@@ -157,18 +157,26 @@ html_title = project + " " + release
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-html_logo = "../../shared_images/adacore-logo-white.png"
+html_logo = "../../shared/images/adacore-logo-white.png"
 
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
-html_favicon = "../../shared_images/favicon.ico"
+html_favicon = "../../shared/images/favicon.ico"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
-html_css_files = ["lrm.css"]
+
+html_css_files = ["custom.css", "lrm.css"]
+
+# Additional templates that should be rendered to pages, maps page names to
+# template names.
+# Search page using pagefind indexing
+html_additional_pages = {
+    "search": "search.html",  # relative to the _templates directory
+}
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
@@ -180,10 +188,6 @@ html_css_files = ["lrm.css"]
 
 # Custom sidebar templates, maps document names to template names.
 # html_sidebars = {}
-
-# Additional templates that should be rendered to pages, maps page names to
-# template names.
-# html_additional_pages = {}
 
 # If false, no module index is generated.
 # html_domain_indices = True

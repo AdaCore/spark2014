@@ -1,0 +1,95 @@
+{%- extends "!search.html" %}
+{% set title = _('Search') %}
+{% set display_vcs_links = False %}
+
+{% block content %}
+<!-- Surround search results with div. Only the right result div will
+ be shown. -->
+<div id="rtd-block-content">
+  {{ super() }}
+</div>
+
+<div id="pagefind-block-content">
+  <h1>{{ _("Search") }}</h1>
+  <div id="search"></div>
+</div>
+{% endblock %}
+
+{%- block scripts %}
+{{ super() }}
+
+<script>
+  // pagefind requires dynamic imports to work properly. This is only possible
+  // for served page to respect the Cross-Origin Resource Sharing (CORS).
+  if (window.location.protocol !== "file:") {
+      var script = document.createElement('script');
+      script.src = 'pagefind/pagefind-ui.js';
+      script.onload = function () {
+        function setupSearch() {
+          new PagefindUI({
+            element: "#search",
+            showSubResults: true,
+            highlightParam: "highlight",
+            showImages: false,
+          });
+
+          const urlParams = new URLSearchParams(window.location.search);
+          const query = urlParams.get('q');
+          const searchInputElement = document.querySelector("#search form[role=search] input");
+
+          const inputChangeEvent = new Event('input');
+          searchInputElement.value = query;
+          searchInputElement?.dispatchEvent(inputChangeEvent);
+          searchInputElement?.focus();
+        }
+
+        if (document.readyState === "loading") {
+          window.addEventListener('DOMContentLoaded', () => {
+            setupSearch();
+          });
+        } else {
+          setupSearch();
+        }
+      }
+
+      document.head.appendChild(script);
+  }
+</script>
+{%- endblock %}
+{% block footer %}
+{{ super() }}
+<script>
+  // Embedded Sphinx search is enabled only if pagefind does not work
+  if (window.location.protocol !== "file:") {
+    $("#rtd-block-content").hide();
+  } else {
+    $("#pagefind-block-content").hide();
+  }
+
+</script>
+{% endblock %}
+
+{% block body %}
+{{ super() }}
+{% endblock %}
+
+{% block extra_styles -%}
+{{ super() }}
+<style type="text/css">
+  #search form input[type="text"] {
+    box-sizing: border-box;
+    width: 100%;
+    line-height: 2em;
+    padding-inline: 0.6em;
+    font-size: 1.2rem;
+    border-radius: 0.25rem;
+    border: 2px solid var(--color-foreground-border);
+    border-bottom-color: 2px solid var(--color-foreground-secondary);
+    transition: border-color 20ms ease;
+  }
+
+  #search form input[type="text"]:focus {
+    border-color: var(--color-foreground-primary);
+  }
+</style>
+{%- endblock extra_styles %}

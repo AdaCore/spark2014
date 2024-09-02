@@ -588,7 +588,7 @@ red_black_trees.adb:427:10: medium: resource or memory leak might occur at end o
 red_black_trees.adb:427:26: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:429:11: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:429:17: medium: resource or memory leak might occur
-red_black_trees.adb:429:24: info: pointer dereference check proved (CVC5: 1 VC)
+red_black_trees.adb:429:24: medium: pointer dereference check might fail
 red_black_trees.adb:430:14: medium: pointer dereference check might fail
 red_black_trees.adb:430:21: medium: resource or memory leak might occur
 red_black_trees.adb:431:12: info: absence of resource or memory leak proved (CVC5: 1 VC)

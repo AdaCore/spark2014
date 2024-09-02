@@ -28,6 +28,7 @@ with Ada.Containers.Hashed_Maps;
 with Common_Containers;           use Common_Containers;
 with GNAT.Source_Info;
 with GNATCOLL.Symbols;            use GNATCOLL.Symbols;
+with Gnat2Why.Expr;               use Gnat2Why.Expr;
 with Namet;                       use Namet;
 with Sinput;                      use Sinput;
 with Snames;                      use Snames;
@@ -84,7 +85,8 @@ package body Why.Gen.Pointers is
 
    function Dummy_Designated_Value
      (E            : Type_Kind_Id;
-      Relaxed_Init : Boolean)
+      Relaxed_Init : Boolean;
+      Local        : Boolean := False)
       return W_Expr_Id;
    --  Compute the dummy value to be used for values designated by E
 
@@ -281,8 +283,6 @@ package body Why.Gen.Pointers is
 
          Assign_Pointer : constant W_Identifier_Id :=
            To_Local (E_Symb (E, WNE_Assign_Null_Check, Relaxed_Init));
-         Dummy_Expr     : constant W_Expr_Id :=
-           Dummy_Designated_Value (E, Relaxed_Init);
 
       begin
          --  If the designated type is incomplete, declare a function to access
@@ -318,43 +318,6 @@ package body Why.Gen.Pointers is
                                       Relaxed_Init => Relaxed_Init))))),
                         Typ    => Get_Typ (Value_Id))));
          end if;
-
-         --  Declare a symbol for the dynamic property of E. It fixes the value
-         --  of value if the pointer is null.
-
-         declare
-            Value_Access : constant W_Term_Id :=
-              (if Designates_Incomplete_Type (E)
-               then New_Record_Access
-                 (Name  => +A_Ident,
-                  Field => To_Local
-                    (E_Symb
-                         (E            => E,
-                          S            => WNE_Pointer_Value_Abstr,
-                          Relaxed_Init => Relaxed_Init)))
-               else New_Pointer_Value_Access
-                 (E, E, +A_Ident, Local => True));
-
-         begin
-            Emit (Th,
-                  New_Function_Decl
-                    (Domain   => EW_Pred,
-                     Name     => To_Local
-                       (E_Symb (E, WNE_Dynamic_Property, Relaxed_Init)),
-                     Binders  => A_Binder,
-                     Location => No_Location,
-                     Labels   => Symbol_Sets.Empty_Set,
-                     Def      => New_Conditional
-                       (Domain    => EW_Pred,
-                        Condition => +Pred_Of_Boolean_Term
-                          (New_Pointer_Is_Null_Access
-                               (E, +A_Ident, Local => True)),
-                        Then_Part => New_Comparison
-                          (Symbol => Why_Eq,
-                           Left   => +Value_Access,
-                           Right  => +Dummy_Expr,
-                           Domain => EW_Pred))));
-         end;
 
          Emit (Th,
                New_Function_Decl
@@ -1369,9 +1332,8 @@ package body Why.Gen.Pointers is
          EW_Import);
 
       --  If Des_Ty does not have static constraints, its static constraint
-      --  predicate is statically True. Give a direct definition in the clone
-      --  for it. Otherwise, an axiom will be generated in the completion
-      --  module.
+      --  predicate is statically True. Otherwise, its dynamic predicate cannot
+      --  be recursive, it can be used directly.
 
       declare
          Abstr_Binder : constant Binder_Type :=
@@ -1391,7 +1353,16 @@ package body Why.Gen.Pointers is
                     (E_Symb (E, WNE_Static_Constraint, Relaxed_Init)),
                   Binders  => Binder_Array'(1 => Abstr_Binder),
                   Def      => (if Type_Has_Static_Constraints (Des_Ty)
-                                  then Why_Empty else +True_Pred),
+                               then +Compute_Dynamic_Invariant
+                                 (Expr           => +Abstr_Binder.B_Name,
+                                  Ty             => Des_Ty,
+                                  Params         => Logic_Params,
+                                  Initialized    => +True_Term,
+                                  Only_Var       => +False_Term,
+                                  Top_Predicate  => +True_Term,
+                                  All_Global_Inv => True,
+                                  Use_Pred       => False)
+                               else +True_Pred),
                   Location => No_Location,
                   Labels   => Symbol_Sets.Empty_Set));
       end;
@@ -1537,6 +1508,44 @@ package body Why.Gen.Pointers is
             Name => Ty_Name);
 
          Emit (Th, New_Havoc_Declaration (Ty_Name));
+
+         --  Declare a symbol for the dynamic property of E. It fixes the value
+         --  of value if the pointer is null.
+
+         declare
+            Value_Access : constant W_Term_Id :=
+              (if Designates_Incomplete_Type (E)
+               then New_Record_Access
+                 (Name  => +A_Ident,
+                  Field => To_Local
+                    (E_Symb
+                         (E            => E,
+                          S            => WNE_Pointer_Value_Abstr,
+                          Relaxed_Init => Relaxed_Init)))
+               else New_Pointer_Value_Access
+                 (E, E, +A_Ident, Local => True));
+
+         begin
+            Emit (Th,
+                  New_Function_Decl
+                    (Domain   => EW_Pred,
+                     Name     => To_Local
+                       (E_Symb (E, WNE_Dynamic_Property, Relaxed_Init)),
+                     Binders  => A_Binder,
+                     Location => No_Location,
+                     Labels   => Symbol_Sets.Empty_Set,
+                     Def      => New_Conditional
+                       (Domain    => EW_Pred,
+                        Condition => +Pred_Of_Boolean_Term
+                          (New_Pointer_Is_Null_Access
+                               (E, +A_Ident, Local => True)),
+                        Then_Part => New_Comparison
+                          (Symbol => Why_Eq,
+                           Left   => +Value_Access,
+                           Right  => +Dummy_Designated_Value
+                             (E, Relaxed_Init, Local => True),
+                           Domain => EW_Pred))));
+         end;
       end Declare_Pointer_Type;
 
       -------------------------------
@@ -1700,13 +1709,22 @@ package body Why.Gen.Pointers is
 
    function Dummy_Designated_Value
      (E            : Type_Kind_Id;
-      Relaxed_Init : Boolean)
+      Relaxed_Init : Boolean;
+      Local        : Boolean := False)
       return W_Expr_Id
    is
       Des_Ty : constant Entity_Id := Directly_Designated_Type (E);
    begin
       if Designates_Incomplete_Type (Repr_Pointer_Type (E)) then
-         return +E_Symb (E, WNE_Dummy_Abstr, Relaxed_Init);
+         declare
+            Dummy : W_Identifier_Id :=
+              E_Symb (E, WNE_Dummy_Abstr, Relaxed_Init);
+         begin
+            if Local then
+               Dummy := To_Local (Dummy);
+            end if;
+            return +Dummy;
+         end;
       elsif Has_Relaxed_Init (Des_Ty) or else Relaxed_Init then
          return Insert_Simple_Conversion
            (Expr   => Why_Default_Value (EW_Term, Des_Ty),
