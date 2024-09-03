@@ -23,7 +23,7 @@ package body Elementary_Functions_Wrapper with SPARK_Mode is
 
    function Tan (X : Float) return Float is (EF.Tan (X));
 
-   function Tan (X, Cycle : Float) return Float is (EF.Tan (X, Cycle));--@PRECONDITION:FAIL
+   function Tan (X, Cycle : Float) return Float is (EF.Tan (X, Cycle));--@OVERFLOW_CHECK:FAIL
 
    function Cot (X : Float) return Float is (EF.Cot (X));--@OVERFLOW_CHECK:FAIL
 
