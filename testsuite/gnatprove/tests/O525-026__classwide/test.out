@@ -1,4 +1,5 @@
 objt_interface_jauge.ads:7:11: info: function contract feasibility proved (Trivial: 1 VC)
+spark-containers-formal-unbounded_vectors.ads:19:18: medium: implicit aspect Always_Terminates on "Oeqr" could be incorrect, indirect dispatching call to record equality might be nonterminating, in instantiation at objt_types_jauge.ads:20 [possible explanation: call could hide recursive calls]
 spark-containers-parameter_checks.ads:32:19: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_vectors.ads:114, in instantiation at objt_types_jauge.ads:20
 spark-containers-parameter_checks.ads:37:19: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_vectors.ads:114, in instantiation at objt_types_jauge.ads:20
 spark-containers-parameter_checks.ads:42:19: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_vectors.ads:114, in instantiation at objt_types_jauge.ads:20

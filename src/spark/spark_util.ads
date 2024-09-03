@@ -291,6 +291,10 @@ package SPARK_Util is
    -- General queries related to entities --
    -----------------------------------------
 
+   function Alternative_Uses_Eq (Alt : Node_Id) return Boolean;
+   --  Return True if the evaluation of a membership test with Alt
+   --  involves an equality relation.
+
    function Enclosing_Generic_Instance
      (E : Entity_Id)
       return Opt_E_Package_Id;
