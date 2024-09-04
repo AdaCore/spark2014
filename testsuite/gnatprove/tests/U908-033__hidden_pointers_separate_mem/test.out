@@ -143,8 +143,10 @@ example_recursive.adb:242:22: info: assertion proved
 example_recursive.adb:242:30: info: precondition proved
 example_recursive.adb:242:30: info: tag check proved
 example_recursive.adb:245:10: info: precondition proved
+example_recursive.adb:245:10: medium: call to ghost subprogram "Prove_Valid_Preserved" might be nonterminating [possible fix: annotate "Prove_Valid_Preserved" with aspect Always_Terminates]
 example_recursive.adb:245:70: info: range check proved
 example_recursive.adb:246:10: info: precondition proved
+example_recursive.adb:246:10: medium: call to ghost subprogram "Prove_Reach_Preserved" might be nonterminating [possible fix: annotate "Prove_Reach_Preserved" with aspect Always_Terminates]
 example_recursive.adb:246:70: info: range check proved
 example_recursive.adb:249:18: info: overflow check proved
 example_recursive.adb:256:14: info: postcondition proved
@@ -157,9 +159,13 @@ example_recursive.adb:269:07: info: precondition proved
 example_recursive.adb:269:32: info: precondition proved
 example_recursive.adb:270:22: info: assertion proved
 example_recursive.adb:272:07: info: precondition proved
+example_recursive.adb:272:07: medium: call to ghost subprogram "Prove_Valid_Preserved" might be nonterminating [possible fix: annotate "Prove_Valid_Preserved" with aspect Always_Terminates]
 example_recursive.adb:273:07: info: precondition proved
+example_recursive.adb:273:07: medium: call to ghost subprogram "Prove_Reach_Preserved" might be nonterminating [possible fix: annotate "Prove_Reach_Preserved" with aspect Always_Terminates]
 example_recursive.adb:274:07: info: precondition proved
+example_recursive.adb:274:07: medium: call to ghost subprogram "Prove_Valid_Preserved" might be nonterminating [possible fix: annotate "Prove_Valid_Preserved" with aspect Always_Terminates]
 example_recursive.adb:275:07: info: precondition proved
+example_recursive.adb:275:07: medium: call to ghost subprogram "Prove_Reach_Preserved" might be nonterminating [possible fix: annotate "Prove_Reach_Preserved" with aspect Always_Terminates]
 example_recursive.adb:280:10: info: assertion proved
 example_recursive.adb:281:16: info: precondition proved
 example_recursive.adb:282:17: info: precondition proved
@@ -179,12 +185,16 @@ example_recursive.adb:306:22: info: assertion proved
 example_recursive.adb:306:30: info: precondition proved
 example_recursive.adb:306:30: info: tag check proved
 example_recursive.adb:314:13: info: precondition proved
+example_recursive.adb:314:13: medium: call to ghost subprogram "Prove_Valid_Preserved" might be nonterminating [possible fix: annotate "Prove_Valid_Preserved" with aspect Always_Terminates]
 example_recursive.adb:314:76: info: range check proved
 example_recursive.adb:315:13: info: precondition proved
+example_recursive.adb:315:13: medium: call to ghost subprogram "Prove_Reach_Preserved" might be nonterminating [possible fix: annotate "Prove_Reach_Preserved" with aspect Always_Terminates]
 example_recursive.adb:315:76: info: range check proved
 example_recursive.adb:318:13: info: precondition proved
+example_recursive.adb:318:13: medium: call to ghost subprogram "Prove_Valid_Preserved" might be nonterminating [possible fix: annotate "Prove_Valid_Preserved" with aspect Always_Terminates]
 example_recursive.adb:318:76: info: range check proved
 example_recursive.adb:319:13: info: precondition proved
+example_recursive.adb:319:13: medium: call to ghost subprogram "Prove_Reach_Preserved" might be nonterminating [possible fix: annotate "Prove_Reach_Preserved" with aspect Always_Terminates]
 example_recursive.adb:319:76: info: range check proved
 example_recursive.adb:325:13: info: precondition proved
 example_recursive.adb:325:73: info: range check proved
@@ -207,8 +217,10 @@ example_recursive.adb:355:22: info: assertion proved
 example_recursive.adb:355:30: info: precondition proved
 example_recursive.adb:355:30: info: tag check proved
 example_recursive.adb:357:07: info: precondition proved
+example_recursive.adb:357:07: medium: call to ghost subprogram "Prove_Valid_Preserved" might be nonterminating [possible fix: annotate "Prove_Valid_Preserved" with aspect Always_Terminates]
 example_recursive.adb:357:70: info: overflow check proved
 example_recursive.adb:358:07: info: precondition proved
+example_recursive.adb:358:07: medium: call to ghost subprogram "Prove_Reach_Preserved" might be nonterminating [possible fix: annotate "Prove_Reach_Preserved" with aspect Always_Terminates]
 example_recursive.adb:358:70: info: overflow check proved
 example_recursive.adb:360:22: info: assertion proved
 example_recursive.adb:360:22: info: precondition proved
