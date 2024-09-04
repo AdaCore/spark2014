@@ -2842,6 +2842,7 @@ package body Gnat2Why.Borrow_Checker is
             | N_Function_Call
             | N_Identifier
             | N_Null
+            | N_External_Initializer
          =>
             raise Program_Error;
 

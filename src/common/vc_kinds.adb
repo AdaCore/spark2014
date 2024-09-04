@@ -702,6 +702,8 @@ package body VC_Kinds is
            "an extension aggregate whose ancestor part is a subtype mark",
          when Lim_Extension_Case_Pattern_Matching =>
            "GNAT extension for case pattern matching",
+         when Lim_External_Initializer =>
+           "GNAT extension for embedded binary resources",
          when Lim_Generic_In_Hidden_Private =>
             "instance of a generic unit declared in a package whose private "
           & "part is hidden outside of this package",

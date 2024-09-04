@@ -1,0 +1,2 @@
+foo.adb:4:20: error: GNAT extension for embedded binary resources is not yet supported
+gnatprove: error during flow analysis and proof

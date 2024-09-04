@@ -3505,6 +3505,9 @@ package body SPARK_Definition is
          when N_Interpolated_String_Literal =>
             Mark_Unsupported (Lim_Interpolated_String_Literal, N);
 
+         when N_External_Initializer =>
+            Mark_Unsupported (Lim_External_Initializer, N);
+
          --  Mark should not be called on other kinds
 
          when N_Abortable_Part
