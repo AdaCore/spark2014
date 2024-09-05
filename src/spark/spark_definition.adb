@@ -7817,6 +7817,24 @@ package body SPARK_Definition is
             Mark_Violation ("controlled types", E);
          end if;
 
+         --  Front-end in GNATprove mode (see freeze.adb, call to
+         --  Collect_Inherited_Class_Wide_Conditions) does not collect properly
+         --  the class-wide contract elements needed to check Liskov on
+         --  interface derivation. Furthermore, because the interfaces covering
+         --  primitives are also not collected by the front-end for derived
+         --  interfaces, the current way of checking for multiple inheritance
+         --  is inapplicable.
+
+         if Is_Interface (E)
+           and then not Is_Class_Wide_Type (E)
+           and then
+             (Parent_Type (E) /= E
+              or else (Present (Interfaces (E))
+                       and then not Is_Empty_Elmt_List (Interfaces (E))))
+         then
+            Mark_Unsupported (Lim_Derived_Interface, E);
+         end if;
+
          --  Hardcoded entities are private types whose definition should not
          --  be translated in SPARK. We add the entity of their full views to
          --  the set of marked entities so that they will not be considered for
