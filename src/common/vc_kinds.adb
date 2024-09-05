@@ -683,6 +683,8 @@ package body VC_Kinds is
          when Lim_Deep_Value_In_Delta_Aggregate =>
            "delta aggregate with possible aliasing of component associations "
           & "of an ownership type",
+         when Lim_Derived_Interface =>
+            "interface derived from other interfaces",
          when Lim_Entry_Family => "entry families",
          when Lim_Exceptional_Cases_Dispatch =>
            "aspect ""Exceptional_Cases"" on dispatching operations",
