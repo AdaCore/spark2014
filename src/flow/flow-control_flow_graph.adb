@@ -8297,17 +8297,6 @@ package body Flow.Control_Flow_Graph is
             end;
       end case;
 
-      --  Label all vertices that are part of exceptional execution paths
-      Mark_Exceptional_Paths (FA);
-      Prune_Exceptional_Paths (FA);
-
-      --  Make sure we will be able to produce the post-dominance frontier
-      --  if we have dead code remaining.
-      Separate_Dead_Paths (FA);
-
-      --  Simplify graph by removing all null vertices
-      Simplify_CFG (FA);
-
       --  In GG mode, we now assemble globals and retroactively make some
       --  initial and final vertices, which is the only reason for this code
       --  to be here.
@@ -8469,6 +8458,29 @@ package body Flow.Control_Flow_Graph is
             end if;
          end loop;
       end if;
+
+      --  Label all vertices that are part of exceptional execution paths
+      Mark_Exceptional_Paths (FA);
+
+      --  Simplify graph by removing all null vertices
+      Simplify_CFG (FA);
+
+      --  Store the original CFG, before pruning, which is only needed to
+      --  compute CDG.
+
+      FA.Full_CFG := FA.CFG;
+      FA.Full_Atr := FA.Atr;
+
+      --  Remove exceptional paths, because they would crash the post-dominance
+      --  fronteir calculation.
+      Prune_Exceptional_Paths (FA);
+
+      --  Make sure we will be able to produce the post-dominance frontier
+      --  if we have dead code remaining.
+      Separate_Dead_Paths (FA);
+
+      --  Simplify graph by removing all null vertices
+      Simplify_CFG (FA);
 
       --  Finally, make sure that all extra checks for folded functions have
       --  been processed and other context information has been dropped.

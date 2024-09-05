@@ -47,15 +47,14 @@ instructions.adb:31:07: medium: unexpected exception might be raised
 instructions.adb:50:58: info: precondition proved (CVC5: 1 VC)
 instructions.adb:54:13: medium: unexpected exception might be raised
 instructions.ads:10:13: info: implicit aspect Always_Terminates on "Read" has been proved, subprogram will terminate
-screen_output.adb:42:07: warning: this statement is never reached
-screen_output.adb:43:07: warning: this statement is never reached
-screen_output.adb:44:07: warning: this statement is never reached
+screen_output.adb:42:07: high: "Text_IO.File_System" must be a global output of "Debug_Msg" (SPARK RM 6.1.4(18))
+screen_output.adb:43:07: high: "Text_IO.File_System" must be a global output of "Debug_Msg" (SPARK RM 6.1.4(18))
+screen_output.adb:44:07: high: "Text_IO.File_System" must be a global output of "Debug_Msg" (SPARK RM 6.1.4(18))
 screen_output.adb:54:46: info: range check proved (CVC5: 2 VC)
 screen_output.adb:77:29: info: cannot unroll loop (too many loop iterations)
 screen_output.adb:83:46: info: range check proved (CVC5: 2 VC)
 screen_output.adb:83:53: low: range check might fail, cannot prove upper bound for Natural'Image (Input.Line_Number) & ": " & S [reason for check: input value must fit in parameter type] [possible fix: subprogram at screen_output.ads:18 should mention S and Input.Line_Num in a precondition]
 screen_output.adb:94:07: medium: unexpected exception might be raised
-screen_output.ads:11:14: warning: subprogram "Debug_Msg" has no effect
 sdc.adb:11:04: info: initialization of "File" proved
 sdc.adb:12:04: info: initialization of "T" proved
 sdc.adb:16:07: warning: assuming "Argument_Count" has no effect on global items
