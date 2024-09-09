@@ -1357,10 +1357,12 @@ Decreases) then the expression value obtained for the call is greater
    that the Subprogram_Variant aspect cannot be specified for an abstract
    subprogram.]
 
-4. The expression of a ``numeric_subprogram_variant_item`` shall be either of a
-   discrete type or of a subtype of
-   ``Ada.Numerics.Big_Numbers.Big_Integers.Big_Integer``. In the second case,
-   the associated ``change_direction`` shall be Decreases.
+4. The expression of a ``numeric_subprogram_variant_item`` shall be either
+   of a discrete type,
+   of a subtype of ``Ada.Numerics.Big_Numbers.Big_Integers.Big_Integer`` or
+   of a subtype of ``Ada.Numerics.Big_Numbers.Big_Integers_Ghost.Big_Integer``.
+   In the second and third cases the associated ``change_direction`` shall be
+   Decreases.
 
 5. The expression of a ``structural_subprogram_variant_item`` shall denote a
    formal parameter of the subprogram.
