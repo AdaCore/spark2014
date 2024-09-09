@@ -4469,7 +4469,7 @@ package body Flow.Control_Flow_Graph is
       --  We pull proof dependencies from the type of the object. Type
       --  invariants are pulled in the enclosing unit only when the object
       --  has no initialization, or it is a library-level entity.
-      Process_Predicate_And_Invariant (E,
+      Process_Predicate_And_Invariant (Etype (E),
                                        FA.B_Scope,
                                        No (Expr)
                                          or else Is_Library_Level_Entity (E),
@@ -6264,6 +6264,14 @@ package body Flow.Control_Flow_Graph is
          Add_Dummy_Vertex (N, FA, CM);
       end if;
 
+      --  In phase 1, pull predicates and invariants that apply to type Typ
+      --  into the proof dependencies of the unit.
+
+      if FA.Generating_Globals and then Entity_In_SPARK (Typ) then
+         Process_Predicate_And_Invariant
+           (Typ, FA.B_Scope, True, FA.Proof_Dependencies);
+      end if;
+
       --  Access-to-subprogram types might be annotated with Pre and Post
       --  contracts. We process their expressions for proof dependencies here.
 
@@ -7811,7 +7819,7 @@ package body Flow.Control_Flow_Graph is
             for Param of Get_Formals (FA.Spec_Entity) loop
                Create_Initial_And_Final_Vertices (Param, FA);
                Process_Predicate_And_Invariant
-                 (Param,
+                 (Etype (Param),
                   FA.B_Scope,
                   Is_Globally_Visible (FA.Spec_Entity),
                   FA.Proof_Dependencies);
@@ -7950,7 +7958,7 @@ package body Flow.Control_Flow_Graph is
       if Ekind (FA.Spec_Entity) = E_Function then
          Create_Initial_And_Final_Vertices (FA.Spec_Entity, FA);
          Process_Predicate_And_Invariant
-           (FA.Spec_Entity,
+           (Etype (FA.Spec_Entity),
             FA.B_Scope,
             Is_Globally_Visible (FA.Spec_Entity),
             FA.Proof_Dependencies);

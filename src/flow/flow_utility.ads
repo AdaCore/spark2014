@@ -837,13 +837,12 @@ package Flow_Utility is
 private
 
    procedure Process_Predicate_And_Invariant_Internal
-     (N                  : Node_Or_Entity_Id;
+     (Typ                : Type_Kind_Id;
       Scop               : Flow_Scope;
       Include_Invariant  : Boolean;
       Proof_Dependencies : in out Node_Sets.Set;
       Types_Seen         : in out Node_Sets.Set)
-   with Pre  => N in N_Has_Etype_Id,
-        Post => Proof_Dependencies'Old.Is_Subset (Proof_Dependencies);
+   with Post => Proof_Dependencies'Old.Is_Subset (Proof_Dependencies);
    --  Like Process_Predicate_And_Invariant, with an additional parameter
    --  Types_Seen that allows to track which type predicates we already
    --  traversed to pick proof dependencies.

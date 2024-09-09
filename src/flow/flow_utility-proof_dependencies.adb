@@ -229,7 +229,7 @@ package body Flow_Utility.Proof_Dependencies is
    -------------------------------------
 
    procedure Process_Predicate_And_Invariant
-     (N                  : Node_Or_Entity_Id;
+     (Typ                : Type_Kind_Id;
       Scop               : Flow_Scope;
       Include_Invariant  : Boolean;
       Proof_Dependencies : in out Node_Sets.Set)
@@ -237,7 +237,7 @@ package body Flow_Utility.Proof_Dependencies is
       Discard : Node_Sets.Set;
    begin
       Process_Predicate_And_Invariant_Internal
-        (N                  => N,
+        (Typ                => Typ,
          Scop               => Scop,
          Include_Invariant  => Include_Invariant,
          Proof_Dependencies => Proof_Dependencies,
