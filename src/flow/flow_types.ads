@@ -628,6 +628,9 @@ package Flow_Types is
       --  It should be noted that most vertices we construct will have this set
       --  to true.
 
+      Is_Dead_Path                 : Boolean;
+      --  True for paths that are dead
+
       Is_Original_Program_Node     : Boolean;
       --  True for pruned vertices that were originally program nodes
 
@@ -789,6 +792,7 @@ package Flow_Types is
                    In_Nested_Package               => False,
                    Is_Program_Node                 => False,
                    Is_Original_Program_Node        => False,
+                   Is_Dead_Path                    => False,
                    Is_Exceptional_Branch           => False,
                    Is_Exceptional_Path             => False,
                    Is_Assertion                    => False,

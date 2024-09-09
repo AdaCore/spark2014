@@ -1058,6 +1058,9 @@ package body Flow.Control_Flow_Graph is
    --  flow or dead code, and Is_Exceptional_branch on all vertices leading
    --  into an exceptional path.
 
+   procedure Prune_Dead_Paths (FA : in out Flow_Analysis_Graphs);
+   --  Remove dead paths from the CFG
+
    procedure Prune_Exceptional_Paths (FA : in out Flow_Analysis_Graphs);
    --  Delete all vertices from exceptional paths from the control flow graph
 
@@ -7156,11 +7159,6 @@ package body Flow.Control_Flow_Graph is
             elsif Atr.Is_Null_Node and then Atr.Is_Program_Node then
                null;
 
-            --  Ignore vertices which don't have normal execution
-
-            elsif Atr.Execution /= Normal_Execution then
-               null;
-
             --  Flag the remaining vertices
 
             else
@@ -7168,7 +7166,7 @@ package body Flow.Control_Flow_Graph is
                --  Is_Original_Program_Node because we want to raise
                --  warnings about unreachable nodes in Find_Dead_Code.
                Atr.Is_Original_Program_Node := Atr.Is_Program_Node;
-               Atr.Is_Exceptional_Path      := True;
+               Atr.Is_Dead_Path             := True;
             end if;
          end;
       end loop;
@@ -7219,6 +7217,39 @@ package body Flow.Control_Flow_Graph is
          end if;
       end loop;
    end Mark_Exceptional_Paths;
+
+   ----------------------
+   -- Prune_Dead_Paths --
+   ----------------------
+
+   procedure Prune_Dead_Paths (FA : in out Flow_Analysis_Graphs) is
+   begin
+      for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         declare
+            Atr : V_Attributes renames FA.Atr (V);
+
+         begin
+            if Atr.Is_Dead_Path then
+
+               --  If we are dealing with a declaration node, then we delete
+               --  the corresponding 'Initial and 'Final vertices as well.
+               if Atr.Is_Declaration_Node then
+                  for F of Atr.Variables_Defined loop
+                     Clear_Vertex_And_Attributes
+                       (FA,
+                        FA.CFG.Get_Vertex (Change_Variant (F, Initial_Value)));
+                     Clear_Vertex_And_Attributes
+                       (FA,
+                        FA.CFG.Get_Vertex (Change_Variant (F, Final_Value)));
+                  end loop;
+               end if;
+
+               --  Then we delete vertex V
+               Clear_Vertex_And_Attributes (FA, V);
+            end if;
+         end;
+      end loop;
+   end Prune_Dead_Paths;
 
    -----------------------------
    -- Prune_Exceptional_Paths --
@@ -7752,6 +7783,7 @@ package body Flow.Control_Flow_Graph is
       FA.CFG.Clear_Vertex (V);
       Atr := (Null_Attributes with delta
                 Is_Null_Node             => True,
+                Is_Dead_Path             => Atr.Is_Dead_Path,
                 Is_Original_Program_Node =>
                   Atr.Is_Original_Program_Node,
                 Error_Location           => Atr.Error_Location,
@@ -8373,6 +8405,14 @@ package body Flow.Control_Flow_Graph is
             end;
       end case;
 
+      --  Label all vertices that are part of exceptional execution paths
+      Mark_Exceptional_Paths (FA);
+
+      Prune_Dead_Paths (FA);
+
+      --  Simplify graph by removing all null vertices
+      Simplify_CFG (FA);
+
       --  In GG mode, we now assemble globals and retroactively make some
       --  initial and final vertices, which is the only reason for this code
       --  to be here.
@@ -8556,12 +8596,6 @@ package body Flow.Control_Flow_Graph is
             end if;
          end loop;
       end if;
-
-      --  Label all vertices that are part of exceptional execution paths
-      Mark_Exceptional_Paths (FA);
-
-      --  Simplify graph by removing all null vertices
-      Simplify_CFG (FA);
 
       --  Store the original CFG, before pruning, which is only needed to
       --  compute CDG.
