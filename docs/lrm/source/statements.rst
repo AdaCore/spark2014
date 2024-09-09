@@ -255,10 +255,13 @@ the value an expression had upon entry to the subprogram.
    block statements are ignored for purposes of this rule.]
 
 
-7. The expression of a ``numeric_loop_variant_item`` shall be either of a
-   discrete type or of a subtype of
-   ``Ada.Numerics.Big_Numbers.Big_Integers.Big_Integer``. In the second case,
-   the associated ``change_direction`` shall be Decreases.
+7. The expression of a ``numeric_loop_variant_item`` shall be either
+   of a discrete type,
+   of a subtype of ``Ada.Numerics.Big_Numbers.Big_Integers.Big_Integer`` or
+   of a subtype of ``Ada.Numerics.Big_Numbers.Big_Integers_Ghost.Big_Integer``.
+   In the second and third cases, the associated ``change_direction`` shall be
+   Decreases.
+
 
 8. The expression of a ``structural_loop_variant_item`` shall denote a
    variable of an anonymous access-to-object type.
