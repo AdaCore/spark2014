@@ -447,6 +447,7 @@ package VC_Kinds is
       Lim_Conv_Incompatible_Fixed,
       Lim_Deep_Object_With_Addr,
       Lim_Deep_Value_In_Delta_Aggregate,
+      Lim_Derived_Interface,
       Lim_Entry_Family,
       Lim_Exceptional_Cases_Dispatch,
       Lim_Exceptional_Cases_Ownership,
@@ -693,6 +694,8 @@ package VC_Kinds is
          when Lim_Deep_Value_In_Delta_Aggregate =>
            "delta aggregate with possible aliasing of components of an "
            & "ownership type",
+         when Lim_Derived_Interface =>
+            "interface derived from other interfaces",
          when Lim_Overlay_With_Deep_Object =>
            "overlay with an object of an ownership type",
          when Lim_Deep_Object_Declaration_Outside_Block =>
