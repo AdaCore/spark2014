@@ -1598,50 +1598,27 @@ package body Flow.Analysis.Sanity is
       --  We look for illegal updates
 
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
-         declare
-            A : V_Attributes renames FA.Atr (V);
+         if FA.PDG.Get_Key (V).Variant in Initial_Value | Final_Value then
+            goto NEXT_VERTEX;
+         end if;
 
-            Corresp_Final_Vertex : Flow_Graphs.Vertex_Id;
-            Final_Atr            : V_Attributes;
-         begin
-            for Var of A.Variables_Defined loop
-               if not FA.All_Vars.Contains (Var) then
-                  if FA.Kind = Kind_Package
-                    and then not Synthetic (Var)
-                  then
-                     --  We have a write to a variable a package knows nothing
-                     --  about. This is always an illegal update.
+         for Var of FA.Atr (V).Variables_Defined loop
 
-                     Error_Msg_Flow
-                       (FA           => FA,
-                        Msg          => "cannot write & during elaboration" &
-                                        " of &",
-                        Explain_Code => EC_Write_In_Elaboration,
-                        N            => Error_Location (FA.PDG, FA.Atr, V),
-                        Severity     => High_Check_Kind,
-                        Tag          => Illegal_Update,
-                        F1           => Entire_Variable (Var),
-                        F2           => Direct_Mapping_Id (FA.Spec_Entity),
-                        Vertex       => V);
+            --  If we know about that particular global, then we need to
+            --  check if the update is OK.
 
-                     Unknown_Globals_In_Package.Include
-                       (Entire_Variable (Var));
-                     Sane := False;
-                  end if;
-               elsif FA.PDG.Get_Key (V).Variant not in
-                 Initial_Value | Final_Value
-               then
-                  --  We do know about that particular global. Now we
-                  --  need to check if the update is OK.
+            if FA.All_Vars.Contains (Var) then
 
-                  Corresp_Final_Vertex :=
+               declare
+                  Corresp_Final_Vertex : constant Flow_Graphs.Vertex_Id :=
                     FA.PDG.Get_Vertex (Change_Variant (Var, Final_Value));
-                  pragma Assert (Corresp_Final_Vertex /=
-                                   Flow_Graphs.Null_Vertex);
-                  Final_Atr := FA.Atr.Element (Corresp_Final_Vertex);
-
-                  if Final_Atr.Is_Global
-                    and then Final_Atr.Is_Constant
+                  pragma Assert
+                    (Corresp_Final_Vertex /= Flow_Graphs.Null_Vertex);
+                  Var_Atr : V_Attributes renames
+                    FA.Atr (Corresp_Final_Vertex);
+               begin
+                  if Var_Atr.Is_Global
+                    and then Var_Atr.Is_Constant
                   then
                      if FA.Kind = Kind_Package then
                         Error_Msg_Flow
@@ -1671,9 +1648,31 @@ package body Flow.Analysis.Sanity is
 
                      Sane := False;
                   end if;
-               end if;
-            end loop;
-         end;
+               end;
+
+            --  If we have a write to a variable a package knows nothing
+            --  about, then it is an illegal update.
+
+            elsif FA.Kind = Kind_Package then
+
+               Error_Msg_Flow
+                 (FA           => FA,
+                  Msg          => "cannot write & during elaboration of &",
+                  Explain_Code => EC_Write_In_Elaboration,
+                  N            => Error_Location (FA.PDG, FA.Atr, V),
+                  Severity     => High_Check_Kind,
+                  Tag          => Illegal_Update,
+                  F1           => Entire_Variable (Var),
+                  F2           => Direct_Mapping_Id (FA.Spec_Entity),
+                  Vertex       => V);
+
+               Unknown_Globals_In_Package.Include (Entire_Variable (Var));
+
+               Sane := False;
+            end if;
+         end loop;
+
+         <<NEXT_VERTEX>>
       end loop;
 
       --  We look for unknown Flow_Ids
@@ -1686,134 +1685,116 @@ package body Flow.Analysis.Sanity is
               A.Variables_Used or A.Variables_Defined;
          begin
             for Var of Variables_Referenced loop
-               case Var.Kind is
 
-                  --  Ignore synthetic null export
+               --  If we are dealing with a global written in the elaboration
+               --  of a package, we don't suggest to mention it as an input in
+               --  the Initializes aspect of the package.
 
-                  when Synthetic_Null_Export =>
-                     null;
+               if not Unknown_Globals_In_Package.Contains
+                        (Entire_Variable (Var))
+                 and then not FA.All_Vars.Contains (Var)
+               then
+                  declare
+                     First_Var_Use : constant Node_Id :=
+                       First_Variable_Use (FA      => FA,
+                                           Var     => Var,
+                                           Kind    => Use_Any,
+                                           Precise => False);
 
-                  --  Here we are dealing with a missing global
+                     Subprogram : constant Flow_Id :=
+                       Direct_Mapping_Id (FA.Spec_Entity);
 
-                  when Direct_Mapping | Record_Field | Magic_String =>
+                     Conts : Message_Lists.List;
 
-                     --  If we are dealing with a global written in the
-                     --  elaboration of a package, we don't suggest to mention
-                     --  it as an input in the Initializes aspect of the
-                     --  package.
+                  begin
 
-                     if not Unknown_Globals_In_Package.Contains
-                       (Entire_Variable (Var))
-                       and then not FA.All_Vars.Contains (Var)
+                     --  If the global is missing both from the refined
+                     --  contract and the abstract contract, issue a
+                     --  continuation message explaining that the global
+                     --  needs to be listed in the abstract contract as well.
+
+                     if FA.Kind in Kind_Subprogram | Kind_Task
+                       and then (Present (FA.Refined_Global_N)
+                                 or else Present (FA.Refined_Depends_N))
+                       and then not In_Abstract_Contract (FA, Var)
                      then
                         declare
-                           First_Var_Use : constant Node_Id :=
-                             First_Variable_Use (FA      => FA,
-                                                 Var     => Var,
-                                                 Kind    => Use_Any,
-                                                 Precise => False);
-
-                           Subprogram : constant Flow_Id :=
-                             Direct_Mapping_Id (FA.Spec_Entity);
-
-                           Conts      : Message_Lists.List;
+                           Missing : constant Flow_Id :=
+                             (if Is_Constituent (Var)
+                              and then not Is_Visible (Var, FA.S_Scope)
+                              then Encapsulating_State (Var)
+                              else Entire_Variable (Var));
 
                         begin
-
-                           --  If the global is missing both from the refined
-                           --  contract and the abstract contract, issue a
-                           --  continuation message explaining that the global
-                           --  needs to be listed in the abstract contract as
-                           --  well.
-
-                           if FA.Kind in Kind_Subprogram | Kind_Task
-                             and then (Present (FA.Refined_Global_N)
-                                       or else Present (FA.Refined_Depends_N))
-                             and then not In_Abstract_Contract (FA, Var)
-                           then
-                              declare
-                                 Missing : constant Flow_Id :=
-                                   (if Is_Constituent (Var)
-                                    and then not Is_Visible (Var, FA.S_Scope)
-                                    then Encapsulating_State (Var)
-                                    else Entire_Variable (Var));
-
-                              begin
-                                 Conts.Append
-                                   (Create
-                                      (Substitute_Message
-                                         ("as a result & must be "
-                                          & "listed in the "
-                                          & Next_Aspect_To_Fix
-                                          & " of &",
-                                          N  => First_Var_Use,
-                                          F1 => Missing,
-                                          F2 => Subprogram)));
-                              end;
-                           end if;
-
-                           Error_Msg_Flow
-                             (FA            => FA,
-                              Msg           => "& " & Msg & " &",
-                              SRM_Ref       => SRM_Ref,
-                              N             => First_Var_Use,
-                              F1            =>
-                                (if Gnat2Why_Args.Flow_Advanced_Debug
-                                 then Var
-                                 else Entire_Variable (Var)),
-                              Severity      => High_Check_Kind,
-                              Tag           => Global_Missing,
-                              F2            => Subprogram,
-                              Vertex        => V,
-                              Continuations => Conts);
-
-                           Sane := False;
-
+                           Conts.Append
+                             (Create
+                                (Substitute_Message
+                                   ("as a result & must be listed in the "
+                                    & Next_Aspect_To_Fix
+                                    & " of &",
+                                    N  => First_Var_Use,
+                                    F1 => Missing,
+                                    F2 => Subprogram)));
                         end;
-
-                        --  Sanity check: if the Global contract is generated,
-                        --  then all variables should be known. When fails,
-                        --  print an offending source location (for the users)
-                        --  and "Subprogram_Name @ Vertex_Id : Flow_Id (for the
-                        --  developers).
-
-                        if Gnat2Why_Args.Flow_Generate_Contracts
-                          and then FA.Is_Generative
-                        then
-                           Current_Error_Node := A.Error_Location;
-
-                           --  If the unknown variable is declared within the
-                           --  analysed subprogram, then most likely something
-                           --  went wrong with Get_Variables and it is best to
-                           --  crash; otherwise, the problem is rather in the
-                           --  GG machinery and the users are likely to
-                           --  workaround the problem by adding explicit Global
-                           --  aspect, as suggested by the error message.
-
-                           if Var.Kind in Direct_Mapping | Record_Field
-                             and then
-                               Scope_Within
-                                 (Inner => Get_Direct_Mapping_Id (Var),
-                                  Outer => FA.Spec_Entity)
-                           then
-                              raise Program_Error with
-                                Full_Source_Name (FA.Spec_Entity) & " @" &
-                                V'Img & " : " &
-                                Flow_Id_To_String (Var);
-                           else
-                              pragma Assert
-                                (False,
-                                 Full_Source_Name (FA.Spec_Entity) & " @" &
-                                   V'Img & " : " &
-                                   Flow_Id_To_String (Var));
-                           end if;
-                        end if;
                      end if;
 
-                  when Null_Value =>
-                     raise Program_Error;
+                     Error_Msg_Flow
+                       (FA            => FA,
+                        Msg           => "& " & Msg & " &",
+                        SRM_Ref       => SRM_Ref,
+                        N             => First_Var_Use,
+                        F1            =>
+                          (if Gnat2Why_Args.Flow_Advanced_Debug
+                           then Var
+                           else Entire_Variable (Var)),
+                        Severity      => High_Check_Kind,
+                        Tag           => Global_Missing,
+                        F2            => Subprogram,
+                        Vertex        => V,
+                        Continuations => Conts);
 
-               end case;
+                     Sane := False;
+
+                  end;
+
+                  --  Sanity check: if the Global contract is generated,
+                  --  then all variables should be known. When fails,
+                  --  print an offending source location (for the users)
+                  --  and "Subprogram_Name @ Vertex_Id : Flow_Id (for the
+                  --  developers).
+
+                  if Gnat2Why_Args.Flow_Generate_Contracts
+                    and then FA.Is_Generative
+                  then
+                     Current_Error_Node := A.Error_Location;
+
+                     --  If the unknown variable is declared within the
+                     --  analysed subprogram, then most likely something went
+                     --  wrong with Get_Variables and it is best to crash;
+                     --  otherwise, the problem is rather in the GG machinery
+                     --  and the users are likely to workaround the problem
+                     --  by adding explicit Global aspect, as suggested by
+                     --  the error message.
+
+                     if Var.Kind in Direct_Mapping | Record_Field
+                       and then
+                         Scope_Within
+                           (Inner => Get_Direct_Mapping_Id (Var),
+                            Outer => FA.Spec_Entity)
+                     then
+                        raise Program_Error with
+                          Full_Source_Name (FA.Spec_Entity) & " @" &
+                          V'Img & " : " &
+                          Flow_Id_To_String (Var);
+                     else
+                        pragma Assert
+                          (False,
+                           Full_Source_Name (FA.Spec_Entity) & " @" &
+                             V'Img & " : " &
+                             Flow_Id_To_String (Var));
+                     end if;
+                  end if;
+               end if;
             end loop;
          end;
       end loop;

@@ -1,4 +1,4 @@
-package Debug_IO is
+package Debug_IO with Always_Terminates is
 
    procedure Put (X : String) with
      Depends => (null => X);  --  Instructs flow analysis that calls to this

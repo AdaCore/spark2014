@@ -6,9 +6,9 @@ loops_static.adb:11:57: info: index check proved (CVC5: 2 VC)
 loops_static.adb:14:07: medium: assertion might fail
 loops_static.adb:17:04: warning: analyzing unreferenced procedure "Loop11"
 loops_static.adb:17:14: high: all paths in "Loop11" raise exceptions or do not terminate normally
-loops_static.adb:17:22: warning: "A" is not modified, could be IN
 loops_static.adb:19:23: info: cannot unroll loop (local non-scalar declaration at line 23)
 loops_static.adb:20:25: info: cannot unroll loop (local non-scalar declaration at line 23)
+loops_static.adb:20:25: warning: statement has no effect
 loops_static.adb:21:16: high: array index check might fail (e.g. when A'First = 2 and A'Last = 0 and I = 1) [reason for check: value must be a valid index into the array]
 loops_static.adb:23:49: info: range check proved (CVC5: 4 VC)
 loops_static.adb:26:50: medium: assertion might fail, cannot prove A_Begins (I) = 0 [possible fix: loop at line 20 should mention A in a loop invariant]
@@ -23,10 +23,14 @@ loops_static.adb:41:46: high: assertion might fail, cannot prove A (A'First + I)
 loops_static.adb:41:57: high: array index check might fail (e.g. when A = (others => 0) and A'First = 0 and A'Last = 1 and I = 2) [reason for check: result of addition must be a valid index into the array]
 loops_static.adb:41:57: info: overflow check proved (CVC5: 4 VC)
 loops_static.adb:44:07: medium: assertion might fail
+loops_static.adb:49:11: warning: unused assignment
 loops_static.adb:50:23: info: unrolling loop
 loops_static.adb:51:13: high: array index check might fail (e.g. when A'First = 2 and A'Last = 0 and I = 1) [reason for check: value must be a valid index into the array]
 loops_static.adb:52:32: info: cannot unroll loop (too many loop iterations)
+loops_static.adb:52:32: warning: statement has no effect
+loops_static.adb:53:13: warning: statement has no effect
 loops_static.adb:53:19: info: index check proved (CVC5: 4 VC)
+loops_static.adb:54:20: warning: unused assignment
 loops_static.adb:58:42: high: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, 1 => 0) and J = 0) [possible fix: subprogram at loops_static.ads:8 should mention A in a precondition]
 loops_static.adb:58:45: info: index check proved (CVC5: 4 VC)
 loops_static.adb:60:07: medium: assertion might fail
@@ -36,33 +40,60 @@ loops_static.adb:68:42: medium: assertion might fail, cannot prove A (J) = 0 [po
 loops_static.adb:68:45: info: index check proved (CVC5: 2 VC)
 loops_static.adb:70:46: info: range check proved (CVC5: 4 VC)
 loops_static.adb:72:37: info: cannot unroll loop (too many loop iterations)
+loops_static.adb:72:37: warning: statement has no effect
+loops_static.adb:73:16: warning: statement has no effect
 loops_static.adb:73:22: info: index check proved (CVC5: 2 VC)
+loops_static.adb:74:23: warning: unused assignment
 loops_static.adb:79:07: medium: assertion might fail
+loops_static.adb:84:11: warning: unused assignment
 loops_static.adb:85:23: info: unrolling loop
 loops_static.adb:86:13: high: array index check might fail (e.g. when A'First = 2 and A'Last = 0 and I = 1) [reason for check: value must be a valid index into the array]
+loops_static.adb:87:10: warning: statement has no effect
 loops_static.adb:88:35: info: cannot unroll loop (too many loop iterations)
+loops_static.adb:88:35: warning: statement has no effect
+loops_static.adb:89:16: warning: statement has no effect
 loops_static.adb:89:22: info: index check proved (CVC5: 4 VC)
+loops_static.adb:90:23: warning: unused assignment
 loops_static.adb:95:42: high: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, 1 => 0) and J = 0) [possible fix: subprogram at loops_static.ads:12 should mention A in a precondition]
 loops_static.adb:95:45: info: index check proved (CVC5: 4 VC)
 loops_static.adb:97:07: medium: assertion might fail
+loops_static.adb:102:11: warning: unused assignment
 loops_static.adb:103:23: info: unrolling loop
 loops_static.adb:104:13: high: array index check might fail (e.g. when A'First = 2 and A'Last = 0 and I = 1) [reason for check: value must be a valid index into the array]
+loops_static.adb:105:10: warning: statement has no effect
+loops_static.adb:106:17: warning: unused assignment
+loops_static.adb:107:10: warning: statement has no effect
 loops_static.adb:108:35: info: cannot unroll loop (too many loop iterations)
+loops_static.adb:108:35: warning: statement has no effect
+loops_static.adb:109:16: warning: statement has no effect
 loops_static.adb:109:22: info: index check proved (CVC5: 4 VC)
+loops_static.adb:110:23: warning: unused assignment
 loops_static.adb:115:42: high: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, 1 => 0) and J = 0) [possible fix: subprogram at loops_static.ads:14 should mention A in a precondition]
 loops_static.adb:115:45: info: index check proved (CVC5: 4 VC)
 loops_static.adb:117:07: medium: assertion might fail
+loops_static.adb:122:11: warning: unused assignment
 loops_static.adb:123:23: info: unrolling loop
 loops_static.adb:124:13: high: array index check might fail (e.g. when A'First = 2 and A'Last = 0 and I = 1) [reason for check: value must be a valid index into the array]
+loops_static.adb:125:10: warning: statement has no effect
+loops_static.adb:126:17: warning: unused assignment
 loops_static.adb:128:35: info: cannot unroll loop (too many loop iterations)
+loops_static.adb:128:35: warning: statement has no effect
+loops_static.adb:129:16: warning: statement has no effect
 loops_static.adb:129:22: info: index check proved (CVC5: 4 VC)
+loops_static.adb:130:23: warning: unused assignment
 loops_static.adb:135:42: high: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, 1 => 0) and J = 0) [possible fix: subprogram at loops_static.ads:16 should mention A in a precondition]
 loops_static.adb:135:45: info: index check proved (CVC5: 4 VC)
 loops_static.adb:137:07: medium: assertion might fail
+loops_static.adb:142:11: warning: unused assignment
 loops_static.adb:143:23: info: unrolling loop
 loops_static.adb:144:13: high: array index check might fail (e.g. when A'First = 2 and A'Last = 0 and I = 1) [reason for check: value must be a valid index into the array]
+loops_static.adb:145:10: warning: statement has no effect
+loops_static.adb:146:27: warning: unused assignment
 loops_static.adb:148:38: info: cannot unroll loop (too many loop iterations)
+loops_static.adb:148:38: warning: statement has no effect
+loops_static.adb:149:19: warning: statement has no effect
 loops_static.adb:149:25: info: index check proved (CVC5: 4 VC)
+loops_static.adb:150:26: warning: unused assignment
 loops_static.adb:155:42: high: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, 1 => 0) and J = 0) [possible fix: subprogram at loops_static.ads:18 should mention A in a precondition]
 loops_static.adb:155:45: info: index check proved (CVC5: 4 VC)
 loops_static.adb:157:07: medium: assertion might fail
@@ -88,19 +119,11 @@ loops_static.adb:194:45: info: index check proved (CVC5: 2 VC)
 loops_static.adb:196:07: medium: assertion might fail
 loops_static.adb:198:07: warning: this statement is never reached
 loops_static.ads:4:14: high: all paths in "Loop1" raise exceptions or do not terminate normally
-loops_static.ads:4:21: warning: "A" is not modified, could be IN
 loops_static.ads:6:14: high: all paths in "Loop2" raise exceptions or do not terminate normally
-loops_static.ads:6:21: warning: "A" is not modified, could be IN
 loops_static.ads:8:14: high: all paths in "Loop3" raise exceptions or do not terminate normally
-loops_static.ads:8:21: warning: "A" is not modified, could be IN
 loops_static.ads:10:14: high: all paths in "Loop4" raise exceptions or do not terminate normally
-loops_static.ads:10:21: warning: "A" is not modified, could be IN
 loops_static.ads:12:14: high: all paths in "Loop5" raise exceptions or do not terminate normally
-loops_static.ads:12:21: warning: "A" is not modified, could be IN
 loops_static.ads:14:14: high: all paths in "Loop6" raise exceptions or do not terminate normally
-loops_static.ads:14:21: warning: "A" is not modified, could be IN
 loops_static.ads:16:14: high: all paths in "Loop7" raise exceptions or do not terminate normally
-loops_static.ads:16:21: warning: "A" is not modified, could be IN
 loops_static.ads:18:14: high: all paths in "Loop8" raise exceptions or do not terminate normally
-loops_static.ads:18:21: warning: "A" is not modified, could be IN
 loops_static.ads:22:13: info: implicit aspect Always_Terminates on "Loop10" has been proved, subprogram will terminate

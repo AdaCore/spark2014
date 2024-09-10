@@ -2017,45 +2017,12 @@ package body Flow.Analysis is
    --------------------
 
    procedure Find_Dead_Code (FA : in out Flow_Analysis_Graphs) is
-      Live_Code : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
-
-      procedure Flag_Live (V  : Flow_Graphs.Vertex_Id;
-                           TV : out Flow_Graphs.Simple_Traversal_Instruction);
-      --  Flag the given node as "live"
-
-      ---------------
-      -- Flag_Live --
-      ---------------
-
-      procedure Flag_Live (V  : Flow_Graphs.Vertex_Id;
-                           TV : out Flow_Graphs.Simple_Traversal_Instruction)
-      is
-         Atr : V_Attributes renames FA.Atr (V);
-      begin
-         if Atr.Is_Program_Node then
-            Live_Code.Insert (V);
-         end if;
-         TV := (if Atr.Execution = Barrier
-                then Flow_Graphs.Skip_Children
-                else Flow_Graphs.Continue);
-      end Flag_Live;
-
-   --  Start of processing for Find_Dead_Code
-
    begin
-      --  Discover live code
-      FA.CFG.DFS (Start         => FA.Start_Vertex,
-                  Include_Start => True,
-                  Visitor       => Flag_Live'Access);
-
-      --  Anything remaining is dead
-      for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices)
-      loop
+      for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             Atr : V_Attributes renames FA.Atr (V);
          begin
             if Atr.Is_Original_Program_Node
-              and then not Live_Code.Contains (V)
 
               --  Suppress the warning on nodes in instances or inlined code
 
@@ -6375,10 +6342,8 @@ package body Flow.Analysis is
                         --  Subprogram_Variant of its enclosing subprogram.
 
                         if Mutually_Recursive (FA.Spec_Entity, SC.E)
-                          and then
-                            not Has_Subprogram_Variant (SC.E)
-                          and then
-                            not Has_Subprogram_Variant (Enclosing_Subp)
+                          and then not Has_Subprogram_Variant (SC.E)
+                          and then not Has_Subprogram_Variant (Enclosing_Subp)
                         then
 
                            Proved := False;
@@ -6438,8 +6403,7 @@ package body Flow.Analysis is
             end;
          end loop;
 
-         if Proved and then Is_Subprogram_Or_Entry (FA.Spec_Entity)
-         then
+         if Proved and then Is_Subprogram_Or_Entry (FA.Spec_Entity) then
             Error_Msg_Flow (FA       => FA,
                             Msg      =>
                               Aspect & " on & has been proved, "
