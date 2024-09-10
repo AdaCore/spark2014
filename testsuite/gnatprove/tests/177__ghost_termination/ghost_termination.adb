@@ -59,7 +59,7 @@ procedure Ghost_Termination with SPARK_Mode is
       if Rand (1) then
          Conditional_Non_Term (False);
       else
-	 pragma Assert (False);
+         pragma Assert (False);
          Non_Term;
       end if;
    end Non_Ghost_Caller_OK;

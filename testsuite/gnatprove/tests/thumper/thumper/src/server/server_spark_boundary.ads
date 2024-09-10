@@ -21,15 +21,15 @@ package Server_SPARK_Boundary is
 
    procedure Service_Clients
      with
-       Global => (Input  => (Reader.Input_Message_Stream, Cryptographic_Services.Key),
+       Global => (Input  => (Reader.Input_Message_Stream, Cryptographic_Services.Key, Serial_Generator.State),
                   In_Out =>
-                    (Logger.Log_Stream, Writer.Output_Message_Stream, Serial_Generator.State)),
+                    (Logger.Log_Stream, Writer.Output_Message_Stream)),
        Depends =>
          (Logger.Log_Stream =>+
-            (Reader.Input_Message_Stream, Writer.Output_Message_Stream,
-             Cryptographic_Services.Key, Serial_Generator.State),
+            (Reader.Input_Message_Stream, Writer.Output_Message_Stream),
           Writer.Output_Message_Stream =>+
-            (Reader.Input_Message_Stream, Cryptographic_Services.Key, Serial_Generator.State),
-          Serial_Generator.State =>+ Reader.Input_Message_Stream);
+            Reader.Input_Message_Stream,
+          null =>
+            (Cryptographic_Services.Key, Serial_Generator.State));
 
 end Server_SPARK_Boundary;
