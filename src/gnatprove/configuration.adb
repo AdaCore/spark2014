@@ -40,7 +40,6 @@ with GPR2.Build.Compilation_Unit;
 with GPR2.Build.Source;
 with GPR2.Build.View_Db;
 with GPR2.KB;
-with GPR2.Log;
 with GPR2.Message;
 with GPR2.Options;
 with GPR2.Path_Name;
@@ -51,6 +50,8 @@ with GPR2.Project.Registry.Attribute.Description;
 with GPR2.Project.Registry.Exchange;
 with GPR2.Project.Registry.Pack;
 with GPR2.Project.Registry.Pack.Description;
+with GPR2.Reporter.Console;
+
 with Platform;          use Platform;
 with SPARK2014VSN;      use SPARK2014VSN;
 with System.Multiprocessors;
@@ -71,6 +72,12 @@ package body Configuration is
    Proj_Opt : Options.Object;
    --  This is the project environment used to load the project. It may be
    --  modified before loading it, e.g. -X switches
+
+   type Spark_Reporter is new GPR2.Reporter.Console.Object with null record;
+
+   overriding procedure Internal_Report
+     (Self    : in out Spark_Reporter;
+      Message : GPR2.Message.Object);
 
    procedure Abort_Msg (Msg       : String;
                         With_Help : Boolean)
@@ -148,9 +155,8 @@ package body Configuration is
                                          Fn   : String);
    --  Raise an error if the file FN is not part of the project
 
-   procedure Check_Duplicate_Bodies (Msgs : GPR2.Log.Object);
-   --  Raise an error if the log object contains a message about duplicate
-   --  bodies.
+   procedure Check_Duplicate_Bodies (Msg : GPR2.Message.Object);
+   --  Raise an error if the message is about duplicate bodies.
 
    function Is_Coq_Prover (FS : File_Specific) return Boolean;
    --  @return True iff one alternate prover is "coq"
@@ -238,18 +244,28 @@ package body Configuration is
    -- Check_Duplicate_Bodies --
    ----------------------------
 
-   procedure Check_Duplicate_Bodies (Msgs : GPR2.Log.Object) is
+   procedure Check_Duplicate_Bodies (Msg : GPR2.Message.Object) is
       use type GPR2.Message.Level_Value;
    begin
-      for Msg of Msgs loop
-         if Msg.Level = GPR2.Message.Warning
-           and then Contains (Msg.Message, "duplicated body")
-         then
-            Abort_Msg ("Stopping analysis due to duplicate bodies",
-                       With_Help => False);
-         end if;
-      end loop;
+      if Msg.Level = GPR2.Message.Warning
+        and then Contains (Msg.Message, "duplicated body")
+      then
+         Abort_Msg ("Stopping analysis due to duplicate bodies",
+                    With_Help => False);
+      end if;
    end Check_Duplicate_Bodies;
+
+   ---------------------
+   -- Internal_Report --
+   ---------------------
+
+   overriding procedure Internal_Report
+     (Self    : in out Spark_Reporter;
+      Message : GPR2.Message.Object) is
+   begin
+      GPR2.Reporter.Console.Object (Self).Internal_Report (Message);
+      Check_Duplicate_Bodies (Message);
+   end Internal_Report;
 
    --------------------------------
    -- Check_File_Part_Of_Project --
@@ -1594,37 +1610,34 @@ package body Configuration is
               (if Null_Or_Empty_String (CL_Switches.P) then
                     No_Project_File_Mode
                else CL_Switches.P.all);
-            Status : Boolean;
-         begin
-            Proj_Opt.Add_Switch (Options.P, Project_File);
+            Status       : Boolean;
 
             --  Do not display warnings, as those messages will be duplicated
             --  during the call to gprbuild.
-            GPR2.Project.Tree.Verbosity := GPR2.Project.Tree.Errors;
+            Reporter     : Spark_Reporter :=
+                             (GPR2.Reporter.Console.Create
+                               (GPR2.Reporter.No_Warnings) with null record);
+         begin
+            Proj_Opt.Add_Switch (Options.P, Project_File);
 
-            Status := Tree.Load (Proj_Opt, Absent_Dir_Error => GPR2.No_Error);
+            Status := Tree.Load
+              (Proj_Opt,
+               Reporter         => Reporter,
+               Absent_Dir_Error => GPR2.No_Error);
 
             if not Status then
                Fail ("");
             end if;
 
-            --  Pending eng/gpr/gpr-issues#39, we only update the sources if
-            --  the root project actually has sources.
+            --  When updating the sources we now need both warnings and
+            --  errors, in particular since duplicated body situation is
+            --  a warning.
 
-            if Tree.Root_Project.Kind in With_Source_Dirs_Kind | Aggregate_Kind
-            then
-               declare
-                  Msgs : GPR2.Log.Object;
-               begin
-                  --  When updating the sources we now need both warnings and
-                  --  errors, in particular since duplicated body situation is
-                  --  a warning.
+            Reporter.Set_Verbosity (GPR2.Reporter.Regular);
+            Tree.Set_Reporter (Reporter);
 
-                  GPR2.Project.Tree.Verbosity :=
-                    GPR2.Project.Tree.Warnings_And_Errors;
-                  Tree.Update_Sources (Msgs);
-                  Check_Duplicate_Bodies (Msgs);
-               end;
+            if not Tree.Update_Sources then
+               Fail ("");
             end if;
          end;
       end Init;
