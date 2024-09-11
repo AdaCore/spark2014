@@ -58,8 +58,5 @@ procedure Test_Dispatch_Iterable_Override with SPARK_Mode is
 begin
    pragma Assert (for all E of R => E <= 4); --@ASSERT:PASS
    --  The Iterable aspect is redefined on Child
-   --  pragma Assert (for some E of C => E > 4); --ASSERT:PASS
-   --  The assert is commented for now because it crashes flow analysis.
-   --  When this is fixed, do not forget to reenable the marker by adding
-   --  the missing @.
+   pragma Assert (for some E of C => E > 4); --@ASSERT:PASS
 end Test_Dispatch_Iterable_Override;
