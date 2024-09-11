@@ -1035,7 +1035,10 @@ def do_flow_only(opt=None, procs=parallel_procs, no_fail=False, ada=default_ada)
     do_flow(opt, procs, no_fail, mode="flow", ada=ada)
 
 
-def no_crash(sparklib=False):
+def no_crash(
+    sparklib=False,
+    opt=None,
+):
     """
     Only attempt to detect crashes and other unexpected behavior. No expected
     tool output is filed for such tests.
@@ -1043,7 +1046,7 @@ def no_crash(sparklib=False):
     if benchmark_mode():
         prove_all(sparklib=sparklib)
     else:
-        gnatprove(no_output=True, exit_status=0, sparklib=sparklib)
+        gnatprove(no_output=True, exit_status=0, sparklib=sparklib, opt=opt)
 
 
 def clean():
