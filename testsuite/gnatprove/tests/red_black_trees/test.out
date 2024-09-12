@@ -3105,9 +3105,9 @@ search_trees.ads:46:44: info: initialization of "I" proved
 search_trees.ads:50:08: info: for T before the call at search_trees.ads:20
 search_trees.ads:50:08: info: invariant check proved (CVC5: 1 VC)
 search_trees.ads:51:06: info: disjoint contract cases proved (CVC5: 1 VC)
+search_trees.ads:59:09: medium: contract case might fail
 search_trees.ads:59:19: info: for T before the call at search_trees.ads:38
 search_trees.ads:59:19: info: invariant check proved (CVC5: 1 VC)
-search_trees.ads:59:34: medium: contract case might fail
 search_trees.ads:61:20: medium: for T before the call at search_trees.ads:22
 search_trees.ads:61:20: medium: invariant check might fail
 search_trees.ads:61:20: medium: precondition might fail
@@ -3157,7 +3157,7 @@ search_trees.ads:75:54: medium: invariant check might fail
 search_trees.ads:75:54: medium: precondition might fail, cannot prove Size (T) /= 0
 search_trees.ads:80:09: info: for T before the call at search_trees.ads:20
 search_trees.ads:80:09: info: invariant check proved (CVC5: 1 VC)
-search_trees.ads:80:22: medium: contract case might fail
+search_trees.ads:80:09: medium: contract case might fail
 search_trees.ads:82:20: medium: for T before the call at search_trees.ads:20
 search_trees.ads:82:20: medium: invariant check might fail
 search_trees.ads:83:20: medium: for T before the call at search_trees.ads:22
@@ -3177,7 +3177,7 @@ search_trees.ads:87:48: medium: for T before the call at search_trees.ads:25
 search_trees.ads:87:48: medium: invariant check might fail
 search_trees.ads:87:64: medium: for T before the call at search_trees.ads:25
 search_trees.ads:87:64: medium: invariant check might fail
-search_trees.ads:94:16: medium: contract case might fail
+search_trees.ads:94:09: medium: contract case might fail
 search_trees.ads:96:20: medium: for T before the call at search_trees.ads:31
 search_trees.ads:96:20: medium: invariant check might fail
 search_trees.ads:96:20: medium: precondition might fail

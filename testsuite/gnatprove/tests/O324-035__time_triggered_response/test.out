@@ -5,5 +5,5 @@ time_triggered_response.ads:12:19: info: range check proved (CVC5: 2 VC)
 time_triggered_response.ads:12:67: info: index check proved (CVC5: 2 VC)
 time_triggered_response.ads:14:16: info: implicit aspect Always_Terminates on "Valid" has been proved, subprogram will terminate
 time_triggered_response.ads:18:29: info: initialization of "Status" proved
-time_triggered_response.ads:21:50: info: contract case proved (CVC5: 1 VC; Trivial: 2 VC)
-time_triggered_response.ads:23:16: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC)
+time_triggered_response.ads:21:09: info: contract case proved (CVC5: 1 VC; Trivial: 2 VC)
+time_triggered_response.ads:23:09: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC)

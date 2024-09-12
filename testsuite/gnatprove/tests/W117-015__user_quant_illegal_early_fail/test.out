@@ -9,12 +9,12 @@ illegal_early_fail.adb:337:22: error: Contains function must be primitive for co
 illegal_early_fail.adb:371:22: error: Model function must be primitive for container type
 illegal_early_fail.adb:401:19: error: Model function must not be volatile
 illegal_early_fail.adb:426:19: error: Contains function must not be volatile
-illegal_early_fail.adb:441:42: error: violation of aspect SPARK_Mode at line 1
-illegal_early_fail.adb:441:42: error: volatile function associated with aspect Iterable is not allowed in SPARK
-illegal_early_fail.adb:442:42: error: violation of aspect SPARK_Mode at line 1
-illegal_early_fail.adb:442:42: error: volatile function associated with aspect Iterable is not allowed in SPARK
-illegal_early_fail.adb:443:42: error: violation of aspect SPARK_Mode at line 1
-illegal_early_fail.adb:443:42: error: volatile function associated with aspect Iterable is not allowed in SPARK
-illegal_early_fail.adb:444:42: error: violation of aspect SPARK_Mode at line 1
-illegal_early_fail.adb:444:42: error: volatile function associated with aspect Iterable is not allowed in SPARK
+illegal_early_fail.adb:441:30: error: violation of aspect SPARK_Mode at line 1
+illegal_early_fail.adb:441:30: error: volatile function associated with aspect Iterable is not allowed in SPARK
+illegal_early_fail.adb:442:30: error: violation of aspect SPARK_Mode at line 1
+illegal_early_fail.adb:442:30: error: volatile function associated with aspect Iterable is not allowed in SPARK
+illegal_early_fail.adb:443:30: error: violation of aspect SPARK_Mode at line 1
+illegal_early_fail.adb:443:30: error: volatile function associated with aspect Iterable is not allowed in SPARK
+illegal_early_fail.adb:444:30: error: violation of aspect SPARK_Mode at line 1
+illegal_early_fail.adb:444:30: error: volatile function associated with aspect Iterable is not allowed in SPARK
 gnatprove: error during flow analysis and proof
