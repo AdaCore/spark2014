@@ -370,24 +370,24 @@ generic_float_tests.adb:382:06: info: disjoint contract cases proved, in instant
 generic_float_tests.adb:382:06: info: disjoint contract cases proved, in instantiation at foo.ads:15
 generic_float_tests.adb:382:06: medium: contract cases might not be complete, in instantiation at foo.ads:10
 generic_float_tests.adb:382:06: medium: contract cases might not be complete, in instantiation at foo.ads:15
-generic_float_tests.adb:382:34: info: contract case proved, in instantiation at foo.ads:10
-generic_float_tests.adb:382:34: info: contract case proved, in instantiation at foo.ads:15
-generic_float_tests.adb:383:34: info: contract case proved, in instantiation at foo.ads:10
-generic_float_tests.adb:383:34: info: contract case proved, in instantiation at foo.ads:15
-generic_float_tests.adb:384:34: info: contract case proved, in instantiation at foo.ads:10
-generic_float_tests.adb:384:34: info: contract case proved, in instantiation at foo.ads:15
-generic_float_tests.adb:385:34: info: contract case proved, in instantiation at foo.ads:10
-generic_float_tests.adb:385:34: info: contract case proved, in instantiation at foo.ads:15
-generic_float_tests.adb:386:34: info: contract case proved, in instantiation at foo.ads:10
-generic_float_tests.adb:386:34: info: contract case proved, in instantiation at foo.ads:15
-generic_float_tests.adb:387:34: info: contract case proved, in instantiation at foo.ads:10
-generic_float_tests.adb:387:34: info: contract case proved, in instantiation at foo.ads:15
-generic_float_tests.adb:388:34: info: contract case proved, in instantiation at foo.ads:10
-generic_float_tests.adb:388:34: info: contract case proved, in instantiation at foo.ads:15
-generic_float_tests.adb:389:34: info: contract case proved, in instantiation at foo.ads:10
-generic_float_tests.adb:389:34: info: contract case proved, in instantiation at foo.ads:15
-generic_float_tests.adb:390:34: info: contract case proved, in instantiation at foo.ads:10
-generic_float_tests.adb:390:34: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:382:25: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:382:25: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:383:25: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:383:25: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:384:25: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:384:25: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:385:25: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:385:25: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:386:25: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:386:25: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:387:25: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:387:25: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:388:25: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:388:25: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:389:25: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:389:25: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:390:25: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:390:25: info: contract case proved, in instantiation at foo.ads:15
 generic_float_tests.adb:393:21: info: range check proved, in instantiation at foo.ads:10
 generic_float_tests.adb:393:21: info: range check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:397:28: info: initialization of "Y" proved, in instantiation at foo.ads:10
@@ -414,24 +414,24 @@ generic_float_tests.adb:437:06: info: disjoint contract cases proved, in instant
 generic_float_tests.adb:437:06: info: disjoint contract cases proved, in instantiation at foo.ads:15
 generic_float_tests.adb:437:06: medium: contract cases might not be complete, in instantiation at foo.ads:10
 generic_float_tests.adb:437:06: medium: contract cases might not be complete, in instantiation at foo.ads:15
-generic_float_tests.adb:437:34: info: contract case proved, in instantiation at foo.ads:10
-generic_float_tests.adb:437:34: info: contract case proved, in instantiation at foo.ads:15
-generic_float_tests.adb:438:34: info: contract case proved, in instantiation at foo.ads:10
-generic_float_tests.adb:438:34: info: contract case proved, in instantiation at foo.ads:15
-generic_float_tests.adb:439:34: info: contract case proved, in instantiation at foo.ads:10
-generic_float_tests.adb:439:34: info: contract case proved, in instantiation at foo.ads:15
-generic_float_tests.adb:440:34: info: contract case proved, in instantiation at foo.ads:10
-generic_float_tests.adb:440:34: info: contract case proved, in instantiation at foo.ads:15
-generic_float_tests.adb:441:34: info: contract case proved, in instantiation at foo.ads:10
-generic_float_tests.adb:441:34: info: contract case proved, in instantiation at foo.ads:15
-generic_float_tests.adb:442:34: info: contract case proved, in instantiation at foo.ads:10
-generic_float_tests.adb:442:34: info: contract case proved, in instantiation at foo.ads:15
-generic_float_tests.adb:443:34: info: contract case proved, in instantiation at foo.ads:10
-generic_float_tests.adb:443:34: info: contract case proved, in instantiation at foo.ads:15
-generic_float_tests.adb:444:34: info: contract case proved, in instantiation at foo.ads:10
-generic_float_tests.adb:444:34: info: contract case proved, in instantiation at foo.ads:15
-generic_float_tests.adb:445:34: info: contract case proved, in instantiation at foo.ads:10
-generic_float_tests.adb:445:34: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:437:25: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:437:25: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:438:25: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:438:25: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:439:25: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:439:25: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:440:25: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:440:25: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:441:25: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:441:25: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:442:25: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:442:25: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:443:25: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:443:25: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:444:25: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:444:25: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:445:25: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:445:25: info: contract case proved, in instantiation at foo.ads:15
 generic_interval_tests.adb:5:23: info: initialization of "Z" proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:5:23: info: initialization of "Z" proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:8:19: info: postcondition proved, in instantiation at bar.ads:12

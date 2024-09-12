@@ -53,9 +53,9 @@ failsafe.adb:78:25: medium: assertion might fail
 failsafe.ads:5:03: info: flow dependencies proved
 failsafe.ads:22:16: info: implicit aspect Always_Terminates on "Time_Below_Threshold" has been proved, subprogram will terminate
 failsafe.ads:23:09: info: disjoint contract cases proved (CVC5: 1 VC)
-failsafe.ads:25:64: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
-failsafe.ads:29:80: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
-failsafe.ads:34:19: info: contract case proved (CVC5: 5 VC; Trivial: 1 VC)
+failsafe.ads:25:12: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
+failsafe.ads:29:12: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
+failsafe.ads:34:12: info: contract case proved (CVC5: 5 VC; Trivial: 1 VC)
 failsafe.ads:37:76: info: range check proved (CVC5: 4 VC)
 failsafe.ads:39:73: info: range check proved (CVC5: 2 VC)
 failsafe.ads:40:85: info: range check proved (CVC5: 4 VC)

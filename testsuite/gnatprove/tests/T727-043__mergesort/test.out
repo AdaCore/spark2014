@@ -213,10 +213,10 @@ recursive_mergesort.ads:76:07: info: predicate check proved
 recursive_mergesort.ads:76:60: info: overflow check proved
 recursive_mergesort.ads:77:47: info: precondition proved
 recursive_mergesort.ads:77:84: info: overflow check proved
-recursive_mergesort.ads:79:16: info: contract case proved
+recursive_mergesort.ads:79:09: info: contract case proved
 recursive_mergesort.ads:79:53: info: predicate check proved
 recursive_mergesort.ads:79:83: info: predicate check proved
-recursive_mergesort.ads:80:16: info: contract case proved
+recursive_mergesort.ads:80:09: info: contract case proved
 recursive_mergesort.ads:80:27: info: precondition proved
 recursive_mergesort.ads:80:27: info: subprogram variant proved
 recursive_mergesort.ads:80:27: warning: call to "Occurrences" within its postcondition will lead to infinite recursion

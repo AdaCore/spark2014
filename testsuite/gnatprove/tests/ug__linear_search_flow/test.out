@@ -3,10 +3,10 @@ linear_search.adb:25:14: high: "Res.At_Index" is not initialized
    25 |      return Res;
       |             ^~~
 
-linear_search.ads:29:20: medium: contract case might fail
-   29 |       (A(1) = Val =>
-      |                   ^ here
+linear_search.ads:29:09: medium: contract case might fail
+   29>|       (A(1) = Val =>
+   30 |          Search'Result.At_Index = 1,
 
-linear_search.ads:31:67: medium: contract case might fail
-   31 |        A(1) /= Val and then Value_Found_In_Range (A, Val, 2, 10) =>
-      |                                                                  ^ here
+linear_search.ads:31:09: medium: contract case might fail
+   31>|        A(1) /= Val and then Value_Found_In_Range (A, Val, 2, 10) =>
+   32 |          Search'Result.Found,

@@ -3,11 +3,11 @@ state_machine.adb:18:12: info: implicit aspect Always_Terminates on "State_B" ha
 state_machine.adb:20:12: info: implicit aspect Always_Terminates on "State_C" has been proved, subprogram will terminate
 state_machine.adb:22:12: info: implicit aspect Always_Terminates on "State_D" has been proved, subprogram will terminate
 state_machine.adb:25:08: info: disjoint contract cases proved (CVC5: 1 VC)
-state_machine.adb:25:35: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
-state_machine.adb:26:35: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
-state_machine.adb:27:35: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
-state_machine.adb:28:35: medium: contract case might fail (e.g. when Flag = False and Num = 0)
-state_machine.adb:29:35: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
+state_machine.adb:25:27: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
+state_machine.adb:26:27: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
+state_machine.adb:27:27: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
+state_machine.adb:28:27: medium: contract case might fail (e.g. when Flag = False and Num = 0)
+state_machine.adb:29:27: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 state_machine.adb:29:38: warning: unreachable branch (CVC5: 1 VC)
 state_machine.adb:36:20: info: overflow check proved (CVC5: 2 VC)
 state_machine.adb:39:17: info: overflow check proved (CVC5: 2 VC)
