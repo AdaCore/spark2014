@@ -24,6 +24,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;
 with Atree;                          use Atree;
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Ada.Text_IO;
@@ -52,7 +53,6 @@ with Rtsfind;                        use Rtsfind;
 with Sem_Aggr;
 with Sem_Aux;                        use Sem_Aux;
 with Sem_Ch12;
-with Sem_Disp;
 with Sem_Eval;                       use Sem_Eval;
 with Sem_Prag;                       use Sem_Prag;
 with Sinfo.Utils;                    use Sinfo.Utils;
@@ -71,6 +71,8 @@ with Tbuild;
 with Uintp;                          use Uintp;
 with Urealp;                         use Urealp;
 with VC_Kinds;                       use VC_Kinds;
+
+use all type Ada.Containers.Count_Type;
 
 package body SPARK_Definition is
 
@@ -350,6 +352,18 @@ package body SPARK_Definition is
    procedure Check_No_Deep_Duplicates_In_Assoc (N : N_Aggregate_Kind_Id);
    --  Search for associations mapping a single deep value to several
    --  components in the Component_Associations of N.
+
+   procedure Check_Not_Inherited_From_Several_Sources
+     (Id                    : Callable_Kind_Id;
+      Current_Marked_Entity : Entity_Id)
+     with Pre => Is_Dispatching_Operation (Id);
+   --  Check limitation that a subprogram is not inherited from several
+   --  sources. Subprogram may be implicitly inherited subprogram for a tagged
+   --  type (in which case it is an alias). Current_Marked_Entity is used to
+   --  locate error messages.
+   --
+   --  This limitation ensures that there is a single Pre'Class/Post'Class to
+   --  consider for LSP checking.
 
    procedure Touch_Record_Fields_For_Eq
      (Ty           : Type_Kind_Id;
@@ -1111,6 +1125,280 @@ package body SPARK_Definition is
          Next (Assoc);
       end loop;
    end Check_No_Deep_Duplicates_In_Assoc;
+
+   ----------------------------------------------
+   -- Check_Not_Inherited_From_Several_Sources --
+   ----------------------------------------------
+
+   procedure Check_Not_Inherited_From_Several_Sources
+     (Id                    : Callable_Kind_Id;
+      Current_Marked_Entity : Entity_Id)
+   is
+      --  Gather subprograms inherited by Id. The complete set is maintained as
+      --  the union of Inherited and Covered. Covered contains the subprograms
+      --  which are known to be (ultimately) overridden by a subprogram in
+      --  Inherited, and as such should be ignored.
+
+      Inherited   : Node_Sets.Set;
+      Covered     : Node_Sets.Set;
+      Parent_Subp : Node_Id := Types.Empty;
+      Reason      : Unsupported_Kind;
+      Is_New_Anc  : Boolean;
+
+      function Find_Dispatching_Type_Full_View
+        (Prim : Callable_Kind_Id)
+         return Type_Kind_Id;
+      --  Find the fullest view of the dispatching type of Prim.
+      --  This might not be in SPARK (due to private-mode-off inheritance),
+      --  so Find_Dispatching_Type is unsuitable for intermediate primitives.
+
+      procedure Register_Ancestor_Subprogram
+        (Anc_Id : Callable_Kind_Id;
+         Is_New : out Boolean)
+        with Pre => Anc_Id = Ultimate_Alias (Anc_Id);
+      --  Register ancestor primitive as inherited, and walk up the inheritance
+      --  graph to register/move overriden primitives as covered. If the
+      --  ancestor subprogram was not already a known primitive, set Is_New.
+
+      procedure Register_Covered_Subprograms (Covering_Anc : Callable_Kind_Id)
+        with Pre => Covering_Anc = Ultimate_Alias (Covering_Anc);
+      --  Subroutine of Register_Ancestor_Subprogram. Register/move all
+      --  ancestor primitives of Covering_Anc as covered, including
+      --  Covering_Anc itself.
+
+      procedure Register_Covered_Subprograms_Except
+        (Covering_Anc : Callable_Kind_Id)
+        with Pre => Covering_Anc = Ultimate_Alias (Covering_Anc);
+      --  Subroutine of Register_Ancestor_Subprogram. Register/move all
+      --  ancestor primitives of Covering_Anc as covered, excluding
+      --  Covering_Anc itself.
+
+      -------------------------------------
+      -- Find_Dispatching_Type_Full_View --
+      -------------------------------------
+
+      function Find_Dispatching_Type_Full_View
+        (Prim : Callable_Kind_Id)
+         return Type_Kind_Id
+      is
+         Formal           : Entity_Id;
+         Dispatching_Type : Entity_Id;
+      begin
+         --  If Prim has a controlling result, the dispatching type is the
+         --  result type.
+
+         if Ekind (Prim) = E_Function
+           and then Has_Controlling_Result (Prim)
+         then
+            Dispatching_Type := Etype (Prim);
+
+         --  Otherwise, find a controlling formal, there should always be one
+         --  so the loop does not exhaust formals.
+
+         else
+            Formal := First_Formal (Prim);
+            loop
+               pragma Assert (Present (Formal));
+               if Is_Controlling_Formal (Formal) then
+                  Dispatching_Type := Etype (Formal);
+                  exit;
+               end if;
+               Next_Formal (Formal);
+            end loop;
+         end if;
+
+         --  Normalize Dispatching_Type to its full view
+
+         loop
+            if not Is_Base_Type (Dispatching_Type) then
+               Dispatching_Type := Base_Type (Dispatching_Type);
+            elsif Present (Full_View (Dispatching_Type)) then
+               Dispatching_Type := Full_View (Dispatching_Type);
+            else
+               exit;
+            end if;
+         end loop;
+         return Dispatching_Type;
+
+      end Find_Dispatching_Type_Full_View;
+
+      ----------------------------------
+      -- Register_Ancestor_Subprogram --
+      ----------------------------------
+
+      procedure Register_Ancestor_Subprogram
+        (Anc_Id : Callable_Kind_Id;
+         Is_New : out Boolean)
+      is
+         Position : Node_Sets.Cursor;
+      begin
+         if not Covered.Contains (Anc_Id) then
+            Inherited.Insert (Anc_Id, Position, Is_New);
+            if Is_New then
+               Register_Covered_Subprograms_Except (Anc_Id);
+            end if;
+         end if;
+      end Register_Ancestor_Subprogram;
+
+      ----------------------------------
+      -- Register_Covered_Subprograms --
+      ----------------------------------
+
+      procedure Register_Covered_Subprograms (Covering_Anc : Callable_Kind_Id)
+      is
+         Inserted : Boolean;
+         Position : Node_Sets.Cursor;
+      begin
+         Covered.Insert (Covering_Anc, Position, Inserted);
+         if Inserted then
+            Inherited.Exclude (Covering_Anc);
+            Register_Covered_Subprograms_Except (Covering_Anc);
+         end if;
+      end Register_Covered_Subprograms;
+
+      -----------------------------------------
+      -- Register_Covered_Subprograms_Except --
+      -----------------------------------------
+
+      procedure Register_Covered_Subprograms_Except
+        (Covering_Anc : Callable_Kind_Id)
+      is
+         Inh_Prim : Entity_Id := Overridden_Operation (Covering_Anc);
+         Disp_Ty  : constant Type_Kind_Id :=
+           Find_Dispatching_Type_Full_View (Covering_Anc);
+      begin
+         --  Cover inherited subprogram
+
+         if Present (Inh_Prim) then
+            Register_Covered_Subprograms (Ultimate_Alias (Inh_Prim));
+         end if;
+
+         --  Cover subprograms inherited from interfaces. We do not have the
+         --  right information available to find them for interfaces
+         --  themselves, but as derived interfaces are currently rejected (not
+         --  supported), there cannot be any.
+
+         if not Is_Interface (Disp_Ty) then
+            --  Primitives inherited from interfaces are represented by
+            --  additional 'fake' primitives in the list of operations, with a
+            --  special Interface_Alias field set. Interface_Alias indicates
+            --  the covered interface primitive, and Alias the real primitive
+            --  of Disp_Ty covering the interface primitive.
+            --  This is only present for real tagged types, interface
+            --  themselves do not have these.
+
+            for Prim of Iter (Direct_Primitive_Operations (Disp_Ty)) loop
+               Inh_Prim := Interface_Alias (Prim);
+               if Present (Inh_Prim) and then Alias (Prim) = Covering_Anc then
+                  Register_Covered_Subprograms (Ultimate_Alias (Inh_Prim));
+               end if;
+            end loop;
+         end if;
+      end Register_Covered_Subprograms_Except;
+
+   begin
+      --  Find subprograms inherited from interfaces. As derived interfaces are
+      --  currently rejected, they cannot inherit any.
+
+      declare
+         Inh_Prim : Entity_Id;
+         Disp_Ty  : constant Type_Kind_Id :=
+           Find_Dispatching_Type_Full_View (Id);
+      begin
+         if not Is_Interface (Disp_Ty) then
+            --  Primitives inherited from interfaces are represented by
+            --  additional 'fake' primitives in the list of operations, with a
+            --  special Interface_Alias field set. Interface_Alias indicates
+            --  the covered interface primitive, and Alias the real primitive
+            --  of Disp_Ty covering the interface primitive.
+            --  This is only present for real tagged types, interface
+            --  themselves do not have these.
+
+            for Prim of Iter (Direct_Primitive_Operations (Disp_Ty)) loop
+               Inh_Prim := Interface_Alias (Prim);
+               if Present (Inh_Prim) and then Alias (Prim) = Id then
+                  Register_Ancestor_Subprogram
+                    (Ultimate_Alias (Inh_Prim), Is_New_Anc);
+               end if;
+            end loop;
+         end if;
+      end;
+
+      --  Find subprogram inherited from parent (if any), and register it
+
+      if Present (Alias (Id)) then
+         Parent_Subp := Ultimate_Alias (Id);
+      elsif Present (Overridden_Operation (Id)) then
+         Parent_Subp := Ultimate_Alias (Overridden_Operation (Id));
+      end if;
+
+      if Present (Parent_Subp) then
+         Register_Ancestor_Subprogram (Parent_Subp, Is_New_Anc);
+
+         --  Reason for the check depends on whether the parent subprogram
+         --  actually came from interfaces or not. When the primitive does not
+         --  come from the parent, Alias still points to one of the inherited
+         --  interface primitives (in practice, the first interface in the list
+         --  that has the subprogram).
+
+         if Is_New_Anc then
+            Reason := Lim_Multiple_Inheritance_Root;
+         else
+            Reason := Lim_Multiple_Inheritance_Interfaces;
+         end if;
+      end if;
+
+      --  If the subprogram is implicitly inherited, not explicitly overridden,
+      --  then we should check that all inherited subprograms have coherent
+      --  SPARK_Mode. If not, this should be rejected.
+
+      if Present (Alias (Id)) then
+         declare
+            Parent_In_SPARK : constant Boolean := In_SPARK (Parent_Subp);
+         begin
+            for Anc_Id of Inherited loop
+               if In_SPARK (Anc_Id) /= Parent_In_SPARK then
+                  Mark_Unsupported
+                    (Kind     => Lim_Multiple_Inheritance_Mixed_SPARK_Mode,
+                     N        => Current_Marked_Entity,
+                     Cont_Msg => Create
+                       ("conflicting SPARK_Mode for subprogram &, inherited"
+                        & " from & and &",
+                        Names =>
+                          [Parent_Subp,
+                           Find_Dispatching_Type_Full_View (Parent_Subp),
+                           Find_Dispatching_Type_Full_View (Anc_Id)]));
+                  return;
+               end if;
+            end loop;
+         end;
+      end if;
+
+      if Inherited.Length >= 2 then
+         declare
+            First_C  : constant Node_Sets.Cursor :=
+              Node_Sets.First (Inherited);
+            Second_C : constant Node_Sets.Cursor :=
+              Node_Sets.Next (First_C);
+         begin
+            --  Add a continuation. This could be helpful when the subprogram
+            --  is implicitly inherited.
+
+            pragma Assert (Node_Sets.Has_Element (Second_C));
+            Mark_Unsupported
+              (Kind     => Reason,
+               N        => Current_Marked_Entity,
+               Cont_Msg => Create
+                 ("subprogram & is inherited from & and &",
+                  Names =>
+                    [Id,
+                     Find_Dispatching_Type_Full_View
+                       (Node_Sets.Element (First_C)),
+                     Find_Dispatching_Type_Full_View
+                       (Node_Sets.Element (Second_C))]));
+         end;
+      end if;
+   end Check_Not_Inherited_From_Several_Sources;
 
    ---------------------------------------
    -- Check_Source_Of_Borrow_Or_Observe --
@@ -7420,40 +7708,10 @@ package body SPARK_Definition is
          --  from a single source, so that there is at most one inherited
          --  Pre'Class or Post'Class to consider for LSP.
 
-         if Is_Dispatching_Operation (E) then
-            declare
-               Inherit_Subp_No_Intf : constant Subprogram_List :=
-                 Sem_Disp.Inherited_Subprograms
-                   (E, No_Interfaces => True, Skip_Overridden => True);
-               Inherit_Subp_Intf : constant Subprogram_List :=
-                 Sem_Disp.Inherited_Subprograms
-                   (E, Interfaces_Only => True, Skip_Overridden => True);
-            begin
-               --  Ok to inherit a subprogram only from non-interfaces
-
-               if Inherit_Subp_Intf'Length = 0 then
-                  null;
-
-               --  Ok to inherit a subprogram from a single interface
-
-               elsif Inherit_Subp_No_Intf'Length = 0
-                 and then Inherit_Subp_Intf'Length = 1
-               then
-                  null;
-
-               --  Do not support yet a subprogram inherited from root type and
-               --  from an interface.
-
-               elsif Inherit_Subp_No_Intf'Length /= 0 then
-                  Mark_Unsupported (Lim_Multiple_Inheritance_Root, E);
-
-               --  Do not support yet a subprogram inherited from multiple
-               --  interfaces.
-
-               else
-                  Mark_Unsupported (Lim_Multiple_Inheritance_Interfaces, E);
-               end if;
-            end;
+         if Is_Dispatching_Operation (E)
+           and then Present (Find_Dispatching_Type (E))
+         then
+            Check_Not_Inherited_From_Several_Sources (E, E);
          end if;
 
          --  If no violations were found and the function is annotated with
@@ -9256,6 +9514,33 @@ package body SPARK_Definition is
             raise Program_Error;
          end if;
 
+         if Is_Tagged_Type (E) then
+            --  Check that E does not implicitly inherit any subprogram from
+            --  multiple sources. This cannot be delayed to marking of the
+            --  corresponding subprograms, as aliases are not marked. Consider:
+            --
+            --  type Root is tagged ...;
+            --  procedure P (X : Root);
+            --  type Interf is interface;
+            --  procedure P (X : Interf);
+            --  type Child is new Root and Interf with ...;
+            --
+            --  Procedure P implicitly inherited by Child is an alias of Root.
+            --  If we were checking constraint about multiple inheritance
+            --  through marked subprograms only, we would never notice the
+            --  multiple inheritance of P for Child. Furthermore, we do not
+            --  have any subprogram that we could requires to have mode Off.
+            --  Instead, we require the type to have mode off.
+
+            for Prim of Iter (Direct_Primitive_Operations (E)) loop
+               if No (Interface_Alias (Prim)) and then Present (Alias (Prim))
+               then
+                  Check_Not_Inherited_From_Several_Sources (Prim, E);
+               end if;
+            end loop;
+
+         end if;
+
          --  Check the user defined equality of record types if any, as they
          --  can be used silently as part of the classwide equality.
 
@@ -9369,7 +9654,6 @@ package body SPARK_Definition is
    --  Start of processing for Mark_Entity
 
    begin
-
       --  Ignore functions generated by the frontend for aspects Type_Invariant
       --  and Default_Initial_Condition. This does not include the functions
       --  generated for Predicate aspects, as these functions are translated

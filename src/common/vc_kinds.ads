@@ -475,6 +475,7 @@ package VC_Kinds is
       Lim_No_Return_Function,
       Lim_Non_Static_Attribute,
       Lim_Multiple_Inheritance_Interfaces,
+      Lim_Multiple_Inheritance_Mixed_SPARK_Mode,
       Lim_Multiple_Inheritance_Root,
       Lim_Multidim_Iterator,
       Lim_Multidim_Update,
@@ -742,6 +743,9 @@ package VC_Kinds is
            "subprogram inherited from root and interface",
          when Lim_Multiple_Inheritance_Interfaces =>
            "subprogram inherited from multiple interfaces",
+         when Lim_Multiple_Inheritance_Mixed_SPARK_Mode =>
+            "subprogram implicitly inherited from multiple progenitor types"
+            & " with conflicting SPARK mode",
          when Lim_Primitive_Call_In_DIC =>
            "primitive calls in default initial condition",
          when Lim_Constrained_Classwide =>

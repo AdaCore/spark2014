@@ -766,6 +766,11 @@ package body VC_Kinds is
          when Lim_Multiple_Inheritance_Interfaces =>
            "a primitive operation which is inherited from several interfaces"
           & " in a tagged derivation",
+         when Lim_Multiple_Inheritance_Mixed_SPARK_Mode =>
+            "a primitive operation which is implicitly inherited from several"
+          & " progenitor types in a tagged derivation, and for which two of"
+          & " these progenitors provide incompatible values for the SPARK mode"
+          & " of the inherited subprogram",
          when Lim_Multiple_Inheritance_Root =>
            "a primitive operation which is inherited both from the parent type"
           & " and from an interface in a tagged derivation",
