@@ -84,9 +84,9 @@ func_contract_case_rhs.adb:10:13: info: function contract might not be available
 func_contract_case_rhs.adb:10:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
 func_contract_case_rhs.adb:11:09: warning: contract cases do not mention function result
 func_contract_case_rhs.adb:11:28: medium: contract case might fail
-func_contract_case_rhs.adb:11:39: warning: assuming "Foo" has no effect on global items
-func_contract_case_rhs.adb:11:39: warning: no Global contract available for "Foo"
-func_contract_case_rhs.adb:11:44: medium: predicate check might fail [possible fix: subprogram at line 10 should mention X in a precondition]
+func_contract_case_rhs.adb:11:38: warning: assuming "Foo" has no effect on global items
+func_contract_case_rhs.adb:11:38: warning: no Global contract available for "Foo"
+func_contract_case_rhs.adb:11:43: medium: predicate check might fail [possible fix: subprogram at line 10 should mention X in a precondition]
 func_contract_case_rhs_imp.adb:4:13: info: function contract might not be available on calls from enclosing unit
 func_contract_case_rhs_imp.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 func_contract_case_rhs_imp.adb:4:64: medium: postcondition might fail
