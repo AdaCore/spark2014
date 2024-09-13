@@ -1188,7 +1188,7 @@ def check_output_file(sort=False):
     prover_tag = re.compile(
         r"(^.*)(\((CVC4|altergo|Z3|colibri|Trivial|Interval|CVC5)[^\)]*\))(.*$\n)"
     )
-    max_time = re.compile(r"(^.*proved in max )[1-9]+( seconds.*$\n)")
+    max_time = re.compile(r"(^.*proved in max )[1-9][0-9]*( seconds.*$\n)")
     output = ""
 
     with open(filename, "r") as f:
