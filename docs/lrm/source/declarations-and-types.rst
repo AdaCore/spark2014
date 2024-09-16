@@ -943,6 +943,10 @@ X.Link is poisoned by the assignment to Y.]
     access-to-variable type is exited normally, there shall be no paths marked
     as Moved with the object as a root.
 
+    If a call exits the whole program, there shall be no paths marked as Moved
+    with an output of the callee as root, provided the output is mentioned in
+    the boolean expression of its aspect Program_Exit outside of a reference to
+    the Old attribute.
 
 11. For a borrowing operation, the borrowed path shall be unrestricted.
 
