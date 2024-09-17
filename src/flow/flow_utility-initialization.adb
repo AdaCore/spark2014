@@ -81,8 +81,7 @@ package body Flow_Utility.Initialization is
 
          Init :=
            (if Component_Is_Visible_In_SPARK (ORC)
-            then Default_Initialization (Base_Type (Etype (ORC)),
-                                         Ignore_DIC)
+            then Default_Initialization (Etype (ORC))
             else No_Default_Initialization);
 
          --  Default initialization of the record depends then on the default
@@ -115,22 +114,14 @@ package body Flow_Utility.Initialization is
 
       --  Local variables
 
-      Comp   : Entity_Id;
+      Decl : Node_Id;
+      Def  : Node_Id;
       Result : Default_Initialization_Kind;
 
    --  Start of processing for Default_Initialization
 
    begin
-      --  For types that are not in SPARK we trust the declaration. This means
-      --  that if we find a Default_Initial_Condition aspect we trust it.
-
-      if Ignore_DIC
-        and then Full_View_Not_In_SPARK (Typ)
-      then
-         return Default_Initialization (Typ);
-      end if;
-
-      --  If we are considering implicit initializations and
+      --  If we are considering implicit initializations and explicit
       --  Default_Initial_Condition was specified for the type, take it into
       --  account.
 
@@ -138,359 +129,400 @@ package body Flow_Utility.Initialization is
         and then Has_Own_DIC (Typ)
       then
          declare
+            --  For types with DIC, given either by an aspect or a pragma,
+            --  frontend rewrites them into:
+            --
+            --     pragma Default_Initial_Condition
+            --       ([null | boolean_expression], type_name);
+
             Prag : constant Node_Id :=
               Get_Pragma (Typ, Pragma_Default_Initial_Condition);
 
+            pragma Assert (Present (Prag));
+
+            Assocs : constant List_Id := Pragma_Argument_Associations (Prag);
+
+            pragma Assert (List_Length (Assocs) = 2);
+
+            Arg1 : constant Node_Id := Get_Pragma_Arg (First (Assocs));
+
          begin
-            --  The pragma has an argument. If NULL, this indicates a value of
-            --  the type is not default initialized. Otherwise, a value of the
-            --  type should be fully default initialized.
+            --  If NULL, this indicates a value of the type is not default
+            --  initialized. Otherwise, a value of the type should be fully
+            --  default initialized.
 
-            if Present (Prag) then
-               declare
-                  Pragma_Assoc : constant List_Id :=
-                    Pragma_Argument_Associations (Prag);
-
-               begin
-                  if Present (Pragma_Assoc)
-                    and then Nkind (Get_Pragma_Arg (First (Pragma_Assoc))) =
-                               N_Null
-                  then
-                     Result := No_Default_Initialization;
-                  else
-                     Result := Full_Default_Initialization;
-                  end if;
-               end;
-
-            --  Otherwise the pragma appears without an argument, indicating a
-            --  value of the type if fully default initialized.
-
+            if Nkind (Arg1) = N_Null then
+               return No_Default_Initialization;
             else
-               Result := Full_Default_Initialization;
+               return Full_Default_Initialization;
             end if;
          end;
+      end if;
 
-      --   We assume access types to be initialized to null
+      --  Types in the Standard package lack declarations that we could
+      --  process, so conservatively (yet quite rightly) consider them
+      --  as uninitialized by default.
 
-      elsif Is_Access_Type (Typ) then
-         Result := Full_Default_Initialization;
+      if Sloc (Typ) = Standard_Location then
+         return No_Default_Initialization;
+      end if;
 
-      --  A scalar type subject to aspect/pragma Default_Value is
-      --  fully default initialized.
+      --  ??? Previously class-wide types reported no possible initialization,
+      --  because their First_Component/Next_Component chain was empty; let's
+      --  keep this behaviour for a moment.
 
-      elsif Is_Scalar_Type (Typ)
-        and then Is_Scalar_Type (Base_Type (Typ))
-        and then Present (Default_Aspect_Value (Base_Type (Typ)))
-      then
-         Result := Full_Default_Initialization;
+      if Is_Class_Wide_Type (Typ) then
+         return No_Possible_Initialization;
+      end if;
 
-      --  A scalar type whose base type is private may still be subject to
-      --  aspect/pragma Default_Value, so it depends on the base type.
+      --  We attempt to process type declaration as it occurs in source code
 
-      elsif Is_Scalar_Type (Typ)
-        and then Is_Private_Type (Base_Type (Typ))
-      then
-         pragma Assert (Entity_In_SPARK (Base_Type (Typ)));
-         Result := Default_Initialization (Base_Type (Typ),
-                                           Ignore_DIC);
+      Decl := Parent (Typ);
 
-      --  A derived type is only initialized if its base type and any
-      --  extensions that it defines are fully default initialized.
+      --  If we find that the above declaration is incomplete, as it typically
+      --  happens for itypes, we will jump at the corresponding original source
+      --  code declaration.
 
-      elsif Is_Derived_Type (Typ) then
-         --  If the type does inherit a default initial condition then we take
-         --  it into account.
+      <<LOOK_AT_SOURCE_DECLARATION>>
 
-         if not Ignore_DIC
-           and then Has_Inherited_DIC (Typ)
-         then
-            pragma Assert (Entity_In_SPARK (Etype (Typ)));
-            Result := Default_Initialization (Etype (Typ),
-                                              Ignore_DIC);
-         else
-            declare
-               Type_Def : Node_Id;
-               Rec_Part : Node_Id := Empty;
+      case Nkind (Decl) is
+         when N_Full_Type_Declaration =>
 
-               Parent_Typ : constant Node_Id := Parent (Typ);
+            Def := Type_Definition (Decl);
 
-            begin
-               --  If Typ is an Itype, it may not have an Parent field pointing
-               --  to a corresponding declaration. In that case, there is no
-               --  record extension part to check for default initialization.
+            case Nkind (Def) is
 
-               --  If the corresponding declaration is a full type declaration
-               --  for a derived type definition or a type declaration with a
-               --  private extension, then there is an extension part to check.
-               --  ??? a type with a private extension should kind of be
-               --  handled by like a private type.
+               --  Access types are initialized by default
 
-               if Present (Parent_Typ) then
-                  case Nkind (Parent_Typ) is
-                     when N_Full_Type_Declaration =>
-                        Type_Def := Type_Definition (Parent_Typ);
+               when N_Access_To_Object_Definition
+                  | N_Access_Function_Definition
+                  | N_Access_Procedure_Definition
+               =>
+                  return Full_Default_Initialization;
 
-                        if Nkind (Type_Def) = N_Derived_Type_Definition then
-                           Rec_Part := Record_Extension_Part (Type_Def);
-                        end if;
+               --  Array types might have aspect Default_Component_Value or
+               --  their components might be initialized by default.
 
-                     when N_Private_Extension_Declaration =>
-                        if Full_View_Not_In_SPARK (Typ) then
+               when N_Array_Type_Definition =>
+                  if Has_Default_Aspect (Typ) then
+                     return Full_Default_Initialization;
+                  else
+                     return
+                       Default_Initialization (Component_Type (Typ), False);
+                  end if;
+
+               --  Derived types might inherit the Default_Value and
+               --  Default_Component_Value aspect (for scalar and array
+               --  types, respectively); otherwise, we examine the parent
+               --  type and any added components.
+
+               when N_Derived_Type_Definition =>
+                  if Has_Default_Aspect (Typ) then
+                     return Full_Default_Initialization;
+                  end if;
+
+                  declare
+                     Parent_Initialization : Default_Initialization_Kind;
+
+                     S_Indication : constant Node_Id :=
+                       Subtype_Indication (Def);
+
+                     Record_Extension : constant Node_Id :=
+                       Record_Extension_Part (Def);
+
+                     CList : Node_Id;
+                     CItem : Node_Id;
+
+                  begin
+                     if Is_Entity_Name (S_Indication) then
+                        Parent_Initialization :=
+                          Default_Initialization (Entity (S_Indication));
+                     elsif Nkind (S_Indication) = N_Subtype_Indication then
+                        Parent_Initialization :=
+                          Default_Initialization
+                            (Entity (Subtype_Mark (S_Indication)));
+                     else
+                        raise Program_Error;
+                     end if;
+
+                     if Present (Record_Extension) then
+                        pragma Assert
+                          (Present (Component_List (Record_Extension))
+                             xor
+                           Null_Present (Record_Extension));
+
+                        if Null_Present (Record_Extension) then
                            null;
                         else
-                           Type_Def :=
-                             Type_Definition
-                               (Original_Node (Parent (Full_View (Typ))));
-                           --  The Original_Node above is needed because
-                           --  frontend rewrites:
-                           --
-                           --    type T is new R (...) [with ...];
-                           --
-                           --  into:
-                           --
-                           --    type BT is new R [with ...];
-                           --    subtype T is BT (...);
-                           --
-                           --  see Build_Derived_Record_Type, step 5.
+                           CList := Component_List (Record_Extension);
 
-                           if Nkind (Type_Def) = N_Derived_Type_Definition then
-                              Rec_Part := Record_Extension_Part (Type_Def);
-                           end if;
-                        end if;
-
-                     when others =>
-                        null;
-                  end case;
-               else
-                  pragma Assert (Is_Itype (Typ));
-               end if;
-
-               --  If there is an extension part then we need to look into it
-               --  in order to determine initialization of the type.
-
-               if Present (Rec_Part) then
-
-                  pragma Assert (Is_Tagged_Type (Typ));
-
-                  --  If the extension is null then initialization of this type
-                  --  is equivalent to the initialization for its Etype.
-
-                  if Null_Present (Rec_Part) then
-                     pragma Assert (Entity_In_SPARK (Etype (Typ)));
-                     Result := Default_Initialization (Etype (Typ),
-                                                       Ignore_DIC);
-
-                     --  If the extension is not null then we need to analyse
-                     --  it.
-
-                  else
-                     --  When the derived type has extensions we check both
-                     --  the base type and the extensions.
-                     declare
-                        Base_Initialized : Default_Initialization_Kind;
-                        Ext_Initialized  : Default_Initialization_Kind;
-
-                     begin
-                        pragma Assert (Entity_In_SPARK (Etype (Typ)));
-                        Base_Initialized :=
-                          Default_Initialization (Etype (Typ),
-                                                  Ignore_DIC);
-
-                        Comp :=
-                          First_Non_Pragma
-                            (Component_Items (Component_List (Rec_Part)));
-
-                        --  Inspect all components of the extension
-
-                        if Present (Comp) then
-                           while Present (Comp) loop
-                              Process_Component (Defining_Identifier (Comp));
-                              Next_Non_Pragma (Comp);
+                           CItem := First_Non_Pragma (Component_Items (CList));
+                           while Present (CItem) loop
+                              Process_Component (Defining_Identifier (CItem));
+                              Next_Non_Pragma (CItem);
                            end loop;
 
-                           --  Detect a mixed case of initialization
-
-                           if FDI and NDI then
-                              Ext_Initialized := Mixed_Initialization;
-
-                           elsif FDI then
-                              Ext_Initialized :=
-                                Full_Default_Initialization;
-
-                           elsif NDI then
-                              Ext_Initialized := No_Default_Initialization;
-
-                           --  The type either has no components or they are
-                           --  all internally generated. The extensions are
-                           --  trivially fully default initialized
-
-                           else
-                              Ext_Initialized :=
-                                Full_Default_Initialization;
-                           end if;
-
-                        --  The extension is null, there is nothing to
-                        --  initialize.
-
-                        else
-                           if Ignore_DIC then
-                              --  The extensions are trivially fully default
-                              --  initialized.
-                              Ext_Initialized :=
-                                Full_Default_Initialization;
-                           else
-                              Ext_Initialized :=
-                                No_Possible_Initialization;
-                           end if;
+                           pragma Assert (No (Variant_Part (CList)));
                         end if;
+                     end if;
 
-                        if Base_Initialized = Full_Default_Initialization
-                          and then Ext_Initialized =
-                          Full_Default_Initialization
+                     if FDI and NDI then
+                        Result := Mixed_Initialization;
+
+                     elsif FDI then
+                        Result := Parent_Initialization;
+
+                     elsif NDI then
+                        if Parent_Initialization in No_Default_Initialization
+                                                  | No_Possible_Initialization
                         then
-                           Result := Full_Default_Initialization;
+                           Result := No_Default_Initialization;
                         else
+                           --  ??? Previosly a fully initialized parent
+                           --  extended with a non-initialized component
+                           --  resulted in No_Default_Initialization, though
+                           --  intuitively it should have Mixed_Initialization.
+
                            Result := No_Default_Initialization;
                         end if;
-                     end;
+                     else
+                        Result := Parent_Initialization;
+                     end if;
+
+                     return Result;
+                  end;
+
+               --  Scalar types either have Default_Value aspect or are
+               --  uninitialized.
+
+               when N_Enumeration_Type_Definition
+                  | N_Modular_Type_Definition
+                  | N_Floating_Point_Definition
+                  | N_Decimal_Fixed_Point_Definition
+                  | N_Ordinary_Fixed_Point_Definition
+                  | N_Signed_Integer_Type_Definition
+               =>
+                  if Has_Default_Aspect (Typ) then
+                     return Full_Default_Initialization;
+                  else
+                     return No_Default_Initialization;
                   end if;
 
-               --  If there is no extension then we analyse initialization for
-               --  the Etype.
+               --  For record types we traverse their component declarations
 
+               when N_Record_Definition =>
+                  declare
+                     CList   : Node_Id := Component_List (Def);
+                     CItem   : Node_Id;
+                     VPart   : Node_Id;
+                     Variant : Node_Id;
+                  begin
+                     pragma Assert (Present (CList) xor Null_Present (Def));
+
+                     if Present (CList) then
+                        CItem := First_Non_Pragma (Component_Items (CList));
+                        while Present (CItem) loop
+                           Process_Component (Defining_Identifier (CItem));
+                           Next_Non_Pragma (CItem);
+                        end loop;
+
+                        VPart := Variant_Part (CList);
+                        if Present (VPart) then
+                           Variant := First_Non_Pragma (Variants (VPart));
+                           while Present (Variant) loop
+                              CList := Component_List (Variant);
+                              CItem :=
+                                First_Non_Pragma (Component_Items (CList));
+                              while Present (CItem) loop
+                                 Process_Component
+                                   (Defining_Identifier (CItem));
+                                 Next_Non_Pragma (CItem);
+                              end loop;
+                              Next_Non_Pragma (Variant);
+                           end loop;
+                        end if;
+                     end if;
+
+                     --  Detect a mixed case of initialization
+
+                     if FDI and NDI then
+                        Result := Mixed_Initialization;
+
+                     elsif FDI then
+                        Result := Full_Default_Initialization;
+
+                     elsif NDI then
+                        Result := No_Default_Initialization;
+
+                        --  The type either has no components or they are all
+                        --  internally generated.
+
+                     else
+                        if Ignore_DIC then
+                           --  The record is considered to be trivially fully
+                           --  default initialized.
+                           Result := Full_Default_Initialization;
+                        else
+                           Result := No_Possible_Initialization;
+                        end if;
+                     end if;
+
+                     return Result;
+                  end;
+
+               when others =>
+                  raise Program_Error;
+            end case;
+
+         --  For private types created by the frontend, e.g. for derived
+         --  private types, we jump to their original source code declarations.
+
+         when N_Private_Type_Declaration =>
+            if not Comes_From_Source (Decl)
+              and then Comes_From_Source (Original_Node (Decl))
+            then
+               Decl := Original_Node (Decl);
+               goto LOOK_AT_SOURCE_DECLARATION;
+            end if;
+
+            --  Otherwise, look at the full view, if allowed by the SPARK_Mode
+            --  barrier.
+
+            declare
+               Full_V : constant Entity_Id := Full_View (Typ);
+            begin
+               if Entity_In_SPARK (Full_V) then
+                  Result := Default_Initialization (Full_V);
+
+                  --  In specific cases, we'd rather consider the type as
+                  --  having no default initialization (which is allowed in
+                  --  SPARK) rather than mixed initialization (which is not
+                  --  allowed).
+
+                  if Result = Mixed_Initialization then
+                     return No_Default_Initialization;
+                  else
+                     return Result;
+                  end if;
                else
-                  pragma Assert (Entity_In_SPARK (Etype (Typ)));
-                  Result := Default_Initialization (Etype (Typ),
-                                                    Ignore_DIC);
+                  return No_Default_Initialization;
                end if;
             end;
-         end if;
 
-      --  The initialization status of a private type depends on its full view
+         --  For private extension declaration recurse into full view, except
+         --  when hidden by the SPARK_Mode barrier.
 
-      elsif Is_Private_Type (Typ) then
-         declare
-            Full_V : constant Entity_Id :=
-              (if Present (Full_View (Typ))
-               then Full_View (Typ)
-               elsif Present (Underlying_Full_View (Typ))
-               then Underlying_Full_View (Typ)
-               else Etype (Typ));
-            --  Typicall we expect the full view to be present, but for example
-            --  on derived types without additional constraints it is not. This
-            --  code is inspired by Einfo.Underlying_Type and should be robust.
-
-            pragma Assert (Is_Type (Full_V) and then Full_V /= Typ);
-
-         begin
-            --  If the full view is not visible from the Scope then we can
-            --  consider the type to be fully initialized if it has a DIC.
-
-            if Full_View_Not_In_SPARK (Typ) then
-
-               Result :=
-                 (if Has_Own_DIC (Typ)
-                  then Full_Default_Initialization
-                  else No_Default_Initialization);
-
-            --  Continue analysing the full view of the private type only if it
-            --  is visible from the Scope and its full view is in SPARK.
-
+         when N_Private_Extension_Declaration =>
+            if Entity_In_SPARK (Full_View (Typ)) then
+               return Default_Initialization (Full_View (Typ));
             else
-               pragma Assert (Entity_In_SPARK (Full_V));
-
-               Result := Default_Initialization (Full_V, Ignore_DIC);
+               declare
+                  S_Indication : constant Node_Id := Subtype_Indication (Decl);
+               begin
+                  if Is_Entity_Name (S_Indication) then
+                     return Default_Initialization (Entity (S_Indication));
+                  elsif Nkind (S_Indication) = N_Subtype_Indication then
+                     return
+                       Default_Initialization
+                         (Entity (Subtype_Mark (S_Indication)));
+                  else
+                     raise Program_Error;
+                  end if;
+               end;
             end if;
-         end;
 
-      --  Concurrent types are always fully default initialized
+         --  Subtype declarations, just like private types, might be
+         --  inserted by the frontend, so we look at the original source
+         --  code declarations.
 
-      elsif Is_Concurrent_Type (Typ) then
-         Result := Full_Default_Initialization;
+         when N_Subtype_Declaration =>
+            if not Comes_From_Source (Decl)
+              and then Comes_From_Source (Original_Node (Decl))
+            then
+               Decl := Original_Node (Decl);
+               goto LOOK_AT_SOURCE_DECLARATION;
+            end if;
 
-      --  An array type subject to aspect/pragma Default_Component_Value is
-      --  fully default initialized. Otherwise its initialization status is
-      --  that of its component type.
-
-      elsif Is_Array_Type (Typ) then
-         if Present (Default_Aspect_Component_Value
-                       (if Is_Partial_View (Base_Type (Typ))
-                        then Full_View (Base_Type (Typ))
-                        else Base_Type (Typ)))
-         then
-            Result := Full_Default_Initialization;
-         else
-            Result := Default_Initialization (Component_Type (Typ),
-                                              Ignore_DIC);
-         end if;
-
-      --  Record types and protected types offer several initialization options
-      --  depending on their components (if any).
-
-      elsif Is_Record_Type (Typ) then
-         Comp := First_Component (Typ);
-
-         --  Inspect all components
-
-         if Present (Comp) then
-            while Present (Comp) loop
-               Process_Component (Comp);
-               Next_Component (Comp);
-            end loop;
-
-            --  Detect a mixed case of initialization
-
-            if FDI and NDI then
-               Result := Mixed_Initialization;
-
-            elsif FDI then
-               Result := Full_Default_Initialization;
-
-            elsif NDI then
-               Result := No_Default_Initialization;
-
-            --  The type either has no components or they are all
-            --  internally generated.
-
-            else
-               if Ignore_DIC then
-                  --  The record is considered to be trivially fully
-                  --  default initialized.
-                  Result := Full_Default_Initialization;
+            declare
+               S_Indication : constant Node_Id := Subtype_Indication (Decl);
+            begin
+               if Is_Entity_Name (S_Indication) then
+                  return Default_Initialization (Entity (S_Indication));
+               elsif Nkind (S_Indication) = N_Subtype_Indication then
+                  return
+                    Default_Initialization
+                      (Entity (Subtype_Mark (S_Indication)));
                else
-                  Result := No_Possible_Initialization;
+                  raise Program_Error;
                end if;
-            end if;
+            end;
 
-         --  The type is null, there is nothing to initialize.
+         --  Concurrent types, looking from the outside, are initialized by
+         --  default.
 
-         else
-            if Ignore_DIC then
-               --  We consider the record to be trivially fully
-               --  default initialized.
-               Result := Full_Default_Initialization;
+         when N_Protected_Type_Declaration
+            | N_Task_Type_Declaration
+         =>
+            return Full_Default_Initialization;
+
+         --  Recurse into itypes created by component declarations
+
+         when N_Component_Declaration =>
+
+            pragma Assert (Is_Itype (Typ));
+
+            declare
+               C_Def : constant Node_Id := Component_Definition (Decl);
+               S_Indication : constant Node_Id := Subtype_Indication (C_Def);
+               A_Definition : constant Node_Id := Access_Definition (C_Def);
+            begin
+               pragma Assert
+                 (Present (S_Indication) xor Present (A_Definition));
+
+               if Present (S_Indication) then
+                  --  Itypes are only atteached to those component declarations
+                  --  that declare constrained subtypes; otherwise, the type
+                  --  indicated by entity name is used directly.
+
+                  pragma Assert (Nkind (S_Indication) = N_Subtype_Indication);
+
+                  return
+                    Default_Initialization
+                      (Entity (Subtype_Mark (S_Indication)));
+               else
+                  pragma Annotate
+                    (Xcov, Exempt_On,
+                     "Anonymous access types are rejected in marking");
+                  return Full_Default_Initialization;
+                  pragma Annotate (Xcov, Exempt_Off);
+               end if;
+            end;
+
+         --  Other itypes have either no parent at all or the parent has no
+         --  semantic significance.
+
+         when others =>
+            pragma Assert (Is_Itype (Typ));
+
+            --  We recurse into the underlying type, except for access and
+            --  array types, where it could be an infinite recursion. Instead
+            --  for those we do the same analysis as for fully declared types.
+
+            if Is_Access_Type (Typ) then
+               return Full_Default_Initialization;
+
+            elsif Is_Array_Type (Typ) then
+               if Has_Default_Aspect (Typ) then
+                  return Full_Default_Initialization;
+               else
+                  return Default_Initialization (Component_Type (Typ));
+               end if;
+
             else
-               Result := No_Possible_Initialization;
+               return Default_Initialization (Etype (Typ));
             end if;
-         end if;
 
-      --  The type has no default initialization
-
-      else
-         Result := No_Default_Initialization;
-      end if;
-
-      --  In specific cases, we'd rather consider the type as having no
-      --  default initialization (which is allowed in SPARK) rather than
-      --  mixed initialization (which is not allowed).
-
-      if Result = Mixed_Initialization then
-         if Is_Private_Type (Typ) or else Is_Class_Wide_Type (Typ) then
-            Result := No_Default_Initialization;
-         end if;
-      end if;
-
-      return Result;
+      end case;
    end Default_Initialization;
 
    --------------------------------

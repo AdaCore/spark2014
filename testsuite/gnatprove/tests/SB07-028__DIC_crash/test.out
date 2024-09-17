@@ -1,4 +1,3 @@
 tokens.ads:2:03: info: initial condition proved (CVC5: 1 VC)
-tokens.ads:2:24: high: "X" is not initialized
 tokens.ads:16:13: info: implicit aspect Always_Terminates on "Init" has been proved, subprogram will terminate
-tokens.ads:22:04: high: "X" is not initialized
+tokens.ads:22:04: info: initialization of "X" proved

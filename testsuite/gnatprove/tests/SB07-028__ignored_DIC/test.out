@@ -4,5 +4,6 @@ tokens_2.ads:16:56: medium: overflow check might fail, cannot prove lower bound 
 tokens_2.ads:17:13: info: implicit aspect Always_Terminates on "T_Length" has been proved, subprogram will terminate
 tokens_2.ads:17:13: info: implicit function contract might not be available on calls from enclosing unit
 tokens_2.ads:19:13: info: implicit aspect Always_Terminates on "Init" has been proved, subprogram will terminate
+tokens_2.ads:22:04: medium: type "Token_Set" is not fully initialized
 tokens_2.ads:26:04: info: initialization of "X" proved
 tokens_2.ads:29:18: medium: overflow check might fail, cannot prove lower bound for Length (X) + C (e.g. when C = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 19 should mention C and X in a precondition]

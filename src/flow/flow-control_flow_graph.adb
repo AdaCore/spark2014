@@ -6308,7 +6308,8 @@ package body Flow.Control_Flow_Graph is
             --  DIC is inherited by the tagged type from its ancestor.
 
             pragma Assert
-              (if DIC_Promised
+              (if Has_Own_DIC (Typ)
+                 and then Has_Fully_Default_Initializing_DIC_Pragma (Typ)
                then Is_Default_Initialized (Direct_Mapping_Id (Typ),
                                             Ignore_DIC => False));
             --  Sanity check: the type whose DIC we will examine should be
