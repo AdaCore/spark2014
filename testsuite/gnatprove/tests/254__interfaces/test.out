@@ -1,3 +1,4 @@
+bad.ads:14:24: error: subprogram "F" is inherited from "I1" and "I2"
 bad.ads:14:24: error: subprogram inherited from multiple interfaces is not yet supported
 reproducer.ads:9:09: error: interface derived from other interfaces is not yet supported
 gnatprove: error during flow analysis and proof
