@@ -28,14 +28,7 @@ project GNAT2Why_GNAT is
    end case;
 
    package Compiler is
-      case Tool is
-         when "gnatsas" =>
-            --  disable use of pragma configuration files when running
-            --  GNAT SAS
-            null;
-         when Others =>
-            for Local_Configuration_Pragmas use "gnat.adc";
-      end case;
+      for Local_Configuration_Pragmas use "gnat.adc";
 
       case Build is
          when "Debug" | "Devel" =>
@@ -52,28 +45,24 @@ project GNAT2Why_GNAT is
 
       case Build is
          when "Debug" =>
-            case Tool is
-               when "gnatsas" =>
-                  --  disable use of pragma configuration files when running
-                  --  GNAT SAS
-                  null;
-               when Others =>
-                  for Global_Configuration_Pragmas use "debug.adc";
-            end case;
+            for Global_Configuration_Pragmas use "debug.adc";
          when "Devel" =>
-            case Tool is
-               when "gnatsas" =>
-                  --  disable use of pragma configuration files when running
-                  --  GNAT SAS
-                  null;
-               when Others =>
-                  for Global_Configuration_Pragmas use "devel.adc";
-            end case;
+            for Global_Configuration_Pragmas use "devel.adc";
          when "Production" =>
             null;
       end case;
 
       for Switches ("Ada") use ("-m");
+
+      case Tool is
+         when "gnatsas" =>
+            --  Use -gnateb to ensure that pragma configuration files checksums are
+            --  correctly computed when running incremental analysis in CIs.
+            for Global_Compilation_Switches ("Ada") use ("-gnateb");
+         when Others =>
+            null;
+      end case;
+
    end Builder;
 
 end GNAT2Why_GNAT;
