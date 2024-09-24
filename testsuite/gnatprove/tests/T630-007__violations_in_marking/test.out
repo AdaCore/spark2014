@@ -35,8 +35,6 @@ bad_inheritance.ads:17:13: error: subprogram "Get" is inherited from "Root" and 
 bad_inheritance.ads:17:13: error: subprogram inherited from root and interface is not yet supported
 bad_inheritance.ads:19:09: error: subprogram "Get" is inherited from "Root" and "Inter"
 bad_inheritance.ads:19:09: error: subprogram inherited from root and interface is not yet supported
-bad_inheritance.ads:27:13: error: subprogram "Get" is inherited from "Root" and "Inter"
-bad_inheritance.ads:27:13: error: subprogram inherited from root and interface is not yet supported
 bad_inheritance.ads:27:55: error: "Grand_Child2" is not allowed in SPARK (due to subprogram inherited from root and interface)
 bad_inheritance.ads:27:55: error: violation of aspect SPARK_Mode at line 2
 bad_inheritance.ads:29:09: error: "Bad_Inter" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
