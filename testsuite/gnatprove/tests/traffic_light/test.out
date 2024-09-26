@@ -3,6 +3,11 @@ road_traffic.ads:32:19: info: postcondition proved (CVC5: 1 VC)
 road_traffic.ads:36:19: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
 road_traffic.ads:42:19: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
 traffic_lights.adb:46:20: info: predicate check proved (CVC5: 1 VC)
+traffic_lights.adb:56:16: info: range check proved (CVC5: 1 VC)
+traffic_lights.adb:59:16: info: range check proved (CVC5: 1 VC)
+traffic_lights.adb:64:40: info: range check proved (CVC5: 1 VC)
+traffic_lights.adb:65:26: info: range check proved (CVC5: 1 VC)
+traffic_lights.adb:66:17: info: range check proved (CVC5: 1 VC)
 traffic_lights.ads:28:13: info: implicit aspect Always_Terminates on "Valid_Combination" has been proved, subprogram will terminate
 traffic_lights.ads:47:07: info: in default value at traffic_lights.ads:47
 traffic_lights.ads:47:07: info: predicate check proved on default value (CVC5: 1 VC)

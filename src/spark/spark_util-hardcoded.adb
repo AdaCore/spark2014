@@ -54,6 +54,27 @@ package body SPARK_Util.Hardcoded is
       raise Program_Error;
    end Get_Hardcoded_Unit;
 
+   -----------------------------
+   -- Get_Real_Time_Time_Unit --
+   -----------------------------
+
+   function Get_Real_Time_Time_Unit (E : Entity_Id) return Ureal is
+      Pack : constant E_Package_Id := Scope (E);
+      Decl : Node_Id := First (Visible_Declarations
+                               (Package_Specification (Pack)));
+   begin
+      while Present (Decl) loop
+         if Nkind (Decl) = N_Number_Declaration
+           and then Get_Name_String (Chars (Defining_Identifier (Decl))) =
+           Real_Time_Names.Time_Unit
+         then
+            return Realval (Expression (Decl));
+         end if;
+         Next (Decl);
+      end loop;
+      raise Program_Error;
+   end Get_Real_Time_Time_Unit;
+
    -----------------------
    -- Has_Stoele_Offset --
    -----------------------
@@ -132,6 +153,9 @@ package body SPARK_Util.Hardcoded is
          when Elementary_Functions =>
             return True;
 
+         when Real_Time =>
+            return False;
+
          when System_Storage_Elements =>
             return False;
 
@@ -159,6 +183,7 @@ package body SPARK_Util.Hardcoded is
       package BRN renames Big_Reals_Names; use BRN;
       package COpN renames Cut_Operations_Names; use COpN;
       package SSEN renames System_Storage_Elements_Names;
+      package RTN renames Real_Time_Names; use RTN;
    begin
 
       if Is_From_Hardcoded_Unit (E, Big_Integers) then
@@ -210,6 +235,30 @@ package body SPARK_Util.Hardcoded is
          return Get_Name_String (Chars (E)) in SSEN.To_Address
                                              | SSEN.To_Integer;
 
+      elsif Is_From_Hardcoded_Unit (E, Real_Time) then
+         return Chars (E) in Name_Op_Abs
+                           | Name_Op_Add
+                           | Name_Op_Subtract
+                           | Name_Op_Multiply
+                           | Name_Op_Divide
+                           | Name_Op_Lt .. Name_Op_Ge
+           or else Get_Name_String (Chars (E)) in RTN.Time
+                                                | RTN.Time_Span
+                                                | RTN.Time_First
+                                                | RTN.Time_Last
+                                                | RTN.Time_Span_First
+                                                | RTN.Time_Span_Last
+                                                | RTN.Time_Span_Zero
+                                                | RTN.Time_Span_Unit
+                                                | RTN.Nanoseconds
+                                                | RTN.Microseconds
+                                                | RTN.Milliseconds
+                                                | RTN.Seconds
+                                                | RTN.Minutes
+                                                | RTN.To_Duration
+                                                | RTN.To_Time_Span
+                                                | RTN.Time_Of
+                                                | RTN.Split;
       end if;
 
       return False;
@@ -310,6 +359,19 @@ package body SPARK_Util.Hardcoded is
             S_Ptr := Scope (S_Ptr);
 
             if Get_Name_String (Chars (S_Ptr)) /= "numerics" then
+               return False;
+            end if;
+
+            S_Ptr := Scope (S_Ptr);
+
+            if Chars (S_Ptr) /= Name_Ada then
+               return False;
+            end if;
+
+            return Scope (S_Ptr) = Standard_Standard;
+
+         when Real_Time =>
+            if Get_Name_String (Chars (S_Ptr)) /= "real_time" then
                return False;
             end if;
 

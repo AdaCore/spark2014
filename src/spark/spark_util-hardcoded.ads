@@ -30,6 +30,7 @@ package SPARK_Util.Hardcoded is
       Big_Reals,
       Cut_Operations,
       Elementary_Functions,
+      Real_Time,
       System_Storage_Elements,
       System
      );
@@ -109,6 +110,27 @@ package SPARK_Util.Hardcoded is
       Arccoth  : constant String := "arccoth";
    end Elementary_Functions_Names;
 
+   package Real_Time_Names is
+      Time            : constant String := "time";
+      Time_Span       : constant String := "time_span";
+      Time_Unit       : constant String := "time_unit";
+      Time_First      : constant String := "time_first";
+      Time_Last       : constant String := "time_last";
+      Time_Span_First : constant String := "time_span_first";
+      Time_Span_Last  : constant String := "time_span_last";
+      Time_Span_Zero  : constant String := "time_span_zero";
+      Time_Span_Unit  : constant String := "time_span_unit";
+      Nanoseconds     : constant String := "nanoseconds";
+      Microseconds    : constant String := "microseconds";
+      Milliseconds    : constant String := "milliseconds";
+      Seconds         : constant String := "seconds";
+      Minutes         : constant String := "minutes";
+      To_Duration     : constant String := "to_duration";
+      To_Time_Span    : constant String := "to_time_span";
+      Time_Of         : constant String := "time_of";
+      Split           : constant String := "split";
+   end Real_Time_Names;
+
    function Is_From_Hardcoded_Unit
      (E    : Entity_Id;
       Unit : Hardcoded_Enum)
@@ -141,5 +163,10 @@ package SPARK_Util.Hardcoded is
    function Is_System_Address (E : Type_Kind_Id) return Boolean;
    --  Return true if the entity is (a subtype of) the type
    --  System.Address;
+
+   function Get_Real_Time_Time_Unit (E : Entity_Id) return Ureal with
+     Pre => Is_From_Hardcoded_Unit (E, Real_Time);
+   --  Return the value of Time_Unit from an entity of the package
+   --  Ada.Real_Time.
 
 end SPARK_Util.Hardcoded;

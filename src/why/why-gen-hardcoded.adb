@@ -25,9 +25,12 @@
 
 with Common_Containers;   use Common_Containers;
 with Errout_Wrapper;      use Errout_Wrapper;
+with GNAT.Source_Info;
+with GNATCOLL.Symbols;    use GNATCOLL.Symbols;
 with Namet;               use Namet;
 with Snames;              use Snames;
 with SPARK_Util.Types;    use SPARK_Util.Types;
+with Stand;               use Stand;
 with Stringt;             use Stringt;
 with Uintp;               use Uintp;
 with Urealp;              use Urealp;
@@ -52,6 +55,52 @@ package body Why.Gen.Hardcoded is
    function Uint_From_String (Str_Value : String) return Uint;
    --  Read an integer value from a string. Might raise Constraint_Error.
 
+   type M_Real_Time (Initialized : Boolean := False) is record
+      case Initialized is
+         when False => null;
+         when True =>
+            Module        : W_Module_Id;
+            T             : W_Type_Id;
+            Of_Int        : W_Identifier_Id;
+            To_Duration   : W_Identifier_Id;
+            Of_Duration   : W_Identifier_Id;
+            Time_Of       : W_Identifier_Id;
+            Split         : W_Identifier_Id;
+            Time_First    : W_Identifier_Id;
+            Time_Last     : W_Identifier_Id;
+            In_Range_Time : W_Identifier_Id;
+            Span_First    : W_Identifier_Id;
+            Span_Last     : W_Identifier_Id;
+            In_Range_Span : W_Identifier_Id;
+      end case;
+   end record;
+
+   Real_Time_Module : M_Real_Time;
+
+   -----------------------------------------
+   -- Dynamic_Property_For_Hardcoded_Type --
+   -----------------------------------------
+
+   function Dynamic_Property_For_Hardcoded_Type
+     (E    : Type_Kind_Id;
+      Expr : W_Term_Id)
+      return W_Pred_Id
+   is
+   begin
+      if Is_From_Hardcoded_Unit (E, Real_Time) then
+         return New_Call
+           (Name =>
+              (if Get_Name_String (Chars (E)) = Real_Time_Names.Time
+               then Real_Time_Module.In_Range_Time
+               elsif Get_Name_String (Chars (E)) = Real_Time_Names.Time_Span
+               then Real_Time_Module.In_Range_Span
+               else raise Program_Error),
+            Args => (1 => +Expr));
+      else
+         return True_Pred;
+      end if;
+   end Dynamic_Property_For_Hardcoded_Type;
+
    -------------------------------------
    -- Emit_Hardcoded_Type_Declaration --
    -------------------------------------
@@ -67,6 +116,196 @@ package body Why.Gen.Hardcoded is
       case Get_Hardcoded_Unit (E) is
          when Big_Integers => Alias := EW_Int_Type;
          when Big_Reals    => Alias := EW_Real_Type;
+         when Real_Time    =>
+
+            --  If necessary, initialize Real_Time_Module as a clone of
+            --  Real_Time_Model. It takes as parameters the numerator and
+            --  denominator of Time_Unit as well as those of the small of
+            --  Duration for conversions.
+
+            if not Real_Time_Module.Initialized then
+               declare
+                  Module   : constant W_Module_Id :=
+                    New_Module (File => No_Symbol,
+                                Name => "Ada__real_time__model");
+                  N_Ty     : constant W_Type_Id := New_Type
+                    (Is_Mutable => False,
+                     Type_Kind  => EW_Builtin,
+                     Name       => Get_Name (M_Main.Fixed_Type));
+                  M_Module : constant M_Real_Time :=
+                    M_Real_Time'
+                      (Initialized   => True,
+                       Module        => Module,
+                       T             => N_Ty,
+                       Of_Int        =>
+                         New_Identifier (Module => Module,
+                                         Domain => EW_Term,
+                                         Symb   => NID ("of_int"),
+                                         Typ    => N_Ty),
+                       To_Duration   =>
+                         New_Identifier (Module => Module,
+                                         Domain => EW_Term,
+                                         Symb   => NID ("to_duration"),
+                                         Typ    => EW_Fixed_Type
+                                           (Standard_Duration)),
+                       Of_Duration   =>
+                         New_Identifier (Module => Module,
+                                         Domain => EW_Term,
+                                         Symb   => NID ("of_duration"),
+                                         Typ    => N_Ty),
+                       Time_Of       =>
+                         New_Identifier (Module => Module,
+                                         Domain => EW_Term,
+                                         Symb   => NID ("time_of"),
+                                         Typ    => N_Ty),
+                       Split         =>
+                         New_Identifier (Module => Module,
+                                         Domain => EW_Pred,
+                                         Symb   => NID ("split")),
+                       Time_First    =>
+                         New_Identifier (Module => Module,
+                                         Domain => EW_Term,
+                                         Symb   => NID ("time_first"),
+                                         Typ    => N_Ty),
+                       Time_Last     =>
+                         New_Identifier (Module => Module,
+                                         Domain => EW_Term,
+                                         Symb   => NID ("time_last"),
+                                         Typ    => N_Ty),
+                       In_Range_Time =>
+                         New_Identifier (Module => Module,
+                                         Domain => EW_Pred,
+                                         Symb   => NID ("in_range_time")),
+                       Span_First    =>
+                         New_Identifier (Module => Module,
+                                         Domain => EW_Term,
+                                         Symb   => NID ("span_first"),
+                                         Typ    => N_Ty),
+                       Span_Last     =>
+                         New_Identifier (Module => Module,
+                                         Domain => EW_Term,
+                                         Symb   => NID ("span_last"),
+                                         Typ    => N_Ty),
+                       In_Range_Span =>
+                         New_Identifier (Module => Module,
+                                         Domain => EW_Pred,
+                                         Symb   => NID ("in_range_span")));
+
+                  --  Time and Time_Span are fixed point type with the same
+                  --  small.
+
+                  Num_Small  : constant W_Name_Id :=
+                    New_Name (Symb => NID ("num_small"));
+                  Den_Small  : constant W_Name_Id :=
+                    New_Name (Symb => NID ("den_small"));
+
+                  --  The numerator and denominator of Time and Time_Span are
+                  --  queried from Time_Unit.
+
+                  Time_Unit   : constant Ureal := Get_Real_Time_Time_Unit (E);
+                  Num_Small_V : constant W_Term_OId :=
+                    New_Integer_Constant (Value => Norm_Num (Time_Unit));
+                  Den_Small_V : constant W_Term_OId :=
+                    New_Integer_Constant (Value => Norm_Den (Time_Unit));
+
+                  --  The small of Duration is used to encode conversions
+
+                  D_Num_Small : constant W_Name_Id :=
+                    New_Name (Symb => NID ("num_small_duration"));
+                  D_Den_Small : constant W_Name_Id :=
+                    New_Name (Symb => NID ("den_small_duration"));
+
+                  --  The numerator and denominator of Duration depend on the
+                  --  plateform. They are passed as additional parameters to
+                  --  the clone.
+
+                  D_Small       : constant Ureal :=
+                    Small_Value (Standard_Duration);
+                  D_Num_Small_V : constant W_Term_OId :=
+                    New_Integer_Constant (Value => Norm_Num (D_Small));
+                  D_Den_Small_V : constant W_Term_OId :=
+                    New_Integer_Constant (Value => Norm_Den (D_Small));
+
+                  Subst : W_Clone_Substitution_Array (1 .. 4);
+                  Th    : Theory_UC;
+
+               begin
+                  Th :=
+                    Open_Theory
+                      (WF_Context, Module,
+                       Comment =>
+                         "Module for Ada.Real_Time, created in "
+                       & GNAT.Source_Info.Enclosing_Entity);
+
+                  Emit (Th,
+                        Why.Atree.Builders.New_Function_Decl
+                          (Domain      => EW_Term,
+                           Name        => New_Identifier (Num_Small),
+                           Binders     => (1 .. 0 => <>),
+                           Return_Type => EW_Int_Type,
+                           Labels      => Symbol_Sets.Empty_Set,
+                           Location    => No_Location,
+                           Def         => +Num_Small_V));
+                  Emit (Th,
+                        Why.Atree.Builders.New_Function_Decl
+                          (Domain      => EW_Term,
+                           Name        => New_Identifier (Den_Small),
+                           Binders     => (1 .. 0 => <>),
+                           Return_Type => EW_Int_Type,
+                           Labels      => Symbol_Sets.Empty_Set,
+                           Location    => No_Location,
+                           Def         => +Den_Small_V));
+                  Emit (Th,
+                        Why.Atree.Builders.New_Function_Decl
+                          (Domain      => EW_Term,
+                           Name        => New_Identifier (D_Num_Small),
+                           Binders     => (1 .. 0 => <>),
+                           Return_Type => EW_Int_Type,
+                           Labels      => Symbol_Sets.Empty_Set,
+                           Location    => No_Location,
+                           Def         => +D_Num_Small_V));
+                  Emit (Th,
+                        Why.Atree.Builders.New_Function_Decl
+                          (Domain      => EW_Term,
+                           Name        => New_Identifier (D_Den_Small),
+                           Binders     => (1 .. 0 => <>),
+                           Return_Type => EW_Int_Type,
+                           Labels      => Symbol_Sets.Empty_Set,
+                           Location    => No_Location,
+                           Def         => +D_Den_Small_V));
+
+                  Subst :=
+                    (1 => New_Clone_Substitution
+                       (Kind      => EW_Function,
+                        Orig_Name => Num_Small,
+                        Image     => Num_Small),
+                     2 => New_Clone_Substitution
+                       (Kind      => EW_Function,
+                        Orig_Name => Den_Small,
+                        Image     => Den_Small),
+                     3 => New_Clone_Substitution
+                       (Kind      => EW_Function,
+                        Orig_Name => D_Num_Small,
+                        Image     => D_Num_Small),
+                     4 => New_Clone_Substitution
+                       (Kind      => EW_Function,
+                        Orig_Name => D_Den_Small,
+                        Image     => D_Den_Small));
+
+                  Emit (Th,
+                        New_Clone_Declaration
+                          (Theory_Kind   => EW_Theory,
+                           Clone_Kind    => EW_Export,
+                           Origin        => Real_Time_Model,
+                           As_Name       => No_Symbol,
+                           Substitutions => Subst));
+
+                  Close_Theory (Th, Kind => Definition_Theory);
+                  Real_Time_Module := M_Module;
+               end;
+            end if;
+
+            Alias := Real_Time_Module.T;
 
          --  No types are declared in the following units
 
@@ -77,6 +316,8 @@ package body Why.Gen.Hardcoded is
          =>
             raise Program_Error;
       end case;
+
+      pragma Assert (Is_Simple_Private_Type (Retysp (E)));
 
       Emit (Th,
             New_Type_Decl
@@ -110,6 +351,41 @@ package body Why.Gen.Hardcoded is
       and then Is_System_Address (Left)
       and then Has_Stoele_Offset (Right));
 
+   ------------------------------
+   -- Hardcoded_Constant_Value --
+   ------------------------------
+
+   function Hardcoded_Constant_Value (E : E_Constant_Id) return W_Term_Id is
+   begin
+      if Is_From_Hardcoded_Unit (E, Real_Time) then
+         if Get_Name_String (Chars (E)) = Real_Time_Names.Time_First then
+            return +Real_Time_Module.Time_First;
+         elsif Get_Name_String (Chars (E)) = Real_Time_Names.Time_Last then
+            return +Real_Time_Module.Time_Last;
+         elsif Get_Name_String (Chars (E)) = Real_Time_Names.Time_Span_First
+         then
+            return +Real_Time_Module.Span_First;
+         elsif Get_Name_String (Chars (E)) = Real_Time_Names.Time_Span_Last
+         then
+            return +Real_Time_Module.Span_Last;
+         elsif Get_Name_String (Chars (E)) = Real_Time_Names.Time_Span_Zero
+         then
+            return New_Fixed_Constant
+              (Value => Uint_0,
+               Typ   => Real_Time_Module.T);
+         elsif Get_Name_String (Chars (E)) = Real_Time_Names.Time_Span_Unit
+         then
+            return New_Fixed_Constant
+              (Value => Uint_1,
+               Typ   => Real_Time_Module.T);
+         else
+            raise Program_Error;
+         end if;
+      else
+         raise Program_Error;
+      end if;
+   end Hardcoded_Constant_Value;
+
    ----------------------------
    -- New_Hardcoded_Equality --
    ----------------------------
@@ -137,6 +413,13 @@ package body Why.Gen.Hardcoded is
                return Real_Infix_Eq;
             end if;
 
+         when Real_Time =>
+            if Domain = EW_Term then
+               return M_Integer.Bool_Eq;
+            else
+               return Why_Eq;
+            end if;
+
          --  No equal in the following units
 
          when Cut_Operations
@@ -148,6 +431,15 @@ package body Why.Gen.Hardcoded is
 
       end case;
    end Hardcoded_Equality_Symbol;
+
+   -------------------------------------------
+   -- Hardcoded_Type_Needs_Dynamic_Property --
+   -------------------------------------------
+
+   function Hardcoded_Type_Needs_Dynamic_Property
+     (E : Type_Kind_Id)
+      return Boolean
+   is (Is_From_Hardcoded_Unit (E, Real_Time));
 
    ---------------------------------------
    -- Transform_Hardcoded_Function_Call --
@@ -914,6 +1206,228 @@ package body Why.Gen.Hardcoded is
                   Typ      => MF.T);
             end if;
          end;
+
+      elsif Is_From_Hardcoded_Unit (Subp, Real_Time) then
+         declare
+            package RTN renames Real_Time_Names;
+            Op      : W_Identifier_Id;
+            Is_Time : constant Boolean :=
+              Is_From_Hardcoded_Unit (Etype (Subp), Real_Time)
+              and then Get_Name_String (Chars (Etype (Subp))) in
+              RTN.Time | RTN.Time_Span;
+            Res_Ty  : constant W_Type_Id :=
+              (if Is_Time then Real_Time_Module.T
+               else Base_Why_Type (Etype (Subp)));
+         begin
+            --  Conversions from integers. The of_int function takes a
+            --  multiplying factor as two parameters for the numerator and
+            --  denominator.
+
+            if Get_Name_String (Chars (Subp)) in RTN.Nanoseconds
+                                               | RTN.Microseconds
+                                               | RTN.Milliseconds
+                                               | RTN.Seconds
+                                               | RTN.Minutes
+            then
+               Op := Real_Time_Module.Of_Int;
+
+               declare
+                  N : Uint := Uint_1;
+                  D : Uint := Uint_1;
+               begin
+                  if Get_Name_String (Chars (Subp)) = RTN.Nanoseconds then
+                     D := UI_From_Int (1_000_000_000);
+                  elsif Get_Name_String (Chars (Subp)) = RTN.Microseconds then
+                     D := UI_From_Int (1_000_000);
+                  elsif Get_Name_String (Chars (Subp)) = RTN.Milliseconds then
+                     D := UI_From_Int (1_000);
+                  elsif Get_Name_String (Chars (Subp)) = RTN.Minutes then
+                     N := UI_From_Int (60);
+                  end if;
+
+                  T := New_Call
+                    (Ada_Node => Ada_Node,
+                     Domain   => Domain,
+                     Name     => Op,
+                     Args     => Args &
+                     (New_Integer_Constant (Value => N),
+                      New_Integer_Constant (Value => D)),
+                     Typ      => Res_Ty);
+               end;
+
+            elsif Get_Name_String (Chars (Subp)) in RTN.To_Duration
+                                                  | RTN.To_Time_Span
+            then
+               if Get_Name_String (Chars (Subp)) = RTN.To_Duration then
+                  Op := Real_Time_Module.To_Duration;
+               else
+                  Op := Real_Time_Module.Of_Duration;
+               end if;
+
+               T := New_Call
+                 (Ada_Node => Ada_Node,
+                  Domain   => Domain,
+                  Name     => Op,
+                  Args     => Args,
+                  Typ      => Res_Ty);
+
+            --  For Time_Of, generate time_of sc + ts. The rounding mode of
+            --  time_of is not specified.
+
+            elsif Get_Name_String (Chars (Subp)) = RTN.Time_Of then
+               pragma Assert (Args'Length = 2);
+
+               T := New_Call
+                 (Ada_Node => Ada_Node,
+                  Domain   => Domain,
+                  Name     => Int_Infix_Add,
+                  Args     =>
+                    (1 => New_Call
+                         (Ada_Node => Ada_Node,
+                          Domain   => Domain,
+                          Name     => Real_Time_Module.Time_Of,
+                          Args     =>
+                            (1 => Insert_Simple_Conversion
+                               (Domain => Domain,
+                                Expr   => Args (1),
+                                To     => EW_Int_Type)),
+                          Typ      => Res_Ty),
+                     2 => Args (2)),
+                  Typ      => Res_Ty);
+
+            --  The effects of the operators on Time and Time_Span are as for
+            --  the operators defined for integer types (RM-D-8).
+
+            --  Comparison operators
+
+            elsif Etype (Subp) = Standard_Boolean then
+               pragma Assert (Args'Length = 2);
+
+               if Domain = EW_Term then
+                  if Chars (Subp) = Name_Op_Gt then
+                     Op := M_Integer.Bool_Gt;
+                  elsif Chars (Subp) = Name_Op_Lt then
+                     Op := M_Integer.Bool_Lt;
+                  elsif Chars (Subp) = Name_Op_Ge then
+                     Op := M_Integer.Bool_Ge;
+                  elsif Chars (Subp) = Name_Op_Le then
+                     Op := M_Integer.Bool_Le;
+                  else
+                     raise Program_Error;
+                  end if;
+               else
+                  if Chars (Subp) = Name_Op_Gt then
+                     Op := Int_Infix_Gt;
+                  elsif Chars (Subp) = Name_Op_Lt then
+                     Op := Int_Infix_Lt;
+                  elsif Chars (Subp) = Name_Op_Ge then
+                     Op := Int_Infix_Ge;
+                  elsif Chars (Subp) = Name_Op_Le then
+                     Op := Int_Infix_Le;
+                  else
+                     raise Program_Error;
+                  end if;
+               end if;
+
+               T := New_Comparison
+                 (Symbol  => Op,
+                  Left    => Args (1),
+                  Right   => Args (2),
+                  Domain  => Domain);
+
+            --  Divison in the program domain
+
+            elsif Domain = EW_Prog and then Chars (Subp) = Name_Op_Divide then
+               T := New_Operator_Call
+                 (Ada_Node => Ada_Node,
+                  Domain   => Domain,
+                  Name     => M_Int_Div.Div,
+                  Args     => Args,
+                  Reason   => VC_Division_Check,
+                  Check    => True,
+                  Typ      => Res_Ty);
+
+            --  Other operators
+
+            else
+               if Chars (Subp) = Name_Op_Add then
+                  Op := Int_Infix_Add;
+               elsif Chars (Subp) = Name_Op_Subtract then
+                  if Args'Length = 2 then
+                     Op := Int_Infix_Subtr;
+                  elsif Args'Length = 1 then
+                     Op := Int_Unary_Minus;
+                  else
+                     raise Program_Error;
+                  end if;
+               elsif Chars (Subp) = Name_Op_Multiply then
+                  Op := Int_Infix_Mult;
+               elsif Chars (Subp) = Name_Op_Divide then
+                  Op := New_Division (EW_Int_Type);
+               elsif Chars (Subp) = Name_Op_Abs then
+                  Op := New_Abs (EW_Int_Type);
+               else
+                  raise Program_Error;
+               end if;
+
+               T := New_Call
+                 (Ada_Node => Ada_Node,
+                  Domain   => Domain,
+                  Name     => Op,
+                  Args     => Args,
+                  Typ      => Res_Ty);
+            end if;
+
+            --  If the result of the operation is Time or Time_Span, introduce
+            --  a range check manually and set the appropriate type.
+
+            if Is_Time then
+               if Domain = EW_Prog then
+                  declare
+                     Tmp         : constant W_Expr_Id := New_Temp_For_Expr (T);
+                     Range_Check : constant W_Identifier_Id :=
+                       (if Get_Name_String (Chars (Etype (Subp))) =
+                            Real_Time_Names.Time
+                        then Real_Time_Module.In_Range_Time
+                        elsif Get_Name_String (Chars (Etype (Subp))) =
+                            Real_Time_Names.Time_Span
+                        then Real_Time_Module.In_Range_Span
+                        else raise Program_Error);
+                  begin
+                     T := +Sequence
+                       (Left  => New_Located_Assert
+                          (Ada_Node => Ada_Node,
+                           Pred     => New_Call
+                             (Name => Range_Check,
+                              Args => (1 => Tmp)),
+                           Reason   => VC_Range_Check,
+                           Kind     => EW_Assert),
+                        Right => +Tmp);
+
+                     T := Binding_For_Temp
+                       (Domain  => Domain,
+                        Tmp     => Tmp,
+                        Context => T);
+                  end;
+               end if;
+
+               T := New_Label
+                 (Ada_Node => Ada_Node,
+                  Domain   => Domain,
+                  Labels   => Symbol_Sets.Empty_Set,
+                  Def      => T,
+                  Typ      => Type_Of_Node (Etype (Subp)));
+
+            elsif Domain = EW_Prog
+              and then Etype (Subp) /= Standard_Boolean
+            then
+               T := +Do_Range_Check
+                 (Ada_Node   => Ada_Node,
+                  Ty         => Etype (Subp),
+                  W_Expr     => T,
+                  Check_Kind => RCK_Range);
+            end if;
+         end;
       else
          raise Program_Error;
       end if;
@@ -1321,6 +1835,68 @@ package body Why.Gen.Hardcoded is
       T := Binding_For_Temp (Empty, Domain, RTT, T);
       return T;
    end Transform_Hardcoded_Operation;
+
+   ----------------------------------------
+   -- Transform_Hardcoded_Procedure_Call --
+   ----------------------------------------
+
+   function Transform_Hardcoded_Procedure_Call
+     (Subp     : Entity_Id;
+      Args     : W_Expr_Array;
+      Ada_Node : Node_Id)
+      return W_Prog_Id
+   is
+   begin
+      if Is_From_Hardcoded_Unit (Subp, Real_Time) then
+         pragma Assert
+           (Get_Name_String (Chars (Subp)) = Real_Time_Names.Split);
+         pragma Assert (Args'Length = 3);
+
+         --  Generate:
+         --
+         --    let tmp_t = t in
+         --      havoc sc;
+         --      havoc ts;
+         --      assume { split tmp_t !sc !ts };
+         --      ignore (range_check_ sc)
+
+         declare
+            T_Arg    : constant W_Expr_Id := New_Temp_For_Expr (Args (1));
+            Sc_Typ   : constant Entity_Id :=
+              Etype (Next_Formal (First_Formal (Subp)));
+            Sc_Id    : constant W_Identifier_Id := +Args (2);
+            Sc_Deref : constant W_Expr_Id := New_Deref
+              (Right => Sc_Id,
+               Typ   => Get_Typ (Sc_Id));
+            Ts_Id    : constant W_Identifier_Id := +Args (3);
+            Ts_Deref : constant W_Expr_Id := New_Deref
+              (Right => Ts_Id,
+               Typ   => Get_Typ (Ts_Id));
+
+         begin
+            return Binding_For_Temp
+              (Ada_Node => Ada_Node,
+               Tmp      => +T_Arg,
+               Context  => Sequence
+                 ((1 => New_Havoc_Call (Sc_Id),
+                   2 => New_Havoc_Call (Ts_Id),
+                   3 => New_Assume_Statement
+                     (Pred => New_Call
+                          (Name => Real_Time_Module.Split,
+                           Args => (1 => T_Arg,
+                                    2 => Sc_Deref,
+                                    3 => Ts_Deref))),
+                   4 => New_Ignore
+                     (Prog => Do_Range_Check
+                          (Ada_Node   => Ada_Node,
+                           Ty         => Sc_Typ,
+                           W_Expr     => Sc_Deref,
+                           Check_Kind => RCK_Range)))));
+         end;
+      else
+         raise Program_Error;
+      end if;
+   end Transform_Hardcoded_Procedure_Call;
 
    ----------------------
    -- Uint_From_String --
