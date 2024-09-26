@@ -1,4 +1,3 @@
 large: True
 prove_all:
   opt: ["--output=oneline"]
-timeout: 1500
