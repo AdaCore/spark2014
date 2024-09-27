@@ -25,8 +25,9 @@
 
 package SPARK_Util.Hardcoded is
 
-   type Hardcoded_Enum is
-     (Big_Integers,
+   type Opt_Hardcoded_Enum is
+     (No_Unit,
+      Big_Integers,
       Big_Reals,
       Cut_Operations,
       Elementary_Functions,
@@ -35,6 +36,9 @@ package SPARK_Util.Hardcoded is
       System
      );
    --  Enum type of the hardcoded units
+
+   subtype Hardcoded_Enum is Opt_Hardcoded_Enum range
+     Big_Integers .. Opt_Hardcoded_Enum'Last;
 
    package Big_Integers_Names is
       Big_Integer              : constant String := "big_integer";

@@ -391,34 +391,19 @@ package body Why.Gen.Hardcoded is
    ----------------------------
 
    function Hardcoded_Equality_Symbol
-     (Typ    : Entity_Id;
-      Domain : EW_Domain)
+     (Typ : Entity_Id)
       return W_Identifier_Id
    is
    begin
       case Get_Hardcoded_Unit (Typ) is
          when Big_Integers =>
-            if Domain = EW_Term then
-               return M_Integer.Bool_Eq;
-            else
-               return Why_Eq;
-            end if;
+            return M_Integer.Bool_Eq;
 
          when Big_Reals =>
-            if Domain = EW_Term then
-               return M_Real.Bool_Eq;
-            elsif Domain = EW_Pred then
-               return Why_Eq;
-            else
-               return Real_Infix_Eq;
-            end if;
+            return M_Real.Bool_Eq;
 
          when Real_Time =>
-            if Domain = EW_Term then
-               return M_Integer.Bool_Eq;
-            else
-               return Why_Eq;
-            end if;
+            return M_Integer.Bool_Eq;
 
          --  No equal in the following units
 

@@ -61,10 +61,7 @@ package Why.Gen.Hardcoded is
      Pre => Is_Hardcoded_Entity (E);
    --  Get the value of a hardcoded constant
 
-   function Hardcoded_Equality_Symbol
-     (Typ    : Entity_Id;
-      Domain : EW_Domain)
-      return W_Identifier_Id
+   function Hardcoded_Equality_Symbol (Typ : Entity_Id) return W_Identifier_Id
    with
      Pre => Is_Type (Typ) and then Is_Hardcoded_Entity (Typ);
    --  Return the equality symbol for type Typ
