@@ -46,7 +46,6 @@ with Output;
 with Pprint;                      use Pprint;
 with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
-with SPARK_Util;
 with SPARK_Util.Hardcoded;        use SPARK_Util.Hardcoded;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
 with SPARK_Util.Types;            use SPARK_Util.Types;
