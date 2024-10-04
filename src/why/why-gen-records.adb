@@ -3517,7 +3517,7 @@ package body Why.Gen.Records is
 
                         elsif Is_Hardcoded_Entity (E)
                         then New_Comparison
-                          (Hardcoded_Equality_Symbol (E, EW_Term),
+                          (Hardcoded_Equality_Symbol (E),
                            +A_Ident, +B_Ident, EW_Term)
 
                         --  For simple private types, use Why3 "=" if the type
