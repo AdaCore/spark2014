@@ -686,7 +686,7 @@ package body Gnat2Why.Borrow_Checker is
    --  Handle assignment as part of an assignment statement or an object
    --  declaration.
 
-   procedure Check_Call_Statement (Call : Node_Id);
+   procedure Check_Call_With_Side_Effects (Call : Node_Id);
 
    procedure Check_Callable_Body (Id : Entity_Id);
    --  Entry point for the analysis of a subprogram or entry body
@@ -1497,11 +1497,11 @@ package body Gnat2Why.Borrow_Checker is
       end if;
    end Check_Assignment;
 
-   --------------------------
-   -- Check_Call_Statement --
-   --------------------------
+   ----------------------------------
+   -- Check_Call_With_Side_Effects --
+   ----------------------------------
 
-   procedure Check_Call_Statement (Call : Node_Id) is
+   procedure Check_Call_With_Side_Effects (Call : Node_Id) is
 
       Subp : constant Entity_Id := Get_Called_Entity (Call);
 
@@ -1537,36 +1537,40 @@ package body Gnat2Why.Borrow_Checker is
 
       procedure Check_Protected_Components (Subp : Entity_Id) is
 
-         procedure Check_Component (Comp : Entity_Id);
+         procedure Check_Component (Comp : Entity_Id; Kind : Formal_Kind);
          --  Apply check to component of protected object
 
          ---------------------
          -- Check_Component --
          ---------------------
 
-         procedure Check_Component (Comp : Entity_Id) is
+         procedure Check_Component (Comp : Entity_Id; Kind : Formal_Kind) is
          begin
             Check_Parameter_Or_Global
               (Expr       => (Is_Ent => True, Ent => Comp, Loc => Call),
                Typ        => Retysp (Etype (Comp)),
-               Kind       => E_In_Out_Parameter,
+               Kind       => Kind,
                Subp       => Subp,
                Global_Var => False);
          end Check_Component;
 
          --  Local variables
 
-         Typ : constant Entity_Id := Scope (Subp);
-      begin
+         Typ  : constant Entity_Id := Scope (Subp);
+         Kind : constant Formal_Kind :=
+           (if Ekind (Subp) in E_Procedure | E_Entry
+            then E_In_Out_Parameter
+            else E_In_Parameter);
          --  The protected object is an implicit input-output of protected
-         --  procedures and entries.
-         pragma Assert (Ekind (Subp) in E_Procedure | E_Entry);
+         --  procedures and entries and an implicit input of functions (even
+         --  functions with side effects).
 
+      begin
          declare
             Comp : Entity_Id := First_Component_Or_Discriminant (Typ);
          begin
             while Present (Comp) loop
-               Check_Component (Comp);
+               Check_Component (Comp, Kind);
                Next_Component_Or_Discriminant (Comp);
             end loop;
          end;
@@ -1576,7 +1580,7 @@ package body Gnat2Why.Borrow_Checker is
          begin
             if Present (Anon_Obj) then
                for Comp of Iter (Part_Of_Constituents (Anon_Obj)) loop
-                  Check_Component (Comp);
+                  Check_Component (Comp, Kind);
                end loop;
             end if;
          end;
@@ -1605,7 +1609,7 @@ package body Gnat2Why.Borrow_Checker is
       procedure Update_Params is new
         Iterate_Call_Parameters (Update_Param);
 
-   --  Start of processing for Check_Call_Statement
+   --  Start of processing for Check_Call_With_Side_Effects
 
    begin
       Inside_Procedure_Call := True;
@@ -1623,7 +1627,7 @@ package body Gnat2Why.Borrow_Checker is
 
       Inside_Procedure_Call := False;
       Update_Params (Call);
-   end Check_Call_Statement;
+   end Check_Call_With_Side_Effects;
 
    -------------------------
    -- Check_Callable_Body --
@@ -3424,7 +3428,7 @@ package body Gnat2Why.Borrow_Checker is
             Check_Statement (N);
 
          when N_Procedure_Call_Statement =>
-            Check_Call_Statement (N);
+            Check_Call_With_Side_Effects (N);
 
             --  If N might raise some exceptions, handle the exceptional paths
 
@@ -4097,7 +4101,7 @@ package body Gnat2Why.Borrow_Checker is
          --  An entry call is handled like other calls
 
          when N_Entry_Call_Statement =>
-            Check_Call_Statement (Stmt);
+            Check_Call_With_Side_Effects (Stmt);
 
          --  An assignment may correspond to a move, a borrow, or an observe
 
@@ -4107,24 +4111,35 @@ package body Gnat2Why.Borrow_Checker is
                Expr   : constant Node_Id := Expression (Stmt);
 
             begin
-               --  If Stmt might raise some exceptions, handle the exceptional
-               --  paths.
-
-               if Nkind (Expr) = N_Function_Call
-                 and then
-                   Is_Function_With_Side_Effects (Get_Called_Entity (Expr))
-                 and then Might_Raise_Handled_Exceptions (Expr)
-               then
-                  Set_Environment_For_Exceptions (Expr);
-               end if;
-
                --  Start with checking that the subexpressions of the target
                --  path are readable, before possibly updating the permission
                --  of these subexpressions in Check_Assignment.
 
                Check_Expression (Target, Read_Subexpr);
 
-               Check_Assignment (Target => Target, Expr => Expr);
+               --  For function calls with side effects, use the handling of
+               --  procedure calls as there might be parameters of mode OUT.
+               --  Such calls can never be borrows/observes as traversal
+               --  functions cannot have side effects. No need to check the
+               --  assignment for ghost compatibility as the returned object
+               --  is necessarily new.
+
+               if Nkind (Expr) = N_Function_Call
+                 and then
+                   Is_Function_With_Side_Effects (Get_Called_Entity (Expr))
+               then
+                  Check_Call_With_Side_Effects (Call => Expr);
+
+                  --  If Stmt might raise some exceptions, handle the
+                  --  exceptional paths.
+
+                  if Might_Raise_Handled_Exceptions (Expr) then
+                     Set_Environment_For_Exceptions (Expr);
+                  end if;
+
+               else
+                  Check_Assignment (Target => Target, Expr => Expr);
+               end if;
 
                --  Local observers and borrowers can always be assigned, unless
                --  they are themselves borrowed (for borrowers only). Indeed,
