@@ -1,4 +1,4 @@
-test_2.adb:32:34: error: object subtype must statically match designated subtype
+test_2.adb:32:31: error: object subtype must statically match designated subtype
 test_4.adb:33:12: error: too few discriminants given in constraint
 test_4.adb:33:19: error: expected type "Option" defined at line 26
 test_4.adb:33:19: error: found private type "Option" defined at line 26
