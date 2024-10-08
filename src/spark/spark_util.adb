@@ -3815,9 +3815,8 @@ package body SPARK_Util is
    function Is_Pragma_Annotate_GNATprove (N : Node_Id) return Boolean is
      (Is_Pragma (N, Pragma_Annotate)
         and then
-      Get_Name_String
-        (Chars (Get_Pragma_Arg (First (Pragma_Argument_Associations (N)))))
-      = "gnatprove");
+      Chars (Get_Pragma_Arg (First (Pragma_Argument_Associations (N))))
+        = Name_Gnatprove);
 
    ------------------------------
    -- Is_Pragma_Assert_And_Cut --

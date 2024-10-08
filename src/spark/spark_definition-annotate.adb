@@ -5233,8 +5233,8 @@ package body SPARK_Definition.Annotate is
                      Add_Named_Subp      => Source_Add_Named,
                      Add_Unnamed_Subp    => Source_Add_Unnamed,
                      New_Indexed_Subp    => Source_New_Indexed,
-                     Assign_Indexed_Subp =>
-                       Source_Assign_Indexed);
+                     Assign_Indexed_Subp => Source_Assign_Indexed);
+
                   Parse_Aspect_Aggregate
                     (N                   => Target_Asp,
                      Empty_Subp          => Target_Empty,
