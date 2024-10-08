@@ -4636,7 +4636,7 @@ package body CE_RAC is
                      loop
                         RAC_List (Statements (N));
                         pragma Annotate
-                          (CodePeer, Intentional,
+                          (GNATSAS, Intentional,
                            "loop does not complete normally",
                            "RAC signals loop exit through Exn_RAC_Exit");
                         Ctx.First_Loop_Iter := False;

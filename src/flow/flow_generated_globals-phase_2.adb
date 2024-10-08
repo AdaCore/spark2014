@@ -2537,7 +2537,7 @@ package body Flow_Generated_Globals.Phase_2 is
             -------------
 
             function To_List (E : Entity_Name) return Name_Lists.List is
-               pragma Annotate (CodePeer, Skip_Analysis);
+               pragma Annotate (GNATSAS, Skip_Analysis);
                Singleton : Name_Lists.List;
             begin
                Singleton.Append (E);

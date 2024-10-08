@@ -90,7 +90,7 @@ package body Flow_Generated_Globals.Partial is
    -------------
 
    function To_List (E : Entity_Id) return Node_Lists.List is
-      pragma Annotate (CodePeer, Skip_Analysis);
+      pragma Annotate (GNATSAS, Skip_Analysis);
       Singleton : Node_Lists.List;
    begin
       Singleton.Append (E);

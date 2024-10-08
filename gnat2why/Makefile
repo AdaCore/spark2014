@@ -24,7 +24,7 @@ else
   prefix:=@NOPREFIX@
 endif
 
-# symbolic linking of GNAT files is fast and that's how CodePeer is built too
+# symbolic linking of GNAT files is fast and that's how GNAT SAS is built too
 USE_LN=true
 uname:=$(shell uname)
 

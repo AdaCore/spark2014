@@ -17,7 +17,12 @@ project GNATprove is
    Target := project'Target;
    Sources := (".", "src/gnatprove", "src/common");
 
-   Sources := Sources & ("src/common/" & Target);
+   case Tool is
+      when "gnatsas" =>
+         Sources := Sources & ("src/common/" & Tool);
+      when others =>
+         Sources := Sources & ("src/common/" & Target);
+   end case;
 
    for Source_Dirs use Sources;
 
@@ -92,7 +97,7 @@ project GNATprove is
          "assumptions.adb",
          "print_table.adb",
          "configuration.adb",
-         "report_database.ads"); --  spurious codepeer violation U804-011
+         "report_database.ads"); --  spurious GNAT SAS violation U804-011
 
       for Switches ("analyze") use ("-j0", "--incrementality-method=minimal",
        "--no-gnatcheck");
