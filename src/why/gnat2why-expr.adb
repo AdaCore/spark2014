@@ -1846,6 +1846,8 @@ package body Gnat2Why.Expr is
               and then Number_Of_Assocs_In_Expression
                 (Expression (Decl)) <= Max_Assocs
               and then not Contains_Volatile_Function_Call (Expression (Decl))
+              and then not Is_Function_Call_With_Side_Effects
+                  (Expression (Decl))
             then
                --  We do not issue checks here. Checks for this declaration
                --  will be issued when verifying its enclosing unit.
