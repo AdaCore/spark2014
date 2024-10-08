@@ -410,7 +410,8 @@ package body Flow_Utility.Initialization is
             end;
 
          --  For private extension declaration recurse into full view, except
-         --  when hidden by the SPARK_Mode barrier.
+         --  when hidden by the SPARK_Mode barrier, which then we assume to
+         --  be uninitialized by default.
 
          when N_Private_Extension_Declaration =>
             if Entity_In_SPARK (Full_View (Typ)) then
@@ -418,16 +419,29 @@ package body Flow_Utility.Initialization is
             else
                declare
                   S_Indication : constant Node_Id := Subtype_Indication (Decl);
+                  Parent_Initialization : Default_Initialization_Kind;
                begin
                   if Is_Entity_Name (S_Indication) then
-                     return Default_Initialization (Entity (S_Indication));
+                     Parent_Initialization :=
+                       Default_Initialization (Entity (S_Indication));
                   elsif Nkind (S_Indication) = N_Subtype_Indication then
-                     return
+                     Parent_Initialization :=
                        Default_Initialization
                          (Entity (Subtype_Mark (S_Indication)));
                   else
                      raise Program_Error;
                   end if;
+
+                  case Parent_Initialization is
+                     when No_Possible_Initialization
+                        | No_Default_Initialization
+                     =>
+                        return No_Default_Initialization;
+                     when Full_Default_Initialization
+                        | Mixed_Initialization
+                     =>
+                        return Mixed_Initialization;
+                  end case;
                end;
             end if;
 
