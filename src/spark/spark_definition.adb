@@ -44,7 +44,7 @@ with Flow_Utility;                   use Flow_Utility;
 with Flow_Utility.Initialization;    use Flow_Utility.Initialization;
 with Flow_Types;                     use Flow_Types;
 with Gnat2Why_Args;
-with Lib;
+with Lib;                            use Lib;
 with Namet;                          use Namet;
 with Nlists;                         use Nlists;
 with Nmake;
@@ -703,7 +703,9 @@ package body SPARK_Definition is
       Expected_Des_Ty : Type_Kind_Id;
 
    begin
-      if not Is_Access_Type (Root_Retysp (Expected_Type)) then
+      if Is_Incomplete_Type (Expected_Type)
+        or else not Is_Access_Type (Root_Retysp (Expected_Type))
+      then
          return;
 
       elsif not Most_Underlying_Type_In_SPARK (Actual_Type) then
@@ -5570,7 +5572,7 @@ package body SPARK_Definition is
          --  If Formal has an anonymous access type, it can happen that Formal
          --  and Actual have incompatible designated type. Reject this case.
 
-         if In_SPARK (Etype (Formal)) then
+         if Entity_In_SPARK (E) then
             Check_Compatible_Access_Types (Etype (Formal), Actual);
          end if;
       end Mark_Param;
@@ -6239,6 +6241,25 @@ package body SPARK_Definition is
 
                   begin
                      if Is_Incomplete_Type (Des_Ty) then
+                        --  For full views deferred to bodies, emit an info
+                        --  message if their enclosing package is not the main
+                        --  unit to notify the user that the privacy of the
+                        --  enclosing package body is broken.
+
+                        if Has_Completion_In_Body (Des_Ty)
+                          and then Main_Unit_Entity /= Unique_Entity
+                            (Enclosing_Unit (Des_Ty))
+                        then
+                           Error_Msg_N
+                             ("full view of & declared # is visible when "
+                              & "analyzing "
+                              & Source_Name (Main_Unit_Entity),
+                              Main_Unit_Entity,
+                              Names         => [Des_Ty],
+                              Secondary_Loc => Sloc (Des_Ty),
+                              Kind          => Info_Kind);
+                        end if;
+
                         Des_Ty := Full_View (Des_Ty);
                      end if;
 
@@ -6751,6 +6772,12 @@ package body SPARK_Definition is
          if Is_Incomplete_Type_From_Limited_With (T) then
             Reject_Incomplete_Type_From_Limited_With (T, E);
 
+         --  Reject "direct" usage of incomplete type (not as the designated
+         --  type of an access type).
+
+         elsif Is_Incomplete_Type (T) then
+            Mark_Unsupported (Lim_Incomplete_Type_Early_Usage, E);
+
          elsif not Retysp_In_SPARK (T) then
             Mark_Violation (E, From => T);
 
@@ -6993,6 +7020,12 @@ package body SPARK_Definition is
 
             if Is_Incomplete_Type_From_Limited_With (Etype (Id)) then
                Reject_Incomplete_Type_From_Limited_With (Etype (Id), Id);
+
+            --  Reject "direct" usage of incomplete type (not as the designated
+            --  type of an access type).
+
+            elsif Is_Incomplete_Type (Etype (Id)) then
+               Mark_Unsupported (Lim_Incomplete_Type_Early_Usage, Id);
 
             elsif not Retysp_In_SPARK (Etype (Id)) then
                Mark_Violation (Id, From => Etype (Id));
@@ -11537,9 +11570,12 @@ package body SPARK_Definition is
                end if;
 
             --  If we are returning a deep type, this is a move. Check that we
-            --  have a path.
+            --  have a path. Omit the check is the return type is an incomplete
+            --  type or not in SPARK, this is rejected when marking the
+            --  subprogram declaration.
 
-            elsif Retysp_In_SPARK (Return_Typ)
+            elsif not Is_Incomplete_Type (Return_Typ)
+              and then Retysp_In_SPARK (Return_Typ)
               and then Is_Deep (Return_Typ)
             then
                Check_Source_Of_Move (Expr);
