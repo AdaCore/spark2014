@@ -196,18 +196,18 @@ loop_statement.adb:11:16: medium: predicate check might fail [possible fix: prec
 loop_statement.adb:11:25: medium: implicit aspect Always_Terminates on "F" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 loop_statement.adb:11:25: warning: loop condition is stable
 loop_statement.adb:11:25: warning: statement has no effect
-membership_test.adb:4:13: info: function contract might not be available on calls from enclosing unit
-membership_test.adb:4:13: info: implicit aspect Always_Terminates on "Foo" has been proved, subprogram will terminate
+membership_test.adb:4:13: info: function contract might not be available on recursive calls or calls from enclosing unit
 membership_test.adb:4:66: medium: postcondition might fail
 membership_test.adb:6:13: info: implicit aspect Always_Terminates on "Bar" has been proved, subprogram will terminate
 membership_test.adb:6:18: warning: unused variable "V"
 membership_test.adb:8:37: info: precondition proved (Trivial: 1 VC)
-membership_test_2.adb:4:13: info: function contract might not be available on calls from enclosing unit
-membership_test_2.adb:4:13: info: implicit aspect Always_Terminates on "Foo" has been proved, subprogram will terminate
+membership_test.adb:12:46: medium: implicit aspect Always_Terminates on "Foo" could be incorrect, subprogram is recursive [possible fix: annotate "Foo" with a Subprogram_Variant aspect]
+membership_test_2.adb:4:13: info: function contract might not be available on recursive calls or calls from enclosing unit
 membership_test_2.adb:4:66: medium: postcondition might fail
 membership_test_2.adb:6:13: info: implicit aspect Always_Terminates on "Bar" has been proved, subprogram will terminate
 membership_test_2.adb:6:18: warning: unused variable "V"
 membership_test_2.adb:8:37: info: precondition proved (Trivial: 1 VC)
+membership_test_2.adb:14:46: medium: implicit aspect Always_Terminates on "Foo" could be incorrect, subprogram is recursive [possible fix: annotate "Foo" with a Subprogram_Variant aspect]
 normal_return.adb:4:13: info: function contract might not be available on calls from enclosing unit
 normal_return.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 normal_return.adb:4:64: medium: postcondition might fail

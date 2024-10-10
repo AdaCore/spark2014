@@ -233,27 +233,33 @@ package body Flow_Utility is
       --  corresponding Entity_Id; for protected functions store the
       --  read-locked protected object.
 
-      procedure Process_Type (E : Entity_Id);
+      procedure Process_Predicate_Expression
+        (Type_Instance   : Formal_Kind_Id;
+         Pred_Expression : Node_Id);
       --  Merge predicate function for the given type
+
+      procedure Process_Predicates is new
+        Iterate_Applicable_Predicates (Process_Predicate_Expression);
 
       ------------------
       -- Process_Type --
       ------------------
 
-      procedure Process_Type (E : Entity_Id) is
-         P : constant Entity_Id := Predicate_Function (E);
+      procedure Process_Predicate_Expression
+        (Type_Instance   : Formal_Kind_Id;
+         Pred_Expression : Node_Id)
+      is
+         pragma Unreferenced (Type_Instance);
       begin
-         if Present (P) then
-            Pick_Generated_Info
-              (N                  => Get_Expr_From_Return_Only_Func (P),
-               Scop               => Scop,
-               Function_Calls     => Function_Calls,
-               Indirect_Calls     => Indirect_Calls,
-               Proof_Dependencies => Proof_Dependencies,
-               Tasking            => Tasking,
-               Generating_Globals => Generating_Globals);
-         end if;
-      end Process_Type;
+         Pick_Generated_Info
+           (N                  => Pred_Expression,
+            Scop               => Scop,
+            Function_Calls     => Function_Calls,
+            Indirect_Calls     => Indirect_Calls,
+            Proof_Dependencies => Proof_Dependencies,
+            Tasking            => Tasking,
+            Generating_Globals => Generating_Globals);
+      end Process_Predicate_Expression;
 
       ----------
       -- Proc --
@@ -337,7 +343,7 @@ package body Flow_Utility is
                            Include_Invariant  => False,
                            Proof_Dependencies => Proof_Dependencies,
                            Types_Seen         => Types_Seen);
-                        Process_Type (Get_Type (P, Scop));
+                        Process_Predicates (Get_Type (P, Scop));
 
                   --  If the membership test involves a call to equality, then
                   --  we add N to the set of indirect calls.
@@ -356,7 +362,7 @@ package body Flow_Utility is
                            Include_Invariant  => False,
                            Proof_Dependencies => Proof_Dependencies,
                            Types_Seen         => Types_Seen);
-                        Process_Type (Get_Type (P, Scop));
+                        Process_Predicates (Get_Type (P, Scop));
                      elsif Alternative_Uses_Eq (P) then
                         Indirect_Calls.Include (N);
                      end if;
