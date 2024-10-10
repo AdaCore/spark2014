@@ -2,5 +2,6 @@ p.adb:1:14: warning: unused variable "Cond"
 p.adb:2:08: info: data dependencies proved
 p.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 p.adb:4:49: info: data dependencies proved
-p.adb:14:13: info: implicit aspect Always_Terminates on "Is_Positive" has been proved, subprogram will terminate
-p.adb:15:09: info: data dependencies proved
+p.adb:14:60: high: "Cond" must be listed in the Global aspect of "Is_Positive" (SPARK RM 6.1.4(15))
+p.adb:15:09: error: "Cond" is referenced in expression function but missing from the Global
+gnatprove: error during flow analysis and proof
