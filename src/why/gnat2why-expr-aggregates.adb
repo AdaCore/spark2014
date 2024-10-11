@@ -392,7 +392,7 @@ package body Gnat2Why.Expr.Aggregates is
                   P : Opt_Path_Type := Value.Status.Path;
                begin
                   Free (P);
-                  pragma Annotate (CodePeer, False_Positive, "use after free",
+                  pragma Annotate (GNATSAS, False_Positive, "use after free",
                                    "Path is only freed through one owner");
                end;
             end if;

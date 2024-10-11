@@ -1203,7 +1203,7 @@ procedure SPARK_Report is
                 | AArch64_Linux  => "Linux",
              when X86_64_Darwin  => "Darwin",
              when X86_64_FreeBSD => "FreeBSD",
-             when CodePeer_OS    => "CodePeer OS",
+             when GNATSAS_OS    => "GNATSAS OS",
              when AArch64_Darwin => "Darwin");
 
       Pointer_Size : constant :=

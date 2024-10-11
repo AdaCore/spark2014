@@ -31,7 +31,7 @@ package body Platform is
 
    function Get_OS_Flavor return Host_Operating_System_Flavor is
    begin
-      return CodePeer_OS;
+      return GNATSAS_OS;
    end Get_OS_Flavor;
 
 end Platform;

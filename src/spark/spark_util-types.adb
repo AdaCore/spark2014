@@ -2507,7 +2507,7 @@ package body SPARK_Util.Types is
       is
          function Typ_Name return String is (Type_Name_For_Explanation (Typ));
       begin
-         --  Default initialization for Codepeer
+         --  Default initialization for GNAT SAS
          Size := Uint_0;
 
          declare

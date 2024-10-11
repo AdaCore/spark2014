@@ -74,7 +74,7 @@ package body Why.Gen.Progs is
      (Left  : in out W_Statement_Sequence_Id;
       Right : W_Statement_Sequence_Id)
    is
-      pragma Annotate (CodePeer, Skip_Analysis);  --  for unmodified Left
+      pragma Annotate (GNATSAS, Skip_Analysis);  --  for unmodified Left
       pragma Unmodified (Left);
 
       Stats : constant Why_Node_Lists.List :=
@@ -326,7 +326,7 @@ package body Why.Gen.Progs is
      (Left  : W_Statement_Sequence_Id;
       Right : in out W_Statement_Sequence_Id)
    is
-      pragma Annotate (CodePeer, Skip_Analysis);  --  for unmodified Right
+      pragma Annotate (GNATSAS, Skip_Analysis);  --  for unmodified Right
       pragma Unmodified (Right);
 
       Stats : constant Why_Node_Lists.List :=
