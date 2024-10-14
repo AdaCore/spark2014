@@ -7536,16 +7536,26 @@ package body SPARK_Definition is
             function Replace_Type (N : Node_Id) return Traverse_Result is
                Context : constant Node_Id    := Parent (N);
                Loc     : constant Source_Ptr := Sloc (N);
+               Ref     : Node_Id := N;
                CW_Typ  : Opt_Type_Kind_Id := Empty;
                Ent     : Formal_Kind_Id;
                Typ     : Type_Kind_Id;
 
             begin
-               if Is_Entity_Name (N)
-                 and then Present (Entity (N))
-                 and then Is_Formal (Entity (N))
+               --  For references to the Old attribute, convert the attribute
+               --  reference and not the prefix only.
+
+               if Nkind (N) = N_Attribute_Reference
+                 and then Attribute_Name (N) = Name_Old
                then
-                  Ent := Entity (N);
+                  Ref := Prefix (N);
+               end if;
+
+               if Is_Entity_Name (Ref)
+                 and then Present (Entity (Ref))
+                 and then Is_Formal (Entity (Ref))
+               then
+                  Ent := Entity (Ref);
                   Typ := Etype (Ent);
 
                   if Nkind (Context) = N_Type_Conversion then
@@ -7566,11 +7576,16 @@ package body SPARK_Definition is
                   end if;
 
                   if Present (CW_Typ) then
-                     Rewrite (N,
+                     Rewrite (Ref,
                        Nmake.Make_Type_Conversion (Loc,
                          Subtype_Mark =>
                            Tbuild.New_Occurrence_Of (CW_Typ, Loc),
                          Expression   => Tbuild.New_Occurrence_Of (Ent, Loc)));
+
+                     if Ref /= N then
+                        Set_Etype (Ref, CW_Typ);
+                     end if;
+
                      Set_Etype (N, CW_Typ);
 
                      --  When changing the type of an argument to a potential
