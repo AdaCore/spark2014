@@ -64,7 +64,9 @@ package body SPARK_Rewrite is
 
    procedure Rewrite_Old_Attribute (N : Node_Id);
    --  Set the Etype of references to the Old attribute to the Etype of their
-   --  prefix.
+   --  prefix. If the prefix's type is a constrained Itype, use its base type
+   --  instead to avoid leaking references to variables outside the Old
+   --  attribute.
 
    procedure Rewrite_Subprogram_Instantiation (N : Node_Id)
    with Pre => Nkind (N) in N_Subprogram_Instantiation;
@@ -164,8 +166,20 @@ package body SPARK_Rewrite is
 
    procedure Rewrite_Old_Attribute (N : Node_Id) is
       Pref : constant Node_Id := Prefix (N);
-      Typ  : constant Entity_Id := Etype (Pref);
+      Typ  : Entity_Id := Etype (Pref);
+
    begin
+      --  For constrained Itypes, use the base type to avoid leaking references
+      --  to the pre-state outside of the Old attribute.
+
+      if Is_Itype (Typ)
+        and then Is_Composite_Type (Typ)
+        and then Is_Constrained (Typ)
+        and then not Is_Constrained (Base_Type (Typ))
+      then
+         Typ := Base_Type (Typ);
+      end if;
+
       Set_Etype (N, Typ);
    end Rewrite_Old_Attribute;
 
@@ -404,8 +418,8 @@ package body SPARK_Rewrite is
             when N_Attribute_Reference =>
 
                --  References to the Old attribute might not have the
-               --  type of their prefix when they occur inside inherited
-               --  classwide contracts.
+               --  type of their prefix. This might lead to discrepencies and
+               --  spurious checks. Use the type of the prefix instead.
 
                if Attribute_Name (N) = Name_Old then
                   Rewrite_Old_Attribute (N);

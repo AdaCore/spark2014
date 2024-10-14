@@ -10,3 +10,16 @@ test.adb:11:23: info: postcondition proved (CVC5: 1 VC)
 test.adb:11:23: medium: postcondition might fail, in inherited contract at test.adb:21
 test.adb:19:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 test.adb:19:19: warning: unused variable "X"
+test_constrained_type.adb:6:14: info: postcondition proved (CVC5: 1 VC)
+test_constrained_type.adb:6:14: info: range check proved (CVC5: 4 VC)
+test_constrained_type.adb:6:36: info: range check proved (CVC5: 4 VC)
+test_constrained_type.adb:6:63: info: index check proved (CVC5: 2 VC)
+test_constrained_type.adb:6:63: info: range check proved (CVC5: 2 VC)
+test_constrained_type.adb:10:10: info: index check proved (CVC5: 2 VC)
+test_constrained_type.adb:21:13: info: index check proved (CVC5: 2 VC)
+test_constrained_type.adb:24:33: info: loop invariant initialization proved (CVC5: 1 VC)
+test_constrained_type.adb:24:33: info: range check proved (CVC5: 4 VC)
+test_constrained_type.adb:24:69: info: range check proved (CVC5: 4 VC)
+test_constrained_type.adb:24:103: info: index check proved (CVC5: 2 VC)
+test_constrained_type.adb:24:103: info: range check proved (CVC5: 2 VC)
+test_constrained_type.adb:32:04: info: precondition proved (CVC5: 5 VC)
