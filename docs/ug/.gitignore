@@ -7,3 +7,5 @@ en/source/proof_checks_table.rst
 en/source/misc_warnings_table.rst
 en/source/unsupported_constructs.rst
 examples
+_templates/search.html
+static/custom.css

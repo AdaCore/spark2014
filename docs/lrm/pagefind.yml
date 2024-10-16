@@ -1,0 +1,6 @@
+# pagefind.yml
+site: _build/html
+
+# Start indexing from the element that has class "document". Skips a few things,
+# in particular the table of contents for each page
+root_selector: .document

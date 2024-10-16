@@ -36,20 +36,15 @@ help:
 
 setup:
 	echo "version = '$(VERSION)'" > ../sphinx_support/confvars.py
-	cp ../shared/static/custom.css static
-	cp ../shared/templates/search.html _templates
+	mkdir -p source/static source/_templates
+	cp ../shared/static/custom.css source/static
+	cp ../shared/templates/search.html source/_templates
 
 clean:
 	-rm -rf $(BUILDDIR)/*
 
 html: setup
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
-	# Add arbitrary ids to the <h1> ... <h6> HTML elements, as they are used
-	# by pagefind to generate indexes.
-	python ../shared/add-id.py '$(BUILDDIR)/html/*.html'
-	python ../shared/add-id.py '$(BUILDDIR)//html/gprbuild_ug/*.html'
-	# Generate pagefind indexes on generated html files
-	pagefind --site $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
 
