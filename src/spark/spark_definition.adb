@@ -7593,10 +7593,8 @@ package body SPARK_Definition is
                      --  setting its controlling argument.
 
                      if Nkind (Context) = N_Function_Call
-                       and then Nkind (Name (Context)) in N_Has_Entity
-                       and then Present (Entity (Name (Context)))
                        and then
-                         Is_Dispatching_Operation (Entity (Name (Context)))
+                         Is_Dispatching_Operation (Get_Called_Entity (Context))
                      then
                         Set_Controlling_Argument (Context, N);
                      end if;
