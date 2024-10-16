@@ -7592,7 +7592,7 @@ package body SPARK_Definition is
                      --  dispatching call, make the call dispatching indeed by
                      --  setting its controlling argument.
 
-                     if Nkind (Parent (N)) = N_Function_Call
+                     if Nkind (Context) = N_Function_Call
                        and then Nkind (Name (Context)) in N_Has_Entity
                        and then Present (Entity (Name (Context)))
                        and then
