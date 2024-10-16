@@ -689,10 +689,14 @@ of a program:
   GNATprove assumes that the procedure ``SPARK.C.Strings.Free`` is never called
   when deallocation is prohibited (eg: cert runtimes).
 
-* [SPARK_TIME_ARITHMETIC]
-  GNATprove assumes that for calls to Ada.Execution_Time and Ada.Real_Time
-  arithmetic and conversion operators (including Time_Of)
-  the result belongs to the result type.
+* [SPARK_MONOTONIC_TIME]
+  GNATprove assumes that the following properties hold for constants declared
+  in ``Ada.Real_Time``:
+
+  * ``Time_First`` <= 0.0,
+  * ``Time_Last`` >= (2.0 ** 63 - 1.0) * ``Time_Unit``,
+  * ``Time_Span_First`` <= - (2.0 ** 63 - 1.0) * ``Time_Unit``, and
+  * ``Time_Span_Last`` >= (2.0 ** 63 - 1.0) * ``Time_Unit``.
 
 In addition, the following assumptions need to be addressed when using SPARK on
 only part of a program:

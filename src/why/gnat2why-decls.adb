@@ -23,27 +23,29 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings;         use Ada.Strings;
-with Ada.Strings.Fixed;   use Ada.Strings.Fixed;
+with Ada.Strings;           use Ada.Strings;
+with Ada.Strings.Fixed;     use Ada.Strings.Fixed;
 with GNAT.Source_Info;
 with GNATCOLL.Symbols;
-with Gnat2Why.Expr;       use Gnat2Why.Expr;
-with Gnat2Why.Util;       use Gnat2Why.Util;
-with Namet;               use Namet;
-with Sinput;              use Sinput;
-with Types;               use Types;
-with Uintp;               use Uintp;
-with Why.Atree.Accessors; use Why.Atree.Accessors;
-with Why.Atree.Builders;  use Why.Atree.Builders;
-with Why.Atree.Modules;   use Why.Atree.Modules;
-with Why.Gen.Binders;     use Why.Gen.Binders;
-with Why.Gen.Decl;        use Why.Gen.Decl;
-with Why.Gen.Names;       use Why.Gen.Names;
-with Why.Gen.Pointers;    use Why.Gen.Pointers;
-with Why.Ids;             use Why.Ids;
-with Why.Inter;           use Why.Inter;
-with Why.Sinfo;           use Why.Sinfo;
-with Why.Types;           use Why.Types;
+with Gnat2Why.Expr;         use Gnat2Why.Expr;
+with Gnat2Why.Util;         use Gnat2Why.Util;
+with Namet;                 use Namet;
+with Sinput;                use Sinput;
+with SPARK_Util.Hardcoded;  use SPARK_Util.Hardcoded;
+with Types;                 use Types;
+with Uintp;                 use Uintp;
+with Why.Atree.Accessors;   use Why.Atree.Accessors;
+with Why.Atree.Builders;    use Why.Atree.Builders;
+with Why.Atree.Modules;     use Why.Atree.Modules;
+with Why.Gen.Binders;       use Why.Gen.Binders;
+with Why.Gen.Decl;          use Why.Gen.Decl;
+with Why.Gen.Hardcoded;     use Why.Gen.Hardcoded;
+with Why.Gen.Names;         use Why.Gen.Names;
+with Why.Gen.Pointers;      use Why.Gen.Pointers;
+with Why.Ids;               use Why.Ids;
+with Why.Inter;             use Why.Inter;
+with Why.Sinfo;             use Why.Sinfo;
+with Why.Types;             use Why.Types;
 
 package body Gnat2Why.Decls is
 
@@ -128,6 +130,28 @@ package body Gnat2Why.Decls is
            else "")
          & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
+      --  If the constant is hardcoded, get its definition
+
+      if Is_Hardcoded_Entity (E) then
+         declare
+            B  : constant Item_Type :=
+              Ada_Ent_To_Why.Element (Symbol_Table, E);
+            pragma Assert (B.Kind = Regular and then not B.Main.Mutable);
+            Def : constant W_Term_Id := Hardcoded_Constant_Value (E);
+
+         begin
+            if Def /= Why_Empty then
+               Emit
+                 (Th,
+                  New_Defining_Axiom
+                    (Ada_Node => E,
+                     Name     => B.Main.B_Name,
+                     Binders  => (1 .. 0 => <>),
+                     Def      => Def));
+
+            end if;
+         end;
+
       --  Default values of parameters are not considered as the value of the
       --  constant representing the parameter. We do not generate an axiom
       --  for constants inserted by the compiler, as their initialization
@@ -139,7 +163,7 @@ package body Gnat2Why.Decls is
       --  expression may require the "self" object, but it's not set up here.
       --  Static expressions can't reference "self", so they are fine.
 
-      if Present (Expr)
+      elsif Present (Expr)
         and then not Expression_Contains_Old_Or_Loop_Entry (Expr)
         and then not Contains_Volatile_Function_Call (Expr)
         and then not Contains_Allocator (Expr)

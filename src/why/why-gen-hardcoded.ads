@@ -29,10 +29,25 @@ with SPARK_Atree.Entities; use SPARK_Atree.Entities;
 with SPARK_Util;           use SPARK_Util;
 with SPARK_Util.Hardcoded; use SPARK_Util.Hardcoded;
 with Types;                use Types;
+with Why.Gen.Terms;        use Why.Gen.Terms;
 with Why.Ids;              use Why.Ids;
 with Why.Sinfo;            use Why.Sinfo;
 
 package Why.Gen.Hardcoded is
+
+   function Dynamic_Property_For_Hardcoded_Type
+     (E    : Type_Kind_Id;
+      Expr : W_Term_Id)
+      return W_Pred_Id
+   with Pre => Is_Hardcoded_Entity (E),
+     Post => (if Dynamic_Property_For_Hardcoded_Type'Result /= True_Pred
+              then Hardcoded_Type_Needs_Dynamic_Property (E));
+   --  Some hardcoded types have a dynamic property that should be carried
+   --  around.
+
+   function Hardcoded_Type_Needs_Dynamic_Property
+     (E : Type_Kind_Id) return Boolean
+     with Pre => Is_Hardcoded_Entity (E);
 
    procedure Emit_Hardcoded_Type_Declaration (Th : Theory_UC; E : Entity_Id)
    with
@@ -42,10 +57,11 @@ package Why.Gen.Hardcoded is
    --  @param Theory the theory where the declaration will be emitted.
    --  @param Entity corresponding to the type declaration.
 
-   function Hardcoded_Equality_Symbol
-     (Typ    : Entity_Id;
-      Domain : EW_Domain)
-      return W_Identifier_Id
+   function Hardcoded_Constant_Value (E : E_Constant_Id) return W_Term_Id with
+     Pre => Is_Hardcoded_Entity (E);
+   --  Get the value of a hardcoded constant
+
+   function Hardcoded_Equality_Symbol (Typ : Entity_Id) return W_Identifier_Id
    with
      Pre => Is_Type (Typ) and then Is_Hardcoded_Entity (Typ);
    --  Return the equality symbol for type Typ
@@ -68,6 +84,15 @@ package Why.Gen.Hardcoded is
    with
      Pre => Is_Subprogram (Subp) and then Is_Hardcoded_Entity (Subp);
    --  Transform a hardcoded function call
+
+   function Transform_Hardcoded_Procedure_Call
+     (Subp     : Entity_Id;
+      Args     : W_Expr_Array;
+      Ada_Node : Node_Id)
+      return W_Prog_Id
+   with
+     Pre => Is_Subprogram (Subp) and then Is_Hardcoded_Entity (Subp);
+   --  Transform a hardcoded procedure call
 
    function Transform_Hardcoded_Literal
      (Call   : Node_Id;
