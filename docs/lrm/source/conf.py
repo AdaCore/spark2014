@@ -52,6 +52,7 @@ extensions = [
     "sphinx.ext.ifconfig",
     "sphinx.ext.autosectionlabel",
     "sphinx_rtd_theme",
+    "pagefind-sphinx",
 ]
 
 Display_Trace_Units = False
