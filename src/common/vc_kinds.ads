@@ -459,6 +459,7 @@ package VC_Kinds is
       Lim_Goto_Cross_Inv,
       Lim_Hidden_Private_Relaxed_Init,
       Lim_Img_On_Non_Scalar,
+      Lim_Incomplete_Type_Early_Usage,
       Lim_Inherited_Controlling_Result_From_Hidden_Part,
       Lim_Inherited_Controlling_Result_From_SPARK_Off,
       Lim_Inherited_Prim_From_Hidden_Part,
@@ -706,6 +707,9 @@ package VC_Kinds is
            "non-static attribute """ & Standard_Ada_Case (Name) & """",
          when Lim_Img_On_Non_Scalar =>
            "attribute """ & Standard_Ada_Case (Name) & """ on non-scalar type",
+         when Lim_Incomplete_Type_Early_Usage =>
+           "usage of incomplete type completed in package body outside of an "
+          & "access type declaration",
          when Lim_Inherited_Controlling_Result_From_Hidden_Part =>
            "tagged type with inherited primitive subprograms with controlling"
            & " result and hidden private extension",
