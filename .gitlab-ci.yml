@@ -1,6 +1,12 @@
 include:
   - project: eng/codepeer/ci-registry
     file: /gnatsas-on-spark.yml
+  - component: $CI_SERVER_FQDN/eng/gitlab-templates/check-issue@~latest
+    inputs:
+      stage: check
+  - component: $CI_SERVER_FQDN/eng/gitlab-templates/pre-commit@~latest
+    inputs:
+      stage: check
 
 # In this CI, pipelines are triggered when pushing to a Merge Request and when
 # merging a MR to a protected branch (only for the gnatsas job).
@@ -152,35 +158,6 @@ build:
   artifacts:
     paths:
       - $PACKAGE_BASE_NAME
-
-issue_present:
-  services:
-     - image:pe-base
-  stage: check
-  needs: [] # Execute regardless of the other stages
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: always
-    - when: never
-  script:
-    - require_issue
-
-precommit_checks:
-  stage: check
-  needs: [] # Execute regardless of the other stages
-  services:
-    - image:e3
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: always
-    - when: never
-  script:
-    - /it/bin/set_git_config.sh
-    - python -mvenv /tmp/venv
-    - . /tmp/venv/bin/activate
-    - python -mpip install pre-commit
-    - cd $CI_PROJECT_DIR
-    - pre-commit run -a --show-diff-on-failure
 
 ########
 # Test #
