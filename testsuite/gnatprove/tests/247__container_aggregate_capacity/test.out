@@ -1,5 +1,4 @@
 test_capacity.adb:5:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
-test_capacity.adb:5:13: info: implicit function contract might not be available on calls from enclosing unit
 test_capacity.adb:8:33: info: range check proved (CVC5: 2 VC)
 test_capacity.adb:9:15: info: range check proved (CVC5: 2 VC)
 test_capacity.adb:21:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
@@ -192,7 +191,6 @@ test_capacity.adb:265:46: info: overflow check proved (CVC5: 2 VC)
 test_capacity.adb:268:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
 test_capacity.adb:269:09: info: data dependencies proved
 test_capacity.adb:272:16: info: implicit aspect Always_Terminates on "Capacity" has been proved, subprogram will terminate
-test_capacity.adb:272:16: info: implicit function contract might not be available on calls from enclosing unit
 test_capacity.adb:275:16: info: implicit aspect Always_Terminates on "Has_Key" has been proved, subprogram will terminate
 test_capacity.adb:278:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 test_capacity.adb:282:16: info: implicit aspect Always_Terminates on "Eq_Keys" has been proved, subprogram will terminate

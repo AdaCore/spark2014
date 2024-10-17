@@ -9,7 +9,6 @@ main.adb:13:42: info: range check proved (CVC5: 2 VC)
 main.adb:14:25: info: data dependencies proved
 main.adb:16:37: high: range check might fail, cannot prove upper bound for Make (255)'Length [reason for check: default component value must fit in the type]
 main.adb:16:37: info: range check proved (CVC5: 1 VC)
-main.adb:22:13: info: implicit function contract might not be available on calls from enclosing unit
 main.adb:23:04: info: range check proved (CVC5: 2 VC)
 main.adb:24:26: info: data dependencies proved
 main.adb:26:29: info: range check proved (CVC5: 1 VC)

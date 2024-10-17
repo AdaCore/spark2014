@@ -1,11 +1,9 @@
 test_borrow.adb:15:13: info: implicit aspect Always_Terminates on "At_End_Borrow" has been proved, subprogram will terminate
-test_borrow.adb:15:13: info: implicit function contract might not be available on calls from enclosing unit
 test_borrow.adb:15:92: info: dynamic accessibility check proved (Trivial)
 test_borrow.adb:18:13: info: implicit aspect Always_Terminates on "At_End_Borrow" has been proved, subprogram will terminate
-test_borrow.adb:18:13: info: implicit function contract might not be available on calls from enclosing unit
 test_borrow.adb:18:86: info: dynamic accessibility check proved (Trivial)
 test_borrow.adb:22:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
-test_borrow.adb:22:13: info: implicit function contract might not be available on recursive calls or calls from enclosing unit
+test_borrow.adb:22:13: info: implicit function contract might not be available on recursive calls
 test_borrow.adb:23:37: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_borrow.adb:23:45: info: predicate check proved (Trivial: 1 VC)
 test_borrow.adb:23:45: info: subprogram variant proved (Trivial)
@@ -13,7 +11,7 @@ test_borrow.adb:23:54: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:23:58: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_borrow.adb:23:60: info: predicate check proved (Trivial: 1 VC)
 test_borrow.adb:27:13: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
-test_borrow.adb:27:13: info: implicit function contract might not be available on recursive calls or calls from enclosing unit
+test_borrow.adb:27:13: info: implicit function contract might not be available on recursive calls
 test_borrow.adb:28:24: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:28:36: info: precondition proved (CVC5: 2 VC)
 test_borrow.adb:28:36: info: subprogram variant proved (Trivial)
@@ -21,7 +19,6 @@ test_borrow.adb:28:42: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:28:50: info: range check proved (CVC5: 2 VC)
 test_borrow.adb:30:15: info: predicate check proved (Trivial: 1 VC)
 test_borrow.adb:31:41: info: predicate check proved (Trivial: 1 VC)
-test_borrow.adb:38:13: info: function contract might not be available on calls from enclosing unit
 test_borrow.adb:42:09: info: predicate check proved (Trivial: 1 VC)
 test_borrow.adb:49:13: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate
 test_borrow.adb:50:16: info: predicate check proved (Trivial: 1 VC)
@@ -166,7 +163,7 @@ test_borrow.adb:146:33: info: in reconstructed value at the end of the borrow at
 test_borrow.adb:146:33: info: in reconstructed value at the end of the borrow at test_borrow.adb:146
 test_borrow.adb:146:33: info: null exclusion check proved (Z3: 1 VC)
 test_borrow.adb:146:33: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:148:12: info: pointer dereference check proved (CVC5: 1 VC)
+test_borrow.adb:148:12: info: pointer dereference check proved (Z3: 1 VC)
 test_borrow.adb:150:13: info: pointer dereference check proved (Z3: 1 VC)
 test_borrow.adb:152:19: info: assertion proved (Z3: 1 VC)
 test_borrow.adb:152:21: info: pointer dereference check proved (CVC5: 1 VC)
@@ -182,7 +179,7 @@ test_borrow.adb:155:21: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:155:23: info: pointer dereference check proved (Z3: 1 VC)
 test_borrow.adb:155:25: info: pointer dereference check proved (Z3: 1 VC)
 test_borrow.adb:155:27: info: pointer dereference check proved (Z3: 1 VC)
-test_borrow.adb:156:19: medium: assertion might fail
+test_borrow.adb:156:19: info: assertion proved (Z3: 1 VC)
 test_borrow.adb:156:21: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:156:23: info: pointer dereference check proved (Z3: 1 VC)
 test_borrow.adb:156:25: info: pointer dereference check proved (Z3: 1 VC)

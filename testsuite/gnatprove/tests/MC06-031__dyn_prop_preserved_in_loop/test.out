@@ -15,6 +15,5 @@ dynamic_types.adb:26:52: info: index check proved (CVC5: 4 VC)
 dynamic_types.adb:27:10: info: precondition proved (CVC5: 2 VC)
 dynamic_types.adb:34:26: info: overflow check proved (CVC5: 2 VC)
 dynamic_types.adb:34:26: info: range check proved (CVC5: 2 VC)
-dynamic_types.ads:4:13: info: function contract might not be available on implicit recursive calls
 dynamic_types.ads:6:14: info: postcondition proved (CVC5: 1 VC)
 dynamic_types.ads:7:58: info: index check proved (CVC5: 2 VC)
