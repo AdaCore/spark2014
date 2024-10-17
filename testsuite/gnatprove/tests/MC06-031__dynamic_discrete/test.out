@@ -10,7 +10,6 @@ dynamic_ranges.adb:24:49: info: overflow check proved (CVC5: 2 VC)
 dynamic_ranges.adb:25:38: info: overflow check proved (CVC5: 2 VC)
 dynamic_ranges.adb:25:38: info: range check proved (CVC5: 2 VC)
 dynamic_ranges.adb:26:15: info: range check proved (CVC5: 2 VC)
-dynamic_ranges.adb:28:16: info: function contract might not be available on calls from enclosing unit
 dynamic_ranges.adb:28:16: info: implicit aspect Always_Terminates on "Nested" has been proved, subprogram will terminate
 dynamic_ranges.adb:32:46: info: overflow check proved (CVC5: 2 VC)
 dynamic_ranges.adb:33:17: info: postcondition proved (CVC5: 1 VC)
@@ -39,7 +38,6 @@ dynamic_ranges.ads:11:13: info: implicit aspect Always_Terminates on "Resize" ha
 dynamic_ranges.ads:14:13: info: implicit aspect Always_Terminates on "Search" has been proved, subprogram will terminate
 dynamic_ranges.ads:15:14: info: postcondition proved (CVC5: 1 VC)
 dynamic_ranges.ads:17:25: info: index check proved (CVC5: 2 VC)
-dynamic_ranges.ads:19:13: info: function contract might not be available on implicit recursive calls
 dynamic_ranges.ads:19:13: info: implicit aspect Always_Terminates on "Search_0" has been proved, subprogram will terminate
 dynamic_ranges.ads:20:47: info: overflow check proved (CVC5: 2 VC)
 dynamic_ranges.ads:21:14: info: postcondition proved (CVC5: 1 VC)

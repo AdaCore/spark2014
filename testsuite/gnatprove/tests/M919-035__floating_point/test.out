@@ -7,7 +7,6 @@ dynamic_float.adb:10:25: info: assertion proved (CVC5: 1 VC)
 zero_and_min.adb:7:14: info: add a contract to analyze it separately from calling contexts
 zero_and_min.adb:7:14: info: local subprogram "Crash" only analyzed in the context of calls
 zero_and_min.adb:7:14: warning: subprogram "Crash" has no effect
-zero_and_min.adb:9:16: info: implicit function contract might not be available on calls from enclosing unit
 zero_and_min.adb:9:16: info: imprecise handling of Unchecked_Conversion (elementary non-integer type)
 zero_and_min.adb:9:16: info: types in unchecked conversion have the same size (Trivial)
 zero_and_min.adb:9:16: info: types in unchecked conversion have the same size (Trivial), in call inlined at zero_and_min.adb:26
@@ -16,7 +15,6 @@ zero_and_min.adb:9:55: info: type is suitable as source for unchecked conversion
 zero_and_min.adb:9:62: info: type is suitable for unchecked conversion (Trivial)
 zero_and_min.adb:9:62: info: type is suitable for unchecked conversion (Trivial), in call inlined at zero_and_min.adb:26
 zero_and_min.adb:14:25: medium: assertion might fail, in call inlined at zero_and_min.adb:26
-zero_and_min.adb:19:13: info: implicit function contract might not be available on calls from enclosing unit
 zero_and_min.adb:19:13: info: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion)
 zero_and_min.adb:19:13: info: types in unchecked conversion have the same size (Trivial)
 zero_and_min.adb:19:54: info: type is suitable as source for unchecked conversion (Trivial)
@@ -25,7 +23,6 @@ zero_and_min.adb:26:04: info: analyzing call to "Crash" in context
 zero_and_unchecked.adb:7:14: info: add a contract to analyze it separately from calling contexts
 zero_and_unchecked.adb:7:14: info: local subprogram "Crash" only analyzed in the context of calls
 zero_and_unchecked.adb:7:14: warning: subprogram "Crash" has no effect
-zero_and_unchecked.adb:9:16: info: implicit function contract might not be available on calls from enclosing unit
 zero_and_unchecked.adb:9:16: info: imprecise handling of Unchecked_Conversion (elementary non-integer type)
 zero_and_unchecked.adb:9:16: info: types in unchecked conversion have the same size (Trivial)
 zero_and_unchecked.adb:9:16: info: types in unchecked conversion have the same size (Trivial), in call inlined at zero_and_unchecked.adb:27
@@ -34,7 +31,6 @@ zero_and_unchecked.adb:9:55: info: type is suitable as source for unchecked conv
 zero_and_unchecked.adb:9:62: info: type is suitable for unchecked conversion (Trivial)
 zero_and_unchecked.adb:9:62: info: type is suitable for unchecked conversion (Trivial), in call inlined at zero_and_unchecked.adb:27
 zero_and_unchecked.adb:14:22: medium: divide by zero might fail, in call inlined at zero_and_unchecked.adb:27
-zero_and_unchecked.adb:20:13: info: implicit function contract might not be available on calls from enclosing unit
 zero_and_unchecked.adb:20:13: info: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion)
 zero_and_unchecked.adb:20:13: info: types in unchecked conversion have the same size (Trivial)
 zero_and_unchecked.adb:20:54: info: type is suitable as source for unchecked conversion (Trivial)

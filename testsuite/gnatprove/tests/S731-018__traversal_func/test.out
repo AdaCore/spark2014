@@ -1,5 +1,4 @@
 local_borrow.adb:10:13: info: implicit aspect Always_Terminates on "Get_Next" has been proved, subprogram will terminate
-local_borrow.adb:10:13: info: implicit function contract might not be available on calls from enclosing unit
 local_borrow.adb:14:15: info: dynamic accessibility check proved (Trivial)
 local_borrow.adb:14:15: info: pointer dereference check proved (CVC5: 1 VC)
 local_borrow.adb:17:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
@@ -12,7 +11,6 @@ local_borrow.adb:24:36: medium: precondition might fail
 local_borrow.adb:24:46: info: precondition proved (CVC5: 1 VC)
 local_borrow.adb:26:08: medium: pointer dereference check might fail
 local_borrow_array.adb:12:13: info: implicit aspect Always_Terminates on "Get_Nexts" has been proved, subprogram will terminate
-local_borrow_array.adb:12:13: info: implicit function contract might not be available on calls from enclosing unit
 local_borrow_array.adb:16:15: info: dynamic accessibility check proved (Trivial)
 local_borrow_array.adb:16:15: info: pointer dereference check proved (CVC5: 1 VC)
 local_borrow_array.adb:19:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)

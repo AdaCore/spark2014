@@ -52,7 +52,7 @@ foo.adb:158:28: medium: aspect Always_Terminates on "B" could be incorrect, call
 foo.adb:170:13: info: implicit aspect Always_Terminates on "Subnested_Package" has been proved, subprogram will terminate
 foo.adb:170:13: info: implicit function contract might not be available on recursive calls
 foo.adb:174:16: info: implicit aspect Always_Terminates on "Aux" has been proved, subprogram will terminate
-foo.adb:174:16: info: implicit function contract might not be available on recursive calls or calls from enclosing unit
+foo.adb:174:16: info: implicit function contract might not be available on recursive calls
 foo.adb:177:52: info: subprogram variant proved (CVC5: 1 VC)
 foo.adb:177:73: info: range check proved (CVC5: 2 VC)
 foo.adb:186:17: info: subprogram variant proved (CVC5: 1 VC)
@@ -60,7 +60,7 @@ foo.adb:186:24: info: range check proved (CVC5: 2 VC)
 foo.adb:190:13: info: implicit aspect Always_Terminates on "Subnested_Package_Wo_Variant" has been proved, subprogram will terminate
 foo.adb:190:13: info: implicit function contract might not be available on recursive calls
 foo.adb:194:16: info: implicit aspect Always_Terminates on "Aux" has been proved, subprogram will terminate
-foo.adb:194:16: info: implicit function contract might not be available on recursive calls or calls from enclosing unit
+foo.adb:194:16: info: implicit function contract might not be available on recursive calls
 foo.adb:195:10: info: no contextual analysis of "Aux" (nested package declaration)
 foo.adb:196:52: medium: subprogram variant might fail [possible explanation: mutually recursive subprograms should have compatible variants]
 foo.adb:196:84: info: range check proved (CVC5: 2 VC)

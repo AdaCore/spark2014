@@ -953,38 +953,6 @@ package body Flow_Generated_Globals.Phase_2 is
                end;
             end loop;
 
-            --  For nested subprograms, add a link to the enclosing
-            --  unit if any.
-
-            for E of Entities_To_Translate loop
-               if Is_Subprogram_Or_Entry (E) then
-                  declare
-                     V_E     : constant Entity_Name_Graphs.Vertex_Id :=
-                       Call_Graph.Get_Vertex (To_Entity_Name (E));
-                     Scope   : constant Entity_Id := Enclosing_Unit (E);
-                     V_Scope : Entity_Name_Graphs.Vertex_Id :=
-                       Entity_Name_Graphs.Null_Vertex;
-
-                  begin
-
-                     --  Get vertex for the scope
-
-                     if Present (Scope)
-                       and then
-                         (Is_Subprogram_Or_Entry (Scope)
-                          or else Ekind (Scope) = E_Package)
-                     then
-                        V_Scope := Call_Graph.Get_Vertex
-                          (To_Entity_Name (Scope));
-                     end if;
-
-                     if V_Scope /= Entity_Name_Graphs.Null_Vertex then
-                        Call_Graph.Add_Edge (V_E, V_Scope);
-                     end if;
-                  end;
-               end if;
-            end loop;
-
             --  Close the call graph
             Call_Graph.Close;
          end Add_Proof_Dependencies;
