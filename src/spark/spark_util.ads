@@ -254,6 +254,9 @@ package SPARK_Util is
    --  @return the dispatching expression previously stored for C, or Empty if
    --    no such expression was stored for C.
 
+   function Dispatching_Contract (L : Node_Lists.List) return Node_Lists.List;
+   --  Same as above but with a list of classwide pre- or postconditions
+
    -----------------------------------------
    -- General queries related to entities --
    -----------------------------------------

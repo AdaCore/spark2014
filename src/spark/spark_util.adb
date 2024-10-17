@@ -533,6 +533,16 @@ package body SPARK_Util is
               else Standard.Types.Empty);
    end Dispatching_Contract;
 
+   function Dispatching_Contract (L : Node_Lists.List) return Node_Lists.List
+   is
+   begin
+      return Dispatch_List : Node_Lists.List := L do
+         for P of Dispatch_List loop
+            P := Dispatching_Contract (P);
+         end loop;
+      end return;
+   end Dispatching_Contract;
+
    ----------------------------
    -- Set_At_End_Borrow_Call --
    ----------------------------
