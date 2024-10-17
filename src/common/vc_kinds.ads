@@ -427,6 +427,8 @@ package VC_Kinds is
       Lim_Conv_Fixed_Integer,
       Lim_Conv_Float_Modular_128,
       Lim_Conv_Incompatible_Fixed,
+      Lim_Deep_Part_Of_Variable,
+      Lim_Deep_Protected_Component,
       Lim_Deep_Object_With_Addr,
       Lim_Deep_Value_In_Delta_Aggregate,
       Lim_Entry_Family,
@@ -656,6 +658,10 @@ package VC_Kinds is
            "'@ inside a reborrow",
          when Lim_Target_Name_In_Move =>
            "'@ inside a move assignment",
+         when Lim_Deep_Part_Of_Variable =>
+            "object subject to ownership Part_Of a protected object",
+         when Lim_Deep_Protected_Component =>
+            "protected component subject to ownership",
          when Lim_Deep_Object_With_Addr =>
            "address clause on an object of an ownership type",
          when Lim_Deep_Value_In_Delta_Aggregate =>
