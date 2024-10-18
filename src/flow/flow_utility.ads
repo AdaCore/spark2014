@@ -841,10 +841,11 @@ private
       Scop               : Flow_Scope;
       Include_Invariant  : Boolean;
       Proof_Dependencies : in out Node_Sets.Set;
-      Types_Seen         : in out Node_Sets.Set)
+      Types_Seen         : in out Node_Sets.Set;
+      Constants_Seen     : in out Node_Sets.Set)
    with Post => Proof_Dependencies'Old.Is_Subset (Proof_Dependencies);
-   --  Like Process_Type_Contracts, with an additional parameter
-   --  Types_Seen that allows to track which type predicates we already
-   --  traversed to pick proof dependencies.
+   --  Like Process_Type_Contracts, with additional parameters Types_Seen and
+   --  Constants_Seen that allows to track which type predicates and constant
+   --  expressions we already traversed to pick proof dependencies.
 
 end Flow_Utility;
