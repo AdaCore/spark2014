@@ -546,10 +546,7 @@ package body Flow_Generated_Globals.Partial is
           or else
          (FA.Kind = Kind_Package
           and then Entity_Body_In_SPARK (FA.Spec_Entity)))
-          and then
-        (not FA.Has_Only_Terminating_Constructs
-           or else
-         (Is_Subprogram (E) and then No_Return (E)));
+         and then not FA.Has_Only_Terminating_Constructs;
 
       Contr.No_Body := False;
 
