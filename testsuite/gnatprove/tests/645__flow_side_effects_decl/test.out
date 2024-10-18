@@ -1,0 +1,11 @@
+p.adb:5:08: info: data dependencies proved
+p.adb:5:29: high: "G" is not initialized
+p.adb:5:29: low: unused global "G"
+p.adb:6:08: info: flow dependencies proved
+p.adb:11:11: info: data dependencies proved
+p.adb:11:32: info: initialization of "G" proved
+p.adb:13:19: info: postcondition proved (CVC5: 2 VC)
+p.adb:13:29: info: overflow check proved (CVC5: 2 VC)
+p.adb:18:14: info: overflow check proved (CVC5: 2 VC)
+p.adb:23:19: info: precondition proved (CVC5: 1 VC)
+p.adb:25:19: info: assertion proved (CVC5: 1 VC)
