@@ -4478,6 +4478,23 @@ package body Flow.Control_Flow_Graph is
                                 or else Is_Library_Level_Entity (E),
                               FA.Proof_Dependencies);
 
+      --  Declaration with a function that has side effects is handled like a
+      --  subprogram call: the function entity acts like a formal parameter of
+      --  mode OUT and the defining identifier acts like the corresponding
+      --  actual parameter.
+
+      if Present (Expr)
+        and then Nkind (Expr) = N_Function_Call
+        and then Is_Function_With_Side_Effects (Get_Called_Entity (Expr))
+      then
+         Do_Call_Statement (Expr, FA, CM, Ctx);
+         Move_Connections
+           (CM,
+            Dst => Union_Id (N),
+            Src => Union_Id (Expr));
+         return;
+      end if;
+
       --  We have a declaration with an explicit initialization
 
       if Present (Expr) then
@@ -6428,9 +6445,11 @@ package body Flow.Control_Flow_Graph is
       Called_Thing : constant Entity_Id := Get_Called_Entity (Callsite);
 
       procedure Handle_Parameter (Formal : Entity_Id; Actual : Node_Id)
-        with Pre => (Is_Formal (Formal)
-                       or else Is_Function_With_Side_Effects (Formal))
-                      and then Nkind (Actual) in N_Subexpr;
+        with Pre =>
+          (if Is_Formal (Formal)
+             then Nkind (Actual) in N_Subexpr
+           elsif Is_Function_With_Side_Effects (Formal)
+             then Nkind (Actual) in N_Subexpr | N_Defining_Identifier);
 
       ----------------------
       -- Handle_Parameter --
@@ -6468,7 +6487,12 @@ package body Flow.Control_Flow_Graph is
                Vertex_Ctx                   => Ctx.Vertex_Ctx,
                E_Loc                        => Actual),
             V);
-         Ctx.Folded_Function_Checks.Append (Actual);
+
+         if Nkind (Actual) in N_Subexpr then
+            Ctx.Folded_Function_Checks.Append (Actual);
+         else
+            pragma Assert (Is_Function_With_Side_Effects (Formal));
+         end if;
          Ins.Append (V);
 
          --  Build an out vertex
@@ -6522,9 +6546,22 @@ package body Flow.Control_Flow_Graph is
       --  actual parameter.
 
       if Nkind (Callsite) = N_Function_Call then
-         Handle_Parameter
-           (Formal => Get_Called_Entity (Callsite),
-            Actual => Name (Parent (Callsite)));
+         declare
+            Context : constant Node_Id := Parent (Callsite);
+            Actual  : Node_Id;
+         begin
+            case Nkind (Context) is
+               when N_Assignment_Statement =>
+                  Actual := Name (Context);
+               when N_Object_Declaration =>
+                  Actual := Defining_Identifier (Context);
+               when others =>
+                  raise Program_Error;
+            end case;
+            Handle_Parameter
+              (Formal => Get_Called_Entity (Callsite),
+               Actual => Actual);
+         end;
       end if;
 
       --  Create vertices for the implicit formal parameter

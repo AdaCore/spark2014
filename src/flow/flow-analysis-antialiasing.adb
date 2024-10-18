@@ -961,6 +961,7 @@ package body Flow.Analysis.Antialiasing is
 
       LHS_Vars : constant Flow_Id_Sets.Set :=
         (if Nkind (N) = N_Function_Call
+           and then Nkind (Parent (N)) = N_Assignment_Statement
          then
            To_Entire_Variables
              (Get_All_Variables
@@ -973,7 +974,9 @@ package body Flow.Analysis.Antialiasing is
          else
            Flow_Id_Sets.Empty_Set);
       --  Objects referenced from the LHS of the assignment statement where the
-      --  RHS is a call to function with side effects.
+      --  RHS is a call to function with side effects; when the call happens in
+      --  an object declaration, there can be no aliasing, because the object
+      --  can't be referenced on the RHS.
 
       Status : Computed_Aliasing_Result := Impossible;
 
