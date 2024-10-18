@@ -836,14 +836,14 @@ package Flow_Utility is
 
 private
 
-   procedure Process_Predicate_And_Invariant_Internal
+   procedure Process_Type_Contracts_Internal
      (Typ                : Type_Kind_Id;
       Scop               : Flow_Scope;
       Include_Invariant  : Boolean;
       Proof_Dependencies : in out Node_Sets.Set;
       Types_Seen         : in out Node_Sets.Set)
    with Post => Proof_Dependencies'Old.Is_Subset (Proof_Dependencies);
-   --  Like Process_Predicate_And_Invariant, with an additional parameter
+   --  Like Process_Type_Contracts, with an additional parameter
    --  Types_Seen that allows to track which type predicates we already
    --  traversed to pick proof dependencies.
 
