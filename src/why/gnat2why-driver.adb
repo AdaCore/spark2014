@@ -1432,7 +1432,7 @@ package body Gnat2Why.Driver is
                   if Is_Partial_View (E) then
                      Translate_Constant (E);
                      if not Entity_In_SPARK (Full_View (E)) then
-                        Generate_Empty_Axiom_Theory (E);
+                        Translate_Constant_Value (E);
                      end if;
                   elsif Is_Full_View (E) then
                      Translate_Constant_Value (E);

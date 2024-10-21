@@ -24,6 +24,7 @@ package body Nuclear_System with SPARK_Mode is
       procedure Current_Status (Status : Nuclear_Reaction) is
          Current_Time : RT.Time := RT.Clock;
       begin
+	 pragma Assume (Current_Time <= RT.Time_Of (315360000, RT.Time_Span_Zero)); -- 10 year
          Deadline := Current_Time + RT.Seconds (2);
          Timer_Active := True;
          case Status is

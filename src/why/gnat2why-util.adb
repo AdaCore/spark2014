@@ -36,11 +36,13 @@ with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 with Nlists;                     use Nlists;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Definition.Annotate;  use SPARK_Definition.Annotate;
+with SPARK_Util.Hardcoded;       use SPARK_Util.Hardcoded;
 with String_Utils;               use String_Utils;
 with Why.Atree.Builders;         use Why.Atree.Builders;
 with Why.Atree.Modules;          use Why.Atree.Modules;
 with Why.Conversions;            use Why.Conversions;
 with Why.Gen.Expr;               use Why.Gen.Expr;
+with Why.Gen.Hardcoded;          use Why.Gen.Hardcoded;
 with Why.Gen.Names;              use Why.Gen.Names;
 with Why.Inter;                  use Why.Inter;
 with Why.Keywords;               use Why.Keywords;
@@ -1735,6 +1737,13 @@ package body Gnat2Why.Util is
            --  We need an invariant for type invariants
 
            or else Has_Potentially_Inherited_Type_Invariants (Ty_Ext)
+
+           --  Some hardcoded types have dynamic properties
+
+           or else
+             (Is_Hardcoded_Entity (Root_Retysp (Ty_Ext))
+              and then Hardcoded_Type_Needs_Dynamic_Property
+                (Root_Retysp (Ty_Ext)))
 
          then
             return True;

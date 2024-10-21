@@ -34,25 +34,149 @@ package body SPARK_Util.Hardcoded is
       return Boolean;
    --  Return True if E is the package for the hardcoded unit Unit
 
+   function Get_Hardcoded_Unit_Opt (E : Entity_Id) return Opt_Hardcoded_Enum;
+   --  Returns the unit in which the hardcoded entity E is defined if any,
+   --  No_Unit otherwise.
+
    -------------------------
    --  Get_Hardcoded_Unit --
    -------------------------
 
    function Get_Hardcoded_Unit (E : Entity_Id) return Hardcoded_Enum is
+      (Get_Hardcoded_Unit_Opt (E));
+
+   -----------------------------
+   --  Get_Hardcoded_Unit_Opt --
+   -----------------------------
+
+   function Get_Hardcoded_Unit_Opt (E : Entity_Id) return Opt_Hardcoded_Enum is
+      package BIN renames Big_Integers_Names; use BIN;
+      package BRN renames Big_Reals_Names; use BRN;
+      package COpN renames Cut_Operations_Names; use COpN;
+      package SSEN renames System_Storage_Elements_Names;
+      package RTN renames Real_Time_Names; use RTN;
+
    begin
-
-      for Unit in Hardcoded_Enum'Range loop
-
-         if Is_From_Hardcoded_Unit (E, Unit)
-           or else Is_From_Hardcoded_Generic_Unit (E, Unit)
+      if Is_From_Hardcoded_Unit (E, Big_Integers) then
+         if Chars (E) in Name_Op_Abs
+                       | Name_Op_Mod
+                       | Name_Op_Rem
+                       | Name_Op_Eq
+                       | Name_Op_Lt .. Name_Op_Subtract
+                       | Name_Op_Multiply .. Name_Op_Expon
+             or else
+                Get_Name_String (Chars (E)) in BIN.Big_Integer
+                                             | BIN.Min
+                                             | BIN.Max
+                                             | BIN.To_Big_Integer
+                                             | BIN.Is_Valid
+                                             | BIN.To_Integer
+                                             | BIN.Gcd
+                                             | BIN.From_String
          then
-            return Unit;
+            return Big_Integers;
          end if;
 
-      end loop;
+      elsif Is_From_Hardcoded_Unit (E, Big_Reals) then
+         if Chars (E) in Name_Op_Abs
+                       | Name_Op_Eq
+                       | Name_Op_Lt .. Name_Op_Subtract
+                       | Name_Op_Multiply .. Name_Op_Expon
+             or else
+                Get_Name_String (Chars (E)) in BRN.Big_Real
+                                             | BRN.Min
+                                             | BRN.Max
+                                             | BRN.Is_Valid
+                                             | BRN.From_String
+                                             | BRN.From_Universal_Image
+                                             | BRN.From_Quotient_String
+         then
+            return Big_Reals;
+         end if;
 
+      elsif Is_From_Hardcoded_Generic_Unit (E, Big_Integers) then
+         if Get_Name_String (Chars (E)) in BIN.Generic_To_Big_Integer
+                                         | BIN.Generic_From_Big_Integer
+         then
+            return Big_Integers;
+         end if;
+
+      elsif Is_From_Hardcoded_Generic_Unit (E, Big_Reals) then
+         if Get_Name_String (Chars (E)) in BRN.Generic_To_Big_Real then
+            return Big_Reals;
+         end if;
+
+      elsif Is_From_Hardcoded_Unit (E, Cut_Operations) then
+         if Get_Name_String (Chars (E)) in COpN.By | COpN.So then
+            return Cut_Operations;
+         end if;
+
+      --  All subprograms in elementary functions are hardcoded
+
+      elsif Is_From_Hardcoded_Generic_Unit (E, Elementary_Functions) then
+         if Is_Subprogram (E) then
+            return Elementary_Functions;
+         end if;
+
+      elsif Is_From_Hardcoded_Unit (E, System_Storage_Elements) then
+         if Get_Name_String (Chars (E)) in SSEN.To_Address
+                                         | SSEN.To_Integer
+         then
+            return System_Storage_Elements;
+         end if;
+
+      elsif Is_From_Hardcoded_Unit (E, Real_Time) then
+         if Chars (E) in Name_Op_Abs
+                       | Name_Op_Add
+                       | Name_Op_Subtract
+                       | Name_Op_Multiply
+                       | Name_Op_Divide
+                       | Name_Op_Lt .. Name_Op_Ge
+           or else Get_Name_String (Chars (E)) in RTN.Time
+                                                | RTN.Time_Span
+                                                | RTN.Time_First
+                                                | RTN.Time_Last
+                                                | RTN.Time_Span_First
+                                                | RTN.Time_Span_Last
+                                                | RTN.Time_Span_Zero
+                                                | RTN.Time_Span_Unit
+                                                | RTN.Nanoseconds
+                                                | RTN.Microseconds
+                                                | RTN.Milliseconds
+                                                | RTN.Seconds
+                                                | RTN.Minutes
+                                                | RTN.To_Duration
+                                                | RTN.To_Time_Span
+                                                | RTN.Time_Of
+                                                | RTN.Split
+         then
+            return Real_Time;
+         end if;
+      end if;
+
+      return No_Unit;
+   end Get_Hardcoded_Unit_Opt;
+
+   -----------------------------
+   -- Get_Real_Time_Time_Unit --
+   -----------------------------
+
+   function Get_Real_Time_Time_Unit (E : Entity_Id) return Ureal is
+      Pack : constant E_Package_Id := Scope (E);
+      Decl : Node_Id := First (Visible_Declarations
+                               (Package_Specification (Pack)));
+   begin
+      while Present (Decl) loop
+         if Nkind (Decl) = N_Number_Declaration
+           and then Get_Name_String (Chars (Defining_Identifier (Decl))) =
+           Real_Time_Names.Time_Unit
+         then
+            return Realval (Expression (Decl));
+         end if;
+         Next (Decl);
+      end loop;
       raise Program_Error;
-   end Get_Hardcoded_Unit;
+   end Get_Real_Time_Time_Unit;
 
    -----------------------
    -- Has_Stoele_Offset --
@@ -126,17 +250,12 @@ package body SPARK_Util.Hardcoded is
                         (Generic_Parent
                            (Par))) in "fixed_conversions"
                                     | "float_conversions";
-         when Cut_Operations =>
-            return False;
 
          when Elementary_Functions =>
             return True;
 
-         when System_Storage_Elements =>
-            return False;
-
-         when System =>
-            return False;
+         when others =>
+            raise Program_Error;
       end case;
    end Is_From_Hardcoded_Generic_Unit;
 
@@ -155,65 +274,7 @@ package body SPARK_Util.Hardcoded is
    -------------------------
 
    function Is_Hardcoded_Entity (E : Entity_Id) return Boolean is
-      package BIN renames Big_Integers_Names; use BIN;
-      package BRN renames Big_Reals_Names; use BRN;
-      package COpN renames Cut_Operations_Names; use COpN;
-      package SSEN renames System_Storage_Elements_Names;
-   begin
-
-      if Is_From_Hardcoded_Unit (E, Big_Integers) then
-         return Chars (E) in Name_Op_Abs
-                           | Name_Op_Mod
-                           | Name_Op_Rem
-                           | Name_Op_Eq
-                           | Name_Op_Lt .. Name_Op_Subtract
-                           | Name_Op_Multiply .. Name_Op_Expon
-                  or else
-                Get_Name_String (Chars (E)) in BIN.Big_Integer
-                                             | BIN.Min
-                                             | BIN.Max
-                                             | BIN.To_Big_Integer
-                                             | BIN.Is_Valid
-                                             | BIN.To_Integer
-                                             | BIN.Gcd
-                                             | BIN.From_String;
-      elsif Is_From_Hardcoded_Unit (E, Big_Reals) then
-         return Chars (E) in Name_Op_Abs
-                           | Name_Op_Eq
-                           | Name_Op_Lt .. Name_Op_Subtract
-                           | Name_Op_Multiply .. Name_Op_Expon
-                  or else
-                Get_Name_String (Chars (E)) in BRN.Big_Real
-                                             | BRN.Min
-                                             | BRN.Max
-                                             | BRN.Is_Valid
-                                             | BRN.From_String
-                                             | BRN.From_Universal_Image
-                                             | BRN.From_Quotient_String;
-
-      elsif Is_From_Hardcoded_Generic_Unit (E, Big_Integers) then
-         return Get_Name_String (Chars (E)) in BIN.Generic_To_Big_Integer
-                                             | BIN.Generic_From_Big_Integer;
-
-      elsif Is_From_Hardcoded_Generic_Unit (E, Big_Reals) then
-         return Get_Name_String (Chars (E)) in BRN.Generic_To_Big_Real;
-
-      elsif Is_From_Hardcoded_Unit (E, Cut_Operations) then
-         return Get_Name_String (Chars (E)) in COpN.By | COpN.So;
-
-      --  All subprograms in elementary functions are hardcoded
-
-      elsif Is_From_Hardcoded_Generic_Unit (E, Elementary_Functions) then
-         return Is_Subprogram (E);
-
-      elsif Is_From_Hardcoded_Unit (E, System_Storage_Elements) then
-         return Get_Name_String (Chars (E)) in SSEN.To_Address
-                                             | SSEN.To_Integer;
-
-      end if;
-
-      return False;
-   end Is_Hardcoded_Entity;
+     (Get_Hardcoded_Unit_Opt (E) /= No_Unit);
 
    -----------------------
    -- Is_Hardcoded_Unit --
@@ -310,6 +371,19 @@ package body SPARK_Util.Hardcoded is
             S_Ptr := Scope (S_Ptr);
 
             if Get_Name_String (Chars (S_Ptr)) /= "numerics" then
+               return False;
+            end if;
+
+            S_Ptr := Scope (S_Ptr);
+
+            if Chars (S_Ptr) /= Name_Ada then
+               return False;
+            end if;
+
+            return Scope (S_Ptr) = Standard_Standard;
+
+         when Real_Time =>
+            if Get_Name_String (Chars (S_Ptr)) /= "real_time" then
                return False;
             end if;
 

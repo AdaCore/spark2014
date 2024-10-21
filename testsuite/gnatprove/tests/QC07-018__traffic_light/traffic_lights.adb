@@ -59,6 +59,10 @@ package body Traffic_Lights is
                Seconds (15));
          Now : constant Time := Clock;
       begin
+         pragma Assume
+           (Now >= Last_State_Change
+              and Last_State_Change >= Time_Of (0, Time_Span_Zero)
+              and Now <= Time_Of (315360000, Time_Span_Zero)); -- 10 years
          if Now - Last_State_Change >= Wait_Duration then
             --  We have waited enough. It is time for a state change...
             Change_State := True;
