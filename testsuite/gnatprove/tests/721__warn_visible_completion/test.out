@@ -1,0 +1,2 @@
+test.adb:3:11: info: full view of "C" declared at ext_1.ads:9 is visible when analyzing Test
+test.adb:3:11: info: full view of "C" declared at line 8 is visible when analyzing Test
