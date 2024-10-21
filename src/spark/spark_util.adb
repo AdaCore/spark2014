@@ -2896,7 +2896,8 @@ package body SPARK_Util is
    function In_Loop_Entry_Or_Old_Attribute (N : Node_Id) return Boolean is
 
       function Is_Attribute_Loop_Entry_Or_Old (N : Node_Id) return Boolean is
-        (Is_Attribute_Loop_Entry (N) or else Is_Attribute_Old (N));
+        (Nkind (N) = N_Attribute_Reference
+           and then Attribute_Name (N) in Name_Loop_Entry | Name_Old);
 
       function Find_Loop_Entry_Or_Old_Attribute is new
         First_Parent_With_Property (Is_Attribute_Loop_Entry_Or_Old);

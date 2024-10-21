@@ -850,8 +850,8 @@ package body SPARK_Definition is
                         Proph);
                      return;
                   end;
-               elsif Is_Attribute_Loop_Entry (N)
-                 or else Is_Attribute_Old (N)
+               elsif Nkind (N) = N_Attribute_Reference
+                 and then Attribute_Name (N) in Name_Loop_Entry | Name_Old
                then
                   Mark_Violation
                     (Msg_Prefix
@@ -7548,9 +7548,7 @@ package body SPARK_Definition is
                --  For references to the Old attribute, convert the attribute
                --  reference and not the prefix only.
 
-               if Nkind (N) = N_Attribute_Reference
-                 and then Attribute_Name (N) = Name_Old
-               then
+               if Is_Attribute_Old (N) then
                   Ref := Prefix (N);
                end if;
 
