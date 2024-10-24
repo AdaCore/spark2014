@@ -850,8 +850,8 @@ package body SPARK_Definition is
                         Proph);
                      return;
                   end;
-               elsif Is_Attribute_Loop_Entry (N)
-                 or else Is_Attribute_Old (N)
+               elsif Nkind (N) = N_Attribute_Reference
+                 and then Attribute_Name (N) in Name_Loop_Entry | Name_Old
                then
                   Mark_Violation
                     (Msg_Prefix
@@ -7536,16 +7536,24 @@ package body SPARK_Definition is
             function Replace_Type (N : Node_Id) return Traverse_Result is
                Context : constant Node_Id    := Parent (N);
                Loc     : constant Source_Ptr := Sloc (N);
+               Ref     : Node_Id := N;
                CW_Typ  : Opt_Type_Kind_Id := Empty;
                Ent     : Formal_Kind_Id;
                Typ     : Type_Kind_Id;
 
             begin
-               if Is_Entity_Name (N)
-                 and then Present (Entity (N))
-                 and then Is_Formal (Entity (N))
+               --  For references to the Old attribute, convert the attribute
+               --  reference and not the prefix only.
+
+               if Is_Attribute_Old (N) then
+                  Ref := Prefix (N);
+               end if;
+
+               if Is_Entity_Name (Ref)
+                 and then Present (Entity (Ref))
+                 and then Is_Formal (Entity (Ref))
                then
-                  Ent := Entity (N);
+                  Ent := Entity (Ref);
                   Typ := Etype (Ent);
 
                   if Nkind (Context) = N_Type_Conversion then
@@ -7566,22 +7574,25 @@ package body SPARK_Definition is
                   end if;
 
                   if Present (CW_Typ) then
-                     Rewrite (N,
+                     Rewrite (Ref,
                        Nmake.Make_Type_Conversion (Loc,
                          Subtype_Mark =>
                            Tbuild.New_Occurrence_Of (CW_Typ, Loc),
                          Expression   => Tbuild.New_Occurrence_Of (Ent, Loc)));
+
+                     if Ref /= N then
+                        Set_Etype (Ref, CW_Typ);
+                     end if;
+
                      Set_Etype (N, CW_Typ);
 
                      --  When changing the type of an argument to a potential
                      --  dispatching call, make the call dispatching indeed by
                      --  setting its controlling argument.
 
-                     if Nkind (Parent (N)) = N_Function_Call
-                       and then Nkind (Name (Context)) in N_Has_Entity
-                       and then Present (Entity (Name (Context)))
+                     if Nkind (Context) = N_Function_Call
                        and then
-                         Is_Dispatching_Operation (Entity (Name (Context)))
+                         Is_Dispatching_Operation (Get_Called_Entity (Context))
                      then
                         Set_Controlling_Argument (Context, N);
                      end if;
