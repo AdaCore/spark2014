@@ -15,7 +15,7 @@ formal verification.
 Aspect ``Constant_After_Elaboration``
 -------------------------------------
 
-[SPARK]
+*Specific to SPARK*
 
 Aspect ``Constant_After_Elaboration`` can be specified on a library level
 variable that has an initialization expression. When specified, the
@@ -64,7 +64,7 @@ unsynchronized modifications (see :ref:`Tasks and Data Races`).
 Aspect ``No_Caching``
 ---------------------
 
-[SPARK]
+*Specific to SPARK*
 
 Aspect ``No_Caching`` can be specified for a volatile type or a volatile
 variable to indicate that this type or variable can be analyzed as non-volatile
@@ -99,7 +99,7 @@ one cannot declare it inside a subprogram.
 Aspect ``Relaxed_Initialization`` and Ghost Attribute ``Initialized``
 ---------------------------------------------------------------------
 
-[SPARK]
+*Specific to SPARK*
 
 Modes on parameters and data dependency contracts in |SPARK| have a stricter
 meaning than in Ada (see :ref:`Data Initialization Policy`). In general, this
@@ -375,7 +375,7 @@ True even if the stack ``S`` contains uninitialized elements.
 Aspect ``Side_Effects``
 -----------------------
 
-[|SPARK|]
+*Specific to SPARK*
 
 Unless stated otherwise, functions in |SPARK| cannot have side effects:
 
@@ -419,7 +419,7 @@ side effects.
 Attribute ``Loop_Entry``
 ------------------------
 
-[|SPARK|]
+*Specific to SPARK*
 
 It is sometimes convenient to refer to the value of variables at loop entry. In
 many cases, the variable has not been modified between the subprogram entry and
@@ -496,7 +496,7 @@ pragma ``Unevaluated_Use_Of_Old``.
 Attribute ``Old``
 -----------------
 
-[Ada 2012]
+*Supported in Ada 2012*
 
 .. index:: postcondition; and Old
 
@@ -675,7 +675,7 @@ detailed description of this pragma.
 Attribute ``Result``
 --------------------
 
-[Ada 2012]
+*Supported in Ada 2012*
 
 Inside :ref:`Postconditions` of functions, attribute ``Result`` refers to the
 value returned by the function. For example, the postcondition of function
@@ -704,7 +704,7 @@ specify the value of each component of the object separately.
 Record Aggregates
 ^^^^^^^^^^^^^^^^^
 
-[Ada 83]
+*Supported in Ada 83*
 
 Since the first version, Ada has a compact syntax for expressing the value of a
 record type, optionally allowing to name the components. Given the following
@@ -789,7 +789,7 @@ required that these components have the same type.
 Array Aggregates
 ^^^^^^^^^^^^^^^^
 
-[Ada 83]
+*Supported in Ada 83*
 
 Since the first version, Ada has the same compact syntax for expressing the
 value of an array type as for record types, optionally allowing to name the
@@ -885,7 +885,7 @@ array aggregates.
 Iterated Component Associations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-[Ada 2022]
+*Supported in Ada 2022*
 
 It is possible to have the value of an association depending on the choice,
 with the feature called `iterated component associations`. Here is how we can
@@ -914,7 +914,7 @@ of this range:
 Initialization Using Array Aggregates
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-[Ada 83]
+*Supported in Ada 83*
 
 Both flow analysis and proof can be used in GNATprove to verify that data is
 correctly initialized before being read, following the :ref:`Data
@@ -980,7 +980,7 @@ difficult to prove.
 Delta Aggregates
 ^^^^^^^^^^^^^^^^
 
-[Ada 2022]
+*Supported in Ada 2022*
 
 It is quite common in :ref:`Postconditions` to relate the input and output
 values of parameters. While this can be as easy as ``X = X'Old + 1`` in the
@@ -1061,7 +1061,7 @@ limited.
    In |SPARK| versions up to |SPARK| 21, delta aggregates are not supported
    and an equivalent attribute named ``Update`` can be used instead.
 
-[SPARK]
+*Specific to SPARK*
 
 As a GNAT-specific extension for SPARK (which requires the use of switch
 ``-gnatX0`` or pragma ``Extensions_Allowed(All)``), it is also possible to use
@@ -1093,7 +1093,7 @@ component.
 Aspect Aggregate
 ^^^^^^^^^^^^^^^^
 
-[Ada 2022]
+*Supported in Ada 2022*
 
 The ``Aggregate`` aspect has been introduced in
 `Ada 2022 <http://www.ada-auth.org/standards/22rm/html/RM-4-3-5.html>`_.
@@ -1166,7 +1166,7 @@ from the :ref:`SPARK Libraries`.
 Conditional Expressions
 -----------------------
 
-[Ada 2012]
+*Supported in Ada 2012*
 
 A conditional expression is a way to express alternative possibilities in an
 expression. It is like the ternary conditional expression ``cond ? expr1 :
@@ -1258,7 +1258,7 @@ parenthesized.
 Declare Expressions
 -------------------
 
-[Ada 2022]
+*Supported in Ada 2022*
 
 Declare expressions are used to factorize parts of an expression. They allow to
 declare constants and renamings which are local to the expression. A
@@ -1330,7 +1330,7 @@ the second bound:
 Expression Functions
 --------------------
 
-[Ada 2012]
+*Supported in Ada 2012*
 
 An expression function is a function whose implementation is given by a single
 expression. For example, the function ``Increment`` can be defined as an
@@ -1440,7 +1440,7 @@ expression function is declared in the unit spec and defined in the unit body.
 Ghost Code
 ----------
 
-[SPARK]
+*Specific to SPARK*
 
 Sometimes, the variables and functions that are present in a program are not
 sufficient to specify intended properties and to verify these properties with
@@ -2068,7 +2068,7 @@ executable. For example on Unix-like platforms::
 Quantified Expressions
 ----------------------
 
-[Ada 2012]
+*Supported in Ada 2012*
 
 A quantified expression is a way to express a property over a collection,
 either an array or a container (see :ref:`Formal Containers Library`):
