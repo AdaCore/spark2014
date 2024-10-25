@@ -6,5 +6,5 @@ project My_SPARKlib extends "sparklib_internal" is
 
    for Object_Dir use "sparklib_obj";
    for Source_Dirs use SPARKlib_Internal'Source_Dirs;
-   for Source_Files use ("spark.ads", "spark-c.ads", "spark-c-strings.ads", "spark-c-strings.adb", "spark-c-constant_strings.ads", "spark-c-constant_strings.adb");
+   for Source_Files use ("spark__exec.ads", "spark-c.ads", "spark-c-strings.ads", "spark-c-strings.adb", "spark-c-constant_strings.ads", "spark-c-constant_strings.adb");
 end My_SPARKlib;
