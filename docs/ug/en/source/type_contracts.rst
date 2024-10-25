@@ -23,7 +23,7 @@ Type Contracts
 Scalar Ranges
 -------------
 
-[Ada 83]
+*Supported in Ada 83*
 
 Scalar types (signed integer types, modulo types, fixed-point types,
 floating-point types) can be given a low bound and a high bound to specify that
@@ -73,7 +73,7 @@ about the program (for example, the absence of overflows in computations).
 Record Discriminants
 ---------------------
 
-[Ada 83]
+*Supported in Ada 83*
 
 Record types can use discriminants to:
 
@@ -112,7 +112,7 @@ bounds:
 Predicates
 ----------
 
-[Ada 2012]
+*Supported in Ada 2012*
 
 Predicates can be used on any subtype to express a property verified by objects of
 the subtype at all times. Aspects ``Static_Predicate`` and ``Dynamic_Predicate``
@@ -307,7 +307,7 @@ whose subtype has a predicate always contain a value allowed by the predicate.
 Type Invariants
 ---------------
 
-[Ada 2012]
+*Supported in Ada 2012*
 
 In |SPARK|, type invariants can only be specified on completions of private
 types (and not directly on private type declarations). They express a property
@@ -508,7 +508,7 @@ holds on global variable ``The_Stack`` through local subprogram calls.
 Default Initial Condition
 -------------------------
 
-[|SPARK|]
+*Specific to SPARK*
 
 Private types in a package define an encapsulation mechanism that prevents
 client units from accessing the implementation of the type. That boundary may

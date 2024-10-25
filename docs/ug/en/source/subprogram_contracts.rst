@@ -53,7 +53,7 @@ non-returning subprogram, or loop forever on any input.
 Preconditions
 -------------
 
-[Ada 2012]
+*Supported in Ada 2012*
 
 The precondition of a subprogram specifies constraints on callers of the
 subprogram. Typically, preconditions are written as conjunctions of constraints
@@ -173,7 +173,7 @@ the previous example.
 Postconditions
 --------------
 
-[Ada 2012]
+*Supported in Ada 2012*
 
 The postcondition of a subprogram specifies partly or completely the functional
 behavior of the subprogram. Typically, postconditions are written as
@@ -256,7 +256,7 @@ correct but likely functionally wrong postcondition.
 Contract Cases
 --------------
 
-[|SPARK|]
+*Specific to SPARK*
 
 When a subprogram has a fixed set of different functional behaviors, it may be
 more convenient to specify these behaviors as contract cases rather than a
@@ -342,7 +342,7 @@ possible inputs. Only disjointness of contract cases is checked in that case.
 Data Dependencies
 -----------------
 
-[|SPARK|]
+*Specific to SPARK*
 
 The data dependencies of a subprogram specify the global data that a subprogram
 is allowed to read and write. Together with the parameters, they completely
@@ -443,7 +443,7 @@ Initialization Policy`.
 Flow Dependencies
 -----------------
 
-[|SPARK|]
+*Specific to SPARK*
 
 The flow dependencies of a subprogram specify how its outputs (both output
 parameters and global outputs) depend on its inputs (both input parameters and
@@ -518,7 +518,7 @@ corresponding flow dependency should use the ``null`` input list:
 State Abstraction and Contracts
 -------------------------------
 
-[|SPARK|]
+*Specific to SPARK*
 
 The subprogram contracts mentioned so far always used directly global
 variables. In many cases, this is not possible because the global variables are
@@ -670,7 +670,7 @@ precise refined contract (precondition and refined postcondition) of
 Exceptional Contracts
 ---------------------
 
-[|SPARK|]
+*Specific to SPARK*
 
 In SPARK, every procedure which might propagate an exception should be annotated
 with an exceptional contract. This contract, introduced by the
@@ -822,7 +822,7 @@ thanks to the precondition of ``Check_OK`` which states that parameter
 Contracts for Termination
 -------------------------
 
-[|SPARK|]
+*Specific to SPARK*
 
 By default, |GNATprove| verifies termination of all functions
 and automatically instantiated lemmas (procedures annotated with
@@ -873,7 +873,7 @@ specified otherwise, a procedure declared inside a package annotated with
 Subprogram Variant
 ------------------
 
-[|SPARK|]
+*Specific to SPARK*
 
 To ensure termination of recursive subprograms, it is possible to annotate them
 using the aspect ``Subprogram_Variant``. This aspect provides a value which
