@@ -22,8 +22,8 @@ list_borrows.adb:18:66: info: predicate check proved
 list_borrows.adb:18:71: info: precondition proved
 list_borrows.adb:18:79: info: predicate check proved
 list_borrows.adb:21:13: info: implicit aspect Always_Terminates on "Tail" has been proved, subprogram will terminate
-list_borrows.adb:23:18: info: contract case proved
-list_borrows.adb:25:18: info: contract case proved
+list_borrows.adb:23:09: info: contract case proved
+list_borrows.adb:25:09: info: contract case proved
 list_borrows.adb:25:38: info: pointer dereference check proved
 list_borrows.adb:25:46: info: pointer dereference check proved
 list_borrows.adb:26:20: info: pointer dereference check proved

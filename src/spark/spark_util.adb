@@ -46,7 +46,6 @@ with Output;
 with Pprint;                      use Pprint;
 with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
-with SPARK_Util;
 with SPARK_Util.Hardcoded;        use SPARK_Util.Hardcoded;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
 with SPARK_Util.Types;            use SPARK_Util.Types;
@@ -626,6 +625,14 @@ package body SPARK_Util is
 
       raise Program_Error;
    end Aggregate_Is_In_Assignment;
+
+   -------------------------
+   -- Alternative_Uses_Eq --
+   -------------------------
+
+   function Alternative_Uses_Eq (Alt : Node_Id) return Boolean is
+     (not Is_Entity_Name (Alt)
+      or else not Is_Type (Entity (Alt)));
 
    ---------------------------
    -- Append_Multiple_Index --

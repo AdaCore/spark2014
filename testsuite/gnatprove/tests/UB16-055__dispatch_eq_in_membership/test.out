@@ -1,5 +1,5 @@
 repr.adb:9:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
-repr.adb:10:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+repr.adb:11:12: medium: implicit aspect Always_Terminates on "F" could be incorrect, indirect dispatching call to record equality might be nonterminating [possible explanation: call could hide recursive calls]
 repr.adb:13:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
 repr.adb:29:07: info: no contextual analysis of "Rand" (body not seen yet)
 repr.adb:29:07: warning: assuming "Rand" has no effect on global items

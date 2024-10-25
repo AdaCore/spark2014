@@ -1,6 +1,7 @@
 private_no_is_null.ads:5:09: info: checks for ressource or memory reclamation will be unprovable
 private_no_is_null.ads:5:09: info: no reclamation function nor reclaimed value found for type with ownership "Pool_Specific_Access"
 private_tagged.ads:18:59: info: precondition proved (CVC5: 1 VC)
+private_tagged_ext.ads:6:04: medium: type "V" is not fully initialized
 test_borrow.adb:7:06: info: data dependencies proved
 test_borrow.adb:10:07: info: initialization of "B" proved
 test_borrow.adb:11:07: info: initialization of "C" proved
@@ -19,8 +20,8 @@ test_borrow.adb:45:29: error: "B" is not readable
 test_borrow.adb:45:29: error: launch "gnatprove --explain=E0010" for more information
 test_borrow.adb:45:29: error: object was moved at line 44 [E0010]
 test_borrow.adb:48:06: info: data dependencies proved
-test_borrow.adb:51:07: info: initialization of "B" proved
-test_borrow.adb:52:07: info: initialization of "C" proved
+test_borrow.adb:51:07: high: "B" is not initialized
+test_borrow.adb:52:07: high: "C" is not initialized
 test_borrow.adb:57:29: error: "B" is not readable
 test_borrow.adb:57:29: error: launch "gnatprove --explain=E0010" for more information
 test_borrow.adb:57:29: error: object was moved at line 56 [E0010]
@@ -131,6 +132,7 @@ test_ownership_annotation.adb:153:07: medium: resource or memory leak might occu
 test_ownership_annotation.adb:154:07: info: initialization of "D" proved
 test_ownership_annotation.adb:154:07: medium: resource or memory leak might occur at end of scope
 test_ownership_annotation.adb:155:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_ownership_annotation.adb:155:07: warning: unused variable "E"
 test_ownership_annotation.adb:157:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_ownership_annotation.adb:158:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_ownership_annotation.adb:159:11: info: absence of resource or memory leak proved (CVC5: 1 VC)

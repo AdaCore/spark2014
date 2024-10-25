@@ -1,0 +1,23 @@
+main.adb:10:12: error: subprogram "P" is inherited from "T" and "I"
+main.adb:10:12: error: subprogram inherited from root and interface is not yet supported
+main.adb:21:12: error: subprogram "P" is inherited from "I" and "J"
+main.adb:21:12: error: subprogram inherited from multiple interfaces is not yet supported
+main.adb:33:15: error: subprogram "P" is inherited from "T" and "I"
+main.adb:33:15: error: subprogram inherited from multiple interfaces is not yet supported
+main.adb:45:17: error: subprogram "P" is inherited from "T" and "I"
+main.adb:45:17: error: subprogram inherited from root and interface is not yet supported
+main.adb:57:17: error: subprogram "P" is inherited from "I" and "J"
+main.adb:57:17: error: subprogram inherited from multiple interfaces is not yet supported
+main.adb:69:17: error: subprogram "P" is inherited from "T" and "I"
+main.adb:69:17: error: subprogram inherited from multiple interfaces is not yet supported
+main.adb:93:12: error: subprogram "P" is inherited from "V" and "I"
+main.adb:93:12: error: subprogram inherited from root and interface is not yet supported
+main.adb:103:12: error: conflicting SPARK_Mode for subprogram "P", inherited from "T" and "I"
+main.adb:103:12: error: subprogram implicitly inherited from multiple progenitor types with conflicting SPARK mode is not yet supported
+main.adb:111:12: error: conflicting SPARK_Mode for subprogram "P", inherited from "T" and "I"
+main.adb:111:12: error: subprogram implicitly inherited from multiple progenitor types with conflicting SPARK mode is not yet supported
+main.adb:120:12: error: conflicting SPARK_Mode for subprogram "P", inherited from "I" and "J"
+main.adb:120:12: error: subprogram implicitly inherited from multiple progenitor types with conflicting SPARK mode is not yet supported
+main.adb:130:12: error: subprogram "P" is inherited from "T" and "I"
+main.adb:130:12: error: subprogram inherited from root and interface is not yet supported
+gnatprove: error during flow analysis and proof

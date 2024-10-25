@@ -97,7 +97,7 @@ codepeer-run: setup force
 
 codepeer:
 	@gnatsas report text -P gnat2why.gpr --quiet
-	@gnatsas report code-climate -P gnat2why.gpr --quiet -o obj/gnatsas/gnat2why.json
+	@gnatsas report code-climate -P gnat2why.gpr --quiet -o obj/gnatsas/gnat2why.json --root=../
 
 force:
 

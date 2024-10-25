@@ -1,0 +1,2 @@
+main.adb:6:12: error: interface derived from other interfaces is not yet supported
+gnatprove: error during flow analysis and proof

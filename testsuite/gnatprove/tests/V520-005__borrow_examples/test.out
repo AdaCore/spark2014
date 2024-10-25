@@ -251,12 +251,12 @@ linear_search.ads:33:07: info: dynamic accessibility check proved
 linear_search.ads:38:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
 linear_search.ads:41:07: info: dynamic accessibility check proved
 linear_search.ads:46:13: info: implicit aspect Always_Terminates on "Linear_Search" has been proved, subprogram will terminate
+linear_search.ads:53:09: info: contract case proved
 linear_search.ads:53:51: info: precondition proved
 linear_search.ads:53:59: info: predicate check proved
-linear_search.ads:53:68: info: contract case proved
 linear_search.ads:54:24: info: predicate check proved
 linear_search.ads:54:34: info: predicate check proved
-linear_search.ads:58:59: info: contract case proved
+linear_search.ads:58:09: info: contract case proved
 linear_search.ads:59:34: info: predicate check proved
 linear_search.ads:60:20: info: precondition proved
 linear_search.ads:60:41: info: predicate check proved
@@ -265,14 +265,14 @@ linear_search.ads:62:61: info: predicate check proved
 linear_search.ads:62:67: info: precondition proved
 linear_search.ads:62:75: info: predicate check proved
 linear_search.ads:64:13: info: implicit aspect Always_Terminates on "Linear_Search" has been proved, subprogram will terminate
+linear_search.ads:71:09: info: contract case proved
 linear_search.ads:71:51: info: precondition proved
 linear_search.ads:71:59: info: predicate check proved
-linear_search.ads:71:68: info: contract case proved
 linear_search.ads:77:62: info: precondition proved
 linear_search.ads:77:79: info: predicate check proved
 linear_search.ads:77:84: info: precondition proved
 linear_search.ads:77:92: info: predicate check proved
-linear_search.ads:81:59: info: contract case proved
+linear_search.ads:81:09: info: contract case proved
 linear_search.ads:83:41: info: pointer dereference check proved
 linear_search.ads:88:13: info: precondition proved
 linear_search.ads:88:30: info: predicate check proved

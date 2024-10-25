@@ -1,0 +1,3 @@
+main.adb:16:17: error: subprogram "P" is inherited from "I" and "T1"
+main.adb:16:17: error: subprogram inherited from root and interface is not yet supported
+gnatprove: error during flow analysis and proof

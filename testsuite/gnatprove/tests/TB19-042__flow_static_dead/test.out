@@ -1,18 +1,17 @@
-dead_condition.adb:4:14: high: "X" must be listed in the Global aspect of "If_True" (SPARK RM 6.1.4(15))
-dead_condition.adb:15:12: high: "X" must be listed in the Global aspect of "Elsif_True" (SPARK RM 6.1.4(15))
-main.adb:25:12: high: "X" must be a global output of "Try_If" (SPARK RM 6.1.4(18)), in instantiation at main.adb:46
-main.adb:32:12: high: "X" must be a global output of "Try_Loop" (SPARK RM 6.1.4(18)), in instantiation at main.adb:47
-main.adb:40:15: high: "X" must be a global output of "Try_Case" (SPARK RM 6.1.4(18)), in instantiation at main.adb:48
+dead_condition.adb:5:06: info: data dependencies proved
+dead_condition.adb:10:07: warning: this statement is never reached
+dead_condition.adb:16:06: info: data dependencies proved
+dead_condition.adb:23:07: warning: this statement is never reached
+main.adb:46:14: warning: subprogram "Try_If" has no effect
 main.adb:47:04: info: cannot unroll loop (value of loop bounds)
 main.adb:47:04: info: in instantiation at line 31
-main2.adb:26:07: warning: statement has no effect, in instantiation at main2.adb:48
+main.adb:47:14: warning: subprogram "Try_Loop" has no effect
+main.adb:48:14: warning: subprogram "Try_Case" has no effect
 main2.adb:27:10: info: precondition proved (Trivial: 1 VC), in instantiation at main2.adb:48
-main2.adb:33:23: warning: statement has no effect, in instantiation at main2.adb:49
 main2.adb:34:10: info: precondition proved (Trivial: 1 VC), in instantiation at main2.adb:49
-main2.adb:40:07: warning: statement has no effect, in instantiation at main2.adb:50
 main2.adb:42:13: info: precondition proved (Trivial: 1 VC), in instantiation at main2.adb:50
-main2.adb:48:14: warning: "X" is not modified, could be INPUT
+main2.adb:48:14: warning: subprogram "Try_If" has no effect
 main2.adb:49:04: info: cannot unroll loop (value of loop bounds)
 main2.adb:49:04: info: in instantiation at line 33
-main2.adb:49:14: warning: "X" is not modified, could be INPUT
-main2.adb:50:14: warning: "X" is not modified, could be INPUT
+main2.adb:49:14: warning: subprogram "Try_Loop" has no effect
+main2.adb:50:14: warning: subprogram "Try_Case" has no effect

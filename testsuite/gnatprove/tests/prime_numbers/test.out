@@ -1,7 +1,7 @@
 prime_and_coprime_numbers.adb:12:07: info: initialization of "Set.Is_Prime" constituent of "P.Prime_Data" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:26:16: info: implicit aspect Always_Terminates on "Euclid" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:33:38: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:34:38: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:33:12: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:34:12: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:36:10: info: initialization of "A" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:37:10: info: initialization of "B" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:38:10: info: initialization of "R" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
@@ -184,17 +184,17 @@ prime_and_coprime_numbers.ads:73:14: info: postcondition proved, in instantiatio
 prime_and_coprime_numbers.ads:74:44: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:75:06: info: complete contract cases proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:75:06: info: disjoint contract cases proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:79:09: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:79:22: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:79:36: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:84:09: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:84:22: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:84:51: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:87:36: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:92:09: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:92:22: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:92:53: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:94:56: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:95:36: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:100:09: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:100:22: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:100:57: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:101:66: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:101:79: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:101:104: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
@@ -207,13 +207,13 @@ prime_and_coprime_numbers.ads:112:06: info: data dependencies proved, in instant
 prime_and_coprime_numbers.ads:119:16: info: postcondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:121:06: info: complete contract cases proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:121:06: info: disjoint contract cases proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:125:26: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:130:44: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:125:09: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:130:09: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:133:37: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:138:46: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:138:09: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:140:62: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:141:37: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:146:50: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:146:09: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:147:71: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:147:84: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:147:115: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6

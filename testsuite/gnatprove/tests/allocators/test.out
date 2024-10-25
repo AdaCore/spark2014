@@ -89,13 +89,13 @@ list_allocator.ads:83:07: info: initialization of "Model" proved
 list_allocator.ads:85:16: info: implicit aspect Always_Terminates on "Is_Valid" has been proved, subprogram will terminate
 list_allocator.ads:89:21: info: initialization of "Res" proved
 list_allocator.ads:91:14: info: postcondition proved
+list_allocator.ads:97:09: info: contract case proved
 list_allocator.ads:97:09: info: predicate check proved
 list_allocator.ads:97:36: info: predicate check proved
-list_allocator.ads:97:38: info: contract case proved
-list_allocator.ads:104:16: info: contract case proved
+list_allocator.ads:104:09: info: contract case proved
 list_allocator.ads:111:14: info: postcondition proved
-list_allocator.ads:116:41: info: contract case proved
-list_allocator.ads:123:16: info: contract case proved
+list_allocator.ads:116:09: info: contract case proved
+list_allocator.ads:123:09: info: contract case proved
 list_mod_allocator.adb:27:39: info: index check proved
 list_mod_allocator.adb:29:39: info: index check proved
 list_mod_allocator.adb:39:22: info: index check proved
@@ -288,25 +288,25 @@ list_mod_allocator.ads:76:17: info: postcondition proved
 list_mod_allocator.ads:78:16: info: implicit aspect Always_Terminates on "Is_Valid" has been proved, subprogram will terminate
 list_mod_allocator.ads:84:21: info: initialization of "Res" proved
 list_mod_allocator.ads:86:14: info: postcondition proved
+list_mod_allocator.ads:92:09: info: contract case proved
 list_mod_allocator.ads:92:09: info: predicate check proved
 list_mod_allocator.ads:92:17: info: precondition proved
 list_mod_allocator.ads:92:36: info: predicate check proved
-list_mod_allocator.ads:92:38: info: contract case proved
 list_mod_allocator.ads:95:11: info: precondition proved
 list_mod_allocator.ads:95:19: info: precondition proved
-list_mod_allocator.ads:99:16: info: contract case proved
+list_mod_allocator.ads:99:09: info: contract case proved
 list_mod_allocator.ads:100:25: info: precondition proved
 list_mod_allocator.ads:100:57: info: precondition proved
 list_mod_allocator.ads:102:19: info: precondition proved
 list_mod_allocator.ads:102:55: info: precondition proved
 list_mod_allocator.ads:106:14: info: postcondition proved
+list_mod_allocator.ads:111:09: info: contract case proved
 list_mod_allocator.ads:111:19: info: precondition proved
-list_mod_allocator.ads:111:41: info: contract case proved
 list_mod_allocator.ads:112:25: info: precondition proved
 list_mod_allocator.ads:112:61: info: precondition proved
 list_mod_allocator.ads:114:19: info: precondition proved
 list_mod_allocator.ads:114:51: info: precondition proved
-list_mod_allocator.ads:118:16: info: contract case proved
+list_mod_allocator.ads:118:09: info: contract case proved
 list_mod_allocator.ads:119:11: info: precondition proved
 list_mod_allocator.ads:119:19: info: precondition proved
 simple_allocator.adb:22:39: info: index check proved
@@ -338,7 +338,7 @@ simple_allocator.ads:49:16: info: implicit aspect Always_Terminates on "Is_Valid
 simple_allocator.ads:51:16: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
 simple_allocator.ads:51:44: info: postcondition proved
 simple_allocator.ads:57:21: info: initialization of "Res" proved
-simple_allocator.ads:63:36: info: contract case proved
-simple_allocator.ads:70:16: info: contract case proved
-simple_allocator.ads:80:41: info: contract case proved
-simple_allocator.ads:87:16: info: contract case proved
+simple_allocator.ads:63:09: info: contract case proved
+simple_allocator.ads:70:09: info: contract case proved
+simple_allocator.ads:80:09: info: contract case proved
+simple_allocator.ads:87:09: info: contract case proved

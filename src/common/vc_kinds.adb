@@ -691,6 +691,8 @@ package body VC_Kinds is
          when Lim_Deep_Value_In_Delta_Aggregate =>
            "delta aggregate with possible aliasing of component associations "
           & "of an ownership type",
+         when Lim_Derived_Interface =>
+            "interface derived from other interfaces",
          when Lim_Entry_Family => "entry families",
          when Lim_Exceptional_Cases_Dispatch =>
            "aspect ""Exceptional_Cases"" on dispatching operations",
@@ -702,6 +704,8 @@ package body VC_Kinds is
            "an extension aggregate whose ancestor part is a subtype mark",
          when Lim_Extension_Case_Pattern_Matching =>
            "GNAT extension for case pattern matching",
+         when Lim_External_Initializer =>
+           "GNAT extension for embedded binary resources",
          when Lim_Generic_In_Hidden_Private =>
             "instance of a generic unit declared in a package whose private "
           & "part is hidden outside of this package",
@@ -762,6 +766,11 @@ package body VC_Kinds is
          when Lim_Multiple_Inheritance_Interfaces =>
            "a primitive operation which is inherited from several interfaces"
           & " in a tagged derivation",
+         when Lim_Multiple_Inheritance_Mixed_SPARK_Mode =>
+            "a primitive operation which is implicitly inherited from several"
+          & " progenitor types in a tagged derivation, and for which two of"
+          & " these progenitors provide incompatible values for the SPARK mode"
+          & " of the inherited subprogram",
          when Lim_Multiple_Inheritance_Root =>
            "a primitive operation which is inherited both from the parent type"
           & " and from an interface in a tagged derivation",

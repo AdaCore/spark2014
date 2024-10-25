@@ -4,10 +4,10 @@ linear_search.ads:28:06: medium: contract cases might not be disjoint
   ... | ...
    34 |          not Search'Result.Found);
 
-linear_search.ads:29:20: medium: contract case might fail
-   29 |       (A(1) = Val =>
-      |                   ^ here
+linear_search.ads:29:09: medium: contract case might fail
+   29>|       (A(1) = Val =>
+   30 |          Search'Result.At_Index = 1,
 
-linear_search.ads:31:46: medium: contract case might fail
-   31 |        Value_Found_In_Range (A, Val, 2, 10) =>
-      |                                             ^ here
+linear_search.ads:31:09: medium: contract case might fail
+   31>|        Value_Found_In_Range (A, Val, 2, 10) =>
+   32 |          Search'Result.Found,

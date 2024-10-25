@@ -533,6 +533,7 @@ package body Flow.Analysis.Sanity is
                  Get_Expr_From_Return_Only_Func (Predicate_Function (Typ));
 
                Funcalls  : Call_Sets.Set;
+               Indcalls  : Node_Sets.Set;
                Proofdeps : Node_Sets.Set;
                Unused    : Tasking_Info;
 
@@ -549,6 +550,7 @@ package body Flow.Analysis.Sanity is
                  (Expr,
                   Scop               => Get_Flow_Scope (Expr),
                   Function_Calls     => Funcalls,
+                  Indirect_Calls     => Indcalls,
                   Proof_Dependencies => Proofdeps,
                   Tasking            => Unused,
                   Generating_Globals => False);
@@ -605,6 +607,7 @@ package body Flow.Analysis.Sanity is
                  Get_Expr_From_Check_Only_Proc (Invariant_Procedure (Typ));
 
                Funcalls  : Call_Sets.Set;
+               Indcalls  : Node_Sets.Set;
                Proofdeps : Node_Sets.Set;
                Unused    : Tasking_Info;
 
@@ -619,6 +622,7 @@ package body Flow.Analysis.Sanity is
                  (Expr,
                   Scop               => Get_Flow_Scope (Expr),
                   Function_Calls     => Funcalls,
+                  Indirect_Calls     => Indcalls,
                   Proof_Dependencies => Proofdeps,
                   Tasking            => Unused,
                   Generating_Globals => False);

@@ -1,0 +1,5 @@
+p1.adb:9:22: error: launch "gnatprove --explain=E0019" for more information
+p1.adb:9:22: error: uninitialized allocator without default initialization is not allowed in SPARK [E0019]
+p1.adb:9:22: error: violation of pragma SPARK_Mode at test.adc:1
+p2.adb:10:04: medium: type "TT" is not fully initialized
+gnatprove: error during flow analysis and proof
