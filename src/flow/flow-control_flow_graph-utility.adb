@@ -561,6 +561,16 @@ package body Flow.Control_Flow_Graph.Utility is
 
          A.Variables_Explicitly_Used := A.Variables_Used;
 
+      --  For a function with side effects occuring in object declaration, the
+      --  entire object is written. We special-case this here, because we don't
+      --  the ordinary processing would crash on actual parameter not being an
+      --  expression.
+
+      elsif Nkind (Actual) = N_Defining_Identifier then
+         pragma Assert (Is_Function_With_Side_Effects (Formal));
+
+         A.Variables_Defined := Flatten_Variable (Actual, Scope);
+
       --  For a "null" appearing as actual parameter of mode IN where the
       --  formal parameter is of an owning access type do nothing. Such a
       --  parameter doesn't define nor use any variables.
