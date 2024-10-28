@@ -234,14 +234,15 @@ package body Flow_Utility.Proof_Dependencies is
       Include_Invariant  : Boolean;
       Proof_Dependencies : in out Node_Sets.Set)
    is
-      Discard : Node_Sets.Set;
+      Types_Discard, Const_Discard : Node_Sets.Set;
    begin
       Process_Type_Contracts_Internal
         (Typ                => Typ,
          Scop               => Scop,
          Include_Invariant  => Include_Invariant,
          Proof_Dependencies => Proof_Dependencies,
-         Types_Seen         => Discard);
+         Types_Seen         => Types_Discard,
+         Constants_Seen     => Const_Discard);
    end Process_Type_Contracts;
 
    -----------------------------------
