@@ -59,7 +59,6 @@ admintoken.adb:156:27: info: initialization of "RoleOK" proved
 admintoken.adb:158:07: info: initialization of "AuthCertContents" proved
 admintoken.adb:159:07: info: initialization of "IDCertContents" proved
 admintoken.adb:169:16: info: implicit aspect Always_Terminates on "MakeDescription" has been proved, subprogram will terminate
-admintoken.adb:169:16: info: implicit function contract might not be available on calls from enclosing unit
 admintoken.adb:176:13: info: range check proved
 admintoken.adb:176:21: info: index check proved
 admintoken.adb:176:30: info: index check proved
@@ -159,7 +158,6 @@ auditlog.adb:161:07: info: initialization of "FirstTime" proved
 auditlog.adb:162:07: info: initialization of "LastTime" proved
 auditlog.adb:163:07: info: initialization of "TimeCount" proved
 auditlog.adb:177:16: info: implicit aspect Always_Terminates on "ConvertTimesToText" has been proved, subprogram will terminate
-auditlog.adb:177:16: info: implicit function contract might not be available on calls from enclosing unit
 auditlog.adb:179:13: info: precondition proved
 auditlog.adb:180:24: info: range check proved
 auditlog.adb:180:36: info: range check proved
@@ -175,7 +173,6 @@ auditlog.adb:257:07: info: initialization of "OK" proved
 auditlog.adb:258:07: info: initialization of "LastTime" proved
 auditlog.adb:259:07: info: initialization of "TimeCount" proved
 auditlog.adb:273:16: info: implicit aspect Always_Terminates on "OverwriteTimeInText" has been proved, subprogram will terminate
-auditlog.adb:273:16: info: implicit function contract might not be available on calls from enclosing unit
 auditlog.adb:275:14: info: data dependencies proved
 auditlog.adb:277:10: info: initialization of "Descr" proved
 auditlog.adb:278:10: info: initialization of "FirstTime" proved
@@ -208,7 +205,6 @@ auditlog.adb:435:11: info: flow dependencies proved
 auditlog.adb:443:07: info: initialization of "OK" proved
 auditlog.adb:444:07: info: initialization of "Now" proved
 auditlog.adb:456:16: info: implicit aspect Always_Terminates on "NameOfType" has been proved, subprogram will terminate
-auditlog.adb:456:16: info: implicit function contract might not be available on calls from enclosing unit
 auditlog.adb:463:10: info: range check proved
 auditlog.adb:463:22: info: index check proved
 auditlog.adb:463:61: info: index check proved
@@ -388,7 +384,6 @@ bio.adb:123:13: info: local subprogram "GetReturnCode" only analyzed in the cont
 bio.adb:129:55: info: loop invariant initialization proved, in call inlined at bio.adb:193
 bio.adb:129:55: info: loop invariant preservation proved, in call inlined at bio.adb:193
 bio.adb:150:13: info: implicit aspect Always_Terminates on "MakeDescription" has been proved, subprogram will terminate
-bio.adb:150:13: info: implicit function contract might not be available on implicit recursive calls
 bio.adb:154:11: info: data dependencies proved
 bio.adb:163:07: info: initialization of "TheCodeName" proved
 bio.adb:175:17: info: postcondition proved
@@ -1004,7 +999,6 @@ configuration.adb:67:07: info: initialization of "TheAlarmThresholdSize" proved
 configuration.adb:68:07: info: initialization of "TheSystemMaxFar" proved
 configuration.adb:69:07: info: initialization of "Success" proved
 configuration.adb:81:16: info: implicit aspect Always_Terminates on "MakeDescription" has been proved, subprogram will terminate
-configuration.adb:81:16: info: implicit function contract might not be available on calls from enclosing unit
 configuration.adb:82:14: info: data dependencies proved
 configuration.adb:99:57: info: division check proved
 configuration.adb:99:63: info: range check proved
@@ -1399,7 +1393,6 @@ enclave.ads:662:11: info: data dependencies proved
 enclave.ads:668:11: info: flow dependencies proved
 enrolment.adb:49:07: info: initialization of "ClosedOK" proved
 enrolment.adb:61:16: info: implicit aspect Always_Terminates on "MakeDescription" has been proved, subprogram will terminate
-enrolment.adb:61:16: info: implicit function contract might not be available on calls from enclosing unit
 enrolment.adb:63:14: info: data dependencies proved
 enrolment.adb:67:66: info: range check proved
 enrolment.adb:68:54: info: range check proved
@@ -1489,7 +1482,6 @@ keystore.adb:148:07: info: initialization of "LoopMax" proved
 keystore.adb:149:07: info: initialization of "BytesLeft" proved
 keystore.adb:151:07: info: initialization of "Block" proved
 keystore.adb:165:16: info: implicit aspect Always_Terminates on "GetBlock" has been proved, subprogram will terminate
-keystore.adb:165:16: info: implicit function contract might not be available on calls from enclosing unit
 keystore.adb:172:42: info: range check proved
 keystore.adb:172:53: info: overflow check proved
 keystore.adb:172:69: info: overflow check proved
@@ -1693,7 +1685,6 @@ screen.adb:409:17: info: initialization of "Clearance" proved
 screen.adb:410:07: info: initialization of "MaxFAR" proved
 screen.adb:412:07: info: initialization of "NewConfig" proved
 screen.adb:436:16: info: implicit aspect Always_Terminates on "SecondsString" has been proved, subprogram will terminate
-screen.adb:436:16: info: implicit function contract might not be available on calls from enclosing unit
 screen.adb:440:41: info: no contextual analysis of "SecondsString" (call returns unconstrained type)
 screen.adb:442:37: info: index check proved
 screen.adb:446:13: info: range check proved
@@ -1732,7 +1723,6 @@ screen.adb:485:40: info: length check proved, in call inlined at screen.adb:665
 screen.adb:485:40: info: range check proved, in call inlined at screen.adb:659
 screen.adb:485:40: info: range check proved, in call inlined at screen.adb:665
 screen.adb:499:16: info: implicit aspect Always_Terminates on "AccessPolicyString" has been proved, subprogram will terminate
-screen.adb:499:16: info: implicit function contract might not be available on calls from enclosing unit
 screen.adb:502:39: info: no contextual analysis of "AccessPolicyString" (call returns unconstrained type)
 screen.adb:505:10: info: range check proved
 screen.adb:505:17: info: index check proved
@@ -1740,7 +1730,6 @@ screen.adb:505:26: info: index check proved
 screen.adb:505:33: info: length check proved
 screen.adb:505:36: info: length check proved
 screen.adb:519:16: info: implicit aspect Always_Terminates on "ClassString" has been proved, subprogram will terminate
-screen.adb:519:16: info: implicit function contract might not be available on calls from enclosing unit
 screen.adb:521:38: info: no contextual analysis of "ClassString" (call returns unconstrained type)
 screen.adb:524:10: info: range check proved
 screen.adb:524:17: info: index check proved
@@ -1748,7 +1737,6 @@ screen.adb:524:26: info: index check proved
 screen.adb:524:33: info: length check proved
 screen.adb:524:36: info: length check proved
 screen.adb:538:16: info: implicit aspect Always_Terminates on "FARString" has been proved, subprogram will terminate
-screen.adb:538:16: info: implicit function contract might not be available on calls from enclosing unit
 screen.adb:541:39: info: no contextual analysis of "FARString" (call returns unconstrained type)
 screen.adb:545:10: info: range check proved
 screen.adb:545:17: info: index check proved
@@ -1784,7 +1772,6 @@ screen.adb:773:09: info: initialization of "FailEntry" proved
 screen.adb:774:09: info: initialization of "SuccessBio" proved
 screen.adb:775:09: info: initialization of "FailBio" proved
 screen.adb:787:16: info: implicit aspect Always_Terminates on "StatsCountString" has been proved, subprogram will terminate
-screen.adb:787:16: info: implicit function contract might not be available on calls from enclosing unit
 screen.adb:790:32: info: no contextual analysis of "StatsCountString" (call returns unconstrained type)
 screen.adb:794:10: info: range check proved
 screen.adb:794:17: info: index check proved
@@ -1950,7 +1937,6 @@ tokenreader.adb:116:39: info: range check proved
 tokenreader.adb:129:13: info: implicit aspect Always_Terminates on "GetCardState" has been proved, subprogram will terminate
 tokenreader.adb:135:37: info: range check proved
 tokenreader.adb:148:13: info: implicit aspect Always_Terminates on "MakeDescription" has been proved, subprogram will terminate
-tokenreader.adb:148:13: info: implicit function contract might not be available on implicit recursive calls
 tokenreader.adb:154:07: info: initialization of "TheCodeName" proved
 tokenreader.adb:166:14: info: data dependencies proved
 tokenreader.adb:170:14: info: flow dependencies proved
@@ -2090,7 +2076,6 @@ userentry.adb:442:07: info: initialization of "MatchResult" proved
 userentry.adb:443:07: info: initialization of "AchievedFAR" proved
 userentry.adb:444:07: info: initialization of "MaxFAR" proved
 userentry.adb:456:16: info: implicit aspect Always_Terminates on "AchievedFARDescription" has been proved, subprogram will terminate
-userentry.adb:456:16: info: implicit function contract might not be available on calls from enclosing unit
 userentry.adb:457:14: info: data dependencies proved
 userentry.adb:471:17: info: data dependencies proved
 userentry.adb:473:17: info: flow dependencies proved

@@ -549,7 +549,6 @@ test_sequences.adb:556:09: info: when reestablishing invariant on Get at test_se
 test_sequences.adb:556:09: info: when reestablishing invariant on Last at test_sequences.adb:580
 test_sequences.adb:564:47: info: during checks for container aggregates at test_sequences.adb:556
 test_sequences.adb:564:47: info: precondition proved (CVC5: 2 VC)
-test_sequences.adb:572:16: info: implicit function contract might not be available on calls from enclosing unit
 test_sequences.adb:577:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
 test_sequences.adb:580:16: info: implicit aspect Always_Terminates on "Last" has been proved, subprogram will terminate
 test_sequences.adb:583:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate

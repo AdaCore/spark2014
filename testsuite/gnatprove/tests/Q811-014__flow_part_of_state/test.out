@@ -10,5 +10,4 @@ initialization_and_elaboration.ads:3:08: info: flow dependencies proved
 initialization_and_elaboration.ads:4:08: medium: initial condition might fail
 initialization_and_elaboration.ads:7:11: info: data dependencies proved
 initialization_and_elaboration.ads:9:13: info: implicit aspect Always_Terminates on "Get_It" has been proved, subprogram will terminate
-initialization_and_elaboration.ads:9:13: info: implicit function contract might not be available on calls from enclosing unit
 initialization_and_elaboration.ads:10:11: info: data dependencies proved

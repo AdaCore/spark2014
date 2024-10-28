@@ -1,16 +1,12 @@
-enums.adb:12:13: info: implicit function contract might not be available on calls from enclosing unit
 enums.adb:12:13: info: types in unchecked conversion have the same size (Trivial)
 enums.adb:12:62: info: type is suitable as source for unchecked conversion (Trivial)
 enums.adb:12:76: info: type is suitable for unchecked conversion (Trivial)
-enums.adb:13:13: info: implicit function contract might not be available on calls from enclosing unit
 enums.adb:13:13: info: types in unchecked conversion have the same size (Trivial)
 enums.adb:13:62: info: type is suitable as source for unchecked conversion (Trivial)
 enums.adb:13:76: info: type is suitable for unchecked conversion (Trivial)
-enums.adb:15:13: info: implicit function contract might not be available on calls from enclosing unit
 enums.adb:15:13: info: types in unchecked conversion have the same size (Trivial)
 enums.adb:15:65: info: type is suitable as source for unchecked conversion (Trivial)
 enums.adb:15:79: info: type is suitable for unchecked conversion (Trivial)
-enums.adb:16:13: info: implicit function contract might not be available on calls from enclosing unit
 enums.adb:16:13: info: types in unchecked conversion have the same size (Trivial)
 enums.adb:16:65: info: type is suitable as source for unchecked conversion (Trivial)
 enums.adb:16:82: info: type is suitable for unchecked conversion (Trivial)
@@ -20,11 +16,9 @@ enums.adb:26:22: info: assertion proved (CVC5: 1 VC)
 enums.adb:30:11: info: data dependencies proved
 enums.adb:35:22: info: assertion proved (Z3: 1 VC)
 enums.adb:37:22: info: assertion proved (Z3: 1 VC)
-enums.adb:45:13: info: implicit function contract might not be available on calls from enclosing unit
 enums.adb:45:13: info: types in unchecked conversion have the same size (Trivial)
 enums.adb:45:63: info: type is suitable as source for unchecked conversion (Trivial)
 enums.adb:45:78: info: type is suitable for unchecked conversion (Trivial)
-enums.adb:46:13: info: implicit function contract might not be available on calls from enclosing unit
 enums.adb:46:13: info: types in unchecked conversion have the same size (Trivial)
 enums.adb:46:63: info: type is suitable as source for unchecked conversion (Trivial)
 enums.adb:46:78: info: type is suitable for unchecked conversion (Trivial)
@@ -84,7 +78,6 @@ imprecise.adb:100:76: high: type is unsuitable as a target for unchecked convers
 modular.adb:14:13: info: types in unchecked conversion have the same size (Trivial)
 modular.adb:14:64: info: type is suitable as source for unchecked conversion (Trivial)
 modular.adb:14:79: info: type is suitable for unchecked conversion (Trivial)
-modular.adb:15:13: info: implicit function contract might not be available on calls from enclosing unit
 modular.adb:15:13: info: types in unchecked conversion have the same size (Trivial)
 modular.adb:15:64: info: type is suitable as source for unchecked conversion (Trivial)
 modular.adb:15:78: info: type is suitable for unchecked conversion (Trivial)
@@ -96,7 +89,6 @@ modular.adb:27:22: info: assertion proved (CVC5: 1 VC)
 modular.adb:61:13: info: types in unchecked conversion have the same size (Trivial)
 modular.adb:61:64: info: type is suitable as source for unchecked conversion (Trivial)
 modular.adb:61:79: info: type is suitable for unchecked conversion (Trivial)
-modular.adb:62:13: info: implicit function contract might not be available on calls from enclosing unit
 modular.adb:62:13: info: types in unchecked conversion have the same size (Trivial)
 modular.adb:62:64: info: type is suitable as source for unchecked conversion (Trivial)
 modular.adb:62:78: info: type is suitable for unchecked conversion (Trivial)
@@ -120,11 +112,9 @@ modular.adb:77:42: info: division check proved (CVC5: 1 VC)
 modular.adb:78:22: info: assertion proved (CVC5: 1 VC)
 modular.adb:80:22: info: assertion proved (CVC5: 1 VC)
 modular.adb:88:22: info: assertion proved (Z3: 1 VC)
-modular.adb:120:13: info: implicit function contract might not be available on calls from enclosing unit
 modular.adb:120:13: info: types in unchecked conversion have the same size (Trivial)
 modular.adb:120:64: info: type is suitable as source for unchecked conversion (Trivial)
 modular.adb:120:79: info: type is suitable for unchecked conversion (Trivial)
-modular.adb:121:13: info: implicit function contract might not be available on calls from enclosing unit
 modular.adb:121:13: info: types in unchecked conversion have the same size (Trivial)
 modular.adb:121:64: info: type is suitable as source for unchecked conversion (Trivial)
 modular.adb:121:78: info: type is suitable for unchecked conversion (Trivial)
@@ -144,7 +134,6 @@ modular.adb:134:49: info: division check proved (CVC5: 1 VC)
 modular.adb:135:22: info: assertion proved (CVC5: 1 VC)
 modular.adb:137:22: info: assertion proved (CVC5: 1 VC)
 modular.adb:143:22: info: assertion proved (Z3: 1 VC)
-modular.adb:148:13: info: implicit function contract might not be available on calls from enclosing unit
 modular.adb:148:13: info: types in unchecked conversion have the same size (Trivial)
 modular.adb:148:69: info: type is suitable as source for unchecked conversion (Trivial)
 modular.adb:148:83: info: type is suitable for unchecked conversion (Trivial)
@@ -154,7 +143,6 @@ modular.adb:149:83: info: type is suitable for unchecked conversion (Trivial)
 modular.adb:152:11: info: data dependencies proved
 modular.adb:157:22: info: assertion proved (Z3: 1 VC)
 modular.adb:158:22: info: assertion proved (Z3: 1 VC)
-modular.adb:196:13: info: implicit function contract might not be available on calls from enclosing unit
 modular.adb:196:13: info: types in unchecked conversion have the same size (Trivial)
 modular.adb:196:65: info: type is suitable as source for unchecked conversion (Trivial)
 modular.adb:196:79: info: type is suitable for unchecked conversion (Trivial)
@@ -168,7 +156,6 @@ modular.adb:213:16: info: implicit aspect Always_Terminates on "Of_U32" has been
 modular.adb:227:13: info: types in unchecked conversion have the same size (Trivial)
 modular.adb:227:62: info: type is suitable as source for unchecked conversion (Trivial)
 modular.adb:227:77: info: type is suitable for unchecked conversion (Trivial)
-modular.adb:228:13: info: implicit function contract might not be available on calls from enclosing unit
 modular.adb:228:13: info: types in unchecked conversion have the same size (Trivial)
 modular.adb:228:62: info: type is suitable as source for unchecked conversion (Trivial)
 modular.adb:228:76: info: type is suitable for unchecked conversion (Trivial)
@@ -180,7 +167,6 @@ modular.adb:240:22: info: assertion proved (CVC5: 1 VC)
 signed.adb:14:13: info: types in unchecked conversion have the same size (Trivial)
 signed.adb:14:64: info: type is suitable as source for unchecked conversion (Trivial)
 signed.adb:14:79: info: type is suitable for unchecked conversion (Trivial)
-signed.adb:15:13: info: implicit function contract might not be available on calls from enclosing unit
 signed.adb:15:13: info: types in unchecked conversion have the same size (Trivial)
 signed.adb:15:64: info: type is suitable as source for unchecked conversion (Trivial)
 signed.adb:15:78: info: type is suitable for unchecked conversion (Trivial)
@@ -192,7 +178,6 @@ signed.adb:27:22: medium: assertion might fail [possible fix: subprogram at line
 signed.adb:61:13: info: types in unchecked conversion have the same size (Trivial)
 signed.adb:61:64: info: type is suitable as source for unchecked conversion (Trivial)
 signed.adb:61:79: info: type is suitable for unchecked conversion (Trivial)
-signed.adb:62:13: info: implicit function contract might not be available on calls from enclosing unit
 signed.adb:62:13: info: types in unchecked conversion have the same size (Trivial)
 signed.adb:62:64: info: type is suitable as source for unchecked conversion (Trivial)
 signed.adb:62:78: info: type is suitable for unchecked conversion (Trivial)
@@ -262,27 +247,21 @@ uc_sign.ads:29:13: info: types in unchecked conversion have the same size (Trivi
 uc_sign.ads:29:64: info: type is suitable as source for unchecked conversion (Trivial)
 uc_sign.ads:29:79: info: type is suitable for unchecked conversion (Trivial)
 uc_sign.ads:31:20: warning: unused variable "Val"
-unsigned.adb:9:13: info: implicit function contract might not be available on calls from enclosing unit
 unsigned.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
 unsigned.adb:9:67: info: type is suitable as source for unchecked conversion (Trivial)
 unsigned.adb:9:82: info: type is suitable for unchecked conversion (Trivial)
-unsigned.adb:10:13: info: implicit function contract might not be available on calls from enclosing unit
 unsigned.adb:10:13: info: types in unchecked conversion have the same size (Trivial)
 unsigned.adb:10:67: info: type is suitable as source for unchecked conversion (Trivial)
 unsigned.adb:10:82: info: type is suitable for unchecked conversion (Trivial)
-unsigned.adb:12:13: info: implicit function contract might not be available on calls from enclosing unit
 unsigned.adb:12:13: info: types in unchecked conversion have the same size (Trivial)
 unsigned.adb:12:67: info: type is suitable as source for unchecked conversion (Trivial)
 unsigned.adb:12:82: info: type is suitable for unchecked conversion (Trivial)
-unsigned.adb:13:13: info: implicit function contract might not be available on calls from enclosing unit
 unsigned.adb:13:13: info: types in unchecked conversion have the same size (Trivial)
 unsigned.adb:13:67: info: type is suitable as source for unchecked conversion (Trivial)
 unsigned.adb:13:82: info: type is suitable for unchecked conversion (Trivial)
-unsigned.adb:15:13: info: implicit function contract might not be available on calls from enclosing unit
 unsigned.adb:15:13: info: types in unchecked conversion have the same size (Trivial)
 unsigned.adb:15:67: info: type is suitable as source for unchecked conversion (Trivial)
 unsigned.adb:15:82: info: type is suitable for unchecked conversion (Trivial)
-unsigned.adb:16:13: info: implicit function contract might not be available on calls from enclosing unit
 unsigned.adb:16:13: info: types in unchecked conversion have the same size (Trivial)
 unsigned.adb:16:67: info: type is suitable as source for unchecked conversion (Trivial)
 unsigned.adb:16:82: info: type is suitable for unchecked conversion (Trivial)

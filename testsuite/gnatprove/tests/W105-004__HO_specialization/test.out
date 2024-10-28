@@ -14,7 +14,6 @@ test_ho_arrays.adb:17:36: info: loop invariant preservation proved (CVC5: 1 VC)
 test_ho_arrays.adb:17:65: info: initialization check proved (CVC5: 2 VC)
 test_ho_arrays.adb:17:70: info: index check proved (CVC5: 4 VC)
 test_ho_arrays.adb:17:81: info: index check proved (CVC5: 4 VC)
-test_ho_arrays.adb:22:13: info: function contract might not be available on implicit recursive calls
 test_ho_arrays.adb:22:13: info: implicit aspect Always_Terminates on "Add_To_All" has been proved, subprogram will terminate
 test_ho_arrays.adb:23:50: info: overflow check proved (CVC5: 2 VC)
 test_ho_arrays.adb:24:14: info: postcondition proved (CVC5: 3 VC)
@@ -22,10 +21,8 @@ test_ho_arrays.adb:25:59: info: index check proved (CVC5: 2 VC)
 test_ho_arrays.adb:25:67: info: index check proved (CVC5: 2 VC)
 test_ho_arrays.adb:25:70: info: overflow check proved (CVC5: 2 VC)
 test_ho_arrays.adb:28:16: info: implicit aspect Always_Terminates on "Safe_Add_N" has been proved, subprogram will terminate
-test_ho_arrays.adb:28:16: info: implicit function contract might not be available on calls from enclosing unit
 test_ho_arrays.adb:29:31: info: overflow check proved (CVC5: 2 VC)
 test_ho_arrays.adb:29:42: info: overflow check proved (CVC5: 2 VC)
-test_ho_arrays.adb:34:13: info: function contract might not be available on implicit recursive calls
 test_ho_arrays.adb:34:13: info: implicit aspect Always_Terminates on "Add_To_All_Bad" has been proved, subprogram will terminate
 test_ho_arrays.adb:35:50: info: overflow check proved (CVC5: 2 VC)
 test_ho_arrays.adb:36:14: info: postcondition proved (CVC5: 3 VC)
@@ -33,18 +30,15 @@ test_ho_arrays.adb:37:63: info: index check proved (CVC5: 2 VC)
 test_ho_arrays.adb:37:71: info: index check proved (CVC5: 2 VC)
 test_ho_arrays.adb:37:74: info: overflow check proved (CVC5: 2 VC)
 test_ho_arrays.adb:40:16: info: implicit aspect Always_Terminates on "Bad_Add_N" has been proved, subprogram will terminate
-test_ho_arrays.adb:40:16: info: implicit function contract might not be available on calls from enclosing unit
 test_ho_arrays.adb:40:61: info: overflow check proved (CVC5: 2 VC)
 test_ho_arrays.adb:41:35: info: overflow check proved (CVC5: 2 VC)
 test_ho_arrays.adb:43:22: medium: precondition of target might not be strong enough to imply precondition of source
 test_ho_specialization.adb:1:11: warning: subprogram "Test_HO_Specialization" has no effect
-test_ho_specialization.adb:8:13: info: function contract might not be available on calls from enclosing unit
 test_ho_specialization.adb:8:32: info: function contract feasibility proved (CVC5: 1 VC)
 test_ho_specialization.adb:10:06: info: flow dependencies proved
 test_ho_specialization.adb:11:14: info: postcondition proved (CVC5: 1 VC)
 test_ho_specialization.adb:11:26: medium: implicit aspect Always_Terminates on "Call" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
 test_ho_specialization.adb:15:07: medium: implicit aspect Always_Terminates on "Call" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
-test_ho_specialization.adb:18:13: info: function contract might not be available on calls from enclosing unit
 test_ho_specialization.adb:18:37: info: function contract feasibility proved (CVC5: 1 VC)
 test_ho_specialization.adb:20:06: info: flow dependencies proved
 test_ho_specialization.adb:21:14: info: postcondition proved (CVC5: 2 VC)
@@ -64,13 +58,9 @@ test_ho_specialization.adb:53:14: info: postcondition proved (CVC5: 1 VC)
 test_ho_specialization.adb:53:33: medium: implicit aspect Always_Terminates on "Use_In_Expr" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
 test_ho_specialization.adb:56:07: medium: implicit aspect Always_Terminates on "Use_In_Expr" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
 test_ho_specialization.adb:60:13: info: implicit aspect Always_Terminates on "Read_V" has been proved, subprogram will terminate
-test_ho_specialization.adb:60:13: info: implicit function contract might not be available on calls from enclosing unit
 test_ho_specialization.adb:61:13: info: implicit aspect Always_Terminates on "Read_V_2" has been proved, subprogram will terminate
-test_ho_specialization.adb:61:13: info: implicit function contract might not be available on calls from enclosing unit
 test_ho_specialization.adb:62:13: info: implicit aspect Always_Terminates on "Cst_1" has been proved, subprogram will terminate
-test_ho_specialization.adb:62:13: info: implicit function contract might not be available on calls from enclosing unit
 test_ho_specialization.adb:63:13: info: implicit aspect Always_Terminates on "Cst_2" has been proved, subprogram will terminate
-test_ho_specialization.adb:63:13: info: implicit function contract might not be available on calls from enclosing unit
 test_ho_specialization.adb:65:17: info: function contract feasibility proved (CVC5: 1 VC)
 test_ho_specialization.adb:65:56: info: null exclusion check proved (Trivial: 1 VC)
 test_ho_specialization.adb:66:04: info: initialization of "I" proved
