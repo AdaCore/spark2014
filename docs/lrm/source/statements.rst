@@ -257,8 +257,10 @@ the value an expression had upon entry to the subprogram.
 
 7. The expression of a ``numeric_loop_variant_item`` shall be either
    of a discrete type,
-   of a subtype of ``Ada.Numerics.Big_Numbers.Big_Integers.Big_Integer`` or
-   of a subtype of ``Ada.Numerics.Big_Numbers.Big_Integers_Ghost.Big_Integer``.
+   of a subtype of ``Ada.Numerics.Big_Numbers.Big_Integers.Big_Integer``,
+   of a subtype of ``Ada.Numerics.Big_Numbers.Big_Integers_Ghost.Big_Integer``
+   or
+   of a subtype of ``SPARK.Big_Integers.Big_Integer``.
    In the second and third cases, the associated ``change_direction`` shall be
    Decreases.
 
