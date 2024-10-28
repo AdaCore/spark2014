@@ -5734,16 +5734,31 @@ package body SPARK_Definition is
       end if;
 
       --  A call to a function with side effects may only occur as the
-      --  [right-hand side] expression of an assignment statement. (SPARK
-      --  RM 6.1.11(4))
+      --  [right-hand side] expression of an assignment statement or of a local
+      --  object declaration without a block. (SPARK RM 6.1.11(4))
+      --  Also reject declaration of internal objects introduced by the
+      --  frontend.
 
       if Ekind (E) = E_Function
         and then Is_Function_With_Side_Effects (E)
-        and then Nkind (Parent (N)) /= N_Assignment_Statement
+        and then (Nkind (Parent (N)) not in N_Assignment_Statement
+                                          | N_Object_Declaration
+                  or else
+                    (Nkind (Parent (N)) = N_Object_Declaration
+                     and then Is_Internal (Defining_Entity (Parent (N))))
+                  or else not Is_Declared_In_Statements (Parent (N)))
       then
-         Mark_Violation
-           ("call to a function with side effects outside of assignment", N,
-            Code => EC_Call_To_Function_With_Side_Effects);
+         declare
+            Msg : constant String :=
+              (if Nkind (Parent (N)) = N_Object_Declaration
+                 and then not Is_Declared_In_Statements (Parent (N))
+               then "in declarative part"
+               else "outside of assignment or object declaration");
+         begin
+            Mark_Violation
+              ("call to a function with side effects " & Msg, N,
+               Code => EC_Call_To_Function_With_Side_Effects);
+         end;
          return;
       end if;
 

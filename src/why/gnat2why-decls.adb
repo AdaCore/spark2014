@@ -157,8 +157,9 @@ package body Gnat2Why.Decls is
       --  for constants inserted by the compiler, as their initialization
       --  expression may not be expressible as a logical term (e.g., it may
       --  include X'Loop_Entry for a constant inserted in a block of actions).
-      --  We also check for the presence of calls to volatile functions and
-      --  allocators which we can't handle in axioms.
+      --  We also check for the presence of calls to volatile functions,
+      --  functions with side effects and allocators which we can't handle in
+      --  axioms.
       --  Finally we check if we are in a protected object, as in that case the
       --  expression may require the "self" object, but it's not set up here.
       --  Static expressions can't reference "self", so they are fine.
@@ -166,6 +167,7 @@ package body Gnat2Why.Decls is
       elsif Present (Expr)
         and then not Expression_Contains_Old_Or_Loop_Entry (Expr)
         and then not Contains_Volatile_Function_Call (Expr)
+        and then not Is_Function_Call_With_Side_Effects (Expr)
         and then not Contains_Allocator (Expr)
         and then (not Within_Protected_Type (E)
                   or else Is_Static_Expression (Expr))
