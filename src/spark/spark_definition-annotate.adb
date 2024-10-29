@@ -682,7 +682,8 @@ package body SPARK_Definition.Annotate is
       function Is_Signed_Or_Big_Integer_Type (Ty : Entity_Id) return Boolean is
         (Is_Signed_Integer_Type (Ty)
          or else Is_RTE (Base_Type (Ty), RE_Big_Integer)
-         or else Is_RTE (Base_Type (Ty), RO_GH_Big_Integer));
+         or else Is_RTE (Base_Type (Ty), RO_GH_Big_Integer)
+         or else Is_RTE (Base_Type (Ty), RO_SP_Big_Integer));
 
       Ok : Boolean;
 
