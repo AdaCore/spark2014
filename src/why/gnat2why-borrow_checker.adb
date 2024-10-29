@@ -2873,7 +2873,6 @@ package body Gnat2Why.Borrow_Checker is
          --  The following nodes are never generated in GNATprove mode
 
          when N_Reference
-            | N_Unchecked_Expression
          =>
             raise Program_Error;
       end case;
