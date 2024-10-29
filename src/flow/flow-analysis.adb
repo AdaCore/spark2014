@@ -6399,6 +6399,77 @@ package body Flow.Analysis is
                         end if;
                      end if;
                   end loop;
+
+                  for N of Atr.Indirect_Calls loop
+
+                     --  We emit messages for dispatching equalities like we do
+                     --  for other dispatching calls.
+
+                     if Calls_Dispatching_Equality (N) then
+                        Proved := False;
+                        Error_Msg_Flow
+                          (FA          => FA,
+                           Msg         => Check_Msg
+                             ("indirect dispatching call to record equality " &
+                              "might be nonterminating"),
+                           Explanation => ("call could hide recursive " &
+                                           "calls"),
+                           Severity    => Medium_Check_Kind,
+                           N           => Atr.Error_Location,
+                           F1          => Spec_Entity_Id,
+                           Tag         => Subprogram_Termination,
+                           Vertex      => V);
+
+                     --  Otherwise, we check whether the analyzed subprogram is
+                     --  recursive with the called primitive equalities.
+
+                     else
+                        declare
+                           Typ   : constant Node_Id :=
+                             (if Nkind (N) = N_Function_Call
+                              then Etype (First_Actual (N))
+                              else Etype (Left_Opnd (N)));
+
+                           Funcs : constant Node_Sets.Set :=
+                             Called_Primitive_Equalities
+                               (Typ,
+                                Nkind (N) in N_Op);
+                        begin
+                           for E of Funcs loop
+                              if E = FA.Spec_Entity then
+
+                                 Proved := False;
+                                 Error_Msg_Flow
+                                   (FA       => FA,
+                                    Msg      => Check_Msg
+                                      ("subprogram is recursive"),
+                                    Severity => Medium_Check_Kind,
+                                    N        => Atr.Error_Location,
+                                    F1       => Spec_Entity_Id,
+                                    Tag      => Subprogram_Termination,
+                                    Vertex   => V);
+
+                              elsif Mutually_Recursive (FA.Spec_Entity, E) then
+                                 Proved := False;
+                                 Error_Msg_Flow
+                                   (FA       => FA,
+                                    Msg      => Check_Msg
+                                      ("& and record equality on type & are " &
+                                       "mutually recursive"),
+                              Severity => Medium_Check_Kind,
+                                    N        => Atr.Error_Location,
+                                    F1       => Spec_Entity_Id,
+                                    F2       => Direct_Mapping_Id
+                                      (FA.Spec_Entity),
+                                    F3       => Direct_Mapping_Id (Typ),
+                                    Tag      => Subprogram_Termination,
+                                    Vertex   => V);
+
+                              end if;
+                           end loop;
+                        end;
+                     end if;
+                  end loop;
                end if;
             end;
          end loop;

@@ -1170,7 +1170,7 @@ package body Gnat2Why.Error_Messages is
          end if;
          return Why3_Prove_Result'
            (Id         => VC_Id (Integer'(Get (Get (V, "id")))),
-            Kind       => VC_Kind'Value (Get (Get (V, "reason"))),
+            Kind       => VC_Kind'Value (Get (Get (V, "check_kind"))),
             Result     => Get (Get (V, "result")),
             EI         => E,
             VC_File    =>

@@ -197,7 +197,7 @@ r.adb:57:04: medium: implicit aspect Always_Terminates on "R" could be incorrect
 r.adb:58:04: warning: assuming "OS_Exit" has no effect on global items
 r.adb:58:04: warning: no Global contract available for "OS_Exit"
 r.adb:58:04: warning: statement has no effect
-r.adb:59:04: medium: implicit aspect Always_Terminates on "R" could be incorrect, call to "Proc2" might be nonterminating [possible fix: annotate "Proc2" with aspect Always_Terminates]
+r.adb:59:04: warning: this statement is never reached
 r.adb:59:04: warning: unreachable code
 spark-containers-parameter_checks.ads:32:19: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:392, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function My_Equal_01 or turning it into an expression function]
 spark-containers-parameter_checks.ads:37:19: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:392, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function My_Equal_01 or turning it into an expression function]

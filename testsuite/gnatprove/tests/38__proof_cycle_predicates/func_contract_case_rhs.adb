@@ -8,7 +8,7 @@ procedure Func_Contract_Case_RHS with SPARK_Mode is
    function Foo (X : S) return Boolean with Import;
 
    function G (X : T) return Boolean is (X = 1)
-   with Contract_Cases => (others  => Foo (X));
+   with Contract_Cases => (others => Foo (X));
 
    function F (X : T) return Boolean is
      (G (X));

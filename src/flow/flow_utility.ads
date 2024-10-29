@@ -45,6 +45,7 @@ package Flow_Utility is
      (N                  : Node_Id;
       Scop               : Flow_Scope;
       Function_Calls     : in out Call_Sets.Set;
+      Indirect_Calls     : in out Node_Sets.Set;
       Proof_Dependencies : in out Node_Sets.Set;
       Tasking            : in out Tasking_Info;
       Generating_Globals : Boolean)
@@ -477,6 +478,13 @@ package Flow_Utility is
    --  cases and the initial condition; or an empty list of none of these
    --  exist.
 
+   function Calls_Dispatching_Equality (N : Node_Id) return Boolean
+   with Pre => Nkind (N) in N_Function_Call
+                          | N_Membership_Test
+                          | N_Op_Eq
+                          | N_Op_Ne;
+   --  Returns True iff N indirectly calls a dispatching equality
+
    function Is_Initialized_At_Elaboration
      (F : Flow_Id;
       S : Flow_Scope)
@@ -818,16 +826,23 @@ package Flow_Utility is
    function To_Subprograms (Calls : Call_Sets.Set) return Node_Sets.Set;
    --  Convert calls to called entities
 
+   function Called_Primitive_Equalities
+     (Ty           : Entity_Id;
+      Force_Predef : Boolean := False)
+      return Node_Sets.Set;
+   --  Return the set of user-defined equalities called by the primitive
+   --  equality of Ty. If Force_Predef is True, use the predefined equality
+   --  even if Ty is a type on which Ada equality uses the primitive equality.
+
 private
 
    procedure Process_Predicate_And_Invariant_Internal
-     (N                  : Node_Or_Entity_Id;
+     (Typ                : Type_Kind_Id;
       Scop               : Flow_Scope;
       Include_Invariant  : Boolean;
       Proof_Dependencies : in out Node_Sets.Set;
       Types_Seen         : in out Node_Sets.Set)
-   with Pre  => N in N_Has_Etype_Id,
-        Post => Proof_Dependencies'Old.Is_Subset (Proof_Dependencies);
+   with Post => Proof_Dependencies'Old.Is_Subset (Proof_Dependencies);
    --  Like Process_Predicate_And_Invariant, with an additional parameter
    --  Types_Seen that allows to track which type predicates we already
    --  traversed to pick proof dependencies.

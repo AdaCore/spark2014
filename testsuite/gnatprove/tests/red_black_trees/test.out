@@ -1506,6 +1506,7 @@ binary_trees.ads:426:13: info: implicit aspect Always_Terminates on "Tree_Struct
 binary_trees.ads:427:06: info: data dependencies proved
 red_black_trees.adb:16:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
 red_black_trees.adb:18:17: info: postcondition proved (CVC5: 1 VC)
+red_black_trees.adb:23:13: info: function contract might not be available on calls from enclosing unit
 red_black_trees.adb:23:13: info: implicit aspect Always_Terminates on "Nb_Blacks" has been proved, subprogram will terminate
 red_black_trees.adb:31:08: medium: postcondition might fail, cannot prove Nb_Blacks'Result (Empty) = (True, 0, 0)
 red_black_trees.adb:36:20: info: precondition proved (CVC5: 1 VC)
@@ -1964,6 +1965,7 @@ red_black_trees.ads:30:47: info: invariant check proved (CVC5: 1 VC)
 red_black_trees.ads:36:09: medium: invariant check might fail on default value
 red_black_trees.ads:42:13: info: implicit aspect Always_Terminates on "Color" has been proved, subprogram will terminate
 red_black_trees.ads:43:46: info: index check proved (CVC5: 2 VC)
+red_black_trees.ads:45:13: info: function contract might not be available on calls from enclosing unit
 red_black_trees.ads:45:13: info: implicit aspect Always_Terminates on "Same_Nb_Blacks" has been proved, subprogram will terminate
 red_black_trees.ads:46:14: info: postcondition proved (CVC5: 1 VC)
 red_black_trees.ads:48:13: info: implicit aspect Always_Terminates on "Invariant" has been proved, subprogram will terminate
@@ -1990,6 +1992,7 @@ search_trees.adb:39:13: info: loop invariant initialization proved (CVC5: 1 VC; 
 search_trees.adb:41:20: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (for some I in Index_Type => Model (T.Struct, T.Root) (I).K and then T.Values (I) = V) [possible fix: subprogram at search_trees.ads:38 should mention T in a precondition]
 search_trees.adb:42:25: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:42:43: info: range check proved (CVC5: 4 VC)
+search_trees.adb:53:13: info: function contract might not be available on calls from enclosing unit
 search_trees.adb:53:13: info: implicit aspect Always_Terminates on "Ordered_Prefix" has been proved, subprogram will terminate
 search_trees.adb:54:10: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:54:47: info: overflow check proved (CVC5: 2 VC)
@@ -3102,9 +3105,9 @@ search_trees.ads:46:44: info: initialization of "I" proved
 search_trees.ads:50:08: info: for T before the call at search_trees.ads:20
 search_trees.ads:50:08: info: invariant check proved (CVC5: 1 VC)
 search_trees.ads:51:06: info: disjoint contract cases proved (CVC5: 1 VC)
+search_trees.ads:59:09: medium: contract case might fail
 search_trees.ads:59:19: info: for T before the call at search_trees.ads:38
 search_trees.ads:59:19: info: invariant check proved (CVC5: 1 VC)
-search_trees.ads:59:34: medium: contract case might fail
 search_trees.ads:61:20: medium: for T before the call at search_trees.ads:22
 search_trees.ads:61:20: medium: invariant check might fail
 search_trees.ads:61:20: medium: precondition might fail
@@ -3154,7 +3157,7 @@ search_trees.ads:75:54: medium: invariant check might fail
 search_trees.ads:75:54: medium: precondition might fail, cannot prove Size (T) /= 0
 search_trees.ads:80:09: info: for T before the call at search_trees.ads:20
 search_trees.ads:80:09: info: invariant check proved (CVC5: 1 VC)
-search_trees.ads:80:22: medium: contract case might fail
+search_trees.ads:80:09: medium: contract case might fail
 search_trees.ads:82:20: medium: for T before the call at search_trees.ads:20
 search_trees.ads:82:20: medium: invariant check might fail
 search_trees.ads:83:20: medium: for T before the call at search_trees.ads:22
@@ -3174,7 +3177,7 @@ search_trees.ads:87:48: medium: for T before the call at search_trees.ads:25
 search_trees.ads:87:48: medium: invariant check might fail
 search_trees.ads:87:64: medium: for T before the call at search_trees.ads:25
 search_trees.ads:87:64: medium: invariant check might fail
-search_trees.ads:94:16: medium: contract case might fail
+search_trees.ads:94:09: medium: contract case might fail
 search_trees.ads:96:20: medium: for T before the call at search_trees.ads:31
 search_trees.ads:96:20: medium: invariant check might fail
 search_trees.ads:96:20: medium: precondition might fail
@@ -3658,6 +3661,7 @@ search_trees.ads:313:09: info: invariant check proved on default value (CVC5: 1 
 search_trees.ads:321:40: info: range check proved (CVC5: 2 VC)
 search_trees.ads:322:20: info: precondition proved (CVC5: 1 VC)
 search_trees.ads:322:43: info: range check proved (CVC5: 2 VC)
+search_trees.ads:324:13: info: function contract might not be available on calls from enclosing unit
 search_trees.ads:324:13: info: implicit aspect Always_Terminates on "Ordered_Leafs" has been proved, subprogram will terminate
 search_trees.ads:333:14: info: postcondition proved (CVC5: 1 VC)
 search_trees.ads:336:07: info: precondition proved (CVC5: 1 VC)

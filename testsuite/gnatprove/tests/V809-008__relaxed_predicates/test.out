@@ -169,6 +169,7 @@ test_predicates_2.adb:61:11: medium: in value of subprogram parameter after the 
 test_predicates_2.adb:61:11: medium: in value of subprogram parameter after the call at test_predicates_2.adb:61
 test_predicates_2.adb:61:11: medium: initialization check might fail
 test_predicates_2.adb:61:11: medium: predicate check might fail
+test_scalar_preds.adb:7:13: info: function contract might not be available on calls from enclosing unit
 test_scalar_preds.adb:25:06: info: data dependencies proved
 test_scalar_preds.adb:28:22: info: assertion proved (CVC5: 1 VC)
 test_scalar_preds.adb:34:21: medium: for parameter X at the end of the subprogram at test_scalar_preds.adb:34

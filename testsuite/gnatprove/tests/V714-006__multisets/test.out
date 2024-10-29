@@ -71,11 +71,12 @@ multiset.ads:82:13: info: precondition proved (CVC5: 1 VC)
 multiset.ads:87:06: info: data dependencies proved
 multiset.ads:88:16: info: for Container before the call at multiset.ads:69
 multiset.ads:88:16: info: invariant check proved (CVC5: 1 VC)
-multiset.ads:107:13: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
+multiset.ads:97:13: info: function contract might not be available on calls from enclosing unit
+multiset.ads:107:13: info: expression function body of subprograms with a numeric variant might not be available on recursive calls and on calls from enclosing unit
 multiset.ads:107:13: info: implicit aspect Always_Terminates on "Cardinality_Rec" has been proved, subprogram will terminate
-multiset.ads:107:13: info: implicit function contract might not be available on recursive calls
+multiset.ads:107:13: info: implicit function contract might not be available on recursive calls or calls from enclosing unit
 multiset.ads:109:46: info: range check proved (CVC5: 1 VC)
-multiset.ads:111:09: info: invariant check proved on default value (CVC5: 1 VC)
+multiset.ads:111:09: medium: invariant check might fail on default value
 multiset.ads:113:29: info: in default value of private type at multiset.ads:17
 multiset.ads:113:29: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 multiset.ads:117:13: info: implicit aspect Always_Terminates on "Invariant" has been proved, subprogram will terminate

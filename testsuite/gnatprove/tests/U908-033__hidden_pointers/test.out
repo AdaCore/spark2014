@@ -152,7 +152,9 @@ example_recursive.adb:269:69: info: null exclusion check proved
 example_recursive.adb:271:22: info: tag check proved
 example_recursive.adb:271:36: info: pointer dereference check proved
 example_recursive.adb:273:19: info: precondition proved
+example_recursive.adb:273:19: medium: call to ghost subprogram "Prove_Append_Valid" might be nonterminating [possible fix: annotate "Prove_Append_Valid" with aspect Always_Terminates]
 example_recursive.adb:274:19: info: precondition proved
+example_recursive.adb:274:19: medium: call to ghost subprogram "Prove_Append_Reach" might be nonterminating [possible fix: annotate "Prove_Append_Reach" with aspect Always_Terminates]
 example_recursive.adb:275:42: info: overflow check proved
 example_recursive.adb:278:16: info: precondition proved
 example_recursive.adb:278:91: info: precondition proved
@@ -167,11 +169,13 @@ example_recursive.adb:291:10: info: precondition proved
 example_recursive.adb:292:41: info: precondition proved
 example_recursive.adb:296:07: info: initialization of "M" proved
 example_recursive.adb:302:10: info: precondition proved
+example_recursive.adb:302:10: medium: call to ghost subprogram "Prove_Valid_Preserved" might be nonterminating [possible fix: annotate "Prove_Valid_Preserved" with aspect Always_Terminates]
 example_recursive.adb:303:30: info: precondition proved
 example_recursive.adb:303:30: info: tag check proved
 example_recursive.adb:303:64: info: overflow check proved
 example_recursive.adb:303:64: info: range check proved
 example_recursive.adb:304:10: info: precondition proved
+example_recursive.adb:304:10: medium: call to ghost subprogram "Prove_Reach_Preserved" might be nonterminating [possible fix: annotate "Prove_Reach_Preserved" with aspect Always_Terminates]
 example_recursive.adb:305:30: info: precondition proved
 example_recursive.adb:305:30: info: tag check proved
 example_recursive.adb:305:64: info: overflow check proved
@@ -216,9 +220,13 @@ example_recursive.adb:336:22: info: assertion proved
 example_recursive.adb:336:22: info: precondition proved
 example_recursive.adb:339:07: info: precondition proved
 example_recursive.adb:340:07: info: precondition proved
+example_recursive.adb:340:07: medium: call to ghost subprogram "Prove_Valid_Preserved" might be nonterminating [possible fix: annotate "Prove_Valid_Preserved" with aspect Always_Terminates]
 example_recursive.adb:341:07: info: precondition proved
+example_recursive.adb:341:07: medium: call to ghost subprogram "Prove_Reach_Preserved" might be nonterminating [possible fix: annotate "Prove_Reach_Preserved" with aspect Always_Terminates]
 example_recursive.adb:342:07: info: precondition proved
+example_recursive.adb:342:07: medium: call to ghost subprogram "Prove_Valid_Preserved" might be nonterminating [possible fix: annotate "Prove_Valid_Preserved" with aspect Always_Terminates]
 example_recursive.adb:343:07: info: precondition proved
+example_recursive.adb:343:07: medium: call to ghost subprogram "Prove_Reach_Preserved" might be nonterminating [possible fix: annotate "Prove_Reach_Preserved" with aspect Always_Terminates]
 example_recursive.adb:345:10: info: no contextual analysis of "Rand" (body not seen yet)
 example_recursive.adb:345:10: warning: assuming "Rand" has no effect on global items
 example_recursive.adb:345:10: warning: no Global contract available for "Rand"
@@ -232,6 +240,7 @@ example_recursive.adb:348:13: warning: no Global contract available for "Rand"
 example_recursive.adb:350:10: info: precondition proved
 example_recursive.adb:350:18: warning: "L3" is set by "Append" but not used after the call
 example_recursive.adb:351:10: info: precondition proved
+example_recursive.adb:351:10: medium: call to ghost subprogram "Prove_Valid_Preserved" might be nonterminating [possible fix: annotate "Prove_Valid_Preserved" with aspect Always_Terminates]
 example_recursive.adb:352:25: info: assertion proved
 example_recursive.adb:352:25: info: precondition proved
 example_recursive.adb:353:13: info: no contextual analysis of "Rand" (body not seen yet)

@@ -1024,11 +1024,11 @@ use_vectors.ads:54:26: info: range check proved
 use_vectors.ads:55:12: info: precondition proved
 use_vectors.ads:55:36: info: range check proved
 use_vectors.ads:59:13: info: implicit aspect Always_Terminates on "My_Find" has been proved, subprogram will terminate
+use_vectors.ads:64:09: info: contract case proved
 use_vectors.ads:65:11: info: precondition proved
 use_vectors.ads:65:23: info: range check proved
-use_vectors.ads:65:32: info: contract case proved
 use_vectors.ads:66:47: info: overflow check proved
-use_vectors.ads:67:16: info: contract case proved
+use_vectors.ads:67:09: info: contract case proved
 use_vectors.ads:68:18: info: precondition proved
 use_vectors.ads:68:37: info: range check proved
 use_vectors.ads:69:67: info: overflow check proved

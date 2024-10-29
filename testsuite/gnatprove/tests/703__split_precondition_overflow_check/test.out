@@ -1,0 +1,22 @@
+foo.adb:5:11: warning: subprogram "Foo" has no effect
+foo.adb:10:09: high: precondition might fail (e.g. when X = -0.0) [possible fix: subprogram at line 5 should mention X in a precondition]
+foo.adb:10:09: info: overflow check proved (CVC5: 1 VC)
+foo.adb:11:11: medium: overflow check might fail [reason for check: value must fit in a 64-bits machine integer] [possible fix: subprogram at line 5 should mention X and Y in a precondition]
+foo.adb:11:11: medium: precondition might fail [possible fix: subprogram at line 5 should mention X and Y in a precondition]
+foo.adb:12:09: info: overflow check proved (CVC5: 1 VC)
+foo.adb:12:09: medium: precondition might fail [possible fix: subprogram at line 5 should mention X and Y in a precondition]
+foo.adb:13:09: medium: overflow check might fail [reason for check: value must fit in a 64-bits machine integer] [possible fix: subprogram at line 5 should mention X in a precondition]
+foo.adb:14:09: info: overflow check proved (CVC5: 1 VC)
+foo.adb:15:09: medium: overflow check might fail [reason for check: value must fit in a 64-bits machine integer] [possible fix: subprogram at line 5 should mention X and Y in a precondition]
+foo.adb:15:09: medium: precondition might fail [possible fix: subprogram at line 5 should mention X and Y in a precondition]
+foo.adb:16:09: medium: overflow check might fail [reason for check: value must fit in a 64-bits machine integer] [possible fix: subprogram at line 5 should mention X in a precondition]
+foo.adb:16:09: medium: precondition might fail [possible fix: subprogram at line 5 should mention X in a precondition]
+foo.adb:17:09: medium: overflow check might fail [reason for check: value must fit in a 64-bits machine integer] [possible fix: subprogram at line 5 should mention X and Y in a precondition]
+foo.adb:17:09: medium: precondition might fail [possible fix: subprogram at line 5 should mention X and Y in a precondition]
+foo.adb:18:09: medium: overflow check might fail [reason for check: value must fit in a 64-bits machine integer] [possible fix: subprogram at line 5 should mention X in a precondition]
+foo.adb:19:09: medium: overflow check might fail [reason for check: value must fit in a 64-bits machine integer] [possible fix: subprogram at line 5 should mention X in a precondition]
+foo.adb:20:09: medium: overflow check might fail [reason for check: value must fit in a 64-bits machine integer] [possible fix: subprogram at line 5 should mention X in a precondition]
+foo.adb:20:09: medium: precondition might fail [possible fix: subprogram at line 5 should mention X in a precondition]
+foo.adb:21:09: info: overflow check proved (CVC5: 1 VC)
+foo.adb:22:09: info: overflow check proved (CVC5: 1 VC)
+foo.adb:22:09: medium: precondition might fail [possible fix: subprogram at line 5 should mention X in a precondition]

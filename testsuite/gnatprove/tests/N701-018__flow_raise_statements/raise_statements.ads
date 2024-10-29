@@ -21,6 +21,6 @@ is
      with Global => (In_Out => G);
 
    procedure OK_3 (OK : Boolean)
-     with Global => (Output => G),
+     with Global => (In_Out => G),
           Pre    => OK;
 end Raise_Statements;

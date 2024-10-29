@@ -797,10 +797,10 @@ package body Why.Gen.Hardcoded is
 
       elsif Is_From_Hardcoded_Generic_Unit (Subp, Elementary_Functions) then
          declare
-            Typ    : constant W_Type_Id := Base_Why_Type (Etype (Subp));
-            MF     : M_Floating_Type renames MF_Floats (Typ);
-            Nam    : constant String := Get_Name_String (Chars (Subp));
-            Symb   : constant W_Identifier_Id :=
+            Typ        : constant W_Type_Id := Base_Why_Type (Etype (Subp));
+            MF         : M_Floating_Type renames MF_Floats (Typ);
+            Nam        : constant String := Get_Name_String (Chars (Subp));
+            Symb       : constant W_Identifier_Id :=
               (case Args'Length is
                   when 1 =>
                     (if Nam = EFN.Ada_Sqrt then MF.Ada_Sqrt
@@ -839,32 +839,72 @@ package body Why.Gen.Hardcoded is
                      else raise Program_Error),
                   when others =>
                      raise Program_Error);
+            Def_Domain : constant W_Identifier_Id :=
+              (case Args'Length is
+                  when 1 =>
+                    (if Nam = EFN.Log then MF.Log_Definition_Domain
+                     elsif Nam = EFN.Cot then MF.Cot_Definition_Domain
+                     elsif Nam = EFN.Coth then MF.Coth_Definition_Domain
+                     elsif Nam = EFN.Arctanh then MF.Arctanh_Definition_Domain
+                     elsif Nam = EFN.Arccoth then MF.Arccoth_Definition_Domain
+                     elsif Nam = EFN.Arccosh then MF.Arccosh_Definition_Domain
+                     else Why_Empty),
+                  when 2 =>
+                    (if Chars (Subp) = Name_Op_Expon
+                     then MF.Ada_Power_Definition_Domain
+                     elsif Nam = EFN.Log then MF.Log_Base_Definition_Domain
+                     elsif Nam = EFN.Tan then MF.Tan_2_Definition_Domain
+                     elsif Nam = EFN.Cot then MF.Cot_2_Definition_Domain
+                     else Why_Empty),
+                  when others =>
+                    Why_Empty);
+            --  Symbol for performing the check that arguments are in the
+            --  domain of definition, when split from main symbol because
+            --  there is also an overflow check.
+
             Reason : constant VC_Kind :=
-              (if Nam in EFN.Ada_Sqrt
-                       | EFN.Sin
-                       | EFN.Cos
-                       | EFN.Arcsin
-                       | EFN.Arccos
-                       | EFN.Arctan
-                       | EFN.Arccot
-                       | EFN.Arcsinh
-                       | EFN.Arccosh
-                       | EFN.Tanh
-                       | EFN.Log
-                       | EFN.Tan
-               then VC_Precondition
-               else VC_Overflow_Check);
-            --  The kind of check is imprecise here, as we cannot separate
-            --  the overflow check from the precondition on the Why3 side.
+              (if Present (Def_Domain)
+                  or else Nam in EFN.Exp
+                               | EFN.Sinh
+                               | EFN.Cosh
+                               | EFN.Arcsinh
+                  or else (Nam = EFN.Tan and then Args'Length = 1)
+               then VC_Overflow_Check
+               else VC_Precondition);
+            --  When an elementary function has an associated Def_Domain check,
+            --  what is left is necessarily an overflow check. This is also
+            --  the case when the function is defined everywhere (over floats,
+            --  tangent is not defined over all reals).
+            --  Remaining symbols (square roots, reciprocal circular
+            --  trigonometric function) may have a domain-of-definition check,
+            --  but cannot overflow.
 
          begin
             if Domain = EW_Prog then
-               return +New_VC_Call
+               return Result : W_Expr_Id := +New_VC_Call
                  (Ada_Node => Ada_Node,
                   Name     => To_Program_Space (Symb),
                   Progs    => Args,
                   Reason   => Reason,
-                  Typ      => MF.T);
+                  Typ      => MF.T)
+               do
+                  --  We emit a precondition check for the domain of definition
+                  --  even though the actual Ada function symbol has no
+                  --  precondition. Those are not in the Ada library because
+                  --  the functions returns special infinity/Nan values instead
+                  --  of failing, but SPARK does not handle such values.
+
+                  if Present (Def_Domain) then
+                     Prepend
+                       (+New_VC_Call
+                          (Ada_Node => Ada_Node,
+                           Name     => Def_Domain,
+                           Progs    => Args,
+                           Reason   => VC_Precondition,
+                           Typ      => EW_Unit_Type),
+                        Result);
+                  end if;
+               end return;
             else
                return New_Call
                  (Ada_Node => Ada_Node,

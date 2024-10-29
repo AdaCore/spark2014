@@ -358,7 +358,9 @@ package body SPARK_Register is
                E : constant Entity_Id := Defining_Entity (N);
 
             begin
-               if Is_Dispatching_Operation (E) then
+               if Is_Dispatching_Operation (E)
+                 or else Is_User_Defined_Equality (E)
+               then
                   Register_Entity (E);
                end if;
             end;

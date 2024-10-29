@@ -1,3 +1,4 @@
+q.adb:7:14: info: function contract might not be available on calls from enclosing unit
 q.adb:7:19: warning: unused variable "X"
 q.adb:7:22: warning: unused variable "Y"
 q.adb:8:15: info: postcondition proved (Trivial: 1 VC)

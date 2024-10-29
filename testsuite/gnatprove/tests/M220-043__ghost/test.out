@@ -16,8 +16,8 @@ semantics.adb:41:07: info: analyzing call to "Nested_Non_Ghost" in context
 semantics.ads:3:13: info: implicit aspect Always_Terminates on "Ghost_Func" has been proved, subprogram will terminate
 semantics.ads:12:19: info: postcondition proved (CVC5: 1 VC)
 semantics.ads:12:43: info: overflow check proved (CVC5: 2 VC)
-semantics.ads:13:41: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
+semantics.ads:13:30: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 semantics.ads:13:44: warning: unreachable branch (CVC5: 1 VC)
-semantics.ads:14:41: medium: contract case might fail
+semantics.ads:14:30: medium: contract case might fail
 semantics.ads:14:68: info: overflow check proved (CVC5: 2 VC)
 semantics.ads:17:13: info: implicit aspect Always_Terminates on "Check_Within_Ghost_Function" has been proved, subprogram will terminate

@@ -133,10 +133,10 @@ bitwalker.ads:42:34: info: range check proved
 bitwalker.ads:43:08: info: data dependencies proved
 bitwalker.ads:44:08: info: complete contract cases proved
 bitwalker.ads:44:08: info: disjoint contract cases proved
+bitwalker.ads:45:11: info: contract case proved
 bitwalker.ads:45:36: info: range check proved
-bitwalker.ads:45:44: info: contract case proved
+bitwalker.ads:47:10: info: contract case proved
 bitwalker.ads:47:37: info: range check proved
-bitwalker.ads:47:46: info: contract case proved
 bitwalker.ads:49:21: info: precondition proved
 bitwalker.ads:49:59: info: range check proved
 bitwalker.ads:52:64: info: range check proved

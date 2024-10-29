@@ -19,11 +19,11 @@ warnings_on_lemmas.adb:29:25: info: null exclusion check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:29:28: info: null exclusion check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:29:31: medium: implicit aspect Always_Terminates on "Lemma_Ok_2" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
 warnings_on_lemmas.adb:31:55: info: function contract feasibility proved (CVC5: 1 VC)
-warnings_on_lemmas.adb:37:16: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
+warnings_on_lemmas.adb:37:09: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 warnings_on_lemmas.adb:37:30: info: null exclusion check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:37:33: info: null exclusion check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:37:36: medium: implicit aspect Always_Terminates on "Lemma_Ok_3" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
-warnings_on_lemmas.adb:38:16: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
+warnings_on_lemmas.adb:38:09: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 warnings_on_lemmas.adb:38:30: info: null exclusion check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:38:33: info: null exclusion check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:38:36: medium: implicit aspect Always_Terminates on "Lemma_Ok_3" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]

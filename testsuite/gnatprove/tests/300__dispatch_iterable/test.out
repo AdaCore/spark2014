@@ -49,3 +49,4 @@ test_dispatch_iterable_override.adb:45:16: info: precondition proved (CVC5: 1 VC
 test_dispatch_iterable_override.adb:49:28: info: precondition proved (CVC5: 1 VC)
 test_dispatch_iterable_override.adb:51:28: info: only expected exception raised (CVC5: 1 VC)
 test_dispatch_iterable_override.adb:59:19: info: assertion proved (CVC5: 1 VC)
+test_dispatch_iterable_override.adb:61:19: info: assertion proved (Z3: 1 VC)

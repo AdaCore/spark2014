@@ -447,11 +447,13 @@ package VC_Kinds is
       Lim_Conv_Incompatible_Fixed,
       Lim_Deep_Object_With_Addr,
       Lim_Deep_Value_In_Delta_Aggregate,
+      Lim_Derived_Interface,
       Lim_Entry_Family,
       Lim_Exceptional_Cases_Dispatch,
       Lim_Exceptional_Cases_Ownership,
       Lim_Ext_Aggregate_With_Type_Ancestor,
       Lim_Extension_Case_Pattern_Matching,
+      Lim_External_Initializer,
       Lim_Generic_In_Hidden_Private,
       Lim_Generic_In_Type_Inv,
       Lim_Goto_Cross_Inv,
@@ -473,6 +475,7 @@ package VC_Kinds is
       Lim_No_Return_Function,
       Lim_Non_Static_Attribute,
       Lim_Multiple_Inheritance_Interfaces,
+      Lim_Multiple_Inheritance_Mixed_SPARK_Mode,
       Lim_Multiple_Inheritance_Root,
       Lim_Multidim_Iterator,
       Lim_Multidim_Update,
@@ -655,6 +658,8 @@ package VC_Kinds is
            "extension aggregate with subtype ancestor part",
          when Lim_Extension_Case_Pattern_Matching =>
            "GNAT extension for case pattern matching",
+         when Lim_External_Initializer =>
+           "GNAT extension for embedded binary resources",
          when Lim_Iterated_Element_Association =>
            "iterated element association",
          when Lim_Multidim_Iterator =>
@@ -690,6 +695,8 @@ package VC_Kinds is
          when Lim_Deep_Value_In_Delta_Aggregate =>
            "delta aggregate with possible aliasing of components of an "
            & "ownership type",
+         when Lim_Derived_Interface =>
+            "interface derived from other interfaces",
          when Lim_Overlay_With_Deep_Object =>
            "overlay with an object of an ownership type",
          when Lim_Deep_Object_Declaration_Outside_Block =>
@@ -736,6 +743,9 @@ package VC_Kinds is
            "subprogram inherited from root and interface",
          when Lim_Multiple_Inheritance_Interfaces =>
            "subprogram inherited from multiple interfaces",
+         when Lim_Multiple_Inheritance_Mixed_SPARK_Mode =>
+            "subprogram implicitly inherited from multiple progenitor types"
+            & " with conflicting SPARK mode",
          when Lim_Primitive_Call_In_DIC =>
            "primitive calls in default initial condition",
          when Lim_Constrained_Classwide =>
