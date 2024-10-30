@@ -1359,8 +1359,10 @@ Decreases) then the expression value obtained for the call is greater
 
 4. The expression of a ``numeric_subprogram_variant_item`` shall be either
    of a discrete type,
-   of a subtype of ``Ada.Numerics.Big_Numbers.Big_Integers.Big_Integer`` or
-   of a subtype of ``Ada.Numerics.Big_Numbers.Big_Integers_Ghost.Big_Integer``.
+   of a subtype of ``Ada.Numerics.Big_Numbers.Big_Integers.Big_Integer``,
+   of a subtype of ``Ada.Numerics.Big_Numbers.Big_Integers_Ghost.Big_Integer``
+   or
+   of a subtype of ``SPARK.Big_Numbers.Big_Integer``.
    In the second and third cases the associated ``change_direction`` shall be
    Decreases.
 
