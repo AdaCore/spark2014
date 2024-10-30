@@ -49,6 +49,8 @@ with Namet;                          use Namet;
 with Nlists;                         use Nlists;
 with Nmake;
 with Opt;                            use Opt;
+with Restrict;                       use Restrict;
+with Rident;                         use Rident;
 with Rtsfind;                        use Rtsfind;
 with Sem_Aggr;
 with Sem_Aux;                        use Sem_Aux;
@@ -11149,6 +11151,39 @@ package body SPARK_Definition is
          when Pragma_Max_Queue_Length =>
             Mark (Expression (Arg1));
 
+         --  Pragma Restrictions is ignored in general by GNATprove. Warn on
+         --  particular restrictions which might be assumed to have an effect
+         --  on verification.
+
+         when Pragma_Restrictions =>
+            declare
+               Arg  : Node_Id;
+               Id   : Name_Id;
+               Expr : Node_Id;
+
+            begin
+               Arg := Arg1;
+               while Present (Arg) loop
+                  Id := Chars (Arg);
+                  Expr := Expression (Arg);
+
+                  if Id = No_Name and then Nkind (Expr) = N_Identifier then
+                     if Get_Restriction_Id (Chars (Expr)) in
+                        No_Recursion | No_Reentrancy
+                     then
+                        if Emit_Warning_Info_Messages then
+                           Error_Msg_N
+                             (Warning_Message (Warn_Restriction_Ignored),
+                              Expr,
+                              Kind => Warning_Kind);
+                        end if;
+                     end if;
+                  end if;
+
+                  Next (Arg);
+               end loop;
+            end;
+
          --  Remaining pragmas fall into two major groups:
          --
          --  Group 1 - ignored
@@ -11196,7 +11231,6 @@ package body SPARK_Definition is
             | Pragma_Pure
             | Pragma_Queuing_Policy
             | Pragma_Relative_Deadline
-            | Pragma_Restrictions
             | Pragma_Reviewable
             | Pragma_Suppress
             | Pragma_Unchecked_Union
