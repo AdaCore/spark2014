@@ -33,8 +33,8 @@ insrc.ads:55:04: error: instantiation error at a-direio.adb:58
 insrc.ads:55:04: error: instantiation error at a-direio.adb:61
 insrc.ads:55:04: error: instantiation error at a-direio.adb:62
 insrc.ads:55:04: error: instantiation error at a-direio.ads:167
-insrc.ads:55:04: error: instantiation error at a-unccon.ads:17
-insrc.ads:55:04: error: instantiation error at a-unccon.ads:18
+insrc.ads:55:04: error: instantiation error at a-unccon.ads:20
+insrc.ads:55:04: error: instantiation error at a-unccon.ads:21
 insrc.ads:55:04: error: violation of aspect SPARK_Mode at line 25
 insrc.ads:55:04: error: violation of aspect SPARK_Mode at line 25
 insrc.ads:55:04: error: violation of aspect SPARK_Mode at line 25
