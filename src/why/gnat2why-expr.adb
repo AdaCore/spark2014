@@ -6431,6 +6431,16 @@ package body Gnat2Why.Expr is
            (Left   => T,
             Right  => Invariant_For_Record (Expr, Ty_Ext));
 
+         --  Take into account the potential dynamic property of hardcoded
+         --  types.
+
+         if Is_Hardcoded_Entity (Root_Retysp (Ty_Ext)) then
+            T := New_And_Pred
+              (Left   => T,
+               Right  => Dynamic_Property_For_Hardcoded_Type
+                 (Root_Retysp (Ty_Ext), Expr));
+         end if;
+
       elsif Is_Access_Type (Ty_Ext)
         and then not Is_Access_Subprogram_Type (Ty_Ext)
         and then Type_Needs_Dynamic_Invariant
@@ -18706,47 +18716,57 @@ package body Gnat2Why.Expr is
       --  will be reused for the call to the checking procedure. Force the use
       --  of temporary identifiers to avoid duplicating checks.
 
-      Why_Name    :  W_Identifier_Id;
-
    begin
-      --  For procedures with higher order specialization, generate a
-      --  specialized version if needed and call it instead.
+      --  If Subp is hardcoded, use a specific translation
 
-      if Is_Specialized_Call (Call, Specialized_Call_Params) then
-         Create_Theory_For_HO_Specialization_If_Needed (Call);
+      if Is_Hardcoded_Entity (Subp) then
+         Result := Transform_Hardcoded_Procedure_Call (Subp, Args, Call);
 
+      else
          declare
-            HO_Specialization : constant M_HO_Specialization_Type :=
-              M_HO_Specializations (Subp)
-                (Get_Specialization_Theory_Name (Call));
+            Why_Name :  W_Identifier_Id;
          begin
-            Why_Name := HO_Specialization.Prog_Id;
-         end;
-      else
-         Why_Name :=
-           W_Identifier_Id
-             (Transform_Identifier (Params   => Params,
-                                    Expr     => Call,
-                                    Ent      => Subp,
-                                    Domain   => EW_Prog,
-                                    Selector => Selector));
-      end if;
 
-      if Why_Subp_Has_Precondition (Subp, Selector) then
-         Result :=
-           New_VC_Call
-             (Call,
-              Why_Name,
-              Args,
-              VC_Precondition,
-              Get_Typ (Why_Name));
-      else
-         Result :=
-           New_Call
-             (Call,
-              Why_Name,
-              Args,
-              Get_Typ (Why_Name));
+            --  For procedures with higher order specialization, generate a
+            --  specialized version if needed and call it instead.
+
+            if Is_Specialized_Call (Call, Specialized_Call_Params) then
+               Create_Theory_For_HO_Specialization_If_Needed (Call);
+
+               declare
+                  HO_Specialization : constant M_HO_Specialization_Type :=
+                    M_HO_Specializations (Subp)
+                    (Get_Specialization_Theory_Name (Call));
+               begin
+                  Why_Name := HO_Specialization.Prog_Id;
+               end;
+            else
+               Why_Name :=
+                 W_Identifier_Id
+                   (Transform_Identifier (Params   => Params,
+                                          Expr     => Call,
+                                          Ent      => Subp,
+                                          Domain   => EW_Prog,
+                                          Selector => Selector));
+            end if;
+
+            if Why_Subp_Has_Precondition (Subp, Selector) then
+               Result :=
+                 New_VC_Call
+                   (Call,
+                    Why_Name,
+                    Args,
+                    VC_Precondition,
+                    Get_Typ (Why_Name));
+            else
+               Result :=
+                 New_Call
+                   (Call,
+                    Why_Name,
+                    Args,
+                    Get_Typ (Why_Name));
+            end if;
+         end;
       end if;
 
       --  Insert a try block around the call to catch potential Ada exceptions

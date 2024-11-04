@@ -1,1 +1,1 @@
-foo.adb:5:19: medium: assertion might fail
+foo.adb:5:19: info: assertion proved (CVC5: 1 VC)

@@ -1594,7 +1594,10 @@ package body Gnat2Why.Subprograms is
    is
       Assume : W_Prog_Id := +Void;
    begin
-      if Ekind (E) in E_Function | E_Package | E_Task_Type then
+      if (Ekind (E) = E_Function
+          and then not Is_Function_With_Side_Effects (E))
+        or else Ekind (E) in E_Package | E_Task_Type
+      then
          return +Void;
       end if;
 

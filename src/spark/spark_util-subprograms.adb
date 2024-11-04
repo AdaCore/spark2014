@@ -584,11 +584,12 @@ package body SPARK_Util.Subprograms is
          end if;
       end if;
 
-      --  Go to the representative type of the dispatching type. If the
-      --  representative type is not visibly tagged, the subprogram is not
-      --  dispatching in SPARK.
+      --  We have the representative type of the dispatching type
 
-      D_Type := Retysp (D_Type);
+      pragma Assert (D_Type = Retysp (D_Type));
+
+      --  If the representative type is not visibly tagged, the subprogram is
+      --  not dispatching in SPARK.
 
       if Is_Tagged_Type (D_Type) then
          return D_Type;

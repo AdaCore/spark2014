@@ -32,6 +32,7 @@ Default_Storage_Pool   	      No		     Restricted access types
 Dispatching_Domain 	      No		     Ravenscar
 Dynamic_Predicate             Yes
 Elaborate_Body     	      Yes
+Exclusive_Functions           Yes
 Export             	      Yes
 External_Name		      Yes
 External_Tag		      No		     No tags

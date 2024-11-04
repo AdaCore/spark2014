@@ -7,6 +7,8 @@ test_01.adb:18:04: medium: address in address clause might not be an integral mu
 test_01.adb:18:04: warning: address specification on "Sensor" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [E0012]
 test_01.adb:18:04: warning: launch "gnatprove --explain=E0012" for more information
 test_01.adb:18:04: warning: make sure that all overlapping objects have Async_Writers set to True
+test_01.adb:41:17: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 40 should mention T in a loop invariant]
+test_01.adb:41:19: info: range check proved (CVC5: 1 VC)
 test_01.ads:5:04: info: flow dependencies proved
 test_01.ads:8:13: info: implicit aspect Always_Terminates on "Get_Reading" has been proved, subprogram will terminate
 test_01.ads:10:09: info: data dependencies proved
@@ -19,6 +21,8 @@ test_02.adb:18:04: medium: address in address clause might not be an integral mu
 test_02.adb:18:04: warning: address specification on "Sensor" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [E0012]
 test_02.adb:18:04: warning: launch "gnatprove --explain=E0012" for more information
 test_02.adb:18:04: warning: make sure that all overlapping objects have Async_Writers set to True
+test_02.adb:41:17: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 40 should mention T in a loop invariant]
+test_02.adb:41:19: info: range check proved (CVC5: 1 VC)
 test_02.ads:5:04: info: flow dependencies proved
 test_02.ads:8:13: info: implicit aspect Always_Terminates on "Get_Reading" has been proved, subprogram will terminate
 test_02.ads:10:09: info: data dependencies proved

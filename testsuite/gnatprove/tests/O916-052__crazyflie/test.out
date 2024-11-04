@@ -1,5 +1,6 @@
 console_pack.adb:9:07: warning: assuming "Set_True" always terminates
 console_pack.adb:9:07: warning: no Always_Terminates aspect available for "Set_True"
+console_pack.adb:22:07: info: range check proved (CVC5: 1 VC)
 console_pack.adb:31:07: warning: assuming "Suspend_Until_True" always terminates
 console_pack.adb:31:07: warning: no Always_Terminates aspect available for "Suspend_Until_True"
 console_pack.adb:33:07: warning: assuming "Set_True" always terminates

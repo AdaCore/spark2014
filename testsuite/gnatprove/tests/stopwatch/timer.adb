@@ -64,6 +64,8 @@ is
          --  Wait until user allows clock to run...
          Run_State.Wait_Until_Start;
 
+	 pragma Assume (Release_Time <= Ada.Real_Time.Time_Of (315360000, Ada.Real_Time.Time_Span_Zero)); -- 10 year
+
          --  Once running, count the seconds.
          Release_Time := Release_Time + Period;
          delay until Release_Time;

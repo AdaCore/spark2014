@@ -934,6 +934,135 @@ module Dynamic_Fixed_Point
     ensures { result = n /\ dynamic_property first last n}
 end
 
+module Real_time__model
+  (* This module is used to hard code Ada.Real_Time *)
+
+  use int.Int
+  use int.EuclideanDivision as EuclideanDivision
+  use real.RealInfix
+  use real.FromInt
+  use "_gnatprove_standard".Main
+  use "_gnatprove_standard".Int_Division
+  use Fixed_Point_Shared
+
+  (* Time and Time_Span are basically fixed points. Their small is given by
+     the Time_Unit constant. *)
+
+  function num_small : int
+  function den_small : int
+
+  (* of_int is used to encode Nanoseconds, Microseconds etc. The additional
+     parameters n and d allow providing a multiplying factor. of_int x n d
+     returns the result of x * n/d rounded away from zero in case of tie. *)
+
+  val function of_int (x : int) (n d : int) : __fixed
+
+  axiom of_int_def :
+    forall x : __fixed, n, d : int [of_int x n d].
+      if x = 0 then
+        of_int x n d = 0
+      else if x > 0 then
+        pos_div_relation_round_away (of_int x n d) (x * n * den_small) (d * num_small)
+      else (* x < 0 *)
+        pos_div_relation_round_away (- (of_int x n d)) (-x * n * den_small) (d * num_small)
+  meta "remove_unused:dependency" axiom of_int_def, function of_int
+
+  (* Conversions to and from duration. The rounding is away from 0 in case of
+     tie. *)
+
+  function num_small_duration : int
+  function den_small_duration : int
+
+  val function to_duration (x : __fixed) : __fixed
+
+  axiom to_duration_def :
+    forall x : __fixed [to_duration x].
+      if x = 0 then
+        to_duration x = 0
+      else if x > 0 then
+        pos_div_relation_round_away (to_duration x)
+          (x * num_small * den_small_duration)
+          (den_small * num_small_duration)
+      else (* x < 0 *)
+        pos_div_relation_round_away (- (to_duration x))
+          (- (x * num_small * den_small_duration))
+          (den_small * num_small_duration)
+  meta "remove_unused:dependency" axiom to_duration_def, function to_duration
+
+  val function of_duration (x : __fixed) : __fixed
+
+  axiom of_duration_def :
+    forall x : __fixed [of_duration x].
+      if x = 0 then
+        of_duration x = 0
+      else if x > 0 then
+        pos_div_relation_round_away (of_duration x)
+          (x * num_small_duration * den_small)
+          (den_small_duration * num_small)
+      else (* x < 0 *)
+        pos_div_relation_round_away (- (of_duration x))
+          (- (x * num_small_duration * den_small))
+          (den_small_duration * num_small)
+  meta "remove_unused:dependency" axiom of_duration_def, function of_duration
+
+  (* The rounding operation used for Time_Of is not documented. *)
+
+  val function time_of (x : int) : __fixed
+
+  axiom time_of_def :
+    forall x : __fixed [time_of x].
+      if x = 0 then
+        time_of x = 0
+      else if x > 0 then
+        pos_div_relation (time_of x) (x * den_small) (num_small)
+      else (* x < 0 *)
+        pos_div_relation (- (time_of x)) (-x * den_small) (num_small)
+  meta "remove_unused:dependency" axiom time_of_def, function time_of
+
+  (* Split uses euclidean division. *)
+
+  predicate split (t : __fixed) (q : int) (r : __fixed) =
+     q = EuclideanDivision.div (t * num_small) den_small
+     /\ r = EuclideanDivision.mod (t * num_small) den_small
+
+  (* Bounds and range predicates for Time and Time_Span *)
+
+  function time_first : __fixed
+  function time_last : __fixed
+
+  axiom time_first_assumption:
+    time_first <= 0
+  meta "remove_unused:dependency" axiom time_first_assumption, function time_first
+
+  axiom time_last_assumption:
+    time_last >= 0x8000000000000000 - 1
+  meta "remove_unused:dependency" axiom time_last_assumption, function time_last
+
+  predicate in_range_time (x: __fixed) =
+    time_first <= x <= time_last
+
+  val in_range_time (x: __fixed) : bool
+    ensures { result <-> in_range_time x }
+
+  function span_first : __fixed
+  function span_last : __fixed
+
+  axiom span_first_assumption:
+    span_first <= - 0x8000000000000000 + 1
+  meta "remove_unused:dependency" axiom span_first_assumption, function span_first
+
+  axiom span_last_assumption:
+    span_last >= 0x8000000000000000 - 1
+  meta "remove_unused:dependency" axiom span_last_assumption, function span_last
+
+  predicate in_range_span (x: __fixed) =
+    span_first <= x <= span_last
+
+  val in_range_span (x: __fixed) : bool
+    ensures { result <-> in_range_span x }
+
+end
+
 module Floating_Point_Base
   (* The module that is used as basis for all floating-point types. *)
 
