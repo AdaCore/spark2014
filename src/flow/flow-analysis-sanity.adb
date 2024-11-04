@@ -178,7 +178,8 @@ package body Flow.Analysis.Sanity is
 
       procedure Detect_Variable_Inputs
         (N        : Node_Id;
-         Err_Desc : String)
+         Err_Desc : String;
+         Cont     : String := "")
       with Pre => Nkind (N) in N_Subexpr;
       --  Emit error for any object referenced within N which does NOT denote
       --  a constant, a bound or a discriminant (of an enclosing concurrent
@@ -301,9 +302,26 @@ package body Flow.Analysis.Sanity is
       function Check_Name_Dereference (N : Node_Id) return Traverse_Result is
       begin
          if Nkind (N) = N_Explicit_Dereference then
-            Detect_Variable_Inputs
-              (N        => Prefix (N),
-               Err_Desc => "renamed dereference");
+            declare
+               Pref : constant Node_Id := Prefix (N);
+
+            begin
+               --  Skip the check if Pref is a constant, as constants of an
+               --  access-to-variable type are not considered to have variable
+               --  inputs in this case.
+
+               if Nkind (Pref) in N_Identifier | N_Expanded_Name
+                 and then Ekind (Entity (Pref)) in E_Constant | E_In_Parameter
+               then
+                  null;
+               else
+                  Detect_Variable_Inputs
+                    (N        => Pref,
+                     Err_Desc => "renamed dereference",
+                     Cont     => "introduce a constant of an anonymous "
+                     & "access type for the prefix of the dereference");
+               end if;
+            end;
 
             --  Detecting variable inputs in the prefix will detect them in
             --  nested prefixes too, so don't traverse the child nodes.
@@ -756,7 +774,8 @@ package body Flow.Analysis.Sanity is
 
       procedure Detect_Variable_Inputs
         (N        : Node_Id;
-         Err_Desc : String)
+         Err_Desc : String;
+         Cont     : String := "")
       is
          function Is_Within_Protected_Function return Boolean;
          --  Returns True if we are inside a protected function, False if
@@ -789,6 +808,10 @@ package body Flow.Analysis.Sanity is
          ----------------
 
          procedure Emit_Error (F : Flow_Id) is
+            Continuation : constant String :=
+              (if Cont'Length > 0 then Cont
+               else "use instead a constant initialized to the "
+               & "expression with variable input");
          begin
             Error_Msg_Flow
               (FA            => FA,
@@ -799,9 +822,7 @@ package body Flow.Analysis.Sanity is
                Severity      => Error_Kind,
                F1            => Entire_Variable (F),
                Continuations =>
-                 [Create
-                      ("use instead a constant initialized to the "
-                       & "expression with variable input")]);
+                 [Create (Continuation)]);
             Sane := False;
          end Emit_Error;
 
