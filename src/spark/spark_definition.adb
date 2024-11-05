@@ -2473,6 +2473,9 @@ package body SPARK_Definition is
                end Check_Raise_Context;
             begin
                Check_Raise_Context (N);
+               if Present (Expression (N)) then
+                  Mark (Expression (N));
+               end if;
             end;
 
          when N_Range =>
