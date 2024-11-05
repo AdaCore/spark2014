@@ -840,6 +840,12 @@ only part of a program:
     relaxed initialization (see :ref:`Aspect Relaxed_Initialization`) should be
     entirely initialized.
 
+  * the ``Extensions_Visible`` aspect (explicit or implicit) - the subprogram
+    shall neither access nor modify the invisible components of its parameters
+    of a specific (not class-wide) tagged type unless it has the
+    ``Extensions_Visible`` aspect (see
+    :ref:`Dynamic Types and Invisible Components`).
+
   Note that this also applies to subprograms which are called indirectly
   from SPARK code, either through a dispatching call or through a call to
   an access-to-subprogram, and to (predefined) operators like ``"="``.

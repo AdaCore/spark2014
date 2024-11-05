@@ -2615,7 +2615,7 @@ package body Gnat2Why.Subprograms is
             Params        => Params);
 
          if Is_Tagged_Type (Retysp (Etype (Function_Entity))) then
-            W_Def := New_Tag_Update
+            W_Def := New_Tag_And_Ext_Update
               (Ada_Node => Value,
                Name     => W_Def,
                Ty       => Etype (Function_Entity));
