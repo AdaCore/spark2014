@@ -672,6 +672,10 @@ package body VC_Kinds is
            "a conversion between fixed point types whose smalls are not "
           & """compatible"" according to Ada RM G.2.3(21-24): the division of"
           & " smalls is not an integer or the reciprocal of an integer",
+         when Lim_Deep_Part_Of_Variable =>
+            "object subject to ownership Part_Of a protected object",
+         when Lim_Deep_Protected_Component =>
+            "protected component subject to ownership",
          when Lim_Deep_Object_With_Addr =>
            "an object with subcomponents of an access-to-variable type "
           & "annotated with an address clause whose value is the address of "

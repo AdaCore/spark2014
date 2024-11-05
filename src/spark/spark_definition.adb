@@ -7844,6 +7844,10 @@ package body SPARK_Definition is
                                  Mark_Violation
                                    ("component of anonymous access type",
                                     Comp);
+                              elsif Is_Deep (Etype (Comp)) then
+                                 Mark_Unsupported
+                                   (Kind => Lim_Deep_Protected_Component,
+                                    N    => Comp);
                               end if;
 
                               Mark_Default_Expression (Comp);
@@ -7895,12 +7899,18 @@ package body SPARK_Definition is
 
                               if Is_Object (Part)
                                 and then Retysp_In_SPARK (Etype (Part))
-                                and then Is_Anonymous_Access_Object_Type
-                                  (Retysp (Etype (Part)))
                               then
-                                 Mark_Violation
-                                   ("anonymous access variable marked Part_Of"
-                                      & " a protected object", Part);
+                                 if Is_Anonymous_Access_Object_Type
+                                   (Retysp (Etype (Part)))
+                                 then
+                                    Mark_Violation
+                                      ("anonymous access variable marked"
+                                       & " Part_Of a protected object", Part);
+                                 elsif Is_Deep (Etype (Part)) then
+                                    Mark_Unsupported
+                                      (Kind => Lim_Deep_Part_Of_Variable,
+                                       N    => Part);
+                                 end if;
                               end if;
 
                               --  Initialization by proof of Part_Of variables

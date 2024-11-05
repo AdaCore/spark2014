@@ -190,37 +190,15 @@ spark02.adb:34:09: error: call to allocating function not stored in object as pa
 spark02.adb:34:09: error: violation of pragma SPARK_Mode at test.adc:3
 spark02.adb:35:09: error: expression as "in out" parameter is not allowed in SPARK
 spark02.adb:35:09: error: violation of pragma SPARK_Mode at test.adc:3
-spark03.adb:6:12: medium: resource or memory leak might occur
-spark03.adb:7:18: info: absence of resource or memory leak proved (CVC5: 1 VC)
-spark03.adb:12:18: info: absence of resource or memory leak proved (CVC5: 1 VC)
-spark03.adb:13:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
-spark03.adb:19:09: medium: pointer dereference check might fail [possible fix: subprogram at spark03.ads:21 should mention Y in a precondition]
-spark03.adb:22:16: info: absence of resource or memory leak proved (CVC5: 1 VC)
-spark03.adb:23:09: medium: pointer dereference check might fail
-spark03.adb:24:16: info: absence of resource or memory leak proved (CVC5: 1 VC)
-spark03.adb:25:09: medium: pointer dereference check might fail
-spark03.ads:8:07: medium: missing dependency "null => AA"
-spark03.ads:8:36: medium: incorrect dependency "AA => AA"
-spark03.ads:9:21: info: initialization of "An_Item" proved
-spark03.ads:10:07: info: flow dependencies proved
-spark03.ads:21:24: info: data dependencies proved
-spark03.ads:21:63: info: initialization of "Z" proved
-spark03.ads:21:65: info: initialization of "W" proved
-spark03b.ads:4:13: error: object was moved at spark03b.adb:6 [E0010]
-spark03b.ads:4:13: error: return from "Insert" with moved value for "An_Item"
-spark03b.ads:4:21: warning: "An_Item" is not modified, could be IN
-spark03b.ads:5:07: info: flow dependencies proved
-spark03b.ads:6:21: info: initialization of "An_Item" proved
-spark03b.ads:17:24: info: data dependencies proved
-spark03b.ads:17:63: info: initialization of "Z" proved
-spark03b.ads:17:65: info: initialization of "W" proved
-spark03c.ads:7:13: error: object was moved at spark03c.adb:6 [E0010]
-spark03c.ads:7:13: error: return from "Insert" with moved value for "An_Item"
-spark03c.ads:7:21: warning: "An_Item" is not modified, parameter type could be rewritten as 'access constant Integer'
-spark03c.ads:8:21: info: initialization of "An_Item" proved
-spark03c.ads:19:24: info: data dependencies proved
-spark03c.ads:19:63: info: initialization of "Z" proved
-spark03c.ads:19:65: info: initialization of "W" proved
+spark03.ads:12:07: error: protected component subject to ownership is not yet supported
+spark03.ads:19:04: error: "AA" is not allowed in SPARK (due to protected component subject to ownership)
+spark03.ads:19:04: error: violation of pragma SPARK_Mode at test.adc:3
+spark03b.ads:8:07: error: protected component subject to ownership is not yet supported
+spark03b.ads:15:04: error: "AA" is not allowed in SPARK (due to protected component subject to ownership)
+spark03b.ads:15:04: error: violation of pragma SPARK_Mode at test.adc:3
+spark03c.ads:10:07: error: protected component subject to ownership is not yet supported
+spark03c.ads:17:04: error: "AA" is not allowed in SPARK (due to protected component subject to ownership)
+spark03c.ads:17:04: error: violation of pragma SPARK_Mode at test.adc:3
 gnatprove: error during flow analysis and proof
 n08b.adb:28:26: error: expected type universal integer
 n08b.adb:28:26: error: found type "ACI" defined at line 12
