@@ -4,6 +4,9 @@ libexec/spark/bin/ dir
 alt-ergo
 alt-ergo.hash
 gcc
+gcc-ar
+gcc-nm
+gcc-ranlib
 gnat2why
 gnatbind
 gnatls
@@ -13,8 +16,10 @@ gprbuild
 gprclean
 gprconfig
 gprinspect
+gprinstall
 gprls
 gprname
+gprof
 gprremote
 gprslave
 spark_memcached_wrapper
@@ -29,8 +34,11 @@ why3server
 why3session.cmxs
 libexec/spark/share dir
 alt-ergo
+examples
+gnatstudio
 gpr
 gprconfig
+gps
 info
 man
 why3
