@@ -1,4 +1,4 @@
---  Seccond attempt, with a derivation at a location where the full view of
+--  Second attempt, with a derivation at a location where the full view of
 --  Option_Priv is not visible. This is rejected by the compiler with an
 --  error.
 

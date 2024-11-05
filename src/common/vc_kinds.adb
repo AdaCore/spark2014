@@ -723,6 +723,9 @@ package body VC_Kinds is
          when Lim_Img_On_Non_Scalar =>
            "a reference to the ""Image"" or ""Img"" attribute on a type or "
           & "an object of a type which is not a scalar type",
+         when Lim_Incomplete_Type_Early_Usage =>
+           "usage of incomplete type completed in package body outside of an "
+          & "access type declaration",
          when Lim_Inherited_Controlling_Result_From_Hidden_Part =>
             "a subprogram with dispatching result which is inherited,"
           & " not overriden, by a private extension completed in a hidden"

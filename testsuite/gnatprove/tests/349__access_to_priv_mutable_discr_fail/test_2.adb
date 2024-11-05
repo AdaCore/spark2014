@@ -28,8 +28,8 @@ procedure Test_2 with SPARK_Mode is
             X.all := None; -- The object is unconstrained
          end P;
 
-         V    : aliased Option (True) := (True, 12); --  This is rejected by the frontend
-         A    : Option_Access := V'Access;
+         V : aliased Option (True) := (True, 12); --  This is rejected by the frontend
+         A : Option_Access := V'Access;
 
       begin
          P (A);

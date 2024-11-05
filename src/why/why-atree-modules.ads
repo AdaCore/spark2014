@@ -115,6 +115,7 @@ package Why.Atree.Modules is
    Rep_Proj_128           : W_Module_Id;
    Incomp_Ty_Conv         : W_Module_Id;
    Pledge                 : W_Module_Id;
+   Real_Time_Model        : W_Module_Id;
 
    Constr_Arrays                 : W_Module_Array (1 .. Max_Array_Dimensions);
    Unconstr_Arrays               : W_Module_Array (1 .. Max_Array_Dimensions);

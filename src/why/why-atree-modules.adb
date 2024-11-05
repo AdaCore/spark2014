@@ -685,6 +685,10 @@ package body Why.Atree.Modules is
         New_Module
           (File => Ada_Model_File,
            Name => "Pledge");
+      Real_Time_Model :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => "Real_time__model");
 
       Constr_Arrays :=
         (1 => New_Module (File => Ada_Model_File,

@@ -9,6 +9,8 @@ foo.adb:47:27: warning: "B" is set by "P_Proc" but not used after the call
 foo.adb:50:14: medium: precondition might fail, cannot prove B
 foo.adb:55:14: warning: subprogram "Test_Delay_01" has no effect
 foo.adb:57:07: info: no contextual analysis of "Test_Delay_01" (non-allowed statement)
+foo.adb:57:23: medium: range check might fail
+foo.adb:57:25: info: range check proved (CVC5: 1 VC)
 p.ads:3:16: info: implicit aspect Always_Terminates on "Get_Content" has been proved, subprogram will terminate
 p.ads:7:17: info: ceiling priority protocol is respected (CVC5: 1 VC)
 p2.adb:5:24: warning: statement has no effect
