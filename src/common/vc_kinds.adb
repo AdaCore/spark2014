@@ -1344,15 +1344,19 @@ package body VC_Kinds is
              when VC_Resource_Leak => "resource or memory leak",
              when VC_Resource_Leak_At_End_Of_Scope =>
                "resource or memory leak at end of scope",
-             when VC_Invariant_Check => "invariant check",
-             when VC_Invariant_Check_On_Default_Value =>
-               "invariant check on default value",
+             when VC_Unchecked_Union_Restriction =>
+               "unchecked union restriction"
              when VC_Length_Check => "length check",
              when VC_Discriminant_Check => "discriminant check",
              when VC_Tag_Check => "tag check",
              when VC_Ceiling_Interrupt =>
                "ceiling priority in Interrupt_Priority",
+             when VC_Initialization_Check =>
+               "use of an uninitialized variable",
              when VC_Interrupt_Reserved => "interrupt is reserved",
+             when VC_Invariant_Check => "invariant check",
+             when VC_Invariant_Check_On_Default_Value =>
+               "invariant check on default value",
              when VC_Ceiling_Priority_Protocol => "ceiling priority protocol",
              when VC_Task_Termination => "task termination",
              when VC_Initial_Condition => "initial condition",
@@ -1372,7 +1376,6 @@ package body VC_Kinds is
                "loop invariant after first iteration",
              when VC_Loop_Variant => "loop variant",
              when VC_Subprogram_Variant => "subprogram variant",
-             when VC_Termination_Check => "termination check",
              when VC_Assert => "assertion",
              when VC_Assert_Premise => "assertion premise",
              when VC_Assert_Step => "assertion step",
@@ -1384,6 +1387,7 @@ package body VC_Kinds is
                "Container_Aggregates annotation",
              when VC_Reclamation_Check =>
                "reclamation annotation",
+             when VC_Termination_Check => "termination check",
              when VC_UC_Source => "unchecked conversion source check",
              when VC_UC_Target => "unchecked conversion target check",
              when VC_UC_Same_Size => "unchecked conversion size check",
@@ -1406,19 +1410,16 @@ package body VC_Kinds is
                "postcondition of the source stronger than postcondition of the"
                & " target",
              when VC_Inconsistent_Pre =>
-               "precondition always False",
+               "precondition-always-false",
              when VC_Inconsistent_Post =>
-               "postcondition always False",
+               "postcondition-always-false",
              when VC_Inconsistent_Assume =>
-               "pragma Assume always False",
+               "pragma-assume-always-false",
              when VC_Unreachable_Branch =>
-               "unreachable branch",
+               "unreachable-branch",
              when VC_Dead_Code =>
-               "unreachable code",
-             when VC_Initialization_Check =>
-               "use of an uninitialized variable",
-             when VC_Unchecked_Union_Restriction =>
-               "unchecked union restriction");
+               "unreachable-code");
+);
    end Kind_Name;
 
    function Kind_Name (Kind : Valid_Flow_Tag_Kind) return String is
@@ -1434,7 +1435,7 @@ package body VC_Kinds is
          when Critical_Global_Missing                     =>
             "critically incomplete Global or Initializes contract",
          when Dead_Code                                   =>
-            "dead code",
+            "dead-code",
          when Default_Initialization_Mismatch             =>
             "wrong Default_Initial_Condition aspect",
          when Depends_Missing                             =>
