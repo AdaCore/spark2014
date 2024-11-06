@@ -737,15 +737,25 @@ package body Why.Gen.Records is
          is
          begin
             if Contains_Allocated_Parts (C_Ty) then
-               return New_Call
-                 (Name => E_Symb (C_Ty, WNE_Is_Moved_Or_Reclaimed),
-                  Args =>
-                    (1 => New_Move_Tree_Record_Access
-                         (Field => Field,
-                          Ty    => E,
-                          Local => True,
-                          Name  => +Tree_Ident),
-                     2 => +C_Expr));
+               declare
+                  C_Typ : constant W_Type_Id :=
+                    (if Has_Init_Wrapper (C_Ty)
+                     then EW_Init_Wrapper (Type_Of_Node (C_Ty))
+                     else Type_Of_Node (C_Ty));
+               begin
+                  return New_Call
+                    (Name => E_Symb (C_Ty, WNE_Is_Moved_Or_Reclaimed),
+                     Args =>
+                       (1 => New_Move_Tree_Record_Access
+                            (Field => Field,
+                             Ty    => E,
+                             Local => True,
+                             Name  => +Tree_Ident),
+                        2 => Insert_Simple_Conversion
+                          (Expr   => +C_Expr,
+                           To     => C_Typ,
+                           Domain => EW_Term)));
+               end;
             else
                return True_Pred;
             end if;
