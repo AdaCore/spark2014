@@ -6246,27 +6246,14 @@ package body Gnat2Why.Subprograms is
                   String_For_Implicit : constant String :=
                     (if Has_Explicit_Contracts then ""
                      else "implicit ");
-                  Scope               : constant Entity_Id :=
-                    Enclosing_Unit (E);
-                  String_For_Scope    : constant String :=
-                    (if Present (Scope)
-                     and then Ekind (Scope) in
-                         E_Package | E_Function | E_Procedure | E_Entry
-                     and then Proof_Module_Cyclic (E, Scope)
-                     then "calls from enclosing unit"
-                     else "");
                   String_For_Rec      : constant String :=
-                   (if String_For_Scope = "" then
-                      (if Is_Recursive (E) then "recursive calls"
-                       else "implicit recursive calls")
-                    else
-                      (if Is_Recursive (E) then "recursive calls or "
-                       else ""));
+                   (if Is_Recursive (E) then "recursive calls"
+                    else "implicit recursive calls");
                begin
                   Error_Msg_N
                     (String_For_Implicit
                      & "function contract might not be available on "
-                     & String_For_Rec & String_For_Scope,
+                     & String_For_Rec,
                      E,
                      Kind => Info_Kind);
                end;

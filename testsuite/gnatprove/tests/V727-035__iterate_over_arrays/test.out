@@ -20,7 +20,6 @@ q.ads:5:09: info: default initial condition proved (CVC5: 1 VC)
 q.ads:14:13: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
 q.ads:16:13: info: implicit aspect Always_Terminates on "Null_Set" has been proved, subprogram will terminate
 q.ads:20:13: info: implicit aspect Always_Terminates on "As_Cursor" has been proved, subprogram will terminate
-q.ads:20:13: info: implicit function contract might not be available on calls from enclosing unit
 q.ads:23:13: info: implicit aspect Always_Terminates on "Valid_Contained_Element" has been proved, subprogram will terminate
 q.ads:28:69: info: overflow check proved (CVC5: 2 VC)
 q.ads:30:19: info: assertion proved (CVC5: 1 VC)

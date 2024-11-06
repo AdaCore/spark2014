@@ -56,12 +56,10 @@ floating_point.adb:119:22: info: float overflow check proved (colibri: 1 VC)
 floating_point.adb:120:22: info: assertion proved (colibri: 2 VC)
 floating_point.adb:120:48: info: range check proved (Trivial)
 floating_point.adb:120:53: info: float overflow check proved (Trivial)
-floating_point.adb:128:16: info: implicit function contract might not be available on calls from enclosing unit
 floating_point.adb:128:16: info: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion)
 floating_point.adb:128:16: info: types in unchecked conversion have the same size (Trivial)
 floating_point.adb:128:68: info: type is suitable as source for unchecked conversion (Trivial)
 floating_point.adb:129:68: high: type is unsuitable as a target for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK]
-floating_point.adb:130:16: info: implicit function contract might not be available on calls from enclosing unit
 floating_point.adb:130:16: info: imprecise handling of Unchecked_Conversion (elementary non-integer type)
 floating_point.adb:130:16: info: types in unchecked conversion have the same size (Trivial)
 floating_point.adb:130:66: info: type is suitable as source for unchecked conversion (Trivial)
@@ -200,7 +198,6 @@ floating_point.ads:27:36: info: initialization of "Res" proved
 floating_point.ads:30:52: info: initialization of "Res" proved
 floating_point.ads:33:13: info: implicit aspect Always_Terminates on "Float_To_Long_Float" has been proved, subprogram will terminate
 floating_point.ads:48:13: info: implicit aspect Always_Terminates on "Approximate_Inverse_Square_Root" has been proved, subprogram will terminate
-floating_point.ads:48:13: info: implicit function contract might not be available on implicit recursive calls
 floating_point.ads:55:29: info: initialization of "Res" proved
 floating_point.ads:64:27: info: initialization of "Res" proved
 floating_point.ads:67:27: info: initialization of "Res" proved

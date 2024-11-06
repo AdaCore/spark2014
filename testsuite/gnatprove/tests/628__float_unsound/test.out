@@ -1,5 +1,4 @@
 sqrt_constraint.adb:7:13: info: implicit aspect Always_Terminates on "Bad_Conversion" has been proved, subprogram will terminate
-sqrt_constraint.adb:7:13: info: implicit function contract might not be available on calls from enclosing unit
 sqrt_constraint.adb:9:30: info: division check proved (altergo: 1 VC)
 sqrt_constraint.adb:9:30: info: float overflow check proved (Trivial)
 sqrt_constraint.adb:11:12: info: range check proved (altergo: 2 VC)

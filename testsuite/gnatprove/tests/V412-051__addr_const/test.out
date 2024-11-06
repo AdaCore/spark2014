@@ -1,4 +1,3 @@
-p.ads:6:12: info: implicit function contract might not be available on calls from enclosing unit
 p.ads:8:38: warning: assuming "F" has no effect on global items
 p.ads:8:38: warning: no Global contract available for "F"
 p.ads:9:03: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]

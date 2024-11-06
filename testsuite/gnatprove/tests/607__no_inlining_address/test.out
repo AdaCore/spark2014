@@ -1,5 +1,4 @@
 foo.adb:7:13: info: implicit aspect Always_Terminates on "Bar" has been proved, subprogram will terminate
-foo.adb:7:13: info: implicit function contract might not be available on calls from enclosing unit
 foo.adb:7:18: warning: unused variable "Data"
 foo.adb:15:07: info: address in address clause is compatible with object alignment (Trivial)
 foo.adb:15:07: info: object is suitable for aliasing via address clause (Trivial)

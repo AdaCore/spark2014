@@ -1,5 +1,4 @@
 get_size.adb:9:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-get_size.adb:9:13: info: implicit function contract might not be available on calls from enclosing unit
 get_size.adb:9:35: info: range check proved (CVC5: 2 VC)
 get_size.adb:11:20: info: range check proved (CVC5: 2 VC)
 get_size.adb:13:19: info: assertion proved (CVC5: 1 VC)

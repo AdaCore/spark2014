@@ -61,7 +61,6 @@ main.adb:221:12: medium: in default value of private type at main.adb:221
 main.adb:221:12: medium: in inlined predicate at main.adb:233
 main.adb:221:12: medium: predicate check might fail on default value, cannot prove Q (F)
 main.adb:224:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
-main.adb:224:16: info: implicit function contract might not be available on calls from enclosing unit
 main.adb:237:07: info: in default value at main.adb:237
 main.adb:237:07: info: initialization of "X" proved
 main.adb:237:07: info: predicate check proved on default value (CVC5: 2 VC)
@@ -71,7 +70,6 @@ main.adb:237:07: medium: in default value at main.adb:237
 main.adb:237:20: info: range check proved (CVC5: 2 VC)
 main.adb:246:12: medium: default initial condition might fail
 main.adb:249:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
-main.adb:249:16: info: implicit function contract might not be available on calls from enclosing unit
 main.adb:251:12: info: in default value of private type at main.adb:251
 main.adb:251:12: info: predicate check proved on default value (CVC5: 2 VC)
 main.adb:265:07: info: in default value at main.adb:265
