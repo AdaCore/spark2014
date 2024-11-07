@@ -10,6 +10,9 @@ colibri.hash
 cvc5
 cvc5.hash
 gcc
+gcc-ar
+gcc-nm
+gcc-ranlib
 gnat2why
 gnatbind
 gnatls
@@ -19,8 +22,11 @@ gprbuild
 gprclean
 gprconfig
 gprinspect
+gprinstall
+gprinstall.manifest
 gprls
 gprname
+gprof
 gprremote
 gprslave
 spark_memcached_wrapper
@@ -37,8 +43,10 @@ z3
 z3.hash
 libexec/spark/share dir
 alt-ergo
+gnatstudio
 gpr
 gprconfig
+gps
 info
 man
 why3
