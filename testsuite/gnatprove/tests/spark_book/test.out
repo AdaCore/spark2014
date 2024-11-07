@@ -1022,7 +1022,7 @@ shapes5.adb:39:07: info: initialization of "Delta_X" proved
 shapes5.adb:40:07: info: initialization of "Delta_Y" proved
 shapes5.ads:4:08: info: flow dependencies proved
 shapes5.ads:11:13: info: implicit aspect Always_Terminates on "Make_Circle" has been proved, subprogram will terminate
-shapes5.ads:14:18: high: postcondition might fail (e.g. when Make_Circle'Result = (Center_X => 0, Center_Y => 0, Radius => 0) and Wild_Man = 0)
+shapes5.ads:14:18: high: postcondition might fail (e.g. when Make_Circle'Result = (Center_X => 0, Center_Y => 0, Radius => 0) and Wild_Man = 0) [possible explanation: validity of the postcondition of Make_Circle should be implied by its refined postcondition]
 shapes5.ads:17:13: info: implicit aspect Always_Terminates on "Inside_Circle" has been proved, subprogram will terminate
 shapes5.ads:24:13: info: implicit aspect Always_Terminates on "In_Bounds" has been proved, subprogram will terminate
 shapes5.ads:25:11: info: data dependencies proved
