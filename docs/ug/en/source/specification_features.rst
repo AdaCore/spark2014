@@ -1497,7 +1497,7 @@ Ghost Functions
 
 Ghost functions are useful to express properties only used in contracts, and to
 factor out common expressions used in contracts. For example, function
-``Get_Total`` introduced in :ref:`State Abstraction and Functional Contracts`
+``Get_Total`` introduced in :ref:`Abstraction and Functional Contracts`
 to retrieve the value of variable ``Total`` in the contract of ``Add_To_Total``
 could be marked as a ghost function as follows:
 
@@ -1505,7 +1505,7 @@ could be marked as a ghost function as follows:
 
    function Get_Total return Integer with Ghost;
 
-and still be used exactly as seen in :ref:`State Abstraction and Functional
+and still be used exactly as seen in :ref:`Abstraction and Functional
 Contracts`:
 
 .. code-block:: ada

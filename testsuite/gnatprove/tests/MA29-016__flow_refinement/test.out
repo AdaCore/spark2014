@@ -67,7 +67,7 @@ levels.adb:15:16: info: implicit aspect Always_Terminates on "Read_Partial_1_Inn
 levels.adb:16:12: info: data dependencies proved
 levels.adb:18:26: info: initialization of "A" proved
 levels.adb:19:12: info: data dependencies proved
-levels.adb:20:20: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function Read_Partial_1 and function Read_Partial_1_Inner and function Read_Partial_0 or turning them into expression functions]
+levels.adb:20:20: medium: postcondition might fail [possible explanation: validity of the postcondition of Test_11 should be implied by its refined postcondition] [possible fix: you should consider adding a postcondition to function Read_Partial_1 and function Read_Partial_1_Inner and function Read_Partial_0 or turning them into expression functions]
 levels.adb:20:39: medium: overflow check might fail, cannot prove lower bound for Read_Partial_0 + Read_Partial_1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 levels.adb:20:56: medium: overflow check might fail, cannot prove lower bound for Read_Partial_0 + Read_Partial_1 + Read_Partial_1_Inner [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 levels.adb:22:28: info: initialization of "X" proved
