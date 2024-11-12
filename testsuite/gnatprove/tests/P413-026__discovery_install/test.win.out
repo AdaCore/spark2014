@@ -5,9 +5,6 @@ alt-ergo
 alt-ergo.manifest
 alt-ergo.hash
 alt-ergo.zlib1
-gcc-ar
-gcc-nm
-gcc-ranlib
 gcc
 gnat2why
 gnatbind
@@ -18,8 +15,6 @@ gprbuild
 gprclean
 gprconfig
 gprinspect
-gprinstall
-gprinstall.manifest
 gprls
 gprname
 gprof
@@ -37,11 +32,8 @@ why3server
 why3session.cmxs
 libexec/spark/share dir
 alt-ergo
-examples
-gnatstudio
 gpr
 gprconfig
-gps
 info
 man
 why3
