@@ -368,4 +368,25 @@ package body Errout_Wrapper is
       return GNATCOLL.JSON.Create (S);
    end To_JSON;
 
+   -------------------
+   -- Warning_Msg_N --
+   -------------------
+
+   procedure Warning_Msg_N
+     (Kind          : Misc_Warning_Kind;
+      N             : Node_Id;
+      Names         : Node_Lists.List := Node_Lists.Empty;
+      Secondary_Loc : Source_Ptr := No_Location;
+      Explain_Code  : Explain_Code_Kind := EC_None;
+      First         : Boolean := False;
+      Continuations : Message_Lists.List := Message_Lists.Empty) is
+   begin
+      Error_Msg_N
+        (Create (Warning_Message (Kind), Names, Secondary_Loc, Explain_Code),
+         N,
+         Warning_Kind,
+         First,
+         Continuations);
+   end Warning_Msg_N;
+
 end Errout_Wrapper;

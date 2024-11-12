@@ -4414,14 +4414,13 @@ package body SPARK_Definition is
                            end if;
                         end if;
                      end loop;
-                     Error_Msg_N
-                       (Warning_Message (Warn_Alias_Different_Volatility),
+                     Warning_Msg_N
+                       (Warn_Alias_Different_Volatility,
                         Address,
-                        Kind => Warning_Kind,
                         Names => [E],
                         Continuations =>
-                          ["values for property " & To_String (Buf)
-                           & " are different"]);
+                          [Create ("values for property " & To_String (Buf)
+                                   & " are different")]);
                   end if;
                end;
             end if;
@@ -4435,10 +4434,9 @@ package body SPARK_Definition is
             if Has_Volatile (E) /= Has_Volatile (Aliased_Object)
               or else Is_Atomic (E) /= Is_Atomic (Aliased_Object)
             then
-               Error_Msg_N
-                 (Warning_Message (Warn_Alias_Atomic_Vol),
+               Warning_Msg_N
+                 (Warn_Alias_Atomic_Vol,
                   Address,
-                  Kind => Warning_Kind,
                   Names => [E]);
             end if;
 
@@ -4473,13 +4471,12 @@ package body SPARK_Definition is
                --  Only emit the warning for constants, it is redundant for
                --  variables.
 
+               --  TODO ???
                if E_Is_Constant then
-                  Error_Msg_N
-                    (Create
-                       (Warning_Message (Warn_Initialization_To_Alias),
-                        Names => [E]),
+                  Warning_Msg_N
+                    (Warn_Initialization_To_Alias,
                      Address,
-                     Kind => Warning_Kind,
+                     Names => [E],
                      Continuations =>
                        [Create
                             ("consider annotating & with Import",
