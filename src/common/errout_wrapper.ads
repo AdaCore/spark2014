@@ -104,7 +104,10 @@ package Errout_Wrapper is
       Explain_Code  : Explain_Code_Kind := EC_None;
       First         : Boolean := False;
       Continuations : Message_Lists.List := Message_Lists.Empty);
-   --  Similar to Error_Msg_N,
+   --  Similar to Error_Msg_N, but uses the Warning_Kind to generate the
+   --  message text. The Extra_Message is appended to the warning message text.
+   --  This function also handles warning suppression and promotion to error
+   --  (-W, -A, -D switches, and --pedantic).
 
    function Escape (S : String) return String;
    --  Escape the special characters # and & in the error message

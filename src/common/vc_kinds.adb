@@ -1344,19 +1344,15 @@ package body VC_Kinds is
              when VC_Resource_Leak => "resource or memory leak",
              when VC_Resource_Leak_At_End_Of_Scope =>
                "resource or memory leak at end of scope",
-             when VC_Unchecked_Union_Restriction =>
-               "unchecked union restriction"
+             when VC_Invariant_Check => "invariant check",
+             when VC_Invariant_Check_On_Default_Value =>
+               "invariant check on default value",
              when VC_Length_Check => "length check",
              when VC_Discriminant_Check => "discriminant check",
              when VC_Tag_Check => "tag check",
              when VC_Ceiling_Interrupt =>
                "ceiling priority in Interrupt_Priority",
-             when VC_Initialization_Check =>
-               "use of an uninitialized variable",
              when VC_Interrupt_Reserved => "interrupt is reserved",
-             when VC_Invariant_Check => "invariant check",
-             when VC_Invariant_Check_On_Default_Value =>
-               "invariant check on default value",
              when VC_Ceiling_Priority_Protocol => "ceiling priority protocol",
              when VC_Task_Termination => "task termination",
              when VC_Initial_Condition => "initial condition",
@@ -1376,6 +1372,7 @@ package body VC_Kinds is
                "loop invariant after first iteration",
              when VC_Loop_Variant => "loop variant",
              when VC_Subprogram_Variant => "subprogram variant",
+             when VC_Termination_Check => "termination check",
              when VC_Assert => "assertion",
              when VC_Assert_Premise => "assertion premise",
              when VC_Assert_Step => "assertion step",
@@ -1387,7 +1384,6 @@ package body VC_Kinds is
                "Container_Aggregates annotation",
              when VC_Reclamation_Check =>
                "reclamation annotation",
-             when VC_Termination_Check => "termination check",
              when VC_UC_Source => "unchecked conversion source check",
              when VC_UC_Target => "unchecked conversion target check",
              when VC_UC_Same_Size => "unchecked conversion size check",
@@ -1410,16 +1406,19 @@ package body VC_Kinds is
                "postcondition of the source stronger than postcondition of the"
                & " target",
              when VC_Inconsistent_Pre =>
-               "precondition-always-false",
+               "precondition always False",
              when VC_Inconsistent_Post =>
-               "postcondition-always-false",
+               "postcondition always False",
              when VC_Inconsistent_Assume =>
-               "pragma-assume-always-false",
+               "pragma Assume always False",
              when VC_Unreachable_Branch =>
-               "unreachable-branch",
+               "unreachable branch",
              when VC_Dead_Code =>
-               "unreachable-code");
-);
+               "unreachable code",
+             when VC_Initialization_Check =>
+               "use of an uninitialized variable",
+             when VC_Unchecked_Union_Restriction =>
+               "unchecked union restriction");
    end Kind_Name;
 
    function Kind_Name (Kind : Valid_Flow_Tag_Kind) return String is
@@ -1435,7 +1434,7 @@ package body VC_Kinds is
          when Critical_Global_Missing                     =>
             "critically incomplete Global or Initializes contract",
          when Dead_Code                                   =>
-            "dead-code",
+            "dead code",
          when Default_Initialization_Mismatch             =>
             "wrong Default_Initial_Condition aspect",
          when Depends_Missing                             =>
@@ -1500,72 +1499,55 @@ package body VC_Kinds is
 
    function Kind_Name (Kind : Misc_Warning_Kind) return String is
      (case Kind is
-        when Warn_Address_To_Access =>
-          "address to access conversion",
-        when Warn_Alias_Atomic_Vol =>
-          "volatile and atomic status of aliases",
-        when Warn_Alias_Different_Volatility =>
-          "volatile properties of aliases",
-        when Warn_Attribute_Valid =>
-          "attribute Valid always True",
-        when Warn_Auto_Lemma_Calls =>
-          "auto-lemma-calls",
-        when Warn_Auto_Lemma_Different =>
-          "auto-lemma-different",
-        when Warn_Auto_Lemma_Higher_Order =>
-          "auto-lemma-higher-order",
-        when Warn_Auto_Lemma_Specializable =>
-          "auto-lemma-specializable",
-        when Warn_Initialization_To_Alias =>
-          "initialization of alias",
-        when Warn_Function_Is_Valid =>
-          "function Is_Valid always return True",
-        when Warn_Generic_Not_Analyzed =>
-          "generic-not-analyzed",
-        when Warn_No_Possible_Termination =>
-          "procedure not terminating normally nor abnormally",
-        when Warn_Pragma_Annotate_No_Check =>
-          "no check message justified",
-        when Warn_Pragma_Annotate_Proved_Check =>
-          "proved check message justified",
-        when Warn_Pragma_Annotate_Terminating =>
-          "Terminating deprecated",
-        when Warn_Pragma_External_Axiomatization =>
-          "External Axiomatizations not supported",
-        when Warn_Pragma_Ignored =>
-          "pragma ignored",
-        when Warn_Pragma_Overflow_Mode =>
-          "Overflow_Mode ignored",
-        when Warn_Precondition_Statically_False =>
-          "precondition statically False",
-        when Warn_Restriction_Ignored =>
-          "restriction ignored",
-        when Warn_Unreferenced_Function =>
-          "unreferenced function",
-        when Warn_Unreferenced_Procedure =>
-          "unreferenced procedure",
-        when Warn_Useless_Relaxed_Init_Fun =>
-          "useless Relaxed_Initialization aspect on function result",
+         when Warn_Address_To_Access => "address-to-access-conversion",
+         when Warn_Alias_Atomic_Vol => "alias-volatile-atomic-mismatch",
+         when Warn_Alias_Different_Volatility =>
+            "alias-volatile-prop-mismatch",
+         when Warn_Attribute_Valid =>  "attribute-valid-always-true",
+         when Warn_Auto_Lemma_Calls => "auto-lemma-calls",
+         when Warn_Auto_Lemma_Different => "auto-lemma-different",
+         when Warn_Auto_Lemma_Higher_Order => "auto-lemma-higher-order",
+         when Warn_Auto_Lemma_Specializable => "auto-lemma-specializable",
+         when Warn_Initialization_To_Alias => "initialization-to-alias",
+         when Warn_Function_Is_Valid => "is-valid-returns-true",
+        when Warn_Generic_Not_Analyzed => "generic-not-analyzed",
+         when Warn_No_Possible_Termination => "no-possible-termination",
+         when Warn_Pragma_Annotate_No_Check => "no-check-message-justified",
+         when Warn_Pragma_Annotate_Proved_Check => "proved-check-justified",
+         when Warn_Pragma_Annotate_Terminating |
+              Warn_Pragma_External_Axiomatization =>
+              "deprecated-feature",
+         when Warn_Pragma_Ignored => "ignored-pragma",
+         when Warn_Pragma_Overflow_Mode => "overflow-mode-ignored",
+         when Warn_Precondition_Statically_False =>
+            "precondition-statically-false",
+         when Warn_Restriction_Ignored => "restriction-ignored",
+         when Warn_Unreferenced_Function =>
+            "unreferenced-function",
+         when Warn_Unreferenced_Procedure =>
+            "unreferenced procedure",
+         when Warn_Useless_Relaxed_Init_Fun =>
+            "useless-relaxed-init-func-result",
         when Warn_Useless_Relaxed_Init_Obj =>
-          "useless Relaxed_Initialization aspect on object",
-        when Warn_Variant_Not_Recursive =>
-          "variant not recursive",
+            "useless-relaxed-init-object",
+         when Warn_Variant_Not_Recursive =>
+            "variant-no-recursion",
 
-        --  Warnings guaranteed to be issued
-        when Warn_Imprecisely_Supported_Address =>
-          "imprecisely supported address specification",
-        when Warn_Assumed_Always_Terminates =>
-          "assumed Always_Terminates",
-        when Warn_Assumed_Global_Null =>
-          "assumed Global null",
+         --  Warnings guaranteed to be issued
+         when Warn_Imprecisely_Supported_Address =>
+            "imprecise-address-specification",
+         when Warn_Assumed_Always_Terminates =>
+            "assumed-always-terminates",
+         when Warn_Assumed_Global_Null =>
+            "assumed-global-null",
 
-        --  Warnings only issued when using switch --pedantic
-        when Warn_Image_Attribute_Length =>
-          "string attribute length",
-        when Warn_Operator_Reassociation =>
-          "operator reassociation",
+         --  Warnings only issued when using switch --pedantic
+         when Warn_Image_Attribute_Length =>
+            "image-attribute-length",
+         when Warn_Operator_Reassociation =>
+            "operator-reassociation",
         when Warn_Representation_Attribute_Value =>
-          "representation attribute value");
+            "representation-attribute-value");
 
    pragma Annotate (Xcov, Exempt_Off);
 
