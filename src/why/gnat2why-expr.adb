@@ -1846,6 +1846,8 @@ package body Gnat2Why.Expr is
               and then Number_Of_Assocs_In_Expression
                 (Expression (Decl)) <= Max_Assocs
               and then not Contains_Volatile_Function_Call (Expression (Decl))
+              and then not Is_Function_Call_With_Side_Effects
+                  (Expression (Decl))
             then
                --  We do not issue checks here. Checks for this declaration
                --  will be issued when verifying its enclosing unit.
@@ -19036,8 +19038,7 @@ package body Gnat2Why.Expr is
            --  whose prefix is a 'Old or 'Loop_Entry attribute
 
            and then Nkind (Pref) = N_Attribute_Reference
-           and then Get_Attribute_Id (Attribute_Name (Pref)) in
-                 Attribute_Old | Attribute_Loop_Entry
+           and then Attribute_Name (Pref) in Name_Loop_Entry | Name_Old
 
            --  whose prefix is Var.
 

@@ -135,11 +135,22 @@ package body Flow_Utility is
       Proof_Dependencies : in out Node_Sets.Set;
       Tasking            : in out Tasking_Info;
       Types_Seen         : in out Node_Sets.Set;
+      Constants_Seen     : in out Node_Sets.Set;
       Generating_Globals : Boolean)
    with Post => Proof_Dependencies'Old.Is_Subset (Proof_Dependencies);
-   --  Like Pick_Generated_Info, with an additional parameter Types_Seen that
-   --  allows to track which type predicates we already traversed to pick
-   --  proof dependencies.
+   --  Like Pick_Generated_Info, with additional parameters Types_Seen and
+   --  Constants_Seen that allows to track which type predicates and constant
+   --  expressions we already traversed to pick proof dependencies.
+
+   procedure Process_Expression
+     (Expr               : Node_Id;
+      Scop               : Flow_Scope;
+      Proof_Dependencies : in out Node_Sets.Set;
+      Types_Seen         : in out Node_Sets.Set;
+      Constants_Seen     : in out Node_Sets.Set)
+   with Post => Proof_Dependencies'Old.Is_Subset (Proof_Dependencies);
+   --  Extract proof dependencies and functions calls from Expr and add
+   --  them to Proof_Dependencies.
 
    ----------------------------------------------------------------------
    -- Constants with variable inputs --
@@ -226,12 +237,17 @@ package body Flow_Utility is
       Proof_Dependencies : in out Node_Sets.Set;
       Tasking            : in out Tasking_Info;
       Types_Seen         : in out Node_Sets.Set;
+      Constants_Seen     : in out Node_Sets.Set;
       Generating_Globals : Boolean)
    is
       function Proc (N : Node_Id) return Traverse_Result;
       --  If the node being processed is an N_Function_Call, store a
       --  corresponding Entity_Id; for protected functions store the
       --  read-locked protected object.
+
+      procedure Process_Constant_Expression (E : Entity_Id)
+      with Pre => Ekind (E) = E_Constant;
+      --  Pull proof dependencies from the expression of constant E
 
       procedure Process_Predicate_Expression
         (Type_Instance   : Formal_Kind_Id;
@@ -241,9 +257,9 @@ package body Flow_Utility is
       procedure Process_Predicates is new
         Iterate_Applicable_Predicates (Process_Predicate_Expression);
 
-      ------------------
-      -- Process_Type --
-      ------------------
+      ----------------------------------
+      -- Process_Predicate_Expression --
+      ----------------------------------
 
       procedure Process_Predicate_Expression
         (Type_Instance   : Formal_Kind_Id;
@@ -337,12 +353,13 @@ package body Flow_Utility is
                         --  is executed, whereas proof pulls the entire set of
                         --  predicates that apply to P.
 
-                        Process_Predicate_And_Invariant_Internal
+                        Process_Type_Contracts_Internal
                           (Typ                => Etype (P),
                            Scop               => Scop,
                            Include_Invariant  => False,
                            Proof_Dependencies => Proof_Dependencies,
-                           Types_Seen         => Types_Seen);
+                           Types_Seen         => Types_Seen,
+                           Constants_Seen     => Constants_Seen);
                         Process_Predicates (Get_Type (P, Scop));
 
                   --  If the membership test involves a call to equality, then
@@ -356,12 +373,13 @@ package body Flow_Utility is
                   P := First (Alternatives (N));
                   loop
                      if Is_Entity_Name (P) and then Is_Type (Entity (P)) then
-                        Process_Predicate_And_Invariant_Internal
+                        Process_Type_Contracts_Internal
                           (Typ                => Etype (P),
                            Scop               => Scop,
                            Include_Invariant  => False,
                            Proof_Dependencies => Proof_Dependencies,
-                           Types_Seen         => Types_Seen);
+                           Types_Seen         => Types_Seen,
+                           Constants_Seen     => Constants_Seen);
                         Process_Predicates (Get_Type (P, Scop));
                      elsif Alternative_Uses_Eq (P) then
                         Indirect_Calls.Include (N);
@@ -456,14 +474,19 @@ package body Flow_Utility is
                   if Present (E)
                     and then Ekind (E) in E_Constant | E_Variable
                   then
-                     Process_Predicate_And_Invariant_Internal
+                     Process_Type_Contracts_Internal
                        (Typ                => Etype (E),
                         Scop               => Scop,
                         Include_Invariant  => not Scope_Within_Or_Same
                                                 (Outer => Scop.Ent,
                                                  Inner => E),
                         Proof_Dependencies => Proof_Dependencies,
-                        Types_Seen         => Types_Seen);
+                        Types_Seen         => Types_Seen,
+                        Constants_Seen     => Constants_Seen);
+
+                     if Generating_Globals and then Ekind (E) = E_Constant then
+                        Process_Constant_Expression (E);
+                     end if;
                   end if;
                end;
 
@@ -474,12 +497,13 @@ package body Flow_Utility is
             when N_Type_Conversion
                | N_Qualified_Expression
             =>
-               Process_Predicate_And_Invariant_Internal
+               Process_Type_Contracts_Internal
                  (Typ                => Etype (N),
                   Scop               => Scop,
                   Include_Invariant  => False,
                   Proof_Dependencies => Proof_Dependencies,
-                  Types_Seen         => Types_Seen);
+                  Types_Seen         => Types_Seen,
+                  Constants_Seen     => Constants_Seen);
 
             --  Pull subprograms referenced through 'Access in the proof
             --  dependencies.
@@ -563,6 +587,32 @@ package body Flow_Utility is
          return OK;
       end Proc;
 
+      ---------------------------------
+      -- Process_Constant_Expression --
+      ---------------------------------
+
+      procedure Process_Constant_Expression (E : Entity_Id) is
+         Decl     : constant N_Object_Declaration_Id :=
+           Enclosing_Declaration (if Is_Partial_View (E)
+                                    and then Entity_In_SPARK (Full_View (E))
+                                  then Full_View (E)
+                                  else E);
+         Expr     : constant Opt_N_Subexpr_Id := Expression (Decl);
+         Position : Node_Sets.Cursor;
+         Inserted : Boolean;
+      begin
+         Constants_Seen.Insert (E, Position, Inserted);
+
+         --  Process the expression of E
+         if Inserted then
+            Process_Expression (Expr,
+                                Scop,
+                                Proof_Dependencies,
+                                Types_Seen,
+                                Constants_Seen);
+         end if;
+      end Process_Constant_Expression;
+
       procedure Traverse is new Traverse_More_Proc (Process => Proc);
       --  AST traversal procedure
 
@@ -585,7 +635,7 @@ package body Flow_Utility is
       Tasking            : in out Tasking_Info;
       Generating_Globals : Boolean)
    is
-      Unused : Node_Sets.Set;
+      Types_Unused, Const_Unused : Node_Sets.Set;
    begin
       Pick_Generated_Info_Internal
         (N,
@@ -594,20 +644,66 @@ package body Flow_Utility is
          Indirect_Calls,
          Proof_Dependencies,
          Tasking,
-         Unused,
+         Types_Unused,
+         Const_Unused,
          Generating_Globals);
    end Pick_Generated_Info;
 
-   ----------------------------------------------
-   -- Process_Predicate_And_Invariant_Internal --
-   ----------------------------------------------
+   ------------------------
+   -- Process_Expression --
+   ------------------------
 
-   procedure Process_Predicate_And_Invariant_Internal
+   procedure Process_Expression
+     (Expr               : Node_Id;
+      Scop               : Flow_Scope;
+      Proof_Dependencies : in out Node_Sets.Set;
+      Types_Seen         : in out Node_Sets.Set;
+      Constants_Seen     : in out Node_Sets.Set)
+   is
+      Funcalls : Call_Sets.Set;
+      Indcalls : Node_Sets.Set;
+      Unused   : Tasking_Info;
+   begin
+      Pick_Generated_Info_Internal
+        (N                  => Expr,
+         Scop               => Scop,
+         Function_Calls     => Funcalls,
+         Indirect_Calls     => Indcalls,
+         Proof_Dependencies => Proof_Dependencies,
+         Tasking            => Unused,
+         Types_Seen         => Types_Seen,
+         Constants_Seen     => Constants_Seen,
+         Generating_Globals => True);
+
+      --  Direct function calls in expressions are also treated
+      --  as proof dependencies.
+
+      for Call of Funcalls loop
+
+         --  This avoids picking references of an access-to-function in the
+         --  case of an access-to-function subtype referencing the result of
+         --  said function in its predicate or invariant.
+         --
+         --  ??? Is it possible to create a proof cycle using enclosing
+         --  E_Subprogram_Type entities?
+
+         if Ekind (Call.E) /= E_Subprogram_Type then
+            Proof_Dependencies.Include (Call.E);
+         end if;
+      end loop;
+   end Process_Expression;
+
+   -------------------------------------
+   -- Process_Type_Contracts_Internal --
+   -------------------------------------
+
+   procedure Process_Type_Contracts_Internal
      (Typ                : Type_Kind_Id;
       Scop               : Flow_Scope;
       Include_Invariant  : Boolean;
       Proof_Dependencies : in out Node_Sets.Set;
-      Types_Seen         : in out Node_Sets.Set)
+      Types_Seen         : in out Node_Sets.Set;
+      Constants_Seen     : in out Node_Sets.Set)
    is
       procedure Add_Predicates_To_Proof_Deps
         (Type_Instance   : Formal_Kind_Id;
@@ -627,10 +723,6 @@ package body Flow_Utility is
       --  Traverse the subtype chain of a type to pull proof dependencies
       --  from the predicates of its parent types.
 
-      procedure Extract_Proof_Dependencies (Expr : Node_Id);
-      --  Extract proof dependencies and functions calls from Expr and add
-      --  them to Proof_Dependencies.
-
       function Visit_Subcomponents is new
         Traverse_Subcomponents (Pull_Proof_Dependencies);
       --  Traverse a type to pull all proof dependencies related to predicates
@@ -646,45 +738,12 @@ package body Flow_Utility is
       is
          pragma Unreferenced (Type_Instance);
       begin
-         Extract_Proof_Dependencies (Pred_Expression);
+         Process_Expression (Pred_Expression,
+                             Scop,
+                             Proof_Dependencies,
+                             Types_Seen,
+                             Constants_Seen);
       end Add_Predicates_To_Proof_Deps;
-
-      --------------------------------
-      -- Extract_Proof_Dependencies --
-      --------------------------------
-
-      procedure Extract_Proof_Dependencies (Expr : Node_Id) is
-         Funcalls : Call_Sets.Set;
-         Indcalls : Node_Sets.Set;
-         Unused   : Tasking_Info;
-      begin
-         Pick_Generated_Info_Internal
-           (N                  => Expr,
-            Scop               => Scop,
-            Function_Calls     => Funcalls,
-            Indirect_Calls     => Indcalls,
-            Proof_Dependencies => Proof_Dependencies,
-            Tasking            => Unused,
-            Types_Seen         => Types_Seen,
-            Generating_Globals => True);
-
-         --  Direct function calls in expressions are also treated
-         --  as proof dependencies.
-
-         for Call of Funcalls loop
-
-            --  This avoids picking references of an access-to-function in the
-            --  case of an access-to-function subtype referencing the result of
-            --  said function in its predicate or invariant.
-            --
-            --  ??? Is it possible to create a proof cycle using enclosing
-            --  E_Subprogram_Type entities?
-
-            if Ekind (Call.E) /= E_Subprogram_Type then
-               Proof_Dependencies.Include (Call.E);
-            end if;
-         end loop;
-      end Extract_Proof_Dependencies;
 
       ---------------------------------
       --  Get_Invariant_From_Parents --
@@ -703,9 +762,13 @@ package body Flow_Utility is
                         or else Invariant_Assumed_In_Scope (Current, Scop.Ent)
                         or else Include_Invariant)
             then
-               Extract_Proof_Dependencies
+               Process_Expression
                  (Get_Expr_From_Check_Only_Proc
-                    (Invariant_Procedure (Current)));
+                    (Invariant_Procedure (Current)),
+                  Scop,
+                  Proof_Dependencies,
+                  Types_Seen,
+                  Constants_Seen);
             end if;
 
             --  Explore the subtype chain of the type
@@ -733,7 +796,7 @@ package body Flow_Utility is
       Position : Node_Sets.Cursor;
       Inserted : Boolean;
 
-   --  Start of processing for Process_Predicate_And_Invariant_Internal
+   --  Start of processing for Process_Type_Contracts_Internal
 
    begin
 
@@ -744,9 +807,22 @@ package body Flow_Utility is
       Types_Seen.Insert (Typ, Position, Inserted);
 
       if Inserted then
+         --  Access-to-subprogram types might be annotated with Pre and Post
+         --  contracts. We process their expressions for proof dependencies.
+
+         if Is_Access_Subprogram_Type (Typ)
+           and then No (Parent_Retysp (Typ))
+         then
+            Process_Access_To_Subprogram_Contracts
+              (Typ,
+               Scop,
+               Proof_Dependencies,
+               True);
+         end if;
+
          Discard := Visit_Subcomponents (Typ);
       end if;
-   end Process_Predicate_And_Invariant_Internal;
+   end Process_Type_Contracts_Internal;
 
    ---------------------------------
    -- Called_Primitive_Equalities --

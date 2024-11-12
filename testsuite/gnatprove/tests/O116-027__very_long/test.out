@@ -10,7 +10,6 @@ very_longs-divide.adb:30:39: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:31:04: info: initialization of "Q_Hat" proved
 very_longs-divide.adb:32:04: info: initialization of "Current_Borrow" proved
 very_longs-divide.adb:36:13: info: implicit aspect Always_Terminates on "Get_Shift_Distance" has been proved, subprogram will terminate
-very_longs-divide.adb:36:13: info: implicit function contract might not be available on calls from enclosing unit
 very_longs-divide.adb:42:27: info: unrolling loop
 very_longs-divide.adb:52:30: info: initialization of "Result" proved
 very_longs-divide.adb:54:08: info: flow dependencies proved

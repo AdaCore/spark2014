@@ -224,25 +224,26 @@ package body Flow_Utility.Proof_Dependencies is
       end if;
    end Process_Iterable_For_Proof_Annotation;
 
-   -------------------------------------
-   -- Process_Predicate_And_Invariant --
-   -------------------------------------
+   ----------------------------
+   -- Process_Type_Contracts --
+   ----------------------------
 
-   procedure Process_Predicate_And_Invariant
+   procedure Process_Type_Contracts
      (Typ                : Type_Kind_Id;
       Scop               : Flow_Scope;
       Include_Invariant  : Boolean;
       Proof_Dependencies : in out Node_Sets.Set)
    is
-      Discard : Node_Sets.Set;
+      Types_Discard, Const_Discard : Node_Sets.Set;
    begin
-      Process_Predicate_And_Invariant_Internal
+      Process_Type_Contracts_Internal
         (Typ                => Typ,
          Scop               => Scop,
          Include_Invariant  => Include_Invariant,
          Proof_Dependencies => Proof_Dependencies,
-         Types_Seen         => Discard);
-   end Process_Predicate_And_Invariant;
+         Types_Seen         => Types_Discard,
+         Constants_Seen     => Const_Discard);
+   end Process_Type_Contracts;
 
    -----------------------------------
    -- Process_Reclamation_Functions --

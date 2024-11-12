@@ -1,6 +1,5 @@
 warnings_on_lemmas.adb:3:13: info: implicit aspect Always_Terminates on "Read_V" has been proved, subprogram will terminate
 warnings_on_lemmas.adb:4:13: info: implicit aspect Always_Terminates on "Cst" has been proved, subprogram will terminate
-warnings_on_lemmas.adb:4:13: info: implicit function contract might not be available on calls from enclosing unit
 warnings_on_lemmas.adb:5:21: info: function contract feasibility proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:5:58: info: null exclusion check proved (Trivial: 1 VC)
 warnings_on_lemmas.adb:6:04: info: function contract feasibility proved (CVC5: 1 VC)

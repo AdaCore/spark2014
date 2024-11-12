@@ -4,6 +4,5 @@ sorted_vectors.ads:15:57: info: index check proved (CVC5: 2 VC)
 sorted_vectors.ads:15:57: info: overflow check proved (CVC5: 2 VC)
 sorted_vectors.ads:15:68: info: index check proved (CVC5: 2 VC)
 sorted_vectors.ads:22:14: info: implicit aspect Always_Terminates on overriding operator "+" has been proved, subprogram will terminate
-sorted_vectors.ads:22:14: info: implicit function contract might not be available on calls from enclosing unit
 sorted_vectors.ads:23:10: info: range check proved (CVC5: 4 VC)
 sorted_vectors.ads:25:10: info: invariant check proved on default value (CVC5: 1 VC)

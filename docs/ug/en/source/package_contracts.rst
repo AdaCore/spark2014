@@ -26,7 +26,7 @@ executed at package startup.
 State Abstraction
 -----------------
 
-[|SPARK|]
+*Specific to SPARK*
 
 The state abstraction of a package specifies a mapping between abstract names
 and concrete global variables defined in the package. State abstraction allows
@@ -269,7 +269,7 @@ abstract state of the enclosing package:
 Package Initialization
 ----------------------
 
-[|SPARK|]
+*Specific to SPARK*
 
 The package initialization specifies which global data (global variables,
 constant with variable inputs, and
@@ -350,7 +350,7 @@ variable:
 Package Initial Condition
 -------------------------
 
-[|SPARK|]
+*Specific to SPARK*
 
 The package initial condition specifies the properties holding after package
 startup.  Thus, package initial condition can be seen as the postcondition of
@@ -385,7 +385,7 @@ other assertion.
 Interfaces to the Physical World
 --------------------------------
 
-[|SPARK|]
+*Specific to SPARK*
 
 .. index:: volatile; variables
 

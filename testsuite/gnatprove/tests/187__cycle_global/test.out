@@ -1,6 +1,5 @@
 pack.ads:9:14: info: implicit aspect Always_Terminates on "H" has been proved, subprogram will terminate
 pack.ads:9:51: medium: overflow check might fail, cannot prove lower bound for X * 2 [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (X * 2 >= Integer'First) to subprogram at line 9]
-pack.ads:11:14: info: function contract might not be available on calls from enclosing unit
 pack.ads:11:14: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
 pack.ads:11:69: medium: postcondition might fail (e.g. when X = 0)
 pack.ads:17:09: info: range check proved (CVC5: 2 VC)

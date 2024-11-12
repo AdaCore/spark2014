@@ -144,7 +144,6 @@ very_longs.adb:320:42: info: range check proved (CVC5: 2 VC)
 very_longs.adb:321:07: info: initialization of "J" proved
 very_longs.adb:322:07: info: initialization of "Q_Hat" proved
 very_longs.adb:323:07: info: initialization of "Current_Borrow" proved
-very_longs.adb:326:16: info: function contract might not be available on calls from enclosing unit
 very_longs.adb:326:16: info: implicit aspect Always_Terminates on "Get_MSD" has been proved, subprogram will terminate
 very_longs.adb:329:19: info: postcondition proved (CVC5: 2 VC)
 very_longs.adb:329:45: medium: array index check might fail [reason for check: value must be a valid index into the array]
@@ -161,7 +160,6 @@ very_longs.adb:340:35: info: loop invariant preservation proved (CVC5: 1 VC; Tri
 very_longs.adb:340:85: info: overflow check proved (CVC5: 4 VC)
 very_longs.adb:340:116: info: index check proved (CVC5: 4 VC)
 very_longs.adb:346:16: info: implicit aspect Always_Terminates on "Get_Shift_Distance" has been proved, subprogram will terminate
-very_longs.adb:346:16: info: implicit function contract might not be available on calls from enclosing unit
 very_longs.adb:353:30: info: unrolling loop
 very_longs.adb:362:56: info: initialization of "Result" proved
 very_longs.adb:364:11: info: flow dependencies proved

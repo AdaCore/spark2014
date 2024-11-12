@@ -105,8 +105,6 @@ a-strbou.ads:2564:61: info: range check proved (CVC5: 2 VC), in instantiation at
 a-strbou.ads:2571:25: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
 a-strbou.ads:2578:31: info: discriminant check proved (CVC5: 1 VC), in instantiation at sb.ads:2
 a-strbou.ads:2578:31: info: predicate check proved (CVC5: 2 VC; Trivial: 1 VC), in instantiation at sb.ads:2
-sb.ads:2:01: info: implicit function contract might not be available on calls from enclosing unit
-sb.ads:2:01: info: in instantiation at a-strbou.ads
 sb.ads:2:01: warning: in instantiation at a-strbou.ads
 sb.ads:2:01: warning: pragma "Stream_Convert" ignored (not yet supported)
 spark-containers-formal-hashed_maps.ads:87:06: medium: Container_Aggregates annotation might be incorrect, in instantiation at test.ads:14
@@ -116,10 +114,3 @@ spark-containers-parameter_checks.ads:246:19: medium: postcondition might fail, 
 test.ads:9:09: info: Initial_Condition of package "SB" is ignored
 test.ads:9:09: info: the elaboration of "SB" is not known to precede the elaboration of the current unit
 test.ads:9:09: info: use pragma Elaborate_Body in "SB" or pragma Elaborate in the current unit
-test.ads:11:13: info: implicit function contract might not be available on calls from enclosing unit
-test.ads:14:04: info: function contract might not be available on implicit recursive calls
-test.ads:14:04: info: function contract might not be available on implicit recursive calls
-test.ads:14:04: info: function contract might not be available on implicit recursive calls
-test.ads:14:04: info: in instantiation at spark-containers-formal-hashed_maps.ads:284
-test.ads:14:04: info: in instantiation at spark-containers-formal-hashed_maps.ads:407
-test.ads:14:04: info: in instantiation at spark-containers-formal-hashed_maps.ads:92

@@ -1588,8 +1588,9 @@ package body SPARK_Util is
       Par : constant Node_Id := Parent (Call);
    begin
       --  For now calls to functions with side effects can only occur in
-      --  assignments.
-      pragma Assert (Nkind (Par) = N_Assignment_Statement);
+      --  assignments and object declarations.
+      pragma Assert
+        (Nkind (Par) in N_Assignment_Statement | N_Object_Declaration);
       return Par;
    end Enclosing_Statement_Of_Call_To_Function_With_Side_Effects;
 
@@ -2896,7 +2897,8 @@ package body SPARK_Util is
    function In_Loop_Entry_Or_Old_Attribute (N : Node_Id) return Boolean is
 
       function Is_Attribute_Loop_Entry_Or_Old (N : Node_Id) return Boolean is
-        (Is_Attribute_Loop_Entry (N) or else Is_Attribute_Old (N));
+        (Nkind (N) = N_Attribute_Reference
+           and then Attribute_Name (N) in Name_Loop_Entry | Name_Old);
 
       function Find_Loop_Entry_Or_Old_Attribute is new
         First_Parent_With_Property (Is_Attribute_Loop_Entry_Or_Old);
@@ -3132,6 +3134,42 @@ package body SPARK_Util is
       return False;
    end Is_Declared_In_Private;
 
+   -------------------------------
+   -- Is_Declared_In_Statements --
+   -------------------------------
+
+   function Is_Declared_In_Statements (Decl : Node_Id) return Boolean is
+      List : List_Id;
+      Par  : constant Node_Id := Parent (Decl);
+
+   begin
+      --  Declarations seem to always occur in lists
+
+      if not Is_List_Member (Decl) then
+         raise Program_Error;
+      end if;
+
+      List := List_Containing (Decl);
+
+      case Nkind (Par) is
+         when N_Loop_Statement
+            | N_Case_Statement_Alternative
+            | N_Exception_Handler
+            | N_Handled_Sequence_Of_Statements
+         =>
+            return List = Statements (Par);
+
+         when N_If_Statement
+            | N_Elsif_Part
+         =>
+            return List = Then_Statements (Par)
+              or else (Nkind (Par) = N_If_Statement
+                       and then List = Else_Statements (Par));
+         when others =>
+            return False;
+      end case;
+   end Is_Declared_In_Statements;
+
    -------------------------
    -- Is_Declared_In_Unit --
    -------------------------
@@ -3297,6 +3335,14 @@ package body SPARK_Util is
           not (Nkind (Prefix (Nam)) in N_Has_Entity
                and then Ekind (Entity (Prefix (Nam))) = E_Protected_Type);
    end Is_External_Call;
+
+   ----------------------------------------
+   -- Is_Function_Call_With_Side_Effects --
+   ----------------------------------------
+
+   function Is_Function_Call_With_Side_Effects (N : Node_Id) return Boolean is
+     (Nkind (N) = N_Function_Call
+      and then Is_Function_With_Side_Effects (Get_Called_Entity (N)));
 
    ----------------------
    -- Is_Global_Entity --
@@ -4595,23 +4641,24 @@ package body SPARK_Util is
 
                when N_Assignment_Statement
                   | N_Entry_Call_Statement
+                  | N_Object_Declaration
                   | N_Procedure_Call_Statement
                   | N_Raise_Statement
                =>
                   declare
                      Exc_Node : Node_Id := Stmt;
                   begin
-                     --  Assignment statements need special treatment for
-                     --  exception-raising/No_Return only if the RHS is a call
-                     --  to a function with side effects. Identify that case
-                     --  and put function call in Exc_Node (or empty if regular
-                     --  assignment).
+                     --  Assignment statements and object declarations need
+                     --  special treatment for exception-raising/No_Return only
+                     --  if the RHS is a call to a function with side effects.
+                     --  Identify that case and put function call in Exc_Node
+                     --  (or empty if regular assignment/object declaration).
 
-                     if Nkind (Stmt) = N_Assignment_Statement then
+                     if Nkind (Stmt) in N_Assignment_Statement
+                                      | N_Object_Declaration
+                     then
                         Exc_Node := Expression (Stmt);
-                        if Nkind (Exc_Node) /= N_Function_Call
-                          or else not Is_Function_With_Side_Effects
-                            (Get_Called_Entity (Exc_Node))
+                        if not Is_Function_Call_With_Side_Effects (Exc_Node)
                         then
                            Exc_Node := Empty;
                         end if;
@@ -4763,8 +4810,7 @@ package body SPARK_Util is
 
                   Add_Edge (Start, Body_Exit_Vertex);
 
-               when N_Object_Declaration
-                  | N_Ignored_In_SPARK
+               when N_Ignored_In_SPARK
                   | N_Itype_Reference
                   | N_Object_Renaming_Declaration
                   | N_Subtype_Declaration

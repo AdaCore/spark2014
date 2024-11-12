@@ -546,10 +546,7 @@ package body Flow_Generated_Globals.Partial is
           or else
          (FA.Kind = Kind_Package
           and then Entity_Body_In_SPARK (FA.Spec_Entity)))
-          and then
-        (not FA.Has_Only_Terminating_Constructs
-           or else
-         (Is_Subprogram (E) and then No_Return (E)));
+         and then not FA.Has_Only_Terminating_Constructs;
 
       Contr.No_Body := False;
 
@@ -743,7 +740,7 @@ package body Flow_Generated_Globals.Partial is
             --  Process predicates that apply to formals of E
 
             for F of Get_Explicit_Formals (E) loop
-               Process_Predicate_And_Invariant
+               Process_Type_Contracts
                  (Etype (F),
                   Get_Flow_Scope (E),
                   Is_Globally_Visible (E),
@@ -754,7 +751,7 @@ package body Flow_Generated_Globals.Partial is
             --  function.
 
             if Ekind (E) = E_Function then
-               Process_Predicate_And_Invariant
+               Process_Type_Contracts
                  (Etype (E),
                   Get_Flow_Scope (E),
                   Is_Globally_Visible (E),

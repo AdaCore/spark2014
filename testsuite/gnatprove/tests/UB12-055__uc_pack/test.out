@@ -1,4 +1,3 @@
-repro.adb:11:13: info: implicit function contract might not be available on calls from enclosing unit
 repro.adb:11:13: info: imprecise handling of Unchecked_Conversion (component offset not known)
 repro.adb:11:13: info: types in unchecked conversion have the same size (Trivial)
 repro.adb:11:53: info: type is suitable as source for unchecked conversion (Trivial)

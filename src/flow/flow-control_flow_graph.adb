@@ -4472,11 +4472,28 @@ package body Flow.Control_Flow_Graph is
       --  We pull proof dependencies from the type of the object. Type
       --  invariants are pulled in the enclosing unit only when the object
       --  has no initialization, or it is a library-level entity.
-      Process_Predicate_And_Invariant (Etype (E),
-                                       FA.B_Scope,
-                                       No (Expr)
-                                         or else Is_Library_Level_Entity (E),
-                                       FA.Proof_Dependencies);
+      Process_Type_Contracts (Etype (E),
+                              FA.B_Scope,
+                              No (Expr)
+                                or else Is_Library_Level_Entity (E),
+                              FA.Proof_Dependencies);
+
+      --  Declaration with a function that has side effects is handled like a
+      --  subprogram call: the function entity acts like a formal parameter of
+      --  mode OUT and the defining identifier acts like the corresponding
+      --  actual parameter.
+
+      if Present (Expr)
+        and then Nkind (Expr) = N_Function_Call
+        and then Is_Function_With_Side_Effects (Get_Called_Entity (Expr))
+      then
+         Do_Call_Statement (Expr, FA, CM, Ctx);
+         Move_Connections
+           (CM,
+            Dst => Union_Id (N),
+            Src => Union_Id (Expr));
+         return;
+      end if;
 
       --  We have a declaration with an explicit initialization
 
@@ -6271,21 +6288,8 @@ package body Flow.Control_Flow_Graph is
       --  into the proof dependencies of the unit.
 
       if FA.Generating_Globals and then Entity_In_SPARK (Typ) then
-         Process_Predicate_And_Invariant
+         Process_Type_Contracts
            (Typ, FA.B_Scope, True, FA.Proof_Dependencies);
-      end if;
-
-      --  Access-to-subprogram types might be annotated with Pre and Post
-      --  contracts. We process their expressions for proof dependencies here.
-
-      if Is_Access_Subprogram_Type (Typ)
-        and then No (Parent_Retysp (Typ))
-      then
-         Process_Access_To_Subprogram_Contracts
-           (Typ,
-            FA.B_Scope,
-            FA.Proof_Dependencies,
-            FA.Generating_Globals);
       end if;
 
       --  In phase 2 check DIC on type definitions that come from source
@@ -6441,9 +6445,11 @@ package body Flow.Control_Flow_Graph is
       Called_Thing : constant Entity_Id := Get_Called_Entity (Callsite);
 
       procedure Handle_Parameter (Formal : Entity_Id; Actual : Node_Id)
-        with Pre => (Is_Formal (Formal)
-                       or else Is_Function_With_Side_Effects (Formal))
-                      and then Nkind (Actual) in N_Subexpr;
+        with Pre =>
+          (if Is_Formal (Formal)
+             then Nkind (Actual) in N_Subexpr
+           elsif Is_Function_With_Side_Effects (Formal)
+             then Nkind (Actual) in N_Subexpr | N_Defining_Identifier);
 
       ----------------------
       -- Handle_Parameter --
@@ -6481,7 +6487,12 @@ package body Flow.Control_Flow_Graph is
                Vertex_Ctx                   => Ctx.Vertex_Ctx,
                E_Loc                        => Actual),
             V);
-         Ctx.Folded_Function_Checks.Append (Actual);
+
+         if Nkind (Actual) in N_Subexpr then
+            Ctx.Folded_Function_Checks.Append (Actual);
+         else
+            pragma Assert (Is_Function_With_Side_Effects (Formal));
+         end if;
          Ins.Append (V);
 
          --  Build an out vertex
@@ -6535,9 +6546,22 @@ package body Flow.Control_Flow_Graph is
       --  actual parameter.
 
       if Nkind (Callsite) = N_Function_Call then
-         Handle_Parameter
-           (Formal => Get_Called_Entity (Callsite),
-            Actual => Name (Parent (Callsite)));
+         declare
+            Context : constant Node_Id := Parent (Callsite);
+            Actual  : Node_Id;
+         begin
+            case Nkind (Context) is
+               when N_Assignment_Statement =>
+                  Actual := Name (Context);
+               when N_Object_Declaration =>
+                  Actual := Defining_Identifier (Context);
+               when others =>
+                  raise Program_Error;
+            end case;
+            Handle_Parameter
+              (Formal => Get_Called_Entity (Callsite),
+               Actual => Actual);
+         end;
       end if;
 
       --  Create vertices for the implicit formal parameter
@@ -7851,7 +7875,7 @@ package body Flow.Control_Flow_Graph is
          when Kind_Subprogram =>
             for Param of Get_Formals (FA.Spec_Entity) loop
                Create_Initial_And_Final_Vertices (Param, FA);
-               Process_Predicate_And_Invariant
+               Process_Type_Contracts
                  (Etype (Param),
                   FA.B_Scope,
                   Is_Globally_Visible (FA.Spec_Entity),
@@ -7990,7 +8014,7 @@ package body Flow.Control_Flow_Graph is
       --  entity is a boundary subprogram.
       if Ekind (FA.Spec_Entity) = E_Function then
          Create_Initial_And_Final_Vertices (FA.Spec_Entity, FA);
-         Process_Predicate_And_Invariant
+         Process_Type_Contracts
            (Etype (FA.Spec_Entity),
             FA.B_Scope,
             Is_Globally_Visible (FA.Spec_Entity),

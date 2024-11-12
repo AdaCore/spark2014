@@ -1,7 +1,5 @@
 ml_bits.adb:7:07: info: initialization of "Result" proved
-ml_bits.adb:8:16: info: implicit function contract might not be available on calls from enclosing unit
 ml_bits.adb:8:16: info: types in unchecked conversion have the same size (Trivial)
 ml_bits.adb:8:73: info: type is suitable as source for unchecked conversion (Trivial)
 ml_bits.adb:8:98: info: type is suitable for unchecked conversion (Trivial)
 ml_bits.ads:20:12: info: implicit aspect Always_Terminates on "Buffer_4bit_To_Int32" has been proved, subprogram will terminate
-ml_bits.ads:20:12: info: implicit function contract might not be available on implicit recursive calls

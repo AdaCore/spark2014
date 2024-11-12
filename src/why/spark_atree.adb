@@ -370,8 +370,7 @@ package body SPARK_Atree is
         (N : Node_Id) return Atree.Traverse_Result is
       begin
          if Nkind (N) = N_Attribute_Reference
-           and then Get_Attribute_Id (Attribute_Name (N))
-             in Attribute_Old | Attribute_Loop_Entry
+           and then Attribute_Name (N) in Name_Loop_Entry | Name_Old
          then
             --  There is no need to continue the traversal, as one such
             --  attribute suffices.

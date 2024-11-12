@@ -13,7 +13,6 @@ test_annotate.adb:35:57: info: pointer dereference check proved (CVC5: 1 VC)
 test_annotate.adb:35:60: info: pointer dereference check proved (CVC5: 1 VC)
 test_annotate.adb:35:67: info: pointer dereference check proved (CVC5: 1 VC)
 test_annotate.adb:35:70: info: pointer dereference check proved (CVC5: 1 VC)
-test_annotate.adb:37:13: info: function contract might not be available on calls from enclosing unit
 test_annotate.adb:37:13: info: implicit aspect Always_Terminates on "Deep_Copy" has been proved, subprogram will terminate
 test_annotate.adb:38:14: info: postcondition proved (CVC5: 1 VC)
 test_annotate.adb:40:07: info: initialization of "Res" proved

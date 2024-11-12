@@ -371,13 +371,17 @@ package SPARK_Util is
    --  @return True iff N is declared in the analysed unit or any of its
    --     parents.
 
-   function Is_Private_Child_Unit (E : Entity_Id) return Boolean with
-     Pre => Is_Child_Unit (E);
-   --  Return True if E is a private child unit
-
    function Is_Declared_In_Private (E : Entity_Id) return Boolean;
    --  @param E any entity
    --  @return True iff E is declared in the private part of a package
+
+   function Is_Declared_In_Statements (Decl : Node_Id) return Boolean;
+   --  @param N any node
+   --  @return True iff N is directly in a sequence of statements
+
+   function Is_Private_Child_Unit (E : Entity_Id) return Boolean with
+     Pre => Is_Child_Unit (E);
+   --  Return True if E is a private child unit
 
    function Is_In_Potentially_Hidden_Private (E : Entity_Id) return Boolean;
    --  Return True if E is defined in the private part of a package annotated
@@ -1137,6 +1141,11 @@ package SPARK_Util is
 
    function Contains_Function_Call (N : Node_Id) return Boolean;
    --  Return True iff N contains an N_Function_Call node
+
+   function Is_Function_Call_With_Side_Effects (N : Node_Id) return Boolean;
+   --  @param N any node
+   --  @return True iff N is an N_Function_Call node whose callee is a function
+   --    annotated with Side_Effects.
 
    function Safe_First_Sloc (N : Node_Id) return Source_Ptr
    with Post => (N = Empty) = (Safe_First_Sloc'Result = No_Location);
