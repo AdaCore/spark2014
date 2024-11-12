@@ -170,7 +170,7 @@ package Flow.Control_Flow_Graph.Utility is
                       when others         =>
                         False)
                    and then not Discriminants_Or_Bounds_Only)
-                and then Nkind (Actual) in N_Subexpr,
+                and then Nkind (Actual) in N_Subexpr | N_Defining_Identifier,
         Post =>
           not Make_Parameter_Attributes'Result.Is_Null_Node and
           not Make_Parameter_Attributes'Result.Is_Program_Node and

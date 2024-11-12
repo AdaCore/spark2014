@@ -1,0 +1,4 @@
+test.adb:3:48: info: exceptional case proved (Trivial: 1 VC)
+test.adb:11:14: info: aspect Always_Terminates on "P" has been proved, subprogram will terminate
+test.adb:13:48: info: exceptional case proved (Trivial: 1 VC)
+test.adb:18:07: info: only expected exception raised (CVC5: 1 VC)

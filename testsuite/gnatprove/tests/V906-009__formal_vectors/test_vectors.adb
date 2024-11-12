@@ -55,15 +55,15 @@ package body Test_Vectors with SPARK_Mode is
       C := 1;
 
       Delete_First (K, 5);
-      Insert (K, C, L);
-      Insert (L, C, K);
-      Insert (L, C, K);
+      Insert_Vector (K, C, L);
+      Insert_Vector (L, C, K);
+      Insert_Vector (L, C, K);
 
       C := Last_Index (K) - 1;
 
       pragma Assert (C /= No_Index);
       Delete_Last (L, 5);
-      Insert (K, C, L);
+      Insert_Vector (K, C, L);
 
       Clear (L);
       C := 1;
@@ -309,7 +309,7 @@ package body Test_Vectors with SPARK_Mode is
 
       Append (L, 5);
 
-      Prepend (K, L);
+      Prepend_Vector (K, L);
 
       pragma Assert (First_Element (K) = First_Element (L));
 

@@ -1601,8 +1601,7 @@ package body Why.Inter is
       --  look through 'old and 'loop_entry
 
       if Nkind (N) = N_Attribute_Reference
-        and then Get_Attribute_Id (Attribute_Name (N)) in
-          Attribute_Old | Attribute_Loop_Entry
+        and then Attribute_Name (N) in Name_Loop_Entry | Name_Old
       then
          return Type_Of_Node (Prefix (N));
 

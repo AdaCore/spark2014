@@ -8,6 +8,5 @@ main.adb:7:26: info: index check proved (CVC5: 2 VC), in call inlined at gen.adb
 main.adb:9:03: info: analyzing call to "My_Read" in context
 main.adb:9:03: info: in instantiation at gen.adb:10
 main.adb:9:12: info: implicit aspect Always_Terminates on "U" has been proved, subprogram will terminate
-main.adb:9:12: info: implicit function contract might not be available on calls from enclosing unit
 main.adb:10:18: medium: precondition might fail
 gnatprove: error during flow analysis and proof

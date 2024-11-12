@@ -15,7 +15,7 @@ type anywhere.
 Class-Wide Subprogram Contracts
 -------------------------------
 
-[Ada 2012]
+*Supported in Ada 2012*
 
 Specific :ref:`Subprogram Contracts` are required on operations of tagged
 types, so that |GNATprove| can check Liskov Substitution Principle on every
@@ -84,7 +84,7 @@ contract, like for a specific contract.
 Mixing Class-Wide and Specific Subprogram Contracts
 ---------------------------------------------------
 
-[Ada 2012]
+*Supported in Ada 2012*
 
 It is possible to specify both a specific contract and a class-wide contract on
 a subprogram, in order to use a more precise contract (the specific one) for
@@ -125,7 +125,7 @@ subprogram, |GNATprove| only checks that the subprogram implements its specific
 Dispatching Calls and Controlling Operands
 ------------------------------------------
 
-[Ada 2012]
+*Supported in Ada 2012*
 
 In a dispatching call, the *controlling operand* is the parameter of class-wide
 type whose dynamic type determinates the actual subprogram called. The dynamic
@@ -171,7 +171,7 @@ procedure ``Append_To_Log``, it can use the class-wide contract of
 Dynamic Types and Invisible Components
 --------------------------------------
 
-[|SPARK|]
+*Specific to SPARK*
 
 The :ref:`Data Initialization Policy` in |SPARK| applies specially to objects
 of tagged type. In general, the dynamic type of an object of tagged type may be

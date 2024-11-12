@@ -5,7 +5,6 @@ test.adb:23:14: info: local subprogram "Stuff2" only analyzed in the context of 
 test.adb:25:22: info: initialization of "C" proved
 test.adb:29:17: info: overflow check proved (CVC5: 2 VC), in call inlined at test.adb:78
 test.adb:29:17: info: overflow check proved (CVC5: 2 VC), in call inlined at test.adb:94
-test.adb:40:13: info: implicit function contract might not be available on calls from enclosing unit
 test.adb:40:13: info: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion)
 test.adb:40:13: info: types in unchecked conversion have the same size (Trivial)
 test.adb:40:52: high: type is unsuitable for unchecked conversion [possible explanation: type Root_T is a tagged type]

@@ -62,6 +62,12 @@ package body SPARK_Rewrite is
    --  declarations as procedure bodies when they act as completion, so N here
    --  cannot be a completion.
 
+   procedure Rewrite_Old_Attribute (N : Node_Id);
+   --  Set the Etype of references to the Old attribute to the Etype of their
+   --  prefix. If the prefix's type is a constrained Itype, use its base type
+   --  instead to avoid leaking references to variables outside the Old
+   --  attribute.
+
    procedure Rewrite_Subprogram_Instantiation (N : Node_Id)
    with Pre => Nkind (N) in N_Subprogram_Instantiation;
    --  Replace names in instances of generic subprograms with names of
@@ -153,6 +159,29 @@ package body SPARK_Rewrite is
       Set_Null_Present (Specification (N), False);
       Nlists.Insert_After (N, Null_Body);
    end Rewrite_Null_Procedure;
+
+   ---------------------------
+   -- Rewrite_Old_Attribute --
+   ---------------------------
+
+   procedure Rewrite_Old_Attribute (N : Node_Id) is
+      Pref : constant Node_Id := Prefix (N);
+      Typ  : Entity_Id := Etype (Pref);
+
+   begin
+      --  For constrained Itypes, use the base type to avoid leaking references
+      --  to the pre-state outside of the Old attribute.
+
+      if Is_Itype (Typ)
+        and then Is_Composite_Type (Typ)
+        and then Is_Constrained (Typ)
+        and then not Is_Constrained (Base_Type (Typ))
+      then
+         Typ := Base_Type (Typ);
+      end if;
+
+      Set_Etype (N, Typ);
+   end Rewrite_Old_Attribute;
 
    --------------------------
    -- Rewrite_Real_Literal --
@@ -385,12 +414,22 @@ package body SPARK_Rewrite is
          end if;
 
          case Nkind (N) is
-            --  In some cases, SPARK expansion is performed before the value
-            --  of size attributes is known. Reapply it here on analyzed nodes
-            --  (other nodes might not have the needed semantic information).
 
             when N_Attribute_Reference =>
-               if Analyzed (N) then
+
+               --  References to the Old attribute might not have the
+               --  type of their prefix. This might lead to discrepencies and
+               --  spurious checks. Use the type of the prefix instead.
+
+               if Attribute_Name (N) = Name_Old then
+                  Rewrite_Old_Attribute (N);
+
+               --  In some cases, SPARK expansion is performed before the value
+               --  of size attributes is known. Reapply it here on analyzed
+               --  nodes (other nodes might not have the needed semantic
+               --  information).
+
+               elsif Analyzed (N) then
                   declare
                      Aname   : constant Name_Id      := Attribute_Name (N);
                      Attr_Id : constant Attribute_Id :=

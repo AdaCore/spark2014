@@ -78,8 +78,8 @@ package body Aida.Containers.Formal_Vectors is
    procedure Append (Container : in out Vector_Type;
                      New_Item  : Vector_Type) is
    begin
-      Vector_Type_Owner.Append (Container.Hidden_Vector,
-                                New_Item.Hidden_Vector);
+      Vector_Type_Owner.Append_Vector (Container.Hidden_Vector,
+                                       New_Item.Hidden_Vector);
    end Append;
 
    procedure Append (Container : in out Vector_Type;

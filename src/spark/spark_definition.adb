@@ -850,8 +850,8 @@ package body SPARK_Definition is
                         Proph);
                      return;
                   end;
-               elsif Is_Attribute_Loop_Entry (N)
-                 or else Is_Attribute_Old (N)
+               elsif Nkind (N) = N_Attribute_Reference
+                 and then Attribute_Name (N) in Name_Loop_Entry | Name_Old
                then
                   Mark_Violation
                     (Msg_Prefix
@@ -3871,7 +3871,6 @@ package body SPARK_Definition is
          --  The following nodes are never generated in GNATprove mode
 
          when N_Compound_Statement
-            | N_Unchecked_Expression
          =>
             raise Program_Error;
 
@@ -5734,16 +5733,31 @@ package body SPARK_Definition is
       end if;
 
       --  A call to a function with side effects may only occur as the
-      --  [right-hand side] expression of an assignment statement. (SPARK
-      --  RM 6.1.11(4))
+      --  [right-hand side] expression of an assignment statement or of a local
+      --  object declaration without a block. (SPARK RM 6.1.11(4))
+      --  Also reject declaration of internal objects introduced by the
+      --  frontend.
 
       if Ekind (E) = E_Function
         and then Is_Function_With_Side_Effects (E)
-        and then Nkind (Parent (N)) /= N_Assignment_Statement
+        and then (Nkind (Parent (N)) not in N_Assignment_Statement
+                                          | N_Object_Declaration
+                  or else
+                    (Nkind (Parent (N)) = N_Object_Declaration
+                     and then Is_Internal (Defining_Entity (Parent (N))))
+                  or else not Is_Declared_In_Statements (Parent (N)))
       then
-         Mark_Violation
-           ("call to a function with side effects outside of assignment", N,
-            Code => EC_Call_To_Function_With_Side_Effects);
+         declare
+            Msg : constant String :=
+              (if Nkind (Parent (N)) = N_Object_Declaration
+                 and then not Is_Declared_In_Statements (Parent (N))
+               then "in declarative part"
+               else "outside of assignment or object declaration");
+         begin
+            Mark_Violation
+              ("call to a function with side effects " & Msg, N,
+               Code => EC_Call_To_Function_With_Side_Effects);
+         end;
          return;
       end if;
 
@@ -7539,16 +7553,24 @@ package body SPARK_Definition is
             function Replace_Type (N : Node_Id) return Traverse_Result is
                Context : constant Node_Id    := Parent (N);
                Loc     : constant Source_Ptr := Sloc (N);
+               Ref     : Node_Id := N;
                CW_Typ  : Opt_Type_Kind_Id := Empty;
                Ent     : Formal_Kind_Id;
                Typ     : Type_Kind_Id;
 
             begin
-               if Is_Entity_Name (N)
-                 and then Present (Entity (N))
-                 and then Is_Formal (Entity (N))
+               --  For references to the Old attribute, convert the attribute
+               --  reference and not the prefix only.
+
+               if Is_Attribute_Old (N) then
+                  Ref := Prefix (N);
+               end if;
+
+               if Is_Entity_Name (Ref)
+                 and then Present (Entity (Ref))
+                 and then Is_Formal (Entity (Ref))
                then
-                  Ent := Entity (N);
+                  Ent := Entity (Ref);
                   Typ := Etype (Ent);
 
                   if Nkind (Context) = N_Type_Conversion then
@@ -7569,11 +7591,16 @@ package body SPARK_Definition is
                   end if;
 
                   if Present (CW_Typ) then
-                     Rewrite (N,
+                     Rewrite (Ref,
                        Nmake.Make_Type_Conversion (Loc,
                          Subtype_Mark =>
                            Tbuild.New_Occurrence_Of (CW_Typ, Loc),
                          Expression   => Tbuild.New_Occurrence_Of (Ent, Loc)));
+
+                     if Ref /= N then
+                        Set_Etype (Ref, CW_Typ);
+                     end if;
+
                      Set_Etype (N, CW_Typ);
 
                      --  When changing the type of an argument to a potential

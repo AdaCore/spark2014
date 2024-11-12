@@ -16,7 +16,7 @@ they are used by |GNATprove| during proof.
 Pragma ``Assert``
 -----------------
 
-[Ada 2005]
+*Supported in Ada 2005*
 
 Pragma ``Assert`` is the simplest assertion pragma. |GNATprove| checks that the
 property asserted holds, and uses the information that it holds for analyzing
@@ -49,7 +49,7 @@ which |GNATprove| analyzes like pragma ``Assert`` in that respect.
 Pragma ``Assertion_Policy``
 ---------------------------
 
-[Ada 2005/Ada 2012]
+*Supported in Ada 2005/Ada 2012*
 
 Assertions can be enabled either globally or locally. Here, *assertions* denote
 either :ref:`Assertion Pragmas` of all kinds (among which :ref:`Pragma Assert`)
@@ -103,7 +103,7 @@ necessary entities.
 Loop Invariants
 ---------------
 
-[|SPARK|]
+*Specific to SPARK*
 
 Pragma ``Loop_Invariant`` is a special kind of assertion used in
 loops. |GNATprove| performs two checks that ensure that the property asserted
@@ -228,7 +228,7 @@ useful to express complex loop invariants.
 Loop Variants
 -------------
 
-[|SPARK|]
+*Specific to SPARK*
 
 Pragma ``Loop_Variant`` is a special kind of assertion used in
 loops. |GNATprove| checks that the given value *progresses* in some sense at
@@ -317,7 +317,7 @@ with loop invariants.
 Pragma ``Assume``
 -----------------
 
-[|SPARK|]
+*Specific to SPARK*
 
 Pragma ``Assume`` is a variant of :ref:`Pragma Assert` that does not require
 |GNATprove| to check that the property holds. This is used to convey trustable
@@ -354,7 +354,7 @@ justification string as the second argument to pragma ``Assume``.
 Pragma ``Assert_And_Cut``
 -------------------------
 
-[|SPARK|]
+*Specific to SPARK*
 
 Pragma ``Assert_And_Cut`` is a variant of :ref:`Pragma Assert` that allows
 hiding some information to |GNATprove|. |GNATprove| checks that the property

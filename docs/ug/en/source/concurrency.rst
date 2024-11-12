@@ -54,7 +54,7 @@ expression, as follows (absolute and relative delays, respectively):
 Tasks and Data Races
 --------------------
 
-[Ravenscar/Jorvik]
+*Requires Ravenscar/Jorvik profile*
 
 Concurrent Ada programs are made of several `tasks`, that is, separate threads
 of control which share the same address space. In Ravenscar, only
@@ -249,7 +249,7 @@ state that ``Num_Accounts`` is only accessed by the task object
 Task Contracts
 --------------
 
-[SPARK]
+*Specific to SPARK*
 
 Dependency contracts can be specified on tasks. As tasks should not terminate
 in |SPARK|, such contracts specify the dependencies between outputs and inputs
@@ -326,7 +326,7 @@ The dependency of the task on itself can be left implicit as well, as follows:
 Protected Objects and Deadlocks
 -------------------------------
 
-[Ravenscar/Jorvik]
+*Requires Ravenscar/Jorvik profile*
 
 In Ada, protected objects are used to encapsulate shared data and protect it
 against data races (low-level unprotected concurrent access to data) and race
@@ -638,7 +638,7 @@ used by ``Account_Management``, its ceiling priority should be no lower than 5:
 Suspension Objects
 ------------------
 
-[Ravenscar/Jorvik]
+*Requires Ravenscar/Jorvik profile*
 
 The language-defined package ``Ada.Synchronous_Task_Control`` provides a type
 for semaphores called `suspension objects`. They allow lighter synchronization
@@ -717,7 +717,7 @@ each suspension object:
 State Abstraction and Concurrency
 ---------------------------------
 
-[SPARK]
+*Specific to SPARK*
 
 Protected objects, as well as suspension objects, are `effectively volatile`
 which means that their value as seen from a given task may change at any time

@@ -1,7 +1,6 @@
 main.adb:6:04: warning: analyzing unreferenced procedure "Bad_Wraparound"
 main.adb:6:14: warning: subprogram "Bad_Wraparound" has no effect
 main.adb:10:16: info: implicit aspect Always_Terminates on "Dice_Roll" has been proved, subprogram will terminate
-main.adb:10:16: info: implicit function contract might not be available on calls from enclosing unit
 main.adb:13:07: info: range check proved (CVC5: 2 VC)
 main.adb:13:50: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 main.adb:13:50: info: range check proved (CVC5: 2 VC)
@@ -20,7 +19,6 @@ main.adb:26:29: medium: range check might fail
 main.adb:33:04: warning: analyzing unreferenced procedure "Excessive_Elements_Before_Others_2"
 main.adb:33:14: warning: subprogram "Excessive_Elements_Before_Others_2" has no effect
 main.adb:36:16: info: implicit aspect Always_Terminates on "Dice_Roll" has been proved, subprogram will terminate
-main.adb:36:16: info: implicit function contract might not be available on calls from enclosing unit
 main.adb:38:07: info: range check proved (CVC5: 2 VC)
 main.adb:38:38: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 main.adb:38:42: info: range check proved (CVC5: 2 VC)
@@ -30,7 +28,6 @@ main.adb:39:38: medium: range check might fail
 main.adb:47:04: warning: analyzing unreferenced procedure "Excessive_Elements_Before_Others_3"
 main.adb:47:14: warning: subprogram "Excessive_Elements_Before_Others_3" has no effect
 main.adb:50:16: info: implicit aspect Always_Terminates on "Dice_Roll" has been proved, subprogram will terminate
-main.adb:50:16: info: implicit function contract might not be available on calls from enclosing unit
 main.adb:52:07: info: range check proved (CVC5: 2 VC)
 main.adb:52:38: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 main.adb:52:38: info: range check proved (CVC5: 2 VC)

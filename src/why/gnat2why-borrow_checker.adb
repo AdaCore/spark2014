@@ -1330,7 +1330,27 @@ package body Gnat2Why.Borrow_Checker is
    --  Start of processing for Check_Assignment
 
    begin
-      if Is_Anonymous_Access_Object_Type (Target_Typ) then
+      --  For function calls with side effects, use the handling of
+      --  procedure calls as there might be parameters of mode OUT.
+      --  Such calls can never be borrows/observes as traversal
+      --  functions cannot have side effects. No need to check the
+      --  assignment for ghost compatibility as the returned object
+      --  is necessarily new.
+
+      if Nkind (Expr) = N_Function_Call
+        and then
+          Is_Function_With_Side_Effects (Get_Called_Entity (Expr))
+      then
+         Check_Call_With_Side_Effects (Call => Expr);
+
+         --  If Expr might raise some exceptions, handle the
+         --  exceptional paths.
+
+         if Might_Raise_Handled_Exceptions (Expr) then
+            Set_Environment_For_Exceptions (Expr);
+         end if;
+
+      elsif Is_Anonymous_Access_Object_Type (Target_Typ) then
          Expr_Root := Get_Root_Object (Expr);
 
          if Is_Decl then
@@ -2853,7 +2873,6 @@ package body Gnat2Why.Borrow_Checker is
          --  The following nodes are never generated in GNATprove mode
 
          when N_Reference
-            | N_Unchecked_Expression
          =>
             raise Program_Error;
       end case;
@@ -4117,29 +4136,7 @@ package body Gnat2Why.Borrow_Checker is
 
                Check_Expression (Target, Read_Subexpr);
 
-               --  For function calls with side effects, use the handling of
-               --  procedure calls as there might be parameters of mode OUT.
-               --  Such calls can never be borrows/observes as traversal
-               --  functions cannot have side effects. No need to check the
-               --  assignment for ghost compatibility as the returned object
-               --  is necessarily new.
-
-               if Nkind (Expr) = N_Function_Call
-                 and then
-                   Is_Function_With_Side_Effects (Get_Called_Entity (Expr))
-               then
-                  Check_Call_With_Side_Effects (Call => Expr);
-
-                  --  If Stmt might raise some exceptions, handle the
-                  --  exceptional paths.
-
-                  if Might_Raise_Handled_Exceptions (Expr) then
-                     Set_Environment_For_Exceptions (Expr);
-                  end if;
-
-               else
-                  Check_Assignment (Target => Target, Expr => Expr);
-               end if;
+               Check_Assignment (Target => Target, Expr => Expr);
 
                --  Local observers and borrowers can always be assigned, unless
                --  they are themselves borrowed (for borrowers only). Indeed,

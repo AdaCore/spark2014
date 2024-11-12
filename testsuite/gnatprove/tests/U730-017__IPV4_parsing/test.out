@@ -254,7 +254,6 @@ ipv4_parsing.ads:113:13: info: implicit aspect Always_Terminates on "Parse_IPV4"
 ipv4_parsing.ads:114:45: info: precondition proved
 ipv4_parsing.ads:115:14: info: postcondition proved
 ipv4_parsing.ads:115:14: info: precondition proved
-ipv4_parsing.ads:118:13: info: function contract might not be available on implicit recursive calls
 ipv4_parsing.ads:118:13: info: implicit aspect Always_Terminates on "Print_IPV4" has been proved, subprogram will terminate
 ipv4_parsing.ads:119:14: info: postcondition proved
 ipv4_parsing.ads:121:15: info: precondition proved

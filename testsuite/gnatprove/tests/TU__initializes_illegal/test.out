@@ -17,7 +17,6 @@ initializes_illegal_4.adb:11:09: warning: unused assignment
 initializes_illegal_4.adb:19:07: info: initialization of "Body_Var" constituent of "State" proved
 initializes_illegal_4.adb:22:17: warning: unused assignment
 initializes_illegal_4.adb:28:16: info: implicit aspect Always_Terminates on "F1" has been proved, subprogram will terminate
-initializes_illegal_4.adb:28:16: info: implicit function contract might not be available on calls from enclosing unit
 initializes_illegal_4.adb:30:35: medium: overflow check might fail, cannot prove lower bound for G_Var - F1 (e.g. when G_Var = Integer'First and G_Var2 = 1) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 initializes_illegal_4.ads:17:29: warning: no subprogram exists that can initialize abstract state "Pac1.State"
 initializes_illegal_4.ads:20:07: low: initialization of "X" must be mentioned in the Initializes contract of "Pac1" (SPARK RM 7.1.5(9))

@@ -1359,8 +1359,10 @@ Decreases) then the expression value obtained for the call is greater
 
 4. The expression of a ``numeric_subprogram_variant_item`` shall be either
    of a discrete type,
-   of a subtype of ``Ada.Numerics.Big_Numbers.Big_Integers.Big_Integer`` or
-   of a subtype of ``Ada.Numerics.Big_Numbers.Big_Integers_Ghost.Big_Integer``.
+   of a subtype of ``Ada.Numerics.Big_Numbers.Big_Integers.Big_Integer``,
+   of a subtype of ``Ada.Numerics.Big_Numbers.Big_Integers_Ghost.Big_Integer``
+   or
+   of a subtype of ``SPARK.Big_Numbers.Big_Integer``.
    In the second and third cases the associated ``change_direction`` shall be
    Decreases.
 
@@ -1626,7 +1628,8 @@ Note that a function with side effects is also a volatile function (see section
    Output or In_Out in its Global aspect.]
 
 4. A call to a function with side effects may only occur as the [right-hand
-   side] expression of an assignment statement. [Redundant: In particular,
+   side] expression of an assignment statement or of a local object declaration
+   witout a block. [Redundant: In particular,
    functions with side effects cannot be called inside assertions.]
 
 5. A function with side effects shall not have a Pure_Function aspect or

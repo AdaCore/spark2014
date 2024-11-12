@@ -16,13 +16,12 @@ bad_spec_prag.ads:21:04: warning: replace "pragma Annotate (GNATprove, might_not
 bad_spec_prag.ads:26:04: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored
 bad_spec_prag.ads:26:04: warning: replace "pragma Annotate (GNATprove, might_not_return, ...)" by "with Always_Terminates => False" or use an exceptional contract on the corresponding entity
 bad.adb:5:07: medium: unexpected exception might be raised
-bad.adb:10:07: medium: implicit aspect Always_Terminates on "Call_Jump_Fun" could be incorrect, call to "Jump" might be nonterminating [possible fix: annotate "Jump" with aspect Always_Terminates]
 bad.adb:11:07: warning: this statement is never reached
-bad.adb:26:07: medium: implicit aspect Always_Terminates on "Silent_Call_Jump" could be incorrect, call to "Call_Jump" might be nonterminating [possible fix: annotate "Call_Jump" with aspect Always_Terminates]
 bad.adb:26:07: medium: unexpected exception might be raised
 bad.ads:5:13: high: all paths in "Call_Jump_Fun" raise exceptions or do not terminate normally
 bad.ads:9:38: medium: exceptional case might fail, in instantiation at bad.adb:22 [possible fix: subprogram at line 8 should mention B in a precondition]
 bad.ads:10:06: info: data dependencies proved, in instantiation at bad.adb:22
+bad.ads:13:13: info: implicit aspect Always_Terminates on "Silent_Call_Jump" has been proved, subprogram will terminate
 weird.adb:25:07: medium: unexpected exception might be raised, in instantiation at weird_inst.adb:6
 weird_inst.adb:6:14: info: aspect Always_Terminates on "RG_Inst" has been proved, subprogram will terminate
 weird_inst.adb:6:14: warning: launch "gnatprove --explain=E0013" for more information
