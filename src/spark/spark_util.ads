@@ -244,6 +244,34 @@ package SPARK_Util is
    --  Return the objects which are aliases of E via overlays. This does not
    --  return E itself.
 
+   procedure Set_Visible_Overridden_Operation (E, Inh : Callable_Kind_Id)
+     with Pre => E = Ultimate_Alias (E)
+       and Inh = Ultimate_Alias (Inh)
+       and Is_Dispatching_Operation (E)
+       and Is_Dispatching_Operation (Inh);
+   --  Register than E is overriding Inh according to SPARK visibility of
+   --  inheritance.
+
+   function Visible_Overridden_Operation
+     (E : Callable_Kind_Id)
+      return Entity_Id
+     with Pre => E = Ultimate_Alias (E),
+     Post => (declare
+                R : constant Entity_Id := Visible_Overridden_Operation'Result;
+              begin
+                (if not Is_Dispatching_Operation (E)
+                 then No (R)
+                 elsif Present (R)
+                 then R = Ultimate_Alias (R)
+                   and Is_Dispatching_Operation (R)));
+   --  Return the SPARK operation overridden by E, according to SPARK
+   --  visibility of inheritance, or Empty if there are none.
+   --  Using SPARK visibility of inheritance means that any intermediate
+   --  overriding procedures in a private part with SPARK_Mode Off are not
+   --  taken into account, effectively skipped. However, procedures with
+   --  SPARK_Mode Off whose type is a visible ancestor are not skipped, and
+   --  may 'cut' an overriding.
+
    ---------------------------------
    -- Extra tables on expressions --
    ---------------------------------
