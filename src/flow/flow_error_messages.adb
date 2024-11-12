@@ -1605,6 +1605,18 @@ package body Flow_Error_Messages is
                end if;
             end if;
          end;
+
+      elsif Tag in VC_Postcondition | VC_Contract_Case
+        and then Has_Contracts (E, Pragma_Refined_Post)
+      then
+         declare
+            Contract : constant String :=
+              (if Tag = VC_Postcondition then "postcondition"
+               else "contract case");
+         begin
+            return "validity of the " & Contract & " of " & Source_Name (E) &
+              " should be implied by its refined postcondition";
+         end;
       end if;
 
       return "";
