@@ -685,7 +685,7 @@ the ``Account`` package, this property would no longer be provable if the
 expression functions are supplied in the body of ``Account``.
 
 Note that abstraction is an important concept for verification as it
-ensures scalability of complex proofs be enforcing separation of concerns -
+ensures scalability of complex proofs by enforcing separation of concerns -
 i.e. only the information that is necessary for a given verification is
 available in the verification tool. The default visibility rules for
 verification can be tuned in some cases using the annotations ``Hide_Info`` and
@@ -697,7 +697,7 @@ expression functions to provide different contracts for a subprogram.
 Since the body of expression functions acts as an implicit postcondition, it
 directly provides a `refined` version of the function's contract possibly with
 a different visibility. Not all subprograms can be turned into an expression
-function. As an alternative, the |SPARK| lagnguage provides the ``Refined_Post``
+function. As an alternative, the |SPARK| language provides the ``Refined_Post``
 aspect or pragma that can be used to provide an alternative postcondition on a
 subprogram body. For example, procedure ``Add_To_Total`` may also increment the
 value of a counter ``Call_Count`` at each call. If this information is not
