@@ -4472,11 +4472,11 @@ package body Flow.Control_Flow_Graph is
       --  We pull proof dependencies from the type of the object. Type
       --  invariants are pulled in the enclosing unit only when the object
       --  has no initialization, or it is a library-level entity.
-      Process_Predicate_And_Invariant (Etype (E),
-                                       FA.B_Scope,
-                                       No (Expr)
-                                         or else Is_Library_Level_Entity (E),
-                                       FA.Proof_Dependencies);
+      Process_Type_Contracts (Etype (E),
+                              FA.B_Scope,
+                              No (Expr)
+                                or else Is_Library_Level_Entity (E),
+                              FA.Proof_Dependencies);
 
       --  We have a declaration with an explicit initialization
 
@@ -6271,21 +6271,8 @@ package body Flow.Control_Flow_Graph is
       --  into the proof dependencies of the unit.
 
       if FA.Generating_Globals and then Entity_In_SPARK (Typ) then
-         Process_Predicate_And_Invariant
+         Process_Type_Contracts
            (Typ, FA.B_Scope, True, FA.Proof_Dependencies);
-      end if;
-
-      --  Access-to-subprogram types might be annotated with Pre and Post
-      --  contracts. We process their expressions for proof dependencies here.
-
-      if Is_Access_Subprogram_Type (Typ)
-        and then No (Parent_Retysp (Typ))
-      then
-         Process_Access_To_Subprogram_Contracts
-           (Typ,
-            FA.B_Scope,
-            FA.Proof_Dependencies,
-            FA.Generating_Globals);
       end if;
 
       --  In phase 2 check DIC on type definitions that come from source
@@ -7851,7 +7838,7 @@ package body Flow.Control_Flow_Graph is
          when Kind_Subprogram =>
             for Param of Get_Formals (FA.Spec_Entity) loop
                Create_Initial_And_Final_Vertices (Param, FA);
-               Process_Predicate_And_Invariant
+               Process_Type_Contracts
                  (Etype (Param),
                   FA.B_Scope,
                   Is_Globally_Visible (FA.Spec_Entity),
@@ -7990,7 +7977,7 @@ package body Flow.Control_Flow_Graph is
       --  entity is a boundary subprogram.
       if Ekind (FA.Spec_Entity) = E_Function then
          Create_Initial_And_Final_Vertices (FA.Spec_Entity, FA);
-         Process_Predicate_And_Invariant
+         Process_Type_Contracts
            (Etype (FA.Spec_Entity),
             FA.B_Scope,
             Is_Globally_Visible (FA.Spec_Entity),

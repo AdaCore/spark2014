@@ -331,7 +331,7 @@ package body Flow_Utility is
                         --  is executed, whereas proof pulls the entire set of
                         --  predicates that apply to P.
 
-                        Process_Predicate_And_Invariant_Internal
+                        Process_Type_Contracts_Internal
                           (Typ                => Etype (P),
                            Scop               => Scop,
                            Include_Invariant  => False,
@@ -350,7 +350,7 @@ package body Flow_Utility is
                   P := First (Alternatives (N));
                   loop
                      if Is_Entity_Name (P) and then Is_Type (Entity (P)) then
-                        Process_Predicate_And_Invariant_Internal
+                        Process_Type_Contracts_Internal
                           (Typ                => Etype (P),
                            Scop               => Scop,
                            Include_Invariant  => False,
@@ -450,7 +450,7 @@ package body Flow_Utility is
                   if Present (E)
                     and then Ekind (E) in E_Constant | E_Variable
                   then
-                     Process_Predicate_And_Invariant_Internal
+                     Process_Type_Contracts_Internal
                        (Typ                => Etype (E),
                         Scop               => Scop,
                         Include_Invariant  => not Scope_Within_Or_Same
@@ -468,7 +468,7 @@ package body Flow_Utility is
             when N_Type_Conversion
                | N_Qualified_Expression
             =>
-               Process_Predicate_And_Invariant_Internal
+               Process_Type_Contracts_Internal
                  (Typ                => Etype (N),
                   Scop               => Scop,
                   Include_Invariant  => False,
@@ -592,11 +592,11 @@ package body Flow_Utility is
          Generating_Globals);
    end Pick_Generated_Info;
 
-   ----------------------------------------------
-   -- Process_Predicate_And_Invariant_Internal --
-   ----------------------------------------------
+   -------------------------------------
+   -- Process_Type_Contracts_Internal --
+   -------------------------------------
 
-   procedure Process_Predicate_And_Invariant_Internal
+   procedure Process_Type_Contracts_Internal
      (Typ                : Type_Kind_Id;
       Scop               : Flow_Scope;
       Include_Invariant  : Boolean;
@@ -727,7 +727,7 @@ package body Flow_Utility is
       Position : Node_Sets.Cursor;
       Inserted : Boolean;
 
-   --  Start of processing for Process_Predicate_And_Invariant_Internal
+   --  Start of processing for Process_Type_Contracts_Internal
 
    begin
 
@@ -738,9 +738,22 @@ package body Flow_Utility is
       Types_Seen.Insert (Typ, Position, Inserted);
 
       if Inserted then
+         --  Access-to-subprogram types might be annotated with Pre and Post
+         --  contracts. We process their expressions for proof dependencies.
+
+         if Is_Access_Subprogram_Type (Typ)
+           and then No (Parent_Retysp (Typ))
+         then
+            Process_Access_To_Subprogram_Contracts
+              (Typ,
+               Scop,
+               Proof_Dependencies,
+               True);
+         end if;
+
          Discard := Visit_Subcomponents (Typ);
       end if;
-   end Process_Predicate_And_Invariant_Internal;
+   end Process_Type_Contracts_Internal;
 
    ---------------------------------
    -- Called_Primitive_Equalities --

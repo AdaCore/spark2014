@@ -78,7 +78,7 @@ package Flow_Utility.Proof_Dependencies is
    --  Fill Proof_Dependencies by analyzing the potential Iterable_For_Proof
    --  annotations associated to N.
 
-   procedure Process_Predicate_And_Invariant
+   procedure Process_Type_Contracts
      (Typ                : Type_Kind_Id;
       Scop               : Flow_Scope;
       Include_Invariant  : Boolean;
@@ -86,8 +86,9 @@ package Flow_Utility.Proof_Dependencies is
      with Post => Proof_Dependencies'Old.Is_Subset
                     (Of_Set => Proof_Dependencies);
    --  Fill Proof_Dependencies by analyzing predicate and invariant expressions
-   --  that apply to Typ. Include_Invariant is used to determine whether a type
-   --  invariant is pulled.
+   --  that apply to Typ. This also pulls contracts in access-to-subprograms
+   --  types. Include_Invariant is used to determine whether a type invariant
+   --  is pulled.
 
    procedure Process_Reclamation_Functions
      (Typ                : Type_Kind_Id;
