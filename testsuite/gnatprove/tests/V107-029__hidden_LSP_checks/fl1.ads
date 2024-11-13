@@ -30,12 +30,12 @@ is
 
    type Bad_Child2 is private;
 
-   procedure Incr_F (X : in out Bad_Child2);
+   procedure Incr_F (X : in out Bad_Child2) with Pre => True;
 
    type Bad_Child3 is private;
 
    procedure Incr_F (X : in out Bad_Child3) with
-     Post => X = X'Old; --@STRONGER_POST:FAIL
+     Pre => True, Post => X = X'Old; --@STRONGER_POST:FAIL
 
 private
    type Child is new Root with record
