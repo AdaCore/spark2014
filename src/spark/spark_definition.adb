@@ -1517,7 +1517,22 @@ package body SPARK_Definition is
                  ("subprogram & is inherited from " & To_String (Msg),
                   Names => Names));
          end;
+         return;
       end if;
+
+      --  There has been no violation. If Id is an explicit overriding, visible
+      --  in SPARK, register the subprogram that it visibly overrides.
+
+      if No (Alias (Id)) and then Inherited.Length = 1 then
+         declare
+            Inh_Id : constant Callable_Kind_Id := Inherited.First_Element;
+         begin
+            if In_SPARK (Inh_Id) then
+               Set_Visible_Overridden_Operation (Id, Inh_Id);
+            end if;
+         end;
+      end if;
+
    end Check_Not_Inherited_From_Several_Sources;
 
    ---------------------------------------
