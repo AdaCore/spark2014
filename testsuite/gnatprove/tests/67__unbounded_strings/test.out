@@ -715,7 +715,6 @@ strunb.ads:64:03: info: initial condition proved
 strunb.ads:74:09: info: default initial condition proved
 strunb.ads:74:09: info: predicate check justified on default value
 strunb.ads:88:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
-strunb.ads:88:13: info: implicit function contract might not be available on calls from enclosing unit
 strunb.ads:89:06: info: data dependencies proved
 strunb.ads:108:13: info: implicit aspect Always_Terminates on "To_Unbounded_String" has been proved, subprogram will terminate
 strunb.ads:111:16: info: postcondition proved

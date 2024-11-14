@@ -567,6 +567,8 @@ package body VC_Kinds is
           "pragma Overflow_Mode in code is ignored",
         when Warn_Precondition_Statically_False =>
           "precondition is statically False",
+        when Warn_Restriction_Ignored =>
+          "restriction is ignored (it is not yet supported)",
         when Warn_Unreferenced_Function =>
           "analyzing unreferenced function",
         when Warn_Unreferenced_Procedure =>
@@ -1504,6 +1506,8 @@ package body VC_Kinds is
           "Overflow_Mode ignored",
         when Warn_Precondition_Statically_False =>
           "precondition statically False",
+        when Warn_Restriction_Ignored =>
+          "restriction ignored",
         when Warn_Unreferenced_Function =>
           "unreferenced function",
         when Warn_Unreferenced_Procedure =>
