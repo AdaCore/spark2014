@@ -4805,8 +4805,7 @@ package body SPARK_Definition is
             then
                Error_Msg_N
                  (Create_N (Warning_Message (Warn_Image_Attribute_Length),
-                            N => N,
-                            Names => [Aname]),
+                            Names => [To_String (Aname, Sloc (N))]),
                   N,
                   Kind => Warning_Kind);
             end if;
@@ -4876,8 +4875,7 @@ package body SPARK_Definition is
                Error_Msg_N
                  (Create_N
                     (Warning_Message (Warn_Representation_Attribute_Value),
-                     N     => N,
-                     Names => [Aname]),
+                     Names => [To_String (Aname, Sloc (N))]),
                   N,
                   Kind => Warning_Kind);
             end if;

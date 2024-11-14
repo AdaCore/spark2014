@@ -56,8 +56,7 @@ package Errout_Wrapper is
 
    function Create_N
      (Msg           : String;
-      N             : Node_Id := Empty;
-      Names         : Name_Id_Lists.List := Name_Id_Lists.Empty;
+      Names         : String_Lists.List := String_Lists.Empty;
       Secondary_Loc : Source_Ptr := No_Location;
       Explain_Code  : Explain_Code_Kind := EC_None) return Message;
    --  Same as Create, but the names can be provided as a list of Name_Ids.
