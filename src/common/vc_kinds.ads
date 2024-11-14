@@ -394,6 +394,7 @@ package VC_Kinds is
       Warn_Pragma_Ignored,
       Warn_Pragma_Overflow_Mode,
       Warn_Precondition_Statically_False,
+      Warn_Restriction_Ignored,
       Warn_Unreferenced_Function,
       Warn_Unreferenced_Procedure,
       Warn_Useless_Relaxed_Init_Fun,
@@ -565,6 +566,8 @@ package VC_Kinds is
           "pragma Overflow_Mode in code is ignored",
         when Warn_Precondition_Statically_False =>
           "precondition is statically False",
+        when Warn_Restriction_Ignored =>
+          "restriction & ignored (not yet supported)",
         when Warn_Unreferenced_Function =>
           "analyzing unreferenced function &",
         when Warn_Unreferenced_Procedure =>

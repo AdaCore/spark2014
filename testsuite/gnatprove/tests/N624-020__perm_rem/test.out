@@ -62,7 +62,7 @@ perm.adb:62:44: info: precondition proved (CVC5: 6 VC)
 perm.adb:62:55: info: range check proved (CVC5: 4 VC)
 perm.adb:64:07: info: assertion proved (Z3: 1 VC)
 perm.adb:65:07: warning: this statement is never reached
-perm.adb:69:16: info: function contract might not be available on recursive calls or calls from enclosing unit
+perm.adb:69:16: info: function contract might not be available on recursive calls
 perm.adb:71:17: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
 perm.adb:71:54: info: precondition proved (CVC5: 2 VC)
 perm.adb:79:13: medium: implicit aspect Always_Terminates on "Induction_Hypothesis" could be incorrect, subprogram is recursive [possible fix: annotate "Induction_Hypothesis" with a Subprogram_Variant aspect]
@@ -73,7 +73,7 @@ perm.adb:80:58: info: precondition proved (CVC5: 3 VC)
 perm.adb:80:70: info: range check proved (CVC5: 2 VC)
 perm.adb:82:28: info: assertion proved (CVC5: 1 VC)
 perm.adb:88:14: info: precondition proved (CVC5: 3 VC)
-perm.adb:93:16: info: function contract might not be available on recursive calls or calls from enclosing unit
+perm.adb:93:16: info: function contract might not be available on recursive calls
 perm.adb:94:63: info: precondition proved (CVC5: 2 VC)
 perm.adb:95:17: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
 perm.adb:95:54: info: precondition proved (CVC5: 2 VC)
@@ -128,12 +128,11 @@ perm.adb:141:44: info: overflow check proved (CVC5: 2 VC)
 perm.adb:141:62: info: index check proved (CVC5: 2 VC)
 perm.adb:141:72: info: index check proved (CVC5: 2 VC)
 perm.adb:141:72: info: overflow check proved (CVC5: 2 VC)
-perm.adb:145:13: info: function contract might not be available on implicit recursive calls
 perm.adb:145:13: info: implicit aspect Always_Terminates on "Shift_Perm_L" has been proved, subprogram will terminate
 perm.adb:147:30: info: precondition proved (CVC5: 2 VC)
 perm.adb:148:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 perm.adb:148:43: info: precondition proved (CVC5: 2 VC)
-perm.adb:152:16: info: function contract might not be available on recursive calls or calls from enclosing unit
+perm.adb:152:16: info: function contract might not be available on recursive calls
 perm.adb:154:33: info: precondition proved (CVC5: 2 VC)
 perm.adb:155:17: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
 perm.adb:155:54: info: precondition proved (CVC5: 2 VC)
@@ -325,7 +324,7 @@ perm.adb:293:39: info: range check proved (CVC5: 4 VC)
 perm.adb:293:43: info: precondition proved (CVC5: 6 VC)
 perm.adb:293:54: info: range check proved (CVC5: 4 VC)
 perm.adb:300:25: info: precondition proved (CVC5: 3 VC)
-perm.adb:307:16: info: function contract might not be available on recursive calls or calls from enclosing unit
+perm.adb:307:16: info: function contract might not be available on recursive calls
 perm.adb:309:18: info: precondition proved (CVC5: 2 VC)
 perm.adb:309:42: info: precondition proved (CVC5: 2 VC)
 perm.adb:310:17: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
@@ -402,16 +401,13 @@ perm.ads:37:30: info: precondition proved (CVC5: 3 VC)
 perm.ads:37:41: info: range check proved (CVC5: 2 VC)
 perm.ads:37:46: info: precondition proved (CVC5: 3 VC)
 perm.ads:37:57: info: range check proved (CVC5: 2 VC)
-perm.ads:38:13: info: function contract might not be available on implicit recursive calls
 perm.ads:38:13: info: implicit aspect Always_Terminates on "Perm_Reflexive" has been proved, subprogram will terminate
 perm.ads:40:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 perm.ads:40:45: info: precondition proved (CVC5: 2 VC)
-perm.ads:42:13: info: function contract might not be available on implicit recursive calls
 perm.ads:42:13: info: implicit aspect Always_Terminates on "Perm_Symmetric" has been proved, subprogram will terminate
 perm.ads:43:60: info: precondition proved (CVC5: 2 VC)
 perm.ads:44:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 perm.ads:44:45: info: precondition proved (CVC5: 2 VC)
-perm.ads:46:13: info: function contract might not be available on implicit recursive calls
 perm.ads:46:13: info: implicit aspect Always_Terminates on "Perm_Transitive" has been proved, subprogram will terminate
 perm.ads:48:06: info: precondition proved (CVC5: 2 VC)
 perm.ads:48:30: info: precondition proved (CVC5: 2 VC)

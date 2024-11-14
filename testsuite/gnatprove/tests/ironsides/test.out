@@ -406,7 +406,6 @@ parser_utilities.adb:824:22: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:824:30: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:831:46: info: range check proved (CVC5: 1 VC)
 parser_utilities.adb:851:07: info: initialization of "CurrentChar" proved
-parser_utilities.adb:853:16: info: function contract might not be available on calls from enclosing unit
 parser_utilities.adb:853:16: info: implicit aspect Always_Terminates on "MultValue" has been proved, subprogram will terminate
 parser_utilities.adb:855:22: info: postcondition proved (CVC5: 2 VC)
 parser_utilities.adb:858:10: info: initialization of "C" proved
@@ -543,9 +542,7 @@ parser_utilities.ads:132:07: info: initialization of "AllDone" proved
 parser_utilities.ads:134:09: info: flow dependencies proved
 parser_utilities.ads:142:09: info: flow dependencies proved
 parser_utilities.ads:144:13: info: implicit aspect Always_Terminates on "ConvertIPV4" has been proved, subprogram will terminate
-parser_utilities.ads:144:13: info: implicit function contract might not be available on implicit recursive calls
 parser_utilities.ads:150:13: info: implicit aspect Always_Terminates on "ConvertIPV6" has been proved, subprogram will terminate
-parser_utilities.ads:150:13: info: implicit function contract might not be available on implicit recursive calls
 parser_utilities.ads:156:13: info: implicit aspect Always_Terminates on "GetRecordType" has been proved, subprogram will terminate
 process_dns_request.ads:130:50: medium: range check might fail, cannot prove lower bound for DNSKey_Record.KeyLength [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (DNSKey_Record.KeyLength >= Integer(Packet_Bytes_Range'First)) to subprogram at line 121]
 process_dns_request.ads:223:50: info: range check proved (CVC5: 2 VC)
@@ -606,7 +603,6 @@ rr_type.adb:114:34: high: array index check might fail (e.g. when I = 1 and S = 
 rr_type.adb:128:07: info: initialization of "LengthOfDomainName" proved
 rr_type.adb:129:07: info: initialization of "WireVersion" proved
 rr_type.adb:131:16: info: implicit aspect Always_Terminates on "FindPeriod" has been proved, subprogram will terminate
-rr_type.adb:131:16: info: implicit function contract might not be available on calls from enclosing unit
 rr_type.adb:136:10: info: initialization of "Result" proved
 rr_type.adb:140:27: info: index check proved (CVC5: 4 VC)
 rr_type.adb:142:34: info: loop variant proved (CVC5: 1 VC)
@@ -634,7 +630,6 @@ rr_type.ads:91:06: info: postcondition proved (CVC5: 1 VC)
 rr_type.ads:93:37: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
 rr_type.ads:94:18: info: range check proved (CVC5: 2 VC)
 rr_type.ads:96:18: info: index check proved (CVC5: 2 VC)
-rr_type.ads:98:13: info: function contract might not be available on implicit recursive calls
 rr_type.ads:98:13: info: implicit aspect Always_Terminates on "ConvertDomainNameToWire" has been proved, subprogram will terminate
 rr_type.ads:102:06: info: postcondition proved (CVC5: 2 VC)
 rr_type.ads:106:13: info: implicit aspect Always_Terminates on "ConvertStringToDomainName" has been proved, subprogram will terminate
@@ -926,7 +921,6 @@ zone_file_parser.adb:696:07: info: initialization of "BlockNumberOfFirstRecordTy
 zone_file_parser.adb:698:07: info: initialization of "BlockIndex" proved
 zone_file_parser.adb:699:07: info: initialization of "ByteNumber" proved
 zone_file_parser.adb:700:07: info: initialization of "BitNumber" proved
-zone_file_parser.adb:702:16: info: implicit function contract might not be available on calls from enclosing unit
 zone_file_parser.adb:702:16: info: imprecise handling of Unchecked_Conversion (enumeration with non-default representation)
 zone_file_parser.adb:702:16: info: types in unchecked conversion have the same size (Trivial)
 zone_file_parser.adb:703:10: info: type is suitable as source for unchecked conversion (Trivial)
