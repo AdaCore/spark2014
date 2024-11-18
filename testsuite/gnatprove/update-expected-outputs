@@ -5,6 +5,10 @@ from e3.fs import sync_tree
 from e3.gaia.api import GAIA
 from e3.testsuite.report.rewriting import BaseBaselineRewriter, RewritingError
 from e3.testsuite.utils import ColorConfig
+from adacore_gitlab_scripts.util.e3_baseline_updates import (
+    Gitlab,
+    GitLabProjectDescription,
+)
 import os.path
 import tarfile
 import tempfile
@@ -41,14 +45,6 @@ def parse_options():
         print("please provide only one of (--output-dir, --from-gaia, --from-gitlab)")
         exit(1)
     return args
-
-
-missing_package_msg = """
-Could not find the remote_artifacts package. Do the following and try again:
-
-    python -m pip install \
-git+ssh://git@ssh.gitlab.adacore-it.com/kanig/remote_artifacts.git
-"""
 
 
 class BaselineRewriter(BaseBaselineRewriter):
@@ -111,14 +107,11 @@ def main():
         tmpdir = download_from_gaia(args.gaia_id)
         outputdirs = [tmpdir]
     elif args.gitlab_id:
-        try:
-            from remote_artifacts import Gitlab, GitLabProjectDescription
-        except ImportError:
-            print(missing_package_msg)
-            exit(1)
         p = GitLabProjectDescription("168", ["spark2014"])
         gl = Gitlab()
         outputdirs = gl.download_test_results(p, args.gitlab_id)
+        # artifact contains a coverage subdir which should be ignored
+        outputdirs = [item for item in outputdirs if "coverage" not in item]
     elif args.outputdir:
         outputdirs = [args.outputdir]
     else:
