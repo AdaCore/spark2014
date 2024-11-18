@@ -2439,6 +2439,27 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
+
+      function Is_Statically_Disabled (N : Node_Id) return Boolean
+      with Pre => Nkind (N) in N_Subexpr and then Is_Boolean_Type (Etype (N));
+      --  Checks if N is a statically disabled condition, no matter what it
+      --  evaluates to.
+
+      ----------------------------
+      -- Is_Statically_Disabled --
+      ----------------------------
+
+      function Is_Statically_Disabled (N : Node_Id) return Boolean is
+        (Exp_Util.Is_Statically_Disabled
+           (N             => N,
+            Value         => True,
+            Include_Valid => False)
+           or else
+         Exp_Util.Is_Statically_Disabled
+           (N             => N,
+            Value         => False,
+            Include_Valid => False));
+
       V, V_Prev           : Flow_Graphs.Vertex_Id;
       If_Part             : constant List_Id := Then_Statements (N);
       Else_Part           : constant List_Id := Else_Statements (N);
@@ -2465,11 +2486,10 @@ package body Flow.Control_Flow_Graph is
          Tasking            => FA.Tasking,
          Generating_Globals => FA.Generating_Globals);
 
+      --  Disable warnings on the if statement itself when the condition is
+      --  statically disabled, no matter its value.
       Ctx.Vertex_Ctx.Warnings_Off :=
-        Save_Warn_Off or else Exp_Util.Is_Statically_Disabled
-                                (N             => Condition (N),
-                                 Value         => True,
-                                 Include_Valid => False);
+        Save_Warn_Off or else Is_Statically_Disabled (Condition (N));
 
       Add_Vertex
         (FA,
@@ -2589,12 +2609,12 @@ package body Flow.Control_Flow_Graph is
                   Tasking            => FA.Tasking,
                   Generating_Globals => FA.Generating_Globals);
 
+               --  Disable warnings on the elsif statement itself when the
+               --  condition is statically disabled, no matter its value.
                Ctx.Vertex_Ctx.Warnings_Off :=
                  Ctx.Vertex_Ctx.Warnings_Off
-                   or else Exp_Util.Is_Statically_Disabled
-                            (N             => Condition (Elsif_Statement),
-                             Value         => True,
-                             Include_Valid => False);
+                   or else
+                 Is_Statically_Disabled (Condition (Elsif_Statement));
 
                Add_Vertex
                  (FA,
