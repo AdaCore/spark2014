@@ -515,9 +515,19 @@ corresponding flow dependency should use the ``null`` input list:
 
 .. index:: state abstraction; in subprogram contract
 
-State Abstraction and Contracts
--------------------------------
+Abstraction and Contracts
+-------------------------
+Just like for programming, abstraction is a key concept for the scalability
+of formal verification. In Ada, it is usually provided through packages and
+privacy. A package is composed of (at most) three parts, the public part of the
+specification, its private part, and the package body. Entities defined in the
+private part of the specification or the package body cannot be used in the
+public part of the specification nor in other units.
 
+.. index:: Refined_Global, Refined_Depends
+
+State Abstraction and Dependencies
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 *Specific to SPARK*
 
 The subprogram contracts mentioned so far always used directly global
@@ -527,11 +537,6 @@ the private part of a package specification, or in a package
 implementation). The notion of abstract state in |SPARK| can be used in that
 case (see :ref:`State Abstraction`) to name in contracts global data that is
 not visible.
-
-.. index:: Refined_Global, Refined_Depends
-
-State Abstraction and Dependencies
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Suppose the global variable ``Total`` incremented by procedure ``Add_To_Total``
 is defined in the package implementation, and a procedure ``Cash_Tickets`` in a
@@ -609,18 +614,19 @@ Refined dependencies can be specified on both subprograms and tasks for which
 data and/or flow dependencies that are specified include abstract states which
 are refined in the current unit.
 
-.. index:: expression function; in refinement
+.. index:: expression function; in refinement, Refined_Post
 
-State Abstraction and Functional Contracts
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Abstraction and Functional Contracts
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If global variables are not visible for data dependencies, they are not visible
+Abstraction affects how functional contracts are written. First,
+if global variables are not visible for data dependencies, they are not visible
 either for functional contracts. For example, in the case of procedure
 ``Add_To_Total``, if global variable ``Total`` is not visible, we cannot
 express anymore the precondition and postcondition of ``Add_To_Total`` as in
-:ref:`Preconditions` and :ref:`Postconditions`. Instead, we define accessor
-functions to retrieve properties of the state that we need to express, and we
-use these in contracts. For example here:
+:ref:`Preconditions` and :ref:`Postconditions`. In this case, it is necessary
+to define accessor functions to retrieve properties of the state that are needed
+to express contracts. For example here:
 
 .. code-block:: ada
 
@@ -630,10 +636,9 @@ use these in contracts. For example here:
      Pre  => Incr >= 0 and then Get_Total in 0 .. Integer'Last - Incr,
      Post => Get_Total = Get_Total'Old + Incr;
 
-Function ``Get_Total`` may be defined either in the private part of package
-``Account`` or in its implementation. It may take the form of a regular
-function or an expression function (see :ref:`Expression Functions`), for
-example:
+The body of the function ``Get_Total`` may be defined either in the private part
+of package ``Account`` or in its implementation. It may take the form of a
+regular function or an expression function (see :ref:`Expression Functions`):
 
 .. code-block:: ada
 
@@ -641,12 +646,62 @@ example:
 
    function Get_Total return Integer is (Total);
 
-Although no refined preconditions and postconditions are required on the
-implementation of ``Add_To_Total``, it is possible to provide a refined
-postcondition introduced by ``Refined_Post`` in that case, which specifies a
-more precise functional behavior of the subprogram. For example, procedure
-``Add_To_Total`` may also increment the value of a counter ``Call_Count`` at
-each call, which can be expressed in the refined postcondition:
+Accessor functions can be annotated as :ref:`Ghost Functions` functions to
+prevent them from being available in the standard API of the package.
+
+Abstraction also affects the visibility of contracts by
+the verification tool. By default, the notion of visibility used by |GNATprove|
+is rather liberal: subprogram contracts and bodies of expression functions are
+visible except if they occur in the body of another (possibly nested) unit. In
+particular, contracts of subprograms declared in the private part of other units
+are visible. On our example, the precise
+definition of ``Get_Global`` is visible for the verification of ``Account`` no
+matter whether it is declared in its private part or its implementation.
+However, it will only be available when verifying units using the
+``Account`` package if it is declared in its private part. To demonstrate this,
+we can introduce two distinct functions to access the value of ``Total`` in
+the public part of the specification of ``Account``:
+
+.. code-block:: ada
+
+   function Get_Total_1 return Integer;
+
+   function Get_Total_2 return Integer;
+
+They can be defined as expression functions as done previously, either in
+private part of ``Account`` or in its implementation:
+
+.. code-block:: ada
+
+   function Get_Total_1 return Integer is (Total);
+
+   function Get_Total_2 return Integer is (Total);
+
+In both cases, it will be possible to prove that ``Get_Total_1`` and
+``Get_Total_2`` necessarily return the same value when verifying ``Account``
+and all subprograms declared within. However, in a ``Main`` procedure using
+the ``Account`` package, this property would no longer be provable if the
+expression functions are supplied in the body of ``Account``.
+
+Note that abstraction is an important concept for verification as it
+ensures scalability of complex proofs be enforcing separation of concerns -
+i.e. only the information that is necessary for a given verification is
+available in the verification tool. The default visibility rules for
+verification can be tuned in some cases using the annotations ``Hide_Info`` and
+``Unhide_Info``, see :ref:`Annotation for Managing the Proof Context`, to
+achieve a fine-grained abstraction.
+
+The examples presented so far take advantage of the specific handling of
+expression functions to provide different contracts for a subprogram.
+Since the body of expression functions acts as an implicit postcondition, it
+directly provides a `refined` version of the function's contract possibly with
+a different visibility. Not all subprograms can be turned into an expression
+function. As an alternative, the |SPARK| lagnguage provides the ``Refined_Post``
+aspect or pragma that can be used to provide an alternative postcondition on a
+subprogram body. For example, procedure ``Add_To_Total`` may also increment the
+value of a counter ``Call_Count`` at each call. If this information is not
+relevant for the verification of programs using the ``Account`` package, it can
+be expressed in a refined postcondition:
 
 .. code-block:: ada
 
@@ -656,14 +711,24 @@ each call, which can be expressed in the refined postcondition:
       ...
    end Add_To_Total;
 
-A refined postcondition can be given on a subprogram implementation even when
-the unit does not use state abstraction, and even when the default
-postcondition of ``True`` is used implicitly on the subprogram declaration.
-
 |GNATprove| uses the abstract contract (precondition and postcondition) of
 ``Add_To_Total`` when analyzing calls outside package ``Account`` and the more
 precise refined contract (precondition and refined postcondition) of
 ``Add_To_Total`` when analyzing calls inside package ``Account``.
+The verification of the subprogram itself ensures that the refined contracts
+are a `refinement` of the abstract ones: the postcondition of
+``Add_To_Total`` should be implied by its refined postcondition only, without
+looking at its body. As an example, removing the first conjunct in the refined
+postcondition of ``Add_To_Total`` would cause the verification of its
+postcondition to fail even though it is still implied by its implementation:
+
+.. code-block:: ada
+
+   procedure Add_To_Total (Incr : in Integer) with
+     Refined_Post => Call_Count = Call_Count'Old + 1 -- NOT PRECISE ENOUGH TO PROVE THE POST
+   is
+      ...
+   end Add_To_Total;
 
 .. index:: exceptions; Exceptional_Cases
 

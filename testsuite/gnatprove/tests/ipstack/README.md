@@ -1,5 +1,4 @@
-AdaCore TCP/IP stack for high-integrity systems
-===============================================
+# AdaCore TCP/IP stack for high-integrity systems
 
 Copyright (C) 2010, AdaCore
 
@@ -10,8 +9,12 @@ Example driver code is adapted from original LWIP code:
  Copyright (C) 2001, 2002 Georges Menie
 and is licensed under the GNU General Public License.
 
-FEATURES
---------
+## Status of this Code
+
+The intention of this code is to provide an example of the application of
+SPARK. It is provided as-is.
+
+## Features
 
 AdaCore TCP/IP stack:
   * Targeted to bare-board embedded applications in certifiable systems.
@@ -38,8 +41,7 @@ Environment:
 Limitations:
   * No IP fragmentation
 
-SUPPORTED TARGETS
------------------
+## Supported Targets
 
 This TCP/IP stack can be used either on a PowerPC bare-board system
 or on a Linux host as a native process. In the latter case, the TAP
@@ -47,8 +49,7 @@ device is used for communication between the stack and the host system.
 
 The PowerPC version can be run on a QEmu virtual system.
 
-BUILD REQUIREMENTS
-------------------
+## Build Requirements
 
 Building the TCP/IP Stack requires:
   GNAT Pro >= 6.3.1
@@ -57,8 +58,7 @@ Building the TCP/IP Stack requires:
 Building for PowerPC also requires the ZFP-Support package to be
 installed and available to your cross build chain.
 
-BUILDING
---------
+## Building
 
 To build the native Linux version:
    make TARGET=native
@@ -71,8 +71,7 @@ service on well-known port 7.
 
 In both cases, the resulting executable is build/app/echop.
 
-RUNNING THE TEST APPLICATION
-----------------------------
+## Running the Test Application
 
 To start the PowerPC version under qemu:
    make run
@@ -91,16 +90,16 @@ host, which may require super-user privileges. The third option can be
 executed by a non-privileged user.
 
 To run another OS in QEmu on the virtual Ethernet, use:
+```
   qemu -net nic -net socket,mcast=224.0.0.1:3333 -cdrom other_os.iso
+```
 
-SPARK
------
+## SPARK
 
 To run SPARK tools (currently only flow analysis) on the stack, use:
    make spark
 
-ACKNOWLEDGEMENTS
-----------------
+## Acknowledgements
 
 Design ideas have been borrowed from the LWIP stack by Pr. Adam Dunkels
 of the Swedish Institute of Computer Science, and are gratefully
