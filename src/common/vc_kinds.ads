@@ -486,6 +486,8 @@ package VC_Kinds is
       Lim_Op_Fixed_Float,
       Lim_Op_Incompatible_Fixed,
       Lim_Overlay_With_Deep_Object,
+      Lim_Overriding_With_Precondition_Discrepancy_Hiding,
+      Lim_Overriding_With_Precondition_Discrepancy_Tagged_Privacy,
       Lim_Deep_Object_Declaration_Outside_Block,
       Lim_Package_Before_Inv,
       Lim_Predicate_With_Different_SPARK_Mode,
@@ -753,6 +755,13 @@ package VC_Kinds is
          when Lim_Multiple_Inheritance_Mixed_SPARK_Mode =>
             "subprogram implicitly inherited from multiple progenitor types"
             & " with conflicting SPARK mode",
+         when Lim_Overriding_With_Precondition_Discrepancy_Hiding =>
+           "dispatching primitive subprogram overriding with class-wide"
+          & " precondition inherited from a potentially hidden ancestor",
+         when Lim_Overriding_With_Precondition_Discrepancy_Tagged_Privacy =>
+           "dispatching primitive subprogram overriding declared for a"
+          & " private untagged type with no precondition and a class-wide"
+          & " precondition inherited from ancestor",
          when Lim_Primitive_Call_In_DIC =>
            "primitive calls in default initial condition",
          when Lim_Constrained_Classwide =>
