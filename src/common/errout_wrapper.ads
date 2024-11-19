@@ -56,8 +56,7 @@ package Errout_Wrapper is
 
    function Create_N
      (Msg           : String;
-      N             : Node_Id := Empty;
-      Names         : Name_Id_Lists.List := Name_Id_Lists.Empty;
+      Names         : String_Lists.List := String_Lists.Empty;
       Secondary_Loc : Source_Ptr := No_Location;
       Explain_Code  : Explain_Code_Kind := EC_None) return Message;
    --  Same as Create, but the names can be provided as a list of Name_Ids.
@@ -93,6 +92,17 @@ package Errout_Wrapper is
       Kind          : Msg_Severity := Error_Kind;
       Continuations : Message_Lists.List := Message_Lists.Empty);
    --  Same as Error_Msg_N but accepts a Source_Span as location
+
+   --  TODO overload with other warning kinds (VC and flow)
+
+   procedure Warning_Msg_N
+     (Kind          : Misc_Warning_Kind;
+      N             : Node_Id;
+      Names         : Node_Lists.List := Node_Lists.Empty;
+      Secondary_Loc : Source_Ptr := No_Location;
+      Explain_Code  : Explain_Code_Kind := EC_None;
+      First         : Boolean := False;
+      Continuations : Message_Lists.List := Message_Lists.Empty);
 
    function Escape (S : String) return String;
    --  Escape the special characters # and & in the error message

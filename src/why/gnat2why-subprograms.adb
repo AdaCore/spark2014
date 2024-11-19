@@ -5448,10 +5448,9 @@ package body Gnat2Why.Subprograms is
               and then not Exp_Util.Is_Statically_Disabled
                 (Expr, False, Include_Valid => True)
             then
-               Error_Msg_N
-                 (Warning_Message (Warn_Precondition_Statically_False),
-                  Expr,
-                  Kind => Warning_Kind);
+               Warning_Msg_N
+                 (Warn_Precondition_Statically_False,
+                  Expr);
             end if;
          end if;
       end loop;
@@ -5537,10 +5536,9 @@ package body Gnat2Why.Subprograms is
         and then Present (Get_Pragma (E, Pragma_Subprogram_Variant))
         and then not Is_Recursive (E)
       then
-         Error_Msg_N (Warning_Message (Warn_Variant_Not_Recursive),
-                      Get_Pragma (E, Pragma_Subprogram_Variant),
-                      First => True,
-                      Kind => Warning_Kind);
+         Warning_Msg_N (Warn_Variant_Not_Recursive,
+                        Get_Pragma (E, Pragma_Subprogram_Variant),
+                        First => True);
       end if;
 
       --  For expression functions, the body is not marked. Retrieve the

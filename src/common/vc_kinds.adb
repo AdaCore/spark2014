@@ -544,6 +544,18 @@ package body VC_Kinds is
           "aliased objects should have the same volatile properties",
         when Warn_Attribute_Valid =>
           "attribute Valid is assumed to return True",
+        when Warn_Auto_Lemma_Calls =>
+          "the automatically instantiated lemma contains calls which"
+          & " cannot be arbitrarily specialized",
+        when Warn_Auto_Lemma_Different =>
+          "the automatically instantiated lemma contains calls to its"
+          & " associated function with different specializations",
+        when Warn_Auto_Lemma_Higher_Order =>
+          "the automatically instantiated lemma is not annotated with"
+          & " Higher_Order_Specialization",
+        when Warn_Auto_Lemma_Specializable =>
+          "the automatically instantiated lemma does not contain any"
+          & " specializable calls to its associated function",
         when Warn_Initialization_To_Alias =>
           "initialization of object is assumed to have no effects on"
           & " other non-volatile objects",
@@ -1493,6 +1505,14 @@ package body VC_Kinds is
           "volatile properties of aliases",
         when Warn_Attribute_Valid =>
           "attribute Valid always True",
+        when Warn_Auto_Lemma_Calls =>
+          "warn-auto-lemma-calls",
+        when Warn_Auto_Lemma_Different =>
+          "warn-auto-lemma-different",
+        when Warn_Auto_Lemma_Higher_Order =>
+          "warn-auto-lemma-higher-order",
+        when Warn_Auto_Lemma_Specializable =>
+          "warn-auto-lemma-specializable",
         when Warn_Initialization_To_Alias =>
           "initialization of alias",
         when Warn_Function_Is_Valid =>
