@@ -561,6 +561,8 @@ package body VC_Kinds is
           & " other non-volatile objects",
         when Warn_Function_Is_Valid =>
           "function Is_Valid is assumed to return True",
+        when Warn_Generic_Not_Analyzed =>
+          "GNATprove doesn't analyze generics, only instances",
         when Warn_No_Possible_Termination =>
           "procedure which does not return normally nor raises an exception"
           & " cannot always terminate",
@@ -1506,17 +1508,19 @@ package body VC_Kinds is
         when Warn_Attribute_Valid =>
           "attribute Valid always True",
         when Warn_Auto_Lemma_Calls =>
-          "warn-auto-lemma-calls",
+          "auto-lemma-calls",
         when Warn_Auto_Lemma_Different =>
-          "warn-auto-lemma-different",
+          "auto-lemma-different",
         when Warn_Auto_Lemma_Higher_Order =>
-          "warn-auto-lemma-higher-order",
+          "auto-lemma-higher-order",
         when Warn_Auto_Lemma_Specializable =>
-          "warn-auto-lemma-specializable",
+          "auto-lemma-specializable",
         when Warn_Initialization_To_Alias =>
           "initialization of alias",
         when Warn_Function_Is_Valid =>
           "function Is_Valid always return True",
+        when Warn_Generic_Not_Analyzed =>
+          "generic-not-analyzed",
         when Warn_No_Possible_Termination =>
           "procedure not terminating normally nor abnormally",
         when Warn_Pragma_Annotate_No_Check =>

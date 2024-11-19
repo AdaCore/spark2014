@@ -7088,7 +7088,7 @@ package body SPARK_Definition.Annotate is
       if Emit_Messages then
          Warning_Msg_N (Kind,
                         N,
-                        Names,
+                        Names => Names,
                         Continuations => Continuations);
       end if;
    end Warning_Msg_N_If;

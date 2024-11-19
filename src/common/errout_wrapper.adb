@@ -375,6 +375,7 @@ package body Errout_Wrapper is
    procedure Warning_Msg_N
      (Kind          : Misc_Warning_Kind;
       N             : Node_Id;
+      Extra_Message : String := "";
       Names         : Node_Lists.List := Node_Lists.Empty;
       Secondary_Loc : Source_Ptr := No_Location;
       Explain_Code  : Explain_Code_Kind := EC_None;
@@ -382,7 +383,10 @@ package body Errout_Wrapper is
       Continuations : Message_Lists.List := Message_Lists.Empty) is
    begin
       Error_Msg_N
-        (Create (Warning_Message (Kind), Names, Secondary_Loc, Explain_Code),
+        (Create (Warning_Message (Kind) & Extra_Message,
+                 Names,
+                 Secondary_Loc,
+                 Explain_Code),
          N,
          Warning_Kind,
          First,

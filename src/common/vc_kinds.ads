@@ -390,6 +390,7 @@ package VC_Kinds is
       Warn_Auto_Lemma_Specializable,
       Warn_Initialization_To_Alias,
       Warn_Function_Is_Valid,
+      Warn_Generic_Not_Analyzed,
       Warn_No_Possible_Termination,
       Warn_Pragma_Annotate_No_Check,
       Warn_Pragma_Annotate_Proved_Check,
@@ -566,6 +567,8 @@ package VC_Kinds is
           & " other non-volatile objects",
         when Warn_Function_Is_Valid =>
           "function Is_Valid is assumed to return True",
+        when Warn_Generic_Not_Analyzed =>
+          "generic compilation unit is not analyzed",
         when Warn_No_Possible_Termination =>
           "procedure which does not return normally nor raises an exception"
           & " cannot always terminate",
@@ -605,7 +608,7 @@ package VC_Kinds is
         --  The warning message is customized depending on the assumptions that
         --  need to be checked.
         when Warn_Imprecisely_Supported_Address =>
-          raise Program_Error,
+          "address specification on & is imprecisely supported",
 
         --  Warnings only issued when using switch --pedantic
         when Warn_Image_Attribute_Length =>
