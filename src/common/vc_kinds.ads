@@ -384,6 +384,10 @@ package VC_Kinds is
       Warn_Alias_Atomic_Vol,
       Warn_Alias_Different_Volatility,
       Warn_Attribute_Valid,
+      Warn_Auto_Lemma_Calls,
+      Warn_Auto_Lemma_Different,
+      Warn_Auto_Lemma_Higher_Order,
+      Warn_Auto_Lemma_Specializable,
       Warn_Initialization_To_Alias,
       Warn_Function_Is_Valid,
       Warn_No_Possible_Termination,
@@ -545,6 +549,18 @@ package VC_Kinds is
           "aliased objects have different volatile properties",
         when Warn_Attribute_Valid =>
           "attribute Valid is assumed to return True",
+        when Warn_Auto_Lemma_Higher_Order =>
+          "automatically instantiated lemma is not annotated with"
+          & " Higher_Order_Specialization",
+        when Warn_Auto_Lemma_Calls =>
+          "automatically instantiated lemma contains calls to "
+          & "& which cannot be arbitrarily specialized",
+        when Warn_Auto_Lemma_Different =>
+          "automatically instantiated lemma contains several "
+           & "calls to & with different specializations",
+        when Warn_Auto_Lemma_Specializable =>
+          "automatically instantiated lemma does not contain any "
+          & "specializable calls to &",
         when Warn_Initialization_To_Alias =>
           "initialization of & is assumed to have no effects on"
           & " other non-volatile objects",

@@ -588,6 +588,12 @@ package body SPARK_Definition.Annotate is
    --  Wrapper for Error_Msg_NE that conditionally emit message depending
    --  on phase.
 
+   procedure Warning_Msg_N_If
+      (Kind : Misc_Warning_Kind;
+       N : Node_Or_Entity_Id;
+       Names : Node_Lists.List := Node_Lists.Empty;
+      Continuations : Message_Lists.List := Message_Lists.Empty);
+
    function Find_Aggregate_Aspect (Typ : Type_Kind_Id) return Node_Id;
    --  Find the Aggregate aspect associated to Typ
 
@@ -1997,11 +2003,9 @@ package body SPARK_Definition.Annotate is
       --  Lemma shall to be annotated with higher order specialization
 
       if not Has_Higher_Order_Specialization_Annotation (Lemma) then
-         Error_Msg_N_If
-           ("automatically instantiated lemma is not annotated with"
-            & " Higher_Order_Specialization",
+         Warning_Msg_N_If
+           (Warn_Auto_Lemma_Higher_Order,
             Lemma,
-            Kind => Warning_Kind,
             Continuations =>
               [Create
                    ("it will not be automatically instantiated on"
@@ -2070,12 +2074,10 @@ package body SPARK_Definition.Annotate is
                   --  instance. We reject it here.
 
                   elsif not Totally_Specialized_Call then
-                     Error_Msg_NE_If
-                       ("automatically instantiated lemma contains calls to "
-                        & "& which cannot be arbitrarily specialized",
+                     Warning_Msg_N_If
+                       (Warn_Auto_Lemma_Calls,
                         Lemma,
-                        Fun,
-                        Kind => Warning_Kind,
+                        Names => [Fun],
                         Continuations =>
                           [Create
                              ("it will not be automatically instantiated on"
@@ -2101,12 +2103,10 @@ package body SPARK_Definition.Annotate is
                   --  specialization is ambiguous. We reject it here.
 
                   else
-                     Error_Msg_NE_If
-                       ("automatically instantiated lemma contains several "
-                        & "calls to & with different specializations",
+                     Warning_Msg_N_If
+                       (Warn_Auto_Lemma_Different,
                         Lemma,
-                        Fun,
-                        Kind => Warning_Kind,
+                        Names => [Fun],
                         Continuations =>
                           [Create
                             ("it will not be automatically instantiated on"
@@ -2189,12 +2189,10 @@ package body SPARK_Definition.Annotate is
          --  Check that the lemma contains at least a call to Fun
 
          elsif Spec_Params.Is_Empty then
-            Error_Msg_NE_If
-              ("automatically instantiated lemma does not contain any "
-               & "specializable calls to &",
+            Warning_Msg_N_If
+              (Warn_Auto_Lemma_Specializable,
                Lemma,
-               Fun,
-               Kind => Warning_Kind,
+               Names => [Fun],
                Continuations =>
                  [Create
                     ("it will not be automatically instantiated on"
@@ -5554,19 +5552,17 @@ package body SPARK_Definition.Annotate is
          if May_Issue_Warning_On_Node (Prag)
            and then not Is_In_Statically_Dead_Branch (Prag)
          then
-            Error_Msg_N_If
-              (Warning_Message (Warn_Pragma_Annotate_No_Check),
-               Prag,
-               Kind => Warning_Kind);
+            Warning_Msg_N_If
+              (Warn_Pragma_Annotate_No_Check,
+               Prag);
          end if;
       end loop;
 
       for Prag of Proved_Pragma loop
          if Instantiation_Location (Sloc (Prag)) = No_Location then
-            Error_Msg_N_If
-              (Warning_Message (Warn_Pragma_Annotate_Proved_Check),
-               Prag,
-               Kind => Warning_Kind);
+            Warning_Msg_N_If
+              (Warn_Pragma_Annotate_Proved_Check,
+               Prag);
          end if;
       end loop;
    end Generate_Useless_Pragma_Annotate_Warnings;
@@ -6741,10 +6737,9 @@ package body SPARK_Definition.Annotate is
       --  Check the name and number of arguments
 
       if Name = "external_axiomatization" then
-         Error_Msg_N_If
-           (Warning_Message (Warn_Pragma_External_Axiomatization),
-            Prag,
-            Kind => Warning_Kind);
+         Warning_Msg_N_If
+           (Warn_Pragma_External_Axiomatization,
+            Prag);
          return;
 
       elsif Name in "always_return" | "terminating" | "might_not_return" then
@@ -6777,10 +6772,9 @@ package body SPARK_Definition.Annotate is
                     (Create ("replace " & Deprecated & " by " & New_Syntax));
                end;
             end if;
-            Error_Msg_N_If
-              (Warning_Message (Warn_Pragma_Annotate_Terminating),
+            Warning_Msg_N_If
+              (Warn_Pragma_Annotate_Terminating,
                Prag,
-               Kind => Warning_Kind,
                Continuations => Conts);
          end;
          return;
@@ -7080,5 +7074,23 @@ package body SPARK_Definition.Annotate is
    begin
       No_Wrap_Around_Annotations.Include (Unique_Entity (E));
    end Set_Has_No_Wrap_Around_Annotation;
+
+   ----------------------
+   -- Warning_Msg_N_If --
+   ----------------------
+
+   procedure Warning_Msg_N_If
+      (Kind : Misc_Warning_Kind;
+       N : Node_Or_Entity_Id;
+       Names : Node_Lists.List := Node_Lists.Empty;
+      Continuations : Message_Lists.List := Message_Lists.Empty) is
+   begin
+      if Emit_Messages then
+         Warning_Msg_N (Kind,
+                        N,
+                        Names,
+                        Continuations => Continuations);
+      end if;
+   end Warning_Msg_N_If;
 
 end SPARK_Definition.Annotate;
