@@ -1,0 +1,6 @@
+project Test2 is
+
+  package Prove is
+   for Proof_Switches ("pedantic.adb") use ("-W", "image-attribute-length");
+  end Prove;
+end Test2;
