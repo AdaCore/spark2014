@@ -23,7 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Common_Containers; use Common_Containers;
+with String_Utils; use String_Utils;
 
 package Why.Keywords is
 

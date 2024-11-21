@@ -542,6 +542,19 @@ package VC_Kinds is
                   + (if Kind in Pedantic_Warning_Kind then 1 else 0)
                   = 1);
 
+   --  Warning enabling/disabling mechanism
+
+   type Warning_Enabled_Status is (WS_Enabled, WS_Disabled, WS_Error);
+   --  A warning can be enabled, disabled or promoted to an error
+
+   type Warning_Status_Array is array (Misc_Warning_Kind) of
+     Warning_Enabled_Status;
+
+   Warning_Status : Warning_Status_Array :=
+     [Pedantic_Warning_Kind => WS_Disabled, others => WS_Enabled];
+   --  The array which contains the status for each warning. By default, all
+   --  warnings are enabled, except the pedantic ones.
+
    function Warning_Message (Kind : Misc_Warning_Kind) return String is
      (case Kind is
         when Warn_Address_To_Access =>

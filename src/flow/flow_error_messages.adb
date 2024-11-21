@@ -61,7 +61,7 @@ with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK_Util.Types;       use SPARK_Util.Types;
 with SPARK_Xrefs;            use SPARK_Xrefs;
 with Stringt;                use Stringt;
-with String_Utils;
+with String_Utils;           use String_Utils;
 with Uintp;                  use Uintp;
 
 -------------------------

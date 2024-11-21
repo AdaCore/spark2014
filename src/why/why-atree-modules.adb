@@ -27,7 +27,6 @@ with Ada.Characters.Handling;        use Ada.Characters.Handling;
 with Ada.Containers;                 use Ada.Containers;
 with Ada.Containers.Ordered_Maps;
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
-with Common_Containers;              use Common_Containers;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Gnat2Why.Tables;                use Gnat2Why.Tables;
 with Gnat2Why.Util;                  use Gnat2Why.Util;

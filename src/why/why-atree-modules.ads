@@ -23,14 +23,15 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada;                            use Ada;
+with Ada;                  use Ada;
 with Ada.Containers.Hashed_Maps;
-with Checked_Types;                  use Checked_Types;
+with Common_Containers;    use Common_Containers;
+with Checked_Types;        use Checked_Types;
 with GNATCOLL.Symbols;
-with SPARK_Atree.Entities;           use SPARK_Atree.Entities;
-with VC_Kinds;                       use VC_Kinds;
-with Why.Ids;                        use Why.Ids;
-with Why.Gen.Names;                  use Why.Gen.Names;
+with SPARK_Atree.Entities; use SPARK_Atree.Entities;
+with VC_Kinds;             use VC_Kinds;
+with Why.Ids;              use Why.Ids;
+with Why.Gen.Names;        use Why.Gen.Names;
 
 package Why.Atree.Modules is
    --  This package helps with Why modules. Today, it is only a list of

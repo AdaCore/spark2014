@@ -111,6 +111,9 @@ package body Configuration is
    --  recognized switches are automatic, so this procedure should only be
    --  called for unknown switches and for switches in section -cargs.
 
+   procedure Handle_Warning_Switches (Switch, Value : String);
+   --  Handle the "-W", "-A", "-D" switches (related to warnings)
+
    function No_Project_File_Mode return String;
    --  This function is supposed to be called when no project file was given.
    --  It searches for project files in the current directory:
@@ -157,6 +160,10 @@ package body Configuration is
 
    procedure Check_Duplicate_Bodies (Msg : GPR2.Message.Object);
    --  Raise an error if the message is about duplicate bodies.
+
+   procedure Check_Warning_Name (Value : String);
+   --  Check that a name passed to -W, -A, -D is indeed a valid warning
+   --  identifier.
 
    function Is_Coq_Prover (FS : File_Specific) return Boolean;
    --  @return True iff one alternate prover is "coq"
@@ -254,6 +261,20 @@ package body Configuration is
                     With_Help => False);
       end if;
    end Check_Duplicate_Bodies;
+
+   ------------------------
+   -- Check_Warning_Name --
+   ------------------------
+
+   procedure Check_Warning_Name (Value : String) is
+   begin
+      if not
+        (for some Warning in Misc_Warning_Kind => Kind_Name (Warning) = Value)
+      then
+         Abort_Msg ("""" & Value & """ is not a valid warning name",
+                    With_Help => False);
+      end if;
+   end Check_Warning_Name;
 
    ---------------------
    -- Internal_Report --
@@ -592,6 +613,30 @@ package body Configuration is
          raise Invalid_Switch;
       end if;
    end Handle_Switch;
+
+   ---------------------
+   -- Handle_W_Switch --
+   ---------------------
+
+   procedure Handle_Warning_Switches (Switch, Value : String) is
+   begin
+      Check_Warning_Name (Value);
+      if Switch = "-W" then
+         CL_Switches.WW.Include (Value);
+         CL_Switches.DD.Exclude (Value);
+         CL_Switches.AA.Exclude (Value);
+      elsif Switch = "-A" then
+         CL_Switches.AA.Include (Value);
+         CL_Switches.WW.Exclude (Value);
+         CL_Switches.DD.Exclude (Value);
+      elsif Switch = "-D" then
+         CL_Switches.DD.Include (Value);
+         CL_Switches.WW.Exclude (Value);
+         CL_Switches.AA.Exclude (Value);
+      else
+         raise Program_Error;
+      end if;
+   end Handle_Warning_Switches;
 
    -----------------------
    -- Has_gnateT_Switch --
@@ -1003,6 +1048,18 @@ package body Configuration is
            (Config,
             CL_Switches.Prover'Access,
             Long_Switch => "--prover=");
+         Define_Switch
+           (Config,
+            Handle_Warning_Switches'Access,
+            "-W=");
+         Define_Switch
+           (Config,
+            Handle_Warning_Switches'Access,
+            "-A=");
+         Define_Switch
+           (Config,
+            Handle_Warning_Switches'Access,
+            "-D=");
 
          --  If not specified on the command-line, value of steps is invalid
          Define_Switch
@@ -1515,7 +1572,10 @@ package body Configuration is
          FS.No_Loop_Unrolling := CL_Switches.No_Loop_Unrolling;
          FS.Proof_Warnings := Proof_Warnings;
          FS.No_Inlining := CL_Switches.No_Inlining or
-                           CL_Switches.No_Global_Generation;
+           CL_Switches.No_Global_Generation;
+         FS.Enabled_Warnings := CL_Switches.WW;
+         FS.Disabled_Warnings := CL_Switches.AA;
+         FS.Promoted_Warnings := CL_Switches.DD;
       end File_Specific_Postprocess;
 
       ----------

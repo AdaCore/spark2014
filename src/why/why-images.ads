@@ -23,9 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Common_Containers; use Common_Containers;
 with GNATCOLL.Symbols;  use GNATCOLL.Symbols;
 with Outputs;           use Outputs;
+with String_Utils;      use String_Utils;
 with Types;             use Types;
 with Uintp;             use Uintp;
 with Urealp;            use Urealp;

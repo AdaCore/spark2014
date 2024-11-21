@@ -382,15 +382,18 @@ package body Errout_Wrapper is
       First         : Boolean := False;
       Continuations : Message_Lists.List := Message_Lists.Empty) is
    begin
-      Error_Msg_N
-        (Create (Warning_Message (Kind) & Extra_Message,
-                 Names,
-                 Secondary_Loc,
-                 Explain_Code),
-         N,
-         Warning_Kind,
-         First,
-         Continuations);
+      if Warning_Status (Kind) in WS_Enabled | WS_Error then
+         Error_Msg_N
+           (Create (Warning_Message (Kind) & Extra_Message,
+                    Names,
+                    Secondary_Loc,
+                    Explain_Code),
+            N,
+            (if Warning_Status (Kind) = WS_Enabled then Warning_Kind
+             else Error_Kind),
+            First,
+            Continuations);
+      end if;
    end Warning_Msg_N;
 
 end Errout_Wrapper;
