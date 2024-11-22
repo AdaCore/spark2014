@@ -23,6 +23,8 @@
 
 with Aspects;     use Aspects;
 with Nlists;      use Nlists;
+with Opt;         use Opt;
+with Sem_Prag;    use Sem_Prag;
 with Sem_Type;    use Sem_Type;
 with Sinfo.Utils; use Sinfo.Utils;
 with Sinput;      use Sinput;
@@ -76,13 +78,7 @@ package body Flow_Utility.Initialization is
             return;
          end if;
 
-         --  If a component is not visible in SPARK, we assume it to be not
-         --  initialized.
-
-         Init :=
-           (if Component_Is_Visible_In_SPARK (ORC)
-            then Default_Initialization (Etype (ORC))
-            else No_Default_Initialization);
+         Init := Default_Initialization (Etype (ORC));
 
          --  Default initialization of the record depends then on the default
          --  initialization of the component type.
@@ -173,6 +169,15 @@ package body Flow_Utility.Initialization is
 
       if Is_Class_Wide_Type (Typ) then
          return No_Possible_Initialization;
+      end if;
+
+      --  If type is explicitly annotated with SPARK_Mode => Off, we assume
+      --  it to be uninitialized by default and stop the traversal.
+
+      if Present (SPARK_Pragma (Typ))
+        and then Get_SPARK_Mode_From_Annotation (SPARK_Pragma (Typ)) = Opt.Off
+      then
+         return No_Default_Initialization;
       end if;
 
       --  We attempt to process type declaration as it occurs in source code
@@ -385,38 +390,34 @@ package body Flow_Utility.Initialization is
                goto LOOK_AT_SOURCE_DECLARATION;
             end if;
 
-            --  Otherwise, look at the full view, if allowed by the SPARK_Mode
-            --  barrier.
+            --  Otherwise, look at the full view
 
-            declare
-               Full_V : constant Entity_Id := Full_View (Typ);
-            begin
-               if Entity_In_SPARK (Full_V) then
-                  Result := Default_Initialization (Full_V);
+            Result := Default_Initialization (Full_View (Typ));
 
-                  --  In specific cases, we'd rather consider the type as
-                  --  having no default initialization (which is allowed in
-                  --  SPARK) rather than mixed initialization (which is not
-                  --  allowed).
+            --  In specific cases, we'd rather consider the type as
+            --  having no default initialization (which is allowed in
+            --  SPARK) rather than mixed initialization (which is not
+            --  allowed).
 
-                  if Result = Mixed_Initialization then
-                     return No_Default_Initialization;
-                  else
-                     return Result;
-                  end if;
-               else
-                  return No_Default_Initialization;
-               end if;
-            end;
+            if Result = Mixed_Initialization then
+               return No_Default_Initialization;
+            else
+               return Result;
+            end if;
 
-         --  For private extension declaration recurse into full view, except
-         --  when hidden by the SPARK_Mode barrier, which then we assume to
-         --  be uninitialized by default.
+         --  For private extension respect their SPARK_Mode barrier, if present
 
          when N_Private_Extension_Declaration =>
-            if Entity_In_SPARK (Full_View (Typ)) then
-               return Default_Initialization (Full_View (Typ));
-            else
+
+            --  If the SPARK_Mode barrier is Off, then combine initialization
+            --  status of the parent with the assumed uninitilised status of
+            --  the private part.
+
+            if Present (SPARK_Pragma (Full_View (Typ)))
+              and then
+                Get_SPARK_Mode_From_Annotation (SPARK_Pragma (Full_View (Typ)))
+                  = Opt.Off
+            then
                declare
                   S_Indication : constant Node_Id := Subtype_Indication (Decl);
                   Parent_Initialization : Default_Initialization_Kind;
@@ -443,6 +444,11 @@ package body Flow_Utility.Initialization is
                         return Mixed_Initialization;
                   end case;
                end;
+
+            --  Otherwise recurse into full type declaration
+
+            else
+               return Default_Initialization (Full_View (Typ));
             end if;
 
          --  Subtype declarations, just like private types, might be
