@@ -1211,6 +1211,11 @@ def check_output_file(sort=False):
         print(output)
 
 
+def sparklib_exec_test(project_file="test.gpr", binary="./obj/test"):
+    gprbuild(opt=["-P", project_file])
+    Run([binary])
+
+
 def print_version():
     """Print the output of "gnatprove --version".
 
