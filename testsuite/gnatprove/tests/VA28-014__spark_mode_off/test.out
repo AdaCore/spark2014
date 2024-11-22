@@ -1,0 +1,2 @@
+user.adb:4:19: info: assertion proved (CVC5: 1 VC)
+user.adb:4:19: medium: "Stuff" might not be initialized after elaboration of main program "User"
