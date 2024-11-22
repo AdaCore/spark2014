@@ -25,4 +25,13 @@ prove_all(opt=["-W", "image-attribute-length", "-A", "variant-no-recursion"])
 
 # file-specific switches behavior
 print("---- expect warning for image attribute -------")
-prove_all(opt=["-P", "test2.gpr", "-A", "variant-no-recursion", "--pedantic"])
+prove_all(
+    opt=[
+        "-P",
+        "test2.gpr",
+        "-A",
+        "variant-no-recursion",
+        "-W",
+        "image-attribute-length",
+    ]
+)

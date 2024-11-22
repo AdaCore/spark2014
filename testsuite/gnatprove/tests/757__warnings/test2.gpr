@@ -1,5 +1,10 @@
 project Test2 is
 
+  package Compiler is
+    for Default_Switches ("Ada") use ("-gnatws", "-gnatdk",  "-gnatd.k", "-gnat2022");
+    for Local_Configuration_Pragmas use "test.adc";
+  end Compiler;
+
   package Prove is
    for Proof_Switches ("pedantic.adb") use ("-W", "image-attribute-length");
   end Prove;

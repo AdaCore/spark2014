@@ -164,7 +164,6 @@ package body Gnat2Why_Opts.Writing is
                     Gnat2Why_Opts.SPARK_Warning_Mode_Type'Image
                       (Warning_Mode));
 
-         Set_Field (Obj, Pedantic_Name,         CL_Switches.Pedantic);
          Set_Field (Obj, Flow_Show_GG_Name,     CL_Switches.Flow_Show_GG);
 
          if CL_Switches.Function_Sandboxing.all = ""

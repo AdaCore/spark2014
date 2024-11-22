@@ -620,7 +620,9 @@ package body Configuration is
 
    procedure Handle_Warning_Switches (Switch, Value : String) is
    begin
-      Check_Warning_Name (Value);
+      if Switch /= "--pedantic" then
+         Check_Warning_Name (Value);
+      end if;
       if Switch = "-W" then
          CL_Switches.WW.Include (Value);
          CL_Switches.DD.Exclude (Value);
@@ -633,6 +635,16 @@ package body Configuration is
          CL_Switches.DD.Include (Value);
          CL_Switches.WW.Exclude (Value);
          CL_Switches.AA.Exclude (Value);
+      elsif Switch = "--pedantic" then
+         for WK in Pedantic_Warning_Kind loop
+            declare
+               S : constant String := Kind_Name (WK);
+            begin
+               CL_Switches.WW.Include (S);
+               CL_Switches.DD.Exclude (S);
+               CL_Switches.AA.Exclude (S);
+            end;
+         end loop;
       else
          raise Program_Error;
       end if;
@@ -949,10 +961,6 @@ package body Configuration is
             Long_Switch => "--output-msg-only");
          Define_Switch
            (Config,
-            CL_Switches.Pedantic'Access,
-            Long_Switch => "--pedantic");
-         Define_Switch
-           (Config,
             CL_Switches.Proof_Warnings'Access,
             Long_Switch => "--proof-warnings=");
          Define_Switch
@@ -1040,6 +1048,10 @@ package body Configuration is
            (Config,
             CL_Switches.No_Loop_Unrolling'Access,
             Long_Switch => "--no-loop-unrolling");
+         Define_Switch
+           (Config,
+            Handle_Warning_Switches'Access,
+            Long_Switch => "--pedantic");
          Define_Switch
            (Config,
             CL_Switches.Proof'Access,

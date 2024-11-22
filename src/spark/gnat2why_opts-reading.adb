@@ -155,7 +155,6 @@ package body Gnat2Why_Opts.Reading is
          Warning_Mode :=
            SPARK_Warning_Mode_Type'Value (Get (Get (V, Warning_Mode_Name)));
 
-         Pedantic              := Get_Opt (V, Pedantic_Name);
          Flow_Show_GG          := Get_Opt (V, Flow_Show_GG_Name);
          Proof_Generate_Guards := Get_Opt (V, Proof_Generate_Guards_Name);
          Ide_Mode              := Get_Opt (V, Ide_Mode_Name);

@@ -79,19 +79,6 @@ package Gnat2Why_Opts.Reading is
 
    Proof_Generate_Guards : Boolean;
 
-   --  When Pedantic is True, issue warnings on features that could cause
-   --  portability issues with other compilers than GNAT. For example, issue
-   --  a warning when the Ada RM allows reassociation of operators in an
-   --  expression (something GNAT never does), which could lead to different
-   --  overflows, e.g. on
-   --    A + B + C
-   --  which is parsed as
-   --    (A + B) + C
-   --  but could be reassociated by another compiler as
-   --    A + (B + C)
-
-   Pedantic : Boolean;
-
    --  Issue CWE Ids in messages
 
    CWE : Boolean;

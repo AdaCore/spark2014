@@ -4796,7 +4796,6 @@ package body SPARK_Definition is
 
             elsif Emit_Warning_Info_Messages
               and then SPARK_Pragma_Is (Opt.On)
-              and then Gnat2Why_Args.Pedantic
               and then Is_Enumeration_Type (Etype (P))
             then
                Error_Msg_N
@@ -4866,7 +4865,6 @@ package body SPARK_Definition is
 
             if Emit_Warning_Info_Messages
               and then SPARK_Pragma_Is (Opt.On)
-              and then Gnat2Why_Args.Pedantic
             then
                Error_Msg_N
                  (Create_N
@@ -5358,7 +5356,6 @@ package body SPARK_Definition is
       --  by GNAT, as they could be reordered according to RM 4.5/13.
 
       if Emit_Warning_Info_Messages
-        and then Gnat2Why_Args.Pedantic
 
         --  Ignore code defined in the standard library, unless the main unit
         --  is from the standard library. In particular, ignore code from
