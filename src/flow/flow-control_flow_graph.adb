@@ -5485,28 +5485,19 @@ package body Flow.Control_Flow_Graph is
       Top : Node_Lists.Cursor;
       --  Iterator for the borrowers reclaimed when jumping with goto
 
+      Expr           : constant Node_Id := Expression (N);
       Local_Handlers : constant Node_Lists.List := Reachable_Handlers (N);
 
-      Funcalls  : Call_Sets.Set;
-      Indcalls  : Node_Sets.Set;
+      Funcalls : Call_Sets.Set;
+      Indcalls : Node_Sets.Set;
+      Vars     : Flow_Id_Sets.Set;
 
    begin
-      --  If there are no local handlers, it is an abnormal execution. We don't
-      --  care if anything is read or called in the string_expressions.
+      --  Pick reads and calls from the string_expression, if any
 
-      if Local_Handlers.Is_Empty then
-         Add_Vertex (FA,
-                     Direct_Mapping_Id (N),
-                     Make_Aux_Vertex_Attributes
-                       (E_Loc     => N,
-                        Execution => Abnormal_Termination),
-                     V_Raise);
-
-      --  Otherwise, RAISE behaves like a GOTO statement
-
-      else
+      if Present (Expr) then
          Pick_Generated_Info
-           (N,
+           (Expr,
             FA.B_Scope,
             Function_Calls     => Funcalls,
             Indirect_Calls     => Indcalls,
@@ -5514,24 +5505,42 @@ package body Flow.Control_Flow_Graph is
             Tasking            => FA.Tasking,
             Generating_Globals => FA.Generating_Globals);
 
-         Add_Vertex
-           (FA,
-            Direct_Mapping_Id (N),
-            Make_Sink_Vertex_Attributes
-              (Var_Use    =>
-                 (if Present (Expression (N)) then
-                    Get_All_Variables
-                      (Expression (N),
-                       Scope               => FA.B_Scope,
-                       Target_Name         => Null_Flow_Id,
-                      Use_Computed_Globals => not FA.Generating_Globals)
-                  else
-                    Flow_Id_Sets.Empty_Set),
-               Subp_Calls => Funcalls,
-               Indt_Calls => Indcalls,
-               Vertex_Ctx => Ctx.Vertex_Ctx,
-               E_Loc      => N),
-            V_Raise);
+         Vars :=
+           Get_Variables
+             (Expr,
+              Scope                => FA.B_Scope,
+              Target_Name          => Null_Flow_Id,
+              Fold_Functions       => Inputs,
+              Use_Computed_Globals => not FA.Generating_Globals);
+
+         Ctx.Folded_Function_Checks.Append (Expr);
+      end if;
+
+      Add_Vertex
+        (FA,
+         Direct_Mapping_Id (N),
+         Make_Sink_Vertex_Attributes
+           (Var_Use    => Vars,
+            Subp_Calls => Funcalls,
+            Indt_Calls => Indcalls,
+            Vertex_Ctx => Ctx.Vertex_Ctx,
+            E_Loc      => N),
+         V_Raise);
+
+      --  If there are no local handlers, it is an abnormal execution
+
+      if Local_Handlers.Is_Empty then
+
+         --  Flag the raise statement as abnormal termination, while not being
+         --  a program node (to suppress various warnings).
+
+         FA.Atr (V_Raise).Execution := Abnormal_Termination;
+         FA.Atr (V_Raise).Is_Program_Node := False;
+
+      --  Otherwise, RAISE behaves like a GOTO statement
+
+      else
+         null;
       end if;
 
       CM.Insert (Union_Id (N),
