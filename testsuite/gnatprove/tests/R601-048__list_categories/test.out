@@ -75,11 +75,13 @@ VC_LOOP_INVARIANT(assertion) - loop invariant - Check that the loop invariant ev
 VC_LOOP_INVARIANT_INIT(assertion) - loop invariant in first iteration - Check that the loop invariant evaluates to True on the first iteration of the loop. - MEDIUM
 VC_LOOP_INVARIANT_PRESERV(assertion) - loop invariant after first iteration - Check that the loop invariant evaluates to True at each further iteration of the loop. - MEDIUM
 VC_LOOP_VARIANT(assertion) - loop variant - Check that the given loop variant decreases/increases as specified during each iteration of the loop. This implies termination of the loop. - MEDIUM
+VC_PROGRAM_EXIT_POST(assertion) - program exit postcondition - Check that the program exit postcondition evaluates to true when the program is exited. - MEDIUM
 VC_SUBPROGRAM_VARIANT(assertion) - subprogram variant - Check that the given subprogram variant decreases/increases as specified during each recursive call. This implies there will be no infinite recursion. - MEDIUM
 VC_ASSERT(assertion) - assertion - Check that the given assertion evaluates to True. - MEDIUM
 VC_ASSERT_STEP(assertion) - assertion step - Check that the side-condition of a cut operation evaluates to True. - MEDIUM
 VC_ASSERT_PREMISE(assertion) - assertion premise - Check that the premise of an assertion with cut operations evaluates to True. - MEDIUM
 VC_RAISE(assertion) - raised exception - Check that raise expressions can never be reached and that all exceptions raised by raise statement and procedure calls are expected. - MEDIUM
+VC_UNEXPECTED_PROGRAM_EXIT(assertion) - unexpected program exit - Check that a subprogram call cannot exit the whole program. - MEDIUM
 VC_FEASIBLE_POST(assertion) - feasible function - Check that an abstract function or access-to-function type is feasible. - MEDIUM
 VC_INLINE_CHECK(assertion) - Inline_For_Proof or Logical_Equal annotation - Check that an Annotate pragma with the Inline_For_Proof or Logical_Equal identifier is correct. - MEDIUM
 VC_CONTAINER_AGGR_CHECK(assertion) - Container_Aggregates annotation - Check the invariants used to translate container aggregates using the primitives provided by the Aggregate aspect and the Container_Aggregates annotation. - MEDIUM

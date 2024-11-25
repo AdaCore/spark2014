@@ -1269,6 +1269,7 @@ procedure SPARK_Report is
             | VC_Ceiling_Priority_Protocol
             | VC_Task_Termination
             | VC_Raise
+            | VC_Unexpected_Program_Exit
             | VC_UC_Source
             | VC_UC_Target
             | VC_UC_Same_Size
@@ -1306,6 +1307,7 @@ procedure SPARK_Report is
             | VC_Disjoint_Cases
             | VC_Complete_Cases
             | VC_Exceptional_Case
+            | VC_Program_Exit_Post
             | VC_Exit_Case
             | VC_Inline_Check
             | VC_Container_Aggr_Check

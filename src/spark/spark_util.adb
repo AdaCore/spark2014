@@ -2580,6 +2580,29 @@ package body SPARK_Util is
       return Buf.Chars (2 .. Buf.Length - 1);
    end Get_Operator_Symbol;
 
+   ----------------------
+   -- Get_Program_Exit --
+   ----------------------
+
+   function Get_Program_Exit (E : Entity_Id) return Node_Id is
+      Prag : constant Node_Id := Get_Pragma (E, Pragma_Program_Exit);
+   begin
+      if No (Prag) then
+         return Empty;
+      end if;
+
+      declare
+         Assoc : constant List_Id := Pragma_Argument_Associations (Prag);
+
+      begin
+         if No (Assoc) then
+            return Empty;
+         end if;
+
+         return Expression (First (Assoc));
+      end;
+   end Get_Program_Exit;
+
    ---------------------------
    -- Get_Raised_Exceptions --
    ---------------------------
@@ -2879,6 +2902,65 @@ package body SPARK_Util is
 
    function Has_Exceptional_Contract (E : Entity_Id) return Boolean is
      (not Get_Exceptions_For_Subp (E).Is_Empty);
+
+   ----------------------
+   -- Has_Program_Exit --
+   ----------------------
+
+   function Has_Program_Exit (E : Entity_Id) return Boolean is
+      Prog_Prag : constant Node_Id := Get_Pragma (E, Pragma_Program_Exit);
+      Exit_Prag : constant Node_Id := Get_Pragma (E, Pragma_Exit_Cases);
+
+   begin
+      if Present (Prog_Prag) then
+         declare
+            Assoc : constant List_Id :=
+              Pragma_Argument_Associations (Prog_Prag);
+            pragma Assert (No (Assoc) or else List_Length (Assoc) = 1);
+            Post  : constant Node_Id :=
+              (if No (Assoc) then Empty else Expression (First (Assoc)));
+         begin
+            return No (Post)
+              or else not Compile_Time_Known_Value (Post)
+              or else not Is_False (Expr_Value (Post));
+         end;
+
+      --  If no program exit contract is supplied but there is an exit cases,
+      --  use it to infer whether E might exit the program.
+
+      elsif Present (Exit_Prag) then
+         declare
+            Aggr      : constant Node_Id :=
+              Expression (First (Pragma_Argument_Associations (Exit_Prag)));
+            Exit_Case : Node_Id :=
+              First (Component_Associations (Aggr));
+         begin
+            while Present (Exit_Case) loop
+               declare
+                  Exit_Kind : constant Node_Id := Expression (Exit_Case);
+               begin
+                  case Nkind (Exit_Kind) is
+                     when N_Identifier =>
+                        if Chars (Exit_Kind) = Name_Program_Exit then
+                           return True;
+                        end if;
+
+                     when N_Aggregate =>
+                        null;
+
+                     when others =>
+                        raise Program_Error;
+                  end case;
+               end;
+               Next (Exit_Case);
+            end loop;
+         end;
+         return False;
+
+      else
+         return False;
+      end if;
+   end Has_Program_Exit;
 
    ------------------
    -- Has_Volatile --
@@ -5205,6 +5287,54 @@ package body SPARK_Util is
          return False;
       end if;
    end May_Issue_Warning_On_Node;
+
+   ------------------------
+   -- Might_Exit_Program --
+   ------------------------
+
+   function Might_Exit_Program (Call : Node_Id) return Boolean is
+      function Is_Body (N : Node_Id) return Boolean is
+        (Nkind (N) in N_Entity_Body);
+
+      function Enclosing_Body is
+        new First_Parent_With_Property (Is_Body);
+
+      Callee : constant Entity_Id := Get_Called_Entity (Call);
+
+   begin
+      if Has_Program_Exit (Callee) then
+
+         --  Ghost function and procedure calls shall never exit the program
+
+         declare
+            Stmt   : constant Node_Id :=
+              (if Nkind (Call) = N_Function_Call
+               then Enclosing_Statement_Of_Call_To_Function_With_Side_Effects
+                 (Call)
+               else Call);
+         begin
+            if Is_Ghost_Assignment (Stmt)
+              or else Is_Ghost_Declaration (Stmt)
+              or else Is_Ghost_Procedure_Call (Stmt)
+            then
+               return False;
+            end if;
+         end;
+
+         --  A call to a function annotated with Program_Exit might exit the
+         --  program if it is located directly inside a subprogram annotated
+         --  with Program_Exit.
+
+         declare
+            Scop : constant Node_Id := Enclosing_Body (Call);
+         begin
+            return Present (Scop)
+              and then Has_Program_Exit (Unique_Defining_Entity (Scop));
+         end;
+      end if;
+
+      return False;
+   end Might_Exit_Program;
 
    ---------------------
    -- No_Deep_Updates --

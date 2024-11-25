@@ -107,6 +107,7 @@ package body VC_Kinds is
             | VC_Refined_Post
             | VC_Exceptional_Case
             | VC_Exit_Case
+            | VC_Program_Exit_Post
             | VC_Contract_Case             => "682",
 
          --  CWE-843 Access of Resource Using Incompatible Type ('Type
@@ -149,6 +150,7 @@ package body VC_Kinds is
             | VC_Assert
             | VC_Assert_Premise
             | VC_Assert_Step
+            | VC_Unexpected_Program_Exit
             | VC_Raise
             | VC_Reclamation_Check
             | VC_Feasible_Post
@@ -353,16 +355,19 @@ package body VC_Kinds is
          when VC_Contract_Case                    =>
             return "Check that all cases of the contract case evaluate to " &
               "true at the end of the subprogram.";
-         when VC_Disjoint_Cases          =>
+         when VC_Disjoint_Cases                   =>
             return "Check that the cases of the contract or exit cases" &
               " aspect are all mutually disjoint.";
-         when VC_Complete_Cases          =>
+         when VC_Complete_Cases                   =>
             return "Check that the cases of the contract cases aspect cover " &
               "the state space that is allowed by the precondition aspect.";
          when VC_Exceptional_Case                 =>
             return "Check that all cases of the exceptional cases evaluate " &
               "to true on exceptional exits.";
-         when VC_Exit_Case                 =>
+         when VC_Program_Exit_Post                =>
+            return "Check that the program exit postcondition evaluates to " &
+              "true when the program is exited.";
+         when VC_Exit_Case                        =>
             return "Check that, for all cases of the exit cases, the exit " &
               "happens as specified.";
          when VC_Loop_Invariant                   =>
@@ -386,6 +391,9 @@ package body VC_Kinds is
             return "Check that raise expressions can never be reached and " &
               "that all exceptions raised by raise statement and procedure " &
               "calls are expected.";
+         when VC_Unexpected_Program_Exit          =>
+            return "Check that a subprogram call cannot exit the whole "
+              & "program.";
          when VC_Feasible_Post                    =>
             return "Check that an abstract function or access-to-function " &
               "type is feasible.";
@@ -744,6 +752,8 @@ package body VC_Kinds is
           & " with Relaxed_Initialization",
          when Lim_Access_To_Subp_With_Exc =>
            "access attribute on a procedure which might raise exceptions",
+         when Lim_Access_To_Subp_With_Prog_Exit =>
+           "access to procedure which might exit the program",
          when Lim_Address_Attr_In_Unsupported_Context =>
            "a reference to the ""Address"" attribute occuring within a "
           & "subtype indication, a range constraint, or a quantified"
@@ -812,6 +822,12 @@ package body VC_Kinds is
           & "passed by reference",
          when Lim_Exit_Cases_Dispatch =>
            "aspect ""Exit_Cases"" on dispatching operations",
+         when Lim_Program_Exit_Dispatch =>
+           "aspect ""Program_Exit"" on dispatching operations",
+         when Lim_Program_Exit_Global_Modified_In_Callee =>
+            "call which might exit the program and leave outputs "
+          & "mentioned in the exit postcondition of its enclosing subprogram"
+          & " in an inconsistent state",
          when Lim_Ext_Aggregate_With_Type_Ancestor =>
            "an extension aggregate whose ancestor part is a subtype mark",
          when Lim_Extension_Case_Pattern_Matching =>
@@ -1490,6 +1506,7 @@ package body VC_Kinds is
              when VC_Disjoint_Cases => "disjoint contract or exit cases",
              when VC_Complete_Cases => "complete contract cases",
              when VC_Exceptional_Case => "exceptional case",
+             when VC_Program_Exit_Post => "program exit postcondition",
              when VC_Exit_Case => "exit case",
              when VC_Loop_Invariant => "loop invariant",
              when VC_Loop_Invariant_Init =>
@@ -1503,6 +1520,7 @@ package body VC_Kinds is
              when VC_Assert_Premise => "assertion premise",
              when VC_Assert_Step => "assertion step",
              when VC_Raise => "raised exception",
+             when VC_Unexpected_Program_Exit => "unexpected program exit",
              when VC_Feasible_Post => "feasible function",
              when VC_Inline_Check =>
                "Inline_For_Proof or Logical_Equal annotation",

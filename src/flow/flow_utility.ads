@@ -247,7 +247,8 @@ package Flow_Utility is
       Use_Computed_Globals    : Boolean;
       Assume_In_Expression    : Boolean := True;
       Expand_Internal_Objects : Boolean := False;
-      Consider_Extensions     : Boolean := False)
+      Consider_Extensions     : Boolean := False;
+      Skip_Old                : Boolean := False)
       return Flow_Id_Sets.Set;
    --  Obtain all variables used in an expression; use Scope to determine if
    --  called subprograms should provide their abstract or refined view.
@@ -271,10 +272,14 @@ package Flow_Utility is
    --       from source (i.e. constants that capture variables) are expanded to
    --       the variables referenced in their initialization expression;
    --       similar for variables that come from inlining-for-proof.
+   --
+   --     * Skip_Old: if True, then the prefix of references to the Old
+   --       attribute are skipped.
 
    function Get_Variables_For_Proof
-     (Expr_N  : Node_Id;
-      Scope_N : Node_Id)
+     (Expr_N   : Node_Id;
+      Scope_N  : Node_Id;
+      Skip_Old : Boolean := False)
       return Flow_Id_Sets.Set
    with Pre  => Nkind (Expr_N) in N_Subexpr
                 and then Present (Scope_N),
@@ -290,7 +295,8 @@ package Flow_Utility is
       Target_Name             : Flow_Id;
       Use_Computed_Globals    : Boolean;
       Assume_In_Expression    : Boolean := True;
-      Expand_Internal_Objects : Boolean := False)
+      Expand_Internal_Objects : Boolean := False;
+      Skip_Old                : Boolean := False)
       return Flow_Id_Sets.Set;
    --  Returns variables referenced by N in all modes, i.e. inputs, proof_ins
    --  and null dependencies.
@@ -833,6 +839,13 @@ package Flow_Utility is
    --  Return the set of user-defined equalities called by the primitive
    --  equality of Ty. If Force_Predef is True, use the predefined equality
    --  even if Ty is a type on which Ada equality uses the primitive equality.
+
+   function Get_Outputs_From_Program_Exit
+     (E    : Entity_Id;
+      Scop : Node_Id)
+      return Flow_Id_Sets.Set
+   with Pre => Is_Subprogram (E);
+   --  Compute the set of outputs of E mentioned in its exit postcondition
 
 private
 

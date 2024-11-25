@@ -139,6 +139,7 @@ package Why.Atree.Modules is
       Bool_Not          : W_Identifier_Id;
       Return_Exc        : W_Name_Id;
       Ada_Exc           : W_Name_Id;
+      Program_Exit_Exc  : W_Name_Id;
       String_Image_Type : W_Type_Id;
       Type_Of_Heap      : W_Type_Id;
       Spark_CE_Branch   : W_Identifier_Id;

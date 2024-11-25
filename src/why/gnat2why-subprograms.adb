@@ -195,15 +195,18 @@ package body Gnat2Why.Subprograms is
    --  to define this identifier. If there is no "others" case, return with
    --  Others_Guard_Ident set to Why_Empty.
 
-   function Compute_Exit_Cases_Normal_Return_Checks
+   function Compute_Exit_Cases_Simple_Checks
      (E                  : Entity_Id;
+      Name               : Name_Id;
       Guard_Map          : Ada_To_Why_Ident.Map;
       Others_Guard_Ident : W_Identifier_Id) return W_Prog_Id;
    --  Returns in Result the Why program for checking the exit kind of
    --  enabled guard of the Exit_Cases pragma attached to subprogram E (if
-   --  any) on normal return. Guard_Map stores a mapping from guard AST nodes
+   --  any) on exit kind Name. Guard_Map stores a mapping from guard AST nodes
    --  to temporary Why names, so that the caller can compute the Why
-   --  expression for these in the pre-state, and bind them appropriately.
+   --  expression for these in the pre-state, and bind them appropriately. This
+   --  only works for "simple" exit kinds like Normal_Return and Program_Exit,
+   --  not for Raised_Exception which might be associated to a value.
 
    function Compute_Exit_Cases_Exceptional_Exit_Checks
      (E                  : Entity_Id;
@@ -216,12 +219,15 @@ package body Gnat2Why.Subprograms is
    --  nodes to temporary Why names, so that the caller can compute the Why
    --  expression for these in the pre-state, and bind them appropriately.
 
-   function Compute_Exit_Cases_Normal_Post
+   function Compute_Exit_Cases_Simple_Post
      (Params : Transformation_Params;
-      E      : Entity_Id)
+      E      : Entity_Id;
+      Name   : Name_Id)
       return W_Pred_Id;
-   --  Returns the postcondition corresponding to the Exit_Cases pragma for
-   --  subprogram E (if any).
+   --  Returns the postcondition for the exit kind Name corresponding to the
+   --  Exit_Cases pragma for subprogram E (if any). This only works for
+   --  "simple" exit kinds like Normal_Return and Program_Exit, not for
+   --  Raised_Exception which might be associated to a value.
 
    function Compute_Exit_Cases_Exceptional_Post
      (Params : Transformation_Params;
@@ -248,6 +254,15 @@ package body Gnat2Why.Subprograms is
    --  Returns the postcondition corresponding to the Exceptional_Cases pragma
    --  for subprogram E (if any), to be used in the raises effect of the
    --  program function.
+
+   function Compute_Program_Exit_Postcondition
+     (Params : Transformation_Params;
+      E      : Callable_Kind_Id)
+      return W_Pred_Id
+   with Pre => Has_Program_Exit (E);
+   --  Returns the postcondition corresponding to the Program_Exit pragma for
+   --  subprogram E (if any), to be used in the raises effect of the program
+   --  function.
 
    function Compute_Dynamic_Property_For_Effects
      (E           : Entity_Id;
@@ -856,6 +871,8 @@ package body Gnat2Why.Subprograms is
          else Get_Pragma (E, Pragma_Contract_Cases));
       EC_Prag   : constant Node_Id :=
         Get_Pragma (E, Pragma_Exceptional_Cases);
+      PE_Prag   : constant Node_Id :=
+        Get_Pragma (E, Pragma_Program_Exit);
       Post_List : constant Node_Lists.List :=
         Find_Contracts (E, Pragma_Postcondition);
    begin
@@ -907,7 +924,7 @@ package body Gnat2Why.Subprograms is
 
       --  Go over exceptional cases to collect the old attributes
 
-      if  Present (EC_Prag) then
+      if Present (EC_Prag) then
          declare
             Aggr             : constant Node_Id :=
               Expression (First (Pragma_Argument_Associations (EC_Prag)));
@@ -919,6 +936,18 @@ package body Gnat2Why.Subprograms is
 
                Next (Exceptional_Case);
             end loop;
+         end;
+      end if;
+
+      --  Collect the old attributes in the program exit contract
+
+      if Present (PE_Prag) then
+         declare
+            Assoc : constant List_Id := Pragma_Argument_Associations (PE_Prag);
+         begin
+            if Present (Assoc) then
+               Collect_Old_Parts (Expression (First (Assoc)), Old_Parts);
+            end if;
          end;
       end if;
    end Collect_Old_For_Subprogram;
@@ -1113,7 +1142,8 @@ package body Gnat2Why.Subprograms is
    is
      (New_And_Pred
         (Left  => Compute_Contract_Cases_Postcondition (Params, E),
-         Right => Compute_Exit_Cases_Normal_Post (Params, E)));
+         Right => Compute_Exit_Cases_Simple_Post
+           (Params, E, Name_Normal_Return)));
 
    -----------------------------------------
    -- Compute_Dynamic_Property_For_Inputs --
@@ -1742,6 +1772,72 @@ package body Gnat2Why.Subprograms is
 
       return Outputs;
    end Compute_Outputs_With_Allocated_Parts;
+
+   ----------------------------------------
+   -- Compute_Program_Exit_Postcondition --
+   ----------------------------------------
+
+   function Compute_Program_Exit_Postcondition
+     (Params : Transformation_Params;
+      E      : Callable_Kind_Id)
+      return W_Pred_Id
+   is
+      Outputs   : constant Flow_Id_Sets.Set :=
+        Get_Outputs_From_Program_Exit (E, E);
+      Dyn_Props : W_Pred_Array (1 .. Natural (Outputs.Length));
+      Top       : Natural := 0;
+
+   begin
+      --  First compute the dynamic invariant (and potentially type invariant)
+      --  of globals mentioned in the Program_Exit post of E.
+
+      for F of Outputs loop
+         pragma Assert (F.Kind in Direct_Mapping | Magic_String);
+
+         --  Magic_String are global state with no attached entities. As
+         --  such state is translated as private in Why3, we do not need
+         --  to consider any dynamic invariant or type invariant for it.
+
+         if F.Kind = Direct_Mapping then
+
+            --  Concurrent self should not occur here
+            pragma Assert (Is_Object (Get_Direct_Mapping_Id (F)));
+
+            declare
+               Binder   : constant Item_Type :=
+                 Ada_Ent_To_Why.Element
+                   (Symbol_Table, Get_Direct_Mapping_Id (F));
+               Ada_Type : constant Entity_Id := Get_Ada_Type_From_Item
+                 (Binder);
+               Expr     : constant W_Term_Id :=
+                 Reconstruct_Item
+                   (Binder, Ref_Allowed => Params.Ref_Allowed);
+            begin
+               Top := Top + 1;
+               Dyn_Props (Top) := New_And_Pred
+                 (Left  => Compute_Dynamic_Inv_And_Initialization
+                    (Expr   => Expr,
+                     Ty     => Ada_Type,
+                     Params => Params),
+                  Right => Compute_Type_Invariant
+                    (Expr   => Expr,
+                     Ty     => Ada_Type,
+                     Params => Params,
+                     Kind   => For_Check,
+                     Scop   => E));
+            end;
+         end if;
+      end loop;
+
+      --  Also include the program exit postcondition itself if any
+
+      return New_And_Pred
+        (Left  => New_And_Pred (Dyn_Props (1 .. Top)),
+         Right =>
+           (if Present (Get_Program_Exit (E))
+            then Transform_Pred (Get_Program_Exit (E), Params)
+            else True_Pred));
+   end Compute_Program_Exit_Postcondition;
 
    ------------------------------------
    -- Compute_Subprogram_Parameters  --
@@ -2561,7 +2657,7 @@ package body Gnat2Why.Subprograms is
                         when Name_Exception_Raised =>
                            null;
 
-                        when Name_Normal_Return =>
+                        when Name_Normal_Return | Name_Program_Exit =>
                            Append
                              (Result, New_Ignore
                                 (Prog => New_Located_Assert
@@ -2713,9 +2809,9 @@ package body Gnat2Why.Subprograms is
       end;
    end Compute_Exit_Cases_Exceptional_Post;
 
-   ------------------------------------
-   -- Compute_Exit_Cases_Normal_Post --
-   ------------------------------------
+   --------------------------------------
+   -- Compute_Exit_Cases_Simple_Checks --
+   --------------------------------------
 
    --  Pragma/aspect Exit_Cases (Guard1 => Exit_Kind1,
    --                            Guard2 => Exit_Kind2,
@@ -2723,114 +2819,14 @@ package body Gnat2Why.Subprograms is
    --                            GuardN => Exit_KindN
    --                          [,OTHERS => Exit_KindN+1]);
 
-   --  leads to the generation of a normal postcondition for the corresponding
-   --  Why program function.
+   --  leads to the generation of checks on exit kind Name. It is checked that
+   --  the guards that are not associated to Name evaluates to False.
 
-   --  If the this no OTHERS case or the OTHERS case in Normal_Return,
-   --  generate:
-   --
-   --  /\ not (old guardi)  --  if Exit_Kindi is not Normal_Return
-   --
-   --  Otherwise, generate:
-   --
-   --  \/ old guardi        --  if Exit_Kindi is Normal_Return
+   --  pragma Assert (not guardi); --  if Exit_Kindi is not Name
 
-   function Compute_Exit_Cases_Normal_Post
-     (Params : Transformation_Params;
-      E      : Entity_Id)
-      return W_Pred_Id
-   is
-      Prag : constant Node_Id := Get_Pragma (E, Pragma_Exit_Cases);
-
-   begin
-      --  If no Exit_Cases on this subprogram, return
-
-      if No (Prag) then
-         return True_Pred;
-      end if;
-
-      --  Process individual exit cases in reverse order, to see the others
-      --  case before the rest.
-
-      declare
-         Aggr           : constant Node_Id :=
-           Expression (First (Pragma_Argument_Associations (Prag)));
-         Assocs         : constant List_Id := Component_Associations (Aggr);
-         Exit_Case      : Node_Id := Last (Assocs);
-         Num_Cases      : constant Positive := Positive (List_Length (Assocs));
-         Others_Normal  : Boolean := True;
-         --  Set to False if we find an OTHERS choice which is not
-         --  Normal_Return.
-         Guards         : W_Pred_Array (1 .. Num_Cases);
-         Top            : Natural := 0;
-         Result         : W_Pred_Id;
-
-      begin
-         while Present (Exit_Case) loop
-            declare
-               Case_Guard : constant Node_Id :=
-                 First (Choice_List (Exit_Case));
-               Exit_Kind  : constant Node_Id := Expression (Exit_Case);
-               Is_Normal  : Boolean;
-            begin
-               case Nkind (Exit_Kind) is
-                  when N_Identifier =>
-                     Is_Normal := Chars (Exit_Kind) = Name_Normal_Return;
-
-                  when N_Aggregate =>
-                     Is_Normal := False;
-
-                  when others =>
-                     raise Program_Error;
-               end case;
-
-               --  If we have an OTHERS choice, set Others_Normal
-
-               if Nkind (Case_Guard) = N_Others_Choice then
-                  Others_Normal := Is_Normal;
-
-               --  Otherwise, aggregate guards of cases which are not the same
-               --  as the OTHERS choice.
-
-               elsif Is_Normal /= Others_Normal then
-                  Top := Top + 1;
-                  Guards (Top) :=
-                    +Transform_Attribute_Old (Case_Guard, EW_Pred, Params);
-               end if;
-            end;
-            Prev (Exit_Case);
-         end loop;
-
-         Result := New_Or_Pred (Guards (1 .. Top));
-
-         --  If Others_Normal is set, then we have aggregated guards for
-         --  abnormal termination. We need to add a negation.
-
-         if Others_Normal then
-            Result := New_Not (Right => Result);
-         end if;
-
-         return Result;
-      end;
-   end Compute_Exit_Cases_Normal_Post;
-
-   ---------------------------------------------
-   -- Compute_Exit_Cases_Normal_Return_Checks --
-   ---------------------------------------------
-
-   --  Pragma/aspect Exit_Cases (Guard1 => Exit_Kind1,
-   --                            Guard2 => Exit_Kind2,
-   --                               ...
-   --                            GuardN => Exit_KindN
-   --                          [,OTHERS => Exit_KindN+1]);
-
-   --  leads to the generation of checks on normal return. It is checked that
-   --  the guards that are not associated to Normal_Return evaluates to False.
-
-   --  pragma Assert (not guardi); --  if Exit_Kindi is not Normal_Return
-
-   function Compute_Exit_Cases_Normal_Return_Checks
+   function Compute_Exit_Cases_Simple_Checks
      (E                  : Entity_Id;
+      Name               : Name_Id;
       Guard_Map          : Ada_To_Why_Ident.Map;
       Others_Guard_Ident : W_Identifier_Id) return W_Prog_Id
    is
@@ -2852,12 +2848,16 @@ package body Gnat2Why.Subprograms is
          Exit_Case  : Node_Id :=
            First (Component_Associations (Aggr));
          Check_Info : Check_Info_Type := New_Check_Info;
+         Loc        : constant String :=
+           (case Name is
+               when Name_Normal_Return => "on normal return",
+               when Name_Program_Exit  => "on program exit",
+               when others             => raise Program_Error);
 
       begin
          Check_Info.Continuation.Append
            (Continuation_Type'
-              (E, To_Unbounded_String
-                   ("on normal return from " & Source_Name (E))));
+              (E, To_Unbounded_String (Loc & " from " & Source_Name (E))));
 
          while Present (Exit_Case) loop
             declare
@@ -2873,16 +2873,7 @@ package body Gnat2Why.Subprograms is
             begin
                case Nkind (Exit_Kind) is
                   when N_Identifier =>
-                     case Chars (Exit_Kind) is
-                        when Name_Exception_Raised =>
-                           Exclude := True;
-
-                        when Name_Normal_Return =>
-                           Exclude := False;
-
-                        when others =>
-                           raise Program_Error;
-                     end case;
+                     Exclude := Chars (Exit_Kind) /= Name;
 
                   when N_Aggregate =>
                      Exclude := True;
@@ -2907,7 +2898,107 @@ package body Gnat2Why.Subprograms is
       end;
 
       return Result;
-   end Compute_Exit_Cases_Normal_Return_Checks;
+   end Compute_Exit_Cases_Simple_Checks;
+
+   ------------------------------------
+   -- Compute_Exit_Cases_Simple_Post --
+   ------------------------------------
+
+   --  Pragma/aspect Exit_Cases (Guard1 => Exit_Kind1,
+   --                            Guard2 => Exit_Kind2,
+   --                               ...
+   --                            GuardN => Exit_KindN
+   --                          [,OTHERS => Exit_KindN+1]);
+
+   --  leads to the generation of a normal postcondition for the corresponding
+   --  Why program function.
+
+   --  If the this no OTHERS case or the OTHERS case is Name, generate:
+   --
+   --  /\ not (old guardi)  --  if Exit_Kindi is not Name
+   --
+   --  Otherwise, generate:
+   --
+   --  \/ old guardi        --  if Exit_Kindi is Name
+
+   function Compute_Exit_Cases_Simple_Post
+     (Params : Transformation_Params;
+      E      : Entity_Id;
+      Name   : Name_Id)
+      return W_Pred_Id
+   is
+      Prag : constant Node_Id := Get_Pragma (E, Pragma_Exit_Cases);
+
+   begin
+      --  If no Exit_Cases on this subprogram, return
+
+      if No (Prag) then
+         return True_Pred;
+      end if;
+
+      --  Process individual exit cases in reverse order, to see the others
+      --  case before the rest.
+
+      declare
+         Aggr           : constant Node_Id :=
+           Expression (First (Pragma_Argument_Associations (Prag)));
+         Assocs         : constant List_Id := Component_Associations (Aggr);
+         Exit_Case      : Node_Id := Last (Assocs);
+         Num_Cases      : constant Positive := Positive (List_Length (Assocs));
+         Others_Is_Name : Boolean := True;
+         --  Set to False if we find an OTHERS choice which is not Name
+         Guards         : W_Pred_Array (1 .. Num_Cases);
+         Top            : Natural := 0;
+         Result         : W_Pred_Id;
+
+      begin
+         while Present (Exit_Case) loop
+            declare
+               Case_Guard : constant Node_Id :=
+                 First (Choice_List (Exit_Case));
+               Exit_Kind  : constant Node_Id := Expression (Exit_Case);
+               Is_Name    : Boolean;
+            begin
+               case Nkind (Exit_Kind) is
+                  when N_Identifier =>
+                     Is_Name := Chars (Exit_Kind) = Name;
+
+                  when N_Aggregate =>
+                     Is_Name := False;
+
+                  when others =>
+                     raise Program_Error;
+               end case;
+
+               --  If we have an OTHERS choice, set Others_Is_Name
+
+               if Nkind (Case_Guard) = N_Others_Choice then
+                  Others_Is_Name := Is_Name;
+
+               --  Otherwise, aggregate guards of cases which are not the same
+               --  as the OTHERS choice.
+
+               elsif Is_Name /= Others_Is_Name then
+                  Top := Top + 1;
+                  Guards (Top) :=
+                    +Transform_Attribute_Old (Case_Guard, EW_Pred, Params);
+               end if;
+            end;
+            Prev (Exit_Case);
+         end loop;
+
+         Result := New_Or_Pred (Guards (1 .. Top));
+
+         --  If Others_Is_Name is set, then we have aggregated guards for
+         --  termination different from Name. We need to add a negation.
+
+         if Others_Is_Name then
+            Result := New_Not (Right => Result);
+         end if;
+
+         return Result;
+      end;
+   end Compute_Exit_Cases_Simple_Post;
 
    --------------------------
    -- Compute_Inlined_Expr --
@@ -5122,8 +5213,9 @@ package body Gnat2Why.Subprograms is
                   E                  => E,
                   Guard_Map          => CC_Guard_Map,
                   Others_Guard_Ident => CC_Others_Guard_Ident),
-               3 => Compute_Exit_Cases_Normal_Return_Checks
+               3 => Compute_Exit_Cases_Simple_Checks
                  (E                  => E,
+                  Name               => Name_Normal_Return,
                   Guard_Map          => EC_Guard_Map,
                   Others_Guard_Ident => EC_Others_Guard_Ident)));
       end CC_EC_And_RTE_Post;
@@ -6151,11 +6243,13 @@ package body Gnat2Why.Subprograms is
 
       elsif Entity_Body_In_SPARK (E) then
          declare
-            Body_N     : constant Node_Id := Get_Body (E);
-            Raise_Stmt : constant W_Prog_Id :=
-              New_Raise
-                (Ada_Node => Body_N,
-                 Name     => M_Main.Return_Exc);
+            Body_N       : constant Node_Id := Get_Body (E);
+            Exceptions   : constant Boolean := Has_Exceptional_Contract (E);
+            Program_Exit : constant Boolean := Has_Program_Exit (E);
+            Num_Handlers : constant Natural :=
+              (if Exceptions then 1 else 0) + (if Program_Exit then 1 else 0);
+            Handlers     : W_Handler_Array (1 .. Num_Handlers);
+            Curr_Handler : Natural := 0;
 
          begin
             Get_Pre_Post_Pragmas (Declarations (Body_N));
@@ -6169,7 +6263,9 @@ package body Gnat2Why.Subprograms is
                     (Declarations (Body_N), Body_Params),
                   4 => Transform_Handled_Statements
                     (Handled_Statement_Sequence (Body_N), Body_Params),
-                  5 => Raise_Stmt));
+                  5 => New_Raise
+                    (Ada_Node => Body_N,
+                     Name     => M_Main.Return_Exc)));
 
             --  Enclose the subprogram body in a try-block, so that return
             --  statements can be translated as raising exceptions.
@@ -6199,91 +6295,233 @@ package body Gnat2Why.Subprograms is
                 3 => Check_Invariants_Of_Outputs,
                 4 => CC_EC_And_RTE_Post,
                 5 => Check_Inline_Annotation));
-         end;
 
-         --  Handling of Ada exceptions
+            --  Create a handler for Ada exceptions
 
-         if Has_Exceptional_Contract (E) then
-            declare
-               Body_N     : constant Node_Id := Get_Body (E);
-               Exc_Id     : constant W_Identifier_Id :=
-                 New_Temp_Identifier (Base_Name => "exc", Typ => EW_Int_Type);
-               Raise_Stmt : constant W_Prog_Id :=
-                 New_Raise
-                   (Ada_Node => Body_N,
-                    Name     => M_Main.Ada_Exc,
-                    Arg      => +Exc_Id);
-               Handler    : W_Prog_Id;
+            if Exceptions then
+               declare
+                  Exc_Id  : constant W_Identifier_Id :=
+                    New_Temp_Identifier
+                      (Base_Name => "exc", Typ => EW_Int_Type);
+                  Handler : W_Prog_Id;
 
-            begin
-               Effects_Append_To_Raises
-                 (Effects,
-                  New_Raise_Effect (Domain => EW_Prog,
-                                    Name   => M_Main.Ada_Exc));
+               begin
+                  Effects_Append_To_Raises
+                    (Effects,
+                     New_Raise_Effect (Domain => EW_Prog,
+                                       Name   => M_Main.Ada_Exc));
 
-               --  Handle the scope exit like on normal return. Do not check
-               --  initialization for parameters with Relaxed_Initialization as
-               --  it is not mandated by Ada.
-               --  We do not need to check for absence of memory leaks in
-               --  formal parameters which are not passed by reference and
-               --  therefore discarded, a such parameters are rejected in
-               --  marking.
+                  --  Handle the scope exit like on normal return. Do not check
+                  --  initialization for parameters with Relaxed_Initialization
+                  --  as it is not mandated by Ada.
+                  --  We do not need to check for absence of memory leaks in
+                  --  formal parameters which are not passed by reference and
+                  --  therefore discarded, a such parameters are rejected in
+                  --  marking.
 
-               Continuation_Stack.Append
-                 (Continuation_Type'
-                    (Ada_Node => Body_N,
-                     Message  =>
-                       To_Unbounded_String ("on exceptional exit")));
+                  Continuation_Stack.Append
+                    (Continuation_Type'
+                       (Ada_Node => Body_N,
+                        Message  =>
+                          To_Unbounded_String ("on exceptional exit")));
 
-               Handler := Sequence
-                 ((1 => +Havoc_Borrowed_And_Check_No_Leaks_From_Scope
-                   (E, Local_CFG.Vertex'(Kind => Local_CFG.Body_Exit,
-                                         Node => E)),
-                   2 => Check_Invariants_Of_Outputs (Exceptional => True)));
+                  Handler := Sequence
+                    ((1 => +Havoc_Borrowed_And_Check_No_Leaks_From_Scope
+                      (E, Local_CFG.Vertex'(Kind => Local_CFG.Body_Exit,
+                                            Node => E)),
+                      2 => Check_Invariants_Of_Outputs (Exceptional => True)));
 
-               Continuation_Stack.Delete_Last;
+                  Continuation_Stack.Delete_Last;
 
-               --  Check RTE + validity of exceptional cases and exit cases
-               --  on exceptional exit.
+                  --  Check RTE + validity of exceptional cases and exit cases
+                  --  on exceptional exit.
 
-               Handler := Sequence
-                 ((1 => Handler,
-                   2 => Compute_Exit_Cases_Exceptional_Exit_Checks
-                     (E, EC_Guard_Map, EC_Others_Guard_Ident, Exc_Id),
-                   3 => Check_Exceptional_Cases (Exc_Id)));
+                  Handler := Sequence
+                    ((1 => Handler,
+                      2 => Compute_Exit_Cases_Exceptional_Exit_Checks
+                        (E, EC_Guard_Map, EC_Others_Guard_Ident, Exc_Id),
+                      3 => Check_Exceptional_Cases (Exc_Id)));
 
-               --  Reraise the exception
+                  --  Reraise the exception
 
-               Handler := Sequence (Handler, Raise_Stmt);
+                  Handler := Sequence
+                    (Handler,
+                     New_Raise
+                       (Ada_Node => Body_N,
+                        Name     => M_Main.Ada_Exc,
+                        Arg      => +Exc_Id));
 
-               --  Add an artificial raise Ada_Exc to Why_Body so the handler
-               --  is not ignored when no Ada exception is raised and the
-               --  warning on dead branches will be emitted.
+                  Curr_Handler := Curr_Handler + 1;
+                  Handlers (Curr_Handler) := New_Handler
+                    (Name   => M_Main.Ada_Exc,
+                     Arg_Id => Exc_Id,
+                     Def    => Handler);
 
-               Why_Body := New_Try_Block
-                 (Prog    =>
-                    Sequence
-                      ((1 => Why_Body,
-                        2 => New_Conditional
-                          (Condition => False_Prog,
-                           Then_Part => New_Raise
-                             (Name => M_Main.Ada_Exc,
-                              Arg  => New_Integer_Constant (Value => Uint_0))),
-                        3 => Result_Var)),
-                  Handler =>
-                    (1 => New_Handler
-                         (Name   => M_Main.Ada_Exc,
-                          Arg_Id => Exc_Id,
-                          Def    => Handler)));
-            end;
+                  --  Add an artificial raise Ada_Exc to Why_Body so the
+                  --  handler is not ignored when no Ada exception is raised
+                  --  and the warning on dead branches will be emitted.
 
-         --  Otherwise simply append the result of the subprogram to the body
+                  Why_Body := Sequence
+                    (Left  => Why_Body,
+                     Right => New_Conditional
+                       (Condition => False_Prog,
+                        Then_Part => New_Raise
+                          (Name => M_Main.Ada_Exc,
+                           Arg  => New_Integer_Constant
+                             (Value => Uint_0))));
+               end;
+            end if;
 
-         else
+            --  Create a handler of Program_Exit
+
+            if Program_Exit then
+               declare
+                  Params     : constant Transformation_Params :=
+                    Contract_VC_Params;
+                  Loc        : constant String := " on program exit";
+                  Raise_Stmt : constant W_Prog_Id :=
+                    New_Raise
+                      (Ada_Node => Body_N,
+                       Name     => M_Main.Program_Exit_Exc);
+                  Handler    : W_Prog_Id := +Void;
+
+               begin
+                  Effects_Append_To_Raises
+                    (Effects,
+                     New_Raise_Effect (Domain => EW_Prog,
+                                       Name   => M_Main.Program_Exit_Exc));
+
+                  --  Do not havoc borrowers not check for memory leaks. It
+                  --  still necessary to check potential invariants of outputs
+                  --  mentioned in the program exit post of E.
+
+                  for F of Get_Outputs_From_Program_Exit (E, E) loop
+                     pragma Assert (F.Kind in Direct_Mapping | Magic_String);
+
+                     --  Magic_String are global state with no attached
+                     --  entities. As such state is translated as private in
+                     --  Why3, we do not need to consider any type invariant
+                     --  for it.
+
+                     if F.Kind = Direct_Mapping then
+
+                        --  Concurrent self should not occur here
+                        pragma Assert (Is_Object (Get_Direct_Mapping_Id (F)));
+
+                        declare
+                           Obj        : constant Entity_Id :=
+                             Get_Direct_Mapping_Id (F);
+                           Binder     : constant Item_Type :=
+                             Ada_Ent_To_Why.Element (Symbol_Table, Obj);
+                           Ada_Type   : constant Entity_Id :=
+                             Get_Ada_Type_From_Item (Binder);
+                           Expr       : constant W_Term_Id :=
+                             Reconstruct_Item
+                               (Binder, Ref_Allowed => Params.Ref_Allowed);
+                           Check_Info : Check_Info_Type := New_Check_Info;
+                           Inv        : constant W_Pred_Id :=
+                             Compute_Type_Invariant
+                               (Expr   => Expr,
+                                Ty     => Ada_Type,
+                                Params => Params,
+                                Kind   => For_Check,
+                                Scop   => E);
+
+                        begin
+                           if not Is_True_Boolean (+Inv) then
+                              Check_Info.Continuation.Append
+                                (Continuation_Type'
+                                   (Ada_Node => Obj,
+                                    Message  => To_Unbounded_String
+                                      ("for " & Source_Name (Obj) & Loc)));
+
+                              Handler := Sequence
+                                (Handler,
+                                 New_Assert
+                                   (Pred        => New_VC_Pred
+                                        (Ada_Node   => E,
+                                         Expr       => Inv,
+                                         Reason     => VC_Invariant_Check,
+                                         Check_Info => Check_Info),
+                                    Assert_Kind => EW_Assert));
+                           end if;
+                        end;
+                     end if;
+                  end loop;
+
+                  --  Check RTE + validity of program exit post and exit cases
+                  --  on exceptional exit.
+
+                  declare
+                     Program_Exit : constant Node_Id := Get_Program_Exit (E);
+                  begin
+                     if Present (Program_Exit) then
+                        Handler := Sequence
+                          ((1 => Handler,
+                            2 => New_Ignore
+                              (Program_Exit,
+                               Warn_On_Dead_Branch
+                                 (Program_Exit,
+                                  Transform_Prog (Program_Exit, Params),
+                                  Params.Phase,
+                                  Params.Warn_On_Dead)),
+
+                            3 => New_Assert
+                              (Ada_Node    => Program_Exit,
+                               Pred        => New_VC_Pred
+                                 (Program_Exit,
+                                  Transform_Pred (Program_Exit, Params),
+                                  VC_Program_Exit_Post),
+                               Assert_Kind => EW_Assert)));
+                     end if;
+                  end;
+
+                  Handler := Sequence
+                    (Left  => Handler,
+                     Right => Compute_Exit_Cases_Simple_Checks
+                       (E                  => E,
+                        Name               => Name_Program_Exit,
+                        Guard_Map          => EC_Guard_Map,
+                        Others_Guard_Ident => EC_Others_Guard_Ident));
+
+                  --  Reraise the exception
+
+                  Handler := Sequence (Handler, Raise_Stmt);
+
+                  Curr_Handler := Curr_Handler + 1;
+                  Handlers (Curr_Handler) := New_Handler
+                    (Name => M_Main.Program_Exit_Exc,
+                     Def  => Handler);
+
+                  --  Add an artificial raise Program_Exit_Exc to Why_Body so
+                  --  the handler is not ignored when no calls in E exits the
+                  --  program.
+
+                  Why_Body := Sequence
+                    (Left  => Why_Body,
+                     Right => New_Conditional
+                       (Condition => False_Prog,
+                        Then_Part => New_Raise
+                          (Name => M_Main.Program_Exit_Exc)));
+               end;
+            end if;
+
+            pragma Assert (Curr_Handler = Num_Handlers);
+
+            --  Append the result of the subprogram to the body
+
             Why_Body := Sequence
               ((1 => Why_Body,
                 2 => Result_Var));
-         end if;
+
+            --  If there are handlers, wrap the body in a try block
+
+            if Num_Handlers > 0 then
+               Why_Body := New_Try_Block
+                 (Prog    => Why_Body,
+                  Handler => Handlers);
+            end if;
+         end;
 
       --  Body is not in SPARK
 
@@ -7712,6 +7950,20 @@ package body Gnat2Why.Subprograms is
                      Compute_Exit_Cases_Exceptional_Post
                        (Params, E, Exc_Id))));
          end;
+      end if;
+
+      --  Potentially add program exit to the effects
+
+      if Has_Program_Exit (E) then
+         Effects_Append_To_Raises
+           (Effects,
+            New_Raise_Effect
+              (Domain => EW_Prog,
+               Name   => M_Main.Program_Exit_Exc,
+               Post   => New_And_Pred
+                 (Compute_Program_Exit_Postcondition (Params, E),
+                  Compute_Exit_Cases_Simple_Post
+                    (Params, E, Name_Program_Exit))));
       end if;
 
       Pre := Get_Static_Call_Contract (Params, E, Pragma_Precondition);

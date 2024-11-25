@@ -2613,6 +2613,9 @@ package body Why.Atree.Modules is
       M_Main.Ada_Exc :=
         New_Name (Symb => NID ("Ada__exc"));
 
+      M_Main.Program_Exit_Exc :=
+        New_Name (Symb => NID ("Program_exit__exc"));
+
       M_Main.Spark_CE_Branch :=
         New_Identifier (Domain => EW_Term,
                         Module => M,

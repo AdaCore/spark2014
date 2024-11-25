@@ -2246,6 +2246,11 @@ package body SPARK_Definition.Annotate is
             & " Automatic_Instantiation shall not propagate exceptions",
             E);
          return;
+      elsif Has_Program_Exit (E) then
+
+         --  Ghost subprograms cannot exit the whole program
+
+         raise Program_Error;
       elsif Mutable_In_Params_Annotations.Contains (E) then
          Error_Msg_N_If
            ("procedure annotated with the " & Aspect_Or_Pragma
@@ -2995,6 +3000,11 @@ package body SPARK_Definition.Annotate is
                & " Higher_Order_Specialization shall not propagate exceptions",
                E);
             return;
+         elsif Has_Program_Exit (E) then
+
+            --  Ghost subprograms cannot exit the whole program
+
+            raise Program_Error;
          elsif Get_Termination_Condition (E) not in
            (Kind => Unspecified) | (Static, True)
          then
@@ -5376,6 +5386,10 @@ package body SPARK_Definition.Annotate is
             Error_Msg_NE_If
               ("& procedure shall not propagate exceptions",
                Typ, Annot.Add_Procedure);
+         elsif Has_Program_Exit (Annot.Add_Procedure) then
+            Error_Msg_NE_If
+              ("& procedure shall not exit the program",
+               Typ, Annot.Add_Procedure);
          end if;
       end;
    end Do_Delayed_Checks_For_Aggregates;
@@ -6746,7 +6760,7 @@ package body SPARK_Definition.Annotate is
                     (if Name in "always_return" | "terminating"
                      then """with Always_Terminates"""
                      else """with Always_Terminates => False"" or use an" &
-                       " exceptional contract") &
+                       " exceptional contract or program exit postcondition") &
                   (if not From_Aspect
                    then " on the corresponding entity"
                    else "");

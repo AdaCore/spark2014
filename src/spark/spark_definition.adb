@@ -39,6 +39,7 @@ with Errout_Wrapper;                 use Errout_Wrapper;
 with Exp_Util;                       use Exp_Util;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
+with Flow_Refinement;                use Flow_Refinement;
 with Flow_Utility;                   use Flow_Utility;
 with Flow_Utility.Initialization;    use Flow_Utility.Initialization;
 with Flow_Types;                     use Flow_Types;
@@ -5095,6 +5096,13 @@ package body SPARK_Definition is
                   elsif Has_Exceptional_Contract (Subp) then
                      Mark_Unsupported (Lim_Access_To_Subp_With_Exc, N);
 
+                  --  Subprograms which might exit the program can not be
+                  --  stored inside access types.
+
+                  elsif Has_Program_Exit (Subp) then
+                     Mark_Unsupported
+                       (Lim_Access_To_Subp_With_Prog_Exit, N);
+
                   --  Subprograms with an exit cases contract necessarily
                   --  allow abnormal return.
 
@@ -5941,6 +5949,119 @@ package body SPARK_Definition is
                     [Create (Cont, Names => [E])]);
             end;
          end if;
+      end if;
+
+      if Has_Program_Exit (E) and then GG_Has_Been_Generated then
+         declare
+            function Is_Body (N : Node_Id) return Boolean is
+              (Nkind (N) in N_Entity_Body);
+
+            function Enclosing_Body is
+              new First_Parent_With_Property (Is_Body);
+
+            Scop : constant Entity_Id := Unique_Defining_Entity
+              (Enclosing_Body (N));
+         begin
+            if Has_Program_Exit (Scop) then
+               declare
+                  E_Outputs    : Flow_Id_Sets.Set;
+                  Scop_Outputs : constant Flow_Id_Sets.Set :=
+                    Get_Outputs_From_Program_Exit (Scop, Scop);
+                  Dummy        : Flow_Id_Sets.Set;
+
+                  procedure Do_Violation
+                    (N        : Node_Id;
+                     G_Name   : String;
+                     Add_Cont : Boolean);
+                  --  Raise an error stating that a global G_Name of Scop is
+                  --  modified in N. If Add_Cont is True, emit a continuation
+                  --  advising to mention G_Name in the postcondition of E.
+
+                  procedure Check_Param
+                    (Formal : Formal_Kind_Id;
+                     Actual : N_Subexpr_Id);
+                  --  Raise an error on Actual if it is rooted at a global of
+                  --  Scop unless it is passed by copy.
+
+                  ------------------
+                  -- Do_Violation --
+                  ------------------
+
+                  procedure Do_Violation
+                    (N        : Node_Id;
+                     G_Name   : String;
+                     Add_Cont : Boolean)
+                  is
+                  begin
+                     Mark_Unsupported
+                       (Kind           =>
+                          Lim_Program_Exit_Global_Modified_In_Callee,
+                        N              => N,
+                        Names          => [Scop],
+                        Name           => G_Name,
+                        Root_Cause_Msg =>
+                          "call which might exit the program and leave outputs"
+                        & " in an inconsistent state",
+                        Cont_Msg       =>
+                          (if Add_Cont
+                           then Create
+                             ("consider mentioning " & G_Name & " in the"
+                              & " exit postcondition of &",
+                              [E])
+                           else No_Message));
+                  end Do_Violation;
+
+                  -----------------
+                  -- Check_Param --
+                  -----------------
+
+                  procedure Check_Param
+                    (Formal : Formal_Kind_Id;
+                     Actual : N_Subexpr_Id)
+                  is
+                     Root : Entity_Id;
+                  begin
+                     if Is_Constant_In_SPARK (Formal)
+                       or else By_Copy (Formal)
+                     then
+                        return;
+                     else
+                        Root := Get_Root_Object (Actual);
+                        pragma Assert (Present (Root));
+                        if Scop_Outputs.Contains (Direct_Mapping_Id (Root))
+                        then
+                           Do_Violation (Actual, Source_Name (Root), False);
+                        end if;
+                     end if;
+                  end Check_Param;
+
+                  procedure Check_Actuals is new
+                    Iterate_Call_Parameters (Check_Param);
+               begin
+                  Check_Actuals (N);
+
+                  Get_Proof_Globals
+                    (Subprogram      => E,
+                     Reads           => Dummy,
+                     Writes          => E_Outputs,
+                     Erase_Constants => True,
+                     Scop            => Get_Flow_Scope (Scop));
+                  E_Outputs.Difference
+                    (Get_Outputs_From_Program_Exit (E, Scop));
+                  E_Outputs.Intersection (Scop_Outputs);
+
+                  for G of To_Ordered_Flow_Id_Set (E_Outputs) loop
+                     Do_Violation
+                       (N,
+                        (case G.Kind is
+                            when Direct_Mapping => Source_Name (G.Node),
+                            when Magic_String   => To_String (G.Name),
+                            when others         => raise Program_Error),
+                        Add_Cont => True);
+                  end loop;
+               end;
+            end if;
+         end;
       end if;
 
       --  Check that the parameter of a function annotated with At_End_Borrow
@@ -7333,6 +7454,96 @@ package body SPARK_Definition is
                end;
             end if;
 
+            Prag := Get_Pragma (E, Pragma_Program_Exit);
+            if Present (Prag) then
+
+               --  The frontend rejects Program_Exit on functions without side
+               --  effects.
+               pragma Assert (Ekind (E) /= E_Function
+                              or else Is_Function_With_Side_Effects (E));
+
+               --  The frontend does not allow Program_Exit on entries
+
+               if Ekind (E) = E_Entry then
+                  raise Program_Error;
+               --  Exiting the program is an effect, it shall not occur in
+               --  ghost code.
+
+               elsif Is_Ghost_Entity (E) then
+                  Mark_Violation
+                    ("aspect ""Program_Exit"" on ghost operations", E);
+
+               --  Reject dispatching operations for now. Supporting them would
+               --  require handling Liskov on program exit postconditions.
+
+               elsif Is_Dispatching_Operation (E)
+                 and then Present (Find_Dispatching_Type (E))
+               then
+                  Mark_Unsupported (Lim_Program_Exit_Dispatch, Prag);
+               end if;
+
+               declare
+                  Assoc : constant List_Id :=
+                    Pragma_Argument_Associations (Prag);
+                  pragma Assert (No (Assoc) or else List_Length (Assoc) = 1);
+                  Cond  : constant Node_Id :=
+                    (if No (Assoc) then Empty
+                     else Expression (First (Assoc)));
+               begin
+                  if Present (Cond) then
+                     Mark (Cond);
+
+                     --  Check that outputs of E mentioned in Cond are
+                     --  stand-alone objects.
+
+                     if GG_Has_Been_Generated then
+                        for Obj of To_Ordered_Flow_Id_Set
+                          (Get_Outputs_From_Program_Exit (E, E))
+                        loop
+                           if Obj.Kind = Direct_Mapping then
+                              declare
+                                 Ent      : constant Entity_Id :=
+                                   Get_Direct_Mapping_Id (Obj);
+                                 Cont_Str : constant String :=
+                                   "Outputs mentioned in the "
+                                   & "expression of an aspect Program_Exit "
+                                   & "shall be a stand-alone objects";
+                                 Root_Str : constant String :=
+                                   "Output mentioned in the "
+                                   & "expression of an aspect Program_Exit "
+                                   & "which is not a stand-alone objects";
+                              begin
+                                 case Ekind (Ent) is
+                                    when Protected_Kind =>
+                                       Mark_Violation
+                                         ("reference to the implicit self "
+                                          & "parameter of the protected "
+                                          & "operation & in the expression of "
+                                          & "its ""Program_Exit"" aspect",
+                                          Cond,
+                                          [E],
+                                          Cont_Msg       => Cont_Str,
+                                          Root_Cause_Msg => Root_Str);
+                                    when Constant_Or_Variable_Kind =>
+                                       null;
+                                    when others =>
+                                       Mark_Violation
+                                         ("reference to &, output of &, in the"
+                                          & " expression of its "
+                                          & """Program_Exit"" aspect",
+                                          Cond,
+                                          [Ent, E],
+                                          Cont_Msg       => Cont_Str,
+                                          Root_Cause_Msg => Root_Str);
+                                 end case;
+                              end;
+                           end if;
+                        end loop;
+                     end if;
+                  end if;
+               end;
+            end if;
+
             Prag := Get_Pragma (E, Pragma_Exit_Cases);
             if Present (Prag) then
 
@@ -7428,10 +7639,10 @@ package body SPARK_Definition is
                   end loop;
 
                   --  Reject exit cases on subprograms which do not allow
-                  --  abnormal termination. For now, this only includes raising
-                  --  exceptions.
+                  --  abnormal termination. This only includes exiting the
+                  --  program and raising exceptions.
 
-                  if Exc_Set.Is_Empty then
+                  if Exc_Set.Is_Empty and then not Has_Program_Exit (E) then
                      Mark_Violation
                        ("Exit_Case on subprogram which can only return "
                         & "normally",
@@ -7506,6 +7717,7 @@ package body SPARK_Definition is
             if Ekind (E) = E_Procedure
               and then No_Return (E)
               and then not Has_Exceptional_Contract (E)
+              and then not Has_Program_Exit (E)
               and then Get_Termination_Condition (E) = (Static, True)
             then
                if Emit_Warning_Info_Messages then
@@ -11520,6 +11732,7 @@ package body SPARK_Definition is
             | Pragma_Pre_Class
             | Pragma_Predicate
             | Pragma_Predicate_Failure
+            | Pragma_Program_Exit
             | Pragma_Provide_Shift_Operators
             | Pragma_Pure_Function
             | Pragma_Restriction_Warnings

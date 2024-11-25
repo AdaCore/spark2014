@@ -18886,6 +18886,21 @@ package body Gnat2Why.Expr is
          end;
       end if;
 
+      --  Insert a try block around the call to catch potential program exit
+      --  if the call is not allowed to exit the program.
+
+      if Has_Program_Exit (Subp) and then not Might_Exit_Program (Call) then
+         Result := New_Try_Block
+           (Ada_Node => Call,
+            Prog     => Result,
+            Handler  =>
+              (1 => New_Handler
+                   (Name   => M_Main.Program_Exit_Exc,
+                    Def    => New_Absurd_Statement
+                      (Call, VC_Unexpected_Program_Exit))),
+            Typ      => Get_Type (+Result));
+      end if;
+
       --  Insert invariant check if needed
 
       if Subp_Needs_Invariant_Checks (Subp, Current_Subp) then

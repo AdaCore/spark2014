@@ -7,8 +7,10 @@ package body Exit_Cases with SPARK_Mode is
          X := 3;
       when 2 =>
          raise E1;
-      when others =>
+      when 3 =>
          raise E2;
+      when others =>
+         OS_Exit;
       end case;
    end Might_Return_Abnormally;
 

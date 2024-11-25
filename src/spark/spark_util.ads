@@ -1394,6 +1394,21 @@ package SPARK_Util is
    is
      (not Get_Raised_Exceptions (Call_Or_Stmt, True).Is_Empty);
 
+   function Has_Program_Exit (E : Entity_Id) return Boolean;
+   --  Return True if E has a program exit postcondition which is not
+   --  statically False or if it has an Exit_Cases contract with at least one
+   --  Program_Exit case.
+
+   function Get_Program_Exit (E : Entity_Id) return Node_Id with
+     Pre => Has_Program_Exit (E);
+   --  Return E's program exit postcondition or Empty if there is none.
+
+   function Might_Exit_Program (Call : Node_Id) return Boolean with
+     Pre => Nkind (Call) in N_Subprogram_Call
+                          | N_Entry_Call_Statement;
+   --  Return True if Call might exit the whole program in a way expected by
+   --  the enclosing unit.
+
    -----------------------------------------------
    --  Control-flow graph of statements/bodies  --
    -----------------------------------------------
