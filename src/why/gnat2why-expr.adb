@@ -5542,7 +5542,7 @@ package body Gnat2Why.Expr is
                                    Typ          => W_Comp_Ty,
                                    Relaxed_Init => Relaxed_Init),
                                 Value  => +E_Symb
-                                  (Ty, WNE_Private_Dummy, Relaxed_Init));
+                                  (Comp, WNE_Private_Dummy, Relaxed_Init));
                         end;
                      else
                         declare
