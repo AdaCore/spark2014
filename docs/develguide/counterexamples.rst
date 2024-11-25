@@ -304,8 +304,7 @@ It is sometimes useful to launch Why3 (without the overcoat of GNATWhy3)
 on a generated .mlw file.
 
 - For a given test of the testsuite, first use the function ``expandtest``
-  given in the SPARK wiki:
-  https://gitlab.adacore-it.com/eng/spark/spark2014/-/wikis/Testing#running-tests-by-hand
+  given in the SPARK wiki
 - Then, go in the ``gnatprove`` directory that has been created, where
   generated .mlw files are present.
   In order to launch Why3, it is necessary to use the generated configuration
