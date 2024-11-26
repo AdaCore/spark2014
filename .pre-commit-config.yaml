@@ -1,5 +1,5 @@
 repos:
-  - repo: git@ssh.gitlab.adacore-it.com:eng/shared/mirrors/pre-commit-hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.0.1
     hooks:
     -   id: check-json
@@ -16,13 +16,13 @@ repos:
     -   id: check-submodules
     -   id: check-empty-testoutopt
     -   id: check-testsuite-markers
-  - repo: git@ssh.gitlab.adacore-it.com:it/flake8.git
+  - repo: https://github.com/pycqa/flake8
     rev: 7.0.0
     hooks:
     - id: flake8
       additional_dependencies:
         - flake8-bugbear
-  - repo: git@ssh.gitlab.adacore-it.com:it/black.git
+  - repo: https://github.com/ambv/black
     rev: 24.2.0
     hooks:
     - id: black
