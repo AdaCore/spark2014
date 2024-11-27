@@ -10747,18 +10747,6 @@ package body Gnat2Why.Expr is
             Binder : constant Item_Type :=
               Ada_Ent_To_Why.Element (Symbol_Table, Entity (Left_Side));
          begin
-            --  Assign initialization flag if any
-
-            if Binder.Init.Present then
-               Result :=
-                 New_Assignment
-                   (Ada_Node => Ada_Node,
-                    Name     => Binder.Init.Id,
-                    Labels   => Symbol_Sets.Empty_Set,
-                    Value    => True_Prog,
-                    Typ      => EW_Bool_Type);
-            end if;
-
             case Binder.Kind is
             when Regular =>
                Append
@@ -10891,6 +10879,21 @@ package body Gnat2Why.Expr is
             =>
                raise Program_Error;
             end case;
+
+            --  Assign initialization flag if any. Do it after the main
+            --  assignment so as to avoid doing it if an exception is raised by
+            --  the evaluation of parameters.
+
+            if Binder.Init.Present then
+               Append
+                 (Result,
+                  New_Assignment
+                    (Ada_Node => Ada_Node,
+                     Name     => Binder.Init.Id,
+                     Labels   => Symbol_Sets.Empty_Set,
+                     Value    => True_Prog,
+                     Typ      => EW_Bool_Type));
+            end if;
          end;
       end if;
 
