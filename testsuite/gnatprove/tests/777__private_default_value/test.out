@@ -1,0 +1,16 @@
+maze.ads:43:13: info: implicit aspect Always_Terminates on "On_Grid" has been proved, subprogram will terminate
+maze.ads:127:10: info: pointer dereference check proved (CVC5: 1 VC)
+maze.ads:128:10: info: pointer dereference check proved (CVC5: 1 VC)
+maze.ads:130:10: info: pointer dereference check proved (CVC5: 1 VC)
+maze.ads:131:10: info: pointer dereference check proved (CVC5: 1 VC)
+maze.ads:152:13: info: implicit aspect Always_Terminates on overriding operator "+" has been proved, subprogram will terminate
+maze.ads:153:27: info: overflow check proved (CVC5: 2 VC)
+maze.ads:153:27: info: range check proved (CVC5: 2 VC)
+maze.ads:153:52: info: overflow check proved (CVC5: 2 VC)
+maze.ads:153:52: info: range check proved (CVC5: 2 VC)
+maze.ads:156:39: info: overflow check proved (CVC5: 2 VC)
+maze.ads:157:39: info: overflow check proved (CVC5: 2 VC)
+maze.ads:173:13: info: implicit aspect Always_Terminates on "Adjacent_Cells" has been proved, subprogram will terminate
+traversal.ads:54:42: info: range check proved (CVC5: 2 VC)
+traversal.ads:55:42: info: range check proved (CVC5: 2 VC)
+traversal.ads:76:31: info: default initial condition on subtype of "List" not available for proof in an assertion context
