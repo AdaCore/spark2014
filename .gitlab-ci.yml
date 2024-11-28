@@ -23,8 +23,6 @@ stages:
     # If the package exists, move it to /tmp so as not to influence "anod vcs"
     - if [ -f $PACKAGE_ABSOLUTE_NAME ] ; then mv $PACKAGE_ABSOLUTE_NAME /tmp ; fi
 
-    - GENERIC_ANOD_CI_OPTIONS=""
-    - if [[ $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "24-sustained" ]]; then GENERIC_ANOD_CI_OPTIONS="$GENERIC_ANOD_CI_OPTIONS --setup=24.3"; fi
     # Use generic_anod_ci here.
     - generic_anod_ci $GENERIC_ANOD_CI_OPTIONS
     - cat /tmp/ci_env.sh
@@ -113,6 +111,9 @@ build:
      - mem:16
   stage: build
   script:
+    - GENERIC_ANOD_CI_OPTIONS="--add-dep eng/spark/sparklib
+                               --add-dep eng/spark/spark-internal-testsuite
+                               --add-dep eng/spark/why3"
     - *setup_repos
 
     # Build using anod
@@ -168,6 +169,7 @@ acats:
   script:
     # Setup the sanbox
     # Add acats explicitly for this build.
+    - GENERIC_ANOD_CI_OPTIONS="--add-dep eng/toolchain/acats"
     - *setup_repos
 
     # Deploy the installed package
