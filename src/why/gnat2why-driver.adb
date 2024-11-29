@@ -647,12 +647,13 @@ package body Gnat2Why.Driver is
             --  the main entity in the compilation unit is generic.
 
             if Gnat2Why_Args.Limit_Units then
-               Error_Msg_N
-                 ("generic compilation unit is not analyzed",
+               Warning_Msg_N
+                 (Warn_Generic_Not_Analyzed,
                   GNAT_Root,
-                  Kind => Warning_Kind,
                   Continuations =>
-                    ["only instantiations of the generic will be analyzed"]);
+                    [Create
+                         ("only instantiations of the generic will be"
+                          & " analyzed")]);
             end if;
          end if;
 

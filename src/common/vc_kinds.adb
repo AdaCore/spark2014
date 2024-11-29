@@ -561,6 +561,8 @@ package body VC_Kinds is
           & " other non-volatile objects",
         when Warn_Function_Is_Valid =>
           "function Is_Valid is assumed to return True",
+        when Warn_Generic_Not_Analyzed =>
+          "GNATprove doesn't analyze generics, only instances",
         when Warn_No_Possible_Termination =>
           "procedure which does not return normally nor raises an exception"
           & " cannot always terminate",
@@ -1497,70 +1499,55 @@ package body VC_Kinds is
 
    function Kind_Name (Kind : Misc_Warning_Kind) return String is
      (case Kind is
-        when Warn_Address_To_Access =>
-          "address to access conversion",
-        when Warn_Alias_Atomic_Vol =>
-          "volatile and atomic status of aliases",
-        when Warn_Alias_Different_Volatility =>
-          "volatile properties of aliases",
-        when Warn_Attribute_Valid =>
-          "attribute Valid always True",
-        when Warn_Auto_Lemma_Calls =>
-          "warn-auto-lemma-calls",
-        when Warn_Auto_Lemma_Different =>
-          "warn-auto-lemma-different",
-        when Warn_Auto_Lemma_Higher_Order =>
-          "warn-auto-lemma-higher-order",
-        when Warn_Auto_Lemma_Specializable =>
-          "warn-auto-lemma-specializable",
-        when Warn_Initialization_To_Alias =>
-          "initialization of alias",
-        when Warn_Function_Is_Valid =>
-          "function Is_Valid always return True",
-        when Warn_No_Possible_Termination =>
-          "procedure not terminating normally nor abnormally",
-        when Warn_Pragma_Annotate_No_Check =>
-          "no check message justified",
-        when Warn_Pragma_Annotate_Proved_Check =>
-          "proved check message justified",
-        when Warn_Pragma_Annotate_Terminating =>
-          "Terminating deprecated",
-        when Warn_Pragma_External_Axiomatization =>
-          "External Axiomatizations not supported",
-        when Warn_Pragma_Ignored =>
-          "pragma ignored",
-        when Warn_Pragma_Overflow_Mode =>
-          "Overflow_Mode ignored",
-        when Warn_Precondition_Statically_False =>
-          "precondition statically False",
-        when Warn_Restriction_Ignored =>
-          "restriction ignored",
-        when Warn_Unreferenced_Function =>
-          "unreferenced function",
-        when Warn_Unreferenced_Procedure =>
-          "unreferenced procedure",
-        when Warn_Useless_Relaxed_Init_Fun =>
-          "useless Relaxed_Initialization aspect on function result",
+         when Warn_Address_To_Access => "address-to-access-conversion",
+         when Warn_Alias_Atomic_Vol => "alias-volatile-atomic-mismatch",
+         when Warn_Alias_Different_Volatility =>
+            "alias-volatile-prop-mismatch",
+         when Warn_Attribute_Valid =>  "attribute-valid-always-true",
+         when Warn_Auto_Lemma_Calls => "auto-lemma-calls",
+         when Warn_Auto_Lemma_Different => "auto-lemma-different",
+         when Warn_Auto_Lemma_Higher_Order => "auto-lemma-higher-order",
+         when Warn_Auto_Lemma_Specializable => "auto-lemma-specializable",
+         when Warn_Initialization_To_Alias => "initialization-to-alias",
+         when Warn_Function_Is_Valid => "is-valid-returns-true",
+        when Warn_Generic_Not_Analyzed => "generic-not-analyzed",
+         when Warn_No_Possible_Termination => "no-possible-termination",
+         when Warn_Pragma_Annotate_No_Check => "no-check-message-justified",
+         when Warn_Pragma_Annotate_Proved_Check => "proved-check-justified",
+         when Warn_Pragma_Annotate_Terminating |
+              Warn_Pragma_External_Axiomatization =>
+              "deprecated-feature",
+         when Warn_Pragma_Ignored => "ignored-pragma",
+         when Warn_Pragma_Overflow_Mode => "overflow-mode-ignored",
+         when Warn_Precondition_Statically_False =>
+            "precondition-statically-false",
+         when Warn_Restriction_Ignored => "restriction-ignored",
+         when Warn_Unreferenced_Function =>
+            "unreferenced-function",
+         when Warn_Unreferenced_Procedure =>
+            "unreferenced procedure",
+         when Warn_Useless_Relaxed_Init_Fun =>
+            "useless-relaxed-init-func-result",
         when Warn_Useless_Relaxed_Init_Obj =>
-          "useless Relaxed_Initialization aspect on object",
-        when Warn_Variant_Not_Recursive =>
-          "variant not recursive",
+            "useless-relaxed-init-object",
+         when Warn_Variant_Not_Recursive =>
+            "variant-no-recursion",
 
-        --  Warnings guaranteed to be issued
-        when Warn_Imprecisely_Supported_Address =>
-          "imprecisely supported address specification",
-        when Warn_Assumed_Always_Terminates =>
-          "assumed Always_Terminates",
-        when Warn_Assumed_Global_Null =>
-          "assumed Global null",
+         --  Warnings guaranteed to be issued
+         when Warn_Imprecisely_Supported_Address =>
+            "imprecise-address-specification",
+         when Warn_Assumed_Always_Terminates =>
+            "assumed-always-terminates",
+         when Warn_Assumed_Global_Null =>
+            "assumed-global-null",
 
-        --  Warnings only issued when using switch --pedantic
-        when Warn_Image_Attribute_Length =>
-          "string attribute length",
-        when Warn_Operator_Reassociation =>
-          "operator reassociation",
+         --  Warnings only issued when using switch --pedantic
+         when Warn_Image_Attribute_Length =>
+            "image-attribute-length",
+         when Warn_Operator_Reassociation =>
+            "operator-reassociation",
         when Warn_Representation_Attribute_Value =>
-          "representation attribute value");
+            "representation-attribute-value");
 
    pragma Annotate (Xcov, Exempt_Off);
 

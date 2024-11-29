@@ -4282,7 +4282,7 @@ package body SPARK_Definition is
                if Nb_Warn > 0 then
                   declare
                      Msg : Unbounded_String;
-                     Cont : String_Lists.List;
+                     Cont : Message_Lists.List;
                   begin
                      if Nb_Warn = 1 then
                         Msg := Warnings (1);
@@ -4305,15 +4305,14 @@ package body SPARK_Definition is
                               else To_String (Continuations (1)) & " and " &
                                 To_String (Continuations (2)));
                         begin
-                           Cont.Append (Msg);
+                           Cont.Append (Create (Msg));
                         end;
                      end if;
 
-                     Error_Msg_N
-                       ("address specification on & is imprecisely supported:"
-                        & " assuming " & To_String (Msg),
+                     Warning_Msg_N
+                       (Warn_Imprecisely_Supported_Address,
                         E,
-                        Kind => Warning_Kind,
+                        Extra_Message => ": assuming " & To_String (Msg),
                         Explain_Code => EC_Address_Spec_Imprecise_Warn,
                         Continuations => Cont);
                   end;
