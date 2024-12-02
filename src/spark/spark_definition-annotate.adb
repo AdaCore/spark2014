@@ -589,9 +589,9 @@ package body SPARK_Definition.Annotate is
    --  on phase.
 
    procedure Warning_Msg_N_If
-      (Kind : Misc_Warning_Kind;
-       N : Node_Or_Entity_Id;
-       Names : Node_Lists.List := Node_Lists.Empty;
+     (Kind : Misc_Warning_Kind;
+      N : Node_Or_Entity_Id;
+      Names : Node_Lists.List := Node_Lists.Empty;
       Continuations : Message_Lists.List := Message_Lists.Empty);
 
    function Find_Aggregate_Aspect (Typ : Type_Kind_Id) return Node_Id;
@@ -6247,7 +6247,7 @@ package body SPARK_Definition.Annotate is
       Pattern, Reason : String_Id;
       First_Node      : Node_Id;
       Skip            : Node_Id := Empty)
-      is
+   is
       Node : Node_Id := First_Node;
    begin
       Insert_Annotate_Range (Prgma, Kind, Pattern, Reason, Node,
@@ -7080,9 +7080,9 @@ package body SPARK_Definition.Annotate is
    ----------------------
 
    procedure Warning_Msg_N_If
-      (Kind : Misc_Warning_Kind;
-       N : Node_Or_Entity_Id;
-       Names : Node_Lists.List := Node_Lists.Empty;
+     (Kind : Misc_Warning_Kind;
+      N : Node_Or_Entity_Id;
+      Names : Node_Lists.List := Node_Lists.Empty;
       Continuations : Message_Lists.List := Message_Lists.Empty) is
    begin
       if Emit_Messages then

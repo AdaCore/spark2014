@@ -1279,10 +1279,10 @@ package body Why.Gen.Binders is
    ---------------------------
 
    function New_Record_Definition
-      (Ada_Node : Node_Id := Empty;
-       Name     : W_Name_Id;
-       Binders  : Binder_Array)
-       return W_Declaration_Id is
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Name_Id;
+      Binders  : Binder_Array)
+      return W_Declaration_Id is
    begin
       return
          New_Type_Decl

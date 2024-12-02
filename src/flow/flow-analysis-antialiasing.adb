@@ -1096,8 +1096,8 @@ package body Flow.Analysis.Antialiasing is
                when Direct_Mapping =>
                   Results.Insert (Get_Direct_Mapping_Id (F));
 
-                  --  If we don't have an Entity_Id for a global, then it can't
-                  --  be referenced as a parameter.
+               --  If we don't have an Entity_Id for a global, then it can't be
+               --  referenced as a parameter.
 
                when Magic_String =>
                   null;

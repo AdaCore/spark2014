@@ -588,11 +588,13 @@ package body Flow_Error_Messages is
                   end if;
 
                when Error_Kind =>
-               --  Set the error flag if we have an error message. Note that
-               --  warnings do not count as errors here, they should not
-               --  prevent us going to proof. The errout mechanism already
-               --  deals with the warnings-as-errors handling for the whole
-               --  unit.
+
+                  --  Set the error flag if we have an error message. Note that
+                  --  warnings do not count as errors here, they should not
+                  --  prevent us going to proof. The errout mechanism already
+                  --  deals with the warnings-as-errors handling for the whole
+                  --  unit.
+
                   Suppressed       := False;
                   Found_Flow_Error := True;
             end case;

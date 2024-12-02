@@ -4442,10 +4442,10 @@ package body Why.Gen.Expr is
    end New_Or_Expr;
 
    function New_Or_Expr
-      (Left, Right : W_Expr_Id;
-       Domain      : EW_Domain;
-       Base        : W_Type_Id)
-       return W_Expr_Id
+     (Left, Right : W_Expr_Id;
+      Domain      : EW_Domain;
+      Base        : W_Type_Id)
+      return W_Expr_Id
    is
    begin
       if Base = EW_BitVector_8_Type or else
@@ -4973,10 +4973,10 @@ package body Why.Gen.Expr is
    ------------------
 
    function New_Xor_Expr
-      (Left, Right : W_Expr_Id;
-       Domain      : EW_Domain;
-       Base        : W_Type_Id)
-       return W_Expr_Id
+     (Left, Right : W_Expr_Id;
+      Domain      : EW_Domain;
+      Base        : W_Type_Id)
+      return W_Expr_Id
    is
    begin
       if Base = EW_BitVector_8_Type or else
