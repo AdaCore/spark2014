@@ -3,6 +3,7 @@ with Ada.Strings.Unbounded;
 with Atree;                   use Atree;
 with Gnat2Why_Args;
 with Gnat2Why_Opts;           use Gnat2Why_Opts;
+with Warnsw;                  use Warnsw;
 
 package body Errout_Wrapper is
 
@@ -384,7 +385,9 @@ package body Errout_Wrapper is
    begin
       if Warning_Status (Kind) in WS_Enabled | WS_Error then
          Error_Msg_N
-           (Create (Warning_Message (Kind) & Extra_Message,
+           (Create (Warning_Message (Kind) & Extra_Message &
+                    (if Warning_Doc_Switch then "[" & Kind_Name (Kind) & "]"
+                     else ""),
                     Names,
                     Secondary_Loc,
                     Explain_Code),

@@ -1,7 +1,7 @@
 project Test2 is
 
   package Compiler is
-    for Default_Switches ("Ada") use ("-gnatws", "-gnatdk",  "-gnatd.k", "-gnat2022");
+    for Default_Switches ("Ada") use ("-gnatws", "-gnatdk",  "-gnatd.k", "-gnat2022", "-gnatw.d");
     for Local_Configuration_Pragmas use "test.adc";
   end Compiler;
 
