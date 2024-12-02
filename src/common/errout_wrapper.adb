@@ -188,6 +188,23 @@ package body Errout_Wrapper is
                  To_String (Buf));
    end Create_N;
 
+   function Create_N
+     (Kind          : Misc_Warning_Kind;
+      Extra_Message : String := "";
+      Names         : String_Lists.List := String_Lists.Empty;
+      Secondary_Loc : Source_Ptr := No_Location;
+      Explain_Code  : Explain_Code_Kind := EC_None) return Message is
+   begin
+      return
+        Create_N
+          (Warning_Message (Kind) & Extra_Message &
+            (if Warning_Doc_Switch then " [" & Kind_Name (Kind) & "]"
+               else ""),
+           Names,
+           Secondary_Loc,
+           Explain_Code);
+   end Create_N;
+
    ---------------
    -- Error_Msg --
    ---------------
@@ -383,14 +400,31 @@ package body Errout_Wrapper is
       First         : Boolean := False;
       Continuations : Message_Lists.List := Message_Lists.Empty) is
    begin
+      Warning_Msg_N
+        (Kind,
+         N,
+         Create
+           (Warning_Message (Kind) & Extra_Message &
+            (if Warning_Doc_Switch then " [" & Kind_Name (Kind) & "]"
+               else ""),
+            Names,
+            Secondary_Loc,
+            Explain_Code),
+         First,
+         Continuations);
+   end Warning_Msg_N;
+
+   procedure Warning_Msg_N
+     (Kind          : Misc_Warning_Kind;
+      N             : Node_Id;
+      Msg           : Message;
+      First         : Boolean := False;
+      Continuations : Message_Lists.List := Message_Lists.Empty)
+   is
+   begin
       if Warning_Status (Kind) in WS_Enabled | WS_Error then
          Error_Msg_N
-           (Create (Warning_Message (Kind) & Extra_Message &
-                    (if Warning_Doc_Switch then "[" & Kind_Name (Kind) & "]"
-                     else ""),
-                    Names,
-                    Secondary_Loc,
-                    Explain_Code),
+           (Msg,
             N,
             (if Warning_Status (Kind) = WS_Enabled then Warning_Kind
              else Error_Kind),
