@@ -50,8 +50,8 @@ package Why.Gen.Names is
    --  Return Symbol for Name
 
    function Conversion_Name
-      (From : W_Type_Id;
-       To   : W_Type_Id) return W_Identifier_Id
+     (From : W_Type_Id;
+      To   : W_Type_Id) return W_Identifier_Id
      with Pre =>
        (if Get_Type_Kind (From) = EW_Builtin
           and then Get_Type_Kind (To) in EW_Abstract | EW_Split

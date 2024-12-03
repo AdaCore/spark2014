@@ -2568,7 +2568,7 @@ package body SPARK_Definition is
 
                      elsif Default_Initialization (Typ)
                      not in Full_Default_Initialization
-                       | No_Possible_Initialization
+                          | No_Possible_Initialization
                      then
                         Mark_Violation ("uninitialized allocator without"
                                         & " default initialization", N,
@@ -10338,12 +10338,12 @@ package body SPARK_Definition is
                  (Before   => Current_Concurrent_Insert_Pos,
                   New_Item => E);
 
-               --  Abstract states are not translated like other entities; they
-               --  are either fully expanded into constituents (if their
-               --  refinement is not hidden behind a SPARK_Mode => Off) or
-               --  translated just to represent their hidden constituents.
-               --
-               --  Named numbers also do not require any translation.
+            --  Abstract states are not translated like other entities; they
+            --  are either fully expanded into constituents (if their
+            --  refinement is not hidden behind a SPARK_Mode => Off) or
+            --  translated just to represent their hidden constituents.
+            --
+            --  Named numbers also do not require any translation.
 
             when E_Abstract_State | Named_Kind =>
                null;

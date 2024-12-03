@@ -926,7 +926,7 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    with Pre => Nkind (N) in N_Raise_xxx_Error;
---  Deals with implicit raise statements
+   --  Deals with implicit raise statements
 
    procedure Do_Simple_Return_Statement
      (N   : Node_Id;

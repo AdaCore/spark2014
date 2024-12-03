@@ -1429,7 +1429,7 @@ package body SPARK_Util is
             | N_Op_Or
             | N_And_Then
             | N_Or_Else
-            =>
+         =>
             return Contains_Cut_Operations (Left_Opnd (N))
               or else Contains_Cut_Operations (Right_Opnd (N));
          when N_Quantified_Expression =>
@@ -2273,7 +2273,7 @@ package body SPARK_Util is
                return Exception_Sets.All_Exceptions;
             when N_Identifier
                | N_Expanded_Name
-               =>
+            =>
                Result.Include (Entity (Exc));
             when others =>
                raise Program_Error;

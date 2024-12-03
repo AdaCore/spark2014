@@ -159,8 +159,8 @@ package body Why.Gen.Names is
    ---------------------
 
    function Conversion_Name
-      (From : W_Type_Id;
-       To   : W_Type_Id) return W_Identifier_Id
+     (From : W_Type_Id;
+      To   : W_Type_Id) return W_Identifier_Id
    is
       From_Kind : constant EW_Type := Get_Type_Kind (From);
       To_Kind   : constant EW_Type := Get_Type_Kind (To);
