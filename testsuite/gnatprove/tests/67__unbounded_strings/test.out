@@ -837,7 +837,7 @@ strunb.ads:391:16: info: postcondition proved
 strunb.ads:392:06: info: data dependencies proved
 strunb.ads:402:13: info: implicit aspect Always_Terminates on "Index" has been proved, subprogram will terminate
 strunb.ads:409:24: info: postcondition proved
-strunb.ads:410:06: info: disjoint contract cases proved
+strunb.ads:410:06: info: disjoint contract or exit cases proved
 strunb.ads:414:09: info: contract case proved
 strunb.ads:421:09: info: contract case proved
 strunb.ads:423:49: info: overflow check proved
@@ -853,7 +853,7 @@ strunb.ads:450:09: info: contract case proved
 strunb.ads:453:06: info: data dependencies proved
 strunb.ads:455:13: info: implicit aspect Always_Terminates on "Index" has been proved, subprogram will terminate
 strunb.ads:462:24: info: postcondition proved
-strunb.ads:463:06: info: disjoint contract cases proved
+strunb.ads:463:06: info: disjoint contract or exit cases proved
 strunb.ads:467:09: info: contract case proved
 strunb.ads:474:09: info: contract case proved
 strunb.ads:476:49: info: overflow check proved
@@ -877,7 +877,7 @@ strunb.ads:549:39: info: precondition proved
 strunb.ads:550:06: info: data dependencies proved
 strunb.ads:552:13: info: implicit aspect Always_Terminates on "Index" has been proved, subprogram will terminate
 strunb.ads:562:24: info: postcondition proved
-strunb.ads:563:06: info: disjoint contract cases proved
+strunb.ads:563:06: info: disjoint contract or exit cases proved
 strunb.ads:567:09: info: contract case proved
 strunb.ads:574:09: info: contract case proved
 strunb.ads:579:17: info: overflow check proved
@@ -893,7 +893,7 @@ strunb.ads:609:09: info: contract case proved
 strunb.ads:612:06: info: data dependencies proved
 strunb.ads:615:13: info: implicit aspect Always_Terminates on "Index" has been proved, subprogram will terminate
 strunb.ads:626:24: info: postcondition proved
-strunb.ads:627:06: info: disjoint contract cases proved
+strunb.ads:627:06: info: disjoint contract or exit cases proved
 strunb.ads:631:09: info: contract case proved
 strunb.ads:638:09: info: contract case proved
 strunb.ads:643:17: info: overflow check proved
@@ -1209,7 +1209,7 @@ strunb.ads:1509:29: info: overflow check proved
 strunb.ads:1510:06: info: data dependencies proved
 strunb.ads:1512:13: info: implicit aspect Always_Terminates on "Tail" has been proved, subprogram will terminate
 strunb.ads:1517:24: info: postcondition proved
-strunb.ads:1518:06: info: disjoint contract cases proved
+strunb.ads:1518:06: info: disjoint contract or exit cases proved
 strunb.ads:1519:09: info: contract case proved
 strunb.ads:1523:09: info: contract case proved
 strunb.ads:1528:13: info: precondition proved
@@ -1232,7 +1232,7 @@ strunb.ads:1540:61: info: range check proved
 strunb.ads:1542:06: info: data dependencies proved
 strunb.ads:1544:14: info: aspect Always_Terminates on "Tail" has been proved, subprogram will terminate
 strunb.ads:1549:24: info: postcondition proved
-strunb.ads:1550:06: info: disjoint contract cases proved
+strunb.ads:1550:06: info: disjoint contract or exit cases proved
 strunb.ads:1551:09: info: contract case proved
 strunb.ads:1555:09: info: contract case proved
 strunb.ads:1560:13: info: precondition proved

@@ -17,7 +17,7 @@ test_interval.adb:20:41: info: predicate check proved (CVC5: 1 VC)
 test_interval.adb:22:22: info: exceptional case proved (Z3: 1 VC)
 test_interval.adb:25:41: info: initialization of "Found" proved
 test_interval.adb:26:09: info: complete contract cases proved (CVC5: 1 VC)
-test_interval.adb:26:09: info: disjoint contract cases proved (CVC5: 1 VC)
+test_interval.adb:26:09: info: disjoint contract or exit cases proved (CVC5: 1 VC)
 test_interval.adb:27:12: info: contract case proved (CVC5: 4 VC; Trivial: 1 VC)
 test_interval.adb:27:61: info: initialization check proved (CVC5: 2 VC)
 test_interval.adb:27:61: info: initialization check proved (CVC5: 2 VC; Trivial: 1 VC)

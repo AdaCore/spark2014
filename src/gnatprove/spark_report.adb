@@ -1303,9 +1303,10 @@ procedure SPARK_Report is
             | VC_Postcondition
             | VC_Refined_Post
             | VC_Contract_Case
-            | VC_Disjoint_Contract_Cases
-            | VC_Complete_Contract_Cases
+            | VC_Disjoint_Cases
+            | VC_Complete_Cases
             | VC_Exceptional_Case
+            | VC_Exit_Case
             | VC_Inline_Check
             | VC_Container_Aggr_Check
             | VC_Reclamation_Check

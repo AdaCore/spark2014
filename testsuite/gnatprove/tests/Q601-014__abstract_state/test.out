@@ -14,7 +14,7 @@ achiever.ads:30:27: warning: unused variable "St"
 achiever.ads:31:27: warning: unused variable "Before"
 achiever.ads:32:27: warning: unused variable "After"
 achiever.ads:35:06: info: complete contract cases proved (CVC5: 1 VC)
-achiever.ads:35:06: info: disjoint contract cases proved (CVC5: 1 VC)
+achiever.ads:35:06: info: disjoint contract or exit cases proved (CVC5: 1 VC)
 achiever.ads:36:09: medium: contract case might fail
 achiever.ads:44:09: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 achiever.ads:47:08: info: postcondition proved (CVC5: 1 VC)

@@ -1,2 +1,2 @@
-exc_cases_and_annotations.adb:13:14: error: procedure annotated with the aspect Automatic_Instantiation shall not raise exceptions
+exc_cases_and_annotations.adb:13:14: error: procedure annotated with the aspect Automatic_Instantiation shall not propagate exceptions
 gnatprove: error during flow analysis and proof

@@ -1530,6 +1530,78 @@ Exceptional_Cases aspects are ignored for execution.
    the verification conditions introduced when raising unexpected exceptions,
    there is always an exceptional case covering the propagated exception.]
 
+Exit Cases
+~~~~~~~~~~
+
+The aspect Exit_Cases may be specified for procedures and functions with side
+effects; it can be used to partition the input state into a list of cases and
+specify, for each case, how the subprogram is allowed to terminate (i.e. return
+normally or propagate an exception). The Exit_Cases aspect is specified with an
+aspect_specification where the aspect_mark is Exit_Cases and the
+aspect_definition must follow the grammar of exit_case_list given below.
+
+.. container:: heading
+
+   Syntax
+
+::
+
+  pragma Exit_Cases (EXIT_CASE_LIST);
+
+  EXIT_CASE_LIST ::= EXIT_CASE {, EXIT_CASE}
+  EXIT_CASE      ::= GUARD => EXIT_KIND
+  EXIT_KIND      ::= Normal_Return
+                   | Exception_Raised
+		   | (Exception_Raised => exception_name)
+  GUARD          ::= Boolean_expression | OTHERS
+
+.. container:: heading
+
+   Name Resolution Rules
+
+The boolean expressions in the guards should be resolved as regular
+preconditions.
+
+.. container:: heading
+
+   Dynamic Semantics
+
+Exit_Cases aspects are ignored for execution.
+
+.. container:: heading
+
+   Legality Rules
+
+1. A guard others, if present, shall appear in the last exit case.
+
+2. A subprogram annotated with Exit_Cases shall be allowed to propagate
+   exceptions. More precisely, if it is has an Exceptional_Cases aspect, then
+   the aspect should not contain only statically False consequences. Otherwise,
+   there should be at least one exit case other than Normal_Return.
+
+3. All exceptions mentioned in the Exit_Cases aspect of a subprogram shall be
+   allowed by the Exceptional_Cases contract of the subprogram, if any.
+
+.. container:: heading
+
+   Verification Rules
+
+4. If a subprogram is annotated with Exit_Cases and there are at least two
+   exit cases whose guards are not the others choice, then a verification
+   condition is introduced to make sure that all the non others guards are
+   disjoint in the context of the precondition.
+
+5. If a subprogram annotated with Exit_Cases returns normally, then a
+   verification condition is introduced to make sure that the exit kind of the
+   exit case whose guard evaluates to True is Normal_Return, if there is one.
+
+6. If an exception raised in a subprogram annotated with Exit_Cases is not
+   handled and causes the subprogram body to complete, then a verification
+   condition is introduced to make sure that the exit kind of the exit case
+   whose guard evaluates to True, if there is one, is either Exception_Raised or
+   (Exception_Raised => E), where E is resolved to the exception that is
+   propagated.
+
 Always_Terminates Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 

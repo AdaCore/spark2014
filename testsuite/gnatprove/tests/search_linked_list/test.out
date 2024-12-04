@@ -9,7 +9,7 @@ lists.adb:12:10: info: precondition proved (CVC5: 1 VC)
 lists.ads:13:13: info: implicit aspect Always_Terminates on "My_Eq" has been proved, subprogram will terminate
 lists.ads:17:15: info: implicit aspect Always_Terminates on "Search" has been proved, subprogram will terminate
 lists.ads:18:06: info: complete contract cases proved (CVC5: 1 VC)
-lists.ads:18:06: info: disjoint contract cases proved (CVC5: 1 VC)
+lists.ads:18:06: info: disjoint contract or exit cases proved (CVC5: 1 VC)
 lists.ads:19:09: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 lists.ads:19:29: info: precondition proved (CVC5: 1 VC)
 lists.ads:20:09: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC)

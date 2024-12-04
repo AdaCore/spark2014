@@ -67,8 +67,8 @@ spark-containers-formal-doubly_linked_lists.ads:959:39: info: precondition prove
 spark-containers-formal-doubly_linked_lists.ads:959:39: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:8
 spark-containers-formal-doubly_linked_lists.ads:1135:43: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:10
 spark-containers-formal-doubly_linked_lists.ads:1135:43: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:1317:06: info: disjoint contract cases proved (Z3: 1 VC), in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:1317:06: info: disjoint contract cases proved (Z3: 1 VC), in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:1317:06: info: disjoint contract or exit cases proved (Z3: 1 VC), in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:1317:06: info: disjoint contract or exit cases proved (Z3: 1 VC), in instantiation at test_lists.ads:8
 spark-containers-formal-doubly_linked_lists.ads:1419:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:44, in instantiation at test_lists.ads:10
 spark-containers-formal-doubly_linked_lists.ads:1419:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:44, in instantiation at test_lists.ads:8
 spark-containers-formal-doubly_linked_lists.ads:1419:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_lists.ads:10
@@ -166,8 +166,8 @@ spark-containers-formal-unbounded_doubly_linked_lists.ads:952:39: info: precondi
 spark-containers-formal-unbounded_doubly_linked_lists.ads:952:39: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:23
 spark-containers-formal-unbounded_doubly_linked_lists.ads:1128:43: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:21
 spark-containers-formal-unbounded_doubly_linked_lists.ads:1128:43: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1309:06: info: disjoint contract cases proved (Z3: 1 VC), in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1309:06: info: disjoint contract cases proved (Z3: 1 VC), in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1309:06: info: disjoint contract or exit cases proved (Z3: 1 VC), in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1309:06: info: disjoint contract or exit cases proved (Z3: 1 VC), in instantiation at test_lists.ads:23
 spark-containers-formal-unbounded_doubly_linked_lists.ads:1411:13: info: during checks for quantification at spark-containers-formal-unbounded_doubly_linked_lists.ads:45, in instantiation at test_lists.ads:21
 spark-containers-formal-unbounded_doubly_linked_lists.ads:1411:13: info: during checks for quantification at spark-containers-formal-unbounded_doubly_linked_lists.ads:45, in instantiation at test_lists.ads:23
 spark-containers-formal-unbounded_doubly_linked_lists.ads:1411:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_lists.ads:21
