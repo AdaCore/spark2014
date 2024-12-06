@@ -4,7 +4,11 @@ project GNAT2Why_GNAT is
    for Exec_Dir use "../install/bin";
 
    for Source_Dirs use ("obj", "gnat_src", "obj-gnat");
-   for Excluded_Source_Files use ("back_end.adb", "gnat1drv.adb");
+   for Excluded_Source_Files use ("back_end.adb",
+                                  "gnat1drv.adb",
+                                  "indepsw-aix.adb",
+                                  "indepsw-darwin.adb",
+                                  "indepsw-gnu.adb");
 
    type Build_Type is ("Debug", "Devel", "Production");
    --  Debug: all checks enabled
@@ -64,5 +68,11 @@ project GNAT2Why_GNAT is
       end case;
 
    end Builder;
+
+   package Coverage is
+      --  This clause is needed to make front end instrumentation work, it'd be
+      --  nice to find out why???
+      for Excluded_Units use ("Gnat1drv");
+   end Coverage;
 
 end GNAT2Why_GNAT;
