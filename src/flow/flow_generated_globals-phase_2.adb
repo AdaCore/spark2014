@@ -1316,6 +1316,10 @@ package body Flow_Generated_Globals.Phase_2 is
                procedure Serialize (G : out Global_Names; Label : String);
                procedure Serialize (V : out Name_Tasking_Info);
 
+               procedure Unused (V : out Boolean);
+               --  Initialize OUT parameter with a dummy value that is not
+               --  meant to be used.
+
                ---------------
                -- Serialize --
                ---------------
@@ -1334,6 +1338,15 @@ package body Flow_Generated_Globals.Phase_2 is
                   end loop;
                end Serialize;
 
+               ------------
+               -- Unused --
+               ------------
+
+               procedure Unused (V : out Boolean) is
+               begin
+                  V := Boolean'Invalid_Value;
+               end Unused;
+
             --  Start of processing for Serialize
 
             begin
@@ -1342,14 +1355,12 @@ package body Flow_Generated_Globals.Phase_2 is
                if V.Kind in E_Function | E_Procedure then
                   Serialize (V.Is_Protected);
                else
-                  --  Dummy value to ensure that the OUT parameter is written
-                  V.Is_Protected := False;
+                  Unused (V.Is_Protected);
                end if;
                if V.Kind = E_Package then
                   Serialize (V.Is_Library_Level);
                else
-                  --  Dummy value to ensure that the OUT parameter is written
-                  V.Is_Library_Level := False;
+                  Unused (V.Is_Library_Level);
                end if;
                Serialize (V.Origin);
                Serialize (V.Parents);
@@ -1379,7 +1390,13 @@ package body Flow_Generated_Globals.Phase_2 is
                           | E_Package
                then
                   --  ??? use Is_Proper_Callee here
-                  if V.Kind /= E_Task_Type then
+                  if V.Kind = E_Task_Type then
+                     Unused (V.Always_Terminates);
+                     Unused (V.Has_Subp_Variant);
+                     Unused (V.No_Body);
+                     Unused (V.Nonreturning);
+                     Unused (V.Nonblocking);
+                  else
                      Serialize (V.Always_Terminates);
                      Serialize (V.Has_Subp_Variant);
                      Serialize (V.No_Body);
