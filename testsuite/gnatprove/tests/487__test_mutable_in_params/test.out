@@ -4,7 +4,7 @@ test_mutable_in_parameters.adb:60:49: info: overflow check proved (CVC5: 2 VC)
 test_mutable_in_parameters.adb:61:25: info: range check proved (CVC5: 2 VC)
 test_mutable_in_parameters.adb:61:33: info: overflow check proved (CVC5: 2 VC)
 test_mutable_in_parameters.adb:61:45: info: precondition proved (CVC5: 1 VC)
-test_mutable_in_parameters.adb:63:18: warning: conjunct in postcondition does not check the outcome of calling "Update"
+test_mutable_in_parameters.adb:63:18: warning: conjunct in postcondition does not check the outcome of calling "Update" [-gnatw.t]
 test_mutable_in_parameters.adb:64:38: info: precondition proved (CVC5: 1 VC)
 test_mutable_in_parameters.adb:69:50: info: precondition proved (CVC5: 1 VC)
 test_mutable_in_parameters.adb:78:14: warning: subprogram "Test_C_Strings" has no effect
@@ -57,7 +57,7 @@ test_mutable_in_parameters.adb:139:25: info: range check proved (CVC5: 2 VC)
 test_mutable_in_parameters.adb:139:33: info: overflow check proved (CVC5: 2 VC)
 test_mutable_in_parameters.adb:139:45: info: precondition proved (CVC5: 1 VC)
 test_mutable_in_parameters.adb:141:13: info: postcondition proved (CVC5: 4 VC)
-test_mutable_in_parameters.adb:141:18: warning: conjunct in postcondition does not check the outcome of calling "Update"
+test_mutable_in_parameters.adb:141:18: warning: conjunct in postcondition does not check the outcome of calling "Update" [-gnatw.t]
 test_mutable_in_parameters.adb:142:22: info: precondition proved (CVC5: 1 VC)
 test_mutable_in_parameters.adb:142:38: info: precondition proved (CVC5: 1 VC)
 test_mutable_in_parameters.adb:143:41: info: precondition proved (CVC5: 1 VC)

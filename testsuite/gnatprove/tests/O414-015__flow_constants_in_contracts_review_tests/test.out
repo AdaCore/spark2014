@@ -35,8 +35,8 @@ info_flow_tests.adb:73:16: info: implicit aspect Always_Terminates on "F3" has b
 info_flow_tests.adb:74:14: info: data dependencies proved
 info_flow_tests.adb:75:16: info: implicit aspect Always_Terminates on "F4" has been proved, subprogram will terminate
 info_flow_tests.adb:76:14: info: flow dependencies proved
-info_flow_tests.adb:79:14: warning: postcondition does not check the outcome of calling "F4"
-info_flow_tests.adb:79:14: warning: postcondition does not mention function result
+info_flow_tests.adb:79:14: warning: postcondition does not check the outcome of calling "F4" [-gnatw.t]
+info_flow_tests.adb:79:14: warning: postcondition does not mention function result [-gnatw.t]
 info_flow_tests.adb:79:22: info: postcondition proved (CVC5: 1 VC)
 info_flow_tests.adb:84:32: info: precondition proved (CVC5: 1 VC)
 info_flow_tests.adb:86:32: info: precondition proved (CVC5: 1 VC)
@@ -61,8 +61,8 @@ info_flow_tests.adb:104:16: info: implicit aspect Always_Terminates on "F3" has 
 info_flow_tests.adb:105:14: info: data dependencies proved
 info_flow_tests.adb:106:16: info: implicit aspect Always_Terminates on "F4" has been proved, subprogram will terminate
 info_flow_tests.adb:107:14: info: flow dependencies proved
-info_flow_tests.adb:110:14: warning: postcondition does not check the outcome of calling "F4"
-info_flow_tests.adb:110:14: warning: postcondition does not mention function result
+info_flow_tests.adb:110:14: warning: postcondition does not check the outcome of calling "F4" [-gnatw.t]
+info_flow_tests.adb:110:14: warning: postcondition does not mention function result [-gnatw.t]
 info_flow_tests.adb:110:22: info: postcondition proved (CVC5: 1 VC)
 info_flow_tests.adb:115:32: info: precondition proved (CVC5: 1 VC)
 info_flow_tests.adb:117:32: info: precondition proved (CVC5: 1 VC)

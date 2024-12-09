@@ -72,6 +72,6 @@ test.adb:199:30: medium: overflow check might fail, cannot prove lower bound for
 test.adb:208:04: warning: analyzing unreferenced procedure "Unreachable_Code_1"
 test.adb:208:14: warning: subprogram "Unreachable_Code_1" has no effect
 test.adb:213:12: warning: this statement is never reached
-test.adb:213:12: warning: unreachable code
+test.adb:213:12: warning: unreachable code [enabled by default]
 test.adb:217:15: warning: this statement is never reached
-test.adb:217:15: warning: unreachable code
+test.adb:217:15: warning: unreachable code [enabled by default]

@@ -8,10 +8,10 @@ illegal.adb:56:09: error: subprogram annotated with Higher_Order_Specialization 
 illegal.adb:65:06: error: function annotated with Higher_Order_Specialization shall not be a borrowing traversal function
 illegal.adb:73:06: error: subprogram annotated with Higher_Order_Specialization shall have at least a parameter of an anonymous access-to-function type
 illegal.adb:83:35: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
-illegal.adb:90:06: warning: postcondition does not mention function result
+illegal.adb:90:06: warning: postcondition does not mention function result [-gnatw.t]
 illegal.adb:90:36: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
 illegal.adb:98:31: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
-illegal.adb:108:06: warning: contract cases do not mention function result
+illegal.adb:108:06: warning: contract cases do not mention function result [-gnatw.t]
 illegal.adb:110:33: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
 illegal.adb:119:64: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
 illegal.adb:128:13: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization

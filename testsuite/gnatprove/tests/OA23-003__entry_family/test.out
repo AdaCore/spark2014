@@ -1,5 +1,5 @@
 one.ads:6:13: error: entry family is not yet supported
 var.ads:8:13: error: entry family is not yet supported
-zero.ads:3:42: warning: null range
+zero.ads:3:42: warning: null range [enabled by default]
 zero.ads:6:13: error: entry family is not yet supported
 gnatprove: error during flow analysis and proof

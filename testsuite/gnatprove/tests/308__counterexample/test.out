@@ -1,4 +1,4 @@
-bad_pack.ads:5:07: warning: postcondition does not check the outcome of calling "Foo"
+bad_pack.ads:5:07: warning: postcondition does not check the outcome of calling "Foo" [-gnatw.t]
 bad_pack.ads:5:15: medium: postcondition might fail (e.g. when Y = False)
 blip.adb:8:13: medium: overflow check might fail, cannot prove upper bound for X * X [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (X * X <= Integer'Last) to subprogram at blip.ads:4]
 blip.ads:4:10: info: implicit aspect Always_Terminates on "Square" has been proved, subprogram will terminate
