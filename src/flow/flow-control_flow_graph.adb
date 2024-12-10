@@ -5683,7 +5683,7 @@ package body Flow.Control_Flow_Graph is
       --  respectively.
 
       Local_Handlers : constant Node_Lists.List :=
-        (if Nkind (N) = N_Procedure_Call_Statement
+        (if Nkind (N) in N_Subprogram_Call
          then Reachable_Handlers (N)
          else Node_Lists.Empty_List);
 
