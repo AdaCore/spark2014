@@ -1227,8 +1227,7 @@ package SPARK_Util is
      (Call_Or_Stmt : Node_Id)
       return Node_Lists.List
    with
-     Pre  => Nkind (Call_Or_Stmt) in N_Function_Call
-                                   | N_Procedure_Call_Statement
+     Pre  => Nkind (Call_Or_Stmt) in N_Subprogram_Call
                                    | N_Raise_Statement,
      Post => Might_Raise_Handled_Exceptions (Call_Or_Stmt) /=
        Reachable_Handlers'Result.Is_Empty;
