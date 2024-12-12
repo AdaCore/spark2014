@@ -7,8 +7,8 @@ data_buffer-context.adb:19:28: info: length check proved (CVC5: 3 VC; Trivial: 1
 data_buffer-context.adb:19:31: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in instantiation at instance.ads:7
 data_buffer-context.ads:18:14: info: aspect Always_Terminates on "Initialize" has been proved, subprogram will terminate, in instantiation at instance.ads:7
 data_buffer-context.ads:18:26: info: initialization of "Context" proved, in instantiation at instance.ads:7
-data_buffer-context.ads:44:31: medium: overflow check might fail, cannot prove upper bound for Writer_Buffer_Header_Type'Size + Entry_Array'Size, in instantiation at instance.ads:7 [reason for check: result of addition must fit in a 128-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-data_buffer-context.ads:45:31: info: overflow check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at instance.ads:7
+data_buffer-context.ads:44:31: info: overflow check proved (CVC5: 2 VC), in instantiation at instance.ads:7
+data_buffer-context.ads:45:31: info: overflow check proved (CVC5: 2 VC), in instantiation at instance.ads:7
 data_buffer-context.ads:51:09: info: overflow check proved (CVC5: 2 VC), in instantiation at instance.ads:7
 data_buffer-context.ads:51:22: info: range check proved (CVC5: 2 VC), in instantiation at instance.ads:7
 data_buffer-context.ads:52:09: info: overflow check proved (CVC5: 2 VC), in instantiation at instance.ads:7
@@ -22,10 +22,4 @@ filler.ads:16:31: info: overflow check proved (CVC5: 2 VC), in instantiation at 
 filler.ads:16:47: info: division check proved (CVC5: 1 VC), in instantiation at data_buffer-context.ads:54, in instantiation at instance.ads:7
 filler.ads:20:09: info: range check proved (CVC5: 2 VC), in instantiation at data_buffer-context.ads:54, in instantiation at instance.ads:7
 instance.ads:7:04: info: in instantiation at data_buffer-context.adb:5
-instance.ads:7:04: info: in instantiation at data_buffer-context.adb:5
-instance.ads:7:04: info: in instantiation at data_buffer-context.ads:44
-instance.ads:7:04: info: in instantiation at data_buffer-context.ads:51
-instance.ads:7:04: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for type "Entry_Array"
-instance.ads:7:04: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for type "Entry_Array"
-instance.ads:7:04: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for type "Packed_Writer_Context_Type"
 instance.ads:7:04: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for type "Writer_Context_Type"
