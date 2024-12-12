@@ -8253,25 +8253,28 @@ package body Flow.Control_Flow_Graph is
                      Nodes => NL,
                      Block => Excep_Cases_Block);
 
-            --  When an unhandled exception ocurrs, the values of actual
-            --  parameters passed by-reference will be transferred to the
-            --  caller; for other parameters it doesn't matter what values
-            --  they are assigned by the callee. In fact, we DON'T WANT these
-            --  values to be represented in the Depends contract (which we want
-            --  to describe the dependencies for a normal termination).
-            --
-            --  We can handle this with the following choices:
-            --  1) leave them unassigned, but this will cause silly checks
-            --     insisting on user to assign them according to the Depends
-            --     contract;
-            --  2) assign them according to the Depends contract, but this will
-            --     suppress messages about variables from the RHS of the
-            --     Depends clauses that otherwise would appear as unused;
-            --  3) assign them with a null dependency.
-            --
-            --  The last choice is not strictly right, but gives us exactly the
-            --  behaviour that we want. In particular, any explicit assignments
-            --  just before the raise statements will become flagged as unused.
+               --  When an unhandled exception ocurrs, the values of actual
+               --  parameters passed by-reference will be transferred to the
+               --  caller; for other parameters it doesn't matter what values
+               --  they are assigned by the callee. In fact, we DON'T WANT
+               --  these values to be represented in the Depends contract
+               --  (which we want to describe the dependencies for a normal
+               --  termination).
+               --
+               --  We can handle this with the following choices:
+               --  1) leave them unassigned, but this will cause silly checks
+               --     insisting on user to assign them according to the Depends
+               --     contract;
+               --  2) assign them according to the Depends contract, but this
+               --     will suppress messages about variables from the RHS of
+               --     the Depends clauses that otherwise would appear as
+               --     unused;
+               --  3) assign them with a null dependency.
+               --
+               --  The last choice is not strictly right, but gives us exactly
+               --  the behaviour that we want. In particular, any explicit
+               --  assignments just before the raise statements will become
+               --  flagged as unused.
 
                if Present (Prag) then
                   declare
