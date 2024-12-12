@@ -8300,6 +8300,16 @@ package body Flow.Control_Flow_Graph is
                         Next_Formal (Formal);
                      end loop;
 
+                     --  Handle 'Result just like a by-copy formal parameter
+                     --  of mode OUT, so that function (with side effects) is
+                     --  represented similarly to a procedure with parameter
+                     --  of mode OUT.
+
+                     if Is_Function_With_Side_Effects (FA.Spec_Entity) then
+                        Var_Def.Union
+                          (Flatten_Variable (FA.Spec_Entity, FA.B_Scope));
+                     end if;
+
                      Add_Vertex
                        (FA,
                         Make_Basic_Attributes
