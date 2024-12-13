@@ -308,6 +308,10 @@ package body SPARK_Util is
    --  Map from handlers to the set of exceptions that might end up in this
    --  handler. It is used to handle reraise statements.
 
+   Visible_Overridden_Operations : Node_Maps.Map;
+   --  Map from dispatching primitive operations to the subprogram they
+   --  override, as visible in SPARK.
+
    ----------------------
    -- Set_Partial_View --
    ----------------------
@@ -468,6 +472,33 @@ package body SPARK_Util is
       end if;
 
    end Overlay_Alias;
+
+   --------------------------------------
+   -- Set_Visible_Overridden_Operation --
+   --------------------------------------
+
+   procedure Set_Visible_Overridden_Operation (E, Inh : Callable_Kind_Id) is
+   begin
+      Visible_Overridden_Operations.Insert (E, Inh);
+   end Set_Visible_Overridden_Operation;
+
+   ----------------------------------
+   -- Visible_Overridden_Operation --
+   ----------------------------------
+
+   function Visible_Overridden_Operation
+     (E : Callable_Kind_Id)
+      return Entity_Id
+   is
+      Position : constant Node_Maps.Cursor :=
+        Visible_Overridden_Operations.Find (E);
+   begin
+      if Node_Maps.Has_Element (Position) then
+         return Node_Maps.Element (Position);
+      else
+         return Empty;
+      end if;
+   end Visible_Overridden_Operation;
 
    ------------------------
    -- Register_Exception --

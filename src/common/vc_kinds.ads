@@ -384,8 +384,13 @@ package VC_Kinds is
       Warn_Alias_Atomic_Vol,
       Warn_Alias_Different_Volatility,
       Warn_Attribute_Valid,
+      Warn_Auto_Lemma_Calls,
+      Warn_Auto_Lemma_Different,
+      Warn_Auto_Lemma_Higher_Order,
+      Warn_Auto_Lemma_Specializable,
       Warn_Initialization_To_Alias,
       Warn_Function_Is_Valid,
+      Warn_Generic_Not_Analyzed,
       Warn_No_Possible_Termination,
       Warn_Pragma_Annotate_No_Check,
       Warn_Pragma_Annotate_Proved_Check,
@@ -486,6 +491,8 @@ package VC_Kinds is
       Lim_Op_Fixed_Float,
       Lim_Op_Incompatible_Fixed,
       Lim_Overlay_With_Deep_Object,
+      Lim_Overriding_With_Precondition_Discrepancy_Hiding,
+      Lim_Overriding_With_Precondition_Discrepancy_Tagged_Privacy,
       Lim_Deep_Object_Declaration_Outside_Block,
       Lim_Package_Before_Inv,
       Lim_Predicate_With_Different_SPARK_Mode,
@@ -543,11 +550,25 @@ package VC_Kinds is
           "aliased objects have different volatile properties",
         when Warn_Attribute_Valid =>
           "attribute Valid is assumed to return True",
+        when Warn_Auto_Lemma_Higher_Order =>
+          "automatically instantiated lemma is not annotated with"
+          & " Higher_Order_Specialization",
+        when Warn_Auto_Lemma_Calls =>
+          "automatically instantiated lemma contains calls to "
+          & "& which cannot be arbitrarily specialized",
+        when Warn_Auto_Lemma_Different =>
+          "automatically instantiated lemma contains several "
+           & "calls to & with different specializations",
+        when Warn_Auto_Lemma_Specializable =>
+          "automatically instantiated lemma does not contain any "
+          & "specializable calls to &",
         when Warn_Initialization_To_Alias =>
           "initialization of & is assumed to have no effects on"
           & " other non-volatile objects",
         when Warn_Function_Is_Valid =>
           "function Is_Valid is assumed to return True",
+        when Warn_Generic_Not_Analyzed =>
+          "generic compilation unit is not analyzed",
         when Warn_No_Possible_Termination =>
           "procedure which does not return normally nor raises an exception"
           & " cannot always terminate",
@@ -587,7 +608,7 @@ package VC_Kinds is
         --  The warning message is customized depending on the assumptions that
         --  need to be checked.
         when Warn_Imprecisely_Supported_Address =>
-          raise Program_Error,
+          "address specification on & is imprecisely supported",
 
         --  Warnings only issued when using switch --pedantic
         when Warn_Image_Attribute_Length =>
@@ -753,6 +774,13 @@ package VC_Kinds is
          when Lim_Multiple_Inheritance_Mixed_SPARK_Mode =>
             "subprogram implicitly inherited from multiple progenitor types"
             & " with conflicting SPARK mode",
+         when Lim_Overriding_With_Precondition_Discrepancy_Hiding =>
+           "dispatching primitive subprogram overriding with class-wide"
+          & " precondition inherited from a potentially hidden ancestor",
+         when Lim_Overriding_With_Precondition_Discrepancy_Tagged_Privacy =>
+           "dispatching primitive subprogram overriding declared for a"
+          & " private untagged type with no precondition and a class-wide"
+          & " precondition inherited from ancestor",
          when Lim_Primitive_Call_In_DIC =>
            "primitive calls in default initial condition",
          when Lim_Constrained_Classwide =>
