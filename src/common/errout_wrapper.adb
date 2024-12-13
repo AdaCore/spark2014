@@ -3,8 +3,6 @@ with Ada.Strings.Unbounded;
 with Atree;                   use Atree;
 with Gnat2Why_Args;
 with Gnat2Why_Opts;           use Gnat2Why_Opts;
-with Sinfo.Nodes;             use Sinfo.Nodes;
-with SPARK_Util;              use SPARK_Util;
 
 package body Errout_Wrapper is
 
@@ -157,15 +155,14 @@ package body Errout_Wrapper is
 
    function Create_N
      (Msg           : String;
-      N             : Node_Id := Empty;
-      Names         : Name_Id_Lists.List := Name_Id_Lists.Empty;
+      Names         : String_Lists.List := String_Lists.Empty;
       Secondary_Loc : Source_Ptr := No_Location;
       Explain_Code  : Explain_Code_Kind := EC_None) return Message
    is
       use Ada.Strings.Unbounded;
       Buf : Unbounded_String;
       Index : Positive := Msg'First;
-      C : Name_Id_Lists.Cursor := Names.First;
+      C : String_Lists.Cursor := Names.First;
    begin
       --  Given that message objects hold lists of nodes, we need to do the
       --  replacement ourselves.
@@ -175,8 +172,8 @@ package body Errout_Wrapper is
             Index := Index + 1;
             Append (Buf, Msg (Index));
          elsif Msg (Index) = '&' then
-            Append (Buf, To_String (Names (C), Sloc (N)));
-            Name_Id_Lists.Next (C);
+            Append (Buf, Names (C));
+            String_Lists.Next (C);
          else
             Append (Buf, Msg (Index));
          end if;
@@ -370,5 +367,30 @@ package body Errout_Wrapper is
    begin
       return GNATCOLL.JSON.Create (S);
    end To_JSON;
+
+   -------------------
+   -- Warning_Msg_N --
+   -------------------
+
+   procedure Warning_Msg_N
+     (Kind          : Misc_Warning_Kind;
+      N             : Node_Id;
+      Extra_Message : String := "";
+      Names         : Node_Lists.List := Node_Lists.Empty;
+      Secondary_Loc : Source_Ptr := No_Location;
+      Explain_Code  : Explain_Code_Kind := EC_None;
+      First         : Boolean := False;
+      Continuations : Message_Lists.List := Message_Lists.Empty) is
+   begin
+      Error_Msg_N
+        (Create (Warning_Message (Kind) & Extra_Message,
+                 Names,
+                 Secondary_Loc,
+                 Explain_Code),
+         N,
+         Warning_Kind,
+         First,
+         Continuations);
+   end Warning_Msg_N;
 
 end Errout_Wrapper;

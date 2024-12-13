@@ -757,9 +757,6 @@ package SPARK_Util.Subprograms is
    --     public view is not tagged. Hence, Pre'Class and Post'Class cannot be
    --     declared on such a subprogram.
 
-   function Is_Overriding_Subprogram (E : Entity_Id) return Boolean renames
-     Inheritance_Utilities_Inst.Is_Overriding_Subprogram;
-
    function Get_View_For_Dispatching_Result
      (E : E_Function_Id) return Entity_Id
      with Pre => Is_Wrapper_For_Dispatching_Result (E);

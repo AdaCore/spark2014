@@ -1,0 +1,4 @@
+see_through.adb:27:63: info: class-wide postcondition is stronger than overridden one (Trivial: 1 VC)
+see_through.adb:27:63: medium: postcondition might fail
+unrelated.adb:11:45: medium: class-wide precondition might be stronger than overridden one
+unrelated.adb:11:66: info: class-wide postcondition is stronger than overridden one (Trivial: 1 VC)

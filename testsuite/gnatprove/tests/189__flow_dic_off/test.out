@@ -1,0 +1,2 @@
+compressed_check_for_uninitialized_records.adb:12:18: medium: overflow check might fail, cannot prove upper bound for R.B + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at compressed_check_for_uninitialized_records.ads:12 should mention R in a precondition]
+main.adb:6:04: medium: "R" might not be initialized after elaboration of main program "Main"

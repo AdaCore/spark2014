@@ -3402,6 +3402,8 @@ package body Gnat2Why.Subprograms is
 
    procedure Generate_VCs_For_LSP (E : Subprogram_Kind_Id) is
       Name      : constant String := Full_Name (E);
+      Overrides : constant Boolean :=
+        Present (Visible_Overridden_Operation (E));
       Params    : Transformation_Params;
 
       Inherited_Pre_List  : Node_Lists.List;
@@ -3530,9 +3532,7 @@ package body Gnat2Why.Subprograms is
       --  This check is done using dispatching operations so it is verified
       --  for all possible descendants.
 
-      if Is_Overriding_Subprogram (E)
-        and then not Dispatch_Pre_List.Is_Empty
-      then
+      if Overrides and then not Dispatch_Pre_List.Is_Empty then
          Inherited_Pre_Assume :=
            New_Assume_Statement (Pred => Inherited_Pre_Spec);
 
@@ -3570,7 +3570,7 @@ package body Gnat2Why.Subprograms is
          --  Only do the check for overriding subprograms. New primitives of
          --  privately tagged types cannot have classwide contracts.
 
-         if Is_Overriding_Subprogram (E) then
+         if Overrides then
             Classwide_Pre_Assume :=
               New_Assume_Statement
                 (Pred => Get_LSP_Contract (Params, E, Pragma_Precondition));
@@ -3666,9 +3666,7 @@ package body Gnat2Why.Subprograms is
       --  This check is done using dispatching operations so it is verified
       --  for all possible descendants.
 
-      if not Dispatch_Post_List.Is_Empty
-        and then Is_Overriding_Subprogram (E)
-      then
+      if not Dispatch_Post_List.Is_Empty and then Overrides then
 
          Dispatch_Post_Assume :=
            New_Assume_Statement (Pred => Dispatch_Post_Spec);
@@ -5450,10 +5448,9 @@ package body Gnat2Why.Subprograms is
               and then not Exp_Util.Is_Statically_Disabled
                 (Expr, False, Include_Valid => True)
             then
-               Error_Msg_N
-                 (Warning_Message (Warn_Precondition_Statically_False),
-                  Expr,
-                  Kind => Warning_Kind);
+               Warning_Msg_N
+                 (Warn_Precondition_Statically_False,
+                  Expr);
             end if;
          end if;
       end loop;
@@ -5539,10 +5536,9 @@ package body Gnat2Why.Subprograms is
         and then Present (Get_Pragma (E, Pragma_Subprogram_Variant))
         and then not Is_Recursive (E)
       then
-         Error_Msg_N (Warning_Message (Warn_Variant_Not_Recursive),
-                      Get_Pragma (E, Pragma_Subprogram_Variant),
-                      First => True,
-                      Kind => Warning_Kind);
+         Warning_Msg_N (Warn_Variant_Not_Recursive,
+                        Get_Pragma (E, Pragma_Subprogram_Variant),
+                        First => True);
       end if;
 
       --  For expression functions, the body is not marked. Retrieve the

@@ -22,7 +22,7 @@ procedure Test with SPARK_Mode is
 
          --  Hidden dispatching operations are also considered to be boundary
 
-         procedure Bad (X : P_Child; Y : out E); -- @INVARIANT_CHECK:FAIL
+         procedure Bad (X : P_Child; Y : out E) with Pre => True; -- @INVARIANT_CHECK:FAIL
       private
          type P_Child is new Root with null record;
       end Nested;
