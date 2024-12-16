@@ -821,7 +821,7 @@ package body Gnat2Why.Types is
                --    forall a :e, b : e [__dispatch_eq <D>.__tag a b].
                --      (attr__tag a = <D>.__tag /\ attr__tag b = <D>.__tag) ->
                --         __dispatch_eq <D>.__tag a b =
-               --            <D>.user_eq  (<D>.of_base a) (<D>.of_base b)
+               --            <D>.user_eq (<D>.of_base a) (<D>.of_base b)
                --
                --  otherwise.
 
