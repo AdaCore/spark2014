@@ -3,7 +3,7 @@ simple_flow.adb:2:36: info: postcondition proved (CVC5: 1 VC)
 simple_flow.adb:2:43: info: data dependencies proved
 simple_flow.adb:14:28: info: only expected exception raised (CVC5: 1 VC)
 simple_flow.adb:20:06: warning: this statement is never reached
-simple_flow.adb:20:06: warning: unreachable code
+simple_flow.adb:20:06: warning: unreachable code [enabled by default]
 test_goto.adb:9:10: info: no contextual analysis of "B" (body not seen yet)
 test_goto.adb:9:10: warning: assuming "B" has no effect on global items
 test_goto.adb:9:10: warning: no Global contract available for "B"

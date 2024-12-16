@@ -27,8 +27,8 @@ test_annotate.adb:56:13: info: absence of resource or memory leak at end of scop
 test_annotate.adb:57:13: medium: resource or memory leak might occur at end of scope
 test_annotate.adb:76:13: info: implicit aspect Always_Terminates on "Find" has been proved, subprogram will terminate
 test_annotate.adb:77:14: info: postcondition proved (CVC5: 2 VC)
-test_annotate.adb:79:55: warning: consider extracting conjunct from quantified expression
-test_annotate.adb:79:55: warning: unused variable "P" in conjunct
+test_annotate.adb:79:55: warning: consider extracting conjunct from quantified expression [-gnatw.t]
+test_annotate.adb:79:55: warning: unused variable "P" in conjunct [-gnatw.t]
 test_annotate.adb:79:79: info: pointer dereference check proved (CVC5: 1 VC)
 test_annotate.adb:83:16: info: index check proved (CVC5: 4 VC)
 test_annotate.adb:84:23: info: index check proved (CVC5: 4 VC)

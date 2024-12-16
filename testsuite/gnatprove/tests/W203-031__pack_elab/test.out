@@ -13,7 +13,7 @@ other.adb:15:29: info: range check proved (CVC5: 2 VC)
 p_main.ads:5:11: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 p_main.ads:7:12: info: range check proved (CVC5: 2 VC)
 p_main.ads:9:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-p_main.ads:10:06: warning: postcondition does not mention function result
+p_main.ads:10:06: warning: postcondition does not mention function result [-gnatw.t]
 p_main.ads:10:14: info: postcondition proved (CVC5: 2 VC)
 p_main.ads:12:22: medium: range check might fail, cannot prove upper bound for Id (3) (e.g. when C = 0) [reason for check: default component value must fit in the type]
 pack.ads:6:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate

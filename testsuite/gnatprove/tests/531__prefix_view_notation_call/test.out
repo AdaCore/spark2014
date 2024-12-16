@@ -81,4 +81,4 @@ untagged_prefixed_calls.adb:306:04: high: "Sub_Int_1_A_Object" is not initialize
 untagged_prefixed_calls.adb:307:04: high: "Sub_Int_1_B_Object" is not initialized
 untagged_prefixed_calls.adb:309:04: info: pointer dereference check proved (CVC5: 1 VC)
 untagged_prefixed_calls.adb:312:04: medium: pointer dereference check might fail
-untagged_prefixed_calls.adb:312:04: warning: "New_Acc_Rec_Object" may be null
+untagged_prefixed_calls.adb:312:04: warning: "New_Acc_Rec_Object" may be null [enabled by default]

@@ -89,8 +89,8 @@ test_relaxed_access_params.adb:60:09: info: discriminant check proved (Trivial: 
 test_relaxed_access_params.adb:60:09: medium: resource or memory leak might occur [possible fix: subprogram at line 54 should mention X in a precondition]
 test_relaxed_access_params.adb:60:12: info: null exclusion check proved (CVC5: 1 VC)
 test_relaxed_access_params.adb:65:49: info: initialization of "Y" proved
-test_relaxed_access_params.adb:66:06: warning: "Globals" is not a valid aspect identifier
-test_relaxed_access_params.adb:66:06: warning: possible misspelling of "Global"
+test_relaxed_access_params.adb:66:06: warning: "Globals" is not a valid aspect identifier [enabled by default]
+test_relaxed_access_params.adb:66:06: warning: possible misspelling of "Global" [enabled by default]
 test_relaxed_access_params.adb:70:13: medium: initialization check might fail [possible fix: subprogram at line 65 should mention X in a precondition]
 test_relaxed_access_params.adb:71:09: info: discriminant check proved (Trivial: 1 VC)
 test_relaxed_access_params.adb:71:09: medium: resource or memory leak might occur [possible fix: subprogram at line 65 should mention X in a precondition]
