@@ -7190,73 +7190,6 @@ package body SPARK_Definition is
          -------------------------------
 
          procedure Mark_Subprogram_Contracts is
-
-            function Check_Param (N : Node_Id) return Traverse_Result;
-            --  Parameters of modes OUT or IN OUT of the subprogram shall not
-            --  occur in the consequences of an exceptional contract unless
-            --  they are either passed by reference or occur in the prefix
-            --  of a reference to the 'Old attribute or as direct prefixes
-            --  of attributes that do not actually read data from the object
-            --  (SPARK RM 6.1.9(1)).
-
-            function Check_Param (N : Node_Id) return Traverse_Result is
-            begin
-               case Nkind (N) is
-                  when N_Identifier | N_Expanded_Name =>
-                     declare
-                        Id : constant Entity_Id := Entity (N);
-                     begin
-                        if Present (Id)
-                          and then Ekind (Id) in E_Out_Parameter
-                                               | E_In_Out_Parameter
-                          and then Scope (Id) = E
-                          and then not Is_By_Reference_Type (Etype (Id))
-                          and then not Is_Aliased (Id)
-                        then
-                           declare
-                              Mode : constant String :=
-                                (if Ekind (Id) = E_Out_Parameter then "out"
-                                 else "in out");
-                           begin
-                              Mark_Violation
-                                ("formal parameter of mode """ & Mode
-                                 & """ in consequence of Exceptional_Cases", N,
-                                 Cont_Msg =>
-                                   "only parameters passed by reference "
-                                   & "are allowed");
-                           end;
-                        end if;
-                     end;
-
-                  when N_Attribute_Reference =>
-                     case Attribute_Name (N) is
-                        when Name_Old =>
-                           return Skip;
-                        when Name_Constrained
-                           | Name_First
-                           | Name_Last
-                           | Name_Length
-                           | Name_Range
-                        =>
-                           if Nkind (Prefix (N)) in N_Identifier
-                                                  | N_Expanded_Name
-                           then
-                              return Skip;
-                           end if;
-                        when others => null;
-                     end case;
-
-                  when others => null;
-               end case;
-
-               return OK;
-            end Check_Param;
-
-            procedure Check_Params_In_Consequence is
-              new Traverse_More_Proc (Check_Param);
-
-            --  Local variables
-
             Prag : Node_Id := (if Present (Contract (E))
                                then Pre_Post_Conditions (Contract (E))
                                else Empty);
@@ -7362,8 +7295,6 @@ package body SPARK_Definition is
                         end loop;
                      end;
 
-                     Check_Params_In_Consequence
-                       (Expression (Exceptional_Case));
                      Mark (Expression (Exceptional_Case));
                      Next (Exceptional_Case);
                   end loop;
