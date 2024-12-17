@@ -11,11 +11,11 @@ pupils.ads:102:25: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
 pupils.ads:103:35: info: index check proved (CVC5: 2 VC)
 pupils.ads:103:60: info: index check proved (CVC5: 1 VC; Z3: 1 VC)
 pupils.ads:107:25: medium: postcondition might fail, cannot prove (Subject_List'(Subj0, Subj1, Subj2, Subj3, Subj4, Subj5, Subj6, Subj7, Subj8, Subj9) (I) /= Subject_List'(Subj0, Subj1, Subj2, Subj3, Subj4, Subj5, Subj6, Subj7, Subj8, Subj9) (J)) or (Subject_List'(Subj0, Subj1, Subj2, Subj3, Subj4, Subj5, Subj6, Subj7, S...
-pupils.ads:115:38: warning: consider extracting conjunct from quantified expression
-pupils.ads:115:38: warning: unused variable "I" in conjunct
+pupils.ads:115:38: warning: consider extracting conjunct from quantified expression [-gnatw.t]
+pupils.ads:115:38: warning: unused variable "I" in conjunct [-gnatw.t]
 pupils.ads:116:38: info: index check proved (Z3: 2 VC)
-pupils.ads:116:55: warning: consider extracting conjunct from quantified expression
-pupils.ads:116:55: warning: unused variable "I" in conjunct
+pupils.ads:116:55: warning: consider extracting conjunct from quantified expression [-gnatw.t]
+pupils.ads:116:55: warning: unused variable "I" in conjunct [-gnatw.t]
 pupils.ads:122:68: info: index check proved (CVC5: 2 VC)
 pupils.ads:125:28: info: index check proved (CVC5: 2 VC)
 pupils.ads:125:53: info: index check proved (CVC5: 2 VC)

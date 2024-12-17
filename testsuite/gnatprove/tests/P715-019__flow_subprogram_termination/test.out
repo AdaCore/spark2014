@@ -179,7 +179,7 @@ preconditions.adb:9:14: warning: unreachable code (CVC5: 1 VC)
 preconditions.ads:2:13: info: implicit aspect Always_Terminates on "Returning_Precondition" has been proved, subprogram will terminate
 r.adb:17:36: info: unrolling loop
 r.adb:18:13: high: potentially blocking entry call in protected operation "E"
-r.adb:18:13: warning: potentially blocking operation in protected operation
+r.adb:18:13: warning: potentially blocking operation in protected operation [enabled by default]
 r.adb:25:21: warning: statement has no effect
 r.adb:31:14: warning: subprogram "Proc1" has no effect
 r.adb:34:10: info: analyzing call to "Proc1" in context
@@ -198,7 +198,7 @@ r.adb:58:04: warning: assuming "OS_Exit" has no effect on global items
 r.adb:58:04: warning: no Global contract available for "OS_Exit"
 r.adb:58:04: warning: statement has no effect
 r.adb:59:04: warning: this statement is never reached
-r.adb:59:04: warning: unreachable code
+r.adb:59:04: warning: unreachable code [enabled by default]
 spark-containers-parameter_checks.ads:32:19: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:392, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function My_Equal_01 or turning it into an expression function]
 spark-containers-parameter_checks.ads:37:19: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:392, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function My_Equal_01 or turning it into an expression function]
 spark-containers-parameter_checks.ads:42:19: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:392, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function My_Equal_01 or turning it into an expression function]
