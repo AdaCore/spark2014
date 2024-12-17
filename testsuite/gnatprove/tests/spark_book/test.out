@@ -794,7 +794,7 @@ numeric_display.ads:7:04: warning: address specification on "Value" is imprecise
 numeric_display.ads:7:04: warning: launch "gnatprove --explain=E0012" for more information
 numeric_display.ads:7:04: warning: make sure that all overlapping objects have Async_Writers set to True
 operator_overload.adb:10:13: info: add a contract to analyze it separately from calling contexts
-operator_overload.adb:10:13: info: implicit aspect Always_Terminates on "<=" has been proved, subprogram will terminate
+operator_overload.adb:10:13: info: implicit aspect Always_Terminates on overriding operator "<=" has been proved, subprogram will terminate
 operator_overload.adb:10:13: info: local subprogram "<=" only analyzed in the context of calls
 operator_overload.adb:13:07: info: initialization of "Left_Squared" proved
 operator_overload.adb:13:07: info: initialization of "Left_Squared" proved, in call inlined at operator_overload.adb:30
