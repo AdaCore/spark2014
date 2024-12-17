@@ -1516,6 +1516,9 @@ Exceptional_Cases aspects are ignored for execution.
    * directly as a prefix of the Constrained, First, Last, Length, or Range
      attributes.
 
+   References to attribute Result shall not occur in the consequences of an
+   exceptional case.
+
 .. container:: heading
 
    Verification Rules

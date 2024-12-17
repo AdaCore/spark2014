@@ -679,8 +679,8 @@ package body Gnat2Why.Borrow_Checker is
       ((Is_Ent => False, Expr => X));
 
    function "<" (P1, P2 : Perm_Kind) return Boolean;
-   function Glb  (P1, P2 : Perm_Kind) return Perm_Kind;
-   function Lub  (P1, P2 : Perm_Kind) return Perm_Kind;
+   function Glb (P1, P2 : Perm_Kind) return Perm_Kind;
+   function Lub (P1, P2 : Perm_Kind) return Perm_Kind;
 
    procedure Check_Assignment (Target : Node_Or_Entity_Id; Expr : Node_Id);
    --  Handle assignment as part of an assignment statement or an object
