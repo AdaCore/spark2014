@@ -68,7 +68,6 @@ exit_cases_examples.adb:29:09: info: contract case proved (CVC5: 3 VC; Trivial: 
 exit_cases_examples.adb:30:54: info: index check proved (CVC5: 2 VC)
 exit_cases_examples.adb:34:14: info: initialization of "R" proved
 exit_cases_examples.adb:35:15: info: only expected exception raised (CVC5: 1 VC)
-exit_cases_examples.adb:38:15: warning: this statement is never reached
 exit_cases_examples.adb:42:14: info: aspect Always_Terminates on "Replace" has been proved, subprogram will terminate
 exit_cases_examples.adb:45:07: info: initialization of "Pos" proved
 exit_cases_examples.adb:49:47: info: exit case proved (CVC5: 1 VC)
