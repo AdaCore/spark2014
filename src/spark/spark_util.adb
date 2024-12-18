@@ -2201,16 +2201,56 @@ package body SPARK_Util is
    function Get_Exceptions_For_Subp
      (Subp : Entity_Id) return Exception_Sets.Set
    is
-      Prag   : constant Node_Id := Get_Pragma (Subp, Pragma_Exceptional_Cases);
-      Result : Exception_Sets.Set := Exception_Sets.Empty_Set;
+      Exc_Prag  : constant Node_Id :=
+        Get_Pragma (Subp, Pragma_Exceptional_Cases);
+      Exit_Prag : constant Node_Id := Get_Pragma (Subp, Pragma_Exit_Cases);
+      Result    : Exception_Sets.Set := Exception_Sets.Empty_Set;
+
    begin
-      if No (Prag) then
+      --  If no exceptional cases contract is supplied but there is an exit
+      --  cases, use it to infer the potentially raised exceptions.
+
+      if No (Exc_Prag) and then No (Exit_Prag) then
+         return Result;
+
+      elsif No (Exc_Prag) then
+         declare
+            Aggr      : constant Node_Id :=
+              Expression (First (Pragma_Argument_Associations (Exit_Prag)));
+            Exit_Case : Node_Id :=
+              First (Component_Associations (Aggr));
+         begin
+            while Present (Exit_Case) loop
+               declare
+                  Exit_Kind : constant Node_Id := Expression (Exit_Case);
+               begin
+                  case Nkind (Exit_Kind) is
+                     when N_Identifier =>
+                        if Chars (Exit_Kind) = Name_Exception_Raised then
+                           return Exception_Sets.All_Exceptions;
+                        end if;
+
+                     when N_Aggregate =>
+                        Result.Include
+                          (Entity
+                             (Expression
+                                  (First
+                                       (Component_Associations
+                                          (Exit_Kind)))));
+
+                     when others =>
+                        raise Program_Error;
+                  end case;
+               end;
+               Next (Exit_Case);
+            end loop;
+         end;
          return Result;
       end if;
 
       declare
          Aggr     : constant Node_Id :=
-           Expression (First (Pragma_Argument_Associations (Prag)));
+           Expression (First (Pragma_Argument_Associations (Exc_Prag)));
          Exc_Case : Node_Id := Last (Component_Associations (Aggr));
       begin
          --  Collect exceptions in Prag. Start from the last case to look

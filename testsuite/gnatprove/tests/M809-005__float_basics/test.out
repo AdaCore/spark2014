@@ -366,8 +366,8 @@ generic_float_tests.adb:375:25: info: assertion proved, in instantiation at foo.
 generic_float_tests.adb:375:25: info: assertion proved, in instantiation at foo.ads:15
 generic_float_tests.adb:380:28: info: initialization of "I" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:380:28: info: initialization of "I" proved, in instantiation at foo.ads:15
-generic_float_tests.adb:382:06: info: disjoint contract cases proved, in instantiation at foo.ads:10
-generic_float_tests.adb:382:06: info: disjoint contract cases proved, in instantiation at foo.ads:15
+generic_float_tests.adb:382:06: info: disjoint contract or exit cases proved, in instantiation at foo.ads:10
+generic_float_tests.adb:382:06: info: disjoint contract or exit cases proved, in instantiation at foo.ads:15
 generic_float_tests.adb:382:06: medium: contract cases might not be complete, in instantiation at foo.ads:10
 generic_float_tests.adb:382:06: medium: contract cases might not be complete, in instantiation at foo.ads:15
 generic_float_tests.adb:382:25: info: contract case proved, in instantiation at foo.ads:10
@@ -410,8 +410,8 @@ generic_float_tests.adb:422:19: info: postcondition proved, in instantiation at 
 generic_float_tests.adb:422:19: info: postcondition proved, in instantiation at foo.ads:15
 generic_float_tests.adb:435:33: info: initialization of "Y" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:435:33: info: initialization of "Y" proved, in instantiation at foo.ads:15
-generic_float_tests.adb:437:06: info: disjoint contract cases proved, in instantiation at foo.ads:10
-generic_float_tests.adb:437:06: info: disjoint contract cases proved, in instantiation at foo.ads:15
+generic_float_tests.adb:437:06: info: disjoint contract or exit cases proved, in instantiation at foo.ads:10
+generic_float_tests.adb:437:06: info: disjoint contract or exit cases proved, in instantiation at foo.ads:15
 generic_float_tests.adb:437:06: medium: contract cases might not be complete, in instantiation at foo.ads:10
 generic_float_tests.adb:437:06: medium: contract cases might not be complete, in instantiation at foo.ads:15
 generic_float_tests.adb:437:25: info: contract case proved, in instantiation at foo.ads:10

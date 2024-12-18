@@ -5074,6 +5074,12 @@ package body SPARK_Definition is
                      elsif Has_Exceptional_Contract (Subp) then
                         Mark_Unsupported (Lim_Access_To_Subp_With_Exc, N);
 
+                     --  Subprograms with an exit cases contract necessarily
+                     --  allow abnormal return.
+
+                     elsif Present (Get_Pragma (Subp, Pragma_Exit_Cases)) then
+                        raise Program_Error;
+
                      --  Subprogram with non-null Global contract (either
                      --  explicit or generated). Global accesses are allowed
                      --  for specialized actuals of functions annotated with
@@ -7301,6 +7307,113 @@ package body SPARK_Definition is
                end;
             end if;
 
+            Prag := Get_Pragma (E, Pragma_Exit_Cases);
+            if Present (Prag) then
+
+               --  The frontend rejects Exit_Cases on functions without side
+               --  effects.
+               pragma Assert (Ekind (E) /= E_Function
+                              or else Is_Function_With_Side_Effects (E));
+
+               --  The frontend does not allow Exit_Cases on entries
+
+               if Ekind (E) = E_Entry then
+                  raise Program_Error;
+
+               --  Reject dispatching operations for now. Supporting them would
+               --  require handling Liskov on exit contracts.
+
+               elsif Is_Dispatching_Operation (E)
+                 and then Present (Find_Dispatching_Type (E))
+               then
+                  Mark_Unsupported (Lim_Exit_Cases_Dispatch, Prag);
+               end if;
+
+               --  Mark guards and register exceptions
+
+               declare
+                  Aggr      : constant Node_Id :=
+                    Expression (First (Pragma_Argument_Associations (Prag)));
+                  Exit_Case : Node_Id :=
+                    First (Component_Associations (Aggr));
+                  Exc_Prag  : constant Node_Id :=
+                    Get_Pragma (E, Pragma_Exceptional_Cases);
+                  Exc_Set   : constant Exception_Sets.Set :=
+                    Get_Exceptions_For_Subp (E);
+               begin
+                  while Present (Exit_Case) loop
+                     declare
+                        Guard : constant Node_Id :=
+                          First (Choices (Exit_Case));
+                     begin
+                        pragma Assert (No (Next (Guard)));
+                        case Nkind (Guard) is
+                           when N_Others_Choice =>
+                              null;
+
+                           when others =>
+                              Mark (Guard);
+                        end case;
+                     end;
+
+                     declare
+                        Exit_Kind : constant Node_Id := Expression (Exit_Case);
+                        Except    : Node_Id;
+                     begin
+                        case Nkind (Exit_Kind) is
+                           when N_Identifier =>
+
+                              --  Reject exceptions if they are disallowed by
+                              --  the exceptional cases if any.
+
+                              if Chars (Exit_Kind) = Name_Exception_Raised
+                                and then Present (Exc_Prag)
+                                and then Exc_Set.Is_Empty
+                              then
+                                 Mark_Violation
+                                   ("exit case mentioning exceptions when "
+                                    & "no exceptions can be propagated",
+                                    Exit_Kind);
+                              end if;
+
+                           when N_Aggregate =>
+                              Except := Expression
+                                (First
+                                   (Component_Associations (Exit_Kind)));
+                              Register_Exception (Entity (Except));
+
+                              --  Reject exceptions which are disallowed by the
+                              --  exceptional cases if any.
+
+                              if Present (Exc_Prag)
+                                and then not Exc_Set.Contains (Entity (Except))
+                              then
+                                 Mark_Violation
+                                   ("exit case mentionning an exception which "
+                                    & "cannot be propagated",
+                                    Except);
+                              end if;
+
+                           when others =>
+                              raise Program_Error;
+                        end case;
+                     end;
+                     Next (Exit_Case);
+                  end loop;
+
+                  --  Reject exit cases on subprograms which do not allow
+                  --  abnormal termination. For now, this only includes raising
+                  --  exceptions.
+
+                  if Exc_Set.Is_Empty then
+                     Mark_Violation
+                       ("Exit_Case on subprogram which can only return "
+                        & "normally",
+                       Prag);
+                  end if;
+               end;
+            end if;
+
             Prag := Get_Pragma (E, Pragma_Subprogram_Variant);
             if Present (Prag) then
                declare
@@ -7419,7 +7532,7 @@ package body SPARK_Definition is
                     (Lim_Exceptional_Cases_Ownership,
                      Formal,
                      Root_Cause_Msg =>
-                       "exceptional contracts and parameters with ownership",
+                       "exception propagation and parameters with ownership",
                      Cont_Msg       =>
                        Create ("& should be marked as aliased",
                                Names => [Formal]));
@@ -11324,6 +11437,7 @@ package body SPARK_Definition is
             | Pragma_Effective_Reads
             | Pragma_Effective_Writes
             | Pragma_Exceptional_Cases
+            | Pragma_Exit_Cases
             | Pragma_Extensions_Visible
             | Pragma_Ghost
             | Pragma_Global

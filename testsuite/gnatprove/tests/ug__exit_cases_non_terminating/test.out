@@ -1,0 +1,10 @@
+exit_cases_non_terminating.ads:6:06: info: disjoint contract or exit cases proved
+exit_cases_non_terminating.ads:7:19: info: exit case proved
+  on exceptional exit from Might_Return_Abnormally at exit_cases_non_terminating.ads:5
+exit_cases_non_terminating.ads:8:19: info: exit case proved
+  on normal return from Might_Return_Abnormally at exit_cases_non_terminating.ads:5
+exit_cases_non_terminating.ads:8:19: info: exit case proved
+  on exceptional exit from Might_Return_Abnormally at exit_cases_non_terminating.ads:5
+exit_cases_non_terminating.ads:9:19: info: exit case proved
+  on normal return from Might_Return_Abnormally at exit_cases_non_terminating.ads:5
+exit_cases_non_terminating.ads:10:39: info: exceptional case proved

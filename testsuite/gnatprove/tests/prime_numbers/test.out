@@ -183,7 +183,7 @@ prime_and_coprime_numbers.ads:72:37: info: precondition proved, in instantiation
 prime_and_coprime_numbers.ads:73:14: info: postcondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:74:44: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:75:06: info: complete contract cases proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:75:06: info: disjoint contract cases proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:75:06: info: disjoint contract or exit cases proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:79:09: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:79:22: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:84:09: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
@@ -206,7 +206,7 @@ prime_and_coprime_numbers.ads:107:13: info: implicit aspect Always_Terminates on
 prime_and_coprime_numbers.ads:112:06: info: data dependencies proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:119:16: info: postcondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:121:06: info: complete contract cases proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:121:06: info: disjoint contract cases proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:121:06: info: disjoint contract or exit cases proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:125:09: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:130:09: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:133:37: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6

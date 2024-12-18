@@ -1,5 +1,5 @@
 main.adb:7:12: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:12:06: info: disjoint contract cases proved (CVC5: 1 VC)
+main.adb:12:06: info: disjoint contract or exit cases proved (CVC5: 1 VC)
 main.adb:13:09: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC)
 main.adb:14:14: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:14:23: info: pointer dereference check proved (CVC5: 1 VC)
@@ -22,7 +22,7 @@ main.adb:38:43: info: flow dependencies proved
 main.adb:41:12: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:45:36: info: flow dependencies proved
 main.adb:48:12: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:53:06: info: disjoint contract cases proved (CVC5: 1 VC)
+main.adb:53:06: info: disjoint contract or exit cases proved (CVC5: 1 VC)
 main.adb:54:09: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC)
 main.adb:55:14: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:55:23: info: pointer dereference check proved (CVC5: 1 VC)

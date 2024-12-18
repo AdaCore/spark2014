@@ -140,7 +140,7 @@ section_4_6.ads:94:13: info: implicit aspect Always_Terminates on "disjoint_cond
 section_4_6.ads:102:13: info: implicit aspect Always_Terminates on "transition" has been proved, subprogram will terminate
 section_4_6.ads:102:24: warning: unused variable "mode"
 section_4_6.ads:106:06: medium: contract cases might not be complete
-section_4_6.ads:106:06: medium: contract cases might not be disjoint
+section_4_6.ads:106:06: medium: contract or exit cases might not be disjoint
 section_4_6.ads:106:25: info: contract case proved (Trivial: 2 VC)
 section_4_6.ads:107:25: info: contract case proved (Trivial: 2 VC)
 section_4_6.ads:108:25: info: contract case proved (Trivial: 2 VC)

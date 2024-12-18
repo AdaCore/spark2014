@@ -15,6 +15,6 @@ illegal.adb:108:06: warning: contract cases do not mention function result [-gna
 illegal.adb:110:33: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
 illegal.adb:119:64: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
 illegal.adb:128:13: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
-illegal.adb:158:14: error: procedure annotated with the aspect Higher_Order_Specialization shall not raise exceptions
+illegal.adb:158:14: error: procedure annotated with the aspect Higher_Order_Specialization shall not propagate exceptions
 illegal.adb:169:14: error: procedure annotated with the aspect Higher_Order_Specialization shall have an Always_Terminates aspect of True
 gnatprove: error during flow analysis and proof

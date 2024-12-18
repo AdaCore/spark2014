@@ -1,4 +1,4 @@
 saturation.adb:11:06: info: complete contract cases proved (CVC5: 1 VC)
-saturation.adb:11:06: info: disjoint contract cases proved (CVC5: 1 VC)
+saturation.adb:11:06: info: disjoint contract or exit cases proved (CVC5: 1 VC)
 saturation.adb:12:09: medium: contract case might fail (e.g. when Val = (Value => Unsigned_16'Last, Upper_Bound => Unsigned_16'Last) and Val'Old = (Value => Unsigned_16'Last-1, Upper_Bound => Unsigned_16'Last))
 saturation.adb:14:09: medium: contract case might fail (e.g. when Val = (Value => Unsigned_16'Last, Upper_Bound => Unsigned_16'Last-1))

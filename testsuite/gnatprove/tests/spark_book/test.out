@@ -868,12 +868,12 @@ raster_graphics.ads:20:08: info: data dependencies proved
 raster_graphics.ads:21:29: info: initialization of "Status" proved
 region_checks.ads:6:13: info: implicit aspect Always_Terminates on "Sign" has been proved, subprogram will terminate
 region_checks.ads:8:08: info: complete contract cases proved (CVC5: 1 VC)
-region_checks.ads:8:08: info: disjoint contract cases proved (CVC5: 1 VC)
+region_checks.ads:8:08: info: disjoint contract or exit cases proved (CVC5: 1 VC)
 region_checks.ads:9:11: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 region_checks.ads:10:11: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 region_checks.ads:11:11: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 region_checks.ads:13:13: info: implicit aspect Always_Terminates on "In_Unit_Square" has been proved, subprogram will terminate
-region_checks.ads:15:08: info: disjoint contract cases proved (CVC5: 1 VC)
+region_checks.ads:15:08: info: disjoint contract or exit cases proved (CVC5: 1 VC)
 region_checks.ads:16:11: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 region_checks.ads:18:11: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 region_checks.ads:20:11: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)

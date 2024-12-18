@@ -29,7 +29,7 @@ search_ter_p.ads:28:42: info: overflow check proved (CVC5: 2 VC)
 search_ter_p.ads:28:46: info: overflow check proved (CVC5: 2 VC)
 search_ter_p.ads:28:49: info: range check proved (CVC5: 2 VC)
 search_ter_p.ads:32:13: info: implicit aspect Always_Terminates on "Search" has been proved, subprogram will terminate
-search_ter_p.ads:34:07: info: disjoint contract cases proved (CVC5: 1 VC)
+search_ter_p.ads:34:07: info: disjoint contract or exit cases proved (CVC5: 1 VC)
 search_ter_p.ads:35:08: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 search_ter_p.ads:35:31: warning: unreachable branch (CVC5: 1 VC)
 search_ter_p.ads:36:08: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
