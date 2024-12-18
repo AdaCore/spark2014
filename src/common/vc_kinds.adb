@@ -728,6 +728,8 @@ package body VC_Kinds is
            "GNAT extension for case pattern matching",
          when Lim_External_Initializer =>
            "GNAT extension for embedded binary resources",
+         when Lim_Finally_Statements =>
+           "GNAT extension for finally statements",
          when Lim_Generic_In_Hidden_Private =>
             "instance of a generic unit declared in a package whose private "
           & "part is hidden outside of this package",

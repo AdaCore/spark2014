@@ -462,6 +462,7 @@ package VC_Kinds is
       Lim_Ext_Aggregate_With_Type_Ancestor,
       Lim_Extension_Case_Pattern_Matching,
       Lim_External_Initializer,
+      Lim_Finally_Statements,
       Lim_Generic_In_Hidden_Private,
       Lim_Generic_In_Type_Inv,
       Lim_Goto_Cross_Inv,
@@ -689,6 +690,8 @@ package VC_Kinds is
            "GNAT extension for case pattern matching",
          when Lim_External_Initializer =>
            "GNAT extension for embedded binary resources",
+         when Lim_Finally_Statements =>
+           "GNAT extension for finally statements",
          when Lim_Iterated_Element_Association =>
            "iterated element association",
          when Lim_Multidim_Iterator =>

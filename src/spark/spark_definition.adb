@@ -10628,6 +10628,13 @@ package body SPARK_Definition is
          end if;
          Next (Handler);
       end loop;
+
+      if Present (Finally_Statements (N)) then
+         Mark_Unsupported
+           (Kind => Lim_Finally_Statements,
+            N    => First (Finally_Statements (N)),
+            Name => "finally");
+      end if;
    end Mark_Handled_Statements;
 
    --------------------------------------
