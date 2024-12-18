@@ -111,6 +111,7 @@ install:
 	$(MAKE) -C include generate
 	$(CP) include/src/*.ad? $(INCLUDEDIR)
 	$(CP) include/*.gpr $(LIBDIR)
+	$(CP) include/*.gpr.templ $(LIBDIR)
 	$(CP) include/proof $(LIBDIR)
 
 doc: $(DOC)
