@@ -1,4 +1,4 @@
 a73001i.adb:5:04: warning: assuming "RESULT" always terminates
 a73001i.adb:5:04: warning: assuming "RESULT" has no effect on global items
-a73001i.adb:5:04: warning: no Always_Terminates aspect available for "RESULT"
-a73001i.adb:5:04: warning: no Global contract available for "RESULT"
+a73001i.adb:5:04: warning: no Always_Terminates aspect available for "RESULT" [assumed-always-terminates]
+a73001i.adb:5:04: warning: no Global contract available for "RESULT" [assumed-global-null]

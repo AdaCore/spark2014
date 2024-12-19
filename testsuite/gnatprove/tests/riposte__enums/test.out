@@ -40,7 +40,7 @@ enums.adb:190:13: info: implicit aspect Always_Terminates on "Succ_A" has been p
 enums.adb:191:19: info: postcondition proved (CVC5: 1 VC)
 enums.adb:191:50: info: range check proved (CVC5: 1 VC)
 enums.adb:194:29: high: range check might fail (e.g. when A = Elem_8) [reason for check: value cannot be maximum value of the type] [possible fix: subprogram at line 190 should mention A in a precondition]
-enums.adb:197:04: warning: analyzing unreferenced function "Subtypes_Broken"
+enums.adb:197:04: warning: analyzing unreferenced function "Subtypes_Broken" [unreferenced-function]
 enums.adb:197:13: info: implicit aspect Always_Terminates on "Subtypes_Broken" has been proved, subprogram will terminate
 enums.adb:203:07: info: initialization of "Tmp" proved
 counterexample expected for check at enums.adb:19

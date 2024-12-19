@@ -35,7 +35,7 @@ in_out_pledge.adb:53:07: info: absence of resource or memory leak at end of scop
 in_out_pledge.adb:54:07: medium: resource or memory leak might occur at end of scope
 in_out_pledge.adb:56:10: info: no contextual analysis of "Rand" (body not seen yet)
 in_out_pledge.adb:56:10: warning: assuming "Rand" has no effect on global items
-in_out_pledge.adb:56:10: warning: no Global contract available for "Rand"
+in_out_pledge.adb:56:10: warning: no Global contract available for "Rand" [assumed-global-null]
 in_out_pledge.adb:61:15: info: data dependencies proved
 in_out_pledge.adb:63:23: info: postcondition proved (CVC5: 4 VC)
 in_out_pledge.adb:63:43: info: pointer dereference check proved (CVC5: 1 VC)

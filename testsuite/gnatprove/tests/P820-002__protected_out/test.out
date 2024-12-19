@@ -40,9 +40,9 @@ polyorb_hi_generated-activity.adb:459:16: error: violation of pragma SPARK_Mode 
 polyorb_hi_generated-activity.adb:561:15: error: "Get_Time_Stamp" is not allowed in SPARK (due to function with global inputs with effective reads)
 polyorb_hi_generated-activity.adb:561:15: error: violation of pragma SPARK_Mode at polyorb-hi-ada/gnat.adc:19
 polyorb_hi_generated-activity.ads:102:03: warning: in instantiation at polyorb_hi-periodic_task.ads:74
-polyorb_hi_generated-activity.ads:102:03: warning: pragma "Storage_Size" ignored (not yet supported)
+polyorb_hi_generated-activity.ads:102:03: warning: pragma "Storage_Size" ignored (not yet supported) [ignored-pragma]
 polyorb_hi_generated-activity.ads:192:03: warning: in instantiation at polyorb_hi-periodic_task.ads:74
-polyorb_hi_generated-activity.ads:192:03: warning: pragma "Storage_Size" ignored (not yet supported)
+polyorb_hi_generated-activity.ads:192:03: warning: pragma "Storage_Size" ignored (not yet supported) [ignored-pragma]
 pr_a.adb:22:20: info: range check proved (CVC5: 2 VC)
 pr_a.adb:25:33: medium: "polyorb_hi.transport_low_level.nodes" might not be initialized after elaboration of main program "pr_A"
 gnatprove: error during flow analysis and proof

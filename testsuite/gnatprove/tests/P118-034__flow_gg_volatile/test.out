@@ -23,10 +23,10 @@ Generated contracts for A
    Initializes =>
       A.Ext_State
       A.State
-a.adb:9:04: warning: address specification on "Sensor" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [E0012]
+a.adb:9:04: warning: address specification on "Sensor" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [imprecise-address-specification] [E0012]
 a.adb:9:04: warning: launch "gnatprove --explain=E0012" for more information
 a.adb:9:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
-a.adb:14:04: warning: address specification on "Actuator" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, no writes to a potential alias, and valid reads [E0012]
+a.adb:14:04: warning: address specification on "Actuator" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, no writes to a potential alias, and valid reads [imprecise-address-specification] [E0012]
 a.adb:14:04: warning: make sure that all overlapping objects have Async_Writers set to True
 a.adb:14:04: warning: launch "gnatprove --explain=E0012" for more information
 a.adb:14:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)

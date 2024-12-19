@@ -1,9 +1,9 @@
 draw.adb:6:04: high: "Rec" is not initialized
 draw.adb:6:07: warning: assuming "Set_Width" always terminates
 draw.adb:6:07: warning: assuming "Set_Width" has no effect on global items
-draw.adb:6:07: warning: no Always_Terminates aspect available for "Set_Width"
-draw.adb:6:07: warning: no Global contract available for "Set_Width"
+draw.adb:6:07: warning: no Always_Terminates aspect available for "Set_Width" [assumed-always-terminates]
+draw.adb:6:07: warning: no Global contract available for "Set_Width" [assumed-global-null]
 draw.adb:9:07: warning: assuming "Set_Height" always terminates
 draw.adb:9:07: warning: assuming "Set_Height" has no effect on global items
-draw.adb:9:07: warning: no Always_Terminates aspect available for "Set_Height"
-draw.adb:9:07: warning: no Global contract available for "Set_Height"
+draw.adb:9:07: warning: no Always_Terminates aspect available for "Set_Height" [assumed-always-terminates]
+draw.adb:9:07: warning: no Global contract available for "Set_Height" [assumed-global-null]

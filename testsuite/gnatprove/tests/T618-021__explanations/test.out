@@ -24,4 +24,4 @@ nonterminating.adb:25:25: info: range check proved (CVC5: 2 VC)
 p.adb:3:11: high: all paths in "P" raise exceptions or do not terminate normally
 p.adb:5:04: medium: aspect Always_Terminates on "P" could be incorrect, call to "Crash" might be nonterminating [possible fix: annotate "Crash" with aspect Always_Terminates]
 p.adb:5:04: warning: assuming "Crash" has no effect on global items
-p.adb:5:04: warning: no Global contract available for "Crash"
+p.adb:5:04: warning: no Global contract available for "Crash" [assumed-global-null]

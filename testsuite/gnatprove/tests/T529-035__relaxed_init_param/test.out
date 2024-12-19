@@ -1,8 +1,8 @@
 a.adb:13:07: info: precondition proved (CVC5: 1 VC)
 a.adb:13:07: warning: assuming "Tcp_Read_Rx_Buffer" always terminates
 a.adb:13:07: warning: assuming "Tcp_Read_Rx_Buffer" has no effect on global items
-a.adb:13:07: warning: no Always_Terminates aspect available for "Tcp_Read_Rx_Buffer"
-a.adb:13:07: warning: no Global contract available for "Tcp_Read_Rx_Buffer"
+a.adb:13:07: warning: no Always_Terminates aspect available for "Tcp_Read_Rx_Buffer" [assumed-always-terminates]
+a.adb:13:07: warning: no Global contract available for "Tcp_Read_Rx_Buffer" [assumed-global-null]
 a.adb:13:26: info: in value of subprogram parameter after the call at a.adb:13
 a.adb:13:26: info: initialization check proved (CVC5: 1 VC)
 a.ads:5:27: info: initialization of "Data" proved

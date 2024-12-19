@@ -1,2 +1,2 @@
-types.adb:4:04: warning: analyzing unreferenced procedure "Test_01"
+types.adb:4:04: warning: analyzing unreferenced procedure "Test_01" [unreferenced-procedure]
 types.adb:5:23: info: initialization of "O" proved

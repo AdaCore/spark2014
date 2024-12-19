@@ -1,7 +1,7 @@
 main.adb:9:09: warning: assuming "Test" always terminates
 main.adb:9:09: warning: assuming "Test" has no effect on global items
-main.adb:9:09: warning: no Always_Terminates aspect available for "Test"
-main.adb:9:09: warning: no Global contract available for "Test"
+main.adb:9:09: warning: no Always_Terminates aspect available for "Test" [assumed-always-terminates]
+main.adb:9:09: warning: no Global contract available for "Test" [assumed-global-null]
 state.ads:5:03: info: flow dependencies proved
 state.ads:14:26: error: "State.State" is referenced in Pre but missing from the Global
 gnatprove: error during flow analysis and proof

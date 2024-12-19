@@ -1,7 +1,7 @@
 call.adb:5:04: warning: assuming "put" always terminates
 call.adb:5:04: warning: assuming "put" has no effect on global items
-call.adb:5:04: warning: no Always_Terminates aspect available for "put"
-call.adb:5:04: warning: no Global contract available for "put"
+call.adb:5:04: warning: no Always_Terminates aspect available for "put" [assumed-always-terminates]
+call.adb:5:04: warning: no Global contract available for "put" [assumed-global-null]
 call.adb:6:09: warning: assuming "get" has no effect on global items
-call.adb:6:09: warning: no Global contract available for "get"
+call.adb:6:09: warning: no Global contract available for "get" [assumed-global-null]
 imports.ads:3:21: warning: no subprogram exists that can initialize abstract state "imports.imp_state"

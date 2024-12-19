@@ -1,2 +1,2 @@
 main.adb:8:04: warning: assuming "P" has no effect on global items
-main.adb:8:04: warning: no Global contract available for "P"
+main.adb:8:04: warning: no Global contract available for "P" [assumed-global-null]

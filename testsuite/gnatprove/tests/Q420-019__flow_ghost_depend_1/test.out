@@ -1,4 +1,4 @@
 main.adb:6:03: info: data dependencies proved
 main.adb:9:09: warning: assuming "Test" always terminates
-main.adb:9:09: warning: no Always_Terminates aspect available for "Test"
+main.adb:9:09: warning: no Always_Terminates aspect available for "Test" [assumed-always-terminates]
 state.ads:6:03: info: flow dependencies proved

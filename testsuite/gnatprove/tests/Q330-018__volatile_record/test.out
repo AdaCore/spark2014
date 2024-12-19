@@ -1,5 +1,5 @@
 tracker_interface.adb:7:13: warning: assuming "Cancel" always terminates
 tracker_interface.adb:7:13: warning: assuming "Cancel" has no effect on global items
-tracker_interface.adb:7:13: warning: no Always_Terminates aspect available for "Cancel"
-tracker_interface.adb:7:13: warning: no Global contract available for "Cancel"
+tracker_interface.adb:7:13: warning: no Always_Terminates aspect available for "Cancel" [assumed-always-terminates]
+tracker_interface.adb:7:13: warning: no Global contract available for "Cancel" [assumed-global-null]
 tracker_interface.ads:8:25: info: data dependencies proved

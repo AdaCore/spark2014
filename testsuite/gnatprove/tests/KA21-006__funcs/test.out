@@ -7,7 +7,7 @@ funcs.adb:23:17: warning: unused variable "X"
 funcs.adb:38:13: info: implicit aspect Always_Terminates on "P4" has been proved, subprogram will terminate
 funcs.adb:53:13: info: implicit aspect Always_Terminates on "Q4" has been proved, subprogram will terminate
 funcs.adb:53:58: info: postcondition proved (CVC5: 2 VC)
-funcs.adb:61:04: warning: analyzing unreferenced procedure "Test"
+funcs.adb:61:04: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
 funcs.adb:62:07: info: initialization of "Y" proved
 funcs.adb:64:22: info: assertion proved (CVC5: 1 VC)
 funcs.adb:65:35: info: assertion proved (CVC5: 2 VC)

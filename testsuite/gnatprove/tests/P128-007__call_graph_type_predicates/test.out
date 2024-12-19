@@ -3,7 +3,7 @@ p.adb:7:13: error: function "Foo" with output global "Tasking_State" is not allo
 p.adb:7:13: error: launch "gnatprove --explain=E0005" for more information
 p.adb:7:13: error: violation of aspect SPARK_Mode at line 4
 p.adb:16:22: warning: assuming "Yield" always terminates
-p.adb:16:22: warning: no Always_Terminates aspect available for "Yield"
+p.adb:16:22: warning: no Always_Terminates aspect available for "Yield" [assumed-always-terminates]
 p.adb:23:30: error: "Foo" is not allowed in SPARK (due to function with global outputs)
 p.adb:23:30: error: violation of aspect SPARK_Mode at line 4
 p.adb:23:30: info: no contextual analysis of "Foo" (inside predicate)

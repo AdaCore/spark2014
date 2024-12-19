@@ -62,7 +62,7 @@ func_contract_case_lhs.adb:10:13: info: implicit aspect Always_Terminates on "G"
 func_contract_case_lhs.adb:11:09: warning: contract cases do not mention function result [-gnatw.t]
 func_contract_case_lhs.adb:11:28: info: contract case proved (Trivial: 2 VC)
 func_contract_case_lhs.adb:11:28: warning: assuming "Foo" has no effect on global items
-func_contract_case_lhs.adb:11:28: warning: no Global contract available for "Foo"
+func_contract_case_lhs.adb:11:28: warning: no Global contract available for "Foo" [assumed-global-null]
 func_contract_case_lhs.adb:11:33: medium: predicate check might fail [possible fix: subprogram at line 10 should mention X in a precondition]
 func_contract_case_lhs.adb:12:28: info: contract case proved (Trivial: 2 VC)
 func_contract_case_lhs_imp.adb:4:13: info: function contract might not be available on implicit recursive calls
@@ -72,10 +72,10 @@ func_contract_case_lhs_imp.adb:6:37: info: precondition proved (Trivial: 1 VC)
 func_contract_case_lhs_imp.adb:10:13: info: function contract might not be available on implicit recursive calls
 func_contract_case_lhs_imp.adb:11:17: warning: contract cases do not mention function result [-gnatw.t]
 func_contract_case_lhs_imp.adb:11:36: warning: assuming "Foo" has no effect on global items
-func_contract_case_lhs_imp.adb:11:36: warning: no Global contract available for "Foo"
+func_contract_case_lhs_imp.adb:11:36: warning: no Global contract available for "Foo" [assumed-global-null]
 func_contract_case_lhs_imp.adb:11:41: medium: predicate check might fail [possible fix: subprogram at line 10 should mention X in a precondition]
 func_contract_case_lhs_imp.adb:15:07: warning: assuming "G" has no effect on global items
-func_contract_case_lhs_imp.adb:15:07: warning: no Global contract available for "G"
+func_contract_case_lhs_imp.adb:15:07: warning: no Global contract available for "G" [assumed-global-null]
 func_contract_case_rhs.adb:4:13: info: function contract might not be available on implicit recursive calls
 func_contract_case_rhs.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 func_contract_case_rhs.adb:4:64: medium: postcondition might fail
@@ -85,7 +85,7 @@ func_contract_case_rhs.adb:10:13: info: implicit aspect Always_Terminates on "G"
 func_contract_case_rhs.adb:11:09: warning: contract cases do not mention function result [-gnatw.t]
 func_contract_case_rhs.adb:11:28: medium: contract case might fail
 func_contract_case_rhs.adb:11:38: warning: assuming "Foo" has no effect on global items
-func_contract_case_rhs.adb:11:38: warning: no Global contract available for "Foo"
+func_contract_case_rhs.adb:11:38: warning: no Global contract available for "Foo" [assumed-global-null]
 func_contract_case_rhs.adb:11:43: medium: predicate check might fail [possible fix: subprogram at line 10 should mention X in a precondition]
 func_contract_case_rhs_imp.adb:4:13: info: function contract might not be available on implicit recursive calls
 func_contract_case_rhs_imp.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
@@ -94,9 +94,9 @@ func_contract_case_rhs_imp.adb:6:37: info: precondition proved (Trivial: 1 VC)
 func_contract_case_rhs_imp.adb:10:13: info: function contract might not be available on implicit recursive calls
 func_contract_case_rhs_imp.adb:11:17: warning: contract cases do not mention function result [-gnatw.t]
 func_contract_case_rhs_imp.adb:11:47: warning: assuming "Foo" has no effect on global items
-func_contract_case_rhs_imp.adb:11:47: warning: no Global contract available for "Foo"
+func_contract_case_rhs_imp.adb:11:47: warning: no Global contract available for "Foo" [assumed-global-null]
 func_contract_case_rhs_imp.adb:14:07: warning: assuming "G" has no effect on global items
-func_contract_case_rhs_imp.adb:14:07: warning: no Global contract available for "G"
+func_contract_case_rhs_imp.adb:14:07: warning: no Global contract available for "G" [assumed-global-null]
 func_formal.adb:4:13: info: function contract might not be available on implicit recursive calls
 func_formal.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 func_formal.adb:4:64: medium: postcondition might fail
@@ -112,7 +112,7 @@ func_post.adb:10:13: info: implicit aspect Always_Terminates on "G" has been pro
 func_post.adb:10:54: warning: postcondition does not mention function result [-gnatw.t]
 func_post.adb:10:62: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function Foo or turning it into an expression function in its unit spec]
 func_post.adb:10:62: warning: assuming "Foo" has no effect on global items
-func_post.adb:10:62: warning: no Global contract available for "Foo"
+func_post.adb:10:62: warning: no Global contract available for "Foo" [assumed-global-null]
 func_post.adb:10:67: medium: predicate check might fail [possible fix: subprogram at line 10 should mention X in a precondition]
 func_post_imp.adb:4:13: info: function contract might not be available on implicit recursive calls
 func_post_imp.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
@@ -121,16 +121,16 @@ func_post_imp.adb:6:37: info: precondition proved (Trivial: 1 VC)
 func_post_imp.adb:10:13: info: function contract might not be available on implicit recursive calls
 func_post_imp.adb:10:51: warning: postcondition does not mention function result [-gnatw.t]
 func_post_imp.adb:10:59: warning: assuming "Foo" has no effect on global items
-func_post_imp.adb:10:59: warning: no Global contract available for "Foo"
+func_post_imp.adb:10:59: warning: no Global contract available for "Foo" [assumed-global-null]
 func_post_imp.adb:13:07: warning: assuming "G" has no effect on global items
-func_post_imp.adb:13:07: warning: no Global contract available for "G"
+func_post_imp.adb:13:07: warning: no Global contract available for "G" [assumed-global-null]
 func_pre.adb:4:13: info: function contract might not be available on implicit recursive calls
 func_pre.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 func_pre.adb:4:64: medium: postcondition might fail
 func_pre.adb:6:37: info: precondition proved (Trivial: 1 VC)
 func_pre.adb:10:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
 func_pre.adb:10:61: warning: assuming "Foo" has no effect on global items
-func_pre.adb:10:61: warning: no Global contract available for "Foo"
+func_pre.adb:10:61: warning: no Global contract available for "Foo" [assumed-global-null]
 func_pre.adb:10:66: medium: predicate check might fail
 func_pre.adb:13:07: medium: precondition might fail [possible fix: precondition of subprogram at line 4 should mention X]
 func_pre_imp.adb:4:13: info: function contract might not be available on implicit recursive calls
@@ -138,11 +138,11 @@ func_pre_imp.adb:4:13: info: implicit aspect Always_Terminates on "F" has been p
 func_pre_imp.adb:4:64: medium: postcondition might fail
 func_pre_imp.adb:6:37: info: precondition proved (Trivial: 1 VC)
 func_pre_imp.adb:10:58: warning: assuming "Foo" has no effect on global items
-func_pre_imp.adb:10:58: warning: no Global contract available for "Foo"
+func_pre_imp.adb:10:58: warning: no Global contract available for "Foo" [assumed-global-null]
 func_pre_imp.adb:10:63: medium: predicate check might fail
 func_pre_imp.adb:13:07: medium: precondition might fail [possible fix: precondition of subprogram at line 4 should mention X]
 func_pre_imp.adb:13:07: warning: assuming "G" has no effect on global items
-func_pre_imp.adb:13:07: warning: no Global contract available for "G"
+func_pre_imp.adb:13:07: warning: no Global contract available for "G" [assumed-global-null]
 func_return.adb:4:13: info: function contract might not be available on implicit recursive calls
 func_return.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 func_return.adb:4:64: medium: postcondition might fail
@@ -169,7 +169,7 @@ imported.adb:4:13: info: implicit aspect Always_Terminates on "F" has been prove
 imported.adb:4:65: medium: postcondition might fail
 imported.adb:6:37: info: precondition proved (Trivial: 1 VC)
 imported.adb:11:08: warning: assuming "Imp" has no effect on global items
-imported.adb:11:08: warning: no Global contract available for "Imp"
+imported.adb:11:08: warning: no Global contract available for "Imp" [assumed-global-null]
 imported.adb:11:13: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
 imported_2.adb:4:13: info: function contract might not be available on implicit recursive calls
 imported_2.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
@@ -178,8 +178,8 @@ imported_2.adb:6:37: info: precondition proved (Trivial: 1 VC)
 imported_2.adb:13:07: info: no contextual analysis of "Imp" (body not seen yet)
 imported_2.adb:13:07: warning: assuming "Imp" always terminates
 imported_2.adb:13:07: warning: assuming "Imp" has no effect on global items
-imported_2.adb:13:07: warning: no Always_Terminates aspect available for "Imp"
-imported_2.adb:13:07: warning: no Global contract available for "Imp"
+imported_2.adb:13:07: warning: no Always_Terminates aspect available for "Imp" [assumed-always-terminates]
+imported_2.adb:13:07: warning: no Global contract available for "Imp" [assumed-global-null]
 imported_2.adb:13:15: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
 imported_ret.adb:4:13: info: function contract might not be available on implicit recursive calls
 imported_ret.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
@@ -187,7 +187,7 @@ imported_ret.adb:4:65: medium: postcondition might fail
 imported_ret.adb:6:37: info: precondition proved (Trivial: 1 VC)
 imported_ret.adb:8:13: info: implicit function contract might not be available on implicit recursive calls
 imported_ret.adb:11:08: warning: assuming "Imp" has no effect on global items
-imported_ret.adb:11:08: warning: no Global contract available for "Imp"
+imported_ret.adb:11:08: warning: no Global contract available for "Imp" [assumed-global-null]
 loop_statement.adb:4:13: info: function contract might not be available on implicit recursive calls
 loop_statement.adb:4:16: warning: unused initial value of "V"
 loop_statement.adb:4:64: medium: postcondition might fail

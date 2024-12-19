@@ -4,13 +4,13 @@ pixel.adb:10:43: medium: precondition might fail
 pixel.adb:14:44: medium: divide by zero might fail
 pixel.adb:14:44: medium: precondition might fail
 pixel.adb:16:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
-pixel.adb:16:04: warning: address specification on "Asp" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias [E0012]
+pixel.adb:16:04: warning: address specification on "Asp" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias [imprecise-address-specification] [E0012]
 pixel.adb:16:04: warning: launch "gnatprove --explain=E0012" for more information
 pixel.adb:16:04: warning: make sure that all overlapping objects have Async_Writers set to True
 pixel.adb:17:43: medium: divide by zero might fail
 pixel.adb:17:43: medium: precondition might fail
 pixel.adb:19:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
-pixel.adb:19:04: warning: address specification on "Cla" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias [E0012]
+pixel.adb:19:04: warning: address specification on "Cla" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias [imprecise-address-specification] [E0012]
 pixel.adb:19:04: warning: launch "gnatprove --explain=E0012" for more information
 pixel.adb:19:04: warning: make sure that all overlapping objects have Async_Writers set to True
 pixel.adb:21:41: medium: divide by zero might fail
@@ -18,10 +18,10 @@ pixel.adb:21:41: medium: precondition might fail
 pixel.adb:24:04: info: no contextual analysis of "Aspect" (body not seen yet)
 pixel.adb:24:04: warning: assuming "Aspect" always terminates
 pixel.adb:24:04: warning: assuming "Aspect" has no effect on global items
-pixel.adb:24:04: warning: no Always_Terminates aspect available for "Aspect"
-pixel.adb:24:04: warning: no Global contract available for "Aspect"
+pixel.adb:24:04: warning: no Always_Terminates aspect available for "Aspect" [assumed-always-terminates]
+pixel.adb:24:04: warning: no Global contract available for "Aspect" [assumed-global-null]
 pixel.adb:25:04: info: no contextual analysis of "Clause" (body not seen yet)
 pixel.adb:25:04: warning: assuming "Clause" always terminates
 pixel.adb:25:04: warning: assuming "Clause" has no effect on global items
-pixel.adb:25:04: warning: no Always_Terminates aspect available for "Clause"
-pixel.adb:25:04: warning: no Global contract available for "Clause"
+pixel.adb:25:04: warning: no Always_Terminates aspect available for "Clause" [assumed-always-terminates]
+pixel.adb:25:04: warning: no Global contract available for "Clause" [assumed-global-null]
