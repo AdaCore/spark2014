@@ -49,7 +49,7 @@ errorexamplefloat.adb:24:07: info: initialization of "Abs_out1" proved
 errorexamplefloat.adb:29:22: info: assertion proved (CVC4: 1 VC)
 errorexamplefloat.adb:39:43: info: float overflow check proved (CodePeer)
 errorexamplefloat.adb:39:65: info: division check proved (CodePeer)
-errorexamplefloat.adb:39:65: info: float overflow check proved (CVC4: 1 VC)
+errorexamplefloat.adb:39:65: medium: float overflow check might fail [possible explanation: precondition of subprogram at errorexamplefloat.ads:18 should mention Calculated_Force]
 errorexamplefloat.adb:48:22: medium: assertion might fail, cannot prove (Abs_out1) <= (0.01)
 errorexamplefloat.ads:21:08: info: initialization of "Relative_Error" proved
 simulink_functions.adb:189:47: medium: precondition might fail, cannot prove X > 0.0 [possible explanation: subprogram at simulink_functions.ads:58 should mention F in a precondition]
@@ -160,11 +160,11 @@ simulink_functions.adb:509:39: info: overflow check proved (CVC4: 1 VC)
 simulink_functions.adb:522:30: info: division check proved (CodePeer)
 simulink_functions.adb:535:30: info: division check proved (CodePeer)
 simulink_functions.adb:548:30: info: division check proved (CodePeer)
-simulink_functions.adb:558:19: info: float overflow check proved (CVC4: 1 VC)
+simulink_functions.adb:558:19: medium: float overflow check might fail [possible explanation: subprogram at simulink_functions.ads:95 should mention Left and Right in a precondition]
 simulink_functions.adb:558:44: medium: divide by zero might fail [possible explanation: subprogram at simulink_functions.ads:95 should mention Left and Right in a precondition]
 simulink_functions.adb:558:44: medium: float overflow check might fail [possible explanation: subprogram at simulink_functions.ads:95 should mention Left and Right in a precondition]
 simulink_functions.adb:558:53: medium: float overflow check might fail [possible explanation: subprogram at simulink_functions.ads:95 should mention Left and Right in a precondition]
-simulink_functions.adb:567:19: info: float overflow check proved (CVC4: 1 VC)
+simulink_functions.adb:567:19: medium: float overflow check might fail [possible explanation: subprogram at simulink_functions.ads:96 should mention Left and Right in a precondition]
 simulink_functions.adb:567:49: medium: divide by zero might fail [possible explanation: subprogram at simulink_functions.ads:96 should mention Left and Right in a precondition]
 simulink_functions.adb:567:49: medium: float overflow check might fail [possible explanation: subprogram at simulink_functions.ads:96 should mention Left and Right in a precondition]
 simulink_functions.adb:567:58: medium: float overflow check might fail [possible explanation: subprogram at simulink_functions.ads:96 should mention Left and Right in a precondition]

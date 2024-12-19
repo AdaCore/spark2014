@@ -289,7 +289,7 @@ simple_trajectory.ads:22:64: info: range check proved (Interval)
 simple_trajectory.ads:22:67: info: float overflow check proved (Interval)
 simple_trajectory.ads:37:29: info: initialization of "New_Speed" proved
 simple_trajectory.ads:38:09: info: data dependencies proved
-simple_trajectory.ads:41:19: info: postcondition proved (CVC4: 1 VC)
+simple_trajectory.ads:41:19: medium: postcondition might fail, cannot prove Invariant (N + 1, New_Speed)
 simple_trajectory.ads:41:32: info: range check proved (CVC4: 1 VC)
 simple_trajectory_overflow.adb:10:46: info: float overflow check proved (Interval)
 simple_trajectory_overflow.adb:10:46: info: range check proved (Interval)
