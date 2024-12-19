@@ -11,7 +11,7 @@ div_lemmas.adb:37:16: info: division check proved (CVC4: 1 VC)
 div_lemmas.adb:40:42: info: initialization of "Res" proved
 div_lemmas.adb:42:14: info: postcondition proved (CVC4: 1 VC)
 div_lemmas.adb:45:16: info: division check proved (CVC4: 1 VC)
-div_lemmas.adb:45:16: medium: float overflow check might fail (e.g. when X = 1.0312459E+0 and Y = 2.9595424E-42)
+div_lemmas.adb:45:16: medium: float overflow check might fail (e.g. when X = 1.9990286E+0 and Y = 2.9387513E-39)
 div_lemmas.adb:48:04: info: initialization of "X" proved
 div_lemmas.adb:48:07: info: initialization of "Y" proved
 div_lemmas.adb:53:04: info: precondition proved (CVC4: 1 VC)

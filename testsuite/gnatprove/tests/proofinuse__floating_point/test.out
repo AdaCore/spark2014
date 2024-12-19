@@ -171,7 +171,7 @@ floating_point.adb:374:22: medium: assertion might fail, cannot prove X - Z > 0.
 floating_point.adb:374:24: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:113 should mention X and Z in a precondition]
 floating_point.adb:382:16: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:116 should mention X and Y in a precondition]
 floating_point.adb:382:21: info: float overflow check proved (Z3: 1 VC)
-floating_point.adb:383:22: medium: assertion might fail, cannot prove Res >= X [possible explanation: subprogram at floating_point.ads:116 should mention X in a precondition]
+floating_point.adb:383:22: info: assertion proved (CVC4: 1 VC)
 floating_point.adb:384:22: medium: assertion might fail, cannot prove Res <= Y [possible explanation: subprogram at floating_point.ads:116 should mention Y in a precondition]
 floating_point.adb:392:16: info: float overflow check proved (Z3: 1 VC)
 floating_point.adb:392:21: info: float overflow check proved (Z3: 1 VC)
