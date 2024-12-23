@@ -5875,7 +5875,7 @@ package body SPARK_Util is
                end if;
             end;
 
-            if Identifier (Node_It) /= Empty then
+            if Present (Identifier (Node_It)) then
                Buf := Get_Name_String (Chars (Identifier (Node_It)))
                  & "_" & Buf;
             end if;
@@ -6097,7 +6097,7 @@ package body SPARK_Util is
 
          when N_Block_Statement =>
             declare
-               Tmp : constant String := (if Identifier (Node_It) /= Empty
+               Tmp : constant String := (if Present (Identifier (Node_It))
                                          then
                                             Get_Name_String
                                            (Chars (Identifier (Node_It))) & "_"
@@ -6111,9 +6111,8 @@ package body SPARK_Util is
               & Label_Append (Buf);
 
          when N_Raise_Statement =>
-            Buf := "raise" & (if Name (Node_It) /= Empty then
-                                 "_" & Get_Name_String
-                                (Chars (Name (Node_It)))
+            Buf := "raise" & (if Present (Name (Node_It)) then
+                                 "_" & Get_Name_String (Chars (Name (Node_It)))
                               else "") & Label_Append (Buf);
 
          when N_Simple_Return_Statement
@@ -6122,7 +6121,7 @@ package body SPARK_Util is
             Buf := "return" & Label_Append (Buf);
 
          when N_Exit_Statement =>
-            Buf := "exit" & (if Name (Node_It) /= Empty then
+            Buf := "exit" & (if Present (Name (Node_It)) then
                                 "_" & Get_Name_String (Chars (Name (Node_It)))
                              else "")
               & Label_Append (Buf);
