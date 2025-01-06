@@ -4149,7 +4149,7 @@ package body SPARK_Definition is
       --  For objects, address clauses can introduce aliases. We need
       --  additional treatment here.
 
-      if not Is_Object (E) or else not Present (Address) then
+      if not Is_Object (E) or else No (Address) then
          return;
       end if;
 

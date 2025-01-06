@@ -186,7 +186,7 @@ package body Flow_Utility is
       return Node_Lists.List
    is (Find_Contracts (E         => E,
                        Name      => Contract,
-                       Classwide => not Present (Overridden_Operation (E)),
+                       Classwide => No (Overridden_Operation (E)),
                        Inherited => Present (Overridden_Operation (E))))
    with Pre => Is_Dispatching_Operation (E)
      and then Contract in Pragma_Precondition

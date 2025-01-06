@@ -269,7 +269,7 @@ package body Gnat2Why.Expr.Loops is
 
          return Found : Boolean := False do
             Main : loop
-               while not Present (Cur_Stmt) loop
+               while No (Cur_Stmt) loop
                   --  Loop to handle potential case of neither declarations
                   --  nor statements.
 
