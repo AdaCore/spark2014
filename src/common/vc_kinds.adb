@@ -1559,7 +1559,7 @@ package body VC_Kinds is
          when Warn_Unreferenced_Function =>
             "unreferenced-function",
          when Warn_Unreferenced_Procedure =>
-            "unreferenced procedure",
+            "unreferenced-procedure",
          when Warn_Useless_Relaxed_Init_Fun =>
             "useless-relaxed-init-func-result",
         when Warn_Useless_Relaxed_Init_Obj =>
