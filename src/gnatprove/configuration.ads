@@ -87,7 +87,6 @@ package Configuration is
       --    some switch)
       --  * Cargs_List is the list of arguments in the --cargs section
 
-      AA                    : String_Sets.Set;
       Assumptions           : aliased Boolean;
       Benchmark             : aliased Boolean;
       Memcached_Server      : aliased GNAT.Strings.String_Access;
@@ -98,7 +97,6 @@ package Configuration is
       Counterexamples       : aliased GNAT.Strings.String_Access;
       CWE                   : aliased Boolean;
       D                     : aliased Boolean;
-      DD                    : String_Sets.Set;
       Dbg_No_Sem            : aliased Boolean;
       --  disable use of semaphores for ease of debugging
       Debug_Exec_RAC        : aliased Boolean;
@@ -158,7 +156,6 @@ package Configuration is
       U                     : aliased Boolean;
       UU                    : aliased Boolean;
       V                     : aliased Boolean;
-      WW                    : String_Sets.Set;
       Version               : aliased Boolean;
       Warnings              : aliased GNAT.Strings.String_Access;
       Why3_Conf             : aliased GNAT.Strings.String_Access;
@@ -192,10 +189,7 @@ package Configuration is
    Report           : Report_Mode_Type;
    Use_Semaphores   : Boolean;
    Warning_Mode     : Gnat2Why_Opts.SPARK_Warning_Mode_Type;
-
-   Enabled_Warnings  : String_Sets.Set;
-   Disabled_Warnings : String_Sets.Set;
-   Promoted_Warnings : String_Sets.Set;
+   Warning_Status   : Warning_Status_Array := VC_Kinds.Warning_Status;
 
    All_Projects      : Boolean renames CL_Switches.UU;
    Continue_On_Error : Boolean renames CL_Switches.K;
@@ -223,9 +217,7 @@ package Configuration is
       Proof_Warn_Timeout    : Integer;
       Counterexamples       : Boolean;
       Check_Counterexamples : Boolean;
-      Enabled_Warnings      : String_Sets.Set;
-      Disabled_Warnings     : String_Sets.Set;
-      Promoted_Warnings     : String_Sets.Set;
+      Warning_Status        : Warning_Status_Array;
    end record;
 
    package File_Specific_Maps is new Ada.Containers.Indefinite_Hashed_Maps

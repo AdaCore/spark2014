@@ -114,8 +114,6 @@ private
    Warning_Mode_Name            : constant String := "warning_mode";
    Why3_Args_Name               : constant String := "why3_args";
    Why3_Dir_Name                : constant String := "why3_dir";
-   Enabled_Warnings_Name        : constant String := "enabled_warnings";
-   Disabled_Warnings_Name       : constant String := "disabled_warnings";
-   Promoted_Warnings_Name       : constant String := "promoted_warnings";
+   Warning_Status_Name          : constant String := "warning_status";
 
 end Gnat2Why_Opts;

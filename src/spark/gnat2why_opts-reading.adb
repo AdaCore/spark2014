@@ -54,7 +54,6 @@ package body Gnat2Why_Opts.Reading is
       --  Return the string value of the [Field] of the JSON record [V]
 
       procedure Read_File_Specific_Info (V : JSON_Value);
-      procedure Update_Warning_Status (V : JSON_Value);
 
       -----------------------------
       -- Read_File_Specific_Info --
@@ -84,41 +83,8 @@ package body Gnat2Why_Opts.Reading is
                end loop;
             end;
          end if;
-         Update_Warning_Status (R);
+         Warning_Status := VC_Kinds.From_JSON (Get (R, Warning_Status_Name));
       end Read_File_Specific_Info;
-
-      procedure Update_Warning_Status (V : JSON_Value) is
-
-         procedure Each_Kind (Field_Name : String;
-                              New_Status : Warning_Enabled_Status);
-
-         ---------------
-         -- Each_Kind --
-         ---------------
-
-         procedure Each_Kind (Field_Name : String;
-                              New_Status : Warning_Enabled_Status) is
-            Ar : constant JSON_Array := Get (V, Field_Name);
-
-         begin
-            for Var_Index in Positive range 1 .. Length (Ar) loop
-               declare
-                  S : constant String := Get (Get (Ar, Var_Index));
-               begin
-                  for Kind in Misc_Warning_Kind loop
-                     if Kind_Name (Kind) = S then
-                        Warning_Status (Kind) := New_Status;
-                     end if;
-                  end loop;
-               end;
-            end loop;
-         end Each_Kind;
-
-      begin
-         Each_Kind (Enabled_Warnings_Name, WS_Enabled);
-         Each_Kind (Disabled_Warnings_Name, WS_Disabled);
-         Each_Kind (Promoted_Warnings_Name, WS_Error);
-      end Update_Warning_Status;
 
       V : constant JSON_Value := Read_File_Into_JSON (Args_File);
 

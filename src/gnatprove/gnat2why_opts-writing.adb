@@ -49,7 +49,6 @@ package body Gnat2Why_Opts.Writing is
       --    identical contents of the file.
 
       function To_JSON (SL : String_Lists.List) return JSON_Array;
-      function To_JSON (SL : String_Sets.Set) return JSON_Array;
       function To_JSON (FS : File_Specific) return JSON_Value;
 
       -------------------
@@ -89,11 +88,7 @@ package body Gnat2Why_Opts.Writing is
          Set_Field (Obj, No_Inlining_Name,           FS.No_Inlining);
          Set_Field (Obj, Info_Messages_Name,         FS.Info);
          Set_Field (Obj, GP_Mode_Name,               To_JSON (FS.Mode));
-         Set_Field (Obj, Enabled_Warnings_Name, To_JSON (FS.Enabled_Warnings));
-         Set_Field (Obj, Disabled_Warnings_Name,
-                    To_JSON (FS.Disabled_Warnings));
-         Set_Field (Obj, Promoted_Warnings_Name,
-                    To_JSON (FS.Promoted_Warnings));
+         Set_Field (Obj, Warning_Status_Name, To_JSON (FS.Warning_Status));
 
          --  Why3_Args are only needed in phase 2; also Compute_Why3_Args
          --  might call gnatwhy3, which requires Write_Why3_Conf_File to be
@@ -111,15 +106,6 @@ package body Gnat2Why_Opts.Writing is
       end To_JSON;
 
       function To_JSON (SL : String_Lists.List) return JSON_Array is
-         A : JSON_Array := GNATCOLL.JSON.Empty_Array;
-      begin
-         for S of SL loop
-            Append (A, Create (S));
-         end loop;
-         return A;
-      end To_JSON;
-
-      function To_JSON (SL : String_Sets.Set) return JSON_Array is
          A : JSON_Array := GNATCOLL.JSON.Empty_Array;
       begin
          for S of SL loop

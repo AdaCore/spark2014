@@ -161,10 +161,6 @@ package body Configuration is
    procedure Check_Duplicate_Bodies (Msg : GPR2.Message.Object);
    --  Raise an error if the message is about duplicate bodies.
 
-   procedure Check_Warning_Name (Value : String);
-   --  Check that a name passed to -W, -A, -D is indeed a valid warning
-   --  identifier.
-
    function Is_Coq_Prover (FS : File_Specific) return Boolean;
    --  @return True iff one alternate prover is "coq"
 
@@ -261,20 +257,6 @@ package body Configuration is
                     With_Help => False);
       end if;
    end Check_Duplicate_Bodies;
-
-   ------------------------
-   -- Check_Warning_Name --
-   ------------------------
-
-   procedure Check_Warning_Name (Value : String) is
-   begin
-      if not
-        (for some Warning in Misc_Warning_Kind => Kind_Name (Warning) = Value)
-      then
-         Abort_Msg ("""" & Value & """ is not a valid warning name",
-                    With_Help => False);
-      end if;
-   end Check_Warning_Name;
 
    ---------------------
    -- Internal_Report --
@@ -619,31 +601,27 @@ package body Configuration is
    ---------------------
 
    procedure Handle_Warning_Switches (Switch, Value : String) is
+      Tag : Misc_Warning_Kind;
    begin
       if Switch /= "--pedantic" then
-         Check_Warning_Name (Value);
+         declare
+         begin
+            Tag := From_Tag (Value);
+         exception
+            when Constraint_Error =>
+               Abort_Msg ("""" & Value & """ is not a valid warning name",
+                          With_Help => False);
+         end;
       end if;
       if Switch = "-W" then
-         CL_Switches.WW.Include (Value);
-         CL_Switches.DD.Exclude (Value);
-         CL_Switches.AA.Exclude (Value);
+         Configuration.Warning_Status (Tag) := VC_Kinds.WS_Enabled;
       elsif Switch = "-A" then
-         CL_Switches.AA.Include (Value);
-         CL_Switches.WW.Exclude (Value);
-         CL_Switches.DD.Exclude (Value);
+         Configuration.Warning_Status (Tag) := VC_Kinds.WS_Disabled;
       elsif Switch = "-D" then
-         CL_Switches.DD.Include (Value);
-         CL_Switches.WW.Exclude (Value);
-         CL_Switches.AA.Exclude (Value);
+         Configuration.Warning_Status (Tag) := VC_Kinds.WS_Error;
       elsif Switch = "--pedantic" then
          for WK in Pedantic_Warning_Kind loop
-            declare
-               S : constant String := Kind_Name (WK);
-            begin
-               CL_Switches.WW.Include (S);
-               CL_Switches.DD.Exclude (S);
-               CL_Switches.AA.Exclude (S);
-            end;
+            Configuration.Warning_Status (WK) := VC_Kinds.WS_Enabled;
          end loop;
       else
          raise Program_Error;
@@ -1585,9 +1563,7 @@ package body Configuration is
          FS.Proof_Warnings := Proof_Warnings;
          FS.No_Inlining := CL_Switches.No_Inlining or
            CL_Switches.No_Global_Generation;
-         FS.Enabled_Warnings := CL_Switches.WW;
-         FS.Disabled_Warnings := CL_Switches.AA;
-         FS.Promoted_Warnings := CL_Switches.DD;
+         FS.Warning_Status := Configuration.Warning_Status;
       end File_Specific_Postprocess;
 
       ----------

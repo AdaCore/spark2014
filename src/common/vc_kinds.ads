@@ -550,6 +550,10 @@ package VC_Kinds is
    type Warning_Status_Array is array (Misc_Warning_Kind) of
      Warning_Enabled_Status;
 
+   function From_Tag (Tag : String) return Misc_Warning_Kind;
+   --  Compute the warning kind from a string. Raise Constraint_Error if the
+   --  tag doesn't correspond to a warning kind.
+
    Warning_Status : Warning_Status_Array :=
      [Pedantic_Warning_Kind => WS_Disabled, others => WS_Enabled];
    --  The array which contains the status for each warning. By default, all
@@ -1312,6 +1316,7 @@ package VC_Kinds is
    function From_JSON (V : JSON_Value) return Cntexample_File_Maps.Map;
    function From_JSON (V : JSON_Value) return SPARK_Mode_Status;
    function From_JSON (V : JSON_Value) return GP_Mode;
+   function From_JSON (V : JSON_Value) return Warning_Status_Array;
 
    function From_JSON_Labels (Ar : JSON_Array) return S_String_List.List;
 
@@ -1321,4 +1326,5 @@ package VC_Kinds is
    function To_JSON (V : Cntexmp_Value) return JSON_Value;
    function To_JSON (Status : SPARK_Mode_Status) return JSON_Value;
    function To_JSON (M : GP_Mode) return JSON_Value;
+   function To_JSON (W : Warning_Status_Array) return JSON_Value;
 end VC_Kinds;
