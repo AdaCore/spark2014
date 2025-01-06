@@ -191,7 +191,6 @@ package body Flow.Slice is
    --  Start of processing for Compute_Dependency_Relation
 
    begin
-
       --  Determine all out vertices
 
       for V_Final of FA.CFG.Get_Collection

@@ -2148,7 +2148,6 @@ package body SPARK_Util is
       Actual : Node_Id := First (Actuals);
 
    begin
-
       while Present (Actual) loop
          pragma Assert (Nkind (Actual) = N_Generic_Association);
 

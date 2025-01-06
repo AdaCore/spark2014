@@ -3991,8 +3991,8 @@ package body Gnat2Why.Expr.Aggregates is
          Pred_Checks   : W_Statement_Sequence_Id := Void_Sequence;
          Context       : Ref_Context;
          Call          : W_Expr_Id;
-      begin
 
+      begin
          --  Compute the arguments for the call
 
          Top := Top + 1;

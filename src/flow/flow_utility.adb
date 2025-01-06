@@ -799,10 +799,8 @@ package body Flow_Utility is
    --  Start of processing for Process_Type_Contracts_Internal
 
    begin
-
-      --  If we didn't analyze Typ yet, and it is not an
-      --  access-to-subprogram type, then we add Typ to Types_Seen and explore
-      --  it.
+      --  If we didn't analyze Typ yet, and it is not an access-to-subprogram
+      --  type, then we add Typ to Types_Seen and explore it.
 
       Types_Seen.Insert (Typ, Position, Inserted);
 
@@ -6303,12 +6301,13 @@ package body Flow_Utility is
       return Boolean
    is
    begin
-
       --  Termination of plain or while loops is not automatically proved
+
       if No (I_Scheme) or else Present (Condition (I_Scheme)) then
          return False;
 
-         --  Termination of loops over a type or range is proved
+      --  Termination of loops over a type or range is proved
+
       elsif Present (Loop_Parameter_Specification (I_Scheme)) then
          return True;
 

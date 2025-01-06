@@ -2849,7 +2849,6 @@ package body Why.Gen.Records is
       Index_All  : Positive := 1;
 
    begin
-
       --  Hardcoded types are translated separately
 
       if Is_Hardcoded_Entity (E) then

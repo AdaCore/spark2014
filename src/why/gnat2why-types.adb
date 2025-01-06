@@ -893,7 +893,6 @@ package body Gnat2Why.Types is
    --  Start of processing for Generate_Type_Completion
 
    begin
-
       Th :=
         Open_Theory
           (WF_Context, E_Module (E, Axiom),

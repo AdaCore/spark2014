@@ -145,7 +145,6 @@ package body Gnat2Why.Assumptions is
 
    procedure Register_Proof_Claims (E : Entity_Id) is
    begin
-
       --  SPARK can't say anything about entities whose body is not in SPARK,
       --  so safe guard against this here.
 

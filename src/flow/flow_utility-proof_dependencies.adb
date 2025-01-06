@@ -135,8 +135,8 @@ package body Flow_Utility.Proof_Dependencies is
 
       Descendants  : constant Node_Sets.Set := Get_Descendant_Set (Ty);
       Descendant_E : Entity_Id;
-   begin
 
+   begin
       --  Pull user-defined equalities from descendants of type Ty
 
       for Descendant of Descendants loop

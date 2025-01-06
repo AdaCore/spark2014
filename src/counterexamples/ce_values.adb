@@ -130,8 +130,8 @@ package body CE_Values is
 
          Arr2_Values : constant Map          := Arr2.Array_Values;
          Arr2_Others : constant Value_Access := Arr2.Array_Others;
-      begin
 
+      begin
          for C1 in Arr1_Values.Iterate loop
             declare
                Checked_C :          Checked_Indices_Set.Cursor;

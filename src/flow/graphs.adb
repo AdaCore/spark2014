@@ -220,7 +220,6 @@ package body Graphs is
    --  Start of processing for BFS
 
    begin
-
       if Include_Start then
          Enqueue (A => Start,
                   B => Start,
@@ -1550,7 +1549,6 @@ package body Graphs is
    --  Start of processing for Shortest_Path
 
    begin
-
       BFS (G             => G,
            Start         => Start,
            Include_Start => Allow_Trivial,

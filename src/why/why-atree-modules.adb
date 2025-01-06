@@ -467,7 +467,6 @@ package body Why.Atree.Modules is
 
    procedure Initialize is
    begin
-
       --  Initialize files first
 
       Int_File  := NID ("int");

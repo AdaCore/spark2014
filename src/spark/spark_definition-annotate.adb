@@ -1960,7 +1960,6 @@ package body SPARK_Definition.Annotate is
    --  Start of processing for Check_At_End_Borrow_Annotation
 
    begin
-
       Check_Annotate_Entity_Argument
         (Arg3_Exp, "third", Prag, "At_End_Borrow", Ok);
       if not Ok then
@@ -6155,7 +6154,6 @@ package body SPARK_Definition.Annotate is
    is
       Left_Sloc, Right_Sloc : Source_Ptr;
    begin
-
       if No (Range_Node) then
          return;
       end if;
@@ -6330,7 +6328,6 @@ package body SPARK_Definition.Annotate is
       Queue_For_Marking : not null access procedure (E : Entity_Id))
    is
    begin
-
       --  If E is a private type with ownership which needs reclamation, go
       --  over the following declarations to try and find its reclamation
       --  function. Do not use the getter functions as they discard confirming

@@ -154,7 +154,6 @@ package body Call is
       Region : Mapped_Region;
 
    begin
-
       File := Open_Read (Fn);
 
       Read (File, Region);

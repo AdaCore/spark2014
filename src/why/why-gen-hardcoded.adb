@@ -108,7 +108,6 @@ package body Why.Gen.Hardcoded is
    procedure Emit_Hardcoded_Type_Declaration (Th : Theory_UC; E : Entity_Id) is
       Alias : W_Type_Id;
    begin
-
       --  The Why3 type used to represent the type is stored in Alias
       --  The following case statement is meant to be extended in the
       --  future.

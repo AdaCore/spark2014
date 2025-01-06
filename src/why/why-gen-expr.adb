@@ -323,8 +323,8 @@ package body Why.Gen.Expr is
    is
       use Why_Node_Maps;
       C : Why_Node_Maps.Cursor := Temp_Names_Map.Find (+Tmp);
-   begin
 
+   begin
       --  if Tmp is in the map, we really introduced a temp variable and need
       --  to build a binding now.
 
@@ -2826,7 +2826,6 @@ package body Why.Gen.Expr is
       From : constant W_Type_Id := Get_Type (Expr);
 
    begin
-
       --  Nothing to do if From = To
 
       if Eq_Base (To, From) then
@@ -4624,7 +4623,6 @@ package body Why.Gen.Expr is
       return W_Expr_Id
    is
    begin
-
       --  Internally, we use a map to store the expression for which we
       --  introduce a temporary variable. The map holds entries:
       --    Identifier -> Expr
