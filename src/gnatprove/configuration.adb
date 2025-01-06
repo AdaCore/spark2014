@@ -112,7 +112,28 @@ package body Configuration is
    --  called for unknown switches and for switches in section -cargs.
 
    procedure Handle_Warning_Switches (Switch, Value : String);
-   --  Handle the "-W", "-A", "-D" switches (related to warnings)
+   --  Handle the "-W", "-A", "-D" switches (related to warnings) as well as
+   --  the "--pedantic" switch. The first three switches are always followed by
+   --  a warning tag name (parameter "Value"). This function checks if "Value"
+   --  is a valid tag name if the switch is one of those three.
+   --  Meaning of the switches:
+   --  - "-W" means the warning corresponding to the tag should be
+   --    issued/enabled (W for "warn")
+   --  - "-A" means the corresponding warning should be disabled
+   --    (A for "allow")
+   --  - "-D" means the corresponding warning should be an error (D for "deny")
+   --  - --pedantic is equivalent to "-W" for the warnings that belong to the
+   --    "pedantic" subkind. See vc_kinds.ads.
+   --  The intention for "--pedantic" is to issue warnings on features that
+   --  could cause portability issues with other compilers than GNAT. For
+   --  example, issue a warning when the Ada RM allows reassociation of
+   --  operators in an expression (something GNAT never does), which could
+   --  lead to different overflows, e.g. on
+   --    A + B + C
+   --  which is parsed as
+   --    (A + B) + C
+   --  but could be reassociated by another compiler as
+   --    A + (B + C)
 
    function No_Project_File_Mode return String;
    --  This function is supposed to be called when no project file was given.
