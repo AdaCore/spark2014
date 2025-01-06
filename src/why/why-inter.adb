@@ -562,11 +562,11 @@ package body Why.Inter is
          end loop;
       end DFS;
 
-      --  Begining of processing for Check_Safe_Guard_Cycles
+      --  Start of processing for Check_Safe_Guard_Cycles
 
       Entry_Points : Node_Sets.Set;
-   begin
 
+   begin
       --  We first collect the entry points in an ordered set. The reason to do
       --  this is to avoid differences in output due to non-determinism.
 
@@ -1193,7 +1193,6 @@ package body Why.Inter is
      (E : Entity_Id; Kind : EW_Type; Relaxed_Init : Boolean) return W_Type_Id
    is
    begin
-
       --  We avoid having renaming of types in Why to allow using the same
       --  reference type.
 

@@ -1765,7 +1765,6 @@ package body Gnat2Why.Expr is
                                     Domain => EW_Term));
 
    begin
-
       pragma Assert (L_Id /= Why_Empty);
 
       --  Assume dynamic property of E
@@ -7984,7 +7983,6 @@ package body Gnat2Why.Expr is
       end Compute_Check;
 
    begin
-
       --  Do not generate a check if the returned expression is a part of the
       --  traversed parameter and this parameter is aliased. In this case the
       --  accessibility check is deferred to the call site.
@@ -8581,7 +8579,6 @@ package body Gnat2Why.Expr is
          Iterable_Info : Iterable_Annotation;
 
       begin
-
          --  In case container type has visible invariants,
          --  iteration primitives implicitly assume it during Iterable checks.
          --  So for the early checks at Iterable to be valid, we need to
@@ -11562,7 +11559,6 @@ package body Gnat2Why.Expr is
       Exc_Set         : Node_Sets.Set;
 
    begin
-
       --  Check whether all raised exceptions are handled and if
       --  not, use absurd to cut unhandled branches.
 
@@ -12149,7 +12145,6 @@ package body Gnat2Why.Expr is
 
       Result        : W_Expr_Id;
    begin
-
       case Nkind (N) is
          when N_Selected_Component
             | N_Identifier
@@ -14552,7 +14547,6 @@ package body Gnat2Why.Expr is
                Params => Params);
 
          begin
-
             --  Deal with the special case of an empty (sub)aggregate []. Those
             --  do not have any explicit choices. They use the default ranges
             --  Index_Type'First .. Index_Type'Base'Pred (Index_Type'First),
@@ -15209,7 +15203,6 @@ package body Gnat2Why.Expr is
       is
          Result : W_Pred_Id := True_Pred;
       begin
-
          --  Assume values of the aggregate's bounds. For delta aggregates,
          --  take the bounds of the array argument, otherwise, bounds are given
          --  as parameters.
@@ -19368,7 +19361,6 @@ package body Gnat2Why.Expr is
    --  Start of processing for Transform_Comparison
 
    begin
-
       --  Special case for equality between Booleans in predicates
 
       if Domain = EW_Pred

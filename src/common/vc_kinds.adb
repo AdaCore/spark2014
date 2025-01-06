@@ -1034,8 +1034,8 @@ package body VC_Kinds is
       pragma Assert (Has_Field (V, "type"));
       T : constant String := Get (V, "type");
       E : constant Unbounded_String := To_Unbounded_String (T);
-   begin
 
+   begin
       if E = "Integer" then
          return Cnt_Integer;
       end if;

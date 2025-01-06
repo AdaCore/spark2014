@@ -288,7 +288,6 @@ package body SPARK_Util.Hardcoded is
       S_Ptr : Entity_Id := E;
       --  Scope pointer
    begin
-
       --  The following case statement is meant to be extended in the future
 
       case Unit is

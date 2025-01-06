@@ -655,7 +655,6 @@ package body Gnat2Why.Util is
       Cur_Spec     : W_Expr_Id;
       Local_Params : Transformation_Params := Params;
    begin
-
       --  For specs we usually want the pretty-printing markers. This flag is a
       --  no-op for Domains other than EW_Pred.
 
@@ -1893,7 +1892,6 @@ package body Gnat2Why.Util is
 
    function Why_Type_Of_Entity (E : Entity_Id) return W_Type_Id is
    begin
-
       --  Entities for ASCII characters are not translated. Instead we use
       --  directly their integer translation.
 

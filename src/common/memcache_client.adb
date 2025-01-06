@@ -116,7 +116,6 @@ package body Memcache_Client is
    is
       Len : constant Natural := Value'Length;
    begin
-
       --  Hardcoding unused flag and expiration values
 
       String'Write (Conn.Stream, "set " & Key & " 0 0" &

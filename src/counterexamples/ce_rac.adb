@@ -1704,8 +1704,8 @@ package body CE_RAC is
       Expr   : constant Node_Id :=
         (if Use_Expr and then not Is_Formal (N)
          then Expression (Enclosing_Declaration (N)) else Empty);
-   begin
 
+   begin
       Val := new Value_Type'
         (Get_Value (N, Expr, Default_Value, Use_Fuzzing, Origin));
 
@@ -2096,7 +2096,6 @@ package body CE_RAC is
       procedure Process_Param (Formal : Entity_Id; Actual : Node_Id) is
          Val : Value_Access;
       begin
-
          --  if Is_Scalar_Type (Etype (Par)) then
          --    -> pass by value; copy out parameters after return
          --       (see Copy_Out_Parameters)
@@ -4397,8 +4396,8 @@ package body CE_RAC is
          To_Update :          Idx_Set.Set;
          Curr      :          Big_Integer  := RHS.First_Attr.Content;
          Last      : constant Big_Integer  := RHS.Last_Attr.Content;
-      begin
 
+      begin
          --  For the indices included in the slice's range, update the values
          --  of the elements which already have a specified value in
          --  Array_Values.

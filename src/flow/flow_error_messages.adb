@@ -267,8 +267,8 @@ package body Flow_Error_Messages is
       File  : constant String     := File_Name (Slc);
       Line  : constant Natural    := Positive (Get_Logical_Line_Number (Slc));
       Col   : constant Natural    := Positive (Get_Column_Number (Slc));
-   begin
 
+   begin
       Set_Field (Value, "file", File);
       Set_Field (Value, "line", Line);
       Set_Field (Value, "col", Col);
@@ -527,7 +527,6 @@ package body Flow_Error_Messages is
    --  Start of processing for Error_Msg_Flow
 
    begin
-
       --  If the message we are about to emit has already been emitted in the
       --  past then do nothing.
 

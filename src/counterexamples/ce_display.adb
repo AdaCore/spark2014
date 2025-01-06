@@ -1146,7 +1146,6 @@ package body CE_Display is
       is
          S : Supp_Lines.Interval_Set := Supp_Lines.Create;
       begin
-
          if not B then
             --  This branch is not taken, remove it
 
@@ -1267,7 +1266,6 @@ package body CE_Display is
       is
          S : Supp_Lines.Interval_Set := Supp_Lines.Create;
       begin
-
          if not B then
             --  This branch is not taken: remove it.
 
@@ -1341,7 +1339,6 @@ package body CE_Display is
                                V : Cntexmp_Value_Ptr)
       is
       begin
-
          for Elt of L loop
             declare
                Str : constant String := To_String (Elt);

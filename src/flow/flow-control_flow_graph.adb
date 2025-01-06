@@ -1461,7 +1461,6 @@ package body Flow.Control_Flow_Graph is
               E_Loc => E);
 
       begin
-
          --  Proof will pull reclamation functions at the end of the scope of
          --  E if its type needs reclamation.
          if Ekind (E) in E_Constant | E_Variable
@@ -2474,8 +2473,8 @@ package body Flow.Control_Flow_Graph is
         Exp_Util.Is_Statically_Disabled
           (N => Condition (N), Value => True, Include_Valid => False);
       Save_Warn_Off       : constant Boolean := Ctx.Vertex_Ctx.Warnings_Off;
-   begin
 
+   begin
       --  We have a vertex for the if statement itself
       Pick_Generated_Info
         (Condition (N),
