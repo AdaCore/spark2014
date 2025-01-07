@@ -1,5 +1,5 @@
 input_port.adb:7:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
-input_port.adb:7:04: warning: address specification on "Inputs" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [E0012]
+input_port.adb:7:04: warning: address specification on "Inputs" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [imprecise-address-specification] [E0012]
 input_port.adb:7:04: warning: launch "gnatprove --explain=E0012" for more information
 input_port.ads:5:29: info: initialization of "Input_Value" proved
 input_port.ads:6:11: info: data dependencies proved

@@ -12,22 +12,22 @@ test_compiler_generated_constant.adb:33:13: error: violation of aspect SPARK_Mod
 test_compiler_generated_constant.adb:33:18: error: call to a function with side effects outside of assignment or object declaration is not allowed in SPARK [E0018]
 test_compiler_generated_constant.adb:33:18: error: launch "gnatprove --explain=E0018" for more information
 test_compiler_generated_constant.adb:33:18: error: violation of aspect SPARK_Mode at line 3
-test_marking.adb:16:04: warning: analyzing unreferenced procedure "Test_OK1"
-test_marking.adb:22:04: warning: analyzing unreferenced procedure "Test_OK2"
-test_marking.adb:32:04: warning: analyzing unreferenced procedure "Test_OK3"
-test_marking.adb:44:04: warning: analyzing unreferenced procedure "Test_OK4"
+test_marking.adb:16:04: warning: analyzing unreferenced procedure "Test_OK1" [unreferenced-procedure]
+test_marking.adb:22:04: warning: analyzing unreferenced procedure "Test_OK2" [unreferenced-procedure]
+test_marking.adb:32:04: warning: analyzing unreferenced procedure "Test_OK3" [unreferenced-procedure]
+test_marking.adb:44:04: warning: analyzing unreferenced procedure "Test_OK4" [unreferenced-procedure]
 test_marking.adb:62:07: info: no contextual analysis of "Test_OK5" (exception handler)
-test_marking.adb:66:04: warning: analyzing unreferenced procedure "Test_OK6"
-test_marking.adb:76:04: warning: analyzing unreferenced procedure "Test_OK7"
-test_marking.adb:84:04: warning: analyzing unreferenced procedure "Test_KO1"
+test_marking.adb:66:04: warning: analyzing unreferenced procedure "Test_OK6" [unreferenced-procedure]
+test_marking.adb:76:04: warning: analyzing unreferenced procedure "Test_OK7" [unreferenced-procedure]
+test_marking.adb:84:04: warning: analyzing unreferenced procedure "Test_KO1" [unreferenced-procedure]
 test_marking.adb:86:22: error: call to a function with side effects in declarative part is not allowed in SPARK [E0018]
 test_marking.adb:86:22: error: launch "gnatprove --explain=E0018" for more information
 test_marking.adb:86:22: error: violation of aspect SPARK_Mode at line 3
-test_marking.adb:91:04: warning: analyzing unreferenced procedure "Test_KO2"
+test_marking.adb:91:04: warning: analyzing unreferenced procedure "Test_KO2" [unreferenced-procedure]
 test_marking.adb:95:25: error: call to a function with side effects in declarative part is not allowed in SPARK [E0018]
 test_marking.adb:95:25: error: launch "gnatprove --explain=E0018" for more information
 test_marking.adb:95:25: error: violation of aspect SPARK_Mode at line 3
-test_marking.adb:101:04: warning: analyzing unreferenced procedure "Test_KO3"
+test_marking.adb:101:04: warning: analyzing unreferenced procedure "Test_KO3" [unreferenced-procedure]
 test_marking.adb:107:36: error: call to a function with side effects in declarative part is not allowed in SPARK [E0018]
 test_marking.adb:107:36: error: launch "gnatprove --explain=E0018" for more information
 test_marking.adb:107:36: error: violation of aspect SPARK_Mode at line 3

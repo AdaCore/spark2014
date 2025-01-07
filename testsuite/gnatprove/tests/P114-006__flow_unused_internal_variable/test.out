@@ -1,2 +1,2 @@
 p.ads:3:44: warning: assuming "Foo" has no effect on global items
-p.ads:3:44: warning: no Global contract available for "Foo"
+p.ads:3:44: warning: no Global contract available for "Foo" [assumed-global-null]

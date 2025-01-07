@@ -3,6 +3,7 @@ with Ada.Strings.Unbounded;
 with Atree;                   use Atree;
 with Gnat2Why_Args;
 with Gnat2Why_Opts;           use Gnat2Why_Opts;
+with Warnsw;                  use Warnsw;
 
 package body Errout_Wrapper is
 
@@ -185,6 +186,23 @@ package body Errout_Wrapper is
                  Secondary_Loc,
                  Explain_Code,
                  To_String (Buf));
+   end Create_N;
+
+   function Create_N
+     (Kind          : Misc_Warning_Kind;
+      Extra_Message : String := "";
+      Names         : String_Lists.List := String_Lists.Empty;
+      Secondary_Loc : Source_Ptr := No_Location;
+      Explain_Code  : Explain_Code_Kind := EC_None) return Message is
+   begin
+      return
+        Create_N
+          (Warning_Message (Kind) & Extra_Message &
+            (if Warning_Doc_Switch then " [" & Kind_Name (Kind) & "]"
+               else ""),
+           Names,
+           Secondary_Loc,
+           Explain_Code);
    end Create_N;
 
    ---------------
@@ -382,15 +400,37 @@ package body Errout_Wrapper is
       First         : Boolean := False;
       Continuations : Message_Lists.List := Message_Lists.Empty) is
    begin
-      Error_Msg_N
-        (Create (Warning_Message (Kind) & Extra_Message,
-                 Names,
-                 Secondary_Loc,
-                 Explain_Code),
+      Warning_Msg_N
+        (Kind,
          N,
-         Warning_Kind,
+         Create
+           (Warning_Message (Kind) & Extra_Message &
+            (if Warning_Doc_Switch then " [" & Kind_Name (Kind) & "]"
+               else ""),
+            Names,
+            Secondary_Loc,
+            Explain_Code),
          First,
          Continuations);
+   end Warning_Msg_N;
+
+   procedure Warning_Msg_N
+     (Kind          : Misc_Warning_Kind;
+      N             : Node_Id;
+      Msg           : Message;
+      First         : Boolean := False;
+      Continuations : Message_Lists.List := Message_Lists.Empty)
+   is
+   begin
+      if Warning_Status (Kind) in WS_Enabled | WS_Error then
+         Error_Msg_N
+           (Msg,
+            N,
+            (if Warning_Status (Kind) = WS_Enabled then Warning_Kind
+             else Error_Kind),
+            First,
+            Continuations);
+      end if;
    end Warning_Msg_N;
 
 end Errout_Wrapper;

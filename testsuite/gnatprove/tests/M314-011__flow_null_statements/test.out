@@ -1,2 +1,2 @@
-test.adb:2:04: warning: analyzing unreferenced procedure "Null_Statement"
+test.adb:2:04: warning: analyzing unreferenced procedure "Null_Statement" [unreferenced-procedure]
 test.adb:2:14: warning: subprogram "Null_Statement" has no effect

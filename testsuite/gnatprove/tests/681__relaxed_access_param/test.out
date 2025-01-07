@@ -1,8 +1,8 @@
-foo.adb:9:04: warning: analyzing unreferenced procedure "Call_P"
+foo.adb:9:04: warning: analyzing unreferenced procedure "Call_P" [unreferenced-procedure]
 foo.adb:9:14: warning: subprogram "Call_P" has no effect
 foo.adb:10:07: medium: resource or memory leak might occur at end of scope
 foo.adb:12:07: warning: assuming "P" always terminates
 foo.adb:12:07: warning: assuming "P" has no effect on global items
-foo.adb:12:07: warning: no Always_Terminates aspect available for "P"
-foo.adb:12:07: warning: no Global contract available for "P"
+foo.adb:12:07: warning: no Always_Terminates aspect available for "P" [assumed-always-terminates]
+foo.adb:12:07: warning: no Global contract available for "P" [assumed-global-null]
 foo.adb:12:10: info: absence of resource or memory leak proved (CVC5: 1 VC)

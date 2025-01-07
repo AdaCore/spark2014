@@ -1,4 +1,4 @@
 p-c.adb:3:05: warning: assuming "Proc" always terminates
 p-c.adb:3:05: warning: assuming "Proc" has no effect on global items
-p-c.adb:3:05: warning: no Always_Terminates aspect available for "Proc"
-p-c.adb:3:05: warning: no Global contract available for "Proc"
+p-c.adb:3:05: warning: no Always_Terminates aspect available for "Proc" [assumed-always-terminates]
+p-c.adb:3:05: warning: no Global contract available for "Proc" [assumed-global-null]

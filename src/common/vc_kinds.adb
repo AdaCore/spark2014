@@ -1112,6 +1112,17 @@ package body VC_Kinds is
          else raise Program_Error);
    end From_JSON;
 
+   function From_JSON (V : JSON_Value) return Warning_Status_Array is
+      Result : Warning_Status_Array := Warning_Status;
+   begin
+      for MW in Misc_Warning_Kind loop
+         Result (MW) :=
+           Warning_Enabled_Status'Value
+             (Get (Get (V, Misc_Warning_Kind'Image (MW))));
+      end loop;
+      return Result;
+   end From_JSON;
+
    function From_JSON (V : JSON_Value) return GP_Mode is
      (GP_Mode'Value (Get (V)));
 
@@ -1131,6 +1142,20 @@ package body VC_Kinds is
       end loop;
       return Res;
    end From_JSON_Labels;
+
+   --------------
+   -- From_Tag --
+   --------------
+
+   function From_Tag (Tag : String) return Misc_Warning_Kind is
+   begin
+      for M in Misc_Warning_Kind loop
+         if Tag = Kind_Name (M) then
+            return M;
+         end if;
+      end loop;
+      raise Constraint_Error;
+   end From_Tag;
 
    -----------------------------
    -- Get_Typed_Cntexmp_Value --
@@ -1534,7 +1559,7 @@ package body VC_Kinds is
          when Warn_Unreferenced_Function =>
             "unreferenced-function",
          when Warn_Unreferenced_Procedure =>
-            "unreferenced procedure",
+            "unreferenced-procedure",
          when Warn_Useless_Relaxed_Init_Fun =>
             "useless-relaxed-init-func-result",
         when Warn_Useless_Relaxed_Init_Obj =>
@@ -1774,6 +1799,17 @@ package body VC_Kinds is
    function To_JSON (M : GP_Mode) return JSON_Value is
    begin
       return Create (GP_Mode'Image (M));
+   end To_JSON;
+
+   function To_JSON (W : Warning_Status_Array) return JSON_Value is
+      Obj : constant JSON_Value := Create_Object;
+   begin
+      for MW in Misc_Warning_Kind loop
+         Set_Field (Obj,
+                    Misc_Warning_Kind'Image (MW),
+                    Warning_Enabled_Status'Image (W (MW)));
+      end loop;
+      return Obj;
    end To_JSON;
 
    ---------------

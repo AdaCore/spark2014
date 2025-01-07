@@ -1,2 +1,2 @@
 dummy.adb:5:19: warning: assuming "Yield" always terminates
-dummy.adb:5:19: warning: no Always_Terminates aspect available for "Yield"
+dummy.adb:5:19: warning: no Always_Terminates aspect available for "Yield" [assumed-always-terminates]

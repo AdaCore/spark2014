@@ -4796,14 +4796,13 @@ package body SPARK_Definition is
 
             elsif Emit_Warning_Info_Messages
               and then SPARK_Pragma_Is (Opt.On)
-              and then Gnat2Why_Args.Pedantic
               and then Is_Enumeration_Type (Etype (P))
             then
-               Error_Msg_N
-                 (Create_N (Warning_Message (Warn_Image_Attribute_Length),
-                            Names => [To_String (Aname, Sloc (N))]),
+               Warning_Msg_N
+                 (Warn_Image_Attribute_Length,
                   N,
-                  Kind => Warning_Kind);
+                  Create_N (Warn_Image_Attribute_Length,
+                            Names => [To_String (Aname, Sloc (N))]));
             end if;
 
          --  These attributes are supported, but generate a warning in
@@ -4866,24 +4865,23 @@ package body SPARK_Definition is
 
             if Emit_Warning_Info_Messages
               and then SPARK_Pragma_Is (Opt.On)
-              and then Gnat2Why_Args.Pedantic
             then
-               Error_Msg_N
-                 (Create_N
-                    (Warning_Message (Warn_Representation_Attribute_Value),
-                     Names => [To_String (Aname, Sloc (N))]),
+               Warning_Msg_N
+                 (Warn_Representation_Attribute_Value,
                   N,
-                  Kind => Warning_Kind);
+                  Create_N
+                    (Warning_Message (Warn_Representation_Attribute_Value),
+                     Names => [To_String (Aname, Sloc (N))]));
             end if;
 
          when Attribute_Valid =>
             if Emit_Warning_Info_Messages
               and then SPARK_Pragma_Is (Opt.On)
             then
-               Error_Msg_N (Warning_Message (Warn_Attribute_Valid),
-                            N,
-                            Kind => Warning_Kind,
-                            First => True);
+               Warning_Msg_N
+                 (Warn_Attribute_Valid,
+                  N,
+                  First => True);
             end if;
 
          --  Attribute Initialized is used on prefixes with relaxed
@@ -5358,7 +5356,6 @@ package body SPARK_Definition is
       --  by GNAT, as they could be reordered according to RM 4.5/13.
 
       if Emit_Warning_Info_Messages
-        and then Gnat2Why_Args.Pedantic
 
         --  Ignore code defined in the standard library, unless the main unit
         --  is from the standard library. In particular, ignore code from
@@ -5378,10 +5375,9 @@ package body SPARK_Definition is
                if Nkind (Left_Opnd (N)) in N_Op_Add | N_Op_Subtract
                  and then Paren_Count (Left_Opnd (N)) = 0
                then
-                  Error_Msg_N
-                    (Warning_Message (Warn_Operator_Reassociation),
+                  Warning_Msg_N
+                    (Warn_Operator_Reassociation,
                      Left_Opnd (N),
-                     Kind => Warning_Kind,
                      First => True);
                end if;
 
@@ -5390,10 +5386,9 @@ package body SPARK_Definition is
                then
                   pragma Annotate
                     (Xcov, Exempt_On, "GNAT associates to the left");
-                  Error_Msg_N
-                    (Warning_Message (Warn_Operator_Reassociation),
+                  Warning_Msg_N
+                    (Warn_Operator_Reassociation,
                      Right_Opnd (N),
-                     Kind => Warning_Kind,
                      First => True);
                   pragma Annotate (Xcov, Exempt_Off);
                end if;
@@ -5402,10 +5397,9 @@ package body SPARK_Definition is
                if Nkind (Left_Opnd (N)) in N_Multiplying_Operator
                  and then Paren_Count (Left_Opnd (N)) = 0
                then
-                  Error_Msg_N
-                    (Warning_Message (Warn_Operator_Reassociation),
+                  Warning_Msg_N
+                    (Warn_Operator_Reassociation,
                      Left_Opnd (N),
-                     Kind => Warning_Kind,
                      First => True);
                end if;
 
@@ -5414,10 +5408,9 @@ package body SPARK_Definition is
                then
                   pragma Annotate
                     (Xcov, Exempt_On, "GNAT associates to the left");
-                  Error_Msg_N
-                    (Warning_Message (Warn_Operator_Reassociation),
+                  Warning_Msg_N
+                    (Warn_Operator_Reassociation,
                      Right_Opnd (N),
-                     Kind => Warning_Kind,
                      First => True);
                   pragma Annotate (Xcov, Exempt_Off);
                end if;
@@ -5861,11 +5854,10 @@ package body SPARK_Definition is
          begin
             if Might_Have_Flow_Assumptions then
                if not Has_User_Supplied_Globals (E) then
-                  Error_Msg_N
-                    (Create (Warning_Message (Warn_Assumed_Global_Null),
-                             Names => [E]),
+                  Warning_Msg_N
+                    (Warn_Assumed_Global_Null,
                      N,
-                     Kind => Warning_Kind,
+                     Names => [E],
                      Continuations =>
                        [Create ("assuming & has no effect on global items",
                                 Names => [E])]);
@@ -5874,11 +5866,10 @@ package body SPARK_Definition is
                if Get_Termination_Condition (E).Kind = Unspecified
                  and then not No_Return (E)
                then
-                  Error_Msg_N
-                    (Create (Warning_Message (Warn_Assumed_Always_Terminates),
-                             Names => [E]),
+                  Warning_Msg_N
+                    (Warn_Assumed_Always_Terminates,
                      N,
-                     Kind => Warning_Kind,
+                     Names => [E],
                      Continuations =>
                        [Create ("assuming & always terminates",
                                 Names => [E])]);
@@ -5905,11 +5896,10 @@ package body SPARK_Definition is
                   else "the value returned by a call to & is assumed to "
                        & "have no aliases");
             begin
-               Error_Msg_N
-                 (Create (Warning_Message (Warn_Address_To_Access),
-                          Names => [E]),
+               Warning_Msg_N
+                 (Warn_Address_To_Access,
                   N,
-                  Kind => Warning_Kind,
+                  Names => [E],
                   Continuations =>
                     [Create (Cont, Names => [E])]);
             end;
@@ -6772,11 +6762,12 @@ package body SPARK_Definition is
 
             if not Obj_Has_Relaxed_Init (E) then
                if Emit_Warning_Info_Messages then
-                  Error_Msg_N
-                    (Warning_Message (Warn_Useless_Relaxed_Init_Obj), E,
-                     Kind => Warning_Kind,
+                  Warning_Msg_N
+                    (Warn_Useless_Relaxed_Init_Obj,
+                     E,
                      Continuations =>
-                       ["Relaxed_Initialization annotation is useless"]);
+                       [Create
+                            ("Relaxed_Initialization annotation is useless")]);
                end if;
             else
                Mark_Type_With_Relaxed_Init
@@ -6835,11 +6826,12 @@ package body SPARK_Definition is
 
             if not Obj_Has_Relaxed_Init (E) then
                if Emit_Warning_Info_Messages then
-                  Error_Msg_N
-                    (Warning_Message (Warn_Useless_Relaxed_Init_Obj), E,
-                     Kind => Warning_Kind,
+                  Warning_Msg_N
+                    (Warn_Useless_Relaxed_Init_Obj,
+                     E,
                      Continuations =>
-                       ["Relaxed_Initialization annotation is useless"]);
+                       [Create
+                            ("Relaxed_Initialization annotation is useless")]);
                end if;
             else
                Mark_Type_With_Relaxed_Init
@@ -7483,10 +7475,9 @@ package body SPARK_Definition is
               and then Get_Termination_Condition (E) = (Static, True)
             then
                if Emit_Warning_Info_Messages then
-                  Error_Msg_N
-                    (Warning_Message (Warn_No_Possible_Termination),
+                  Warning_Msg_N
+                    (Warn_No_Possible_Termination,
                      E,
-                     Kind => Warning_Kind,
                      Explain_Code => EC_Always_Terminates_Warn);
                end if;
             end if;
@@ -8091,11 +8082,12 @@ package body SPARK_Definition is
 
             if not Fun_Has_Relaxed_Init (E) then
                if Emit_Warning_Info_Messages then
-                  Error_Msg_N
-                    (Warning_Message (Warn_Useless_Relaxed_Init_Fun), E,
-                     Kind => Warning_Kind,
+                  Warning_Msg_N
+                    (Warn_Useless_Relaxed_Init_Fun,
+                     E,
                      Continuations =>
-                       ["Relaxed_Initialization annotation is useless"]);
+                       [Create
+                            ("Relaxed_Initialization annotation is useless")]);
                end if;
             else
                Mark_Type_With_Relaxed_Init
@@ -11317,9 +11309,8 @@ package body SPARK_Definition is
             elsif Emit_Warning_Info_Messages
               and then not SPARK_Pragma_Is (Opt.Off)
             then
-               Error_Msg_N (Warning_Message (Warn_Pragma_Overflow_Mode),
+               Warning_Msg_N (Warn_Pragma_Overflow_Mode,
                             N,
-                            Kind => Warning_Kind,
                             First => True);
             end if;
 
@@ -11363,10 +11354,9 @@ package body SPARK_Definition is
                         No_Recursion | No_Reentrancy
                      then
                         if Emit_Warning_Info_Messages then
-                           Error_Msg_N
-                             (Warning_Message (Warn_Restriction_Ignored),
-                              Expr,
-                              Kind => Warning_Kind);
+                           Warning_Msg_N
+                             (Warn_Restriction_Ignored,
+                              Expr);
                         end if;
                      end if;
                   end if;
@@ -11668,10 +11658,9 @@ package body SPARK_Definition is
             if Emit_Warning_Info_Messages
               and then SPARK_Pragma_Is (Opt.On)
             then
-               Error_Msg_N
-                 (Warning_Message (Warn_Pragma_Ignored),
-                  N,
-                  Kind => Warning_Kind);
+               Warning_Msg_N
+                 (Warn_Pragma_Ignored,
+                  N);
             end if;
 
          --  Unknown_Pragma is treated here. We use an OTHERS case in order to
@@ -12089,17 +12078,15 @@ package body SPARK_Definition is
                then
                   case Ekind (E) is
                   when E_Function =>
-                     Error_Msg_N
-                       (Warning_Message (Warn_Unreferenced_Function),
+                     Warning_Msg_N
+                       (Warn_Unreferenced_Function,
                         N,
-                        Kind => Warning_Kind,
                         Names => [E]);
 
                   when E_Procedure =>
-                     Error_Msg_N
-                       (Warning_Message (Warn_Unreferenced_Procedure),
+                     Warning_Msg_N
+                       (Warn_Unreferenced_Procedure,
                         N,
-                        Kind => Warning_Kind,
                         Names => [E]);
 
                   when others =>

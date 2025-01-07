@@ -9,6 +9,6 @@ test_str.adb:25:29: info: range check proved (CVC5: 1 VC)
 test_str.adb:27:14: warning: subprogram "Do_Something" has no effect
 test_str.adb:32:25: info: assertion proved (CVC5: 2 VC)
 test_str.adb:32:25: warning: assuming "F" has no effect on global items
-test_str.adb:32:25: warning: no Global contract available for "F"
+test_str.adb:32:25: warning: no Global contract available for "F" [assumed-global-null]
 test_str.adb:32:33: warning: assuming "F" has no effect on global items
-test_str.adb:32:33: warning: no Global contract available for "F"
+test_str.adb:32:33: warning: no Global contract available for "F" [assumed-global-null]

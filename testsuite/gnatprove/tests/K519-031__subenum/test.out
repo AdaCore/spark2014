@@ -1,7 +1,7 @@
-sub.adb:22:04: warning: analyzing unreferenced procedure "P"
+sub.adb:22:04: warning: analyzing unreferenced procedure "P" [unreferenced-procedure]
 sub.adb:22:14: warning: subprogram "P" has no effect
 sub.adb:25:18: info: range check proved (CVC5: 2 VC)
-sub.adb:30:04: warning: analyzing unreferenced procedure "P"
+sub.adb:30:04: warning: analyzing unreferenced procedure "P" [unreferenced-procedure]
 sub.adb:30:14: warning: subprogram "P" has no effect
 sub.adb:32:18: info: range check proved (CVC5: 2 VC)
 sub.ads:6:13: info: implicit aspect Always_Terminates on "Remove_Absent" has been proved, subprogram will terminate

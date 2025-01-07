@@ -6,7 +6,7 @@ blocking_contract.adb:5:13: error: function "Blocking" with output global "Taski
 blocking_contract.adb:5:13: error: launch "gnatprove --explain=E0005" for more information
 blocking_contract.adb:5:13: error: violation of pragma SPARK_Mode at test.adc:1
 blocking_contract.adb:9:22: warning: assuming "Yield" always terminates
-blocking_contract.adb:9:22: warning: no Always_Terminates aspect available for "Yield"
+blocking_contract.adb:9:22: warning: no Always_Terminates aspect available for "Yield" [assumed-always-terminates]
 blocking_contract.adb:13:31: error: "Blocking" is not allowed in SPARK (due to function with global outputs)
 blocking_contract.adb:13:31: error: violation of pragma SPARK_Mode at test.adc:1
 blocking_contract.adb:13:31: info: no contextual analysis of "Blocking" (in assertion expression)
@@ -58,7 +58,7 @@ p.adb:128:10: high: call to potentially blocking subprogram "Blocking_Proc" in p
 p.adb:156:10: high: call to potentially blocking subprogram "Yielding_Proc" in protected operation "Yielding_Entry"
 p.adb:161:25: high: call to potentially blocking predefined subprogram "Yield" in protected operation "Yielding_Proc"
 p.adb:161:25: warning: assuming "Yield" always terminates
-p.adb:161:25: warning: no Always_Terminates aspect available for "Yield"
+p.adb:161:25: warning: no Always_Terminates aspect available for "Yield" [assumed-always-terminates]
 p.adb:174:12: warning: unused assignment
 p.adb:193:10: high: call to potentially blocking subprogram "barrier.wait" in protected operation "Barrier_Entry"
 p.adb:198:17: high: call to potentially blocking subprogram "Wait" in protected operation "Barrier_Proc"
@@ -92,8 +92,8 @@ pack.ads:10:13: info: ceiling priority protocol is respected (CVC5: 1 VC)
 pack.ads:14:14: warning: subprogram "External_Call_To_Protected_Func" has no effect
 pack.ads:17:16: info: implicit aspect Always_Terminates on "Func" has been proved, subprogram will terminate
 pack.ads:19:13: info: ceiling priority protocol is respected (CVC5: 1 VC)
-remote.ads:3:04: warning: pragma "Remote_Call_Interface" ignored (not yet supported)
-remote.ads:4:04: warning: pragma "All_Calls_Remote" ignored (not yet supported)
+remote.ads:3:04: warning: pragma "Remote_Call_Interface" ignored (not yet supported) [ignored-pragma]
+remote.ads:4:04: warning: pragma "All_Calls_Remote" ignored (not yet supported) [ignored-pragma]
 remote.ads:7:14: warning: subprogram "Remote_Call" has no effect
 simple_package.ads:3:14: warning: subprogram "Dummy" has no effect
 gnatprove: error during flow analysis and proof

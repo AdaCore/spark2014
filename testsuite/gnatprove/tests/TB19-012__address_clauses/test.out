@@ -12,7 +12,7 @@ test_overlay.adb:5:04: error: consider marking it as imported
 test_overlay.adb:5:04: error: object with an address clause which is not fully initialized at declaration is not allowed in SPARK
 test_overlay.adb:5:04: error: violation of aspect SPARK_Mode at line 1
 test_overlay.adb:9:19: warning: assuming "Init" has no effect on global items
-test_overlay.adb:9:19: warning: no Global contract available for "Init"
+test_overlay.adb:9:19: warning: no Global contract available for "Init" [assumed-global-null]
 test_overlay.adb:10:04: error: consider marking it as imported
 test_overlay.adb:10:04: error: object with an address clause which is not fully initialized at declaration is not allowed in SPARK
 test_overlay.adb:10:04: error: violation of aspect SPARK_Mode at line 1

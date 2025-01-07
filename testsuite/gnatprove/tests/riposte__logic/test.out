@@ -21,7 +21,7 @@ logic.adb:49:30: info: assertion proved (Trivial: 1 VC)
 logic.adb:50:22: high: assertion might fail (e.g. when F = False and T = True)
 logic.adb:52:30: info: assertion proved (Trivial: 1 VC)
 logic.adb:53:22: medium: assertion might fail
-logic.adb:58:04: warning: analyzing unreferenced procedure "De_Morgan"
+logic.adb:58:04: warning: analyzing unreferenced procedure "De_Morgan" [unreferenced-procedure]
 logic.adb:61:30: info: assertion proved (Trivial: 1 VC)
 logic.adb:62:22: info: assertion proved (CVC5: 3 VC)
 logic.adb:64:30: info: assertion proved (Trivial: 1 VC)
@@ -34,13 +34,13 @@ logic.adb:75:30: info: assertion proved (Trivial: 1 VC)
 logic.adb:76:22: medium: assertion might fail [possible fix: subprogram at line 58 should mention A and B in a precondition]
 logic.adb:78:30: info: assertion proved (Trivial: 1 VC)
 logic.adb:79:22: medium: assertion might fail [possible fix: subprogram at line 58 should mention A and B in a precondition]
-logic.adb:82:04: warning: analyzing unreferenced procedure "Contraposition"
+logic.adb:82:04: warning: analyzing unreferenced procedure "Contraposition" [unreferenced-procedure]
 logic.adb:85:30: info: assertion proved (Trivial: 1 VC)
 logic.adb:86:22: info: assertion proved (CVC5: 1 VC; Trivial: 2 VC)
 logic.adb:90:13: info: implicit aspect Always_Terminates on "XOR_Test_A" has been proved, subprogram will terminate
 logic.adb:91:19: info: postcondition proved (CVC5: 1 VC)
 logic.adb:93:07: info: initialization of "R" proved
-logic.adb:107:04: warning: analyzing unreferenced procedure "XOR_Test_B"
+logic.adb:107:04: warning: analyzing unreferenced procedure "XOR_Test_B" [unreferenced-procedure]
 logic.adb:110:30: info: assertion proved (Trivial: 1 VC)
 logic.adb:111:22: info: assertion proved (CVC5: 3 VC)
 logic.adb:113:30: info: assertion proved (Trivial: 1 VC)
@@ -49,5 +49,5 @@ logic.adb:118:11: info: flow dependencies proved
 logic.adb:120:22: info: postcondition proved (CVC5: 2 VC)
 logic.adb:126:13: info: implicit aspect Always_Terminates on "Equivalence_Test_3" has been proved, subprogram will terminate
 logic.adb:127:19: info: postcondition proved (CVC5: 4 VC)
-logic.adb:134:04: warning: analyzing unreferenced procedure "Implies_Test_1"
+logic.adb:134:04: warning: analyzing unreferenced procedure "Implies_Test_1" [unreferenced-procedure]
 logic.adb:137:22: high: assertion might fail (e.g. when A = False and B = False and C = False) [possible fix: subprogram at line 134 should mention A and B and C in a precondition]

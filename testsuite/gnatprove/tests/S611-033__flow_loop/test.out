@@ -1,4 +1,4 @@
-p.adb:7:04: warning: analyzing unreferenced procedure "Update"
+p.adb:7:04: warning: analyzing unreferenced procedure "Update" [unreferenced-procedure]
 p.adb:7:22: warning: "Noise" is not modified, could be IN
 p.adb:9:34: info: cannot unroll loop (too many loop iterations)
 p.adb:9:34: warning: statement has no effect

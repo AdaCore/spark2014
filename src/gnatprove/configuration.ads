@@ -189,6 +189,7 @@ package Configuration is
    Report           : Report_Mode_Type;
    Use_Semaphores   : Boolean;
    Warning_Mode     : Gnat2Why_Opts.SPARK_Warning_Mode_Type;
+   Warning_Status   : Warning_Status_Array := VC_Kinds.Warning_Status;
 
    All_Projects      : Boolean renames CL_Switches.UU;
    Continue_On_Error : Boolean renames CL_Switches.K;
@@ -216,6 +217,7 @@ package Configuration is
       Proof_Warn_Timeout    : Integer;
       Counterexamples       : Boolean;
       Check_Counterexamples : Boolean;
+      Warning_Status        : Warning_Status_Array;
    end record;
 
    package File_Specific_Maps is new Ada.Containers.Indefinite_Hashed_Maps

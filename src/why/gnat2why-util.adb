@@ -1379,8 +1379,8 @@ package body Gnat2Why.Util is
 
          use Ada_To_Why_Ident;
 
-         Attrs : Common_Containers.String_Sets.Set :=
-                   Common_Containers.String_Sets.Empty_Set;
+         Attrs : String_Utils.String_Sets.Set :=
+                   String_Utils.String_Sets.Empty_Set;
          Model_Trace : constant String :=
            --  Here we exclude Loop_Entry expressions and only consider
            --  Entities
@@ -1408,7 +1408,7 @@ package body Gnat2Why.Util is
             end if;
 
             if Model_Trace /= "" then
-               Common_Containers.String_Sets.Insert (Attrs, Model_Trace);
+               String_Utils.String_Sets.Insert (Attrs, Model_Trace);
             end if;
             Loop_Map.Insert (Key      => Expr,
                              New_Item => New_Generated_Identifier
@@ -1480,8 +1480,8 @@ package body Gnat2Why.Util is
 
             Typ : W_Type_Id;
             Nd  : Node_Id;
-            Attrs : Common_Containers.String_Sets.Set :=
-                   Common_Containers.String_Sets.Empty_Set;
+            Attrs : String_Utils.String_Sets.Set :=
+                   String_Utils.String_Sets.Empty_Set;
             Model_Trace : constant String :=
               --  Here we exclude Old expressions and only consider Entities
               (if Nkind (N) in N_Has_Entity then
@@ -1502,7 +1502,7 @@ package body Gnat2Why.Util is
             if Present (Enclosing_Contract_Case (N)) and then
               Model_Trace /= ""
             then
-               Common_Containers.String_Sets.Insert (Attrs, Model_Trace);
+               String_Utils.String_Sets.Insert (Attrs, Model_Trace);
                Old_Map (Position) :=
                  New_Generated_Identifier
                    (Base_Name => "old",

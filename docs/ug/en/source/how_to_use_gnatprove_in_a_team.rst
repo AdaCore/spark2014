@@ -77,7 +77,28 @@ The default is that |GNATprove| issues warnings but does not stop.
 
 .. index:: Warnings (pragma)
 
-Warnings can be suppressed selectively by the use of pragma
+Warnings can be controlled in a more fine-grained way using two methods:
+
+- the ``-W``, ``-D`` and ``-A`` switches
+- the use of pragma ``Warnings``.
+
+
+Use of Command-Line Switches to Control Warnings
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Each different warning issued by GNATprove has a specific tag, as detailed in
+the tables in :ref:`Description of Messages`. These tags can be used to allow
+the usage (that is, issue no warning) using ``-A``, enable the warning using
+``-W``, or promote the warning to an error using ``-D`` (deny). For example,
+users can specify ``-W image-attribute-length`` to enable the warning about
+the implementation-defined length of return values of the ``'Image`` attribute,
+which is normally disabled, or ``-D image-attribute-length`` to transform this
+warning into an error.
+
+Use of In-source Pragma to Suppress Warnings
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Users can also suppress warnings selectively by the use of pragma
 ``Warnings`` in the source code. For example, |GNATprove| issues three warnings
 on procedure ``Warn``, which are suppressed by the three pragma ``Warnings`` in
 the source code:

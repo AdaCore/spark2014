@@ -1,2 +1,2 @@
-test.adb:1:22: warning: restriction "No_Recursion" ignored (not yet supported)
-test.adb:1:36: warning: restriction "No_Reentrancy" ignored (not yet supported)
+test.adb:1:22: warning: restriction "No_Recursion" ignored (not yet supported) [restriction-ignored]
+test.adb:1:36: warning: restriction "No_Reentrancy" ignored (not yet supported) [restriction-ignored]

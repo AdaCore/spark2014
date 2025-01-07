@@ -4,7 +4,7 @@ p.adb:6:13: info: implicit aspect Always_Terminates on "G_False" has been proved
 p.adb:7:19: info: postcondition proved (CVC5: 1 VC)
 p.adb:11:13: info: implicit aspect Always_Terminates on "G_Y" has been proved, subprogram will terminate
 p.adb:12:19: info: postcondition proved (CVC5: 2 VC)
-p.adb:16:04: warning: analyzing unreferenced procedure "Sub"
+p.adb:16:04: warning: analyzing unreferenced procedure "Sub" [unreferenced-procedure]
 p.adb:16:14: warning: subprogram "Sub" has no effect
 p.adb:17:07: info: initialization of "Z" proved
 p.adb:18:16: info: implicit aspect Always_Terminates on "H_True" has been proved, subprogram will terminate

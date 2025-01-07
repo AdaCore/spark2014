@@ -1,6 +1,6 @@
 gen.adb:3:12: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
 gen.ads:7:18: info: postcondition proved (CVC5: 1 VC), in instantiation at main.adb:4
 main.adb:4:12: info: implicit aspect Always_Terminates on "U" has been proved, subprogram will terminate
-main.adb:5:03: warning: analyzing unreferenced procedure "Test"
+main.adb:5:03: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
 main.adb:5:13: warning: subprogram "Test" has no effect
 main.adb:7:20: info: assertion proved (CVC5: 1 VC)

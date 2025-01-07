@@ -59,9 +59,15 @@ package Errout_Wrapper is
       Names         : String_Lists.List := String_Lists.Empty;
       Secondary_Loc : Source_Ptr := No_Location;
       Explain_Code  : Explain_Code_Kind := EC_None) return Message;
-   --  Same as Create, but the names can be provided as a list of Name_Ids.
-   --  The node N is only used to help pretty-printing the names (it is used to
-   --  derive casing information).
+   --  Same as Create, but the names can be provided as a list of Strings.
+
+   function Create_N
+     (Kind          : Misc_Warning_Kind;
+      Extra_Message : String := "";
+      Names         : String_Lists.List := String_Lists.Empty;
+      Secondary_Loc : Source_Ptr := No_Location;
+      Explain_Code  : Explain_Code_Kind := EC_None) return Message;
+   --  Same as Create_N, but intended to produce a warning message.
 
    procedure Error_Msg_N
      (Msg           : Message;
@@ -108,6 +114,15 @@ package Errout_Wrapper is
    --  message text. The Extra_Message is appended to the warning message text.
    --  This function also handles warning suppression and promotion to error
    --  (-W, -A, -D switches, and --pedantic).
+
+   procedure Warning_Msg_N
+     (Kind          : Misc_Warning_Kind;
+      N             : Node_Id;
+      Msg           : Message;
+      First         : Boolean := False;
+      Continuations : Message_Lists.List := Message_Lists.Empty);
+   --  Variant of Warning_Msg_N where the user creates the message object,
+   --  ideally with the Create_N that takes a Misc_Warning_Kind.
 
    function Escape (S : String) return String;
    --  Escape the special characters # and & in the error message

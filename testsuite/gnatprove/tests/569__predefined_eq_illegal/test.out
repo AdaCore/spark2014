@@ -40,5 +40,5 @@ test_usage.adb:99:24: error: equality on T is not allowed in SPARK
 test_usage.adb:99:24: error: violation of aspect SPARK_Mode at line 1
 test_usage.adb:100:29: error: equality on T is not allowed in SPARK
 test_usage.adb:100:29: error: violation of aspect SPARK_Mode at line 1
-test_usage.adb:129:04: warning: analyzing unreferenced procedure "Use_No_Eq_Tagged_2"
+test_usage.adb:129:04: warning: analyzing unreferenced procedure "Use_No_Eq_Tagged_2" [unreferenced-procedure]
 gnatprove: error during flow analysis and proof

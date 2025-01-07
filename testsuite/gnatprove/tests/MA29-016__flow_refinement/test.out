@@ -119,21 +119,21 @@ levels.ads:25:25: info: initialization of "X" proved
 levels.ads:27:11: info: data dependencies proved
 levels.ads:28:11: info: flow dependencies proved
 par-priv.adb:8:18: medium: overflow check might fail, cannot prove lower bound for Par.X + Par.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at par-priv.ads:9 should mention X and Y in a precondition]
-par-priv.adb:13:04: warning: analyzing unreferenced procedure "Test"
+par-priv.adb:13:04: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
 par-priv.ads:11:13: info: implicit aspect Always_Terminates on "H" has been proved, subprogram will terminate
 par-priv.ads:11:40: medium: overflow check might fail, cannot prove lower bound for Par.X + Par.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 11 should mention X and Y in a precondition]
 par-priv.ads:15:13: info: implicit aspect Always_Terminates on "I" has been proved, subprogram will terminate
 par-priv2.ads:4:27: warning: no subprogram exists that can initialize abstract state "Priv2.More_Private_State" constituent of "Par.State"
 par-priv2.ads:11:13: info: implicit aspect Always_Terminates on "K" has been proved, subprogram will terminate
 par-pub.adb:9:18: medium: overflow check might fail, cannot prove lower bound for Par.X + Par.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at par-pub.ads:8 should mention X and Y in a precondition]
-par-pub.adb:14:04: warning: analyzing unreferenced procedure "Test"
+par-pub.adb:14:04: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
 par-pub.ads:6:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 par-pub.ads:15:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
 par-pub.ads:15:40: medium: overflow check might fail, cannot prove lower bound for Par.X + Par.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 15 should mention X and Y in a precondition]
 par.adb:20:16: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at par.ads:15 should mention X and Y in a precondition]
 par.adb:20:20: medium: overflow check might fail, cannot prove lower bound for X + Y + Z [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at par.ads:15 should mention X and Y and Z in a precondition]
 par.adb:26:14: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at par.ads:7 should mention X and Y in a precondition]
-par.adb:29:04: warning: analyzing unreferenced procedure "Test_1"
-par.adb:37:04: warning: analyzing unreferenced procedure "Test_2"
+par.adb:29:04: warning: analyzing unreferenced procedure "Test_1" [unreferenced-procedure]
+par.adb:37:04: warning: analyzing unreferenced procedure "Test_2" [unreferenced-procedure]
 par.ads:2:27: warning: no subprogram exists that can initialize abstract state "Par.State"
 par.ads:15:13: info: implicit aspect Always_Terminates on "Wibble" has been proved, subprogram will terminate

@@ -144,8 +144,8 @@ main_test.adb:10:05: warning: assuming "*" has no effect on global items
 main_test.adb:10:05: warning: assuming "Transpose" has no effect on global items
 main_test.adb:10:05: warning: in instantiation at generic_matrix_thing.adb:13
 main_test.adb:10:05: warning: in instantiation at generic_matrix_thing.adb:13
-main_test.adb:10:05: warning: no Global contract available for "*"
-main_test.adb:10:05: warning: no Global contract available for "Transpose"
+main_test.adb:10:05: warning: no Global contract available for "*" [assumed-global-null]
+main_test.adb:10:05: warning: no Global contract available for "Transpose" [assumed-global-null]
 specific_matrix_other.ads:11:05: info: analyzing call to "Lt" in context
 specific_matrix_other.ads:11:05: info: analyzing call to "Lt" in context
 specific_matrix_other.ads:11:05: info: analyzing call to "Rotate" in context

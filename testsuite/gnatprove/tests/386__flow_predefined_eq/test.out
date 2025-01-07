@@ -4,7 +4,7 @@ dispatching.adb:14:16: info: function contract might not be available on implici
 dispatching.adb:14:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
 dispatching.adb:15:34: medium: postcondition might fail
 dispatching.adb:25:39: warning: assuming "N" has no effect on global items
-dispatching.adb:25:39: warning: no Global contract available for "N"
+dispatching.adb:25:39: warning: no Global contract available for "N" [assumed-global-null]
 dispatching.adb:27:10: medium: implicit aspect Always_Terminates on "F" could be incorrect, indirect dispatching call to record equality might be nonterminating [possible explanation: call could hide recursive calls]
 dispatching_contract.adb:10:19: warning: unused variable "X"
 dispatching_contract.adb:10:22: warning: unused variable "Y"
@@ -12,13 +12,13 @@ dispatching_contract.adb:14:16: info: function contract might not be available o
 dispatching_contract.adb:14:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
 dispatching_contract.adb:15:30: medium: postcondition might fail
 dispatching_contract.adb:25:39: warning: assuming "N" has no effect on global items
-dispatching_contract.adb:25:39: warning: no Global contract available for "N"
+dispatching_contract.adb:25:39: warning: no Global contract available for "N" [assumed-global-null]
 dispatching_contract.adb:27:10: medium: implicit aspect Always_Terminates on "F" could be incorrect, indirect dispatching call to record equality might be nonterminating [possible explanation: call could hide recursive calls]
 dispatching_contract_import.adb:10:19: warning: unused variable "X"
 dispatching_contract_import.adb:10:22: warning: unused variable "Y"
 dispatching_contract_import.adb:14:16: info: function contract might not be available on implicit recursive calls
 dispatching_contract_import.adb:26:39: warning: assuming "N" has no effect on global items
-dispatching_contract_import.adb:26:39: warning: no Global contract available for "N"
+dispatching_contract_import.adb:26:39: warning: no Global contract available for "N" [assumed-global-null]
 dispatching_contract_import.adb:28:10: medium: implicit aspect Always_Terminates on "F" could be incorrect, indirect dispatching call to record equality might be nonterminating [possible explanation: call could hide recursive calls]
 gen.ads:3:18: medium: implicit aspect Always_Terminates on "Oeqr" could be incorrect, indirect dispatching call to record equality might be nonterminating, in instantiation at types.adb:8 [possible explanation: call could hide recursive calls]
 gen.ads:5:14: warning: subprogram "Test" has no effect, in instantiation at types.adb:8
@@ -46,7 +46,7 @@ membership_func.adb:15:07: high: "X" is not initialized, in call inlined at memb
 membership_func.adb:15:07: medium: implicit aspect Always_Terminates on "F" could be incorrect, "F" and record equality on type "R2" are mutually recursive
 membership_func.adb:15:19: info: no contextual analysis of "Foo" (body not seen yet)
 membership_func.adb:15:19: warning: assuming "Foo" has no effect on global items
-membership_func.adb:15:19: warning: no Global contract available for "Foo"
+membership_func.adb:15:19: warning: no Global contract available for "Foo" [assumed-global-null]
 membership_func.adb:18:47: info: no contextual analysis of "F" (inside expression function)
 membership_func.adb:18:47: medium: implicit aspect Always_Terminates on overriding operator "=" could be incorrect, overriding operator "=" and "F" are mutually recursive [possible fix: annotate overriding operator "=" and "F" with Subprogram_Variant aspects]
 membership_func.adb:20:19: info: analyzing call to "F" in context
@@ -94,12 +94,12 @@ recursive_contracts.adb:13:17: info: postcondition proved (CVC5: 1 VC)
 recursive_contracts.adb:13:45: medium: implicit aspect Always_Terminates on "F" could be incorrect, "F" and overriding operator "=" are mutually recursive [possible fix: annotate "F" and overriding operator "=" with Subprogram_Variant aspects]
 recursive_contracts_import.adb:7:13: info: function contract might not be available on recursive calls
 recursive_contracts_import.adb:9:31: warning: assuming "F" has no effect on global items
-recursive_contracts_import.adb:9:31: warning: no Global contract available for "F"
+recursive_contracts_import.adb:9:31: warning: no Global contract available for "F" [assumed-global-null]
 recursive_contracts_import.adb:9:42: warning: assuming "F" has no effect on global items
-recursive_contracts_import.adb:9:42: warning: no Global contract available for "F"
+recursive_contracts_import.adb:9:42: warning: no Global contract available for "F" [assumed-global-null]
 recursive_contracts_import.adb:11:13: info: function contract might not be available on recursive calls
 recursive_contracts_import.adb:13:45: warning: assuming "=" has no effect on global items
-recursive_contracts_import.adb:13:45: warning: no Global contract available for "="
+recursive_contracts_import.adb:13:45: warning: no Global contract available for "=" [assumed-global-null]
 types.ads:9:16: info: function contract might not be available on implicit recursive calls
 types.ads:9:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
 types.ads:9:70: info: postcondition proved (CVC5: 1 VC)

@@ -2,11 +2,11 @@ hello.ads:36:14: warning: subprogram "Hello_Spg_1" has no effect
 hello.ads:37:14: warning: subprogram "Hello_Spg_2" has no effect
 node_a.adb:21:20: info: range check proved (CVC5: 2 VC)
 node_a.adb:24:24: warning: assuming "Unblock_All_Tasks" always terminates
-node_a.adb:24:24: warning: no Always_Terminates aspect available for "Unblock_All_Tasks"
+node_a.adb:24:24: warning: no Always_Terminates aspect available for "Unblock_All_Tasks" [assumed-always-terminates]
 node_a.adb:27:24: warning: assuming "Suspend_Forever" always terminates
 node_a.adb:27:24: warning: assuming "Suspend_Forever" has no effect on global items
-node_a.adb:27:24: warning: no Always_Terminates aspect available for "Suspend_Forever"
-node_a.adb:27:24: warning: no Global contract available for "Suspend_Forever"
+node_a.adb:27:24: warning: no Always_Terminates aspect available for "Suspend_Forever" [assumed-always-terminates]
+node_a.adb:27:24: warning: no Global contract available for "Suspend_Forever" [assumed-global-null]
 polyorb_hi-epoch.adb:46:16: info: implicit aspect Always_Terminates on "System_Startup_Time" has been proved, subprogram will terminate
 polyorb_hi-epoch.adb:88:16: medium: range check might fail [reason for check: input value must fit in parameter type]
 polyorb_hi-epoch.adb:88:31: info: range check proved (CVC5: 1 VC)
@@ -40,9 +40,9 @@ polyorb_hi_generated-activity.ads:22:03: warning: assuming "Block_Task" has no e
 polyorb_hi_generated-activity.ads:22:03: warning: in instantiation at polyorb_hi-periodic_task.adb:70
 polyorb_hi_generated-activity.ads:22:03: warning: in instantiation at polyorb_hi-periodic_task.adb:70
 polyorb_hi_generated-activity.ads:22:03: warning: in instantiation at polyorb_hi-periodic_task.ads:73
-polyorb_hi_generated-activity.ads:22:03: warning: no Always_Terminates aspect available for "Block_Task"
-polyorb_hi_generated-activity.ads:22:03: warning: no Global contract available for "Block_Task"
-polyorb_hi_generated-activity.ads:22:03: warning: pragma "Storage_Size" ignored (not yet supported)
+polyorb_hi_generated-activity.ads:22:03: warning: no Always_Terminates aspect available for "Block_Task" [assumed-always-terminates]
+polyorb_hi_generated-activity.ads:22:03: warning: no Global contract available for "Block_Task" [assumed-global-null]
+polyorb_hi_generated-activity.ads:22:03: warning: pragma "Storage_Size" ignored (not yet supported) [ignored-pragma]
 polyorb_hi_generated-activity.ads:25:39: info: range check proved (CVC5: 1 VC)
 polyorb_hi_generated-activity.ads:26:35: info: range check proved (CVC5: 1 VC)
 polyorb_hi_generated-activity.ads:28:37: info: range check proved (CVC5: 1 VC)
@@ -52,9 +52,9 @@ polyorb_hi_generated-activity.ads:38:03: warning: assuming "Block_Task" has no e
 polyorb_hi_generated-activity.ads:38:03: warning: in instantiation at polyorb_hi-periodic_task.adb:70
 polyorb_hi_generated-activity.ads:38:03: warning: in instantiation at polyorb_hi-periodic_task.adb:70
 polyorb_hi_generated-activity.ads:38:03: warning: in instantiation at polyorb_hi-periodic_task.ads:73
-polyorb_hi_generated-activity.ads:38:03: warning: no Always_Terminates aspect available for "Block_Task"
-polyorb_hi_generated-activity.ads:38:03: warning: no Global contract available for "Block_Task"
-polyorb_hi_generated-activity.ads:38:03: warning: pragma "Storage_Size" ignored (not yet supported)
+polyorb_hi_generated-activity.ads:38:03: warning: no Always_Terminates aspect available for "Block_Task" [assumed-always-terminates]
+polyorb_hi_generated-activity.ads:38:03: warning: no Global contract available for "Block_Task" [assumed-global-null]
+polyorb_hi_generated-activity.ads:38:03: warning: pragma "Storage_Size" ignored (not yet supported) [ignored-pragma]
 polyorb_hi_generated-activity.ads:41:35: info: range check proved (CVC5: 1 VC)
 polyorb_hi_generated-activity.ads:43:37: info: range check proved (CVC5: 1 VC)
 polyorb_hi_generated-activity.ads:45:39: info: range check proved (CVC5: 1 VC)

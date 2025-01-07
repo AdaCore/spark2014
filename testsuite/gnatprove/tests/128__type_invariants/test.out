@@ -7,21 +7,21 @@ glob.ads:13:04: info: invariant check proved (CVC5: 1 VC)
 hidden.ads:2:13: info: implicit aspect Always_Terminates on "Proxy" has been proved, subprogram will terminate
 p.ads:11:09: medium: invariant check might fail on default value
 p.ads:14:29: warning: assuming "F" has no effect on global items
-p.ads:14:29: warning: no Global contract available for "F"
+p.ads:14:29: warning: no Global contract available for "F" [assumed-global-null]
 p.ads:14:32: warning: assuming "G" has no effect on global items
-p.ads:14:32: warning: no Global contract available for "G"
+p.ads:14:32: warning: no Global contract available for "G" [assumed-global-null]
 q.ads:11:09: medium: invariant check might fail on default value
 q.ads:14:29: high: cannot call boundary subprogram "F" for type "T" in its own invariant (SPARK RM 7.3.2(5))
 q.ads:14:29: medium: for X before the call at q.ads:6
 q.ads:14:29: medium: invariant check might fail
 q.ads:14:29: warning: assuming "F" has no effect on global items
-q.ads:14:29: warning: no Global contract available for "F"
+q.ads:14:29: warning: no Global contract available for "F" [assumed-global-null]
 q.ads:14:32: warning: assuming "G" has no effect on global items
-q.ads:14:32: warning: no Global contract available for "G"
+q.ads:14:32: warning: no Global contract available for "G" [assumed-global-null]
 q.ads:16:09: medium: invariant check might fail on default value
 r.ads:7:09: medium: invariant check might fail on default value
 r.ads:10:29: high: cannot call boundary subprogram "F" for type "T" in its own invariant (SPARK RM 7.3.2(5))
 r.ads:10:29: medium: for X before the call at r.ads:4
 r.ads:10:29: medium: invariant check might fail
 r.ads:10:29: warning: assuming "F" has no effect on global items
-r.ads:10:29: warning: no Global contract available for "F"
+r.ads:10:29: warning: no Global contract available for "F" [assumed-global-null]
