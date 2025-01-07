@@ -2,7 +2,7 @@ c83e02a.adb:7:14: info: add a contract to analyze it separately from calling con
 c83e02a.adb:7:14: info: local subprogram "P" only analyzed in the context of calls
 c83e02a.adb:7:14: warning: subprogram "P" has no effect
 c83e02a.adb:14:04: info: analyzing call to "P" in context
-main.adb:8:06: warning: postcondition does not check the outcome of calling "Test"
+main.adb:8:06: warning: postcondition does not check the outcome of calling "Test" [-gnatw.t]
 main.adb:8:14: info: postcondition proved (CVC5: 1 VC)
 main.adb:8:35: info: overflow check proved (CVC5: 2 VC)
 main.adb:8:35: info: range check proved (CVC5: 2 VC)

@@ -794,7 +794,7 @@ numeric_display.ads:7:04: warning: address specification on "Value" is imprecise
 numeric_display.ads:7:04: warning: launch "gnatprove --explain=E0012" for more information
 numeric_display.ads:7:04: warning: make sure that all overlapping objects have Async_Writers set to True
 operator_overload.adb:10:13: info: add a contract to analyze it separately from calling contexts
-operator_overload.adb:10:13: info: implicit aspect Always_Terminates on "<=" has been proved, subprogram will terminate
+operator_overload.adb:10:13: info: implicit aspect Always_Terminates on overriding operator "<=" has been proved, subprogram will terminate
 operator_overload.adb:10:13: info: local subprogram "<=" only analyzed in the context of calls
 operator_overload.adb:13:07: info: initialization of "Left_Squared" proved
 operator_overload.adb:13:07: info: initialization of "Left_Squared" proved, in call inlined at operator_overload.adb:30
@@ -868,12 +868,12 @@ raster_graphics.ads:20:08: info: data dependencies proved
 raster_graphics.ads:21:29: info: initialization of "Status" proved
 region_checks.ads:6:13: info: implicit aspect Always_Terminates on "Sign" has been proved, subprogram will terminate
 region_checks.ads:8:08: info: complete contract cases proved (CVC5: 1 VC)
-region_checks.ads:8:08: info: disjoint contract cases proved (CVC5: 1 VC)
+region_checks.ads:8:08: info: disjoint contract or exit cases proved (CVC5: 1 VC)
 region_checks.ads:9:11: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 region_checks.ads:10:11: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 region_checks.ads:11:11: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 region_checks.ads:13:13: info: implicit aspect Always_Terminates on "In_Unit_Square" has been proved, subprogram will terminate
-region_checks.ads:15:08: info: disjoint contract cases proved (CVC5: 1 VC)
+region_checks.ads:15:08: info: disjoint contract or exit cases proved (CVC5: 1 VC)
 region_checks.ads:16:11: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 region_checks.ads:18:11: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 region_checks.ads:20:11: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)

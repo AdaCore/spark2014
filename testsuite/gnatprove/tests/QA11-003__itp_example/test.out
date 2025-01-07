@@ -1,6 +1,6 @@
 test.adb:6:13: info: implicit aspect Always_Terminates on "Test_1" has been proved, subprogram will terminate
-test.adb:9:08: warning: postcondition does not check the outcome of calling "Test_1"
-test.adb:9:08: warning: postcondition does not mention function result
+test.adb:9:08: warning: postcondition does not check the outcome of calling "Test_1" [-gnatw.t]
+test.adb:9:08: warning: postcondition does not mention function result [-gnatw.t]
 test.adb:9:16: info: postcondition proved (CVC5: 1 VC)
 test.adb:16:13: info: implicit aspect Always_Terminates on "Test_2" has been proved, subprogram will terminate
 test.adb:17:17: high: postcondition might fail (e.g. when Test_2'Result = 'NUL')

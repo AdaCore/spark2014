@@ -1,5 +1,4 @@
 test_leaks.adb:5:11: warning: subprogram "Test_Leaks" has no effect
-test_leaks.adb:11:13: medium: function "Raise_Exp" does not return on some paths
 test_leaks.adb:13:14: info: postcondition proved (CVC5: 1 VC)
 test_leaks.adb:14:45: info: exceptional case proved (CVC5: 1 VC)
 test_leaks.adb:25:04: medium: resource or memory leak might occur at end of scope

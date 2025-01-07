@@ -40,16 +40,16 @@ iterable_invariant.ads:21:29: info: precondition proved (CVC5: 1 VC)
 iterable_invariant.ads:21:38: info: for C before the call at iterable_invariant.ads:10
 iterable_invariant.ads:21:38: info: invariant check proved (CVC5: 1 VC)
 iterable_invariant.ads:23:09: info: invariant check proved (CVC5: 1 VC)
-iterable_invariant.ads:23:09: warning: conjunct in postcondition does not check the outcome of calling "Allowed_Quantification"
+iterable_invariant.ads:23:09: warning: conjunct in postcondition does not check the outcome of calling "Allowed_Quantification" [-gnatw.t]
 iterable_invariant.ads:24:12: info: invariant check proved (CVC5: 1 VC)
-iterable_invariant.ads:25:28: warning: consider extracting disjunct from quantified expression
-iterable_invariant.ads:25:28: warning: unused variable "Y" in disjunct
+iterable_invariant.ads:25:28: warning: consider extracting disjunct from quantified expression [-gnatw.t]
+iterable_invariant.ads:25:28: warning: unused variable "Y" in disjunct [-gnatw.t]
 iterable_invariant.ads:28:09: info: invariant check proved on default value (CVC5: 1 VC)
 iterable_invariant.ads:30:25: info: in default value of private type at iterable_invariant.ads:3
 iterable_invariant.ads:30:25: info: range check proved (CVC5: 2 VC)
 iterable_invariant.ads:34:19: medium: invariant check might fail
-iterable_invariant.ads:34:27: warning: unused variable "X"
-iterable_invariant.ads:35:06: warning: postcondition does not check the outcome of calling "Forbidden_Quantification"
+iterable_invariant.ads:34:27: warning: unused variable "X" [-gnatw.t]
+iterable_invariant.ads:35:06: warning: postcondition does not check the outcome of calling "Forbidden_Quantification" [-gnatw.t]
 iterable_invariant.ads:35:14: medium: postcondition might fail (e.g. when C = Correct_Value)
 quant_checks.adb:10:16: info: during checks for quantification at quant_checks.adb:4
 quant_checks.adb:10:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate

@@ -1182,7 +1182,7 @@ package body CE_Parsing is
             end if;
 
          when Cnt_Boolean =>
-               return Boolean_Value (Cnt_Value.Bo);
+            return Boolean_Value (Cnt_Value.Bo);
 
          when Cnt_Bitvector =>
 
@@ -1240,7 +1240,7 @@ package body CE_Parsing is
             | Cnt_Projection
             | Cnt_Record
             | Cnt_Array
-          =>
+         =>
             raise Parse_Error;
       end case;
    end Parse_Scalar_Value;

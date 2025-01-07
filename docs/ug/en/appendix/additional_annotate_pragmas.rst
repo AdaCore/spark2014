@@ -165,9 +165,9 @@ on our sets, we could write:
     Annotate => (GNATprove, Iterable_For_Proof, "Contains");
 
 With this annotation, the postcondition of ``Intersection`` is translated in a
-simpler way, using logic quantification directly over elements:
+simpler way, using logic quantification directly over elements (not valid Ada syntax):
 
-.. code-block:: ada
+::
 
   (for all E : Element_Type =>
        (if Mem (Intersection'Result, E) then Mem (S1, E) and Mem (S2, E)))
@@ -233,9 +233,9 @@ type ``Sequence``, that is used to represent logically the content of the linked
 list in specifications.
 The sequence associated to a list can be constructed using the ``Model``
 function. Following the usual translation scheme for quantified expressions, the
-last line of the postcondition of ``Init`` is translated for proof as:
+last line of the postcondition of ``Init`` is translated for proof as (not Ada syntax):
 
-.. code-block:: ada
+::
 
   (for all C : Cursor =>
       (if Has_Element (Init'Result, C) then Element (Init'Result, C) = E));
@@ -243,7 +243,7 @@ last line of the postcondition of ``Init`` is translated for proof as:
 Using the definition of ``Element`` and ``Has_Element``, it can then be refined
 further into:
 
-.. code-block:: ada
+::
 
   (for all C : Cursor =>
       (if Position (Init'Result, C) in 1 .. Length (Model (Init'Result))
@@ -267,9 +267,9 @@ lists, we could write:
      Annotate => (GNATprove, Iterable_For_Proof, "Model");
 
 With this annotation, the postcondition of ``Init`` is translated directly as a
-quantification on the elements of the result's model:
+quantification on the elements of the result's model (not Ada syntax):
 
-.. code-block:: ada
+::
 
   (for all I : Positive =>
      (if I in 1 .. Length (Model (Init'Result)) then
@@ -292,14 +292,14 @@ Annotation for Inlining Functions for Proof
 Contracts for functions are generally translated by |GNATprove| as axioms on
 otherwise undefined functions. As an example, consider the following function:
 
-.. code-block:: ada
+::
 
     function Increment (X : Integer) return Integer with
       Post => Increment'Result >= X;
 
-It will be translated by GNATprove as follows:
+It will be translated by GNATprove as follows (not Ada syntax):
 
-.. code-block:: ada
+::
 
     function Increment (X : Integer) return Integer;
 
@@ -315,7 +315,7 @@ defined using axioms. For example:
 will be translated exactly as if its definition was given through a
 postcondition, namely:
 
-.. code-block:: ada
+::
 
     function Is_Positive (X : Integer) return Boolean;
 

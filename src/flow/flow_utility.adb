@@ -2281,6 +2281,8 @@ package body Flow_Utility is
         Get_Pragma (E, Pragma_Contract_Cases);
       Subprogram_Variant : constant Node_Id :=
         Get_Pragma (E, Pragma_Subprogram_Variant);
+      Exit_Cases         : constant Node_Id :=
+        Get_Pragma (E, Pragma_Exit_Cases);
 
    begin
       if Is_Dispatching_Operation (E) then
@@ -2334,6 +2336,35 @@ package body Flow_Utility is
                Next (Variant);
 
                exit when No (Variant);
+            end loop;
+         end;
+      end if;
+
+      --  If a Exit_Cases aspect was found then we pull every condition apart
+      --  from the others.
+
+      if Present (Exit_Cases) then
+         declare
+            Exit_Case : Node_Id :=
+              First
+                (Component_Associations
+                   (Expression
+                      (First
+                         (Pragma_Argument_Associations (Exit_Cases)))));
+
+            Case_Guard : Node_Id;
+
+         begin
+            loop
+               Case_Guard := First (Choices (Exit_Case));
+
+               if Nkind (Case_Guard) /= N_Others_Choice then
+                  Precondition_Expressions.Append (Case_Guard);
+               end if;
+
+               Next (Exit_Case);
+
+               exit when No (Exit_Case);
             end loop;
          end;
       end if;

@@ -97,9 +97,10 @@ package VC_Kinds is
       VC_Postcondition,              --  a postcondition
       VC_Refined_Post,               --  a refined_post
       VC_Contract_Case,
-      VC_Disjoint_Contract_Cases,
-      VC_Complete_Contract_Cases,
+      VC_Disjoint_Cases,
+      VC_Complete_Cases,
       VC_Exceptional_Case,
+      VC_Exit_Case,
 
       VC_Loop_Invariant,
       --  Internal check kind, transformed by gnatwhy3 into
@@ -457,9 +458,11 @@ package VC_Kinds is
       Lim_Entry_Family,
       Lim_Exceptional_Cases_Dispatch,
       Lim_Exceptional_Cases_Ownership,
+      Lim_Exit_Cases_Dispatch,
       Lim_Ext_Aggregate_With_Type_Ancestor,
       Lim_Extension_Case_Pattern_Matching,
       Lim_External_Initializer,
+      Lim_Finally_Statements,
       Lim_Generic_In_Hidden_Private,
       Lim_Generic_In_Type_Inv,
       Lim_Goto_Cross_Inv,
@@ -647,7 +650,7 @@ package VC_Kinds is
          when Lim_Access_To_Relaxed_Init_Subp =>
            "access to subprogram annotated with Relaxed_Initialization",
          when Lim_Access_To_Subp_With_Exc =>
-           "access to procedure which might raise exceptions",
+           "access to procedure which might propagate exceptions",
          when Lim_Address_Attr_In_Unsupported_Context =>
            "attribute ""Address"" in unsupported context",
          when Lim_Alloc_With_Type_Constraints =>
@@ -676,15 +679,19 @@ package VC_Kinds is
          when Lim_Exceptional_Cases_Dispatch =>
            "aspect ""Exceptional_Cases"" on dispatching operation",
          when Lim_Exceptional_Cases_Ownership =>
-           "procedures with exceptional contracts and parameters of mode"
+           "procedure which might propagate exceptions with parameters of mode"
           & " ""in out"" or ""out"" subjected to ownership which might not be "
           & "passed by reference",
+         when Lim_Exit_Cases_Dispatch =>
+           "aspect ""Exit_Cases"" on dispatching operation",
          when Lim_Ext_Aggregate_With_Type_Ancestor =>
            "extension aggregate with subtype ancestor part",
          when Lim_Extension_Case_Pattern_Matching =>
            "GNAT extension for case pattern matching",
          when Lim_External_Initializer =>
            "GNAT extension for embedded binary resources",
+         when Lim_Finally_Statements =>
+           "GNAT extension for finally statements",
          when Lim_Iterated_Element_Association =>
            "iterated element association",
          when Lim_Multidim_Iterator =>

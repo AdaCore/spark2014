@@ -158,7 +158,7 @@ package body Gnat2Why.Subprograms.Pointers is
               +New_And_Expr
               (Left   =>
                  +Compute_Spec (Params, To, Pragma_Postcondition, EW_Pred),
-               Right  => +Compute_Contract_Cases_Postcondition (Params, To),
+               Right  => +Compute_CC_And_EC_Postcondition (Params, To),
                Domain => EW_Pred);
             To_Post_RTE := New_Ignore
               (Ada_Node => Ada_Node,
@@ -173,7 +173,7 @@ package body Gnat2Why.Subprograms.Pointers is
               +New_And_Expr
               (Left   =>
                  +Compute_Spec (Params, From, Pragma_Postcondition, EW_Pred),
-               Right  => +Compute_Contract_Cases_Postcondition (Params, From),
+               Right  => +Compute_CC_And_EC_Postcondition (Params, From),
                Domain => EW_Pred);
             From_Post_Assume :=
               New_Assume_Statement (Pred => From_Post);

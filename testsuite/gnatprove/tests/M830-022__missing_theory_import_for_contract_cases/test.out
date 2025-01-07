@@ -2,7 +2,7 @@ state_machine.adb:16:12: info: implicit aspect Always_Terminates on "State_A" ha
 state_machine.adb:18:12: info: implicit aspect Always_Terminates on "State_B" has been proved, subprogram will terminate
 state_machine.adb:20:12: info: implicit aspect Always_Terminates on "State_C" has been proved, subprogram will terminate
 state_machine.adb:22:12: info: implicit aspect Always_Terminates on "State_D" has been proved, subprogram will terminate
-state_machine.adb:25:08: info: disjoint contract cases proved (CVC5: 1 VC)
+state_machine.adb:25:08: info: disjoint contract or exit cases proved (CVC5: 1 VC)
 state_machine.adb:25:27: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 state_machine.adb:26:27: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 state_machine.adb:27:27: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)

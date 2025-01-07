@@ -2568,7 +2568,7 @@ package body SPARK_Definition is
 
                      elsif Default_Initialization (Typ)
                      not in Full_Default_Initialization
-                       | No_Possible_Initialization
+                          | No_Possible_Initialization
                      then
                         Mark_Violation ("uninitialized allocator without"
                                         & " default initialization", N,
@@ -5074,6 +5074,12 @@ package body SPARK_Definition is
                      elsif Has_Exceptional_Contract (Subp) then
                         Mark_Unsupported (Lim_Access_To_Subp_With_Exc, N);
 
+                     --  Subprograms with an exit cases contract necessarily
+                     --  allow abnormal return.
+
+                     elsif Present (Get_Pragma (Subp, Pragma_Exit_Cases)) then
+                        raise Program_Error;
+
                      --  Subprogram with non-null Global contract (either
                      --  explicit or generated). Global accesses are allowed
                      --  for specialized actuals of functions annotated with
@@ -7190,73 +7196,6 @@ package body SPARK_Definition is
          -------------------------------
 
          procedure Mark_Subprogram_Contracts is
-
-            function Check_Param (N : Node_Id) return Traverse_Result;
-            --  Parameters of modes OUT or IN OUT of the subprogram shall not
-            --  occur in the consequences of an exceptional contract unless
-            --  they are either passed by reference or occur in the prefix
-            --  of a reference to the 'Old attribute or as direct prefixes
-            --  of attributes that do not actually read data from the object
-            --  (SPARK RM 6.1.9(1)).
-
-            function Check_Param (N : Node_Id) return Traverse_Result is
-            begin
-               case Nkind (N) is
-                  when N_Identifier | N_Expanded_Name =>
-                     declare
-                        Id : constant Entity_Id := Entity (N);
-                     begin
-                        if Present (Id)
-                          and then Ekind (Id) in E_Out_Parameter
-                                               | E_In_Out_Parameter
-                          and then Scope (Id) = E
-                          and then not Is_By_Reference_Type (Etype (Id))
-                          and then not Is_Aliased (Id)
-                        then
-                           declare
-                              Mode : constant String :=
-                                (if Ekind (Id) = E_Out_Parameter then "out"
-                                 else "in out");
-                           begin
-                              Mark_Violation
-                                ("formal parameter of mode """ & Mode
-                                 & """ in consequence of Exceptional_Cases", N,
-                                 Cont_Msg =>
-                                   "only parameters passed by reference "
-                                   & "are allowed");
-                           end;
-                        end if;
-                     end;
-
-                  when N_Attribute_Reference =>
-                     case Attribute_Name (N) is
-                        when Name_Old =>
-                           return Skip;
-                        when Name_Constrained
-                           | Name_First
-                           | Name_Last
-                           | Name_Length
-                           | Name_Range
-                        =>
-                           if Nkind (Prefix (N)) in N_Identifier
-                                                  | N_Expanded_Name
-                           then
-                              return Skip;
-                           end if;
-                        when others => null;
-                     end case;
-
-                  when others => null;
-               end case;
-
-               return OK;
-            end Check_Param;
-
-            procedure Check_Params_In_Consequence is
-              new Traverse_More_Proc (Check_Param);
-
-            --  Local variables
-
             Prag : Node_Id := (if Present (Contract (E))
                                then Pre_Post_Conditions (Contract (E))
                                else Empty);
@@ -7362,11 +7301,116 @@ package body SPARK_Definition is
                         end loop;
                      end;
 
-                     Check_Params_In_Consequence
-                       (Expression (Exceptional_Case));
                      Mark (Expression (Exceptional_Case));
                      Next (Exceptional_Case);
                   end loop;
+               end;
+            end if;
+
+            Prag := Get_Pragma (E, Pragma_Exit_Cases);
+            if Present (Prag) then
+
+               --  The frontend rejects Exit_Cases on functions without side
+               --  effects.
+               pragma Assert (Ekind (E) /= E_Function
+                              or else Is_Function_With_Side_Effects (E));
+
+               --  The frontend does not allow Exit_Cases on entries
+
+               if Ekind (E) = E_Entry then
+                  raise Program_Error;
+
+               --  Reject dispatching operations for now. Supporting them would
+               --  require handling Liskov on exit contracts.
+
+               elsif Is_Dispatching_Operation (E)
+                 and then Present (Find_Dispatching_Type (E))
+               then
+                  Mark_Unsupported (Lim_Exit_Cases_Dispatch, Prag);
+               end if;
+
+               --  Mark guards and register exceptions
+
+               declare
+                  Aggr      : constant Node_Id :=
+                    Expression (First (Pragma_Argument_Associations (Prag)));
+                  Exit_Case : Node_Id :=
+                    First (Component_Associations (Aggr));
+                  Exc_Prag  : constant Node_Id :=
+                    Get_Pragma (E, Pragma_Exceptional_Cases);
+                  Exc_Set   : constant Exception_Sets.Set :=
+                    Get_Exceptions_For_Subp (E);
+               begin
+                  while Present (Exit_Case) loop
+                     declare
+                        Guard : constant Node_Id :=
+                          First (Choices (Exit_Case));
+                     begin
+                        pragma Assert (No (Next (Guard)));
+                        case Nkind (Guard) is
+                           when N_Others_Choice =>
+                              null;
+
+                           when others =>
+                              Mark (Guard);
+                        end case;
+                     end;
+
+                     declare
+                        Exit_Kind : constant Node_Id := Expression (Exit_Case);
+                        Except    : Node_Id;
+                     begin
+                        case Nkind (Exit_Kind) is
+                           when N_Identifier =>
+
+                              --  Reject exceptions if they are disallowed by
+                              --  the exceptional cases if any.
+
+                              if Chars (Exit_Kind) = Name_Exception_Raised
+                                and then Present (Exc_Prag)
+                                and then Exc_Set.Is_Empty
+                              then
+                                 Mark_Violation
+                                   ("exit case mentioning exceptions when "
+                                    & "no exceptions can be propagated",
+                                    Exit_Kind);
+                              end if;
+
+                           when N_Aggregate =>
+                              Except := Expression
+                                (First
+                                   (Component_Associations (Exit_Kind)));
+                              Register_Exception (Entity (Except));
+
+                              --  Reject exceptions which are disallowed by the
+                              --  exceptional cases if any.
+
+                              if Present (Exc_Prag)
+                                and then not Exc_Set.Contains (Entity (Except))
+                              then
+                                 Mark_Violation
+                                   ("exit case mentionning an exception which "
+                                    & "cannot be propagated",
+                                    Except);
+                              end if;
+
+                           when others =>
+                              raise Program_Error;
+                        end case;
+                     end;
+                     Next (Exit_Case);
+                  end loop;
+
+                  --  Reject exit cases on subprograms which do not allow
+                  --  abnormal termination. For now, this only includes raising
+                  --  exceptions.
+
+                  if Exc_Set.Is_Empty then
+                     Mark_Violation
+                       ("Exit_Case on subprogram which can only return "
+                        & "normally",
+                       Prag);
+                  end if;
                end;
             end if;
 
@@ -7488,7 +7532,7 @@ package body SPARK_Definition is
                     (Lim_Exceptional_Cases_Ownership,
                      Formal,
                      Root_Cause_Msg =>
-                       "exceptional contracts and parameters with ownership",
+                       "exception propagation and parameters with ownership",
                      Cont_Msg       =>
                        Create ("& should be marked as aliased",
                                Names => [Formal]));
@@ -10338,12 +10382,12 @@ package body SPARK_Definition is
                  (Before   => Current_Concurrent_Insert_Pos,
                   New_Item => E);
 
-               --  Abstract states are not translated like other entities; they
-               --  are either fully expanded into constituents (if their
-               --  refinement is not hidden behind a SPARK_Mode => Off) or
-               --  translated just to represent their hidden constituents.
-               --
-               --  Named numbers also do not require any translation.
+            --  Abstract states are not translated like other entities; they
+            --  are either fully expanded into constituents (if their
+            --  refinement is not hidden behind a SPARK_Mode => Off) or
+            --  translated just to represent their hidden constituents.
+            --
+            --  Named numbers also do not require any translation.
 
             when E_Abstract_State | Named_Kind =>
                null;
@@ -10584,6 +10628,13 @@ package body SPARK_Definition is
          end if;
          Next (Handler);
       end loop;
+
+      if Present (Finally_Statements (N)) then
+         Mark_Unsupported
+           (Kind => Lim_Finally_Statements,
+            N    => First (Finally_Statements (N)),
+            Name => "finally");
+      end if;
    end Mark_Handled_Statements;
 
    --------------------------------------
@@ -11393,6 +11444,7 @@ package body SPARK_Definition is
             | Pragma_Effective_Reads
             | Pragma_Effective_Writes
             | Pragma_Exceptional_Cases
+            | Pragma_Exit_Cases
             | Pragma_Extensions_Visible
             | Pragma_Ghost
             | Pragma_Global

@@ -10,7 +10,7 @@ arrays.ads:4:13: info: implicit aspect Always_Terminates on "Sum" has been prove
 arrays.ads:5:14: medium: postcondition might fail
 arrays.ads:5:29: info: range check proved (CVC5: 2 VC)
 arrays.ads:6:06: medium: contract cases might not be complete
-arrays.ads:6:06: medium: contract cases might not be disjoint
+arrays.ads:6:06: medium: contract or exit cases might not be disjoint
 arrays.ads:6:25: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 arrays.ads:7:24: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 arrays.ads:7:52: info: index check proved (CVC5: 2 VC)

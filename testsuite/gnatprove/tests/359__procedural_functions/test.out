@@ -86,7 +86,6 @@ p.adb:82:17: info: initialization of "X" proved
 p.adb:100:11: info: data dependencies proved
 p.adb:100:32: info: initialization of "G" proved
 p.adb:109:11: info: data dependencies proved
-p.adb:116:13: medium: function "B5" does not return on some paths
 p.adb:118:43: info: exceptional case proved (Trivial: 1 VC)
 p.adb:144:13: info: aspect Always_Terminates on "B8" has been proved, subprogram will terminate
 p.adb:158:10: info: conditional call termination proved (CVC5: 1 VC)
@@ -97,7 +96,6 @@ p.ads:5:17: info: initialization of "X" proved
 p.ads:13:11: info: data dependencies proved
 p.ads:13:32: info: initialization of "G" proved
 p.ads:17:11: info: data dependencies proved
-p.ads:19:13: medium: function "F5" does not return on some paths
 p.ads:21:43: info: exceptional case proved (Trivial: 1 VC)
 p.ads:31:13: info: aspect Always_Terminates on "F8" has been proved, subprogram will terminate
 p.ads:39:13: info: initialization of "G" proved
@@ -112,7 +110,6 @@ p_with_post.adb:102:32: info: initialization of "G" proved
 p_with_post.adb:103:19: info: postcondition proved (CVC5: 2 VC)
 p_with_post.adb:112:11: info: data dependencies proved
 p_with_post.adb:113:19: info: postcondition proved (CVC5: 2 VC)
-p_with_post.adb:120:13: medium: function "B5" does not return on some paths
 p_with_post.adb:122:43: info: exceptional case proved (Trivial: 1 VC)
 p_with_post.adb:123:19: info: postcondition proved (CVC5: 2 VC)
 p_with_post.adb:135:19: info: postcondition proved (CVC5: 1 VC)
@@ -134,7 +131,6 @@ p_with_post.ads:15:32: info: initialization of "G" proved
 p_with_post.ads:16:19: info: postcondition proved (CVC5: 2 VC)
 p_with_post.ads:20:11: info: data dependencies proved
 p_with_post.ads:21:19: info: postcondition proved (CVC5: 2 VC)
-p_with_post.ads:23:13: medium: function "F5" does not return on some paths
 p_with_post.ads:25:43: info: exceptional case proved (CVC5: 1 VC)
 p_with_post.ads:26:19: info: postcondition proved (CVC5: 2 VC)
 p_with_post.ads:31:19: info: postcondition proved (CVC5: 1 VC)

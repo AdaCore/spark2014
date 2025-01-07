@@ -30,8 +30,8 @@ with GNATCOLL.Utils;
 package body Call is
 
    procedure Print_Command_Line
-      (Command   : String;
-       Arguments : Argument_List);
+     (Command   : String;
+      Arguments : Argument_List);
    --  Print the command line for debug purposes
 
    ------------------------
@@ -113,8 +113,8 @@ package body Call is
 
    pragma Annotate (Xcov, Exempt_On, "Not called from gnat2why");
    procedure Print_Command_Line
-      (Command   : String;
-       Arguments : Argument_List)
+     (Command   : String;
+      Arguments : Argument_List)
    is
    begin
       Ada.Text_IO.Put (Command);

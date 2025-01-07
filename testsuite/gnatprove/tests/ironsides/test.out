@@ -709,12 +709,12 @@ spark_dns_main.adb:39:20: info: range check proved (CVC5: 2 VC)
 spark_dns_main.adb:40:04: info: initialization of "ZoneFile" proved
 spark_dns_main.adb:43:34: warning: "ZoneFile" is set by "ProcessZoneFile" but not used after the call
 task_limit.adb:42:16: info: refined post proved (CVC5: 6 VC; Trivial: 2 VC)
-task_limit.adb:42:27: warning: conjunct in refined postcondition does not check the outcome of calling "Increment"
+task_limit.adb:42:27: warning: conjunct in refined postcondition does not check the outcome of calling "Increment" [-gnatw.t]
 task_limit.adb:50:38: info: range check proved (CVC5: 2 VC)
 task_limit.adb:64:16: info: refined post proved (CVC5: 4 VC; Trivial: 2 VC)
-task_limit.adb:64:27: warning: conjunct in refined postcondition does not check the outcome of calling "Decrement"
-task_limit.adb:65:17: warning: conjunct in refined postcondition does not check the outcome of calling "Decrement"
-task_limit.adb:67:17: warning: conjunct in refined postcondition does not check the outcome of calling "Decrement"
+task_limit.adb:64:27: warning: conjunct in refined postcondition does not check the outcome of calling "Decrement" [-gnatw.t]
+task_limit.adb:65:17: warning: conjunct in refined postcondition does not check the outcome of calling "Decrement" [-gnatw.t]
+task_limit.adb:67:17: warning: conjunct in refined postcondition does not check the outcome of calling "Decrement" [-gnatw.t]
 task_limit.adb:71:38: info: range check proved (CVC5: 2 VC)
 task_limit.ads:25:23: info: range check proved (CVC5: 2 VC)
 task_limit.ads:29:28: info: initialization of "Success" proved

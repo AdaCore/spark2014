@@ -37,8 +37,15 @@ objective:
 
 * exceptional contract (``Exceptional_Cases``)
 
-  As a default, procedures are not considered to raise any exceptions
-  (``Exceptional_Cases => (others => False)``).
+  As a default, procedures and functions with side effects are not considered to
+  propagate any exceptions (``Exceptional_Cases => (others => False)``). If
+  they have an exit cases contract mentioning exceptions
+  (``Exception_Raised => E``), all mentioned exceptions will be considered to
+  be potentially propagated (``Exceptional_Cases => (E | ... => True)``). If
+  the exception potentially propagated is left unspecified by at least one exit
+  case (``Exception_Raised`` with no exception name), then the subprogram is
+  assumed to potentially propagate any exception
+  (``Exceptional_Cases => (others => True)``).
 
 * termination contract (``Always_Terminates``)
 

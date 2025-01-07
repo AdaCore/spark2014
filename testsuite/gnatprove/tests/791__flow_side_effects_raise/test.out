@@ -1,0 +1,23 @@
+main.adb:10:13: info: aspect Always_Terminates on "Find" has been proved, subprogram will terminate
+main.adb:13:41: info: exceptional case proved (CVC5: 1 VC)
+main.adb:14:14: info: postcondition proved (CVC5: 3 VC)
+main.adb:14:53: info: index check proved (CVC5: 2 VC)
+main.adb:16:14: info: aspect Always_Terminates on "Find" has been proved, subprogram will terminate
+main.adb:16:48: info: initialization of "Result" proved
+main.adb:18:41: info: exceptional case proved (CVC5: 1 VC)
+main.adb:19:14: info: postcondition proved (CVC5: 3 VC)
+main.adb:19:44: info: index check proved (CVC5: 2 VC)
+main.adb:25:20: info: range check proved (CVC5: 4 VC)
+main.adb:27:33: info: loop invariant initialization proved (CVC5: 1 VC)
+main.adb:27:33: info: loop invariant preservation proved (CVC5: 1 VC)
+main.adb:27:65: info: index check proved (CVC5: 4 VC)
+main.adb:36:23: info: range check proved (CVC5: 4 VC)
+main.adb:39:33: info: loop invariant initialization proved (CVC5: 1 VC)
+main.adb:39:33: info: loop invariant preservation proved (CVC5: 1 VC)
+main.adb:39:65: info: index check proved (CVC5: 4 VC)
+main.adb:44:13: info: implicit aspect Always_Terminates on "Find_2" has been proved, subprogram will terminate
+main.adb:46:09: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
+main.adb:47:09: info: contract case proved (CVC5: 3 VC; Trivial: 1 VC)
+main.adb:48:54: info: index check proved (CVC5: 2 VC)
+main.adb:52:14: info: initialization of "R" proved
+main.adb:53:15: info: only expected exception raised (CVC5: 1 VC)

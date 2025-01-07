@@ -1,5 +1,4 @@
 test_bc.adb:3:11: warning: subprogram "Test_BC" has no effect
-test_bc.adb:7:13: medium: function "Raise_Exp" does not return on some paths
 test_bc.adb:29:24: error: launch "gnatprove --explain=E0010" for more information
 test_bc.adb:29:24: error: object was moved at line 24 [E0010]
 test_bc.adb:29:24: error: part of "Y" is not readable

@@ -1007,9 +1007,9 @@ package body CE_Display is
       --  then for of iterators on T will refined against T2's cursor type and
       --  then printed as My_Element_2 (Model (Container_Name), <value>).
 
-   -------------------------------------
-   -- Refine_Container_Iterator_Value --
-   -------------------------------------
+      -------------------------------------
+      -- Refine_Container_Iterator_Value --
+      -------------------------------------
 
       function Refine_Container_Iterator_Value
         (R_Value        : Unbounded_String;

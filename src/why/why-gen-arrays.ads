@@ -243,11 +243,11 @@ package Why.Gen.Arrays is
    --  <array_expr>.first<dim> <= <index_expr> <= <array_expr>.last<dim>
 
    function New_Array_Update
-      (Ada_Node  : Node_Id;
-       Ar        : W_Expr_Id;
-       Index     : W_Expr_Array;
-       Value     : W_Expr_Id;
-       Domain    : EW_Domain) return W_Expr_Id;
+     (Ada_Node  : Node_Id;
+      Ar        : W_Expr_Id;
+      Index     : W_Expr_Array;
+      Value     : W_Expr_Id;
+      Domain    : EW_Domain) return W_Expr_Id;
    --  ???
 
    function New_Bounds_Equality

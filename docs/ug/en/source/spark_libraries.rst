@@ -39,7 +39,6 @@ the parent project:
 
    project SPARKlib extends "sparklib_internal" is
       for Object_Dir use "sparklib_obj";
-      for Source_Dirs use SPARKlib_Internal'Source_Dirs;
       for Excluded_Source_Files use SPARKlib_Internal'Excluded_Source_Files;
    end SPARKlib;
 
