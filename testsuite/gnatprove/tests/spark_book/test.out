@@ -857,6 +857,8 @@ prime_search.adb:3:50: info: initialization of "Prime_Index" proved
 prime_search.adb:12:04: info: initialization of "Found" proved
 prime_search.adb:13:04: info: initialization of "Position" proved
 prime_search.adb:20:18: info: assertion proved (CVC5: 1 VC)
+prime_search.adb:21:36: info: overflow check proved (CVC5: 2 VC)
+prime_search.adb:21:65: info: index check proved (CVC5: 2 VC)
 prime_search.adb:21:77: info: index check proved (CVC5: 2 VC)
 prime_search.adb:22:04: info: precondition proved (CVC5: 1 VC)
 raster_graphics.adb:12:11: info: data dependencies proved

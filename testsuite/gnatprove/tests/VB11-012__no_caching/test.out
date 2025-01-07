@@ -12,4 +12,6 @@ noc.ads:8:20: high: "Loc" is not initialized in "Store" [reason for check: OUT p
 noc.ads:19:13: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 noc.ads:28:13: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 noc.ads:35:07: info: assertion proved (CVC5: 1 VC)
+noc.ads:36:11: info: index check proved (CVC5: 2 VC)
 noc.ads:44:07: info: assertion proved (CVC5: 1 VC)
+noc.ads:45:12: info: index check proved (CVC5: 2 VC)

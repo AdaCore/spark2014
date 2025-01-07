@@ -19,6 +19,7 @@ my_container.ads:21:26: warning: unused variable "C"
 my_container.ads:22:13: info: during checks for quantification at my_container.ads:26
 my_container.ads:22:13: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
 my_container.ads:22:13: info: precondition proved (CVC5: 1 VC)
+my_container_contains.adb:3:35: info: index check proved (CVC5: 2 VC)
 my_container_contains.adb:14:33: info: loop invariant initialization proved (CVC5: 1 VC)
 my_container_contains.adb:14:33: info: loop invariant preservation proved (CVC5: 1 VC)
 my_container_contains.adb:14:66: info: index check proved (CVC5: 4 VC)

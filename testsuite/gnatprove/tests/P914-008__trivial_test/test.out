@@ -1,6 +1,10 @@
 a.adb:15:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+a.adb:17:45: info: index check proved (CVC5: 2 VC)
+a.adb:17:53: info: index check proved (CVC5: 2 VC)
 a.adb:22:09: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC)
 a.adb:22:49: info: range check proved (CVC5: 1 VC)
 a.adb:23:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+a.adb:25:45: info: index check proved (CVC5: 2 VC)
+a.adb:25:53: info: index check proved (CVC5: 2 VC)
 a.ads:9:14: warning: subprogram "Test" has no effect
 a.ads:13:14: warning: subprogram "Test_Float" has no effect

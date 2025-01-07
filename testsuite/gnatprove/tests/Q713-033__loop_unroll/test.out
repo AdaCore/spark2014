@@ -58,3 +58,4 @@ loopstat.adb:16:17: info: overflow check proved (CVC5: 200 VC)
 loopstat.adb:19:19: info: assertion proved (CVC5: 1 VC)
 loopstat.adb:21:21: info: unrolling loop
 loopstat.adb:24:19: info: assertion proved (CVC5: 1 VC)
+loopstat.adb:24:45: info: index check proved (CVC5: 2 VC)
