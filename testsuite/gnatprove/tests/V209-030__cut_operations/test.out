@@ -101,15 +101,22 @@ main.adb:108:47: warning: assuming "Find_First_0" has no effect on global items
 main.adb:108:47: warning: no Global contract available for "Find_First_0"
 main.adb:108:74: info: overflow check proved (CVC5: 2 VC)
 main.adb:111:26: info: assertion step proved (CVC5: 1 VC)
+main.adb:111:29: info: index check proved (CVC5: 2 VC)
+main.adb:112:67: info: index check proved (CVC5: 2 VC)
 main.adb:112:75: info: assertion step proved (CVC5: 1 VC)
+main.adb:112:78: info: index check proved (CVC5: 2 VC)
 main.adb:113:63: info: assertion step proved (CVC5: 1 VC)
+main.adb:113:70: info: index check proved (CVC5: 2 VC)
 main.adb:113:79: warning: assuming "Lemma_Find_First_0_Def" has no effect on global items
 main.adb:113:79: warning: no Global contract available for "Lemma_Find_First_0_Def"
+main.adb:113:115: info: range check proved (CVC5: 2 VC)
 main.adb:114:63: info: assertion step proved (CVC5: 1 VC)
+main.adb:114:70: info: index check proved (CVC5: 2 VC)
 main.adb:114:79: warning: assuming "Lemma_Find_First_0_Def" has no effect on global items
 main.adb:114:79: warning: no Global contract available for "Lemma_Find_First_0_Def"
 main.adb:114:116: info: overflow check proved (CVC5: 2 VC)
 main.adb:115:63: info: assertion step proved (CVC5: 1 VC)
+main.adb:115:70: info: index check proved (CVC5: 2 VC)
 main.adb:115:79: warning: assuming "Lemma_Find_First_0_Def" has no effect on global items
 main.adb:115:79: warning: no Global contract available for "Lemma_Find_First_0_Def"
 main.adb:115:116: info: overflow check proved (CVC5: 2 VC)
@@ -118,6 +125,7 @@ main.adb:117:43: warning: assuming "Lemma_Has_Less_Than_3_0_Def" has no effect o
 main.adb:117:43: warning: no Global contract available for "Lemma_Has_Less_Than_3_0_Def"
 main.adb:118:28: info: assertion step proved (CVC5: 1 VC)
 main.adb:118:32: info: assertion step proved (CVC5: 1 VC)
+main.adb:118:39: info: index check proved (CVC5: 2 VC)
 main.adb:118:48: warning: assuming "Lemma_Find_First_0_Def" has no effect on global items
 main.adb:118:48: warning: no Global contract available for "Lemma_Find_First_0_Def"
 main.adb:118:85: info: overflow check proved (CVC5: 2 VC)
