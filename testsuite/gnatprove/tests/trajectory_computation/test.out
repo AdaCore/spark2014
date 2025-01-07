@@ -56,7 +56,7 @@ complex_trajectory.adb:44:48: info: range check proved (CVC5: 2 VC)
 complex_trajectory.adb:44:70: info: range check proved (CVC5: 2 VC)
 complex_trajectory.adb:46:25: info: assertion proved (colibri: 2 VC)
 complex_trajectory.adb:48:25: info: assertion proved (colibri: 2 VC)
-complex_trajectory.adb:50:22: info: assertion proved (Z3: 1 VC; colibri: 1 VC)
+complex_trajectory.adb:50:22: info: assertion proved (colibri: 2 VC)
 complex_trajectory.adb:50:46: info: range check proved (CVC5: 2 VC)
 complex_trajectory.adb:50:68: info: range check proved (CVC5: 2 VC)
 complex_trajectory.adb:51:22: medium: assertion might fail
@@ -169,8 +169,7 @@ complex_trajectory.ads:36:50: info: float overflow check proved (Trivial)
 complex_trajectory.ads:36:58: info: float overflow check proved (Trivial)
 complex_trajectory.ads:44:32: info: initialization of "Average" proved
 complex_trajectory.ads:45:09: info: data dependencies proved
-complex_trajectory.ads:48:19: medium: in inlined expression function body at complex_trajectory.ads:35
-complex_trajectory.ads:48:19: medium: postcondition might fail, cannot prove Distance in Float64 (N) * Float64 (N + 1) * (- Bound) * 0.5 .. Float64 (N) * Float64 (N + 1) * Bound * 0.5
+complex_trajectory.ads:48:19: info: postcondition proved (CVC5: 3 VC; Z3: 1 VC)
 complex_trajectory.ads:48:32: info: range check proved (CVC5: 2 VC)
 complex_trajectory_overflow.adb:14:46: info: float overflow check proved (Trivial)
 complex_trajectory_overflow.adb:14:46: info: range check proved (Trivial)
@@ -219,7 +218,7 @@ complex_trajectory_overflow.adb:39:22: medium: assertion might fail
 complex_trajectory_overflow.adb:39:40: info: range check proved (Trivial)
 complex_trajectory_overflow.adb:39:43: info: float overflow check proved (Trivial)
 complex_trajectory_overflow.adb:39:51: info: float overflow check proved (Trivial)
-complex_trajectory_overflow.adb:40:22: info: assertion proved (Z3: 1 VC)
+complex_trajectory_overflow.adb:40:22: info: assertion proved (colibri: 1 VC)
 complex_trajectory_overflow.adb:40:42: info: range check proved (Trivial)
 complex_trajectory_overflow.adb:40:47: info: float overflow check proved (Trivial)
 complex_trajectory_overflow.adb:44:22: info: assertion proved (CVC5: 1 VC)

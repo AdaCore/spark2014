@@ -2,11 +2,11 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "https://www.why3.org/why3session.dtd">
 <why3session shape_version="6">
-<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="120" steplimit="10000" memlimit="0"/>
-<prover id="1" name="CVC5" version="0.0.7-gnatprove" timelimit="120" steplimit="365000" memlimit="0"/>
-<prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="8450000" memlimit="0"/>
+<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="120" steplimit="10000" memlimit="2000"/>
+<prover id="1" name="CVC5" version="0.0.7-gnatprove" timelimit="120" steplimit="365000" memlimit="2000"/>
+<prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="8450000" memlimit="2000"/>
 <prover id="3" name="Trivial" version="1.0" alternative="trivial" timelimit="1" steplimit="1" memlimit="1000"/>
-<prover id="4" name="colibri" version="2137" timelimit="120" steplimit="12000" memlimit="0"/>
+<prover id="4" name="colibri" version="2137" timelimit="120" steplimit="12000" memlimit="2000"/>
 <file format="gnat-json">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="foo__double_tests__not_so_associative.gnat-json"/>
@@ -16,25 +16,25 @@
   <goal name="def&#39;vc.0">
   <proof prover="0"><result status="steplimitexceeded" steps="3462"/></proof>
   <proof prover="1"><result status="unknown" steps="69141"/></proof>
-  <proof prover="2"><result status="unknown" steps="98255"/></proof>
+  <proof prover="2"><result status="unknown" steps="347724"/></proof>
   <proof prover="4"><result status="unknown" steps="225"/></proof>
   </goal>
   <goal name="def&#39;vc.1">
   <proof prover="0"><result status="steplimitexceeded" steps="3782"/></proof>
   <proof prover="1"><result status="unknown" steps="104755"/></proof>
-  <proof prover="2"><result status="unknown" steps="921266"/></proof>
+  <proof prover="2"><result status="unknown" steps="601994"/></proof>
   <proof prover="4"><result status="unknown" steps="254"/></proof>
   </goal>
   <goal name="def&#39;vc.2">
   <proof prover="0"><result status="steplimitexceeded" steps="3548"/></proof>
   <proof prover="1"><result status="unknown" steps="140476"/></proof>
-  <proof prover="2"><result status="unknown" steps="884403"/></proof>
+  <proof prover="2"><result status="unknown" steps="964345"/></proof>
   <proof prover="4"><result status="unknown" steps="281"/></proof>
   </goal>
   <goal name="def&#39;vc.3">
   <proof prover="0"><result status="steplimitexceeded" steps="3510"/></proof>
   <proof prover="1"><result status="unknown" steps="204333"/></proof>
-  <proof prover="2"><result status="unknown" steps="1626794"/></proof>
+  <proof prover="2"><result status="steplimitexceeded" steps="8450224"/></proof>
   <proof prover="4"><result status="unknown" steps="311"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
@@ -43,7 +43,7 @@
   <goal name="def&#39;vc.5">
   <proof prover="0"><result status="steplimitexceeded" steps="4358"/></proof>
   <proof prover="1"><result status="unknown" steps="197324"/></proof>
-  <proof prover="2"><result status="steplimitexceeded" steps="8450159"/></proof>
+  <proof prover="2"><result status="unknown" steps="1197123"/></proof>
   <proof prover="4"><result status="unknown" steps="2627"/></proof>
   </goal>
  </transf>
