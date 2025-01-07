@@ -39,8 +39,8 @@ package body Gnat2Why_Opts.Writing is
    ------------------------------------
 
    function Pass_Extra_Options_To_Gnat2why
-      (Translation_Phase : Boolean;
-       Obj_Dir           : String) return String
+     (Translation_Phase : Boolean;
+      Obj_Dir           : String) return String
    is
       function Write_To_File (V : JSON_Value) return String;
       --  Write a textual representation of V to file

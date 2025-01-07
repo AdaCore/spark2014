@@ -1,5 +1,5 @@
 const.adb:5:17: info: range check proved (CVC5: 2 VC)
 const.ads:5:13: info: implicit aspect Always_Terminates on "Incr" has been proved, subprogram will terminate
-const.ads:7:12: warning: postcondition does not check the outcome of calling "Incr"
-const.ads:7:12: warning: postcondition does not mention function result
+const.ads:7:12: warning: postcondition does not check the outcome of calling "Incr" [-gnatw.t]
+const.ads:7:12: warning: postcondition does not mention function result [-gnatw.t]
 const.ads:7:20: info: postcondition proved (CVC5: 1 VC)

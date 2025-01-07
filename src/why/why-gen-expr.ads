@@ -89,9 +89,9 @@ package Why.Gen.Expr is
    --  Check whether a conversion between those types might require sliding
 
    function New_And_Expr
-      (Left, Right : W_Expr_Id;
-       Domain      : EW_Domain)
-       return W_Expr_Id;
+     (Left, Right : W_Expr_Id;
+      Domain      : EW_Domain)
+      return W_Expr_Id;
 
    function New_And_Prog (Left, Right : W_Prog_Id) return W_Prog_Id is
       (+New_And_Expr (+Left, +Right, EW_Prog));
@@ -103,10 +103,10 @@ package Why.Gen.Expr is
       (+New_And_Expr (+Left, +Right, EW_Pred));
 
    function New_And_Expr
-      (Left, Right : W_Expr_Id;
-       Domain      : EW_Domain;
-       Base        : W_Type_Id)
-       return W_Expr_Id
+     (Left, Right : W_Expr_Id;
+      Domain      : EW_Domain;
+      Base        : W_Type_Id)
+      return W_Expr_Id
    with Pre => Base in EW_BitVector_8_Type
                      | EW_BitVector_16_Type
                      | EW_BitVector_32_Type
@@ -122,9 +122,9 @@ package Why.Gen.Expr is
    --  True predicate.
 
    function New_And_Then_Expr
-      (Left, Right : W_Expr_Id;
-       Domain      : EW_Domain)
-       return W_Expr_Id;
+     (Left, Right : W_Expr_Id;
+      Domain      : EW_Domain)
+      return W_Expr_Id;
 
    function New_Comparison
      (Symbol      : W_Identifier_Id;
@@ -212,10 +212,10 @@ package Why.Gen.Expr is
       return W_Expr_Id;
 
    function New_Xor_Expr
-      (Left, Right : W_Expr_Id;
-       Domain      : EW_Domain;
-       Base        : W_Type_Id)
-       return W_Expr_Id
+     (Left, Right : W_Expr_Id;
+      Domain      : EW_Domain;
+      Base        : W_Type_Id)
+      return W_Expr_Id
    with Pre => Base in EW_BitVector_8_Type
                      | EW_BitVector_16_Type
                      | EW_BitVector_32_Type
@@ -281,16 +281,16 @@ package Why.Gen.Expr is
    --  term or pred domain, use an epsilon or a direct call as appropriate.
 
    function New_Operator_Call
-      (Ada_Node   : Node_Id;
-       Name       : W_Identifier_Id;
-       Fix_Name   : Boolean := False;
-       Args       : W_Expr_Array;
-       Reason     : VC_Kind;
-       Check      : Boolean;
-       Domain     : EW_Domain;
-       Typ        : W_Type_Id;
-       Check_Info : Check_Info_Type := New_Check_Info)
-       return W_Expr_Id
+     (Ada_Node   : Node_Id;
+      Name       : W_Identifier_Id;
+      Fix_Name   : Boolean := False;
+      Args       : W_Expr_Array;
+      Reason     : VC_Kind;
+      Check      : Boolean;
+      Domain     : EW_Domain;
+      Typ        : W_Type_Id;
+      Check_Info : Check_Info_Type := New_Check_Info)
+      return W_Expr_Id
    with
      Pre => (if Check then Domain = EW_Prog);
    --  If Check is True, build a call to Name(Progs) using New_VC_Call. When
@@ -298,13 +298,13 @@ package Why.Gen.Expr is
    --  call in the appropriate domain.
 
    function New_VC_Call
-      (Ada_Node   : Node_Id;
-       Name       : W_Identifier_Id;
-       Progs      : W_Expr_Array;
-       Reason     : VC_Kind;
-       Typ        : W_Type_Id;
-       Check_Info : Check_Info_Type := New_Check_Info)
-       return W_Prog_Id;
+     (Ada_Node   : Node_Id;
+      Name       : W_Identifier_Id;
+      Progs      : W_Expr_Array;
+      Reason     : VC_Kind;
+      Typ        : W_Type_Id;
+      Check_Info : Check_Info_Type := New_Check_Info)
+      return W_Prog_Id;
    --  Build a call to Name(Progs) with VC and location labels
 
    function New_VC_Expr

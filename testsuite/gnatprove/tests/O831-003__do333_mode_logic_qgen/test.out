@@ -105,8 +105,8 @@ event_processing.adb:190:07: info: initialization of "Seen_14_Inhibit_Out" prove
 event_processing.adb:191:07: info: initialization of "Seen_2_Seen" proved
 event_processing.adb:192:07: info: initialization of "Seen_2_Inhibit_Out" proved
 event_processing.adb:193:07: info: initialization of "Seen_Seen" proved
-event_processing.adb:440:80: warning: aspect Unreferenced specified for "Seen_11_Inhibit_Out"
-event_processing.adb:464:79: warning: aspect Unreferenced specified for "Seen_Inhibit_Out"
+event_processing.adb:440:80: warning: aspect Unreferenced specified for "Seen_11_Inhibit_Out" [enabled by default]
+event_processing.adb:464:79: warning: aspect Unreferenced specified for "Seen_Inhibit_Out" [enabled by default]
 event_processing.ads:38:08: info: initialization of "When_Pilot_Fllying_Transfer_Seen" proved
 event_processing.ads:39:08: info: initialization of "When_AP_Engaged_Seen" proved
 event_processing.ads:40:08: info: initialization of "When_SYNC_Switch_Pressed_Seen" proved
@@ -748,10 +748,10 @@ mode_logic_props.adb:102:07: info: initialization of "Event_Processing_If_ALTSEL
 mode_logic_props.adb:103:07: info: initialization of "Event_Processing_If_ALTSEL_Track_Cond_Met_Seen" proved
 mode_logic_props.adb:104:07: info: initialization of "Event_Processing_If_VAPPR_Capture_Cond_Met_Seen" proved
 mode_logic_props.adb:105:07: info: initialization of "Bus_Creator_out1" proved
-mode_logic_props.adb:208:1000: (style) this line is too long: 1191
-mode_logic_props.adb:208:1000: (style) this line is too long: 1191
-mode_logic_props.adb:212:1000: (style) this line is too long: 1819
-mode_logic_props.adb:212:1000: (style) this line is too long: 1819
+mode_logic_props.adb:208:1000: (style) this line is too long: 1191 [-gnatyM]
+mode_logic_props.adb:208:1000: (style) this line is too long: 1191 [-gnatyM]
+mode_logic_props.adb:212:1000: (style) this line is too long: 1819 [-gnatyM]
+mode_logic_props.adb:212:1000: (style) this line is too long: 1819 [-gnatyM]
 modes_off_at_startup.adb:26:07: info: initialization of "Unit_Delay_out1" proved
 modes_off_at_startup.adb:27:07: info: initialization of "Modes_On_out1" proved
 modes_off_at_startup.adb:28:07: info: initialization of "NOT_out1" proved
@@ -854,8 +854,8 @@ no_higher_event_1.adb:150:07: info: initialization of "No_Higher_No_Higher_Below
 no_higher_event_1.adb:151:07: info: initialization of "No_Higher_Event_Than_ALTSEL_Capture_Cond_Met" proved
 no_higher_event_1.adb:309:72: warning: "No_Higher_No_Higher" is set by "comp" but not used after the call
 no_higher_event_1.adb:317:73: warning: "No_Higher_No_Higher_1" is set by "comp" but not used after the call
-no_higher_event_1.adb:343:117: warning: aspect Unreferenced specified for "No_Higher_No_Higher_Below_13"
-no_higher_event_1.adb:355:120: warning: aspect Unreferenced specified for "No_Higher_No_Higher_Below_16"
+no_higher_event_1.adb:343:117: warning: aspect Unreferenced specified for "No_Higher_No_Higher_Below_13" [enabled by default]
+no_higher_event_1.adb:355:120: warning: aspect Unreferenced specified for "No_Higher_No_Higher_Below_16" [enabled by default]
 no_higher_event_1.adb:378:26: info: unrolling loop
 no_higher_event_1.adb:379:21: medium: "Bus_Creator_out1" might not be initialized
 no_higher_event_1.ads:19:43: info: initialization of "O" proved

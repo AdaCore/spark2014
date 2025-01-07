@@ -92,7 +92,7 @@ Dependence Graph and Its Use in Optimization" by Ferrante, et al. We have 5
 kinds of graphs, but in practice we primarily look at control flow graph (CFG)
 and code that populates it, and on the program dependence graph (PDG) and code
 that analyses it. To see the graph use ``--flow-debug`` switch; they will be
-placed as gnatprove/*.pdf files. They are prefixed with gg_ and fa_, which
+placed as `gnatprove/*.pdf` files. They are prefixed with gg_ and fa_, which
 stands for "global generation" and "flow analysis" (or phase 1 and 2),
 respectively.
 

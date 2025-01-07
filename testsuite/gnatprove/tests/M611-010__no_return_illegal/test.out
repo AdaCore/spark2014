@@ -2,7 +2,7 @@ no_return_illegal.adb:8:07: warning: statement has no effect
 no_return_illegal.adb:9:12: warning: unused assignment
 no_return_illegal.adb:11:07: medium: unexpected exception might be raised
 no_return_illegal.adb:18:12: warning: this statement is never reached
-no_return_illegal.adb:18:12: warning: unreachable code
+no_return_illegal.adb:18:12: warning: unreachable code [enabled by default]
 no_return_illegal.adb:18:17: info: overflow check proved (CVC5: 2 VC)
 no_return_illegal.adb:27:17: info: overflow check proved (CVC5: 2 VC)
 no_return_illegal.adb:36:17: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at no_return_illegal.ads:10 should mention X in a precondition]

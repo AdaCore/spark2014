@@ -10,10 +10,10 @@ test_bad_init.adb:36:11: error: attribute "Initialized" on a discriminant which 
 test_bad_init.adb:36:11: error: violation of aspect SPARK_Mode at line 1
 test_bad_init.adb:37:11: error: attribute "Initialized" on a discriminant which is always initialized is not allowed in SPARK
 test_bad_init.adb:37:11: error: violation of aspect SPARK_Mode at line 1
-test_bad_init.adb:43:23: warning: conjunct in postcondition does not check the outcome of calling "On_Attribute"
+test_bad_init.adb:43:23: warning: conjunct in postcondition does not check the outcome of calling "On_Attribute" [-gnatw.t]
 test_bad_init.adb:44:10: error: attribute "Initialized" on a discriminant which is always initialized is not allowed in SPARK
 test_bad_init.adb:44:10: error: violation of aspect SPARK_Mode at line 1
-test_bad_init.adb:44:17: warning: conjunct in postcondition does not check the outcome of calling "On_Attribute"
+test_bad_init.adb:44:17: warning: conjunct in postcondition does not check the outcome of calling "On_Attribute" [-gnatw.t]
 test_bad_init.adb:60:07: error: attribute "Initialized" on a discriminant which is always initialized is not allowed in SPARK
 test_bad_init.adb:60:07: error: violation of aspect SPARK_Mode at line 1
 test_bad_init.adb:60:27: error: attribute "Initialized" on a discriminant which is always initialized is not allowed in SPARK

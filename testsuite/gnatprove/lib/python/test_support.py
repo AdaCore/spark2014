@@ -337,8 +337,8 @@ def is_spark_assertion_tag(tag):
     return tag in (
         "DEFAULT_INITIAL_CONDITION",
         "CONTRACT_CASE",
-        "DISJOINT_CONTRACT_CASES",
-        "COMPLETE_CONTRACT_CASES",
+        "DISJOINT_CASES",
+        "COMPLETE_CASES",
         "LOOP_INVARIANT_INIT",
         "LOOP_INVARIANT_PRESERV",
         "LOOP_INVARIANT",
@@ -346,6 +346,7 @@ def is_spark_assertion_tag(tag):
         "REFINED_POST",
         "SUBPROGRAM_VARIANT",
         "EXCEPTIONAL_CASE",
+        "EXIT_CASE",
     )
 
 
@@ -544,13 +545,14 @@ def check_marks(strlist):
                 return "STRONGER_POST_ACCESS"
             else:
                 return "POSTCONDITION"
+        elif "disjoint" in text and "cases" in text:
+            return "DISJOINT_CASES"
+        elif "complete" in text and "cases" in text:
+            return "COMPLETE_CASES"
         elif "contract case" in text:
-            if "disjoint" in text and "contract cases" in text:
-                return "DISJOINT_CONTRACT_CASES"
-            elif "complete" in text and "contract cases" in text:
-                return "COMPLETE_CONTRACT_CASES"
-            else:
-                return "CONTRACT_CASE"
+            return "CONTRACT_CASE"
+        elif "exit case" in text:
+            return "EXIT_CASE"
         elif "loop invariant" in text:
             if "initialization" in text or "in first iteration" in text:
                 return "LOOP_INVARIANT_INIT"

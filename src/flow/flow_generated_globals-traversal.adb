@@ -419,7 +419,7 @@ package body Flow_Generated_Globals.Traversal is
             when N_Loop_Statement =>
                Traverse_Declarations_Or_Statements (Statements (N));
 
-               --  Generic declarations are ignored
+            --  Generic declarations are ignored
 
             when others =>
                null;

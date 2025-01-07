@@ -394,16 +394,16 @@ p.ads:67:10: info: range check proved (CVC5: 2 VC)
 p.ads:71:51: info: overflow check proved (CVC5: 2 VC)
 p.ads:75:21: info: index check proved (CVC5: 2 VC)
 rec_ids.adb:11:22: info: assertion proved (Trivial: 1 VC)
-rec_ids.adb:11:30: warning: unused variable "F"
+rec_ids.adb:11:30: warning: unused variable "F" [-gnatw.t]
 rec_ids.adb:11:35: high: "C" is not initialized
 rec_ids.adb:18:22: info: assertion proved (Trivial: 1 VC)
-rec_ids.adb:18:30: warning: unused variable "F"
+rec_ids.adb:18:30: warning: unused variable "F" [-gnatw.t]
 rec_ids.adb:18:35: high: "C" is not initialized
 rec_ids.adb:25:22: info: assertion proved (Trivial: 1 VC)
-rec_ids.adb:25:30: warning: unused variable "F"
+rec_ids.adb:25:30: warning: unused variable "F" [-gnatw.t]
 rec_ids.adb:25:35: high: "C" is not initialized
 rec_ids.adb:32:22: info: assertion proved (Trivial: 1 VC)
-rec_ids.adb:32:30: warning: unused variable "F"
+rec_ids.adb:32:30: warning: unused variable "F" [-gnatw.t]
 rec_ids.adb:32:35: high: "C" is not initialized
 rec_ids.ads:3:13: info: implicit aspect Always_Terminates on "P_Rec_Id" has been proved, subprogram will terminate
 rec_ids.ads:3:13: info: implicit function contract might not be available on implicit recursive calls

@@ -9,7 +9,7 @@ safety_pack.adb:71:17: info: predicate check proved (CVC5: 1 VC)
 safety_pack.adb:73:17: info: predicate check proved (CVC5: 1 VC)
 safety_pack.ads:10:13: info: implicit aspect Always_Terminates on "Dead_Band" has been proved, subprogram will terminate
 safety_pack.ads:15:08: info: complete contract cases proved (CVC5: 1 VC)
-safety_pack.ads:15:08: info: disjoint contract cases proved (CVC5: 1 VC)
+safety_pack.ads:15:08: info: disjoint contract or exit cases proved (CVC5: 1 VC)
 safety_pack.ads:15:27: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 safety_pack.ads:17:27: info: contract case proved (Trivial: 1 VC; Z3: 1 VC)
 safety_pack.ads:18:54: info: float overflow check proved (colibri: 1 VC)
@@ -22,6 +22,6 @@ safety_pack.ads:44:17: info: postcondition proved (CVC5: 3 VC)
 safety_pack.ads:53:13: info: implicit aspect Always_Terminates on "Truncate_To_T_Int16" has been proved, subprogram will terminate
 safety_pack.ads:58:13: info: implicit aspect Always_Terminates on "Lift_Away_From_Zero" has been proved, subprogram will terminate
 safety_pack.ads:59:11: info: complete contract cases proved (CVC5: 1 VC)
-safety_pack.ads:59:11: info: disjoint contract cases proved (CVC5: 1 VC)
+safety_pack.ads:59:11: info: disjoint contract or exit cases proved (CVC5: 1 VC)
 safety_pack.ads:59:30: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 safety_pack.ads:60:30: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)

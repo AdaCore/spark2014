@@ -1,7 +1,7 @@
 test_illegal_add.adb:26:12: error: "Insert" procedure shall always terminate
 test_illegal_add.adb:26:12: info: no "Length" function found for type with predefined set aggregates "T"
 test_illegal_add.adb:26:12: info: the cardinality of aggregates will be unknown
-test_illegal_add.adb:61:12: error: "Insert" procedure shall not raise exceptions
+test_illegal_add.adb:61:12: error: "Insert" procedure shall not propagate exceptions
 test_illegal_add.adb:61:12: info: no "Length" function found for type with predefined set aggregates "T"
 test_illegal_add.adb:61:12: info: the cardinality of aggregates will be unknown
 test_illegal_add.adb:97:12: error: "Insert" procedure shall not access global data

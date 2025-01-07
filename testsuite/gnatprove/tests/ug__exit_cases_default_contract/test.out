@@ -1,0 +1,4 @@
+
+exit_cases_default_contract.adb:17:07: medium: unexpected exception might be raised
+   17 |      Might_Return_Abnormally (X);
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~

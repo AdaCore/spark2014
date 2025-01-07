@@ -141,19 +141,19 @@ stable_marriage.adb:394:10: info: precondition proved (CVC5: 10 VC; Trivial: 5 V
 stable_marriage.ads:20:13: info: implicit aspect Always_Terminates on "Is_Permutation_1" has been proved, subprogram will terminate
 stable_marriage.ads:21:14: info: postcondition proved (altergo: 2 VC)
 stable_marriage.ads:26:06: info: flow dependencies proved
-stable_marriage.ads:28:06: warning: postcondition does not check the outcome of calling "Invert_Permutation_1"
+stable_marriage.ads:28:06: warning: postcondition does not check the outcome of calling "Invert_Permutation_1" [-gnatw.t]
 stable_marriage.ads:30:49: medium: postcondition might fail, cannot prove R1 (Rank1) /= R1 (Rank2)
 stable_marriage.ads:32:13: info: implicit aspect Always_Terminates on "Is_Permutation_2" has been proved, subprogram will terminate
 stable_marriage.ads:33:14: info: postcondition proved (altergo: 2 VC)
 stable_marriage.ads:38:06: info: flow dependencies proved
-stable_marriage.ads:40:06: warning: postcondition does not check the outcome of calling "Invert_Permutation_2"
+stable_marriage.ads:40:06: warning: postcondition does not check the outcome of calling "Invert_Permutation_2" [-gnatw.t]
 stable_marriage.ads:42:49: medium: postcondition might fail, cannot prove R2 (Rank1) /= R2 (Rank2)
 stable_marriage.ads:47:13: info: implicit aspect Always_Terminates on "Invert_1" has been proved, subprogram will terminate
 stable_marriage.ads:50:14: info: postcondition proved (altergo: 2 VC)
 stable_marriage.ads:53:13: info: implicit aspect Always_Terminates on "Invert_2" has been proved, subprogram will terminate
 stable_marriage.ads:56:14: info: postcondition proved (altergo: 2 VC)
 stable_marriage.ads:60:06: info: flow dependencies proved
-stable_marriage.ads:63:06: warning: postcondition does not check the outcome of calling "Invert_Ranking_Of_Group_1"
+stable_marriage.ads:63:06: warning: postcondition does not check the outcome of calling "Invert_Ranking_Of_Group_1" [-gnatw.t]
 stable_marriage.ads:65:45: medium: postcondition might fail, cannot prove G2_To_G1 (G21) /= G2_To_G1 (G22)
 stable_marriage.ads:67:13: info: implicit aspect Always_Terminates on "Invert_Map" has been proved, subprogram will terminate
 stable_marriage.ads:71:07: info: postcondition proved (altergo: 2 VC)

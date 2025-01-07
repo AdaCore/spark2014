@@ -294,13 +294,13 @@ private
    function Same_Globals (Subp_1, Subp_2 : Callable_Kind_Id) return Boolean;
    --  Return True if Subp_1 and Sup2 access the same set of global variables
 
-   function Compute_Contract_Cases_Postcondition
+   function Compute_CC_And_EC_Postcondition
      (Params : Transformation_Params;
       E      : Callable_Kind_Id)
       return W_Pred_Id;
-   --  Returns the postcondition corresponding to the Contract_Cases pragma for
-   --  subprogram E (if any), to be used in the postcondition of the program
-   --  function.
+   --  Returns the postcondition corresponding to the Contract_Cases and
+   --  Exit_Cases pragmas for  subprogram E (if any), to be used in the
+   --  postcondition of the program function.
 
    procedure Collect_Old_For_Subprogram
      (E                 :        Callable_Kind_Id;

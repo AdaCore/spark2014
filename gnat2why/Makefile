@@ -81,8 +81,12 @@ build: setup force
 # this target depends on "setup", which generates some required
 # source files.
 
+COVERED_PROJECTS ?= gnat2why
+
+covered-project-args := $(foreach proj,$(COVERED_PROJECTS),--projects=$(proj))
+
 coverage-setup: setup force
-	gnatcov instrument --no-subprojects -P gnat2why.gpr --level=stmt --dump-trigger=atexit
+	gnatcov instrument --no-subprojects -P gnat2why.gpr --level=stmt --dump-trigger=atexit $(covered-project-args)
 	mkdir -p obj_coverage
 
 coverage: COVERAGEARGS=-XCoverage=yes --src-subdirs=gnatcov-instr --implicit-with=gnatcov_rts

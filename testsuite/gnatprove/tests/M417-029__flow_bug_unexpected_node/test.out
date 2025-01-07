@@ -13,7 +13,7 @@ time.adb:19:42: info: overflow check proved (CVC5: 2 VC)
 time.ads:22:12: info: implicit aspect Always_Terminates on "T_Increment" has been proved, subprogram will terminate
 time.ads:23:05: info: data dependencies proved
 time.ads:25:05: info: complete contract cases proved (CVC5: 1 VC)
-time.ads:25:05: info: disjoint contract cases proved (CVC5: 1 VC)
+time.ads:25:05: info: disjoint contract or exit cases proved (CVC5: 1 VC)
 time.ads:26:08: info: contract case proved (CVC5: 3 VC; Trivial: 1 VC)
 time.ads:32:08: info: contract case proved (CVC5: 3 VC; Trivial: 1 VC)
 time.ads:39:08: info: contract case proved (CVC5: 3 VC; Trivial: 1 VC)

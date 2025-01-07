@@ -1,0 +1,7 @@
+project Exit_Cases_Incomplete is
+
+   package Prove is
+      for Proof_Switches ("Ada") use ("--report=all");
+   end Prove;
+
+end Exit_Cases_Incomplete;

@@ -589,9 +589,9 @@ package body SPARK_Definition.Annotate is
    --  on phase.
 
    procedure Warning_Msg_N_If
-      (Kind : Misc_Warning_Kind;
-       N : Node_Or_Entity_Id;
-       Names : Node_Lists.List := Node_Lists.Empty;
+     (Kind : Misc_Warning_Kind;
+      N : Node_Or_Entity_Id;
+      Names : Node_Lists.List := Node_Lists.Empty;
       Continuations : Message_Lists.List := Message_Lists.Empty);
 
    function Find_Aggregate_Aspect (Typ : Type_Kind_Id) return Node_Id;
@@ -2258,7 +2258,7 @@ package body SPARK_Definition.Annotate is
       elsif Has_Exceptional_Contract (E) then
          Error_Msg_N_If
            ("procedure annotated with the " & Aspect_Or_Pragma
-            & " Automatic_Instantiation shall not raise exceptions",
+            & " Automatic_Instantiation shall not propagate exceptions",
             E);
          return;
       elsif Mutable_In_Params_Annotations.Contains (E) then
@@ -3007,7 +3007,7 @@ package body SPARK_Definition.Annotate is
          elsif Has_Exceptional_Contract (E) then
             Error_Msg_N_If
               ("procedure annotated with the " & Aspect_Or_Pragma
-               & " Higher_Order_Specialization shall not raise exceptions",
+               & " Higher_Order_Specialization shall not propagate exceptions",
                E);
             return;
          elsif Get_Termination_Condition (E) not in
@@ -5390,7 +5390,7 @@ package body SPARK_Definition.Annotate is
                Typ, Annot.Add_Procedure);
          elsif Has_Exceptional_Contract (Annot.Add_Procedure) then
             Error_Msg_NE_If
-              ("& procedure shall not raise exceptions",
+              ("& procedure shall not propagate exceptions",
                Typ, Annot.Add_Procedure);
          end if;
       end;
@@ -6247,7 +6247,7 @@ package body SPARK_Definition.Annotate is
       Pattern, Reason : String_Id;
       First_Node      : Node_Id;
       Skip            : Node_Id := Empty)
-      is
+   is
       Node : Node_Id := First_Node;
    begin
       Insert_Annotate_Range (Prgma, Kind, Pattern, Reason, Node,
@@ -7080,9 +7080,9 @@ package body SPARK_Definition.Annotate is
    ----------------------
 
    procedure Warning_Msg_N_If
-      (Kind : Misc_Warning_Kind;
-       N : Node_Or_Entity_Id;
-       Names : Node_Lists.List := Node_Lists.Empty;
+     (Kind : Misc_Warning_Kind;
+      N : Node_Or_Entity_Id;
+      Names : Node_Lists.List := Node_Lists.Empty;
       Continuations : Message_Lists.List := Message_Lists.Empty) is
    begin
       if Emit_Messages then

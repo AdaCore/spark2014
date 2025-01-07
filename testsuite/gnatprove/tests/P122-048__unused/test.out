@@ -1,1 +1,1 @@
-main.adb:36:09: warning: aspect Unreferenced specified for "R"
+main.adb:36:09: warning: aspect Unreferenced specified for "R" [enabled by default]

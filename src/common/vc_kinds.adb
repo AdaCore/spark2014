@@ -106,6 +106,7 @@ package body VC_Kinds is
          when VC_Postcondition
             | VC_Refined_Post
             | VC_Exceptional_Case
+            | VC_Exit_Case
             | VC_Contract_Case             => "682",
 
          --  CWE-843 Access of Resource Using Incompatible Type ('Type
@@ -137,9 +138,9 @@ package body VC_Kinds is
             | VC_Task_Termination
             | VC_Initial_Condition
             | VC_Default_Initial_Condition
-            | VC_Disjoint_Contract_Cases
+            | VC_Disjoint_Cases
             | VC_Dynamic_Accessibility_Check
-            | VC_Complete_Contract_Cases
+            | VC_Complete_Cases
             | VC_Loop_Invariant
             | VC_Loop_Invariant_Init
             | VC_Loop_Invariant_Preserv
@@ -352,15 +353,18 @@ package body VC_Kinds is
          when VC_Contract_Case                    =>
             return "Check that all cases of the contract case evaluate to " &
               "true at the end of the subprogram.";
-         when VC_Disjoint_Contract_Cases          =>
-            return "Check that the cases of the contract cases aspect are " &
-              "all mutually disjoint.";
-         when VC_Complete_Contract_Cases          =>
+         when VC_Disjoint_Cases          =>
+            return "Check that the cases of the contract or exit cases" &
+              " aspect are all mutually disjoint.";
+         when VC_Complete_Cases          =>
             return "Check that the cases of the contract cases aspect cover " &
               "the state space that is allowed by the precondition aspect.";
          when VC_Exceptional_Case                 =>
             return "Check that all cases of the exceptional cases evaluate " &
               "to true on exceptional exits.";
+         when VC_Exit_Case                 =>
+            return "Check that, for all cases of the exit cases, the exit " &
+              "happens as specified.";
          when VC_Loop_Invariant                   =>
             return "Check that the loop invariant evaluates to True on all " &
               "iterations of the loop.";
@@ -713,15 +717,19 @@ package body VC_Kinds is
          when Lim_Exceptional_Cases_Dispatch =>
            "aspect ""Exceptional_Cases"" on dispatching operations",
          when Lim_Exceptional_Cases_Ownership =>
-           "procedures with exceptional contracts and parameters of mode"
+           "procedure which might propagate exceptions with parameters of mode"
           & " ""in out"" or ""out"" subjected to ownership which might not be "
           & "passed by reference",
+         when Lim_Exit_Cases_Dispatch =>
+           "aspect ""Exit_Cases"" on dispatching operations",
          when Lim_Ext_Aggregate_With_Type_Ancestor =>
            "an extension aggregate whose ancestor part is a subtype mark",
          when Lim_Extension_Case_Pattern_Matching =>
            "GNAT extension for case pattern matching",
          when Lim_External_Initializer =>
            "GNAT extension for embedded binary resources",
+         when Lim_Finally_Statements =>
+           "GNAT extension for finally statements",
          when Lim_Generic_In_Hidden_Private =>
             "instance of a generic unit declared in a package whose private "
           & "part is hidden outside of this package",
@@ -1362,9 +1370,10 @@ package body VC_Kinds is
              when VC_Postcondition => "postcondition",
              when VC_Refined_Post => "refined postcondition",
              when VC_Contract_Case => "contract case",
-             when VC_Disjoint_Contract_Cases => "disjoint contract cases",
-             when VC_Complete_Contract_Cases => "complete contract cases",
+             when VC_Disjoint_Cases => "disjoint contract or exit cases",
+             when VC_Complete_Cases => "complete contract cases",
              when VC_Exceptional_Case => "exceptional case",
+             when VC_Exit_Case => "exit case",
              when VC_Loop_Invariant => "loop invariant",
              when VC_Loop_Invariant_Init =>
                "loop invariant in first iteration",

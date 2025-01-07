@@ -440,8 +440,8 @@ package body Gnat2Why.Util is
                Labels := Model_Trace;
                Labels.Include (Model_Projected);
 
-         when others =>
-            null;
+            when others =>
+               null;
          end case;
       end if;
 

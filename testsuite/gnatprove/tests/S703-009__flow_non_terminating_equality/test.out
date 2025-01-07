@@ -2,7 +2,7 @@ q.adb:7:19: warning: unused variable "X"
 q.adb:7:22: warning: unused variable "Y"
 q.adb:8:15: info: postcondition proved (Trivial: 1 VC)
 q.adb:11:08: medium: implicit aspect Always_Terminates on overriding operator "=" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
-q.adb:14:08: warning: unreachable code
+q.adb:14:08: warning: unreachable code [enabled by default]
 q.adb:21:14: info: implicit aspect Always_Terminates on "Bad" has been proved, subprogram will terminate
 q.adb:24:05: info: initialization of "X" proved
 q.adb:24:08: info: initialization of "Y" proved

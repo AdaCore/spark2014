@@ -926,7 +926,7 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    with Pre => Nkind (N) in N_Raise_xxx_Error;
---  Deals with implicit raise statements
+   --  Deals with implicit raise statements
 
    procedure Do_Simple_Return_Statement
      (N   : Node_Id;
@@ -5683,7 +5683,7 @@ package body Flow.Control_Flow_Graph is
       --  respectively.
 
       Local_Handlers : constant Node_Lists.List :=
-        (if Nkind (N) = N_Procedure_Call_Statement
+        (if Nkind (N) in N_Subprogram_Call
          then Reachable_Handlers (N)
          else Node_Lists.Empty_List);
 
@@ -8253,25 +8253,28 @@ package body Flow.Control_Flow_Graph is
                      Nodes => NL,
                      Block => Excep_Cases_Block);
 
-            --  When an unhandled exception ocurrs, the values of actual
-            --  parameters passed by-reference will be transferred to the
-            --  caller; for other parameters it doesn't matter what values
-            --  they are assigned by the callee. In fact, we DON'T WANT these
-            --  values to be represented in the Depends contract (which we want
-            --  to describe the dependencies for a normal termination).
-            --
-            --  We can handle this with the following choices:
-            --  1) leave them unassigned, but this will cause silly checks
-            --     insisting on user to assign them according to the Depends
-            --     contract;
-            --  2) assign them according to the Depends contract, but this will
-            --     suppress messages about variables from the RHS of the
-            --     Depends clauses that otherwise would appear as unused;
-            --  3) assign them with a null dependency.
-            --
-            --  The last choice is not strictly right, but gives us exactly the
-            --  behaviour that we want. In particular, any explicit assignments
-            --  just before the raise statements will become flagged as unused.
+               --  When an unhandled exception ocurrs, the values of actual
+               --  parameters passed by-reference will be transferred to the
+               --  caller; for other parameters it doesn't matter what values
+               --  they are assigned by the callee. In fact, we DON'T WANT
+               --  these values to be represented in the Depends contract
+               --  (which we want to describe the dependencies for a normal
+               --  termination).
+               --
+               --  We can handle this with the following choices:
+               --  1) leave them unassigned, but this will cause silly checks
+               --     insisting on user to assign them according to the Depends
+               --     contract;
+               --  2) assign them according to the Depends contract, but this
+               --     will suppress messages about variables from the RHS of
+               --     the Depends clauses that otherwise would appear as
+               --     unused;
+               --  3) assign them with a null dependency.
+               --
+               --  The last choice is not strictly right, but gives us exactly
+               --  the behaviour that we want. In particular, any explicit
+               --  assignments just before the raise statements will become
+               --  flagged as unused.
 
                if Present (Prag) then
                   declare
@@ -8296,6 +8299,16 @@ package body Flow.Control_Flow_Graph is
                         end if;
                         Next_Formal (Formal);
                      end loop;
+
+                     --  Handle 'Result just like a by-copy formal parameter
+                     --  of mode OUT, so that function (with side effects) is
+                     --  represented similarly to a procedure with parameter
+                     --  of mode OUT.
+
+                     if Is_Function_With_Side_Effects (FA.Spec_Entity) then
+                        Var_Def.Union
+                          (Flatten_Variable (FA.Spec_Entity, FA.B_Scope));
+                     end if;
 
                      Add_Vertex
                        (FA,

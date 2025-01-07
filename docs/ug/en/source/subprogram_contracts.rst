@@ -12,7 +12,7 @@ is made up of various optional parts:
   completely) the functional behavior of the subprogram.
 * The `contract cases` introduced by aspect ``Contract_Cases`` is a way to
   partition the behavior of a subprogram. It can replace or complement a
-  precondition and a postcondition.
+  postcondition.
 * The `data dependencies` introduced by aspect ``Global`` specify the global
   data read and written by the subprogram.
 * The `flow dependencies` introduced by aspect ``Depends`` specify how
@@ -20,6 +20,9 @@ is made up of various optional parts:
 * The `exceptional contract` introduced by aspect ``Exceptional_Cases``
   specifies the exceptions that might be propagated by a procedure, along with
   exceptional postconditions.
+* The `exit cases` introduced by aspect ``Exit_Cases`` is a way to specify how
+  a subprogram is allowed to exit by partioning the input domain. It can replace
+  or complement a postcondition or an exceptional contract.
 * The `termination contract` introduced by aspect ``Always_Terminates``
   requires procedures and entries to terminate, possibly under a particular
   condition.
@@ -737,11 +740,11 @@ Exceptional Contracts
 
 *Specific to SPARK*
 
-In SPARK, every procedure which might propagate an exception should be annotated
-with an exceptional contract. This contract, introduced by the
-``Exceptional_Cases`` aspect, lists all the exceptions which might be propagated
-by a procedure, and associates them to an exceptional postcondition. This
-postcondition describes the effect of the procedure when the exception is
+In SPARK, every subprogram with side effects which might propagate an exception
+should be annotated with an exceptional contract. This contract, introduced by
+the ``Exceptional_Cases`` aspect, lists all the exceptions which might be
+propagated by a procedure, and associates them to an exceptional postcondition.
+This postcondition describes the effect of the procedure when the exception is
 raised. As an example, consider the procedure ``Incr_All`` below. It goes over
 an array to increment its elements. If an overflow would occur, the exception
 ``Overflow`` is raised and the traversal is stopped. The global variable
@@ -878,9 +881,133 @@ thanks to the precondition of ``Check_OK`` which states that parameter
 .. note::
 
    Raising an exception is a side-effect. As a consequence, the aspect
-   ``Exceptional_Cases`` is not allowed on functions and exceptions raised
+   ``Exceptional_Cases`` is not allowed on functions which are not annotated
+   with the ``Side_Effects`` aspect and exceptions raised
    by ``raise_expressions`` cannot be handled or propagated. |GNATprove|
    makes sure that they never occur.
+
+.. index:: Exit_Cases
+
+Exit Cases
+----------
+
+*Specific to SPARK*
+
+There are several ways for a subprogram to terminate: it can return normally
+or propagate an exception. If a subprogram does not always terminate normally,
+then it is possible to annotate it with an ``Exit_Cases`` aspect. This aspect
+allows partitioning the input state into cases, specifying for each case what
+the expected termination kind is. It can be either:
+
+* ``Normal_Return``, if the subprogram shall return normally,
+* ``Exception_Raised``, if it shall raise an (unspecified) exception, or
+* ``(Exception_Raised => E)``, if it shall raise the exception ``E``.
+
+As an example, consider the procedure ``Might_Return_Abnormally`` below:
+
+.. literalinclude:: /examples/ug__exit_cases_base/exit_cases.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__exit_cases_base/exit_cases.adb
+   :language: ada
+   :linenos:
+
+Its contract states that, if it terminates, it shall return normally if ``X`` is
+1, raise the exception ``E1`` is ``X`` is 2, and raise either ``E1`` or ``E2``,
+that is, any exception allowed by its exceptional contract, otherwise. The
+|GNATprove| tool generates verification conditions to make sure that these
+restrictions hold. As can be seen below, in this example, they are all proved.
+Note that there are sometimes several checks for a single exit case. For
+example here, two verifications are associated to the second case: one to make
+sure that the subprogram does not return normally, and one to check that the
+expected exception is propagated on exceptional exit:
+
+.. literalinclude:: /examples/ug__exit_cases_base/test.out
+   :language: none
+
+While a check is emitted by |GNATprove| to make sure that the different cases of
+an exit cases are disjoint (there shall be no inputs satisfying the guard of
+several cases at the same time), it does not ensure that they are complete
+(there can be inputs which are not satisfying any guards). In this case, there
+are no constraints on how the subprogram is allowed to terminate. As an example,
+the contract of ``Might_Return_Abnormally`` would still be proved if the first
+and last cases where removed:
+
+.. literalinclude:: /examples/ug__exit_cases_incomplete/exit_cases_incomplete.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__exit_cases_incomplete/exit_cases_incomplete.adb
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__exit_cases_incomplete/test.out
+   :language: none
+
+In |SPARK|, as a general rule, postconditions, be they standard or exceptional
+postconditions, are only enforced if the subprogram terminates. Exit cases are
+similar, they do not force the program to terminate but only ensure that it
+terminates in the correct way if it does.
+As an example, the exit cases contract of ``Might_Return_Abnormally`` is still
+verified if its body is replaced by an infinite loop. To enforce termination,
+:ref:`Contracts for Termination` should be used in addition to the exit cases.
+
+.. literalinclude:: /examples/ug__exit_cases_non_terminating/exit_cases_non_terminating.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__exit_cases_non_terminating/exit_cases_non_terminating.adb
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__exit_cases_non_terminating/test.out
+   :language: none
+
+If an exit cases mentioning exceptions is supplied on a subprogram which does
+not have an exceptional contract, then by default, |GNATprove| will assume that
+it is allowed to propagate the exceptions listed in its exit cases. If some of
+these exceptions are unspecified, then it is allowed to propagate any exception.
+As an example, |GNATprove| will accept raise statements inside
+``Might_Return_Abnormally`` even if we remove its exceptional contract. However,
+the default exceptional contract is imprecise in this case, as the propagated
+exception is not specified in the last exit case. As a result, when analyzing
+a caller like ``Call_Might_Return_Abnormally`` below, the analysis tool won't
+know that ``Might_Return_Abnormally`` only propagates ``E1`` or ``E2``:
+
+.. literalinclude:: /examples/ug__exit_cases_default_contract/exit_cases_default_contract.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__exit_cases_default_contract/exit_cases_default_contract.adb
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__exit_cases_default_contract/test.out
+   :language: none
+
+.. note::
+
+   Remark that exit cases are always equivalent to a conjunction of standard and
+   exceptional postconditions, possibly with a number of duplicates. As an
+   example, the exit cases of ``Might_Return_Abnormally`` is actually
+   equivalent to the combination of normal and exceptional cases below. The
+   postcondition states that ``Might_Return_Abnormally`` might only return
+   normally if ``X`` was equal to 1 before the call, while the exceptional
+   contract ensures both that neither ``E1`` nor ``E2`` can be propagates if
+   ``X`` was 1 before the call, and that only ``E1`` might be propagated if it
+   was 2:
+
+   .. code-block:: ada
+
+     procedure Might_Return_Abnormally (X : in out Integer) with
+       Post => X'Old = 1,
+       Exceptional_Cases =>
+           (E1 => X'Old /= 1,
+            E2 => X'Old not in 1 | 2);
+
+   These alternative contracts are often harder to read though as they involve
+   references to the ``Old`` attribute, negations, and duplications.
 
 .. index:: termination; Always_Terminates
 

@@ -588,11 +588,13 @@ package body Flow_Error_Messages is
                   end if;
 
                when Error_Kind =>
-               --  Set the error flag if we have an error message. Note that
-               --  warnings do not count as errors here, they should not
-               --  prevent us going to proof. The errout mechanism already
-               --  deals with the warnings-as-errors handling for the whole
-               --  unit.
+
+                  --  Set the error flag if we have an error message. Note that
+                  --  warnings do not count as errors here, they should not
+                  --  prevent us going to proof. The errout mechanism already
+                  --  deals with the warnings-as-errors handling for the whole
+                  --  unit.
+
                   Suppressed       := False;
                   Found_Flow_Error := True;
             end case;
@@ -2537,10 +2539,10 @@ package body Flow_Error_Messages is
             return No_Message;
          end;
 
-      --  Do not try to generate a fix message for termination checks. This
-      --  is not properly handled and leads to erroneous messages.
+      --  Do not try to generate a fix message for termination checks and exit
+      --  cases. They are not properly handled and lead to erroneous messages.
 
-      elsif Tag in VC_Termination_Check then
+      elsif Tag in VC_Termination_Check | VC_Exit_Case then
          return No_Message;
 
       --  Do not try to generate a fix message for static checks on validity of
@@ -4016,12 +4018,14 @@ package body Flow_Error_Messages is
             return "refined postcondition might fail";
          when VC_Contract_Case             =>
             return "contract case might fail";
-         when VC_Disjoint_Contract_Cases   =>
-            return "contract cases might not be disjoint";
-         when VC_Complete_Contract_Cases   =>
+         when VC_Disjoint_Cases   =>
+            return "contract or exit cases might not be disjoint";
+         when VC_Complete_Cases   =>
             return "contract cases might not be complete";
          when VC_Exceptional_Case             =>
             return "exceptional case might fail";
+         when VC_Exit_Case             =>
+            return "exit case might fail";
          when VC_Loop_Invariant            =>
             return "loop invariant might fail";
          when VC_Loop_Invariant_Init       =>
@@ -4501,12 +4505,14 @@ package body Flow_Error_Messages is
          when VC_Postcondition             => return "postcondition " & Verb;
          when VC_Refined_Post              => return "refined post " & Verb;
          when VC_Contract_Case             => return "contract case " & Verb;
-         when VC_Disjoint_Contract_Cases   =>
-            return "disjoint contract cases " & Verb;
-         when VC_Complete_Contract_Cases   =>
+         when VC_Disjoint_Cases   =>
+            return "disjoint contract or exit cases " & Verb;
+         when VC_Complete_Cases   =>
             return "complete contract cases " & Verb;
          when VC_Exceptional_Case          =>
             return "exceptional case " & Verb;
+         when VC_Exit_Case          =>
+            return "exit case " & Verb;
          when VC_Loop_Invariant            =>
             return "loop invariant " & Verb;
          when VC_Loop_Invariant_Init       =>

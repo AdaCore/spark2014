@@ -1,0 +1,2 @@
+example.adb:14:04: error: GNAT extension for finally statements is not yet supported
+gnatprove: error during flow analysis and proof

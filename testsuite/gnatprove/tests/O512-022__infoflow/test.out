@@ -131,7 +131,7 @@ infoflow.adb:220:55: info: index check proved (CVC5: 4 VC)
 infoflow.adb:221:16: info: index check proved (CVC5: 2 VC)
 infoflow.adb:221:36: info: index check proved (CVC5: 2 VC)
 infoflow.adb:221:36: info: overflow check proved (CVC5: 2 VC)
-infoflow.ads:9:06: info: disjoint contract cases proved (CVC5: 1 VC)
+infoflow.ads:9:06: info: disjoint contract or exit cases proved (CVC5: 1 VC)
 infoflow.ads:9:06: medium: contract cases might not be complete
 infoflow.ads:9:25: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 infoflow.ads:13:24: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -150,7 +150,7 @@ infoflow.ads:63:06: medium: contract cases might not be complete
 infoflow.ads:63:25: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 infoflow.ads:64:30: medium: "OutKeys_V1" might not be initialized
 infoflow.ads:64:47: medium: "OutKeys_V2" might not be initialized
-infoflow.ads:74:06: info: disjoint contract cases proved (CVC5: 1 VC)
+infoflow.ads:74:06: info: disjoint contract or exit cases proved (CVC5: 1 VC)
 infoflow.ads:74:06: medium: contract cases might not be complete
 infoflow.ads:74:25: medium: contract case might fail
 infoflow.ads:78:40: info: division check proved (CVC5: 1 VC)
@@ -168,7 +168,7 @@ infoflow.ads:86:59: info: index check proved (CVC5: 2 VC)
 infoflow.ads:86:70: info: division check proved (CVC5: 1 VC)
 infoflow.ads:87:33: info: index check proved (CVC5: 2 VC)
 infoflow.ads:87:44: info: index check proved (CVC5: 2 VC)
-infoflow.ads:90:06: info: disjoint contract cases proved (CVC5: 1 VC)
+infoflow.ads:90:06: info: disjoint contract or exit cases proved (CVC5: 1 VC)
 infoflow.ads:90:06: medium: contract cases might not be complete
 infoflow.ads:90:25: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 infoflow.ads:94:40: info: division check proved (CVC5: 1 VC)
@@ -188,7 +188,7 @@ infoflow.ads:103:33: info: index check proved (CVC5: 2 VC)
 infoflow.ads:103:44: info: index check proved (CVC5: 2 VC)
 infoflow.ads:112:07: medium: "A_V1" might not be initialized in "ArrayPartitionedTransfer" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "A_V1" on all paths, make "A_V1" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 infoflow.ads:112:13: medium: "A_V2" might not be initialized in "ArrayPartitionedTransfer" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "A_V2" on all paths, make "A_V2" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
-infoflow.ads:129:06: info: disjoint contract cases proved (CVC5: 1 VC)
+infoflow.ads:129:06: info: disjoint contract or exit cases proved (CVC5: 1 VC)
 infoflow.ads:129:06: medium: contract cases might not be complete
 infoflow.ads:129:25: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 infoflow.ads:131:33: info: index check proved (CVC5: 2 VC)

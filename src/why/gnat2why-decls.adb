@@ -235,7 +235,7 @@ package body Gnat2Why.Decls is
                Location    => No_Location,
                Return_Type => EW_Int_Type,
                Def         => New_Integer_Constant
-                 (Value => UI_From_Int  (V))));
+                 (Value => UI_From_Int (V))));
          V := V + 1;
       end loop;
 
