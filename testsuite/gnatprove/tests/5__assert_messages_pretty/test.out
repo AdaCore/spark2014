@@ -20,7 +20,6 @@ p.adb:4:27: high: assertion might fail
   possible fix: subprogram at line 1 should mention X in a precondition
     1 |procedure P (X : Integer) with SPARK_Mode is
       |^ here
-p.adb:6:30: info: loop invariant preservation proved (CVC5: 1 VC)
 
 p.adb:6:30: high: loop invariant might fail in first iteration
     6 |      pragma Loop_Invariant (X > 10, "X should be > 10 at this point");
@@ -30,6 +29,7 @@ p.adb:6:30: high: loop invariant might fail in first iteration
   possible fix: subprogram at line 1 should mention X in a precondition
     1 |procedure P (X : Integer) with SPARK_Mode is
       |^ here
+p.adb:6:30: info: loop invariant preservation proved (CVC5: 1 VC)
 
 p.adb:7:30: high: loop invariant might fail in first iteration
     7 |      pragma Loop_Invariant (X > 15, "X should be > 15 at this point");
