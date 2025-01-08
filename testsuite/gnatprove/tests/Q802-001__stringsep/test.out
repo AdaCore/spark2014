@@ -106,7 +106,7 @@ a-strbou.ads:2571:25: info: range check proved (CVC5: 2 VC), in instantiation at
 a-strbou.ads:2578:31: info: discriminant check proved (CVC5: 1 VC), in instantiation at sb.ads:2
 a-strbou.ads:2578:31: info: predicate check proved (CVC5: 2 VC; Trivial: 1 VC), in instantiation at sb.ads:2
 sb.ads:2:01: warning: in instantiation at a-strbou.ads
-sb.ads:2:01: warning: pragma "Stream_Convert" ignored (not yet supported)
+sb.ads:2:01: warning: pragma "Stream_Convert" ignored (not yet supported) [ignored-pragma]
 spark-containers-formal-hashed_maps.ads:87:06: medium: Container_Aggregates annotation might be incorrect, in instantiation at test.ads:14
 spark-containers-formal-hashed_maps.ads:87:06: medium: after a call to Insert at spark-containers-formal-hashed_maps.ads:660, in instantiation at test.ads:14
 spark-containers-formal-hashed_maps.ads:87:06: medium: when reestablishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at spark-containers-formal-hashed_maps.ads:177, in instantiation at test.ads:14

@@ -1,6 +1,6 @@
 test_conts.adb:8:23: info: initialization of "X" proved
 test_conts.adb:15:13: info: implicit aspect Always_Terminates on "Int_Hash" has been proved, subprogram will terminate
-test_conts.adb:22:04: warning: analyzing unreferenced procedure "Do_Test"
+test_conts.adb:22:04: warning: analyzing unreferenced procedure "Do_Test" [unreferenced-procedure]
 test_conts.adb:27:10: info: initialization of "L" proved
 test_conts.adb:27:20: info: range check proved (CVC5: 2 VC)
 test_conts.adb:28:10: info: initialization of "C" proved

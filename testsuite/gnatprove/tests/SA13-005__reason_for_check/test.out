@@ -11,12 +11,12 @@ reason_for_check.adb:19:25: medium: range check might fail, cannot prove lower b
 reason_for_check.adb:19:29: info: range check proved (CVC5: 2 VC)
 reason_for_check.adb:19:29: medium: in value of subprogram parameter after the call at reason_for_check.adb:19
 reason_for_check.adb:19:29: medium: range check might fail, cannot prove lower bound for Y2 [reason for check: input value must fit in parameter type and output value must fit in argument type] [possible fix: precondition of subprogram at line 16 should mention Y2]
-reason_for_check.adb:24:04: warning: analyzing unreferenced function "Get"
+reason_for_check.adb:24:04: warning: analyzing unreferenced function "Get" [unreferenced-function]
 reason_for_check.adb:24:13: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 reason_for_check.adb:26:16: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in Positive) to subprogram at line 24]
-reason_for_check.adb:29:04: warning: analyzing unreferenced procedure "Set"
+reason_for_check.adb:29:04: warning: analyzing unreferenced procedure "Set" [unreferenced-procedure]
 reason_for_check.adb:31:09: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in S'First .. S'Last) to subprogram at line 29]
-reason_for_check.adb:42:04: warning: analyzing unreferenced procedure "Oper_Integer"
+reason_for_check.adb:42:04: warning: analyzing unreferenced procedure "Oper_Integer" [unreferenced-procedure]
 reason_for_check.adb:42:68: info: initialization of "U" proved
 reason_for_check.adb:45:30: medium: overflow check might fail, cannot prove upper bound for -X [reason for check: result of negation must fit in a 32-bits machine integer] [possible fix: add precondition (-X <= Integer'Last) to subprogram at line 42]
 reason_for_check.adb:46:30: medium: overflow check might fail, cannot prove upper bound for abs X [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs X <= Integer'Last) to subprogram at line 42]
@@ -26,7 +26,7 @@ reason_for_check.adb:49:32: medium: overflow check might fail, cannot prove lowe
 reason_for_check.adb:50:32: medium: divide by zero might fail [possible fix: add precondition (Y /= 0) to subprogram at line 42]
 reason_for_check.adb:50:32: medium: overflow check might fail, cannot prove lower bound for X / Y [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: add precondition (X / Y >= Integer'First) to subprogram at line 42]
 reason_for_check.adb:51:32: medium: overflow check might fail, cannot prove lower bound for X ** E [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: add precondition (X ** E >= Integer'First) to subprogram at line 42]
-reason_for_check.adb:55:04: warning: analyzing unreferenced procedure "Oper_Float"
+reason_for_check.adb:55:04: warning: analyzing unreferenced procedure "Oper_Float" [unreferenced-procedure]
 reason_for_check.adb:55:64: info: initialization of "U" proved
 reason_for_check.adb:60:32: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 55 should mention X and Y in a precondition]
 reason_for_check.adb:61:32: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at line 55 should mention X and Y in a precondition]
@@ -35,7 +35,7 @@ reason_for_check.adb:63:32: medium: divide by zero might fail [possible fix: add
 reason_for_check.adb:63:32: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at line 55 should mention X and Y in a precondition]
 reason_for_check.adb:64:32: info: division check proved (CVC5: 1 VC; Trivial: 1 VC)
 reason_for_check.adb:64:32: medium: float overflow check might fail [reason for check: result of floating-point exponentiation must be bounded] [possible fix: subprogram at line 55 should mention E and X in a precondition]
-reason_for_check.adb:68:04: warning: analyzing unreferenced procedure "Oper_Fixed"
+reason_for_check.adb:68:04: warning: analyzing unreferenced procedure "Oper_Fixed" [unreferenced-procedure]
 reason_for_check.adb:68:51: warning: unused variable "E"
 reason_for_check.adb:68:64: medium: "U" might not be initialized in "Oper_Fixed" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "U" on all paths or make "U" an IN OUT parameter]
 reason_for_check.adb:71:30: medium: overflow check might fail, cannot prove upper bound for -X [reason for check: result of fixed-point negation must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 68 should mention X in a precondition]
@@ -45,28 +45,28 @@ reason_for_check.adb:74:32: medium: overflow check might fail, cannot prove lowe
 reason_for_check.adb:75:32: medium: overflow check might fail, cannot prove upper bound for X * Y [reason for check: result of fixed-point multiplication must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 68 should mention X and Y in a precondition]
 reason_for_check.adb:76:32: medium: divide by zero might fail [possible fix: add precondition (Y /= 0) to subprogram at line 68]
 reason_for_check.adb:76:32: medium: overflow check might fail, cannot prove lower bound for X / Y [reason for check: result of fixed-point division must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 68 should mention X and Y in a precondition]
-reason_for_check.adb:92:04: warning: analyzing unreferenced procedure "Convert_Enum"
+reason_for_check.adb:92:04: warning: analyzing unreferenced procedure "Convert_Enum" [unreferenced-procedure]
 reason_for_check.adb:92:38: info: initialization of "U" proved
 reason_for_check.adb:94:12: medium: range check might fail, cannot prove lower bound for X [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at line 92 should mention X in a precondition]
-reason_for_check.adb:97:04: warning: analyzing unreferenced procedure "Convert_Integer"
+reason_for_check.adb:97:04: warning: analyzing unreferenced procedure "Convert_Integer" [unreferenced-procedure]
 reason_for_check.adb:97:44: info: initialization of "U" proved
 reason_for_check.adb:99:12: medium: range check might fail, cannot prove lower bound for X [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (X >= Natural'First) to subprogram at line 97]
-reason_for_check.adb:102:04: warning: analyzing unreferenced procedure "Convert_Unsigned"
+reason_for_check.adb:102:04: warning: analyzing unreferenced procedure "Convert_Unsigned" [unreferenced-procedure]
 reason_for_check.adb:102:46: info: initialization of "U" proved
 reason_for_check.adb:104:12: medium: range check might fail, cannot prove upper bound for X [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (X <= Small_Unsigned'Last) to subprogram at line 102]
-reason_for_check.adb:107:04: warning: analyzing unreferenced procedure "Convert_Float"
+reason_for_check.adb:107:04: warning: analyzing unreferenced procedure "Convert_Float" [unreferenced-procedure]
 reason_for_check.adb:107:40: info: initialization of "U" proved
 reason_for_check.adb:109:12: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at line 107 should mention X in a precondition]
-reason_for_check.adb:112:04: warning: analyzing unreferenced procedure "Convert_Fixed"
+reason_for_check.adb:112:04: warning: analyzing unreferenced procedure "Convert_Fixed" [unreferenced-procedure]
 reason_for_check.adb:112:40: info: initialization of "U" proved
 reason_for_check.adb:114:12: medium: range check might fail, cannot prove lower bound for X [reason for check: value must fit in the target type of the assignment] [possible fix: subprogram at line 112 should mention X in a precondition]
-reason_for_check.adb:119:04: warning: analyzing unreferenced procedure "Assign"
+reason_for_check.adb:119:04: warning: analyzing unreferenced procedure "Assign" [unreferenced-procedure]
 reason_for_check.adb:119:34: info: initialization of "T" proved
 reason_for_check.adb:121:09: medium: length check might fail [reason for check: source and destination arrays for the assignment must have the same length] [possible fix: subprogram at line 119 should mention T'Length or T'First or T'Last in a precondition]
-reason_for_check.adb:126:04: warning: analyzing unreferenced function "Get_Small"
+reason_for_check.adb:126:04: warning: analyzing unreferenced function "Get_Small" [unreferenced-function]
 reason_for_check.adb:126:13: info: implicit aspect Always_Terminates on "Get_Small" has been proved, subprogram will terminate
 reason_for_check.adb:128:27: medium: length check might fail [reason for check: value must have same length as the target array type of the conversion] [possible fix: subprogram at line 126 should mention S in a precondition]
-reason_for_check.adb:134:04: warning: analyzing unreferenced procedure "Oper_Mask"
+reason_for_check.adb:134:04: warning: analyzing unreferenced procedure "Oper_Mask" [unreferenced-procedure]
 reason_for_check.adb:137:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 reason_for_check.adb:137:37: medium: length check might fail [reason for check: both array operands must have the same length] [possible fix: subprogram at line 134 should mention X and Y in a precondition]
 reason_for_check.adb:138:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
