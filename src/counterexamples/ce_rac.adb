@@ -3305,9 +3305,10 @@ package body CE_RAC is
                      Val_Right : constant Big_Integer := Value_Integer (Right);
 
                      Real_Left : constant Long_Float :=
-                       To_Long_Float (abs (Val_Left));
+                       To_Long_Float (abs Val_Left);
+
                      Int_Right : constant Integer :=
-                       To_Integer (abs (Val_Right));
+                       To_Integer (abs Val_Right);
                   begin
                      --  Protect against very large values which exceed
                      --  what the Big_Integers library can handle. We limit
@@ -4069,8 +4070,7 @@ package body CE_RAC is
                      Res := Boolean_Value (All_Present (N), Etype (N));
                   exception
                      when Break =>
-                        Res := Boolean_Value
-                          (not (All_Present (N)), Etype (N));
+                        Res := Boolean_Value (not All_Present (N), Etype (N));
                   end;
                else
                   pragma Assert (Present (Iterator_Specification (N)));

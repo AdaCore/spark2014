@@ -833,7 +833,7 @@ package body CE_Pretty_Printing is
       --  within +/- 2**24 and +/- 2**54 (bounds excluded) for single and
       --  double precision floating point numbers, respectively.
 
-      if abs (Nb) < 1000.0 and then T_Float'Truncation (Nb) = Nb then
+      if abs Nb < 1000.0 and then T_Float'Truncation (Nb) = Nb then
          F_IO.Put (To   => Result,
                    Item => Nb,
                    Aft  => 0,
