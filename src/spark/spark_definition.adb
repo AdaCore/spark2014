@@ -10056,8 +10056,7 @@ package body SPARK_Definition is
 
       if Ekind (E) in E_Record_Type | E_Record_Subtype
         and then Is_Tagged_Type (E)
-        and then (if Ekind (E) = E_Record_Subtype then
-                      not (Present (Cloned_Subtype (E))))
+        and then (if Ekind (E) = E_Record_Subtype then No (Cloned_Subtype (E)))
         and then not Is_Class_Wide_Type (E)
         and then not Is_Itype (E)
       then

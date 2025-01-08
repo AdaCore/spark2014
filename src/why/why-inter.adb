@@ -968,7 +968,7 @@ package body Why.Inter is
    function Get_EW_Term_Type (N : Node_Id) return W_Type_Id is
       Ty : Node_Id := N;
    begin
-      if Nkind (N) /= N_Defining_Identifier or else not (Is_Type (N)) then
+      if Nkind (N) /= N_Defining_Identifier or else not Is_Type (N) then
          Ty := Etype (N);
       end if;
 

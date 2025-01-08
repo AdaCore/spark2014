@@ -295,9 +295,9 @@ package body CE_Values is
 
       function Is_Infinity (R : Float_Value) return Boolean is
         (case R.K is
-            when Float_32_K => abs (R.Content_32) > Float'Last,
-            when Float_64_K => abs (R.Content_64) > Long_Float'Last,
-            when Extended_K => abs (R.Ext_Content) > Long_Long_Float'Last);
+            when Float_32_K => abs R.Content_32 > Float'Last,
+            when Float_64_K => abs R.Content_64 > Long_Float'Last,
+            when Extended_K => abs R.Ext_Content > Long_Long_Float'Last);
 
    begin
       return not Is_NaN (R) and then not Is_Infinity (R);
