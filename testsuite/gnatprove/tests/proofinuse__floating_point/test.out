@@ -160,7 +160,7 @@ floating_point.adb:338:22: info: float overflow check proved (colibri: 1 VC)
 floating_point.adb:338:26: info: float overflow check proved (colibri: 1 VC)
 floating_point.adb:338:30: info: float overflow check proved (colibri: 1 VC)
 floating_point.adb:339:22: medium: assertion might fail
-floating_point.adb:349:04: warning: analyzing unreferenced procedure "Polynomial"
+floating_point.adb:349:04: warning: analyzing unreferenced procedure "Polynomial" [unreferenced-procedure]
 floating_point.adb:349:14: warning: subprogram "Polynomial" has no effect
 floating_point.adb:353:22: info: assertion proved (colibri: 2 VC)
 floating_point.adb:353:27: info: float overflow check proved (colibri: 1 VC)

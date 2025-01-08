@@ -1,10 +1,10 @@
-ext_part_classwide.adb:16:07: warning: analyzing unreferenced procedure "Initialize"
+ext_part_classwide.adb:16:07: warning: analyzing unreferenced procedure "Initialize" [unreferenced-procedure]
 ext_part_classwide.adb:16:29: high: "R" is not initialized in "Initialize" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
-ext_part_classwide.adb:28:07: warning: analyzing unreferenced procedure "Initialize"
+ext_part_classwide.adb:28:07: warning: analyzing unreferenced procedure "Initialize" [unreferenced-procedure]
 ext_part_classwide.adb:28:29: medium: "R" might not be initialized in "Initialize" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
-ext_part_classwide.adb:42:07: warning: analyzing unreferenced procedure "Initialize"
+ext_part_classwide.adb:42:07: warning: analyzing unreferenced procedure "Initialize" [unreferenced-procedure]
 ext_part_classwide.adb:42:29: info: initialization of "R" proved
-ext_part_classwide.adb:59:07: warning: analyzing unreferenced procedure "Initialize"
+ext_part_classwide.adb:59:07: warning: analyzing unreferenced procedure "Initialize" [unreferenced-procedure]
 ext_part_classwide.adb:61:10: high: "R" is not initialized
 ext_part_classwide.adb:61:25: medium: assertion might fail
 ext_part_classwide.adb:80:13: info: only expected exception raised (CVC5: 1 VC)
@@ -19,24 +19,24 @@ ext_part_classwide.adb:102:31: warning: "R.A" is set by "Raise_Exception" but no
 ext_part_classwide.adb:104:13: info: no contextual analysis of "Initialize" (exception handler)
 ext_part_classwide.adb:105:16: medium: "R.A" might not be initialized
 ext_part_classwide.adb:105:31: medium: assertion might fail [possible fix: call at line 99 should mention R (for argument R) in a postcondition]
-ext_part_classwide.adb:119:07: warning: analyzing unreferenced procedure "Initialize"
+ext_part_classwide.adb:119:07: warning: analyzing unreferenced procedure "Initialize" [unreferenced-procedure]
 ext_part_classwide.adb:125:25: medium: assertion might fail
 ext_part_classwide.adb:125:29: high: extension of "R" is not initialized
 ext_part_classwide.adb:125:29: medium: "R.A" might not be initialized
-ext_part_classwide.adb:137:07: warning: analyzing unreferenced procedure "Initialize"
+ext_part_classwide.adb:137:07: warning: analyzing unreferenced procedure "Initialize" [unreferenced-procedure]
 ext_part_classwide.adb:143:10: medium: "R" might not be initialized
 ext_part_classwide.adb:143:25: medium: assertion might fail
 ext_part_classwide.adb:160:13: info: only expected exception raised (CVC5: 1 VC)
 ext_part_classwide.adb:162:13: info: no contextual analysis of "Initialize" (exception handler)
 ext_part_classwide.adb:170:10: medium: "R.A" might not be initialized
 ext_part_classwide.adb:170:25: medium: assertion might fail [possible fix: call at line 157 should mention R (for argument R) in a postcondition]
-ext_part_classwide.adb:182:07: warning: analyzing unreferenced procedure "Initialize"
+ext_part_classwide.adb:182:07: warning: analyzing unreferenced procedure "Initialize" [unreferenced-procedure]
 ext_part_classwide.adb:185:25: medium: assertion might fail [possible fix: call at line 184 should mention R (for argument R) in a postcondition]
 ext_part_classwide.adb:185:29: high: extension of "R" is not initialized
-ext_part_classwide.adb:197:07: warning: analyzing unreferenced procedure "Initialize"
+ext_part_classwide.adb:197:07: warning: analyzing unreferenced procedure "Initialize" [unreferenced-procedure]
 ext_part_classwide.adb:204:25: medium: assertion might fail [possible fix: call at line 203 should mention R (for argument R) in a postcondition]
 ext_part_classwide.adb:204:29: medium: extension of "R" might not be initialized
-ext_part_classwide.adb:216:07: warning: analyzing unreferenced procedure "Initialize"
+ext_part_classwide.adb:216:07: warning: analyzing unreferenced procedure "Initialize" [unreferenced-procedure]
 ext_part_classwide.adb:216:29: info: initialization of "R" proved
 ext_part_classwide.adb:219:25: medium: assertion might fail [possible fix: call at line 218 should mention R (for argument R) in a postcondition]
 ext_part_extensions_visible.adb:15:29: high: "R" is not initialized in "Initialize" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]

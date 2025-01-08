@@ -53,7 +53,7 @@ test_hashed_maps.adb:66:22: info: assertion proved (Z3: 1 VC)
 test_hashed_maps.adb:66:22: info: precondition proved (Z3: 1 VC)
 test_hashed_maps.adb:67:22: info: assertion proved (Z3: 1 VC)
 test_hashed_maps.adb:67:22: info: precondition proved (Z3: 1 VC)
-test_hashed_maps.adb:70:04: warning: analyzing unreferenced procedure "Do_Test"
+test_hashed_maps.adb:70:04: warning: analyzing unreferenced procedure "Do_Test" [unreferenced-procedure]
 test_hashed_maps.adb:70:14: warning: subprogram "Do_Test" has no effect
 test_hashed_maps.adb:71:07: info: initialization of "M" proved
 test_hashed_maps.adb:71:24: info: range check proved (CVC5: 2 VC)
@@ -68,7 +68,7 @@ test_hashed_sets.adb:9:20: warning: "S" is not modified, could be IN
 test_hashed_sets.adb:19:51: info: precondition proved (CVC5: 1 VC)
 test_hashed_sets.adb:21:25: info: assertion proved (CVC5: 1 VC)
 test_hashed_sets.adb:21:27: info: pointer dereference check proved (CVC5: 1 VC)
-test_hashed_sets.adb:25:04: warning: analyzing unreferenced procedure "Do_Test"
+test_hashed_sets.adb:25:04: warning: analyzing unreferenced procedure "Do_Test" [unreferenced-procedure]
 test_hashed_sets.adb:25:14: warning: subprogram "Do_Test" has no effect
 test_hashed_sets.adb:26:07: info: initialization of "S" proved
 test_hashed_sets.adb:26:24: info: range check proved (CVC5: 2 VC)

@@ -4,7 +4,7 @@ client_spark_boundary.adb:28:07: warning: this statement is never reached
 client_spark_boundary.ads:17:14: high: all paths in "Fetch_Timestamp" raise exceptions or do not terminate normally
 client_spark_boundary.ads:17:14: warning: subprogram "Fetch_Timestamp" has no effect
 client_spark_boundary.ads:21:13: high: all paths in "Check_Timestamp" raise exceptions or do not terminate normally
-client_timestamp_maker.adb:34:07: warning: analyzing unreferenced procedure "Make_Request"
+client_timestamp_maker.adb:34:07: warning: analyzing unreferenced procedure "Make_Request" [unreferenced-procedure]
 client_timestamp_maker.adb:35:10: info: initialization of "Local_Host" proved
 client_timestamp_maker.adb:36:10: info: initialization of "Request_Message" proved
 client_timestamp_maker.adb:37:10: info: initialization of "Network_Status" proved
@@ -356,7 +356,7 @@ serial_generator.adb:37:07: info: initialization of "Month" proved
 serial_generator.adb:38:07: info: initialization of "Day" proved
 serial_generator.adb:39:07: info: initialization of "Seconds" proved
 serial_generator.adb:45:07: warning: assuming "Split" always terminates
-serial_generator.adb:45:07: warning: no Always_Terminates aspect available for "Split"
+serial_generator.adb:45:07: warning: no Always_Terminates aspect available for "Split" [assumed-always-terminates]
 serial_generator.adb:48:33: info: range check proved (CVC5: 1 VC)
 serial_generator.adb:51:28: info: range check proved (CVC5: 1 VC)
 serial_generator.ads:19:06: info: flow dependencies proved

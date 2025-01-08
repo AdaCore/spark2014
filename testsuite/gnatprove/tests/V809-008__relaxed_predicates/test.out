@@ -14,35 +14,35 @@ test_dic.adb:38:07: medium: type "T1" is not fully initialized
 test_dic.adb:46:07: medium: type "T2" is not fully initialized
 test_dic.adb:55:07: medium: type "T3" is not fully initialized
 test_dic.adb:63:07: medium: type "T4" is not fully initialized
-test_predicates.adb:23:04: warning: analyzing unreferenced procedure "P"
-test_predicates.adb:23:17: warning: "X" cannot be partially initialized
+test_predicates.adb:23:04: warning: analyzing unreferenced procedure "P" [unreferenced-procedure]
+test_predicates.adb:23:17: warning: "X" cannot be partially initialized [useless-relaxed-init-object]
 test_predicates.adb:23:17: warning: Relaxed_Initialization annotation is useless
 test_predicates.adb:27:22: info: assertion proved (CVC5: 1 VC)
 test_predicates.adb:28:12: info: predicate check proved (CVC5: 1 VC)
-test_predicates.adb:32:04: warning: analyzing unreferenced procedure "Q"
+test_predicates.adb:32:04: warning: analyzing unreferenced procedure "Q" [unreferenced-procedure]
 test_predicates.adb:32:17: medium: for parameter X at the end of the subprogram at test_predicates.adb:32
 test_predicates.adb:32:17: medium: for parameter X at the end of the subprogram at test_predicates.adb:32
 test_predicates.adb:32:17: medium: initialization check might fail
 test_predicates.adb:32:17: medium: predicate check might fail
 test_predicates.adb:37:12: info: predicate check proved (CVC5: 1 VC)
-test_predicates.adb:42:04: warning: analyzing unreferenced function "Default"
+test_predicates.adb:42:04: warning: analyzing unreferenced function "Default" [unreferenced-function]
 test_predicates.adb:42:13: info: implicit aspect Always_Terminates on "Default" has been proved, subprogram will terminate
 test_predicates.adb:42:13: warning: Relaxed_Initialization annotation is useless
-test_predicates.adb:42:13: warning: the result of "Default" cannot be partially initialized
+test_predicates.adb:42:13: warning: the result of "Default" cannot be partially initialized [useless-relaxed-init-func-result]
 test_predicates.adb:47:14: info: initialization check proved (CVC5: 2 VC)
 test_predicates.adb:47:14: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:47:14: medium: initialization check might fail (e.g. when X = (F => ?, G => (C => 0)) and X.F.C'Initialized = False and X.G.C'Initialized = True)
 test_predicates.adb:47:14: medium: predicate check might fail (e.g. when X = (F => (C => 0), G => (C => 0)) and X.F.C'Initialized = True and X.G.C'Initialized = True)
-test_predicates.adb:55:04: warning: analyzing unreferenced procedure "P"
+test_predicates.adb:55:04: warning: analyzing unreferenced procedure "P" [unreferenced-procedure]
 test_predicates.adb:57:22: info: assertion proved (CVC5: 1 VC)
 test_predicates.adb:58:12: info: predicate check proved (CVC5: 1 VC)
-test_predicates.adb:62:04: warning: analyzing unreferenced procedure "Q"
+test_predicates.adb:62:04: warning: analyzing unreferenced procedure "Q" [unreferenced-procedure]
 test_predicates.adb:62:17: medium: for parameter X at the end of the subprogram at test_predicates.adb:62
 test_predicates.adb:62:17: medium: for parameter X at the end of the subprogram at test_predicates.adb:62
 test_predicates.adb:62:17: medium: initialization check might fail
 test_predicates.adb:62:17: medium: predicate check might fail
 test_predicates.adb:65:15: info: predicate check proved (CVC5: 1 VC)
-test_predicates.adb:70:04: warning: analyzing unreferenced function "Default"
+test_predicates.adb:70:04: warning: analyzing unreferenced function "Default" [unreferenced-function]
 test_predicates.adb:70:13: info: implicit aspect Always_Terminates on "Default" has been proved, subprogram will terminate
 test_predicates.adb:73:14: info: initialization check proved (CVC5: 2 VC)
 test_predicates.adb:73:14: info: predicate check proved (CVC5: 1 VC)
@@ -76,11 +76,11 @@ test_predicates.adb:108:14: info: add a contract to analyze it separately from c
 test_predicates.adb:108:14: info: local subprogram "Q" only analyzed in the context of calls
 test_predicates.adb:113:16: info: predicate check proved (CVC5: 1 VC), in call inlined at test_predicates.adb:173
 test_predicates.adb:113:36: info: predicate check proved (CVC5: 1 VC), in call inlined at test_predicates.adb:173
-test_predicates.adb:118:04: warning: analyzing unreferenced function "Default"
+test_predicates.adb:118:04: warning: analyzing unreferenced function "Default" [unreferenced-function]
 test_predicates.adb:118:13: info: implicit aspect Always_Terminates on "Default" has been proved, subprogram will terminate
 test_predicates.adb:128:13: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 test_predicates.adb:128:13: warning: Relaxed_Initialization annotation is useless
-test_predicates.adb:128:13: warning: the result of "Get" cannot be partially initialized
+test_predicates.adb:128:13: warning: the result of "Get" cannot be partially initialized [useless-relaxed-init-func-result]
 test_predicates.adb:134:18: info: initialization check proved (CVC5: 2 VC)
 test_predicates.adb:134:18: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:134:18: medium: initialization check might fail (e.g. when X = (H => (F => ?, G => (C => 0)), I => (F => (C => -1), G => (C => 0))) and X.H.F.C'Initialized = False and X.H.G.C'Initialized = True and X.I.F.C'Initialized = True and X.I.G.C'Initialized = True)
@@ -335,17 +335,17 @@ test_scalar_preds.adb:474:10: medium: precondition might fail [possible fix: cal
 test_scalar_preds.adb:477:10: info: precondition proved (CVC5: 1 VC)
 test_scalar_preds.adb:480:16: medium: initialization check might fail [possible fix: call at line 479 should mention X'Initialized (for argument X4) in a postcondition]
 test_scalar_preds.adb:483:16: info: initialization check proved (CVC5: 1 VC)
-test_two_preds.adb:12:04: warning: analyzing unreferenced procedure "P"
+test_two_preds.adb:12:04: warning: analyzing unreferenced procedure "P" [unreferenced-procedure]
 test_two_preds.adb:12:14: warning: subprogram "P" has no effect
 test_two_preds.adb:16:12: info: predicate check proved (CVC5: 1 VC)
 test_two_preds.adb:16:13: medium: initialization check might fail (e.g. when X = (F => ?, G => 0) and X.F'Initialized = False and X.G'Initialized = True) [possible fix: subprogram at line 12 should mention X in a precondition]
-test_two_preds.adb:22:04: warning: analyzing unreferenced procedure "P"
+test_two_preds.adb:22:04: warning: analyzing unreferenced procedure "P" [unreferenced-procedure]
 test_two_preds.adb:22:14: warning: subprogram "P" has no effect
-test_two_preds.adb:22:17: warning: "X" cannot be partially initialized
+test_two_preds.adb:22:17: warning: "X" cannot be partially initialized [useless-relaxed-init-object]
 test_two_preds.adb:22:17: warning: Relaxed_Initialization annotation is useless
-test_two_preds.adb:33:04: warning: analyzing unreferenced procedure "P"
+test_two_preds.adb:33:04: warning: analyzing unreferenced procedure "P" [unreferenced-procedure]
 test_two_preds.adb:33:14: warning: subprogram "P" has no effect
-test_two_preds.adb:45:04: warning: analyzing unreferenced procedure "P"
+test_two_preds.adb:45:04: warning: analyzing unreferenced procedure "P" [unreferenced-procedure]
 test_two_preds.adb:45:14: warning: subprogram "P" has no effect
 test_two_preds.adb:51:13: info: for inherited predicate at test_two_preds.adb:10
 test_two_preds.adb:51:13: info: predicate check proved (CVC5: 1 VC)

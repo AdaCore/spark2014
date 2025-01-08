@@ -140,10 +140,10 @@ test_borrow.adb:125:27: info: pointer dereference check proved (Z3: 1 VC)
 test_borrow.adb:131:31: info: predicate check proved (Trivial: 1 VC)
 test_borrow.adb:133:11: info: postcondition proved (CVC5: 5 VC)
 test_borrow.adb:133:11: warning: assuming "Model" has no effect on global items
-test_borrow.adb:133:11: warning: no Global contract available for "Model"
+test_borrow.adb:133:11: warning: no Global contract available for "Model" [assumed-global-null]
 test_borrow.adb:133:19: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:133:29: warning: assuming "Model" has no effect on global items
-test_borrow.adb:133:29: warning: no Global contract available for "Model"
+test_borrow.adb:133:29: warning: no Global contract available for "Model" [assumed-global-null]
 test_borrow.adb:134:28: info: predicate check proved (Trivial: 1 VC)
 test_borrow.adb:134:35: info: predicate check proved (Trivial: 1 VC)
 test_borrow.adb:134:48: info: predicate check proved (Trivial: 1 VC)
@@ -153,10 +153,10 @@ test_borrow.adb:136:18: info: predicate check proved (Trivial: 1 VC)
 test_borrow.adb:136:51: info: predicate check proved (Trivial: 1 VC)
 test_borrow.adb:136:80: info: predicate check proved (Trivial: 1 VC)
 test_borrow.adb:137:18: warning: assuming "Model" has no effect on global items
-test_borrow.adb:137:18: warning: no Global contract available for "Model"
+test_borrow.adb:137:18: warning: no Global contract available for "Model" [assumed-global-null]
 test_borrow.adb:137:46: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:137:52: warning: assuming "Model" has no effect on global items
-test_borrow.adb:137:52: warning: no Global contract available for "Model"
+test_borrow.adb:137:52: warning: no Global contract available for "Model" [assumed-global-null]
 test_borrow.adb:141:16: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:144:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_borrow.adb:146:33: info: in reconstructed value at the end of the borrow at test_borrow.adb:146

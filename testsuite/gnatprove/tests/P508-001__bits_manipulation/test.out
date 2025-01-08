@@ -442,12 +442,12 @@ bits_manipulation_unsigned.ads:42:04: warning: in instantiation at line 20
 bits_manipulation_unsigned.ads:42:04: warning: in instantiation at line 20
 bits_manipulation_unsigned.ads:42:04: warning: in instantiation at line 20
 bits_manipulation_unsigned.ads:42:04: warning: in instantiation at line 20
-bits_manipulation_unsigned.ads:42:04: warning: no Global contract available for "Axiom"
-bits_manipulation_unsigned.ads:42:04: warning: no Global contract available for "Lemma1_Goal"
-bits_manipulation_unsigned.ads:42:04: warning: no Global contract available for "Lemma2_Goal"
-bits_manipulation_unsigned.ads:42:04: warning: no Global contract available for "Lemma6"
-bits_manipulation_unsigned.ads:42:04: warning: no Global contract available for "Lemma8"
-bits_manipulation_unsigned.ads:42:04: warning: no Global contract available for "Lemma8"
+bits_manipulation_unsigned.ads:42:04: warning: no Global contract available for "Axiom" [assumed-global-null]
+bits_manipulation_unsigned.ads:42:04: warning: no Global contract available for "Lemma1_Goal" [assumed-global-null]
+bits_manipulation_unsigned.ads:42:04: warning: no Global contract available for "Lemma2_Goal" [assumed-global-null]
+bits_manipulation_unsigned.ads:42:04: warning: no Global contract available for "Lemma6" [assumed-global-null]
+bits_manipulation_unsigned.ads:42:04: warning: no Global contract available for "Lemma8" [assumed-global-null]
+bits_manipulation_unsigned.ads:42:04: warning: no Global contract available for "Lemma8" [assumed-global-null]
 bits_manipulation_unsigned.ads:43:04: warning: assuming "Axiom" has no effect on global items
 bits_manipulation_unsigned.ads:43:04: warning: assuming "Lemma1_Goal" has no effect on global items
 bits_manipulation_unsigned.ads:43:04: warning: assuming "Lemma2_Goal" has no effect on global items
@@ -466,12 +466,12 @@ bits_manipulation_unsigned.ads:43:04: warning: in instantiation at line 20
 bits_manipulation_unsigned.ads:43:04: warning: in instantiation at line 20
 bits_manipulation_unsigned.ads:43:04: warning: in instantiation at line 20
 bits_manipulation_unsigned.ads:43:04: warning: in instantiation at line 20
-bits_manipulation_unsigned.ads:43:04: warning: no Global contract available for "Axiom"
-bits_manipulation_unsigned.ads:43:04: warning: no Global contract available for "Lemma1_Goal"
-bits_manipulation_unsigned.ads:43:04: warning: no Global contract available for "Lemma2_Goal"
-bits_manipulation_unsigned.ads:43:04: warning: no Global contract available for "Lemma6"
-bits_manipulation_unsigned.ads:43:04: warning: no Global contract available for "Lemma8"
-bits_manipulation_unsigned.ads:43:04: warning: no Global contract available for "Lemma8"
+bits_manipulation_unsigned.ads:43:04: warning: no Global contract available for "Axiom" [assumed-global-null]
+bits_manipulation_unsigned.ads:43:04: warning: no Global contract available for "Lemma1_Goal" [assumed-global-null]
+bits_manipulation_unsigned.ads:43:04: warning: no Global contract available for "Lemma2_Goal" [assumed-global-null]
+bits_manipulation_unsigned.ads:43:04: warning: no Global contract available for "Lemma6" [assumed-global-null]
+bits_manipulation_unsigned.ads:43:04: warning: no Global contract available for "Lemma8" [assumed-global-null]
+bits_manipulation_unsigned.ads:43:04: warning: no Global contract available for "Lemma8" [assumed-global-null]
 bits_manipulation_unsigned.ads:44:04: warning: assuming "Axiom" has no effect on global items
 bits_manipulation_unsigned.ads:44:04: warning: assuming "Lemma1_Goal" has no effect on global items
 bits_manipulation_unsigned.ads:44:04: warning: assuming "Lemma2_Goal" has no effect on global items
@@ -490,12 +490,12 @@ bits_manipulation_unsigned.ads:44:04: warning: in instantiation at line 20
 bits_manipulation_unsigned.ads:44:04: warning: in instantiation at line 20
 bits_manipulation_unsigned.ads:44:04: warning: in instantiation at line 20
 bits_manipulation_unsigned.ads:44:04: warning: in instantiation at line 20
-bits_manipulation_unsigned.ads:44:04: warning: no Global contract available for "Axiom"
-bits_manipulation_unsigned.ads:44:04: warning: no Global contract available for "Lemma1_Goal"
-bits_manipulation_unsigned.ads:44:04: warning: no Global contract available for "Lemma2_Goal"
-bits_manipulation_unsigned.ads:44:04: warning: no Global contract available for "Lemma6"
-bits_manipulation_unsigned.ads:44:04: warning: no Global contract available for "Lemma8"
-bits_manipulation_unsigned.ads:44:04: warning: no Global contract available for "Lemma8"
+bits_manipulation_unsigned.ads:44:04: warning: no Global contract available for "Axiom" [assumed-global-null]
+bits_manipulation_unsigned.ads:44:04: warning: no Global contract available for "Lemma1_Goal" [assumed-global-null]
+bits_manipulation_unsigned.ads:44:04: warning: no Global contract available for "Lemma2_Goal" [assumed-global-null]
+bits_manipulation_unsigned.ads:44:04: warning: no Global contract available for "Lemma6" [assumed-global-null]
+bits_manipulation_unsigned.ads:44:04: warning: no Global contract available for "Lemma8" [assumed-global-null]
+bits_manipulation_unsigned.ads:44:04: warning: no Global contract available for "Lemma8" [assumed-global-null]
 bits_manipulation_unsigned.ads:45:04: warning: assuming "Axiom" has no effect on global items
 bits_manipulation_unsigned.ads:45:04: warning: assuming "Lemma1_Goal" has no effect on global items
 bits_manipulation_unsigned.ads:45:04: warning: assuming "Lemma2_Goal" has no effect on global items
@@ -514,9 +514,9 @@ bits_manipulation_unsigned.ads:45:04: warning: in instantiation at line 20
 bits_manipulation_unsigned.ads:45:04: warning: in instantiation at line 20
 bits_manipulation_unsigned.ads:45:04: warning: in instantiation at line 20
 bits_manipulation_unsigned.ads:45:04: warning: in instantiation at line 20
-bits_manipulation_unsigned.ads:45:04: warning: no Global contract available for "Axiom"
-bits_manipulation_unsigned.ads:45:04: warning: no Global contract available for "Lemma1_Goal"
-bits_manipulation_unsigned.ads:45:04: warning: no Global contract available for "Lemma2_Goal"
-bits_manipulation_unsigned.ads:45:04: warning: no Global contract available for "Lemma6"
-bits_manipulation_unsigned.ads:45:04: warning: no Global contract available for "Lemma8"
-bits_manipulation_unsigned.ads:45:04: warning: no Global contract available for "Lemma8"
+bits_manipulation_unsigned.ads:45:04: warning: no Global contract available for "Axiom" [assumed-global-null]
+bits_manipulation_unsigned.ads:45:04: warning: no Global contract available for "Lemma1_Goal" [assumed-global-null]
+bits_manipulation_unsigned.ads:45:04: warning: no Global contract available for "Lemma2_Goal" [assumed-global-null]
+bits_manipulation_unsigned.ads:45:04: warning: no Global contract available for "Lemma6" [assumed-global-null]
+bits_manipulation_unsigned.ads:45:04: warning: no Global contract available for "Lemma8" [assumed-global-null]
+bits_manipulation_unsigned.ads:45:04: warning: no Global contract available for "Lemma8" [assumed-global-null]
