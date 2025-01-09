@@ -21,45 +21,45 @@ memcpy.adb:28:36: info: range check proved (CVC5: 1 VC)
 memcpy.adb:29:36: info: range check proved (CVC5: 1 VC)
 memcpy.adb:30:36: info: range check proved (CVC5: 1 VC)
 memcpy.adb:35:10: warning: assuming "WriteMem64" always terminates
-memcpy.adb:35:10: warning: no Always_Terminates aspect available for "WriteMem64"
+memcpy.adb:35:10: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 memcpy.adb:42:10: warning: assuming "WriteMem64" always terminates
-memcpy.adb:42:10: warning: no Always_Terminates aspect available for "WriteMem64"
+memcpy.adb:42:10: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 memcpy.adb:45:10: warning: assuming "WriteMem64" always terminates
-memcpy.adb:45:10: warning: no Always_Terminates aspect available for "WriteMem64"
+memcpy.adb:45:10: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 memcpy.adb:48:10: warning: assuming "WriteMem64" always terminates
-memcpy.adb:48:10: warning: no Always_Terminates aspect available for "WriteMem64"
+memcpy.adb:48:10: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 memcpy.adb:54:10: warning: assuming "Write_EAX" always terminates
-memcpy.adb:54:10: warning: no Always_Terminates aspect available for "Write_EAX"
+memcpy.adb:54:10: warning: no Always_Terminates aspect available for "Write_EAX" [assumed-always-terminates]
 memcpy.adb:69:13: warning: assuming "Write_EAX" always terminates
-memcpy.adb:69:13: warning: no Always_Terminates aspect available for "Write_EAX"
+memcpy.adb:69:13: warning: no Always_Terminates aspect available for "Write_EAX" [assumed-always-terminates]
 memcpy.adb:84:16: warning: assuming "Write_EAX" always terminates
-memcpy.adb:84:16: warning: no Always_Terminates aspect available for "Write_EAX"
+memcpy.adb:84:16: warning: no Always_Terminates aspect available for "Write_EAX" [assumed-always-terminates]
 memcpy.adb:88:26: warning: unused assignment
 memcpy.adb:89:27: warning: unused assignment
 memcpy.adb:90:30: warning: unused assignment
 memcpy.adb:99:19: warning: assuming "WriteMem64" always terminates
-memcpy.adb:99:19: warning: no Always_Terminates aspect available for "WriteMem64"
+memcpy.adb:99:19: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 memcpy.adb:105:19: warning: assuming "WriteMem64" always terminates
-memcpy.adb:105:19: warning: no Always_Terminates aspect available for "WriteMem64"
+memcpy.adb:105:19: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 memcpy.adb:108:19: warning: assuming "WriteMem64" always terminates
-memcpy.adb:108:19: warning: no Always_Terminates aspect available for "WriteMem64"
+memcpy.adb:108:19: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 memcpy.adb:110:16: medium: precondition might fail, cannot prove (X86.ReadMem64(X86.RBP - 8) = 0) [possible fix: precondition of subprogram at memcpy.ads:24 should mention RBP]
 memcpy.adb:110:16: warning: "RAX" is set by "ZSTLoopProc_400605" but not used after the call
 memcpy.adb:119:19: warning: assuming "WriteMem64" always terminates
-memcpy.adb:119:19: warning: no Always_Terminates aspect available for "WriteMem64"
+memcpy.adb:119:19: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 memcpy.adb:125:19: warning: assuming "WriteMem64" always terminates
-memcpy.adb:125:19: warning: no Always_Terminates aspect available for "WriteMem64"
+memcpy.adb:125:19: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 memcpy.adb:128:19: warning: assuming "WriteMem64" always terminates
-memcpy.adb:128:19: warning: no Always_Terminates aspect available for "WriteMem64"
+memcpy.adb:128:19: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 memcpy.adb:131:16: medium: precondition might fail, cannot prove (X86.ReadMem64(X86.RBP - 8) = 0) [possible fix: precondition of subprogram at memcpy.ads:24 should mention RBP]
 memcpy.adb:131:16: warning: "RAX" is set by "ZSTLoopProc_40064f" but not used after the call
 memcpy.adb:151:21: info: assertion proved (CVC5: 1 VC)
 memcpy.adb:152:21: medium: assertion might fail, cannot prove (X86.Memory(SaveStackPtr) = SaveMem(SaveStackPtr))
 memcpy.adb:160:21: medium: assertion might fail [possible fix: precondition of subprogram at memcpy.ads:24 should mention RBP]
 memcpy.adb:162:21: warning: assuming "InRange64" has no effect on global items
-memcpy.adb:162:21: warning: no Global contract available for "InRange64"
+memcpy.adb:162:21: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.adb:162:66: warning: assuming "InSafeRegion64" has no effect on global items
-memcpy.adb:162:66: warning: no Global contract available for "InSafeRegion64"
+memcpy.adb:162:66: warning: no Global contract available for "InSafeRegion64" [assumed-global-null]
 memcpy.adb:164:12: medium: assertion might fail, cannot prove (X86.Memory(i) = SaveMem(i))
 memcpy.adb:171:39: info: range check proved (CVC5: 1 VC)
 memcpy.adb:172:39: info: range check proved (CVC5: 1 VC)
@@ -70,12 +70,12 @@ memcpy.adb:189:28: info: division check proved (CVC5: 2 VC)
 memcpy.adb:207:32: info: loop invariant preservation proved (CVC5: 1 VC)
 memcpy.adb:208:34: medium: loop invariant might fail in first iteration, cannot prove X86.InSafeRegion64(i,X86.RSP+8)
 memcpy.adb:208:37: warning: assuming "InSafeRegion64" has no effect on global items
-memcpy.adb:208:37: warning: no Global contract available for "InSafeRegion64"
+memcpy.adb:208:37: warning: no Global contract available for "InSafeRegion64" [assumed-global-null]
 memcpy.adb:210:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 memcpy.adb:211:46: warning: assuming "InRange64" has no effect on global items
-memcpy.adb:211:46: warning: no Global contract available for "InRange64"
+memcpy.adb:211:46: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.adb:212:45: warning: assuming "InRange64" has no effect on global items
-memcpy.adb:212:45: warning: no Global contract available for "InRange64"
+memcpy.adb:212:45: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.adb:213:39: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (X86.Memory(i) = X86.Memory'Loop_Entry(i))
 memcpy.adb:216:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:216:32: medium: loop invariant might not be preserved by an arbitrary iteration
@@ -94,48 +94,48 @@ memcpy.adb:262:23: warning: unused assignment
 memcpy.adb:263:23: warning: unused assignment
 memcpy.adb:271:24: info: assertion proved (CVC5: 1 VC)
 memcpy.adb:272:37: warning: assuming "InSafeRegion64" has no effect on global items
-memcpy.adb:272:37: warning: no Global contract available for "InSafeRegion64"
+memcpy.adb:272:37: warning: no Global contract available for "InSafeRegion64" [assumed-global-null]
 memcpy.adb:274:24: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 memcpy.adb:275:46: warning: assuming "InRange64" has no effect on global items
-memcpy.adb:275:46: warning: no Global contract available for "InRange64"
+memcpy.adb:275:46: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.adb:276:45: warning: assuming "InRange64" has no effect on global items
-memcpy.adb:276:45: warning: no Global contract available for "InRange64"
+memcpy.adb:276:45: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.adb:280:24: info: assertion proved (CVC5: 1 VC)
 memcpy.adb:281:24: info: assertion proved (CVC5: 1 VC)
 memcpy.adb:283:24: info: assertion proved (CVC5: 1 VC)
 memcpy.adb:283:51: info: division check proved (CVC5: 1 VC)
 memcpy.adb:285:24: medium: assertion might fail [possible fix: loop invariant at line 207 should mention RDX]
 memcpy.adb:285:27: warning: assuming "InRange64" has no effect on global items
-memcpy.adb:285:27: warning: no Global contract available for "InRange64"
+memcpy.adb:285:27: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.adb:286:24: medium: assertion might fail [possible fix: loop invariant at line 207 should mention RDX]
 memcpy.adb:286:27: warning: assuming "InRange64" has no effect on global items
-memcpy.adb:286:27: warning: no Global contract available for "InRange64"
+memcpy.adb:286:27: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.adb:287:24: medium: assertion might fail [possible fix: loop invariant at line 207 should mention RDX]
 memcpy.adb:287:27: warning: assuming "InRange64" has no effect on global items
-memcpy.adb:287:27: warning: no Global contract available for "InRange64"
+memcpy.adb:287:27: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.adb:288:24: medium: assertion might fail [possible fix: loop invariant at line 207 should mention RDX]
 memcpy.adb:288:27: warning: assuming "InRange64" has no effect on global items
-memcpy.adb:288:27: warning: no Global contract available for "InRange64"
+memcpy.adb:288:27: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.adb:289:24: medium: assertion might fail [possible fix: loop invariant at line 207 should mention RDX]
 memcpy.adb:289:27: warning: assuming "InRange64" has no effect on global items
-memcpy.adb:289:27: warning: no Global contract available for "InRange64"
+memcpy.adb:289:27: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.adb:290:24: medium: assertion might fail [possible fix: loop invariant at line 207 should mention RDX]
 memcpy.adb:290:27: warning: assuming "InRange64" has no effect on global items
-memcpy.adb:290:27: warning: no Global contract available for "InRange64"
+memcpy.adb:290:27: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.adb:291:24: medium: assertion might fail [possible fix: loop invariant at line 207 should mention RDX]
 memcpy.adb:291:27: warning: assuming "InRange64" has no effect on global items
-memcpy.adb:291:27: warning: no Global contract available for "InRange64"
+memcpy.adb:291:27: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.adb:292:24: medium: assertion might fail [possible fix: loop invariant at line 207 should mention RDX]
 memcpy.adb:292:27: warning: assuming "InRange64" has no effect on global items
-memcpy.adb:292:27: warning: no Global contract available for "InRange64"
+memcpy.adb:292:27: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.adb:297:13: warning: assuming "WriteMem64" always terminates
-memcpy.adb:297:13: warning: no Always_Terminates aspect available for "WriteMem64"
+memcpy.adb:297:13: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 memcpy.adb:307:10: warning: assuming "WriteMem64" always terminates
-memcpy.adb:307:10: warning: no Always_Terminates aspect available for "WriteMem64"
+memcpy.adb:307:10: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 memcpy.adb:310:43: warning: assuming "InRange64" has no effect on global items
-memcpy.adb:310:43: warning: no Global contract available for "InRange64"
+memcpy.adb:310:43: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.adb:311:42: warning: assuming "InRange64" has no effect on global items
-memcpy.adb:311:42: warning: no Global contract available for "InRange64"
+memcpy.adb:311:42: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.adb:312:36: medium: assertion might fail, cannot prove (X86.Memory(i) = saved_mem(i))
 memcpy.adb:314:21: medium: assertion might fail
 memcpy.adb:315:21: medium: assertion might fail
@@ -151,12 +151,12 @@ memcpy.adb:331:35: info: range check proved (CVC5: 1 VC)
 memcpy.adb:353:32: info: loop invariant preservation proved (CVC5: 1 VC)
 memcpy.adb:354:34: medium: loop invariant might fail in first iteration, cannot prove X86.InSafeRegion64(i,X86.RSP+8)
 memcpy.adb:354:37: warning: assuming "InSafeRegion64" has no effect on global items
-memcpy.adb:354:37: warning: no Global contract available for "InSafeRegion64"
+memcpy.adb:354:37: warning: no Global contract available for "InSafeRegion64" [assumed-global-null]
 memcpy.adb:356:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 memcpy.adb:357:46: warning: assuming "InRange64" has no effect on global items
-memcpy.adb:357:46: warning: no Global contract available for "InRange64"
+memcpy.adb:357:46: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.adb:358:45: warning: assuming "InRange64" has no effect on global items
-memcpy.adb:358:45: warning: no Global contract available for "InRange64"
+memcpy.adb:358:45: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.adb:359:39: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (X86.Memory(i) = X86.Memory'Loop_Entry(i))
 memcpy.adb:362:32: info: loop invariant initialization proved (CVC5: 1 VC)
 memcpy.adb:362:32: medium: loop invariant might not be preserved by an arbitrary iteration
@@ -173,29 +173,29 @@ memcpy.adb:386:23: warning: unused assignment
 memcpy.adb:401:23: warning: unused assignment
 memcpy.adb:402:23: warning: unused assignment
 memcpy.adb:407:13: warning: assuming "Write_EAX" always terminates
-memcpy.adb:407:13: warning: no Always_Terminates aspect available for "Write_EAX"
+memcpy.adb:407:13: warning: no Always_Terminates aspect available for "Write_EAX" [assumed-always-terminates]
 memcpy.adb:411:24: info: assertion proved (CVC5: 1 VC)
 memcpy.adb:412:29: warning: assuming "InSafeRegion64" has no effect on global items
-memcpy.adb:412:29: warning: no Global contract available for "InSafeRegion64"
+memcpy.adb:412:29: warning: no Global contract available for "InSafeRegion64" [assumed-global-null]
 memcpy.adb:414:24: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 memcpy.adb:415:38: warning: assuming "InRange64" has no effect on global items
-memcpy.adb:415:38: warning: no Global contract available for "InRange64"
+memcpy.adb:415:38: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.adb:416:37: warning: assuming "InRange64" has no effect on global items
-memcpy.adb:416:37: warning: no Global contract available for "InRange64"
+memcpy.adb:416:37: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.adb:420:24: info: assertion proved (CVC5: 1 VC)
 memcpy.adb:421:24: info: assertion proved (CVC5: 1 VC)
 memcpy.adb:423:24: info: assertion proved (CVC5: 1 VC)
 memcpy.adb:426:24: medium: assertion might fail [possible fix: loop invariant at line 353 should mention RDX]
 memcpy.adb:426:27: warning: assuming "InRange64" has no effect on global items
-memcpy.adb:426:27: warning: no Global contract available for "InRange64"
+memcpy.adb:426:27: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.adb:430:13: warning: assuming "WriteMem8" always terminates
-memcpy.adb:430:13: warning: no Always_Terminates aspect available for "WriteMem8"
+memcpy.adb:430:13: warning: no Always_Terminates aspect available for "WriteMem8" [assumed-always-terminates]
 memcpy.adb:441:10: warning: assuming "WriteMem64" always terminates
-memcpy.adb:441:10: warning: no Always_Terminates aspect available for "WriteMem64"
+memcpy.adb:441:10: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 memcpy.adb:445:43: warning: assuming "InRange64" has no effect on global items
-memcpy.adb:445:43: warning: no Global contract available for "InRange64"
+memcpy.adb:445:43: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.adb:446:42: warning: assuming "InRange64" has no effect on global items
-memcpy.adb:446:42: warning: no Global contract available for "InRange64"
+memcpy.adb:446:42: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.adb:447:36: medium: assertion might fail, cannot prove (X86.Memory(i) = saved_mem(i))
 memcpy.adb:449:21: medium: assertion might fail
 memcpy.adb:450:21: medium: assertion might fail
@@ -224,35 +224,35 @@ memcpy.adb:471:32: info: range check proved (CVC5: 1 VC)
 memcpy.adb:472:10: warning: initialization of "ra7" has no effect
 memcpy.adb:472:32: info: range check proved (CVC5: 1 VC)
 memcpy.adb:478:13: warning: assuming "WriteMem64" always terminates
-memcpy.adb:478:13: warning: no Always_Terminates aspect available for "WriteMem64"
+memcpy.adb:478:13: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 memcpy.adb:485:23: warning: unused assignment
 memcpy.adb:486:23: warning: unused assignment
 memcpy.adb:490:13: warning: assuming "WriteMem32" always terminates
-memcpy.adb:490:13: warning: no Always_Terminates aspect available for "WriteMem32"
+memcpy.adb:490:13: warning: no Always_Terminates aspect available for "WriteMem32" [assumed-always-terminates]
 memcpy.adb:493:13: warning: assuming "WriteMem64" always terminates
-memcpy.adb:493:13: warning: no Always_Terminates aspect available for "WriteMem64"
+memcpy.adb:493:13: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 memcpy.adb:496:13: warning: assuming "WriteMem64" always terminates
-memcpy.adb:496:13: warning: no Always_Terminates aspect available for "WriteMem64"
+memcpy.adb:496:13: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 memcpy.adb:502:13: warning: assuming "Write_EAX" always terminates
-memcpy.adb:502:13: warning: no Always_Terminates aspect available for "Write_EAX"
+memcpy.adb:502:13: warning: no Always_Terminates aspect available for "Write_EAX" [assumed-always-terminates]
 memcpy.adb:505:13: warning: "RCX" is set by "Write_ECX" but not used after the call
 memcpy.adb:505:13: warning: assuming "Write_ECX" always terminates
-memcpy.adb:505:13: warning: no Always_Terminates aspect available for "Write_ECX"
+memcpy.adb:505:13: warning: no Always_Terminates aspect available for "Write_ECX" [assumed-always-terminates]
 memcpy.adb:505:13: warning: statement has no effect
 memcpy.adb:511:13: warning: assuming "WriteMem64" always terminates
-memcpy.adb:511:13: warning: no Always_Terminates aspect available for "WriteMem64"
+memcpy.adb:511:13: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 memcpy.adb:518:13: warning: assuming "WriteMem16" always terminates
-memcpy.adb:518:13: warning: no Always_Terminates aspect available for "WriteMem16"
+memcpy.adb:518:13: warning: no Always_Terminates aspect available for "WriteMem16" [assumed-always-terminates]
 memcpy.adb:523:18: warning: unused assignment
 memcpy.adb:526:18: warning: unused assignment
 memcpy.adb:529:18: warning: unused assignment
 memcpy.adb:532:13: warning: "RDI" is set by "Write_EDI" but not used after the call
 memcpy.adb:532:13: warning: assuming "Write_EDI" always terminates
-memcpy.adb:532:13: warning: no Always_Terminates aspect available for "Write_EDI"
+memcpy.adb:532:13: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 memcpy.adb:532:13: warning: statement has no effect
 memcpy.adb:535:13: warning: "RAX" is set by "Write_EAX" but not used after the call
 memcpy.adb:535:13: warning: assuming "Write_EAX" always terminates
-memcpy.adb:535:13: warning: no Always_Terminates aspect available for "Write_EAX"
+memcpy.adb:535:13: warning: no Always_Terminates aspect available for "Write_EAX" [assumed-always-terminates]
 memcpy.adb:535:13: warning: statement has no effect
 memcpy.adb:543:18: warning: unused assignment
 memcpy.adb:546:18: warning: unused assignment
@@ -261,14 +261,14 @@ memcpy.adb:574:10: warning: "RAX" is set by "memcpy2" but not used after the cal
 memcpy.adb:574:10: warning: "RSI" is set by "memcpy2" but not used after the call
 memcpy.adb:574:10: warning: "RSP" is set by "memcpy2" but not used after the call
 memcpy.adb:583:13: warning: assuming "Write_EDI" always terminates
-memcpy.adb:583:13: warning: no Always_Terminates aspect available for "Write_EDI"
+memcpy.adb:583:13: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 memcpy.adb:586:13: warning: assuming "Write_EAX" always terminates
-memcpy.adb:586:13: warning: no Always_Terminates aspect available for "Write_EAX"
+memcpy.adb:586:13: warning: no Always_Terminates aspect available for "Write_EAX" [assumed-always-terminates]
 memcpy.adb:590:18: warning: unused assignment
 memcpy.adb:591:10: warning: "RSP" is set by "printf" but not used after the call
 memcpy.adb:591:10: warning: statement has no effect
 memcpy.adb:594:13: warning: assuming "Write_EAX" always terminates
-memcpy.adb:594:13: warning: no Always_Terminates aspect available for "Write_EAX"
+memcpy.adb:594:13: warning: no Always_Terminates aspect available for "Write_EAX" [assumed-always-terminates]
 memcpy.ads:17:06: info: data dependencies proved
 memcpy.ads:18:14: info: postcondition proved (CVC5: 1 VC)
 memcpy.ads:21:06: info: data dependencies proved
@@ -307,13 +307,13 @@ memcpy.ads:31:31: low: unused global "StackAddressSize"
 memcpy.ads:31:53: low: unused global "FS"
 memcpy.ads:31:61: low: unused global "GS"
 memcpy.ads:32:48: warning: assuming "InRange64" has no effect on global items
-memcpy.ads:32:48: warning: no Global contract available for "InRange64"
+memcpy.ads:32:48: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.ads:33:47: warning: assuming "InSafeRegion64" has no effect on global items
-memcpy.ads:33:47: warning: no Global contract available for "InSafeRegion64"
+memcpy.ads:33:47: warning: no Global contract available for "InSafeRegion64" [assumed-global-null]
 memcpy.ads:46:21: warning: assuming "InRange64" has no effect on global items
-memcpy.ads:46:21: warning: no Global contract available for "InRange64"
+memcpy.ads:46:21: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.ads:46:70: warning: assuming "InSafeRegion64" has no effect on global items
-memcpy.ads:46:70: warning: no Global contract available for "InSafeRegion64"
+memcpy.ads:46:70: warning: no Global contract available for "InSafeRegion64" [assumed-global-null]
 memcpy.ads:48:12: medium: postcondition might fail, cannot prove (X86.Memory(i) = X86.Memory'Old(i))
 memcpy.ads:52:06: info: data dependencies proved
 memcpy.ads:53:31: info: initialization of "RAX" proved
@@ -322,14 +322,14 @@ memcpy.ads:53:55: info: initialization of "SignFlag" proved
 memcpy.ads:53:69: info: initialization of "OverflowFlag" proved
 memcpy.ads:53:87: info: initialization of "ZeroFlag" proved
 memcpy.ads:58:28: warning: assuming "InRange64" has no effect on global items
-memcpy.ads:58:28: warning: no Global contract available for "InRange64"
+memcpy.ads:58:28: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.ads:59:29: warning: assuming "InSafeRegion64" has no effect on global items
-memcpy.ads:59:29: warning: no Global contract available for "InSafeRegion64"
+memcpy.ads:59:29: warning: no Global contract available for "InSafeRegion64" [assumed-global-null]
 memcpy.ads:60:16: medium: postcondition might fail
 memcpy.ads:61:31: warning: assuming "InRange64" has no effect on global items
-memcpy.ads:61:31: warning: no Global contract available for "InRange64"
+memcpy.ads:61:31: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.ads:62:32: warning: assuming "InRange64" has no effect on global items
-memcpy.ads:62:32: warning: no Global contract available for "InRange64"
+memcpy.ads:62:32: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.ads:86:92: info: division check proved (CVC5: 1 VC)
 memcpy.ads:111:06: info: data dependencies proved
 memcpy.ads:112:31: info: initialization of "ZeroFlag" proved
@@ -338,14 +338,14 @@ memcpy.ads:112:59: info: initialization of "CarryFlag" proved
 memcpy.ads:112:75: info: initialization of "OverflowFlag" proved
 memcpy.ads:113:61: warning: unused initial value of "RAX"
 memcpy.ads:118:28: warning: assuming "InRange64" has no effect on global items
-memcpy.ads:118:28: warning: no Global contract available for "InRange64"
+memcpy.ads:118:28: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.ads:119:29: warning: assuming "InSafeRegion64" has no effect on global items
-memcpy.ads:119:29: warning: no Global contract available for "InSafeRegion64"
+memcpy.ads:119:29: warning: no Global contract available for "InSafeRegion64" [assumed-global-null]
 memcpy.ads:120:16: medium: postcondition might fail
 memcpy.ads:121:31: warning: assuming "InRange64" has no effect on global items
-memcpy.ads:121:31: warning: no Global contract available for "InRange64"
+memcpy.ads:121:31: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.ads:122:32: warning: assuming "InRange64" has no effect on global items
-memcpy.ads:122:32: warning: no Global contract available for "InRange64"
+memcpy.ads:122:32: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.ads:169:09: info: data dependencies proved
 memcpy.ads:170:52: warning: unused initial value of "SignFlag"
 memcpy.ads:170:66: warning: unused initial value of "ZeroFlag"
@@ -353,150 +353,150 @@ memcpy.ads:171:44: warning: unused initial value of "RCX"
 memcpy.ads:171:54: warning: unused initial value of "RDX"
 memcpy.ads:178:09: medium: postcondition might fail, cannot prove (X86.Memory(X86.RSP'Old) = X86.Memory'Old(X86.RSP'Old))
 x86.ads:79:40: warning: assuming "InRange64" has no effect on global items
-x86.ads:79:40: warning: no Global contract available for "InRange64"
+x86.ads:79:40: warning: no Global contract available for "InRange64" [assumed-global-null]
 x86.ads:104:15: warning: assuming "writeRegLow8Post" has no effect on global items
-x86.ads:104:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:104:15: warning: no Global contract available for "writeRegLow8Post" [assumed-global-null]
 x86.ads:108:42: warning: assuming "readRegLow8" has no effect on global items
-x86.ads:108:42: warning: no Global contract available for "readRegLow8"
+x86.ads:108:42: warning: no Global contract available for "readRegLow8" [assumed-global-null]
 x86.ads:115:14: warning: assuming "writeRegHigh8Post" has no effect on global items
-x86.ads:115:14: warning: no Global contract available for "writeRegHigh8Post"
+x86.ads:115:14: warning: no Global contract available for "writeRegHigh8Post" [assumed-global-null]
 x86.ads:119:43: warning: assuming "readRegHigh8" has no effect on global items
-x86.ads:119:43: warning: no Global contract available for "readRegHigh8"
+x86.ads:119:43: warning: no Global contract available for "readRegHigh8" [assumed-global-null]
 x86.ads:126:15: warning: assuming "writeReg16Post" has no effect on global items
-x86.ads:126:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:126:15: warning: no Global contract available for "writeReg16Post" [assumed-global-null]
 x86.ads:130:40: warning: assuming "readReg16" has no effect on global items
-x86.ads:130:40: warning: no Global contract available for "readReg16"
+x86.ads:130:40: warning: no Global contract available for "readReg16" [assumed-global-null]
 x86.ads:137:15: warning: assuming "writeReg32Post" has no effect on global items
-x86.ads:137:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:137:15: warning: no Global contract available for "writeReg32Post" [assumed-global-null]
 x86.ads:141:40: warning: assuming "readReg32" has no effect on global items
-x86.ads:141:40: warning: no Global contract available for "readReg32"
+x86.ads:141:40: warning: no Global contract available for "readReg32" [assumed-global-null]
 x86.ads:151:27: warning: assuming "readRegLow8" has no effect on global items
-x86.ads:151:27: warning: no Global contract available for "readRegLow8"
+x86.ads:151:27: warning: no Global contract available for "readRegLow8" [assumed-global-null]
 x86.ads:156:15: warning: assuming "writeRegLow8Post" has no effect on global items
-x86.ads:156:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:156:15: warning: no Global contract available for "writeRegLow8Post" [assumed-global-null]
 x86.ads:161:27: warning: assuming "readRegHigh8" has no effect on global items
-x86.ads:161:27: warning: no Global contract available for "readRegHigh8"
+x86.ads:161:27: warning: no Global contract available for "readRegHigh8" [assumed-global-null]
 x86.ads:166:14: warning: assuming "writeRegHigh8Post" has no effect on global items
-x86.ads:166:14: warning: no Global contract available for "writeRegHigh8Post"
+x86.ads:166:14: warning: no Global contract available for "writeRegHigh8Post" [assumed-global-null]
 x86.ads:172:27: warning: assuming "readReg16" has no effect on global items
-x86.ads:172:27: warning: no Global contract available for "readReg16"
+x86.ads:172:27: warning: no Global contract available for "readReg16" [assumed-global-null]
 x86.ads:177:15: warning: assuming "writeReg16Post" has no effect on global items
-x86.ads:177:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:177:15: warning: no Global contract available for "writeReg16Post" [assumed-global-null]
 x86.ads:186:15: warning: assuming "writeReg32Post" has no effect on global items
-x86.ads:186:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:186:15: warning: no Global contract available for "writeReg32Post" [assumed-global-null]
 x86.ads:197:27: warning: assuming "readRegLow8" has no effect on global items
-x86.ads:197:27: warning: no Global contract available for "readRegLow8"
+x86.ads:197:27: warning: no Global contract available for "readRegLow8" [assumed-global-null]
 x86.ads:202:15: warning: assuming "writeRegLow8Post" has no effect on global items
-x86.ads:202:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:202:15: warning: no Global contract available for "writeRegLow8Post" [assumed-global-null]
 x86.ads:207:27: warning: assuming "readRegHigh8" has no effect on global items
-x86.ads:207:27: warning: no Global contract available for "readRegHigh8"
+x86.ads:207:27: warning: no Global contract available for "readRegHigh8" [assumed-global-null]
 x86.ads:212:15: warning: assuming "writeRegHigh8Post" has no effect on global items
-x86.ads:212:15: warning: no Global contract available for "writeRegHigh8Post"
+x86.ads:212:15: warning: no Global contract available for "writeRegHigh8Post" [assumed-global-null]
 x86.ads:218:27: warning: assuming "readReg16" has no effect on global items
-x86.ads:218:27: warning: no Global contract available for "readReg16"
+x86.ads:218:27: warning: no Global contract available for "readReg16" [assumed-global-null]
 x86.ads:223:15: warning: assuming "writeReg16Post" has no effect on global items
-x86.ads:223:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:223:15: warning: no Global contract available for "writeReg16Post" [assumed-global-null]
 x86.ads:228:28: warning: assuming "readReg32" has no effect on global items
-x86.ads:228:28: warning: no Global contract available for "readReg32"
+x86.ads:228:28: warning: no Global contract available for "readReg32" [assumed-global-null]
 x86.ads:233:15: warning: assuming "writeReg32Post" has no effect on global items
-x86.ads:233:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:233:15: warning: no Global contract available for "writeReg32Post" [assumed-global-null]
 x86.ads:244:27: warning: assuming "readRegLow8" has no effect on global items
-x86.ads:244:27: warning: no Global contract available for "readRegLow8"
+x86.ads:244:27: warning: no Global contract available for "readRegLow8" [assumed-global-null]
 x86.ads:249:15: warning: assuming "writeRegLow8Post" has no effect on global items
-x86.ads:249:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:249:15: warning: no Global contract available for "writeRegLow8Post" [assumed-global-null]
 x86.ads:254:27: warning: assuming "readRegHigh8" has no effect on global items
-x86.ads:254:27: warning: no Global contract available for "readRegHigh8"
+x86.ads:254:27: warning: no Global contract available for "readRegHigh8" [assumed-global-null]
 x86.ads:259:15: warning: assuming "writeRegHigh8Post" has no effect on global items
-x86.ads:259:15: warning: no Global contract available for "writeRegHigh8Post"
+x86.ads:259:15: warning: no Global contract available for "writeRegHigh8Post" [assumed-global-null]
 x86.ads:265:27: warning: assuming "readReg16" has no effect on global items
-x86.ads:265:27: warning: no Global contract available for "readReg16"
+x86.ads:265:27: warning: no Global contract available for "readReg16" [assumed-global-null]
 x86.ads:270:15: warning: assuming "writeReg16Post" has no effect on global items
-x86.ads:270:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:270:15: warning: no Global contract available for "writeReg16Post" [assumed-global-null]
 x86.ads:275:28: warning: assuming "readReg32" has no effect on global items
-x86.ads:275:28: warning: no Global contract available for "readReg32"
+x86.ads:275:28: warning: no Global contract available for "readReg32" [assumed-global-null]
 x86.ads:280:15: warning: assuming "writeReg32Post" has no effect on global items
-x86.ads:280:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:280:15: warning: no Global contract available for "writeReg32Post" [assumed-global-null]
 x86.ads:291:27: warning: assuming "readRegLow8" has no effect on global items
-x86.ads:291:27: warning: no Global contract available for "readRegLow8"
+x86.ads:291:27: warning: no Global contract available for "readRegLow8" [assumed-global-null]
 x86.ads:296:15: warning: assuming "writeRegLow8Post" has no effect on global items
-x86.ads:296:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:296:15: warning: no Global contract available for "writeRegLow8Post" [assumed-global-null]
 x86.ads:301:27: warning: assuming "readRegHigh8" has no effect on global items
-x86.ads:301:27: warning: no Global contract available for "readRegHigh8"
+x86.ads:301:27: warning: no Global contract available for "readRegHigh8" [assumed-global-null]
 x86.ads:306:15: warning: assuming "writeRegHigh8Post" has no effect on global items
-x86.ads:306:15: warning: no Global contract available for "writeRegHigh8Post"
+x86.ads:306:15: warning: no Global contract available for "writeRegHigh8Post" [assumed-global-null]
 x86.ads:312:27: warning: assuming "readReg16" has no effect on global items
-x86.ads:312:27: warning: no Global contract available for "readReg16"
+x86.ads:312:27: warning: no Global contract available for "readReg16" [assumed-global-null]
 x86.ads:317:15: warning: assuming "writeReg16Post" has no effect on global items
-x86.ads:317:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:317:15: warning: no Global contract available for "writeReg16Post" [assumed-global-null]
 x86.ads:322:28: warning: assuming "readReg32" has no effect on global items
-x86.ads:322:28: warning: no Global contract available for "readReg32"
+x86.ads:322:28: warning: no Global contract available for "readReg32" [assumed-global-null]
 x86.ads:327:15: warning: assuming "writeReg32Post" has no effect on global items
-x86.ads:327:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:327:15: warning: no Global contract available for "writeReg32Post" [assumed-global-null]
 x86.ads:339:27: warning: assuming "readReg16" has no effect on global items
-x86.ads:339:27: warning: no Global contract available for "readReg16"
+x86.ads:339:27: warning: no Global contract available for "readReg16" [assumed-global-null]
 x86.ads:344:15: warning: assuming "writeReg16Post" has no effect on global items
-x86.ads:344:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:344:15: warning: no Global contract available for "writeReg16Post" [assumed-global-null]
 x86.ads:349:28: warning: assuming "readReg32" has no effect on global items
-x86.ads:349:28: warning: no Global contract available for "readReg32"
+x86.ads:349:28: warning: no Global contract available for "readReg32" [assumed-global-null]
 x86.ads:354:15: warning: assuming "writeReg32Post" has no effect on global items
-x86.ads:354:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:354:15: warning: no Global contract available for "writeReg32Post" [assumed-global-null]
 x86.ads:366:27: warning: assuming "readReg16" has no effect on global items
-x86.ads:366:27: warning: no Global contract available for "readReg16"
+x86.ads:366:27: warning: no Global contract available for "readReg16" [assumed-global-null]
 x86.ads:371:15: warning: assuming "writeReg16Post" has no effect on global items
-x86.ads:371:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:371:15: warning: no Global contract available for "writeReg16Post" [assumed-global-null]
 x86.ads:376:28: warning: assuming "readReg32" has no effect on global items
-x86.ads:376:28: warning: no Global contract available for "readReg32"
+x86.ads:376:28: warning: no Global contract available for "readReg32" [assumed-global-null]
 x86.ads:381:15: warning: assuming "writeReg32Post" has no effect on global items
-x86.ads:381:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:381:15: warning: no Global contract available for "writeReg32Post" [assumed-global-null]
 x86.ads:393:27: warning: assuming "readReg16" has no effect on global items
-x86.ads:393:27: warning: no Global contract available for "readReg16"
+x86.ads:393:27: warning: no Global contract available for "readReg16" [assumed-global-null]
 x86.ads:398:15: warning: assuming "writeReg16Post" has no effect on global items
-x86.ads:398:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:398:15: warning: no Global contract available for "writeReg16Post" [assumed-global-null]
 x86.ads:403:28: warning: assuming "readReg32" has no effect on global items
-x86.ads:403:28: warning: no Global contract available for "readReg32"
+x86.ads:403:28: warning: no Global contract available for "readReg32" [assumed-global-null]
 x86.ads:408:15: warning: assuming "writeReg32Post" has no effect on global items
-x86.ads:408:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:408:15: warning: no Global contract available for "writeReg32Post" [assumed-global-null]
 x86.ads:420:27: warning: assuming "readReg16" has no effect on global items
-x86.ads:420:27: warning: no Global contract available for "readReg16"
+x86.ads:420:27: warning: no Global contract available for "readReg16" [assumed-global-null]
 x86.ads:425:15: warning: assuming "writeReg16Post" has no effect on global items
-x86.ads:425:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:425:15: warning: no Global contract available for "writeReg16Post" [assumed-global-null]
 x86.ads:430:28: warning: assuming "readReg32" has no effect on global items
-x86.ads:430:28: warning: no Global contract available for "readReg32"
+x86.ads:430:28: warning: no Global contract available for "readReg32" [assumed-global-null]
 x86.ads:435:15: warning: assuming "writeReg32Post" has no effect on global items
-x86.ads:435:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:435:15: warning: no Global contract available for "writeReg32Post" [assumed-global-null]
 x86.ads:447:28: warning: assuming "readRegLow8" has no effect on global items
-x86.ads:447:28: warning: no Global contract available for "readRegLow8"
+x86.ads:447:28: warning: no Global contract available for "readRegLow8" [assumed-global-null]
 x86.ads:452:15: warning: assuming "writeRegLow8Post" has no effect on global items
-x86.ads:452:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:452:15: warning: no Global contract available for "writeRegLow8Post" [assumed-global-null]
 x86.ads:464:28: warning: assuming "readRegLow8" has no effect on global items
-x86.ads:464:28: warning: no Global contract available for "readRegLow8"
+x86.ads:464:28: warning: no Global contract available for "readRegLow8" [assumed-global-null]
 x86.ads:469:15: warning: assuming "writeRegLow8Post" has no effect on global items
-x86.ads:469:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:469:15: warning: no Global contract available for "writeRegLow8Post" [assumed-global-null]
 x86.ads:481:29: warning: assuming "readRegLow8" has no effect on global items
-x86.ads:481:29: warning: no Global contract available for "readRegLow8"
+x86.ads:481:29: warning: no Global contract available for "readRegLow8" [assumed-global-null]
 x86.ads:486:15: warning: assuming "writeRegLow8Post" has no effect on global items
-x86.ads:486:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:486:15: warning: no Global contract available for "writeRegLow8Post" [assumed-global-null]
 x86.ads:498:29: warning: assuming "readRegLow8" has no effect on global items
-x86.ads:498:29: warning: no Global contract available for "readRegLow8"
+x86.ads:498:29: warning: no Global contract available for "readRegLow8" [assumed-global-null]
 x86.ads:503:15: warning: assuming "writeRegLow8Post" has no effect on global items
-x86.ads:503:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:503:15: warning: no Global contract available for "writeRegLow8Post" [assumed-global-null]
 x86.ads:515:29: warning: assuming "readRegLow8" has no effect on global items
-x86.ads:515:29: warning: no Global contract available for "readRegLow8"
+x86.ads:515:29: warning: no Global contract available for "readRegLow8" [assumed-global-null]
 x86.ads:520:15: warning: assuming "writeRegLow8Post" has no effect on global items
-x86.ads:520:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:520:15: warning: no Global contract available for "writeRegLow8Post" [assumed-global-null]
 x86.ads:532:29: warning: assuming "readRegLow8" has no effect on global items
-x86.ads:532:29: warning: no Global contract available for "readRegLow8"
+x86.ads:532:29: warning: no Global contract available for "readRegLow8" [assumed-global-null]
 x86.ads:537:15: warning: assuming "writeRegLow8Post" has no effect on global items
-x86.ads:537:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:537:15: warning: no Global contract available for "writeRegLow8Post" [assumed-global-null]
 x86.ads:549:29: warning: assuming "readRegLow8" has no effect on global items
-x86.ads:549:29: warning: no Global contract available for "readRegLow8"
+x86.ads:549:29: warning: no Global contract available for "readRegLow8" [assumed-global-null]
 x86.ads:554:15: warning: assuming "writeRegLow8Post" has no effect on global items
-x86.ads:554:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:554:15: warning: no Global contract available for "writeRegLow8Post" [assumed-global-null]
 x86.ads:566:29: warning: assuming "readRegLow8" has no effect on global items
-x86.ads:566:29: warning: no Global contract available for "readRegLow8"
+x86.ads:566:29: warning: no Global contract available for "readRegLow8" [assumed-global-null]
 x86.ads:571:15: warning: assuming "writeRegLow8Post" has no effect on global items
-x86.ads:571:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:571:15: warning: no Global contract available for "writeRegLow8Post" [assumed-global-null]
 x86.ads:677:55: warning: assuming "SignedLT_32" has no effect on global items
-x86.ads:677:55: warning: no Global contract available for "SignedLT_32"
+x86.ads:677:55: warning: no Global contract available for "SignedLT_32" [assumed-global-null]
 x86.ads:728:18: warning: assuming "InRange64" has no effect on global items
-x86.ads:728:18: warning: no Global contract available for "InRange64"
+x86.ads:728:18: warning: no Global contract available for "InRange64" [assumed-global-null]
