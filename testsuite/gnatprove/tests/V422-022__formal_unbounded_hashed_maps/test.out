@@ -113,7 +113,7 @@ test_map.adb:210:07: info: precondition proved (CVC5: 1 VC)
 test_map.adb:211:22: info: assertion proved (Z3: 1 VC)
 test_map.adb:216:22: info: precondition proved (CVC5: 1 VC)
 test_map.adb:216:22: medium: assertion might fail [possible fix: call at line 210 should mention Position (for argument C) in a postcondition]
-test_map.adb:220:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_map.adb:220:07: medium: precondition might fail, cannot prove not Contains (Container, Key)
 test_map.adb:221:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_map.adb:222:22: info: assertion proved (CVC5: 1 VC)
 test_map.adb:228:25: info: assertion proved (CVC5: 1 VC)

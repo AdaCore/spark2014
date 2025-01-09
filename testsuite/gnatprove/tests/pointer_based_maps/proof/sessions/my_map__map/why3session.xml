@@ -16,7 +16,7 @@
   <goal name="def&#39;vc.0" proved="true">
   <proof prover="0"><result status="valid" steps="0"/></proof>
   <proof prover="1"><result status="valid" steps="486"/></proof>
-  <proof prover="2"><result status="valid" steps="182"/></proof>
+  <proof prover="2"><result status="valid" steps="154"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
@@ -43,13 +43,13 @@
   <goal name="def&#39;vc.8" proved="true">
   <proof prover="0"><result status="valid" steps="12"/></proof>
   <proof prover="1"><result status="valid" steps="1974"/></proof>
-  <proof prover="2"><result status="valid" steps="7491"/></proof>
+  <proof prover="2"><result status="valid" steps="7887"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.9" proved="true">
-  <proof prover="0"><result status="valid" steps="18"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="valid" steps="2605"/></proof>
-  <proof prover="2"><result status="highfailure"/></proof>
+  <proof prover="2"><result status="valid" steps="7922"/></proof>
   <proof prover="4"><result status="unknown" steps="207"/></proof>
   </goal>
   <goal name="def&#39;vc.10" proved="true">
@@ -58,13 +58,13 @@
   <goal name="def&#39;vc.11" proved="true">
   <proof prover="0"><result status="valid" steps="12"/></proof>
   <proof prover="1"><result status="valid" steps="1974"/></proof>
-  <proof prover="2"><result status="valid" steps="7491"/></proof>
+  <proof prover="2"><result status="valid" steps="7887"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.12" proved="true">
   <proof prover="0"><result status="valid" steps="18"/></proof>
   <proof prover="1"><result status="valid" steps="2605"/></proof>
-  <proof prover="2"><result status="valid" steps="7528"/></proof>
+  <proof prover="2"><result status="valid" steps="7922"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.13" proved="true">

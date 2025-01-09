@@ -18,7 +18,7 @@ a.adb:25:14: warning: subprogram "Test" has no effect
 a.adb:26:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 a.adb:27:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 a.adb:28:07: medium: resource or memory leak might occur at end of scope
-a.adb:33:13: info: loop invariant initialization proved (Z3: 1 VC)
+a.adb:33:13: medium: loop invariant might fail in first iteration
 a.adb:33:13: medium: loop invariant might not be preserved by an arbitrary iteration
 a.adb:33:50: info: precondition proved (CVC5: 4 VC)
 a.adb:34:25: info: assertion proved (CVC5: 1 VC)
@@ -44,7 +44,7 @@ b.adb:25:14: warning: subprogram "Test" has no effect
 b.adb:26:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 b.adb:27:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 b.adb:28:07: medium: resource or memory leak might occur at end of scope
-b.adb:33:13: info: loop invariant initialization proved (Z3: 1 VC)
+b.adb:33:13: medium: loop invariant might fail in first iteration
 b.adb:33:13: medium: loop invariant might not be preserved by an arbitrary iteration
 b.adb:33:50: info: precondition proved (CVC5: 4 VC)
 b.adb:34:25: info: assertion proved (CVC5: 1 VC)
