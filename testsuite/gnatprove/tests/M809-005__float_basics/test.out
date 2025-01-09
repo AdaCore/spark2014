@@ -1,19 +1,19 @@
-foo.adb:4:04: warning: analyzing unreferenced procedure "Floats_And_Double"
+foo.adb:4:04: warning: analyzing unreferenced procedure "Floats_And_Double" [unreferenced-procedure]
 foo.adb:4:14: warning: subprogram "Floats_And_Double" has no effect
 foo.adb:7:22: medium: assertion might fail [possible fix: subprogram at line 4 should mention X and Y in a precondition]
 foo.adb:7:30: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 4 should mention Y in a precondition]
-foo.ads:10:04: warning: analyzing unreferenced function "Exhaustive"
-foo.ads:10:04: warning: analyzing unreferenced procedure "A_Minimum_Of_Care_Is_Needed"
-foo.ads:10:04: warning: analyzing unreferenced procedure "Distributed_Fun"
-foo.ads:10:04: warning: analyzing unreferenced procedure "Equality"
-foo.ads:10:04: warning: analyzing unreferenced procedure "I_Like_To_Commute_To_Work"
-foo.ads:10:04: warning: analyzing unreferenced procedure "Interesting_Inverse_1"
-foo.ads:10:04: warning: analyzing unreferenced procedure "Interesting_Inverse_2"
-foo.ads:10:04: warning: analyzing unreferenced procedure "Inverse_Addition"
-foo.ads:10:04: warning: analyzing unreferenced procedure "Not_So_Associative"
-foo.ads:10:04: warning: analyzing unreferenced procedure "Test_Floor_5"
-foo.ads:10:04: warning: analyzing unreferenced procedure "Test_Floor_6"
-foo.ads:10:04: warning: analyzing unreferenced procedure "Unary_Ops"
+foo.ads:10:04: warning: analyzing unreferenced function "Exhaustive" [unreferenced-function]
+foo.ads:10:04: warning: analyzing unreferenced procedure "A_Minimum_Of_Care_Is_Needed" [unreferenced-procedure]
+foo.ads:10:04: warning: analyzing unreferenced procedure "Distributed_Fun" [unreferenced-procedure]
+foo.ads:10:04: warning: analyzing unreferenced procedure "Equality" [unreferenced-procedure]
+foo.ads:10:04: warning: analyzing unreferenced procedure "I_Like_To_Commute_To_Work" [unreferenced-procedure]
+foo.ads:10:04: warning: analyzing unreferenced procedure "Interesting_Inverse_1" [unreferenced-procedure]
+foo.ads:10:04: warning: analyzing unreferenced procedure "Interesting_Inverse_2" [unreferenced-procedure]
+foo.ads:10:04: warning: analyzing unreferenced procedure "Inverse_Addition" [unreferenced-procedure]
+foo.ads:10:04: warning: analyzing unreferenced procedure "Not_So_Associative" [unreferenced-procedure]
+foo.ads:10:04: warning: analyzing unreferenced procedure "Test_Floor_5" [unreferenced-procedure]
+foo.ads:10:04: warning: analyzing unreferenced procedure "Test_Floor_6" [unreferenced-procedure]
+foo.ads:10:04: warning: analyzing unreferenced procedure "Unary_Ops" [unreferenced-procedure]
 foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:129
 foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:163
 foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:169
@@ -26,18 +26,18 @@ foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:278
 foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:294
 foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:346
 foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:352
-foo.ads:15:04: warning: analyzing unreferenced function "Exhaustive"
-foo.ads:15:04: warning: analyzing unreferenced procedure "A_Minimum_Of_Care_Is_Needed"
-foo.ads:15:04: warning: analyzing unreferenced procedure "Distributed_Fun"
-foo.ads:15:04: warning: analyzing unreferenced procedure "Equality"
-foo.ads:15:04: warning: analyzing unreferenced procedure "I_Like_To_Commute_To_Work"
-foo.ads:15:04: warning: analyzing unreferenced procedure "Interesting_Inverse_1"
-foo.ads:15:04: warning: analyzing unreferenced procedure "Interesting_Inverse_2"
-foo.ads:15:04: warning: analyzing unreferenced procedure "Inverse_Addition"
-foo.ads:15:04: warning: analyzing unreferenced procedure "Not_So_Associative"
-foo.ads:15:04: warning: analyzing unreferenced procedure "Test_Floor_5"
-foo.ads:15:04: warning: analyzing unreferenced procedure "Test_Floor_6"
-foo.ads:15:04: warning: analyzing unreferenced procedure "Unary_Ops"
+foo.ads:15:04: warning: analyzing unreferenced function "Exhaustive" [unreferenced-function]
+foo.ads:15:04: warning: analyzing unreferenced procedure "A_Minimum_Of_Care_Is_Needed" [unreferenced-procedure]
+foo.ads:15:04: warning: analyzing unreferenced procedure "Distributed_Fun" [unreferenced-procedure]
+foo.ads:15:04: warning: analyzing unreferenced procedure "Equality" [unreferenced-procedure]
+foo.ads:15:04: warning: analyzing unreferenced procedure "I_Like_To_Commute_To_Work" [unreferenced-procedure]
+foo.ads:15:04: warning: analyzing unreferenced procedure "Interesting_Inverse_1" [unreferenced-procedure]
+foo.ads:15:04: warning: analyzing unreferenced procedure "Interesting_Inverse_2" [unreferenced-procedure]
+foo.ads:15:04: warning: analyzing unreferenced procedure "Inverse_Addition" [unreferenced-procedure]
+foo.ads:15:04: warning: analyzing unreferenced procedure "Not_So_Associative" [unreferenced-procedure]
+foo.ads:15:04: warning: analyzing unreferenced procedure "Test_Floor_5" [unreferenced-procedure]
+foo.ads:15:04: warning: analyzing unreferenced procedure "Test_Floor_6" [unreferenced-procedure]
+foo.ads:15:04: warning: analyzing unreferenced procedure "Unary_Ops" [unreferenced-procedure]
 foo.ads:15:04: warning: in instantiation at generic_float_tests.adb:129
 foo.ads:15:04: warning: in instantiation at generic_float_tests.adb:163
 foo.ads:15:04: warning: in instantiation at generic_float_tests.adb:169

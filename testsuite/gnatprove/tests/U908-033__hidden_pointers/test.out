@@ -229,14 +229,14 @@ example_recursive.adb:343:07: info: precondition proved
 example_recursive.adb:343:07: medium: call to ghost subprogram "Prove_Reach_Preserved" might be nonterminating [possible fix: annotate "Prove_Reach_Preserved" with aspect Always_Terminates]
 example_recursive.adb:345:10: info: no contextual analysis of "Rand" (body not seen yet)
 example_recursive.adb:345:10: warning: assuming "Rand" has no effect on global items
-example_recursive.adb:345:10: warning: no Global contract available for "Rand"
+example_recursive.adb:345:10: warning: no Global contract available for "Rand" [assumed-global-null]
 example_recursive.adb:346:10: info: precondition proved
 example_recursive.adb:346:18: warning: "L1" is set by "Append" but not used after the call
 example_recursive.adb:347:25: info: precondition proved
 example_recursive.adb:347:25: medium: assertion might fail
 example_recursive.adb:348:13: info: no contextual analysis of "Rand" (body not seen yet)
 example_recursive.adb:348:13: warning: assuming "Rand" has no effect on global items
-example_recursive.adb:348:13: warning: no Global contract available for "Rand"
+example_recursive.adb:348:13: warning: no Global contract available for "Rand" [assumed-global-null]
 example_recursive.adb:350:10: info: precondition proved
 example_recursive.adb:350:18: warning: "L3" is set by "Append" but not used after the call
 example_recursive.adb:351:10: info: precondition proved
@@ -245,7 +245,7 @@ example_recursive.adb:352:25: info: assertion proved
 example_recursive.adb:352:25: info: precondition proved
 example_recursive.adb:353:13: info: no contextual analysis of "Rand" (body not seen yet)
 example_recursive.adb:353:13: warning: assuming "Rand" has no effect on global items
-example_recursive.adb:353:13: warning: no Global contract available for "Rand"
+example_recursive.adb:353:13: warning: no Global contract available for "Rand" [assumed-global-null]
 example_recursive.adb:354:10: medium: in inlined expression function body at example_recursive.adb:197
 example_recursive.adb:354:10: medium: precondition might fail, cannot prove not Reachable (Address (L2.Values), L2.Length, A, Memory)
 example_recursive.adb:354:18: warning: "L1" is set by "Append" but not used after the call

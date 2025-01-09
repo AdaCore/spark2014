@@ -226,7 +226,7 @@ example_recursive.adb:360:22: info: assertion proved
 example_recursive.adb:360:22: info: precondition proved
 example_recursive.adb:360:71: info: overflow check proved
 example_recursive.adb:362:20: info: overflow check proved
-example_recursive.adb:365:04: warning: analyzing unreferenced procedure "Do_Test"
+example_recursive.adb:365:04: warning: analyzing unreferenced procedure "Do_Test" [unreferenced-procedure]
 example_recursive.adb:365:23: warning: "L1" is not modified, could be IN
 example_recursive.adb:365:23: warning: unused variable "L1"
 example_recursive.adb:365:27: warning: "L2" is not modified, could be IN
