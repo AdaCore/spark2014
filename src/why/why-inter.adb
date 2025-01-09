@@ -1121,31 +1121,30 @@ package body Why.Inter is
       Left_Base := Base_Why_Type (Left);
       Right_Base := Base_Why_Type (Right);
 
-      if (Left_Base = EW_Int_Type and then Right = EW_Bool_Type)
-        or else
-          (Left_Base = EW_Bool_Type and then Right_Base = EW_Int_Type)
+      if Left_Base = EW_Int_Type
+        or else Right = EW_Int_Type
       then
          return EW_Int_Type;
-      elsif Left_Base = EW_BitVector_8_Type or else
-        Right_Base = EW_BitVector_8_Type
-      then
-         return EW_BitVector_8_Type;
-      elsif Left_Base = EW_BitVector_16_Type or else
-        Right_Base = EW_BitVector_16_Type
-      then
-         return EW_BitVector_16_Type;
-      elsif Left_Base = EW_BitVector_32_Type or else
-        Right_Base = EW_BitVector_32_Type
-      then
-         return EW_BitVector_32_Type;
-      elsif Left_Base = EW_BitVector_64_Type or else
-        Right_Base = EW_BitVector_64_Type
-      then
-         return EW_BitVector_64_Type;
       elsif Left_Base = EW_BitVector_128_Type or else
         Right_Base = EW_BitVector_128_Type
       then
          return EW_BitVector_128_Type;
+      elsif Left_Base = EW_BitVector_64_Type or else
+        Right_Base = EW_BitVector_64_Type
+      then
+         return EW_BitVector_64_Type;
+      elsif Left_Base = EW_BitVector_32_Type or else
+        Right_Base = EW_BitVector_32_Type
+      then
+         return EW_BitVector_32_Type;
+      elsif Left_Base = EW_BitVector_16_Type or else
+        Right_Base = EW_BitVector_16_Type
+      then
+         return EW_BitVector_16_Type;
+      elsif Left_Base = EW_BitVector_8_Type or else
+        Right_Base = EW_BitVector_8_Type
+      then
+         return EW_BitVector_8_Type;
       end if;
 
       --  There are no other uses of this subprogram for now
