@@ -1633,9 +1633,11 @@ package body Gnat2Why.Expr.Loops is
                   --    (forall tmp. old !i <= tmp < !i -> not cond)
 
                   Other_Filter := New_Universal_Quantif
-                    (Variables => (1 => Index_Tmp),
+                    (Binders   =>
+                       (1 => New_Binder (Domain => EW_Pred,
+                                         Name => Index_Tmp,
+                                         Arg_Type => Loop_Index_Type)),
                      Labels    => Symbol_Sets.Empty_Set,
-                     Var_Type  => Loop_Index_Type,
                      Pred      => New_Conditional
                        (Condition => Tmp_Range,
                         Then_Part => New_Not
