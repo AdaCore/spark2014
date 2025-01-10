@@ -3,7 +3,7 @@ pedantic.adb:5:12: info: implicit aspect Always_Terminates on "To_String" has be
 rec.ads:3:13: warning: subprogram "P" has no effect
 rec.ads:3:34: warning: no recursive call visible [variant-no-recursion]
 ---- expect error for unknown warning name -------
-"variant-no-recursiop" is not a valid warning name
+"variant-no-recursiop" is not a valid warning name, use "--list-categories" to obtain a list of all warning names
 Try "gnatprove --help" for more information.
 ---- no warning related recursion -------
 pedantic.adb:5:12: info: implicit aspect Always_Terminates on "To_String" has been proved, subprogram will terminate
