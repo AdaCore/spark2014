@@ -630,8 +630,11 @@ package body Configuration is
             Tag := From_Tag (Value);
          exception
             when Constraint_Error =>
-               Abort_Msg ("""" & Value & """ is not a valid warning name",
-                          With_Help => False);
+               Abort_Msg
+                 ("""" & Value & """ is not a valid warning name, use "
+                  & """--list-categories"" to obtain a list of all warning "
+                  & "names",
+                  With_Help => False);
          end;
       end if;
       if Switch = "-W" then
@@ -1410,6 +1413,13 @@ package body Configuration is
               (Rule_Name (K) & " - " & Kind_Name (K) &
                  " - " & Description (K) & " - " & Effort (K));
          end if;
+      end loop;
+
+      Ada.Text_IO.Put_Line ("[Misc warnings categories]");
+      for K in Misc_Warning_Kind loop
+         Ada.Text_IO.Put_Line
+           (Kind_Name (K) & " - " & Kind_Name (K) &
+              " - " & Description (K) & " - EASY");
       end loop;
 
       --  ??? TODO GNAT front-end categories
