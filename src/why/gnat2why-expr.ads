@@ -599,9 +599,8 @@ package Gnat2Why.Expr is
    --  Given an N_Range node N and a Why expr T, create an expression
    --  low <= T <= high
    --  where "low" and "high" are the lower and higher bounds of N.
-   --  T_Type is the base type in which the comparisons take
-   --  place (e.g. int, real). If it is not set, it is deduced from
-   --  the bounds' type.
+   --  T_Type is the base type of T (e.g. int, real). The comparison will be
+   --  done in a range accomodating both T_Type (if set) and the bounds' type.
 
    function Transform_Attribute_Old
      (Expr   : N_Subexpr_Id;
