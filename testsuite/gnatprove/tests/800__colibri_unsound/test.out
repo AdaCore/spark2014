@@ -1,0 +1,11 @@
+test.adb:15:22: info: assertion proved (colibri: 1 VC)
+test.adb:15:22: info: predicate check proved (Trivial: 1 VC)
+test.adb:15:32: info: division check proved (CVC5: 1 VC)
+test.adb:15:36: info: predicate check proved (Trivial: 1 VC)
+test.adb:15:41: info: predicate check proved (Trivial: 1 VC)
+test.adb:15:43: info: division check proved (CVC5: 1 VC)
+test.adb:15:47: info: predicate check proved (Trivial: 1 VC)
+test.ads:20:13: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
+test.ads:25:13: info: predicate check proved (Trivial: 1 VC)
+test.ads:25:19: info: predicate check proved (Trivial: 1 VC)
+test.ads:26:14: info: postcondition proved (colibri: 1 VC)
