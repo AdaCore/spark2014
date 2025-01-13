@@ -172,9 +172,9 @@ test_set.adb:282:07: info: precondition proved
 test_set.adb:287:25: info: assertion proved
 test_set.adb:288:25: info: assertion proved
 test_set.adb:291:25: info: assertion proved
-test_set.adb:297:22: info: assertion proved
-raised ADA.ASSERTIONS.ASSERTION_ERROR : failed postcondition from spark-containers-formal-ordered_sets.ads:590 instantiated at test_set.ads:8
 
+raised ADA.ASSERTIONS.ASSERTION_ERROR : failed postcondition from spark-containers-formal-ordered_sets.ads:590 instantiated at test_set.ads:8
+test_set.adb:297:22: info: assertion proved
 test_set.adb:298:22: info: assertion proved
 test_set.adb:300:12: info: discriminant check proved
 test_set.adb:302:22: info: assertion proved
