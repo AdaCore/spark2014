@@ -624,7 +624,7 @@ package body Configuration is
    procedure Handle_Warning_Switches (Switch, Value : String) is
       Tag : Misc_Warning_Kind;
    begin
-      if Switch /= "--pedantic" then
+      if Switch /= "--pedantic"  and then Switch /= "--info" then
          declare
          begin
             Tag := From_Tag (Value);
@@ -645,6 +645,10 @@ package body Configuration is
          Configuration.Warning_Status (Tag) := VC_Kinds.WS_Error;
       elsif Switch = "--pedantic" then
          for WK in Pedantic_Warning_Kind loop
+            Configuration.Warning_Status (WK) := VC_Kinds.WS_Enabled;
+         end loop;
+      elsif Switch = "--info" then
+         for WK in Info_Warning_Kind loop
             Configuration.Warning_Status (WK) := VC_Kinds.WS_Enabled;
          end loop;
       else
@@ -895,10 +899,6 @@ package body Configuration is
             CL_Switches.IDE_Progress_Bar'Access,
             Long_Switch => "--ide-progress-bar");
          Define_Switch
-           (Config,
-            CL_Switches.Info'Access,
-            Long_Switch => "--info");
-         Define_Switch
            (Config, CL_Switches.J'Access,
             Long_Switch => "-j:",
             Initial     => 1);
@@ -1034,6 +1034,10 @@ package body Configuration is
            (Config,
             CL_Switches.Debug_Exec_RAC'Access,
             Long_Switch => "--debug-exec-rac");
+         Define_Switch
+           (Config,
+            Handle_Warning_Switches'Access,
+            Long_Switch => "--info");
          Define_Switch
            (Config,
             CL_Switches.Mode'Access,
@@ -1589,7 +1593,6 @@ package body Configuration is
          Set_Proof_Mode (FS);
          Set_Mode (FS);
          FS.No_Inlining := CL_Switches.No_Inlining;
-         FS.Info := CL_Switches.Info;
          FS.No_Loop_Unrolling := CL_Switches.No_Loop_Unrolling;
          FS.Proof_Warnings := Proof_Warnings;
          FS.No_Inlining := CL_Switches.No_Inlining or

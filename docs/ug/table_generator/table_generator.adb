@@ -193,6 +193,39 @@ procedure Table_Generator is
          Put (File, """" & Description (Kind) & """");
          New_Line (File);
       end loop;
+      New_Line (File);
+      Put_Line (File, "The following warnings are disabled by default, and " &
+                  "can be enabled collectively using switch ``--info``, "
+                & " or individually using switch ``-W``.");
+      New_Line (File);
+      Put_Line (File, ".. tabularcolumns:: |p{2in}|p{3in}|");
+      New_Line (File);
+      Put_Line (File, ".. csv-table::");
+      Put_Line (File, "   :header: ""Warning Tag"", ""Explanation""");
+      Put_Line (File, "   :widths: 2, 4");
+      New_Line (File);
+      for Kind in Info_Warning_Kind loop
+         Put (File, "    ");
+         Put (File, """" & Kind_Name (Kind) & """, ");
+         Put (File, """" & Description (Kind) & """");
+         New_Line (File);
+      end loop;
+      New_Line (File);
+      Put_Line (File, "The following info messages are issued by default, and "
+                &  "can be disabled using switch ``-A``.");
+      New_Line (File);
+      Put_Line (File, ".. tabularcolumns:: |p{2in}|p{3in}|");
+      New_Line (File);
+      Put_Line (File, ".. csv-table::");
+      Put_Line (File, "   :header: ""Warning Tag"", ""Explanation""");
+      Put_Line (File, "   :widths: 2, 4");
+      New_Line (File);
+      for Kind in Info_Msg_Kind loop
+         Put (File, "    ");
+         Put (File, """" & Kind_Name (Kind) & """, ");
+         Put (File, """" & Description (Kind) & """");
+         New_Line (File);
+      end loop;
    end Produce_Misc_Warnings_Table;
 
    --------------------------------

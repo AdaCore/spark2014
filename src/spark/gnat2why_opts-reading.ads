@@ -136,10 +136,6 @@ package Gnat2Why_Opts.Reading is
 
    Proof_Warnings : Boolean;
 
-   --  Issue info messages related to gnatprove usage
-
-   Info_Messages : Boolean;
-
    --  Do not inline local functions to prove their code in the calling
    --  context.
 

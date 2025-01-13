@@ -26,6 +26,13 @@ package body Errout_Wrapper is
    --  First_Node - this node, if present, is used to set the map of names, and
    --               is passed to Locate_Message.
 
+   function Create_N
+     (Msg           : String;
+      Names         : String_Lists.List := String_Lists.Empty;
+      Secondary_Loc : Source_Ptr := No_Location;
+      Explain_Code  : Explain_Code_Kind := EC_None) return Message;
+   --  Same as Create, but the names can be provided as a list of Strings.
+
    --------------------------
    -- Generic_Print_Result --
    --------------------------

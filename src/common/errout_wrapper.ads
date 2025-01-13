@@ -55,19 +55,13 @@ package Errout_Wrapper is
    --  secondary location via #, and it may contain an explain code.
 
    function Create_N
-     (Msg           : String;
-      Names         : String_Lists.List := String_Lists.Empty;
-      Secondary_Loc : Source_Ptr := No_Location;
-      Explain_Code  : Explain_Code_Kind := EC_None) return Message;
-   --  Same as Create, but the names can be provided as a list of Strings.
-
-   function Create_N
      (Kind          : Misc_Warning_Kind;
       Extra_Message : String := "";
       Names         : String_Lists.List := String_Lists.Empty;
       Secondary_Loc : Source_Ptr := No_Location;
       Explain_Code  : Explain_Code_Kind := EC_None) return Message;
-   --  Same as Create_N, but intended to produce a warning message.
+   --  Same as Create_N, but intended to produce a warning message, and the
+   --  Names are provided in String form.
 
    procedure Error_Msg_N
      (Msg           : Message;

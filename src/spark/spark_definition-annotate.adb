@@ -31,7 +31,6 @@ with Ada.Strings.Unbounded;        use Ada.Strings.Unbounded;
 with Aspects;                      use Aspects;
 with Checked_Types;                use Checked_Types;
 with Common_Containers;
-with Debug;
 with Errout;
 with Erroutc;
 with Errout_Wrapper;               use Errout_Wrapper;
@@ -5040,13 +5039,10 @@ package body SPARK_Definition.Annotate is
 
             if No (Annot.Sets_Length)
               and then Emit_Warning_Info_Messages
-              and then Debug.Debug_Flag_Underscore_F
             then
-               Error_Msg_N_If
-                 ("no ""Length"" function found for type with "
-                  & "predefined set aggregates &",
+               Warning_Msg_N_If
+                 (Warn_Set_Length_Aggregates,
                   Typ,
-                  Kind => Info_Kind,
                   Continuations =>
                     [Create
                          ("the cardinality of aggregates will be unknown")]);
@@ -5129,13 +5125,10 @@ package body SPARK_Definition.Annotate is
             if No (Annot.Maps_Length)
               and then Present (Annot.Has_Key)
               and then Emit_Warning_Info_Messages
-              and then Debug.Debug_Flag_Underscore_F
             then
-               Error_Msg_N_If
-                 ("no ""Length"" function found for type with "
-                  & "predefined map aggregates &",
+               Warning_Msg_N_If
+                 (Warn_Map_Length_Aggregates,
                   Typ,
-                  Kind => Info_Kind,
                   Continuations =>
                     [Create
                          ("the cardinality of aggregates will be unknown")]);
@@ -6367,15 +6360,14 @@ package body SPARK_Definition.Annotate is
 
             if No (Ent)
               and then Emit_Warning_Info_Messages
-              and then Debug.Debug_Flag_Underscore_F
             then
-               Error_Msg_N
-                 ("no reclamation function nor reclaimed value found "
-                  & "for type with ownership &", E,
-                  Kind => Info_Kind,
+               Warning_Msg_N
+                 (Warn_No_Reclam_Func,
+                  E,
                   Continuations =>
-                    ["checks for ressource or memory reclamation will be"
-                     & " unprovable"]);
+                    [Create
+                         ("checks for ressource or memory reclamation will be"
+                          & " unprovable")]);
             end if;
          end;
       end if;
@@ -6410,18 +6402,17 @@ package body SPARK_Definition.Annotate is
                end loop;
             end if;
 
-            if No (Ent)
-              and then Emit_Warning_Info_Messages
-              and then Debug.Debug_Flag_Underscore_F
+            if No (Ent) and then Emit_Warning_Info_Messages
             then
-               Error_Msg_N
-                 ("no null value found for type with predefined equality &",
+               Warning_Msg_N
+                 (Warn_Predef_Eq_Null,
                   E,
-                  Kind => Info_Kind,
                   Continuations =>
-                    ["consider annotating a constant with a pragma Annotate "
-                     & "(GNATprove, Predefined_Equality, ""Null_Value"""
-                     & ", ...)"]);
+                    [Create
+                         ("consider annotating a constant with a pragma "
+                          & "Annotate "
+                          & "(GNATprove, Predefined_Equality, ""Null_Value"""
+                          & ", ...)")]);
             end if;
          end;
       end if;

@@ -26,7 +26,6 @@
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Atree;
-with Debug;
 with Errout_Wrapper;                 use Errout_Wrapper;
 with Exp_Util;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
@@ -476,8 +475,7 @@ package body Gnat2Why.Subprograms is
             --  Otherwise raise a warning if --info is given and there is an
             --  Initial_Condition.
 
-            elsif Debug.Debug_Flag_Underscore_F
-              and then Nkind (Withed_Unit) = N_Package_Declaration
+            elsif Nkind (Withed_Unit) = N_Package_Declaration
             then
                declare
                   Init_Cond : constant Node_Id :=
@@ -487,12 +485,10 @@ package body Gnat2Why.Subprograms is
                     and then (Ekind (Main) /= E_Package_Body
                               or else Withed /= Unique_Entity (Main))
                   then
-                     Error_Msg_N
-                       (Create
-                          ("Initial_Condition of package & is ignored",
-                           Names => [Withed]),
+                     Warning_Msg_N
+                       (Warn_Init_Cond_Ignored,
                         Main,
-                        Kind => Info_Kind,
+                        Names => [Withed],
                         Continuations =>
                           [Create
                                ("the elaboration of & is not known to precede"
@@ -3231,16 +3227,14 @@ package body Gnat2Why.Subprograms is
 
             if not Precise_UC.Ok then
 
-               --  If --info is set, output information on reason for imprecise
-               --  handling of UC.
+               --  Output information on reason for imprecise handling of UC.
 
-               if Debug.Debug_Flag_Underscore_F then
-                  Error_Msg_N
-                    ("imprecise handling of Unchecked_Conversion ("
-                     & To_String (Precise_UC.Explanation) & ")",
-                     E,
-                     Kind => Info_Kind);
-               end if;
+               Warning_Msg_N
+                 (Warn_Imprecise_UC,
+                  E,
+                  Msg => Create_N
+                    (Warn_Imprecise_UC,
+                     Names => [To_String (Precise_UC.Explanation)]));
 
                Def := Why_Empty;
 
@@ -6820,9 +6814,7 @@ package body Gnat2Why.Subprograms is
               Type_Needs_Dynamic_Invariant (Etype (E));
          begin
 
-            if Debug.Debug_Flag_Underscore_F
-              and then (Has_Implicit_Contracts or else Has_Explicit_Contracts)
-            then
+            if Has_Implicit_Contracts or else Has_Explicit_Contracts then
                declare
                   String_For_Implicit : constant String :=
                     (if Has_Explicit_Contracts then ""
@@ -6831,12 +6823,12 @@ package body Gnat2Why.Subprograms is
                    (if Is_Recursive (E) then "recursive calls"
                     else "implicit recursive calls");
                begin
-                  Error_Msg_N
-                    (String_For_Implicit
-                     & "function contract might not be available on "
-                     & String_For_Rec,
+                  Warning_Msg_N
+                    (Warn_Contracts_Recursive,
                      E,
-                     Kind => Info_Kind);
+                     Create_N (Warn_Contracts_Recursive,
+                       Names => [String_For_Implicit, String_For_Rec])
+                     );
                end;
             end if;
          end;
@@ -8924,26 +8916,22 @@ package body Gnat2Why.Subprograms is
 
          --  Raise a warning about missing definition on recursive calls
 
-         if Debug.Debug_Flag_Underscore_F then
-            declare
-               Scope               : constant Entity_Id :=
-                 Enclosing_Unit (E);
-               String_For_Scope    : constant String :=
-                 (if Present (Scope)
-                  and then Ekind (Scope) in
-                      E_Package | E_Function | E_Procedure | E_Entry
-                  and then Proof_Module_Cyclic (E, Scope)
-                  then " and on calls from enclosing unit"
-                  else "");
-            begin
-               Error_Msg_N
-                 ("expression function body of subprograms with a numeric "
-                  & "variant might not be available on recursive calls"
-                  & String_For_Scope,
-                  E,
-                  Kind => Info_Kind);
-            end;
-         end if;
+         declare
+            Scope               : constant Entity_Id :=
+              Enclosing_Unit (E);
+            String_For_Scope    : constant String :=
+              (if Present (Scope)
+               and then Ekind (Scope) in
+                   E_Package | E_Function | E_Procedure | E_Entry
+               and then Proof_Module_Cyclic (E, Scope)
+               then " and on calls from enclosing unit"
+               else "");
+         begin
+            Warning_Msg_N
+              (Warn_Num_Variant,
+               E,
+               Extra_Message => String_For_Scope);
+         end;
 
          Register_Proof_Cyclic_Function (E);
          Register_Dependency_For_Soundness (E_Module (E, Expr_Fun_Axiom), E);
