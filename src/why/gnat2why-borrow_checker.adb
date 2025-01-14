@@ -858,6 +858,13 @@ package body Gnat2Why.Borrow_Checker is
    procedure Merge_Env (Source : in out Perm_Env; Target : in out Perm_Env);
    --  Merge Target and Source into Target, and then deallocate the Source
 
+   procedure BC_Error
+     (Msg           : Message;
+      N             : Node_Id;
+      Continuations : Message_Lists.List := Message_Lists.Empty);
+   --  Common mechanism to emit errors in the borrow checker. Call Error_Msg_N
+   --  and set Permission_Error.
+
    procedure Perm_Error
      (N              : Expr_Or_Ent;
       Perm           : Perm_Kind;
@@ -1144,9 +1151,19 @@ package body Gnat2Why.Borrow_Checker is
       return P1 /= P2 and then P2 >= P1;
    end "<";
 
-   ----------
-   -- ">=" --
-   ----------
+   --------------
+   -- BC_Error --
+   --------------
+
+   procedure BC_Error
+     (Msg           : Message;
+      N             : Node_Id;
+      Continuations : Message_Lists.List := Message_Lists.Empty)
+   is
+   begin
+      Error_Msg_N (Msg, N, Continuations => Continuations);
+      Permission_Error := True;
+   end BC_Error;
 
    ----------------------
    -- Check_Assignment --
@@ -1205,16 +1222,15 @@ package body Gnat2Why.Borrow_Checker is
            and then Present (Expr_Root)
            and then not Is_Ghost_Entity (Expr_Root)
          then
-            Error_Msg_N
-              ("non-ghost object & cannot be " &
+            BC_Error
+              (Create ("non-ghost object & cannot be " &
                (case Mode is
-                  when Borrow => "borrowed",
-                  when Move   => "moved",
-                  when others => raise Program_Error) &
+                     when Borrow => "borrowed",
+                     when Move   => "moved",
+                     when others => raise Program_Error) &
                   " in an assignment to ghost object &",
-               Expr,
-               Names => [Expr_Root, Target_Root]);
-            Permission_Error := True;
+               Names => [Expr_Root, Target_Root]),
+               Expr);
          end if;
       end Check_Assignment_To_Ghost;
 
@@ -1343,13 +1359,6 @@ package body Gnat2Why.Borrow_Checker is
       then
          Check_Call_With_Side_Effects (Call => Expr);
 
-         --  If Expr might raise some exceptions, handle the
-         --  exceptional paths.
-
-         if Might_Raise_Handled_Exceptions (Expr) then
-            Set_Environment_For_Exceptions (Expr);
-         end if;
-
       elsif Is_Anonymous_Access_Object_Type (Target_Typ) then
          Expr_Root := Get_Root_Object (Expr);
 
@@ -1368,11 +1377,11 @@ package body Gnat2Why.Borrow_Checker is
                      or else Is_Constant_Borrower (Target_Root)
                      then "observed" else "borrowed");
                begin
-                  Error_Msg_N
-                    (Operation & " object aliased through address clauses"
-                     & " is not supported yet",
+                  BC_Error
+                    (Create
+                       (Operation & " object aliased through address clauses"
+                        & " is not supported yet"),
                      Target);
-                  Permission_Error := True;
                end;
             end if;
          else
@@ -1647,6 +1656,12 @@ package body Gnat2Why.Borrow_Checker is
 
       Inside_Procedure_Call := False;
       Update_Params (Call);
+
+      --  If Call might raise some exceptions, handle the exceptional paths
+
+      if Might_Raise_Handled_Exceptions (Call) then
+         Set_Environment_For_Exceptions (Call);
+      end if;
    end Check_Call_With_Side_Effects;
 
    -------------------------
@@ -2191,11 +2206,10 @@ package body Gnat2Why.Borrow_Checker is
             if Obj.Kind /= Direct_Mapping
               or else Is_Mutable_In_Why (Obj.Node)
             then
-               Error_Msg_N
-                 ("actual for a call to a function annotated with"
-                  & " At_End_Borrow should not depend on a variable",
+               BC_Error
+                 (Create ("actual for a call to a function annotated with"
+                  & " At_End_Borrow should not depend on a variable"),
                   Actual);
-               Permission_Error := True;
                return;
             end if;
          end loop;
@@ -2284,11 +2298,11 @@ package body Gnat2Why.Borrow_Checker is
          end if;
 
          if No (Brower) then
-            Error_Msg_N
-              ("actual for a call to a function annotated with At_End_Borrow"
-               & " should be rooted at a borrower or a borrowed expression",
+            BC_Error
+              (Create ("actual for a call to a function annotated with"
+               & " At_End_Borrow should be rooted at a borrower or a borrowed"
+               & " expression"),
                Actual);
-            Permission_Error := True;
          else
             Set_At_End_Borrow_Call (Expr, Brower);
          end if;
@@ -3292,16 +3306,16 @@ package body Gnat2Why.Borrow_Checker is
          Ent : constant Expr_Or_Ent :=
            (Is_Ent => True, Ent => E, Loc => Loop_Stmt);
       begin
-         Error_Msg_N
-           (Create ("loop iteration terminates with moved value for &",
-                    Names => [E]),
+         BC_Error
+           (Create
+              ("loop iteration terminates with moved value for &",
+               Names => [E]),
             Loop_Stmt,
             Continuations =>
               [Perm_Mismatch (N        => Ent,
                              Exp_Perm => Perm,
                              Act_Perm => Found_Perm,
                              Expl     => Expl)]);
-         Permission_Error := True;
       end Perm_Error_Loop_Exit;
 
       --  Local variables
@@ -3448,12 +3462,6 @@ package body Gnat2Why.Borrow_Checker is
 
          when N_Procedure_Call_Statement =>
             Check_Call_With_Side_Effects (N);
-
-            --  If N might raise some exceptions, handle the exceptional paths
-
-            if Might_Raise_Handled_Exceptions (N) then
-               Set_Environment_For_Exceptions (N);
-            end if;
 
          when N_Package_Body =>
             declare
@@ -3617,16 +3625,19 @@ package body Gnat2Why.Borrow_Checker is
       begin
          if Present (Borrowed) then
             if Expr.Is_Ent then
-               Error_Msg_N ("& was borrowed #",
-                            Expr.Loc,
-                            Names => [Expr.Ent],
-                            Secondary_Loc => Sloc (Borrowed));
+               BC_Error
+                 (Create
+                    ("& was borrowed #",
+                     Names         => [Expr.Ent],
+                     Secondary_Loc => Sloc (Borrowed)),
+                  Expr.Loc);
             else
-               Error_Msg_N ("object was borrowed #",
-                            Expr.Expr,
-                            Secondary_Loc => Sloc (Borrowed));
+               BC_Error
+                 (Create
+                    ("object was borrowed #",
+                     Secondary_Loc => Sloc (Borrowed)),
+                  Expr.Expr);
             end if;
-            Permission_Error := True;
          end if;
       end;
    end Check_Not_Borrowed;
@@ -3649,16 +3660,19 @@ package body Gnat2Why.Borrow_Checker is
               else Is_Prefix_Or_Almost (Expr.Expr, +Moved))
          then
             if Expr.Is_Ent then
-               Error_Msg_N ("& was moved #",
-                            Expr.Loc,
-                            Names         => [Expr.Ent],
-                            Secondary_Loc => Sloc (Moved));
+               BC_Error
+                 (Create ("& was moved #",
+                  Names         => [Expr.Ent],
+                  Secondary_Loc => Sloc (Moved)),
+                  Expr.Loc);
             else
-               Error_Msg_N ("object was moved #", Expr.Expr,
-                            Secondary_Loc => Sloc (Moved),
-                            Explain_Code  => EC_Ownership_Moved_Object);
+               BC_Error
+                 (Create
+                    ("object was moved #",
+                     Secondary_Loc => Sloc (Moved),
+                     Explain_Code  => EC_Ownership_Moved_Object),
+                  Expr.Expr);
             end if;
-            Permission_Error := True;
             return;
          end if;
       end loop;
@@ -3684,16 +3698,19 @@ package body Gnat2Why.Borrow_Checker is
       begin
          if Present (Observed) then
             if Expr.Is_Ent then
-               Error_Msg_N ("& was observed #",
-                            Expr.Loc,
-                            Names         => [Expr.Ent],
-                            Secondary_Loc => Sloc (Observed));
+               BC_Error
+                 (Create
+                    ("& was observed #",
+                     Names         => [Expr.Ent],
+                     Secondary_Loc => Sloc (Observed)),
+                  Expr.Loc);
             else
-               Error_Msg_N ("object was observed #",
-                            Expr.Expr,
-                            Secondary_Loc => Sloc (Observed));
+               BC_Error
+                 (Create
+                    ("object was observed #",
+                     Secondary_Loc => Sloc (Observed)),
+                  Expr.Expr);
             end if;
-            Permission_Error := True;
          end if;
       end;
    end Check_Not_Observed;
@@ -3953,16 +3970,17 @@ package body Gnat2Why.Borrow_Checker is
             if Present (Root)
               and then not Is_Ghost_Entity (Root)
             then
-               Error_Msg_N
-                 ("non-ghost object & cannot be " &
-                  (case Mode is
-                      when Borrow => "borrowed",
-                      when Free   => "freed",
-                      when Move   => "moved",
-                      when others => raise Program_Error) &
-                  " in a call to ghost subprogram &",
-                  Expr.Expr, Names => [Root, Subp]);
-               Permission_Error := True;
+               BC_Error
+                 (Create
+                    ("non-ghost object & cannot be " &
+                     (case Mode is
+                           when Borrow => "borrowed",
+                           when Free   => "freed",
+                           when Move   => "moved",
+                           when others => raise Program_Error) &
+                        " in a call to ghost subprogram &",
+                     Names => [Root, Subp]),
+                  Expr.Expr);
             end if;
          end;
       end if;
@@ -4087,10 +4105,12 @@ package body Gnat2Why.Borrow_Checker is
                      --  ultimate root was Param, then the anonymous access
                      --  object would have been classified as an observer.
 
-                     Error_Msg_N
-                       ("return value of a traversal function "
-                        & "should be rooted at &", Expr, Names => [Param]);
-                     Permission_Error := True;
+                     BC_Error
+                       (Create
+                          ("return value of a traversal function "
+                           & "should be rooted at &",
+                           Names => [Param]),
+                        Expr);
                      exit;
                   end if;
                end loop;
@@ -4646,11 +4666,12 @@ package body Gnat2Why.Borrow_Checker is
               or else Has_Variable_Input (E)
             then
                pragma Assert (Present (Current_Subp));
-               Error_Msg_N
-                 ("owning or observing object should occur in the global" &
-                    " contract of &",
-                  E, Names => [Current_Subp]);
-               Permission_Error := True;
+               BC_Error
+                 (Create
+                    ("owning or observing object should occur in the global" &
+                       " contract of &",
+                     Names => [Current_Subp]),
+                  E);
             end if;
 
             --  If E is a constant without variable inputs, it has permission
@@ -4892,11 +4913,11 @@ package body Gnat2Why.Borrow_Checker is
       --  overlays visible at this point in the program.
 
       if not Overlay_Alias (Root).Is_Empty then
-         Error_Msg_N
-           ("moved object aliased through address clauses is not supported"
-            & " yet",
+         BC_Error
+           (Create
+              ("moved object aliased through address clauses is not supported"
+               & " yet"),
             Expr);
-         Permission_Error := True;
       end if;
 
       Shallow_Moves.Insert (Expr);
@@ -5538,7 +5559,7 @@ package body Gnat2Why.Borrow_Checker is
          Set_Root_Object (N.Expr, Root, Part, Is_Deref);
       end if;
 
-      Error_Msg_N
+      BC_Error
         (Create
            ((if Part then "part of " else "")
             & (if Is_Deref then "dereference from " else "")
@@ -5553,7 +5574,6 @@ package body Gnat2Why.Borrow_Checker is
          Loc,
          Continuations =>
            [Perm_Mismatch (N, Perm, Found_Perm, Expl, Forbidden_Perm)]);
-      Permission_Error := True;
    end Perm_Error;
 
    ---------------------------
@@ -5568,12 +5588,10 @@ package body Gnat2Why.Borrow_Checker is
    is
       Ent : constant Expr_Or_Ent := (Is_Ent => True, Ent => E, Loc => E);
    begin
-      Error_Msg_N
+      BC_Error
         (Create ("borrower & exits its scope with moved value", Names => [E]),
          N,
          Continuations => [Perm_Mismatch (Ent, Read_Write, Found_Perm, Expl)]);
-      Permission_Error := True;
-
    end Perm_Error_Borrow_End;
 
    -------------------------------
@@ -5594,11 +5612,10 @@ package body Gnat2Why.Borrow_Checker is
         (if Exceptional then "exceptional exit from & with moved value for &"
            else "return from & with moved value for &");
    begin
-      Error_Msg_N
+      BC_Error
         (Create (Msg_String, Names => [Subp, E]),
          Subp,
          Continuations => Conts);
-      Permission_Error := True;
    end Perm_Error_Subprogram_End;
 
    -------------------------
@@ -5613,13 +5630,13 @@ package body Gnat2Why.Borrow_Checker is
    is
       Ent : constant Expr_Or_Ent := (Is_Ent => True, Ent => E, Loc => E);
    begin
-      Error_Msg_N (Create ("borrower & is reborrowed with moved value",
-                           Names => [E]),
-                   N,
-                   Continuations =>
-                     [Perm_Mismatch (Ent, Read_Write, Found_Perm, Expl)]);
-      Permission_Error := True;
-
+      BC_Error
+        (Create
+           ("borrower & is reborrowed with moved value",
+            Names => [E]),
+         N,
+         Continuations =>
+           [Perm_Mismatch (Ent, Read_Write, Found_Perm, Expl)]);
    end Perm_Error_Reborrow;
 
    -------------------
@@ -5815,8 +5832,7 @@ package body Gnat2Why.Borrow_Checker is
 
             if Inside_Elaboration then
                if not Inside_Procedure_Call then
-                  Error_Msg_N ("illegal move during elaboration", Loc);
-                  Permission_Error := True;
+                  BC_Error (Create ("illegal move during elaboration"), Loc);
                end if;
 
                return;
@@ -5836,11 +5852,12 @@ package body Gnat2Why.Borrow_Checker is
            or else Has_Variable_Input (Root)
          then
             pragma Assert (Present (Current_Subp));
-            Error_Msg_N
-              ("owning or observing object should occur in the global" &
-                 " contract of &",
-               Root, Names => [Current_Subp]);
-            Permission_Error := True;
+            BC_Error
+              (Create
+                 ("owning or observing object should occur in the global" &
+                    " contract of &",
+                  Names => [Current_Subp]),
+               Root);
          end if;
 
          Perm := Read_Only;
@@ -5872,8 +5889,7 @@ package body Gnat2Why.Borrow_Checker is
                  and then not Inside_Procedure_Call
                  and then Present (Root)
                then
-                  Error_Msg_N ("illegal move during elaboration", Loc);
-                  Permission_Error := True;
+                  BC_Error (Create ("illegal move during elaboration"), Loc);
                end if;
 
                return;
