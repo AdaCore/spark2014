@@ -37,17 +37,17 @@ list_borrows.adb:43:57: info: precondition proved
 list_borrows.adb:43:65: info: predicate check proved
 list_borrows.adb:47:26: info: predicate check proved
 list_borrows.adb:52:33: info: predicate check proved
-list_borrows.adb:52:33: info: loop invariant initialization proved
 list_borrows.adb:52:33: info: loop invariant preservation proved
+list_borrows.adb:52:33: info: loop invariant initialization proved
 list_borrows.adb:52:47: info: predicate check proved
 list_borrows.adb:52:61: info: predicate check proved
 list_borrows.adb:55:13: info: predicate check proved
-list_borrows.adb:55:13: info: loop invariant initialization proved
 list_borrows.adb:55:13: info: loop invariant preservation proved
+list_borrows.adb:55:13: info: loop invariant initialization proved
 list_borrows.adb:55:42: info: predicate check proved
 list_borrows.adb:55:46: info: predicate check proved
-list_borrows.adb:58:13: info: loop invariant preservation proved
 list_borrows.adb:58:13: info: loop invariant initialization proved
+list_borrows.adb:58:13: info: loop invariant preservation proved
 list_borrows.adb:59:21: info: predicate check proved
 list_borrows.adb:59:26: info: predicate check proved
 list_borrows.adb:60:23: info: precondition proved
@@ -73,11 +73,17 @@ list_borrows.adb:80:20: info: pointer dereference check proved
 list_borrows.adb:81:19: info: assertion proved
 list_borrows.adb:81:20: info: pointer dereference check proved
 list_borrows.adb:81:25: info: pointer dereference check proved
-list_borrows.adb:82:19: info: assertion proved
+
+list_borrows.adb:82:19: medium: assertion might fail
+   82 |   pragma Assert (X.Next.Next.Val = 42);
+      |                  ^~~~~~~~~~~~~~~~~~~~
 list_borrows.adb:82:20: info: pointer dereference check proved
 list_borrows.adb:82:25: info: pointer dereference check proved
 list_borrows.adb:82:30: info: pointer dereference check proved
-list_borrows.adb:83:19: info: assertion proved
+
+list_borrows.adb:83:19: medium: assertion might fail
+   83 |   pragma Assert (X.Next.Next.Next.Val = 4);
+      |                  ^~~~~~~~~~~~~~~~~~~~~~~~
 list_borrows.adb:83:20: info: pointer dereference check proved
 list_borrows.adb:83:25: info: pointer dereference check proved
 list_borrows.adb:83:30: info: pointer dereference check proved
