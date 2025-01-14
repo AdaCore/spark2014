@@ -2,11 +2,11 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "https://www.why3.org/why3session.dtd">
 <why3session shape_version="6">
-<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="120" steplimit="10000" memlimit="0"/>
-<prover id="1" name="CVC5" version="0.0.7-gnatprove" timelimit="120" steplimit="365000" memlimit="0"/>
-<prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="8450000" memlimit="0"/>
+<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="120" steplimit="10000" memlimit="2000"/>
+<prover id="1" name="CVC5" version="0.0.7-gnatprove" timelimit="120" steplimit="365000" memlimit="2000"/>
+<prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="8450000" memlimit="2000"/>
 <prover id="3" name="Trivial" version="1.0" alternative="trivial" timelimit="1" steplimit="1" memlimit="1000"/>
-<prover id="4" name="colibri" version="2137" timelimit="120" steplimit="12000" memlimit="0"/>
+<prover id="4" name="colibri" version="2137" timelimit="120" steplimit="12000" memlimit="2000"/>
 <file format="gnat-json">
 <path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="bar__float_tests__test_17.gnat-json"/>
@@ -19,13 +19,13 @@
   <goal name="def&#39;vc.1" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="valid" steps="23739"/></proof>
-  <proof prover="2"><result status="valid" steps="20697"/></proof>
+  <proof prover="2"><result status="valid" steps="21059"/></proof>
   <proof prover="4"><result status="failure" steps="0"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
+  <proof prover="0"><result status="failure" steps="0"/></proof>
   <proof prover="1"><result status="valid" steps="40796"/></proof>
-  <proof prover="2"><result status="valid" steps="68454"/></proof>
+  <proof prover="2"><result status="failure" steps="0"/></proof>
   <proof prover="4"><result status="failure" steps="0"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
@@ -34,7 +34,7 @@
   <goal name="def&#39;vc.4">
   <proof prover="0"><result status="steplimitexceeded" steps="2280"/></proof>
   <proof prover="1"><result status="unknown" steps="42367"/></proof>
-  <proof prover="2"><result status="unknown" steps="79402"/></proof>
+  <proof prover="2"><result status="unknown" steps="64884"/></proof>
   <proof prover="4"><result status="unknown" steps="266"/></proof>
   </goal>
  </transf>

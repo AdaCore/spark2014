@@ -6,8 +6,8 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2024, AdaCore                     --
---              Copyright (C) 2017-2024, Capgemini Engineering              --
+--                     Copyright (C) 2010-2025, AdaCore                     --
+--              Copyright (C) 2017-2025, Capgemini Engineering              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -83,6 +83,7 @@ package body Gnat2Why_Opts.Reading is
                end loop;
             end;
          end if;
+         Warning_Status := VC_Kinds.From_JSON (Get (R, Warning_Status_Name));
       end Read_File_Specific_Info;
 
       V : constant JSON_Value := Read_File_Into_JSON (Args_File);
@@ -120,7 +121,6 @@ package body Gnat2Why_Opts.Reading is
          Warning_Mode :=
            SPARK_Warning_Mode_Type'Value (Get (Get (V, Warning_Mode_Name)));
 
-         Pedantic              := Get_Opt (V, Pedantic_Name);
          Flow_Show_GG          := Get_Opt (V, Flow_Show_GG_Name);
          Proof_Generate_Guards := Get_Opt (V, Proof_Generate_Guards_Name);
          Ide_Mode              := Get_Opt (V, Ide_Mode_Name);

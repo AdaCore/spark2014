@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2024, AdaCore                     --
+--                     Copyright (C) 2010-2025, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -2849,7 +2849,6 @@ package body Why.Gen.Records is
       Index_All  : Positive := 1;
 
    begin
-
       --  Hardcoded types are translated separately
 
       if Is_Hardcoded_Entity (E) then

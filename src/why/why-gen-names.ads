@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                     Copyright (C) 2010-2024, AdaCore                     --
+--                     Copyright (C) 2010-2025, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -24,10 +24,10 @@
 ------------------------------------------------------------------------------
 
 with Checked_Types;          use Checked_Types;
-with Common_Containers;      use Common_Containers;
 with GNATCOLL.Symbols;       use GNATCOLL.Symbols;
 with Snames;                 use Snames;
 with SPARK_Util;             use SPARK_Util;
+with String_Utils;           use String_Utils;
 with Types;                  use Types;
 with Why.Atree.Accessors;    use Why.Atree.Accessors;
 with Why.Ids;                use Why.Ids;

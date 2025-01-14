@@ -103,3 +103,35 @@ VC_INCONSISTENT_POST - postcondition always False - Warn if postcondition is fou
 VC_INCONSISTENT_ASSUME - pragma Assume always False - Warn if pragma Assume is found to be always False - EASY
 VC_UNREACHABLE_BRANCH - unreachable branch - Warn if branch is found to be unreachable - EASY
 VC_DEAD_CODE - unreachable code - Warn if code is found to be unreachable - EASY
+[Misc warnings categories]
+address-to-access-conversion - address-to-access-conversion - call to conversion function is assumed to return a valid access designating a valid value - EASY
+alias-volatile-atomic-mismatch - alias-volatile-atomic-mismatch - aliased objects should both be volatile or non-volatile, and both be atomic or non-atomic - EASY
+alias-volatile-prop-mismatch - alias-volatile-prop-mismatch - aliased objects should have the same volatile properties - EASY
+attribute-valid-always-true - attribute-valid-always-true - attribute Valid is assumed to return True - EASY
+auto-lemma-calls - auto-lemma-calls - the automatically instantiated lemma contains calls which cannot be arbitrarily specialized - EASY
+auto-lemma-different - auto-lemma-different - the automatically instantiated lemma contains calls to its associated function with different specializations - EASY
+auto-lemma-higher-order - auto-lemma-higher-order - the automatically instantiated lemma is not annotated with Higher_Order_Specialization - EASY
+auto-lemma-specializable - auto-lemma-specializable - the automatically instantiated lemma does not contain any specializable calls to its associated function - EASY
+initialization-to-alias - initialization-to-alias - initialization of object is assumed to have no effects on other non-volatile objects - EASY
+is-valid-returns-true - is-valid-returns-true - function Is_Valid is assumed to return True - EASY
+generic-not-analyzed - generic-not-analyzed - GNATprove doesn't analyze generics, only instances - EASY
+no-possible-termination - no-possible-termination - procedure which does not return normally nor raises an exception cannot always terminate - EASY
+no-check-message-justified - no-check-message-justified - no check message justified by this pragma - EASY
+proved-check-justified - proved-check-justified - only proved check messages justified by this pragma - EASY
+deprecated-feature - deprecated-feature - Terminating, Always_Return, and Might_Not_Return annotations are ignored - EASY
+deprecated-feature - deprecated-feature - External Axiomatizations are not supported anymore, ignored - EASY
+ignored-pragma - ignored-pragma - pragma is ignored (it is not yet supported) - EASY
+overflow-mode-ignored - overflow-mode-ignored - pragma Overflow_Mode in code is ignored - EASY
+precondition-statically-false - precondition-statically-false - precondition is statically False - EASY
+restriction-ignored - restriction-ignored - restriction is ignored (it is not yet supported) - EASY
+unreferenced-function - unreferenced-function - analyzing unreferenced function - EASY
+unreferenced-procedure - unreferenced-procedure - analyzing unreferenced procedure - EASY
+useless-relaxed-init-func-result - useless-relaxed-init-func-result - function result annotated with Relaxed_Initialization cannot be partially initialized - EASY
+useless-relaxed-init-object - useless-relaxed-init-object - object annotated with Relaxed_Initialization cannot be partially initialized - EASY
+variant-no-recursion - variant-no-recursion - no recursive call visible on subprogram with Subprogram_Variant - EASY
+assumed-always-terminates - assumed-always-terminates - no Always_Terminates aspect available for subprogram, subprogram is assumed to always terminate - EASY
+assumed-global-null - assumed-global-null - no Global contract available for subprogram, null is assumed - EASY
+imprecise-address-specification - imprecise-address-specification - object with an imprecisely supported address specification: non-atomic objects should not be accessed concurrently, volatile properties should be correct, indirect writes to object to and through potential aliases are ignored, and reads should be valid - EASY
+image-attribute-length - image-attribute-length - string attribute has an implementation-defined length - EASY
+operator-reassociation - operator-reassociation - possible operator reassociation due to missing parentheses - EASY
+representation-attribute-value - representation-attribute-value - representation attribute has an implementation-defined value - EASY

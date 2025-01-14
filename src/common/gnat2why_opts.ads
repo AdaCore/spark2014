@@ -6,8 +6,8 @@
 --                                                                          --
 --                                  S p e c                                 --
 --                                                                          --
---                     Copyright (C) 2010-2024, AdaCore                     --
---              Copyright (C) 2017-2024, Capgemini Engineering              --
+--                     Copyright (C) 2010-2025, AdaCore                     --
+--              Copyright (C) 2017-2025, Capgemini Engineering              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -107,7 +107,6 @@ private
    No_Loop_Unrolling_Name       : constant String := "no_loop_unrolling";
    Output_Mode_Name             : constant String := "output_mode";
    Parallel_Why3_Name           : constant String := "parallel_why3";
-   Pedantic_Name                : constant String := "pedantic";
    Proof_Generate_Guards_Name   : constant String :=
      "proof_generate_axiom_guards";
    Proof_Warnings_Name          : constant String := "proof_warnings";
@@ -115,5 +114,6 @@ private
    Warning_Mode_Name            : constant String := "warning_mode";
    Why3_Args_Name               : constant String := "why3_args";
    Why3_Dir_Name                : constant String := "why3_dir";
+   Warning_Status_Name          : constant String := "warning_status";
 
 end Gnat2Why_Opts;

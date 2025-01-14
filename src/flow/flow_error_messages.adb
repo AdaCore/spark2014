@@ -6,8 +6,8 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---              Copyright (C) 2013-2024, Capgemini Engineering              --
---                     Copyright (C) 2013-2024, AdaCore                     --
+--              Copyright (C) 2013-2025, Capgemini Engineering              --
+--                     Copyright (C) 2013-2025, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -61,7 +61,7 @@ with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK_Util.Types;       use SPARK_Util.Types;
 with SPARK_Xrefs;            use SPARK_Xrefs;
 with Stringt;                use Stringt;
-with String_Utils;
+with String_Utils;           use String_Utils;
 with Uintp;                  use Uintp;
 
 -------------------------
@@ -267,8 +267,8 @@ package body Flow_Error_Messages is
       File  : constant String     := File_Name (Slc);
       Line  : constant Natural    := Positive (Get_Logical_Line_Number (Slc));
       Col   : constant Natural    := Positive (Get_Column_Number (Slc));
-   begin
 
+   begin
       Set_Field (Value, "file", File);
       Set_Field (Value, "line", Line);
       Set_Field (Value, "col", Col);
@@ -527,7 +527,6 @@ package body Flow_Error_Messages is
    --  Start of processing for Error_Msg_Flow
 
    begin
-
       --  If the message we are about to emit has already been emitted in the
       --  past then do nothing.
 

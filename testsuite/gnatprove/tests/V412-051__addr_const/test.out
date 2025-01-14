@@ -1,6 +1,6 @@
 p.ads:8:38: warning: assuming "F" has no effect on global items
-p.ads:8:38: warning: no Global contract available for "F"
+p.ads:8:38: warning: no Global contract available for "F" [assumed-global-null]
 p.ads:9:03: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
-p.ads:9:03: warning: address specification on "v" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias [E0012]
+p.ads:9:03: warning: address specification on "v" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias [imprecise-address-specification] [E0012]
 p.ads:9:03: warning: consider making "v" volatile and annotating it with Async_Writers and make sure that all overlapping objects have Async_Writers set to True
 p.ads:9:03: warning: launch "gnatprove --explain=E0012" for more information

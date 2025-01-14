@@ -4,7 +4,7 @@ loops_static.adb:8:46: info: range check proved (CVC5: 4 VC)
 loops_static.adb:11:47: medium: assertion might fail, cannot prove A_Begins (I) = 0 [possible fix: loop at line 5 should mention A in a loop invariant]
 loops_static.adb:11:57: info: index check proved (CVC5: 2 VC)
 loops_static.adb:14:07: medium: assertion might fail
-loops_static.adb:17:04: warning: analyzing unreferenced procedure "Loop11"
+loops_static.adb:17:04: warning: analyzing unreferenced procedure "Loop11" [unreferenced-procedure]
 loops_static.adb:17:14: high: all paths in "Loop11" raise exceptions or do not terminate normally
 loops_static.adb:19:23: info: cannot unroll loop (local non-scalar declaration at line 23)
 loops_static.adb:20:25: info: cannot unroll loop (local non-scalar declaration at line 23)
@@ -97,7 +97,7 @@ loops_static.adb:150:26: warning: unused assignment
 loops_static.adb:155:42: high: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, 1 => 0) and J = 0) [possible fix: subprogram at loops_static.ads:18 should mention A in a precondition]
 loops_static.adb:155:45: info: index check proved (CVC5: 4 VC)
 loops_static.adb:157:07: medium: assertion might fail
-loops_static.adb:160:04: warning: analyzing unreferenced function "Loop9"
+loops_static.adb:160:04: warning: analyzing unreferenced function "Loop9" [unreferenced-function]
 loops_static.adb:160:13: info: implicit aspect Always_Terminates on "Loop9" has been proved, subprogram will terminate
 loops_static.adb:163:23: info: unrolling loop
 loops_static.adb:164:13: high: array index check might fail (e.g. when I = 1 and R'First = 2 and R'Last = 0) [reason for check: value must be a valid index into the array]

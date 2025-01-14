@@ -38,10 +38,10 @@ preds.adb:58:07: info: initialization of "Tmp" proved
 preds.adb:58:07: medium: in default value at preds.adb:58
 preds.adb:58:07: medium: in inlined predicate at preds.ads:64
 preds.adb:58:07: medium: predicate check might fail on default value, cannot prove Rec_Bad.I /= 0
-preds.adb:63:04: warning: analyzing unreferenced procedure "Create_Rec_Wrap_OK"
+preds.adb:63:04: warning: analyzing unreferenced procedure "Create_Rec_Wrap_OK" [unreferenced-procedure]
 preds.adb:63:34: info: initialization of "X" proved
 preds.adb:64:07: info: initialization of "Tmp" proved
-preds.adb:69:04: warning: analyzing unreferenced procedure "Create_Rec_Wrap_Bad"
+preds.adb:69:04: warning: analyzing unreferenced procedure "Create_Rec_Wrap_Bad" [unreferenced-procedure]
 preds.adb:69:35: info: initialization of "X" proved
 preds.adb:70:07: info: initialization of "Tmp" proved
 preds.ads:4:23: info: in default initialization of component "X" at preds.ads:54
@@ -68,6 +68,8 @@ preds.ads:36:23: info: in default value at preds.adb:34
 preds.ads:36:23: info: range check proved (CVC5: 2 VC)
 preds.ads:38:34: info: initialization of "X" proved
 preds.ads:39:35: info: initialization of "X" proved
+preds.ads:43:57: info: index check proved (CVC5: 2 VC)
+preds.ads:47:59: info: index check proved (CVC5: 2 VC)
 preds.ads:49:29: info: initialization of "X" proved
 preds.ads:50:30: info: initialization of "X" proved
 preds.ads:54:07: info: in default initialization of component "X" at preds.ads:54
@@ -76,6 +78,7 @@ preds.ads:54:07: info: predicate check proved on default value (CVC5: 1 VC)
 preds.ads:55:07: info: in default initialization of component "A" at preds.ads:55
 preds.ads:55:07: info: in default value at preds.adb:52
 preds.ads:55:07: info: predicate check proved on default value (CVC5: 1 VC)
+preds.ads:57:97: info: index check proved (CVC5: 2 VC)
 preds.ads:61:07: medium: in default initialization of component "X" at preds.ads:61
 preds.ads:61:07: medium: in default value at preds.adb:58
 preds.ads:61:07: medium: predicate check might fail on default value
@@ -83,6 +86,7 @@ preds.ads:62:07: medium: in default initialization of component "A" at preds.ads
 preds.ads:62:07: medium: in default value at preds.adb:58
 preds.ads:62:07: medium: in inlined predicate at preds.ads:47
 preds.ads:62:07: medium: predicate check might fail on default value, cannot prove Arr_Bad (K) /= 0
+preds.ads:64:101: info: index check proved (CVC5: 2 VC)
 preds.ads:66:29: info: initialization of "X" proved
 preds.ads:67:30: info: initialization of "X" proved
 preds.ads:70:23: info: in default initialization of component "X" at preds.ads:78

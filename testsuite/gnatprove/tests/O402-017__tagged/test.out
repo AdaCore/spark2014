@@ -3,7 +3,7 @@ no_primitive_call.adb:9:07: error: violation of aspect SPARK_Mode at line 1
 no_primitive_use.adb:7:04: medium: precondition might fail
 no_primitive_use.adb:7:04: warning: assuming "Init" always terminates
 no_primitive_use.adb:7:04: warning: assuming "Init" has no effect on global items
-no_primitive_use.adb:7:04: warning: no Always_Terminates aspect available for "Init"
-no_primitive_use.adb:7:04: warning: no Global contract available for "Init"
+no_primitive_use.adb:7:04: warning: no Always_Terminates aspect available for "Init" [assumed-always-terminates]
+no_primitive_use.adb:7:04: warning: no Global contract available for "Init" [assumed-global-null]
 no_primitive_use.adb:7:10: high: "X" is not initialized
 gnatprove: error during flow analysis and proof

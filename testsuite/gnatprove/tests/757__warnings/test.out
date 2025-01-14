@@ -1,0 +1,26 @@
+---- expect warning related to recursion -------
+pedantic.adb:5:12: info: implicit aspect Always_Terminates on "To_String" has been proved, subprogram will terminate
+rec.ads:3:13: warning: subprogram "P" has no effect
+rec.ads:3:34: warning: no recursive call visible [variant-no-recursion]
+---- expect error for unknown warning name -------
+"variant-no-recursiop" is not a valid warning name, use "--list-categories" to obtain a list of all warning names
+Try "gnatprove --help" for more information.
+---- no warning related recursion -------
+pedantic.adb:5:12: info: implicit aspect Always_Terminates on "To_String" has been proved, subprogram will terminate
+rec.ads:3:13: warning: subprogram "P" has no effect
+---- expect error instead of warning -------
+pedantic.adb:5:12: info: implicit aspect Always_Terminates on "To_String" has been proved, subprogram will terminate
+rec.ads:3:13: warning: subprogram "P" has no effect
+rec.ads:3:34: error: no recursive call visible [variant-no-recursion]
+gnatprove: error during flow analysis and proof
+---- expect no warning -------
+pedantic.adb:5:12: info: implicit aspect Always_Terminates on "To_String" has been proved, subprogram will terminate
+rec.ads:3:13: warning: subprogram "P" has no effect
+---- expect warning for image attribute -------
+pedantic.adb:5:12: info: implicit aspect Always_Terminates on "To_String" has been proved, subprogram will terminate
+pedantic.adb:7:13: warning: attribute "Image" has an implementation-defined length [image-attribute-length]
+rec.ads:3:13: warning: subprogram "P" has no effect
+---- expect warning for image attribute, with tag -------
+pedantic.adb:5:12: info: implicit aspect Always_Terminates on "To_String" has been proved, subprogram will terminate
+pedantic.adb:7:13: warning: attribute "Image" has an implementation-defined length [image-attribute-length]
+rec.ads:3:13: warning: subprogram "P" has no effect

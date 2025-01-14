@@ -91,7 +91,7 @@ procedure Table_Generator is
       Put_Line (File, ".. tabularcolumns:: |p{2in}|l|l|p{3in}|");
       New_Line (File);
       Put_Line (File, ".. csv-table::");
-      Put_Line (File, "   :header: ""Message Kind"", ""Class"", ""CWE"", " &
+      Put_Line (File, "   :header: ""Message Tag"", ""Class"", ""CWE"", " &
                   """Explanation""");
       Put_Line (File, "   :widths: 1, 1, 1, 6");
       New_Line (File);
@@ -151,8 +151,8 @@ procedure Table_Generator is
       Put_Line (File, ".. tabularcolumns:: |p{2in}|p{3in}|");
       New_Line (File);
       Put_Line (File, ".. csv-table::");
-      Put_Line (File, "   :header: ""Message Kind"", ""Explanation""");
-      Put_Line (File, "   :widths: 1, 4");
+      Put_Line (File, "   :header: ""Warning Tag"", ""Explanation""");
+      Put_Line (File, "   :widths: 2, 4");
       New_Line (File);
       for Kind in Default_Warning_Kind loop
          Put (File, "    ");
@@ -167,8 +167,8 @@ procedure Table_Generator is
       Put_Line (File, ".. tabularcolumns:: |p{2in}|p{3in}|");
       New_Line (File);
       Put_Line (File, ".. csv-table::");
-      Put_Line (File, "   :header: ""Message Kind"", ""Explanation""");
-      Put_Line (File, "   :widths: 1, 4");
+      Put_Line (File, "   :header: ""Warning Tag"", ""Explanation""");
+      Put_Line (File, "   :widths: 2, 4");
       New_Line (File);
       for Kind in Guaranteed_Warning_Kind loop
          Put (File, "    ");
@@ -177,14 +177,15 @@ procedure Table_Generator is
          New_Line (File);
       end loop;
       New_Line (File);
-      Put_Line (File, "The following table shows warnings " &
-                  "reported by GNATprove when using switch ``--pedantic``.");
+      Put_Line (File, "The following warnings are disabled by default, and " &
+                  "can be enabled collectively using switch ``--pedantic``, "
+                & " or individually using switch ``-W``.");
       New_Line (File);
       Put_Line (File, ".. tabularcolumns:: |p{2in}|p{3in}|");
       New_Line (File);
       Put_Line (File, ".. csv-table::");
-      Put_Line (File, "   :header: ""Message Kind"", ""Explanation""");
-      Put_Line (File, "   :widths: 1, 4");
+      Put_Line (File, "   :header: ""Warning Tag"", ""Explanation""");
+      Put_Line (File, "   :widths: 2, 4");
       New_Line (File);
       for Kind in Pedantic_Warning_Kind loop
          Put (File, "    ");
@@ -261,7 +262,7 @@ procedure Table_Generator is
       Put_Line (File, ".. tabularcolumns:: |p{2in}|l|p{3in}|");
       New_Line (File);
       Put_Line (File, ".. csv-table::");
-      Put_Line (File, "   :header: ""Message Kind"", ""CWE"", " &
+      Put_Line (File, "   :header: ""Warning Tag"", ""CWE"", " &
                   """Explanation""");
       Put_Line (File, "   :widths: 1, 1, 4");
       New_Line (File);

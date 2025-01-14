@@ -2,20 +2,20 @@ no_optim.adb:9:25: info: assertion proved (CVC5: 1 VC)
 no_optim.adb:12:25: info: assertion proved (CVC5: 1 VC)
 various_no_optim.adb:9:07: info: initialization of "Cond" proved
 various_no_optim.adb:12:15: warning: assuming "Get_Value" has no effect on global items
-various_no_optim.adb:12:15: warning: no Global contract available for "Get_Value"
+various_no_optim.adb:12:15: warning: no Global contract available for "Get_Value" [assumed-global-null]
 various_no_optim.adb:18:13: warning: assuming "Error_Detected" has no effect on global items
-various_no_optim.adb:18:13: warning: no Global contract available for "Error_Detected"
+various_no_optim.adb:18:13: warning: no Global contract available for "Error_Detected" [assumed-global-null]
 various_no_optim.adb:32:22: info: assertion proved (CVC5: 1 VC)
 various_no_optim.adb:40:07: warning: assuming "Execute_Step_1" always terminates
 various_no_optim.adb:40:07: warning: assuming "Execute_Step_1" has no effect on global items
-various_no_optim.adb:40:07: warning: no Always_Terminates aspect available for "Execute_Step_1"
-various_no_optim.adb:40:07: warning: no Global contract available for "Execute_Step_1"
+various_no_optim.adb:40:07: warning: no Always_Terminates aspect available for "Execute_Step_1" [assumed-always-terminates]
+various_no_optim.adb:40:07: warning: no Global contract available for "Execute_Step_1" [assumed-global-null]
 various_no_optim.adb:43:07: warning: assuming "Execute_Step_2" always terminates
 various_no_optim.adb:43:07: warning: assuming "Execute_Step_2" has no effect on global items
-various_no_optim.adb:43:07: warning: no Always_Terminates aspect available for "Execute_Step_2"
-various_no_optim.adb:43:07: warning: no Global contract available for "Execute_Step_2"
+various_no_optim.adb:43:07: warning: no Always_Terminates aspect available for "Execute_Step_2" [assumed-always-terminates]
+various_no_optim.adb:43:07: warning: no Global contract available for "Execute_Step_2" [assumed-global-null]
 various_no_optim.adb:46:07: warning: assuming "Execute_Step_N" always terminates
 various_no_optim.adb:46:07: warning: assuming "Execute_Step_N" has no effect on global items
-various_no_optim.adb:46:07: warning: no Always_Terminates aspect available for "Execute_Step_N"
-various_no_optim.adb:46:07: warning: no Global contract available for "Execute_Step_N"
+various_no_optim.adb:46:07: warning: no Always_Terminates aspect available for "Execute_Step_N" [assumed-always-terminates]
+various_no_optim.adb:46:07: warning: no Global contract available for "Execute_Step_N" [assumed-global-null]
 various_no_optim.adb:48:22: info: assertion proved (CVC5: 1 VC)

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2023-2024, AdaCore                     --
+--                     Copyright (C) 2023-2025, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -3991,8 +3991,8 @@ package body Gnat2Why.Expr.Aggregates is
          Pred_Checks   : W_Statement_Sequence_Id := Void_Sequence;
          Context       : Ref_Context;
          Call          : W_Expr_Id;
-      begin
 
+      begin
          --  Compute the arguments for the call
 
          Top := Top + 1;

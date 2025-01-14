@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2011-2024, AdaCore                     --
+--                     Copyright (C) 2011-2025, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -2148,7 +2148,6 @@ package body SPARK_Util is
       Actual : Node_Id := First (Actuals);
 
    begin
-
       while Present (Actual) loop
          pragma Assert (Nkind (Actual) = N_Generic_Association);
 
@@ -5875,7 +5874,7 @@ package body SPARK_Util is
                end if;
             end;
 
-            if Identifier (Node_It) /= Empty then
+            if Present (Identifier (Node_It)) then
                Buf := Get_Name_String (Chars (Identifier (Node_It)))
                  & "_" & Buf;
             end if;
@@ -6097,7 +6096,7 @@ package body SPARK_Util is
 
          when N_Block_Statement =>
             declare
-               Tmp : constant String := (if Identifier (Node_It) /= Empty
+               Tmp : constant String := (if Present (Identifier (Node_It))
                                          then
                                             Get_Name_String
                                            (Chars (Identifier (Node_It))) & "_"
@@ -6111,9 +6110,8 @@ package body SPARK_Util is
               & Label_Append (Buf);
 
          when N_Raise_Statement =>
-            Buf := "raise" & (if Name (Node_It) /= Empty then
-                                 "_" & Get_Name_String
-                                (Chars (Name (Node_It)))
+            Buf := "raise" & (if Present (Name (Node_It)) then
+                                 "_" & Get_Name_String (Chars (Name (Node_It)))
                               else "") & Label_Append (Buf);
 
          when N_Simple_Return_Statement
@@ -6122,7 +6120,7 @@ package body SPARK_Util is
             Buf := "return" & Label_Append (Buf);
 
          when N_Exit_Statement =>
-            Buf := "exit" & (if Name (Node_It) /= Empty then
+            Buf := "exit" & (if Present (Name (Node_It)) then
                                 "_" & Get_Name_String (Chars (Name (Node_It)))
                              else "")
               & Label_Append (Buf);

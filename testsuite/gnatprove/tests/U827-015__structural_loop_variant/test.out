@@ -14,7 +14,7 @@ main.adb:35:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:37:13: info: loop variant proved (Trivial)
 main.adb:38:16: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:38:16: warning: assuming "Rand" has no effect on global items
-main.adb:38:16: warning: no Global contract available for "Rand"
+main.adb:38:16: warning: no Global contract available for "Rand" [assumed-global-null]
 main.adb:41:18: info: predicate check proved (Trivial: 1 VC)
 main.adb:41:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:41:22: info: predicate check proved (Trivial: 1 VC)
@@ -25,7 +25,7 @@ main.adb:53:13: info: loop variant proved (Trivial)
 main.adb:54:19: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:55:16: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:55:16: warning: assuming "Rand" has no effect on global items
-main.adb:55:16: warning: no Global contract available for "Rand"
+main.adb:55:16: warning: no Global contract available for "Rand" [assumed-global-null]
 main.adb:58:18: info: predicate check proved (Trivial: 1 VC)
 main.adb:58:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:58:22: info: predicate check proved (Trivial: 1 VC)
@@ -37,7 +37,7 @@ main.adb:70:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:70:22: info: predicate check proved (Trivial: 1 VC)
 main.adb:71:18: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:71:18: warning: assuming "Rand" has no effect on global items
-main.adb:71:18: warning: no Global contract available for "Rand"
+main.adb:71:18: warning: no Global contract available for "Rand" [assumed-global-null]
 main.adb:75:19: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:80:13: info: implicit aspect Always_Terminates on "Length_4" has been proved, subprogram will terminate
 main.adb:83:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -217,7 +217,7 @@ main_bad.adb:34:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:34:22: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:35:16: info: no contextual analysis of "Rand" (body not seen yet)
 main_bad.adb:35:16: warning: assuming "Rand" has no effect on global items
-main_bad.adb:35:16: warning: no Global contract available for "Rand"
+main_bad.adb:35:16: warning: no Global contract available for "Rand" [assumed-global-null]
 main_bad.adb:38:19: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:44:43: info: initialization of "R" proved
 main_bad.adb:47:12: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -254,21 +254,21 @@ main_bad.adb:90:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:90:22: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:91:16: info: no contextual analysis of "Rand" (body not seen yet)
 main_bad.adb:91:16: warning: assuming "Rand" has no effect on global items
-main_bad.adb:91:16: warning: no Global contract available for "Rand"
+main_bad.adb:91:16: warning: no Global contract available for "Rand" [assumed-global-null]
 main_bad.adb:92:22: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:94:19: info: no contextual analysis of "Rand" (body not seen yet)
 main_bad.adb:94:19: warning: assuming "Rand" has no effect on global items
-main_bad.adb:94:19: warning: no Global contract available for "Rand"
+main_bad.adb:94:19: warning: no Global contract available for "Rand" [assumed-global-null]
 main_bad.adb:95:22: info: no contextual analysis of "Rand" (body not seen yet)
 main_bad.adb:95:22: warning: assuming "Rand" has no effect on global items
-main_bad.adb:95:22: warning: no Global contract available for "Rand"
+main_bad.adb:95:22: warning: no Global contract available for "Rand" [assumed-global-null]
 main_bad.adb:96:28: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:97:25: info: no contextual analysis of "Rand" (body not seen yet)
 main_bad.adb:97:25: warning: assuming "Rand" has no effect on global items
-main_bad.adb:97:25: warning: no Global contract available for "Rand"
+main_bad.adb:97:25: warning: no Global contract available for "Rand" [assumed-global-null]
 main_bad.adb:99:25: info: no contextual analysis of "Rand" (body not seen yet)
 main_bad.adb:99:25: warning: assuming "Rand" has no effect on global items
-main_bad.adb:99:25: warning: no Global contract available for "Rand"
+main_bad.adb:99:25: warning: no Global contract available for "Rand" [assumed-global-null]
 main_bad.adb:102:28: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:105:25: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:112:13: info: implicit aspect Always_Terminates on "Length_7" has been proved, subprogram will terminate
@@ -279,7 +279,7 @@ main_bad.adb:118:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:118:22: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:119:18: info: no contextual analysis of "Rand" (body not seen yet)
 main_bad.adb:119:18: warning: assuming "Rand" has no effect on global items
-main_bad.adb:119:18: warning: no Global contract available for "Rand"
+main_bad.adb:119:18: warning: no Global contract available for "Rand" [assumed-global-null]
 main_bad.adb:120:35: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:127:13: info: implicit aspect Always_Terminates on "Length_8" has been proved, subprogram will terminate
 main_bad.adb:130:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -291,7 +291,7 @@ main_bad.adb:134:29: info: unrolling loop
 main_bad.adb:134:29: warning: statement has no effect
 main_bad.adb:135:19: info: no contextual analysis of "Rand" (body not seen yet)
 main_bad.adb:135:19: warning: assuming "Rand" has no effect on global items
-main_bad.adb:135:19: warning: no Global contract available for "Rand"
+main_bad.adb:135:19: warning: no Global contract available for "Rand" [assumed-global-null]
 main_bad.adb:139:19: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:145:43: info: initialization of "R" proved
 main_bad.adb:148:12: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)

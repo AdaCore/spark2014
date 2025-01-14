@@ -1,9 +1,9 @@
 p.ads:15:24: warning: assuming "To_Acc" has no effect on global items
-p.ads:15:24: warning: no Global contract available for "To_Acc"
+p.ads:15:24: warning: no Global contract available for "To_Acc" [assumed-global-null]
 p.ads:16:24: warning: assuming "To_Rec" has no effect on global items
-p.ads:16:24: warning: no Global contract available for "To_Rec"
+p.ads:16:24: warning: no Global contract available for "To_Rec" [assumed-global-null]
 p.ads:17:24: warning: assuming "To_Arr" has no effect on global items
-p.ads:17:24: warning: no Global contract available for "To_Arr"
+p.ads:17:24: warning: no Global contract available for "To_Arr" [assumed-global-null]
 p.ads:19:19: info: assertion proved (CVC5: 1 VC)
 p.ads:20:19: info: assertion proved (CVC5: 1 VC)
 p.ads:21:19: info: assertion proved (CVC5: 1 VC)

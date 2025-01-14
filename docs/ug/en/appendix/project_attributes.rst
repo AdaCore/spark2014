@@ -49,7 +49,7 @@ is allowed to contain the following attributes:
   Only the following switches are allowed for file-specific switches:
   ``--steps``, ``--timeout``, ``--memlimit``, ``--proof``, ``--prover``,
   ``--level``, ``--mode``, ``--counterexamples``, ``--no-inlining``,
-  ``--no-loop-unrolling``.
+  ``--no-loop-unrolling``, ``--pedantic``, ``-W``, ``-A``, ``-D``.
 
 * ``Switches``. This deprecated attribute is the same as ``Proof_Switches
   ("Ada")``.

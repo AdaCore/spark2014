@@ -13,7 +13,7 @@ glob.ads:5:13: info: implicit aspect Always_Terminates on "F" has been proved, s
 glob.ads:5:51: medium: postcondition might fail (e.g. when X = (A => False))
 glob.ads:7:09: info: invariant check proved on default value (CVC5: 1 VC)
 imported_return.adb:4:42: warning: assuming "Imported_Return_Util" has no effect on global items
-imported_return.adb:4:42: warning: no Global contract available for "Imported_Return_Util"
+imported_return.adb:4:42: warning: no Global contract available for "Imported_Return_Util" [assumed-global-null]
 imported_return.ads:5:13: info: function contract might not be available on implicit recursive calls
 imported_return.ads:5:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 imported_return.ads:5:51: medium: postcondition might fail (e.g. when X = (A => False))

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2022-2024, AdaCore                     --
+--                     Copyright (C) 2022-2025, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -130,8 +130,8 @@ package body CE_Values is
 
          Arr2_Values : constant Map          := Arr2.Array_Values;
          Arr2_Others : constant Value_Access := Arr2.Array_Others;
-      begin
 
+      begin
          for C1 in Arr1_Values.Iterate loop
             declare
                Checked_C :          Checked_Indices_Set.Cursor;
@@ -295,9 +295,9 @@ package body CE_Values is
 
       function Is_Infinity (R : Float_Value) return Boolean is
         (case R.K is
-            when Float_32_K => abs (R.Content_32) > Float'Last,
-            when Float_64_K => abs (R.Content_64) > Long_Float'Last,
-            when Extended_K => abs (R.Ext_Content) > Long_Long_Float'Last);
+            when Float_32_K => abs R.Content_32 > Float'Last,
+            when Float_64_K => abs R.Content_64 > Long_Float'Last,
+            when Extended_K => abs R.Ext_Content > Long_Long_Float'Last);
 
    begin
       return not Is_NaN (R) and then not Is_Infinity (R);

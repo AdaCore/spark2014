@@ -1,10 +1,10 @@
 input_port_14.adb:7:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
-input_port_14.adb:7:04: warning: address specification on "Input_Port" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [E0012]
+input_port_14.adb:7:04: warning: address specification on "Input_Port" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [imprecise-address-specification] [E0012]
 input_port_14.adb:7:04: warning: launch "gnatprove --explain=E0012" for more information
 input_port_14.adb:16:07: info: initialization of "First_Read" proved
 input_port_14.adb:17:07: info: initialization of "Second_Read" proved
-input_port_14.adb:20:22: warning: attribute Valid is assumed to return True
-input_port_14.adb:24:25: warning: attribute Valid is assumed to return True
+input_port_14.adb:20:22: warning: attribute Valid is assumed to return True [attribute-valid-always-true]
+input_port_14.adb:24:25: warning: attribute Valid is assumed to return True [attribute-valid-always-true]
 input_port_14.adb:29:22: info: assertion proved (CVC5: 1 VC)
 input_port_14.ads:5:29: info: initialization of "Input_Value" proved
 input_port_14.ads:6:11: info: data dependencies proved

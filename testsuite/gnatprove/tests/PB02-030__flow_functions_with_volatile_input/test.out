@@ -1,13 +1,13 @@
-legal.adb:14:04: warning: address specification on "V1" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [E0012]
+legal.adb:14:04: warning: address specification on "V1" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [imprecise-address-specification] [E0012]
 legal.adb:14:04: warning: launch "gnatprove --explain=E0012" for more information
 legal.adb:14:04: warning: make sure that all overlapping objects have Async_Writers set to True
-legal.adb:19:04: warning: address specification on "V2" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [E0012]
+legal.adb:19:04: warning: address specification on "V2" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [imprecise-address-specification] [E0012]
 legal.adb:19:04: warning: launch "gnatprove --explain=E0012" for more information
 legal.adb:19:04: warning: make sure that all overlapping objects have Async_Writers set to True
-legal.adb:24:04: warning: address specification on "V3" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [E0012]
+legal.adb:24:04: warning: address specification on "V3" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [imprecise-address-specification] [E0012]
 legal.adb:24:04: warning: launch "gnatprove --explain=E0012" for more information
 legal.adb:24:04: warning: make sure that all overlapping objects have Async_Writers set to True
-legal.adb:30:04: warning: address specification on "V4" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [E0012]
+legal.adb:30:04: warning: address specification on "V4" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [imprecise-address-specification] [E0012]
 legal.adb:30:04: warning: launch "gnatprove --explain=E0012" for more information
 legal.adb:30:04: warning: make sure that all overlapping objects have Async_Writers set to True
 legal.adb:59:13: error: launch "gnatprove --explain=E0006" for more information
@@ -32,10 +32,10 @@ legal.adb:130:13: error: function "F_06" with output global "PO_V4" is not allow
 legal.adb:130:13: error: launch "gnatprove --explain=E0005" for more information
 legal.adb:130:13: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
-illegal.adb:15:04: warning: address specification on "V3" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [E0012]
+illegal.adb:15:04: warning: address specification on "V3" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [imprecise-address-specification] [E0012]
 illegal.adb:15:04: warning: launch "gnatprove --explain=E0012" for more information
 illegal.adb:15:04: warning: make sure that all overlapping objects have Async_Writers set to True
-illegal.adb:21:04: warning: address specification on "V4" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [E0012]
+illegal.adb:21:04: warning: address specification on "V4" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [imprecise-address-specification] [E0012]
 illegal.adb:21:04: warning: launch "gnatprove --explain=E0012" for more information
 illegal.adb:21:04: warning: make sure that all overlapping objects have Async_Writers set to True
 illegal.adb:57:13: error: launch "gnatprove --explain=E0006" for more information

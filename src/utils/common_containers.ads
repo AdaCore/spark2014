@@ -6,8 +6,8 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---              Copyright (C) 2014-2024, Capgemini Engineering              --
---                     Copyright (C) 2014-2024, AdaCore                     --
+--              Copyright (C) 2014-2025, Capgemini Engineering              --
+--                     Copyright (C) 2014-2025, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -26,10 +26,8 @@ with Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
-with Ada.Containers.Indefinite_Hashed_Sets;
 with Ada.Containers.Ordered_Sets;
 with Ada.Containers.Vectors;
-with Ada.Strings.Hash;
 
 with Einfo.Entities;   use Einfo.Entities;
 with GNATCOLL.Symbols; use GNATCOLL.Symbols;
@@ -168,12 +166,6 @@ package Common_Containers is
       Hash            => Name_Hash,
       Equivalent_Keys => "=",
       "="             => Name_Sets."=");
-
-   package String_Sets is new Ada.Containers.Indefinite_Hashed_Sets
-     (Element_Type        => String,
-      Hash                => Ada.Strings.Hash,
-      Equivalent_Elements => "=",
-      "="                 => "=");
 
    package Symbol_Sets is new Ada.Containers.Hashed_Sets
      (Element_Type        => Symbol,

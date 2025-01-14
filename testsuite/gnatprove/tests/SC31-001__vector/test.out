@@ -106,7 +106,7 @@ a-strbou.ads:2571:25: info: range check proved (CVC5: 2 VC), in instantiation at
 a-strbou.ads:2578:31: info: discriminant check proved (CVC5: 1 VC), in instantiation at repr2.ads:5
 a-strbou.ads:2578:31: info: predicate check proved (CVC5: 2 VC; Trivial: 1 VC), in instantiation at repr2.ads:5
 repr2.ads:5:04: warning: in instantiation at a-strbou.ads
-repr2.ads:5:04: warning: pragma "Stream_Convert" ignored (not yet supported)
+repr2.ads:5:04: warning: pragma "Stream_Convert" ignored (not yet supported) [ignored-pragma]
 repr3.ads:9:40: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC)
 repr3.ads:9:40: warning: assuming "To_Bounded_String" has no effect on global items
-repr3.ads:9:40: warning: no Global contract available for "To_Bounded_String"
+repr3.ads:9:40: warning: no Global contract available for "To_Bounded_String" [assumed-global-null]

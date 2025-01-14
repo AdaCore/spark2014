@@ -1,12 +1,12 @@
-gotow.adb:3:03: warning: analyzing unreferenced procedure "Idk"
+gotow.adb:3:03: warning: analyzing unreferenced procedure "Idk" [unreferenced-procedure]
 gotow.adb:9:06: error: GNAT extension for conditional goto is not allowed in SPARK
 gotow.adb:9:06: error: violation of pragma SPARK_Mode at spark.adc:1
-raisew.adb:2:04: warning: analyzing unreferenced procedure "Idk"
+raisew.adb:2:04: warning: analyzing unreferenced procedure "Idk" [unreferenced-procedure]
 raisew.adb:4:07: error: GNAT extension for conditional raise is not allowed in SPARK
 raisew.adb:4:07: error: violation of pragma SPARK_Mode at spark.adc:1
 raisew.adb:5:07: error: GNAT extension for conditional raise is not allowed in SPARK
 raisew.adb:5:07: error: violation of pragma SPARK_Mode at spark.adc:1
-retw.adb:3:04: warning: analyzing unreferenced function "X"
+retw.adb:3:04: warning: analyzing unreferenced function "X" [unreferenced-function]
 retw.adb:5:07: error: GNAT extension for conditional return is not allowed in SPARK
 retw.adb:5:07: error: violation of pragma SPARK_Mode at spark.adc:1
 gnatprove: error during flow analysis and proof

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2021-2024, AdaCore                     --
+--                     Copyright (C) 2021-2025, AdaCore                     --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1704,8 +1704,8 @@ package body CE_RAC is
       Expr   : constant Node_Id :=
         (if Use_Expr and then not Is_Formal (N)
          then Expression (Enclosing_Declaration (N)) else Empty);
-   begin
 
+   begin
       Val := new Value_Type'
         (Get_Value (N, Expr, Default_Value, Use_Fuzzing, Origin));
 
@@ -2096,7 +2096,6 @@ package body CE_RAC is
       procedure Process_Param (Formal : Entity_Id; Actual : Node_Id) is
          Val : Value_Access;
       begin
-
          --  if Is_Scalar_Type (Etype (Par)) then
          --    -> pass by value; copy out parameters after return
          --       (see Copy_Out_Parameters)
@@ -3306,9 +3305,10 @@ package body CE_RAC is
                      Val_Right : constant Big_Integer := Value_Integer (Right);
 
                      Real_Left : constant Long_Float :=
-                       To_Long_Float (abs (Val_Left));
+                       To_Long_Float (abs Val_Left);
+
                      Int_Right : constant Integer :=
-                       To_Integer (abs (Val_Right));
+                       To_Integer (abs Val_Right);
                   begin
                      --  Protect against very large values which exceed
                      --  what the Big_Integers library can handle. We limit
@@ -4070,8 +4070,7 @@ package body CE_RAC is
                      Res := Boolean_Value (All_Present (N), Etype (N));
                   exception
                      when Break =>
-                        Res := Boolean_Value
-                          (not (All_Present (N)), Etype (N));
+                        Res := Boolean_Value (not All_Present (N), Etype (N));
                   end;
                else
                   pragma Assert (Present (Iterator_Specification (N)));
@@ -4397,8 +4396,8 @@ package body CE_RAC is
          To_Update :          Idx_Set.Set;
          Curr      :          Big_Integer  := RHS.First_Attr.Content;
          Last      : constant Big_Integer  := RHS.Last_Attr.Content;
-      begin
 
+      begin
          --  For the indices included in the slice's range, update the values
          --  of the elements which already have a specified value in
          --  Array_Values.

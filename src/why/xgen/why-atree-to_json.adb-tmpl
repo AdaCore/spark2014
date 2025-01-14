@@ -2,7 +2,6 @@ with GNATCOLL.Symbols;  use GNATCOLL;
 with GNATCOLL.Utils;
 with SPARK_Util;
 with Sinput;            use Sinput;
-with Common_Containers; use Common_Containers;
 with Why.Sinfo;         use Why.Sinfo;
 
 package body Why.Atree.To_Json is

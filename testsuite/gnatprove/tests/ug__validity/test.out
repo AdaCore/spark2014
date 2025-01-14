@@ -6,12 +6,12 @@ validity.adb:7:68: high: type is unsuitable as a target for unchecked conversion
       |                                                                   ^~~~~
   possible explanation: floating-point types have invalid bit patterns for SPARK
 
-validity.adb:11:22: warning: attribute Valid is assumed to return True
+validity.adb:11:22: warning: attribute Valid is assumed to return True [attribute-valid-always-true]
    11 |      pragma Assert (X'Valid);
       |                     ^~~~~~~
 validity.adb:11:22: info: assertion proved
 
-validity.adb:13:22: warning: attribute Valid is assumed to return True
+validity.adb:13:22: warning: attribute Valid is assumed to return True [attribute-valid-always-true]
    13 |      pragma Assert (Y'Valid);
       |                     ^~~~~~~
 validity.adb:13:22: info: assertion proved

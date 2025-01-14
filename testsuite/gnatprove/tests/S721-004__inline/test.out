@@ -2,7 +2,7 @@ sem_cat.adb:3:13: info: implicit aspect Always_Terminates on "Simply_False" has 
 sem_cat.adb:11:16: info: implicit aspect Always_Terminates on "Stream_Attributes_Available" has been proved, subprogram will terminate
 sem_cat.adb:11:45: warning: unused variable "Typ"
 sem_cat.adb:13:17: warning: assuming "Stream_Attribute_Available" has no effect on global items
-sem_cat.adb:13:17: warning: no Global contract available for "Stream_Attribute_Available"
+sem_cat.adb:13:17: warning: no Global contract available for "Stream_Attribute_Available" [assumed-global-null]
 sem_cat.adb:18:18: info: no contextual analysis of "Stream_Attributes_Available" (in potentially unevaluated context)
 sem_cat.adb:19:27: info: no contextual analysis of "Simply_False" (in potentially unevaluated context)
 sem_cat.ads:4:14: warning: subprogram "Validate_RT_RAT_Component" has no effect

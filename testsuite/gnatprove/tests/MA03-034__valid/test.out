@@ -1,10 +1,10 @@
 data.ads:7:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
-data.ads:7:04: warning: address specification on "Sensor" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to a potential alias, and valid reads [E0012]
+data.ads:7:04: warning: address specification on "Sensor" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to a potential alias, and valid reads [imprecise-address-specification] [E0012]
 data.ads:7:04: warning: launch "gnatprove --explain=E0012" for more information
 data.ads:7:04: warning: make sure that all overlapping objects have Async_Writers set to True
 validate.adb:4:31: error: launch "gnatprove --explain=E0004" for more information
 validate.adb:4:31: error: violation of pragma SPARK_Mode at test.adc:1
 validate.adb:4:31: error: volatile object in interfering context is not allowed in SPARK (SPARK RM 7.1.3(9)) [E0004]
-validate.adb:4:31: warning: attribute Valid is assumed to return True
-validate.adb:7:25: warning: attribute Valid is assumed to return True
+validate.adb:4:31: warning: attribute Valid is assumed to return True [attribute-valid-always-true]
+validate.adb:7:25: warning: attribute Valid is assumed to return True [attribute-valid-always-true]
 gnatprove: error during flow analysis and proof

@@ -2,7 +2,7 @@ nest_in_proc.adb:3:11: info: aspect Always_Terminates on "Nest_In_Proc" has been
 nest_in_proc.adb:5:14: high: all paths in "Proxy" raise exceptions or do not terminate normally
 nest_in_proc.adb:5:14: warning: subprogram "Proxy" has no effect
 nest_in_proc.adb:9:07: warning: assuming "OS_Exit" has no effect on global items
-nest_in_proc.adb:9:07: warning: no Global contract available for "OS_Exit"
+nest_in_proc.adb:9:07: warning: no Global contract available for "OS_Exit" [assumed-global-null]
 nest_in_proc.adb:13:17: info: aspect Always_Terminates on "Nothing" has been proved, subprogram will terminate
 nest_in_proc.adb:13:17: warning: subprogram "Nothing" has no effect
 nest_in_proc.adb:22:07: info: precondition proved (Trivial: 1 VC)

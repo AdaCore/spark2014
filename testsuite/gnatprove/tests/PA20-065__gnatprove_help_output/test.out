@@ -40,6 +40,10 @@ gnatprove basic switches:
      --version         Output version of the tool and exit
      --warnings=w      Set the warning mode of GNATprove
                        (w=off, continue*, error)
+     -W=warning-tag    (warn) Enable the warning corresponding to the tag
+     -A=warning-tag    (allow) Disable the warning corresponding to the tag
+     -D=warning-tag    (deny) Promote the warning corresponding to the tag
+                       to an error
 
  * Main mode values
    . check               - Fast partial check for SPARK violations
@@ -101,7 +105,8 @@ gnatprove advanced switches:
                       pretty*)
  --output-header      Add a header with extra information in the generated
                       output file
- --pedantic           Use a strict interpretation of the Ada standard
+ --pedantic           Use a strict interpretation of the Ada standard by
+                      enabling the corresponding warnings
  --proof-warnings=c   Issue warnings by proof (c=on,off*)
  --proof-warnings-timeout
                       Set the timeout for proof warnings

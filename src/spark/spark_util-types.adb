@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2016-2024, AdaCore                     --
+--                     Copyright (C) 2016-2025, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -629,7 +629,6 @@ package body SPARK_Util.Types is
    is
       Typ  : Entity_Id := Retysp (E);
    begin
-
       --  Types whose full view is not in Spark do not need specific checks
       if Nkind (Parent (Typ)) in N_Private_Extension_Declaration
                                | N_Private_Type_Declaration
@@ -740,7 +739,6 @@ package body SPARK_Util.Types is
 
       function Include_If_Reclaimed (Typ : Type_Kind_Id) return Test_Result is
       begin
-
          if Has_Ownership_Annotation (Typ)
            and then Needs_Reclamation (Typ)
          then
@@ -1050,7 +1048,6 @@ package body SPARK_Util.Types is
    function Has_Private_Fields (E : Type_Kind_Id) return Boolean is
       Ty : constant Type_Kind_Id := Retysp (E);
    begin
-
       --  Only base types have private fields of their own; subtypes do not
 
       if not Is_Base_Type (Ty) then

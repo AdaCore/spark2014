@@ -1,21 +1,21 @@
-my_package.adb:31:04: warning: analyzing unreferenced procedure "Do_Not_Modify_X"
+my_package.adb:31:04: warning: analyzing unreferenced procedure "Do_Not_Modify_X" [unreferenced-procedure]
 my_package.adb:31:31: warning: "X" is not modified, could be IN
-my_package.adb:36:04: warning: analyzing unreferenced procedure "Write_X_Twice"
+my_package.adb:36:04: warning: analyzing unreferenced procedure "Write_X_Twice" [unreferenced-procedure]
 my_package.adb:36:29: info: initialization of "X" proved
 my_package.adb:38:09: warning: unused assignment
-my_package.adb:42:04: warning: analyzing unreferenced procedure "Write_X_To_Same"
+my_package.adb:42:04: warning: analyzing unreferenced procedure "Write_X_To_Same" [unreferenced-procedure]
 my_package.adb:43:07: info: initialization of "Y" proved
-my_package.adb:49:04: warning: analyzing unreferenced function "Init_Result_Twice"
+my_package.adb:49:04: warning: analyzing unreferenced function "Init_Result_Twice" [unreferenced-function]
 my_package.adb:49:13: info: implicit aspect Always_Terminates on "Init_Result_Twice" has been proved, subprogram will terminate
 my_package.adb:50:07: warning: initialization of "Result" has no effect
 my_package.adb:56:26: info: initialization of "X" proved
-my_package.adb:61:04: warning: analyzing unreferenced procedure "Initialize_X"
+my_package.adb:61:04: warning: analyzing unreferenced procedure "Initialize_X" [unreferenced-procedure]
 my_package.adb:61:28: info: initialization of "X" proved
 my_package.adb:64:07: warning: statement has no effect
 my_package.adb:64:19: warning: "Y" is set by "Set_To_One" but not used after the call
-my_package.adb:68:04: warning: analyzing unreferenced procedure "Initialize_X2"
+my_package.adb:68:04: warning: analyzing unreferenced procedure "Initialize_X2" [unreferenced-procedure]
 my_package.adb:68:29: warning: unused initial value of "X"
-my_package.adb:73:04: warning: analyzing unreferenced procedure "Do_Nothing"
+my_package.adb:73:04: warning: analyzing unreferenced procedure "Do_Nothing" [unreferenced-procedure]
 my_package.adb:73:14: warning: subprogram "Do_Nothing" has no effect
 my_package.adb:82:26: info: initialization of "X" proved
 my_package.adb:83:06: info: data dependencies proved
@@ -32,7 +32,7 @@ my_package.adb:174:28: info: initialization of "Y" proved
 my_package.adb:179:43: info: initialization of "Y" proved
 my_package.adb:190:28: info: initialization of "Y" proved
 my_package.adb:195:33: info: initialization of "Y" proved
-my_package.adb:200:04: warning: analyzing unreferenced procedure "Bad_Aliasing"
+my_package.adb:200:04: warning: analyzing unreferenced procedure "Bad_Aliasing" [unreferenced-procedure]
 my_package.adb:201:07: warning: initialization of "Z" has no effect
 my_package.adb:202:07: warning: initialization of "A" has no effect
 my_package.adb:205:20: high: formal parameter "X" and global "Y" are aliased (SPARK RM 6.4.2)

@@ -6,18 +6,18 @@ deceleration_curve.adb:36:65: medium: implicit aspect Always_Terminates on "Dist
 deceleration_curve.adb:37:25: info: assertion proved (CVC5: 4 VC)
 deceleration_curve.adb:40:13: info: loop invariant initialization proved (CVC5: 2 VC)
 deceleration_curve.adb:40:45: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove speed <= Initial_Speed
-deceleration_curve.adb:41:25: medium: assertion might fail, cannot prove 0.0 < 1.0/speed
 deceleration_curve.adb:41:34: info: division check proved (Z3: 1 VC)
 deceleration_curve.adb:41:34: info: float overflow check proved (CVC5: 1 VC)
+deceleration_curve.adb:41:45: medium: assertion might fail, cannot prove 1.0/speed < 1.0 / Minimum_Valid_Speed
 deceleration_curve.adb:41:48: info: division check proved (CVC5: 1 VC)
-deceleration_curve.adb:41:48: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
+deceleration_curve.adb:41:48: info: float overflow check proved (Z3: 1 VC)
 deceleration_curve.adb:43:14: medium: assertion might fail
 deceleration_curve.adb:44:38: info: division check proved (Z3: 1 VC)
 deceleration_curve.adb:44:38: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
 deceleration_curve.adb:46:14: info: assertion proved (Z3: 1 VC)
 deceleration_curve.adb:48:39: info: division check proved (Z3: 1 VC)
 deceleration_curve.adb:48:39: info: float overflow check proved (Z3: 1 VC)
-deceleration_curve.adb:48:48: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
+deceleration_curve.adb:48:48: info: float overflow check proved (Z3: 1 VC)
 deceleration_curve.adb:50:48: info: division check proved (Z3: 1 VC)
 deceleration_curve.adb:50:48: info: float overflow check proved (Z3: 1 VC)
 deceleration_curve.adb:51:12: info: float overflow check proved (Z3: 1 VC)
@@ -40,22 +40,22 @@ deceleration_curve.adb:105:09: high: precondition might fail (e.g. when Braking_
 deceleration_curve.adb:105:60: info: cannot unroll loop (too many loop iterations)
 deceleration_curve.adb:106:10: warning: assuming "Put" always terminates
 deceleration_curve.adb:106:10: warning: assuming "Put" has no effect on global items
-deceleration_curve.adb:106:10: warning: no Always_Terminates aspect available for "Put"
-deceleration_curve.adb:106:10: warning: no Global contract available for "Put"
+deceleration_curve.adb:106:10: warning: no Always_Terminates aspect available for "Put" [assumed-always-terminates]
+deceleration_curve.adb:106:10: warning: no Global contract available for "Put" [assumed-global-null]
 deceleration_curve.adb:107:10: warning: assuming "Put" always terminates
 deceleration_curve.adb:107:10: warning: assuming "Put" has no effect on global items
-deceleration_curve.adb:107:10: warning: no Always_Terminates aspect available for "Put"
-deceleration_curve.adb:107:10: warning: no Global contract available for "Put"
+deceleration_curve.adb:107:10: warning: no Always_Terminates aspect available for "Put" [assumed-always-terminates]
+deceleration_curve.adb:107:10: warning: no Global contract available for "Put" [assumed-global-null]
 deceleration_curve.adb:108:10: warning: assuming "Put" always terminates
 deceleration_curve.adb:108:10: warning: assuming "Put" has no effect on global items
-deceleration_curve.adb:108:10: warning: no Always_Terminates aspect available for "Put"
-deceleration_curve.adb:108:10: warning: no Global contract available for "Put"
+deceleration_curve.adb:108:10: warning: no Always_Terminates aspect available for "Put" [assumed-always-terminates]
+deceleration_curve.adb:108:10: warning: no Global contract available for "Put" [assumed-global-null]
 deceleration_curve.adb:109:12: medium: in inlined expression function body at units.ads:42
 deceleration_curve.adb:109:12: medium: precondition might fail, cannot prove Speed >= 0.0 [possible fix: subprogram at deceleration_curve.ads:85 should mention Braking_Curve in a precondition]
 deceleration_curve.adb:110:10: warning: assuming "New_Line" always terminates
 deceleration_curve.adb:110:10: warning: assuming "New_Line" has no effect on global items
-deceleration_curve.adb:110:10: warning: no Always_Terminates aspect available for "New_Line"
-deceleration_curve.adb:110:10: warning: no Global contract available for "New_Line"
+deceleration_curve.adb:110:10: warning: no Always_Terminates aspect available for "New_Line" [assumed-always-terminates]
+deceleration_curve.adb:110:10: warning: no Global contract available for "New_Line" [assumed-global-null]
 deceleration_curve.ads:28:06: info: precondition proved (CVC5: 2 VC)
 deceleration_curve.ads:75:13: info: implicit aspect Always_Terminates on "Curve_Index_From_Location" has been proved, subprogram will terminate
 deceleration_curve.ads:81:32: medium: "Braking_Curve.curve" might not be initialized in "Curve_From_Target" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Braking_Curve.curve" on all paths, make "Braking_Curve" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
@@ -262,7 +262,7 @@ step_function.ads:74:50: info: index check proved (CVC5: 2 VC)
 step_function.ads:78:26: info: index check proved (CVC5: 2 VC)
 step_function.ads:80:53: info: index check proved (CVC5: 2 VC)
 step_function.ads:86:06: info: postcondition proved (CVC5: 6 VC)
-step_function.ads:101:04: medium: postcondition might fail, cannot prove Is_Valid(Merge)
+step_function.ads:104:13: medium: postcondition might fail, cannot prove (for some j in Num_Delimiters_Range'First..Merge.Number_Of_Delimiters => (Merge.Step(j).Delimiter = SFun1.Step(i).Delimiter))
 step_function.ads:106:30: info: index check proved (CVC5: 2 VC)
 step_function.ads:106:56: info: index check proved (CVC5: 2 VC)
 step_function.ads:111:30: info: index check proved (CVC5: 2 VC)

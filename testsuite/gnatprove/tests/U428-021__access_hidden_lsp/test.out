@@ -1,4 +1,4 @@
 hidden_dispatch.ads:5:13: warning: assuming "F" has no effect on global items
-hidden_dispatch.ads:5:13: warning: no Global contract available for "F"
+hidden_dispatch.ads:5:13: warning: no Global contract available for "F" [assumed-global-null]
 hidden_dispatch.ads:7:13: warning: assuming "F" has no effect on global items
-hidden_dispatch.ads:7:13: warning: no Global contract available for "F"
+hidden_dispatch.ads:7:13: warning: no Global contract available for "F" [assumed-global-null]

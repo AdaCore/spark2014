@@ -107,4 +107,4 @@ a-strbou.ads:2578:31: info: discriminant check proved (CVC5: 1 VC), in instantia
 a-strbou.ads:2578:31: info: predicate check proved (CVC5: 2 VC; Trivial: 1 VC), in instantiation at test.ads:6
 spark-containers-parameter_checks.ads:246:19: medium: postcondition might fail, in instantiation at spark-containers-formal-hashed_maps.ads:162, in instantiation at test.ads:12 [possible fix: you should consider adding a postcondition to function SBHash or turning it into an expression function]
 test.ads:6:04: warning: in instantiation at a-strbou.ads
-test.ads:6:04: warning: pragma "Stream_Convert" ignored (not yet supported)
+test.ads:6:04: warning: pragma "Stream_Convert" ignored (not yet supported) [ignored-pragma]

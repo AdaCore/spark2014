@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2024, AdaCore                     --
+--                     Copyright (C) 2010-2025, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -559,7 +559,6 @@ package body Gnat2Why.Subprograms is
          --  Priority expression
 
       begin
-
          if Present (Prio_Expr) then
             return Transform_Term (Prio_Expr, EW_Int_Type, Params);
          end if;
@@ -636,7 +635,6 @@ package body Gnat2Why.Subprograms is
    --  Start of processing for Check_Ceiling_Protocol
 
    begin
-
       if Ekind (E) not in E_Task_Type | E_Entry
         and then not Might_Be_Main (E)
         and then not Is_Protected_Operation (E)
@@ -1216,7 +1214,6 @@ package body Gnat2Why.Subprograms is
       Dynamic_Prop_Effects : W_Pred_Id := True_Pred;
       Formal               : Entity_Id;
    begin
-
       --  Compute the dynamic property of mutable parameters
 
       for I in Func_Why_Binders'Range loop
@@ -3209,7 +3206,7 @@ package body Gnat2Why.Subprograms is
       Labels : constant Symbol_Set :=
         (if Is_Expression_Function_Or_Completion (E)
          and then not Has_Contracts (E, Pragma_Postcondition)
-         and then not Present (Get_Pragma (E, Pragma_Contract_Cases))
+         and then No (Get_Pragma (E, Pragma_Contract_Cases))
          then Symbol_Sets.To_Set (NID (GP_Inline_Marker))
          else Symbol_Sets.Empty_Set);
 
@@ -5672,7 +5669,6 @@ package body Gnat2Why.Subprograms is
          Mark_Params : Transformation_Params := Params;
          Post_N    : Node_Id;
       begin
-
          Mark_Params.Gen_Marker := GM_Toplevel;
 
          --  There might be no specific postcondition for E. In that case, the
@@ -6596,7 +6592,6 @@ package body Gnat2Why.Subprograms is
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Node_Id is
    begin
-
       --  In the case of a No_Return Subprogram, there is no real location for
       --  the postcondition; simply return the subprogram entity node.
 

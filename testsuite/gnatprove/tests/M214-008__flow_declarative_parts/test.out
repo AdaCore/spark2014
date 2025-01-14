@@ -4,9 +4,9 @@ test.adb:4:13: info: local subprogram "Double" only analyzed in the context of c
 test.adb:10:14: warning: subprogram "Tons_Of_Types" has no effect
 test.adb:14:43: info: analyzing call to "Double" in context
 test.adb:30:07: info: no contextual analysis of "Tons_Of_Types" (nested subprogram)
-test.adb:30:07: warning: analyzing unreferenced procedure "Nested"
+test.adb:30:07: warning: analyzing unreferenced procedure "Nested" [unreferenced-procedure]
 test.adb:30:17: warning: subprogram "Nested" has no effect
-test.adb:43:04: warning: analyzing unreferenced procedure "Test_01"
+test.adb:43:04: warning: analyzing unreferenced procedure "Test_01" [unreferenced-procedure]
 test.adb:44:23: info: initialization of "L" proved
 test.adb:47:13: info: range check proved (CVC5: 2 VC)
 test.adb:55:24: info: initialization of "B" proved

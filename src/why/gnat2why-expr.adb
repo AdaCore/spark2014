@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2024, AdaCore                     --
+--                     Copyright (C) 2010-2025, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1765,7 +1765,6 @@ package body Gnat2Why.Expr is
                                     Domain => EW_Term));
 
    begin
-
       pragma Assert (L_Id /= Why_Empty);
 
       --  Assume dynamic property of E
@@ -7984,7 +7983,6 @@ package body Gnat2Why.Expr is
       end Compute_Check;
 
    begin
-
       --  Do not generate a check if the returned expression is a part of the
       --  traversed parameter and this parameter is aliased. In this case the
       --  accessibility check is deferred to the call site.
@@ -8581,7 +8579,6 @@ package body Gnat2Why.Expr is
          Iterable_Info : Iterable_Annotation;
 
       begin
-
          --  In case container type has visible invariants,
          --  iteration primitives implicitly assume it during Iterable checks.
          --  So for the early checks at Iterable to be valid, we need to
@@ -11562,7 +11559,6 @@ package body Gnat2Why.Expr is
       Exc_Set         : Node_Sets.Set;
 
    begin
-
       --  Check whether all raised exceptions are handled and if
       --  not, use absurd to cut unhandled branches.
 
@@ -12149,7 +12145,6 @@ package body Gnat2Why.Expr is
 
       Result        : W_Expr_Id;
    begin
-
       case Nkind (N) is
          when N_Selected_Component
             | N_Identifier
@@ -12805,7 +12800,7 @@ package body Gnat2Why.Expr is
       T_Type : W_Type_OId := Why_Empty) return W_Expr_Id
    is
       Subdomain  : constant EW_Domain :=
-                     (if Domain = EW_Pred then EW_Term else Domain);
+        (if Domain = EW_Pred then EW_Term else Domain);
       Range_Node : constant Node_Id := Get_Range (N);
       Low        : constant Node_Id := Low_Bound (Range_Node);
       High       : constant Node_Id := High_Bound (Range_Node);
@@ -14552,7 +14547,6 @@ package body Gnat2Why.Expr is
                Params => Params);
 
          begin
-
             --  Deal with the special case of an empty (sub)aggregate []. Those
             --  do not have any explicit choices. They use the default ranges
             --  Index_Type'First .. Index_Type'Base'Pred (Index_Type'First),
@@ -15209,7 +15203,6 @@ package body Gnat2Why.Expr is
       is
          Result : W_Pred_Id := True_Pred;
       begin
-
          --  Assume values of the aggregate's bounds. For delta aggregates,
          --  take the bounds of the array argument, otherwise, bounds are given
          --  as parameters.
@@ -19368,7 +19361,6 @@ package body Gnat2Why.Expr is
    --  Start of processing for Transform_Comparison
 
    begin
-
       --  Special case for equality between Booleans in predicates
 
       if Domain = EW_Pred
@@ -24432,8 +24424,9 @@ package body Gnat2Why.Expr is
       --  test "Var = Alt".
 
       function Transform_Simple_Membership_Expression
-        (Var     : W_Expr_Id;
-         In_Expr : Node_Id) return W_Expr_Id;
+        (Var       : W_Expr_Id;
+         In_Expr   : Node_Id;
+         Base_Type : W_Type_Id) return W_Expr_Id;
 
       ---------------------------------
       -- Initialization_Check_For_Eq --
@@ -24513,7 +24506,7 @@ package body Gnat2Why.Expr is
            or else Nkind (Alt) = N_Range
          then
             Result :=
-              Transform_Simple_Membership_Expression (Var, Alt);
+              Transform_Simple_Membership_Expression (Var, Alt, Base_Type);
          else
 
             Result := New_Ada_Equality
@@ -24534,8 +24527,9 @@ package body Gnat2Why.Expr is
       --------------------------------------------
 
       function Transform_Simple_Membership_Expression
-        (Var     : W_Expr_Id;
-         In_Expr : Node_Id) return W_Expr_Id
+        (Var       : W_Expr_Id;
+         In_Expr   : Node_Id;
+         Base_Type : W_Type_Id) return W_Expr_Id
       is
          True_Expr : constant W_Expr_Id :=
            (if Domain = EW_Pred then +True_Pred else +True_Term);
@@ -24795,7 +24789,17 @@ package body Gnat2Why.Expr is
 
                else
                   pragma Assert (Is_Scalar_Type (Ty));
-                  if Type_Is_Modeled_As_Base (Ty) then
+
+                  --  It can happen that Var and Ty doe not have the same base
+                  --  type, in particular if Var has the universal integer
+                  --  type. In this case, generate the range expression in a
+                  --  type which fits both Ty and the base type of Var.
+
+                  if Base_Why_Type_No_Bool (Ty) /= Base_Type then
+                     Result := Range_Expr
+                       (Ty, +Var_Tmp, Domain, Params, Base_Type);
+
+                  elsif Type_Is_Modeled_As_Base (Ty) then
                      Result := New_Dynamic_Property (Domain => Domain,
                                                      Ty     => Ty,
                                                      Expr   => Var_Tmp);
@@ -24827,7 +24831,8 @@ package body Gnat2Why.Expr is
                end if;
             end;
          else
-            Result := Range_Expr (In_Expr, +Var_Tmp, Domain, Params);
+            Result := Range_Expr
+              (In_Expr, +Var_Tmp, Domain, Params, Base_Type);
          end if;
 
          Result := Binding_For_Temp (Domain  => Domain,
@@ -24851,7 +24856,7 @@ package body Gnat2Why.Expr is
       --  * because the membership checking involves an equality, or
       --  * because the membership checking evaluates a subtype predicate.
 
-      Base_Type    : W_Type_Id :=
+      Base_Type    : constant W_Type_Id :=
         (if Is_Record_Type_In_Why (Etype (Var))
          then EW_Abstract
            (Root_Retysp (Etype (Var)),
@@ -24862,7 +24867,7 @@ package body Gnat2Why.Expr is
       --  Do not check initialization on composite types if Relaxed_Init is
       --  True.
 
-         else Base_Why_Type (Var));
+         else Base_Why_Type_No_Bool (Var));
 
       Subdomain : constant EW_Domain :=
         (if Domain = EW_Pred then EW_Term else Domain);
@@ -24878,11 +24883,6 @@ package body Gnat2Why.Expr is
          Check_UU_Restrictions (Expr);
       end if;
 
-      --  For ranges and membership, "bool" should be mapped to "int"
-
-      if Base_Type = EW_Bool_Type then
-         Base_Type := EW_Int_Type;
-      end if;
       Var_Expr := Transform_Expr (Var, Base_Type, Subdomain, Params);
 
       --  Initialization checks for predicates are introduced by the conversion
@@ -24924,7 +24924,7 @@ package body Gnat2Why.Expr is
       else
          Result :=
            Transform_Simple_Membership_Expression
-             (Var_Expr, Right_Opnd (Expr));
+             (Var_Expr, Right_Opnd (Expr), Base_Type);
       end if;
 
       --  Inverse the result if the operator is NOT IN

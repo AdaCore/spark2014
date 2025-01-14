@@ -1,16 +1,16 @@
 ext.ads:3:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
-ext.ads:3:04: warning: address specification on "C1" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [E0012]
+ext.ads:3:04: warning: address specification on "C1" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [imprecise-address-specification] [E0012]
 ext.ads:3:04: warning: launch "gnatprove --explain=E0012" for more information
 ext.ads:11:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
-ext.ads:11:04: warning: address specification on "V1" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [E0012]
+ext.ads:11:04: warning: address specification on "V1" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [imprecise-address-specification] [E0012]
 ext.ads:11:04: warning: launch "gnatprove --explain=E0012" for more information
 ext.ads:11:04: warning: make sure that all overlapping objects have Async_Writers set to True
 ext.ads:20:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
-ext.ads:20:04: warning: address specification on "V2" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [E0012]
+ext.ads:20:04: warning: address specification on "V2" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [imprecise-address-specification] [E0012]
 ext.ads:20:04: warning: launch "gnatprove --explain=E0012" for more information
 ext.ads:28:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
-ext.ads:28:04: warning: address specification on "V3" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [E0012]
+ext.ads:28:04: warning: address specification on "V3" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [imprecise-address-specification] [E0012]
 ext.ads:28:04: warning: launch "gnatprove --explain=E0012" for more information
 ext.ads:36:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
-ext.ads:36:04: warning: address specification on "C2" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [E0012]
+ext.ads:36:04: warning: address specification on "C2" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [imprecise-address-specification] [E0012]
 ext.ads:36:04: warning: launch "gnatprove --explain=E0012" for more information

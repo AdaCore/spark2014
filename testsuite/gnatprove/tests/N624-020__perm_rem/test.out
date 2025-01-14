@@ -327,7 +327,7 @@ perm.adb:300:25: info: precondition proved (CVC5: 3 VC)
 perm.adb:307:16: info: function contract might not be available on recursive calls
 perm.adb:309:18: info: precondition proved (CVC5: 2 VC)
 perm.adb:309:42: info: precondition proved (CVC5: 2 VC)
-perm.adb:310:17: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
+perm.adb:310:17: info: postcondition proved (Trivial: 1 VC; altergo: 1 VC)
 perm.adb:310:54: info: precondition proved (CVC5: 2 VC)
 perm.adb:318:41: info: precondition proved (CVC5: 4 VC)
 perm.adb:319:41: info: precondition proved (CVC5: 3 VC)

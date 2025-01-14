@@ -1,6 +1,6 @@
 range_check_aggr.adb:19:15: info: range check proved (CVC5: 2 VC), in instantiation at range_check_aggr.adb:41
 range_check_aggr.adb:29:17: warning: subprogram "PC1" has no effect, in instantiation at range_check_aggr.adb:41
-range_check_aggr.adb:38:07: info: range check proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at range_check_aggr.adb:41
+range_check_aggr.adb:38:07: medium: range check might fail, cannot prove lower bound for F_STATIC_VALUE, in instantiation at range_check_aggr.adb:41 [reason for check: value must fit in component type]
 range_check_aggr.adb:38:07: medium: range check might fail, cannot prove lower bound for L_STATIC_VALUE, in instantiation at range_check_aggr.adb:41
 range_check_aggr.adb:38:07: medium: range check might fail, cannot prove lower bound for S_STATIC_VALUE, in instantiation at range_check_aggr.adb:41 (e.g. when LOWER = 20 and UPPER = NUMBER'Last-1) [possible fix: add or complete related loop invariants or postconditions]
 range_check_aggr.adb:38:07: medium: range check might fail, cannot prove lower bound for T_STATIC_VALUE, in instantiation at range_check_aggr.adb:41 (e.g. when LOWER = 86 and UPPER = NUMBER'Last-1) [possible fix: add or complete related loop invariants or postconditions]

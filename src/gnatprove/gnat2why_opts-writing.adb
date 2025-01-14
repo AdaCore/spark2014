@@ -6,8 +6,8 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2024, AdaCore                     --
---              Copyright (C) 2017-2024, Capgemini Engineering              --
+--                     Copyright (C) 2010-2025, AdaCore                     --
+--              Copyright (C) 2017-2025, Capgemini Engineering              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -88,6 +88,7 @@ package body Gnat2Why_Opts.Writing is
          Set_Field (Obj, No_Inlining_Name,           FS.No_Inlining);
          Set_Field (Obj, Info_Messages_Name,         FS.Info);
          Set_Field (Obj, GP_Mode_Name,               To_JSON (FS.Mode));
+         Set_Field (Obj, Warning_Status_Name, To_JSON (FS.Warning_Status));
 
          --  Why3_Args are only needed in phase 2; also Compute_Why3_Args
          --  might call gnatwhy3, which requires Write_Why3_Conf_File to be
@@ -149,7 +150,6 @@ package body Gnat2Why_Opts.Writing is
                     Gnat2Why_Opts.SPARK_Warning_Mode_Type'Image
                       (Warning_Mode));
 
-         Set_Field (Obj, Pedantic_Name,         CL_Switches.Pedantic);
          Set_Field (Obj, Flow_Show_GG_Name,     CL_Switches.Flow_Show_GG);
 
          if CL_Switches.Function_Sandboxing.all = ""

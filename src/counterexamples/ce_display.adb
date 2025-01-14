@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2016-2024, AdaCore                     --
+--                     Copyright (C) 2016-2025, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1146,7 +1146,6 @@ package body CE_Display is
       is
          S : Supp_Lines.Interval_Set := Supp_Lines.Create;
       begin
-
          if not B then
             --  This branch is not taken, remove it
 
@@ -1267,7 +1266,6 @@ package body CE_Display is
       is
          S : Supp_Lines.Interval_Set := Supp_Lines.Create;
       begin
-
          if not B then
             --  This branch is not taken: remove it.
 
@@ -1341,7 +1339,6 @@ package body CE_Display is
                                V : Cntexmp_Value_Ptr)
       is
       begin
-
          for Elt of L loop
             declare
                Str : constant String := To_String (Elt);

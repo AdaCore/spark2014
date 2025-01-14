@@ -2,9 +2,9 @@ discr_rec.ads:3:09: warning: creation of "Rec" object may raise Storage_Error [e
 discr_rec.ads:5:09: info: range check proved (CVC5: 2 VC)
 integer_caller.adb:5:10: warning: assuming "Integer_Size" always terminates
 integer_caller.adb:5:10: warning: assuming "Integer_Size" has no effect on global items
-integer_caller.adb:5:10: warning: no Always_Terminates aspect available for "Integer_Size"
-integer_caller.adb:5:10: warning: no Global contract available for "Integer_Size"
+integer_caller.adb:5:10: warning: no Always_Terminates aspect available for "Integer_Size" [assumed-always-terminates]
+integer_caller.adb:5:10: warning: no Global contract available for "Integer_Size" [assumed-global-null]
 word_size_caller.adb:5:10: warning: assuming "Word_Size" always terminates
 word_size_caller.adb:5:10: warning: assuming "Word_Size" has no effect on global items
-word_size_caller.adb:5:10: warning: no Always_Terminates aspect available for "Word_Size"
-word_size_caller.adb:5:10: warning: no Global contract available for "Word_Size"
+word_size_caller.adb:5:10: warning: no Always_Terminates aspect available for "Word_Size" [assumed-always-terminates]
+word_size_caller.adb:5:10: warning: no Global contract available for "Word_Size" [assumed-global-null]

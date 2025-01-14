@@ -1,6 +1,6 @@
 other.ads:2:24: info: initialization of "X" proved
 p.adb:15:13: warning: assuming "Vol_Proc" always terminates
-p.adb:15:13: warning: no Always_Terminates aspect available for "Vol_Proc"
+p.adb:15:13: warning: no Always_Terminates aspect available for "Vol_Proc" [assumed-always-terminates]
 p.ads:2:13: error: launch "gnatprove --explain=E0006" for more information
 p.ads:2:13: error: nonvolatile function "Fun" with volatile input global "Other.Hidden" is not allowed in SPARK [E0006]
 p.ads:2:13: error: violation of pragma SPARK_Mode at test.adc:1

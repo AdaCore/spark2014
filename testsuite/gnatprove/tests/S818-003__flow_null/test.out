@@ -1,13 +1,13 @@
 flip.adb:3:42: info: data dependencies proved
 flip.adb:7:05: warning: assuming "Dummy_With_Global" always terminates
-flip.adb:7:05: warning: no Always_Terminates aspect available for "Dummy_With_Global"
+flip.adb:7:05: warning: no Always_Terminates aspect available for "Dummy_With_Global" [assumed-always-terminates]
 flip.adb:8:05: warning: assuming "Dummy_With_Depends" always terminates
-flip.adb:8:05: warning: no Always_Terminates aspect available for "Dummy_With_Depends"
+flip.adb:8:05: warning: no Always_Terminates aspect available for "Dummy_With_Depends" [assumed-always-terminates]
 flip.adb:9:05: warning: assuming "Dummy_With_Global_And_Depends" always terminates
-flip.adb:9:05: warning: no Always_Terminates aspect available for "Dummy_With_Global_And_Depends"
+flip.adb:9:05: warning: no Always_Terminates aspect available for "Dummy_With_Global_And_Depends" [assumed-always-terminates]
 flip.adb:11:05: warning: assuming "Dummy_With_Global_And_Imported" always terminates
-flip.adb:11:05: warning: no Always_Terminates aspect available for "Dummy_With_Global_And_Imported"
+flip.adb:11:05: warning: no Always_Terminates aspect available for "Dummy_With_Global_And_Imported" [assumed-always-terminates]
 flip.adb:12:05: warning: assuming "Dummy_With_Depends_And_Imported" always terminates
-flip.adb:12:05: warning: no Always_Terminates aspect available for "Dummy_With_Depends_And_Imported"
+flip.adb:12:05: warning: no Always_Terminates aspect available for "Dummy_With_Depends_And_Imported" [assumed-always-terminates]
 flip.adb:13:05: warning: assuming "Dummy_With_Global_And_Depends_And_Imported" always terminates
-flip.adb:13:05: warning: no Always_Terminates aspect available for "Dummy_With_Global_And_Depends_And_Imported"
+flip.adb:13:05: warning: no Always_Terminates aspect available for "Dummy_With_Global_And_Depends_And_Imported" [assumed-always-terminates]

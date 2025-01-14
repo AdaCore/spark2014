@@ -1,16 +1,16 @@
 subar.adb:5:22: info: assertion proved (CVC5: 1 VC)
-subar.adb:9:04: warning: analyzing unreferenced procedure "Try_B"
+subar.adb:9:04: warning: analyzing unreferenced procedure "Try_B" [unreferenced-procedure]
 subar.adb:9:14: warning: subprogram "Try_B" has no effect
 subar.adb:13:07: info: precondition proved (CVC5: 1 VC)
 subar.adb:13:10: medium: "AB" might not be initialized
 subar.adb:18:22: info: assertion proved (CVC5: 1 VC)
 subar.adb:18:26: medium: array index check might fail [reason for check: value must be a valid index into the array]
-subar.adb:22:04: warning: analyzing unreferenced procedure "Try_D"
+subar.adb:22:04: warning: analyzing unreferenced procedure "Try_D" [unreferenced-procedure]
 subar.adb:22:14: warning: subprogram "Try_D" has no effect
 subar.adb:23:07: info: initialization of "AD" proved
 subar.adb:25:15: info: range check proved (CVC5: 1 VC)
 subar.adb:27:07: info: precondition proved (CVC5: 1 VC)
-subar.adb:30:04: warning: analyzing unreferenced procedure "Try_E"
+subar.adb:30:04: warning: analyzing unreferenced procedure "Try_E" [unreferenced-procedure]
 subar.adb:30:14: warning: subprogram "Try_E" has no effect
 subar.adb:34:07: info: precondition proved (CVC5: 1 VC)
 subar.adb:34:10: medium: "AE" might not be initialized
@@ -20,7 +20,7 @@ subar.adb:41:25: info: index check proved (CVC5: 2 VC)
 subar.adb:41:26: info: range check proved (CVC5: 2 VC)
 subar.adb:41:33: info: range check proved (CVC5: 2 VC)
 subar.adb:42:10: info: index check proved (CVC5: 2 VC)
-subar.adb:45:04: warning: analyzing unreferenced procedure "Loop_Test"
+subar.adb:45:04: warning: analyzing unreferenced procedure "Loop_Test" [unreferenced-procedure]
 subar.adb:45:14: warning: subprogram "Loop_Test" has no effect
 subar.adb:50:11: info: range check proved (CVC5: 2 VC)
 subar.adb:50:32: info: cannot unroll loop (too many loop iterations)

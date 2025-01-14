@@ -1,5 +1,5 @@
 main_func.adb:3:10: info: implicit aspect Always_Terminates on "Main_Func" has been proved, subprogram will terminate
 main_proc.adb:6:09: warning: assuming "Proc" always terminates
-main_proc.adb:6:09: warning: no Always_Terminates aspect available for "Proc"
+main_proc.adb:6:09: warning: no Always_Terminates aspect available for "Proc" [assumed-always-terminates]
 state.ads:5:49: medium: constant without variable input "Val" not allowed as input to "Proc" (SPARK RM 6.1.4(16))
 state.ads:6:49: medium: constant without variable input "Val" not allowed as input to "Func" (SPARK RM 6.1.4(16))

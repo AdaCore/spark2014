@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2017-2024, AdaCore                     --
+--                     Copyright (C) 2017-2025, AdaCore                     --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -116,7 +116,6 @@ package body Memcache_Client is
    is
       Len : constant Natural := Value'Length;
    begin
-
       --  Hardcoding unused flag and expiration values
 
       String'Write (Conn.Stream, "set " & Key & " 0 0" &

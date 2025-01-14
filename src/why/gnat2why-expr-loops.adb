@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2024, AdaCore                     --
+--                     Copyright (C) 2010-2025, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -269,7 +269,7 @@ package body Gnat2Why.Expr.Loops is
 
          return Found : Boolean := False do
             Main : loop
-               while not Present (Cur_Stmt) loop
+               while No (Cur_Stmt) loop
                   --  Loop to handle potential case of neither declarations
                   --  nor statements.
 

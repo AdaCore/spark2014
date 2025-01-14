@@ -1,4 +1,4 @@
-uninitialized.adb:2:04: warning: analyzing unreferenced procedure "Local"
+uninitialized.adb:2:04: warning: analyzing unreferenced procedure "Local" [unreferenced-procedure]
 uninitialized.adb:2:21: info: initialization of "Y" proved
 uninitialized.adb:5:07: warning: statement has no effect
 uninitialized.adb:6:12: warning: this statement is never reached

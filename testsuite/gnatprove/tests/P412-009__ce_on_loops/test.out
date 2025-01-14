@@ -1,6 +1,6 @@
 counter_example_loop_index.adb:14:33: high: loop invariant might not be preserved by an arbitrary iteration (e.g. when J = 1)
 counter_example_loop_index.adb:14:33: info: loop invariant initialization proved (CVC5: 1 VC)
-counter_example_loop_index.adb:19:04: warning: analyzing unreferenced procedure "P1"
+counter_example_loop_index.adb:19:04: warning: analyzing unreferenced procedure "P1" [unreferenced-procedure]
 counter_example_loop_index.adb:19:14: warning: subprogram "P1" has no effect
 counter_example_loop_index.adb:24:33: info: loop invariant initialization proved (Trivial: 1 VC)
 counter_example_loop_index.adb:24:33: info: loop invariant preservation proved (Trivial: 1 VC)
@@ -9,7 +9,7 @@ counter_example_loop_index.adb:25:33: info: loop invariant initialization proved
 counter_example_loop_index.adb:26:33: info: loop invariant initialization proved (Trivial: 1 VC)
 counter_example_loop_index.adb:26:33: info: loop invariant preservation proved (Trivial: 1 VC)
 counter_example_loop_index.adb:32:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-counter_example_loop_index.adb:41:04: warning: analyzing unreferenced procedure "P2"
+counter_example_loop_index.adb:41:04: warning: analyzing unreferenced procedure "P2" [unreferenced-procedure]
 counter_example_loop_index.adb:41:14: warning: subprogram "P2" has no effect
 counter_example_loop_index.adb:46:33: info: loop invariant initialization proved (Trivial: 1 VC)
 counter_example_loop_index.adb:46:33: info: loop invariant preservation proved (Trivial: 1 VC)
@@ -18,11 +18,11 @@ counter_example_loop_index.adb:47:33: medium: loop invariant might fail in first
 counter_example_loop_index.adb:47:33: medium: loop invariant might not be preserved by an arbitrary iteration [possible fix: you should consider adding a postcondition to function F or turning it into an expression function]
 counter_example_loop_index.adb:48:33: info: loop invariant initialization proved (Trivial: 1 VC)
 counter_example_loop_index.adb:48:33: info: loop invariant preservation proved (Trivial: 1 VC)
-counter_example_loop_index.adb:55:04: warning: analyzing unreferenced procedure "P3"
+counter_example_loop_index.adb:55:04: warning: analyzing unreferenced procedure "P3" [unreferenced-procedure]
 counter_example_loop_index.adb:55:14: warning: subprogram "P3" has no effect
 counter_example_loop_index.adb:61:33: high: loop invariant might not be preserved by an arbitrary iteration (e.g. when J = 51)
 counter_example_loop_index.adb:61:33: info: loop invariant initialization proved (CVC5: 1 VC)
-counter_example_loop_index.adb:67:04: warning: analyzing unreferenced procedure "P4"
+counter_example_loop_index.adb:67:04: warning: analyzing unreferenced procedure "P4" [unreferenced-procedure]
 counter_example_loop_index.adb:67:14: warning: subprogram "P4" has no effect
 counter_example_loop_index.adb:74:33: high: loop invariant might not be preserved by an arbitrary iteration (e.g. when J = 51)
 counter_example_loop_index.adb:74:33: info: loop invariant initialization proved (CVC5: 1 VC)
