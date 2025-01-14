@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---              Copyright (C) 2024, AdaCore                                 --
+--                     Copyright (C) 2024-2025, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -135,8 +135,8 @@ package body Flow_Utility.Proof_Dependencies is
 
       Descendants  : constant Node_Sets.Set := Get_Descendant_Set (Ty);
       Descendant_E : Entity_Id;
-   begin
 
+   begin
       --  Pull user-defined equalities from descendants of type Ty
 
       for Descendant of Descendants loop

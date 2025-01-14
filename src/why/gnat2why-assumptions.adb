@@ -6,8 +6,8 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2024, AdaCore                     --
---              Copyright (C) 2014-2024, Capgemini Engineering              --
+--                     Copyright (C) 2010-2025, AdaCore                     --
+--              Copyright (C) 2014-2025, Capgemini Engineering              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -145,7 +145,6 @@ package body Gnat2Why.Assumptions is
 
    procedure Register_Proof_Claims (E : Entity_Id) is
    begin
-
       --  SPARK can't say anything about entities whose body is not in SPARK,
       --  so safe guard against this here.
 

@@ -1,2 +1,2 @@
 x-y.adb:11:08: warning: assuming "init_z" always terminates
-x-y.adb:11:08: warning: no Always_Terminates aspect available for "init_z"
+x-y.adb:11:08: warning: no Always_Terminates aspect available for "init_z" [assumed-always-terminates]

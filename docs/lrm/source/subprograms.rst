@@ -1465,8 +1465,9 @@ The aspect Exceptional_Cases may be specified for procedures and functions with
 side effects; it can be used to list exceptions that might be propagated by the
 subprogram with side effects in the context of its precondition, and associate
 them with a specific postcondition. The Exceptional_Cases aspect is specified
-with an aspect_specification where the aspect_mark is Exceptional_Cases and the
-aspect_definition must follow the grammar of exceptional_case_list given below.
+with an aspect_specification where the ``aspect_mark`` is Exceptional_Cases and
+the ``aspect_definition`` must follow the grammar of ``exceptional_case_list``
+given below.
 
 .. container:: heading
 
@@ -1537,8 +1538,9 @@ The aspect Exit_Cases may be specified for procedures and functions with side
 effects; it can be used to partition the input state into a list of cases and
 specify, for each case, how the subprogram is allowed to terminate (i.e. return
 normally or propagate an exception). The Exit_Cases aspect is specified with an
-aspect_specification where the aspect_mark is Exit_Cases and the
-aspect_definition must follow the grammar of exit_case_list given below.
+``aspect_specification`` where the ``aspect_mark`` is Exit_Cases and the
+``aspect_definition`` must follow the grammar of ``exit_case_list`` given
+below.
 
 .. container:: heading
 
@@ -1546,13 +1548,11 @@ aspect_definition must follow the grammar of exit_case_list given below.
 
 ::
 
-  pragma Exit_Cases (EXIT_CASE_LIST);
-
   EXIT_CASE_LIST ::= EXIT_CASE {, EXIT_CASE}
   EXIT_CASE      ::= GUARD => EXIT_KIND
   EXIT_KIND      ::= Normal_Return
                    | Exception_Raised
-		   | (Exception_Raised => exception_name)
+                   | (Exception_Raised => exception_name)
   GUARD          ::= Boolean_expression | OTHERS
 
 .. container:: heading
@@ -1572,7 +1572,7 @@ Exit_Cases aspects are ignored for execution.
 
    Legality Rules
 
-1. A guard others, if present, shall appear in the last exit case.
+1. A guard **others**, if present, shall appear in the last exit case.
 
 2. A subprogram annotated with Exit_Cases shall be allowed to propagate
    exceptions. More precisely, if it is has an Exceptional_Cases aspect, then
@@ -1587,8 +1587,8 @@ Exit_Cases aspects are ignored for execution.
    Verification Rules
 
 4. If a subprogram is annotated with Exit_Cases and there are at least two
-   exit cases whose guards are not the others choice, then a verification
-   condition is introduced to make sure that all the non others guards are
+   exit cases whose guards are not the **others** choice, then a verification
+   condition is introduced to make sure that all the non-**others** guards are
    disjoint in the context of the precondition.
 
 5. If a subprogram annotated with Exit_Cases returns normally, then a

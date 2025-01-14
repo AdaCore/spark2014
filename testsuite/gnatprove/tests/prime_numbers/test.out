@@ -1,4 +1,6 @@
 prime_and_coprime_numbers.adb:12:07: info: initialization of "Set.Is_Prime" constituent of "P.Prime_Data" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:16:60: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:16:75: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:26:16: info: implicit aspect Always_Terminates on "Euclid" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:33:12: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:34:12: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6

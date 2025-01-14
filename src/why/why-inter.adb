@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2024, AdaCore                     --
+--                     Copyright (C) 2010-2025, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -562,11 +562,11 @@ package body Why.Inter is
          end loop;
       end DFS;
 
-      --  Begining of processing for Check_Safe_Guard_Cycles
+      --  Start of processing for Check_Safe_Guard_Cycles
 
       Entry_Points : Node_Sets.Set;
-   begin
 
+   begin
       --  We first collect the entry points in an ordered set. The reason to do
       --  this is to avoid differences in output due to non-determinism.
 
@@ -968,7 +968,7 @@ package body Why.Inter is
    function Get_EW_Term_Type (N : Node_Id) return W_Type_Id is
       Ty : Node_Id := N;
    begin
-      if Nkind (N) /= N_Defining_Identifier or else not (Is_Type (N)) then
+      if Nkind (N) /= N_Defining_Identifier or else not Is_Type (N) then
          Ty := Etype (N);
       end if;
 
@@ -1121,31 +1121,30 @@ package body Why.Inter is
       Left_Base := Base_Why_Type (Left);
       Right_Base := Base_Why_Type (Right);
 
-      if (Left_Base = EW_Int_Type and then Right = EW_Bool_Type)
-        or else
-          (Left_Base = EW_Bool_Type and then Right_Base = EW_Int_Type)
+      if Left_Base = EW_Int_Type
+        or else Right = EW_Int_Type
       then
          return EW_Int_Type;
-      elsif Left_Base = EW_BitVector_8_Type or else
-        Right_Base = EW_BitVector_8_Type
-      then
-         return EW_BitVector_8_Type;
-      elsif Left_Base = EW_BitVector_16_Type or else
-        Right_Base = EW_BitVector_16_Type
-      then
-         return EW_BitVector_16_Type;
-      elsif Left_Base = EW_BitVector_32_Type or else
-        Right_Base = EW_BitVector_32_Type
-      then
-         return EW_BitVector_32_Type;
-      elsif Left_Base = EW_BitVector_64_Type or else
-        Right_Base = EW_BitVector_64_Type
-      then
-         return EW_BitVector_64_Type;
       elsif Left_Base = EW_BitVector_128_Type or else
         Right_Base = EW_BitVector_128_Type
       then
          return EW_BitVector_128_Type;
+      elsif Left_Base = EW_BitVector_64_Type or else
+        Right_Base = EW_BitVector_64_Type
+      then
+         return EW_BitVector_64_Type;
+      elsif Left_Base = EW_BitVector_32_Type or else
+        Right_Base = EW_BitVector_32_Type
+      then
+         return EW_BitVector_32_Type;
+      elsif Left_Base = EW_BitVector_16_Type or else
+        Right_Base = EW_BitVector_16_Type
+      then
+         return EW_BitVector_16_Type;
+      elsif Left_Base = EW_BitVector_8_Type or else
+        Right_Base = EW_BitVector_8_Type
+      then
+         return EW_BitVector_8_Type;
       end if;
 
       --  There are no other uses of this subprogram for now
@@ -1193,7 +1192,6 @@ package body Why.Inter is
      (E : Entity_Id; Kind : EW_Type; Relaxed_Init : Boolean) return W_Type_Id
    is
    begin
-
       --  We avoid having renaming of types in Why to allow using the same
       --  reference type.
 

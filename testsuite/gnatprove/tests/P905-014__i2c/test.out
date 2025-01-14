@@ -47,19 +47,19 @@ stm32_svd-gpio.ads:476:04: error: violation of pragma SPARK_Mode at test.adc:1
 stm32_svd-gpio.ads:480:04: error: "GPIO_Peripheral" is not allowed in SPARK (due to discriminated volatile type)
 stm32_svd-gpio.ads:480:04: error: violation of pragma SPARK_Mode at test.adc:1
 stm32_svd-i2c.ads:433:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
-stm32_svd-i2c.ads:433:04: warning: address specification on "I2C1_Periph" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [E0012]
+stm32_svd-i2c.ads:433:04: warning: address specification on "I2C1_Periph" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [imprecise-address-specification] [E0012]
 stm32_svd-i2c.ads:433:04: warning: launch "gnatprove --explain=E0012" for more information
 stm32_svd-i2c.ads:433:04: warning: make sure that all overlapping objects have Async_Writers set to True
 stm32_svd-i2c.ads:437:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
-stm32_svd-i2c.ads:437:04: warning: address specification on "I2C2_Periph" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [E0012]
+stm32_svd-i2c.ads:437:04: warning: address specification on "I2C2_Periph" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [imprecise-address-specification] [E0012]
 stm32_svd-i2c.ads:437:04: warning: launch "gnatprove --explain=E0012" for more information
 stm32_svd-i2c.ads:437:04: warning: make sure that all overlapping objects have Async_Writers set to True
 stm32_svd-i2c.ads:441:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
-stm32_svd-i2c.ads:441:04: warning: address specification on "I2C3_Periph" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [E0012]
+stm32_svd-i2c.ads:441:04: warning: address specification on "I2C3_Periph" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [imprecise-address-specification] [E0012]
 stm32_svd-i2c.ads:441:04: warning: launch "gnatprove --explain=E0012" for more information
 stm32_svd-i2c.ads:441:04: warning: make sure that all overlapping objects have Async_Writers set to True
 stm32_svd-rcc.ads:1804:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
-stm32_svd-rcc.ads:1804:04: warning: address specification on "RCC_Periph" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to a potential alias, and valid reads [E0012]
+stm32_svd-rcc.ads:1804:04: warning: address specification on "RCC_Periph" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to a potential alias, and valid reads [imprecise-address-specification] [E0012]
 stm32_svd-rcc.ads:1804:04: warning: launch "gnatprove --explain=E0012" for more information
 stm32_svd-rcc.ads:1804:04: warning: make sure that all overlapping objects have Async_Writers set to True
 gnatprove: error during flow analysis and proof

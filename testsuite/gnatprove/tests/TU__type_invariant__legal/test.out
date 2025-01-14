@@ -59,7 +59,7 @@ type_invariant_legal_2.adb:75:14: medium: invariant check might fail (e.g. when 
 type_invariant_legal_2.adb:76:14: info: precondition proved (Trivial: 1 VC)
 type_invariant_legal_2.adb:78:14: info: for X before the call at type_invariant_legal_2.ads:13
 type_invariant_legal_2.adb:78:14: info: invariant check proved (CVC5: 1 VC)
-type_invariant_legal_2.adb:83:04: warning: analyzing unreferenced procedure "Extra_Test"
+type_invariant_legal_2.adb:83:04: warning: analyzing unreferenced procedure "Extra_Test" [unreferenced-procedure]
 type_invariant_legal_2.adb:85:07: medium: for X before the call at type_invariant_legal_2.ads:17
 type_invariant_legal_2.adb:85:07: medium: invariant check might fail (e.g. when X = 0)
 type_invariant_legal_2.adb:86:07: info: precondition proved (Trivial: 1 VC)
@@ -158,7 +158,7 @@ type_invariant_legal_4.adb:80:14: info: for X before the call at type_invariant_
 type_invariant_legal_4.adb:80:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_4.adb:81:14: info: for X before the call at type_invariant_legal_4.ads:21
 type_invariant_legal_4.adb:81:14: info: invariant check proved (CVC5: 1 VC)
-type_invariant_legal_4.adb:85:04: warning: analyzing unreferenced procedure "Extra_Test"
+type_invariant_legal_4.adb:85:04: warning: analyzing unreferenced procedure "Extra_Test" [unreferenced-procedure]
 type_invariant_legal_4.adb:85:14: info: for X at the end of Extra_Test at type_invariant_legal_4.ads:21
 type_invariant_legal_4.adb:85:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_4.adb:87:07: info: for X before the call at type_invariant_legal_4.ads:21

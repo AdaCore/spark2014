@@ -1,12 +1,12 @@
-init.adb:9:04: warning: analyzing unreferenced procedure "P"
+init.adb:9:04: warning: analyzing unreferenced procedure "P" [unreferenced-procedure]
 init.adb:9:17: medium: "X" might not be initialized in "P" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 init.adb:9:29: info: initialization of "Status" proved
-init.adb:15:04: warning: analyzing unreferenced procedure "Q"
+init.adb:15:04: warning: analyzing unreferenced procedure "Q" [unreferenced-procedure]
 init.adb:15:17: medium: "X" might not be initialized in "Q" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "X" on all paths or make "X" an IN OUT parameter]
-init.adb:24:04: warning: analyzing unreferenced procedure "R"
+init.adb:24:04: warning: analyzing unreferenced procedure "R" [unreferenced-procedure]
 init.adb:24:17: high: "X.B" is not initialized in "R" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.B" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 init.adb:24:17: high: "X.C" is not initialized in "R" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.C" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
-init.adb:29:04: warning: analyzing unreferenced procedure "S"
+init.adb:29:04: warning: analyzing unreferenced procedure "S" [unreferenced-procedure]
 init.adb:29:17: high: "X.B" is not initialized in "S" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.B" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 init.adb:29:17: high: "X.C" is not initialized in "S" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.C" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 init.adb:29:17: medium: "X.A" might not be initialized in "S" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.A" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]

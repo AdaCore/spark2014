@@ -1,0 +1,4 @@
+messages_wrapper.ads:5:13: info: implicit aspect Always_Terminates on "Compute_Fletcher_Checksum" has been proved, subprogram will terminate
+messages_wrapper.ads:8:21: info: overflow check proved (altergo: 2 VC)
+messages_wrapper.ads:11:14: info: range check proved (CVC5: 1 VC)
+messages_wrapper.ads:11:14: info: range check proved (CVC5: 1 VC; altergo: 1 VC)

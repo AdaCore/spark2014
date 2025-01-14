@@ -1,13 +1,13 @@
 call_proc_no_body.adb:4:07: medium: precondition might fail
 call_proc_no_body.adb:4:07: warning: assuming "P_02" always terminates
 call_proc_no_body.adb:4:07: warning: assuming "P_02" has no effect on global items
-call_proc_no_body.adb:4:07: warning: no Always_Terminates aspect available for "P_02"
-call_proc_no_body.adb:4:07: warning: no Global contract available for "P_02"
+call_proc_no_body.adb:4:07: warning: no Always_Terminates aspect available for "P_02" [assumed-always-terminates]
+call_proc_no_body.adb:4:07: warning: no Global contract available for "P_02" [assumed-global-null]
 call_proc_no_body.adb:9:07: info: precondition proved (CVC5: 1 VC)
 call_proc_no_body.adb:9:07: warning: assuming "P_03" always terminates
 call_proc_no_body.adb:9:07: warning: assuming "P_03" has no effect on global items
-call_proc_no_body.adb:9:07: warning: no Always_Terminates aspect available for "P_03"
-call_proc_no_body.adb:9:07: warning: no Global contract available for "P_03"
+call_proc_no_body.adb:9:07: warning: no Always_Terminates aspect available for "P_03" [assumed-always-terminates]
+call_proc_no_body.adb:9:07: warning: no Global contract available for "P_03" [assumed-global-null]
 call_proc_no_body.ads:4:14: info: aspect Always_Terminates on "Returning" has been proved, subprogram will terminate
 call_proc_no_body.ads:4:14: warning: subprogram "Returning" has no effect
 call_proc_no_body.ads:6:14: info: aspect Always_Terminates on "Nonreturning" has been proved, subprogram will terminate
@@ -22,7 +22,7 @@ container.adb:30:11: info: precondition proved (Trivial: 1 VC), in call inlined 
 container.adb:33:20: medium: range check might fail, cannot prove upper bound for X + 1, in call inlined at container.adb:45 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 32 should mention Int in a loop invariant]
 container.adb:34:34: info: loop variant proved (CVC5: 1 VC), in call inlined at container.adb:45
 container.adb:45:07: info: analyzing call to "Test3" in context
-container.adb:48:04: warning: analyzing unreferenced procedure "Test5"
+container.adb:48:04: warning: analyzing unreferenced procedure "Test5" [unreferenced-procedure]
 container.adb:48:14: info: aspect Always_Terminates on "Test5" has been proved, subprogram will terminate
 container.adb:51:11: info: precondition proved (CVC5: 1 VC)
 container.adb:51:11: info: precondition proved (Trivial: 1 VC)
@@ -91,10 +91,10 @@ functions.adb:14:14: warning: subprogram "G" has no effect
 functions.adb:16:07: medium: aspect Always_Terminates on "G" could be incorrect, call to "P" might be nonterminating [possible fix: annotate "P" with aspect Always_Terminates]
 functions.adb:16:07: medium: implicit aspect Always_Terminates on "Functions" could be incorrect, call to "P" might be nonterminating, in call inlined at functions.adb:29 [possible fix: annotate "P" with aspect Always_Terminates]
 functions.adb:16:07: warning: assuming "P" has no effect on global items
-functions.adb:16:07: warning: no Global contract available for "P"
+functions.adb:16:07: warning: no Global contract available for "P" [assumed-global-null]
 functions.adb:22:10: medium: aspect Always_Terminates on "Nested_Proc" could be incorrect, call to "P" might be nonterminating [possible fix: annotate "P" with aspect Always_Terminates]
 functions.adb:22:10: warning: assuming "P" has no effect on global items
-functions.adb:22:10: warning: no Global contract available for "P"
+functions.adb:22:10: warning: no Global contract available for "P" [assumed-global-null]
 functions.adb:29:04: info: analyzing call to "G" in context
 functions.ads:4:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 functions.ads:6:13: info: implicit aspect Always_Terminates on "Expr_Func" has been proved, subprogram will terminate
@@ -102,13 +102,13 @@ functions.ads:9:17: high: all paths in "Nested_Proc" raise exceptions or do not 
 functions.ads:9:17: warning: subprogram "Nested_Proc" has no effect
 imported.adb:5:07: warning: assuming "P_01" always terminates
 imported.adb:5:07: warning: assuming "P_01" has no effect on global items
-imported.adb:5:07: warning: no Always_Terminates aspect available for "P_01"
-imported.adb:5:07: warning: no Global contract available for "P_01"
+imported.adb:5:07: warning: no Always_Terminates aspect available for "P_01" [assumed-always-terminates]
+imported.adb:5:07: warning: no Global contract available for "P_01" [assumed-global-null]
 imported.adb:10:07: medium: precondition might fail
 imported.adb:10:07: warning: assuming "P_02" always terminates
 imported.adb:10:07: warning: assuming "P_02" has no effect on global items
-imported.adb:10:07: warning: no Always_Terminates aspect available for "P_02"
-imported.adb:10:07: warning: no Global contract available for "P_02"
+imported.adb:10:07: warning: no Always_Terminates aspect available for "P_02" [assumed-always-terminates]
+imported.adb:10:07: warning: no Global contract available for "P_02" [assumed-global-null]
 imported.ads:9:14: info: aspect Always_Terminates on "Q_01" has been proved, subprogram will terminate
 imported.ads:9:14: warning: subprogram "Q_01" has no effect
 imported.ads:16:14: info: aspect Always_Terminates on "Q_02" has been proved, subprogram will terminate
@@ -117,8 +117,8 @@ modular_analysis.adb:5:14: info: aspect Always_Terminates on "Test_01" has been 
 modular_analysis.adb:5:23: info: initialization of "F" proved
 modular_analysis.adb:8:14: warning: assuming "Open_Read" always terminates
 modular_analysis.adb:8:14: warning: assuming "Open_Read" has no effect on global items
-modular_analysis.adb:8:14: warning: no Always_Terminates aspect available for "Open_Read"
-modular_analysis.adb:8:14: warning: no Global contract available for "Open_Read"
+modular_analysis.adb:8:14: warning: no Always_Terminates aspect available for "Open_Read" [assumed-always-terminates]
+modular_analysis.adb:8:14: warning: no Global contract available for "Open_Read" [assumed-global-null]
 nest_in_proc.adb:5:17: info: aspect Always_Terminates on "Nothing" has been proved, subprogram will terminate
 nest_in_proc.adb:5:17: warning: subprogram "Nothing" has no effect
 nest_in_proc.adb:20:21: medium: implicit aspect Always_Terminates on "Pkg2" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
@@ -185,17 +185,17 @@ r.adb:31:14: warning: subprogram "Proc1" has no effect
 r.adb:34:10: info: analyzing call to "Proc1" in context
 r.adb:34:10: info: no contextual analysis of call to recursive subprogram
 r.adb:40:07: warning: assuming "OS_Exit" has no effect on global items
-r.adb:40:07: warning: no Global contract available for "OS_Exit"
+r.adb:40:07: warning: no Global contract available for "OS_Exit" [assumed-global-null]
 r.adb:45:18: medium: implicit aspect Always_Terminates on "Proc3" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 r.adb:48:07: warning: unreachable code (CVC5: 1 VC)
-r.adb:51:04: warning: analyzing unreferenced procedure "Proc4"
+r.adb:51:04: warning: analyzing unreferenced procedure "Proc4" [unreferenced-procedure]
 r.adb:51:14: high: all paths in "Proc4" raise exceptions or do not terminate normally
 r.adb:51:14: warning: subprogram "Proc4" has no effect
 r.adb:53:07: warning: assuming "OS_Exit" has no effect on global items
-r.adb:53:07: warning: no Global contract available for "OS_Exit"
+r.adb:53:07: warning: no Global contract available for "OS_Exit" [assumed-global-null]
 r.adb:57:04: medium: implicit aspect Always_Terminates on "R" could be incorrect, call to "Proc1" might be nonterminating [possible fix: annotate "Proc1" with aspect Always_Terminates]
 r.adb:58:04: warning: assuming "OS_Exit" has no effect on global items
-r.adb:58:04: warning: no Global contract available for "OS_Exit"
+r.adb:58:04: warning: no Global contract available for "OS_Exit" [assumed-global-null]
 r.adb:58:04: warning: statement has no effect
 r.adb:59:04: warning: this statement is never reached
 r.adb:59:04: warning: unreachable code [enabled by default]

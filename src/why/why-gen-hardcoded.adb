@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2020-2024, AdaCore                     --
+--                     Copyright (C) 2020-2025, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -108,7 +108,6 @@ package body Why.Gen.Hardcoded is
    procedure Emit_Hardcoded_Type_Declaration (Th : Theory_UC; E : Entity_Id) is
       Alias : W_Type_Id;
    begin
-
       --  The Why3 type used to represent the type is stored in Alias
       --  The following case statement is meant to be extended in the
       --  future.

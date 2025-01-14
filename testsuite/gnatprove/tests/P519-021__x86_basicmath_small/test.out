@@ -1,88 +1,88 @@
 basicmath_small.adb:28:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:28:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:34:13: warning: assuming "Write_EDI" always terminates
-basicmath_small.adb:34:13: warning: no Always_Terminates aspect available for "Write_EDI"
+basicmath_small.adb:34:13: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 basicmath_small.adb:37:13: warning: assuming "Write_EAX" always terminates
-basicmath_small.adb:37:13: warning: no Always_Terminates aspect available for "Write_EAX"
+basicmath_small.adb:37:13: warning: no Always_Terminates aspect available for "Write_EAX" [assumed-always-terminates]
 basicmath_small.adb:40:13: warning: assuming "Write_EBX" always terminates
-basicmath_small.adb:40:13: warning: no Always_Terminates aspect available for "Write_EBX"
+basicmath_small.adb:40:13: warning: no Always_Terminates aspect available for "Write_EBX" [assumed-always-terminates]
 basicmath_small.adb:67:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:67:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:73:13: warning: assuming "Write_EDI" always terminates
-basicmath_small.adb:73:13: warning: no Always_Terminates aspect available for "Write_EDI"
+basicmath_small.adb:73:13: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 basicmath_small.adb:76:13: warning: assuming "Write_EAX" always terminates
-basicmath_small.adb:76:13: warning: no Always_Terminates aspect available for "Write_EAX"
+basicmath_small.adb:76:13: warning: no Always_Terminates aspect available for "Write_EAX" [assumed-always-terminates]
 basicmath_small.adb:79:13: warning: assuming "Write_EBX" always terminates
-basicmath_small.adb:79:13: warning: no Always_Terminates aspect available for "Write_EBX"
+basicmath_small.adb:79:13: warning: no Always_Terminates aspect available for "Write_EBX" [assumed-always-terminates]
 basicmath_small.adb:106:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:106:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:112:13: warning: assuming "Write_EDI" always terminates
-basicmath_small.adb:112:13: warning: no Always_Terminates aspect available for "Write_EDI"
+basicmath_small.adb:112:13: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 basicmath_small.adb:115:13: warning: assuming "Write_EAX" always terminates
-basicmath_small.adb:115:13: warning: no Always_Terminates aspect available for "Write_EAX"
+basicmath_small.adb:115:13: warning: no Always_Terminates aspect available for "Write_EAX" [assumed-always-terminates]
 basicmath_small.adb:118:13: warning: assuming "Write_EBX" always terminates
-basicmath_small.adb:118:13: warning: no Always_Terminates aspect available for "Write_EBX"
+basicmath_small.adb:118:13: warning: no Always_Terminates aspect available for "Write_EBX" [assumed-always-terminates]
 basicmath_small.adb:145:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:145:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:152:13: warning: assuming "Write_EDI" always terminates
-basicmath_small.adb:152:13: warning: no Always_Terminates aspect available for "Write_EDI"
+basicmath_small.adb:152:13: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 basicmath_small.adb:155:13: warning: assuming "Write_EAX" always terminates
-basicmath_small.adb:155:13: warning: no Always_Terminates aspect available for "Write_EAX"
+basicmath_small.adb:155:13: warning: no Always_Terminates aspect available for "Write_EAX" [assumed-always-terminates]
 basicmath_small.adb:158:13: warning: assuming "Write_EBX" always terminates
-basicmath_small.adb:158:13: warning: no Always_Terminates aspect available for "Write_EBX"
+basicmath_small.adb:158:13: warning: no Always_Terminates aspect available for "Write_EBX" [assumed-always-terminates]
 basicmath_small.adb:185:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:185:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:191:13: warning: assuming "Write_EDI" always terminates
-basicmath_small.adb:191:13: warning: no Always_Terminates aspect available for "Write_EDI"
+basicmath_small.adb:191:13: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 basicmath_small.adb:194:13: warning: assuming "Write_EAX" always terminates
-basicmath_small.adb:194:13: warning: no Always_Terminates aspect available for "Write_EAX"
+basicmath_small.adb:194:13: warning: no Always_Terminates aspect available for "Write_EAX" [assumed-always-terminates]
 basicmath_small.adb:197:13: warning: assuming "Write_EBX" always terminates
-basicmath_small.adb:197:13: warning: no Always_Terminates aspect available for "Write_EBX"
+basicmath_small.adb:197:13: warning: no Always_Terminates aspect available for "Write_EBX" [assumed-always-terminates]
 basicmath_small.adb:224:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:224:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:225:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:230:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (X86.Memory(i) = X86.Memory'Loop_Entry(i))
 basicmath_small.adb:238:13: warning: assuming "Write_EBX" always terminates
-basicmath_small.adb:238:13: warning: no Always_Terminates aspect available for "Write_EBX"
+basicmath_small.adb:238:13: warning: no Always_Terminates aspect available for "Write_EBX" [assumed-always-terminates]
 basicmath_small.adb:261:13: warning: assuming "Write_EAX" always terminates
-basicmath_small.adb:261:13: warning: no Always_Terminates aspect available for "Write_EAX"
+basicmath_small.adb:261:13: warning: no Always_Terminates aspect available for "Write_EAX" [assumed-always-terminates]
 basicmath_small.adb:264:13: warning: assuming "Write_EDI" always terminates
-basicmath_small.adb:264:13: warning: no Always_Terminates aspect available for "Write_EDI"
+basicmath_small.adb:264:13: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 basicmath_small.adb:272:13: warning: assuming "Write_EAX" always terminates
-basicmath_small.adb:272:13: warning: no Always_Terminates aspect available for "Write_EAX"
+basicmath_small.adb:272:13: warning: no Always_Terminates aspect available for "Write_EAX" [assumed-always-terminates]
 basicmath_small.adb:281:10: warning: "ZeroFlag" is set by "loop_5d" but not used after the call
 basicmath_small.adb:284:13: warning: assuming "Write_EDI" always terminates
-basicmath_small.adb:284:13: warning: no Always_Terminates aspect available for "Write_EDI"
+basicmath_small.adb:284:13: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 basicmath_small.adb:304:13: warning: assuming "WriteMem64" always terminates
-basicmath_small.adb:304:13: warning: no Always_Terminates aspect available for "WriteMem64"
+basicmath_small.adb:304:13: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 basicmath_small.adb:314:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:314:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:315:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:324:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (X86.Memory(i) = X86.Memory'Loop_Entry(i))
 basicmath_small.adb:332:13: warning: assuming "WriteMem64" always terminates
-basicmath_small.adb:332:13: warning: no Always_Terminates aspect available for "WriteMem64"
+basicmath_small.adb:332:13: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 basicmath_small.adb:334:10: warning: "ZeroFlag" is set by "loop_5c" but not used after the call
 basicmath_small.adb:349:13: warning: assuming "WriteMem64" always terminates
-basicmath_small.adb:349:13: warning: no Always_Terminates aspect available for "WriteMem64"
+basicmath_small.adb:349:13: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 basicmath_small.adb:359:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:359:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:360:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:373:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (X86.Memory(i) = X86.Memory'Loop_Entry(i))
 basicmath_small.adb:381:13: warning: assuming "WriteMem64" always terminates
-basicmath_small.adb:381:13: warning: no Always_Terminates aspect available for "WriteMem64"
+basicmath_small.adb:381:13: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 basicmath_small.adb:383:10: warning: "ZeroFlag" is set by "loop_5b" but not used after the call
 basicmath_small.adb:398:13: warning: assuming "WriteMem64" always terminates
-basicmath_small.adb:398:13: warning: no Always_Terminates aspect available for "WriteMem64"
+basicmath_small.adb:398:13: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 basicmath_small.adb:408:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:408:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:409:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:426:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (X86.Memory(i) = X86.Memory'Loop_Entry(i))
 basicmath_small.adb:434:13: warning: assuming "WriteMem64" always terminates
-basicmath_small.adb:434:13: warning: no Always_Terminates aspect available for "WriteMem64"
+basicmath_small.adb:434:13: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 basicmath_small.adb:436:10: warning: "XMM7" is set by "loop_5a" but not used after the call
 basicmath_small.adb:436:10: warning: "ZeroFlag" is set by "loop_5a" but not used after the call
 basicmath_small.adb:451:13: warning: assuming "WriteMem64" always terminates
-basicmath_small.adb:451:13: warning: no Always_Terminates aspect available for "WriteMem64"
+basicmath_small.adb:451:13: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 basicmath_small.adb:461:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:461:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:462:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -93,41 +93,41 @@ basicmath_small.adb:482:10: warning: "OverflowFlag" is set by "usqrt" but not us
 basicmath_small.adb:482:10: warning: "SignFlag" is set by "usqrt" but not used after the call
 basicmath_small.adb:482:10: warning: "ZeroFlag" is set by "usqrt" but not used after the call
 basicmath_small.adb:485:13: warning: assuming "Write_EDX" always terminates
-basicmath_small.adb:485:13: warning: no Always_Terminates aspect available for "Write_EDX"
+basicmath_small.adb:485:13: warning: no Always_Terminates aspect available for "Write_EDX" [assumed-always-terminates]
 basicmath_small.adb:488:13: warning: assuming "Write_ESI" always terminates
-basicmath_small.adb:488:13: warning: no Always_Terminates aspect available for "Write_ESI"
+basicmath_small.adb:488:13: warning: no Always_Terminates aspect available for "Write_ESI" [assumed-always-terminates]
 basicmath_small.adb:491:13: warning: assuming "Write_EAX" always terminates
-basicmath_small.adb:491:13: warning: no Always_Terminates aspect available for "Write_EAX"
+basicmath_small.adb:491:13: warning: no Always_Terminates aspect available for "Write_EAX" [assumed-always-terminates]
 basicmath_small.adb:494:13: warning: assuming "Write_EDI" always terminates
-basicmath_small.adb:494:13: warning: no Always_Terminates aspect available for "Write_EDI"
+basicmath_small.adb:494:13: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 basicmath_small.adb:522:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:522:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:523:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:528:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (X86.Memory(i) = X86.Memory'Loop_Entry(i))
 basicmath_small.adb:537:13: warning: assuming "Write_EDI" always terminates
-basicmath_small.adb:537:13: warning: no Always_Terminates aspect available for "Write_EDI"
+basicmath_small.adb:537:13: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 basicmath_small.adb:540:13: warning: assuming "Write_EAX" always terminates
-basicmath_small.adb:540:13: warning: no Always_Terminates aspect available for "Write_EAX"
+basicmath_small.adb:540:13: warning: no Always_Terminates aspect available for "Write_EAX" [assumed-always-terminates]
 basicmath_small.adb:543:13: warning: assuming "WriteMem64" always terminates
-basicmath_small.adb:543:13: warning: no Always_Terminates aspect available for "WriteMem64"
+basicmath_small.adb:543:13: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 basicmath_small.adb:549:25: warning: assuming "SafeDivision64" has no effect on global items
-basicmath_small.adb:549:25: warning: no Global contract available for "SafeDivision64"
+basicmath_small.adb:549:25: warning: no Global contract available for "SafeDivision64" [assumed-global-null]
 basicmath_small.adb:560:13: warning: assuming "Write_EBX" always terminates
-basicmath_small.adb:560:13: warning: no Always_Terminates aspect available for "Write_EBX"
+basicmath_small.adb:560:13: warning: no Always_Terminates aspect available for "Write_EBX" [assumed-always-terminates]
 basicmath_small.adb:576:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:576:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:577:32: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 basicmath_small.adb:582:37: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (X86.Memory(i) = X86.Memory'Loop_Entry(i))
 basicmath_small.adb:590:13: warning: assuming "Write_EDI" always terminates
-basicmath_small.adb:590:13: warning: no Always_Terminates aspect available for "Write_EDI"
+basicmath_small.adb:590:13: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 basicmath_small.adb:593:13: warning: assuming "Write_EAX" always terminates
-basicmath_small.adb:593:13: warning: no Always_Terminates aspect available for "Write_EAX"
+basicmath_small.adb:593:13: warning: no Always_Terminates aspect available for "Write_EAX" [assumed-always-terminates]
 basicmath_small.adb:596:13: warning: assuming "WriteMem64" always terminates
-basicmath_small.adb:596:13: warning: no Always_Terminates aspect available for "WriteMem64"
+basicmath_small.adb:596:13: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 basicmath_small.adb:602:25: warning: assuming "SafeDivision64" has no effect on global items
-basicmath_small.adb:602:25: warning: no Global contract available for "SafeDivision64"
+basicmath_small.adb:602:25: warning: no Global contract available for "SafeDivision64" [assumed-global-null]
 basicmath_small.adb:613:13: warning: assuming "Write_EBX" always terminates
-basicmath_small.adb:613:13: warning: no Always_Terminates aspect available for "Write_EBX"
+basicmath_small.adb:613:13: warning: no Always_Terminates aspect available for "Write_EBX" [assumed-always-terminates]
 basicmath_small.adb:628:07: warning: initialization of "SaveStackPtr" has no effect
 basicmath_small.adb:628:39: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:629:07: warning: initialization of "ra0" has no effect
@@ -159,33 +159,33 @@ basicmath_small.adb:641:34: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:642:07: warning: initialization of "SaveR15" has no effect
 basicmath_small.adb:642:34: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:648:10: warning: assuming "WriteMem64" always terminates
-basicmath_small.adb:648:10: warning: no Always_Terminates aspect available for "WriteMem64"
+basicmath_small.adb:648:10: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 basicmath_small.adb:652:10: warning: assuming "WriteMem64" always terminates
-basicmath_small.adb:652:10: warning: no Always_Terminates aspect available for "WriteMem64"
+basicmath_small.adb:652:10: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 basicmath_small.adb:656:10: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:656:10: warning: assuming "Write_EDI" always terminates
-basicmath_small.adb:656:10: warning: no Always_Terminates aspect available for "Write_EDI"
+basicmath_small.adb:656:10: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 basicmath_small.adb:656:10: warning: statement has no effect
 basicmath_small.adb:659:10: warning: assuming "WriteMem64" always terminates
-basicmath_small.adb:659:10: warning: no Always_Terminates aspect available for "WriteMem64"
+basicmath_small.adb:659:10: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 basicmath_small.adb:663:10: warning: assuming "WriteMem64" always terminates
-basicmath_small.adb:663:10: warning: no Always_Terminates aspect available for "WriteMem64"
+basicmath_small.adb:663:10: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 basicmath_small.adb:667:10: warning: assuming "WriteMem64" always terminates
-basicmath_small.adb:667:10: warning: no Always_Terminates aspect available for "WriteMem64"
+basicmath_small.adb:667:10: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 basicmath_small.adb:671:10: warning: assuming "WriteMem64" always terminates
-basicmath_small.adb:671:10: warning: no Always_Terminates aspect available for "WriteMem64"
+basicmath_small.adb:671:10: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 basicmath_small.adb:675:10: warning: assuming "Write_EBX" always terminates
-basicmath_small.adb:675:10: warning: no Always_Terminates aspect available for "Write_EBX"
+basicmath_small.adb:675:10: warning: no Always_Terminates aspect available for "Write_EBX" [assumed-always-terminates]
 basicmath_small.adb:686:15: warning: unused assignment
 basicmath_small.adb:695:16: warning: unused assignment
 basicmath_small.adb:698:16: warning: unused assignment
 basicmath_small.adb:701:16: warning: unused assignment
 basicmath_small.adb:713:10: warning: assuming "Write_EDI" always terminates
-basicmath_small.adb:713:10: warning: no Always_Terminates aspect available for "Write_EDI"
+basicmath_small.adb:713:10: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 basicmath_small.adb:716:10: warning: assuming "Write_EAX" always terminates
-basicmath_small.adb:716:10: warning: no Always_Terminates aspect available for "Write_EAX"
+basicmath_small.adb:716:10: warning: no Always_Terminates aspect available for "Write_EAX" [assumed-always-terminates]
 basicmath_small.adb:724:10: warning: assuming "Write_EDI" always terminates
-basicmath_small.adb:724:10: warning: no Always_Terminates aspect available for "Write_EDI"
+basicmath_small.adb:724:10: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 basicmath_small.adb:733:07: warning: "CarryFlag" is set by "loop_1" but not used after the call
 basicmath_small.adb:733:07: warning: "OverflowFlag" is set by "loop_1" but not used after the call
 basicmath_small.adb:733:07: warning: "RBP" is set by "loop_1" but not used after the call
@@ -195,19 +195,19 @@ basicmath_small.adb:733:07: warning: "XMM0" is set by "loop_1" but not used afte
 basicmath_small.adb:733:07: warning: "ZeroFlag" is set by "loop_1" but not used after the call
 basicmath_small.adb:736:10: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:736:10: warning: assuming "Write_EDI" always terminates
-basicmath_small.adb:736:10: warning: no Always_Terminates aspect available for "Write_EDI"
+basicmath_small.adb:736:10: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 basicmath_small.adb:736:10: warning: statement has no effect
 basicmath_small.adb:739:10: warning: assuming "Write_EBX" always terminates
-basicmath_small.adb:739:10: warning: no Always_Terminates aspect available for "Write_EBX"
+basicmath_small.adb:739:10: warning: no Always_Terminates aspect available for "Write_EBX" [assumed-always-terminates]
 basicmath_small.adb:756:16: warning: unused assignment
 basicmath_small.adb:759:16: warning: unused assignment
 basicmath_small.adb:762:16: warning: unused assignment
 basicmath_small.adb:773:10: warning: assuming "Write_EAX" always terminates
-basicmath_small.adb:773:10: warning: no Always_Terminates aspect available for "Write_EAX"
+basicmath_small.adb:773:10: warning: no Always_Terminates aspect available for "Write_EAX" [assumed-always-terminates]
 basicmath_small.adb:776:10: warning: assuming "Write_EDI" always terminates
-basicmath_small.adb:776:10: warning: no Always_Terminates aspect available for "Write_EDI"
+basicmath_small.adb:776:10: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 basicmath_small.adb:784:10: warning: assuming "Write_ESI" always terminates
-basicmath_small.adb:784:10: warning: no Always_Terminates aspect available for "Write_ESI"
+basicmath_small.adb:784:10: warning: no Always_Terminates aspect available for "Write_ESI" [assumed-always-terminates]
 basicmath_small.adb:793:07: warning: "CarryFlag" is set by "loop_2" but not used after the call
 basicmath_small.adb:793:07: warning: "OverflowFlag" is set by "loop_2" but not used after the call
 basicmath_small.adb:793:07: warning: "RBP" is set by "loop_2" but not used after the call
@@ -217,20 +217,20 @@ basicmath_small.adb:793:07: warning: "XMM0" is set by "loop_2" but not used afte
 basicmath_small.adb:793:07: warning: "ZeroFlag" is set by "loop_2" but not used after the call
 basicmath_small.adb:797:10: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:797:10: warning: assuming "Write_EDI" always terminates
-basicmath_small.adb:797:10: warning: no Always_Terminates aspect available for "Write_EDI"
+basicmath_small.adb:797:10: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 basicmath_small.adb:797:10: warning: statement has no effect
 basicmath_small.adb:800:10: warning: assuming "Write_EBX" always terminates
-basicmath_small.adb:800:10: warning: no Always_Terminates aspect available for "Write_EBX"
+basicmath_small.adb:800:10: warning: no Always_Terminates aspect available for "Write_EBX" [assumed-always-terminates]
 basicmath_small.adb:811:15: warning: unused assignment
 basicmath_small.adb:817:16: warning: unused assignment
 basicmath_small.adb:820:16: warning: unused assignment
 basicmath_small.adb:823:16: warning: unused assignment
 basicmath_small.adb:834:10: warning: assuming "Write_EAX" always terminates
-basicmath_small.adb:834:10: warning: no Always_Terminates aspect available for "Write_EAX"
+basicmath_small.adb:834:10: warning: no Always_Terminates aspect available for "Write_EAX" [assumed-always-terminates]
 basicmath_small.adb:837:10: warning: assuming "Write_EDI" always terminates
-basicmath_small.adb:837:10: warning: no Always_Terminates aspect available for "Write_EDI"
+basicmath_small.adb:837:10: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 basicmath_small.adb:845:10: warning: assuming "Write_ECX" always terminates
-basicmath_small.adb:845:10: warning: no Always_Terminates aspect available for "Write_ECX"
+basicmath_small.adb:845:10: warning: no Always_Terminates aspect available for "Write_ECX" [assumed-always-terminates]
 basicmath_small.adb:854:07: warning: "CarryFlag" is set by "loop_3" but not used after the call
 basicmath_small.adb:854:07: warning: "OverflowFlag" is set by "loop_3" but not used after the call
 basicmath_small.adb:854:07: warning: "RBP" is set by "loop_3" but not used after the call
@@ -240,28 +240,28 @@ basicmath_small.adb:854:07: warning: "XMM0" is set by "loop_3" but not used afte
 basicmath_small.adb:854:07: warning: "ZeroFlag" is set by "loop_3" but not used after the call
 basicmath_small.adb:857:10: warning: "RDI" is set by "Write_EDI" but not used after the call
 basicmath_small.adb:857:10: warning: assuming "Write_EDI" always terminates
-basicmath_small.adb:857:10: warning: no Always_Terminates aspect available for "Write_EDI"
+basicmath_small.adb:857:10: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 basicmath_small.adb:857:10: warning: statement has no effect
 basicmath_small.adb:860:10: warning: assuming "Write_EBX" always terminates
-basicmath_small.adb:860:10: warning: no Always_Terminates aspect available for "Write_EBX"
+basicmath_small.adb:860:10: warning: no Always_Terminates aspect available for "Write_EBX" [assumed-always-terminates]
 basicmath_small.adb:874:15: warning: unused assignment
 basicmath_small.adb:880:16: warning: unused assignment
 basicmath_small.adb:883:16: warning: unused assignment
 basicmath_small.adb:894:10: warning: assuming "Write_EAX" always terminates
-basicmath_small.adb:894:10: warning: no Always_Terminates aspect available for "Write_EAX"
+basicmath_small.adb:894:10: warning: no Always_Terminates aspect available for "Write_EAX" [assumed-always-terminates]
 basicmath_small.adb:897:10: warning: assuming "Write_EDI" always terminates
-basicmath_small.adb:897:10: warning: no Always_Terminates aspect available for "Write_EDI"
+basicmath_small.adb:897:10: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 basicmath_small.adb:905:10: warning: assuming "Write_EDX" always terminates
-basicmath_small.adb:905:10: warning: no Always_Terminates aspect available for "Write_EDX"
+basicmath_small.adb:905:10: warning: no Always_Terminates aspect available for "Write_EDX" [assumed-always-terminates]
 basicmath_small.adb:914:07: warning: "CarryFlag" is set by "loop_4" but not used after the call
 basicmath_small.adb:914:07: warning: "OverflowFlag" is set by "loop_4" but not used after the call
 basicmath_small.adb:914:07: warning: "SignFlag" is set by "loop_4" but not used after the call
 basicmath_small.adb:914:07: warning: "XMM0" is set by "loop_4" but not used after the call
 basicmath_small.adb:914:07: warning: "ZeroFlag" is set by "loop_4" but not used after the call
 basicmath_small.adb:917:10: warning: assuming "Write_EDI" always terminates
-basicmath_small.adb:917:10: warning: no Always_Terminates aspect available for "Write_EDI"
+basicmath_small.adb:917:10: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 basicmath_small.adb:931:10: warning: assuming "WriteMem64" always terminates
-basicmath_small.adb:931:10: warning: no Always_Terminates aspect available for "WriteMem64"
+basicmath_small.adb:931:10: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 basicmath_small.adb:933:07: warning: "CarryFlag" is set by "loop_5" but not used after the call
 basicmath_small.adb:933:07: warning: "OverflowFlag" is set by "loop_5" but not used after the call
 basicmath_small.adb:933:07: warning: "R12" is set by "loop_5" but not used after the call
@@ -274,49 +274,49 @@ basicmath_small.adb:933:07: warning: "XMM0" is set by "loop_5" but not used afte
 basicmath_small.adb:933:07: warning: "XMM1" is set by "loop_5" but not used after the call
 basicmath_small.adb:933:07: warning: "ZeroFlag" is set by "loop_5" but not used after the call
 basicmath_small.adb:937:10: warning: assuming "Write_EDI" always terminates
-basicmath_small.adb:937:10: warning: no Always_Terminates aspect available for "Write_EDI"
+basicmath_small.adb:937:10: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 basicmath_small.adb:940:10: warning: assuming "Write_EBX" always terminates
-basicmath_small.adb:940:10: warning: no Always_Terminates aspect available for "Write_EBX"
+basicmath_small.adb:940:10: warning: no Always_Terminates aspect available for "Write_EBX" [assumed-always-terminates]
 basicmath_small.adb:942:07: warning: "CarryFlag" is set by "loop_6" but not used after the call
 basicmath_small.adb:942:07: warning: "OverflowFlag" is set by "loop_6" but not used after the call
 basicmath_small.adb:942:07: warning: "RSI" is set by "loop_6" but not used after the call
 basicmath_small.adb:942:07: warning: "SignFlag" is set by "loop_6" but not used after the call
 basicmath_small.adb:942:07: warning: "ZeroFlag" is set by "loop_6" but not used after the call
 basicmath_small.adb:948:10: warning: assuming "Write_EDI" always terminates
-basicmath_small.adb:948:10: warning: no Always_Terminates aspect available for "Write_EDI"
+basicmath_small.adb:948:10: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 basicmath_small.adb:951:10: warning: assuming "Write_BX" always terminates
-basicmath_small.adb:951:10: warning: no Always_Terminates aspect available for "Write_BX"
+basicmath_small.adb:951:10: warning: no Always_Terminates aspect available for "Write_BX" [assumed-always-terminates]
 basicmath_small.adb:956:07: medium: precondition might fail [possible fix: postcondition of call at line 942 should mention RSI]
 basicmath_small.adb:956:07: warning: "ZeroFlag" is set by "usqrt" but not used after the call
 basicmath_small.adb:959:10: warning: assuming "Write_EDX" always terminates
-basicmath_small.adb:959:10: warning: no Always_Terminates aspect available for "Write_EDX"
+basicmath_small.adb:959:10: warning: no Always_Terminates aspect available for "Write_EDX" [assumed-always-terminates]
 basicmath_small.adb:962:10: warning: assuming "Write_ESI" always terminates
-basicmath_small.adb:962:10: warning: no Always_Terminates aspect available for "Write_ESI"
+basicmath_small.adb:962:10: warning: no Always_Terminates aspect available for "Write_ESI" [assumed-always-terminates]
 basicmath_small.adb:965:10: warning: assuming "Write_EDI" always terminates
-basicmath_small.adb:965:10: warning: no Always_Terminates aspect available for "Write_EDI"
+basicmath_small.adb:965:10: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 basicmath_small.adb:968:10: warning: assuming "Write_EAX" always terminates
-basicmath_small.adb:968:10: warning: no Always_Terminates aspect available for "Write_EAX"
+basicmath_small.adb:968:10: warning: no Always_Terminates aspect available for "Write_EAX" [assumed-always-terminates]
 basicmath_small.adb:976:10: warning: assuming "Write_EDI" always terminates
-basicmath_small.adb:976:10: warning: no Always_Terminates aspect available for "Write_EDI"
+basicmath_small.adb:976:10: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 basicmath_small.adb:986:07: warning: "XMM0" is set by "loop_7" but not used after the call
 basicmath_small.adb:986:07: warning: "XMM1" is set by "loop_7" but not used after the call
 basicmath_small.adb:986:07: warning: "ZeroFlag" is set by "loop_7" but not used after the call
 basicmath_small.adb:989:10: warning: assuming "Write_EDI" always terminates
-basicmath_small.adb:989:10: warning: no Always_Terminates aspect available for "Write_EDI"
+basicmath_small.adb:989:10: warning: no Always_Terminates aspect available for "Write_EDI" [assumed-always-terminates]
 basicmath_small.adb:992:10: warning: assuming "Write_EBX" always terminates
-basicmath_small.adb:992:10: warning: no Always_Terminates aspect available for "Write_EBX"
+basicmath_small.adb:992:10: warning: no Always_Terminates aspect available for "Write_EBX" [assumed-always-terminates]
 basicmath_small.adb:1002:07: warning: "RBP" is set by "loop_8" but not used after the call
 basicmath_small.adb:1002:07: warning: "RBX" is set by "loop_8" but not used after the call
 basicmath_small.adb:1008:10: warning: assuming "Write_EAX" always terminates
-basicmath_small.adb:1008:10: warning: no Always_Terminates aspect available for "Write_EAX"
+basicmath_small.adb:1008:10: warning: no Always_Terminates aspect available for "Write_EAX" [assumed-always-terminates]
 basicmath_small.adb:1050:22: warning: assuming "SafeDivision64" has no effect on global items
-basicmath_small.adb:1050:22: warning: no Global contract available for "SafeDivision64"
+basicmath_small.adb:1050:22: warning: no Global contract available for "SafeDivision64" [assumed-global-null]
 basicmath_small.adb:1067:22: warning: assuming "SafeDivision64" has no effect on global items
-basicmath_small.adb:1067:22: warning: no Global contract available for "SafeDivision64"
+basicmath_small.adb:1067:22: warning: no Global contract available for "SafeDivision64" [assumed-global-null]
 basicmath_small.adb:1080:32: info: loop invariant initialization proved (CVC5: 1 VC)
 basicmath_small.adb:1080:32: info: loop invariant preservation proved (CVC5: 1 VC)
 basicmath_small.adb:1091:13: warning: assuming "Write_ECX" always terminates
-basicmath_small.adb:1091:13: warning: no Always_Terminates aspect available for "Write_ECX"
+basicmath_small.adb:1091:13: warning: no Always_Terminates aspect available for "Write_ECX" [assumed-always-terminates]
 basicmath_small.adb:1132:07: warning: initialization of "SaveStackPtr" has no effect
 basicmath_small.adb:1132:39: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:1133:07: warning: initialization of "ra0" has no effect
@@ -336,11 +336,11 @@ basicmath_small.adb:1139:29: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:1140:07: warning: initialization of "ra7" has no effect
 basicmath_small.adb:1140:29: info: range check proved (CVC5: 1 VC)
 basicmath_small.adb:1150:10: warning: assuming "Write_EAX" always terminates
-basicmath_small.adb:1150:10: warning: no Always_Terminates aspect available for "Write_EAX"
+basicmath_small.adb:1150:10: warning: no Always_Terminates aspect available for "Write_EAX" [assumed-always-terminates]
 basicmath_small.adb:1153:10: warning: assuming "Write_EDX" always terminates
-basicmath_small.adb:1153:10: warning: no Always_Terminates aspect available for "Write_EDX"
+basicmath_small.adb:1153:10: warning: no Always_Terminates aspect available for "Write_EDX" [assumed-always-terminates]
 basicmath_small.adb:1158:10: warning: assuming "WriteMem64" always terminates
-basicmath_small.adb:1158:10: warning: no Always_Terminates aspect available for "WriteMem64"
+basicmath_small.adb:1158:10: warning: no Always_Terminates aspect available for "WriteMem64" [assumed-always-terminates]
 basicmath_small.ads:17:09: info: data dependencies proved
 basicmath_small.ads:18:17: info: postcondition proved (CVC5: 1 VC)
 basicmath_small.ads:21:09: info: data dependencies proved
@@ -506,155 +506,155 @@ basicmath_small.ads:227:41: info: initialization of "SignFlag" proved
 basicmath_small.ads:227:55: info: initialization of "CarryFlag" proved
 basicmath_small.ads:227:70: info: initialization of "OverflowFlag" proved
 basicmath_small.ads:228:21: warning: assuming "InRange64" has no effect on global items
-basicmath_small.ads:228:21: warning: no Global contract available for "InRange64"
+basicmath_small.ads:228:21: warning: no Global contract available for "InRange64" [assumed-global-null]
 basicmath_small.ads:241:32: warning: assuming "InRange64" has no effect on global items
-basicmath_small.ads:241:32: warning: no Global contract available for "InRange64"
+basicmath_small.ads:241:32: warning: no Global contract available for "InRange64" [assumed-global-null]
 basicmath_small.ads:242:23: medium: postcondition might fail, cannot prove (X86.Memory(i) = X86.Memory'Old(i))
 x86.ads:79:40: warning: assuming "InRange64" has no effect on global items
-x86.ads:79:40: warning: no Global contract available for "InRange64"
+x86.ads:79:40: warning: no Global contract available for "InRange64" [assumed-global-null]
 x86.ads:104:15: warning: assuming "writeRegLow8Post" has no effect on global items
-x86.ads:104:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:104:15: warning: no Global contract available for "writeRegLow8Post" [assumed-global-null]
 x86.ads:108:42: warning: assuming "readRegLow8" has no effect on global items
-x86.ads:108:42: warning: no Global contract available for "readRegLow8"
+x86.ads:108:42: warning: no Global contract available for "readRegLow8" [assumed-global-null]
 x86.ads:115:14: warning: assuming "writeRegHigh8Post" has no effect on global items
-x86.ads:115:14: warning: no Global contract available for "writeRegHigh8Post"
+x86.ads:115:14: warning: no Global contract available for "writeRegHigh8Post" [assumed-global-null]
 x86.ads:119:43: warning: assuming "readRegHigh8" has no effect on global items
-x86.ads:119:43: warning: no Global contract available for "readRegHigh8"
+x86.ads:119:43: warning: no Global contract available for "readRegHigh8" [assumed-global-null]
 x86.ads:126:15: warning: assuming "writeReg16Post" has no effect on global items
-x86.ads:126:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:126:15: warning: no Global contract available for "writeReg16Post" [assumed-global-null]
 x86.ads:130:40: warning: assuming "readReg16" has no effect on global items
-x86.ads:130:40: warning: no Global contract available for "readReg16"
+x86.ads:130:40: warning: no Global contract available for "readReg16" [assumed-global-null]
 x86.ads:137:15: warning: assuming "writeReg32Post" has no effect on global items
-x86.ads:137:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:137:15: warning: no Global contract available for "writeReg32Post" [assumed-global-null]
 x86.ads:141:40: warning: assuming "readReg32" has no effect on global items
-x86.ads:141:40: warning: no Global contract available for "readReg32"
+x86.ads:141:40: warning: no Global contract available for "readReg32" [assumed-global-null]
 x86.ads:151:27: warning: assuming "readRegLow8" has no effect on global items
-x86.ads:151:27: warning: no Global contract available for "readRegLow8"
+x86.ads:151:27: warning: no Global contract available for "readRegLow8" [assumed-global-null]
 x86.ads:156:15: warning: assuming "writeRegLow8Post" has no effect on global items
-x86.ads:156:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:156:15: warning: no Global contract available for "writeRegLow8Post" [assumed-global-null]
 x86.ads:161:27: warning: assuming "readRegHigh8" has no effect on global items
-x86.ads:161:27: warning: no Global contract available for "readRegHigh8"
+x86.ads:161:27: warning: no Global contract available for "readRegHigh8" [assumed-global-null]
 x86.ads:166:14: warning: assuming "writeRegHigh8Post" has no effect on global items
-x86.ads:166:14: warning: no Global contract available for "writeRegHigh8Post"
+x86.ads:166:14: warning: no Global contract available for "writeRegHigh8Post" [assumed-global-null]
 x86.ads:172:27: warning: assuming "readReg16" has no effect on global items
-x86.ads:172:27: warning: no Global contract available for "readReg16"
+x86.ads:172:27: warning: no Global contract available for "readReg16" [assumed-global-null]
 x86.ads:177:15: warning: assuming "writeReg16Post" has no effect on global items
-x86.ads:177:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:177:15: warning: no Global contract available for "writeReg16Post" [assumed-global-null]
 x86.ads:186:15: warning: assuming "writeReg32Post" has no effect on global items
-x86.ads:186:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:186:15: warning: no Global contract available for "writeReg32Post" [assumed-global-null]
 x86.ads:197:27: warning: assuming "readRegLow8" has no effect on global items
-x86.ads:197:27: warning: no Global contract available for "readRegLow8"
+x86.ads:197:27: warning: no Global contract available for "readRegLow8" [assumed-global-null]
 x86.ads:202:15: warning: assuming "writeRegLow8Post" has no effect on global items
-x86.ads:202:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:202:15: warning: no Global contract available for "writeRegLow8Post" [assumed-global-null]
 x86.ads:207:27: warning: assuming "readRegHigh8" has no effect on global items
-x86.ads:207:27: warning: no Global contract available for "readRegHigh8"
+x86.ads:207:27: warning: no Global contract available for "readRegHigh8" [assumed-global-null]
 x86.ads:212:15: warning: assuming "writeRegHigh8Post" has no effect on global items
-x86.ads:212:15: warning: no Global contract available for "writeRegHigh8Post"
+x86.ads:212:15: warning: no Global contract available for "writeRegHigh8Post" [assumed-global-null]
 x86.ads:218:27: warning: assuming "readReg16" has no effect on global items
-x86.ads:218:27: warning: no Global contract available for "readReg16"
+x86.ads:218:27: warning: no Global contract available for "readReg16" [assumed-global-null]
 x86.ads:223:15: warning: assuming "writeReg16Post" has no effect on global items
-x86.ads:223:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:223:15: warning: no Global contract available for "writeReg16Post" [assumed-global-null]
 x86.ads:228:28: warning: assuming "readReg32" has no effect on global items
-x86.ads:228:28: warning: no Global contract available for "readReg32"
+x86.ads:228:28: warning: no Global contract available for "readReg32" [assumed-global-null]
 x86.ads:233:15: warning: assuming "writeReg32Post" has no effect on global items
-x86.ads:233:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:233:15: warning: no Global contract available for "writeReg32Post" [assumed-global-null]
 x86.ads:244:27: warning: assuming "readRegLow8" has no effect on global items
-x86.ads:244:27: warning: no Global contract available for "readRegLow8"
+x86.ads:244:27: warning: no Global contract available for "readRegLow8" [assumed-global-null]
 x86.ads:249:15: warning: assuming "writeRegLow8Post" has no effect on global items
-x86.ads:249:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:249:15: warning: no Global contract available for "writeRegLow8Post" [assumed-global-null]
 x86.ads:254:27: warning: assuming "readRegHigh8" has no effect on global items
-x86.ads:254:27: warning: no Global contract available for "readRegHigh8"
+x86.ads:254:27: warning: no Global contract available for "readRegHigh8" [assumed-global-null]
 x86.ads:259:15: warning: assuming "writeRegHigh8Post" has no effect on global items
-x86.ads:259:15: warning: no Global contract available for "writeRegHigh8Post"
+x86.ads:259:15: warning: no Global contract available for "writeRegHigh8Post" [assumed-global-null]
 x86.ads:265:27: warning: assuming "readReg16" has no effect on global items
-x86.ads:265:27: warning: no Global contract available for "readReg16"
+x86.ads:265:27: warning: no Global contract available for "readReg16" [assumed-global-null]
 x86.ads:270:15: warning: assuming "writeReg16Post" has no effect on global items
-x86.ads:270:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:270:15: warning: no Global contract available for "writeReg16Post" [assumed-global-null]
 x86.ads:275:28: warning: assuming "readReg32" has no effect on global items
-x86.ads:275:28: warning: no Global contract available for "readReg32"
+x86.ads:275:28: warning: no Global contract available for "readReg32" [assumed-global-null]
 x86.ads:280:15: warning: assuming "writeReg32Post" has no effect on global items
-x86.ads:280:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:280:15: warning: no Global contract available for "writeReg32Post" [assumed-global-null]
 x86.ads:291:27: warning: assuming "readRegLow8" has no effect on global items
-x86.ads:291:27: warning: no Global contract available for "readRegLow8"
+x86.ads:291:27: warning: no Global contract available for "readRegLow8" [assumed-global-null]
 x86.ads:296:15: warning: assuming "writeRegLow8Post" has no effect on global items
-x86.ads:296:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:296:15: warning: no Global contract available for "writeRegLow8Post" [assumed-global-null]
 x86.ads:301:27: warning: assuming "readRegHigh8" has no effect on global items
-x86.ads:301:27: warning: no Global contract available for "readRegHigh8"
+x86.ads:301:27: warning: no Global contract available for "readRegHigh8" [assumed-global-null]
 x86.ads:306:15: warning: assuming "writeRegHigh8Post" has no effect on global items
-x86.ads:306:15: warning: no Global contract available for "writeRegHigh8Post"
+x86.ads:306:15: warning: no Global contract available for "writeRegHigh8Post" [assumed-global-null]
 x86.ads:312:27: warning: assuming "readReg16" has no effect on global items
-x86.ads:312:27: warning: no Global contract available for "readReg16"
+x86.ads:312:27: warning: no Global contract available for "readReg16" [assumed-global-null]
 x86.ads:317:15: warning: assuming "writeReg16Post" has no effect on global items
-x86.ads:317:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:317:15: warning: no Global contract available for "writeReg16Post" [assumed-global-null]
 x86.ads:322:28: warning: assuming "readReg32" has no effect on global items
-x86.ads:322:28: warning: no Global contract available for "readReg32"
+x86.ads:322:28: warning: no Global contract available for "readReg32" [assumed-global-null]
 x86.ads:327:15: warning: assuming "writeReg32Post" has no effect on global items
-x86.ads:327:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:327:15: warning: no Global contract available for "writeReg32Post" [assumed-global-null]
 x86.ads:339:27: warning: assuming "readReg16" has no effect on global items
-x86.ads:339:27: warning: no Global contract available for "readReg16"
+x86.ads:339:27: warning: no Global contract available for "readReg16" [assumed-global-null]
 x86.ads:344:15: warning: assuming "writeReg16Post" has no effect on global items
-x86.ads:344:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:344:15: warning: no Global contract available for "writeReg16Post" [assumed-global-null]
 x86.ads:349:28: warning: assuming "readReg32" has no effect on global items
-x86.ads:349:28: warning: no Global contract available for "readReg32"
+x86.ads:349:28: warning: no Global contract available for "readReg32" [assumed-global-null]
 x86.ads:354:15: warning: assuming "writeReg32Post" has no effect on global items
-x86.ads:354:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:354:15: warning: no Global contract available for "writeReg32Post" [assumed-global-null]
 x86.ads:366:27: warning: assuming "readReg16" has no effect on global items
-x86.ads:366:27: warning: no Global contract available for "readReg16"
+x86.ads:366:27: warning: no Global contract available for "readReg16" [assumed-global-null]
 x86.ads:371:15: warning: assuming "writeReg16Post" has no effect on global items
-x86.ads:371:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:371:15: warning: no Global contract available for "writeReg16Post" [assumed-global-null]
 x86.ads:376:28: warning: assuming "readReg32" has no effect on global items
-x86.ads:376:28: warning: no Global contract available for "readReg32"
+x86.ads:376:28: warning: no Global contract available for "readReg32" [assumed-global-null]
 x86.ads:381:15: warning: assuming "writeReg32Post" has no effect on global items
-x86.ads:381:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:381:15: warning: no Global contract available for "writeReg32Post" [assumed-global-null]
 x86.ads:393:27: warning: assuming "readReg16" has no effect on global items
-x86.ads:393:27: warning: no Global contract available for "readReg16"
+x86.ads:393:27: warning: no Global contract available for "readReg16" [assumed-global-null]
 x86.ads:398:15: warning: assuming "writeReg16Post" has no effect on global items
-x86.ads:398:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:398:15: warning: no Global contract available for "writeReg16Post" [assumed-global-null]
 x86.ads:403:28: warning: assuming "readReg32" has no effect on global items
-x86.ads:403:28: warning: no Global contract available for "readReg32"
+x86.ads:403:28: warning: no Global contract available for "readReg32" [assumed-global-null]
 x86.ads:408:15: warning: assuming "writeReg32Post" has no effect on global items
-x86.ads:408:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:408:15: warning: no Global contract available for "writeReg32Post" [assumed-global-null]
 x86.ads:420:27: warning: assuming "readReg16" has no effect on global items
-x86.ads:420:27: warning: no Global contract available for "readReg16"
+x86.ads:420:27: warning: no Global contract available for "readReg16" [assumed-global-null]
 x86.ads:425:15: warning: assuming "writeReg16Post" has no effect on global items
-x86.ads:425:15: warning: no Global contract available for "writeReg16Post"
+x86.ads:425:15: warning: no Global contract available for "writeReg16Post" [assumed-global-null]
 x86.ads:430:28: warning: assuming "readReg32" has no effect on global items
-x86.ads:430:28: warning: no Global contract available for "readReg32"
+x86.ads:430:28: warning: no Global contract available for "readReg32" [assumed-global-null]
 x86.ads:435:15: warning: assuming "writeReg32Post" has no effect on global items
-x86.ads:435:15: warning: no Global contract available for "writeReg32Post"
+x86.ads:435:15: warning: no Global contract available for "writeReg32Post" [assumed-global-null]
 x86.ads:447:28: warning: assuming "readRegLow8" has no effect on global items
-x86.ads:447:28: warning: no Global contract available for "readRegLow8"
+x86.ads:447:28: warning: no Global contract available for "readRegLow8" [assumed-global-null]
 x86.ads:452:15: warning: assuming "writeRegLow8Post" has no effect on global items
-x86.ads:452:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:452:15: warning: no Global contract available for "writeRegLow8Post" [assumed-global-null]
 x86.ads:464:28: warning: assuming "readRegLow8" has no effect on global items
-x86.ads:464:28: warning: no Global contract available for "readRegLow8"
+x86.ads:464:28: warning: no Global contract available for "readRegLow8" [assumed-global-null]
 x86.ads:469:15: warning: assuming "writeRegLow8Post" has no effect on global items
-x86.ads:469:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:469:15: warning: no Global contract available for "writeRegLow8Post" [assumed-global-null]
 x86.ads:481:29: warning: assuming "readRegLow8" has no effect on global items
-x86.ads:481:29: warning: no Global contract available for "readRegLow8"
+x86.ads:481:29: warning: no Global contract available for "readRegLow8" [assumed-global-null]
 x86.ads:486:15: warning: assuming "writeRegLow8Post" has no effect on global items
-x86.ads:486:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:486:15: warning: no Global contract available for "writeRegLow8Post" [assumed-global-null]
 x86.ads:498:29: warning: assuming "readRegLow8" has no effect on global items
-x86.ads:498:29: warning: no Global contract available for "readRegLow8"
+x86.ads:498:29: warning: no Global contract available for "readRegLow8" [assumed-global-null]
 x86.ads:503:15: warning: assuming "writeRegLow8Post" has no effect on global items
-x86.ads:503:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:503:15: warning: no Global contract available for "writeRegLow8Post" [assumed-global-null]
 x86.ads:515:29: warning: assuming "readRegLow8" has no effect on global items
-x86.ads:515:29: warning: no Global contract available for "readRegLow8"
+x86.ads:515:29: warning: no Global contract available for "readRegLow8" [assumed-global-null]
 x86.ads:520:15: warning: assuming "writeRegLow8Post" has no effect on global items
-x86.ads:520:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:520:15: warning: no Global contract available for "writeRegLow8Post" [assumed-global-null]
 x86.ads:532:29: warning: assuming "readRegLow8" has no effect on global items
-x86.ads:532:29: warning: no Global contract available for "readRegLow8"
+x86.ads:532:29: warning: no Global contract available for "readRegLow8" [assumed-global-null]
 x86.ads:537:15: warning: assuming "writeRegLow8Post" has no effect on global items
-x86.ads:537:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:537:15: warning: no Global contract available for "writeRegLow8Post" [assumed-global-null]
 x86.ads:549:29: warning: assuming "readRegLow8" has no effect on global items
-x86.ads:549:29: warning: no Global contract available for "readRegLow8"
+x86.ads:549:29: warning: no Global contract available for "readRegLow8" [assumed-global-null]
 x86.ads:554:15: warning: assuming "writeRegLow8Post" has no effect on global items
-x86.ads:554:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:554:15: warning: no Global contract available for "writeRegLow8Post" [assumed-global-null]
 x86.ads:566:29: warning: assuming "readRegLow8" has no effect on global items
-x86.ads:566:29: warning: no Global contract available for "readRegLow8"
+x86.ads:566:29: warning: no Global contract available for "readRegLow8" [assumed-global-null]
 x86.ads:571:15: warning: assuming "writeRegLow8Post" has no effect on global items
-x86.ads:571:15: warning: no Global contract available for "writeRegLow8Post"
+x86.ads:571:15: warning: no Global contract available for "writeRegLow8Post" [assumed-global-null]
 x86.ads:677:55: warning: assuming "SignedLT_32" has no effect on global items
-x86.ads:677:55: warning: no Global contract available for "SignedLT_32"
+x86.ads:677:55: warning: no Global contract available for "SignedLT_32" [assumed-global-null]
 x86.ads:728:18: warning: assuming "InRange64" has no effect on global items
-x86.ads:728:18: warning: no Global contract available for "InRange64"
+x86.ads:728:18: warning: no Global contract available for "InRange64" [assumed-global-null]

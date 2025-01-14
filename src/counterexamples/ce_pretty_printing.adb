@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2018-2024, AdaCore                     --
+--                     Copyright (C) 2018-2025, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -833,7 +833,7 @@ package body CE_Pretty_Printing is
       --  within +/- 2**24 and +/- 2**54 (bounds excluded) for single and
       --  double precision floating point numbers, respectively.
 
-      if abs (Nb) < 1000.0 and then T_Float'Truncation (Nb) = Nb then
+      if abs Nb < 1000.0 and then T_Float'Truncation (Nb) = Nb then
          F_IO.Put (To   => Result,
                    Item => Nb,
                    Aft  => 0,

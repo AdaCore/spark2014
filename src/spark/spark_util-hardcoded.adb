@@ -6,7 +6,7 @@
 --                                                                          --
 --                                  B o d y                                 --
 --                                                                          --
---                     Copyright (C) 2020-2024, AdaCore                     --
+--                     Copyright (C) 2020-2025, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -288,7 +288,6 @@ package body SPARK_Util.Hardcoded is
       S_Ptr : Entity_Id := E;
       --  Scope pointer
    begin
-
       --  The following case statement is meant to be extended in the future
 
       case Unit is

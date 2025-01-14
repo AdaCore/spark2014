@@ -1,4 +1,4 @@
-test.adb:6:04: warning: analyzing unreferenced procedure "Test_Add"
+test.adb:6:04: warning: analyzing unreferenced procedure "Test_Add" [unreferenced-procedure]
 test.adb:6:14: warning: subprogram "Test_Add" has no effect
 test.adb:7:22: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at line 6 should mention X and Y in a precondition]
 test.adb:8:22: info: range check proved (CVC5: 1 VC)
@@ -8,18 +8,18 @@ test.adb:11:22: info: assertion proved (CVC5: 1 VC)
 test.adb:11:29: info: range check proved (CVC5: 1 VC)
 test.adb:12:22: info: assertion proved (CVC5: 1 VC)
 test.adb:12:28: info: range check proved (CVC5: 1 VC)
-test.adb:17:04: warning: analyzing unreferenced procedure "Test_Subst"
+test.adb:17:04: warning: analyzing unreferenced procedure "Test_Subst" [unreferenced-procedure]
 test.adb:17:14: warning: subprogram "Test_Subst" has no effect
 test.adb:18:23: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at line 17 should mention X1 and Y1 in a precondition]
 test.adb:19:28: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at line 17 should mention X1 and X2 in a precondition]
 test.adb:20:28: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at line 17 should mention Y1 and Y2 in a precondition]
 test.adb:21:25: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at line 17 should mention Y1 in a precondition]
-test.adb:26:04: warning: analyzing unreferenced procedure "Test_Mult"
+test.adb:26:04: warning: analyzing unreferenced procedure "Test_Mult" [unreferenced-procedure]
 test.adb:26:14: warning: subprogram "Test_Mult" has no effect
 test.adb:27:27: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at line 26 should mention X and Y in a precondition]
 test.adb:28:27: info: range check proved (CVC5: 1 VC)
 test.adb:29:22: info: assertion proved (CVC5: 1 VC)
-test.adb:34:04: warning: analyzing unreferenced procedure "Test_Div"
+test.adb:34:04: warning: analyzing unreferenced procedure "Test_Div" [unreferenced-procedure]
 test.adb:34:14: warning: subprogram "Test_Div" has no effect
 test.adb:35:25: medium: divide by zero might fail [possible fix: subprogram at line 34 should mention X and Y in a precondition]
 test.adb:35:25: medium: range check might fail, cannot prove lower bound for X / Y [reason for check: default component value must fit in the type] [possible fix: add precondition (X / Y >= Integer'First) to subprogram at line 34]
@@ -31,73 +31,73 @@ test.adb:37:24: info: range check proved (CVC5: 1 VC)
 test.adb:38:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 test.adb:38:52: info: division check proved (CVC5: 1 VC)
 test.adb:38:52: info: range check proved (CVC5: 2 VC)
-test.adb:43:04: warning: analyzing unreferenced procedure "Test_Lt"
+test.adb:43:04: warning: analyzing unreferenced procedure "Test_Lt" [unreferenced-procedure]
 test.adb:43:14: warning: subprogram "Test_Lt" has no effect
 test.adb:45:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 test.adb:46:22: info: assertion proved (CVC5: 1 VC)
 test.adb:48:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 test.adb:49:22: info: assertion proved (CVC5: 1 VC)
-test.adb:54:04: warning: analyzing unreferenced procedure "Test_Le"
+test.adb:54:04: warning: analyzing unreferenced procedure "Test_Le" [unreferenced-procedure]
 test.adb:54:14: warning: subprogram "Test_Le" has no effect
 test.adb:56:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 test.adb:57:22: info: assertion proved (CVC5: 1 VC)
 test.adb:59:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 test.adb:60:22: info: assertion proved (CVC5: 1 VC)
 test.adb:62:22: info: assertion proved (CVC5: 1 VC)
-test.adb:65:04: warning: analyzing unreferenced procedure "Test_Gt"
+test.adb:65:04: warning: analyzing unreferenced procedure "Test_Gt" [unreferenced-procedure]
 test.adb:65:14: warning: subprogram "Test_Gt" has no effect
 test.adb:67:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 test.adb:68:22: info: assertion proved (CVC5: 1 VC)
 test.adb:70:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 test.adb:71:22: info: assertion proved (CVC5: 1 VC)
-test.adb:76:04: warning: analyzing unreferenced procedure "Test_Ge"
+test.adb:76:04: warning: analyzing unreferenced procedure "Test_Ge" [unreferenced-procedure]
 test.adb:76:14: warning: subprogram "Test_Ge" has no effect
 test.adb:78:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 test.adb:79:22: info: assertion proved (CVC5: 1 VC)
 test.adb:81:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 test.adb:82:22: info: assertion proved (CVC5: 1 VC)
 test.adb:84:22: info: assertion proved (CVC5: 1 VC)
-test.adb:87:04: warning: analyzing unreferenced procedure "Test_Seconds"
+test.adb:87:04: warning: analyzing unreferenced procedure "Test_Seconds" [unreferenced-procedure]
 test.adb:87:14: warning: subprogram "Test_Seconds" has no effect
 test.adb:88:24: info: range check proved (CVC5: 1 VC)
 test.adb:90:22: info: assertion proved (CVC5: 1 VC)
 test.adb:90:42: info: range check proved (CVC5: 1 VC)
 test.adb:90:47: info: range check proved (CVC5: 1 VC)
-test.adb:93:04: warning: analyzing unreferenced procedure "Test_Minutes"
+test.adb:93:04: warning: analyzing unreferenced procedure "Test_Minutes" [unreferenced-procedure]
 test.adb:93:14: warning: subprogram "Test_Minutes" has no effect
 test.adb:94:24: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at line 93 should mention I in a precondition]
 test.adb:96:22: info: assertion proved (CVC5: 1 VC)
 test.adb:96:29: info: range check proved (CVC5: 1 VC)
 test.adb:96:31: info: range check proved (CVC5: 1 VC)
-test.adb:99:04: warning: analyzing unreferenced procedure "Test_Milliseconds"
+test.adb:99:04: warning: analyzing unreferenced procedure "Test_Milliseconds" [unreferenced-procedure]
 test.adb:99:14: warning: subprogram "Test_Milliseconds" has no effect
 test.adb:100:24: info: range check proved (CVC5: 1 VC)
 test.adb:102:22: info: assertion proved (CVC5: 1 VC)
 test.adb:102:24: info: range check proved (CVC5: 1 VC)
 test.adb:102:34: info: range check proved (CVC5: 1 VC)
-test.adb:105:04: warning: analyzing unreferenced procedure "Test_Microseconds"
+test.adb:105:04: warning: analyzing unreferenced procedure "Test_Microseconds" [unreferenced-procedure]
 test.adb:105:14: warning: subprogram "Test_Microseconds" has no effect
 test.adb:106:24: info: range check proved (CVC5: 1 VC)
 test.adb:108:22: info: assertion proved (CVC5: 1 VC)
 test.adb:108:24: info: range check proved (CVC5: 1 VC)
 test.adb:108:38: info: range check proved (CVC5: 1 VC)
-test.adb:111:04: warning: analyzing unreferenced procedure "Test_Nanoseconds"
+test.adb:111:04: warning: analyzing unreferenced procedure "Test_Nanoseconds" [unreferenced-procedure]
 test.adb:111:14: warning: subprogram "Test_Nanoseconds" has no effect
 test.adb:112:24: info: range check proved (CVC5: 1 VC)
 test.adb:114:22: info: assertion proved (CVC5: 1 VC)
 test.adb:114:24: info: range check proved (CVC5: 1 VC)
 test.adb:114:42: info: range check proved (CVC5: 1 VC)
-test.adb:117:04: warning: analyzing unreferenced procedure "Test_To_Duration"
+test.adb:117:04: warning: analyzing unreferenced procedure "Test_To_Duration" [unreferenced-procedure]
 test.adb:117:14: warning: subprogram "Test_To_Duration" has no effect
 test.adb:118:24: medium: range check might fail, cannot prove lower bound for To_Duration (X) [reason for check: default component value must fit in the type] [possible fix: subprogram at line 117 should mention X in a precondition]
 test.adb:119:24: info: range check proved (CVC5: 2 VC)
 test.adb:121:22: info: assertion proved (CVC5: 1 VC)
-test.adb:124:04: warning: analyzing unreferenced procedure "Test_To_Time_Span"
+test.adb:124:04: warning: analyzing unreferenced procedure "Test_To_Time_Span" [unreferenced-procedure]
 test.adb:124:14: warning: subprogram "Test_To_Time_Span" has no effect
 test.adb:125:25: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at line 124 should mention X in a precondition]
 test.adb:126:25: info: range check proved (CVC5: 1 VC)
 test.adb:128:22: info: assertion proved (CVC5: 1 VC)
-test.adb:131:04: warning: analyzing unreferenced procedure "Test_Split_And_Time_Of"
+test.adb:131:04: warning: analyzing unreferenced procedure "Test_Split_And_Time_Of" [unreferenced-procedure]
 test.adb:131:14: warning: subprogram "Test_Split_And_Time_Of" has no effect
 test.adb:132:07: info: initialization of "Sc" proved
 test.adb:133:07: info: initialization of "Ts" proved

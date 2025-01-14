@@ -1,6 +1,6 @@
 assume_call.adb:4:15: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at assume_call.ads:3]
 assume_call.adb:7:14: warning: subprogram "Wrong_Pre" has no effect
-assume_call.adb:14:04: warning: analyzing unreferenced procedure "Caller"
+assume_call.adb:14:04: warning: analyzing unreferenced procedure "Caller" [unreferenced-procedure]
 assume_call.adb:14:14: warning: subprogram "Caller" has no effect
 assume_call.adb:17:07: info: precondition proved (CVC5: 1 VC)
 assume_call.ads:3:13: info: implicit aspect Always_Terminates on "f1" has been proved, subprogram will terminate

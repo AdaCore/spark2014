@@ -35,14 +35,14 @@ p.adb:35:27: error: default initialization cannot depend on variable input "S" [
 p.adb:35:27: error: launch "gnatprove --explain=E0007" for more information
 p.adb:35:27: error: use instead a constant initialized to the expression with variable input
 p.adb:43:27: warning: assuming "F5" has no effect on global items
-p.adb:43:27: warning: no Global contract available for "F5"
+p.adb:43:27: warning: no Global contract available for "F5" [assumed-global-null]
 p.adb:44:27: warning: assuming "F5" has no effect on global items
-p.adb:44:27: warning: no Global contract available for "F5"
+p.adb:44:27: warning: no Global contract available for "F5" [assumed-global-null]
 p.adb:45:27: error: default initialization cannot depend on variable input "S" [E0007]
 p.adb:45:27: error: launch "gnatprove --explain=E0007" for more information
 p.adb:45:27: error: use instead a constant initialized to the expression with variable input
 p.adb:45:27: warning: assuming "F5" has no effect on global items
-p.adb:45:27: warning: no Global contract available for "F5"
+p.adb:45:27: warning: no Global contract available for "F5" [assumed-global-null]
 p.adb:51:27: error: default initialization cannot depend on variable input "S" [E0007]
 p.adb:51:27: error: launch "gnatprove --explain=E0007" for more information
 p.adb:51:27: error: use instead a constant initialized to the expression with variable input

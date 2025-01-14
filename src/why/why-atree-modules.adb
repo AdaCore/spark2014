@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d Y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2024, AdaCore                     --
+--                     Copyright (C) 2010-2025, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -27,7 +27,6 @@ with Ada.Characters.Handling;        use Ada.Characters.Handling;
 with Ada.Containers;                 use Ada.Containers;
 with Ada.Containers.Ordered_Maps;
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
-with Common_Containers;              use Common_Containers;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Gnat2Why.Tables;                use Gnat2Why.Tables;
 with Gnat2Why.Util;                  use Gnat2Why.Util;
@@ -467,7 +466,6 @@ package body Why.Atree.Modules is
 
    procedure Initialize is
    begin
-
       --  Initialize files first
 
       Int_File  := NID ("int");

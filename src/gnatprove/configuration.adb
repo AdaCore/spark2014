@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2024, AdaCore                     --
+--                     Copyright (C) 2010-2025, AdaCore                     --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -110,6 +110,30 @@ package body Configuration is
    --  Deal with all switches that are not automatic. In gnatprove, all
    --  recognized switches are automatic, so this procedure should only be
    --  called for unknown switches and for switches in section -cargs.
+
+   procedure Handle_Warning_Switches (Switch, Value : String);
+   --  Handle the "-W", "-A", "-D" switches (related to warnings) as well as
+   --  the "--pedantic" switch. The first three switches are always followed by
+   --  a warning tag name (parameter "Value"). This function checks if "Value"
+   --  is a valid tag name if the switch is one of those three.
+   --  Meaning of the switches:
+   --  - "-W" means the warning corresponding to the tag should be
+   --    issued/enabled (W for "warn")
+   --  - "-A" means the corresponding warning should be disabled
+   --    (A for "allow")
+   --  - "-D" means the corresponding warning should be an error (D for "deny")
+   --  - --pedantic is equivalent to "-W" for the warnings that belong to the
+   --    "pedantic" subkind. See vc_kinds.ads.
+   --  The intention for "--pedantic" is to issue warnings on features that
+   --  could cause portability issues with other compilers than GNAT. For
+   --  example, issue a warning when the Ada RM allows reassociation of
+   --  operators in an expression (something GNAT never does), which could
+   --  lead to different overflows, e.g. on
+   --    A + B + C
+   --  which is parsed as
+   --    (A + B) + C
+   --  but could be reassociated by another compiler as
+   --    A + (B + C)
 
    function No_Project_File_Mode return String;
    --  This function is supposed to be called when no project file was given.
@@ -593,6 +617,41 @@ package body Configuration is
       end if;
    end Handle_Switch;
 
+   ---------------------
+   -- Handle_W_Switch --
+   ---------------------
+
+   procedure Handle_Warning_Switches (Switch, Value : String) is
+      Tag : Misc_Warning_Kind;
+   begin
+      if Switch /= "--pedantic" then
+         declare
+         begin
+            Tag := From_Tag (Value);
+         exception
+            when Constraint_Error =>
+               Abort_Msg
+                 ("""" & Value & """ is not a valid warning name, use "
+                  & """--list-categories"" to obtain a list of all warning "
+                  & "names",
+                  With_Help => False);
+         end;
+      end if;
+      if Switch = "-W" then
+         Configuration.Warning_Status (Tag) := VC_Kinds.WS_Enabled;
+      elsif Switch = "-A" then
+         Configuration.Warning_Status (Tag) := VC_Kinds.WS_Disabled;
+      elsif Switch = "-D" then
+         Configuration.Warning_Status (Tag) := VC_Kinds.WS_Error;
+      elsif Switch = "--pedantic" then
+         for WK in Pedantic_Warning_Kind loop
+            Configuration.Warning_Status (WK) := VC_Kinds.WS_Enabled;
+         end loop;
+      else
+         raise Program_Error;
+      end if;
+   end Handle_Warning_Switches;
+
    -----------------------
    -- Has_gnateT_Switch --
    -----------------------
@@ -904,10 +963,6 @@ package body Configuration is
             Long_Switch => "--output-msg-only");
          Define_Switch
            (Config,
-            CL_Switches.Pedantic'Access,
-            Long_Switch => "--pedantic");
-         Define_Switch
-           (Config,
             CL_Switches.Proof_Warnings'Access,
             Long_Switch => "--proof-warnings=");
          Define_Switch
@@ -997,12 +1052,28 @@ package body Configuration is
             Long_Switch => "--no-loop-unrolling");
          Define_Switch
            (Config,
+            Handle_Warning_Switches'Access,
+            Long_Switch => "--pedantic");
+         Define_Switch
+           (Config,
             CL_Switches.Proof'Access,
             Long_Switch => "--proof=");
          Define_Switch
            (Config,
             CL_Switches.Prover'Access,
             Long_Switch => "--prover=");
+         Define_Switch
+           (Config,
+            Handle_Warning_Switches'Access,
+            "-W=");
+         Define_Switch
+           (Config,
+            Handle_Warning_Switches'Access,
+            "-A=");
+         Define_Switch
+           (Config,
+            Handle_Warning_Switches'Access,
+            "-D=");
 
          --  If not specified on the command-line, value of steps is invalid
          Define_Switch
@@ -1344,6 +1415,13 @@ package body Configuration is
          end if;
       end loop;
 
+      Ada.Text_IO.Put_Line ("[Misc warnings categories]");
+      for K in Misc_Warning_Kind loop
+         Ada.Text_IO.Put_Line
+           (Kind_Name (K) & " - " & Kind_Name (K) &
+              " - " & Description (K) & " - EASY");
+      end loop;
+
       --  ??? TODO GNAT front-end categories
    end Produce_List_Categories_Output;
 
@@ -1515,7 +1593,8 @@ package body Configuration is
          FS.No_Loop_Unrolling := CL_Switches.No_Loop_Unrolling;
          FS.Proof_Warnings := Proof_Warnings;
          FS.No_Inlining := CL_Switches.No_Inlining or
-                           CL_Switches.No_Global_Generation;
+           CL_Switches.No_Global_Generation;
+         FS.Warning_Status := Configuration.Warning_Status;
       end File_Specific_Postprocess;
 
       ----------

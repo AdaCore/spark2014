@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---              Copyright (C) 2013-2024, Capgemini Engineering              --
+--              Copyright (C) 2013-2025, Capgemini Engineering              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -220,7 +220,6 @@ package body Graphs is
    --  Start of processing for BFS
 
    begin
-
       if Include_Start then
          Enqueue (A => Start,
                   B => Start,
@@ -1550,7 +1549,6 @@ package body Graphs is
    --  Start of processing for Shortest_Path
 
    begin
-
       BFS (G             => G,
            Start         => Start,
            Include_Start => Allow_Trivial,

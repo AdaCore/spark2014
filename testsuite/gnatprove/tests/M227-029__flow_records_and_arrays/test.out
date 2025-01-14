@@ -1,18 +1,18 @@
-message_tests.adb:14:04: warning: analyzing unreferenced procedure "Not_All_Used_In_1"
+message_tests.adb:14:04: warning: analyzing unreferenced procedure "Not_All_Used_In_1" [unreferenced-procedure]
 message_tests.adb:15:33: info: initialization of "W" proved
-message_tests.adb:23:04: warning: analyzing unreferenced procedure "Not_All_Used_In_2"
+message_tests.adb:23:04: warning: analyzing unreferenced procedure "Not_All_Used_In_2" [unreferenced-procedure]
 message_tests.adb:24:33: info: initialization of "B" proved
-message_tests.adb:32:04: warning: analyzing unreferenced procedure "Not_All_Used_In_3"
+message_tests.adb:32:04: warning: analyzing unreferenced procedure "Not_All_Used_In_3" [unreferenced-procedure]
 message_tests.adb:33:33: info: initialization of "W" proved
 message_tests.adb:37:16: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 32 should mention C in a precondition]
-message_tests.adb:40:04: warning: analyzing unreferenced procedure "Not_All_Used_In_4"
+message_tests.adb:40:04: warning: analyzing unreferenced procedure "Not_All_Used_In_4" [unreferenced-procedure]
 message_tests.adb:40:33: warning: unused variable "C"
 message_tests.adb:41:33: info: initialization of "W" proved
-message_tests.adb:48:04: warning: analyzing unreferenced procedure "Not_All_Used_Out"
+message_tests.adb:48:04: warning: analyzing unreferenced procedure "Not_All_Used_Out" [unreferenced-procedure]
 message_tests.adb:48:32: high: "C.Flags.A" is not initialized in "Not_All_Used_Out" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "C.Flags.A" on all paths, make "C" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 message_tests.adb:48:32: high: "C.Flags.B" is not initialized in "Not_All_Used_Out" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "C.Flags.B" on all paths, make "C" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 message_tests.adb:48:32: high: "C.W" is not initialized in "Not_All_Used_Out" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "C.W" on all paths, make "C" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
-message_tests.adb:56:04: warning: analyzing unreferenced procedure "Undefined_Used_1"
+message_tests.adb:56:04: warning: analyzing unreferenced procedure "Undefined_Used_1" [unreferenced-procedure]
 message_tests.adb:56:32: info: initialization of "C" proved
 message_tests.adb:66:18: high: "F.B" is not initialized
 parameter_tests.adb:15:14: info: add a contract to analyze it separately from calling contexts
@@ -23,7 +23,7 @@ parameter_tests.adb:21:14: info: local subprogram "Clear_Coordinate" only analyz
 parameter_tests.adb:21:32: info: initialization of "C" proved
 parameter_tests.adb:24:07: info: analyzing call to "Clear_Float" in context
 parameter_tests.adb:25:07: info: analyzing call to "Clear_Float" in context
-parameter_tests.adb:28:04: warning: analyzing unreferenced procedure "Clear_Position"
+parameter_tests.adb:28:04: warning: analyzing unreferenced procedure "Clear_Position" [unreferenced-procedure]
 parameter_tests.adb:32:07: info: analyzing call to "Clear_Coordinate" in context
 parameter_tests.adb:36:11: info: data dependencies proved
 parameter_tests.adb:36:32: high: "G.Y" is not initialized
@@ -31,33 +31,33 @@ parameter_tests.adb:43:11: info: data dependencies proved
 parameter_tests.adb:50:11: info: data dependencies proved
 parameter_tests.adb:50:33: warning: unused initial value of "G"
 parameter_tests.adb:50:36: warning: "H" is not modified, could be INPUT
-test.adb:26:04: warning: analyzing unreferenced function "New_Player_01"
+test.adb:26:04: warning: analyzing unreferenced function "New_Player_01" [unreferenced-function]
 test.adb:26:13: info: implicit aspect Always_Terminates on "New_Player_01" has been proved, subprogram will terminate
 test.adb:27:07: info: initialization of "P" proved
-test.adb:36:04: warning: analyzing unreferenced function "New_Player_02"
+test.adb:36:04: warning: analyzing unreferenced function "New_Player_02" [unreferenced-function]
 test.adb:36:13: info: implicit aspect Always_Terminates on "New_Player_02" has been proved, subprogram will terminate
 test.adb:37:07: info: initialization of "P" proved
-test.adb:46:04: warning: analyzing unreferenced function "New_Player_03"
+test.adb:46:04: warning: analyzing unreferenced function "New_Player_03" [unreferenced-function]
 test.adb:46:13: info: implicit aspect Always_Terminates on "New_Player_03" has been proved, subprogram will terminate
 test.adb:47:07: info: initialization of "P" proved
-untangle_tests.adb:22:04: warning: analyzing unreferenced function "New_Coordinate"
+untangle_tests.adb:22:04: warning: analyzing unreferenced function "New_Coordinate" [unreferenced-function]
 untangle_tests.adb:22:13: info: implicit aspect Always_Terminates on "New_Coordinate" has been proved, subprogram will terminate
 untangle_tests.adb:24:07: info: initialization of "R" proved
-untangle_tests.adb:34:04: warning: analyzing unreferenced procedure "Swap_Triangle"
+untangle_tests.adb:34:04: warning: analyzing unreferenced procedure "Swap_Triangle" [unreferenced-procedure]
 untangle_tests.adb:37:28: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (A in 1 .. 100) to subprogram at line 34]
 untangle_tests.adb:39:10: info: index check proved (CVC5: 2 VC)
 untangle_tests.adb:39:19: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (B in 1 .. 100) to subprogram at line 34]
 untangle_tests.adb:40:10: info: index check proved (CVC5: 2 VC)
-untangle_tests.adb:44:04: warning: analyzing unreferenced procedure "Sieve"
+untangle_tests.adb:44:04: warning: analyzing unreferenced procedure "Sieve" [unreferenced-procedure]
 untangle_tests.adb:44:21: info: initialization of "P" proved
 untangle_tests.adb:46:07: info: initialization of "N" proved
 untangle_tests.adb:51:46: info: cannot unroll loop (too many loop iterations)
 untangle_tests.adb:55:19: info: index check proved (CVC5: 2 VC)
 untangle_tests.adb:56:23: info: overflow check proved (CVC5: 2 VC)
-untangle_tests.adb:63:04: warning: analyzing unreferenced procedure "Transform"
+untangle_tests.adb:63:04: warning: analyzing unreferenced procedure "Transform" [unreferenced-procedure]
 untangle_tests.adb:67:51: info: cannot unroll loop (too many loop iterations)
 untangle_tests.adb:68:26: info: unrolling loop
 untangle_tests.adb:69:60: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop at line 67 should mention V and TL in a loop invariant]
 untangle_tests.adb:70:60: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop at line 67 should mention V and TL in a loop invariant]
 untangle_tests.adb:71:60: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop at line 67 should mention V and TL in a loop invariant]
-untangle_tests.adb:77:04: warning: analyzing unreferenced procedure "Set_Normal"
+untangle_tests.adb:77:04: warning: analyzing unreferenced procedure "Set_Normal" [unreferenced-procedure]

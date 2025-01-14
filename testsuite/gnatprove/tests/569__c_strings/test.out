@@ -1,10 +1,10 @@
-main.adb:6:04: warning: analyzing unreferenced procedure "Test_New_String"
+main.adb:6:04: warning: analyzing unreferenced procedure "Test_New_String" [unreferenced-procedure]
 main.adb:10:22: error: equality on chars_ptr is not allowed in SPARK
 main.adb:10:22: error: violation of aspect SPARK_Mode at line 4
-main.adb:13:04: warning: analyzing unreferenced procedure "Test_New_Char_Array"
+main.adb:13:04: warning: analyzing unreferenced procedure "Test_New_Char_Array" [unreferenced-procedure]
 main.adb:17:22: error: equality on chars_ptr is not allowed in SPARK
 main.adb:17:22: error: violation of aspect SPARK_Mode at line 4
-main.adb:20:04: warning: analyzing unreferenced procedure "Test_To_Chars_Ptr"
+main.adb:20:04: warning: analyzing unreferenced procedure "Test_To_Chars_Ptr" [unreferenced-procedure]
 main.adb:27:22: error: equality on chars_ptr is not allowed in SPARK
 main.adb:27:22: error: violation of aspect SPARK_Mode at line 4
 gnatprove: error during flow analysis and proof

@@ -154,51 +154,51 @@ rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message
 rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:423
 rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:423
 rflx-tlv-message.ads:5:01: warning: in instantiation at rflx-tlv-generic_message.adb:423
-rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Left_Shift_Limit"
-rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Left_Shift_Limit"
-rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Left_Shift_Limit"
-rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Left_Shift_Limit"
-rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Left_Shift_Limit"
-rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Left_Shift_Limit"
-rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Left_Shift_Limit"
-rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Left_Shift_Limit"
-rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Mult_Ge_0"
-rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Mult_Ge_0"
-rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Mult_Ge_0"
-rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Mult_Ge_0"
-rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Mult_Ge_0"
-rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Mult_Ge_0"
-rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Mult_Limit"
-rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Mult_Limit"
-rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Mult_Limit"
-rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Mult_Limit"
-rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Mult_Limit"
-rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Mult_Limit"
-rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Right_Shift_Limit"
-rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Right_Shift_Limit"
-rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Right_Shift_Limit"
-rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Right_Shift_Limit"
-rflx-tlv-message.ads:5:01: warning: no Global contract available for "Left_Shift_Limit"
-rflx-tlv-message.ads:5:01: warning: no Global contract available for "Left_Shift_Limit"
-rflx-tlv-message.ads:5:01: warning: no Global contract available for "Left_Shift_Limit"
-rflx-tlv-message.ads:5:01: warning: no Global contract available for "Left_Shift_Limit"
-rflx-tlv-message.ads:5:01: warning: no Global contract available for "Left_Shift_Limit"
-rflx-tlv-message.ads:5:01: warning: no Global contract available for "Left_Shift_Limit"
-rflx-tlv-message.ads:5:01: warning: no Global contract available for "Left_Shift_Limit"
-rflx-tlv-message.ads:5:01: warning: no Global contract available for "Left_Shift_Limit"
-rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Ge_0"
-rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Ge_0"
-rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Ge_0"
-rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Ge_0"
-rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Ge_0"
-rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Ge_0"
-rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Limit"
-rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Limit"
-rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Limit"
-rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Limit"
-rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Limit"
-rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Limit"
-rflx-tlv-message.ads:5:01: warning: no Global contract available for "Right_Shift_Limit"
-rflx-tlv-message.ads:5:01: warning: no Global contract available for "Right_Shift_Limit"
-rflx-tlv-message.ads:5:01: warning: no Global contract available for "Right_Shift_Limit"
-rflx-tlv-message.ads:5:01: warning: no Global contract available for "Right_Shift_Limit"
+rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Left_Shift_Limit" [assumed-always-terminates]
+rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Left_Shift_Limit" [assumed-always-terminates]
+rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Left_Shift_Limit" [assumed-always-terminates]
+rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Left_Shift_Limit" [assumed-always-terminates]
+rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Left_Shift_Limit" [assumed-always-terminates]
+rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Left_Shift_Limit" [assumed-always-terminates]
+rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Left_Shift_Limit" [assumed-always-terminates]
+rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Left_Shift_Limit" [assumed-always-terminates]
+rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Mult_Ge_0" [assumed-always-terminates]
+rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Mult_Ge_0" [assumed-always-terminates]
+rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Mult_Ge_0" [assumed-always-terminates]
+rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Mult_Ge_0" [assumed-always-terminates]
+rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Mult_Ge_0" [assumed-always-terminates]
+rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Mult_Ge_0" [assumed-always-terminates]
+rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Mult_Limit" [assumed-always-terminates]
+rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Mult_Limit" [assumed-always-terminates]
+rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Mult_Limit" [assumed-always-terminates]
+rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Mult_Limit" [assumed-always-terminates]
+rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Mult_Limit" [assumed-always-terminates]
+rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Mult_Limit" [assumed-always-terminates]
+rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Right_Shift_Limit" [assumed-always-terminates]
+rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Right_Shift_Limit" [assumed-always-terminates]
+rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Right_Shift_Limit" [assumed-always-terminates]
+rflx-tlv-message.ads:5:01: warning: no Always_Terminates aspect available for "Right_Shift_Limit" [assumed-always-terminates]
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Left_Shift_Limit" [assumed-global-null]
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Left_Shift_Limit" [assumed-global-null]
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Left_Shift_Limit" [assumed-global-null]
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Left_Shift_Limit" [assumed-global-null]
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Left_Shift_Limit" [assumed-global-null]
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Left_Shift_Limit" [assumed-global-null]
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Left_Shift_Limit" [assumed-global-null]
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Left_Shift_Limit" [assumed-global-null]
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Ge_0" [assumed-global-null]
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Ge_0" [assumed-global-null]
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Ge_0" [assumed-global-null]
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Ge_0" [assumed-global-null]
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Ge_0" [assumed-global-null]
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Ge_0" [assumed-global-null]
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Limit" [assumed-global-null]
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Limit" [assumed-global-null]
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Limit" [assumed-global-null]
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Limit" [assumed-global-null]
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Limit" [assumed-global-null]
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Mult_Limit" [assumed-global-null]
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Right_Shift_Limit" [assumed-global-null]
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Right_Shift_Limit" [assumed-global-null]
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Right_Shift_Limit" [assumed-global-null]
+rflx-tlv-message.ads:5:01: warning: no Global contract available for "Right_Shift_Limit" [assumed-global-null]

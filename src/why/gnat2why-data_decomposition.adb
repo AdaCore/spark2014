@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2023-2024, AdaCore                     --
+--                     Copyright (C) 2023-2025, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -27,7 +27,6 @@ with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Directories;
 with Ada.Text_IO;
 with Call;                       use Call;
-with Common_Containers;          use Common_Containers;
 with GNAT.OS_Lib;
 with GNATCOLL.JSON;              use GNATCOLL.JSON;
 with Namet;                      use Namet;
@@ -35,6 +34,7 @@ with Sinput;                     use Sinput;
 with SPARK_Atree;                use SPARK_Atree;
 with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
 with SPARK_Util;                 use SPARK_Util;
+with String_Utils;               use String_Utils;
 with VC_Kinds;                   use VC_Kinds;
 
 package body Gnat2Why.Data_Decomposition is

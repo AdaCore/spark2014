@@ -30,5 +30,5 @@ ext3.ads:21:57: error: violation of aspect SPARK_Mode at line 2
 ext3.ads:23:32: warning: Program_Error will be raised at run time [enabled by default]
 ext3.ads:23:32: warning: assuming "Create" has no effect on global items
 ext3.ads:23:32: warning: cannot call "Create" before body seen [enabled by default]
-ext3.ads:23:32: warning: no Global contract available for "Create"
+ext3.ads:23:32: warning: no Global contract available for "Create" [assumed-global-null]
 gnatprove: error during flow analysis and proof

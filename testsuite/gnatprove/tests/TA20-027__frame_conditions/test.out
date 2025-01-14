@@ -5,8 +5,8 @@ test_loop.adb:13:25: info: cannot unroll loop (too many loop iterations)
 test_loop.adb:14:10: info: no contextual analysis of "P" (body not seen yet)
 test_loop.adb:14:10: warning: assuming "P" always terminates
 test_loop.adb:14:10: warning: assuming "P" has no effect on global items
-test_loop.adb:14:10: warning: no Always_Terminates aspect available for "P"
-test_loop.adb:14:10: warning: no Global contract available for "P"
+test_loop.adb:14:10: warning: no Always_Terminates aspect available for "P" [assumed-always-terminates]
+test_loop.adb:14:10: warning: no Global contract available for "P" [assumed-global-null]
 test_loop.adb:14:15: info: pointer dereference check proved (CVC5: 1 VC)
 test_loop.adb:27:14: info: postcondition proved (CVC5: 2 VC)
 test_loop.adb:27:15: info: pointer dereference check proved (CVC5: 1 VC)
@@ -15,8 +15,8 @@ test_loop.adb:31:25: info: cannot unroll loop (too many loop iterations)
 test_loop.adb:32:10: info: no contextual analysis of "P" (body not seen yet)
 test_loop.adb:32:10: warning: assuming "P" always terminates
 test_loop.adb:32:10: warning: assuming "P" has no effect on global items
-test_loop.adb:32:10: warning: no Always_Terminates aspect available for "P"
-test_loop.adb:32:10: warning: no Global contract available for "P"
+test_loop.adb:32:10: warning: no Always_Terminates aspect available for "P" [assumed-always-terminates]
+test_loop.adb:32:10: warning: no Global contract available for "P" [assumed-global-null]
 test_loop.adb:32:15: info: pointer dereference check proved (CVC5: 1 VC)
 test_loop.adb:45:14: medium: postcondition might fail [possible fix: loop at line 49 should mention A in a loop invariant]
 test_loop.adb:45:15: info: pointer dereference check proved (CVC5: 1 VC)
@@ -25,6 +25,6 @@ test_loop.adb:49:25: info: cannot unroll loop (too many loop iterations)
 test_loop.adb:50:10: info: no contextual analysis of "P" (body not seen yet)
 test_loop.adb:50:10: warning: assuming "P" always terminates
 test_loop.adb:50:10: warning: assuming "P" has no effect on global items
-test_loop.adb:50:10: warning: no Always_Terminates aspect available for "P"
-test_loop.adb:50:10: warning: no Global contract available for "P"
+test_loop.adb:50:10: warning: no Always_Terminates aspect available for "P" [assumed-always-terminates]
+test_loop.adb:50:10: warning: no Global contract available for "P" [assumed-global-null]
 test_loop.adb:50:15: info: pointer dereference check proved (CVC5: 1 VC)

@@ -1,6 +1,6 @@
 bad.adb:4:29: error: aspect Skip_Proof cannot occur in the scope of a Skip_Flow_And_Proof aspect or pragma
 bad.adb:8:25: warning: assuming "F" has no effect on global items
-bad.adb:8:25: warning: no Global contract available for "F"
+bad.adb:8:25: warning: no Global contract available for "F" [assumed-global-null]
 bad.adb:11:22: warning: assuming "F" has no effect on global items
-bad.adb:11:22: warning: no Global contract available for "F"
+bad.adb:11:22: warning: no Global contract available for "F" [assumed-global-null]
 gnatprove: error during flow analysis and proof

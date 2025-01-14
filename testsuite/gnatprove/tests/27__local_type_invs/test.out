@@ -1,4 +1,4 @@
-q1.adb:13:07: warning: analyzing unreferenced procedure "Q1"
+q1.adb:13:07: warning: analyzing unreferenced procedure "Q1" [unreferenced-procedure]
 q1.adb:15:10: medium: for X before the call at q1.ads:35
 q1.adb:15:10: medium: invariant check might fail (e.g. when X = (F1 => -1, F2 => 0, F3 => 0, F4 => 0, F5 => 0))
 q1.adb:21:10: medium: for X before the call at q1.ads:35
@@ -7,7 +7,7 @@ q1.adb:27:10: medium: for X before the call at q1.ads:35
 q1.adb:27:10: medium: invariant check might fail (e.g. when X = (F1 => -1, F2 => 0, F3 => 0, F4 => 0, F5 => 0))
 q1.adb:33:10: info: for X before the call at q1.ads:35
 q1.adb:33:10: info: invariant check proved (CVC5: 2 VC; Trivial: 1 VC)
-q1.adb:36:07: warning: analyzing unreferenced procedure "Q5"
+q1.adb:36:07: warning: analyzing unreferenced procedure "Q5" [unreferenced-procedure]
 q1.adb:38:10: medium: for X before the call at q1.adb:3
 q1.adb:38:10: medium: invariant check might fail (e.g. when X = (F1 => -1, F2 => 0, F3 => 0, F4 => 0, F5 => 0))
 q1.adb:44:10: info: for X before the call at q1.adb:3

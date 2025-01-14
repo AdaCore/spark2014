@@ -105,11 +105,11 @@ norm-reals-errors.adb:188:17: medium: postcondition might fail
 norm-reals-errors.adb:188:22: info: precondition proved (CVC5: 1 VC)
 norm-reals-errors.adb:188:22: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:188:22: warning: assuming "Sqrt" has no effect on global items
-norm-reals-errors.adb:188:22: warning: no Global contract available for "Sqrt"
+norm-reals-errors.adb:188:22: warning: no Global contract available for "Sqrt" [assumed-global-null]
 norm-reals-errors.adb:188:33: info: precondition proved (CVC5: 1 VC)
 norm-reals-errors.adb:188:33: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:188:33: warning: assuming "Sqrt" has no effect on global items
-norm-reals-errors.adb:188:33: warning: no Global contract available for "Sqrt"
+norm-reals-errors.adb:188:33: warning: no Global contract available for "Sqrt" [assumed-global-null]
 norm-reals-errors.adb:189:12: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:189:18: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:189:32: info: division check proved (CVC5: 1 VC)
@@ -117,12 +117,12 @@ norm-reals-errors.adb:189:34: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:189:42: info: precondition proved (CVC5: 1 VC)
 norm-reals-errors.adb:189:42: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:189:42: warning: assuming "Sqrt" has no effect on global items
-norm-reals-errors.adb:189:42: warning: no Global contract available for "Sqrt"
+norm-reals-errors.adb:189:42: warning: no Global contract available for "Sqrt" [assumed-global-null]
 norm-reals-errors.adb:189:53: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:189:60: info: precondition proved (CVC5: 1 VC)
 norm-reals-errors.adb:189:60: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:189:60: warning: assuming "Sqrt" has no effect on global items
-norm-reals-errors.adb:189:60: warning: no Global contract available for "Sqrt"
+norm-reals-errors.adb:189:60: warning: no Global contract available for "Sqrt" [assumed-global-null]
 norm-reals-errors.adb:198:27: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:198:45: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:198:63: info: predicate check proved (Trivial: 1 VC)
@@ -132,7 +132,7 @@ norm-reals-errors.adb:200:40: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:200:47: info: precondition proved (CVC5: 1 VC)
 norm-reals-errors.adb:200:47: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:200:47: warning: assuming "Sqrt" has no effect on global items
-norm-reals-errors.adb:200:47: warning: no Global contract available for "Sqrt"
+norm-reals-errors.adb:200:47: warning: no Global contract available for "Sqrt" [assumed-global-null]
 norm-reals-errors.adb:200:64: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:201:17: info: postcondition proved (altergo: 1 VC)
 norm-reals-errors.adb:201:42: info: predicate check proved (Trivial: 1 VC)
@@ -143,18 +143,18 @@ norm-reals-errors.adb:211:15: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:212:07: info: precondition proved (CVC5: 1 VC)
 norm-reals-errors.adb:212:07: warning: assuming "Bound_Error_Sqrt" always terminates
 norm-reals-errors.adb:212:07: warning: assuming "Bound_Error_Sqrt" has no effect on global items
-norm-reals-errors.adb:212:07: warning: no Always_Terminates aspect available for "Bound_Error_Sqrt"
-norm-reals-errors.adb:212:07: warning: no Global contract available for "Bound_Error_Sqrt"
+norm-reals-errors.adb:212:07: warning: no Always_Terminates aspect available for "Bound_Error_Sqrt" [assumed-always-terminates]
+norm-reals-errors.adb:212:07: warning: no Global contract available for "Bound_Error_Sqrt" [assumed-global-null]
 norm-reals-errors.adb:213:07: medium: precondition might fail, cannot prove Norm_F >= 0.0 (e.g. when Values = (others => -1.7123742E-22))
 norm-reals-errors.adb:214:33: info: precondition proved (CVC5: 1 VC)
 norm-reals-errors.adb:215:20: info: precondition proved (altergo: 1 VC)
 norm-reals-errors.adb:215:20: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:215:20: warning: assuming "Sqrt" has no effect on global items
-norm-reals-errors.adb:215:20: warning: no Global contract available for "Sqrt"
+norm-reals-errors.adb:215:20: warning: no Global contract available for "Sqrt" [assumed-global-null]
 norm-reals-errors.adb:216:20: info: precondition proved (CVC5: 1 VC)
 norm-reals-errors.adb:216:20: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:216:20: warning: assuming "Sqrt" has no effect on global items
-norm-reals-errors.adb:216:20: warning: no Global contract available for "Sqrt"
+norm-reals-errors.adb:216:20: warning: no Global contract available for "Sqrt" [assumed-global-null]
 norm-reals-errors.ads:8:08: info: postcondition proved (CVC5: 1 VC)
 norm-reals-errors.ads:10:14: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.ads:10:39: info: predicate check proved (Trivial: 1 VC)
@@ -180,13 +180,13 @@ norm-reals.ads:26:13: info: implicit aspect Always_Terminates on "Norm" has been
 norm-reals.ads:27:07: info: precondition proved (CVC5: 1 VC)
 norm-reals.ads:27:07: info: predicate check proved (Trivial: 1 VC)
 norm-reals.ads:27:07: warning: assuming "Sqrt" has no effect on global items
-norm-reals.ads:27:07: warning: no Global contract available for "Sqrt"
+norm-reals.ads:27:07: warning: no Global contract available for "Sqrt" [assumed-global-null]
 norm.adb:16:23: info: float overflow check proved (CVC5: 1 VC)
 norm.adb:19:17: info: postcondition proved (Z3: 1 VC; colibri: 1 VC)
 norm.adb:19:22: info: float overflow check proved (CVC5: 1 VC)
 norm.adb:19:27: info: float overflow check proved (Z3: 1 VC)
 norm.adb:19:49: info: float overflow check proved (CVC5: 1 VC)
-norm.adb:19:54: info: float overflow check proved (colibri: 1 VC)
+norm.adb:19:54: info: float overflow check proved (Z3: 1 VC)
 norm.adb:26:10: info: precondition proved (CVC5: 7 VC)
 norm.adb:27:10: info: precondition proved (CVC5: 2 VC; Z3: 2 VC; altergo: 3 VC)
 norm.adb:28:10: info: precondition proved (CVC5: 1 VC; Z3: 3 VC; altergo: 2 VC; colibri: 1 VC)
@@ -237,13 +237,13 @@ norm.adb:69:34: info: precondition proved (CVC5: 1 VC)
 norm.adb:71:16: info: precondition proved (CVC5: 2 VC)
 norm.adb:71:16: warning: assuming "Sqrt_Is_Monotonic" always terminates
 norm.adb:71:16: warning: assuming "Sqrt_Is_Monotonic" has no effect on global items
-norm.adb:71:16: warning: no Always_Terminates aspect available for "Sqrt_Is_Monotonic"
-norm.adb:71:16: warning: no Global contract available for "Sqrt_Is_Monotonic"
+norm.adb:71:16: warning: no Always_Terminates aspect available for "Sqrt_Is_Monotonic" [assumed-always-terminates]
+norm.adb:71:16: warning: no Global contract available for "Sqrt_Is_Monotonic" [assumed-global-null]
 norm.adb:74:16: info: precondition proved (CVC5: 2 VC)
 norm.adb:74:16: warning: assuming "Sqrt_Exact_Integer" always terminates
 norm.adb:74:16: warning: assuming "Sqrt_Exact_Integer" has no effect on global items
-norm.adb:74:16: warning: no Always_Terminates aspect available for "Sqrt_Exact_Integer"
-norm.adb:74:16: warning: no Global contract available for "Sqrt_Exact_Integer"
+norm.adb:74:16: warning: no Always_Terminates aspect available for "Sqrt_Exact_Integer" [assumed-always-terminates]
+norm.adb:74:16: warning: no Global contract available for "Sqrt_Exact_Integer" [assumed-global-null]
 norm.adb:75:14: medium: range check might fail [reason for check: returned value must fit in the result type of the function]
 norm.ads:17:07: info: assertion proved (Trivial)
 norm.ads:19:07: info: assertion proved (Trivial)
@@ -278,8 +278,8 @@ sqrt_spec.ads:37:19: info: predicate check proved (Trivial: 1 VC)
 sqrt_spec.ads:46:19: info: assertion proved (Trivial)
 sqrt_spec.ads:47:19: info: assertion proved (Trivial)
 sqrt_spec.ads:53:44: warning: assuming "Sqrt" has no effect on global items
-sqrt_spec.ads:53:44: warning: no Global contract available for "Sqrt"
+sqrt_spec.ads:53:44: warning: no Global contract available for "Sqrt" [assumed-global-null]
 sqrt_spec.ads:54:12: warning: assuming "Sqrt" has no effect on global items
-sqrt_spec.ads:54:12: warning: no Global contract available for "Sqrt"
+sqrt_spec.ads:54:12: warning: no Global contract available for "Sqrt" [assumed-global-null]
 sqrt_spec.ads:55:35: warning: assuming "Sqrt" has no effect on global items
-sqrt_spec.ads:55:35: warning: no Global contract available for "Sqrt"
+sqrt_spec.ads:55:35: warning: no Global contract available for "Sqrt" [assumed-global-null]

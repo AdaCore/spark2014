@@ -1,6 +1,6 @@
 pkg.adb:8:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 pkg.adb:8:04: info: justified that "Descriptors" constituent of "State" is not initialized in "Pkg"
-pkg.adb:8:04: warning: address specification on "Descriptors" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias [E0012]
+pkg.adb:8:04: warning: address specification on "Descriptors" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias [imprecise-address-specification] [E0012]
 pkg.adb:8:04: warning: consider making "Descriptors" volatile and annotating it with Async_Writers and make sure that all overlapping objects have Async_Writers set to True
 pkg.adb:8:04: warning: launch "gnatprove --explain=E0012" for more information
 pkg.ads:5:04: info: flow dependencies proved

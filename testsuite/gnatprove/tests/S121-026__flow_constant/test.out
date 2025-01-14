@@ -1,6 +1,6 @@
 soc.ads:3:18: info: flow dependencies proved
 soc.ads:8:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 soc.ads:8:04: info: initialization of "Periph" proved
-soc.ads:8:04: warning: address specification on "Periph" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias [E0012]
+soc.ads:8:04: warning: address specification on "Periph" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias [imprecise-address-specification] [E0012]
 soc.ads:8:04: warning: consider making "Periph" volatile and annotating it with Async_Writers and make sure that all overlapping objects have Async_Writers set to True
 soc.ads:8:04: warning: launch "gnatprove --explain=E0012" for more information

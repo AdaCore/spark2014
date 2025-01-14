@@ -1,22 +1,22 @@
 bad_access.adb:14:10: info: no contextual analysis of "Rand" (body not seen yet)
 bad_access.adb:14:10: warning: assuming "Rand" has no effect on global items
-bad_access.adb:14:10: warning: no Global contract available for "Rand"
+bad_access.adb:14:10: warning: no Global contract available for "Rand" [assumed-global-null]
 bad_access.adb:20:13: info: no contextual analysis of "Rand" (body not seen yet)
 bad_access.adb:20:13: warning: assuming "Rand" has no effect on global items
-bad_access.adb:20:13: warning: no Global contract available for "Rand"
+bad_access.adb:20:13: warning: no Global contract available for "Rand" [assumed-global-null]
 bad_access.adb:22:13: info: no contextual analysis of "Do_Something" (nested package declaration)
 bad_access.adb:28:13: info: no contextual analysis of "Rand" (body not seen yet)
 bad_access.adb:28:13: warning: assuming "Rand" has no effect on global items
-bad_access.adb:28:13: warning: no Global contract available for "Rand"
+bad_access.adb:28:13: warning: no Global contract available for "Rand" [assumed-global-null]
 bad_access.adb:39:13: info: no contextual analysis of "Rand" (body not seen yet)
 bad_access.adb:39:13: warning: assuming "Rand" has no effect on global items
-bad_access.adb:39:13: warning: no Global contract available for "Rand"
+bad_access.adb:39:13: warning: no Global contract available for "Rand" [assumed-global-null]
 bad_access.adb:51:13: info: no contextual analysis of "Rand" (body not seen yet)
 bad_access.adb:51:13: warning: assuming "Rand" has no effect on global items
-bad_access.adb:51:13: warning: no Global contract available for "Rand"
+bad_access.adb:51:13: warning: no Global contract available for "Rand" [assumed-global-null]
 bad_access.adb:69:13: info: no contextual analysis of "Rand" (body not seen yet)
 bad_access.adb:69:13: warning: assuming "Rand" has no effect on global items
-bad_access.adb:69:13: warning: no Global contract available for "Rand"
+bad_access.adb:69:13: warning: no Global contract available for "Rand" [assumed-global-null]
 bad_access.adb:95:18: error: "Id" is not allowed in SPARK
 bad_access.adb:95:18: error: "Id" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 bad_access.adb:95:18: error: violation of aspect SPARK_Mode at line 2

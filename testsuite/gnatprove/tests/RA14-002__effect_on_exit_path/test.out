@@ -17,7 +17,7 @@ test.adb:167:51: info: range check proved (CVC5: 2 VC)
 test.adb:169:07: info: data dependencies proved
 test.adb:179:14: info: add a contract to analyze it separately from calling contexts
 test.adb:179:14: info: local subprogram "os_mbx_clear_mbx_entry" only analyzed in the context of calls
-test.adb:194:04: warning: analyzing unreferenced procedure "os_mbx_set_mbx_entry"
+test.adb:194:04: warning: analyzing unreferenced procedure "os_mbx_set_mbx_entry" [unreferenced-procedure]
 test.adb:207:13: info: implicit aspect Always_Terminates on "os_mbx_get_mbx_entry" has been proved, subprogram will terminate
 test.adb:216:13: info: implicit aspect Always_Terminates on "os_mbx_is_waiting_mbx_entry" has been proved, subprogram will terminate
 test.adb:221:44: info: precondition proved (CVC5: 2 VC)
@@ -41,4 +41,5 @@ test.adb:340:16: info: precondition proved (CVC5: 2 VC)
 test.ads:76:13: info: implicit aspect Always_Terminates on "os_ghost_mbx_are_well_formed" has been proved, subprogram will terminate
 test.ads:80:30: info: initialization of "status" proved
 test.ads:81:30: info: initialization of "mbx_entry" proved
-test.ads:85:15: info: postcondition proved (Z3: 1 VC)
+test.ads:85:15: medium: in inlined expression function body at test.adb:266
+test.ads:85:15: medium: postcondition might fail, cannot prove os_ghost_task_mbx_are_well_formed (task_id)

@@ -9,7 +9,7 @@ update_checks_1.adb:26:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 update_checks_1.adb:26:24: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (1 .. I in Index) to subprogram at update_checks_1.ads:14]
 update_checks_1.adb:26:37: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (J .. K in Index) to subprogram at update_checks_1.ads:14]
 update_checks_1.adb:26:44: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (L in Index) to subprogram at update_checks_1.ads:14]
-update_checks_1.adb:29:04: warning: analyzing unreferenced procedure "P6"
+update_checks_1.adb:29:04: warning: analyzing unreferenced procedure "P6" [unreferenced-procedure]
 update_checks_1.adb:33:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 update_checks_1.adb:33:27: medium: array index check might fail [reason for check: value must be a valid index into the array]
 update_checks_1.adb:51:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)

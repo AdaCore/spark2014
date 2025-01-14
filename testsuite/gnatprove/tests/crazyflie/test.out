@@ -169,15 +169,15 @@ stabilizer_pack.adb:180:07: info: initialization of "Baro_V_Speed" proved
 stabilizer_pack.adb:181:07: info: initialization of "Alt_Hold_PID_Out" proved
 stabilizer_pack.adb:182:07: info: initialization of "Raw_Thrust" proved
 stabilizer_pack.adb:185:07: warning: assuming "Commander_Get_Alt_Hold" always terminates
-stabilizer_pack.adb:185:07: warning: no Always_Terminates aspect available for "Commander_Get_Alt_Hold"
+stabilizer_pack.adb:185:07: warning: no Always_Terminates aspect available for "Commander_Get_Alt_Hold" [assumed-always-terminates]
 stabilizer_pack.adb:293:07: warning: assuming "IMU_9_Read" always terminates
-stabilizer_pack.adb:293:07: warning: no Always_Terminates aspect available for "IMU_9_Read"
+stabilizer_pack.adb:293:07: warning: no Always_Terminates aspect available for "IMU_9_Read" [assumed-always-terminates]
 stabilizer_pack.adb:313:07: warning: assuming "Commander_Get_RPY_Type" always terminates
-stabilizer_pack.adb:313:07: warning: no Always_Terminates aspect available for "Commander_Get_RPY_Type"
+stabilizer_pack.adb:313:07: warning: no Always_Terminates aspect available for "Commander_Get_RPY_Type" [assumed-always-terminates]
 stabilizer_pack.adb:346:10: warning: assuming "Commander_Get_Thrust" always terminates
-stabilizer_pack.adb:346:10: warning: no Always_Terminates aspect available for "Commander_Get_Thrust"
+stabilizer_pack.adb:346:10: warning: no Always_Terminates aspect available for "Commander_Get_Thrust" [assumed-always-terminates]
 stabilizer_pack.adb:352:10: warning: assuming "Commander_Watchdog" always terminates
-stabilizer_pack.adb:352:10: warning: no Always_Terminates aspect available for "Commander_Watchdog"
+stabilizer_pack.adb:352:10: warning: no Always_Terminates aspect available for "Commander_Watchdog" [assumed-always-terminates]
 stabilizer_pack.ads:30:03: info: flow dependencies proved
 stabilizer_pack.ads:65:08: info: data dependencies proved
 stabilizer_pack.ads:89:08: info: data dependencies proved
@@ -190,9 +190,9 @@ stabilizer_pack.ads:378:14: info: initialization of "Motor_Power_M4" constituent
 stabilizer_pack.ads:384:08: info: data dependencies proved
 stabilizer_pack.ads:387:13: info: implicit aspect Always_Terminates on "Limit_Thrust" has been proved, subprogram will terminate
 worker_pack.adb:76:07: warning: assuming "Worker_Function" always terminates
-worker_pack.adb:76:07: warning: no Always_Terminates aspect available for "Worker_Function"
+worker_pack.adb:76:07: warning: no Always_Terminates aspect available for "Worker_Function" [assumed-always-terminates]
 worker_pack.adb:85:07: warning: assuming "Worker_Function" always terminates
-worker_pack.adb:85:07: warning: no Always_Terminates aspect available for "Worker_Function"
+worker_pack.adb:85:07: warning: no Always_Terminates aspect available for "Worker_Function" [assumed-always-terminates]
 worker_pack.ads:8:03: info: flow dependencies proved
 worker_pack.ads:33:08: info: data dependencies proved
 worker_pack.ads:37:13: info: implicit aspect Always_Terminates on "Worker_Test" has been proved, subprogram will terminate

@@ -66,16 +66,16 @@ definite.adb:170:09: info: data dependencies proved
 definite.adb:171:04: info: flow dependencies proved
 definite.adb:174:09: medium: discriminant check might fail [possible fix: subprogram at line 168 should mention X'Constrained or X.D in a precondition]
 definite.adb:174:29: medium: range check might fail, cannot prove lower bound for I [reason for check: value must fit in component type] [possible fix: add precondition (I >= Natural'First) to subprogram at line 168]
-test.adb:18:04: warning: analyzing unreferenced procedure "Test_Init_01"
+test.adb:18:04: warning: analyzing unreferenced procedure "Test_Init_01" [unreferenced-procedure]
 test.adb:19:28: info: initialization of "R" proved
 test.adb:23:12: medium: discriminant check might fail [possible fix: subprogram at line 18 should mention R'Constrained or R.D in a precondition]
 test.adb:27:12: medium: discriminant check might fail [possible fix: subprogram at line 18 should mention R'Constrained or R.D in a precondition]
-test.adb:33:04: warning: analyzing unreferenced procedure "Test_Init_02"
+test.adb:33:04: warning: analyzing unreferenced procedure "Test_Init_02" [unreferenced-procedure]
 test.adb:33:28: info: initialization of "R" proved
 test.adb:35:19: info: range check proved (CVC5: 2 VC)
 test.adb:40:09: medium: discriminant check might fail [possible fix: subprogram at line 33 should mention R'Constrained or R.D in a precondition]
 test.adb:40:12: high: "V.Z" is not initialized
-test.adb:43:04: warning: analyzing unreferenced procedure "Test_Init_03"
+test.adb:43:04: warning: analyzing unreferenced procedure "Test_Init_03" [unreferenced-procedure]
 test.adb:43:28: info: initialization of "R" proved
 test.adb:45:07: info: initialization of "V" proved
 test.adb:45:19: info: range check proved (CVC5: 2 VC)
@@ -84,22 +84,22 @@ test.adb:50:09: medium: discriminant check might fail [possible fix: subprogram 
 test.adb:58:07: info: range check proved (CVC5: 2 VC)
 test.adb:61:37: info: range check proved (CVC5: 2 VC)
 test.adb:61:40: info: range check proved (CVC5: 2 VC)
-test.adb:80:04: warning: analyzing unreferenced procedure "Test_Definite_01"
+test.adb:80:04: warning: analyzing unreferenced procedure "Test_Definite_01" [unreferenced-procedure]
 test.adb:80:32: info: initialization of "X" proved
 test.adb:84:09: medium: discriminant check might fail [possible fix: subprogram at line 80 should mention X'Constrained or X.Found in a precondition]
-test.adb:88:04: warning: analyzing unreferenced procedure "Test_Definite_02"
+test.adb:88:04: warning: analyzing unreferenced procedure "Test_Definite_02" [unreferenced-procedure]
 test.adb:88:32: high: "X.Reason" is not initialized in "Test_Definite_02" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.Reason" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 test.adb:93:08: medium: discriminant check might fail [possible fix: subprogram at line 88 should mention X'Constrained or X.Found in a precondition]
-test.adb:96:04: warning: analyzing unreferenced procedure "Test_Definite_03"
+test.adb:96:04: warning: analyzing unreferenced procedure "Test_Definite_03" [unreferenced-procedure]
 test.adb:96:32: medium: "X.Index" might not be initialized in "Test_Definite_03" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.Index" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 test.adb:96:32: medium: "X.Reason" might not be initialized in "Test_Definite_03" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.Reason" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 test.adb:102:14: info: discriminant check proved (CVC5: 1 VC)
 test.adb:104:14: info: discriminant check proved (CVC5: 1 VC)
-test.adb:108:04: warning: analyzing unreferenced procedure "Test_Definite_04"
+test.adb:108:04: warning: analyzing unreferenced procedure "Test_Definite_04" [unreferenced-procedure]
 test.adb:108:32: info: initialization of "X" proved
 test.adb:114:15: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 test.adb:116:15: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
-test.adb:120:04: warning: analyzing unreferenced procedure "Test_Definite_05"
+test.adb:120:04: warning: analyzing unreferenced procedure "Test_Definite_05" [unreferenced-procedure]
 test.adb:120:32: info: initialization of "X" proved
 test.adb:123:28: info: range check proved (CVC5: 1 VC)
 test.adb:128:14: info: discriminant check proved (CVC5: 1 VC)
