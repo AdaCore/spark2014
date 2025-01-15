@@ -5326,10 +5326,12 @@ package body Gnat2Why.Subprograms is
             return New_Located_Assert
               (Ada_Node => E,
                Pred     => New_Existential_Quantif
-                 (Variables => (1 => Result_Id),
-                  Labels    => Symbol_Sets.Empty_Set,
-                  Var_Type  => Why_Type,
-                  Pred      => Post),
+                 (Binders  =>
+                      (1 => New_Binder (Domain   => EW_Pred,
+                                        Name     => Result_Id,
+                                        Arg_Type => Why_Type)),
+                  Labels   => Symbol_Sets.Empty_Set,
+                  Pred     => Post),
                Reason   => VC_Feasible_Post,
                Kind     => EW_Assert);
          end;
@@ -9134,9 +9136,10 @@ package body Gnat2Why.Subprograms is
 
       return New_And_Pred
         (Left   => New_Universal_Quantif
-           (Variables => (1 => Brower_At_End),
+           (Binders => (1 => New_Binder (Domain => EW_Pred,
+                                         Name   => Brower_At_End,
+                                         Arg_Type => Get_Typ (Brower_At_End))),
             Labels    => Symbol_Sets.Empty_Set,
-            Var_Type  => Get_Typ (Brower_At_End),
             Triggers  => New_Triggers
               (Triggers =>
                    (1 => New_Trigger (Terms => (1 => +Borrowed_Call)))),

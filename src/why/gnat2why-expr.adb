@@ -8982,12 +8982,16 @@ package body Gnat2Why.Expr is
               New_Connection (Op    => Connector,
                               Left  => +W_Bound_Expr,
                               Right => +Result);
+            Binders : constant W_Binder_Array :=
+              (1 => New_Binder (Domain   => EW_Pred,
+                                Name     => W_Index_Var,
+                                Arg_Type => W_Index_Type));
          begin
             if All_Present (Expr) then
                Result :=
                   New_Universal_Quantif
                      (Ada_Node  => Expr,
-                      Variables => (1 => W_Index_Var),
+                      Binders   => Binders,
                       Labels    =>
                         Get_Counterexample_Labels
                           (Quant_Var,
@@ -8999,15 +9003,13 @@ package body Gnat2Why.Expr is
                            Append_To_Name =>
                              (if Need_Temp_Var then "'" & Index_Label
                               else "")),
-                      Var_Type  => W_Index_Type,
                       Pred      => Quant_Body);
             else
                Result :=
                   New_Existential_Quantif
                      (Ada_Node  => Expr,
-                      Variables => (1 => W_Index_Var),
+                      Binders   => Binders,
                       Labels    => Symbol_Sets.Empty_Set,
-                      Var_Type  => W_Index_Type,
                       Pred      => Quant_Body);
             end if;
          end;
@@ -11377,18 +11379,22 @@ package body Gnat2Why.Expr is
                          (Condition => Range_Pred,
                           Then_Part => In_Slice_Eq,
                           Else_Part => Unchanged);
-                     Quantif     : constant W_Pred_Id :=
-                       New_Universal_Quantif
-                         (Variables => Binders,
-                          Var_Type  => Binders_Type,
-                          Labels    => Symbol_Sets.Empty_Set,
-                          Pred      => Def);
-
+                     Quant_Binders : W_Binder_Array (Binders'Range);
                   begin
+                     for I in Binders'Range loop
+                        Quant_Binders (I) :=
+                          New_Binder (Domain   => EW_Pred,
+                                      Name     => Binders (I),
+                                      Arg_Type => Binders_Type);
+                     end loop;
                      Right_Side :=
-                       New_Simpl_Any_Prog (T    => Get_Type (+Pref_Expr),
-                                           Pred => Quantif);
-
+                       New_Simpl_Any_Prog
+                         (T    => Get_Type (+Pref_Expr),
+                          Pred =>
+                            New_Universal_Quantif
+                              (Binders => Quant_Binders,
+                               Labels  => Symbol_Sets.Empty_Set,
+                               Pred    => Def));
                      Right_Side := Binding_For_Temp
                        (Tmp     => +Value_Name,
                         Context => Right_Side);
@@ -12349,12 +12355,6 @@ package body Gnat2Why.Expr is
                    (Condition => Range_Pred,
                     Then_Part => In_Slice_Eq,
                     Else_Part => Unchanged);
-               Quantif     : constant W_Pred_Id :=
-                 New_Universal_Quantif
-                   (Variables => Binders,
-                    Var_Type  => Binders_Type,
-                    Labels    => Symbol_Sets.Empty_Set,
-                    Pred      => Def);
 
                --  If the prefix is not in split form, then its bounds are
                --  contained in the object. We should assume that they are
@@ -12366,17 +12366,30 @@ package body Gnat2Why.Expr is
                                             Right_Arr => +Result_Id,
                                             Dim       => Positive (Dim))
                   else True_Pred);
+               Quant_Binders : W_Binder_Array (Binders'Range);
             begin
                --  "any" Why3 nodes are only allowed in programs, which is
                --  ensured by not allowing slices in borrowed expressions.
                pragma Assert (Domain in EW_Prog | EW_Pterm);
 
+               for I in Binders'Range loop
+                  Quant_Binders (I) :=
+                    New_Binder (Domain   => EW_Pred,
+                                Name     => Binders (I),
+                                Arg_Type => Binders_Type);
+               end loop;
+
                Result :=
-                 +New_Simpl_Any_Prog (T    => Get_Type (+Pref),
-                                      Pred =>
-                                        New_And_Pred
-                                          (Left   => Bounds,
-                                           Right  => Quantif));
+                 +New_Simpl_Any_Prog
+                 (T    => Get_Type (+Pref),
+                  Pred =>
+                    New_And_Pred
+                      (Left   => Bounds,
+                       Right  =>
+                         New_Universal_Quantif
+                           (Binders => Quant_Binders,
+                            Labels  => Symbol_Sets.Empty_Set,
+                            Pred    => Def)));
 
                --  Insert checks for bounds in the program domain
 
@@ -19277,9 +19290,11 @@ package body Gnat2Why.Expr is
 
                for J in Indexes'Range loop
                   T := New_Universal_Quantif
-                    (Variables => (1 => Indexes (J)),
+                    (Binders =>
+                       (1 => New_Binder (Domain => EW_Pred,
+                                         Name => Indexes (J),
+                                        Arg_Type => Get_Typ (Indexes (J)))),
                      Labels    => Symbol_Sets.Empty_Set,
-                     Var_Type  => Get_Typ (Indexes (J)),
                      Pred      => New_Conditional
                        (Condition => +New_Array_Range_Expr
                             (Index_Expr => +Indexes (J),
