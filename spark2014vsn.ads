@@ -22,7 +22,7 @@
 
 package SPARK2014VSN is
 
-   SPARK2014_Static_Version_String : constant String := "0.0w";
+   SPARK2014_Static_Version_String : constant String := "FSF 15.0";
    --  Static string identifying this version, that can be used as an argument
    --  to e.g. pragma Ident.
    --
