@@ -1178,6 +1178,7 @@ package body SPARK_Util is
       --  to non-ghost code.
 
       if Is_Ghost_Assignment (Stmt)
+        or else Is_Ghost_Declaration (Stmt)
         or else Is_Ghost_Procedure_Call (Stmt)
       then
          declare
@@ -2401,6 +2402,7 @@ package body SPARK_Util is
       --  to non-ghost code.
 
       if Is_Ghost_Assignment (Stmt)
+        or else Is_Ghost_Declaration (Stmt)
         or else Is_Ghost_Procedure_Call (Stmt)
       then
          declare
