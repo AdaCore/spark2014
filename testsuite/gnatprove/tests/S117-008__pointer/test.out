@@ -80,7 +80,7 @@ formal_vectors.adb:111:34: info: pointer dereference check proved (CVC5: 2 VC), 
 formal_vectors.adb:111:42: info: range check proved (CVC5: 4 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:111:59: info: overflow check proved (CVC5: 4 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:113:13: info: loop invariant initialization proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
-formal_vectors.adb:113:13: info: loop invariant preservation proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at use_formal_vectors.ads:11
+formal_vectors.adb:113:13: info: loop invariant preservation proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:113:32: info: overflow check proved (CVC5: 4 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:113:45: info: overflow check proved (CVC5: 4 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:113:57: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
@@ -219,7 +219,7 @@ formal_vectors.adb:182:47: info: overflow check proved (CVC5: 2 VC), in instanti
 formal_vectors.adb:184:10: medium: resource or memory leak might occur, in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:184:17: info: in value of subprogram parameter after the call at formal_vectors.adb:184, in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:184:17: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
-formal_vectors.adb:184:17: info: predicate check proved (Z3: 1 VC), in instantiation at use_formal_vectors.ads:11
+formal_vectors.adb:184:17: info: predicate check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:184:33: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:184:33: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 [reason for check: result of addition must be a valid index into the array]
 formal_vectors.adb:189:14: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11

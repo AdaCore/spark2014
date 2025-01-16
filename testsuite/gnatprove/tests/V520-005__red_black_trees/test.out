@@ -61,8 +61,7 @@ infinite_sequences.adb:57:53: info: predicate check proved (Trivial: 2 VC)
 infinite_sequences.adb:58:21: info: predicate check proved (Trivial: 1 VC)
 infinite_sequences.adb:58:23: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 infinite_sequences.adb:58:25: info: predicate check proved (Trivial: 1 VC)
-infinite_sequences.adb:62:14: medium: in inlined expression function body at infinite_sequences.adb:15
-infinite_sequences.adb:62:14: medium: predicate check might fail, cannot prove In_Range (I, Fst, Lst)
+infinite_sequences.adb:62:14: info: predicate check proved (CVC5: 3 VC)
 infinite_sequences.ads:7:09: info: in default value of private type at infinite_sequences.ads:7
 infinite_sequences.ads:7:09: info: predicate check proved on default value (CVC5: 3 VC)
 infinite_sequences.ads:8:13: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
@@ -116,8 +115,8 @@ infinite_sequences.ads:40:13: info: implicit aspect Always_Terminates on "Concat
 infinite_sequences.ads:41:14: info: predicate check proved (Trivial: 1 VC)
 infinite_sequences.ads:41:27: info: predicate check proved (Trivial: 1 VC)
 infinite_sequences.ads:41:39: info: predicate check proved (Trivial: 1 VC)
-infinite_sequences.ads:42:14: medium: in inlined expression function body at infinite_sequences.ads:33
-infinite_sequences.ads:42:14: medium: postcondition might fail, cannot prove S1 <= R
+infinite_sequences.ads:42:14: medium: in inlined expression function body at infinite_sequences.ads:35
+infinite_sequences.ads:42:14: medium: postcondition might fail, cannot prove S3 <= R
 infinite_sequences.ads:47:13: info: implicit aspect Always_Terminates on "Is_Valid" has been proved, subprogram will terminate
 infinite_sequences.ads:54:33: info: in default value of private type at infinite_sequences.ads:7
 infinite_sequences.ads:54:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -488,13 +487,13 @@ red_black_trees.adb:369:118: info: predicate check proved (CVC5: 1 VC; Trivial: 
 red_black_trees.adb:369:120: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:369:127: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:369:133: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:373:10: medium: resource or memory leak might occur at end of scope
+red_black_trees.adb:373:10: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 red_black_trees.adb:373:26: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:375:11: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:375:18: medium: resource or memory leak might occur
-red_black_trees.adb:375:25: medium: pointer dereference check might fail
-red_black_trees.adb:376:14: medium: pointer dereference check might fail
-red_black_trees.adb:376:20: medium: resource or memory leak might occur
+red_black_trees.adb:375:18: info: absence of resource or memory leak proved (CVC5: 1 VC)
+red_black_trees.adb:375:25: info: pointer dereference check proved (CVC5: 1 VC)
+red_black_trees.adb:376:14: info: pointer dereference check proved (CVC5: 1 VC)
+red_black_trees.adb:376:20: info: absence of resource or memory leak proved (CVC5: 1 VC)
 red_black_trees.adb:377:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
 red_black_trees.adb:383:07: medium: in inlined expression function body at infinite_sequences.ads:31
 red_black_trees.adb:383:07: medium: precondition might fail, cannot prove First (R) = First (S1)
@@ -584,13 +583,13 @@ red_black_trees.adb:423:63: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:423:72: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:423:76: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:423:78: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:427:10: medium: resource or memory leak might occur at end of scope
+red_black_trees.adb:427:10: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 red_black_trees.adb:427:26: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:429:11: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:429:17: medium: resource or memory leak might occur
-red_black_trees.adb:429:24: medium: pointer dereference check might fail
-red_black_trees.adb:430:14: medium: pointer dereference check might fail
-red_black_trees.adb:430:21: medium: resource or memory leak might occur
+red_black_trees.adb:429:17: info: absence of resource or memory leak proved (CVC5: 1 VC)
+red_black_trees.adb:429:24: info: pointer dereference check proved (CVC5: 1 VC)
+red_black_trees.adb:430:14: info: pointer dereference check proved (CVC5: 1 VC)
+red_black_trees.adb:430:21: info: absence of resource or memory leak proved (CVC5: 1 VC)
 red_black_trees.adb:431:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
 red_black_trees.adb:437:07: medium: in inlined expression function body at infinite_sequences.ads:31
 red_black_trees.adb:437:07: medium: precondition might fail, cannot prove First (R) = First (S1)
@@ -691,8 +690,7 @@ red_black_trees.adb:515:81: medium: pointer dereference check might fail
 red_black_trees.adb:515:86: medium: pointer dereference check might fail
 red_black_trees.adb:515:94: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:515:100: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:515:102: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:515:102: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 451 should mention Pos]
+red_black_trees.adb:515:102: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:515:104: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:515:111: medium: pointer dereference check might fail
 red_black_trees.adb:515:116: medium: pointer dereference check might fail
@@ -723,14 +721,13 @@ red_black_trees.adb:530:56: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:532:16: medium: precondition might fail, cannot prove T.Right /= null
 red_black_trees.adb:532:30: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:536:16: medium: in inlined expression function body at infinite_sequences.ads:31
-red_black_trees.adb:536:16: medium: precondition might fail, cannot prove First (R) = First (S1) [possible fix: precondition of subprogram at line 451 should mention Pos]
+red_black_trees.adb:536:16: medium: precondition might fail, cannot prove Last (R) = Last (S3) [possible fix: precondition of subprogram at line 451 should mention Pos]
 red_black_trees.adb:536:51: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:536:65: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:536:81: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:536:89: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:536:95: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:536:97: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:536:97: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 451 should mention Pos]
+red_black_trees.adb:536:97: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:536:99: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:536:106: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:539:13: medium: precondition might fail, cannot prove T.Left /= null
@@ -951,8 +948,7 @@ red_black_trees.adb:687:54: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:687:57: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:687:63: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:687:70: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:687:77: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:687:77: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
+red_black_trees.adb:687:77: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:687:79: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:691:13: medium: precondition might fail, cannot prove Is_Sorted (T1) [possible fix: precondition of subprogram at line 626 should mention V]
 red_black_trees.adb:691:52: info: pointer dereference check proved (CVC5: 1 VC)
@@ -988,8 +984,8 @@ red_black_trees.adb:705:67: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:705:74: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:705:81: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:705:83: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:710:13: medium: in inlined expression function body at infinite_sequences.ads:32
-red_black_trees.adb:710:13: medium: precondition might fail, cannot prove First (S3) = Last (S1) + 2
+red_black_trees.adb:710:13: medium: in inlined expression function body at infinite_sequences.ads:33
+red_black_trees.adb:710:13: medium: precondition might fail, cannot prove S1 <= R
 red_black_trees.adb:710:49: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:710:63: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:710:79: info: pointer dereference check proved (CVC5: 1 VC)
@@ -1005,13 +1001,12 @@ red_black_trees.adb:712:43: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:712:50: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:712:57: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:712:59: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:716:13: medium: precondition might fail, cannot prove Is_Sorted (T1) [possible fix: precondition of subprogram at line 626 should mention V]
+red_black_trees.adb:716:13: medium: precondition might fail, cannot prove Is_Sorted (T2) [possible fix: precondition of subprogram at line 626 should mention V]
 red_black_trees.adb:716:52: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:716:60: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:716:66: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:716:73: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:716:80: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:716:80: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
+red_black_trees.adb:716:80: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:716:82: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:717:13: medium: in inlined expression function body at infinite_sequences.ads:31
 red_black_trees.adb:717:13: medium: precondition might fail, cannot prove First (R) = First (S1)

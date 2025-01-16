@@ -15,5 +15,5 @@ test.adb:25:56: high: loop invariant might not be preserved by an arbitrary iter
 test.adb:25:59: info: index check proved (CVC5: 4 VC)
 test.adb:30:48: info: data dependencies proved
 test.adb:34:56: high: loop invariant might fail in first iteration, cannot prove X (H) = I (e.g. when H = 1 and I = 2 and X = (others => 1))
-test.adb:34:56: high: loop invariant might not be preserved by an arbitrary iteration, cannot prove X (H) = I (e.g. when H = 1 and I = 1 and X = (1 => 2, others => 1))
+test.adb:34:56: high: loop invariant might not be preserved by an arbitrary iteration, cannot prove X (H) = I (e.g. when H = 1 and I = Integer'Last and X = (others => 1))
 test.adb:34:59: info: index check proved (CVC5: 4 VC)

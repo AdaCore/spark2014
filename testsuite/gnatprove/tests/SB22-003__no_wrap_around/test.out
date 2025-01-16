@@ -74,7 +74,7 @@ nwa.adb:165:14: info: range check proved (CVC5: 2 VC)
 nwa.adb:166:14: info: overflow check proved (CVC5: 1 VC)
 nwa.adb:166:14: info: range check proved (CVC5: 2 VC)
 nwa.adb:167:14: info: overflow check proved (Z3: 1 VC)
-nwa.adb:167:14: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+nwa.adb:167:14: info: range check proved (CVC5: 2 VC)
 nwa.adb:168:14: info: division check proved (CVC5: 1 VC)
 nwa.adb:175:14: medium: overflow check might fail [reason for check: result of multiplication must fit in a 64-bits machine integer] [possible fix: add precondition (X * Y in 0 .. 18446744073709551615) to subprogram at nwa.ads:55]
 nwa.adb:176:14: high: divide by zero might fail (e.g. when Y = 0) [possible fix: add precondition (Y /= 0) to subprogram at nwa.ads:55]

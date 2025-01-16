@@ -8,9 +8,9 @@ test_constant_string.adb:12:22: info: no contextual analysis of "Test_Strings" (
 test_constant_string.adb:12:22: info: precondition proved (CVC5: 2 VC)
 test_constant_string.adb:13:22: info: assertion proved (CVC5: 1 VC)
 test_constant_string.adb:13:22: info: precondition proved (CVC5: 1 VC)
-test_constant_string.adb:14:22: info: assertion proved (altergo: 1 VC)
+test_constant_string.adb:14:22: info: assertion proved (CVC5: 1 VC)
 test_constant_string.adb:14:22: info: precondition proved (CVC5: 2 VC)
-test_constant_string.adb:15:22: info: assertion proved (CVC5: 1 VC)
+test_constant_string.adb:15:22: info: assertion proved (altergo: 1 VC)
 test_constant_string.adb:15:22: info: precondition proved (CVC5: 3 VC)
 test_constant_string.adb:18:14: warning: subprogram "Test_Char_Array" has no effect
 test_constant_string.adb:19:24: info: precondition proved (CVC5: 1 VC)

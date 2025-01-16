@@ -40,6 +40,6 @@ q.adb:18:22: info: assertion proved (CVC5: 1 VC)
 q.adb:18:24: info: index check proved (CVC5: 2 VC)
 q.adb:18:32: info: index check proved (CVC5: 2 VC)
 q_initial.adb:5:03: info: data dependencies proved
-q_initial.adb:12:22: info: assertion proved (Z3: 1 VC)
+q_initial.adb:12:22: info: assertion proved (CVC5: 1 VC)
 q_initial.adb:12:24: info: index check proved (CVC5: 2 VC)
 q_initial.adb:12:32: info: index check proved (CVC5: 2 VC)

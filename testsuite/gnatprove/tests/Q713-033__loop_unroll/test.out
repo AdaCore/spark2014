@@ -26,7 +26,7 @@ lcp.adb:20:48: info: index check proved (CVC5: 20 VC)
 lcp.adb:20:48: info: overflow check proved (CVC5: 20 VC)
 lcp.adb:21:14: info: overflow check proved (CVC5: 20 VC)
 lcp.ads:10:10: info: implicit aspect Always_Terminates on "LCP" has been proved, subprogram will terminate
-lcp.ads:14:05: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC)
+lcp.ads:14:05: info: postcondition proved (CVC5: 2 VC)
 lcp.ads:14:47: info: index check proved (CVC5: 2 VC)
 lcp.ads:14:47: info: overflow check proved (CVC5: 2 VC)
 lcp.ads:14:59: info: index check proved (CVC5: 2 VC)

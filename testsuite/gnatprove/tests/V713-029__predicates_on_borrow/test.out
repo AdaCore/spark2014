@@ -286,7 +286,7 @@ main.adb:650:14: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:650:14: info: predicate check proved (CVC5: 1 VC)
 main.adb:651:19: info: in possible reconstructed values at the end of the borrow at main.adb:647
 main.adb:651:19: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:651:19: info: predicate check proved (Z3: 1 VC)
+main.adb:651:19: info: predicate check proved (CVC5: 1 VC)
 main.adb:660:39: info: in reconstructed value at the end of the borrow at main.adb:660
 main.adb:660:39: info: in reconstructed value at the end of the borrow at main.adb:660
 main.adb:660:39: info: in reconstructed value at the end of the borrow at main.adb:660
@@ -296,7 +296,7 @@ main.adb:660:39: info: predicate check proved (CVC5: 1 VC)
 main.adb:662:18: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:664:19: info: in possible reconstructed values at the end of the borrow at main.adb:656
 main.adb:664:19: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:664:19: info: predicate check proved (Z3: 1 VC)
+main.adb:664:19: info: predicate check proved (CVC5: 1 VC)
 main.adb:675:06: info: data dependencies proved
 main.adb:684:40: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:685:21: info: pointer dereference check proved (CVC5: 1 VC)

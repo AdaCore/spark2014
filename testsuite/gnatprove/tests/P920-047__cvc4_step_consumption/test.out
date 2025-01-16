@@ -62,7 +62,7 @@ memcpy.ads:24:43: warning: assuming "InMemoryRange" has no effect on global item
 memcpy.ads:24:43: warning: no Global contract available for "InMemoryRange" [assumed-global-null]
 memcpy.ads:25:42: warning: assuming "InSafeRegion64" has no effect on global items
 memcpy.ads:25:42: warning: no Global contract available for "InSafeRegion64" [assumed-global-null]
-memcpy.ads:35:08: medium: postcondition might fail, cannot prove (X86.Memory(X86.RSP'Old + 7) = X86.Memory'Old(X86.RSP'Old + 7))
+memcpy.ads:33:08: medium: postcondition might fail, cannot prove (X86.Memory(X86.RSP'Old + 5) = X86.Memory'Old(X86.RSP'Old + 5))
 memcpy.ads:37:45: warning: assuming "InMemoryRange" has no effect on global items
 memcpy.ads:37:45: warning: no Global contract available for "InMemoryRange" [assumed-global-null]
 memcpy.ads:38:42: warning: assuming "InSafeRegion64" has no effect on global items

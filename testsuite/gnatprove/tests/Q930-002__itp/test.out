@@ -182,7 +182,7 @@ bounded_dynamic_arrays.ads:170:14: info: postcondition proved (CVC5: 2 VC), in i
 bounded_dynamic_arrays.ads:170:28: info: index check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:175:13: info: implicit aspect Always_Terminates on "Location" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:182:13: info: implicit aspect Always_Terminates on "Location" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
-bounded_dynamic_arrays.ads:185:17: medium: postcondition might fail, cannot prove Location'Result = 0, in instantiation at bounded_dynamic_strings.ads:5 (e.g. when Fragment'First = 1 and Fragment'Last = 0)
+bounded_dynamic_arrays.ads:185:17: medium: postcondition might fail, cannot prove Location'Result = 0, in instantiation at bounded_dynamic_strings.ads:5 (e.g. when Fragment = (1 => 'NUL'))
 bounded_dynamic_arrays.ads:193:13: info: implicit aspect Always_Terminates on "Location" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:194:14: info: postcondition proved (CVC5: 4 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:199:13: info: implicit aspect Always_Terminates on "Contains" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5

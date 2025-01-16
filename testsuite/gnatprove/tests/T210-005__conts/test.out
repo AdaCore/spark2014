@@ -23,14 +23,14 @@ test_conts.adb:58:20: info: overflow check proved (CVC5: 2 VC)
 test_conts.adb:63:10: info: initialization of "L" proved
 test_conts.adb:63:19: info: range check proved (CVC5: 2 VC)
 test_conts.adb:64:10: info: initialization of "C" proved
-test_conts.adb:66:10: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_conts.adb:66:10: info: precondition proved (Z3: 2 VC)
 test_conts.adb:68:10: info: precondition proved (CVC5: 1 VC)
 test_conts.adb:70:20: info: overflow check proved (CVC5: 2 VC)
 test_conts.adb:75:10: info: initialization of "L" proved
 test_conts.adb:75:19: info: range check proved (CVC5: 2 VC)
 test_conts.adb:75:24: info: range check proved (CVC5: 2 VC)
 test_conts.adb:76:10: info: initialization of "C" proved
-test_conts.adb:78:10: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+test_conts.adb:78:10: info: precondition proved (Z3: 2 VC)
 test_conts.adb:80:10: info: precondition proved (Z3: 1 VC)
-test_conts.adb:82:20: info: overflow check proved (Z3: 2 VC)
+test_conts.adb:82:20: info: overflow check proved (CVC5: 2 VC)
 test_conts.adb:85:22: info: assertion proved (Z3: 1 VC)
