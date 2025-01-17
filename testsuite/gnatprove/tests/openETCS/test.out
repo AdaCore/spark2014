@@ -193,8 +193,8 @@ step_function.adb:112:13: info: loop invariant preservation proved (Trivial: 1 V
 step_function.adb:113:16: medium: "Merge.Step" might not be initialized
 step_function.adb:113:29: info: index check proved (CVC5: 4 VC)
 step_function.adb:115:13: info: loop invariant initialization proved (CVC5: 1 VC)
+step_function.adb:115:13: info: loop invariant preservation proved (Z3: 1 VC)
 step_function.adb:116:15: medium: "Merge.Step" might not be initialized
-step_function.adb:116:15: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Merge.Step(i-1).Delimiter < Merge.Step(i).Delimiter
 step_function.adb:116:27: info: index check proved (CVC5: 4 VC)
 step_function.adb:116:54: info: index check proved (CVC5: 4 VC)
 step_function.adb:120:13: info: loop invariant initialization proved (CVC5: 1 VC)
@@ -213,7 +213,7 @@ step_function.adb:133:30: info: index check proved (CVC5: 4 VC)
 step_function.adb:133:45: medium: "Merge.Step" might not be initialized
 step_function.adb:133:56: info: index check proved (CVC5: 4 VC)
 step_function.adb:135:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
-step_function.adb:137:20: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (for some j in 0..im-1 => SFun2.Step(i).Delimiter = Merge.Step(j).Delimiter)
+step_function.adb:135:13: info: loop invariant preservation proved (Trivial: 1 VC; Z3: 1 VC)
 step_function.adb:138:36: info: index check proved (CVC5: 4 VC)
 step_function.adb:138:51: medium: "Merge.Step" might not be initialized
 step_function.adb:138:62: info: index check proved (CVC5: 4 VC)
@@ -262,7 +262,7 @@ step_function.ads:74:50: info: index check proved (CVC5: 2 VC)
 step_function.ads:78:26: info: index check proved (CVC5: 2 VC)
 step_function.ads:80:53: info: index check proved (CVC5: 2 VC)
 step_function.ads:86:06: info: postcondition proved (CVC5: 6 VC)
-step_function.ads:104:13: medium: postcondition might fail, cannot prove (for some j in Num_Delimiters_Range'First..Merge.Number_Of_Delimiters => (Merge.Step(j).Delimiter = SFun1.Step(i).Delimiter))
+step_function.ads:101:04: medium: postcondition might fail, cannot prove Is_Valid(Merge)
 step_function.ads:106:30: info: index check proved (CVC5: 2 VC)
 step_function.ads:106:56: info: index check proved (CVC5: 2 VC)
 step_function.ads:111:30: info: index check proved (CVC5: 2 VC)

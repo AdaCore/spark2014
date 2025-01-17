@@ -23,28 +23,28 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
-  <proof prover="0"><result status="valid" steps="14"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="valid" steps="316"/></proof>
   <proof prover="2"><result status="valid" steps="268"/></proof>
-  <proof prover="4"><result status="failure" steps="0"/></proof>
+  <proof prover="4"><result status="valid" steps="34"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="0"><result status="valid" steps="156"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="valid" steps="330"/></proof>
-  <proof prover="2"><result status="valid" steps="290"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   <proof prover="4"><result status="failure" steps="0"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
   <proof prover="0"><result status="valid" steps="18"/></proof>
   <proof prover="1"><result status="valid" steps="291"/></proof>
-  <proof prover="2"><result status="failure" steps="0"/></proof>
-  <proof prover="4"><result status="failure" steps="0"/></proof>
+  <proof prover="2"><result status="valid" steps="321"/></proof>
+  <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
+  <proof prover="0"><result status="valid" steps="198"/></proof>
   <proof prover="1"><result status="valid" steps="404"/></proof>
   <proof prover="2"><result status="valid" steps="350"/></proof>
-  <proof prover="4"><result status="failure" steps="0"/></proof>
+  <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -56,7 +56,7 @@
   <proof prover="0"><result status="valid" steps="107"/></proof>
   <proof prover="1"><result status="valid" steps="410"/></proof>
   <proof prover="2"><result status="valid" steps="400"/></proof>
-  <proof prover="4"><result status="failure" steps="0"/></proof>
+  <proof prover="4"><result status="highfailure"/></proof>
   </goal>
  </transf>
  </goal>
