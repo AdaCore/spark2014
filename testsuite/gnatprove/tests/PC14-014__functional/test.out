@@ -190,6 +190,7 @@ use_lists.ads:83:21: info: precondition proved
 use_lists.ads:84:21: info: precondition proved
 use_lists.ads:85:23: info: precondition proved
 use_lists.ads:86:20: info: precondition proved
+use_lists.ads:96:14: info: postcondition proved
 use_lists.ads:96:42: info: overflow check proved
 use_lists.ads:97:30: info: precondition proved
 use_lists.ads:98:13: info: precondition proved
@@ -198,7 +199,6 @@ use_lists.ads:100:25: info: precondition proved
 use_lists.ads:101:14: info: precondition proved
 use_lists.ads:101:43: info: overflow check proved
 use_lists.ads:102:09: info: precondition proved
-use_lists.ads:102:09: medium: postcondition might fail, cannot prove Element (Model (L), I) = 0
 use_lists.ads:102:29: info: range check proved
 use_lists.ads:103:25: info: precondition proved
 use_lists.ads:103:54: info: overflow check proved

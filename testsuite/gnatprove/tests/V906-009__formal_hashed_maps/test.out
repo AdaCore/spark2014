@@ -86,8 +86,8 @@ test_map.adb:114:07: info: precondition proved
 test_map.adb:116:07: info: precondition proved
 test_map.adb:118:07: info: precondition proved
 test_map.adb:119:22: info: assertion proved
-test_map.adb:122:22: info: assertion proved
-test_map.adb:124:22: info: assertion proved
+test_map.adb:122:22: medium: assertion might fail
+test_map.adb:124:22: medium: assertion might fail
 test_map.adb:125:07: medium: assertion might fail
 test_map.adb:130:07: info: precondition proved
 test_map.adb:131:07: info: precondition proved

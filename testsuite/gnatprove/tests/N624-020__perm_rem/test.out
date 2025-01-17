@@ -327,7 +327,7 @@ perm.adb:300:25: info: precondition proved (CVC5: 3 VC)
 perm.adb:307:16: info: function contract might not be available on recursive calls
 perm.adb:309:18: info: precondition proved (CVC5: 2 VC)
 perm.adb:309:42: info: precondition proved (CVC5: 2 VC)
-perm.adb:310:17: info: postcondition proved (Trivial: 1 VC; altergo: 1 VC)
+perm.adb:310:17: info: postcondition proved (Trivial: 1 VC; Z3: 1 VC)
 perm.adb:310:54: info: precondition proved (CVC5: 2 VC)
 perm.adb:318:41: info: precondition proved (CVC5: 4 VC)
 perm.adb:319:41: info: precondition proved (CVC5: 3 VC)
@@ -368,7 +368,7 @@ perm.adb:360:45: info: range check proved (CVC5: 2 VC)
 perm.adb:360:51: info: precondition proved (CVC5: 3 VC)
 perm.adb:361:29: info: precondition proved (CVC5: 3 VC)
 perm.adb:362:25: info: assertion proved (CVC5: 1 VC)
-perm.adb:364:12: medium: precondition might fail, cannot prove Is_Perm (A, B)
+perm.adb:364:12: info: precondition proved (CVC5: 2 VC; Z3: 1 VC)
 perm.ads:6:13: info: implicit aspect Always_Terminates on "Invariant" has been proved, subprogram will terminate
 perm.ads:9:13: info: implicit aspect Always_Terminates on "Remove" has been proved, subprogram will terminate
 perm.ads:11:14: info: postcondition proved (CVC5: 5 VC)
