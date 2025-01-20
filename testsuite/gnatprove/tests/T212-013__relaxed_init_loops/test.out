@@ -50,7 +50,7 @@ test_loops.adb:101:10: info: precondition proved (CVC5: 2 VC)
 test_loops.adb:101:36: info: range check proved (CVC5: 1 VC)
 test_loops.adb:103:13: info: precondition proved (CVC5: 4 VC)
 test_loops.adb:103:37: info: range check proved (CVC5: 2 VC)
-test_loops.adb:104:36: info: loop invariant preservation proved (CVC5: 1 VC)
+test_loops.adb:104:36: info: loop invariant preservation proved (Z3: 1 VC)
 test_loops.adb:104:59: medium: loop invariant might fail in first iteration, cannot prove X.G1 (K).F1'Initialized
 test_loops.adb:104:65: info: index check proved (CVC5: 4 VC)
 test_loops.adb:107:19: info: index check proved (CVC5: 4 VC)

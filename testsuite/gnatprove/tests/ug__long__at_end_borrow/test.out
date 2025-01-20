@@ -73,17 +73,11 @@ list_borrows.adb:80:20: info: pointer dereference check proved
 list_borrows.adb:81:19: info: assertion proved
 list_borrows.adb:81:20: info: pointer dereference check proved
 list_borrows.adb:81:25: info: pointer dereference check proved
-
-list_borrows.adb:82:19: medium: assertion might fail
-   82 |   pragma Assert (X.Next.Next.Val = 42);
-      |                  ^~~~~~~~~~~~~~~~~~~~
+list_borrows.adb:82:19: info: assertion proved
 list_borrows.adb:82:20: info: pointer dereference check proved
 list_borrows.adb:82:25: info: pointer dereference check proved
 list_borrows.adb:82:30: info: pointer dereference check proved
-
-list_borrows.adb:83:19: medium: assertion might fail
-   83 |   pragma Assert (X.Next.Next.Next.Val = 4);
-      |                  ^~~~~~~~~~~~~~~~~~~~~~~~
+list_borrows.adb:83:19: info: assertion proved
 list_borrows.adb:83:20: info: pointer dereference check proved
 list_borrows.adb:83:25: info: pointer dereference check proved
 list_borrows.adb:83:30: info: pointer dereference check proved

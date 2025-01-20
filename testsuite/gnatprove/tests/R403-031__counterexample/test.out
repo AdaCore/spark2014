@@ -12,5 +12,5 @@ p.adb:37:25: medium: implicit aspect Always_Terminates on "Sqrt_Von_Neumann_Aux1
 p.adb:39:25: medium: assertion might fail (e.g. when M = 14 and Res = 32769 and Res_G = 32767) [possible fix: loop at line 37 should mention M and Res and Res_G in a loop invariant]
 p.adb:40:25: medium: assertion might fail (e.g. when Bits_G = 32769 and M = 15) [possible fix: loop at line 37 should mention Bits_G and M in a loop invariant]
 p.adb:42:25: medium: assertion might fail (e.g. when B = 49152 and Bits = 49152 and Res = 32768) [possible fix: loop at line 37 should mention B and Res in a loop invariant]
-p.adb:43:25: medium: assertion might fail (e.g. when B = 35681 and Bits_G = 16384 and M = 14 and Res_G = 53663) [possible fix: loop at line 37 should mention B and Bits_G and M and Res_G in a loop invariant]
+p.adb:43:25: medium: assertion might fail (e.g. when B = 57820 and Bits_G = 16384 and M = 14 and Res_G = 39511) [possible fix: loop at line 37 should mention B and Bits_G and M and Res_G in a loop invariant]
 p.adb:53:23: info: division check proved (CVC5: 1 VC)

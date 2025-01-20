@@ -114,11 +114,11 @@ evoting.ads:81:07: info: initialization of "chosen_vote" proved
 evoting.ads:83:17: info: postcondition proved (CVC5: 1 VC)
 evoting.ads:84:41: info: exceptional case proved (Trivial: 1 VC)
 evoting.ads:86:13: info: implicit aspect Always_Terminates on "Counters_Sum" has been proved, subprogram will terminate
-evoting.ads:98:17: info: postcondition proved (Z3: 1 VC)
+evoting.ads:98:17: info: postcondition proved (CVC5: 1 VC)
 evoting.ads:99:33: info: index check proved (CVC5: 2 VC)
 evoting.ads:100:41: info: exceptional case proved (Trivial: 1 VC)
 evoting.ads:106:07: medium: "winners" might not be initialized in "Compute_Winner" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "winners" on all paths, make "winners" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
-evoting.ads:108:17: info: postcondition proved (CVC5: 3 VC; Trivial: 2 VC; Z3: 1 VC)
+evoting.ads:108:17: info: postcondition proved (CVC5: 4 VC; Trivial: 2 VC)
 evoting.ads:109:29: info: range check proved (CVC5: 2 VC)
 evoting.ads:110:27: medium: "winners" might not be initialized
 evoting.ads:110:59: info: index check proved (CVC5: 2 VC)

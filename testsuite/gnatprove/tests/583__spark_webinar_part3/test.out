@@ -100,17 +100,17 @@ use_memory.adb:8:19: medium: precondition might fail, cannot prove Is_Initialize
 use_memory.adb:10:04: info: precondition proved (CVC5: 4 VC)
 use_memory.adb:11:19: info: assertion proved (Z3: 1 VC)
 use_memory.adb:11:19: info: precondition proved (CVC5: 4 VC)
-use_memory.adb:13:04: info: precondition proved (CVC5: 3 VC; Z3: 1 VC)
+use_memory.adb:13:04: info: precondition proved (CVC5: 4 VC)
 use_memory.adb:14:19: info: assertion proved (Z3: 1 VC)
 use_memory.adb:14:19: info: precondition proved (CVC5: 3 VC; Z3: 1 VC)
 use_memory.adb:18:04: info: precondition proved (Z3: 4 VC)
-use_memory_with_model.adb:6:04: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
+use_memory_with_model.adb:6:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 use_memory_with_model.adb:8:04: info: precondition proved (CVC5: 4 VC)
 use_memory_with_model.adb:9:19: info: assertion proved (Z3: 1 VC)
 use_memory_with_model.adb:9:19: info: precondition proved (CVC5: 3 VC)
 use_memory_with_model.adb:11:04: info: precondition proved (CVC5: 4 VC)
+use_memory_with_model.adb:12:19: info: assertion proved (Z3: 1 VC)
 use_memory_with_model.adb:12:19: info: precondition proved (CVC5: 3 VC)
-use_memory_with_model.adb:12:19: medium: assertion might fail
 use_simple_memory.adb:8:19: info: assertion proved (CVC5: 1 VC)
 use_simple_memory.adb:9:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Read or turning it into an expression function in its unit spec]
 use_simple_memory.adb:9:19: medium: precondition might fail

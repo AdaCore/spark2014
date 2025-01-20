@@ -166,7 +166,7 @@ patience.ads:115:32: info: index check proved (CVC5: 2 VC)
 patience.ads:115:39: info: index check proved (CVC5: 2 VC)
 patience.ads:115:56: info: index check proved (CVC5: 2 VC)
 patience.ads:122:14: info: aspect Always_Terminates on "PlayCard" has been proved, subprogram will terminate
-patience.ads:125:18: info: postcondition proved (CVC5: 3 VC)
+patience.ads:125:18: info: postcondition proved (CVC5: 2 VC; Z3: 1 VC)
 patience.ads:125:47: info: index check proved (CVC5: 2 VC)
 patience.ads:128:13: info: implicit aspect Always_Terminates on "PlayGame" has been proved, subprogram will terminate
 patience.ads:131:14: info: postcondition proved (CVC5: 1 VC)

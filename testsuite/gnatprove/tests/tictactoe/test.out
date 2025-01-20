@@ -19,11 +19,11 @@ tictactoe.adb:105:30: info: unrolling loop
 tictactoe.adb:108:34: info: overflow check proved (CVC5: 96 VC)
 tictactoe.adb:110:34: info: overflow check proved (CVC5: 96 VC)
 tictactoe.adb:115:28: info: unrolling loop
-tictactoe.adb:127:10: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-tictactoe.adb:131:22: info: assertion proved (altergo: 1 VC)
+tictactoe.adb:127:10: info: precondition proved (CVC5: 2 VC)
+tictactoe.adb:131:22: info: assertion proved (CVC5: 1 VC)
 tictactoe.adb:133:31: info: unrolling loop
 tictactoe.adb:134:37: info: unrolling loop
-tictactoe.adb:136:16: info: precondition proved (CVC5: 9 VC; altergo: 9 VC)
+tictactoe.adb:136:16: info: precondition proved (CVC5: 18 VC)
 tictactoe.adb:145:28: info: unrolling loop
 tictactoe.adb:146:23: info: unrolling loop
 tictactoe.adb:161:07: info: initialization of "Score" proved
