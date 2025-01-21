@@ -610,7 +610,7 @@ loop involves a reborrow (in this case the value of the borrower at the end
 of the borrow is modified inside the loop and needs to be described in the
 invariant). Let us consider the following example:
 
-.. literalinclude:: /examples/ug__long__at_end_borrow/list_borrows.adb
+.. literalinclude:: /examples/ug__at_end_borrow/list_borrows.adb
    :language: ada
    :linenos:
 
@@ -689,7 +689,7 @@ changes that can be made to ``X`` during the rest of the borrow, there is no
 look ahead. Both ``Tail`` and ``Set_All_To_Zero`` can be entirely verified
 by |GNATprove|:
 
-.. literalinclude:: /examples/ug__long__at_end_borrow/test.out
+.. literalinclude:: /examples/ug__at_end_borrow/test.out
    :language: none
    :linenos:
 

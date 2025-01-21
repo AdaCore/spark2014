@@ -276,15 +276,15 @@ of its array parameter (but it is not the only one, see :ref:`Ghost Variables`).
 The :ref:`Functional Containers Library` of SPARK provides an implementation
 of multisets that we use here:
 
-.. literalinclude:: /examples/ug__long__perm/nat_multisets.ads
+.. literalinclude:: /examples/ug__perm/nat_multisets.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: /examples/ug__long__perm/sort_types.ads
+.. literalinclude:: /examples/ug__perm/sort_types.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: /examples/ug__long__perm/perm.ads
+.. literalinclude:: /examples/ug__perm/perm.ads
    :language: ada
    :linenos:
 
@@ -301,21 +301,21 @@ axiom is needed, like in manual proofs in an interactive theorem prover. Here
 is how a lemma subprogram can be defined for the desired property of
 ``Occurrences``:
 
-.. literalinclude:: /examples/ug__long__perm/perm-lemma_subprograms.ads
+.. literalinclude:: /examples/ug__perm/perm-lemma_subprograms.ads
    :language: ada
 
 This "axiom" can then be used to prove an implementation of the selection
 sort algorithm. The lemma subprogram needs to be explicitely called when needed:
 
-.. literalinclude:: /examples/ug__long__sort/sort.adb
+.. literalinclude:: /examples/ug__sort/sort.adb
    :language: ada
 
-.. literalinclude:: /examples/ug__long__sort/sort.ads
+.. literalinclude:: /examples/ug__sort/sort.ads
    :language: ada
 
 The procedure ``Selection_Sort`` can be verified using |GNATprove| at level 2.
 
-.. literalinclude:: /examples/ug__long__sort/test.out
+.. literalinclude:: /examples/ug__sort/test.out
    :language: none
 
 To complete the verification of our selection sort, the only remaining issue
@@ -327,12 +327,12 @@ itself to assert the induction hypothesis. Note that the proof of the
 lemma is then conditioned to the termination of the lemma functions, which
 can be verified by |GNATprove| using a :ref:`Subprogram Variant`.
 
-.. literalinclude:: /examples/ug__long__perm/perm-lemma_subprograms.adb
+.. literalinclude:: /examples/ug__perm/perm-lemma_subprograms.adb
    :language: ada
 
 |GNATprove| proves automatically all checks on the final program at level 2.
 
-.. literalinclude:: /examples/ug__long__perm/test.out
+.. literalinclude:: /examples/ug__perm/test.out
    :language: none
 
 .. index:: manual proof; using Coq
