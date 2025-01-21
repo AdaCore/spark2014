@@ -66,14 +66,14 @@
   </goal>
   <goal name="def&#39;vc.10" proved="true">
   <proof prover="0"><result status="valid" steps="641"/></proof>
-  <proof prover="1"><result status="valid" steps="16202"/></proof>
-  <proof prover="2"><result status="valid" steps="38968"/></proof>
+  <proof prover="1"><result status="valid" steps="16190"/></proof>
+  <proof prover="2"><result status="valid" steps="38964"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
   <proof prover="0"><result status="valid" steps="550"/></proof>
-  <proof prover="1"><result status="valid" steps="16616"/></proof>
-  <proof prover="2"><result status="valid" steps="41527"/></proof>
+  <proof prover="1"><result status="valid" steps="16604"/></proof>
+  <proof prover="2"><result status="valid" steps="41523"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
  </transf>

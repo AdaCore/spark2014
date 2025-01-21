@@ -1,1 +1,1 @@
-list_allocator.adb:236:13: medium: assertion might fail, cannot prove Data (Get (Model.Available, J)).Next = (if J < Length (Model.Available) then Get (Model.Available, J + 1) else No_Resource)
+list_allocator.adb:233:11: info: assertion proved (CVC5: 2 VC; Z3: 1 VC)
