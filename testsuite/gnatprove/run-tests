@@ -330,11 +330,12 @@ class UGTestDriver(DiffTestDriver):
         # Tests withing SPARK libraries need this switch
         cmd += ["--no-subprojects"]
 
-        # tests prefixed by ug__long__ require more steps to prove
-        if self.test_env["test_name"].startswith("ug__long__"):
-            cmd += ["--steps=19000"]
-        else:
-            cmd += ["--steps=200"]
+        steps = 200
+        yamlfile = os.path.join(self.test_env["working_dir"], "test.yaml")
+        if os.path.exists(yamlfile):
+            config = e3.yaml.load_ordered(yamlfile)
+            steps = config["steps"]
+        cmd += [f"--steps={steps}"]
 
         start_time = time.time()
         self.shell(cmd, env=env, catch_error=False)
