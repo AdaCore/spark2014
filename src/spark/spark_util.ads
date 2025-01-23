@@ -930,17 +930,28 @@ package SPARK_Util is
    procedure Register_Prophecy_Save (E : Entity_Id);
    --  Registers that E saves a prophecy variable.
 
+   function Path_Contains_Witness
+     (Expr : N_Subexpr_Id;
+      Test : access function (N : Node_Id) return Boolean)
+      return Boolean
+     with Pre => Is_Path_Expression (Expr);
+   --  Check whether the path contains a node satisfying predicate Test.
+
    function Path_Contains_Qualified_Expr (Expr : N_Subexpr_Id) return Boolean
    with
      Pre => Is_Path_Expression (Expr)
        and then Present (Get_Root_Object (Expr));
    --  Return True if the path from Expr contains a qualified expression
 
-   function Path_Contains_Traversal_Calls (Expr : N_Subexpr_Id) return Boolean
+   function Path_Contains_Traversal_Calls
+     (Expr         : N_Subexpr_Id;
+      Only_Observe : Boolean := False)
+      return Boolean
    with
      Pre => Is_Path_Expression (Expr);
    --  Return True if the path from Expr contains a call to a traversal
-   --  function.
+   --  function. If Only_Observe is True, borrowing traversal functions are
+   --  ignored.
 
    function Traverse_Access_To_Constant (Expr : N_Subexpr_Id) return Boolean
    with
