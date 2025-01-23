@@ -478,7 +478,8 @@ package body SPARK_Util.Subprograms is
       end case;
 
       --  If Inherited is True, look for an inherited contract, starting from
-      --  the closest overridden subprogram.
+      --  the closest overridden subprogram. Skips subprograms overridden
+      --  outside of SPARK boundaries.
 
       --  ??? Does not work for multiple inheritance through interfaces
 
@@ -487,14 +488,14 @@ package body SPARK_Util.Subprograms is
 
       elsif Inherited then
          declare
-            Inherit_Subp : constant Subprogram_List :=
-              Inherited_Subprograms (E);
+            Walk_Cursor     : Entity_Id := E;
             Inherit_Pragmas : Node_Lists.List;
          begin
-            for J in Inherit_Subp'Range loop
+            loop
+               Walk_Cursor := Visible_Overridden_Operation (Walk_Cursor);
+               exit when No (Walk_Cursor);
                Inherit_Pragmas :=
-                 Filter_Classwide_Contracts
-                   (Pragmas, Ultimate_Alias (Inherit_Subp (J)));
+                 Filter_Classwide_Contracts (Pragmas, Walk_Cursor);
                exit when not Inherit_Pragmas.Is_Empty;
             end loop;
             Pragmas := Inherit_Pragmas;
