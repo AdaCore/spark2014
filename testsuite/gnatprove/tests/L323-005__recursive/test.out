@@ -1,4 +1,4 @@
-p.adb:6:23: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+p.adb:6:23: info: assertion proved (CVC5: 1 VC)
 p.ads:2:14: info: function contract might not be available on recursive calls
 p.ads:3:15: info: postcondition proved (CVC5: 1 VC)
 p.ads:3:25: medium: implicit aspect Always_Terminates on "Id" could be incorrect, subprogram is recursive [possible fix: annotate "Id" with a Subprogram_Variant aspect]
