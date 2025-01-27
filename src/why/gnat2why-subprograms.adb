@@ -3207,6 +3207,7 @@ package body Gnat2Why.Subprograms is
         (if Is_Expression_Function_Or_Completion (E)
          and then not Has_Contracts (E, Pragma_Postcondition)
          and then No (Get_Pragma (E, Pragma_Contract_Cases))
+         and then not Is_Recursive (E)
          then Symbol_Sets.To_Set (NID (GP_Inline_Marker))
          else Symbol_Sets.Empty_Set);
 
@@ -8781,36 +8782,54 @@ package body Gnat2Why.Subprograms is
 
       --  Given an expression function F with expression E, define an axiom
       --  that states that: "for all <args> => F(<args>) = E".
-      --  There is no need to use the precondition here, as the above axiom
-      --  is always sound.
+      --  Except when F is recursive, there is no need to use the precondition
+      --  here, as the above axiom is always sound.
 
-      if Is_Standard_Boolean_Type (Etype (E)) then
-         Emit
-           (Expr_Fun_Axiom_Th,
-            New_Defining_Bool_Axiom
-              (Ada_Node => E,
-               Name     => Logic_Id,
-               Binders  => Flat_Binders,
-               Dep_Kind => EW_Axdep_Func,
-               Def      => Transform_Pred (Expr, Params)));
-
-      else
-         declare
-            Equ_Ty : constant W_Type_Id := Type_Of_Node (E);
-         begin
+      declare
+         Guard : W_Pred_Id := Why_Empty;
+      begin
+         if Is_Recursive (E) then
+            Guard := +New_And_Then_Expr
+              (Left   => +Compute_Guard_Formula (Logic_Func_Binders, Params),
+               Right  => +Compute_Type_Invariants_For_Subprogram
+                 (E, Params, True),
+               Domain => EW_Pred);
+            Guard := +New_And_Then_Expr
+              (Left   => +Guard,
+               Right  =>
+                 +Compute_Spec (Params, E, Pragma_Precondition, EW_Pred),
+               Domain => EW_Pred);
+         end if;
+         if Is_Standard_Boolean_Type (Etype (E)) then
             Emit
               (Expr_Fun_Axiom_Th,
-               New_Defining_Axiom
+               New_Defining_Bool_Axiom
                  (Ada_Node => E,
                   Name     => Logic_Id,
                   Binders  => Flat_Binders,
-                  Def      => +Transform_Expr
-                    (Expr,
-                     Expected_Type => Equ_Ty,
-                     Domain        => EW_Term,
-                     Params        => Params)));
-         end;
-      end if;
+                  Pre      => Guard,
+                  Dep_Kind => EW_Axdep_Func,
+                  Def      => Transform_Pred (Expr, Params)));
+
+         else
+            declare
+               Equ_Ty : constant W_Type_Id := Type_Of_Node (E);
+            begin
+               Emit
+                 (Expr_Fun_Axiom_Th,
+                  New_Defining_Axiom
+                    (Ada_Node => E,
+                     Name     => Logic_Id,
+                     Binders  => Flat_Binders,
+                     Pre      => Guard,
+                     Def      => +Transform_Expr
+                       (Expr,
+                        Expected_Type => Equ_Ty,
+                        Domain        => EW_Term,
+                        Params        => Params)));
+            end;
+         end if;
+      end;
 
       --  If the function is a traversal function add an axiom to assume the
       --  value of its borrowed at end function.

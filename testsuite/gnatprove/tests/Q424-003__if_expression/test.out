@@ -58,6 +58,5 @@ string_utilities.ads:7:06: medium: implicit aspect Always_Terminates on "Is_Subs
 string_utilities.ads:13:12: info: implicit function contract might not be available on recursive calls
 string_utilities.ads:15:06: medium: implicit aspect Always_Terminates on "Slow_LCS_Length" could be incorrect, subprogram is recursive [possible fix: annotate "Slow_LCS_Length" with a Subprogram_Variant aspect]
 string_utilities.ads:17:15: medium: overflow check might fail, cannot prove upper bound for 1 + Slow_LCS_Length (Tail (S1), Tail (S2)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (1 <= Integer'Last - Slow_LCS_Length (Tail (S1), Tail (S2))) to subprogram at line 13]
-string_utilities.ads:24:06: medium: in inlined expression function body at string_utilities.ads:10
-string_utilities.ads:24:06: medium: postcondition might fail, cannot prove Is_Subsequence (Tail (Subseq), Tail (Seq))
+string_utilities.ads:24:06: medium: postcondition might fail, cannot prove Is_Subsequence (Longest_Common_Subsequence'Result, S1)
 string_utilities.ads:26:39: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
