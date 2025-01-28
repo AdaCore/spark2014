@@ -62,7 +62,7 @@ test_list_search.adb:26:61: info: pointer dereference check proved (CVC5: 1 VC)
 test_list_search.adb:34:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
 test_list_search.adb:35:07: info: dynamic accessibility check proved (Trivial)
 test_list_search.adb:40:14: info: postcondition proved (CVC5: 1 VC)
-test_list_search.adb:42:22: info: exceptional case proved (CVC5: 1 VC; Z3: 1 VC)
+test_list_search.adb:42:22: info: exceptional case proved (CVC5: 2 VC)
 test_list_search.adb:42:36: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
 test_list_search.adb:42:65: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
 test_list_search.adb:43:22: info: exceptional case proved (CVC5: 3 VC)

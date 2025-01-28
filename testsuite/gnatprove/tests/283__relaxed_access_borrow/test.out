@@ -48,16 +48,16 @@ test_relaxed_reborrow.adb:79:36: info: loop invariant initialization proved (CVC
 test_relaxed_reborrow.adb:79:36: info: loop invariant preservation proved (CVC5: 1 VC)
 test_relaxed_reborrow.adb:79:53: info: initialization check proved (CVC5: 2 VC)
 test_relaxed_reborrow.adb:81:16: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
-test_relaxed_reborrow.adb:81:16: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
+test_relaxed_reborrow.adb:81:16: info: loop invariant preservation proved (Trivial: 1 VC; Z3: 1 VC)
 test_relaxed_reborrow.adb:81:36: info: initialization check proved (CVC5: 2 VC)
 test_relaxed_reborrow.adb:81:69: info: initialization check proved (CVC5: 2 VC)
 test_relaxed_reborrow.adb:82:18: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_reborrow.adb:82:19: info: for pointer allocation at test_relaxed_reborrow.adb:25
-test_relaxed_reborrow.adb:82:19: info: initialization check proved (CVC5: 1 VC)
+test_relaxed_reborrow.adb:82:19: info: initialization check proved (Z3: 1 VC)
 test_relaxed_reborrow.adb:82:19: info: null exclusion check proved (CVC5: 1 VC)
 test_relaxed_reborrow.adb:83:23: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_reborrow.adb:83:24: info: for pointer allocation at test_relaxed_reborrow.adb:25
-test_relaxed_reborrow.adb:83:24: info: initialization check proved (CVC5: 1 VC)
+test_relaxed_reborrow.adb:83:24: info: initialization check proved (Z3: 1 VC)
 test_relaxed_reborrow.adb:85:10: info: absence of resource or memory leak proved (CVC5: 1 VC; Trivial: 1 VC)
 test_relaxed_reborrow.adb:85:16: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_reborrow.adb:85:17: info: for pointer allocation at test_relaxed_reborrow.adb:25
@@ -110,11 +110,11 @@ test_relaxed_reborrow.adb:131:53: medium: loop invariant might not be preserved 
 test_relaxed_reborrow.adb:131:70: info: initialization check proved (CVC5: 2 VC)
 test_relaxed_reborrow.adb:133:18: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_reborrow.adb:133:19: info: for pointer allocation at test_relaxed_reborrow.adb:25
-test_relaxed_reborrow.adb:133:19: info: initialization check proved (CVC5: 1 VC)
+test_relaxed_reborrow.adb:133:19: info: initialization check proved (Z3: 1 VC)
 test_relaxed_reborrow.adb:133:19: info: null exclusion check proved (CVC5: 1 VC)
 test_relaxed_reborrow.adb:134:23: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_reborrow.adb:134:24: info: for pointer allocation at test_relaxed_reborrow.adb:25
-test_relaxed_reborrow.adb:134:24: info: initialization check proved (CVC5: 1 VC)
+test_relaxed_reborrow.adb:134:24: info: initialization check proved (Z3: 1 VC)
 test_relaxed_reborrow.adb:136:10: info: absence of resource or memory leak proved (CVC5: 1 VC; Trivial: 1 VC)
 test_relaxed_reborrow.adb:136:16: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_reborrow.adb:136:17: info: for pointer allocation at test_relaxed_reborrow.adb:25
