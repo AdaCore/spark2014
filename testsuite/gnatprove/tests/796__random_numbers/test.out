@@ -1,0 +1,61 @@
+test_di_bad.adb:8:04: info: initialization of "G" proved
+test_di_bad.adb:12:04: info: initialization of "X" proved
+test_di_bad.adb:12:07: info: initialization of "Y" proved
+test_di_bad.adb:18:19: medium: assertion might fail (e.g. when X = -1 and Y = 0)
+test_di_bad2.adb:15:22: error: constant object as "in" parameter of an access-to-variable type is not allowed in SPARK
+test_di_bad2.adb:15:22: error: violation of aspect SPARK_Mode at line 4
+test_di_bad2.adb:22:09: info: analyzing call to "Get_Random" in context
+test_di_good.adb:9:04: info: initialization of "G" proved
+test_di_good.adb:13:04: info: initialization of "X" proved
+test_di_good.adb:13:07: info: initialization of "Y" proved
+test_di_good.adb:21:21: info: range check proved (CVC5: 2 VC)
+test_di_good.adb:21:30: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+test_di_good.adb:21:41: info: range check proved (CVC5: 2 VC)
+test_di_good.adb:21:52: info: range check proved (CVC5: 2 VC)
+test_di_good.adb:21:61: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+test_di_good.adb:27:21: info: range check proved (CVC5: 2 VC)
+test_di_good.adb:27:30: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+test_di_good.adb:32:20: info: unrolling loop
+test_di_good.adb:34:24: info: range check proved (CVC5: 6 VC)
+test_di_good.adb:34:33: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+test_di_good.adb:40:20: info: unrolling loop
+test_di_good.adb:42:24: info: range check proved (CVC5: 6 VC)
+test_di_good.adb:42:33: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+test_di_good.adb:48:07: info: initialization of "S1" proved
+test_di_good.adb:48:11: info: initialization of "S2" proved
+test_di_good.adb:56:24: info: range check proved (CVC5: 2 VC)
+test_di_good.adb:56:33: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+test_di_good.adb:61:24: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+test_di_good.adb:61:33: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+test_di_good.adb:65:20: warning: "G" is set by "Random" but not used after the call
+test_di_good.adb:66:24: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+test_di_good.adb:66:33: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+test_fl_bad.adb:5:04: info: initialization of "G" proved
+test_fl_bad.adb:9:04: info: initialization of "X" proved
+test_fl_bad.adb:9:07: info: initialization of "Y" proved
+test_fl_bad.adb:15:19: medium: assertion might fail
+test_fl_bad2.adb:12:22: error: constant object as "in" parameter of an access-to-variable type is not allowed in SPARK
+test_fl_bad2.adb:12:22: error: violation of aspect SPARK_Mode at line 4
+test_fl_bad2.adb:19:09: info: analyzing call to "Get_Random" in context
+test_fl_good.adb:6:04: info: initialization of "G" proved
+test_fl_good.adb:10:04: info: initialization of "X" proved
+test_fl_good.adb:17:21: info: range check proved (CVC5: 2 VC)
+test_fl_good.adb:17:28: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+test_fl_good.adb:23:21: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+test_fl_good.adb:23:28: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+test_fl_good.adb:28:20: info: unrolling loop
+test_fl_good.adb:30:24: info: range check proved (CVC5: 3 VC; Z3: 3 VC)
+test_fl_good.adb:30:31: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+test_fl_good.adb:36:20: info: unrolling loop
+test_fl_good.adb:38:24: info: range check proved (CVC5: 3 VC; Z3: 3 VC)
+test_fl_good.adb:38:31: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+test_fl_good.adb:44:07: info: initialization of "S1" proved
+test_fl_good.adb:44:11: info: initialization of "S2" proved
+test_fl_good.adb:52:24: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+test_fl_good.adb:52:31: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+test_fl_good.adb:57:24: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+test_fl_good.adb:57:31: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+test_fl_good.adb:61:20: warning: "G" is set by "Random" but not used after the call
+test_fl_good.adb:62:24: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
+test_fl_good.adb:62:31: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+gnatprove: error during flow analysis and proof
