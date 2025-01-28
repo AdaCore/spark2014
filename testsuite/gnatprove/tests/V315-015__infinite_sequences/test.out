@@ -85,7 +85,7 @@ sequences.adb:107:13: info: implicit aspect Always_Terminates on "Set" has been 
 sequences.adb:111:45: info: range check proved (CVC5: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:112:13: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:112:25: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
-sequences.adb:114:08: info: postcondition proved (CVC5: 3 VC; Trivial: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:114:08: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC; Z3: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:114:08: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:114:29: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:115:17: info: precondition proved (CVC5: 1 VC), in instantiation at use_list.adb:3
@@ -109,7 +109,7 @@ sequences.adb:130:60: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), 
 sequences.adb:130:62: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:138:18: info: precondition proved (CVC5: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:140:13: info: implicit aspect Always_Terminates on "Add" has been proved, subprogram will terminate, in instantiation at use_list.adb:3
-sequences.adb:143:08: info: postcondition proved (CVC5: 2 VC; Z3: 1 VC), in instantiation at use_list.adb:3
+sequences.adb:143:08: info: postcondition proved (CVC5: 3 VC), in instantiation at use_list.adb:3
 sequences.adb:143:08: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:143:29: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:143:51: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
@@ -129,7 +129,7 @@ sequences.adb:167:45: info: range check proved (CVC5: 1 VC), in instantiation at
 sequences.adb:168:14: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:168:26: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:168:47: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
-sequences.adb:170:08: info: postcondition proved (CVC5: 4 VC; Trivial: 2 VC), in instantiation at use_list.adb:3
+sequences.adb:170:08: info: postcondition proved (CVC5: 3 VC; Trivial: 2 VC; Z3: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:170:08: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:170:29: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:170:51: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
@@ -337,7 +337,7 @@ sequences.ads:207:08: info: precondition proved (CVC5: 1 VC), in instantiation a
 sequences.ads:208:19: info: precondition proved (CVC5: 1 VC), in instantiation at use_list.adb:3
 sequences.ads:210:13: info: implicit aspect Always_Terminates on "Add" has been proved, subprogram will terminate, in instantiation at use_list.adb:3
 sequences.ads:215:06: info: data dependencies proved, in instantiation at use_list.adb:3
-sequences.ads:217:08: info: postcondition proved (CVC5: 2 VC; altergo: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:217:08: info: postcondition proved (CVC5: 3 VC), in instantiation at use_list.adb:3
 sequences.ads:217:08: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.ads:217:30: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.ads:217:51: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
@@ -363,7 +363,7 @@ sequences.ads:246:13: info: implicit aspect Always_Terminates on "Remove" has be
 sequences.ads:253:06: info: data dependencies proved, in instantiation at use_list.adb:3
 sequences.ads:254:16: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.ads:254:28: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
-sequences.ads:256:08: info: postcondition proved (CVC5: 2 VC; Z3: 1 VC), in instantiation at use_list.adb:3
+sequences.ads:256:08: info: postcondition proved (CVC5: 3 VC), in instantiation at use_list.adb:3
 sequences.ads:256:08: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.ads:256:33: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.ads:256:54: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3

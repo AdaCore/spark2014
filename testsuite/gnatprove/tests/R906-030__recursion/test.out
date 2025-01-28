@@ -1,4 +1,4 @@
-pack.adb:5:14: info: postcondition proved (Z3: 1 VC)
+pack.adb:5:14: info: postcondition proved (CVC5: 1 VC)
 pack.adb:11:07: info: precondition proved (CVC5: 1 VC)
 pack.adb:11:21: info: range check proved (CVC5: 4 VC)
 pack.adb:11:42: info: overflow check proved (CVC5: 2 VC)
