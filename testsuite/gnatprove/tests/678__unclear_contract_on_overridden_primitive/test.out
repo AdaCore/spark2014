@@ -1,0 +1,15 @@
+unclear.ads:16:17: error: consider adding a specific precondition to subprogram "P"
+unclear.ads:16:17: error: dispatching primitive subprogram overriding declared for a private untagged type with no precondition and a class-wide precondition inherited from ancestor is not yet supported
+unclear.ads:24:17: error: consider adding a specific precondition to subprogram "P"
+unclear.ads:24:17: error: dispatching primitive subprogram overriding declared for a private untagged type with no precondition and a class-wide precondition inherited from ancestor is not yet supported
+unclear.ads:32:17: error: consider adding a specific precondition to subprogram "P"
+unclear.ads:32:17: error: dispatching primitive subprogram overriding declared for a private untagged type with no precondition and a class-wide precondition inherited from ancestor is not yet supported
+unclear.ads:40:17: error: consider adding a class-wide precondition to subprogram "P"
+unclear.ads:40:17: error: dispatching primitive subprogram overriding with class-wide precondition inherited from a potentially hidden ancestor is not yet supported
+unclear.ads:48:17: error: consider adding a class-wide precondition to subprogram "P"
+unclear.ads:48:17: error: dispatching primitive subprogram overriding with class-wide precondition inherited from a potentially hidden ancestor is not yet supported
+unclear.ads:56:17: error: consider adding a class-wide precondition to subprogram "P"
+unclear.ads:56:17: error: dispatching primitive subprogram overriding with class-wide precondition inherited from a potentially hidden ancestor is not yet supported
+unclear.ads:64:17: error: consider adding a class-wide precondition to subprogram "P"
+unclear.ads:64:17: error: dispatching primitive subprogram overriding with class-wide precondition inherited from a potentially hidden ancestor is not yet supported
+gnatprove: error during flow analysis and proof

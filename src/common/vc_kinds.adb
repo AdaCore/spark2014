@@ -799,6 +799,13 @@ package body VC_Kinds is
          when Lim_Deep_Object_Declaration_Outside_Block =>
            "a declaration of an object of an ownership type outside a block "
           & "for declarations",
+         when Lim_Overriding_With_Precondition_Discrepancy_Hiding =>
+           "a dispatching primitive subprogram overriding with class-wide"
+          & " precondition inherited from a potentially hidden ancestor",
+         when Lim_Overriding_With_Precondition_Discrepancy_Tagged_Privacy =>
+           "a dispatching primitive subprogram overriding declared for a"
+          & " private untagged type with no specific precondition and a"
+          & " class-wide precondition inherited from ancestor",
          when Lim_Package_Before_Inv =>
            "a package declaration occurring in a loop before the loop "
           & "invariant",

@@ -7822,6 +7822,137 @@ package body SPARK_Definition is
            and then Present (Find_Dispatching_Type (E))
          then
             Check_Not_Inherited_From_Several_Sources (E, E);
+
+            --  If there is a visible overridden operation, the precondition
+            --  determined for the procedure should be coherent regardless of
+            --  visibility changes.
+            --  * If the subprogram is an hidden dispatching operation, the
+            --    contract should be the compatible when interpreting as a
+            --    non-dispatching operation (so ignoring class-wide elements)
+            --    or as a dispatching operation. In particular, when
+            --    interpreting as a non-dispatching operation in absence of
+            --    pre/postconditions, the default empty contract should be
+            --    valid. Since there is no check in absence of Pre, if there
+            --    is an inherited Pre'Class, we should require a precondition.
+            --    The compatibility with default postcondition is automatic,
+            --    as the default postcondition is true.
+            --  * A similar discrepancy may arise if the operation is publicly
+            --    dispatching, but the class-wide precondition is inherited
+            --    through a potentially hidden part. The compatibility with
+            --    class-wide postcondition is automatic, as the default
+            --    postcondition is True and any postcondition of further
+            --    ancestors is checked to be weaker.
+
+            declare
+               Lim_Privacy : constant Unsupported_Kind :=
+                 Lim_Overriding_With_Precondition_Discrepancy_Tagged_Privacy;
+               Lim_Hidden  : constant Unsupported_Kind :=
+                 Lim_Overriding_With_Precondition_Discrepancy_Hiding;
+            begin
+               if Present (Visible_Overridden_Operation (E)) then
+
+                  --  For hidden dispatching operations, suffices to check the
+                  --  contracts.
+
+                  if Is_Hidden_Dispatching_Operation (E) then
+                     if Find_Contracts (E, Pragma_Precondition).Is_Empty
+                       and then not Find_Contracts
+                         (E, Pragma_Precondition, Inherited => True).Is_Empty
+                     then
+                        Mark_Unsupported
+                          (Lim_Privacy,
+                           N        => E,
+                           Cont_Msg => Errout_Wrapper.Create
+                             (Msg   =>
+                                 "consider adding a specific precondition to"
+                                 & " subprogram &",
+                              Names => [E]));
+                     end if;
+
+                  --  For regular dispatching operation, need to check whether
+                  --  the contract comes from an hidden ancestor.
+
+                  elsif Find_Contracts
+                    (E, Pragma_Precondition, Classwide => True).Is_Empty
+                    and then not Find_Contracts
+                      (E, Pragma_Precondition, Inherited => True).Is_Empty
+                    and then not Is_In_Potentially_Hidden_Private (E)
+                  then
+                     declare
+                        Partial_View     : Entity_Id :=
+                          Find_Dispatching_Type (E);
+                        Walk_Cursor      : Entity_Id := E;
+                        Public_Anc_Prims : Node_Sets.Set;
+                        Bad              : Boolean := False;
+                     begin
+                        if not Is_Incomplete_Or_Private_Type (Partial_View)
+                        then
+                           Partial_View := Incomplete_Or_Partial_View
+                             (Partial_View);
+                        end if;
+
+                        --  If there is no hidden private part in the
+                        --  inheritance, this is guaranteed by the check on the
+                        --  private parent.
+
+                        if Present (Partial_View)
+                          and then Is_In_Potentially_Hidden_Private
+                            (Full_View (Partial_View))
+                          and then In_Visible_Declarations
+                            (Subprogram_Spec (E))
+                        then
+                           --  If there is no public ancestor, the source is
+                           --  necessarily hidden from view.
+
+                           if Ekind (Partial_View)
+                             /= E_Record_Type_With_Private
+                             or else Etype (Partial_View) = Partial_View
+                           then
+                              Bad := True;
+
+                           --  Otherwise, we check whether the inherited
+                           --  precondition comes from an intermediate
+                           --  ancestor.
+
+                           else
+                              for P of Iter
+                                (Direct_Primitive_Operations
+                                   (Parent_Type (Partial_View)))
+                              loop
+                                 Public_Anc_Prims.Insert (Ultimate_Alias (P));
+                              end loop;
+
+                              loop
+                                 Walk_Cursor :=
+                                   Visible_Overridden_Operation (Walk_Cursor);
+                                 pragma Assert (Present (Walk_Cursor));
+                                 exit when Public_Anc_Prims.Contains
+                                   (Walk_Cursor);
+                                 if not Find_Contracts
+                                   (Walk_Cursor,
+                                    Pragma_Precondition,
+                                    Classwide => True).Is_Empty
+                                 then
+                                    Bad := True;
+                                    exit;
+                                 end if;
+                              end loop;
+                           end if;
+                        end if;
+                        if Bad then
+                           Mark_Unsupported
+                             (Lim_Hidden,
+                              N        => E,
+                              Cont_Msg => Errout_Wrapper.Create
+                                (Msg   =>
+                                     "consider adding a class-wide"
+                                 & " precondition to subprogram &",
+                                 Names => [E]));
+                        end if;
+                     end;
+                  end if;
+               end if;
+            end;
          end if;
 
          --  If no violations were found and the function is annotated with
