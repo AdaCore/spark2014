@@ -5569,16 +5569,9 @@ package body Flow.Analysis is
                begin
                   for Var of To_Entire_Variables (Atr.Variables_Used) loop
 
-                     --  Any Synthetic_Null_Export global is treated as
-                     --  volatile; having one generated against the function
-                     --  is not in and of itself cause for a flow error
-
-                     if Synthetic (Var) then
-                        null;
-
                      --  Case 1: Volatile variables
 
-                     elsif Is_Volatile (Var) then
+                     if Is_Volatile (Var) then
                         pragma Assert (Present (Atr.Error_Location));
                         Error_Msg_Flow
                            (FA       => FA,
