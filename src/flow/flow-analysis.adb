@@ -5661,9 +5661,9 @@ package body Flow.Analysis is
               or else
             (for some F of Globals.Inputs    => Is_Volatile_For_Reading (F));
 
-         if not Is_Function_With_Side_Effects (FA.Spec_Entity) then
-            pragma Assert (Globals.Outputs.Is_Empty);
-         end if;
+         pragma Assert
+           (if not Is_Function_With_Side_Effects (FA.Spec_Entity)
+            then Globals.Outputs.Is_Empty);
       end;
 
       --  Emit messages about nonvolatile functions with volatile effects
