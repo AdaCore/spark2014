@@ -1,0 +1,8 @@
+project Test is
+
+   package Prove is
+      --  Use small number of steps for CE to avoid a CVC5 timeout
+      for Proof_Switches ("legal.adb") use ("--counterexamples=on", "--ce-steps=100");
+   end Prove;
+
+end Test;
