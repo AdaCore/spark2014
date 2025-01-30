@@ -5569,16 +5569,9 @@ package body Flow.Analysis is
                begin
                   for Var of To_Entire_Variables (Atr.Variables_Used) loop
 
-                     --  Any Synthetic_Null_Export global is treated as
-                     --  volatile; having one generated against the function
-                     --  is not in and of itself cause for a flow error
-
-                     if Synthetic (Var) then
-                        null;
-
                      --  Case 1: Volatile variables
 
-                     elsif Is_Volatile (Var) then
+                     if Is_Volatile (Var) then
                         pragma Assert (Present (Atr.Error_Location));
                         Error_Msg_Flow
                            (FA       => FA,
@@ -5663,19 +5656,14 @@ package body Flow.Analysis is
          --  instead of computing their union. The global Outputs of a
          --  function, after sanity checks, are known to be empty.
 
-         --  The function is volatile if one of its parameters is of a volatile
-         --  type for reading.
-
          Volatile_Effect_Found :=
             (for some F of Globals.Proof_Ins => Is_Volatile_For_Reading (F))
-            or else
-             (for some F of Globals.Inputs => Is_Volatile_For_Reading (F))
-            or else (for some F of Get_Explicit_Formals (FA.Spec_Entity)
-                       => Is_Effectively_Volatile_For_Reading (Etype (F)));
+              or else
+            (for some F of Globals.Inputs    => Is_Volatile_For_Reading (F));
 
-         if not Is_Function_With_Side_Effects (FA.Spec_Entity) then
-            pragma Assert (Globals.Outputs.Is_Empty);
-         end if;
+         pragma Assert
+           (if not Is_Function_With_Side_Effects (FA.Spec_Entity)
+            then Globals.Outputs.Is_Empty);
       end;
 
       --  Emit messages about nonvolatile functions with volatile effects
