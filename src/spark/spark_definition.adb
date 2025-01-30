@@ -7006,7 +7006,8 @@ package body SPARK_Definition is
                --  expression itself for a better error message.
 
                if not Is_Volatile_Func
-                 and then not Is_Predicate_Function (Id)
+                 and then not (Ekind (Id) = E_Function
+                                 and then Is_Predicate_Function (Id))
                  and then Is_Effectively_Volatile_For_Reading (Etype (Formal))
                then
                   Mark_Violation
