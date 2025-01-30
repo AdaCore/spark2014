@@ -21,8 +21,6 @@ gprconfig
 gprinspect
 gprls
 gprname
-gprremote
-gprslave
 spark_memcached_wrapper
 spark_report
 spark_semaphore_wrapper
