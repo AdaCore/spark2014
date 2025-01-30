@@ -12322,39 +12322,61 @@ package body Gnat2Why.Expr is
                  New_Result_Ident (Get_Type (+Pref));
                D_Rng        : constant Node_Id := Discrete_Range (N);
                Rng          : constant Node_Id := Get_Range (D_Rng);
-               Binders_Type : constant W_Type_Id :=
+               Binder_Type  : constant W_Type_Id :=
                  Base_Why_Type_No_Bool (D_Rng);
-               Binders      : constant W_Identifier_Array :=
-                 New_Temp_Identifiers (Positive (Dim), Typ => Binders_Type);
-               Indexes      : constant W_Expr_Array := To_Exprs (Binders);
-               Range_Pred   : constant W_Pred_Id :=
+               Binder       : constant W_Identifier_Id :=
+                 New_Temp_Identifier (Typ => Binder_Type);
+               Index        : constant W_Expr_Id := +Binder;
+               Low_Term     : constant W_Term_Id :=
                  (if Index_Map.Is_Empty
-                  then +Transform_Discrete_Choice
-                    (Choice      => Discrete_Range (N),
-                     Choice_Type => Empty,
-                     Expr        => Indexes (1),
-                     Domain      => EW_Pred,
-                     Params      => Params)
-                  else New_Range_Expr
-                    (Low  => +Index_Map.Element (Low_Bound (Rng)),
-                     High => +Index_Map.Element (High_Bound (Rng)),
-                     Expr => +Indexes (1)));
-               In_Slice_Eq  : constant W_Pred_Id :=
-                 New_Element_Equality
-                   (Left_Arr   => +Result_Id,
-                    Right_Arr  => Value_Name,
-                    Index      => Indexes);
+                  then Transform_Term (Low_Bound (Rng), Binder_Type, Params)
+                  else +Index_Map.Element (Low_Bound (Rng)));
+               High_Term    : constant W_Term_Id :=
+                 (if Index_Map.Is_Empty
+                  then Transform_Term (High_Bound (Rng), Binder_Type, Params)
+                  else +Index_Map.Element (High_Bound (Rng)));
+               Range_Pred   : constant W_Pred_Id := New_Range_Expr
+                 (Low  => Low_Term,
+                  High => High_Term,
+                  Expr => +Index);
+               Quant_Binder : constant W_Binder_Id :=
+                 New_Binder (Domain   => EW_Pred,
+                             Name     => Binder,
+                             Arg_Type => Binder_Type);
                Unchanged    : constant W_Pred_Id :=
-                 New_Element_Equality
-                   (Left_Arr   => +Result_Id,
-                    Right_Arr  => +Prefix_Name,
-                    Index      => Indexes);
+                 New_Universal_Quantif
+                   (Binders => (1 => Quant_Binder),
+                    Labels  => Symbol_Sets.Empty_Set,
+                    Pred    =>
+                      New_Conditional
+                        (Condition => New_Not (Right => Range_Pred),
+                         Then_Part => New_Element_Equality
+                           (Left_Arr   => +Result_Id,
+                            Right_Arr  => +Prefix_Name,
+                            Index      => (1 => Index))));
+               --  Assumption after the slice update:
+               --     forall i.
+               --       not low <= i <= high -> get result i = get prefix i
 
-               Def         : constant W_Pred_Id :=
-                 New_Conditional
-                   (Condition => Range_Pred,
-                    Then_Part => In_Slice_Eq,
-                    Else_Part => Unchanged);
+               Slice_Eq    : constant W_Pred_Id := New_Comparison
+                 (Symbol => Why_Eq,
+                  Left   =>
+                    (if Is_Static_Array_Type
+                         (Get_Ada_Node (+Get_Type (+Value_Name)))
+                     then +Value_Name
+                     else +Array_Convert_To_Base (EW_Term, +Value_Name)),
+                  Right  => +New_Slice_Call
+                    (Domain => EW_Term,
+                     Arr    =>
+                       (if Is_Static_Array_Type
+                            (Get_Ada_Node (+Get_Type (+Result_Id)))
+                        then +Result_Id
+                        else Array_Convert_To_Base (EW_Term, +Result_Id)),
+                     Typ    => Get_Typ (Result_Id),
+                     Low    => +Low_Term,
+                     High   => +High_Term));
+               --  Assumption after the slice update:
+               --     value = slice result low high
 
                --  If the prefix is not in split form, then its bounds are
                --  contained in the object. We should assume that they are
@@ -12366,30 +12388,19 @@ package body Gnat2Why.Expr is
                                             Right_Arr => +Result_Id,
                                             Dim       => Positive (Dim))
                   else True_Pred);
-               Quant_Binders : W_Binder_Array (Binders'Range);
             begin
                --  "any" Why3 nodes are only allowed in programs, which is
                --  ensured by not allowing slices in borrowed expressions.
                pragma Assert (Domain in EW_Prog | EW_Pterm);
-
-               for I in Binders'Range loop
-                  Quant_Binders (I) :=
-                    New_Binder (Domain   => EW_Pred,
-                                Name     => Binders (I),
-                                Arg_Type => Binders_Type);
-               end loop;
 
                Result :=
                  +New_Simpl_Any_Prog
                  (T    => Get_Type (+Pref),
                   Pred =>
                     New_And_Pred
-                      (Left   => Bounds,
-                       Right  =>
-                         New_Universal_Quantif
-                           (Binders => Quant_Binders,
-                            Labels  => Symbol_Sets.Empty_Set,
-                            Pred    => Def)));
+                      ((1 => Bounds,
+                        2 => Unchanged,
+                        3 => Slice_Eq)));
 
                --  Insert checks for bounds in the program domain
 
@@ -12400,18 +12411,18 @@ package body Gnat2Why.Expr is
                      Low_Expr     : constant W_Prog_Id :=
                        New_Temp_For_Expr
                          (Transform_Prog (Low_Bound (Rng),
-                          Binders_Type,
+                          Binder_Type,
                           Params));
                      High_Expr    : constant W_Prog_Id :=
                        New_Temp_For_Expr
                          (Transform_Prog (High_Bound (Rng),
-                          Binders_Type,
+                          Binder_Type,
                           Params));
                      Cond         : constant W_Prog_Id :=
                        New_Comparison
                          (Symbol =>
-                            (if Binders_Type = EW_Int_Type then Int_Infix_Le
-                             else MF_BVs (Binders_Type).Ule),
+                            (if Binder_Type = EW_Int_Type then Int_Infix_Le
+                             else MF_BVs (Binder_Type).Ule),
                           Left   => Low_Expr,
                           Right  => High_Expr);
                      Index_Checks : W_Prog_Id;

@@ -71,4 +71,4 @@ swap_ranges.adb:58:15: info: range check proved (CVC5: 8 VC)
 swap_ranges.adb:58:26: info: overflow check proved (CVC5: 4 VC)
 swap_ranges.adb:58:30: info: overflow check proved (CVC5: 4 VC)
 swap_ranges.ads:8:15: medium: postcondition might fail, cannot prove A'Old = B
-swap_ranges.ads:14:15: info: postcondition proved (CVC5: 2 VC)
+swap_ranges.ads:14:15: info: postcondition proved (Z3: 2 VC)

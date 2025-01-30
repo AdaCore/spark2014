@@ -173,7 +173,7 @@ bounded_dynamic_arrays.ads:147:42: info: range check proved (CVC5: 2 VC), in ins
 bounded_dynamic_arrays.ads:152:14: info: postcondition proved (CVC5: 2 VC; altergo: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:152:14: info: range check proved (CVC5: 4 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:160:24: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
-bounded_dynamic_arrays.ads:161:14: info: postcondition proved (CVC5: 3 VC), in instantiation at bounded_dynamic_strings.ads:5
+bounded_dynamic_arrays.ads:161:14: info: postcondition proved (CVC5: 2 VC; Z3: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:161:14: info: range check proved (CVC5: 4 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:161:47: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:162:28: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
