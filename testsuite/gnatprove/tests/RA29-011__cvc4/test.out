@@ -46,7 +46,6 @@ asan          : no
 ubsan         : no
 tsan          : no
 competition   : no
-portfolio     : yes
 
 cln           : no
 glpk          : no
