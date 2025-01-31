@@ -317,6 +317,16 @@ contradict Hx; lia.
 Qed.
 
 (* Why3 goal *)
+Lemma slice_extensional :
+  forall (a:map) (b:map) (f:t) (l:t), ~ ((slice a f l) = (slice b f l)) ->
+  exists i:t,
+  le f i /\ le i l /\ ~ ((get (slice a f l) i) = (get (slice b f l) i)).
+Proof.
+intros a b f l h1.
+apply extensionality; auto; apply slice_has_bounds.
+Qed.
+
+(* Why3 goal *)
 Definition concat : map -> t -> t -> map -> t -> t -> t -> map.
 Proof.
 intros a af al b bf bl l x.
