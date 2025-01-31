@@ -1,0 +1,5 @@
+main.adb:4:04: warning: "Gen" is not modified, could be IN
+main.adb:5:04: info: initialization of "Result1" proved
+main.adb:6:04: info: initialization of "Result2" proved
+main.adb:7:08: info: flow dependencies proved
+main.adb:12:19: medium: assertion might fail
