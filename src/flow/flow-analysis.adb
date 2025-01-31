@@ -5656,10 +5656,15 @@ package body Flow.Analysis is
          --  instead of computing their union. The global Outputs of a
          --  function, after sanity checks, are known to be empty.
 
+         --  The function is volatile if one of its parameters or its result
+         --  type is of a volatile type for reading.
+
          Volatile_Effect_Found :=
             (for some F of Globals.Proof_Ins => Is_Volatile_For_Reading (F))
               or else
-            (for some F of Globals.Inputs    => Is_Volatile_For_Reading (F));
+            (for some F of Globals.Inputs => Is_Volatile_For_Reading (F))
+              or else
+            Has_Effectively_Volatile_Profile (FA.Spec_Entity);
 
          pragma Assert
            (if not Is_Function_With_Side_Effects (FA.Spec_Entity)
