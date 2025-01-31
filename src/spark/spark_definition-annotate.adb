@@ -4091,6 +4091,11 @@ package body SPARK_Definition.Annotate is
             & " cannot appear after an automatically instantiated lemma",
             Prag);
          return;
+      elsif Has_Depends (Scope) then
+         Error_Msg_N_If
+           ("pragma Annotate ""Mutable_In_Parameters"""
+            & " cannot appear after a subprogram with ""Depends"" contract",
+            Prag);
       end if;
 
       declare
