@@ -851,7 +851,8 @@ X.Link is poisoned by the assignment to Y.]
 
 4. If the target of an assignment operation is an object of an anonymous
    access-to-object type (including copy-in for a parameter), then the source
-   shall be a markable expression.
+   shall be either a markable expression, the literal null, or of a named
+   access-to-constant type.
 
    [Redundant: One consequence of this rule is that every allocator is of a
    named access type.]

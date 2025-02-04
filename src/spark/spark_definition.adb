@@ -5511,7 +5511,15 @@ package body SPARK_Definition is
          if Is_Anonymous_Access_Object_Type (Etype (Formal))
            and then not Is_Function_Or_Function_Type (E)
          then
-            if not Is_Null_Owning_Access (Actual) then
+
+            --  Allow null objects and objects of a named access-to-constant
+            --  type as they are not subject to ownership.
+
+            if not Is_Null_Owning_Access (Actual)
+              and then not
+                (Is_Named_Access_Type (Retysp (Etype (Actual)))
+                 and then Is_Access_Constant (Retysp (Etype (Actual))))
+            then
                Check_Source_Of_Borrow_Or_Observe
                  (Actual, Is_Access_Constant (Etype (Formal)));
             end if;
