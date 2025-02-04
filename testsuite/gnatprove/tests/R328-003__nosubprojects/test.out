@@ -1,2 +1,10 @@
-c.adb:4:34: high: "a.state" must be listed in the Global aspect of "P" (SPARK RM 6.1.4(15))
-c.adb:7:22: medium: assertion might fail [possible fix: call at line 6 should mention A.State in a postcondition]
+c.adb:4:34: warning: assuming "Get" has no effect on global items
+c.adb:4:34: warning: no Global contract available for "Get" [assumed-global-null]
+c.adb:6:08: warning: assuming "Mutate" always terminates
+c.adb:6:08: warning: assuming "Mutate" has no effect on global items
+c.adb:6:08: warning: no Always_Terminates aspect available for "Mutate" [assumed-always-terminates]
+c.adb:6:08: warning: no Global contract available for "Mutate" [assumed-global-null]
+c.adb:7:22: info: assertion proved (CVC5: 1 VC)
+c.adb:7:29: warning: assuming "Get" has no effect on global items
+c.adb:7:29: warning: no Global contract available for "Get" [assumed-global-null]
+c.ads:5:12: info: data dependencies proved

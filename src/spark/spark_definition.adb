@@ -5850,7 +5850,9 @@ package body SPARK_Definition is
                or else (Is_Ignored_Internal (E)
                  and then not Is_Ignored_Internal (N)))
               and then not Is_Unchecked_Conversion_Instance (E)
-              and then not Is_Unchecked_Deallocation_Instance (E);
+              and then not Is_Unchecked_Deallocation_Instance (E)
+              and then not Is_Predicate_Function (E)
+              and then not Is_Abstract_Subprogram (E);
 
          begin
             if Might_Have_Flow_Assumptions then

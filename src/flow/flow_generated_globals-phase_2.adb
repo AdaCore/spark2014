@@ -2991,8 +2991,8 @@ package body Flow_Generated_Globals.Phase_2 is
       C : constant Phase_1_Info_Maps.Cursor :=
         Phase_1_Info.Find (To_Entity_Name (E));
    begin
-      return Phase_1_Info_Maps.Has_Element (C)
-               and then Phase_1_Info (C).No_Body;
+      return (not Phase_1_Info_Maps.Has_Element (C)
+                or else Phase_1_Info (C).No_Body);
    end Has_No_Body;
 
    ----------------------
