@@ -1,0 +1,9 @@
+q.ads:6:13: error: "SUBENUM" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+q.ads:6:13: error: violation of aspect SPARK_Mode at line 4
+q.ads:7:07: error: "SUBENUM" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+q.ads:7:07: error: violation of aspect SPARK_Mode at line 4
+q.ads:7:17: error: "SUBENUM" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+q.ads:7:17: error: violation of aspect SPARK_Mode at line 4
+q.ads:7:27: error: "SUBENUM" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+q.ads:7:27: error: violation of aspect SPARK_Mode at line 4
+gnatprove: error during flow analysis and proof

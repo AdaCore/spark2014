@@ -704,6 +704,7 @@ package body SPARK_Definition is
 
    begin
       if Is_Incomplete_Type (Expected_Type)
+        or else not Most_Underlying_Type_In_SPARK (Expected_Type)
         or else not Is_Access_Type (Root_Retysp (Expected_Type))
       then
          return;
