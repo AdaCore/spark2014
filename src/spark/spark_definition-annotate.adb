@@ -4091,6 +4091,11 @@ package body SPARK_Definition.Annotate is
             & " cannot appear after an automatically instantiated lemma",
             Prag);
          return;
+      elsif Has_Depends (Scope) then
+         Error_Msg_N_If
+           ("pragma Annotate ""Mutable_In_Parameters"""
+            & " cannot appear after a subprogram with ""Depends"" contract",
+            Prag);
       end if;
 
       declare
@@ -5933,10 +5938,13 @@ package body SPARK_Definition.Annotate is
    -------------------------------------
 
    function Has_Mutable_In_Param_Annotation (E : Entity_Id) return Boolean is
-     (Ekind (E) = E_In_Parameter
-      and then Mutable_In_Params_Annotations.Contains (Scope (E))
-      and then Mutable_In_Params_Annotations.Element
-        (Scope (E)).Contains (Retysp (Etype (E))));
+      Position : constant Common_Containers.Node_Graphs.Cursor :=
+        Mutable_In_Params_Annotations.Find (Scope (E));
+   begin
+      return Common_Containers.Node_Graphs.Has_Element (Position)
+        and then Mutable_In_Params_Annotations (Position).Contains
+                   (Retysp (Etype (E)));
+   end Has_Mutable_In_Param_Annotation;
 
    ----------------------------------
    -- Has_Own_Ownership_Annotation --

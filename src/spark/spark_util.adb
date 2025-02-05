@@ -4412,7 +4412,8 @@ package body SPARK_Util is
 
    function Is_Writable_Parameter (E : Entity_Id) return Boolean is
    begin
-      return Is_Access_Variable (Base_Type (Etype (E)));
+      return Is_Access_Variable (Base_Type (Etype (E)))
+        or else Has_Mutable_In_Param_Annotation (E);
    end Is_Writable_Parameter;
 
    --------------------------------
