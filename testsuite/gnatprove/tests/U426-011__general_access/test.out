@@ -35,9 +35,10 @@ ext.ads:70:42: medium: resource or memory leak might occur [possible explanation
 ext.ads:71:42: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
 ext.ads:72:42: medium: resource or memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
 gen_access.adb:7:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-gen_access.adb:9:04: medium: resource or memory leak might occur at end of scope
+gen_access.adb:9:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 gen_access.adb:10:19: warning: assuming "F" has no effect on global items
 gen_access.adb:10:19: warning: no Global contract available for "F"
+gen_access.adb:11:21: medium: resource or memory leak might occur [possible explanation: conversion to general access type leaks memory]
 gen_access.adb:12:21: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
 gen_access.adb:15:28: warning: assuming "Mk" has no effect on global items
 gen_access.adb:15:28: warning: no Global contract available for "Mk"

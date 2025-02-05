@@ -165,7 +165,10 @@ package body Gnat2Why.Expr is
    --  pre state.
 
    function Can_Be_Moved (Expr : Node_Or_Entity_Id) return Boolean;
-   --  Return whether an expression can be moved
+   --  Return whether an expression can be moved. In proof, moving is only
+   --  considered for types with allocated parts, so this function will return
+   --  false on other types even if they are subject to ownership (like
+   --  general access types).
 
    function Call_Never_Terminates
      (Call  : Node_Id;
@@ -474,7 +477,8 @@ package body Gnat2Why.Expr is
    --         return statement
    --  @param Lhs_Typ expected type for the lhs of the assignment
    --  @param Expr program that contains the translation of the rhs on input,
-   --         and inserts moves on output.
+   --         and inserts moves on output and checks for moves to types without
+   --         reclamation.
 
    function Insert_Overflow_Check
      (Ada_Node : Node_Id;
@@ -10177,12 +10181,11 @@ package body Gnat2Why.Expr is
       --  Local subprograms
 
       procedure Collect_Moved_Objects
-        (Expr     : Node_Id;
-         Toplevel : Boolean;
-         Set      : in out Node_Sets.Set);
-      --  Add in Set all moved objects from Expr. If Toplevel is True, this is
-      --  the outer toplevel call, for which the top-level object should not
-      --  be inserted in the set as it is handled specially.
+        (Expr   : Node_Id;
+         Set    : in out Node_Sets.Set;
+         Checks : in out W_Prog_Id);
+      --  Add in Set all moved objects from Expr and emit in Checks resource
+      --  leak checks for conversions to types without reclamation.
 
       function Tmp_Of_Expr (Expr : W_Expr_Id) return W_Identifier_Id;
       --  Return a temporary identifier suitable to be used in place of Expr
@@ -10192,9 +10195,9 @@ package body Gnat2Why.Expr is
       ---------------------------
 
       procedure Collect_Moved_Objects
-        (Expr     : Node_Id;
-         Toplevel : Boolean;
-         Set      : in out Node_Sets.Set)
+        (Expr   : Node_Id;
+         Set    : in out Node_Sets.Set;
+         Checks : in out W_Prog_Id)
       is
          --  Local subprograms
 
@@ -10205,8 +10208,7 @@ package body Gnat2Why.Expr is
          --  Collect objects in all expressions of an aggregate
 
          procedure Collect_Subobject (Expr : Node_Id);
-         --  Collect a subobject, passing in the value False for Toplevel and
-         --  the Set.
+         --  Collect a subobject, passing in the Set and Checks
 
          --------------------------
          -- Collect_Associations --
@@ -10243,7 +10245,7 @@ package body Gnat2Why.Expr is
 
          procedure Collect_Subobject (Expr : Node_Id) is
          begin
-            Collect_Moved_Objects (Expr, Toplevel => False, Set => Set);
+            Collect_Moved_Objects (Expr, Set => Set, Checks => Checks);
          end Collect_Subobject;
 
       --  Start of processing for Collect_Moved_Objects
@@ -10251,9 +10253,7 @@ package body Gnat2Why.Expr is
       begin
          --  Object can be moved, insert it in the set unless at top-level
 
-         if not Toplevel
-           and then Can_Be_Moved (Expr)
-         then
+         if Can_Be_Moved (Expr) then
             Set.Insert (Expr);
             return;
          end if;
@@ -10268,8 +10268,45 @@ package body Gnat2Why.Expr is
                | N_Type_Conversion
                | N_Unchecked_Type_Conversion
             =>
-               Collect_Moved_Objects
-                 (Expression (Expr), Toplevel => Toplevel, Set => Set);
+
+               --  Insert resource leak checks if the conversion is a move of a
+               --  pool specific access type to a general or access-to-constant
+               --  type.
+
+               if Is_Access_Type (Retysp (Etype (Expr))) then
+                  pragma Assert (not In_Assertion_Expression_Pragma (Expr));
+
+                  declare
+                     Target_Typ : constant Entity_Id :=
+                       Retysp (Etype (Expr));
+                     To_Const   : constant Boolean :=
+                       Is_Access_Constant (Target_Typ);
+                     To_Gen     : constant Boolean :=
+                       Is_General_Access_Type (Target_Typ);
+                     Source_Typ : constant Entity_Id :=
+                       Retysp (Etype (Expression (Expr)));
+                     From_Const : constant Boolean :=
+                       Is_Access_Constant (Source_Typ)
+                       or else Is_Rooted_In_Constant (Expression (Expr));
+                     From_Gen   : constant Boolean :=
+                       Is_General_Access_Type (Source_Typ);
+
+                  begin
+                     --  Insert check for resource leak if needed
+
+                     if (To_Gen or else To_Const)
+                       and then not From_Gen
+                       and then not From_Const
+                       and then not Value_Is_Never_Leaked (Expr)
+                     then
+                        Append
+                          (Checks,
+                           Check_No_Memory_Leaks (Expr, Expression (Expr)));
+                     end if;
+                  end;
+               end if;
+
+               Collect_Subobject (Expression (Expr));
 
             --  No move occurs in an uninitialized allocator
 
@@ -10330,11 +10367,11 @@ package body Gnat2Why.Expr is
 
       --  Local variables
 
-      Toplevel_Move : constant Boolean := Can_Be_Moved (Rhs);
-      Nested_Moved  : Node_Sets.Set;
-      Do_Move       : Boolean;
-      Tmp           : W_Identifier_Id;
-      Init          : W_Prog_Id;
+      Nested_Moved : Node_Sets.Set;
+      Checks       : W_Prog_Id := +Void;
+      Do_Move      : Boolean;
+      Tmp          : constant W_Identifier_Id := Tmp_Of_Expr (+Expr);
+      Init         : constant W_Prog_Id := Expr;
 
    --  Start of processing for Insert_Move_Of_Deep_Parts
 
@@ -10344,39 +10381,47 @@ package body Gnat2Why.Expr is
       if Is_Anonymous_Access_Type (Lhs_Typ) then
          Do_Move := False;
 
-      --  Collect all deep objects potentially moved inside an aggregate
+      --  If Rhs can be moved, do it
+
+      elsif Can_Be_Moved (Rhs) then
+         Do_Move := True;
+         Expr := Sequence (Move_Expression (Rhs, Tmp), +Tmp);
+
+      --  Otherwise, collect all deep objects potentially moved inside an
+      --  aggregate.
 
       else
-         Collect_Moved_Objects (Rhs, Toplevel => True, Set => Nested_Moved);
-         Do_Move := Toplevel_Move or else not Nested_Moved.Is_Empty;
+         Collect_Moved_Objects (Rhs, Set => Nested_Moved, Checks => Checks);
+         Do_Move := not Nested_Moved.Is_Empty;
+
+         if Do_Move then
+            Expr := +Tmp;
+
+            for Obj of Nested_Moved loop
+               declare
+                  Obj_Expr : constant W_Expr_Id :=
+                    Transform_Expr (Obj, EW_Term, Body_Params);
+                  Obj_Tmp  : constant W_Identifier_Id :=
+                    Tmp_Of_Expr (Obj_Expr);
+               begin
+                  Expr := New_Binding
+                    (Name    => +Obj_Tmp,
+                     Def     => +Obj_Expr,
+                     Context => Sequence
+                       (Move_Expression (Obj, Obj_Tmp), Expr),
+                     Typ     => Get_Type (+Expr));
+               end;
+            end loop;
+         end if;
+
+         Expr := Sequence (Checks, Expr);
       end if;
 
       if Do_Move then
-         Tmp  := Tmp_Of_Expr (+Expr);
-         Init := Expr;
-         Expr := +Tmp;
-
-         for Obj of Nested_Moved loop
-            declare
-               Obj_Expr : constant W_Expr_Id :=
-                 Transform_Expr (Obj, EW_Term, Body_Params);
-               Obj_Tmp  : constant W_Identifier_Id := Tmp_Of_Expr (Obj_Expr);
-            begin
-               Expr := New_Binding
-                 (Name    => +Obj_Tmp,
-                  Def     => +Obj_Expr,
-                  Context => Sequence (Move_Expression (Obj, Obj_Tmp), Expr),
-                  Typ     => Get_Type (+Expr));
-            end;
-         end loop;
-
          Expr := New_Binding
            (Name    => Tmp,
             Def     => Init,
-            Context =>
-              (if Toplevel_Move then
-                 Sequence (Move_Expression (Rhs, Tmp), Expr)
-               else Expr),
+            Context => Expr,
             Typ     => Get_Type (+Expr));
       end if;
    end Insert_Move_Of_Deep_Parts;
@@ -22335,21 +22380,6 @@ package body Gnat2Why.Expr is
                                  Domain,
                                  Local_Params,
                                  No_Read);
-
-            --  Insert static resource leak if the conversion is a move of a
-            --  pool specific access type.
-
-            if Domain = EW_Prog
-              and then Conversion_Is_Move_To_Constant (Expr)
-              and then not Is_General_Access_Type
-                (Retysp (Etype (Expression (Expr))))
-              and then not Value_Is_Never_Leaked (Expr)
-            then
-               Emit_Static_Proof_Result
-                 (Expr, VC_Resource_Leak, False, Current_Subp,
-                  Explanation =>
-                    "conversion to access-to-constant type leaks memory");
-            end if;
 
             --  Invariant checks are introduced explicitly as they need only be
             --  performed on actual type conversions (and not view
