@@ -1578,6 +1578,26 @@ package body Flow_Error_Messages is
             end if;
          end;
 
+      elsif Tag = VC_Resource_Leak
+        and then Nkind (N) in N_Type_Conversion | N_Unchecked_Type_Conversion
+        and then Has_Access_Type (Etype (N))
+      then
+         declare
+            Target_Typ : constant Entity_Id :=
+              Retysp (Etype (N));
+            To_Const   : constant Boolean :=
+              Is_Access_Constant (Target_Typ);
+            To_Gen     : constant Boolean :=
+              Is_General_Access_Type (Target_Typ);
+         begin
+            if To_Gen or else To_Const then
+               return "conversion to "
+                 & (if To_Const then "access-to-constant"
+                    else "general access")
+                 & " type leaks memory";
+            end if;
+         end;
+
       --  If a run-time check fails inside the prefix of a an attribute
       --  reference with 'Old or 'Loop_Entry attribute, and this attribute
       --  reference is potentially unevaluated, it is likely that the user
