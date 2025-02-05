@@ -765,6 +765,12 @@ package Flow_Types is
       --  Which loops are we a member of (identified by loop name/label). For
       --  loop stability analysis.
 
+      First_Field                  : Flow_Graphs.Vertex_Id;
+      --  For vertices coming from declarations and assignments of record
+      --  objects, it points to the first vertex in the CFG that represents
+      --  the sequence of vertices with variable useds and variables defined
+      --  for every record component.
+
       Record_RHS                   : Flow_Graphs.Vertex_Id;
       --  Vertex with a variables used on the RHS of a record assignment
 
@@ -830,6 +836,7 @@ package Flow_Types is
                    Subprogram_Calls                => Call_Sets.Empty_Set,
                    Indirect_Calls                  => Node_Sets.Empty_Set,
                    Loops                           => Node_Sets.Empty_Set,
+                   First_Field                     => Flow_Graphs.Null_Vertex,
                    Record_RHS                      => Flow_Graphs.Null_Vertex,
                    Error_Location                  => Empty,
                    Aux_Node                        => Empty,

@@ -1692,12 +1692,15 @@ package body Flow.Control_Flow_Graph is
          --  this is done in Flow.Data_Depence_Graph.Create.
 
          declare
-            All_Vertices : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
-            Missing      : Flow_Id_Sets.Set;
-            Verts        : Vertex_Lists.List;
+            Missing : Flow_Id_Sets.Set;
+            Verts   : Vertex_Lists.List;
 
             Verts_Defined : Vertex_Lists.List;
             --  Dedicated list with vertices for component definitions
+
+            Cluster       : Flow_Graphs.Cluster_Id;
+            --  For grouping vertices corresponding to this object
+            --  assignment in the visual representation of the graph.
 
             RHS_Map : constant Flow_Id_Maps.Map :=
               Untangle_Record_Assignment
@@ -1752,7 +1755,7 @@ package body Flow.Control_Flow_Graph is
                      V_Used);
                   Verts.Append (V_Used);
 
-                  All_Vertices.Insert (V_Used);
+                  FA.Atr (V_Used).First_Field := Verts.First_Element;
 
                   Add_Vertex
                     (FA,
@@ -1766,7 +1769,7 @@ package body Flow.Control_Flow_Graph is
                      V_Defined);
                   Verts_Defined.Append (V_Defined);
 
-                  All_Vertices.Insert (V_Defined);
+                  FA.Atr (V_Defined).First_Field := Verts.First_Element;
 
                   --  Link variable use with variable definition. We will add
                   --  a data dependency edge when building DDG.
@@ -1793,25 +1796,15 @@ package body Flow.Control_Flow_Graph is
                         Print_Hint => Pretty_Print_Record_Field),
                      V);
                   Verts_Defined.Append (V);
-                  All_Vertices.Insert (V);
+                  if Verts.Is_Empty then
+                     FA.Atr (V).First_Field := Verts_Defined.First_Element;
+                  else
+                     FA.Atr (V).First_Field := Verts.First_Element;
+                  end if;
                   pragma Assert
                     (for some Comp_Id of F.Component =>
                        Is_Declared_Within_Variant (Comp_Id));
                end loop;
-            end if;
-
-            if not FA.Generating_Globals then
-               declare
-                  C : Flow_Graphs.Cluster_Id;
-               begin
-                  FA.CFG.New_Cluster (C);
-                  for V of All_Vertices loop
-                     FA.Other_Fields.Insert
-                       (V,
-                        All_Vertices - Vertex_Sets.To_Set (V));
-                     FA.CFG.Set_Cluster (V, C);
-                  end loop;
-               end;
             end if;
 
             --  Move vertices with variables defined to the end of list
@@ -1830,12 +1823,14 @@ package body Flow.Control_Flow_Graph is
             --  the connection map.
 
             else
+               FA.CFG.New_Cluster (Cluster);
                V := Flow_Graphs.Null_Vertex;
                for W of Verts loop
                   if V /= Flow_Graphs.Null_Vertex then
                      Linkup (FA, V, W);
                   end if;
                   V := W;
+                  FA.CFG.Set_Cluster (V, Cluster);
                end loop;
 
                CM.Insert (Union_Id (N),
@@ -4555,10 +4550,15 @@ package body Flow.Control_Flow_Graph is
                      Use_Computed_Globals    => not FA.Generating_Globals,
                      Expand_Internal_Objects => False);
 
-                  All_Vertices : Vertex_Sets.Set  := Vertex_Sets.Empty_Set;
-                  Missing      : Flow_Id_Sets.Set := Var_Def;
+                  Cluster : Flow_Graphs.Cluster_Id;
+                  --  For grouping vertices corresponding to this object
+                  --  declaration in the visual representation of the graph.
+
+                  Missing : Flow_Id_Sets.Set := Var_Def;
 
                begin
+                  FA.CFG.New_Cluster (Cluster);
+
                   for C in M.Iterate loop
                      declare
                         Output : Flow_Id          renames Flow_Id_Maps.Key (C);
@@ -4586,7 +4586,8 @@ package body Flow.Control_Flow_Graph is
                         --  private types and objects of that types.
 
                         Inits.Append (V);
-                        All_Vertices.Insert (V);
+                        FA.Atr (V).First_Field := Inits.First_Element;
+                        FA.CFG.Set_Cluster (V, Cluster);
                      end;
                   end loop;
 
@@ -4606,7 +4607,8 @@ package body Flow.Control_Flow_Graph is
                            with delta Is_Declaration_Node => True),
                         V);
                      Inits.Append (V);
-                     All_Vertices.Insert (V);
+                     FA.Atr (V).First_Field := Inits.First_Element;
+                     FA.CFG.Set_Cluster (V, Cluster);
 
                      --  ??? We only expect missing variant parts here, but
                      --  also get array bounds (which feels dubious but easy)
@@ -4625,20 +4627,6 @@ package body Flow.Control_Flow_Graph is
                           or else
                         Ctx.Vertex_Ctx.In_Nested_Package);
                   end loop;
-
-                  if not FA.Generating_Globals then
-                     declare
-                        C : Flow_Graphs.Cluster_Id;
-                     begin
-                        FA.CFG.New_Cluster (C);
-                        for V of All_Vertices loop
-                           FA.Other_Fields.Insert
-                             (V,
-                              All_Vertices - Vertex_Sets.To_Set (V));
-                           FA.CFG.Set_Cluster (V, C);
-                        end loop;
-                     end;
-                  end if;
                end;
 
             else
