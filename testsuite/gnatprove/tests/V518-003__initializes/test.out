@@ -9,9 +9,9 @@ my_lib.adb:8:20: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 my_lib.adb:8:73: info: range check proved (CVC5: 2 VC)
 my_lib.adb:10:14: info: precondition proved (CVC5: 1 VC)
 my_lib.adb:11:20: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
-my_lib.ads:3:09: info: Initial_Condition of package "My_Exception_Runtime" is ignored
-my_lib.ads:3:09: info: the elaboration of "My_Exception_Runtime" is not known to precede the elaboration of the current unit
-my_lib.ads:3:09: info: use pragma Elaborate_Body in "My_Exception_Runtime" or pragma Elaborate in the current unit
+my_lib.ads:3:09: warning: Initial_Condition of package "My_Exception_Runtime" is ignored [warn-init-cond-ignored]
+my_lib.ads:3:09: warning: the elaboration of "My_Exception_Runtime" is not known to precede the elaboration of the current unit
+my_lib.ads:3:09: warning: use pragma Elaborate_Body in "My_Exception_Runtime" or pragma Elaborate in the current unit
 my_lib.ads:23:14: info: implicit aspect Always_Terminates on "Optionalize" has been proved, subprogram will terminate
 my_lib.ads:26:41: info: initialization of "Output" proved
 my_lib.ads:28:09: info: complete contract cases proved (CVC5: 1 VC)

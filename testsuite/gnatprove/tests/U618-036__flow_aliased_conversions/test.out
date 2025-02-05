@@ -5,8 +5,8 @@ test.adb:23:14: info: local subprogram "Stuff2" only analyzed in the context of 
 test.adb:25:22: info: initialization of "C" proved
 test.adb:29:17: info: overflow check proved (CVC5: 2 VC), in call inlined at test.adb:78
 test.adb:29:17: info: overflow check proved (CVC5: 2 VC), in call inlined at test.adb:94
-test.adb:40:13: info: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion)
 test.adb:40:13: info: types in unchecked conversion have the same size (Trivial)
+test.adb:40:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion) [warn-imprecise-uc]
 test.adb:40:52: high: type is unsuitable for unchecked conversion [possible explanation: type Root_T is a tagged type]
 test.adb:40:61: high: type is unsuitable as a target for unchecked conversion [possible explanation: type Root_T is a tagged type]
 test.adb:42:14: info: add a contract to analyze it separately from calling contexts
@@ -15,8 +15,8 @@ test.adb:43:22: info: initialization of "B" proved
 test.adb:46:26: info: overflow check proved (CVC5: 2 VC), in call inlined at test.adb:85
 test.adb:46:26: medium: overflow check might fail, cannot prove upper bound for A.Field + 1, in call inlined at test.adb:82 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 74 should mention B (for argument Rec1) in a postcondition]
 test.adb:46:26: medium: overflow check might fail, cannot prove upper bound for A.Field + 1, in call inlined at test.adb:91 [reason for check: result of addition must fit in a 32-bits machine integer]
-test.adb:57:13: info: imprecise handling of Unchecked_Conversion (component offset not known)
 test.adb:57:13: info: types in unchecked conversion have the same size (Trivial)
+test.adb:57:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [warn-imprecise-uc]
 test.adb:57:51: info: type is suitable as source for unchecked conversion (Trivial)
 test.adb:57:58: info: type is suitable for unchecked conversion (Trivial)
 test.adb:59:14: info: add a contract to analyze it separately from calling contexts

@@ -36,7 +36,7 @@ main.adb:155:10: info: conditional loop termination proved (CVC5: 1 VC)
 main.adb:163:16: info: implicit aspect Always_Terminates on "Disp" has been proved, subprogram will terminate
 main.adb:169:22: medium: call might not terminate [reason for check: procedure "Call_Disp" has an Always_Terminates aspect] [possible explanation: dispatching calls might hide recursive calls]
 main.adb:172:10: info: conditional loop termination proved (CVC5: 1 VC)
-main.adb:181:13: info: implicit function contract might not be available on recursive calls
+main.adb:181:13: warning: implicit function contract might not be available on recursive calls [warn-contracts-recursive]
 main.adb:185:07: info: conditional call termination proved (Trivial: 1 VC)
 main.adb:185:07: medium: implicit aspect Always_Terminates on "Rec" could be incorrect, "Rec" and "Call_Rec" are mutually recursive [possible fix: annotate "Rec" and "Call_Rec" with Subprogram_Variant aspects]
 main.adb:190:22: info: precondition proved (Trivial: 1 VC)

@@ -32,9 +32,9 @@ evoting.adb:124:07: info: precondition proved (CVC5: 1 VC)
 evoting.adb:124:07: warning: assuming "Assert" always terminates
 evoting.adb:124:07: warning: no Always_Terminates aspect available for "Assert" [assumed-always-terminates]
 evoting.adb:134:13: info: only expected exception raised (CVC5: 1 VC)
-evoting.adb:135:41: info: references to the "Value" attribute are handled in an imprecise way, so the precondition might be impossible to prove.
 evoting.adb:135:41: medium: precondition might fail
 evoting.adb:135:41: medium: range check might fail, cannot prove lower bound for Candidate_Number_t'Value(buf(1..last)) [reason for check: value must fit in the target type of the assignment]
+evoting.adb:135:41: warning: references to the "Value" attribute are handled in an imprecise way, so the precondition might be impossible to prove [warn-imprecise-value]
 evoting.adb:135:48: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
 evoting.adb:135:48: info: range check proved (CVC5: 1 VC)
 evoting.adb:135:48: info: range check proved (CVC5: 4 VC)

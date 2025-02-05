@@ -1,5 +1,5 @@
 external_7.adb:5:07: medium: implicit aspect Always_Terminates on "Read" could be incorrect, "Read" and "Pub" are mutually recursive [possible fix: annotate "Read" and "Pub" with Subprogram_Variant aspects]
-external_7.ads:5:13: info: implicit function contract might not be available on recursive calls
+external_7.ads:5:13: warning: implicit function contract might not be available on recursive calls [warn-contracts-recursive]
 external_7.ads:6:14: warning: subprogram "Read" has no effect
 external_7.ads:7:21: info: initialization of "X" proved
 type_invariant_legal_7.adb:15:04: warning: analyzing unreferenced function "Priv" [unreferenced-function]

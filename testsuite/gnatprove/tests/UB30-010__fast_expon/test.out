@@ -27,8 +27,8 @@ fast_exponentiation.adb:40:28: medium: assertion might fail
 fast_exponentiation.adb:40:32: info: predicate check proved (Trivial: 1 VC)
 fast_exponentiation.adb:40:41: info: predicate check proved (Trivial: 1 VC)
 fast_exponentiation.adb:43:22: info: assertion proved (CVC5: 1 VC)
-fast_exponentiation.ads:8:13: info: function contract might not be available on recursive calls
 fast_exponentiation.ads:8:13: info: implicit aspect Always_Terminates on "Fast_Exp" has been proved, subprogram will terminate
+fast_exponentiation.ads:8:13: warning: function contract might not be available on recursive calls [warn-contracts-recursive]
 fast_exponentiation.ads:11:14: medium: postcondition might fail
 fast_exponentiation.ads:11:22: info: predicate check proved (Trivial: 1 VC)
 fast_exponentiation.ads:11:32: info: predicate check proved (Trivial: 1 VC)

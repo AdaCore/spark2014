@@ -18,6 +18,6 @@ termination_explanations_and_fixes.ads:8:13: info: implicit aspect Always_Termin
 termination_explanations_and_fixes.ads:18:14: warning: subprogram "Use_Acc_To_P" has no effect
 termination_explanations_and_fixes.ads:26:13: info: implicit aspect Always_Terminates on "Dispatching_F" has been proved, subprogram will terminate
 termination_explanations_and_fixes.ads:27:29: info: initialization of "X" proved
-termination_explanations_and_fixes.ads:40:13: info: implicit function contract might not be available on recursive calls
-termination_explanations_and_fixes.ads:43:13: info: implicit function contract might not be available on recursive calls
-termination_explanations_and_fixes.ads:44:13: info: implicit function contract might not be available on recursive calls
+termination_explanations_and_fixes.ads:40:13: warning: implicit function contract might not be available on recursive calls [warn-contracts-recursive]
+termination_explanations_and_fixes.ads:43:13: warning: implicit function contract might not be available on recursive calls [warn-contracts-recursive]
+termination_explanations_and_fixes.ads:44:13: warning: implicit function contract might not be available on recursive calls [warn-contracts-recursive]

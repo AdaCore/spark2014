@@ -50,24 +50,24 @@ foo.adb:154:43: info: data dependencies proved
 foo.adb:155:24: info: data dependencies proved
 foo.adb:158:28: medium: aspect Always_Terminates on "B" could be incorrect, call to "C" might be nonterminating [possible fix: annotate "C" with aspect Always_Terminates]
 foo.adb:170:13: info: implicit aspect Always_Terminates on "Subnested_Package" has been proved, subprogram will terminate
-foo.adb:170:13: info: implicit function contract might not be available on recursive calls
+foo.adb:170:13: warning: implicit function contract might not be available on recursive calls [warn-contracts-recursive]
 foo.adb:174:16: info: implicit aspect Always_Terminates on "Aux" has been proved, subprogram will terminate
-foo.adb:174:16: info: implicit function contract might not be available on recursive calls
+foo.adb:174:16: warning: implicit function contract might not be available on recursive calls [warn-contracts-recursive]
 foo.adb:177:52: info: subprogram variant proved (CVC5: 1 VC)
 foo.adb:177:73: info: range check proved (CVC5: 2 VC)
 foo.adb:186:17: info: subprogram variant proved (CVC5: 1 VC)
 foo.adb:186:24: info: range check proved (CVC5: 2 VC)
 foo.adb:190:13: info: implicit aspect Always_Terminates on "Subnested_Package_Wo_Variant" has been proved, subprogram will terminate
-foo.adb:190:13: info: implicit function contract might not be available on recursive calls
+foo.adb:190:13: warning: implicit function contract might not be available on recursive calls [warn-contracts-recursive]
 foo.adb:194:16: info: implicit aspect Always_Terminates on "Aux" has been proved, subprogram will terminate
-foo.adb:194:16: info: implicit function contract might not be available on recursive calls
+foo.adb:194:16: warning: implicit function contract might not be available on recursive calls [warn-contracts-recursive]
 foo.adb:195:10: info: no contextual analysis of "Aux" (nested package declaration)
 foo.adb:196:52: medium: subprogram variant might fail [possible explanation: mutually recursive subprograms should have compatible variants]
 foo.adb:196:84: info: range check proved (CVC5: 2 VC)
 foo.adb:205:17: medium: subprogram variant might fail [possible explanation: mutually recursive subprograms should have compatible variants]
 foo.adb:205:24: info: range check proved (CVC5: 2 VC)
 foo.adb:209:13: info: implicit aspect Always_Terminates on "Function_W_Nested_Package" has been proved, subprogram will terminate
-foo.adb:209:13: info: implicit function contract might not be available on recursive calls
+foo.adb:209:13: warning: implicit function contract might not be available on recursive calls [warn-contracts-recursive]
 foo.adb:214:49: info: subprogram variant proved (CVC5: 1 VC)
 foo.adb:214:78: info: range check proved (CVC5: 2 VC)
 foo.ads:3:14: warning: subprogram "Recursive_Proc_W_Variant" has no effect
