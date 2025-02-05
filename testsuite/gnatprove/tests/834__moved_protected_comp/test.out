@@ -1,0 +1,5 @@
+p.ads:8:17: error: launch "gnatprove --explain=E0010" for more information
+p.ads:8:17: error: object was moved at p.adb:5 [E0010]
+p.ads:8:17: error: return from "Swap" with moved value for "X"
+p.ads:8:23: warning: unused initial value of "Y"
+gnatprove: error during flow analysis and proof

@@ -4285,6 +4285,15 @@ package body Gnat2Why.Borrow_Checker is
                end if;
                Return_Globals (Subp);
 
+               --  For operations directly inside protected objects, check the
+               --  permission of protected components on return.
+
+               if Ekind (Scope (Subp)) = E_Protected_Type
+                 and then (Is_Entry (Subp) or else Ekind (Subp) = E_Procedure)
+               then
+                  Return_Protected_Components (Subp);
+               end if;
+
                Reset_Env (Current_Perm_Env);
             end;
 
