@@ -82,7 +82,9 @@ n10.adb:20:21: error: "A" is not readable
 n10.adb:20:21: error: launch "gnatprove --explain=E0010" for more information
 n10.adb:20:21: error: object was moved at line 19 [E0010]
 n10.adb:23:17: warning: unused assignment
-n11.adb:18:37: error: move as part of an allocator or a conversion to an access-to-constant type is not yet supported
+n11.adb:18:37: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(4)) [E0020]
+n11.adb:18:37: error: launch "gnatprove --explain=E0020" for more information
+n11.adb:18:37: error: violation of pragma SPARK_Mode at test.adc:3
 n11.adb:21:10: error: "T1" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
 n11.adb:21:10: error: violation of pragma SPARK_Mode at test.adc:3
 n11.adb:21:24: error: "T1" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
@@ -105,10 +107,14 @@ n13.adb:19:10: warning: initialization of "B" has no effect
 n13.adb:25:20: error: "A" is not readable
 n13.adb:25:20: error: launch "gnatprove --explain=E0010" for more information
 n13.adb:25:20: error: object was moved at line 19 [E0010]
-n14.adb:21:37: error: move as part of an allocator or a conversion to an access-to-constant type is not yet supported
+n14.adb:21:37: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(4)) [E0020]
+n14.adb:21:37: error: launch "gnatprove --explain=E0020" for more information
+n14.adb:21:37: error: violation of pragma SPARK_Mode at test.adc:3
 n14.adb:24:36: error: "T2" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
 n14.adb:24:36: error: violation of pragma SPARK_Mode at test.adc:3
-n15.adb:21:37: error: move as part of an allocator or a conversion to an access-to-constant type is not yet supported
+n15.adb:21:37: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(4)) [E0020]
+n15.adb:21:37: error: launch "gnatprove --explain=E0020" for more information
+n15.adb:21:37: error: violation of pragma SPARK_Mode at test.adc:3
 n15.adb:24:25: error: "T2" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
 n15.adb:24:25: error: violation of pragma SPARK_Mode at test.adc:3
 n16.adb:13:17: error: launch "gnatprove --explain=E0010" for more information

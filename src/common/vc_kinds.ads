@@ -727,7 +727,9 @@ package VC_Kinds is
           & " types",
          when Lim_Move_To_Access_Constant =>
            "move as part of an allocator or a conversion to an "
-          & "access-to-constant type",
+          & "access-to-constant type which does not occur directly inside"
+          & " an assignment statement, an object declaration, or a simple"
+          & " return statement",
          when Lim_Conv_Fixed_Float =>
            "conversion between fixed-point and floating-point types",
          when Lim_Conv_Incompatible_Fixed =>
