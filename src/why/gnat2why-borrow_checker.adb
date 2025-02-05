@@ -840,6 +840,12 @@ package body Gnat2Why.Borrow_Checker is
    --  the debugger to look into a hash table.
    pragma Unreferenced (Hp);
 
+   function Is_Move_To_Constant (Expr : Node_Id) return Boolean
+     with Pre => Is_Access_Constant (Retysp (Etype (Expr)));
+   --  Even if the type of Expr is not deep, an assignment can still be a
+   --  move. It occurs on allocators and conversions to access-to-constant
+   --  types.
+
    function Is_Prefix_Or_Almost
      (Pref : Node_Id;
       Expr : Expr_Or_Ent) return Boolean;
@@ -1197,13 +1203,6 @@ package body Gnat2Why.Borrow_Checker is
          Expr : Node_Id);
       --  Update map of current observers
 
-      function Is_Move_To_Constant (Expr : Node_Id) return Boolean
-      with
-        Pre => Is_Access_Constant (Retysp (Etype (Expr)));
-      --  Even if the type of Expr is not deep, the assignment can still be a
-      --  move. It occurs on allocators and conversions to access-to-constant
-      --  types.
-
       -------------------------------
       -- Check_Assignment_To_Ghost --
       -------------------------------
@@ -1291,49 +1290,6 @@ package body Gnat2Why.Borrow_Checker is
       begin
          Handle_Borrow_Or_Observe (Current_Observers, Var, Expr);
       end Handle_Observe;
-
-      -------------------------
-      -- Is_Move_To_Constant --
-      -------------------------
-
-      function Is_Move_To_Constant (Expr : Node_Id) return Boolean is
-      begin
-         case Nkind (Expr) is
-
-            --  The initial value of the an access-to-constant allocator is
-            --  moved if the designated type is deep.
-
-            when N_Allocator =>
-               --  Ada RM 4.8(5/2): If the type of the allocator is an
-               --  access-to-constant type, the allocator shall be an
-               --  initialized allocator.
-               pragma Assert
-                 (Nkind (Expression (Expr)) = N_Qualified_Expression);
-               declare
-                  Des_Ty : Entity_Id := Directly_Designated_Type
-                    (Retysp (Etype (Expr)));
-               begin
-                  if Is_Incomplete_Type (Des_Ty)
-                    and then Present (Full_View (Des_Ty))
-                  then
-                     Des_Ty := Full_View (Des_Ty);
-                  end if;
-
-                  return Is_Deep (Des_Ty)
-                    and then not Is_Rooted_In_Constant (Expression (Expr));
-               end;
-
-            --  A conversion from an access-to-variable type to an
-            --  access-to-constant type is a move.
-
-            when N_Type_Conversion | N_Unchecked_Type_Conversion =>
-               return
-                 not (Is_Access_Constant (Retysp (Etype (Expression (Expr))))
-                      or else Is_Rooted_In_Constant (Expression (Expr)));
-            when others =>
-               return False;
-         end case;
-      end Is_Move_To_Constant;
 
       --  Local variables
 
@@ -4124,6 +4080,16 @@ package body Gnat2Why.Borrow_Checker is
 
          Check_Expression (Expr, Move);
 
+      elsif Is_Access_Type (Retysp (Return_Typ))
+        and then Is_Access_Constant (Retysp (Return_Typ))
+        and then Is_Move_To_Constant (Expr)
+      then
+
+         --  The expression of the conversion/allocator is moved
+
+         pragma Assert (Is_Path_Expression (Expression (Expr)));
+         Check_Expression (Expression (Expr), Move);
+
       else
          Check_Expression (Expr, Read);
       end if;
@@ -4296,7 +4262,8 @@ package body Gnat2Why.Borrow_Checker is
                  (From => Stmt, Stop => Subprogram_Body (Subp));
 
                if Ekind (Subp) in E_Procedure | E_Entry
-                 and then not No_Return (Subp)
+                 or else (Ekind (Subp) = E_Function
+                          and then Is_Function_With_Side_Effects (Subp))
                then
                   Return_Parameters (Subp);
                end if;
@@ -4350,9 +4317,7 @@ package body Gnat2Why.Borrow_Checker is
                Check_End_Of_Scopes
                  (From => Stmt, Stop => Subprogram_Body (Subp));
 
-               if Ekind (Subp) in E_Procedure | E_Entry
-                 and then not No_Return (Subp)
-               then
+               if Is_Function_With_Side_Effects (Subp) then
                   Return_Parameters (Subp);
                end if;
                Return_Globals (Subp);
@@ -4988,6 +4953,49 @@ package body Gnat2Why.Borrow_Checker is
       end loop;
    end Hp;
    pragma Annotate (Xcov, Exempt_Off);
+
+   -------------------------
+   -- Is_Move_To_Constant --
+   -------------------------
+
+   function Is_Move_To_Constant (Expr : Node_Id) return Boolean is
+   begin
+      case Nkind (Expr) is
+
+         --  The initial value of the an access-to-constant allocator is
+         --  moved if the designated type is deep.
+
+         when N_Allocator =>
+            --  Ada RM 4.8(5/2): If the type of the allocator is an
+            --  access-to-constant type, the allocator shall be an
+            --  initialized allocator.
+            pragma Assert
+              (Nkind (Expression (Expr)) = N_Qualified_Expression);
+            declare
+               Des_Ty : Entity_Id := Directly_Designated_Type
+                 (Retysp (Etype (Expr)));
+            begin
+               if Is_Incomplete_Type (Des_Ty)
+                 and then Present (Full_View (Des_Ty))
+               then
+                  Des_Ty := Full_View (Des_Ty);
+               end if;
+
+               return Is_Deep (Des_Ty)
+                 and then not Is_Rooted_In_Constant (Expression (Expr));
+            end;
+
+            --  A conversion from an access-to-variable type to an
+            --  access-to-constant type is a move.
+
+         when N_Type_Conversion | N_Unchecked_Type_Conversion =>
+            return
+            not (Is_Access_Constant (Retysp (Etype (Expression (Expr))))
+                 or else Is_Rooted_In_Constant (Expression (Expr)));
+         when others =>
+            return False;
+      end case;
+   end Is_Move_To_Constant;
 
    -------------------------
    -- Is_Prefix_Or_Almost --
