@@ -1589,8 +1589,8 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      Funcalls  : Call_Sets.Set;
-      Indcalls  : Node_Sets.Set;
+      Funcalls : Call_Sets.Set;
+      Indcalls : Node_Sets.Set;
 
       V : Flow_Graphs.Vertex_Id;
 
@@ -1743,12 +1743,12 @@ package body Flow.Control_Flow_Graph is
                   Add_Vertex
                     (FA,
                      Make_Basic_Attributes
-                       (Var_Ex_Use    => Inputs,
-                        Subp_Calls    => Funcalls,
-                        Indt_Calls    => Indcalls,
-                        Vertex_Ctx    => Ctx.Vertex_Ctx,
-                        E_Loc         => N,
-                        Print_Hint    => Pretty_Print_Record_Field),
+                       (Var_Ex_Use => Inputs,
+                        Subp_Calls => Funcalls,
+                        Indt_Calls => Indcalls,
+                        Vertex_Ctx => Ctx.Vertex_Ctx,
+                        E_Loc      => N,
+                        Print_Hint => Pretty_Print_Record_Field),
                      V_Used);
                   Verts.Append (V_Used);
 
@@ -1757,12 +1757,12 @@ package body Flow.Control_Flow_Graph is
                   Add_Vertex
                     (FA,
                      Make_Basic_Attributes
-                       (Var_Def       => Flow_Id_Sets.To_Set (Output),
-                        Subp_Calls    => Funcalls,
-                        Indt_Calls    => Indcalls,
-                        Vertex_Ctx    => Ctx.Vertex_Ctx,
-                        E_Loc         => N,
-                        Print_Hint    => Pretty_Print_Record_Field),
+                       (Var_Def    => Flow_Id_Sets.To_Set (Output),
+                        Subp_Calls => Funcalls,
+                        Indt_Calls => Indcalls,
+                        Vertex_Ctx => Ctx.Vertex_Ctx,
+                        E_Loc      => N,
+                        Print_Hint => Pretty_Print_Record_Field),
                      V_Defined);
                   Verts_Defined.Append (V_Defined);
 
@@ -1892,10 +1892,10 @@ package body Flow.Control_Flow_Graph is
                   Var_Im_Use => (if Partial
                                     then Vars_Defined
                                     else Flow_Id_Sets.Empty_Set),
-                  Subp_Calls    => Funcalls,
-                  Indt_Calls    => Indcalls,
-                  Vertex_Ctx    => Ctx.Vertex_Ctx,
-                  E_Loc         => N),
+                  Subp_Calls => Funcalls,
+                  Indt_Calls => Indcalls,
+                  Vertex_Ctx => Ctx.Vertex_Ctx,
+                  E_Loc      => N),
                V);
 
             CM.Insert (Union_Id (N), Trivial_Connection (V));
@@ -4571,13 +4571,13 @@ package body Flow.Control_Flow_Graph is
                         Add_Vertex
                           (FA,
                            (Make_Basic_Attributes
-                             (Var_Def       => Flow_Id_Sets.To_Set (Output),
-                              Var_Ex_Use    => Inputs,
-                              Subp_Calls    => Funcalls,
-                              Indt_Calls    => Indcalls,
-                              Vertex_Ctx    => Ctx.Vertex_Ctx,
-                              E_Loc         => N,
-                              Print_Hint    => Pretty_Print_Record_Field)
+                             (Var_Def    => Flow_Id_Sets.To_Set (Output),
+                              Var_Ex_Use => Inputs,
+                              Subp_Calls => Funcalls,
+                              Indt_Calls => Indcalls,
+                              Vertex_Ctx => Ctx.Vertex_Ctx,
+                              E_Loc      => N,
+                              Print_Hint => Pretty_Print_Record_Field)
                            with delta Is_Declaration_Node => True),
                            V);
                         Missing.Exclude (Output);
