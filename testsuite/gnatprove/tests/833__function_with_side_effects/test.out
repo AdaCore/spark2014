@@ -1,0 +1,9 @@
+test.adb:4:13: error: launch "gnatprove --explain=E0010" for more information
+test.adb:4:13: error: object was moved at line 9 [E0010]
+test.adb:4:13: error: return from "F" with moved value for "X"
+test.adb:4:16: warning: "X" is not modified, could be IN
+test.adb:13:13: error: launch "gnatprove --explain=E0010" for more information
+test.adb:13:13: error: object was moved at line 18 [E0010]
+test.adb:13:13: error: return from "F_2" with moved value for "X"
+test.adb:13:18: warning: "X" is not modified, could be IN
+gnatprove: error during flow analysis and proof
