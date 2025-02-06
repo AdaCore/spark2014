@@ -254,6 +254,10 @@ end
 
 module Int_Power
   use export int.Power
+  val function pow2 int : int
+
+  axiom Pow2_def:
+     forall x [pow2 x]. pow2 x = power 2 x
 end
 
 module Int_Minmax

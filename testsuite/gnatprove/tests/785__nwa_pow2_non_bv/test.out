@@ -1,0 +1,3 @@
+pow2_no_wrap_non_bv.adb:9:42: info: initialization of "Result" proved
+pow2_no_wrap_non_bv.adb:13:32: high: overflow check might fail, cannot prove upper bound for Non_Binary'(2) ** Exp (e.g. when Exp = 16) [reason for check: result of exponentiation must fit in a 16-bits machine integer] [possible fix: add precondition (Non_Binary'(2) ** Exp <= Non_Binary'Last) to subprogram at line 9]
+pow2_no_wrap_non_bv.adb:20:07: info: precondition proved (Trivial: 1 VC)

@@ -62,12 +62,12 @@ negative_base.ads:20:33: medium: postcondition might fail
 power_of_two.adb:17:21: info: division check proved (CVC5: 1 VC)
 power_of_two.adb:22:16: info: overflow check proved (CVC5: 2 VC)
 power_of_two.adb:22:22: info: overflow check proved (CVC5: 2 VC)
-power_of_two.adb:22:31: medium: overflow check might fail, cannot prove upper bound for 2 * 2 ** N [reason for check: result of multiplication must fit in a 128-bits machine integer] [possible fix: add precondition (2 * 2 ** N <= 170141183460469231731687303715884105727) to subprogram at power_of_two.ads:20]
-power_of_two.adb:22:35: medium: overflow check might fail, cannot prove upper bound for 2 ** N [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: add precondition (2 ** N <= 170141183460469231731687303715884105727) to subprogram at power_of_two.ads:20]
+power_of_two.adb:22:31: info: overflow check proved (CVC5: 2 VC)
+power_of_two.adb:22:35: info: overflow check proved (CVC5: 2 VC)
 power_of_two.adb:27:16: info: overflow check proved (CVC5: 2 VC)
 power_of_two.adb:27:21: medium: overflow check might fail, cannot prove upper bound for 2 ** A * 2 ** B [reason for check: result of multiplication must fit in a 128-bits machine integer] [possible fix: add precondition (2 ** A * 2 ** B <= 170141183460469231731687303715884105727) to subprogram at power_of_two.ads:23]
 power_of_two.adb:27:25: info: overflow check proved (CVC5: 2 VC)
-power_of_two.adb:27:34: medium: overflow check might fail, cannot prove upper bound for 2 ** (A + B) [reason for check: result of exponentiation must fit in a 128-bits machine integer] [possible fix: add precondition (2 ** (A + B) <= 170141183460469231731687303715884105727) to subprogram at power_of_two.ads:23]
+power_of_two.adb:27:34: info: overflow check proved (CVC5: 2 VC)
 power_of_two.adb:27:40: info: overflow check proved (CVC5: 2 VC)
 power_of_two.ads:11:13: info: implicit aspect Always_Terminates on "Two_Pow" has been proved, subprogram will terminate
 power_of_two.ads:12:17: info: postcondition proved (CVC5: 1 VC)
@@ -76,7 +76,7 @@ power_of_two.ads:15:17: info: postcondition proved (CVC5: 1 VC)
 power_of_two.ads:17:13: info: implicit aspect Always_Terminates on "Two_Pow_Even_For_Positive_N" has been proved, subprogram will terminate
 power_of_two.ads:18:32: info: postcondition proved (CVC5: 1 VC)
 power_of_two.ads:20:13: info: implicit aspect Always_Terminates on "Two_Pow_Doubling" has been proved, subprogram will terminate
-power_of_two.ads:21:32: info: postcondition proved (CVC5: 1 VC)
+power_of_two.ads:21:32: medium: postcondition might fail
 power_of_two.ads:23:13: info: implicit aspect Always_Terminates on "Two_Pow_Product" has been proved, subprogram will terminate
 power_of_two.ads:24:50: medium: postcondition might fail
 power_of_two.ads:26:13: info: implicit aspect Always_Terminates on "Two_Pow_Strictly_Increasing" has been proved, subprogram will terminate
