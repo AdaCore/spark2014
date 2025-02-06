@@ -905,7 +905,8 @@ package VC_Kinds is
       EC_Always_Terminates_On_Function,
       EC_Exceptional_Cases_On_Function,
       EC_Call_To_Function_With_Side_Effects,
-      EC_Uninitialized_Allocator);
+      EC_Uninitialized_Allocator,
+      EC_Incorrect_Source_Of_Borrow);
    for Explain_Code_Kind use
      (EC_None                                 => 0,
       EC_Volatile_At_Library_Level            => 1,
@@ -926,7 +927,8 @@ package VC_Kinds is
       EC_Always_Terminates_On_Function        => 16,
       EC_Exceptional_Cases_On_Function        => 17,
       EC_Call_To_Function_With_Side_Effects   => 18,
-      EC_Uninitialized_Allocator              => 19);
+      EC_Uninitialized_Allocator              => 19,
+      EC_Incorrect_Source_Of_Borrow           => 20);
 
    function To_String (Code : Explain_Code_Kind) return String
      with Pre => Code /= EC_None;
