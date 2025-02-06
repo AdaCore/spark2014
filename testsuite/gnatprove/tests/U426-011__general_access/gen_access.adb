@@ -6,9 +6,9 @@ procedure Gen_Access with SPARK_Mode is
    function F (X : Gen_Int) return Boolean with Import;
    function F (Dummy : Cst_Int) return Boolean is (True);
 
-   X : PS_Int := new Integer'(12); -- @RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
+   X : PS_Int := new Integer'(12); -- @RESOURCE_LEAK_AT_END_OF_SCOPE:PASS
    B : Boolean := F (Gen_Int (X));
-   Y_1 : Gen_Int := Gen_Int (X);      --  <<< X is moved in the BC, not in proof => memory leak on X
+   Y_1 : Gen_Int := Gen_Int (X); -- @RESOURCE_LEAK:FAIL
    Y_2 : Gen_Int := new Integer'(12); -- @RESOURCE_LEAK:FAIL
 
    function Mk return Gen_Int with Import;
