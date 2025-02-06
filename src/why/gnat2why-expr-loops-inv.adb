@@ -1542,6 +1542,7 @@ package body Gnat2Why.Expr.Loops.Inv is
             declare
                E        : constant Constant_Or_Variable_Kind_Id :=
                  Defining_Identifier (N);
+               Rvalue   : constant Node_Id := Expression (N);
                Relevant : constant Boolean :=
                  Relevant_Vertices.Contains (Local_CFG.Starting_Vertex (N));
 
@@ -1569,6 +1570,12 @@ package body Gnat2Why.Expr.Loops.Inv is
                   if not Is_Imported (E) then
                      Write_Aliases (E, Loop_Writes, Relevant);
                   end if;
+               end if;
+
+               if Present (Rvalue) and then Nkind (Rvalue) = N_Function_Call
+               then
+                  Process_Call
+                    (Rvalue, Loop_Writes, Relevant, After_Inv);
                end if;
             end;
 
