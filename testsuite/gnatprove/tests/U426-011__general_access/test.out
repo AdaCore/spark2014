@@ -2,7 +2,7 @@ bad_gen_access.adb:9:14: error: instance of Unchecked_Deallocation with a genera
 bad_gen_access.adb:9:14: error: violation of aspect SPARK_Mode at line 3
 bad_gen_access.adb:14:19: warning: assuming "F" has no effect on global items
 bad_gen_access.adb:14:19: warning: no Global contract available for "F" [assumed-global-null]
-bad_gen_access.adb:15:19: error: move as part of a conversion to an access-to-constant type is not yet supported
+bad_gen_access.adb:15:19: error: move as part of an allocator or a conversion to an access-to-constant type is not yet supported
 bad_gen_access.adb:16:19: warning: assuming "F" has no effect on global items
 bad_gen_access.adb:16:19: warning: no Global contract available for "F" [assumed-global-null]
 bad_gen_access.adb:24:12: error: conversion from an anonymous access type to a named access type is not allowed in SPARK
