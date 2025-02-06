@@ -2589,9 +2589,9 @@ package body SPARK_Definition is
                --  to access-to-constant types as the allocator type is
                --  not itself of a deep type.
 
-               if Is_Access_Constant (Retysp (Etype (N)))
-                 and then Nkind (Expression (N)) = N_Qualified_Expression
-               then
+               if Is_Access_Constant (Retysp (Etype (N))) then
+                  pragma Assert
+                    (Nkind (Expression (N)) = N_Qualified_Expression);
                   declare
                      Des_Ty : Type_Kind_Id :=
                        Directly_Designated_Type (Retysp (Etype (N)));
@@ -2600,9 +2600,20 @@ package body SPARK_Definition is
                         Des_Ty := Full_View (Des_Ty);
                      end if;
 
-                     if Is_Deep (Des_Ty) then
+                     if Is_Deep (Des_Ty)
+                       and then not Is_Rooted_In_Constant (Expression (N))
+                     then
                         Check_Source_Of_Move
                           (Expression (N), To_Constant => True);
+
+                        --  Moving a tracked object inside an expression is not
+                        --  supported yet.
+
+                        if Is_Path_Expression (Expression (N))
+                          and then Present (Get_Root_Object (Expression (N)))
+                        then
+                           Mark_Unsupported (Lim_Move_To_Access_Constant, N);
+                        end if;
                      end if;
                   end;
                end if;
