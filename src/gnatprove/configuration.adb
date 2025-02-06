@@ -2864,13 +2864,17 @@ package body Configuration is
                   VS : GPR2.Build.Source.Object;
                   Elt : constant GPR2.Name_Type :=
                     Name_Type (Simple_File_Name);
+                  Ambiguous : Boolean;
                begin
                   if View_DB.Source_Option >= Sources_Units
                     and then View_DB.Has_Compilation_Unit (Elt)
                   then
                      CU := View_DB.Compilation_Unit (Elt);
                   elsif View_DB.Source_Option > No_Source then
-                     VS := View_DB.Visible_Source (GPR2.Simple_Name (Elt));
+                     VS :=
+                       View_DB.Visible_Source
+                         (GPR2.Simple_Name (Elt), Ambiguous);
+                     pragma Assert (not Ambiguous);
                      if VS.Is_Defined
                        and then View_DB.Has_Compilation_Unit (VS.Unit.Name)
                      then
