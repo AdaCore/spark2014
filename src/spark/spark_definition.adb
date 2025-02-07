@@ -1599,6 +1599,7 @@ package body SPARK_Definition is
                   Mark_Violation
                     ("borrow or observe of a non-traversal function call",
                      Root_Expr,
+                     Code          => EC_Incorrect_Source_Of_Borrow,
                      SRM_Reference => "SPARK RM 3.10(4)");
                elsif No (Root_Expr) or else No (Get_Root_Object (Root_Expr))
                then
@@ -1606,6 +1607,7 @@ package body SPARK_Definition is
                     ("borrow or observe of an expression which is not part "
                      & "of stand-alone object or parameter",
                      Alt_Expr,
+                     Code          => EC_Incorrect_Source_Of_Borrow,
                      SRM_Reference => "SPARK RM 3.10(4)");
                elsif No (First_Root) then
                   First_Root := Get_Root_Object (Root_Expr);

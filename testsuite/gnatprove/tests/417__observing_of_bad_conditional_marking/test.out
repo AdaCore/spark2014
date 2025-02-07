@@ -2,8 +2,10 @@ main.adb:7:36: error: observe of a conditional or case expression with branches 
 main.adb:7:36: error: violation of aspect SPARK_Mode at line 2
 main.adb:11:09: error: observe of a conditional or case expression with branches rooted in different objects is not allowed in SPARK
 main.adb:11:09: error: violation of aspect SPARK_Mode at line 2
-main.adb:19:35: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(4))
+main.adb:19:35: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(4)) [E0020]
+main.adb:19:35: error: launch "gnatprove --explain=E0020" for more information
 main.adb:19:35: error: violation of aspect SPARK_Mode at line 2
-main.adb:23:08: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(4))
+main.adb:23:08: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(4)) [E0020]
+main.adb:23:08: error: launch "gnatprove --explain=E0020" for more information
 main.adb:23:08: error: violation of aspect SPARK_Mode at line 2
 gnatprove: error during flow analysis and proof
