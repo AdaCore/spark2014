@@ -3646,6 +3646,23 @@ package body SPARK_Util is
    end Is_In_Statically_Dead_Branch;
 
    -----------------------
+   -- Is_In_Toplevel_Move --
+   -----------------------
+
+   function Is_In_Toplevel_Move (N : N_Subexpr_Id) return Boolean is
+      Context : constant Node_Id := Parent (N);
+   begin
+      return
+        Nkind (Context) in N_Assignment_Statement
+                         | N_Object_Declaration
+                         | N_Simple_Return_Statement
+          and then Present (Expression (Context))
+          and then Expression (Context) = N
+          and then Nkind (Parent (Context)) /=
+          N_Expression_With_Actions;
+   end Is_In_Toplevel_Move;
+
+   -----------------------
    -- Is_Local_Borrower --
    -----------------------
 

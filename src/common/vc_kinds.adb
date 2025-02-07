@@ -785,7 +785,9 @@ package body VC_Kinds is
            "a modular type with a modulus greater than 2 ** 128",
          when Lim_Move_To_Access_Constant =>
            "a move operation occuring as part of  an allocator or a conversion"
-          & " to an access-to-constant type",
+          & " to an access-to-constant type which does not occur directly"
+          & " inside an assignment statement, an object declaration, or a"
+          & " simple return statement",
          when Lim_No_Return_Function =>
            "a function annotated as No_Return",
          when Lim_Non_Static_Attribute =>

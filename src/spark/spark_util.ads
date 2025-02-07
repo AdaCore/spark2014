@@ -938,6 +938,12 @@ package SPARK_Util is
    --  However, the front end rejects these two cases. For the SPARK back end,
    --  this routine gives correct results.
 
+   function Is_In_Toplevel_Move (N : N_Subexpr_Id) return Boolean;
+   --  Return True if N occurs directly at a place where moves are alloxed, ie
+   --  as the expression of an object declaration occuring outside of a
+   --  declare block, as the lefthand side of an assignment, or in a simple
+   --  return statement.
+
    function Is_Path_Expression (Expr : N_Subexpr_Id) return Boolean;
    --  Return whether Expr corresponds to a path
 

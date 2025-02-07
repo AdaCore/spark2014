@@ -2608,11 +2608,12 @@ package body SPARK_Definition is
                         Check_Source_Of_Move
                           (Expression (N), To_Constant => True);
 
-                        --  Moving a tracked object inside an expression is not
-                        --  supported yet.
+                        --  Moving a tracked object inside an expression is
+                        --  only supported in simple contexts, like 'Access.
 
                         if Is_Path_Expression (Expression (N))
                           and then Present (Get_Root_Object (Expression (N)))
+                          and then not Is_In_Toplevel_Move (N)
                         then
                            Mark_Unsupported (Lim_Move_To_Access_Constant, N);
                         end if;
@@ -3470,11 +3471,12 @@ package body SPARK_Definition is
                elsif Conversion_Is_Move_To_Constant (N) then
                   Check_Source_Of_Move (Expression (N), To_Constant => True);
 
-                  --  Moving a tracked object inside an expression is not
-                  --  supported yet.
+                  --  Moving a tracked object in a conversion is only supported
+                  --  in simple contexts, like 'Access.
 
                   if Is_Path_Expression (Expression (N))
                     and then Present (Get_Root_Object (Expression (N)))
+                    and then not Is_In_Toplevel_Move (N)
                   then
                      Mark_Unsupported (Lim_Move_To_Access_Constant, N);
                   end if;
@@ -5022,201 +5024,192 @@ package body SPARK_Definition is
             end if;
 
          when Attribute_Access =>
-            declare
-               Par : constant Node_Id := Parent (N);
-            begin
-               --  We support 'Access if it is directly prefixed by a
-               --  subprogram name.
+            --  We support 'Access if it is directly prefixed by a
+            --  subprogram name.
 
-               if Nkind (P) in N_Identifier | N_Expanded_Name
-                 and then Is_Subprogram (Entity (P))
-               then
-                  declare
-                     Subp : constant Subprogram_Kind_Id := Entity (P);
-                  begin
-                     if not In_SPARK (Subp) then
-                        Mark_Violation (N, From => P);
+            if Nkind (P) in N_Identifier | N_Expanded_Name
+              and then Is_Subprogram (Entity (P))
+            then
+               declare
+                  Subp : constant Subprogram_Kind_Id := Entity (P);
+               begin
+                  if not In_SPARK (Subp) then
+                     Mark_Violation (N, From => P);
 
-                     --  Dispatching operations need a specialised version that
-                     --  called on classwide types. We do not support them is
-                     --  currently.
+                  --  Dispatching operations need a specialised version that
+                  --  called on classwide types. We do not support them is
+                  --  currently.
 
-                     elsif Is_Dispatching_Operation (Subp) then
-                        Mark_Unsupported (Lim_Access_To_Dispatch_Op, N);
+                  elsif Is_Dispatching_Operation (Subp) then
+                     Mark_Unsupported (Lim_Access_To_Dispatch_Op, N);
 
-                     --  Functions with side effects, volatile functions and
-                     --  subprograms declared within a protected object have
-                     --  an implicit global parameter. We do not support taking
-                     --  their access.
+                  --  Functions with side effects, volatile functions and
+                  --  subprograms declared within a protected object have
+                  --  an implicit global parameter. We do not support taking
+                  --  their access.
 
-                     elsif Ekind (Subp) = E_Function
-                       and then Is_Function_With_Side_Effects (Subp)
-                       and then not Has_Handler_Annotation (Etype (N))
-                     then
-                        Mark_Violation
-                          ("access to function with side effects", N);
+                  elsif Ekind (Subp) = E_Function
+                    and then Is_Function_With_Side_Effects (Subp)
+                    and then not Has_Handler_Annotation (Etype (N))
+                  then
+                     Mark_Violation
+                       ("access to function with side effects", N);
 
-                     elsif Ekind (Subp) = E_Function
-                       and then Is_Volatile_Function (Subp)
-                       and then not Has_Handler_Annotation (Etype (N))
-                     then
-                        Mark_Violation ("access to volatile function", N);
+                  elsif Ekind (Subp) = E_Function
+                    and then Is_Volatile_Function (Subp)
+                    and then not Has_Handler_Annotation (Etype (N))
+                  then
+                     Mark_Violation ("access to volatile function", N);
 
-                     elsif Within_Protected_Type (Subp) then
-                        Mark_Violation
-                          ("access to subprogram declared within a protected"
-                           & " object", N);
+                  elsif Within_Protected_Type (Subp) then
+                     Mark_Violation
+                       ("access to subprogram declared within a protected"
+                        & " object", N);
 
-                     --  Subprograms annotated with relaxed initialization need
-                     --  a special handling at call.
+                  --  Subprograms annotated with relaxed initialization need
+                  --  a special handling at call.
 
-                     elsif Has_Aspect (Subp, Aspect_Relaxed_Initialization)
-                     then
-                        Mark_Unsupported (Lim_Access_To_Relaxed_Init_Subp, N);
+                  elsif Has_Aspect (Subp, Aspect_Relaxed_Initialization)
+                  then
+                     Mark_Unsupported (Lim_Access_To_Relaxed_Init_Subp, N);
 
-                     --  No_Return procedures can not be stored inside access
-                     --  types.
+                  --  No_Return procedures can not be stored inside access
+                  --  types.
 
-                     elsif No_Return (Subp) then
-                        Mark_Unsupported (Lim_Access_To_No_Return_Subp, N);
+                  elsif No_Return (Subp) then
+                     Mark_Unsupported (Lim_Access_To_No_Return_Subp, N);
 
-                     --  Subprograms which might raise exceptions can not be
-                     --  stored inside access types.
+                  --  Subprograms which might raise exceptions can not be
+                  --  stored inside access types.
 
-                     elsif Has_Exceptional_Contract (Subp) then
-                        Mark_Unsupported (Lim_Access_To_Subp_With_Exc, N);
+                  elsif Has_Exceptional_Contract (Subp) then
+                     Mark_Unsupported (Lim_Access_To_Subp_With_Exc, N);
 
-                     --  Subprograms with an exit cases contract necessarily
-                     --  allow abnormal return.
+                  --  Subprograms with an exit cases contract necessarily
+                  --  allow abnormal return.
 
-                     elsif Present (Get_Pragma (Subp, Pragma_Exit_Cases)) then
-                        raise Program_Error;
+                  elsif Present (Get_Pragma (Subp, Pragma_Exit_Cases)) then
+                     raise Program_Error;
 
-                     --  Subprogram with non-null Global contract (either
-                     --  explicit or generated). Global accesses are allowed
-                     --  for specialized actuals of functions annotated with
-                     --  higher order specialization and for
-                     --  access-to-subprogram types annotated with Handler.
+                  --  Subprogram with non-null Global contract (either
+                  --  explicit or generated). Global accesses are allowed
+                  --  for specialized actuals of functions annotated with
+                  --  higher order specialization and for
+                  --  access-to-subprogram types annotated with Handler.
 
-                     elsif not Is_Specialized_Actual (N) then
-                        if Has_Handler_Annotation (Etype (N)) then
+                  elsif not Is_Specialized_Actual (N) then
+                     if Has_Handler_Annotation (Etype (N)) then
 
-                           --  Postpone check for handler accesses until
-                           --  Skip_Flow_And_Proof annotations are picked.
+                        --  Postpone check for handler accesses until
+                        --  Skip_Flow_And_Proof annotations are picked.
 
-                           if not Gnat2Why_Args.Global_Gen_Mode then
-                              Handler_Accesses.Insert (N);
-                           end if;
-                        else
-                           declare
-                              Globals : Global_Flow_Ids;
-                           begin
-                              Get_Globals
-                                (Subprogram          => Subp,
-                                 Scope               =>
-                                   (Ent => Subp, Part => Visible_Part),
-                                 Classwide           => False,
-                                 Globals             => Globals,
-                                 Use_Deduced_Globals =>
-                                    not Gnat2Why_Args.Global_Gen_Mode,
-                                 Ignore_Depends      => False);
-
-                              if not Globals.Proof_Ins.Is_Empty
-                                or else not Globals.Inputs.Is_Empty
-                                or else not Globals.Outputs.Is_Empty
-                              then
-                                 Mark_Violation
-                                   ("access to subprogram with global effects",
-                                    N);
-                              end if;
-                           end;
+                        if not Gnat2Why_Args.Global_Gen_Mode then
+                           Handler_Accesses.Insert (N);
                         end if;
+                     else
+                        declare
+                           Globals : Global_Flow_Ids;
+                        begin
+                           Get_Globals
+                             (Subprogram          => Subp,
+                              Scope               =>
+                                (Ent => Subp, Part => Visible_Part),
+                              Classwide           => False,
+                              Globals             => Globals,
+                              Use_Deduced_Globals =>
+                                 not Gnat2Why_Args.Global_Gen_Mode,
+                              Ignore_Depends      => False);
+
+                           if not Globals.Proof_Ins.Is_Empty
+                             or else not Globals.Inputs.Is_Empty
+                             or else not Globals.Outputs.Is_Empty
+                           then
+                              Mark_Violation
+                                ("access to subprogram with global effects",
+                                 N);
+                           end if;
+                        end;
                      end if;
-                  end;
+                  end if;
+               end;
 
-               --  N should visibly be of an access type
+            --  N should visibly be of an access type
 
-               elsif not Is_Access_Type (Retysp (Etype (N))) then
-                  Mark_Violation
-                    ("Access attribute of a private type", N);
-                  return;
+            elsif not Is_Access_Type (Retysp (Etype (N))) then
+               Mark_Violation
+                 ("Access attribute of a private type", N);
+               return;
 
-               --  The prefix must be a path rooted inside an object
+            --  The prefix must be a path rooted inside an object
 
-               elsif not Is_Access_Object_Type (Retysp (Etype (N)))
-                 or else not Is_Path_Expression (P)
-               then
-                  Mark_Violation
-                    ("Access attribute on a complex expression", N);
-                  return;
+            elsif not Is_Access_Object_Type (Retysp (Etype (N)))
+              or else not Is_Path_Expression (P)
+            then
+               Mark_Violation
+                 ("Access attribute on a complex expression", N);
+               return;
 
-               elsif No (Get_Root_Object (P)) then
-                  Mark_Violation
-                    ("Access attribute of a path not rooted inside an object",
-                     N);
-                  return;
+            elsif No (Get_Root_Object (P)) then
+               Mark_Violation
+                 ("Access attribute of a path not rooted inside an object",
+                  N);
+               return;
 
-               --  For a named access-to-constant type, mark the prefix before
-               --  checking whether it is rooted at a constant part of an
-               --  object.
+            --  For a named access-to-constant type, mark the prefix before
+            --  checking whether it is rooted at a constant part of an
+            --  object.
 
-               elsif not Is_Anonymous_Access_Type (Etype (N))
-                 and then Is_Access_Constant (Retysp (Etype (N)))
-               then
+            elsif not Is_Anonymous_Access_Type (Etype (N))
+              and then Is_Access_Constant (Retysp (Etype (N)))
+            then
 
-                  Mark (P);
-                  pragma Assert (List_Length (Exprs) = 0);
+               Mark (P);
+               pragma Assert (List_Length (Exprs) = 0);
 
-                  declare
-                     Root : constant Object_Kind_Id := Get_Root_Object (P);
-                  begin
-                     --  Reject paths not rooted inside a constant part of an
-                     --  object. Parameters of mode IN are not considered
-                     --  constants as the actual might be a variable.
-                     --  Also reject paths rooted inside observers which can
-                     --  really be parts of variables.
+               declare
+                  Root : constant Object_Kind_Id := Get_Root_Object (P);
+               begin
+                  --  Reject paths not rooted inside a constant part of an
+                  --  object. Parameters of mode IN are not considered
+                  --  constants as the actual might be a variable.
+                  --  Also reject paths rooted inside observers which can
+                  --  really be parts of variables.
 
-                     if (Is_Anonymous_Access_Object_Type (Etype (Root))
-                         or else not Is_Constant_In_SPARK (Root)
-                         or else Ekind (Root) = E_In_Parameter)
-                       and then not Traverse_Access_To_Constant (P)
-                     then
-                        Mark_Violation
-                          ("Access attribute of a named access-to-constant"
-                           & " type whose prefix is not a constant part of an"
-                           & " object", N);
-                     end if;
-                  end;
+                  if (Is_Anonymous_Access_Object_Type (Etype (Root))
+                      or else not Is_Constant_In_SPARK (Root)
+                      or else Ekind (Root) = E_In_Parameter)
+                    and then not Traverse_Access_To_Constant (P)
+                  then
+                     Mark_Violation
+                       ("Access attribute of a named access-to-constant"
+                        & " type whose prefix is not a constant part of an"
+                        & " object", N);
+                  end if;
+               end;
 
-                  --  We can return here, the prefix has already been marked
+               --  We can return here, the prefix has already been marked
 
-                  return;
+               return;
 
-               --  'Access of an anonymous access-to-object type or named
-               --  access-to-variable type must occur directly inside an
-               --  assignment statement, an object declaration, or a simple
-               --  return statement from a non-expression function. We don't
-               --  need to worry about declare expressions, 'Access is not
-               --  allowed there.
-               --  This is because the expression introduces a borrower/an
-               --  observer/a move that we only handle currently inside
-               --  declarations, assignments and on return of traversal
-               --  functions. We could consider allowing it inside
-               --  non-traversal function calls (probaly easy) or inside
-               --  procedure calls (would require special handling in flow and
-               --  proof).
+            --  'Access of an anonymous access-to-object type or named
+            --  access-to-variable type must occur directly inside an
+            --  assignment statement, an object declaration, or a simple
+            --  return statement from a non-expression function. We don't
+            --  need to worry about declare expressions, 'Access is not
+            --  allowed there.
+            --  This is because the expression introduces a borrower/an
+            --  observer/a move that we only handle currently inside
+            --  declarations, assignments and on return of traversal
+            --  functions. We could consider allowing it inside
+            --  non-traversal function calls (probaly easy) or inside
+            --  procedure calls (would require special handling in flow and
+            --  proof).
 
-               elsif No (Par)
-                 or else Nkind (Par) not in N_Assignment_Statement
-                                          | N_Object_Declaration
-                                          | N_Simple_Return_Statement
-                 or else N /= Expression (Par)
-               then
-                  Mark_Unsupported
-                    (Lim_Access_Attr_With_Ownership_In_Unsupported_Context, N);
-                  return;
-               end if;
-            end;
+            elsif not Is_In_Toplevel_Move (N) then
+               Mark_Unsupported
+                 (Lim_Access_Attr_With_Ownership_In_Unsupported_Context, N);
+               return;
+            end if;
 
          when others =>
             Mark_Violation

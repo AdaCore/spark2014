@@ -472,13 +472,15 @@ package body Gnat2Why.Expr is
    procedure Insert_Move_Of_Deep_Parts
      (Rhs     : N_Subexpr_Id;
       Lhs_Typ : Entity_Id;
-      Expr    : in out W_Prog_Id);
+      Expr    : in out W_Prog_Id;
+      Do_Move : out Boolean);
    --  @param Rhs the expression of an assignment or object declaration or
    --         return statement
    --  @param Lhs_Typ expected type for the lhs of the assignment
    --  @param Expr program that contains the translation of the rhs on input,
    --         and inserts moves on output and checks for moves to types without
    --         reclamation.
+   --  @param Do_Move True if moves have effectively been inserted.
 
    function Insert_Overflow_Check
      (Ada_Node : Node_Id;
@@ -1337,11 +1339,13 @@ package body Gnat2Why.Expr is
                               Params => Body_Params);
             L_Name   : constant String := Full_Name (Lvalue);
             Res      : W_Prog_Id := +Void;
+            Dummy    : Boolean;
 
          begin
-            Insert_Move_Of_Deep_Parts (Rhs     => Expression (N),
+            Insert_Move_Of_Deep_Parts (Rhs     => Rexpr,
                                        Lhs_Typ => Etype (Lvalue),
-                                       Expr    => Why_Expr);
+                                       Expr    => Why_Expr,
+                                       Do_Move => Dummy);
 
             if Binder.Init.Present then
                Append
@@ -10191,7 +10195,8 @@ package body Gnat2Why.Expr is
    procedure Insert_Move_Of_Deep_Parts
      (Rhs     : N_Subexpr_Id;
       Lhs_Typ : Entity_Id;
-      Expr    : in out W_Prog_Id)
+      Expr    : in out W_Prog_Id;
+      Do_Move : out Boolean)
    is
       --  Local subprograms
 
@@ -10384,7 +10389,6 @@ package body Gnat2Why.Expr is
 
       Nested_Moved : Node_Sets.Set;
       Checks       : W_Prog_Id := +Void;
-      Do_Move      : Boolean;
       Tmp          : constant W_Identifier_Id := Tmp_Of_Expr (+Expr);
       Init         : constant W_Prog_Id := Expr;
 
@@ -17121,22 +17125,29 @@ package body Gnat2Why.Expr is
             Expr   => +T,
             To     => Type_Of_Node (Lvalue)));
 
-      --  If a move may be needed, force the use of a temporary to hold
-      --  the value of the expression including any moves. This is because
-      --  New_Assignment does not expect the rhs expression to modify the
-      --  target of the assignment.
+      declare
+         Do_Move : Boolean;
+      begin
+         Insert_Move_Of_Deep_Parts (Rhs     => Expression (Stmt),
+                                    Lhs_Typ => Typ,
+                                    Expr    => T,
+                                    Do_Move => Do_Move);
 
-      if Is_Deep (Typ)
-        and then not Is_Anonymous_Access_Type (Typ)
-      then
+         --  If a move may be needed, force the use of a temporary to hold
+         --  the value of the expression including any moves. This is because
+         --  New_Assignment does not expect the rhs expression to modify the
+         --  target of the assignment.
+
          declare
-            Tmp : W_Expr_Id;
+            Tmp : constant W_Expr_Id := New_Temp_For_Expr (+T, Do_Move);
          begin
-            Insert_Move_Of_Deep_Parts (Rhs     => Expression (Stmt),
-                                       Lhs_Typ => Typ,
-                                       Expr    => T);
 
-            Tmp := New_Temp_For_Expr (+T);
+            T := Gnat2Why.Expr.New_Assignment
+              (Ada_Node => Stmt,
+               Lvalue   => Lvalue,
+               Expr     => +Tmp,
+               Do_Check =>
+                 (if Has_Target_Names (Stmt) then Only_Vars else All_Checks));
 
             --  Check that the assignment does not cause a resource leak. This
             --  is done after moves, so that we properly handle the case where
@@ -17145,30 +17156,15 @@ package body Gnat2Why.Expr is
             --  also deals with the special case X:=X so that we avoid issuing
             --  a message here.
 
-            T := +Binding_For_Temp
-              (Empty, EW_Prog, Tmp,
-               +Sequence
-                 (Check_No_Memory_Leaks (Stmt, Lvalue),
-                  Gnat2Why.Expr.New_Assignment
-                    (Ada_Node => Stmt,
-                     Lvalue   => Lvalue,
-                     Expr     => +Tmp,
-                     Do_Check =>
-                       (if Has_Target_Names (Stmt) then Only_Vars
-                        else All_Checks))));
+            if Is_Deep (Typ)
+              and then not Is_Anonymous_Access_Type (Typ)
+            then
+               T := +Sequence (Check_No_Memory_Leaks (Stmt, Lvalue), T);
+            end if;
+
+            T := +Binding_For_Temp (Empty, EW_Prog, Tmp, +T);
          end;
-
-      --  Normal assignment that does not involve any move
-
-      else
-         T := Gnat2Why.Expr.New_Assignment
-           (Ada_Node => Stmt,
-            Lvalue   => Lvalue,
-            Expr     => T,
-            Do_Check =>
-              (if Has_Target_Names (Stmt) then Only_Vars
-               else All_Checks));
-      end if;
+      end;
 
       --  Update the value at end of local borrowers. This needs to be done
       --  prior to the assignment, as the assumtion generated during the
@@ -26179,6 +26175,7 @@ package body Gnat2Why.Expr is
       return W_Prog_Id
    is
       Result_Stmt : W_Prog_Id;
+      Dummy       : Boolean;
    begin
       Result_Stmt :=
         Transform_Prog (Expr,
@@ -26196,7 +26193,8 @@ package body Gnat2Why.Expr is
 
       Insert_Move_Of_Deep_Parts (Rhs     => Expr,
                                  Lhs_Typ => Etype (Subp),
-                                 Expr    => Result_Stmt);
+                                 Expr    => Result_Stmt,
+                                 Do_Move => Dummy);
 
       Result_Stmt :=
         New_Assignment
