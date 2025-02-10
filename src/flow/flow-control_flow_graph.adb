@@ -1716,6 +1716,10 @@ package body Flow.Control_Flow_Graph is
                  Use_Computed_Globals    => not FA.Generating_Globals,
                  Expand_Internal_Objects => False);
 
+            Empty_Reuse : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
+            --  Optimize record assignments with no variable inputs, similar
+            --  to what we do for record object declarations.
+
          begin
             Missing := Flatten_Variable (LHS_Root, FA.B_Scope);
             if Is_Class_Wide_Type (LHS_Type)
@@ -1737,46 +1741,62 @@ package body Flow.Control_Flow_Graph is
                begin
                   Missing.Delete (Output);
 
-                  --  Create separate vertices with variables used and defined.
-                  --  All variable uses happen first; then happen all variable
-                  --  definitions. This is essential when representing record
-                  --  self-assignments where several components are read and
-                  --  then redefined.
+                  --  Reuse existing vertex for a field that uses no variable
+                  --  inputs.
 
-                  Add_Vertex
-                    (FA,
-                     Make_Basic_Attributes
-                       (Var_Ex_Use => Inputs,
-                        Subp_Calls => Funcalls,
-                        Indt_Calls => Indcalls,
-                        Vertex_Ctx => Ctx.Vertex_Ctx,
-                        E_Loc      => N,
-                        Print_Hint => Pretty_Print_Record_Field),
-                     V_Used);
-                  Verts.Append (V_Used);
+                  if Inputs.Is_Empty
+                    and then Empty_Reuse /= Flow_Graphs.Null_Vertex
+                  then
+                     FA.Atr (Empty_Reuse).Variables_Defined.Insert (Output);
+                  else
+                     --  Create separate vertices with variables used and
+                     --  defined. All variable uses happen first; then happen
+                     --  all variable definitions. This is essential when
+                     --  representing record self-assignments where several
+                     --  components are read and then redefined.
 
-                  FA.Atr (V_Used).First_Field := Verts.First_Element;
+                     Add_Vertex
+                       (FA,
+                        Make_Basic_Attributes
+                          (Var_Ex_Use => Inputs,
+                           Subp_Calls => Funcalls,
+                           Indt_Calls => Indcalls,
+                           Vertex_Ctx => Ctx.Vertex_Ctx,
+                           E_Loc      => N,
+                           Print_Hint => Pretty_Print_Record_Field),
+                        V_Used);
+                     Verts.Append (V_Used);
 
-                  Add_Vertex
-                    (FA,
-                     Make_Basic_Attributes
-                       (Var_Def    => Flow_Id_Sets.To_Set (Output),
-                        Subp_Calls => Funcalls,
-                        Indt_Calls => Indcalls,
-                        Vertex_Ctx => Ctx.Vertex_Ctx,
-                        E_Loc      => N,
-                        Print_Hint => Pretty_Print_Record_Field),
-                     V_Defined);
-                  Verts_Defined.Append (V_Defined);
+                     FA.Atr (V_Used).First_Field := Verts.First_Element;
 
-                  FA.Atr (V_Defined).First_Field := Verts.First_Element;
+                     Add_Vertex
+                       (FA,
+                        Make_Basic_Attributes
+                          (Var_Def    => Flow_Id_Sets.To_Set (Output),
+                           Subp_Calls => Funcalls,
+                           Indt_Calls => Indcalls,
+                           Vertex_Ctx => Ctx.Vertex_Ctx,
+                           E_Loc      => N,
+                           Print_Hint => Pretty_Print_Record_Field),
+                        V_Defined);
+                     Verts_Defined.Append (V_Defined);
 
-                  --  Link variable use with variable definition. We will add
-                  --  a data dependency edge when building DDG.
-                  --  ??? This could be set in Make_Basic_Attributes to avoid
-                  --  explicit manipulation of vertex attributes, but then this
-                  --  routine would no longer be "Basic".
-                  FA.Atr (V_Defined).Record_RHS := V_Used;
+                     FA.Atr (V_Defined).First_Field := Verts.First_Element;
+
+                     --  Link variable use with variable definition. We will
+                     --  add a data dependency edge when building DDG.
+                     --  ??? This could be set in Make_Basic_Attributes to
+                     --  avoid explicit manipulation of vertex attributes,
+                     --  but then this routine would no longer be "Basic".
+                     FA.Atr (V_Defined).Record_RHS := V_Used;
+
+                     --  If this field uses no variable inputs, then we want
+                     --  to reuse its vertex.
+
+                     if Inputs.Is_Empty then
+                        Empty_Reuse := V_Defined;
+                     end if;
+                  end if;
                end;
             end loop;
 
@@ -1786,21 +1806,33 @@ package body Flow.Control_Flow_Graph is
                --  full assignment), flow analysis must not claim any other
                --  fields are "uninitialized".
                for F of Missing loop
-                  Add_Vertex
-                    (FA,
-                     Make_Basic_Attributes
-                       (Var_Def    => Flow_Id_Sets.To_Set (F),
-                        Var_Ex_Use => Flow_Id_Sets.Empty_Set,
-                        Vertex_Ctx => Ctx.Vertex_Ctx,
-                        E_Loc      => N,
-                        Print_Hint => Pretty_Print_Record_Field),
-                     V);
-                  Verts_Defined.Append (V);
-                  if Verts.Is_Empty then
-                     FA.Atr (V).First_Field := Verts_Defined.First_Element;
-                  else
-                     FA.Atr (V).First_Field := Verts.First_Element;
+
+                  --  If we don't yet have a vertex that uses no variable
+                  --  inputs then create a one and we will reuse it for all
+                  --  the missing fields.
+
+                  if Empty_Reuse = Flow_Graphs.Null_Vertex then
+                     Add_Vertex
+                       (FA,
+                        Make_Basic_Attributes
+                          (Var_Def    => Flow_Id_Sets.Empty_Set,
+                           Var_Ex_Use => Flow_Id_Sets.Empty_Set,
+                           Vertex_Ctx => Ctx.Vertex_Ctx,
+                           E_Loc      => N,
+                           Print_Hint => Pretty_Print_Record_Field),
+                        V);
+                     Verts_Defined.Append (V);
+                     if Verts.Is_Empty then
+                        FA.Atr (V).First_Field := Verts_Defined.First_Element;
+                     else
+                        FA.Atr (V).First_Field := Verts.First_Element;
+                     end if;
+
+                     Empty_Reuse := V;
                   end if;
+
+                  FA.Atr (Empty_Reuse).Variables_Defined.Insert (F);
+
                   pragma Assert
                     (for some Comp_Id of F.Component =>
                        Is_Declared_Within_Variant (Comp_Id));
