@@ -1228,15 +1228,37 @@ package body Gnat2Why.Expr is
    --  a contract/an assertion fails to prove whereas it actually holds at
    --  runtime, but not the other way around.
 
-   function Havoc_Borrowed_And_Check_No_Leaks_On_Goto
-     (Stmt_Or_Decl : Node_Id) return W_Prog_Id;
-   --  Havoc the local borrowers and check for resource leaks for objects
-   --  declared in blocks traversed by a goto statement.
+   function Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
+     (Scopes  : Node_Lists.List;
+      Exiting : Local_CFG.Vertex_Sets.Set)
+      return W_Statement_Sequence_Id;
+   --  From a list of exited scopes, either block statements
+   --  or unique entity of escaped body (matching association of
+   --  Local_CFG.Graph_Id), construct a program which for each scope in order
+   --  * Havocs all borrowed expressions. After each individual havoc,
+   --    we get information about potential updates from the borrower by
+   --    assuming that its pledge (relation between the borrower and the
+   --    borrowed expression) holds. We also check here that we have not broken
+   --    any constraints on the borrowed object during the borrow.
+   --  * Generate checks that no variable whose scope is exited leads to a
+   --    resource leak at the end of its scope. This part
+   --    follows the same traversal structure as Check_No_Owning_Decl in
+   --    SPARK_Definition.
+   --
+   --  Scopes must be listed in order of exit (innermost scopes first),
+   --  without skipping any intermediate scope. They are considered to
+   --  be exited from one of vertices in Exiting, to filter out borrowers
+   --  not updated on any local control path to Exiting from the havoced
+   --  borrows.
+   --
+   --  If Exiting is empty, then analysis of updated borrowers is not performed
+   --  and all borrows are havoc'd.
 
-   function Havoc_Borrowed_And_Check_No_Leaks_On_Return
-     (Stmt_Or_Decl : Node_Id) return W_Prog_Id;
-   --  Havoc the local borrowers and check for resource leaks for objects
-   --  declared in blocks traversed by a return statement.
+   function Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
+     (Scopes  : Node_Lists.List;
+      Exiting : Local_CFG.Vertex)
+      return W_Statement_Sequence_Id;
+   --  Specialization when Exiting is a singleton.
 
    function Havoc_Borrowed_And_Check_No_Leaks_On_Raise
      (Stmt_Or_Decl : Node_Id) return W_Prog_Id;
@@ -10129,34 +10151,37 @@ package body Gnat2Why.Expr is
    end Get_Variants_Ids;
 
    -----------------------------------------------
-   -- Havoc_Borrowed_And_Check_No_Leaks_On_Goto --
+   -- Havoc_Borrowed_And_Check_No_Leaks_On_Jump --
    -----------------------------------------------
 
-   function Havoc_Borrowed_And_Check_No_Leaks_On_Goto
+   function Havoc_Borrowed_And_Check_No_Leaks_On_Jump
      (Stmt_Or_Decl : Node_Id) return W_Prog_Id
    is
-      Enclosing_Stmt : constant Node_Id :=
-        Statement_Enclosing_Label (Entity (Name (Stmt_Or_Decl)));
-
-      function Is_Scop_Or_Block (N : Node_Id) return Boolean is
-        (Nkind (N) = N_Block_Statement or else N = Enclosing_Stmt);
-
-      function Enclosing_Block_Stmt is new
-        First_Parent_With_Property (Is_Scop_Or_Block);
-
-      Scop   : Node_Id := Stmt_Or_Decl;
       Scopes : Node_Lists.List;
 
+      procedure Append (Scop : Node_Id);
+
+      ------------
+      -- Append --
+      ------------
+
+      procedure Append (Scop : Node_Id) is
+      begin
+         if Scop in N_Block_Statement_Id then
+            Scopes.Append (Scop);
+         end if;
+      end Append;
+
+      procedure Iter_Scopes is new Iter_Exited_Scopes (Append);
+
+   --  Start of processing for Havoc_Borrowed_And_Check_No_Leaks_On_Jump
+
    begin
-      loop
-         Scop := Enclosing_Block_Stmt (Scop);
-         exit when Scop = Enclosing_Stmt;
-         Scopes.Append (Scop);
-      end loop;
+      Iter_Scopes (Stmt_Or_Decl);
 
       return +Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
         (Scopes, Local_CFG.Starting_Vertex (Stmt_Or_Decl));
-   end Havoc_Borrowed_And_Check_No_Leaks_On_Goto;
+   end Havoc_Borrowed_And_Check_No_Leaks_On_Jump;
 
    ------------------------------------------------
    -- Havoc_Borrowed_And_Check_No_Leaks_On_Raise --
@@ -10167,18 +10192,51 @@ package body Gnat2Why.Expr is
    is
       use Local_CFG;
 
-      function Is_Block_Or_Handler (N : Node_Id) return Boolean is
-        (Nkind (N) in N_Block_Statement
-                    | N_Handled_Sequence_Of_Statements
-                    | N_Exception_Handler
-                    | N_Entity_Body);
-
-      function Enclosing_Block_Or_Handler is new
-        First_Parent_With_Property (Is_Block_Or_Handler);
-
-      Scop   : Node_Id := Stmt_Or_Decl;
       Scopes : Node_Lists.List;
+
+      Found  : exception;
+
+      procedure Append (Scop : Node_Id);
+      --  Collect exited scopes (for Iter_Exited_Scopes)
+
+      procedure Stop
+        (Destination : Node_Id;
+         Exc_Set     : Exception_Sets.Set);
+      --  Stop collection at first caught exception by raising Found
+
+      procedure Iter_From is new Iter_Exited_Scopes_With_Specified_Transfer
+        (Process => Append,
+         Stop    => Stop);
+
+      ------------
+      -- Append --
+      ------------
+
+      procedure Append (Scop : Node_Id) is
+      begin
+         if Scop in N_Block_Statement_Id then
+            Scopes.Append (Scop);
+         end if;
+      end Append;
+
+      ----------
+      -- Stop --
+      ----------
+
+      procedure Stop
+        (Destination : Node_Id;
+         Exc_Set     : Exception_Sets.Set)
+      is
+         pragma Unreferenced (Exc_Set);
+      begin
+         if Nkind (Destination) = N_Exception_Handler then
+            raise Found;
+         end if;
+      end Stop;
+
       Res    : W_Prog_Id;
+
+   --  Start of processing for Havoc_Borrowed_And_Check_No_Leaks_On_Raise
 
    begin
       --  Add a continuation locating the potential checks on exceptional exits
@@ -10188,84 +10246,36 @@ package body Gnat2Why.Expr is
            (Ada_Node => Stmt_Or_Decl,
             Message  => To_Unbounded_String ("when an exception is raised")));
 
-      loop
-         --  If we are in a handler, skip the enclosing sequence of statements
+      --  Since we stop at the first encountered handler, we can make the
+      --  iteration as if all exceptions were raised. This is also necessary
+      --  for the case of implicit re-raises inserted at handlers, as the
+      --  precise set of exceptions raised is not known.
 
-         if Nkind (Scop) = N_Exception_Handler then
-            Scop := Enclosing_Statement (Scop);
-         end if;
+      begin
+         Iter_From
+           (Stmt_Or_Decl, Exception_Sources => Exception_Sets.All_Exceptions);
+      exception
+         when Found =>
+            null;
+      end;
 
-         Scop := Enclosing_Block_Or_Handler (Scop);
+      --  This case happens because exceptions not handled by sequence of
+      --  statements are treated as if handled and re-raised. Could do
+      --  something by tracking the original exception sources (possibly
+      --  several ones). Disconnect precise analysis for now.
 
-         --  Stop at the first enclosing exception handler, or when
-         --  escaping enclosing body.
-
-         exit when Nkind (Scop) in N_Entity_Body
-           or else (Nkind (Scop) = N_Handled_Sequence_Of_Statements
-                    and then Present (Exception_Handlers (Scop)));
-
-         --  Produce a havoc on traversed block statements
-
-         if Nkind (Scop) = N_Block_Statement then
-            Scopes.Append (Scop);
-         end if;
-      end loop;
-
-      case Nkind (Stmt_Or_Decl) is
-         when N_Procedure_Call_Statement | N_Raise_Statement =>
-            Res := +Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
-              (Scopes, Starting_Vertex (Stmt_Or_Decl));
-
-         when N_Function_Call =>
-            pragma Assert (Is_Function_With_Side_Effects
-                           (Get_Called_Entity (Stmt_Or_Decl)));
-            Res := +Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
-              (Scopes, Starting_Vertex (Enclosing_Statement (Stmt_Or_Decl)));
-
-         when N_Handled_Sequence_Of_Statements =>
-            --  This happens because exceptions not handled by sequence of
-            --  statements are treated as if handled and re-raised.
-            --  Could do something by tracking the original exception sources
-            --  (possibly several ones). Disconnect precise analysis for now.
-
-            Res := +Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
-              (Scopes, Vertex_Sets.Empty_Set);
-
-         when others =>
-            pragma Assert (False);
-      end case;
+      if Nkind (Stmt_Or_Decl) = N_Handled_Sequence_Of_Statements then
+         Res := +Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
+           (Scopes, Vertex_Sets.Empty_Set);
+      else
+         Res := +Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
+           (Scopes, Starting_Vertex (Stmt_Or_Decl));
+      end if;
 
       Continuation_Stack.Delete_Last;
 
       return +Res;
    end Havoc_Borrowed_And_Check_No_Leaks_On_Raise;
-
-   -------------------------------------------------
-   -- Havoc_Borrowed_And_Check_No_Leaks_On_Return --
-   -------------------------------------------------
-
-   function Havoc_Borrowed_And_Check_No_Leaks_On_Return
-     (Stmt_Or_Decl : Node_Id) return W_Prog_Id
-   is
-      function Is_Body_Or_Block (N : Node_Id) return Boolean is
-        (Nkind (N) in N_Block_Statement | N_Entity_Body);
-
-      function Enclosing_Block_Stmt is new
-        First_Parent_With_Property (Is_Body_Or_Block);
-
-      Scop   : Node_Id := Stmt_Or_Decl;
-      Scopes : Node_Lists.List;
-
-   begin
-      loop
-         Scop := Enclosing_Block_Stmt (Scop);
-         exit when Nkind (Scop) /= N_Block_Statement;
-         Scopes.Append (Scop);
-      end loop;
-
-      return +Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
-        (Scopes, Local_CFG.Starting_Vertex (Stmt_Or_Decl));
-   end Havoc_Borrowed_And_Check_No_Leaks_On_Return;
 
    -------------------------------
    -- Havoc_Borrowed_Expression --
@@ -27956,7 +27966,7 @@ package body Gnat2Why.Expr is
                --  scopes traversed by the return statement.
 
                Prepend
-                 (Havoc_Borrowed_And_Check_No_Leaks_On_Return (Stmt_Or_Decl),
+                 (Havoc_Borrowed_And_Check_No_Leaks_On_Jump (Stmt_Or_Decl),
                   Raise_Stmt);
 
                if Expression (Stmt_Or_Decl) /= Empty then
@@ -28054,29 +28064,24 @@ package body Gnat2Why.Expr is
 
                return
                  New_Try_Block
-                   (Prog    => Sequence
-                      ((1 => Expr,
-
-                        --  Havoc the local borrowers and check for memory
-                        --  leaks for objects declared in blocks traversed by
-                        --  the return statement.
-
-                        2 => Havoc_Borrowed_And_Check_No_Leaks_On_Return
-                          (Stmt_Or_Decl),
-
-                        --  Raise statement
-
-                        3 => Raise_Stmt)),
+                   (Prog    => Sequence (Expr, Raise_Stmt),
 
                     Handler =>
                       (1 => New_Handler
                          (Name => M_Main.Return_Exc,
                           Def  => Sequence
-                            (Result_Assign,
+                            ((1 => Result_Assign,
 
-                             --  Reraise the exception
+                              --  Havoc the local borrowers and check for
+                              --  memory leaks for objects declared in blocks
+                              --  traversed by the return statement.
 
-                             Raise_Stmt))));
+                              2 => Havoc_Borrowed_And_Check_No_Leaks_On_Jump
+                                (Stmt_Or_Decl),
+
+                              --  Reraise the exception
+
+                              3 => Raise_Stmt)))));
             end;
 
          when N_Goto_Statement =>
@@ -28093,7 +28098,7 @@ package body Gnat2Why.Expr is
                --  scopes traversed by the goto statement.
 
                return Sequence
-                 (Havoc_Borrowed_And_Check_No_Leaks_On_Goto (Stmt_Or_Decl),
+                 (Havoc_Borrowed_And_Check_No_Leaks_On_Jump (Stmt_Or_Decl),
                   Raise_Stmt);
             end;
 

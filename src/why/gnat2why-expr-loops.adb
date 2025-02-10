@@ -555,46 +555,13 @@ package body Gnat2Why.Expr.Loops is
       Params : Transformation_Params)
       return W_Prog_Id
    is
-      function Havoc_Borrowed_And_Check_No_Leaks_On_Exit return W_Prog_Id;
-      --  Havoc the local borrowers and check for resource leaks for objects
-      --  declared in blocks traversed by an exit statement.
-
-      -----------------------------------------------
-      -- Havoc_Borrowed_And_Check_No_Leaks_On_Exit --
-      -----------------------------------------------
-
-      function Havoc_Borrowed_And_Check_No_Leaks_On_Exit return W_Prog_Id is
-         Loop_Id : constant E_Loop_Id := Loop_Entity_Of_Exit_Statement (Stmt);
-
-         function Is_Loop_Or_Block (N : Node_Id) return Boolean is
-           (Nkind (N) = N_Block_Statement
-            or else (Nkind (N) = N_Loop_Statement
-                     and then Entity (Identifier (N)) = Loop_Id));
-
-         function Enclosing_Block_Stmt is new
-           First_Parent_With_Property (Is_Loop_Or_Block);
-
-         Scop   : Node_Id := Stmt;
-         Scopes : Node_Lists.List;
-
-      begin
-         loop
-            Scop := Enclosing_Block_Stmt (Scop);
-            exit when Nkind (Scop) = N_Loop_Statement;
-            Scopes.Append (Scop);
-         end loop;
-
-         return +Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
-           (Scopes, Local_CFG.Starting_Vertex (Stmt));
-      end Havoc_Borrowed_And_Check_No_Leaks_On_Exit;
-
       Exc_Name   : constant W_Name_Id :=
         Loop_Exception_Name (Loop_Entity_Of_Exit_Statement (Stmt));
       Raise_Stmt : W_Prog_Id := New_Raise
         (Ada_Node => Stmt,
          Name => Exc_Name);
    begin
-      Prepend (Havoc_Borrowed_And_Check_No_Leaks_On_Exit, Raise_Stmt);
+      Prepend (Havoc_Borrowed_And_Check_No_Leaks_On_Jump (Stmt), Raise_Stmt);
 
       if No (Condition (Stmt)) then
          return Raise_Stmt;
