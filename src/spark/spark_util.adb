@@ -4915,6 +4915,267 @@ package body SPARK_Util is
         and then Is_Traversal_Function (Get_Called_Entity (Expr));
    end Is_Traversal_Function_Call;
 
+   ------------------------------------------------
+   -- Iter_Exited_Scopes_With_Specified_Transfer --
+   ------------------------------------------------
+
+   procedure Iter_Exited_Scopes_With_Specified_Transfer
+     (Start             : Node_Id;
+      Goto_Labels       : Node_Sets.Set := Node_Sets.Empty_Set;
+      Exception_Sources : Exception_Sets.Set := Exception_Sets.Empty_Set;
+      Exited_Loops      : Node_Sets.Set := Node_Sets.Empty_Set;
+      Return_Source     : Boolean := False)
+   is
+      Remaining_Labels     : Node_Graphs.Map;
+      Remaining_Exceptions : Exception_Sets.Set := Exception_Sources;
+      Remaining_Loops      : Node_Sets.Set := Exited_Loops;
+      Remaining_Return     : Boolean := Return_Source;
+      --  Track transfer of control not <<caught>> yet. For labels, the
+      --  collection is indexed by sequence of statement, in order to detect
+      --  stopping easily.
+
+      Buffer : Node_Vectors.Vector;
+      --  Buffer exited scopes until we detect a stop. If we never detect a
+      --  stop, the scopes where only exited by meaningless transfer of
+      --  control, like exceptions that cannot be handled by the surrounding
+      --  scopes, and should not be considered.
+
+      Prev : Node_Id;
+      Scop : Node_Id := Start;
+      --  Iteration cursors.
+
+      procedure Do_Stop
+        (Destination : Node_Id;
+         Exc_Set     : Exception_Sets.Set := Exception_Sets.Empty_Set);
+      --  Wrapper over client Stop procedure. Clear the buffered scopes,
+      --  calling Process over each of them, before calling the actual Stop
+      --  procedure.
+
+      -------------
+      -- Do_Stop --
+      -------------
+
+      procedure Do_Stop
+        (Destination : Node_Id;
+         Exc_Set     : Exception_Sets.Set := Exception_Sets.Empty_Set) is
+      begin
+         for N of Buffer loop
+            Process (N);
+         end loop;
+         Buffer.Clear;
+         Stop (Destination, Exc_Set);
+      end Do_Stop;
+
+      --  Start of processing for Iter_Exited_Scopes_With_Specified_Transfer
+
+   begin
+      --  Index labels
+
+      for L of Goto_Labels loop
+         declare
+            Stmt     : constant Node_Id := Statement_Enclosing_Label (L);
+            pragma Assert (Present (Stmt));
+            Cursor   : Node_Graphs.Cursor := Remaining_Labels.Find (Stmt);
+            Inserted : Boolean;
+         begin
+            if not Node_Graphs.Has_Element (Cursor) then
+               Remaining_Labels.Insert
+                 (Stmt, Node_Sets.Empty_Set, Cursor, Inserted);
+               pragma Assert (Inserted);
+            end if;
+            Remaining_Labels.Reference (Cursor).Insert (L);
+         end;
+      end loop;
+
+      --  Actually iter the scopes
+
+      while Remaining_Return
+        or else not Remaining_Labels.Is_Empty
+        or else not Exception_Sources.Is_Empty
+        or else not Remaining_Loops.Is_Empty
+      loop
+
+         Prev := Scop;
+         Scop := Parent (Scop);
+
+         --  Stop gotos
+
+         declare
+            Cursor : Node_Graphs.Cursor := Remaining_Labels.Find (Scop);
+         begin
+            if Node_Graphs.Has_Element (Cursor) then
+               for L of Remaining_Labels.Constant_Reference (Cursor) loop
+                  Do_Stop (L);
+               end loop;
+               Remaining_Labels.Delete (Cursor);
+            end if;
+         end;
+
+         case Nkind (Scop) is
+
+            --  Entity body is the final scope
+
+            when N_Entity_Body =>
+
+               declare
+                  Ent_Of_Body : constant Entity_Id :=
+                    Unique_Defining_Entity (Scop);
+               begin
+                  Buffer.Append (Ent_Of_Body);
+                  if Remaining_Return then
+                     Do_Stop (Ent_Of_Body);
+                  end if;
+
+                  Remaining_Exceptions.Intersection
+                    (Get_Exceptions_For_Subp (Ent_Of_Body));
+                  if not Remaining_Exceptions.Is_Empty then
+                     Do_Stop (Ent_Of_Body, Exc_Set => Remaining_Exceptions);
+                  end if;
+                  exit;
+               end;
+
+            --  Block statements are escaped
+
+            when N_Block_Statement =>
+               Buffer.Append (Scop);
+
+            --  Transfer from an exception handlers always exit their
+            --  surrounding handled sequence of statement, handlers do not
+            --  apply to themselves.
+
+            when N_Exception_Handler =>
+
+               Scop := Parent (Scop);
+               Buffer.Append (Scop);
+
+            when N_Handled_Sequence_Of_Statements =>
+
+               --  Finally statements should never be exited by transfer
+               --  of control. We could still reach that case for incorrectly
+               --  specified transfer of control, so gracefully exit the loop.
+
+               exit when
+                 Present (Finally_Statements (Scop))
+                 and then List_Containing (Prev) = Finally_Statements (Scop);
+
+               --  Otherwise, stop caught exceptions and exit the scope
+
+               declare
+                  Handler : Node_Id :=
+                    First_Non_Pragma (Exception_Handlers (Scop));
+               begin
+                  while Present (Handler) loop
+                     declare
+                        Caught_Exc : Exception_Sets.Set :=
+                          Get_Exceptions_From_Handler (Handler);
+                     begin
+                        Caught_Exc.Intersection (Remaining_Exceptions);
+                        if not Caught_Exc.Is_Empty then
+                           Do_Stop (Handler, Exc_Set => Caught_Exc);
+                           Remaining_Exceptions.Difference (Caught_Exc);
+                           exit when Remaining_Exceptions.Is_Empty;
+                        end if;
+                     end;
+                     Next_Non_Pragma (Handler);
+                  end loop;
+               end;
+
+               Buffer.Append (Scop);
+
+            --  Exit loop statement scopes, and stop loop exits
+
+            when N_Loop_Statement =>
+
+               if Present (Iteration_Scheme (Scop))
+                 and then No (Condition (Iteration_Scheme (Scop)))
+               then
+                  Buffer.Append (Scop);
+               end if;
+
+               declare
+                  Key    : constant Node_Id := Entity (Identifier (Scop));
+                  Cursor : Node_Sets.Cursor := Remaining_Loops.Find (Key);
+               begin
+                  if Node_Sets.Has_Element (Cursor) then
+                     Do_Stop (Scop);
+                     Remaining_Loops.Delete (Cursor);
+                  end if;
+               end;
+
+            --  Extended return statements stop inner returns, and are exited
+            --  otherwise.
+
+            when N_Extended_Return_Statement =>
+
+               if Remaining_Return then
+                  Do_Stop (Scop);
+                  Remaining_Return := False;
+               end if;
+
+               Buffer.Append (Scop);
+
+            --  Nothing to do in other cases
+
+            when others =>
+               null;
+         end case;
+      end loop;
+
+   end Iter_Exited_Scopes_With_Specified_Transfer;
+
+   ------------------------
+   -- Iter_Exited_Scopes --
+   ------------------------
+
+   procedure Iter_Exited_Scopes (Source : Node_Id) is
+
+      procedure Main_Iteration is new
+        Iter_Exited_Scopes_With_Specified_Transfer
+          (Process => Process,
+           Stop    => Stop);
+
+   begin
+      case Nkind (Source) is
+
+         --  Goto statement. Exit all scopes until reaching the construct
+         --  containing the label.
+
+         when N_Goto_Statement =>
+            Main_Iteration
+              (Source,
+               Goto_Labels => Node_Sets.To_Set (Entity (Name (Source))));
+
+         --  Exit statement. Exit all scopes until named loop.
+
+         when N_Exit_Statement =>
+            Main_Iteration
+              (Source,
+               Exited_Loops =>
+                 Node_Sets.To_Set (Loop_Entity_Of_Exit_Statement (Source)));
+
+         --  Return statement. Exit all scopes until end of body.
+
+         when N_Simple_Return_Statement | N_Extended_Return_Statement =>
+            Main_Iteration (Source, Return_Source => True);
+
+         --  Exception-raising constructs. Exit all scopes until all potential
+         --  exceptions have been handled.
+
+         when N_Subprogram_Call | N_Entry_Call_Statement | N_Raise_Statement =>
+            Main_Iteration
+              ((if Nkind (Source) = N_Function_Call
+                then
+                  Enclosing_Statement_Of_Call_To_Function_With_Side_Effects
+                    (Source)
+                else Source),
+               Exception_Sources =>
+                 Get_Raised_Exceptions (Source, Only_Handled => False));
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end Iter_Exited_Scopes;
+
    ---------------
    -- Local_CFG --
    ---------------
