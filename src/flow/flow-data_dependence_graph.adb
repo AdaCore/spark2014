@@ -188,6 +188,40 @@ package body Flow.Data_Dependence_Graph is
                   then
                      TV_U := Flow_Graphs.Skip_Children;
 
+                  --  Optimization: if we are at the end vertex, we can jump
+                  --  straight to the vertex for the 'Final_Value and finish.
+                  --
+                  --  For a degenerated but common case of highly nested record
+                  --  object initialized with a static expression, the graph
+                  --  looks like this:
+                  --
+                  --       C1'Initial, C2'Initial, ..., Cn'Initial
+                  --            \            |               /
+                  --                      <start>
+                  --                         |
+                  --              VD := {C1, C2, ..., Cn}
+                  --                         |
+                  --                       <end>
+                  --            /            |               \
+                  --       C1'Final,   C2'Final,   ..., Cn'Final
+                  --
+                  --
+                  --  The jump will be done in O(1) instead of O(N), i.e. in a
+                  --  constant time avoiding a linear interation over the
+                  --  out-neighbours vertices. In turn, the data dependency
+                  --  graph will be created in O(N) and not O(N^2).
+
+                  elsif V_U = FA.End_Vertex then
+                     declare
+                        Final_Use : constant Flow_Graphs.Vertex_Id :=
+                          FA.CFG.Get_Vertex
+                            (Change_Variant (Var, Final_Value));
+                     begin
+                        if Final_Use /= Flow_Graphs.Null_Vertex then
+                           Visitor (Final_Use, TV_U);
+                        end if;
+                        TV_U := Flow_Graphs.Skip_Children;
+                     end;
                   else
                      TV_U := Flow_Graphs.Continue;
                   end if;

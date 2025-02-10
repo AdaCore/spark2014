@@ -4556,6 +4556,9 @@ package body Flow.Control_Flow_Graph is
 
                   Missing : Flow_Id_Sets.Set := Var_Def;
 
+                  Empty_Reuse : Flow_Graphs.Vertex_Id :=
+                    Flow_Graphs.Null_Vertex;
+
                begin
                   FA.CFG.New_Cluster (Cluster);
 
@@ -4568,26 +4571,54 @@ package body Flow.Control_Flow_Graph is
                         --  ??? It might be useful to improve E_Loc to point
                         --      at the relevant bit in the aggregate.
 
-                        Add_Vertex
-                          (FA,
-                           (Make_Basic_Attributes
-                             (Var_Def    => Flow_Id_Sets.To_Set (Output),
-                              Var_Ex_Use => Inputs,
-                              Subp_Calls => Funcalls,
-                              Indt_Calls => Indcalls,
-                              Vertex_Ctx => Ctx.Vertex_Ctx,
-                              E_Loc      => N,
-                              Print_Hint => Pretty_Print_Record_Field)
-                           with delta Is_Declaration_Node => True),
-                           V);
+                        if Inputs.Is_Empty then
+                           if Empty_Reuse = Flow_Graphs.Null_Vertex then
+                              Add_Vertex
+                                (FA,
+                                 (Make_Basic_Attributes
+                                   (Var_Def    => Flow_Id_Sets.Empty_Set,
+                                    Var_Ex_Use => Inputs,
+                                    Subp_Calls => Funcalls,
+                                    Indt_Calls => Indcalls,
+                                    Vertex_Ctx => Ctx.Vertex_Ctx,
+                                    E_Loc      => N,
+                                    Print_Hint => Pretty_Print_Record_Field)
+                                 with delta Is_Declaration_Node => True),
+                                 V);
+
+                              Inits.Append (V);
+                              FA.Atr (V).First_Field := Inits.First_Element;
+                              FA.CFG.Set_Cluster (V, Cluster);
+
+                              Empty_Reuse := V;
+                           end if;
+
+                           FA.Atr (Empty_Reuse).Variables_Defined.Insert
+                             (Output);
+                        else
+                           Add_Vertex
+                             (FA,
+                              (Make_Basic_Attributes
+                                (Var_Def    => Flow_Id_Sets.To_Set (Output),
+                                 Var_Ex_Use => Inputs,
+                                 Subp_Calls => Funcalls,
+                                 Indt_Calls => Indcalls,
+                                 Vertex_Ctx => Ctx.Vertex_Ctx,
+                                 E_Loc      => N,
+                                 Print_Hint => Pretty_Print_Record_Field)
+                              with delta Is_Declaration_Node => True),
+                              V);
+
+                           Inits.Append (V);
+                           FA.Atr (V).First_Field := Inits.First_Element;
+                           FA.CFG.Set_Cluster (V, Cluster);
+                        end if;
+
                         Missing.Exclude (Output);
                         --  ??? this should be Delete, but currently we will
                         --  crash when processing nested packages that declare
                         --  private types and objects of that types.
 
-                        Inits.Append (V);
-                        FA.Atr (V).First_Field := Inits.First_Element;
-                        FA.CFG.Set_Cluster (V, Cluster);
                      end;
                   end loop;
 
@@ -4596,19 +4627,26 @@ package body Flow.Control_Flow_Graph is
                   --  set; since it is not possible in SPARK to partially
                   --  initialize a variable at declaration.
                   for F of Missing loop
-                     Add_Vertex
-                       (FA,
-                        (Make_Basic_Attributes
-                          (Var_Def    => Flow_Id_Sets.To_Set (F),
-                           Var_Ex_Use => Flow_Id_Sets.Empty_Set,
-                           Vertex_Ctx => Ctx.Vertex_Ctx,
-                           E_Loc      => N,
-                           Print_Hint => Pretty_Print_Record_Field)
-                           with delta Is_Declaration_Node => True),
-                        V);
-                     Inits.Append (V);
-                     FA.Atr (V).First_Field := Inits.First_Element;
-                     FA.CFG.Set_Cluster (V, Cluster);
+                     if Empty_Reuse = Flow_Graphs.Null_Vertex then
+                        Add_Vertex
+                          (FA,
+                           (Make_Basic_Attributes
+                             (Var_Def    => Flow_Id_Sets.Empty_Set,
+                              Var_Ex_Use => Flow_Id_Sets.Empty_Set,
+                              Vertex_Ctx => Ctx.Vertex_Ctx,
+                              E_Loc      => N,
+                              Print_Hint => Pretty_Print_Record_Field)
+                              with delta Is_Declaration_Node => True),
+                           V);
+
+                        Inits.Append (V);
+                        FA.Atr (V).First_Field := Inits.First_Element;
+                        FA.CFG.Set_Cluster (V, Cluster);
+
+                        Empty_Reuse := V;
+                     end if;
+
+                     FA.Atr (Empty_Reuse).Variables_Defined.Insert (F);
 
                      --  ??? We only expect missing variant parts here, but
                      --  also get array bounds (which feels dubious but easy)
