@@ -475,6 +475,33 @@ package Gnat2Why.Expr is
    --  should be used to querry its move tree. It might not be the type of N
    --  on case of view conversions or unconstrained formal parameters.
 
+   function Finalization_Actions
+     (Scope   : Node_Id;
+      Exiting : Local_CFG.Vertex)
+      return W_Statement_Sequence_Id;
+   --  From a scope a <<scope>> with attached finalization actions,
+   --  translate the individual finalization actions to perform at exit. That
+   --  is,
+   --  * For Handled sequence of statements with a finally section, the
+   --    translation of the code within the section.
+   --  * For block statements or entity with bodies, havocs all borrowed
+   --    expressions. After each individual havoc, we get information about
+   --    potential updates from the borrower by assuming that its pledge
+   --    (relation between the borrower and the borrowed expression) holds. We
+   --    also check here that we have not broken any constraints on the
+   --    borrowed object during the borrow.
+   --  * For block statements or entities with bodies, checks that no variable
+   --    leads to a resource leak.
+   --
+   --  Scope is considered to be exited from Exiting, to filter out borrowers
+   --  not updated on any local control path to Exiting from the havoced
+   --  borrows.
+
+   function Finalization_Actions_On_Jump (Jump : Node_Id) return W_Prog_Id;
+   --  Translate the finalization actions for a static jump (goto/exit/return).
+   --  This is equivalent to the sequence of programs resulting from
+   --  Finalization_Actions for all exited scopes, in order.
+
    function Get_Variants_Exprs
      (E      : Callable_Kind_Id;
       Domain : EW_Domain;
@@ -491,33 +518,6 @@ package Gnat2Why.Expr is
    --  subprogram or entry. The returned array only contains identifiers, we
    --  use the type W_Expr_Array to be able to share the handling whether we
    --  use ids or the expressions directly.
-
-   function Havoc_Borrowed_And_Check_No_Leaks_On_Jump
-     (Stmt_Or_Decl : Node_Id) return W_Prog_Id;
-   --  Havoc the local borrowers and check for resource leaks for objects
-   --  declared in blocks traversed by a statement performing a static jump
-   --  (goto/exit/return). This is equivalent to the sequence of programs
-   --  resulting from Havoc_Borrowed_And_Check_No_Leaks_From_Scope on all
-   --  exited scopes, in order.
-
-   function Havoc_Borrowed_And_Check_No_Leaks_From_Scope
-     (Scope   : Node_Id;
-      Exiting : Local_CFG.Vertex)
-      return W_Statement_Sequence_Id;
-   --  From a scope, either a block statement or the unique entity of escaped
-   --  body (matching association of Local_CFG.Graph_Id), construct a program
-   --  which
-   --  * Havocs all borrowed expressions. After each individual havoc,
-   --    we get information about potential updates from the borrower by
-   --    assuming that its pledge (relation between the borrower and the
-   --    borrowed expression) holds. We also check here that we have not broken
-   --    any constraints on the borrowed object during the borrow.
-   --  * Generate checks that no variable leads to a
-   --    resource leak at the end the scope.
-
-   --  Scope is considered to be exited from Exiting, to filter out borrowers
-   --  not updated on any local control path to Exiting from the havoced
-   --  borrows.
 
    function Insert_Predicate_Check
      (Ada_Node      : Node_Id;
