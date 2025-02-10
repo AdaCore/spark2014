@@ -680,7 +680,8 @@ package VC_Kinds is
            "conversion between array types with modular and non-modular index"
           & " types",
          when Lim_Move_To_Access_Constant =>
-           "move as part of a conversion to an access-to-constant type",
+           "move as part of an allocator or a conversion to an "
+          & "access-to-constant type",
          when Lim_Conv_Fixed_Float =>
            "conversion between fixed-point and floating-point types",
          when Lim_Conv_Incompatible_Fixed =>

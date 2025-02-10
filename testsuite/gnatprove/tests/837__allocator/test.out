@@ -1,0 +1,5 @@
+test.adb:10:04: error: "Y1" is not allowed in SPARK (due to move as part of an allocator or a conversion to an access-to-constant type)
+test.adb:10:04: error: violation of aspect SPARK_Mode at line 1
+test.adb:10:20: error: move as part of an allocator or a conversion to an access-to-constant type is not yet supported
+test.adb:22:32: error: move as part of an allocator or a conversion to an access-to-constant type is not yet supported
+gnatprove: error during flow analysis and proof
