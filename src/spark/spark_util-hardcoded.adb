@@ -293,16 +293,10 @@ package body SPARK_Util.Hardcoded is
       case Unit is
          when Big_Integers | Big_Reals =>
 
-            --  First check for the name of the big number unit, which
-            --  might be either Big_Integers for the Ada standard unit, or
-            --  Big_Integers_Ghost as a replacement of the standard unit for
-            --  use in the runtime (as it is ghost, cannot be executed, and
-            --  does not depend on System and Ada.Finalization).
+            --  First check for the name of the big number unit
 
             if Unit = Big_Integers then
-               if Get_Name_String (Chars (S_Ptr)) not in "big_integers"
-                                                       | "big_integers_ghost"
-               then
+               if Get_Name_String (Chars (S_Ptr)) /= "big_integers" then
                   return False;
                end if;
             else
@@ -348,15 +342,6 @@ package body SPARK_Util.Hardcoded is
             end if;
 
             S_Ptr := Scope (S_Ptr);
-
-            --  The special runtime unit System.SPARK.Cut_Operations duplicates
-            --  the operations of SPARK.Cut_Operations for use inside the
-            --  runtime.
-            if Get_Name_String (Chars (S_Ptr)) = "system"
-              and then Scope (S_Ptr) = Standard_Standard
-            then
-               return True;
-            end if;
 
             return S_Ptr = Standard_Standard;
 
