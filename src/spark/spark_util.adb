@@ -1490,6 +1490,7 @@ package body SPARK_Util is
              (Call_Or_Stmt)
          else Call_Or_Stmt);
       Scop    : Node_Id := Stmt;
+      Prev    : Node_Id;
       Exc_Set : Exception_Sets.Set :=
         Get_Raised_Exceptions (Call_Or_Stmt, Only_Handled => False);
 
@@ -1528,6 +1529,7 @@ package body SPARK_Util is
             if Nkind (Scop) = N_Exception_Handler then
                Scop := Parent (Scop);
             end if;
+            Prev := Scop;
             Scop := Parent (Scop);
 
             case Nkind (Scop) is
@@ -1546,12 +1548,23 @@ package body SPARK_Util is
 
                   exit Outer;
 
-               --  Go over the handlers to accumulate those which are reachable
-               --  from the current statement. The set of potentially raised
-               --  exceptions is reduced along the search. If all exceptions
-               --  have been encountered, the search is stopped.
-
                when N_Handled_Sequence_Of_Statements =>
+
+                  --  Stop the search if the exception come from the finally
+                  --  statements, as exceptions shall not escape finally blocks
+                  --  in SPARK.
+
+                  exit Outer when
+                    Present (Finally_Statements (Scop))
+                    and then List_Containing (Prev)
+                             = Finally_Statements (Scop);
+
+                  --  Go over the handlers to accumulate those which are
+                  --  reachable from the current statement. The set of
+                  --  potentially raised exceptions is reduced along the
+                  --  search. If all exceptions have been encountered, the
+                  --  search is stopped.
+
                   declare
                      Handler : Node_Id;
                   begin
@@ -2693,15 +2706,6 @@ package body SPARK_Util is
 
       function Enclosing_Body is new First_Parent_With_Property (Is_Body);
 
-      function Is_Body_Or_Handler (N : Node_Id) return Boolean
-      is (Nkind (N)
-          in N_Entity_Body
-           | N_Handled_Sequence_Of_Statements
-           | N_Exception_Handler);
-
-      function Enclosing_Handler is new
-        First_Parent_With_Property (Is_Body_Or_Handler);
-
       Stmt   : constant Node_Id :=
         (if Nkind (Call_Or_Stmt) = N_Function_Call
          then
@@ -2709,6 +2713,7 @@ package body SPARK_Util is
              (Call_Or_Stmt)
          else Call_Or_Stmt);
       Scop   : Node_Id := Stmt;
+      Prev   : Node_Id;
       Result : Exception_Sets.Set := Exception_Sets.Empty_Set;
 
    begin
@@ -2739,13 +2744,17 @@ package body SPARK_Util is
          if Nkind (Scop) = N_Exception_Handler then
             Scop := Parent (Scop);
          end if;
-
-         Scop := Enclosing_Handler (Scop);
+         Prev := Scop;
+         Scop := Parent (Scop);
 
          --  On handled sequences of statement, get the set of handled
-         --  exceptions.
+         --  exceptions, unless we are crossing a finally boundary. In this
+         --  case, no more exception can be handled.
 
          if Nkind (Scop) = N_Handled_Sequence_Of_Statements then
+            exit when
+              Present (Finally_Statements (Scop))
+              and then List_Containing (Prev) = Finally_Statements (Scop);
             Result.Union (Get_Exceptions_From_Handlers (Scop));
 
          --  On subprogram bodies, get the expected exceptions from the
