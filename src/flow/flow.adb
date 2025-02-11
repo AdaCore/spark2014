@@ -1462,13 +1462,8 @@ package body Flow is
 
          --  Restore the original CFG
 
-         FA.CFG := FA.Full_CFG;  --  ??? we could have Graphs.Move
+         FA.CFG.Move (Source => FA.Full_CFG);
          FA.Atr.Move (Source => FA.Full_Atr);
-
-         --  Destroy the temporary copy of a full CFG, as we no longer need it
-
-         FA.Full_CFG := Flow_Graphs.Create;
-         pragma Assert (FA.Full_Atr.Is_Empty);
 
          --  We can only print the original graph now, after FA.Atr has been
          --  restored.
