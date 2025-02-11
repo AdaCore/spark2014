@@ -1,0 +1,6 @@
+test.adb:23:04: warning: analyzing unreferenced procedure "Test"
+test.adb:23:14: warning: subprogram "Test" has no effect
+test.adb:26:25: info: cannot unroll loop (too many loop iterations)
+test.adb:27:25: medium: assertion might fail [possible fix: subprogram at line 23 should mention G in a precondition]
+test.adb:28:15: warning: assuming "Random" always terminates
+test.adb:28:15: warning: no Always_Terminates aspect available for "Random"

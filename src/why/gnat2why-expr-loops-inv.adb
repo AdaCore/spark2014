@@ -26,27 +26,28 @@
 with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;
 with Ada.Unchecked_Deallocation;
-with Checked_Types;          use Checked_Types;
+with Checked_Types;             use Checked_Types;
 with Common_Containers;
-with Flow_Refinement;        use Flow_Refinement;
-with Flow_Utility;           use Flow_Utility;
-with Gnat2Why.Tables;        use Gnat2Why.Tables;
-with Snames;                 use Snames;
-with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
-with SPARK_Util.Types;       use SPARK_Util.Types;
-with Why;                    use Why;
-with Why.Atree.Accessors;    use Why.Atree.Accessors;
-with Why.Atree.Builders;     use Why.Atree.Builders;
-with Why.Atree.Modules;      use Why.Atree.Modules;
-with Why.Conversions;        use Why.Conversions;
-with Why.Gen.Arrays;         use Why.Gen.Arrays;
-with Why.Gen.Binders;        use Why.Gen.Binders;
-with Why.Gen.Expr;           use Why.Gen.Expr;
-with Why.Gen.Init;           use Why.Gen.Init;
-with Why.Gen.Names;          use Why.Gen.Names;
-with Why.Gen.Pointers;       use Why.Gen.Pointers;
-with Why.Gen.Records;        use Why.Gen.Records;
-with Why.Gen.Terms;          use Why.Gen.Terms;
+with Flow_Refinement;           use Flow_Refinement;
+with Flow_Utility;              use Flow_Utility;
+with Gnat2Why.Tables;           use Gnat2Why.Tables;
+with Snames;                    use Snames;
+with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
+with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
+with SPARK_Util.Types;          use SPARK_Util.Types;
+with Why;                       use Why;
+with Why.Atree.Accessors;       use Why.Atree.Accessors;
+with Why.Atree.Builders;        use Why.Atree.Builders;
+with Why.Atree.Modules;         use Why.Atree.Modules;
+with Why.Conversions;           use Why.Conversions;
+with Why.Gen.Arrays;            use Why.Gen.Arrays;
+with Why.Gen.Binders;           use Why.Gen.Binders;
+with Why.Gen.Expr;              use Why.Gen.Expr;
+with Why.Gen.Init;              use Why.Gen.Init;
+with Why.Gen.Names;             use Why.Gen.Names;
+with Why.Gen.Pointers;          use Why.Gen.Pointers;
+with Why.Gen.Records;           use Why.Gen.Records;
+with Why.Gen.Terms;             use Why.Gen.Terms;
 
 package body Gnat2Why.Expr.Loops.Inv is
 
@@ -1367,6 +1368,7 @@ package body Gnat2Why.Expr.Loops.Inv is
            or else (Has_Access_Type (Etype (Formal))
                     and then not Is_Access_Constant (Retysp (Etype (Formal)))
                     and then Nkind (Actual) /= N_Null)
+           or else Has_Mutable_In_Param_Annotation (Formal)
          then
             --  If Formal is an IN parameter of an access-to-variable type, the
             --  designated value only can be updated by the call, not the
@@ -1374,7 +1376,8 @@ package body Gnat2Why.Expr.Loops.Inv is
 
             Write_Expr
                (Actual, Loop_Writes, After_Inv, Relevant_Path,
-                Deref_Only => Ekind (Formal) = E_In_Parameter);
+                Deref_Only => Ekind (Formal) = E_In_Parameter
+                and then Has_Access_Type (Etype (Formal)));
 
             --  Aliases of the root of the actual are entirely written
 
