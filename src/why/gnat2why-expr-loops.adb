@@ -561,7 +561,7 @@ package body Gnat2Why.Expr.Loops is
         (Ada_Node => Stmt,
          Name => Exc_Name);
    begin
-      Prepend (Finalization_Actions_On_Jump (Stmt), Raise_Stmt);
+      Prepend (Finalization_Actions_On_Jump (Stmt, Params), Raise_Stmt);
 
       if No (Condition (Stmt)) then
          return Raise_Stmt;

@@ -5686,8 +5686,10 @@ package body Gnat2Why.Subprograms is
             Why_Body := Sequence
               ((1 => Why_Body,
                 2 => +Finalization_Actions
-                  (E, Local_CFG.Vertex'(Kind => Local_CFG.Body_Exit,
-                                        Node => E)),
+                  (E,
+                   Local_CFG.Vertex'(Kind => Local_CFG.Body_Exit,
+                                     Node => E),
+                   Body_Params),
                 3 => Transform_All_Pragmas
                   (Post_Prags, "checking of pragma postcondition")));
 
@@ -5735,8 +5737,10 @@ package body Gnat2Why.Subprograms is
 
                   Handler := Sequence
                     ((1 => +Finalization_Actions
-                      (E, Local_CFG.Vertex'(Kind => Local_CFG.Body_Exit,
-                                            Node => E)),
+                      (E,
+                       Local_CFG.Vertex'(Kind => Local_CFG.Body_Exit,
+                                         Node => E),
+                       Body_Params),
                       2 => Check_Invariants_Of_Outputs (Exceptional => True)));
 
                   Continuation_Stack.Delete_Last;

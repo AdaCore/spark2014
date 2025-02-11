@@ -537,6 +537,11 @@ package SPARK_Atree is
    function First_Actual (Node : Node_Id) return Node_Id renames
      Sem_Util.First_Actual;
 
+   function Finally_Statements
+     (N : Sinfo.Nodes.N_Handled_Sequence_Of_Statements_Id)
+      return List_Id
+      renames Sinfo.Nodes.Finally_Statements;
+
    function From_Aspect_Specification (N : Node_Id) return Boolean with
      Pre => Nkind (N) = N_Pragma;
 

@@ -477,7 +477,8 @@ package Gnat2Why.Expr is
 
    function Finalization_Actions
      (Scope   : Node_Id;
-      Exiting : Local_CFG.Vertex)
+      Exiting : Local_CFG.Vertex;
+      Params  : Transformation_Params)
       return W_Statement_Sequence_Id;
    --  From a scope a <<scope>> with attached finalization actions,
    --  translate the individual finalization actions to perform at exit. That
@@ -497,7 +498,10 @@ package Gnat2Why.Expr is
    --  not updated on any local control path to Exiting from the havoced
    --  borrows.
 
-   function Finalization_Actions_On_Jump (Jump : Node_Id) return W_Prog_Id;
+   function Finalization_Actions_On_Jump
+     (Jump   : Node_Id;
+      Params : Transformation_Params)
+      return W_Prog_Id;
    --  Translate the finalization actions for a static jump (goto/exit/return).
    --  This is equivalent to the sequence of programs resulting from
    --  Finalization_Actions for all exited scopes, in order.

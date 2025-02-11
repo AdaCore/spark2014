@@ -619,10 +619,12 @@ package body Gnat2Why.Expr is
    function New_Raise_Or_Absurd
      (Ada_Node    : Node_Id;
       Ex_Name     : W_Identifier_Id;
-      Handled_Exc : Exception_Sets.Set)
+      Handled_Exc : Exception_Sets.Set;
+      Params      : Transformation_Params)
       return W_Prog_Id;
    --  Generate conditional raising an exception if Ex_Name is in Handled_Exc
-   --  and absurd statement otherwise.
+   --  and absurd statement otherwise. This also generates the relevant
+   --  sequence of finalization actions for the raise.
 
    function One_Level_Access
      (N             : Node_Id;
@@ -1230,7 +1232,8 @@ package body Gnat2Why.Expr is
 
    function Finalization_Actions
      (Scopes  : Node_Lists.List;
-      Exiting : Local_CFG.Vertex_Sets.Set)
+      Exiting : Local_CFG.Vertex_Sets.Set;
+      Params  : Transformation_Params)
       return W_Statement_Sequence_Id;
    --  For Scopes a list of <<scopes>> with attached finalization actions,
    --  translate the individual finalization actions to perform at exit. That
@@ -1257,13 +1260,16 @@ package body Gnat2Why.Expr is
 
    function Finalization_Actions
      (Scopes  : Node_Lists.List;
-      Exiting : Local_CFG.Vertex)
+      Exiting : Local_CFG.Vertex;
+      Params  : Transformation_Params)
       return W_Statement_Sequence_Id;
    --  Specialization of Finalization_Actions when the Exiting set is a
    --  singleton.
 
    function Finalization_Actions_On_Raise
-     (Stmt_Or_Decl : Node_Id) return W_Prog_Id;
+     (Stmt_Or_Decl : Node_Id;
+      Params       : Transformation_Params)
+      return W_Prog_Id;
    --  Perform finalization actions for scopes exited by a raise statement,
    --  or by implicit re-raise for an handled sequence of statement. Stops at
    --  the first exception handler or entity body. Exceptions which might not
@@ -8634,18 +8640,20 @@ package body Gnat2Why.Expr is
 
    function Finalization_Actions
      (Scope   : Node_Id;
-      Exiting : Local_CFG.Vertex)
+      Exiting : Local_CFG.Vertex;
+      Params  : Transformation_Params)
       return W_Statement_Sequence_Id
    is
       Scopes : Node_Lists.List;
    begin
       Scopes.Append (Scope);
-      return Finalization_Actions (Scopes, Exiting);
+      return Finalization_Actions (Scopes, Exiting, Params);
    end Finalization_Actions;
 
    function Finalization_Actions
      (Scopes  : Node_Lists.List;
-      Exiting : Local_CFG.Vertex_Sets.Set)
+      Exiting : Local_CFG.Vertex_Sets.Set;
+      Params  : Transformation_Params)
       return W_Statement_Sequence_Id
    is
       use Local_CFG;
@@ -8741,6 +8749,29 @@ package body Gnat2Why.Expr is
    begin
       return Result : W_Statement_Sequence_Id := Void_Sequence do
          for S of Scopes loop
+
+            --  If S is an handled sequence of statements, the corresponding
+            --  finalization actions are given by the finally block. This is
+            --  the simple case, translate it and go to next iteration.
+
+            if Nkind (S) = N_Handled_Sequence_Of_Statements then
+               declare
+                  Fin_Section : constant List_Id := Finally_Statements (S);
+               begin
+                  if Present (Fin_Section) then
+                     Append
+                       (Result,
+                        Transform_Statements_And_Declarations
+                          (Fin_Section, Params));
+                  end if;
+               end;
+               goto Continue;
+            end if;
+
+            --  Otherwise, the finalization actions are given by end of borrows
+            --  and leak checks. We analyze control flow to find borrows which
+            --  may actually be updated.
+
             declare
                Decls   : constant List_Id := Declarations
                  (if S in N_Block_Statement_Id then S else Get_Body (S));
@@ -8822,26 +8853,31 @@ package body Gnat2Why.Expr is
                     (Result, Check_No_Memory_Leaks_At_End_Of_Scope (Decls));
                end if;
             end;
+            <<Continue>>
          end loop;
       end return;
    end Finalization_Actions;
 
    function Finalization_Actions
      (Scopes  : Node_Lists.List;
-      Exiting : Local_CFG.Vertex)
+      Exiting : Local_CFG.Vertex;
+      Params  : Transformation_Params)
       return W_Statement_Sequence_Id
    is
       Exitings : Local_CFG.Vertex_Sets.Set;
    begin
       Exitings.Insert (Exiting);
-      return Finalization_Actions (Scopes, Exitings);
+      return Finalization_Actions (Scopes, Exitings, Params);
    end Finalization_Actions;
 
    ----------------------------------
    -- Finalization_Actions_On_Jump --
    ----------------------------------
 
-   function Finalization_Actions_On_Jump (Jump : Node_Id) return W_Prog_Id
+   function Finalization_Actions_On_Jump
+     (Jump   : Node_Id;
+      Params : Transformation_Params)
+      return W_Prog_Id
    is
       Scopes : Node_Lists.List;
 
@@ -8853,7 +8889,9 @@ package body Gnat2Why.Expr is
 
       procedure Append (Scop : Node_Id) is
       begin
-         if Scop in N_Block_Statement_Id then
+         if Nkind (Scop) in N_Block_Statement
+                          | N_Handled_Sequence_Of_Statements
+         then
             Scopes.Append (Scop);
          end if;
       end Append;
@@ -8866,7 +8904,7 @@ package body Gnat2Why.Expr is
       Iter_Scopes (Jump);
 
       return +Finalization_Actions
-        (Scopes, Local_CFG.Starting_Vertex (Jump));
+        (Scopes, Local_CFG.Starting_Vertex (Jump), Params);
    end Finalization_Actions_On_Jump;
 
    -----------------------------------
@@ -8874,7 +8912,9 @@ package body Gnat2Why.Expr is
    -----------------------------------
 
    function Finalization_Actions_On_Raise
-     (Stmt_Or_Decl : Node_Id) return W_Prog_Id
+     (Stmt_Or_Decl : Node_Id;
+      Params       : Transformation_Params)
+      return W_Prog_Id
    is
       use Local_CFG;
 
@@ -8900,7 +8940,9 @@ package body Gnat2Why.Expr is
 
       procedure Append (Scop : Node_Id) is
       begin
-         if Scop in N_Block_Statement_Id then
+         if Nkind (Scop) in N_Block_Statement
+                          | N_Handled_Sequence_Of_Statements
+         then
             Scopes.Append (Scop);
          end if;
       end Append;
@@ -8932,6 +8974,18 @@ package body Gnat2Why.Expr is
            (Ada_Node => Stmt_Or_Decl,
             Message  => To_Unbounded_String ("when an exception is raised")));
 
+      --  A handled sequence of statements represent an implicit re-raise of
+      --  not-caught exceptions in the handled sequence of statements. In
+      --  particular, this goes through the finally section of that sequence if
+      --  any. But since the iteration of exited scopes starts supposing that
+      --  the transfer-of-control comes from the whole handled sequence of
+      --  statements, which does not cover that particular scope. We need to
+      --  add it explicitly.
+
+      if Nkind (Stmt_Or_Decl) = N_Handled_Sequence_Of_Statements then
+         Append (Stmt_Or_Decl);
+      end if;
+
       --  Since we stop at the first encountered handler, we can make the
       --  iteration as if all exceptions were raised. This is also necessary
       --  for the case of implicit re-raises inserted at handlers, as the
@@ -8951,9 +9005,10 @@ package body Gnat2Why.Expr is
       --  several ones). Disconnect precise analysis for now.
 
       if Nkind (Stmt_Or_Decl) = N_Handled_Sequence_Of_Statements then
-         Res := +Finalization_Actions (Scopes, Vertex_Sets.Empty_Set);
+         Res := +Finalization_Actions (Scopes, Vertex_Sets.Empty_Set, Params);
       else
-         Res := +Finalization_Actions (Scopes, Starting_Vertex (Stmt_Or_Decl));
+         Res := +Finalization_Actions
+           (Scopes, Starting_Vertex (Stmt_Or_Decl), Params);
       end if;
 
       Continuation_Stack.Delete_Last;
@@ -12055,7 +12110,8 @@ package body Gnat2Why.Expr is
    function New_Raise_Or_Absurd
      (Ada_Node    : Node_Id;
       Ex_Name     : W_Identifier_Id;
-      Handled_Exc : Exception_Sets.Set)
+      Handled_Exc : Exception_Sets.Set;
+      Params      : Transformation_Params)
       return W_Prog_Id
    is
       Raise_Or_Absurd : W_Prog_Id;
@@ -12076,7 +12132,7 @@ package body Gnat2Why.Expr is
          Raise_Or_Absurd :=
            Sequence
              (Finalization_Actions_On_Raise
-                (Ada_Node),
+                (Ada_Node, Params),
               New_Raise
                 (Ada_Node => Ada_Node,
                  Name     => M_Main.Ada_Exc,
@@ -19587,7 +19643,7 @@ package body Gnat2Why.Expr is
          Append
            (Core,
             +Finalization_Actions
-              (N, Vertex'(Kind => Completion, Node => N)));
+              (N, Vertex'(Kind => Completion, Node => N), Params));
 
          return Transform_Declarations_Block (Declarations (N), Core, Params);
       else
@@ -19736,7 +19792,7 @@ package body Gnat2Why.Expr is
             Ex_Name         : constant W_Identifier_Id :=
               New_Temp_Identifier (Base_Name => "exn", Typ => EW_Int_Type);
             Raise_Or_Absurd : constant W_Prog_Id :=
-              New_Raise_Or_Absurd (Call, Ex_Name, Handled_Exc);
+              New_Raise_Or_Absurd (Call, Ex_Name, Handled_Exc, Params);
          begin
             --  Put the raise at the end of the handler
 
@@ -25123,7 +25179,7 @@ package body Gnat2Why.Expr is
       end List_Length_Non_Pragma;
 
       Handlers : constant List_Id := Exception_Handlers (N);
-      Core     : constant W_Prog_Id :=
+      Core     : W_Prog_Id :=
         Transform_Statements_And_Declarations (Statements (N), Params);
 
    --  Start of processing for Transform_Handled_Statements
@@ -25182,7 +25238,7 @@ package body Gnat2Why.Expr is
 
                elsif not Handled_Above.Is_Subset (Handled_Exc) then
                   Else_Part := Sequence
-                    (Left  => Finalization_Actions_On_Raise (N),
+                    (Left  => Finalization_Actions_On_Raise (N, Params),
                      Right => New_Raise
                        (Name => M_Main.Ada_Exc, Arg => +Exc_Id));
 
@@ -25210,7 +25266,7 @@ package body Gnat2Why.Expr is
 
             Handled_Exception_Name := Save_Exception_Name;
 
-            return New_Try_Block
+            Core := New_Try_Block
               (Ada_Node => N,
                Prog     => Core,
                Handler  =>
@@ -25219,9 +25275,16 @@ package body Gnat2Why.Expr is
                        Arg_Id => Exc_Id,
                        Def    => W_Handler)));
          end;
-      else
-         return Core;
       end if;
+
+      if Present (Finally_Statements (N)) then
+         Append
+           (Core,
+            Transform_Statements_And_Declarations
+              (Finally_Statements (N), Params));
+      end if;
+
+      return Core;
    end Transform_Handled_Statements;
 
    --------------------------
@@ -27956,7 +28019,7 @@ package body Gnat2Why.Expr is
                --  scopes traversed by the return statement.
 
                Prepend
-                 (Finalization_Actions_On_Jump (Stmt_Or_Decl),
+                 (Finalization_Actions_On_Jump (Stmt_Or_Decl, Params),
                   Raise_Stmt);
 
                if Expression (Stmt_Or_Decl) /= Empty then
@@ -28066,7 +28129,8 @@ package body Gnat2Why.Expr is
                               --  memory leaks for objects declared in blocks
                               --  traversed by the return statement.
 
-                              2 => Finalization_Actions_On_Jump (Stmt_Or_Decl),
+                              2 => Finalization_Actions_On_Jump
+                                (Stmt_Or_Decl, Params),
 
                               --  Reraise the exception
 
@@ -28087,7 +28151,8 @@ package body Gnat2Why.Expr is
                --  scopes traversed by the goto statement.
 
                return Sequence
-                 (Finalization_Actions_On_Jump (Stmt_Or_Decl), Raise_Stmt);
+                 (Finalization_Actions_On_Jump (Stmt_Or_Decl, Params),
+                  Raise_Stmt);
             end;
 
          when N_Procedure_Call_Statement
@@ -28360,7 +28425,8 @@ package body Gnat2Why.Expr is
                              (Stmt_Or_Decl,
                               Transform_Prog
                                 (Expression (Stmt_Or_Decl), Params))),
-                      2 => Finalization_Actions_On_Raise (Stmt_Or_Decl),
+                      2 => Finalization_Actions_On_Raise
+                        (Stmt_Or_Decl, Params),
                       3 => New_Raise
                         (Ada_Node => Stmt_Or_Decl,
                          Name     => M_Main.Ada_Exc,
@@ -28379,7 +28445,8 @@ package body Gnat2Why.Expr is
                  (Ada_Node    => Stmt_Or_Decl,
                   Ex_Name     => Handled_Exception_Name,
                   Handled_Exc => Get_Raised_Exceptions
-                    (Stmt_Or_Decl, Only_Handled => True));
+                    (Stmt_Or_Decl, Only_Handled => True),
+                  Params      => Params);
             end if;
 
          --  Subprogram and package declarations are already taken care of
