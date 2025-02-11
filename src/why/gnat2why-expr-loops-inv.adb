@@ -32,7 +32,6 @@ with Flow_Refinement;           use Flow_Refinement;
 with Flow_Utility;              use Flow_Utility;
 with Gnat2Why.Tables;           use Gnat2Why.Tables;
 with Snames;                    use Snames;
-with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
 with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
 with SPARK_Util.Types;          use SPARK_Util.Types;
 with Why;                       use Why;
@@ -1364,11 +1363,9 @@ package body Gnat2Why.Expr.Loops.Inv is
       procedure Process_Param (Formal : Formal_Kind_Id; Actual : N_Subexpr_Id)
       is
       begin
-         if Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter
-           or else (Has_Access_Type (Etype (Formal))
-                    and then not Is_Access_Constant (Retysp (Etype (Formal)))
-                    and then Nkind (Actual) /= N_Null)
-           or else Has_Mutable_In_Param_Annotation (Formal)
+         if not Is_Constant_In_SPARK (Formal)
+           and then (Ekind (Formal) /= E_In_Parameter
+                     or else Nkind (Actual) /= N_Null)
          then
             --  If Formal is an IN parameter of an access-to-variable type, the
             --  designated value only can be updated by the call, not the
