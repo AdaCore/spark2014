@@ -1,0 +1,13 @@
+test.adb:8:14: warning: subprogram "Foo" has no effect
+test.adb:11:07: info: only expected exception raised (CVC5: 1 VC)
+test.adb:14:07: info: no contextual analysis of "Foo" (exception handler)
+test.adb:14:29: high: "X" is not initialized
+test.adb:14:44: medium: assertion might fail
+test2.adb:8:19: medium: "X" might not be initialized in "Foo" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+test2.adb:12:07: info: only expected exception raised (CVC5: 1 VC)
+test2.adb:15:07: info: no contextual analysis of "Foo" (exception handler)
+test3.adb:8:14: warning: subprogram "Foo" has no effect
+test3.adb:12:12: info: only expected exception raised (CVC5: 1 VC)
+test3.adb:14:07: info: no contextual analysis of "Foo" (exception handler)
+test3.adb:14:29: high: "X" is not initialized
+test3.adb:14:44: medium: assertion might fail
