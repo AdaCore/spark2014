@@ -1,7 +1,7 @@
 example_recursive.adb:21:13: info: implicit aspect Always_Terminates on "Valid_Memory" has been proved, subprogram will terminate
 example_recursive.adb:22:25: info: precondition proved
-example_recursive.adb:33:13: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
 example_recursive.adb:33:13: info: implicit aspect Always_Terminates on "Valid_List" has been proved, subprogram will terminate
+example_recursive.adb:33:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [warn-num-variant]
 example_recursive.adb:35:41: info: precondition proved
 example_recursive.adb:35:41: info: tag check proved
 example_recursive.adb:36:32: info: precondition proved
@@ -14,9 +14,9 @@ example_recursive.adb:37:69: info: range check proved
 example_recursive.adb:39:06: info: data dependencies proved
 example_recursive.adb:43:13: info: implicit aspect Always_Terminates on "Valid_List" has been proved, subprogram will terminate
 example_recursive.adb:45:16: info: precondition proved
-example_recursive.adb:49:13: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
-example_recursive.adb:49:13: info: function contract might not be available on recursive calls
 example_recursive.adb:49:13: info: implicit aspect Always_Terminates on "Reachable" has been proved, subprogram will terminate
+example_recursive.adb:49:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [warn-num-variant]
+example_recursive.adb:49:13: warning: function contract might not be available on recursive calls [warn-contracts-recursive]
 example_recursive.adb:51:31: info: precondition proved
 example_recursive.adb:51:31: info: subprogram variant proved
 example_recursive.adb:51:62: info: precondition proved
@@ -96,9 +96,9 @@ example_recursive.adb:166:10: info: precondition proved
 example_recursive.adb:166:51: info: precondition proved
 example_recursive.adb:166:51: info: tag check proved
 example_recursive.adb:166:71: info: range check proved
-example_recursive.adb:170:13: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
 example_recursive.adb:170:13: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
-example_recursive.adb:170:13: info: implicit function contract might not be available on recursive calls
+example_recursive.adb:170:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [warn-num-variant]
+example_recursive.adb:170:13: warning: implicit function contract might not be available on recursive calls [warn-contracts-recursive]
 example_recursive.adb:171:29: info: precondition proved
 example_recursive.adb:171:29: info: tag check proved
 example_recursive.adb:172:12: info: precondition proved

@@ -141,11 +141,11 @@ my_map.adb:185:21: info: dynamic accessibility check proved
 my_map.adb:185:21: info: pointer dereference check proved
 my_map.adb:187:16: info: pointer dereference check proved
 my_map.adb:189:07: info: only expected exception raised
-my_map.ads:13:13: info: function contract might not be available on recursive calls
 my_map.ads:13:13: info: implicit aspect Always_Terminates on "Model_Contains" has been proved, subprogram will terminate
+my_map.ads:13:13: warning: function contract might not be available on recursive calls [warn-contracts-recursive]
 my_map.ads:16:14: info: postcondition proved
 my_map.ads:19:13: info: implicit aspect Always_Terminates on "Model_Value" has been proved, subprogram will terminate
-my_map.ads:19:13: info: implicit function contract might not be available on recursive calls
+my_map.ads:19:13: warning: implicit function contract might not be available on recursive calls [warn-contracts-recursive]
 my_map.ads:25:13: info: implicit aspect Always_Terminates on "At_End_Borrow" has been proved, subprogram will terminate
 my_map.ads:26:07: info: dynamic accessibility check proved
 my_map.ads:30:13: info: implicit aspect Always_Terminates on "At_End_Borrow" has been proved, subprogram will terminate
@@ -184,7 +184,7 @@ my_map.ads:74:13: info: during checks for quantification at my_map.ads:108
 my_map.ads:74:13: info: implicit aspect Always_Terminates on "Has_Element_No_Rec_Wrapper" has been proved, subprogram will terminate
 my_map.ads:74:13: info: precondition proved
 my_map.ads:77:13: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
-my_map.ads:77:13: info: implicit function contract might not be available on recursive calls
+my_map.ads:77:13: warning: implicit function contract might not be available on recursive calls [warn-contracts-recursive]
 my_map.ads:81:13: info: during checks for quantification at my_map.ads:108
 my_map.ads:81:13: info: implicit aspect Always_Terminates on "Next_No_Rec_Wrapper" has been proved, subprogram will terminate
 my_map.ads:81:13: info: precondition proved
@@ -192,8 +192,8 @@ my_map.ads:82:07: info: precondition proved
 my_map.ads:86:13: info: during checks for quantification at my_map.ads:108
 my_map.ads:86:13: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
 my_map.ads:86:13: info: precondition proved
-my_map.ads:90:13: info: function contract might not be available on recursive calls
 my_map.ads:90:13: info: implicit aspect Always_Terminates on "Deep_Copy" has been proved, subprogram will terminate
+my_map.ads:90:13: warning: function contract might not be available on recursive calls [warn-contracts-recursive]
 my_map.ads:94:08: info: postcondition proved
 my_map.ads:97:27: info: pointer dereference check proved
 my_map.ads:97:68: info: range check proved

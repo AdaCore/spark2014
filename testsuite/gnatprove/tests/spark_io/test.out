@@ -124,9 +124,9 @@ hello_world.adb:30:03: info: data dependencies proved
 hello_world.adb:31:13: info: precondition of main program proved (CVC5: 3 VC)
 hello_world.adb:35:04: info: precondition proved (CVC5: 1 VC)
 hello_world.adb:37:07: info: precondition proved (CVC5: 1 VC)
-spark-text_io-unbounded_io.ads:29:23: info: Initial_Condition of package "Text_IO" is ignored
-spark-text_io-unbounded_io.ads:29:23: info: the elaboration of "Text_IO" is not known to precede the elaboration of the current unit
-spark-text_io-unbounded_io.ads:29:23: info: use pragma Elaborate_Body in "Text_IO" or pragma Elaborate in the current unit
+spark-text_io-unbounded_io.ads:29:23: warning: Initial_Condition of package "Text_IO" is ignored [warn-init-cond-ignored]
+spark-text_io-unbounded_io.ads:29:23: warning: the elaboration of "Text_IO" is not known to precede the elaboration of the current unit
+spark-text_io-unbounded_io.ads:29:23: warning: use pragma Elaborate_Body in "Text_IO" or pragma Elaborate in the current unit
 spark-text_io-unbounded_io.ads:46:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io-unbounded_io.ads:47:33: info: precondition proved (CVC5: 1 VC)
 spark-text_io-unbounded_io.ads:48:40: info: precondition proved (CVC5: 2 VC)

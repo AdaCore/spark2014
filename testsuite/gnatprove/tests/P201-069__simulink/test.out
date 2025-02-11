@@ -71,19 +71,19 @@ simulink_functions.adb:45:13: info: types in unchecked conversion have the same 
 simulink_functions.adb:45:67: info: type is suitable as source for unchecked conversion (Trivial)
 simulink_functions.adb:46:67: info: type is suitable for unchecked conversion (Trivial)
 simulink_functions.adb:48:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type Unsigned_32 and type Unsigned_16 differ]
-simulink_functions.adb:48:13: info: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size)
+simulink_functions.adb:48:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [warn-imprecise-uc]
 simulink_functions.adb:48:65: info: type is suitable as source for unchecked conversion (Trivial)
 simulink_functions.adb:49:67: info: type is suitable for unchecked conversion (Trivial)
 simulink_functions.adb:50:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type Unsigned_32 and type Unsigned_8 differ]
-simulink_functions.adb:50:13: info: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size)
+simulink_functions.adb:50:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [warn-imprecise-uc]
 simulink_functions.adb:50:64: info: type is suitable as source for unchecked conversion (Trivial)
 simulink_functions.adb:51:67: info: type is suitable for unchecked conversion (Trivial)
 simulink_functions.adb:52:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type Unsigned_32 and type Integer_16 differ]
-simulink_functions.adb:52:13: info: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size)
+simulink_functions.adb:52:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [warn-imprecise-uc]
 simulink_functions.adb:52:67: info: type is suitable as source for unchecked conversion (Trivial)
 simulink_functions.adb:53:67: info: type is suitable for unchecked conversion (Trivial)
 simulink_functions.adb:54:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type Unsigned_32 and type Integer_8 differ]
-simulink_functions.adb:54:13: info: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size)
+simulink_functions.adb:54:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [warn-imprecise-uc]
 simulink_functions.adb:54:66: info: type is suitable as source for unchecked conversion (Trivial)
 simulink_functions.adb:55:67: info: type is suitable for unchecked conversion (Trivial)
 simulink_functions.adb:171:47: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:55 should mention F in a precondition]
