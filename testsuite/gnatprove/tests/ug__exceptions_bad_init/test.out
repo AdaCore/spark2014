@@ -3,12 +3,15 @@ exceptions_bad_init.adb:19:07: medium: "A" might not be initialized in "Incr_All
    19 |     (A       : in out Nat_Array;
       |      ^ here
   reason for check: OUT parameter should be fully initialized on return
-  possible fix: initialize "A" on all paths, make "A" an IN OUT parameter or annotate it with aspect Relaxed_Initialization
+  possible explanation: value of "A" is unknown following exceptional exit
+  possible fix: initialize "A" on all paths or annotate it with aspect Relaxed_Initialization
 
 exceptions_bad_init.adb:23:49: medium: "A" might not be initialized
    23 |     Post => Success = (for all I in A'Range => A'Old (I) /= Natural'Last)
       |                                                ^ here
+  possible explanation: value of "A" is unknown following exceptional exit
 
 exceptions_bad_init.adb:39:15: high: "A" is not initialized
    39 |         N := A (Index);
       |              ^ here
+  possible explanation: value of "A" is unknown following exceptional exit

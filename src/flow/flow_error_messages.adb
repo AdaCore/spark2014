@@ -469,6 +469,7 @@ package body Flow_Error_Messages is
       F1            : Flow_Id            := Null_Flow_Id;
       F2            : Flow_Id            := Null_Flow_Id;
       F3            : Flow_Id            := Null_Flow_Id;
+      EF1           : Flow_Id            := Null_Flow_Id;
       FF1           : Flow_Id            := Null_Flow_Id;
       FF2           : Flow_Id            := Null_Flow_Id;
       Tag           : Flow_Tag_Kind      := Empty_Tag;
@@ -618,11 +619,17 @@ package body Flow_Error_Messages is
                        (Compute_Message
                          (Fix, Attach_Node, FF1, FF2, With_Location => False))
                   else No_Message);
+
+               Explanation_Msg : constant String :=
+                 (if Explanation /= "" then
+                    Compute_Message
+                      (Explanation, Attach_Node, EF1, With_Location => False)
+                  else "");
             begin
                Msg_Id :=
                  Print_Regular_Msg (Msg3, Span, Severity,
                                     Details       => Details,
-                                    Explanation   => Explanation,
+                                    Explanation   => Explanation_Msg,
                                     Fix           => Fix_Msg,
                                     Explain_Code  => Explain_Code,
                                     Continuations => Continuations);
@@ -666,6 +673,7 @@ package body Flow_Error_Messages is
       F1            : Flow_Id               := Null_Flow_Id;
       F2            : Flow_Id               := Null_Flow_Id;
       F3            : Flow_Id               := Null_Flow_Id;
+      EF1           : Flow_Id               := Null_Flow_Id;
       FF1           : Flow_Id               := Null_Flow_Id;
       FF2           : Flow_Id               := Null_Flow_Id;
       Tag           : Flow_Tag_Kind         := Empty_Tag;
@@ -706,7 +714,8 @@ package body Flow_Error_Messages is
             begin
                --  ??? we should only print vertices whose Atr.Is_Program_Node
                --  is True (taking into account various special-cases).
-               if F.Kind = Direct_Mapping then
+               if F.Kind = Direct_Mapping or else FA.Atr (V).Is_Param_Havoc
+               then
                   Ada.Text_IO.Put_Line
                     (FD, Vertex_Sloc_Location (FA.PDG, FA.Atr, V));
                end if;
@@ -737,6 +746,7 @@ package body Flow_Error_Messages is
                       F1            => F1,
                       F2            => F2,
                       F3            => F3,
+                      EF1           => EF1,
                       FF1           => FF1,
                       FF2           => FF2,
                       Tag           => Tag,

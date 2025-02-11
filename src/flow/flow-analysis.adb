@@ -2230,10 +2230,14 @@ package body Flow.Analysis is
            Get_Initial_Vertex (FA.PDG, Var);
 
          V_Initial_Atr : V_Attributes renames FA.Atr (V_Initial);
+         V_Start_Atr   : V_Attributes renames FA.Atr (Start);
 
-         N                 : Node_Or_Entity_Id;
-         Msg, Details, Fix : Unbounded_String;
-         Fix_F1, Fix_F2    : Flow_Id;
+         N                              : Node_Or_Entity_Id;
+         Msg, Details, Explanation, Fix : Unbounded_String;
+         Explanation_F1                 : Flow_Id;
+         Fix_F1, Fix_F2                 : Flow_Id;
+         --  Optional parameters for messages with the explanation and the fix,
+         --  respectively.
 
          V_Goal       : Flow_Graphs.Vertex_Id;
 
@@ -2302,8 +2306,11 @@ package body Flow.Analysis is
 
             procedure Add_Loc (V : Flow_Graphs.Vertex_Id) is
                F : Flow_Id renames FA.CFG.Get_Key (V);
+               A : V_Attributes renames FA.Atr (V);
             begin
-               if V /= To and then F.Kind = Direct_Mapping then
+               if (V = Start and then A.Is_Param_Havoc)
+                 or else (V /= To and then F.Kind = Direct_Mapping)
+               then
                   Path.Insert (V);
                end if;
             end Add_Loc;
@@ -2476,14 +2483,17 @@ package body Flow.Analysis is
                         Fix_F1 := Var;
 
                         --  Second possible fix
-                        if Is_Record_Part_Or_Array then
-                           Append (Fix, ", ");
-                        else
-                           Append (Fix, " or ");
+
+                        if not V_Start_Atr.Is_Param_Havoc then
+                           if Is_Record_Part_Or_Array then
+                              Append (Fix, ", ");
+                           else
+                              Append (Fix, " or ");
+                           end if;
+                           Append (Fix, "make & an IN OUT parameter");
+                           Fix_F2 := Entire_Variable
+                             (Change_Variant (Var, Normal_Use));
                         end if;
-                        Append (Fix, "make & an IN OUT parameter");
-                        Fix_F2 := Entire_Variable
-                          (Change_Variant (Var, Normal_Use));
 
                         --  Third possible fix
                         if Is_Record_Part_Or_Array then
@@ -2504,6 +2514,13 @@ package body Flow.Analysis is
                                  raise Program_Error));
                   --  ??? this message should be tuned for interrupt handlers
                end if;
+            end if;
+
+            --  Add reason for check when starting vertex is a parameter havoc
+            if V_Start_Atr.Is_Param_Havoc then
+               Append (Explanation, "value of & is unknown following "
+                                  & "exceptional exit");
+               Explanation_F1 := Var;
             end if;
 
             declare
@@ -2538,10 +2555,12 @@ package body Flow.Analysis is
                   Path          => Path,
                   Msg           => To_String (Msg),
                   Details       => To_String (Details),
+                  Explanation   => To_String (Explanation),
                   Fix           => To_String (Fix),
                   N             => N,
                   F1            => Var,
                   F2            => Direct_Mapping_Id (FA.Spec_Entity),
+                  EF1           => Explanation_F1,
                   FF1           => Fix_F1,
                   FF2           => Fix_F2,
                   Tag           => Uninitialized,

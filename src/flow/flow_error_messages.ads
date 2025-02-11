@@ -97,6 +97,7 @@ package Flow_Error_Messages is
       F1            : Flow_Id            := Null_Flow_Id;
       F2            : Flow_Id            := Null_Flow_Id;
       F3            : Flow_Id            := Null_Flow_Id;
+      EF1           : Flow_Id            := Null_Flow_Id;
       FF1           : Flow_Id            := Null_Flow_Id;
       FF2           : Flow_Id            := Null_Flow_Id;
       Tag           : Flow_Tag_Kind      := Empty_Tag;
@@ -148,6 +149,7 @@ package Flow_Error_Messages is
       F1            : Flow_Id               := Null_Flow_Id;
       F2            : Flow_Id               := Null_Flow_Id;
       F3            : Flow_Id               := Null_Flow_Id;
+      EF1           : Flow_Id               := Null_Flow_Id;
       FF1           : Flow_Id               := Null_Flow_Id;
       FF2           : Flow_Id               := Null_Flow_Id;
       Tag           : Flow_Tag_Kind         := Empty_Tag;
