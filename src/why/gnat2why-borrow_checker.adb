@@ -1151,11 +1151,6 @@ package body Gnat2Why.Borrow_Checker is
    Current_Subp : Entity_Id := Empty;
    --  Set to the enclosing unit during the analysis of a callable body
 
-   Current_Loops_Envs : Env_Backups;
-   --  This variable contains saves of permission environments at each loop the
-   --  analysis entered. Each saved environment can be reached with the label
-   --  of the loop.
-
    Current_Loops_Accumulators : Env_Backups;
    --  This variable contains the environments used as accumulators for loops,
    --  that consist of the merge of all environments at each exit point of
@@ -1968,27 +1963,9 @@ package body Gnat2Why.Borrow_Checker is
 
    procedure Check_Entity (E : Entity_Id) is
 
-      --  Local subprograms
-
-      procedure Initialize;
-      --  Initialize global variables before starting the analysis of a body
-
-      ----------------
-      -- Initialize --
-      ----------------
-
-      procedure Initialize is
-      begin
-         Reset (Current_Loops_Envs);
-         Reset (Current_Loops_Accumulators);
-         Reset (Current_Perm_Env);
-         Reset (Default_Perm_Env);
-      end Initialize;
-
-   --  Start of processing for Check_Entity
-
    begin
-      Initialize;
+      Reset (Default_Perm_Env);
+      Reset (Current_Perm_Env);
       case Ekind (E) is
          when Type_Kind =>
             if Ekind (E) in E_Task_Type | E_Protected_Type
@@ -3401,15 +3378,13 @@ package body Gnat2Why.Borrow_Checker is
 
       Copy_Env (From => Current_Perm_Env, To => Loop_Env.all);
 
-      --  Add saved environment to loop environment
-
-      Set (Current_Loops_Envs, Loop_Name, Loop_Env);
-
       --  If the loop is not a plain-loop, then it may either never be entered,
       --  or it may be exited after a number of iterations. Hence add the
       --  current permission environment as the initial loop exit environment.
       --  Otherwise, the loop exit environment remains empty until it is
       --  populated by analyzing exit statements.
+
+      pragma Assert (Get (Current_Loops_Accumulators, Loop_Name) = null);
 
       if Present (Iteration_Scheme (Stmt)) then
          declare
@@ -3496,6 +3471,7 @@ package body Gnat2Why.Borrow_Checker is
             Copy_Env (From => Exit_Env.all, To => Current_Perm_Env);
             Free_Env (Loop_Env.all);
             Free_Env (Exit_Env.all);
+            Remove (Current_Loops_Accumulators, Loop_Name);
          else
             Copy_Env (From => Loop_Env.all, To => Current_Perm_Env);
             Free_Env (Loop_Env.all);
