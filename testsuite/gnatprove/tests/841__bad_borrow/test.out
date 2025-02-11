@@ -1,0 +1,6 @@
+main.adb:3:26: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(4)) [E0020]
+main.adb:3:26: error: launch "gnatprove --explain=E0020" for more information
+main.adb:3:26: error: violation of aspect SPARK_Mode at line 1
+main.adb:6:03: error: "X" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
+main.adb:6:03: error: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof

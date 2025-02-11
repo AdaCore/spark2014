@@ -3062,14 +3062,30 @@ package body SPARK_Util is
       --  Search for the ultimate root of the borrow
 
       loop
-         Root := Get_Root_Object (Expression (Parent (Root)));
+         declare
+            Expr : constant Node_Id := Expression (Parent (Root));
+         begin
+            --  On illegal SPARK code, local borrowers might not have initial
+            --  expressions or the initial expression might not be a path or
+            --  not have a root. Return False in this case.
+
+            if No (Expr) or else not Is_Path_Expression (Expr) then
+               return False;
+            end if;
+            Root := Get_Root_Object (Expr);
+
+            if No (Root) then
+               return False;
+            end if;
+         end;
+
          exit when not Is_Local_Borrower (Root);
       end loop;
 
       --  Return True if it is the first parameter of a borrowing traversal
       --  function.
 
-      return Ekind (Root) = E_In_Parameter
+      return Ekind (Root) in E_In_Parameter | E_In_Out_Parameter
         and then Is_Borrowing_Traversal_Function (Scope (Root))
         and then Root = First_Formal (Scope (Root));
    end Is_Constant_Borrower;
@@ -3099,6 +3115,12 @@ package body SPARK_Util is
          when E_Constant =>
             return Comes_From_Declare_Expr (E)
               or else not Is_Access_Variable (Etype (E));
+
+         --  The first parameter of a borrowing traversal functions might be an
+         --  IN OUT parameter.
+
+         when E_In_Out_Parameter =>
+            return Is_Borrowing_Traversal_Function (Scope (E));
          when others =>
             return False;
       end case;
@@ -3667,7 +3689,7 @@ package body SPARK_Util is
    -----------------------
 
    function Is_Local_Borrower (E : Entity_Id) return Boolean is
-      T : constant Entity_Id := Retysp (Etype (E));
+      T : constant Entity_Id := Etype (E);
    begin
       return Ekind (E) in E_Variable | E_Constant
         and then Is_Anonymous_Access_Object_Type (T)
