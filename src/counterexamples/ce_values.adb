@@ -93,9 +93,7 @@ package body CE_Values is
             --  The 2 following cases are currently unused as the rac does not
             --  support real values.
             when Float_K   => V1.Float_Content = V2.Float_Content,
-            when Fixed_K   =>
-               V1.Small = V2.Small
-                 and then V1.Fixed_Content = V2.Fixed_Content));
+            when Fixed_K   => V1.Fixed_Content = V2.Fixed_Content));
 
    function "=" (V1, V2 : Value_Type) return Boolean is
 
@@ -238,6 +236,25 @@ package body CE_Values is
       then Default_Equal (V2, null)
       else not Default_Equal (V2, null) and then V1.all = V2.all);
 
+   ---------------------
+   -- Div_Fixed_Point --
+   ---------------------
+
+   function Div_Fixed_Point
+     (Fixed_L, Fixed_R            : Big_Integer;
+      Small_L, Small_R, Small_Res : Big_Real)
+      return Big_Integer
+   is
+      N_L   : constant Big_Integer := Numerator (Small_L);
+      D_L   : constant Big_Integer := Denominator (Small_L);
+      N_R   : constant Big_Integer := Numerator (Small_R);
+      D_R   : constant Big_Integer := Denominator (Small_R);
+      N_Res : constant Big_Integer := Numerator (Small_Res);
+      D_Res : constant Big_Integer := Denominator (Small_Res);
+   begin
+      return (Fixed_L * N_L * D_R * D_Res) / (Fixed_R * N_R * D_L * N_Res);
+   end Div_Fixed_Point;
+
    ---------------------------
    -- Enum_Entity_To_String --
    ---------------------------
@@ -307,6 +324,25 @@ package body CE_Values is
 
    pragma Unsuppress (Validity_Check);
 
+   ----------------------
+   -- Mult_Fixed_Point --
+   ----------------------
+
+   function Mult_Fixed_Point
+     (Fixed_L, Fixed_R            : Big_Integer;
+      Small_L, Small_R, Small_Res : Big_Real)
+      return Big_Integer
+   is
+      N_L   : constant Big_Integer := Numerator (Small_L);
+      D_L   : constant Big_Integer := Denominator (Small_L);
+      N_R   : constant Big_Integer := Numerator (Small_R);
+      D_R   : constant Big_Integer := Denominator (Small_R);
+      N_Res : constant Big_Integer := Numerator (Small_Res);
+      D_Res : constant Big_Integer := Denominator (Small_Res);
+   begin
+      return (Fixed_L * N_L * Fixed_R * N_R * D_Res) / (D_L * D_R * N_Res);
+   end Mult_Fixed_Point;
+
    --------------------
    -- To_Big_Integer --
    --------------------
@@ -339,8 +375,7 @@ package body CE_Values is
      (case V.K is
          when Enum_K    => Enum_Entity_To_String (V.Enum_Entity),
          when Integer_K => To_String (V.Integer_Content),
-         when Fixed_K   => To_String (V.Fixed_Content) & " x "
-           & To_String (V.Small),
+         when Fixed_K   => To_String (V.Fixed_Content),
          when Float_K   => To_String (V.Float_Content));
 
    function To_String
