@@ -415,8 +415,33 @@ package VC_Kinds is
       --  Warnings only issued when using switch --pedantic
       Warn_Image_Attribute_Length,
       Warn_Operator_Reassociation,
-      Warn_Representation_Attribute_Value
-      );
+      Warn_Representation_Attribute_Value,
+
+      --  Warnings only issued when using switch --info
+      Warn_Comp_Relaxed_Init,
+      Warn_Contracts_Recursive,
+      Warn_DIC_Ignored,
+      Warn_Full_View_Visible,
+      Warn_Imprecise_Align,
+      Warn_Imprecise_Call,
+      Warn_Imprecise_Size,
+      Warn_Imprecise_UC,
+      Warn_Imprecise_Value,
+      Warn_Init_Cond_Ignored,
+      Warn_No_Reclam_Func,
+      Warn_Num_Variant,
+      Warn_Map_Length_Aggregates,
+      Warn_Set_Length_Aggregates,
+      Warn_Predef_Eq_Null,
+      Warn_Unit_Not_SPARK,
+
+      --  Info messages enabled by default
+      Warn_Info_Unrolling_Inlining
+     );
+
+   --  TODO Warn_Unit_Not_SPARK should just be a regular warning.
+   --  Warn_Info_Unrolling_Inlining is part of Warning enumeration as it can be
+   --  disabled using the same mechanism.
 
    Max_Array_Dimensions : constant Positive := 4;
    --  Maximal number of array dimensions that are currently supported
@@ -528,18 +553,33 @@ package VC_Kinds is
 
    subtype Default_Warning_Kind is Misc_Warning_Kind range
      Warn_Address_To_Access .. Warn_Variant_Not_Recursive;
+   --  These warnings are on by default
 
    subtype Guaranteed_Warning_Kind is Misc_Warning_Kind range
      Warn_Assumed_Always_Terminates .. Warn_Imprecisely_Supported_Address;
+   --  These warnings are guaranteed to be issued
 
    subtype Pedantic_Warning_Kind is Misc_Warning_Kind range
      Warn_Image_Attribute_Length .. Warn_Representation_Attribute_Value;
+   --  These warnings are disabled by default and enabled collectively by
+   --  "--pedantic" switch
 
-   --  Each warning kind is either a default or a pedantic one
+   subtype Info_Warning_Kind is Misc_Warning_Kind range
+     Warn_Comp_Relaxed_Init .. Warn_Unit_Not_SPARK;
+   --  These warnings are disabled by default and enabled collectively by
+   --  "--info" switch
+
+   subtype Info_Msg_Kind is Misc_Warning_Kind range
+     Warn_Info_Unrolling_Inlining .. Warn_Info_Unrolling_Inlining;
+   --  These info messages are enabled by default.
+
+   --  Assertion that the different warning subtypes are disjoint
    pragma Assert (for all Kind in Misc_Warning_Kind =>
                     (if Kind in Default_Warning_Kind then 1 else 0)
                   + (if Kind in Guaranteed_Warning_Kind then 1 else 0)
                   + (if Kind in Pedantic_Warning_Kind then 1 else 0)
+                  + (if Kind in Info_Warning_Kind then 1 else 0)
+                  + (if Kind in Info_Msg_Kind then 1 else 0)
                   = 1);
 
    --  Warning enabling/disabling mechanism
@@ -555,7 +595,10 @@ package VC_Kinds is
    --  tag doesn't correspond to a warning kind.
 
    Warning_Status : Warning_Status_Array :=
-     [Pedantic_Warning_Kind => WS_Disabled, others => WS_Enabled];
+     [Pedantic_Warning_Kind => WS_Disabled,
+      Info_Warning_Kind => WS_Disabled,
+      Warn_Info_Unrolling_Inlining => WS_Enabled,
+      others => WS_Enabled];
    --  The array which contains the status for each warning. By default, all
    --  warnings are enabled, except the pedantic ones.
 
@@ -630,13 +673,59 @@ package VC_Kinds is
         when Warn_Imprecisely_Supported_Address =>
           "address specification on & is imprecisely supported",
 
-        --  Warnings only issued when using switch --pedantic
+        --  Warnings enabled with --pedantic switch
         when Warn_Image_Attribute_Length =>
           "attribute & has an implementation-defined length",
         when Warn_Operator_Reassociation =>
           "possible reassociation due to missing parentheses",
         when Warn_Representation_Attribute_Value =>
-          "attribute & has an implementation-defined value"
+          "attribute & has an implementation-defined value",
+
+        --  Warnings enabled with --info switch
+        when Warn_Comp_Relaxed_Init =>
+          "& is handled as if it was annotated with Relaxed_Initialization as "
+        & "all its components are annotated that way",
+        when Warn_Contracts_Recursive =>
+          "&function contract might not be available on &",
+        when Warn_DIC_Ignored =>
+          "default initial condition on type & not available for proof in an "
+        & "assertion context",
+        when Warn_Full_View_Visible =>
+          "full view of & declared # is visible when analyzing &",
+        when Warn_Imprecise_Align =>
+          "alignment of attribute address is not precisely known",
+        when Warn_Imprecise_Call =>
+          "call to & is not handled precisely",
+        when Warn_Imprecise_Size =>
+          "the value of attribute & is handled in an imprecise way",
+        when Warn_Imprecise_UC =>
+          "imprecise handling of Unchecked_Conversion (&)",
+        when Warn_Imprecise_Value =>
+         "references to the ""Value"" attribute are handled in an imprecise "
+         & "way, so the precondition might be impossible to prove",
+        when Warn_Init_Cond_Ignored =>
+         "Initial_Condition of package & is ignored",
+        when Warn_No_Reclam_Func =>
+         "no reclamation function nor reclaimed value found for type with "
+         & "ownership &",
+        when Warn_Num_Variant =>
+          "expression function body of subprograms with a numeric "
+        & "variant might not be available on recursive calls",
+        when Warn_Map_Length_Aggregates =>
+          "no ""Length"" function found for type with predefined map "
+        & "aggregates &",
+        when Warn_Set_Length_Aggregates =>
+          "no ""Length"" function found for type with predefined set "
+        & "aggregates &",
+        when Warn_Predef_Eq_Null =>
+          "no null value found for type with predefined equality &",
+        when Warn_Unit_Not_SPARK =>
+           "SPARK_Mode not applied to this compilation unit",
+
+        --  info messages enabled by default
+        when Warn_Info_Unrolling_Inlining =>
+            --  these messages are issued by the front-end
+            raise Program_Error
      );
 
    function Unsupported_Message

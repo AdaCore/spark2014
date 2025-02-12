@@ -313,7 +313,17 @@ class UGTestDriver(DiffTestDriver):
         pattern = os.path.join(self.test_env["working_dir"], "*.gpr")
         gprfiles = glob.glob(pattern)
         assert len(gprfiles) == 1
-        cmd = ["gnatprove", "-P", gprfiles[0], "-f", "-q", "--level=2", "--timeout=30"]
+        cmd = [
+            "gnatprove",
+            "-P",
+            gprfiles[0],
+            "-f",
+            "-q",
+            "--level=2",
+            "--timeout=30",
+            "-A",
+            "info-unrolling-inlining",
+        ]
 
         # Generate sparklib.gpr in case the project depends on SPARKlib
         sparklib_proj = os.path.join(self.test_env["working_dir"], "sparklib.gpr")

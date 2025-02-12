@@ -1,5 +1,5 @@
-crash.adb:20:13: info: imprecise handling of Unchecked_Conversion (component offset not known)
 crash.adb:20:13: info: types in unchecked conversion have the same size (Trivial)
+crash.adb:20:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [warn-imprecise-uc]
 crash.adb:20:51: info: type is suitable as source for unchecked conversion (Trivial)
 crash.adb:20:58: info: type is suitable for unchecked conversion (Trivial)
 crash.adb:22:13: info: types in unchecked conversion have the same size (Trivial)

@@ -1,6 +1,6 @@
 test.adb:6:27: medium: overflow check might fail, cannot prove upper bound for Integer (My_Int) + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
-test.adb:10:12: info: checks for ressource or memory reclamation will be unprovable
-test.adb:10:12: info: no reclamation function nor reclaimed value found for type with ownership "My_Priv"
+test.adb:10:12: warning: checks for ressource or memory reclamation will be unprovable
+test.adb:10:12: warning: no reclamation function nor reclaimed value found for type with ownership "My_Priv" [warn-no-reclam-func]
 test.adb:19:24: medium: overflow check might fail, cannot prove upper bound for To_Int (S) + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
 test.adb:34:09: info: initialization check proved (CVC5: 1 VC)
 test.adb:35:13: info: initialization check proved (CVC5: 1 VC)

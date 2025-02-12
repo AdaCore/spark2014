@@ -30,7 +30,6 @@ with Ada.Strings;
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
 with Checks;                         use Checks;
-with Debug;
 with Elists;                         use Elists;
 with Errout_Wrapper;                 use Errout_Wrapper;
 with Exp_Util;
@@ -5637,18 +5636,14 @@ package body Gnat2Why.Expr is
             end;
          end if;
 
-         --  If Ty has a default initial condition, it will be ignored. If
-         --  --info is set, warn the user.
+         --  If Ty has a default initial condition, it will be ignored.
+         --  Warn the user.
 
-         if Debug.Debug_Flag_Underscore_F
-           and then Has_DIC (Ty)
-           and then Has_Non_Empty_DIC (Ty)
-         then
-            Error_Msg_N
-              ("default initial condition on type & not available for"
-               & " proof in an assertion context", Ada_Node,
-               Names => [Ty],
-               Kind => Info_Kind);
+         if Has_DIC (Ty) and then Has_Non_Empty_DIC (Ty) then
+            Warning_Msg_N
+              (Warn_DIC_Ignored,
+               Ada_Node,
+               Names => [Ty]);
          end if;
          return Def;
       end Compute_Default_Value_Rec;
@@ -18120,62 +18115,49 @@ package body Gnat2Why.Expr is
                --  If --info is given, notify the user that the attribute is
                --  handled in an imprecise way.
 
-               if Debug.Debug_Flag_Underscore_F
-                 and then Imprecise_Handling
-               then
-                  --  The attribute can always be specified on the type
+               if Imprecise_Handling then
+                  declare
+                     Conts : Message_Lists.List;
+                  begin
 
-                  if Has_Type_Prefix then
-                     Error_Msg_N
-                       ("the value of " & To_String (Aname, Sloc (Expr))
-                        & " attribute is handled in an"
-                        & " imprecise way as it is not specified for type &",
+                     --  The attribute can always be specified on the type
+
+                     if Has_Type_Prefix then
+                        Conts.Append
+                          (Create ("it is not specified for type &",
+                                   Names => [Entity (Var)]));
+
+                     --  If the object is not a complete object, only
+                     --  Object_Size could be set on its type, if not a
+                     --  standard one.
+
+                     elsif not Has_Complete_Object_Prefix
+                       and then Type_Could_Have_Object_Size
+                     then
+                        Conts.Append
+                          (Create ("""Object_Size"" is not specified for "
+                                   & "type &",
+                                   Names => [Var_Type]));
+
+                     --  If this is a complete object, the attribute could be
+                     --  set on the object, or possibly Object_Size could be
+                     --  set on its type, if not a standard one.
+
+                     elsif Has_Complete_Object_Prefix then
+                        Conts.Append
+                          (Create ("it is not specified for object & and "
+                                   & """Object_Size"" is not specified for "
+                                   & "type &",
+                                   Names => [Entity (Var), Var_Type]));
+
+                     end if;
+                     Warning_Msg_N
+                       (Warn_Imprecise_Size,
                         Expr,
-                        Names => [Entity (Var)],
-                        Kind => Info_Kind);
-
-                  --  If the object is not a complete object, only Object_Size
-                  --  could be set on its type, if not a standard one.
-
-                  elsif not Has_Complete_Object_Prefix
-                    and then Type_Could_Have_Object_Size
-                  then
-                     Error_Msg_N
-                       ("the value of " & To_String (Aname, Sloc (Expr))
-                        & " attribute is handled in an"
-                        & " imprecise way as ""Object_Size"" is not specified"
-                        & " for type &",
-                        Expr,
-                        Names => [Var_Type],
-                        Kind => Info_Kind);
-
-                  --  If this is a complete object, the attribute could be set
-                  --  on the object, or possibly Object_Size could be set on
-                  --  its type, if not a standard one.
-
-                  elsif Has_Complete_Object_Prefix then
-                     Error_Msg_N
-                       ("the value of " & To_String (Aname, Sloc (Expr))
-                        & " attribute is handled in an"
-                        & " imprecise way as it is not specified for object &"
-                        & (if Type_Could_Have_Object_Size then
-                             " and ""Object_Size"" is not specified for type &"
-                           else ""),
-                        Expr,
-                        Names => [Entity (Var), Var_Type],
-                        Kind => Info_Kind);
-
-                  --  In the default case, just report the imprecision
-
-                  else
-                     Error_Msg_N
-                       ("the value of "  & To_String (Aname, Sloc (Expr))
-                        & " attribute is handled in an"
-                        & " imprecise way",
-                        Expr,
-                        Names => [Entity (Var)],
-                        Kind => Info_Kind);
-                  end if;
+                        Create_N (Warn_Imprecise_Size,
+                                  Names => [To_String (Aname, Sloc (Expr))]),
+                        Continuations => Conts);
+                  end;
                end if;
             end Size_Attributes;
 
@@ -18207,17 +18189,9 @@ package body Gnat2Why.Expr is
                   Reason   => VC_Precondition,
                   Typ      => Base_Why_Type (Var));
 
-               --  If --info is given, notify the user that 'Value is handled
-               --  in an imprecise way.
-
-               if Debug.Debug_Flag_Underscore_F then
-                  Error_Msg_N
-                    ("references to the ""Value"" attribute are"
-                        & " handled in an imprecise way, so the precondition"
-                        & " might be impossible to prove.",
-                     Expr,
-                     Kind => Info_Kind);
-               end if;
+               Warning_Msg_N
+                 (Warn_Imprecise_Value,
+                  Expr);
             end;
 
          when Attribute_Update =>
@@ -18386,9 +18360,7 @@ package body Gnat2Why.Expr is
                   Align := Get_Attribute_Value
                     (Entity (Var), Attribute_Alignment);
                else
-                  Error_Msg_N
-                    ("alignment of attribute address is not precisely known",
-                     Expr, Kind => Info_Kind);
+                  Warning_Msg_N (Warn_Imprecise_Align, Expr);
                end if;
 
                --  Generate
@@ -23840,13 +23812,11 @@ package body Gnat2Why.Expr is
             if T /= Why_Empty then
                return T;
 
-            --  Otherwise raise a warning if --info is given and default to
-            --  imprecise translation.
+            --  Otherwise raise a warning and default to imprecise translation.
 
-            elsif Debug.Debug_Flag_Underscore_F then
-               Error_Msg_N
-                 ("call to & is not handled precisely",
-                  Expr, Names => [Subp], Kind => Info_Kind);
+            else
+               Warning_Msg_N
+                 (Warn_Imprecise_Call, Expr, Names => [Subp]);
             end if;
          end if;
 

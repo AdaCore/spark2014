@@ -32,7 +32,6 @@ with Aspects;                        use Aspects;
 with Assumption_Types;               use Assumption_Types;
 with Checked_Types;                  use Checked_Types;
 with Common_Iterators;               use Common_Iterators;
-with Debug;
 with Einfo.Utils;                    use Einfo.Utils;
 with Elists;                         use Elists;
 with Errout;
@@ -4886,7 +4885,7 @@ package body SPARK_Definition is
                  (Warn_Representation_Attribute_Value,
                   N,
                   Create_N
-                    (Warning_Message (Warn_Representation_Attribute_Value),
+                    (Warn_Representation_Attribute_Value,
                      Names => [To_String (Aname, Sloc (N))]));
             end if;
 
@@ -6291,14 +6290,11 @@ package body SPARK_Definition is
                           and then Main_Unit_Entity /= Unique_Entity
                             (Enclosing_Unit (Des_Ty))
                         then
-                           Error_Msg_N
-                             ("full view of & declared # is visible when "
-                              & "analyzing "
-                              & Source_Name (Main_Unit_Entity),
+                           Warning_Msg_N
+                             (Warn_Full_View_Visible,
                               Main_Unit_Entity,
-                              Names         => [Des_Ty],
-                              Secondary_Loc => Sloc (Des_Ty),
-                              Kind          => Info_Kind);
+                              Names => [Des_Ty, Main_Unit_Entity],
+                              Secondary_Loc => Sloc (Des_Ty));
                         end if;
 
                         Des_Ty := Full_View (Des_Ty);
@@ -9983,18 +9979,13 @@ package body SPARK_Definition is
 
                else
                   if Emit_Warning_Info_Messages
-                    and then Debug.Debug_Flag_Underscore_F
                     and then Has_Predicates (E)
                     and then Comes_From_Source (E)
                   then
-                     Error_Msg_N
-                       (Create
-                          ("& is handled as if it was annotated with"
-                           & " Relaxed_Initialization as all its components"
-                           & " are annotated that way",
-                           Names => [E]),
+                     Warning_Msg_N
+                       (Warn_Comp_Relaxed_Init,
                         E,
-                        Kind => Info_Kind,
+                        Names => [E],
                         Continuations =>
                           [Create
                                ("consider annotating & with"

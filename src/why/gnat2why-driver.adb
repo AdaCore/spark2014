@@ -755,13 +755,12 @@ package body Gnat2Why.Driver is
             if Gnat2Why_Args.Limit_Units
               and then No (SPARK_Pragma (Root))
             then
-               Error_Msg_N
-                 ("SPARK_Mode not applied to this compilation unit",
+               Warning_Msg_N
+                 (Warn_Unit_Not_SPARK,
                   GNAT_Root,
-                  Info_Kind,
                   Continuations =>
-                    ["only enclosed declarations with SPARK_Mode"
-                     & " will be analyzed"]);
+                    [Create ("only enclosed declarations with SPARK_Mode"
+                             & " will be analyzed")]);
             end if;
          end;
 
@@ -1248,11 +1247,11 @@ package body Gnat2Why.Driver is
                --  This subprogram is only analyzed contextually. In the case
                --  that it is referenced without being called (by taking its
                --  address for example) or if all calls are in non-SPARK code,
-               --  the subprogram may not be analyzed at all. Warn the user if
-               --  --info is set.
+               --  the subprogram may not be analyzed at all.
 
                when Contextually_Analyzed =>
-                  if Debug.Debug_Flag_Underscore_F then
+                  if Warning_Status (Warn_Info_Unrolling_Inlining) = WS_Enabled
+                  then
                      Error_Msg_N
                        ("local subprogram &" &
                           " only analyzed in the context of calls",

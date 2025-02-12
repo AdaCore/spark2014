@@ -4,5 +4,5 @@ addr.adb:6:10: high: object with non-trivial address clause or prefix of the 'Ad
 addr.adb:6:10: info: object is suitable for aliasing via address clause (Trivial)
 addr.adb:6:50: info: object is suitable for aliasing via address clause (Trivial)
 addr.adb:6:50: info: types of aliased objects have the same size (Trivial)
-addr.adb:6:56: info: alignment of attribute address is not precisely known
+addr.adb:6:56: warning: alignment of attribute address is not precisely known [warn-imprecise-align]
 addr.adb:8:33: medium: range check might fail [reason for check: value cannot be minimum value of the type]

@@ -5,8 +5,8 @@ function_contracts.ads:11:24: warning: unused initial value of "Y"
 function_contracts.ads:13:09: info: data dependencies proved
 function_contracts.ads:14:17: high: postcondition might fail (e.g. when X = -1 and X'Old = -1 and Y = -1 and Y'Old = 0)
 function_contracts.ads:20:51: medium: exceptional case might fail (e.g. when Arg = -1) [possible fix: subprogram at line 18 should mention Arg in a precondition]
-low_level.adb:22:14: info: imprecise handling of Unchecked_Conversion (component offset not known)
 low_level.adb:22:14: info: types in unchecked conversion have the same size (Trivial)
+low_level.adb:22:14: warning: imprecise handling of Unchecked_Conversion (component offset not known) [warn-imprecise-uc]
 low_level.adb:22:65: info: type is suitable as source for unchecked conversion (Trivial)
 low_level.adb:22:83: info: type is suitable for unchecked conversion (Trivial)
 low_level.adb:25:09: info: address in address clause is compatible with object alignment (Trivial)

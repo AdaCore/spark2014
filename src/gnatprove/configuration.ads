@@ -211,7 +211,6 @@ package Configuration is
       CE_Timeout            : Integer;
       No_Inlining           : Boolean;
       Mode                  : GP_Mode;
-      Info                  : Boolean;
       No_Loop_Unrolling     : Boolean;
       Proof_Warnings        : Boolean;
       Proof_Warn_Timeout    : Integer;

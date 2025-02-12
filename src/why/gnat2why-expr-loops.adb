@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
-with Debug;
 with Gnat2Why_Args;
 with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr.Loops.Inv; use Gnat2Why.Expr.Loops.Inv;
@@ -1731,8 +1730,8 @@ package body Gnat2Why.Expr.Loops is
                Candidate_For_Loop_Unrolling
                  (Loop_Stmt   => Stmt,
                   Output_Info =>
-                    Debug.Debug_Flag_Underscore_F
-                      and not Gnat2Why_Args.No_Loop_Unrolling,
+                    Warning_Status (Warn_Info_Unrolling_Inlining) = WS_Enabled
+                      and then not Gnat2Why_Args.No_Loop_Unrolling,
                   Result      => Unroll,
                   Low_Val     => Low_Val,
                   High_Val    => High_Val);

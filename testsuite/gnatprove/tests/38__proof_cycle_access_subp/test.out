@@ -1,5 +1,5 @@
 main.adb:2:04: info: function contract feasibility proved (Trivial: 1 VC)
-main.adb:4:13: info: function contract might not be available on implicit recursive calls
+main.adb:4:13: warning: function contract might not be available on implicit recursive calls [warn-contracts-recursive]
 main.adb:4:43: medium: postcondition might fail
 main.adb:5:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
 main.adb:12:07: medium: implicit aspect Always_Terminates on "F" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]

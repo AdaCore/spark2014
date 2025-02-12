@@ -8,11 +8,11 @@ illegal_annot.adb:61:12: error: the private part of the scope of a type annotate
 illegal_annot.adb:70:12: error: a tagged type cannot be annotated with "Only_Null"
 illegal_annot.adb:88:07: error: pragma Annotate Predefined_Equality must immediately follow the  private declaration of type T
 illegal_annot.adb:101:07: error: pragma Annotate Predefined_Equality must immediately follow the declaration of constant C
-illegal_annot.adb:112:15: info: consider annotating a constant with a pragma Annotate (GNATprove, Predefined_Equality, "Null_Value", ...)
-illegal_annot.adb:112:15: info: no null value found for type with predefined equality "T"
+illegal_annot.adb:112:15: warning: consider annotating a constant with a pragma Annotate (GNATprove, Predefined_Equality, "Null_Value", ...)
+illegal_annot.adb:112:15: warning: no null value found for type with predefined equality "T" [warn-predef-eq-null]
 illegal_annot.adb:120:07: error: constant annotated with Predefined_Equality shall be declared in same declaration list as its type
-illegal_annot.adb:128:12: info: consider annotating a constant with a pragma Annotate (GNATprove, Predefined_Equality, "Null_Value", ...)
-illegal_annot.adb:128:12: info: no null value found for type with predefined equality "T"
+illegal_annot.adb:128:12: warning: consider annotating a constant with a pragma Annotate (GNATprove, Predefined_Equality, "Null_Value", ...)
+illegal_annot.adb:128:12: warning: no null value found for type with predefined equality "T" [warn-predef-eq-null]
 illegal_annot.adb:150:07: error: consider annotating it with a pragma Annotate (GNATprove, Predefined_Equality, "Only_Null", ...)
 illegal_annot.adb:150:07: error: the type of a constant annotated with Predefined_Equality must be annotated with Predefined_Equality
 illegal_annot.adb:163:07: error: consider annotating it with a pragma Annotate (GNATprove, Predefined_Equality, "Only_Null", ...)

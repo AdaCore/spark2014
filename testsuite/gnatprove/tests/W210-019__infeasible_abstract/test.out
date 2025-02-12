@@ -1,13 +1,13 @@
 infeasible_abstract.adb:6:16: medium: contract of function might not be feasible (e.g. when I = 0)
 infeasible_abstract.adb:8:23: medium: postcondition might fail, in inherited contract at infeasible_abstract.adb:25
 infeasible_abstract.adb:8:23: medium: postcondition might fail, in inherited contract at infeasible_abstract.adb:32
-infeasible_abstract.adb:12:13: info: function contract might not be available on implicit recursive calls
+infeasible_abstract.adb:12:13: warning: function contract might not be available on implicit recursive calls [warn-contracts-recursive]
 infeasible_abstract.adb:14:14: info: postcondition proved (CVC5: 1 VC)
 infeasible_abstract.adb:17:07: medium: implicit aspect Always_Terminates on "F" could be incorrect, dispatching call to "Bad" might be nonterminating [possible explanation: call could hide recursive calls]
 infeasible_abstract.adb:25:16: info: implicit aspect Always_Terminates on "Bad" has been proved, subprogram will terminate
-infeasible_abstract.adb:25:16: info: implicit function contract might not be available on implicit recursive calls
+infeasible_abstract.adb:25:16: warning: implicit function contract might not be available on implicit recursive calls [warn-contracts-recursive]
 infeasible_abstract.adb:32:16: info: implicit aspect Always_Terminates on "Bad" has been proved, subprogram will terminate
-infeasible_abstract.adb:32:16: info: implicit function contract might not be available on implicit recursive calls
+infeasible_abstract.adb:32:16: warning: implicit function contract might not be available on implicit recursive calls [warn-contracts-recursive]
 test.adb:1:11: warning: subprogram "Test" has no effect
 test.adb:9:16: info: function contract feasibility proved (CVC5: 1 VC)
 test.adb:15:16: info: function contract feasibility proved (CVC5: 1 VC)

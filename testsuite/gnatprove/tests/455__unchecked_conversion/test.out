@@ -1,8 +1,8 @@
 unsigned.adb:8:13: info: types in unchecked conversion have the same size (Trivial)
 unsigned.adb:8:63: info: type is suitable as source for unchecked conversion (Trivial)
 unsigned.adb:8:78: info: type is suitable for unchecked conversion (Trivial)
-unsigned.adb:10:13: info: imprecise handling of Unchecked_Conversion (type with biased representation)
 unsigned.adb:10:13: info: types in unchecked conversion have the same size (Trivial)
+unsigned.adb:10:13: warning: imprecise handling of Unchecked_Conversion (type with biased representation) [warn-imprecise-uc]
 unsigned.adb:10:63: info: type is suitable as source for unchecked conversion (Trivial)
 unsigned.adb:10:78: info: type is suitable for unchecked conversion (Trivial)
 unsigned.adb:12:14: warning: subprogram "Test_Unsigned" has no effect

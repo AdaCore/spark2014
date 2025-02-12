@@ -1,5 +1,5 @@
 external_6.adb:5:07: medium: implicit aspect Always_Terminates on "Read" could be incorrect, "Read" and "Pub" are mutually recursive [possible fix: annotate "Read" and "Pub" with Subprogram_Variant aspects]
-external_6.ads:5:13: info: implicit function contract might not be available on recursive calls
+external_6.ads:5:13: warning: implicit function contract might not be available on recursive calls [warn-contracts-recursive]
 external_6.ads:6:14: warning: subprogram "Read" has no effect
 external_6.ads:7:21: info: initialization of "X" proved
 type_invariant_legal.adb:3:14: warning: subprogram "Priv_In" has no effect
@@ -316,7 +316,7 @@ type_invariant_legal_6.adb:55:07: warning: statement has no effect
 type_invariant_legal_6.adb:55:19: warning: "X" is set by "Read_Write" but not used after the call
 type_invariant_legal_6.adb:57:07: medium: for X before the call at external_6.ads:8
 type_invariant_legal_6.adb:57:07: medium: invariant check might fail (e.g. when X = 0)
-type_invariant_legal_6.ads:10:13: info: implicit function contract might not be available on recursive calls
+type_invariant_legal_6.ads:10:13: warning: implicit function contract might not be available on recursive calls [warn-contracts-recursive]
 type_invariant_legal_6.ads:11:14: warning: subprogram "Pub_In" has no effect
 type_invariant_legal_6.ads:12:14: info: for X at the end of Pub_Out at type_invariant_legal_6.ads:12
 type_invariant_legal_6.ads:12:14: info: invariant check proved (CVC5: 1 VC)
