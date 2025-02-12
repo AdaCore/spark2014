@@ -2305,7 +2305,7 @@ package body Gnat2Why.Expr is
               --  We only consider here parameters of enclosing subprograms.
               --  Parameters of Scope are handled specifically.
 
-              or else (Ekind (N) = E_In_Parameter
+              or else (Ekind (N) in Formal_Kind
                        and then Enclosing_Unit (N) /= Scope))
          then
             Assume_Declaration_Of_Entity

@@ -1636,7 +1636,7 @@ package body SPARK_Definition is
       elsif not In_Observe
         and then Is_Constant_In_SPARK (Root)
         and then
-          not (Ekind (Root) = E_In_Parameter
+          not (Ekind (Root) in Formal_Kind
                and then Ekind (Scope (Root)) = E_Function
                and then Is_Borrowing_Traversal_Function (Scope (Root))
                and then Root = First_Formal (Scope (Root)))
@@ -5973,7 +5973,7 @@ package body SPARK_Definition is
 
             Is_Borrowed_Parameter  : constant Boolean :=
               Nkind (Fst_Actual) in N_Identifier | N_Expanded_Name
-              and then Ekind (Entity (Fst_Actual)) = E_In_Parameter
+              and then Ekind (Entity (Fst_Actual)) in Formal_Kind
               and then Is_Borrowing_Traversal_Function
                 (Scope (Entity (Fst_Actual)))
               and then Entity (Fst_Actual) =
@@ -6943,14 +6943,10 @@ package body SPARK_Definition is
                  ("anonymous access type for result for "
                   & "non-traversal functions", Id);
 
-            --  If Id is a borrowing traversal function, its first parameter
-            --  must have an anonymous access-to-variable type.
+            --  If Id is a borrowing traversal function, it shall not be a
+            --  volatile function.
 
             elsif Is_Borrowing_Traversal_Function (Id) then
-               if not Is_Anonymous_Access_Type (Etype (First_Formal (Id)))
-                 or else not Is_Access_Variable (Etype (First_Formal (Id)))
-               then
-                  Mark_Unsupported (Lim_Borrow_Traversal_First_Param, Id);
 
                --  For now we don't support volatile borrowing traversal
                --  functions.
@@ -6958,7 +6954,7 @@ package body SPARK_Definition is
                --  cannot call the function in the term domain to update the
                --  value of the borrowed parameter at end.
 
-               elsif Is_Volatile_Func then
+               if Is_Volatile_Func then
                   Mark_Unsupported (Lim_Borrow_Traversal_Volatile, Id);
                end if;
             end if;
@@ -7059,8 +7055,12 @@ package body SPARK_Definition is
                         Mark_Violation ("function with ""out"" parameter", Id);
 
                      when E_In_Out_Parameter =>
-                        Mark_Violation
-                          ("function with ""in out"" parameter", Id);
+                        if not Is_Borrowing_Traversal_Function (Id)
+                          or else Formal /= First_Formal (Id)
+                        then
+                           Mark_Violation
+                             ("function with ""in out"" parameter", Id);
+                        end if;
 
                      when E_In_Parameter =>
                         null;

@@ -4047,8 +4047,7 @@ package body Gnat2Why.Borrow_Checker is
       if Is_Anonymous_Access_Object_Type (Return_Typ) then
          if Nkind (Expr) /= N_Null then
             declare
-               Param    : constant Entity_Id :=
-                 First_Formal (Subp);
+               Param    : constant Entity_Id := First_Formal (Subp);
                Root     : Entity_Id := Get_Root_Object (Expr);
                Path_Bag : Node_Vectors.Vector;
             begin
@@ -7146,12 +7145,13 @@ package body Gnat2Why.Borrow_Checker is
             if not Is_Deep (Typ) then
                Perm := None;
 
-            --  Functions without side effects cannot have outputs in SPARK
+            --  The first parameter of borrowing traversal functions might have
+            --  mode IN OUT. It cannot be modified.
 
             elsif Ekind (Subp) = E_Function
               and then not Is_Function_With_Side_Effects (Subp)
             then
-               return;
+               Perm := Read_Only;
 
             --  Deep types define a borrow or a move
 

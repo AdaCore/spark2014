@@ -1,7 +1,6 @@
 bad_pledges.adb:2:13: error: At_End_Borrow function must have exactly one parameter
 bad_pledges.adb:5:47: error: entity parameter of a pragma At_End_Borrow must be a function
-bad_pledges.adb:6:13: error: the parameter of an At_End_Borrow function must have an anonymous access-to-constant type
-bad_pledges.adb:8:13: error: At_End_Borrow function must return an anonymous access-to-constant type
+bad_pledges.adb:8:13: error: At_End_Borrow function must be the identity function
 bad_pledges.adb:10:13: error: At_End_Borrow function must be a ghost function
 bad_pledges.adb:12:13: error: At_End_Borrow function must be an expression function
 bad_pledges.adb:18:13: error: At_End_Borrow function must be the identity function

@@ -9168,12 +9168,10 @@ package body Gnat2Why.Subprograms is
                  (Name    => Borrowed_At_End,
                   Def     => +Borrowed_Call,
                   Context => New_And_Pred
-                    (Left   => New_Comparison
-                         (Symbol => Why_Eq,
-                          Left   => New_Pointer_Is_Null_Access
-                            (Borrowed_Ty, +Borrowed_At_End),
-                          Right  => New_Pointer_Is_Null_Access
-                            (Borrowed_Ty, Borrowed)),
+                    (Left   => New_Equality_Of_Preserved_Parts
+                         (Ty    => Borrowed_Ty,
+                          Expr1 => +Borrowed_At_End,
+                          Expr2 => Borrowed),
                      Right  => Post),
                   Typ     => EW_Bool_Type))),
          Right  => New_Comparison
