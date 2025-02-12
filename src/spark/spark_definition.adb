@@ -2623,6 +2623,10 @@ package body SPARK_Definition is
             declare
                Var  : constant Node_Id := Name (N);
                Expr : constant Node_Id := Expression (N);
+               Root : constant Entity_Id :=
+                 (if Is_Path_Expression (Var)
+                  then Get_Root_Object (Var, Through_Traversal => False)
+                  else Empty);
             begin
                Mark (Var);
                Mark (Expr);
@@ -2633,16 +2637,24 @@ package body SPARK_Definition is
                --  functions). Otherwise there is no way to update the
                --  corresponding path permission.
 
-               if not Is_Path_Expression (Var)
-                 or else No (Get_Root_Object
-                             (Var, Through_Traversal => False))
-               then
+               if No (Root) then
                   Mark_Violation ("assignment to a complex expression", Var);
 
                --  Assigned object should not be a constant
 
-               elsif Is_Constant_In_SPARK (Get_Root_Object (Var)) then
+               elsif Is_Constant_In_SPARK (Root) then
                   Mark_Violation ("assignment into a constant object", Var);
+
+               --  Assigned object should not be a constant borrower unless
+               --  the assignment is a reborrow.
+
+               elsif not Is_Anonymous_Access_Type (Etype (Var))
+                 and then Is_Local_Borrower (Root)
+                 and then Is_Constant_Borrower (Root)
+               then
+                  Mark_Violation
+                    ("assignment into a parameter of a traversal function",
+                     Var);
 
                --  Assigned object should not be inside an access-to-constant
                --  type.
@@ -2678,8 +2690,7 @@ package body SPARK_Definition is
                   if Is_Path_Expression (Expr)
                     and then Present (Get_Root_Object (Expr))
                     and then Get_Root_Object
-                    (Get_Observed_Or_Borrowed_Expr (Expr)) /=
-                      Get_Root_Object (Var)
+                    (Get_Observed_Or_Borrowed_Expr (Expr)) /= Root
                   then
                      Mark_Violation
                        ((if Is_Access_Constant (Etype (Var))
@@ -5564,23 +5575,33 @@ package body SPARK_Definition is
                        """out"" parameter",
                      when others             =>
                         raise Program_Error);
+               Root : constant Entity_Id :=
+                 (if Is_Path_Expression (Actual)
+                  then Get_Root_Object (Actual, Through_Traversal => False)
+                  else Empty);
             begin
                --  Actual should represent a part of an object
 
-               if not Is_Path_Expression (Actual)
-                 or else
-                   No (Get_Root_Object (Actual, Through_Traversal => False))
-               then
+               if No (Root) then
                   if not Is_Null_Owning_Access (Actual) then
                      Mark_Violation
                        ("expression as " & Mode, Actual);
                   end if;
 
-               --  The root object of Actual should not be a constant objects
+               --  The root object of Actual should not be a constant object
 
-               elsif Is_Constant_In_SPARK (Get_Root_Object (Actual)) then
+               elsif Is_Constant_In_SPARK (Root) then
                   Mark_Violation
                     ("constant object as " & Mode, Actual);
+
+               --  The root object of Actual should not be a constant borrower
+
+               elsif Is_Local_Borrower (Root)
+                 and then Is_Constant_Borrower (Root)
+               then
+                  Mark_Violation
+                    ("parameter of a traversal function as " & Mode,
+                     Actual);
 
                --  The actual should not be inside an access-to-constant type
 
