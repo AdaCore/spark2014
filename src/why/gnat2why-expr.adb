@@ -9964,11 +9964,7 @@ package body Gnat2Why.Expr is
          procedure Do_Param (Formal : Formal_Kind_Id; Actual : N_Subexpr_Id)
          is
          begin
-            if Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter
-              or else (Has_Access_Type (Etype (Formal))
-                       and then not Is_Access_Constant
-                         (Retysp (Etype (Formal))))
-            then
+            if not Is_Constant_In_SPARK (Formal) then
                Update_Variable (Get_Root_Object (Actual));
             end if;
          end Do_Param;
@@ -10049,6 +10045,21 @@ package body Gnat2Why.Expr is
                         Collect_Vertices_Leading_To (S, Leading_To_Exiting);
                         for U of Leading_To_Exiting loop
                            case Nkind (U.Node) is
+
+                              --  Calls to functions with side effects can
+                              --  occur inside assignments and object
+                              --  declarations.
+
+                              when N_Object_Declaration =>
+                                 declare
+                                    Src : constant Node_Id :=
+                                      Expression (U.Node);
+                                 begin
+                                    if Nkind (Src) = N_Function_Call then
+                                       Update_Call_Variables (Src);
+                                    end if;
+                                 end;
+
                               when N_Assignment_Statement =>
                                  declare
                                     Nm  : constant Node_Id := Name (U.Node);
@@ -10066,6 +10077,7 @@ package body Gnat2Why.Expr is
                                        Update_Call_Variables (Src);
                                     end if;
                                  end;
+
                               when N_Entry_Call_Statement
                                  | N_Procedure_Call_Statement
                                =>
