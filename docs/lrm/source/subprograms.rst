@@ -102,10 +102,13 @@ an *entire object*.
 
 
 6. The declaration of a function without side effects shall not have a
-   ``parameter_specification`` with a mode of **out** or **in out**. This rule
-   also applies to a ``subprogram_body`` for a function without side effects
-   for which no explicit declaration is given. A function without side effects
-   shall have no outputs other than its result.
+   ``parameter_specification`` with a mode of **out** or **in out** unless it
+   has a mode of **in out** and is the first parameter of a borrowing traversal
+   function (see :ref:`Access Types`). This rule also applies to a
+   ``subprogram_body`` for a function without side effects for which no explicit
+   declaration is given. A function without side effects shall have no outputs
+   other than its result. [A subprogram parameter of mode **in out** shall not
+   be an output of its borrowing traversal function].
 
 7. A subprogram parameter of mode **in** shall not be an output of its
    subprogram unless the type of the parameter is an access type and the

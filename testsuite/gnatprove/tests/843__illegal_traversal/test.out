@@ -1,0 +1,5 @@
+test_illegal.adb:9:31: error: function cannot have parameter of mode "out" or "in out" in SPARK [E0015]
+test_illegal.adb:9:31: error: launch "gnatprove --explain=E0015" for more information
+test_illegal.adb:11:18: error: function cannot have parameter of mode "out" or "in out" in SPARK [E0015]
+test_illegal.adb:11:18: error: launch "gnatprove --explain=E0015" for more information
+gnatprove: error during generation of Global contracts

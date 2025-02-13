@@ -1902,18 +1902,6 @@ package body SPARK_Definition.Annotate is
          then
             Error_Msg_N_If
               ("At_End_Borrow function must have exactly one parameter", E);
-         elsif not Is_Anonymous_Access_Type (Etype (Path))
-           or else not Is_Access_Constant (Etype (Path))
-         then
-            Error_Msg_N_If
-              ("the parameter of an At_End_Borrow function must have an"
-               & " anonymous access-to-constant type", E);
-         elsif not Is_Anonymous_Access_Type (Etype (E))
-           or else not Is_Access_Constant (Etype (E))
-         then
-            Error_Msg_N_If
-              ("At_End_Borrow function must return an"
-               & " anonymous access-to-constant type", E);
          elsif not Is_Ghost_Entity (E) then
             Error_Msg_N_If
               ("At_End_Borrow function must be a ghost function", E);

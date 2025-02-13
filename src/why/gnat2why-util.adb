@@ -1188,7 +1188,14 @@ package body Gnat2Why.Util is
 
             return False;
 
-         when E_In_Out_Parameter | E_Out_Parameter | E_Protected_Type =>
+         when E_In_Out_Parameter | E_Out_Parameter =>
+
+            --  The first parameter of a borrowing traversal function might be
+            --  an IN OUT parameter.
+
+            return not Is_Constant_In_SPARK (E);
+
+         when E_Protected_Type =>
             return True;
 
          when E_Constant =>

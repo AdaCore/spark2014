@@ -529,10 +529,17 @@ package body Gnat2Why.Driver is
    procedure Do_Ownership_Checking (Error_Found : out Boolean) is
    begin
       for E of Entities_To_Translate loop
+
+         --  Do not check At_End_Borrow functions, they might break the
+         --  ownership policy.
+
+         if not Has_At_End_Borrow_Annotation (E) then
+
          --  Set error node so that bugbox information will be correct
 
-         Current_Error_Node := E;
-         Borrow_Checker.Check_Entity (E);
+            Current_Error_Node := E;
+            Borrow_Checker.Check_Entity (E);
+         end if;
       end loop;
 
       --  If an error was found then print all errors/warnings and return
