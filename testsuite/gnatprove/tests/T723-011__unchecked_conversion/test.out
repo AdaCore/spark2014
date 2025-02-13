@@ -1,3 +1,5 @@
 uc.adb:6:13: info: types in unchecked conversion have the same size (Trivial)
 uc.adb:6:51: info: type is suitable as source for unchecked conversion (Trivial)
 uc.adb:6:54: info: type is suitable for unchecked conversion (Trivial)
+uc.adb:10:27: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+uc.adb:11:27: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]

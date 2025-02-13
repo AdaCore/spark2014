@@ -427,6 +427,7 @@ package VC_Kinds is
       Warn_Imprecise_Size,
       Warn_Imprecise_UC,
       Warn_Imprecise_Value,
+      Warn_Imprecise_Image,
       Warn_Init_Cond_Ignored,
       Warn_No_Reclam_Func,
       Warn_Num_Variant,
@@ -702,7 +703,12 @@ package VC_Kinds is
           "imprecise handling of Unchecked_Conversion (&)",
         when Warn_Imprecise_Value =>
          "references to the ""Value"" attribute are handled in an imprecise "
-         & "way, so the precondition might be impossible to prove",
+         & "way, so the precondition is impossible to prove and nothing will "
+         & "be known about the evaluation of the attribute reference",
+        when Warn_Imprecise_Image =>
+         "references to the ""Image"" and ""Img"" attributes are handled in an"
+         & " imprecise way, so nothing will be known about the evaluation of "
+         & "the attribute reference apart from a bound on its length",
         when Warn_Init_Cond_Ignored =>
          "Initial_Condition of package & is ignored",
         when Warn_No_Reclam_Func =>

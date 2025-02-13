@@ -242,6 +242,7 @@ uc_mixed.ads:27:69: info: type is suitable as source for unchecked conversion (T
 uc_mixed.ads:27:87: info: type is suitable for unchecked conversion (Trivial)
 uc_mixed.ads:29:14: warning: subprogram "Test" has no effect
 uc_sign.adb:9:28: info: range check proved (CVC5: 2 VC)
+uc_sign.adb:9:31: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 uc_sign.adb:10:23: info: assertion proved (CVC5: 1 VC)
 uc_sign.ads:29:13: info: types in unchecked conversion have the same size (Trivial)
 uc_sign.ads:29:64: info: type is suitable as source for unchecked conversion (Trivial)

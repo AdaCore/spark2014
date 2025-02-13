@@ -18007,6 +18007,10 @@ package body Gnat2Why.Expr is
                                    (Value => Max_Size_Of_Img_Attr
                                         (Retysp (Etype (Var))))),
                               Typ      => EW_Abstract (Standard_String));
+
+               Warning_Msg_N
+                 (Warn_Imprecise_Image,
+                  Expr);
             end;
 
          when Attribute_Size

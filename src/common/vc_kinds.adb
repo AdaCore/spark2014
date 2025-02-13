@@ -628,21 +628,24 @@ package body VC_Kinds is
         & " Relaxed_Initialization, so the containing type is treated as if "
         & "it had the same annotation",
         when Warn_Contracts_Recursive =>
-          "Explicit and implicit contracts of the recursive call are not "
-        & "available, which can lead to false positives",
+          "Explicit and implicit postconditions of the subprogram cannot be "
+        & "used on recursive calls occurring inside assertions and contracts,"
+        & " but will still be available in regular code",
         when Warn_DIC_Ignored =>
-          "The default initial condition on the type cannot be used when "
-        & "proving assertions and contracts, but will still be available "
-        & "in regular code",
+          "The default initial condition on the type cannot be used on "
+        & "subcomponents initialized by default inside assertions and "
+        & "contracts, but will still be available in regular code",
         when Warn_Full_View_Visible =>
-          "The full view of private types in this unit might be visible for "
-        & "proof even outside of this package",
+          "The full view of an incomplete type is visible for proof when "
+        & "verifying a unit even if it is deferred to the body of another "
+        & "unit",
         when Warn_Imprecise_Align =>
           "The alignment of the address clause is not known, which can lead "
         & "to false positives",
         when Warn_Imprecise_Call =>
           "The behavior of this call is not known by SPARK and handled in an "
-        & "imprecise way, which can lead to false positives",
+        & "imprecise way; its precondition might be impossible to prove and "
+        & "nothing will be known about its result",
         when Warn_Imprecise_Size =>
           "The attributes Size, Object_Size or Value_Size are not handled "
         & "precisely, which can lead to false positives",
@@ -650,34 +653,40 @@ package body VC_Kinds is
           "This unchecked conversion is not handled precisely by SPARK, which "
         & "can lead to false positives",
         when Warn_Imprecise_Value =>
-          "The attribute Value is not handled precisely which can lead to "
-        & "false positives",
+          "References to the attribute Value are handled in an imprecise way; "
+        & "its precondition is impossible to prove and nothing will be known "
+        & "about the evaluation of the attribute reference",
+        when Warn_Imprecise_Image =>
+          "References to the attributes Image and Img are handled in an "
+        & "imprecise way; nothing will be known about the evaluation of the"
+        & " attribute reference apart from a bound on its length",
         when Warn_Init_Cond_Ignored =>
-          "The initial condition of the named package is ignored,  as it is "
+          "The initial condition of a withed package is ignored, as it is "
         & "not known to be true, due to elaboration order",
         when Warn_No_Reclam_Func =>
           "No reclamation function or reclaimed value was found for the "
-        & "ownership type, which may make it impossible to deallocate its "
-        & "values.",
+        & "ownership type, which may make it impossible to prove that values"
+        & "of this type are reclaimed",
         when Warn_Num_Variant =>
           "For recursive expression functions with a numeric (not structural) "
-        & "Subprogram_Invariant, the definition of the expression function "
-        & "might not be available for recursive calls",
+        & "Subprogram_Variant, the definition of the expression function "
+        & "might not be available for recursive calls occurring inside "
+        & "assertions and contracts, but will still be available in regular "
+        & "code",
         when Warn_Map_Length_Aggregates =>
           "A type with predefined map aggregates doesn't have a Length "
-        & "function. This will result in the length of aggregates being "
-        & "unknown for this type.",
+        & "function; the length of aggregates will not be known for this type",
         when Warn_Set_Length_Aggregates =>
           "A type with predefined set aggregates doesn't have a Length "
-        & "function. This will result in the length of aggregates being "
-        & "unknown for this type.",
+        & "function; the length of aggregates will not be known for this type",
         when Warn_Predef_Eq_Null =>
           "A type was annotated with Only_Null as value for the "
         & "Predefined_Equality annotation, but no constant annotated with "
-        & "Null_Value was found.",
+        & "Null_Value was found; this will result in all calls to the "
+        & "predefined equality being rejected",
         when Warn_Unit_Not_SPARK =>
           "A unit whose analysis has been requested on the command-line is "
-          & "not annotated with SPARK_Mode Pragma",
+        & "not annotated with SPARK_Mode Pragma",
 
         --  Info messages enabled by default
         when Warn_Info_Unrolling_Inlining =>
@@ -1659,6 +1668,7 @@ package body VC_Kinds is
          when Warn_Imprecise_Size => "imprecise-size",
          when Warn_Imprecise_UC   => "imprecise-unchecked-conversion",
          when Warn_Imprecise_Value => "imprecise-value",
+         when Warn_Imprecise_Image => "imprecise-image",
          when Warn_Init_Cond_Ignored => "init-cond-ignored",
          when Warn_No_Reclam_Func => "no-reclamation-function",
          when Warn_Num_Variant => "numeric-variant",

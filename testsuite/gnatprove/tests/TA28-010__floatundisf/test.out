@@ -59,4 +59,5 @@ test_convert.adb:9:44: info: cannot unroll loop (too many loop iterations)
 test_convert.adb:9:44: warning: statement has no effect
 test_convert.adb:10:09: warning: unused assignment
 test_convert.adb:12:35: info: range check proved (Z3: 2 VC)
+test_convert.adb:12:40: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 test_convert.adb:13:06: warning: unused assignment

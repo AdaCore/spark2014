@@ -53,7 +53,7 @@ test_or_mod.adb:7:19: info: assertion proved (CVC5: 1 VC)
 test_or_mod.adb:8:19: info: assertion proved (CVC5: 1 VC)
 test_string.adb:4:19: medium: assertion might fail
 test_string.adb:4:26: medium: precondition might fail
-test_string.adb:4:26: warning: references to the "Value" attribute are handled in an imprecise way, so the precondition might be impossible to prove [imprecise-value]
+test_string.adb:4:26: warning: references to the "Value" attribute are handled in an imprecise way, so the precondition is impossible to prove and nothing will be known about the evaluation of the attribute reference [imprecise-value]
 test_tagged_records.adb:12:07: info: no contextual analysis of "Rand" (body not seen yet)
 test_tagged_records.adb:12:07: warning: assuming "Rand" has no effect on global items
 test_tagged_records.adb:12:07: warning: no Global contract available for "Rand" [assumed-global-null]
