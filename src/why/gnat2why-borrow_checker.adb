@@ -792,13 +792,13 @@ package body Gnat2Why.Borrow_Checker is
 
    procedure Check_Statement (Stmt : Node_Id);
 
-   function Get_Expl (N : Expr_Or_Ent) return Node_Id;
-   --  The function that takes a name as input and returns an explanation node
-   --  for the permission associated with it.
-
-   function Get_Perm (N : Expr_Or_Ent) return Perm_Kind;
+   type Perm_And_Expl is record
+      Perm : Perm_Kind;
+      Expl : Node_Id;
+   end record;
+   function Get_Perm_And_Expl (N : Expr_Or_Ent) return Perm_And_Expl;
    --  The function that takes a name as input and returns a permission
-   --  associated with it.
+   --  associated with it, together with an explanation node.
 
    function Get_Perm_Or_Tree (N : Expr_Or_Ent) return Perm_Or_Tree;
    pragma Precondition (N.Is_Ent or else Is_Path_Expression (N.Expr));
@@ -1296,7 +1296,7 @@ package body Gnat2Why.Borrow_Checker is
       Target_Typ  : constant Entity_Id := Etype (Target);
       Target_Root : Entity_Id;
       Expr_Root   : Entity_Id;
-      Perm        : Perm_Kind;
+      Perm_Expl   : Perm_And_Expl;
       Dummy       : Boolean := True;
 
    --  Start of processing for Check_Assignment
@@ -1386,21 +1386,21 @@ package body Gnat2Why.Borrow_Checker is
                if Is_Deep (Etype (Expr_Root)) then
 
                   for Dep_Path of Terminal_Alternatives (Expr) loop
-                     Perm := Get_Perm (+Dep_Path);
+                     Perm_Expl := Get_Perm_And_Expl (+Dep_Path);
 
-                     if Perm = No_Access then
+                     if Perm_Expl.Perm = No_Access then
                         Perm_Error (+Dep_Path, No_Access, No_Access,
-                                    Expl           => Get_Expl (+Dep_Path),
+                                    Expl           => Perm_Expl.Expl,
                                     Forbidden_Perm => True);
                         return;
                      end if;
                   end loop;
 
-                  Perm := Get_Perm (E_Root);
+                  Perm_Expl := Get_Perm_And_Expl (E_Root);
 
-                  if Perm = No_Access then
+                  if Perm_Expl.Perm = No_Access then
                      Perm_Error (+Expr, No_Access, No_Access,
-                                 Expl           => Get_Expl (E_Root),
+                                 Expl           => Perm_Expl.Expl,
                                  Forbidden_Perm => True);
                      return;
                   end if;
@@ -1429,11 +1429,11 @@ package body Gnat2Why.Borrow_Checker is
             --  sufficient.
 
             if Is_Deep (Etype (Expr_Root)) then
-               Perm := Get_Perm (+Expr);
+               Perm_Expl := Get_Perm_And_Expl (+Expr);
 
-               if Perm /= Read_Write then
-                  Perm_Error (+Expr, Read_Write, Perm,
-                              Expl => Get_Expl (+Expr));
+               if Perm_Expl.Perm /= Read_Write then
+                  Perm_Error (+Expr, Read_Write, Perm_Expl.Perm,
+                              Expl => Perm_Expl.Expl);
                   return;
                end if;
             end if;
@@ -1811,16 +1811,17 @@ package body Gnat2Why.Borrow_Checker is
               and then not Is_Access_Constant (Typ)
             then
                declare
-                  E_Obj : constant Expr_Or_Ent :=
+                  E_Obj     : constant Expr_Or_Ent :=
                     (Is_Ent => True, Ent => Obj, Loc => Decl);
-                  Perm : constant Perm_Kind := Get_Perm (E_Obj);
+                  Perm_Expl : constant Perm_And_Expl :=
+                    Get_Perm_And_Expl (E_Obj);
                begin
-                  if Perm /= Read_Write then
+                  if Perm_Expl.Perm /= Read_Write then
                      Perm_Error_Borrow_End
                        (E          => Obj,
                         N          => (if Present (N) then N else Obj),
-                        Found_Perm => Perm,
-                        Expl       => Get_Expl (E_Obj));
+                        Found_Perm => Perm_Expl.Perm,
+                        Expl       => Perm_Expl.Expl);
                   end if;
                end;
             end if;
@@ -4143,16 +4144,17 @@ package body Gnat2Why.Borrow_Checker is
 
                      if not Is_Access_Constant (Etype (Target)) then
                         declare
-                           E_Root : constant Expr_Or_Ent :=
+                           E_Root    : constant Expr_Or_Ent :=
                              (Is_Ent => True, Ent => Root, Loc => Stmt);
-                           Perm : constant Perm_Kind := Get_Perm (E_Root);
+                           Perm_Expl : constant Perm_And_Expl :=
+                             Get_Perm_And_Expl (E_Root);
                         begin
-                           if Perm /= Read_Write then
+                           if Perm_Expl.Perm /= Read_Write then
                               Perm_Error_Reborrow
                                 (E          => Root,
                                  N          => Stmt,
-                                 Found_Perm => Perm,
-                                 Expl       => Get_Expl (E_Root));
+                                 Found_Perm => Perm_Expl.Perm,
+                                 Expl       => Perm_Expl.Expl);
                            end if;
                         end;
                      end if;
@@ -4282,12 +4284,13 @@ package body Gnat2Why.Borrow_Checker is
 
          when N_Extended_Return_Statement =>
             declare
-               Subp  : constant Entity_Id :=
+               Subp      : constant Entity_Id :=
                  Return_Applies_To (Return_Statement_Entity (Stmt));
-               Decls : constant List_Id := Return_Object_Declarations (Stmt);
-               Decl  : constant Node_Id := Last_Non_Pragma (Decls);
-               Obj   : constant Entity_Id := Defining_Identifier (Decl);
-               Perm  : Perm_Kind;
+               Decls     : constant List_Id :=
+                 Return_Object_Declarations (Stmt);
+               Decl      : constant Node_Id := Last_Non_Pragma (Decls);
+               Obj       : constant Entity_Id := Defining_Identifier (Decl);
+               Perm_Expl : Perm_And_Expl;
 
             begin
                pragma Assert (not Is_Traversal_Function (Subp));
@@ -4300,14 +4303,14 @@ package body Gnat2Why.Borrow_Checker is
                      E_Obj : constant Expr_Or_Ent :=
                        (Is_Ent => True, Ent => Obj, Loc => Decl);
                   begin
-                     Perm := Get_Perm (E_Obj);
+                     Perm_Expl := Get_Perm_And_Expl (E_Obj);
 
-                     if Perm /= Read_Write then
+                     if Perm_Expl.Perm /= Read_Write then
                         Perm_Error_Subprogram_End
                           (E           => Obj,
                            Subp        => Subp,
-                           Found_Perm  => Perm,
-                           Expl        => Get_Expl (E_Obj),
+                           Found_Perm  => Perm_Expl.Perm,
+                           Expl        => Perm_Expl.Expl,
                            Exceptional => False);
                      end if;
                   end;
@@ -4497,11 +4500,11 @@ package body Gnat2Why.Borrow_Checker is
 
    function Found_Permission_Error return Boolean is (Permission_Error);
 
-   --------------
-   -- Get_Expl --
-   --------------
+   -----------------------
+   -- Get_Perm_And_Expl --
+   -----------------------
 
-   function Get_Expl (N : Expr_Or_Ent) return Node_Id is
+   function Get_Perm_And_Expl (N : Expr_Or_Ent) return Perm_And_Expl is
    begin
       if N.Is_Ent then
          declare
@@ -4509,58 +4512,7 @@ package body Gnat2Why.Borrow_Checker is
               Get (Current_Perm_Env, Unique_Entity_In_SPARK (N.Ent));
          begin
             pragma Assert (C /= null);
-            return Explanation (C);
-         end;
-      else
-         declare
-            Root : constant Node_Id :=
-              Get_Root_Expr (N.Expr, Through_Traversal => False);
-         begin
-            --  The expression is rooted in a call to a traversal function
-
-            if Is_Traversal_Function_Call (Root) then
-               return N.Expr;
-
-            --  The expression is directly rooted in an object
-
-            elsif Present
-              (Get_Root_Object (N.Expr, Through_Traversal => False))
-            then
-               declare
-                  Tree_Or_Perm : constant Perm_Or_Tree := Get_Perm_Or_Tree (N);
-               begin
-                  case Tree_Or_Perm.R is
-                     when Folded =>
-                        return Tree_Or_Perm.Explanation;
-
-                     when Unfolded =>
-                        pragma Assert (Tree_Or_Perm.Tree_Access /= null);
-                        return Explanation (Tree_Or_Perm.Tree_Access);
-                  end case;
-               end;
-
-            --  The expression is a function call, an allocation, or null
-
-            else
-               return N.Expr;
-            end if;
-         end;
-      end if;
-   end Get_Expl;
-
-   --------------
-   -- Get_Perm --
-   --------------
-
-   function Get_Perm (N : Expr_Or_Ent) return Perm_Kind is
-   begin
-      if N.Is_Ent then
-         declare
-            C : constant Perm_Tree_Access :=
-              Get (Current_Perm_Env, Unique_Entity_In_SPARK (N.Ent));
-         begin
-            pragma Assert (C /= null);
-            return Permission (C);
+            return (Perm => Permission (C), Expl => Explanation (C));
          end;
 
       else
@@ -4573,12 +4525,14 @@ package body Gnat2Why.Borrow_Checker is
             if Is_Traversal_Function_Call (Root) then
                declare
                   Callee : constant Entity_Id := Get_Called_Entity (Root);
+                  Perm   : Perm_Kind;
                begin
                   if Is_Access_Constant (Etype (Callee)) then
-                     return Read_Only;
+                     Perm := Read_Only;
                   else
-                     return Read_Write;
+                     Perm := Read_Write;
                   end if;
+                  return (Perm => Perm, Expl => N.Expr);
                end;
 
             --  The expression is directly rooted in an object
@@ -4591,22 +4545,25 @@ package body Gnat2Why.Borrow_Checker is
                begin
                   case Tree_Or_Perm.R is
                      when Folded =>
-                        return Tree_Or_Perm.Found_Permission;
+                        return (Perm => Tree_Or_Perm.Found_Permission,
+                                Expl => Tree_Or_Perm.Explanation);
 
                      when Unfolded =>
                         pragma Assert (Tree_Or_Perm.Tree_Access /= null);
-                        return Permission (Tree_Or_Perm.Tree_Access);
+                        return
+                          (Perm => Permission (Tree_Or_Perm.Tree_Access),
+                           Expl => Explanation (Tree_Or_Perm.Tree_Access));
                   end case;
                end;
 
             --  The expression is a function call, an allocation, or null
 
             else
-               return Read_Write;
+               return (Perm => Read_Write, Expl => N.Expr);
             end if;
          end;
       end if;
-   end Get_Perm;
+   end Get_Perm_And_Expl;
 
    ----------------------
    -- Get_Perm_Or_Tree --
@@ -5879,8 +5836,12 @@ package body Gnat2Why.Borrow_Checker is
          Perm := Read_Only;
          Expl := Root;
       else
-         Perm := Get_Perm (Expr);
-         Expl := Get_Expl (Expr);
+         declare
+            Perm_Expl : constant Perm_And_Expl := Get_Perm_And_Expl (Expr);
+         begin
+            Perm := Perm_Expl.Perm;
+            Expl := Perm_Expl.Expl;
+         end;
       end if;
 
       --  Check permissions
