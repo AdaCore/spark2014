@@ -2,9 +2,6 @@ borrow.adb:33:04: warning: assuming "Free" always terminates
 borrow.adb:33:04: warning: assuming "Free" has no effect on global items
 borrow.adb:33:04: warning: no Always_Terminates aspect available for "Free" [assumed-always-terminates]
 borrow.adb:33:04: warning: no Global contract available for "Free" [assumed-global-null]
-borrow.adb:43:36: error: launch "gnatprove --explain=E0010" for more information
-borrow.adb:43:36: error: object was moved at line 42 [E0010]
-borrow.adb:43:36: error: part of "U" is not readable
 borrow.adb:44:20: error: launch "gnatprove --explain=E0010" for more information
 borrow.adb:44:20: error: object was moved at line 42 [E0010]
 borrow.adb:44:20: error: part of "U" is not readable

@@ -1296,7 +1296,6 @@ package body Gnat2Why.Borrow_Checker is
       Target_Typ  : constant Entity_Id := Etype (Target);
       Target_Root : Entity_Id;
       Expr_Root   : Entity_Id;
-      Perm_Expl   : Perm_And_Expl;
       Dummy       : Boolean := True;
 
    --  Start of processing for Check_Assignment
@@ -1373,40 +1372,6 @@ package body Gnat2Why.Borrow_Checker is
          elsif Is_Access_Constant (Target_Typ)
            or else Is_Constant_Borrower (Target_Root)
          then
-            declare
-               E_Root : constant Expr_Or_Ent :=
-                 (Is_Ent => True, Ent => Expr_Root, Loc => Expr);
-
-            begin
-               --  E_Root might not be deep if it contains access-to-constant
-               --  types, or if we are observing a regular object using
-               --  'Access. In this case, it is not in the perm environment but
-               --  the permission is necessarily sufficient.
-
-               if Is_Deep (Etype (Expr_Root)) then
-
-                  for Dep_Path of Terminal_Alternatives (Expr) loop
-                     Perm_Expl := Get_Perm_And_Expl (+Dep_Path);
-
-                     if Perm_Expl.Perm = No_Access then
-                        Perm_Error (+Dep_Path, No_Access, No_Access,
-                                    Expl           => Perm_Expl.Expl,
-                                    Forbidden_Perm => True);
-                        return;
-                     end if;
-                  end loop;
-
-                  Perm_Expl := Get_Perm_And_Expl (E_Root);
-
-                  if Perm_Expl.Perm = No_Access then
-                     Perm_Error (+Expr, No_Access, No_Access,
-                                 Expl           => Perm_Expl.Expl,
-                                 Forbidden_Perm => True);
-                     return;
-                  end if;
-               end if;
-            end;
-
             --  The fact that a re-observe is always rooted at the observer for
             --  access to variable observe is checked in marking.
 
@@ -1423,21 +1388,6 @@ package body Gnat2Why.Borrow_Checker is
          --  state, and whose root object is the target object itself.
 
          else
-            --  Expr_Root might not be deep if we are borrowing a regular
-            --  object using 'Access. In this case, it is not in the perm
-            --  environment but we can assume the permission is necessarily
-            --  sufficient.
-
-            if Is_Deep (Etype (Expr_Root)) then
-               Perm_Expl := Get_Perm_And_Expl (+Expr);
-
-               if Perm_Expl.Perm /= Read_Write then
-                  Perm_Error (+Expr, Read_Write, Perm_Expl.Perm,
-                              Expl => Perm_Expl.Expl);
-                  return;
-               end if;
-            end if;
-
             --  The fact that a re-borrow is always rooted at the borrower is
             --  checked in marking.
 
