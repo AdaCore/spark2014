@@ -1613,9 +1613,10 @@ package body VC_Kinds is
          when Warn_No_Possible_Termination => "no-possible-termination",
          when Warn_Pragma_Annotate_No_Check => "no-check-message-justified",
          when Warn_Pragma_Annotate_Proved_Check => "proved-check-justified",
-         when Warn_Pragma_Annotate_Terminating |
-              Warn_Pragma_External_Axiomatization =>
-              "deprecated-feature",
+         when Warn_Pragma_Annotate_Terminating =>
+            "deprecated-terminating",
+         when Warn_Pragma_External_Axiomatization =>
+            "deprecated-external-axiomatization",
          when Warn_Pragma_Ignored => "ignored-pragma",
          when Warn_Pragma_Overflow_Mode => "overflow-mode-ignored",
          when Warn_Precondition_Statically_False =>
@@ -1649,22 +1650,22 @@ package body VC_Kinds is
             "representation-attribute-value",
 
          --  Warnings enabled by --info switch
-         when Warn_Comp_Relaxed_Init => "warn-comp-relaxed-init",
-         when Warn_Contracts_Recursive => "warn-contracts-recursive",
-         when Warn_DIC_Ignored => "warn-dic-ignored",
-         when Warn_Full_View_Visible => "warn-full-view-visible",
-         when Warn_Imprecise_Align => "warn-imprecise-align",
-         when Warn_Imprecise_Call => "warn-imprecise-call",
-         when Warn_Imprecise_Size => "warn-imprecise-size",
-         when Warn_Imprecise_UC   => "warn-imprecise-uc",
-         when Warn_Imprecise_Value => "warn-imprecise-value",
-         when Warn_Init_Cond_Ignored => "warn-init-cond-ignored",
-         when Warn_No_Reclam_Func => "warn-no-reclam-func",
-         when Warn_Num_Variant => "warn-num-variant",
-         when Warn_Map_Length_Aggregates => "warn-map-length-aggregates",
-         when Warn_Set_Length_Aggregates => "warn-set-length-aggregates",
-         when Warn_Predef_Eq_Null => "warn-predef-eq-null",
-         when Warn_Unit_Not_SPARK => "warn-unit-not-spark",
+         when Warn_Comp_Relaxed_Init => "component-relaxed-init",
+         when Warn_Contracts_Recursive => "contracts-recursive",
+         when Warn_DIC_Ignored => "dic-ignored",
+         when Warn_Full_View_Visible => "full-view-visible",
+         when Warn_Imprecise_Align => "imprecise-align",
+         when Warn_Imprecise_Call => "imprecise-call",
+         when Warn_Imprecise_Size => "imprecise-size",
+         when Warn_Imprecise_UC   => "imprecise-unchecked-conversion",
+         when Warn_Imprecise_Value => "imprecise-value",
+         when Warn_Init_Cond_Ignored => "init-cond-ignored",
+         when Warn_No_Reclam_Func => "no-reclamation-function",
+         when Warn_Num_Variant => "numeric-variant",
+         when Warn_Map_Length_Aggregates => "map-length-aggregates",
+         when Warn_Set_Length_Aggregates => "set-length-aggregates",
+         when Warn_Predef_Eq_Null => "predefined-equality-null",
+         when Warn_Unit_Not_SPARK => "unit-not-spark",
 
          --  Info messages enabled by default
          when Warn_Info_Unrolling_Inlining => "info-unrolling-inlining"

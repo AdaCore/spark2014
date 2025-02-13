@@ -1,5 +1,5 @@
 private_no_is_null.ads:5:09: warning: checks for ressource or memory reclamation will be unprovable
-private_no_is_null.ads:5:09: warning: no reclamation function nor reclaimed value found for type with ownership "Pool_Specific_Access" [warn-no-reclam-func]
+private_no_is_null.ads:5:09: warning: no reclamation function nor reclaimed value found for type with ownership "Pool_Specific_Access" [no-reclamation-function]
 private_tagged.ads:18:59: info: precondition proved (CVC5: 1 VC)
 private_tagged_ext.ads:6:04: medium: type "V" is not fully initialized
 test_borrow.adb:7:06: info: data dependencies proved

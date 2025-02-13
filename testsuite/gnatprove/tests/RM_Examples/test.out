@@ -100,7 +100,7 @@ hal.ads:64:11: info: flow dependencies proved
 hal.ads:69:30: info: initialization of "Result" proved
 hal.ads:70:11: info: data dependencies proved
 hal.ads:71:11: info: flow dependencies proved
-initialization_and_elaboration-private_child.ads:1:48: warning: Initial_Condition of package "Initialization_And_Elaboration" is ignored [warn-init-cond-ignored]
+initialization_and_elaboration-private_child.ads:1:48: warning: Initial_Condition of package "Initialization_And_Elaboration" is ignored [init-cond-ignored]
 initialization_and_elaboration-private_child.ads:1:48: warning: the elaboration of "Initialization_And_Elaboration" is not known to precede the elaboration of the current unit
 initialization_and_elaboration-private_child.ads:1:48: warning: use pragma Elaborate_Body in "Initialization_And_Elaboration" or pragma Elaborate in the current unit
 initialization_and_elaboration-private_child.ads:4:08: info: flow dependencies proved

@@ -118,8 +118,8 @@ generic-not-analyzed - generic-not-analyzed - GNATprove doesn't analyze generics
 no-possible-termination - no-possible-termination - procedure which does not return normally nor raises an exception cannot always terminate - EASY
 no-check-message-justified - no-check-message-justified - no check message justified by this pragma - EASY
 proved-check-justified - proved-check-justified - only proved check messages justified by this pragma - EASY
-deprecated-feature - deprecated-feature - Terminating, Always_Return, and Might_Not_Return annotations are ignored - EASY
-deprecated-feature - deprecated-feature - External Axiomatizations are not supported anymore, ignored - EASY
+deprecated-terminating - deprecated-terminating - Terminating, Always_Return, and Might_Not_Return annotations are ignored - EASY
+deprecated-external-axiomatization - deprecated-external-axiomatization - External Axiomatizations are not supported anymore, ignored - EASY
 ignored-pragma - ignored-pragma - pragma is ignored (it is not yet supported) - EASY
 overflow-mode-ignored - overflow-mode-ignored - pragma Overflow_Mode in code is ignored - EASY
 precondition-statically-false - precondition-statically-false - precondition is statically False - EASY
@@ -135,20 +135,20 @@ imprecise-address-specification - imprecise-address-specification - object with 
 image-attribute-length - image-attribute-length - string attribute has an implementation-defined length - EASY
 operator-reassociation - operator-reassociation - possible operator reassociation due to missing parentheses - EASY
 representation-attribute-value - representation-attribute-value - representation attribute has an implementation-defined value - EASY
-warn-comp-relaxed-init - warn-comp-relaxed-init - All components of a given type are annotated with  Relaxed_Initialization, so the containing type is treated as if it had the same annotation - EASY
-warn-contracts-recursive - warn-contracts-recursive - Explicit and implicit contracts of the recursive call are not available, which can lead to false positives - EASY
-warn-dic-ignored - warn-dic-ignored - The default initial condition on the type cannot be used when proving assertions and contracts, but will still be available in regular code - EASY
-warn-full-view-visible - warn-full-view-visible - The full view of private types in this unit might be visible for proof even outside of this package - EASY
-warn-imprecise-align - warn-imprecise-align - The alignment of the address clause is not known, which can lead to false positives - EASY
-warn-imprecise-call - warn-imprecise-call - The behavior of this call is not known by SPARK and handled in an imprecise way, which can lead to false positives - EASY
-warn-imprecise-size - warn-imprecise-size - The attributes Size, Object_Size or Value_Size are not handled precisely, which can lead to false positives - EASY
-warn-imprecise-uc - warn-imprecise-uc - This unchecked conversion is not handled precisely by SPARK, which can lead to false positives - EASY
-warn-imprecise-value - warn-imprecise-value - The attribute Value is not handled precisely which can lead to false positives - EASY
-warn-init-cond-ignored - warn-init-cond-ignored - The initial condition of the named package is ignored,  as it is not known to be true, due to elaboration order - EASY
-warn-no-reclam-func - warn-no-reclam-func - No reclamation function or reclaimed value was found for the ownership type, which may make it impossible to deallocate its values. - EASY
-warn-num-variant - warn-num-variant - For recursive expression functions with a numeric (not structural) Subprogram_Invariant, the definition of the expression function might not be available for recursive calls - EASY
-warn-map-length-aggregates - warn-map-length-aggregates - A type with predefined map aggregates doesn't have a Length function. This will result in the length of aggregates being unknown for this type. - EASY
-warn-set-length-aggregates - warn-set-length-aggregates - A type with predefined set aggregates doesn't have a Length function. This will result in the length of aggregates being unknown for this type. - EASY
-warn-predef-eq-null - warn-predef-eq-null - A type was annotated with Only_Null as value for the Predefined_Equality annotation, but no constant annotated with Null_Value was found. - EASY
-warn-unit-not-spark - warn-unit-not-spark - A unit whose analysis has been requested on the command-line is not annotated with SPARK_Mode Pragma - EASY
+component-relaxed-init - component-relaxed-init - All components of a given type are annotated with  Relaxed_Initialization, so the containing type is treated as if it had the same annotation - EASY
+contracts-recursive - contracts-recursive - Explicit and implicit contracts of the recursive call are not available, which can lead to false positives - EASY
+dic-ignored - dic-ignored - The default initial condition on the type cannot be used when proving assertions and contracts, but will still be available in regular code - EASY
+full-view-visible - full-view-visible - The full view of private types in this unit might be visible for proof even outside of this package - EASY
+imprecise-align - imprecise-align - The alignment of the address clause is not known, which can lead to false positives - EASY
+imprecise-call - imprecise-call - The behavior of this call is not known by SPARK and handled in an imprecise way, which can lead to false positives - EASY
+imprecise-size - imprecise-size - The attributes Size, Object_Size or Value_Size are not handled precisely, which can lead to false positives - EASY
+imprecise-unchecked-conversion - imprecise-unchecked-conversion - This unchecked conversion is not handled precisely by SPARK, which can lead to false positives - EASY
+imprecise-value - imprecise-value - The attribute Value is not handled precisely which can lead to false positives - EASY
+init-cond-ignored - init-cond-ignored - The initial condition of the named package is ignored,  as it is not known to be true, due to elaboration order - EASY
+no-reclamation-function - no-reclamation-function - No reclamation function or reclaimed value was found for the ownership type, which may make it impossible to deallocate its values. - EASY
+numeric-variant - numeric-variant - For recursive expression functions with a numeric (not structural) Subprogram_Invariant, the definition of the expression function might not be available for recursive calls - EASY
+map-length-aggregates - map-length-aggregates - A type with predefined map aggregates doesn't have a Length function. This will result in the length of aggregates being unknown for this type. - EASY
+set-length-aggregates - set-length-aggregates - A type with predefined set aggregates doesn't have a Length function. This will result in the length of aggregates being unknown for this type. - EASY
+predefined-equality-null - predefined-equality-null - A type was annotated with Only_Null as value for the Predefined_Equality annotation, but no constant annotated with Null_Value was found. - EASY
+unit-not-spark - unit-not-spark - A unit whose analysis has been requested on the command-line is not annotated with SPARK_Mode Pragma - EASY
 info-unrolling-inlining - info-unrolling-inlining - These messages are issued when the tool is unrolling loops or inlining subprograms, or unable to do so - EASY

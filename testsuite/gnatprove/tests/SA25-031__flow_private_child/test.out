@@ -6,7 +6,7 @@ spin-tunnel.ads:13:15: medium: postcondition might fail
 spin-tunnel.ads:16:08: info: initialization of "Result" proved
 spin-tunnel.ads:19:15: medium: postcondition might fail
 spin-tunnel.ads:21:13: info: implicit aspect Always_Terminates on "Is_Valid" has been proved, subprogram will terminate
-spin.adb:3:14: warning: Initial_Condition of package "Tunnel" is ignored [warn-init-cond-ignored]
+spin.adb:3:14: warning: Initial_Condition of package "Tunnel" is ignored [init-cond-ignored]
 spin.adb:3:14: warning: the elaboration of "Tunnel" is not known to precede the elaboration of the current unit
 spin.adb:3:14: warning: use pragma Elaborate_Body in "Tunnel" or pragma Elaborate in the current unit
 spin.ads:4:04: info: flow dependencies proved

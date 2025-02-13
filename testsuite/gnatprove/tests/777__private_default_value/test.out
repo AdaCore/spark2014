@@ -13,4 +13,4 @@ maze.ads:157:39: info: overflow check proved (CVC5: 2 VC)
 maze.ads:173:13: info: implicit aspect Always_Terminates on "Adjacent_Cells" has been proved, subprogram will terminate
 traversal.ads:54:42: info: range check proved (CVC5: 2 VC)
 traversal.ads:55:42: info: range check proved (CVC5: 2 VC)
-traversal.ads:76:31: warning: default initial condition on subtype of "List" not available for proof in an assertion context [warn-dic-ignored]
+traversal.ads:76:31: warning: default initial condition on subtype of "List" not available for proof in an assertion context [dic-ignored]

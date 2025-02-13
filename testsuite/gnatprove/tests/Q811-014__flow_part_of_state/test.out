@@ -1,5 +1,5 @@
 initialization_and_elaboration-private_child.adb:7:40: info: initialization of "S" constituent of "State" proved
-initialization_and_elaboration-private_child.ads:1:48: warning: Initial_Condition of package "Initialization_And_Elaboration" is ignored [warn-init-cond-ignored]
+initialization_and_elaboration-private_child.ads:1:48: warning: Initial_Condition of package "Initialization_And_Elaboration" is ignored [init-cond-ignored]
 initialization_and_elaboration-private_child.ads:1:48: warning: the elaboration of "Initialization_And_Elaboration" is not known to precede the elaboration of the current unit
 initialization_and_elaboration-private_child.ads:1:48: warning: use pragma Elaborate_Body in "Initialization_And_Elaboration" or pragma Elaborate in the current unit
 initialization_and_elaboration-private_child.ads:6:11: info: data dependencies proved

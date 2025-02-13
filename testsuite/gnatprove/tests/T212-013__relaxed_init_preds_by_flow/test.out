@@ -1,4 +1,4 @@
-test_pred_on_array.adb:3:09: warning: "E_Arr" is handled as if it was annotated with Relaxed_Initialization as all its components are annotated that way [warn-comp-relaxed-init]
+test_pred_on_array.adb:3:09: warning: "E_Arr" is handled as if it was annotated with Relaxed_Initialization as all its components are annotated that way [component-relaxed-init]
 test_pred_on_array.adb:3:09: warning: consider annotating "E_Arr" with Relaxed_Initialization
 test_pred_on_array.adb:4:62: info: index check proved (CVC5: 2 VC)
 test_pred_on_array.adb:6:36: info: data dependencies proved
@@ -39,7 +39,7 @@ test_pred_on_array.adb:44:18: info: predicate check proved (CVC5: 1 VC)
 test_pred_on_array.adb:44:18: medium: predicate check might fail [possible fix: precondition of subprogram at line 42 should mention X'Length or X'First or X'Last]
 test_pred_on_array.adb:47:07: info: predicate check proved (CVC5: 1 VC)
 test_pred_on_array.adb:47:10: info: index check proved (CVC5: 2 VC)
-test_pred_on_array.adb:50:09: warning: "E_Rec" is handled as if it was annotated with Relaxed_Initialization as all its components are annotated that way [warn-comp-relaxed-init]
+test_pred_on_array.adb:50:09: warning: "E_Rec" is handled as if it was annotated with Relaxed_Initialization as all its components are annotated that way [component-relaxed-init]
 test_pred_on_array.adb:50:09: warning: consider annotating "E_Rec" with Relaxed_Initialization
 test_pred_on_array.adb:55:36: info: data dependencies proved
 test_pred_on_array.adb:57:22: info: assertion proved (CVC5: 1 VC)

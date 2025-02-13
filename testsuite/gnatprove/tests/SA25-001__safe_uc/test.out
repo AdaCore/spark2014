@@ -1,13 +1,13 @@
 safe.adb:5:13: info: types in unchecked conversion have the same size (Trivial)
-safe.adb:5:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [warn-imprecise-uc]
+safe.adb:5:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 safe.adb:5:57: info: type is suitable as source for unchecked conversion (Trivial)
 safe.adb:5:66: high: type is unsuitable as a target for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK]
 safe.adb:7:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type Float and type Natural differ]
-safe.adb:7:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [warn-imprecise-uc]
+safe.adb:7:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [imprecise-unchecked-conversion]
 safe.adb:7:56: info: type is suitable as source for unchecked conversion (Trivial)
 safe.adb:7:63: info: type is suitable for unchecked conversion (Trivial)
 safe.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
-safe.adb:9:13: warning: imprecise handling of Unchecked_Conversion (elementary non-integer type) [warn-imprecise-uc]
+safe.adb:9:13: warning: imprecise handling of Unchecked_Conversion (elementary non-integer type) [imprecise-unchecked-conversion]
 safe.adb:9:60: info: type is suitable as source for unchecked conversion (Trivial)
 safe.adb:9:67: info: type is suitable for unchecked conversion (Trivial)
 safe.adb:18:13: info: types in unchecked conversion have the same size (Trivial)
@@ -17,19 +17,19 @@ safe.adb:19:13: info: types in unchecked conversion have the same size (Trivial)
 safe.adb:19:55: info: type is suitable as source for unchecked conversion (Trivial)
 safe.adb:19:59: info: type is suitable for unchecked conversion (Trivial)
 safe.adb:20:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type U8 and type SS_Nat differ]
-safe.adb:20:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [warn-imprecise-uc]
+safe.adb:20:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [imprecise-unchecked-conversion]
 safe.adb:20:59: info: type is suitable as source for unchecked conversion (Trivial)
 safe.adb:20:63: info: type is suitable for unchecked conversion (Trivial)
 safe.adb:41:13: high: types used for unchecked conversion do not have the same size [possible explanation: type HRec doesn't have a Size representation clause or aspect]
-safe.adb:41:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [warn-imprecise-uc]
+safe.adb:41:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 safe.adb:41:57: info: type is suitable as source for unchecked conversion (Trivial)
 safe.adb:41:62: high: type is unsuitable as a target for unchecked conversion [possible explanation: type HRec doesn't have a Size representation clause or aspect]
 safe.adb:43:13: info: types in unchecked conversion have the same size (Trivial)
-safe.adb:43:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [warn-imprecise-uc]
+safe.adb:43:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
 safe.adb:43:58: info: type is suitable as source for unchecked conversion (Trivial)
 safe.adb:43:63: info: type is suitable for unchecked conversion (Trivial)
 safe.adb:50:13: high: types used for unchecked conversion do not have the same size [possible explanation: type HRec3 doesn't have a Size representation clause or aspect]
-safe.adb:50:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [warn-imprecise-uc]
+safe.adb:50:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 safe.adb:50:58: info: type is suitable as source for unchecked conversion (Trivial)
 safe.adb:50:63: high: type is unsuitable as a target for unchecked conversion [possible explanation: type HRec3 doesn't have a Size representation clause or aspect]
 safe.adb:58:13: info: types in unchecked conversion have the same size (Trivial)
@@ -42,18 +42,18 @@ safe.adb:106:13: info: types in unchecked conversion have the same size (Trivial
 safe.adb:106:54: info: type is suitable as source for unchecked conversion (Trivial)
 safe.adb:106:63: info: type is suitable for unchecked conversion (Trivial)
 safe.adb:107:13: info: types in unchecked conversion have the same size (Trivial)
-safe.adb:107:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [warn-imprecise-uc]
+safe.adb:107:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 safe.adb:107:54: info: type is suitable as source for unchecked conversion (Trivial)
 safe.adb:107:64: high: type is unsuitable as a target for unchecked conversion [possible explanation: type My_Enum_Sub has 239 values but has Size 8]
 safe.adb:121:13: high: types used for unchecked conversion do not have the same size [possible explanation: type My_Rec doesn't have a Size representation clause or aspect]
-safe.adb:121:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion) [warn-imprecise-uc]
+safe.adb:121:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion) [imprecise-unchecked-conversion]
 safe.adb:121:55: high: type is unsuitable for unchecked conversion [possible explanation: type My_Rec has discriminants]
 safe.adb:121:63: info: type is suitable for unchecked conversion (Trivial)
 safe.adb:123:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type Integer and type U8 differ]
-safe.adb:123:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [warn-imprecise-uc]
+safe.adb:123:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [imprecise-unchecked-conversion]
 safe.adb:123:54: info: type is suitable as source for unchecked conversion (Trivial)
 safe.adb:123:63: info: type is suitable for unchecked conversion (Trivial)
 safe.adb:132:13: info: types in unchecked conversion have the same size (Trivial)
-safe.adb:132:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [warn-imprecise-uc]
+safe.adb:132:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
 safe.adb:132:51: info: type is suitable as source for unchecked conversion (Trivial)
 safe.adb:132:55: info: type is suitable for unchecked conversion (Trivial)

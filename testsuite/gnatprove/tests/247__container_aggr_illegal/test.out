@@ -1,14 +1,14 @@
 test_illegal_add.adb:26:12: error: "Insert" procedure shall always terminate
-test_illegal_add.adb:26:12: warning: no "Length" function found for type with predefined set aggregates "T" [warn-set-length-aggregates]
+test_illegal_add.adb:26:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_add.adb:26:12: warning: the cardinality of aggregates will be unknown
 test_illegal_add.adb:61:12: error: "Insert" procedure shall not propagate exceptions
-test_illegal_add.adb:61:12: warning: no "Length" function found for type with predefined set aggregates "T" [warn-set-length-aggregates]
+test_illegal_add.adb:61:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_add.adb:61:12: warning: the cardinality of aggregates will be unknown
 test_illegal_add.adb:97:12: error: "Insert" procedure shall not access global data
-test_illegal_add.adb:97:12: warning: no "Length" function found for type with predefined set aggregates "T" [warn-set-length-aggregates]
+test_illegal_add.adb:97:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_add.adb:97:12: warning: the cardinality of aggregates will be unknown
 test_illegal_add.adb:133:12: error: "Insert" procedure shall not have global effects
-test_illegal_add.adb:133:12: warning: no "Length" function found for type with predefined set aggregates "T" [warn-set-length-aggregates]
+test_illegal_add.adb:133:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_add.adb:133:12: warning: the cardinality of aggregates will be unknown
 test_illegal_aggregates.adb:6:07: info: no contextual analysis of "P1" (nested package declaration)
 test_illegal_aggregates.adb:29:21: error: container aggregate whose type does not have a "Container_Aggregates" annotation is not allowed in SPARK
@@ -78,13 +78,13 @@ test_illegal_default_item.adb:332:12: error: no "Has_Key" nor "Default_Item" fun
 test_illegal_default_item.adb:363:16: error: a function annotated with Container_Aggregates shall not access global data
 test_illegal_default_item.adb:378:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
 test_illegal_empty.adb:30:12: error: "Empty" function shall not have side effects
-test_illegal_empty.adb:30:12: warning: no "Length" function found for type with predefined set aggregates "T" [warn-set-length-aggregates]
+test_illegal_empty.adb:30:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_empty.adb:30:12: warning: the cardinality of aggregates will be unknown
 test_illegal_empty.adb:61:12: error: "Empty" function shall not be volatile
-test_illegal_empty.adb:61:12: warning: no "Length" function found for type with predefined set aggregates "T" [warn-set-length-aggregates]
+test_illegal_empty.adb:61:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_empty.adb:61:12: warning: the cardinality of aggregates will be unknown
 test_illegal_empty.adb:97:12: error: "Empty" function shall not access global data
-test_illegal_empty.adb:97:12: warning: no "Length" function found for type with predefined set aggregates "T" [warn-set-length-aggregates]
+test_illegal_empty.adb:97:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_empty.adb:97:12: warning: the cardinality of aggregates will be unknown
 test_illegal_eq_elements.adb:30:16: error: equivalence relations shall have two parameters
 test_illegal_eq_elements.adb:37:12: error: no "Equivalent_Elements" function found for type with predefined set aggregates "T"
@@ -159,7 +159,7 @@ test_illegal_has_key.adb:198:12: error: no "Has_Key" nor "Default_Item" function
 test_illegal_has_key.adb:229:16: error: "Has_Key" function shall return a boolean
 test_illegal_has_key.adb:250:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
 test_illegal_has_key.adb:287:16: error: a single "Has_Key" function shall be specified for a type with a Container_Aggregates annotation
-test_illegal_has_key.adb:309:12: warning: no "Length" function found for type with predefined map aggregates "T" [warn-map-length-aggregates]
+test_illegal_has_key.adb:309:12: warning: no "Length" function found for type with predefined map aggregates "T" [map-length-aggregates]
 test_illegal_has_key.adb:309:12: warning: the cardinality of aggregates will be unknown
 test_illegal_has_key.adb:342:19: error: a function annotated with Container_Aggregates shall be declared in the same list of declarations as the partial view of "T"
 test_illegal_has_key.adb:366:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
@@ -201,10 +201,10 @@ test_illegal_maps.adb:103:12: error: no "Equivalent_Keys" function found for typ
 test_illegal_maps.adb:144:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
 test_illegal_maps.adb:197:12: error: "Has_Key" and "Default_Item" functions shall not both be specified for type with predefined map aggregates "T"
 test_illegal_maps.adb:251:12: error: "Length" and "Default_Item" functions shall not both be specified for type with predefined map aggregates "T"
-test_illegal_maps.adb:345:12: warning: no "Length" function found for type with predefined map aggregates "T" [warn-map-length-aggregates]
+test_illegal_maps.adb:345:12: warning: no "Length" function found for type with predefined map aggregates "T" [map-length-aggregates]
 test_illegal_maps.adb:345:12: warning: the cardinality of aggregates will be unknown
 test_illegal_maps.adb:454:55: error: invalid third parameter for predefined map aggregates
-test_illegal_maps.adb:466:12: warning: no "Length" function found for type with predefined map aggregates "T" [warn-map-length-aggregates]
+test_illegal_maps.adb:466:12: warning: no "Length" function found for type with predefined map aggregates "T" [map-length-aggregates]
 test_illegal_maps.adb:466:12: warning: the cardinality of aggregates will be unknown
 test_illegal_maps_get.adb:24:16: error: a function annotated with Container_Aggregates shall have parameters
 test_illegal_maps_get.adb:42:12: error: no "Get" function found for type with predefined map aggregates "T"
@@ -217,7 +217,7 @@ test_illegal_maps_get.adb:198:12: error: no "Get" function found for type with p
 test_illegal_maps_get.adb:232:16: error: "Get" function shall return a value of type Element_Type
 test_illegal_maps_get.adb:250:12: error: no "Get" function found for type with predefined map aggregates "T"
 test_illegal_maps_get.adb:289:16: error: a single "Get" function shall be specified for a type with a Container_Aggregates annotation
-test_illegal_maps_get.adb:307:12: warning: no "Length" function found for type with predefined map aggregates "T" [warn-map-length-aggregates]
+test_illegal_maps_get.adb:307:12: warning: no "Length" function found for type with predefined map aggregates "T" [map-length-aggregates]
 test_illegal_maps_get.adb:307:12: warning: the cardinality of aggregates will be unknown
 test_illegal_maps_get.adb:342:19: error: a function annotated with Container_Aggregates shall be declared in the same list of declarations as the partial view of "T"
 test_illegal_maps_get.adb:361:12: error: no "Get" function found for type with predefined map aggregates "T"
@@ -232,35 +232,35 @@ test_illegal_maps_get.adb:573:12: error: no "Get" function found for type with p
 test_illegal_maps_get.adb:609:16: error: a function annotated with Container_Aggregates shall not access global data
 test_illegal_maps_get.adb:627:12: error: no "Get" function found for type with predefined map aggregates "T"
 test_illegal_maps_length.adb:34:16: error: a function annotated with Container_Aggregates shall have parameters
-test_illegal_maps_length.adb:49:12: warning: no "Length" function found for type with predefined map aggregates "T" [warn-map-length-aggregates]
+test_illegal_maps_length.adb:49:12: warning: no "Length" function found for type with predefined map aggregates "T" [map-length-aggregates]
 test_illegal_maps_length.adb:49:12: warning: the cardinality of aggregates will be unknown
 test_illegal_maps_length.adb:96:16: error: type of first parameter shall be annotated with Container_Aggregate
-test_illegal_maps_length.adb:111:12: warning: no "Length" function found for type with predefined map aggregates "T" [warn-map-length-aggregates]
+test_illegal_maps_length.adb:111:12: warning: no "Length" function found for type with predefined map aggregates "T" [map-length-aggregates]
 test_illegal_maps_length.adb:111:12: warning: the cardinality of aggregates will be unknown
 test_illegal_maps_length.adb:158:16: error: "Length" function shall have one parameter
-test_illegal_maps_length.adb:173:12: warning: no "Length" function found for type with predefined map aggregates "T" [warn-map-length-aggregates]
+test_illegal_maps_length.adb:173:12: warning: no "Length" function found for type with predefined map aggregates "T" [map-length-aggregates]
 test_illegal_maps_length.adb:173:12: warning: the cardinality of aggregates will be unknown
 test_illegal_maps_length.adb:218:16: error: "Length" shall return a signed integer type or a subtype of Big_Integer
-test_illegal_maps_length.adb:233:12: warning: no "Length" function found for type with predefined map aggregates "T" [warn-map-length-aggregates]
+test_illegal_maps_length.adb:233:12: warning: no "Length" function found for type with predefined map aggregates "T" [map-length-aggregates]
 test_illegal_maps_length.adb:233:12: warning: the cardinality of aggregates will be unknown
 test_illegal_maps_length.adb:285:16: error: a single "Length" function shall be specified for a type with a Container_Aggregates annotation
 test_illegal_maps_length.adb:348:19: error: a function annotated with Container_Aggregates shall be declared in the same list of declarations as the partial view of "T"
-test_illegal_maps_length.adb:364:12: warning: no "Length" function found for type with predefined map aggregates "T" [warn-map-length-aggregates]
+test_illegal_maps_length.adb:364:12: warning: no "Length" function found for type with predefined map aggregates "T" [map-length-aggregates]
 test_illegal_maps_length.adb:364:12: warning: the cardinality of aggregates will be unknown
 test_illegal_maps_length.adb:415:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function Length
-test_illegal_maps_length.adb:427:12: warning: no "Length" function found for type with predefined map aggregates "T" [warn-map-length-aggregates]
+test_illegal_maps_length.adb:427:12: warning: no "Length" function found for type with predefined map aggregates "T" [map-length-aggregates]
 test_illegal_maps_length.adb:427:12: warning: the cardinality of aggregates will be unknown
 test_illegal_maps_length.adb:474:16: error: a function annotated with Container_Aggregates must not have side effects
-test_illegal_maps_length.adb:490:12: warning: no "Length" function found for type with predefined map aggregates "T" [warn-map-length-aggregates]
+test_illegal_maps_length.adb:490:12: warning: no "Length" function found for type with predefined map aggregates "T" [map-length-aggregates]
 test_illegal_maps_length.adb:490:12: warning: the cardinality of aggregates will be unknown
 test_illegal_maps_length.adb:537:16: error: a function annotated with Container_Aggregates must not be volatile
-test_illegal_maps_length.adb:553:12: warning: no "Length" function found for type with predefined map aggregates "T" [warn-map-length-aggregates]
+test_illegal_maps_length.adb:553:12: warning: no "Length" function found for type with predefined map aggregates "T" [map-length-aggregates]
 test_illegal_maps_length.adb:553:12: warning: the cardinality of aggregates will be unknown
 test_illegal_maps_length.adb:600:16: error: a function annotated with Container_Aggregates shall be in SPARK
-test_illegal_maps_length.adb:616:12: warning: no "Length" function found for type with predefined map aggregates "T" [warn-map-length-aggregates]
+test_illegal_maps_length.adb:616:12: warning: no "Length" function found for type with predefined map aggregates "T" [map-length-aggregates]
 test_illegal_maps_length.adb:616:12: warning: the cardinality of aggregates will be unknown
 test_illegal_maps_length.adb:665:16: error: a function annotated with Container_Aggregates shall not access global data
-test_illegal_maps_length.adb:680:12: warning: no "Length" function found for type with predefined map aggregates "T" [warn-map-length-aggregates]
+test_illegal_maps_length.adb:680:12: warning: no "Length" function found for type with predefined map aggregates "T" [map-length-aggregates]
 test_illegal_maps_length.adb:680:12: warning: the cardinality of aggregates will be unknown
 test_illegal_model.adb:118:16: error: a function annotated with Container_Aggregates shall have parameters
 test_illegal_model.adb:126:12: error: no "Model" function found for type with aggregates using models "T"
@@ -308,38 +308,38 @@ test_illegal_seqs_get.adb:587:12: error: no "Get" function found for type with p
 test_illegal_sets.adb:7:12: error: a type with predefined set aggregates shall specify an Add_Unnamed procedure
 test_illegal_sets.adb:48:12: error: no "Contains" function found for type with predefined set aggregates "T"
 test_illegal_sets.adb:76:12: error: no "Equivalent_Elements" function found for type with predefined set aggregates "T"
-test_illegal_sets.adb:110:12: warning: no "Length" function found for type with predefined set aggregates "T" [warn-set-length-aggregates]
+test_illegal_sets.adb:110:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_sets.adb:110:12: warning: the cardinality of aggregates will be unknown
 test_illegal_sets.adb:188:55: error: invalid third parameter for predefined set aggregates
 test_illegal_sets_length.adb:25:16: error: a function annotated with Container_Aggregates shall have parameters
-test_illegal_sets_length.adb:35:12: warning: no "Length" function found for type with predefined set aggregates "T" [warn-set-length-aggregates]
+test_illegal_sets_length.adb:35:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_sets_length.adb:35:12: warning: the cardinality of aggregates will be unknown
 test_illegal_sets_length.adb:65:16: error: type of first parameter shall be annotated with Container_Aggregate
-test_illegal_sets_length.adb:75:12: warning: no "Length" function found for type with predefined set aggregates "T" [warn-set-length-aggregates]
+test_illegal_sets_length.adb:75:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_sets_length.adb:75:12: warning: the cardinality of aggregates will be unknown
 test_illegal_sets_length.adb:105:16: error: "Length" function shall have one parameter
-test_illegal_sets_length.adb:115:12: warning: no "Length" function found for type with predefined set aggregates "T" [warn-set-length-aggregates]
+test_illegal_sets_length.adb:115:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_sets_length.adb:115:12: warning: the cardinality of aggregates will be unknown
 test_illegal_sets_length.adb:143:16: error: "Length" shall return a signed integer type or a subtype of Big_Integer
-test_illegal_sets_length.adb:153:12: warning: no "Length" function found for type with predefined set aggregates "T" [warn-set-length-aggregates]
+test_illegal_sets_length.adb:153:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_sets_length.adb:153:12: warning: the cardinality of aggregates will be unknown
 test_illegal_sets_length.adb:188:16: error: a single "Length" function shall be specified for a type with a Container_Aggregates annotation
 test_illegal_sets_length.adb:229:19: error: a function annotated with Container_Aggregates shall be declared in the same list of declarations as the partial view of "T"
-test_illegal_sets_length.adb:240:12: warning: no "Length" function found for type with predefined set aggregates "T" [warn-set-length-aggregates]
+test_illegal_sets_length.adb:240:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_sets_length.adb:240:12: warning: the cardinality of aggregates will be unknown
 test_illegal_sets_length.adb:277:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function Length
-test_illegal_sets_length.adb:281:12: warning: no "Length" function found for type with predefined set aggregates "T" [warn-set-length-aggregates]
+test_illegal_sets_length.adb:281:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_sets_length.adb:281:12: warning: the cardinality of aggregates will be unknown
 test_illegal_sets_length.adb:311:16: error: a function annotated with Container_Aggregates must not have side effects
-test_illegal_sets_length.adb:322:12: warning: no "Length" function found for type with predefined set aggregates "T" [warn-set-length-aggregates]
+test_illegal_sets_length.adb:322:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_sets_length.adb:322:12: warning: the cardinality of aggregates will be unknown
 test_illegal_sets_length.adb:352:16: error: a function annotated with Container_Aggregates must not be volatile
-test_illegal_sets_length.adb:363:12: warning: no "Length" function found for type with predefined set aggregates "T" [warn-set-length-aggregates]
+test_illegal_sets_length.adb:363:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_sets_length.adb:363:12: warning: the cardinality of aggregates will be unknown
 test_illegal_sets_length.adb:393:16: error: a function annotated with Container_Aggregates shall be in SPARK
-test_illegal_sets_length.adb:404:12: warning: no "Length" function found for type with predefined set aggregates "T" [warn-set-length-aggregates]
+test_illegal_sets_length.adb:404:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_sets_length.adb:404:12: warning: the cardinality of aggregates will be unknown
 test_illegal_sets_length.adb:436:16: error: a function annotated with Container_Aggregates shall not access global data
-test_illegal_sets_length.adb:446:12: warning: no "Length" function found for type with predefined set aggregates "T" [warn-set-length-aggregates]
+test_illegal_sets_length.adb:446:12: warning: no "Length" function found for type with predefined set aggregates "T" [set-length-aggregates]
 test_illegal_sets_length.adb:446:12: warning: the cardinality of aggregates will be unknown
 gnatprove: error during flow analysis and proof

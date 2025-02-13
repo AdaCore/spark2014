@@ -1,5 +1,5 @@
 convert.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
-convert.adb:9:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [warn-imprecise-uc]
+convert.adb:9:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 convert.adb:10:07: info: type is suitable as source for unchecked conversion (Trivial)
 convert.adb:10:20: high: type is unsuitable as a target for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK]
 convert.adb:13:07: info: initialization of "Res_Hi" proved
