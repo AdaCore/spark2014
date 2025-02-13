@@ -798,6 +798,10 @@ package body Flow is
             Rv.Shape := Shape_None;
             Write_Str ("param scrub");
 
+         elsif A.Pretty_Print_Kind = Pretty_Print_Program_Exit then
+            Rv.Shape := Shape_None;
+            Write_Str ("program exit");
+
          elsif A.Pretty_Print_Kind /= Pretty_Print_Null then
             raise Program_Error;
 

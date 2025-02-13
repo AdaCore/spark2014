@@ -5739,6 +5739,9 @@ package body Flow.Control_Flow_Graph is
       --  raises an exception and for havocing its parameters passed,
       --  respectively.
 
+      Program_Exit : Flow_Graphs.Vertex_Id;
+      --  Vertex to capture what happens when the callee might exit the program
+
       Local_Handlers : constant Node_Lists.List :=
         (if Nkind (N) in N_Subprogram_Call
          then Reachable_Handlers (N)
@@ -5958,6 +5961,33 @@ package body Flow.Control_Flow_Graph is
             FA.CFG.Add_Edge (Prev, Var, EC_Default);
             Prev := Var;
          end loop;
+
+         --  When the callee might exit the program, we simply assert its
+         --  Program_Exit expression.
+
+         --  ??? Might_Exit_Program contains 2 parts: one that looks at the
+         --  callee, and one another that looks at the context. The second
+         --  part could be separated, so we would use Ctx.
+
+         if Might_Exit_Program (N) then
+            Add_Vertex (FA,
+                        Make_Sink_Vertex_Attributes
+                          (Var_Use      =>
+                             Get_Outputs_From_Program_Exit
+                               (FA.Spec_Entity, FA.B_Scope,
+                                not FA.Generating_Globals),
+                           Vertex_Ctx   => Ctx.Vertex_Ctx,
+                           E_Loc        => N,
+                           Is_Assertion => True),
+                        Program_Exit);
+
+            FA.Atr (Program_Exit).Pretty_Print_Kind :=
+              Pretty_Print_Program_Exit;
+
+            FA.CFG.Set_Cluster (Program_Exit, C);
+            FA.CFG.Add_Edge (Prev, Program_Exit, EC_Default);
+            Prev := Program_Exit;
+         end if;
 
          --  Abnormal execution is when the callee has No_Return, but the
          --  caller is an ordinary unit (i.e. without No_Return).

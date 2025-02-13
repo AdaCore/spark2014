@@ -11,27 +11,23 @@ test.adb:118:25: error: Outputs mentioned in the expression of an aspect Program
 test.adb:118:25: error: reference to "F", output of "Bad", in the expression of its "Program_Exit" aspect is not allowed in SPARK
 test.adb:118:25: error: violation of aspect SPARK_Mode at line 1
 test_bc.adb:17:06: info: data dependencies proved
-test_bc.adb:17:32: low: unused global "G2"
 test_bc.adb:17:32: warning: "G2" is not modified, could be INPUT
 test_bc.adb:22:07: error: "G1" is not readable
 test_bc.adb:22:07: error: launch "gnatprove --explain=E0010" for more information
 test_bc.adb:22:07: error: object was moved at line 20 [E0010]
 test_bc.adb:22:07: error: when exiting the program
 test_bc.adb:27:06: info: data dependencies proved
-test_bc.adb:27:32: low: unused global "G2"
 test_bc.adb:27:32: warning: "G2" is not modified, could be INPUT
 test_bc.adb:32:07: error: "G1" was borrowed at line 30
 test_bc.adb:32:07: error: when exiting the program
 test_bc.adb:36:06: info: data dependencies proved
 test_bc.adb:36:28: warning: "G1" is not modified, could be INPUT
-test_bc.adb:36:32: low: unused global "G2"
 test_bc.adb:36:32: warning: "G2" is not modified, could be INPUT
 test_bc.adb:39:07: warning: initialization of "X" has no effect
 test_bc.adb:44:14: error: launch "gnatprove --explain=E0010" for more information
 test_bc.adb:44:14: error: object was moved at line 48 [E0010]
 test_bc.adb:44:14: error: return from "Call_P1_Shallow_Moved" with moved value for "G2"
 test_bc.adb:45:06: info: data dependencies proved
-test_bc.adb:45:28: low: unused global "G1"
 test_bc.adb:45:28: warning: "G1" is not modified, could be INPUT
 test_bc.adb:45:32: warning: "G2" is not modified, could be INPUT
 test_bc.adb:48:07: warning: initialization of "X" has no effect

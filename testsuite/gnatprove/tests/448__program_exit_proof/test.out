@@ -8,7 +8,7 @@ test.adb:43:07: medium: call might exit the program
 test.adb:46:04: warning: analyzing unreferenced procedure "Call_P2_No_Exit_Bad" [unreferenced-procedure]
 test.adb:49:07: info: call cannot exit the program proved (CVC5: 1 VC)
 test.adb:55:22: info: program exit postcondition proved (CVC5: 1 VC)
-test.adb:64:22: medium: program exit postcondition might fail
+test.adb:64:22: medium: program exit postcondition might fail [possible fix: subprogram at line 63 should mention G in a precondition]
 test.adb:73:22: info: program exit postcondition proved (CVC5: 1 VC)
 test.adb:81:22: medium: program exit postcondition might fail [possible fix: subprogram at line 80 should mention G in a precondition]
 test.adb:90:14: warning: subprogram "Call_P1_Post_Old" has no effect
@@ -36,7 +36,6 @@ test.adb:154:17: info: invariant check proved (CVC5: 1 VC)
 test.adb:154:17: medium: for GT on program exit at test.adb:133
 test.adb:154:17: medium: invariant check might fail
 test.adb:155:25: info: program exit postcondition proved (CVC5: 1 VC)
-test.adb:158:13: warning: unused assignment
 test.adb:171:17: info: for GT at the end of Call_P3 at test.adb:133
 test.adb:171:17: info: for GT on program exit at test.adb:133
 test.adb:171:17: info: invariant check proved (CVC5: 1 VC)

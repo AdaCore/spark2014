@@ -1,6 +1,5 @@
 test.adb:16:07: medium: call might exit the program
 test.adb:20:06: info: data dependencies proved
-test.adb:20:27: warning: unused initial value of "G"
 test.adb:21:22: medium: program exit postcondition might fail [possible fix: subprogram at line 19 should mention G in a precondition]
 test.adb:29:06: info: data dependencies proved
 test.adb:29:27: info: initialization of "G" proved
@@ -9,11 +8,10 @@ test.adb:44:06: info: data dependencies proved
 test.adb:44:27: warning: unused initial value of "G"
 test.adb:45:22: info: program exit postcondition proved (CVC5: 1 VC)
 test.adb:68:06: info: data dependencies proved
-test.adb:68:27: low: unused global "G"
 test.adb:68:27: warning: "G" is not modified, could be INPUT
 test.adb:69:22: medium: program exit postcondition might fail [possible fix: subprogram at line 67 should mention G in a precondition]
 test2.adb:26:14: info: aspect Always_Terminates on "Wrap_Proc" has been proved, subprogram will terminate
-test2.adb:26:25: medium: "X" might not be initialized in "Wrap_Proc" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+test2.adb:26:25: medium: "X" might not be initialized in "Wrap_Proc" [reason for check: OUT parameter should be fully initialized on return] [possible explanation: value of "X" is unknown following exceptional exit] [possible fix: initialize "X" on all paths or annotate it with aspect Relaxed_Initialization]
 test2.adb:27:06: info: data dependencies proved
 test2.adb:29:22: info: program exit postcondition proved (CVC5: 1 VC)
 test2.adb:33:07: info: only expected exception raised (CVC5: 1 VC)
