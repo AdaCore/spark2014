@@ -1,4 +1,4 @@
-perm.ads:2:04: warning: External Axiomatizations are not supported anymore, ignored [deprecated-feature]
+perm.ads:2:04: warning: External Axiomatizations are not supported anymore, ignored [deprecated-external-axiomatization]
 sort.adb:12:15: medium: postcondition might fail
 sort.adb:14:07: info: initialization of "Temp" proved
 sort.adb:16:29: info: index check proved (CVC5: 2 VC)

@@ -559,7 +559,7 @@ process_first_line_of_record.adb:73:07: info: initialization of "RecordTypes" pr
 process_first_line_of_record.adb:74:07: info: initialization of "BlockNumbers" proved
 process_first_line_of_record.adb:75:07: info: initialization of "BlockLengths" proved
 process_first_line_of_record.adb:76:07: info: initialization of "BitMaps" proved
-process_first_line_of_record.ads:32:09: warning: Initial_Condition of package "Text_IO" is ignored [warn-init-cond-ignored]
+process_first_line_of_record.ads:32:09: warning: Initial_Condition of package "Text_IO" is ignored [init-cond-ignored]
 process_first_line_of_record.ads:32:09: warning: the elaboration of "Text_IO" is not known to precede the elaboration of the current unit
 process_first_line_of_record.ads:32:09: warning: use pragma Elaborate_Body in "Text_IO" or pragma Elaborate in the current unit
 process_first_line_of_record.ads:45:07: info: initialization of "InMultilineRecord" proved
@@ -695,7 +695,7 @@ spark-text_io.ads:699:24: medium: in inlined expression function body at spark-t
 spark-text_io.ads:699:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:701:24: medium: in inlined expression function body at spark-text_io.ads:138
 spark-text_io.ads:701:24: medium: precondition might fail, cannot prove Is_Open (File)
-spark_ada_command_line.ads:61:09: warning: Initial_Condition of package "Text_IO" is ignored [warn-init-cond-ignored]
+spark_ada_command_line.ads:61:09: warning: Initial_Condition of package "Text_IO" is ignored [init-cond-ignored]
 spark_ada_command_line.ads:61:09: warning: the elaboration of "Text_IO" is not known to precede the elaboration of the current unit
 spark_ada_command_line.ads:61:09: warning: use pragma Elaborate_Body in "Text_IO" or pragma Elaborate in the current unit
 spark_ada_command_line.ads:63:08: info: flow dependencies proved
@@ -724,7 +724,7 @@ task_limit.ads:36:14: info: data dependencies proved
 task_limit.ads:37:14: info: flow dependencies proved
 tcp_dns_package.ads:45:23: info: range check proved (CVC5: 2 VC)
 udp_dns_package.ads:47:23: info: range check proved (CVC5: 2 VC)
-zone_file_io.adb:44:14: warning: Initial_Condition of package "Text_IO" is ignored [warn-init-cond-ignored]
+zone_file_io.adb:44:14: warning: Initial_Condition of package "Text_IO" is ignored [init-cond-ignored]
 zone_file_io.adb:44:14: warning: the elaboration of "Text_IO" is not known to precede the elaboration of the current unit
 zone_file_io.adb:44:14: warning: use pragma Elaborate_Body in "Text_IO" or pragma Elaborate in the current unit
 zone_file_io.adb:50:07: warning: initialization of "CurrentLine" has no effect
@@ -764,7 +764,7 @@ zone_file_io.adb:404:26: medium: in inlined expression function body at spark-te
 zone_file_io.adb:404:26: medium: precondition might fail, cannot prove Is_Open (File) [possible fix: loop at line 113 should mention ZoneFile in a loop invariant]
 zone_file_io.adb:410:20: info: range check proved (CVC5: 2 VC)
 zone_file_io.adb:410:47: medium: overflow check might fail, cannot prove lower bound for LastPos + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
-zone_file_io.ads:23:09: warning: Initial_Condition of package "Text_IO" is ignored [warn-init-cond-ignored]
+zone_file_io.ads:23:09: warning: Initial_Condition of package "Text_IO" is ignored [init-cond-ignored]
 zone_file_io.ads:23:09: warning: the elaboration of "Text_IO" is not known to precede the elaboration of the current unit
 zone_file_io.ads:23:09: warning: use pragma Elaborate_Body in "Text_IO" or pragma Elaborate in the current unit
 zone_file_io.ads:26:07: info: initialization of "Success" proved
@@ -922,7 +922,7 @@ zone_file_parser.adb:698:07: info: initialization of "BlockIndex" proved
 zone_file_parser.adb:699:07: info: initialization of "ByteNumber" proved
 zone_file_parser.adb:700:07: info: initialization of "BitNumber" proved
 zone_file_parser.adb:702:16: info: types in unchecked conversion have the same size (Trivial)
-zone_file_parser.adb:702:16: warning: imprecise handling of Unchecked_Conversion (enumeration with non-default representation) [warn-imprecise-uc]
+zone_file_parser.adb:702:16: warning: imprecise handling of Unchecked_Conversion (enumeration with non-default representation) [imprecise-unchecked-conversion]
 zone_file_parser.adb:703:10: info: type is suitable as source for unchecked conversion (Trivial)
 zone_file_parser.adb:703:32: info: type is suitable for unchecked conversion (Trivial)
 zone_file_parser.adb:713:23: info: precondition proved (CVC5: 1 VC)

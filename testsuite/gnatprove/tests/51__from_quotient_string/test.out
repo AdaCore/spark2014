@@ -5,4 +5,4 @@ main.adb:8:19: info: assertion proved (CVC5: 1 VC)
 main.adb:8:19: info: predicate check proved (Trivial: 1 VC)
 main.adb:8:23: info: predicate check proved (Trivial: 1 VC)
 main.adb:9:29: medium: precondition might fail
-main.adb:9:29: warning: call to "From_Quotient_String" is not handled precisely [warn-imprecise-call]
+main.adb:9:29: warning: call to "From_Quotient_String" is not handled precisely [imprecise-call]
