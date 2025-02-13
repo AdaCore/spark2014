@@ -1614,7 +1614,7 @@ below.
   EXIT_KIND      ::= Normal_Return
                    | Exception_Raised
                    | (Exception_Raised => exception_name)
-		   | Program_Exit
+                   | Program_Exit
   GUARD          ::= Boolean_expression | OTHERS
 
 .. container:: heading
