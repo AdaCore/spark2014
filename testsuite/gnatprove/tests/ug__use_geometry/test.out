@@ -1,13 +1,24 @@
-geometry.ads:9:13: info: implicit aspect Always_Terminates on "Valid" has been proved, subprogram will terminate
-geometry.ads:31:13: info: implicit aspect Always_Terminates on "Valid" has been proved, subprogram will terminate
-geometry.ads:44:20: info: class-wide postcondition is stronger than overridden one
-geometry.ads:49:20: info: class-wide postcondition is stronger than overridden one
-use_geometry.adb:8:05: info: precondition proved
-use_geometry.adb:11:05: info: precondition proved
+ info: precondition proved
+--> use_geometry.adb:8:05
 
-use_geometry.adb:14:05: medium: precondition might fail
-   14 |   S.Operate;
-      |   ~^~~~~~~~
-  possible fix: call at line 13 should mention S (for argument S) in a postcondition
-   13 |   S.Set_Default_No_Post;
-      |    ^ here
+ info: precondition proved
+--> use_geometry.adb:11:05
+
+ medium: precondition might fail
+--> use_geometry.adb:14:05
+   14 |       S.Operate;
+      |       ~^~~~~~~~
+      + possible fix: call at line 13 should mention S (for argument S) in a postcondition
+   13 |       S.Set_Default_No_Post;
+      |        ^
+ info: implicit aspect Always_Terminates on "Valid" has been proved, subprogram will terminate
+--> geometry.ads:9:13
+
+ info: implicit aspect Always_Terminates on "Valid" has been proved, subprogram will terminate
+--> geometry.ads:31:13
+
+ info: class-wide postcondition is stronger than overridden one
+--> geometry.ads:44:20
+
+ info: class-wide postcondition is stronger than overridden one
+--> geometry.ads:49:20

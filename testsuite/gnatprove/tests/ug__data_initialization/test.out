@@ -1,55 +1,67 @@
+ high: "G3" is not an input in the Global contract of subprogram "Call_Proc" at data_initialization.ads:20
+--> data_initialization.adb:23:07
+   23 |          Proc (X1, X2, X3);
+      |          ^~~~~~~~~~~~~~~~
+      + either make "G3" an input in the Global contract or initialize it before use
 
-data_initialization.adb:23:07: high: "G3" is not an input in the Global contract of subprogram "Call_Proc" at data_initialization.ads:20
-   23 |      Proc (X1, X2, X3);
-      |      ^~~~~~~~~~~~~~~~
-  either make "G3" an input in the Global contract or initialize it before use
-
-data_initialization.adb:23:13: high: "X1.Num" is not initialized
-   23 |      Proc (X1, X2, X3);
-      |            ^~
-
-data_initialization.adb:23:17: warning: "X2" is set by "Proc" but not used after the call
-   23 |      Proc (X1, X2, X3);
+ high: "X1.Num" is not initialized
+--> data_initialization.adb:23:13
+   23 |          Proc (X1, X2, X3);
       |                ^~
 
-data_initialization.adb:23:21: warning: "X3" is set by "Proc" but not used after the call
-   23 |      Proc (X1, X2, X3);
+ warning: "X2" is set by "Proc" but not used after the call
+--> data_initialization.adb:23:17
+   23 |          Proc (X1, X2, X3);
       |                    ^~
 
-data_initialization.adb:23:21: high: "X3.Val" is not initialized
-   23 |      Proc (X1, X2, X3);
-      |                    ^~
+ warning: "X3" is set by "Proc" but not used after the call
+--> data_initialization.adb:23:21
+   23 |          Proc (X1, X2, X3);
+      |                        ^~
 
-data_initialization.ads:12:07: warning: unused variable "P1"
-   12 |     (P1 : in     Data;
-      |      ^~
+ high: "X3.Val" is not initialized
+--> data_initialization.adb:23:21
+   23 |          Proc (X1, X2, X3);
+      |                        ^~
 
-data_initialization.ads:13:07: high: "P2.Num" is not initialized in "Proc"
-   13 |      P2 :    out Data;
-      |      ^~
-  reason for check: OUT parameter should be fully initialized on return
-  possible fix: initialize "P2.Num" on all paths, make "P2" an IN OUT parameter or annotate it with aspect Relaxed_Initialization
+ warning: unused variable "P1"
+--> data_initialization.ads:12:07
+   12 |         (P1 : in     Data;
+      |          ^~
 
-data_initialization.ads:14:07: warning: "P3" is not modified, could be IN
-   14 |      P3 : in out Data)
-      |      ^~
+ high: "P2.Num" is not initialized in "Proc"
+--> data_initialization.ads:13:07
+   13 |          P2 :    out Data;
+      |          ^~
+      + reason for check: OUT parameter should be fully initialized on return
+      + possible fix: initialize "P2.Num" on all paths, make "P2" an IN OUT parameter or annotate it with aspect Relaxed_Initialization
 
-data_initialization.ads:14:07: warning: unused variable "P3"
-   14 |      P3 : in out Data)
-      |      ^~
+ warning: "P3" is not modified, could be IN
+--> data_initialization.ads:14:07
+   14 |          P3 : in out Data)
+      |          ^~
 
-data_initialization.ads:16:27: low: unused global "G1"
-   16 |     Global => (Input  => G1,
-      |                          ^~
+ warning: unused variable "P3"
+--> data_initialization.ads:14:07
+   14 |          P3 : in out Data)
+      |          ^~
 
-data_initialization.ads:17:27: high: "G2.Val" is not initialized
-   17 |                Output => G2,
-      |                          ^~
+ low: unused global "G1"
+--> data_initialization.ads:16:27
+   16 |         Global => (Input  => G1,
+      |                              ^~
 
-data_initialization.ads:18:27: warning: "G3" is not modified, could be INPUT
-   18 |                In_Out => G3);
-      |                          ^~
+ high: "G2.Val" is not initialized
+--> data_initialization.ads:17:27
+   17 |                    Output => G2,
+      |                              ^~
 
-data_initialization.ads:18:27: low: unused global "G3"
-   18 |                In_Out => G3);
-      |                          ^~
+ warning: "G3" is not modified, could be INPUT
+--> data_initialization.ads:18:27
+   18 |                    In_Out => G3);
+      |                              ^~
+
+ low: unused global "G3"
+--> data_initialization.ads:18:27
+   18 |                    In_Out => G3);
+      |                              ^~

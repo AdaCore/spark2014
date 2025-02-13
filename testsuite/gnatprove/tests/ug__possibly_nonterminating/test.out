@@ -1,9 +1,17 @@
-possibly_nonterminating.adb:14:10: info: conditional call termination proved
-possibly_nonterminating.adb:20:07: info: conditional call termination proved
+ info: conditional call termination proved
+--> possibly_nonterminating.adb:14:10
 
-possibly_nonterminating.adb:25:07: medium: call might not terminate
-   25 |      Conditionally_Loop (True);
-      |      ^~~~~~~~~~~~~~~~~~~~~~~~
-  reason for check: procedure "Bad_Terminating" has an Always_Terminates aspect
-possibly_nonterminating.ads:13:14: info: aspect Always_Terminates on "OK_Terminating" has been proved, subprogram will terminate
-possibly_nonterminating.ads:16:14: info: aspect Always_Terminates on "Bad_Terminating" has been proved, subprogram will terminate
+ info: conditional call termination proved
+--> possibly_nonterminating.adb:20:07
+
+ medium: call might not terminate
+--> possibly_nonterminating.adb:25:07
+   25 |          Conditionally_Loop (True);
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~
+      + reason for check: procedure "Bad_Terminating" has an Always_Terminates aspect
+
+ info: aspect Always_Terminates on "OK_Terminating" has been proved, subprogram will terminate
+--> possibly_nonterminating.ads:13:14
+
+ info: aspect Always_Terminates on "Bad_Terminating" has been proved, subprogram will terminate
+--> possibly_nonterminating.ads:16:14

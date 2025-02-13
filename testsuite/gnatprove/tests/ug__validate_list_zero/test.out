@@ -1,8 +1,23 @@
-validate_list_zero.adb:4:43: info: initialization of "Success" proved
-validate_list_zero.adb:6:11: info: postcondition proved
-validate_list_zero.adb:11:30: info: loop invariant initialization proved
-validate_list_zero.adb:11:30: info: loop invariant preservation proved
-validate_list_zero.adb:11:49: info: precondition proved
-validate_list_zero.adb:12:32: info: precondition proved
-validate_list_zero.adb:13:10: info: precondition proved
-validate_list_zero.adb:17:07: info: precondition proved
+ info: initialization of "Success" proved
+--> validate_list_zero.adb:4:43
+
+ info: postcondition proved
+--> validate_list_zero.adb:6:11
+
+ info: loop invariant initialization proved
+--> validate_list_zero.adb:11:30
+
+ info: loop invariant preservation proved
+--> validate_list_zero.adb:11:30
+
+ info: precondition proved
+--> validate_list_zero.adb:11:49
+
+ info: precondition proved
+--> validate_list_zero.adb:12:32
+
+ info: precondition proved
+--> validate_list_zero.adb:13:10
+
+ info: precondition proved
+--> validate_list_zero.adb:17:07

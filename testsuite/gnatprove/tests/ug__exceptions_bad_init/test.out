@@ -1,17 +1,19 @@
+ medium: "A" might not be initialized in "Incr_All_Bad_Init"
+--> exceptions_bad_init.adb:19:07
+   19 |         (A       : in out Nat_Array;
+      |          ^
+      + reason for check: OUT parameter should be fully initialized on return
+      + possible explanation: value of "A" is unknown following exceptional exit
+      + possible fix: initialize "A" on all paths or annotate it with aspect Relaxed_Initialization
 
-exceptions_bad_init.adb:19:07: medium: "A" might not be initialized in "Incr_All_Bad_Init"
-   19 |     (A       : in out Nat_Array;
-      |      ^ here
-  reason for check: OUT parameter should be fully initialized on return
-  possible explanation: value of "A" is unknown following exceptional exit
-  possible fix: initialize "A" on all paths or annotate it with aspect Relaxed_Initialization
+ medium: "A" might not be initialized
+--> exceptions_bad_init.adb:23:49
+   23 |         Post => Success = (for all I in A'Range => A'Old (I) /= Natural'Last)
+      |                                                    ^
+      + possible explanation: value of "A" is unknown following exceptional exit
 
-exceptions_bad_init.adb:23:49: medium: "A" might not be initialized
-   23 |     Post => Success = (for all I in A'Range => A'Old (I) /= Natural'Last)
-      |                                                ^ here
-  possible explanation: value of "A" is unknown following exceptional exit
-
-exceptions_bad_init.adb:39:15: high: "A" is not initialized
-   39 |         N := A (Index);
-      |              ^ here
-  possible explanation: value of "A" is unknown following exceptional exit
+ high: "A" is not initialized
+--> exceptions_bad_init.adb:39:15
+   39 |             N := A (Index);
+      |                  ^
+      + possible explanation: value of "A" is unknown following exceptional exit

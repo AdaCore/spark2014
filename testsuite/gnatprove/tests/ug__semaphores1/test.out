@@ -1,26 +1,36 @@
-semaphores1.adb:8:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+ info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+--> semaphores1.adb:8:16
 
-semaphores1.adb:17:31: medium: overflow check might fail, cannot prove upper bound for The_Data + 1
-   17 |         The_Data := The_Data + 1;
-      |                     ~~~~~~~~~^~~
-  reason for check: result of addition must fit in a 32-bits machine integer
+ medium: overflow check might fail, cannot prove upper bound for The_Data + 1
+--> semaphores1.adb:17:31
+   17 |             The_Data := The_Data + 1;
+      |                         ~~~~~~~~~^~~
+      + reason for check: result of addition must fit in a 32-bits machine integer
 
-semaphores1.adb:34:07: warning: no Always_Terminates aspect available for "Set_True" [assumed-always-terminates]
-   34 |      Set_True (Semaphore);
-      |      ^~~~~~~~~~~~~~~~~~~
-  assuming "Set_True" always terminates
+ warning: no Always_Terminates aspect available for "Set_True" [assumed-always-terminates]
+--> semaphores1.adb:34:07
+   34 |          Set_True (Semaphore);
+      |          ^~~~~~~~~~~~~~~~~~~
+      + assuming "Set_True" always terminates
 
-semaphores1.adb:42:07: warning: no Always_Terminates aspect available for "Suspend_Until_True" [assumed-always-terminates]
-   42 |      Suspend_Until_True (Semaphore);
-      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  assuming "Suspend_Until_True" always terminates
+ warning: no Always_Terminates aspect available for "Suspend_Until_True" [assumed-always-terminates]
+--> semaphores1.adb:42:07
+   42 |          Suspend_Until_True (Semaphore);
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      + assuming "Suspend_Until_True" always terminates
 
-semaphores1.ads:6:09: medium: ceiling priority protocol might not be respected
-    6 |   task T1;
-      |        ^~
-semaphores1.ads:6:09: info: nontermination of task proved
+ medium: ceiling priority protocol might not be respected
+--> semaphores1.ads:6:09
+    6 |       task T1;
+      |            ^~
 
-semaphores1.ads:7:09: medium: ceiling priority protocol might not be respected
-    7 |   task T2;
-      |        ^~
-semaphores1.ads:7:09: info: nontermination of task proved
+ info: nontermination of task proved
+--> semaphores1.ads:6:09
+
+ medium: ceiling priority protocol might not be respected
+--> semaphores1.ads:7:09
+    7 |       task T2;
+      |            ^~
+
+ info: nontermination of task proved
+--> semaphores1.ads:7:09

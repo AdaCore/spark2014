@@ -1,11 +1,12 @@
+ warning: unreachable branch
+--> exceptions_rte.adb:9:48
+    9 |         Exceptional_Cases => (Constraint_Error => True);
+      |                                                   ^~~~
 
-exceptions_rte.adb:9:48: warning: unreachable branch
-    9 |     Exceptional_Cases => (Constraint_Error => True);
-      |                                               ^~~~
-
-exceptions_rte.adb:14:25: high: overflow check might fail, cannot prove upper bound for A (I) + 1
-   14 |         A (I) := A (I) + 1;
-      |                  ~~~~~~^~~
-  e.g. when A = (1 => Natural'Last)
-        and I = 1
-  reason for check: result of addition must fit in a 32-bits machine integer
+ high: overflow check might fail, cannot prove upper bound for A (I) + 1
+--> exceptions_rte.adb:14:25
+   14 |             A (I) := A (I) + 1;
+      |                      ~~~~~~^~~
+      + e.g. when A = (1 => Natural'Last)
+      and I = 1
+      + reason for check: result of addition must fit in a 32-bits machine integer

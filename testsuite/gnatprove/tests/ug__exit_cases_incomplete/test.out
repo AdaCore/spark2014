@@ -1,5 +1,10 @@
-exit_cases_incomplete.ads:7:18: info: exit case proved
-  on normal return from Might_Return_Abnormally at exit_cases_incomplete.ads:5
-exit_cases_incomplete.ads:7:18: info: exit case proved
-  on exceptional exit from Might_Return_Abnormally at exit_cases_incomplete.ads:5
-exit_cases_incomplete.ads:8:39: info: exceptional case proved
+ info: exit case proved
+--> exit_cases_incomplete.ads:7:18
+      + on normal return from Might_Return_Abnormally at exit_cases_incomplete.ads:5
+
+ info: exit case proved
+--> exit_cases_incomplete.ads:7:18
+      + on exceptional exit from Might_Return_Abnormally at exit_cases_incomplete.ads:5
+
+ info: exceptional case proved
+--> exit_cases_incomplete.ads:8:39

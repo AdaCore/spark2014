@@ -1,12 +1,20 @@
-increment_calls.adb:8:04: info: initialization of "X" proved
-increment_calls.adb:15:04: info: precondition proved
+ info: initialization of "X" proved
+--> increment_calls.adb:8:04
 
-increment_calls.adb:16:04: medium: precondition might fail
-   16 |   Increment_Guarded (X);
-      |   ^~~~~~~~~~~~~~~~~~~~
-  e.g. when X = Integer'Last
-  possible fix: call at line 15 should mention X (for argument X) in a postcondition
-   15 |   Increment_Guarded (X);
-      |   ^ here
-increment_calls.adb:19:04: info: precondition proved
-increment_calls.adb:20:04: info: precondition proved
+ info: precondition proved
+--> increment_calls.adb:15:04
+
+ medium: precondition might fail
+--> increment_calls.adb:16:04
+   16 |       Increment_Guarded (X);
+      |       ^~~~~~~~~~~~~~~~~~~~
+      + e.g. when X = Integer'Last
+      + possible fix: call at line 15 should mention X (for argument X) in a postcondition
+   15 |       Increment_Guarded (X);
+      |       ^
+
+ info: precondition proved
+--> increment_calls.adb:19:04
+
+ info: precondition proved
+--> increment_calls.adb:20:04

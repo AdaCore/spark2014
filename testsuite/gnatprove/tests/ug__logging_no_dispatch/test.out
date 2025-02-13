@@ -1,1 +1,2 @@
-logging_no_dispatch.ads:10:13: info: implicit aspect Always_Terminates on "Log_Size" has been proved, subprogram will terminate
+ info: implicit aspect Always_Terminates on "Log_Size" has been proved, subprogram will terminate
+--> logging_no_dispatch.ads:10:13

@@ -1,3 +1,8 @@
-terminating_loops.adb:9:10: info: loop variant proved
-terminating_loops.adb:10:11: info: pointer dereference check proved
-terminating_loops.adb:11:16: info: pointer dereference check proved
+ info: loop variant proved
+--> terminating_loops.adb:9:10
+
+ info: pointer dereference check proved
+--> terminating_loops.adb:10:11
+
+ info: pointer dereference check proved
+--> terminating_loops.adb:11:16

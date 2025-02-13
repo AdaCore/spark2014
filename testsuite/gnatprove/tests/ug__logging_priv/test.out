@@ -1,5 +1,7 @@
-
-logging_priv.ads:18:04: medium: type "Log_Type" is not fully initialized
-   18>|   type Log_Type is record
-  ... | ...
-   21 |   end record;
+ medium: type "Log_Type" is not fully initialized
+--> logging_priv.ads:18:04
+   18 |       type Log_Type is record
+      |       ^~~~~~~~~~~~~~~~~~~~~~~
+      :
+   21 |       end record;
+      |       ~~~~~~~~~~~

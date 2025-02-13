@@ -1,76 +1,226 @@
-perm.ads:8:13: info: implicit aspect Always_Terminates on "Occurrences" has been proved, subprogram will terminate
-perm.ads:10:17: info: precondition proved
-perm.ads:10:17: info: subprogram variant proved
-perm.ads:10:42: info: overflow check proved
-perm.ads:10:56: info: index check proved
-perm.ads:14:13: info: implicit aspect Always_Terminates on "Occurrences" has been proved, subprogram will terminate
-perm.ads:15:07: info: precondition proved
-perm.ads:17:13: info: implicit aspect Always_Terminates on "Occ" has been proved, subprogram will terminate
-perm.ads:20:13: info: implicit aspect Always_Terminates on "Is_Perm" has been proved, subprogram will terminate
-perm-lemma_subprograms.adb:3:14: info: aspect Always_Terminates on "Occ_Eq" has been proved, subprogram will terminate
-perm-lemma_subprograms.adb:6:15: info: range check proved
-perm-lemma_subprograms.adb:6:35: info: range check proved
-perm-lemma_subprograms.adb:7:14: info: precondition proved
-perm-lemma_subprograms.adb:7:14: info: postcondition proved
-perm-lemma_subprograms.adb:7:36: info: precondition proved
-perm-lemma_subprograms.adb:15:07: info: precondition proved
-perm-lemma_subprograms.adb:15:07: info: subprogram variant proved
-perm-lemma_subprograms.adb:15:24: info: overflow check proved
-perm-lemma_subprograms.adb:15:32: info: overflow check proved
-perm-lemma_subprograms.adb:18:14: info: aspect Always_Terminates on "Occ_Set_Rec" has been proved, subprogram will terminate
-perm-lemma_subprograms.adb:22:36: info: precondition proved
-perm-lemma_subprograms.adb:24:08: info: postcondition proved
-perm-lemma_subprograms.adb:24:19: info: index check proved
-perm-lemma_subprograms.adb:24:41: info: precondition proved
-perm-lemma_subprograms.adb:24:62: info: precondition proved
-perm-lemma_subprograms.adb:25:14: info: predicate check proved
-perm-lemma_subprograms.adb:25:28: info: precondition proved
-perm-lemma_subprograms.adb:26:11: info: predicate check proved
-perm-lemma_subprograms.adb:26:25: info: precondition proved
-perm-lemma_subprograms.adb:26:50: info: predicate check proved
-perm-lemma_subprograms.adb:27:18: info: predicate check proved
-perm-lemma_subprograms.adb:27:32: info: precondition proved
-perm-lemma_subprograms.adb:27:55: info: index check proved
-perm-lemma_subprograms.adb:28:11: info: predicate check proved
-perm-lemma_subprograms.adb:28:25: info: precondition proved
-perm-lemma_subprograms.adb:28:48: info: index check proved
-perm-lemma_subprograms.adb:28:54: info: predicate check proved
-perm-lemma_subprograms.adb:30:25: info: precondition proved
-perm-lemma_subprograms.adb:31:34: info: index check proved
-perm-lemma_subprograms.adb:32:20: info: predicate check proved
-perm-lemma_subprograms.adb:32:34: info: precondition proved
-perm-lemma_subprograms.adb:33:17: info: predicate check proved
-perm-lemma_subprograms.adb:33:31: info: precondition proved
-perm-lemma_subprograms.adb:35:25: info: precondition proved
-perm-lemma_subprograms.adb:36:34: info: index check proved
-perm-lemma_subprograms.adb:37:20: info: predicate check proved
-perm-lemma_subprograms.adb:37:34: info: precondition proved
-perm-lemma_subprograms.adb:38:17: info: predicate check proved
-perm-lemma_subprograms.adb:38:31: info: precondition proved
-perm-lemma_subprograms.adb:49:10: info: precondition proved
-perm-lemma_subprograms.adb:49:26: info: overflow check proved
-perm-lemma_subprograms.adb:49:33: info: overflow check proved
-perm-lemma_subprograms.adb:51:10: info: precondition proved
-perm-lemma_subprograms.adb:51:10: info: subprogram variant proved
-perm-lemma_subprograms.adb:51:37: info: overflow check proved
-perm-lemma_subprograms.adb:58:07: info: precondition proved
-perm-lemma_subprograms.ads:7:13: info: implicit aspect Always_Terminates on "Is_Set" has been proved, subprogram will terminate
-perm-lemma_subprograms.ads:10:20: info: index check proved
-perm-lemma_subprograms.ads:12:39: info: index check proved
-perm-lemma_subprograms.ads:12:47: info: index check proved
-perm-lemma_subprograms.ads:15:14: info: aspect Always_Terminates on "Occ_Set" has been proved, subprogram will terminate
-perm-lemma_subprograms.ads:17:06: info: data dependencies proved
-perm-lemma_subprograms.ads:18:38: info: precondition proved
-perm-lemma_subprograms.ads:20:08: info: postcondition proved
-perm-lemma_subprograms.ads:20:19: info: index check proved
-perm-lemma_subprograms.ads:21:14: info: predicate check proved
-perm-lemma_subprograms.ads:21:27: info: predicate check proved
-perm-lemma_subprograms.ads:21:40: info: predicate check proved
-perm-lemma_subprograms.ads:22:20: info: predicate check proved
-perm-lemma_subprograms.ads:22:31: info: index check proved
-perm-lemma_subprograms.ads:22:37: info: predicate check proved
-perm-lemma_subprograms.ads:22:48: info: index check proved
-perm-lemma_subprograms.ads:22:54: info: predicate check proved
-perm-lemma_subprograms.ads:25:36: info: index check proved
-perm-lemma_subprograms.ads:25:44: info: predicate check proved
-perm-lemma_subprograms.ads:25:57: info: predicate check proved
+ info: implicit aspect Always_Terminates on "Occurrences" has been proved, subprogram will terminate
+--> perm.ads:8:13
+
+ info: precondition proved
+--> perm.ads:10:17
+
+ info: subprogram variant proved
+--> perm.ads:10:17
+
+ info: overflow check proved
+--> perm.ads:10:42
+
+ info: index check proved
+--> perm.ads:10:56
+
+ info: implicit aspect Always_Terminates on "Occurrences" has been proved, subprogram will terminate
+--> perm.ads:14:13
+
+ info: precondition proved
+--> perm.ads:15:07
+
+ info: implicit aspect Always_Terminates on "Occ" has been proved, subprogram will terminate
+--> perm.ads:17:13
+
+ info: implicit aspect Always_Terminates on "Is_Perm" has been proved, subprogram will terminate
+--> perm.ads:20:13
+ info: aspect Always_Terminates on "Occ_Eq" has been proved, subprogram will terminate
+--> perm-lemma_subprograms.adb:3:14
+
+ info: range check proved
+--> perm-lemma_subprograms.adb:6:15
+
+ info: range check proved
+--> perm-lemma_subprograms.adb:6:35
+
+ info: precondition proved
+--> perm-lemma_subprograms.adb:7:14
+
+ info: postcondition proved
+--> perm-lemma_subprograms.adb:7:14
+
+ info: precondition proved
+--> perm-lemma_subprograms.adb:7:36
+
+ info: precondition proved
+--> perm-lemma_subprograms.adb:15:07
+
+ info: subprogram variant proved
+--> perm-lemma_subprograms.adb:15:07
+
+ info: overflow check proved
+--> perm-lemma_subprograms.adb:15:24
+
+ info: overflow check proved
+--> perm-lemma_subprograms.adb:15:32
+
+ info: aspect Always_Terminates on "Occ_Set_Rec" has been proved, subprogram will terminate
+--> perm-lemma_subprograms.adb:18:14
+
+ info: precondition proved
+--> perm-lemma_subprograms.adb:22:36
+
+ info: postcondition proved
+--> perm-lemma_subprograms.adb:24:08
+
+ info: index check proved
+--> perm-lemma_subprograms.adb:24:19
+
+ info: precondition proved
+--> perm-lemma_subprograms.adb:24:41
+
+ info: precondition proved
+--> perm-lemma_subprograms.adb:24:62
+
+ info: predicate check proved
+--> perm-lemma_subprograms.adb:25:14
+
+ info: precondition proved
+--> perm-lemma_subprograms.adb:25:28
+
+ info: predicate check proved
+--> perm-lemma_subprograms.adb:26:11
+
+ info: precondition proved
+--> perm-lemma_subprograms.adb:26:25
+
+ info: predicate check proved
+--> perm-lemma_subprograms.adb:26:50
+
+ info: predicate check proved
+--> perm-lemma_subprograms.adb:27:18
+
+ info: precondition proved
+--> perm-lemma_subprograms.adb:27:32
+
+ info: index check proved
+--> perm-lemma_subprograms.adb:27:55
+
+ info: predicate check proved
+--> perm-lemma_subprograms.adb:28:11
+
+ info: precondition proved
+--> perm-lemma_subprograms.adb:28:25
+
+ info: index check proved
+--> perm-lemma_subprograms.adb:28:48
+
+ info: predicate check proved
+--> perm-lemma_subprograms.adb:28:54
+
+ info: precondition proved
+--> perm-lemma_subprograms.adb:30:25
+
+ info: index check proved
+--> perm-lemma_subprograms.adb:31:34
+
+ info: predicate check proved
+--> perm-lemma_subprograms.adb:32:20
+
+ info: precondition proved
+--> perm-lemma_subprograms.adb:32:34
+
+ info: predicate check proved
+--> perm-lemma_subprograms.adb:33:17
+
+ info: precondition proved
+--> perm-lemma_subprograms.adb:33:31
+
+ info: precondition proved
+--> perm-lemma_subprograms.adb:35:25
+
+ info: index check proved
+--> perm-lemma_subprograms.adb:36:34
+
+ info: predicate check proved
+--> perm-lemma_subprograms.adb:37:20
+
+ info: precondition proved
+--> perm-lemma_subprograms.adb:37:34
+
+ info: predicate check proved
+--> perm-lemma_subprograms.adb:38:17
+
+ info: precondition proved
+--> perm-lemma_subprograms.adb:38:31
+
+ info: precondition proved
+--> perm-lemma_subprograms.adb:49:10
+
+ info: overflow check proved
+--> perm-lemma_subprograms.adb:49:26
+
+ info: overflow check proved
+--> perm-lemma_subprograms.adb:49:33
+
+ info: precondition proved
+--> perm-lemma_subprograms.adb:51:10
+
+ info: subprogram variant proved
+--> perm-lemma_subprograms.adb:51:10
+
+ info: overflow check proved
+--> perm-lemma_subprograms.adb:51:37
+
+ info: precondition proved
+--> perm-lemma_subprograms.adb:58:07
+
+ info: implicit aspect Always_Terminates on "Is_Set" has been proved, subprogram will terminate
+--> perm-lemma_subprograms.ads:7:13
+
+ info: index check proved
+--> perm-lemma_subprograms.ads:10:20
+
+ info: index check proved
+--> perm-lemma_subprograms.ads:12:39
+
+ info: index check proved
+--> perm-lemma_subprograms.ads:12:47
+
+ info: aspect Always_Terminates on "Occ_Set" has been proved, subprogram will terminate
+--> perm-lemma_subprograms.ads:15:14
+
+ info: data dependencies proved
+--> perm-lemma_subprograms.ads:17:06
+
+ info: precondition proved
+--> perm-lemma_subprograms.ads:18:38
+
+ info: postcondition proved
+--> perm-lemma_subprograms.ads:20:08
+
+ info: index check proved
+--> perm-lemma_subprograms.ads:20:19
+
+ info: predicate check proved
+--> perm-lemma_subprograms.ads:21:14
+
+ info: predicate check proved
+--> perm-lemma_subprograms.ads:21:27
+
+ info: predicate check proved
+--> perm-lemma_subprograms.ads:21:40
+
+ info: predicate check proved
+--> perm-lemma_subprograms.ads:22:20
+
+ info: index check proved
+--> perm-lemma_subprograms.ads:22:31
+
+ info: predicate check proved
+--> perm-lemma_subprograms.ads:22:37
+
+ info: index check proved
+--> perm-lemma_subprograms.ads:22:48
+
+ info: predicate check proved
+--> perm-lemma_subprograms.ads:22:54
+
+ info: index check proved
+--> perm-lemma_subprograms.ads:25:36
+
+ info: predicate check proved
+--> perm-lemma_subprograms.ads:25:44
+
+ info: predicate check proved
+--> perm-lemma_subprograms.ads:25:57

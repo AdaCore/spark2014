@@ -1,6 +1,6 @@
-
-exceptions_bad.adb:16:25: error: formal parameter of mode "in out" in consequence of Exceptional_Cases
-   16 |                        A (I) = (if I < Index then A'Old (I) + 1 else A'Old (I))));
-      |                        ^ here
-  only parameters passed by reference are allowed
+ error: formal parameter of mode "in out" in consequence of Exceptional_Cases
+--> exceptions_bad.adb:16:25
+   16 |                            A (I) = (if I < Index then A'Old (I) + 1 else A'Old (I))));
+      |                            ^
+      + only parameters passed by reference are allowed
 gnatprove: error during generation of Global contracts

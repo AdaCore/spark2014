@@ -1,13 +1,20 @@
+ high: overflow check might fail, cannot prove lower bound for Total + Incr
+--> logging_out.adb:6:22
+    6 |          Total := Total + Incr;
+      |                   ~~~~~~^~~~~~
+      + e.g. when Incr = -1
+      and Total = Integer'First
+      + reason for check: result of addition must fit in a 32-bits machine integer
+      + possible fix: subprogram at logging_out.ads:7 should mention Incr and Total in a precondition
+      --> logging_out.ads:7:04
+    7 |       procedure Add_To_Total (Incr : in Integer) with
+      |       ^
 
-logging_out.adb:6:22: high: overflow check might fail, cannot prove lower bound for Total + Incr
-    6 |      Total := Total + Incr;
-      |               ~~~~~~^~~~~~
-  e.g. when Incr = -1
-        and Total = Integer'First
-  reason for check: result of addition must fit in a 32-bits machine integer
-  possible fix: subprogram at logging_out.ads:7 should mention Incr and Total in a precondition
-    7 |   procedure Add_To_Total (Incr : in Integer) with
-      |   ^ here
-logging_out.ads:8:06: info: data dependencies proved
-logging_out.ads:8:45: info: initialization of "Log_Out" proved
-logging_out.ads:9:06: info: flow dependencies proved
+ info: data dependencies proved
+--> logging_out.ads:8:06
+
+ info: initialization of "Log_Out" proved
+--> logging_out.ads:8:45
+
+ info: flow dependencies proved
+--> logging_out.ads:9:06

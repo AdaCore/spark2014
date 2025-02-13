@@ -1,59 +1,155 @@
-predefined.adb:5:09: info: absence of resource or memory leak proved
-predefined.adb:13:33: info: pointer dereference check proved
-predefined.adb:13:40: info: subprogram variant proved
-predefined.adb:13:47: info: pointer dereference check proved
-predefined.ads:8:06: info: Container_Aggregates annotation proved
-  when establishing invariant on Length at predefined.ads:15
-  after a call to Empty_List at predefined.ads:10
-predefined.ads:8:06: info: Container_Aggregates annotation proved
-  when reestablishing invariant on Get at predefined.ads:19
-  after a call to Add at predefined.ads:34
-predefined.ads:8:06: info: Container_Aggregates annotation proved
-  when reestablishing invariant on Length at predefined.ads:15
-  after a call to Add at predefined.ads:34
-predefined.ads:10:13: info: implicit aspect Always_Terminates on "Empty_List" has been proved, subprogram will terminate
-predefined.ads:12:13: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
-predefined.ads:12:43: info: predicate check proved
-predefined.ads:15:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
-predefined.ads:19:13: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
-predefined.ads:20:13: info: predicate check proved
-predefined.ads:20:18: info: predicate check proved
-predefined.ads:24:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
-predefined.ads:25:07: info: predicate check proved
-predefined.ads:25:21: info: predicate check proved
-predefined.ads:28:15: info: precondition proved
-predefined.ads:28:24: info: predicate check proved
-predefined.ads:28:29: info: precondition proved
-predefined.ads:28:38: info: predicate check proved
-predefined.ads:30:13: info: implicit aspect Always_Terminates on "Copy" has been proved, subprogram will terminate
-predefined.ads:32:14: info: postcondition proved
-predefined.ads:34:14: info: aspect Always_Terminates on "Add" has been proved, subprogram will terminate
-predefined.ads:36:14: info: predicate check proved
-predefined.ads:36:14: info: postcondition proved
-predefined.ads:36:37: info: predicate check proved
-predefined.ads:36:44: info: predicate check proved
-predefined.ads:37:15: info: precondition proved
-predefined.ads:37:23: info: predicate check proved
-predefined.ads:38:42: info: predicate check proved
-predefined.ads:38:55: info: predicate check proved
-predefined.ads:39:18: info: precondition proved
-predefined.ads:39:26: info: predicate check proved
-predefined.ads:39:31: info: precondition proved
+ info: absence of resource or memory leak proved
+--> predefined.adb:5:09
 
-predefined.ads:39:36: medium: resource or memory leak might occur
-   39 |                 Get (L, I) = Get (Copy (L)'Old, I));
-      |                                   ^~~~~~~
-  possible explanation: call to allocating function inside an assertion leaks some resource or memory
-predefined.ads:39:50: info: predicate check proved
-predefined.ads:50:24: info: predicate check proved
-predefined.ads:50:31: info: predicate check proved
-predefined.ads:50:33: info: predicate check proved
-predefined.ads:50:35: info: subprogram variant proved
-predefined.ads:50:35: info: predicate check proved
-predefined.ads:50:44: info: pointer dereference check proved
-predefined.ads:53:10: info: predicate check proved
-predefined.ads:53:14: info: predicate check proved
-predefined.ads:53:31: info: pointer dereference check proved
-predefined.ads:53:42: info: subprogram variant proved
-predefined.ads:53:42: info: precondition proved
-predefined.ads:53:48: info: pointer dereference check proved
+ info: pointer dereference check proved
+--> predefined.adb:13:33
+
+ info: subprogram variant proved
+--> predefined.adb:13:40
+
+ info: pointer dereference check proved
+--> predefined.adb:13:47
+
+ info: Container_Aggregates annotation proved
+--> predefined.ads:8:06
+      + when establishing invariant on Length at predefined.ads:15
+      + after a call to Empty_List at predefined.ads:10
+
+ info: Container_Aggregates annotation proved
+--> predefined.ads:8:06
+      + when reestablishing invariant on Get at predefined.ads:19
+      + after a call to Add at predefined.ads:34
+
+ info: Container_Aggregates annotation proved
+--> predefined.ads:8:06
+      + when reestablishing invariant on Length at predefined.ads:15
+      + after a call to Add at predefined.ads:34
+
+ info: implicit aspect Always_Terminates on "Empty_List" has been proved, subprogram will terminate
+--> predefined.ads:10:13
+
+ info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
+--> predefined.ads:12:13
+
+ info: predicate check proved
+--> predefined.ads:12:43
+
+ info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+--> predefined.ads:15:13
+
+ info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+--> predefined.ads:19:13
+
+ info: predicate check proved
+--> predefined.ads:20:13
+
+ info: predicate check proved
+--> predefined.ads:20:18
+
+ info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
+--> predefined.ads:24:13
+
+ info: predicate check proved
+--> predefined.ads:25:07
+
+ info: predicate check proved
+--> predefined.ads:25:21
+
+ info: precondition proved
+--> predefined.ads:28:15
+
+ info: predicate check proved
+--> predefined.ads:28:24
+
+ info: precondition proved
+--> predefined.ads:28:29
+
+ info: predicate check proved
+--> predefined.ads:28:38
+
+ info: implicit aspect Always_Terminates on "Copy" has been proved, subprogram will terminate
+--> predefined.ads:30:13
+
+ info: postcondition proved
+--> predefined.ads:32:14
+
+ info: aspect Always_Terminates on "Add" has been proved, subprogram will terminate
+--> predefined.ads:34:14
+
+ info: predicate check proved
+--> predefined.ads:36:14
+
+ info: postcondition proved
+--> predefined.ads:36:14
+
+ info: predicate check proved
+--> predefined.ads:36:37
+
+ info: predicate check proved
+--> predefined.ads:36:44
+
+ info: precondition proved
+--> predefined.ads:37:15
+
+ info: predicate check proved
+--> predefined.ads:37:23
+
+ info: predicate check proved
+--> predefined.ads:38:42
+
+ info: predicate check proved
+--> predefined.ads:38:55
+
+ info: precondition proved
+--> predefined.ads:39:18
+
+ info: predicate check proved
+--> predefined.ads:39:26
+
+ info: precondition proved
+--> predefined.ads:39:31
+
+ medium: resource or memory leak might occur
+--> predefined.ads:39:36
+   39 |                     Get (L, I) = Get (Copy (L)'Old, I));
+      |                                       ^~~~~~~
+      + possible explanation: call to allocating function inside an assertion leaks some resource or memory
+
+ info: predicate check proved
+--> predefined.ads:39:50
+
+ info: predicate check proved
+--> predefined.ads:50:24
+
+ info: predicate check proved
+--> predefined.ads:50:31
+
+ info: predicate check proved
+--> predefined.ads:50:33
+
+ info: subprogram variant proved
+--> predefined.ads:50:35
+
+ info: predicate check proved
+--> predefined.ads:50:35
+
+ info: pointer dereference check proved
+--> predefined.ads:50:44
+
+ info: predicate check proved
+--> predefined.ads:53:10
+
+ info: predicate check proved
+--> predefined.ads:53:14
+
+ info: pointer dereference check proved
+--> predefined.ads:53:31
+
+ info: subprogram variant proved
+--> predefined.ads:53:42
+
+ info: precondition proved
+--> predefined.ads:53:42
+
+ info: pointer dereference check proved
+--> predefined.ads:53:48
