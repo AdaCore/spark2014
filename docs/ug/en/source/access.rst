@@ -1,26 +1,98 @@
-Pointer Support and Dynamic Memory Management
-=============================================
+Pointer Support, Ownership, and Dynamic Memory Management
+=========================================================
 
-Access types are supported in |SPARK| but with major restrictions. Here is
-an overview of the kind of access types supported in |SPARK|, their
-restrictions, and what they can be used for.
+Access types (pointers) are supported in |SPARK| but with important
+restrictions. As in Rust, |SPARK| enforces a :ref:`Memory Ownership Policy`.
+Ownership can be understood by analogy to a set of permissions to perform
+operations on the designated value of an object of an access type. When we copy
+an object of an access type, we transfer or grant some or all of the permissions
+on the designated value from the source access-type object to the destination
+access-type object and revoke some or all of the permissions on the source
+access-type object. Which permissions are transferred, granted or revoked
+depends on the ownership semantics of the copy operation. As we will see below,
+|SPARK| *infers* the ownership semantics of a copy operation based on the kind
+of access type of the destination access-type object.
+
+.. note::
+
+  Because the ownership semantics associated with copying an access-type object
+  are inferred by |SPARK| based on the kind of access type of the destination
+  access-type object, we strongly encourage you to review Ada access types
+  before reading the remainder of this section. A solid presentation of Ada
+  access types can be found at
+  `learn.adacore.com <https://learn.adacore.com/courses/advanced-ada/parts/resource_management/access_types.html>`_.
+
+The table below presents each kind of Ada access type and the ownership
+semantics associated with copying to an access-type object of that kind:
+
+.. list-table:: Ownership Semantics of Ada Access Types in |SPARK|
+   :header-rows: 1
+
+   * - Kind of Access Type
+     - Semantics on Copy
+     - Supports Deallocation?
+   * - Named pool-specific access-to-variable
+     - :ref:`Move<Moving>`
+     - :ref:`Yes<Deallocation>`
+   * - Named general access-to-variable
+     - :ref:`Move<Moving>`
+     - No
+   * - Named access-to-constant
+     - Not subject to ownership
+     - No
+   * - Anonymous access-to-variable
+     - :ref:`Borrow<Borrowing>`
+     - No - see note below
+   * - Anonymous access-to-constant
+     - :ref:`Observe<Observing>`
+     - No - see note below
+   * - Access-to-subprogram
+     - N/A
+     - N/A
+
+Note that while anonymous access-to-object types cannot be used to deallocate
+the value they designate, the original owner of the value may be used to do so,
+provided the original owner is a pool-specific access-to-variable type.
+
+Here are overviews and examples of each kind of access type.
 
 * Named pool-specific access-to-variable types can only designate data allocated
-  on the heap (this is an Ada rule). |SPARK| enforces a
-  :ref:`Memory Ownership Policy` to retain absence of aliasing, see
-  :ref:`Access to Objects and Ownership`. Values of such an access type can be
-  deallocated safely. |GNATprove| generates verification conditions to ensure
-  that no memory can be leaked.
+  on the heap (this is an Ada rule). |SPARK| enforces a :ref:`Memory Ownership
+  Policy` to retain absence of aliasing. Copying into an object of these access
+  types represents :ref:`Moving` the designated value of the access type.
+  Designated values of objects of these access type can be deallocated safely.
+  |GNATprove| generates verification conditions to ensure that no memory can be
+  leaked.
 
   .. code-block:: ada
 
      type PS_Int_Acc is access Integer;
-     X1 : PS_Int_Acc := new Integer'(15);
+     X1 : PS_Int_Acc := new Integer'(15);  -- This is an Allocation
+     X2 : PS_Int_Acc := X1;                -- This is a Move
+
+* Named general access-to-variable types (using the keyword ``all``) can
+  designate data regardless of where it is allocated. They are subject to the
+  :ref:`Memory Ownership Policy` of |SPARK|. Copying into an object of these
+  access types represents :ref:`Moving` the designated value of the access type.
+  However, they cannot be deallocated, and |GNATprove| will flag a memory leaks
+  if a designated value of such an access type is allocated on the heap.
+
+  .. code-block:: ada
+
+     type Gen_Int_Acc is access all Integer;
+     V  : aliased Integer := 15;
+     X3 : Gen_Int_Acc := V'Access;  -- This is a Move
+     X4 : Gen_Int_Acc := X3;        -- This is a Move
+
+     X3 : Gen_Int_Acc := new Integer'(15);  -- This is an Allocation;
+                                            -- |GNATprove| will flag this as a
+                                            -- memory leak because deallocation
+                                            -- is not possible
 
 * Named access-to-constant types (using the keyword ``constant``) can be used
   to designate data regardless of where it is allocated (the stack, the
-  heap...), but they cannot be deallocated. Objects of this type
-  are not subject to any ownership checking but the value they designate
+  heap, etc.), but they cannot be deallocated. They are *not* subject to the
+  :ref:`Memory Ownership Policy` of |SPARK|, however the value they designate
   should be constant all the way down (ie. if such a value has a subcomponent
   of an access-to-variable type, the value designated by this subcomponent
   should be constant too).
@@ -29,38 +101,63 @@ restrictions, and what they can be used for.
 
      type Cst_Int_Acc is access constant Integer;
      C  : aliased constant Integer := 15;
-     X2 : Cst_Int_Acc := C'Access;
+     X4 : Cst_Int_Acc := C'Access;  -- X4 is not subject to ownership
 
-* Named general access-to-variable types (using the keyword ``all``) can
-  designate data regardless of where it is allocated. Like access-to-constant
-  types, they cannot be deallocated, so |GNATprove| will flag memory leaks
-  as soon as a value of such a type is allocated on the heap. They are
-  subject to the :ref:`Memory Ownership Policy` of |SPARK|.
-
-  .. code-block:: ada
-
-     type Gen_Int_Acc is access all Integer;
-     V  : aliased Integer := 15;
-     X3 : Gen_Int_Acc := V'Access;
-
-* Anonymous access-to-object types can only be used as the type of stand-alone
-  objects for :ref:`Observing` and :ref:`Borrowing` and as the return type of
-  :ref:`Traversal Functions`. In particular they cannot be stored inside
-  composite types. They are used to grant temporary access to parts of
-  other data-structures (recursive data-structures, composite types, formal
-  containers...).
+* Anonymous access-to-variable types are subject to the :ref:`Memory Ownership
+  Policy` of |SPARK|. Copying into an object of these access types represents
+  :ref:`Borrowing` the designated value of the access type, granting temporary
+  access to all or part of the object, such as recursive data structures,
+  composite types, or formal containers. These access types may appear as formal
+  parameters of subprograms and as the return type of :ref:`Traversal
+  Functions`, but they cannot be stored inside of composite types or converted
+  to a named access-to-variable type.
 
   .. code-block:: ada
 
-     type List;
-     type List_Acc is access List;
-     type List is record
-       Value : aliased Integer;
-       Next  : List_Acc;
-     end record;
+     type Int_Acc is not null access Integer;
+     X5 : Int_Acc := new Integer'(15);
 
-     L : List_Acc := new List'(14, new List'(15, new List'(16, null)));
-     B : access Integer := L.Next.Value'Access;
+     declare
+        Y  : access Integer := X5;  -- This is a Borrow;
+     begin
+        Y.all := 16;  -- Y can be modified
+     end;  -- Y goes out of scope, X5 regains full ownership; its value is 16
+
+  .. code-block:: ada
+
+    type List;
+    type List_Acc is access List;
+    type List is record
+      Value : aliased Integer;
+      Next  : List_Acc;
+    end record;
+
+    L : List_Acc := new List'(14, new List'(15, new List'(16, null)));
+    B : access Integer := L.Next.Value'Access;  -- B borrows part of L
+
+* Anonymous access-to-constant types are subject to the :ref:`Memory Ownership
+  Policy` of |SPARK|. Copying into an object of these access types represents
+  :ref:`Observing` the value of the access type, granting a temporary view of
+  all or part of the object, such as recursive data structures, composite types,
+  or formal containers. These access types may appear as formal parameters of
+  subprograms and as the return type of :ref:`Traversal Functions`, but they
+  cannot be stored inside of composite types or converted to a named
+  access-to-constant type.
+
+
+  .. code-block:: ada
+
+     type Int_Acc is not null access Integer;
+     X5 : Int_Acc := new Integer'(15);
+
+     declare
+        Y  : access constant Integer := X5;  -- This is an Observe
+        Z : access constant Integer := X5;   -- We can have more than one
+                                             -- observer
+     begin
+        ...
+     end;  -- Y,Z go out of scope, X5 regains full ownership; its value is still
+           -- 15
 
 * Access-to-subprogram types can designate functions and procedures. Named
   access-to-subprogram types can be annotated with a contract, see
@@ -76,22 +173,28 @@ restrictions, and what they can be used for.
 .. index:: ownership; analysis of
            access types; access to object
 
-Access to Objects and Ownership
--------------------------------
+Ownership Operations on Access-to-Object Types
+----------------------------------------------
 
-In |SPARK|, values of an access-to-variable type are subject to a
-:ref:`Memory Ownership Policy`. The idea is that an object designated by a
-pointer always has a single owner, which retains the right to either modify it,
-or (exclusive or) share it with others in a read-only way. Said otherwise, we
-always have either several copies of the pointer that allow only reading, or
-only a single copy of the pointer that allows modification.
+As the examples above illustrate, |SPARK| associates three distinct semantics
+with assignments to access-to-object types, depending on the kind of access type
+to which the assignment is made: :ref:`Moving`, :ref:`Observing`, and
+:ref:`Borrowing`. Additionally, for pool-specific access-to-variable types,
+|SPARK| supports :ref:`Deallocation` of the memory designated by the access
+type.
 
-The main idea used to enforce single ownership for pointers is the move
+Moving
+^^^^^^
+
+The main idea used to enforce single ownership for pointers is the `move`
 semantics of assignments. When a pointer is copied through an assignment
-statement, the ownership of the pointer is transferred to the left hand side of
-the assignment. As a result, the right hand side loses the ownership of the
-object, and therefore loses the right to access it, both for writing and
-reading. In the example below, the assignment from ``X`` to ``Y`` causes ``X``
+statement to a pointer of a named pool-specific access-to-variable type or named
+general access-to-variable type, the ownership of the pointer is transferred
+(moved) to the left hand side of the assignment. As a result, the right hand
+side loses the ownership of the object and therefore loses the right to access
+it, both for writing and reading.
+
+In the example below, the assignment from ``X`` to ``Y`` causes ``X``
 to lose ownership on the value it references:
 
 .. literalinclude:: /examples/ug__access1/test.adb
@@ -105,19 +208,19 @@ As a result, the last assertion, which reads the value of ``X``, is illegal in
    :language: none
    :linenos:
 
-In this example, we can see the point of these ownership rules. To correctly
-reason about the semantics of a program, |SPARK| needs to know, when a change is
-made, what are the objects that are potentially impacted. Because it assumes
-that there can be no aliasing (at least no aliasing of mutable data,
-see :ref:`Absence of Interferences`), the tool
-can easily determine what are the parts of the environment that are updated
-by a statement, be it a simple assignment, or for example a procedure call. If
-we were to break this assumption, we would need to either assume the worst
-(that all references can be aliases of each other) or require the user to
-explicitly annotate subprograms to describe which references can be aliased and
-which cannot. In our example, |SPARK| can deduce that an assignment to ``Y``
-cannot impact ``X``. This is only correct because of ownership rules that
-prevent us from accessing the value of ``X`` after the update of ``Y``.
+This example illustrates the purpose of these ownership rules. To reason
+about the semantics of a program, |SPARK| needs to know, when a change is
+made, which objects are potentially impacted. Because |SPARK| assumes that there
+can be no aliasing (at least no aliasing of mutable data, see
+:ref:`Absence of Interferences`), the tool can easily determine what are the
+parts of the environment that are updated by a statement, be it a simple
+assignment, or for example a procedure call. If we were to break this
+assumption, we would need to either assume the worst (that all references can be
+aliases of each other) or require the user to explicitly annotate subprograms to
+describe which references can be aliased and which cannot. In our example,
+|SPARK| can deduce that an assignment to ``Y`` cannot impact ``X``. This is only
+correct because of ownership rules that prevent us from accessing the value of
+``X`` after the update of ``Y``.
 
 Note that a variable which has been moved is not necessarily lost for the rest
 of the program. Indeed, it is possible to assign it again, restoring ownership.
@@ -142,139 +245,17 @@ The above variant is rejected by |GNATprove|:
    :language: none
    :linenos:
 
-.. index:: deallocation
-           Unchecked_Deallocation
-           access types; deallocation
-
-.. _Attribute Access:
-
-Attribute ``Access``
---------------------
-
-Let's consider objects :code:`Variable` and :code:`Const`, respectively a
-variable and constant of type :code:`T`, marked as :code:`aliased` so that it
-is possible to use attribute :code:`Access` on them:
-
-.. code-block:: ada
-
-   Variable : aliased T;
-   Const    : aliased constant T := ...;
-
-Depending on the type of the attribute reference expression, taking an access
-value to an object is interpreted differently in SPARK.
-
-* attribute :code:`'Access` of an anonymous access type:
-
-  .. code-block:: ada
-
-     Variable_Handle : access T := Variable'Access;
-     Const_Handle    : access constant T := Const'Access;
-
-  The :code:`'Access` attribute of an anonymous access-to-variable type, like
-  for :code:`Variable_Handle` above, allows :ref:`Borrowing` a part of an
-  object temporarily, like :code:`Variable` here.  The :code:`'Access`
-  attribute of an anonymous access-to-constant type, like for
-  :code:`Const_Handle` above, allows :ref:`Observing` a part of an object
-  temporarily, like :code:`Const` here.
-
-* attribute :code:`'Access` of a general access-to-variable type:
-
-  .. code-block:: ada
-
-     type General_Ptr is access all T;
-     General_Handle : General_Ptr := Variable'Access;
-
-  The :code:`'Access` attribute of a general access-to-variable type, like for
-  :code:`General_Handle` above, allows moving the ownership of a local object,
-  like :code:`Variable` here, into a pointer. Ownership cannot be reclaimed
-  back by :code:`Variable` which should not be read or written directly
-  afterwards. This is only allowed in SPARK if :code:`Variable` is a local
-  object, i.e. it is declared inside a subprogram.
-
-* attribute :code:`'Access` of a named access-to-constant type:
-
-  .. code-block:: ada
-
-     type Const_Ptr is access constant T;
-     Const_Handle : Const_Ptr := Const'Access;
-
-  The :code:`'Access` attribute of a named access-to-constant type, like for
-  :code:`Const_Handle` above, allows sharing a read-only access to a constant
-  part of an object, like :code:`Const` here.
-
-Deallocation
-------------
-
-At the end of its lifetime, unless the memory it points to is transferred to
-another owner, an owning pointer should be deallocated. This is typically
-achieved by instantiating the standard generic procedure
-``Ada.Unchecked_Deallocation`` with the type of the underlying ``Object`` and
-the type ``Name`` of the access type:
-
-.. literalinclude:: /examples/ug__access4/test.adb
-   :language: ada
-   :linenos:
-
-|GNATprove| guarantees the absence of memory leak in the above code:
-
-.. literalinclude:: /examples/ug__access4/test.out
-   :language: none
-   :linenos:
-
-Notice that there are three kinds of checks for memory leaks:
-
-1. On each assignment, |GNATprove| checks that the left-hand side is not
-   leaking memory. That's the case on the assignment to ``Y`` above on line 11.
-
-2. On each declaration, |GNATprove| checks that the object is not leaking
-   memory at the end of its lifetime. That's the case for the declarations of
-   ``X`` and ``Y`` above on lines 8 and 9.
-
-3. On each call to an instance of ``Ada.Unchecked_Deallocation``, |GNATprove|
-   checks that the underlying memory is not itself owning memory. Above, the
-   object pointed to is an integer, so this holds trivially.
-
-Here is an example of code with all three cases of memory leaks:
-
-.. literalinclude:: /examples/ug__access5/test.adb
-   :language: ada
-   :linenos:
-
-|GNATprove| detects all three memory leaks in the above code:
-
-.. literalinclude:: /examples/ug__access5/test.out
-   :language: none
-   :linenos:
-
-Finally, in a case like above where a data structure manipulated through
-pointers also contains pointers, it is customary to define deallocation
-procedures to take care of deallocating the complete subtree of allocated
-memory. This is done in the following code by defining a higher-level ``Free``
-procedure applying to arguments of type ``Int_Ptr_Ptr``, which is based on
-instances of ``Ada.Unchecked_Deallocation`` for deallocating individual memory
-chunks:
-
-.. literalinclude:: /examples/ug__access6/test.adb
-   :language: ada
-   :linenos:
-
-Note the contract of the higher-level ``Free`` procedure, with a postcondition
-stating that ``X`` is null on exit, and correct dependences similar to what is
-defined for the standard ``Ada.Unchecked_Deallocation``. |GNATprove| guarantees
-that the above code is correctly deallocating memory:
-
-.. literalinclude:: /examples/ug__access6/test.out
-   :language: none
-   :linenos:
-
 Observing
----------
+^^^^^^^^^
 
 The ownership policy of |SPARK| allows sharing a single reference between
-several readers. This mechanism is called `observing`. When a variable is
-observed, both the observed object and the observer retain the right to read
-the object, but none can modify it. When the observer disappears, the observed
-object regains the permissions it had before (read-write or read-only).
+several readers. When a pointer is copied through an assignment statement,
+subprogram call, or subprogram return to a pointer of an anonymous
+access-to-constant type, a read-only view of the access value is created. This
+mechanism is called `observing`. When an object is observed, both the observed
+object and the observer retain the right to read the object, but none can modify
+it. When the observer disappears, the observed object regains the permissions it
+had before (read-write or read-only).
 
 To declare an observer, it is necessary to use an anonymous access-to-constant
 type. It is what allows the tool to tell the difference between moving and
@@ -338,18 +319,23 @@ the loop, ``C`` is shifted so that it designates one element further in the
 list.
 
 Borrowing
----------
+^^^^^^^^^
 
 Moving is not the only way to transfer ownership. It is also possible to
-`borrow` the ownership of (a part of) an object for a period of time. During
-this period, the part of the object which was borrowed can only be accessed
-through the borrower. When the borrower disappears (goes out of scope), the
-borrowed object regains the ownership, and is
-accessible again. It is what happens for example for mutable parameters of a
-subprogram when the subprogram is called. The ownership of the actual parameter
-is transferred to the formal parameter for the duration of the call, and should
-be returned when the subprogram terminates. In particular, this disallows
-procedures that move some of their parameters away, as in the following example:
+`borrow` the ownership of (a part of) an object for a period of time. When a
+pointer is copied through an assignment statement, subprogram call, or
+subprogram return to a pointer of an anonymous access-to-variable type, the
+ownership of the access value is transferred temporarily - it is borrowed.
+During this period, the part of the variable that was borrowed can only be
+accessed through the borrower. When the borrower disappears (goes out of scope),
+the borrowed variable regains the ownership and is accessible again.
+
+This is what happens, for example, for mutable parameters of a composite type
+and access parameters of a subprogram when the subprogram is called. The
+ownership of the actual parameter is transferred to the formal parameter for the
+duration of the call, and should be returned when the subprogram terminates. In
+particular, this disallows procedures that move some of their parameters away,
+as in the following example:
 
 .. code-block:: ada
    :linenos:
@@ -368,13 +354,14 @@ procedures that move some of their parameters away, as in the following example:
    insufficient permission for "Y" when returning from "Move"
    object was moved at line 7
 
-Note that borrowing does not occur on subprogram calls for in out parameters
-of a named access type. Indeed, |SPARK| RM has a special wording for these
-parameters, stating that they are not borrowed but moved on entry and on exit
-of the subprogram. This allows us to move these parameters inside the call, so
-they can designate something else (or be set to ``null``), which otherwise
-would be forbidden, as borrowed top-level access objects cannot be moved
-(but parts of such objects can be moved).
+.. note::
+
+  Borrowing does not occur on subprogram calls for in out parameters of a named
+  access-to-variable type. These are :ref:`moved<Moving>` on entry and on exit
+  of the subprogram. This allows us to move these parameters inside the call, so
+  they can designate something else (or be set to ``null``), which otherwise
+  would be forbidden, as borrowed top-level access objects cannot be moved (but
+  parts of such objects can be moved).
 
 The ownership policy of |SPARK| also allows declaring local borrowers in a
 nested scope by using an anonymous access-to-variable type (without the
@@ -430,18 +417,92 @@ describing the relation between the borrowed object and the borrower. This can
 be done by using an :ref:`Annotation for Referring to a value at the end of a
 local borrow`.
 
+.. index:: deallocation
+           Unchecked_Deallocation
+           access types; deallocation
+
+Deallocation
+^^^^^^^^^^^^
+
+At the end of its lifetime, unless the memory it points to is transferred to
+another owner, an owning pointer should be deallocated. This is typically
+achieved by instantiating the standard generic procedure
+``Ada.Unchecked_Deallocation`` with the type of the underlying ``Object`` and
+the type ``Name`` of the pool-specific access-to-variable type:
+
+.. literalinclude:: /examples/ug__access4/test.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| guarantees the absence of memory leak in the above code:
+
+.. literalinclude:: /examples/ug__access4/test.out
+   :language: none
+   :linenos:
+
+Notice that there are three kinds of checks for memory leaks:
+
+1. On each assignment, |GNATprove| checks that the left-hand side is not
+   leaking memory. That's the case on the assignment to ``Y`` above on line 11.
+
+2. On each declaration, |GNATprove| checks that the object is not leaking
+   memory at the end of its lifetime. That's the case for the declarations of
+   ``X`` and ``Y`` above on lines 8 and 9.
+
+3. On each call to an instance of ``Ada.Unchecked_Deallocation``, |GNATprove|
+   checks that the underlying memory is not itself owning memory. Above, the
+   object pointed to is an integer, so this holds trivially.
+
+Here is an example of code with all three cases of memory leaks:
+
+.. literalinclude:: /examples/ug__access5/test.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| detects all three memory leaks in the above code:
+
+.. literalinclude:: /examples/ug__access5/test.out
+   :language: none
+   :linenos:
+
+Finally, in a case like above where a data structure manipulated through
+pointers also contains pointers, it is customary to define deallocation
+procedures to take care of deallocating the complete subtree of allocated
+memory. This is done in the following code by defining a higher-level ``Free``
+procedure applying to arguments of type ``Int_Ptr_Ptr``, which is based on
+instances of ``Ada.Unchecked_Deallocation`` for deallocating individual memory
+chunks:
+
+.. literalinclude:: /examples/ug__access6/test.adb
+   :language: ada
+   :linenos:
+
+Note the contract of the higher-level ``Free`` procedure, with a postcondition
+stating that ``X`` is null on exit, and correct dependences similar to what is
+defined for the standard ``Ada.Unchecked_Deallocation``. |GNATprove| guarantees
+that the above code is correctly deallocating memory:
+
+.. literalinclude:: /examples/ug__access6/test.out
+   :language: none
+   :linenos:
+
 .. index:: traversal function
 
 Traversal Functions
 -------------------
 
-It is possible to write a function which computes and returns an observer or a
-borrower of an input data structure, provided the traversed data structure is
-itself an access type. This is called a `traversal function`.
+In |SPARK|, it is possible to write a function that computes and returns an
+observer or a borrower of an input data structure, provided the traversed data
+structure is itself an access type. This is called a `traversal function`.
+
+Observing Traversal Functions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 An `observing` traversal function takes an access type as its first parameter
-and returns an anonymous access-to-constant object which should be a part of
-this first parameter. As an example, we can write a function which returns a
+and has as its return type an anonymous access-to-constant type. The value
+returned by the function should be a part of the first parameter.
+
+As an example, we can write a function which returns a
 value stored in a list as an anonymous access-to-constant type. To be able to
 do this, we need to store an access to the value instead of the value itself in
 the list:
@@ -489,6 +550,9 @@ traversal function should necessarily observe its first parameter.
    end;
    L := null; --  L can be modified again
 
+Borrowing Traversal Functions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 It is also possible to return a mutable access inside a data structure using a
 `borrowing` traversal function. Just like observing traversal functions,
 their borrowing counterparts take as a first parameter an access type, but they
@@ -523,7 +587,65 @@ Note that it is possible to use pledges to describe the relation between the
 result of a borrowing traversal function and its parameter in a postcondition,
 see :ref:`Annotation for Referring to a value at the end of a local borrow`.
 
-.. index:: access types; access to subprogram
+.. index:: access types
+
+.. _Attribute Access:
+
+Attribute ``Access`` Examples
+-----------------------------
+
+Let's consider objects :code:`Variable` and :code:`Const`, respectively a
+variable and constant of type :code:`T`, marked as :code:`aliased` so that it
+is possible to use attribute :code:`Access` on them:
+
+.. code-block:: ada
+
+   Variable : aliased T;
+   Const    : aliased constant T := ...;
+
+Depending on the type of the attribute reference expression, taking an access
+value to an object is interpreted differently in SPARK.
+
+* attribute :code:`'Access` of an anonymous access type:
+
+  .. code-block:: ada
+
+     Variable_Handle : access T := Variable'Access;
+     Const_Handle    : access constant T := Const'Access;
+
+  The :code:`'Access` attribute of an anonymous access-to-variable type, like
+  for :code:`Variable_Handle` above, allows :ref:`Borrowing` a part of an
+  object temporarily, like :code:`Variable` here.  The :code:`'Access`
+  attribute of an anonymous access-to-constant type, like for
+  :code:`Const_Handle` above, allows :ref:`Observing` a part of an object
+  temporarily, like :code:`Const` here.
+
+* attribute :code:`'Access` of a general access-to-variable type:
+
+  .. code-block:: ada
+
+     type General_Ptr is access all T;
+     General_Handle : General_Ptr := Variable'Access;
+
+  The :code:`'Access` attribute of a general access-to-variable type, like for
+  :code:`General_Handle` above, allows moving the ownership of a local object,
+  like :code:`Variable` here, into a pointer. Ownership cannot be reclaimed
+  back by :code:`Variable` which should not be read or written directly
+  afterwards. This is only allowed in SPARK if :code:`Variable` is a local
+  object, i.e. it is declared inside a subprogram.
+
+* attribute :code:`'Access` of a named access-to-constant type:
+
+  .. code-block:: ada
+
+     type Const_Ptr is access constant T;
+     Const_Handle : Const_Ptr := Const'Access;
+
+  The :code:`'Access` attribute of a named access-to-constant type, like for
+  :code:`Const_Handle` above, allows sharing a read-only access to a constant
+  part of an object, like :code:`Const` here.
+
+.. index:: access to subprogram
 
 Subprogram Pointers
 -------------------
@@ -585,7 +707,7 @@ prove anything on the effect of ``Update_All``.
            postcondition; for subprogram pointer
 
 Contracts for Subprogram Pointers
----------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 *Supported in Ada 2022*
 
