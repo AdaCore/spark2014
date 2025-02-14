@@ -14,7 +14,7 @@ foo.ads:13:54: info: range check proved (CVC5: 2 VC), in instantiation at usefoo
 foo.ads:13:54: info: range check proved (CVC5: 4 VC), in instantiation at usefoo.adb:9
 usefoo.adb:9:29: info: range check proved (CVC5: 4 VC)
 usefoo.adb:9:51: info: overflow check proved (CVC5: 2 VC)
-usefoo.adb:9:54: medium: range check might fail, cannot prove upper bound for B'Length
+usefoo.adb:9:54: info: range check proved (CVC5: 2 VC)
 usefoo.adb:9:62: info: division check proved (CVC5: 1 VC)
 usefoo.adb:9:66: info: overflow check proved (CVC5: 2 VC)
 usefoo.adb:11:27: info: overflow check proved (CVC5: 2 VC)
