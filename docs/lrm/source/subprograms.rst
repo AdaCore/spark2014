@@ -1500,6 +1500,9 @@ occur in them.
 
    Static Semantics
 
+An Exceptional_Cases aspect is an assertion (as defined in RM 11.4.2(1.1/3));
+its assertion expressions are the consequences of its exceptional cases.
+
 All prefixes of references to the Old attribute in exceptional cases are
 expected to be evaluated at the beginning of the call regardless of whether or
 not the particular exception is raised. This allows to introduce constants for
@@ -1562,6 +1565,9 @@ occur in it.
 
    Static Semantics
 
+A Program_Exit aspect is an assertion (as defined in RM 11.4.2(1.1/3)); its
+assertion expression is its boolean expression.
+
 1. If an output of a subprogram with side effects is mentioned in the boolean
    expression of its aspect Program_Exit, then it shall either occur inside
    the prefix of a reference to the Old attribute or be a stand-alone object.
@@ -1623,6 +1629,13 @@ below.
 
 The boolean expressions in the guards should be resolved as regular
 preconditions.
+
+.. container:: heading
+
+   Static Semantics
+
+An Exit_Cases aspect is an assertion (as defined in RM 11.4.2(1.1/3)); its
+assertion expressions are the guards of its exit cases.
 
 .. container:: heading
 
@@ -1700,6 +1713,9 @@ precondition.
 .. container:: heading
 
    Static Semantics
+
+An Always_Terminates aspect is an assertion (as defined in RM 11.4.2(1.1/3));
+its assertion expression is its boolean expression.
 
 1. If the aspect Always_Terminates is specified for a package, it shall not have
    an aspect definition.
