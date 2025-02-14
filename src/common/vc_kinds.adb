@@ -623,35 +623,41 @@ package body VC_Kinds is
           "representation attribute has an implementation-defined value",
 
         --  Warnings enabled by --info switch
+        when Warn_Unit_Not_SPARK =>
+          "A unit whose analysis has been requested on the command-line is "
+        & "not annotated with SPARK_Mode Pragma",
+
+        --  Other tool limitations
         when Warn_Comp_Relaxed_Init =>
-          "All components of a given type are annotated with "
-        & " Relaxed_Initialization, so the containing type is treated as if "
+          "If all components of a given type are annotated with "
+        & " Relaxed_Initialization, the containing type is treated as if "
         & "it had the same annotation",
+        when Warn_Full_View_Visible =>
+          "The full view of an incomplete type deferred to the body of a "
+        & "withed unit might be visible by GNATprove",
+
+        --  Proof limitations
         when Warn_Contracts_Recursive =>
-          "Explicit and implicit postconditions of the subprogram cannot be "
-        & "used on recursive calls occurring inside assertions and contracts,"
-        & " but will still be available in regular code",
+          "Explicit and implicit postconditions of a recursive subprogram "
+        & "cannot be used on (mutually) recursive calls occurring inside "
+        & "assertions and contracts, but will still be available in regular "
+        & "code",
         when Warn_DIC_Ignored =>
-          "The default initial condition on the type cannot be used on "
+          "The Default_Initial_Condition of a type won't be assumed on "
         & "subcomponents initialized by default inside assertions and "
         & "contracts, but will still be available in regular code",
-        when Warn_Full_View_Visible =>
-          "The full view of an incomplete type is visible for proof when "
-        & "verifying a unit even if it is deferred to the body of another "
-        & "unit",
         when Warn_Imprecise_Align =>
-          "The alignment of the address clause is not known, which can lead "
-        & "to false positives",
+          "The alignment of an object might not be known for proof",
         when Warn_Imprecise_Call =>
-          "The behavior of this call is not known by SPARK and handled in an "
-        & "imprecise way; its precondition might be impossible to prove and "
-        & "nothing will be known about its result",
+          "The behavior of a call might not be known by SPARK and handled in "
+        & "an imprecise way; its precondition might be impossible to prove "
+        & "and nothing will be known about its result",
         when Warn_Imprecise_Size =>
-          "The attributes Size, Object_Size or Value_Size are not handled "
-        & "precisely, which can lead to false positives",
+          "The attributes Size, Object_Size or Value_Size might not be handled"
+        & " precisely, nothing will be known about their evaluation",
         when Warn_Imprecise_UC =>
-          "This unchecked conversion is not handled precisely by SPARK, which "
-        & "can lead to false positives",
+          "Unchecked conversion might not be handled precisely by SPARK, "
+        & "nothing will be known about their result.",
         when Warn_Imprecise_Value =>
           "References to the attribute Value are handled in an imprecise way; "
         & "its precondition is impossible to prove and nothing will be known "
@@ -661,10 +667,10 @@ package body VC_Kinds is
         & "imprecise way; nothing will be known about the evaluation of the"
         & " attribute reference apart from a bound on its length",
         when Warn_Init_Cond_Ignored =>
-          "The initial condition of a withed package is ignored, as it is "
-        & "not known to be true, due to elaboration order",
+          "The initial condition of a withed package might be ignored if it "
+        & "is not known to be true, due to elaboration order",
         when Warn_No_Reclam_Func =>
-          "No reclamation function or reclaimed value was found for the "
+          "No reclamation function or reclaimed value was found for an "
         & "ownership type, which may make it impossible to prove that values"
         & "of this type are reclaimed",
         when Warn_Num_Variant =>
@@ -680,13 +686,10 @@ package body VC_Kinds is
           "A type with predefined set aggregates doesn't have a Length "
         & "function; the length of aggregates will not be known for this type",
         when Warn_Predef_Eq_Null =>
-          "A type was annotated with Only_Null as value for the "
+          "A type is annotated with Only_Null as value for the "
         & "Predefined_Equality annotation, but no constant annotated with "
-        & "Null_Value was found; this will result in all calls to the "
+        & "Null_Value is found; this will result in all calls to the "
         & "predefined equality being rejected",
-        when Warn_Unit_Not_SPARK =>
-          "A unit whose analysis has been requested on the command-line is "
-        & "not annotated with SPARK_Mode Pragma",
 
         --  Info messages enabled by default
         when Warn_Info_Unrolling_Inlining =>

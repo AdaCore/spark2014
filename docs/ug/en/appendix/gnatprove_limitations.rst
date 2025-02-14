@@ -11,22 +11,7 @@ Tool Limitations Leading to an Error Message
 Other Tool Limitations
 ----------------------
 
-The generation of Global contracts by |GNATprove| has limitations. When this
-capability is used in a certification context, the generated contracts should
-be verified by the user. In particular:
-
-* The Global contracts generated automatically by |GNATprove| for subprograms
-  without an explicit one, whose body is not in SPARK, do not take into account
-  indirect calls (through access-to-subprogram and dynamic binding) and
-  indirect reads/writes to global variables (through access variables). See
-  :ref:`Coarse Generation for non-SPARK Subprograms`.
-
-Some features defined in the reference manual have not been implemented in the
-tool. It is the case of:
-
-* classwide Global and Depends contracts as defined in SPARK RM 6.1.6, and
-
-* the use of Ada.Synchronous_Barriers.Synchronous_Barrier type.
+.. include:: ../source/other_tool_limitations.rst
 
 Flow Analysis Limitations
 -------------------------
@@ -51,25 +36,4 @@ precise (but sound) analysis.
 Proof Limitations
 -----------------
 
-These limitations in the proof part of GNATprove may result in a less precise
-(but sound) analysis.
-
-.. index:: recursion; limitation
-
-* The following attributes are not yet supported in proof: Adjacent, Aft,
-  Bit_Order, Body_Version, Copy_Sign, Definite, Denorm, First_Valid, Fore,
-  Last_Valid, Machine, all Machine_* attributes, Model, all Model_* attributes,
-  Partition_Id, Remainder, Round, Safe_First, Safe_Last, Scale, Scaling, Small,
-  Unbiased_Rounding, Version, Wide_Image, Wide_Value, Wide_Width,
-  Wide_Wide_Image, Wide_Wide_Value, Wide_Wide_Width, Width.
-
-  The attributes First_Bit, Last_Bit and Position are supported but if there is
-  no record representation clause then we assume that their value is
-  nonnegative.
-
-.. index:: Loop_Invariant; limitation
-
-* Constants declared in loops before the loop invariant are handled as
-  variables by the tool. This means in particular that any information about
-  their values needed after the loop invariant must be stated explicitly in the
-  loop invariant.
+.. include:: ../source/proof_limitations.rst
