@@ -70,8 +70,6 @@ with Why;
 
 package body Flow is
 
-   use type Ada.Containers.Count_Type;
-
    --  These debug options control which graphs to output.
 
    Debug_Print_CFG           : constant Boolean := True;
@@ -735,19 +733,24 @@ package body Flow is
             if A.Variables_Defined.Is_Empty then
                null;
 
-            --  Otherwise there is exactly one defined variable (a single
-            --  record component).
+            --  Otherwise there might be multiple components being defined
+            --  by the same inputs.
 
             else
-               pragma Assert (A.Variables_Defined.Length = 1);
-
                declare
-                  Var_Def : Flow_Id renames
-                    A.Variables_Defined (A.Variables_Defined.First);
+                  First : Boolean := True;
                begin
-                  Write_Str (Flow_Id_To_String (Var_Def));
-                  Write_Str (" => ");
+                  for F of A.Variables_Defined loop
+                     if First then
+                        First := False;
+                     else
+                        Write_Str (", ");
+                     end if;
+                     Sprint_Flow_Id (F);
+                  end loop;
                end;
+
+               Write_Str (" => ");
             end if;
 
             declare

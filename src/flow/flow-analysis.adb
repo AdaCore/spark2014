@@ -1790,14 +1790,49 @@ package body Flow.Analysis is
       function Other_Field_Is_Effective (V : Flow_Graphs.Vertex_Id)
                                          return Boolean
       is
-         C : constant Vertex_To_Vertex_Set_Maps.Cursor :=
-           FA.Other_Fields.Find (V);
+         My_First_Field : constant Flow_Graphs.Vertex_Id :=
+           FA.Atr (V).First_Field;
+         Other_Field : Flow_Graphs.Vertex_Id;
       begin
-         return Vertex_To_Vertex_Set_Maps.Has_Element (C)
-           and then
-             (for some Other_Field of FA.Other_Fields (C) =>
-                FA.PDG.Non_Trivial_Path_Exists
-                  (Other_Field, Is_Final_Use_Any_Export'Access));
+         --  Vertices representing declaration of / assignment to a record
+         --  object form a linear sequence in the CFG. We pick the first
+         --  vertex from this sequence and traverse the sequence looking
+         --  for a vertex that is effective.
+
+         Other_Field := My_First_Field;
+
+         --  This might be a simple declaration/assignment with no sequence
+         --  (e.g. for a scalar object) or perhaps the sequence ended with
+         --  no outgoing edges for some reason.
+
+         while Other_Field /= Flow_Graphs.Null_Vertex loop
+
+            --  Skip the current field
+
+            if Other_Field = V then
+               null;
+
+            --  Check if this field comes from the same declaration/assignment
+
+            elsif FA.Atr (Other_Field).First_Field = My_First_Field then
+               if FA.PDG.Non_Trivial_Path_Exists
+                 (Other_Field, Is_Final_Use_Any_Export'Access)
+               then
+                  return True;
+               end if;
+
+            --  Otherwise we are done
+
+            else
+               exit;
+            end if;
+
+            --  Proceed to the next field
+
+            Other_Field := FA.CFG.Child (Other_Field);
+         end loop;
+
+         return False;
       end Other_Field_Is_Effective;
 
    --  Start of processing for Find_Ineffective_Statements

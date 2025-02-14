@@ -1589,8 +1589,8 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      Funcalls  : Call_Sets.Set;
-      Indcalls  : Node_Sets.Set;
+      Funcalls : Call_Sets.Set;
+      Indcalls : Node_Sets.Set;
 
       V : Flow_Graphs.Vertex_Id;
 
@@ -1692,12 +1692,15 @@ package body Flow.Control_Flow_Graph is
          --  this is done in Flow.Data_Depence_Graph.Create.
 
          declare
-            All_Vertices : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
-            Missing      : Flow_Id_Sets.Set;
-            Verts        : Vertex_Lists.List;
+            Missing : Flow_Id_Sets.Set;
+            Verts   : Vertex_Lists.List;
 
             Verts_Defined : Vertex_Lists.List;
             --  Dedicated list with vertices for component definitions
+
+            Cluster       : Flow_Graphs.Cluster_Id;
+            --  For grouping vertices corresponding to this object
+            --  assignment in the visual representation of the graph.
 
             RHS_Map : constant Flow_Id_Maps.Map :=
               Untangle_Record_Assignment
@@ -1712,6 +1715,10 @@ package body Flow.Control_Flow_Graph is
                  Fold_Functions          => Inputs,
                  Use_Computed_Globals    => not FA.Generating_Globals,
                  Expand_Internal_Objects => False);
+
+            Empty_Reuse : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
+            --  Optimize record assignments with no variable inputs, similar
+            --  to what we do for record object declarations.
 
          begin
             Missing := Flatten_Variable (LHS_Root, FA.B_Scope);
@@ -1734,46 +1741,62 @@ package body Flow.Control_Flow_Graph is
                begin
                   Missing.Delete (Output);
 
-                  --  Create separate vertices with variables used and defined.
-                  --  All variable uses happen first; then happen all variable
-                  --  definitions. This is essential when representing record
-                  --  self-assignments where several components are read and
-                  --  then redefined.
+                  --  Reuse existing vertex for a field that uses no variable
+                  --  inputs.
 
-                  Add_Vertex
-                    (FA,
-                     Make_Basic_Attributes
-                       (Var_Ex_Use    => Inputs,
-                        Subp_Calls    => Funcalls,
-                        Indt_Calls    => Indcalls,
-                        Vertex_Ctx    => Ctx.Vertex_Ctx,
-                        E_Loc         => N,
-                        Print_Hint    => Pretty_Print_Record_Field),
-                     V_Used);
-                  Verts.Append (V_Used);
+                  if Inputs.Is_Empty
+                    and then Empty_Reuse /= Flow_Graphs.Null_Vertex
+                  then
+                     FA.Atr (Empty_Reuse).Variables_Defined.Insert (Output);
+                  else
+                     --  Create separate vertices with variables used and
+                     --  defined. All variable uses happen first; then happen
+                     --  all variable definitions. This is essential when
+                     --  representing record self-assignments where several
+                     --  components are read and then redefined.
 
-                  All_Vertices.Insert (V_Used);
+                     Add_Vertex
+                       (FA,
+                        Make_Basic_Attributes
+                          (Var_Ex_Use => Inputs,
+                           Subp_Calls => Funcalls,
+                           Indt_Calls => Indcalls,
+                           Vertex_Ctx => Ctx.Vertex_Ctx,
+                           E_Loc      => N,
+                           Print_Hint => Pretty_Print_Record_Field),
+                        V_Used);
+                     Verts.Append (V_Used);
 
-                  Add_Vertex
-                    (FA,
-                     Make_Basic_Attributes
-                       (Var_Def       => Flow_Id_Sets.To_Set (Output),
-                        Subp_Calls    => Funcalls,
-                        Indt_Calls    => Indcalls,
-                        Vertex_Ctx    => Ctx.Vertex_Ctx,
-                        E_Loc         => N,
-                        Print_Hint    => Pretty_Print_Record_Field),
-                     V_Defined);
-                  Verts_Defined.Append (V_Defined);
+                     FA.Atr (V_Used).First_Field := Verts.First_Element;
 
-                  All_Vertices.Insert (V_Defined);
+                     Add_Vertex
+                       (FA,
+                        Make_Basic_Attributes
+                          (Var_Def    => Flow_Id_Sets.To_Set (Output),
+                           Subp_Calls => Funcalls,
+                           Indt_Calls => Indcalls,
+                           Vertex_Ctx => Ctx.Vertex_Ctx,
+                           E_Loc      => N,
+                           Print_Hint => Pretty_Print_Record_Field),
+                        V_Defined);
+                     Verts_Defined.Append (V_Defined);
 
-                  --  Link variable use with variable definition. We will add
-                  --  a data dependency edge when building DDG.
-                  --  ??? This could be set in Make_Basic_Attributes to avoid
-                  --  explicit manipulation of vertex attributes, but then this
-                  --  routine would no longer be "Basic".
-                  FA.Atr (V_Defined).Record_RHS := V_Used;
+                     FA.Atr (V_Defined).First_Field := Verts.First_Element;
+
+                     --  Link variable use with variable definition. We will
+                     --  add a data dependency edge when building DDG.
+                     --  ??? This could be set in Make_Basic_Attributes to
+                     --  avoid explicit manipulation of vertex attributes,
+                     --  but then this routine would no longer be "Basic".
+                     FA.Atr (V_Defined).Record_RHS := V_Used;
+
+                     --  If this field uses no variable inputs, then we want
+                     --  to reuse its vertex.
+
+                     if Inputs.Is_Empty then
+                        Empty_Reuse := V_Defined;
+                     end if;
+                  end if;
                end;
             end loop;
 
@@ -1783,35 +1806,37 @@ package body Flow.Control_Flow_Graph is
                --  full assignment), flow analysis must not claim any other
                --  fields are "uninitialized".
                for F of Missing loop
-                  Add_Vertex
-                    (FA,
-                     Make_Basic_Attributes
-                       (Var_Def    => Flow_Id_Sets.To_Set (F),
-                        Var_Ex_Use => Flow_Id_Sets.Empty_Set,
-                        Vertex_Ctx => Ctx.Vertex_Ctx,
-                        E_Loc      => N,
-                        Print_Hint => Pretty_Print_Record_Field),
-                     V);
-                  Verts_Defined.Append (V);
-                  All_Vertices.Insert (V);
+
+                  --  If we don't yet have a vertex that uses no variable
+                  --  inputs then create a one and we will reuse it for all
+                  --  the missing fields.
+
+                  if Empty_Reuse = Flow_Graphs.Null_Vertex then
+                     Add_Vertex
+                       (FA,
+                        Make_Basic_Attributes
+                          (Var_Def    => Flow_Id_Sets.Empty_Set,
+                           Var_Ex_Use => Flow_Id_Sets.Empty_Set,
+                           Vertex_Ctx => Ctx.Vertex_Ctx,
+                           E_Loc      => N,
+                           Print_Hint => Pretty_Print_Record_Field),
+                        V);
+                     Verts_Defined.Append (V);
+                     if Verts.Is_Empty then
+                        FA.Atr (V).First_Field := Verts_Defined.First_Element;
+                     else
+                        FA.Atr (V).First_Field := Verts.First_Element;
+                     end if;
+
+                     Empty_Reuse := V;
+                  end if;
+
+                  FA.Atr (Empty_Reuse).Variables_Defined.Insert (F);
+
                   pragma Assert
                     (for some Comp_Id of F.Component =>
                        Is_Declared_Within_Variant (Comp_Id));
                end loop;
-            end if;
-
-            if not FA.Generating_Globals then
-               declare
-                  C : Flow_Graphs.Cluster_Id;
-               begin
-                  FA.CFG.New_Cluster (C);
-                  for V of All_Vertices loop
-                     FA.Other_Fields.Insert
-                       (V,
-                        All_Vertices - Vertex_Sets.To_Set (V));
-                     FA.CFG.Set_Cluster (V, C);
-                  end loop;
-               end;
             end if;
 
             --  Move vertices with variables defined to the end of list
@@ -1830,12 +1855,14 @@ package body Flow.Control_Flow_Graph is
             --  the connection map.
 
             else
+               FA.CFG.New_Cluster (Cluster);
                V := Flow_Graphs.Null_Vertex;
                for W of Verts loop
                   if V /= Flow_Graphs.Null_Vertex then
                      Linkup (FA, V, W);
                   end if;
                   V := W;
+                  FA.CFG.Set_Cluster (V, Cluster);
                end loop;
 
                CM.Insert (Union_Id (N),
@@ -1892,10 +1919,10 @@ package body Flow.Control_Flow_Graph is
                   Var_Im_Use => (if Partial
                                     then Vars_Defined
                                     else Flow_Id_Sets.Empty_Set),
-                  Subp_Calls    => Funcalls,
-                  Indt_Calls    => Indcalls,
-                  Vertex_Ctx    => Ctx.Vertex_Ctx,
-                  E_Loc         => N),
+                  Subp_Calls => Funcalls,
+                  Indt_Calls => Indcalls,
+                  Vertex_Ctx => Ctx.Vertex_Ctx,
+                  E_Loc      => N),
                V);
 
             CM.Insert (Union_Id (N), Trivial_Connection (V));
@@ -4555,10 +4582,18 @@ package body Flow.Control_Flow_Graph is
                      Use_Computed_Globals    => not FA.Generating_Globals,
                      Expand_Internal_Objects => False);
 
-                  All_Vertices : Vertex_Sets.Set  := Vertex_Sets.Empty_Set;
-                  Missing      : Flow_Id_Sets.Set := Var_Def;
+                  Cluster : Flow_Graphs.Cluster_Id;
+                  --  For grouping vertices corresponding to this object
+                  --  declaration in the visual representation of the graph.
+
+                  Missing : Flow_Id_Sets.Set := Var_Def;
+
+                  Empty_Reuse : Flow_Graphs.Vertex_Id :=
+                    Flow_Graphs.Null_Vertex;
 
                begin
+                  FA.CFG.New_Cluster (Cluster);
+
                   for C in M.Iterate loop
                      declare
                         Output : Flow_Id          renames Flow_Id_Maps.Key (C);
@@ -4568,25 +4603,54 @@ package body Flow.Control_Flow_Graph is
                         --  ??? It might be useful to improve E_Loc to point
                         --      at the relevant bit in the aggregate.
 
-                        Add_Vertex
-                          (FA,
-                           (Make_Basic_Attributes
-                             (Var_Def       => Flow_Id_Sets.To_Set (Output),
-                              Var_Ex_Use    => Inputs,
-                              Subp_Calls    => Funcalls,
-                              Indt_Calls    => Indcalls,
-                              Vertex_Ctx    => Ctx.Vertex_Ctx,
-                              E_Loc         => N,
-                              Print_Hint    => Pretty_Print_Record_Field)
-                           with delta Is_Declaration_Node => True),
-                           V);
+                        if Inputs.Is_Empty then
+                           if Empty_Reuse = Flow_Graphs.Null_Vertex then
+                              Add_Vertex
+                                (FA,
+                                 (Make_Basic_Attributes
+                                   (Var_Def    => Flow_Id_Sets.Empty_Set,
+                                    Var_Ex_Use => Inputs,
+                                    Subp_Calls => Funcalls,
+                                    Indt_Calls => Indcalls,
+                                    Vertex_Ctx => Ctx.Vertex_Ctx,
+                                    E_Loc      => N,
+                                    Print_Hint => Pretty_Print_Record_Field)
+                                 with delta Is_Declaration_Node => True),
+                                 V);
+
+                              Inits.Append (V);
+                              FA.Atr (V).First_Field := Inits.First_Element;
+                              FA.CFG.Set_Cluster (V, Cluster);
+
+                              Empty_Reuse := V;
+                           end if;
+
+                           FA.Atr (Empty_Reuse).Variables_Defined.Insert
+                             (Output);
+                        else
+                           Add_Vertex
+                             (FA,
+                              (Make_Basic_Attributes
+                                (Var_Def    => Flow_Id_Sets.To_Set (Output),
+                                 Var_Ex_Use => Inputs,
+                                 Subp_Calls => Funcalls,
+                                 Indt_Calls => Indcalls,
+                                 Vertex_Ctx => Ctx.Vertex_Ctx,
+                                 E_Loc      => N,
+                                 Print_Hint => Pretty_Print_Record_Field)
+                              with delta Is_Declaration_Node => True),
+                              V);
+
+                           Inits.Append (V);
+                           FA.Atr (V).First_Field := Inits.First_Element;
+                           FA.CFG.Set_Cluster (V, Cluster);
+                        end if;
+
                         Missing.Exclude (Output);
                         --  ??? this should be Delete, but currently we will
                         --  crash when processing nested packages that declare
                         --  private types and objects of that types.
 
-                        Inits.Append (V);
-                        All_Vertices.Insert (V);
                      end;
                   end loop;
 
@@ -4595,18 +4659,26 @@ package body Flow.Control_Flow_Graph is
                   --  set; since it is not possible in SPARK to partially
                   --  initialize a variable at declaration.
                   for F of Missing loop
-                     Add_Vertex
-                       (FA,
-                        (Make_Basic_Attributes
-                          (Var_Def    => Flow_Id_Sets.To_Set (F),
-                           Var_Ex_Use => Flow_Id_Sets.Empty_Set,
-                           Vertex_Ctx => Ctx.Vertex_Ctx,
-                           E_Loc      => N,
-                           Print_Hint => Pretty_Print_Record_Field)
-                           with delta Is_Declaration_Node => True),
-                        V);
-                     Inits.Append (V);
-                     All_Vertices.Insert (V);
+                     if Empty_Reuse = Flow_Graphs.Null_Vertex then
+                        Add_Vertex
+                          (FA,
+                           (Make_Basic_Attributes
+                             (Var_Def    => Flow_Id_Sets.Empty_Set,
+                              Var_Ex_Use => Flow_Id_Sets.Empty_Set,
+                              Vertex_Ctx => Ctx.Vertex_Ctx,
+                              E_Loc      => N,
+                              Print_Hint => Pretty_Print_Record_Field)
+                              with delta Is_Declaration_Node => True),
+                           V);
+
+                        Inits.Append (V);
+                        FA.Atr (V).First_Field := Inits.First_Element;
+                        FA.CFG.Set_Cluster (V, Cluster);
+
+                        Empty_Reuse := V;
+                     end if;
+
+                     FA.Atr (Empty_Reuse).Variables_Defined.Insert (F);
 
                      --  ??? We only expect missing variant parts here, but
                      --  also get array bounds (which feels dubious but easy)
@@ -4625,20 +4697,6 @@ package body Flow.Control_Flow_Graph is
                           or else
                         Ctx.Vertex_Ctx.In_Nested_Package);
                   end loop;
-
-                  if not FA.Generating_Globals then
-                     declare
-                        C : Flow_Graphs.Cluster_Id;
-                     begin
-                        FA.CFG.New_Cluster (C);
-                        for V of All_Vertices loop
-                           FA.Other_Fields.Insert
-                             (V,
-                              All_Vertices - Vertex_Sets.To_Set (V));
-                           FA.CFG.Set_Cluster (V, C);
-                        end loop;
-                     end;
-                  end if;
                end;
 
             else
