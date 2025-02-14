@@ -64,3 +64,4 @@ tester.adb:28:40: info: cannot unroll loop (too many loop iterations)
 tester.adb:29:07: medium: precondition might fail, cannot prove not Empty (Buffer) [possible fix: loop at line 28 should mention X in a loop invariant]
 tester.adb:29:12: info: in value of subprogram parameter after the call at tester.adb:29
 tester.adb:29:12: info: predicate check proved (CVC5: 5 VC)
+tester.adb:30:36: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]

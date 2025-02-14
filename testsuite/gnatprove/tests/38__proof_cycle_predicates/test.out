@@ -249,6 +249,7 @@ raise_stmt.adb:4:16: warning: unused initial value of "V"
 raise_stmt.adb:4:64: medium: postcondition might fail
 raise_stmt.adb:6:37: info: precondition proved (Trivial: 1 VC)
 raise_stmt.adb:12:38: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
+raise_stmt.adb:12:42: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 recursive_predicates.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 recursive_predicates.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
 recursive_predicates.adb:4:51: medium: postcondition might fail

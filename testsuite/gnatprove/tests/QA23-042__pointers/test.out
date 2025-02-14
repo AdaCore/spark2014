@@ -11,13 +11,17 @@ spark05.adb:32:04: medium: resource or memory leak might occur at end of scope
 spark05.adb:34:04: info: initialization of "getX" proved
 spark05.adb:35:04: info: initialization of "getY" proved
 spark05.adb:39:22: info: range check proved (CVC5: 2 VC)
+spark05.adb:39:31: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 spark05.adb:40:14: info: range check proved (CVC5: 2 VC)
 spark05.adb:40:26: info: range check proved (CVC5: 2 VC)
+spark05.adb:40:35: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 spark05.adb:41:14: info: range check proved (CVC5: 2 VC)
 spark05.adb:41:29: info: range check proved (CVC5: 2 VC)
+spark05.adb:41:38: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 spark05.adb:41:48: info: pointer dereference check proved (CVC5: 1 VC)
 spark05.adb:42:14: info: range check proved (CVC5: 2 VC)
 spark05.adb:42:29: info: range check proved (CVC5: 2 VC)
+spark05.adb:42:38: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 spark05.adb:42:48: info: pointer dereference check proved (CVC5: 1 VC)
 spark05.adb:44:07: info: pointer dereference check proved (CVC5: 1 VC)
 spark05.adb:45:07: info: pointer dereference check proved (CVC5: 1 VC)
@@ -29,18 +33,24 @@ spark05.adb:54:22: info: pointer dereference check proved (CVC5: 1 VC)
 spark05.adb:55:16: info: pointer dereference check proved (CVC5: 1 VC)
 spark05.adb:55:22: info: pointer dereference check proved (CVC5: 1 VC)
 spark05.adb:57:22: info: range check proved (CVC5: 2 VC)
+spark05.adb:57:31: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 spark05.adb:58:14: info: range check proved (CVC5: 2 VC)
 spark05.adb:58:26: info: range check proved (CVC5: 2 VC)
+spark05.adb:58:35: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 spark05.adb:59:14: info: range check proved (CVC5: 2 VC)
 spark05.adb:59:29: info: range check proved (CVC5: 2 VC)
+spark05.adb:59:38: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 spark05.adb:59:48: info: pointer dereference check proved (CVC5: 1 VC)
 spark05.adb:60:14: info: range check proved (CVC5: 2 VC)
 spark05.adb:60:29: info: range check proved (CVC5: 2 VC)
+spark05.adb:60:38: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 spark05.adb:60:48: info: pointer dereference check proved (CVC5: 1 VC)
 spark05.adb:61:14: info: range check proved (CVC5: 2 VC)
 spark05.adb:61:27: info: range check proved (CVC5: 2 VC)
+spark05.adb:61:36: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 spark05.adb:62:14: info: range check proved (CVC5: 2 VC)
 spark05.adb:62:27: info: range check proved (CVC5: 2 VC)
+spark05.adb:62:36: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 spark05.adb:66:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 spark05.adb:68:11: info: pointer dereference check proved (CVC5: 1 VC)
 spark05.adb:68:15: medium: resource or memory leak might occur
@@ -49,15 +59,21 @@ spark05.adb:71:22: info: pointer dereference check proved (CVC5: 1 VC)
 spark05.adb:72:16: info: pointer dereference check proved (CVC5: 1 VC)
 spark05.adb:72:22: info: pointer dereference check proved (CVC5: 1 VC)
 spark05.adb:74:22: info: range check proved (CVC5: 2 VC)
+spark05.adb:74:31: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 spark05.adb:75:14: info: range check proved (CVC5: 2 VC)
 spark05.adb:75:26: info: range check proved (CVC5: 2 VC)
+spark05.adb:75:35: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 spark05.adb:76:14: info: range check proved (CVC5: 2 VC)
 spark05.adb:76:29: info: range check proved (Z3: 2 VC)
+spark05.adb:76:38: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 spark05.adb:76:48: info: pointer dereference check proved (CVC5: 1 VC)
 spark05.adb:77:14: info: range check proved (Z3: 2 VC)
 spark05.adb:77:29: info: range check proved (Z3: 2 VC)
+spark05.adb:77:38: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 spark05.adb:77:48: info: pointer dereference check proved (CVC5: 1 VC)
 spark05.adb:78:14: low: range check might fail, cannot prove upper bound for "P.X =" & Integer'Image(P.X) & ", P.Y =" & Integer'Image(P.Y) & ", AX.all =" & Integer'Image(AX.all) & ", AY.all =" & Integer'Image(AY.all) & ", getX ="
 spark05.adb:78:27: info: range check proved (Z3: 2 VC)
+spark05.adb:78:36: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 spark05.adb:79:14: info: range check proved (Z3: 2 VC)
 spark05.adb:79:27: low: range check might fail, cannot prove upper bound for "P.X =" & Integer'Image(P.X) & ", P.Y =" & Integer'Image(P.Y) & ", AX.all =" & Integer'Image(AX.all) & ", AY.all =" & Integer'Image(AY.all) & ", getX =" & Integer'Image(getX) & ", getY =" & Integer'Image(getY) [reason for check: input value must fit in parameter type]
+spark05.adb:79:36: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]

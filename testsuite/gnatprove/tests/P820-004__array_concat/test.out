@@ -1,3 +1,4 @@
+main.adb:2:40: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 main.adb:4:19: info: assertion proved (Trivial)
 main.adb:10:45: info: range check proved (CVC5: 2 VC)
 main.adb:10:55: info: range check proved (CVC5: 2 VC)

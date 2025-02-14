@@ -197,6 +197,10 @@ test_patience.adb:47:04: info: initialization of "S" proved
 test_patience.adb:51:04: info: analyzing call to "PrintCardStack" in context
 test_patience.adb:51:04: info: cannot unroll loop (too many loop iterations)
 test_patience.adb:51:04: info: in inlined body at line 11
+test_patience.adb:51:04: warning: in inlined body at line 10
+test_patience.adb:51:04: warning: in inlined body at line 12
+test_patience.adb:51:04: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+test_patience.adb:51:04: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 test_patience.adb:52:09: info: precondition proved (CVC5: 1 VC)
 test_patience.adb:53:04: info: analyzing call to "PrintState" in context
 test_patience.adb:53:04: info: cannot unroll loop (too many loop iterations)
@@ -205,3 +209,13 @@ test_patience.adb:53:04: info: cannot unroll loop (too many loop iterations)
 test_patience.adb:53:04: info: in inlined body at line 23
 test_patience.adb:53:04: info: in inlined body at line 28
 test_patience.adb:53:04: info: in inlined body at line 34
+test_patience.adb:53:04: warning: in inlined body at line 21
+test_patience.adb:53:04: warning: in inlined body at line 24
+test_patience.adb:53:04: warning: in inlined body at line 27
+test_patience.adb:53:04: warning: in inlined body at line 33
+test_patience.adb:53:04: warning: in inlined body at line 36
+test_patience.adb:53:04: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+test_patience.adb:53:04: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+test_patience.adb:53:04: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+test_patience.adb:53:04: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+test_patience.adb:53:04: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]

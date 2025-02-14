@@ -2,3 +2,4 @@ main.adb:13:07: info: data dependencies proved
 main.adb:16:07: warning: assuming "Run" has no effect on global items
 main.adb:16:07: warning: no Global contract available for "Run" [assumed-global-null]
 main.adb:20:35: info: range check proved (CVC5: 2 VC)
+main.adb:20:44: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]

@@ -120,10 +120,18 @@ echo_1.adb:45:13: info: precondition proved (CVC5: 3 VC)
 echo_1.adb:45:36: info: discriminant check proved (CVC5: 1 VC)
 echo_1.adb:48:16: info: precondition proved (CVC5: 3 VC)
 echo_1.adb:55:13: info: precondition proved (CVC5: 3 VC)
+enums.ads:31:04: warning: in instantiation at spark-text_io-enumeration_io.ads:98
+enums.ads:31:04: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+float_io.ads:27:01: warning: in instantiation at spark-text_io-float_io.ads:106
+float_io.ads:27:01: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 hello_world.adb:30:03: info: data dependencies proved
 hello_world.adb:31:13: info: precondition of main program proved (CVC5: 3 VC)
 hello_world.adb:35:04: info: precondition proved (CVC5: 1 VC)
 hello_world.adb:37:07: info: precondition proved (CVC5: 1 VC)
+integer_io.ads:27:01: warning: in instantiation at spark-text_io-integer_io.ads:100
+integer_io.ads:27:01: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+my_number_io.ads:28:01: warning: in instantiation at spark-text_io-integer_io.ads:100
+my_number_io.ads:28:01: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 spark-text_io-unbounded_io.ads:29:23: warning: Initial_Condition of package "Text_IO" is ignored [init-cond-ignored]
 spark-text_io-unbounded_io.ads:29:23: warning: the elaboration of "Text_IO" is not known to precede the elaboration of the current unit
 spark-text_io-unbounded_io.ads:29:23: warning: use pragma Elaborate_Body in "Text_IO" or pragma Elaborate in the current unit

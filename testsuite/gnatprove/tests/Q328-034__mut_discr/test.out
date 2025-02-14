@@ -43,6 +43,7 @@ input.ads:31:13: info: implicit aspect Always_Terminates on "Current_Line" has b
 input.ads:34:13: info: implicit aspect Always_Terminates on "Column_Number" has been proved, subprogram will terminate
 input.ads:37:13: info: implicit aspect Always_Terminates on "Line_Number" has been proved, subprogram will terminate
 instructions.adb:19:28: info: unrolling loop
+instructions.adb:24:24: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 instructions.adb:31:07: medium: unexpected exception might be raised
 instructions.adb:50:58: info: precondition proved (CVC5: 1 VC)
 instructions.adb:54:13: medium: unexpected exception might be raised
@@ -50,8 +51,10 @@ instructions.ads:10:13: info: implicit aspect Always_Terminates on "Read" has be
 screen_output.adb:42:07: warning: this statement is never reached
 screen_output.adb:43:07: warning: this statement is never reached
 screen_output.adb:44:07: warning: this statement is never reached
+screen_output.adb:54:19: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 screen_output.adb:54:46: info: range check proved (CVC5: 2 VC)
 screen_output.adb:77:29: info: cannot unroll loop (too many loop iterations)
+screen_output.adb:83:19: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 screen_output.adb:83:46: info: range check proved (CVC5: 2 VC)
 screen_output.adb:83:53: low: range check might fail, cannot prove upper bound for Natural'Image (Input.Line_Number) & ": " & S [reason for check: input value must fit in parameter type] [possible fix: subprogram at screen_output.ads:18 should mention S and Input.Line_Num in a precondition]
 screen_output.adb:94:07: medium: unexpected exception might be raised
@@ -125,4 +128,5 @@ values.adb:24:07: info: initialization of "Kind" proved
 values.adb:27:12: medium: implicit aspect Always_Terminates on "Read" could be incorrect, call to "Read_Number" might be nonterminating [possible fix: annotate "Read_Number" with aspect Always_Terminates]
 values.adb:27:41: warning: "Real_Val" is set by "Read_Number" but not used after the call
 values.adb:30:10: medium: unexpected exception might be raised
+values.adb:45:21: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 values.ads:11:13: info: implicit aspect Always_Terminates on "To_String" has been proved, subprogram will terminate
