@@ -428,12 +428,16 @@ package VC_Kinds is
 
       Warn_Contracts_Recursive,
       Warn_DIC_Ignored,
+      Warn_Imprecise_Address,
       Warn_Imprecise_Align,
       Warn_Imprecise_Call,
+      Warn_Component_Size,
+      Warn_Record_Component_Attr,
       Warn_Imprecise_Size,
       Warn_Imprecise_UC,
       Warn_Imprecise_Value,
       Warn_Imprecise_Image,
+      Warn_Loop_Entity,
       Warn_No_Reclam_Func,
       Warn_Num_Variant,
       Warn_Map_Length_Aggregates,
@@ -716,10 +720,17 @@ package VC_Kinds is
         when Warn_DIC_Ignored =>
           "default initial condition on type & not available for proof in an "
         & "assertion context",
+        when Warn_Imprecise_Address =>
+          "adress of object is not precisely known",
         when Warn_Imprecise_Align =>
-          "alignment of attribute address is not precisely known",
+          "alignment of object is not precisely known",
         when Warn_Imprecise_Call =>
           "call to & is not handled precisely",
+        when Warn_Component_Size =>
+          "the value of attribute Component_Size is handled in an imprecise "
+         & "way",
+        when Warn_Record_Component_Attr =>
+          "the value of attribute & is handled in an imprecise way",
         when Warn_Imprecise_Size =>
           "the value of attribute & is handled in an imprecise way",
         when Warn_Imprecise_UC =>
@@ -729,9 +740,13 @@ package VC_Kinds is
          & "way, so the precondition is impossible to prove and nothing will "
          & "be known about the evaluation of the attribute reference",
         when Warn_Imprecise_Image =>
-         "references to the ""Image"" and ""Img"" attributes are handled in an"
+         "references to the & attribute are handled in an"
          & " imprecise way, so nothing will be known about the evaluation of "
          & "the attribute reference apart from a bound on its length",
+        when Warn_Loop_Entity =>
+         "The initial value of & declared before the loop invariant "
+        & "is not visible after the invariant; it shall be restated in the "
+        & "invariant if necessary",
         when Warn_Init_Cond_Ignored =>
          "Initial_Condition of package & is ignored",
         when Warn_No_Reclam_Func =>
@@ -739,13 +754,13 @@ package VC_Kinds is
          & "ownership &",
         when Warn_Num_Variant =>
           "expression function body of subprograms with a numeric "
-        & "variant might not be available on recursive calls",
+         & "variant might not be available on recursive calls",
         when Warn_Map_Length_Aggregates =>
           "no ""Length"" function found for type with predefined map "
-        & "aggregates &",
+         & "aggregates &",
         when Warn_Set_Length_Aggregates =>
           "no ""Length"" function found for type with predefined set "
-        & "aggregates &",
+         & "aggregates &",
         when Warn_Predef_Eq_Null =>
           "no null value found for type with predefined equality &",
 

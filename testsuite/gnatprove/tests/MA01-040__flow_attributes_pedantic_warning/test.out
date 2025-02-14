@@ -3,13 +3,17 @@ gnatprove: error during flow analysis and proof
 pedantic.adb:7:15: info: range check proved (CVC5: 2 VC)
 pedantic.adb:7:15: warning: attribute "Alignment" has an implementation-defined value [representation-attribute-value]
 pedantic.adb:19:15: warning: attribute "Component_Size" has an implementation-defined value [representation-attribute-value]
+pedantic.adb:19:15: warning: the value of attribute Component_Size is handled in an imprecise way [imprecise-component-size]
 pedantic.adb:25:18: medium: range check might fail, cannot prove upper bound for V.F1'First_Bit [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at pedantic.ads:23 should mention V in a precondition]
 pedantic.adb:25:18: warning: attribute "First_Bit" has an implementation-defined value [representation-attribute-value]
+pedantic.adb:25:18: warning: the value of attribute "First_Bit" is handled in an imprecise way [imprecise-record-component-attribute]
 pedantic.adb:31:18: info: range check proved (CVC5: 2 VC)
 pedantic.adb:31:18: medium: range check might fail, cannot prove upper bound for V.F1'Last_Bit [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at pedantic.ads:25 should mention V in a precondition]
 pedantic.adb:31:18: warning: attribute "Last_Bit" has an implementation-defined value [representation-attribute-value]
+pedantic.adb:31:18: warning: the value of attribute "Last_Bit" is handled in an imprecise way [imprecise-record-component-attribute]
 pedantic.adb:37:18: medium: range check might fail, cannot prove upper bound for V.F1'Position [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at pedantic.ads:27 should mention V in a precondition]
 pedantic.adb:37:18: warning: attribute "Position" has an implementation-defined value [representation-attribute-value]
+pedantic.adb:37:18: warning: the value of attribute "Position" is handled in an imprecise way [imprecise-record-component-attribute]
 pedantic.adb:43:15: info: range check proved (CVC5: 2 VC)
 pedantic.adb:43:15: warning: attribute "Size" has an implementation-defined value [representation-attribute-value]
 pedantic.adb:49:15: info: range check proved (CVC5: 2 VC)

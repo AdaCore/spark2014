@@ -255,15 +255,12 @@ package body Gnat2Why.Expr.Loops.Inv is
    --------------------
 
    procedure Get_Loop_Writes
-     (Loop_Stmt          :     N_Loop_Statement_Id;
-      Loop_Writes        : out Write_Status_Maps.Map;
-      Inv_Objects        : out Entity_Sets.Set);
+     (Loop_Stmt   :     N_Loop_Statement_Id;
+      Loop_Writes : out Write_Status_Maps.Map);
    --  Traverse a loop statement and accumulate potentially written variables.
    --  @param Loop_Stmt considered loop statement.
    --  @param Loop_Writes a map between written entities and their write
    --         status.
-   --  @param Inv_Objects the set of constants declared just before the
-   --         invariant if any.
 
    procedure Process_Call
      (Call          :        Node_Id;
@@ -986,9 +983,10 @@ package body Gnat2Why.Expr.Loops.Inv is
    ------------------------------
 
    function Generate_Frame_Condition
-     (Loop_Stmt          : N_Loop_Statement_Id;
-      Low_Id             : W_Expr_Id;
-      High_Id            : W_Expr_Id)
+     (Loop_Stmt       : N_Loop_Statement_Id;
+      Low_Id          : W_Expr_Id;
+      High_Id         : W_Expr_Id;
+      Frame_Constants : Entity_Sets.Set)
       return W_Pred_Id
    is
       use Write_Status_Maps;
@@ -1009,10 +1007,9 @@ package body Gnat2Why.Expr.Loops.Inv is
       N             : Node_Id;
       Dyn_Types_Inv : W_Pred_Id := True_Pred;
       Loop_Writes   : Map;
-      Inv_Objects   : Entity_Sets.Set;
 
    begin
-      Get_Loop_Writes (Loop_Stmt, Loop_Writes, Inv_Objects);
+      Get_Loop_Writes (Loop_Stmt, Loop_Writes);
 
       --  Sanity checking:
       --  Check that we have at least every variable modified in the loop.
@@ -1178,7 +1175,7 @@ package body Gnat2Why.Expr.Loops.Inv is
 
       --  Assume value of scalar constants declared just before the invariant
 
-      for E of Inv_Objects loop
+      for E of Frame_Constants loop
          pragma Assert (Has_Scalar_Type (Etype (E)));
 
          declare
@@ -1216,9 +1213,8 @@ package body Gnat2Why.Expr.Loops.Inv is
    ---------------------
 
    procedure Get_Loop_Writes
-     (Loop_Stmt          :     N_Loop_Statement_Id;
-      Loop_Writes        : out Write_Status_Maps.Map;
-      Inv_Objects        : out Entity_Sets.Set)
+     (Loop_Stmt   :     N_Loop_Statement_Id;
+      Loop_Writes : out Write_Status_Maps.Map)
    is
       Stmts     : constant List_Id := Statements (Loop_Stmt);
       Scheme    : constant Opt_N_Iteration_Scheme_Id :=
@@ -1307,33 +1303,6 @@ package body Gnat2Why.Expr.Loops.Inv is
                         or else Is_Pragma (N, Pragma_Loop_Variant))
             then
                After_Inv := False;
-
-               --  Collect scalar variables declared just before the invariant
-               --  so that we can assume their value.
-
-               declare
-                  use Node_Lists;
-                  Prev : Node_Lists.Cursor := Previous (C);
-               begin
-                  while Has_Element (Prev) loop
-                     declare
-                        D : constant Node_Id := Element (Prev);
-                     begin
-                        exit when Nkind (D) not in
-                          N_Declaration | N_Ignored_In_SPARK;
-
-                        if Nkind (D) = N_Object_Declaration
-                          and then Ekind (Defining_Identifier (D)) = E_Constant
-                          and then Has_Scalar_Type
-                            (Etype (Defining_Identifier (D)))
-                        then
-                           Inv_Objects.Insert (Defining_Identifier (D));
-                        end if;
-                     end;
-
-                     Previous (Prev);
-                  end loop;
-               end;
             end if;
 
             Process_Statement (N, Loop_Writes, Relevant_Vertices,

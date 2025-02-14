@@ -7,17 +7,17 @@ test_inline.adb:32:14: info: local subprogram "Print_B" only analyzed in the con
 test_inline.adb:39:07: info: analyzing call to "Set_A_And_B" in context
 test_inline.adb:40:07: info: analyzing call to "Print_A" in context
 test_inline.adb:40:07: warning: in inlined body at line 29
-test_inline.adb:40:07: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+test_inline.adb:40:07: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 test_inline.adb:45:07: info: analyzing call to "Set_A_And_B" in context
 test_inline.adb:46:07: info: analyzing call to "Print_B" in context
 test_inline.adb:46:07: warning: in inlined body at line 34
-test_inline.adb:46:07: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+test_inline.adb:46:07: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 test_inline.adb:51:07: warning: "A" is set by "Do_Test_A" but not used after the call
 test_inline.adb:51:07: warning: "B" is set by "Do_Test_A" but not used after the call
 test_inline.adb:55:07: info: analyzing call to "Set_A_And_B" in context
 test_inline.adb:56:07: info: analyzing call to "Print_A" in context
 test_inline.adb:56:07: warning: in inlined body at line 29
-test_inline.adb:56:07: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+test_inline.adb:56:07: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 test_inline.adb:57:07: info: analyzing call to "Print_B" in context
 test_inline.adb:57:07: warning: in inlined body at line 34
-test_inline.adb:57:07: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+test_inline.adb:57:07: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]

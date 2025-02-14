@@ -1,9 +1,9 @@
 main.adb:14:04: info: no contextual analysis of "Print_Set" (object renaming)
 main.adb:18:20: info: cannot unroll loop (too many loop iterations)
-main.adb:19:18: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+main.adb:19:18: warning: references to the "Img" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 main.adb:24:04: info: no contextual analysis of "Print_Part" (object renaming)
 main.adb:28:20: info: cannot unroll loop (too many loop iterations)
-main.adb:29:18: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+main.adb:29:18: warning: references to the "Img" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 main.adb:39:04: info: initialization of "NP" proved
 main.adb:40:04: info: initialization of "Count" proved
 main.adb:43:04: info: precondition proved (CVC5: 6 VC)
