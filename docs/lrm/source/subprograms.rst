@@ -1651,9 +1651,10 @@ Exit_Cases aspects are ignored for execution.
 
 2. If all the exit cases of the Exit_Cases aspect of a subprogram are associated
    with Normal_Return, then the subprogram shall have either an
-   Exceptional_Cases contract that does not contain only statically False
-   consequences or a Program_Exit contract whose postcondition is not statically
-   False. [A subprogram annotated with Exit_Cases shall be allowed to either
+   Exceptional_Cases contract that does not contain only consequences which
+   are known to be False at compile time or a Program_Exit contract whose
+   postcondition is not known to be False at compile time.
+   [A subprogram annotated with Exit_Cases shall be allowed to either
    propagate an exception or exit the program.]
 
 3. All exceptions mentioned in the Exit_Cases aspect of a subprogram shall be
@@ -1661,7 +1662,7 @@ Exit_Cases aspects are ignored for execution.
 
 4. If the Exit_Cases aspect has at least one exit case associated with
    Program_Exit, then the Program_Exit contract for the subprogram, if any,
-   shall not have a statically False postcondition.
+   shall not have a postcondition which is known to be False at compile time.
 
 .. container:: heading
 
