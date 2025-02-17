@@ -21,23 +21,24 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;               use Atree;
-with Ada.Containers;      use Ada.Containers;
-with Errout_Wrapper;      use Errout_Wrapper;
-with Flow_Classwide;      use Flow_Classwide;
-with Flow_Error_Messages; use Flow_Error_Messages;
-with Flow_Utility;        use Flow_Utility;
-with Namet;               use Namet;
-with Nlists;              use Nlists;
-with Output;              use Output;
-with Sem_Aux;             use Sem_Aux;
-with Sem_Eval;            use Sem_Eval;
-with Sem_Util;            use Sem_Util;
-with Sinfo.Utils;         use Sinfo.Utils;
-with Snames;              use Snames;
-with Sprint;              use Sprint;
-with SPARK_Util;          use SPARK_Util;
-with VC_Kinds;            use VC_Kinds;
+with Atree;                     use Atree;
+with Ada.Containers;            use Ada.Containers;
+with Errout_Wrapper;            use Errout_Wrapper;
+with Flow_Classwide;            use Flow_Classwide;
+with Flow_Error_Messages;       use Flow_Error_Messages;
+with Flow_Utility;              use Flow_Utility;
+with Namet;                     use Namet;
+with Nlists;                    use Nlists;
+with Output;                    use Output;
+with Sem_Aux;                   use Sem_Aux;
+with Sem_Eval;                  use Sem_Eval;
+with Sem_Util;                  use Sem_Util;
+with Sinfo.Utils;               use Sinfo.Utils;
+with Snames;                    use Snames;
+with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
+with Sprint;                    use Sprint;
+with SPARK_Util;                use SPARK_Util;
+with VC_Kinds;                  use VC_Kinds;
 with Why;
 
 package body Flow.Analysis.Antialiasing is
@@ -75,7 +76,9 @@ package body Flow.Analysis.Antialiasing is
    function Is_Immutable (F : Entity_Id) return Boolean
    with Pre => Is_Formal (F);
    --  Check if the given formal parameter is immutable, as per the rules
-   --  of the SPARK RM section 6.4.2(2).
+   --  of the SPARK RM section 6.4.2(2). Also, recognize Mutable_In_Parameters,
+   --  even though SPARK RM is silent about them and they are only described
+   --  in SPARK User's Guide.
 
    function Is_Conservatively_By_Copy_Type (F : Entity_Id) return Boolean
      with Pre => Is_Formal (F) and then Is_Immutable (F);
@@ -813,7 +816,8 @@ package body Flow.Analysis.Antialiasing is
         --  type.
         Ekind (F) = E_In_Parameter
         and then not Is_Access_Variable (Typ)
-        and then not Is_Anonymous_Access_To_Constant (Typ);
+        and then not Is_Anonymous_Access_To_Constant (Typ)
+        and then not Has_Mutable_In_Param_Annotation (F);
    end Is_Immutable;
 
    ------------------------------------
