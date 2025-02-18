@@ -1,2 +1,2 @@
+float_test.adb:6:16: high: range check might fail, cannot prove upper bound for X + X (e.g. when X = 3.1415927E+0) [reason for check: result of addition must be convertible to the target type of the conversion]
 float_test.adb:6:16: info: float overflow check proved (CVC5: 1 VC)
-float_test.adb:6:16: medium: range check might fail, cannot prove upper bound for X + X [reason for check: result of addition must be convertible to the target type of the conversion]

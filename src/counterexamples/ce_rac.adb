@@ -3943,7 +3943,8 @@ package body CE_RAC is
                  and then Has_Floating_Point_Type (Expr_Typ)
                then
                   Res := RAC_Expr (Expression (N));
-                  Res := Integer_Value (To_Big_Integer (Value_Real (Res)), N);
+                  Res := Integer_Value
+                    (To_Big_Integer (Value_Real (Res)), Ty, Expression (N));
 
                --  Unless a conversion between integer and real values is
                --  needed, perform the range checking on the expression in
