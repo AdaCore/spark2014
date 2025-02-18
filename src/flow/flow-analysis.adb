@@ -990,14 +990,26 @@ package body Flow.Analysis is
                   then
                      if Is_In_Access_Parameter then
                         declare
-                           E : constant Entity_Id :=
+                           Typ       : constant Entity_Id :=
                              Directly_Designated_Type (Etype (Var));
-                           Report_Id : constant Flow_Id := Direct_Mapping_Id
+                           E         : Entity_Id;
+                           Report_Id : Flow_Id;
+                        begin
+
+                           --  If Var points to the completion of a type, then
+                           --  we use the incomplete view in the message
+                           --  (because the full view is flagged as internal).
+                           if Present (Incomplete_View (Typ)) then
+                              E := Incomplete_View (Typ);
+                           else
+                              E := Typ;
+                           end if;
+
+                           Report_Id := Direct_Mapping_Id
                              (if Comes_From_Source (E)
-                              or else Is_Standard_Type (E)
+                                or else Is_Standard_Type (E)
                               then E
                               else Base_Type (E));
-                        begin
                            Error_Msg_Flow
                              (FA       => FA,
                               Msg      => "& is not modified, parameter type" &

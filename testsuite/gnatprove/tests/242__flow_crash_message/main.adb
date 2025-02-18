@@ -10,6 +10,11 @@ procedure Main with SPARK_Mode is
    begin
       null;
    end Contains;
+
+   procedure Foo (I : not null access Integer) is
+   begin
+      null;
+   end Foo;
 begin
    null;
 end Main;
