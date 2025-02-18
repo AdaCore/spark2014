@@ -9053,7 +9053,6 @@ package body SPARK_Definition is
             --  long_long_float should not pose any fundamental problem.
 
             if Is_Modular_Integer_Type (E)
-              and then Present (Modulus (E))
               and then Modulus (E) > UI_Expon (Uint_2, Uint_128)
             then
                pragma Annotate
