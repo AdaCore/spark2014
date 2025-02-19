@@ -278,16 +278,14 @@ package body CE_Parsing is
                   while Has_Element (C) loop
                      declare
                         Comp_Name : String renames Key (C);
-
+                        Comp_Elem : Cntexmp_Value_Ptr renames Element (C);
                      begin
                         --  if the key is "rt", then Element (C) is a record
                         --  with the bounds
                         if Comp_Name = "rt" then
                            declare
-                              Cnt_Bounds : Cntexmp_Value_Ptr
-                                renames Element (C);
                               C : Cntexmp_Value_Array.Cursor :=
-                                Cnt_Bounds.Fi.First;
+                                Comp_Elem.Fi.First;
                            begin
                               while Has_Element (C) loop
                                  declare
@@ -306,13 +304,11 @@ package body CE_Parsing is
                                  end;
                               end loop;
                            end;
-                        else
+                        elsif Comp_Elem.T = Cnt_Array then
                            --  Go over the association in the Why3
                            --  counterexample. If we fail to parse an element,
                            --  continue with the next.
                            declare
-                              Comp_Elem : Cntexmp_Value_Ptr renames
-                                Element (C);
                               Comp_Ty : constant Entity_Id :=
                                 Retysp (Component_Type (Ty));
                               Comp    : Value_Type;
@@ -341,8 +337,7 @@ package body CE_Parsing is
                                          (From_String (Key (C)),
                                           new Value_Type'(Comp));
                                     exception
-                                       when Parse_Error =>
-                                          null;
+                                       when Parse_Error => null;
                                     end;
                                     Next (C);
                                  end loop;

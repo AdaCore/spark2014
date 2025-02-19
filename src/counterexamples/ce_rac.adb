@@ -2822,6 +2822,14 @@ package body CE_RAC is
             while Present (Assoc) loop
                Check_Fuel_Decrease (Ctx.Fuel);
 
+               if Box_Present (Assoc) then
+                  RAC_Unsupported ("RAC_Expr aggregate record",
+                                   "boxed association");
+               end if;
+               --  Each component association has either a box or an expression
+
+               pragma Assert (Present (Expression (Assoc)));
+
                Val := new Value_Type'(RAC_Expr (Expression (Assoc)));
                Choice := First (Choice_List (Assoc));
 
