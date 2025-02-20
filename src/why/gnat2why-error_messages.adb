@@ -161,7 +161,10 @@ package body Gnat2Why.Error_Messages is
    VC_Table : Id_Tables.Vector := Id_Tables.Empty_Vector;
    --  This table maps ids to their VC_Info (entity and Ada node)
 
-   function Find_VC (N : Node_Id; Kind : VC_Kind) return VC_Id;
+   function Find_VC (N           : Node_Id;
+                     Kind        : VC_Kind;
+                     Expected_VC : VC_Id)
+                     return VC_Id;
    --  Find the key of a VC in VC_Table
 
    Registered_VCs_In_Why3 : Natural := 0;
@@ -407,13 +410,18 @@ package body Gnat2Why.Error_Messages is
    -- Find_VC --
    -------------
 
-   function Find_VC (N : Node_Id; Kind : VC_Kind) return VC_Id is
+   function Find_VC (N           : Node_Id;
+                     Kind        : VC_Kind;
+                     Expected_VC : VC_Id)
+                     return VC_Id is
    begin
       for C in VC_Table.Iterate loop
          if VC_Table (C).Node = N
-           and then VC_Table (C).Kind = Kind
+           and then VC_Kinds_Match (VC_Table (C).Kind, Kind)
          then
-            return VC_Id (Id_Tables.To_Index (C));
+            if Id_Tables.To_Index (C) = Expected_VC then
+               return VC_Id (Id_Tables.To_Index (C));
+            end if;
          end if;
       end loop;
 
@@ -696,7 +704,8 @@ package body Gnat2Why.Error_Messages is
                     Natural
                       (Find_VC
                          (Small_Step_Res.Res_Node,
-                          Small_Step_Res.Res_VC_Kind));
+                          Small_Step_Res.Res_VC_Kind,
+                          Id));
                exception
                   when E : Program_Error =>
                      --  Find_VC raises a Program_Error when unsuccessful
