@@ -1,0 +1,16 @@
+crash.adb:10:07: warning: initialization of "Y" has no effect
+crash.adb:10:20: medium: pointer dereference check might fail (e.g. when X = null) [possible fix: subprogram at line 8 should mention X in a precondition]
+crash.adb:10:25: medium: pointer dereference check might fail [possible fix: subprogram at line 8 should mention X in a precondition]
+crash.adb:12:08: medium: pointer dereference check might fail (e.g. when X = null) [possible fix: subprogram at line 8 should mention X in a precondition]
+crash.adb:12:13: medium: pointer dereference check might fail [possible fix: subprogram at line 8 should mention X in a precondition]
+crash.adb:14:10: warning: initialization of "Z" has no effect
+crash.adb:14:39: medium: pointer dereference check might fail (e.g. when X = null) [possible fix: subprogram at line 8 should mention X in a precondition]
+crash.adb:14:45: medium: pointer dereference check might fail [possible fix: subprogram at line 8 should mention X in a precondition]
+crash.adb:19:14: warning: subprogram "Test2" has no effect
+crash.adb:20:04: warning: analyzing unreferenced procedure "Test2" [unreferenced-procedure]
+crash.adb:21:19: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
+crash.adb:23:12: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
+crash.adb:25:23: info: pointer dereference check proved (CVC5: 1 VC)
+crash.adb:27:11: info: pointer dereference check proved (CVC5: 1 VC)
+crash.adb:27:20: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
+crash.adb:29:27: info: pointer dereference check proved (CVC5: 1 VC)
