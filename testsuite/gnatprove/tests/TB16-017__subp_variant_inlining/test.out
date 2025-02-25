@@ -1,23 +1,23 @@
 mutrec2.adb:5:13: info: implicit aspect Always_Terminates on "Inc" has been proved, subprogram will terminate
 mutrec2.adb:6:13: info: implicit aspect Always_Terminates on "Dec" has been proved, subprogram will terminate
 mutrec2.adb:17:38: info: range check proved (CVC5: 2 VC)
-mutrec2.adb:17:41: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+mutrec2.adb:17:41: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 mutrec2.adb:17:48: info: range check proved (CVC5: 2 VC)
 mutrec2.adb:17:58: info: range check proved (CVC5: 2 VC)
-mutrec2.adb:17:61: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+mutrec2.adb:17:61: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 mutrec2.adb:21:14: info: overflow check proved (CVC5: 2 VC)
 mutrec2.adb:22:14: info: overflow check proved (CVC5: 2 VC)
 mutrec2.adb:24:10: medium: subprogram variant might fail
 mutrec2.adb:30:38: info: range check proved (CVC5: 2 VC)
-mutrec2.adb:30:41: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+mutrec2.adb:30:41: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 mutrec2.adb:30:48: info: range check proved (CVC5: 2 VC)
 mutrec2.adb:30:58: info: range check proved (CVC5: 2 VC)
-mutrec2.adb:30:61: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+mutrec2.adb:30:61: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 mutrec2.adb:34:14: info: overflow check proved (CVC5: 2 VC)
 mutrec2.adb:35:14: info: overflow check proved (CVC5: 2 VC)
 mutrec2.adb:37:10: medium: subprogram variant might fail
 mutrec2.adb:54:36: info: range check proved (CVC5: 2 VC)
-mutrec2.adb:54:39: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+mutrec2.adb:54:39: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 mutrec2.adb:54:46: info: range check proved (CVC5: 2 VC)
 mutrec2.adb:54:56: info: range check proved (CVC5: 2 VC)
-mutrec2.adb:54:59: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+mutrec2.adb:54:59: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]

@@ -42,7 +42,7 @@ deceleration_curve.adb:106:10: warning: assuming "Put" always terminates
 deceleration_curve.adb:106:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:106:10: warning: no Always_Terminates aspect available for "Put" [assumed-always-terminates]
 deceleration_curve.adb:106:10: warning: no Global contract available for "Put" [assumed-global-null]
-deceleration_curve.adb:106:24: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+deceleration_curve.adb:106:24: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 deceleration_curve.adb:107:10: warning: assuming "Put" always terminates
 deceleration_curve.adb:107:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:107:10: warning: no Always_Terminates aspect available for "Put" [assumed-always-terminates]
@@ -51,7 +51,7 @@ deceleration_curve.adb:108:10: warning: assuming "Put" always terminates
 deceleration_curve.adb:108:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:108:10: warning: no Always_Terminates aspect available for "Put" [assumed-always-terminates]
 deceleration_curve.adb:108:10: warning: no Global contract available for "Put" [assumed-global-null]
-deceleration_curve.adb:108:30: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+deceleration_curve.adb:108:30: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 deceleration_curve.adb:109:12: medium: in inlined expression function body at units.ads:42
 deceleration_curve.adb:109:12: medium: precondition might fail, cannot prove Speed >= 0.0 [possible fix: subprogram at deceleration_curve.ads:85 should mention Braking_Curve in a precondition]
 deceleration_curve.adb:110:10: warning: assuming "New_Line" always terminates

@@ -18010,7 +18010,9 @@ package body Gnat2Why.Expr is
 
                Warning_Msg_N
                  (Warn_Imprecise_Image,
-                  Expr);
+                  Expr,
+                  Create_N (Warn_Imprecise_Image,
+                    Names => [To_String (Aname, Sloc (Expr))]));
             end;
 
          when Attribute_Size
@@ -18449,6 +18451,8 @@ package body Gnat2Why.Expr is
                end if;
             end;
 
+            Warning_Msg_N (Warn_Component_Size, Expr);
+
          --  Alignment may be specified explicitly on the type or object. When
          --  specified on the type, the frontend replaces T'Alignment by its
          --  value. When specified on the object, we only support cases where
@@ -18486,6 +18490,12 @@ package body Gnat2Why.Expr is
                  E_Symb (Component, WNE_Attr_First_Bit);
 
             begin
+               Warning_Msg_N
+                 (Warn_Record_Component_Attr,
+                  Expr,
+                  Create_N (Warn_Record_Component_Attr,
+                    Names => [To_String (Aname, Sloc (Expr))]));
+
                return New_Call (Ada_Node => Expr,
                                 Domain   => Domain,
                                 Name     => Name,
@@ -18504,6 +18514,12 @@ package body Gnat2Why.Expr is
                  E_Symb (Component, WNE_Attr_Last_Bit);
 
             begin
+               Warning_Msg_N
+                 (Warn_Record_Component_Attr,
+                  Expr,
+                  Create_N (Warn_Record_Component_Attr,
+                    Names => [To_String (Aname, Sloc (Expr))]));
+
                return New_Call (Ada_Node => Expr,
                                 Domain   => Domain,
                                 Name     => Name,
@@ -18522,6 +18538,12 @@ package body Gnat2Why.Expr is
                  E_Symb (Component, WNE_Attr_Position);
 
             begin
+               Warning_Msg_N
+                 (Warn_Record_Component_Attr,
+                  Expr,
+                  Create_N (Warn_Record_Component_Attr,
+                    Names => [To_String (Aname, Sloc (Expr))]));
+
                return New_Call (Ada_Node => Expr,
                                 Domain   => Domain,
                                 Name     => Name,
@@ -20219,7 +20241,7 @@ package body Gnat2Why.Expr is
                  (not Is_In_Loop_Initial_Statements
                     or else (Is_Scalar_Type (Obj_Type)
                                and then Is_Loop_Entity (Obj))
-                    or else Is_Actions_Entity (Obj));
+                  or else Is_Actions_Entity (Obj));
 
                R := Assignment_Of_Obj_Decl (Decl);
 
@@ -24177,6 +24199,17 @@ package body Gnat2Why.Expr is
       T : W_Expr_Id;
 
    begin
+      --  Emit warning on constants declared before the loop invariant if their
+      --  value might not be known precisely at the current program point.
+
+      if Imprecise_Constant_Value_In_Loop (Ent) then
+         pragma Assert (Is_Loop_Entity (Ent));
+         Warning_Msg_N
+           (Warn_Loop_Entity,
+            Expr,
+            Names => [Ent]);
+      end if;
+
       --  The special cases of this function are:
       --  * parameters, whose names are stored in Params.Name_Map (these can
       --    also be refs)

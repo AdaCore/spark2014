@@ -646,18 +646,29 @@ package body VC_Kinds is
           "The Default_Initial_Condition of a type won't be assumed on "
         & "subcomponents initialized by default inside assertions and "
         & "contracts, but will still be available in regular code",
+        when Warn_Imprecise_Address =>
+          "The adress of objects is not precisely known if it is not supplied "
+        & "through an address clause",
         when Warn_Imprecise_Align =>
-          "The alignment of an object might not be known for proof",
+          "The alignment of an object might not be known for proof if it is "
+        & "not supplied through an attribute definition clause",
         when Warn_Imprecise_Call =>
           "The behavior of a call might not be known by SPARK and handled in "
         & "an imprecise way; its precondition might be impossible to prove "
         & "and nothing will be known about its result",
+        when Warn_Component_Size =>
+          "the value of attribute Component_Size might not be known for "
+        & "proof if it is not supplied through an attribute definition clause",
+        when Warn_Record_Component_Attr =>
+          "the value of attributes First_Bit, Last_Bit, and Position on "
+        & "record components are handled in an imprecise way if the record "
+        & "does not have a record representation clause",
         when Warn_Imprecise_Size =>
           "The attributes Size, Object_Size or Value_Size might not be handled"
         & " precisely, nothing will be known about their evaluation",
         when Warn_Imprecise_UC =>
           "Unchecked conversion might not be handled precisely by SPARK, "
-        & "nothing will be known about their result.",
+        & "nothing will be known about their result",
         when Warn_Imprecise_Value =>
           "References to the attribute Value are handled in an imprecise way; "
         & "its precondition is impossible to prove and nothing will be known "
@@ -666,12 +677,16 @@ package body VC_Kinds is
           "References to the attributes Image and Img are handled in an "
         & "imprecise way; nothing will be known about the evaluation of the"
         & " attribute reference apart from a bound on its length",
+        when Warn_Loop_Entity =>
+         "The initial value of constants declared before the loop invariant "
+        & "is not visible after the invariant; it shall be restated in the "
+        & "invariant if necessary",
         when Warn_Init_Cond_Ignored =>
           "The initial condition of a withed package might be ignored if it "
         & "is not known to be true, due to elaboration order",
         when Warn_No_Reclam_Func =>
           "No reclamation function or reclaimed value was found for an "
-        & "ownership type, which may make it impossible to prove that values"
+        & "ownership type, which may make it impossible to prove that values "
         & "of this type are reclaimed",
         when Warn_Num_Variant =>
           "For recursive expression functions with a numeric (not structural) "
@@ -1621,7 +1636,7 @@ package body VC_Kinds is
          when Warn_Auto_Lemma_Specializable => "auto-lemma-specializable",
          when Warn_Initialization_To_Alias => "initialization-to-alias",
          when Warn_Function_Is_Valid => "is-valid-returns-true",
-        when Warn_Generic_Not_Analyzed => "generic-not-analyzed",
+         when Warn_Generic_Not_Analyzed => "generic-not-analyzed",
          when Warn_No_Possible_Termination => "no-possible-termination",
          when Warn_Pragma_Annotate_No_Check => "no-check-message-justified",
          when Warn_Pragma_Annotate_Proved_Check => "proved-check-justified",
@@ -1666,12 +1681,17 @@ package body VC_Kinds is
          when Warn_Contracts_Recursive => "contracts-recursive",
          when Warn_DIC_Ignored => "dic-ignored",
          when Warn_Full_View_Visible => "full-view-visible",
+         when Warn_Imprecise_Address => "imprecise-address",
          when Warn_Imprecise_Align => "imprecise-align",
          when Warn_Imprecise_Call => "imprecise-call",
+         when Warn_Component_Size => "imprecise-component-size",
+         when Warn_Record_Component_Attr =>
+            "imprecise-record-component-attribute",
          when Warn_Imprecise_Size => "imprecise-size",
          when Warn_Imprecise_UC   => "imprecise-unchecked-conversion",
          when Warn_Imprecise_Value => "imprecise-value",
          when Warn_Imprecise_Image => "imprecise-image",
+         when Warn_Loop_Entity => "constants-in-loops",
          when Warn_Init_Cond_Ignored => "init-cond-ignored",
          when Warn_No_Reclam_Func => "no-reclamation-function",
          when Warn_Num_Variant => "numeric-variant",

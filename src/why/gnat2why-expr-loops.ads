@@ -50,4 +50,9 @@ package Gnat2Why.Expr.Loops is
    --  all inner declarations and statements that appear in block statements
    --  containing a loop invariant.
 
+   function Imprecise_Constant_Value_In_Loop (E : Entity_Id) return Boolean;
+   --  Return True if E is a (scalar) constant declared in a loop prior to the
+   --  loop invariant whose value is not precisely known at the current program
+   --  point.
+
 end Gnat2Why.Expr.Loops;

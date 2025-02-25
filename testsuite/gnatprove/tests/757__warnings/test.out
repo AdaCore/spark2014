@@ -1,6 +1,6 @@
 ---- expect warning related to recursion -------
 pedantic.adb:5:12: info: implicit aspect Always_Terminates on "To_String" has been proved, subprogram will terminate
-pedantic.adb:7:13: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+pedantic.adb:7:13: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 rec.ads:3:13: warning: subprogram "P" has no effect
 rec.ads:3:34: warning: no recursive call visible [variant-no-recursion]
 ---- expect error for unknown warning name -------
@@ -8,25 +8,25 @@ rec.ads:3:34: warning: no recursive call visible [variant-no-recursion]
 Try "gnatprove --help" for more information.
 ---- no warning related recursion -------
 pedantic.adb:5:12: info: implicit aspect Always_Terminates on "To_String" has been proved, subprogram will terminate
-pedantic.adb:7:13: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+pedantic.adb:7:13: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 rec.ads:3:13: warning: subprogram "P" has no effect
 ---- expect error instead of warning -------
 pedantic.adb:5:12: info: implicit aspect Always_Terminates on "To_String" has been proved, subprogram will terminate
-pedantic.adb:7:13: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+pedantic.adb:7:13: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 rec.ads:3:13: warning: subprogram "P" has no effect
 rec.ads:3:34: error: no recursive call visible [variant-no-recursion]
 gnatprove: error during flow analysis and proof
 ---- expect no warning -------
 pedantic.adb:5:12: info: implicit aspect Always_Terminates on "To_String" has been proved, subprogram will terminate
-pedantic.adb:7:13: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+pedantic.adb:7:13: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 rec.ads:3:13: warning: subprogram "P" has no effect
 ---- expect warning for image attribute -------
 pedantic.adb:5:12: info: implicit aspect Always_Terminates on "To_String" has been proved, subprogram will terminate
 pedantic.adb:7:13: warning: attribute "Image" has an implementation-defined length [image-attribute-length]
-pedantic.adb:7:13: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+pedantic.adb:7:13: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 rec.ads:3:13: warning: subprogram "P" has no effect
 ---- expect warning for image attribute, with tag -------
 pedantic.adb:5:12: info: implicit aspect Always_Terminates on "To_String" has been proved, subprogram will terminate
 pedantic.adb:7:13: warning: attribute "Image" has an implementation-defined length [image-attribute-length]
-pedantic.adb:7:13: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+pedantic.adb:7:13: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 rec.ads:3:13: warning: subprogram "P" has no effect

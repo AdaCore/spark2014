@@ -49,6 +49,6 @@ repro_main.adb:20:13: info: precondition proved (CVC5: 1 VC)
 repro_main.adb:22:08: info: precondition proved (CVC5: 1 VC)
 repro_main.adb:22:08: info: precondition proved (Trivial: 1 VC)
 repro_main.adb:23:38: info: precondition proved (CVC5: 2 VC)
-repro_main.adb:23:56: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+repro_main.adb:23:56: warning: references to the "Img" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 repro_main.adb:24:28: info: loop variant proved (CVC5: 1 VC)
 gnatprove: error during flow analysis and proof

@@ -4,6 +4,6 @@ carver.ads:22:14: info: implicit aspect Always_Terminates on "Make_Carved_Array"
 carver.ads:24:55: high: null exclusion check might fail, in instantiation at carver_test.adb:9
 carver.ads:24:55: warning: (Ada 2005) "null" not allowed in null-excluding component [enabled by default]
 carver.ads:24:55: warning: Constraint_Error will be raised at run time [enabled by default]
-carver_test.adb:16:37: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-carver_test.adb:17:36: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+carver_test.adb:16:37: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+carver_test.adb:17:36: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 carver_test.ads:8:09: info: data dependencies proved

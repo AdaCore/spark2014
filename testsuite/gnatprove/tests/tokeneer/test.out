@@ -375,11 +375,11 @@ auditlog.ads:295:13: info: implicit aspect Always_Terminates on "Valid_NumberLog
 audittypes.ads:77:13: info: implicit aspect Always_Terminates on "ElementT_Image" has been proved, subprogram will terminate
 audittypes.ads:78:16: info: predicate check justified
 audittypes.ads:78:16: info: range check proved
-audittypes.ads:78:16: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+audittypes.ads:78:16: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 bio.adb:83:13: info: implicit aspect Always_Terminates on "ReturnT_Image" has been proved, subprogram will terminate
 bio.adb:84:15: info: predicate check justified
 bio.adb:84:15: info: range check proved
-bio.adb:84:15: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+bio.adb:84:15: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 bio.adb:123:13: info: add a contract to analyze it separately from calling contexts
 bio.adb:123:13: info: implicit aspect Always_Terminates on "GetReturnCode" has been proved, subprogram will terminate
 bio.adb:123:13: info: local subprogram "GetReturnCode" only analyzed in the context of calls
@@ -393,7 +393,7 @@ bio.adb:177:38: info: range check proved
 bio.adb:178:12: info: range check proved
 bio.adb:178:41: info: range check proved
 bio.adb:179:12: info: range check proved
-bio.adb:179:37: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+bio.adb:179:37: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 bio.adb:179:57: info: range check proved
 bio.adb:185:13: info: range check proved
 bio.adb:185:21: info: index check proved
@@ -481,10 +481,10 @@ cert-attr-priv.ads:93:11: info: flow dependencies proved
 cert-attr-priv.ads:96:13: info: implicit aspect Always_Terminates on "Cert_Attr_Priv_To_Cert" has been proved, subprogram will terminate
 cert-attr-priv.ads:99:13: info: implicit aspect Always_Terminates on "Cert_Attr_Priv_To_Cert_Attr" has been proved, subprogram will terminate
 cert-attr.adb:36:09: info: range check proved
-cert-attr.adb:36:32: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+cert-attr.adb:36:32: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 cert-attr.adb:37:09: info: range check proved
 cert-attr.adb:38:09: info: range check proved
-cert-attr.adb:38:34: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+cert-attr.adb:38:34: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 cert-attr.adb:42:07: info: range check proved
 cert-attr.adb:42:18: info: index check proved
 cert-attr.adb:42:33: info: index check proved
@@ -509,10 +509,10 @@ cert-id.ads:93:11: info: data dependencies proved
 cert-id.ads:94:11: info: flow dependencies proved
 cert-id.ads:97:13: info: implicit aspect Always_Terminates on "Cert_Id_To_Cert" has been proved, subprogram will terminate
 cert.adb:61:09: info: range check proved
-cert.adb:61:32: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+cert.adb:61:32: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 cert.adb:62:09: info: range check proved
 cert.adb:63:09: info: range check proved
-cert.adb:63:34: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+cert.adb:63:34: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 cert.adb:66:07: info: range check proved
 cert.adb:66:18: info: index check proved
 cert.adb:66:33: info: index check proved
@@ -616,7 +616,7 @@ certtypes.ads:63:21: info: for inherited predicate at commontypes.ads:66
 certtypes.ads:63:21: info: predicate check justified
 certtypes.ads:63:21: info: predicate check proved
 certtypes.ads:63:21: info: range check proved
-certtypes.ads:63:21: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+certtypes.ads:63:21: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 clock.adb:49:11: info: flow dependencies proved
 clock.adb:54:07: info: initialization of "V" proved
 clock.adb:59:11: info: range check proved
@@ -929,11 +929,11 @@ configdata.ads:40:17: info: for inherited predicate at commontypes.ads:66
 configdata.ads:40:17: info: predicate check justified
 configdata.ads:40:17: info: predicate check proved
 configdata.ads:40:17: info: range check proved
-configdata.ads:40:17: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+configdata.ads:40:17: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 configdata.ads:48:13: info: implicit aspect Always_Terminates on "AccessPolicyT_Image" has been proved, subprogram will terminate
 configdata.ads:49:21: info: predicate check justified
 configdata.ads:49:21: info: range check proved
-configdata.ads:49:21: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+configdata.ads:49:21: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 configdata.ads:66:11: info: data dependencies proved
 configdata.ads:68:11: info: flow dependencies proved
 configdata.ads:96:11: info: data dependencies proved
@@ -1010,19 +1010,19 @@ configuration.adb:68:07: info: initialization of "TheSystemMaxFar" proved
 configuration.adb:69:07: info: initialization of "Success" proved
 configuration.adb:81:16: info: implicit aspect Always_Terminates on "MakeDescription" has been proved, subprogram will terminate
 configuration.adb:82:14: info: data dependencies proved
-configuration.adb:99:27: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+configuration.adb:99:27: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 configuration.adb:99:57: info: division check proved
 configuration.adb:99:63: info: range check proved
 configuration.adb:100:12: info: range check proved
-configuration.adb:100:29: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+configuration.adb:100:29: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 configuration.adb:100:59: info: division check proved
 configuration.adb:100:65: info: range check proved
 configuration.adb:101:12: info: range check proved
-configuration.adb:101:29: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+configuration.adb:101:29: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 configuration.adb:101:60: info: division check proved
 configuration.adb:101:66: info: range check proved
 configuration.adb:102:12: info: range check proved
-configuration.adb:102:29: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+configuration.adb:102:29: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 configuration.adb:102:58: info: division check proved
 configuration.adb:102:64: info: range check proved
 configuration.adb:103:12: info: range check proved
@@ -1041,15 +1041,15 @@ configuration.adb:107:62: info: range check proved
 configuration.adb:108:12: info: range check proved
 configuration.adb:108:55: info: range check proved
 configuration.adb:109:12: info: range check proved
-configuration.adb:109:34: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+configuration.adb:109:34: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 configuration.adb:109:64: info: division check proved
 configuration.adb:109:72: info: range check proved
 configuration.adb:110:12: info: range check proved
-configuration.adb:110:34: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+configuration.adb:110:34: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 configuration.adb:110:63: info: division check proved
 configuration.adb:110:71: info: range check proved
 configuration.adb:111:12: info: range check proved
-configuration.adb:111:29: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+configuration.adb:111:29: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 configuration.adb:116:26: info: range check proved
 configuration.adb:118:13: info: range check proved
 configuration.adb:118:23: info: index check proved
@@ -1412,7 +1412,7 @@ enrolment.adb:49:07: info: initialization of "ClosedOK" proved
 enrolment.adb:61:16: info: implicit aspect Always_Terminates on "MakeDescription" has been proved, subprogram will terminate
 enrolment.adb:63:14: info: data dependencies proved
 enrolment.adb:67:66: info: range check proved
-enrolment.adb:68:39: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+enrolment.adb:68:39: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 enrolment.adb:68:54: info: range check proved
 enrolment.adb:68:62: info: range check proved
 enrolment.adb:72:13: info: range check proved
@@ -1462,7 +1462,7 @@ iandatypes.ads:35:13: info: implicit aspect Always_Terminates on "FarT_Image" ha
 iandatypes.ads:36:12: info: predicate check justified
 iandatypes.ads:36:12: info: predicate check proved
 iandatypes.ads:36:12: info: range check proved
-iandatypes.ads:36:12: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+iandatypes.ads:36:12: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 keyboard.adb:67:07: info: initialization of "LocalData" proved
 keyboard.adb:68:07: info: initialization of "LocalLength" proved
 keyboard.ads:48:11: info: data dependencies proved
@@ -1479,7 +1479,7 @@ keystore-interfac.ads:24:08: info: flow dependencies proved
 keystore-interfac.ads:95:13: info: implicit aspect Always_Terminates on "ReturnValueT_Image" has been proved, subprogram will terminate
 keystore-interfac.ads:96:20: info: predicate check justified
 keystore-interfac.ads:96:20: info: range check proved
-keystore-interfac.ads:96:20: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+keystore-interfac.ads:96:20: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 keystore.adb:90:13: info: implicit aspect Always_Terminates on "ConvertRetValToText" has been proved, subprogram will terminate
 keystore.adb:97:35: info: range check proved
 keystore.adb:97:39: info: range check proved
@@ -1670,7 +1670,7 @@ poll.ads:113:13: info: postcondition proved
 privtypes.ads:43:13: info: implicit aspect Always_Terminates on "ClassT_Image" has been proved, subprogram will terminate
 privtypes.ads:44:14: info: predicate check justified
 privtypes.ads:44:14: info: range check proved
-privtypes.ads:44:14: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+privtypes.ads:44:14: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 screen.adb:156:28: info: initialization of "OK" proved
 screen.adb:157:11: info: data dependencies proved
 screen.adb:160:11: info: flow dependencies proved
@@ -1775,10 +1775,10 @@ screen.adb:635:35: info: analyzing call to "HrsMinsString" in context
 screen.adb:641:35: info: analyzing call to "HrsMinsString" in context
 screen.adb:659:35: info: analyzing call to "FileSizeString" in context
 screen.adb:659:35: warning: in inlined body at line 481
-screen.adb:659:35: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+screen.adb:659:35: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 screen.adb:665:35: info: analyzing call to "FileSizeString" in context
 screen.adb:665:35: warning: in inlined body at line 481
-screen.adb:665:35: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+screen.adb:665:35: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 screen.adb:697:26: info: initialization of "OK" proved
 screen.adb:698:11: info: data dependencies proved
 screen.adb:698:41: info: initialization of "Interfac.Output" constituent of "Screen.Output" proved
@@ -1843,7 +1843,7 @@ stats.ads:29:13: info: implicit aspect Always_Terminates on "StatsCount_Image" h
 stats.ads:30:18: info: predicate check justified
 stats.ads:30:18: info: predicate check proved
 stats.ads:30:18: info: range check proved
-stats.ads:30:18: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+stats.ads:30:18: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 stats.ads:44:20: info: initialization of "TheStats" proved
 stats.ads:45:11: info: flow dependencies proved
 stats.ads:57:11: info: flow dependencies proved
@@ -1956,7 +1956,7 @@ tismain.adb:1598:22: info: precondition proved
 tokenreader-interfac.ads:83:13: info: implicit aspect Always_Terminates on "ResponseCodeT_Image" has been proved, subprogram will terminate
 tokenreader-interfac.ads:84:21: info: predicate check justified
 tokenreader-interfac.ads:84:21: info: range check proved
-tokenreader-interfac.ads:84:21: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+tokenreader-interfac.ads:84:21: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 tokenreader.adb:91:13: info: implicit aspect Always_Terminates on "GetResponseCode" has been proved, subprogram will terminate
 tokenreader.adb:97:40: info: range check proved
 tokenreader.adb:110:13: info: implicit aspect Always_Terminates on "GetReaderState" has been proved, subprogram will terminate
@@ -1971,7 +1971,7 @@ tokenreader.adb:174:47: info: range check proved
 tokenreader.adb:175:12: info: range check proved
 tokenreader.adb:175:55: info: range check proved
 tokenreader.adb:176:12: info: range check proved
-tokenreader.adb:176:37: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+tokenreader.adb:176:37: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 tokenreader.adb:176:57: info: range check proved
 tokenreader.adb:181:13: info: range check proved
 tokenreader.adb:181:21: info: index check proved
@@ -2108,7 +2108,7 @@ userentry.adb:457:14: info: data dependencies proved
 userentry.adb:471:17: info: data dependencies proved
 userentry.adb:473:17: info: flow dependencies proved
 userentry.adb:476:15: info: range check proved
-userentry.adb:476:32: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+userentry.adb:476:32: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 userentry.adb:479:13: info: range check proved
 userentry.adb:479:21: info: index check proved
 userentry.adb:479:35: info: index check proved

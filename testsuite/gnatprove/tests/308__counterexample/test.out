@@ -12,5 +12,5 @@ good_pack.adb:15:19: info: range check proved (CVC5: 2 VC)
 good_pack.ads:3:14: info: implicit aspect Always_Terminates on "Square" has been proved, subprogram will terminate
 good_pack.ads:5:17: medium: postcondition might fail (e.g. when arg = 3)
 good_pack.ads:5:38: info: overflow check proved (CVC5: 2 VC)
-main.adb:12:27: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+main.adb:12:27: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 main.adb:12:38: info: precondition proved (CVC5: 1 VC)

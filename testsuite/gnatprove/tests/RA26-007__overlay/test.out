@@ -9,4 +9,4 @@ arrays.ads:20:04: info: object is suitable for aliasing via address clause (Triv
 arrays.ads:21:04: warning: aliased objects must have the same volatility and atomic status [alias-volatile-atomic-mismatch]
 arrays.ads:21:26: high: types of aliased objects do not have the same size [possible explanation: Object_Sizes of type Tarr_3s and type Uint8 differ]
 arrays.ads:21:26: info: object is suitable for aliasing via address clause (Trivial)
-arrays.ads:21:39: warning: alignment of attribute address is not precisely known [imprecise-align]
+arrays.ads:21:39: warning: alignment of object is not precisely known [imprecise-align]
