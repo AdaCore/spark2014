@@ -418,22 +418,31 @@ package VC_Kinds is
       Warn_Representation_Attribute_Value,
 
       --  Warnings only issued when using switch --info
+
+      --  Tool limitations not impacting soundness
+
       Warn_Comp_Relaxed_Init,
+      Warn_Full_View_Visible,
+
+      --  Proof limitations not impacting soundness
+
       Warn_Contracts_Recursive,
       Warn_DIC_Ignored,
-      Warn_Full_View_Visible,
       Warn_Imprecise_Align,
       Warn_Imprecise_Call,
       Warn_Imprecise_Size,
       Warn_Imprecise_UC,
       Warn_Imprecise_Value,
       Warn_Imprecise_Image,
-      Warn_Init_Cond_Ignored,
       Warn_No_Reclam_Func,
       Warn_Num_Variant,
       Warn_Map_Length_Aggregates,
       Warn_Set_Length_Aggregates,
+
+      --  Other --info warnings
+
       Warn_Predef_Eq_Null,
+      Warn_Init_Cond_Ignored,
       Warn_Unit_Not_SPARK,
 
       --  Info messages enabled by default
@@ -570,6 +579,14 @@ package VC_Kinds is
    --  These warnings are disabled by default and enabled collectively by
    --  "--info" switch
 
+   subtype Other_Tool_Limitation_Kind is Info_Warning_Kind range
+     Warn_Comp_Relaxed_Init .. Warn_Full_View_Visible;
+   --  Warnings for tool limitations
+
+   subtype Proof_Limitation_Kind is Info_Warning_Kind range
+     Warn_Contracts_Recursive .. Warn_Set_Length_Aggregates;
+   --  Warnings for proof limitations
+
    subtype Info_Msg_Kind is Misc_Warning_Kind range
      Warn_Info_Unrolling_Inlining .. Warn_Info_Unrolling_Inlining;
    --  These info messages are enabled by default.
@@ -683,16 +700,22 @@ package VC_Kinds is
           "attribute & has an implementation-defined value",
 
         --  Warnings enabled with --info switch
+        when Warn_Unit_Not_SPARK =>
+           "SPARK_Mode not applied to this compilation unit",
+
+        --  Tool limitations
         when Warn_Comp_Relaxed_Init =>
           "& is handled as if it was annotated with Relaxed_Initialization as "
         & "all its components are annotated that way",
+        when Warn_Full_View_Visible =>
+          "full view of & declared # is visible when analyzing &",
+
+        --  Proof limitations
         when Warn_Contracts_Recursive =>
           "&function contract might not be available on &",
         when Warn_DIC_Ignored =>
           "default initial condition on type & not available for proof in an "
         & "assertion context",
-        when Warn_Full_View_Visible =>
-          "full view of & declared # is visible when analyzing &",
         when Warn_Imprecise_Align =>
           "alignment of attribute address is not precisely known",
         when Warn_Imprecise_Call =>
@@ -725,8 +748,6 @@ package VC_Kinds is
         & "aggregates &",
         when Warn_Predef_Eq_Null =>
           "no null value found for type with predefined equality &",
-        when Warn_Unit_Not_SPARK =>
-           "SPARK_Mode not applied to this compilation unit",
 
         --  info messages enabled by default
         when Warn_Info_Unrolling_Inlining =>
