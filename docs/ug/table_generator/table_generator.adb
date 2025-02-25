@@ -221,7 +221,7 @@ procedure Table_Generator is
       Create (File, Name => Other_Tool_Limitations_Target);
       Put_Line (File, "The following constructs are incompletely supported." &
                   " They can be used safely but might lead to unexpected " &
-                  "behaviors. Warnings can be emitted by GNATprove if the" &
+                  "behaviors. Warnings can be emitted by GNATprove if the " &
                   "``--info`` switch is used:");
       New_Line (File);
       for Kind in Other_Tool_Limitation_Kind loop
