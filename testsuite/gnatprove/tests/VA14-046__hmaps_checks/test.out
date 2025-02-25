@@ -29,24 +29,24 @@ spark-containers-formal-hashed_maps.ads:87:06: info: after a call to Empty_Map a
 spark-containers-formal-hashed_maps.ads:87:06: info: after a call to Empty_Map at spark-containers-formal-hashed_maps.ads:92, in instantiation at test_hmaps.ads:8
 spark-containers-formal-hashed_maps.ads:87:06: info: after a call to Empty_Map at spark-containers-formal-hashed_maps.ads:92, in instantiation at test_hmaps.ads:8
 spark-containers-formal-hashed_maps.ads:87:06: info: after a call to Empty_Map at spark-containers-formal-hashed_maps.ads:92, in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:87:06: info: after a call to Insert at spark-containers-formal-hashed_maps.ads:660, in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:87:06: info: after a call to Insert at spark-containers-formal-hashed_maps.ads:660, in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:87:06: info: after a call to Insert at spark-containers-formal-hashed_maps.ads:660, in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:87:06: info: after a call to Insert at spark-containers-formal-hashed_maps.ads:660, in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:87:06: info: after a call to Insert at spark-containers-formal-hashed_maps.ads:660, in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:87:06: info: after a call to Insert at spark-containers-formal-hashed_maps.ads:660, in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:87:06: info: after a call to Insert at spark-containers-formal-hashed_maps.ads:660, in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:87:06: info: after a call to Insert at spark-containers-formal-hashed_maps.ads:660, in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:87:06: info: after a call to Insert at spark-containers-formal-hashed_maps.ads:658, in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:87:06: info: after a call to Insert at spark-containers-formal-hashed_maps.ads:658, in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:87:06: info: after a call to Insert at spark-containers-formal-hashed_maps.ads:658, in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:87:06: info: after a call to Insert at spark-containers-formal-hashed_maps.ads:658, in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:87:06: info: after a call to Insert at spark-containers-formal-hashed_maps.ads:658, in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:87:06: info: after a call to Insert at spark-containers-formal-hashed_maps.ads:658, in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:87:06: info: after a call to Insert at spark-containers-formal-hashed_maps.ads:658, in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:87:06: info: after a call to Insert at spark-containers-formal-hashed_maps.ads:658, in instantiation at test_hmaps.ads:8
 spark-containers-formal-hashed_maps.ads:87:06: info: during checks for container aggregates at spark-containers-formal-hashed_maps.ads:87, in instantiation at test_hmaps.ads:13
 spark-containers-formal-hashed_maps.ads:87:06: info: during checks for container aggregates at spark-containers-formal-hashed_maps.ads:87, in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:87:06: info: when establishing invariant on Aggr_Capacity at spark-containers-formal-hashed_maps.ads:1000, in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:87:06: info: when establishing invariant on Aggr_Capacity at spark-containers-formal-hashed_maps.ads:1000, in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:87:06: info: when establishing invariant on Aggr_Capacity at spark-containers-formal-hashed_maps.ads:998, in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:87:06: info: when establishing invariant on Aggr_Capacity at spark-containers-formal-hashed_maps.ads:998, in instantiation at test_hmaps.ads:8
 spark-containers-formal-hashed_maps.ads:87:06: info: when establishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at spark-containers-formal-hashed_maps.ads:177, in instantiation at test_hmaps.ads:13
 spark-containers-formal-hashed_maps.ads:87:06: info: when establishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at spark-containers-formal-hashed_maps.ads:177, in instantiation at test_hmaps.ads:8
 spark-containers-formal-hashed_maps.ads:87:06: info: when establishing invariant on Length at spark-containers-functional-maps.ads:167, in instantiation at spark-containers-formal-hashed_maps.ads:177, in instantiation at test_hmaps.ads:13
 spark-containers-formal-hashed_maps.ads:87:06: info: when establishing invariant on Length at spark-containers-functional-maps.ads:167, in instantiation at spark-containers-formal-hashed_maps.ads:177, in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:87:06: info: when reestablishing invariant on Aggr_Capacity at spark-containers-formal-hashed_maps.ads:1000, in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:87:06: info: when reestablishing invariant on Aggr_Capacity at spark-containers-formal-hashed_maps.ads:1000, in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:87:06: info: when reestablishing invariant on Aggr_Capacity at spark-containers-formal-hashed_maps.ads:998, in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:87:06: info: when reestablishing invariant on Aggr_Capacity at spark-containers-formal-hashed_maps.ads:998, in instantiation at test_hmaps.ads:8
 spark-containers-formal-hashed_maps.ads:87:06: info: when reestablishing invariant on Get at spark-containers-functional-maps.ads:138, in instantiation at spark-containers-formal-hashed_maps.ads:177, in instantiation at test_hmaps.ads:13
 spark-containers-formal-hashed_maps.ads:87:06: info: when reestablishing invariant on Get at spark-containers-functional-maps.ads:138, in instantiation at spark-containers-formal-hashed_maps.ads:177, in instantiation at test_hmaps.ads:8
 spark-containers-formal-hashed_maps.ads:87:06: info: when reestablishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at spark-containers-formal-hashed_maps.ads:177, in instantiation at test_hmaps.ads:13
@@ -59,52 +59,50 @@ spark-containers-formal-hashed_maps.ads:449:13: info: precondition proved (Z3: 1
 spark-containers-formal-hashed_maps.ads:449:13: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:8
 spark-containers-formal-hashed_maps.ads:495:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:13
 spark-containers-formal-hashed_maps.ads:495:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:497:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:497:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:501:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:501:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:503:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:503:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:668:09: info: during checks for container aggregates at spark-containers-formal-hashed_maps.ads:87, in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:668:09: info: during checks for container aggregates at spark-containers-formal-hashed_maps.ads:87, in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:668:09: info: precondition proved (Z3: 2 VC), in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:668:09: info: precondition proved (Z3: 2 VC), in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:891:39: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:891:39: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:900:17: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:900:17: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:914:13: info: during checks for quantification at spark-containers-formal-hashed_maps.ads:79, in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:914:13: info: during checks for quantification at spark-containers-formal-hashed_maps.ads:79, in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:914:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:914:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:924:13: info: during checks for quantification at spark-containers-formal-hashed_maps.ads:79, in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:924:13: info: during checks for quantification at spark-containers-formal-hashed_maps.ads:79, in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:924:13: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:924:13: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:930:20: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:930:20: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:945:20: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:945:20: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:986:13: info: during checks for quantification at spark-containers-formal-hashed_maps.ads:79, in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:986:13: info: during checks for quantification at spark-containers-formal-hashed_maps.ads:79, in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:986:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:986:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:1000:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:1000:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:1004:06: info: data dependencies proved, in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:1004:06: info: data dependencies proved, in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:1008:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:1008:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:1012:06: info: data dependencies proved, in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:1012:06: info: data dependencies proved, in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:1016:13: info: during checks for quantification at spark-containers-formal-hashed_maps.ads:79, in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:1016:13: info: during checks for quantification at spark-containers-formal-hashed_maps.ads:79, in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:1016:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:1016:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:1016:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:1016:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:1020:06: info: data dependencies proved, in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:1020:06: info: data dependencies proved, in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:499:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:499:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:501:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:501:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:666:09: info: during checks for container aggregates at spark-containers-formal-hashed_maps.ads:87, in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:666:09: info: during checks for container aggregates at spark-containers-formal-hashed_maps.ads:87, in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:666:09: info: precondition proved (Z3: 2 VC), in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:666:09: info: precondition proved (Z3: 2 VC), in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:889:39: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:889:39: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:898:17: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:898:17: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:912:13: info: during checks for quantification at spark-containers-formal-hashed_maps.ads:79, in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:912:13: info: during checks for quantification at spark-containers-formal-hashed_maps.ads:79, in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:912:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:912:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:922:13: info: during checks for quantification at spark-containers-formal-hashed_maps.ads:79, in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:922:13: info: during checks for quantification at spark-containers-formal-hashed_maps.ads:79, in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:922:13: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:922:13: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:928:20: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:928:20: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:943:20: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:943:20: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:984:13: info: during checks for quantification at spark-containers-formal-hashed_maps.ads:79, in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:984:13: info: during checks for quantification at spark-containers-formal-hashed_maps.ads:79, in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:984:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:984:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:998:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:998:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:1002:06: info: data dependencies proved, in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:1002:06: info: data dependencies proved, in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:1006:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:1006:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:1010:06: info: data dependencies proved, in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:1010:06: info: data dependencies proved, in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:1014:13: info: during checks for quantification at spark-containers-formal-hashed_maps.ads:79, in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:1014:13: info: during checks for quantification at spark-containers-formal-hashed_maps.ads:79, in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:1014:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:1014:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:1014:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:1014:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:1018:06: info: data dependencies proved, in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:1018:06: info: data dependencies proved, in instantiation at test_hmaps.ads:8
 spark-containers-formal-unbounded_hashed_maps.ads:34:19: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:25
 spark-containers-formal-unbounded_hashed_maps.ads:36:19: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:25
 spark-containers-formal-unbounded_hashed_maps.ads:38:19: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:25
@@ -126,12 +124,12 @@ spark-containers-formal-unbounded_hashed_maps.ads:81:06: info: after a call to E
 spark-containers-formal-unbounded_hashed_maps.ads:81:06: info: after a call to Empty_Map at spark-containers-formal-unbounded_hashed_maps.ads:86, in instantiation at test_hmaps.ads:25
 spark-containers-formal-unbounded_hashed_maps.ads:81:06: info: after a call to Empty_Map at spark-containers-formal-unbounded_hashed_maps.ads:86, in instantiation at test_hmaps.ads:30
 spark-containers-formal-unbounded_hashed_maps.ads:81:06: info: after a call to Empty_Map at spark-containers-formal-unbounded_hashed_maps.ads:86, in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:81:06: info: after a call to Insert at spark-containers-formal-unbounded_hashed_maps.ads:624, in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:81:06: info: after a call to Insert at spark-containers-formal-unbounded_hashed_maps.ads:624, in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:81:06: info: after a call to Insert at spark-containers-formal-unbounded_hashed_maps.ads:624, in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:81:06: info: after a call to Insert at spark-containers-formal-unbounded_hashed_maps.ads:624, in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:81:06: info: after a call to Insert at spark-containers-formal-unbounded_hashed_maps.ads:624, in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:81:06: info: after a call to Insert at spark-containers-formal-unbounded_hashed_maps.ads:624, in instantiation at test_hmaps.ads:30
+spark-containers-formal-unbounded_hashed_maps.ads:81:06: info: after a call to Insert at spark-containers-formal-unbounded_hashed_maps.ads:622, in instantiation at test_hmaps.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:81:06: info: after a call to Insert at spark-containers-formal-unbounded_hashed_maps.ads:622, in instantiation at test_hmaps.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:81:06: info: after a call to Insert at spark-containers-formal-unbounded_hashed_maps.ads:622, in instantiation at test_hmaps.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:81:06: info: after a call to Insert at spark-containers-formal-unbounded_hashed_maps.ads:622, in instantiation at test_hmaps.ads:30
+spark-containers-formal-unbounded_hashed_maps.ads:81:06: info: after a call to Insert at spark-containers-formal-unbounded_hashed_maps.ads:622, in instantiation at test_hmaps.ads:30
+spark-containers-formal-unbounded_hashed_maps.ads:81:06: info: after a call to Insert at spark-containers-formal-unbounded_hashed_maps.ads:622, in instantiation at test_hmaps.ads:30
 spark-containers-formal-unbounded_hashed_maps.ads:81:06: info: when establishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:169, in instantiation at test_hmaps.ads:25
 spark-containers-formal-unbounded_hashed_maps.ads:81:06: info: when establishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:169, in instantiation at test_hmaps.ads:30
 spark-containers-formal-unbounded_hashed_maps.ads:81:06: info: when establishing invariant on Length at spark-containers-functional-maps.ads:167, in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:169, in instantiation at test_hmaps.ads:25
@@ -148,52 +146,50 @@ spark-containers-formal-unbounded_hashed_maps.ads:412:13: info: precondition pro
 spark-containers-formal-unbounded_hashed_maps.ads:412:13: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:30
 spark-containers-formal-unbounded_hashed_maps.ads:458:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:25
 spark-containers-formal-unbounded_hashed_maps.ads:458:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:460:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:460:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:464:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:464:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:466:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:466:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:632:09: info: during checks for container aggregates at spark-containers-formal-unbounded_hashed_maps.ads:81, in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:632:09: info: during checks for container aggregates at spark-containers-formal-unbounded_hashed_maps.ads:81, in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:632:09: info: precondition proved (Z3: 2 VC), in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:632:09: info: precondition proved (Z3: 2 VC), in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:855:39: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:855:39: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:864:17: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:864:17: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:878:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_maps.ads:73, in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:878:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_maps.ads:73, in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:878:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:878:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:888:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_maps.ads:73, in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:888:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_maps.ads:73, in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:888:13: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:888:13: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:894:20: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:894:20: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:909:20: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:909:20: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:951:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_maps.ads:73, in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:951:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_maps.ads:73, in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:951:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:951:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:962:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:962:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:966:06: info: data dependencies proved, in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:966:06: info: data dependencies proved, in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:970:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:970:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:974:06: info: data dependencies proved, in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:974:06: info: data dependencies proved, in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:978:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_maps.ads:73, in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:978:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_maps.ads:73, in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:978:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:978:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:978:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:978:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:982:06: info: data dependencies proved, in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:982:06: info: data dependencies proved, in instantiation at test_hmaps.ads:30
+spark-containers-formal-unbounded_hashed_maps.ads:462:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:462:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:30
+spark-containers-formal-unbounded_hashed_maps.ads:464:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_hmaps.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:464:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_hmaps.ads:30
+spark-containers-formal-unbounded_hashed_maps.ads:630:09: info: during checks for container aggregates at spark-containers-formal-unbounded_hashed_maps.ads:81, in instantiation at test_hmaps.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:630:09: info: during checks for container aggregates at spark-containers-formal-unbounded_hashed_maps.ads:81, in instantiation at test_hmaps.ads:30
+spark-containers-formal-unbounded_hashed_maps.ads:630:09: info: precondition proved (Z3: 2 VC), in instantiation at test_hmaps.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:630:09: info: precondition proved (Z3: 2 VC), in instantiation at test_hmaps.ads:30
+spark-containers-formal-unbounded_hashed_maps.ads:853:39: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:853:39: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:30
+spark-containers-formal-unbounded_hashed_maps.ads:862:17: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:862:17: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:30
+spark-containers-formal-unbounded_hashed_maps.ads:876:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_maps.ads:73, in instantiation at test_hmaps.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:876:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_maps.ads:73, in instantiation at test_hmaps.ads:30
+spark-containers-formal-unbounded_hashed_maps.ads:876:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hmaps.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:876:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hmaps.ads:30
+spark-containers-formal-unbounded_hashed_maps.ads:886:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_maps.ads:73, in instantiation at test_hmaps.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:886:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_maps.ads:73, in instantiation at test_hmaps.ads:30
+spark-containers-formal-unbounded_hashed_maps.ads:886:13: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:886:13: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:30
+spark-containers-formal-unbounded_hashed_maps.ads:892:20: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:892:20: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:30
+spark-containers-formal-unbounded_hashed_maps.ads:907:20: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:907:20: info: precondition proved (Z3: 1 VC), in instantiation at test_hmaps.ads:30
+spark-containers-formal-unbounded_hashed_maps.ads:949:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_maps.ads:73, in instantiation at test_hmaps.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:949:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_maps.ads:73, in instantiation at test_hmaps.ads:30
+spark-containers-formal-unbounded_hashed_maps.ads:949:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hmaps.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:949:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hmaps.ads:30
+spark-containers-formal-unbounded_hashed_maps.ads:960:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:960:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:30
+spark-containers-formal-unbounded_hashed_maps.ads:964:06: info: data dependencies proved, in instantiation at test_hmaps.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:964:06: info: data dependencies proved, in instantiation at test_hmaps.ads:30
+spark-containers-formal-unbounded_hashed_maps.ads:968:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:968:13: info: implicit aspect Always_Terminates on "Aggr_Model" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:30
+spark-containers-formal-unbounded_hashed_maps.ads:972:06: info: data dependencies proved, in instantiation at test_hmaps.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:972:06: info: data dependencies proved, in instantiation at test_hmaps.ads:30
+spark-containers-formal-unbounded_hashed_maps.ads:976:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_maps.ads:73, in instantiation at test_hmaps.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:976:13: info: during checks for quantification at spark-containers-formal-unbounded_hashed_maps.ads:73, in instantiation at test_hmaps.ads:30
+spark-containers-formal-unbounded_hashed_maps.ads:976:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:976:13: info: implicit aspect Always_Terminates on "Iter_Model" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:30
+spark-containers-formal-unbounded_hashed_maps.ads:976:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hmaps.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:976:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_hmaps.ads:30
+spark-containers-formal-unbounded_hashed_maps.ads:980:06: info: data dependencies proved, in instantiation at test_hmaps.ads:25
+spark-containers-formal-unbounded_hashed_maps.ads:980:06: info: data dependencies proved, in instantiation at test_hmaps.ads:30
 spark-containers-functional-maps.ads:35:19: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_maps.ads:177, in instantiation at test_hmaps.ads:13
 spark-containers-functional-maps.ads:35:19: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_maps.ads:177, in instantiation at test_hmaps.ads:8
 spark-containers-functional-maps.ads:35:19: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-hashed_maps.ads:244, in instantiation at test_hmaps.ads:13

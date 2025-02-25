@@ -29,8 +29,7 @@ procedure Test_Ordered_Maps with SPARK_Mode is
          pragma Assert (C.all = 3);
       end;
       declare
-         M_Acc : access Map := M'Access;
-         E     : constant access Integer := Reference (M_Acc, 3);
+         E : constant access Integer := Reference (M, 3);
       begin
          pragma Assert (E.all = 3);
          E.all := 5;
@@ -47,8 +46,7 @@ procedure Test_Ordered_Maps with SPARK_Mode is
       pragma Assert (Element (M, F) = 5);
       pragma Assert (Key (M, F) = 3);
       declare
-         M_Acc : access Map := M'Access;
-         E     : constant access Integer := Reference (M_Acc, F);
+         E : constant access Integer := Reference (M, F);
       begin
          pragma Assert (E.all = 5);
          E.all := 7;

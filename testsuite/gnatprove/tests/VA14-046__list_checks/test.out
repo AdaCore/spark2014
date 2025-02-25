@@ -15,24 +15,24 @@ spark-containers-formal-doubly_linked_lists.ads:52:06: info: Container_Aggregate
 spark-containers-formal-doubly_linked_lists.ads:52:06: info: Container_Aggregates annotation proved (Z3: 1 VC), in instantiation at test_lists.ads:8
 spark-containers-formal-doubly_linked_lists.ads:52:06: info: Container_Aggregates annotation proved (Z3: 1 VC), in instantiation at test_lists.ads:8
 spark-containers-formal-doubly_linked_lists.ads:52:06: info: Container_Aggregates annotation proved (Z3: 1 VC), in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:52:06: info: after a call to Append at spark-containers-formal-doubly_linked_lists.ads:833, in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:52:06: info: after a call to Append at spark-containers-formal-doubly_linked_lists.ads:833, in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:52:06: info: after a call to Append at spark-containers-formal-doubly_linked_lists.ads:833, in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:52:06: info: after a call to Append at spark-containers-formal-doubly_linked_lists.ads:833, in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:52:06: info: after a call to Append at spark-containers-formal-doubly_linked_lists.ads:833, in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:52:06: info: after a call to Append at spark-containers-formal-doubly_linked_lists.ads:833, in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:52:06: info: after a call to Append at spark-containers-formal-doubly_linked_lists.ads:832, in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:52:06: info: after a call to Append at spark-containers-formal-doubly_linked_lists.ads:832, in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:52:06: info: after a call to Append at spark-containers-formal-doubly_linked_lists.ads:832, in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:52:06: info: after a call to Append at spark-containers-formal-doubly_linked_lists.ads:832, in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:52:06: info: after a call to Append at spark-containers-formal-doubly_linked_lists.ads:832, in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:52:06: info: after a call to Append at spark-containers-formal-doubly_linked_lists.ads:832, in instantiation at test_lists.ads:8
 spark-containers-formal-doubly_linked_lists.ads:52:06: info: after a call to Empty_List at spark-containers-formal-doubly_linked_lists.ads:63, in instantiation at test_lists.ads:10
 spark-containers-formal-doubly_linked_lists.ads:52:06: info: after a call to Empty_List at spark-containers-formal-doubly_linked_lists.ads:63, in instantiation at test_lists.ads:10
 spark-containers-formal-doubly_linked_lists.ads:52:06: info: after a call to Empty_List at spark-containers-formal-doubly_linked_lists.ads:63, in instantiation at test_lists.ads:8
 spark-containers-formal-doubly_linked_lists.ads:52:06: info: after a call to Empty_List at spark-containers-formal-doubly_linked_lists.ads:63, in instantiation at test_lists.ads:8
 spark-containers-formal-doubly_linked_lists.ads:52:06: info: during checks for container aggregates at spark-containers-formal-doubly_linked_lists.ads:52, in instantiation at test_lists.ads:10
 spark-containers-formal-doubly_linked_lists.ads:52:06: info: during checks for container aggregates at spark-containers-formal-doubly_linked_lists.ads:52, in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:52:06: info: when establishing invariant on Aggr_Capacity at spark-containers-formal-doubly_linked_lists.ads:1753, in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:52:06: info: when establishing invariant on Aggr_Capacity at spark-containers-formal-doubly_linked_lists.ads:1753, in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:52:06: info: when establishing invariant on Aggr_Capacity at spark-containers-formal-doubly_linked_lists.ads:1752, in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:52:06: info: when establishing invariant on Aggr_Capacity at spark-containers-formal-doubly_linked_lists.ads:1752, in instantiation at test_lists.ads:8
 spark-containers-formal-doubly_linked_lists.ads:52:06: info: when establishing invariant on Last at spark-containers-functional-vectors.ads:94, in instantiation at spark-containers-formal-doubly_linked_lists.ads:111, in instantiation at test_lists.ads:10
 spark-containers-formal-doubly_linked_lists.ads:52:06: info: when establishing invariant on Last at spark-containers-functional-vectors.ads:94, in instantiation at spark-containers-formal-doubly_linked_lists.ads:111, in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:52:06: info: when reestablishing invariant on Aggr_Capacity at spark-containers-formal-doubly_linked_lists.ads:1753, in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:52:06: info: when reestablishing invariant on Aggr_Capacity at spark-containers-formal-doubly_linked_lists.ads:1753, in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:52:06: info: when reestablishing invariant on Aggr_Capacity at spark-containers-formal-doubly_linked_lists.ads:1752, in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:52:06: info: when reestablishing invariant on Aggr_Capacity at spark-containers-formal-doubly_linked_lists.ads:1752, in instantiation at test_lists.ads:8
 spark-containers-formal-doubly_linked_lists.ads:52:06: info: when reestablishing invariant on Get at spark-containers-functional-vectors.ads:101, in instantiation at spark-containers-formal-doubly_linked_lists.ads:111, in instantiation at test_lists.ads:10
 spark-containers-formal-doubly_linked_lists.ads:52:06: info: when reestablishing invariant on Get at spark-containers-functional-vectors.ads:101, in instantiation at spark-containers-formal-doubly_linked_lists.ads:111, in instantiation at test_lists.ads:8
 spark-containers-formal-doubly_linked_lists.ads:52:06: info: when reestablishing invariant on Last at spark-containers-functional-vectors.ads:94, in instantiation at spark-containers-formal-doubly_linked_lists.ads:111, in instantiation at test_lists.ads:10
@@ -43,78 +43,76 @@ spark-containers-formal-doubly_linked_lists.ads:400:13: info: precondition prove
 spark-containers-formal-doubly_linked_lists.ads:400:13: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:8
 spark-containers-formal-doubly_linked_lists.ads:440:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_lists.ads:10
 spark-containers-formal-doubly_linked_lists.ads:440:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:441:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:441:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:445:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:445:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:447:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:447:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:578:49: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:578:49: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:713:49: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:713:49: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:804:57: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:804:57: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:835:35: info: during checks for container aggregates at spark-containers-formal-doubly_linked_lists.ads:52, in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:835:35: info: during checks for container aggregates at spark-containers-formal-doubly_linked_lists.ads:52, in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:835:35: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:835:35: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:872:57: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:872:57: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:959:28: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:959:28: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:959:39: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:959:39: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:1135:43: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:1135:43: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:1317:06: info: disjoint contract or exit cases proved (Z3: 1 VC), in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:1317:06: info: disjoint contract or exit cases proved (Z3: 1 VC), in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:1419:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:44, in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:1419:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:44, in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:1419:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:1419:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:1452:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:44, in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:1452:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:44, in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:1452:13: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:1452:13: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:1458:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:1458:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:1473:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:1473:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:1488:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:1488:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:1503:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:1503:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:1525:14: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:1525:14: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:1531:23: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:1531:23: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:1580:14: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:1580:14: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:1587:23: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:1587:23: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:1634:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:44, in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:1634:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:44, in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:1634:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:1634:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:1649:22: info: aspect Always_Terminates on "Lt_Irreflexive" has been proved, subprogram will terminate, in instantiation at test_lists.ads:15
-spark-containers-formal-doubly_linked_lists.ads:1651:22: info: aspect Always_Terminates on "Lt_Asymmetric" has been proved, subprogram will terminate, in instantiation at test_lists.ads:15
-spark-containers-formal-doubly_linked_lists.ads:1653:22: info: aspect Always_Terminates on "Lt_Transitive" has been proved, subprogram will terminate, in instantiation at test_lists.ads:15
-spark-containers-formal-doubly_linked_lists.ads:1655:22: info: aspect Always_Terminates on "Lt_Order" has been proved, subprogram will terminate, in instantiation at test_lists.ads:15
-spark-containers-formal-doubly_linked_lists.ads:1725:54: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:15
-spark-containers-formal-doubly_linked_lists.ads:1725:54: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:16
-spark-containers-formal-doubly_linked_lists.ads:1753:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:1753:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:1757:06: info: data dependencies proved, in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:1757:06: info: data dependencies proved, in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:1761:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:44, in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:1761:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:44, in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:1761:13: info: implicit aspect Always_Terminates on "Aggr_And_Iter_Model" has been proved, subprogram will terminate, in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:1761:13: info: implicit aspect Always_Terminates on "Aggr_And_Iter_Model" has been proved, subprogram will terminate, in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:1761:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:1761:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:1765:06: info: data dependencies proved, in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:1765:06: info: data dependencies proved, in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:444:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:444:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:446:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:446:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:577:49: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:577:49: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:712:49: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:712:49: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:803:57: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:803:57: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:834:35: info: during checks for container aggregates at spark-containers-formal-doubly_linked_lists.ads:52, in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:834:35: info: during checks for container aggregates at spark-containers-formal-doubly_linked_lists.ads:52, in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:834:35: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:834:35: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:871:57: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:871:57: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:958:28: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:958:28: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:958:39: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:958:39: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:1134:43: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:1134:43: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:1316:06: info: disjoint contract or exit cases proved (Z3: 1 VC), in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:1316:06: info: disjoint contract or exit cases proved (Z3: 1 VC), in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:1418:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:44, in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:1418:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:44, in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:1418:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:1418:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:1451:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:44, in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:1451:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:44, in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:1451:13: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:1451:13: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:1457:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:1457:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:1472:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:1472:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:1487:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:1487:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:1502:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:1502:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:1524:14: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:1524:14: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:1530:23: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:1530:23: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:1579:14: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:1579:14: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:1586:23: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:1586:23: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:1633:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:44, in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:1633:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:44, in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:1633:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:1633:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:1648:22: info: aspect Always_Terminates on "Lt_Irreflexive" has been proved, subprogram will terminate, in instantiation at test_lists.ads:15
+spark-containers-formal-doubly_linked_lists.ads:1650:22: info: aspect Always_Terminates on "Lt_Asymmetric" has been proved, subprogram will terminate, in instantiation at test_lists.ads:15
+spark-containers-formal-doubly_linked_lists.ads:1652:22: info: aspect Always_Terminates on "Lt_Transitive" has been proved, subprogram will terminate, in instantiation at test_lists.ads:15
+spark-containers-formal-doubly_linked_lists.ads:1654:22: info: aspect Always_Terminates on "Lt_Order" has been proved, subprogram will terminate, in instantiation at test_lists.ads:15
+spark-containers-formal-doubly_linked_lists.ads:1724:54: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:15
+spark-containers-formal-doubly_linked_lists.ads:1724:54: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:16
+spark-containers-formal-doubly_linked_lists.ads:1752:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:1752:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:1756:06: info: data dependencies proved, in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:1756:06: info: data dependencies proved, in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:1760:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:44, in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:1760:13: info: during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:44, in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:1760:13: info: implicit aspect Always_Terminates on "Aggr_And_Iter_Model" has been proved, subprogram will terminate, in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:1760:13: info: implicit aspect Always_Terminates on "Aggr_And_Iter_Model" has been proved, subprogram will terminate, in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:1760:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:1760:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:1764:06: info: data dependencies proved, in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:1764:06: info: data dependencies proved, in instantiation at test_lists.ads:8
 spark-containers-formal-unbounded_doubly_linked_lists.ads:23:19: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at test_lists.ads:21
 spark-containers-formal-unbounded_doubly_linked_lists.ads:25:19: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at test_lists.ads:21
 spark-containers-formal-unbounded_doubly_linked_lists.ads:27:19: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at test_lists.ads:21
@@ -124,10 +122,10 @@ spark-containers-formal-unbounded_doubly_linked_lists.ads:53:06: info: Container
 spark-containers-formal-unbounded_doubly_linked_lists.ads:53:06: info: Container_Aggregates annotation proved (Z3: 1 VC), in instantiation at test_lists.ads:23
 spark-containers-formal-unbounded_doubly_linked_lists.ads:53:06: info: Container_Aggregates annotation proved (Z3: 1 VC), in instantiation at test_lists.ads:23
 spark-containers-formal-unbounded_doubly_linked_lists.ads:53:06: info: Container_Aggregates annotation proved (Z3: 1 VC), in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:53:06: info: after a call to Append at spark-containers-formal-unbounded_doubly_linked_lists.ads:826, in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:53:06: info: after a call to Append at spark-containers-formal-unbounded_doubly_linked_lists.ads:826, in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:53:06: info: after a call to Append at spark-containers-formal-unbounded_doubly_linked_lists.ads:826, in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:53:06: info: after a call to Append at spark-containers-formal-unbounded_doubly_linked_lists.ads:826, in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:53:06: info: after a call to Append at spark-containers-formal-unbounded_doubly_linked_lists.ads:825, in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:53:06: info: after a call to Append at spark-containers-formal-unbounded_doubly_linked_lists.ads:825, in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:53:06: info: after a call to Append at spark-containers-formal-unbounded_doubly_linked_lists.ads:825, in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:53:06: info: after a call to Append at spark-containers-formal-unbounded_doubly_linked_lists.ads:825, in instantiation at test_lists.ads:23
 spark-containers-formal-unbounded_doubly_linked_lists.ads:53:06: info: after a call to Empty_List at spark-containers-formal-unbounded_doubly_linked_lists.ads:67, in instantiation at test_lists.ads:21
 spark-containers-formal-unbounded_doubly_linked_lists.ads:53:06: info: after a call to Empty_List at spark-containers-formal-unbounded_doubly_linked_lists.ads:67, in instantiation at test_lists.ads:23
 spark-containers-formal-unbounded_doubly_linked_lists.ads:53:06: info: when establishing invariant on Last at spark-containers-functional-vectors.ads:94, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:111, in instantiation at test_lists.ads:21
@@ -142,78 +140,76 @@ spark-containers-formal-unbounded_doubly_linked_lists.ads:394:13: info: precondi
 spark-containers-formal-unbounded_doubly_linked_lists.ads:394:13: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:23
 spark-containers-formal-unbounded_doubly_linked_lists.ads:434:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_lists.ads:21
 spark-containers-formal-unbounded_doubly_linked_lists.ads:434:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:435:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:435:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:439:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:439:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:441:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:441:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:571:46: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:571:46: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:706:46: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:706:46: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:797:54: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:797:54: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:828:35: info: during checks for container aggregates at spark-containers-formal-unbounded_doubly_linked_lists.ads:53, in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:828:35: info: during checks for container aggregates at spark-containers-formal-unbounded_doubly_linked_lists.ads:53, in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:828:35: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:828:35: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:865:54: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:865:54: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:952:28: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:952:28: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:952:39: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:952:39: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1128:43: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1128:43: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1309:06: info: disjoint contract or exit cases proved (Z3: 1 VC), in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1309:06: info: disjoint contract or exit cases proved (Z3: 1 VC), in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1411:13: info: during checks for quantification at spark-containers-formal-unbounded_doubly_linked_lists.ads:45, in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1411:13: info: during checks for quantification at spark-containers-formal-unbounded_doubly_linked_lists.ads:45, in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1411:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1411:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1444:13: info: during checks for quantification at spark-containers-formal-unbounded_doubly_linked_lists.ads:45, in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1444:13: info: during checks for quantification at spark-containers-formal-unbounded_doubly_linked_lists.ads:45, in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1444:13: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1444:13: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1450:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1450:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1465:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1465:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1480:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1480:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1495:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1495:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1517:14: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1517:14: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1523:23: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1523:23: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1572:14: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1572:14: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1579:23: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1579:23: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1626:13: info: during checks for quantification at spark-containers-formal-unbounded_doubly_linked_lists.ads:45, in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1626:13: info: during checks for quantification at spark-containers-formal-unbounded_doubly_linked_lists.ads:45, in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1626:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1626:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1641:22: info: aspect Always_Terminates on "Lt_Irreflexive" has been proved, subprogram will terminate, in instantiation at test_lists.ads:28
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1643:22: info: aspect Always_Terminates on "Lt_Asymmetric" has been proved, subprogram will terminate, in instantiation at test_lists.ads:28
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1645:22: info: aspect Always_Terminates on "Lt_Transitive" has been proved, subprogram will terminate, in instantiation at test_lists.ads:28
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1647:22: info: aspect Always_Terminates on "Lt_Order" has been proved, subprogram will terminate, in instantiation at test_lists.ads:28
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1717:54: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:28
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1717:54: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:29
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1745:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1745:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1749:06: info: data dependencies proved, in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1749:06: info: data dependencies proved, in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1753:13: info: during checks for quantification at spark-containers-formal-unbounded_doubly_linked_lists.ads:45, in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1753:13: info: during checks for quantification at spark-containers-formal-unbounded_doubly_linked_lists.ads:45, in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1753:13: info: implicit aspect Always_Terminates on "Aggr_And_Iter_Model" has been proved, subprogram will terminate, in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1753:13: info: implicit aspect Always_Terminates on "Aggr_And_Iter_Model" has been proved, subprogram will terminate, in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1753:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1753:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1757:06: info: data dependencies proved, in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:1757:06: info: data dependencies proved, in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:438:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:438:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:440:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:440:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:570:46: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:570:46: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:705:46: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:705:46: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:796:54: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:796:54: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:827:35: info: during checks for container aggregates at spark-containers-formal-unbounded_doubly_linked_lists.ads:53, in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:827:35: info: during checks for container aggregates at spark-containers-formal-unbounded_doubly_linked_lists.ads:53, in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:827:35: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:827:35: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:864:54: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:864:54: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:951:28: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:951:28: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:951:39: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:951:39: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1127:43: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1127:43: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1308:06: info: disjoint contract or exit cases proved (Z3: 1 VC), in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1308:06: info: disjoint contract or exit cases proved (Z3: 1 VC), in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1410:13: info: during checks for quantification at spark-containers-formal-unbounded_doubly_linked_lists.ads:45, in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1410:13: info: during checks for quantification at spark-containers-formal-unbounded_doubly_linked_lists.ads:45, in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1410:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1410:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1443:13: info: during checks for quantification at spark-containers-formal-unbounded_doubly_linked_lists.ads:45, in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1443:13: info: during checks for quantification at spark-containers-formal-unbounded_doubly_linked_lists.ads:45, in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1443:13: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1443:13: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1449:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1449:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1464:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1464:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1479:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1479:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1494:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1494:20: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1516:14: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1516:14: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1522:23: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1522:23: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1571:14: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1571:14: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1578:23: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1578:23: info: precondition proved (Z3: 1 VC), in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1625:13: info: during checks for quantification at spark-containers-formal-unbounded_doubly_linked_lists.ads:45, in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1625:13: info: during checks for quantification at spark-containers-formal-unbounded_doubly_linked_lists.ads:45, in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1625:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1625:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1640:22: info: aspect Always_Terminates on "Lt_Irreflexive" has been proved, subprogram will terminate, in instantiation at test_lists.ads:28
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1642:22: info: aspect Always_Terminates on "Lt_Asymmetric" has been proved, subprogram will terminate, in instantiation at test_lists.ads:28
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1644:22: info: aspect Always_Terminates on "Lt_Transitive" has been proved, subprogram will terminate, in instantiation at test_lists.ads:28
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1646:22: info: aspect Always_Terminates on "Lt_Order" has been proved, subprogram will terminate, in instantiation at test_lists.ads:28
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1716:54: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:28
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1716:54: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:29
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1744:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1744:13: info: implicit aspect Always_Terminates on "Aggr_Capacity" has been proved, subprogram will terminate, in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1748:06: info: data dependencies proved, in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1748:06: info: data dependencies proved, in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1752:13: info: during checks for quantification at spark-containers-formal-unbounded_doubly_linked_lists.ads:45, in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1752:13: info: during checks for quantification at spark-containers-formal-unbounded_doubly_linked_lists.ads:45, in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1752:13: info: implicit aspect Always_Terminates on "Aggr_And_Iter_Model" has been proved, subprogram will terminate, in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1752:13: info: implicit aspect Always_Terminates on "Aggr_And_Iter_Model" has been proved, subprogram will terminate, in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1752:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1752:13: info: precondition proved (Trivial: 1 VC), in instantiation at test_lists.ads:23
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1756:06: info: data dependencies proved, in instantiation at test_lists.ads:21
+spark-containers-formal-unbounded_doubly_linked_lists.ads:1756:06: info: data dependencies proved, in instantiation at test_lists.ads:23
 spark-containers-functional-maps.ads:35:19: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:205, in instantiation at test_lists.ads:10
 spark-containers-functional-maps.ads:35:19: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:205, in instantiation at test_lists.ads:8
 spark-containers-functional-maps.ads:35:19: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:205, in instantiation at test_lists.ads:21
@@ -550,46 +546,46 @@ spark-containers-parameter_checks.adb:81:10: info: precondition proved (Z3: 2 VC
 spark-containers-parameter_checks.adb:81:10: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-doubly_linked_lists.ads:111, in instantiation at test_lists.ads:8
 spark-containers-parameter_checks.adb:81:10: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:111, in instantiation at test_lists.ads:21
 spark-containers-parameter_checks.adb:81:10: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:111, in instantiation at test_lists.ads:23
-spark-containers-parameter_checks.adb:244:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.adb:244:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.adb:244:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.adb:244:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.adb:250:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.adb:250:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.adb:250:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.adb:250:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.adb:251:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.adb:251:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.adb:251:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.adb:251:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.adb:252:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.adb:252:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.adb:252:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.adb:252:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.adb:270:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.adb:270:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.adb:270:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.adb:270:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.adb:271:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.adb:271:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.adb:271:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.adb:271:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.adb:273:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.adb:273:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.adb:273:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.adb:273:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.adb:274:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.adb:274:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.adb:274:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.adb:274:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.adb:285:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.adb:285:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.adb:294:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.adb:294:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.adb:303:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.adb:303:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.adb:312:10: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.adb:312:10: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.adb:244:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.adb:244:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.adb:244:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.adb:244:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.adb:250:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.adb:250:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.adb:250:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.adb:250:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.adb:251:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.adb:251:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.adb:251:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.adb:251:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.adb:252:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.adb:252:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.adb:252:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.adb:252:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.adb:270:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.adb:270:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.adb:270:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.adb:270:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.adb:271:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.adb:271:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.adb:271:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.adb:271:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.adb:273:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.adb:273:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.adb:273:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.adb:273:13: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.adb:274:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.adb:274:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.adb:274:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.adb:274:13: info: assertion proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.adb:285:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.adb:285:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.adb:294:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.adb:294:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.adb:303:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.adb:303:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.adb:312:10: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.adb:312:10: info: precondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
 spark-containers-parameter_checks.ads:30:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:89, in instantiation at test_lists.ads:10
 spark-containers-parameter_checks.ads:30:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:89, in instantiation at test_lists.ads:8
 spark-containers-parameter_checks.ads:30:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:89, in instantiation at test_lists.ads:21
@@ -842,103 +838,103 @@ spark-containers-parameter_checks.ads:102:19: info: postcondition proved (Z3: 1 
 spark-containers-parameter_checks.ads:102:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:98, in instantiation at test_lists.ads:8
 spark-containers-parameter_checks.ads:102:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:98, in instantiation at test_lists.ads:21
 spark-containers-parameter_checks.ads:102:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:98, in instantiation at test_lists.ads:23
-spark-containers-parameter_checks.ads:183:17: info: aspect Always_Terminates on "Lt_Irreflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.ads:183:17: info: aspect Always_Terminates on "Lt_Irreflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.ads:183:17: info: aspect Always_Terminates on "Lt_Irreflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.ads:183:17: info: aspect Always_Terminates on "Lt_Irreflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.ads:184:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.ads:184:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.ads:184:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.ads:184:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.ads:186:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.ads:186:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.ads:186:19: medium: postcondition might fail, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
-spark-containers-parameter_checks.ads:186:19: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
-spark-containers-parameter_checks.ads:188:17: info: aspect Always_Terminates on "Lt_Asymmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.ads:188:17: info: aspect Always_Terminates on "Lt_Asymmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.ads:188:17: info: aspect Always_Terminates on "Lt_Asymmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.ads:188:17: info: aspect Always_Terminates on "Lt_Asymmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.ads:189:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.ads:189:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.ads:189:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.ads:189:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.ads:191:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.ads:191:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.ads:191:19: medium: postcondition might fail, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
-spark-containers-parameter_checks.ads:191:19: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
-spark-containers-parameter_checks.ads:193:17: info: aspect Always_Terminates on "Lt_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.ads:193:17: info: aspect Always_Terminates on "Lt_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.ads:193:17: info: aspect Always_Terminates on "Lt_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.ads:193:17: info: aspect Always_Terminates on "Lt_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.ads:194:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.ads:194:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.ads:194:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.ads:194:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.ads:196:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.ads:196:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.ads:196:19: medium: postcondition might fail, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
-spark-containers-parameter_checks.ads:196:19: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
-spark-containers-parameter_checks.ads:198:17: info: aspect Always_Terminates on "Lt_Order" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.ads:198:17: info: aspect Always_Terminates on "Lt_Order" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.ads:198:17: info: aspect Always_Terminates on "Lt_Order" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.ads:198:17: info: aspect Always_Terminates on "Lt_Order" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.ads:199:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.ads:199:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.ads:199:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.ads:199:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.ads:201:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.ads:201:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.ads:201:19: medium: postcondition might fail, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
-spark-containers-parameter_checks.ads:201:19: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
-spark-containers-parameter_checks.ads:207:16: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.ads:207:16: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.ads:207:16: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.ads:207:16: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.ads:209:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.ads:209:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.ads:209:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.ads:209:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.ads:210:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.ads:210:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.ads:210:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.ads:210:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.ads:211:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.ads:211:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.ads:211:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.ads:211:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.ads:213:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.ads:213:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.ads:213:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.ads:213:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.ads:214:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.ads:214:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.ads:214:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.ads:214:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.ads:216:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.ads:216:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.ads:216:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.ads:216:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.ads:219:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.ads:219:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.ads:219:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.ads:219:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.ads:220:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.ads:220:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.ads:220:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.ads:220:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.ads:222:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.ads:222:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.ads:222:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.ads:222:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.ads:225:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.ads:225:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.ads:225:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.ads:225:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.ads:226:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.ads:226:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.ads:226:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.ads:226:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
-spark-containers-parameter_checks.ads:228:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:15
-spark-containers-parameter_checks.ads:228:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1671, in instantiation at test_lists.ads:16
-spark-containers-parameter_checks.ads:228:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:28
-spark-containers-parameter_checks.ads:228:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1663, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.ads:183:17: info: aspect Always_Terminates on "Lt_Irreflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.ads:183:17: info: aspect Always_Terminates on "Lt_Irreflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.ads:183:17: info: aspect Always_Terminates on "Lt_Irreflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.ads:183:17: info: aspect Always_Terminates on "Lt_Irreflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.ads:184:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.ads:184:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.ads:184:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.ads:184:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.ads:186:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.ads:186:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.ads:186:19: medium: postcondition might fail, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:186:19: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:188:17: info: aspect Always_Terminates on "Lt_Asymmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.ads:188:17: info: aspect Always_Terminates on "Lt_Asymmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.ads:188:17: info: aspect Always_Terminates on "Lt_Asymmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.ads:188:17: info: aspect Always_Terminates on "Lt_Asymmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.ads:189:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.ads:189:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.ads:189:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.ads:189:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.ads:191:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.ads:191:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.ads:191:19: medium: postcondition might fail, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:191:19: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:193:17: info: aspect Always_Terminates on "Lt_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.ads:193:17: info: aspect Always_Terminates on "Lt_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.ads:193:17: info: aspect Always_Terminates on "Lt_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.ads:193:17: info: aspect Always_Terminates on "Lt_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.ads:194:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.ads:194:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.ads:194:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.ads:194:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.ads:196:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.ads:196:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.ads:196:19: medium: postcondition might fail, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:196:19: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:198:17: info: aspect Always_Terminates on "Lt_Order" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.ads:198:17: info: aspect Always_Terminates on "Lt_Order" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.ads:198:17: info: aspect Always_Terminates on "Lt_Order" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.ads:198:17: info: aspect Always_Terminates on "Lt_Order" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.ads:199:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.ads:199:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.ads:199:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.ads:199:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.ads:201:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.ads:201:19: info: postcondition proved (Z3: 1 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.ads:201:19: medium: postcondition might fail, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:201:19: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28 [possible fix: you should consider adding a postcondition to operator "<" or turning it into an expression function in its unit spec]
+spark-containers-parameter_checks.ads:207:16: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.ads:207:16: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.ads:207:16: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.ads:207:16: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.ads:209:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.ads:209:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.ads:209:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.ads:209:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.ads:210:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.ads:210:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.ads:210:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.ads:210:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.ads:211:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.ads:211:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.ads:211:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.ads:211:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.ads:213:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.ads:213:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.ads:213:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.ads:213:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.ads:214:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.ads:214:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.ads:214:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.ads:214:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.ads:216:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.ads:216:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.ads:216:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.ads:216:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.ads:219:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.ads:219:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.ads:219:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.ads:219:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.ads:220:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.ads:220:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.ads:220:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.ads:220:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.ads:222:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.ads:222:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.ads:222:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.ads:222:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.ads:225:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.ads:225:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.ads:225:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.ads:225:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.ads:226:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.ads:226:09: info: data dependencies proved, in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.ads:226:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.ads:226:09: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29
+spark-containers-parameter_checks.ads:228:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:15
+spark-containers-parameter_checks.ads:228:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-doubly_linked_lists.ads:1670, in instantiation at test_lists.ads:16
+spark-containers-parameter_checks.ads:228:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:28
+spark-containers-parameter_checks.ads:228:19: info: postcondition proved (Z3: 2 VC), in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:1662, in instantiation at test_lists.ads:29

@@ -21,8 +21,7 @@ procedure Main with SPARK_Mode is
    procedure UseCase(VCpuId : VCpuIdType)
      with Pre => VCpuId in 1 .. VCpuVectors.Last_Index (VCpuVector)
    is
-      VCpuVectorAcc : constant access VCpuVectors.Vector := VCpuVector'Access;
-      VCpu          : access VCpuType := VCpuVectors.Reference (VCpuVectorAcc, VCpuId);
+      VCpu : access VCpuType := VCpuVectors.Reference (VCpuVector, VCpuId);
    begin
       VCpu.x := VCpu.y;
       DoStuff(VCpu.all);
