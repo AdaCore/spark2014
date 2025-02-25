@@ -222,7 +222,7 @@ procedure Table_Generator is
       Put_Line (File, "The following constructs are incompletely supported." &
                   " They can be used safely but might lead to unexpected " &
                   "behaviors. Warnings can be emitted by GNATprove if the" &
-                  "`--info` switch is used:");
+                  "``--info`` switch is used:");
       New_Line (File);
       for Kind in Other_Tool_Limitation_Kind loop
          Put (File, "* ");
@@ -323,7 +323,7 @@ procedure Table_Generator is
       Put_Line (File, "The following constructs are imprecisely supported in" &
                   " proof. They can be used safely but might lead to " &
                   "unprovable checks. Warnings can be emitted by GNATprove " &
-                  "if the `--info` switch is used:");
+                  "if the ``--info`` switch is used:");
       New_Line (File);
       for Kind in Proof_Limitation_Kind loop
          Put (File, "* ");
