@@ -28,9 +28,9 @@ original_sample.adb:17:44: info: float overflow check proved (Trivial)
 original_sample.adb:27:19: info: float overflow check proved (CVC5: 1 VC)
 original_sample.adb:27:25: info: float overflow check proved (Trivial)
 original_sample.ads:15:13: info: implicit aspect Always_Terminates on "Are_Float_Equal" has been proved, subprogram will terminate
-original_sample.ads:15:128: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at line 15 should mention Float_Ref and Float_Tested in a precondition]
+original_sample.ads:15:128: high: float overflow check might fail (e.g. when Float_Ref = 2.5521173E+38 and Float_Tested = -2.5521175E+38) [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at line 15 should mention Float_Ref and Float_Tested in a precondition]
+original_sample.ads:15:140: high: float overflow check might fail (e.g. when Float_Ref = -5.8774844E-39 and Float_Tested = -2.1634625E+32) [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at line 15 should mention Float_Ref and Float_Tested in a precondition]
 original_sample.ads:15:140: info: division check proved (CVC5: 1 VC)
-original_sample.ads:15:140: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at line 15 should mention Float_Ref and Float_Tested in a precondition]
 original_sample.ads:34:06: info: data dependencies proved
 original_sample.ads:35:06: info: flow dependencies proved
 original_sample.ads:37:29: info: float overflow check proved (Trivial)
@@ -67,9 +67,9 @@ sample.adb:29:43: info: float overflow check proved (Trivial)
 sample.adb:29:43: info: range check proved (Trivial)
 sample.adb:32:19: info: float overflow check proved (CVC5: 1 VC)
 sample.ads:13:13: info: implicit aspect Always_Terminates on "Are_Float_Equal" has been proved, subprogram will terminate
-sample.ads:13:128: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at line 13 should mention Float_Ref and Float_Tested in a precondition]
+sample.ads:13:128: high: float overflow check might fail (e.g. when Float_Ref = 2.5521173E+38 and Float_Tested = -2.5521175E+38) [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at line 13 should mention Float_Ref and Float_Tested in a precondition]
+sample.ads:13:140: high: float overflow check might fail (e.g. when Float_Ref = -5.8774844E-39 and Float_Tested = -2.1634625E+32) [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at line 13 should mention Float_Ref and Float_Tested in a precondition]
 sample.ads:13:140: info: division check proved (CVC5: 1 VC)
-sample.ads:13:140: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at line 13 should mention Float_Ref and Float_Tested in a precondition]
 sample.ads:32:06: info: data dependencies proved
 sample.ads:33:06: info: flow dependencies proved
 sample.ads:35:29: info: float overflow check proved (Trivial)
