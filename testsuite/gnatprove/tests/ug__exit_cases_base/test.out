@@ -1,10 +1,21 @@
-exit_cases.ads:6:06: info: disjoint contract or exit cases proved
-exit_cases.ads:7:19: info: exit case proved
-  on exceptional exit from Might_Return_Abnormally at exit_cases.ads:5
-exit_cases.ads:8:19: info: exit case proved
-  on normal return from Might_Return_Abnormally at exit_cases.ads:5
-exit_cases.ads:8:19: info: exit case proved
-  on exceptional exit from Might_Return_Abnormally at exit_cases.ads:5
-exit_cases.ads:9:19: info: exit case proved
-  on normal return from Might_Return_Abnormally at exit_cases.ads:5
-exit_cases.ads:10:39: info: exceptional case proved
+ info: disjoint contract or exit cases proved
+--> exit_cases.ads:6:06
+
+ info: exit case proved
+--> exit_cases.ads:7:19
+      + on exceptional exit from Might_Return_Abnormally at exit_cases.ads:5
+
+ info: exit case proved
+--> exit_cases.ads:8:19
+      + on normal return from Might_Return_Abnormally at exit_cases.ads:5
+
+ info: exit case proved
+--> exit_cases.ads:8:19
+      + on exceptional exit from Might_Return_Abnormally at exit_cases.ads:5
+
+ info: exit case proved
+--> exit_cases.ads:9:19
+      + on normal return from Might_Return_Abnormally at exit_cases.ads:5
+
+ info: exceptional case proved
+--> exit_cases.ads:10:39

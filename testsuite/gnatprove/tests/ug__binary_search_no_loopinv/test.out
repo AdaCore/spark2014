@@ -1,12 +1,13 @@
+ medium: array index check might fail
+--> binary_search.adb:28:16
+   28 |             if A (Med) < I then
+      |                   ^~~
+      + reason for check: value must be a valid index into the array
+      + possible fix: loop at line 23 should mention Med in a loop invariant
+   23 |          while Left <= Right loop
+      |                              ^
 
-binary_search.adb:28:16: medium: array index check might fail
-   28 |         if A (Med) < I then
-      |               ^~~
-  reason for check: value must be a valid index into the array
-  possible fix: loop at line 23 should mention Med in a loop invariant
-   23 |      while Left <= Right loop
-      |                          ^ here
-
-binary_search.ads:21:49: medium: postcondition might fail, cannot prove A (Index) /= I
-   21 |              else (for all Index in A'Range => A (Index) /= I));
-      |                                                ^~~~~~~~~~~~~~
+ medium: postcondition might fail, cannot prove A (Index) /= I
+--> binary_search.ads:21:49
+   21 |                  else (for all Index in A'Range => A (Index) /= I));
+      |                                                    ^~~~~~~~~~~~~~

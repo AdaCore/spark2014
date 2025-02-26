@@ -1,2 +1,5 @@
-swap.adb:3:03: info: flow dependencies proved
-swap.adb:4:14: info: postcondition proved
+ info: flow dependencies proved
+--> swap.adb:3:03
+
+ info: postcondition proved
+--> swap.adb:4:14

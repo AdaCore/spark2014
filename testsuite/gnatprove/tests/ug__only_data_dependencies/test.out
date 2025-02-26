@@ -1,34 +1,41 @@
+ high: overflow check might fail, cannot prove lower bound for V + X
+--> only_data_dependencies.adb:6:14
+    6 |          V := V + X;
+      |               ~~^~~
+      + e.g. when V = Integer'First
+      and X = -1
+      + reason for check: result of addition must fit in a 32-bits machine integer
+      + possible fix: subprogram at only_data_dependencies.ads:6 should mention X and V in a precondition
+      --> only_data_dependencies.ads:6:04
+    6 |       procedure Add (X : Integer) with
+      |       ^
 
-only_data_dependencies.adb:6:14: high: overflow check might fail, cannot prove lower bound for V + X
-    6 |      V := V + X;
-      |           ~~^~~
-  e.g. when V = Integer'First
-        and X = -1
-  reason for check: result of addition must fit in a 32-bits machine integer
-  possible fix: subprogram at only_data_dependencies.ads:6 should mention X and V in a precondition
-    6 |   procedure Add (X : Integer) with
-      |   ^ here
+ medium: missing dependency "X => V"
+--> only_data_dependencies.ads:18:18
+   18 |         Depends => (X => Y, Y => X, V => V);
+      |                     ^
 
-only_data_dependencies.ads:18:18: medium: missing dependency "X => V"
-   18 |     Depends => (X => Y, Y => X, V => V);
-      |                 ^ here
+ medium: missing self-dependency "X => X"
+--> only_data_dependencies.ads:18:18
+   18 |         Depends => (X => Y, Y => X, V => V);
+      |                     ^
 
-only_data_dependencies.ads:18:18: medium: missing self-dependency "X => X"
-   18 |     Depends => (X => Y, Y => X, V => V);
-      |                 ^ here
+ medium: missing dependency "Y => V"
+--> only_data_dependencies.ads:18:26
+   18 |         Depends => (X => Y, Y => X, V => V);
+      |                             ^
 
-only_data_dependencies.ads:18:26: medium: missing dependency "Y => V"
-   18 |     Depends => (X => Y, Y => X, V => V);
-      |                         ^ here
+ medium: missing self-dependency "Y => Y"
+--> only_data_dependencies.ads:18:26
+   18 |         Depends => (X => Y, Y => X, V => V);
+      |                             ^
 
-only_data_dependencies.ads:18:26: medium: missing self-dependency "Y => Y"
-   18 |     Depends => (X => Y, Y => X, V => V);
-      |                         ^ here
+ medium: missing dependency "V => X"
+--> only_data_dependencies.ads:18:34
+   18 |         Depends => (X => Y, Y => X, V => V);
+      |                                     ^
 
-only_data_dependencies.ads:18:34: medium: missing dependency "V => X"
-   18 |     Depends => (X => Y, Y => X, V => V);
-      |                                 ^ here
-
-only_data_dependencies.ads:18:34: medium: missing dependency "V => Y"
-   18 |     Depends => (X => Y, Y => X, V => V);
-      |                                 ^ here
+ medium: missing dependency "V => Y"
+--> only_data_dependencies.ads:18:34
+   18 |         Depends => (X => Y, Y => X, V => V);
+      |                                     ^

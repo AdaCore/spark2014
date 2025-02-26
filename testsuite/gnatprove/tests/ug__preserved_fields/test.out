@@ -1,3 +1,8 @@
-preserved_fields.adb:14:04: info: initialization of "D" proved
-preserved_fields.adb:19:22: info: assertion proved
-preserved_fields.adb:21:22: info: assertion proved
+ info: initialization of "D" proved
+--> preserved_fields.adb:14:04
+
+ info: assertion proved
+--> preserved_fields.adb:19:22
+
+ info: assertion proved
+--> preserved_fields.adb:21:22

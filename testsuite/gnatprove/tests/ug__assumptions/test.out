@@ -1,2 +1,5 @@
-assumptions.adb:12:34: info: overflow check proved
-assumptions.ads:4:13: info: implicit aspect Always_Terminates on "Get_Tick" has been proved, subprogram will terminate
+ info: overflow check proved
+--> assumptions.adb:12:34
+
+ info: implicit aspect Always_Terminates on "Get_Tick" has been proved, subprogram will terminate
+--> assumptions.ads:4:13

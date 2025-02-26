@@ -1,17 +1,20 @@
+ error: object was borrowed at line 9
+--> ownership_borrowing.adb:12:09
+   12 |          X.all := X.all + 1;  --  illegal
+      |          ~~^~~
 
-ownership_borrowing.adb:12:09: error: object was borrowed at line 9
-   12 |      X.all := X.all + 1;  --  illegal
-      |      ~~^~~
+ error: object was borrowed at line 9
+--> ownership_borrowing.adb:12:18
+   12 |          X.all := X.all + 1;  --  illegal
+      |                   ~~^~~
 
-ownership_borrowing.adb:12:18: error: object was borrowed at line 9
-   12 |      X.all := X.all + 1;  --  illegal
-      |               ~~^~~
+ error: object was borrowed at line 9
+--> ownership_borrowing.adb:13:09
+   13 |          X.all := 1;          --  illegal
+      |          ~~^~~
 
-ownership_borrowing.adb:13:09: error: object was borrowed at line 9
-   13 |      X.all := 1;          --  illegal
-      |      ~~^~~
-
-ownership_borrowing.adb:14:18: error: object was borrowed at line 9
-   14 |      Tmp   := X.all;      --  illegal
-      |               ~~^~~
+ error: object was borrowed at line 9
+--> ownership_borrowing.adb:14:18
+   14 |          Tmp   := X.all;      --  illegal
+      |                   ~~^~~
 gnatprove: error during flow analysis and proof

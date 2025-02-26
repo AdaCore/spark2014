@@ -1,16 +1,29 @@
+ high: overflow check might fail, cannot prove lower bound for V + X
+--> only_flow_dependencies.adb:6:14
+    6 |          V := V + X;
+      |               ~~^~~
+      + e.g. when V = Integer'First
+      and X = -1
+      + reason for check: result of addition must fit in a 32-bits machine integer
+      + possible fix: subprogram at only_flow_dependencies.ads:6 should mention X and V in a precondition
+      --> only_flow_dependencies.ads:6:04
+    6 |       procedure Add (X : Integer) with
+      |       ^
 
-only_flow_dependencies.adb:6:14: high: overflow check might fail, cannot prove lower bound for V + X
-    6 |      V := V + X;
-      |           ~~^~~
-  e.g. when V = Integer'First
-        and X = -1
-  reason for check: result of addition must fit in a 32-bits machine integer
-  possible fix: subprogram at only_flow_dependencies.ads:6 should mention X and V in a precondition
-    6 |   procedure Add (X : Integer) with
-      |   ^ here
-only_flow_dependencies.ads:7:06: info: flow dependencies proved
-only_flow_dependencies.ads:10:06: info: flow dependencies proved
-only_flow_dependencies.ads:13:06: info: data dependencies proved
-only_flow_dependencies.ads:14:06: info: flow dependencies proved
-only_flow_dependencies.ads:17:06: info: data dependencies proved
-only_flow_dependencies.ads:18:06: info: flow dependencies proved
+ info: flow dependencies proved
+--> only_flow_dependencies.ads:7:06
+
+ info: flow dependencies proved
+--> only_flow_dependencies.ads:10:06
+
+ info: data dependencies proved
+--> only_flow_dependencies.ads:13:06
+
+ info: flow dependencies proved
+--> only_flow_dependencies.ads:14:06
+
+ info: data dependencies proved
+--> only_flow_dependencies.ads:17:06
+
+ info: flow dependencies proved
+--> only_flow_dependencies.ads:18:06
