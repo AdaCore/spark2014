@@ -100,6 +100,20 @@ package CE_RAC is
       N : Node_Id)
       return Value_Type;
 
+   function Fixed_Point_Value
+     (F : Big_Integer;
+      S : Big_Real;
+      N : Node_Id)
+      return Value_Type;
+   --  Construct a fixed-point value after checking against type bounds.
+
+   function Small (Ty : Entity_Id) return Big_Real;
+   --  Retreive small of a fixed-point type entity.
+
+   function Is_Zero (V : Value_Type) return Boolean;
+   --  Return true iff V is Scalar and equals zero. Throw a program error
+   --  otherwise.
+
    function RAC_Execute
      (E              : Entity_Id;
       Cntexmp        : Cntexample_File_Maps.Map := Cntexample_File_Maps.Empty;

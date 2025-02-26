@@ -147,6 +147,9 @@ package body CE_RAC is
    function Value_Real (V : Value_Type) return CE_Values.Float_Value;
    --  Get the value of a real value, fail for other types
 
+   function Value_Fixed_Point (V : Value_Type) return Big_Integer;
+   --  Get the value of a fixed point value, fail for other types
+
    function Value_Character (V : Value_Type) return Character;
    --  Get the value of a enumeration value as a character, fail for other
    --  types.
@@ -176,6 +179,11 @@ package body CE_RAC is
    procedure Check_Real (V : Value_Type; Ty : Entity_Id; N : Node_Id);
    --  Check a value V against the range bounds of the type Ty, if V is a
    --  float, signaling errors for node N.
+
+   procedure Check_Fixed_Point (I : Big_Integer; Ty : Entity_Id; N : Node_Id);
+   procedure Check_Fixed_Point (V : Value_Type; Ty : Entity_Id; N : Node_Id);
+   --  Check a value V against the range bounds for the type Ty, if V is not
+   --  fixed-point number, signaling errors for node N.
 
    function Int_Value (I : Big_Integer; Ty : Entity_Id) return Value_Type is
       (Scalar_Value ((K => Integer_K, Integer_Content => I), Retysp (Ty)));
@@ -672,9 +680,6 @@ package body CE_RAC is
       if Has_Predicates (Ty) and then not Has_Static_Predicate (Ty) then
          RAC_Unsupported ("Type has dynamic predicate aspect", Ty);
       end if;
-      if Is_Fixed_Point_Type (Ty) then
-         RAC_Unsupported ("Fixed-point type", Ty);
-      end if;
       if Is_Array_Type (Ty)
         and then Number_Dimensions (Ty) > 1
       then
@@ -762,6 +767,44 @@ package body CE_RAC is
          Check_Real (V.Scalar_Content.Float_Content, Ty, N);
       end if;
    end Check_Real;
+
+   -----------------------
+   -- Check_Fixed_Point --
+   -----------------------
+
+   procedure Check_Fixed_Point
+     (I  : Big_Integer;
+      Ty : Entity_Id;
+      N  : Node_Id)
+   is
+      Fst, Lst : Big_Integer;
+      Kind     : VC_Kind;
+      Desc     : constant String :=
+        "Check fixed point of type " & Get_Name_String (Chars (Ty));
+   begin
+      Get_Bounds (Get_Range (Ty), Fst, Lst);
+      Kind :=
+        (if Is_Base_Type (Ty) then VC_Overflow_Check else VC_Range_Check);
+
+      if I < Fst then
+         RAC_Info (Desc, "has failed as " & VC_Kind'Image (Kind), N);
+         RAC_Failure (N, Kind, (Info => Low_Bound_Id, others => <>));
+      elsif I > Lst then
+         RAC_Info (Desc, "has failed as " & VC_Kind'Image (Kind), N);
+         RAC_Failure (N, Kind, (Info => High_Bound_Id, others => <>));
+      end if;
+   end Check_Fixed_Point;
+
+   procedure Check_Fixed_Point (V : Value_Type; Ty : Entity_Id; N : Node_Id) is
+   begin
+      if V.K = Scalar_K
+        and then V.Scalar_Content /= null
+        and then V.Scalar_Content.K = Fixed_K
+      then
+         Check_Fixed_Point
+           (V.Scalar_Content.Fixed_Content, Ty, N);
+      end if;
+   end Check_Fixed_Point;
 
    ----------------
    -- Check_List --
@@ -949,12 +992,6 @@ package body CE_RAC is
               or else V.Scalar_Content = null
             then
                RAC_Unsupported ("uninitialized scalar", N);
-
-            --  Fixed-point types are not supported yet
-
-            elsif V.Scalar_Content.K = Fixed_K then
-               RAC_Unsupported
-                 ("value of fixed-point type " & Full_Name (V.AST_Ty), N);
             end if;
 
          when Record_K =>
@@ -1223,6 +1260,9 @@ package body CE_RAC is
 
       elsif Has_Floating_Point_Type (Rep_Ty) then
          return Real_Value (0.0, Rep_Ty, Empty);
+
+      elsif Has_Fixed_Point_Type (Rep_Ty) then
+         return Fixed_Point_Value (0, Small (Rep_Ty), Rep_Ty);
 
       elsif Is_Array_Type (Rep_Ty) then
          declare
@@ -1759,6 +1799,14 @@ package body CE_RAC is
         Scalar_Value ((K => Float_K, Float_Content => R), Retysp (Etype (N)));
    end Real_Value;
 
+   function Fixed_Point_Value (F : Big_Integer; S : Big_Real; N : Node_Id)
+                               return Value_Type
+   is
+   begin
+      return Scalar_Value ((K => Fixed_K, Fixed_Content => F, Small => S),
+                           Retysp (Etype (N)));
+   end Fixed_Point_Value;
+
    function Integer_Value
      (I     : Big_Integer;
       Ty    : Entity_Id;
@@ -1785,6 +1833,23 @@ package body CE_RAC is
    begin
       return Integer_Value (I, Retysp (Etype (N)), N);
    end Integer_Value;
+
+   -------------
+   -- Is_Zero --
+   -------------
+
+   function Is_Zero (V : Value_Type) return Boolean is
+   begin
+      if V.K /= Scalar_K then
+         raise Program_Error;
+      else
+         return (case (V.Scalar_Content.K) is
+                    when Integer_K => V.Scalar_Content.Integer_Content = 0,
+                    when Float_K => Is_Zero (V.Scalar_Content.Float_Content),
+                    when Fixed_K => V.Scalar_Content.Fixed_Content = 0,
+                    when others => raise Program_Error);
+      end if;
+   end Is_Zero;
 
    -------------------------
    -- Iterate_Scheme_Spec --
@@ -3291,9 +3356,10 @@ package body CE_RAC is
       -------------------
 
       function RAC_Binary_Op return Value_Type is
-         Left      : constant Value_Type := RAC_Expr (Left_Opnd (N));
-         Right     : constant Value_Type := RAC_Expr (Right_Opnd (N));
-         Left_Type : constant Type_Kind_Id := Etype (Left_Opnd (N));
+         Left       : constant Value_Type := RAC_Expr (Left_Opnd (N));
+         Right      : constant Value_Type := RAC_Expr (Right_Opnd (N));
+         Left_Type  : constant Type_Kind_Id := Etype (Left_Opnd (N));
+         Right_Type : constant Type_Kind_Id := Etype (Right_Opnd (N));
       begin
          case Nkind (N) is
             when N_Op_Add =>
@@ -3301,9 +3367,19 @@ package body CE_RAC is
                   return
                     Integer_Value
                       (Value_Integer (Left) + Value_Integer (Right), N);
-               else
+               elsif Is_Floating_Point_Type (Ty) then
                   return
                     Real_Value (Value_Real (Left) + Value_Real (Right), N);
+               elsif Has_Fixed_Point_Type (Ty) then
+                  pragma Assert (Small (Left_Type) = Small (Right_Type),
+                                 "Fixed_points with different smalls");
+                  return
+                    Fixed_Point_Value (Value_Fixed_Point (Left) +
+                                           Value_Fixed_Point (Right),
+                                       Small (Left_Type),
+                                       N);
+               else
+                     raise Program_Error;
                end if;
 
             when N_Op_Expon =>
@@ -3344,13 +3420,100 @@ package body CE_RAC is
                   return
                     Integer_Value
                       (Value_Integer (Left) - Value_Integer (Right), N);
-               else
+               elsif Is_Floating_Point_Type (Ty) then
                   return
                     Real_Value (Value_Real (Left) - Value_Real (Right), N);
+               elsif Has_Fixed_Point_Type (Ty) then
+                  pragma Assert (Small (Left_Type) = Small (Right_Type),
+                                 "Fixed_points with different smalls");
+                  return
+                    Fixed_Point_Value (Value_Fixed_Point (Left) -
+                                           Value_Fixed_Point (Right),
+                                       Small (Left_Type),
+                                       N);
+               else
+                  raise Program_Error;
                end if;
 
             when N_Op_Divide .. N_Op_Rem =>
-               if Is_Integer_Type (Ty) then
+               if Has_Fixed_Point_Type (Ty)
+                 or Has_Fixed_Point_Type (Left_Type)
+                 or Has_Fixed_Point_Type (Right_Type)
+               then
+                  if Nkind (N) = N_Op_Divide and then Is_Zero (Right) then
+                     RAC_Failure (N, VC_Division_Check);
+                  end if;
+
+                  declare
+                     Fixed_L : Big_Integer :=
+                       (if Has_Fixed_Point_Type (Left_Type)
+                        then Left.Scalar_Content.Fixed_Content
+                        else Left.Scalar_Content.Integer_Content);
+                     Small_L : Big_Real :=
+                       (if Has_Fixed_Point_Type (Left_Type)
+                        then Small (Left_Type)
+                        else 1.0);
+                     Fixed_R : Big_Integer :=
+                       (if Has_Fixed_Point_Type (Right_Type)
+                        then Right.Scalar_Content.Fixed_Content
+                        else Right.Scalar_Content.Integer_Content);
+                     Small_R : Big_Real :=
+                       (if Has_Fixed_Point_Type (Right_Type)
+                        then Small (Right_Type)
+                        else 1.0);
+                     Small_Res : constant Big_Real :=
+                       (if Has_Fixed_Point_Type (Ty)
+                        then Small (Ty)
+                        else 1.0);
+                  begin
+                     case Nkind (N) is
+                        when N_Op_Multiply =>
+                           if Has_Fixed_Point_Type (Ty) then
+                              return Fixed_Point_Value
+                                (Mult_Fixed_Point
+                                   (Fixed_L,
+                                    Fixed_R,
+                                    Small_L,
+                                    Small_R,
+                                    Small_Res),
+                                 Small_Res,
+                                 N);
+                           else
+                              return Integer_Value
+                                (Mult_Fixed_Point
+                                   (Fixed_L,
+                                    Fixed_R,
+                                    Small_L,
+                                    Small_R,
+                                    Small_Res),
+                                 N);
+                           end if;
+                        when N_Op_Divide   =>
+                           if Has_Fixed_Point_Type (Ty) then
+                              return Fixed_Point_Value
+                                (Div_Fixed_Point
+                                   (Fixed_L,
+                                    Fixed_R,
+                                    Small_L,
+                                    Small_R,
+                                    Small_Res),
+                                 Small_Res,
+                                 N);
+                           else
+                              return Integer_Value
+                                (Div_Fixed_Point
+                                   (Fixed_L,
+                                    Fixed_R,
+                                    Small_L,
+                                    Small_R,
+                                    Small_Res),
+                                 N);
+                           end if;
+                        when others        =>
+                           raise Program_Error;
+                     end case;
+                  end;
+               elsif Is_Integer_Type (Ty) then
                   if Nkind (N) in N_Op_Divide | N_Op_Mod | N_Op_Rem
                     and then Value_Integer (Right) = 0
                   then
@@ -3372,7 +3535,7 @@ package body CE_RAC is
                              raise Program_Error),
                        N);
 
-               else
+               elsif Is_Floating_Point_Type (Ty) then
                   if Nkind (N) = N_Op_Divide
                     and then Is_Zero (Value_Real (Right))
                   then
@@ -3389,6 +3552,8 @@ package body CE_RAC is
                           when others        =>
                              raise Program_Error),
                        N);
+               else
+                  raise Program_Error;
                end if;
 
             when N_Op_Compare =>
@@ -3752,6 +3917,8 @@ package body CE_RAC is
       --------------------
 
       function RAC_Op_Compare (Left, Right : Value_Type) return Boolean is
+         Left_Type  : constant Type_Kind_Id := Etype (Left_Opnd (N));
+         Right_Type : constant Type_Kind_Id := Etype (Right_Opnd (N));
       begin
          case N_Op_Compare (Nkind (N)) is
             when N_Op_Eq =>
@@ -3764,6 +3931,24 @@ package body CE_RAC is
                begin
                   if Is_Array_Type (Typ) then
                      RAC_Unsupported ("RAC_Op_Compare on arrays", N);
+
+                  elsif Has_Fixed_Point_Type (Ty) then
+                     pragma Assert (Small (Left_Type) = Small (Right_Type),
+                                    "Fixed_points with different smalls");
+                     declare
+                        Fixed_L : constant Big_Integer :=
+                          Left.Scalar_Content.Fixed_Content;
+                        Fixed_R : constant Big_Integer :=
+                          Right.Scalar_Content.Fixed_Content;
+                     begin
+                        case N_Op_Compare (Nkind (N)) is
+                           when N_Op_Lt => return Fixed_L < Fixed_R;
+                           when N_Op_Le => return Fixed_L <= Fixed_R;
+                           when N_Op_Ge => return Fixed_L >= Fixed_R;
+                           when N_Op_Gt => return Fixed_L > Fixed_R;
+                           when others  => raise Program_Error;
+                        end case;
+                     end;
 
                   elsif Has_Floating_Point_Type (Typ) then
                      declare
@@ -3810,6 +3995,9 @@ package body CE_RAC is
             when N_Op_Abs   =>
                if Is_Integer_Type (Ty) then
                   return Integer_Value (abs Value_Integer (Right), N);
+               elsif Has_Fixed_Point_Type (Ty) then
+                  return Fixed_Point_Value
+                    (abs Value_Fixed_Point (Right), Small (Ty), N);
                else
                   return Real_Value (abs Value_Real (Right), N);
                end if;
@@ -3817,6 +4005,9 @@ package body CE_RAC is
             when N_Op_Minus =>
                if Is_Integer_Type (Ty) then
                   return Integer_Value (-Value_Integer (Right), N);
+               elsif Has_Fixed_Point_Type (Ty) then
+                  return Fixed_Point_Value
+                    (-(Value_Fixed_Point (Right)), Small (Ty), N);
                else
                   return Real_Value (-Value_Real (Right), N);
                end if;
@@ -3862,16 +4053,25 @@ package body CE_RAC is
             Res := String_Value (Stringt.To_String (Strval (N)));
 
          when N_Real_Literal =>
-            declare
-               Num : constant Big_Integer :=
-                 From_String (UI_Image (Norm_Num (Realval (N))));
-               Den : constant Big_Integer :=
-                 From_String (UI_Image (Norm_Den (Realval (N))));
-               Sign : constant Big_Integer :=
-                 (if UR_Is_Negative (Realval (N)) then -1 else 1);
-            begin
-               Res := Real_Value (Sign * Num / Den, N);
-            end;
+            if Has_Fixed_Point_Type (Ty) then
+               declare
+                  F : constant Big_Integer := From_String
+                    (UI_Image (Corresponding_Integer_Value (N)));
+               begin
+                  Res := Fixed_Point_Value (F, Small (Ty), N);
+               end;
+            else
+               declare
+                  Num : constant Big_Integer :=
+                    From_String (UI_Image (Norm_Num (Realval (N))));
+                  Den : constant Big_Integer :=
+                    From_String (UI_Image (Norm_Den (Realval (N))));
+                  Sign : constant Big_Integer :=
+                    (if UR_Is_Negative (Realval (N)) then -1 else 1);
+               begin
+                  Res := Real_Value (Sign * Num / Den, N);
+               end;
+            end if;
 
          when N_Identifier | N_Expanded_Name =>
             declare
@@ -3941,7 +4141,44 @@ package body CE_RAC is
             declare
                Expr_Typ : constant Type_Kind_Id := Etype (Expression (N));
             begin
-               if Has_Floating_Point_Type (Ty)
+               if Has_Integer_Type (Ty)
+                 and then Has_Fixed_Point_Type (Expr_Typ)
+               then
+                  Res := RAC_Expr (Expression (N));
+                  declare
+                     Fixed : constant Big_Integer
+                       := Res.Scalar_Content.Fixed_Content;
+                     S : constant Big_Real
+                       := Small (Expr_Typ);
+                     Num   : constant Big_Integer
+                       := Numerator (S);
+                     Den   : constant Big_Integer
+                       := Denominator (S);
+                  begin
+                     Res := Integer_Value
+                       (Fixed * Num / Den, Ty, Expression (N));
+                  end;
+
+               elsif Has_Fixed_Point_Type (Ty)
+                 and then Is_Integer_Type (Expr_Typ)
+               then
+                  declare
+                     Small_Num : constant Big_Integer :=
+                       Numerator (Small (Ty));
+                     Small_Den : constant Big_Integer :=
+                       Denominator (Small (Ty));
+                     Fixed : Big_Integer;
+                  begin
+                     Res := RAC_Expr (Expression (N));
+                     Fixed :=
+                       Res.Scalar_Content.Integer_Content * Small_Den
+                         / Small_Num;
+                     Res := Fixed_Point_Value (Fixed,
+                                               Small (Ty),
+                                               Expression (N));
+                  end;
+
+               elsif Has_Floating_Point_Type (Ty)
                  and then Is_Integer_Type (Expr_Typ)
                then
                   Res := RAC_Expr (Expression (N));
@@ -4158,6 +4395,8 @@ package body CE_RAC is
          Check_Integer (Res, Ty, N);
       elsif Has_Floating_Point_Type (Ty) then
          Check_Real (Res, Ty, N);
+      elsif Has_Fixed_Point_Type (Ty) then
+         Check_Fixed_Point (Res, Ty, N);
       end if;
 
       return Res;
@@ -4843,6 +5082,21 @@ package body CE_RAC is
       end if;
    end Set_Value;
 
+   -----------
+   -- Small --
+   -----------
+
+   function Small (Ty : Entity_Id) return Big_Real is
+      Num, Den : Big_Integer;
+   begin
+      if not Has_Fixed_Point_Type (Ty) then
+         raise Program_Error;
+      end if;
+      Num := From_String (UI_Image (Norm_Num (Small_Value (Ty))));
+      Den := From_String (UI_Image (Norm_Den (Small_Value (Ty))));
+      return Num / Den;
+   end Small;
+
    ------------------
    -- String_Value --
    ------------------
@@ -5051,6 +5305,8 @@ package body CE_RAC is
       case V.Scalar_Content.K is
          when Integer_K =>
             return V.Scalar_Content.Integer_Content;
+         when Fixed_K =>
+            return V.Scalar_Content.Fixed_Content;
          when Enum_K    =>
             return To_Big_Integer
               (Enum_Entity_To_Integer (V.Scalar_Content.Enum_Entity));
@@ -5090,5 +5346,22 @@ package body CE_RAC is
 
       return V.Scalar_Content.Float_Content;
    end Value_Real;
+
+   -----------------------
+   -- Value_Fixed_Point --
+   -----------------------
+
+   function Value_Fixed_Point (V : Value_Type) return Big_Integer
+   is
+   begin
+      if V.K /= Scalar_K
+        or else V.Scalar_Content = null
+        or else V.Scalar_Content.K /= Fixed_K
+      then
+         raise Program_Error with "Value_Fixed_Point";
+      end if;
+
+      return V.Scalar_Content.Fixed_Content;
+   end Value_Fixed_Point;
 
 end CE_RAC;

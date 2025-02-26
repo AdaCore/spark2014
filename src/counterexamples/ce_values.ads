@@ -48,6 +48,20 @@ package CE_Values is
       end case;
    end record;
 
+   function Mult_Fixed_Point
+     (Fixed_L, Fixed_R            : Big_Integer;
+      Small_L, Small_R, Small_Res : Big_Real)
+      return Big_Integer;
+   --  Multiply two fixed-point numbers L and R and scale the result so that
+   --  its small is equal to Small_Res
+
+   function Div_Fixed_Point
+     (Fixed_L, Fixed_R             : Big_Integer;
+      Small_L, Small_R, Small_Res : Big_Real)
+      return Big_Integer;
+   --  Divide two fixed-point numbers L and R and scale the result so that
+   --  its small is equal to Small_Res
+
    function Is_Zero (R : Float_Value) return Boolean is
      (case R.K is
          when Float_32_K => R.Content_32 = 0.0,
