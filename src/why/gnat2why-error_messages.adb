@@ -693,11 +693,15 @@ package body Gnat2Why.Error_Messages is
             Verdict        : out Cntexmp_Verdict;
             Use_Fuzzing    :     Boolean := False)
          is
+            Slc : constant Source_Ptr := Sloc (VC.Node);
          begin
             Small_Step_Res :=
               Small_Step_Rac
-                (Subp, Cntexmp, VC.Node, Fuel, Use_Fuzzing);
-
+                (Subp,
+                 Remap_VC_Info (Cntexmp, Slc),
+                 VC.Node,
+                 Fuel,
+                 Use_Fuzzing);
             if Small_Step_Res.Res_Kind = CE_RAC.Res_Failure then
                begin
                   Small_Step_Res.Res_VC_Id :=
