@@ -68,7 +68,7 @@ test_pred_on_array.adb:102:22: info: assertion proved (Trivial: 1 VC)
 test_pred_on_array.adb:105:22: info: data dependencies proved
 test_pred_on_array.adb:108:13: medium: initialization check might fail (e.g. when X'Initialized = False)
 test_pred_on_array.adb:111:18: medium: for parameter X at the end of the subprogram at test_pred_on_array.adb:111
-test_pred_on_array.adb:111:18: medium: initialization check might fail [possible fix: add or complete related loop invariants or postconditions]
+test_pred_on_array.adb:111:18: medium: initialization check might fail
 test_pred_on_array.adb:111:18: warning: unused variable "X"
 test_pred_on_array.adb:111:39: info: data dependencies proved
 test_pred_on_array.adb:116:13: info: implicit aspect Always_Terminates on "F5" has been proved, subprogram will terminate

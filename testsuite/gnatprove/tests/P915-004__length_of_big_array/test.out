@@ -17,5 +17,5 @@ fail.adb:49:04: info: precondition proved (CVC5: 2 VC)
 fail.adb:50:04: info: precondition proved (CVC5: 2 VC)
 fail.adb:51:04: info: precondition proved (CVC5: 2 VC)
 mod_array.ads:6:13: info: implicit aspect Always_Terminates on "My_Length" has been proved, subprogram will terminate
+mod_array.ads:6:52: high: range check might fail, cannot prove upper bound for X'Length (e.g. when X = (others => False) and X'First = 0 and X'Last = My_Index'Last) [reason for check: returned value must fit in the result type of the function]
 mod_array.ads:6:52: info: range check proved (CVC5: 1 VC)
-mod_array.ads:6:52: medium: range check might fail [reason for check: returned value must fit in the result type of the function]
