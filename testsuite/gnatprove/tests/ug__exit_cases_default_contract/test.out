@@ -1,4 +1,4 @@
-
-exit_cases_default_contract.adb:19:07: medium: unexpected exception might be raised
-   19 |      Might_Return_Abnormally (X);
-      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~
+ medium: unexpected exception might be raised
+--> exit_cases_default_contract.adb:19:07
+   19 |          Might_Return_Abnormally (X);
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~
