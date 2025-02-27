@@ -2205,6 +2205,67 @@ package body Flow_Utility is
      renames Loop_Info.Element;
 
    -----------------------------------
+   -- Get_Outputs_From_Program_Exit --
+   -----------------------------------
+
+   function Get_Outputs_From_Program_Exit
+     (E    : Entity_Id;
+      Scop : Node_Id)
+      return Flow_Id_Sets.Set
+   is
+      Prag : constant Node_Id := Get_Pragma (E, Pragma_Program_Exit);
+      Res  : Flow_Id_Sets.Set;
+
+   begin
+      if No (Prag) then
+         return Res;
+      end if;
+
+      declare
+         Assoc         : constant List_Id :=
+           Pragma_Argument_Associations (Prag);
+         pragma Assert (No (Assoc) or else List_Length (Assoc) = 1);
+         Post          : Node_Id;
+         Reads, Writes : Flow_Id_Sets.Set;
+
+      begin
+         if No (Assoc) then
+            return Res;
+         end if;
+
+         Post := Expression (First (Assoc));
+
+         --  Collect all variables read in Post (except under 'Old)
+
+         Res.Union (Get_Variables_For_Proof (Post, Scop, Skip_Old => True));
+
+         --  Only keep E's outputs
+
+         Get_Proof_Globals
+           (Subprogram      => E,
+            Reads           => Reads,
+            Writes          => Writes,
+            Erase_Constants => True,
+            Scop            => Get_Flow_Scope (Scop));
+
+         --  Include the protected type for procedures and entries declared
+         --  directly within protected types. They are handled in flow as if
+         --  they had an implicit self parameter of mode in out.
+
+         if Present (Scope (E))
+           and then Ekind (Scope (E)) = E_Protected_Type
+           and then Ekind (E) in E_Procedure | E_Entry
+         then
+            Writes.Include (Direct_Mapping_Id (Scope (E)));
+         end if;
+
+         Res.Intersection (Writes);
+      end;
+
+      return Res;
+   end Get_Outputs_From_Program_Exit;
+
+   -----------------------------------
    -- Get_Postcondition_Expressions --
    -----------------------------------
 
@@ -2700,7 +2761,8 @@ package body Flow_Utility is
       Target_Name             : Flow_Id;
       Use_Computed_Globals    : Boolean;
       Assume_In_Expression    : Boolean := True;
-      Expand_Internal_Objects : Boolean := False)
+      Expand_Internal_Objects : Boolean := False;
+      Skip_Old                : Boolean := False)
       return Flow_Id_Sets.Set
    is
       Vars : Flow_Id_Sets.Set;
@@ -2715,7 +2777,8 @@ package body Flow_Utility is
                            Use_Computed_Globals    => Use_Computed_Globals,
                            Assume_In_Expression    => Assume_In_Expression,
                            Expand_Internal_Objects => Expand_Internal_Objects,
-                           Consider_Extensions     => False));
+                           Consider_Extensions     => False,
+                           Skip_Old                => Skip_Old));
       end loop;
 
       return Vars;
@@ -2736,8 +2799,9 @@ package body Flow_Utility is
    end record;
 
    function Get_Variables_Internal
-     (N   : Node_Id;
-      Ctx : Get_Variables_Context)
+     (N        : Node_Id;
+      Ctx      : Get_Variables_Context;
+      Skip_Old : Boolean := False)
       return Flow_Id_Sets.Set
    with Pre => (if Ctx.Assume_In_Expression then Nkind (N) in N_Subexpr);
    --  Internal version with a context that we'll use to recurse
@@ -2754,7 +2818,8 @@ package body Flow_Utility is
       Use_Computed_Globals    : Boolean;
       Assume_In_Expression    : Boolean := True;
       Expand_Internal_Objects : Boolean := False;
-      Consider_Extensions     : Boolean := False)
+      Consider_Extensions     : Boolean := False;
+      Skip_Old                : Boolean := False)
       return Flow_Id_Sets.Set
    is
       Ctx : constant Get_Variables_Context :=
@@ -2767,7 +2832,7 @@ package body Flow_Utility is
          Consider_Extensions     => Consider_Extensions);
 
    begin
-      return Get_Variables_Internal (N, Ctx);
+      return Get_Variables_Internal (N, Ctx, Skip_Old);
    end Get_Variables;
 
    ----------------------------
@@ -2775,8 +2840,9 @@ package body Flow_Utility is
    ----------------------------
 
    function Get_Variables_Internal
-     (N   : Node_Id;
-      Ctx : Get_Variables_Context)
+     (N        : Node_Id;
+      Ctx      : Get_Variables_Context;
+      Skip_Old : Boolean := False)
       return Flow_Id_Sets.Set
    is
       ----------------------------------------------------
@@ -3836,6 +3902,14 @@ package body Flow_Utility is
                --  The address of anything is totally separate from anything
                --  flow analysis cares about, so we ignore it.
                return Flow_Id_Sets.Empty_Set;
+
+            when Attribute_Old =>
+               --  If Skip_Old is True, ignore the attribute. Otherwise, we
+               --  just need the usual.
+
+               if Skip_Old then
+                  return Flow_Id_Sets.Empty_Set;
+               end if;
 
             when Attribute_Callable
                | Attribute_Caller
@@ -5332,8 +5406,9 @@ package body Flow_Utility is
    -----------------------------
 
    function Get_Variables_For_Proof
-     (Expr_N  : Node_Id;
-      Scope_N : Node_Id)
+     (Expr_N   : Node_Id;
+      Scope_N  : Node_Id;
+      Skip_Old : Boolean := False)
       return Flow_Id_Sets.Set
    is
       function Enclosing_Declaration_Or_Statement (N : Node_Id) return Node_Id;
@@ -5409,7 +5484,8 @@ package body Flow_Utility is
          Target_Name             => Target_Name,
          Use_Computed_Globals    => True,
          Assume_In_Expression    => True,
-         Expand_Internal_Objects => False)
+         Expand_Internal_Objects => False,
+         Skip_Old                => Skip_Old)
       loop
          if not Is_Bound (V) then
             Entire_Variables.Include (Entire_Variable (V));

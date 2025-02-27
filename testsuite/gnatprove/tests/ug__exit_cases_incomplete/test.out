@@ -1,10 +1,13 @@
- info: exit case proved
---> exit_cases_incomplete.ads:7:18
-      + on normal return from Might_Return_Abnormally at exit_cases_incomplete.ads:5
-
- info: exit case proved
---> exit_cases_incomplete.ads:7:18
-      + on exceptional exit from Might_Return_Abnormally at exit_cases_incomplete.ads:5
-
- info: exceptional case proved
---> exit_cases_incomplete.ads:8:39
+exit_cases_incomplete.ads:13:06: info: disjoint contract or exit cases proved
+exit_cases_incomplete.ads:14:18: info: exit case proved
+  on normal return from Might_Return_Abnormally at exit_cases_incomplete.ads:12
+exit_cases_incomplete.ads:14:18: info: exit case proved
+  on exceptional exit from Might_Return_Abnormally at exit_cases_incomplete.ads:12
+exit_cases_incomplete.ads:14:18: info: exit case proved
+  on program exit from Might_Return_Abnormally at exit_cases_incomplete.ads:12
+exit_cases_incomplete.ads:15:18: info: exit case proved
+  on normal return from Might_Return_Abnormally at exit_cases_incomplete.ads:12
+exit_cases_incomplete.ads:15:18: info: exit case proved
+  on program exit from Might_Return_Abnormally at exit_cases_incomplete.ads:12
+exit_cases_incomplete.ads:16:39: info: exceptional case proved
+exit_cases_incomplete.ads:17:22: info: program exit postcondition proved

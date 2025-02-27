@@ -14,6 +14,9 @@ module Main
   (* exception used to translate Ada exceptions *)
   exception Ada__exc int
 
+  (* exception used to exit the whole program *)
+  exception Program_exit__exc
+
   (* The type for the heap, and the heap variable. This variable represents
      all effects that we cannot describe more precisely, and that do not
      interfere with other variables, i.e., writes through pointers, aliased

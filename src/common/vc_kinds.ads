@@ -109,11 +109,13 @@ package VC_Kinds is
       VC_Loop_Invariant_Init,
       VC_Loop_Invariant_Preserv,
       VC_Loop_Variant,
+      VC_Program_Exit_Post,
       VC_Subprogram_Variant,
       VC_Assert,
       VC_Assert_Step,                --  Side condition for proof cut points
       VC_Assert_Premise,             --  Premise for proof with cut points
       VC_Raise,
+      VC_Unexpected_Program_Exit,
 
       VC_Feasible_Post,
       --  Check that the postcondition of abstract functions and
@@ -474,6 +476,7 @@ package VC_Kinds is
       Lim_Access_To_No_Return_Subp,
       Lim_Access_To_Relaxed_Init_Subp,
       Lim_Access_To_Subp_With_Exc,
+      Lim_Access_To_Subp_With_Prog_Exit,
       Lim_Address_Attr_In_Unsupported_Context,
       Lim_Alloc_With_Type_Constraints,
       Lim_Array_Conv_Different_Size_Modular_Index,
@@ -540,6 +543,8 @@ package VC_Kinds is
       Lim_Predicate_With_Different_SPARK_Mode,
       Lim_Predicate_With_Different_Visibility,
       Lim_Primitive_Call_In_DIC,
+      Lim_Program_Exit_Dispatch,
+      Lim_Program_Exit_Global_Modified_In_Callee,
       Lim_Protected_Operation_Of_Component,
       Lim_Protected_Operation_Of_Formal,
       Lim_Refined_Post_On_Entry,
@@ -799,6 +804,8 @@ package VC_Kinds is
            "access to subprogram annotated with Relaxed_Initialization",
          when Lim_Access_To_Subp_With_Exc =>
            "access to procedure which might propagate exceptions",
+         when Lim_Access_To_Subp_With_Prog_Exit =>
+           "access to procedure which might exit the program",
          when Lim_Address_Attr_In_Unsupported_Context =>
            "attribute ""Address"" in unsupported context",
          when Lim_Alloc_With_Type_Constraints =>
@@ -832,6 +839,11 @@ package VC_Kinds is
           & "passed by reference",
          when Lim_Exit_Cases_Dispatch =>
            "aspect ""Exit_Cases"" on dispatching operation",
+         when Lim_Program_Exit_Dispatch =>
+           "aspect ""Program_Exit"" on dispatching operation",
+         when Lim_Program_Exit_Global_Modified_In_Callee =>
+            "call which might exit the program and leave " & Name
+          & " mentioned in the postcondition of & in an inconsistent state",
          when Lim_Ext_Aggregate_With_Type_Ancestor =>
            "extension aggregate with subtype ancestor part",
          when Lim_Extension_Case_Pattern_Matching =>

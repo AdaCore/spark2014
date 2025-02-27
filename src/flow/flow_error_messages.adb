@@ -4047,13 +4047,15 @@ package body Flow_Error_Messages is
             return "refined postcondition might fail";
          when VC_Contract_Case             =>
             return "contract case might fail";
-         when VC_Disjoint_Cases   =>
+         when VC_Disjoint_Cases            =>
             return "contract or exit cases might not be disjoint";
-         when VC_Complete_Cases   =>
+         when VC_Complete_Cases            =>
             return "contract cases might not be complete";
-         when VC_Exceptional_Case             =>
+         when VC_Exceptional_Case          =>
             return "exceptional case might fail";
-         when VC_Exit_Case             =>
+         when VC_Program_Exit_Post         =>
+            return "program exit postcondition might fail";
+         when VC_Exit_Case                 =>
             return "exit case might fail";
          when VC_Loop_Invariant            =>
             return "loop invariant might fail";
@@ -4108,6 +4110,8 @@ package body Flow_Error_Messages is
                end case;
             end if;
             return "unexpected exception might be raised";
+         when VC_Unexpected_Program_Exit   =>
+            return "call might exit the program";
          when VC_Feasible_Post             =>
             return "contract of function might not be feasible";
          when VC_Inline_Check              =>
@@ -4115,7 +4119,7 @@ package body Flow_Error_Messages is
               & " incorrect";
          when VC_Container_Aggr_Check      =>
             return "Container_Aggregates annotation might be incorrect";
-         when VC_Reclamation_Check      =>
+         when VC_Reclamation_Check         =>
             return "reclamation entity might not be consistent with "
               & "reclamation on the full view";
          when VC_Subprogram_Variant        =>
@@ -4540,6 +4544,8 @@ package body Flow_Error_Messages is
             return "complete contract cases " & Verb;
          when VC_Exceptional_Case          =>
             return "exceptional case " & Verb;
+         when VC_Program_Exit_Post         =>
+            return "program exit postcondition " & Verb;
          when VC_Exit_Case          =>
             return "exit case " & Verb;
          when VC_Loop_Invariant            =>
@@ -4578,6 +4584,8 @@ package body Flow_Error_Messages is
                end case;
             end if;
             return Prefix & "only expected exception raised";
+         when VC_Unexpected_Program_Exit         =>
+            return "call cannot exit the program " & Verb;
          when VC_Feasible_Post             =>
             return "function contract feasibility " & Verb;
          when VC_Inline_Check              =>

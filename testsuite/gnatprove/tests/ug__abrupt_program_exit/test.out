@@ -1,0 +1,46 @@
+use_abrupt_program_exit.adb:6:07: info: initialization of "S" proved
+use_abrupt_program_exit.adb:7:07: info: initialization of "Last" proved
+use_abrupt_program_exit.adb:9:18: info: only expected exception raised
+use_abrupt_program_exit.adb:10:28: info: initialization check proved
+use_abrupt_program_exit.adb:11:30: info: initialization check proved
+use_abrupt_program_exit.adb:22:12: info: overflow check proved
+use_abrupt_program_exit.adb:25:16: info: overflow check proved
+use_abrupt_program_exit.adb:29:07: info: initialization of "X" proved
+use_abrupt_program_exit.adb:29:10: info: initialization of "Y" proved
+use_abrupt_program_exit.adb:29:13: info: initialization of "Z" proved
+use_abrupt_program_exit.adb:36:12: info: precondition proved
+use_abrupt_program_exit.adb:37:42: info: range check proved
+use_abrupt_program_exit.adb:41:07: info: initialization of "Z" proved
+use_abrupt_program_exit.adb:46:12: info: precondition proved
+use_abrupt_program_exit.adb:46:12: info: call cannot exit the program proved
+use_abrupt_program_exit.adb:47:42: info: range check proved
+use_abrupt_program_exit.ads:11:13: info: implicit aspect Always_Terminates on "To_String" has been proved, subprogram will terminate
+
+use_abrupt_program_exit.ads:16:25: medium: "X" might not be initialized in "Get_Digit"
+   16 |   procedure Get_Digit (X : out Integer) with
+      |                        ^ here
+  reason for check: OUT parameter should be initialized on return
+  possible fix: initialize "X" on all paths or make "X" an IN OUT parameter
+
+use_abrupt_program_exit.ads:17:14: medium: "X" might not be initialized
+   17 |     Post => X in 0 .. 9,
+      |             ^ here
+use_abrupt_program_exit.ads:17:14: info: postcondition proved
+use_abrupt_program_exit.ads:18:22: info: program exit postcondition proved
+use_abrupt_program_exit.ads:20:33: info: tag check proved
+
+use_abrupt_program_exit.ads:22:13: medium: function "Add" does not return on some paths
+   22 |   function Add (X, Y : Integer) return Integer with
+      |            ^~~
+use_abrupt_program_exit.ads:25:14: info: postcondition proved
+
+use_abrupt_program_exit.ads:25:25: medium: function "Add" does not return on some paths
+   25 |     Post => Add'Result in 0 .. 9,
+      |             ~~~~~~~~~~~^~~~~~~~~
+use_abrupt_program_exit.ads:26:22: info: program exit postcondition proved
+use_abrupt_program_exit.ads:26:24: info: overflow check proved
+use_abrupt_program_exit.ads:29:33: info: tag check proved
+use_abrupt_program_exit.ads:32:22: info: program exit postcondition proved
+use_abrupt_program_exit.ads:36:32: info: tag check proved
+use_abrupt_program_exit.ads:37:32: info: tag check proved
+abrupt_program_exit.ads:4:03: info: flow dependencies proved

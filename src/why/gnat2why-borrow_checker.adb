@@ -1049,6 +1049,11 @@ package body Gnat2Why.Borrow_Checker is
    --  observe/borrow are not allowed. As a result, no other checking is needed
    --  during elaboration.
 
+   For_Program_Exit : Boolean := False;
+   --  Set during the checks for globals mentioned in the Program_Exit contract
+   --  of the current subprogram on calls to subprograms which might exit the
+   --  program. It is used to add a continuation to the generated checks.
+
    Current_Subp : Entity_Id := Empty;
    --  Set to the enclosing unit during the analysis of a callable body
 
@@ -1166,8 +1171,12 @@ package body Gnat2Why.Borrow_Checker is
       N             : Node_Id;
       Continuations : Message_Lists.List := Message_Lists.Empty)
    is
+      Conts : Message_Lists.List := Continuations;
    begin
-      Error_Msg_N (Msg, N, Continuations => Continuations);
+      if For_Program_Exit then
+         Conts.Append (Create ("when exiting the program"));
+      end if;
+      Error_Msg_N (Msg, N, Continuations => Conts);
       Permission_Error := True;
    end BC_Error;
 
@@ -1563,6 +1572,23 @@ package body Gnat2Why.Borrow_Checker is
       Inside_Procedure_Call := False;
       Update_Params (Call);
 
+      --  If Call might exit the program, make sure that all globals occuring
+      --  in the Post_Exit of the enclosing subprogram can be read.
+
+      if Might_Exit_Program (Call) then
+         pragma Assert
+           (Present (Current_Subp) and then Has_Program_Exit (Current_Subp));
+         for G of Get_Outputs_From_Program_Exit (Current_Subp, Current_Subp)
+         loop
+            if G.Kind = Direct_Mapping then
+               For_Program_Exit := True;
+               Process_Path
+                 ((Is_Ent => True, Ent => G.Node, Loc => Call), Read);
+               For_Program_Exit := False;
+            end if;
+         end loop;
+      end if;
+
       --  If Call might raise some exceptions, handle the exceptional paths
 
       if Might_Raise_Handled_Exceptions (Call) then
@@ -1575,10 +1601,11 @@ package body Gnat2Why.Borrow_Checker is
    -------------------------
 
    procedure Check_Callable_Body (Id : Entity_Id) is
-      Save_In_Elab    : constant Boolean := Inside_Elaboration;
-      Saved_Env       : Perm_Env;
-      Saved_Borrowers : Variable_Mapping;
-      Saved_Observers : Variable_Mapping;
+      Save_In_Elab        : constant Boolean := Inside_Elaboration;
+      Saved_Env           : Perm_Env;
+      Saved_Borrowers     : Variable_Mapping;
+      Saved_Observers     : Variable_Mapping;
+      Saved_Shallow_Moves : Node_Sets.Set;
 
    begin
       Inside_Elaboration := False;
@@ -1590,6 +1617,7 @@ package body Gnat2Why.Borrow_Checker is
       Move_Env (Current_Perm_Env, Saved_Env);
       Move_Variable_Mapping (Current_Borrowers, Saved_Borrowers);
       Move_Variable_Mapping (Current_Observers, Saved_Observers);
+      Saved_Shallow_Moves.Move (Shallow_Moves);
 
       --  Add formals and globals to the environment with adequate permissions
 
@@ -1655,6 +1683,7 @@ package body Gnat2Why.Borrow_Checker is
       Move_Env (Saved_Env, Current_Perm_Env);
       Move_Variable_Mapping (Saved_Borrowers, Current_Borrowers);
       Move_Variable_Mapping (Saved_Observers, Current_Observers);
+      Shallow_Moves.Move (Saved_Shallow_Moves);
 
       Inside_Elaboration := Save_In_Elab;
       Current_Subp := Empty;
