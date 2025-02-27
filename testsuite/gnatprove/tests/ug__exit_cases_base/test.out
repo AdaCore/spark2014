@@ -1,21 +1,44 @@
-exit_cases.ads:13:06: info: disjoint contract or exit cases proved
-exit_cases.ads:14:19: info: exit case proved
-  on exceptional exit from Might_Return_Abnormally at exit_cases.ads:12
-exit_cases.ads:14:19: info: exit case proved
-  on program exit from Might_Return_Abnormally at exit_cases.ads:12
-exit_cases.ads:15:19: info: exit case proved
-  on normal return from Might_Return_Abnormally at exit_cases.ads:12
-exit_cases.ads:15:19: info: exit case proved
-  on exceptional exit from Might_Return_Abnormally at exit_cases.ads:12
-exit_cases.ads:15:19: info: exit case proved
-  on program exit from Might_Return_Abnormally at exit_cases.ads:12
-exit_cases.ads:16:19: info: exit case proved
-  on normal return from Might_Return_Abnormally at exit_cases.ads:12
-exit_cases.ads:16:19: info: exit case proved
-  on program exit from Might_Return_Abnormally at exit_cases.ads:12
-exit_cases.ads:17:19: info: exit case proved
-  on normal return from Might_Return_Abnormally at exit_cases.ads:12
-exit_cases.ads:17:19: info: exit case proved
-  on exceptional exit from Might_Return_Abnormally at exit_cases.ads:12
-exit_cases.ads:18:39: info: exceptional case proved
-exit_cases.ads:19:22: info: program exit postcondition proved
+ info: disjoint contract or exit cases proved
+--> exit_cases.ads:13:06
+
+ info: exit case proved
+--> exit_cases.ads:14:19
+      + on exceptional exit from Might_Return_Abnormally at exit_cases.ads:12
+
+ info: exit case proved
+--> exit_cases.ads:14:19
+      + on program exit from Might_Return_Abnormally at exit_cases.ads:12
+
+ info: exit case proved
+--> exit_cases.ads:15:19
+      + on normal return from Might_Return_Abnormally at exit_cases.ads:12
+
+ info: exit case proved
+--> exit_cases.ads:15:19
+      + on exceptional exit from Might_Return_Abnormally at exit_cases.ads:12
+
+ info: exit case proved
+--> exit_cases.ads:15:19
+      + on program exit from Might_Return_Abnormally at exit_cases.ads:12
+
+ info: exit case proved
+--> exit_cases.ads:16:19
+      + on normal return from Might_Return_Abnormally at exit_cases.ads:12
+
+ info: exit case proved
+--> exit_cases.ads:16:19
+      + on program exit from Might_Return_Abnormally at exit_cases.ads:12
+
+ info: exit case proved
+--> exit_cases.ads:17:19
+      + on normal return from Might_Return_Abnormally at exit_cases.ads:12
+
+ info: exit case proved
+--> exit_cases.ads:17:19
+      + on exceptional exit from Might_Return_Abnormally at exit_cases.ads:12
+
+ info: exceptional case proved
+--> exit_cases.ads:18:39
+
+ info: program exit postcondition proved
+--> exit_cases.ads:19:22
