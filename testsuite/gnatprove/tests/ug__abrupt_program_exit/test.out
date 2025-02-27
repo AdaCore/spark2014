@@ -1,3 +1,4 @@
+abrupt_program_exit.ads:4:03: info: flow dependencies proved
 use_abrupt_program_exit.adb:6:07: info: initialization of "S" proved
 use_abrupt_program_exit.adb:7:07: info: initialization of "Last" proved
 use_abrupt_program_exit.adb:9:18: info: only expected exception raised
@@ -43,4 +44,3 @@ use_abrupt_program_exit.ads:29:33: info: tag check proved
 use_abrupt_program_exit.ads:32:22: info: program exit postcondition proved
 use_abrupt_program_exit.ads:36:32: info: tag check proved
 use_abrupt_program_exit.ads:37:32: info: tag check proved
-abrupt_program_exit.ads:4:03: info: flow dependencies proved

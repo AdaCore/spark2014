@@ -2204,6 +2204,45 @@ package body Flow_Utility is
    function Get_Loop_Writes (E : Entity_Id) return Flow_Id_Sets.Set
      renames Loop_Info.Element;
 
+   ------------------------------------
+   --  Get_Outputs_From_Program_Exit --
+   ------------------------------------
+
+   function Get_Outputs_From_Program_Exit
+     (E                    : Entity_Id;
+      Scope                : Flow_Scope;
+      Use_Computed_Globals : Boolean)
+      return Flow_Id_Sets.Set
+   is
+      Prag : constant Node_Id := Get_Pragma (E, Pragma_Program_Exit);
+
+   begin
+      if Present (Prag) then
+         declare
+            Assoc : constant List_Id :=
+              Pragma_Argument_Associations (Prag);
+
+            pragma Assert (No (Assoc) or else List_Length (Assoc) = 1);
+            --  Pragma has one optional argument
+
+         begin
+            --  Collect variables read in the expression.
+
+            if Present (Assoc) then
+               return
+                 Get_All_Variables
+                   (Expression (First (Assoc)),
+                    Scope                => Scope,
+                    Target_Name          => Null_Flow_Id,
+                    Use_Computed_Globals => Use_Computed_Globals,
+                    Skip_Old             => True);
+            end if;
+         end;
+      end if;
+
+      return Flow_Id_Sets.Empty_Set;
+   end Get_Outputs_From_Program_Exit;
+
    -----------------------------------
    -- Get_Outputs_From_Program_Exit --
    -----------------------------------

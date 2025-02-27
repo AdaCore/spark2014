@@ -847,6 +847,14 @@ package Flow_Utility is
    with Pre => Is_Subprogram (E);
    --  Compute the set of outputs of E mentioned in its exit postcondition
 
+   function Get_Outputs_From_Program_Exit
+     (E                    : Entity_Id;
+      Scope                : Flow_Scope;
+      Use_Computed_Globals : Boolean)
+      return Flow_Id_Sets.Set
+   with Pre => Is_Subprogram (E);
+   --  Return global outputs used in the Program_Exit expression; for flow
+
 private
 
    procedure Process_Type_Contracts_Internal
