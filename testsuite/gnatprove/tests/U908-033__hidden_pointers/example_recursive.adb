@@ -265,8 +265,7 @@ procedure Example_Recursive with SPARK_Mode is
                   --  its designated value can be updated in place.
 
                   declare
-                     Mem_Access : access Memory_Type := Memory'Access;
-                     X_Ptr      : access Object'Class := Reference (Mem_Access, X);
+                     X_Ptr : access Object'Class := Reference (Memory, X);
                   begin
                      L_Cell (X_Ptr.all).N := L2.Values;
                   end;

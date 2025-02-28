@@ -72,8 +72,7 @@ procedure Example_Tagged_Obj with SPARK_Mode is
      and Deallocates (Memory'Old, Memory, None)
      and Writes (Memory'Old, Memory, Only (Address (X)))
    is
-      Mem_Access : access Memory_Type := Memory'Access;
-      X_Content  : access Object'Class := Reference (Mem_Access, X);
+      X_Content : access Object'Class := Reference (Memory, X);
    begin
       Child (X_Content.all).F := New_F;
    end Update_In_Place;
