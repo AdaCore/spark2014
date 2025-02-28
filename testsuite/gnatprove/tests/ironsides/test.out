@@ -230,67 +230,67 @@ driver.adb:74:22: high: "ZoneFile" is not initialized
 driver.adb:86:40: warning: "ZoneFile" is set by "ProcessZoneFile" but not used after the call
 driver.adb:90:04: info: initialization of "Success" proved
 driver.adb:95:17: medium: precondition might fail
-driver.adb:98:36: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+driver.adb:98:36: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:98:53: low: range check might fail, cannot prove lower bound for Integer'Image(NumFound) & " A records returned" [reason for check: input value must fit in parameter type]
 driver.adb:99:11: info: range check proved (CVC5: 2 VC)
-driver.adb:101:52: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+driver.adb:101:52: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:102:48: medium: array index check might fail [reason for check: value must be a valid index into the array]
 driver.adb:107:17: medium: precondition might fail
-driver.adb:110:36: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+driver.adb:110:36: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:110:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " AAAA records returned" [reason for check: input value must fit in parameter type]
 driver.adb:112:11: info: range check proved (CVC5: 2 VC)
-driver.adb:114:52: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+driver.adb:114:52: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:115:51: medium: array index check might fail [reason for check: value must be a valid index into the array]
 driver.adb:120:17: medium: precondition might fail
-driver.adb:123:36: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+driver.adb:123:36: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:123:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " CNAME records returned" [reason for check: input value must fit in parameter type]
 driver.adb:125:11: info: range check proved (CVC5: 2 VC)
 driver.adb:127:49: medium: array index check might fail [reason for check: value must be a valid index into the array]
 driver.adb:132:17: medium: precondition might fail
-driver.adb:135:36: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+driver.adb:135:36: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:135:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " DNSKEY records returned" [reason for check: input value must fit in parameter type]
 driver.adb:137:11: info: range check proved (CVC5: 2 VC)
 driver.adb:139:50: medium: array index check might fail [reason for check: value must be a valid index into the array]
 driver.adb:144:17: medium: precondition might fail
-driver.adb:147:36: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+driver.adb:147:36: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:147:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " MX records returned" [reason for check: input value must fit in parameter type]
 driver.adb:149:11: info: range check proved (CVC5: 2 VC)
-driver.adb:151:52: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+driver.adb:151:52: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:152:49: medium: array index check might fail [reason for check: value must be a valid index into the array]
 driver.adb:154:46: info: index check proved (CVC5: 2 VC)
 driver.adb:159:17: medium: precondition might fail
-driver.adb:162:36: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+driver.adb:162:36: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:162:53: low: range check might fail, cannot prove lower bound for Integer'Image(NumFound) & " SRV records returned" [reason for check: input value must fit in parameter type]
 driver.adb:164:11: info: range check proved (CVC5: 2 VC)
-driver.adb:167:38: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+driver.adb:167:38: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:167:66: medium: array index check might fail [reason for check: value must be a valid index into the array]
-driver.adb:169:52: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+driver.adb:169:52: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:170:50: info: index check proved (CVC5: 2 VC)
-driver.adb:173:38: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+driver.adb:173:38: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:173:66: info: index check proved (CVC5: 2 VC)
 driver.adb:175:47: info: index check proved (CVC5: 2 VC)
 driver.adb:180:17: medium: precondition might fail
-driver.adb:183:36: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+driver.adb:183:36: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:183:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " NSEC records returned" [reason for check: input value must fit in parameter type]
 driver.adb:185:11: info: range check proved (CVC5: 2 VC)
 driver.adb:187:48: medium: array index check might fail [reason for check: value must be a valid index into the array]
 driver.adb:192:17: medium: precondition might fail
-driver.adb:195:36: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+driver.adb:195:36: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:195:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " NS records returned" [reason for check: input value must fit in parameter type]
 driver.adb:196:11: info: range check proved (CVC5: 2 VC)
 driver.adb:198:46: medium: array index check might fail [reason for check: value must be a valid index into the array]
 driver.adb:203:17: medium: precondition might fail
-driver.adb:210:36: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+driver.adb:210:36: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:210:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " PTR records returned" [reason for check: input value must fit in parameter type]
 driver.adb:212:11: info: range check proved (CVC5: 2 VC)
 driver.adb:214:47: medium: array index check might fail [reason for check: value must be a valid index into the array]
 driver.adb:219:17: medium: precondition might fail
-driver.adb:222:36: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+driver.adb:222:36: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:222:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " RRSIG records returned" [reason for check: input value must fit in parameter type]
 driver.adb:224:11: info: range check proved (CVC5: 2 VC)
 driver.adb:226:49: medium: array index check might fail [reason for check: value must be a valid index into the array]
 driver.adb:231:17: medium: precondition might fail
-driver.adb:234:36: warning: references to the "Image" and "Img" attributes are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+driver.adb:234:36: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 driver.adb:234:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " SOA records returned" [reason for check: input value must fit in parameter type]
 driver.adb:236:11: info: range check proved (CVC5: 2 VC)
 driver.adb:238:47: medium: array index check might fail [reason for check: value must be a valid index into the array]
