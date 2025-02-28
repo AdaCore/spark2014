@@ -796,9 +796,15 @@ package body Gnat2Why.Borrow_Checker is
       Perm : Perm_Kind;
       Expl : Node_Id;
    end record;
-   function Get_Perm_And_Expl (N : Expr_Or_Ent) return Perm_And_Expl;
+   function Get_Perm_And_Expl
+     (N                 : Expr_Or_Ent;
+      Under_Dereference : Boolean := False)
+      return Perm_And_Expl;
    --  The function that takes a name as input and returns a permission
    --  associated with it, together with an explanation node.
+   --  If Under_Dereference is True, it return the greatest lower bound (meet)
+   --  of permissions for parts potentially accessible under dereference (.all)
+   --  from N, together with a matching explanation node.
 
    function Get_Perm_Or_Tree (N : Expr_Or_Ent) return Perm_Or_Tree;
    pragma Precondition (N.Is_Ent or else Is_Path_Expression (N.Expr));
@@ -811,10 +817,6 @@ package body Gnat2Why.Borrow_Checker is
    --  This function gets a node and looks recursively to find the appropriate
    --  subtree for that node. If the tree is folded, then it unrolls the tree
    --  up to the appropriate level.
-
-   function Get_Pointed_To_Perm (N : Expr_Or_Ent) return Perm_Kind;
-   --  The function that takes a path as input and returns a permission
-   --  associated with the dereference from that path.
 
    generic
       with procedure Handle_Parameter_Or_Global
@@ -4483,65 +4485,215 @@ package body Gnat2Why.Borrow_Checker is
    -- Get_Perm_And_Expl --
    -----------------------
 
-   function Get_Perm_And_Expl (N : Expr_Or_Ent) return Perm_And_Expl is
-   begin
-      if N.Is_Ent then
-         declare
-            C : constant Perm_Tree_Access :=
-              Get (Current_Perm_Env, Unique_Entity_In_SPARK (N.Ent));
-         begin
-            pragma Assert (C /= null);
-            return (Perm => Permission (C), Expl => Explanation (C));
-         end;
+   function Get_Perm_And_Expl
+     (N                 : Expr_Or_Ent;
+      Under_Dereference : Boolean := False)
+      return Perm_And_Expl
+   is
+      --  Local subprograms
 
+      function Glb_Expl (P1, P2 : Perm_And_Expl) return Perm_And_Expl;
+      --  Generalize Glb to permission with explanations. Currently,
+      --  non-trivial join should be impossible, so there should always be a
+      --  coherent explanation.
+
+      function Scan_Under_Dereference
+        (T : Perm_Tree_Access)
+         return Perm_And_Expl;
+      --  Return greatest lower bound of permissions reachable under
+      --  dereferences of parts abstracted by T, together with a suitable
+      --  explanation.
+
+      --------------
+      -- Glb_Expl --
+      --------------
+
+      function Glb_Expl (P1, P2 : Perm_And_Expl) return Perm_And_Expl is
+      begin
+         return Res : Perm_And_Expl :=
+           (Perm => Glb (P1.Perm, P2.Perm), Expl => P1.Expl)
+         do
+            --  If P2 provides a suitable explanation and P1 does not, take
+            --  that of P2 instead.
+
+            if P2.Perm = Res.Perm
+              and then (No (Res.Expl) or else P1.Perm /= Res.Perm)
+            then
+               Res.Expl := P2.Expl;
+
+            --  If neither P1 nor P2 provides a suitable explanation, this
+            --  means we are making the greatest lower bound of a read-only and
+            --  a write-only permission. Currently, that case is not possible.
+
+            elsif P1.Perm /= Res.Perm and then P2.Perm /= Res.Perm then
+               raise Program_Error;
+            end if;
+         end return;
+      end Glb_Expl;
+
+      ----------------------------
+      -- Scan_Under_Dereference --
+      ----------------------------
+
+      function Scan_Under_Dereference
+        (T : Perm_Tree_Access)
+         return Perm_And_Expl
+      is
+      begin
+         --  If T is not deep, no part can be reached under a dereference, so
+         --  they are all read/write. No suitable explanation can be provided,
+         --  but none is needed, the subsequent test can never fail with
+         --  maximum permission.
+
+         if not Is_Node_Deep (T) then
+            return (Perm => Read_Write, Expl => Types.Empty);
+         end if;
+         case Kind (T) is
+            when Entire_Object =>
+               return (Perm => Children_Permission (T),
+                       Expl => Explanation (T));
+            when Reference =>
+               return (Perm => Permission (Get_All (T)),
+                       Expl => Explanation (Get_All (T)));
+            when Array_Component =>
+               return Scan_Under_Dereference (Get_Elem (T));
+            when Record_Component =>
+               return Result : Perm_And_Expl :=
+                 (Perm => Read_Write, Expl => Types.Empty)
+               do
+                  declare
+                     Comp : constant Perm_Tree_Maps.Instance := Component (T);
+                     Key  : Perm_Tree_Maps.Key_Option :=
+                       Perm_Tree_Maps.Get_First_Key (Comp);
+                  begin
+                     while Key.Present loop
+                        Result := Glb_Expl
+                          (Result,
+                           Scan_Under_Dereference
+                             (Perm_Tree_Maps.Get (Comp, Key.K)));
+                        Key := Perm_Tree_Maps.Get_Next_Key (Comp);
+                     end loop;
+                  end;
+               end return;
+         end case;
+      end Scan_Under_Dereference;
+
+      --  Local variables
+
+      Do_Under_Dereference : Boolean := Under_Dereference;
+      Limit_To_Read_Only   : Boolean := False;
+      Main_Path            : Node_Id :=
+        (if not N.Is_Ent then N.Expr else N.Ent);
+      Result               : Perm_And_Expl;
+
+   --  Start of processing for Get_Perm_And_Expl
+
+   begin
+      --  If the expression contains a toplevel 'Access, resulting permissions
+      --  may be affected.
+      --  * The result of an 'Access operation is not a view of a part of
+      --    N.Expr anymore. It can never be written. In effect, this limits the
+      --    maximum possible permission to Read_Only.
+      --  * If we want the permission for parts reachable under dereference,
+      --    the effect of 'Access and the Under_Dereference flag cancel out
+      --    instead.
+
+      if not N.Is_Ent
+        and then N.Expr in N_Attribute_Reference_Id
+        and then Get_Attribute_Id
+          (Attribute_Name (N.Expr)) = Attribute_Access
+      then
+         Main_Path := Prefix (N.Expr);
+         if Do_Under_Dereference then
+            Do_Under_Dereference := False;
+         else
+            Limit_To_Read_Only := True;
+         end if;
+      end if;
+
+      --  The expression has a shallow type, and we want parts that can be
+      --  reached under dereference. Since there are none, we give Read_Write
+      --  permission. We need to single out this case early because the tree
+      --  might be folded on a prefix.
+
+      if Do_Under_Dereference and then not Is_Deep (Retysp (Etype (Main_Path)))
+      then
+         Result := (Perm => Read_Write,
+                    Expl => Types.Empty);
+
+      --  The expression is directly rooted in an object
+
+      elsif N.Is_Ent
+        or else Present
+          (Get_Root_Object (Main_Path, Through_Traversal => False))
+      then
+         declare
+            Tree_Or_Perm : constant Perm_Or_Tree :=
+              Get_Perm_Or_Tree
+                (if N.Is_Ent
+                 then N
+                 else (Is_Ent => False, Expr => Main_Path));
+         begin
+            case Tree_Or_Perm.R is
+               when Folded =>
+                  Result := (Perm => Tree_Or_Perm.Found_Permission,
+                             Expl => Tree_Or_Perm.Explanation);
+
+               when Unfolded =>
+                  declare
+                     Tree_Ptr : constant Perm_Tree_Access :=
+                       Tree_Or_Perm.Tree_Access;
+                  begin
+                     pragma Assert (Tree_Ptr /= null);
+
+                     if Do_Under_Dereference then
+                        Result := Scan_Under_Dereference (Tree_Ptr);
+                     else
+                        Result := (Perm => Permission (Tree_Ptr),
+                                   Expl => Explanation (Tree_Ptr));
+                     end if;
+                  end;
+            end case;
+         end;
       else
          declare
-            Root : constant Node_Id :=
-              Get_Root_Expr (N.Expr, Through_Traversal => False);
+            Root : constant Node_Id := Get_Root_Expr
+              (Main_Path, Through_Traversal => False);
          begin
-            --  The expression is rooted in a call to a traversal function
+
+            --  The expression is rooted in a call to a traversal function. The
+            --  type of the result determine the permissions of everything that
+            --  is accessible from it.
 
             if Is_Traversal_Function_Call (Root) then
-               declare
-                  Callee : constant Entity_Id := Get_Called_Entity (Root);
-                  Perm   : Perm_Kind;
-               begin
-                  if Is_Access_Constant (Etype (Callee)) then
-                     Perm := Read_Only;
-                  else
-                     Perm := Read_Write;
-                  end if;
-                  return (Perm => Perm, Expl => N.Expr);
-               end;
+               Result :=
+                 (Perm =>
+                    (if Is_Access_Constant (Etype (Get_Called_Entity (Root)))
+                     then Read_Only
+                     else Read_Write),
+                  Expl => Main_Path);
 
-            --  The expression is directly rooted in an object
-
-            elsif Present
-              (Get_Root_Object (N.Expr, Through_Traversal => False))
-            then
-               declare
-                  Tree_Or_Perm : constant Perm_Or_Tree := Get_Perm_Or_Tree (N);
-               begin
-                  case Tree_Or_Perm.R is
-                     when Folded =>
-                        return (Perm => Tree_Or_Perm.Found_Permission,
-                                Expl => Tree_Or_Perm.Explanation);
-
-                     when Unfolded =>
-                        pragma Assert (Tree_Or_Perm.Tree_Access /= null);
-                        return
-                          (Perm => Permission (Tree_Or_Perm.Tree_Access),
-                           Expl => Explanation (Tree_Or_Perm.Tree_Access));
-                  end case;
-               end;
-
-            --  The expression is a function call, an allocation, or null
+            --  The expression is a function call, an allocation, or null. The
+            --  result is freshly allocated, everything in it can be read and
+            --  written.
 
             else
-               return (Perm => Read_Write, Expl => N.Expr);
+               Result := (Perm => Read_Write, Expl => Main_Path);
             end if;
          end;
       end if;
+
+      --  Limit permission to Read_Only if needed
+
+      if Limit_To_Read_Only
+        and then Result.Perm in Read_Perm
+        and then Result.Perm /= Read_Only
+      then
+         Result.Perm := Read_Only;
+         Result.Expl := N.Expr;
+      end if;
+
+      return Result;
    end Get_Perm_And_Expl;
 
    ----------------------
@@ -4624,8 +4776,7 @@ package body Gnat2Why.Borrow_Checker is
                then Get_Attribute_Id (Attribute_Name (N.Expr))
                  in Attribute_First
                   | Attribute_Last
-                  | Attribute_Length
-                  | Attribute_Access);
+                  | Attribute_Length);
 
             declare
                Pref : constant Node_Id :=
@@ -4736,25 +4887,6 @@ package body Gnat2Why.Borrow_Checker is
    begin
       return Set_Perm_Prefixes (N, None, Empty);
    end Get_Perm_Tree;
-
-   -------------------------
-   -- Get_Pointed_To_Perm --
-   -------------------------
-
-   function Get_Pointed_To_Perm (N : Expr_Or_Ent) return Perm_Kind is
-      Tree : constant Perm_Tree_Access := Get_Perm_Tree (N);
-   begin
-      case Kind (Tree) is
-         when Entire_Object =>
-            return Children_Permission (Tree);
-
-         when Reference =>
-            return Permission (Get_All (Tree));
-
-         when others =>
-            raise Program_Error;
-      end case;
-   end Get_Pointed_To_Perm;
 
    ---------
    -- Glb --
@@ -5851,55 +5983,44 @@ package body Gnat2Why.Borrow_Checker is
                return;
             end if;
 
-            --  For deep path, check RW permission, otherwise R permission
+            --  Check read permissions of shallow parts
 
-            if not Is_Deep (Expr_Type) then
-               if Perm not in Read_Perm then
-                  Perm_Error (Expr, Read_Only, Perm, Expl => Expl);
+            if Perm not in Read_Perm then
+               Perm_Error (Expr, Read_Only, Perm, Expl => Expl);
+               return;
+            end if;
+
+            --  Check read-write permissions of parts reachable under
+            --  dereference
+
+            declare
+               Perm_Expl : constant Perm_And_Expl :=
+                 Get_Perm_And_Expl
+                   (Expr, Under_Dereference => True);
+            begin
+               --  SPARK RM 3.10(1): At the point of a move operation the state
+               --  of the source object (if any) shall be Unrestricted.
+
+               if Perm_Expl.Perm /= Read_Write then
+                  Perm_Error (Expr, Read_Write, Perm_Expl.Perm,
+                              Expl => Perm_Expl.Expl);
+                  return;
                end if;
-               return;
-            end if;
-
-            --  SPARK RM 3.10(1): At the point of a move operation the state of
-            --  the source object (if any) shall be Unrestricted.
-
-            if Perm /= Read_Write then
-               Perm_Error (Expr, Read_Write, Perm, Expl => Expl);
-               return;
-            end if;
+            end;
 
          when Free =>
+            --  Check W permission on the pointed-to path. Still issue an error
+            --  message wrt permission of the full path and RW permission, as
+            --  it is likely less confusing.
+
             declare
-               Des_Ty : Entity_Id :=
-                 Directly_Designated_Type (Retysp (Expr_Type));
-
+               Perm_Expl : constant Perm_And_Expl :=
+                 Get_Perm_And_Expl (Expr, Under_Dereference => True);
             begin
-               --  If Des_Ty is an incomplete type, go to its full view
-
-               if Is_Incomplete_Type (Des_Ty)
-                 and then Present (Full_View (Des_Ty))
-               then
-                  Des_Ty := Full_View (Des_Ty);
-               end if;
-
-               --  For a deep designated type, check W permission on the
-               --  pointed-to path. Still issue an error message wrt permission
-               --  of the full path and RW permission, as it is likely less
-               --  confusing.
-
-               if Is_Deep (Des_Ty) then
-                  if Get_Pointed_To_Perm (Expr) not in Write_Perm then
-                     Perm_Error (Expr, Read_Write, Perm, Expl => Expl);
-                     return;
-                  end if;
-
-               --  Otherwise, check RW permission
-
-               else
-                  if Perm /= Read_Write then
-                     Perm_Error (Expr, Read_Write, Perm, Expl => Expl);
-                     return;
-                  end if;
+               if Perm_Expl.Perm not in Write_Perm then
+                  Perm_Error (Expr, Read_Write, Perm_Expl.Perm,
+                              Expl => Perm_Expl.Expl);
+                  return;
                end if;
             end;
 
@@ -5920,12 +6041,23 @@ package body Gnat2Why.Borrow_Checker is
                return;
             end if;
 
-            --  For borrowing, check RW permission
+            --  For borrowing, check read-write on designated values
 
-            if Perm /= Read_Write then
-               Perm_Error (Expr, Read_Write, Perm, Expl => Expl);
-               return;
-            end if;
+            declare
+               Perm_Expl : constant Perm_And_Expl :=
+                 Get_Perm_And_Expl (Expr, Under_Dereference => True);
+            begin
+               if Perm_Expl.Perm /= Read_Write then
+                  Perm_Error (Expr, Read_Write, Perm_Expl.Perm,
+                              Expl => Perm_Expl.Expl);
+                  return;
+               end if;
+            end;
+
+            --  Permission of borrowed path must be readable, as otherwise it
+            --  should not be possible to read designated value.
+
+            pragma Assert (Perm in Read_Perm);
 
          when Observe =>
 
