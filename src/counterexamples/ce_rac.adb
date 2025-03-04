@@ -329,9 +329,12 @@ package body CE_RAC is
       Old_Attrs        : Node_To_Value.Map;
       Loop_Id          : Entity_Id := Empty;
       Loop_Entry_Attrs : Node_To_Value.Map;
+      Located_Values   : Node_To_Node_To_Value.Map;
    end record;
    --  A scope is a flat mapping of variable (defining identifiers) to bindings
    --  and a mapping of old and loop entry values of expressions.
+   --  Located_Values is used to store mapping from a statement to a map of
+   --  counterexample values that should be displayed.
 
    function To_String (S : Scopes) return String;
 
@@ -617,6 +620,22 @@ package body CE_RAC is
 
    function All_Initial_Values return Node_To_Value.Map is
      (Ctx.Initial_Values);
+
+   ------------------------
+   -- All_Located_Values --
+   ------------------------
+
+   function All_Located_Values return Node_To_Node_To_Value.Map is
+      use Node_To_Node_To_Value;
+   begin
+      return Res : Node_To_Node_To_Value.Map do
+         for Scope of Ctx.Env loop
+            for Cu in Scope.Located_Values.Iterate loop
+               Res.Insert (Key (Cu), Element (Cu));
+            end loop;
+         end loop;
+      end return;
+   end All_Located_Values;
 
    -------------------
    -- Boolean_Value --
@@ -2431,6 +2450,74 @@ package body CE_RAC is
       Ctx.Env.Delete_First;
       if not Is_Main and then Present (N) then
          Copy_Out_Parameters (N, Sc);
+
+         --  Add values of all objects updated by the call to the
+         --  counterexample values to be printed.
+
+         declare
+            Ctx_Values      : Node_To_Value.Map;
+            Updated_Objects : Node_Sets.Set;
+
+            procedure Process_Param (Formal : Entity_Id; Actual : Node_Id);
+            --  Look for modified objects in parameters
+
+            -------------------
+            -- Process_Param --
+            -------------------
+
+            procedure Process_Param (Formal : Entity_Id; Actual : Node_Id) is
+            begin
+               if not Is_Constant_In_SPARK (Formal) then
+                  Updated_Objects.Include (Get_Root_Object (Actual));
+               end if;
+            end Process_Param;
+
+            procedure Iterate_Call is new
+              Iterate_Call_Parameters (Process_Param);
+
+            Read_Ids     : Flow_Types.Flow_Id_Sets.Set;
+            Write_Ids    : Flow_Types.Flow_Id_Sets.Set;
+
+         begin
+            --  We compute the global outputs of the call
+
+            Flow_Utility.Get_Proof_Globals
+              (Subprogram      => E,
+               Reads           => Read_Ids,
+               Writes          => Write_Ids,
+               Erase_Constants => True);
+
+            for Write_Id of Write_Ids loop
+               case Write_Id.Kind is
+                  when Direct_Mapping =>
+                     declare
+                        Obj : constant Entity_Id :=
+                          Get_Direct_Mapping_Id (Write_Id);
+                     begin
+                        if Is_Object (Obj) then
+                           Updated_Objects.Include (Obj);
+                        end if;
+                     end;
+                  when others =>
+                     null;
+               end case;
+            end loop;
+
+            --  Add the parameters
+
+            Iterate_Call (N);
+
+            for Obj of Updated_Objects loop
+               declare
+                  Val : constant access Value_Type := Find_Binding (Obj);
+               begin
+                  if Val /= null then
+                     Ctx_Values.Insert (Obj, Copy (Val.all));
+                  end if;
+               end;
+            end loop;
+            Ctx.Env (Ctx.Env.First).Located_Values.Include (N, Ctx_Values);
+         end;
       end if;
 
       RAC_Trace ("call result of " & Get_Name_String (Chars (E)) &
@@ -2522,6 +2609,17 @@ package body CE_RAC is
                  (Ctx.Env (Ctx.Env.First),
                   Defining_Identifier (Decl),
                   new Value_Type'(V));
+
+               --  Add value of the declared object to the counterexample
+               --  values to be printed.
+
+               declare
+                  Ctx_Values : Node_To_Value.Map;
+               begin
+                  Ctx_Values.Insert (Defining_Identifier (Decl), Copy (V));
+                  Ctx.Env (Ctx.Env.First).Located_Values.Include
+                    (Decl, Ctx_Values);
+               end;
             end;
 
          when N_Package_Declaration =>
@@ -4829,6 +4927,21 @@ package body CE_RAC is
                   when others =>
                      RAC_Unsupported ("N_Assignment_Statement", Name (N));
                end case;
+
+               --  Add value of the root of the assignment to the
+               --  counterexample values to be printed.
+
+               declare
+                  Ctx_Values : Node_To_Value.Map;
+                  Lhs_Root   :  constant Entity_Id :=
+                    Get_Root_Object (Name (N));
+                  Lhs_Value  : constant Value_Type :=
+                    Find_Binding (Lhs_Root).all;
+               begin
+                  Ctx_Values.Insert (Lhs_Root, Copy (Lhs_Value));
+                  Ctx.Env (Ctx.Env.First).Located_Values.Include
+                    (N, Ctx_Values);
+               end;
             end;
 
          when N_If_Statement =>
@@ -4857,6 +4970,24 @@ package body CE_RAC is
 
          when N_Loop_Statement =>
             declare
+               procedure Iteration;
+               --  Handle one iteration of the loop
+
+               ----------------
+               --  Iteration --
+               ----------------
+
+               procedure Iteration is
+               begin
+                  RAC_List (Statements (N));
+                  Ctx.First_Loop_Iter := False;
+
+                  --  Clear counterexample values at each iteration to avoid
+                  --  mixing them up.
+
+                  Ctx.Env (Ctx.Env.First).Located_Values.Clear;
+               end Iteration;
+
                First_Iter_Save  : constant Boolean := Ctx.First_Loop_Iter;
                Scheme           : constant Node_Id := Iteration_Scheme (N);
                Loop_Entry_Nodes : Node_Sets.Set;
@@ -4881,12 +5012,11 @@ package body CE_RAC is
                if No (Scheme) then
                   begin
                      loop
-                        RAC_List (Statements (N));
+                        Iteration;
                         pragma Annotate
                           (GNATSAS, Intentional,
                            "loop does not complete normally",
                            "RAC signals loop exit through Exn_RAC_Exit");
-                        Ctx.First_Loop_Iter := False;
                      end loop;
                   exception
                      when Exn_RAC_Exit =>
@@ -4899,8 +5029,7 @@ package body CE_RAC is
                      while
                        Value_Boolean (RAC_Expr (Condition (Scheme)))
                      loop
-                        RAC_List (Statements (N));
-                        Ctx.First_Loop_Iter := False;
+                        Iteration;
                      end loop;
                   exception
                      when Exn_RAC_Exit =>
@@ -4909,13 +5038,6 @@ package body CE_RAC is
 
                else
                   declare
-                     procedure Iteration;
-                     procedure Iteration is
-                     begin
-                        RAC_List (Statements (N));
-                        Ctx.First_Loop_Iter := False;
-                     end Iteration;
-
                      --  We distinguish between 4 types of FOR loops:
                      --  . over a scalar range (for V in Low .. High)
                      --  . over an array (for V of Arr)
@@ -4944,10 +5066,6 @@ package body CE_RAC is
                   end;
                end if;
 
-               --  Clean the nearest scope by removing 'Loop_Entry values
-               for N of Loop_Entry_Nodes loop
-                  Ctx.Env (Ctx.Env.First).Loop_Entry_Attrs.Delete (N);
-               end loop;
                Ctx.First_Loop_Iter := First_Iter_Save;
                Ctx.Env.Delete_First;
             end;

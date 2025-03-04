@@ -79,8 +79,18 @@ package CE_RAC is
       Hash            => Node_Hash,
       Equivalent_Keys => "=");
 
+   package Node_To_Node_To_Value is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Node_To_Value.Map,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => Node_To_Value."=");
+
    function All_Initial_Values return Node_To_Value.Map;
    --  Get all input values used by the RAC instance
+
+   function All_Located_Values return Node_To_Node_To_Value.Map;
+   --  Get all intermediate values used by the RAC instance
 
    procedure Get_Integer_Type_Bounds
      (Ty       :     Entity_Id;

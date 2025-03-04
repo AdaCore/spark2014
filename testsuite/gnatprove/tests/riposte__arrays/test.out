@@ -74,10 +74,13 @@ counterexample expected for check at arrays.adb:80
   trace at arrays.adb:80 --> C = 'NUL' and Is_Id_2'Result = True and M = (others => 'a')
 counterexample expected for check at arrays.adb:112
   trace at arrays.adb:107 --> M = (others => 'A')
+  trace at arrays.adb:111 --> M = (others => 'A')
   trace at arrays.adb:112 --> M = (others => 'A')
 counterexample expected for check at arrays.adb:120
   trace at arrays.adb:115 --> M = (others => Elem_2)
+  trace at arrays.adb:119 --> M = (others => Elem_2)
   trace at arrays.adb:120 --> M = (others => Elem_2)
 counterexample expected for check at arrays.adb:144
   trace at arrays.adb:139 --> R = (A => (others => 5), Exists => False)
+  trace at arrays.adb:143 --> R = (A => (others => 5), Exists => False)
   trace at arrays.adb:144 --> R = (A => (others => 5), Exists => False)
