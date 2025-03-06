@@ -5,4 +5,4 @@ foo.adb:7:60: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 foo.adb:8:09: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
 foo.adb:8:14: info: precondition proved (CVC5: 1 VC)
 foo.adb:8:26: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-foo.adb:8:33: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
+foo.adb:8:33: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
