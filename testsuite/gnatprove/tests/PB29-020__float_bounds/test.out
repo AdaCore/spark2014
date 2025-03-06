@@ -20,7 +20,7 @@ floats.adb:35:16: info: assertion proved (altergo: 2 VC)
 floats.adb:38:25: info: float overflow check proved (Trivial)
 floats.adb:39:25: info: float overflow check proved (Trivial)
 floats.adb:40:25: info: float overflow check proved (Trivial)
-floats.adb:42:16: info: assertion proved (Z3: 2 VC)
+floats.adb:42:16: info: assertion proved (altergo: 2 VC)
 floats.adb:43:16: info: assertion proved (altergo: 2 VC)
 floats.adb:44:16: info: assertion proved (altergo: 2 VC)
 floats.adb:45:16: info: assertion proved (altergo: 2 VC)
@@ -30,6 +30,6 @@ floats.adb:49:14: info: float overflow check proved (Z3: 1 VC)
 floats.adb:50:14: info: float overflow check proved (Z3: 1 VC)
 floats.adb:51:14: info: float overflow check proved (Z3: 1 VC)
 floats.adb:53:16: medium: assertion might fail
-floats.adb:54:16: medium: assertion might fail
-floats.adb:55:16: medium: assertion might fail
-floats.adb:56:16: medium: assertion might fail
+floats.adb:54:16: info: assertion proved (altergo: 2 VC)
+floats.adb:55:16: info: assertion proved (altergo: 2 VC)
+floats.adb:56:16: info: assertion proved (altergo: 2 VC)
