@@ -1010,7 +1010,7 @@ package body Flow_Error_Messages is
          elsif Verdict.Verdict_Category in
               Not_Checked | Cntexmp_Confirmed_Verdict_Category
          then
-            Create_Pretty_Cntexmp (From_JSON (Cntexmp), Slc)
+            Create_Pretty_Cntexmp (From_JSON (Cntexmp), Slc, N, Tag)
          else
             Cntexample_File_Maps.Empty);
 

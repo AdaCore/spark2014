@@ -30,13 +30,17 @@ package CE_Display is
 
    function Create_Pretty_Cntexmp
      (Cntexmp : Cntexample_File_Maps.Map;
-      VC_Loc  : Source_Ptr)
+      VC_Loc  : Source_Ptr;
+      VC_Node : Node_Id;
+      VC_K    : VC_Kind)
       return Cntexample_File_Maps.Map;
    --  Create pretty printed counterexample.
    --  Note that deep copy of Cntexmp is made and thus the content of
    --  Cntexmp is not impacted by pretty printing.
    --  @param Cntexmp the counterexample that is pretty printed
    --  @param VC_Loc the location of the construct that triggers VC
+   --  @param VC_Node the node associated to the VC
+   --  @param VC_K check kind associated to the VC
    --  @return pretty printed counterexample.
 
    function Get_Cntexmp_One_Liner

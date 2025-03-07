@@ -22,7 +22,7 @@ call_actuals.adb:39:13: info: range check proved (CVC5: 2 VC)
 call_actuals.adb:39:13: medium: range check might fail, cannot prove upper bound for A1 (e.g. when A1 = 21) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add or complete related loop invariants or postconditions]
 call_actuals.adb:39:20: info: in value of subprogram parameter after the call at call_actuals.adb:39
 call_actuals.adb:39:20: info: range check proved (CVC5: 2 VC)
-call_actuals.adb:39:20: medium: range check might fail, cannot prove upper bound for A2 (e.g. when A1 = 20 and A2 = 21) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add or complete related loop invariants or postconditions]
+call_actuals.adb:39:20: medium: range check might fail, cannot prove upper bound for A2 (e.g. when A2 = 21) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add or complete related loop invariants or postconditions]
 call_actuals.adb:40:15: info: in value of subprogram parameter after the call at call_actuals.adb:40
 call_actuals.adb:40:15: info: range check proved (CVC5: 2 VC)
 call_actuals.adb:40:15: medium: range check might fail, cannot prove lower bound for A1 (e.g. when A1 = -1) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add or complete related loop invariants or postconditions]

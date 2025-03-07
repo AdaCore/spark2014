@@ -359,16 +359,16 @@ test_capacity.adb:556:16: info: precondition proved (CVC5: 2 VC)
 test_capacity.adb:558:22: info: assertion proved (CVC5: 1 VC)
 test_capacity.adb:562:06: info: data dependencies proved
 test_capacity.adb:567:16: medium: all elements shall fit in index type and fit in "Small_Nat" for sequence aggregates at test_capacity.adb:356
-test_capacity.adb:567:16: medium: precondition might fail (e.g. when X = (Capacity => 0, others => ?))
+test_capacity.adb:567:16: medium: precondition might fail
 test_capacity.adb:573:06: info: data dependencies proved
 test_capacity.adb:578:16: medium: all elements shall fit in index type and fit in "Small_Nat" for sequence aggregates at test_capacity.adb:356
-test_capacity.adb:578:16: medium: precondition might fail (e.g. when X = (Capacity => 0, others => ?))
+test_capacity.adb:578:16: medium: precondition might fail
 test_capacity.adb:584:06: info: data dependencies proved
 test_capacity.adb:589:16: info: all elements shall fit in index type and be smaller than "Capacity" for sequence aggregates at test_capacity.adb:421
 test_capacity.adb:589:16: info: precondition proved (CVC5: 2 VC)
 test_capacity.adb:595:06: info: data dependencies proved
 test_capacity.adb:600:16: medium: all elements shall fit in index type and be smaller than "Capacity" for sequence aggregates at test_capacity.adb:421
-test_capacity.adb:600:16: medium: precondition might fail (e.g. when Max = 10)
+test_capacity.adb:600:16: medium: precondition might fail
 test_capacity.adb:606:06: info: data dependencies proved
 test_capacity.adb:611:16: medium: all elements shall fit in index type and be smaller than "Capacity" for sequence aggregates at test_capacity.adb:421
 test_capacity.adb:611:16: medium: precondition might fail

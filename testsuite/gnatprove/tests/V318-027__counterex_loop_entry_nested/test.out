@@ -29,4 +29,4 @@ loopentry.adb:73:31: high: assertion might fail (e.g. when A = (1 => 4, others =
 loopentry.adb:86:33: info: unrolling loop
 loopentry.adb:86:33: warning: statement has no effect
 loopentry.adb:87:17: info: range check proved (CVC5: 2 VC)
-loopentry.adb:88:59: high: assertion might fail, cannot prove K /= K (e.g. when K = 1)
+loopentry.adb:88:59: high: assertion might fail, cannot prove K /= K (e.g. when I'Loop_Entry = 2 and K = 1)

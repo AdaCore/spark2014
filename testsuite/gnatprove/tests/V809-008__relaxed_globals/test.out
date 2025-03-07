@@ -1,5 +1,5 @@
 test_relaxed_globals.adb:1:11: warning: subprogram "Test_Relaxed_Globals" has no effect
-test_relaxed_globals.adb:14:15: medium: predicate check might fail (e.g. when C = 1)
+test_relaxed_globals.adb:14:15: medium: predicate check might fail
 test_relaxed_globals.adb:18:13: info: implicit aspect Always_Terminates on "Get_G" has been proved, subprogram will terminate
 test_relaxed_globals.adb:18:33: medium: initialization check might fail (e.g. when G1'Initialized = False) [possible fix: subprogram at line 18 should mention G1 in a precondition]
 test_relaxed_globals.adb:19:06: info: data dependencies proved

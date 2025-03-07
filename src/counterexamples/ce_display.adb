@@ -33,6 +33,7 @@ with CE_Pretty_Printing;          use CE_Pretty_Printing;
 with CE_RAC;                      use CE_RAC;
 with CE_Utils;                    use CE_Utils;
 with CE_Values;                   use CE_Values;
+with Elists;                      use Elists;
 with Erroutc;                     use Erroutc;
 with Flow_Types;                  use Flow_Types;
 with Flow_Utility;                use Flow_Utility;
@@ -114,6 +115,16 @@ package body CE_Display is
    --  Reconstruct a string for the value of the Ada quantified variable
    --  in a FOR OF quantification from the value for the Why3 quantified
    --  variable.
+
+   generic
+      with procedure Process_Entity
+        (E       : Entity_Id;
+         Mode    : Modifier;
+         Loop_Id : Entity_Id := Empty);
+   procedure Process_Entities_For_One_Liner (N : Node_Id; K : VC_Kind);
+   --  Traverse the node N related to a one liner and call Process_Entity on
+   --  all relevant entities. Loop_Id is set to the relevant loop when Mode is
+   --  Loop_Entry.
 
    -------------------------
    -- Before_Next_Element --
@@ -249,7 +260,9 @@ package body CE_Display is
 
    function Create_Pretty_Cntexmp
      (Cntexmp : Cntexample_File_Maps.Map;
-      VC_Loc  : Source_Ptr)
+      VC_Loc  : Source_Ptr;
+      VC_Node : Node_Id;
+      VC_K    : VC_Kind)
       return Cntexample_File_Maps.Map
    is
       use Cntexample_File_Maps;
@@ -260,7 +273,8 @@ package body CE_Display is
          Line                : Natural;
          Line_Cntexmp        : Cntexample_Elt_Lists.List;
          Is_Previous         : Boolean;
-         LI_Node             : Node_Id);
+         LI_Node             : Node_Id;
+         Is_One_Liner        : Boolean);
       --  Pretty prints counterexample model elements at a single source
       --  code location (line).
 
@@ -274,7 +288,8 @@ package body CE_Display is
          Line                : Natural;
          Line_Cntexmp        : Cntexample_Elt_Lists.List;
          Is_Previous         : Boolean;
-         LI_Node             : Node_Id)
+         LI_Node             : Node_Id;
+         Is_One_Liner        : Boolean)
       is
          Variables               : Entity_To_Extended_Value_Maps.Map;
          Pretty_Line_Cntexmp_Arr : Cntexample_Elt_Lists.List;
@@ -283,6 +298,48 @@ package body CE_Display is
 
       begin
          Parse_Counterexample_Line (Line_Cntexmp, Variables);
+
+         --  On the one liner, we need to filter relevant nodes
+
+         if Is_One_Liner then
+            declare
+               Tmp_Vars : Entity_To_Extended_Value_Maps.Map;
+
+               procedure Pick_Relevant_Variable
+                 (E       : Entity_Id;
+                  Mode    : Modifier;
+                  Loop_Id : Entity_Id := Types.Empty);
+               --  Get counterexample value for the entity E with mode Mode
+               --  from Tmp_Vars and store it in Variables.
+
+               ----------------------------
+               -- Pick_Relevant_Variable --
+               ----------------------------
+
+               procedure Pick_Relevant_Variable
+                 (E       : Entity_Id;
+                  Mode    : Modifier;
+                  Loop_Id : Entity_Id := Types.Empty)
+               is
+                  pragma Unreferenced (Loop_Id);
+                  Pos      : Entity_To_Extended_Value_Maps.Cursor;
+                  Tmp_Pos  : Entity_To_Extended_Value_Maps.Cursor :=
+                    Tmp_Vars.Find (E);
+                  Inserted : Boolean;
+               begin
+                  if Entity_To_Extended_Value_Maps.Has_Element (Tmp_Pos) then
+                     Variables.Insert (E, (others => null), Pos, Inserted);
+                     Variables (Pos) (Mode) := Tmp_Vars (Tmp_Pos) (Mode);
+                  end if;
+               end Pick_Relevant_Variable;
+
+               procedure Pick_Relevant_Variables is new
+                 Process_Entities_For_One_Liner (Pick_Relevant_Variable);
+            begin
+               Tmp_Vars.Move (Variables);
+               Pick_Relevant_Variables (VC_Node, VC_K);
+            end;
+         end if;
 
          if not Variables.Is_Empty then
             Build_Pretty_Line (Variables, File, Line, Pretty_Line_Cntexmp_Arr);
@@ -309,13 +366,13 @@ package body CE_Display is
 
       --  Local variables
 
-      File : constant String := File_Name (VC_Loc);
-      Line : constant Logical_Line_Number :=
-        Get_Logical_Line_Number (VC_Loc);
+      VC_File          : constant String := File_Name (VC_Loc);
+      VC_Line          : constant Natural :=
+        Natural (Get_Logical_Line_Number (VC_Loc));
       Remapped_Cntexmp : constant Cntexample_File_Maps.Map :=
         Remove_Irrelevant_Branches
-          (Remap_VC_Info (Cntexmp, File, Natural (Line)));
-      Pretty_Cntexmp : Cntexample_File_Maps.Map :=
+          (Remap_VC_Info (Cntexmp, VC_File, VC_Line));
+      Pretty_Cntexmp   : Cntexample_File_Maps.Map :=
         Cntexample_File_Maps.Empty_Map;
 
    --  Start of processing for Create_Pretty_Cntexmp
@@ -325,11 +382,11 @@ package body CE_Display is
          declare
             Is_Previous         : Boolean;
             LI_Node             : Node_Id := Types.Empty;
-            Filename            : constant String :=
+            File                : constant String :=
               Compute_Filename_Previous (Key (File_C), Is_Previous, LI_Node);
             Pretty_File_Cntexmp : Cntexample_Lines :=
-              (if No_Element /= Pretty_Cntexmp.Find (Filename) then
-                  Element (Pretty_Cntexmp.Find (Filename))
+              (if No_Element /= Pretty_Cntexmp.Find (File) then
+                  Element (Pretty_Cntexmp.Find (File))
                else
                   Cntexample_Lines'(VC_Line        =>
                                       Cntexample_Elt_Lists.Empty_List,
@@ -342,25 +399,31 @@ package body CE_Display is
 
          begin
             for Line_C in Lines_Map.Iterate loop
-               Create_Pretty_Line
-                 (Pretty_File_Cntexmp,
-                  Filename,
-                  Cntexample_Line_Maps.Key (Line_C),
-                  Lines_Map (Line_C),
-                  Is_Previous,
-                  LI_Node);
+               declare
+                  Line : constant Natural :=
+                    Cntexample_Line_Maps.Key (Line_C);
+               begin
+                  Create_Pretty_Line
+                    (Pretty_File_Cntexmp,
+                     File,
+                     Line,
+                     Lines_Map (Line_C),
+                     Is_Previous,
+                     LI_Node,
+                     Is_One_Liner => File = VC_File and Line = VC_Line);
+               end;
             end loop;
 
             --  At this point, the information of VC_line is now in the
             --  Other_Lines field because Remap_VC_Info was applied.
-            if Is_Ada_File_Name (Filename) and then
+            if Is_Ada_File_Name (File) and then
               (not Cntexample_Line_Maps.Is_Empty
                 (Pretty_File_Cntexmp.Other_Lines)
               or else
                 not Previous_Line_Maps.Is_Empty
                 (Pretty_File_Cntexmp.Previous_Lines))
             then
-               Pretty_Cntexmp.Include (Filename, Pretty_File_Cntexmp);
+               Pretty_Cntexmp.Include (File, Pretty_File_Cntexmp);
             end if;
          end;
       end loop;
@@ -481,16 +544,12 @@ package body CE_Display is
          Mode : Modifier);
       --  Insert a single value in Expl
 
-      function Accumulate_Expl (N : Node_Id) return Atree.Traverse_Result;
-      --  Insert all relevant values in an expression N in Expl. Use the
-      --  environment of the RAC to get the values. We do not assume that all
-      --  queried objects necessarily have a value.
-
-      procedure Accumulate_Entity (E : Entity_Id);
-      --  Insert relevant value for an entity
-
-      procedure Accumulate_All_Expl (N : Node_Id);
-      --  Traverse all nodes accessible from N to accumulate relevant values
+      procedure Accumulate_Expl_For_Entity
+        (E       : Entity_Id;
+         Mode    : Modifier;
+         Loop_Id : Entity_Id := Empty)
+      with Pre => Mode = Loop_Entry or Loop_Id = Empty;
+      --  Insert the value associated to E into Expl
 
       function Is_Internal_Entity (E : Entity_Id) return Boolean is
         (Is_Internal (E) or else
@@ -504,144 +563,58 @@ package body CE_Display is
          Cntexmp : in out Cntexample_File_Maps.Map);
       --  Insert pretty printed values Value in a counterexample Cntexmp
 
-      -----------------------
-      -- Accumulate_Entity --
-      -----------------------
+      --------------------------------
+      -- Accumulate_Expl_For_Entity --
+      --------------------------------
 
-      procedure Accumulate_Entity (E : Entity_Id) is
-         Val : Value_Access;
+      procedure Accumulate_Expl_For_Entity
+        (E       : Entity_Id;
+         Mode    : Modifier;
+         Loop_Id : Entity_Id := Empty)
+      is
       begin
-         if Ekind (E) in E_Variable
-                       | E_Constant
-                       | E_Loop_Parameter
-                       | Formal_Kind
-           and then not Is_Discriminal (E)
-           and then not Is_Protected_Component_Or_Discr_Or_Part_Of (E)
-         then
-            Val := Find_Binding (E, False);
-            if Val /= null then
-               Insert_Expl (E, Val.all, None);
-            end if;
-
-         --  For types, traverse the bounds
-
-         elsif Is_Scalar_Type (E) then
-            Accumulate_All_Expl (Get_Range (E));
-         end if;
-      end Accumulate_Entity;
-
-      ---------------------
-      -- Accumulate_Expl --
-      ---------------------
-
-      function Accumulate_Expl (N : Node_Id) return Atree.Traverse_Result is
-      begin
-         case Nkind (N) is
-            when N_Subprogram_Call =>
-
-               --  Manually add global reads, as they will not be traversed.
-               --  Discard global writes, only preconditions are located at
-               --  subprogram calls.
-
+         case Mode is
+            when None =>
                declare
-                  Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
-                  Write_Ids : Flow_Types.Flow_Id_Sets.Set;
-
+                  Val : constant Value_Access := Find_Binding (E, False);
                begin
-                  --  Collect global variables potentially read and written
-
-                  Flow_Utility.Get_Proof_Globals
-                    (Subprogram      => Get_Called_Entity_For_Proof (N),
-                     Reads           => Read_Ids,
-                     Writes          => Write_Ids,
-                     Erase_Constants => False);
-
-                  for V of Read_Ids loop
-                     if V.Kind = Direct_Mapping then
-                        Accumulate_Entity (Get_Direct_Mapping_Id (V));
-                     end if;
-                  end loop;
-               end;
-
-            when N_Identifier | N_Expanded_Name =>
-
-               --  Add values for referenced objects in Expl
-
-               declare
-                  E : constant Entity_Id := SPARK_Atree.Entity (N);
-               begin
-                  if Present (E) then
-                     Accumulate_Entity (E);
+                  if Val /= null then
+                     Insert_Expl (E, Val.all, Mode);
                   end if;
                end;
-               return Atree.Skip;
 
-            when N_Attribute_Reference =>
+            when Old =>
+               declare
+                  Val : constant Opt_Value_Type := Find_Old_Value (E);
+               begin
+                  if Val.Present then
+                     Insert_Expl (E, Val.Content, Mode);
+                  end if;
+               end;
 
-               --  For 'Old and 'Loop_Entry, print the old value of referenced
-               --  variables. Stop the search to avoid pulling useless values.
-               --  Do not assume that we necessarily have values for these
-               --  references in the map. It might not be the case if parts of
-               --  the prefix is not evaluated.
+            when Loop_Entry =>
+               declare
+                  Val : constant Opt_Value_Type := Find_Loop_Entry_Value
+                    (E, Loop_Id);
+               begin
+                  if Val.Present then
+                     Insert_Expl (E, Val.Content, Mode);
+                  end if;
+               end;
 
-               case Attribute_Name (N) is
-                  when Snames.Name_Old =>
-                     declare
-                        Variables : constant Flow_Id_Sets.Set :=
-                          Get_Variables_For_Proof (Prefix (N), Prefix (N));
-                        Var       : Entity_Id;
-                        Val       : Opt_Value_Type;
-                     begin
-                        for V of Variables loop
-                           if V.Kind = Direct_Mapping then
-                              Var := Get_Direct_Mapping_Id (V);
-                              Val := Find_Old_Value (Var);
-                              if Val.Present then
-                                 Insert_Expl (Var, Val.Content, Old);
-                              end if;
-                           end if;
-                        end loop;
-                     end;
-                     return Atree.Skip;
+            when CE_Values.Result =>
+               declare
+                  Val : constant Value_Access := Find_Binding (E, False);
+               begin
+                  if Val /= null then
+                     Insert_Expl (E, Val.all, Mode);
+                  end if;
+               end;
 
-                  when Snames.Name_Loop_Entry =>
-                     declare
-                        Variables : constant Flow_Id_Sets.Set :=
-                          Get_Variables_For_Proof (Prefix (N), Prefix (N));
-                        Loop_Id   : constant Entity_Id :=
-                          Name_For_Loop_Entry (N);
-                        Var       : Entity_Id;
-                        Val       : Opt_Value_Type;
-                     begin
-                        for V of Variables loop
-                           if V.Kind = Direct_Mapping then
-                              Var := Get_Direct_Mapping_Id (V);
-                              Val := Find_Loop_Entry_Value (Var, Loop_Id);
-                              if Val.Present then
-                                 Insert_Expl (Var, Val.Content, Loop_Entry);
-                              end if;
-                           end if;
-                        end loop;
-                     end;
-                     return Atree.Skip;
-
-                  when Snames.Name_Result =>
-                     declare
-                        E   : constant Entity_Id :=
-                          SPARK_Atree.Entity (Prefix (N));
-                        Val : constant Value_Access := Find_Binding (E, False);
-                     begin
-                        Insert_Expl (E, Val.all, CE_Values.Result);
-                     end;
-                     return Atree.Skip;
-
-                  when others =>
-                     null;
-               end case;
-            when others => null;
+            when Index =>
+               null;
          end case;
-         return Atree.OK;
-      end Accumulate_Expl;
+      end Accumulate_Expl_For_Entity;
 
       -------------------------
       -- Insert_Cntexmp_Line --
@@ -700,13 +673,10 @@ package body CE_Display is
          end;
       end Insert_Expl;
 
-      procedure Accumulate_All_Expl_Ann is new Traverse_More_Proc
-        (Accumulate_Expl);
+      procedure Accumulate_All_Expl is new
+        Process_Entities_For_One_Liner (Accumulate_Expl_For_Entity);
 
-      procedure Accumulate_All_Expl (N : Node_Id) renames
-        Accumulate_All_Expl_Ann;
-
-      Cntexmp     : Cntexample_File_Maps.Map;
+      Cntexmp : Cntexample_File_Maps.Map;
 
    --  Start of processing for Get_Environment_One_Liner
 
@@ -714,106 +684,7 @@ package body CE_Display is
       --  Find the relevant expression and accumulate information about used
       --  objects.
 
-      case Nkind (N) is
-         when N_Defining_Identifier =>
-            Accumulate_Entity (N);
-
-         when N_Subexpr =>
-
-            --  For index checks, we want to include the array object to get
-            --  the bounds.
-
-            if K = VC_Index_Check
-              and then Nkind (Atree.Parent (N)) = N_Indexed_Component
-              and then not
-                Is_Static_Array_Type (Etype (Prefix (Atree.Parent (N))))
-            then
-               Accumulate_All_Expl (N);
-               Accumulate_All_Expl (Prefix (Atree.Parent (N)));
-
-            --  Discriminant checks might occur in delta aggregates. Include
-            --  the expression.
-
-            elsif K = VC_Discriminant_Check
-              and then Nkind (N) in N_Identifier | N_Expanded_Name
-              and then Ekind (Entity (N)) = E_Component
-              and then Nkind (Atree.Parent (N)) = N_Component_Association
-            then
-               Accumulate_All_Expl (N);
-               declare
-                  use Namet;
-                  P : constant Node_Id := Atree.Parent (Atree.Parent (N));
-               begin
-                  if Nkind (P) = N_Delta_Aggregate then
-                     Accumulate_All_Expl (Expression (P));
-                  elsif Nkind (Atree.Parent (P)) = N_Attribute_Reference
-                    and then Attribute_Name (Atree.Parent (P)) = Name_Update
-                  then
-                     Accumulate_All_Expl (Prefix (Atree.Parent (P)));
-                  end if;
-               end;
-
-            --  For division checks, we only consider the right operand
-
-            elsif K = VC_Division_Check
-              and then Nkind (N) in N_Binary_Op
-            then
-               Accumulate_All_Expl (Right_Opnd (N));
-
-            --  For scalar range checks, include the bounds
-
-            elsif K = VC_Range_Check
-              and then Is_Scalar_Type (Etype (N))
-            then
-               Accumulate_Entity (Etype (N));
-               Accumulate_All_Expl (N);
-            else
-               Accumulate_All_Expl (N);
-            end if;
-
-            --  Force the value of all quantified variables above N
-
-            declare
-               P : Node_Id := N;
-            begin
-               loop
-                  P := Atree.Parent (P);
-                  exit when Nkind (P) not in N_Subexpr;
-                  if Nkind (P) = N_Quantified_Expression then
-                     declare
-                        Over_Range : constant Boolean :=
-                          Present (Loop_Parameter_Specification (P));
-                        Id         : constant Entity_Id :=
-                          Get_Quantified_Variable (P, Over_Range);
-                     begin
-                        Accumulate_Entity (Id);
-                     end;
-                  end if;
-               end loop;
-            end;
-
-         when N_Pragma =>
-
-            --  It would be useful if we could retrieve and use the information
-            --  about the part of the assertion which is unproved.
-
-            if Get_Pragma_Id (N) in Pragma_Check then
-               Accumulate_All_Expl
-                 (Next (First (Pragma_Argument_Associations (N))));
-            end if;
-
-         when N_Assignment_Statement =>
-            Accumulate_All_Expl (Expression (N));
-
-            --  Add the left-hand side for discriminant checks
-
-            if K = VC_Discriminant_Check then
-               Accumulate_All_Expl (SPARK_Atree.Name (N));
-            end if;
-
-         when others =>
-            null;
-      end case;
+      Accumulate_All_Expl (N, K);
 
       --  Create a pretty one liner from Expl
 
@@ -1011,6 +882,416 @@ package body CE_Display is
 
       return False;
    end Is_Uninitialized;
+
+   ------------------------------------
+   -- Process_Entities_For_One_Liner --
+   ------------------------------------
+
+   procedure Process_Entities_For_One_Liner (N : Node_Id; K : VC_Kind) is
+
+      function Process_Node (N : Node_Id) return Atree.Traverse_Result;
+      --  Process all relevant values in N
+
+      procedure Process_Basic_Entity (E : Entity_Id);
+      --  Insert relevant values for an entity
+
+      procedure Process_Globals (Subp : Entity_Id; Discard_Writes : Boolean);
+      --  Process globals of a subprogram. If Discard_Writes is True, do not
+      --  consider outputs of the subprogram.
+
+      procedure Process_All (N : Node_Id);
+      --  Process all relevant values in N and its children
+
+      --------------------------
+      -- Process_Basic_Entity --
+      --------------------------
+
+      procedure Process_Basic_Entity (E : Entity_Id) is
+      begin
+         if Ekind (E) in E_Variable
+                       | E_Constant
+                       | E_Loop_Parameter
+                       | Formal_Kind
+           and then not Is_Discriminal (E)
+           and then not Is_Protected_Component_Or_Discr_Or_Part_Of (E)
+         then
+            Process_Entity (E, None);
+
+         --  For scalar types, traverse the bounds
+
+         elsif Is_Scalar_Type (E) then
+            Process_All (Get_Range (E));
+
+         --  For scalar types, traverse the bounds
+
+         elsif Is_Array_Type (E) then
+            declare
+               Index : Node_Id := First_Index (E);
+            begin
+               while Present (Index) loop
+                  Process_All (Get_Range (Index));
+                  Next_Index (Index);
+               end loop;
+            end;
+
+         elsif Is_Type (E) and then Has_Discriminants (E) then
+            declare
+               Elmt : Elmt_Id := First_Elmt (Discriminant_Constraint (E));
+            begin
+               while Present (Elmt) loop
+                  Process_All (Node (Elmt));
+                  Next_Elmt (Elmt);
+               end loop;
+            end;
+         end if;
+      end Process_Basic_Entity;
+
+      ---------------------
+      -- Process_Globals --
+      ---------------------
+
+      procedure Process_Globals (Subp : Entity_Id; Discard_Writes : Boolean) is
+         Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
+         Write_Ids : Flow_Types.Flow_Id_Sets.Set;
+
+      begin
+         --  Collect global variables potentially read and written
+
+         Flow_Utility.Get_Proof_Globals
+           (Subprogram      => Subp,
+            Reads           => Read_Ids,
+            Writes          => Write_Ids,
+            Erase_Constants => False);
+
+         for V of Read_Ids loop
+            if V.Kind = Direct_Mapping then
+               Process_Basic_Entity (Get_Direct_Mapping_Id (V));
+            end if;
+         end loop;
+
+         if not Discard_Writes then
+            for V of Write_Ids loop
+               if V.Kind = Direct_Mapping then
+                  Process_Basic_Entity (Get_Direct_Mapping_Id (V));
+               end if;
+            end loop;
+         end if;
+      end Process_Globals;
+
+      ------------------
+      -- Process_Node --
+      ------------------
+
+      function Process_Node (N : Node_Id) return Atree.Traverse_Result is
+      begin
+         case Nkind (N) is
+            when N_Subprogram_Call =>
+
+               --  Manually add global reads, as they will not be traversed.
+               --  Discard global writes, only preconditions are located at
+               --  subprogram calls.
+
+               Process_Globals
+                 (Get_Called_Entity_For_Proof (N), Discard_Writes => True);
+
+            when N_Identifier | N_Expanded_Name =>
+
+               --  Add values for referenced objects in Expl
+
+               declare
+                  E : constant Entity_Id := SPARK_Atree.Entity (N);
+               begin
+                  if Present (E) then
+                     Process_Basic_Entity (E);
+                  end if;
+               end;
+               return Atree.Skip;
+
+            when N_Attribute_Reference =>
+
+               --  For 'Old and 'Loop_Entry, print the old value of referenced
+               --  variables. Stop the search to avoid pulling useless values.
+               --  Do not assume that we necessarily have values for these
+               --  references in the map. It might not be the case if parts of
+               --  the prefix is not evaluated.
+
+               case Attribute_Name (N) is
+                  when Snames.Name_Old =>
+                     declare
+                        Variables : constant Flow_Id_Sets.Set :=
+                          Get_Variables_For_Proof (Prefix (N), Prefix (N));
+                        Var       : Entity_Id;
+                     begin
+                        for V of Variables loop
+                           if V.Kind = Direct_Mapping then
+                              Var := Get_Direct_Mapping_Id (V);
+                              Process_Entity (Var, Old);
+                           end if;
+                        end loop;
+                     end;
+                     return Atree.Skip;
+
+                  when Snames.Name_Loop_Entry =>
+                     declare
+                        Variables : constant Flow_Id_Sets.Set :=
+                          Get_Variables_For_Proof (Prefix (N), Prefix (N));
+                        Loop_Id   : constant Entity_Id :=
+                          Name_For_Loop_Entry (N);
+                        Var       : Entity_Id;
+                     begin
+                        for V of Variables loop
+                           if V.Kind = Direct_Mapping then
+                              Var := Get_Direct_Mapping_Id (V);
+                              Process_Entity (Var, Loop_Entry, Loop_Id);
+                           end if;
+                        end loop;
+                     end;
+                     return Atree.Skip;
+
+                  when Snames.Name_Result =>
+                     declare
+                        E : constant Entity_Id :=
+                          SPARK_Atree.Entity (Prefix (N));
+                     begin
+                        Process_Entity (E, CE_Values.Result);
+                     end;
+                     return Atree.Skip;
+
+                  when others =>
+                     null;
+               end case;
+
+            when N_Target_Name =>
+               declare
+                  function Is_Assignment (N : Node_Id) return Boolean is
+                    (Nkind (N) = N_Assignment_Statement);
+                  function Find_Assignment is new First_Parent_With_Property
+                    (Is_Assignment);
+                  Assign : constant Node_Id := Find_Assignment (N);
+               begin
+                  Process_All (Name (Assign));
+               end;
+
+            when others => null;
+         end case;
+         return Atree.OK;
+      end Process_Node;
+
+      procedure Process_All_Internal is new Traverse_More_Proc
+        (Process_Node);
+
+      procedure Process_All (N : Node_Id) renames Process_All_Internal;
+   begin
+      --  Find the relevant expression and call Process_Entity on used objects
+
+      case Nkind (N) is
+         when N_Defining_Identifier =>
+
+            --  Some checks are located on subprogram entities.
+            --  Get all inputs and outputs of the subprogram.
+
+            if Ekind (N) in Subprogram_Kind | Entry_Kind then
+               declare
+                  F : Entity_Id := First_Formal (N);
+               begin
+                  while Present (F) loop
+                     Process_Basic_Entity (F);
+                     Next_Formal (F);
+                  end loop;
+               end;
+               Process_Globals (N, Discard_Writes => False);
+               if Ekind (N) = E_Function then
+                  Process_Entity (N, CE_Values.Result);
+               end if;
+            else
+               Process_Basic_Entity (N);
+            end if;
+
+         when N_Subexpr =>
+
+            --  For index checks, we want to include the array object to get
+            --  the bounds.
+
+            if K = VC_Index_Check
+              and then Nkind (Atree.Parent (N)) = N_Indexed_Component
+              and then not
+                Is_Static_Array_Type (Etype (Prefix (Atree.Parent (N))))
+            then
+               Process_All (N);
+               Process_All (Prefix (Atree.Parent (N)));
+
+            --  Discriminant checks might occur in delta aggregates. Include
+            --  the expression.
+
+            elsif K = VC_Discriminant_Check
+              and then Nkind (N) in N_Identifier | N_Expanded_Name
+              and then Ekind (Entity (N)) = E_Component
+              and then Nkind (Atree.Parent (N)) = N_Component_Association
+            then
+               Process_All (N);
+               declare
+                  use Namet;
+                  P : constant Node_Id := Atree.Parent (Atree.Parent (N));
+               begin
+                  if Nkind (P) = N_Delta_Aggregate then
+                     Process_All (Expression (P));
+                  elsif Nkind (Atree.Parent (P)) = N_Attribute_Reference
+                    and then Attribute_Name (Atree.Parent (P)) = Name_Update
+                  then
+                     Process_All (Prefix (Atree.Parent (P)));
+                  end if;
+               end;
+
+            --  For division checks, we only consider the right operand
+
+            elsif K = VC_Division_Check
+              and then Nkind (N) in N_Binary_Op
+            then
+               Process_All (Right_Opnd (N));
+
+            --  For scalar range checks, include the bounds
+
+            elsif K = VC_Range_Check
+              and then Is_Scalar_Type (Etype (N))
+            then
+               Process_Basic_Entity (Etype (N));
+               Process_All (N);
+
+            --  For discriminant and length checks try to find the type we are
+            --  converting to. Process its constraints.
+
+            elsif K in VC_Discriminant_Check | VC_Length_Check then
+               declare
+                  Par    : constant Node_Id := Atree.Parent (N);
+                  Exp_Ty : Entity_Id := Empty;
+               begin
+                  case Nkind (Atree.Parent (N)) is
+                     when N_Assignment_Statement =>
+                        Exp_Ty := Etype (Name (Par));
+                     when N_Object_Declaration =>
+                        Exp_Ty := Etype (Defining_Identifier (Par));
+                     when N_Type_Conversion
+                        | N_Unchecked_Type_Conversion
+                        | N_Qualified_Expression
+                        =>
+                        Exp_Ty := Etype (Par);
+                     when others =>
+                        null;
+                  end case;
+
+                  if Present (Exp_Ty) and then Is_Constrained (Exp_Ty) then
+                     Process_Basic_Entity (Exp_Ty);
+                  end if;
+               end;
+
+               Process_All (N);
+            else
+               Process_All (N);
+            end if;
+
+            --  Force the value of all quantified variables and declared above
+            --  expressions above N.
+
+            declare
+               P : Node_Id := N;
+            begin
+               loop
+                  P := Atree.Parent (P);
+                  exit when Nkind (P) not in N_Subexpr;
+                  if Nkind (P) = N_Quantified_Expression then
+                     declare
+                        Over_Range : constant Boolean :=
+                          Present (Loop_Parameter_Specification (P));
+                        Id         : constant Entity_Id :=
+                          Get_Quantified_Variable (P, Over_Range);
+                        Expr       : constant Node_Id :=
+                          Get_Expr_Quantified_Over (P, Over_Range);
+                     begin
+                        Process_All (Expr);
+                        Process_Basic_Entity (Id);
+
+                        --  Also add the potential additional index used for
+                        --  for of quantifications in Why.
+
+                        Process_Entity (Id, Index);
+                     end;
+                  elsif Nkind (P) = N_Expression_With_Actions then
+                     declare
+                        Action : Node_Id := First (Actions (P));
+                     begin
+                        while Present (Action) loop
+                           if Nkind (Action) = N_Object_Declaration then
+                              Process_All (Expression (Action));
+                           end if;
+                           Next (Action);
+                        end loop;
+                     end;
+                  end if;
+               end loop;
+            end;
+
+         when N_Pragma =>
+
+            --  Disjointness or completeness of Contract_Cases
+
+            if Get_Pragma_Id (N) = Pragma_Contract_Cases then
+               declare
+                  Aggr          : constant Node_Id :=
+                    Expression (First (Pragma_Argument_Associations (N)));
+                  Contract_Case : Node_Id :=
+                    First (Component_Associations (Aggr));
+               begin
+                  while Present (Contract_Case) loop
+                     Process_All (First (Choice_List (Contract_Case)));
+                     Next (Contract_Case);
+                  end loop;
+               end;
+            end if;
+
+         when N_Assignment_Statement =>
+            Process_All (Expression (N));
+
+            --  Add the left-hand side for discriminant checks
+
+            if K = VC_Discriminant_Check then
+               Process_All (SPARK_Atree.Name (N));
+            end if;
+
+         when N_Component_Association =>
+            Process_All (Expression (N));
+
+            --  On contract cases, the choices shall be evaluated in the pre
+            --  state.
+
+            if K = VC_Contract_Case then
+               if not Is_Others_Choice (Choice_List (N)) then
+                  declare
+                     C : Node_Id := First (Choice_List (N));
+                  begin
+                     loop
+                        declare
+                           Variables : constant Flow_Id_Sets.Set :=
+                             Get_Variables_For_Proof (C, N);
+                           Var       : Entity_Id;
+                        begin
+                           for V of Variables loop
+                              if V.Kind = Direct_Mapping then
+                                 Var := Get_Direct_Mapping_Id (V);
+                                 Process_Entity (Var, Old);
+                              end if;
+                           end loop;
+                        end;
+                        Next (C);
+                        exit when No (C);
+                     end loop;
+                  end;
+               end if;
+            end if;
+
+         when others =>
+            null;
+      end case;
+   end Process_Entities_For_One_Liner;
 
    -----------------------------
    -- Reconstruct_Index_Value --
