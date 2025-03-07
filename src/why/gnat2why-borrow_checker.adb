@@ -1803,6 +1803,7 @@ package body Gnat2Why.Borrow_Checker is
          --  Ignored constructs for pointer checking
 
          when N_Formal_Object_Declaration
+            | N_Formal_Package_Declaration
             | N_Formal_Type_Declaration
             | N_Incomplete_Type_Declaration
             | N_Private_Extension_Declaration
@@ -3556,7 +3557,6 @@ package body Gnat2Why.Borrow_Checker is
             | N_Empty
             | N_Enumeration_Representation_Clause
             | N_Exception_Renaming_Declaration
-            | N_Formal_Package_Declaration
             | N_Formal_Subprogram_Declaration
             | N_Freeze_Entity
             | N_Freeze_Generic_Entity
