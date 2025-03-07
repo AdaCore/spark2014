@@ -1,0 +1,2 @@
+main.adb:15:19: high: "R.N" is not initialized in "Foo" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R.N" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+main.adb:15:44: high: "R.N" is not initialized
