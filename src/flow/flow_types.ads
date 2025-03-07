@@ -140,7 +140,7 @@ package Flow_Types is
                              Private_Part,    --  for private types
                              Extension_Part,  --  for tagged types
                              The_Tag,         --  for tagged types
-                             The_Bounds       --  for unconstrained arrays
+                             The_Bounds       --  for unconstrained objects
                              );
    --  Not all things can be represented by just X. For example a discriminated
    --  private type might need X'Private_Part and X.D. Most Flow_Id objects

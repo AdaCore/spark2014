@@ -3726,14 +3726,35 @@ package body Flow_Utility is
                return Variables;
 
             when Attribute_Constrained =>
-               for F of Recurse (Prefix (N)) loop
-                  if Is_Bound (F)
-                    or else Is_Discriminant (F)
-                  then
-                     Variables.Include (F);
-                  end if;
-               end loop;
-               return Variables;
+
+               --  Mimic how proof recognizes when GNAT expands 'Constrained
+               --  into an extra formal that is passed at runtime. ??? This is
+               --  pessimistic, e.g. a formal of a constrained type has its
+               --  'Constrained known statically.
+
+               if Ctx.Fold_Functions = Inputs
+                 and then Is_Entity_Name (Prefix (N))
+                 and then Ekind (Entity (Prefix (N))) in E_In_Out_Parameter
+                                                       | E_Out_Parameter
+                 and then
+                   Has_Discriminants
+                     (Get_Type (Entity (Prefix (N)), Ctx.Scope))
+               then
+                  return
+                    Flow_Id_Sets.To_Set
+                      (Direct_Mapping_Id
+                         (Entity (Prefix (N)), Facet => The_Bounds));
+
+               --  Otherwise, the attribute is known statically, but the prefix
+               --  is still evaluated and we capture this as null dependencies.
+
+               elsif Ctx.Fold_Functions = Null_Deps
+                 and then not Statically_Names_Object (Prefix (N))
+               then
+                  return Recurse (Prefix (N), Fold_Functions => Inputs);
+               else
+                  return Flow_Id_Sets.Empty_Set;
+               end if;
 
             when Attribute_Alignment
                | Attribute_Size
