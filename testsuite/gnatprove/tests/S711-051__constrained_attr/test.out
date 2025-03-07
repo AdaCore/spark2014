@@ -1,7 +1,7 @@
 test_constrained.adb:8:13: info: implicit aspect Always_Terminates on "Get_Constr" has been proved, subprogram will terminate
 test_constrained.adb:10:19: info: postcondition proved (CVC5: 1 VC)
 test_constrained.adb:12:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-test_constrained.adb:15:22: info: assertion proved (CVC5: 1 VC)
+test_constrained.adb:15:22: info: assertion proved (Trivial: 1 VC)
 test_constrained.adb:16:22: info: assertion proved (CVC5: 1 VC)
 test_constrained.adb:28:13: info: implicit aspect Always_Terminates on "F_H" has been proved, subprogram will terminate
 test_constrained.adb:33:19: info: assertion proved (Trivial: 1 VC)
