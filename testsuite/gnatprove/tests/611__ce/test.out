@@ -6,14 +6,17 @@ test.adb:6:31: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 test.adb:8:10: info: index check proved (CVC5: 2 VC)
 test.adb:9:22: high: assertion might fail (e.g. when X = (1 => 1) and Y = (1 => 0))
 test.adb:12:45: info: data dependencies proved
+test.adb:15:24: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 test.adb:16:33: info: loop invariant preservation proved (Z3: 1 VC)
 test.adb:16:56: high: loop invariant might fail in first iteration, cannot prove X (H) = I (e.g. when H = 1 and I = 2 and K = 1 and X = (others => 1))
 test.adb:16:59: info: index check proved (CVC5: 4 VC)
 test.adb:21:45: info: data dependencies proved
+test.adb:24:24: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 test.adb:25:33: info: loop invariant initialization proved (CVC5: 1 VC)
 test.adb:25:56: high: loop invariant might not be preserved by an arbitrary iteration, cannot prove X (H) = 1 (e.g. when H = 1 and K = 2 and X = (1 => 2, others => 1))
 test.adb:25:59: info: index check proved (CVC5: 4 VC)
 test.adb:30:48: info: data dependencies proved
+test.adb:33:24: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 test.adb:34:56: high: loop invariant might fail in first iteration, cannot prove X (H) = I (e.g. when H = 1 and I = 2 and K = 1 and X = (others => 1))
 test.adb:34:56: high: loop invariant might not be preserved by an arbitrary iteration, cannot prove X (H) = I (e.g. when H = 1 and I = Integer'Last and K = 1 and X = (others => 1))
 test.adb:34:59: info: index check proved (CVC5: 4 VC)

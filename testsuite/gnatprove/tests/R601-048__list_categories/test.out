@@ -139,6 +139,11 @@ operator-reassociation - operator-reassociation - possible operator reassociatio
 representation-attribute-value - representation-attribute-value - representation attribute has an implementation-defined value - EASY
 component-relaxed-init - component-relaxed-init - If all components of a given type are annotated with  Relaxed_Initialization, the containing type is treated as if it had the same annotation - EASY
 full-view-visible - full-view-visible - The full view of an incomplete type deferred to the body of a withed unit might be visible by GNATprove - EASY
+alias-array - alias-array - Aliasing checks might be spurious for actual parameters that are array components - EASY
+imprecise-global-generation - imprecise-global-generation - Global generation might wrongly classify an Output item as an In_Out for subprograms that call other subprograms with no Global contract - EASY
+array-initialization - array-initialization - Initialization of arrays inside FOR loops is only recognized when assignments to array element are directly indexed by the loopparameter - EASY
+multidimensional-array-init - multidimensional-array-init - Initialization of multi-dimensional array inside FOR loops is only recognized when array bounds are static - EASY
+tagged-assignment - tagged-assignment - Assignments to record objects might cause spurious data dependencies in some components of the assigned object - EASY
 contracts-recursive - contracts-recursive - Explicit and implicit postconditions of a recursive subprogram cannot be used on (mutually) recursive calls occurring inside assertions and contracts, but will still be available in regular code - EASY
 dic-ignored - dic-ignored - The Default_Initial_Condition of a type won't be assumed on subcomponents initialized by default inside assertions and contracts, but will still be available in regular code - EASY
 imprecise-address - imprecise-address - The adress of objects is not precisely known if it is not supplied through an address clause - EASY

@@ -38,5 +38,6 @@ dynamic_array.adb:47:10: info: initialization of "F" proved
 dynamic_array.adb:50:19: info: discriminant check proved (CVC5: 1 VC)
 dynamic_array.adb:52:19: info: discriminant check proved (CVC5: 1 VC)
 dynamic_array.adb:56:20: info: overflow check proved (CVC5: 2 VC)
+dynamic_array.adb:59:11: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 dynamic_array.adb:59:24: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 dynamic_array.adb:59:45: info: range check proved (CVC5: 2 VC)

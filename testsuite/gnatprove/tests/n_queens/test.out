@@ -7,10 +7,12 @@ queen.adb:25:13: info: loop invariant initialization proved (CVC5: 1 VC)
 queen.adb:25:13: info: loop invariant preservation proved (CVC5: 1 VC)
 queen.adb:25:53: info: index check proved (CVC5: 4 VC)
 queen.adb:25:60: info: index check proved (CVC5: 4 VC)
+queen.adb:26:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 queen.adb:30:13: info: loop invariant initialization proved (CVC5: 1 VC)
 queen.adb:30:13: info: loop invariant preservation proved (CVC5: 1 VC)
 queen.adb:30:49: info: index check proved (CVC5: 4 VC)
 queen.adb:30:56: info: index check proved (CVC5: 4 VC)
+queen.adb:31:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 queen.adb:42:13: info: loop invariant initialization proved (CVC5: 3 VC; Trivial: 1 VC)
 queen.adb:42:13: info: loop invariant preservation proved (CVC5: 3 VC; Trivial: 1 VC)
 queen.adb:43:46: info: index check proved (CVC5: 4 VC)

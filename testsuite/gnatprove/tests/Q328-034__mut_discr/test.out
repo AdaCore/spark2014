@@ -26,6 +26,7 @@ input.adb:258:24: info: index check proved (CVC5: 4 VC)
 input.adb:260:35: info: range check proved (CVC5: 2 VC)
 input.adb:266:24: info: range check proved (CVC5: 4 VC)
 input.adb:269:27: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+input.adb:269:27: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 input.adb:270:16: info: index check proved (CVC5: 2 VC)
 input.adb:270:59: info: index check proved (CVC5: 2 VC)
 input.adb:273:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)

@@ -28,6 +28,7 @@ sorters.adb:54:34: info: range check proved (CVC5: 2 VC)
 sorters.adb:55:38: info: index check proved (CVC5: 2 VC)
 sorters.adb:55:59: info: index check proved (CVC5: 2 VC)
 sorters.adb:57:25: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
+sorters.adb:57:25: warning: aliasing check on components of an array is handled imprecisely [alias-array]
 sorters.adb:57:33: info: index check proved (CVC5: 2 VC)
 sorters.adb:58:33: info: index check proved (CVC5: 2 VC)
 sorters.adb:60:25: info: assertion proved (CVC5: 1 VC)

@@ -643,6 +643,25 @@ package body VC_Kinds is
           "The full view of an incomplete type deferred to the body of a "
         & "withed unit might be visible by GNATprove",
 
+        --  Flow limitations
+        when Warn_Imprecise_GG =>
+          "Global generation might wrongly classify an Output item as an "
+        & "In_Out for subprograms that call other subprograms with no Global "
+        & "contract",
+        when Warn_Init_Array =>
+          "Initialization of arrays inside FOR loops is only recognized when "
+        & "assignments to array element are directly indexed by the loop"
+        & "parameter",
+        when Warn_Init_Multidim_Array =>
+          "Initialization of multi-dimensional array inside FOR loops is only "
+        & "recognized when array bounds are static",
+        when Warn_Alias_Array =>
+          "Aliasing checks might be spurious for actual parameters that are "
+        & "array components",
+        when Warn_Tagged_Untangling =>
+          "Assignments to record objects might cause spurious data "
+        & "dependencies in some components of the assigned object",
+
         --  Proof limitations
         when Warn_Contracts_Recursive =>
           "Explicit and implicit postconditions of a recursive subprogram "
@@ -1683,6 +1702,7 @@ package body VC_Kinds is
             "representation-attribute-value",
 
          --  Warnings enabled by --info switch
+         when Warn_Alias_Array => "alias-array",
          when Warn_Comp_Relaxed_Init => "component-relaxed-init",
          when Warn_Contracts_Recursive => "contracts-recursive",
          when Warn_DIC_Ignored => "dic-ignored",
@@ -1690,6 +1710,9 @@ package body VC_Kinds is
          when Warn_Imprecise_Address => "imprecise-address",
          when Warn_Imprecise_Align => "imprecise-align",
          when Warn_Imprecise_Call => "imprecise-call",
+         when Warn_Imprecise_GG => "imprecise-global-generation",
+         when Warn_Init_Array => "array-initialization",
+         when Warn_Init_Multidim_Array => "multidimensional-array-init",
          when Warn_Component_Size => "imprecise-component-size",
          when Warn_Record_Component_Attr =>
             "imprecise-record-component-attribute",
@@ -1703,6 +1726,7 @@ package body VC_Kinds is
          when Warn_Num_Variant => "numeric-variant",
          when Warn_Map_Length_Aggregates => "map-length-aggregates",
          when Warn_Set_Length_Aggregates => "set-length-aggregates",
+         when Warn_Tagged_Untangling => "tagged-assignment",
          when Warn_Predef_Eq_Null => "predefined-equality-null",
          when Warn_Unit_Not_SPARK => "unit-not-spark",
 

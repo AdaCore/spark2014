@@ -25,6 +25,8 @@ double_list.ads:31:13: info: implicit aspect Always_Terminates on "Size" has bee
 double_list.ads:33:08: info: data dependencies proved, in instantiation at list_handler.adb:11
 list_handler.adb:11:04: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 list_handler.adb:11:04: info: in instantiation at double_list.adb:35
+list_handler.adb:11:04: warning: in instantiation at double_list.adb:36
+list_handler.adb:11:04: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 list_handler.adb:22:07: info: initialization of "Status" proved
 list_handler.adb:27:29: info: overflow check proved (CVC5: 2 VC)
 list_handler.ads:6:07: info: flow dependencies proved

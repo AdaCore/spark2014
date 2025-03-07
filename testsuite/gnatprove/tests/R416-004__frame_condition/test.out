@@ -1,6 +1,7 @@
 check_loop_inv.adb:5:13: info: implicit aspect Always_Terminates on "Get_V" has been proved, subprogram will terminate
 check_loop_inv.adb:8:30: info: loop invariant initialization proved (Trivial: 1 VC)
 check_loop_inv.adb:8:30: info: loop invariant preservation proved (Trivial: 1 VC)
+check_loop_inv.adb:10:07: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 check_loop_inv.adb:10:10: info: index check proved (CVC5: 2 VC)
 check_loop_inv.adb:12:19: info: assertion proved (CVC5: 1 VC)
 check_loop_inv.adb:12:19: info: range check proved (CVC5: 4 VC)
