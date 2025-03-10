@@ -67,7 +67,7 @@ setup: setup_precheck
 	done
 	cd obj-tools && $(GPRBUILD) -q xsnamest && ./xsnamest && \
 	mv snames.ns ../obj/snames.ads && mv snames.nb ../obj/snames.adb && \
-	$(GPRBUILD) -q -j0 gen_il-main.adb -cargs -I../obj && ./gen_il-main && \
+	$(GPRBUILD) -q -j$(PROCS) gen_il-main.adb -cargs -I../obj && ./gen_il-main && \
 	mv $(GEN_IL_FILES) ../obj
 
 build: setup force
