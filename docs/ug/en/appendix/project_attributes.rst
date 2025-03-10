@@ -44,7 +44,7 @@ is allowed to contain the following attributes:
     end Prove;
 
   The following switches cannot be used inside project files: ``-P``, ``-aP``,
-  ``--subdirs``, ``--clean``, ``--list-categories``, ``--version``.
+  ``--subdirs``, ``--clean``, ``--list-categories``, ``--version``, ``-X``.
 
   Only the following switches are allowed for file-specific switches:
   ``--steps``, ``--timeout``, ``--memlimit``, ``--proof``, ``--prover``,

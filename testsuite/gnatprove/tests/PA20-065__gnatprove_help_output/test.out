@@ -44,6 +44,7 @@ gnatprove basic switches:
      -A=warning-tag    (allow) Disable the warning corresponding to the tag
      -D=warning-tag    (deny) Promote the warning corresponding to the tag
                        to an error
+ -Xnm=val              Specify an external reference for Project Files
 
  * Main mode values
    . check               - Fast partial check for SPARK violations
