@@ -1,0 +1,4 @@
+test.adb:9:18: medium: missing dependency "A => B"
+test.adb:9:26: medium: missing dependency "B => A"
+test.adb:13:19: info: tag check proved (CVC5: 1 VC)
+test.adb:14:19: info: tag check proved (CVC5: 1 VC)

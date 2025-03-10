@@ -6881,6 +6881,17 @@ package body Flow_Utility is
                   Valid_To_Fields.Insert (Join (Map_Root, F));
                end loop;
 
+               if not Valid_To_Fields.Contains (The_Ext)
+                 and then Is_Tagged_Type (T_To)
+                 and then not Extensions_Irrelevant
+               then
+                  Valid_To_Fields.Insert (The_Ext);
+               end if;
+
+               --  Handle all fields of Tmp but the extension. If the field is
+               --  valid in T_To, then insert it in M. Otherwise, it flows into
+               --  the extension if any.
+
                for C in Tmp.Iterate loop
                   declare
                      Output : Flow_Id          renames Flow_Id_Maps.Key (C);
@@ -6889,7 +6900,9 @@ package body Flow_Utility is
                        Valid_To_Fields.Find (Output);
 
                   begin
-                     if Flow_Id_Sets.Has_Element (Target) then
+                     if Flow_Id_Sets.Has_Element (Target)
+                       and then Output /= The_Ext
+                     then
                         M.Insert (Output, Inputs);
                         Valid_To_Fields.Delete (Target);
                      elsif Valid_To_Fields.Contains (The_Ext) then
@@ -6899,12 +6912,27 @@ package body Flow_Utility is
                   end;
                end loop;
 
-               if Valid_To_Fields.Contains (The_Tg) then
-                  M.Insert (The_Tg, Position, Unused);
-               end if;
-
                if Valid_To_Fields.Contains (The_Ext) then
                   M.Insert (The_Ext, Position, Unused);
+                  Valid_To_Fields.Delete (The_Ext);
+               end if;
+
+               --  Handle the extension. All remaining valid fields of T_To
+               --  depend on the extension of Tmp.
+
+               declare
+                  C : constant Flow_Id_Maps.Cursor :=
+                    Tmp.Find (The_Ext);
+               begin
+                  if Flow_Id_Maps.Has_Element (C) then
+                     for Output of Valid_To_Fields loop
+                        M.Insert (Output, Tmp (C));
+                     end loop;
+                  end if;
+               end;
+
+               if Valid_To_Fields.Contains (The_Tg) then
+                  M.Insert (The_Tg, Position, Unused);
                end if;
             end;
 
