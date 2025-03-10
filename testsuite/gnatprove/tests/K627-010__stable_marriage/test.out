@@ -84,7 +84,7 @@ stable_marriage.adb:269:53: info: index check proved (CVC5: 2 VC), in call inlin
 stable_marriage.adb:269:53: info: index check proved (CVC5: 2 VC), in call inlined at stable_marriage.adb:324
 stable_marriage.adb:269:53: info: index check proved (CVC5: 2 VC), in call inlined at stable_marriage.adb:383
 stable_marriage.adb:275:18: info: precondition proved (CVC5: 1 VC)
-stable_marriage.adb:277:17: info: postcondition proved (CVC5: 7 VC; Trivial: 5 VC; Z3: 1 VC; altergo: 1 VC)
+stable_marriage.adb:277:17: info: postcondition proved (CVC5: 7 VC; Trivial: 5 VC; altergo: 2 VC)
 stable_marriage.adb:290:10: info: initialization of "G1" proved
 stable_marriage.adb:291:10: info: initialization of "G2" proved
 stable_marriage.adb:292:10: info: initialization of "Accepted" proved
