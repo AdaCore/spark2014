@@ -56,7 +56,6 @@ setup: setup_precheck
 	    -e "s^@PREFIX@^$(prefix)^" \
 	    -e "s^@GNAT1DIR@^$(gnat1dir)^" \
 	    sdefault.adb.in > obj/sdefault.adb
-	cp -f gnat_src/ada_get_targ.adb obj/get_targ.adb
 	for f in gnat1drv.adb ;\
 	do \
 	  cp -pf gnat_src/$$f obj-gnat2why; \
