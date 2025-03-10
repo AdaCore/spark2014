@@ -199,7 +199,7 @@ def check_counterexamples():
                 msg_list = []
 
                 def str_elem(val):
-                    return val["name"] + " = " + val["value"]
+                    return str(val["name"]) + " = " + str(val["value"])
 
                 def location(arg):
                     return arg[0]
