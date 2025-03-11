@@ -497,6 +497,13 @@ package body CE_Display is
              (Nkind (E) in N_Has_Chars
               and then Namet.Is_Internal_Name (Chars (E))));
 
+      procedure Insert_Cntexmp_Line
+        (File    : String;
+         Line    : Natural;
+         Value   : in out Cntexample_Elt_Lists.List;
+         Cntexmp : in out Cntexample_File_Maps.Map);
+      --  Insert pretty printed values Value in a counterexample Cntexmp
+
       -----------------------
       -- Accumulate_Entity --
       -----------------------
@@ -635,6 +642,35 @@ package body CE_Display is
          end case;
          return Atree.OK;
       end Accumulate_Expl;
+
+      -------------------------
+      -- Insert_Cntexmp_Line --
+      -------------------------
+
+      procedure Insert_Cntexmp_Line
+        (File    : String;
+         Line    : Natural;
+         Value   : in out Cntexample_Elt_Lists.List;
+         Cntexmp : in out Cntexample_File_Maps.Map)
+      is
+      begin
+         if not Value.Is_Empty then
+            declare
+               File_Pos : Cntexample_File_Maps.Cursor;
+               Line_Pos : Cntexample_Line_Maps.Cursor;
+               Inserted : Boolean;
+            begin
+               Cntexmp.Insert
+                 (File, (others => <>), File_Pos, Inserted);
+               Cntexmp (File_Pos).Other_Lines.Insert
+                 (Line, Value, Line_Pos, Inserted);
+               if not Inserted then
+                  Cntexmp (File_Pos).Other_Lines (Line_Pos).Splice
+                    (Cntexample_Elt_Lists.No_Element, Value);
+               end if;
+            end;
+         end if;
+      end Insert_Cntexmp_Line;
 
       -----------------
       -- Insert_Expl --
@@ -836,18 +872,40 @@ package body CE_Display is
 
          --  Insert the pretty printed values in a counterexample
 
-         if not Init_Cntexmp_Line.Is_Empty then
-            declare
-               Position : Cntexample_File_Maps.Cursor;
-               Inserted : Boolean;
-            begin
-               Cntexmp.Insert
-                 (Init_File, (others => <>), Position, Inserted);
-               Cntexmp (Position).Other_Lines.Insert
-                 (Init_Line, Init_Cntexmp_Line);
-            end;
-         end if;
+         Insert_Cntexmp_Line
+           (Init_File, Init_Line, Init_Cntexmp_Line, Cntexmp);
       end;
+
+      --  Query located values of the RAC
+
+      for Cu_Loc in All_Located_Values.Iterate loop
+         declare
+            use Node_To_Node_To_Value;
+            Loc          : constant Source_Ptr  := Sloc (Key (Cu_Loc));
+            File         : constant String := File_Name (Loc);
+            Line         : constant Natural :=
+              Natural (Get_Logical_Line_Number (Loc));
+            Values       : Entity_To_Extended_Value_Maps.Map;
+            Cntexmp_Line : Cntexample_Elt_Lists.List;
+            use Node_To_Value;
+
+         begin
+            for Cu in Element (Cu_Loc).Iterate loop
+               if not Is_Internal_Entity (Key (Cu)) then
+                  Values.Insert
+                    (Key (Cu),
+                     (None   => new Value_Type'(Element (Cu)),
+                      others => null));
+               end if;
+            end loop;
+
+            Build_Pretty_Line (Values, File, Line, Cntexmp_Line);
+
+            --  Insert the pretty printed values in a counterexample
+
+            Insert_Cntexmp_Line (File, Line, Cntexmp_Line, Cntexmp);
+         end;
+      end loop;
 
       --  Add values of the loop id for all enclosing loops up to the enclosing
       --  unit.
@@ -888,24 +946,8 @@ package body CE_Display is
                         Loop_Map.Insert (Id, (None => Val, others => null));
                         Build_Pretty_Line
                           (Loop_Map, Loop_File, Loop_Line, Loop_Cntexmp_Line);
-
-                        --  Insert the pretty printed values in a
-                        --  counterexample
-
-                        if not Loop_Cntexmp_Line.Is_Empty then
-                           declare
-                              File_Pos : Cntexample_File_Maps.Cursor;
-                              Line_Pos : Cntexample_Line_Maps.Cursor;
-                              Inserted : Boolean;
-                           begin
-                              Cntexmp.Insert
-                                (Loop_File, (others => <>), File_Pos,
-                                 Inserted);
-                              Cntexmp (File_Pos).Other_Lines.Insert
-                                (Loop_Line, Loop_Cntexmp_Line, Line_Pos,
-                                 Inserted);
-                           end;
-                        end if;
+                        Insert_Cntexmp_Line
+                          (Loop_File, Loop_Line, Loop_Cntexmp_Line, Cntexmp);
                      end if;
                   end;
                end if;

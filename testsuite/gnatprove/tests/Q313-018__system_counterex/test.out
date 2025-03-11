@@ -4,6 +4,7 @@ incr.adb:6:11: high: overflow check might fail, cannot prove lower bound for X -
 counterexample expected for check at incr.adb:3
   trace at incr.adb:1 --> X = 0
   trace at incr.adb:3 --> X = -1 and X'Old = 0
+  trace at incr.adb:6 --> X = -1
 counterexample expected for check at incr.adb:6
   trace at incr.adb:1 --> X = Integer'First
   trace at incr.adb:6 --> X = Integer'First

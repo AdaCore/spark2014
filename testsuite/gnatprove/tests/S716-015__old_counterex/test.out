@@ -11,14 +11,18 @@ show_failed_proof_attempt.ads:12:25: high: postcondition might fail, cannot prov
 show_failed_proof_attempt.ads:18:25: high: postcondition might fail, cannot prove X = C (e.g. when C = 0 and X = 10)
 show_failed_proof_attempt.ads:21:53: high: postcondition might fail, cannot prove X = C (e.g. when C = 0 and X = 10)
 counterexample expected for check at show_failed_proof_attempt.ads:7
+  trace at show_failed_proof_attempt.adb:6 --> X = 20
   trace at show_failed_proof_attempt.ads:5 --> C = 0 and X = 10
   trace at show_failed_proof_attempt.ads:7 --> C = 0 and X = 20
 counterexample expected for check at show_failed_proof_attempt.ads:12
+  trace at show_failed_proof_attempt.adb:17 --> X = 10
   trace at show_failed_proof_attempt.ads:9 --> C = 0 and X = 0
   trace at show_failed_proof_attempt.ads:12 --> C = 0 and X = 10
 counterexample expected for check at show_failed_proof_attempt.ads:18
+  trace at show_failed_proof_attempt.adb:28 --> X = 10
   trace at show_failed_proof_attempt.ads:14 --> C = 0 and X = 0
   trace at show_failed_proof_attempt.ads:18 --> C = 0 and X = 10
 counterexample expected for check at show_failed_proof_attempt.ads:21
+  trace at show_failed_proof_attempt.adb:39 --> X = 10
   trace at show_failed_proof_attempt.ads:20 --> C = 0 and X = 0
   trace at show_failed_proof_attempt.ads:21 --> C = 0 and X = 10
