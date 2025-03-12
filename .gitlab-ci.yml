@@ -231,6 +231,41 @@ acats:
      reports:
        junit: xunit-*.xml
 
+####################
+# Test of SPARKlib #
+####################
+
+sparklib:
+  services:
+     - image:pe-base
+     - cpu:16
+  stage: test
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+    - when: never
+  script:
+    # Setup the sanbox
+    # Add acats explicitly for this build.
+    - GENERIC_ANOD_CI_OPTIONS="--add-dep eng/spark/sparklib"
+    - *setup_repos
+
+    # Deploy the installed package
+    - *deploy_package
+
+    # Test using anod
+    - anod run test_sparklib
+
+    # Process the results
+    - testsuite_reports
+
+  artifacts:
+     paths:
+        - xunit-*.xml
+        - __results*
+     reports:
+       junit: xunit-*.xml
+
 ################
 # Build of Doc #
 ################
