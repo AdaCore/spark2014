@@ -948,13 +948,17 @@ package body CE_Pretty_Printing is
                  Search_Component_In_Type
                    (Ada_Type, Comp);
             begin
-               Visibility := Visibility_Map (Orig_Comp);
+               if Present (Orig_Comp) then
+                  Visibility := Visibility_Map (Orig_Comp);
 
-               --  If Comp_Val is not Dont_Display, Comp has been displayed.
-               --  Remove it from the visibility map.
+                  --  If Comp_Val is not Dont_Display, Comp has been displayed.
+                  --  Remove it from the visibility map.
 
-               if Comp_Val.Value /= Dont_Display then
-                  Visibility_Map.Exclude (Orig_Comp);
+                  if Comp_Val.Value /= Dont_Display then
+                     Visibility_Map.Exclude (Orig_Comp);
+                  end if;
+               else
+                  Visibility := Removed;
                end if;
             end;
 
