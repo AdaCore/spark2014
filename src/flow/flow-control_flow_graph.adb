@@ -5892,13 +5892,13 @@ package body Flow.Control_Flow_Graph is
                Add_Vertex
                  (FA,
                   Make_Global_Attributes
-                    (Call_Vertex => N,
-                     Global      =>
+                    (Callsite   => N,
+                     Global     =>
                        Change_Variant (Null_Export_Flow_Id, Out_View),
-                     Mode        => Mode_Out,
-                     Scope       => FA.B_Scope,
-                     Vertex_Ctx  => Ctx.Vertex_Ctx,
-                     E_Loc       => N),
+                     Mode       => Mode_Out,
+                     Scope      => FA.B_Scope,
+                     Vertex_Ctx => Ctx.Vertex_Ctx,
+                     E_Loc      => N),
                   V);
                Outs_By_Reference.Append (V);
             end if;
@@ -5914,13 +5914,12 @@ package body Flow.Control_Flow_Graph is
             Add_Vertex
               (FA,
                Make_Global_Attributes
-                 (Call_Vertex => N,
-                  Global      =>
-                    Change_Variant (Null_Export_Flow_Id, Out_View),
-                  Mode        => Mode_Out,
-                  Scope       => FA.B_Scope,
-                  Vertex_Ctx  => Ctx.Vertex_Ctx,
-                  E_Loc       => N),
+                 (Callsite   => N,
+                  Global     => Change_Variant (Null_Export_Flow_Id, Out_View),
+                  Mode       => Mode_Out,
+                  Scope      => FA.B_Scope,
+                  Vertex_Ctx => Ctx.Vertex_Ctx,
+                  E_Loc      => N),
                V);
             Outs_By_Reference.Append (V);
          end;
@@ -6506,12 +6505,12 @@ package body Flow.Control_Flow_Graph is
       for R of Globals.Proof_Ins loop
          Add_Vertex (FA,
                      Make_Global_Attributes
-                       (Call_Vertex => Callsite,
-                        Global      => R,
-                        Mode        => Mode_Proof,
-                        Scope       => FA.B_Scope,
-                        Vertex_Ctx  => Ctx.Vertex_Ctx,
-                        E_Loc       => Callsite),
+                       (Callsite   => Callsite,
+                        Global     => R,
+                        Mode       => Mode_Proof,
+                        Scope      => FA.B_Scope,
+                        Vertex_Ctx => Ctx.Vertex_Ctx,
+                        E_Loc      => Callsite),
                      V);
          Ins.Append (V);
       end loop;
@@ -6519,12 +6518,12 @@ package body Flow.Control_Flow_Graph is
       for R of Globals.Inputs loop
          Add_Vertex (FA,
                      Make_Global_Attributes
-                       (Call_Vertex => Callsite,
-                        Global      => R,
-                        Mode        => Mode_In,
-                        Scope       => FA.B_Scope,
-                        Vertex_Ctx  => Ctx.Vertex_Ctx,
-                        E_Loc       => Callsite),
+                       (Callsite   => Callsite,
+                        Global     => R,
+                        Mode       => Mode_In,
+                        Scope      => FA.B_Scope,
+                        Vertex_Ctx => Ctx.Vertex_Ctx,
+                        E_Loc      => Callsite),
                      V);
          Ins.Append (V);
       end loop;
@@ -6534,23 +6533,23 @@ package body Flow.Control_Flow_Graph is
             Add_Vertex
               (FA,
                Make_Global_Attributes
-                 (Call_Vertex => Callsite,
-                  Global      => Change_Variant (W, In_View),
-                  Mode        => Mode_Out,
-                  Scope       => FA.B_Scope,
-                  Vertex_Ctx  => Ctx.Vertex_Ctx,
-                  E_Loc       => Callsite),
+                 (Callsite   => Callsite,
+                  Global     => Change_Variant (W, In_View),
+                  Mode       => Mode_Out,
+                  Scope      => FA.B_Scope,
+                  Vertex_Ctx => Ctx.Vertex_Ctx,
+                  E_Loc      => Callsite),
                V);
             Ins.Append (V);
          end if;
          Add_Vertex (FA,
                      Make_Global_Attributes
-                       (Call_Vertex => Callsite,
-                        Global      => W,
-                        Mode        => Mode_Out,
-                        Scope       => FA.B_Scope,
-                        Vertex_Ctx  => Ctx.Vertex_Ctx,
-                        E_Loc       => Callsite),
+                       (Callsite   => Callsite,
+                        Global     => W,
+                        Mode       => Mode_Out,
+                        Scope      => FA.B_Scope,
+                        Vertex_Ctx => Ctx.Vertex_Ctx,
+                        E_Loc      => Callsite),
                      V);
          Outs.Append (V);
       end loop;
@@ -6605,15 +6604,15 @@ package body Flow.Control_Flow_Graph is
            (FA,
             Direct_Mapping_Id (Actual, In_View),
             Make_Parameter_Attributes
-              (FA          => FA,
-               Call_Vertex => Callsite,
-               Actual      => Actual,
-               Formal      => Formal,
-               In_Vertex   => True,
-               Subp_Calls  => Funcalls,
-               Indt_Calls  => Indcalls,
-               Vertex_Ctx  => Ctx.Vertex_Ctx,
-               E_Loc       => Actual),
+              (FA         => FA,
+               Callsite   => Callsite,
+               Actual     => Actual,
+               Formal     => Formal,
+               In_Vertex  => True,
+               Subp_Calls => Funcalls,
+               Indt_Calls => Indcalls,
+               Vertex_Ctx => Ctx.Vertex_Ctx,
+               E_Loc      => Actual),
             V);
 
          if Nkind (Actual) in N_Subexpr then
@@ -6636,13 +6635,13 @@ package body Flow.Control_Flow_Graph is
               (FA,
                Direct_Mapping_Id (Actual, Out_View),
                Make_Parameter_Attributes
-                 (FA          => FA,
-                  Call_Vertex => Callsite,
-                  Actual      => Actual,
-                  Formal      => Formal,
-                  In_Vertex   => False,
-                  Vertex_Ctx  => Ctx.Vertex_Ctx,
-                  E_Loc       => Actual),
+                 (FA         => FA,
+                  Callsite   => Callsite,
+                  Actual     => Actual,
+                  Formal     => Formal,
+                  In_Vertex  => False,
+                  Vertex_Ctx => Ctx.Vertex_Ctx,
+                  E_Loc      => Actual),
                V);
 
             if Is_Aliased (Formal)

@@ -354,18 +354,18 @@ package body Flow.Control_Flow_Graph.Utility is
    -------------------------------
 
    function Make_Parameter_Attributes
-     (FA          : Flow_Analysis_Graphs;
-      Call_Vertex : Node_Id;
-      Actual      : Node_Id;
-      Formal      : Entity_Id;
-      In_Vertex   : Boolean;
-      Subp_Calls  : Call_Sets.Set := Call_Sets.Empty_Set;
-      Indt_Calls  : Node_Sets.Set := Node_Sets.Empty_Set;
-      Vertex_Ctx  : Vertex_Context;
-      E_Loc       : Node_Or_Entity_Id)
+     (FA         : Flow_Analysis_Graphs;
+      Callsite   : Node_Id;
+      Actual     : Node_Id;
+      Formal     : Entity_Id;
+      In_Vertex  : Boolean;
+      Subp_Calls : Call_Sets.Set := Call_Sets.Empty_Set;
+      Indt_Calls : Node_Sets.Set := Node_Sets.Empty_Set;
+      Vertex_Ctx : Vertex_Context;
+      E_Loc      : Node_Or_Entity_Id)
       return V_Attributes
    is
-      Subprogram : constant Entity_Id := Get_Called_Entity (Call_Vertex);
+      Subprogram : constant Entity_Id := Get_Called_Entity (Callsite);
       Scope      : Flow_Scope renames FA.B_Scope;
 
       Ext_Relevant_To_Formal : constant Boolean :=
@@ -378,7 +378,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Is_Parameter      := True;
       A.Subprogram_Calls  := Subp_Calls;
       A.Indirect_Calls    := Indt_Calls;
-      A.Call_Vertex       := Direct_Mapping_Id (Call_Vertex);
+      A.Call_Vertex       := Direct_Mapping_Id (Callsite);
       A.Parameter_Actual  := Direct_Mapping_Id (Actual);
       A.Parameter_Formal  := Direct_Mapping_Id (Formal);
       A.Loops             := Vertex_Ctx.Current_Loops;
@@ -633,12 +633,12 @@ package body Flow.Control_Flow_Graph.Utility is
    ----------------------------
 
    function Make_Global_Attributes
-     (Call_Vertex : Node_Id;
-      Global      : Flow_Id;
-      Mode        : Param_Mode;
-      Scope       : Flow_Scope;
-      Vertex_Ctx  : Vertex_Context;
-      E_Loc       : Node_Or_Entity_Id := Empty)
+     (Callsite   : Node_Id;
+      Global     : Flow_Id;
+      Mode       : Param_Mode;
+      Scope      : Flow_Scope;
+      Vertex_Ctx : Vertex_Context;
+      E_Loc      : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
       G : constant Flow_Id := Change_Variant (Global, Normal_Use);
@@ -647,7 +647,7 @@ package body Flow.Control_Flow_Graph.Utility is
       Tmp : Flow_Id_Sets.Set;
    begin
       A.Is_Global_Parameter := True;
-      A.Call_Vertex         := Direct_Mapping_Id (Call_Vertex);
+      A.Call_Vertex         := Direct_Mapping_Id (Callsite);
       A.Parameter_Formal    := Global;
       A.Loops               := Vertex_Ctx.Current_Loops;
       A.In_Nested_Package   := Vertex_Ctx.In_Nested_Package;
