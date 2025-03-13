@@ -19,8 +19,8 @@ loops_static.adb:36:13: high: array index check might fail (e.g. when A'First = 
 loops_static.adb:38:46: high: overflow check might fail, cannot prove upper bound for I - A'First (e.g. when A = (others => 0) and A'First = Integer'First+1 and A'Last = 1 and I = 1) [reason for check: result of subtraction must fit in a 32-bits machine integer]
 loops_static.adb:38:56: high: overflow check might fail, cannot prove upper bound for I - A'First + 1 (e.g. when A = (others => 0) and A'First = Integer'First+2 and A'Last = 1 and I = 1) [reason for check: result of addition must fit in a 32-bits machine integer]
 loops_static.adb:38:56: info: range check proved (CVC5: 4 VC)
-loops_static.adb:41:46: high: assertion might fail, cannot prove A (A'First + I) = 0 (e.g. when A = (1 => 0, others => 1) and A'First = -1 and A'Last = 1 and I = 1) [possible fix: subprogram at loops_static.ads:6 should mention A in a precondition]
-loops_static.adb:41:57: high: array index check might fail (e.g. when A = (others => 0) and A'First = 0 and A'Last = 1 and I = 2) [reason for check: result of addition must be a valid index into the array]
+loops_static.adb:41:46: high: assertion might fail, cannot prove A (A'First + I) = 0 (e.g. when A = (1 => 0, others => 1) and A'First = -1 and A'Last = 1 and A_Length = 3 and I = 1) [possible fix: subprogram at loops_static.ads:6 should mention A in a precondition]
+loops_static.adb:41:57: high: array index check might fail (e.g. when A = (others => 0) and A'First = 0 and A'Last = 1 and A_Length = 2 and I = 2) [reason for check: result of addition must be a valid index into the array]
 loops_static.adb:41:57: info: overflow check proved (CVC5: 4 VC)
 loops_static.adb:44:07: medium: assertion might fail
 loops_static.adb:49:11: warning: unused assignment
@@ -31,7 +31,7 @@ loops_static.adb:52:32: warning: statement has no effect
 loops_static.adb:53:13: warning: statement has no effect
 loops_static.adb:53:19: info: index check proved (CVC5: 4 VC)
 loops_static.adb:54:20: warning: unused assignment
-loops_static.adb:58:42: high: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, 1 => 0) and J = 0) [possible fix: subprogram at loops_static.ads:8 should mention A in a precondition]
+loops_static.adb:58:42: high: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, 1 => 0) and I = 1 and J = 0) [possible fix: subprogram at loops_static.ads:8 should mention A in a precondition]
 loops_static.adb:58:45: info: index check proved (CVC5: 4 VC)
 loops_static.adb:60:07: medium: assertion might fail
 loops_static.adb:65:23: info: cannot unroll loop (local non-scalar declaration at line 70)
@@ -54,7 +54,7 @@ loops_static.adb:88:35: warning: statement has no effect
 loops_static.adb:89:16: warning: statement has no effect
 loops_static.adb:89:22: info: index check proved (CVC5: 4 VC)
 loops_static.adb:90:23: warning: unused assignment
-loops_static.adb:95:42: high: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, 1 => 0) and J = 0) [possible fix: subprogram at loops_static.ads:12 should mention A in a precondition]
+loops_static.adb:95:42: high: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, 1 => 0) and I = 1 and J = 0) [possible fix: subprogram at loops_static.ads:12 should mention A in a precondition]
 loops_static.adb:95:45: info: index check proved (CVC5: 4 VC)
 loops_static.adb:97:07: medium: assertion might fail
 loops_static.adb:102:11: warning: unused assignment
@@ -68,7 +68,7 @@ loops_static.adb:108:35: warning: statement has no effect
 loops_static.adb:109:16: warning: statement has no effect
 loops_static.adb:109:22: info: index check proved (CVC5: 4 VC)
 loops_static.adb:110:23: warning: unused assignment
-loops_static.adb:115:42: high: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, 1 => 0) and J = 0) [possible fix: subprogram at loops_static.ads:14 should mention A in a precondition]
+loops_static.adb:115:42: high: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, 1 => 0) and I = 1 and J = 0) [possible fix: subprogram at loops_static.ads:14 should mention A in a precondition]
 loops_static.adb:115:45: info: index check proved (CVC5: 4 VC)
 loops_static.adb:117:07: medium: assertion might fail
 loops_static.adb:122:11: warning: unused assignment
@@ -81,7 +81,7 @@ loops_static.adb:128:35: warning: statement has no effect
 loops_static.adb:129:16: warning: statement has no effect
 loops_static.adb:129:22: info: index check proved (CVC5: 4 VC)
 loops_static.adb:130:23: warning: unused assignment
-loops_static.adb:135:42: high: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, 1 => 0) and J = 0) [possible fix: subprogram at loops_static.ads:16 should mention A in a precondition]
+loops_static.adb:135:42: high: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, 1 => 0) and I = 1 and J = 0) [possible fix: subprogram at loops_static.ads:16 should mention A in a precondition]
 loops_static.adb:135:45: info: index check proved (CVC5: 4 VC)
 loops_static.adb:137:07: medium: assertion might fail
 loops_static.adb:142:11: warning: unused assignment
@@ -94,7 +94,7 @@ loops_static.adb:148:38: warning: statement has no effect
 loops_static.adb:149:19: warning: statement has no effect
 loops_static.adb:149:25: info: index check proved (CVC5: 4 VC)
 loops_static.adb:150:26: warning: unused assignment
-loops_static.adb:155:42: high: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, 1 => 0) and J = 0) [possible fix: subprogram at loops_static.ads:18 should mention A in a precondition]
+loops_static.adb:155:42: high: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, 1 => 0) and I = 1 and J = 0) [possible fix: subprogram at loops_static.ads:18 should mention A in a precondition]
 loops_static.adb:155:45: info: index check proved (CVC5: 4 VC)
 loops_static.adb:157:07: medium: assertion might fail
 loops_static.adb:160:04: warning: analyzing unreferenced function "Loop9" [unreferenced-function]
@@ -104,7 +104,7 @@ loops_static.adb:164:13: high: array index check might fail (e.g. when I = 1 and
 loops_static.adb:166:20: info: initialization of "Bad" proved
 loops_static.adb:168:38: info: cannot unroll loop (too many loop iterations)
 loops_static.adb:169:25: info: index check proved (CVC5: 4 VC)
-loops_static.adb:176:42: high: assertion might fail, cannot prove R (J) = 0 (e.g. when J = 0 and R = (1 => 0, others => 1) and R'First = 0 and R'Last = 2)
+loops_static.adb:176:42: high: assertion might fail, cannot prove R (J) = 0 (e.g. when A = (1 => 0, others => 1) and A'First = 0 and A'Last = 2 and I = 1 and J = 0 and R = (1 => 0, others => 1) and R'First = 0 and R'Last = 2)
 loops_static.adb:176:45: info: index check proved (CVC5: 4 VC)
 loops_static.adb:178:07: medium: assertion might fail
 loops_static.adb:180:07: warning: this statement is never reached

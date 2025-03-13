@@ -1041,7 +1041,7 @@ silly.adb:6:26: info: division check proved (CVC5: 1 VC)
 silly.adb:12:22: info: division check proved (CVC5: 1 VC)
 simple_math.adb:6:07: info: initialization of "Q" proved
 simple_math.adb:7:07: info: initialization of "R" proved
-simple_math.adb:12:34: medium: loop variant might fail (e.g. when Q = 0)
+simple_math.adb:12:34: medium: loop variant might fail
 simple_math.adb:13:19: medium: divide by zero might fail (e.g. when Q = 0) [possible fix: loop at line 11 should mention Q in a loop invariant]
 simple_math.adb:15:25: info: division check proved (CVC5: 1 VC)
 simple_math.adb:18:14: info: range check proved (CVC5: 2 VC)

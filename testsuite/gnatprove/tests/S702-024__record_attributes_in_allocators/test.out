@@ -30,7 +30,7 @@ test_constrained.adb:19:07: info: absence of resource or memory leak at end of s
 test_constrained.adb:21:09: info: pointer dereference check proved (CVC5: 1 VC)
 test_constrained.adb:21:09: info: range check proved (CVC5: 1 VC)
 test_constrained.adb:21:13: medium: discriminant check might fail (e.g. when Y.all = (B => True, X => 0))
-test_constrained.adb:21:16: medium: discriminant check might fail (e.g. when Y.all = (B => True, X => 0))
+test_constrained.adb:21:16: medium: discriminant check might fail
 test_constrained.adb:24:04: warning: analyzing unreferenced procedure "Test_3" [unreferenced-procedure]
 test_constrained.adb:24:14: warning: subprogram "Test_3" has no effect
 test_constrained.adb:25:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
@@ -42,14 +42,14 @@ test_constrained.adb:31:07: info: absence of resource or memory leak at end of s
 test_constrained.adb:33:09: info: pointer dereference check proved (CVC5: 1 VC)
 test_constrained.adb:33:09: info: range check proved (CVC5: 1 VC)
 test_constrained.adb:33:13: medium: discriminant check might fail (e.g. when Y.all = (B => False, X => 0))
-test_constrained.adb:33:16: medium: discriminant check might fail (e.g. when Y.all = (B => False, X => 0))
+test_constrained.adb:33:16: medium: discriminant check might fail
 test_constrained.adb:36:04: warning: analyzing unreferenced procedure "Test_5" [unreferenced-procedure]
 test_constrained.adb:36:14: warning: subprogram "Test_5" has no effect
 test_constrained.adb:37:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 test_constrained.adb:39:09: info: pointer dereference check proved (CVC5: 1 VC)
 test_constrained.adb:39:09: info: range check proved (CVC5: 1 VC)
 test_constrained.adb:39:13: medium: discriminant check might fail (e.g. when Y.all = (B => False, X => 0))
-test_constrained.adb:39:16: medium: discriminant check might fail (e.g. when Y.all = (B => False, X => 0))
+test_constrained.adb:39:16: medium: discriminant check might fail
 test_constrained.adb:42:04: warning: analyzing unreferenced procedure "Test_6" [unreferenced-procedure]
 test_constrained.adb:42:14: warning: subprogram "Test_6" has no effect
 test_constrained.adb:43:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)

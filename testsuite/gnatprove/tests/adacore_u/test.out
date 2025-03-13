@@ -128,7 +128,7 @@ communication.ads:9:14: info: implicit aspect Always_Terminates on "Create" has 
 communication.ads:11:23: info: initialization of "Message" proved
 communication.ads:14:11: info: flow dependencies proved
 communication.ads:18:26: info: initialization of "E" proved
-communication.ads:19:33: medium: range check might fail, cannot prove lower bound for V_Ext (e.g. when Max = 0 and V_Ext = -1) [reason for check: default component value must fit in the type]
+communication.ads:19:33: medium: range check might fail, cannot prove lower bound for V_Ext (e.g. when V_Ext = -1) [reason for check: default component value must fit in the type]
 communication.ads:21:07: info: range check proved (CVC5: 2 VC)
 communication.ads:22:07: medium: type "Buffer" is not fully initialized
 counting.adb:7:35: info: initialization of "Black_Counter" constituent of "State" proved
