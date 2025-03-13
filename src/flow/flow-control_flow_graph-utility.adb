@@ -354,16 +354,15 @@ package body Flow.Control_Flow_Graph.Utility is
    -------------------------------
 
    function Make_Parameter_Attributes
-     (FA                           : Flow_Analysis_Graphs;
-      Call_Vertex                  : Node_Id;
-      Actual                       : Node_Id;
-      Formal                       : Entity_Id;
-      In_Vertex                    : Boolean;
-      Discriminants_Or_Bounds_Only : Boolean;
-      Subp_Calls                   : Call_Sets.Set   := Call_Sets.Empty_Set;
-      Indt_Calls                   : Node_Sets.Set   := Node_Sets.Empty_Set;
-      Vertex_Ctx                   : Vertex_Context;
-      E_Loc                        : Node_Or_Entity_Id)
+     (FA          : Flow_Analysis_Graphs;
+      Call_Vertex : Node_Id;
+      Actual      : Node_Id;
+      Formal      : Entity_Id;
+      In_Vertex   : Boolean;
+      Subp_Calls  : Call_Sets.Set := Call_Sets.Empty_Set;
+      Indt_Calls  : Node_Sets.Set := Node_Sets.Empty_Set;
+      Vertex_Ctx  : Vertex_Context;
+      E_Loc       : Node_Or_Entity_Id)
       return V_Attributes
    is
       Subprogram : constant Entity_Id := Get_Called_Entity (Call_Vertex);
@@ -388,7 +387,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Error_Location    := E_Loc;
 
       if In_Vertex then
-         if Discriminants_Or_Bounds_Only then
+         if Ekind (Formal) = E_Out_Parameter then
             declare
                Formal_Type : constant Entity_Id := Get_Type (Formal, Scope);
 
@@ -547,6 +546,13 @@ package body Flow.Control_Flow_Graph.Utility is
                   pragma Assert (not A.Variables_Used.Is_Empty);
                end if;
             end;
+
+         --  Result of a function with side effects doesn't contribute to call
+         --  inputs.
+
+         elsif Ekind (Formal) = E_Function then
+            pragma Assert (Is_Function_With_Side_Effects (Formal));
+
          else
             A.Variables_Used :=
               Get_Variables
@@ -627,13 +633,13 @@ package body Flow.Control_Flow_Graph.Utility is
    ----------------------------
 
    function Make_Global_Attributes
-     (Call_Vertex                  : Node_Id;
-      Global                       : Flow_Id;
-      Scope                        : Flow_Scope;
-      Discriminants_Or_Bounds_Only : Boolean;
-      Vertex_Ctx                   : Vertex_Context;
-      Is_Assertion                 : Boolean           := False;
-      E_Loc                        : Node_Or_Entity_Id := Empty)
+     (Call_Vertex  : Node_Id;
+      Global       : Flow_Id;
+      Mode         : Param_Mode;
+      Scope        : Flow_Scope;
+      Vertex_Ctx   : Vertex_Context;
+      Is_Assertion : Boolean           := False;
+      E_Loc        : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
       G : constant Flow_Id := Change_Variant (Global, Normal_Use);
@@ -652,7 +658,7 @@ package body Flow.Control_Flow_Graph.Utility is
 
       case Global.Variant is
          when In_View =>
-            if Discriminants_Or_Bounds_Only then
+            if Mode = Mode_Out then
                if G.Kind = Direct_Mapping
                  and then
                    Is_Unconstrained_Or_Tagged_Item (Get_Direct_Mapping_Id (G))
