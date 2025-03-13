@@ -38,7 +38,8 @@ package body Flow.Interprocedural is
    function Find_Parameter_Vertex (FA        : Flow_Analysis_Graphs;
                                    Callsite  : Flow_Graphs.Vertex_Id;
                                    Parameter : Flow_Id)
-                                   return Flow_Graphs.Vertex_Id;
+                                   return Flow_Graphs.Vertex_Id
+     with Pre => Parameter.Variant in In_View | Out_View;
    --  Search for the relevant parameter vertex for a given call
 
    ---------------------------
@@ -274,11 +275,10 @@ package body Flow.Interprocedural is
             Globals : Global_Flow_Ids;
             --  Globals deduced from the contract (if available) or body
 
-            The_In  : Flow_Id;
-            The_Out : Flow_Id;
-
             Ghost_Subprogram : constant Boolean :=
               Is_Ghost_Entity (Called_Thing);
+
+            Inputs, Outputs : Flow_Id_Sets.Set;
 
          begin
             --  Collect all the globals first
@@ -291,6 +291,9 @@ package body Flow.Interprocedural is
                             Use_Deduced_Globals => not FA.Generating_Globals);
 
                Remove_Constants (Globals.Inputs);
+
+               Inputs.Move  (Source => Globals.Inputs);
+               Outputs.Move (Source => Globals.Outputs);
             end if;
 
             --  Global outputs might act as implicit inputs, e.g. when they
@@ -299,15 +302,13 @@ package body Flow.Interprocedural is
             --  don't act as implicit inputs, the vertex will use no variables
             --  and the dependency edge that we add will have no effect.
 
-            for Output of Globals.Outputs loop
-               Globals.Inputs.Include (Change_Variant (Output, In_View));
+            for Output of Outputs loop
+               Inputs.Include (Change_Variant (Output, In_View));
             end loop;
 
             --  Add formal parameters
 
             for E of Get_Explicit_Formals (Called_Thing) loop
-               The_In  := Direct_Mapping_Id (E, In_View);
-               The_Out := Direct_Mapping_Id (E, Out_View);
 
                --  Formal inputs might act as implicit outputs, e.g. when they
                --  are of an access-to-variable type.
@@ -315,30 +316,26 @@ package body Flow.Interprocedural is
                if Ekind (E) in E_Out_Parameter | E_In_Out_Parameter
                  or else Is_Writable_Parameter (E)
                then
-                  Globals.Outputs.Insert (The_Out);
+                  Outputs.Insert (Direct_Mapping_Id (E, Out_View));
                end if;
 
                --  Formal outputs might act as inputs as well, just like
                --  global outputs, so ultimately all formals act as inputs.
 
-               Globals.Inputs.Insert (The_In);
+               Inputs.Insert (Direct_Mapping_Id (E, In_View));
             end loop;
 
             --  Add function result, which acts as a parameter of mode out
+
             if Ekind (Called_Thing) = E_Function then
-               Globals.Outputs.Insert
-                 (Direct_Mapping_Id (Called_Thing, Out_View));
+               Outputs.Insert (Direct_Mapping_Id (Called_Thing, Out_View));
             end if;
 
             if Ekind (Scope (Called_Thing)) = E_Protected_Type then
                declare
-                  Implicit : constant Flow_Id :=
-                    Direct_Mapping_Id (Scope (Called_Thing));
+                  Implicit : constant Entity_Id := Scope (Called_Thing);
 
                begin
-                  The_In  := Change_Variant (Implicit, In_View);
-                  The_Out := Change_Variant (Implicit, Out_View);
-
                   --  The protected object may already appear as a (generated)
                   --  Global, e.g. when a protected subprogram calls an
                   --  (external) proxy that externally calls a protected
@@ -347,15 +344,15 @@ package body Flow.Interprocedural is
                   --  conservatively Include and not Insert the protected
                   --  object. If the current implicit parameter is the
                   --  protected type we still include it.
-                  Globals.Inputs.Include (The_In);
+                  Inputs.Include (Direct_Mapping_Id (Implicit, In_View));
                   if Ekind (Called_Thing) /= E_Function then
-                     Globals.Outputs.Include (The_Out);
+                     Outputs.Include (Direct_Mapping_Id (Implicit, Out_View));
                   end if;
                end;
             end if;
 
-            if Globals.Outputs.Is_Empty then
-               if not Globals.Inputs.Is_Empty then
+            if Outputs.Is_Empty then
+               if not Inputs.Is_Empty then
                   --  Every input flows into the null export vertex
                   declare
                      Output_V : constant Flow_Graphs.Vertex_Id :=
@@ -364,7 +361,7 @@ package body Flow.Interprocedural is
                           Change_Variant (Null_Export_Flow_Id, Out_View));
 
                   begin
-                     for Input of Globals.Inputs loop
+                     for Input of Inputs loop
                         FA.TDG.Add_Edge
                           (Find_Parameter_Vertex (FA, V, Input),
                            Output_V,
@@ -374,7 +371,7 @@ package body Flow.Interprocedural is
                end if;
             else
                --  Every input flows into all outputs
-               for Output of Globals.Outputs loop
+               for Output of Outputs loop
                   declare
                      Output_V : constant Flow_Graphs.Vertex_Id :=
                        Find_Parameter_Vertex (FA, V, Output);
@@ -383,7 +380,7 @@ package body Flow.Interprocedural is
                        Is_Ghost_Entity (Output);
 
                   begin
-                     for Input of Globals.Inputs loop
+                     for Input of Inputs loop
                         declare
                            Dependency_Allowed : constant Boolean :=
                              Output_Is_Ghost
