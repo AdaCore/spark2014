@@ -633,13 +633,12 @@ package body Flow.Control_Flow_Graph.Utility is
    ----------------------------
 
    function Make_Global_Attributes
-     (Call_Vertex  : Node_Id;
-      Global       : Flow_Id;
-      Mode         : Param_Mode;
-      Scope        : Flow_Scope;
-      Vertex_Ctx   : Vertex_Context;
-      Is_Assertion : Boolean           := False;
-      E_Loc        : Node_Or_Entity_Id := Empty)
+     (Call_Vertex : Node_Id;
+      Global      : Flow_Id;
+      Mode        : Param_Mode;
+      Scope       : Flow_Scope;
+      Vertex_Ctx  : Vertex_Context;
+      E_Loc       : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
       G : constant Flow_Id := Change_Variant (Global, Normal_Use);
@@ -654,7 +653,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.In_Nested_Package   := Vertex_Ctx.In_Nested_Package;
       A.Warnings_Off        := Vertex_Ctx.Warnings_Off;
       A.Error_Location      := E_Loc;
-      A.Is_Assertion        := Is_Assertion;
+      A.Is_Assertion        := Mode = Mode_Proof;
 
       case Global.Variant is
          when In_View =>

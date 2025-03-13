@@ -170,13 +170,12 @@ package Flow.Control_Flow_Graph.Utility is
    --  Note: variables defined and used are calculated automatically
 
    function Make_Global_Attributes
-     (Call_Vertex  : Node_Id;
-      Global       : Flow_Id;
-      Mode         : Param_Mode;
-      Scope        : Flow_Scope;
-      Vertex_Ctx   : Vertex_Context;
-      Is_Assertion : Boolean           := False;
-      E_Loc        : Node_Or_Entity_Id := Empty)
+     (Call_Vertex : Node_Id;
+      Global      : Flow_Id;
+      Mode        : Param_Mode;
+      Scope       : Flow_Scope;
+      Vertex_Ctx  : Vertex_Context;
+      E_Loc       : Node_Or_Entity_Id := Empty)
       return V_Attributes
    with Pre  => Global.Variant in In_View | Out_View,
         Post => not Make_Global_Attributes'Result.Is_Null_Node and

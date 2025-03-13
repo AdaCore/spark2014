@@ -6506,13 +6506,12 @@ package body Flow.Control_Flow_Graph is
       for R of Globals.Proof_Ins loop
          Add_Vertex (FA,
                      Make_Global_Attributes
-                       (Call_Vertex  => Callsite,
-                        Global       => R,
-                        Mode         => Mode_Proof,
-                        Scope        => FA.B_Scope,
-                        Vertex_Ctx   => Ctx.Vertex_Ctx,
-                        E_Loc        => Callsite,
-                        Is_Assertion => True),
+                       (Call_Vertex => Callsite,
+                        Global      => R,
+                        Mode        => Mode_Proof,
+                        Scope       => FA.B_Scope,
+                        Vertex_Ctx  => Ctx.Vertex_Ctx,
+                        E_Loc       => Callsite),
                      V);
          Ins.Append (V);
       end loop;
