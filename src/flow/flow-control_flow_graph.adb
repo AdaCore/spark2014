@@ -1508,6 +1508,12 @@ package body Flow.Control_Flow_Graph is
       if Extensions_Visible (E, FA.B_Scope) then
          Process (Direct_Mapping_Id (E, Facet => Extension_Part));
       end if;
+
+      if Ekind (E) in E_In_Out_Parameter | E_Out_Parameter
+        and then Has_Discriminants (Get_Type (E, FA.B_Scope))
+      then
+         Process (Direct_Mapping_Id (E, Facet => The_Bounds));
+      end if;
    end Create_Initial_And_Final_Vertices;
 
    procedure Create_Initial_And_Final_Vertices
@@ -1576,6 +1582,15 @@ package body Flow.Control_Flow_Graph is
 
       if Extensions_Visible (F, FA.B_Scope) then
          Process ((F with delta Facet => Extension_Part));
+      end if;
+
+      if F.Kind = Direct_Mapping
+        and then Ekind (Get_Direct_Mapping_Id (F)) in E_In_Out_Parameter
+                                                    | E_Out_Parameter
+        and then
+          Has_Discriminants (Get_Type (Get_Direct_Mapping_Id (F), FA.B_Scope))
+      then
+         Process ((F with delta Facet => The_Bounds));
       end if;
    end Create_Initial_And_Final_Vertices;
 
