@@ -24,7 +24,6 @@
 with Flow_Classwide; use Flow_Classwide;
 with Flow_Utility;   use Flow_Utility;
 with Sem_Aux;        use Sem_Aux;
-with Sem_Util;       use Sem_Util;
 with Sinfo.Nodes;    use Sinfo.Nodes;
 with SPARK_Util;     use SPARK_Util;
 
@@ -281,20 +280,6 @@ package body Flow.Interprocedural is
             Ghost_Subprogram : constant Boolean :=
               Is_Ghost_Entity (Called_Thing);
 
-            function Is_Implicit_Input (F : Flow_Id) return Boolean
-              with Pre => F.Kind in Direct_Mapping | Magic_String;
-            --  Returns True iff F should augument the explicit input set of
-            --  a subprogram, as described in SPARK RM 6.1.5(5).
-
-            -----------------------
-            -- Is_Implicit_Input --
-            -----------------------
-
-            function Is_Implicit_Input (F : Flow_Id) return Boolean is
-              (F.Kind = Direct_Mapping
-                 and then Ekind (F.Node) /= E_Abstract_State
-                 and then Is_Unconstrained_Or_Tagged_Item (F.Node));
-
          begin
             --  Collect all the globals first
             if Ekind (Called_Thing) /= E_Subprogram_Type then
@@ -308,43 +293,38 @@ package body Flow.Interprocedural is
                Remove_Constants (Globals.Inputs);
             end if;
 
-            --  Add implicit global inputs
+            --  Global outputs might act as implicit inputs, e.g. when they
+            --  include discriminants or attributes like array bounds, and
+            --  then their vertex will use the necessary variables. If they
+            --  don't act as implicit inputs, the vertex will use no variables
+            --  and the dependency edge that we add will have no effect.
+
             for Output of Globals.Outputs loop
-               if Is_Implicit_Input (Output) then
-                  Globals.Inputs.Include (Change_Variant (Output, In_View));
-               end if;
+               Globals.Inputs.Include (Change_Variant (Output, In_View));
             end loop;
 
-            --  Add parameters
+            --  Add formal parameters
+
             for E of Get_Explicit_Formals (Called_Thing) loop
                The_In  := Direct_Mapping_Id (E, In_View);
                The_Out := Direct_Mapping_Id (E, Out_View);
 
-               case Ekind (E) is
-                  when E_In_Parameter =>
-                     if Is_Writable_Parameter (E) then
-                        Globals.Outputs.Insert (The_Out);
-                     end if;
-                     Globals.Inputs.Insert (The_In);
+               --  Formal inputs might act as implicit outputs, e.g. when they
+               --  are of an access-to-variable type.
 
-                  when E_In_Out_Parameter =>
-                     Globals.Inputs.Insert (The_In);
-                     Globals.Outputs.Insert (The_Out);
+               if Ekind (E) in E_Out_Parameter | E_In_Out_Parameter
+                 or else Is_Writable_Parameter (E)
+               then
+                  Globals.Outputs.Insert (The_Out);
+               end if;
 
-                  when E_Out_Parameter =>
-                     if Is_Implicit_Input (The_In) then
-                        Globals.Inputs.Insert (The_In);
-                     end if;
-                     Globals.Outputs.Insert (The_Out);
+               --  Formal outputs might act as inputs as well, just like
+               --  global outputs, so ultimately all formals act as inputs.
 
-                  when others =>
-                     raise Program_Error;
-
-               end case;
+               Globals.Inputs.Insert (The_In);
             end loop;
 
             --  Add function result, which acts as a parameter of mode out
-
             if Ekind (Called_Thing) = E_Function then
                Globals.Outputs.Insert
                  (Direct_Mapping_Id (Called_Thing, Out_View));
