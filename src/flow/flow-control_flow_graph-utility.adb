@@ -376,17 +376,16 @@ package body Flow.Control_Flow_Graph.Utility is
       A : V_Attributes := Null_Attributes;
 
    begin
-      A.Is_Parameter                 := True;
-      A.Is_Discr_Or_Bounds_Parameter := Discriminants_Or_Bounds_Only;
-      A.Subprogram_Calls             := Subp_Calls;
-      A.Indirect_Calls               := Indt_Calls;
-      A.Call_Vertex                  := Direct_Mapping_Id (Call_Vertex);
-      A.Parameter_Actual             := Direct_Mapping_Id (Actual);
-      A.Parameter_Formal             := Direct_Mapping_Id (Formal);
-      A.Loops                        := Vertex_Ctx.Current_Loops;
-      A.In_Nested_Package            := Vertex_Ctx.In_Nested_Package;
-      A.Warnings_Off                 := Vertex_Ctx.Warnings_Off;
-      A.Error_Location               := E_Loc;
+      A.Is_Parameter      := True;
+      A.Subprogram_Calls  := Subp_Calls;
+      A.Indirect_Calls    := Indt_Calls;
+      A.Call_Vertex       := Direct_Mapping_Id (Call_Vertex);
+      A.Parameter_Actual  := Direct_Mapping_Id (Actual);
+      A.Parameter_Formal  := Direct_Mapping_Id (Formal);
+      A.Loops             := Vertex_Ctx.Current_Loops;
+      A.In_Nested_Package := Vertex_Ctx.In_Nested_Package;
+      A.Warnings_Off      := Vertex_Ctx.Warnings_Off;
+      A.Error_Location    := E_Loc;
 
       if In_Vertex then
          if Discriminants_Or_Bounds_Only then
@@ -642,15 +641,14 @@ package body Flow.Control_Flow_Graph.Utility is
 
       Tmp : Flow_Id_Sets.Set;
    begin
-      A.Is_Global_Parameter          := True;
-      A.Is_Discr_Or_Bounds_Parameter := Discriminants_Or_Bounds_Only;
-      A.Call_Vertex                  := Direct_Mapping_Id (Call_Vertex);
-      A.Parameter_Formal             := Global;
-      A.Loops                        := Vertex_Ctx.Current_Loops;
-      A.In_Nested_Package            := Vertex_Ctx.In_Nested_Package;
-      A.Warnings_Off                 := Vertex_Ctx.Warnings_Off;
-      A.Error_Location               := E_Loc;
-      A.Is_Assertion                 := Is_Assertion;
+      A.Is_Global_Parameter := True;
+      A.Call_Vertex         := Direct_Mapping_Id (Call_Vertex);
+      A.Parameter_Formal    := Global;
+      A.Loops               := Vertex_Ctx.Current_Loops;
+      A.In_Nested_Package   := Vertex_Ctx.In_Nested_Package;
+      A.Warnings_Off        := Vertex_Ctx.Warnings_Off;
+      A.Error_Location      := E_Loc;
+      A.Is_Assertion        := Is_Assertion;
 
       case Global.Variant is
          when In_View =>

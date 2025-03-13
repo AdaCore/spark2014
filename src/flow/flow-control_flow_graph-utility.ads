@@ -175,9 +175,7 @@ package Flow.Control_Flow_Graph.Utility is
           not Make_Parameter_Attributes'Result.Is_Null_Node and
           not Make_Parameter_Attributes'Result.Is_Program_Node and
           not Make_Parameter_Attributes'Result.Is_Global_Parameter and
-          Make_Parameter_Attributes'Result.Is_Parameter and
-          Make_Parameter_Attributes'Result.Is_Discr_Or_Bounds_Parameter =
-            Discriminants_Or_Bounds_Only;
+          Make_Parameter_Attributes'Result.Is_Parameter;
    --  Create attributes for a parameter of a subprogram call. If In_Vertex is
    --  true, create attributes for the IN version of a parameter; otherwise,
    --  create attributes for the OUT version.
