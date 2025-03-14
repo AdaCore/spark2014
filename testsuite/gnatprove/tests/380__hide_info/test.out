@@ -16,7 +16,7 @@ main.adb:60:16: info: implicit aspect Always_Terminates on "Rec_And" has been pr
 main.adb:60:16: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
 main.adb:60:16: warning: function contract might not be available on recursive calls [contracts-recursive]
 main.adb:61:57: info: subprogram variant proved (CVC5: 1 VC)
-main.adb:64:32: medium: postcondition might fail, cannot prove Rec_And'Result = Y (e.g. when Rec_And'Result = True and X = True and Y = False) [possible fix: add or complete related loop invariants or postconditions]
+main.adb:64:32: medium: postcondition might fail, cannot prove Rec_And'Result = Y (e.g. when Rec_And'Result = True and Y = False) [possible fix: add or complete related loop invariants or postconditions]
 main.adb:69:16: info: implicit aspect Always_Terminates on "Rec_And_2" has been proved, subprogram will terminate
 main.adb:69:16: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
 main.adb:69:16: warning: function contract might not be available on recursive calls [contracts-recursive]

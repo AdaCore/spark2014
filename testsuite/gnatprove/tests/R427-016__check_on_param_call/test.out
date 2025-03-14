@@ -220,10 +220,10 @@ formals_rec_split.adb:36:11: medium: discriminant check might fail, in call inli
 formals_rec_split.adb:43:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split.adb:44:04: info: analyzing call to "P2" in context
 formals_rec_split.adb:47:10: info: precondition proved (Trivial: 1 VC)
-formals_rec_split.adb:47:13: medium: discriminant check might fail (e.g. when U = (D => False) and X = True)
+formals_rec_split.adb:47:13: medium: discriminant check might fail (e.g. when U = (D => False))
 formals_rec_split.adb:49:10: info: analyzing call to "P2" in context
 formals_rec_split.adb:53:10: info: precondition proved (Trivial: 1 VC)
-formals_rec_split.adb:53:13: medium: discriminant check might fail (e.g. when U = (D => False) and X = True)
+formals_rec_split.adb:53:13: medium: discriminant check might fail (e.g. when U = (D => False))
 formals_rec_split.adb:55:10: info: analyzing call to "P3" in context
 formals_rec_split_pred.adb:13:31: info: range check proved (CVC5: 1 VC)
 formals_rec_split_pred.adb:14:29: info: discriminant check proved (CVC5: 1 VC)

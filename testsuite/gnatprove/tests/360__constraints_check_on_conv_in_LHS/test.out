@@ -62,7 +62,7 @@ main.adb:138:40: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:142:10: medium: discriminant check might fail (e.g. when V_R.all = (D => 1, F => 4))
 main.adb:142:20: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:142:24: info: discriminant check proved (CVC5: 1 VC)
-main.adb:142:27: medium: discriminant check might fail (e.g. when V_R.all = (D => 1, F => 4))
+main.adb:142:27: medium: discriminant check might fail
 main.adb:146:40: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:150:10: medium: discriminant check might fail
 main.adb:150:19: info: pointer dereference check proved (CVC5: 1 VC)
@@ -83,7 +83,7 @@ main.adb:183:40: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:187:10: medium: discriminant check might fail (e.g. when V_R.all = (D => 1, F => 4))
 main.adb:187:20: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:187:24: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
-main.adb:187:27: medium: discriminant check might fail (e.g. when V_R.all = (D => 1, F => 4))
+main.adb:187:27: medium: discriminant check might fail
 main.adb:191:40: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:195:10: medium: discriminant check might fail
 main.adb:195:19: info: pointer dereference check proved (CVC5: 1 VC)

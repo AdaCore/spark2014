@@ -12,4 +12,4 @@ main.adb:16:37: info: range check proved (CVC5: 1 VC)
 main.adb:23:04: info: range check proved (CVC5: 2 VC)
 main.adb:24:26: info: data dependencies proved
 main.adb:26:29: info: range check proved (CVC5: 1 VC)
-main.adb:26:29: medium: range check might fail (e.g. when V1 = 0) [reason for check: default component value must fit in the type]
+main.adb:26:29: medium: range check might fail [reason for check: default component value must fit in the type]

@@ -10,7 +10,7 @@ deep_delta_predicate_checks.adb:27:17: info: predicate check proved (CVC5: 2 VC)
 deep_delta_predicate_checks.adb:27:28: info: predicate check proved (CVC5: 2 VC)
 deep_delta_predicate_checks.adb:28:17: info: predicate check proved (CVC5: 2 VC)
 deep_delta_predicate_checks.adb:28:31: medium: in inlined predicate at deep_delta_predicate_checks.adb:9
-deep_delta_predicate_checks.adb:28:31: medium: predicate check might fail, cannot prove F2 <= F3 (e.g. when X.G1.F1 = 1 and X.G1.F2 = 1 and X.G1.F3 = 1 and X.G2.F1 = 1 and X.G2.F2 = 1)
+deep_delta_predicate_checks.adb:28:31: medium: predicate check might fail, cannot prove F2 <= F3
 deep_delta_predicate_checks.adb:28:49: info: predicate check proved (CVC5: 2 VC)
 deep_delta_predicate_checks.adb:33:17: info: predicate check proved (CVC5: 2 VC)
 deep_delta_predicate_checks.adb:33:28: info: predicate check proved (CVC5: 2 VC)

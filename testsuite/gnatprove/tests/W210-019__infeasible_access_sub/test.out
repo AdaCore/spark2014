@@ -20,4 +20,4 @@ test.adb:8:07: info: function contract feasibility proved (CVC5: 1 VC)
 test.adb:14:07: info: function contract feasibility proved (CVC5: 1 VC)
 test.adb:22:07: medium: contract of function might not be feasible
 test.adb:25:12: info: range check proved (CVC5: 2 VC)
-test.adb:29:07: medium: contract of function might not be feasible (e.g. when G = 9)
+test.adb:29:07: medium: contract of function might not be feasible
