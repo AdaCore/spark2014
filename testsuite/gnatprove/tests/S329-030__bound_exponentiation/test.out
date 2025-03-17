@@ -1,5 +1,5 @@
 signed.adb:9:07: info: precondition proved (CVC5: 2 VC)
-signed.adb:10:22: info: assertion proved (CVC5: 1 VC; altergo: 1 VC)
+signed.adb:10:22: info: assertion proved (CVC5: 1 VC; colibri: 1 VC)
 signed.adb:10:24: info: overflow check proved (CVC5: 4 VC)
 signed.adb:11:30: info: loop invariant initialization proved (CVC5: 2 VC)
 signed.adb:11:30: info: loop invariant preservation proved (CVC5: 2 VC)

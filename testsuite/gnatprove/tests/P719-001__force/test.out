@@ -8,5 +8,5 @@ arithmetic.adb:6:13: info: implicit aspect Always_Terminates on "Halve_D" has be
 arithmetic.adb:7:19: medium: postcondition might fail
 arithmetic.adb:7:38: info: division check proved (altergo: 1 VC)
 arithmetic.adb:9:07: info: initialization of "R" proved
-arithmetic.adb:15:33: medium: loop invariant might fail in first iteration, cannot prove R = I
-arithmetic.adb:15:33: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove R = I
+arithmetic.adb:16:39: medium: loop invariant might fail in first iteration, cannot prove N > R + R + 1
+arithmetic.adb:16:39: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove N > R + R + 1

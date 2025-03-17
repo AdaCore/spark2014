@@ -33,6 +33,6 @@ fast_exponentiation.ads:11:14: medium: postcondition might fail
 fast_exponentiation.ads:11:22: info: predicate check proved (Trivial: 1 VC)
 fast_exponentiation.ads:11:32: info: predicate check proved (Trivial: 1 VC)
 fast_exponentiation.ads:13:13: info: implicit aspect Always_Terminates on "Fast_Exp_Imperative" has been proved, subprogram will terminate
-fast_exponentiation.ads:15:14: info: postcondition proved (altergo: 1 VC)
+fast_exponentiation.ads:15:14: medium: postcondition might fail
 fast_exponentiation.ads:15:33: info: predicate check proved (Trivial: 1 VC)
 fast_exponentiation.ads:15:43: info: predicate check proved (Trivial: 1 VC)
