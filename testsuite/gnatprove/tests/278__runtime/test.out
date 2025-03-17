@@ -1,3 +1,5 @@
-kb: warning: can't find a toolchain for the following configuration: language 'Ada', target 'some_target', runtime 'some_runtime'
+kb: info: can't find a toolchain for the following configuration: language 'Ada', target 'some_target', runtime 'some_runtime'
+kb: info: can't find a toolchain for the following configuration: language 'Ada', target 'some_target', runtime 'some_runtime'
+kb: info: can't find a toolchain for the following configuration: language 'Ada', target 'some_target', runtime 'some_runtime'
 warning: attribute "Target" of your project file is only used to determine runtime library
 warning: to specify target properties, specify option "-gnateT" using "Builder.Global_Compilation_Switches"
