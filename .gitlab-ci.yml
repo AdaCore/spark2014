@@ -22,6 +22,7 @@ workflow:
 variables:
    PACKAGE_BASE_NAME: spark2014.tar.gz
    PACKAGE_ABSOLUTE_NAME: $CI_PROJECT_DIR/$PACKAGE_BASE_NAME
+   PACKAGE_EXPORT: /tmp/spark2014-export
 
 stages:
   - build
@@ -48,14 +49,11 @@ stages:
     - cd $ANOD_DEFAULT_SANDBOX_DIR
 
 .deploy_package_and_touch_fingerprints: &deploy_package
-    # Unpack the package
+    # Deploying the package is a two-step process. First we unpack the tarball,
+    # by restoring its location at packing time in $PACKAGE_EXPORT.
+    # Then we copy the components into the sandbox via anod-copy-components.
     - tar zxf /tmp/$PACKAGE_BASE_NAME -C /
-
-    # Tell anod that the package has already been built
-    - mkdir -p fingerprints
-    - COMPONENT=`anod eval spark2014 build_space_name --primitive build --qualifier=coverage,assertions`
-    - touch fingerprints/x86_64-linux.$COMPONENT.download_bin.json.assume-unchanged
-    - touch fingerprints/x86_64-linux.$COMPONENT.install.json.assume-unchanged
+    - anod-copy-components $PACKAGE_EXPORT $ANOD_DEFAULT_SANDBOX_DIR
 
 
 .spark2014_test:
@@ -64,15 +62,9 @@ stages:
      - cpu:16
   stage: test
   script:
-    # Move the package out of the way, so it does not influence "anod vcs"
-    - mv $PACKAGE_ABSOLUTE_NAME /tmp
-
-    # add sparklib and internal testsuite for which we want to use most recent
+    # add internal testsuite for which we want to use most recent
     # sources for testing
-    - GENERIC_ANOD_CI_OPTIONS="--add-dep eng/spark/sparklib
-                               --add-dep eng/spark/spark-internal-testsuite"
-
-    - if [[ $CI_PIPELINE_SOURCE == "schedule" ]]; then GENERIC_ANOD_CI_OPTIONS="$GENERIC_ANOD_CI_OPTIONS --continuous-builder-mode"; fi
+    - GENERIC_ANOD_CI_OPTIONS="--add-dep eng/spark/spark-internal-testsuite"
 
     # Setup the "anod vcs as appropriate"
     - *setup_repos
@@ -80,9 +72,6 @@ stages:
     # remove gnat from vcs if present for testing; this is allowed to fail when
     # gnat is not present
     - anod vcs --remove gnat || true
-
-    # Do not rebuild spark2014-doc
-    - anod install spark2014-doc --latest
 
     - *deploy_package
 
@@ -150,9 +139,8 @@ build:
 
     # Create the package
     - SB_WITHOUT_LEADING_SLASH=`echo $ANOD_DEFAULT_SANDBOX_DIR | cut -b2-`
-    - PACKNAME=`anod info build spark2014 --show build_space --qualifier=assertions,coverage`
-    - tar czf $PACKAGE_ABSOLUTE_NAME -C /
-        $SB_WITHOUT_LEADING_SLASH/x86_64-linux/$PACKNAME/install
+    - anod-copy-components --standalone-export $ANOD_DEFAULT_SANDBOX_DIR $PACKAGE_EXPORT
+    - tar czf $PACKAGE_ABSOLUTE_NAME -C/ $PACKAGE_EXPORT
 
   artifacts:
     paths:
@@ -196,30 +184,24 @@ spark2014_nocache:
     ANOD_ENTRY_POINT: test_nocache
     ANOD_QUALIFIERS: assertions,coverage,cleanup-mode=none
 
-#################
-# Test of ACATS #
-#################
+###############################
+# Tests of ACATS and SPARKlib #
+###############################
 
-acats:
+.other_test:
   services:
      - image:pe-base
      - cpu:16
   stage: test
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      when: always
-    - when: never
   script:
-    # Setup the sanbox
-    # Add acats explicitly for this build.
-    - GENERIC_ANOD_CI_OPTIONS="--add-dep eng/toolchain/acats"
+    # Setup the sandbox
     - *setup_repos
 
     # Deploy the installed package
     - *deploy_package
 
     # Test using anod
-    - anod run test_acats
+    - anod run $ANOD_TARGET
 
     # Process the results
     - testsuite_reports
@@ -230,6 +212,26 @@ acats:
         - __results*
      reports:
        junit: xunit-*.xml
+
+acats:
+  extends: .other_test
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+    - when: never
+  variables:
+    GENERIC_ANOD_CI_OPTIONS: "--add-dep eng/toolchain/acats"
+    ANOD_TARGET: test_acats
+
+sparklib:
+  extends: .other_test
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+    - when: never
+  variables:
+    GENERIC_ANOD_CI_OPTIONS: "--add-dep eng/spark/sparklib"
+    ANOD_TARGET: test_sparklib
 
 ################
 # Build of Doc #
