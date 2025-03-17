@@ -7449,10 +7449,11 @@ package body Flow_Utility is
             when N_Selected_Component =>
                Idx := Idx + 1;
 
-            when N_Unchecked_Type_Conversion
-               | N_Explicit_Dereference
-            =>
+            when N_Unchecked_Type_Conversion =>
                null;
+
+            when N_Explicit_Dereference =>
+               Process_Type_Conversions := False;
 
             when others =>
                raise Why.Unexpected_Node;

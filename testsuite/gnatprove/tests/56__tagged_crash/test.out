@@ -1,0 +1,4 @@
+reproduce.adb:5:15: medium: pointer dereference check might fail [possible fix: subprogram at reproduce.ads:4 should mention X in a precondition]
+reproduce.ads:9:19: warning: "Y" is not modified, could be IN
+simple.adb:5:23: medium: pointer dereference check might fail [possible fix: subprogram at simple.ads:11 should mention X in a precondition]
+simple.ads:12:19: warning: "Y" is not modified, could be IN
