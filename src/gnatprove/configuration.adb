@@ -52,8 +52,8 @@ with GPR2.Project.Registry.Pack;
 with GPR2.Project.Registry.Pack.Description;
 with GPR2.Reporter.Console;
 
-with Platform;          use Platform;
-with SPARK2014VSN;      use SPARK2014VSN;
+with Platform;     use Platform;
+with SPARK2014VSN; use SPARK2014VSN;
 with System.Multiprocessors;
 
 package body Configuration is
@@ -75,13 +75,12 @@ package body Configuration is
 
    type Spark_Reporter is new GPR2.Reporter.Console.Object with null record;
 
-   overriding procedure Internal_Report
-     (Self    : in out Spark_Reporter;
-      Message : GPR2.Message.Object);
+   overriding
+   procedure Internal_Report
+     (Self : in out Spark_Reporter; Message : GPR2.Message.Object);
 
-   procedure Abort_Msg (Msg       : String;
-                        With_Help : Boolean)
-     with No_Return;
+   procedure Abort_Msg (Msg : String; With_Help : Boolean)
+   with No_Return;
    --  Stop the program, output the message and the help message when
    --  requested, then exit.
 
@@ -98,15 +97,11 @@ package body Configuration is
    --  - otherwise return the object directory.
 
    procedure Handle_Project_Loading_Switches
-     (Switch    : String;
-      Parameter : String;
-      Section   : String);
+     (Switch : String; Parameter : String; Section : String);
    --  Command line handler which deals with -X switches and -aP switches
 
    procedure Handle_Switch
-     (Switch    : String;
-      Parameter : String;
-      Section   : String);
+     (Switch : String; Parameter : String; Section : String);
    --  Deal with all switches that are not automatic. In gnatprove, all
    --  recognized switches are automatic, so this procedure should only be
    --  called for unknown switches and for switches in section -cargs.
@@ -175,8 +170,8 @@ package body Configuration is
    --  a target and runtime set, but we can't compute the switch, a warning
    --  is issued.
 
-   procedure Check_File_Part_Of_Project (View : Project.View.Object;
-                                         Fn   : String);
+   procedure Check_File_Part_Of_Project
+     (View : Project.View.Object; Fn : String);
    --  Raise an error if the file FN is not part of the project
 
    procedure Check_Duplicate_Bodies (Msg : GPR2.Message.Object);
@@ -233,8 +228,7 @@ package body Configuration is
    -- Abort_Msg --
    ---------------
 
-   procedure Abort_Msg (Msg       : String;
-                        With_Help : Boolean) is
+   procedure Abort_Msg (Msg : String; With_Help : Boolean) is
    begin
       if Msg /= "" then
          Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error, Msg);
@@ -274,8 +268,9 @@ package body Configuration is
       if Msg.Level = GPR2.Message.Warning
         and then Contains (Msg.Message, "does not match source name")
       then
-         Abort_Msg ("Stopping analysis due incorrectly named source files",
-                    With_Help => False);
+         Abort_Msg
+           ("Stopping analysis due incorrectly named source files",
+            With_Help => False);
       end if;
    end Check_Duplicate_Bodies;
 
@@ -283,9 +278,9 @@ package body Configuration is
    -- Internal_Report --
    ---------------------
 
-   overriding procedure Internal_Report
-     (Self    : in out Spark_Reporter;
-      Message : GPR2.Message.Object) is
+   overriding
+   procedure Internal_Report
+     (Self : in out Spark_Reporter; Message : GPR2.Message.Object) is
    begin
       GPR2.Reporter.Console.Object (Self).Internal_Report (Message);
       Check_Duplicate_Bodies (Message);
@@ -295,14 +290,15 @@ package body Configuration is
    -- Check_File_Part_Of_Project --
    --------------------------------
 
-   procedure Check_File_Part_Of_Project (View : Project.View.Object;
-                                         Fn   : String)
-   is
+   procedure Check_File_Part_Of_Project
+     (View : Project.View.Object; Fn : String) is
    begin
       if not View.Has_Source (GPR2.Simple_Name (Fn)) then
          Abort_Msg
-           ("file " & Fn & " of attribute Proof_Switches " &
-              "is not part of the project",
+           ("file "
+            & Fn
+            & " of attribute Proof_Switches "
+            & "is not part of the project",
             With_Help => False);
       end if;
    end Check_File_Part_Of_Project;
@@ -317,8 +313,8 @@ package body Configuration is
       --  as Project.Tree.Target_Name, that we have to normalize first. There
       --  is nothing to check for the native target.
 
-      if View.Tree.Target /=
-        View.Tree.Get_KB.Normalized_Target (Project.Tree.Target_Name)
+      if View.Tree.Target
+        /= View.Tree.Get_KB.Normalized_Target (Project.Tree.Target_Name)
       then
          --  User has already set the attribute, don't try anything smart
          if Has_gnateT_Switch (View) then
@@ -336,8 +332,8 @@ package body Configuration is
                if RT_Attr.Is_Defined then
                   declare
                      Targ_Prop_File : constant String :=
-                       Ada.Directories.Compose (RT_Attr.Value.Text,
-                                                "ada_target_properties");
+                       Ada.Directories.Compose
+                         (RT_Attr.Value.Text, "ada_target_properties");
                   begin
                      if Ada.Directories.Exists (Targ_Prop_File) then
                         return "-gnateT=" & Targ_Prop_File;
@@ -353,12 +349,12 @@ package body Configuration is
 
          Ada.Text_IO.Put_Line
            (Ada.Text_IO.Standard_Error,
-            "warning: attribute ""Target"" of your project file is " &
-              "only used to determine runtime library");
+            "warning: attribute ""Target"" of your project file is "
+            & "only used to determine runtime library");
          Ada.Text_IO.Put_Line
            (Ada.Text_IO.Standard_Error,
-            "warning: to specify target properties, specify option " &
-              """-gnateT"" using ""Builder.Global_Compilation_Switches""");
+            "warning: to specify target properties, specify option "
+            & """-gnateT"" using ""Builder.Global_Compilation_Switches""");
       end if;
       return "";
    end Check_gnateT_Switch;
@@ -389,8 +385,7 @@ package body Configuration is
             pragma Assert (Name_Dir = Gnat2Why_Opts.Writing.Name_GNATprove);
             if GNAT.OS_Lib.Is_Directory (Rm_Dir) then
                if Verbose then
-                  Ada.Text_IO.Put
-                    ("Deleting directory " & Rm_Dir & "...");
+                  Ada.Text_IO.Put ("Deleting directory " & Rm_Dir & "...");
                end if;
                GNAT.Directory_Operations.Remove_Dir
                  (Rm_Dir, Recursive => True);
@@ -406,18 +401,19 @@ package body Configuration is
             end if;
       end Clean_Up_One_Directory;
 
-   --  Start of processing for Clean_Up
+      --  Start of processing for Clean_Up
 
    begin
-      for Cursor in Tree.Iterate
-        (Kind   =>
-           [Project.I_Project       => True,
-            Project.I_Runtime       => False,
-            Project.I_Configuration => False,
-            Project.I_Recursive     => True,
-            others                  => False],
-         Status =>
-           [GPR2.Project.S_Externally_Built => GNATCOLL.Tribooleans.False])
+      for Cursor in
+        Tree.Iterate
+          (Kind   =>
+             [Project.I_Project       => True,
+              Project.I_Runtime       => False,
+              Project.I_Configuration => False,
+              Project.I_Recursive     => True,
+              others                  => False],
+           Status =>
+             [GPR2.Project.S_Externally_Built => GNATCOLL.Tribooleans.False])
       loop
          declare
             View : constant Project.View.Object :=
@@ -455,11 +451,12 @@ package body Configuration is
 
       function Exists_And_Is_Writable (Dir : String) return Boolean is
       begin
-         return Ada.Directories.Exists (Dir)
+         return
+           Ada.Directories.Exists (Dir)
            and then GNAT.OS_Lib.Is_Write_Accessible_File (Dir);
       end Exists_And_Is_Writable;
 
-   --  Start of processing for Compute_Socket_Dir
+      --  Start of processing for Compute_Socket_Dir
 
    begin
       if Get_OS_Flavor in X86_Windows | X86_64_Windows then
@@ -467,7 +464,7 @@ package body Configuration is
       end if;
       if Ada.Environment_Variables.Exists (TMPDIR_Envvar)
         and then Exists_And_Is_Writable
-          (Ada.Environment_Variables.Value (TMPDIR_Envvar))
+                   (Ada.Environment_Variables.Value (TMPDIR_Envvar))
       then
          return Ada.Environment_Variables.Value (TMPDIR_Envvar);
       elsif Exists_And_Is_Writable (TMP_Dir) then
@@ -488,7 +485,9 @@ package body Configuration is
       when others =>
          Ada.Text_IO.Put_Line
            (Ada.Text_IO.Standard_Error,
-            "when creating directory " & New_Directory & ": "
+            "when creating directory "
+            & New_Directory
+            & ": "
             & GNAT.OS_Lib.Errno_Message);
          GNAT.OS_Lib.OS_Exit (1);
    end Create_Directory_Or_Exit;
@@ -501,16 +500,14 @@ package body Configuration is
      (File : in out Ada.Text_IO.File_Type;
       Mode : Ada.Text_IO.File_Mode := Ada.Text_IO.Out_File;
       Name : String := "";
-      Form : String := "")
-   is
+      Form : String := "") is
    begin
       Ada.Text_IO.Create (File, Mode, Name, Form);
    exception
       when others =>
          Ada.Text_IO.Put_Line
            (Ada.Text_IO.Standard_Error,
-            "when creating file " & Name & ": "
-            & GNAT.OS_Lib.Errno_Message);
+            "when creating file " & Name & ": " & GNAT.OS_Lib.Errno_Message);
          GNAT.OS_Lib.OS_Exit (1);
    end Create_File_Or_Exit;
 
@@ -525,7 +522,9 @@ package body Configuration is
       when others =>
          Ada.Text_IO.Put_Line
            (Ada.Text_IO.Standard_Error,
-            "when creating directory " & New_Directory & ": "
+            "when creating directory "
+            & New_Directory
+            & ": "
             & GNAT.OS_Lib.Errno_Message);
          GNAT.OS_Lib.OS_Exit (1);
    end Create_Path_Or_Exit;
@@ -554,15 +553,11 @@ package body Configuration is
    -------------------------------------
 
    procedure Handle_Project_Loading_Switches
-     (Switch    : String;
-      Parameter : String;
-      Section   : String)
+     (Switch : String; Parameter : String; Section : String)
    is
       pragma Unreferenced (Section);
    begin
-      if Switch'Length > 2
-        and then Switch (Switch'First + 1) = 'X'
-      then
+      if Switch'Length > 2 and then Switch (Switch'First + 1) = 'X' then
 
          --  When a -X switch was found, we need to:
          --  * add the scenario variable to the environment that we use to load
@@ -571,8 +566,8 @@ package body Configuration is
 
          --  First we add the variable to the environment.
 
-         Proj_Opt.Add_Switch (Options.X,
-                              Switch (Switch'First + 2 .. Switch'Last));
+         Proj_Opt.Add_Switch
+           (Options.X, Switch (Switch'First + 2 .. Switch'Last));
 
          --  Second, we add the whole switch to the list of Scenario switches
 
@@ -587,9 +582,7 @@ package body Configuration is
    -------------------
 
    procedure Handle_Switch
-     (Switch    : String;
-      Parameter : String;
-      Section   : String)
+     (Switch : String; Parameter : String; Section : String)
    is
       pragma Unreferenced (Parameter);
    begin
@@ -606,9 +599,7 @@ package body Configuration is
       --  We explicitly ignore project-loading switches here. They have been
       --  taken into account in the parsing of the command line.
 
-      elsif Switch'Length >= 2
-        and then Switch (Switch'First + 1) = 'X'
-      then
+      elsif Switch'Length >= 2 and then Switch (Switch'First + 1) = 'X' then
          null;
       elsif Switch = "-aP" then
          null;
@@ -622,7 +613,7 @@ package body Configuration is
    ---------------------
 
    procedure Handle_Warning_Switches (Switch, Value : String) is
-      Tag : Misc_Warning_Kind;
+      Tag    : Misc_Warning_Kind;
       Status : Warning_Enabled_Status;
    begin
 
@@ -640,12 +631,15 @@ package body Configuration is
          end loop;
          return;
       end if;
-      pragma Assert
-        (Switch = "-W" or else Switch = "-A" or else Switch = "-D");
+      pragma
+        Assert (Switch = "-W" or else Switch = "-A" or else Switch = "-D");
 
-      Status := (if Switch = "-W" then VC_Kinds.WS_Enabled
-                elsif Switch = "-A" then VC_Kinds.WS_Disabled
-                else VC_Kinds.WS_Error);
+      Status :=
+        (if Switch = "-W"
+         then VC_Kinds.WS_Enabled
+         elsif Switch = "-A"
+         then VC_Kinds.WS_Disabled
+         else VC_Kinds.WS_Error);
 
       --  Handling of "all"
 
@@ -663,7 +657,9 @@ package body Configuration is
       exception
          when Constraint_Error =>
             Abort_Msg
-              ("""" & Value & """ is not a valid warning name, use "
+              (""""
+               & Value
+               & """ is not a valid warning name, use "
                & """--list-categories"" to obtain a list of all warning "
                & "names",
                With_Help => False);
@@ -680,13 +676,13 @@ package body Configuration is
       Attr : GPR2.Project.Attribute.Object;
    begin
       if View.Check_Attribute
-        (Project.Registry.Attribute.Builder.Global_Compilation_Switches,
-         Index  => GPR2.Project.Attribute_Index.Create ("Ada"),
-         Result => Attr)
+           (Project.Registry.Attribute.Builder.Global_Compilation_Switches,
+            Index  => GPR2.Project.Attribute_Index.Create ("Ada"),
+            Result => Attr)
       then
-         return (for some Switch of Attr.Values =>
-                   GNATCOLL.Utils.Starts_With
-                     (String (Switch.Text), "-gnateT="));
+         return
+           (for some Switch of Attr.Values =>
+              GNATCOLL.Utils.Starts_With (String (Switch.Text), "-gnateT="));
       else
          return False;
       end if;
@@ -698,10 +694,10 @@ package body Configuration is
 
    function Is_Manual_Prover (FS : File_Specific) return Boolean is
    begin
-      return FS.Provers.Length = 1
-        and then
-          (Case_Insensitive_Contains (FS.Provers, "coq")
-           or else Case_Insensitive_Contains (FS.Provers, "isabelle"));
+      return
+        FS.Provers.Length = 1
+        and then (Case_Insensitive_Contains (FS.Provers, "coq")
+                  or else Case_Insensitive_Contains (FS.Provers, "isabelle"));
    end Is_Manual_Prover;
 
    -------------------
@@ -732,7 +728,7 @@ package body Configuration is
       ---------------------------------
 
       function Create_Default_Project_File return String is
-         F : Ada.Text_IO.File_Type;
+         F    : Ada.Text_IO.File_Type;
          Name : constant String := "default.gpr";
       begin
          Create_File_Or_Exit (F, Ada.Text_IO.Out_File, Name);
@@ -752,8 +748,10 @@ package body Configuration is
          D : Ada.Directories.Directory_Entry_Type;
       begin
          Ada.Directories.Start_Search
-           (S, ".", "*.gpr", [Ada.Directories.Ordinary_File => True,
-                              others                        => False]);
+           (S,
+            ".",
+            "*.gpr",
+            [Ada.Directories.Ordinary_File => True, others => False]);
          if not Ada.Directories.More_Entries (S) then
             return "";
          end if;
@@ -768,7 +766,7 @@ package body Configuration is
 
       Result : constant String := Find_Project_File_In_CWD;
 
-   --  Start of processing for No_Project_File_Mode
+      --  Start of processing for No_Project_File_Mode
 
    begin
       if Result /= "" then
@@ -778,8 +776,7 @@ package body Configuration is
          declare
             Name : constant String := Create_Default_Project_File;
          begin
-            Ada.Text_IO.Put_Line
-              ("No project file given, creating " & Name);
+            Ada.Text_IO.Put_Line ("No project file given, creating " & Name);
             return Name;
          end;
       end if;
@@ -791,56 +788,40 @@ package body Configuration is
 
    procedure Parse_Switches (Mode : Parsing_Modes; Com_Lin : String_List) is
 
-      procedure Free_Topmost is new Ada.Unchecked_Deallocation
-        (Object => String_List, Name => String_List_Access);
+      procedure Free_Topmost is new
+        Ada.Unchecked_Deallocation
+          (Object => String_List,
+           Name   => String_List_Access);
 
       Config         : Command_Line_Configuration;
       Parser         : Opt_Parser;
-      Com_Lin_Access : String_List_Access :=
-        new String_List'(Com_Lin);
+      Com_Lin_Access : String_List_Access := new String_List'(Com_Lin);
 
       use CL_Switches;
 
    begin
       Initialize_Option_Scan (Parser, Com_Lin_Access);
-      Set_Usage (Config,
-                 Usage    => Usage_Message,
-                 Help_Msg => SPARK_Install.Help_Message);
+      Set_Usage
+        (Config,
+         Usage    => Usage_Message,
+         Help_Msg => SPARK_Install.Help_Message);
 
       if Mode in Project_Parsing | All_Switches then
          Define_Switch (Config, "-aP=");
-         Define_Switch
-           (Config,
-            Clean'Access,
-            Long_Switch => "--clean");
+         Define_Switch (Config, Clean'Access, Long_Switch => "--clean");
          Define_Switch
            (Config,
             List_Categories'Access,
             Long_Switch => "--list-categories");
+         Define_Switch (Config, CL_Switches.P'Access, "-P:");
          Define_Switch
-           (Config,
-            CL_Switches.P'Access,
-            "-P:");
+           (Config, CL_Switches.Target'Access, Long_Switch => "--target=");
          Define_Switch
-           (Config,
-            CL_Switches.Target'Access,
-            Long_Switch => "--target=");
+           (Config, CL_Switches.RTS'Access, Long_Switch => "--RTS=");
          Define_Switch
-           (Config,
-            CL_Switches.RTS'Access,
-            Long_Switch => "--RTS=");
-         Define_Switch
-           (Config,
-            CL_Switches.Subdirs'Access,
-            Long_Switch => "--subdirs=");
-         Define_Switch
-           (Config,
-            Version'Access,
-            Long_Switch => "--version");
-         Define_Switch
-           (Config,
-            Explain'Access,
-            Long_Switch => "--explain=");
+           (Config, CL_Switches.Subdirs'Access, Long_Switch => "--subdirs=");
+         Define_Switch (Config, Version'Access, Long_Switch => "--version");
+         Define_Switch (Config, Explain'Access, Long_Switch => "--explain=");
          Define_Switch
            (Config,
             CL_Switches.Print_Gpr_Registry'Access,
@@ -849,9 +830,7 @@ package body Configuration is
 
       if Mode in Project_Parsing | All_Switches | Global_Switches_Only then
          Define_Switch
-           (Config,
-            CL_Switches.V'Access,
-            "-v", Long_Switch => "--verbose");
+           (Config, CL_Switches.V'Access, "-v", Long_Switch => "--verbose");
       end if;
 
       if Mode in All_Switches | Global_Switches_Only then
@@ -864,20 +843,17 @@ package body Configuration is
          --  binaries instead of the real prover binaries. This helps when
          --  collecting benchmarks for prover developers.
          Define_Switch
-           (Config, CL_Switches.Benchmark'Access,
+           (Config,
+            CL_Switches.Benchmark'Access,
             Long_Switch => "--benchmark");
          Define_Switch
            (Config,
             CL_Switches.Checks_As_Errors'Access,
             Long_Switch => "--checks-as-errors=");
          Define_Switch
-           (Config,
-            CL_Switches.CWE'Access,
-            Long_Switch => "--cwe");
+           (Config, CL_Switches.CWE'Access, Long_Switch => "--cwe");
          Define_Switch
-           (Config,
-            CL_Switches.D'Access,
-            "-d", Long_Switch => "--debug");
+           (Config, CL_Switches.D'Access, "-d", Long_Switch => "--debug");
          Define_Switch
            (Config,
             CL_Switches.Debug_Save_VCs'Access,
@@ -906,22 +882,14 @@ package body Configuration is
            (Config,
             CL_Switches.Flow_Show_GG'Access,
             Long_Switch => "--flow-show-gg");
-         Define_Switch
-           (Config,
-            CL_Switches.F'Access,
-            "-f");
+         Define_Switch (Config, CL_Switches.F'Access, "-f");
          Define_Switch
            (Config,
             CL_Switches.IDE_Progress_Bar'Access,
             Long_Switch => "--ide-progress-bar");
          Define_Switch
-           (Config, CL_Switches.J'Access,
-            Long_Switch => "-j:",
-            Initial     => 1);
-         Define_Switch
-           (Config,
-            CL_Switches.K'Access,
-            "-k");
+           (Config, CL_Switches.J'Access, Long_Switch => "-j:", Initial => 1);
+         Define_Switch (Config, CL_Switches.K'Access, "-k");
          Define_Switch
            (Config,
             CL_Switches.Limit_Line'Access,
@@ -943,12 +911,10 @@ package body Configuration is
             CL_Switches.Limit_Subp'Access,
             Long_Switch => "--limit-subp=");
          Define_Switch
-           (Config, CL_Switches.Memcached_Server'Access,
-            Long_Switch => "--memcached-server=");
-         Define_Switch
            (Config,
-            CL_Switches.M'Access,
-            "-m");
+            CL_Switches.Memcached_Server'Access,
+            Long_Switch => "--memcached-server=");
+         Define_Switch (Config, CL_Switches.M'Access, "-m");
          Define_Switch
            (Config,
             CL_Switches.No_Axiom_Guard'Access,
@@ -966,9 +932,7 @@ package body Configuration is
             CL_Switches.No_Subprojects'Access,
             Long_Switch => "--no-subprojects");
          Define_Switch
-           (Config,
-            CL_Switches.Output'Access,
-            Long_Switch => "--output=");
+           (Config, CL_Switches.Output'Access, Long_Switch => "--output=");
          Define_Switch
            (Config,
             CL_Switches.Output_Header'Access,
@@ -982,44 +946,32 @@ package body Configuration is
             CL_Switches.Proof_Warnings'Access,
             Long_Switch => "--proof-warnings=");
          Define_Switch
-           (Config,
-            CL_Switches.Q'Access,
-            "-q", Long_Switch => "--quiet");
+           (Config, CL_Switches.Q'Access, "-q", Long_Switch => "--quiet");
+         Define_Switch
+           (Config, CL_Switches.Replay'Access, Long_Switch => "--replay");
+         Define_Switch
+           (Config, CL_Switches.Report'Access, Long_Switch => "--report=");
+         Define_Switch
+           (Config, CL_Switches.Subdirs'Access, Long_Switch => "--subdirs=");
+         Define_Switch (Config, CL_Switches.U'Access, "-u");
+         Define_Switch (Config, CL_Switches.UU'Access, "-U");
+         Define_Switch
+           (Config, CL_Switches.Warnings'Access, Long_Switch => "--warnings=");
          Define_Switch
            (Config,
-            CL_Switches.Replay'Access,
-            Long_Switch => "--replay");
-         Define_Switch
-           (Config,
-            CL_Switches.Report'Access,
-            Long_Switch => "--report=");
-         Define_Switch
-           (Config,
-            CL_Switches.Subdirs'Access,
-            Long_Switch => "--subdirs=");
-         Define_Switch
-           (Config,
-            CL_Switches.U'Access,
-            "-u");
-         Define_Switch
-           (Config,
-            CL_Switches.UU'Access,
-            "-U");
-         Define_Switch
-           (Config,
-            CL_Switches.Warnings'Access,
-            Long_Switch => "--warnings=");
-         Define_Switch
-           (Config, CL_Switches.Why3_Conf'Access,
+            CL_Switches.Why3_Conf'Access,
             Long_Switch => "--why3-conf=");
          Define_Switch
-           (Config, CL_Switches.Why3_Debug'Access,
+           (Config,
+            CL_Switches.Why3_Debug'Access,
             Long_Switch => "--why3-debug=");
          Define_Switch
-           (Config, CL_Switches.Why3_Logging'Access,
+           (Config,
+            CL_Switches.Why3_Logging'Access,
             Long_Switch => "--why3-logging");
          Define_Switch
-           (Config, CL_Switches.Why3_Server'Access,
+           (Config,
+            CL_Switches.Why3_Server'Access,
             Long_Switch => "--why3-server=");
          Define_Switch
            (Config,
@@ -1031,13 +983,12 @@ package body Configuration is
 
       if Mode in All_Switches | Global_Switches_Only | File_Specific_Only then
          Define_Switch
-           (Config, CL_Switches.Level'Access,
+           (Config,
+            CL_Switches.Level'Access,
             Long_Switch => "--level=",
             Initial     => Invalid_Level);
          Define_Switch
-           (Config,
-            CL_Switches.Memlimit'Access,
-            Long_Switch => "--memlimit=");
+           (Config, CL_Switches.Memlimit'Access, Long_Switch => "--memlimit=");
          Define_Switch
            (Config,
             CL_Switches.Counterexamples'Access,
@@ -1051,13 +1002,9 @@ package body Configuration is
             CL_Switches.Debug_Exec_RAC'Access,
             Long_Switch => "--debug-exec-rac");
          Define_Switch
-           (Config,
-            Handle_Warning_Switches'Access,
-            Long_Switch => "--info");
+           (Config, Handle_Warning_Switches'Access, Long_Switch => "--info");
          Define_Switch
-           (Config,
-            CL_Switches.Mode'Access,
-            Long_Switch => "--mode=");
+           (Config, CL_Switches.Mode'Access, Long_Switch => "--mode=");
          Define_Switch
            (Config,
             CL_Switches.No_Counterexample'Access,
@@ -1075,39 +1022,26 @@ package body Configuration is
             Handle_Warning_Switches'Access,
             Long_Switch => "--pedantic");
          Define_Switch
-           (Config,
-            CL_Switches.Proof'Access,
-            Long_Switch => "--proof=");
+           (Config, CL_Switches.Proof'Access, Long_Switch => "--proof=");
          Define_Switch
-           (Config,
-            CL_Switches.Prover'Access,
-            Long_Switch => "--prover=");
-         Define_Switch
-           (Config,
-            Handle_Warning_Switches'Access,
-            "-W=");
-         Define_Switch
-           (Config,
-            Handle_Warning_Switches'Access,
-            "-A=");
-         Define_Switch
-           (Config,
-            Handle_Warning_Switches'Access,
-            "-D=");
+           (Config, CL_Switches.Prover'Access, Long_Switch => "--prover=");
+         Define_Switch (Config, Handle_Warning_Switches'Access, "-W=");
+         Define_Switch (Config, Handle_Warning_Switches'Access, "-A=");
+         Define_Switch (Config, Handle_Warning_Switches'Access, "-D=");
 
          --  If not specified on the command-line, value of steps is invalid
          Define_Switch
-           (Config, CL_Switches.Steps'Access,
+           (Config,
+            CL_Switches.Steps'Access,
             Long_Switch => "--steps=",
             Initial     => Invalid_Steps);
          Define_Switch
-           (Config, CL_Switches.CE_Steps'Access,
+           (Config,
+            CL_Switches.CE_Steps'Access,
             Long_Switch => "--ce-steps=",
             Initial     => Invalid_Steps);
          Define_Switch
-           (Config,
-            CL_Switches.Timeout'Access,
-            Long_Switch => "--timeout=");
+           (Config, CL_Switches.Timeout'Access, Long_Switch => "--timeout=");
          Define_Switch
            (Config,
             CL_Switches.Proof_Warn_Timeout'Access,
@@ -1121,14 +1055,15 @@ package body Configuration is
 
       declare
          Callback : constant Switch_Handler :=
-           (if Mode = Project_Parsing then
-               Handle_Project_Loading_Switches'Access
+           (if Mode = Project_Parsing
+            then Handle_Project_Loading_Switches'Access
             else Handle_Switch'Access);
       begin
-         Getopt (Config,
-                 Callback    => Callback,
-                 Parser      => Parser,
-                 Concatenate => False);
+         Getopt
+           (Config,
+            Callback    => Callback,
+            Parser      => Parser,
+            Concatenate => False);
 
       exception
          when Invalid_Switch =>
@@ -1136,8 +1071,9 @@ package body Configuration is
          when Exit_From_Command_Line =>
             Succeed;
          when Invalid_Parameter =>
-            Abort_Msg ("No parameter given to switch -" & Full_Switch (Parser),
-                       With_Help => False);
+            Abort_Msg
+              ("No parameter given to switch -" & Full_Switch (Parser),
+               With_Help => False);
       end;
 
       Free (Config);
@@ -1174,14 +1110,16 @@ package body Configuration is
 
       procedure Compile_Lib (Dir, File : String) is
          Target_Dir : constant String :=
-           (if Dir /= "" then Ada.Directories.Compose (Prover_Obj_Dir, Dir)
+           (if Dir /= ""
+            then Ada.Directories.Compose (Prover_Obj_Dir, Dir)
             else Prover_Obj_Dir);
          Lib_Dir    : constant String :=
-           (if Dir /= "" then Ada.Directories.Compose (Prover_Lib_Dir, Dir)
+           (if Dir /= ""
+            then Ada.Directories.Compose (Prover_Lib_Dir, Dir)
             else Prover_Lib_Dir);
       begin
          if not Ada.Directories.Exists
-           (Ada.Directories.Compose (Target_Dir, Name => File & ".vo"))
+                  (Ada.Directories.Compose (Target_Dir, Name => File & ".vo"))
          then
             declare
                Source_Dest : constant String :=
@@ -1199,7 +1137,7 @@ package body Configuration is
                declare
                   Coqc_Bin : String_Access :=
                     GNAT.OS_Lib.Locate_Exec_On_Path ("coqc");
-                  Args : GNAT.OS_Lib.Argument_List :=
+                  Args     : GNAT.OS_Lib.Argument_List :=
                     [1 => new String'("-R"),
                      2 => new String'(Prover_Obj_Dir),
                      3 => new String'("Why3"),
@@ -1209,17 +1147,19 @@ package body Configuration is
 
                begin
                   if Coqc_Bin = null then
-                     Abort_Msg (Msg       => "coq prover not present in PATH",
-                                With_Help => False);
+                     Abort_Msg
+                       (Msg       => "coq prover not present in PATH",
+                        With_Help => False);
                   end if;
-                  GNAT.OS_Lib.Spawn (Program_Name => Coqc_Bin.all,
-                                     Args         => Args,
-                                     Success      => Success);
+                  GNAT.OS_Lib.Spawn
+                    (Program_Name => Coqc_Bin.all,
+                     Args         => Args,
+                     Success      => Success);
                   if not Success then
-                     Abort_Msg (Msg       =>
-                                  "error during compilations of " &
-                                  Source_Dest,
-                                With_Help => False);
+                     Abort_Msg
+                       (Msg       =>
+                          "error during compilations of " & Source_Dest,
+                        With_Help => False);
                   end if;
 
                   GNAT.OS_Lib.Free (Coqc_Bin);
@@ -1306,11 +1246,20 @@ package body Configuration is
    function To_String (P : Proof_Mode) return String is
    begin
       case P is
-         when No_WP       => return "no_wp";
-         when All_Split   => return "all_split";
-         when Progressive => return "progressive";
-         when Per_Path    => return "per_path";
-         when Per_Check   => return "per_check";
+         when No_WP =>
+            return "no_wp";
+
+         when All_Split =>
+            return "all_split";
+
+         when Progressive =>
+            return "progressive";
+
+         when Per_Path =>
+            return "per_path";
+
+         when Per_Check =>
+            return "per_check";
       end case;
    end To_String;
 
@@ -1328,9 +1277,10 @@ package body Configuration is
         or else C (1) /= 'E'
         or else (for some I in 2 .. 5 => C (I) not in '0' .. '9')
       then
-         Abort_Msg ("error: wrong argument for --explain, " &
-                      "must be explain code of the form E0001",
-                    With_Help => False);
+         Abort_Msg
+           ("error: wrong argument for --explain, "
+            & "must be explain code of the form E0001",
+            With_Help => False);
       end if;
 
       declare
@@ -1340,9 +1290,11 @@ package body Configuration is
          File     : Ada.Text_IO.File_Type;
       begin
          if not Ada.Directories.Exists (Filename) then
-            Abort_Msg ("error: wrong argument for --explain, " &
-                         C & " is not a valid explain code",
-                       With_Help => False);
+            Abort_Msg
+              ("error: wrong argument for --explain, "
+               & C
+               & " is not a valid explain code",
+               With_Help => False);
          end if;
 
          Ada.Text_IO.Open (File, Ada.Text_IO.In_File, Filename);
@@ -1371,10 +1323,17 @@ package body Configuration is
       function Category (K : VC_Kind) return String is
       begin
          case K is
-            when VC_RTE_Kind     => return "(run-time-check)";
-            when VC_Assert_Kind  => return "(assertion)";
-            when VC_LSP_Kind     => return "(liskov-substitution-principle)";
-            when VC_Warning_Kind => return "(proof_warning)";
+            when VC_RTE_Kind =>
+               return "(run-time-check)";
+
+            when VC_Assert_Kind =>
+               return "(assertion)";
+
+            when VC_LSP_Kind =>
+               return "(liskov-substitution-principle)";
+
+            when VC_Warning_Kind =>
+               return "(proof_warning)";
          end case;
       end Category;
 
@@ -1387,12 +1346,13 @@ package body Configuration is
          case K is
             when VC_RTE_Kind | VC_Assert_Kind | VC_LSP_Kind =>
                return "MEDIUM";
+
             when VC_Warning_Kind =>
                return "EASY";
          end case;
       end Effort;
 
-   --  Start of processing for Produce_List_Categories_Output
+      --  Start of processing for Produce_List_Categories_Output
 
    begin
 
@@ -1402,28 +1362,49 @@ package body Configuration is
 
       Ada.Text_IO.Put_Line ("[Flow analysis error categories]");
       for K in Flow_Error_Kind loop
-         Ada.Text_IO.Put_Line (Rule_Name (K) & " - " & Kind_Name (K) & " - " &
-                                 Description (K) & " - MEDIUM");
+         Ada.Text_IO.Put_Line
+           (Rule_Name (K)
+            & " - "
+            & Kind_Name (K)
+            & " - "
+            & Description (K)
+            & " - MEDIUM");
       end loop;
 
       Ada.Text_IO.Put_Line ("[Flow analysis check categories]");
       for K in Flow_Check_Kind loop
-         Ada.Text_IO.Put_Line (Rule_Name (K) & " - " & Kind_Name (K) & " - " &
-                                 Description (K) & " - EASY");
+         Ada.Text_IO.Put_Line
+           (Rule_Name (K)
+            & " - "
+            & Kind_Name (K)
+            & " - "
+            & Description (K)
+            & " - EASY");
       end loop;
 
       Ada.Text_IO.Put_Line ("[Flow analysis warnings categories]");
       for K in Flow_Warning_Kind loop
-         Ada.Text_IO.Put_Line (Rule_Name (K) & " - " & Kind_Name (K) & " - " &
-                                 Description (K) & " - EASY");
+         Ada.Text_IO.Put_Line
+           (Rule_Name (K)
+            & " - "
+            & Kind_Name (K)
+            & " - "
+            & Description (K)
+            & " - EASY");
       end loop;
 
       Ada.Text_IO.Put_Line ("[Proof check categories]");
       for K in VC_Kind loop
          if K not in VC_Warning_Kind then
             Ada.Text_IO.Put_Line
-              (Rule_Name (K) & Category (K) & " - " & Kind_Name (K) &
-                 " - " & Description (K) & " - " & Effort (K));
+              (Rule_Name (K)
+               & Category (K)
+               & " - "
+               & Kind_Name (K)
+               & " - "
+               & Description (K)
+               & " - "
+               & Effort (K));
          end if;
       end loop;
 
@@ -1431,19 +1412,28 @@ package body Configuration is
       for K in VC_Kind loop
          if K in VC_Warning_Kind then
             Ada.Text_IO.Put_Line
-              (Rule_Name (K) & " - " & Kind_Name (K) &
-                 " - " & Description (K) & " - " & Effort (K));
+              (Rule_Name (K)
+               & " - "
+               & Kind_Name (K)
+               & " - "
+               & Description (K)
+               & " - "
+               & Effort (K));
          end if;
       end loop;
 
       Ada.Text_IO.Put_Line ("[Misc warnings categories]");
       for K in Misc_Warning_Kind loop
          Ada.Text_IO.Put_Line
-           (Kind_Name (K) & " - " & Kind_Name (K) &
-              " - " & Description (K) & " - EASY");
+           (Kind_Name (K)
+            & " - "
+            & Kind_Name (K)
+            & " - "
+            & Description (K)
+            & " - EASY");
       end loop;
 
-      --  ??? TODO GNAT front-end categories
+   --  ??? TODO GNAT front-end categories
    end Produce_List_Categories_Output;
 
    ----------------------------
@@ -1451,53 +1441,48 @@ package body Configuration is
    ----------------------------
 
    procedure Produce_Version_Output is
-      Gnatwhy3 : constant String :=
+      Gnatwhy3          : constant String :=
         Ada.Directories.Compose (SPARK_Install.Libexec_Spark_Bin, "gnatwhy3");
-      Alt_Ergo : String_Access :=
+      Alt_Ergo          : String_Access :=
         GNAT.OS_Lib.Locate_Exec_On_Path ("alt-ergo");
-      Colibri : String_Access :=
+      Colibri           : String_Access :=
         GNAT.OS_Lib.Locate_Exec_On_Path ("colibri");
-      CVC5 : String_Access :=
+      CVC5              : String_Access :=
         GNAT.OS_Lib.Locate_Exec_On_Path ("cvc5");
-      Z3 : String_Access :=
+      Z3                : String_Access :=
         GNAT.OS_Lib.Locate_Exec_On_Path ("z3");
-      Status : aliased Integer;
+      Status            : aliased Integer;
       Dash_Dash_Version : String_Lists.List;
-      Dash_Version : String_Lists.List;
+      Dash_Version      : String_Lists.List;
    begin
       Dash_Dash_Version.Append ("--version");
       Dash_Version.Append ("-version");
       Ada.Text_IO.Put_Line (SPARK2014_Version_String);
-      Call_With_Status (Gnatwhy3,
-                        Arguments => Dash_Dash_Version,
-                        Status    => Status);
+      Call_With_Status
+        (Gnatwhy3, Arguments => Dash_Dash_Version, Status => Status);
 
       if Alt_Ergo /= null then
          Ada.Text_IO.Put (Alt_Ergo.all & ": ");
-         Call_With_Status (Alt_Ergo.all,
-                           Arguments => Dash_Dash_Version,
-                           Status    => Status);
+         Call_With_Status
+           (Alt_Ergo.all, Arguments => Dash_Dash_Version, Status => Status);
          Free (Alt_Ergo);
       end if;
       if Colibri /= null then
          Ada.Text_IO.Put (Colibri.all & ": ");
-         Call_With_Status (Colibri.all,
-                           Arguments => Dash_Dash_Version,
-                           Status    => Status);
+         Call_With_Status
+           (Colibri.all, Arguments => Dash_Dash_Version, Status => Status);
          Free (Colibri);
       end if;
       if CVC5 /= null then
          Ada.Text_IO.Put (CVC5.all & ": ");
-         Call_With_Status (CVC5.all,
-                           Arguments => Dash_Dash_Version,
-                           Status    => Status);
+         Call_With_Status
+           (CVC5.all, Arguments => Dash_Dash_Version, Status => Status);
          Free (CVC5);
       end if;
       if Z3 /= null then
          Ada.Text_IO.Put (Z3.all & ": ");
-         Call_With_Status (Z3.all,
-                           Arguments => Dash_Dash_Version,
-                           Status    => Status);
+         Call_With_Status
+           (Z3.all, Arguments => Dash_Dash_Version, Status => Status);
          Free (Z3);
       end if;
    end Produce_Version_Output;
@@ -1511,7 +1496,7 @@ package body Configuration is
       use String_Lists;
 
       Buf : Unbounded_String := Null_Unbounded_String;
-      C : Cursor := First (FS.Provers);
+      C   : Cursor := First (FS.Provers);
    begin
       loop
          Append (Buf, FS.Provers (C));
@@ -1562,8 +1547,7 @@ package body Configuration is
       procedure Set_Proof_Mode (FS : in out File_Specific);
       procedure Process_Limit_Switches;
       procedure Set_Provers
-        (Prover : GNAT.Strings.String_Access;
-         FS     : in out File_Specific);
+        (Prover : GNAT.Strings.String_Access; FS : in out File_Specific);
       procedure Set_Proof_Dir (View : GPR2.Project.View.Object);
       --  If attribute Proof_Dir is set in the project file,
       --  set global variable Proof_Dir to the full path
@@ -1578,8 +1562,8 @@ package body Configuration is
       procedure Sanity_Checking;
       --  Check the command line flags for conflicting flags
 
-      function List_From_Attr (Attribute : GPR2.Project.Attribute.Object)
-                               return String_List_Access;
+      function List_From_Attr
+        (Attribute : GPR2.Project.Attribute.Object) return String_List_Access;
       --  Helper function to convert attribute to list of strings
 
       -----------------------------------
@@ -1591,8 +1575,8 @@ package body Configuration is
          if View.Attribute ((+"Prove", +"Switches")).Is_Defined then
             Ada.Text_IO.Put_Line
               (Ada.Text_IO.Standard_Error,
-               "warning: attribute ""Switches"" of package ""Prove"" of " &
-                 "your project file is deprecated");
+               "warning: attribute ""Switches"" of package ""Prove"" of "
+               & "your project file is deprecated");
             Ada.Text_IO.Put_Line
               (Ada.Text_IO.Standard_Error,
                "warning: use ""Proof_Switches (""Ada"")"" instead");
@@ -1612,8 +1596,8 @@ package body Configuration is
          FS.No_Inlining := CL_Switches.No_Inlining;
          FS.No_Loop_Unrolling := CL_Switches.No_Loop_Unrolling;
          FS.Proof_Warnings := Proof_Warnings;
-         FS.No_Inlining := CL_Switches.No_Inlining or
-           CL_Switches.No_Global_Generation;
+         FS.No_Inlining :=
+           CL_Switches.No_Inlining or CL_Switches.No_Global_Generation;
          FS.Warning_Status := Configuration.Warning_Status;
       end File_Specific_Postprocess;
 
@@ -1625,8 +1609,8 @@ package body Configuration is
 
       begin
          if not Null_Or_Empty_String (CL_Switches.Subdirs) then
-            Phase2_Subdir := Filesystem_String (CL_Switches.Subdirs.all) /
-              Phase2_Subdir;
+            Phase2_Subdir :=
+              Filesystem_String (CL_Switches.Subdirs.all) / Phase2_Subdir;
 
          end if;
 
@@ -1636,8 +1620,8 @@ package body Configuration is
            (+"Prove", Project.Registry.Pack.Everywhere);
          Project.Registry.Pack.Description.Set_Package_Description
            (+"Prove",
-            "This package specifies the options used when calling " &
-              "'gnatprove' tool.");
+            "This package specifies the options used when calling "
+            & "'gnatprove' tool.");
          Project.Registry.Attribute.Add
            (Q_Attribute_Id'(+"Prove", +"Switches"),
             Index_Type           => Project.Registry.Attribute.No_Index,
@@ -1646,22 +1630,22 @@ package body Configuration is
             Is_Allowed_In        => Project.Registry.Attribute.Everywhere);
          Project.Registry.Attribute.Description.Set_Attribute_Description
            (Q_Attribute_Id'(+"Prove", +"Switches"),
-            "This deprecated attribute is the same as Proof_Switches " &
-              "(""Ada"").");
+            "This deprecated attribute is the same as Proof_Switches "
+            & "(""Ada"").");
          Project.Registry.Attribute.Add
            (Q_Attribute_Id'(+"Prove", +"Proof_Switches"),
             Index_Type           =>
-               Project.Registry.Attribute.FileGlob_Or_Language_Index,
+              Project.Registry.Attribute.FileGlob_Or_Language_Index,
             Value                => Project.Registry.Attribute.List,
             Value_Case_Sensitive => False,
             Is_Allowed_In        => Project.Registry.Attribute.Everywhere);
          Project.Registry.Attribute.Description.Set_Attribute_Description
            (Q_Attribute_Id'(+"Prove", +"Proof_Switches"),
-            "Defines additional command line switches that are used for the " &
-              "invokation of GNATprove. Only the following switches are " &
-              "allowed for file-specific switches: '--steps', '--timeout', " &
-              "'--memlimit', '--proof', '--prover', '--level', '--mode', " &
-              "'--counterexamples', '--no-inlining', '--no-loop-unrolling'");
+            "Defines additional command line switches that are used for the "
+            & "invokation of GNATprove. Only the following switches are "
+            & "allowed for file-specific switches: '--steps', '--timeout', "
+            & "'--memlimit', '--proof', '--prover', '--level', '--mode', "
+            & "'--counterexamples', '--no-inlining', '--no-loop-unrolling'");
          Project.Registry.Attribute.Add
            (Q_Attribute_Id'(+"Prove", +"Proof_Dir"),
             Index_Type           => Project.Registry.Attribute.No_Index,
@@ -1670,18 +1654,18 @@ package body Configuration is
             Is_Allowed_In        => Project.Registry.Attribute.Everywhere);
          Project.Registry.Attribute.Description.Set_Attribute_Description
            (Q_Attribute_Id'(+"Prove", +"Proof_Dir"),
-            "Defines the directory where are stored the files " &
-              "concerning the state of the proof of a project. This " &
-              "directory contains a sub-directory sessions with one " &
-              "directory per source package analyzed for proof. Each of " &
-              "these package directories contains a Why3 session file. If a " &
-              "manual prover is used to prove some VCs, then a " &
-              "sub-directory called by the name of the prover is created " &
-              "next to sessions, with the same organization of " &
-              "sub-directories. Each of these package directories contains " &
-              "manual proof files. Common proof files to be used across " &
-              "various proofs can be stored at the toplevel of the " &
-              "prover-specific directory.");
+            "Defines the directory where are stored the files "
+            & "concerning the state of the proof of a project. This "
+            & "directory contains a sub-directory sessions with one "
+            & "directory per source package analyzed for proof. Each of "
+            & "these package directories contains a Why3 session file. If a "
+            & "manual prover is used to prove some VCs, then a "
+            & "sub-directory called by the name of the prover is created "
+            & "next to sessions, with the same organization of "
+            & "sub-directories. Each of these package directories contains "
+            & "manual proof files. Common proof files to be used across "
+            & "various proofs can be stored at the toplevel of the "
+            & "prover-specific directory.");
 
          if CL_Switches.Print_Gpr_Registry then
             --  Print registered gpr attributes and exit as requested
@@ -1706,23 +1690,24 @@ package body Configuration is
 
          declare
             Project_File : constant String :=
-              (if Null_Or_Empty_String (CL_Switches.P) then
-                    No_Project_File_Mode
+              (if Null_Or_Empty_String (CL_Switches.P)
+               then No_Project_File_Mode
                else CL_Switches.P.all);
             Status       : Boolean;
 
             --  Do not display warnings, as those messages will be duplicated
             --  during the call to gprbuild.
-            Reporter     : Spark_Reporter :=
-                             (GPR2.Reporter.Console.Create
-                               (GPR2.Reporter.No_Warnings) with null record);
+            Reporter : Spark_Reporter :=
+              (GPR2.Reporter.Console.Create (GPR2.Reporter.No_Warnings)
+               with null record);
          begin
             Proj_Opt.Add_Switch (Options.P, Project_File);
 
-            Status := Tree.Load
-              (Proj_Opt,
-               Reporter         => Reporter,
-               Absent_Dir_Error => GPR2.No_Error);
+            Status :=
+              Tree.Load
+                (Proj_Opt,
+                 Reporter         => Reporter,
+                 Absent_Dir_Error => GPR2.No_Error);
 
             if not Status then
                Fail ("");
@@ -1765,7 +1750,7 @@ package body Configuration is
 
          Is_Empty_At_Start : constant Boolean := Provers.Is_Empty;
 
-      --  Start of processing for Limit_Prover
+         --  Start of processing for Limit_Prover
 
       begin
          if not SPARK_Install.CVC5_Present then
@@ -1788,14 +1773,15 @@ package body Configuration is
       -- List_From_Attr --
       --------------------
 
-      function List_From_Attr (Attribute : GPR2.Project.Attribute.Object)
-                               return GNAT.Strings.String_List_Access is
+      function List_From_Attr
+        (Attribute : GPR2.Project.Attribute.Object)
+         return GNAT.Strings.String_List_Access is
       begin
          if Attribute.Is_Defined then
             declare
                List : constant GNAT.Strings.String_List_Access :=
                  new GNAT.Strings.String_List
-                   (1 .. Integer (Attribute.Count_Values));
+                       (1 .. Integer (Attribute.Count_Values));
                I    : Integer := 1;
             begin
                for Value of Attribute.Values loop
@@ -1822,8 +1808,7 @@ package body Configuration is
          -------------
 
          function On_Path (Exec : String) return Boolean is
-            Location : String_Access :=
-              GNAT.OS_Lib.Locate_Exec_On_Path (Exec);
+            Location : String_Access := GNAT.OS_Lib.Locate_Exec_On_Path (Exec);
 
             Present : constant Boolean := Location /= null;
 
@@ -1832,13 +1817,13 @@ package body Configuration is
             return Present;
          end On_Path;
 
-      --  Start of processing for Postprocess
+         --  Start of processing for Postprocess
 
       begin
          Sanity_Checking;
 
-         SPARK_Install.Z3_Present      := On_Path ("z3");
-         SPARK_Install.CVC5_Present    := On_Path ("cvc5");
+         SPARK_Install.Z3_Present := On_Path ("z3");
+         SPARK_Install.CVC5_Present := On_Path ("cvc5");
          SPARK_Install.Colibri_Present := On_Path ("colibri");
 
          Debug := CL_Switches.D or CL_Switches.Flow_Debug;
@@ -1870,8 +1855,7 @@ package body Configuration is
          if CL_Switches.J = 0 then
             Parallel := Natural (System.Multiprocessors.Number_Of_CPUs);
          elsif CL_Switches.J < 0 then
-            Abort_Msg ("error: wrong argument for -j",
-                       With_Help => False);
+            Abort_Msg ("error: wrong argument for -j", With_Help => False);
          else
             Parallel := CL_Switches.J;
          end if;
@@ -1891,9 +1875,10 @@ package body Configuration is
          end if;
 
          if CL_Switches.Function_Sandboxing.all not in "" | "on" | "off" then
-            Abort_Msg ("error: wrong argument for --function-sandboxing, " &
-                         "must be one of (on, off)",
-                       With_Help => False);
+            Abort_Msg
+              ("error: wrong argument for --function-sandboxing, "
+               & "must be one of (on, off)",
+               With_Help => False);
          end if;
 
          if CL_Switches.Checks_As_Errors.all = ""
@@ -1903,11 +1888,12 @@ package body Configuration is
          elsif CL_Switches.Checks_As_Errors.all = "on" then
             Checks_As_Errors := True;
          else
-            Abort_Msg ("error: wrong argument """
-                       & CL_Switches.Checks_As_Errors.all
-                       & """ for --checks-as-errors, "
-                       & "must be one of (on, off)",
-                       With_Help => False);
+            Abort_Msg
+              ("error: wrong argument """
+               & CL_Switches.Checks_As_Errors.all
+               & """ for --checks-as-errors, "
+               & "must be one of (on, off)",
+               With_Help => False);
          end if;
 
          if CL_Switches.Proof_Warnings.all = ""
@@ -1917,16 +1903,18 @@ package body Configuration is
          elsif CL_Switches.Proof_Warnings.all = "on" then
             Proof_Warnings := True;
          else
-            Abort_Msg ("error: wrong argument """
-                       & CL_Switches.Proof_Warnings.all
-                       & """ for --proof-warnings, "
-                       & "must be one of (on, off)",
-                       With_Help => False);
+            Abort_Msg
+              ("error: wrong argument """
+               & CL_Switches.Proof_Warnings.all
+               & """ for --proof-warnings, "
+               & "must be one of (on, off)",
+               With_Help => False);
          end if;
 
          --  Handling of Only_Given and Filelist
 
-         Only_Given := CL_Switches.U
+         Only_Given :=
+           CL_Switches.U
            or not Null_Or_Empty_String (CL_Switches.Limit_Subp)
            or not Null_Or_Empty_String (CL_Switches.Limit_Line)
            or not Null_Or_Empty_String (CL_Switches.Limit_Lines);
@@ -1935,7 +1923,7 @@ package body Configuration is
             Ada.Text_IO.Put_Line
               (Ada.Text_IO.Standard_Error,
                "warning: switch -u without a file name is equivalent to "
-                 & "switch --no-subproject");
+               & "switch --no-subproject");
          end if;
 
          Process_Limit_Switches;
@@ -1967,7 +1955,7 @@ package body Configuration is
          --  directive to the list of files.
 
          procedure Process_Limit_Directive
-           (Msg : String;  Limit_String : GNAT.Strings.String_Access);
+           (Msg : String; Limit_String : GNAT.Strings.String_Access);
          --  Same, but do nothing if Limit_String is the null pointer or empty
          --  string.
 
@@ -1986,42 +1974,40 @@ package body Configuration is
          -- Process_Limit_Directive --
          -----------------------------
 
-         procedure Process_Limit_Directive (Msg, Limit_String : String)
-         is
+         procedure Process_Limit_Directive (Msg, Limit_String : String) is
             Colon_Index : constant Natural :=
-              Ada.Strings.Fixed.Index (Source  => Limit_String,
-                                       Pattern => ":");
+              Ada.Strings.Fixed.Index (Source => Limit_String, Pattern => ":");
          begin
             if Colon_Index = 0 then
                Abort_Msg
-                 (Msg & ": incorrect line specification" &
-                    " - missing ':' followed by operand",
+                 (Msg
+                  & ": incorrect line specification"
+                  & " - missing ':' followed by operand",
                   With_Help => False);
             end if;
 
-         --  Unless -U is specified, use of --limit-[line,region,subp] leads
-         --  to only the file with the given line or subprogram to be analyzed.
-         --  Specifying -U with --limit-[line,region,subp] is useful to
-         --  force analysis of all files, when the line or subprogram is
-         --  inside a generic or itself a generic, so that all instances of
-         --  the line/subprogram are analyzed.
+            --  Unless -U is specified, use of --limit-[line,region,subp] leads
+            --  to only the file with the given line or subprogram to be
+            --  analyzed.  Specifying -U with --limit-[line,region,subp] is
+            --  useful to force analysis of all files, when the line or
+            --  subprogram is inside a generic or itself a generic, so that all
+            --  instances of the line/subprogram are analyzed.
 
             if not All_Projects then
                CL_Switches.File_List.Append
-                 (Limit_String
-                    (Limit_String'First .. Colon_Index - 1));
+                 (Limit_String (Limit_String'First .. Colon_Index - 1));
             end if;
          end Process_Limit_Directive;
 
          procedure Process_Limit_Directive
-           (Msg : String;  Limit_String : GNAT.Strings.String_Access) is
+           (Msg : String; Limit_String : GNAT.Strings.String_Access) is
          begin
             if not Null_Or_Empty_String (Limit_String) then
                Process_Limit_Directive (Msg, Limit_String.all);
             end if;
          end Process_Limit_Directive;
 
-      --  Start of processing for Process_Limit_Switches
+         --  Start of processing for Process_Limit_Switches
 
       begin
 
@@ -2037,9 +2023,9 @@ package body Configuration is
          if Switch_Count > 1 then
             if Switch_Count = 2
               and then not Null_Or_Empty_String (CL_Switches.Limit_Subp)
-              and then
-                (not Null_Or_Empty_String (CL_Switches.Limit_Region)
-                 or else not Null_Or_Empty_String (CL_Switches.Limit_Line))
+              and then (not Null_Or_Empty_String (CL_Switches.Limit_Region)
+                        or else not Null_Or_Empty_String
+                                      (CL_Switches.Limit_Line))
             then
                null;
             else
@@ -2051,8 +2037,7 @@ package body Configuration is
          end if;
 
          Process_Limit_Directive ("limit-subp", CL_Switches.Limit_Subp);
-         Process_Limit_Directive
-           ("limit-region", CL_Switches.Limit_Region);
+         Process_Limit_Directive ("limit-region", CL_Switches.Limit_Region);
          Process_Limit_Directive ("limit-line", CL_Switches.Limit_Line);
          if not Null_Or_Empty_String (CL_Switches.Limit_Line) then
             Limit_Lines.Append (CL_Switches.Limit_Line.all);
@@ -2062,14 +2047,16 @@ package body Configuration is
                File_Handle : Ada.Text_IO.File_Type;
                Line_Count  : Integer := 1;
             begin
-               Ada.Text_IO.Open (File_Handle,
-                                 Ada.Text_IO.In_File,
-                                 CL_Switches.Limit_Lines.all);
+               Ada.Text_IO.Open
+                 (File_Handle,
+                  Ada.Text_IO.In_File,
+                  CL_Switches.Limit_Lines.all);
                while True loop
                   declare
                      Line : constant String :=
-                       Trim (Ada.Text_IO.Get_Line (File_Handle),
-                             Ada.Strings.Both);
+                       Trim
+                         (Ada.Text_IO.Get_Line (File_Handle),
+                          Ada.Strings.Both);
                   begin
                      if Line /= "" then
                         Process_Limit_Directive
@@ -2098,8 +2085,8 @@ package body Configuration is
            or else (CL_Switches.F and CL_Switches.Replay)
          then
             Abort_Msg
-              ("only one switch out of -f, --output-msg-only and --replay" &
-                 " should be provided to gnatprove",
+              ("only one switch out of -f, --output-msg-only and --replay"
+               & " should be provided to gnatprove",
                With_Help => False);
          end if;
       end Sanity_Checking;
@@ -2182,8 +2169,8 @@ package body Configuration is
                FS.Counterexamples := True;
 
             when others =>
-               Abort_Msg ("error: wrong argument for --level",
-                          With_Help => False);
+               Abort_Msg
+                 ("error: wrong argument for --level", With_Help => False);
          end case;
 
          FS.Check_Counterexamples := True;
@@ -2205,18 +2192,20 @@ package body Configuration is
                end if;
             exception
                when Constraint_Error =>
-                  Abort_Msg ("error: wrong argument for --timeout, " &
-                               "must be a non-negative integer",
-                             With_Help => False);
+                  Abort_Msg
+                    ("error: wrong argument for --timeout, "
+                     & "must be a non-negative integer",
+                     With_Help => False);
             end;
          end if;
 
          if CL_Switches.Memlimit = 0 then
             null;
          elsif CL_Switches.Memlimit < 0 then
-            Abort_Msg ("error: wrong argument for --memlimit, " &
-                         "must be a non-negative integer",
-                       With_Help => False);
+            Abort_Msg
+              ("error: wrong argument for --memlimit, "
+               & "must be a non-negative integer",
+               With_Help => False);
          else
             FS.Memlimit := CL_Switches.Memlimit;
          end if;
@@ -2224,8 +2213,8 @@ package body Configuration is
          if CL_Switches.Steps = Invalid_Steps then
             null;
          elsif CL_Switches.Steps < 0 then
-            Abort_Msg ("error: wrong argument for --steps",
-                       With_Help => False);
+            Abort_Msg
+              ("error: wrong argument for --steps", With_Help => False);
          else
             FS.Steps := CL_Switches.Steps;
          end if;
@@ -2233,8 +2222,8 @@ package body Configuration is
          if CL_Switches.CE_Steps = Invalid_Steps then
             null;
          elsif CL_Switches.CE_Steps < 0 then
-            Abort_Msg ("error: wrong argument for --ce-steps",
-                       With_Help => False);
+            Abort_Msg
+              ("error: wrong argument for --ce-steps", With_Help => False);
          else
             FS.CE_Steps := CL_Switches.CE_Steps;
          end if;
@@ -2242,8 +2231,9 @@ package body Configuration is
          if CL_Switches.Proof_Warn_Timeout = Invalid_Timeout then
             null;
          elsif CL_Switches.Proof_Warn_Timeout < 0 then
-            Abort_Msg ("error: wrong argument for --proof-warn-timeout",
-                       With_Help => False);
+            Abort_Msg
+              ("error: wrong argument for --proof-warn-timeout",
+               With_Help => False);
          else
             FS.Proof_Warn_Timeout := CL_Switches.Proof_Warn_Timeout;
          end if;
@@ -2254,8 +2244,10 @@ package body Configuration is
          --  seconds.
 
          FS.CE_Timeout :=
-           (if FS.CE_Steps > 0 then 0
-            elsif FS.Timeout = 0 then Constants.Max_CE_Timeout
+           (if FS.CE_Steps > 0
+            then 0
+            elsif FS.Timeout = 0
+            then Constants.Max_CE_Timeout
             else Integer'Min (FS.Timeout, Constants.Max_CE_Timeout));
 
          Set_Provers (CL_Switches.Prover, FS);
@@ -2272,9 +2264,10 @@ package body Configuration is
          elsif CL_Switches.Counterexamples.all = "off" then
             FS.Counterexamples := False;
          else
-            Abort_Msg ("error: wrong argument for --counterexamples, " &
-                         "must be one of (on, off)",
-                       With_Help => False);
+            Abort_Msg
+              ("error: wrong argument for --counterexamples, "
+               & "must be one of (on, off)",
+               With_Help => False);
          end if;
 
          FS.Counterexamples :=
@@ -2290,9 +2283,10 @@ package body Configuration is
          elsif CL_Switches.Check_Counterexamples.all = "off" then
             FS.Check_Counterexamples := False;
          else
-            Abort_Msg ("error: wrong argument for --check-counterexamples, " &
-                         "must be one of (on, off)",
-                       With_Help => False);
+            Abort_Msg
+              ("error: wrong argument for --check-counterexamples, "
+               & "must be one of (on, off)",
+               With_Help => False);
          end if;
 
          FS.Check_Counterexamples :=
@@ -2326,8 +2320,7 @@ package body Configuration is
          then
             FS.Mode := GPM_All;
          else
-            Abort_Msg ("error: wrong argument for --mode",
-                       With_Help => False);
+            Abort_Msg ("error: wrong argument for --mode", With_Help => False);
          end if;
 
          --  Update mode to the highest we have seen
@@ -2364,8 +2357,8 @@ package body Configuration is
          elsif CL_Switches.Output.all = "pretty" then
             Output := GPO_Pretty_Simple;
          else
-            Abort_Msg ("error: wrong argument for --output",
-                       With_Help => False);
+            Abort_Msg
+              ("error: wrong argument for --output", With_Help => False);
          end if;
 
          --  When outputting to a terminal, switch automatically to colored
@@ -2400,10 +2393,11 @@ package body Configuration is
                  Create
                    (Filesystem_String (Tree.Root_Project.Path_Name.Dir_Name));
                Full_Name    : constant Virtual_File :=
-                 (if Is_Absolute_Path (My_Proof_Dir) then My_Proof_Dir
+                 (if Is_Absolute_Path (My_Proof_Dir)
+                  then My_Proof_Dir
                   else
-                     Create_From_Dir
-                       (Proj_Dir, Filesystem_String (Attr.Value.Text)));
+                    Create_From_Dir
+                      (Proj_Dir, Filesystem_String (Attr.Value.Text)));
             begin
                Full_Name.Normalize_Path;
                Proof_Dir := new String'(Full_Name.Display_Full_Name);
@@ -2416,15 +2410,17 @@ package body Configuration is
       --------------------
 
       procedure Set_Proof_Mode (FS : in out File_Specific) is
-         Input : String renames CL_Switches.Proof.all;
+         Input       : String renames CL_Switches.Proof.all;
          Colon_Index : constant Natural :=
            Index (Source => Input, Pattern => ":");
 
          Proof_Input : constant String :=
-           (if Colon_Index /= 0 then Input (Input'First .. Colon_Index - 1)
+           (if Colon_Index /= 0
+            then Input (Input'First .. Colon_Index - 1)
             else Input);
-         Lazy_Input : constant String :=
-           (if Colon_Index /= 0 then Input (Colon_Index + 1 .. Input'Last)
+         Lazy_Input  : constant String :=
+           (if Colon_Index /= 0
+            then Input (Colon_Index + 1 .. Input'Last)
             else "");
 
       begin
@@ -2444,8 +2440,8 @@ package body Configuration is
          elsif Proof_Input = "all_split" then
             FS.Proof := All_Split;
          else
-            Abort_Msg ("error: wrong argument for --proof",
-                       With_Help => False);
+            Abort_Msg
+              ("error: wrong argument for --proof", With_Help => False);
          end if;
 
          if Lazy_Input = "" then
@@ -2455,8 +2451,8 @@ package body Configuration is
          elsif Lazy_Input = "lazy" then
             FS.Lazy := True;
          else
-            Abort_Msg ("error: wrong argument for --proof",
-                       With_Help => False);
+            Abort_Msg
+              ("error: wrong argument for --proof", With_Help => False);
          end if;
       end Set_Proof_Mode;
 
@@ -2465,11 +2461,10 @@ package body Configuration is
       -----------------
 
       procedure Set_Provers
-        (Prover : GNAT.Strings.String_Access;
-         FS     : in out File_Specific)
+        (Prover : GNAT.Strings.String_Access; FS : in out File_Specific)
       is
          First : Integer;
-         S : constant String :=
+         S     : constant String :=
            (if Prover /= null then Prover.all else "");
 
       begin
@@ -2504,15 +2499,15 @@ package body Configuration is
 
             for Prover of FS.Provers loop
                if (Prover = "cvc5" and then not SPARK_Install.CVC5_Present)
-                 or else
-                   (Prover = "z3" and then not SPARK_Install.Z3_Present)
-                 or else
-                   (Prover = "colibri"
-                    and then not SPARK_Install.Colibri_Present)
+                 or else (Prover = "z3" and then not SPARK_Install.Z3_Present)
+                 or else (Prover = "colibri"
+                          and then not SPARK_Install.Colibri_Present)
                then
-                  Abort_Msg ("error: prover " & Prover &
-                               " was selected, but it is not installed",
-                             With_Help => False);
+                  Abort_Msg
+                    ("error: prover "
+                     & Prover
+                     & " was selected, but it is not installed",
+                     With_Help => False);
                end if;
             end loop;
 
@@ -2549,8 +2544,8 @@ package body Configuration is
          elsif CL_Switches.Report.all = "statistics" then
             Report := GPR_Statistics;
          else
-            Abort_Msg ("error: wrong argument for --report",
-                       With_Help => False);
+            Abort_Msg
+              ("error: wrong argument for --report", With_Help => False);
          end if;
       end Set_Report_Mode;
 
@@ -2569,34 +2564,30 @@ package body Configuration is
             Warning_Mode := Gnat2Why_Opts.SW_Suppress;
          elsif Warn_Switch = "error" then
             Warning_Mode := Gnat2Why_Opts.SW_Treat_As_Error;
-         elsif Warn_Switch = "on"
-           or else Warn_Switch = "continue"
-         then
+         elsif Warn_Switch = "on" or else Warn_Switch = "continue" then
             Warning_Mode := Gnat2Why_Opts.SW_Normal;
          else
 
-            Abort_Msg ("error: wrong argument for --warnings",
-                       With_Help => False);
+            Abort_Msg
+              ("error: wrong argument for --warnings", With_Help => False);
          end if;
       end Set_Warning_Mode;
 
       --  Local variables
 
-      Com_Lin : String_List :=
-        [1 .. Ada.Command_Line.Argument_Count => <>];
-      Attr : GPR2.Project.Attribute.Object;
+      Com_Lin : String_List := [1 .. Ada.Command_Line.Argument_Count => <>];
+      Attr    : GPR2.Project.Attribute.Object;
 
       --  Help message read from a static file
 
       use CL_Switches;
 
-   --  Start of processing for Read_Command_Line
+      --  Start of processing for Read_Command_Line
 
    begin
 
       for Index in 1 .. Com_Lin'Last loop
-         Com_Lin (Index) :=
-           new String'(Ada.Command_Line.Argument (Index));
+         Com_Lin (Index) := new String'(Ada.Command_Line.Argument (Index));
       end loop;
 
       --  The following code calls Parse_Switches several times, with varying
@@ -2625,8 +2616,7 @@ package body Configuration is
          Succeed;
       end if;
 
-      if CL_Switches.Explain /= null
-        and then CL_Switches.Explain.all /= ""
+      if CL_Switches.Explain /= null and then CL_Switches.Explain.all /= ""
       then
          Produce_Explain_Output;
          Succeed;
@@ -2643,7 +2633,7 @@ package body Configuration is
       end if;
 
       if Tree.Root_Project.Check_Attribute
-        ((+"Prove", +"Switches"), Result => Attr)
+           ((+"Prove", +"Switches"), Result => Attr)
       then
          declare
             L : String_List_Access := List_From_Attr (Attr);
@@ -2657,15 +2647,15 @@ package body Configuration is
       end if;
 
       if Tree.Root_Project.Check_Attribute
-        ((+"Prove", +"Proof_Switches"),
-         Index  => GPR2.Project.Attribute_Index.Create ("Ada"),
-         Result => Attr)
+           ((+"Prove", +"Proof_Switches"),
+            Index  => GPR2.Project.Attribute_Index.Create ("Ada"),
+            Result => Attr)
       then
          declare
             L : String_List_Access := List_From_Attr (Attr);
          begin
-         --  parse the Proof_Switches ("Ada") attribute of the project file;
-         --  this is to detect invalid switches only.
+            --  parse the Proof_Switches ("Ada") attribute of the project file;
+            --  this is to detect invalid switches only.
 
             Parse_Switches (Global_Switches_Only, L.all);
             Free (L);
@@ -2673,11 +2663,11 @@ package body Configuration is
       end if;
 
       declare
-         function Concat3 (A, B : String_List_Access; C : String_List)
-           return String_List;
+         function Concat3
+           (A, B : String_List_Access; C : String_List) return String_List;
 
-         function Concat4 (A, B, C : String_List_Access; D : String_List)
-           return String_List;
+         function Concat4
+           (A, B, C : String_List_Access; D : String_List) return String_List;
 
          procedure Reset_File_Specific_Switches;
          --  Reset file-specific switches between parsing of the full
@@ -2687,25 +2677,28 @@ package body Configuration is
          -- Concat3 --
          -------------
 
-         function Concat3 (A, B : String_List_Access; C : String_List)
-                           return String_List is
+         function Concat3
+           (A, B : String_List_Access; C : String_List) return String_List is
          begin
-            return (if A = null then [] else A.all) &
-                   (if B = null then [] else B.all) &
-                   C;
+            return
+              (if A = null then [] else A.all)
+              & (if B = null then [] else B.all)
+              & C;
          end Concat3;
 
          -------------
          -- Concat4 --
          -------------
 
-         function Concat4 (A, B, C : String_List_Access; D : String_List)
-                           return String_List is
+         function Concat4
+           (A, B, C : String_List_Access; D : String_List) return String_List
+         is
          begin
-            return (if A = null then [] else A.all) &
-                   (if B = null then [] else B.all) &
-                   (if C = null then [] else C.all) &
-                   D;
+            return
+              (if A = null then [] else A.all)
+              & (if B = null then [] else B.all)
+              & (if C = null then [] else C.all)
+              & D;
          end Concat4;
 
          ----------------------------------
@@ -2740,12 +2733,9 @@ package body Configuration is
               List_From_Attr
                 (Tree.Root_Project.Attribute
                    ((+"Prove", +"Proof_Switches"),
-                    Index  => GPR2.Project.Attribute_Index.Create ("Ada")));
+                    Index => GPR2.Project.Attribute_Index.Create ("Ada")));
             Parsed_Cmdline     : constant String_List :=
-              Concat3
-                (Prove_Switches,
-                 Proof_Switches_Ada,
-                 Com_Lin);
+              Concat3 (Prove_Switches, Proof_Switches_Ada, Com_Lin);
          begin
             --  parse all switches that apply to all files, concatenated in the
             --  right order (most important is last).
@@ -2766,17 +2756,18 @@ package body Configuration is
                      FS_Switches    : constant String_List_Access :=
                        List_From_Attr (Attr);
                      Parsed_Cmdline : constant String_List :=
-                       Concat4 (Prove_Switches,
-                                Proof_Switches_Ada,
-                                FS_Switches, Com_Lin);
+                       Concat4
+                         (Prove_Switches,
+                          Proof_Switches_Ada,
+                          FS_Switches,
+                          Com_Lin);
                   begin
                      if FS_Switches /= null then
 
                         --  parse the file switches to check if they contain
                         --  invalid switches; this is for error reporting only.
 
-                        Parse_Switches (File_Specific_Only,
-                                        FS_Switches.all);
+                        Parse_Switches (File_Specific_Only, FS_Switches.all);
                      end if;
 
                      --  parse all switches that apply to a single file,
@@ -2819,17 +2810,22 @@ package body Configuration is
             PID_String  : constant String := Integer'Image (Get_Process_Id);
             Socket_Dir  : constant String := Compute_Socket_Dir (Tree);
             Socket_Base : constant String :=
-              "why3server_" &
-              PID_String (PID_String'First + 1 .. PID_String'Last)
+              "why3server_"
+              & PID_String (PID_String'First + 1 .. PID_String'Last)
               & ".sock";
          begin
-            Socket_Name := new String'(
-               (if Socket_Dir = "" then Socket_Base
-                else Ada.Directories.Compose (Socket_Dir, Socket_Base)));
+            Socket_Name :=
+              new String'
+                ((if Socket_Dir = ""
+                  then Socket_Base
+                  else Ada.Directories.Compose (Socket_Dir, Socket_Base)));
             if Is_Coq_Prover (File_Specific_Map ("Ada")) then
                Prepare_Prover_Lib
-                 (Tree.Root_Project.Object_Directory.
-                    Virtual_File.Display_Full_Name);
+                 (Tree
+                    .Root_Project
+                    .Object_Directory
+                    .Virtual_File
+                    .Display_Full_Name);
             end if;
          end;
       end;
@@ -2853,21 +2849,21 @@ package body Configuration is
       for Cursor in CL_Switches.File_List.Iterate loop
 
          declare
-            File_Entry : String renames CL_Switches.File_List (Cursor);
-            Has_Path : constant Boolean :=
+            File_Entry       : String renames CL_Switches.File_List (Cursor);
+            Has_Path         : constant Boolean :=
               Filename_Type (File_Entry) not in GPR2.Simple_Name;
             Simple_File_Name : constant String :=
-              (if Has_Path then Ada.Directories.Base_Name (File_Entry)
+              (if Has_Path
+               then Ada.Directories.Base_Name (File_Entry)
                else File_Entry);
-            Found : Boolean := False;
+            Found            : Boolean := False;
          begin
             --  If the provided filename has a path component, we check if the
             --  file exists.
 
             if Has_Path and then not Ada.Directories.Exists (File_Entry) then
                Abort_Msg
-                 ("could not locate " & File_Entry,
-                  With_Help => False);
+                 ("could not locate " & File_Entry, With_Help => False);
             end if;
 
             --  We check each project if it contains the name as a unit, then
@@ -2878,11 +2874,11 @@ package body Configuration is
 
             for NRP of Tree.Namespace_Root_Projects loop
                declare
-                  View_DB : constant GPR2.Build.View_Db.Object :=
+                  View_DB   : constant GPR2.Build.View_Db.Object :=
                     Tree.Artifacts_Database (NRP);
-                  CU : GPR2.Build.Compilation_Unit.Object;
-                  VS : GPR2.Build.Source.Object;
-                  Elt : constant GPR2.Name_Type :=
+                  CU        : GPR2.Build.Compilation_Unit.Object;
+                  VS        : GPR2.Build.Source.Object;
+                  Elt       : constant GPR2.Name_Type :=
                     Name_Type (Simple_File_Name);
                   Ambiguous : Boolean;
                begin
@@ -2904,13 +2900,13 @@ package body Configuration is
                   if CU.Is_Defined then
                      if Found then
                         Abort_Msg
-                          ("file or compilation unit " & Simple_File_Name
+                          ("file or compilation unit "
+                           & Simple_File_Name
                            & " is not unique in aggregate project",
                            With_Help => False);
                      else
                         CL_Switches.File_List.Replace_Element
-                          (Cursor,
-                           String (CU.Main_Part.Source.Simple_Name));
+                          (Cursor, String (CU.Main_Part.Source.Simple_Name));
                         Found := True;
                      end if;
                   end if;
@@ -2918,7 +2914,8 @@ package body Configuration is
             end loop;
             if not Found then
                Abort_Msg
-                 (File_Entry & " is not a file or compilation unit"
+                 (File_Entry
+                  & " is not a file or compilation unit"
                   & " of any project",
                   With_Help => False);
             end if;
@@ -2948,22 +2945,23 @@ package body Configuration is
    -- Compute_Why3_Args --
    -----------------------
 
-   function Compute_Why3_Args (Obj_Dir : String;
-                               FS      : File_Specific)
-                               return String_Lists.List
+   function Compute_Why3_Args
+     (Obj_Dir : String; FS : File_Specific) return String_Lists.List
    is
 
-      Args    : String_Lists.List;
-      Why3_VF : constant Virtual_File :=
+      Args          : String_Lists.List;
+      Why3_VF       : constant Virtual_File :=
         (if CL_Switches.Why3_Conf.all /= ""
          then Create (Filesystem_String (CL_Switches.Why3_Conf.all))
          else No_File);
       Gnatwhy3_Conf : constant String :=
-        (if Why3_VF /= No_File then
+        (if Why3_VF /= No_File
+         then
            (if Is_Absolute_Path (Why3_VF)
             then CL_Switches.Why3_Conf.all
-            else Ada.Directories.Compose (+Get_Current_Dir.Full_Name,
-                                          CL_Switches.Why3_Conf.all))
+            else
+              Ada.Directories.Compose
+                (+Get_Current_Dir.Full_Name, CL_Switches.Why3_Conf.all))
          else "");
 
       -------------------------
@@ -2978,8 +2976,9 @@ package body Configuration is
       ---------------------------
 
       procedure Prepare_Why3_Manual is
-         Args : GNAT.OS_Lib.Argument_List :=
-           (if Gnatwhy3_Conf /= "" then
+         Args     : GNAT.OS_Lib.Argument_List :=
+           (if Gnatwhy3_Conf /= ""
+            then
               [1 => new String'("--prepare-shared"),
                2 => new String'("--prover"),
                3 => new String'(Prover_List ("Ada")),
@@ -2993,7 +2992,7 @@ package body Configuration is
                3 => new String'(Prover_List ("Ada")),
                4 => new String'("--proof-dir"),
                5 => new String'(Proof_Dir.all)]);
-         Res : Boolean;
+         Res      : Boolean;
          Old_Dir  : constant String := Ada.Directories.Current_Directory;
          Gnatwhy3 : constant String :=
            Ada.Directories.Compose
@@ -3011,9 +3010,8 @@ package body Configuration is
             end loop;
             Ada.Text_IO.New_Line;
          end if;
-         GNAT.OS_Lib.Spawn (Program_Name => Gnatwhy3,
-                            Args         => Args,
-                            Success      => Res);
+         GNAT.OS_Lib.Spawn
+           (Program_Name => Gnatwhy3, Args => Args, Success => Res);
          Free (Args);
          Ada.Directories.Set_Directory (Old_Dir);
          if Verbose then
@@ -3022,12 +3020,13 @@ package body Configuration is
             Ada.Text_IO.New_Line;
          end if;
          if not Res then
-            Abort_Msg ("error: failed to compile shared Coq library",
-                       With_Help => False);
+            Abort_Msg
+              ("error: failed to compile shared Coq library",
+               With_Help => False);
          end if;
       end Prepare_Why3_Manual;
 
-   --  Start of processing for Compute_Why3_Args
+      --  Start of processing for Compute_Why3_Args
 
    begin
       --  The first "argument" is in fact the command name itself, because in

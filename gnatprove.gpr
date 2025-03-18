@@ -108,4 +108,8 @@ project GNATprove is
 
    end Analyzer;
 
+   package Format is
+     for Ignore use "gnatprove_format_ignore.txt";
+   end Format;
+
 end GNATprove;

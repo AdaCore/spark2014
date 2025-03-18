@@ -55,6 +55,7 @@ package Report_Database is
       Max_Time  : Float;
    end record;
 
+   --!format off
    function "<" (X, Y : Proved_Check) return Boolean is
      (X.Max_Time < Y.Max_Time
       or else (X.Max_Time = Y.Max_Time
@@ -67,6 +68,7 @@ package Report_Database is
                     and then (X.Column < Y.Column
                       or else (X.Column = Y.Column
                           and then X.Kind < Y.Kind))))))))));
+   --!format on
 
    type Pragma_Assume is record
       File   : Unbounded_String;
@@ -78,8 +80,7 @@ package Report_Database is
    package Check_Lists is new
      Ada.Containers.Doubly_Linked_Lists (Suppressed_Check, "=");
 
-   package Proved_Check_Sets is new
-     Ada.Containers.Ordered_Sets (Proved_Check);
+   package Proved_Check_Sets is new Ada.Containers.Ordered_Sets (Proved_Check);
 
    package Pragma_Assume_Lists is new
      Ada.Containers.Doubly_Linked_Lists (Pragma_Assume, "=");
@@ -144,9 +145,7 @@ package Report_Database is
    type Flow_Message_Kind is (FMK_Error, FMK_Check, FMK_Warning);
 
    procedure Add_Flow_Result
-     (Unit     : Unit_Type;
-      Subp     : Subp_Type;
-      Msg_Kind : Flow_Message_Kind);
+     (Unit : Unit_Type; Subp : Subp_Type; Msg_Kind : Flow_Message_Kind);
    --  For the subprogram in the given unit, register a flow result, which is
    --  either a warning or an error.
 
@@ -159,15 +158,11 @@ package Report_Database is
    --  For the subprogram in the given unit, register a pragma assume result
 
    procedure Add_Proof_Result
-     (Unit   : Unit_Type;
-      Subp   : Subp_Type;
-      Proved : Boolean);
+     (Unit : Unit_Type; Subp : Subp_Type; Proved : Boolean);
    --  For the subprogram in the given unit, register a proof result
 
    procedure Add_SPARK_Status
-     (Unit         : Unit_Type;
-      Subp         : Subp_Type;
-      SPARK_Status : SPARK_Mode_Status);
+     (Unit : Unit_Type; Subp : Subp_Type; SPARK_Status : SPARK_Mode_Status);
    --  Register the SPARK status for the given subprogram
 
    procedure Add_Analysis_Progress
@@ -190,12 +185,12 @@ package Report_Database is
    procedure Add_Claim_With_Assumptions (Claim : Token; S : Token_Sets.Set);
    --  Register that claim C ultimately only depends on assumptions S
 
-   function Has_Unproved_Check return Boolean is
-      (for some Check_Kind in Summary'Range =>
-          Summary (Check_Kind).Unproved > 0);
+   function Has_Unproved_Check return Boolean
+   is (for some Check_Kind in Summary'Range =>
+         Summary (Check_Kind).Unproved > 0);
 
-   function Has_Check return Boolean is
-     (for some Line of Summary =>
+   function Has_Check return Boolean
+   is (for some Line of Summary =>
          Line.Flow > 0
          or else Line.Provers.Total > 0
          or else Line.Justified > 0
@@ -217,10 +212,9 @@ package Report_Database is
    --  Resets the results, removing all information on units and subprograms
 
    procedure Iter_All_Subps
-     (Process : not null access
-                   procedure (U : Unit_Type;
-                              Subp : Subp_Type;
-                              Stat : Stat_Rec));
+     (Process :
+        not null access procedure
+          (U : Unit_Type; Subp : Subp_Type; Stat : Stat_Rec));
    --  Iterate over all subprograms of all units
 
    function Num_Units return Natural;
@@ -246,21 +240,20 @@ package Report_Database is
 
    procedure Iter_Unit_Subps
      (Unit    : Unit_Type;
-      Process : not null access procedure (Subp : Subp_Type;
-                                           Stat : Stat_Rec;
-                                           Progress : Analysis_Progress);
+      Process :
+        not null access procedure
+          (Subp : Subp_Type; Stat : Stat_Rec; Progress : Analysis_Progress);
       Ordered : Boolean := False);
    --  Iterate over all subprograms of a given Unit. If Ordered is True,
    --  iterate in a fixed order defined by the lexicographic order on
    --  subprogram names.
 
-   procedure Merge_Stat_Maps (A : in out Prover_Stat_Maps.Map;
-                              B : Prover_Stat_Maps.Map);
+   procedure Merge_Stat_Maps
+     (A : in out Prover_Stat_Maps.Map; B : Prover_Stat_Maps.Map);
    --  "Add" the second map of prover stats to the first, so that count and
    --  maximum values area taken into acount
 
-   procedure Update_Most_Difficult_Proved_Checks
-     (Check : Proved_Check);
+   procedure Update_Most_Difficult_Proved_Checks (Check : Proved_Check);
    --  Update the set of most difficult checks, to later report to the user
 
 end Report_Database;

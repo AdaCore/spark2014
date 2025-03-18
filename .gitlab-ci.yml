@@ -271,3 +271,16 @@ build_docs:
     - if [[ $CI_PIPELINE_SOURCE = "merge_request_event" ]]; then export HTMLTARGETDIR=MRs/$CI_MERGE_REQUEST_IID ; fi
     - publish-pages $CI_PROJECT_DIR/spark/html/lrm --target-subdir doc/lrm/$HTMLTARGETDIR --expires 30
     - publish-pages $CI_PROJECT_DIR/spark/html/ug --target-subdir doc/ug/$HTMLTARGETDIR --expires 30
+
+# Adjust pre-commit to give it access to gnatformat
+pre-commit:
+  before_script:
+    - generic_anod_ci $GENERIC_ANOD_CI_OPTIONS
+    - cat /tmp/ci_env.sh
+    - . /tmp/ci_env.sh
+    - cd $ANOD_DEFAULT_SANDBOX_DIR
+    - anod install gnat --latest
+    - anod install libgpr2
+    - eval $(anod printenv gnat)
+    - eval $(anod printenv libgpr2)
+    - cd $CI_PROJECT_DIR

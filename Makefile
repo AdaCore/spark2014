@@ -230,3 +230,9 @@ create-benchmark:
 run-benchmark:
 	testsuite/gnatprove/bench/benchtests.py -j0 --testsuite-dir=testsuite/gnatprove $(BENCHDIR) --results-dir=$(RESULTSDIR)
 	testsuite/gnatprove/bench/gaia.py --testsuite-dir=testsuite/gnatprove $(RESULTSDIR)/results.json
+
+format:
+	gnatformat -P gnatprove
+
+check-format:
+	gnatformat -P gnatprove --check
