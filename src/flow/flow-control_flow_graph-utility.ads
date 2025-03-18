@@ -142,42 +142,27 @@ package Flow.Control_Flow_Graph.Utility is
    --     * Is_Callsite
 
    function Make_Parameter_Attributes
-     (FA                           : Flow_Analysis_Graphs;
-      Call_Vertex                  : Node_Id;
-      Actual                       : Node_Id;
-      Formal                       : Entity_Id;
-      In_Vertex                    : Boolean;
-      Discriminants_Or_Bounds_Only : Boolean;
-      Subp_Calls                   : Call_Sets.Set   := Call_Sets.Empty_Set;
-      Indt_Calls                   : Node_Sets.Set   := Node_Sets.Empty_Set;
-      Vertex_Ctx                   : Vertex_Context;
-      E_Loc                        : Node_Or_Entity_Id)
+     (FA         : Flow_Analysis_Graphs;
+      Callsite   : Node_Id;
+      Actual     : Node_Id;
+      Formal     : Entity_Id;
+      In_Vertex  : Boolean;
+      Subp_Calls : Call_Sets.Set := Call_Sets.Empty_Set;
+      Indt_Calls : Node_Sets.Set := Node_Sets.Empty_Set;
+      Vertex_Ctx : Vertex_Context;
+      E_Loc      : Node_Or_Entity_Id)
       return V_Attributes
-   with Pre  => (if In_Vertex
-                 then
-                   Ekind (Formal) in E_In_Parameter | E_In_Out_Parameter
-                     or else Discriminants_Or_Bounds_Only
-                 else
-                   (case Ekind (Formal) is
-                      when E_Out_Parameter
-                         | E_In_Out_Parameter
-                      =>
-                        True,
-                      when E_In_Parameter =>
-                        Is_Writable_Parameter (Formal),
-                      when E_Function     =>
-                        Is_Function_With_Side_Effects (Formal),
-                      when others         =>
-                        False)
-                   and then not Discriminants_Or_Bounds_Only)
+   with Pre  => (Is_Formal (Formal)
+                   or else Is_Function_With_Side_Effects (Formal))
+                and then
+                  (if Ekind (Formal) = E_In_Parameter
+                   then In_Vertex or else Is_Writable_Parameter (Formal))
                 and then Nkind (Actual) in N_Subexpr | N_Defining_Identifier,
         Post =>
           not Make_Parameter_Attributes'Result.Is_Null_Node and
           not Make_Parameter_Attributes'Result.Is_Program_Node and
           not Make_Parameter_Attributes'Result.Is_Global_Parameter and
-          Make_Parameter_Attributes'Result.Is_Parameter and
-          Make_Parameter_Attributes'Result.Is_Discr_Or_Bounds_Parameter =
-            Discriminants_Or_Bounds_Only;
+          Make_Parameter_Attributes'Result.Is_Parameter;
    --  Create attributes for a parameter of a subprogram call. If In_Vertex is
    --  true, create attributes for the IN version of a parameter; otherwise,
    --  create attributes for the OUT version.
@@ -185,17 +170,14 @@ package Flow.Control_Flow_Graph.Utility is
    --  Note: variables defined and used are calculated automatically
 
    function Make_Global_Attributes
-     (Call_Vertex                  : Node_Id;
-      Global                       : Flow_Id;
-      Scope                        : Flow_Scope;
-      Discriminants_Or_Bounds_Only : Boolean;
-      Vertex_Ctx                   : Vertex_Context;
-      Is_Assertion                 : Boolean           := False;
-      E_Loc                        : Node_Or_Entity_Id := Empty)
+     (Callsite   : Node_Id;
+      Global     : Flow_Id;
+      Mode       : Param_Mode;
+      Scope      : Flow_Scope;
+      Vertex_Ctx : Vertex_Context;
+      E_Loc      : Node_Or_Entity_Id := Empty)
       return V_Attributes
-   with Pre  => (if Discriminants_Or_Bounds_Only
-                 then Global.Variant = In_View
-                 else Global.Variant in In_View | Out_View),
+   with Pre  => Global.Variant in In_View | Out_View,
         Post => not Make_Global_Attributes'Result.Is_Null_Node and
                 not Make_Global_Attributes'Result.Is_Program_Node and
                 not Make_Global_Attributes'Result.Is_Parameter and

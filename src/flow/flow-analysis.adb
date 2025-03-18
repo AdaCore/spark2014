@@ -3351,10 +3351,6 @@ package body Flow.Analysis is
                        and then Ekind (FA.Spec_Entity) = E_Package
                        and then No (FA.Initializes_N))
 
-              --  Ignore implicit references to discriminants and bounds
-
-              or else Parent_Atr.Is_Discr_Or_Bounds_Parameter
-
             then
                null;
             else
