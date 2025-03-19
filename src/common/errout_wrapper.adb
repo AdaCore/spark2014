@@ -78,15 +78,15 @@ package body Errout_Wrapper is
            (case Kind is
                when Error_Kind        => "",
                when Warning_Kind      => "?",
-               when Info_Kind         => "info: ?",
+               when Info_Kind         => "info: ",
                when Low_Check_Kind    => "low: ",
                when Medium_Check_Kind => "medium: ",
                when High_Check_Kind   => "high: ");
          Cont_Prefix : constant String :=
            (case Kind is
-               when Error_Kind               => "\",
-               when Warning_Kind | Info_Kind => "\?",
-               when Check_Kind               =>
+               when Error_Kind | Info_Kind => "\",
+               when Warning_Kind           => "\?",
+               when Check_Kind             =>
                  (if Gnat2Why_Args.Output_Mode in GPO_Pretty then "\"
                   else "\" & Prefix));
          use Node_Lists;
