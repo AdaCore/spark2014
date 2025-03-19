@@ -14,6 +14,7 @@ gnat2why
 gnatbind
 gnatls
 gnatwhy3
+gnatwhy3.manifest
 gnatwhy3.hash
 gprbuild
 gprclean
@@ -26,10 +27,14 @@ spark_report
 spark_semaphore_wrapper
 target.atp
 why3
+why3.manifest
+why3.zlib1
 why3config.cmxs
 why3cpulimit
+why3cpulimit.manifest
 why3realize.cmxs
 why3server
+why3server.manifest
 why3session.cmxs
 z3
 z3.hash
