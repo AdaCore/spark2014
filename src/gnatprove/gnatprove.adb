@@ -73,6 +73,7 @@ with Call;             use Call;
 with Configuration;    use Configuration;
 with GNAT.OS_Lib;
 with GNAT.Strings;     use GNAT.Strings;
+with Gnat2Why_Opts;
 with Gnat2Why_Opts.Writing;
 with GNATCOLL.JSON;    use GNATCOLL.JSON;
 with GNATCOLL.Tribooleans;
@@ -680,6 +681,7 @@ procedure Gnatprove with SPARK_Mode is
       Status     : Integer;
       Args       : String_Lists.List;
       JSON_Rec   : constant JSON_Value := Create_Object;
+      use type Gnat2Why_Opts.Output_Mode_Type;
    begin
 
       declare
@@ -792,6 +794,8 @@ procedure Gnatprove with SPARK_Mode is
 
       Set_Field (JSON_Rec, "mode", To_JSON (Configuration.Mode));
       Set_Field (JSON_Rec, "has_errors", Errors);
+
+      Set_Field (JSON_Rec, "colors", Output = Gnat2Why_Opts.GPO_Pretty_Color);
 
       declare
          Report_Info_File : File_Type;

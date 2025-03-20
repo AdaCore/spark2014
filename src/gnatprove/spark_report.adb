@@ -47,6 +47,7 @@
 --     "mode" : string,
 --     "output_header" : bool,
 --     "quiet" : bool,
+--     "colors" : bool,
 --  }
 --  Note that all fields are optional and absence of a value indicates default
 --  values for the corresponding fields: the empty list for lists, "false" for
@@ -106,6 +107,8 @@ procedure SPARK_Report is
    Quiet              : Boolean := False;
    Has_Limit_Switches : Boolean := False;
    Has_Errors         : Boolean := False;
+   Colors             : Boolean := False;
+
    Mode               : GP_Mode;
 
    Error_Code         : Integer := 0;
@@ -1402,6 +1405,7 @@ begin
 
    Mode := From_JSON (Get (Info, "mode"));
    Has_Errors := Get (Info, "has_errors");
+   Colors := Get (Info, "colors");
 
    if Has_Field (Info, "obj_dirs") then
       declare
@@ -1473,6 +1477,37 @@ begin
             end if;
          end;
       end if;
+   end if;
+
+   --  Similarly, we print a success message if some checks exist and
+   --  all have been proved. Suppressed if we are in mode "quiet".
+
+   if not Quiet
+     and then not Has_Errors
+     and then Has_Check
+     and then not Has_Unproved_Check
+   then
+      declare
+         Sum       : Summary_Line renames Summary (Total);
+         Total_VCs : constant Natural :=
+           Sum.Flow + Sum.Justified + Sum.Provers.Total + Sum.Unproved;
+         Enable_Green : constant String :=
+           (if Colors then ASCII.ESC & "[32m" & ASCII.ESC & "[K"
+            else "");
+         Reset_Color : constant String :=
+           (if Colors then ASCII.ESC & "[m" & ASCII.ESC & "[K"
+            else "");
+         Checks : constant String :=
+           (if Total_VCs = 1 then "check" else "checks");
+         Total : constant String := Natural'Image (Total_VCs);
+      begin
+         Put_Line (Enable_Green
+                   & "Success:"
+                   & Reset_Color
+                   & " all checks proved ("
+                   & Total (Total'First + 1 .. Total'Last)
+                   & " " & Checks & ").");
+      end;
    end if;
 
    Print_Most_Difficult_Proved_Checks (Handle);
