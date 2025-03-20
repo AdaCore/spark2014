@@ -376,6 +376,19 @@ package body Errout_Wrapper is
       return To_String (R);
    end Escape_For_Errout;
 
+   ----------------
+   -- Tag_Suffix --
+   ----------------
+
+   function Tag_Suffix (Kind : Misc_Warning_Kind) return String is
+   begin
+      if Warning_Doc_Switch then
+         return " [" & Kind_Name (Kind) & "]";
+      else
+         return "";
+      end if;
+   end Tag_Suffix;
+
    -------------
    -- To_JSON --
    -------------
@@ -411,9 +424,7 @@ package body Errout_Wrapper is
         (Kind,
          N,
          Create
-           (Warning_Message (Kind) & Extra_Message &
-            (if Warning_Doc_Switch then " [" & Kind_Name (Kind) & "]"
-               else ""),
+           (Warning_Message (Kind) & Extra_Message & Tag_Suffix (Kind),
             Names,
             Secondary_Loc,
             Explain_Code),

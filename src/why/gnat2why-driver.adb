@@ -1264,8 +1264,9 @@ package body Gnat2Why.Driver is
                   if Warning_Status (Warn_Info_Unrolling_Inlining) = WS_Enabled
                   then
                      Error_Msg_N
-                       ("local subprogram &" &
-                          " only analyzed in the context of calls",
+                       ("local subprogram &"
+                        &  " only analyzed in the context of calls"
+                        & Tag_Suffix (Warn_Info_Unrolling_Inlining),
                         E,
                         Kind => Info_Kind,
                         Continuations =>
