@@ -1,5 +1,5 @@
 pack.adb:4:17: info: add a contract to analyze it separately from calling contexts
-pack.adb:4:17: info: local subprogram "P3" only analyzed in the context of calls
+pack.adb:4:17: info: local subprogram "P3" only analyzed in the context of calls [info-unrolling-inlining]
 pack.adb:4:17: warning: subprogram "P3" has no effect
 pack.adb:6:15: medium: pointer dereference check might fail, in call inlined at pack.adb:15 (e.g. when Y = null) [possible fix: precondition of subprogram at pack.ads:13 should mention Y]
 pack.adb:10:07: warning: analyzing unreferenced procedure "P0_Ok" [unreferenced-procedure]

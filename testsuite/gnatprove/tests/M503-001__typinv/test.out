@@ -58,10 +58,10 @@ globals.ads:41:11: info: data dependencies proved
 globals.ads:43:13: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 globals.ads:44:11: info: data dependencies proved
 inside_out.adb:3:14: info: add a contract to analyze it separately from calling contexts
-inside_out.adb:3:14: info: local subprogram "Body_Create" only analyzed in the context of calls
+inside_out.adb:3:14: info: local subprogram "Body_Create" only analyzed in the context of calls [info-unrolling-inlining]
 inside_out.adb:3:27: info: initialization of "X" proved
 inside_out.adb:5:14: info: add a contract to analyze it separately from calling contexts
-inside_out.adb:5:14: info: local subprogram "Body_Update" only analyzed in the context of calls
+inside_out.adb:5:14: info: local subprogram "Body_Update" only analyzed in the context of calls [info-unrolling-inlining]
 inside_out.adb:7:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
 inside_out.adb:16:07: medium: for X before the call at inside_out.ads:7
 inside_out.adb:16:07: medium: invariant check might fail, in call inlined at inside_out.adb:58 (e.g. when X = 0)

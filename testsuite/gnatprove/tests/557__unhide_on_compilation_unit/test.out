@@ -2,7 +2,7 @@ gen.adb:1:35: error: the entity of a pragma Annotate Unhide_Info for package bod
 gen.adb:8:05: warning: initialization of "Z" has no effect, in instantiation at main.adb:9
 main.adb:4:14: info: implicit aspect Always_Terminates on "Read_Pre" has been proved, subprogram will terminate
 main.adb:5:15: info: add a contract to analyze it separately from calling contexts
-main.adb:5:15: info: local subprogram "My_Read" only analyzed in the context of calls
+main.adb:5:15: info: local subprogram "My_Read" only analyzed in the context of calls [info-unrolling-inlining]
 main.adb:5:41: info: initialization of "X" proved
 main.adb:7:26: info: index check proved (CVC5: 2 VC), in call inlined at gen.adb:10, in instantiation at main.adb:9
 main.adb:9:03: info: analyzing call to "My_Read" in context

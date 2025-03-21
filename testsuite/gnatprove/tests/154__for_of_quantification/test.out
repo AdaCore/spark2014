@@ -1,5 +1,5 @@
 p.adb:1:11: warning: subprogram "P" has no effect
 p.adb:8:43: high: assertion might fail, cannot prove C = 'x' (e.g. when C = 'h' and X = "h" and X'First = 1)
 p.adb:10:25: high: assertion might fail (e.g. when X = "h" and X'First = 1)
-p.adb:12:21: info: unrolling loop
+p.adb:12:21: info: unrolling loop [info-unrolling-inlining]
 p.adb:13:28: high: assertion might fail (e.g. when X = "h" and X'First = 1)

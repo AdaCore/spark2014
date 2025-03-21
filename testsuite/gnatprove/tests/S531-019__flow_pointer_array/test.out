@@ -4,7 +4,7 @@ test.adb:10:38: info: pointer dereference check proved (CVC5: 1 VC)
 test.adb:10:54: info: pointer dereference check proved (CVC5: 1 VC)
 test.adb:10:63: info: pointer dereference check proved (CVC5: 1 VC)
 test.adb:13:20: info: pointer dereference check proved (CVC5: 1 VC)
-test.adb:13:28: info: cannot unroll loop (too many loop iterations)
+test.adb:13:28: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 test.adb:14:10: info: pointer dereference check proved (CVC5: 1 VC)
 test.adb:14:13: info: index check proved (CVC5: 2 VC)
 test.adb:18:04: medium: resource or memory leak might occur at end of scope

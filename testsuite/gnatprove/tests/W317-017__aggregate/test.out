@@ -8,5 +8,5 @@ range_check_aggr.adb:41:04: info: add a contract to analyze it separately from c
 range_check_aggr.adb:41:04: info: analyzing call to "PC1" in context
 range_check_aggr.adb:41:04: info: in instantiation at line 29
 range_check_aggr.adb:41:04: info: in instantiation at line 38
-range_check_aggr.adb:41:04: info: local subprogram "PC1" only analyzed in the context of calls
+range_check_aggr.adb:41:04: info: local subprogram "PC1" only analyzed in the context of calls [info-unrolling-inlining]
 range_check_aggr.adb:41:14: warning: subprogram "NEW_PC" has no effect

@@ -1,4 +1,4 @@
-data.adb:9:24: info: unrolling loop
+data.adb:9:24: info: unrolling loop [info-unrolling-inlining]
 data.adb:18:33: info: loop invariant initialization proved (CVC5: 4 VC)
 data.adb:18:33: info: loop invariant preservation proved (CVC5: 4 VC)
 data.adb:18:67: info: index check proved (CVC5: 4 VC)

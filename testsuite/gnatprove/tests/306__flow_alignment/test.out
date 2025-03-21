@@ -21,7 +21,7 @@ full.adb:28:10: info: range check proved (CVC5: 2 VC)
 full.adb:29:11: info: range check proved (CVC5: 2 VC)
 full.adb:31:11: info: range check proved (CVC5: 2 VC)
 main.adb:7:14: info: add a contract to analyze it separately from calling contexts
-main.adb:7:14: info: local subprogram "Test" only analyzed in the context of calls
+main.adb:7:14: info: local subprogram "Test" only analyzed in the context of calls [info-unrolling-inlining]
 main.adb:8:07: info: initialization of "Y1" proved
 main.adb:8:07: info: initialization of "Y1" proved, in call inlined at main.adb:43
 main.adb:8:07: info: initialization of "Y1" proved, in call inlined at main.adb:44

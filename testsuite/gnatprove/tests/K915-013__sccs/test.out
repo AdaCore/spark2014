@@ -1,7 +1,7 @@
 sccs.adb:3:14: info: add a contract to analyze it separately from calling contexts
-sccs.adb:3:14: info: local subprogram "Set_True" only analyzed in the context of calls
+sccs.adb:3:14: info: local subprogram "Set_True" only analyzed in the context of calls [info-unrolling-inlining]
 sccs.adb:9:14: info: add a contract to analyze it separately from calling contexts
-sccs.adb:9:14: info: local subprogram "G2" only analyzed in the context of calls
+sccs.adb:9:14: info: local subprogram "G2" only analyzed in the context of calls [info-unrolling-inlining]
 sccs.adb:9:26: warning: statement has no effect
 sccs.adb:9:26: warning: statement has no effect, in call inlined at sccs.adb:10
 sccs.adb:9:36: info: no contextual analysis of "F2" (body not seen yet)
@@ -16,7 +16,7 @@ sccs.adb:10:40: info: in inlined body at line 9
 sccs.adb:10:40: info: in inlined body at line 9
 sccs.adb:10:40: info: no contextual analysis of call to recursive subprogram
 sccs.adb:13:14: info: add a contract to analyze it separately from calling contexts
-sccs.adb:13:14: info: local subprogram "G5" only analyzed in the context of calls
+sccs.adb:13:14: info: local subprogram "G5" only analyzed in the context of calls [info-unrolling-inlining]
 sccs.adb:13:26: warning: statement has no effect
 sccs.adb:13:26: warning: statement has no effect, in call inlined at sccs.adb:14
 sccs.adb:13:26: warning: statement has no effect, in call inlined at sccs.adb:14, in call inlined at sccs.adb:15
@@ -35,13 +35,13 @@ sccs.adb:13:36: warning: statement has no effect, in call inlined at sccs.adb:14
 sccs.adb:13:36: warning: statement has no effect, in call inlined at sccs.adb:14, in call inlined at sccs.adb:15, in call inlined at sccs.adb:16, in call inlined at sccs.adb:17
 sccs.adb:13:48: info: analyzing call to "Set_True" in context
 sccs.adb:14:14: info: add a contract to analyze it separately from calling contexts
-sccs.adb:14:14: info: local subprogram "H5" only analyzed in the context of calls
+sccs.adb:14:14: info: local subprogram "H5" only analyzed in the context of calls [info-unrolling-inlining]
 sccs.adb:14:40: info: analyzing call to "G5" in context
 sccs.adb:15:14: info: add a contract to analyze it separately from calling contexts
-sccs.adb:15:14: info: local subprogram "I5" only analyzed in the context of calls
+sccs.adb:15:14: info: local subprogram "I5" only analyzed in the context of calls [info-unrolling-inlining]
 sccs.adb:15:36: info: analyzing call to "H5" in context
 sccs.adb:16:14: info: add a contract to analyze it separately from calling contexts
-sccs.adb:16:14: info: local subprogram "J5" only analyzed in the context of calls
+sccs.adb:16:14: info: local subprogram "J5" only analyzed in the context of calls [info-unrolling-inlining]
 sccs.adb:16:40: info: analyzing call to "I5" in context
 sccs.adb:17:40: info: analyzing call to "F5" in context
 sccs.adb:17:40: info: analyzing call to "J5" in context

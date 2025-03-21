@@ -8,7 +8,7 @@ mutually_recursive_nested_package.adb:2:17: medium: implicit aspect Always_Termi
 mutually_recursive_nested_package.adb:2:17: warning: initialization of "X" has no effect
 nonterminating.adb:1:11: warning: subprogram "Nonterminating" has no effect
 nonterminating.adb:4:14: info: add a contract to analyze it separately from calling contexts
-nonterminating.adb:4:14: info: local subprogram "Infinite_Loop" only analyzed in the context of calls
+nonterminating.adb:4:14: info: local subprogram "Infinite_Loop" only analyzed in the context of calls [info-unrolling-inlining]
 nonterminating.adb:4:14: warning: subprogram "Infinite_Loop" has no effect
 nonterminating.adb:7:20: medium: aspect Always_Terminates on "Nonterminating" could be incorrect, loop might be nonterminating, in call inlined at nonterminating.adb:21 [possible fix: add loop variant in the loop body]
 nonterminating.adb:8:15: medium: overflow check might fail, cannot prove upper bound for -X, in call inlined at nonterminating.adb:21 (e.g. when X = Integer'First) [reason for check: result of negation must fit in a 32-bits machine integer]

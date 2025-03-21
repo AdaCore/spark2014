@@ -85,7 +85,7 @@ info_flow_tests.adb:153:23: info: initialization of "C" proved
 info_flow_tests.adb:158:07: info: no contextual analysis of "Test_07" (nested subprogram)
 info_flow_tests.adb:161:18: medium: range check might fail
 info_flow_tests.adb:164:19: high: constant with variable input "C2" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(15))
-info_flow_tests.adb:164:21: info: cannot unroll loop (too many loop iterations)
+info_flow_tests.adb:164:21: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 info_flow_tests.adb:175:23: info: initialization of "C" proved
 info_flow_tests.adb:176:09: info: data dependencies proved
 info_flow_tests.adb:177:09: info: flow dependencies proved

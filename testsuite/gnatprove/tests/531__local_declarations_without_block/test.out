@@ -2,12 +2,12 @@ body_test.adb:10:09: warning: unused assignment
 body_test.adb:10:14: info: overflow check proved (CVC5: 2 VC)
 dup_name.adb:4:13: info: add a contract to analyze it separately from calling contexts
 dup_name.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-dup_name.adb:4:13: info: local subprogram "F" only analyzed in the context of calls
+dup_name.adb:4:13: info: local subprogram "F" only analyzed in the context of calls [info-unrolling-inlining]
 dup_name.adb:20:28: info: analyzing call to "F" in context
 dup_name.adb:22:15: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 dup_name.adb:23:28: info: analyzing call to "F" in context
 dup_name.adb:24:15: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 dup_name.adb:25:28: info: analyzing call to "F" in context
 dup_name.adb:26:15: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-little_test.adb:7:15: info: cannot unroll loop (too many loop iterations)
+little_test.adb:7:15: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 little_test.adb:9:21: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]

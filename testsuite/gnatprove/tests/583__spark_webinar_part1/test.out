@@ -13,7 +13,7 @@ low_level.adb:25:09: info: address in address clause is compatible with object a
 low_level.adb:25:09: info: object is suitable for aliasing via address clause (Trivial)
 low_level.adb:26:33: info: object is suitable for aliasing via address clause (Trivial)
 low_level.adb:26:33: info: types of aliased objects have the same size (Trivial)
-low_level.adb:28:31: info: unrolling loop
+low_level.adb:28:31: info: unrolling loop [info-unrolling-inlining]
 low_level.adb:36:05: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 low_level.adb:69:14: info: implicit aspect Always_Terminates on "Read_C_Struct" has been proved, subprogram will terminate
 rich_data.ads:36:30: info: predicate check proved (CVC5: 1 VC)

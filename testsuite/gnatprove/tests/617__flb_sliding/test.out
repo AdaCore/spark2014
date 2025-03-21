@@ -1,5 +1,5 @@
 q.adb:7:14: info: add a contract to analyze it separately from calling contexts
-q.adb:7:14: info: local subprogram "Loc" only analyzed in the context of calls
+q.adb:7:14: info: local subprogram "Loc" only analyzed in the context of calls [info-unrolling-inlining]
 q.adb:7:14: warning: subprogram "Loc" has no effect
 q.adb:9:22: info: range check proved (CVC5: 4 VC), in call inlined at q.adb:14
 q.adb:9:22: medium: assertion might fail, in call inlined at q.adb:14

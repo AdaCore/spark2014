@@ -16,5 +16,5 @@ declare_iterable.ads:20:13: info: implicit aspect Always_Terminates on "From_Nat
 declare_iterable.ads:21:13: info: implicit aspect Always_Terminates on "To_Nat_Array" has been proved, subprogram will terminate
 declare_iterable.ads:31:33: info: range check proved (CVC5: 2 VC)
 declare_iterable.ads:34:18: info: index check proved (CVC5: 2 VC)
-for_loop_array.adb:6:47: info: cannot unroll loop (too many loop iterations)
+for_loop_array.adb:6:47: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 for_loop_array.adb:7:22: info: assertion proved (CVC5: 1 VC)

@@ -24,7 +24,7 @@ sideeffects.adb:60:14: high: overflow check might fail, cannot prove upper bound
 sideeffects.adb:61:14: high: overflow check might fail, cannot prove upper bound for H + 1 (e.g. when H = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 54 should mention H in a precondition]
 sideeffects.adb:62:16: high: overflow check might fail, cannot prove lower bound for X + H (e.g. when H = Integer'First+1 and X = -2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 54 should mention H and X in a precondition]
 sideeffects.adb:65:14: info: add a contract to analyze it separately from calling contexts
-sideeffects.adb:65:14: info: local subprogram "Incr" only analyzed in the context of calls
+sideeffects.adb:65:14: info: local subprogram "Incr" only analyzed in the context of calls [info-unrolling-inlining]
 sideeffects.adb:67:14: medium: overflow check might fail, cannot prove lower bound for X + 1, in call inlined at sideeffects.adb:77 [reason for check: result of addition must fit in a 32-bits machine integer]
 sideeffects.adb:68:14: medium: overflow check might fail, cannot prove upper bound for H + 1, in call inlined at sideeffects.adb:77 [reason for check: result of addition must fit in a 32-bits machine integer]
 sideeffects.adb:71:04: info: initialization of "V1" proved

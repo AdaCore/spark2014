@@ -15,10 +15,10 @@ test_di_good.adb:21:52: info: range check proved (CVC5: 2 VC)
 test_di_good.adb:21:61: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 test_di_good.adb:27:21: info: range check proved (CVC5: 2 VC)
 test_di_good.adb:27:30: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-test_di_good.adb:32:20: info: unrolling loop
+test_di_good.adb:32:20: info: unrolling loop [info-unrolling-inlining]
 test_di_good.adb:34:24: info: range check proved (CVC5: 6 VC)
 test_di_good.adb:34:33: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-test_di_good.adb:40:20: info: unrolling loop
+test_di_good.adb:40:20: info: unrolling loop [info-unrolling-inlining]
 test_di_good.adb:42:24: info: range check proved (CVC5: 6 VC)
 test_di_good.adb:42:33: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 test_di_good.adb:48:07: info: initialization of "S1" proved
@@ -43,10 +43,10 @@ test_fl_good.adb:17:21: info: range check proved (CVC5: 2 VC)
 test_fl_good.adb:17:28: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 test_fl_good.adb:23:21: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
 test_fl_good.adb:23:28: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-test_fl_good.adb:28:20: info: unrolling loop
+test_fl_good.adb:28:20: info: unrolling loop [info-unrolling-inlining]
 test_fl_good.adb:30:24: info: range check proved (CVC5: 3 VC; Z3: 3 VC)
 test_fl_good.adb:30:31: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-test_fl_good.adb:36:20: info: unrolling loop
+test_fl_good.adb:36:20: info: unrolling loop [info-unrolling-inlining]
 test_fl_good.adb:38:24: info: range check proved (CVC5: 3 VC; Z3: 3 VC)
 test_fl_good.adb:38:31: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 test_fl_good.adb:44:07: info: initialization of "S1" proved

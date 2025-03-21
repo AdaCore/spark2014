@@ -26,7 +26,7 @@ exit_statement.adb:4:13: warning: function contract might not be available on im
 exit_statement.adb:4:16: warning: unused initial value of "V"
 exit_statement.adb:4:64: medium: postcondition might fail
 exit_statement.adb:6:37: info: precondition proved (Trivial: 1 VC)
-exit_statement.adb:11:24: info: unrolling loop
+exit_statement.adb:11:24: info: unrolling loop [info-unrolling-inlining]
 exit_statement.adb:11:24: warning: statement has no effect
 exit_statement.adb:12:10: warning: loop exit condition is stable
 exit_statement.adb:12:10: warning: statement has no effect
@@ -43,7 +43,7 @@ for_loop.adb:4:16: warning: unused initial value of "V"
 for_loop.adb:4:64: medium: postcondition might fail
 for_loop.adb:6:37: info: precondition proved (Trivial: 1 VC)
 for_loop.adb:11:24: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
-for_loop.adb:11:29: info: cannot unroll loop (too many loop iterations)
+for_loop.adb:11:29: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 for_loop.adb:11:29: warning: statement has no effect
 func_actual.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 func_actual.adb:4:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]

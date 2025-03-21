@@ -1,6 +1,6 @@
 account8.adb:7:31: medium: overflow check might fail, cannot prove upper bound for The_Data + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
 account8.adb:16:14: info: add a contract to analyze it separately from calling contexts
-account8.adb:16:14: info: local subprogram "Get_Next_Account_Created" only analyzed in the context of calls
+account8.adb:16:14: info: local subprogram "Get_Next_Account_Created" only analyzed in the context of calls [info-unrolling-inlining]
 account8.adb:16:14: warning: subprogram "Get_Next_Account_Created" has no effect
 account8.adb:25:10: info: analyzing call to "Get_Next_Account_Created" in context
 account8.ads:6:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate

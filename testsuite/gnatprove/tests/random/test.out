@@ -2,7 +2,7 @@ random.adb:36:13: info: implicit aspect Always_Terminates on "To_State" has been
 random.adb:37:13: info: implicit aspect Always_Terminates on "To_State" has been proved, subprogram will terminate
 random.adb:45:07: info: initialization of "Last" proved
 random.adb:47:14: info: initialization of "G" proved
-random.adb:49:31: info: cannot unroll loop (too many loop iterations)
+random.adb:49:31: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 random.adb:65:14: info: range check proved (CVC5: 2 VC)
 random.adb:66:58: info: range check proved (CVC5: 2 VC)
 random.adb:70:31: info: index check proved (CVC5: 4 VC)

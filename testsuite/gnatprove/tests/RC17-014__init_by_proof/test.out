@@ -52,7 +52,7 @@ init_by_proof.adb:56:26: info: index check proved (CVC5: 2 VC)
 init_by_proof.adb:56:29: info: division check proved (CVC5: 1 VC)
 init_by_proof.adb:62:21: info: range check proved (CVC5: 2 VC)
 init_by_proof.adb:65:39: info: overflow check proved (CVC5: 2 VC)
-init_by_proof.adb:65:52: info: cannot unroll loop (too many loop iterations)
+init_by_proof.adb:65:52: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 init_by_proof.adb:66:15: info: index check proved (CVC5: 2 VC)
 init_by_proof.adb:66:26: info: index check proved (CVC5: 2 VC)
 init_by_proof.adb:66:29: info: division check proved (CVC5: 1 VC)

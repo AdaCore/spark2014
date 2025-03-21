@@ -7,7 +7,7 @@ generate_initializes.ads:9:11: info: data dependencies proved
 outer.adb:10:16: info: implicit aspect Always_Terminates on "Foo" has been proved, subprogram will terminate
 outer.adb:16:47: medium: overflow check might fail, cannot prove lower bound for Visible + Hidden [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 10 should mention Hidden and Visible in a precondition]
 outer.adb:18:17: info: add a contract to analyze it separately from calling contexts
-outer.adb:18:17: info: local subprogram "Init" only analyzed in the context of calls
+outer.adb:18:17: info: local subprogram "Init" only analyzed in the context of calls [info-unrolling-inlining]
 outer.adb:21:10: info: initialization of "Tmp" proved
 outer.adb:21:10: info: initialization of "Tmp" proved, in call inlined at outer.adb:29
 outer.adb:29:07: info: analyzing call to "Init" in context

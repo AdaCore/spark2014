@@ -1,6 +1,6 @@
 conv.adb:3:13: info: add a contract to analyze it separately from calling contexts
 conv.adb:3:13: info: implicit aspect Always_Terminates on "Has_Neg_Sign" has been proved, subprogram will terminate
-conv.adb:3:13: info: local subprogram "Has_Neg_Sign" only analyzed in the context of calls
+conv.adb:3:13: info: local subprogram "Has_Neg_Sign" only analyzed in the context of calls [info-unrolling-inlining]
 conv.adb:8:13: info: implicit aspect Always_Terminates on "Zero" has been proved, subprogram will terminate
 conv.adb:13:34: info: analyzing call to "Has_Neg_Sign" in context
 conv.adb:14:34: info: analyzing call to "Has_Neg_Sign" in context

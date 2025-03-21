@@ -1,4 +1,4 @@
-bar.adb:4:38: info: unrolling loop
+bar.adb:4:38: info: unrolling loop [info-unrolling-inlining]
 bar.ads:3:13: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
 bar.ads:4:13: info: implicit aspect Always_Terminates on "Bizarre" has been proved, subprogram will terminate
 bar.ads:4:55: medium: predicate check might fail (e.g. when X = False) [possible fix: subprogram at line 4 should mention X in a precondition]

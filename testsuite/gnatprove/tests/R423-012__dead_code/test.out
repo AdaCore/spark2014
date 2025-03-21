@@ -1,10 +1,10 @@
-dead_code.adb:6:23: info: cannot unroll loop (too many loop iterations)
-dead_code.adb:14:23: info: cannot unroll loop (too many loop iterations)
+dead_code.adb:6:23: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+dead_code.adb:14:23: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 dead_code.adb:17:07: info: assertion proved (CVC5: 1 VC)
 dead_code.adb:18:07: warning: this statement is never reached
-dead_code.adb:23:23: info: cannot unroll loop (too many loop iterations)
+dead_code.adb:23:23: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 dead_code.adb:26:07: info: only expected exception raised (CVC5: 1 VC)
-dead_code.adb:31:23: info: cannot unroll loop (too many loop iterations)
+dead_code.adb:31:23: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 dead_code.adb:34:07: warning: unreachable code (CVC5: 1 VC)
 dead_code.adb:40:25: medium: implicit aspect Always_Terminates on "While_Loop1" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 dead_code.adb:40:25: warning: loop condition is stable

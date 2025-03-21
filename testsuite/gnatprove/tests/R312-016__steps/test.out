@@ -1,12 +1,12 @@
 correct variant
 ethernet_dissector.adb:5:05: info: in instantiation at types.adb:28
-ethernet_dissector.adb:5:05: info: unrolling loop
+ethernet_dissector.adb:5:05: info: unrolling loop [info-unrolling-inlining]
 ethernet_dissector.adb:5:14: info: implicit aspect Always_Terminates on "Convert_To_Two_Octets" has been proved, subprogram will terminate
 ethernet_dissector.adb:6:05: info: in instantiation at types.adb:28
-ethernet_dissector.adb:6:05: info: unrolling loop
+ethernet_dissector.adb:6:05: info: unrolling loop [info-unrolling-inlining]
 ethernet_dissector.adb:6:14: info: implicit aspect Always_Terminates on "Convert_To_Four_Octets" has been proved, subprogram will terminate
 ethernet_dissector.adb:7:05: info: in instantiation at types.adb:28
-ethernet_dissector.adb:7:05: info: unrolling loop
+ethernet_dissector.adb:7:05: info: unrolling loop [info-unrolling-inlining]
 ethernet_dissector.adb:7:14: info: implicit aspect Always_Terminates on "Convert_To_Six_Octets" has been proved, subprogram will terminate
 ethernet_dissector.adb:11:09: info: initialization of "EtherType_Length_1" proved
 ethernet_dissector.adb:12:09: info: initialization of "EtherType_Length_2" proved
@@ -97,13 +97,13 @@ types.ads:13:09: info: flow dependencies proved, in instantiation at ethernet_di
 types.ads:13:09: info: flow dependencies proved, in instantiation at ethernet_dissector.adb:7
 incorrect variant
 ethernet_dissector.adb:5:05: info: in instantiation at types.adb:28
-ethernet_dissector.adb:5:05: info: unrolling loop
+ethernet_dissector.adb:5:05: info: unrolling loop [info-unrolling-inlining]
 ethernet_dissector.adb:5:14: info: implicit aspect Always_Terminates on "Convert_To_Two_Octets" has been proved, subprogram will terminate
 ethernet_dissector.adb:6:05: info: in instantiation at types.adb:28
-ethernet_dissector.adb:6:05: info: unrolling loop
+ethernet_dissector.adb:6:05: info: unrolling loop [info-unrolling-inlining]
 ethernet_dissector.adb:6:14: info: implicit aspect Always_Terminates on "Convert_To_Four_Octets" has been proved, subprogram will terminate
 ethernet_dissector.adb:7:05: info: in instantiation at types.adb:28
-ethernet_dissector.adb:7:05: info: unrolling loop
+ethernet_dissector.adb:7:05: info: unrolling loop [info-unrolling-inlining]
 ethernet_dissector.adb:7:14: info: implicit aspect Always_Terminates on "Convert_To_Six_Octets" has been proved, subprogram will terminate
 ethernet_dissector.adb:11:09: info: initialization of "EtherType_Length_1" proved
 ethernet_dissector.adb:12:09: info: initialization of "EtherType_Length_2" proved

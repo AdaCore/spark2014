@@ -44,7 +44,7 @@ use_stacks.adb:22:07: info: initialization of "My_Stack" proved
 use_stacks.adb:23:07: info: initialization of "V" proved
 use_stacks.adb:35:07: info: initialization of "My_Stack" proved
 use_stacks.adb:36:07: info: initialization of "V" proved
-use_stacks.adb:49:25: info: cannot unroll loop (too many loop iterations)
+use_stacks.adb:49:25: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 use_stacks.adb:50:19: medium: "Stack_Vector" might not be initialized
 use_stacks.ads:6:14: warning: subprogram "Fill_Generic_Stack" has no effect
 gnatprove: error during flow analysis and proof

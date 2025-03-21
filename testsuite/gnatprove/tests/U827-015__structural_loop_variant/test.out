@@ -64,7 +64,7 @@ main.adb:115:22: info: predicate check proved (Trivial: 1 VC)
 main.adb:116:13: info: precondition proved (CVC5: 1 VC)
 main.adb:121:13: info: implicit aspect Always_Terminates on "Length_5_b" has been proved, subprogram will terminate
 main.adb:124:17: info: add a contract to analyze it separately from calling contexts
-main.adb:124:17: info: local subprogram "Next" only analyzed in the context of calls
+main.adb:124:17: info: local subprogram "Next" only analyzed in the context of calls [info-unrolling-inlining]
 main.adb:126:16: info: pointer dereference check proved (CVC5: 1 VC), in call inlined at main.adb:133
 main.adb:129:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:131:13: info: loop variant proved (Trivial)
@@ -95,13 +95,13 @@ main.adb:177:13: medium: loop variant might fail [possible explanation: "C" migh
 main.adb:178:18: info: predicate check proved (Trivial: 1 VC)
 main.adb:178:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:178:22: info: predicate check proved (Trivial: 1 VC)
-main.adb:179:29: info: unrolling loop
+main.adb:179:29: info: unrolling loop [info-unrolling-inlining]
 main.adb:179:29: warning: statement has no effect
 main.adb:180:28: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:186:13: info: implicit aspect Always_Terminates on "Length_7_b" has been proved, subprogram will terminate
 main.adb:189:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:191:13: info: loop variant proved (Trivial)
-main.adb:192:29: info: unrolling loop
+main.adb:192:29: info: unrolling loop [info-unrolling-inlining]
 main.adb:193:21: info: predicate check proved (Trivial: 1 VC)
 main.adb:193:23: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:195:25: info: pointer dereference check proved (CVC5: 1 VC)
@@ -287,7 +287,7 @@ main_bad.adb:132:13: medium: loop variant might fail [possible explanation: "C" 
 main_bad.adb:133:18: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:133:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:133:22: info: predicate check proved (Trivial: 1 VC)
-main_bad.adb:134:29: info: unrolling loop
+main_bad.adb:134:29: info: unrolling loop [info-unrolling-inlining]
 main_bad.adb:134:29: warning: statement has no effect
 main_bad.adb:135:19: info: no contextual analysis of "Rand" (body not seen yet)
 main_bad.adb:135:19: warning: assuming "Rand" has no effect on global items

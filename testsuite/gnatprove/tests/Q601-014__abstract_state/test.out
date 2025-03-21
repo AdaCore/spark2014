@@ -1,5 +1,5 @@
 achiever.adb:19:18: info: add a contract to analyze it separately from calling contexts
-achiever.adb:19:18: info: local subprogram "Do_Something" only analyzed in the context of calls
+achiever.adb:19:18: info: local subprogram "Do_Something" only analyzed in the context of calls [info-unrolling-inlining]
 achiever.adb:19:18: warning: subprogram "Do_Something" has no effect
 achiever.adb:95:11: info: analyzing call to "Do_Something" in context
 achiever.ads:20:13: info: implicit aspect Always_Terminates on "Get_Internal_State" has been proved, subprogram will terminate

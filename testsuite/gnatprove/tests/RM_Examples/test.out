@@ -1,5 +1,5 @@
 anti_aliasing.adb:15:14: info: add a contract to analyze it separately from calling contexts
-anti_aliasing.adb:15:14: info: local subprogram "One_In_One_Out" only analyzed in the context of calls
+anti_aliasing.adb:15:14: info: local subprogram "One_In_One_Out" only analyzed in the context of calls [info-unrolling-inlining]
 anti_aliasing.adb:18:14: info: overflow check proved (CVC5: 2 VC), in call inlined at anti_aliasing.adb:40
 anti_aliasing.adb:21:54: info: data dependencies proved
 anti_aliasing.adb:23:07: info: initialization of "Temp" proved
