@@ -59,7 +59,8 @@ package body Gnat2Why.Borrow_Checker is
    function Is_Read_Only (E : Entity_Id) return Boolean with
      Pre => Is_Object (E);
    --  Return True if E is declared as Read_Only (ie. a constant which is not
-   --  of access-to-variable type, or a variable of access-to-constant type).
+   --  of access-to-variable type, or a variable of anonymous
+   --  access-to-constant type)
 
    function Unique_Entity_In_SPARK (E : Entity_Id) return Entity_Id is
      (if E in E_Constant_Id
@@ -210,6 +211,27 @@ package body Gnat2Why.Borrow_Checker is
       type Perm_Env is new Perm_Tree_Maps.Instance;
       --  The definition of a permission environment for the analysis. This is
       --  just a hash table from entities to permission trees.
+
+      function Query_Mutable_Tree_With_Default
+        (T           : in out Perm_Env;
+         K           :        Entity_Id;
+         Default_Env :        Perm_Env)
+         return Perm_Tree_Access;
+      --  Wrapper around get. In case the key is not present, it tries putting
+      --  a copy of the tree from Default_Env in T before querying again.
+      --  The default environment is used to avoid cluterring the main
+      --  permissions environments with typically useless and redundant data,
+      --  which can get expensive on code with both many variables and paths.
+
+      function Query_Read_Only_Tree_With_Default
+        (T           : Perm_Env;
+         K           : Entity_Id;
+         Default_Env : Perm_Env)
+         return Perm_Tree_Access;
+      --  Wrapper around Get. In case the key is not present, it tries getting
+      --  it from Default_Env. The functionality is similar to
+      --  Query_Mutable_Tree_With_Default, except that due to the absence of
+      --  copying, the resulting tree should not be mutated.
 
       type Perm_Env_Access is access Perm_Env;
       --  Access to permission environments
@@ -583,6 +605,50 @@ package body Gnat2Why.Borrow_Checker is
          return T.all.Tree.Permission;
       end Permission;
 
+      -------------------------------------
+      -- Query_Mutable_Tree_With_Default --
+      -------------------------------------
+
+      function Query_Mutable_Tree_With_Default
+        (T           : in out Perm_Env;
+         K           :        Entity_Id;
+         Default_Env :        Perm_Env)
+         return Perm_Tree_Access
+      is
+      begin
+         return Res : Perm_Tree_Access := Get (T, K) do
+            if Res = null then
+               declare
+                  Temp : Perm_Tree_Access := Get (Default_Env, K);
+               begin
+                  if Temp /= null then
+                     Res := new Perm_Tree_Wrapper;
+                     Copy_Tree (From => Temp, To => Res);
+                     Set (T, K, Res);
+                  end if;
+               end;
+            end if;
+         end return;
+      end Query_Mutable_Tree_With_Default;
+
+      ---------------------------------------
+      -- Query_Read_Only_Tree_With_Default --
+      ---------------------------------------
+
+      function Query_Read_Only_Tree_With_Default
+        (T           : Perm_Env;
+         K           : Entity_Id;
+         Default_Env : Perm_Env)
+         return Perm_Tree_Access
+      is
+      begin
+         return Res : Perm_Tree_Access := Get (T, K) do
+            if Res = null then
+               Res := Get (Default_Env, K);
+            end if;
+         end return;
+      end Query_Read_Only_Tree_With_Default;
+
    end Permissions;
 
    use Permissions;
@@ -682,6 +748,14 @@ package body Gnat2Why.Borrow_Checker is
    function Glb (P1, P2 : Perm_Kind) return Perm_Kind;
    function Lub (P1, P2 : Perm_Kind) return Perm_Kind;
 
+   procedure Setup_Environment_For_Object
+     (Name : Entity_Id;
+      Perm : Perm_Kind;
+      Expl : Node_Id)
+     with Pre => Perm in Read_Only | Read_Write;
+   --  Extends current permission environment with declaration of variable
+   --  Name, with initial permission Perm.
+
    procedure Check_Assignment (Target : Node_Or_Entity_Id; Expr : Node_Id);
    --  Handle assignment as part of an assignment statement or an object
    --  declaration.
@@ -750,13 +824,6 @@ package body Gnat2Why.Borrow_Checker is
    procedure Check_Not_Observed (Expr : Expr_Or_Ent; Root : Entity_Id);
    --  Check expression Expr originating in Root was not observed
 
-   procedure Check_Not_Moved (Expr : Expr_Or_Ent) with
-     Pre => not Is_Deep
-       (Etype
-          (if Expr.Is_Ent then Expr.Ent
-           else Get_Root_Object (Expr.Expr)));
-   --  Check expression Expr was not moved
-
    function Check_On_Borrowed (Expr : Expr_Or_Ent) return Node_Id;
    --  Return a previously borrowed expression in conflict with Expr if any
 
@@ -811,6 +878,7 @@ package body Gnat2Why.Borrow_Checker is
    --  This function gets a node and looks recursively to find the appropriate
    --  subtree for that node. If the tree is folded on that node, then it
    --  returns the permission given at the right level.
+   --  If a tree is returned, it must be used in read-only fashion.
 
    function Get_Perm_Tree (N : Expr_Or_Ent) return Perm_Tree_Access;
    pragma Precondition (N.Is_Ent or else Is_Path_Expression (N.Expr));
@@ -827,10 +895,6 @@ package body Gnat2Why.Borrow_Checker is
          Global_Var : Boolean);
    procedure Handle_Globals (Subp : Entity_Id; Loc : Node_Id);
    --  Handling of globals is factored in a generic instantiated below
-
-   procedure Handle_Move_Of_Shallow (Expr : Node_Id) with
-     Pre => not Is_Deep (Etype (Get_Root_Object (Expr)));
-   --  Check that Expr can be moved and store it in the Shallow_Moves set
 
    function Has_Array_Component (Expr : Node_Id) return Boolean;
    pragma Precondition (Is_Path_Expression (Expr));
@@ -1043,6 +1107,34 @@ package body Gnat2Why.Borrow_Checker is
    --  scope. The analysis ensures at each point that this variables contains
    --  a valid permission environment with all bindings in scope.
 
+   Default_Perm_Env : Perm_Env;
+   --  Permission environment storing initial permissions for variables that
+   --  are not immediately put in the permission environment (for performance
+   --  reasons). Currently, we put shallow variables in there, as in > 95% of
+   --  the cases they are not involved in borrow-checking at all. We never put
+   --  deep variables in there as this could involve duplicating trees more
+   --  often.
+   --  ??? It is unclear what the performance impact of putting deep variables
+   --  in the initial permission environment would be.
+
+   function Query_Mutable_Tree
+        (T           : in out Perm_Env;
+         K           :        Entity_Id;
+         Default_Env :        Perm_Env := Default_Perm_Env)
+         return Perm_Tree_Access
+   is (Query_Mutable_Tree_With_Default (T, K, Default_Env));
+   --  Wrapper over Query_Mutable_Tree_With_Default, which sets default to
+   --  Default_Perm_Env. All queries to permission environments should be done
+   --  through Query_*_Tree, except for specific performance optimizations.
+
+   function Query_Read_Only_Tree
+     (T           : Perm_Env;
+      K           : Entity_Id;
+      Default_Env : Perm_Env := Default_Perm_Env)
+     return Perm_Tree_Access
+   is (Query_Read_Only_Tree_With_Default (T, K, Default_Env));
+   --  Matching wrapper for Query_Read_Only_With_Default
+
    Inside_Procedure_Call : Boolean := False;
    --  Set while checking the actual parameters of a procedure or entry call
 
@@ -1091,9 +1183,6 @@ package body Gnat2Why.Borrow_Checker is
 
    Current_Observers : Variable_Mapping;
    --  Mapping from observers to the paths observed
-
-   Shallow_Moves     : Node_Sets.Set;
-   --  Set of all the local shallow paths which have been moved
 
    Permission_Error  : Boolean := False;
    --  Should be set to true when an error message is emitted
@@ -1163,6 +1252,64 @@ package body Gnat2Why.Borrow_Checker is
    begin
       return P1 /= P2 and then P2 >= P1;
    end "<";
+
+   --------------------------------
+   -- Set_Environment_For_Object --
+   --------------------------------
+
+   procedure Setup_Environment_For_Object
+     (Name : Entity_Id;
+      Perm : Perm_Kind;
+      Expl : Node_Id)
+   is
+      Name_Is_Deep : constant Boolean := Is_Deep (Etype (Name));
+      Tree         : Perm_Tree_Access;
+      Old_Tree     : Perm_Tree_Access;
+   begin
+      --  For shallow variables, we add the permission tree to the initial
+      --  permission environment instead as a performance optimization.
+      --  See Query_Mutable_Tree_With_Default for rationale.
+
+      if Name_Is_Deep then
+         pragma Assert (Get (Default_Perm_Env, Name) = null);
+         Old_Tree := Get (Current_Perm_Env, Name);
+      else
+         pragma Assert (Get (Current_Perm_Env, Name) = null);
+         Old_Tree := Get (Default_Perm_Env, Name);
+      end if;
+
+      --  During setup of package elaboration globals, entities can be
+      --  referenced multiple times. This can also happen because we go through
+      --  expression twice, but do not clean up (variable in declare
+      --  expressions for example). The addition should always be consistent
+      --  with the environment in that case.
+
+      if Old_Tree /= null then
+         if Kind (Old_Tree) = Entire_Object
+           and then Permission (Old_Tree) = Perm
+           and then Children_Permission (Old_Tree) = Perm
+           and then Is_Node_Deep (Old_Tree) = Name_Is_Deep
+         then
+            return;
+         else
+            raise Program_Error;
+         end if;
+      end if;
+
+      Tree := new Perm_Tree_Wrapper'
+        (Tree =>
+           (Kind                => Entire_Object,
+            Is_Node_Deep        => Name_Is_Deep,
+            Explanation         => Expl,
+            Permission          => Perm,
+            Children_Permission => Perm));
+
+      if Name_Is_Deep then
+         Set (Current_Perm_Env, Name, Tree);
+      else
+         Set (Default_Perm_Env, Name, Tree);
+      end if;
+   end Setup_Environment_For_Object;
 
    --------------
    -- BC_Error --
@@ -1603,11 +1750,10 @@ package body Gnat2Why.Borrow_Checker is
    -------------------------
 
    procedure Check_Callable_Body (Id : Entity_Id) is
-      Save_In_Elab        : constant Boolean := Inside_Elaboration;
-      Saved_Env           : Perm_Env;
-      Saved_Borrowers     : Variable_Mapping;
-      Saved_Observers     : Variable_Mapping;
-      Saved_Shallow_Moves : Node_Sets.Set;
+      Save_In_Elab    : constant Boolean := Inside_Elaboration;
+      Saved_Env       : Perm_Env;
+      Saved_Borrowers : Variable_Mapping;
+      Saved_Observers : Variable_Mapping;
 
    begin
       Inside_Elaboration := False;
@@ -1619,7 +1765,6 @@ package body Gnat2Why.Borrow_Checker is
       Move_Env (Current_Perm_Env, Saved_Env);
       Move_Variable_Mapping (Current_Borrowers, Saved_Borrowers);
       Move_Variable_Mapping (Current_Observers, Saved_Observers);
-      Saved_Shallow_Moves.Move (Shallow_Moves);
 
       --  Add formals and globals to the environment with adequate permissions
 
@@ -1685,7 +1830,6 @@ package body Gnat2Why.Borrow_Checker is
       Move_Env (Saved_Env, Current_Perm_Env);
       Move_Variable_Mapping (Saved_Borrowers, Current_Borrowers);
       Move_Variable_Mapping (Saved_Observers, Current_Observers);
-      Shallow_Moves.Move (Saved_Shallow_Moves);
 
       Inside_Elaboration := Save_In_Elab;
       Current_Subp := Empty;
@@ -1697,7 +1841,6 @@ package body Gnat2Why.Borrow_Checker is
 
    procedure Check_Declaration (Decl : Node_Id) is
       Target     : constant Entity_Id := Defining_Identifier (Decl);
-      Target_Typ : constant Entity_Id := Etype (Target);
       Expr       : Node_Id;
 
    begin
@@ -1724,22 +1867,10 @@ package body Gnat2Why.Borrow_Checker is
             --  even in the illegal case, as the rest of the analysis expects
             --  to find it.
 
-            if Is_Deep (Target_Typ) then
-               declare
-                  Perm : constant Perm_Kind :=
-                    (if Is_Read_Only (Target) then Read_Only else Read_Write);
-                  Tree : constant Perm_Tree_Access :=
-                    new Perm_Tree_Wrapper'
-                      (Tree =>
-                         (Kind                => Entire_Object,
-                          Is_Node_Deep        => True,
-                          Explanation         => Decl,
-                          Permission          => Perm,
-                          Children_Permission => Perm));
-               begin
-                  Set (Current_Perm_Env, Target, Tree);
-               end;
-            end if;
+            Setup_Environment_For_Object
+              (Target,
+               (if Is_Read_Only (Target) then Read_Only else Read_Write),
+               Decl);
 
          --  Checking should not be called directly on these nodes
 
@@ -1851,6 +1982,7 @@ package body Gnat2Why.Borrow_Checker is
          Reset (Current_Loops_Envs);
          Reset (Current_Loops_Accumulators);
          Reset (Current_Perm_Env);
+         Reset (Default_Perm_Env);
       end Initialize;
 
    --  Start of processing for Check_Entity
@@ -1903,6 +2035,7 @@ package body Gnat2Why.Borrow_Checker is
          when others =>
             raise Program_Error;
       end case;
+
    end Check_Entity;
 
    -----------------------
@@ -2723,13 +2856,26 @@ package body Gnat2Why.Borrow_Checker is
 
          when N_Quantified_Expression =>
             declare
-               For_In_Spec : constant Node_Id :=
+               For_In_Spec     : constant Node_Id :=
                  Loop_Parameter_Specification (Expr);
-               For_Of_Spec : constant Node_Id :=
+               For_Of_Spec     : constant Node_Id :=
                  Iterator_Specification (Expr);
                For_Of_Spec_Typ : Node_Id;
+               For_Actual_Spec : constant Node_Id :=
+                 (if Present (For_In_Spec) then For_In_Spec else For_Of_Spec);
+               Quantified_Var  : constant Entity_Id :=
+                 Defining_Identifier (For_Actual_Spec);
 
             begin
+               --  Temporarily add the quantified variable to the permission
+               --  environment, so that context for sub-expressions remain
+               --  well-formed.
+
+               Setup_Environment_For_Object
+                 (Quantified_Var, Read_Only, For_Actual_Spec);
+
+               --  Sub-expressions checking
+
                if Present (For_In_Spec) then
                   Read_Expression (Discrete_Subtype_Definition (For_In_Spec));
                   if Present (Iterator_Filter (For_In_Spec)) then
@@ -2742,32 +2888,17 @@ package body Gnat2Why.Borrow_Checker is
                      Read_Expression (For_Of_Spec_Typ);
                   end if;
 
-                  --  Add the quantified variable to the current permission
-                  --  environment.
-
-                  if Is_Deep (Etype (Defining_Identifier (For_Of_Spec))) then
-                     declare
-                        Target : constant Entity_Id :=
-                          Defining_Identifier (For_Of_Spec);
-                        Tree : constant Perm_Tree_Access :=
-                          new Perm_Tree_Wrapper'
-                            (Tree =>
-                               (Kind                => Entire_Object,
-                                Is_Node_Deep        => True,
-                                Explanation         => For_Of_Spec,
-                                Permission          => Read_Only,
-                                Children_Permission => Read_Only));
-                     begin
-                        Set (Current_Perm_Env, Target, Tree);
-                     end;
-                  end if;
-
                   if Present (Iterator_Filter (For_Of_Spec)) then
                      Read_Expression (Iterator_Filter (For_Of_Spec));
                   end if;
                end if;
 
                Read_Expression (Condition (Expr));
+
+               --  Environment cleanup.
+
+               Remove (Current_Perm_Env, Quantified_Var);
+               Remove (Default_Perm_Env, Quantified_Var);
             end;
 
          when N_Character_Literal
@@ -2886,15 +3017,15 @@ package body Gnat2Why.Borrow_Checker is
         (Exiting_Env : Perm_Env;
          Entry_Env   : Perm_Env)
       is
-         Comp_Entry : Perm_Tree_Maps.Key_Option;
+         Comp_Entry            : Perm_Tree_Maps.Key_Option;
          Iter_Entry, Iter_Exit : Perm_Tree_Access;
 
       begin
          Comp_Entry := Get_First_Key (Entry_Env);
          while Comp_Entry.Present loop
-            Iter_Entry := Get (Entry_Env, Comp_Entry.K);
+            Iter_Entry := Query_Read_Only_Tree (Entry_Env, Comp_Entry.K);
             pragma Assert (Iter_Entry /= null);
-            Iter_Exit := Get (Exiting_Env, Comp_Entry.K);
+            Iter_Exit := Query_Read_Only_Tree (Exiting_Env, Comp_Entry.K);
             pragma Assert (Iter_Exit /= null);
             Check_Is_Less_Restrictive_Tree
               (New_Tree  => Iter_Exit,
@@ -3303,10 +3434,18 @@ package body Gnat2Why.Borrow_Checker is
 
          else
             declare
-               Param_Spec : constant Node_Id :=
+               Param_Spec    : constant Node_Id :=
                  Loop_Parameter_Specification (Scheme);
-               Iter_Spec : constant Node_Id := Iterator_Specification (Scheme);
+               Iter_Spec     : constant Node_Id :=
+                 Iterator_Specification (Scheme);
+               Concrete_Spec : constant Node_Id :=
+                 (if Present (Param_Spec) then Param_Spec else Iter_Spec);
+               Loop_Index    : constant Entity_Id :=
+                 Defining_Identifier (Concrete_Spec);
             begin
+               Setup_Environment_For_Object
+                 (Loop_Index, Read_Only, Concrete_Spec);
+
                if Present (Param_Spec) then
                   Check_Expression
                     (Discrete_Subtype_Definition (Param_Spec), Read);
@@ -3320,30 +3459,11 @@ package body Gnat2Why.Borrow_Checker is
                      Check_Expression (Subtype_Indication (Iter_Spec), Read);
                   end if;
 
-                  --  Add iterator variable to the current permission
-                  --  environment.
-
-                  if Is_Deep (Etype (Defining_Identifier (Iter_Spec))) then
-                     declare
-                        Target : constant Entity_Id :=
-                          Defining_Identifier (Iter_Spec);
-                        Tree : constant Perm_Tree_Access :=
-                          new Perm_Tree_Wrapper'
-                            (Tree =>
-                               (Kind                => Entire_Object,
-                                Is_Node_Deep        => True,
-                                Explanation         => Iter_Spec,
-                                Permission          => Read_Only,
-                                Children_Permission => Read_Only));
-                     begin
-                        Set (Current_Perm_Env, Target, Tree);
-                     end;
-                  end if;
-
                   if Present (Iterator_Filter (Iter_Spec)) then
                      Check_Expression (Iterator_Filter (Iter_Spec), Read);
                   end if;
                end if;
+
             end;
          end if;
       end if;
@@ -3579,42 +3699,6 @@ package body Gnat2Why.Borrow_Checker is
          end if;
       end;
    end Check_Not_Borrowed;
-
-   ---------------------
-   -- Check_Not_Moved --
-   ---------------------
-
-   procedure Check_Not_Moved (Expr : Expr_Or_Ent) is
-   begin
-      --  Try to match the expression with one of the moved expressions.
-      --  For every moved object, check that:
-      --    * the moved expression is not a prefix of Expr
-      --    * Expr is not a prefix of the moved expression.
-
-      for Moved of Shallow_Moves loop
-         if Is_Prefix_Or_Almost (Pref => Moved, Expr => Expr)
-           or else
-             (if Expr.Is_Ent then Get_Root_Object (Moved) = Expr.Ent
-              else Is_Prefix_Or_Almost (Expr.Expr, +Moved))
-         then
-            if Expr.Is_Ent then
-               BC_Error
-                 (Create ("& was moved #",
-                  Names         => [Expr.Ent],
-                  Secondary_Loc => Sloc (Moved)),
-                  Expr.Loc);
-            else
-               BC_Error
-                 (Create
-                    ("object was moved #",
-                     Secondary_Loc => Sloc (Moved),
-                     Explain_Code  => EC_Ownership_Moved_Object),
-                  Expr.Expr);
-            end if;
-            return;
-         end if;
-      end loop;
-   end Check_Not_Moved;
 
    ------------------------
    -- Check_Not_Observed --
@@ -4711,7 +4795,7 @@ package body Gnat2Why.Borrow_Checker is
 
       function Get_Perm_Or_Tree_Ent (E : Entity_Id) return Perm_Or_Tree is
          C : constant Perm_Tree_Access :=
-           Get (Current_Perm_Env, Unique_Entity_In_SPARK (E));
+           Query_Read_Only_Tree (Current_Perm_Env, Unique_Entity_In_SPARK (E));
       begin
          --  The root object should have been declared and entered into the
          --  current permission environment.
@@ -4859,6 +4943,8 @@ package body Gnat2Why.Borrow_Checker is
                                         Bounds_Permission (C.Tree_Access),
                                       Explanation      =>
                                         Explanation (C.Tree_Access));
+                           elsif Nkind (N.Expr) = N_Slice then
+                              return C;
                            else
                               pragma Assert (Get_Elem (C.Tree_Access) /= null);
                               return (R           => Unfolded,
@@ -4925,44 +5011,6 @@ package body Gnat2Why.Borrow_Checker is
             return P2;
       end case;
    end Glb;
-
-   ----------------------------
-   -- Handle_Move_Of_Shallow --
-   ----------------------------
-
-   procedure Handle_Move_Of_Shallow (Expr : Node_Id) is
-      Root : constant Object_Kind_Id := Get_Root_Object (Expr);
-      Scop : constant Unit_Kind_Id := Enclosing_Unit (Root);
-
-   begin
-      pragma Assert (Present (Current_Subp));
-
-      --  If Root is a parameter or global variable of Current_Subp, it will be
-      --  moved at the end of Current_Subp.
-
-      if Ekind (Root) in Formal_Kind or else Scop /= Current_Subp then
-         Perm_Error_Subprogram_End
-           (E           => Root,
-            Subp        => Current_Subp,
-            Found_Perm  => Write_Only,
-            Expl        => Expr,
-            Exceptional => False);
-      end if;
-
-      --  Check that the root of the moved expression does not have overlays.
-      --  We could also only consider visible overlays, or even move all
-      --  overlays visible at this point in the program.
-
-      if not Overlay_Alias (Root).Is_Empty then
-         BC_Error
-           (Create
-              ("moved object aliased through address clauses is not supported"
-               & " yet"),
-            Expr);
-      end if;
-
-      Shallow_Moves.Insert (Expr);
-   end Handle_Move_Of_Shallow;
 
    -------------------------
    -- Has_Array_Component --
@@ -5211,14 +5259,17 @@ package body Gnat2Why.Borrow_Checker is
    ------------------
 
    function Is_Read_Only (E : Entity_Id) return Boolean is
-      Ty : constant Entity_Id := Etype (E);
    begin
       case Ekind (E) is
          when E_Constant | E_In_Parameter =>
             return Is_Constant_In_SPARK (E);
          when E_Variable =>
-            return Is_Access_Type (Ty)
-              and then Is_Access_Constant (Ty);
+            declare
+               Typ : constant Entity_Id := Etype (E);
+            begin
+               return Is_Anonymous_Access_Object_Type (Typ)
+                 and then Is_Access_Constant (Typ);
+            end;
          when others =>
             return False;
       end case;
@@ -5502,55 +5553,60 @@ package body Gnat2Why.Borrow_Checker is
 
       CompTarget : Perm_Tree_Access;
       CompSource : Perm_Tree_Access;
-      KeyTarget : Perm_Tree_Maps.Key_Option;
+      KeyTarget  : Perm_Tree_Maps.Key_Option;
 
    --  Start of processing for Merge_Env
 
    begin
       KeyTarget := Get_First_Key (Target);
+
       --  Iterate over every tree of the environment in the target, and merge
       --  it with the source if there is such a similar one that exists. If
       --  there is none, then skip.
+
       while KeyTarget.Present loop
 
-         CompSource := Get (Source, KeyTarget.K);
-         CompTarget := Get (Target, KeyTarget.K);
+         CompSource := Query_Mutable_Tree (Source, KeyTarget.K);
+         CompTarget := Query_Mutable_Tree (Target, KeyTarget.K);
 
          pragma Assert (CompTarget /= null);
 
          if CompSource /= null then
             Merge_Trees (CompTarget, CompSource);
             Remove (Source, KeyTarget.K);
+            Free_Tree (CompSource);
          end if;
 
          KeyTarget := Get_Next_Key (Target);
       end loop;
 
-      --  Iterate over every tree of the environment of the source. And merge
-      --  again. If there is not any tree of the target then just copy the tree
-      --  from source to target.
+      --  Transfer remaining trees from source to target, merging if necessary.
+      --  There may be corresponding trees from target because of the default
+      --  environment.
+
       declare
          KeySource : Perm_Tree_Maps.Key_Option;
       begin
          KeySource := Get_First_Key (Source);
          while KeySource.Present loop
 
-            CompSource := Get (Source, KeySource.K);
-            CompTarget := Get (Target, KeySource.K);
+            CompSource := Query_Mutable_Tree (Source, KeySource.K);
+            CompTarget := Query_Mutable_Tree (Target, KeySource.K);
 
-            if CompTarget = null then
-               CompTarget := new Perm_Tree_Wrapper'(CompSource.all);
-               Copy_Tree (CompSource, CompTarget);
-               Set (Target, KeySource.K, CompTarget);
-            else
+            pragma Assert (CompSource /= null);
+
+            if CompTarget /= null then
                Merge_Trees (CompTarget, CompSource);
+               Remove (Source, KeySource.K);
+               Free_Tree (CompSource);
+            else
+               Set (Target, KeySource.K, CompSource);
+               Remove (Source, KeySource.K);
             end if;
 
-            KeySource := Get_Next_Key (Source);
+            KeySource := Get_First_Key (Source);
          end loop;
       end;
-
-      Free_Env (Source);
    end Merge_Env;
 
    ----------------
@@ -5897,36 +5953,32 @@ package body Gnat2Why.Borrow_Checker is
             Check_Not_Observed (Expr, Root);
       end case;
 
-      --  If the root is not deep, it can still be moved. Check inside the
-      --  map for moved shallow types.
+      --  If the root and target types are both not deep, this is a shallow
+      --  assignment. The root could still be moved, but only if it is already
+      --  in the permission environment. If we cannot find it, we can return
+      --  early. This is a performance optimization to avoid putting
+      --  permissions for shallow types in the environment when unnecessary.
 
-      if not Is_Deep (Etype (Root)) then
-         Check_Not_Moved (Expr);
-
-         pragma Assert (Mode /= Free);
-         pragma Assert (Mode /= Assign or else not Is_Deep (Expr_Type));
-
-         if Is_Deep (Expr_Type) and then Mode = Move then
-            pragma Assert
-              (not Expr.Is_Ent
-               and then Nkind (Expr.Expr) = N_Attribute_Reference
-               and then Attribute_Name (Expr.Expr) = Name_Access);
-
-            --  Move forbidden in elaboration
-
-            if Inside_Elaboration then
-               if not Inside_Procedure_Call then
-                  BC_Error (Create ("illegal move during elaboration"), Loc);
-               end if;
-
-               return;
-            end if;
-
-            Handle_Move_Of_Shallow (Prefix (Expr.Expr));
-         end if;
+      if not Is_Deep (Etype (Root))
+        and then not Is_Deep (Expr_Type)
+        and then Get (Current_Perm_Env, Root) = null
+      then
          return;
+      end if;
 
-      elsif Get (Current_Perm_Env, Root) = null then
+      --  Check that the root of the moved expression does not have overlays.
+      --  We could also only consider visible overlays, or even move all
+      --  overlays visible at this point in the program.
+
+      if Mode = Move and then not Overlay_Alias (Root).Is_Empty then
+         BC_Error
+           (Create
+              ("moved object aliased through address clauses is not supported"
+               & " yet"),
+            Loc);
+      end if;
+
+      if Query_Read_Only_Tree (Current_Perm_Env, Root) = null then
 
          --  If the root object is not in the current environment, then it must
          --  be a constant without variable input. It can only be read.
@@ -6227,10 +6279,14 @@ package body Gnat2Why.Borrow_Checker is
       Global_Var  : Boolean;
       Exceptional : Boolean)
    is
+      Typ_Is_Deep : constant Boolean := Is_Deep (Typ);
    begin
-      --  Shallow parameters and globals need not be considered
+      --  Shallow parameters and globals need not be considered if they are not
+      --  in the permission environment, as they keep their initial
+      --  permissions.
 
-      if not Is_Deep (Typ) then
+      if not Typ_Is_Deep and then Get (Current_Perm_Env, Id) = null
+      then
          return;
 
       elsif Kind = E_In_Parameter then
@@ -6255,7 +6311,7 @@ package body Gnat2Why.Borrow_Checker is
 
          --  Deep types other than access types define an observe
 
-         elsif not Is_Access_Type (Typ) then
+         elsif Typ_Is_Deep and then not Is_Access_Type (Typ) then
             return;
          end if;
       end if;
@@ -6714,7 +6770,8 @@ package body Gnat2Why.Borrow_Checker is
          Perm : Perm_Kind_Option) return Perm_Tree_Access
       is
          E : constant Entity_Id := Unique_Entity_In_SPARK (N);
-         C : constant Perm_Tree_Access := Get (Current_Perm_Env, E);
+         C : constant Perm_Tree_Access := Query_Mutable_Tree
+           (Current_Perm_Env, E);
          pragma Assert (C /= null);
 
       begin
@@ -6915,9 +6972,7 @@ package body Gnat2Why.Borrow_Checker is
                end if;
             end;
 
-         when N_Indexed_Component
-            | N_Slice
-         =>
+         when N_Indexed_Component =>
             declare
                C : constant Perm_Tree_Access :=
                  Set_Perm_Prefixes (+Prefix (N.Expr), Perm, Expl, Move_Access);
@@ -6971,6 +7026,10 @@ package body Gnat2Why.Borrow_Checker is
                   end;
                end if;
             end;
+
+         when N_Slice =>
+            return Set_Perm_Prefixes
+              (+Prefix (N.Expr), Perm, Expl, Move_Access);
 
          when N_Qualified_Expression
             | N_Type_Conversion
@@ -7158,13 +7217,15 @@ package body Gnat2Why.Borrow_Checker is
       Perm : Perm_Kind_Option;
 
    begin
+      --  We do not handle task types/protected types directly in the
+      --  borrow-checker. Rather, their dependent entities (fields of protected
+      --  objects for instance) are used directly as roots.
+
+      if Ekind (Id) in E_Task_Type | E_Protected_Type then
+         return;
+      end if;
       case Kind is
          when E_In_Parameter =>
-
-            --  Shallow parameters and globals need not be considered
-
-            if not Is_Deep (Typ) then
-               Perm := None;
 
             --  Use the permission of the declaration for global variables to
             --  have better error messages in the case of generated globals.
@@ -7175,7 +7236,7 @@ package body Gnat2Why.Borrow_Checker is
             --  strange message stating that the variable was declared as
             --  read-only by a flow generated contract.
 
-            elsif Global_Var then
+            if Global_Var then
                Perm := (if Is_Read_Only (Id) then Read_Only else Read_Write);
 
             --  Inputs of functions without side effects have R permission
@@ -7203,7 +7264,8 @@ package body Gnat2Why.Borrow_Checker is
             elsif Is_Access_Type (Typ) then
                Perm := Read_Write;
 
-            --  Deep types other than access types define an observe
+            --  Deep types other than access types define an observe, and
+            --  shallow input parameters are Read_Only as well.
 
             else
                Perm := Read_Only;
@@ -7212,40 +7274,23 @@ package body Gnat2Why.Borrow_Checker is
          when E_Out_Parameter
             | E_In_Out_Parameter
          =>
-            --  Shallow parameters and globals need not be considered
-
-            if not Is_Deep (Typ) then
-               Perm := None;
 
             --  The first parameter of borrowing traversal functions might have
             --  mode IN OUT. It cannot be modified.
 
-            elsif Ekind (Subp) = E_Function
+            if Ekind (Subp) = E_Function
               and then not Is_Function_With_Side_Effects (Subp)
             then
                Perm := Read_Only;
 
-            --  Deep types define a borrow or a move
+            --  Other parameters are read-write
 
             else
                Perm := Read_Write;
             end if;
       end case;
 
-      if Perm /= None then
-         declare
-            Tree : constant Perm_Tree_Access :=
-              new Perm_Tree_Wrapper'
-                (Tree =>
-                   (Kind                => Entire_Object,
-                    Is_Node_Deep        => Is_Deep (Etype (Id)),
-                    Explanation         => Expl,
-                    Permission          => Perm,
-                    Children_Permission => Perm));
-         begin
-            Set (Current_Perm_Env, Id, Tree);
-         end;
-      end if;
+      Setup_Environment_For_Object (Id, Perm, Expl);
    end Setup_Parameter_Or_Global;
 
    ----------------------

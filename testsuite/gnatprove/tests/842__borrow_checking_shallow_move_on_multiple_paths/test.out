@@ -1,0 +1,3 @@
+main.adb:7:07: info: no contextual analysis of "Random" (body not seen yet)
+main.adb:7:07: warning: assuming "Random" has no effect on global items
+main.adb:7:07: warning: no Global contract available for "Random" [assumed-global-null]
