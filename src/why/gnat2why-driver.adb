@@ -1059,6 +1059,10 @@ package body Gnat2Why.Driver is
       --  For now we allow the -g/-O/-f/-m/-W/-w, -nostdlib, -pipe and
       --  -save-temps/-save-temps=.. switches, even though they will have no
       --  effect. This permits compatibility with existing scripts.
+      --  The below condition also covers some front-end switches such as
+      --  "-gnat*", but this is harmless as the routine is only used for
+      --  deciding whether a switch that appears on the command-line should be
+      --  rejected.
 
       return
         Is_Switch (Switch)
