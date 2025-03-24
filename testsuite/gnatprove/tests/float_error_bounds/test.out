@@ -406,7 +406,7 @@ libst-reals-errors.adb:424:22: info: precondition proved
 libst-reals-errors.adb:424:22: info: predicate check proved
 libst-reals-errors.adb:427:22: info: assertion proved
 libst-reals-errors.adb:427:22: info: predicate check proved
-libst-reals-errors.adb:429:10: info: assertion proved
+libst-reals-errors.adb:429:10: medium: assertion might fail [possible fix: precondition of subprogram at libst-reals-errors.ads:90 should mention Values]
 libst-reals-errors.adb:429:23: info: predicate check proved
 libst-reals-errors.adb:429:25: info: precondition proved
 libst-reals-errors.adb:430:17: info: predicate check proved

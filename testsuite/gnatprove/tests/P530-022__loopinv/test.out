@@ -79,7 +79,7 @@ x86.adb:732:32: medium: loop invariant might not be preserved by an arbitrary it
 x86.adb:733:32: info: loop invariant initialization proved (CVC5: 1 VC)
 x86.adb:733:32: medium: loop invariant might not be preserved by an arbitrary iteration
 x86.adb:734:32: info: loop invariant initialization proved (CVC5: 1 VC)
-x86.adb:734:32: info: loop invariant preservation proved (altergo: 1 VC)
+x86.adb:734:32: info: loop invariant preservation proved (Z3: 1 VC)
 x86.adb:735:32: info: loop invariant initialization proved (CVC5: 1 VC)
 x86.adb:735:32: info: loop invariant preservation proved (CVC5: 1 VC)
 x86.adb:738:32: info: loop invariant initialization proved (CVC5: 1 VC)
