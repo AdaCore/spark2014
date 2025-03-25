@@ -422,15 +422,19 @@ package body Why.Gen.Binders is
 
          when Pointer =>
 
+            --  Use the wrapper type if either we have an init field or if the
+            --  designated value is of a wrapper type when the designated type
+            --  is not itself annotated with Relaxed_Initialization.
+
             declare
                Des_Ty       : constant Entity_Id :=
                  Directly_Designated_Type (B.P_Typ);
                Relaxed_Init : constant Boolean :=
-                 (if Has_Init_Wrapper (B.P_Typ)
-                     and not Has_Relaxed_Init (Des_Ty)
-                  then Get_Module (Get_Name (Get_Typ (B.Value.B_Name)))
-                     = E_Module (Des_Ty, Init_Wrapper)
-                  else False);
+                 B.Init.Present
+                 or else
+                   (Has_Init_Wrapper (B.P_Typ)
+                    and then not Has_Relaxed_Init (Des_Ty)
+                    and then Get_Relaxed_Init (Get_Typ (B.Value.B_Name)));
             begin
                return
                  EW_Abstract (B.P_Typ, Relaxed_Init => Relaxed_Init);
