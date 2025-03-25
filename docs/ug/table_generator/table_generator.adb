@@ -221,12 +221,15 @@ procedure Table_Generator is
       Create (File, Name => Other_Tool_Limitations_Target);
       Put_Line (File, "The following constructs are incompletely supported." &
                   " They can be used safely but might lead to unexpected " &
-                  "behaviors. Warnings can be emitted by GNATprove if the " &
-                  "``--info`` switch is used:");
+                  "behavior. Warnings for these constructs can be enabled " &
+                  "individually using the ``-W`` switch and the tag " &
+                  "between parentheses, or collectively using the " &
+                  "``--info`` switch.");
       New_Line (File);
       for Kind in Other_Tool_Limitation_Kind loop
          Put (File, "* ");
          Put (File, Description (Kind));
+         Put (File, " (" & Kind_Name (Kind) & ")");
          if Kind = Other_Tool_Limitation_Kind'Last then
             Put_Line (File, ".");
          else
@@ -320,14 +323,17 @@ procedure Table_Generator is
       File : File_Type;
    begin
       Create (File, Name => Proof_Limitations_Target);
-      Put_Line (File, "The following constructs are imprecisely supported in" &
-                  " proof. They can be used safely but might lead to " &
-                  "unprovable checks. Warnings can be emitted by GNATprove " &
-                  "if the ``--info`` switch is used:");
+      Put_Line (File, "The following constructs are imprecisely supported " &
+                  "in proof. They can be used safely but might lead to " &
+                  "unexpected behavior. Warnings for these constructs can " &
+                  " be enabled individually using the ``-W`` switch and the " &
+                  "tag between parentheses, or collectively using the " &
+                  "``--info`` switch.");
       New_Line (File);
       for Kind in Proof_Limitation_Kind loop
          Put (File, "* ");
          Put (File, Description (Kind));
+         Put (File, " (" & Kind_Name (Kind) & ")");
          if Kind = Proof_Limitation_Kind'Last then
             Put_Line (File, ".");
          else
