@@ -1,39 +1,68 @@
 elementary_functions_wrapper.adb:6:49: info: precondition proved (CVC5: 1 VC)
+elementary_functions_wrapper.adb:6:49: warning: call to "Sqrt" is not handled precisely [imprecise-call]
 elementary_functions_wrapper.adb:8:48: info: overflow check proved (CVC5: 1 VC)
 elementary_functions_wrapper.adb:8:48: info: precondition proved (CVC5: 1 VC)
+elementary_functions_wrapper.adb:8:48: warning: call to "Log" is not handled precisely [imprecise-call]
 elementary_functions_wrapper.adb:10:54: info: overflow check proved (CVC5: 1 VC)
 elementary_functions_wrapper.adb:10:54: info: precondition proved (CVC5: 3 VC)
-elementary_functions_wrapper.adb:12:48: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible fix: subprogram at elementary_functions_wrapper.ads:18 should mention X in a precondition]
+elementary_functions_wrapper.adb:10:54: warning: call to "Log" is not handled precisely [imprecise-call]
+elementary_functions_wrapper.adb:12:48: low: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
+elementary_functions_wrapper.adb:12:48: warning: call to "Exp" is not handled precisely [imprecise-call]
 elementary_functions_wrapper.adb:14:59: info: precondition proved (CVC5: 2 VC)
-elementary_functions_wrapper.adb:14:59: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer]
+elementary_functions_wrapper.adb:14:59: low: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
+elementary_functions_wrapper.adb:14:59: warning: call to "**" is not handled precisely [imprecise-call]
+elementary_functions_wrapper.adb:16:48: warning: call to "Sin" is not handled precisely [imprecise-call]
 elementary_functions_wrapper.adb:18:55: info: precondition proved (CVC5: 1 VC)
+elementary_functions_wrapper.adb:18:55: warning: call to "Sin" is not handled precisely [imprecise-call]
+elementary_functions_wrapper.adb:20:48: warning: call to "Cos" is not handled precisely [imprecise-call]
 elementary_functions_wrapper.adb:22:55: info: precondition proved (CVC5: 1 VC)
+elementary_functions_wrapper.adb:22:55: warning: call to "Cos" is not handled precisely [imprecise-call]
 elementary_functions_wrapper.adb:24:48: info: overflow check proved (CVC5: 1 VC)
+elementary_functions_wrapper.adb:24:48: warning: call to "Tan" is not handled precisely [imprecise-call]
 elementary_functions_wrapper.adb:26:55: info: precondition proved (CVC5: 1 VC)
-elementary_functions_wrapper.adb:26:55: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer]
+elementary_functions_wrapper.adb:26:55: low: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
+elementary_functions_wrapper.adb:26:55: warning: call to "Tan" is not handled precisely [imprecise-call]
 elementary_functions_wrapper.adb:28:48: info: precondition proved (CVC5: 1 VC)
-elementary_functions_wrapper.adb:28:48: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer]
+elementary_functions_wrapper.adb:28:48: low: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
+elementary_functions_wrapper.adb:28:48: warning: call to "Cot" is not handled precisely [imprecise-call]
 elementary_functions_wrapper.adb:30:55: info: precondition proved (CVC5: 2 VC)
-elementary_functions_wrapper.adb:30:55: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer]
+elementary_functions_wrapper.adb:30:55: low: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
+elementary_functions_wrapper.adb:30:55: warning: call to "Cot" is not handled precisely [imprecise-call]
 elementary_functions_wrapper.adb:32:51: info: precondition proved (CVC5: 1 VC)
+elementary_functions_wrapper.adb:32:51: warning: call to "Arcsin" is not handled precisely [imprecise-call]
 elementary_functions_wrapper.adb:34:58: info: precondition proved (CVC5: 2 VC)
+elementary_functions_wrapper.adb:34:58: warning: call to "Arcsin" is not handled precisely [imprecise-call]
 elementary_functions_wrapper.adb:36:51: info: precondition proved (CVC5: 1 VC)
+elementary_functions_wrapper.adb:36:51: warning: call to "Arccos" is not handled precisely [imprecise-call]
 elementary_functions_wrapper.adb:38:58: info: precondition proved (CVC5: 2 VC)
+elementary_functions_wrapper.adb:38:58: warning: call to "Arccos" is not handled precisely [imprecise-call]
 elementary_functions_wrapper.adb:42:44: info: precondition proved (CVC5: 1 VC)
+elementary_functions_wrapper.adb:42:44: warning: call to "Arctan" is not handled precisely [imprecise-call]
 elementary_functions_wrapper.adb:47:41: info: precondition proved (CVC5: 2 VC)
+elementary_functions_wrapper.adb:47:41: warning: call to "Arctan" is not handled precisely [imprecise-call]
 elementary_functions_wrapper.adb:51:46: info: precondition proved (CVC5: 1 VC)
+elementary_functions_wrapper.adb:51:46: warning: call to "Arccot" is not handled precisely [imprecise-call]
 elementary_functions_wrapper.adb:56:41: info: precondition proved (CVC5: 2 VC)
-elementary_functions_wrapper.adb:58:49: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible fix: subprogram at elementary_functions_wrapper.ads:112 should mention X in a precondition]
-elementary_functions_wrapper.adb:60:49: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible fix: subprogram at elementary_functions_wrapper.ads:115 should mention X in a precondition]
+elementary_functions_wrapper.adb:56:41: warning: call to "Arccot" is not handled precisely [imprecise-call]
+elementary_functions_wrapper.adb:58:49: low: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
+elementary_functions_wrapper.adb:58:49: warning: call to "Sinh" is not handled precisely [imprecise-call]
+elementary_functions_wrapper.adb:60:49: low: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
+elementary_functions_wrapper.adb:60:49: warning: call to "Cosh" is not handled precisely [imprecise-call]
+elementary_functions_wrapper.adb:62:49: warning: call to "Tanh" is not handled precisely [imprecise-call]
 elementary_functions_wrapper.adb:64:50: info: precondition proved (CVC5: 1 VC)
-elementary_functions_wrapper.adb:64:50: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer]
+elementary_functions_wrapper.adb:64:50: low: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
+elementary_functions_wrapper.adb:64:50: warning: call to "Coth" is not handled precisely [imprecise-call]
 elementary_functions_wrapper.adb:66:52: info: overflow check proved (CVC5: 1 VC)
+elementary_functions_wrapper.adb:66:52: warning: call to "Arcsinh" is not handled precisely [imprecise-call]
 elementary_functions_wrapper.adb:68:52: info: overflow check proved (CVC5: 1 VC)
 elementary_functions_wrapper.adb:68:52: info: precondition proved (CVC5: 1 VC)
+elementary_functions_wrapper.adb:68:52: warning: call to "Arccosh" is not handled precisely [imprecise-call]
 elementary_functions_wrapper.adb:70:52: info: precondition proved (CVC5: 1 VC)
-elementary_functions_wrapper.adb:70:52: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer]
+elementary_functions_wrapper.adb:70:52: low: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
+elementary_functions_wrapper.adb:70:52: warning: call to "Arctanh" is not handled precisely [imprecise-call]
 elementary_functions_wrapper.adb:72:52: info: precondition proved (CVC5: 1 VC)
-elementary_functions_wrapper.adb:72:52: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer]
+elementary_functions_wrapper.adb:72:52: low: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
+elementary_functions_wrapper.adb:72:52: warning: call to "Arccoth" is not handled precisely [imprecise-call]
 elementary_functions_wrapper.ads:3:13: info: implicit aspect Always_Terminates on "Sqrt" has been proved, subprogram will terminate
 elementary_functions_wrapper.ads:5:14: info: postcondition proved (CVC5: 4 VC; Trivial: 3 VC)
 elementary_functions_wrapper.ads:10:13: info: implicit aspect Always_Terminates on "Log" has been proved, subprogram will terminate

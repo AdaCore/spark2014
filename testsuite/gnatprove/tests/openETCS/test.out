@@ -30,6 +30,7 @@ deceleration_curve.adb:80:09: info: precondition proved (CVC5: 1 VC)
 deceleration_curve.adb:86:67: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 deceleration_curve.adb:88:19: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop at line 86 should mention location and speed in a loop invariant]
 deceleration_curve.adb:88:21: info: precondition proved (Z3: 1 VC)
+deceleration_curve.adb:88:21: warning: call to "Sqrt" is not handled precisely [imprecise-call]
 deceleration_curve.adb:88:32: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop at line 86 should mention speed in a loop invariant]
 deceleration_curve.adb:89:13: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop at line 86 should mention location and speed in a loop invariant]
 deceleration_curve.adb:89:29: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop at line 86 should mention location and speed in a loop invariant]

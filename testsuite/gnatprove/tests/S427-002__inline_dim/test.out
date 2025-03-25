@@ -27,6 +27,11 @@ challenges.adb:27:14: info: local subprogram "Go_To_Position_Distance" only anal
 challenges.adb:27:14: warning: subprogram "Go_To_Position_Distance" has no effect
 challenges.adb:33:29: info: analyzing call to "Get_Remaining_Distance" in context
 challenges.adb:38:10: info: analyzing call to "Go_To_Position_Distance" in context
+challenges.adb:38:10: warning: call to "Sqrt" is not handled precisely [imprecise-call]
+challenges.adb:38:10: warning: in inlined body at line 15
+challenges.adb:38:10: warning: in inlined body at line 24
+challenges.adb:38:10: warning: in inlined body at line 33
+challenges.adb:38:10: warning: in inlined body at line 8
 challenges.ads:5:14: warning: subprogram "Calibrate_At_Junction_Or_Line_End" has no effect
 dimensions.ads:377:07: medium: float overflow check might fail [reason for check: result of floating-point exponentiation must be bounded]
 dimensions.ads:377:11: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]

@@ -73,6 +73,10 @@ package body Flow_Error_Messages is
    Flow_Msgs_Set : String_Sets.Set;
    --  Container with flow-related messages; used to prevent duplicate messages
 
+   function Is_Unprovable_Check (Tag : VC_Kind; N : Node_Id) return Boolean;
+   --  Return True if a check with kind Tag located at node N might be
+   --  unprovable due to proof imprecision.
+
    function Get_Details
      (N   : Node_Id;
       E   : Entity_Id;
@@ -905,6 +909,11 @@ package body Flow_Error_Messages is
          then
             Result := Low_Check_Kind;
 
+         --  Issue a low severity message for unprovable checks
+
+         elsif Is_Unprovable_Check (Tag, N) then
+            Result := Low_Check_Kind;
+
          elsif Verdict.Verdict_Category = Non_Conformity then
             Result := High_Check_Kind;
 
@@ -1558,9 +1567,15 @@ package body Flow_Error_Messages is
          return Explanation;
       end if;
 
+      --  On unprovable checks, advise --info
+
+      if Is_Unprovable_Check (Tag, N) then
+         return "the check might be unprovable due to proof limitations; use "
+           & "--info for more information";
+
       --  Add an explanation for range checks on empty aggregates
 
-      if Tag = VC_Range_Check
+      elsif Tag = VC_Range_Check
         and then Nkind (N) = N_Aggregate
         and then Is_Null_Aggregate (N)
       then
@@ -2544,7 +2559,12 @@ package body Flow_Error_Messages is
    --  Start of processing for Get_Fix
 
    begin
-      if Tag = VC_UC_Alignment then
+      --  On unprovable checks, avoid producing an incorrect possible fix
+
+      if Is_Unprovable_Check (Tag, N) then
+         return No_Message;
+
+      elsif Tag = VC_UC_Alignment then
          pragma Assert (Nkind (N) = N_Object_Declaration);
          declare
             Obj    : constant Entity_Id := Defining_Identifier (N);
@@ -3816,6 +3836,44 @@ package body Flow_Error_Messages is
 
       return False;
    end Is_Specified_Line;
+
+   -------------------------
+   -- Is_Unprovable_Check --
+   -------------------------
+
+   function Is_Unprovable_Check (Tag : VC_Kind; N : Node_Id) return Boolean is
+   begin
+      --  References to the attribute Value are handled in an imprecise way;
+      --  its precondition is impossible to prove.
+
+      if Tag = VC_Precondition
+        and then Nkind (N) = N_Attribute_Reference
+        and then Get_Attribute_Id (Attribute_Name (N)) = Attribute_Value
+      then
+         return True;
+
+      --  Calls to hardcoded functions might have an unprovable precondition
+
+      elsif Tag = VC_Precondition
+        and then Nkind (N) in N_Subprogram_Call
+        and then Is_Hardcoded_Entity (Get_Called_Entity_For_Proof (N))
+        and then Has_Imprecise_Precondition (Get_Called_Entity_For_Proof (N))
+      then
+         return True;
+
+      --  Calls to hardcoded operators might produce an unprovable overflow
+      --  check.
+
+      elsif Tag = VC_Overflow_Check
+        and then Nkind (N) in N_Subprogram_Call
+        and then Is_Hardcoded_Entity (Get_Called_Entity_For_Proof (N))
+        and then Is_Imprecisely_Hardcoded (Get_Called_Entity_For_Proof (N))
+      then
+         return True;
+      else
+         return False;
+      end if;
+   end Is_Unprovable_Check;
 
    -----------------------
    -- Justified_Message --

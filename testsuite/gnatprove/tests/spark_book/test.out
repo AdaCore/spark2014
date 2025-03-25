@@ -358,11 +358,14 @@ control_structures.adb:113:60: info: division check proved (CVC5: 1 VC)
 control_structures.adb:115:04: warning: statement has no effect
 control_structures.adb:116:09: warning: unused assignment
 control_structures.adb:116:12: info: precondition proved (CVC5: 1 VC)
+control_structures.adb:116:12: warning: call to "Sqrt" is not handled precisely [imprecise-call]
 control_structures.adb:118:09: warning: unused assignment
 control_structures.adb:118:12: info: precondition proved (CVC5: 1 VC)
+control_structures.adb:118:12: warning: call to "Sqrt" is not handled precisely [imprecise-call]
 control_structures.adb:118:23: info: float overflow check proved (CVC5: 1 VC)
 control_structures.adb:121:06: warning: unused assignment
 control_structures.adb:121:09: info: precondition proved (CVC5: 1 VC)
+control_structures.adb:121:09: warning: call to "Sqrt" is not handled precisely [imprecise-call]
 control_structures.adb:121:44: info: float overflow check proved (CVC5: 1 VC)
 control_structures.adb:125:04: warning: statement has no effect
 control_structures.adb:125:13: info: overflow check proved (CVC5: 2 VC)
@@ -595,6 +598,7 @@ elaboration_demo.adb:4:34: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 elaboration_demo.adb:5:04: warning: initialization of "Guess" has no effect
 elaboration_demo.adb:5:26: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
 elaboration_demo.adb:5:61: info: precondition proved (CVC5: 1 VC)
+elaboration_demo.adb:5:61: warning: call to "Sqrt" is not handled precisely [imprecise-call]
 elaboration_demo.adb:5:74: info: division check proved (CVC5: 1 VC)
 elaboration_demo.adb:5:74: info: float overflow check proved (Trivial)
 enum_example.adb:4:35: info: exceptional case proved (Trivial: 1 VC)
@@ -1147,7 +1151,7 @@ strings.adb:33:07: info: initialization of "Equals_Found" proved
 strings.adb:34:07: info: initialization of "Equals_Position" proved
 strings.adb:39:34: info: range check proved (CVC5: 2 VC)
 strings.adb:44:23: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
-strings.adb:45:32: medium: precondition might fail [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
+strings.adb:45:32: low: precondition might fail [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
 strings.adb:45:32: warning: references to the "Value" attribute are handled in an imprecise way, so the precondition is impossible to prove and nothing will be known about the evaluation of the attribute reference [imprecise-value]
 strings.adb:45:40: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
 strings.adb:45:62: medium: overflow check might fail, cannot prove upper bound for Equals_Position + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]

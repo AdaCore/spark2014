@@ -23864,16 +23864,17 @@ package body Gnat2Why.Expr is
 
             if T /= Why_Empty then
                return T;
-
-            --  Otherwise raise a warning and default to imprecise translation.
-
-            else
-               Warning_Msg_N
-                 (Warn_Imprecise_Call, Expr, Names => [Subp]);
             end if;
          end if;
 
          T := Transform_Hardcoded_Function_Call (Subp, Args, Domain, Expr);
+
+         --  Raise a warning on imprecise translation
+
+         if Is_Imprecisely_Hardcoded (Subp) then
+            Warning_Msg_N (Warn_Imprecise_Call, Expr, Names => [Subp]);
+         end if;
+
          return T;
       end if;
 

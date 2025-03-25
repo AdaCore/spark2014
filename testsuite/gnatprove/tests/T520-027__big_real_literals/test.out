@@ -1,4 +1,4 @@
-test_literal.adb:8:14: medium: precondition might fail
+test_literal.adb:8:14: low: precondition might fail [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
 test_literal.adb:8:14: warning: call to "From_String" is not handled precisely [imprecise-call]
 test_literal.adb:8:74: info: predicate check proved (Trivial: 1 VC)
 test_literal.adb:14:22: info: predicate check proved (Trivial: 1 VC)
@@ -6,11 +6,11 @@ test_literal.adb:14:22: medium: assertion might fail
 test_literal.adb:14:29: info: predicate check proved (Trivial: 1 VC)
 test_literal.adb:17:04: warning: analyzing unreferenced procedure "Bad" [unreferenced-procedure]
 test_literal.adb:17:14: warning: subprogram "Bad" has no effect
-test_literal.adb:22:15: medium: precondition might fail
+test_literal.adb:22:15: low: precondition might fail [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
 test_literal.adb:22:15: warning: call to "From_String" is not handled precisely [imprecise-call]
-test_literal.adb:24:15: medium: precondition might fail
+test_literal.adb:24:15: low: precondition might fail [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
 test_literal.adb:24:15: warning: call to "From_String" is not handled precisely [imprecise-call]
-test_literal.adb:26:15: medium: precondition might fail
+test_literal.adb:26:15: low: precondition might fail [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
 test_literal.adb:26:15: warning: call to "From_String" is not handled precisely [imprecise-call]
 test_literal.adb:33:19: info: assertion proved (CVC5: 1 VC)
 test_literal.adb:33:27: info: predicate check proved (Trivial: 1 VC)

@@ -156,6 +156,20 @@ package SPARK_Util.Hardcoded is
    --  Return True iff E is a function used to encode literals. Those are
    --  handled specifically when they have string literals as parameters.
 
+   function Is_Imprecisely_Hardcoded (E : Entity_Id) return Boolean with
+     Pre => Is_Hardcoded_Entity (E) and then Ekind (E) in Subprogram_Kind;
+   --  Return True if E produces an imprecise result. This is used to emit
+   --  warnings for users and to lower the severity of check messages for
+   --  overflow on the result.
+
+   function Has_Imprecise_Precondition (E : Entity_Id) return Boolean with
+     Pre  => Is_Hardcoded_Entity (E) and then Ekind (E) in Subprogram_Kind,
+     Post =>
+       (if Has_Imprecise_Precondition'Result
+        then Is_Imprecisely_Hardcoded (E));
+   --  Return True if E produces unprovable precondition checks. This is used
+   --  to lower the severity of the check message.
+
    function Get_Hardcoded_Unit (E : Entity_Id) return Hardcoded_Enum
      with Pre => Is_Hardcoded_Entity (E);
    --  Returns the unit in which the hardcoded entity E is defined
