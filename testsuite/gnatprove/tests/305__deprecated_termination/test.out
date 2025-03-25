@@ -11,7 +11,7 @@ main.adb:18:13: info: implicit aspect Always_Terminates on "F2" has been proved,
 main.adb:19:04: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored [deprecated-terminating]
 main.adb:19:04: warning: terminating annotation is implicit on functions
 main.adb:21:14: info: add a contract to analyze it separately from calling contexts
-main.adb:21:14: info: local subprogram "P2" only analyzed in the context of calls
+main.adb:21:14: info: local subprogram "P2" only analyzed in the context of calls [info-unrolling-inlining]
 main.adb:21:18: info: initialization of "X" proved
 main.adb:26:04: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored [deprecated-terminating]
 main.adb:26:04: warning: replace "pragma Annotate (GNATprove, always_return, ...)" by "with Always_Terminates" on the corresponding entity

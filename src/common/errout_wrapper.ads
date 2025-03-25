@@ -118,6 +118,12 @@ package Errout_Wrapper is
    --  Variant of Warning_Msg_N where the user creates the message object,
    --  ideally with the Create_N that takes a Misc_Warning_Kind.
 
+   function Tag_Suffix (Kind : Misc_Warning_Kind) return String;
+   --  If the option is set to print the tag for each warning message, then
+   --  this function returns the string " [tag]" (note the initial space),
+   --  where "tag" is the tag name of the warning kind.
+   --  If not, it returns the empty string.
+
    function Escape (S : String) return String;
    --  Escape the special characters # and & in the error message
 

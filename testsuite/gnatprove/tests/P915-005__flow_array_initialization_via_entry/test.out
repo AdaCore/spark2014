@@ -1,5 +1,5 @@
 p.adb:13:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-p.adb:19:35: info: cannot unroll loop (too many loop iterations)
+p.adb:19:35: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 p.adb:21:32: info: range check proved (CVC5: 4 VC)
 p.ads:6:27: info: initialization of "A" proved
 p.ads:10:28: info: initialization of "A" proved

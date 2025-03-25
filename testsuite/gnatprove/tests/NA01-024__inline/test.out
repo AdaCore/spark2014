@@ -4,7 +4,7 @@ unknown_1.adb:18:34: low: unused global "input_parameter"
 unknown_1.adb:21:10: info: initialization of "Box" proved
 unknown_1.adb:39:19: info: add a contract to analyze it separately from calling contexts
 unknown_1.adb:39:19: info: implicit aspect Always_Terminates on "function_2" has been proved, subprogram will terminate
-unknown_1.adb:39:19: info: local subprogram "function_2" only analyzed in the context of calls
+unknown_1.adb:39:19: info: local subprogram "function_2" only analyzed in the context of calls [info-unrolling-inlining]
 unknown_1.adb:44:48: high: "input_parameter" must be listed in the Global aspect of "Procedure_2" (SPARK RM 6.1.4(15)), in call inlined at unknown_1.adb:55
 unknown_1.adb:47:39: info: range check proved (Trivial), in call inlined at unknown_1.adb:55
 unknown_1.adb:49:41: info: range check proved (Trivial), in call inlined at unknown_1.adb:55

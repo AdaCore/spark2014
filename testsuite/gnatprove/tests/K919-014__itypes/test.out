@@ -1,7 +1,7 @@
-p.adb:4:26: info: cannot unroll loop (too many loop iterations)
+p.adb:4:26: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 p.adb:4:26: warning: statement has no effect
 p.ads:3:18: warning: "X" is not modified, could be IN
-q.adb:4:26: info: cannot unroll loop (too many loop iterations)
+q.adb:4:26: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 q.adb:4:26: warning: statement has no effect
 q.ads:4:18: warning: "X" is not modified, could be IN
 t.ads:5:07: info: range check proved (CVC5: 2 VC)

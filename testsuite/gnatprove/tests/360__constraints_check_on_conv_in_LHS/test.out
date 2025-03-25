@@ -17,7 +17,7 @@ main.adb:52:30: info: data dependencies proved
 main.adb:55:07: info: range check proved (CVC5: 2 VC)
 main.adb:59:25: info: initialization of "V_A" proved
 main.adb:63:20: info: add a contract to analyze it separately from calling contexts
-main.adb:63:20: info: local subprogram "Assign" only analyzed in the context of calls
+main.adb:63:20: info: local subprogram "Assign" only analyzed in the context of calls [info-unrolling-inlining]
 main.adb:63:28: info: initialization of "X" proved
 main.adb:65:13: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in call inlined at main.adb:68
 main.adb:65:15: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in call inlined at main.adb:68
@@ -25,7 +25,7 @@ main.adb:65:18: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in call i
 main.adb:68:10: info: analyzing call to "Assign" in context
 main.adb:71:28: info: initialization of "V_A" proved
 main.adb:75:20: info: add a contract to analyze it separately from calling contexts
-main.adb:75:20: info: local subprogram "Assign" only analyzed in the context of calls
+main.adb:75:20: info: local subprogram "Assign" only analyzed in the context of calls [info-unrolling-inlining]
 main.adb:75:28: info: initialization of "X" proved
 main.adb:77:13: medium: length check might fail, in call inlined at main.adb:80 [reason for check: array must be of the appropriate length] [possible fix: precondition of subprogram at line 71 should mention V_A'Length or V_A'First or V_A'Last]
 main.adb:77:15: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in call inlined at main.adb:80
@@ -33,14 +33,14 @@ main.adb:77:18: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in call i
 main.adb:80:10: info: analyzing call to "Assign" in context
 main.adb:83:28: info: initialization of "V_A" proved
 main.adb:87:20: info: add a contract to analyze it separately from calling contexts
-main.adb:87:20: info: local subprogram "Assign" only analyzed in the context of calls
+main.adb:87:20: info: local subprogram "Assign" only analyzed in the context of calls [info-unrolling-inlining]
 main.adb:87:28: info: initialization of "X" proved
 main.adb:89:13: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in call inlined at main.adb:92
 main.adb:89:15: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in call inlined at main.adb:92
 main.adb:89:18: medium: length check might fail, in call inlined at main.adb:92 [reason for check: array must be of the appropriate length]
 main.adb:92:10: info: analyzing call to "Assign" in context
 main.adb:99:20: info: add a contract to analyze it separately from calling contexts
-main.adb:99:20: info: local subprogram "Assign" only analyzed in the context of calls
+main.adb:99:20: info: local subprogram "Assign" only analyzed in the context of calls [info-unrolling-inlining]
 main.adb:101:13: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in call inlined at main.adb:104
 main.adb:101:16: info: index check proved (CVC5: 2 VC), in call inlined at main.adb:104
 main.adb:104:10: info: analyzing call to "Assign" in context

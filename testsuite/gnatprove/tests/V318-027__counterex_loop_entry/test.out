@@ -1,10 +1,10 @@
-loopentry.adb:19:23: info: unrolling loop
+loopentry.adb:19:23: info: unrolling loop [info-unrolling-inlining]
 loopentry.adb:20:17: info: range check proved (CVC5: 6 VC)
 loopentry.adb:21:25: high: assertion might fail (e.g. when I = 2 and I'Loop_Entry = 1)
 loopentry.adb:28:17: info: range check proved (CVC5: 4 VC)
 loopentry.adb:29:33: high: loop invariant might fail in first iteration (e.g. when I = 2 and I'Loop_Entry = 1)
 loopentry.adb:29:33: medium: loop invariant might not be preserved by an arbitrary iteration
-loopentry.adb:39:24: info: unrolling loop
+loopentry.adb:39:24: info: unrolling loop [info-unrolling-inlining]
 loopentry.adb:40:23: info: range check proved (CVC5: 20 VC)
 loopentry.adb:42:25: high: assertion might fail (e.g. when A = (1 => 2, others => 1) and A'Loop_Entry = (others => 1) and J = 1)
 loopentry.adb:49:23: info: range check proved (CVC5: 4 VC)
@@ -12,7 +12,7 @@ loopentry.adb:52:34: high: loop invariant might fail in first iteration, cannot 
 loopentry.adb:52:34: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove A(K) = A'Loop_Entry(K) + 2
 loopentry.adb:52:36: info: index check proved (CVC5: 4 VC)
 loopentry.adb:52:54: info: index check proved (CVC5: 4 VC)
-loopentry.adb:64:24: info: unrolling loop
+loopentry.adb:64:24: info: unrolling loop [info-unrolling-inlining]
 loopentry.adb:65:23: info: range check proved (CVC5: 20 VC)
 loopentry.adb:67:25: high: assertion might fail (e.g. when A = (1 => 2, others => 1) and A'Loop_Entry = (others => 1) and J = 1)
 loopentry.adb:76:23: info: range check proved (CVC5: 4 VC)
@@ -20,7 +20,7 @@ loopentry.adb:79:34: high: loop invariant might fail in first iteration, cannot 
 loopentry.adb:79:34: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove A(K) = Same (A)'Loop_Entry(K)
 loopentry.adb:79:36: info: index check proved (CVC5: 4 VC)
 loopentry.adb:79:61: info: index check proved (CVC5: 4 VC)
-loopentry.adb:89:26: info: unrolling loop
+loopentry.adb:89:26: info: unrolling loop [info-unrolling-inlining]
 loopentry.adb:90:27: info: range check proved (CVC5: 20 VC)
 loopentry.adb:92:25: high: assertion might fail (e.g. when J = 1 and R = (A => (1 => 2, others => 1)) and R'Loop_Entry = (A => (1 => 2, others => 1)))
 loopentry.adb:99:27: info: range check proved (CVC5: 4 VC)
@@ -28,7 +28,7 @@ loopentry.adb:102:34: high: loop invariant might fail in first iteration, cannot
 loopentry.adb:102:34: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove R.A(K) = R.A'Loop_Entry(K)
 loopentry.adb:102:38: info: index check proved (CVC5: 4 VC)
 loopentry.adb:102:58: info: index check proved (CVC5: 4 VC)
-loopentry.adb:112:23: info: unrolling loop
+loopentry.adb:112:23: info: unrolling loop [info-unrolling-inlining]
 loopentry.adb:113:25: high: assertion might fail (e.g. when I = 1 and I'Loop_Entry = 1) [possible fix: subprogram at loopentry.ads:40 should mention I in a precondition]
 loopentry.ads:11:13: info: implicit aspect Always_Terminates on "Same" has been proved, subprogram will terminate
 loopentry.ads:13:13: info: implicit aspect Always_Terminates on "Same" has been proved, subprogram will terminate

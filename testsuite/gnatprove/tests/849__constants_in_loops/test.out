@@ -11,7 +11,7 @@ test.adb:35:28: info: assertion proved (CVC5: 2 VC)
 test.adb:36:36: info: loop invariant initialization proved (Trivial: 1 VC)
 test.adb:36:36: info: loop invariant preservation proved (Trivial: 1 VC)
 test.adb:41:26: info: data dependencies proved
-test.adb:44:25: info: cannot unroll loop (too many loop iterations)
+test.adb:44:25: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 test.adb:49:28: info: assertion proved (CVC5: 1 VC)
 test.adb:54:26: info: data dependencies proved
 test.adb:62:36: info: loop invariant initialization proved (Trivial: 1 VC)

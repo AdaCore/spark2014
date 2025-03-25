@@ -12,7 +12,7 @@ cubedos-lib-xdr.adb:21:45: info: type is suitable as source for unchecked conver
 cubedos-lib-xdr.adb:21:75: info: type is suitable for unchecked conversion (Trivial)
 cubedos-lib-xdr.adb:31:07: info: precondition proved (CVC5: 5 VC)
 cubedos-lib-xdr.adb:42:07: info: initialization of "Temporary_2" proved
-cubedos-lib-xdr.adb:44:23: info: unrolling loop
+cubedos-lib-xdr.adb:44:23: info: unrolling loop [info-unrolling-inlining]
 cubedos-lib-xdr.adb:45:37: info: division check proved (CVC5: 4 VC)
 cubedos-lib-xdr.adb:46:24: info: index check proved (CVC5: 8 VC)
 cubedos-lib-xdr.adb:46:44: info: range check proved (CVC5: 8 VC)
@@ -22,7 +22,7 @@ cubedos-lib-xdr.adb:59:07: info: initialization of "Temporary" proved
 cubedos-lib-xdr.adb:66:07: info: precondition proved (CVC5: 5 VC)
 cubedos-lib-xdr.adb:77:07: info: precondition proved (CVC5: 5 VC)
 cubedos-lib-xdr.adb:88:07: info: initialization of "Temporary_2" proved
-cubedos-lib-xdr.adb:90:23: info: unrolling loop
+cubedos-lib-xdr.adb:90:23: info: unrolling loop [info-unrolling-inlining]
 cubedos-lib-xdr.adb:91:37: info: division check proved (CVC5: 8 VC)
 cubedos-lib-xdr.adb:92:24: info: index check proved (CVC5: 16 VC)
 cubedos-lib-xdr.adb:92:44: info: range check proved (CVC5: 16 VC)
@@ -54,7 +54,7 @@ cubedos-lib-xdr.adb:126:07: info: range check proved (CVC5: 2 VC)
 cubedos-lib-xdr.adb:126:47: info: range check proved (CVC5: 2 VC)
 cubedos-lib-xdr.adb:128:23: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 cubedos-lib-xdr.adb:128:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-cubedos-lib-xdr.adb:129:28: info: cannot unroll loop (too many loop iterations)
+cubedos-lib-xdr.adb:129:28: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 cubedos-lib-xdr.adb:130:28: info: index check proved (CVC5: 2 VC)
 cubedos-lib-xdr.adb:130:28: info: overflow check proved (CVC5: 2 VC)
 cubedos-lib-xdr.adb:132:07: info: precondition proved (CVC5: 6 VC)
@@ -62,7 +62,7 @@ cubedos-lib-xdr.adb:146:07: info: initialization of "Temp" proved
 cubedos-lib-xdr.adb:148:07: info: precondition proved (CVC5: 5 VC)
 cubedos-lib-xdr.adb:159:55: info: index check proved (CVC5: 2 VC)
 cubedos-lib-xdr.adb:160:07: info: initialization of "Temporary_2" proved
-cubedos-lib-xdr.adb:162:23: info: unrolling loop
+cubedos-lib-xdr.adb:162:23: info: unrolling loop [info-unrolling-inlining]
 cubedos-lib-xdr.adb:164:66: info: index check proved (CVC5: 6 VC)
 cubedos-lib-xdr.adb:168:24: info: range check proved (CVC5: 2 VC)
 cubedos-lib-xdr.adb:178:07: info: initialization of "Temporary" proved
@@ -71,7 +71,7 @@ cubedos-lib-xdr.adb:197:07: info: initialization of "Temporary" proved
 cubedos-lib-xdr.adb:199:07: info: precondition proved (CVC5: 5 VC)
 cubedos-lib-xdr.adb:211:67: info: index check proved (CVC5: 2 VC)
 cubedos-lib-xdr.adb:212:07: info: initialization of "Temporary_2" proved
-cubedos-lib-xdr.adb:214:23: info: unrolling loop
+cubedos-lib-xdr.adb:214:23: info: unrolling loop [info-unrolling-inlining]
 cubedos-lib-xdr.adb:216:72: info: index check proved (CVC5: 14 VC)
 cubedos-lib-xdr.adb:220:15: info: range check proved (CVC5: 2 VC)
 cubedos-lib-xdr.adb:232:13: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
@@ -82,7 +82,7 @@ cubedos-lib-xdr.adb:233:52: info: range check proved (CVC5: 2 VC)
 cubedos-lib-xdr.adb:245:13: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 cubedos-lib-xdr.adb:246:38: info: overflow check proved (CVC5: 2 VC)
 cubedos-lib-xdr.adb:246:45: info: range check proved (CVC5: 2 VC)
-cubedos-lib-xdr.adb:246:58: info: cannot unroll loop (too many loop iterations)
+cubedos-lib-xdr.adb:246:58: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 cubedos-lib-xdr.adb:247:28: info: index check proved (CVC5: 2 VC)
 cubedos-lib-xdr.adb:247:28: info: overflow check proved (CVC5: 2 VC)
 cubedos-lib-xdr.adb:247:33: info: overflow check proved (CVC5: 2 VC)

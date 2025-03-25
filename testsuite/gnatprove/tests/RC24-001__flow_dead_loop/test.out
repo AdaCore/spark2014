@@ -1,5 +1,5 @@
 main.adb:3:43: info: initialization of "Status" proved
-main.adb:5:47: info: unrolling loop
+main.adb:5:47: info: unrolling loop [info-unrolling-inlining]
 main.adb:13:07: warning: assuming "Update" always terminates
 main.adb:13:07: warning: assuming "Update" has no effect on global items
 main.adb:13:07: warning: no Always_Terminates aspect available for "Update" [assumed-always-terminates]

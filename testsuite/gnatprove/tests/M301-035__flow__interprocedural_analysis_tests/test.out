@@ -7,13 +7,13 @@ across_compilation_units-child.ads:30:24: medium: missing self-dependency "Z => 
 across_compilation_units-child.ads:41:12: info: data dependencies proved
 across_compilation_units-child.ads:42:12: info: flow dependencies proved
 across_compilation_units.adb:4:23: info: division check proved (CVC5: 1 VC)
-across_compilation_units.adb:4:27: info: cannot unroll loop (too many loop iterations)
+across_compilation_units.adb:4:27: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 across_compilation_units.adb:5:16: info: division check proved (CVC5: 1 VC)
 across_compilation_units.adb:13:07: info: initialization of "Temp" proved
 across_compilation_units.adb:21:07: info: initialization of "Temp" proved
 across_compilation_units.ads:2:13: info: implicit aspect Always_Terminates on "Prime" has been proved, subprogram will terminate
 across_compilation_units.ads:7:12: info: flow dependencies proved
-caller_of_across_compilation_units.adb:19:32: info: cannot unroll loop (too many loop iterations)
+caller_of_across_compilation_units.adb:19:32: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 caller_of_across_compilation_units.adb:20:16: info: division check proved (CVC5: 1 VC)
 caller_of_across_compilation_units.adb:20:39: info: division check proved (CVC5: 1 VC)
 caller_of_across_compilation_units.ads:5:13: info: implicit aspect Always_Terminates on "Min" has been proved, subprogram will terminate

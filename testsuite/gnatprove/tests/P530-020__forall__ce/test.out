@@ -4,7 +4,7 @@ counterex_forall.adb:12:43: high: loop invariant might not be preserved by an ar
 counterex_forall.adb:12:43: medium: "R" might not be initialized
 counterex_forall.adb:12:58: high: overflow check might fail, cannot prove upper bound for C + 1 (e.g. when C = Integer'Last and I = 1 and X = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 counterex_forall.adb:14:14: medium: "R" might not be initialized
-counterex_forall.adb:19:25: info: cannot unroll loop (too many loop iterations)
+counterex_forall.adb:19:25: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 counterex_forall.adb:21:22: high: "R" is not initialized
 counterex_forall.adb:21:28: high: overflow check might fail, cannot prove upper bound for R (X) + Y (e.g. when R = (others => Integer'Last) and X = 1 and Y = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 22 should mention R]
 counterex_forall.adb:22:36: info: loop invariant preservation proved (CVC5: 1 VC)

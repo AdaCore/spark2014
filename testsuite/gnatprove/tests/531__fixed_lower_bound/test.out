@@ -10,7 +10,7 @@ fixed_lower_bound_types_and_objects.adb:30:04: warning: unused variable "Arr_Mix
 fixed_lower_bound_types_and_objects.adb:31:04: info: range check proved (CVC5: 1 VC)
 fixed_lower_bound_types_and_objects.adb:31:04: warning: unused variable "Arr_Mixed_FLB_1_2D"
 fixed_lower_bound_types_and_objects.adb:34:14: info: add a contract to analyze it separately from calling contexts
-fixed_lower_bound_types_and_objects.adb:34:14: info: local subprogram "Proc_FLB_0" only analyzed in the context of calls
+fixed_lower_bound_types_and_objects.adb:34:14: info: local subprogram "Proc_FLB_0" only analyzed in the context of calls [info-unrolling-inlining]
 fixed_lower_bound_types_and_objects.adb:36:22: high: "A_0_7" is not initialized, in call inlined at fixed_lower_bound_types_and_objects.adb:78
 fixed_lower_bound_types_and_objects.adb:36:22: info: assertion proved (CVC5: 1 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:78
 fixed_lower_bound_types_and_objects.adb:36:22: info: assertion proved (CVC5: 1 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:79
@@ -32,7 +32,7 @@ fixed_lower_bound_types_and_objects.adb:41:17: info: range check proved (CVC5: 4
 fixed_lower_bound_types_and_objects.adb:41:18: info: index check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:78
 fixed_lower_bound_types_and_objects.adb:41:18: info: index check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:79
 fixed_lower_bound_types_and_objects.adb:44:14: info: add a contract to analyze it separately from calling contexts
-fixed_lower_bound_types_and_objects.adb:44:14: info: local subprogram "Proc_FLB_1" only analyzed in the context of calls
+fixed_lower_bound_types_and_objects.adb:44:14: info: local subprogram "Proc_FLB_1" only analyzed in the context of calls [info-unrolling-inlining]
 fixed_lower_bound_types_and_objects.adb:46:22: info: assertion proved (CVC5: 1 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:81
 fixed_lower_bound_types_and_objects.adb:46:22: info: assertion proved (CVC5: 1 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:82
 fixed_lower_bound_types_and_objects.adb:46:22: info: assertion proved (CVC5: 1 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:83
@@ -52,7 +52,7 @@ fixed_lower_bound_types_and_objects.adb:52:04: info: no contextual analysis of "
 fixed_lower_bound_types_and_objects.adb:52:13: info: implicit aspect Always_Terminates on "Func_FLB_1" has been proved, subprogram will terminate
 fixed_lower_bound_types_and_objects.adb:54:14: high: range check might fail (e.g. when A'First = 1 and A'Last = 0) [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at line 52 should mention A in a precondition]
 fixed_lower_bound_types_and_objects.adb:57:14: info: add a contract to analyze it separately from calling contexts
-fixed_lower_bound_types_and_objects.adb:57:14: info: local subprogram "Proc_Colors" only analyzed in the context of calls
+fixed_lower_bound_types_and_objects.adb:57:14: info: local subprogram "Proc_Colors" only analyzed in the context of calls [info-unrolling-inlining]
 fixed_lower_bound_types_and_objects.adb:59:22: high: "A_Red_Blue" is not initialized, in call inlined at fixed_lower_bound_types_and_objects.adb:91
 fixed_lower_bound_types_and_objects.adb:59:22: high: "All_Colors" is not initialized, in call inlined at fixed_lower_bound_types_and_objects.adb:86
 fixed_lower_bound_types_and_objects.adb:59:22: info: assertion proved (CVC5: 1 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:86
@@ -203,7 +203,7 @@ fixed_lower_bound_types_and_objects.adb:92:04: warning: references to the "Image
 fixed_lower_bound_types_and_objects.adb:92:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 fixed_lower_bound_types_and_objects.adb:92:17: info: range check proved (CVC5: 4 VC)
 flb_multidimensional_subtypes.adb:11:14: info: add a contract to analyze it separately from calling contexts
-flb_multidimensional_subtypes.adb:11:14: info: local subprogram "Proc_FLB_0" only analyzed in the context of calls
+flb_multidimensional_subtypes.adb:11:14: info: local subprogram "Proc_FLB_0" only analyzed in the context of calls [info-unrolling-inlining]
 flb_multidimensional_subtypes.adb:13:22: high: "A10_x_20" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:46
 flb_multidimensional_subtypes.adb:13:22: high: "A_2_7_x_0_11" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:47
 flb_multidimensional_subtypes.adb:13:22: high: "A_FLB_0_7_x_0_12" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:45
@@ -282,7 +282,7 @@ flb_multidimensional_subtypes.adb:20:32: info: index check proved (CVC5: 2 VC), 
 flb_multidimensional_subtypes.adb:20:32: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:46
 flb_multidimensional_subtypes.adb:20:32: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:47
 flb_multidimensional_subtypes.adb:23:14: info: add a contract to analyze it separately from calling contexts
-flb_multidimensional_subtypes.adb:23:14: info: local subprogram "Proc_FLB_1" only analyzed in the context of calls
+flb_multidimensional_subtypes.adb:23:14: info: local subprogram "Proc_FLB_1" only analyzed in the context of calls [info-unrolling-inlining]
 flb_multidimensional_subtypes.adb:25:22: high: "A_1_5_x_3_16" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:51
 flb_multidimensional_subtypes.adb:25:22: info: assertion proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:49
 flb_multidimensional_subtypes.adb:25:22: info: assertion proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:50

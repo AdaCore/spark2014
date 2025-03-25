@@ -15,7 +15,7 @@ fixed_stream.adb:56:09: info: range check proved (CVC5: 2 VC)
 fixed_stream.adb:58:18: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 fixed_stream.adb:71:39: info: range check proved (CVC5: 2 VC)
 fixed_stream.adb:71:54: info: range check proved (CVC5: 2 VC)
-fixed_stream.adb:76:36: info: cannot unroll loop (too many loop iterations)
+fixed_stream.adb:76:36: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 fixed_stream.adb:77:41: info: index check proved (CVC5: 2 VC)
 fixed_stream.adb:77:41: info: overflow check proved (CVC5: 2 VC)
 fixed_stream.adb:79:57: info: index check proved (CVC5: 2 VC)

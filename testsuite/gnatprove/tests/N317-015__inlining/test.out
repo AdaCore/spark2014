@@ -1,6 +1,6 @@
 array_arith.adb:6:16: info: add a contract to analyze it separately from calling contexts
 array_arith.adb:6:16: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
-array_arith.adb:6:16: info: local subprogram "Ident" only analyzed in the context of calls
+array_arith.adb:6:16: info: local subprogram "Ident" only analyzed in the context of calls [info-unrolling-inlining]
 array_arith.adb:12:15: info: analyzing call to "Ident" in context
 array_arith.adb:13:15: info: analyzing call to "Ident" in context
 array_arith.adb:14:15: info: analyzing call to "Ident" in context
@@ -13,7 +13,7 @@ array_arith.adb:20:15: info: analyzing call to "Ident" in context
 array_arith.adb:21:16: info: analyzing call to "Ident" in context
 array_arith.adb:26:16: info: add a contract to analyze it separately from calling contexts
 array_arith.adb:26:16: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
-array_arith.adb:26:16: info: local subprogram "Ident" only analyzed in the context of calls
+array_arith.adb:26:16: info: local subprogram "Ident" only analyzed in the context of calls [info-unrolling-inlining]
 array_arith.adb:29:19: info: overflow check proved (CVC5: 2 VC), in call inlined at array_arith.adb:32
 array_arith.adb:29:19: info: overflow check proved (CVC5: 2 VC), in call inlined at array_arith.adb:33
 array_arith.adb:29:19: info: overflow check proved (CVC5: 2 VC), in call inlined at array_arith.adb:34
@@ -46,7 +46,7 @@ array_arith.adb:40:15: info: analyzing call to "Ident" in context
 array_arith.adb:41:16: info: analyzing call to "Ident" in context
 array_arith.adb:46:16: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
 array_arith.adb:47:17: info: add a contract to analyze it separately from calling contexts
-array_arith.adb:47:17: info: local subprogram "Local" only analyzed in the context of calls
+array_arith.adb:47:17: info: local subprogram "Local" only analyzed in the context of calls [info-unrolling-inlining]
 array_arith.adb:50:18: info: no contextual analysis of "Ident" (body not seen yet)
 array_arith.adb:51:18: info: no contextual analysis of "Ident" (body not seen yet)
 array_arith.adb:52:18: info: no contextual analysis of "Ident" (body not seen yet)
@@ -101,7 +101,7 @@ array_arith.adb:66:07: info: in inlined body at line 57
 array_arith.adb:66:07: info: in inlined body at line 58
 array_arith.adb:66:07: info: in inlined body at line 59
 array_arith.adb:70:17: info: add a contract to analyze it separately from calling contexts
-array_arith.adb:70:17: info: local subprogram "Put_A_Zero" only analyzed in the context of calls
+array_arith.adb:70:17: info: local subprogram "Put_A_Zero" only analyzed in the context of calls [info-unrolling-inlining]
 array_arith.adb:70:29: info: initialization of "Y" proved
 array_arith.adb:76:07: info: analyzing call to "Put_A_Zero" in context
 array_arith.adb:77:07: info: analyzing call to "Put_A_Zero" in context
@@ -127,9 +127,9 @@ array_arith.ads:18:14: info: postcondition proved (CVC5: 1 VC)
 array_arith.ads:18:35: medium: "X" might not be initialized
 ident.adb:8:13: info: add a contract to analyze it separately from calling contexts
 ident.adb:8:13: info: implicit aspect Always_Terminates on "Id_Body" has been proved, subprogram will terminate
-ident.adb:8:13: info: local subprogram "Id_Body" only analyzed in the context of calls
+ident.adb:8:13: info: local subprogram "Id_Body" only analyzed in the context of calls [info-unrolling-inlining]
 ident.adb:9:14: info: add a contract to analyze it separately from calling contexts
-ident.adb:9:14: info: local subprogram "Incr_Body" only analyzed in the context of calls
+ident.adb:9:14: info: local subprogram "Incr_Body" only analyzed in the context of calls [info-unrolling-inlining]
 ident.adb:9:42: info: initialization of "Y" proved
 ident.adb:43:07: info: initialization of "Y" proved
 ident.adb:44:07: info: initialization of "Res" proved

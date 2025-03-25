@@ -1,4 +1,4 @@
-a.adb:12:37: info: unrolling loop
+a.adb:12:37: info: unrolling loop [info-unrolling-inlining]
 a.adb:24:26: info: in value of subprogram parameter after the call at a.adb:24
 a.adb:24:26: info: initialization check proved (CVC5: 1 VC)
 a.adb:24:26: info: range check proved (CVC5: 2 VC)

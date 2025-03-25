@@ -1,5 +1,5 @@
 dyn_bounds.adb:1:11: warning: subprogram "Dyn_Bounds" has no effect
-dyn_bounds.adb:3:20: info: cannot unroll loop (too many loop iterations)
+dyn_bounds.adb:3:20: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 dyn_bounds.adb:5:18: info: range check proved (CVC5: 2 VC)
 dyn_bounds.adb:6:18: info: range check proved (CVC5: 2 VC)
 dyn_bounds.adb:8:19: info: implicit aspect Always_Terminates on "F_Simple_1" has been proved, subprogram will terminate

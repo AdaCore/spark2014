@@ -1,5 +1,5 @@
 flight_manager.adb:9:17: info: add a contract to analyze it separately from calling contexts
-flight_manager.adb:9:17: info: local subprogram "Adjust_Speed" only analyzed in the context of calls
+flight_manager.adb:9:17: info: local subprogram "Adjust_Speed" only analyzed in the context of calls [info-unrolling-inlining]
 flight_manager.adb:16:19: medium: "Result.X_Speed" might not be initialized, in call inlined at flight_manager.adb:42
 flight_manager.adb:16:19: medium: "Result.Y_Speed" might not be initialized, in call inlined at flight_manager.adb:43
 flight_manager.adb:16:21: info: overflow check proved (CVC5: 2 VC), in call inlined at flight_manager.adb:42
@@ -8,7 +8,7 @@ flight_manager.adb:16:43: info: division check proved (CVC5: 1 VC), in call inli
 flight_manager.adb:16:43: info: division check proved (CVC5: 1 VC), in call inlined at flight_manager.adb:43
 flight_manager.adb:20:16: info: add a contract to analyze it separately from calling contexts
 flight_manager.adb:20:16: info: implicit aspect Always_Terminates on "My_Abs" has been proved, subprogram will terminate
-flight_manager.adb:20:16: info: local subprogram "My_Abs" only analyzed in the context of calls
+flight_manager.adb:20:16: info: local subprogram "My_Abs" only analyzed in the context of calls [info-unrolling-inlining]
 flight_manager.adb:23:20: medium: overflow check might fail, cannot prove upper bound for -I, in call inlined at flight_manager.adb:42 [reason for check: result of negation must fit in a 32-bits machine integer]
 flight_manager.adb:23:20: medium: overflow check might fail, cannot prove upper bound for -I, in call inlined at flight_manager.adb:43 [reason for check: result of negation must fit in a 32-bits machine integer]
 flight_manager.adb:42:07: info: analyzing call to "Adjust_Speed" in context

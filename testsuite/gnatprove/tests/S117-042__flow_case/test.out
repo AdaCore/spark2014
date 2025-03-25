@@ -1,5 +1,5 @@
-c57004a.adb:7:20: info: unrolling loop
-c57004a.adb:9:38: info: unrolling loop
+c57004a.adb:7:20: info: unrolling loop [info-unrolling-inlining]
+c57004a.adb:9:38: info: unrolling loop [info-unrolling-inlining]
 c57004a.adb:13:16: warning: assuming "FAILED" always terminates
 c57004a.adb:13:16: warning: no Always_Terminates aspect available for "FAILED" [assumed-always-terminates]
 c57004a.adb:13:16: warning: this statement is never reached

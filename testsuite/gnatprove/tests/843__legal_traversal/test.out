@@ -21,9 +21,9 @@ test_legal.adb:9:16: warning: "X" is not modified, could be IN
 test_legal.adb:16:13: info: implicit aspect Always_Terminates on "F_2" has been proved, subprogram will terminate
 test_legal.adb:21:14: medium: dynamic accessibility check might fail
 test_legal.adb:26:14: info: add a contract to analyze it separately from calling contexts
-test_legal.adb:26:14: info: local subprogram "Test" only analyzed in the context of calls
+test_legal.adb:26:14: info: local subprogram "Test" only analyzed in the context of calls [info-unrolling-inlining]
 test_legal.adb:32:14: info: add a contract to analyze it separately from calling contexts
-test_legal.adb:32:14: info: local subprogram "Test_2" only analyzed in the context of calls
+test_legal.adb:32:14: info: local subprogram "Test_2" only analyzed in the context of calls [info-unrolling-inlining]
 test_legal.adb:44:13: info: implicit aspect Always_Terminates on "F_3" has been proved, subprogram will terminate
 test_legal.adb:44:18: warning: "X" is not modified, could be IN
 test_legal.adb:48:15: info: dynamic accessibility check proved (Trivial)

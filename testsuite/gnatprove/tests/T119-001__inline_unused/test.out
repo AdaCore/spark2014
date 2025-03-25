@@ -1,9 +1,9 @@
 test_inline.adb:21:14: info: add a contract to analyze it separately from calling contexts
-test_inline.adb:21:14: info: local subprogram "Set_A_And_B" only analyzed in the context of calls
+test_inline.adb:21:14: info: local subprogram "Set_A_And_B" only analyzed in the context of calls [info-unrolling-inlining]
 test_inline.adb:27:14: info: add a contract to analyze it separately from calling contexts
-test_inline.adb:27:14: info: local subprogram "Print_A" only analyzed in the context of calls
+test_inline.adb:27:14: info: local subprogram "Print_A" only analyzed in the context of calls [info-unrolling-inlining]
 test_inline.adb:32:14: info: add a contract to analyze it separately from calling contexts
-test_inline.adb:32:14: info: local subprogram "Print_B" only analyzed in the context of calls
+test_inline.adb:32:14: info: local subprogram "Print_B" only analyzed in the context of calls [info-unrolling-inlining]
 test_inline.adb:39:07: info: analyzing call to "Set_A_And_B" in context
 test_inline.adb:40:07: info: analyzing call to "Print_A" in context
 test_inline.adb:40:07: warning: in inlined body at line 29

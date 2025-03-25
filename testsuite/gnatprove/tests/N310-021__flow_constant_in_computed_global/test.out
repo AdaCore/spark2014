@@ -29,7 +29,7 @@ heatingsystem_dfa.adb:22:04: info: initialization of "OnOffTime" proved
 heatingsystem_dfa.adb:23:04: info: initialization of "ClockOffset" proved
 heatingsystem_dfa.adb:24:04: info: initialization of "HeatingIsOn" proved
 heatingsystem_dfa.adb:26:14: info: add a contract to analyze it separately from calling contexts
-heatingsystem_dfa.adb:26:14: info: local subprogram "UpdateDisplay" only analyzed in the context of calls
+heatingsystem_dfa.adb:26:14: info: local subprogram "UpdateDisplay" only analyzed in the context of calls [info-unrolling-inlining]
 heatingsystem_dfa.adb:30:07: info: initialization of "TheDisplay" proved
 heatingsystem_dfa.adb:30:07: info: initialization of "TheDisplay" proved, in call inlined at heatingsystem_dfa.adb:114
 heatingsystem_dfa.adb:30:07: info: initialization of "TheDisplay" proved, in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
@@ -47,7 +47,7 @@ heatingsystem_dfa.adb:39:44: info: division check proved (CVC5: 1 VC), in call i
 heatingsystem_dfa.adb:40:46: info: division check proved (CVC5: 1 VC), in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:41:46: info: division check proved (CVC5: 1 VC), in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:47:14: info: add a contract to analyze it separately from calling contexts
-heatingsystem_dfa.adb:47:14: info: local subprogram "CheckAdvanceButton" only analyzed in the context of calls
+heatingsystem_dfa.adb:47:14: info: local subprogram "CheckAdvanceButton" only analyzed in the context of calls [info-unrolling-inlining]
 heatingsystem_dfa.adb:49:07: info: initialization of "SlowAdvance" proved
 heatingsystem_dfa.adb:49:07: info: initialization of "SlowAdvance" proved, in call inlined at heatingsystem_dfa.adb:105
 heatingsystem_dfa.adb:49:07: info: initialization of "SlowAdvance" proved, in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
@@ -83,12 +83,12 @@ heatingsystem_dfa.adb:68:26: warning: "advancebutton.advpressed" is set by "Pres
 heatingsystem_dfa.adb:70:54: info: division check proved (CVC5: 1 VC), in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:70:54: info: division check proved (CVC5: 1 VC), in call inlined at heatingsystem_dfa.adb:110, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:83:14: info: add a contract to analyze it separately from calling contexts
-heatingsystem_dfa.adb:83:14: info: local subprogram "AddOffset" only analyzed in the context of calls
+heatingsystem_dfa.adb:83:14: info: local subprogram "AddOffset" only analyzed in the context of calls [info-unrolling-inlining]
 heatingsystem_dfa.adb:86:30: info: division check proved (CVC5: 1 VC), in call inlined at heatingsystem_dfa.adb:101, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:86:30: info: division check proved (CVC5: 1 VC), in call inlined at heatingsystem_dfa.adb:106, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:86:30: info: division check proved (CVC5: 1 VC), in call inlined at heatingsystem_dfa.adb:169
 heatingsystem_dfa.adb:91:14: info: add a contract to analyze it separately from calling contexts
-heatingsystem_dfa.adb:91:14: info: local subprogram "CheckProgramSwitch" only analyzed in the context of calls
+heatingsystem_dfa.adb:91:14: info: local subprogram "CheckProgramSwitch" only analyzed in the context of calls [info-unrolling-inlining]
 heatingsystem_dfa.adb:93:07: info: initialization of "SwitchPosition" proved
 heatingsystem_dfa.adb:93:07: info: initialization of "SwitchPosition" proved, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:94:07: info: initialization of "Timer" proved
@@ -106,12 +106,12 @@ heatingsystem_dfa.adb:121:07: info: initialization of "CurrentTime" proved
 heatingsystem_dfa.adb:122:07: info: initialization of "ModeSetting" proved
 heatingsystem_dfa.adb:124:07: info: no contextual analysis of "CheckModeSwitch" (nested subprogram)
 heatingsystem_dfa.adb:124:17: info: add a contract to analyze it separately from calling contexts
-heatingsystem_dfa.adb:124:17: info: local subprogram "TurnOn" only analyzed in the context of calls
+heatingsystem_dfa.adb:124:17: info: local subprogram "TurnOn" only analyzed in the context of calls [info-unrolling-inlining]
 heatingsystem_dfa.adb:133:17: info: add a contract to analyze it separately from calling contexts
-heatingsystem_dfa.adb:133:17: info: local subprogram "TurnOff" only analyzed in the context of calls
+heatingsystem_dfa.adb:133:17: info: local subprogram "TurnOff" only analyzed in the context of calls [info-unrolling-inlining]
 heatingsystem_dfa.adb:143:16: info: implicit aspect Always_Terminates on "IsBetween" has been proved, subprogram will terminate
 heatingsystem_dfa.adb:150:17: info: add a contract to analyze it separately from calling contexts
-heatingsystem_dfa.adb:150:17: info: local subprogram "OperateIfNeeded" only analyzed in the context of calls
+heatingsystem_dfa.adb:150:17: info: local subprogram "OperateIfNeeded" only analyzed in the context of calls [info-unrolling-inlining]
 heatingsystem_dfa.adb:156:16: info: analyzing call to "TurnOff" in context
 heatingsystem_dfa.adb:158:16: info: analyzing call to "TurnOn" in context
 heatingsystem_dfa.adb:162:13: info: analyzing call to "TurnOff" in context

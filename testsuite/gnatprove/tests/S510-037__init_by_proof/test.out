@@ -1,4 +1,4 @@
-a.adb:11:35: info: unrolling loop
+a.adb:11:35: info: unrolling loop [info-unrolling-inlining]
 a.adb:12:10: high: "Global_AA" must be listed in the Global aspect of "initGlobalsA" (SPARK RM 6.1.4(15))
 a.adb:23:25: info: in value of subprogram parameter after the call at a.adb:23
 a.adb:23:25: info: initialization check proved (CVC5: 1 VC)

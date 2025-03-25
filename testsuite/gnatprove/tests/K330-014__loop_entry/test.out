@@ -2,17 +2,17 @@ for_loops.adb:16:33: info: loop invariant preservation proved (CVC5: 1 VC)
 for_loops.adb:16:33: medium: loop invariant might fail in first iteration [possible fix: you should consider adding a postcondition to function Sum_Of or turning it into an expression function in its unit spec]
 for_loops.adb:29:33: info: loop invariant preservation proved (CVC5: 1 VC)
 for_loops.adb:29:33: medium: loop invariant might fail in first iteration [possible fix: you should consider adding a postcondition to function Sum_Of or turning it into an expression function in its unit spec]
-for_loops.adb:40:47: info: cannot unroll loop (too many loop iterations)
+for_loops.adb:40:47: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 for_loops.adb:44:36: info: loop invariant initialization proved (CVC5: 1 VC)
 for_loops.adb:44:36: info: loop invariant preservation proved (CVC5: 1 VC)
-for_loops.adb:55:47: info: cannot unroll loop (too many loop iterations)
+for_loops.adb:55:47: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 for_loops.adb:61:36: info: loop invariant initialization proved (CVC5: 1 VC)
 for_loops.adb:61:36: info: loop invariant preservation proved (CVC5: 1 VC)
 optional.adb:17:33: info: loop invariant initialization proved (CVC5: 1 VC)
 optional.adb:17:33: info: loop invariant preservation proved (CVC5: 1 VC)
 optional.adb:19:21: warning: unused assignment
 optional.adb:27:11: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: you should consider adding a postcondition to function Sum_Of or turning it into an expression function in its unit spec]
-optional.adb:29:48: info: unrolling loop
+optional.adb:29:48: info: unrolling loop [info-unrolling-inlining]
 optional.adb:31:36: info: loop invariant initialization proved (CVC5: 3 VC)
 optional.adb:31:36: medium: loop invariant might not be preserved by an arbitrary iteration
 utils.adb:10:10: medium: implicit aspect Always_Terminates on "Sum_Of" could be incorrect, subprogram is recursive [possible fix: annotate "Sum_Of" with a Subprogram_Variant aspect]

@@ -1,5 +1,5 @@
 demo_problem.adb:9:14: info: add a contract to analyze it separately from calling contexts
-demo_problem.adb:9:14: info: local subprogram "Print" only analyzed in the context of calls
+demo_problem.adb:9:14: info: local subprogram "Print" only analyzed in the context of calls [info-unrolling-inlining]
 demo_problem.adb:12:11: info: precondition proved (Trivial: 1 VC), in call inlined at demo_problem.adb:19
 demo_problem.adb:12:11: medium: in inlined expression function body at q.ads:25
 demo_problem.adb:12:11: medium: precondition might fail, cannot prove C <= Contained_Element'Pos (Contained_Element'Last), in call inlined at demo_problem.adb:19

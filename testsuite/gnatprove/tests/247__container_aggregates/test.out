@@ -68,7 +68,7 @@ test.adb:138:13: info: precondition proved (CVC5: 1 VC)
 test.adb:138:13: info: subprogram variant proved (CVC5: 1 VC)
 test.adb:138:38: info: range check proved (CVC5: 2 VC)
 test.adb:144:20: info: add a contract to analyze it separately from calling contexts
-test.adb:144:20: info: local subprogram "Prove_Length" only analyzed in the context of calls
+test.adb:144:20: info: local subprogram "Prove_Length" only analyzed in the context of calls [info-unrolling-inlining]
 test.adb:149:19: info: loop invariant initialization proved (CVC5: 2 VC), in call inlined at test.adb:158
 test.adb:149:19: info: loop invariant preservation proved (CVC5: 2 VC), in call inlined at test.adb:158
 test.adb:158:10: info: analyzing call to "Prove_Length" in context
@@ -159,7 +159,7 @@ test.adb:355:16: info: keys shall be distinct and all elements shall fit in the 
 test.adb:355:16: info: precondition proved (CVC5: 1 VC)
 test.adb:357:22: info: assertion proved (CVC5: 1 VC)
 test.adb:358:22: info: assertion proved (CVC5: 2 VC)
-test.adb:359:38: info: unrolling loop
+test.adb:359:38: info: unrolling loop [info-unrolling-inlining]
 test.adb:360:25: info: assertion proved (CVC5: 5 VC)
 test.adb:360:25: info: precondition proved (CVC5: 5 VC)
 test.adb:362:22: info: assertion proved (CVC5: 1 VC)
@@ -179,7 +179,7 @@ test.adb:392:16: info: keys shall be distinct for maps aggregates at test.adb:26
 test.adb:392:16: info: precondition proved (CVC5: 10 VC)
 test.adb:393:16: info: keys shall be distinct for maps aggregates at test.adb:266
 test.adb:393:16: info: precondition proved (Trivial: 1 VC)
-test.adb:395:38: info: unrolling loop
+test.adb:395:38: info: unrolling loop [info-unrolling-inlining]
 test.adb:396:25: info: assertion proved (CVC5: 5 VC)
 test.adb:398:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 test.adb:399:22: info: assertion proved (CVC5: 1 VC)
@@ -195,7 +195,7 @@ test.adb:418:16: info: precondition proved (CVC5: 1 VC)
 test.adb:419:16: info: all elements shall fit in index type for sequence aggregates at test.adb:13
 test.adb:419:16: info: precondition proved (Trivial: 1 VC)
 test.adb:421:22: info: assertion proved (CVC5: 1 VC)
-test.adb:422:40: info: unrolling loop
+test.adb:422:40: info: unrolling loop [info-unrolling-inlining]
 test.adb:423:25: info: assertion proved (CVC5: 5 VC)
 test.adb:423:25: info: precondition proved (CVC5: 5 VC)
 test.adb:425:22: info: assertion proved (CVC5: 1 VC)

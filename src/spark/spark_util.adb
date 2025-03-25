@@ -57,6 +57,7 @@ with Sem_Type;                    use Sem_Type;
 with Sinfo.Utils;                 use Sinfo.Utils;
 with Stand;                       use Stand;
 with Stringt;                     use Stringt;
+with VC_Kinds;                    use VC_Kinds;
 
 package body SPARK_Util is
 
@@ -936,14 +937,16 @@ package body SPARK_Util is
 
          if Output_Info then
             if Result /= No_Unrolling then
-               Error_Msg_N ("unrolling loop",
+               Error_Msg_N ("unrolling loop"
+                            & Tag_Suffix (Warn_Info_Unrolling_Inlining),
                             Loop_Stmt,
                             Kind => Info_Kind);
 
             else
                pragma Assert (Reason /= "");
                Error_Msg_N
-                 ("cannot unroll loop (" & To_String (Reason) & ")",
+                 ("cannot unroll loop (" & To_String (Reason) & ")"
+                  & Tag_Suffix (Warn_Info_Unrolling_Inlining),
                   Loop_Stmt,
                   Secondary_Loc => Secondary_Loc,
                   Kind          => Info_Kind);

@@ -1,4 +1,4 @@
-p.adb:4:22: info: unrolling loop
+p.adb:4:22: info: unrolling loop [info-unrolling-inlining]
 p.ads:10:06: warning: postcondition does not check the outcome of calling "Shadow_Effect" [-gnatw.t]
 p.ads:10:23: warning: unused variable "C" [-gnatw.t]
 p.ads:10:37: high: postcondition might fail, cannot prove False (e.g. when C = Red)
