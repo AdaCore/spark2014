@@ -156,8 +156,6 @@ prime_and_coprime_numbers.adb:313:47: info: division check proved, in instantiat
 prime_and_coprime_numbers.adb:314:37: info: loop variant proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:315:31: info: assertion proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:315:39: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:315:62: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:315:73: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:316:35: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:317:31: info: assertion proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:317:39: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
