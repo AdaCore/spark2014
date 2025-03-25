@@ -1,3 +1,4 @@
 foo.adb:11:27: error: launch "gnatprove --explain=E0010" for more information
 foo.adb:11:27: error: object was moved at line 10 [E0010]
+foo.adb:11:27: error: part of "X" is not readable
 gnatprove: error during flow analysis and proof

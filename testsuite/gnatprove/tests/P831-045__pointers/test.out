@@ -1,13 +1,18 @@
 n01.adb:21:39: error: launch "gnatprove --explain=E0010" for more information
 n01.adb:21:39: error: object was moved at line 19 [E0010]
+n01.adb:21:39: error: part of "X" is not readable
 n01.adb:26:39: error: launch "gnatprove --explain=E0010" for more information
 n01.adb:26:39: error: object was moved at line 19 [E0010]
+n01.adb:26:39: error: part of "X" is not readable
+n01.adb:30:04: error: "X" is not writable
 n01.adb:30:04: error: launch "gnatprove --explain=E0010" for more information
 n01.adb:30:04: error: object was moved at line 19 [E0010]
 n01.adb:33:39: error: launch "gnatprove --explain=E0010" for more information
 n01.adb:33:39: error: object was moved at line 19 [E0010]
+n01.adb:33:39: error: part of "X" is not readable
 n011.adb:21:12: error: launch "gnatprove --explain=E0010" for more information
 n011.adb:21:12: error: object was moved at line 19 [E0010]
+n011.adb:21:12: error: part of "X" is not readable
 n02.adb:21:47: error: launch "gnatprove --explain=E0010" for more information
 n02.adb:21:47: error: object was moved at line 19 [E0010]
 n02.adb:21:47: error: part of dereference from "X" is not readable

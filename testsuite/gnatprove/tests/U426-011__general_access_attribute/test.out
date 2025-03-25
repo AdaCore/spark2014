@@ -80,6 +80,7 @@ bad_moves_of_shallow.adb:13:14: error: launch "gnatprove --explain=E0010" for mo
 bad_moves_of_shallow.adb:13:14: error: object was moved at line 14 [E0010]
 bad_moves_of_shallow.adb:13:14: error: return from "Bad_1" with moved value for "X1"
 bad_moves_of_shallow.adb:13:25: info: data dependencies proved
+bad_moves_of_shallow.adb:16:22: error: "X1" is not readable
 bad_moves_of_shallow.adb:16:22: error: launch "gnatprove --explain=E0010" for more information
 bad_moves_of_shallow.adb:16:22: error: object was moved at line 14 [E0010]
 bad_moves_of_shallow.adb:19:14: error: launch "gnatprove --explain=E0010" for more information
@@ -88,14 +89,17 @@ bad_moves_of_shallow.adb:19:14: error: return from "Bad_2" with moved value for 
 bad_moves_of_shallow.adb:19:21: warning: "X" is not modified, could be IN
 bad_moves_of_shallow.adb:19:54: info: data dependencies proved
 bad_moves_of_shallow.adb:21:07: warning: initialization of "Z" has no effect
+bad_moves_of_shallow.adb:23:22: error: "X" is not readable
 bad_moves_of_shallow.adb:23:22: error: launch "gnatprove --explain=E0010" for more information
 bad_moves_of_shallow.adb:23:22: error: object was moved at line 21 [E0010]
 bad_moves_of_shallow.adb:26:13: error: launch "gnatprove --explain=E0010" for more information
 bad_moves_of_shallow.adb:26:13: error: object was moved at line 27 [E0010]
 bad_moves_of_shallow.adb:26:13: error: return from "Get" with moved value for "X3"
 bad_moves_of_shallow.adb:26:13: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+bad_moves_of_shallow.adb:30:04: error: "X2" is not writable
 bad_moves_of_shallow.adb:30:04: error: launch "gnatprove --explain=E0010" for more information
 bad_moves_of_shallow.adb:30:04: error: object was moved at line 6 [E0010]
+bad_moves_of_shallow.adb:31:19: error: "X2" is not readable
 bad_moves_of_shallow.adb:31:19: error: launch "gnatprove --explain=E0010" for more information
 bad_moves_of_shallow.adb:31:19: error: object was moved at line 6 [E0010]
 gnatprove: error during flow analysis and proof

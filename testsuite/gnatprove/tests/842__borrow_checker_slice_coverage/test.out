@@ -1,0 +1,4 @@
+main.adb:6:19: error: launch "gnatprove --explain=E0010" for more information
+main.adb:6:19: error: object was moved at line 5 [E0010]
+main.adb:6:19: error: part of "X" is not readable
+gnatprove: error during flow analysis and proof

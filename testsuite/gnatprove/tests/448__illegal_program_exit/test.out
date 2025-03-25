@@ -31,7 +31,9 @@ test_bc.adb:45:06: info: data dependencies proved
 test_bc.adb:45:28: warning: "G1" is not modified, could be INPUT
 test_bc.adb:45:32: warning: "G2" is not modified, could be INPUT
 test_bc.adb:48:07: warning: initialization of "X" has no effect
-test_bc.adb:50:07: error: "G2" was moved at line 48
+test_bc.adb:50:07: error: "G2" is not readable
+test_bc.adb:50:07: error: launch "gnatprove --explain=E0010" for more information
+test_bc.adb:50:07: error: object was moved at line 48 [E0010]
 test_bc.adb:50:07: error: when exiting the program
 test_bc.adb:58:07: error: "G2" was borrowed at line 56
 test_bc.adb:58:07: error: when exiting the program
