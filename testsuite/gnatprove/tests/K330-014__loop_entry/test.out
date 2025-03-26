@@ -21,7 +21,7 @@ utils.adb:10:34: medium: overflow check might fail, cannot prove upper bound for
 utils.ads:2:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
 while_loops.adb:18:33: info: loop invariant initialization proved (CVC5: 1 VC)
 while_loops.adb:18:33: info: loop invariant preservation proved (CVC5: 1 VC)
-while_loops.adb:20:29: medium: overflow check might fail, cannot prove upper bound for Counter + 1 (e.g. when Counter = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
+while_loops.adb:20:29: medium: overflow check might fail, cannot prove upper bound for Counter + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
 while_loops.adb:32:33: info: loop invariant preservation proved (CVC5: 1 VC)
 while_loops.adb:32:33: medium: loop invariant might fail in first iteration [possible fix: you should consider adding a postcondition to function Sum_Of or turning it into an expression function in its unit spec]
 while_loops.adb:36:29: info: overflow check proved (CVC5: 2 VC)

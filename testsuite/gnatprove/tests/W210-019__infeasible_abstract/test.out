@@ -1,6 +1,6 @@
-infeasible_abstract.adb:6:16: medium: contract of function might not be feasible (e.g. when I = 0)
-infeasible_abstract.adb:8:23: medium: postcondition might fail, in inherited contract at infeasible_abstract.adb:25
-infeasible_abstract.adb:8:23: medium: postcondition might fail, in inherited contract at infeasible_abstract.adb:32
+infeasible_abstract.adb:6:16: medium: contract of function might not be feasible (e.g. when Bad'Result = 0 and I = 0)
+infeasible_abstract.adb:8:23: medium: postcondition might fail, in inherited contract at infeasible_abstract.adb:25 [possible fix: add or complete related loop invariants or postconditions]
+infeasible_abstract.adb:8:23: medium: postcondition might fail, in inherited contract at infeasible_abstract.adb:32 [possible fix: add or complete related loop invariants or postconditions]
 infeasible_abstract.adb:12:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
 infeasible_abstract.adb:14:14: info: postcondition proved (CVC5: 1 VC)
 infeasible_abstract.adb:17:07: medium: implicit aspect Always_Terminates on "F" could be incorrect, dispatching call to "Bad" might be nonterminating [possible explanation: call could hide recursive calls]
@@ -13,4 +13,4 @@ test.adb:9:16: info: function contract feasibility proved (CVC5: 1 VC)
 test.adb:15:16: info: function contract feasibility proved (CVC5: 1 VC)
 test.adb:24:16: medium: contract of function might not be feasible (e.g. when X = 9)
 test.adb:27:12: info: range check proved (CVC5: 2 VC)
-test.adb:31:16: medium: contract of function might not be feasible
+test.adb:31:16: medium: contract of function might not be feasible (e.g. when G'Result = 0)

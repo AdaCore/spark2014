@@ -13,7 +13,7 @@ test_ghost.adb:31:06: info: absence of resource or memory leak proved (CVC5: 1 V
 test_loop.adb:13:10: info: initialization of "Local" proved
 test_loop.adb:15:17: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 11 should mention X in a loop invariant]
 test_loop.adb:16:19: info: only expected exception raised (CVC5: 1 VC)
-test_loop.adb:17:17: medium: overflow check might fail, cannot prove lower bound for Y + Local (e.g. when Local = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer]
+test_loop.adb:17:17: medium: overflow check might fail, cannot prove lower bound for Y + Local (e.g. when Local = Integer'First and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer]
 test_loop.adb:21:20: info: overflow check proved (CVC5: 2 VC)
 test_loop.adb:24:19: medium: assertion might fail [possible fix: loop at line 11 should mention X in a loop invariant]
 test_ok.adb:11:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)

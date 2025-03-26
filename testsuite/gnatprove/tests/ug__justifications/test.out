@@ -2,8 +2,8 @@
 --> justifications.adb:6:14
     6 |          X := X + Y;
       |               ~~^~~
-      + e.g. when X = Integer'First
-      and Y = -1
+      + e.g. when X = -1
+      and Y = Integer'First
       + reason for check: result of addition must fit in a 32-bits machine integer
       + possible fix: subprogram at justifications.ads:4 should mention X and Y in a precondition
       --> justifications.ads:4:04
@@ -25,8 +25,8 @@
 --> justifications.adb:12:14
    12 |          X := X + Y;
       |               ~~^~~
-      + e.g. when X = Integer'First
-      and Y = -1
+      + e.g. when X = -1
+      and Y = Integer'First
       + reason for check: result of addition must fit in a 32-bits machine integer
       + possible fix: subprogram at justifications.ads:9 should mention X and Y in a precondition
       --> justifications.ads:9:04

@@ -1,91 +1,91 @@
 modular.adb:4:08: info: data dependencies proved
 modular.adb:22:20: info: range check proved (CVC5: 2 VC)
 modular.adb:37:20: info: range check proved (CVC5: 2 VC)
-modular.adb:52:26: medium: overflow check might fail (e.g. when B = 1) [reason for check: result of addition must fit in a 32-bits machine integer]
-modular.adb:54:26: medium: overflow check might fail (e.g. when D = 5) [reason for check: result of addition must fit in a 32-bits machine integer]
+modular.adb:52:26: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+modular.adb:54:26: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
 modular.adb:56:26: info: range check proved (CVC5: 2 VC)
-modular.adb:56:26: medium: overflow check might fail (e.g. when S = 9) [reason for check: result of addition must fit in a 32-bits machine integer]
-modular.adb:73:26: medium: overflow check might fail, cannot prove upper bound for B + Base'Last (e.g. when B = 1) [reason for check: result of addition must fit in a 32-bits machine integer]
-modular.adb:75:26: medium: overflow check might fail, cannot prove upper bound for D + Der'Last (e.g. when D = 5) [reason for check: result of addition must fit in a 32-bits machine integer]
+modular.adb:56:26: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+modular.adb:73:26: medium: overflow check might fail, cannot prove upper bound for B + Base'Last [reason for check: result of addition must fit in a 32-bits machine integer]
+modular.adb:75:26: medium: overflow check might fail, cannot prove upper bound for D + Der'Last [reason for check: result of addition must fit in a 32-bits machine integer]
 modular.adb:77:26: info: range check proved (CVC5: 2 VC)
-modular.adb:77:26: medium: overflow check might fail, cannot prove upper bound for S + Base'Last (e.g. when S = 9) [reason for check: result of addition must fit in a 32-bits machine integer]
+modular.adb:77:26: medium: overflow check might fail, cannot prove upper bound for S + Base'Last [reason for check: result of addition must fit in a 32-bits machine integer]
 modular.adb:94:20: info: range check proved (CVC5: 2 VC)
 modular.adb:109:20: info: range check proved (CVC5: 2 VC)
-modular.adb:124:26: medium: overflow check might fail (e.g. when B = 1) [reason for check: result of addition must fit in a 8-bits machine integer]
-modular.adb:126:26: medium: overflow check might fail (e.g. when D = 5) [reason for check: result of addition must fit in a 8-bits machine integer]
-modular.adb:128:26: medium: overflow check might fail (e.g. when S = 9) [reason for check: result of addition must fit in a 8-bits machine integer]
-modular.adb:128:26: medium: range check might fail, cannot prove upper bound for S + Base'Last (e.g. when S = 9) [reason for check: result of addition must fit in the target type of the assignment]
-modular.adb:145:26: medium: overflow check might fail, cannot prove upper bound for B + Base'Last (e.g. when B = 1) [reason for check: result of addition must fit in a 8-bits machine integer]
-modular.adb:147:26: medium: overflow check might fail, cannot prove upper bound for D + Der'Last (e.g. when D = 5) [reason for check: result of addition must fit in a 8-bits machine integer]
+modular.adb:124:26: medium: overflow check might fail [reason for check: result of addition must fit in a 8-bits machine integer]
+modular.adb:126:26: medium: overflow check might fail [reason for check: result of addition must fit in a 8-bits machine integer]
+modular.adb:128:26: medium: overflow check might fail [reason for check: result of addition must fit in a 8-bits machine integer]
+modular.adb:128:26: medium: range check might fail, cannot prove upper bound for S + Base'Last [reason for check: result of addition must fit in the target type of the assignment]
+modular.adb:145:26: medium: overflow check might fail, cannot prove upper bound for B + Base'Last [reason for check: result of addition must fit in a 8-bits machine integer]
+modular.adb:147:26: medium: overflow check might fail, cannot prove upper bound for D + Der'Last [reason for check: result of addition must fit in a 8-bits machine integer]
 modular.adb:149:26: info: range check proved (CVC5: 2 VC)
-modular.adb:149:26: medium: overflow check might fail, cannot prove upper bound for S + Base'Last (e.g. when S = 9) [reason for check: result of addition must fit in a 8-bits machine integer]
+modular.adb:149:26: medium: overflow check might fail, cannot prove upper bound for S + Base'Last [reason for check: result of addition must fit in a 8-bits machine integer]
 modular.adb:166:20: info: range check proved (CVC5: 2 VC)
 modular.adb:181:20: info: range check proved (CVC5: 2 VC)
-modular.adb:196:26: medium: overflow check might fail (e.g. when B = 1) [reason for check: result of addition must fit in a 8-bits machine integer]
-modular.adb:198:26: medium: overflow check might fail (e.g. when D = 5) [reason for check: result of addition must fit in a 8-bits machine integer]
+modular.adb:196:26: medium: overflow check might fail [reason for check: result of addition must fit in a 8-bits machine integer]
+modular.adb:198:26: medium: overflow check might fail [reason for check: result of addition must fit in a 8-bits machine integer]
 modular.adb:200:26: info: range check proved (CVC5: 2 VC)
-modular.adb:200:26: medium: overflow check might fail (e.g. when S = 9) [reason for check: result of addition must fit in a 8-bits machine integer]
-modular.adb:217:26: medium: overflow check might fail, cannot prove upper bound for B + Base'Last (e.g. when B = 1) [reason for check: result of addition must fit in a 8-bits machine integer]
-modular.adb:219:26: medium: overflow check might fail, cannot prove upper bound for D + Der'Last (e.g. when D = 5) [reason for check: result of addition must fit in a 8-bits machine integer]
+modular.adb:200:26: medium: overflow check might fail [reason for check: result of addition must fit in a 8-bits machine integer]
+modular.adb:217:26: medium: overflow check might fail, cannot prove upper bound for B + Base'Last [reason for check: result of addition must fit in a 8-bits machine integer]
+modular.adb:219:26: medium: overflow check might fail, cannot prove upper bound for D + Der'Last [reason for check: result of addition must fit in a 8-bits machine integer]
 modular.adb:221:26: info: range check proved (CVC5: 2 VC)
-modular.adb:221:26: medium: overflow check might fail, cannot prove upper bound for S + Base'Last (e.g. when S = 9) [reason for check: result of addition must fit in a 8-bits machine integer]
-modular.adb:246:28: medium: overflow check might fail (e.g. when B = Base'Last and NW = No_Wrap'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
-modular.adb:248:28: medium: overflow check might fail (e.g. when NB = No_Bitwise'Last and NW = No_Wrap'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
-modular.adb:250:28: medium: overflow check might fail (e.g. when NW = No_Wrap'Last and NWNB = No_Wrap_No_Bitwise'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
-modular.adb:254:32: medium: overflow check might fail, cannot prove upper bound for NWNB + No_Wrap_No_Bitwise(B) (e.g. when B = Base'Last and NWNB = No_Wrap_No_Bitwise'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
-modular.adb:256:32: medium: overflow check might fail, cannot prove upper bound for NWNB + No_Wrap_No_Bitwise(NW) (e.g. when NW = No_Wrap'Last and NWNB = No_Wrap_No_Bitwise'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
-modular.adb:258:32: medium: overflow check might fail, cannot prove upper bound for NWNB + No_Wrap_No_Bitwise(NB) (e.g. when NB = No_Bitwise'Last and NWNB = No_Wrap_No_Bitwise'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
-modular.adb:281:28: medium: overflow check might fail (e.g. when B = Base'Last and NW = No_Wrap'Last) [reason for check: result of addition must fit in a 8-bits machine integer]
-modular.adb:283:28: medium: overflow check might fail (e.g. when NB = No_Bitwise'Last and NW = No_Wrap'Last) [reason for check: result of addition must fit in a 8-bits machine integer]
-modular.adb:285:28: medium: overflow check might fail (e.g. when NW = No_Wrap'Last and NWNB = No_Wrap_No_Bitwise'Last) [reason for check: result of addition must fit in a 8-bits machine integer]
-modular.adb:289:32: medium: overflow check might fail, cannot prove upper bound for NWNB + No_Wrap_No_Bitwise(B) (e.g. when B = Base'Last and NWNB = No_Wrap_No_Bitwise'Last) [reason for check: result of addition must fit in a 8-bits machine integer]
-modular.adb:291:32: medium: overflow check might fail, cannot prove upper bound for NWNB + No_Wrap_No_Bitwise(NW) (e.g. when NW = No_Wrap'Last and NWNB = No_Wrap_No_Bitwise'Last) [reason for check: result of addition must fit in a 8-bits machine integer]
-modular.adb:293:32: medium: overflow check might fail, cannot prove upper bound for NWNB + No_Wrap_No_Bitwise(NB) (e.g. when NB = No_Bitwise'Last and NWNB = No_Wrap_No_Bitwise'Last) [reason for check: result of addition must fit in a 8-bits machine integer]
-modular.adb:316:28: medium: overflow check might fail (e.g. when B = Base'Last and NW = No_Wrap'Last) [reason for check: result of addition must fit in a 8-bits machine integer]
-modular.adb:318:28: medium: overflow check might fail (e.g. when NB = No_Bitwise'Last and NW = No_Wrap'Last) [reason for check: result of addition must fit in a 8-bits machine integer]
-modular.adb:320:28: medium: overflow check might fail (e.g. when NW = No_Wrap'Last and NWNB = No_Wrap_No_Bitwise'Last) [reason for check: result of addition must fit in a 8-bits machine integer]
-modular.adb:324:32: medium: overflow check might fail, cannot prove upper bound for NWNB + No_Wrap_No_Bitwise(B) (e.g. when B = Base'Last and NWNB = No_Wrap_No_Bitwise'Last) [reason for check: result of addition must fit in a 8-bits machine integer]
-modular.adb:326:32: medium: overflow check might fail, cannot prove upper bound for NWNB + No_Wrap_No_Bitwise(NW) (e.g. when NW = No_Wrap'Last and NWNB = No_Wrap_No_Bitwise'Last) [reason for check: result of addition must fit in a 8-bits machine integer]
-modular.adb:328:32: medium: overflow check might fail, cannot prove upper bound for NWNB + No_Wrap_No_Bitwise(NB) (e.g. when NB = No_Bitwise'Last and NWNB = No_Wrap_No_Bitwise'Last) [reason for check: result of addition must fit in a 8-bits machine integer]
-modular.adb:356:28: medium: overflow check might fail (e.g. when B = Base'Last and NW = No_Wrap'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
-modular.adb:358:28: medium: overflow check might fail (e.g. when NB = No_Bitwise'Last and NW = No_Wrap'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
-modular.adb:360:28: medium: overflow check might fail (e.g. when NW = No_Wrap'Last and NWNB = No_Wrap_No_Bitwise'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
-modular.adb:362:28: medium: overflow check might fail (e.g. when NBNW = No_Bitwise_No_Wrap'Last and NW = No_Wrap'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
-modular.adb:366:32: medium: overflow check might fail, cannot prove upper bound for NWNB + No_Wrap_No_Bitwise(B) (e.g. when B = Base'Last and NWNB = No_Wrap_No_Bitwise'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
-modular.adb:368:32: medium: overflow check might fail, cannot prove upper bound for NWNB + No_Wrap_No_Bitwise(NW) (e.g. when NW = No_Wrap'Last and NWNB = No_Wrap_No_Bitwise'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
-modular.adb:370:32: medium: overflow check might fail, cannot prove upper bound for NWNB + No_Wrap_No_Bitwise(NB) (e.g. when NB = No_Bitwise'Last and NWNB = No_Wrap_No_Bitwise'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
-modular.adb:372:32: medium: overflow check might fail, cannot prove upper bound for NWNB + No_Wrap_No_Bitwise(NBNW) (e.g. when NBNW = No_Bitwise_No_Wrap'Last and NWNB = No_Wrap_No_Bitwise'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
-modular.adb:374:32: medium: overflow check might fail, cannot prove upper bound for NBNW + No_Bitwise_No_Wrap(B) (e.g. when B = Base'Last and NBNW = No_Bitwise_No_Wrap'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
-modular.adb:376:32: medium: overflow check might fail, cannot prove upper bound for NBNW + No_Bitwise_No_Wrap(NW) (e.g. when NBNW = No_Bitwise_No_Wrap'Last and NW = No_Wrap'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
-modular.adb:378:32: medium: overflow check might fail, cannot prove upper bound for NBNW + No_Bitwise_No_Wrap(NB) (e.g. when NB = No_Bitwise'Last and NBNW = No_Bitwise_No_Wrap'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
-modular.adb:380:32: medium: overflow check might fail, cannot prove upper bound for NBNW + No_Bitwise_No_Wrap(NWNB) (e.g. when NBNW = No_Bitwise_No_Wrap'Last and NWNB = No_Wrap_No_Bitwise'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
+modular.adb:221:26: medium: overflow check might fail, cannot prove upper bound for S + Base'Last [reason for check: result of addition must fit in a 8-bits machine integer]
+modular.adb:246:28: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+modular.adb:248:28: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+modular.adb:250:28: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+modular.adb:254:32: medium: overflow check might fail, cannot prove upper bound for NWNB + No_Wrap_No_Bitwise(B) [reason for check: result of addition must fit in a 32-bits machine integer]
+modular.adb:256:32: medium: overflow check might fail, cannot prove upper bound for NWNB + No_Wrap_No_Bitwise(NW) [reason for check: result of addition must fit in a 32-bits machine integer]
+modular.adb:258:32: medium: overflow check might fail, cannot prove upper bound for NWNB + No_Wrap_No_Bitwise(NB) [reason for check: result of addition must fit in a 32-bits machine integer]
+modular.adb:281:28: medium: overflow check might fail [reason for check: result of addition must fit in a 8-bits machine integer]
+modular.adb:283:28: medium: overflow check might fail [reason for check: result of addition must fit in a 8-bits machine integer]
+modular.adb:285:28: medium: overflow check might fail [reason for check: result of addition must fit in a 8-bits machine integer]
+modular.adb:289:32: medium: overflow check might fail, cannot prove upper bound for NWNB + No_Wrap_No_Bitwise(B) [reason for check: result of addition must fit in a 8-bits machine integer]
+modular.adb:291:32: medium: overflow check might fail, cannot prove upper bound for NWNB + No_Wrap_No_Bitwise(NW) [reason for check: result of addition must fit in a 8-bits machine integer]
+modular.adb:293:32: medium: overflow check might fail, cannot prove upper bound for NWNB + No_Wrap_No_Bitwise(NB) [reason for check: result of addition must fit in a 8-bits machine integer]
+modular.adb:316:28: medium: overflow check might fail [reason for check: result of addition must fit in a 8-bits machine integer]
+modular.adb:318:28: medium: overflow check might fail [reason for check: result of addition must fit in a 8-bits machine integer]
+modular.adb:320:28: medium: overflow check might fail [reason for check: result of addition must fit in a 8-bits machine integer]
+modular.adb:324:32: medium: overflow check might fail, cannot prove upper bound for NWNB + No_Wrap_No_Bitwise(B) [reason for check: result of addition must fit in a 8-bits machine integer]
+modular.adb:326:32: medium: overflow check might fail, cannot prove upper bound for NWNB + No_Wrap_No_Bitwise(NW) [reason for check: result of addition must fit in a 8-bits machine integer]
+modular.adb:328:32: medium: overflow check might fail, cannot prove upper bound for NWNB + No_Wrap_No_Bitwise(NB) [reason for check: result of addition must fit in a 8-bits machine integer]
+modular.adb:356:28: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+modular.adb:358:28: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+modular.adb:360:28: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+modular.adb:362:28: medium: overflow check might fail [reason for check: result of addition must fit in a 32-bits machine integer]
+modular.adb:366:32: medium: overflow check might fail, cannot prove upper bound for NWNB + No_Wrap_No_Bitwise(B) [reason for check: result of addition must fit in a 32-bits machine integer]
+modular.adb:368:32: medium: overflow check might fail, cannot prove upper bound for NWNB + No_Wrap_No_Bitwise(NW) [reason for check: result of addition must fit in a 32-bits machine integer]
+modular.adb:370:32: medium: overflow check might fail, cannot prove upper bound for NWNB + No_Wrap_No_Bitwise(NB) [reason for check: result of addition must fit in a 32-bits machine integer]
+modular.adb:372:32: medium: overflow check might fail, cannot prove upper bound for NWNB + No_Wrap_No_Bitwise(NBNW) [reason for check: result of addition must fit in a 32-bits machine integer]
+modular.adb:374:32: medium: overflow check might fail, cannot prove upper bound for NBNW + No_Bitwise_No_Wrap(B) [reason for check: result of addition must fit in a 32-bits machine integer]
+modular.adb:376:32: medium: overflow check might fail, cannot prove upper bound for NBNW + No_Bitwise_No_Wrap(NW) [reason for check: result of addition must fit in a 32-bits machine integer]
+modular.adb:378:32: medium: overflow check might fail, cannot prove upper bound for NBNW + No_Bitwise_No_Wrap(NB) [reason for check: result of addition must fit in a 32-bits machine integer]
+modular.adb:380:32: medium: overflow check might fail, cannot prove upper bound for NBNW + No_Bitwise_No_Wrap(NWNB) [reason for check: result of addition must fit in a 32-bits machine integer]
 modular.adb:403:34: info: division check proved (CVC5: 1 VC)
 modular.adb:405:34: info: division check proved (CVC5: 1 VC)
 modular.adb:407:34: info: division check proved (CVC5: 1 VC)
 modular.adb:411:29: info: range check proved (CVC5: 2 VC)
 modular.adb:413:29: info: range check proved (CVC5: 2 VC)
-modular.adb:428:24: medium: overflow check might fail (e.g. when B = 2) [reason for check: result of negation must fit in a 32-bits machine integer]
-modular.adb:430:26: medium: overflow check might fail (e.g. when B = 2) [reason for check: result of subtraction must fit in a 32-bits machine integer]
-modular.adb:432:26: medium: overflow check might fail (e.g. when B = 2) [reason for check: result of multiplication must fit in a 32-bits machine integer]
+modular.adb:428:24: medium: overflow check might fail [reason for check: result of negation must fit in a 32-bits machine integer]
+modular.adb:430:26: medium: overflow check might fail [reason for check: result of subtraction must fit in a 32-bits machine integer]
+modular.adb:432:26: medium: overflow check might fail [reason for check: result of multiplication must fit in a 32-bits machine integer]
 modular.adb:434:34: info: division check proved (CVC5: 1 VC)
 modular.adb:436:34: info: division check proved (CVC5: 1 VC)
 modular.adb:438:34: info: division check proved (CVC5: 1 VC)
 modular.adb:440:35: info: overflow check proved (CVC5: 10 VC)
-modular.adb:440:40: medium: overflow check might fail (e.g. when B = 2) [reason for check: result of exponentiation must fit in a 32-bits machine integer]
-modular.adb:442:26: medium: overflow check might fail (e.g. when B = 2 and Exp = 35) [reason for check: result of exponentiation must fit in a 32-bits machine integer]
+modular.adb:440:40: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 32-bits machine integer]
+modular.adb:442:26: medium: overflow check might fail (e.g. when Exp = 35) [reason for check: result of exponentiation must fit in a 32-bits machine integer]
 modular.adb:442:29: info: range check proved (CVC5: 4 VC)
 modular.adb:444:26: medium: overflow check might fail (e.g. when Exp = 35) [reason for check: result of exponentiation must fit in a 32-bits machine integer]
 modular.adb:444:29: info: range check proved (CVC5: 4 VC)
-modular.adb:460:24: medium: overflow check might fail, cannot prove lower bound for - B (e.g. when B = 2) [reason for check: result of negation must fit in a 32-bits machine integer]
-modular.adb:462:26: medium: overflow check might fail, cannot prove lower bound for B - Base'Last (e.g. when B = 2) [reason for check: result of subtraction must fit in a 32-bits machine integer]
-modular.adb:464:26: medium: overflow check might fail, cannot prove upper bound for B * Base'Last (e.g. when B = 2) [reason for check: result of multiplication must fit in a 32-bits machine integer]
+modular.adb:460:24: medium: overflow check might fail, cannot prove lower bound for - B [reason for check: result of negation must fit in a 32-bits machine integer]
+modular.adb:462:26: medium: overflow check might fail, cannot prove lower bound for B - Base'Last [reason for check: result of subtraction must fit in a 32-bits machine integer]
+modular.adb:464:26: medium: overflow check might fail, cannot prove upper bound for B * Base'Last [reason for check: result of multiplication must fit in a 32-bits machine integer]
 modular.adb:466:34: info: division check proved (CVC5: 1 VC)
 modular.adb:468:34: info: division check proved (CVC5: 1 VC)
 modular.adb:470:34: info: division check proved (CVC5: 1 VC)
 modular.adb:472:35: info: overflow check proved (CVC5: 6 VC)
 modular.adb:472:40: info: overflow check proved (CVC5: 2 VC)
-modular.adb:472:40: medium: overflow check might fail, cannot prove upper bound for (Base'Last - B) ** 3 (e.g. when B = 2) [reason for check: result of exponentiation must fit in a 32-bits machine integer]
-modular.adb:474:26: medium: overflow check might fail, cannot prove upper bound for B ** Exp (e.g. when B = 2 and Exp = 35) [reason for check: result of exponentiation must fit in a 32-bits machine integer]
+modular.adb:472:40: medium: overflow check might fail, cannot prove upper bound for (Base'Last - B) ** 3 [reason for check: result of exponentiation must fit in a 32-bits machine integer]
+modular.adb:474:26: medium: overflow check might fail, cannot prove upper bound for B ** Exp (e.g. when Exp = 35) [reason for check: result of exponentiation must fit in a 32-bits machine integer]
 modular.adb:474:29: info: range check proved (CVC5: 2 VC)
 modular.adb:476:26: medium: overflow check might fail, cannot prove upper bound for 2 ** Exp (e.g. when Exp = 35) [reason for check: result of exponentiation must fit in a 32-bits machine integer]
 modular.adb:476:29: info: range check proved (CVC5: 2 VC)

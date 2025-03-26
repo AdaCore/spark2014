@@ -2,7 +2,7 @@ enums.adb:9:13: info: implicit aspect Always_Terminates on "Enum_Equals" has bee
 enums.adb:10:19: info: postcondition proved (CVC5: 2 VC)
 enums.adb:16:13: info: implicit aspect Always_Terminates on "Enum_Equals_Broken_A" has been proved, subprogram will terminate
 enums.adb:17:11: info: flow dependencies proved
-enums.adb:19:22: high: postcondition might fail (e.g. when A = Elem_0 and B = Elem_1 and Enum_Equals_Broken_A'Result = True)
+enums.adb:19:22: high: postcondition might fail (e.g. when A = Elem_1 and B = Elem_0 and Enum_Equals_Broken_A'Result = True)
 enums.adb:26:13: info: implicit aspect Always_Terminates on "Enum_Equals_Broken_B" has been proved, subprogram will terminate
 enums.adb:27:19: high: postcondition might fail (e.g. when A = Elem_0 and B = Elem_1 and Enum_Equals_Broken_B'Result = True)
 enums.adb:33:13: info: implicit aspect Always_Terminates on "Enum_Equals_Subtype" has been proved, subprogram will terminate
@@ -44,9 +44,9 @@ enums.adb:197:04: warning: analyzing unreferenced function "Subtypes_Broken" [un
 enums.adb:197:13: info: implicit aspect Always_Terminates on "Subtypes_Broken" has been proved, subprogram will terminate
 enums.adb:203:07: info: initialization of "Tmp" proved
 counterexample expected for check at enums.adb:19
-  trace at enums.adb:16 --> A = Elem_0 and B = Elem_1
-  trace at enums.adb:19 --> A = Elem_0 and B = Elem_1 and Enum_Equals_Broken_A'Result = True
-  trace at enums.adb:21 --> Tmp = Elem_0
+  trace at enums.adb:16 --> A = Elem_1 and B = Elem_0
+  trace at enums.adb:19 --> A = Elem_1 and B = Elem_0 and Enum_Equals_Broken_A'Result = True
+  trace at enums.adb:21 --> Tmp = Elem_1
 counterexample expected for check at enums.adb:27
   trace at enums.adb:26 --> A = Elem_0 and B = Elem_1
   trace at enums.adb:27 --> A = Elem_0 and B = Elem_1 and Enum_Equals_Broken_B'Result = True

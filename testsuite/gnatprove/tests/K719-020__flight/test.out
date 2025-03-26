@@ -22,7 +22,7 @@ flight_manager.ads:7:13: info: implicit aspect Always_Terminates on "Set_Engine_
 flight_manager.ads:11:14: medium: postcondition might fail, cannot prove ((Position_X + Set_Engine_Speed'Result.X_Speed) - Target_X) < (Position_X + Set_Engine_Speed'Result.X_Speed) (e.g. when Position_X = 10 and Set_Engine_Speed'Result = (X_Speed => -100, Y_Speed => -100) and Target_X = 0)
 flight_manager.ads:11:27: info: overflow check proved (CVC5: 2 VC)
 flight_manager.ads:11:62: info: overflow check proved (CVC5: 2 VC)
-flight_manager.ads:12:18: medium: overflow check might fail, cannot prove lower bound for (Position_X + Set_Engine_Speed'Result.X_Speed) (e.g. when Position_X = -2147483549 and Set_Engine_Speed'Result = (X_Speed => -100, Y_Speed => -100)) [reason for check: result of addition must fit in a 32-bits machine integer]
+flight_manager.ads:12:18: medium: overflow check might fail, cannot prove lower bound for (Position_X + Set_Engine_Speed'Result.X_Speed) [reason for check: result of addition must fit in a 32-bits machine integer]
 flight_manager.ads:13:23: info: overflow check proved (CVC5: 2 VC)
 flight_manager.ads:13:58: info: overflow check proved (CVC5: 2 VC)
-flight_manager.ads:14:18: medium: overflow check might fail, cannot prove lower bound for (Position_Y + Set_Engine_Speed'Result.Y_Speed) (e.g. when Position_Y = -2147483549 and Set_Engine_Speed'Result = (X_Speed => -100, Y_Speed => -100)) [reason for check: result of addition must fit in a 32-bits machine integer]
+flight_manager.ads:14:18: medium: overflow check might fail, cannot prove lower bound for (Position_Y + Set_Engine_Speed'Result.Y_Speed) [reason for check: result of addition must fit in a 32-bits machine integer]

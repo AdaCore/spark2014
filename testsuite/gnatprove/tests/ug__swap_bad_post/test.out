@@ -7,5 +7,5 @@
 --> swap_bad_post.adb:3:30
     3 |      Post => X = Y'Old and then Y = X'Old
       |                                 ^~~~~~~~~
-      + e.g. when X'Old = 1
+      + e.g. when X'Old = -1
       and Y = 0

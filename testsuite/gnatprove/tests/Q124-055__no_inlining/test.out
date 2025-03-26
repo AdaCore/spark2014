@@ -1,9 +1,9 @@
 array_arith.adb:6:16: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
 array_arith.adb:26:16: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
-array_arith.adb:29:19: high: overflow check might fail, cannot prove upper bound for Y + One (e.g. when One = Integer'Last and Y = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 26 should mention Y and One in a precondition]
+array_arith.adb:29:19: high: overflow check might fail, cannot prove upper bound for Y + One (e.g. when One = 1 and Y = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 26 should mention Y and One in a precondition]
 array_arith.adb:29:19: high: range check might fail, cannot prove lower bound for Y + One (e.g. when One = -1 and Y = 0) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at line 26 should mention Y and One in a precondition]
 array_arith.adb:46:16: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
-array_arith.adb:63:19: high: overflow check might fail, cannot prove upper bound for Y + One (e.g. when One = Integer'Last and Y = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 46 should mention Y and One in a precondition]
+array_arith.adb:63:19: high: overflow check might fail, cannot prove upper bound for Y + One (e.g. when One = 1 and Y = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 46 should mention Y and One in a precondition]
 array_arith.adb:63:19: high: range check might fail, cannot prove lower bound for Y + One (e.g. when One = -1 and Y = 0) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at line 46 should mention Y and One in a precondition]
 array_arith.adb:66:07: high: "X" is not initialized
 array_arith.adb:70:29: info: initialization of "Y" proved
@@ -25,7 +25,7 @@ ident.adb:44:22: medium: assertion might fail (e.g. when Res = 0 and X = 10) [po
 ident.adb:46:22: medium: assertion might fail (e.g. when Res = 0 and X = 10) [possible fix: add or complete related loop invariants or postconditions]
 ident.adb:48:22: medium: assertion might fail (e.g. when Res = 0 and X = 10) [possible fix: add or complete related loop invariants or postconditions]
 ident.adb:51:22: medium: assertion might fail (e.g. when Y = 0) [possible fix: call at line 50 should mention Y (for argument Y) in a postcondition]
-ident.adb:53:22: medium: assertion might fail (e.g. when Y = 0) [possible fix: call at line 52 should mention Y (for argument Y) in a postcondition]
+ident.adb:53:22: medium: assertion might fail [possible fix: call at line 52 should mention Y (for argument Y) in a postcondition]
 ident.adb:55:22: medium: assertion might fail [possible fix: call at line 54 should mention Y (for argument Y) in a postcondition]
 ident.ads:4:13: info: implicit aspect Always_Terminates on "Id_Public" has been proved, subprogram will terminate
 ident.ads:5:44: info: initialization of "Y" proved

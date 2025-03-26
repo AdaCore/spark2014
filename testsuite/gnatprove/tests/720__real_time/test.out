@@ -23,7 +23,7 @@ test.adb:34:04: warning: analyzing unreferenced procedure "Test_Div" [unreferenc
 test.adb:34:14: warning: subprogram "Test_Div" has no effect
 test.adb:35:25: medium: divide by zero might fail [possible fix: subprogram at line 34 should mention X and Y in a precondition]
 test.adb:35:25: medium: range check might fail, cannot prove lower bound for X / Y [reason for check: default component value must fit in the type] [possible fix: add precondition (X / Y >= Integer'First) to subprogram at line 34]
-test.adb:36:27: medium: divide by zero might fail (e.g. when Z = 0) [possible fix: subprogram at line 34 should mention X and Z in a precondition]
+test.adb:36:27: medium: divide by zero might fail [possible fix: subprogram at line 34 should mention X and Z in a precondition]
 test.adb:36:27: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at line 34 should mention X and Z in a precondition]
 test.adb:37:22: info: assertion proved (CVC5: 1 VC)
 test.adb:37:24: info: division check proved (CVC5: 1 VC)

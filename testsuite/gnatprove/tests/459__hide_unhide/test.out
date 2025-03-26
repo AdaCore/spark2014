@@ -1,10 +1,10 @@
 main.adb:5:16: info: implicit aspect Always_Terminates on "My_And" has been proved, subprogram will terminate
 main.adb:11:16: info: implicit aspect Always_Terminates on "Use_And" has been proved, subprogram will terminate
 main.adb:17:16: info: implicit aspect Always_Terminates on "Call_Use_And" has been proved, subprogram will terminate
-main.adb:18:17: medium: postcondition might fail (e.g. when Call_Use_And'Result = True and X = False) [possible fix: add or complete related loop invariants or postconditions]
+main.adb:18:17: medium: postcondition might fail (e.g. when Call_Use_And'Result = True and X = False and Y = True) [possible fix: add or complete related loop invariants or postconditions]
 main.adb:24:16: info: implicit aspect Always_Terminates on "Use_And_2" has been proved, subprogram will terminate
 main.adb:32:16: info: implicit aspect Always_Terminates on "Call_Use_And_2" has been proved, subprogram will terminate
-main.adb:33:17: medium: postcondition might fail (e.g. when Call_Use_And_2'Result = True and X = False) [possible fix: add or complete related loop invariants or postconditions]
+main.adb:33:17: medium: postcondition might fail (e.g. when Call_Use_And_2'Result = True and X = False and Y = True) [possible fix: add or complete related loop invariants or postconditions]
 main.adb:39:16: info: implicit aspect Always_Terminates on "Use_And_3" has been proved, subprogram will terminate
 main.adb:45:16: info: implicit aspect Always_Terminates on "Call_Use_And_3" has been proved, subprogram will terminate
-main.adb:46:17: medium: postcondition might fail (e.g. when Call_Use_And_3'Result = True and X = False) [possible fix: add or complete related loop invariants or postconditions]
+main.adb:46:17: medium: postcondition might fail (e.g. when Call_Use_And_3'Result = True and X = False and Y = True) [possible fix: add or complete related loop invariants or postconditions]

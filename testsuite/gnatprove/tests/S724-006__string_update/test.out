@@ -1,7 +1,7 @@
 p.adb:4:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 p.adb:8:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 p.ads:1:16: info: flow dependencies proved
-p.ads:5:17: high: range check might fail (e.g. when S'First = 0 and S'Last = -1) [reason for check: slice bounds must fit in the underlying array]
+p.ads:5:17: high: range check might fail (e.g. when S'First = 1 and S'Last = 0) [reason for check: slice bounds must fit in the underlying array]
 p.ads:5:17: medium: postcondition might fail
 p.ads:5:45: medium: array index check might fail [reason for check: value must be a valid index into the array]
 p.ads:5:45: medium: range check might fail, cannot prove lower bound for X [reason for check: value must fit in component type]

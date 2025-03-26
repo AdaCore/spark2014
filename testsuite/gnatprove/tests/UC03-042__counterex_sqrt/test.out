@@ -64,6 +64,6 @@ sqrt_subcontract_weakness.adb:14:30: info: loop invariant preservation proved (C
 sqrt_subcontract_weakness.adb:14:36: info: overflow check proved (CVC5: 4 VC)
 sqrt_subcontract_weakness.adb:14:39: info: overflow check proved (CVC5: 4 VC)
 sqrt_subcontract_weakness.adb:14:42: info: overflow check proved (CVC5: 4 VC)
-sqrt_subcontract_weakness.adb:17:13: medium: overflow check might fail, cannot prove upper bound for Y+Z (e.g. when Y = 4 and Z = Integer'Last-2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 12 should mention Z]
+sqrt_subcontract_weakness.adb:17:13: medium: overflow check might fail, cannot prove upper bound for Y+Z (e.g. when Y = 4 and Z = Integer'Last-3) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 12 should mention Z]
 sqrt_subcontract_weakness.adb:18:13: info: overflow check proved (CVC5: 2 VC)
 sqrt_subcontract_weakness.adb:19:13: info: range check proved (CVC5: 2 VC)

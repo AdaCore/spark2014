@@ -25,7 +25,7 @@ extended.adb:38:19: medium: assertion might fail
 extended.adb:38:40: info: range check proved (Trivial)
 extended.adb:39:19: medium: assertion might fail
 extended.adb:39:40: info: range check proved (Trivial)
-extended.adb:41:19: medium: assertion might fail
+extended.adb:41:19: high: assertion might fail (e.g. when X = 0.0 and X8 = 0)
 extended.adb:41:23: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
 extended.adb:42:19: medium: assertion might fail
 extended.adb:42:24: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]

@@ -57,7 +57,7 @@ array_arith.adb:56:18: info: no contextual analysis of "Ident" (body not seen ye
 array_arith.adb:57:18: info: no contextual analysis of "Ident" (body not seen yet)
 array_arith.adb:58:18: info: no contextual analysis of "Ident" (body not seen yet)
 array_arith.adb:59:19: info: no contextual analysis of "Ident" (body not seen yet)
-array_arith.adb:63:19: high: overflow check might fail, cannot prove upper bound for Y + One (e.g. when One = Integer'Last and Y = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 46 should mention Y and One in a precondition]
+array_arith.adb:63:19: high: overflow check might fail, cannot prove upper bound for Y + One (e.g. when One = 1 and Y = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 46 should mention Y and One in a precondition]
 array_arith.adb:63:19: high: range check might fail, cannot prove lower bound for Y + One (e.g. when One = -1 and Y = 0) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at line 46 should mention Y and One in a precondition]
 array_arith.adb:63:19: info: overflow check proved (CVC5: 2 VC), in call inlined at array_arith.adb:50, in call inlined at array_arith.adb:66
 array_arith.adb:63:19: info: overflow check proved (CVC5: 2 VC), in call inlined at array_arith.adb:51, in call inlined at array_arith.adb:66
