@@ -1663,7 +1663,8 @@ package body Flow.Control_Flow_Graph is
             Partial_Definition => Partial,
             View_Conversion    => View_Conversion,
             Map_Root           => LHS_Root,
-            Seq                => Unused);
+            Seq                => Unused,
+            Scope              => FA.B_Scope);
       end;
 
       --  We have two scenarios: some kind of record assignment (in which case
@@ -1893,6 +1894,8 @@ package body Flow.Control_Flow_Graph is
             Vars_Used    : Flow_Id_Sets.Set;
 
             Slice_Update : Boolean;
+            Partial_Ext  : Boolean;
+            Partial_Priv : Boolean;
 
          begin
             --  Work out which variables we define
@@ -1902,7 +1905,9 @@ package body Flow.Control_Flow_Graph is
                Use_Computed_Globals => not FA.Generating_Globals,
                Vars_Defined         => Vars_Defined,
                Vars_Used            => Vars_Used,
-               Partial_Definition   => Slice_Update);
+               Partial_Definition   => Slice_Update,
+               Partial_Ext          => Partial_Ext,
+               Partial_Priv         => Partial_Priv);
 
             pragma Assert (Partial = Slice_Update);
 
@@ -1924,21 +1929,37 @@ package body Flow.Control_Flow_Graph is
             Ctx.Folded_Function_Checks.Append (Expression (N));
             Ctx.Folded_Function_Checks.Append (Name (N));
 
-            --  Produce the vertex
-            Add_Vertex
-              (FA,
-               Direct_Mapping_Id (N),
-               Make_Basic_Attributes
-                 (Var_Def    => Vars_Defined,
-                  Var_Ex_Use => Vars_Used,
-                  Var_Im_Use => (if Partial
-                                    then Vars_Defined
-                                    else Flow_Id_Sets.Empty_Set),
-                  Subp_Calls => Funcalls,
-                  Indt_Calls => Indcalls,
-                  Vertex_Ctx => Ctx.Vertex_Ctx,
-                  E_Loc      => N),
-               V);
+            declare
+               Var_Im_Use : Flow_Id_Sets.Set;
+            begin
+               if Partial then
+                  Var_Im_Use := Vars_Defined;
+               else
+                  if Partial_Ext then
+                     Var_Im_Use.Insert
+                       ((LHS_Root with delta Facet => Extension_Part));
+                  end if;
+
+                  if Partial_Priv then
+                     Var_Im_Use.Insert
+                       ((LHS_Root with delta Facet => Private_Part));
+                  end if;
+               end if;
+
+               --  Produce the vertex
+               Add_Vertex
+                 (FA,
+                  Direct_Mapping_Id (N),
+                  Make_Basic_Attributes
+                    (Var_Def    => Vars_Defined,
+                     Var_Ex_Use => Vars_Used,
+                     Var_Im_Use => Var_Im_Use,
+                     Subp_Calls => Funcalls,
+                     Indt_Calls => Indcalls,
+                     Vertex_Ctx => Ctx.Vertex_Ctx,
+                     E_Loc      => N),
+                  V);
+            end;
 
             CM.Insert (Union_Id (N), Trivial_Connection (V));
          end;
@@ -6951,7 +6972,7 @@ package body Flow.Control_Flow_Graph is
             Target_Name : constant Flow_Id :=
               (if Nkind (N) = N_Assignment_Statement
                  and then Has_Target_Names (N)
-               then Path_To_Flow_Id (Name (N))
+               then Path_To_Flow_Id (Name (N), FA.B_Scope)
                else Null_Flow_Id);
 
             Unchecked : Flow_Id_Sets.Set;
@@ -7019,7 +7040,8 @@ package body Flow.Control_Flow_Graph is
         Direct_Mapping_Id (Defining_Identifier (Decl));
 
       Borrowed : constant Flow_Id :=
-        Path_To_Flow_Id (Get_Observed_Or_Borrowed_Expr (Expression (Decl)));
+        Path_To_Flow_Id
+          (Get_Observed_Or_Borrowed_Expr (Expression (Decl)), FA.B_Scope);
       --  The borrower and borrowed objects, respectively
 
       V : Flow_Graphs.Vertex_Id;

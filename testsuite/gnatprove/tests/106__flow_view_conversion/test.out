@@ -1,0 +1,138 @@
+test_base.adb:11:38: info: initialization of "C" proved
+test_base.adb:12:18: medium: missing dependency "C => A"
+test_base.adb:12:34: medium: incorrect dependency "null => A"
+test_base.adb:18:12: info: tag check proved (CVC5: 1 VC)
+test_base.adb:19:25: info: tag check proved (CVC5: 1 VC)
+test_base.adb:22:38: info: initialization of "C" proved
+test_base.adb:23:06: info: flow dependencies proved
+test_base.adb:28:12: info: tag check proved (CVC5: 1 VC)
+test_base.adb:28:25: warning: unused assignment
+test_base.adb:32:38: info: initialization of "C" proved
+test_base.adb:33:06: info: flow dependencies proved
+test_base.adb:37:07: warning: initialization of "Y" has no effect
+test_base.adb:39:16: warning: unused assignment
+test_base.adb:43:38: info: initialization of "C" proved
+test_base.adb:44:06: info: flow dependencies proved
+test_base.adb:47:07: warning: initialization of "X" has no effect
+test_base.adb:54:38: info: initialization of "C" proved
+test_base.adb:55:06: info: flow dependencies proved
+test_base.adb:58:07: warning: initialization of "X" has no effect
+test_base.adb:61:22: info: tag check proved (CVC5: 1 VC)
+test_base.adb:65:38: info: initialization of "C" proved
+test_base.adb:66:06: info: flow dependencies proved
+test_base.adb:69:07: warning: initialization of "X" has no effect
+test_base.adb:72:22: info: tag check proved (CVC5: 1 VC)
+test_base.adb:76:38: info: initialization of "C" proved
+test_base.adb:77:18: medium: missing dependency "C => B"
+test_base.adb:77:34: medium: incorrect dependency "null => B"
+test_base.adb:85:25: info: tag check proved (CVC5: 1 VC)
+test_base.adb:88:38: info: initialization of "C" proved
+test_base.adb:89:06: info: flow dependencies proved
+test_base.adb:92:07: warning: initialization of "X" has no effect
+test_base.adb:99:38: info: initialization of "C" proved
+test_base.adb:100:06: info: flow dependencies proved
+test_base.adb:103:07: warning: initialization of "X" has no effect
+test_base.adb:106:22: info: tag check proved (CVC5: 1 VC)
+test_base.adb:107:25: info: tag check proved (CVC5: 1 VC)
+test_base.adb:110:39: info: initialization of "C" proved
+test_base.adb:111:06: info: flow dependencies proved
+test_base.adb:114:07: warning: initialization of "X" has no effect
+test_base.adb:117:22: info: tag check proved (CVC5: 1 VC)
+test_base.adb:123:04: warning: analyzing unreferenced procedure "Test_Soundness" [unreferenced-procedure]
+test_base.adb:126:07: medium: tag check might fail
+test_base.adb:126:17: high: extension of "X" is not initialized
+test_base.adb:135:07: medium: tag check might fail
+test_base.adb:135:30: high: extension of "X" is not initialized
+test_call.adb:27:38: info: initialization of "C" proved
+test_call.adb:28:06: info: flow dependencies proved
+test_call.adb:31:07: warning: initialization of "X" has no effect
+test_call.adb:37:38: info: initialization of "C" proved
+test_call.adb:38:06: info: flow dependencies proved
+test_call.adb:41:07: warning: initialization of "X" has no effect
+test_call.adb:47:38: info: initialization of "C" proved
+test_call.adb:48:06: info: flow dependencies proved
+test_call.adb:53:07: warning: statement has no effect
+test_call.adb:53:12: warning: "X" is set by "Set" but not used after the call
+test_call.adb:57:38: info: initialization of "C" proved
+test_call.adb:58:06: info: flow dependencies proved
+test_call.adb:61:07: warning: initialization of "X" has no effect
+test_call.adb:67:38: info: initialization of "C" proved
+test_call.adb:68:06: info: flow dependencies proved
+test_call.adb:71:07: warning: initialization of "X" has no effect
+test_call.adb:77:38: info: initialization of "C" proved
+test_call.adb:78:06: info: flow dependencies proved
+test_call.adb:81:07: warning: initialization of "X" has no effect
+test_call.adb:87:38: info: initialization of "C" proved
+test_call.adb:88:06: info: flow dependencies proved
+test_call.adb:91:07: warning: initialization of "X" has no effect
+test_call.adb:97:38: info: initialization of "C" proved
+test_call.adb:98:06: info: flow dependencies proved
+test_call.adb:101:07: warning: initialization of "X" has no effect
+test_call.adb:114:04: warning: analyzing unreferenced procedure "Test_Soundness" [unreferenced-procedure]
+test_call.adb:116:12: info: in value of subprogram parameter after the call at test_call.adb:116
+test_call.adb:116:12: info: tag check proved (CVC5: 1 VC)
+test_call.adb:116:19: high: extension of "X" is not initialized
+test_call.adb:116:19: medium: tag check might fail
+test_call.adb:124:12: high: extension of "X" is not initialized
+test_call.adb:124:12: info: in value of subprogram parameter after the call at test_call.adb:124
+test_call.adb:124:12: info: tag check proved (CVC5: 1 VC)
+test_call.adb:124:23: medium: tag check might fail
+test_private.adb:7:16: info: implicit aspect Always_Terminates on "Create" has been proved, subprogram will terminate
+test_private.adb:8:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+test_private.adb:26:16: info: implicit aspect Always_Terminates on "Create" has been proved, subprogram will terminate
+test_private.adb:29:16: info: implicit aspect Always_Terminates on "Create" has been proved, subprogram will terminate
+test_private.adb:30:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+test_private.adb:32:16: info: implicit aspect Always_Terminates on "Create" has been proved, subprogram will terminate
+test_private.adb:33:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+test_private.adb:52:16: info: implicit aspect Always_Terminates on "Create" has been proved, subprogram will terminate
+test_private.adb:53:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+test_private.adb:64:38: info: initialization of "C" proved
+test_private.adb:65:06: info: flow dependencies proved
+test_private.adb:68:07: warning: initialization of "X" has no effect
+test_private.adb:74:38: info: initialization of "C" proved
+test_private.adb:75:06: info: flow dependencies proved
+test_private.adb:84:38: info: initialization of "C" proved
+test_private.adb:85:06: info: flow dependencies proved
+test_private.adb:88:07: warning: initialization of "X" has no effect
+test_private.adb:95:38: info: initialization of "C" proved
+test_private.adb:96:06: info: flow dependencies proved
+test_private.adb:106:38: info: initialization of "C" proved
+test_private.adb:107:18: medium: missing dependency "C => A"
+test_private.adb:107:34: medium: incorrect dependency "null => A"
+test_private.adb:117:38: info: initialization of "C" proved
+test_private.adb:118:06: info: flow dependencies proved
+test_private.adb:127:38: info: initialization of "C" proved
+test_private.adb:128:06: info: flow dependencies proved
+test_private.adb:131:07: warning: initialization of "X" has no effect
+test_private.adb:137:38: info: initialization of "C" proved
+test_private.adb:138:06: info: flow dependencies proved
+test_private.adb:144:26: info: tag check proved (CVC5: 1 VC)
+test_private.adb:147:38: info: initialization of "C" proved
+test_private.adb:148:06: info: flow dependencies proved
+test_private.adb:151:07: warning: initialization of "X" has no effect
+test_private.adb:158:39: info: initialization of "C" proved
+test_private.adb:159:06: info: flow dependencies proved
+test_private.adb:166:26: info: tag check proved (CVC5: 1 VC)
+test_private.adb:169:39: info: initialization of "C" proved
+test_private.adb:170:06: info: flow dependencies proved
+test_private.adb:173:07: warning: initialization of "X" has no effect
+test_private.adb:179:39: info: initialization of "C" proved
+test_private.adb:180:06: info: flow dependencies proved
+test_private.adb:189:04: warning: analyzing unreferenced procedure "Test_Soundness" [unreferenced-procedure]
+test_private.adb:192:18: high: "X" is not initialized
+test_private.adb:201:04: warning: analyzing unreferenced procedure "Test_Soundness_2" [unreferenced-procedure]
+test_private.adb:203:12: high: "X" is not initialized
+test_private.adb:210:46: info: initialization of "C" proved
+test_private.adb:211:06: info: flow dependencies proved
+test_private.adb:216:07: info: tag check proved (CVC5: 1 VC)
+test_private.adb:220:46: info: initialization of "C" proved
+test_private.adb:221:06: info: flow dependencies proved
+test_private.adb:227:07: info: tag check proved (CVC5: 1 VC)
+test_private.adb:234:13: info: implicit aspect Always_Terminates on "Create" has been proved, subprogram will terminate
+test_private.adb:237:46: info: initialization of "C" proved
+test_private.adb:238:18: medium: missing dependency "C => A"
+test_private.adb:238:34: medium: incorrect dependency "null => A"
+test_private.adb:242:43: info: tag check proved (CVC5: 1 VC)
+test_private.adb:244:07: info: tag check proved (CVC5: 1 VC)
+test_private.adb:245:07: info: tag check proved (CVC5: 1 VC)
+test_private.adb:246:35: info: tag check proved (CVC5: 1 VC)

@@ -488,7 +488,8 @@ package body Flow.Control_Flow_Graph.Utility is
                             Partial_Definition => Partial,
                             View_Conversion    => Unused_Vc,
                             Map_Root           => Map_Root,
-                            Seq                => Unused_Seq);
+                            Seq                => Unused_Seq,
+                            Scope              => Scope);
 
                         --  If the bounds are located in a "blob", e.g. in an
                         --  array component or pointed-to object, then they are
@@ -525,7 +526,8 @@ package body Flow.Control_Flow_Graph.Utility is
                       Partial_Definition => Partial,
                       View_Conversion    => Unused_Vc,
                       Map_Root           => Map_Root,
-                      Seq                => Unused_Seq);
+                      Seq                => Unused_Seq,
+                      Scope              => Scope);
 
                   --  If the discrimnants are located in a "blob", e.g. in an
                   --  array component or pointed-to object, then they are
@@ -588,10 +590,12 @@ package body Flow.Control_Flow_Graph.Utility is
       elsif not Is_Null_Owning_Access (Actual) then
 
          declare
-            Partial    : Boolean;
-            Unused_Vc  : Boolean;
-            Unused_Seq : Node_Lists.List;
-            Map_Root   : Flow_Id;
+            Partial      : Boolean;
+            Partial_Ext  : Boolean;
+            Partial_Priv : Boolean;
+            Unused_Vc    : Boolean;
+            Unused_Seq   : Node_Lists.List;
+            Map_Root     : Flow_Id;
 
          begin
             --  We're interested in the map root, since we might have to do
@@ -601,7 +605,8 @@ package body Flow.Control_Flow_Graph.Utility is
                Partial_Definition => Partial,
                View_Conversion    => Unused_Vc,
                Map_Root           => Map_Root,
-               Seq                => Unused_Seq);
+               Seq                => Unused_Seq,
+               Scope              => Scope);
 
             --  We have an unconditional addition to folded_function_checks for
             --  each actual anyway, so we can ignore the proof variables here.
@@ -609,9 +614,12 @@ package body Flow.Control_Flow_Graph.Utility is
               (N                    => Actual,
                Scope                => Scope,
                Use_Computed_Globals => not FA.Generating_Globals,
+               Force_Extension      => Ext_Relevant_To_Formal,
                Vars_Defined         => A.Variables_Defined,
                Vars_Used            => A.Variables_Explicitly_Used,
-               Partial_Definition   => Partial);
+               Partial_Definition   => Partial,
+               Partial_Ext          => Partial_Ext,
+               Partial_Priv         => Partial_Priv);
 
             if Ext_Relevant_To_Formal
               and then Extensions_Visible (Map_Root, Scope)
@@ -624,6 +632,15 @@ package body Flow.Control_Flow_Graph.Utility is
 
             if Partial then
                A.Variables_Used.Union (A.Variables_Defined);
+            else
+               if Partial_Ext then
+                  A.Variables_Used.Include
+                    ((Map_Root with delta Facet => Extension_Part));
+               end if;
+               if Partial_Priv then
+                  A.Variables_Used.Include
+                    ((Map_Root with delta Facet => Private_Part));
+               end if;
             end if;
 
          end;
@@ -770,7 +787,9 @@ package body Flow.Control_Flow_Graph.Utility is
             end;
          else
             declare
-               Partial : Boolean;
+               Partial      : Boolean;
+               Partial_Ext  : Boolean;
+               Partial_Priv : Boolean;
 
             begin
                --  We have an unconditional addition to folded_function_checks
@@ -782,7 +801,11 @@ package body Flow.Control_Flow_Graph.Utility is
                   Use_Computed_Globals => not FA.Generating_Globals,
                   Vars_Defined         => A.Variables_Defined,
                   Vars_Used            => A.Variables_Explicitly_Used,
-                  Partial_Definition   => Partial);
+                  Partial_Definition   => Partial,
+                  Partial_Ext          => Partial_Ext,
+                  Partial_Priv         => Partial_Priv);
+
+               pragma Assert (not Partial_Ext and not Partial_Priv);
 
                A.Variables_Used := A.Variables_Explicitly_Used;
 
