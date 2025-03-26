@@ -71,12 +71,12 @@ stable_marriage.adb:247:30: info: range check proved (CVC5: 2 VC)
 stable_marriage.adb:249:52: info: index check proved (CVC5: 2 VC)
 stable_marriage.adb:252:39: info: range check proved (CVC5: 2 VC)
 stable_marriage.adb:254:17: info: add a contract to analyze it separately from calling contexts
-stable_marriage.adb:254:17: info: local subprogram "Select_And_Remove_An_Unmatched_G1" only analyzed in the context of calls
+stable_marriage.adb:254:17: info: local subprogram "Select_And_Remove_An_Unmatched_G1" only analyzed in the context of calls [info-unrolling-inlining]
 stable_marriage.adb:254:52: info: initialization of "Selected" proved
 stable_marriage.adb:262:55: info: index check proved (CVC5: 2 VC), in call inlined at stable_marriage.adb:297
 stable_marriage.adb:263:71: info: range check proved (CVC5: 2 VC), in call inlined at stable_marriage.adb:297
 stable_marriage.adb:266:17: info: add a contract to analyze it separately from calling contexts
-stable_marriage.adb:266:17: info: local subprogram "Add_An_Unmatched" only analyzed in the context of calls
+stable_marriage.adb:266:17: info: local subprogram "Add_An_Unmatched" only analyzed in the context of calls [info-unrolling-inlining]
 stable_marriage.adb:268:71: info: range check proved (CVC5: 2 VC), in call inlined at stable_marriage.adb:319
 stable_marriage.adb:268:71: info: range check proved (CVC5: 2 VC), in call inlined at stable_marriage.adb:324
 stable_marriage.adb:268:71: info: range check proved (CVC5: 2 VC), in call inlined at stable_marriage.adb:383

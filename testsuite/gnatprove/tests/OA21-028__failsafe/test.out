@@ -64,7 +64,7 @@ failsafe.ads:48:16: info: implicit aspect Always_Terminates on "Is_Valid" has be
 failsafe.ads:56:14: info: postcondition proved (CVC5: 3 VC)
 failsafe.ads:60:13: info: implicit aspect Always_Terminates on "Is_Raised" has been proved, subprogram will terminate
 failsafe.ads:62:14: info: postcondition proved (CVC5: 3 VC)
-test_failsafe.adb:6:21: info: cannot unroll loop (too many loop iterations)
+test_failsafe.adb:6:21: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 test_failsafe.adb:7:07: medium: precondition might fail [possible fix: loop at line 6 should mention Battery_Level_At and Current_Time and Failsafe.Counter in a loop invariant]
 test_failsafe.adb:9:19: medium: assertion might fail [possible fix: loop at line 6 should mention Battery_Level_At and Current_Time and Failsafe.Counter in a loop invariant]
 test_failsafe.adb:9:23: info: precondition proved (CVC5: 1 VC)

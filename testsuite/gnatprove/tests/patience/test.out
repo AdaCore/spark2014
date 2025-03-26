@@ -171,13 +171,13 @@ patience.ads:125:47: info: index check proved (CVC5: 2 VC)
 patience.ads:128:13: info: implicit aspect Always_Terminates on "PlayGame" has been proved, subprogram will terminate
 patience.ads:131:14: info: postcondition proved (CVC5: 1 VC)
 test_patience.adb:7:14: info: add a contract to analyze it separately from calling contexts
-test_patience.adb:7:14: info: local subprogram "PrintCardStack" only analyzed in the context of calls
+test_patience.adb:7:14: info: local subprogram "PrintCardStack" only analyzed in the context of calls [info-unrolling-inlining]
 test_patience.adb:10:31: info: range check proved (CVC5: 2 VC), in call inlined at test_patience.adb:51
 test_patience.adb:10:56: info: range check proved (CVC5: 2 VC), in call inlined at test_patience.adb:51
 test_patience.adb:12:18: info: range check proved (CVC5: 2 VC), in call inlined at test_patience.adb:51
 test_patience.adb:12:33: info: index check proved (CVC5: 2 VC), in call inlined at test_patience.adb:51
 test_patience.adb:18:14: info: add a contract to analyze it separately from calling contexts
-test_patience.adb:18:14: info: local subprogram "PrintState" only analyzed in the context of calls
+test_patience.adb:18:14: info: local subprogram "PrintState" only analyzed in the context of calls [info-unrolling-inlining]
 test_patience.adb:21:36: info: range check proved (CVC5: 2 VC), in call inlined at test_patience.adb:53
 test_patience.adb:24:18: info: range check proved (CVC5: 2 VC), in call inlined at test_patience.adb:53
 test_patience.adb:27:38: info: range check proved (CVC5: 2 VC), in call inlined at test_patience.adb:53
@@ -195,7 +195,7 @@ test_patience.adb:36:55: info: range check proved (CVC5: 2 VC), in call inlined 
 test_patience.adb:36:77: info: index check proved (CVC5: 2 VC), in call inlined at test_patience.adb:53
 test_patience.adb:47:04: info: initialization of "S" proved
 test_patience.adb:51:04: info: analyzing call to "PrintCardStack" in context
-test_patience.adb:51:04: info: cannot unroll loop (too many loop iterations)
+test_patience.adb:51:04: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 test_patience.adb:51:04: info: in inlined body at line 11
 test_patience.adb:51:04: warning: in inlined body at line 10
 test_patience.adb:51:04: warning: in inlined body at line 12
@@ -203,9 +203,9 @@ test_patience.adb:51:04: warning: references to the "Image" attribute are handle
 test_patience.adb:51:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 test_patience.adb:52:09: info: precondition proved (CVC5: 1 VC)
 test_patience.adb:53:04: info: analyzing call to "PrintState" in context
-test_patience.adb:53:04: info: cannot unroll loop (too many loop iterations)
-test_patience.adb:53:04: info: cannot unroll loop (too many loop iterations)
-test_patience.adb:53:04: info: cannot unroll loop (too many loop iterations)
+test_patience.adb:53:04: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+test_patience.adb:53:04: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+test_patience.adb:53:04: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 test_patience.adb:53:04: info: in inlined body at line 23
 test_patience.adb:53:04: info: in inlined body at line 28
 test_patience.adb:53:04: info: in inlined body at line 34

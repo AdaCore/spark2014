@@ -36,7 +36,7 @@ fib.adb:47:19: info: range check proved (CVC5: 2 VC)
 fib.adb:48:17: info: overflow check proved (CVC5: 2 VC)
 fib.adb:63:07: info: initialization of "p" proved
 fib.adb:66:11: info: range check proved (CVC5: 2 VC)
-fib.adb:66:35: info: cannot unroll loop (too many loop iterations)
+fib.adb:66:35: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 fib.adb:67:17: medium: overflow check might fail, cannot prove upper bound for i * p (e.g. when i = 2 and p = 1073741824) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 66 should mention p in a loop invariant]
 fib.adb:75:11: info: range check proved (CVC5: 2 VC)
 fib.adb:76:33: medium: loop invariant might fail in first iteration (e.g. when i = 2 and p1 = 1) [possible fix: you should consider adding a postcondition to function Factorial or turning it into an expression function]
@@ -77,42 +77,42 @@ fib.adb:118:51: info: range check proved (CVC5: 2 VC)
 fib.adb:120:22: info: range check proved (CVC5: 2 VC)
 fib.adb:121:22: medium: overflow check might fail, cannot prove lower bound for b2 * p2 [reason for check: result of multiplication must fit in a 32-bits machine integer]
 fib.adb:130:11: info: range check proved (CVC5: 2 VC)
-fib.adb:130:43: info: cannot unroll loop (too many loop iterations)
+fib.adb:130:43: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 fib.adb:131:13: info: index check proved (CVC5: 2 VC)
 fib.adb:131:22: info: index check proved (CVC5: 2 VC)
 fib.adb:133:11: info: range check proved (CVC5: 2 VC)
 fib.adb:133:33: info: overflow check proved (CVC5: 2 VC)
-fib.adb:133:47: info: cannot unroll loop (too many loop iterations)
+fib.adb:133:47: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 fib.adb:134:13: info: index check proved (CVC5: 2 VC)
 fib.adb:134:24: info: index check proved (CVC5: 2 VC)
 fib.adb:134:24: info: overflow check proved (CVC5: 2 VC)
 fib.adb:136:11: info: range check proved (CVC5: 2 VC)
-fib.adb:136:43: info: cannot unroll loop (too many loop iterations)
+fib.adb:136:43: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 fib.adb:137:13: info: index check proved (CVC5: 2 VC)
 fib.adb:137:22: info: index check proved (CVC5: 2 VC)
 fib.adb:139:11: info: range check proved (CVC5: 2 VC)
 fib.adb:139:33: info: overflow check proved (CVC5: 2 VC)
-fib.adb:139:46: info: cannot unroll loop (too many loop iterations)
+fib.adb:139:46: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 fib.adb:140:13: info: index check proved (CVC5: 2 VC)
 fib.adb:140:24: info: index check proved (CVC5: 2 VC)
 fib.adb:140:24: info: overflow check proved (CVC5: 2 VC)
 fib.adb:148:11: info: range check proved (CVC5: 2 VC)
-fib.adb:148:42: info: cannot unroll loop (too many loop iterations)
+fib.adb:148:42: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 fib.adb:149:13: info: index check proved (CVC5: 2 VC)
 fib.adb:149:22: info: index check proved (CVC5: 2 VC)
 fib.adb:151:11: info: range check proved (CVC5: 2 VC)
 fib.adb:151:32: info: overflow check proved (CVC5: 2 VC)
-fib.adb:151:45: info: cannot unroll loop (too many loop iterations)
+fib.adb:151:45: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 fib.adb:152:13: info: index check proved (CVC5: 2 VC)
 fib.adb:152:24: info: index check proved (CVC5: 2 VC)
 fib.adb:152:24: info: overflow check proved (CVC5: 2 VC)
 fib.adb:154:11: info: range check proved (CVC5: 2 VC)
-fib.adb:154:42: info: cannot unroll loop (too many loop iterations)
+fib.adb:154:42: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 fib.adb:155:13: info: index check proved (CVC5: 2 VC)
 fib.adb:155:22: info: index check proved (CVC5: 2 VC)
 fib.adb:157:11: info: range check proved (CVC5: 2 VC)
 fib.adb:157:32: info: overflow check proved (CVC5: 2 VC)
-fib.adb:157:45: info: cannot unroll loop (too many loop iterations)
+fib.adb:157:45: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 fib.adb:158:13: info: index check proved (CVC5: 2 VC)
 fib.adb:158:24: info: index check proved (CVC5: 2 VC)
 fib.adb:158:24: info: overflow check proved (CVC5: 2 VC)

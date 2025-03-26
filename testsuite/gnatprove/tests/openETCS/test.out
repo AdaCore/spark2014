@@ -27,7 +27,7 @@ deceleration_curve.adb:61:31: medium: overflow check might fail, cannot prove up
 deceleration_curve.adb:70:36: info: division check proved (CVC5: 1 VC)
 deceleration_curve.adb:70:36: info: range check proved (CVC5: 2 VC)
 deceleration_curve.adb:80:09: info: precondition proved (CVC5: 1 VC)
-deceleration_curve.adb:86:67: info: cannot unroll loop (too many loop iterations)
+deceleration_curve.adb:86:67: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 deceleration_curve.adb:88:19: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop at line 86 should mention location and speed in a loop invariant]
 deceleration_curve.adb:88:21: info: precondition proved (Z3: 1 VC)
 deceleration_curve.adb:88:32: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop at line 86 should mention speed in a loop invariant]
@@ -37,7 +37,7 @@ deceleration_curve.adb:90:13: medium: float overflow check might fail [reason fo
 deceleration_curve.adb:90:46: info: division check proved (CVC5: 1 VC)
 deceleration_curve.adb:90:46: info: float overflow check proved (Trivial)
 deceleration_curve.adb:105:09: high: precondition might fail (e.g. when Braking_Curve = (curve => (others => (location => 5001, speed => 0.0)), end_point => 5001)) [possible fix: subprogram at deceleration_curve.ads:85 should mention Braking_Curve in a precondition]
-deceleration_curve.adb:105:60: info: cannot unroll loop (too many loop iterations)
+deceleration_curve.adb:105:60: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 deceleration_curve.adb:106:10: warning: assuming "Put" always terminates
 deceleration_curve.adb:106:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:106:10: warning: no Always_Terminates aspect available for "Put" [assumed-always-terminates]
@@ -297,7 +297,7 @@ step_function_test.adb:51:19: info: assertion proved (Z3: 1 VC)
 step_function_test.adb:51:19: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 step_function_test.adb:54:19: info: assertion proved (CVC5: 1 VC; Z3: 1 VC)
 step_function_test.adb:56:04: info: precondition proved (CVC5: 3 VC; Z3: 2 VC)
-step_function_test.adb:58:38: info: unrolling loop
+step_function_test.adb:58:38: info: unrolling loop [info-unrolling-inlining]
 step_function_test.adb:61:22: info: precondition proved (Z3: 26 VC)
 step_function_test.adb:61:22: medium: assertion might fail
 step_function_test.adb:62:28: info: precondition proved (CVC5: 13 VC; Z3: 13 VC)

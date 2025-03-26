@@ -142,12 +142,12 @@ auditlog.adb:98:11: info: data dependencies proved
 auditlog.adb:100:11: info: flow dependencies proved
 auditlog.adb:120:13: info: implicit aspect Always_Terminates on "ConvertToAuditDescription" has been proved, subprogram will terminate
 auditlog.adb:127:35: info: range check proved
-auditlog.adb:127:47: info: cannot unroll loop (too many loop iterations)
+auditlog.adb:127:47: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 auditlog.adb:128:40: info: index check proved
 auditlog.adb:128:40: info: overflow check proved
 auditlog.adb:129:46: info: index check proved
 auditlog.adb:129:46: info: overflow check proved
-auditlog.adb:132:45: info: cannot unroll loop (too many loop iterations)
+auditlog.adb:132:45: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 auditlog.adb:134:46: info: index check proved
 auditlog.adb:134:46: info: overflow check proved
 auditlog.adb:154:07: info: initialization of "Description" proved
@@ -226,10 +226,10 @@ auditlog.adb:673:14: info: flow dependencies proved
 auditlog.adb:686:25: info: postcondition proved
 auditlog.adb:690:10: info: initialization of "TheFile" proved
 auditlog.adb:692:20: info: add a contract to analyze it separately from calling contexts
-auditlog.adb:692:20: info: local subprogram "SetCurrentFileToNextFreeFile" only analyzed in the context of calls
+auditlog.adb:692:20: info: local subprogram "SetCurrentFileToNextFreeFile" only analyzed in the context of calls [info-unrolling-inlining]
 auditlog.adb:707:10: info: analyzing call to "SetCurrentFileToNextFreeFile" in context
 auditlog.adb:707:10: info: in inlined body at line 695
-auditlog.adb:707:10: info: unrolling loop
+auditlog.adb:707:10: info: unrolling loop [info-unrolling-inlining]
 auditlog.adb:712:79: info: range check proved
 auditlog.adb:735:10: info: precondition proved
 auditlog.adb:744:10: info: precondition proved
@@ -280,7 +280,7 @@ auditlog.adb:984:12: info: initialization of "TimeCount" proved
 auditlog.adb:990:37: info: predicate check proved
 auditlog.adb:990:37: info: range check proved
 auditlog.adb:1014:55: info: range check proved
-auditlog.adb:1045:32: info: unrolling loop
+auditlog.adb:1045:32: info: unrolling loop [info-unrolling-inlining]
 auditlog.adb:1070:33: info: loop invariant initialization proved
 auditlog.adb:1070:33: info: loop invariant preservation proved
 auditlog.adb:1071:33: info: loop invariant initialization proved
@@ -294,7 +294,7 @@ auditlog.adb:1088:90: info: range check proved
 auditlog.adb:1089:91: info: range check proved
 auditlog.adb:1090:26: info: range check proved
 auditlog.adb:1091:32: info: overflow check proved
-auditlog.adb:1092:22: info: cannot unroll loop (too many loop iterations)
+auditlog.adb:1092:22: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 auditlog.adb:1093:56: info: index check proved
 auditlog.adb:1093:95: info: index check proved
 auditlog.adb:1093:95: info: overflow check proved
@@ -343,7 +343,7 @@ auditlog.adb:1428:10: info: precondition proved
 auditlog.adb:1436:07: info: for LogFileState before the call at auditlog.ads:306
 auditlog.adb:1436:07: info: invariant check proved
 auditlog.adb:1436:07: info: precondition proved
-auditlog.adb:1459:30: info: unrolling loop
+auditlog.adb:1459:30: info: unrolling loop [info-unrolling-inlining]
 auditlog.ads:27:08: info: flow dependencies proved
 auditlog.ads:47:14: info: for LogFileState at the end of Init at auditlog.ads:306
 auditlog.ads:47:14: info: invariant check proved
@@ -382,7 +382,7 @@ bio.adb:84:15: info: range check proved
 bio.adb:84:15: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 bio.adb:123:13: info: add a contract to analyze it separately from calling contexts
 bio.adb:123:13: info: implicit aspect Always_Terminates on "GetReturnCode" has been proved, subprogram will terminate
-bio.adb:123:13: info: local subprogram "GetReturnCode" only analyzed in the context of calls
+bio.adb:123:13: info: local subprogram "GetReturnCode" only analyzed in the context of calls [info-unrolling-inlining]
 bio.adb:129:55: info: loop invariant initialization proved, in call inlined at bio.adb:193
 bio.adb:129:55: info: loop invariant preservation proved, in call inlined at bio.adb:193
 bio.adb:150:13: info: implicit aspect Always_Terminates on "MakeDescription" has been proved, subprogram will terminate
@@ -620,7 +620,7 @@ certtypes.ads:63:21: warning: references to the "Image" attribute are handled in
 clock.adb:49:11: info: flow dependencies proved
 clock.adb:54:07: info: initialization of "V" proved
 clock.adb:59:11: info: range check proved
-clock.adb:59:54: info: cannot unroll loop (too many loop iterations)
+clock.adb:59:54: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 clock.adb:60:12: info: index check proved
 clock.adb:60:56: info: division check proved
 clock.adb:61:20: info: division check proved
@@ -707,7 +707,7 @@ configdata.adb:295:36: info: initialization of "Success" proved
 configdata.adb:296:14: info: flow dependencies proved
 configdata.adb:300:10: info: initialization of "RawClass" proved
 configdata.adb:301:10: info: initialization of "Stop" proved
-configdata.adb:306:36: info: unrolling loop
+configdata.adb:306:36: info: unrolling loop [info-unrolling-inlining]
 configdata.adb:313:20: info: range check proved
 configdata.adb:315:42: info: loop invariant initialization proved
 configdata.adb:315:42: info: loop invariant preservation proved
@@ -785,7 +785,7 @@ configdata.adb:682:14: info: flow dependencies proved
 configdata.adb:686:10: info: initialization of "TheTitle" proved
 configdata.adb:687:10: info: initialization of "RawAccessPolicy" proved
 configdata.adb:688:10: info: initialization of "Stop" proved
-configdata.adb:698:37: info: unrolling loop
+configdata.adb:698:37: info: unrolling loop [info-unrolling-inlining]
 configdata.adb:703:23: info: range check proved
 configdata.adb:704:45: info: loop invariant initialization proved
 configdata.adb:704:45: info: loop invariant preservation proved
@@ -818,7 +818,7 @@ configdata.adb:844:10: info: initialization of "Stop" proved
 configdata.adb:996:07: info: initialization of "CloseOK" proved
 configdata.adb:1010:16: info: add a contract to analyze it separately from calling contexts
 configdata.adb:1010:16: info: implicit aspect Always_Terminates on "WorkingHoursText" has been proved, subprogram will terminate
-configdata.adb:1010:16: info: local subprogram "WorkingHoursText" only analyzed in the context of calls
+configdata.adb:1010:16: info: local subprogram "WorkingHoursText" only analyzed in the context of calls [info-unrolling-inlining]
 configdata.adb:1013:10: info: initialization of "LocalValue" proved
 configdata.adb:1013:10: info: initialization of "LocalValue" proved, in call inlined at configdata.adb:1098
 configdata.adb:1013:10: info: initialization of "LocalValue" proved, in call inlined at configdata.adb:1108
@@ -1068,7 +1068,7 @@ configuration.ads:74:11: info: flow dependencies proved
 display-interfac.ads:24:08: info: flow dependencies proved
 display.adb:120:13: info: add a contract to analyze it separately from calling contexts
 display.adb:120:13: info: implicit aspect Always_Terminates on "CombineLines" has been proved, subprogram will terminate
-display.adb:120:13: info: local subprogram "CombineLines" only analyzed in the context of calls
+display.adb:120:13: info: local subprogram "CombineLines" only analyzed in the context of calls [info-unrolling-inlining]
 display.adb:128:11: info: range check proved, in call inlined at display.adb:191
 display.adb:128:11: info: range check proved, in call inlined at display.adb:287
 display.adb:129:35: info: loop invariant initialization proved, in call inlined at display.adb:191
@@ -1718,13 +1718,13 @@ screen.adb:446:44: info: range check proved
 screen.adb:446:72: info: overflow check proved
 screen.adb:462:16: info: add a contract to analyze it separately from calling contexts
 screen.adb:462:16: info: implicit aspect Always_Terminates on "HrsMinsString" has been proved, subprogram will terminate
-screen.adb:462:16: info: local subprogram "HrsMinsString" only analyzed in the context of calls
+screen.adb:462:16: info: local subprogram "HrsMinsString" only analyzed in the context of calls [info-unrolling-inlining]
 screen.adb:465:22: info: range check proved, in call inlined at screen.adb:629
 screen.adb:465:22: info: range check proved, in call inlined at screen.adb:635
 screen.adb:465:22: info: range check proved, in call inlined at screen.adb:641
 screen.adb:478:16: info: add a contract to analyze it separately from calling contexts
 screen.adb:478:16: info: implicit aspect Always_Terminates on "FileSizeString" has been proved, subprogram will terminate
-screen.adb:478:16: info: local subprogram "FileSizeString" only analyzed in the context of calls
+screen.adb:478:16: info: local subprogram "FileSizeString" only analyzed in the context of calls [info-unrolling-inlining]
 screen.adb:481:59: info: division check proved, in call inlined at screen.adb:659
 screen.adb:481:59: info: division check proved, in call inlined at screen.adb:665
 screen.adb:481:67: info: range check proved, in call inlined at screen.adb:659
@@ -2213,7 +2213,7 @@ usertoken.adb:678:07: info: initialization of "PrivValid" proved
 usertoken.adb:678:18: info: initialization of "IandAValid" proved
 usertoken.adb:690:16: info: add a contract to analyze it separately from calling contexts
 usertoken.adb:690:16: info: implicit aspect Always_Terminates on "MakeDescription" has been proved, subprogram will terminate
-usertoken.adb:690:16: info: local subprogram "MakeDescription" only analyzed in the context of calls
+usertoken.adb:690:16: info: local subprogram "MakeDescription" only analyzed in the context of calls [info-unrolling-inlining]
 usertoken.adb:695:10: warning: statement has no effect, in call inlined at usertoken.adb:740
 usertoken.adb:695:10: warning: statement has no effect, in call inlined at usertoken.adb:743
 usertoken.adb:695:10: warning: statement has no effect, in call inlined at usertoken.adb:746

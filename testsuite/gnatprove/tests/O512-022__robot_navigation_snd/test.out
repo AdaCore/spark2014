@@ -1,4 +1,4 @@
-algorithm.adb:86:07: info: cannot unroll loop (too many loop iterations)
+algorithm.adb:86:07: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 algorithm.adb:94:65: info: division check proved (CVC5: 1 VC)
 algorithm.adb:94:65: info: float overflow check proved (Trivial)
 algorithm.adb:95:19: warning: statement has no effect
@@ -19,7 +19,7 @@ algorithm.adb:117:25: warning: statement has no effect
 algorithm.adb:118:28: warning: this statement is never reached
 algorithm.adb:119:28: warning: this statement is never reached
 algorithm.adb:120:28: warning: this statement is never reached
-algorithm.adb:149:10: info: cannot unroll loop (too many loop iterations)
+algorithm.adb:149:10: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 algorithm.adb:152:63: info: range check proved (Trivial)
 algorithm.adb:152:70: info: float overflow check proved (CVC5: 1 VC)
 algorithm.adb:156:70: info: float overflow check proved (CVC5: 1 VC)
@@ -232,7 +232,7 @@ algorithm.adb:587:10: warning: this statement is never reached
 algorithm.adb:588:10: warning: this statement is never reached
 algorithm.adb:591:31: info: assertion proved (Trivial: 1 VC)
 algorithm.adb:603:31: info: assertion proved (Trivial: 1 VC)
-algorithm.adb:605:37: info: cannot unroll loop (too many loop iterations)
+algorithm.adb:605:37: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 algorithm.adb:607:67: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop at line 605 should mention This in a loop invariant]
 algorithm.adb:607:101: info: range check proved (Trivial)
 algorithm.adb:607:111: info: division check proved (CVC5: 1 VC)

@@ -73,7 +73,7 @@ test_predicates.adb:103:33: medium: predicate check might fail (e.g. when X = (H
 test_predicates.adb:103:37: info: initialization check proved (CVC5: 1 VC)
 test_predicates.adb:104:14: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:108:14: info: add a contract to analyze it separately from calling contexts
-test_predicates.adb:108:14: info: local subprogram "Q" only analyzed in the context of calls
+test_predicates.adb:108:14: info: local subprogram "Q" only analyzed in the context of calls [info-unrolling-inlining]
 test_predicates.adb:113:16: info: predicate check proved (CVC5: 1 VC), in call inlined at test_predicates.adb:173
 test_predicates.adb:113:36: info: predicate check proved (CVC5: 1 VC), in call inlined at test_predicates.adb:173
 test_predicates.adb:118:04: warning: analyzing unreferenced function "Default" [unreferenced-function]

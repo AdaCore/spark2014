@@ -173,7 +173,7 @@ test_vectors.adb:298:22: info: assertion proved (CVC5: 1 VC)
 test_vectors.adb:298:22: info: precondition proved (Z3: 1 VC)
 test_vectors.adb:298:42: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_vectors.adb:302:22: info: assertion proved (Z3: 1 VC)
-test_vectors.adb:303:23: info: unrolling loop
+test_vectors.adb:303:23: info: unrolling loop [info-unrolling-inlining]
 test_vectors.adb:304:25: info: assertion proved (Z3: 4 VC)
 test_vectors.adb:306:22: info: assertion proved (Z3: 1 VC)
 test_vectors.adb:310:07: info: precondition proved (CVC5: 1 VC)

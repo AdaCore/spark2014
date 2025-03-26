@@ -141,7 +141,7 @@ glob.ads:19:14: warning: subprogram "Local" has no effect
 notnull.adb:5:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 notnull.adb:6:04: medium: resource or memory leak might occur at end of scope
 notnull.adb:8:06: medium: resource or memory leak might occur
-notnull.adb:10:21: info: unrolling loop
+notnull.adb:10:21: info: unrolling loop [info-unrolling-inlining]
 notnull.adb:11:09: medium: resource or memory leak might occur
 pointers.adb:10:22: info: initialization of "X" proved
 pointers.adb:11:19: info: postcondition proved (CVC5: 2 VC)

@@ -55,7 +55,7 @@ convert.ads:76:63: info: float overflow check proved (Z3: 1 VC)
 convert.ads:79:23: medium: precondition might fail, cannot prove (Hi = 2.0**64 or else Hi <= Last_Float_As_Uns64)
 convert.ads:81:63: info: float overflow check proved (Z3: 1 VC)
 test_convert.adb:9:08: info: range check proved (Z3: 2 VC)
-test_convert.adb:9:44: info: cannot unroll loop (too many loop iterations)
+test_convert.adb:9:44: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 test_convert.adb:9:44: warning: statement has no effect
 test_convert.adb:10:09: warning: unused assignment
 test_convert.adb:12:35: info: range check proved (Z3: 2 VC)

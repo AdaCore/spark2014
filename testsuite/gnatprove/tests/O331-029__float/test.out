@@ -1,7 +1,7 @@
 sensfusion6_pack.adb:18:14: info: add a contract to analyze it separately from calling contexts
-sensfusion6_pack.adb:18:14: info: local subprogram "Madgwick_Update_Q" only analyzed in the context of calls
+sensfusion6_pack.adb:18:14: info: local subprogram "Madgwick_Update_Q" only analyzed in the context of calls [info-unrolling-inlining]
 sensfusion6_pack.adb:19:14: info: add a contract to analyze it separately from calling contexts
-sensfusion6_pack.adb:19:14: info: local subprogram "Mahony_Update_Q" only analyzed in the context of calls
+sensfusion6_pack.adb:19:14: info: local subprogram "Mahony_Update_Q" only analyzed in the context of calls [info-unrolling-inlining]
 sensfusion6_pack.adb:42:07: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:42:07: warning: unused variable "Recip_Norm", in call inlined at sensfusion6_pack.adb:263
 sensfusion6_pack.adb:43:07: info: initialization of "S0" proved
