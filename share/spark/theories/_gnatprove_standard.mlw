@@ -431,8 +431,6 @@ end
 
 module Real_Abs
   use export real.Abs
-  val abs (x : real) : real
-  ensures { result = abs x }
 end
 
 module Floating_power
