@@ -367,6 +367,9 @@ package body CE_Parsing is
             --  - if yes, we reconstruct the record by extracting the field
             --  name from the attribute,
             --  - if no, we expect the Why3 counterexample to be a record.
+            --  NOTE: This only happens when parsing values directly inferred
+            --  from a prover model. When the counterexample is taken from Why3
+            --  RAC, all expected fields should be present.
 
             declare
                Field_Attr_Present : Boolean := False;
