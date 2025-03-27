@@ -1,2 +1,2 @@
-prot.adb:10:24: medium: overflow check might fail, cannot prove lower bound for Val + X (e.g. when X = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at prot.ads:7 should mention X in a precondition]
+prot.adb:10:24: medium: overflow check might fail, cannot prove lower bound for Val + X (e.g. when X = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at prot.ads:7 should mention X in a precondition]
 prot.ads:8:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate

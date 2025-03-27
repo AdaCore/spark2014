@@ -4,7 +4,7 @@ p.adb:7:04: info: initialization of "Buffer" proved
 p.adb:11:07: medium: unexpected exception might be raised
 p.adb:11:17: medium: in value of subprogram parameter after the call at p.adb:11
 p.adb:11:17: medium: initialization check might fail
-p.adb:12:26: medium: precondition might fail (e.g. when Buffer = "[[[[[[[[[[" and Last = 1) [possible fix: loop at line 10 should mention Unb_Str in a loop invariant]
+p.adb:12:26: medium: precondition might fail [possible fix: loop at line 10 should mention Unb_Str in a loop invariant]
 p.adb:12:28: info: range check proved (CVC5: 4 VC)
 p.adb:17:18: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 p.adb:18:13: medium: precondition might fail [possible fix: loop at line 10 should mention Unb_Str in a loop invariant]

@@ -5,8 +5,8 @@
 --> logging_out_abstract.adb:13:22
    13 |          Total := Total + Incr;
       |                   ~~~~~~^~~~~~
-      + e.g. when Incr = -1
-      and Total = Integer'First
+      + e.g. when Incr = Integer'First
+      and Total = -1
       + reason for check: result of addition must fit in a 32-bits machine integer
       + possible fix: subprogram at logging_out_abstract.ads:6 should mention Incr and Total in a precondition
       --> logging_out_abstract.ads:6:04

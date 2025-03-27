@@ -2,8 +2,8 @@
 --> counterex.adb:10:17
    10 |             R := R + In2;
       |                  ~~^~~~~
-      + e.g. when In2 = -1073741824
-      and R = -1073741825
+      + e.g. when In2 = Integer'First+1
+      and R = Integer'First
       + reason for check: result of addition must fit in a 32-bits machine integer
 
  high: assertion might fail

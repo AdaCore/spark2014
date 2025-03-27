@@ -1,6 +1,6 @@
 main.adb:8:04: warning: analyzing unreferenced function "Test1" [unreferenced-function]
 main.adb:8:13: info: implicit aspect Always_Terminates on "Test1" has been proved, subprogram will terminate
-main.adb:12:15: medium: initialization check might fail (e.g. when X = (F => ?, G => 0) and X.F'Initialized = False and X.G'Initialized = True) [possible fix: subprogram at line 8 should mention X'Initialized in a precondition]
+main.adb:12:15: medium: initialization check might fail (e.g. when X = (F => 0, G => ?) and X.F'Initialized = True and X.G'Initialized = False) [possible fix: subprogram at line 8 should mention X'Initialized in a precondition]
 reproducer_main.adb:29:07: info: initialization of "Success" proved
 reproducer_main.adb:32:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 reproducer_main.adb:42:04: info: initialization of "Success" proved

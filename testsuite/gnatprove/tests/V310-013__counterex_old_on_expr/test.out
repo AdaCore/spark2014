@@ -8,7 +8,7 @@ exprold.ads:23:16: high: postcondition might fail (e.g. when I = 1 and I'Old = 0
 exprold.ads:28:16: high: postcondition might fail (e.g. when R = (X => 2) and R'Old = (X => 1))
 exprold.ads:33:16: high: postcondition might fail (e.g. when A = (1 => 2, others => 1) and A'Old = (others => 1))
 exprold.ads:38:16: high: postcondition might fail (e.g. when A = (1 => (X => 2), others => (X => 1)) and A'Old = (others => (X => 1)))
-exprold.ads:44:11: high: postcondition might fail (e.g. when I = 1 and I'Old = 0)
+exprold.ads:44:11: high: postcondition might fail (e.g. when I = 0 and I'Old = -1)
 exprold.ads:44:22: info: overflow check proved (CVC5: 2 VC)
 exprold.ads:44:40: info: overflow check proved (CVC5: 2 VC)
 exprold.ads:44:49: info: overflow check proved (CVC5: 2 VC)

@@ -33,7 +33,7 @@ test_di_good.adb:66:33: warning: references to the "Image" attribute are handled
 test_fl_bad.adb:5:04: info: initialization of "G" proved
 test_fl_bad.adb:9:04: info: initialization of "X" proved
 test_fl_bad.adb:9:07: info: initialization of "Y" proved
-test_fl_bad.adb:15:19: medium: assertion might fail
+test_fl_bad.adb:15:19: medium: assertion might fail (e.g. when X = 1.0 and Y = 0.0)
 test_fl_bad2.adb:12:22: error: constant object as "in" parameter of an access-to-variable type is not allowed in SPARK
 test_fl_bad2.adb:12:22: error: violation of aspect SPARK_Mode at line 4
 test_fl_bad2.adb:19:09: info: analyzing call to "Get_Random" in context

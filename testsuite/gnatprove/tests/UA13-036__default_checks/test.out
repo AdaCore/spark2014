@@ -14,8 +14,8 @@ main.adb:7:52: medium: in default value at main.adb:20
 main.adb:7:52: medium: range check might fail, cannot prove lower bound for 0 [reason for check: default value must fit in the type]
 main.adb:8:16: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 main.adb:9:15: info: range check proved (CVC5: 2 VC)
-main.adb:14:24: medium: in default value at main.adb:20
-main.adb:14:24: medium: range check might fail, cannot prove lower bound for 0 [reason for check: default component value must fit in the type]
+main.adb:14:24: high: in default value at main.adb:20
+main.adb:14:24: high: range check might fail, cannot prove lower bound for 0 [reason for check: default component value must fit in the type]
 main.adb:17:24: medium: in default value at main.adb:20
 main.adb:17:24: medium: range check might fail, cannot prove lower bound for 0 [reason for check: default component value must fit in the type]
 main.adb:27:54: info: in default initialization of component "OK1" at main.adb:39, in instantiation at main.adb:56
@@ -34,8 +34,8 @@ main.adb:28:19: info: implicit aspect Always_Terminates on "Id" has been proved,
 main.adb:28:19: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate, in instantiation at main.adb:55
 main.adb:29:18: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:54
 main.adb:29:18: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:55
-main.adb:41:27: medium: in default value at main.adb:51, in instantiation at main.adb:57
-main.adb:41:27: medium: range check might fail, cannot prove lower bound for 0, in instantiation at main.adb:56 [reason for check: default component value must fit in the type]
+main.adb:41:27: high: in default value at main.adb:51, in instantiation at main.adb:57
+main.adb:41:27: high: range check might fail, cannot prove lower bound for 0, in instantiation at main.adb:56 [reason for check: default component value must fit in the type]
 main.adb:44:27: medium: in default value at main.adb:51, in instantiation at main.adb:57
 main.adb:44:27: medium: range check might fail, cannot prove lower bound for 0, in instantiation at main.adb:56 [reason for check: default component value must fit in the type]
 main.adb:61:52: info: in default value at main.adb:82

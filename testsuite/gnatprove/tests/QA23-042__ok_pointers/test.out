@@ -30,8 +30,8 @@ spark04.adb:21:17: info: range check proved (CVC5: 2 VC)
 spark04.adb:21:32: info: range check proved (CVC5: 2 VC)
 spark04.adb:21:41: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 spark04.adb:21:51: medium: pointer dereference check might fail (e.g. when AY = null) [possible fix: subprogram at spark04.ads:21 should mention AY in a precondition]
-spark04.adb:23:10: medium: pointer dereference check might fail (e.g. when AY = null) [possible fix: subprogram at spark04.ads:21 should mention AY in a precondition]
-spark04.adb:24:10: medium: pointer dereference check might fail (e.g. when AX = null) [possible fix: subprogram at spark04.ads:21 should mention AX in a precondition]
+spark04.adb:23:10: medium: pointer dereference check might fail [possible fix: subprogram at spark04.ads:21 should mention AY in a precondition]
+spark04.adb:24:10: medium: pointer dereference check might fail [possible fix: subprogram at spark04.ads:21 should mention AX in a precondition]
 spark04.adb:27:25: info: range check proved (CVC5: 2 VC)
 spark04.adb:27:34: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 spark04.adb:28:17: info: range check proved (CVC5: 2 VC)
@@ -40,11 +40,11 @@ spark04.adb:28:38: warning: references to the "Image" attribute are handled in a
 spark04.adb:29:17: info: range check proved (CVC5: 2 VC)
 spark04.adb:29:32: info: range check proved (Z3: 2 VC)
 spark04.adb:29:41: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-spark04.adb:29:51: medium: pointer dereference check might fail (e.g. when AX = null) [possible fix: subprogram at spark04.ads:21 should mention AX in a precondition]
+spark04.adb:29:51: medium: pointer dereference check might fail [possible fix: subprogram at spark04.ads:21 should mention AX in a precondition]
 spark04.adb:30:17: info: range check proved (Z3: 2 VC)
 spark04.adb:30:32: info: range check proved (Z3: 2 VC)
 spark04.adb:30:41: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
-spark04.adb:30:51: medium: pointer dereference check might fail (e.g. when AY = null) [possible fix: subprogram at spark04.ads:21 should mention AY in a precondition]
+spark04.adb:30:51: medium: pointer dereference check might fail [possible fix: subprogram at spark04.ads:21 should mention AY in a precondition]
 spark04.ads:11:16: info: implicit aspect Always_Terminates on "CreatePoint" has been proved, subprogram will terminate
 spark04.ads:22:06: info: data dependencies proved
 spark04.ads:23:28: info: initialization of "P" proved

@@ -172,7 +172,7 @@ signed.adb:15:64: info: type is suitable as source for unchecked conversion (Tri
 signed.adb:15:78: info: type is suitable for unchecked conversion (Trivial)
 signed.adb:18:11: info: data dependencies proved
 signed.adb:23:22: medium: assertion might fail [possible fix: subprogram at line 17 should mention X in a precondition]
-signed.adb:24:22: medium: assertion might fail [possible fix: subprogram at line 17 should mention X in a precondition]
+signed.adb:24:22: info: assertion proved (colibri: 1 VC)
 signed.adb:26:22: medium: assertion might fail [possible fix: subprogram at line 17 should mention Y in a precondition]
 signed.adb:27:22: medium: assertion might fail [possible fix: subprogram at line 17 should mention Y in a precondition]
 signed.adb:61:13: info: types in unchecked conversion have the same size (Trivial)
@@ -268,20 +268,20 @@ unsigned.adb:16:67: info: type is suitable as source for unchecked conversion (T
 unsigned.adb:16:82: info: type is suitable for unchecked conversion (Trivial)
 unsigned.adb:19:11: info: data dependencies proved
 unsigned.adb:24:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-unsigned.adb:25:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
+unsigned.adb:25:22: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
 unsigned.adb:27:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-unsigned.adb:28:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
+unsigned.adb:28:22: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
 unsigned.adb:30:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-unsigned.adb:31:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
+unsigned.adb:31:22: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
 unsigned.adb:33:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-unsigned.adb:34:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
+unsigned.adb:34:22: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
 unsigned.adb:38:11: info: data dependencies proved
 unsigned.adb:43:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-unsigned.adb:44:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
+unsigned.adb:44:22: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
 unsigned.adb:46:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-unsigned.adb:47:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
+unsigned.adb:47:22: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
 unsigned.adb:49:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-unsigned.adb:50:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
+unsigned.adb:50:22: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
 unsigned.adb:54:11: info: data dependencies proved
 unsigned.adb:59:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 unsigned.adb:60:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
