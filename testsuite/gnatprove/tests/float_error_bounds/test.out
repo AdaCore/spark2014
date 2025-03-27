@@ -380,53 +380,57 @@ libst-reals-errors.adb:386:26: info: predicate check proved
 libst-reals-errors.adb:388:07: info: precondition proved
 libst-reals-errors.adb:388:25: info: range check proved
 libst-reals-errors.adb:388:32: info: predicate check proved
-libst-reals-errors.adb:393:13: info: predicate check proved
-libst-reals-errors.adb:393:25: info: predicate check proved
-libst-reals-errors.adb:393:36: info: predicate check proved
-libst-reals-errors.adb:393:41: info: predicate check proved
-libst-reals-errors.adb:394:14: info: postcondition proved
-libst-reals-errors.adb:394:14: info: predicate check proved
-libst-reals-errors.adb:394:16: info: division check proved
-libst-reals-errors.adb:394:18: info: predicate check proved
-libst-reals-errors.adb:394:23: info: predicate check proved
-libst-reals-errors.adb:394:25: info: division check proved
-libst-reals-errors.adb:394:27: info: predicate check proved
-libst-reals-errors.adb:406:17: info: postcondition proved
-libst-reals-errors.adb:406:17: info: predicate check proved
-libst-reals-errors.adb:406:55: info: predicate check proved
-libst-reals-errors.adb:407:17: info: predicate check proved
-libst-reals-errors.adb:411:13: info: subprogram variant proved
-libst-reals-errors.adb:411:27: info: range check proved
-libst-reals-errors.adb:418:22: info: assertion proved
-libst-reals-errors.adb:418:22: info: predicate check proved
-libst-reals-errors.adb:418:54: info: predicate check proved
-libst-reals-errors.adb:420:07: info: precondition proved
-libst-reals-errors.adb:424:22: info: assertion proved
-libst-reals-errors.adb:424:22: info: precondition proved
-libst-reals-errors.adb:424:22: info: predicate check proved
-libst-reals-errors.adb:427:22: info: assertion proved
-libst-reals-errors.adb:427:22: info: predicate check proved
-libst-reals-errors.adb:429:10: medium: assertion might fail [possible fix: precondition of subprogram at libst-reals-errors.ads:90 should mention Values]
-libst-reals-errors.adb:429:23: info: predicate check proved
-libst-reals-errors.adb:429:25: info: precondition proved
-libst-reals-errors.adb:430:17: info: predicate check proved
-libst-reals-errors.adb:431:10: info: division check proved
-libst-reals-errors.adb:431:12: info: predicate check proved
-libst-reals-errors.adb:432:07: info: precondition proved
-libst-reals-errors.adb:433:15: info: predicate check proved
-libst-reals-errors.adb:437:10: info: assertion proved
-libst-reals-errors.adb:437:15: info: precondition proved
-libst-reals-errors.adb:437:15: info: predicate check proved
-libst-reals-errors.adb:438:13: info: precondition proved
-libst-reals-errors.adb:438:13: info: predicate check proved
-libst-reals-errors.adb:439:35: info: precondition proved
-libst-reals-errors.adb:440:22: info: precondition proved
-libst-reals-errors.adb:444:10: info: assertion proved
-libst-reals-errors.adb:444:28: info: precondition proved
-libst-reals-errors.adb:445:38: info: predicate check proved
-libst-reals-errors.adb:445:49: info: predicate check proved
-libst-reals-errors.adb:445:58: info: division check proved
-libst-reals-errors.adb:446:12: info: predicate check proved
+libst-reals-errors.adb:395:13: info: predicate check proved
+libst-reals-errors.adb:395:25: info: predicate check proved
+libst-reals-errors.adb:395:36: info: predicate check proved
+libst-reals-errors.adb:395:41: info: predicate check proved
+libst-reals-errors.adb:396:14: info: postcondition proved
+libst-reals-errors.adb:396:14: info: predicate check proved
+libst-reals-errors.adb:396:16: info: division check proved
+libst-reals-errors.adb:396:18: info: predicate check proved
+libst-reals-errors.adb:396:23: info: predicate check proved
+libst-reals-errors.adb:396:25: info: division check proved
+libst-reals-errors.adb:396:27: info: predicate check proved
+libst-reals-errors.adb:403:14: info: predicate check proved
+libst-reals-errors.adb:403:18: info: predicate check proved
+libst-reals-errors.adb:404:14: info: postcondition proved
+libst-reals-errors.adb:404:19: info: predicate check proved
+libst-reals-errors.adb:404:21: info: division check proved
+libst-reals-errors.adb:404:23: info: predicate check proved
+libst-reals-errors.adb:404:32: info: predicate check proved
+libst-reals-errors.adb:404:34: info: division check proved
+libst-reals-errors.adb:404:36: info: predicate check proved
+libst-reals-errors.adb:416:17: info: postcondition proved
+libst-reals-errors.adb:416:17: info: predicate check proved
+libst-reals-errors.adb:416:55: info: predicate check proved
+libst-reals-errors.adb:417:17: info: predicate check proved
+libst-reals-errors.adb:421:13: info: subprogram variant proved
+libst-reals-errors.adb:421:27: info: range check proved
+libst-reals-errors.adb:428:22: info: assertion proved
+libst-reals-errors.adb:428:22: info: predicate check proved
+libst-reals-errors.adb:428:54: info: predicate check proved
+libst-reals-errors.adb:430:07: info: precondition proved
+libst-reals-errors.adb:434:22: info: assertion proved
+libst-reals-errors.adb:434:22: info: precondition proved
+libst-reals-errors.adb:434:22: info: predicate check proved
+libst-reals-errors.adb:437:22: info: assertion proved
+libst-reals-errors.adb:437:22: info: predicate check proved
+libst-reals-errors.adb:438:07: info: precondition proved
+libst-reals-errors.adb:440:07: info: precondition proved
+libst-reals-errors.adb:441:15: info: predicate check proved
+libst-reals-errors.adb:445:10: info: assertion proved
+libst-reals-errors.adb:445:15: info: precondition proved
+libst-reals-errors.adb:445:15: info: predicate check proved
+libst-reals-errors.adb:446:13: info: precondition proved
+libst-reals-errors.adb:446:13: info: predicate check proved
+libst-reals-errors.adb:447:35: info: precondition proved
+libst-reals-errors.adb:448:22: info: precondition proved
+libst-reals-errors.adb:452:10: info: assertion proved
+libst-reals-errors.adb:452:28: info: precondition proved
+libst-reals-errors.adb:453:38: info: predicate check proved
+libst-reals-errors.adb:453:49: info: predicate check proved
+libst-reals-errors.adb:453:58: info: division check proved
+libst-reals-errors.adb:454:12: info: predicate check proved
 libst-reals-errors.ads:8:08: info: postcondition proved
 libst-reals-errors.ads:9:15: info: predicate check proved
 libst-reals-errors.ads:10:14: info: predicate check proved
