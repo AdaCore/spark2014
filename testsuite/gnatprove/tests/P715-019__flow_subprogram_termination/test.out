@@ -16,7 +16,7 @@ container.adb:19:67: info: overflow check proved (CVC5: 2 VC)
 container.adb:23:14: info: index check proved (CVC5: 2 VC)
 container.adb:26:14: info: add a contract to analyze it separately from calling contexts
 container.adb:26:14: info: aspect Always_Terminates on "Test3" has been proved, subprogram will terminate
-container.adb:26:14: info: local subprogram "Test3" only analyzed in the context of calls
+container.adb:26:14: info: local subprogram "Test3" only analyzed in the context of calls [info-unrolling-inlining]
 container.adb:30:11: info: precondition proved (CVC5: 1 VC), in call inlined at container.adb:45
 container.adb:30:11: info: precondition proved (Trivial: 1 VC), in call inlined at container.adb:45
 container.adb:33:20: medium: range check might fail, cannot prove upper bound for X + 1, in call inlined at container.adb:45 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 32 should mention Int in a loop invariant]
@@ -86,7 +86,7 @@ functions.adb:8:18: medium: implicit aspect Always_Terminates on "Non_Ter_Func" 
 functions.adb:11:07: warning: unreachable code (CVC5: 1 VC)
 functions.adb:14:14: high: all paths in "G" raise exceptions or do not terminate normally
 functions.adb:14:14: info: add a contract to analyze it separately from calling contexts
-functions.adb:14:14: info: local subprogram "G" only analyzed in the context of calls
+functions.adb:14:14: info: local subprogram "G" only analyzed in the context of calls [info-unrolling-inlining]
 functions.adb:14:14: warning: subprogram "G" has no effect
 functions.adb:16:07: medium: aspect Always_Terminates on "G" could be incorrect, call to "P" might be nonterminating [possible fix: annotate "P" with aspect Always_Terminates]
 functions.adb:16:07: medium: implicit aspect Always_Terminates on "Functions" could be incorrect, call to "P" might be nonterminating, in call inlined at functions.adb:29 [possible fix: annotate "P" with aspect Always_Terminates]
@@ -142,7 +142,7 @@ nested_loops.adb:30:24: medium: aspect Always_Terminates on "Proc2" could be inc
 nested_loops.adb:38:14: warning: subprogram "Proc3" has no effect
 nested_loops.adb:41:19: medium: aspect Always_Terminates on "Proc3" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 nested_loops.adb:42:17: info: overflow check proved (CVC5: 2 VC)
-nested_loops.adb:43:26: info: unrolling loop
+nested_loops.adb:43:26: info: unrolling loop [info-unrolling-inlining]
 nested_loops.adb:44:24: medium: aspect Always_Terminates on "Proc3" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 nested_packages.adb:7:20: warning: subprogram "Null_Pck" has no effect
 nested_packages.adb:10:23: warning: subprogram "Null_Pck2" has no effect
@@ -177,7 +177,7 @@ p.adb:60:15: medium: implicit aspect Always_Terminates on "P" could be incorrect
 preconditions.adb:6:18: medium: implicit aspect Always_Terminates on "Nonreturning_Precondition" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 preconditions.adb:9:14: warning: unreachable code (CVC5: 1 VC)
 preconditions.ads:2:13: info: implicit aspect Always_Terminates on "Returning_Precondition" has been proved, subprogram will terminate
-r.adb:17:36: info: unrolling loop
+r.adb:17:36: info: unrolling loop [info-unrolling-inlining]
 r.adb:18:13: high: potentially blocking entry call in protected operation "E"
 r.adb:18:13: warning: potentially blocking operation in protected operation [enabled by default]
 r.adb:25:21: warning: statement has no effect

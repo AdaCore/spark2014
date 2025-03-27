@@ -1,20 +1,20 @@
 main.adb:29:14: info: add a contract to analyze it separately from calling contexts
-main.adb:29:14: info: local subprogram "Train_Everyone" only analyzed in the context of calls
+main.adb:29:14: info: local subprogram "Train_Everyone" only analyzed in the context of calls [info-unrolling-inlining]
 main.adb:35:13: info: precondition proved (CVC5: 13 VC), in call inlined at main.adb:70
 main.adb:39:13: info: precondition proved (CVC5: 13 VC), in call inlined at main.adb:70
 main.adb:43:13: info: precondition proved (CVC5: 13 VC), in call inlined at main.adb:70
 main.adb:47:13: info: precondition proved (CVC5: 13 VC), in call inlined at main.adb:70
 main.adb:52:14: info: add a contract to analyze it separately from calling contexts
-main.adb:52:14: info: local subprogram "OMG" only analyzed in the context of calls
+main.adb:52:14: info: local subprogram "OMG" only analyzed in the context of calls [info-unrolling-inlining]
 main.adb:54:07: medium: precondition might fail, cannot prove Is_Alive (Killer), in call inlined at main.adb:71
 main.adb:57:07: medium: precondition might fail, cannot prove Is_Alive (Killer), in call inlined at main.adb:71
 main.adb:58:35: warning: "Kenny" is set by "Another_One_Bites_The_Dust" but not used after the call, in call inlined at main.adb:71
 main.adb:61:14: info: add a contract to analyze it separately from calling contexts
-main.adb:61:14: info: local subprogram "Print_Everyone" only analyzed in the context of calls
+main.adb:61:14: info: local subprogram "Print_Everyone" only analyzed in the context of calls [info-unrolling-inlining]
 main.adb:61:14: warning: subprogram "Print_Everyone" has no effect
 main.adb:70:04: info: analyzing call to "Train_Everyone" in context
 main.adb:70:04: info: in inlined body at line 31
-main.adb:70:04: info: unrolling loop
+main.adb:70:04: info: unrolling loop [info-unrolling-inlining]
 main.adb:71:04: info: analyzing call to "OMG" in context
 main.adb:72:04: info: analyzing call to "Print_Everyone" in context
 people.adb:4:04: info: initialization of "Today" constituent of "Date" proved
@@ -30,7 +30,7 @@ people.ads:31:13: info: implicit aspect Always_Terminates on "Is_Alive" has been
 professionals.adb:62:07: info: initialization of "Tmp" proved
 professionals.adb:77:07: info: initialization of "Tmp" proved
 professionals.adb:94:40: info: initialization of "Skill_Of_The_Day" constituent of "State" proved
-professionals.adb:156:28: info: unrolling loop
+professionals.adb:156:28: info: unrolling loop [info-unrolling-inlining]
 professionals.adb:206:72: medium: overflow check might fail, cannot prove upper bound for Killer.Number_Of_People_Killed + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
 professionals.ads:24:13: info: implicit aspect Always_Terminates on "New_Person" has been proved, subprogram will terminate
 professionals.ads:30:13: info: implicit aspect Always_Terminates on "New_Person" has been proved, subprogram will terminate
@@ -51,7 +51,7 @@ simple_oo_with_contracts.adb:12:22: medium: assertion might fail [possible fix: 
 simple_oo_with_contracts.adb:13:16: medium: overflow check might fail, cannot prove lower bound for G3 + Par.X [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at simple_oo_with_contracts.ads:19 should mention Par and G3 in a precondition]
 simple_oo_with_contracts.adb:13:24: medium: overflow check might fail, cannot prove lower bound for G3 + Par.X + Par.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at simple_oo_with_contracts.ads:19 should mention Par and G3 in a precondition]
 simple_oo_with_contracts.adb:19:22: medium: assertion might fail [possible fix: subprogram at simple_oo_with_contracts.ads:29 should mention Par and G3 in a precondition]
-simple_oo_with_contracts.adb:26:24: info: cannot unroll loop (too many loop iterations)
+simple_oo_with_contracts.adb:26:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 simple_oo_with_contracts.adb:27:25: medium: assertion might fail [possible fix: subprogram at simple_oo_with_contracts.ads:38 should mention Par and G2 in a precondition]
 simple_oo_with_contracts.adb:27:33: medium: overflow check might fail, cannot prove upper bound for I + Par.Z2 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 simple_oo_with_contracts.ads:9:11: info: data dependencies proved
@@ -68,7 +68,7 @@ simple_oo_without_contracts.adb:12:22: medium: assertion might fail [possible fi
 simple_oo_without_contracts.adb:13:16: medium: overflow check might fail, cannot prove lower bound for G3 + Par.X [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at simple_oo_without_contracts.ads:15 should mention Par and G3 in a precondition]
 simple_oo_without_contracts.adb:13:24: medium: overflow check might fail, cannot prove lower bound for G3 + Par.X + Par.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at simple_oo_without_contracts.ads:15 should mention Par and G3 in a precondition]
 simple_oo_without_contracts.adb:19:22: medium: assertion might fail [possible fix: subprogram at simple_oo_without_contracts.ads:22 should mention Par and G3 in a precondition]
-simple_oo_without_contracts.adb:26:24: info: cannot unroll loop (too many loop iterations)
+simple_oo_without_contracts.adb:26:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 simple_oo_without_contracts.adb:27:25: medium: assertion might fail [possible fix: subprogram at simple_oo_without_contracts.ads:29 should mention Par and G2 in a precondition]
 simple_oo_without_contracts.adb:27:33: medium: overflow check might fail, cannot prove upper bound for I + Par.Z2 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 simple_oo_without_contracts.ads:29:14: warning: subprogram "Do_Stuff" has no effect

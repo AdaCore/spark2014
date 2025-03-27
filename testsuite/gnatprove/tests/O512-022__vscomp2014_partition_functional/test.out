@@ -79,7 +79,7 @@ partition_refinement.adb:122:22: info: assertion proved (CVC5: 1 VC)
 partition_refinement.adb:135:07: info: initialization of "P_Elem" proved
 partition_refinement.adb:135:15: info: initialization of "P_Prime" proved
 partition_refinement.adb:136:07: info: initialization of "P_Prime_Index" proved
-partition_refinement.adb:143:59: info: cannot unroll loop (too many loop iterations)
+partition_refinement.adb:143:59: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 partition_refinement.adb:149:20: medium: precondition might fail [possible fix: loop at line 143 should mention P in a loop invariant]
 partition_refinement.adb:151:56: info: range check proved (CVC5: 2 VC)
 partition_refinement.adb:154:56: info: range check proved (CVC5: 2 VC)

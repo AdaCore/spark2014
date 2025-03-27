@@ -114,7 +114,7 @@ records.adb:430:11: info: flow dependencies proved
 records.adb:436:22: high: assertion might fail (e.g. when X = (Exists => True, The_Pair => (A => 5, B => 10)))
 records.adb:439:13: info: add a contract to analyze it separately from calling contexts
 records.adb:439:13: info: implicit aspect Always_Terminates on "Swap_Fields" has been proved, subprogram will terminate
-records.adb:439:13: info: local subprogram "Swap_Fields" only analyzed in the context of calls
+records.adb:439:13: info: local subprogram "Swap_Fields" only analyzed in the context of calls [info-unrolling-inlining]
 records.adb:446:04: warning: analyzing unreferenced function "Apply_Command" [unreferenced-function]
 records.adb:446:13: info: implicit aspect Always_Terminates on "Apply_Command" has been proved, subprogram will terminate
 records.adb:448:07: info: initialization of "R" proved

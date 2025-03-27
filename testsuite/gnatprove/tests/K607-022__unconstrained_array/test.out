@@ -44,7 +44,7 @@ simple_unc_arrays.adb:66:34: info: loop invariant preservation proved (CVC5: 1 V
 simple_unc_arrays.adb:66:73: info: index check proved (CVC5: 4 VC)
 simple_unc_arrays.adb:68:24: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.adb:69:25: info: index check proved (CVC5: 2 VC)
-simple_unc_arrays.adb:83:28: info: cannot unroll loop (too many loop iterations)
+simple_unc_arrays.adb:83:28: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 simple_unc_arrays.adb:84:20: medium: overflow check might fail, cannot prove lower bound for Sum + A.V (I) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 83 should mention Sum in a loop invariant]
 simple_unc_arrays.adb:84:27: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.adb:87:18: info: division check proved (CVC5: 1 VC)
@@ -53,7 +53,7 @@ simple_unc_arrays.adb:98:33: info: loop invariant preservation proved (CVC5: 1 V
 simple_unc_arrays.adb:98:65: info: index check proved (CVC5: 4 VC)
 simple_unc_arrays.adb:100:18: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.adb:117:18: medium: implicit aspect Always_Terminates on "Bubble_Sort" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
-simple_unc_arrays.adb:119:37: info: cannot unroll loop (too many loop iterations)
+simple_unc_arrays.adb:119:37: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 simple_unc_arrays.adb:120:25: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.adb:120:25: info: overflow check proved (CVC5: 2 VC)
 simple_unc_arrays.adb:120:39: info: index check proved (CVC5: 2 VC)

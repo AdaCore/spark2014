@@ -41,7 +41,7 @@ ipv4_parsing.adb:70:86: info: overflow check proved
 ipv4_parsing.adb:71:42: info: precondition proved
 ipv4_parsing.adb:72:27: info: precondition proved
 ipv4_parsing.adb:76:36: info: index check proved
-ipv4_parsing.adb:81:23: info: unrolling loop
+ipv4_parsing.adb:81:23: info: unrolling loop [info-unrolling-inlining]
 ipv4_parsing.adb:82:41: info: range check proved
 ipv4_parsing.adb:82:44: info: index check proved
 ipv4_parsing.adb:83:25: info: overflow check proved
@@ -50,7 +50,7 @@ ipv4_parsing.adb:89:23: info: index check proved
 ipv4_parsing.adb:90:72: info: index check proved
 ipv4_parsing.adb:96:07: info: only expected exception raised
 ipv4_parsing.adb:101:07: info: initialization of "Byte" proved
-ipv4_parsing.adb:108:23: info: unrolling loop
+ipv4_parsing.adb:108:23: info: unrolling loop [info-unrolling-inlining]
 ipv4_parsing.adb:109:09: info: precondition proved
 ipv4_parsing.adb:109:27: info: in value of subprogram parameter after the call at ipv4_parsing.adb:109
 ipv4_parsing.adb:109:27: info: range check proved
@@ -58,7 +58,7 @@ ipv4_parsing.adb:112:28: info: overflow check proved
 ipv4_parsing.adb:117:24: info: overflow check proved
 ipv4_parsing.adb:124:07: info: initialization of "Byte" proved
 ipv4_parsing.adb:125:07: info: initialization of "Error" proved
-ipv4_parsing.adb:127:23: info: unrolling loop
+ipv4_parsing.adb:127:23: info: unrolling loop [info-unrolling-inlining]
 ipv4_parsing.adb:128:09: info: precondition proved
 ipv4_parsing.adb:128:27: info: in value of subprogram parameter after the call at ipv4_parsing.adb:128
 ipv4_parsing.adb:128:27: info: range check proved
@@ -90,7 +90,7 @@ ipv4_parsing.adb:163:79: info: initialization check proved
 ipv4_parsing.adb:163:82: info: index check proved
 ipv4_parsing.adb:163:88: info: initialization check proved
 ipv4_parsing.adb:163:94: info: index check proved
-ipv4_parsing.adb:167:23: info: unrolling loop
+ipv4_parsing.adb:167:23: info: unrolling loop [info-unrolling-inlining]
 ipv4_parsing.adb:168:12: info: index check proved
 ipv4_parsing.adb:168:40: info: division check proved
 ipv4_parsing.adb:169:22: info: range check proved
@@ -137,7 +137,7 @@ ipv4_parsing.adb:196:24: info: assertion proved
 ipv4_parsing.adb:196:24: info: precondition proved
 ipv4_parsing.adb:196:42: info: overflow check proved
 ipv4_parsing.adb:196:69: info: range check proved
-ipv4_parsing.adb:208:23: info: unrolling loop
+ipv4_parsing.adb:208:23: info: unrolling loop [info-unrolling-inlining]
 ipv4_parsing.adb:209:09: info: precondition proved
 ipv4_parsing.adb:209:38: info: range check proved
 ipv4_parsing.adb:212:13: info: index check proved

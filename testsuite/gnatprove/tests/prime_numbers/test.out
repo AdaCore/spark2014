@@ -229,7 +229,7 @@ test_prime_and_coprime_numbers.adb:6:04: info: add a contract to analyze it sepa
 test_prime_and_coprime_numbers.adb:6:04: info: analyzing call to "Prove_Index_2_Not_Prime" in context
 test_prime_and_coprime_numbers.adb:6:04: info: in instantiation at prime_and_coprime_numbers.adb:225
 test_prime_and_coprime_numbers.adb:6:04: info: in instantiation at prime_and_coprime_numbers.adb:327
-test_prime_and_coprime_numbers.adb:6:04: info: local subprogram "Prove_Index_2_Not_Prime" only analyzed in the context of calls
+test_prime_and_coprime_numbers.adb:6:04: info: local subprogram "Prove_Index_2_Not_Prime" only analyzed in the context of calls [info-unrolling-inlining]
 test_prime_and_coprime_numbers.adb:9:04: info: initialization of "Coprimes" proved
 test_prime_and_coprime_numbers.adb:12:15: info: precondition proved
 test_prime_and_coprime_numbers.adb:12:15: info: range check proved

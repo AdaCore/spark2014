@@ -13,10 +13,10 @@ do_checks.adb:61:16: medium: range check might fail
 do_checks.adb:67:16: info: range check proved (CVC5: 2 VC)
 do_checks.adb:67:61: medium: overflow check might fail, cannot prove lower bound for Zero - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
 do_checks.adb:74:17: medium: range check might fail
-do_checks.adb:74:47: info: cannot unroll loop (too many loop iterations)
+do_checks.adb:74:47: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 do_checks.adb:78:17: info: range check proved (CVC5: 2 VC)
 do_checks.adb:78:50: high: overflow check might fail, cannot prove lower bound for Zero - 1 (e.g. when Zero = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
-do_checks.adb:78:54: info: cannot unroll loop (too many loop iterations)
+do_checks.adb:78:54: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 do_checks.adb:86:19: medium: range check might fail
 do_checks.adb:94:19: info: range check proved (CVC5: 2 VC)
 do_checks.adb:94:51: medium: overflow check might fail, cannot prove lower bound for Zero - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]

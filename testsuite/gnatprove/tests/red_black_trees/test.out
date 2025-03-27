@@ -2449,7 +2449,7 @@ search_trees.adb:732:25: info: initialization of "Dummy_3" proved
 search_trees.adb:732:34: info: initialization of "Dummy_4" proved
 search_trees.adb:732:43: info: initialization of "Dummy_5" proved
 search_trees.adb:738:17: info: add a contract to analyze it separately from calling contexts
-search_trees.adb:738:17: info: local subprogram "Prove_Extract_X" only analyzed in the context of calls
+search_trees.adb:738:17: info: local subprogram "Prove_Extract_X" only analyzed in the context of calls [info-unrolling-inlining]
 search_trees.adb:747:16: medium: precondition might fail, cannot prove Valid_Root (F_Old, Root), in call inlined at search_trees.adb:953
 search_trees.adb:747:55: info: range check proved (CVC5: 2 VC), in call inlined at search_trees.adb:953
 search_trees.adb:750:16: info: precondition proved (CVC5: 1 VC), in call inlined at search_trees.adb:953
@@ -2466,7 +2466,7 @@ search_trees.adb:754:44: medium: invariant check might fail, in call inlined at 
 search_trees.adb:754:44: medium: precondition might fail, in call inlined at search_trees.adb:953
 search_trees.adb:754:63: info: precondition proved (CVC5: 1 VC), in call inlined at search_trees.adb:953
 search_trees.adb:759:17: info: add a contract to analyze it separately from calling contexts
-search_trees.adb:759:17: info: local subprogram "Prove_Extract_Y" only analyzed in the context of calls
+search_trees.adb:759:17: info: local subprogram "Prove_Extract_Y" only analyzed in the context of calls [info-unrolling-inlining]
 search_trees.adb:765:13: medium: precondition might fail, cannot prove Valid_Root (F_Old, Root), in call inlined at search_trees.adb:958
 search_trees.adb:766:28: medium: assertion might fail, in call inlined at search_trees.adb:958 [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function in its unit spec]
 search_trees.adb:766:28: medium: precondition might fail, in call inlined at search_trees.adb:958
@@ -2492,7 +2492,7 @@ search_trees.adb:785:30: medium: precondition might fail, in call inlined at sea
 search_trees.adb:786:27: info: precondition proved (CVC5: 1 VC), in call inlined at search_trees.adb:958
 search_trees.adb:786:56: medium: precondition might fail, in call inlined at search_trees.adb:958
 search_trees.adb:791:17: info: add a contract to analyze it separately from calling contexts
-search_trees.adb:791:17: info: local subprogram "Prove_Extract_YL" only analyzed in the context of calls
+search_trees.adb:791:17: info: local subprogram "Prove_Extract_YL" only analyzed in the context of calls [info-unrolling-inlining]
 search_trees.adb:798:16: medium: precondition might fail, cannot prove Valid_Root (F_Old, Root), in call inlined at search_trees.adb:963
 search_trees.adb:798:59: medium: range check might fail, cannot prove lower bound for YL, in call inlined at search_trees.adb:963 [reason for check: input value must fit in parameter type]
 search_trees.adb:799:31: medium: assertion might fail, in call inlined at search_trees.adb:963 [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function in its unit spec]
@@ -2523,7 +2523,7 @@ search_trees.adb:829:56: info: precondition proved (CVC5: 1 VC), in call inlined
 search_trees.adb:829:107: medium: precondition might fail, in call inlined at search_trees.adb:963
 search_trees.adb:829:124: medium: range check might fail, cannot prove lower bound for YL, in call inlined at search_trees.adb:963 [reason for check: input value must fit in parameter type]
 search_trees.adb:834:17: info: add a contract to analyze it separately from calling contexts
-search_trees.adb:834:17: info: local subprogram "Prove_Plug_YL" only analyzed in the context of calls
+search_trees.adb:834:17: info: local subprogram "Prove_Plug_YL" only analyzed in the context of calls [info-unrolling-inlining]
 search_trees.adb:839:13: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:968
 search_trees.adb:844:31: medium: assertion might fail, in call inlined at search_trees.adb:968 [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function in its unit spec]
 search_trees.adb:844:31: medium: precondition might fail, in call inlined at search_trees.adb:968
@@ -2553,7 +2553,7 @@ search_trees.adb:876:30: medium: precondition might fail, in call inlined at sea
 search_trees.adb:877:27: medium: precondition might fail, in call inlined at search_trees.adb:968
 search_trees.adb:877:56: medium: precondition might fail, in call inlined at search_trees.adb:968
 search_trees.adb:882:17: info: add a contract to analyze it separately from calling contexts
-search_trees.adb:882:17: info: local subprogram "Prove_Plug_X" only analyzed in the context of calls
+search_trees.adb:882:17: info: local subprogram "Prove_Plug_X" only analyzed in the context of calls [info-unrolling-inlining]
 search_trees.adb:888:13: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:973
 search_trees.adb:890:13: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:973
 search_trees.adb:890:53: medium: precondition might fail, in call inlined at search_trees.adb:973
@@ -2572,7 +2572,7 @@ search_trees.adb:903:90: info: range check proved (CVC5: 2 VC), in call inlined 
 search_trees.adb:905:30: medium: precondition might fail, in call inlined at search_trees.adb:973
 search_trees.adb:905:57: medium: precondition might fail, in call inlined at search_trees.adb:973
 search_trees.adb:910:17: info: add a contract to analyze it separately from calling contexts
-search_trees.adb:910:17: info: local subprogram "Prove_Plug_Y" only analyzed in the context of calls
+search_trees.adb:910:17: info: local subprogram "Prove_Plug_Y" only analyzed in the context of calls [info-unrolling-inlining]
 search_trees.adb:916:28: medium: assertion might fail, cannot prove M1 (I).A = M2 (I).A, in call inlined at search_trees.adb:981
 search_trees.adb:916:28: medium: in inlined expression function body at tree_model.ads:55
 search_trees.adb:916:28: medium: precondition might fail, in call inlined at search_trees.adb:981
@@ -2659,7 +2659,7 @@ search_trees.adb:1005:41: info: for T before the call at search_trees.ads:22
 search_trees.adb:1005:41: info: invariant check proved (CVC5: 1 VC)
 search_trees.adb:1005:41: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:1021:17: info: add a contract to analyze it separately from calling contexts
-search_trees.adb:1021:17: info: local subprogram "Prove_Extract_Y" only analyzed in the context of calls
+search_trees.adb:1021:17: info: local subprogram "Prove_Extract_Y" only analyzed in the context of calls [info-unrolling-inlining]
 search_trees.adb:1028:16: medium: precondition might fail, cannot prove Valid_Root (F_Old, Root), in call inlined at search_trees.adb:1234
 search_trees.adb:1028:55: info: range check proved (CVC5: 2 VC), in call inlined at search_trees.adb:1234
 search_trees.adb:1031:16: info: precondition proved (CVC5: 1 VC), in call inlined at search_trees.adb:1234
@@ -2676,7 +2676,7 @@ search_trees.adb:1035:44: medium: invariant check might fail, in call inlined at
 search_trees.adb:1035:44: medium: precondition might fail, in call inlined at search_trees.adb:1234
 search_trees.adb:1035:63: info: precondition proved (CVC5: 1 VC), in call inlined at search_trees.adb:1234
 search_trees.adb:1040:17: info: add a contract to analyze it separately from calling contexts
-search_trees.adb:1040:17: info: local subprogram "Prove_Extract_X" only analyzed in the context of calls
+search_trees.adb:1040:17: info: local subprogram "Prove_Extract_X" only analyzed in the context of calls [info-unrolling-inlining]
 search_trees.adb:1046:13: medium: precondition might fail, cannot prove Valid_Root (F_Old, Root), in call inlined at search_trees.adb:1239
 search_trees.adb:1047:28: medium: assertion might fail, in call inlined at search_trees.adb:1239 [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function in its unit spec]
 search_trees.adb:1047:28: medium: precondition might fail, in call inlined at search_trees.adb:1239
@@ -2702,7 +2702,7 @@ search_trees.adb:1066:30: medium: precondition might fail, in call inlined at se
 search_trees.adb:1067:27: medium: precondition might fail, in call inlined at search_trees.adb:1239
 search_trees.adb:1067:56: info: precondition proved (CVC5: 1 VC), in call inlined at search_trees.adb:1239
 search_trees.adb:1072:17: info: add a contract to analyze it separately from calling contexts
-search_trees.adb:1072:17: info: local subprogram "Prove_Extract_XR" only analyzed in the context of calls
+search_trees.adb:1072:17: info: local subprogram "Prove_Extract_XR" only analyzed in the context of calls [info-unrolling-inlining]
 search_trees.adb:1079:16: medium: precondition might fail, cannot prove Valid_Root (F_Old, Root), in call inlined at search_trees.adb:1244
 search_trees.adb:1079:59: medium: range check might fail, cannot prove lower bound for XR, in call inlined at search_trees.adb:1244 [reason for check: input value must fit in parameter type]
 search_trees.adb:1080:31: medium: assertion might fail, in call inlined at search_trees.adb:1244 [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function in its unit spec]
@@ -2733,7 +2733,7 @@ search_trees.adb:1110:56: medium: precondition might fail, in call inlined at se
 search_trees.adb:1110:107: medium: precondition might fail, in call inlined at search_trees.adb:1244
 search_trees.adb:1110:124: medium: range check might fail, cannot prove lower bound for XR, in call inlined at search_trees.adb:1244 [reason for check: input value must fit in parameter type]
 search_trees.adb:1115:17: info: add a contract to analyze it separately from calling contexts
-search_trees.adb:1115:17: info: local subprogram "Prove_Plug_XR" only analyzed in the context of calls
+search_trees.adb:1115:17: info: local subprogram "Prove_Plug_XR" only analyzed in the context of calls [info-unrolling-inlining]
 search_trees.adb:1120:13: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1249
 search_trees.adb:1125:31: medium: assertion might fail, in call inlined at search_trees.adb:1249 [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function in its unit spec]
 search_trees.adb:1125:31: medium: precondition might fail, in call inlined at search_trees.adb:1249
@@ -2763,7 +2763,7 @@ search_trees.adb:1157:30: medium: precondition might fail, in call inlined at se
 search_trees.adb:1158:27: medium: precondition might fail, in call inlined at search_trees.adb:1249
 search_trees.adb:1158:56: medium: precondition might fail, in call inlined at search_trees.adb:1249
 search_trees.adb:1163:17: info: add a contract to analyze it separately from calling contexts
-search_trees.adb:1163:17: info: local subprogram "Prove_Plug_Y" only analyzed in the context of calls
+search_trees.adb:1163:17: info: local subprogram "Prove_Plug_Y" only analyzed in the context of calls [info-unrolling-inlining]
 search_trees.adb:1169:13: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1254
 search_trees.adb:1171:13: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1254
 search_trees.adb:1171:53: medium: precondition might fail, in call inlined at search_trees.adb:1254
@@ -2782,7 +2782,7 @@ search_trees.adb:1184:90: info: range check proved (CVC5: 2 VC), in call inlined
 search_trees.adb:1186:30: medium: precondition might fail, in call inlined at search_trees.adb:1254
 search_trees.adb:1186:57: medium: precondition might fail, in call inlined at search_trees.adb:1254
 search_trees.adb:1191:17: info: add a contract to analyze it separately from calling contexts
-search_trees.adb:1191:17: info: local subprogram "Prove_Plug_X" only analyzed in the context of calls
+search_trees.adb:1191:17: info: local subprogram "Prove_Plug_X" only analyzed in the context of calls [info-unrolling-inlining]
 search_trees.adb:1197:28: medium: assertion might fail, cannot prove M1 (I).A = M2 (I).A, in call inlined at search_trees.adb:1262
 search_trees.adb:1197:28: medium: in inlined expression function body at tree_model.ads:55
 search_trees.adb:1197:28: medium: precondition might fail, in call inlined at search_trees.adb:1262

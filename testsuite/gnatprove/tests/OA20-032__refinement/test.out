@@ -9,7 +9,7 @@ patris.adb:53:04: info: initialization of "Action_Request_Nbr" constituent of "G
 patris.adb:54:04: info: initialization of "Speed_Up" constituent of "Game_State" proved
 patris.adb:59:13: info: add a contract to analyze it separately from calling contexts
 patris.adb:59:13: info: implicit aspect Always_Terminates on "Get_New_Piece" has been proved, subprogram will terminate
-patris.adb:59:13: info: local subprogram "Get_New_Piece" only analyzed in the context of calls
+patris.adb:59:13: info: local subprogram "Get_New_Piece" only analyzed in the context of calls [info-unrolling-inlining]
 patris.adb:67:49: warning: assuming "Rand" has no effect on global items
 patris.adb:67:49: warning: no Global contract available for "Rand" [assumed-global-null]
 patris.adb:67:56: info: division check proved (CVC5: 1 VC), in call inlined at patris.adb:306
@@ -27,14 +27,14 @@ patris.adb:107:50: info: index check proved (CVC5: 2 VC)
 patris.adb:108:36: info: index check proved (CVC5: 2 VC)
 patris.adb:108:54: info: index check proved (CVC5: 2 VC)
 patris.adb:113:16: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-patris.adb:118:30: info: unrolling loop
-patris.adb:119:33: info: unrolling loop
+patris.adb:118:30: info: unrolling loop [info-unrolling-inlining]
+patris.adb:119:33: info: unrolling loop [info-unrolling-inlining]
 patris.adb:121:45: info: index check proved (CVC5: 24 VC; Z3: 2 VC; altergo: 6 VC)
 patris.adb:121:63: info: index check proved (CVC5: 24 VC; Z3: 5 VC; altergo: 3 VC)
 patris.adb:129:16: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 patris.adb:131:57: info: index check proved (CVC5: 2 VC)
-patris.adb:134:34: info: unrolling loop
-patris.adb:135:37: info: unrolling loop
+patris.adb:134:34: info: unrolling loop [info-unrolling-inlining]
+patris.adb:135:37: info: unrolling loop [info-unrolling-inlining]
 patris.adb:136:54: info: index check proved (CVC5: 18 VC)
 patris.adb:137:45: info: index check proved (CVC5: 10 VC; Z3: 3 VC; altergo: 5 VC)
 patris.adb:137:63: info: index check proved (CVC5: 10 VC; Z3: 8 VC)

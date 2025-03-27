@@ -45,6 +45,6 @@ p.adb:98:26: medium: range check might fail, cannot prove upper bound for Y [rea
 p.ads:9:13: info: implicit aspect Always_Terminates on "Sqrt_Binary" has been proved, subprogram will terminate
 p.ads:10:19: info: postcondition proved (CVC5: 2 VC)
 p.ads:15:19: medium: postcondition might fail, cannot prove Sqrt_Von_Neumann'Result * Sqrt_Von_Neumann'Result <= X
-test_sqrt.adb:7:25: info: cannot unroll loop (too many loop iterations)
+test_sqrt.adb:7:25: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 test_sqrt.adb:7:25: warning: statement has no effect
 test_sqrt.adb:8:09: warning: unused assignment

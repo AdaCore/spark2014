@@ -1,7 +1,7 @@
-rflx-tlv-message.ads:5:01: info: cannot unroll loop (too many loop iterations)
-rflx-tlv-message.ads:5:01: info: cannot unroll loop (too many loop iterations)
-rflx-tlv-message.ads:5:01: info: cannot unroll loop (too many loop iterations)
-rflx-tlv-message.ads:5:01: info: cannot unroll loop (too many loop iterations)
+rflx-tlv-message.ads:5:01: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+rflx-tlv-message.ads:5:01: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+rflx-tlv-message.ads:5:01: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+rflx-tlv-message.ads:5:01: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 rflx-tlv-message.ads:5:01: info: in instantiation at rflx-generic_types.adb:196
 rflx-tlv-message.ads:5:01: info: in instantiation at rflx-generic_types.adb:196
 rflx-tlv-message.ads:5:01: info: in instantiation at rflx-generic_types.adb:62

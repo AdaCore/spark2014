@@ -64,16 +64,16 @@ keccak-duplex.ads:160:66: info: division check proved (CVC5: 1 VC), in instantia
 keccak-duplex.ads:161:15: info: postcondition proved (CVC5: 1 VC), in instantiation at keccak-keccak_1600.ads:66
 keccak-keccak_1600.ads:45:04: info: in instantiation at keccak-keccakf.adb:216
 keccak-keccak_1600.ads:45:04: info: in instantiation at keccak-keccakf.adb:44
-keccak-keccak_1600.ads:45:04: info: unrolling loop
-keccak-keccak_1600.ads:45:04: info: unrolling loop
-keccak-keccak_1600.ads:53:04: info: cannot unroll loop (too many loop iterations)
+keccak-keccak_1600.ads:45:04: info: unrolling loop [info-unrolling-inlining]
+keccak-keccak_1600.ads:45:04: info: unrolling loop [info-unrolling-inlining]
+keccak-keccak_1600.ads:53:04: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 keccak-keccak_1600.ads:53:04: info: in instantiation at keccak-keccakf-permutation.adb:35
-keccak-keccak_1600.ads:55:04: info: cannot unroll loop (too many loop iterations)
+keccak-keccak_1600.ads:55:04: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 keccak-keccak_1600.ads:55:04: info: in instantiation at keccak-keccakf-byte_lanes.adb:116
 keccak-keccak_1600.ads:55:04: info: in instantiation at keccak-keccakf-byte_lanes.adb:55
 keccak-keccak_1600.ads:55:04: info: in instantiation at keccak-keccakf-byte_lanes.adb:79
-keccak-keccak_1600.ads:55:04: info: unrolling loop
-keccak-keccak_1600.ads:55:04: info: unrolling loop
+keccak-keccak_1600.ads:55:04: info: unrolling loop [info-unrolling-inlining]
+keccak-keccak_1600.ads:55:04: info: unrolling loop [info-unrolling-inlining]
 keccak-keccak_1600.ads:57:04: warning: assuming "Pad101_Multi_Blocks" always terminates
 keccak-keccak_1600.ads:57:04: warning: in instantiation at keccak-sponge.adb:296
 keccak-keccak_1600.ads:57:04: warning: no Always_Terminates aspect available for "Pad101_Multi_Blocks" [assumed-always-terminates]

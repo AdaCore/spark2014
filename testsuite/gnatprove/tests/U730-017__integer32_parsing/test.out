@@ -129,7 +129,7 @@ integer32_parsing.adb:166:73: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.adb:168:44: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.adb:169:34: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.adb:171:17: info: add a contract to analyze it separately from calling contexts
-integer32_parsing.adb:171:17: info: local subprogram "Prove_Is_Integer" only analyzed in the context of calls
+integer32_parsing.adb:171:17: info: local subprogram "Prove_Is_Integer" only analyzed in the context of calls [info-unrolling-inlining]
 integer32_parsing.adb:173:34: info: overflow check proved (CVC5: 2 VC), in call inlined at integer32_parsing.adb:179
 integer32_parsing.adb:174:34: medium: loop invariant might fail in first iteration, in call inlined at integer32_parsing.adb:179
 integer32_parsing.adb:174:34: medium: loop invariant might not be preserved by an arbitrary iteration, in call inlined at integer32_parsing.adb:179
@@ -248,7 +248,7 @@ integer32_parsing.adb:243:59: info: index check proved (CVC5: 2 VC)
 integer32_parsing.adb:243:64: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.adb:251:07: info: initialization of "First" proved
 integer32_parsing.adb:252:17: info: add a contract to analyze it separately from calling contexts
-integer32_parsing.adb:252:17: info: local subprogram "Prove_Is_Integer" only analyzed in the context of calls
+integer32_parsing.adb:252:17: info: local subprogram "Prove_Is_Integer" only analyzed in the context of calls [info-unrolling-inlining]
 integer32_parsing.adb:256:28: medium: assertion might fail, in call inlined at integer32_parsing.adb:291 (e.g. when I = 11 and V = 1000000001 and res = "11111111180") [possible fix: loop at line 267 should mention res in a loop invariant]
 integer32_parsing.adb:256:28: medium: precondition might fail, in call inlined at integer32_parsing.adb:291 (e.g. when I = 11 and res(1) = '2' and res(2) = '1' and res(3) = '4' and res(4) = '7' and res(5) = '4') [possible fix: loop at line 267 should mention res in a loop invariant]
 integer32_parsing.adb:256:59: medium: divide by zero might fail, in call inlined at integer32_parsing.adb:291 [possible fix: add precondition (Tens (12 - I) /= 0) to subprogram at integer32_parsing.ads:65]

@@ -58,7 +58,7 @@ main.adb:85:17: info: precondition proved (CVC5: 2 VC)
 main.adb:85:17: warning: assuming "Find_First_0" has no effect on global items
 main.adb:85:17: warning: no Global contract available for "Find_First_0" [assumed-global-null]
 main.adb:89:10: info: initialization of "Prev_Fst" proved
-main.adb:91:26: info: unrolling loop
+main.adb:91:26: info: unrolling loop [info-unrolling-inlining]
 main.adb:92:29: info: overflow check proved (CVC5: 6 VC)
 main.adb:93:20: info: precondition proved (CVC5: 6 VC)
 main.adb:93:20: warning: assuming "Find_First_0" has no effect on global items
