@@ -562,6 +562,7 @@ homothetical.adb:12:21: medium: float overflow check might fail [reason for chec
 homothetical.adb:12:24: info: division check proved
 homothetical.adb:12:24: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
 homothetical.adb:13:17: info: precondition proved
+homothetical.adb:13:17: warning: call to "Sqrt" is not handled precisely [imprecise-call]
 homothetical.adb:13:28: info: float overflow check proved
 homothetical.adb:41:33: info: loop invariant initialization proved
 homothetical.adb:41:33: info: loop invariant preservation proved

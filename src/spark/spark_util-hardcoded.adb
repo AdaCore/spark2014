@@ -178,6 +178,26 @@ package body SPARK_Util.Hardcoded is
       raise Program_Error;
    end Get_Real_Time_Time_Unit;
 
+   --------------------------------
+   -- Has_Imprecise_Precondition --
+   --------------------------------
+
+   function Has_Imprecise_Precondition (E : Entity_Id) return Boolean is
+   begin
+      case Get_Hardcoded_Unit (E) is
+         when Big_Integers =>
+            return Get_Name_String (Chars (E)) =
+              Big_Integers_Names.From_String;
+         when Big_Reals =>
+            return Get_Name_String (Chars (E)) in
+              Big_Reals_Names.From_String
+            | Big_Reals_Names.From_Quotient_String
+            | Big_Reals_Names.From_Universal_Image;
+         when others =>
+            return False;
+      end case;
+   end Has_Imprecise_Precondition;
+
    -----------------------
    -- Has_Stoele_Offset --
    -----------------------
@@ -401,6 +421,34 @@ package body SPARK_Util.Hardcoded is
       end case;
 
    end Is_Hardcoded_Unit;
+
+   ------------------------------
+   -- Is_Imprecisely_Hardcoded --
+   ------------------------------
+
+   function Is_Imprecisely_Hardcoded (E : Entity_Id) return Boolean is
+   begin
+      case Get_Hardcoded_Unit (E) is
+         when Big_Integers =>
+            return Get_Name_String (Chars (E)) =
+              Big_Integers_Names.From_String;
+
+         when Big_Reals =>
+            return Get_Name_String (Chars (E)) in
+              Big_Reals_Names.From_String
+            | Big_Reals_Names.From_Quotient_String
+            | Big_Reals_Names.From_Universal_Image;
+
+         when Elementary_Functions =>
+
+            --  All elementary functions are imprecisely hardcoded for now
+
+            return True;
+
+         when others =>
+            return False;
+      end case;
+   end Is_Imprecisely_Hardcoded;
 
    -------------------------
    -- Is_Literal_Function --

@@ -16,18 +16,18 @@ lits.ads:21:29: info: predicate check proved (Trivial: 1 VC)
 lits.ads:23:40: info: predicate check proved (Trivial: 1 VC)
 lits.ads:24:19: info: assertion proved (CVC5: 1 VC)
 lits.ads:24:28: info: predicate check proved (Trivial: 1 VC)
+lits.ads:27:41: low: precondition might fail [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
 lits.ads:27:41: medium: divide by zero might fail
-lits.ads:27:41: medium: precondition might fail
 lits.ads:27:41: warning: call to "From_Universal_Image" is not handled precisely [imprecise-call]
 lits.ads:28:19: medium: assertion might fail
 lits.ads:28:30: info: predicate check proved (Trivial: 1 VC)
+lits.ads:29:41: low: precondition might fail [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
 lits.ads:29:41: medium: divide by zero might fail
-lits.ads:29:41: medium: precondition might fail
 lits.ads:29:41: warning: call to "From_Universal_Image" is not handled precisely [imprecise-call]
 lits.ads:30:19: medium: assertion might fail
 lits.ads:30:30: info: predicate check proved (Trivial: 1 VC)
+lits.ads:32:41: low: precondition might fail [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
 lits.ads:32:41: medium: divide by zero might fail
-lits.ads:32:41: medium: precondition might fail
 lits.ads:32:41: warning: call to "From_Universal_Image" is not handled precisely [imprecise-call]
 lits.ads:33:41: info: predicate check proved (Trivial: 1 VC)
 lits.ads:33:41: medium: divide by zero might fail
