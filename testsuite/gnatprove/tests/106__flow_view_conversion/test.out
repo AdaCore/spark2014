@@ -23,26 +23,27 @@ test_base.adb:66:06: info: flow dependencies proved
 test_base.adb:69:07: warning: initialization of "X" has no effect
 test_base.adb:72:22: info: tag check proved (CVC5: 1 VC)
 test_base.adb:76:38: info: initialization of "C" proved
-test_base.adb:77:18: medium: missing dependency "C => B"
-test_base.adb:77:34: medium: incorrect dependency "null => B"
-test_base.adb:85:25: info: tag check proved (CVC5: 1 VC)
-test_base.adb:88:38: info: initialization of "C" proved
-test_base.adb:89:06: info: flow dependencies proved
-test_base.adb:92:07: warning: initialization of "X" has no effect
-test_base.adb:99:38: info: initialization of "C" proved
-test_base.adb:100:06: info: flow dependencies proved
-test_base.adb:103:07: warning: initialization of "X" has no effect
-test_base.adb:106:22: info: tag check proved (CVC5: 1 VC)
-test_base.adb:107:25: info: tag check proved (CVC5: 1 VC)
-test_base.adb:110:39: info: initialization of "C" proved
-test_base.adb:111:06: info: flow dependencies proved
-test_base.adb:114:07: warning: initialization of "X" has no effect
-test_base.adb:117:22: info: tag check proved (CVC5: 1 VC)
-test_base.adb:123:04: warning: analyzing unreferenced procedure "Test_Soundness" [unreferenced-procedure]
-test_base.adb:126:07: medium: tag check might fail
-test_base.adb:126:17: high: extension of "X" is not initialized
-test_base.adb:135:07: medium: tag check might fail
-test_base.adb:135:30: high: extension of "X" is not initialized
+test_base.adb:77:06: info: flow dependencies proved
+test_base.adb:81:07: warning: initialization of "Y" has no effect
+test_base.adb:83:16: warning: unused assignment
+test_base.adb:84:25: info: tag check proved (CVC5: 1 VC)
+test_base.adb:87:38: info: initialization of "C" proved
+test_base.adb:88:06: info: flow dependencies proved
+test_base.adb:91:07: warning: initialization of "X" has no effect
+test_base.adb:98:38: info: initialization of "C" proved
+test_base.adb:99:06: info: flow dependencies proved
+test_base.adb:102:07: warning: initialization of "X" has no effect
+test_base.adb:105:22: info: tag check proved (CVC5: 1 VC)
+test_base.adb:106:25: info: tag check proved (CVC5: 1 VC)
+test_base.adb:109:39: info: initialization of "C" proved
+test_base.adb:110:06: info: flow dependencies proved
+test_base.adb:113:07: warning: initialization of "X" has no effect
+test_base.adb:116:22: info: tag check proved (CVC5: 1 VC)
+test_base.adb:122:04: warning: analyzing unreferenced procedure "Test_Soundness" [unreferenced-procedure]
+test_base.adb:125:07: medium: tag check might fail
+test_base.adb:125:17: high: extension of "X" is not initialized
+test_base.adb:134:07: medium: tag check might fail
+test_base.adb:134:30: high: extension of "X" is not initialized
 test_call.adb:27:38: info: initialization of "C" proved
 test_call.adb:28:06: info: flow dependencies proved
 test_call.adb:31:07: warning: initialization of "X" has no effect

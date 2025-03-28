@@ -175,6 +175,20 @@ package body Flow_Utility is
      (Get_Type (Etype (Base_Type (E)), Scop));
    --  Get the specific type from a classwide type
 
+   function Join
+     (A, B   : Flow_Id;
+      Offset : Natural := 0)
+         return Flow_Id
+     with Pre => A.Kind in Direct_Mapping | Record_Field and then
+                 B.Kind in Direct_Mapping | Record_Field,
+          Post => Join'Result.Facet = B.Facet;
+   --  Glues components of B to A, starting at offset. For example
+   --  consider A = Obj.X and B = R.X.Y and Offset = 1. Then joining
+   --  will return Obj.X.Y.
+   --
+   --  Similarly, if A = Obj.X and B = R.X'Private_Part and Offset = 1,
+   --  then joining will produce Obj.X'Private_Part.
+
    ----------------------------------------------------------------------
    -- Constants with variable inputs --
    ----------------------------------------------------------------------
@@ -1451,14 +1465,10 @@ package body Flow_Utility is
         and then not Is_Class_Wide_Type (Get_Type (Etype (N), Scope))
       then
          declare
-            Old_Ty : Entity_Id := Get_Type (Map_Root, Scope);
+            Old_Ty : constant Entity_Id := Get_Type (Map_Root, Scope);
             New_Ty : constant Entity_Id := Get_Type (Etype (N), Scope);
 
          begin
-            if Is_Class_Wide_Type (Old_Ty) then
-               Old_Ty := Get_Specific_Type_From_Classwide (Old_Ty, Scope);
-            end if;
-
             if not Is_Ancestor (Old_Ty, New_Ty, Scope)
               and then not Is_Ancestor (New_Ty, Old_Ty, Scope)
             then
@@ -4321,7 +4331,8 @@ package body Flow_Utility is
            or else
              ((Is_Attribute_Update (Root_Node)
                  or else
-               Nkind (Root_Node) = N_Delta_Aggregate)
+               Nkind (Root_Node) in N_Delta_Aggregate
+                                  | N_Type_Conversion)
               and then
               Is_Record_Type (Unchecked_Full_Type (Etype (Root_Node))))
            or else
@@ -4338,7 +4349,8 @@ package body Flow_Utility is
             end if;
 
             Root_Node :=
-              (if Nkind (Root_Node) = N_Delta_Aggregate
+              (if Nkind (Root_Node) in N_Delta_Aggregate
+                                     | N_Type_Conversion
                then Expression (Root_Node)
                else Prefix (Root_Node));
 
@@ -4427,7 +4439,9 @@ package body Flow_Utility is
                         end loop;
                      end;
 
-                  when N_Selected_Component =>
+                  when N_Selected_Component
+                     | N_Type_Conversion
+                  =>
                      null;
 
                   when others =>
@@ -4649,6 +4663,83 @@ package body Flow_Utility is
 
                   Current_Field := Add_Component (Current_Field, Comp);
                   Comp_Id       := Comp_Id + 1;
+               end;
+
+            when N_Type_Conversion =>
+               declare
+                  New_T     : constant Entity_Id :=
+                    Get_Type (Etype (N), Scope);
+                  Old_T     : constant Entity_Id :=
+                    Get_Type (Etype (Expression (N)), Scope);
+                  Same_Priv : constant Boolean :=
+                    (if not Is_Tagged_Type (Old_T) then True
+                     elsif Is_Ancestor (Old_T, New_T, Scope)
+                     then not Introduces_Private_Fields (New_T, Old_T, Scope)
+                     elsif Is_Ancestor (New_T, Old_T, Scope)
+                     then not Introduces_Private_Fields (Old_T, New_T, Scope)
+                     else False);
+                  --  Normally, one of Old_T and New_T is an ancestor of the
+                  --  other. However, when we peek into declarations of nested
+                  --  packages without adjusting the visibility, we can
+                  --  encounter conversions for which this derivation is not
+                  --  visible.
+
+                  New_Comps : Flow_Id_Sets.Set;
+                  The_Ext   : constant Flow_Id :=
+                    (Current_Field with delta Facet => Extension_Part);
+                  The_Priv  : constant Flow_Id :=
+                    (Current_Field with delta Facet => Private_Part);
+                  Default   : Flow_Id_Sets.Set;
+                  New_Map   : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
+               begin
+                  for K of Flatten_Variable
+                    (Direct_Mapping_Id (New_T), Scope)
+                  loop
+                     New_Comps.Insert (Join (Current_Field, K));
+                  end loop;
+
+                  if Is_Tagged_Type (New_T) then
+                     New_Comps.Include (The_Ext);
+                  end if;
+
+                  --  Go over M to remove additional components not present in
+                  --  New_T. Merge their inputs into default.
+
+                  for C in M.Iterate loop
+                     declare
+                        K : Flow_Id          renames Flow_Id_Maps.Key (C);
+                        V : Flow_Id_Sets.Set renames M (C);
+
+                     begin
+                        --  The conversion might be from or to an ancestor
+                        --  type. In the first case, the extension might flow
+                        --  into missing components and the private part. In
+                        --  the second case, the private part and additional
+                        --  components might flow into the extension.
+                        --  Handle both cases at once by merging the extension
+                        --  and the private part into Default and back again.
+                        --  The case where both type have the same private part
+                        --  is handled specifically for more precision.
+
+                        if not New_Comps.Contains (K)
+                          or else K = The_Ext
+                          or else (not Same_Priv and K = The_Priv)
+                        then
+                           Default.Union (V);
+                        else
+                           New_Map.Insert (K, V);
+                           New_Comps.Delete (K);
+                        end if;
+                     end;
+                  end loop;
+
+                  --  Add missing components from New_T. They depend on Default
+
+                  for K of New_Comps loop
+                     New_Map.Insert (K, Default);
+                  end loop;
+
+                  M.Move (Source => New_Map);
                end;
 
             when others =>
@@ -5818,17 +5909,20 @@ package body Flow_Utility is
       Scope : Flow_Scope)
       return Boolean
    is
+      B_Anc : constant Entity_Id := Get_Type (Base_Type (Anc), Scope);
       S_Anc : constant Entity_Id :=
-        (if Is_Class_Wide_Type (Anc)
-         then Get_Specific_Type_From_Classwide (Anc, Scope)
-         else Anc);
-      B_Anc : constant Entity_Id := Get_Type (Base_Type (S_Anc), Scope);
-      T     : Entity_Id := Ty;
+        (if Is_Class_Wide_Type (B_Anc)
+         then Get_Specific_Type_From_Classwide (B_Anc, Scope)
+         else B_Anc);
+      T     : Entity_Id :=
+        (if Is_Class_Wide_Type (Ty)
+         then Get_Specific_Type_From_Classwide (Base_Type (Ty), Scope)
+         else Ty);
    begin
       loop
          T := Get_Type (Base_Type (T), Scope);
 
-         if T = B_Anc then
+         if T = S_Anc then
             return False;
          elsif Is_Private_Type (T) then
             return True;
@@ -5848,17 +5942,20 @@ package body Flow_Utility is
       Scope : Flow_Scope)
       return Boolean
    is
+      B_Anc : constant Entity_Id := Get_Type (Base_Type (Anc), Scope);
       S_Anc : constant Entity_Id :=
-        (if Is_Class_Wide_Type (Anc)
-         then Get_Specific_Type_From_Classwide (Anc, Scope)
-         else Anc);
-      B_Anc : constant Entity_Id := Get_Type (Base_Type (S_Anc), Scope);
-      T     : Entity_Id := Ty;
+        (if Is_Class_Wide_Type (B_Anc)
+         then Get_Specific_Type_From_Classwide (B_Anc, Scope)
+         else B_Anc);
+      T     : Entity_Id :=
+        (if Is_Class_Wide_Type (Ty)
+         then Get_Specific_Type_From_Classwide (Base_Type (Ty), Scope)
+         else Ty);
    begin
       loop
          T := Get_Type (Base_Type (T), Scope);
 
-         if T = B_Anc then
+         if T = S_Anc then
             return True;
          end if;
          T := Ancestor (T);
@@ -6110,6 +6207,30 @@ package body Flow_Utility is
    is
      (Nkind (N) in N_Entity
       and then Ekind (N) = E_Abstract_State);
+
+   ----------
+   -- Join --
+   ----------
+
+   function Join
+     (A, B   : Flow_Id;
+      Offset : Natural := 0)
+         return Flow_Id
+   is
+      F : Flow_Id := A;
+      N : Natural := 0;
+   begin
+      if B.Kind = Record_Field then
+         for C of B.Component loop
+            if N >= Offset then
+               F := Add_Component (F, C);
+            end if;
+            N := N + 1;
+         end loop;
+      end if;
+      F.Facet := B.Facet;
+      return F;
+   end Join;
 
    ------------------------------
    -- Rely_On_Generated_Global --
@@ -6730,20 +6851,6 @@ package body Flow_Utility is
       --  Helpful wrapper for recursing. Note that once extensions are not
       --  irrelevant its not right to start ignoring them again.
 
-      function Join
-        (A, B   : Flow_Id;
-         Offset : Natural := 0)
-         return Flow_Id
-      with Pre => A.Kind in Direct_Mapping | Record_Field and then
-                  B.Kind in Direct_Mapping | Record_Field,
-           Post => Join'Result.Facet = B.Facet;
-      --  Glues components of B to A, starting at offset. For example
-      --  consider A = Obj.X and B = R.X.Y and Offset = 1. Then joining
-      --  will return Obj.X.Y.
-      --
-      --  Similarly, if A = Obj.X and B = R.X'Private_Part and Offset = 1,
-      --  then joining will produce Obj.X'Private_Part.
-
       procedure Merge
         (M         : in out Flow_Id_Maps.Map;
          Component : Entity_Id;
@@ -6771,30 +6878,6 @@ package body Flow_Utility is
       --  Untangle delta aggregate or attribute Update
       --  ??? Pre should include "Is_Object_Reference (Pref)", but currently
       --  it would fail on nested delta aggregates (TA01-056).
-
-      ----------
-      -- Join --
-      ----------
-
-      function Join
-        (A, B   : Flow_Id;
-         Offset : Natural := 0)
-         return Flow_Id
-      is
-         F : Flow_Id := A;
-         N : Natural := 0;
-      begin
-         if B.Kind = Record_Field then
-            for C of B.Component loop
-               if N >= Offset then
-                  F := Add_Component (F, C);
-               end if;
-               N := N + 1;
-            end loop;
-         end if;
-         F.Facet := B.Facet;
-         return F;
-      end Join;
 
       -----------
       -- Merge --

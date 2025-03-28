@@ -1,0 +1,40 @@
+test.adb:10:36: info: initialization of "C" proved
+test.adb:11:06: info: flow dependencies proved
+test.adb:16:11: warning: unused assignment
+test.adb:20:38: info: initialization of "C" proved
+test.adb:21:06: info: flow dependencies proved
+test.adb:26:11: warning: unused assignment
+test.adb:30:38: info: initialization of "C" proved
+test.adb:31:06: info: flow dependencies proved
+test.adb:36:07: info: tag check proved (CVC5: 1 VC)
+test.adb:36:19: warning: unused assignment
+test.adb:37:19: info: tag check proved (CVC5: 1 VC)
+test.adb:40:38: info: initialization of "C" proved
+test.adb:41:06: info: flow dependencies proved
+test.adb:46:07: info: tag check proved (CVC5: 1 VC)
+test.adb:46:19: warning: unused assignment
+test.adb:50:38: info: initialization of "C" proved
+test.adb:51:06: info: flow dependencies proved
+test.adb:54:07: warning: initialization of "X" has no effect
+test.adb:60:38: info: initialization of "C" proved
+test.adb:61:18: medium: missing dependency "C => A"
+test.adb:61:34: medium: incorrect dependency "null => A"
+test.adb:67:07: info: tag check proved (CVC5: 1 VC)
+test.adb:68:19: info: tag check proved (CVC5: 1 VC)
+test.adb:71:38: info: initialization of "C" proved
+test.adb:72:06: info: flow dependencies proved
+test.adb:80:38: info: initialization of "C" proved
+test.adb:81:06: info: flow dependencies proved
+test.adb:89:38: info: initialization of "C" proved
+test.adb:90:06: info: flow dependencies proved
+test.adb:95:27: info: tag check proved (CVC5: 1 VC)
+test.adb:98:39: info: initialization of "C" proved
+test.adb:99:06: info: flow dependencies proved
+test.adb:104:26: info: tag check proved (CVC5: 1 VC)
+test.adb:107:39: info: initialization of "C" proved
+test.adb:108:06: info: flow dependencies proved
+test.adb:111:07: warning: initialization of "X" has no effect
+test.adb:116:39: info: initialization of "C" proved
+test.adb:117:06: info: flow dependencies proved
+test.adb:120:07: warning: initialization of "X" has no effect
+test.adb:122:27: info: tag check proved (CVC5: 1 VC)
