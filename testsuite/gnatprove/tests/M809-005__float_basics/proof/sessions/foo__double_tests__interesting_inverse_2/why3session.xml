@@ -14,31 +14,31 @@
  <goal name="def&#39;vc">
  <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0">
-  <proof prover="0"><result status="unknown"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="unknown" steps="33960"/></proof>
   <proof prover="2"><result status="unknown" steps="1515"/></proof>
   <proof prover="4"><result status="unknown" steps="227"/></proof>
   </goal>
   <goal name="def&#39;vc.1">
-  <proof prover="0"><result status="unknown"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="steplimitexceeded" steps="603930"/></proof>
   <proof prover="2"><result status="unknown" steps="3993236"/></proof>
   <proof prover="4"><result status="unknown" steps="285"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
-  <proof prover="0"><result status="valid" steps="1483"/></proof>
+  <proof prover="0"><result status="valid" steps="1501"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
   <proof prover="2"><result status="highfailure"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.3">
-  <proof prover="0"><result status="unknown"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="steplimitexceeded" steps="1172493"/></proof>
   <proof prover="2"><result status="steplimitexceeded" steps="8450222"/></proof>
   <proof prover="4"><result status="unknown" steps="311"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="0"><result status="valid" steps="1718"/></proof>
+  <proof prover="0"><result status="valid" steps="1737"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
   <proof prover="2"><result status="highfailure"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
@@ -53,7 +53,7 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.7">
-  <proof prover="0"><result status="unknown"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="steplimitexceeded" steps="1742161"/></proof>
   <proof prover="2"><result status="steplimitexceeded" steps="8450247"/></proof>
   <proof prover="4"><result status="unknown" steps="349"/></proof>

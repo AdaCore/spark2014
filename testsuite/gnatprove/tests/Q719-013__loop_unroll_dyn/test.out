@@ -20,7 +20,7 @@ loops_static.adb:38:46: high: overflow check might fail, cannot prove upper boun
 loops_static.adb:38:56: high: overflow check might fail, cannot prove upper bound for I - A'First + 1 (e.g. when A = (others => 0) and A'First = Integer'First+2 and A'Last = 1 and I = 1) [reason for check: result of addition must fit in a 32-bits machine integer]
 loops_static.adb:38:56: info: range check proved (CVC5: 4 VC)
 loops_static.adb:41:46: high: assertion might fail, cannot prove A (A'First + I) = 0 (e.g. when A = (1 => 0, others => 1) and A'First = -1 and A'Last = 1 and A_Length = 3 and I = 1) [possible fix: subprogram at loops_static.ads:6 should mention A in a precondition]
-loops_static.adb:41:57: high: array index check might fail (e.g. when A = (others => 0) and A'First = 0 and A'Last = 1 and A_Length = 2 and I = 2) [reason for check: result of addition must be a valid index into the array]
+loops_static.adb:41:57: high: array index check might fail (e.g. when A = (1 => 0) and A_Length = 1 and I = 1) [reason for check: result of addition must be a valid index into the array]
 loops_static.adb:41:57: info: overflow check proved (CVC5: 4 VC)
 loops_static.adb:44:07: medium: assertion might fail
 loops_static.adb:49:11: warning: unused assignment

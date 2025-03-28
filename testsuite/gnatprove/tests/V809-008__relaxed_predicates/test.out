@@ -56,7 +56,7 @@ test_predicates.adb:89:27: info: initialization check proved (CVC5: 1 VC)
 test_predicates.adb:89:33: info: initialization check proved (CVC5: 2 VC; Trivial: 1 VC)
 test_predicates.adb:89:33: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:89:37: info: initialization check proved (CVC5: 1 VC)
-test_predicates.adb:91:25: medium: assertion might fail (e.g. when X = (H => (F => (C => 0), G => (C => 1)), I => (F => (C => 0), G => (C => 0))) and X.H.F.C'Initialized = True and X.H.G.C'Initialized = True and X.I.F.C'Initialized = True and X.I.G.C'Initialized = True)
+test_predicates.adb:91:25: medium: assertion might fail (e.g. when X = (H => (F => (C => -1), G => (C => 0)), I => (F => (C => 0), G => (C => 0))) and X.H.F.C'Initialized = True and X.H.G.C'Initialized = True and X.I.F.C'Initialized = True and X.I.G.C'Initialized = True)
 test_predicates.adb:91:26: info: initialization check proved (CVC5: 2 VC; Trivial: 1 VC)
 test_predicates.adb:91:26: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:91:30: info: initialization check proved (CVC5: 1 VC)
@@ -83,8 +83,8 @@ test_predicates.adb:128:13: warning: Relaxed_Initialization annotation is useles
 test_predicates.adb:128:13: warning: the result of "Get" cannot be partially initialized [useless-relaxed-init-func-result]
 test_predicates.adb:134:18: info: initialization check proved (CVC5: 2 VC)
 test_predicates.adb:134:18: info: predicate check proved (CVC5: 1 VC)
-test_predicates.adb:134:18: medium: initialization check might fail (e.g. when X = (H => (F => ?, G => (C => 0)), I => (F => (C => -1), G => (C => 0))) and X.H.F.C'Initialized = False and X.H.G.C'Initialized = True and X.I.F.C'Initialized = True and X.I.G.C'Initialized = True)
-test_predicates.adb:134:18: medium: predicate check might fail (e.g. when X = (H => (F => (C => -1), G => (C => -1)), I => (F => (C => -1), G => (C => 0))) and X.H.F.C'Initialized = True and X.H.G.C'Initialized = True and X.I.F.C'Initialized = True and X.I.G.C'Initialized = True)
+test_predicates.adb:134:18: medium: initialization check might fail (e.g. when X = (H => (F => ?, G => (C => 0)), I => (F => (C => 0), G => (C => 1))) and X.H.F.C'Initialized = False and X.H.G.C'Initialized = True and X.I.F.C'Initialized = True and X.I.G.C'Initialized = True)
+test_predicates.adb:134:18: medium: predicate check might fail (e.g. when X = (H => (F => (C => 1), G => (C => 1)), I => (F => (C => 0), G => (C => 1))) and X.H.F.C'Initialized = True and X.H.G.C'Initialized = True and X.I.F.C'Initialized = True and X.I.G.C'Initialized = True)
 test_predicates.adb:136:18: info: initialization check proved (CVC5: 2 VC)
 test_predicates.adb:136:18: info: initialization check proved (CVC5: 2 VC; Trivial: 1 VC)
 test_predicates.adb:136:18: info: predicate check proved (CVC5: 1 VC)
@@ -95,8 +95,8 @@ test_predicates.adb:142:22: warning: unused variable "X"
 test_predicates.adb:152:14: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:153:14: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:154:18: info: initialization check proved (CVC5: 1 VC)
-test_predicates.adb:158:10: medium: initialization check might fail
-test_predicates.adb:158:10: medium: predicate check might fail
+test_predicates.adb:158:10: medium: initialization check might fail (e.g. when X = (H => (F => (C => 1), G => ?), I => (F => (C => 1), G => (C => 1))) and X.H.F.C'Initialized = True and X.H.G.C'Initialized = False and X.I.F.C'Initialized = True and X.I.G.C'Initialized = True)
+test_predicates.adb:158:10: medium: predicate check might fail (e.g. when X = (H => (F => (C => 0), G => (C => 0)), I => (F => (C => 0), G => (C => 0))) and X.H.F.C'Initialized = True and X.H.G.C'Initialized = True and X.I.F.C'Initialized = True and X.I.G.C'Initialized = True)
 test_predicates.adb:162:14: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:163:18: medium: initialization check might fail (e.g. when X = (H => (F => (C => 0), G => (C => 0)), I => (F => (C => 2), G => (C => 3))) and X.H.F.C'Initialized = True and X.H.G.C'Initialized = True and X.I.F.C'Initialized = True and X.I.G.C'Initialized = True)
 test_predicates.adb:167:14: info: predicate check proved (CVC5: 1 VC)
@@ -108,7 +108,7 @@ test_predicates.adb:178:10: info: initialization check proved (CVC5: 2 VC; Trivi
 test_predicates.adb:178:10: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:180:14: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:181:10: info: initialization check proved (CVC5: 2 VC; Trivial: 1 VC)
-test_predicates.adb:181:10: medium: predicate check might fail
+test_predicates.adb:181:10: medium: predicate check might fail (e.g. when X = (H => (F => (C => 0), G => (C => 1)), I => ?) and X.H.F.C'Initialized = True and X.H.G.C'Initialized = True and X.I.F.C'Initialized = False and X.I.G.C'Initialized = False)
 test_predicates.adb:185:24: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:185:54: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:186:18: info: initialization check proved (CVC5: 1 VC)
@@ -132,18 +132,18 @@ test_predicates.adb:197:60: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:198:18: info: initialization check proved (CVC5: 1 VC)
 test_predicates.adb:206:17: medium: predicate check might fail (e.g. when H = (C => 0) and H.C'Initialized = True)
 test_predicates.adb:206:23: medium: initialization check might fail (e.g. when H.C'Initialized = False)
-test_predicates.adb:212:14: medium: predicate check might fail
+test_predicates.adb:212:14: medium: predicate check might fail (e.g. when X = (H => (F => (C => -1), G => (C => 0)), I => (F => (C => -1), G => (C => -1))) and X.H.F.C'Initialized = True and X.H.G.C'Initialized = True and X.I.F.C'Initialized = True and X.I.G.C'Initialized = True)
 test_predicates.adb:212:16: info: initialization check proved (CVC5: 2 VC)
 test_predicates.adb:212:16: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:212:16: medium: initialization check might fail (e.g. when X = (H => (F => ?, G => (C => 0)), I => (F => (C => 0), G => (C => 0))) and X.H.F.C'Initialized = False and X.H.G.C'Initialized = True and X.I.F.C'Initialized = True and X.I.G.C'Initialized = True)
 test_predicates.adb:212:16: medium: predicate check might fail (e.g. when X = (H => (F => (C => 0), G => (C => 0)), I => (F => (C => 0), G => (C => 0))) and X.H.F.C'Initialized = True and X.H.G.C'Initialized = True and X.I.F.C'Initialized = True and X.I.G.C'Initialized = True)
 test_predicates.adb:214:14: info: predicate check proved (CVC5: 1 VC)
-test_predicates.adb:215:14: medium: predicate check might fail
+test_predicates.adb:215:14: medium: predicate check might fail (e.g. when X = (H => (F => (C => 0), G => (C => 1)), I => ?) and X.H.F.C'Initialized = True and X.H.G.C'Initialized = True and X.I.F.C'Initialized = False and X.I.G.C'Initialized = False)
 test_predicates.adb:215:16: info: initialization check proved (CVC5: 2 VC)
 test_predicates.adb:215:16: info: initialization check proved (CVC5: 2 VC; Trivial: 1 VC)
 test_predicates.adb:215:16: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:217:14: info: predicate check proved (CVC5: 1 VC)
-test_predicates.adb:221:17: medium: predicate check might fail (e.g. when H = (C => 0) and H.C'Initialized = True)
+test_predicates.adb:221:17: medium: predicate check might fail (e.g. when H = (C => 0) and H.C'Initialized = True and X = (H => (F => (C => 0), G => (C => 1)), I => ?) and X.H.F.C'Initialized = True and X.H.G.C'Initialized = True and X.I.F.C'Initialized = False and X.I.G.C'Initialized = False)
 test_predicates.adb:221:19: info: initialization check proved (CVC5: 2 VC)
 test_predicates.adb:221:19: info: initialization check proved (CVC5: 2 VC; Trivial: 1 VC)
 test_predicates.adb:221:19: info: predicate check proved (CVC5: 1 VC)
@@ -153,7 +153,7 @@ test_predicates_2.adb:46:11: info: in value of subprogram parameter after the ca
 test_predicates_2.adb:46:11: info: in value of subprogram parameter after the call at test_predicates_2.adb:46
 test_predicates_2.adb:46:11: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_predicates_2.adb:46:11: info: predicate check proved (CVC5: 1 VC)
-test_predicates_2.adb:51:10: medium: initialization check might fail (e.g. when X = (H => (F => ?, G => 0)) and X.H.F'Initialized = False and X.H.G'Initialized = True)
+test_predicates_2.adb:51:10: medium: initialization check might fail (e.g. when X = (H => (F => 0, G => ?)) and X.H.F'Initialized = True and X.H.G'Initialized = False)
 test_predicates_2.adb:51:10: medium: predicate check might fail (e.g. when X = (H => (F => 0, G => 0)) and X.H.F'Initialized = True and X.H.G'Initialized = True)
 test_predicates_2.adb:55:12: info: predicate check proved (CVC5: 1 VC)
 test_predicates_2.adb:56:10: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -167,8 +167,8 @@ test_predicates_2.adb:61:10: info: initialization check proved (CVC5: 1 VC; Triv
 test_predicates_2.adb:61:10: info: predicate check proved (CVC5: 1 VC)
 test_predicates_2.adb:61:11: medium: in value of subprogram parameter after the call at test_predicates_2.adb:61
 test_predicates_2.adb:61:11: medium: in value of subprogram parameter after the call at test_predicates_2.adb:61
-test_predicates_2.adb:61:11: medium: initialization check might fail
-test_predicates_2.adb:61:11: medium: predicate check might fail
+test_predicates_2.adb:61:11: medium: initialization check might fail (e.g. when X = (H => (F => 1, G => ?)) and X.H.F'Initialized = True and X.H.G'Initialized = False)
+test_predicates_2.adb:61:11: medium: predicate check might fail (e.g. when X = (H => (F => 0, G => 0)) and X.H.F'Initialized = True and X.H.G'Initialized = True)
 test_scalar_preds.adb:25:06: info: data dependencies proved
 test_scalar_preds.adb:28:22: info: assertion proved (CVC5: 1 VC)
 test_scalar_preds.adb:34:21: medium: for parameter X at the end of the subprogram at test_scalar_preds.adb:34

@@ -26,7 +26,7 @@ nwa.adb:59:12: medium: overflow check might fail [reason for check: result of ne
 nwa.adb:66:15: info: overflow check proved (CVC5: 1 VC)
 nwa.adb:69:14: info: overflow check proved (CVC5: 1 VC)
 nwa.adb:70:14: info: overflow check proved (CVC5: 1 VC)
-nwa.adb:71:14: info: overflow check proved (Z3: 1 VC)
+nwa.adb:71:14: info: overflow check proved (altergo: 1 VC)
 nwa.adb:72:14: info: division check proved (CVC5: 1 VC)
 nwa.adb:79:14: medium: overflow check might fail [reason for check: result of multiplication must fit in a 64-bits machine integer] [possible fix: add precondition (X * Y in NvU64) to subprogram at nwa.ads:27]
 nwa.adb:80:14: high: divide by zero might fail (e.g. when Y = 0) [possible fix: add precondition (Y /= 0) to subprogram at nwa.ads:27]
@@ -36,7 +36,7 @@ nwa.adb:83:12: medium: overflow check might fail [reason for check: result of ne
 nwa.adb:90:15: info: overflow check proved (CVC5: 1 VC)
 nwa.adb:93:14: info: overflow check proved (CVC5: 1 VC)
 nwa.adb:94:14: info: overflow check proved (CVC5: 1 VC)
-nwa.adb:95:14: info: overflow check proved (Z3: 1 VC)
+nwa.adb:95:14: info: overflow check proved (altergo: 1 VC)
 nwa.adb:96:14: info: division check proved (CVC5: 1 VC)
 nwa.adb:103:14: medium: overflow check might fail [reason for check: result of multiplication must fit in a 8-bits machine integer] [possible fix: add precondition (X * Y in NvU17) to subprogram at nwa.ads:34]
 nwa.adb:104:14: high: divide by zero might fail (e.g. when Y = 0) [possible fix: add precondition (Y /= 0) to subprogram at nwa.ads:34]
@@ -59,7 +59,7 @@ nwa.adb:142:14: info: overflow check proved (CVC5: 1 VC)
 nwa.adb:143:14: info: overflow check proved (CVC5: 1 VC)
 nwa.adb:144:14: info: division check proved (CVC5: 1 VC)
 nwa.adb:151:14: high: range check might fail, cannot prove upper bound for X * Y (e.g. when X = 7 and Y = 143) [reason for check: result of multiplication must fit in the target type of the assignment] [possible fix: add precondition (X * Y <= NvU32b'Last) to subprogram at nwa.ads:46]
-nwa.adb:151:14: info: overflow check proved (Z3: 1 VC)
+nwa.adb:151:14: info: overflow check proved (altergo: 1 VC)
 nwa.adb:152:14: high: divide by zero might fail (e.g. when Y = 0) [possible fix: add precondition (Y /= 0) to subprogram at nwa.ads:46]
 nwa.adb:153:14: high: range check might fail, cannot prove upper bound for X + Y (e.g. when X = NvU32b'Last and Y = 1) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: add precondition (X <= NvU32b'Last - Y) to subprogram at nwa.ads:46]
 nwa.adb:153:14: info: overflow check proved (CVC5: 1 VC)
@@ -73,7 +73,7 @@ nwa.adb:165:14: info: overflow check proved (CVC5: 1 VC)
 nwa.adb:165:14: info: range check proved (CVC5: 2 VC)
 nwa.adb:166:14: info: overflow check proved (CVC5: 1 VC)
 nwa.adb:166:14: info: range check proved (CVC5: 2 VC)
-nwa.adb:167:14: info: overflow check proved (Z3: 1 VC)
+nwa.adb:167:14: info: overflow check proved (altergo: 1 VC)
 nwa.adb:167:14: info: range check proved (CVC5: 2 VC)
 nwa.adb:168:14: info: division check proved (CVC5: 1 VC)
 nwa.adb:175:14: medium: overflow check might fail [reason for check: result of multiplication must fit in a 64-bits machine integer] [possible fix: add precondition (X * Y in 0 .. 18446744073709551615) to subprogram at nwa.ads:55]
@@ -84,7 +84,7 @@ nwa.adb:179:12: medium: overflow check might fail [reason for check: result of n
 nwa.adb:186:15: info: overflow check proved (CVC5: 1 VC)
 nwa.adb:189:14: info: overflow check proved (CVC5: 1 VC)
 nwa.adb:190:14: info: overflow check proved (CVC5: 1 VC)
-nwa.adb:191:14: info: overflow check proved (Z3: 1 VC)
+nwa.adb:191:14: info: overflow check proved (altergo: 1 VC)
 nwa.adb:192:14: info: division check proved (CVC5: 1 VC)
 nwa.ads:15:39: info: data dependencies proved
 nwa.ads:16:39: info: data dependencies proved
