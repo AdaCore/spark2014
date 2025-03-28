@@ -13,12 +13,12 @@ assign_arr.adb:5:18: high: overflow check might fail [CWE 190], cannot prove low
 assign_arr.ads:3:22: medium: "X" might not be initialized in "Assign" [CWE 457] [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 assign_arr_unk.adb:4:10: high: array index check might fail [CWE 119], cannot prove lower bound for 1 (e.g. when X'First = 2 and X'Last = 0) [reason for check: value must be a valid index into the array]
 assign_arr_unk.adb:4:18: high: overflow check might fail [CWE 190], cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Y <= Integer'Last - 1) to subprogram at assign_arr_unk.ads:3]
-assign_arr_unk.adb:5:10: high: array index check might fail [CWE 119], cannot prove upper bound for 4 (e.g. when X = (others => 0) and X'First = 0 and X'Last = 1) [reason for check: value must be a valid index into the array]
+assign_arr_unk.adb:5:10: high: array index check might fail [CWE 119], cannot prove upper bound for 4 (e.g. when X = (0 => 1, 1 => 0)) [reason for check: value must be a valid index into the array]
 assign_arr_unk.adb:5:18: high: overflow check might fail [CWE 190], cannot prove lower bound for Y - 1 (e.g. when Y = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Y >= Integer'First + 1) to subprogram at assign_arr_unk.ads:3]
 assign_arr_unk.ads:3:22: medium: "X" might not be initialized in "Assign" [CWE 457] [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 assign_pos.adb:1:23: info: initialization of "X" proved
 assign_pos.adb:3:11: high: overflow check might fail [CWE 190], cannot prove upper bound for Y + 1 (e.g. when Y = Positive'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Y <= Integer'Last - 1) to subprogram at line 1]
-assign_rec.adb:4:16: high: overflow check might fail [CWE 190], cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Y <= Integer'Last - 1) to subprogram at assign_rec.ads:9]
+assign_rec.adb:4:16: medium: overflow check might fail [CWE 190], cannot prove upper bound for Y + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Y <= Integer'Last - 1) to subprogram at assign_rec.ads:9]
 assign_rec.adb:5:18: high: overflow check might fail [CWE 190], cannot prove lower bound for Y - 1 (e.g. when Y = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Y >= Integer'First + 1) to subprogram at assign_rec.ads:9]
 assign_rec.ads:9:22: high: "X.D.A" is not initialized in "Assign" [CWE 457] [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.D.A" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 assign_to_pos.adb:1:26: info: initialization of "X" proved
@@ -76,7 +76,7 @@ call_unknown_pos.adb:4:04: warning: assuming "Unknown" has no effect on global i
 call_unknown_pos.adb:4:04: warning: no Always_Terminates aspect available for "Unknown" [assumed-always-terminates]
 call_unknown_pos.adb:4:04: warning: no Global contract available for "Unknown" [assumed-global-null]
 call_unknown_pos.adb:4:13: medium: in value of subprogram parameter after the call at call_unknown_pos.adb:4
-call_unknown_pos.adb:4:13: medium: range check might fail [CWE 682], cannot prove lower bound for X [reason for check: output value must fit in argument type] [possible fix: call at line 4 should mention X (for argument X) in a postcondition]
+call_unknown_pos.adb:4:13: medium: range check might fail [CWE 682], cannot prove lower bound for X (e.g. when X = 1) [reason for check: output value must fit in argument type] [possible fix: call at line 4 should mention X (for argument X) in a postcondition]
 call_unknown_rel.adb:2:29: info: initialization of "X" proved
 call_unknown_rel.adb:4:04: warning: assuming "Unknown" always terminates
 call_unknown_rel.adb:4:04: warning: assuming "Unknown" has no effect on global items
@@ -120,7 +120,7 @@ induction.adb:4:21: info: unrolling loop [info-unrolling-inlining]
 induction.adb:5:14: info: overflow check proved (CVC5: 20 VC)
 map.adb:2:44: info: initialization of "Z" proved
 map.adb:4:21: info: unrolling loop [info-unrolling-inlining]
-map.adb:5:22: high: overflow check might fail [CWE 190], cannot prove lower bound for X (J) + Y (e.g. when J = 1 and X = (others => Integer'First) and Y = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 2 should mention X and Y in a precondition]
+map.adb:5:22: high: overflow check might fail [CWE 190], cannot prove lower bound for X (J) + Y (e.g. when J = 1 and X = (others => -1) and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 2 should mention X and Y in a precondition]
 multi_cond_assign.adb:1:30: info: initialization of "X" proved
 multi_cond_assign.adb:4:14: high: overflow check might fail [CWE 190], cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Y <= Integer'Last - 1) to subprogram at line 1]
 multi_cond_assign.adb:7:17: high: overflow check might fail [CWE 190], cannot prove lower bound for Y - 1 (e.g. when Y = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Y >= Integer'First + 1) to subprogram at line 1]

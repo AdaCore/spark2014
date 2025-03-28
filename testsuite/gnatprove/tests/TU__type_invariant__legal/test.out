@@ -17,7 +17,7 @@ type_invariant_legal.ads:11:14: info: for X at the end of Pub_Out at type_invari
 type_invariant_legal.ads:11:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal.ads:11:23: info: initialization of "X" proved
 type_invariant_legal.ads:12:14: medium: for X at the end of Pub_In_Out at type_invariant_legal.ads:12
-type_invariant_legal.ads:12:14: medium: invariant check might fail (e.g. when X = 0)
+type_invariant_legal.ads:12:14: medium: invariant check might fail (e.g. when X = 1)
 type_invariant_legal.ads:15:09: medium: invariant check might fail on default value
 type_invariant_legal.ads:17:13: info: implicit aspect Always_Terminates on "Priv" has been proved, subprogram will terminate
 type_invariant_legal.ads:18:13: info: implicit aspect Always_Terminates on "E_Priv" has been proved, subprogram will terminate
