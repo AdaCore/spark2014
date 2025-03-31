@@ -1256,6 +1256,7 @@ package body Configuration is
       Compile_Lib ("map", "Occ");
       Compile_Lib ("map", "MapPermut");
       Compile_Lib ("map", "MapInjection");
+      Compile_Lib ("map", "MapExt");
       Compile_Lib ("set", "Set");
       Compile_Lib ("list", "List");
       Compile_Lib ("list", "Length");
