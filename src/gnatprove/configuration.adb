@@ -623,37 +623,53 @@ package body Configuration is
 
    procedure Handle_Warning_Switches (Switch, Value : String) is
       Tag : Misc_Warning_Kind;
+      Status : Warning_Enabled_Status;
    begin
-      if Switch /= "--pedantic"  and then Switch /= "--info" then
-         declare
-         begin
-            Tag := From_Tag (Value);
-         exception
-            when Constraint_Error =>
-               Abort_Msg
-                 ("""" & Value & """ is not a valid warning name, use "
-                  & """--list-categories"" to obtain a list of all warning "
-                  & "names",
-                  With_Help => False);
-         end;
-      end if;
-      if Switch = "-W" then
-         Configuration.Warning_Status (Tag) := VC_Kinds.WS_Enabled;
-      elsif Switch = "-A" then
-         Configuration.Warning_Status (Tag) := VC_Kinds.WS_Disabled;
-      elsif Switch = "-D" then
-         Configuration.Warning_Status (Tag) := VC_Kinds.WS_Error;
-      elsif Switch = "--pedantic" then
+
+      --  Handling of pedantic and info
+
+      if Switch = "--pedantic" then
          for WK in Pedantic_Warning_Kind loop
             Configuration.Warning_Status (WK) := VC_Kinds.WS_Enabled;
          end loop;
-      elsif Switch = "--info" then
+         return;
+      end if;
+      if Switch = "--info" then
          for WK in Info_Warning_Kind loop
             Configuration.Warning_Status (WK) := VC_Kinds.WS_Enabled;
          end loop;
-      else
-         raise Program_Error;
+         return;
       end if;
+      pragma Assert
+        (Switch = "-W" or else Switch = "-A" or else Switch = "-D");
+
+      Status := (if Switch = "-W" then VC_Kinds.WS_Enabled
+                elsif Switch = "-A" then VC_Kinds.WS_Disabled
+                else VC_Kinds.WS_Error);
+
+      --  Handling of "all"
+
+      if Value = "all" then
+         for WK in Misc_Warning_Kind loop
+            Configuration.Warning_Status (WK) := Status;
+         end loop;
+         return;
+      end if;
+
+      --  Remaining cases
+
+      begin
+         Tag := From_Tag (Value);
+      exception
+         when Constraint_Error =>
+            Abort_Msg
+              ("""" & Value & """ is not a valid warning name, use "
+               & """--list-categories"" to obtain a list of all warning "
+               & "names",
+               With_Help => False);
+      end;
+
+      Configuration.Warning_Status (Tag) := Status;
    end Handle_Warning_Switches;
 
    -----------------------

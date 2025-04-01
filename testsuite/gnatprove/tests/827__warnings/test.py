@@ -1,0 +1,18 @@
+from test_support import prove_all
+
+print("=== warning should be issued ===")
+prove_all()
+print("=== warning should not be issued ===")
+prove_all(opt=["-A", "precondition-statically-false"])
+print("=== warning should not be issued ===")
+prove_all(opt=["--warnings=off"])
+print("=== warning should not be issued ===")
+prove_all(opt=["--warnings=off", "-W", "precondition-statically-false"])
+print("=== warning should not be issued ===")
+prove_all(opt=["-A", "all"])
+print("=== warning should be promoted to error ===")
+prove_all(opt=["-D", "precondition-statically-false"])
+print("=== warning should be issued, as well as 'error during analysis' ===")
+prove_all(opt=["--warnings=error"])
+print("=== warning should be promoted to error ===")
+prove_all(opt=["-D", "precondition-statically-false", "--warnings=off"])
