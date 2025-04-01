@@ -10525,86 +10525,7 @@ package body Gnat2Why.Expr is
                            | N_Entry_Call_Statement
       then
          Prepend (Why_Call, Store);
-
-         --  We need to havoc the values of global variables of mode Output if
-         --  they have parts with relaxed initialization so that their value
-         --  before the call cannot leak into subsequently read values.
-
-         declare
-            Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
-            Write_Ids : Flow_Types.Flow_Id_Sets.Set;
-            Effects   : constant W_Effects_Id := New_Effects;
-
-         begin
-            Flow_Utility.Get_Proof_Globals (Subprogram      => Subp,
-                                            Reads           => Read_Ids,
-                                            Writes          => Write_Ids,
-                                            Erase_Constants => True);
-
-            for Write_Id of Write_Ids loop
-               if not Read_Ids.Contains (Write_Id) then
-                  case Write_Id.Kind is
-                     when Direct_Mapping =>
-                        declare
-                           Entity : constant Entity_Id :=
-                             Get_Direct_Mapping_Id (Write_Id);
-                           Binder : constant Item_Type :=
-                             Ada_Ent_To_Why.Element (Symbol_Table, Entity);
-
-                        begin
-                           if Contains_Relaxed_Init_Parts (Etype (Entity))
-                             or else Obj_Has_Relaxed_Init (Entity)
-                           then
-                              case Binder.Kind is
-                                 when DRecord =>
-                                    pragma Assert (Binder.Fields.Present);
-                                    Effects_Append_To_Writes
-                                      (Effects, Binder.Fields.Binder.B_Name);
-
-                                 when UCArray =>
-                                    Effects_Append_To_Writes
-                                      (Effects, Binder.Content.B_Name);
-
-                                 when Pointer =>
-                                    Effects_Append_To_Writes
-                                      (Effects, Binder.Value.B_Name);
-
-                                 when Regular =>
-                                    Effects_Append_To_Writes
-                                      (Effects, Binder.Main.B_Name);
-
-                                 when others =>
-                                    raise Program_Error;
-                              end case;
-
-                              if Binder.Init.Present then
-                                 Effects_Append_To_Writes
-                                   (Effects, Binder.Init.Id);
-                              end if;
-                           end if;
-                        end;
-                     when Magic_String =>
-                        Effects_Append_To_Writes
-                          (Effects,
-                           To_Why_Id (Obj   => To_Name (Write_Id),
-                                      Local => False));
-                     when others =>
-                        raise Program_Error;
-                  end case;
-               end if;
-            end loop;
-
-            Prepend
-              (New_Havoc_Statement
-                 (Ada_Node => Ada_Call,
-                  Effects  => Effects),
-               Store);
-         end;
-      end if;
-
-      --  Set the pieces together
-
-      Ref_Context := +Store;
+         Ref_Context := +Store;
 
       --  In the case of a function call, there is value to return as the final
       --  expression. Note that this can only occur for calls to functions
@@ -10614,7 +10535,7 @@ package body Gnat2Why.Expr is
       --  post-call assignments and assumptions at this point) and use it as
       --  the final value for the sequence.
 
-      if Nkind (Ada_Call) = N_Function_Call then
+      elsif not Is_Void_Sequence (Store) then
          declare
             Tmp : constant W_Identifier_Id :=
               New_Temp_Identifier (Ada_Call, Get_Type (+Why_Call));
@@ -10622,9 +10543,91 @@ package body Gnat2Why.Expr is
             Ref_Context :=
               New_Typed_Binding (Name    => Tmp,
                                  Def     => Why_Call,
-                                 Context => Sequence (Ref_Context, +Tmp));
+                                 Context => Sequence (+Store, +Tmp));
          end;
+      else
+         Ref_Context := Why_Call;
       end if;
+
+      --  We need to havoc the values of global variables of mode Output if
+      --  they have parts with relaxed initialization so that their value
+      --  before the call cannot leak into subsequently read values.
+
+      declare
+         Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
+         Write_Ids : Flow_Types.Flow_Id_Sets.Set;
+         Effects   : constant W_Effects_Id := New_Effects;
+         Has_Out   : Boolean := False;
+
+      begin
+         Flow_Utility.Get_Proof_Globals (Subprogram      => Subp,
+                                         Reads           => Read_Ids,
+                                         Writes          => Write_Ids,
+                                         Erase_Constants => True);
+
+         for Write_Id of Write_Ids loop
+            if not Read_Ids.Contains (Write_Id) then
+               case Write_Id.Kind is
+                  when Direct_Mapping =>
+                     declare
+                        Entity : constant Entity_Id :=
+                          Get_Direct_Mapping_Id (Write_Id);
+                        Binder : constant Item_Type :=
+                          Ada_Ent_To_Why.Element (Symbol_Table, Entity);
+
+                     begin
+                        if Contains_Relaxed_Init_Parts (Etype (Entity))
+                          or else Obj_Has_Relaxed_Init (Entity)
+                        then
+                           Has_Out := True;
+                           case Binder.Kind is
+                              when DRecord =>
+                                 pragma Assert (Binder.Fields.Present);
+                                 Effects_Append_To_Writes
+                                   (Effects, Binder.Fields.Binder.B_Name);
+
+                              when UCArray =>
+                                 Effects_Append_To_Writes
+                                   (Effects, Binder.Content.B_Name);
+
+                              when Pointer =>
+                                 Effects_Append_To_Writes
+                                   (Effects, Binder.Value.B_Name);
+
+                              when Regular =>
+                                 Effects_Append_To_Writes
+                                   (Effects, Binder.Main.B_Name);
+
+                              when others =>
+                                 raise Program_Error;
+                           end case;
+
+                           if Binder.Init.Present then
+                              Effects_Append_To_Writes
+                                (Effects, Binder.Init.Id);
+                           end if;
+                        end if;
+                     end;
+                  when Magic_String =>
+                     Has_Out := True;
+                     Effects_Append_To_Writes
+                       (Effects,
+                        To_Why_Id (Obj   => To_Name (Write_Id),
+                                   Local => False));
+                  when others =>
+                     raise Program_Error;
+               end case;
+            end if;
+         end loop;
+
+         if Has_Out then
+            Prepend
+              (New_Havoc_Statement
+                 (Ada_Node => Ada_Call,
+                  Effects  => Effects),
+               Ref_Context);
+         end if;
+      end;
 
       for J of reverse Context loop
          if J.Mutable then
@@ -24042,10 +24045,10 @@ package body Gnat2Why.Expr is
 
       --  We may need a context if we have introduced constants for expressions
       --  which mandate checks in parameters and possibly also a store for
-      --  volatile functions. This can only occur in the program domain.
+      --  volatile functions and havocs for parameters of functions with
+      --  side-effects. This can only occur in the program domain.
 
-      if not Context.Is_Empty then
-         pragma Assert (Domain = EW_Prog);
+      if Domain = EW_Prog then
          T := +Insert_Ref_Context (Expr, +T, Context, Store);
       end if;
 
@@ -28012,14 +28015,6 @@ package body Gnat2Why.Expr is
 
       Variables.Exclude (Direct_Mapping_Id (Unique_Entity (Inv_Param)));
    end Variables_In_Type_Invariant;
-
-   -------------------
-   -- Void_Sequence --
-   -------------------
-
-   function Void_Sequence return W_Statement_Sequence_Id is
-     (New_Statement_Sequence (Ada_Node => Empty,
-                              Statements => (1 .. 1 => +Void)));
 
    -------------------------
    -- Warn_On_Dead_Branch --
