@@ -1,4 +1,4 @@
-qa-tienio.ads:34:51: info: precondition proved (CVC5: 1 VC), in instantiation at enum_example.adb:13
+a-tienio.ads:34:51: info: precondition proved (CVC5: 1 VC), in instantiation at enum_example.adb:13
 a-tienio.ads:51:51: info: precondition proved (CVC5: 1 VC), in instantiation at enum_example.adb:13
 a-tienio.ads:53:08: info: precondition proved (CVC5: 2 VC), in instantiation at enum_example.adb:13
 a-tienio.ads:54:12: info: precondition proved (CVC5: 2 VC), in instantiation at enum_example.adb:13
