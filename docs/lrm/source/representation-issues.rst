@@ -189,26 +189,167 @@ could be misaligned (as GNAT ensures).
    shall have the same Size.
 
 2. The source subtype shall be suitable as the source of an unchecked
-   conversion and the target subtype should be suitable as the target of an
-   unchecked conversion.
+   conversion.
+
+3. The target subtype should be suitable for unchecked conversion and it
+   should be suitable as the target of an unchecked
+   conversion unless the instance of ``Unchecked_Conversion`` has the
+   Potentially_Invalid aspect, see :ref:`Data Validity`.
+
+.. index:: Potentially_Invalid
 
 Data Validity
 ~~~~~~~~~~~~~
 
-|SPARK| rules ensure the only possible cases of invalid data in a |SPARK|
-program come from interfacing with the external world, either through the
-hardware-software or Operating Systems integration, or through interactions
-with non-|SPARK| code in the same program. In particular, it is up to users to
+In general, |SPARK| rules ensure the only possible cases of invalid data in a
+|SPARK| program come from interfacing with the external world, either through
+the hardware-software or Operating Systems integration, or through interactions
+with non-|SPARK| code in the same program. In this case, it is up to users to
 ensure that data read from external sources are valid.
 
 Validity can be ensured by using a type for the target of the data read from an
 external source (or an unchecked type conversion when used to read data from
 external source) which is sufficient to encompass all possible values of the
-source.  Alternatively the X'Valid (or X'Valid_Scalars for composite types) may
+source. Alternatively the X'Valid (or X'Valid_Scalars for composite types) may
 be used to help determine the validity of an object.
 
-The use of invalid values in a program (other than in a Valid, or Valid_Scalars
-attribute) may invalidate any proofs performed on the program.
+SPARK defines the aspect Potentially_Invalid. It can be used to identify objects
+that might hold invalid values at subprogram boundary and functions that might
+return invalid values. The use of invalid values coming from other external
+sources in a program may invalidate any proofs performed on the program.
+
+The Potentially_Invalid aspect may be specified for a standalone object or for a
+subprogram or entry, where it effectively applies to one or more of its formal
+parameters and the return object of a function.
+
+.. container:: heading
+
+   Static Semantics
+
+1. An object is said to *be potentially invalid* if and only if
+
+   * its Potentially_Invalid aspect is True; or
+
+   * it is the return object of a function call and the Potentially_Invalid
+     aspect of the function's result is True.
+
+2. A Potentially_Invalid aspect specification for a formal parameter
+   of a subprogram or entry or for a function's result is expressed syntactically
+   as an aspect_specification of the declaration of the enclosing callable
+   entity. In the following example, the parameter ``X1`` and the result of
+   ``F`` are specified as potentially invalid; the parameters ``X2``
+   and ``X3`` are not:
+
+   .. code-block:: ada
+
+      function F (X1 : T1; X2 : T2; X3 : T3) return T4
+        with Potentially_Invalid => (X1, F'Result);
+
+..
+
+   More precisely, the Potentially_Invalid aspect for a subprogram or entry (or
+   a generic subprogram) is specified by an ``aspect_specification`` where the
+   ``aspect_mark`` is Potentially_Invalid and the ``aspect_definition`` has
+   the following grammar for ``profile_aspect_spec``:
+
+   ::
+
+      profile_aspect_spec ::= ( profile_spec_item {, profile_spec_item} )
+      profile_spec_item   ::= parameter_name [=> aspect_definition]
+                            | function_name'Result [=> aspect_definition]
+
+3. As a special case, a Potentially_Invalid aspect specification for the result
+   of an instance of Ada.Unchecked_Conversion is expressed syntactically as an
+   aspect_specification of the generic instantiation:
+
+   .. code-block:: ada
+
+      function F is new Ada.Unchecked_Conversion (T1, T2) with
+        Potentially_Invalid;
+
+.. container:: heading
+
+   Legality Rules
+
+4. The following rules apply to the profile_aspect_spec of a Potentially_Invalid
+   aspect specification for a subprogram, a generic subprogram, or an entry.
+
+   * Each parameter_name shall name a parameter of the given subprogram or
+     entry and no parameter shall be named more than once. It is not required
+     that every parameter be named.
+
+   * Each aspect_definition within a profile_aspect_spec shall be as for a
+     Boolean aspect.
+
+   * The form of profile_spec_item that includes a Result attribute reference
+     shall only be provided if the given subprogram or entry is a function or
+     generic function; in that case, the prefix of the attribute reference shall
+     denote that function or generic function. Such a Result attribute reference
+     is allowed, other language restrictions on the use of Result attribute
+     references notwithstanding (i.e., despite the fact that such a
+     Result attribute reference does not occur within a postcondition
+     expression).
+
+   * A parameter or function result named in the aspect_specification shall not
+     be of a scalar type, except for the result of an imported function.
+     [It is a bounded error to pass an invalid scalar parameter as input for an
+     input parameter or as output for an output parameter or function result, so
+     there is no benefit of marking such a parameter or result as being
+     potentially invalid.]
+
+   * A Boolean value of True is implicitly specified if no aspect_definition
+     is provided, as per Ada RM 13.1.1's rules for Boolean-valued aspects.
+     A Boolean value of False is implicitly specified if a given parameter
+     (or, in the case of a function or generic function, the result) is not
+     mentioned in any profile_spec_item.
+
+5. No part of an object or function result annotated with Potentially_Invalid
+   shall be of an access type, a tagged type, a concurrent
+   type, or an Unchecked_Union type.
+
+6. No object marked Part_Of an abstract state or a concurrent object shall be
+   potentially invalid.
+
+7. No part of an object or function result annotated with Potentially_Invalid
+   shall be subject to a type invariant.
+
+8. An overlaid object shall not be potentially invalid.
+
+9. A formal parameter of a dispatching operation shall not be potentially
+   invalid; the result of a dispatching function shall not be potentially
+   invalid.
+
+.. container:: heading
+
+   Verification Rules
+
+10. At the point of a read of a non-discriminant subcomponent X of an object
+    or function result that is potentially invalid, a verification condition is
+    introduced to ensure that X is a valid value of its type, except if the read
+    occurs either:
+
+    * as the prefix of a component selection, indexed component, or array slice,
+
+    * as the expression of a return statement of a function with the
+      Potentially_Invalid aspect,
+
+    * as the input value of an actual parameter [of mode **in** or **in out**]
+      in a call whose corresponding formal has the Potentially_Invalid aspect,
+
+    * as the expression of the declaration of a potentially invalid object,
+
+    * as the expression of an assignment statement into a subcomponent of a
+      potentially invalid object,
+
+    * as the output value of an actual parameter that is a subcomponent of a
+      potentially invalid object, or
+
+    * as the prefix of a reference to the attributes Length, First, Last, Size,
+      Object_Size, and Valid.
+
+    When a subprogram returns normally or propagates an exception, all its
+    parameters and global ouputs are considered to be read for the purpose of
+    this rule.
 
 Unchecked Access Value Creation
 -------------------------------
