@@ -855,10 +855,6 @@ package Gnat2Why.Expr is
    --  @param Ty a type with a visible type invariant
    --  @param Variables used in the expression for Ty's invariant
 
-   function Void_Sequence return W_Statement_Sequence_Id;
-   --  Returns a sequence statement with only one void statement (this avoids
-   --  visible calls to New_Statement_Sequence for non sequential statements).
-
    function Warn_On_Dead_Branch
      (N       : N_Subexpr_Id;
       W       : W_Prog_Id;
