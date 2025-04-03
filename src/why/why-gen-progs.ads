@@ -104,6 +104,13 @@ package Why.Gen.Progs is
      (Left : in out W_Statement_Sequence_Id;
       Right : W_Prog_Id);
 
+   function Void_Sequence return W_Statement_Sequence_Id;
+   --  Returns a sequence statement with only one void statement (this avoids
+   --  visible calls to New_Statement_Sequence for non sequential statements).
+
+   function Is_Void_Sequence (S : W_Statement_Sequence_Id) return Boolean;
+   --  Returns True if S contains only one void statement
+
    procedure Emit_Always_True_Range_Check
      (Ada_Node   : Node_Id;
       Check_Kind : Scalar_Check_Kind);
