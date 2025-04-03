@@ -2,4 +2,4 @@ main.adb:8:13: info: aspect Always_Terminates on "F" has been proved, subprogram
 main.adb:11:14: info: postcondition proved (CVC5: 2 VC)
 main.adb:12:06: info: data dependencies proved
 main.adb:13:06: info: flow dependencies proved
-main.adb:23:09: medium: precondition might fail
+main.adb:23:09: medium: precondition might fail (e.g. when X = (F => ?, G => 2) and X.F'Initialized = False and X.G'Initialized = True)
