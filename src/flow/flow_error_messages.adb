@@ -4196,7 +4196,7 @@ package body Flow_Error_Messages is
                return Statement & " might not terminate";
             end;
          when VC_UC_Source                 =>
-            return "type is unsuitable for unchecked conversion";
+            return "type is unsuitable as a source for unchecked conversion";
 
          when VC_UC_Target                 =>
             declare

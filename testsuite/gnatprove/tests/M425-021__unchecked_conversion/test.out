@@ -1,7 +1,7 @@
 test.adb:16:13: info: types in unchecked conversion have the same size (Trivial)
 test.adb:16:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion) [imprecise-unchecked-conversion]
-test.adb:16:62: high: type is unsuitable for unchecked conversion [possible explanation: type Record_A has minimal size 3, but Size was declared as 24]
-test.adb:17:62: high: type is unsuitable as a target for unchecked conversion [possible explanation: type Record_A2 has minimal size 3, but Size was declared as 24]
+test.adb:16:62: high: type is unsuitable as a source for unchecked conversion [possible explanation: type Record_A has minimal size 3, but Size was declared as 24; type Record_A might have unused bits that are not modelled in SPARK]
+test.adb:17:62: info: type is suitable for unchecked conversion (Trivial)
 test.adb:30:09: info: data dependencies proved
 test.adb:35:04: warning: analyzing unreferenced procedure "UCC_01" [unreferenced-procedure]
 test.adb:38:14: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)

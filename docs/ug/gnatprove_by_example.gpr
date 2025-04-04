@@ -181,6 +181,7 @@ aggregate project GNATprove_By_Example is
      "ug__terminating_loops/terminating_loops.gpr",
      "ug__uc_to_access/uc_to_access.gpr",
      "ug__uc/uc.gpr",
+     "ug__unchecked_conversion/uc.gpr",
      "ug__update_arr_zero/update_arr_zero.gpr",
      "ug__update_list_zero/update_list_zero.gpr",
      "ug__update_range_arr_zero/update_range_arr_zero.gpr",

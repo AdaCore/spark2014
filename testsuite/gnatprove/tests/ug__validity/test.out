@@ -8,7 +8,7 @@
 --> validity.adb:7:68
     7 |       function Int_To_Float is new Ada.Unchecked_Conversion (Integer, Float);
       |                                                                       ^~~~~
-      + possible explanation: floating-point types have invalid bit patterns for SPARK
+      + possible explanation: floating-point types have invalid bit patterns for SPARK; invalid values could result from the unchecked conversion [SPARK RM 13.9]
 
  warning: attribute Valid is assumed to return True [attribute-valid-always-true]
 --> validity.adb:11:22

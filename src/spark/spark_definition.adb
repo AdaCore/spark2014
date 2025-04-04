@@ -4291,18 +4291,11 @@ package body SPARK_Definition is
                --  We emit a warning when the value read might not be valid.
                --  This addresses assumption SPARK_EXTERNAL_VALID.
 
-               declare
-                  Valid       : Boolean;
-                  Explanation : Unbounded_String;
-               begin
-                  Suitable_For_UC_Target
-                    (Retysp (Etype (E)), True, Valid, Explanation);
-
-                  if not Valid then
-                     Nb_Warn := Nb_Warn + 1;
-                     Warnings (Nb_Warn) := To_Unbounded_String ("valid reads");
-                  end if;
-               end;
+               if not Type_Has_Only_Valid_Values (Retysp (Etype (E)), True).Ok
+               then
+                  Nb_Warn := Nb_Warn + 1;
+                  Warnings (Nb_Warn) := To_Unbounded_String ("valid reads");
+               end if;
 
                --  Emit composite warning
 
@@ -8065,9 +8058,13 @@ package body SPARK_Definition is
                      E);
 
                --  Precise unchecked conversion accesses record fields, update
-               --  the Unused_Records set.
+               --  the Unused_Records set. Avoid calling touch on access types
+               --  as designated type might not be marked yet. Such conversions
+               --  are never precisely supported in SPARK.
 
-               elsif Is_UC_With_Precise_Definition (E).Ok then
+               elsif not Contains_Access_Subcomponents (To)
+                 and then not Contains_Access_Subcomponents (From)
+               then
                   Touch_All_Record_Fields (To);
                   Touch_All_Record_Fields (From);
                end if;

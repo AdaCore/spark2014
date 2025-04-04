@@ -140,21 +140,21 @@ main_hal.adb:19:04: info: initialization of "Wdog_Timed_Out" proved
 main_hal.adb:20:04: info: initialization of "A_Byte" proved
 main_hal.adb:35:07: medium: "Found" might not be initialized
 multiple_ports.ads:18:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
-multiple_ports.ads:18:04: warning: address specification on "V_In_1" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads [imprecise-address-specification] [E0012]
+multiple_ports.ads:18:04: warning: address specification on "V_In_1" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [imprecise-address-specification] [E0012]
 multiple_ports.ads:18:04: warning: launch "gnatprove --explain=E0012" for more information
 multiple_ports.ads:27:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
-multiple_ports.ads:27:04: warning: address specification on "V_In_2" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads [imprecise-address-specification] [E0012]
+multiple_ports.ads:27:04: warning: address specification on "V_In_2" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [imprecise-address-specification] [E0012]
 multiple_ports.ads:27:04: warning: launch "gnatprove --explain=E0012" for more information
 multiple_ports.ads:36:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
-multiple_ports.ads:36:04: warning: address specification on "V_Out_1" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, no writes to a potential alias, and valid reads [imprecise-address-specification] [E0012]
+multiple_ports.ads:36:04: warning: address specification on "V_Out_1" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [imprecise-address-specification] [E0012]
 multiple_ports.ads:36:04: warning: launch "gnatprove --explain=E0012" for more information
 multiple_ports.ads:36:04: warning: make sure that all overlapping objects have Async_Writers set to True
 multiple_ports.ads:42:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
-multiple_ports.ads:42:04: warning: address specification on "V_Out_2" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, no writes to a potential alias, and valid reads [imprecise-address-specification] [E0012]
+multiple_ports.ads:42:04: warning: address specification on "V_Out_2" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [imprecise-address-specification] [E0012]
 multiple_ports.ads:42:04: warning: launch "gnatprove --explain=E0012" for more information
 multiple_ports.ads:42:04: warning: make sure that all overlapping objects have Async_Writers set to True
 multiple_ports.ads:55:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
-multiple_ports.ads:55:04: warning: address specification on "V_In_Out" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to a potential alias, and valid reads [imprecise-address-specification] [E0012]
+multiple_ports.ads:55:04: warning: address specification on "V_In_Out" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [imprecise-address-specification] [E0012]
 multiple_ports.ads:55:04: warning: launch "gnatprove --explain=E0012" for more information
 multiple_ports.ads:55:04: warning: make sure that all overlapping objects have Async_Writers set to True
 outer-public_child.ads:6:17: info: initialization of "Hidden_State" constituent of "A2" proved
