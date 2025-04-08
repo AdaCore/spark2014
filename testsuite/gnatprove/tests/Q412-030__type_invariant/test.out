@@ -37,5 +37,5 @@ varinput.ads:47:31: error: actual for formal object with mode in cannot depend o
 varinput.ads:47:31: error: launch "gnatprove --explain=E0007" for more information
 varinput.ads:47:31: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof
-instance-child.ads: warning: unit name "VARINPUT.INSTANCE_CHILD" does not match source name
-package_instance-child.ads: warning: unit name "VARINPUT.PACKAGE_INSTANCE_CHILD" does not match source name
+instance-child.ads: warning: unit name "VARINPUT.INSTANCE_CHILD" does not match source name. The source will be ignored.
+package_instance-child.ads: warning: unit name "VARINPUT.PACKAGE_INSTANCE_CHILD" does not match source name. The source will be ignored.
