@@ -1,5 +1,3 @@
-Stopping analysis due to duplicate bodies
+Stopping analysis due incorrectly named source files
 Try "gnatprove --help" for more information.
-a.adb: warning: unit name "B" does not match source name
-c.adb: warning: unit name "B" does not match source name
-test.gpr: warning: duplicated body for unit "B" in c.adb and b.adb
+a.adb: warning: unit name "B" does not match source name. The source will be ignored.
