@@ -135,6 +135,24 @@ procedure Test_Base with SPARK_Mode is
                       --  is not entirely initialized.
    end Test_Soundness_2;
 
+   function Create return Child with Import, Global => null;
+
+   procedure Test_Soundness_3 (X : out Root'Class);
+
+   procedure Test_Soundness_3 (X : out Root'Class) is
+   begin
+      Child (X) := Create; --  Initialization check shall fail, the extension of X
+                      --  is not entirely initialized.
+   end Test_Soundness_3;
+
+   procedure Test_Soundness_4 (X : out Root) with Extensions_Visible;
+
+   procedure Test_Soundness_4 (X : out Root) is
+   begin
+      Child (Root'Class (X)) := Create; --  Initialization check shall fail, the extension of X
+                      --  is not entirely initialized.
+   end Test_Soundness_4;
+
 begin
    null;
 end;

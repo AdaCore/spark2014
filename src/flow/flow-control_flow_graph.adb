@@ -1612,13 +1612,13 @@ package body Flow.Control_Flow_Graph is
       Partial         : Boolean;
       View_Conversion : Boolean;
       LHS_Root        : Flow_Id;
+      Vars_Defined    : Flow_Id_Sets.Set;
+      Vars_Used       : Flow_Id_Sets.Set;
+      Partial_Ext     : Boolean;
+      Partial_Priv    : Boolean;
 
       LHS_Type : constant Entity_Id := Get_Type (Name (N), FA.B_Scope);
-      RHS_Type : constant Entity_Id := Get_Type (Expression (N), FA.B_Scope);
-
-      To_Cw    : constant Boolean :=
-        Is_Class_Wide_Type (LHS_Type) and then
-          not Is_Class_Wide_Type (RHS_Type);
+      To_Cw    : constant Boolean := Is_Class_Wide_Type (LHS_Type);
 
    begin
       --  Collect function calls appearing in the assignment statement: both
@@ -1651,21 +1651,20 @@ package body Flow.Control_Flow_Graph is
       end if;
 
       --  First we need to determine the root name where we assign to, and
-      --  whether this is a partial or full assignment. This mirror the
-      --  beginning of Untangle_Assignment_Target.
+      --  whether this is a partial or full assignment. And work out which
+      --  variables we define.
 
-      declare
-         Unused : Node_Lists.List;
-
-      begin
-         Get_Assignment_Target_Properties
-           (Name (N),
-            Partial_Definition => Partial,
-            View_Conversion    => View_Conversion,
-            Map_Root           => LHS_Root,
-            Seq                => Unused,
-            Scope              => FA.B_Scope);
-      end;
+      Untangle_Assignment_Target
+        (N                    => Name (N),
+         Scope                => FA.B_Scope,
+         View_Conversion      => View_Conversion,
+         Map_Root             => LHS_Root,
+         Use_Computed_Globals => not FA.Generating_Globals,
+         Vars_Defined         => Vars_Defined,
+         Vars_Used            => Vars_Used,
+         Partial_Definition   => Partial,
+         Partial_Ext          => Partial_Ext,
+         Partial_Priv         => Partial_Priv);
 
       --  We have two scenarios: some kind of record assignment (in which case
       --  we try our best to dis-entangle the record fields so that information
@@ -1708,7 +1707,6 @@ package body Flow.Control_Flow_Graph is
          --  this is done in Flow.Data_Depence_Graph.Create.
 
          declare
-            Missing : Flow_Id_Sets.Set;
             Verts   : Vertex_Lists.List;
 
             Verts_Defined : Vertex_Lists.List;
@@ -1718,7 +1716,7 @@ package body Flow.Control_Flow_Graph is
             --  For grouping vertices corresponding to this object
             --  assignment in the visual representation of the graph.
 
-            RHS_Map : constant Flow_Id_Maps.Map :=
+            RHS_Map : Flow_Id_Maps.Map :=
               Untangle_Record_Assignment
                 (Expression (N),
                  Map_Root                => LHS_Root,
@@ -1730,18 +1728,55 @@ package body Flow.Control_Flow_Graph is
                  Scope                   => FA.B_Scope,
                  Fold_Functions          => Inputs,
                  Use_Computed_Globals    => not FA.Generating_Globals,
-                 Expand_Internal_Objects => False);
+                 Expand_Internal_Objects => False,
+                 Extensions_Irrelevant   =>
+                   not View_Conversion
+                     and then not Is_Class_Wide_Type (LHS_Type));
 
             Empty_Reuse : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
             --  Optimize record assignments with no variable inputs, similar
             --  to what we do for record object declarations.
 
          begin
-            Missing := Flatten_Variable (LHS_Root, FA.B_Scope);
-            if Is_Class_Wide_Type (LHS_Type)
-              and then LHS_Root.Kind = Direct_Mapping
-            then
-               Missing.Insert ((LHS_Root with delta Facet => Extension_Part));
+            --  If the LHS is a view conversion, filter the assigned fields
+            --  and handle potential partial assignments in the extension and
+            --  the private part.
+
+            if View_Conversion then
+               declare
+                  Old_Map : constant Flow_Id_Maps.Map := RHS_Map;
+               begin
+                  RHS_Map.Clear;
+
+                  for Field of Vars_Defined loop
+                     declare
+                        use Flow_Id_Maps;
+                        Position : constant Flow_Id_Maps.Cursor :=
+                          Find (Old_Map, Field);
+                        pragma Assert (Has_Element (Position));
+                     begin
+                        RHS_Map.Insert (Key (Position), Old_Map (Position));
+                     end;
+                  end loop;
+
+                  if Partial_Ext then
+                     declare
+                        The_Ext : constant Flow_Id :=
+                          (LHS_Root with delta Facet => Extension_Part);
+                     begin
+                        RHS_Map (The_Ext).Include (The_Ext);
+                     end;
+                  end if;
+
+                  if Partial_Priv then
+                     declare
+                        The_Priv : constant Flow_Id :=
+                          (LHS_Root with delta Facet => Private_Part);
+                     begin
+                        RHS_Map (The_Priv).Include (The_Priv);
+                     end;
+                  end if;
+               end;
             end if;
 
             --  Split out the assignment over a number of vertices
@@ -1755,8 +1790,6 @@ package body Flow.Control_Flow_Graph is
                   --  component assignment.
 
                begin
-                  Missing.Delete (Output);
-
                   --  Reuse existing vertex for a field that uses no variable
                   --  inputs.
 
@@ -1816,45 +1849,6 @@ package body Flow.Control_Flow_Graph is
                end;
             end loop;
 
-            if not View_Conversion then
-               --  There might be some fields missing, but if this is not a
-               --  view conversion (and we have already established it is a
-               --  full assignment), flow analysis must not claim any other
-               --  fields are "uninitialized".
-               for F of Missing loop
-
-                  --  If we don't yet have a vertex that uses no variable
-                  --  inputs then create a one and we will reuse it for all
-                  --  the missing fields.
-
-                  if Empty_Reuse = Flow_Graphs.Null_Vertex then
-                     Add_Vertex
-                       (FA,
-                        Make_Basic_Attributes
-                          (Var_Def    => Flow_Id_Sets.Empty_Set,
-                           Var_Ex_Use => Flow_Id_Sets.Empty_Set,
-                           Vertex_Ctx => Ctx.Vertex_Ctx,
-                           E_Loc      => N,
-                           Print_Hint => Pretty_Print_Record_Field),
-                        V);
-                     Verts_Defined.Append (V);
-                     if Verts.Is_Empty then
-                        FA.Atr (V).First_Field := Verts_Defined.First_Element;
-                     else
-                        FA.Atr (V).First_Field := Verts.First_Element;
-                     end if;
-
-                     Empty_Reuse := V;
-                  end if;
-
-                  FA.Atr (Empty_Reuse).Variables_Defined.Insert (F);
-
-                  pragma Assert
-                    (for some Comp_Id of F.Component =>
-                       Is_Declared_Within_Variant (Comp_Id));
-               end loop;
-            end if;
-
             --  Move vertices with variables defined to the end of list
             Verts.Splice (Before => Vertex_Lists.No_Element,
                           Source => Verts_Defined);
@@ -1889,80 +1883,58 @@ package body Flow.Control_Flow_Graph is
          end;
 
       else
-         declare
-            Vars_Defined : Flow_Id_Sets.Set;
-            Vars_Used    : Flow_Id_Sets.Set;
 
-            Slice_Update : Boolean;
-            Partial_Ext  : Boolean;
-            Partial_Priv : Boolean;
-
-         begin
-            --  Work out which variables we define
-            Untangle_Assignment_Target
-              (N                    => Name (N),
+         --  Work out the variables we use. These are the ones already
+         --  used by the LHS + everything on the RHS.
+         Vars_Used.Union
+           (Get_Variables
+              (Expression (N),
                Scope                => FA.B_Scope,
+               Target_Name          => (if Has_Target_Names (N)
+                                        then LHS_Root
+                                        else Null_Flow_Id),
+               Fold_Functions       => Inputs,
                Use_Computed_Globals => not FA.Generating_Globals,
-               Vars_Defined         => Vars_Defined,
-               Vars_Used            => Vars_Used,
-               Partial_Definition   => Slice_Update,
-               Partial_Ext          => Partial_Ext,
-               Partial_Priv         => Partial_Priv);
+               Consider_Extensions  => To_Cw));
 
-            pragma Assert (Partial = Slice_Update);
+         --  Any proof or null dependency variables need to be checked
+         --  separately. We need to check both the LHS and RHS.
+         Ctx.Folded_Function_Checks.Append (Expression (N));
+         Ctx.Folded_Function_Checks.Append (Name (N));
 
-            --  Work out the variables we use. These are the ones already
-            --  used by the LHS + everything on the RHS.
-            Vars_Used.Union
-              (Get_Variables
-                 (Expression (N),
-                  Scope                => FA.B_Scope,
-                  Target_Name          => (if Has_Target_Names (N)
-                                           then LHS_Root
-                                           else Null_Flow_Id),
-                  Fold_Functions       => Inputs,
-                  Use_Computed_Globals => not FA.Generating_Globals,
-                  Consider_Extensions  => To_Cw));
-
-            --  Any proof or null dependency variables need to be checked
-            --  separately. We need to check both the LHS and RHS.
-            Ctx.Folded_Function_Checks.Append (Expression (N));
-            Ctx.Folded_Function_Checks.Append (Name (N));
-
-            declare
-               Var_Im_Use : Flow_Id_Sets.Set;
-            begin
-               if Partial then
-                  Var_Im_Use := Vars_Defined;
-               else
-                  if Partial_Ext then
-                     Var_Im_Use.Insert
-                       ((LHS_Root with delta Facet => Extension_Part));
-                  end if;
-
-                  if Partial_Priv then
-                     Var_Im_Use.Insert
-                       ((LHS_Root with delta Facet => Private_Part));
-                  end if;
+         declare
+            Var_Im_Use : Flow_Id_Sets.Set;
+         begin
+            if Partial then
+               Var_Im_Use := Vars_Defined;
+            else
+               if Partial_Ext then
+                  Var_Im_Use.Insert
+                    ((LHS_Root with delta Facet => Extension_Part));
                end if;
 
-               --  Produce the vertex
-               Add_Vertex
-                 (FA,
-                  Direct_Mapping_Id (N),
-                  Make_Basic_Attributes
-                    (Var_Def    => Vars_Defined,
-                     Var_Ex_Use => Vars_Used,
-                     Var_Im_Use => Var_Im_Use,
-                     Subp_Calls => Funcalls,
-                     Indt_Calls => Indcalls,
-                     Vertex_Ctx => Ctx.Vertex_Ctx,
-                     E_Loc      => N),
-                  V);
-            end;
+               if Partial_Priv then
+                  Var_Im_Use.Insert
+                    ((LHS_Root with delta Facet => Private_Part));
+               end if;
+            end if;
 
-            CM.Insert (Union_Id (N), Trivial_Connection (V));
+            --  Produce the vertex
+            Add_Vertex
+              (FA,
+               Direct_Mapping_Id (N),
+               Make_Basic_Attributes
+                 (Var_Def    => Vars_Defined,
+                  Var_Ex_Use => Vars_Used,
+                  Var_Im_Use => Var_Im_Use,
+                  Subp_Calls => Funcalls,
+                  Indt_Calls => Indcalls,
+                  Vertex_Ctx => Ctx.Vertex_Ctx,
+                  E_Loc      => N),
+               V);
          end;
+
+         CM.Insert (Union_Id (N), Trivial_Connection (V));
       end if;
    end Do_Assignment_Statement;
 
@@ -4616,13 +4588,13 @@ package body Flow.Control_Flow_Graph is
                      Scope                   => FA.B_Scope,
                      Fold_Functions          => Inputs,
                      Use_Computed_Globals    => not FA.Generating_Globals,
-                     Expand_Internal_Objects => False);
+                     Expand_Internal_Objects => False,
+                     Extensions_Irrelevant   => not
+                       Is_Class_Wide_Type (Get_Type (E, FA.B_Scope)));
 
                   Cluster : Flow_Graphs.Cluster_Id;
                   --  For grouping vertices corresponding to this object
                   --  declaration in the visual representation of the graph.
-
-                  Missing : Flow_Id_Sets.Set := Var_Def;
 
                   Empty_Reuse : Flow_Graphs.Vertex_Id :=
                     Flow_Graphs.Null_Vertex;
@@ -4681,57 +4653,7 @@ package body Flow.Control_Flow_Graph is
                            FA.Atr (V).First_Field := Inits.First_Element;
                            FA.CFG.Set_Cluster (V, Cluster);
                         end if;
-
-                        Missing.Exclude (Output);
-                        --  ??? this should be Delete, but currently we will
-                        --  crash when processing nested packages that declare
-                        --  private types and objects of that types.
-
                      end;
-                  end loop;
-
-                  --  Any "missing" fields which are produced by flatten,
-                  --  but not by URA we flag as initialized to the empty
-                  --  set; since it is not possible in SPARK to partially
-                  --  initialize a variable at declaration.
-                  for F of Missing loop
-                     if Empty_Reuse = Flow_Graphs.Null_Vertex then
-                        Add_Vertex
-                          (FA,
-                           (Make_Basic_Attributes
-                             (Var_Def    => Flow_Id_Sets.Empty_Set,
-                              Var_Ex_Use => Flow_Id_Sets.Empty_Set,
-                              Vertex_Ctx => Ctx.Vertex_Ctx,
-                              E_Loc      => N,
-                              Print_Hint => Pretty_Print_Record_Field)
-                              with delta Is_Declaration_Node => True),
-                           V);
-
-                        Inits.Append (V);
-                        FA.Atr (V).First_Field := Inits.First_Element;
-                        FA.CFG.Set_Cluster (V, Cluster);
-
-                        Empty_Reuse := V;
-                     end if;
-
-                     FA.Atr (Empty_Reuse).Variables_Defined.Insert (F);
-
-                     --  ??? We only expect missing variant parts here, but
-                     --  also get array bounds (which feels dubious but easy)
-                     --  and private parts (when a nested package makes use of
-                     --  its private types). The private parts is a known
-                     --  consequence of the current handling of nested packages
-                     --  and while more serious it is also much harder to fix.
-
-                     pragma Assert
-                       (Is_Bound (F)
-                          or else
-                        (F.Kind = Record_Field
-                          and then
-                         (for some Comp_Id of F.Component =>
-                           Is_Declared_Within_Variant (Comp_Id)))
-                          or else
-                        Ctx.Vertex_Ctx.In_Nested_Package);
                   end loop;
                end;
 
@@ -7086,16 +7008,21 @@ package body Flow.Control_Flow_Graph is
       function Is_Split_Useful (N : Node_Id) return Boolean is
          T : constant Entity_Id := Get_Type (N, Scope);
       begin
-         if not Is_Record_Type (T)
-           or else Is_Tagged_Type (T)
-           or else Is_Class_Wide_Type (T)
-         then
+         if not Is_Record_Type (T) then
             --  No point in trying to split if we are not dealing with some
             --  record type.
-            --  !!! Workaround for N715-015 difficulties - disable this for
-            --  !!! any tagged type.
             return False;
          end if;
+
+         --  Do not split N if objects of type T cannot be split
+         declare
+            F : constant Flow_Id := Direct_Mapping_Id (T);
+            S : constant Flow_Id_Sets.Set := Get_Components (F, Scope);
+         begin
+            if S.Contains (F) then
+               return False;
+            end if;
+         end;
 
          if not Is_Visible (T, Scope) then
             --  Sometimes we process things we're not really meant to see
@@ -7133,8 +7060,6 @@ package body Flow.Control_Flow_Graph is
          end case;
       end Is_Split_Useful;
 
-      T : constant Entity_Id := Get_Type (LHS, Scope);
-
       LHS_Root : constant Entity_Id :=
         (if Nkind (LHS) in N_Subexpr
          then Get_Root_Object (LHS)
@@ -7152,9 +7077,7 @@ package body Flow.Control_Flow_Graph is
          return False;
       end if;
 
-      return not Is_Class_Wide_Type (T)
-        and then not Is_Tagged_Type (T)
-        and then Is_Split_Useful (RHS);
+      return Is_Split_Useful (RHS);
    end RHS_Split_Useful;
 
    ----------------------------
