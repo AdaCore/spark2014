@@ -272,9 +272,9 @@ package body Configuration is
       use type GPR2.Message.Level_Value;
    begin
       if Msg.Level = GPR2.Message.Warning
-        and then Contains (Msg.Message, "duplicated body")
+        and then Contains (Msg.Message, "does not match source name")
       then
-         Abort_Msg ("Stopping analysis due to duplicate bodies",
+         Abort_Msg ("Stopping analysis due incorrectly named source files",
                     With_Help => False);
       end if;
    end Check_Duplicate_Bodies;
