@@ -1070,7 +1070,7 @@ package body Gnat2Why.Driver is
                     or else Switch (First .. Last) = "nostdlib"
                     or else Switch (First .. Last) = "pipe"
                     or else
-                      (Switch'Length >= 10
+                      (Switch'Length >= 11
                        and then Switch (First .. First + 9) = "save-temps"));
    end Is_Back_End_Switch;
 
