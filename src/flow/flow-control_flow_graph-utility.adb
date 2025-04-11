@@ -22,6 +22,7 @@
 ------------------------------------------------------------------------------
 
 with Atree;                     use Atree;
+with Flow_Classwide;
 with Flow_Utility;              use Flow_Utility;
 with Sem_Aux;                   use Sem_Aux;
 with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
@@ -370,7 +371,11 @@ package body Flow.Control_Flow_Graph.Utility is
 
       Ext_Relevant_To_Formal : constant Boolean :=
         Has_Extensions_Visible (Subprogram) or else
-        Is_Class_Wide_Type (Get_Type (Formal, Scope));
+        Is_Class_Wide_Type (Get_Type (Formal, Scope))
+        or else
+          (Flow_Classwide.Is_Dispatching_Call (Callsite)
+           and then Ekind (Formal) in Formal_Kind
+           and then Is_Controlling_Formal (Formal));
 
       A : V_Attributes := Null_Attributes;
 

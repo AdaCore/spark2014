@@ -3054,11 +3054,14 @@ package body Flow_Utility is
          procedure Handle_Parameter (Formal : Entity_Id; Actual : Node_Id) is
             function May_Use_Extensions return Boolean is
               (Has_Extensions_Visible (Subprogram)
-                 or else
-               Is_Class_Wide_Type (Get_Type (Formal, Ctx.Scope)));
+               or else Is_Class_Wide_Type (Get_Type (Formal, Ctx.Scope))
+               or else
+                 (Flow_Classwide.Is_Dispatching_Call (Callsite)
+                  and then Is_Controlling_Formal (Formal)));
             --  True if we have the aspect set (so we know the subprogram might
-            --  convert to a classwide type), or we're dealing with a classwide
-            --  type directly (since that may or may not have extensions).
+            --  convert to a classwide type), we're dealing with a classwide
+            --  type directly (since that may or may not have extensions), or
+            --  the call is dispatching.
 
          begin
             --  When detecting Inputs and Null_Deps we use the Depends
