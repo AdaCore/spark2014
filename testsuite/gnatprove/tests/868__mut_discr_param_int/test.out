@@ -1,0 +1,2 @@
+p_int.adb:5:11: medium: discriminant check might fail [possible fix: subprogram at p_int.ads:7 should mention Rec in a precondition]
+p_int.adb:10:11: medium: discriminant check might fail [possible fix: subprogram at p_int.ads:9 should mention Rec'Constrained or Rec.K in a precondition]

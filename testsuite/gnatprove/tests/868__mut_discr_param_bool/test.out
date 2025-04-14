@@ -1,0 +1,2 @@
+p_bool.adb:5:11: medium: discriminant check might fail (e.g. when Rec = (K1 => False) and Rec'Constrained = True) [possible fix: subprogram at p_bool.ads:7 should mention Rec in a precondition]
+p_bool.adb:10:11: medium: discriminant check might fail (e.g. when Rec = (K1 => False) and Rec'Constrained = True) [possible fix: subprogram at p_bool.ads:9 should mention Rec'Constrained or Rec.K1 in a precondition]
