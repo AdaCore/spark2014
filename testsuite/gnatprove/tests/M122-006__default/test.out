@@ -5,5 +5,5 @@ p.adb:10:12: info: implicit aspect Always_Terminates on "Int_Ident" has been pro
 p.adb:10:12: info: local subprogram "Int_Ident" only analyzed in the context of calls [info-unrolling-inlining]
 p.adb:17:05: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 p.adb:17:16: info: analyzing call to "Int_Ident" in context
-p.adb:18:09: medium: discriminant check might fail
+p.adb:18:09: high: discriminant check might fail
 p.adb:18:16: info: analyzing call to "Int_Ident" in context

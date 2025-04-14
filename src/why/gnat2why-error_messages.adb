@@ -53,6 +53,7 @@ with Osint;                  use Osint;
 with Output;                 use Output;
 with Sinput;                 use Sinput;
 with SPARK_Atree.Entities;   use SPARK_Atree.Entities;
+with SPARK_Util.Types;       use SPARK_Util.Types;
 
 package body Gnat2Why.Error_Messages is
 
@@ -668,7 +669,8 @@ package body Gnat2Why.Error_Messages is
 
          function To_Initialize_Present (E : Entity_Id) return Boolean;
          --  Determine if the subprogram has global variables that can be
-         --  initialized or if the function has IN parameters.
+         --  initialized, the subprogram has IN parameters, or the subprogram
+         --  has OUT parameters that can be constrained in the actual.
 
          function Small_Step_Rac
            (E           : Entity_Id;
@@ -755,7 +757,7 @@ package body Gnat2Why.Error_Messages is
             Get_Proof_Globals
               (E, Reads, Writes, False, Scope);
             --  Check that there are globals, i.e. that running the fuzzer
-            --  would have an effect. This is done to prevent the fuzzing
+            --  would have an effect on. This is done to prevent the fuzzing
             --  session to never stop when the verdict cannot be affected by
             --  the fuzzer.
 
@@ -771,6 +773,25 @@ package body Gnat2Why.Error_Messages is
                while Present (Param) loop
                   if Ekind (Param) /= E_Out_Parameter then
                      return True;
+                  else
+                     --  Check if the out parameter has properties whose
+                     --  initial settings can affect the result. For example,
+                     --  record discriminants.
+                     --
+                     --  TODO Other kinds of constraints should be added, such
+                     --  as tags, array constraints and generally any kind
+                     --  of subtype constraint (the actual could have a more
+                     --  constrained subtype than the formal).
+                     declare
+                        Param_Ty : constant Entity_Id :=
+                          Retysp (Etype (Param));
+                     begin
+                        if Is_Record_Type (Param_Ty)
+                          and then Has_Discriminants (Param_Ty)
+                        then
+                           return True;
+                        end if;
+                     end;
                   end if;
                   Next_Formal (Param);
                end loop;
@@ -937,7 +958,6 @@ package body Gnat2Why.Error_Messages is
                   Small_Step_Res := Small_Step_Res_Tmp;
                   Verdict := Verdict_Tmp;
                end if;
-
             end if;
 
          else

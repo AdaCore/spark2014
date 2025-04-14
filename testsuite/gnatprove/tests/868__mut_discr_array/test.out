@@ -3,14 +3,14 @@ main.adb:10:33: warning: "X" is not modified, could be IN
 main.adb:20:22: info: assertion proved (Trivial: 1 VC)
 main.adb:22:14: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:22:14: warning: unused assignment
-main.adb:26:22: medium: assertion might fail
+main.adb:26:22: high: assertion might fail (e.g. when Ar = (2 => (D => 0, F => 0), others => (D => 1, F => 0)))
 main.adb:35:50: info: discriminant check proved (CVC5: 1 VC)
 main.adb:37:22: info: assertion proved (Trivial: 1 VC)
 main.adb:40:17: warning: unused assignment
-main.adb:40:20: medium: discriminant check might fail [possible fix: precondition of subprogram at line 10 should mention X]
+main.adb:40:20: high: discriminant check might fail (e.g. when X = (D => 0, F => 0) and X'Constrained = False) [possible fix: precondition of subprogram at line 10 should mention X]
 main.adb:43:17: warning: unused assignment
 main.adb:43:20: info: discriminant check proved (CVC5: 1 VC)
-main.adb:47:25: medium: assertion might fail
+main.adb:47:25: high: assertion might fail (e.g. when Ar = (2 => (D => 9, F => 9), others => (D => 9, F => 0)))
 main.adb:54:12: info: range check proved (CVC5: 2 VC)
 main.adb:54:18: info: discriminant check proved (CVC5: 1 VC)
 main.adb:55:12: info: range check proved (CVC5: 2 VC)

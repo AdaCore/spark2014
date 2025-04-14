@@ -12,7 +12,7 @@ test.adb:47:12: medium: "X.F.D" is not set
 test.adb:51:31: info: initialization of "B" proved
 test.adb:52:06: info: flow dependencies proved
 test.adb:57:13: medium: for mutable discriminants at test.adb:7
-test.adb:57:13: medium: initialization check might fail (e.g. when X = (F => (D => 0, A => 0, B => 0)) and X.F.A'Initialized = True and X.F.B'Initialized = True)
+test.adb:57:13: medium: initialization check might fail (e.g. when X = (F => (D => 0, A => 0, B => 0)) and X.F.A'Initialized = True and X.F.B'Initialized = True) [possible fix: add or complete related loop invariants or postconditions]
 test.adb:61:31: info: initialization of "B" proved
 test.adb:62:06: info: flow dependencies proved
 test.adb:67:07: info: precondition proved (Trivial: 1 VC)
