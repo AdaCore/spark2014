@@ -1221,7 +1221,8 @@ def check_output_file(sort=False):
 
 def sparklib_exec_test(project_file="test.gpr", binary="./obj/test"):
     gprbuild(opt=["-P", project_file])
-    Run([binary])
+    p = Run([binary])
+    print(p.out)
 
 
 def print_version():
