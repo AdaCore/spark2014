@@ -24,7 +24,7 @@ test_conts.adb:63:10: info: initialization of "L" proved
 test_conts.adb:63:19: info: range check proved (CVC5: 2 VC)
 test_conts.adb:64:10: info: initialization of "C" proved
 test_conts.adb:66:10: info: precondition proved (Z3: 2 VC)
-test_conts.adb:68:10: info: precondition proved (CVC5: 1 VC)
+test_conts.adb:68:10: info: precondition proved (Z3: 1 VC)
 test_conts.adb:70:20: info: overflow check proved (CVC5: 2 VC)
 test_conts.adb:75:10: info: initialization of "L" proved
 test_conts.adb:75:19: info: range check proved (CVC5: 2 VC)
