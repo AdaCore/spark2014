@@ -418,6 +418,10 @@ package Flow_Types is
    function Is_Constituent (F : Flow_Id) return Boolean;
    --  Checks if F is a constituent of an abstract state
 
+   function Is_Implicit_Constituent (F : Flow_Id) return Boolean;
+   --  Checks if F is a constituent of an implicit abstract state that
+   --  implicitly represents an object hidden inside a package.
+
    function Is_Function_Entity (F : Flow_Id) return Boolean;
    --  Checks if F is a function entity (and thus used to capture the
    --  function's return value).

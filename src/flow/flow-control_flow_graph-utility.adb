@@ -990,12 +990,17 @@ package body Flow.Control_Flow_Graph.Utility is
       case F.Variant is
          when Initial_Value =>
             if Mode in Initialized_Global_Modes
-              or else Is_Input_Discriminant (F)
-              or else Is_Bound (F)
-              or else Is_Record_Tag (F)
+              or else
+              ((Is_Input_Discriminant (F)
+                  or else Is_Bound (F)
+                  or else Is_Record_Tag (F))
+               and then
+                 not (Is_Constituent (F) or else Is_Implicit_Constituent (F)))
             then
-               --  Discriminants, array bounds and tags are *always*
-               --  initialized imports.
+               --  Discriminants, array bounds and tags initialized imports,
+               --  except when they belong to a constituent of an abstract
+               --  state.
+
                A.Is_Initialized := True;
                A.Is_Import      := True;
             end if;

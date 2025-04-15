@@ -1207,10 +1207,14 @@ package body Flow.Analysis is
                      --  The entire variable
 
                      Bound_Or_Discr : constant Boolean :=
-                       Is_Bound (Var) or else Is_Discriminant (Var);
-                     --  If this is an array bound or a discriminant, we only
-                     --  consider it if it is actually used. It is OK to not
-                     --  explicitly use it.
+                       (Is_Bound (Var) or else Is_Discriminant (Var))
+                         and then
+                         not (Is_Constituent (Var)
+                                or else Is_Implicit_Constituent (Var));
+                     --  If this is an array bound or a discriminant that will
+                     --  never be seen via its encapsulating abstract state,
+                     --  then we only consider it if it is actually used. It is
+                     --  OK to not explicitly use it.
 
                   begin
                      --  Using bounds or discriminants marks the entire

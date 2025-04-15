@@ -109,9 +109,9 @@ is
       Current_Line := 1;
       Current_Col  := 0;
       Current_Pos  := 0;
-      Read (The_File, Current_Read);
+      Current_Read := (Status => Error); Read (The_File, Current_Read);
       Adjust_Position;
-      Read (The_File, Next_Read);
+      Next_Read := (Status => Error); Read (The_File, Next_Read);
    end Open_File;
 
    ----------------

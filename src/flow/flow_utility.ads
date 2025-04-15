@@ -717,6 +717,9 @@ package Flow_Utility is
    function Is_Constituent (N : Node_Id) return Boolean;
    --  Returns True iff N is a constituent of an abstract state
 
+   function Is_Implicit_Constituent (N : Node_Id) return Boolean;
+   --  Returns True iff N is implicitly lifted to a singleton abstract state
+
    function Is_Abstract_State (N : Node_Id) return Boolean;
    --  Returns True iff N is an abstract state
 

@@ -24,7 +24,7 @@ is
 
    package Hidden with Abstract_State => (State_A, State_B) is
       procedure Initialize_A
-         with Pre => True, Global => (Output => State_A);
+         with Pre => True, Global => (In_Out => State_A);
       procedure Initialize_B
          with Pre => True;
    end;

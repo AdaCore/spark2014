@@ -622,6 +622,14 @@ package body Flow_Types is
          when Magic_String                  => GG_Is_Constituent (F.Name),
          when others                        => False);
 
+   -----------------------------
+   -- Is_Implicit_Constituent --
+   -----------------------------
+
+   function Is_Implicit_Constituent (F : Flow_Id) return Boolean is
+     (F.Kind in Direct_Mapping | Record_Field
+        and then Is_Implicit_Constituent (F.Node));
+
    -------------------------
    -- Encapsulating_State --
    -------------------------

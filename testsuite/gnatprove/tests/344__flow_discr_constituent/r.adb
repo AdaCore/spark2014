@@ -8,8 +8,8 @@ is
       C : Integer;
    end record;
 
-   --  Configuration procedure for a formal parameter of this type. Instead
-   --  of calling this routine, this test inlines its contract and its body.
+   --  Configuration procedure for a formal parameter of this type. While in
+   --  unit Q calls this routine, here we inline its contract and its body.
 
    procedure Configure (Y : out T)
       with Pre => Y.D = 0

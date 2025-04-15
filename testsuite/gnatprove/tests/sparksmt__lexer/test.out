@@ -12,8 +12,10 @@ lexer.adb:99:39: info: initialization of "Current_Col" constituent of "State" pr
 lexer.adb:100:39: info: initialization of "Current_Pos" constituent of "State" proved
 lexer.adb:101:39: info: initialization of "Next_Read" constituent of "State" proved
 lexer.adb:107:07: info: precondition proved (CVC5: 1 VC)
-lexer.adb:112:07: info: precondition proved (CVC5: 1 VC)
-lexer.adb:114:07: info: precondition proved (CVC5: 1 VC)
+lexer.adb:112:20: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
+lexer.adb:112:42: info: precondition proved (CVC5: 1 VC)
+lexer.adb:114:17: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
+lexer.adb:114:39: info: precondition proved (CVC5: 1 VC)
 lexer.adb:134:07: info: initialization of "S" proved
 lexer.adb:135:07: info: initialization of "First_Line" proved
 lexer.adb:136:07: info: initialization of "First_Col" proved

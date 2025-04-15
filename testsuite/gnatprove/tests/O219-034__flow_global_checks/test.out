@@ -11,13 +11,13 @@ foo.adb:47:40: info: initialization of "M" proved
 foo.adb:48:40: info: initialization of "O" proved
 foo.adb:49:09: info: data dependencies proved
 foo.adb:49:31: high: "X" is not initialized
-foo.adb:49:37: info: initialization of "Z" proved
 foo.adb:49:40: info: initialization of "W" proved
 foo.adb:52:12: high: "X" is not an input in the Global contract of subprogram "Test_SRM_6_1_4_Rule_15_B" at line 46
 foo.adb:52:12: high: either make "X" an input in the Global contract or initialize it before use
 foo.adb:53:12: high: "Y" is not an input in the Global contract of subprogram "Test_SRM_6_1_4_Rule_15_B" at line 46
 foo.adb:53:12: high: either make "Y" an input in the Global contract or initialize it before use
 foo.adb:53:14: medium: overflow check might fail, cannot prove upper bound for Y + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+foo.adb:55:12: medium: "Z.Valid" is not set
 foo.adb:56:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 foo.adb:63:40: info: initialization of "N" proved
 foo.adb:64:09: info: data dependencies proved
