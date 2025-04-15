@@ -315,6 +315,29 @@ package SPARK_Util is
    function Dispatching_Contract (L : Node_Lists.List) return Node_Lists.List;
    --  Same as above but with a list of classwide pre- or postconditions
 
+   procedure Set_Call_Simulates_Contract_Dispatch (N : Node_Id)
+     with Pre =>
+       Nkind (N) in N_Function_Call | N_Op_Eq | N_Membership_Test
+       and then
+         (if Nkind (N) = N_Function_Call
+          then Present (Controlling_Argument (N)));
+   --  Register that a dispatching call is one produced by GNATprove to model
+   --  contract dispatch.
+   --
+   --  When a dispatching call is performed, the subprogram and the contract
+   --  are resolved as a whole. GNATprove creates a contract containing
+   --  dispatching calls to simulate selection of the contract, breaking down
+   --  that wholesale selection in pieces. However, these calls do not mirror
+   --  real dispatching calls. In particular, there is no associated runtime
+   --  tag check. The equality operator (and membership tests that
+   --  implicitly use it) may also appear due to primitive equality, which
+   --  should be modeled by calls to dispatching equality. Due to the
+   --  differences in handling, we need a way to distinguish these cases.
+
+   function Call_Simulates_Contract_Dispatch (N : Node_Id) return Boolean;
+   --  Return True if N is a function call that has been introduced to simulate
+   --  contract dispatch.
+
    -----------------------------------------
    -- General queries related to entities --
    -----------------------------------------

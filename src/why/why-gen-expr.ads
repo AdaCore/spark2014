@@ -162,6 +162,15 @@ package Why.Gen.Expr is
    --  [spark__branch.bool__content <- Condition;
    --  ("node_id:If_Node" spark__branch).bool__content]
 
+   function New_Ada_Dispatching_Equality
+     (Typ         : Type_Kind_Id;
+      Domain      : EW_Domain;
+      Left, Right : W_Expr_Id)
+     return W_Expr_Id;
+   --  Generate a boolean term which expresses the translation of "Left =
+   --  Right" in Ada semantics, where the equality is dispatching on Typ
+   --  or its class-wide type.
+
    function New_Ada_Equality
      (Typ         : Type_Kind_Id;
       Domain      : EW_Domain;

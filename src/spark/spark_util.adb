@@ -535,6 +535,10 @@ package body SPARK_Util is
    --  class-wide type, and corresponding calls to primitive subprograms are
    --  dispatching calls.
 
+   Call_Simulating_Contract_Dispatch : Node_Sets.Set;
+   --  Set registering individual function calls used to simulate resolution of
+   --  contract during dispatching calls.
+
    At_End_Borrow_Call_Map : Node_Maps.Map;
    --  Map from calls to functions annotated with At_End_Borrow to the related
    --  borrower entity.
@@ -594,6 +598,16 @@ package body SPARK_Util is
       At_End_Borrow_Call_Map.Insert (Call, Borrower, Position, Inserted);
       pragma Assert (Inserted or else Node_Maps.Element (Position) = Borrower);
    end Set_At_End_Borrow_Call;
+
+   ------------------------------------------
+   -- Set_Call_Simulates_Contract_Dispatch --
+   ------------------------------------------
+
+   procedure Set_Call_Simulates_Contract_Dispatch (N : Node_Id)
+   is
+   begin
+      Call_Simulating_Contract_Dispatch.Insert (N);
+   end Set_Call_Simulates_Contract_Dispatch;
 
    ------------------------------
    -- Set_Dispatching_Contract --
@@ -725,6 +739,16 @@ package body SPARK_Util is
       or else Is_Aliased (Obj)
       or else (Ekind (Obj) = E_In_Parameter
         and then Is_Access_Variable (Etype (Obj))));
+
+   --------------------------------------
+   -- Call_Simulates_Contract_Dispatch --
+   --------------------------------------
+
+   function Call_Simulates_Contract_Dispatch (N : Node_Id) return Boolean
+   is
+   begin
+      return Call_Simulating_Contract_Dispatch.Contains (N);
+   end Call_Simulates_Contract_Dispatch;
 
    ----------------------
    -- Canonical_Entity --

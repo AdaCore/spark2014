@@ -47,7 +47,6 @@ with Gnat2Why_Args;
 with Lib;                            use Lib;
 with Namet;                          use Namet;
 with Nlists;                         use Nlists;
-with Nmake;
 with Opt;                            use Opt;
 with Restrict;                       use Restrict;
 with Rident;                         use Rident;
@@ -69,7 +68,6 @@ with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 with SPARK_Util.Types;               use SPARK_Util.Types;
 with Stand;                          use Stand;
 with String_Utils;                   use String_Utils;
-with Tbuild;
 with Uintp;                          use Uintp;
 with Urealp;                         use Urealp;
 with VC_Kinds;                       use VC_Kinds;
@@ -7104,11 +7102,37 @@ package body SPARK_Definition is
          --  Mark violations related to parameters, result and contract
 
          procedure Process_Class_Wide_Condition
-           (Expr    : N_Subexpr_Id;
-            Spec_Id : Subprogram_Kind_Id);
-         --  Replace the type of all references to the controlling formal of
-         --  subprogram Spec_Id found in expression Expr with the corresponding
-         --  class-wide type.
+           (Expr    :     N_Subexpr_Id;
+            Spec_Id :     Subprogram_Kind_Id;
+            Valid   : out Boolean);
+         --  According to ARM 6.1.1, controlling formals in a class-wide
+         --  contracts are interpreted as having a notional type descending
+         --  from the real tagged type. So does a controlling result attribute.
+         --  This notional type propagates from formals/result up in the tree
+         --  through chains of controlling parameters/results. And possibly
+         --  back down through following these in reverse, e.g in F(A,B(X))
+         --  A can have the notional type as output.
+         --
+         --  For correct interpretation of contracts in dispatching calls, we
+         --  need to interpret this notional type as a class-wide type, so we
+         --  need to replace it in Expr by the class-wide type. However, the
+         --  front-end does not provide an explicit realization of this type,
+         --  so we need to perform manual selection and replacement. Since
+         --  proof is the only client, and do not make any difference between
+         --  representation of tagged types and their class-wide types, it
+         --  suffices to mark all calls on the (implicit) notional type as
+         --  dispatching, by setting an adequate controlling argument.
+         --
+         --  Process_Class_Wide_Condition perform that replacement of calls
+         --  involving the notional type by dispatching calls. If this
+         --  replacement fails, Valid is set to False.
+
+         procedure Sanitize_Class_Wide_Condition (Expr : N_Subexpr_Id);
+         --  Workaround: currently, the front-end may generate class-wide
+         --  conditions which are mistyped at dependent expressions
+         --  (if/case/declare), as the type of dependent expressions is not
+         --  mirrored to that of the full construct. This procedure fix the
+         --  types in-place.
 
          ---------------------------------
          -- Mark_Function_Specification --
@@ -7455,14 +7479,22 @@ package body SPARK_Definition is
                --  possible newly created itypes.
 
                if Class_Present (Prag) then
+                  Sanitize_Class_Wide_Condition (Expr);
                   declare
                      New_Expr : constant Node_Id :=
                        New_Copy_Tree (Source => Expr);
+                     Valid    : Boolean;
                   begin
-                     Process_Class_Wide_Condition (New_Expr, E);
-                     Mark (New_Expr);
-                     Set_Dispatching_Contract (Expr, New_Expr);
-                     Set_Parent (New_Expr, Prag);
+                     Process_Class_Wide_Condition (New_Expr, E, Valid);
+
+                     --  If the replacement could not be done through, no need
+                     --  to try marking the new expression.
+
+                     if Valid then
+                        Mark (New_Expr);
+                        Set_Dispatching_Contract (Expr, New_Expr);
+                        Set_Parent (New_Expr, Prag);
+                     end if;
                   end;
                end if;
 
@@ -7927,107 +7959,680 @@ package body SPARK_Definition is
          ----------------------------------
 
          procedure Process_Class_Wide_Condition
-           (Expr    : N_Subexpr_Id;
-            Spec_Id : Subprogram_Kind_Id)
+           (Expr    :     N_Subexpr_Id;
+            Spec_Id :     Subprogram_Kind_Id;
+            Valid   : out Boolean)
          is
             Disp_Typ : constant Opt_Type_Kind_Id :=
               SPARK_Util.Subprograms.Find_Dispatching_Type (Spec_Id);
 
-            function Replace_Type (N : Node_Id) return Traverse_Result;
-            --  Within the expression for a Pre'Class or Post'Class aspect for
-            --  a primitive subprogram of a tagged type Disp_Typ, a name that
-            --  denotes a formal parameter of type Disp_Typ is treated as
-            --  having type Disp_Typ'Class. This is used to create a suitable
-            --  pre- or postcondition expression for analyzing dispatching
-            --  calls.
+            type Notional_Status is (None, Arg_Only, Result);
+            function Call_Notional_Status
+              (N : N_Function_Call_Id)
+               return Notional_Status;
+            --  Return where a function call may have argument/results
+            --  interpreted to have the notional type of ARM 6.1.1, based on
+            --  the function name alone. This does not make any contextual
+            --  analysis, it is intended for use within said analysis.
+            --  * None: none of the argument may have notional type. This
+            --          matches functions which are not primitives of Disp_Typ.
+            --  * Arg_Only: only some (and necessarily at least one) of the
+            --              arguments may have the notional type. This matches
+            --              functions which are primitives of Disp_Typ and
+            --              dispatch solely on arguments.
+            --  * Result: the result, and possibly some of the arguments, may
+            --            have the notional type. This matches functions which
+            --            are primitives of Disp_Typ and dispatch on result.
+            --            Such calls may chain the notional type through them,
+            --            between result and arguments (in any direction).
 
-            ------------------
-            -- Replace_Type --
-            ------------------
+            function Collect_Controlling_Formals return Node_Sets.Set;
+            --  Collect all controlling formals of Spec_Id.
 
-            function Replace_Type (N : Node_Id) return Traverse_Result is
-               Context : constant Node_Id    := Parent (N);
-               Loc     : constant Source_Ptr := Sloc (N);
-               Ref     : Node_Id := N;
-               CW_Typ  : Opt_Type_Kind_Id := Empty;
-               Ent     : Formal_Kind_Id;
-               Typ     : Type_Kind_Id;
+            function Collect_Notional_Leaf_Occurrences
+              (Formals : Node_Sets.Set)
+               return Node_Lists.List;
+            --  Collect all leaf occurrences of the notional type in Expr, that
+            --  is occurrences of controlling formal and result attribute.
+
+            function Collect_Replacement_Roots
+              (Leaves : Node_Lists.List)
+               return Node_Lists.List
+              with Pre => Present (Disp_Typ);
+            --  The notional type propagates from formals/results (leaves) up
+            --  in the expression tree through tagged primitives of Disp_Typ,
+            --  propagating further on parameters/results. It also propagates
+            --  up under type-preserving construct or anonymous-access related
+            --  constructs (.all, 'Access, 'Old, declare-expr....).
+            --  Collect_Replacement_Roots collects the outermost elements of
+            --  such propagation chains from Leaves and returns them. The
+            --  elements of Leaves should all have the notional types or
+            --  anonymous access to it, the expected value for Leaves is the
+            --  occurrence of formals of Spec_Id (plus result). Note that
+            --  function calls controlled by the notional type may be roots if
+            --  they do not have controlling results. They block propagation,
+            --  but still take the notional type into account.
+
+            procedure Replace_Calls
+              (Root        : Node_Id;
+               Formals     : Node_Sets.Set;
+               Controlling : Node_Id);
+            --  Replace top-down from Root the primitive calls involving the
+            --  (implicit) notional type by dispatching calls, using
+            --  Controlling (any of the controlling formals) as the controlling
+            --  parameter for calls that may be controlled from result. We
+            --  could replace types by their class-wide equivalent, but proof
+            --  is the only client of the transformed expression, and it does
+            --  not make any difference of representation between class-wide
+            --  types and regular types.
+            --
+            --  Formals is used to validate that ultimately reached variables
+            --  are formals of Spec_Id. (At the time of writing, front-end does
+            --  not control that contract would type-check using the notional
+            --  type instead of the real tagged type).
+
+            ---------------------------------
+            -- Collect_Controlling_Formals --
+            ---------------------------------
+
+            function Collect_Controlling_Formals return Node_Sets.Set is
+               Formal  : Opt_Formal_Kind_Id := First_Formal (Spec_Id);
+            begin
+               return Formals : Node_Sets.Set do
+                  while Present (Formal) loop
+                     if Is_Controlling_Formal (Formal) then
+                        Formals.Insert (Formal);
+                     end if;
+                     Next_Formal (Formal);
+                  end loop;
+               end return;
+            end Collect_Controlling_Formals;
+
+            ---------------------------------------
+            -- Collect_Notional_Leaf_Occurrences --
+            ---------------------------------------
+
+            function Collect_Notional_Leaf_Occurrences
+              (Formals : Node_Sets.Set)
+               return Node_Lists.List
+            is
+            begin
+               return Bag : Node_Lists.List do
+                  declare
+                     function Collect_Occurrence
+                       (N : Node_Id)
+                        return Traverse_Result;
+
+                     ------------------------
+                     -- Collect_Occurrence --
+                     ------------------------
+
+                     function Collect_Occurrence
+                       (N : Node_Id)
+                        return Traverse_Result
+                     is
+                     begin
+                        if Nkind (N) = N_Attribute_Reference
+                          and then Attribute_Name (N) = Name_Result
+                          and then Has_Controlling_Result (Spec_Id)
+                        then
+                           Bag.Append (N);
+                        elsif Is_Entity_Name (N) then
+                           declare
+                              E : constant Entity_Id := Entity (N);
+                           begin
+                              if Present (E) and then Formals.Contains (E) then
+                                 Bag.Append (N);
+                              end if;
+                           end;
+                        end if;
+                        return OK;
+                     end Collect_Occurrence;
+
+                     procedure Collect_Occurrences is
+                       new Traverse_More_Proc (Collect_Occurrence);
+
+                  begin
+                     Collect_Occurrences (Expr);
+                  end;
+               end return;
+            end Collect_Notional_Leaf_Occurrences;
+
+            --------------------------
+            -- Call_Notional_Status --
+            --------------------------
+
+            function Call_Notional_Status
+              (N : N_Function_Call_Id)
+               return Notional_Status
+            is
+               Nm     : constant Node_Id := Name (N);
+               E      : Entity_Id;
+               E_D_Ty : Type_Kind_Id;
+            begin
+               --  This test is essentially imported from exp_util.adb
+               --  (reconstruction of class-wide postcondition upon
+               --   overriding).
+               --  The Is_Ancestor direction was wrong for our purposes. It
+               --  appears to not matter in exp_util since the functions that
+               --  are found are the internal inherited primitives rather than
+               --  the primitive they alias, but here it does matter.
+
+               if Is_Entity_Name (Nm) then
+                  E := Entity (Nm);
+                  if Is_Dispatching_Operation (E) then
+                     E_D_Ty := Find_Dispatching_Type (E);
+                     if Present (E_D_Ty)
+                       and then Is_Ancestor (E_D_Ty, Disp_Typ)
+                     then
+                        if Has_Controlling_Result (E) then
+                           return Result;
+                        else
+                           return Arg_Only;
+                        end if;
+                     end if;
+                  end if;
+               end if;
+               return None;
+            end Call_Notional_Status;
+
+            -------------------------------
+            -- Collect_Replacement_Roots --
+            -------------------------------
+
+            function Collect_Replacement_Roots
+              (Leaves : Node_Lists.List)
+               return Node_Lists.List
+            is
+               Processed : Node_Sets.Set;
+               --  Cache already processed nodes to avoid duplicates
 
             begin
-               --  For references to the Old attribute, convert the attribute
-               --  reference and not the prefix only.
+               return Roots : Node_Lists.List do
+                  for Leaf of Leaves loop
+                     declare
+                        Cursor   : Node_Id := Leaf;
+                        Above    : Node_Id;
+                        Position : Node_Sets.Cursor;
+                        Inserted : Boolean;
+                     begin
+                        Inner : while not Processed.Contains (Cursor) loop
+                           Above := Parent (Cursor);
 
-               if Is_Attribute_Old (N) then
-                  Ref := Prefix (N);
-               end if;
+                           --  Skip intermediate nodes in case expressions
 
-               if Is_Entity_Name (Ref)
-                 and then Present (Entity (Ref))
-                 and then Is_Formal (Entity (Ref))
-               then
-                  Ent := Entity (Ref);
-                  Typ := Etype (Ent);
+                           if Nkind (Above) = N_Case_Expression_Alternative
+                           then
+                              Above := Parent (Above);
+                           end if;
 
-                  if Nkind (Context) = N_Type_Conversion then
-                     null;
+                           case Nkind (Above) is
+                              when N_Function_Call =>
+                                 --  Sanity checking: check cursor is among the
+                                 --  actuals. There should be no other
+                                 --  subexpressions in a function call
+                                 --  (except access-to-subprogram, but that
+                                 --   is incompatible with a tagged type).
 
-                  --  Do not perform the type replacement for selector names
-                  --  in parameter associations. These carry an entity for
-                  --  reference purposes, but semantically they are just
-                  --  identifiers.
+                                 declare
+                                    Actual : Node_Id := First_Actual (Above);
+                                 begin
+                                    while Actual /= Cursor loop
+                                       if No (Actual) then
+                                          raise Program_Error;
 
-                  elsif Nkind (Context) = N_Parameter_Association
-                    and then Selector_Name (Context) = N
-                  then
-                     null;
+                                       end if;
+                                       Next_Actual (Actual);
+                                    end loop;
+                                 end;
 
-                  elsif Retysp (Typ) = Disp_Typ then
-                     CW_Typ := Class_Wide_Type (Typ);
-                  end if;
+                                 --  Notional arguments may propagate to the
+                                 --  call from its argument.
 
-                  if Present (CW_Typ) then
-                     Rewrite (Ref,
-                       Nmake.Make_Type_Conversion (Loc,
-                         Subtype_Mark =>
-                           Tbuild.New_Occurrence_Of (CW_Typ, Loc),
-                         Expression   => Tbuild.New_Occurrence_Of (Ent, Loc)));
+                                 declare
+                                    Status : constant Notional_Status :=
+                                      Call_Notional_Status (Above);
+                                 begin
+                                    case Status is
+                                       when None =>
+                                          goto End_Propagation;
+                                       when Result =>
+                                          goto Continue_Propagation;
+                                       when Arg_Only =>
+                                          goto Dispatching_Root;
+                                    end case;
+                                 end;
+                              when N_Attribute_Reference =>
+                                 --  Notional type propagates through
+                                 --  'Old/'Loop_Entry/'Access.
 
-                     if Ref /= N then
-                        Set_Etype (Ref, CW_Typ);
+                                 if Attribute_Name (Above) in Name_Old
+                                                            | Name_Loop_Entry
+                                                            | Name_Access
+                                 then
+                                    goto Continue_Propagation;
+                                 else
+                                    raise Program_Error;
+                                 end if;
+
+                              when N_If_Expression =>
+                                 --  Notional type propagates through dependent
+                                 --  expressions of if expressions.
+
+                                 --  Sanity checking
+
+                                 declare
+                                    Dep_Expr : Node_Id :=
+                                      First (Expressions (Above));
+                                 begin
+                                    pragma Assert (Present (Dep_Expr));
+                                    pragma Assert (Dep_Expr /= Cursor);
+                                    Next (Dep_Expr);
+                                    while Dep_Expr /= Cursor loop
+                                       if No (Dep_Expr) then
+                                          --  This should not happen, the only
+                                          --  other subexpression of a if
+                                          --  expression should be the
+                                          --  conditional expression itself,
+                                          --  which cannot be tagged.
+
+                                          raise Program_Error;
+
+                                       end if;
+                                       Next (Dep_Expr);
+                                    end loop;
+                                 end;
+                                 goto Continue_Propagation;
+
+                              when N_Case_Expression =>
+                                 --  Notional type propagates through dependent
+                                 --  expressions of case expressions.
+
+                                 --  Sanity checking
+
+                                 declare
+                                    Dep_Alt : Node_Id :=
+                                      First (Alternatives (Above));
+                                 begin
+                                    loop
+                                       if No (Dep_Alt) then
+                                          --  This should not happen by same
+                                          --  rationale as for if expressions,
+                                          --  other subexpressions of a case
+                                          --  expressions should not have a
+                                          --  tagged type.
+
+                                          raise Program_Error;
+
+                                       end if;
+                                       exit when Expression (Dep_Alt) = Cursor;
+                                       Next (Dep_Alt);
+                                    end loop;
+                                    goto Continue_Propagation;
+                                 end;
+
+                              when N_Expression_With_Actions =>
+                                 --  Notional type propagates through dependent
+                                 --  expressions of declare expressions.
+
+                                 pragma Assert (Cursor = Expression (Above));
+                                 goto Continue_Propagation;
+
+                              when N_Explicit_Dereference =>
+                                 pragma Assert (Prefix (Above) = Cursor);
+                                 goto Continue_Propagation;
+
+                              when N_Type_Conversion
+                                 | N_Qualified_Expression
+                                 | N_Selected_Component
+                              =>
+                                 --  Type conversion blocks propagation of
+                                 --  notional type, so do extracting a field.
+
+                                 pragma Assert (Prefix (Above) = Cursor);
+                                 goto End_Propagation;
+
+                              when N_Op_Eq =>
+                                 --  The equal operator blocks propagation of
+                                 --  notional type, but takes it into account,
+                                 --  unless the type is an (anonymous) access.
+
+                                 pragma Assert
+                                   (Left_Opnd (Above) = Cursor
+                                    or else Right_Opnd (Above) = Cursor);
+                                 if Is_Access_Object_Type (Etype (Cursor)) then
+                                    goto End_Propagation;
+                                 else
+                                    goto Dispatching_Root;
+                                 end if;
+
+                              when N_Membership_Test =>
+                                 --  Membership tests against values implicitly
+                                 --  use dispatching equality, the behavior
+                                 --  is similar to the equal operator.
+
+                                 --  Sanity checking
+
+                                 if Left_Opnd (Above) /= Cursor
+                                   and then Right_Opnd (Above) /= Cursor
+                                 then
+                                    declare
+                                       Alt : Node_Id :=
+                                         First (Alternatives (Above));
+                                    begin
+                                       while Alt /= Cursor loop
+                                          if No (Alt) then
+                                             raise Program_Error;
+                                          end if;
+                                          Next (Alt);
+                                       end loop;
+                                    end;
+                                 end if;
+
+                                 --  Same distinction as equality
+
+                                 if Is_Access_Object_Type (Etype (Cursor)) then
+                                    goto End_Propagation;
+                                 else
+                                    goto Dispatching_Root;
+                                 end if;
+
+                              when others =>
+
+                                 --  Other cases are unexpected and we are not
+                                 --  sure what should happen.
+
+                                 raise Program_Error;
+                           end case;
+
+                           --  Cases where the propagation stops, so we get a
+                           --  root.
+
+                           <<End_Propagation>>
+                           Processed.Insert (Cursor);
+                           Roots.Append (Cursor);
+                           exit Inner;
+
+                           --  Case where the propagation stops, but the Above
+                           --  node takes the notional type into account, so it
+                           --  should be a root.
+
+                           <<Dispatching_Root>>
+                           Processed.Insert (Cursor);
+                           Processed.Insert
+                             (Above, Position, Inserted);
+                           if Inserted then
+                              Roots.Append (Above);
+                           end if;
+                           exit Inner;
+
+                           --  Cases where the propagation continue further
+
+                           <<Continue_Propagation>>
+                           Processed.Insert (Cursor);
+                           Cursor := Above;
+                        end loop Inner;
+                     end;
+                  end loop;
+               end return;
+            end Collect_Replacement_Roots;
+
+            -------------------
+            -- Replace_Calls --
+            -------------------
+
+            procedure Replace_Calls
+              (Root        : Node_Id;
+               Formals     : Node_Sets.Set;
+               Controlling : Node_Id)
+            is
+            begin
+               case Nkind (Root) is
+                  when N_Function_Call =>
+                     if Call_Notional_Status (Root) = None then
+                        --  This one should not even type-check in the first
+                        --  place.
+
+                        raise Program_Error;
+                     else
+                        --  Make the call dispatching and propagates to any
+                        --  controlling parameters.
+
+                        declare
+                           Formal          : Node_Id := First_Formal
+                             (Get_Called_Entity (Root));
+                           Actual          : Node_Id := First_Actual (Root);
+                        begin
+                           while Present (Formal) loop
+                              pragma Assert (Present (Actual));
+                              if Is_Controlling_Formal (Formal) then
+                                 Replace_Calls (Actual, Formals, Controlling);
+                              end if;
+                              Next_Formal (Formal);
+                              Next_Actual (Actual);
+                           end loop;
+                           pragma Assert (No (Actual));
+
+                           Set_Controlling_Argument (Root, Controlling);
+                           Set_Call_Simulates_Contract_Dispatch (Root);
+                        end;
                      end if;
 
-                     Set_Etype (N, CW_Typ);
+                  when N_Type_Conversion | N_Qualified_Expression =>
+                     --  Yet other cases that should not even type-check in the
+                     --  first place. Conversion is fine when propagating up
+                     --  (it blocks propagation by converting the notional
+                     --  type), but never down since there is no way to name
+                     --  the notional type at all.
 
-                     --  When changing the type of an argument to a potential
-                     --  dispatching call, make the call dispatching indeed by
-                     --  setting its controlling argument.
+                     raise Program_Error;
 
-                     if Nkind (Context) = N_Function_Call
-                       and then
-                         Is_Dispatching_Operation (Get_Called_Entity (Context))
+                  when N_Explicit_Dereference =>
+                     Replace_Calls (Prefix (Root), Formals, Controlling);
+
+                  when N_Attribute_Reference =>
+                     if Attribute_Name (Root) in Name_Old
+                                               | Name_Loop_Entry
+                                               | Name_Access
                      then
-                        Set_Controlling_Argument (Context, N);
+                        Replace_Calls (Prefix (Root), Formals, Controlling);
+                     elsif Attribute_Name (Root) = Name_Result
+                       and then Has_Controlling_Result (Spec_Id)
+                     then
+                        null;
+                     else
+                        raise Program_Error;
                      end if;
-                  end if;
-               end if;
 
-               return OK;
-            end Replace_Type;
+                  when N_Identifier | N_Expanded_Name =>
+                     if not Formals.Contains (Entity (Root)) then
+                        raise Program_Error;
+                     end if;
 
-            procedure Replace_Types is new Traverse_More_Proc (Replace_Type);
+                  when N_If_Expression =>
+                     declare
+                        Dep_Expr : Node_Id := First (Expressions (Root));
+                     begin
+                        --  First expression is test condition
+
+                        pragma Assert (Present (Dep_Expr));
+                        Next (Dep_Expr);
+
+                        while Present (Dep_Expr) loop
+                           Replace_Calls (Dep_Expr, Formals, Controlling);
+                           Next (Dep_Expr);
+                        end loop;
+
+                     end;
+
+                  when N_Case_Expression =>
+                     declare
+                        Dep_Alt : Node_Id := First (Alternatives (Root));
+                     begin
+
+                        while Present (Dep_Alt) loop
+                           Replace_Calls
+                             (Expression (Dep_Alt), Formals, Controlling);
+                           Next (Dep_Alt);
+                        end loop;
+                     end;
+
+                  when N_Expression_With_Actions =>
+                     Replace_Calls (Expression (Root), Formals, Controlling);
+
+                  when N_Op_Eq =>
+                     --  Treat dispatching equality as a dispatching function
+                     --  call.
+
+                     Set_Call_Simulates_Contract_Dispatch (Root);
+                     Replace_Calls (Left_Opnd (Root), Formals, Controlling);
+                     Replace_Calls (Right_Opnd (Root), Formals, Controlling);
+
+                  when N_Membership_Test =>
+                     --  Membership test may implicitly use equality
+
+                     Set_Call_Simulates_Contract_Dispatch (Root);
+                     Replace_Calls (Left_Opnd (Root), Formals, Controlling);
+                     declare
+                        Right : constant Node_Id := Right_Opnd (Root);
+                        Alt   : Node_Id := First (Alternatives (Root));
+                     begin
+                        if Present (Right)
+                          and then Alternative_Uses_Eq (Right)
+                        then
+                           Replace_Calls (Right, Formals, Controlling);
+                        end if;
+                        while Present (Alt) loop
+                           if Alternative_Uses_Eq (Alt) then
+                              Replace_Calls (Alt, Formals, Controlling);
+                           end if;
+                           Next (Alt);
+                        end loop;
+                     end;
+
+                  when others =>
+                     --  We do not know what should happen in other cases
+
+                     raise Program_Error;
+               end case;
+            end Replace_Calls;
 
          --  Start of processing for Process_Class_Wide_Condition
 
          begin
+            Valid := Present (Disp_Typ);
+
             --  In the case of a private type that is not visibly tagged, we
             --  can get also a derived type inheriting classwide contracts that
             --  is also not visibly tagged, making Find_Dispatching_Type return
             --  Empty here. Do nothing as this case is marked as a violation
             --  already.
-            if Present (Disp_Typ) then
-               Replace_Types (Expr);
+
+            if Valid then
+               declare
+                  Formals : constant Node_Sets.Set :=
+                    Collect_Controlling_Formals;
+                  Leaves  : constant Node_Lists.List :=
+                    Collect_Notional_Leaf_Occurrences (Formals);
+               begin
+                  --  There is no work to be done if the notional type does not
+                  --  occur in the contracts, for example for a static True/
+                  --  False contract. Otherwise, any leaf provides a
+                  --  controlling argument we can use.
+                  if not Leaves.Is_Empty then
+                     declare
+                        Controlling : constant Node_Id := Leaves.First_Element;
+                     begin
+                        for Root of Collect_Replacement_Roots (Leaves) loop
+                           Replace_Calls (Root, Formals, Controlling);
+                        end loop;
+                     end;
+                  end if;
+               end;
             end if;
          end Process_Class_Wide_Condition;
+
+         -----------------------------------
+         -- Sanitize_Class_Wide_Condition --
+         -----------------------------------
+
+         procedure Sanitize_Class_Wide_Condition (Expr : N_Subexpr_Id) is
+            Visited : Node_Sets.Set;
+            --  Register handled nodes to prevent work duplication.
+
+            procedure Handle_Node (N : Node_Id);
+            --  Traverse nested subtrees of depedent subexpressions
+            --  (if/case/declare expressions) bottom-up, setting the Etype
+            --  to that of children.
+            --  Called on every subexpression of an expression through
+            --  Traverse_More_Proc, using Visited to prevent work duplication.
+            --  ??? Is there a bottom-up alternative to Traverse_More_Proc we
+            --  could use instead ?
+
+            function Process (N : Node_Id) return Traverse_Result;
+            --  Adapt Handle_Node to expected prototype for Traverse_More_Proc
+
+            -----------------
+            -- Handle_Node --
+            -----------------
+
+            procedure Handle_Node (N : Node_Id) is
+            begin
+               if not Visited.Contains (N) then
+                  Visited.Insert (N);
+                  case Nkind (N) is
+                     when N_If_Expression =>
+                        declare
+                           Then_Expr : constant Node_Id :=
+                             Next (First (Expressions (N)));
+                           Dep_Expr  : Node_Id := Then_Expr;
+                        begin
+                           while Present (Dep_Expr) loop
+                              Handle_Node (Dep_Expr);
+                              Next (Dep_Expr);
+                           end loop;
+                           Set_Etype (N, Etype (Then_Expr));
+                        end;
+                     when N_Case_Expression =>
+                        declare
+                           Dep_Alt  : Node_Id := First (Alternatives (N));
+                           Dep_Expr : constant Node_Id := Expression (Dep_Alt);
+                        begin
+                           while Present (Dep_Alt) loop
+                              Handle_Node (Dep_Alt);
+                              Next (Dep_Alt);
+                           end loop;
+                           Set_Etype (N, Etype (Dep_Expr));
+                        end;
+                     when N_Expression_With_Actions =>
+                        declare
+                           Dep_Expr : constant Node_Id := Expression (N);
+                        begin
+                           Handle_Node (Dep_Expr);
+                           Set_Etype (N, Etype (Dep_Expr));
+                        end;
+                     when others =>
+                     null;
+                  end case;
+               end if;
+            end Handle_Node;
+
+            -------------
+            -- Process --
+            -------------
+
+            function Process (N : Node_Id) return Traverse_Result is
+            begin
+               Handle_Node (N);
+               return OK;
+            end Process;
+
+            procedure Traverse is new Traverse_More_Proc (Process);
+
+            --  Start of processing for Sanitize_Class_Wide_Condition
+         begin
+            Traverse (Expr);
+         end Sanitize_Class_Wide_Condition;
 
       --  Start of processing for Mark_Subprogram_Entity
 

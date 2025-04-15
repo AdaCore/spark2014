@@ -1,0 +1,37 @@
+contract_call_on_result.adb:1:11: high: all paths in "Contract_Call_On_Result" raise exceptions or do not terminate normally
+contract_call_on_result.adb:4:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+contract_call_on_result.adb:5:16: info: implicit aspect Always_Terminates on "Copy" has been proved, subprogram will terminate
+contract_call_on_result.adb:5:57: info: postcondition proved (CVC5: 1 VC)
+contract_call_on_result.adb:5:57: info: postcondition proved (CVC5: 1 VC), in inherited contract at contract_call_on_result.adb:12
+contract_call_on_result.adb:11:27: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+contract_call_on_result.adb:12:27: info: implicit aspect Always_Terminates on "Copy" has been proved, subprogram will terminate
+contract_call_on_result.adb:16:06: info: tag check proved (CVC5: 1 VC)
+contract_call_on_result.adb:17:04: medium: assertion might fail
+test_numeric_trait.adb:8:16: info: implicit aspect Always_Terminates on "Zero" has been proved, subprogram will terminate
+test_numeric_trait.adb:9:16: info: implicit aspect Always_Terminates on "One" has been proved, subprogram will terminate
+test_numeric_trait.adb:10:16: info: implicit aspect Always_Terminates on "Add" has been proved, subprogram will terminate
+test_numeric_trait.adb:12:16: info: implicit aspect Always_Terminates on "Mul" has been proved, subprogram will terminate
+test_numeric_trait.adb:14:16: info: implicit aspect Always_Terminates on "Equal" has been proved, subprogram will terminate
+test_numeric_trait.adb:36:25: info: tag check proved (CVC5: 1 VC)
+test_numeric_trait.adb:36:25: medium: assertion might fail
+test_numeric_trait.adb:38:25: info: assertion proved (CVC5: 1 VC)
+test_numeric_trait.adb:38:25: info: tag check proved (CVC5: 1 VC)
+test_numeric_trait.adb:38:35: info: tag check proved (CVC5: 2 VC)
+test_numeric_trait.adb:38:40: info: tag check proved (CVC5: 2 VC)
+test_numeric_trait.adb:40:25: info: tag check proved (CVC5: 1 VC)
+test_numeric_trait.adb:40:25: medium: assertion might fail
+up_and_down_transfer.adb:7:16: info: implicit aspect Always_Terminates on "Sentinel" has been proved, subprogram will terminate
+up_and_down_transfer.adb:8:16: info: implicit aspect Always_Terminates on "Equivalent" has been proved, subprogram will terminate
+up_and_down_transfer.adb:9:18: info: division check proved (CVC5: 1 VC)
+up_and_down_transfer.adb:9:34: info: division check proved (CVC5: 1 VC)
+up_and_down_transfer.adb:18:27: info: implicit aspect Always_Terminates on "Sentinel" has been proved, subprogram will terminate
+up_and_down_transfer.adb:19:16: info: implicit aspect Always_Terminates on "Equivalent" has been proved, subprogram will terminate
+up_and_down_transfer.adb:20:19: info: division check proved (CVC5: 1 VC)
+up_and_down_transfer.adb:20:35: info: division check proved (CVC5: 1 VC)
+up_and_down_transfer.adb:35:25: info: assertion proved (CVC5: 1 VC)
+up_and_down_transfer.adb:37:25: medium: assertion might fail
+up_and_down_transfer.adb:39:25: info: assertion proved (CVC5: 1 VC)
+up_and_down_transfer.adb:41:25: medium: assertion might fail
+up_and_down_transfer.adb:43:25: info: assertion proved (CVC5: 1 VC)
+up_and_down_transfer.adb:45:25: medium: assertion might fail
+up_and_down_transfer.adb:47:25: info: assertion proved (CVC5: 1 VC)
