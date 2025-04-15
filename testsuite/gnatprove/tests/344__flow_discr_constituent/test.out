@@ -1,0 +1,69 @@
+q.adb:2:08: info: data dependencies proved
+q.adb:13:25: info: initialization of "Y" proved
+q.adb:17:09: info: discriminant check proved (CVC5: 1 VC)
+q.adb:26:17: info: initialization of "A" constituent of "State_A" proved
+q.adb:27:28: info: data dependencies proved
+q.adb:34:14: info: range check proved (CVC5: 2 VC)
+q.adb:35:14: info: range check proved (CVC5: 2 VC)
+q.adb:39:10: medium: precondition might fail
+q.adb:44:10: medium: precondition might fail
+q.adb:58:14: info: range check proved (CVC5: 2 VC)
+q.adb:62:10: medium: precondition might fail
+q.adb:66:11: info: range check proved (CVC5: 2 VC)
+q.adb:67:11: info: range check proved (CVC5: 2 VC)
+q.adb:74:24: info: data dependencies proved
+q.adb:74:45: info: initialization of "D" proved
+q.adb:76:07: medium: precondition might fail
+q.adb:82:07: medium: precondition might fail
+q.adb:86:10: info: precondition proved (Trivial: 1 VC)
+q.adb:87:10: info: precondition proved (Trivial: 1 VC)
+q.adb:88:19: info: precondition proved (Trivial: 1 VC)
+q.adb:89:04: info: precondition proved (Trivial: 1 VC)
+q.adb:90:04: info: precondition proved (Trivial: 1 VC)
+r.adb:2:08: info: data dependencies proved
+r.adb:14:25: info: initialization of "Y" proved
+r.adb:18:09: info: discriminant check proved (CVC5: 1 VC)
+r.adb:25:17: info: initialization of "A" constituent of "State_A" proved
+r.adb:26:28: info: data dependencies proved
+r.adb:33:14: info: range check proved (CVC5: 2 VC)
+r.adb:34:14: info: range check proved (CVC5: 2 VC)
+r.adb:38:25: medium: assertion might fail
+r.adb:39:15: info: discriminant check proved (CVC5: 1 VC)
+r.adb:44:25: medium: assertion might fail
+r.adb:45:15: info: discriminant check proved (CVC5: 1 VC)
+r.adb:59:14: info: range check proved (CVC5: 2 VC)
+r.adb:63:25: medium: assertion might fail
+r.adb:64:15: info: discriminant check proved (CVC5: 1 VC)
+r.adb:68:11: info: range check proved (CVC5: 2 VC)
+r.adb:69:11: info: range check proved (CVC5: 2 VC)
+r.adb:76:24: info: data dependencies proved
+r.adb:76:45: info: initialization of "D" proved
+r.adb:78:22: medium: assertion might fail
+r.adb:79:12: info: discriminant check proved (CVC5: 1 VC)
+r.adb:85:22: medium: assertion might fail
+r.adb:86:12: info: discriminant check proved (CVC5: 1 VC)
+r.adb:90:10: info: precondition proved (Trivial: 1 VC)
+r.adb:91:10: info: precondition proved (Trivial: 1 VC)
+r.adb:92:19: info: precondition proved (Trivial: 1 VC)
+r.adb:93:04: info: precondition proved (Trivial: 1 VC)
+r.adb:94:04: info: precondition proved (Trivial: 1 VC)
+sneak.adb:1:22: info: data dependencies proved
+sneak.adb:3:33: info: initialization of "Y" proved
+sneak.adb:4:20: medium: postcondition might fail [possible fix: call at line 34 should mention Y (for argument Y) in a postcondition]
+sneak.adb:5:09: info: flow dependencies proved
+sneak.adb:12:26: info: initialization of "Y" proved
+sneak.adb:13:15: info: data dependencies proved
+sneak.adb:23:23: info: range check proved (CVC5: 2 VC)
+sneak.adb:26:44: warning: "Storage" constituent of "State" is not modified, could be INPUT
+sneak.adb:34:08: warning: "P.State" is set by "Read" but not used after the call
+sneak2.adb:1:23: info: data dependencies proved
+sneak2.adb:3:33: info: initialization of "Y" proved
+sneak2.adb:4:20: medium: postcondition might fail [possible fix: call at line 29 should mention Y (for argument Y) in a postcondition]
+sneak2.adb:5:09: info: flow dependencies proved
+sneak2.adb:10:26: info: initialization of "Y" proved
+sneak2.adb:11:15: info: data dependencies proved
+sneak2.adb:17:30: info: range check proved (CVC5: 2 VC)
+sneak2.adb:17:33: info: range check proved (CVC5: 2 VC)
+sneak2.adb:20:44: info: initialization of "Storage" constituent of "State" proved
+sneak2.adb:24:21: medium: length check might fail [reason for check: source and destination arrays for the assignment must have the same length]
+sneak2.adb:29:08: warning: "P.State" is set by "Read" but not used after the call
