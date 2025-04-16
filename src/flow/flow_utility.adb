@@ -6199,6 +6199,62 @@ package body Flow_Utility is
        and then Present (Encapsulating_State (N))
        and then Ekind (Encapsulating_State (N)) = E_Abstract_State);
 
+   -----------------------------
+   -- Is_Implicit_Constituent --
+   -----------------------------
+
+   function Is_Implicit_Constituent (N : Node_Id) return Boolean is
+
+      function In_Body_Or_Private_Part (Item : Node_Id) return Boolean
+        with Pre => Nkind (Item) in N_Object_Declaration
+                                  | N_Package_Declaration;
+      --  Returns True if Item is declared in body or private part of a
+      --  package, or in a private desendant of a library-level pacakge.
+
+      -----------------------------
+      -- In_Body_Or_Private_Part --
+      -----------------------------
+
+      function In_Body_Or_Private_Part (Item : Node_Id) return Boolean is
+         Context : constant Node_Id := Parent (Item);
+      begin
+         case Nkind (Context) is
+            when N_Package_Body =>
+               pragma Assert (List_Containing (Item) = Declarations (Context));
+               return True;
+
+            when N_Package_Specification =>
+               if List_Containing (Item) = Private_Declarations (Context) then
+                  return True;
+
+               elsif List_Containing (Item) = Visible_Declarations (Context)
+               then
+                  return In_Body_Or_Private_Part (Parent (Context));
+
+               else
+                  raise Program_Error;
+               end if;
+
+            --  Compilation unit may contain a package where objects are
+            --  declared, but it won't contain the objects themselves.
+
+            when N_Compilation_Unit =>
+               pragma Assert (Nkind (Item) = N_Package_Declaration);
+               return Is_Private_Descendant (Defining_Entity (Item));
+
+            when others =>
+               return False;
+         end case;
+      end In_Body_Or_Private_Part;
+
+   begin
+      return Nkind (N) in N_Entity
+        and then Ekind (N) in E_Constant | E_Variable
+        and then Ekind (Scope (N)) = E_Package
+        and then No (Encapsulating_State (N))
+        and then In_Body_Or_Private_Part (Parent (N));
+   end Is_Implicit_Constituent;
+
    -----------------------
    -- Is_Abstract_State --
    -----------------------
