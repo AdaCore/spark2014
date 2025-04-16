@@ -194,10 +194,13 @@ package SPARK_Util.Types is
    --  @returns True if one of E's partial view
    --    (including E itself) declares an Iterable aspect.
 
-   function Has_Unconstrained_UU_Component (Typ : Type_Kind_Id) return Boolean;
+   function Has_UU_Component
+     (Typ                : Type_Kind_Id;
+      Unconstrained_Only : Boolean := False) return Boolean;
    --  Returns True iff Typ has a component visible in SPARK whose type is an
-   --  unchecked union type which is unconstrained. Predefined equality on
-   --  these types is defined to raise Program_Error in Ada for now, even if
+   --  unchecked union type. If Unconstrained_Only, only look for unconstrained
+   --  types. Predefined equality on types with unconstrained unchecked union
+   --  parts is defined to raise Program_Error in Ada for now, even if
    --  the primitive equality of the components is redefined. To be changed
    --  when the wording and the compiler are fixed (code might be shared with
    --  Predefined_Eq_Uses_Pointer_Eq).
