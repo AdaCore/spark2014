@@ -374,6 +374,7 @@ package Flow_Utility is
 
    procedure Get_Assignment_Target_Properties
      (N                  :     Node_Id;
+      Scope              :     Flow_Scope;
       Partial_Definition : out Boolean;
       View_Conversion    : out Boolean;
       Map_Root           : out Flow_Id;
@@ -384,7 +385,11 @@ package Flow_Utility is
    --  Checks the assignment target N and determines a few basic properties
    --
    --  * Partial_Definition: the assignment to N touches only a few elements
-   --                        of a larger array.
+   --                        of a larger object. For assignments into view
+   --                        conversions, Partial_Definition can be set to
+   --                        False even though the whole target is not updated.
+   --                        The caller is responsible for deciding which
+   --                        components are effectively updated.
    --  * View_Conversion: N contains a view conversion.
    --  * Map_Root: the non-flattened Flow_Id which is assigned to.
    --  * Seq: items used to derive Map_Root.
@@ -393,12 +398,16 @@ package Flow_Utility is
      (N                    :     Node_Id;
       Scope                :     Flow_Scope;
       Use_Computed_Globals :     Boolean;
+      Force_Extension      :     Boolean := False;
       Vars_Defined         : out Flow_Id_Sets.Set;
       Vars_Used            : out Flow_Id_Sets.Set;
-      Partial_Definition   : out Boolean)
+      Partial_Definition   : out Boolean;
+      Partial_Ext          : out Boolean;
+      Partial_Priv         : out Boolean)
      with Pre  => Is_Valid_Assignment_Target (N),
         Post => (if not Is_Empty_Record_Type (Etype (N))
-                 then not Vars_Defined.Is_Empty);
+                 then not Vars_Defined.Is_Empty)
+     and then not (Partial_Definition and (Partial_Ext or Partial_Priv));
    --  Process the LHS of an assignment statement or an [in] out parameter,
    --  establishing the sets of variables used. For example, assume we have
    --  a function Foo:
@@ -429,6 +438,14 @@ package Flow_Utility is
    --  Note we only support unchecked conversion from and to scalars, i.e.
    --  for things generated from:
    --     Foo (Positive (X))
+   --
+   --  If the object is entirely written except its extension part or private
+   --  part, Partial_Definition is set to False but Partial_Ext and/or
+   --  Partial_Priv be True.
+   --
+   --  If Force_Extension is True, N is an actual of a call to a subprogram
+   --  with extension visible. The extension will be set even if the
+   --  type of the actual is not classwide.
 
    function Untangle_Record_Assignment
      (N                       : Node_Id;
@@ -805,7 +822,7 @@ package Flow_Utility is
    function Strip_Child_Prefixes (EN : String) return String;
    --  Strip Child_Prefix from the string representation of an Entity_Name
 
-   function Path_To_Flow_Id (Expr : Node_Id) return Flow_Id
+   function Path_To_Flow_Id (Expr : Node_Id; Scop : Flow_Scope) return Flow_Id
    with Pre  => Is_Path_Expression (Expr),
         Post => (if Present (Path_To_Flow_Id'Result) then
                  Path_To_Flow_Id'Result.Kind in Direct_Mapping | Record_Field

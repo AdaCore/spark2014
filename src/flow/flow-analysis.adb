@@ -1951,7 +1951,8 @@ package body Flow.Analysis is
                                  then
                                     Path_To_Flow_Id
                                       (Get_Direct_Mapping_Id
-                                        (Atr.Parameter_Actual))
+                                        (Atr.Parameter_Actual),
+                                       FA.B_Scope)
                                  else Atr.Parameter_Formal);
                               --  ??? Path_To_Flow_Id was meant to be used
                               --  in a borrow checker, but it also works for
