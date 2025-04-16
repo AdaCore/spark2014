@@ -290,10 +290,10 @@ spark-containers-functional-vectors.ads:78:06: info: Container_Aggregates annota
 spark-containers-functional-vectors.ads:78:06: info: Container_Aggregates annotation proved (Z3: 1 VC), in instantiation at test_functional.ads:54
 spark-containers-functional-vectors.ads:78:06: info: Container_Aggregates annotation proved (Z3: 1 VC), in instantiation at test_functional.ads:54
 spark-containers-functional-vectors.ads:78:06: info: Container_Aggregates annotation proved (Z3: 1 VC), in instantiation at test_functional.ads:54
-spark-containers-functional-vectors.ads:78:06: info: after a call to Aggr_Append at spark-containers-functional-vectors.ads:522, in instantiation at test_functional.ads:21
-spark-containers-functional-vectors.ads:78:06: info: after a call to Aggr_Append at spark-containers-functional-vectors.ads:522, in instantiation at test_functional.ads:21
-spark-containers-functional-vectors.ads:78:06: info: after a call to Aggr_Append at spark-containers-functional-vectors.ads:522, in instantiation at test_functional.ads:54
-spark-containers-functional-vectors.ads:78:06: info: after a call to Aggr_Append at spark-containers-functional-vectors.ads:522, in instantiation at test_functional.ads:54
+spark-containers-functional-vectors.ads:78:06: info: after a call to Aggr_Append at spark-containers-functional-vectors.ads:524, in instantiation at test_functional.ads:21
+spark-containers-functional-vectors.ads:78:06: info: after a call to Aggr_Append at spark-containers-functional-vectors.ads:524, in instantiation at test_functional.ads:21
+spark-containers-functional-vectors.ads:78:06: info: after a call to Aggr_Append at spark-containers-functional-vectors.ads:524, in instantiation at test_functional.ads:54
+spark-containers-functional-vectors.ads:78:06: info: after a call to Aggr_Append at spark-containers-functional-vectors.ads:524, in instantiation at test_functional.ads:54
 spark-containers-functional-vectors.ads:78:06: info: after a call to Empty_Sequence at spark-containers-functional-vectors.ads:217, in instantiation at test_functional.ads:21
 spark-containers-functional-vectors.ads:78:06: info: after a call to Empty_Sequence at spark-containers-functional-vectors.ads:217, in instantiation at test_functional.ads:54
 spark-containers-functional-vectors.ads:78:06: info: when establishing invariant on Last at spark-containers-functional-vectors.ads:94, in instantiation at test_functional.ads:21
@@ -332,10 +332,10 @@ spark-containers-functional-vectors.ads:501:57: info: predicate check proved (Tr
 spark-containers-functional-vectors.ads:501:57: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:54
 spark-containers-functional-vectors.ads:502:31: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:21
 spark-containers-functional-vectors.ads:502:31: info: predicate check proved (Trivial: 1 VC), in instantiation at test_functional.ads:54
-spark-containers-functional-vectors.ads:527:33: info: during checks for container aggregates at spark-containers-functional-vectors.ads:78, in instantiation at test_functional.ads:21
-spark-containers-functional-vectors.ads:527:33: info: during checks for container aggregates at spark-containers-functional-vectors.ads:78, in instantiation at test_functional.ads:54
-spark-containers-functional-vectors.ads:527:33: info: precondition proved (Z3: 1 VC), in instantiation at test_functional.ads:21
-spark-containers-functional-vectors.ads:527:33: info: precondition proved (Z3: 1 VC), in instantiation at test_functional.ads:54
+spark-containers-functional-vectors.ads:529:33: info: during checks for container aggregates at spark-containers-functional-vectors.ads:78, in instantiation at test_functional.ads:21
+spark-containers-functional-vectors.ads:529:33: info: during checks for container aggregates at spark-containers-functional-vectors.ads:78, in instantiation at test_functional.ads:54
+spark-containers-functional-vectors.ads:529:33: info: precondition proved (Z3: 1 VC), in instantiation at test_functional.ads:21
+spark-containers-functional-vectors.ads:529:33: info: precondition proved (Z3: 1 VC), in instantiation at test_functional.ads:54
 spark-containers-parameter_checks.adb:31:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-infinite_sequences.ads:299, in instantiation at test_functional.ads:25
 spark-containers-parameter_checks.adb:31:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-maps.ads:522, in instantiation at test_functional.ads:34
 spark-containers-parameter_checks.adb:31:10: info: precondition proved (Z3: 1 VC), in instantiation at spark-containers-functional-maps.ads:531, in instantiation at test_functional.ads:34
