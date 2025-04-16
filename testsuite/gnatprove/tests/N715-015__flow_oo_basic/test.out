@@ -37,22 +37,17 @@ tests.adb:145:15: warning: assuming "Hash" has no effect on global items
 tests.adb:145:15: warning: no Global contract available for "Hash" [assumed-global-null]
 tests.adb:151:23: info: initialization of "N" proved
 tests.adb:152:09: info: data dependencies proved
-tests.adb:153:21: medium: missing dependency "N => C"
-tests.adb:154:29: medium: incorrect dependency "null => C"
+tests.adb:153:09: info: flow dependencies proved
 tests.adb:161:15: warning: assuming "Hash" has no effect on global items
 tests.adb:161:15: warning: no Global contract available for "Hash" [assumed-global-null]
 tests.adb:166:23: info: initialization of "N" proved
 tests.adb:167:09: info: data dependencies proved
-tests.adb:168:21: medium: missing dependency "N => C"
-tests.adb:169:29: medium: incorrect dependency "null => C"
+tests.adb:168:09: info: flow dependencies proved
 tests.adb:175:26: warning: assuming "Hash" has no effect on global items
 tests.adb:175:26: warning: no Global contract available for "Hash" [assumed-global-null]
 tests.adb:180:23: info: initialization of "N" proved
 tests.adb:181:09: info: data dependencies proved
-tests.adb:182:21: medium: missing dependency "N => A"
-tests.adb:182:21: medium: missing dependency "N => B"
-tests.adb:183:30: medium: incorrect dependency "null => A"
-tests.adb:183:33: medium: incorrect dependency "null => B"
+tests.adb:182:09: info: flow dependencies proved
 tests.adb:191:15: warning: assuming "Hash" has no effect on global items
 tests.adb:191:15: warning: no Global contract available for "Hash" [assumed-global-null]
 tests.adb:196:23: info: initialization of "N" proved
@@ -67,8 +62,7 @@ tests.adb:209:15: warning: assuming "Hash" has no effect on global items
 tests.adb:209:15: warning: no Global contract available for "Hash" [assumed-global-null]
 tests.adb:215:23: info: initialization of "N" proved
 tests.adb:216:09: info: data dependencies proved
-tests.adb:217:21: medium: missing dependency "N => C"
-tests.adb:218:29: medium: incorrect dependency "null => C"
+tests.adb:217:09: info: flow dependencies proved
 tests.adb:227:16: warning: assuming "Hash" has no effect on global items
 tests.adb:227:16: warning: no Global contract available for "Hash" [assumed-global-null]
 tests.adb:233:23: info: initialization of "N" proved
@@ -88,10 +82,7 @@ tests.adb:276:23: info: initialization of "X" proved
 tests.adb:277:23: info: initialization of "Y" proved
 tests.adb:278:23: info: initialization of "Z" proved
 tests.adb:279:09: info: data dependencies proved
-tests.adb:280:21: medium: missing dependency "X => C"
-tests.adb:281:21: medium: missing dependency "Y => A"
-tests.adb:281:21: medium: missing dependency "Y => B"
-tests.adb:282:21: medium: missing dependency "Z => A"
+tests.adb:280:09: info: flow dependencies proved
 tests.adb:284:07: info: initialization of "Obj" proved
 tests.adb:285:07: info: initialization of "Tmp" proved
 tests.adb:286:07: info: initialization of "Tmp2" proved
@@ -142,8 +133,7 @@ tests.adb:408:23: info: initialization of "N" proved
 tests.adb:409:23: info: initialization of "M" proved
 tests.adb:410:23: info: initialization of "O" proved
 tests.adb:411:09: info: data dependencies proved
-tests.adb:413:21: medium: missing dependency "M => B"
-tests.adb:414:21: medium: missing dependency "O => A"
+tests.adb:412:09: info: flow dependencies proved
 tests.adb:420:43: info: tag check proved (CVC5: 1 VC)
 tests.adb:422:13: warning: assuming "Hash" has no effect on global items
 tests.adb:422:13: warning: no Global contract available for "Hash" [assumed-global-null]
@@ -170,7 +160,7 @@ tests.adb:493:23: info: initialization of "O3" proved
 tests.adb:494:23: info: initialization of "O4" proved
 tests.adb:495:23: info: initialization of "O5" proved
 tests.adb:496:09: info: data dependencies proved
-tests.adb:497:21: medium: missing dependency "O1 => A"
+tests.adb:497:09: info: flow dependencies proved
 tests.adb:509:07: warning: initialization of "Y" has no effect
 tests.adb:516:14: warning: assuming "Hash" has no effect on global items
 tests.adb:516:14: warning: no Global contract available for "Hash" [assumed-global-null]

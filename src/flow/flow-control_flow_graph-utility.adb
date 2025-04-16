@@ -598,23 +598,16 @@ package body Flow.Control_Flow_Graph.Utility is
             Map_Root     : Flow_Id;
 
          begin
-            --  We're interested in the map root, since we might have to do
-            --  something about extensions.
-            Get_Assignment_Target_Properties
-              (Actual,
-               Partial_Definition => Partial,
-               View_Conversion    => Unused_Vc,
-               Map_Root           => Map_Root,
-               Seq                => Unused_Seq,
-               Scope              => Scope);
-
             --  We have an unconditional addition to folded_function_checks for
             --  each actual anyway, so we can ignore the proof variables here.
+
             Untangle_Assignment_Target
               (N                    => Actual,
                Scope                => Scope,
                Use_Computed_Globals => not FA.Generating_Globals,
                Force_Extension      => Ext_Relevant_To_Formal,
+               View_Conversion      => Unused_Vc,
+               Map_Root             => Map_Root,
                Vars_Defined         => A.Variables_Defined,
                Vars_Used            => A.Variables_Explicitly_Used,
                Partial_Definition   => Partial,
@@ -787,6 +780,8 @@ package body Flow.Control_Flow_Graph.Utility is
             end;
          else
             declare
+               Unused_Root  : Flow_Id;
+               Unused_Vc    : Boolean;
                Partial      : Boolean;
                Partial_Ext  : Boolean;
                Partial_Priv : Boolean;
@@ -799,6 +794,8 @@ package body Flow.Control_Flow_Graph.Utility is
                  (N                    => Prefix (Name (Call_Vertex)),
                   Scope                => Scope,
                   Use_Computed_Globals => not FA.Generating_Globals,
+                  Map_Root             => Unused_Root,
+                  View_Conversion      => Unused_Vc,
                   Vars_Defined         => A.Variables_Defined,
                   Vars_Used            => A.Variables_Explicitly_Used,
                   Partial_Definition   => Partial,

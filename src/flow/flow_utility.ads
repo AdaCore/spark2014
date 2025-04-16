@@ -399,6 +399,8 @@ package Flow_Utility is
       Scope                :     Flow_Scope;
       Use_Computed_Globals :     Boolean;
       Force_Extension      :     Boolean := False;
+      View_Conversion      : out Boolean;
+      Map_Root             : out Flow_Id;
       Vars_Defined         : out Flow_Id_Sets.Set;
       Vars_Used            : out Flow_Id_Sets.Set;
       Partial_Definition   : out Boolean;
@@ -439,6 +441,9 @@ package Flow_Utility is
    --  for things generated from:
    --     Foo (Positive (X))
    --
+   --  Map_Root, View_Conversion, and Partial are the values returned by
+   --  Get_Assignment_Target_Properties.
+   --
    --  If the object is entirely written except its extension part or private
    --  part, Partial_Definition is set to False but Partial_Ext and/or
    --  Partial_Priv be True.
@@ -456,7 +461,8 @@ package Flow_Utility is
       Fold_Functions          : Reference_Kind;
       Use_Computed_Globals    : Boolean;
       Expand_Internal_Objects : Boolean;
-      Extensions_Irrelevant   : Boolean := True)
+      Extensions_Irrelevant   : Boolean;
+      Top_Level               : Boolean := True)
       return Flow_Id_Maps.Map
    with Pre => Ekind (Get_Type (N, Scope)) in Record_Kind | Private_Kind
                  and then Map_Root.Kind in Direct_Mapping | Record_Field
@@ -477,6 +483,8 @@ package Flow_Utility is
    --
    --  Scope, Fold_Functions, Use_Computed_Globals, Expand_Internal_Objects
    --  will be passed on to Get_Variables if necessary.
+   --
+   --  If Top_Level is True, introduce a conversion to the type of Map_Root.
 
    function Get_Precondition_Expressions (E : Entity_Id) return Node_Lists.List
    with Pre  => Ekind (E) in Entry_Kind

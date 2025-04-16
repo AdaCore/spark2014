@@ -1,5 +1,6 @@
 dispatch.ads:6:13: info: implicit aspect Always_Terminates on "Init" has been proved, subprogram will terminate
 dispatch.ads:13:16: info: implicit aspect Always_Terminates on "Init" has been proved, subprogram will terminate
 test_dispatch.adb:5:04: high: "R" is not initialized
-test_dispatch.adb:6:04: high: "C" is not initialized
+test_dispatch.adb:6:23: high: "C.F" is not initialized
+test_dispatch.adb:6:23: high: "C.G" is not initialized
 test_dispatch.adb:10:19: medium: assertion might fail

@@ -44,6 +44,11 @@ test_base.adb:125:07: medium: tag check might fail
 test_base.adb:125:17: high: extension of "X" is not initialized
 test_base.adb:134:07: medium: tag check might fail
 test_base.adb:134:30: high: extension of "X" is not initialized
+test_base.adb:142:04: warning: analyzing unreferenced procedure "Test_Soundness_3" [unreferenced-procedure]
+test_base.adb:144:07: medium: tag check might fail
+test_base.adb:144:17: high: extension of "X" is not initialized
+test_base.adb:152:07: medium: tag check might fail
+test_base.adb:152:30: high: extension of "X" is not initialized
 test_call.adb:27:38: info: initialization of "C" proved
 test_call.adb:28:06: info: flow dependencies proved
 test_call.adb:31:07: warning: initialization of "X" has no effect
