@@ -75,7 +75,6 @@ procedure Test_Base with SPARK_Mode is
 
    procedure Test_7 (A, B : Integer; C : out Integer) with
      Depends => (C => A, null => B);
-   --  Imprecision is expected, assignment is going through the extension
 
    procedure Test_7 (A, B : Integer; C : out Integer) is
       X : Root'Class := Root'Class (Child'(A, A, A, A));
