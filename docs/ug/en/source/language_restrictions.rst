@@ -159,6 +159,24 @@ also :ref:`Sizes of Objects`). Similarly, for object declarations with an
 Address clause or aspect that refers to the ``'Address`` of another object,
 |SPARK| checks that both objects have the same known ``Object_Size``.
 
+As calls to instances of ``Unchecked_Conversion`` are handled as function calls
+by |GNATprove|, it is necessary to ensure that they will never return
+different results when given the same input. This is enforced by checking that
+the source type doesn't have any unused bit in its representation, whose value
+might be different in otherwise equal values. These checks are illustrated in
+the following example:
+
+.. literalinclude:: /examples/ug__unchecked_conversion/test_unchecked_conversion.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| issues "high" unproved checks on both instances of
+``Unchecked_Conversion``, as the source and target of ``Bad_Size`` have
+different sizes and ``With_Holes`` has invalid bits in its representation:
+
+.. literalinclude:: /examples/ug__unchecked_conversion/test.out
+   :language: none
+
 |SPARK| allows conversions from (suitable) integer types or
 ``System.Address_Type`` to general access-to-object types. When
 calling such instances of ``Unchecked_Conversion``, |GNATprove| makes

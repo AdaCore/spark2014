@@ -2,7 +2,7 @@ p.adb:31:28: medium: overflow check might fail, cannot prove lower bound for Ful
 p.adb:32:28: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at p.ads:30 should mention Full_S and Raw_S and Y in a precondition]
 p.ads:21:04: info: address in address clause is compatible with object alignment (Trivial)
 p.ads:21:04: info: object is suitable for aliasing via address clause (Trivial)
-p.ads:22:26: high: object is unsuitable for aliasing via address clause [possible explanation: floating-point types have invalid bit patterns for SPARK]
+p.ads:22:26: high: object is unsuitable for aliasing via address clause [possible explanation: floating-point types have invalid bit patterns for SPARK; aliased object could have invalid values [SPARK RM 13.7]]
 p.ads:22:26: info: types of aliased objects have the same size (Trivial)
 p.ads:25:11: info: data dependencies proved
 p.ads:25:33: info: initialization of "Full_S" proved

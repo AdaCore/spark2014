@@ -50,6 +50,7 @@ with Gnat2Why.Expr.Loops;            use Gnat2Why.Expr.Loops;
 with Gnat2Why.Subprograms;           use Gnat2Why.Subprograms;
 with Gnat2Why.Subprograms.Pointers;  use Gnat2Why.Subprograms.Pointers;
 with Gnat2Why.Tables;                use Gnat2Why.Tables;
+with Gnat2Why.Unchecked_Conversion;  use Gnat2Why.Unchecked_Conversion;
 with Namet;                          use Namet;
 with Opt;                            use type Opt.Warning_Mode_Type;
 with Rtsfind;                        use Rtsfind;
@@ -20335,7 +20336,11 @@ package body Gnat2Why.Expr is
 
                      if Supported_Alias then
                         Suitable_For_UC_Target
-                          (Retysp (Etype (Obj)), True, Valid, Explanation);
+                          (Typ         => Retysp (Etype (Obj)),
+                           Use_Esize   => True,
+                           For_UC      => False,
+                           Result      => Valid,
+                           Explanation => Explanation);
                         Emit_Static_Proof_Result
                           (Decl, VC_UC_Target, Valid, Current_Subp,
                            Explanation => To_String (Explanation));
@@ -20381,11 +20386,15 @@ package body Gnat2Why.Expr is
                            if Is_Constant_In_SPARK (Aliased_Object) then
                               Suitable_For_UC
                                 (Retysp (Etype (Prefix (Address))),
-                                 True, Valid, Explanation);
+                                 Valid, Explanation);
                            else
                               Suitable_For_UC_Target
-                                (Retysp (Etype (Prefix (Address))),
-                                 True, Valid, Explanation);
+                                (Typ         =>
+                                   Retysp (Etype (Prefix (Address))),
+                                 Use_Esize   => True,
+                                 For_UC      => False,
+                                 Result      => Valid,
+                                 Explanation => Explanation);
                            end if;
 
                            Emit_Static_Proof_Result

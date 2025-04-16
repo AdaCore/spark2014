@@ -350,40 +350,29 @@ package SPARK_Util.Types is
      Pre => Has_Predicates (Ty) and then not Is_Full_View (Ty);
    --  Return the view of Ty on which its predicate is defined
 
-   procedure Suitable_For_UC
+   function Type_Name_For_Explanation (Typ : Type_Kind_Id) return String;
+   --  This function computes a user-visible string to represent the type in
+   --  argument.
+
+   procedure Check_Known_RM_Size
      (Typ         :     Type_Kind_Id;
-      Use_Esize   :     Boolean;
-      Result      : out Boolean;
+      RM_Size     : out Uint;
       Explanation : out Unbounded_String);
-   --  This procedure implements the notion of "suitable for unchecked
-   --  conversion" of SPARK RM 13.9.
+   --  If the RM_Size of the type is known, assign its value to parameter
+   --  RM_Size. Otherwise, set it to No_Uint and save an explanation string
+   --  in Explanation.
 
-   procedure Suitable_For_UC_Target
+   procedure Check_Known_Esize
      (Typ         :     Type_Kind_Id;
-      Use_Esize   :     Boolean;
-      Result      : out Boolean;
+      Esize       : out Uint;
       Explanation : out Unbounded_String);
-   --  This procedure implements the notion of "suitable as a target of an
-   --  unchecked conversion" of SPARK RM 13.9.
+   --  same as Check_Known_RM_Size, but for Esize
 
-   function Suitable_For_Precise_UC
-     (Arg_Typ : Type_Kind_Id)
-      return True_Or_Explain;
-   --  Check if Typ is only made of integers. When returning False,
-   --  return also the Explanation.
-
-   procedure Have_Same_Known_Esize
-     (A, B        :     Type_Kind_Id;
-      Result      : out Boolean;
-      Explanation : out Unbounded_String);
-   --  If types A and B have the same Esize, then set Result to True; otherwise
-   --  set Result to False and Explanation to a possible fix.
-
-   procedure Have_Same_Known_RM_Size
-     (A, B        :     Type_Kind_Id;
-      Result      : out Boolean;
-      Explanation : out Unbounded_String);
-   --  Same as Have_Same_Known_Esize, but checks the RM_Size.
+   function Type_Has_Only_Valid_Values
+     (Typ       : Type_Kind_Id;
+      Use_Esize : Boolean) return True_Or_Explain;
+   --  Return True if Type is known to have only valid values. Otherwise,
+   --  return an explanation for why Ty might have invalid values.
 
    function Contains_Access_Subcomponents (Typ : Type_Kind_Id) return Boolean;
    --  Returns True if Typ has access subcomponents

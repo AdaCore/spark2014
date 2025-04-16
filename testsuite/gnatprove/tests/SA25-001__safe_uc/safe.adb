@@ -38,16 +38,16 @@ procedure Safe is
    end record
    with Size => 64, Object_Size => 64;
 
-   function To_Hrec_NO is new Ada.Unchecked_Conversion (U64, Hrec); --@UNCHECKED_CONVERSION:FAIL
+   function From_Hrec_NO is new Ada.Unchecked_Conversion (Hrec, U64); --@UNCHECKED_CONVERSION:FAIL
 
-   function To_Hrec2_OK is new Ada.Unchecked_Conversion (U64, HRec2);
+   function From_Hrec2_OK is new Ada.Unchecked_Conversion (HRec2, U64);
 
    type HRec3 is record
       C      : Character;
       I      : Integer;
    end record;
 
-   function To_Hrec2_NO is new Ada.Unchecked_Conversion (U64, HRec3); --@UNCHECKED_CONVERSION:FAIL
+   function From_Hrec2_NO is new Ada.Unchecked_Conversion (HRec3, U64); --@UNCHECKED_CONVERSION:FAIL
 
 
    type Arr is array (1 .. 8) of Character;

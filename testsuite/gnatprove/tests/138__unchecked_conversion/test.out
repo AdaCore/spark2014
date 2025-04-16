@@ -47,7 +47,7 @@ imprecise.adb:47:75: info: type is suitable for unchecked conversion (Trivial)
 imprecise.adb:57:13: info: types in unchecked conversion have the same size (Trivial)
 imprecise.adb:57:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 imprecise.adb:57:60: info: type is suitable as source for unchecked conversion (Trivial)
-imprecise.adb:57:75: high: type is unsuitable as a target for unchecked conversion [possible explanation: type R6 has discriminants]
+imprecise.adb:57:75: high: type is unsuitable as a target for unchecked conversion [possible explanation: type R6 has discriminants; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
 imprecise.adb:66:13: info: types in unchecked conversion have the same size (Trivial)
 imprecise.adb:66:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 imprecise.adb:66:60: info: type is suitable as source for unchecked conversion (Trivial)
@@ -63,18 +63,18 @@ imprecise.adb:78:75: info: type is suitable for unchecked conversion (Trivial)
 imprecise.adb:83:13: info: types in unchecked conversion have the same size (Trivial)
 imprecise.adb:83:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 imprecise.adb:83:61: info: type is suitable as source for unchecked conversion (Trivial)
-imprecise.adb:83:76: high: type is unsuitable as a target for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK]
+imprecise.adb:83:76: high: type is unsuitable as a target for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
 imprecise.adb:88:13: info: types in unchecked conversion have the same size (Trivial)
 imprecise.adb:88:61: info: type is suitable as source for unchecked conversion (Trivial)
 imprecise.adb:88:76: info: type is suitable for unchecked conversion (Trivial)
 imprecise.adb:97:16: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type U32 and type P32 differ]
 imprecise.adb:97:16: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 imprecise.adb:97:64: info: type is suitable as source for unchecked conversion (Trivial)
-imprecise.adb:97:79: high: type is unsuitable as a target for unchecked conversion [possible explanation: type P32 has 16#7FFF_FFFF# values but has Size 31]
+imprecise.adb:97:79: high: type is unsuitable as a target for unchecked conversion [possible explanation: type P32 has 16#7FFF_FFFF# values but has Size 31, which allows 16#8000_0000# possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
 imprecise.adb:100:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type U32 and type P32 differ]
 imprecise.adb:100:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 imprecise.adb:100:61: info: type is suitable as source for unchecked conversion (Trivial)
-imprecise.adb:100:76: high: type is unsuitable as a target for unchecked conversion [possible explanation: type P32 has 16#7FFF_FFFF# values but has Size 31]
+imprecise.adb:100:76: high: type is unsuitable as a target for unchecked conversion [possible explanation: type P32 has 16#7FFF_FFFF# values but has Size 31, which allows 16#8000_0000# possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
 modular.adb:14:13: info: types in unchecked conversion have the same size (Trivial)
 modular.adb:14:64: info: type is suitable as source for unchecked conversion (Trivial)
 modular.adb:14:79: info: type is suitable for unchecked conversion (Trivial)

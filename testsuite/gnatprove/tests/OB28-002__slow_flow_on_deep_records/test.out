@@ -1,4 +1,4 @@
-iommu.adb:9:04: warning: address specification on "IOMMUs" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, no writes to a potential alias, and valid reads [imprecise-address-specification] [E0012]
+iommu.adb:9:04: warning: address specification on "IOMMUs" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [imprecise-address-specification] [E0012]
 iommu.adb:9:04: warning: launch "gnatprove --explain=E0012" for more information
 iommu.adb:9:04: warning: make sure that all overlapping objects have Async_Writers set to True
 iommu.ads:389:13: error: launch "gnatprove --explain=E0006" for more information

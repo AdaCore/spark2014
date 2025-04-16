@@ -276,4 +276,4 @@ unch_conversion.adb:10:13: info: types in unchecked conversion have the same siz
 unch_conversion.adb:10:13: warning: implicit function contract might not be available on implicit recursive calls [contracts-recursive]
 unch_conversion.adb:10:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 unch_conversion.adb:10:51: info: type is suitable as source for unchecked conversion (Trivial)
-unch_conversion.adb:10:54: high: type is unsuitable as a target for unchecked conversion [possible explanation: type R has invariants or predicates]
+unch_conversion.adb:10:54: high: type is unsuitable as a target for unchecked conversion [possible explanation: type R has predicates; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
