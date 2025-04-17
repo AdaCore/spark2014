@@ -118,6 +118,7 @@ initialization-to-alias - initialization-to-alias - initialization of object is 
 is-valid-returns-true - is-valid-returns-true - function Is_Valid is assumed to return True - EASY
 generic-not-analyzed - generic-not-analyzed - GNATprove doesn't analyze generics, only instances - EASY
 no-possible-termination - no-possible-termination - procedure which does not return normally nor raises an exception cannot always terminate - EASY
+potentially-invalid-read - potentially-invalid-read - invalid data might be read in the contract of a subprogram without an analyzed body; the fact that the read data is valid is not checked by SPARK - EASY
 no-check-message-justified - no-check-message-justified - no check message justified by this pragma - EASY
 proved-check-justified - proved-check-justified - only proved check messages justified by this pragma - EASY
 deprecated-terminating - deprecated-terminating - Terminating, Always_Return, and Might_Not_Return annotations are ignored - EASY
@@ -128,6 +129,8 @@ precondition-statically-false - precondition-statically-false - precondition is 
 restriction-ignored - restriction-ignored - restriction is ignored (it is not yet supported) - EASY
 unreferenced-function - unreferenced-function - analyzing unreferenced function - EASY
 unreferenced-procedure - unreferenced-procedure - analyzing unreferenced procedure - EASY
+useless-potentially-invalid-func-result - useless-potentially-invalid-func-result - function result annotated with Potentially_Invalid cannot have invalid values - EASY
+useless-potentially-invalid-object - useless-potentially-invalid-object - object annotated with Potentially_Invalid cannot have invalid values - EASY
 useless-relaxed-init-func-result - useless-relaxed-init-func-result - function result annotated with Relaxed_Initialization cannot be partially initialized - EASY
 useless-relaxed-init-object - useless-relaxed-init-object - object annotated with Relaxed_Initialization cannot be partially initialized - EASY
 variant-no-recursion - variant-no-recursion - no recursive call visible on subprogram with Subprogram_Variant - EASY

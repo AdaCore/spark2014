@@ -395,6 +395,7 @@ package VC_Kinds is
       Warn_Function_Is_Valid,
       Warn_Generic_Not_Analyzed,
       Warn_No_Possible_Termination,
+      Warn_Potentially_Invalid_Read,
       Warn_Pragma_Annotate_No_Check,
       Warn_Pragma_Annotate_Proved_Check,
       Warn_Pragma_Annotate_Terminating,
@@ -405,6 +406,8 @@ package VC_Kinds is
       Warn_Restriction_Ignored,
       Warn_Unreferenced_Function,
       Warn_Unreferenced_Procedure,
+      Warn_Useless_Potentially_Invalid_Fun,
+      Warn_Useless_Potentially_Invalid_Obj,
       Warn_Useless_Relaxed_Init_Fun,
       Warn_Useless_Relaxed_Init_Obj,
       Warn_Variant_Not_Recursive,
@@ -550,6 +553,13 @@ package VC_Kinds is
       Lim_Overriding_With_Precondition_Discrepancy_Tagged_Privacy,
       Lim_Deep_Object_Declaration_Outside_Block,
       Lim_Package_Before_Inv,
+      Lim_Potentially_Invalid_Iterable,
+      Lim_Potentially_Invalid_Mutable_Discr,
+      Lim_Potentially_Invalid_Predicates,
+      Lim_Potentially_Invalid_Private,
+      Lim_Potentially_Invalid_Relaxed,
+      Lim_Potentially_Invalid_Subp_Access,
+      Lim_Potentially_Invalid_Volatile,
       Lim_Predicate_With_Different_SPARK_Mode,
       Lim_Predicate_With_Different_Visibility,
       Lim_Primitive_Call_In_DIC,
@@ -672,6 +682,9 @@ package VC_Kinds is
         when Warn_No_Possible_Termination =>
           "procedure which does not return normally nor raises an exception"
           & " cannot always terminate",
+        when Warn_Potentially_Invalid_Read =>
+          "invalid data might be read; read data is assumed to be valid in "
+          & "SPARK",
         when Warn_Pragma_Annotate_No_Check =>
           "no check message justified by this pragma",
         when Warn_Pragma_Annotate_Proved_Check =>
@@ -693,6 +706,10 @@ package VC_Kinds is
           "analyzing unreferenced function &",
         when Warn_Unreferenced_Procedure =>
           "analyzing unreferenced procedure &",
+        when Warn_Useless_Potentially_Invalid_Obj =>
+          "& cannot have invalid values",
+        when Warn_Useless_Potentially_Invalid_Fun =>
+          "the result of & cannot have invalid values",
         when Warn_Useless_Relaxed_Init_Fun =>
           "the result of & cannot be partially initialized",
         when Warn_Useless_Relaxed_Init_Obj =>
@@ -979,6 +996,23 @@ package VC_Kinds is
            "dispatching primitive subprogram overriding declared for a"
           & " private untagged type with no precondition and a class-wide"
           & " precondition inherited from ancestor",
+         when Lim_Potentially_Invalid_Iterable =>
+           "Potentially_Invalid aspect on a function associated to the aspect"
+          & " Iterable",
+         when Lim_Potentially_Invalid_Mutable_Discr =>
+           "part of potentially invalid object with mutable discriminants",
+         when Lim_Potentially_Invalid_Predicates =>
+           "potentially invalid object with a part subject to predicates",
+         when Lim_Potentially_Invalid_Private =>
+           "potentially invalid object with a part whose full view is not in "
+          & "SPARK",
+         when Lim_Potentially_Invalid_Relaxed =>
+           "potentially invalid object with a part with relaxed "
+          & "initialization",
+         when Lim_Potentially_Invalid_Subp_Access =>
+           "access to a subprogram annotated with Potentially_Invalid",
+         when Lim_Potentially_Invalid_Volatile =>
+           "effectively volatile potentially invalid object",
          when Lim_Primitive_Call_In_DIC =>
            "primitive calls in default initial condition",
          when Lim_Constrained_Classwide =>

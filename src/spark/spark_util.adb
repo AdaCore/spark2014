@@ -4065,6 +4065,28 @@ package body SPARK_Util is
       end case;
    end Is_Path_Expression;
 
+   ----------------------------
+   -- Is_Potentially_Invalid --
+   ----------------------------
+
+   function Is_Potentially_Invalid (E : Entity_Id) return Boolean is
+   begin
+      case Ekind (E) is
+         when E_Variable | Formal_Kind | E_Function =>
+            return Has_Potentially_Invalid (E);
+
+         when E_Constant =>
+            if Is_Full_View (E) then
+               return Has_Potentially_Invalid (Partial_View (E));
+            else
+               return Has_Potentially_Invalid (E);
+            end if;
+
+         when others =>
+            return False;
+      end case;
+   end Is_Potentially_Invalid;
+
    ---------------
    -- Is_Pragma --
    ---------------
@@ -5889,6 +5911,131 @@ package body SPARK_Util is
             return Path_Contains_Auxiliary (Expr);
       end case;
    end Path_Contains_Witness;
+
+   -------------------------------------
+   -- Propagates_Potential_Invalidity --
+   -------------------------------------
+
+   function Propagates_Potential_Invalidity (N : Node_Id) return Boolean is
+      Source, Target : Entity_Id;
+
+   begin
+      --  Retrieve values for Source and Target
+
+      case Nkind (N) is
+         when N_Object_Declaration =>
+            if No (Expression (N)) then
+               return False;
+            end if;
+
+            case Nkind (Expression (N)) is
+               when N_Identifier | N_Expanded_Name =>
+                  if Is_Object (Entity (Expression (N))) then
+                     Source := Entity (Expression (N));
+                  else
+                     return False;
+                  end if;
+               when N_Function_Call =>
+                  Source := Get_Called_Entity (Expression (N));
+               when others =>
+                  return False;
+            end case;
+            Target := Defining_Identifier (N);
+
+            --  If the object is declared in a package or protected type,
+            --  return empty as locally potentialy invalid objects are not
+            --  allowed there.
+
+            if Ekind (Scope (Target)) in E_Package
+                                       | E_Package_Body
+                                       | E_Protected_Type
+                and then not Is_Potentially_Invalid (Target)
+            then
+               return False;
+            end if;
+
+         when N_Assignment_Statement =>
+            case Nkind (Expression (N)) is
+               when N_Identifier | N_Expanded_Name =>
+                  if Is_Object (Entity (Expression (N))) then
+                     Source := Entity (Expression (N));
+                  else
+                     return False;
+                  end if;
+               when N_Function_Call =>
+                  Source := Get_Called_Entity (Expression (N));
+               when others =>
+                  return False;
+            end case;
+
+            case Nkind (Name (N)) is
+               when N_Identifier | N_Expanded_Name =>
+                  Target := Entity (Name (N));
+               when others =>
+                  return False;
+            end case;
+
+         --  N should be an actual parameter of a call
+
+         when N_Identifier | N_Expanded_Name =>
+
+            declare
+               Call : Node_Id;
+            begin
+               Find_Actual (N, Source, Call);
+
+               if Present (Call)
+                 and then
+                   Ekind (Source) in E_In_Out_Parameter | E_Out_Parameter
+               then
+                  pragma Assert (Is_Object (Entity (N)));
+                  Target := Entity (N);
+               else
+                  return False;
+               end if;
+            end;
+
+         when others =>
+            return False;
+      end case;
+
+      --  For now, effectively volatile object cannot be potentially invalid.
+      --  When we add support for volatile potentially invalid ovjects, we
+      --  probably do not want to allow locally potentially invalid objects.
+
+      if Is_Effectively_Volatile_Object (Target) then
+         return False;
+      end if;
+
+      return Is_Potentially_Invalid (Source)
+        and then Propagates_Potential_Invalidity (Source, Target);
+      --  ??? Add a querry to check for whether Source is locally potentially
+      --  invalid.
+
+   end Propagates_Potential_Invalidity;
+
+   function Propagates_Potential_Invalidity
+     (Source : Entity_Id;
+      Target : Entity_Id) return Boolean
+   is
+   begin
+      --  If Source and Target have a scalar type, check that the types of
+      --  Source and Target are statically matching and that Source is a
+      --  function.
+
+      if Has_Scalar_Type (Etype (Source)) then
+
+         return Retysp (Etype (Source)) = Retysp (Etype (Target))
+           and then Ekind (Source) = E_Function;
+
+      --  Otherwise, check that target does not have predicates
+
+      else
+         pragma Assert (Has_Array_Type (Etype (Source))
+                        or else Has_Record_Type (Etype (Source)));
+         return not Has_Predicates (Etype (Target));
+      end if;
+   end Propagates_Potential_Invalidity;
 
    ------------------------
    -- Reachable_Handlers --

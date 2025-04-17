@@ -672,6 +672,29 @@ package body SPARK_Util.Types is
 
    end Find_View_For_Default_Checks;
 
+   -------------------------------
+   -- Fun_Has_Only_Valid_Values --
+   -------------------------------
+
+   function Fun_Has_Only_Valid_Values (Fun : Entity_Id) return Boolean is
+      Ty          : constant Type_Kind_Id := Retysp (Etype (Fun));
+      Size        : Uint;
+      Size_Str    : Unbounded_String;
+      Valid       : True_Or_Explain;
+   begin
+      if Is_Scalar_Type (Ty) and then not Known_RM_Size (Ty) then
+         return False;
+      else
+         Check_Known_RM_Size (Ty, Size, Size_Str);
+         Valid :=
+           Type_Has_Only_Valid_Values
+             (Ty,
+              (if Is_Scalar_Type (Ty) then Size else Uint_0),
+              To_String (Size_Str));
+         return Valid.Ok;
+      end if;
+   end Fun_Has_Only_Valid_Values;
+
    ------------------------------
    -- Get_Constraint_For_Discr --
    ------------------------------
@@ -1865,6 +1888,30 @@ package body SPARK_Util.Types is
       end loop;
       return Count;
    end Num_Literals;
+
+   -------------------------------
+   -- Obj_Has_Only_Valid_Values --
+   -------------------------------
+
+   function Obj_Has_Only_Valid_Values (Obj : Entity_Id) return Boolean is
+      Ty          : constant Type_Kind_Id := Retysp (Etype (Obj));
+      Size        : Uint := Uint_0;
+      Explanation : Unbounded_String;
+      Size_Str    : Unbounded_String;
+      Valid       : True_Or_Explain;
+   begin
+      Check_Known_Size_For_Object (Obj, Size, Explanation, Size_Str);
+      if Is_Scalar_Type (Ty) and then No (Size) then
+         return False;
+      else
+         Valid :=
+           Type_Has_Only_Valid_Values
+             (Ty,
+              (if Is_Scalar_Type (Ty) then Size else Uint_0),
+              To_String (Size_Str));
+         return Valid.Ok;
+      end if;
+   end Obj_Has_Only_Valid_Values;
 
    -------------------
    -- Parent_Retysp --

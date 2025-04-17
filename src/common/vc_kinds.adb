@@ -577,6 +577,10 @@ package body VC_Kinds is
         when Warn_No_Possible_Termination =>
           "procedure which does not return normally nor raises an exception"
           & " cannot always terminate",
+        when Warn_Potentially_Invalid_Read =>
+          "invalid data might be read in the contract of a subprogram without "
+          & "an analyzed body; the fact that the read data is valid is not"
+          & " checked by SPARK",
         when Warn_Pragma_Annotate_No_Check =>
           "no check message justified by this pragma",
         when Warn_Pragma_Annotate_Proved_Check =>
@@ -598,6 +602,12 @@ package body VC_Kinds is
           "analyzing unreferenced function",
         when Warn_Unreferenced_Procedure =>
           "analyzing unreferenced procedure",
+        when Warn_Useless_Potentially_Invalid_Obj =>
+          "object annotated with Potentially_Invalid cannot have "
+          & "invalid values",
+        when Warn_Useless_Potentially_Invalid_Fun =>
+          "function result annotated with Potentially_Invalid cannot have "
+          & "invalid values",
         when Warn_Useless_Relaxed_Init_Fun =>
           "function result annotated with Relaxed_Initialization cannot be"
           & " partially initialized",
@@ -962,6 +972,23 @@ package body VC_Kinds is
            "a dispatching primitive subprogram overriding declared for a"
           & " private untagged type with no specific precondition and a"
           & " class-wide precondition inherited from ancestor",
+         when Lim_Potentially_Invalid_Iterable =>
+           "a Potentially_Invalid aspect on a function associated to the"
+          & " aspect Iterable",
+         when Lim_Potentially_Invalid_Mutable_Discr =>
+           "a part of potentially invalid object with mutable discriminants",
+         when Lim_Potentially_Invalid_Predicates =>
+           "a potentially invalid object with a part subject to predicates",
+         when Lim_Potentially_Invalid_Private =>
+           "a potentially invalid object with a part whose full view is not in"
+          & " SPARK",
+         when Lim_Potentially_Invalid_Relaxed =>
+           "a potentially invalid object with a part annotated with relaxed "
+          & "initialization",
+         when Lim_Potentially_Invalid_Subp_Access =>
+           "an access to a subprogram annotated with Potentially_Invalid",
+         when Lim_Potentially_Invalid_Volatile =>
+           "an effectively volatile potentially invalid object",
          when Lim_Package_Before_Inv =>
            "a package declaration occurring in a loop before the loop "
           & "invariant",
@@ -1669,6 +1696,8 @@ package body VC_Kinds is
          when Warn_Function_Is_Valid => "is-valid-returns-true",
          when Warn_Generic_Not_Analyzed => "generic-not-analyzed",
          when Warn_No_Possible_Termination => "no-possible-termination",
+         when Warn_Potentially_Invalid_Read =>
+            "potentially-invalid-read",
          when Warn_Pragma_Annotate_No_Check => "no-check-message-justified",
          when Warn_Pragma_Annotate_Proved_Check => "proved-check-justified",
          when Warn_Pragma_Annotate_Terminating =>
@@ -1684,6 +1713,10 @@ package body VC_Kinds is
             "unreferenced-function",
          when Warn_Unreferenced_Procedure =>
             "unreferenced-procedure",
+         when Warn_Useless_Potentially_Invalid_Fun =>
+            "useless-potentially-invalid-func-result",
+        when Warn_Useless_Potentially_Invalid_Obj =>
+            "useless-potentially-invalid-object",
          when Warn_Useless_Relaxed_Init_Fun =>
             "useless-relaxed-init-func-result",
         when Warn_Useless_Relaxed_Init_Obj =>

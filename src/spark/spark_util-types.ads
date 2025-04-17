@@ -403,6 +403,13 @@ package SPARK_Util.Types is
    --  return an explanation for why Ty might have invalid values.
    --  If Typ is scalar, use the passed size to check for invalid values.
 
+   function Obj_Has_Only_Valid_Values (Obj : Entity_Id) return Boolean;
+   --  Wrapper on Type_Has_Only_Valid_Values for objects
+
+   function Fun_Has_Only_Valid_Values (Fun : Entity_Id) return Boolean;
+   --  Wrapper on Type_Has_Only_Valid_Values for the return type of functions.
+   --  It uses the Size of the return type.
+
    function Contains_Access_Subcomponents (Typ : Type_Kind_Id) return Boolean;
    --  Returns True if Typ has access subcomponents
 
