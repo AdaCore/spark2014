@@ -21,6 +21,7 @@ q.adb:86:10: info: precondition proved (Trivial: 1 VC)
 q.adb:87:10: high: "Hidden.State_B" is not initialized
 q.adb:87:10: info: precondition proved (Trivial: 1 VC)
 q.adb:88:19: high: "C.C" is not initialized
+q.adb:88:19: high: private part of "C" is not initialized
 q.adb:88:19: info: precondition proved (Trivial: 1 VC)
 q.adb:89:04: info: precondition proved (Trivial: 1 VC)
 q.adb:90:04: info: precondition proved (Trivial: 1 VC)
@@ -52,6 +53,7 @@ r.adb:90:10: info: precondition proved (Trivial: 1 VC)
 r.adb:91:10: high: "Hidden.State_B" is not initialized
 r.adb:91:10: info: precondition proved (Trivial: 1 VC)
 r.adb:92:19: high: "C.C" is not initialized
+r.adb:92:19: high: private part of "C" is not initialized
 r.adb:92:19: info: precondition proved (Trivial: 1 VC)
 r.adb:93:04: info: precondition proved (Trivial: 1 VC)
 r.adb:94:04: info: precondition proved (Trivial: 1 VC)
