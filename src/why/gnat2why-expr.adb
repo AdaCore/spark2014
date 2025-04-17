@@ -4083,7 +4083,12 @@ package body Gnat2Why.Expr is
                     Has_Extensions_Visible (Subp)
                     or else
                       (not Is_Self
-                       and then Is_Class_Wide_Type (Etype (Formal)));
+                       and then Is_Class_Wide_Type (Etype (Formal)))
+                    or else
+                      (not Is_Self
+                       and then Nkind (Call) in N_Subprogram_Call
+                       and then Present (Controlling_Argument (Call))
+                       and then Is_Controlling_Actual (Actual));
 
                begin
                   Compute_Store
