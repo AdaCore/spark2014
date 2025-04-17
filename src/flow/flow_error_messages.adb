@@ -178,7 +178,7 @@ package body Flow_Error_Messages is
       Msg_Id     : Message_Id;
       How_Proved : Prover_Category;
       Tracefile  : String := "";
-      Cntexmp    : Cntexample_File_Maps.Map := Cntexample_File_Maps.Empty_Map;
+      Cntexmp    : Cntexample_Data := (others => <>);
       Check_Tree : JSON_Value;
       VC_File    : String := "";
       VC_Loc     : Source_Ptr := No_Location;
@@ -260,7 +260,7 @@ package body Flow_Error_Messages is
       Msg_Id     : Message_Id;
       How_Proved : Prover_Category;
       Tracefile  : String := "";
-      Cntexmp    : Cntexample_File_Maps.Map := Cntexample_File_Maps.Empty_Map;
+      Cntexmp    : Cntexample_Data := (others => <>);
       Check_Tree : JSON_Value;
       VC_File    : String := "";
       VC_Loc     : Source_Ptr := No_Location;
@@ -317,8 +317,12 @@ package body Flow_Error_Messages is
          Set_Field (Value, "tracefile", Tracefile);
       end if;
 
-      if not Cntexmp.Is_Empty then
-         Set_Field (Value, "cntexmp", To_JSON (Cntexmp));
+      if not Cntexmp.Map.Is_Empty then
+         Set_Field (Value, "cntexmp", To_JSON (Cntexmp.Map));
+      end if;
+
+      if not Cntexmp.Input_As_JSON.Input_As_JSON.Is_Empty then
+         Set_Field (Value, "cntexmp_value", To_JSON (Cntexmp.Input_As_JSON));
       end if;
 
       if VC_File /= "" then
@@ -1007,21 +1011,26 @@ package body Flow_Error_Messages is
          & (if CWE then CWE_Message (Tag) else ""))
         & Extra_Msg
         & (if VC_File /= "" then ", vc file: " & VC_File else "");
-      Message     : constant String      := Compute_Message (Msg, N);
-      Place_First : constant Boolean     := Locate_On_First_Token (Tag);
-      Span        : constant Source_Span := Compute_Sloc (N, Place_First);
-      Slc         : constant Source_Ptr  := Span.Ptr;
-      VC_Span     : constant Source_Span := Compute_Sloc (VC_Loc, Place_First);
-      VC_Slc      : constant Source_Ptr  := VC_Span.Ptr;
+      Message        : constant String          := Compute_Message (Msg, N);
+      Place_First    : constant Boolean         := Locate_On_First_Token (Tag);
+      Span           : constant Source_Span     :=
+        Compute_Sloc (N, Place_First);
+      Slc            : constant Source_Ptr      := Span.Ptr;
+      VC_Span        : constant Source_Span     := Compute_Sloc (VC_Loc,
+                                                             Place_First);
+      VC_Slc         : constant Source_Ptr      := VC_Span.Ptr;
 
-      Pretty_Cntexmp  : constant Cntexample_File_Maps.Map :=
-        (if CE_From_RAC then Remap_VC_Info (Verdict.CE, Slc)
-         elsif Verdict.Verdict_Category in
-              Not_Checked | Cntexmp_Confirmed_Verdict_Category
+      Pretty_Cntexmp : constant Cntexample_Data :=
+        (if CE_From_RAC
          then
-            Create_Pretty_Cntexmp (From_JSON (Cntexmp), Slc, N, Tag)
+           (Verdict.CE with delta Map =>
+                Remap_VC_Info (Verdict.CE.Map, Slc))
+         elsif Verdict.Verdict_Category in
+           Not_Checked | Cntexmp_Confirmed_Verdict_Category
+         then
+            Create_Pretty_Cntexmp (From_JSON (Cntexmp), Slc, N, Tag, E)
          else
-            Cntexample_File_Maps.Empty);
+            VC_Kinds.Cntexample_Data'(others => <>));
 
       Severity  : constant Msg_Severity :=
         Get_Severity (VC_Loc, Is_Proved, Tag, Verdict);
@@ -1099,7 +1108,7 @@ package body Flow_Error_Messages is
                      elsif Verdict.Verdict_Category in
                        Not_Checked | Cntexmp_Confirmed_Verdict_Category
                      then
-                        Get_Cntexmp_One_Liner (Pretty_Cntexmp, Slc)
+                        Get_Cntexmp_One_Liner (Pretty_Cntexmp.Map, Slc)
                      else "");
 
                   Details : constant String :=

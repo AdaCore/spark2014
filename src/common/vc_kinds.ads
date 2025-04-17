@@ -1329,20 +1329,22 @@ package VC_Kinds is
      with Predicate => Count >= Natural (Elems.Length);
    --  Mostly a string for a counterexample value. Component Count
    --  gives the number of individual subcomponents being printed in Str, and
-   --  component Elems gives the value of individual non-others non-nul
+   --  component Elems gives the value of individual non-others non-null
    --  subcomponents, to be used if the Count is too large for printing Str.
 
-   type Cntexample_Kind is (Raw, Pretty_Printed);
+   type Cntexample_Kind is (Raw, Pretty_Printed, Json_Format);
 
    type Cntexample_Elt (K : Cntexample_Kind := Raw) is record
-      Kind    : CEE_Kind;
-      Name    : Unbounded_String;
+      Kind     : CEE_Kind;
+      Name     : Unbounded_String;
       case K is
          when Raw =>
             Labels : S_String_List.List;
             Value  : Cntexmp_Value_Ptr;
          when Pretty_Printed =>
             Val_Str : CNT_Unbounded_String;
+         when Json_Format =>
+            JSON_Obj : JSON_Value := Create_Object;
       end case;
    end record;
 
@@ -1403,6 +1405,19 @@ package VC_Kinds is
                                              "<"          => "<",
                                              "="          => "=");
 
+   --  Type used to store the inputs and location of the subprogram that
+   --  lead to the generation of the counterexample
+   type Json_Formatted_Input is record
+      Input_As_JSON : Cntexample_Elt_Lists.List := Cntexample_Elt_Lists.Empty;
+      File          : Unbounded_String          := To_Unbounded_String ("");
+      Line          : Natural                   := 0;
+   end record;
+
+   type Cntexample_Data is record
+      Map           : Cntexample_File_Maps.Map := Cntexample_File_Maps.Empty;
+      Input_As_JSON : Json_Formatted_Input     := (others => <>);
+   end record;
+
    type Cntexmp_Verdict_Category is
      (Non_Conformity,
       --  The counterexample shows how the code contradicts the check
@@ -1439,7 +1454,7 @@ package VC_Kinds is
             Verdict_Reason : Unbounded_String :=
               To_Unbounded_String ("Unknown");
          when Cntexmp_Confirmed_Verdict_Category =>
-            CE             : Cntexample_File_Maps.Map;
+            CE             : Cntexample_Data;
             Extra_Info     : Prover_Extra_Info;
          end case;
       end record;
@@ -1475,4 +1490,6 @@ package VC_Kinds is
    function To_JSON (Status : SPARK_Mode_Status) return JSON_Value;
    function To_JSON (M : GP_Mode) return JSON_Value;
    function To_JSON (W : Warning_Status_Array) return JSON_Value;
+   function To_JSON (L : Cntexample_Elt_Lists.List) return JSON_Value;
+   function To_JSON (S : Json_Formatted_Input) return JSON_Value;
 end VC_Kinds;

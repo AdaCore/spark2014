@@ -23,6 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Float_Text_IO;
+with Ada.Long_Float_Text_IO;
+with Ada.Long_Long_Float_Text_IO;
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Ordered_Maps;
 with Ada.Numerics.Big_Numbers.Big_Integers;
@@ -131,10 +134,14 @@ package body CE_Pretty_Printing is
    --  type Byte is range -128..127;
    --  V = - 127 is printed V = Byte'First + 1
 
-   function Print_Fixed (Small : Big_Real; Nb : Big_Integer) return String;
+   function Print_Fixed
+     (Small           : Big_Real;
+      Nb              : Big_Integer;
+      Always_Quotient : Boolean := False)
+      return String;
    --  If the computation of Small * Nb is an integer we print it as an
    --  integer. If not, we print Nb * Num (Small) / Den (Small) with Small
-   --  normalized.
+   --  normalized. If Always_Quotient is True, always print as fraction.
 
    generic
       type T_Float is digits <>;
@@ -789,13 +796,18 @@ package body CE_Pretty_Printing is
    -- Print_Fixed --
    -----------------
 
-   function Print_Fixed (Small : Big_Real; Nb : Big_Integer) return String is
+   function Print_Fixed
+     (Small           : Big_Real;
+      Nb              : Big_Integer;
+      Always_Quotient : Boolean := False)
+      return String is
    begin
       declare
          Nb_Real : constant Big_Real := To_Big_Real (Nb) * Small;
       begin
          if Denominator (Nb_Real) = 1 then
-            return To_String (Numerator (Nb_Real));
+            return To_String (Numerator (Nb_Real))
+              & (if Always_Quotient then "/1" else "");
          else
             declare
                Num_Small : constant Big_Integer := Numerator (Small);
@@ -805,7 +817,7 @@ package body CE_Pretty_Printing is
                  & (if Num_Small /= 1
                     then "*" & Trim (To_String (Num_Small), Left)
                     else "")
-                 & (if Den_Small /= 1
+                 & (if Den_Small /= 1 or Always_Quotient
                     then "/" & Trim (To_String (Den_Small), Left)
                     else "");
             end;
@@ -1355,38 +1367,250 @@ package body CE_Pretty_Printing is
    ----------------------
 
    procedure Print_Value_And_Attributes
-     (Name        : Unbounded_String;
-      Value       : Value_Type;
-      Pretty_Line : in out Cntexample_Elt_Lists.List)
+     (Name           : Unbounded_String;
+      Value          : Value_Type;
+      Pretty_Line    : in out Cntexample_Elt_Lists.List;
+      Is_Json_Format : Boolean := False)
    is
-      Val_And_Attrs : constant Value_And_Attributes :=
-        Print_Value (Value);
-
    begin
-      --  Append the pretty printed value of Value
-
-      if Val_And_Attrs.Value /= Dont_Display then
-         Pretty_Line.Append
-           (Cntexample_Elt'(K       => Pretty_Printed,
-                            Kind    => CEE_Variable,
-                            Name    => Name,
-                            Val_Str => Val_And_Attrs.Value));
-      end if;
-
-      --  Add the attributes
-
-      declare
-         Val_Attr : constant Name_Value_Lists.List :=
-           Prefix_Names (Val_And_Attrs.Attributes, To_String (Name));
-      begin
-         for Name_And_Value of Val_Attr loop
+      if Is_Json_Format then
+         declare
+            JSON_Obj : constant GNATCOLL.JSON.JSON_Value :=
+              Serialize_Value (Value);
+         begin
             Pretty_Line.Append
-              (Cntexample_Elt'(K       => Pretty_Printed,
-                               Kind    => CEE_Variable,
-                               Name    => Name_And_Value.Name,
-                               Val_Str => Name_And_Value.Value));
-         end loop;
-      end;
+              (Cntexample_Elt'(K        => Json_Format,
+                               Kind     => CEE_Variable,
+                               Name     => Name,
+                               JSON_Obj => JSON_Obj));
+         end;
+      else
+         declare
+            Val_And_Attrs : constant Value_And_Attributes :=
+              Print_Value (Value);
+         begin
+            --  Append the pretty printed value of Value
+            if Val_And_Attrs.Value /= Dont_Display then
+               Pretty_Line.Append
+                 (Cntexample_Elt'(K        => Pretty_Printed,
+                                  Kind     => CEE_Variable,
+                                  Name     => Name,
+                                  Val_Str  => Val_And_Attrs.Value));
+            end if;
+
+            --  Add the attributes
+
+            declare
+               Val_Attr : constant Name_Value_Lists.List :=
+                 Prefix_Names (Val_And_Attrs.Attributes, To_String (Name));
+            begin
+               for Name_And_Value of Val_Attr loop
+                  Pretty_Line.Append
+                    (Cntexample_Elt'(K       => Pretty_Printed,
+                                     Kind    => CEE_Variable,
+                                     Name    => Name_And_Value.Name,
+                                     Val_Str => Name_And_Value.Value));
+               end loop;
+            end;
+         end;
+      end if;
    end Print_Value_And_Attributes;
+
+   ---------------------
+   -- Serialize_Float --
+   ---------------------
+
+   function Serialize_Float (F : CE_Values.Float_Value)
+                             return GNATCOLL.JSON.JSON_Value
+   is
+      use GNATCOLL.JSON;
+      JSON_Obj : constant GNATCOLL.JSON.JSON_Value := Create_Object;
+   begin
+      Set_Field (JSON_Obj,
+                 "quotient",
+                 False);
+      case F.K is
+         when Float_32_K =>
+            declare
+               Content_32 : constant Float := F.Content_32;
+               F_Str      : String (1 .. Float'Digits * 3);
+            begin
+               Ada.Float_Text_IO.Put (To => F_Str,
+                                      Item => Content_32,
+                                      Aft => Float'Digits,
+                                      Exp => 1);
+               Set_Field (JSON_Obj,
+                          "value",
+                          Create (Trim (F_Str, Ada.Strings.Left)));
+            end;
+         when Float_64_K =>
+            declare
+               Content_64 : constant Long_Float := F.Content_64;
+               F_Str      : String (1 .. Long_Float'Digits * 3);
+            begin
+               Ada.Long_Float_Text_IO.Put (To => F_Str,
+                                           Item => Content_64,
+                                           Aft => Long_Float'Digits,
+                                           Exp => 1);
+               Set_Field (JSON_Obj,
+                          "value",
+                          Create (Trim (F_Str, Ada.Strings.Left)));
+            end;
+         when others =>
+            declare
+               Ext_Content : constant Long_Long_Float := F.Ext_Content;
+               F_Str       : String (1 .. Long_Long_Float'Digits * 3);
+            begin
+               Ada.Long_Long_Float_Text_IO.Put (To => F_Str,
+                                                Item => Ext_Content,
+                                                Aft => Long_Long_Float'Digits,
+                                                Exp => 1);
+               Set_Field (JSON_Obj,
+                          "value",
+                          Create (Trim (F_Str, Ada.Strings.Left)));
+            end;
+      end case;
+      return JSON_Obj;
+   end Serialize_Float;
+
+   ---------------------
+   -- Serialize_Value --
+   ---------------------
+
+   function Serialize_Value (Value : CE_Values.Value_Type)
+                             return GNATCOLL.JSON.JSON_Value
+   is
+      use GNATCOLL.JSON;
+      JSON_Obj : GNATCOLL.JSON.JSON_Value := Create_Object;
+   begin
+      case Value.K is
+         when Scalar_K =>
+            if Value.Scalar_Content /= null
+            then
+               case Value.Scalar_Content.K is
+               when Integer_K =>
+                  JSON_Obj := Create
+                    (Trim
+                       (To_String (Value.Scalar_Content.Integer_Content),
+                        Ada.Strings.Left));
+               when Float_K =>
+                  JSON_Obj := Serialize_Float
+                    (Value.Scalar_Content.Float_Content);
+               when Fixed_K =>
+                  Set_Field (JSON_Obj,
+                             "value",
+                             Create (Print_Fixed
+                               (Value.Scalar_Content.Small,
+                                  Value.Scalar_Content.Fixed_Content,
+                                  True)));
+                  Set_Field (JSON_Obj,
+                             "quotient",
+                             True);
+               when others =>
+                  case Nkind (Value.Scalar_Content.Enum_Entity) is
+                     when N_Character_Literal =>
+                        JSON_Obj := Create (To_String (Value)
+                                            (To_String (Value)'First)'Image);
+                     when others =>
+                        JSON_Obj := Create (To_String (Value));
+                  end case;
+               end case;
+            end if;
+         when Record_K =>
+            declare
+               Components : constant GNATCOLL.JSON.JSON_Value := Create_Object;
+               Discriminants : constant GNATCOLL.JSON.JSON_Value
+                 := Create_Object;
+            begin
+               for Elt in Value.Record_Fields.Iterate loop
+                  declare
+                     use Entity_To_Value_Maps;
+                     Name : constant String := Source_Name (Key (Elt));
+                  begin
+                     case Ekind (Key (Elt)) is
+                        when E_Discriminant =>
+                           Set_Field (Discriminants,
+                                      Name,
+                                      Serialize_Value
+                                        (Value.Record_Fields (Elt).all));
+                        when others =>
+                           Set_Field (Components,
+                                      Name,
+                                      Serialize_Value
+                                        (Value.Record_Fields (Elt).all));
+                     end case;
+                  end;
+               end loop;
+               Set_Field (JSON_Obj,
+                          "discriminants",
+                          Discriminants);
+               Set_Field (JSON_Obj,
+                          "components",
+                          Components);
+            end;
+         when Array_K =>
+            if Value.First_Attr.Present and Value.Last_Attr.Present then
+               declare
+                  Aggregate  : constant GNATCOLL.JSON.JSON_Value
+                    := Create_Object;
+                  Min        : constant Valid_Big_Integer
+                    := Value.First_Attr.Content;
+                  Max        : constant Valid_Big_Integer
+                    := Value.Last_Attr.Content;
+                  Size       : constant Valid_Big_Integer := Max - Min + 1;
+                  Sizes      : GNATCOLL.JSON.JSON_Array := Empty_Array;
+                  Dimension  : constant GNATCOLL.JSON.JSON_Value
+                    := Create_Object;
+                  Dimensions : GNATCOLL.JSON.JSON_Array := Empty_Array;
+               begin
+
+                  Append (Sizes,
+                          Create (Trim (To_String (Size), Ada.Strings.Left)));
+                  Set_Field (JSON_Obj, "sizes", Sizes);
+
+                  Set_Field (Dimension,
+                             "First",
+                             (Trim (To_String (Min), Ada.Strings.Left)));
+                  Set_Field (Dimension,
+                             "Last",
+                             (Trim (To_String (Max), Ada.Strings.Left)));
+                  Append (Dimensions, Dimension);
+                  Set_Field (JSON_Obj, "dimensions", Dimensions);
+
+                  if Size >= 0 then
+                     for Elt in Value.Array_Values.Iterate loop
+                        declare
+                           use Big_Integer_To_Value_Maps;
+                        begin
+                           Set_Field (Aggregate,
+                                      Trim (To_String (Key (Elt)),
+                                        Ada.Strings.Left),
+                                      Serialize_Value (Element (Elt).all));
+                        end;
+                     end loop;
+                     if Value.Array_Others /= null then
+                        Set_Field (Aggregate, "others",
+                                   Serialize_Value (Value.Array_Others.all));
+                     end if;
+                  end if;
+                  Set_Field (JSON_Obj, "aggregate", Aggregate);
+               end;
+            end if;
+         when Multidim_K =>
+            JSON_Obj := Create
+              (Value.Bounds'Image);
+         when Access_K =>
+            if Value.Is_Null.Present and then not Value.Is_Null.Content
+              and then Value.Designated_Value /= null
+            then
+               --  wrap the pointed object into a single field to differentiate
+               --  it from non-access values
+               Set_Field (JSON_Obj,
+                          "designated value",
+                          Serialize_Value (Value.Designated_Value.all));
+            end if;
+      end case;
+      return JSON_Obj;
+   end Serialize_Value;
 
 end CE_Pretty_Printing;

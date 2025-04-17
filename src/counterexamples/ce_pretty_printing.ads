@@ -25,6 +25,7 @@
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with CE_Values;             use CE_Values;
+with GNATCOLL.JSON;
 with VC_Kinds;              use VC_Kinds;
 
 package CE_Pretty_Printing is
@@ -44,12 +45,21 @@ package CE_Pretty_Printing is
    --  Create a CNT_Unbounded_String. Removes "trivial" counterexamples.
 
    procedure Print_Value_And_Attributes
-     (Name        : Unbounded_String;
-      Value       : Value_Type;
-      Pretty_Line : in out Cntexample_Elt_Lists.List);
+     (Name           : Unbounded_String;
+      Value          : Value_Type;
+      Pretty_Line    : in out Cntexample_Elt_Lists.List;
+      Is_Json_Format : Boolean := False);
    --  Add the value and its attributes to Attributes
 
    function Print_Value (Value : Value_Type) return CNT_Unbounded_String;
    --  Return a string for a counterexample value. Attributes are ignored.
+
+   function Serialize_Float (F : CE_Values.Float_Value)
+                             return GNATCOLL.JSON.JSON_Value;
+   --  Create a serialized JSON object from a Float_Value.
+
+   function Serialize_Value (Value : CE_Values.Value_Type)
+                             return GNATCOLL.JSON.JSON_Value;
+   --  Create a serialized JSON object from any kind of Value_Type.
 
 end CE_Pretty_Printing;

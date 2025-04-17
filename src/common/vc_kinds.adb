@@ -28,7 +28,6 @@ package body VC_Kinds is
    function To_JSON (S : Prover_Stat)               return JSON_Value;
    function To_JSON (L : Cntexample_Lines)          return JSON_Value;
    function To_JSON (C : Cntexample_Elt)            return JSON_Value;
-   function To_JSON (L : Cntexample_Elt_Lists.List) return JSON_Value;
    function To_JSON (K : CEE_Kind)                  return JSON_Value;
 
    function From_JSON (V : JSON_Value) return Cntexample_Lines;
@@ -1910,6 +1909,8 @@ package body VC_Kinds is
             Set_Field (Obj, "full_value", To_JSON (C.Value.all));
          when Pretty_Printed =>
             Set_Field (Obj, "value", C.Val_Str.Str);
+         when Json_Format =>
+            Set_Field (Obj, "value", C.JSON_Obj);
       end case;
       return Obj;
    end To_JSON;
@@ -1933,6 +1934,17 @@ package body VC_Kinds is
             when Not_In_SPARK => "no");
    begin
       return Create (S);
+   end To_JSON;
+
+   function To_JSON (S : Json_Formatted_Input)
+                     return JSON_Value
+   is
+      Obj : constant JSON_Value := Create_Object;
+   begin
+      Set_Field (Obj, "subp_file", S.File);
+      Set_Field (Obj, "subp_line", S.Line);
+      Set_Field (Obj, "inputs", To_JSON (S.Input_As_JSON));
+      return Obj;
    end To_JSON;
 
    function To_JSON (M : GP_Mode) return JSON_Value is

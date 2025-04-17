@@ -32,7 +32,6 @@ with CE_Parsing;                  use CE_Parsing;
 with CE_Pretty_Printing;          use CE_Pretty_Printing;
 with CE_RAC;                      use CE_RAC;
 with CE_Utils;                    use CE_Utils;
-with CE_Values;                   use CE_Values;
 with Elists;                      use Elists;
 with Erroutc;                     use Erroutc;
 with Flow_Types;                  use Flow_Types;
@@ -104,7 +103,8 @@ package body CE_Display is
      (Variables               : Entity_To_Extended_Value_Maps.Map;
       File                    : String;
       Line                    : Natural;
-      Pretty_Line_Cntexmp_Arr : out Cntexample_Elt_Lists.List);
+      Pretty_Line_Cntexmp_Arr : out Cntexample_Elt_Lists.List;
+      Is_Json_Format          : Boolean := False);
    --  Build pretty printed JSON array of counterexample elements.
    --  @Variables stores information about values and fields of
    --    variables at a single source code location (line).
@@ -149,10 +149,11 @@ package body CE_Display is
    -----------------------
 
    procedure Build_Pretty_Line
-     (Variables               : Entity_To_Extended_Value_Maps.Map;
-      File                    : String;
-      Line                    : Natural;
-      Pretty_Line_Cntexmp_Arr : out Cntexample_Elt_Lists.List)
+     (Variables                : Entity_To_Extended_Value_Maps.Map;
+      File                     : String;
+      Line                     : Natural;
+      Pretty_Line_Cntexmp_Arr  : out Cntexample_Elt_Lists.List;
+      Is_Json_Format           : Boolean := False)
    is
       use Entity_To_Extended_Value_Maps;
       Ordered_Variables : Name_Ordered_Entities_Sets.Set;
@@ -217,18 +218,28 @@ package body CE_Display is
 
                      begin
                         if Pretty_Value /= Dont_Display then
-                           Pretty_Value.Str :=
-                             Reconstruct_Index_Value (Pretty_Value.Str, Var);
+                           if Is_Json_Format then
+                              Pretty_Line_Cntexmp_Arr.Append
+                                (Cntexample_Elt'(K        => Json_Format,
+                                                 Kind     => CEE_Variable,
+                                                 Name     => Name,
+                                                 JSON_Obj => Serialize_Value
+                                                   (Value)));
+                           else
+                              Pretty_Value.Str :=
+                                Reconstruct_Index_Value
+                                  (Pretty_Value.Str, Var);
 
-                           Pretty_Line_Cntexmp_Arr.Append
-                             (Cntexample_Elt'(K       => Pretty_Printed,
-                                              Kind    => CEE_Variable,
-                                              Name    => Name,
-                                              Val_Str => Pretty_Value));
+                              Pretty_Line_Cntexmp_Arr.Append
+                                (Cntexample_Elt'(K        => Pretty_Printed,
+                                                 Kind     => CEE_Variable,
+                                                 Name     => Name,
+                                                 Val_Str  => Pretty_Value));
+                           end if;
                         end if;
                      end;
 
-                  --  General case, add the counterexample value and its
+                     --  General case, add the counterexample value and its
                   --  attributes.
 
                   else
@@ -246,7 +257,7 @@ package body CE_Display is
                      end if;
 
                      Print_Value_And_Attributes
-                       (Name, Value, Pretty_Line_Cntexmp_Arr);
+                       (Name, Value, Pretty_Line_Cntexmp_Arr, Is_Json_Format);
                   end if;
                end if;
             end loop;
@@ -262,8 +273,9 @@ package body CE_Display is
      (Cntexmp : Cntexample_File_Maps.Map;
       VC_Loc  : Source_Ptr;
       VC_Node : Node_Id;
-      VC_K    : VC_Kind)
-      return Cntexample_File_Maps.Map
+      VC_K    : VC_Kind;
+      Subp    : Entity_Id)
+      return Cntexample_Data
    is
       use Cntexample_File_Maps;
 
@@ -375,6 +387,17 @@ package body CE_Display is
       Pretty_Cntexmp   : Cntexample_File_Maps.Map :=
         Cntexample_File_Maps.Empty_Map;
 
+      Init_Loc          : constant Source_Ptr  := Sloc (Subp);
+      Init_File         : constant String := File_Name (Init_Loc);
+      Init_Line         : constant Natural :=
+        Natural (Get_Logical_Line_Number (Init_Loc));
+
+      --  Inputs of the subprogram in json format.
+      --  They are located on the subprogram declaration.
+      Init_Cntexmp_Line : Cntexample_Elt_Lists.List;
+
+      Variables         : Entity_To_Extended_Value_Maps.Map;
+
    --  Start of processing for Create_Pretty_Cntexmp
 
    begin
@@ -411,6 +434,22 @@ package body CE_Display is
                      Is_Previous,
                      LI_Node,
                      Is_One_Liner => File = VC_File and Line = VC_Line);
+
+                  --  If the current Line is the one where the original
+                  --  subprogram is declared, save it in Init_Cntexmp_Line
+
+                  if File = Init_File and Line = Init_Line then
+                     Parse_Counterexample_Line (Lines_Map (Line_C), Variables);
+
+                     if not Variables.Is_Empty then
+                        Build_Pretty_Line (Variables,
+                                           Init_File,
+                                           Init_Line,
+                                           Is_Json_Format => True,
+                                           Pretty_Line_Cntexmp_Arr =>
+                                             Init_Cntexmp_Line);
+                     end if;
+                  end if;
                end;
             end loop;
 
@@ -430,7 +469,10 @@ package body CE_Display is
 
       Remove_Vars.Remove_Extra_Vars (Pretty_Cntexmp);
 
-      return Pretty_Cntexmp;
+      return Cntexample_Data'(Pretty_Cntexmp, Json_Formatted_Input'
+                                (Init_Cntexmp_Line,
+                                 To_Unbounded_String (Init_File),
+                                 Init_Line));
 
    end Create_Pretty_Cntexmp;
 
@@ -534,9 +576,10 @@ package body CE_Display is
      (N    : Node_Id;
       K    : VC_Kind;
       Subp : Node_Id)
-      return Cntexample_File_Maps.Map
+      return Cntexample_Data
    is
-      Expl : Entity_To_Extended_Value_Maps.Map;
+      Expl          : Entity_To_Extended_Value_Maps.Map;
+      Input_As_JSON : Json_Formatted_Input;
 
       procedure Insert_Expl
         (E    : Entity_Id;
@@ -713,6 +756,7 @@ package body CE_Display is
       --  Query the input values of the RAC
 
       declare
+         Init_Cntexmp_JSON : Cntexample_Elt_Lists.List;
          Inputs            : Entity_To_Extended_Value_Maps.Map;
          Init_Loc          : constant Source_Ptr  := Sloc (Subp);
          Init_File         : constant String := File_Name (Init_Loc);
@@ -741,10 +785,21 @@ package body CE_Display is
 
          Build_Pretty_Line (Inputs, Init_File, Init_Line, Init_Cntexmp_Line);
 
+         Build_Pretty_Line (Inputs,
+                            Init_File,
+                            Init_Line,
+                            Init_Cntexmp_JSON,
+                            Is_Json_Format => True);
+
          --  Insert the pretty printed values in a counterexample
 
          Insert_Cntexmp_Line
            (Init_File, Init_Line, Init_Cntexmp_Line, Cntexmp);
+
+         Input_As_JSON := Json_Formatted_Input'
+           (Init_Cntexmp_JSON,
+            To_Unbounded_String (Init_File),
+            Init_Line);
       end;
 
       --  Query located values of the RAC
@@ -826,7 +881,8 @@ package body CE_Display is
          end loop;
       end;
 
-      return Cntexmp;
+      return Cntexample_Data'(Cntexmp, Input_As_JSON);
+
    end Get_Environment_CE;
 
    ----------------------

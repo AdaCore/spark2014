@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with CE_Values;     use CE_Values;
 with Types;         use Types;
 with VC_Kinds;      use VC_Kinds;
 
@@ -32,8 +33,9 @@ package CE_Display is
      (Cntexmp : Cntexample_File_Maps.Map;
       VC_Loc  : Source_Ptr;
       VC_Node : Node_Id;
-      VC_K    : VC_Kind)
-      return Cntexample_File_Maps.Map;
+      VC_K    : VC_Kind;
+      Subp    : Entity_Id)
+      return Cntexample_Data;
    --  Create pretty printed counterexample.
    --  Note that deep copy of Cntexmp is made and thus the content of
    --  Cntexmp is not impacted by pretty printing.
@@ -54,7 +56,7 @@ package CE_Display is
      (N    : Node_Id;
       K    : VC_Kind;
       Subp : Node_Id)
-      return Cntexample_File_Maps.Map;
+      return Cntexample_Data;
    --  Get the elements of the evaluation environment used in the construct
    --  that triggers a VC, with N the AST node corresponding to that construct
    --  and Subp the enclosing subprogram.
