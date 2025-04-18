@@ -1,11 +1,11 @@
 simple.adb:5:16: high: range check might fail, cannot prove upper bound for X + Y (e.g. when X = 10 and Y = 1) [reason for check: returned value must fit in the result type of the function] [possible fix: add precondition (X <= T'Last - Y) to subprogram at simple.ads:12]
 simple.adb:10:16: high: range check might fail, cannot prove upper bound for X * Y (e.g. when X = 2 and Y = 6) [reason for check: returned value must fit in the result type of the function] [possible fix: add precondition (X * Y <= T'Last) to subprogram at simple.ads:15]
-simple.adb:15:24: high: overflow check might fail, cannot prove upper bound for Alice.Age + Bob.Age (e.g. when Alice = (Name => (others => 'NUL'), Age => Lifetime'Last) and Bob = (Name => (others => 'NUL'), Age => 8)) [reason for check: result of addition must fit in a 8-bits machine integer] [possible fix: add precondition (Alice.Age <= 127 - Bob.Age) to subprogram at simple.ads:18]
-simple.adb:15:24: high: range check might fail, cannot prove upper bound for Alice.Age + Bob.Age (e.g. when Alice = (Name => (others => 'NUL'), Age => Lifetime'Last) and Bob = (Name => (others => 'NUL'), Age => 1)) [reason for check: returned value must fit in the result type of the function] [possible fix: add precondition (Alice.Age <= Lifetime'Last - Bob.Age) to subprogram at simple.ads:18]
+simple.adb:15:24: high: overflow check might fail, cannot prove upper bound for Alice.Age + Bob.Age (e.g. when Alice = (Name => (others => 'NUL'), Age => 8) and Bob = (Name => (others => 'NUL'), Age => Lifetime'Last)) [reason for check: result of addition must fit in a 8-bits machine integer] [possible fix: add precondition (Alice.Age <= 127 - Bob.Age) to subprogram at simple.ads:18]
+simple.adb:15:24: high: range check might fail, cannot prove upper bound for Alice.Age + Bob.Age (e.g. when Alice = (Name => (others => 'NUL'), Age => 1) and Bob = (Name => (others => 'NUL'), Age => Lifetime'Last)) [reason for check: returned value must fit in the result type of the function] [possible fix: add precondition (Alice.Age <= Lifetime'Last - Bob.Age) to subprogram at simple.ads:18]
 simple.adb:20:18: high: divide by zero might fail (e.g. when N = 3.1415000E+0) [possible fix: add precondition ((N - 3.1415) /= 0) to subprogram at simple.ads:20]
 simple.adb:20:18: info: float overflow check proved (colibri: 1 VC)
 simple.adb:20:23: info: float overflow check proved (CVC5: 1 VC)
-simple.adb:25:28: high: range check might fail, cannot prove upper bound for A (1) + A (2) + A (0) (e.g. when A = (0 => 0, 1 => 10, 2 => 1)) [reason for check: returned value must fit in the result type of the function] [possible fix: add precondition (A (1) + A (2) <= T'Last - A (0)) to subprogram at simple.ads:26]
+simple.adb:25:28: high: range check might fail, cannot prove upper bound for A (1) + A (2) + A (0) (e.g. when A = (0 => 10, 1 => 0, 2 => 1)) [reason for check: returned value must fit in the result type of the function] [possible fix: add precondition (A (1) + A (2) <= T'Last - A (0)) to subprogram at simple.ads:26]
 simple.adb:29:07: info: initialization of "Z" proved
 simple.adb:31:18: info: range check proved (CVC5: 2 VC)
 simple.adb:32:16: high: divide by zero might fail (e.g. when Z = 0)
@@ -39,14 +39,14 @@ counterexample expected for check at simple.adb:10
   trace at simple.adb:10 --> X = 2 and Y = 6
   trace at simple.ads:15 --> X = 2 and Y = 6
 counterexample expected for check at simple.adb:15
-  trace at simple.adb:15 --> Alice = (Name => (others => 'NUL'), Age => Lifetime'Last) and Bob = (Name => (others => 'NUL'), Age => 1)
-  trace at simple.ads:18 --> Alice = (Name => (others => 'NUL'), Age => Lifetime'Last) and Bob = (Name => (others => 'NUL'), Age => 1)
+  trace at simple.adb:15 --> Alice = (Name => (others => 'NUL'), Age => 1) and Bob = (Name => (others => 'NUL'), Age => Lifetime'Last)
+  trace at simple.ads:18 --> Alice = (Name => (others => 'NUL'), Age => 1) and Bob = (Name => (others => 'NUL'), Age => Lifetime'Last)
 counterexample expected for check at simple.adb:20
   trace at simple.adb:20 --> N = 3.1415000E+0
   trace at simple.ads:20 --> N = 3.1415000E+0
 counterexample expected for check at simple.adb:25
-  trace at simple.adb:25 --> A = (0 => 0, 1 => 10, 2 => 1)
-  trace at simple.ads:26 --> A = (0 => 0, 1 => 10, 2 => 1)
+  trace at simple.adb:25 --> A = (0 => 10, 1 => 0, 2 => 1)
+  trace at simple.ads:26 --> A = (0 => 10, 1 => 0, 2 => 1)
 counterexample expected for check at simple.adb:32
   trace at simple.adb:31 --> Z = 0
   trace at simple.adb:32 --> Z = 0
