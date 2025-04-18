@@ -212,6 +212,12 @@ package body SPARK_Definition is
    --  inappropiate order. We mark them at the end and raise an error if they
    --  are not in SPARK.
 
+   Requires_No_Relaxed_Init_Check : Hashed_Node_Sets.Set;
+   --  Register whether an element of Access_To_Incomplete_Types shall be
+   --  checked for absence of parts with Relaxed_Init.
+   --  We could change the structure to also store the appropriate violation
+   --  message to have better messages.
+
    Access_To_Incomplete_Views : Node_Maps.Map;
    --  Links full views of incomplete types to an access type designating the
    --  incomplete type.
@@ -370,6 +376,20 @@ package body SPARK_Definition is
    --  The retysp view of Current_Marked_Entity's dispatching type must have
    --  all visible ancestors in SPARK, so this must not be called blindly in
    --  presence of violations.
+
+   procedure Check_No_Relaxed_Init_Part
+     (Typ            : Type_Kind_Id;
+      N              : Node_Id;
+      Msg            : String;
+      Names          : Node_Lists.List := Node_Lists.Empty;
+      Cont_Msg       : String := "";
+      Root_Cause_Msg : String := "");
+   --  Check that Typ has no subcomponent with relaxed initialization. If
+   --  such a component is found, a violation is raised using the other
+   --  parameters of the procedure.
+   --  If an access to an unmarked type is found, store it in
+   --  Requires_No_Relaxed_Init_Check, so a check is introduced when it is
+   --  marked.
 
    procedure Touch_Record_Fields_For_Eq
      (Ty           : Type_Kind_Id;
@@ -1134,6 +1154,78 @@ package body SPARK_Definition is
          Next (Assoc);
       end loop;
    end Check_No_Deep_Duplicates_In_Assoc;
+
+   --------------------------------
+   -- Check_No_Relaxed_Init_Part --
+   --------------------------------
+
+   procedure Check_No_Relaxed_Init_Part
+     (Typ            : Type_Kind_Id;
+      N              : Node_Id;
+      Msg            : String;
+      Names          : Node_Lists.List := Node_Lists.Empty;
+      Cont_Msg       : String := "";
+      Root_Cause_Msg : String := "")
+   is
+      function Check_No_Relaxed_Init (C_Typ : Type_Kind_Id) return Test_Result;
+      --  Function traversing a given subcomponent and raising a violation if
+      --  it has a subcomponent with relaxed initialization.
+
+      ---------------------------
+      -- Check_No_Relaxed_Init --
+      ---------------------------
+
+      function Check_No_Relaxed_Init (C_Typ : Type_Kind_Id) return Test_Result
+      is
+      begin
+         if Has_Relaxed_Init (C_Typ) then
+            Mark_Violation
+              (Msg            => Msg,
+               N              => N,
+               Names          => Names,
+               Cont_Msg       => Cont_Msg,
+               Root_Cause_Msg => Root_Cause_Msg);
+            return Pass;
+
+         --  Protected components cannot have relaxed initialization
+
+         elsif Ekind (C_Typ) in Concurrent_Kind then
+            return Fail;
+
+         --  The type designated by an access to object type might not be
+         --  marked. In this case, register that it needs to be checked for
+         --  absence of parts with relaxed initialization.
+
+         elsif Is_Access_Object_Type (C_Typ) then
+            declare
+               Des_Ty : Entity_Id := Directly_Designated_Type (C_Typ);
+            begin
+               if Is_Incomplete_Type (Des_Ty)
+                 and then Present (Full_View (Des_Ty))
+               then
+                  Des_Ty := Full_View (Des_Ty);
+               end if;
+
+               if not Entity_Marked (Des_Ty) then
+                  pragma Assert (Access_To_Incomplete_Types.Contains (C_Typ));
+                  Requires_No_Relaxed_Init_Check.Include (Des_Ty);
+                  return Fail;
+               end if;
+            end;
+
+            return Continue;
+         else
+            return Continue;
+         end if;
+      end Check_No_Relaxed_Init;
+
+      function Check_No_Relaxed_Init_Subcomps is new Traverse_Subcomponents
+        (Check_No_Relaxed_Init);
+
+      Unused : constant Boolean := Check_No_Relaxed_Init_Subcomps (Typ);
+   begin
+      null;
+   end Check_No_Relaxed_Init_Part;
 
    ----------------------------------------------
    -- Check_Not_Inherited_From_Several_Sources --
@@ -4914,6 +5006,13 @@ package body SPARK_Definition is
          when Attribute_Initialized =>
             if not Retysp_In_SPARK (Etype (P)) then
                Mark_Violation (N, From => Etype (P));
+
+            --  Initialized on a prefix with parts of an unchecked union type
+            --  is rejected by the frontend.
+
+            elsif Has_UU_Component (Etype (P)) then
+               raise Program_Error;
+
             elsif Nkind (P) = N_Selected_Component
               and then Ekind (Entity (Selector_Name (P))) = E_Discriminant
             then
@@ -6460,7 +6559,6 @@ package body SPARK_Definition is
                         Mark_Unsupported (Lim_Type_Inv_Access_Type, E);
 
                      else
-
                         --  Attempt to insert the view in the incomplete views
                         --  map if the designated type is not already present
                         --  (which can happen if there are several access types
@@ -6498,7 +6596,6 @@ package body SPARK_Definition is
                      Current_Incomplete_Type := Empty;
                   end;
                end if;
-
                Access_To_Incomplete_Types.Delete_First;
             end;
          else
@@ -6847,6 +6944,15 @@ package body SPARK_Definition is
                   "volatile object", "its type",
                   Srcpos_Bearer => E);
             end if;
+
+            --  Effectively volatile objects should not have parts with relaxed
+            --  initialization.
+
+            Check_No_Relaxed_Init_Part
+              (T,
+               Msg => "effectively volatile object with components annotated "
+               & "with relaxed initialization",
+               N   => N);
          end if;
 
          --  Do not allow type invariants on volatile data with asynchronous
@@ -7703,6 +7809,18 @@ package body SPARK_Definition is
                      Mark (Cond);
                   end if;
                end;
+            end if;
+
+            --  Dispatching operations shall not have a Relaxed_Initialization
+            --  aspect.
+
+            if Has_Aspect (E, Aspect_Relaxed_Initialization)
+              and then Is_Dispatching_Operation (E)
+              and then Present (Find_Dispatching_Type (E))
+            then
+               Mark_Violation
+                 ("dispatching operation with Relaxed_Initialization aspect",
+                  E);
             end if;
 
             --  Warn on subprograms which have no ways to terminate
@@ -9231,6 +9349,13 @@ package body SPARK_Definition is
 
                if not In_SPARK (Component_Typ) then
                   Mark_Violation (E, From => Component_Typ);
+
+               elsif Is_Effectively_Volatile (E) then
+                  Check_No_Relaxed_Init_Part
+                    (E,
+                     Msg => "part of effectively volatile type with relaxed "
+                     & "initialization",
+                     N   => E);
                end if;
 
                --  Mark default aspect if any
@@ -9649,7 +9774,8 @@ package body SPARK_Definition is
                     and then Underlying_Type (Etype (E)) /= E
                     and then Is_Tagged_Type (E);
                   Needs_No_UU_Check : constant Boolean := Is_Tagged_Ext
-                    and then not Has_Unconstrained_UU_Component (Etype (E));
+                    and then not Has_UU_Component
+                      (Etype (E), Unconstrained_Only => True);
                   --  True if we need to make sure that the type contains no
                   --  component with an unconstrained unchecked union type.
                   --  We reject them for tagged types whose root type does not
@@ -9688,23 +9814,36 @@ package body SPARK_Definition is
                                     Root_Cause_Msg =>
                                       "owning component of tagged extension");
 
-                              --  Do not check for relaxed initialization if
-                              --  the type is deep as some of the designated
-                              --  types might not be marked yet.
-                              --  ??? A crash might still happen if the
-                              --  extension contains access-to-constant types.
-
-                              elsif Contains_Relaxed_Init_Parts (Comp_Type)
-                              then
-                                 Mark_Violation
-                                   ("component & of tagged extension & with"
+                              else
+                                 Check_No_Relaxed_Init_Part
+                                   (Comp_Type,
+                                    Msg            =>
+                                      "component & of tagged extension & with"
                                     & " relaxed initialization",
-                                    Comp,
-                                    Names => [Comp, E],
+                                    N              => Comp,
+                                    Names          => [Comp, E],
                                     Root_Cause_Msg =>
                                       "component of tagged extension with"
                                     & " relaxed Initialization");
                               end if;
+
+                           --  Also check absence of components with
+                           --  Relaxed_Init in unchecked unions and effectively
+                           --  volatile types.
+
+                           elsif Is_Unchecked_Union (E)
+                             or else Is_Effectively_Volatile (E)
+                           then
+                              Check_No_Relaxed_Init_Part
+                                (Comp_Type,
+                                 Msg => "part of "
+                                 & (if Is_Unchecked_Union (E)
+                                   then "Unchecked_Union"
+                                   else "effectively volatile")
+                                 & " type with relaxed initialization",
+                                 N   =>
+                                   (if Is_Nouveau_Type (E) then Comp
+                                    else E));
                            end if;
 
                            --  Check that the component is not of an anonymous
@@ -9729,8 +9868,8 @@ package body SPARK_Definition is
                                ((Is_Unchecked_Union (Base_Retysp (Comp_Type))
                                  and then
                                    not Is_Constrained (Retysp (Comp_Type)))
-                                or else Has_Unconstrained_UU_Component
-                                  (Comp_Type))
+                                or else Has_UU_Component
+                                  (Comp_Type, Unconstrained_Only => True))
                            then
                               Mark_Unsupported (Lim_UU_Tagged_Comp, Comp);
                            end if;
@@ -9994,16 +10133,14 @@ package body SPARK_Definition is
                               Mark_Violation (Comp, From => Etype (Comp));
                            end if;
 
-                           --  Initialization by proof of protected components
-                           --  is not supported yet.
-                           --  ??? This call might raise Program_Error if
-                           --  Etype (Comp) has a subcomponent designating an
-                           --  unmarked incomplete or private type.
+                           --  Initialization by proof of effectively volatile
+                           --  parts.
 
-                           if Contains_Relaxed_Init_Parts (Etype (Comp)) then
-                              Mark_Unsupported
-                                (Lim_Relaxed_Init_Protected_Component, Comp);
-                           end if;
+                           Check_No_Relaxed_Init_Part
+                             (Etype (Comp),
+                              Msg => "part of effectively volatile type with "
+                              & "relaxed initialization",
+                              N   => Comp);
 
                            Next_Component (Comp);
                         end loop;
@@ -10030,19 +10167,24 @@ package body SPARK_Definition is
                               end if;
 
                               --  Initialization by proof of Part_Of variables
-                              --  is not supported yet.
-                              --  ??? This call might raise Program_Error if
-                              --  Etype (Part) has a subcomponent designating
-                              --  an unmarked incomplete or private type.
+                              --  is not allowed in SPARK.
 
                               if Ekind (Part) = E_Variable
                                 and then Retysp_In_SPARK (Etype (Part))
-                                and then (Obj_Has_Relaxed_Init (Part)
-                                          or else Contains_Relaxed_Init_Parts
-                                            (Etype (Part)))
                               then
-                                 Mark_Unsupported
-                                   (Lim_Relaxed_Init_Part_Of_Variable, Part);
+                                 if Obj_Has_Relaxed_Init (Part) then
+                                    Mark_Violation
+                                      ("part of effectively volatile type with"
+                                       & " relaxed initialization",
+                                       Part);
+                                 else
+                                    Check_No_Relaxed_Init_Part
+                                      (Etype (Part),
+                                       Msg =>
+                                         "part of effectively volatile type "
+                                       & "with relaxed initialization",
+                                       N   => Part);
+                                 end if;
                               end if;
                            end loop;
                         end if;
@@ -10138,6 +10280,22 @@ package body SPARK_Definition is
             end loop;
 
          end if;
+
+         --  If necessary, check that Des_Ty does not have parts with
+         --  Relaxed_Initialization. We could improve the error message if this
+         --  occurs in practice.
+
+         if not Violation_Detected
+           and then Requires_No_Relaxed_Init_Check.Contains (E)
+         then
+            Check_No_Relaxed_Init_Part
+              (E,
+               N   => E,
+               Msg =>
+                 "designated type with Relaxed_Initialization");
+         end if;
+
+         Requires_No_Relaxed_Init_Check.Exclude (E);
 
          --  Check the user defined equality of record types if any, as they
          --  can be used silently as part of the classwide equality.
@@ -12596,11 +12754,20 @@ package body SPARK_Definition is
       if Has_Invariants_In_SPARK (Ty) then
          Mark_Unsupported (Lim_Relaxed_Init_Invariant, N);
       elsif Is_Tagged_Type (Rep_Ty) then
-         Mark_Unsupported (Lim_Relaxed_Init_Tagged_Type, N);
+         Mark_Violation
+           ("tagged type or object with relaxed initialization",
+            N);
       elsif Is_Access_Subprogram_Type (Rep_Ty) then
          Mark_Unsupported (Lim_Relaxed_Init_Access_Type, N);
-      elsif Is_Concurrent_Type (Rep_Ty) then
-         Mark_Unsupported (Lim_Relaxed_Init_Concurrent_Type, N);
+      elsif Is_Effectively_Volatile (Rep_Ty) then
+         Mark_Violation
+           ("effectively volatile type or object with relaxed initialization",
+            N);
+      elsif Is_Unchecked_Union (Rep_Ty) then
+         Mark_Violation
+           ("part of type or object with relaxed initialization of "
+            & "Unchecked_Union type",
+            N);
       end if;
 
       --  Using conversions, expressions of any ancestor of Rep_Ty can also
@@ -12609,10 +12776,26 @@ package body SPARK_Definition is
       --  Descendants are not added to the map. They are handled specifically
       --  in routines deciding whether a type might be partially initialized.
 
-      if Retysp (Etype (Rep_Ty)) /= Rep_Ty
-        and then not Is_Scalar_Type (Rep_Ty)
-      then
-         Mark_Type_With_Relaxed_Init (N, Retysp (Etype (Rep_Ty)));
+      if Retysp (Etype (Rep_Ty)) /= Rep_Ty then
+
+         --  On scalars, we still need to look at potential ancestors to check
+         --  whether they have a type invariant.
+
+         if Is_Scalar_Type (Rep_Ty) then
+            declare
+               Anc : Entity_Id := Rep_Ty;
+            begin
+               while Retysp (Etype (Anc)) /= Anc loop
+                  Anc := Retysp (Etype (Anc));
+                  if Has_Invariants_In_SPARK (Anc) then
+                     Mark_Unsupported (Lim_Relaxed_Init_Invariant, N);
+                     exit;
+                  end if;
+               end loop;
+            end;
+         else
+            Mark_Type_With_Relaxed_Init (N, Retysp (Etype (Rep_Ty)));
+         end if;
       end if;
 
       --  Components of composite types can be partially initialized

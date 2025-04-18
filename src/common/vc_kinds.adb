@@ -966,20 +966,9 @@ package body VC_Kinds is
          when Lim_Relaxed_Init_Aliasing =>
             "an object annotated with Relaxed_Initialization"
           & " is part of an overlay",
-         when Lim_Relaxed_Init_Concurrent_Type =>
-           "a concurrent type used as a subcomponent of a type or"
-          & " an object annotated with Relaxed_Initialization",
          when Lim_Relaxed_Init_Invariant =>
            "a type annotated with an invariant used as a subcomponent of a"
           & " type or an object annotated with Relaxed_Initialization",
-         when Lim_Relaxed_Init_Part_Of_Variable =>
-           "a variable annotated both with Relaxed_Initialization and as "
-          & "Part_Of a concurrent object",
-         when Lim_Relaxed_Init_Protected_Component =>
-           "a protected component annotated with Relaxed_Initialization",
-         when Lim_Relaxed_Init_Tagged_Type =>
-           "a tagged type used as a subcomponent of a type or"
-          & " an object annotated with Relaxed_Initialization",
          when Lim_Relaxed_Init_Variant_Part =>
             "a subtype with a discriminant constraint containing only"
           & " subcomponents whose type is annotated with"

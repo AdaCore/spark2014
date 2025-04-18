@@ -3432,7 +3432,7 @@ package body Gnat2Why.Expr is
       Left_Type                          : constant Entity_Id :=
         Retysp (Etype (Left));
       Ty_Has_Unconstrained_UU_Component  : constant Boolean :=
-        Has_Unconstrained_UU_Component (Left_Type);
+        Has_UU_Component (Left_Type, Unconstrained_Only => True);
       Ty_Has_UU_Type                     : constant Boolean :=
         Is_Unchecked_Union (Left_Type);
       Left_Lacks_Inferable_Discriminants : constant Boolean :=

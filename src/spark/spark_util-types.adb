@@ -450,7 +450,6 @@ package body SPARK_Util.Types is
 
          elsif Ekind (C_Typ) in Concurrent_Kind then
             return Fail;
-
          else
             return Continue;
          end if;
@@ -1155,11 +1154,13 @@ package body SPARK_Util.Types is
       return Search_Sub_Typ (Typ);
    end Has_Subcomponents_Of_Type;
 
-   ------------------------------------
-   -- Has_Unconstrained_UU_Component --
-   ------------------------------------
+   ----------------------
+   -- Has_UU_Component --
+   ----------------------
 
-   function Has_Unconstrained_UU_Component (Typ : Type_Kind_Id) return Boolean
+   function Has_UU_Component
+     (Typ                : Type_Kind_Id;
+      Unconstrained_Only : Boolean := False) return Boolean
    is
       Rep_Ty : constant Type_Kind_Id := Root_Retysp (Typ);
       --  For tagged types, go to the root type. UU_Components cannot be
@@ -1174,8 +1175,11 @@ package body SPARK_Util.Types is
                if Component_Is_Visible_In_SPARK (Comp)
                  and then
                    ((Is_Unchecked_Union (Retysp (Etype (Comp)))
-                     and then not Is_Constrained (Retysp (Etype (Comp))))
-                    or else Has_Unconstrained_UU_Component (Etype (Comp)))
+                     and then
+                       (not Unconstrained_Only
+                        or else not Is_Constrained (Retysp (Etype (Comp)))))
+                    or else Has_UU_Component
+                      (Etype (Comp), Unconstrained_Only))
                then
                   return True;
                end if;
@@ -1186,12 +1190,15 @@ package body SPARK_Util.Types is
       elsif Is_Array_Type (Rep_Ty) then
          return (Is_Unchecked_Union (Retysp (Component_Type (Rep_Ty)))
                  and then
-                   not Is_Constrained (Retysp (Component_Type (Rep_Ty))))
-           or else Has_Unconstrained_UU_Component (Component_Type (Rep_Ty));
+                   (not Unconstrained_Only
+                    or else not
+                      Is_Constrained (Retysp (Component_Type (Rep_Ty)))))
+           or else Has_UU_Component
+             (Component_Type (Rep_Ty), Unconstrained_Only);
       else
          return False;
       end if;
-   end Has_Unconstrained_UU_Component;
+   end Has_UU_Component;
 
    -------------------------------
    -- Invariant_Assumed_In_Main --

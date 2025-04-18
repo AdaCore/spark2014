@@ -550,11 +550,7 @@ package VC_Kinds is
       Lim_Refined_Post_On_Entry,
       Lim_Relaxed_Init_Access_Type,
       Lim_Relaxed_Init_Aliasing,
-      Lim_Relaxed_Init_Concurrent_Type,
       Lim_Relaxed_Init_Invariant,
-      Lim_Relaxed_Init_Part_Of_Variable,
-      Lim_Relaxed_Init_Protected_Component,
-      Lim_Relaxed_Init_Tagged_Type,
       Lim_Relaxed_Init_Variant_Part,
       Lim_Subprogram_Before_Inv,
       Lim_Suspension_On_Formal,
@@ -986,25 +982,14 @@ package VC_Kinds is
          when Lim_UU_Tagged_Comp =>
            "component of an unconstrained unchecked union type in a tagged"
           & " extension",
-         when Lim_Relaxed_Init_Protected_Component =>
-           "protected component with relaxed initialization",
-         when Lim_Relaxed_Init_Part_Of_Variable =>
-           "variable annotated as Part_Of a concurrent object with relaxed"
-          & " initialization",
          when Lim_Relaxed_Init_Invariant =>
            "invariant on a type used as a subcomponent of a type or"
-          & " an object annotated with relaxed initialization",
-         when Lim_Relaxed_Init_Tagged_Type =>
-           "tagged type used as a subcomponent of a type or"
           & " an object annotated with relaxed initialization",
          when Lim_Relaxed_Init_Access_Type =>
            "access-to-subprogram type used as a subcomponent of a type or"
           & " an object annotated with relaxed initialization",
          when Lim_Relaxed_Init_Aliasing =>
            "relaxed initialization on overlaid objects",
-         when Lim_Relaxed_Init_Concurrent_Type =>
-           "concurrent type used as a subcomponent of a type or"
-          & " an object annotated with relaxed initialization",
          when Lim_Relaxed_Init_Variant_Part =>
             "subtype with a discriminant constraint containing only"
           & " subcomponents whose type is annotated with"
