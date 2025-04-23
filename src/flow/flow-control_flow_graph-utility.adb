@@ -374,7 +374,7 @@ package body Flow.Control_Flow_Graph.Utility is
         Has_Extensions_Visible (Subprogram) or else
         Is_Class_Wide_Type (Get_Type (Formal, Scope))
         or else
-          (Flow_Classwide.Is_Dispatching_Call (Callsite)
+          (Flow_Classwide.Is_Dispatching_Call (Call_Vertex)
            and then Ekind (Formal) in Formal_Kind
            and then Is_Controlling_Formal (Formal));
 
