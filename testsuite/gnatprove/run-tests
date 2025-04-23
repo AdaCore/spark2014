@@ -8,7 +8,7 @@ from e3.testsuite.control import AdaCoreLegacyTestControlCreator, TestControl
 from e3.testsuite.driver import TestDriver
 from e3.testsuite.driver.adacore import AdaCoreLegacyTestDriver
 from e3.testsuite.driver.diff import DiffTestDriver, OutputRefiner, RefiningChain
-from e3.testsuite.result import binary_repr, Log, truncated
+from e3.testsuite.result import binary_repr, FailureReason, Log, truncated
 from e3.testsuite.testcase_finder import ParsedTest, ProbingError, TestFinder
 import e3.yaml
 import glob
@@ -96,7 +96,30 @@ class SortLinesRefiner(OutputRefiner):
         return "\n".join(lines)
 
 
-class RACTestDriver(DiffTestDriver):
+class SPARKDiffTestDriver(DiffTestDriver):
+    """Base class used by RACTestDriver and UGTestDriver to factor common
+    code.
+
+    A requirement is that children define a variable self.test_process that
+    contains the process used for testing.
+    """
+
+    def compute_failures(self) -> List[str]:
+        # First, do compute the failures and let the baseline rewriting
+        # machinery do its magic on the baseline it is given (i.e. the copy in
+        # the working directory: see set_up).
+        result = super().compute_failures()
+
+        if self.test_process is not None and self.process_may_have_timed_out(
+            self.test_process
+        ):
+            self.result.failure_reasons.add(FailureReason.TIMEOUT)
+            result.append("test timed out")
+
+        return result
+
+
+class RACTestDriver(SPARKDiffTestDriver):
 
     _baseline = None
 
@@ -153,10 +176,10 @@ end Test;
             "-cargs",
             "-gnat2022",
         ]
-        self.shell(cmd, analyze_output=True, catch_error=False)
+        self.test_process = self.shell(cmd, analyze_output=True, catch_error=False)
 
 
-class UGTestDriver(DiffTestDriver):
+class UGTestDriver(SPARKDiffTestDriver):
     """Simple test driver (in principle) that just runs a fixed gnatprove
     command on the UG tests. The output is sorted before comparison as we
     have observed diffs in the order of file processing (for the tests that
@@ -348,7 +371,7 @@ class UGTestDriver(DiffTestDriver):
         cmd += [f"--steps={steps}"]
 
         start_time = time.time()
-        self.shell(cmd, env=env, catch_error=False)
+        self.test_process = self.shell(cmd, env=env, catch_error=False)
         self.result.time = time.time() - start_time
 
 
