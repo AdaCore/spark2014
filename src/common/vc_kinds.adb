@@ -554,7 +554,7 @@ package body VC_Kinds is
         when Warn_Alias_Different_Volatility  =>
           "aliased objects should have the same volatile properties",
         when Warn_Attribute_Valid =>
-          "attribute Valid is assumed to return True",
+          "attribute Valid or Valid_Scalars is assumed to return True",
         when Warn_Auto_Lemma_Calls =>
           "the automatically instantiated lemma contains calls which"
           & " cannot be arbitrarily specialized",

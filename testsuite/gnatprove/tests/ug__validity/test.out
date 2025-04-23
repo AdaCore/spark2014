@@ -10,7 +10,7 @@
       |                                                                       ^~~~~
       + possible explanation: floating-point types have invalid bit patterns for SPARK; invalid values could result from the unchecked conversion [SPARK RM 13.9]
 
- warning: attribute Valid is assumed to return True [attribute-valid-always-true]
+ warning: attribute "Valid" is assumed to return True [attribute-valid-always-true]
 --> validity.adb:11:22
    11 |          pragma Assert (X'Valid);
       |                         ^~~~~~~
@@ -18,7 +18,7 @@
  info: assertion proved
 --> validity.adb:11:22
 
- warning: attribute Valid is assumed to return True [attribute-valid-always-true]
+ warning: attribute "Valid" is assumed to return True [attribute-valid-always-true]
 --> validity.adb:13:22
    13 |          pragma Assert (Y'Valid);
       |                         ^~~~~~~
