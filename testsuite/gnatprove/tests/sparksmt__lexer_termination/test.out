@@ -4,15 +4,15 @@ lexer.adb:85:45: info: overflow check proved (CVC5: 2 VC)
 lexer.adb:90:43: info: overflow check proved (CVC5: 2 VC)
 lexer.adb:101:39: info: initialization of "The_Filename" constituent of "State" proved
 lexer.adb:102:39: info: initialization of "The_File" constituent of "State" proved
-lexer.adb:103:39: info: initialization of "Current_Read" constituent of "State" proved
 lexer.adb:104:39: info: initialization of "Current_Line" constituent of "State" proved
 lexer.adb:105:39: info: initialization of "Current_Col" constituent of "State" proved
 lexer.adb:106:39: info: initialization of "Current_Idx" constituent of "State" proved
-lexer.adb:107:39: info: initialization of "Next_Read" constituent of "State" proved
 lexer.adb:108:39: info: initialization of "Next_Idx" constituent of "State" proved
 lexer.adb:114:07: info: precondition proved (CVC5: 1 VC)
 lexer.adb:119:07: info: precondition proved (CVC5: 1 VC)
+lexer.adb:119:23: medium: "Current_Read.Status" constituent of "State" is not set
 lexer.adb:124:10: info: precondition proved (CVC5: 1 VC)
+lexer.adb:124:26: medium: "Next_Read.Status" constituent of "State" is not set
 lexer.adb:127:20: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 lexer.adb:150:07: info: initialization of "S" proved
 lexer.adb:151:07: info: initialization of "First_Line" proved
