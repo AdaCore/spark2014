@@ -635,7 +635,7 @@ package VC_Kinds is
         when Warn_Alias_Different_Volatility =>
           "aliased objects have different volatile properties",
         when Warn_Attribute_Valid =>
-          "attribute Valid is assumed to return True",
+          "attribute & is assumed to return True",
         when Warn_Auto_Lemma_Higher_Order =>
           "automatically instantiated lemma is not annotated with"
           & " Higher_Order_Specialization",

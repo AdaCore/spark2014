@@ -4986,13 +4986,16 @@ package body SPARK_Definition is
                      Names => [To_String (Aname, Sloc (N))]));
             end if;
 
-         when Attribute_Valid =>
+         when Attribute_Valid | Attribute_Valid_Scalars =>
             if Emit_Warning_Info_Messages
               and then SPARK_Pragma_Is (Opt.On)
             then
                Warning_Msg_N
                  (Warn_Attribute_Valid,
                   N,
+                  Create_N
+                    (Warn_Attribute_Valid,
+                     Names => [To_String (Aname, Sloc (N))]),
                   First => True);
             end if;
 

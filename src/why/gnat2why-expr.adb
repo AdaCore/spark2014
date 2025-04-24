@@ -18329,10 +18329,10 @@ package body Gnat2Why.Expr is
                               Typ      => Base);
             end;
 
-         --  Currently support attribute Valid by assuming it always evaluates
-         --  to True.
+         --  Currently support attributes Valid and Valid_Scalars by assuming
+         --  they always evaluate to True.
 
-         when Attribute_Valid =>
+         when Attribute_Valid | Attribute_Valid_Scalars =>
             if Domain = EW_Prog then
                declare
                   Why_Expr : constant W_Expr_Id :=

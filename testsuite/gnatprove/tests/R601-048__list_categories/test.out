@@ -109,7 +109,7 @@ VC_DEAD_CODE - unreachable code - Warn if code is found to be unreachable - EASY
 address-to-access-conversion - address-to-access-conversion - call to conversion function is assumed to return a valid access designating a valid value - EASY
 alias-volatile-atomic-mismatch - alias-volatile-atomic-mismatch - aliased objects should both be volatile or non-volatile, and both be atomic or non-atomic - EASY
 alias-volatile-prop-mismatch - alias-volatile-prop-mismatch - aliased objects should have the same volatile properties - EASY
-attribute-valid-always-true - attribute-valid-always-true - attribute Valid is assumed to return True - EASY
+attribute-valid-always-true - attribute-valid-always-true - attribute Valid or Valid_Scalars is assumed to return True - EASY
 auto-lemma-calls - auto-lemma-calls - the automatically instantiated lemma contains calls which cannot be arbitrarily specialized - EASY
 auto-lemma-different - auto-lemma-different - the automatically instantiated lemma contains calls to its associated function with different specializations - EASY
 auto-lemma-higher-order - auto-lemma-higher-order - the automatically instantiated lemma is not annotated with Higher_Order_Specialization - EASY
