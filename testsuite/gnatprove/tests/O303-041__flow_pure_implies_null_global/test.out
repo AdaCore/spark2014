@@ -55,8 +55,8 @@ a.adb:5:04: info: in inlined body at a-cogeso.adb:90
 a.adb:5:04: info: in inlined body at a-cogeso.adb:90
 a.adb:5:04: info: in inlined body at a-cogeso.adb:97
 a.adb:5:04: info: in inlined body at a-cogeso.adb:97
-a.adb:5:04: info: in inlined body at a-ngrear.adb:750
-a.adb:5:04: info: in inlined body at a-ngrear.adb:750
+a.adb:5:04: info: in inlined body at a-ngrear.adb:757
+a.adb:5:04: info: in inlined body at a-ngrear.adb:757
 a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
 a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
 a.adb:5:04: info: in instantiation at a-cgaaso.adb:40
@@ -115,40 +115,40 @@ a.adb:5:04: info: in instantiation at a-cogeso.adb:90
 a.adb:5:04: info: in instantiation at a-cogeso.adb:97
 a.adb:5:04: info: in instantiation at a-ngrear.adb:106
 a.adb:5:04: info: in instantiation at a-ngrear.adb:114
-a.adb:5:04: info: in instantiation at a-ngrear.adb:641
-a.adb:5:04: info: in instantiation at a-ngrear.adb:688
-a.adb:5:04: info: in instantiation at a-ngrear.adb:692
-a.adb:5:04: info: in instantiation at a-ngrear.adb:696
-a.adb:5:04: info: in instantiation at a-ngrear.adb:700
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:745
-a.adb:5:04: info: in instantiation at a-ngrear.adb:750
+a.adb:5:04: info: in instantiation at a-ngrear.adb:648
+a.adb:5:04: info: in instantiation at a-ngrear.adb:695
+a.adb:5:04: info: in instantiation at a-ngrear.adb:699
+a.adb:5:04: info: in instantiation at a-ngrear.adb:703
+a.adb:5:04: info: in instantiation at a-ngrear.adb:707
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:752
+a.adb:5:04: info: in instantiation at a-ngrear.adb:757
 a.adb:5:04: info: local subprogram "Rotate" only analyzed in the context of calls
 a.adb:5:04: info: local subprogram "Swap" only analyzed in the context of calls
 a.adb:12:32: warning: assuming "Unit_Vector" has no effect on global items
