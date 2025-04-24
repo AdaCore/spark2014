@@ -557,9 +557,9 @@ package SPARK_Atree is
    --  Same as Sem_Aux.Get_Called_Entity except that, on intrinsic operators,
    --  it returns the associated function instead of the operator name.
 
-   function Get_Enclosing_Object (N : Node_Id) return Entity_Id with
+   function Get_Entire_Object (N : Node_Id) return Entity_Id with
      Pre => Nkind (N) in N_Subexpr;
-   --  Copied from Sem_Util.Get_Enclosing_Object except that it does not
+   --  Similar to Sem_Util.Get_Enclosing_Object except that it does not
    --  return Empty on dereferences of access objects.
    --  It can only return Empty when called on expressions which are not paths.
 

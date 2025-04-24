@@ -428,11 +428,11 @@ package body SPARK_Atree is
       then Entity (N)
       else Sem_Aux.Get_Called_Entity (N));
 
-   --------------------------
-   -- Get_Enclosing_Object --
-   --------------------------
+   -----------------------
+   -- Get_Entire_Object --
+   -----------------------
 
-   function Get_Enclosing_Object (N : Node_Id) return Entity_Id is
+   function Get_Entire_Object (N : Node_Id) return Entity_Id is
    begin
       if Einfo.Utils.Is_Entity_Name (N) then
          return Entity (N);
@@ -443,16 +443,18 @@ package body SPARK_Atree is
                | N_Selected_Component
                | N_Slice
             =>
-               return Get_Enclosing_Object (Prefix (N));
+               return Get_Entire_Object (Prefix (N));
 
-            when N_Type_Conversion =>
-               return Get_Enclosing_Object (Expression (N));
+            when N_Type_Conversion
+               | N_Unchecked_Type_Conversion
+            =>
+               return Get_Entire_Object (Expression (N));
 
             when others =>
                return Empty;
          end case;
       end if;
-   end Get_Enclosing_Object;
+   end Get_Entire_Object;
 
    -------------------
    -- Get_Pragma_Id --
