@@ -1302,6 +1302,7 @@ procedure SPARK_Report is
             | VC_UC_Alignment
             | VC_Unchecked_Union_Restriction
             | VC_UC_Volatile
+            | VC_Validity_Check
          =>
             return Runtime_Checks;
 

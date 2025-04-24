@@ -27,6 +27,7 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Errout_Wrapper;              use Errout_Wrapper;
 with Gnat2Why.Data_Decomposition; use Gnat2Why.Data_Decomposition;
 with Gnat2Why.Tables;             use Gnat2Why.Tables;
+with Gnat2Why.Util;               use Gnat2Why.Util;
 with Snames;                      use Snames;
 with SPARK_Atree;                 use SPARK_Atree;
 with SPARK_Definition;            use SPARK_Definition;
@@ -44,6 +45,7 @@ with Why.Gen.Records;             use Why.Gen.Records;
 with Why.Gen.Terms;               use Why.Gen.Terms;
 with Why.Inter;                   use Why.Inter;
 with Why.Sinfo;                   use Why.Sinfo;
+with Why.Types;                   use Why.Types;
 
 package body Gnat2Why.Unchecked_Conversion is
 
@@ -66,6 +68,26 @@ package body Gnat2Why.Unchecked_Conversion is
    --  Note: This procedure is currently only suitable for checks related to
    --  Unchecked_Conversion, in particular for "suitable as a source of an
    --  unchecked conversion".
+
+   function Is_Valid_Scalar
+     (Range_Ty : Type_Kind_Id;
+      Value    : W_Term_Id) return W_Term_Id
+   is
+     (if Is_Standard_Boolean_Type (Range_Ty)
+      then New_Call
+        (Name => M_Boolean.Range_Pred,
+         Args => (1 => +Value),
+         Typ  => EW_Bool_Type)
+      elsif Type_Is_Modeled_As_Base (Range_Ty)
+      then +New_Dynamic_Property
+        (Domain => EW_Term,
+         Ty     => Range_Ty,
+         Expr   => Value)
+      else New_Call
+        (Name => E_Symb (Range_Ty, WNE_Range_Pred),
+         Args => (1 => +Value),
+         Typ  => EW_Bool_Type));
+   --  Return a term checking whether Value is in Range_Ty
 
    -----------------------------
    -- Have_Same_Known_RM_Size --
@@ -128,7 +150,10 @@ package body Gnat2Why.Unchecked_Conversion is
            ("type is unsuitable as source for unchecked conversion");
       end if;
 
-      Suitable_For_UC_Target_UC_Wrap (Target_Type, Valid_Target, Explanation);
+      Suitable_For_UC_Target_UC_Wrap
+        (Target_Type, Valid_Target, Explanation,
+         Check_Validity => not Is_Potentially_Invalid (E));
+
       if not Valid_Target then
          --  Override explanation to avoid special characters
          return False_With_Explain
@@ -207,11 +232,14 @@ package body Gnat2Why.Unchecked_Conversion is
    --------------------------
 
    function Precise_Composite_UC
-     (Arg         : W_Term_Id;
-      Source_Type : Type_Kind_Id;
-      Target_Type : Type_Kind_Id)
+     (Arg          : W_Term_Id;
+      Source_Type  : Type_Kind_Id;
+      Target_Type  : Type_Kind_Id;
+      Ada_Function : E_Function_Id)
       return W_Term_Id
    is
+      Do_Validity : constant Boolean := Is_Potentially_Invalid (Ada_Function);
+
       --  Representation of a subcomponent of Source
       type Source_Element is record
          Typ    : Type_Kind_Id;
@@ -224,6 +252,12 @@ package body Gnat2Why.Unchecked_Conversion is
         Ada.Containers.Doubly_Linked_Lists (Source_Element);
       use Source_Elements;
 
+      type Target_Value is record
+         Value    : W_Term_Id;
+         Is_Valid : W_Term_Id;
+      end record with
+        Predicate => (Is_Valid /= Why_Empty) = Do_Validity;
+
       --  Local subprograms
 
       function Contribute_Value
@@ -232,7 +266,7 @@ package body Gnat2Why.Unchecked_Conversion is
          Offset : Uint;
          Size   : Uint;
          Typ    : Type_Kind_Id)
-                     return W_Expr_Id;
+         return W_Expr_Id;
       --  Given a scalar expression Expr of type Typ, return its
       --  contribution to a modular value of type Base, when its
       --  bit representation takes Size bits at a given Offset in
@@ -241,7 +275,7 @@ package body Gnat2Why.Unchecked_Conversion is
       function Expr_Index
         (Typ : Type_Kind_Id;
          Idx : Uint)
-                     return W_Expr_Id;
+         return W_Expr_Id;
       --  Return the expression for indexing into array of type Typ
 
       function Extract_Value
@@ -250,7 +284,7 @@ package body Gnat2Why.Unchecked_Conversion is
          Offset : Uint;
          Size   : Uint;
          Typ    : Type_Kind_Id)
-                     return W_Expr_Id;
+         return Target_Value;
       --  Return (Bits and (2**(Offset+Size)-1)) / 2**(Offset) as
       --  a value of type Typ, to extract the value of an element
       --  from its bit representation.
@@ -271,7 +305,7 @@ package body Gnat2Why.Unchecked_Conversion is
          Offset : Uint;
          Size   : Uint;
          Typ    : Type_Kind_Id)
-                     return W_Expr_Id;
+         return Target_Value;
       --  Given the representation Bits of modular type Base for
       --  the complete object, reconstruct the element of type Typ
       --  of a given Size at a given Offset.
@@ -286,7 +320,7 @@ package body Gnat2Why.Unchecked_Conversion is
          Offset : Uint;
          Size   : Uint;
          Typ    : Type_Kind_Id)
-                     return W_Expr_Id
+         return W_Expr_Id
       is
          Value : W_Expr_Id;
       begin
@@ -306,19 +340,19 @@ package body Gnat2Why.Unchecked_Conversion is
                       Typ   => Base),
                  Typ       => Base);
 
-            --  If the value is from a modular type, or from a signed
-            --  type with no negative value, then simply convert it to
-            --  Base.
+         --  If the value is from a modular type, or from a signed
+         --  type with no negative value, then simply convert it to
+         --  Base.
          elsif Is_Unsigned_Type (Typ) then
             Value := Insert_Scalar_Conversion
               (Domain => EW_Term,
                Expr   => Expr,
                To     => Base);
 
-            --  Otherwise, we need to consider the bit representation
-            --  of that (possibly negative) signed value as Base, and
-            --  extract the low Size bits with the expression
-            --  (uc_of_int Expr) and (2**Size - 1)
+         --  Otherwise, we need to consider the bit representation
+         --  of that (possibly negative) signed value as Base, and
+         --  extract the low Size bits with the expression
+         --  (uc_of_int Expr) and (2**Size - 1)
          else
             Value :=
               New_Call
@@ -390,7 +424,7 @@ package body Gnat2Why.Unchecked_Conversion is
          Offset : Uint;
          Size   : Uint;
          Typ    : Type_Kind_Id)
-                     return W_Expr_Id
+         return Target_Value
       is
          Mask    : constant W_Expr_Id :=
            New_Modular_Constant
@@ -416,40 +450,71 @@ package body Gnat2Why.Unchecked_Conversion is
                       (1 => Bits,
                        2 => Mask)),
                  2 => Divisor));
+         Res     : Target_Value;
       begin
          --  Special case for Boolean
          if Is_Standard_Boolean_Type (Typ) then
-            return
-              New_Conditional
-                (Domain    => EW_Term,
-                 Condition =>
-                   New_Comparison
-                     (Domain => EW_Term,
-                      Symbol => Why_Eq,
-                      Left   => Value,
-                      Right  =>
-                        New_Modular_Constant
-                          (Value => Uint_1,
-                           Typ   => Base)),
-                 Then_Part => +True_Term,
-                 Else_Part => +False_Term,
-                 Typ       => EW_Bool_Type);
+            Res :=
+              (Value    => New_Conditional
+                 (Condition =>
+                    +New_Comparison
+                      (Domain => EW_Term,
+                       Symbol => Why_Eq,
+                       Left   => Value,
+                       Right  =>
+                         New_Modular_Constant
+                           (Value => Uint_1,
+                            Typ   => Base)),
+                  Then_Part => +True_Term,
+                  Else_Part => +False_Term,
+                  Typ       => EW_Bool_Type),
+               Is_Valid =>
+                 (if Do_Validity
+                  then New_Or_Term
+                    (Left  => +New_Comparison
+                         (Domain => EW_Term,
+                          Symbol => Why_Eq,
+                          Left   => Value,
+                          Right  =>
+                            New_Modular_Constant
+                              (Value => Uint_0,
+                               Typ   => Base)),
+                     Right => +New_Comparison
+                       (Domain => EW_Term,
+                        Symbol => Why_Eq,
+                        Left   => Value,
+                        Right  =>
+                          New_Modular_Constant
+                            (Value => Uint_1,
+                             Typ   => Base)))
+                  else Why_Empty));
 
-            --  If the value is to a modular type, or an enumeration
-            --  with default 0-based representation, or to a signed
-            --  type with no negative value, then simply convert it
-            --  to Typ.
+         --  If the value is to a modular type, or an enumeration
+         --  with default 0-based representation, or to a signed
+         --  type with no negative value, then simply convert it
+         --  to Typ.
+
          elsif Is_Unsigned_Type (Typ) then
-            return Insert_Scalar_Conversion
-              (Domain => EW_Term,
-               Expr   => Value,
-               To     => EW_Abstract (Typ));
+            Res :=
+              (Value    => +Insert_Scalar_Conversion
+                 (Domain => EW_Term,
+                  Expr   => Value,
+                  To     => EW_Abstract (Typ)),
+               Is_Valid =>
+                 (if Do_Validity
+                  then Is_Valid_Scalar
+                    (Typ,
+                     +Insert_Scalar_Conversion
+                       (Domain => EW_Term,
+                        Expr   => Value,
+                        To     => EW_Split (Typ)))
+                  else Why_Empty));
 
-            --  Otherwise, we need to consider the bit representation
-            --  of that (possibly negative) signed value, to see
-            --  if the high bit is 1, in which case the value is
-            --  negative. So we generate the value
-            --  if Value >= 2**(Size-1) then Value-2**Size else Value
+         --  Otherwise, we need to consider the bit representation
+         --  of that (possibly negative) signed value, to see
+         --  if the high bit is 1, in which case the value is
+         --  negative. So we generate the value
+         --  if Value >= 2**(Size-1) then Value-2**Size else Value
          else
             declare
                Top_Bit        : constant W_Expr_Id :=
@@ -462,36 +527,53 @@ package body Gnat2Why.Unchecked_Conversion is
                     Name   => Int_Infix_Subtr,
                     Typ    => EW_Int_Type,
                     Args   =>
-                      (1 =>
-                             Insert_Scalar_Conversion
+                      (1 => Insert_Scalar_Conversion
                          (Domain => EW_Term,
                           Expr   => Value,
                           To     => EW_Int_Type),
                        2 =>
                          New_Integer_Constant
                            (Value => 2 ** Size)));
-            begin
-               return New_Conditional
-                 (Domain    => EW_Term,
-                  Condition =>
-                    New_Comparison
-                      (Domain => EW_Term,
-                       Symbol => MF_BVs (Base).Uge,
-                       Left   => Value,
-                       Right  => Top_Bit),
-                  Then_Part =>
-                    Insert_Scalar_Conversion
-                      (Domain => EW_Term,
-                       Expr   => Negative_Value,
-                       To     => EW_Abstract (Typ)),
-                  Else_Part =>
-                    Insert_Scalar_Conversion
+               B_Value        : constant W_Expr_Id :=
+                 New_Conditional
+                   (Domain    => EW_Term,
+                    Condition =>
+                      New_Comparison
+                        (Domain => EW_Term,
+                         Symbol => MF_BVs (Base).Uge,
+                         Left   => Value,
+                         Right  => Top_Bit),
+                    Then_Part => Negative_Value,
+                    Else_Part => Insert_Scalar_Conversion
                       (Domain => EW_Term,
                        Expr   => Value,
+                       To     => EW_Int_Type),
+                    Typ       => EW_Int_Type);
+            begin
+               Res :=
+                 (Value    => +Insert_Scalar_Conversion
+                      (Domain => EW_Term,
+                       Expr   => B_Value,
                        To     => EW_Abstract (Typ)),
-                  Typ       => EW_Abstract (Typ));
+                  Is_Valid =>
+                    (if Do_Validity
+                     then Is_Valid_Scalar (Typ, +B_Value)
+                     else Why_Empty));
             end;
          end if;
+
+         --  If Do_Validity is set, avoid assuming invalid values that could
+         --  be incompatible with the dynamic invariant of the object.
+
+         if Do_Validity then
+            Res.Value := New_Conditional
+              (Condition => Res.Is_Valid,
+               Then_Part => Res.Value,
+               Else_Part => +Why_Default_Value (EW_Term, Typ),
+               Typ       => EW_Abstract (Typ));
+         end if;
+
+         return Res;
       end Extract_Value;
 
       --------------------------
@@ -577,7 +659,7 @@ package body Gnat2Why.Unchecked_Conversion is
          Offset : Uint;
          Size   : Uint;
          Typ    : Type_Kind_Id)
-                     return W_Expr_Id
+         return Target_Value
       is
       begin
          if Is_Scalar_Type (Typ) then
@@ -590,61 +672,72 @@ package body Gnat2Why.Unchecked_Conversion is
 
          elsif Is_Record_Type (Typ) then
             declare
-               Comps  : constant Component_Sets.Set :=
+               Comps    : constant Component_Sets.Set :=
                  Get_Component_Set (Typ);
-               Assocs : W_Field_Association_Array
+               Assocs   : W_Field_Association_Array
                  (1 .. Integer (Comps.Length));
-               Index  : Positive := 1;
+               Is_Valid : W_Term_Id :=
+                 (if Do_Validity then True_Term else Why_Empty);
+               Index    : Positive := 1;
             begin
                for Comp of Comps loop
-                  Assocs (Index) :=
-                    New_Field_Association
-                      (Domain => EW_Term,
-                       Field  =>
-                         To_Why_Id
-                           (Comp, Local => False, Rec => Typ),
-                       Value  =>
+                  declare
+                     F_Value : constant Target_Value :=
                          Reconstruct_Value
                            (Base   => Base,
                             Bits   => Bits,
                             Offset =>
                               Offset + Component_Bit_Offset (Comp),
                             Size   => Esize (Comp),
-                            Typ    => Retysp (Etype (Comp))));
+                            Typ    => Retysp (Etype (Comp)));
+                  begin
+                     Assocs (Index) :=
+                       New_Field_Association
+                         (Domain => EW_Term,
+                          Field  =>
+                            To_Why_Id
+                              (Comp, Local => False, Rec => Typ),
+                          Value  => +F_Value.Value);
+
+                     if Do_Validity then
+                        Is_Valid := New_And_Term (Is_Valid, F_Value.Is_Valid);
+                     end if;
+                  end;
                   Index := Index + 1;
                end loop;
 
-               return New_Record_Aggregate
-                 (Associations =>
-                    (1 => New_Field_Association
-                         (Domain => EW_Term,
-                          Field  =>
-                            E_Symb (Typ, WNE_Rec_Split_Fields),
-                          Value  =>
-                            New_Record_Aggregate
-                              (Associations => Assocs))),
-                  Typ          => EW_Abstract (Typ));
+               return
+                 (Value    => New_Record_Aggregate
+                      (Associations =>
+                           (1 => New_Field_Association
+                              (Domain => EW_Term,
+                               Field  =>
+                                 E_Symb (Typ, WNE_Rec_Split_Fields),
+                               Value  =>
+                                 New_Record_Aggregate
+                                   (Associations => Assocs))),
+                       Typ          => EW_Abstract (Typ)),
+                  Is_Valid => Is_Valid);
             end;
 
          elsif Is_Array_Type (Typ) then
             declare
-               Index : constant Node_Id := First_Index (Typ);
-               Rng   : constant Node_Id := Get_Range (Index);
-               Low   : constant Uint :=
+               Index    : constant Node_Id := First_Index (Typ);
+               Rng      : constant Node_Id := Get_Range (Index);
+               Low      : constant Uint :=
                  Expr_Value (Low_Bound (Rng));
-               High  : constant Uint :=
+               High     : constant Uint :=
                  Expr_Value (High_Bound (Rng));
-               Cur   : Uint;
-               Ar    : W_Expr_Id := +E_Symb (Typ, WNE_Dummy);
+               Cur      : Uint;
+               Ar       : W_Expr_Id := +E_Symb (Typ, WNE_Dummy);
+               Is_Valid : W_Term_Id :=
+                 (if Do_Validity then True_Term else Why_Empty);
             begin
                if Low <= High then
                   Cur := Low;
                   while Cur <= High loop
-                     Ar := New_Array_Update
-                       (Ada_Node => Types.Empty,
-                        Ar       => Ar,
-                        Index    => (1 => Expr_Index (Typ, Cur)),
-                        Value    =>
+                     declare
+                        C_Value : constant Target_Value :=
                           Reconstruct_Value
                             (Base   => Base,
                              Bits   => Bits,
@@ -654,13 +747,25 @@ package body Gnat2Why.Unchecked_Conversion is
                              Size   =>
                                Component_Size (Typ),
                              Typ    =>
-                               Retysp (Component_Type (Typ))),
-                        Domain   => EW_Term);
+                               Retysp (Component_Type (Typ)));
+                     begin
+                        Ar := New_Array_Update
+                          (Ada_Node => Types.Empty,
+                           Ar       => Ar,
+                           Index    => (1 => Expr_Index (Typ, Cur)),
+                           Value    => +C_Value.Value,
+                           Domain   => EW_Term);
+
+                        if Do_Validity then
+                           Is_Valid := New_And_Term
+                             (Is_Valid, C_Value.Is_Valid);
+                        end if;
+                     end;
                      Cur := Cur + 1;
                   end loop;
                end if;
 
-               return Ar;
+               return (Value => +Ar, Is_Valid => Is_Valid);
             end;
 
          else
@@ -690,14 +795,13 @@ package body Gnat2Why.Unchecked_Conversion is
       --  call to uc_of_int.
 
       if Is_Scalar_Type (Source_Type) then
-         Conv :=
-           Precise_Integer_UC
-             (Arg           => +Arg,
-              Size          => No_Uint,
-              Source_Type   => EW_Abstract (Source_Type),
-              Target_Type   => Base,
-              Source_Status => Get_Scalar_Status (Source_Type),
-              Target_Status => Modular);
+         Conv := Precise_Integer_UC
+           (Arg           => +Arg,
+            Size          => No_Uint,
+            Source_Type   => EW_Abstract (Source_Type),
+            Target_Type   => Base,
+            Source_Status => Get_Scalar_Status (Source_Type),
+            Target_Status => Modular);
 
          --  1.b Otherwise extract all scalar subcomponents from the
          --  composite value and sum up their contributions to the
@@ -732,27 +836,40 @@ package body Gnat2Why.Unchecked_Conversion is
       --  call to uc_to_int.
 
       if Is_Scalar_Type (Target_Type) then
-         Def :=
-           Precise_Integer_UC
-             (Arg           => Conv,
-              Size          => No_Uint,
-              Source_Type   => Base,
-              Target_Type   => Base_Why_Type_No_Bool (Target_Type),
-              Source_Status => Modular,
-              Target_Status => Get_Scalar_Status (Target_Type));
+         Def := Precise_Integer_UC
+           (Arg           => Conv,
+            Size          => No_Uint,
+            Source_Type   => Base,
+            Target_Type   => Base_Why_Type_No_Bool (Target_Type),
+            Source_Status => Modular,
+            Target_Status => Get_Scalar_Status (Target_Type),
+            Ada_Function  => Ada_Function);
 
          --  2.b Otherwise recursively reconstruct all scalar
          --  subcomponents from the value of type Base.
 
       else
-         Def :=
-           +Reconstruct_Value
-           (Base   => Base,
-            Bits   => +Conv,
-            Offset => Uint_0,
-            Size   =>
-              Get_Attribute_Value (Target_Type, Attribute_Size),
-            Typ    => Target_Type);
+         declare
+            Val : constant Target_Value := Reconstruct_Value
+              (Base   => Base,
+               Bits   => +Conv,
+               Offset => Uint_0,
+               Size   =>
+                 Get_Attribute_Value (Target_Type, Attribute_Size),
+               Typ    => Target_Type);
+         begin
+            Def := Val.Value;
+
+            --  If the result of Ada_Function is potentially invalid,
+            --  reconstruct the wrapper.
+
+            if Do_Validity then
+               Def := +New_Validity_Wrapper_Value
+                 (Fun      => Ada_Function,
+                  Is_Valid => +Val.Is_Valid,
+                  Value    => +Val.Value);
+            end if;
+         end;
       end if;
       return Def;
    end Precise_Composite_UC;
@@ -767,7 +884,8 @@ package body Gnat2Why.Unchecked_Conversion is
       Source_Type   : W_Type_Id;
       Target_Type   : W_Type_Id;
       Source_Status : Scalar_Status;
-      Target_Status : Scalar_Status)
+      Target_Status : Scalar_Status;
+      Ada_Function  : Opt_E_Function_Id := Empty)
       return W_Term_Id
    is
       Source_Base_Type : constant W_Type_Id :=
@@ -792,8 +910,8 @@ package body Gnat2Why.Unchecked_Conversion is
       then
          null;  --  Modular value can be directly converted to unsigned
 
-         --  Apply the appropriate UC function for conversions between Modular
-         --  and Signed.
+      --  Apply the appropriate UC function for conversions between Modular
+      --  and Signed.
 
       elsif Source_Status = Modular
         and then Target_Status = Signed
@@ -811,10 +929,10 @@ package body Gnat2Why.Unchecked_Conversion is
             Args => (1 => +Conv),
             Typ  => Target_Base_Type);
 
-         --  Otherwise, this is a conversion between Unsigned and Signed.
-         --  We need to consider the bit representation of that (possibly
-         --  negative) signed value, to see if the high bit is 1, in which
-         --  case the Signed value is negative.
+      --  Otherwise, this is a conversion between Unsigned and Signed.
+      --  We need to consider the bit representation of that (possibly
+      --  negative) signed value, to see if the high bit is 1, in which
+      --  case the Signed value is negative.
 
       elsif Source_Status = Unsigned
         and then Target_Status = Signed
@@ -871,7 +989,42 @@ package body Gnat2Why.Unchecked_Conversion is
          end;
       end if;
 
-      return Insert_Simple_Conversion (Expr => Conv, To => Target_Type);
+      --  If Ada_Function is set and its result is potentially invalid, it is
+      --  necessary to reconstruct the wrapper. Only assume the value of the
+      --  result if it is valid to avoid inconsistent assumptions with the
+      --  dynamic invariant of the result. Otherwise use a dummy of the type.
+
+      if Present (Ada_Function)
+        and then Is_Potentially_Invalid (Ada_Function)
+      then
+         declare
+            Range_Ty     : constant Type_Kind_Id :=
+              Retysp (Etype (Ada_Function));
+            Conv_To_Base : constant W_Term_Id := New_Temp_For_Expr
+              (Insert_Simple_Conversion
+                 (Expr => Conv, To => Target_Base_Type));
+            Valid_Flag   : constant W_Term_Id := New_Temp_For_Expr
+                 (Is_Valid_Scalar (Range_Ty, Conv_To_Base));
+
+         begin
+            return Binding_For_Temp
+              (Tmp     => Conv_To_Base,
+               Context => Binding_For_Temp
+                 (Tmp     => Valid_Flag,
+                  Context => +New_Validity_Wrapper_Value
+                    (Fun      => Ada_Function,
+                     Is_Valid => +Valid_Flag,
+                     Value    => +New_Conditional
+                       (Condition => Valid_Flag,
+                        Then_Part => Insert_Simple_Conversion
+                          (Expr => Conv_To_Base, To => Target_Type),
+                        Else_Part => Insert_Simple_Conversion
+                          (Expr => +Why_Default_Value (EW_Term, Range_Ty),
+                           To   => Target_Type)))));
+         end;
+      else
+         return Insert_Simple_Conversion (Expr => Conv, To => Target_Type);
+      end if;
    end Precise_Integer_UC;
 
    -----------------------------
@@ -1212,19 +1365,20 @@ package body Gnat2Why.Unchecked_Conversion is
    ----------------------------
 
    procedure Suitable_For_UC_Target
-     (Typ         :     Type_Kind_Id;
-      Size        :     Uint;
-      Size_Str    :     String;
-      For_UC      :     Boolean;
-      Result      : out Boolean;
-      Explanation : out Unbounded_String)
+     (Typ            :     Type_Kind_Id;
+      Size           :     Uint;
+      Size_Str       :     String;
+      For_UC         :     Boolean;
+      Result         : out Boolean;
+      Explanation    : out Unbounded_String;
+      Check_Validity : Boolean := True)
    is
    begin
       Suitable_For_UC (Typ, Result, Explanation);
 
       --  Check for invalid values
 
-      if Result then
+      if Result and then Check_Validity then
          declare
             Res          : True_Or_Explain := (Ok => True);
             Continuation : constant String :=
@@ -1249,10 +1403,11 @@ package body Gnat2Why.Unchecked_Conversion is
    -----------------------------------------
 
    procedure Suitable_For_UC_Target_Overlay_Wrap
-     (Typ         :     Type_Kind_Id;
-      Obj         :     Node_Id;
-      Result      : out Boolean;
-      Explanation : out Unbounded_String)
+     (Typ            :     Type_Kind_Id;
+      Obj            :     Node_Id;
+      Result         : out Boolean;
+      Explanation    : out Unbounded_String;
+      Check_Validity : Boolean := True)
    is
       Size     : Uint := Uint_0;
       Size_Str : Unbounded_String;
@@ -1270,7 +1425,8 @@ package body Gnat2Why.Unchecked_Conversion is
          To_String (Size_Str),
          False,
          Result,
-         Explanation);
+         Explanation,
+         Check_Validity);
    end Suitable_For_UC_Target_Overlay_Wrap;
 
    ------------------------------------
@@ -1278,9 +1434,10 @@ package body Gnat2Why.Unchecked_Conversion is
    ------------------------------------
 
    procedure Suitable_For_UC_Target_UC_Wrap
-     (Typ         :     Type_Kind_Id;
-      Result      : out Boolean;
-      Explanation : out Unbounded_String)
+     (Typ            :     Type_Kind_Id;
+      Result         : out Boolean;
+      Explanation    : out Unbounded_String;
+      Check_Validity : Boolean := True)
    is
       Size : Uint := Uint_0;
    begin
@@ -1290,7 +1447,7 @@ package body Gnat2Why.Unchecked_Conversion is
          pragma Assert (not No (Size));
       end if;
       Suitable_For_UC_Target
-        (Typ, Size, "Size", True, Result, Explanation);
+        (Typ, Size, "Size ", True, Result, Explanation, Check_Validity);
    end Suitable_For_UC_Target_UC_Wrap;
 
 end Gnat2Why.Unchecked_Conversion;

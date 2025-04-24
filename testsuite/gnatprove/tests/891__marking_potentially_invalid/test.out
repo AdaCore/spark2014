@@ -103,13 +103,15 @@ ext.ads:525:118: warning: invalid data might be read; read data is assumed to be
 ext.ads:525:128: warning: contract case does not check the outcome of calling "P_Read_Old_KO7" [-gnatw.t]
 ext.ads:530:41: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
 test.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
-test.adb:9:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
+test.adb:9:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
 test.adb:9:51: info: type is suitable as source for unchecked conversion (Trivial)
-test.adb:9:60: high: type is unsuitable as a target for unchecked conversion [possible explanation: type Positive has 16#7FFF_FFFF# values but has Object_Size 32, which allows 16#1000_0000_0# possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
+test.adb:9:60: info: type is suitable for unchecked conversion (Trivial)
 test.adb:14:41: info: initialization of "Res" proved
 test.adb:16:14: medium: postcondition might fail (e.g. when Res = (I => 1) and X = 0)
+test.adb:16:14: medium: validity check might fail
 test.adb:23:13: info: implicit aspect Always_Terminates on "F_Body_SPARK" has been proved, subprogram will terminate
 test.adb:25:14: medium: postcondition might fail (e.g. when F_Body_SPARK'Result = (I => 1) and X = 0)
+test.adb:25:26: medium: validity check might fail
 test.adb:29:14: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
 test.adb:38:24: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
 gnatprove: error during flow analysis and proof

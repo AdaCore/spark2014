@@ -274,7 +274,8 @@ package CE_Values is
    end record;
 
    type Value_Type (K : Value_Kind := Scalar_K) is record
-      AST_Ty : Entity_Id;
+      AST_Ty     : Entity_Id;
+      Valid_Attr : Opt_Boolean;
 
       case K is
          when Scalar_K   =>

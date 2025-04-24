@@ -157,7 +157,8 @@ package body CE_Parsing is
          return Value_Type'
            (K      => Multidim_K,
             AST_Ty => Ty,
-            Bounds => (Dim => Natural (Number_Dimensions (Ty)), others => <>));
+            Bounds => (Dim => Natural (Number_Dimensions (Ty)), others => <>),
+            others => <>);
       elsif Is_Record_Type_In_Why (Ty) then
          return Value_Type'(K      => Record_K,
                             AST_Ty => Ty,
@@ -875,6 +876,9 @@ package body CE_Parsing is
                            Set_Boolean_Flag
                              (Elt.Value, Current_Val.Initialized_Attr);
                         end if;
+
+                     elsif Label = Valid_Label then
+                        Set_Boolean_Flag (Elt.Value, Current_Val.Valid_Attr);
 
                      --  Some labels are currently parsed as First@result,
                      --  where the @result part is not expected.

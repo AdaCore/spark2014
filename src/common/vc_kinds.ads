@@ -78,6 +78,7 @@ package VC_Kinds is
       VC_Tag_Check,
       VC_Ceiling_Interrupt,
       VC_Initialization_Check,
+      VC_Validity_Check,
       VC_Interrupt_Reserved,
       VC_Invariant_Check,
 

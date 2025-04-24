@@ -307,6 +307,7 @@ def is_rte_tag(tag):
         "CEILING_PRIORITY_PROTOCOL",
         "INTERRUPT_RESERVED",
         "TASK_TERMINATION",
+        "VALIDITY_CHECK",
     )
 
 
@@ -508,6 +509,8 @@ def check_marks(strlist):
                 return "RESOURCE_LEAK"
         elif "dereference check" in text:
             return "DEREFERENCE_CHECK"
+        elif "validity check" in text:
+            return "VALIDITY_CHECK"
         elif "operation on unchecked union type" in text:
             return "UU_RESTRICTION"
         elif "ceiling priority" in text:

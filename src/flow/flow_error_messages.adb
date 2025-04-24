@@ -4247,8 +4247,10 @@ package body Flow_Error_Messages is
          when VC_UC_Alignment =>
             return "address in address clause might not be an integral " &
               "multiple of alignment of object";
-         when VC_Initialization_Check      =>
+         when VC_Initialization_Check        =>
             return "initialization check might fail";
+         when VC_Validity_Check              =>
+            return "validity check might fail";
          when VC_Unchecked_Union_Restriction =>
             return "operation on unchecked union type will raise"
               & " Program_Error";
@@ -4739,6 +4741,8 @@ package body Flow_Error_Messages is
               & " postcondition of target";
          when VC_Initialization_Check      =>
             return "initialization check " & Verb;
+         when VC_Validity_Check            =>
+            return "validity check " & Verb;
          when VC_Unchecked_Union_Restriction =>
             return "operation on unchecked union type " & Verb;
 

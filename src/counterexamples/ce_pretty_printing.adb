@@ -1258,6 +1258,33 @@ package body CE_Pretty_Printing is
 
    function Print_Value (Value : Value_Type) return Value_And_Attributes is
    begin
+      --  Handling of invalid values
+
+      declare
+         Attributes : Name_Value_Lists.List;
+      begin
+         if Value.Valid_Attr.Present then
+            declare
+               Valid_Val : constant CNT_Unbounded_String :=
+                 Make_CNT_Unbounded_String
+                   (Str => To_Unbounded_String
+                      (if Value.Valid_Attr.Content then "True" else "False"));
+               Attr_Name : constant String :=
+                 (if Value.K = Scalar_K then "'Valid" else "'Valid_Scalars");
+            begin
+               Attributes.Append
+                 ((Name  => To_Unbounded_String (Attr_Name),
+                   Value => Valid_Val));
+            end;
+
+               --  Don't display scalar values if 'Initialized is False
+
+               if not Value.Valid_Attr.Content then
+                  return (Value => Dont_Display, Attributes => Attributes);
+               end if;
+         end if;
+      end;
+
       case Value.K is
          when Scalar_K =>
 

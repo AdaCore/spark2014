@@ -432,6 +432,12 @@ package body Gnat2Why.Subprograms is
    --  borrow (if it contains a call to a pledge function). Introduce bindings
    --  for them.
 
+   function Wrap_Post_Of_Potentially_Invalid
+     (E    : Entity_Id;
+      Post : W_Pred_Id) return W_Pred_Id;
+   --  Introduce bindings for the value part and the validity flag of functions
+   --  with a potentially invalid result.
+
    ----------------------------------------------
    -- Assume_Initial_Condition_Of_Withed_Units --
    ----------------------------------------------
@@ -1102,6 +1108,7 @@ package body Gnat2Why.Subprograms is
                     Local    => True,
                     Init     => <>,
                     Is_Moved => <>,
+                    Valid    => <>,
                     Main     => Unit_Param));
       else
          return Binders;
@@ -1305,6 +1312,8 @@ package body Gnat2Why.Subprograms is
                           Ty             => Ada_Type,
                           Params         => Params,
                           Initialized    => Init_Expr,
+                          Valid          => Get_Valid_Id_From_Item
+                            (Func_Why_Binders (I), Params.Ref_Allowed),
                           All_Global_Inv => All_Global_Inv);
                   begin
                      Dynamic_Prop_Effects := +New_And_Expr
@@ -1331,6 +1340,8 @@ package body Gnat2Why.Subprograms is
                           Domain => EW_Term),
                        Ty             => Ada_Type,
                        Params         => Params,
+                       Valid          => Get_Valid_Id_From_Item
+                         (Func_Why_Binders (I), Params.Ref_Allowed),
                        All_Global_Inv => All_Global_Inv);
                begin
                   Dynamic_Prop_Effects := +New_And_Expr
@@ -1368,12 +1379,14 @@ package body Gnat2Why.Subprograms is
                         Dyn_Prop : constant W_Pred_Id :=
                           Compute_Dynamic_Invariant
                             (Expr        =>
-                               +Transform_Identifier (Params   => Params,
-                                                      Expr     => Entity,
-                                                      Ent      => Entity,
-                                                      Domain   => EW_Term),
+                               +Transform_Identifier (Params => Params,
+                                                      Expr   => Entity,
+                                                      Ent    => Entity,
+                                                      Domain => EW_Term),
                              Ty          => Etype (Entity),
-                             Params      => Params,
+                             Params         => Params,
+                             Valid          => Get_Valid_Id_From_Object
+                               (Entity, Params.Ref_Allowed),
                              Initialized =>
                                (if Init_Id /= Why_Empty then +Init_Id
                                 else True_Term));
@@ -1626,10 +1639,12 @@ package body Gnat2Why.Subprograms is
             Dyn_Prop : constant W_Pred_Id :=
               (if Present (Ty_Node)
                then Compute_Dynamic_Inv_And_Initialization
-                 (Expr     => +Expr,
-                  Ty       => Ty_Node,
-                  Params   => Params,
-                  Only_Var => False_Term,
+                 (Expr           => +Expr,
+                  Ty             => Ty_Node,
+                  Params         => Params,
+                  Valid          => Get_Valid_Id_From_Item
+                    (B, Params.Ref_Allowed),
+                  Only_Var       => False_Term,
                   All_Global_Inv => All_Global_Inv
                     or else Ekind (Ada_Node) not in Formal_Kind
                     or else Enclosing_Unit (Ada_Node) /= Current_Subp)
@@ -1819,7 +1834,9 @@ package body Gnat2Why.Subprograms is
                  (Left  => Compute_Dynamic_Inv_And_Initialization
                     (Expr   => Expr,
                      Ty     => Ada_Type,
-                     Params => Params),
+                     Params => Params,
+                     Valid   => Get_Valid_Id_From_Item
+                       (Binder, Params.Ref_Allowed)),
                   Right => Compute_Type_Invariant
                     (Expr   => Expr,
                      Ty     => Ada_Type,
@@ -1960,6 +1977,7 @@ package body Gnat2Why.Subprograms is
                Local    => True,
                Init     => <>,
                Is_Moved => <>,
+               Valid    => <>,
                Main     => Concurrent_Self_Binder
                  (Prot, Mutable => Ekind (E) /= E_Function));
             Count := 2;
@@ -1980,6 +1998,7 @@ package body Gnat2Why.Subprograms is
                Local    => True,
                Init     => <>,
                Is_Moved => <>,
+               Valid    => <>,
                Main     => Unit_Param (Short_Name (Formal), Formal));
          else
             Result (Count) := Mk_Item_Of_Entity
@@ -3075,7 +3094,37 @@ package body Gnat2Why.Subprograms is
            );
          W_Def := Why_Empty;
 
-      --  Translate the Value expression in Why.
+      --  Reconstruct the wrapper for potentially invalid values
+
+      elsif Is_Potentially_Invalid (Function_Entity) then
+         declare
+            Tmp_Id     : W_Identifier_Id;
+            Id_Def     : W_Expr_Id;
+            Valid_Flag : W_Expr_Id;
+         begin
+            W_Def := +Transform_Potentially_Invalid_Expr
+              (Expr          => Value,
+               Expected_Type => Type_Of_Node (Function_Entity),
+               Domain        => EW_Term,
+               Params        => Params,
+               Tmp_Id        => Tmp_Id,
+               Id_Def        => Id_Def,
+               Valid_Flag    => Valid_Flag);
+
+            W_Def := +New_Validity_Wrapper_Value
+              (Fun      => Function_Entity,
+               Is_Valid => Valid_Flag,
+               Value    => +W_Def);
+
+            if Present (Tmp_Id) then
+               W_Def := New_Typed_Binding
+                 (Name    => Tmp_Id,
+                  Def     => +Id_Def,
+                  Context => W_Def);
+            end if;
+         end;
+
+      --  Translate the Value expression in Why
 
       else
          W_Def := Transform_Term
@@ -3119,7 +3168,9 @@ package body Gnat2Why.Subprograms is
       Specialization_Module : Symbol := No_Symbol;
       More_Reads            : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
    is
-      Why_Type           : constant W_Type_Id := Type_Of_Node (E);
+      Why_Type           : constant W_Type_Id :=
+        (if Is_Potentially_Invalid (E) then Validity_Wrapper_Type (E)
+         else Type_Of_Node (E));
       Logic_Func_Binders : constant Item_Array := Compute_Binders
         (E, EW_Term, More_Reads);
       Logic_Why_Binders  : constant Binder_Array :=
@@ -3185,15 +3236,15 @@ package body Gnat2Why.Subprograms is
             elsif Is_Scalar_Type (Source_Type)
               and then Is_Scalar_Type (Target_Type)
             then
-               Def :=
-                 Precise_Integer_UC
-                   (Arg           => +Arg,
-                    Size          =>
-                      Get_Attribute_Value (Source_Type, Attribute_Size),
-                    Source_Type   => EW_Abstract (Source_Type),
-                    Target_Type   => Base_Why_Type_No_Bool (Target_Type),
-                    Source_Status => Get_Scalar_Status (Source_Type),
-                    Target_Status => Get_Scalar_Status (Target_Type));
+               Def := Precise_Integer_UC
+                 (Arg           => +Arg,
+                  Size          =>
+                    Get_Attribute_Value (Source_Type, Attribute_Size),
+                  Source_Type   => EW_Abstract (Source_Type),
+                  Target_Type   => Base_Why_Type_No_Bool (Target_Type),
+                  Source_Status => Get_Scalar_Status (Source_Type),
+                  Target_Status => Get_Scalar_Status (Target_Type),
+                  Ada_Function  => E);
 
             --  At least one of Source or Target is a composite type made up
             --  of integers. Convert Source to a large-enough modular type,
@@ -3203,9 +3254,10 @@ package body Gnat2Why.Subprograms is
             else
                Def :=
                  Precise_Composite_UC
-                   (Arg         => +Arg,
-                    Source_Type => Source_Type,
-                    Target_Type => Target_Type);
+                   (Arg          => +Arg,
+                    Source_Type  => Source_Type,
+                    Target_Type  => Target_Type,
+                    Ada_Function => E);
             end if;
          end;
 
@@ -3683,6 +3735,8 @@ package body Gnat2Why.Subprograms is
       --  Declare a global variable to hold the result of a function
 
       if Ekind (E) = E_Function then
+         pragma Assert (not Is_Potentially_Invalid (E));
+
          Emit
            (Th,
             New_Global_Ref_Declaration
@@ -4669,6 +4723,8 @@ package body Gnat2Why.Subprograms is
            New_Temp_Identifier (Typ => Why_Type, Base_Name => "result");
 
       begin
+         pragma Assert (not Is_Potentially_Invalid (E));
+
          --  Store an immutable local name for the result that can be
          --  existentially quantified.
 
@@ -4821,6 +4877,8 @@ package body Gnat2Why.Subprograms is
          Params     : constant Transformation_Params := Contract_VC_Params;
       begin
          if Need_Check then
+            pragma Assert (not Is_Potentially_Invalid (E));
+
             declare
                Def : constant W_Term_Id :=
                  Compute_Inlined_Expr
@@ -4903,7 +4961,8 @@ package body Gnat2Why.Subprograms is
                          (Right => Result_Name,
                           Typ   => Get_Typ (Result_Name)),
                        Ty     => Etype (E),
-                       Params => Params);
+                       Params => Params,
+                       Valid  => Get_Valid_Id_For_Result (E));
 
                begin
                   --  For borrowing traversal functions, add the dynamic
@@ -4925,12 +4984,11 @@ package body Gnat2Why.Subprograms is
                                   (Expr    => New_Deref
                                        (Right => Brower_At_End,
                                         Typ   => Get_Typ (Brower_At_End)),
-                                   Ty     => Etype (E),
-                                   Params => Params),
+                                   Ty      => Etype (E),
+                                   Params  => Params),
                                 3 => Compute_Dynamic_Inv_And_Initialization
                                   (Expr   => +Borrowed_At_End,
-                                   Ty     => Etype
-                                     (First_Formal (E)),
+                                   Ty     => Etype (First_Formal (E)),
                                    Params => Params)));
                      end;
                   end if;
@@ -5484,6 +5542,20 @@ package body Gnat2Why.Subprograms is
                Location => No_Location,
                Ref_Type => Type_Of_Node (E)));
 
+         --  Add a validity flag for the result if it is potentially invalid
+
+         if Is_Potentially_Invalid (E) then
+            Emit
+              (Th,
+               New_Global_Ref_Declaration
+                 (Ada_Node => E,
+                  Name     => Get_Valid_Flag_For_Id (Result_Name),
+                  Labels   => Get_Counterexample_Labels
+                    (E, "'" & Initialized_Label),
+                  Location => No_Location,
+                  Ref_Type => EW_Bool_Type));
+         end if;
+
          --  If E is a traversal function returning a borrower, declare a
          --  reference borrower at end and a constant for the borrowed at end.
 
@@ -5994,7 +6066,13 @@ package body Gnat2Why.Subprograms is
                  (Source, VC_UC_Source, Valid, E,
                   Explanation => To_String (Explanation));
 
-               Suitable_For_UC_Target_UC_Wrap (Tar_Ty, Valid, Explanation);
+               --  If E is annotated with Potentially_Invalid, do not check
+               --  that its target type has only valid values.
+
+               Suitable_For_UC_Target_UC_Wrap
+                 (Tar_Ty, Valid, Explanation,
+                  Check_Validity => not Is_Potentially_Invalid (E));
+
                Emit_Static_Proof_Result
                  (Target, VC_UC_Target, Valid, E,
                   Explanation => To_String (Explanation));
@@ -6321,21 +6399,27 @@ package body Gnat2Why.Subprograms is
       Specialization_Module : Symbol := No_Symbol;
       More_Reads            : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
    is
-      Logic_Func_Binders : constant Item_Array := Compute_Binders
+      Needs_Validity_Wrapper : constant Boolean :=
+        Is_Potentially_Invalid (E);
+      Logic_Func_Binders     : constant Item_Array := Compute_Binders
         (E, EW_Term, More_Reads);
-      Params             : Transformation_Params;
-      Pre                : W_Pred_Id;
-      Post               : W_Pred_Id;
-      Dispatch_Pre       : W_Pred_Id := Why_Empty;
-      Dispatch_Post      : W_Pred_Id := Why_Empty;
-      Refined_Post       : W_Pred_Id := Why_Empty;
-      Why_Type           : W_Type_Id := Why_Empty;
+      Params                 : Transformation_Params;
+      Pre                    : W_Pred_Id;
+      Post                   : W_Pred_Id;
+      Dispatch_Pre           : W_Pred_Id := Why_Empty;
+      Dispatch_Post          : W_Pred_Id := Why_Empty;
+      Refined_Post           : W_Pred_Id := Why_Empty;
+      Why_Type               : W_Type_Id := Why_Empty;
 
    begin
       Params := (Logic_Params with delta Old_Policy => Ignore);
 
       if Is_Function_Or_Function_Type (E) then
-         Why_Type := Type_Of_Node (E);
+         if Needs_Validity_Wrapper then
+            Why_Type := Validity_Wrapper_Type (E);
+         else
+            Why_Type := Type_Of_Node (E);
+         end if;
       end if;
 
       --  Do not generate an axiom for the postcondition of volatile functions,
@@ -6445,6 +6529,16 @@ package body Gnat2Why.Subprograms is
       end if;
 
       declare
+         Result_Id           : constant W_Identifier_Id :=
+           +New_Result_Ident (Why_Type);
+         Result_Value        : constant W_Term_Id :=
+           (if Needs_Validity_Wrapper
+            then +New_Valid_Value_Access (Fun => E, Name => +Result_Id)
+            else +Result_Id);
+         Result_Is_Valid     : constant W_Term_Id :=
+           (if Needs_Validity_Wrapper
+            then +New_Is_Valid_Access (Fun => E, Name => +Result_Id)
+            else True_Term);
          Logic_Why_Binders   : constant Binder_Array :=
            To_Binder_Array (Logic_Func_Binders);
          Guard               : constant W_Pred_Id :=
@@ -6458,11 +6552,12 @@ package body Gnat2Why.Subprograms is
          Dynamic_Prop_Result : constant W_Pred_Id :=
            +New_And_Then_Expr
            (Left   => +Compute_Dynamic_Inv_And_Initialization
-              (Expr           => +New_Result_Ident (Why_Type),
+              (Expr           => Result_Value,
                Ty             => Etype (E),
                Only_Var       => False_Term,
                All_Global_Inv =>
                  Include_All_Global_Invariants_For_Subp (E),
+               Valid          => Result_Is_Valid,
                Params         => Params),
             Right  => +Compute_Type_Invariants_For_Subprogram
               (E, Params, False),
@@ -6492,8 +6587,6 @@ package body Gnat2Why.Subprograms is
                 (E,
                  Selector_Name         => Selector,
                  Specialization_Module => Specialization_Module);
-            Result_Id     : constant W_Identifier_Id :=
-              New_Result_Ident (Why_Type);
             Tag_B         : constant Binder_Array :=
               (if Selector = Dispatch then (1 => Tag_Binder)
                else (1 .. 0 => <>));
@@ -6514,7 +6607,7 @@ package body Gnat2Why.Subprograms is
                    (Symbol => Why_Eq,
                     Left   => New_Tag_Access
                       (Domain   => EW_Term,
-                       Name     => +New_Result_Ident (Why_Type),
+                       Name     => +Result_Value,
                        Ty       => Retysp (Etype (E))),
                     Right  =>
                       (if Ekind (E) = E_Function
@@ -6538,6 +6631,13 @@ package body Gnat2Why.Subprograms is
                         Args   => Get_Args_From_Binders
                           (Logic_Why_Binders, Ref_Allowed => False),
                         Params => Params)
+
+                     --  If the function returns a validity wrapper, introduce
+                     --  bindings for the value part and the validity flag of
+                     --  the result.
+
+                     elsif Needs_Validity_Wrapper
+                     then Wrap_Post_Of_Potentially_Invalid (E, Post)
                      else Post),
                   2 => Dynamic_Prop_Result,
                   3 => Tag_Comp));
@@ -6559,7 +6659,7 @@ package body Gnat2Why.Subprograms is
             Def           : constant W_Pred_Id := +New_Typed_Binding
               (Ada_Node => Empty,
                Domain   => EW_Pred,
-               Name     => +New_Result_Ident (Why_Type),
+               Name     => +Result_Id,
                Def      => Call,
                Context  => +Guarded_Post);
             Dep           : constant W_Axiom_Dep_Id :=
@@ -6872,6 +6972,7 @@ package body Gnat2Why.Subprograms is
                                  Local    => True,
                                  Init     => <>,
                                  Is_Moved => <>,
+                                 Valid    => <>,
                                  Main     =>
                                    (B_Name   =>
                                         New_Temp_Identifier
@@ -7115,10 +7216,18 @@ package body Gnat2Why.Subprograms is
 
       declare
          Use_Result_Name : constant Boolean := Ekind (E) = E_Function;
-         --  Store the result identifier in Result_Name
+         --  Store the result identifier in Result_Name. If the result of
+         --  the function is potentially invalid, use a temporary as the
+         --  function returns a validity wrapper.
+
       begin
          if Use_Result_Name then
-            Result_Name := New_Result_Ident (Type_Of_Node (E));
+            Result_Name :=
+              (if Is_Potentially_Invalid (E)
+               then New_Temp_Identifier
+                 (Base_Name => "result",
+                  Typ       => Type_Of_Node (E))
+               else New_Result_Ident (Type_Of_Node (E)));
             Result_Is_Mutable := False;
          end if;
 
@@ -7209,18 +7318,19 @@ package body Gnat2Why.Subprograms is
       Specialization_Module : Symbol := No_Symbol;
       More_Reads            : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
    is
-      Func_Binders     : constant Item_Array :=
+      Needs_Validity_Wrapper : constant Boolean := Is_Potentially_Invalid (E);
+      Func_Binders           : constant Item_Array :=
         Compute_Binders (E, EW_Prog, More_Reads);
-      Func_Why_Binders : constant Binder_Array :=
+      Func_Why_Binders       : constant Binder_Array :=
         To_Binder_Array (Func_Binders);
-      Params           : Transformation_Params;
-      Effects          : W_Effects_Id;
-      Pre              : W_Pred_Id;
-      Post             : W_Pred_Id;
-      Dispatch_Pre     : W_Pred_Id := Why_Empty;
-      Dispatch_Post    : W_Pred_Id := Why_Empty;
-      Refined_Post     : W_Pred_Id := Why_Empty;
-      Why_Type         : W_Type_Id := Why_Empty;
+      Params                 : Transformation_Params;
+      Effects                : W_Effects_Id;
+      Pre                    : W_Pred_Id;
+      Post                   : W_Pred_Id;
+      Dispatch_Pre           : W_Pred_Id := Why_Empty;
+      Dispatch_Post          : W_Pred_Id := Why_Empty;
+      Refined_Post           : W_Pred_Id := Why_Empty;
+      Why_Type               : W_Type_Id := Why_Empty;
 
    begin
       Params := (Logic_Params with delta Ref_Allowed => True);
@@ -7357,20 +7467,33 @@ package body Gnat2Why.Subprograms is
 
       if Is_Function_Or_Function_Type (E) then
 
-         Why_Type := Type_Of_Node (E);
+         Why_Type :=
+           (if Needs_Validity_Wrapper then Validity_Wrapper_Type (E)
+            else Type_Of_Node (E));
 
          declare
             Logic_Func_Args     : constant W_Expr_Array :=
               Get_Args_From_Binders (Spec_Binders, Ref_Allowed => True)
-               & Compute_Args (E, Func_Why_Binders, More_Reads);
+              & Compute_Args (E, Func_Why_Binders, More_Reads);
+            Result_Id           : constant W_Identifier_Id :=
+              New_Result_Ident (Why_Type);
+            Result_Value        : constant W_Term_Id :=
+              (if Needs_Validity_Wrapper
+               then +New_Valid_Value_Access (Fun => E, Name => +Result_Id)
+               else +Result_Id);
+            Result_Is_Valid     : constant W_Term_Id :=
+              (if Needs_Validity_Wrapper
+               then +New_Is_Valid_Access (Fun => E, Name => +Result_Id)
+               else True_Term);
             Dynamic_Prop_Result : constant W_Pred_Id :=
               +New_And_Then_Expr
               (Left   => +Compute_Dynamic_Inv_And_Initialization
-                 (Expr           => +New_Result_Ident (Why_Type),
+                 (Expr           => Result_Value,
                   Ty             => Etype (E),
                   Only_Var       => False_Term,
                   All_Global_Inv =>
                     Include_All_Global_Invariants_For_Subp (E),
+                  Valid          => Result_Is_Valid,
                   Params         => Params),
                Right  => +Compute_Type_Invariants_For_Subprogram
                  (E, Params, False),
@@ -7423,6 +7546,13 @@ package body Gnat2Why.Subprograms is
                     (if Is_Borrowing_Traversal_Function (E)
                      then +Wrap_Post_Of_Traversal
                        (E, Post, Logic_Func_Args, Params)
+
+                     --  If the function returns a validity wrapper, introduce
+                     --  bindings for the value part and the validity flag of
+                     --  the result.
+
+                     elsif Needs_Validity_Wrapper
+                     then +Wrap_Post_Of_Potentially_Invalid (E, Post)
                      else +Post),
                   Domain => EW_Pred);
                Tag_Arg    : constant W_Expr_Array :=
@@ -7431,8 +7561,6 @@ package body Gnat2Why.Subprograms is
                Tag_B      : constant Binder_Array :=
                  (if Need_Tag then (1 => Tag_Binder)
                   else (1 .. 0 => <>));
-               Result_Id  : constant W_Identifier_Id :=
-                 New_Result_Ident (Why_Type);
                Pred_Args  : constant W_Expr_Array :=
                  +Result_Id & Tag_Arg & Logic_Func_Args;
 
@@ -7502,7 +7630,7 @@ package body Gnat2Why.Subprograms is
                         (Symbol => Why_Eq,
                          Left   => New_Tag_Access
                            (Domain   => EW_Term,
-                            Name     => +New_Result_Ident (Why_Type),
+                            Name     => +Result_Value,
                             Ty       => Retysp (Etype (E))),
                          Right  =>
                            (if Ekind (E) = E_Function
@@ -7517,7 +7645,7 @@ package body Gnat2Why.Subprograms is
                  (Domain      => EW_Prog,
                   Name        => Prog_Id,
                   Binders     => Tag_B & Spec_Binders & Func_Why_Binders,
-                  Return_Type => Type_Of_Node (E),
+                  Return_Type => Why_Type,
                   Labels      => Symbol_Sets.Empty_Set,
                   Location    => No_Location,
                   Effects     => Effects,
@@ -7575,18 +7703,54 @@ package body Gnat2Why.Subprograms is
                      else EW_Term);
                   Expr_Fun_N : constant Node_Id :=
                     Get_Expression_Function (E);
-                  Expr_Body : constant W_Expr_Id :=
-                    Transform_Expr (Expression (Expr_Fun_N),
-                                    Expected_Type => Why_Type,
-                                    Domain        => Domain,
-                                    Params        => Params);
-                  Res_Expr  : constant W_Expr_Id :=
-                    +New_Result_Ident (Why_Type);
-                  Eq_Expr   : constant W_Pred_Id :=
-                    (New_Call (Name => Why_Eq,
-                               Args => (Res_Expr, Expr_Body),
-                               Typ  => EW_Bool_Type));
+                  Expr_Body : W_Expr_Id;
+                  Eq_Expr   : W_Pred_Id;
+
+                  --  Handling of potentially invalid values
+
+                  Tmp_Id     : W_Identifier_Id;
+                  Id_Def     : W_Expr_Id;
+                  Valid_Flag : W_Expr_Id;
+
                begin
+                  if Needs_Validity_Wrapper then
+                     Expr_Body := Transform_Potentially_Invalid_Expr
+                       (Expr          => Expression (Expr_Fun_N),
+                        Expected_Type => Type_Of_Node (E),
+                        Domain        => Domain,
+                        Params        => Params,
+                        Tmp_Id        => Tmp_Id,
+                        Id_Def        => Id_Def,
+                        Valid_Flag    => Valid_Flag);
+
+                     Expr_Body := New_Validity_Wrapper_Value
+                       (Fun      => E,
+                        Is_Valid => Valid_Flag,
+                        Value    => Expr_Body);
+
+                     Eq_Expr := New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => +Result_Id,
+                        Right  => +Expr_Body);
+
+                     if Present (Tmp_Id) then
+                        Eq_Expr := New_Typed_Binding
+                          (Name    => Tmp_Id,
+                           Def     => +Id_Def,
+                           Context => Eq_Expr);
+                     end if;
+                  else
+                     Expr_Body :=
+                       Transform_Expr (Expression (Expr_Fun_N),
+                                       Expected_Type => Why_Type,
+                                       Domain        => Domain,
+                                       Params        => Params);
+
+                     Eq_Expr := New_Call
+                       (Name => Why_Eq,
+                        Args => (+Result_Id, +Expr_Body));
+                  end if;
+
                   if Entity_Body_In_SPARK (E) and then Has_Refinement (E)
                   then
                      Refined_Post :=
@@ -8248,8 +8412,15 @@ package body Gnat2Why.Subprograms is
       end if;
 
       --  Store an appropriate value for the result identifier in Result_Name.
+      --  If the result of the function is potentially invalid, use a temporary
+      --  as the function returns a validity wrapper.
 
-      Result_Name := New_Result_Ident (Type_Of_Node (E));
+      Result_Name :=
+        (if Is_Potentially_Invalid (E)
+         then New_Temp_Identifier
+           (Base_Name => "result",
+            Typ       => Type_Of_Node (E))
+         else New_Result_Ident (Type_Of_Node (E)));
       Result_Is_Mutable := False;
 
       if Within_Protected_Type (E) then
@@ -8544,6 +8715,39 @@ package body Gnat2Why.Subprograms is
               & ", created in " & GNAT.Source_Info.Enclosing_Entity);
       end if;
 
+      if Is_Potentially_Invalid (E) then
+         declare
+            Validity_Module : constant W_Module_Id :=
+              E_Module (E, Validity_Wrapper);
+            Validity_Th     : Theory_UC :=
+              Open_Theory
+                (WF_Context, Validity_Module,
+                 Comment =>
+                   "Module for the wrapper type for the potentially invalid"
+                 & " result of "
+                 & """" & Get_Name_String (Chars (E)) & """"
+                 & (if Sloc (E) > 0 then
+                      " defined at " & Build_Location_String (Sloc (E))
+                   else "")
+                 & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+            Subst           : constant W_Clone_Substitution_Array :=
+              (1 => New_Clone_Substitution
+                 (Kind      => EW_Type_Subst,
+                  Orig_Name => New_Name (Symb => NID ("__t")),
+                  Image     => Get_Name (+Type_Of_Node (E))));
+
+         begin
+            Emit (Validity_Th,
+                  New_Clone_Declaration
+                    (Theory_Kind   => EW_Theory,
+                     Clone_Kind    => EW_Export,
+                     Origin        => Validity_Wrapper_Model,
+                     As_Name       => No_Symbol,
+                     Substitutions => Subst));
+            Close_Theory (Validity_Th, Kind => Definition_Theory);
+         end;
+      end if;
+
       --  No logic function is created for volatile functions and functions
       --  with side effects. The function's effects are modelled by an effect
       --  on the program function.
@@ -8659,6 +8863,36 @@ package body Gnat2Why.Subprograms is
          Relocate_Symbols (Subp_For_Post);
       end if;
    end Update_Symbol_Table_For_Inherited_Contracts;
+
+   --------------------------------------
+   -- Wrap_Post_Of_Potentially_Invalid --
+   --------------------------------------
+
+   function Wrap_Post_Of_Potentially_Invalid
+     (E    : Entity_Id;
+      Post : W_Pred_Id) return W_Pred_Id
+   is
+      Result_Id : constant W_Term_Id :=
+        +New_Result_Ident (Validity_Wrapper_Type (E));
+   begin
+      --  Generate:
+      --
+      --  let result_name = result.valid_name in
+      --  let result_name_valid = result.valid_id in
+      --    post
+
+      if Is_True_Boolean (+Post) then
+         return Post;
+      else
+         return New_Typed_Binding
+           (Name    => Result_Name,
+            Def     => +New_Valid_Value_Access (Fun => E, Name => +Result_Id),
+            Context => New_Typed_Binding
+              (Name    => Get_Valid_Flag_For_Id (Result_Name),
+               Def     => +New_Is_Valid_Access (Fun => E, Name => +Result_Id),
+               Context => Post));
+      end if;
+   end Wrap_Post_Of_Potentially_Invalid;
 
    ----------------------------
    -- Wrap_Post_Of_Traversal --

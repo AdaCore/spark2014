@@ -4847,6 +4847,20 @@ package body Why.Gen.Expr is
       end if;
    end New_Function_Call;
 
+   -------------------------
+   -- New_Is_Valid_Access --
+   -------------------------
+
+   function New_Is_Valid_Access
+     (Fun  : E_Function_Id;
+      Name : W_Expr_Id)
+      return W_Expr_Id
+   is
+     (New_Record_Access
+        (Name  => Name,
+         Field => E_Symb (Fun, WNE_Is_Valid),
+         Typ   => EW_Bool_Type));
+
    -----------------------
    -- New_Operator_Call --
    -----------------------
@@ -4982,6 +4996,56 @@ package body Why.Gen.Expr is
 
       return Labels;
    end New_VC_Labels;
+
+   ----------------------------
+   -- New_Valid_Value_Access --
+   ----------------------------
+
+   function New_Valid_Value_Access
+     (Ada_Node : Node_Id := Empty;
+      Fun      : E_Function_Id;
+      Name     : W_Expr_Id;
+      Do_Check : Boolean := False)
+      return W_Expr_Id
+   is
+      Value_Id : constant W_Identifier_Id := E_Symb (Fun, WNE_Valid_Value);
+   begin
+      if Do_Check then
+         return +New_VC_Call
+           (Ada_Node => Ada_Node,
+            Name     => To_Program_Space (Value_Id),
+            Progs    => (1 => Name),
+            Reason   => VC_Validity_Check,
+            Typ      => Get_Typ (Value_Id));
+      else
+         return New_Record_Access
+           (Name  => Name,
+            Field => Value_Id,
+            Typ   => Get_Typ (Value_Id));
+      end if;
+   end New_Valid_Value_Access;
+
+   --------------------------------
+   -- New_Validity_Wrapper_Value --
+   --------------------------------
+
+   function New_Validity_Wrapper_Value
+     (Fun      : E_Function_Id;
+      Is_Valid : W_Expr_Id;
+      Value    : W_Expr_Id)
+      return W_Expr_Id
+   is
+     (New_Record_Aggregate
+        (Associations =>
+             (1 => New_Field_Association
+                  (Domain => EW_Term,
+                   Field  => E_Symb (Fun, WNE_Valid_Value),
+                   Value  => Value),
+              2 => New_Field_Association
+                (Domain => EW_Term,
+                 Field  => E_Symb (Fun, WNE_Is_Valid),
+                 Value  => Is_Valid)),
+         Typ          => Validity_Wrapper_Type (Fun)));
 
    ------------------
    -- New_Xor_Expr --
@@ -5377,6 +5441,13 @@ package body Why.Gen.Expr is
 
       return T;
    end Transform_Non_Binary_Modular_Operation;
+
+   ---------------------------
+   -- Validity_Wrapper_Type --
+   ---------------------------
+
+   function Validity_Wrapper_Type (Fun : E_Function_Id) return W_Type_Id is
+     (New_Named_Type (Get_Name (E_Symb (Fun, WNE_Valid_Wrapper))));
 
    -----------------------
    -- Why_Default_Value --

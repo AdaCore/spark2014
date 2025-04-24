@@ -4087,6 +4087,40 @@ package body SPARK_Util is
       end case;
    end Is_Potentially_Invalid;
 
+   ---------------------------------
+   -- Is_Potentially_Invalid_Expr --
+   ---------------------------------
+
+   function Is_Potentially_Invalid_Expr (Expr : Node_Id) return Boolean is
+
+      function Object_Can_Be_Invalid
+        (Obj : Entity_Id) return Boolean
+         renames Is_Potentially_Invalid;
+      --  Whether Obj is considered (locally) invalid at the location of Expr.
+      --  For now, only consider annotated objects as potentially invalid.
+      --  ??? Handle locally potentially invalid
+
+   begin
+      case Nkind (Expr) is
+         when N_Identifier | N_Expanded_Name =>
+            return Object_Can_Be_Invalid (Entity (Expr));
+
+         when N_Function_Call =>
+            return Is_Potentially_Invalid (Get_Called_Entity (Expr));
+
+         when N_Attribute_Reference =>
+            return (Attribute_Name (Expr) in Name_Old | Name_Loop_Entry
+                    and then Is_Potentially_Invalid_Expr (Prefix (Expr))
+                    and then not Has_Scalar_Type (Etype (Expr)))
+              or else
+                (Attribute_Name (Expr) = Name_Result
+                 and then Is_Potentially_Invalid (Entity (Prefix (Expr))));
+
+         when others =>
+            return False;
+      end case;
+   end Is_Potentially_Invalid_Expr;
+
    ---------------
    -- Is_Pragma --
    ---------------
@@ -6036,6 +6070,52 @@ package body SPARK_Util is
          return not Has_Predicates (Etype (Target));
       end if;
    end Propagates_Potential_Invalidity;
+
+   ------------------------------
+   -- Propagates_Validity_Flag --
+   ------------------------------
+
+   function Propagates_Validity_Flag (N : Node_Id) return Boolean is
+
+      function Object_Can_Be_Invalid
+        (Obj : Entity_Id) return Boolean
+         renames Is_Potentially_Invalid;
+      --  Whether Obj is considered (locally) invalid at the location of N.
+      --  For now, only consider annotated objects as potentially invalid.
+
+   begin
+      case Nkind (N) is
+         when N_Object_Declaration =>
+            return Present (Expression (N))
+              and then
+                (Nkind (Expression (N)) = N_Function_Call
+                 or else not Has_Scalar_Type (Etype (Defining_Identifier (N))))
+              and then Object_Can_Be_Invalid (Defining_Identifier (N));
+
+         when N_Assignment_Statement =>
+            return
+              (Nkind (Expression (N)) = N_Function_Call
+               or else not Has_Scalar_Type (Etype (Name (N))))
+              and then Object_Can_Be_Invalid (Get_Root_Object (Name (N)));
+
+         --  N should be an actual parameter of a call
+
+         when others =>
+
+            declare
+               Call   : Node_Id;
+               Formal : Entity_Id;
+            begin
+               Find_Actual (N, Formal, Call);
+
+               return Present (Call)
+                 and then Ekind (Formal) in E_In_Out_Parameter
+                                          | E_Out_Parameter
+                 and then Is_Potentially_Invalid (Formal)
+                 and then Object_Can_Be_Invalid (Get_Root_Object (N));
+            end;
+      end case;
+   end Propagates_Validity_Flag;
 
    ------------------------
    -- Reachable_Handlers --

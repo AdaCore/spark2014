@@ -12783,6 +12783,11 @@ package body SPARK_Definition is
          Mark_Unsupported
            (Lim_Potentially_Invalid_Predicates,
             N);
+
+      --  Supporting mutable discriminants makes it possible to have invalid
+      --  values inside discriminant checks, both on assignments and on
+      --  component access, possibly on the LHS.
+
       elsif Has_Discriminants (Rep_Ty)
         and then Has_Mutable_Discriminants (Rep_Ty)
       then

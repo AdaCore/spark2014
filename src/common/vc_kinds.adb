@@ -166,6 +166,7 @@ package body VC_Kinds is
             | VC_UC_Alignment
             | VC_Unchecked_Union_Restriction
             | VC_UC_Volatile
+            | VC_Validity_Check
          => "");
    end CWE_ID;
 
@@ -462,6 +463,8 @@ package body VC_Kinds is
             return "Warn if code is found to be unreachable";
          when VC_Initialization_Check             =>
             return "Check that a variable is initialized";
+         when VC_Validity_Check                   =>
+            return "Check that no invalid value is read";
          when VC_Unchecked_Union_Restriction      =>
             return "Check restrictions imposed on expressions of an unchecked"
               & " union type";
@@ -1573,6 +1576,7 @@ package body VC_Kinds is
              when VC_UC_Same_Size => "unchecked conversion size check",
              when VC_UC_Alignment => "alignment check",
              when VC_UC_Volatile => "volatile overlay check",
+             when VC_Validity_Check => "validity check",
              when VC_Weaker_Pre =>
                "precondition weaker than class-wide precondition",
              when VC_Trivial_Weaker_Pre =>

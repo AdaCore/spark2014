@@ -766,10 +766,10 @@ package body CE_Utils is
                         (GNATCOLL.JSON.Get (JSON_Data)));
 
                Res := new CE_Values.Value_Type'
-                 (K => Scalar_K,
-                  AST_Ty => Res_Type,
+                 (K              => Scalar_K,
+                  AST_Ty         => Res_Type,
                   Scalar_Content => Val,
-                  Initialized_Attr => <>);
+                  others         => <>);
             end;
          else
             raise Program_Error with "ill-formated JSON  (integer)";
@@ -787,10 +787,10 @@ package body CE_Utils is
                  := Create_Float_Value (Res_Type, Str_Value);
             begin
                Res := new CE_Values.Value_Type'
-                 (K => Scalar_K,
-                  AST_Ty => Res_Type,
+                 (K              => Scalar_K,
+                  AST_Ty         => Res_Type,
                   Scalar_Content => Val,
-                  Initialized_Attr => <>);
+                  others         => <>);
             end;
          else
             raise Program_Error with "ill-formated JSON (float)";
@@ -828,10 +828,10 @@ package body CE_Utils is
                     Enum_Entity => E);
 
                Res := new CE_Values.Value_Type'
-                 (K => Scalar_K,
-                  AST_Ty => Res_Type,
+                 (K              => Scalar_K,
+                  AST_Ty         => Res_Type,
                   Scalar_Content => Val,
-                  Initialized_Attr => <>);
+                  others         => <>);
             end;
          end if;
 
@@ -881,12 +881,13 @@ package body CE_Utils is
 
             if Size <= 0 then
                Res := new CE_Values.Value_Type'
-                 (K => Array_K,
-                  AST_Ty => Res_Type,
-                  First_Attr => First_Attr,
-                  Last_Attr => Last_Attr,
+                 (K            => Array_K,
+                  AST_Ty       => Res_Type,
+                  First_Attr   => First_Attr,
+                  Last_Attr    => Last_Attr,
                   Array_Values => Array_Values,
-                  Array_Others => null);
+                  Array_Others => null,
+                  others       => <>);
             else
                N := First_Attr.Content;
                while N <= Last_Attr.Content loop
@@ -906,12 +907,13 @@ package body CE_Utils is
                end loop;
 
                Res := new CE_Values.Value_Type'
-                 (K => Array_K,
-                  AST_Ty => Res_Type,
-                  First_Attr => First_Attr,
-                  Last_Attr => Last_Attr,
+                 (K            => Array_K,
+                  AST_Ty       => Res_Type,
+                  First_Attr   => First_Attr,
+                  Last_Attr    => Last_Attr,
                   Array_Values => Array_Values,
-                  Array_Others => null);
+                  Array_Others => null,
+                  others       => <>);
             end if;
          end;
 
@@ -946,10 +948,10 @@ package body CE_Utils is
                     (Res_Type);
                end loop;
                Res := new CE_Values.Value_Type'
-                 (K => Record_K,
-                  AST_Ty => Res_Type,
+                 (K             => Record_K,
+                  AST_Ty        => Res_Type,
                   Record_Fields => Record_Fields,
-                  Constrained_Attr => <>);
+                  others        => <>);
             end;
          else
             raise Program_Error with "ill-formated JSON (record)";

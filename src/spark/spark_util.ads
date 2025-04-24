@@ -1455,6 +1455,24 @@ package SPARK_Util is
    --  ??? This function is not ready yet. For now, it does not take into
    --  account locally potentially invalid objects.
 
+   function Is_Potentially_Invalid_Expr (Expr : Node_Id) return Boolean;
+   --  Return True if Expr might be invalid. It might happen for:
+   --  * Potentially invalid or locally potentially invalid objects,
+   --  * Reference to the 'Result attribute of a function potentially invalid
+   --    function,
+   --  * Call to a potentially invalid function, and
+   --  * References to 'Old and 'Loop_Entry if the prefix is not a scalar and
+   --    might be invalid.
+   --  Other expressions require a validity check.
+
+   function Propagates_Validity_Flag (N : Node_Id) return Boolean;
+   --  Returns True on an assignment statement, an object declaration, or
+   --  an actual parameter of mode IN OUT or OUT that propagates the invalidity
+   --  flag of its source to its target. Otherwise, a validity check should
+   --  be issued.
+   --  ??? This function is not ready yet. For now, it does not take into
+   --  account locally potentially invalid objects.
+
    -----------------------------------------------
    --  Control-flow graph of statements/bodies  --
    -----------------------------------------------

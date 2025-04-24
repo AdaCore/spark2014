@@ -434,33 +434,6 @@ package body Why.Gen.Init is
       end case;
    end EW_Init_Wrapper;
 
-   -----------------------------
-   -- Get_Init_Id_From_Object --
-   -----------------------------
-
-   function Get_Init_Id_From_Object
-     (Obj         : Entity_Id;
-      Ref_Allowed : Boolean) return W_Expr_Id
-   is
-      C    : constant Ada_Ent_To_Why.Cursor :=
-        Ada_Ent_To_Why.Find (Symbol_Table, Obj);
-      Item : Item_Type;
-   begin
-      if Ada_Ent_To_Why.Has_Element (C) then
-         Item := Ada_Ent_To_Why.Element (C);
-         if Item.Init.Present then
-            if Ref_Allowed then
-               return New_Deref
-                 (Right => Item.Init.Id,
-                  Typ   => Get_Typ (Item.Init.Id));
-            else
-               return +Item.Init.Id;
-            end if;
-         end if;
-      end if;
-      return Why_Empty;
-   end Get_Init_Id_From_Object;
-
    ---------------------------------
    -- Insert_Top_Level_Init_Check --
    ---------------------------------
