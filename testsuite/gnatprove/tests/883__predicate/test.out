@@ -2,9 +2,11 @@ test.adb:3:37: warning: assuming "P" has no effect on global items
 test.adb:3:37: warning: no Global contract available for "P" [assumed-global-null]
 test.adb:5:04: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
 test.adb:5:14: warning: subprogram "Test" has no effect
-test.adb:7:22: medium: assertion might fail [possible fix: subprogram at line 5 should mention X in a precondition]
+test.adb:7:22: info: assertion proved (CVC5: 1 VC)
 test.adb:7:22: warning: assuming "P" has no effect on global items
 test.adb:7:22: warning: no Global contract available for "P" [assumed-global-null]
 test.adb:10:04: warning: analyzing unreferenced procedure "Test_2" [unreferenced-procedure]
 test.adb:10:29: info: initialization of "O" proved
+test.adb:12:12: info: for inherited predicate at ext.ads:7
 test.adb:12:12: info: predicate check proved (CVC5: 1 VC)
+test.adb:12:12: medium: predicate check might fail [possible fix: subprogram at line 10 should mention X in a precondition]
