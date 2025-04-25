@@ -79,13 +79,13 @@ attempt_3.adb:62:25: info: assertion proved (CVC5: 1 VC)
 attempt_3.adb:62:27: info: overflow check proved (CVC5: 2 VC)
 attempt_3.adb:62:32: info: overflow check proved (CVC5: 2 VC)
 attempt_3.adb:62:45: medium: overflow check might fail, cannot prove upper bound for (N+1) * 65 [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-attempt_3.adb:63:25: info: assertion proved (colibri: 1 VC)
+attempt_3.adb:63:25: medium: assertion might fail
 attempt_3.adb:63:35: info: overflow check proved (CVC5: 2 VC)
 attempt_3.adb:63:40: info: overflow check proved (CVC5: 2 VC)
 attempt_3.adb:63:40: info: range check proved (Trivial)
 attempt_3.adb:63:62: info: range check proved (Trivial)
 attempt_3.adb:63:62: medium: overflow check might fail, cannot prove upper bound for (N+1) * 65 [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-attempt_3.adb:64:25: info: assertion proved (colibri: 1 VC)
+attempt_3.adb:64:25: medium: assertion might fail
 attempt_3.adb:64:31: info: float overflow check proved (colibri: 1 VC)
 attempt_3.adb:64:49: medium: overflow check might fail, cannot prove upper bound for N * 65 [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 attempt_3.adb:64:54: info: overflow check proved (CVC5: 2 VC)
@@ -141,7 +141,7 @@ attempt_4.adb:30:50: info: float overflow check proved (Trivial)
 attempt_4.adb:30:71: info: float overflow check proved (Trivial)
 attempt_4.adb:36:34: info: initialization of "Average" proved
 attempt_4.adb:37:09: info: data dependencies proved
-attempt_4.adb:40:19: info: postcondition proved (colibri: 1 VC)
+attempt_4.adb:40:19: medium: postcondition might fail
 attempt_4.adb:40:32: info: range check proved (CVC5: 2 VC)
 attempt_4.adb:44:25: info: float overflow check proved (colibri: 1 VC)
 attempt_4.adb:44:35: info: float overflow check proved (Trivial)

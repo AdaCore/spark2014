@@ -29,7 +29,7 @@
   <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="unknown" steps="10682"/></proof>
   <proof prover="2"><result status="unknown" steps="2555"/></proof>
-  <proof prover="4"><result status="unknown" steps="161"/></proof>
+  <proof prover="4"><result status="unknown" steps="105"/></proof>
   </goal>
  </transf>
  </goal>
