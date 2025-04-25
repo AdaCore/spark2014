@@ -49,6 +49,29 @@ package CE_RAC is
    --  If the fuzzer is used, the fuel must be shared and modified by each call
    --  to the small-step RAC.
 
+   package Entity_Bindings is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Entity_Id,
+      Element_Type    => Value_Access,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=");
+   --  Flat mapping of variables to bindings
+
+   type Value_List is array (Integer range <>) of Entity_Bindings.Map;
+   --  List of (unordered) subprogram parameter bindings, used to store
+   --  gnattest CE values.
+
+   type Value_List_Access is access Value_List;
+
+   type Param_Values is record
+      Values : Value_List_Access;
+      Pos    : Natural;
+   end record;
+   --  Holds a list of CE value as well as the position of the next one that
+   --  shall be read.
+
+   Gnattest_Values : Param_Values;
+   --  Global value holding the data extracted from gnattest.
+
    procedure Check_Fuel_Decrease
      (Fuel   : Fuel_Access;
       Amount : Fuel_Type := 1);
@@ -103,6 +126,9 @@ package CE_RAC is
    function Integer_Value (I : Big_Integer; N : Node_Id) return Value_Type;
    --  Construct an integer value after checking against type bounds or
    --  applying modulo for type Etype (N), signaling errors for node N.
+
+   function Character_Value (C : Character; Ty : Entity_Id) return Value_Type;
+   --  Make a character value, i.e. an enum value
 
    function Real_Value (R : Big_Real; N : Node_Id) return Value_Type;
    function Real_Value

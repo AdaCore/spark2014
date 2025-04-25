@@ -1001,6 +1001,10 @@ package body Configuration is
             Long_Switch => "--check-counterexamples=");
          Define_Switch
            (Config,
+            CL_Switches.Gnattest_Values'Access,
+            Long_Switch => "--gnattest-values=");
+         Define_Switch
+           (Config,
             CL_Switches.Debug_Exec_RAC'Access,
             Long_Switch => "--debug-exec-rac");
          Define_Switch

@@ -115,6 +115,7 @@ package Configuration is
       Flow_Termination      : aliased Boolean;
       Flow_Show_GG          : aliased Boolean;
       Function_Sandboxing   : aliased GNAT.Strings.String_Access;
+      Gnattest_Values       : aliased GNAT.Strings.String_Access;
       GPR_Project_Path      : String_Lists.List;
       --  extra paths to look for project files, passed to gnatprove via -aP
       IDE_Progress_Bar      : aliased Boolean;

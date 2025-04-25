@@ -37,4 +37,13 @@ package Gnat2Why.Driver is
    --  Returns True if and only if Switch denotes a back-end switch. This is
    --  only used to ignore switches for now.
 
+   ---------------------------
+   -- Parse_Gnattest_Values --
+   ---------------------------
+
+   procedure Parse_Gnattest_Values (E : Entity_Id);
+   --  Read input values for subprogram at E from Gnattest if
+   --  --gnattest_values was passed and store them into
+   --  CE_RAC.Gnattest_Values if they exist.
+
 end Gnat2Why.Driver;

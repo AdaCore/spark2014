@@ -101,10 +101,11 @@ package body Gnat2Why_Opts.Reading is
       Flow_Generate_Contracts := Get_Opt (V, Flow_Generate_Contracts_Name);
 
       if not Global_Gen_Mode then
-         Limit_Units  := Get_Opt (V, Limit_Units_Name);
-         Limit_Subp   := Get_Opt (V, Limit_Subp_Name);
-         Limit_Region := Get_Opt (V, Limit_Region_Name);
-         Limit_Name   := Get_Opt (V, Limit_Name_Name);
+         Limit_Units     := Get_Opt (V, Limit_Units_Name);
+         Limit_Subp      := Get_Opt (V, Limit_Subp_Name);
+         Limit_Region    := Get_Opt (V, Limit_Region_Name);
+         Limit_Name      := Get_Opt (V, Limit_Name_Name);
+         Gnattest_Values := Get_Opt (V, Gnattest_Values_Name);
 
          declare
             Ar : constant JSON_Array := Get (V, Limit_Lines_Name);
