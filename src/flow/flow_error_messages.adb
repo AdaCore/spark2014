@@ -2409,7 +2409,7 @@ package body Flow_Error_Messages is
                   if Ekind (Formal) in E_In_Parameter
                                      | E_In_Out_Parameter
                   then
-                     Var := SPARK_Atree.Get_Enclosing_Object (Actual);
+                     Var := SPARK_Atree.Get_Entire_Object (Actual);
 
                      --  We only insert into the mapping when the actual is
                      --  rooted in a variable. A more elaborate solution would
@@ -2442,7 +2442,7 @@ package body Flow_Error_Messages is
          elsif Nkind (N) = N_Assignment_Statement then
             declare
                V : constant Entity_Id :=
-                 SPARK_Atree.Get_Enclosing_Object (Name (N));
+                 SPARK_Atree.Get_Entire_Object (Name (N));
             begin
                Vars := Flow_Id_Sets.To_Set (Direct_Mapping_Id (V));
             end;
@@ -3361,7 +3361,7 @@ package body Flow_Error_Messages is
                         if Ekind (Formal) in E_Out_Parameter
                                            | E_In_Out_Parameter
                         then
-                           Var := SPARK_Atree.Get_Enclosing_Object (Actual);
+                           Var := SPARK_Atree.Get_Entire_Object (Actual);
                            Id := Direct_Mapping_Id (Var);
 
                            --  Include the actual in the variables written in
