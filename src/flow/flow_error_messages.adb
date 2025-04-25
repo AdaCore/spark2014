@@ -2346,6 +2346,10 @@ package body Flow_Error_Messages is
          --  (except when used as an index of an array component association).
          --  Detect these nodes to exclude them.
 
+         -----------------------
+         -- Is_Choice_Of_Aggr --
+         -----------------------
+
          function Is_Choice_Of_Aggr (N : Node_Id) return Boolean is
             Par : Node_Id := N;
          begin
@@ -2399,6 +2403,10 @@ package body Flow_Error_Messages is
                procedure Treat_Param
                  (Formal : Entity_Id; Actual : Node_Id);
                --  Fill the mapping formal->actual
+
+               -----------------
+               -- Treat_Param --
+               -----------------
 
                procedure Treat_Param
                  (Formal : Entity_Id; Actual : Node_Id)
@@ -3351,6 +3359,10 @@ package body Flow_Error_Messages is
                      procedure Treat_Param
                        (Formal : Entity_Id; Actual : Node_Id);
                      --  Get the parameters written in the call
+
+                     -----------------
+                     -- Treat_Param --
+                     -----------------
 
                      procedure Treat_Param
                        (Formal : Entity_Id; Actual : Node_Id)
