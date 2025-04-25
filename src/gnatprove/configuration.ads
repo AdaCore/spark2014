@@ -29,17 +29,17 @@ with Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings.Hash;
 with Ada.Text_IO;
-with Call;              use Call;
+with Call;             use Call;
 with GNAT.Strings;
 with GPR2.Project.Tree;
 with GPR2.Project.View;
 use GPR2;
-with Gnat2Why_Opts;     use Gnat2Why_Opts;
-with GNATCOLL.Utils;    use GNATCOLL.Utils;
-with GNATCOLL.VFS;      use GNATCOLL.VFS;
-with Named_Semaphores;  use Named_Semaphores;
-with String_Utils;      use String_Utils;
-with VC_Kinds;          use VC_Kinds;
+with Gnat2Why_Opts;    use Gnat2Why_Opts;
+with GNATCOLL.Utils;   use GNATCOLL.Utils;
+with GNATCOLL.VFS;     use GNATCOLL.VFS;
+with Named_Semaphores; use Named_Semaphores;
+with String_Utils;     use String_Utils;
+with VC_Kinds;         use VC_Kinds;
 
 package Configuration is
 
@@ -50,17 +50,20 @@ package Configuration is
    --  Exception used to signal that the report should be generated before
    --  aborting execution.
 
-   procedure Succeed with No_Return;
+   procedure Succeed
+   with No_Return;
    --  End the program signaling success
 
-   procedure Fail (Msg : String) with No_Return;
+   procedure Fail (Msg : String)
+   with No_Return;
    --  End the program signaling a failure, with a message
 
-   package Dir_Name_Sets is new Ada.Containers.Indefinite_Hashed_Sets
-     (Element_Type        => String,
-      Hash                => Ada.Strings.Hash,
-      Equivalent_Elements => "=",
-      "="                 => "=");
+   package Dir_Name_Sets is new
+     Ada.Containers.Indefinite_Hashed_Sets
+       (Element_Type        => String,
+        Hash                => Ada.Strings.Hash,
+        Equivalent_Elements => "=",
+        "="                 => "=");
 
    package Constants is
       --  This package contains constants that influence the behavior of
@@ -219,12 +222,13 @@ package Configuration is
       Warning_Status        : Warning_Status_Array;
    end record;
 
-   package File_Specific_Maps is new Ada.Containers.Indefinite_Hashed_Maps
-     (Key_Type        => String,
-      Element_Type    => File_Specific,
-      Hash            => Ada.Strings.Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
+   package File_Specific_Maps is new
+     Ada.Containers.Indefinite_Hashed_Maps
+       (Key_Type        => String,
+        Element_Type    => File_Specific,
+        Hash            => Ada.Strings.Hash,
+        Equivalent_Keys => "=",
+        "="             => "=");
 
    File_Specific_Map : File_Specific_Maps.Map;
 
@@ -248,47 +252,47 @@ package Configuration is
       --  prefix/share/spark/stdlib     - Why3 files of the stdlib
       --  prefix/share/spark/theories   - Why3 files for Ada theories
 
-      Prefix                   : constant String := Executable_Location;
-      Lib                      : constant String :=
+      Prefix                    : constant String := Executable_Location;
+      Lib                       : constant String :=
         Ada.Directories.Compose (Prefix, "lib");
-      Libexec_Spark            : constant String :=
+      Libexec_Spark             : constant String :=
         Ada.Directories.Compose
           (Ada.Directories.Compose (Prefix, "libexec"), "spark");
-      Libexec_Spark_Bin        : constant String :=
+      Libexec_Spark_Bin         : constant String :=
         Ada.Directories.Compose (Libexec_Spark, "bin");
-      Share                    : constant String :=
+      Share                     : constant String :=
         Ada.Directories.Compose (Prefix, "share");
-      Libexec_Share_Why3       : constant String :=
+      Libexec_Share_Why3        : constant String :=
         Ada.Directories.Compose
           (Ada.Directories.Compose (Libexec_Spark, "share"), "why3");
-      Share_Spark              : constant String :=
+      Share_Spark               : constant String :=
         Ada.Directories.Compose (Share, "spark");
-      Share_Spark_Theories     : constant String :=
+      Share_Spark_Theories      : constant String :=
         Ada.Directories.Compose (Share_Spark, "theories");
-      Share_Spark_Config       : constant String :=
+      Share_Spark_Config        : constant String :=
         Ada.Directories.Compose (Share_Spark, "config");
       Share_Spark_Explain_Codes : constant String :=
         Ada.Directories.Compose (Share_Spark, "explain_codes");
-      Share_Spark_Runtimes     : constant String :=
+      Share_Spark_Runtimes      : constant String :=
         Ada.Directories.Compose (Share_Spark, "runtimes");
-      Help_Msg_File            : constant String :=
+      Help_Msg_File             : constant String :=
         Ada.Directories.Compose (Share_Spark, "help.txt");
-      Gpr_Frames_DB            : constant String :=
+      Gpr_Frames_DB             : constant String :=
         Ada.Directories.Compose (Share_Spark_Config, "frames");
-      Gpr_Translation_DB : constant String :=
+      Gpr_Translation_DB        : constant String :=
         Ada.Directories.Compose (Share_Spark_Config, "gnat2why");
-      Gnatprove_Conf           : constant String :=
+      Gnatprove_Conf            : constant String :=
         Ada.Directories.Compose (Share_Spark_Config, "gnatprove.conf");
-      GNSA_Dir                 : constant String :=
+      GNSA_Dir                  : constant String :=
         (if Ada.Environment_Variables.Exists ("GNSA_ROOT")
          then Ada.Environment_Variables.Value ("GNSA_ROOT")
          else Libexec_Spark);
-      GNSA_Dir_Bin             : constant String :=
+      GNSA_Dir_Bin              : constant String :=
         Ada.Directories.Compose (GNSA_Dir, "bin");
-      Z3_Present               : Boolean;
-      CVC5_Present             : Boolean;
-      Colibri_Present          : Boolean;
-      Help_Message             : constant String :=
+      Z3_Present                : Boolean;
+      CVC5_Present              : Boolean;
+      Colibri_Present           : Boolean;
+      Help_Message              : constant String :=
         Read_File_Into_String (Help_Msg_File);
    end SPARK_Install;
 
@@ -299,8 +303,8 @@ package Configuration is
 
    Data_Representation_Subdir : constant Virtual_File :=
      Create (+Data_Representation_Subdir_Name);
-   Phase1_Subdir : constant Virtual_File := Create ("phase1");
-   Phase2_Subdir : Virtual_File := Create ("gnatprove");
+   Phase1_Subdir              : constant Virtual_File := Create ("phase1");
+   Phase2_Subdir              : Virtual_File := Create ("gnatprove");
    --  The subdir names for the storage of intermediate files (ALI, why3 files,
    --  etc). This is the subdir of the object dir, which might be further
    --  modified via the --subdirs switch. Overall, phase 2 will store files in
@@ -340,8 +344,8 @@ package Configuration is
    --  Wrapper on Ada.Directories.Create_Path that exits with a message instead
    --  of propagating an exception in case of error.
 
-   function Semaphore_Name return String is
-     (Ada.Directories.Base_Name (Socket_Name.all));
+   function Semaphore_Name return String
+   is (Ada.Directories.Base_Name (Socket_Name.all));
    --  The name used to create the semaphore object
 
    function SPARK_Report_File (Out_Dir : String) return String;
@@ -362,9 +366,8 @@ package Configuration is
    function Artifact_Dir (Tree : GPR2.Project.Tree.Object) return Virtual_File;
    --  place to store the gnatprove artifacts.
 
-   function Compute_Why3_Args (Obj_Dir : String;
-                               FS      : File_Specific)
-                               return String_Lists.List;
+   function Compute_Why3_Args
+     (Obj_Dir : String; FS : File_Specific) return String_Lists.List;
    --  Compute the list of arguments of gnatwhy3. This list is passed first to
    --  gnat2why, which then passes it to gnatwhy3.
 

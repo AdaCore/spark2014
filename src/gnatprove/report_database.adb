@@ -37,20 +37,20 @@ package body Report_Database is
         "="             => "=");
 
    Default_Stat : constant Stat_Rec :=
-     Stat_Rec'(SPARK           => Not_In_SPARK,
-               Suppr_Checks    => Check_Lists.Empty_List,
-               Pragma_Assumes  => Pragma_Assume_Lists.Empty_List,
-               Flow_Warnings   => 0,
-               Flow_Errors     => 0,
-               Flow_Checks     => 0,
-               Proof_Warnings  => 0,
-               Proof_Checks    => 0,
-               Proof_Checks_OK => 0,
-               Assumptions     => Rule_Lists.Empty_List);
+     Stat_Rec'
+       (SPARK           => Not_In_SPARK,
+        Suppr_Checks    => Check_Lists.Empty_List,
+        Pragma_Assumes  => Pragma_Assume_Lists.Empty_List,
+        Flow_Warnings   => 0,
+        Flow_Errors     => 0,
+        Flow_Checks     => 0,
+        Proof_Warnings  => 0,
+        Proof_Checks    => 0,
+        Proof_Checks_OK => 0,
+        Assumptions     => Rule_Lists.Empty_List);
 
    package Ordered_Subp_Sets is new
-     Ada.Containers.Ordered_Sets (Element_Type => Subp_Type,
-                                  "<"          => "<");
+     Ada.Containers.Ordered_Sets (Element_Type => Subp_Type, "<" => "<");
 
    type Unit_Rec is record
       Analysis    : Analysis_Progress;
@@ -88,8 +88,7 @@ package body Report_Database is
         "="             => "=");
 
    package Ordered_Unit_Sets is new
-     Ada.Containers.Ordered_Sets (Element_Type => Unit_Type,
-                                  "<"          => "<");
+     Ada.Containers.Ordered_Sets (Element_Type => Unit_Type, "<" => "<");
 
    Unit_Map : Unit_Maps.Map := Unit_Maps.Empty_Map;
 
@@ -97,7 +96,8 @@ package body Report_Database is
    --  This map maps subprograms to their unit. It is filled by the
    --  Add_SPARK_Status procedure.
 
-   Skipped_Proof : Ordered_Subp_Sets.Set := Ordered_Subp_Sets.Empty_Set;
+   Skipped_Proof          : Ordered_Subp_Sets.Set :=
+     Ordered_Subp_Sets.Empty_Set;
    Skipped_Flow_And_Proof : Ordered_Subp_Sets.Set :=
      Ordered_Subp_Sets.Empty_Set;
 
@@ -117,15 +117,17 @@ package body Report_Database is
       Progress    : Analysis_Progress;
       Stop_Reason : Stop_Reason_Type)
    is
-      C : Unit_Maps.Cursor;
+      C        : Unit_Maps.Cursor;
       Inserted : Boolean;
    begin
-      Unit_Map.Insert (Unit,
-                       Unit_Rec'(Analysis    => Progress,
-                                 Stop_Reason => Stop_Reason,
-                                 Subps       => Subp_Maps.Empty_Map),
-                       C,
-                       Inserted);
+      Unit_Map.Insert
+        (Unit,
+         Unit_Rec'
+           (Analysis    => Progress,
+            Stop_Reason => Stop_Reason,
+            Subps       => Subp_Maps.Empty_Map),
+         C,
+         Inserted);
       if not Inserted then
          Unit_Map (C).Analysis := Progress;
          Unit_Map (C).Stop_Reason := Stop_Reason;
@@ -152,12 +154,10 @@ package body Report_Database is
 
       Subp : constant Subp_Type := Claim.Arg;
 
-   --  Start of processing for Add_Claim_With_Assumptions
+      --  Start of processing for Add_Claim_With_Assumptions
 
    begin
-      Update_Subp_Entry (Subp_Unit_Map (Subp),
-                         Subp,
-                         Add_Claim_Entry'Access);
+      Update_Subp_Entry (Subp_Unit_Map (Subp), Subp, Add_Claim_Entry'Access);
    end Add_Claim_With_Assumptions;
 
    ---------------------
@@ -165,9 +165,7 @@ package body Report_Database is
    ---------------------
 
    procedure Add_Flow_Result
-     (Unit     : Unit_Type;
-      Subp     : Subp_Type;
-      Msg_Kind : Flow_Message_Kind)
+     (Unit : Unit_Type; Subp : Subp_Type; Msg_Kind : Flow_Message_Kind)
    is
       procedure Process (Stat : in out Stat_Rec);
       --  Do the actual work
@@ -181,14 +179,16 @@ package body Report_Database is
          case Msg_Kind is
             when FMK_Error =>
                Stat.Flow_Errors := Stat.Flow_Errors + 1;
+
             when FMK_Check =>
                Stat.Flow_Checks := Stat.Flow_Checks + 1;
+
             when FMK_Warning =>
                Stat.Flow_Warnings := Stat.Flow_Warnings + 1;
          end case;
       end Process;
 
-   --  Start of processing for Add_Flow_Result
+      --  Start of processing for Add_Flow_Result
 
    begin
       Update_Subp_Entry (Unit, Subp, Process'Access);
@@ -211,13 +211,14 @@ package body Report_Database is
       procedure Process (Stat : in out Stat_Rec) is
       begin
          Stat.Pragma_Assumes.Append
-           (Pragma_Assume'(File   => To_Unbounded_String (File),
-                           Line   => Line,
-                           Column => Column,
-                           Subp   => Subp));
+           (Pragma_Assume'
+              (File   => To_Unbounded_String (File),
+               Line   => Line,
+               Column => Column,
+               Subp   => Subp));
       end Process;
 
-   --  Start of processing for Add_Pragma_Assume_Result
+      --  Start of processing for Add_Pragma_Assume_Result
 
    begin
       Update_Subp_Entry (Unit, Subp, Process'Access);
@@ -228,9 +229,7 @@ package body Report_Database is
    ----------------------
 
    procedure Add_Proof_Result
-     (Unit   : Unit_Type;
-      Subp   : Subp_Type;
-      Proved : Boolean)
+     (Unit : Unit_Type; Subp : Subp_Type; Proved : Boolean)
    is
       procedure Process (Stat : in out Stat_Rec);
       --  Do the actual work
@@ -247,7 +246,7 @@ package body Report_Database is
          end if;
       end Process;
 
-   --  Start of processing for Add_Proof_Result
+      --  Start of processing for Add_Proof_Result
 
    begin
       Update_Subp_Entry (Unit, Subp, Process'Access);
@@ -268,9 +267,8 @@ package body Report_Database is
    ----------------------
 
    procedure Add_SPARK_Status
-     (Unit         : Unit_Type;
-      Subp         : Subp_Type;
-      SPARK_Status : SPARK_Mode_Status) is
+     (Unit : Unit_Type; Subp : Subp_Type; SPARK_Status : SPARK_Mode_Status)
+   is
 
       procedure Process (Stat : in out Stat_Rec);
       --  Do the actual work
@@ -284,7 +282,7 @@ package body Report_Database is
          Stat.SPARK := SPARK_Status;
       end Process;
 
-   --  Start of processing for Add_SPARK_Status
+      --  Start of processing for Add_SPARK_Status
 
    begin
       --  ??? We need to use include instead of insert because GNATprove
@@ -318,15 +316,16 @@ package body Report_Database is
       procedure Process (Stat : in out Stat_Rec) is
       begin
          Stat.Suppr_Checks.Append
-           (Suppressed_Check'(Justif_Msg => To_Unbounded_String (Justif_Msg),
-                              Kind       => To_Unbounded_String (Kind),
-                              Reason     => To_Unbounded_String (Reason),
-                              File       => To_Unbounded_String (File),
-                              Line       => Line,
-                              Column     => Column));
+           (Suppressed_Check'
+              (Justif_Msg => To_Unbounded_String (Justif_Msg),
+               Kind       => To_Unbounded_String (Kind),
+               Reason     => To_Unbounded_String (Reason),
+               File       => To_Unbounded_String (File),
+               Line       => Line,
+               Column     => Column));
       end Process;
 
-   --  Start of processing for Add_Suppressed_Check
+      --  Start of processing for Add_Suppressed_Check
 
    begin
       Update_Subp_Entry (Unit, Subp, Process'Access);
@@ -355,17 +354,16 @@ package body Report_Database is
    --------------------
 
    procedure Iter_All_Subps
-     (Process : not null access
-                   procedure (U : Unit_Type;
-                              Subp : Subp_Type;
-                              Stat : Stat_Rec))
-   is
+     (Process :
+        not null access procedure
+          (U : Unit_Type; Subp : Subp_Type; Stat : Stat_Rec)) is
    begin
       for Unit_C in Unit_Map.Iterate loop
          for Subp_C in Unit_Map (Unit_C).Subps.Iterate loop
-            Process (Unit_Maps.Key (Unit_C),
-                     Subp_Maps.Key (Subp_C),
-                     Unit_Map (Unit_C).Subps (Subp_C));
+            Process
+              (Unit_Maps.Key (Unit_C),
+               Subp_Maps.Key (Subp_C),
+               Unit_Map (Unit_C).Subps (Subp_C));
          end loop;
       end loop;
    end Iter_All_Subps;
@@ -411,9 +409,9 @@ package body Report_Database is
 
    procedure Iter_Unit_Subps
      (Unit    : Unit_Type;
-      Process : not null access procedure (Subp : Subp_Type;
-                                           Stat : Stat_Rec;
-                                           Progress : Analysis_Progress);
+      Process :
+        not null access procedure
+          (Subp : Subp_Type; Stat : Stat_Rec; Progress : Analysis_Progress);
       Ordered : Boolean := False)
    is
       C : constant Unit_Maps.Cursor := Unit_Map.Find (Unit);
@@ -434,9 +432,8 @@ package body Report_Database is
                end loop;
 
                for Subp of Names loop
-                  Process (Subp,
-                           Unit_Map (C).Subps (Subp),
-                           Unit_Map (C).Analysis);
+                  Process
+                    (Subp, Unit_Map (C).Subps (Subp), Unit_Map (C).Analysis);
                end loop;
             end;
 
@@ -444,9 +441,10 @@ package body Report_Database is
 
          else
             for Subp_C in Unit_Map (C).Subps.Iterate loop
-               Process (Subp_Maps.Key (Subp_C),
-                        Unit_Map (C).Subps (Subp_C),
-                        Unit_Map (C).Analysis);
+               Process
+                 (Subp_Maps.Key (Subp_C),
+                  Unit_Map (C).Subps (Subp_C),
+                  Unit_Map (C).Analysis);
             end loop;
          end if;
       end if;
@@ -456,27 +454,27 @@ package body Report_Database is
    -- Merge_Stat_Maps --
    ---------------------
 
-   procedure Merge_Stat_Maps (A : in out Prover_Stat_Maps.Map;
-                              B : Prover_Stat_Maps.Map) is
+   procedure Merge_Stat_Maps
+     (A : in out Prover_Stat_Maps.Map; B : Prover_Stat_Maps.Map)
+   is
 
-      procedure Merge_Stat (A : in out Prover_Stat;
-                            B : Prover_Stat);
+      procedure Merge_Stat (A : in out Prover_Stat; B : Prover_Stat);
 
       ----------------
       -- Merge_Stat --
       ----------------
 
-      procedure Merge_Stat (A : in out Prover_Stat;
-                            B : Prover_Stat) is
+      procedure Merge_Stat (A : in out Prover_Stat; B : Prover_Stat) is
       begin
-         A := (Count     => A.Count + B.Count,
-               Max_Steps => Integer'Max (A.Max_Steps, B.Max_Steps),
-               Max_Time  => Float'Max (A.Max_Time, B.Max_Time));
+         A :=
+           (Count     => A.Count + B.Count,
+            Max_Steps => Integer'Max (A.Max_Steps, B.Max_Steps),
+            Max_Time  => Float'Max (A.Max_Time, B.Max_Time));
       end Merge_Stat;
 
       use Prover_Stat_Maps;
 
-   --  Start of processing for Merge_Stat_Maps
+      --  Start of processing for Merge_Stat_Maps
 
    begin
       for C in B.Iterate loop
@@ -484,10 +482,11 @@ package body Report_Database is
             Position : Cursor;
             Inserted : Boolean;
          begin
-            A.Insert (Key      => Key (C),
-                      New_Item => B (C),
-                      Position => Position,
-                      Inserted => Inserted);
+            A.Insert
+              (Key      => Key (C),
+               New_Item => B (C),
+               Position => Position,
+               Inserted => Inserted);
             if not Inserted then
                Merge_Stat (A (Position), B (C));
             end if;
@@ -499,28 +498,26 @@ package body Report_Database is
    -- Num_Subps --
    ---------------
 
-   function Num_Subps (Unit : Unit_Type) return Natural is
-     (Natural (Unit_Map (Unit).Subps.Length));
+   function Num_Subps (Unit : Unit_Type) return Natural
+   is (Natural (Unit_Map (Unit).Subps.Length));
 
    ---------------------
    -- Num_Subps_SPARK --
    ---------------------
 
-   function Num_Subps_SPARK (Unit : Unit_Type) return Natural
-   is
+   function Num_Subps_SPARK (Unit : Unit_Type) return Natural is
       Count : Natural := 0;
 
-      procedure Update (Subp : Subp_Type;
-                        Stat : Stat_Rec;
-                        Progress : Analysis_Progress);
+      procedure Update
+        (Subp : Subp_Type; Stat : Stat_Rec; Progress : Analysis_Progress);
 
       ------------
       -- Update --
       ------------
 
-      procedure Update (Subp : Subp_Type;
-                        Stat : Stat_Rec;
-                        Progress : Analysis_Progress) is
+      procedure Update
+        (Subp : Subp_Type; Stat : Stat_Rec; Progress : Analysis_Progress)
+      is
          pragma Unreferenced (Subp);
          pragma Unreferenced (Progress);
       begin
@@ -529,7 +526,7 @@ package body Report_Database is
          end if;
       end Update;
 
-   --  Start of processing for Num_Subps_SPARK
+      --  Start of processing for Num_Subps_SPARK
 
    begin
       Iter_Unit_Subps (Unit, Update'Access);
@@ -540,8 +537,8 @@ package body Report_Database is
    -- Num_Units --
    ---------------
 
-   function Num_Units return Natural is
-     (Natural (Unit_Map.Length));
+   function Num_Units return Natural
+   is (Natural (Unit_Map.Length));
 
    -----------------------
    -- Reset_All_Results --
@@ -574,9 +571,7 @@ package body Report_Database is
    -- Update_Most_Difficult_Proved_Checks --
    -----------------------------------------
 
-   procedure Update_Most_Difficult_Proved_Checks
-     (Check : Proved_Check)
-   is
+   procedure Update_Most_Difficult_Proved_Checks (Check : Proved_Check) is
       use type Ada.Containers.Count_Type;
    begin
       Most_Difficult_Proved_Checks.Include (Check);
@@ -601,8 +596,7 @@ package body Report_Database is
       -- Update_Unit_Entry --
       -----------------------
 
-      procedure Update_Unit_Entry (U : Unit_Type; R : in out Unit_Rec)
-      is
+      procedure Update_Unit_Entry (U : Unit_Type; R : in out Unit_Rec) is
          pragma Unreferenced (U);
          use Subp_Maps;
 
@@ -617,15 +611,17 @@ package body Report_Database is
       C        : Cursor;
       Inserted : Boolean;
 
-   --  Start of processing for Update_Subp_Entry
+      --  Start of processing for Update_Subp_Entry
 
    begin
-      Unit_Map.Insert (Unit,
-                       Unit_Rec'(Analysis    => Progress_None,
-                                 Stop_Reason => Stop_Reason_None,
-                                 Subps       => Subp_Maps.Empty_Map),
-                       C,
-                       Inserted);
+      Unit_Map.Insert
+        (Unit,
+         Unit_Rec'
+           (Analysis    => Progress_None,
+            Stop_Reason => Stop_Reason_None,
+            Subps       => Subp_Maps.Empty_Map),
+         C,
+         Inserted);
       Unit_Map.Update_Element (C, Update_Unit_Entry'Access);
    end Update_Subp_Entry;
 
