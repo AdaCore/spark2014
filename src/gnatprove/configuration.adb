@@ -35,6 +35,7 @@ with Gnat2Why_Opts.Writing;
 with GNAT.Command_Line; use GNAT.Command_Line;
 with GNAT.Directory_Operations;
 with GNAT.OS_Lib;
+with GNAT.Regpat;       use GNAT.Regpat;
 with GNAT.Strings;      use GNAT.Strings;
 with GPR2.Build.Compilation_Unit;
 with GPR2.Build.Source;
@@ -1959,6 +1960,10 @@ package body Configuration is
          --  Same, but do nothing if Limit_String is the null pointer or empty
          --  string.
 
+         procedure Process_Limit_Line (Spec : String);
+         --  Sanity check the argument to --limit-line or an entry in
+         --  --limit-lines. Also, add the argument to the Limit_Lines list.
+
          ------------------
          -- Check_Switch --
          ------------------
@@ -2007,6 +2012,36 @@ package body Configuration is
             end if;
          end Process_Limit_Directive;
 
+         ------------------------
+         -- Process_Limit_Line --
+         ------------------------
+
+         procedure Process_Limit_Line (Spec : String) is
+            Regex : constant String := "^[^:]+:[0-9]+(?::[0-9]+:([^:]+))?$";
+            MA    : Match_Array (0 .. 1);
+            Kind  : VC_Kind;
+            pragma Unreferenced (Kind);
+         begin
+            Match (Regex, Spec, MA);
+            if MA (0) = No_Match then
+               Abort_Msg
+                 ("incorrect line specification: """ & Spec & """",
+                  With_Help => False);
+            end if;
+            if MA (1) /= No_Match then
+               begin
+                  Kind := VC_Kind'Value (Spec (MA (1).First .. MA (1).Last));
+               exception
+                  when Constraint_Error =>
+                     Abort_Msg
+                       ("incorrect check name in line specification: "
+                        & Spec (MA (1).First .. MA (1).Last),
+                        With_Help => False);
+               end;
+            end if;
+            Limit_Lines.Append (Spec);
+         end Process_Limit_Line;
+
          --  Start of processing for Process_Limit_Switches
 
       begin
@@ -2040,7 +2075,7 @@ package body Configuration is
          Process_Limit_Directive ("limit-region", CL_Switches.Limit_Region);
          Process_Limit_Directive ("limit-line", CL_Switches.Limit_Line);
          if not Null_Or_Empty_String (CL_Switches.Limit_Line) then
-            Limit_Lines.Append (CL_Switches.Limit_Line.all);
+            Process_Limit_Line (CL_Switches.Limit_Line.all);
          end if;
          if not Null_Or_Empty_String (CL_Switches.Limit_Lines) then
             declare
@@ -2062,7 +2097,7 @@ package body Configuration is
                         Process_Limit_Directive
                           ("limit-lines: line" & Integer'Image (Line_Count),
                            Line);
-                        Limit_Lines.Append (Line);
+                        Process_Limit_Line (Line);
                      end if;
                      Line_Count := Line_Count + 1;
                   end;

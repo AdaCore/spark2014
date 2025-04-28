@@ -10,3 +10,14 @@ gen_pack.adb:5:16: high: range check might fail, cannot prove lower bound for X 
 gen_pack.adb:5:16: high: range check might fail, cannot prove upper bound for X + Y, in instantiation at main.adb:10 (e.g. when X = Other_Int'Last and Y = 1) [reason for check: returned value must fit in the result type of the function] [possible fix: add precondition (X <= Other_Int'Last - Y) to subprogram at gen_pack.ads:5]
 gen_pack.ads:5:13: info: implicit aspect Always_Terminates on "Add" has been proved, subprogram will terminate, in instantiation at main.adb:10
 gen_pack.ads:5:13: info: implicit aspect Always_Terminates on "Add" has been proved, subprogram will terminate, in instantiation at main.adb:9
+=================
+Try "gnatprove --help" for more information.
+incorrect line specification: "main.adb:9:gen_pack.adb:5"
+=================
+Try "gnatprove --help" for more information.
+incorrect line specification: "main.adb:10:gen_pack.adb:5:16:VC_OVERFLOW_CHECK"
+=================
+Try "gnatprove --help" for more information.
+incorrect line specification: "main.adb:xxx"
+Try "gnatprove --help" for more information.
+incorrect check name in line specification: xxx
