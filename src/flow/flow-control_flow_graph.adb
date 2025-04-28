@@ -3342,6 +3342,12 @@ package body Flow.Control_Flow_Graph is
          --  CFG for checking whether a variable is defined on all paths in
          --  the current loop.
 
+         procedure Emit_Warning (W : Misc_Warning_Kind;
+                                 F : Flow_Id;
+                                 N : Node_Id)
+         with Pre => W in Warn_Init_Array | Warn_Init_Multidim_Array;
+         --  Emit warning W on node N
+
          function Get_Array_Index (N : Node_Id) return Target
          with Pre  => Present (N),
               Post => (if Get_Array_Index'Result.Valid
@@ -3378,6 +3384,27 @@ package body Flow.Control_Flow_Graph is
 
          procedure Rec is new Traverse_More_Proc (Proc_Search);
          --  Wrapper around the traversal, so that Proc_Search can call itself
+
+         ------------------
+         -- Emit_Warning --
+         ------------------
+
+         procedure Emit_Warning (W : Misc_Warning_Kind;
+                                 F : Flow_Id;
+                                 N : Node_Id)
+         is
+            Obj : constant Entity_Id :=
+              Get_Direct_Mapping_Id (Entire_Variable (F));
+         begin
+            if not Is_Default_Initialized (F)
+              and then not
+                (Present (Obj) and then Ekind (Obj) = E_In_Out_Parameter)
+              and then not Has_Relaxed_Initialization
+                (Get_Direct_Mapping_Id (F))
+            then
+               Warning_Msg_N (W, N);
+            end if;
+         end Emit_Warning;
 
          ---------------------
          -- Get_Array_Index --
@@ -3417,8 +3444,27 @@ package body Flow.Control_Flow_Graph is
 
             case Nkind (Prefix (N)) is
                when N_Identifier | N_Expanded_Name =>
-                  F := Direct_Mapping_Id (Entity (Prefix (N)));
-                  T := Get_Type (Entity (Prefix (N)), FA.B_Scope);
+
+                  declare
+                     E : constant Entity_Id := Entity (Prefix (N));
+                  begin
+                     if Is_Protected_Component (E) then
+                        F :=
+                          Add_Component
+                            (Direct_Mapping_Id (Sinfo.Nodes.Scope (E)),
+                             E);
+                     elsif Is_Part_Of_Concurrent_Object (E) then
+                        F :=
+                          Add_Component
+                            (Direct_Mapping_Id
+                               (Etype (Encapsulating_State (E))),
+                             E);
+                     else
+                        F := Direct_Mapping_Id (E);
+                     end if;
+
+                     T := Get_Type (E, FA.B_Scope);
+                  end;
 
                when N_Selected_Component =>
                   F := Record_Field_Id (Prefix (N));
@@ -3526,6 +3572,12 @@ package body Flow.Control_Flow_Graph is
                         --  index type.
 
                         else
+                           Emit_Warning ((if Multi_Dim
+                                          then Warn_Init_Multidim_Array
+                                          else Warn_Init_Array),
+                                         F,
+                                         N);
+
                            return Null_Target;
                         end if;
 
@@ -3538,6 +3590,8 @@ package body Flow.Control_Flow_Graph is
                         --  for I in Idx loop
                         --     A (I + 1) := 0;
                         --  end loop;
+
+                        Emit_Warning (Warn_Init_Array, F, N);
                         return Null_Target;
                   end case;
 
@@ -3585,6 +3639,9 @@ package body Flow.Control_Flow_Graph is
                Touched.Insert (V);
 
                if A.Variables_Explicitly_Used.Contains (T.Var) then
+
+                  Emit_Warning (Warn_Init_Array, T.Var, Loop_N);
+
                   Fully_Defined := False;
                   Tv            := Flow_Graphs.Abort_Traversal;
 
@@ -3650,8 +3707,12 @@ package body Flow.Control_Flow_Graph is
                if Touched.Contains (V) then
                   Tv := Flow_Graphs.Skip_Children;
                elsif FA.Atr (V).Variables_Explicitly_Used.Contains (T.Var) then
+
+                  Emit_Warning (Warn_Init_Array, T.Var, Loop_N);
+
                   Fully_Defined := False;
                   Tv            := Flow_Graphs.Abort_Traversal;
+
                else
                   Tv := Flow_Graphs.Continue;
                end if;

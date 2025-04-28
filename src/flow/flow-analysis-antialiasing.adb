@@ -725,6 +725,8 @@ package body Flow.Analysis.Antialiasing is
                               null;
 
                            when LE | GE | Unknown =>
+                              Warning_Msg_N
+                                (Warn_Alias_Array, A);
                               Definitive_Result := False;
                         end case;
 

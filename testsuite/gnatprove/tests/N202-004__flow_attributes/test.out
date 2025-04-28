@@ -54,6 +54,7 @@ foo.adb:136:14: medium: range check might fail, cannot prove upper bound for Dat
 foo.adb:137:29: info: range check proved (CVC5: 2 VC)
 foo.adb:140:11: info: range check proved (CVC5: 2 VC)
 foo.adb:140:47: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+foo.adb:141:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 foo.adb:141:26: medium: overflow check might fail, cannot prove upper bound for Data'First + I [reason for check: result of addition must fit in a 32-bits machine integer]
 foo.adb:141:30: info: index check proved (CVC5: 2 VC)
 foo.adb:141:30: info: overflow check proved (CVC5: 2 VC)

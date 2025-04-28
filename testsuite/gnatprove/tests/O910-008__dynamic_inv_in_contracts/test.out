@@ -19,6 +19,7 @@ use_stack.adb:43:21: info: overflow check proved (CVC5: 2 VC)
 use_stack.adb:43:21: info: range check proved (CVC5: 2 VC)
 use_stack.adb:44:19: info: index check proved (CVC5: 2 VC)
 use_stack.adb:48:17: info: range check proved (CVC5: 2 VC)
+use_stack.adb:49:33: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 use_stack.adb:51:36: info: loop invariant initialization proved (CVC5: 1 VC)
 use_stack.adb:51:36: info: loop invariant preservation proved (CVC5: 1 VC)
 use_stack.adb:51:68: info: index check proved (CVC5: 4 VC)

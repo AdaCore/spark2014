@@ -41,6 +41,8 @@ procedure Table_Generator is
      Compose (Target_Dir, "unsupported_constructs.rst");
    Other_Tool_Limitations_Target  : constant String :=
      Compose (Target_Dir, "other_tool_limitations.rst");
+   Flow_Limitations_Target        : constant String :=
+     Compose (Target_Dir, "flow_limitations.rst");
    Proof_Limitations_Target       : constant String :=
      Compose (Target_Dir, "proof_limitations.rst");
 
@@ -57,6 +59,7 @@ procedure Table_Generator is
    procedure Produce_Flow_Checks_Table;
    procedure Produce_Tool_Limitation_List;
    procedure Produce_Other_Tool_Limitation_List;
+   procedure Produce_Flow_Limitation_List;
    procedure Produce_Proof_Limitation_List;
    procedure Produce_Proof_Checks_Table;
    procedure Produce_Misc_Warnings_Table;
@@ -116,6 +119,31 @@ procedure Table_Generator is
                   "classified as errors and consequently cannot be " &
                   "suppressed or justified.");
    end Produce_Flow_Checks_Table;
+
+   ----------------------------------
+   -- Produce_Flow_Limitation_List --
+   ----------------------------------
+
+   procedure Produce_Flow_Limitation_List is
+      File : File_Type;
+   begin
+      Create (File, Name => Flow_Limitations_Target);
+      Put_Line (File, "The following constructs are imprecisely supported in" &
+                  " flow analysis. They can be used safely but might lead to" &
+                  " unprovable checks. Warnings can be emitted by GNATprove" &
+                  " if the ``--info`` switch is used:");
+      New_Line (File);
+      for Kind in Flow_Limitation_Kind loop
+         Put (File, "* ");
+         Put (File, Description (Kind));
+         if Kind = Flow_Limitation_Kind'Last then
+            Put_Line (File, ".");
+         else
+            Put_Line (File, ",");
+         end if;
+         New_Line (File);
+      end loop;
+   end Produce_Flow_Limitation_List;
 
    ---------------------------------
    -- Produce_Misc_Warnings_Table --
@@ -375,5 +403,6 @@ begin
    Produce_Misc_Warnings_Table;
    Produce_Tool_Limitation_List;
    Produce_Other_Tool_Limitation_List;
+   Produce_Flow_Limitation_List;
    Produce_Proof_Limitation_List;
 end Table_Generator;

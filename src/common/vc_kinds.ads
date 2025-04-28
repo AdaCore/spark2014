@@ -426,6 +426,14 @@ package VC_Kinds is
       Warn_Comp_Relaxed_Init,
       Warn_Full_View_Visible,
 
+      --  Flow limitations not impacting soundness
+
+      Warn_Alias_Array,
+      Warn_Imprecise_GG,
+      Warn_Init_Array,
+      Warn_Init_Multidim_Array,
+      Warn_Tagged_Untangling,
+
       --  Proof limitations not impacting soundness
 
       Warn_Contracts_Recursive,
@@ -588,6 +596,10 @@ package VC_Kinds is
      Warn_Comp_Relaxed_Init .. Warn_Full_View_Visible;
    --  Warnings for tool limitations
 
+   subtype Flow_Limitation_Kind is Info_Warning_Kind range
+     Warn_Alias_Array .. Warn_Tagged_Untangling;
+   --  Warnings for flow limitations
+
    subtype Proof_Limitation_Kind is Info_Warning_Kind range
      Warn_Contracts_Recursive .. Warn_Set_Length_Aggregates;
    --  Warnings for proof limitations
@@ -714,6 +726,19 @@ package VC_Kinds is
         & "all its components are annotated that way",
         when Warn_Full_View_Visible =>
           "full view of & declared # is visible when analyzing &",
+
+        --  Flow limitations
+        when Warn_Alias_Array =>
+          "aliasing check on components of an array is handled imprecisely",
+        when Warn_Imprecise_GG =>
+          "global generation of & might be imprecise",
+        when Warn_Init_Array =>
+          "initialization of an array in FOR loop is handled imprecisely",
+        when Warn_Init_Multidim_Array =>
+          "initialization of a multi-dimensional array in nested FOR loops is "
+        & "handled imprecisely",
+        when Warn_Tagged_Untangling =>
+          "flow of dependencies on & is handled imprecisely",
 
         --  Proof limitations
         when Warn_Contracts_Recursive =>

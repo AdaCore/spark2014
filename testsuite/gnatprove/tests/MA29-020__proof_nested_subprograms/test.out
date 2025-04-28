@@ -23,6 +23,7 @@ skein.adb:84:17: info: add a contract to analyze it separately from calling cont
 skein.adb:84:17: info: local subprogram "Zero_Pad_B" only analyzed in the context of calls [info-unrolling-inlining]
 skein.adb:87:14: info: range check proved (CVC5: 2 VC), in call inlined at skein.adb:111
 skein.adb:87:112: warning: statement has no effect, in call inlined at skein.adb:111
+skein.adb:88:22: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 skein.adb:88:29: warning: unused assignment, in call inlined at skein.adb:111
 skein.adb:92:17: info: add a contract to analyze it separately from calling contexts
 skein.adb:92:17: info: local subprogram "Set_B_Counter" only analyzed in the context of calls [info-unrolling-inlining]
@@ -57,6 +58,8 @@ skein.adb:127:10: info: analyzing call to "Skein_Start_New_Type" in context
 skein.adb:139:10: info: analyzing call to "Put_64_LSB_First" in context
 skein.adb:139:10: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 skein.adb:139:10: info: in inlined body at line 34
+skein.adb:139:10: warning: in inlined body at line 35
+skein.adb:139:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 skein.adb:146:37: medium: range check might fail, cannot prove upper bound for Blocks_Done + 1 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 124 should mention Blocks_Done in a loop invariant]
 skein.ads:132:31: info: initialization of "Hash" proved
 =========================

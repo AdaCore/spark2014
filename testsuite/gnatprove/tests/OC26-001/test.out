@@ -55,6 +55,7 @@ cubedos-lib-xdr.adb:126:47: info: range check proved (CVC5: 2 VC)
 cubedos-lib-xdr.adb:128:23: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 cubedos-lib-xdr.adb:128:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 cubedos-lib-xdr.adb:129:28: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+cubedos-lib-xdr.adb:130:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 cubedos-lib-xdr.adb:130:28: info: index check proved (CVC5: 2 VC)
 cubedos-lib-xdr.adb:130:28: info: overflow check proved (CVC5: 2 VC)
 cubedos-lib-xdr.adb:132:07: info: precondition proved (CVC5: 6 VC)
@@ -83,6 +84,7 @@ cubedos-lib-xdr.adb:245:13: info: length check proved (CVC5: 3 VC; Trivial: 1 VC
 cubedos-lib-xdr.adb:246:38: info: overflow check proved (CVC5: 2 VC)
 cubedos-lib-xdr.adb:246:45: info: range check proved (CVC5: 2 VC)
 cubedos-lib-xdr.adb:246:58: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+cubedos-lib-xdr.adb:247:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 cubedos-lib-xdr.adb:247:28: info: index check proved (CVC5: 2 VC)
 cubedos-lib-xdr.adb:247:28: info: overflow check proved (CVC5: 2 VC)
 cubedos-lib-xdr.adb:247:33: info: overflow check proved (CVC5: 2 VC)
