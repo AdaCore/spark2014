@@ -93,7 +93,7 @@ norm-reals-errors.adb:150:22: info: range check proved (CVC5: 1 VC)
 norm-reals-errors.adb:154:10: info: precondition proved (CVC5: 4 VC; altergo: 1 VC)
 norm-reals-errors.adb:155:22: info: range check proved (CVC5: 1 VC)
 norm-reals-errors.adb:159:10: info: precondition proved (CVC5: 3 VC)
-norm-reals-errors.adb:160:22: info: range check proved (colibri: 1 VC)
+norm-reals-errors.adb:160:22: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
 norm-reals-errors.adb:161:22: info: range check proved (CVC5: 1 VC)
 norm-reals-errors.adb:184:22: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:184:35: info: predicate check proved (Trivial: 1 VC)

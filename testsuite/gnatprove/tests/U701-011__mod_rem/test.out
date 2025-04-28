@@ -34,7 +34,7 @@ mod_rem.adb:26:32: info: division check proved (CVC5: 1 VC)
 mod_rem.adb:27:19: info: assertion proved (CVC5: 1 VC)
 mod_rem.adb:27:42: info: division check proved (CVC5: 1 VC)
 mod_rem.adb:27:57: info: predicate check proved (Trivial: 1 VC)
-mod_rem.adb:29:19: medium: assertion might fail [possible fix: precondition of subprogram at line 3 should mention A]
+mod_rem.adb:29:19: info: assertion proved (colibri: 1 VC)
 mod_rem.adb:30:21: info: predicate check proved (Trivial: 1 VC)
 mod_rem.adb:30:28: info: predicate check proved (Trivial: 1 VC)
 mod_rem.adb:31:39: info: division check proved (CVC5: 1 VC)
