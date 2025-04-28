@@ -37,11 +37,14 @@ package Filecache_Client is
    function Init (Dir : String) return Filecache;
    --  Create the file cache in directory Dir.
 
-   overriding procedure Set (Conn : Filecache; Key : String; Value : String);
+   overriding
+   procedure Set (Conn : Filecache; Key : String; Value : String);
 
-   overriding function Get (Conn : Filecache; Key : String) return String;
+   overriding
+   function Get (Conn : Filecache; Key : String) return String;
 
-   overriding procedure Close (Conn : in out Filecache);
+   overriding
+   procedure Close (Conn : in out Filecache);
 
 private
 

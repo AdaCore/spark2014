@@ -35,13 +35,10 @@ package body Memcache_Client is
    --  https://github.com/memcached/memcached/blob/master/doc/protocol.txt
 
    CRLF : constant String :=
-     Ada.Characters.Latin_1.CR &
-     Ada.Characters.Latin_1.LF;
+     Ada.Characters.Latin_1.CR & Ada.Characters.Latin_1.LF;
 
    function Read_Stop_When_End_Marker
-     (Conn       : Cache_Connection;
-      End_Marker : String)
-      return String;
+     (Conn : Cache_Connection; End_Marker : String) return String;
    --  @param Conn the connection from which to read
    --  @param End_Marker when the read text ends with this marker, stop
    --    reading. Reading will *not* stop if the end marker appears somewhere
@@ -52,27 +49,23 @@ package body Memcache_Client is
    -- Init --
    ----------
 
-   function Init
-     (Hostname : String;
-      Port     : Port_Type) return Cache_Connection
+   function Init (Hostname : String; Port : Port_Type) return Cache_Connection
    is
-      Host : constant Host_Entry_Type := Get_Host_By_Name (Hostname);
+      Host   : constant Host_Entry_Type := Get_Host_By_Name (Hostname);
       Result : Cache_Connection;
       Status : Boolean;
    begin
       Create_Socket (Result.Sock);
 
       --  Make socket available only to wrapper, not to the wrapped executable
-      Set_Close_On_Exec (Socket        => Result.Sock,
-                         Close_On_Exec => True,
-                         Status        => Status);
+      Set_Close_On_Exec
+        (Socket => Result.Sock, Close_On_Exec => True, Status => Status);
 
       pragma Assert (Status);
 
-      Connect_Socket (Result.Sock,
-                      (Family => Family_Inet,
-                       Addr   => Addresses (Host),
-                       Port   => Port));
+      Connect_Socket
+        (Result.Sock,
+         (Family => Family_Inet, Addr => Addresses (Host), Port => Port));
       Result.Stream := Stream (Result.Sock);
       return Result;
    end Init;
@@ -82,13 +75,11 @@ package body Memcache_Client is
    -------------------------------
 
    function Read_Stop_When_End_Marker
-     (Conn : Cache_Connection;
-      End_Marker : String)
-      return String
+     (Conn : Cache_Connection; End_Marker : String) return String
    is
-      Buf : Ada.Streams.Stream_Element_Array (1 .. 1024);
+      Buf    : Ada.Streams.Stream_Element_Array (1 .. 1024);
       Result : Unbounded_String := Null_Unbounded_String;
-      Last : Ada.Streams.Stream_Element_Offset;
+      Last   : Ada.Streams.Stream_Element_Offset;
    begin
       loop
          Receive_Socket (Conn.Sock, Buf, Last);
@@ -109,17 +100,13 @@ package body Memcache_Client is
    -- Set --
    ---------
 
-   procedure Set
-     (Conn  : Cache_Connection;
-      Key   : String;
-      Value : String)
-   is
+   procedure Set (Conn : Cache_Connection; Key : String; Value : String) is
       Len : constant Natural := Value'Length;
    begin
       --  Hardcoding unused flag and expiration values
 
-      String'Write (Conn.Stream, "set " & Key & " 0 0" &
-                      Natural'Image (Len) & CRLF);
+      String'Write
+        (Conn.Stream, "set " & Key & " 0 0" & Natural'Image (Len) & CRLF);
 
       --  The stored value might be arbitrarily large, so we need to send it
       --  separately, i.e. without concatenating with the "set ..." command
