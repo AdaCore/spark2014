@@ -4838,6 +4838,8 @@ package body SPARK_Definition is
             | Attribute_Truncation
             | Attribute_Update
             | Attribute_Val
+            | Attribute_Valid
+            | Attribute_Valid_Scalars
             | Attribute_Value
          =>
             null;
@@ -4984,19 +4986,6 @@ package body SPARK_Definition is
                   Create_N
                     (Warn_Representation_Attribute_Value,
                      Names => [To_String (Aname, Sloc (N))]));
-            end if;
-
-         when Attribute_Valid | Attribute_Valid_Scalars =>
-            if Emit_Warning_Info_Messages
-              and then SPARK_Pragma_Is (Opt.On)
-            then
-               Warning_Msg_N
-                 (Warn_Attribute_Valid,
-                  N,
-                  Create_N
-                    (Warn_Attribute_Valid,
-                     Names => [To_String (Aname, Sloc (N))]),
-                  First => True);
             end if;
 
          --  Attribute Initialized is used on prefixes with relaxed

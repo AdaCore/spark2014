@@ -18333,6 +18333,14 @@ package body Gnat2Why.Expr is
          --  they always evaluate to True.
 
          when Attribute_Valid | Attribute_Valid_Scalars =>
+            Warning_Msg_N
+              (Warn_Attribute_Valid,
+               Expr,
+               Create_N
+                 (Warn_Attribute_Valid,
+                  Names => [To_String (Aname, Sloc (Expr))]),
+               First => True);
+
             if Domain = EW_Prog then
                declare
                   Why_Expr : constant W_Expr_Id :=
