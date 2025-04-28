@@ -1,0 +1,1 @@
+acchessboard.ads:472:13: warning: attribute "Valid" is assumed to return True [attribute-valid-always-true]
