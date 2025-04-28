@@ -56,7 +56,7 @@
   <proof prover="0"><result status="unknown" steps="743"/></proof>
   <proof prover="1"><result status="unknown" steps="1346"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="4"><result status="unknown" steps="195"/></proof>
+  <proof prover="4"><result status="unknown" steps="781"/></proof>
   </goal>
   <goal name="def&#39;vc.11">
   </goal>
