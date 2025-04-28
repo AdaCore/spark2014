@@ -5773,7 +5773,7 @@ package body SPARK_Util is
 
    function Path_Contains_Witness
      (Expr : N_Subexpr_Id;
-      Test : access function (N : Node_Id) return Boolean)
+      Test : not null access function (N : Node_Id) return Boolean)
       return Boolean
    is
       function Path_Contains_Auxiliary (Subpath : N_Subexpr_Id) return Boolean;

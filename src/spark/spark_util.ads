@@ -1063,7 +1063,7 @@ package SPARK_Util is
 
    function Path_Contains_Witness
      (Expr : N_Subexpr_Id;
-      Test : access function (N : Node_Id) return Boolean)
+      Test : not null access function (N : Node_Id) return Boolean)
       return Boolean
      with Pre => Is_Path_Expression (Expr);
    --  Check whether the path contains a node satisfying predicate Test.
