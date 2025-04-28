@@ -59,8 +59,7 @@ package body Named_Semaphores is
    -- Create --
    ------------
 
-   procedure Create (Name : String; Init : Natural; S : out Semaphore)
-   is
+   procedure Create (Name : String; Init : Natural; S : out Semaphore) is
    begin
       S := Create_Semaphore_C (To_C (Name), unsigned (Init));
    end Create;

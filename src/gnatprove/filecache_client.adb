@@ -75,7 +75,7 @@ package body Filecache_Client is
       end if;
       Rename_File (Name.all, Fn, Unused);
 
-      << Cleanup >>
+      <<Cleanup>>
       Free (Name);
       Set_Directory (Prev_Dir);
    end Set;
