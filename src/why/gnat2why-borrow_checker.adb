@@ -4387,15 +4387,17 @@ package body Gnat2Why.Borrow_Checker is
                else
                   Merge_Env (Source => Environment_Copy.all,
                              Target => Saved_Accumulator.all);
-                  --  ??? Either free Environment_Copy, or change the type
-                  --  of loop accumulators to directly store permission
-                  --  environments.
                end if;
 
                Check_End_Of_Scopes
                  (From => Stmt, Stop => Loop_Statement_Of_Exit (Stmt));
 
-               Reset_Env (Current_Perm_Env);
+               --  For unconditional exits, reset permission environment as the
+               --  path is dead.
+
+               if not Present (Condition (Stmt)) then
+                  Reset_Env (Current_Perm_Env);
+               end if;
             end;
 
          --  On branches, analyze each branch independently on a fresh copy of
