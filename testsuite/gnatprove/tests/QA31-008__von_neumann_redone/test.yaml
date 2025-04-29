@@ -1,4 +1,3 @@
 large: True
 prove_all:
   steps: 7000
-  prover: ["z3", "cvc5"]
