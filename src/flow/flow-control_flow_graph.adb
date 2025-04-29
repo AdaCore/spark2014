@@ -782,10 +782,14 @@ package body Flow.Control_Flow_Graph is
       Ctx : in out Context)
    with Pre => Nkind (N) in N_Null_Statement
                           | N_Exception_Declaration
-                          | N_Exception_Renaming_Declaration;
+                          | N_Exception_Renaming_Declaration
+                 or else
+               (Nkind (N) = N_Block_Statement
+                  and then Nkind (Original_Node (N)) in N_Subprogram_Call);
    --  Deals with null statements. We create a new vertex that has control flow
    --  in from the top and leave from the bottom (nothing happens in between).
-   --  Exception declarations are treated like null statements.
+   --  Exception declarations are treated like null statements and subprogram
+   --  calls inlined into block statements too.
 
    procedure Do_Object_Declaration
      (N   : Node_Id;
@@ -6268,6 +6272,11 @@ package body Flow.Control_Flow_Graph is
       --  Record current position of the borrows stack
 
    begin
+      if Nkind (Original_Node (N)) in N_Subprogram_Call then
+         Do_Null_Statement (N, FA, CM, Ctx);
+         L.Append (Union_Id (N));
+      end if;
+
       if Present (Decls) then
          Process_Statement_List (Decls, FA, CM, Ctx);
          L.Append (Union_Id (Decls));
