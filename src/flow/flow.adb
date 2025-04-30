@@ -901,6 +901,13 @@ package body Flow is
                            Write_Str ("when ");
                            Sprint_Comma_List (Discrete_Choices (N));
 
+                        when N_Block_Statement =>
+                           pragma Assert
+                             (Nkind (Original_Node (N)) in N_Subprogram_Call);
+                           Rv.Shape := Shape_Box;
+                           Write_Str ("inlined call ");
+                           Print_Node (Original_Node (N));
+
                         when N_Defining_Identifier =>
                            case Ekind (N) is
                               when E_Return_Statement =>

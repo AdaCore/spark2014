@@ -4,7 +4,7 @@ test.adb:18:17: info: add a contract to analyze it separately from calling conte
 test.adb:18:17: info: local subprogram "HRB_Add" only analyzed in the context of calls [info-unrolling-inlining]
 test.adb:19:26: warning: "B" is not modified, could be IN
 test.adb:22:17: info: overflow check proved (CVC5: 2 VC), in call inlined at test.adb:29, in call inlined at test.adb:37, in call inlined at test.adb:45
-test.adb:22:17: medium: overflow check might fail, cannot prove lower bound for A + B, in call inlined at test.adb:36, in call inlined at test.adb:45 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 44 should mention Sum in a loop invariant]
+test.adb:22:17: medium: overflow check might fail, cannot prove lower bound for A + B, in call inlined at test.adb:36, in call inlined at test.adb:45 [reason for check: result of addition must fit in a 32-bits machine integer]
 test.adb:25:17: info: add a contract to analyze it separately from calling contexts
 test.adb:25:17: info: local subprogram "HRB_Increment" only analyzed in the context of calls [info-unrolling-inlining]
 test.adb:29:10: info: analyzing call to "HRB_Add" in context

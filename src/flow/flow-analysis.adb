@@ -5434,10 +5434,10 @@ package body Flow.Analysis is
                N : constant Node_Id := Get_Direct_Mapping_Id (F);
             begin
                --  Subprogram calls that were inlined by the frontend are
-               --  represented as null statements with the original call
-               --  statement kept in the Original_Node.
+               --  represented as either null or block statements with the
+               --  original call statement kept in the Original_Node.
 
-               return Nkind (N) = N_Null_Statement
+               return Nkind (N) in N_Block_Statement | N_Null_Statement
                  and then Nkind (Original_Node (N)) in N_Subprogram_Call;
             end;
          else
