@@ -7426,7 +7426,9 @@ package body Gnat2Why.Expr is
    --  Start of processing for Compute_Tag_Check
 
    begin
-      if No (Controlling_Arg) then
+      if No (Controlling_Arg)
+        or else Call_Simulates_Contract_Dispatch (Call)
+      then
          return +Void;
       end if;
 
@@ -24533,13 +24535,16 @@ package body Gnat2Why.Expr is
       --  to check its predicates.
 
       function Transform_Alternative
-        (Var       : W_Expr_Id;
-         Alt       : Node_Id;
-         Base_Type : W_Type_Id)
+        (Var             : W_Expr_Id;
+         Alt             : Node_Id;
+         Base_Type       : W_Type_Id;
+         Use_Dispatch_Eq : Boolean := False)
          return W_Expr_Id;
       --  If the alternative Alt is a subtype mark, transform it as a simple
       --  membership test "Var in Alt". Otherwise transform it as an equality
       --  test "Var = Alt".
+      --  If Use_Dispatch_Eq is set to true, calls to equality will be turned
+      --  into calls to dispatching equality instead.
 
       function Transform_Simple_Membership_Expression
         (Var       : W_Expr_Id;
@@ -24609,9 +24614,10 @@ package body Gnat2Why.Expr is
       ---------------------------
 
       function Transform_Alternative
-        (Var       : W_Expr_Id;
-         Alt       : Node_Id;
-         Base_Type : W_Type_Id)
+        (Var             : W_Expr_Id;
+         Alt             : Node_Id;
+         Base_Type       : W_Type_Id;
+         Use_Dispatch_Eq : Boolean := False)
          return W_Expr_Id
       is
          Result    : W_Expr_Id;
@@ -24625,8 +24631,16 @@ package body Gnat2Why.Expr is
          then
             Result :=
               Transform_Simple_Membership_Expression (Var, Alt, Base_Type);
+         elsif Use_Dispatch_Eq then
+            Result := New_Ada_Dispatching_Equality
+              (Typ    => Etype (Left_Opnd (Expr)),
+               Left   => Var,
+               Right  => Transform_Expr (Expr          => Alt,
+                                         Expected_Type => Base_Type,
+                                         Domain        => Subdomain,
+                                         Params        => Params),
+               Domain => Domain);
          else
-
             Result := New_Ada_Equality
               (Typ    => Etype (Left_Opnd (Expr)),
                Left   => Var,
@@ -25025,12 +25039,17 @@ package body Gnat2Why.Expr is
          begin
             Var_Expr := New_Temp_For_Expr (Var_Expr, True);
             Alt := Last (Alternatives (Expr));
-            Result := Transform_Alternative (Var_Expr, Alt, Base_Type);
+            Result := Transform_Alternative
+              (Var_Expr, Alt, Base_Type,
+               Use_Dispatch_Eq => Call_Simulates_Contract_Dispatch (Expr));
 
             Prev (Alt);
             while Present (Alt) loop
                Result := New_Or_Else_Expr
-                 (Left   => Transform_Alternative (Var_Expr, Alt, Base_Type),
+                 (Left   => Transform_Alternative
+                    (Var_Expr, Alt, Base_Type,
+                     Use_Dispatch_Eq =>
+                       Call_Simulates_Contract_Dispatch (Expr)),
                   Right  => Result,
                   Domain => Domain);
                Prev (Alt);
@@ -26037,8 +26056,11 @@ package body Gnat2Why.Expr is
            Domain,
            Exclude_Components => For_Eq);
 
-      if Is_Class_Wide_Type (Left_Type) then
-         T := New_Ada_Equality
+      if Is_Class_Wide_Type (Left_Type)
+        or else Call_Simulates_Contract_Dispatch (Expr)
+      then
+         pragma Assert (Op = N_Op_Eq);
+         T := New_Ada_Dispatching_Equality
            (Typ    => Left_Type,
             Domain => Domain,
             Left   => Left_Expr,

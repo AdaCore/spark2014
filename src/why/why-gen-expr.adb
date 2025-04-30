@@ -3237,6 +3237,78 @@ package body Why.Gen.Expr is
       return False;
    end Needs_Slide;
 
+   ----------------------------------
+   -- New_Ada_Dispatching_Equality --
+   ----------------------------------
+
+   function New_Ada_Dispatching_Equality
+     (Typ         : Type_Kind_Id;
+      Domain      : EW_Domain;
+      Left, Right : W_Expr_Id)
+      return W_Expr_Id
+   is
+   begin
+      --  Translate to:
+      --  let a = to_root left in
+      --  let b = to_root right in
+      --    a.attr_tag = b.attr_tag /\
+      --    __dispatch_eq a b
+
+      declare
+         Subdomain : constant EW_Domain :=
+           (if Domain = EW_Pred then EW_Term else Domain);
+         Root      : constant Entity_Id := Root_Retysp (Typ);
+         Args      : constant W_Expr_Array :=
+           (1 => New_Temp_For_Expr
+              (Insert_Simple_Conversion
+                   (Domain => Subdomain,
+                    Expr   => Left,
+                    To     => Type_Of_Node (Root))),
+            2 => New_Temp_For_Expr
+              (Insert_Simple_Conversion
+                   (Domain => Subdomain,
+                    Expr   => Right,
+                    To     => Type_Of_Node (Root))));
+         T         : W_Expr_Id;
+      begin
+         T := New_And_Then_Expr
+           (Left   => New_Call
+              (Domain => Domain,
+               Name   => Why_Eq,
+               Args   =>
+                 (1 => New_Tag_Access
+                      (Domain => Subdomain,
+                       Name   => Args (1),
+                       Ty     => Root),
+                  2 => New_Tag_Access
+                    (Domain => Subdomain,
+                     Name   => Args (2),
+                     Ty     => Root)),
+               Typ    => EW_Bool_Type),
+            Right  =>
+              New_Call
+                (Domain => Domain,
+                 Name   =>
+                   E_Symb (Root, WNE_Dispatch_Eq),
+                 Args   => New_Tag_Access
+                   (Domain => Subdomain,
+                    Name   => Args (1),
+                    Ty     => Root)
+                 & Args,
+                 Typ    => EW_Bool_Type),
+            Domain => Domain);
+
+         T := Binding_For_Temp (Domain  => Domain,
+                                Tmp     => Args (1),
+                                Context => T);
+         T := Binding_For_Temp (Domain  => Domain,
+                                Tmp     => Args (2),
+                                Context => T);
+
+         return T;
+      end;
+   end New_Ada_Dispatching_Equality;
+
    ----------------------
    -- New_Ada_Equality --
    ----------------------
@@ -3257,62 +3329,7 @@ package body Why.Gen.Expr is
 
    begin
       if Is_Class_Wide_Type (Typ) then
-         --  Dispatching equality. Translate to:
-         --  let a = to_root left in
-         --  let b = to_root right in
-         --    a.attr_tag = b.attr_tag /\
-         --    __dispatch_eq a b
-
-         declare
-            Subdomain : constant EW_Domain :=
-              (if Domain = EW_Pred then EW_Term else Domain);
-            Root      : constant Entity_Id := Root_Retysp (Typ);
-            Args      : constant W_Expr_Array :=
-              (1 => New_Temp_For_Expr
-                 (Insert_Simple_Conversion
-                      (Domain => Subdomain,
-                       Expr   => Left,
-                       To     => Type_Of_Node (Root))),
-               2 => New_Temp_For_Expr
-                 (Insert_Simple_Conversion
-                      (Domain => Subdomain,
-                       Expr   => Right,
-                       To     => Type_Of_Node (Root))));
-         begin
-            T := New_And_Then_Expr
-              (Left   => New_Call
-                 (Domain => Domain,
-                  Name   => Why_Eq,
-                  Args   =>
-                    (1 => New_Tag_Access
-                         (Domain => Subdomain,
-                          Name   => Args (1),
-                          Ty     => Root),
-                     2 => New_Tag_Access
-                       (Domain => Subdomain,
-                        Name   => Args (2),
-                        Ty     => Root)),
-                  Typ    => EW_Bool_Type),
-               Right  =>
-                 New_Call
-                   (Domain => Domain,
-                    Name   =>
-                      E_Symb (Root, WNE_Dispatch_Eq),
-                    Args   => New_Tag_Access
-                      (Domain => Subdomain,
-                       Name   => Args (1),
-                       Ty     => Root)
-                    & Args,
-                    Typ    => EW_Bool_Type),
-               Domain => Domain);
-
-            T := Binding_For_Temp (Domain  => Domain,
-                                   Tmp     => Args (1),
-                                   Context => T);
-            T := Binding_For_Temp (Domain  => Domain,
-                                   Tmp     => Args (2),
-                                   Context => T);
-         end;
+         T := New_Ada_Dispatching_Equality (Typ, Domain, Left, Right);
       elsif Is_Scalar_Type (Typ) then
          declare
             BT       : constant W_Type_Id := Base_Why_Type (Why_Type);
