@@ -143,11 +143,13 @@ auditlog.adb:100:11: info: flow dependencies proved
 auditlog.adb:120:13: info: implicit aspect Always_Terminates on "ConvertToAuditDescription" has been proved, subprogram will terminate
 auditlog.adb:127:35: info: range check proved
 auditlog.adb:127:47: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+auditlog.adb:128:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 auditlog.adb:128:40: info: index check proved
 auditlog.adb:128:40: info: overflow check proved
 auditlog.adb:129:46: info: index check proved
 auditlog.adb:129:46: info: overflow check proved
 auditlog.adb:132:45: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+auditlog.adb:133:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 auditlog.adb:134:46: info: index check proved
 auditlog.adb:134:46: info: overflow check proved
 auditlog.adb:154:07: info: initialization of "Description" proved
@@ -344,6 +346,7 @@ auditlog.adb:1436:07: info: for LogFileState before the call at auditlog.ads:306
 auditlog.adb:1436:07: info: invariant check proved
 auditlog.adb:1436:07: info: precondition proved
 auditlog.adb:1459:30: info: unrolling loop [info-unrolling-inlining]
+auditlog.adb:1459:30: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 auditlog.ads:27:08: info: flow dependencies proved
 auditlog.ads:47:14: info: for LogFileState at the end of Init at auditlog.ads:306
 auditlog.ads:47:14: info: invariant check proved
@@ -1075,6 +1078,7 @@ display.adb:129:35: info: loop invariant initialization proved, in call inlined 
 display.adb:129:35: info: loop invariant initialization proved, in call inlined at display.adb:287
 display.adb:129:35: info: loop invariant preservation proved, in call inlined at display.adb:191
 display.adb:129:35: info: loop invariant preservation proved, in call inlined at display.adb:287
+display.adb:132:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 display.adb:137:30: info: index check proved, in call inlined at display.adb:191
 display.adb:137:30: info: index check proved, in call inlined at display.adb:287
 display.adb:138:30: info: index check proved, in call inlined at display.adb:191
@@ -1089,6 +1093,7 @@ display.adb:144:35: info: loop invariant initialization proved, in call inlined 
 display.adb:144:35: info: loop invariant initialization proved, in call inlined at display.adb:287
 display.adb:144:35: info: loop invariant preservation proved, in call inlined at display.adb:191
 display.adb:144:35: info: loop invariant preservation proved, in call inlined at display.adb:287
+display.adb:148:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 display.adb:148:33: info: index check proved, in call inlined at display.adb:191
 display.adb:148:33: info: index check proved, in call inlined at display.adb:287
 display.adb:148:33: info: overflow check proved, in call inlined at display.adb:191
@@ -1097,11 +1102,19 @@ display.adb:152:32: info: range check proved, in call inlined at display.adb:191
 display.adb:152:32: info: range check proved, in call inlined at display.adb:287
 display.adb:187:18: info: precondition proved
 display.adb:191:32: info: analyzing call to "CombineLines" in context
+display.adb:191:32: warning: in inlined body at line 132
+display.adb:191:32: warning: in inlined body at line 148
+display.adb:191:32: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+display.adb:191:32: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 display.adb:255:07: info: initialization of "TheMsg" proved
 display.adb:256:07: info: initialization of "Written" proved
 display.adb:258:07: info: initialization of "TopWritten" proved
 display.adb:259:07: info: initialization of "BottomWritten" proved
 display.adb:287:57: info: analyzing call to "CombineLines" in context
+display.adb:287:57: warning: in inlined body at line 132
+display.adb:287:57: warning: in inlined body at line 148
+display.adb:287:57: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+display.adb:287:57: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 display.adb:293:21: info: precondition proved
 display.adb:312:42: info: initialization of "CurrentDisplay" constituent of "State" proved
 display.adb:313:42: info: initialization of "CurrentlyDisplayed" constituent of "State" proved

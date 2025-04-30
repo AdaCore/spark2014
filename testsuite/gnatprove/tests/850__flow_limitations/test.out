@@ -30,7 +30,6 @@ array_init.adb:31:63: medium: "A" might not be initialized
 array_init.adb:31:66: info: index check proved (CVC5: 4 VC)
 array_init.adb:36:10: medium: "A" might not be initialized
 array_part_of.adb:6:26: info: unrolling loop [info-unrolling-inlining]
-array_part_of.adb:7:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 array_part_of.ads:5:14: low: initialization of "PO" must be mentioned in the Initializes contract of "Array_Part_Of" (SPARK RM 7.1.5(9))
 imprecise_gg.adb:5:14: warning: subprogram "Read" has no effect
 imprecise_gg.adb:7:23: info: data dependencies proved

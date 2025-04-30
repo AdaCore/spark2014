@@ -176,6 +176,7 @@ conversion.ads:21:13: info: implicit aspect Always_Terminates on "Partial_Conver
 conversion.ads:26:32: info: precondition proved (CVC5: 4 VC)
 conversion.ads:30:13: info: implicit aspect Always_Terminates on "To_Integer_255" has been proved, subprogram will terminate
 conversion.ads:31:07: info: precondition proved (CVC5: 3 VC)
+curve25519.adb:37:26: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 curve25519.adb:39:27: info: overflow check proved (CVC5: 4 VC)
 curve25519.adb:41:33: info: loop invariant initialization proved (CVC5: 1 VC)
 curve25519.adb:42:35: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Sum (K) = X (K) + Y (K)

@@ -2,11 +2,13 @@ stable_marriage.adb:9:13: info: loop invariant initialization proved (CVC5: 2 VC
 stable_marriage.adb:9:13: info: loop invariant preservation proved (CVC5: 2 VC)
 stable_marriage.adb:11:26: info: range check proved (CVC5: 4 VC)
 stable_marriage.adb:12:26: info: index check proved (CVC5: 4 VC)
+stable_marriage.adb:13:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 stable_marriage.adb:15:22: info: assertion proved (CVC5: 2 VC; altergo: 1 VC)
 stable_marriage.adb:30:13: info: loop invariant initialization proved (CVC5: 2 VC)
 stable_marriage.adb:30:13: info: loop invariant preservation proved (CVC5: 2 VC)
 stable_marriage.adb:32:26: info: range check proved (CVC5: 4 VC)
 stable_marriage.adb:33:26: info: index check proved (CVC5: 4 VC)
+stable_marriage.adb:34:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 stable_marriage.adb:36:22: info: assertion proved (CVC5: 2 VC; altergo: 1 VC)
 stable_marriage.adb:51:07: info: precondition proved (CVC5: 1 VC)
 stable_marriage.adb:54:13: info: loop invariant initialization proved (CVC5: 1 VC)
@@ -17,6 +19,7 @@ stable_marriage.adb:57:13: info: loop invariant initialization proved (CVC5: 1 V
 stable_marriage.adb:57:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
 stable_marriage.adb:58:29: info: range check proved (CVC5: 4 VC)
 stable_marriage.adb:59:28: info: index check proved (CVC5: 4 VC)
+stable_marriage.adb:60:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 stable_marriage.adb:71:07: info: precondition proved (CVC5: 1 VC)
 stable_marriage.adb:74:13: info: loop invariant initialization proved (CVC5: 1 VC)
 stable_marriage.adb:74:13: info: loop invariant preservation proved (altergo: 1 VC)
@@ -26,6 +29,7 @@ stable_marriage.adb:77:13: info: loop invariant initialization proved (CVC5: 1 V
 stable_marriage.adb:77:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
 stable_marriage.adb:78:29: info: range check proved (CVC5: 4 VC)
 stable_marriage.adb:79:28: info: index check proved (CVC5: 4 VC)
+stable_marriage.adb:80:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 stable_marriage.adb:87:07: info: initialization of "Inverted" proved
 stable_marriage.adb:89:19: info: precondition proved (CVC5: 1 VC)
 stable_marriage.adb:95:07: info: initialization of "Inverted" proved
@@ -39,10 +43,12 @@ stable_marriage.adb:113:13: info: loop invariant initialization proved (CVC5: 1 
 stable_marriage.adb:113:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
 stable_marriage.adb:114:29: info: range check proved (CVC5: 4 VC)
 stable_marriage.adb:115:35: info: index check proved (CVC5: 4 VC)
+stable_marriage.adb:117:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 stable_marriage.adb:124:13: info: implicit aspect Always_Terminates on "Invert" has been proved, subprogram will terminate
 stable_marriage.adb:129:08: info: postcondition proved (altergo: 1 VC)
 stable_marriage.adb:130:33: info: precondition proved (CVC5: 1 VC)
 stable_marriage.adb:132:07: info: initialization of "Result" proved
+stable_marriage.adb:138:27: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 stable_marriage.adb:140:13: info: loop invariant initialization proved (CVC5: 1 VC)
 stable_marriage.adb:140:13: info: loop invariant preservation proved (altergo: 1 VC)
 stable_marriage.adb:140:21: info: range check proved (CVC5: 4 VC)
@@ -132,6 +138,8 @@ stable_marriage.adb:381:21: info: range check proved (CVC5: 4 VC)
 stable_marriage.adb:382:45: info: index check proved (CVC5: 4 VC)
 stable_marriage.adb:382:64: info: range check proved (CVC5: 4 VC)
 stable_marriage.adb:383:10: info: analyzing call to "Add_An_Unmatched" in context
+stable_marriage.adb:383:10: warning: in inlined body at line 269
+stable_marriage.adb:383:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 stable_marriage.adb:386:22: info: assertion proved (CVC5: 1 VC)
 stable_marriage.adb:388:22: info: assertion proved (CVC5: 2 VC)
 stable_marriage.adb:392:46: medium: implicit aspect Always_Terminates on "Matching" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]

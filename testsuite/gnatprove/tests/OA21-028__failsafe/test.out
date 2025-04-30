@@ -12,6 +12,7 @@ counter.adb:20:55: info: index check proved (CVC5: 4 VC)
 counter.adb:22:27: info: range check proved (CVC5: 4 VC)
 counter.adb:23:31: info: index check proved (CVC5: 4 VC)
 counter.adb:23:55: info: index check proved (CVC5: 4 VC)
+counter.adb:24:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 counter.adb:38:25: info: range check proved (CVC5: 2 VC)
 counter.adb:45:25: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 counter.adb:46:76: info: index check proved (CVC5: 2 VC)

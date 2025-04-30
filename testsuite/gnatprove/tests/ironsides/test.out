@@ -15,6 +15,7 @@ dns_network_receive.ads:58:11: info: postcondition proved (CVC5: 2 VC; Trivial: 
 dns_table_pkg.adb:29:16: info: implicit aspect Always_Terminates on "To_Lower" has been proved, subprogram will terminate
 dns_table_pkg.adb:34:10: info: initialization of "Length" proved
 dns_table_pkg.adb:37:14: info: range check proved (CVC5: 2 VC)
+dns_table_pkg.adb:38:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 dns_table_pkg.adb:44:16: info: implicit aspect Always_Terminates on "Same" has been proved, subprogram will terminate
 dns_table_pkg.adb:45:62: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:45:70: medium: array index check might fail [reason for check: value must be a valid index into the array]
@@ -615,6 +616,7 @@ rr_type.adb:101:22: info: index check proved (CVC5: 4 VC)
 rr_type.adb:102:25: info: range check proved (CVC5: 2 VC)
 rr_type.adb:113:11: info: range check proved (CVC5: 2 VC)
 rr_type.adb:113:36: info: range check proved (CVC5: 2 VC)
+rr_type.adb:114:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 rr_type.adb:114:25: info: index check proved (CVC5: 2 VC)
 rr_type.adb:114:34: high: array index check might fail (e.g. when I = 1 and S = (2 => 'NUL')) [reason for check: value must be a valid index into the array]
 rr_type.adb:128:07: info: initialization of "LengthOfDomainName" proved
@@ -630,10 +632,12 @@ rr_type.adb:147:39: info: range check proved (CVC5: 2 VC)
 rr_type.adb:154:11: info: range check proved (CVC5: 2 VC)
 rr_type.adb:158:13: info: loop invariant initialization proved (CVC5: 2 VC)
 rr_type.adb:158:13: info: loop invariant preservation proved (CVC5: 2 VC)
+rr_type.adb:161:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 rr_type.adb:161:28: info: index check proved (CVC5: 2 VC)
 rr_type.adb:161:28: info: overflow check proved (CVC5: 2 VC)
 rr_type.adb:161:69: info: overflow check proved (CVC5: 2 VC)
 rr_type.adb:161:69: info: range check proved (CVC5: 2 VC)
+rr_type.adb:163:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 rr_type.adb:163:28: info: index check proved (CVC5: 2 VC)
 rr_type.adb:163:28: info: overflow check proved (CVC5: 2 VC)
 rr_type.adb:175:39: info: precondition proved (CVC5: 1 VC)
@@ -781,6 +785,7 @@ zone_file_io.adb:404:26: medium: in inlined expression function body at spark-te
 zone_file_io.adb:404:26: medium: precondition might fail, cannot prove Is_Open (File) [possible fix: loop at line 113 should mention ZoneFile in a loop invariant]
 zone_file_io.adb:410:20: info: range check proved (CVC5: 2 VC)
 zone_file_io.adb:410:47: medium: overflow check might fail, cannot prove lower bound for LastPos + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
+zone_file_io.adb:411:19: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 zone_file_io.ads:23:09: warning: Initial_Condition of package "Text_IO" is ignored [init-cond-ignored]
 zone_file_io.ads:23:09: warning: the elaboration of "Text_IO" is not known to precede the elaboration of the current unit
 zone_file_io.ads:23:09: warning: use pragma Elaborate_Body in "Text_IO" or pragma Elaborate in the current unit
@@ -886,12 +891,14 @@ zone_file_parser.adb:530:45: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:538:17: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:540:19: info: loop invariant initialization proved (CVC5: 3 VC)
 zone_file_parser.adb:540:19: info: loop invariant preservation proved (CVC5: 3 VC)
+zone_file_parser.adb:543:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 zone_file_parser.adb:543:34: info: overflow check proved (CVC5: 2 VC)
 zone_file_parser.adb:543:39: info: index check proved (CVC5: 2 VC)
 zone_file_parser.adb:543:39: info: overflow check proved (CVC5: 2 VC)
 zone_file_parser.adb:545:17: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:547:39: info: loop invariant initialization proved (CVC5: 1 VC)
 zone_file_parser.adb:547:39: info: loop invariant preservation proved (CVC5: 1 VC)
+zone_file_parser.adb:548:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 zone_file_parser.adb:564:07: info: initialization of "EndIdx" proved
 zone_file_parser.adb:565:07: info: initialization of "FoundType" proved
 zone_file_parser.adb:566:07: info: initialization of "LengthOfToken" proved
@@ -909,12 +916,14 @@ zone_file_parser.adb:604:45: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:612:17: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:614:19: info: loop invariant initialization proved (CVC5: 3 VC)
 zone_file_parser.adb:614:19: info: loop invariant preservation proved (CVC5: 3 VC)
+zone_file_parser.adb:617:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 zone_file_parser.adb:617:34: info: overflow check proved (CVC5: 2 VC)
 zone_file_parser.adb:617:39: info: index check proved (CVC5: 2 VC)
 zone_file_parser.adb:617:39: info: overflow check proved (CVC5: 2 VC)
 zone_file_parser.adb:619:17: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:622:39: info: loop invariant initialization proved (CVC5: 1 VC)
 zone_file_parser.adb:622:39: info: loop invariant preservation proved (CVC5: 1 VC)
+zone_file_parser.adb:623:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 zone_file_parser.adb:630:30: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:631:29: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:635:45: warning: "FoundType" is set by "FindNextToken" but not used after the call
@@ -922,12 +931,14 @@ zone_file_parser.adb:639:48: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:648:20: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:650:22: info: loop invariant initialization proved (CVC5: 3 VC)
 zone_file_parser.adb:650:22: info: loop invariant preservation proved (CVC5: 3 VC)
+zone_file_parser.adb:653:19: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 zone_file_parser.adb:653:32: info: overflow check proved (CVC5: 2 VC)
 zone_file_parser.adb:653:37: info: index check proved (CVC5: 2 VC)
 zone_file_parser.adb:653:37: info: overflow check proved (CVC5: 2 VC)
 zone_file_parser.adb:655:20: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:659:42: info: loop invariant initialization proved (CVC5: 1 VC)
 zone_file_parser.adb:659:42: info: loop invariant preservation proved (CVC5: 1 VC)
+zone_file_parser.adb:660:19: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 zone_file_parser.adb:660:28: info: index check proved (CVC5: 2 VC)
 zone_file_parser.adb:691:07: info: initialization of "BegIdx" proved
 zone_file_parser.adb:692:07: info: initialization of "EndIdx" proved
@@ -1005,12 +1016,14 @@ zone_file_parser.adb:961:35: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:974:23: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:975:45: info: loop invariant initialization proved (CVC5: 2 VC)
 zone_file_parser.adb:975:45: info: loop invariant preservation proved (CVC5: 2 VC)
+zone_file_parser.adb:976:22: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 zone_file_parser.adb:990:37: info: index check proved (CVC5: 2 VC)
 zone_file_parser.adb:991:37: info: index check proved (CVC5: 2 VC)
 zone_file_parser.adb:992:37: info: index check proved (CVC5: 2 VC)
 zone_file_parser.adb:995:36: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:996:35: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:1009:23: info: range check proved (CVC5: 2 VC)
+zone_file_parser.adb:1010:22: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 zone_file_parser.adb:1034:07: info: initialization of "EndIdx" proved
 zone_file_parser.adb:1035:07: info: initialization of "FoundType" proved
 zone_file_parser.adb:1036:07: info: initialization of "DigitVal" proved
@@ -1045,12 +1058,14 @@ zone_file_parser.adb:1151:54: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1161:26: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1163:28: info: loop invariant initialization proved (CVC5: 3 VC)
 zone_file_parser.adb:1163:28: info: loop invariant preservation proved (CVC5: 3 VC)
+zone_file_parser.adb:1167:25: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 zone_file_parser.adb:1167:43: info: overflow check proved (CVC5: 2 VC)
 zone_file_parser.adb:1167:48: info: index check proved (CVC5: 2 VC)
 zone_file_parser.adb:1167:48: info: overflow check proved (CVC5: 2 VC)
 zone_file_parser.adb:1169:26: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1173:48: info: loop invariant initialization proved (CVC5: 1 VC)
 zone_file_parser.adb:1173:48: info: loop invariant preservation proved (CVC5: 1 VC)
+zone_file_parser.adb:1174:25: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 zone_file_parser.adb:1196:07: info: initialization of "EndIdx" proved
 zone_file_parser.adb:1197:07: info: initialization of "FoundType" proved
 zone_file_parser.adb:1198:07: info: initialization of "DigitVal" proved
@@ -1084,12 +1099,14 @@ zone_file_parser.adb:1333:72: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1348:44: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1352:46: info: loop invariant initialization proved (CVC5: 3 VC)
 zone_file_parser.adb:1352:46: info: loop invariant preservation proved (CVC5: 3 VC)
+zone_file_parser.adb:1356:43: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 zone_file_parser.adb:1356:61: info: overflow check proved (CVC5: 2 VC)
 zone_file_parser.adb:1356:66: info: index check proved (CVC5: 2 VC)
 zone_file_parser.adb:1356:66: info: overflow check proved (CVC5: 2 VC)
 zone_file_parser.adb:1359:44: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1363:66: info: loop invariant initialization proved (CVC5: 1 VC)
 zone_file_parser.adb:1363:66: info: loop invariant preservation proved (CVC5: 1 VC)
+zone_file_parser.adb:1364:43: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 zone_file_parser.adb:1387:07: info: initialization of "EndIdx" proved
 zone_file_parser.adb:1388:07: info: initialization of "FoundType" proved
 zone_file_parser.adb:1389:07: info: initialization of "TmpVal" proved
@@ -1121,24 +1138,28 @@ zone_file_parser.adb:1513:45: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1523:17: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1525:19: info: loop invariant initialization proved (CVC5: 3 VC)
 zone_file_parser.adb:1525:19: info: loop invariant preservation proved (CVC5: 3 VC)
+zone_file_parser.adb:1528:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 zone_file_parser.adb:1528:34: info: overflow check proved (CVC5: 2 VC)
 zone_file_parser.adb:1528:39: info: index check proved (CVC5: 2 VC)
 zone_file_parser.adb:1528:39: info: overflow check proved (CVC5: 2 VC)
 zone_file_parser.adb:1530:17: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1532:39: info: loop invariant initialization proved (CVC5: 1 VC)
 zone_file_parser.adb:1532:39: info: loop invariant preservation proved (CVC5: 1 VC)
+zone_file_parser.adb:1533:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 zone_file_parser.adb:1545:27: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1546:26: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:1551:45: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1561:17: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1563:19: info: loop invariant initialization proved (CVC5: 3 VC)
 zone_file_parser.adb:1563:19: info: loop invariant preservation proved (CVC5: 3 VC)
+zone_file_parser.adb:1567:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 zone_file_parser.adb:1567:29: info: overflow check proved (CVC5: 2 VC)
 zone_file_parser.adb:1567:34: info: index check proved (CVC5: 2 VC)
 zone_file_parser.adb:1567:34: info: overflow check proved (CVC5: 2 VC)
 zone_file_parser.adb:1569:17: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1573:39: info: loop invariant initialization proved (CVC5: 1 VC)
 zone_file_parser.adb:1573:39: info: loop invariant preservation proved (CVC5: 1 VC)
+zone_file_parser.adb:1574:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 zone_file_parser.adb:1593:07: info: initialization of "EndIdx" proved
 zone_file_parser.adb:1596:07: info: initialization of "LengthOfToken" proved
 zone_file_parser.adb:1597:07: info: initialization of "TokenType" proved
@@ -1149,6 +1170,7 @@ zone_file_parser.adb:1613:45: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1614:14: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1615:36: info: loop invariant initialization proved (CVC5: 2 VC)
 zone_file_parser.adb:1615:36: info: loop invariant preservation proved (CVC5: 2 VC)
+zone_file_parser.adb:1616:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 zone_file_parser.adb:1616:23: info: overflow check proved (CVC5: 2 VC)
 zone_file_parser.adb:1616:28: info: index check proved (CVC5: 2 VC)
 zone_file_parser.adb:1616:28: info: overflow check proved (CVC5: 2 VC)
@@ -1163,6 +1185,7 @@ zone_file_parser.adb:1651:33: info: loop invariant preservation proved (CVC5: 1 
 zone_file_parser.adb:1652:14: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:1653:36: info: loop invariant initialization proved (CVC5: 2 VC)
 zone_file_parser.adb:1653:36: info: loop invariant preservation proved (CVC5: 2 VC)
+zone_file_parser.adb:1654:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 zone_file_parser.adb:1654:23: info: overflow check proved (CVC5: 2 VC)
 zone_file_parser.adb:1654:28: info: index check proved (CVC5: 2 VC)
 zone_file_parser.adb:1654:28: info: overflow check proved (CVC5: 2 VC)

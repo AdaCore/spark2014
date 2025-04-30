@@ -375,6 +375,7 @@ hw-gfx-gma-i2c.adb:189:19: warning: this statement is never reached
 hw-gfx-gma-i2c.adb:202:07: info: initialization of "GMBUS2" proved
 hw-gfx-gma-i2c.adb:203:07: info: initialization of "GMBUS3" proved
 hw-gfx-gma-i2c.adb:205:07: info: initialization of "Current" proved
+hw-gfx-gma-i2c.adb:237:19: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 hw-gfx-gma-i2c.ads:23:07: info: initialization of "Data" proved
 hw-gfx-gma-i2c.ads:24:07: info: initialization of "Success" proved
 hw-gfx-gma-panel.adb:61:13: info: implicit aspect Always_Terminates on "Div_Round_Up32" has been proved, subprogram will terminate
@@ -812,8 +813,10 @@ hw-gfx-gma.adb:214:56: info: initialization of "Detected" proved
 hw-gfx-gma.adb:227:07: info: initialization of "Old_Configs" proved
 hw-gfx-gma.adb:240:16: info: implicit aspect Always_Terminates on "Full_Update" has been proved, subprogram will terminate
 hw-gfx-gma.adb:262:13: info: initialization of "Unplug_Detected" proved
+hw-gfx-gma.adb:279:30: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 hw-gfx-gma.adb:281:13: info: initialization of "Success" proved
 hw-gfx-gma.adb:282:13: info: initialization of "Scaler_Available" proved
+hw-gfx-gma.adb:291:19: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 hw-gfx-gma.adb:356:16: info: implicit aspect Always_Terminates on "Cap_Add" has been proved, subprogram will terminate
 hw-gfx-gma.adb:382:16: high: "Dev.Address_State" constituent of "GMA.State" is not initialized
 hw-gfx-gma.adb:382:16: low: unused global "Dev.Address_State" constituent of "GMA.State"
