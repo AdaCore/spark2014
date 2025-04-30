@@ -15,6 +15,8 @@ test_higher_order.adb:27:45: info: index check proved (CVC5: 2 VC)
 test_higher_order.ads:9:13: info: implicit aspect Always_Terminates on "Small_Enough" has been proved, subprogram will terminate
 test_higher_order.ads:12:13: info: implicit aspect Always_Terminates on "Add_One" has been proved, subprogram will terminate
 test_higher_order.ads:12:56: info: overflow check proved (CVC5: 2 VC)
+test_higher_order.ads:15:04: warning: in instantiation at spark-higher_order.adb:19
+test_higher_order.ads:15:04: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 test_higher_order.ads:15:13: info: implicit aspect Always_Terminates on "Add_All" has been proved, subprogram will terminate
 test_higher_order.ads:24:13: info: implicit aspect Always_Terminates on "A_Small_Enough" has been proved, subprogram will terminate
 test_higher_order.ads:40:13: info: implicit aspect Always_Terminates on "In_Range" has been proved, subprogram will terminate

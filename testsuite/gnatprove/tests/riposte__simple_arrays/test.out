@@ -7,6 +7,7 @@ simple_arrays.adb:34:55: medium: "A" might not be initialized in "Array_Equality
 simple_arrays.adb:36:11: info: flow dependencies proved
 simple_arrays.adb:37:22: info: postcondition proved (CVC5: 1 VC)
 simple_arrays.adb:37:22: medium: "A" might not be initialized
+simple_arrays.adb:40:24: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 simple_arrays.adb:43:13: info: loop invariant initialization proved (CVC5: 1 VC)
 simple_arrays.adb:43:13: info: loop invariant preservation proved (CVC5: 1 VC)
 simple_arrays.adb:43:21: info: range check proved (CVC5: 4 VC)

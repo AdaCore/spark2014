@@ -266,3 +266,5 @@ formal_vectors.ads:79:48: info: pointer dereference check proved (CVC5: 1 VC), i
 formal_vectors.ads:79:53: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 [reason for check: value must be a valid index into the array]
 use_formal_vectors.ads:6:13: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
 use_formal_vectors.ads:7:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
+use_formal_vectors.ads:11:04: warning: aliasing check on components of an array is handled imprecisely [alias-array]
+use_formal_vectors.ads:11:04: warning: in instantiation at formal_vectors.adb:182
