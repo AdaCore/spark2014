@@ -1,0 +1,4 @@
+bad_exit.adb:11:13: error: "X" is not readable
+bad_exit.adb:11:13: error: launch "gnatprove --explain=E0010" for more information
+bad_exit.adb:11:13: error: object was moved at line 9 [E0010]
+gnatprove: error during flow analysis and proof
