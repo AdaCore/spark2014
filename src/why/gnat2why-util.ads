@@ -423,7 +423,8 @@ package Gnat2Why.Util is
    function New_Check_Info
      (Range_Check_Ty : Opt_Type_Kind_Id := Empty;
       Divisor        : Node_Or_Entity_Id := Empty;
-      User_Message   : String_Id := No_String) return Check_Info_Type;
+      User_Message   : String_Id := No_String;
+      Explanation    : String := "") return Check_Info_Type;
    --  Construct a check info with the supplied information for the fix
    --  message and the current continuation stack.
 

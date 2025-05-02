@@ -162,6 +162,7 @@ package SPARK_Util is
       --  Message associated with an assertion/check pragma by the user
       Fix_Info     : Fix_Info_Type;
       Continuation : Continuation_Vectors.Vector;
+      Explanation  : Unbounded_String := Null_Unbounded_String;
    end record;
    --  Extra information for checks that is useful for generating better
    --  messages.
