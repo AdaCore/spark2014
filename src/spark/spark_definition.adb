@@ -8159,9 +8159,11 @@ package body SPARK_Definition is
                         Inner : while not Processed.Contains (Cursor) loop
                            Above := Parent (Cursor);
 
-                           --  Skip intermediate nodes in case expressions
+                           --  Skip intermediate nodes in case expressions and
+                           --  function calls.
 
-                           if Nkind (Above) = N_Case_Expression_Alternative
+                           if Nkind (Above) in N_Case_Expression_Alternative
+                                             | N_Parameter_Association
                            then
                               Above := Parent (Above);
                            end if;
