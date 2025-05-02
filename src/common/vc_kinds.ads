@@ -450,6 +450,7 @@ package VC_Kinds is
       Warn_Loop_Entity,
       Warn_No_Reclam_Func,
       Warn_Num_Variant,
+      Warn_Relaxed_Init_Mutable_Discr,
       Warn_Map_Length_Aggregates,
       Warn_Set_Length_Aggregates,
 
@@ -787,6 +788,9 @@ package VC_Kinds is
         when Warn_Set_Length_Aggregates =>
           "no ""Length"" function found for type with predefined set "
          & "aggregates &",
+        when Warn_Relaxed_Init_Mutable_Discr =>
+          "mutable discriminants of a standalone object or parameter with "
+         & "relaxed initialization are enforced to always be initialized",
         when Warn_Predef_Eq_Null =>
           "no null value found for type with predefined equality &",
 

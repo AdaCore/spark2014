@@ -726,6 +726,10 @@ package body VC_Kinds is
         when Warn_Set_Length_Aggregates =>
           "A type with predefined set aggregates doesn't have a Length "
         & "function; the length of aggregates will not be known for this type",
+        when Warn_Relaxed_Init_Mutable_Discr =>
+          "The tool enforces that mutable discriminants of standalone objects"
+        & " and parameters with relaxed initialization are always"
+        & " initialized",
         when Warn_Predef_Eq_Null =>
           "A type is annotated with Only_Null as value for the "
         & "Predefined_Equality annotation, but no constant annotated with "
@@ -1726,6 +1730,8 @@ package body VC_Kinds is
          when Warn_Num_Variant => "numeric-variant",
          when Warn_Map_Length_Aggregates => "map-length-aggregates",
          when Warn_Set_Length_Aggregates => "set-length-aggregates",
+         when Warn_Relaxed_Init_Mutable_Discr =>
+            "relaxed-mutable-discriminants",
          when Warn_Tagged_Untangling => "tagged-assignment",
          when Warn_Predef_Eq_Null => "predefined-equality-null",
          when Warn_Unit_Not_SPARK => "unit-not-spark",
