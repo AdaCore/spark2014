@@ -1,0 +1,27 @@
+p.adb:6:22: info: initialization of "X" proved
+p.adb:7:06: info: flow dependencies proved
+p.adb:8:45: info: exceptional case proved (Trivial: 1 VC)
+p.adb:17:04: info: only expected exception raised (CVC5: 1 VC)
+p.adb:17:12: info: for mutable discriminants at p.adb:2
+p.adb:17:12: info: initialization check proved (Trivial: 1 VC)
+p.adb:17:12: medium: in value of subprogram parameter after the call when an exception is raised at p.adb:17
+p.adb:17:12: medium: initialization check might fail [possible explanation: mutable discriminants of actual parameters are considered to be uninitialized if the call propagates an exception] [possible fix: call at line 17 should mention X (for argument X) in a postcondition]
+p.adb:20:22: medium: "X.B" is not set [possible explanation: value of "X.B" is unknown following exceptional exit]
+p.adb:20:22: medium: assertion might fail
+q.adb:10:22: info: initialization of "X" proved
+q.adb:11:06: info: flow dependencies proved
+q.adb:12:45: info: exceptional case proved (Trivial: 1 VC)
+q.adb:20:06: info: flow dependencies proved
+q.adb:22:45: info: exceptional case proved (Trivial: 1 VC)
+q.adb:33:04: info: only expected exception raised (CVC5: 1 VC)
+q.adb:33:14: info: in value of subprogram parameter after the call at q.adb:33
+q.adb:33:14: info: initialization check proved (CVC5: 1 VC)
+q.adb:34:04: info: only expected exception raised (CVC5: 1 VC)
+q.adb:34:13: info: for mutable discriminants at q.adb:2
+q.adb:34:13: info: initialization check proved (CVC5: 1 VC)
+q.adb:37:22: low: "X.B" might not be set [possible explanation: value of "X.B" is unknown following exceptional exit]
+q.adb:37:22: medium: assertion might fail
+q.adb:38:22: low: "Y.C.B" might not be set [possible explanation: value of "Y.C.B" is unknown following exceptional exit]
+q.adb:38:22: medium: assertion might fail
+q.adb:38:23: medium: for mutable discriminants at q.adb:2
+q.adb:38:23: medium: initialization check might fail

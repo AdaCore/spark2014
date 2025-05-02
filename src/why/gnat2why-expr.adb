@@ -6910,6 +6910,33 @@ package body Gnat2Why.Expr is
 
             Append (Store, New_Assume_Statement (Pred => Assumption));
          end;
+
+         --  Objects with relaxed initialization should be considered to be
+         --  potentially unintialized by the call. However, we do not have
+         --  top level initialization flags for types with mutable
+         --  discriminants (and access types, but such parameters are either by
+         --  copy or by reference). Introduce an unprovable initialization
+         --  check at the point of call if the actual is unconstrained instead.
+
+         if Is_Simple_Actual (Actual)
+           and then Obj_Has_Relaxed_Init (Entity (Actual))
+         then
+            Append
+              (Store,
+               New_Ignore
+                 (Prog => New_Located_Assert
+                      (Ada_Node   => Actual,
+                       Pred       => +New_Constrained_Attribute_Expr
+                         (Domain => EW_Term,
+                          Prefix => Actual),
+                       Reason     => VC_Initialization_Check,
+                       Kind       => EW_Assert,
+                       Check_Info => New_Check_Info
+                         (Explanation =>
+                                "mutable discriminants of actual parameters "
+                          & "are considered to be uninitialized if the call "
+                          & "propagates an exception"))));
+         end if;
       end if;
 
       --  Havoc all aliases of Actual. Flow analysis should make sure that they
