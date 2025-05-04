@@ -255,10 +255,13 @@ package body CE_RAC is
 
    function "=" (F1, F2 : Entity_To_Value_Maps.Map) return Boolean;
 
-   procedure Cleanup_Counterexample_Value (V : in out Value_Type; N : Node_Id);
+   procedure Cleanup_Counterexample_Value
+     (V : in out Value_Type; N : Node_Id; Target_Ty : Entity_Id := Empty);
    --  Clean-up counterexample values so they can be used by the RAC. Call
    --  RAC_Unsupported if the counterexample value is unsupported yet,
    --  RAC_Stuck if the value is incomplete, RAC_Failure if it fails a check.
+   --  If the expected target type Target_Ty is provided, the value will be
+   --  updated to be of that specific type.
 
    --------------------------------
    -- Runtime control exceptions --
@@ -1086,10 +1089,13 @@ package body CE_RAC is
    -- Cleanup_Counterexample_Value --
    ----------------------------------
 
-   procedure Cleanup_Counterexample_Value (V : in out Value_Type; N : Node_Id)
+   procedure Cleanup_Counterexample_Value
+     (V : in out Value_Type; N : Node_Id; Target_Ty : Entity_Id := Empty)
    is
+      Ty : constant Entity_Id :=
+        (if Present (Target_Ty) then Retysp (Target_Ty) else V.AST_Ty);
    begin
-      Check_Supported_Type (V.AST_Ty);
+      Check_Supported_Type (Ty);
 
       case V.K is
          when Scalar_K =>
@@ -1108,7 +1114,7 @@ package body CE_RAC is
             --  Check that we have values for all components and discriminants.
             --  Delete components which are not present in the type.
 
-            if Has_Discriminants (V.AST_Ty) then
+            if Has_Discriminants (Ty) then
 
                --  Adjust the tracked 'Constrained attribute for values of
                --  discriminated types.
@@ -1116,16 +1122,16 @@ package body CE_RAC is
                   Is_Read_Only_Input : constant Boolean :=
                     Nkind (N) in N_Entity
                     and then Ekind (N) = E_In_Parameter
-                    and then not Is_Access_Type (V.AST_Ty);
+                    and then not Is_Access_Type (Ty);
                begin
-                  if Has_Mutable_Discriminants (V.AST_Ty)
+                  if Has_Mutable_Discriminants (Ty)
                     and then not Is_Read_Only_Input
                     and then not V.Constrained_Attr.Present
                   then
                      V.Constrained_Attr := (Present => True, Content => False);
 
                   elsif V.Constrained_Attr.Present then
-                     if Is_Constrained (V.AST_Ty) or else Is_Read_Only_Input
+                     if Is_Constrained (Ty) or else Is_Read_Only_Input
                      then
                         --  The component is statically constrained. No need
                         --  to track (and consequently print) the value of the
@@ -1143,34 +1149,42 @@ package body CE_RAC is
 
                --  Clean up and check discriminants
                declare
-                  Discr : Entity_Id :=
-                    First_Discriminant (Root_Retysp (V.AST_Ty));
+                  Discr : Entity_Id := First_Discriminant (Root_Retysp (Ty));
                   Elmt  : Elmt_Id :=
-                    (if Is_Constrained (V.AST_Ty)
-                     then First_Elmt (Discriminant_Constraint (V.AST_Ty))
+                    (if Is_Constrained (Ty)
+                     then First_Elmt (Discriminant_Constraint (Ty))
                      else No_Elmt);
                begin
                   while Present (Discr) loop
                      if not V.Record_Fields.Contains (Discr) then
-                        if Is_Constrained (V.AST_Ty) then
+                        if Is_Constrained (Ty) then
+                           pragma
+                             Annotate
+                               (Xcov,
+                                Exempt_On,
+                                "potentially malformed externally produced CEs"
+                           );
                            V.Record_Fields.Insert
                              (Discr,
                               new Value_Type'
                                 (RAC_Expr
-                                     (Node (Elmt), Retysp (Etype (Discr)))));
+                                   (Node (Elmt), Retysp (Etype (Discr)))));
+                           pragma Annotate (Xcov, Exempt_Off);
                         else
                            RAC_Stuck
                              ("missing value for discriminant "
                               & Source_Name (Discr)
-                              & " in " & Full_Name (V.AST_Ty));
+                              & " in " & Full_Name (Ty));
                         end if;
                      else
                         Cleanup_Counterexample_Value
-                          (V.Record_Fields (Discr).all, N);
+                          (V.Record_Fields (Discr).all,
+                           N,
+                           Retysp (Etype (Discr)));
                      end if;
 
                      Next_Discriminant (Discr);
-                     if Is_Constrained (V.AST_Ty) then
+                     if Is_Constrained (Ty) then
                         Next_Elmt (Elmt);
                      end if;
                   end loop;
@@ -1178,9 +1192,9 @@ package body CE_RAC is
             end if;
 
             --  Clean up remaining fields
-            for Comp of Get_Component_Set (V.AST_Ty) loop
+            for Comp of Get_Component_Set (Ty) loop
                if Component_Is_Removed_In_Type
-                 (V.AST_Ty, Comp, V.Record_Fields)
+                 (Ty, Comp, V.Record_Fields)
                then
                   V.Record_Fields.Exclude (Comp);
                elsif Is_Type (Comp) then
@@ -1203,10 +1217,13 @@ package body CE_RAC is
                            & Source_Name (Original_Declaration (Comp)));
                      else
                         declare
+                           Comp_Ty  : constant Entity_Id :=
+                             Retysp (Etype (Comp_In_Value));
                            Comp_Val : constant Value_Access :=
                              V.Record_Fields (Comp_In_Value);
                         begin
-                           Cleanup_Counterexample_Value (Comp_Val.all, N);
+                           Cleanup_Counterexample_Value
+                             (Comp_Val.all, N, Comp_Ty);
                         end;
                      end if;
                   end;
@@ -1219,19 +1236,20 @@ package body CE_RAC is
                Type_Fst : Big_Integer;
                Type_Lst : Big_Integer;
                Fst, Lst : Big_Integer;
+               Comp_Ty  : constant Entity_Id := Retysp (Component_Type (Ty));
 
             begin
                Get_Bounds
-                 (Get_Range (First_Index (V.AST_Ty)), Type_Fst, Type_Lst);
+                 (Get_Range (First_Index (Ty)), Type_Fst, Type_Lst);
 
                --  For constrained arrays, fill the bounds
 
-               if Is_Constrained (V.AST_Ty) then
+               if Is_Constrained (Ty) then
                   Fst := Type_Fst;
                   Lst := Type_Lst;
 
                   if V.First_Attr.Present then
-                     Slide (V, V.AST_Ty);
+                     Slide (V, Ty);
                   end if;
 
                   V.First_Attr := (True, Fst);
@@ -1281,7 +1299,7 @@ package body CE_RAC is
                            end;
 
                         else
-                           Cleanup_Counterexample_Value (Val.all, N);
+                           Cleanup_Counterexample_Value (Val.all, N, Comp_Ty);
                            Next (C);
                         end if;
                      end;
@@ -1289,7 +1307,8 @@ package body CE_RAC is
                end;
 
                if V.Array_Others /= null then
-                  Cleanup_Counterexample_Value (V.Array_Others.all, N);
+                  Cleanup_Counterexample_Value
+                    (V.Array_Others.all, N, Comp_Ty);
                end if;
             end;
 
@@ -1299,6 +1318,10 @@ package body CE_RAC is
          when Access_K =>
             RAC_Unsupported ("value of an access type", N);
       end case;
+
+      if Present (Target_Ty) then
+         Update_Type (V, Target_Ty);
+      end if;
    end Cleanup_Counterexample_Value;
 
    ----------
@@ -2823,7 +2846,7 @@ package body CE_RAC is
                  Retysp (Etype (Unique_Defining_Entity (Decl)));
             begin
                if Present (Expression (Decl)) then
-                  V := RAC_Expr (Expression (Decl));
+                  V := RAC_Expr (Expression (Decl), Ty);
 
                   Update_Constrained
                     (V, Ty, Sinfo.Nodes.Constant_Present (Decl));
@@ -3398,7 +3421,7 @@ package body CE_RAC is
             end if;
          end if;
 
-         Cleanup_Counterexample_Value (Res, N);
+         Cleanup_Counterexample_Value (Res, N, Ty);
          return Res;
       end RAC_Aggregate;
 
@@ -3606,7 +3629,7 @@ package body CE_RAC is
                   pragma Assert (Record_Not_Array xor Is_Array_Type (Ty));
                   if Record_Not_Array then
                      Res := Record_Value
-                       (Copy (Prefix_Value.Record_Fields), Ty);
+                       (Copy (Prefix_Value.Record_Fields, Ty), Ty);
                      Ex := First (Expressions (N));
 
                      while Present (Ex) loop
@@ -4817,6 +4840,9 @@ package body CE_RAC is
             RAC_Unsupported ("RAC_Expr", N);
       end case;
 
+      --  Update the type to the expected type (if not already the case)
+      Update_Type (Res, Ty);
+
       --  Check the computed value against the expected type
       Check_Value (Res, Ty, N);
 
@@ -5155,7 +5181,7 @@ package body CE_RAC is
             declare
                Ty  : constant Entity_Id := Retysp (Etype (Name (N)));
                RHS : constant Value_Access :=
-                 new Value_Type'(Copy (RAC_Expr (Expression (N), Ty)));
+                 new Value_Type'(Copy (RAC_Expr (Expression (N), Ty), Ty));
 
             begin
                --  Slide the array value if necessary

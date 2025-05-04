@@ -346,14 +346,24 @@ package CE_Values is
    function Valid_Value
      (V : Value_Type) return Boolean
      with Ghost;
-   --  Checks if the value V is well-formed. In particular, the following check
-   --  has been currenty defined:
+   --  A function to check in contracts and ghost code that the value V is
+   --  well-formed. In particular, the following check has been currenty
+   --  defined:
    --
-   --  * If V is a record, then each key C_Key in the Record_Fields
-   --    map must be compatible with V.AST_Ty in the sense that:
-   --    * A component C_Ty is found in V.AST_Ty by searching for C_Key via
-   --      Search_Component_In_Type and C_Key = C_Ty (i.e., the former isn't
-   --      less precise than the latter and vice versa).
+   --  * If V is a record, then
+   --    * Each key C_Key in the Record_Fields map must be compatible with
+   --      V.AST_Ty in the sense that:
+   --      * A component C_Ty is found in V.AST_Ty by searching for C_Key via
+   --        Search_Component_In_Type and C_Key = C_Ty (i.e., the former isn't
+   --    * The following exception is made for tagged types: Fields in the
+   --      value are allowed to exist even when they do not exist in V.AST_Ty.
+   --      This relaxation allows for handling values that are upcast to a type
+   --      that might not contain such a field. (Note that erasing hidden
+   --      fields from the value would prevent the proper treatment of a
+   --      subsequent downcast.)
+   --
+   --  Note: To check values in the user's code the function Check_Value should
+   --  be used instead.
 
    function Search_Component_In_Value
      (Rec : Value_Type; Comp : Entity_Id) return Entity_Id
@@ -365,6 +375,12 @@ package CE_Values is
    --  corresponds to Comp in the type of the record value (its AST_Ty). If the
    --  corresponding key (component) is found it is returned. Otherwise, Empty
    --  is returned.
+
+   procedure Update_Type (V : in out Value_Type; T_New : Entity_Id)
+   with Pre => Ekind (T_New) in Type_Kind, Post => Valid_Value (V);
+   --  Update the V.AST_Ty to New_Type. Adjust the structure of V if needed. It
+   --  is assumed that the existing value is compatible with both types.
+   --  However, the types could e.g. be different subtypes.
 
    function To_String (V : Float_Value) return String;
    --  Convert a float value to a string

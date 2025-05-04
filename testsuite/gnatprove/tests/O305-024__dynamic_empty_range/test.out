@@ -9,5 +9,5 @@ empty_range_in_loop.adb:4:45: high: overflow check might fail, cannot prove uppe
 empty_range_in_loop.adb:7:22: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 empty_range_in_loop.adb:8:12: high: range check might fail, cannot prove upper bound for C (e.g. when C = 101) [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (C <= May_Be_Empty1'Last) to subprogram at line 1]
 empty_range_in_loop.adb:10:22: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+empty_range_in_loop.adb:12:33: high: range check might fail, cannot prove upper bound for C + 1 (e.g. when C = 100) [reason for check: default component value must fit in the type] [possible fix: add precondition (C <= May_Be_Empty2'Last - 1) to subprogram at line 1]
 empty_range_in_loop.adb:12:33: info: overflow check proved (CVC5: 2 VC)
-empty_range_in_loop.adb:12:33: medium: range check might fail, cannot prove upper bound for C + 1 [reason for check: default component value must fit in the type] [possible fix: add precondition (C <= May_Be_Empty2'Last - 1) to subprogram at line 1]

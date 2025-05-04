@@ -312,7 +312,10 @@ package body CE_Values is
                   C_Ty  : constant Entity_Id :=
                     Search_Component_In_Type (V.AST_Ty, C_Key);
                begin
-                  if not Present (C_Key) or else C_Key /= C_Ty then
+                  if not Present (C_Ty) and then not Is_Tagged_Type (V.AST_Ty)
+                  then
+                     return False;
+                  elsif Present (C_Ty) and then C_Key /= C_Ty then
                      return False;
                   end if;
                end;
@@ -347,6 +350,46 @@ package body CE_Values is
          return Types.Empty;
       end if;
    end Search_Component_In_Value;
+
+   -----------------
+   -- Update_Type --
+   -----------------
+
+   procedure Update_Type (V : in out Value_Type; T_New : Entity_Id) is
+   begin
+      if V.AST_Ty = T_New then
+         return;  --  No change of the actual type.
+      end if;
+
+      if V.K = Record_K then
+         pragma Assert (Is_Record_Type (T_New));
+         declare
+            use Entity_To_Value_Maps;
+            Old_Fields : constant Entity_To_Value_Maps.Map := V.Record_Fields;
+         begin
+            V.Record_Fields.Clear;
+            for C in Old_Fields.Iterate loop
+               declare
+                  Comp_In_T_New : constant Entity_Id :=
+                     Search_Component_In_Type (T_New, Key (C));
+               begin
+                  if Present (Comp_In_T_New) then
+                     V.Record_Fields.Insert (Comp_In_T_New, Element (C));
+                  else
+                     pragma Assert (Is_Tagged_Type (T_New));
+                     --  For tagged types this is a legal scenario when
+                     --  upcasting. For this component keep the component from
+                     --  the old type.
+                     V.Record_Fields.Insert (Key (C), Element (C));
+                  end if;
+               end;
+            end loop;
+         end;
+      end if;
+
+      V.AST_Ty := T_New;
+
+   end Update_Type;
 
    --------------
    -- Is_Valid --

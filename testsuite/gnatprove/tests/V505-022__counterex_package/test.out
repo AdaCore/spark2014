@@ -5,4 +5,4 @@ main.adb:25:16: info: implicit aspect Always_Terminates on "Make_Array" has been
 main.adb:28:19: info: implicit aspect Always_Terminates on "Get_Sixteenth" has been proved, subprogram will terminate
 main.adb:36:10: info: initialization of "A" proved
 main.adb:38:23: info: cannot unroll loop (local non-scalar declaration at line 40) [info-unrolling-inlining]
-main.adb:59:19: high: assertion might fail, cannot prove My_Package.Nested.Get_Sixteenth (A) = 1 (e.g. when A(One).F = Int'Last and A(Two).F = Int'Last and A(Four).F = Int'Last and A(Eight).F = Int'Last and A(Sixteen).F = Int'Last)
+main.adb:59:19: high: assertion might fail, cannot prove My_Package.Nested.Get_Sixteenth (A) = 1 (e.g. when A(One).F = 42 and A(Two).F = 42 and A(Four).F = 42 and A(Eight).F = 42 and A(Sixteen).F = 42)
