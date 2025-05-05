@@ -1879,7 +1879,7 @@ subprogram calls unless the parameters are of an access-to-variable type. Ada,
 however, does not enforce the same restriction. In particular, if a parameter of
 mode ``in`` is of a private type which is ultimately an access-to-variable type,
 then the subprogram might modify the value it designates. The
-``Mutable_In_Parameter`` annotation is designed to make it possible to interact
+``Mutable_In_Parameters`` annotation is designed to make it possible to interact
 with existing Ada libraries from |SPARK| code, even if the libraries are not
 abiding by the language restrictions. It allows annotating an entry, procedure,
 or function with side effects so that all its parameters of mode ``in`` of
