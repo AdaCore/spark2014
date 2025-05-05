@@ -80,6 +80,8 @@ bingo_basket.adb:21:37: info: cannot unroll loop (too many loop iterations) [inf
 bingo_basket.adb:25:36: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 bingo_basket.adb:25:36: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 bingo_basket.adb:27:10: info: analyzing call to "Swap" in context
+bingo_basket.adb:27:21: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
+bingo_basket.adb:27:21: warning: aliasing check on components of an array is handled imprecisely [alias-array]
 bingo_basket.adb:36:32: info: index check proved (CVC5: 2 VC)
 bingo_basket.adb:37:30: info: range check proved (CVC5: 2 VC)
 bingo_basket.ads:4:13: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
