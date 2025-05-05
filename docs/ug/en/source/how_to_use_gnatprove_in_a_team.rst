@@ -685,6 +685,11 @@ of a program:
   * does not lock protected objects with calls to protected subprograms,
   * does not call Ada.Task_Identification.Current_Task.
 
+* [SPARK_TIME_ARITHMETIC]
+  GNATprove assumes that for calls to Ada.Execution_Time and Ada.Real_Time
+  arithmetic and conversion operators (including Time_Of)
+  the result belongs to the result type.
+
 In addition, the following assumptions need to be addressed when using SPARK on
 only part of a program:
 
