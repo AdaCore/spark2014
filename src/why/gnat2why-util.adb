@@ -1306,6 +1306,26 @@ package body Gnat2Why.Util is
                  (Ada_To_Why_Ident.Empty_Map, Ada_To_Why_Ident.Empty_Map));
    end Map_For_Loop_Entry;
 
+   -----------------------------------
+   -- Might_Need_Discriminant_Check --
+   -----------------------------------
+
+   function Might_Need_Discriminant_Check
+     (Field : Entity_Id) return Boolean
+   is
+   begin
+      if Ekind (Field) /= E_Component then
+         return False;
+      else
+         declare
+            Ty : constant Type_Kind_Id := Original_Declaration (Field);
+         begin
+            return Has_Discriminants (Ty)
+              and then (not Is_Tagged_Type (Ty) or else Ty = Root_Retysp (Ty));
+         end;
+      end if;
+   end Might_Need_Discriminant_Check;
+
    -------------------------
    -- Name_For_Loop_Entry --
    -------------------------

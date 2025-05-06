@@ -485,6 +485,11 @@ package Gnat2Why.Util is
    --  In the translation to Why, use Count_Discriminants instead of
    --  Has_Discriminant to avoid counting hidden discriminants.
 
+   function Might_Need_Discriminant_Check (Field : Entity_Id) return Boolean;
+   --  Field is a record field, discriminant, private type, or part_of
+   --  variable. Return True if a discriminant check might be needed when
+   --  accessing Field.
+
    function Get_Expr_Quantified_Over
      (N          : Node_Id;
       Over_Range : Boolean)
