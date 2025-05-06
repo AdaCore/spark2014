@@ -3368,11 +3368,10 @@ package body Flow.Control_Flow_Graph is
          --  Performs a mini-flow analysis on the current loop statements to
          --  see if T is defined on all paths (but not explicitly used).
 
-         function Is_Declared_Within_Current_Loop
-           (E : Entity_Id) return Boolean
-         with Pre => Is_Object (E);
-         --  Returns True iff object E is declared within the currently
-         --  analysed loop.
+         function Is_Declared_Within_Current_Loop (F : Flow_Id) return Boolean
+         with Pre => F.Kind in Direct_Mapping | Record_Field;
+         --  Returns True iff F represents an object declared within the
+         --  currently analysed loop.
          --  Note: this is similar to Scope_Within, but operating on the
          --  syntactic level, because FOR loops do not act as scopes for
          --  objects declared within them.
@@ -3736,17 +3735,9 @@ package body Flow.Control_Flow_Graph is
          -- Is_Declared_Within_Current_Loop --
          -------------------------------------
 
-         function Is_Declared_Within_Current_Loop
-           (E : Entity_Id) return Boolean
+         function Is_Declared_Within_Current_Loop (F : Flow_Id) return Boolean
          is
-            function Is_Current_Loop (N : Node_Id) return Boolean is
-              (N = Loop_N);
-
-            function Current_Loop_Parent is new First_Parent_With_Property
-              (Is_Current_Loop);
-         begin
-            return Present (Current_Loop_Parent (E));
-         end Is_Declared_Within_Current_Loop;
+           (In_Subtree (Get_Direct_Mapping_Id (F), Loop_N));
 
          -------------------------
          -- Potentially_Defined --
@@ -3756,8 +3747,7 @@ package body Flow.Control_Flow_Graph is
             T : constant Target := Get_Array_Index (N);
          begin
             if T.Valid
-              and then not Is_Declared_Within_Current_Loop
-                (Get_Direct_Mapping_Id (T.Var))
+              and then not Is_Declared_Within_Current_Loop (T.Var)
               and then Fully_Defined_In_Original_Loop (T)
             then
                Fully_Initialized.Include (T.Var);
