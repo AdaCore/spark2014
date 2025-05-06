@@ -104,11 +104,11 @@ test.adb:9:13: warning: imprecise handling of Unchecked_Conversion (component of
 test.adb:9:51: info: type is suitable as source for unchecked conversion (Trivial)
 test.adb:9:60: info: type is suitable for unchecked conversion (Trivial)
 test.adb:14:41: info: initialization of "Res" proved
-test.adb:16:14: medium: postcondition might fail (e.g. when Res = (I => 1) and X = 0)
-test.adb:16:14: medium: validity check might fail
+test.adb:16:14: medium: postcondition might fail (e.g. when Res = (I => 1) and Res.I'Valid = True and X = 0)
+test.adb:16:17: medium: validity check might fail
 test.adb:23:13: info: implicit aspect Always_Terminates on "F_Body_SPARK" has been proved, subprogram will terminate
 test.adb:25:14: medium: postcondition might fail (e.g. when F_Body_SPARK'Result = (I => 1) and X = 0)
-test.adb:25:26: medium: validity check might fail
+test.adb:25:33: medium: validity check might fail
 test.adb:29:14: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
 test.adb:38:24: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
 gnatprove: error during flow analysis and proof

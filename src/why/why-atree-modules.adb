@@ -31,7 +31,6 @@ with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Gnat2Why.Tables;                use Gnat2Why.Tables;
 with Gnat2Why.Util;                  use Gnat2Why.Util;
 with GNATCOLL.Utils;                 use GNATCOLL.Utils;
-with SPARK_Definition;               use SPARK_Definition;
 with SPARK_Definition.Annotate;      use SPARK_Definition.Annotate;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 with SPARK_Util.Types;               use SPARK_Util.Types;
@@ -162,7 +161,8 @@ package body Why.Atree.Modules is
               when Dispatch_Equality         => "___dispatch_eq",
               when Dispatch_Equality_Axiom   => "___dispatch_eq__axiom",
               when Move_Tree                 => "___move_tree",
-              when Incomp_Move_Tree          => "___incomplete_move_tree");
+              when Incomp_Move_Tree          => "___incomplete_move_tree",
+              when Validity_Tree             => "___validity_tree");
 
    begin
       --  Sanity checking
@@ -265,6 +265,13 @@ package body Why.Atree.Modules is
          =>
             pragma Assert
               (E in Type_Kind_Id and then Contains_Allocated_Parts (E));
+
+         when Validity_Tree =>
+            pragma Assert
+              (E in Type_Kind_Id
+               and then not Is_Scalar_Type (E)
+               and then Type_Might_Be_Invalid (E)
+               and then E = Base_Retysp (E));
       end case;
 
       return Hashconsed_Entity_Module (E, K, Name, Entity_Modules);
@@ -418,6 +425,24 @@ package body Why.Atree.Modules is
          end loop;
       end return;
    end Get_Refinement_Mask;
+
+   ----------------------------
+   -- Get_Validity_Tree_Type --
+   ----------------------------
+
+   function Get_Validity_Tree_Type (E : Entity_Id) return W_Type_Id is
+      Rep_Ty : constant Type_Kind_Id := Retysp (E);
+
+   begin
+      if Is_Scalar_Type (Rep_Ty) then
+         return EW_Bool_Type;
+      else
+         return New_Named_Type
+           (Name => New_Name
+              (Symb   => NID (To_String (WNE_Validity_Tree)),
+               Module => E_Module (Base_Retysp (Rep_Ty), Validity_Tree)));
+      end if;
+   end Get_Validity_Tree_Type;
 
    ------------------------------
    -- Hashconsed_Entity_Module --
@@ -692,10 +717,6 @@ package body Why.Atree.Modules is
         New_Module
           (File => Ada_Model_File,
            Name => "Real_time__model");
-      Validity_Wrapper_Model :=
-        New_Module
-          (File => Ada_Model_File,
-           Name => "Potentially_invalid_value");
 
       Constr_Arrays :=
         (1 => New_Module (File => Ada_Model_File,
@@ -2988,16 +3009,16 @@ package body Why.Atree.Modules is
                      Module => VM,
                      Domain => EW_Term));
                Insert_Symbol
-                 (E, WNE_Is_Valid,
+                 (E, WNE_Valid_Wrapper_Flag,
                   New_Identifier
-                    (Symb   => NID ("__is_valid"),
+                    (Symb   => NID ("__valid_wrapper_flag"),
                      Module => VM,
                      Domain => EW_Term,
                      Typ    => EW_Bool_Type));
                Insert_Symbol
-                 (E, WNE_Valid_Value,
+                 (E, WNE_Valid_Wrapper_Result,
                   New_Identifier
-                    (Symb   => NID ("__valid_value"),
+                    (Symb   => NID ("__valid_wrapper_result"),
                      Module => VM,
                      Domain => EW_Term,
                      Typ    => Type_Of_Node (E)));
@@ -3627,6 +3648,57 @@ package body Why.Atree.Modules is
                                 Module => E_Module (E, Incomp_Move_Tree))),
                         Module => E_Module (E, Move_Tree)));
             end if;
+         end if;
+
+         --  Symbols for validity trees if any
+
+         if Type_Might_Be_Invalid (E) and then not Has_Scalar_Type (E) then
+            declare
+               V_M     : constant W_Module_Id :=
+                 E_Module (Base_Retysp (E), Validity_Tree);
+               Tree_Ty : constant W_Type_Id := Get_Validity_Tree_Type (E);
+            begin
+               Insert_Symbol
+                 (E, WNE_Is_Valid,
+                  New_Identifier
+                    (Symb   => NID (To_String (WNE_Is_Valid)),
+                     Module => V_M,
+                     Domain => EW_Pred));
+               Insert_Symbol
+                 (E, WNE_Valid_Value,
+                  New_Identifier
+                    (Symb   => NID (To_String (WNE_Valid_Value)),
+                     Module => V_M,
+                     Domain => EW_Pterm,
+                     Typ    => Tree_Ty));
+
+               if Is_Array_Type (E) then
+                  Insert_Symbol
+                    (E, WNE_Validity_Tree_Get,
+                     New_Identifier
+                       (Domain => EW_Term,
+                        Symb   =>
+                          NID (To_String (WNE_Validity_Tree_Get)),
+                        Typ    => Get_Validity_Tree_Type (Component_Type (E)),
+                        Module => V_M));
+                  Insert_Symbol
+                    (E, WNE_Validity_Tree_Set,
+                     New_Identifier
+                       (Domain => EW_Prog,
+                        Symb   =>
+                          NID (To_String (WNE_Validity_Tree_Set)),
+                        Typ    => Tree_Ty,
+                        Module => V_M));
+                  Insert_Symbol
+                    (E, WNE_Validity_Tree_Slide,
+                     New_Identifier
+                       (Domain => EW_Prog,
+                        Symb   =>
+                          NID (To_String (WNE_Validity_Tree_Slide)),
+                        Typ    => Tree_Ty,
+                        Module => V_M));
+               end if;
+            end;
          end if;
 
          --  Symbols for scalar types

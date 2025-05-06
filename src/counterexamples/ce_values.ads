@@ -274,13 +274,13 @@ package CE_Values is
    end record;
 
    type Value_Type (K : Value_Kind := Scalar_K) is record
-      AST_Ty     : Entity_Id;
-      Valid_Attr : Opt_Boolean;
+      AST_Ty : Entity_Id;
 
       case K is
          when Scalar_K   =>
             Scalar_Content   : Scalar_Value_Access;
             Initialized_Attr : Opt_Boolean;
+            Valid_Attr       : Opt_Boolean;
          when Record_K   =>
             Record_Fields    : Entity_To_Value_Maps.Map;
             Constrained_Attr : Opt_Boolean;

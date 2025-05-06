@@ -19,9 +19,10 @@ procedure Test_Function_Result with spark_mode is
    --  Test VC generation for potentially invalid function result
 
    procedure Test_VCs with Global => null is
+      function F (X : Integer) return Boolean is (True);
       function Id_OK (X : R) return R with
         Potentially_Invalid => (X, Id_OK'Result),
-        Post => Id_OK'Result.I = 0;  --  @VALIDITY_CHECK:FAIL
+        Post => F (Id_OK'Result.I);  --  @VALIDITY_CHECK:FAIL
 
       function Id_OK (X : R) return R is
       begin
@@ -61,9 +62,16 @@ procedure Test_Function_Result with spark_mode is
 
       function Id_Fun_OK (X : R) return R with
         Potentially_Invalid => (X, Id_Fun_OK'Result),
-        Post => Id_Fun_OK'Result.I = 0;  --  @VALIDITY_CHECK:FAIL
+        Post => F (Id_Fun_OK'Result.I);  --  @VALIDITY_CHECK:FAIL
 
       function Id_Fun_OK (X : R) return R is (X);
+
+      function F (X : R) return Boolean is (True);
+      function Id_Fun_OK_2 (X : R) return R with
+        Potentially_Invalid => (X, Id_Fun_OK_2'Result),
+        Post => F (Id_Fun_OK_2'Result);  --  @VALIDITY_CHECK:FAIL
+
+      function Id_Fun_OK_2 (X : R) return R is (X);
 
       function Id_Fun_KO (X : R) return R with
         Global => null,

@@ -87,6 +87,12 @@ package Why.Gen.Records is
    --  Create a module declaring a type for the move trees for objects
    --  of type E.
 
+   procedure Create_Validity_Tree_Theory_For_Record
+     (Th : Theory_UC;
+      E  : Entity_Id);
+   --  Create a module declaring a type for the validity trees for objects
+   --  of type E.
+
    function New_Ada_Record_Access
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
@@ -235,6 +241,22 @@ package Why.Gen.Records is
       return W_Prog_Id
    with Pre => Contains_Allocated_Parts (Etype (Field));
    --  Update to the move tree for Field in Name
+
+   function New_Validity_Tree_Record_Access
+     (Name  : W_Expr_Id;
+      Field : Entity_Id;
+      Ty    : Entity_Id;
+      Local : Boolean := False)
+      return W_Expr_Id;
+   --  Access to the validity tree for Field in Name
+
+   function New_Validity_Tree_Record_Update
+     (Name  : W_Prog_Id;
+      Field : Entity_Id;
+      Value : W_Prog_Id;
+      Ty    : Entity_Id)
+      return W_Prog_Id;
+   --  Update to the validity tree for Field in Name
 
    procedure Generate_Associations_From_Ancestor
      (Ada_Node       : Node_Id := Empty;

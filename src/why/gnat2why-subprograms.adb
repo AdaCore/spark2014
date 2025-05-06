@@ -3098,30 +3098,26 @@ package body Gnat2Why.Subprograms is
 
       elsif Is_Potentially_Invalid (Function_Entity) then
          declare
-            Tmp_Id     : W_Identifier_Id;
-            Id_Def     : W_Expr_Id;
             Valid_Flag : W_Expr_Id;
+            Context    : Ref_Context;
          begin
             W_Def := +Transform_Potentially_Invalid_Expr
               (Expr          => Value,
                Expected_Type => Type_Of_Node (Function_Entity),
                Domain        => EW_Term,
                Params        => Params,
-               Tmp_Id        => Tmp_Id,
-               Id_Def        => Id_Def,
+               Context       => Context,
                Valid_Flag    => Valid_Flag);
 
             W_Def := +New_Function_Validity_Wrapper_Value
-              (Fun      => Function_Entity,
-               Is_Valid => Valid_Flag,
-               Value    => +W_Def);
+              (Fun        => Function_Entity,
+               Valid_Flag => Valid_Flag,
+               Value      => +W_Def);
 
-            if Present (Tmp_Id) then
-               W_Def := New_Typed_Binding
-                 (Name    => Tmp_Id,
-                  Def     => +Id_Def,
-                  Context => W_Def);
-            end if;
+            W_Def := +Bindings_For_Ref_Context
+              (Expr    => +W_Def,
+               Context => Context,
+               Domain  => EW_Term);
          end;
 
       --  Translate the Value expression in Why
@@ -5545,15 +5541,20 @@ package body Gnat2Why.Subprograms is
          --  Add a validity flag for the result if it is potentially invalid
 
          if Is_Potentially_Invalid (E) then
-            Emit
-              (Th,
-               New_Global_Ref_Declaration
-                 (Ada_Node => E,
-                  Name     => Get_Valid_Flag_For_Id (Result_Name),
-                  Labels   => Get_Counterexample_Labels
-                    (E, "'" & Initialized_Label),
-                  Location => No_Location,
-                  Ref_Type => EW_Bool_Type));
+            declare
+               Result_Valid : constant W_Identifier_Id :=
+                 Get_Valid_Flag_For_Id (Result_Name, Etype (E));
+            begin
+               Emit
+                 (Th,
+                  New_Global_Ref_Declaration
+                    (Ada_Node => E,
+                     Name     => Result_Valid,
+                     Labels   => Get_Counterexample_Labels
+                       (E, "'" & Initialized_Label),
+                     Location => No_Location,
+                     Ref_Type => Get_Typ (Result_Valid)));
+            end;
          end if;
 
          --  If E is a traversal function returning a borrower, declare a
@@ -6536,10 +6537,10 @@ package body Gnat2Why.Subprograms is
             then +New_Function_Valid_Value_Access
               (Fun => E, Name => +Result_Id)
             else +Result_Id);
-         Result_Is_Valid     : constant W_Term_Id :=
+         Result_Valid_Flag   : constant W_Term_Id :=
            (if Needs_Validity_Wrapper
-            then +New_Function_Is_Valid_Access (Fun => E, Name => +Result_Id)
-            else True_Term);
+            then +New_Function_Valid_Flag_Access (Fun => E, Name => +Result_Id)
+            else Why_Empty);
          Logic_Why_Binders   : constant Binder_Array :=
            To_Binder_Array (Logic_Func_Binders);
          Guard               : constant W_Pred_Id :=
@@ -6558,7 +6559,7 @@ package body Gnat2Why.Subprograms is
                Only_Var       => False_Term,
                All_Global_Inv =>
                  Include_All_Global_Invariants_For_Subp (E),
-               Valid          => Result_Is_Valid,
+               Valid          => Result_Valid_Flag,
                Params         => Params),
             Right  => +Compute_Type_Invariants_For_Subprogram
               (E, Params, False),
@@ -7483,11 +7484,11 @@ package body Gnat2Why.Subprograms is
                then +New_Function_Valid_Value_Access
                  (Fun => E, Name => +Result_Id)
                else +Result_Id);
-            Result_Is_Valid     : constant W_Term_Id :=
+            Result_Valid_Flag   : constant W_Term_Id :=
               (if Needs_Validity_Wrapper
-               then +New_Function_Is_Valid_Access
+               then +New_Function_Valid_Flag_Access
                  (Fun => E, Name => +Result_Id)
-               else True_Term);
+               else Why_Empty);
             Dynamic_Prop_Result : constant W_Pred_Id :=
               +New_And_Then_Expr
               (Left   => +Compute_Dynamic_Inv_And_Initialization
@@ -7496,7 +7497,7 @@ package body Gnat2Why.Subprograms is
                   Only_Var       => False_Term,
                   All_Global_Inv =>
                     Include_All_Global_Invariants_For_Subp (E),
-                  Valid          => Result_Is_Valid,
+                  Valid          => Result_Valid_Flag,
                   Params         => Params),
                Right  => +Compute_Type_Invariants_For_Subprogram
                  (E, Params, False),
@@ -7710,10 +7711,8 @@ package body Gnat2Why.Subprograms is
                   Eq_Expr   : W_Pred_Id;
 
                   --  Handling of potentially invalid values
-
-                  Tmp_Id     : W_Identifier_Id;
-                  Id_Def     : W_Expr_Id;
                   Valid_Flag : W_Expr_Id;
+                  Context    : Ref_Context;
 
                begin
                   if Needs_Validity_Wrapper then
@@ -7722,26 +7721,23 @@ package body Gnat2Why.Subprograms is
                         Expected_Type => Type_Of_Node (E),
                         Domain        => Domain,
                         Params        => Params,
-                        Tmp_Id        => Tmp_Id,
-                        Id_Def        => Id_Def,
+                        Context       => Context,
                         Valid_Flag    => Valid_Flag);
 
                      Expr_Body := New_Function_Validity_Wrapper_Value
-                       (Fun      => E,
-                        Is_Valid => Valid_Flag,
-                        Value    => Expr_Body);
+                       (Fun        => E,
+                        Valid_Flag => Valid_Flag,
+                        Value      => Expr_Body);
 
                      Eq_Expr := New_Comparison
                        (Symbol => Why_Eq,
                         Left   => +Result_Id,
                         Right  => +Expr_Body);
 
-                     if Present (Tmp_Id) then
-                        Eq_Expr := New_Typed_Binding
-                          (Name    => Tmp_Id,
-                           Def     => +Id_Def,
-                           Context => Eq_Expr);
-                     end if;
+                     Eq_Expr := +Bindings_For_Ref_Context
+                       (Expr    => +Eq_Expr,
+                        Context => Context,
+                        Domain  => EW_Pred);
                   else
                      Expr_Body :=
                        Transform_Expr (Expression (Expr_Fun_N),
@@ -8718,6 +8714,9 @@ package body Gnat2Why.Subprograms is
               & ", created in " & GNAT.Source_Info.Enclosing_Entity);
       end if;
 
+      --  If E is potentially invalid, create a record wrapper for its
+      --  result and its valid flag.
+
       if Is_Potentially_Invalid (E) then
          declare
             Validity_Module : constant W_Module_Id :=
@@ -8733,20 +8732,71 @@ package body Gnat2Why.Subprograms is
                       " defined at " & Build_Location_String (Sloc (E))
                    else "")
                  & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-            Subst           : constant W_Clone_Substitution_Array :=
-              (1 => New_Clone_Substitution
-                 (Kind      => EW_Type_Subst,
-                  Orig_Name => New_Name (Symb => NID ("__t")),
-                  Image     => Get_Name (+Type_Of_Node (E))));
+            E_Ty            : constant W_Type_Id := Type_Of_Node (E);
+            Tree_Ty         : constant W_Type_Id :=
+              Get_Validity_Tree_Type (Etype (E));
 
          begin
-            Emit (Validity_Th,
-                  New_Clone_Declaration
-                    (Theory_Kind   => EW_Theory,
-                     Clone_Kind    => EW_Export,
-                     Origin        => Validity_Wrapper_Model,
-                     As_Name       => No_Symbol,
-                     Substitutions => Subst));
+            Emit_Record_Declaration
+              (Th      => Validity_Th,
+               Name    => To_Local (E_Symb (E, WNE_Valid_Wrapper)),
+               Binders =>
+                 (1 =>
+                      (B_Name => New_Identifier
+                           (Domain => EW_Term,
+                            Name   => To_Local
+                              (E_Symb (E, WNE_Valid_Wrapper_Result)),
+                            Typ    => E_Ty),
+                       others => <>),
+                  2 =>
+                    (B_Name => New_Identifier
+                         (Domain => EW_Term,
+                          Name   => To_Local
+                            (E_Symb (E, WNE_Valid_Wrapper_Flag)),
+                          Typ    => Tree_Ty),
+                     others => <>)));
+
+            declare
+               Wrapper_Id : constant W_Identifier_Id :=
+                 New_Identifier
+                   (Name => "x",
+                    Typ  => New_Named_Type
+                      (Name => To_Local (E_Symb (E, WNE_Valid_Wrapper))));
+            begin
+               Emit
+                 (Validity_Th,
+                  New_Function_Decl
+                    (Domain      => EW_Prog,
+                     Name        => To_Program_Space
+                       (To_Local (E_Symb (E, WNE_Valid_Wrapper_Result))),
+                     Binders     => Binder_Array'
+                       (1 => (B_Name => Wrapper_Id, others => <>)),
+                     Return_Type => E_Ty,
+                     Location    => No_Location,
+                     Labels      => Symbol_Sets.Empty_Set,
+                     Pre         => +New_Is_Valid_Call_For_Expr
+                       (Tree   => New_Record_Access
+                            (Name  => +Wrapper_Id,
+                             Field => To_Local
+                               (E_Symb (E, WNE_Valid_Wrapper_Flag)),
+                             Typ   => EW_Bool_Type),
+                        Ty     => Etype (E),
+                        Expr   => New_Record_Access
+                          (Name  => +Wrapper_Id,
+                           Field => To_Local
+                             (E_Symb (E, WNE_Valid_Wrapper_Result)),
+                           Typ   => E_Ty),
+                        Domain => EW_Pred),
+                     Post        => New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => +New_Result_Ident (Typ => E_Ty),
+                        Right  => New_Record_Access
+                          (Name  => +Wrapper_Id,
+                           Field => To_Local
+                             (E_Symb (E, WNE_Valid_Wrapper_Result)),
+                           Typ   => E_Ty))));
+            end;
+
             Close_Theory (Validity_Th, Kind => Definition_Theory);
          end;
       end if;
@@ -8892,8 +8942,8 @@ package body Gnat2Why.Subprograms is
             Def     => +New_Function_Valid_Value_Access
               (Fun => E, Name => +Result_Id),
             Context => New_Typed_Binding
-              (Name    => Get_Valid_Flag_For_Id (Result_Name),
-               Def     => +New_Function_Is_Valid_Access
+              (Name    => Get_Valid_Flag_For_Id (Result_Name, Etype (E)),
+               Def     => +New_Function_Valid_Flag_Access
                  (Fun => E, Name => +Result_Id),
                Context => Post));
       end if;

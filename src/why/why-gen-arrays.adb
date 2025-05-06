@@ -214,6 +214,25 @@ package body Why.Gen.Arrays is
    --  @param Symbols the symbols for the array theory
    --  Clone module for comparison functions (see M_Array_Comp_Type)
 
+   procedure Declare_Getter_And_Setter
+     (Th       : Theory_UC;
+      E        : Entity_Id;
+      Arr_Ty   : W_Type_Id;
+      Comp_Ty  : W_Type_Id;
+      Get_Symb : W_Identifier_Id;
+      Set_Symb : W_Identifier_Id);
+   --  Emit definitions for get and set as for infinite maps. Set is only
+   --  defined in programs, it is defined using a postcondition. Generate:
+   --
+   --   function get (arr : arr_ty) (i_1 : index_1) ... : comp_ty
+   --   val set (arr : arr_ty) ... (comp : comp_ty) : arr_ty
+   --      ensures
+   --       { get result i_1 ... = comp /\
+   --         (forall j_1 : index_1, .... (j_1 <> i_1 \/ ...) ->
+   --             get result i_1 ... = get arr i_1 ...) }
+   --
+   --  This is used to create flag trees for Is_Moved and validity.
+
    -----------------
    -- Add_Map_Arg --
    -----------------
@@ -911,8 +930,6 @@ package body Why.Gen.Arrays is
         New_Identifier
           (Name => "tree",
            Typ  => New_Named_Type (Name => Ty_Name));
-      Tree_Binder : constant Binder_Type :=
-        (B_Name => Tree_Ident, others => <>);
       Comp_Tree   : constant W_Type_Id := Get_Move_Tree_Type
         (Component_Type (E));
 
@@ -922,101 +939,13 @@ package body Why.Gen.Arrays is
       Emit_Ref_Type_Definition (Th   => Th,
                                 Name => Ty_Name);
 
-      --  Emit definitions for get and set as for infinite maps. Set is only
-      --  defined in programs, it is defined using a postcondition. Generate:
-      --
-      --   function get (tree : move_tree) (i_1 : index_1) ... : comp_move_tree
-      --   val set (tree : move_tree) ... (comp : comp_move_tree) : move_tree
-      --      ensures
-      --       { get result i_1 ... = comp /\
-      --         (forall j_1 : index_1, .... (j_1 <> i_1 \/ ...) ->
-      --             get result i_1 ... = get tree i_1 ...) }
-
-      declare
-         Comp_Binder : constant Binder_Type :=
-           (B_Name => New_Identifier
-              (Name => "comp",
-               Typ  => Comp_Tree),
-            others => <>);
-         Nb_Dim      : constant Positive := Positive (Number_Dimensions (E));
-         I_Binders   : Binder_Array (1 .. Nb_Dim);
-
-      begin
-         for I in I_Binders'Range loop
-            I_Binders (I) :=
-              (B_Name => New_Identifier
-                 (Name => Append_Num ("i", I),
-                  Typ  => Nth_Index_Rep_Type_No_Bool (E, I)),
-               others => <>);
-         end loop;
-
-         Emit
-           (Th,
-            New_Function_Decl
-              (Domain      => EW_Pterm,
-               Name        => To_Local (E_Symb (E, WNE_Move_Tree_Array_Get)),
-               Binders     => Binder_Array'
-                 (Tree_Binder & I_Binders),
-               Location    => No_Location,
-               Labels      => Symbol_Sets.Empty_Set,
-               Return_Type => Comp_Tree));
-
-         declare
-            J_Binders : Binder_Array (1 .. Nb_Dim);
-            Distinct  : W_Pred_Array (1 .. Nb_Dim);
-            Result_Id : constant W_Identifier_Id :=
-              New_Result_Ident (Get_Typ (Tree_Ident));
-            R_Binder  : constant Binder_Type :=
-              (B_Name => Result_Id, others => <>);
-
-         begin
-            for I in J_Binders'Range loop
-               J_Binders (I) :=
-                 (B_Name => New_Identifier
-                    (Name => Append_Num ("j", I),
-                     Typ  => Nth_Index_Rep_Type_No_Bool (E, I)),
-                  others => <>);
-               Distinct (I) := New_Comparison
-                 (Symbol => Why_Neq,
-                  Left   => +J_Binders (I).B_Name,
-                  Right  => +I_Binders (I).B_Name);
-            end loop;
-
-            Emit
-              (Th,
-               New_Function_Decl
-                 (Domain      => EW_Prog,
-                  Name        => To_Local
-                    (E_Symb (E, WNE_Move_Tree_Array_Set)),
-                  Binders     => Binder_Array'
-                    (Tree_Binder & I_Binders & Comp_Binder),
-                  Location    => No_Location,
-                  Labels      => Symbol_Sets.Empty_Set,
-                  Post        => New_And_Pred
-                    (Left  => New_Comparison
-                         (Symbol => Why_Eq,
-                          Left   => New_Call
-                            (Name    => To_Local
-                               (E_Symb (E, WNE_Move_Tree_Array_Get)),
-                             Binders => R_Binder & I_Binders),
-                          Right  => +Comp_Binder.B_Name),
-                     Right => New_Universal_Quantif
-                       (Binders => J_Binders,
-                        Pred    => New_Conditional
-                          (Condition => New_Or_Pred (Distinct),
-                           Then_Part => New_Comparison
-                             (Symbol => Why_Eq,
-                              Left   => New_Call
-                                (Name    => To_Local
-                                     (E_Symb (E, WNE_Move_Tree_Array_Get)),
-                                 Binders => R_Binder & J_Binders),
-                              Right  => New_Call
-                                (Name    => To_Local
-                                     (E_Symb (E, WNE_Move_Tree_Array_Get)),
-                                 Binders => Tree_Binder & J_Binders))))),
-                  Return_Type => Get_Typ (Tree_Ident)));
-         end;
-      end;
+      Declare_Getter_And_Setter
+        (Th       => Th,
+         E        => E,
+         Arr_Ty   => New_Named_Type (Name => Ty_Name),
+         Comp_Ty  => Comp_Tree,
+         Get_Symb => To_Local (E_Symb (E, WNE_Move_Tree_Array_Get)),
+         Set_Symb => To_Local (E_Symb (E, WNE_Move_Tree_Array_Set)));
 
       --  Create __is_moved_or_reclaimed predicate. Generate:
       --
@@ -1267,6 +1196,333 @@ package body Why.Gen.Arrays is
             To_Wrapper   => True);
       end if;
    end Create_Rep_Array_Theory_If_Needed;
+
+   -------------------------------------------
+   -- Create_Validity_Tree_Theory_For_Array --
+   -------------------------------------------
+
+   procedure Create_Validity_Tree_Theory_For_Array
+     (Th : Theory_UC;
+      E  : Entity_Id)
+   is
+      Ty_Name     : constant W_Name_Id := To_Name (WNE_Validity_Tree);
+      Tree_Ty     : constant W_Type_Id := New_Named_Type (Name => Ty_Name);
+      Comp_Ty     : constant Type_Kind_Id := Component_Type (E);
+      Comp_Tree   : constant W_Type_Id := Get_Validity_Tree_Type (Comp_Ty);
+      Tree_Ident  : constant W_Identifier_Id :=
+        New_Identifier (Name => "tree", Typ  => Tree_Ty);
+      Tree_Binder : constant Binder_Type := Binder_Type'
+        (Ada_Node => Empty,
+         B_Name   => Tree_Ident,
+         B_Ent    => Null_Entity_Name,
+         Mutable  => False,
+         Labels   => <>);
+      Dim         : constant Positive := Positive (Number_Dimensions (E));
+      Get_Name    : constant W_Identifier_Id :=
+        To_Local (E_Symb (E, WNE_Validity_Tree_Get));
+
+   begin
+      Emit
+        (Th,
+         New_Type_Decl (Name   => Ty_Name,
+                        Labels => Symbol_Sets.Empty_Set));
+
+      Emit_Ref_Type_Definition (Th   => Th,
+                                Name => Ty_Name);
+      Emit (Th, New_Havoc_Declaration (Name => Ty_Name));
+
+      Declare_Getter_And_Setter
+        (Th       => Th,
+         E        => E,
+         Arr_Ty   => Tree_Ty,
+         Comp_Ty  => Comp_Tree,
+         Get_Symb => Get_Name,
+         Set_Symb => To_Local (E_Symb (E, WNE_Validity_Tree_Set)));
+
+      --  Generate a function for sliding. Generate:
+      --
+      --
+      --  let function __slide
+      --       (tree : Ty_Name) (old_f1, new_f1 : I1.t) ... : Ty_Name
+      --  axiom __slide__def:
+      --    forall tree : Ty_Name, old_f1, new_f1 : I1.t ...
+      --          [__slide tree old_f1 new_f1 ...].
+      --     let result = __slide tree old_f1 new_f1 ... in
+      --       (old_f1 = new_f1 /\ ... -> result = tree)
+      --       /\ forall i1. ... get result i1 ... = get tree
+      --             (i1 - new_f1 + old_f1) ...
+      --       /\ forall i1. ... get tree i1 ... = get result
+      --             (i1 - old_f1 + new_f1) ...
+
+      declare
+         Slide_Name  : constant W_Identifier_Id :=
+           To_Local (E_Symb (E, WNE_Validity_Tree_Slide));
+         Firsts      : Binder_Array (1 .. Dim * 2);
+         Vars        : Binder_Array (1 .. Dim);
+         Vars_To_Old : W_Expr_Array (1 .. Dim); --  (i1 - new_f1 + old_f1) ...
+         Vars_To_New : W_Expr_Array (1 .. Dim); --  (i1 - old_f1 + new_f1) ...
+         Eq_First    : W_Pred_Array (1 .. Dim);
+         Index       : Node_Id := First_Index (E);
+
+      begin
+         for I in 1 .. Dim loop
+            declare
+               Idx_Ty    : constant W_Type_Id := Base_Why_Type_No_Bool (Index);
+               Idx       : constant W_Identifier_Id := New_Temp_Identifier
+                 (Base_Name => "idx", Typ => Idx_Ty);
+               Old_First : constant W_Identifier_Id := New_Temp_Identifier
+                 (Base_Name => "old_first", Typ => Idx_Ty);
+               New_First : constant W_Identifier_Id := New_Temp_Identifier
+                 (Base_Name => "new_first", Typ => Idx_Ty);
+            begin
+               Vars (I) := Binder_Type'
+                 (Ada_Node => Empty,
+                  B_Name   => Idx,
+                  B_Ent    => Null_Entity_Name,
+                  Mutable  => False,
+                  Labels   => <>);
+               Firsts (I * 2 - 1) := Binder_Type'
+                 (Ada_Node => Empty,
+                  B_Name   => Old_First,
+                  B_Ent    => Null_Entity_Name,
+                  Mutable  => False,
+                  Labels   => <>);
+               Firsts (I * 2) := Binder_Type'
+                 (Ada_Node => Empty,
+                  B_Name   => New_First,
+                  B_Ent    => Null_Entity_Name,
+                  Mutable  => False,
+                  Labels   => <>);
+               Eq_First (I) := New_Comparison
+                 (Symbol => Why_Eq,
+                  Left   => +Old_First,
+                  Right  => +New_First);
+               Vars_To_Old (I) := +New_Discrete_Add
+                 (Domain => EW_Term,
+                  Left   => New_Discrete_Substract
+                    (Domain => EW_Term,
+                     Left   => +Idx,
+                     Right  => +New_First,
+                     Typ    => Idx_Ty),
+                  Right  => +Old_First,
+                  Typ    => Idx_Ty);
+               Vars_To_New (I) := +New_Discrete_Add
+                 (Domain => EW_Term,
+                  Left   => New_Discrete_Substract
+                    (Domain => EW_Term,
+                     Left   => +Idx,
+                     Right  => +Old_First,
+                     Typ    => Idx_Ty),
+                  Right  => +New_First,
+                  Typ    => Idx_Ty);
+            end;
+            Next_Index (Index);
+         end loop;
+
+         pragma Assert (No (Index));
+         Emit
+           (Th,
+            New_Function_Decl
+              (Domain      => EW_Pterm,
+               Name        => To_Local (E_Symb (E, WNE_Validity_Tree_Slide)),
+               Return_Type => Tree_Ty,
+               Binders     => Tree_Binder & Firsts,
+               Location    => No_Location,
+               Labels      => Symbol_Sets.Empty_Set));
+
+         declare
+            Axiom_Name : constant String := "__slide__" & Def_Axiom;
+            Call       : constant W_Term_Id := New_Call
+              (Name    => Slide_Name,
+               Binders => Tree_Binder & Firsts,
+               Typ     => Tree_Ty);
+         begin
+            Emit
+              (Th,
+               New_Guarded_Axiom
+                 (Name     => NID (Axiom_Name),
+                  Binders  => Tree_Binder & Firsts,
+                  Triggers => New_Triggers
+                    (Triggers =>
+                         (1 => New_Trigger (Terms => (1 => +Call)))),
+                  Def      => New_Typed_Binding
+                    (Name     => New_Result_Ident (Tree_Ty),
+                     Def      => Call,
+                     Context  => New_And_Pred
+                       ((1 => New_Conditional
+                         (Condition => New_And_Pred (Eq_First),
+                          Then_Part => New_Comparison
+                            (Symbol => Why_Eq,
+                             Left   => +New_Result_Ident (Tree_Ty),
+                             Right  => +Tree_Ident)),
+                         2 => New_Universal_Quantif
+                           (Binders => Vars,
+                            Pred    => New_Comparison
+                              (Symbol => Why_Eq,
+                               Left   => New_Call
+                                 (Name    => Get_Name,
+                                  Binders => Binder_Type'
+                                    (Ada_Node => Empty,
+                                     B_Name   => New_Result_Ident (Tree_Ty),
+                                     B_Ent    => Null_Entity_Name,
+                                     Mutable  => False,
+                                     Labels   => <>) & Vars,
+                                  Typ     => Comp_Tree),
+                               Right  => New_Call
+                                 (Name  => Get_Name,
+                                  Args  => +Tree_Ident & Vars_To_Old,
+                                  Typ   => Comp_Tree))),
+                         3 => New_Universal_Quantif
+                           (Binders => Vars,
+                            Pred    => New_Comparison
+                              (Symbol => Why_Eq,
+                               Left   => New_Call
+                                 (Name    => Get_Name,
+                                  Binders => Tree_Binder & Vars,
+                                  Typ     => Comp_Tree),
+                               Right  => New_Call
+                                 (Name  => Get_Name,
+                                  Args  => +New_Result_Ident (Tree_Ty)
+                                  & Vars_To_New,
+                                  Typ   => Comp_Tree)))))),
+                  Dep      => New_Axiom_Dep
+                    (Name => Slide_Name, Kind => EW_Axdep_Func)));
+         end;
+      end;
+
+      --  Generate a is_valid function and a valid_value constant that has all
+      --  its fields to True.
+      --
+      --  Generate:
+      --
+      --  predicate is_valid (tree : Ty_Name) (f1, l1 : I1.t) ... =
+      --    (forall i1. f1 <= i1 <= l1 ->
+      --     ...
+      --       Comp.is_valid (get tree i1 ...))
+      --
+      --  let function valid_value : Ty_Name
+      --  axiom valid_value__def
+      --     forall i1. ... get valid_value i1 ... = Comp.valid_value
+
+      declare
+         Bounds : Binder_Array (1 .. Dim * 2);
+         Vars   : Binder_Array (1 .. Dim);
+         Ranges : W_Pred_Array (1 .. Dim);
+         Index  : Node_Id := First_Index (E);
+
+      begin
+         for I in 1 .. Dim loop
+            declare
+               Idx_Ty   : constant W_Type_Id := Base_Why_Type_No_Bool (Index);
+               Idx      : constant W_Identifier_Id := New_Temp_Identifier
+                 (Base_Name => "idx", Typ => Idx_Ty);
+               First_Id : constant W_Identifier_Id := New_Temp_Identifier
+                 (Base_Name => "first", Typ => Idx_Ty);
+               Last_Id  : constant W_Identifier_Id := New_Temp_Identifier
+                 (Base_Name => "last", Typ => Idx_Ty);
+            begin
+               Vars (I) := Binder_Type'
+                 (Ada_Node => Empty,
+                  B_Name   => Idx,
+                  B_Ent    => Null_Entity_Name,
+                  Mutable  => False,
+                  Labels   => <>);
+               Bounds (I * 2 - 1) := Binder_Type'
+                 (Ada_Node => Empty,
+                  B_Name   => First_Id,
+                  B_Ent    => Null_Entity_Name,
+                  Mutable  => False,
+                  Labels   => <>);
+               Bounds (I * 2) := Binder_Type'
+                 (Ada_Node => Empty,
+                  B_Name   => Last_Id,
+                  B_Ent    => Null_Entity_Name,
+                  Mutable  => False,
+                  Labels   => <>);
+               Ranges (I) := +New_Range_Expr
+                 (Low    => +First_Id,
+                  High   => +Last_Id,
+                  Expr   => +Idx,
+                  Domain => EW_Pred);
+               Next_Index (Index);
+            end;
+         end loop;
+
+         pragma Assert (No (Index));
+
+         --  Define Is_Valid
+
+         declare
+            Get_Call     : constant W_Term_Id := New_Call
+              (Name    => Get_Name,
+               Binders => Tree_Binder & Vars,
+               Typ     => Comp_Tree);
+            Is_Valid_Def : constant W_Pred_Id := New_Universal_Quantif
+              (Binders => Vars,
+               Pred    => New_Conditional
+                 (Condition => New_And_Pred (Ranges),
+                  Then_Part =>
+                    (if Has_Scalar_Type (Comp_Ty)
+                     then Pred_Of_Boolean_Term (+Get_Call)
+                     else +New_Is_Valid_Call_For_Constrained_Ty
+                       (+Get_Call, Comp_Ty, EW_Pred, Logic_Params))));
+         begin
+            Emit
+              (Th,
+               New_Function_Decl
+                 (Domain   => EW_Pred,
+                  Name     => To_Local (E_Symb (E, WNE_Is_Valid)),
+                  Binders  => Tree_Binder & Bounds,
+                  Location => No_Location,
+                  Labels   => Symbol_Sets.Empty_Set,
+                  Def      => +Is_Valid_Def));
+         end;
+
+         --  Define Valid_Value
+
+         declare
+            Valid_Value_Name : constant W_Identifier_Id :=
+              To_Local (E_Symb (E, WNE_Valid_Value));
+            Axiom_Name       : constant String :=
+              "__valid_value__" & Def_Axiom;
+         begin
+            Emit
+              (Th,
+               New_Function_Decl
+                 (Domain      => EW_Pterm,
+                  Name        => Valid_Value_Name,
+                  Return_Type => Tree_Ty,
+                  Binders     => Binder_Array'(1 .. 0 => <>),
+                  Location    => No_Location,
+                  Labels      => Symbol_Sets.Empty_Set));
+
+            Emit
+              (Th,
+               New_Guarded_Axiom
+                 (Name    => NID (Axiom_Name),
+                  Binders => (1 .. 0 => <>),
+                  Def     => New_Universal_Quantif
+                    (Binders => Vars,
+                     Pred    => New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => New_Call
+                          (Name    => Get_Name,
+                           Binders => Binder_Type'
+                             (Ada_Node => Empty,
+                              B_Name   => Valid_Value_Name,
+                              B_Ent    => Null_Entity_Name,
+                              Mutable  => False,
+                              Labels   => <>) & Vars,
+                           Typ     => Comp_Tree),
+                        Right  =>
+                          (if Has_Scalar_Type (Comp_Ty)
+                           then True_Term
+                           else +E_Symb (Comp_Ty, WNE_Valid_Value)))),
+                  Dep     => New_Axiom_Dep
+                    (Name => Valid_Value_Name, Kind => EW_Axdep_Func)));
+         end;
+      end;
+   end Create_Validity_Tree_Theory_For_Array;
 
    -----------------------
    -- Declare_Ada_Array --
@@ -1926,6 +2182,135 @@ package body Why.Gen.Arrays is
          end;
       end if;
    end Declare_Equality_Function;
+
+   -------------------------------
+   -- Declare_Getter_And_Setter --
+   -------------------------------
+
+   procedure Declare_Getter_And_Setter
+     (Th       : Theory_UC;
+      E        : Entity_Id;
+      Arr_Ty   : W_Type_Id;
+      Comp_Ty  : W_Type_Id;
+      Get_Symb : W_Identifier_Id;
+      Set_Symb : W_Identifier_Id)
+   is
+      Arr_Ident   : constant W_Identifier_Id :=
+        New_Identifier
+          (Name => "arr",
+           Typ  => Arr_Ty);
+      Arr_Binder  : constant Binder_Type :=
+        (B_Name => Arr_Ident, others => <>);
+      Comp_Binder : constant Binder_Type :=
+        (B_Name => New_Identifier
+           (Name => "comp",
+            Typ  => Comp_Ty),
+         others => <>);
+      Nb_Dim      : constant Positive := Positive (Number_Dimensions (E));
+      I_Binders   : Binder_Array (1 .. Nb_Dim);
+
+   begin
+      for I in I_Binders'Range loop
+         I_Binders (I) :=
+           (B_Name => New_Identifier
+              (Name => Append_Num ("i", I),
+               Typ  => Nth_Index_Rep_Type_No_Bool (E, I)),
+            others => <>);
+      end loop;
+
+      Emit
+        (Th,
+         New_Function_Decl
+           (Domain      => EW_Pterm,
+            Name        => Get_Symb,
+            Binders     => Binder_Array'(Arr_Binder & I_Binders),
+            Location    => No_Location,
+            Labels      => Symbol_Sets.Empty_Set,
+            Return_Type => Comp_Ty));
+
+      declare
+         J_Binders : Binder_Array (1 .. Nb_Dim);
+         Distinct  : W_Pred_Array (1 .. Nb_Dim);
+
+      begin
+         for I in J_Binders'Range loop
+            J_Binders (I) :=
+              (B_Name => New_Identifier
+                 (Name => Append_Num ("j", I),
+                  Typ  => Nth_Index_Rep_Type_No_Bool (E, I)),
+               others => <>);
+            Distinct (I) := New_Comparison
+              (Symbol => Why_Neq,
+               Left   => +J_Binders (I).B_Name,
+               Right  => +I_Binders (I).B_Name);
+         end loop;
+
+         Emit
+           (Th,
+            New_Function_Decl
+              (Domain      => EW_Pterm,
+               Name        => Set_Symb,
+               Binders     => Binder_Array'
+                 (Arr_Binder & I_Binders & Comp_Binder),
+               Location    => No_Location,
+               Labels      => Symbol_Sets.Empty_Set,
+               Return_Type => Arr_Ty));
+
+         declare
+            Set_Call   : constant W_Term_Id := New_Call
+              (Name    => Set_Symb,
+               Binders => Binder_Array'
+                 (Arr_Binder & I_Binders & Comp_Binder),
+               Typ     =>  Arr_Ty);
+            Get_Eq     : constant W_Term_Id := New_Call
+              (Name => Get_Symb,
+               Args => W_Expr_Array'
+                 (+Set_Call & Get_Args_From_Binders (I_Binders, False)));
+            Get_Neq_1  : constant W_Term_Id := New_Call
+              (Name => Get_Symb,
+               Args => W_Expr_Array'
+                 (+Set_Call & Get_Args_From_Binders (J_Binders, False)));
+            Get_Neq_2  : constant W_Term_Id := New_Call
+              (Name    => Get_Symb,
+               Binders => Arr_Binder & J_Binders);
+         begin
+            Emit
+              (Th,
+               New_Guarded_Axiom
+                 (Name    => NID ("__set__eq"),
+                  Binders => Binder_Array'
+                    (Arr_Binder & I_Binders & Comp_Binder),
+                  Triggers => New_Triggers
+                    (Triggers =>
+                         (1 => New_Trigger (Terms => (1 => +Get_Eq)))),
+                  Def     => New_Comparison
+                    (Symbol => Why_Eq,
+                     Left   => Get_Eq,
+                     Right  => +Comp_Binder.B_Name),
+                  Dep     => New_Axiom_Dep (Name => Set_Symb,
+                                            Kind => EW_Axdep_Func)));
+            Emit
+              (Th,
+               New_Guarded_Axiom
+                 (Name    => NID ("__set__neq"),
+                  Binders => Binder_Array'
+                    (Arr_Binder & I_Binders & J_Binders & Comp_Binder),
+                  Triggers => New_Triggers
+                    (Triggers =>
+                         (1 => New_Trigger (Terms => (1 => +Get_Neq_1)),
+                          2 => New_Trigger
+                            (Terms => (+Set_Call, +Get_Neq_2)))),
+                  Def      => New_Conditional
+                    (Condition => New_Or_Pred (Distinct),
+                     Then_Part => New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => Get_Neq_1,
+                        Right  => Get_Neq_2)),
+                  Dep     => New_Axiom_Dep (Name => Set_Symb,
+                                            Kind => EW_Axdep_Func)));
+         end;
+      end;
+   end Declare_Getter_And_Setter;
 
    ------------------------------------
    -- Declare_Init_Wrapper_For_Array --
@@ -3309,6 +3694,88 @@ package body Why.Gen.Arrays is
       end if;
       return Binding_For_Temp (Domain => Domain, Tmp => Expr, Context => R);
    end New_Slice_Call;
+
+   ------------------------------------
+   -- New_Validity_Tree_Array_Access --
+   ------------------------------------
+
+   function New_Validity_Tree_Array_Access
+     (Name   : W_Expr_Id;
+      Index  : W_Expr_Array;
+      Ty     : Entity_Id;
+      Domain : EW_Domain)
+      return W_Expr_Id
+   is
+   begin
+      return New_Call
+        (Name   => E_Symb (Ty, WNE_Validity_Tree_Get),
+         Domain => Domain,
+         Args   => Name & Index,
+         Typ    => Get_Validity_Tree_Type (Component_Type (Retysp (Ty))));
+   end New_Validity_Tree_Array_Access;
+
+   -----------------------------
+   -- New_Validity_Tree_Slide --
+   -----------------------------
+
+   function New_Validity_Tree_Slide
+     (Tree   : W_Expr_Id;
+      Expr   : W_Expr_Id;
+      To     : W_Type_Id;
+      Domain : EW_Domain;
+      Params : Transformation_Params)
+      return W_Expr_Id
+   is
+      To_Ty   : constant Entity_Id := Get_Ada_Node (+To);
+      Dim     : constant Positive := Positive (Number_Dimensions (To_Ty));
+      Firsts  : W_Expr_Array (1 .. Dim * 2);
+      Arg_Ind : Positive := 1;
+
+   begin
+      for I in 1 .. Dim loop
+         Add_Attr_Arg
+           (Domain, Firsts, Expr,
+            Attribute_First, I, Arg_Ind);
+         if Is_Constrained (To_Ty)
+           or else
+             Is_Fixed_Lower_Bound_Index_Subtype (Nth_Index_Type (To_Ty, I))
+         then
+            Add_Attr_Arg
+              (Domain, Firsts, To_Ty,
+               Attribute_First, I, Arg_Ind, Params);
+         else
+            Add_Attr_Arg
+              (Domain, Firsts, Expr,
+               Attribute_First, I, Arg_Ind);
+         end if;
+      end loop;
+
+      return New_Call
+        (Domain => Domain,
+         Name   => E_Symb (To_Ty, WNE_Validity_Tree_Slide),
+         Args   => Tree & Firsts,
+         Typ    => Get_Type (Tree));
+   end New_Validity_Tree_Slide;
+
+   ------------------------------------
+   -- New_Validity_Tree_Array_Update --
+   ------------------------------------
+
+   function New_Validity_Tree_Array_Update
+     (Name   : W_Expr_Id;
+      Index  : W_Expr_Array;
+      Value  : W_Expr_Id;
+      Ty     : Entity_Id;
+      Domain : EW_Domain)
+      return W_Expr_Id
+   is
+   begin
+      return New_Call
+        (Name   => E_Symb (Ty, WNE_Validity_Tree_Set),
+         Args   => +Name & Index & W_Expr_Id'(+Value),
+         Typ    => Get_Type (+Name),
+         Domain => Domain);
+   end New_Validity_Tree_Array_Update;
 
    --------------------------
    -- New_Well_Formed_Pred --

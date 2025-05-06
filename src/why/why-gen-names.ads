@@ -475,7 +475,14 @@ package Why.Gen.Names is
 
       --  Names for potentially invalid
       WNE_Is_Valid,               --  "__is_valid"
+      WNE_Validity_Tree,          --  "__validity_tree"
+      WNE_Validity_Tree_Get,      --  "__get"
+      WNE_Validity_Tree_Set,      --  "__set"
+      WNE_Validity_Tree_Slide,    --  "__slide"
+      WNE_Valid_Flag,             --  "__valid_flag"
       WNE_Valid_Value,            --  "__valid_value"
+      WNE_Valid_Wrapper_Result,   --  "__valid_wrapper_result"
+      WNE_Valid_Wrapper_Flag,     --  "__valid_wrapper_flag"
       WNE_Valid_Wrapper           --  "__valid_wrapper"
      );
 
@@ -517,7 +524,10 @@ package Why.Gen.Names is
 
    function Havoc_Append (Base : W_Name_Id) return W_Identifier_Id;
 
-   function Valid_Append (Base : W_Identifier_Id) return W_Identifier_Id;
+   function Valid_Append
+     (Base : W_Identifier_Id;
+      Typ  : W_Type_Id)
+      return W_Identifier_Id;
 
    function Variant_Append
      (Base     : String;
@@ -570,11 +580,5 @@ package Why.Gen.Names is
    --  @param From the BV type to convert from
    --  @param To the BV type to convert to
    --  @return the appropriate range check function
-
-   function Get_Valid_Flag_For_Id
-     (Id : W_Identifier_Id) return W_Identifier_Id;
-   --  Function used to get the name of the validity flag from the name of an
-   --  identifier used for Old and Loop_Entry values as well as the result
-   --  name.
 
 end Why.Gen.Names;

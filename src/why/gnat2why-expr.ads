@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers;
-with Ada.Containers.Vectors;
 with Checked_Types;              use Checked_Types;
 with Common_Containers;          use Common_Containers;
 with Flow_Types;                 use Flow_Types;
@@ -67,13 +66,13 @@ package Gnat2Why.Expr is
      (Expr          : W_Term_Id;
       Ty            : Type_Kind_Id;
       Initialized   : Boolean := True;
-      Valid         : W_Term_Id := True_Term;
+      Valid         : W_Term_Id := Why_Empty;
       Only_Var      : Boolean := True;
       Top_Predicate : Boolean := True)
       return W_Prog_Id;
    --  @param Expr Why3 expression on which to assume the dynamic invariant
    --  @param Ty type of expression [Expr]
-   --  @param Valid a term encoding the validity of Expr
+   --  @param Valid a term encoding the validity tree of Expr if any
    --  @param Initialized True iff Expr is known to be initialized
    --  @param Only_Var True iff the dynamic invariant should only consider
    --     the variable parts of [Expr].
@@ -294,7 +293,7 @@ package Gnat2Why.Expr is
       Ty             : Type_Kind_Id;
       Params         : Transformation_Params;
       Initialized    : W_Term_Id := True_Term;
-      Valid          : W_Term_Id := True_Term;
+      Valid          : W_Term_Id := Why_Empty;
       Only_Var       : W_Term_Id := True_Term;
       Top_Predicate  : W_Term_Id := True_Term;
       All_Global_Inv : Boolean := True;
@@ -305,7 +304,8 @@ package Gnat2Why.Expr is
    --  @param Initialized true term iff Expr is known to be initialized. If
    --     Expr has an initialization wrapper type, then Initialized is not
    --     used.
-   --  @param Valid true term iff Expr is valid if it is initialized.
+   --  @param Valid validity flag of Expr if it is potentially invalid,
+   --     Why_Empty otherwise.
    --  @param Only_Var true term iff the dynamic invariant should only consider
    --     the variable parts of [Expr].
    --  @param Top_Predicate true term iff the dynamic invariant should consider
@@ -325,6 +325,7 @@ package Gnat2Why.Expr is
       Ty                :        Type_Kind_Id;
       Params            :        Transformation_Params;
       Initialized       :        W_Term_Id;
+      Valid             :        W_Term_Id;
       Only_Var          :        W_Term_Id;
       Top_Predicate     :        W_Term_Id;
       All_Global_Inv    :        W_Term_Id;
@@ -372,7 +373,7 @@ package Gnat2Why.Expr is
       Ty             : Type_Kind_Id;
       Params         : Transformation_Params;
       Initialized    : W_Term_Id := True_Term;
-      Valid          : W_Term_Id := True_Term;
+      Valid          : W_Term_Id := Why_Empty;
       Only_Var       : W_Term_Id := True_Term;
       Top_Predicate  : Boolean := True;
       All_Global_Inv : Boolean := True)
@@ -766,42 +767,32 @@ package Gnat2Why.Expr is
      (Expr       : N_Subexpr_Id;
       Domain     : EW_Domain;
       Params     : Transformation_Params;
-      Tmp_Id     : out W_Identifier_Id;
-      Id_Def     : out W_Expr_Id;
+      Context    : in out Ref_Context;
       W_Expr     : out W_Expr_Id;
-      Valid_Flag : out W_Term_Id;
+      Valid_Flag : out W_Expr_Id;
       As_Old     : Boolean := False)
    with
-     Pre  => Is_Potentially_Invalid_Expr (Expr),
-     Post => (Tmp_Id = Why_Empty) = (Id_Def = Why_Empty);
+     Pre  => Is_Potentially_Invalid_Expr (Expr);
    --  Transform a potentially invalid expression. Store the transformed
    --  expression into W_Expr and its valid flag into Valid_Flag.
-   --  A constant binding Tmp_Id = Id_Def might be needed to translate function
-   --  calls only once even though they are used both in the expression and in
-   --  the valid flag. If it is not needed, Tmp_Id and Id_Def are set to
-   --  Why_Empty.
+   --  Constant bindings might be introduced in Context as necessary.
 
    function Transform_Potentially_Invalid_Expr
      (Expr          : Node_Id;
       Expected_Type : W_Type_Id;
       Domain        : EW_Domain;
       Params        : Transformation_Params;
-      Tmp_Id        : out W_Identifier_Id;
-      Id_Def        : out W_Expr_Id;
-      Valid_Flag    : out W_Expr_Id)
+      Context       : in out Ref_Context;
+      Valid_Flag    : out W_Expr_Id;
+      No_Checks     : Boolean := False)
       return W_Expr_Id
    with
-     Post => (Tmp_Id = Why_Empty) = (Id_Def = Why_Empty)
-       and then
-         (if not Is_Potentially_Invalid_Expr (Expr)
-          then Is_True_Boolean (Valid_Flag));
+     Pre => (if No_Checks then Is_Potentially_Invalid_Expr (Expr));
    --  Transform an expression that might be potentially invalid. Return the
    --  transformed expression and set Valid_Flag to the valid flag that should
    --  be used for it.
-   --  A constant binding Tmp_Id = Id_Def might be needed to translate function
-   --  calls only once even though they are used both in the expression and in
-   --  the valid flag. If it is not needed, Tmp_Id and Id_Def are set to
-   --  Why_Empty.
+   --  Constant bindings might be introduced in Context as necessary.
+   --  If No_Checks is True, do not emit checks on conversion to Expected_Type.
 
    function Transform_Pragma
      (Prag   : N_Pragma_Id;
@@ -947,7 +938,7 @@ package Gnat2Why.Expr is
 
    function Get_Valid_Id_For_Result (Fun : Entity_Id) return W_Term_Id;
    --  Return the valid flag used for Result_Name if Fun has a potentially
-   --  invalid result. Otherwise, return True_Term.
+   --  invalid result. Otherwise, return Why_Empty.
 
    Self_Name       : W_Identifier_Id := Why_Empty;
    Self_Is_Mutable : Boolean := False;
@@ -992,19 +983,6 @@ private
 
    Incompl_Access_Dyn_Inv_Map_R : Ada_To_Why_Ident.Map;
    --  Same but for predicates of init wrappers
-
-   type Ref_Type is record
-      Mutable : Boolean;
-      Name    : W_Identifier_Id;
-      Value   : W_Expr_Id;
-   end record;
-   --  Represent a mapping from an identifier Name to an expression Value.
-   --  If Mutable is True, the mapping should be a reference.
-
-   package Ref_Type_Vectors is new Ada.Containers.Vectors
-     (Index_Type   => Positive,
-      Element_Type => Ref_Type);
-   subtype Ref_Context is Ref_Type_Vectors.Vector;
 
    procedure Get_Item_From_Expr
      (Pattern     :        Item_Type;

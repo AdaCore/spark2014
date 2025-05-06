@@ -125,8 +125,8 @@ package body Why.Gen.Decl is
    begin
       --  Emit declaration of the record
       Emit (Th,
-            Decl   => New_Record_Definition (Name     => Name,
-                                             Binders  => Binders));
+            Decl => New_Record_Definition (Name     => Name,
+                                           Binders  => Binders));
 
       --  For each record field, emit projection from the record to the field
       for Binder in Binders'Range loop

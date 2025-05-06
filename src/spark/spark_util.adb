@@ -4108,6 +4108,13 @@ package body SPARK_Util is
                 (Attribute_Name (Expr) = Name_Result
                  and then Is_Potentially_Invalid (Entity (Prefix (Expr))));
 
+         when N_Selected_Component =>
+            return Ekind (Entity (Selector_Name (Expr))) /= E_Discriminant
+              and then Is_Potentially_Invalid_Expr (Prefix (Expr));
+
+         when N_Indexed_Component | N_Slice =>
+            return Is_Potentially_Invalid_Expr (Prefix (Expr));
+
          when others =>
             return False;
       end case;
