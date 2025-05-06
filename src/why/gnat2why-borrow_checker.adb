@@ -4385,23 +4385,21 @@ package body Gnat2Why.Borrow_Checker is
                   end if;
                end;
 
-               if Is_Deep (Etype (Obj)) then
-                  declare
-                     E_Obj : constant Expr_Or_Ent :=
-                       (Is_Ent => True, Ent => Obj, Loc => Decl);
-                  begin
-                     Perm_Expl := Get_Perm_And_Expl (E_Obj);
+               declare
+                  E_Obj : constant Expr_Or_Ent :=
+                    (Is_Ent => True, Ent => Obj, Loc => Decl);
+               begin
+                  Perm_Expl := Get_Perm_And_Expl (E_Obj);
 
-                     if Perm_Expl.Perm /= Read_Write then
-                        Perm_Error_Subprogram_End
-                          (E           => Obj,
-                           Subp        => Subp,
-                           Found_Perm  => Perm_Expl.Perm,
-                           Expl        => Perm_Expl.Expl,
-                           Exceptional => False);
-                     end if;
-                  end;
-               end if;
+                  if Perm_Expl.Perm /= Read_Write then
+                     Perm_Error_Subprogram_End
+                       (E           => Obj,
+                        Subp        => Subp,
+                        Found_Perm  => Perm_Expl.Perm,
+                        Expl        => Perm_Expl.Expl,
+                        Exceptional => False);
+                  end if;
+               end;
 
                Check_End_Of_Scopes
                  (From => Stmt, Stop => Subprogram_Body (Subp));
