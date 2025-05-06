@@ -3350,8 +3350,8 @@ package body SPARK_Definition is
 
             --  In most cases, it is enough to look at the record type (the
             --  most underlying one) to see whether the access is in SPARK. An
-            --  exception is the access to discrimants to a private type whose
-            --  full view is not in SPARK.
+            --  exception is the access to discriminants to a private type
+            --  whose full view is not in SPARK.
 
             if not Retysp_In_SPARK (Etype (Prefix (N))) then
                Mark_Violation (N, From  => Etype (Prefix (N)));

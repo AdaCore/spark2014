@@ -29,9 +29,9 @@ with Ada.Strings;               use Ada.Strings;
 with Ada.Strings.Fixed;         use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with CE_RAC;
+with Gnat2Why.Tables;           use Gnat2Why.Tables;
 with Namet;                     use Namet;
 with SPARK_Atree;               use SPARK_Atree;
-with SPARK_Atree.Entities;      use SPARK_Atree.Entities;
 with Uintp;                     use Uintp;
 
 package body CE_Values is
@@ -293,6 +293,61 @@ package body CE_Values is
       end if;
    end Get_Array_Length;
 
+   -----------------
+   -- Valid_Value --
+   -----------------
+
+   function Valid_Value
+     (V : Value_Type) return Boolean is
+   begin
+      case V.K is
+
+      when Record_K =>
+         declare
+            use Entity_To_Value_Maps;
+         begin
+            for Cur in V.Record_Fields.Iterate loop
+               declare
+                  C_Key : constant Entity_Id := Key (Cur);
+                  C_Ty  : constant Entity_Id :=
+                    Search_Component_In_Type (V.AST_Ty, C_Key);
+               begin
+                  if not Present (C_Key) or else C_Key /= C_Ty then
+                     return False;
+                  end if;
+               end;
+            end loop;
+         end;
+
+         when others =>
+            null;
+      end case;
+      return True;
+   end Valid_Value;
+
+   -------------------------------
+   -- Search_Component_In_Value --
+   -------------------------------
+
+   function Search_Component_In_Value
+     (Rec : Value_Type; Comp : Entity_Id) return Entity_Id is
+   begin
+
+      if Rec.Record_Fields.Contains (Comp) then
+         return Comp;
+      else
+         declare
+            Comp_In_AST_Ty : constant Entity_Id :=
+              Search_Component_In_Type (Rec.AST_Ty, Comp);
+         begin
+            if Rec.Record_Fields.Contains (Comp_In_AST_Ty) then
+               return Comp_In_AST_Ty;
+            end if;
+         end;
+         return Types.Empty;
+      end if;
+   end Search_Component_In_Value;
+
    --------------
    -- Is_Valid --
    --------------
@@ -365,11 +420,20 @@ package body CE_Values is
    -- To_String --
    ---------------
 
+   --  Disable validity checks introduced in debug builds by -gnatVa switch so
+   --  that invalid floating-point values like Inf or NaN could be represented.
+   pragma Suppress (Validity_Check);
+
    function To_String (V : Float_Value) return String is
-     (case V.K is
-         when Float_32_K => V.Content_32'Image,
-         when Float_64_K => V.Content_64'Image,
-         when Extended_K => V.Ext_Content'Image);
+   begin
+      return
+        (case V.K is
+            when Float_32_K => V.Content_32'Image,
+            when Float_64_K => V.Content_64'Image,
+            when Extended_K => V.Ext_Content'Image);
+   end To_String;
+
+   pragma Unsuppress (Validity_Check);
 
    function To_String (V : Scalar_Value_Type) return String is
      (case V.K is

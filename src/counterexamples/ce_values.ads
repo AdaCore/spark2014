@@ -31,6 +31,7 @@ use Ada.Numerics.Big_Numbers.Big_Integers;
 with Ada.Numerics.Big_Numbers.Big_Reals;
 use Ada.Numerics.Big_Numbers.Big_Reals;
 with Common_Containers;        use Common_Containers;
+with SPARK_Atree.Entities;     use SPARK_Atree.Entities;
 with Types;                    use Types;
 
 package CE_Values is
@@ -341,6 +342,29 @@ package CE_Values is
    with
        Pre => V.K = Array_K;
    --  Return the length of the array if its first and last indices exist
+
+   function Valid_Value
+     (V : Value_Type) return Boolean
+     with Ghost;
+   --  Checks if the value V is well-formed. In particular, the following check
+   --  has been currenty defined:
+   --
+   --  * If V is a record, then each key C_Key in the Record_Fields
+   --    map must be compatible with V.AST_Ty in the sense that:
+   --    * A component C_Ty is found in V.AST_Ty by searching for C_Key via
+   --      Search_Component_In_Type and C_Key = C_Ty (i.e., the former isn't
+   --      less precise than the latter and vice versa).
+
+   function Search_Component_In_Value
+     (Rec : Value_Type; Comp : Entity_Id) return Entity_Id
+   with
+     Pre =>
+       Rec.K = Record_K
+       and Ekind (Comp) in E_Discriminant | E_Component | Type_Kind;
+   --  Search among the component keys of the record value Rec for a key that
+   --  corresponds to Comp in the type of the record value (its AST_Ty). If the
+   --  corresponding key (component) is found it is returned. Otherwise, Empty
+   --  is returned.
 
    function To_String (V : Float_Value) return String;
    --  Convert a float value to a string

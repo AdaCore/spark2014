@@ -457,14 +457,16 @@ package body CE_Parsing is
                         begin
                            if Comp_E /= Types.Empty then
                               declare
-                                 Comp_Ty : constant Entity_Id :=
+                                 Comp_Ty      : constant Entity_Id :=
                                    Retysp (Etype (Comp_E));
-                                 Comp    : Value_Type;
+                                 Comp_E_in_Ty : constant Entity_Id :=
+                                   Search_Component_In_Type (AST_Ty, Comp_E);
+                                 Comp         : Value_Type;
                               begin
                                  Comp := Parse_Cnt_Value
                                    (Cnt_Labels, Element (C), Comp_Ty);
                                  Val.Record_Fields.Insert
-                                   (Comp_E, new Value_Type'(Comp));
+                                   (Comp_E_in_Ty, new Value_Type'(Comp));
                               exception
                                  when Parse_Error =>
                                     null;
@@ -476,6 +478,7 @@ package body CE_Parsing is
                         end;
                         Next (C);
                      end loop;
+                     pragma Assert (Valid_Value (Val));
                   end;
                end if;
 

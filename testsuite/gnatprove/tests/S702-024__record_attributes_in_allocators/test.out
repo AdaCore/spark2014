@@ -22,7 +22,7 @@ test_constrained.adb:5:22: info: range check proved (CVC5: 1 VC)
 test_constrained.adb:12:04: warning: analyzing unreferenced procedure "Test_1" [unreferenced-procedure]
 test_constrained.adb:12:14: warning: subprogram "Test_1" has no effect
 test_constrained.adb:13:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-test_constrained.adb:15:22: medium: assertion might fail (e.g. when Y.all = (B => True, X => 0))
+test_constrained.adb:15:22: high: assertion might fail (e.g. when Y.all = (B => False, X => 0))
 test_constrained.adb:15:28: info: pointer dereference check proved (CVC5: 1 VC)
 test_constrained.adb:18:04: warning: analyzing unreferenced procedure "Test_2" [unreferenced-procedure]
 test_constrained.adb:18:14: warning: subprogram "Test_2" has no effect
@@ -34,7 +34,7 @@ test_constrained.adb:21:16: medium: discriminant check might fail
 test_constrained.adb:24:04: warning: analyzing unreferenced procedure "Test_3" [unreferenced-procedure]
 test_constrained.adb:24:14: warning: subprogram "Test_3" has no effect
 test_constrained.adb:25:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-test_constrained.adb:27:22: medium: assertion might fail (e.g. when Y.all = (B => False, X => 0))
+test_constrained.adb:27:22: high: assertion might fail (e.g. when Y.all = (B => False, X => 0))
 test_constrained.adb:27:28: info: pointer dereference check proved (CVC5: 1 VC)
 test_constrained.adb:30:04: warning: analyzing unreferenced procedure "Test_4" [unreferenced-procedure]
 test_constrained.adb:30:14: warning: subprogram "Test_4" has no effect
@@ -53,8 +53,8 @@ test_constrained.adb:39:16: medium: discriminant check might fail
 test_constrained.adb:42:04: warning: analyzing unreferenced procedure "Test_6" [unreferenced-procedure]
 test_constrained.adb:42:14: warning: subprogram "Test_6" has no effect
 test_constrained.adb:43:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_constrained.adb:45:22: high: assertion might fail (e.g. when X.all = (others => (B => False, X => 0)))
 test_constrained.adb:45:22: info: pointer dereference check proved (CVC5: 1 VC)
-test_constrained.adb:45:22: medium: assertion might fail
 test_constrained.adb:48:04: medium: resource or memory leak might occur at end of scope
 test_constrained.adb:51:06: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_constrained.adb:52:19: info: assertion proved (Trivial: 1 VC)
