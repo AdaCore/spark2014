@@ -775,7 +775,8 @@ package body Gnat2Why.Borrow_Checker is
 
    procedure Check_End_Of_Scopes (From : Node_Id; Stop : Node_Id);
    --  Check that local borrowers in all scopes between From (a return, exit or
-   --  goto statement) and Stop (an enclosing block, loop or subprogram body)
+   --  goto statement) and Stop (an enclosing block, loop, extended return
+   --  denoted by its entity, or subprogram body)
    --  are in the Unrestricted state before releasing ownership back to the
    --  borrowed object.
 
@@ -1172,6 +1173,11 @@ package body Gnat2Why.Borrow_Checker is
    --  each raise or call statements which might jump to the handler. When such
    --  a statement is encountered, this environment is merged with the current
    --  one.
+
+   Current_Extended_Return_Accumulators : Env_Backups;
+   --  This variable contains the environments used as accumulators for
+   --  completion of extended returns, which are targeted by inner
+   --  return statements.
 
    Current_Borrowers : Variable_Mapping;
    --  Mapping from borrowers to the paths borrowed (only one for borrowers)
@@ -1951,7 +1957,9 @@ package body Gnat2Why.Borrow_Checker is
             Check_End_Of_Scope (Declarations (Cur), From);
          end if;
 
-         exit when Cur = Stop;
+         exit when Cur = Stop
+           or else (Nkind (Cur) = N_Extended_Return_Statement
+                    and then Return_Statement_Entity (Cur) = Stop);
 
          Cur := Parent (Cur);
       end loop;
@@ -4284,41 +4292,65 @@ package body Gnat2Why.Borrow_Checker is
 
          when N_Simple_Return_Statement =>
             declare
-               Subp : Entity_Id :=
+               Targ : constant Entity_Id :=
                  Return_Applies_To (Return_Statement_Entity (Stmt));
                Expr : constant Node_Id := Expression (Stmt);
 
             begin
                --  For simple return inside extended return, return applies to
-               --  the extended return. Go to the enclosing subprogram.
+               --  the extended return. Treat it as a goto to the end of said
+               --  extended return.
 
-               if Ekind (Subp) = E_Return_Statement then
-                  Subp := Return_Applies_To (Subp);
+               if Ekind (Targ) = E_Return_Statement then
+                  Check_End_Of_Scopes (From => Stmt, Stop => Targ);
+                  declare
+                     Return_Env       : constant Perm_Env_Access :=
+                       Get (Current_Extended_Return_Accumulators, Targ);
+                     Environment_Copy : constant Perm_Env_Access :=
+                       new Perm_Env;
+                  begin
+                     Copy_Env (Current_Perm_Env, Environment_Copy.all);
+                     if Return_Env = null then
+                        Set
+                          (Current_Extended_Return_Accumulators,
+                           Targ,
+                           Environment_Copy);
+                     else
+                        Merge_Env (Environment_Copy.all, Return_Env.all);
+                     end if;
+                  end;
+
+               --  Otherwise, return complete the subprogram
+
+               else
+
+                  if Present (Expr) then
+                     Check_Simple_Return_Expression (Expr, Targ);
+                  end if;
+
+                  Check_End_Of_Scopes
+                    (From => Stmt, Stop => Subprogram_Body (Targ));
+
+                  if Ekind (Targ) in E_Procedure | E_Entry
+                    or else (Ekind (Targ) = E_Function
+                             and then Is_Function_With_Side_Effects (Targ))
+                  then
+                     Return_Parameters (Targ);
+                  end if;
+                  Return_Globals (Targ);
+
+                  --  For operations directly inside protected objects, check
+                  --  the permission of protected components on return.
+
+                  if Ekind (Scope (Targ)) = E_Protected_Type
+                    and then (Is_Entry (Targ)
+                              or else Ekind (Targ) = E_Procedure)
+                  then
+                     Return_Protected_Components (Targ);
+                  end if;
                end if;
 
-               if Present (Expr) then
-                  Check_Simple_Return_Expression (Expr, Subp);
-               end if;
-
-               Check_End_Of_Scopes
-                 (From => Stmt, Stop => Subprogram_Body (Subp));
-
-               if Ekind (Subp) in E_Procedure | E_Entry
-                 or else (Ekind (Subp) = E_Function
-                          and then Is_Function_With_Side_Effects (Subp))
-               then
-                  Return_Parameters (Subp);
-               end if;
-               Return_Globals (Subp);
-
-               --  For operations directly inside protected objects, check the
-               --  permission of protected components on return.
-
-               if Ekind (Scope (Subp)) = E_Protected_Type
-                 and then (Is_Entry (Subp) or else Ekind (Subp) = E_Procedure)
-               then
-                  Return_Protected_Components (Subp);
-               end if;
+               --  In either case, the path is cut
 
                Reset_Env (Current_Perm_Env);
             end;
@@ -4332,12 +4364,26 @@ package body Gnat2Why.Borrow_Checker is
                Decl      : constant Node_Id := Last_Non_Pragma (Decls);
                Obj       : constant Entity_Id := Defining_Identifier (Decl);
                Perm_Expl : Perm_And_Expl;
-
             begin
                pragma Assert (not Is_Traversal_Function (Subp));
 
                Check_List (Return_Object_Declarations (Stmt));
                Check_Node (Handled_Statement_Sequence (Stmt));
+
+               --  Merge environments from inner return
+
+               declare
+                  Return_Entity : constant Entity_Id :=
+                    Return_Statement_Entity (Stmt);
+                  Return_Env    : constant Perm_Env_Access :=
+                    Get (Current_Extended_Return_Accumulators, Return_Entity);
+               begin
+                  if Return_Env /= null then
+                     Merge_Env (Return_Env.all, Current_Perm_Env);
+                     Remove
+                       (Current_Extended_Return_Accumulators, Return_Entity);
+                  end if;
+               end;
 
                if Is_Deep (Etype (Obj)) then
                   declare

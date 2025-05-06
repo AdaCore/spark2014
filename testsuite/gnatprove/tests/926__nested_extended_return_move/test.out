@@ -1,0 +1,7 @@
+main.adb:13:13: error: launch "gnatprove --explain=E0010" for more information
+main.adb:13:13: error: object was moved at line 25 [E0010]
+main.adb:13:13: error: return from "Foo" with moved value for "Res"
+main.adb:13:13: info: aspect Always_Terminates on "Foo" has been proved, subprogram will terminate
+main.adb:15:06: info: data dependencies proved
+main.adb:23:07: warning: this statement is never reached
+gnatprove: error during flow analysis and proof
