@@ -3832,7 +3832,10 @@ package body Gnat2Why.Expr is
                         Params  => Params,
                         No_Read => True),
                      Domain   => Domain,
-                     Do_Check => not Is_Access_Type (Etype (Actual))),
+                     Do_Check => not Is_Access_Type (Etype (Actual)),
+                     Details  =>
+                       "mutable discriminants of actual parameters of mode OUT"
+                     & " need to be initialized prior to the call"),
                   To       => Formal_T,
                   No_Init  => True)
 
@@ -3886,6 +3889,17 @@ package body Gnat2Why.Expr is
             --  these expressions.
 
          begin
+            --  Emit a warning stating the proof enforces initialization of
+            --  mutable discriminants if relevant.
+
+            if not Is_Self
+              and then Ekind (Formal) = E_Out_Parameter
+              and then Has_Mutable_Discriminants (Etype (Formal))
+              and then Expr_Has_Relaxed_Init (Actual)
+            then
+               Warning_Msg_N (Warn_Relaxed_Init_Mutable_Discr, Actual);
+            end if;
+
             --  Store the converted actual into a temporary constant to avoid
             --  computing it several times. It also ensures that checks are
             --  emitted even if the expression happens to not be used.
@@ -6921,6 +6935,11 @@ package body Gnat2Why.Expr is
          if Is_Simple_Actual (Actual)
            and then Obj_Has_Relaxed_Init (Entity (Actual))
          then
+            --  Emit a warning stating the proof enforces initialization of
+            --  mutable discriminants.
+
+            Warning_Msg_N (Warn_Relaxed_Init_Mutable_Discr, Actual);
+
             Append
               (Store,
                New_Ignore
@@ -6932,7 +6951,7 @@ package body Gnat2Why.Expr is
                        Reason     => VC_Initialization_Check,
                        Kind       => EW_Assert,
                        Check_Info => New_Check_Info
-                         (Explanation =>
+                         (Details =>
                                 "mutable discriminants of actual parameters "
                           & "are considered to be uninitialized if the call "
                           & "propagates an exception"))));

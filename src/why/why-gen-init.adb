@@ -470,7 +470,8 @@ package body Why.Gen.Init is
       E        : Entity_Id;
       Name     : W_Expr_Id;
       Domain   : EW_Domain;
-      Do_Check : Boolean := True)
+      Do_Check : Boolean := True;
+      Details  : String := "")
       return W_Expr_Id
    is
       T : W_Expr_Id;
@@ -493,11 +494,12 @@ package body Why.Gen.Init is
                   Message  => To_Unbounded_String (Msg)));
             T := +Sequence
               (Left  => New_Located_Assert
-                 (Ada_Node => Ada_Node,
-                  Reason   => VC_Initialization_Check,
-                  Kind     => EW_Assert,
-                  Pred     => Pred_Of_Boolean_Term
-                    (New_Init_Attribute_Access (E, +Tmp))),
+                 (Ada_Node   => Ada_Node,
+                  Reason     => VC_Initialization_Check,
+                  Kind       => EW_Assert,
+                  Pred       => Pred_Of_Boolean_Term
+                    (New_Init_Attribute_Access (E, +Tmp)),
+                  Check_Info => New_Check_Info (Details => Details)),
                Right => +Tmp);
             Continuation_Stack.Delete_Last;
 

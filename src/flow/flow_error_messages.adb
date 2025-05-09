@@ -1113,22 +1113,19 @@ package body Flow_Error_Messages is
 
                   Details : constant String :=
                     (if Gnat2Why_Args.Output_Mode = GPO_Brief then ""
+                     elsif Check_Info.Details /= Null_Unbounded_String
+                     then To_String (Check_Info.Details)
                      else Get_Details (N, E, Tag));
                   User_Msg : constant String :=
                     (if Check_Info.User_Message /= No_String
                      then To_String (Check_Info.User_Message)
-                     else "");
-                  Expl     : String :=
-                    (if Explanation /= "" then Explanation
-                     elsif Check_Info.Explanation /= Null_Unbounded_String
-                     then To_String (Check_Info.Explanation)
                      else "");
                begin
 
                   Msg_Id := Print_Regular_Msg
                     (Message, Span, Severity,
                      Details       => Details,
-                     Explanation   => Get_Explanation (N, E, Tag, Expl),
+                     Explanation   => Get_Explanation (N, E, Tag, Explanation),
                      Fix           =>
                        Get_Fix_Or_Verdict (N, Tag, How_Proved, Verdict),
                      CE            => One_Liner,

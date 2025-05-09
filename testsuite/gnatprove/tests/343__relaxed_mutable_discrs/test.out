@@ -17,7 +17,8 @@ test.adb:61:31: info: initialization of "B" proved
 test.adb:62:06: info: flow dependencies proved
 test.adb:67:07: info: precondition proved (Trivial: 1 VC)
 test.adb:67:13: medium: for mutable discriminants at test.adb:7
-test.adb:67:13: medium: initialization check might fail (e.g. when X = (F => (D => 0, A => 0, B => 0)) and X.F.A'Initialized = True and X.F.B'Initialized = True) [possible fix: call at line 67 should mention X (for argument X) in a postcondition]
+test.adb:67:13: medium: initialization check might fail (e.g. when X = (F => (D => 0, A => 0, B => 0)) and X.F.A'Initialized = True and X.F.B'Initialized = True) [reason for check: mutable discriminants of actual parameters of mode OUT need to be initialized prior to the call] [possible fix: call at line 67 should mention X (for argument X) in a postcondition]
+test.adb:67:13: warning: mutable discriminants of a standalone object or parameter with relaxed initialization are enforced to always be initialized [relaxed-mutable-discriminants]
 test.adb:72:30: info: initialization of "B" proved
 test.adb:73:06: info: flow dependencies proved
 test.adb:77:12: high: "X" is not initialized
@@ -30,14 +31,16 @@ test.adb:91:30: info: initialization of "B" proved
 test.adb:92:06: info: flow dependencies proved
 test.adb:97:07: info: precondition proved (Trivial: 1 VC)
 test.adb:97:12: medium: for mutable discriminants at test.adb:7
-test.adb:97:12: medium: initialization check might fail [possible fix: call at line 97 should mention X (for argument X) in a postcondition]
+test.adb:97:12: medium: initialization check might fail [reason for check: mutable discriminants of actual parameters of mode OUT need to be initialized prior to the call] [possible fix: call at line 97 should mention X (for argument X) in a postcondition]
+test.adb:97:12: warning: mutable discriminants of a standalone object or parameter with relaxed initialization are enforced to always be initialized [relaxed-mutable-discriminants]
 test.adb:98:23: info: for mutable discriminants at test.adb:7
 test.adb:98:23: info: initialization check proved (CVC5: 1 VC)
 test.adb:101:30: info: initialization of "B" proved
 test.adb:102:06: info: flow dependencies proved
 test.adb:107:07: info: precondition proved (Trivial: 1 VC)
 test.adb:107:12: medium: for mutable discriminants at test.adb:7
-test.adb:107:12: medium: initialization check might fail [possible fix: call at line 107 should mention X'Initialized (for argument X) in a postcondition]
+test.adb:107:12: medium: initialization check might fail [reason for check: mutable discriminants of actual parameters of mode OUT need to be initialized prior to the call] [possible fix: call at line 107 should mention X'Initialized (for argument X) in a postcondition]
+test.adb:107:12: warning: mutable discriminants of a standalone object or parameter with relaxed initialization are enforced to always be initialized [relaxed-mutable-discriminants]
 test.adb:108:23: info: for mutable discriminants at test.adb:7
 test.adb:108:23: info: initialization check proved (CVC5: 1 VC)
 test.adb:114:30: info: initialization of "B" proved
@@ -56,6 +59,7 @@ test.adb:147:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 test.adb:154:24: medium: for mutable discriminants at test.adb:7
 test.adb:154:24: medium: initialization check might fail
 test.adb:159:07: info: precondition proved (Trivial: 1 VC)
+test.adb:160:10: warning: mutable discriminants of a standalone object or parameter with relaxed initialization are enforced to always be initialized [relaxed-mutable-discriminants]
 test.adb:161:13: medium: discriminant check might fail
 test.adb:161:13: medium: for mutable discriminants at test.adb:7
 test.adb:161:13: medium: initialization check might fail

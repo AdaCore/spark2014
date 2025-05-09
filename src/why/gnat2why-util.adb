@@ -1569,15 +1569,15 @@ package body Gnat2Why.Util is
      (Range_Check_Ty : Opt_Type_Kind_Id := Empty;
       Divisor        : Node_Or_Entity_Id := Empty;
       User_Message   : String_Id := No_String;
-      Explanation    : String := "") return Check_Info_Type
+      Details        : String := "") return Check_Info_Type
    is ((User_Message => User_Message,
         Fix_Info     => (Range_Check_Ty => Range_Check_Ty,
                          Divisor        => Divisor,
                          Bound_Info     => No_Bound),
         Continuation => Continuation_Stack,
-        Explanation  =>
-          (if Explanation = "" then Null_Unbounded_String
-           else To_Unbounded_String (Explanation))));
+        Details      =>
+          (if Details = "" then Null_Unbounded_String
+           else To_Unbounded_String (Details))));
 
    --------------------------------
    -- Nth_Index_Rep_Type_No_Bool --
