@@ -276,6 +276,44 @@ to then ensure correct initialization of subcomponents that are read, as
 |GNATprove| relies during proof on the property that data is properly
 initialized before being read.
 
+Even if a parameter has mode ``out`` or a global item has mode ``Output``, it
+sometimes has parts which are inputs of the subprogram. This includes both
+discriminants of records and array bounds. If the record or array has a
+constrained subtype, then reading the bounds or discriminant is not a read of
+the object. If it is unconstrained however, the bounds and discriminants are
+actual inputs of the subprogram. They cannot be considered to be outputs, as, in
+general, array bounds and discriminants of records are immutable in Ada.
+As a result, their initial value is considered as initialized by |GNATprove|
+and they are expected to be listed as inputs in :ref:`Flow Dependencies` of the
+subprogram. As an example, the parameter ``S`` of the procedure ``P_String``
+below has mode ``out``. However, its bounds are really inputs of the procedure:
+
+.. literalinclude:: /examples/ug__data_initialization/data_initialization_2.ads
+   :language: ada
+   :linenos:
+
+As a result, they are considered to be initialized inside the body of
+``P_String``, and they can be read even before ``S`` is assigned:
+
+.. literalinclude:: /examples/ug__data_initialization/data_initialization_2.adb
+   :language: ada
+   :linenos:
+
+Even though array bounds are always constant for a given object, record
+discriminants might be mutable if they are declared with a default value, like
+the ``Present`` discriminant of the ``Int_Option`` type defined above. The
+same rule applies to these discriminants however, and they are still considered
+to be inputs of the subprogram even if the parameter has mode ``out`` like the
+parameter ``O`` of ``P_Option``. This allows handling cases where the
+discriminants of the actual parameter happen to be constrained, like in
+``Call_P_Option``.
+
+.. note::
+
+  If a strict subcomponent or designated part of a parameter of mode ``out``
+  or a global of mode ``Output`` has unconstrained array bounds or
+  discriminants, then they are not considered as inputs of the subprogram.
+
 Note also the various low check messages and warnings that |GNATprove| issues
 on unused parameters, global items and assignments, also based on the stricter
 |SPARK| interpretation of parameter and global modes.
