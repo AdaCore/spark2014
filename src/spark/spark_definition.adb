@@ -4466,9 +4466,13 @@ package body SPARK_Definition is
 
             --  We do not support overlays with Relaxed_Initialization yet
 
-            if Has_Relaxed_Initialization (E) or else
-              (Ekind (Aliased_Object) /= E_Loop_Parameter
-               and then Has_Relaxed_Initialization (Aliased_Object))
+            if Has_Relaxed_Initialization (E)
+              or else Contains_Relaxed_Init_Parts (Etype (E))
+              or else
+                ((Ekind (Aliased_Object) /= E_Loop_Parameter
+                  and then Has_Relaxed_Initialization (Aliased_Object))
+                 or else Contains_Relaxed_Init_Parts
+                   (Etype (Aliased_Object)))
             then
                Mark_Unsupported (Lim_Relaxed_Init_Aliasing, E);
             end if;
