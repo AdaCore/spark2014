@@ -3,7 +3,6 @@ test_at_end_copy.adb:25:29: error: violation of aspect SPARK_Mode at line 1
 test_at_end_copy.adb:28:32: error: "X_E" is not allowed in SPARK (due to call to a function annotated with At_End_Borrow occurring inside the initialization expression of an object other than of a constant of anonymous access-to-constant type)
 test_at_end_copy.adb:28:32: error: violation of aspect SPARK_Mode at line 1
 test_bc.adb:15:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-test_bc.adb:15:16: warning: "X" is not modified, could be IN
 test_bc.adb:22:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
 test_bc.adb:35:23: error: object was borrowed at line 33
 test_bc.adb:43:23: error: object was borrowed at line 41
