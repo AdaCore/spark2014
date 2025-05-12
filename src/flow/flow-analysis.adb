@@ -974,7 +974,9 @@ package body Flow.Analysis is
                   --     default defined in the formal part of a generic unit
                   --   * are formal parameters of a null procedure
                   --   * are instantiations of a generic procedure's 'IN'
-                  --     parameter with an access type.
+                  --     parameter with an access type
+                  --   * are first parameters of a borrowing traversal function
+                  --     (which must be writable)
                   if Has_Pragma_Un (Var)
                     or else
                       Is_Or_Belongs_To_Concurrent_Object (F_Final)
@@ -983,6 +985,9 @@ package body Flow.Analysis is
                     or else
                       (Is_In_Access_Parameter
                        and then Is_Generic_Actual_Type (Etype (Var)))
+                    or else
+                     (Is_Borrowing_Traversal_Function (FA.Spec_Entity)
+                      and then Var = First_Formal (FA.Spec_Entity))
                   then
                      null;
                   elsif not Written_Exports.Contains
