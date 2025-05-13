@@ -1953,12 +1953,12 @@ package body CE_RAC is
 
    begin
       Val := new Value_Type'
-        (Get_Value (N => N,
-                    Ex => Expr,
-                    Use_Default => Default_Value,
-                    Use_Fuzzing => Use_Fuzzing,
+        (Get_Value (N            => N,
+                    Ex           => Expr,
+                    Use_Default  => Default_Value,
+                    Use_Fuzzing  => Use_Fuzzing,
                     Use_Gnattest => False,
-                    Origin => Origin));
+                    Origin       => Origin));
 
       Ctx.Env (Ctx.Env.Last).Bindings.Insert (N, Val);
 
@@ -2496,12 +2496,12 @@ package body CE_RAC is
       begin
          while Present (Param) loop
             Is_Out := Ekind (Param) = E_Out_Parameter;
-            V := Get_Value (N => Param,
-                            Ex => Empty,
-                            Use_Default => Is_Out,
-                            Use_Fuzzing => Fuzz_Formals,
+            V := Get_Value (N            => Param,
+                            Ex           => Empty,
+                            Use_Default  => Is_Out,
+                            Use_Fuzzing  => Fuzz_Formals,
                             Use_Gnattest => True,
-                            Origin => Origin);
+                            Origin       => Origin);
             Res.Bindings.Insert (Param, new Value_Type'(V));
             RAC_Trace ("Initialize parameter "
                        & Get_Name_String (Chars (Param)) & " to "

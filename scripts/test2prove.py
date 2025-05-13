@@ -11,13 +11,13 @@ import subprocess
 # run spark with --gnattest-values
 def run_spark(project_file, filename, line, gnattest_JSON):
     print("Running gnatprove")
+    print(project_file, filename, line, gnattest_JSON)
     subprocess.run(
         [
             "gnatprove",
             f"-P{project_file}",
             "-j0",
             "--output=oneline",
-            "-u",
             "--counterexamples=on",
             "--check-counterexamples=on",
             "--level=2",
@@ -53,7 +53,7 @@ def get_hash(project_name, filename, line):
 
     process = subprocess.run(command, capture_output=True, text=True)
 
-    return process.stdout.strip("\n").strip("\t")
+    return process.stdout.strip("\n\t")
 
 
 # extract relevant data from gnattest's json
