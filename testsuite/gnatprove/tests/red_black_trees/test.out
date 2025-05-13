@@ -1493,9 +1493,9 @@ binary_trees.ads:405:23: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:405:50: medium: for F before the call at binary_trees.ads:45
 binary_trees.ads:405:50: medium: invariant check might fail
 binary_trees.ads:405:50: medium: precondition might fail
-binary_trees.ads:405:65: info: for F before the call at binary_trees.ads:45
-binary_trees.ads:405:65: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:405:65: info: precondition proved (CVC5: 1 VC)
+binary_trees.ads:405:65: medium: for F before the call at binary_trees.ads:45
+binary_trees.ads:405:65: medium: invariant check might fail
 binary_trees.ads:409:42: info: precondition proved (CVC5: 1 VC)
 binary_trees.ads:409:42: medium: for F before the call at binary_trees.ads:45
 binary_trees.ads:409:42: medium: invariant check might fail
