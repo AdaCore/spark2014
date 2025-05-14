@@ -3393,6 +3393,7 @@ package body Flow.Control_Flow_Graph is
                 (Present (Obj) and then Ekind (Obj) = E_In_Out_Parameter)
               and then not Has_Relaxed_Initialization
                 (Get_Direct_Mapping_Id (F))
+              and then not FA.Generating_Globals
             then
                if T.D.Length = 1 then
                   Warning_Msg_N (Warn_Init_Array, N);
