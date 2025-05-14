@@ -625,15 +625,18 @@ of a program:
     in cases where review is needed.
 
   * Other objects visible from SPARK code which might be affected by a
-    modification of such a variable have valid values for their type when read.
+    modification of such a variable have valid values for their type when read,
+    except possibly for their non-discriminant scalar subcomponents if they have
+    the ``Potentially_Invalid`` aspect.
     The warning `imprecisely supported address specification` is guaranteed to
     be issued in cases where review is needed.
 
 .. index:: Valid; limitation
 
 * [SPARK_VALID]
-  Attribute 'Valid is currently assumed to always return True, as no invalid
-  value can be constructed in SPARK (see :ref:`Data Validity`).  If assumptions
+  References to the 'Valid and 'Valid_Scalars attributes are assumed to return
+  True unless their prefix is *potentially invalid*, (see SPARK RM 13.9.1).
+  If assumptions
   [SPARK_ALIASING_ADDRESS], [SPARK_EXTERNAL_VALID], and [ADA_EXTERNAL] are
   satisfied, then this assumption will be satisfied as well. However, it is
   valuable to explicitly state this assumption because it highlights an
@@ -643,12 +646,15 @@ of a program:
 
 * [SPARK_EXTERNAL_VALID]
   Values read from objects whose address is specified are assumed to be valid
-  values. This assumption is limited to objects with an imprecisely
+  values except possibly for their non-discriminant scalar subcomponents if they
+  have the ``Potentially_Invalid`` aspect.
+  This assumption is limited to objects with an imprecisely
   supported address (because an explicit check is emitted
-  otherwise). Currently there is no model of invalidity or undefinedness. The
+  otherwise). By default, invalidity or undefinedness are not modeled. The
   onus is on the user to ensure that all values read from an external source
-  are valid. The use of an invalid value invalidates any proofs associated with
-  the value. The warning `imprecisely supported address specification` is
+  are valid unless annotated otherwise. The use of an invalid value invalidates
+  any proofs associated with the value. The warning
+  `imprecisely supported address specification` is
   guaranteed to be issued in cases where review is required.
 
 * [SPARK_STORAGE_ERROR]
@@ -861,6 +867,9 @@ only part of a program:
 
   * :ref:`Type Contracts` of parameters, result (for a function) and global
     objects produced as outputs from the non-SPARK callee to the SPARK caller
+    if they are not subject to relaxed initialization
+    (see :ref:`Aspect Relaxed_Initialization`) or potentially invalid (see
+    :ref:`Aspect Potentially_Invalid`)
 
   * :ref:`Postconditions` (only explicit)
 
@@ -915,7 +924,9 @@ only part of a program:
   The (explicit or implicit) precondition to check is made up of:
 
   * :ref:`Type Contracts` of both parameters and global objects taken as input
-    by the SPARK callee from the non-SPARK caller
+    by the SPARK callee from the non-SPARK caller if they are not subject to
+    relaxed initialization (see :ref:`Aspect Relaxed_Initialization`) or
+    potentially invalid (see :ref:`Aspect Potentially_Invalid`)
 
   * :ref:`Preconditions` (explicit)
 
@@ -927,6 +938,13 @@ only part of a program:
     out* and global variables of mode *Input* or *In_Out* which are not
     subject to relaxed initialization (see :ref:`Aspect
     Relaxed_Initialization`) should be entirely initialized
+
+* [ADA_POTENTIALLY_INVALID]
+  When the body of a subprogram is not analyzed by GNATprove, its contract
+  should not constrain the value of parameters, result (for a function) and
+  global objects produced as outputs to have values that do not abide by their
+  :ref:`Type Contracts`, even if they are potentially invalid (see
+  :ref:`Aspect Potentially_Invalid`).
 
 * [ADA_OBJECT_ADDRESSES]
   When the body of a function is not analyzed by GNATprove, its result should

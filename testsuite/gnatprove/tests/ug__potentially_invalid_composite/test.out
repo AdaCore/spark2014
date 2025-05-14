@@ -1,0 +1,27 @@
+ info: initialization of "Y" proved
+--> potentially_invalid_composite.adb:7:31
+
+ info: data dependencies proved
+--> potentially_invalid_composite.adb:8:07
+
+ warning: attribute "Valid" is assumed to return True [attribute-valid-always-true]
+--> potentially_invalid_composite.adb:13:22
+   13 |          pragma Assert (X.F'Valid);
+      |                         ^~~~~~~~~
+
+ medium: validity check might fail
+--> potentially_invalid_composite.adb:13:22
+   13 |          pragma Assert (X.F'Valid);
+      |                         ^
+      + possible fix: subprogram at line 7 should mention X in a precondition
+    7 |       procedure P (X : in out R; Y : out R) with
+      |       ^
+
+ info: assertion proved
+--> potentially_invalid_composite.adb:13:22
+
+ medium: assertion might fail
+--> potentially_invalid_composite.adb:16:22
+   16 |          pragma Assert (Y'Valid_Scalars);
+      |                         ^~~~~~~~~~~~~~~
+      + e.g. when Y'Valid_Scalars = False

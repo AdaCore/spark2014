@@ -1,0 +1,4 @@
+ warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+--> potentially_invalid_warning.adb:12:55
+   12 |         Post => not One_Bad'Result'Valid and then One_Bad'Result = -1,
+      |                                                   ~~~~~~~^~~~~~~
