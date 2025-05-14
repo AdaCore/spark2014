@@ -12,12 +12,14 @@ string_utilities.adb:27:22: info: range check proved (CVC5: 2 VC)
 string_utilities.adb:29:17: info: range check proved (CVC5: 2 VC)
 string_utilities.adb:32:26: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 string_utilities.adb:33:29: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+string_utilities.adb:38:19: warning: initialization of a multi-dimensional array in nested FOR loops is handled imprecisely [multidimensional-array-init]
 string_utilities.adb:38:39: medium: overflow check might fail, cannot prove upper bound for 1 + Get_Length (X1 - 1, X2 - 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 33 should mention Lengths in a loop invariant]
 string_utilities.adb:38:39: medium: range check might fail, cannot prove upper bound for 1 + Get_Length (X1 - 1, X2 - 1) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 33 should mention Lengths in a loop invariant]
 string_utilities.adb:38:41: medium: "Lengths" might not be initialized
 string_utilities.adb:38:56: info: overflow check proved (CVC5: 2 VC)
 string_utilities.adb:38:64: info: overflow check proved (CVC5: 2 VC)
 string_utilities.adb:38:64: info: range check proved (CVC5: 2 VC)
+string_utilities.adb:40:19: warning: initialization of a multi-dimensional array in nested FOR loops is handled imprecisely [multidimensional-array-init]
 string_utilities.adb:40:47: info: range check proved (CVC5: 2 VC)
 string_utilities.adb:40:68: info: overflow check proved (CVC5: 2 VC)
 string_utilities.adb:40:73: info: range check proved (CVC5: 2 VC)

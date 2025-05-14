@@ -1,4 +1,4 @@
-cast_array.adb:7:34: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+cast_array.adb:8:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 cast_array.adb:9:33: info: loop invariant initialization proved (CVC5: 1 VC)
 cast_array.adb:9:33: info: loop invariant preservation proved (CVC5: 1 VC)
 cast_array.adb:10:35: medium: "result" might not be initialized

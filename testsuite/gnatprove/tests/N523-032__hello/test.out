@@ -25,7 +25,8 @@ hello.adb:41:08: info: postcondition proved (CVC5: 5 VC)
 hello.adb:45:08: info: precondition proved (CVC5: 3 VC)
 hello.adb:53:07: info: range check proved (CVC5: 2 VC)
 hello.adb:53:48: info: length check proved (CVC5: 2 VC; Trivial: 2 VC)
-hello.adb:57:28: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+hello.adb:59:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+hello.adb:61:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 hello.adb:64:25: info: assertion proved (Trivial)
 hello.adb:65:25: info: assertion proved (CVC5: 4 VC)
 hello.adb:66:25: info: assertion proved (CVC5: 4 VC)

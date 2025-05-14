@@ -3324,18 +3324,20 @@ package body Flow.Control_Flow_Graph is
       is
          Fully_Initialized : Flow_Id_Sets.Set;
 
-         type Target (Valid : Boolean := False)
+         type Target_Kind is (Precise, Imprecise, Invalid);
+
+         type Target (Kind : Target_Kind := Invalid)
             is record
-               case Valid is
-                  when True =>
+               case Kind is
+                  when Precise | Imprecise =>
                      Var : Flow_Id;
                      D   : Node_Lists.List;
-                  when False =>
+                  when Invalid =>
                      null;
                end case;
             end record;
 
-         Null_Target : constant Target := (Valid => False);
+         Null_Target : constant Target := (Kind => Invalid);
 
          Current_Loop : Node_Id       := Types.Empty;
          Active_Loops : Node_Sets.Set := Node_Sets.Empty_Set;
@@ -3346,15 +3348,12 @@ package body Flow.Control_Flow_Graph is
          --  CFG for checking whether a variable is defined on all paths in
          --  the current loop.
 
-         procedure Emit_Warning (W : Misc_Warning_Kind;
-                                 F : Flow_Id;
-                                 N : Node_Id)
-         with Pre => W in Warn_Init_Array | Warn_Init_Multidim_Array;
-         --  Emit warning W on node N
+         procedure Emit_Warning (T : Target; N : Node_Id);
+         --  Emit warning about T being written in node N
 
          function Get_Array_Index (N : Node_Id) return Target
          with Pre  => Present (N),
-              Post => (if Get_Array_Index'Result.Valid
+              Post => (if Get_Array_Index'Result.Kind = Precise
                        then Get_Array_Index'Result.Var.Kind in Direct_Mapping
                                                              | Record_Field
                         and then not Get_Array_Index'Result.D.Is_Empty
@@ -3364,7 +3363,7 @@ package body Flow.Control_Flow_Graph is
          --  and a list of loop parameters.
 
          function Fully_Defined_In_Original_Loop (T : Target) return Boolean
-         with Pre => T.Valid;
+         with Pre => T.Kind = Precise;
          --  Performs a mini-flow analysis on the current loop statements to
          --  see if T is defined on all paths (but not explicitly used).
 
@@ -3384,10 +3383,8 @@ package body Flow.Control_Flow_Graph is
          -- Emit_Warning --
          ------------------
 
-         procedure Emit_Warning (W : Misc_Warning_Kind;
-                                 F : Flow_Id;
-                                 N : Node_Id)
-         is
+         procedure Emit_Warning (T : Target; N : Node_Id) is
+            F    : Flow_Id renames T.Var;
             Obj : constant Entity_Id :=
               Get_Direct_Mapping_Id (Entire_Variable (F));
          begin
@@ -3397,7 +3394,11 @@ package body Flow.Control_Flow_Graph is
               and then not Has_Relaxed_Initialization
                 (Get_Direct_Mapping_Id (F))
             then
-               Warning_Msg_N (W, N);
+               if T.D.Length = 1 then
+                  Warning_Msg_N (Warn_Init_Array, N);
+               else
+                  Warning_Msg_N (Warn_Init_Multidim_Array, N);
+               end if;
             end if;
          end Emit_Warning;
 
@@ -3409,7 +3410,14 @@ package body Flow.Control_Flow_Graph is
             F : Flow_Id;
             L : Node_Lists.List;
 
-            Root : Node_Id;
+            Exact : Boolean := True;
+            --  Assignment is considered exact until we find that it might not
+            --  precisely represent an assigned array.
+
+            Root  : Node_Id;
+            --  Used for descending into the root of the assigned object
+            --  and then back when constructing the assigned target.
+
          begin
             --  First, is this really an array access?
             --  ??? We are not supporting array slices yet
@@ -3582,13 +3590,7 @@ package body Flow.Control_Flow_Graph is
                         --  index type.
 
                         else
-                           Emit_Warning ((if Multi_Dim
-                                          then Warn_Init_Multidim_Array
-                                          else Warn_Init_Array),
-                                         F,
-                                         N);
-
-                           return Null_Target;
+                           Exact := False;
                         end if;
 
                         L.Append (Entity (Param_Expr));
@@ -3601,8 +3603,9 @@ package body Flow.Control_Flow_Graph is
                         --     A (I + 1) := 0;
                         --  end loop;
 
-                        Emit_Warning (Warn_Init_Array, F, N);
-                        return Null_Target;
+                        Exact := False;
+
+                        L.Append (Param_Expr);
                   end case;
 
                   Next (Param_Expr);
@@ -3611,9 +3614,15 @@ package body Flow.Control_Flow_Graph is
                end loop;
             end;
 
-            return (Valid => True,
-                    Var   => F,
-                    D     => L);
+            if Exact then
+               return (Kind => Precise,
+                       Var  => F,
+                       D    => L);
+            else
+               return (Kind => Imprecise,
+                       Var  => F,
+                       D    => L);
+            end if;
          end Get_Array_Index;
 
          ------------------------------------
@@ -3649,8 +3658,6 @@ package body Flow.Control_Flow_Graph is
                Touched.Insert (V);
 
                if A.Variables_Explicitly_Used.Contains (T.Var) then
-
-                  Emit_Warning (Warn_Init_Array, T.Var, Loop_N);
 
                   Fully_Defined := False;
                   Tv            := Flow_Graphs.Abort_Traversal;
@@ -3718,8 +3725,6 @@ package body Flow.Control_Flow_Graph is
                   Tv := Flow_Graphs.Skip_Children;
                elsif FA.Atr (V).Variables_Explicitly_Used.Contains (T.Var) then
 
-                  Emit_Warning (Warn_Init_Array, T.Var, Loop_N);
-
                   Fully_Defined := False;
                   Tv            := Flow_Graphs.Abort_Traversal;
 
@@ -3745,11 +3750,18 @@ package body Flow.Control_Flow_Graph is
          procedure Potentially_Defined (N : Node_Id) is
             T : constant Target := Get_Array_Index (N);
          begin
-            if T.Valid
-              and then Fully_Defined_In_Original_Loop (T)
-            then
-               Fully_Initialized.Include (T.Var);
-            end if;
+            case T.Kind is
+               when Precise =>
+                  if Fully_Defined_In_Original_Loop (T) then
+                     Fully_Initialized.Include (T.Var);
+                  else
+                     Emit_Warning (T, N);
+                  end if;
+               when Imprecise =>
+                  Emit_Warning (T, N);
+               when Invalid =>
+                  null;
+            end case;
          end Potentially_Defined;
 
          -----------------

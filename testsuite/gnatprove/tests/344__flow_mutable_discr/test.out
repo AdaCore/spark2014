@@ -9,5 +9,5 @@ test.adb:30:19: medium: "X" might not be initialized in "Q_2" [reason for check:
 test.adb:30:30: info: initialization of "B" proved
 test.adb:31:06: info: flow dependencies proved
 test.adb:35:24: info: unrolling loop [info-unrolling-inlining]
-test.adb:35:24: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 test.adb:36:13: high: "X" is not initialized
+test.adb:36:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]

@@ -1,7 +1,7 @@
 s.adb:6:32: info: loop invariant initialization proved (CVC5: 1 VC)
 s.adb:6:32: info: loop invariant preservation proved (CVC5: 1 VC)
 s.adb:7:33: info: index check proved (CVC5: 4 VC)
-s.adb:20:30: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+s.adb:21:09: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 s.adb:24:32: info: loop invariant initialization proved (CVC5: 2 VC)
 s.adb:24:32: info: loop invariant preservation proved (CVC5: 2 VC)
 s.adb:25:27: medium: "Dest" might not be initialized
