@@ -1,0 +1,26 @@
+b.adb:8:04: high: object is unsuitable for aliasing via address clause [possible explanation: type U8 has 256 values but has Object_Size 32, which allows 16#1000_0000_0# possible values; aliased object could have invalid values [SPARK RM 13.7]]
+b.adb:8:04: info: address in address clause is compatible with object alignment (Trivial)
+b.adb:8:47: high: types of aliased objects do not have the same size [possible explanation: Object_Sizes of type U8 and type U32 differ]
+b.adb:8:47: info: object is suitable for aliasing via address clause (Trivial)
+b.adb:11:19: info: assertion proved (Trivial: 1 VC)
+b.adb:11:19: warning: attribute "Valid" is assumed to return True [attribute-valid-always-true]
+cover.adb:7:03: info: address in address clause is compatible with object alignment (Trivial)
+cover.adb:7:03: info: object is suitable for aliasing via address clause (Trivial)
+cover.adb:7:27: info: object is suitable for aliasing via address clause (Trivial)
+cover.adb:7:27: info: types of aliased objects have the same size (Trivial)
+cover.adb:15:03: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: unknown alignment for object] [possible fix: overlaying object should have an Alignment representation clause]
+cover.adb:15:03: high: object with non-trivial address clause or prefix of the 'Address reference does not have asynchronous writers
+cover.adb:15:03: info: object is suitable for aliasing via address clause (Trivial)
+cover.adb:15:30: info: object is suitable for aliasing via address clause (Trivial)
+cover.adb:15:30: info: types of aliased objects have the same size (Trivial)
+cover.adb:15:35: warning: alignment of object is not precisely known [imprecise-align]
+cover.adb:18:19: info: assertion proved (Trivial)
+test.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
+test.adb:9:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
+test.adb:9:51: info: type is suitable as source for unchecked conversion (Trivial)
+test.adb:9:60: high: type is unsuitable as a target for unchecked conversion [possible explanation: type Natural has 16#8000_0000# values but has Object_Size 32, which allows 16#1000_0000_0# possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
+test.adb:26:13: info: types in unchecked conversion have the same size (Trivial)
+test.adb:26:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
+test.adb:26:51: info: type is suitable as source for unchecked conversion (Trivial)
+test.adb:26:56: high: type is unsuitable as a target for unchecked conversion [possible explanation: type Natural has 16#8000_0000# values but has Object_Size 32, which allows 16#1000_0000_0# possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
+test.adb:29:19: info: assertion proved (CVC5: 1 VC)

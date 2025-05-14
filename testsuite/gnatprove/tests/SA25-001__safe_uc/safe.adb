@@ -127,9 +127,18 @@ procedure Safe is
       A : U7;
       B : Boolean;
    end record
-   with Object_Size => 8, Size => 8;
+   with Object_Size => 8, Size => 8, Pack;
 
    function R_OK is new Ada.Unchecked_Conversion (U8, R);
+
+   type R2 is record
+      A : Boolean;
+      B : Boolean;
+   end record
+   with Object_Size => 8, Size => 8, Pack;
+
+   function R2_OK is new Ada.Unchecked_Conversion (U8, R2);
+   function R2_KO is new Ada.Unchecked_Conversion (R2, U8); --@UNCHECKED_CONVERSION:FAIL
 
 begin
    null;

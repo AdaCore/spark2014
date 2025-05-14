@@ -1,4 +1,3 @@
-with Ada.Text_IO;
 with Ada.Unchecked_Conversion;
 
 procedure Test with spark_mode is
