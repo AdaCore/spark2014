@@ -56,15 +56,31 @@ package Gnat2Why.Unchecked_Conversion is
    --  conversion" of SPARK RM 13.9. It always uses the RM size.
 
    procedure Suitable_For_UC_Target
-     (Typ          :     Type_Kind_Id;
-      Use_Esize    :     Boolean;
-      For_UC       : Boolean;
-      Result       : out Boolean;
-      Explanation  : out Unbounded_String);
+     (Typ         :     Type_Kind_Id;
+      Size        :     Uint;
+      Size_Str    :     String;
+      For_UC      :     Boolean;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String);
    --  This procedure implements the notion of "suitable as a target of an
-   --  unchecked conversion" of SPARK RM 13.9.
+   --  unchecked conversion" of SPARK RM 13.9. Possibility of invalid values is
+   --  checked using the passed size.
    --  If For_UC is True, the explanation mentions UC, otherwise, it mentions
    --  aliased objects.
+
+   procedure Suitable_For_UC_Target_UC_Wrap
+     (Typ         :     Type_Kind_Id;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String);
+   --  Wrapper of Suitable_For_UC_Target, to be used with unchecked conversion.
+   --  The RM_Size is used to check for invalid values.
+
+   procedure Suitable_For_UC_Target_Overlay_Wrap
+     (Typ         :     Type_Kind_Id;
+      Obj         :     Node_Id;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String);
+   --  Wrapper of Suitable_For_UC_Target, to be used with overlays.
 
    function Suitable_For_Precise_UC
      (Arg_Typ : Type_Kind_Id)

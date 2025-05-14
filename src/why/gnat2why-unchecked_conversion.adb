@@ -158,8 +158,7 @@ package body Gnat2Why.Unchecked_Conversion is
            ("type is unsuitable as source for unchecked conversion");
       end if;
 
-      Suitable_For_UC_Target
-        (Target_Type, False, True, Valid_Target, Explanation);
+      Suitable_For_UC_Target_UC_Wrap (Target_Type, Valid_Target, Explanation);
       if not Valid_Target then
          --  Override explanation to avoid special characters
          return False_With_Explain
@@ -1194,11 +1193,12 @@ package body Gnat2Why.Unchecked_Conversion is
    ----------------------------
 
    procedure Suitable_For_UC_Target
-     (Typ          :     Type_Kind_Id;
-      Use_Esize    :     Boolean;
-      For_UC       : Boolean;
-      Result       : out Boolean;
-      Explanation  : out Unbounded_String)
+     (Typ         :     Type_Kind_Id;
+      Size        :     Uint;
+      Size_Str    :     String;
+      For_UC      :     Boolean;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String)
    is
    begin
       Suitable_For_UC (Typ, Result, Explanation);
@@ -1215,7 +1215,7 @@ package body Gnat2Why.Unchecked_Conversion is
                else "; aliased object could have invalid values "
                & "[SPARK RM 13.7]");
          begin
-            Res := Type_Has_Only_Valid_Values (Typ, Use_Esize);
+            Res := Type_Has_Only_Valid_Values (Typ, Size, Size_Str);
 
             Result := Res.Ok;
             if not Result then
@@ -1224,5 +1224,59 @@ package body Gnat2Why.Unchecked_Conversion is
          end;
       end if;
    end Suitable_For_UC_Target;
+
+   -----------------------------------------
+   -- Suitable_For_UC_Target_Overlay_Wrap --
+   -----------------------------------------
+
+   procedure Suitable_For_UC_Target_Overlay_Wrap
+     (Typ         :     Type_Kind_Id;
+      Obj         :     Node_Id;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String)
+   is
+      Size     : Uint := Uint_0;
+      Size_Str : Unbounded_String := To_Unbounded_String ("has Size ");
+   begin
+      if Is_Scalar_Type (Typ) then
+         Check_Known_Size_For_Object (Obj, Size, Explanation, Size_Str);
+         if No (Size) then
+            Result := False;
+            return;
+         end if;
+      end if;
+      Suitable_For_UC_Target
+        (Typ,
+         Size,
+         To_String (Size_Str),
+         False,
+         Result,
+         Explanation);
+   end Suitable_For_UC_Target_Overlay_Wrap;
+
+   ------------------------------------
+   -- Suitable_For_UC_Target_UC_Wrap --
+   ------------------------------------
+
+   procedure Suitable_For_UC_Target_UC_Wrap
+     (Typ         :     Type_Kind_Id;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String)
+   is
+      Size     : Uint := Uint_0;
+   begin
+      if Is_Scalar_Type (Typ) then
+         --  ARM K.2 226
+         Check_Known_RM_Size (Typ, Size, Explanation);
+         pragma Assert (not No (Size));
+      end if;
+      Suitable_For_UC_Target
+        (Typ,
+         Size,
+         "has Size ",
+         True,
+         Result,
+         Explanation);
+   end Suitable_For_UC_Target_UC_Wrap;
 
 end Gnat2Why.Unchecked_Conversion;

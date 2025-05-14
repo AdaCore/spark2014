@@ -4384,11 +4384,19 @@ package body SPARK_Definition is
                --  We emit a warning when the value read might not be valid.
                --  This addresses assumption SPARK_EXTERNAL_VALID.
 
-               if not Type_Has_Only_Valid_Values (Retysp (Etype (E)), True).Ok
-               then
-                  Nb_Warn := Nb_Warn + 1;
-                  Warnings (Nb_Warn) := To_Unbounded_String ("valid reads");
-               end if;
+               declare
+                  Ret : constant Type_Kind_Id := Retysp (Etype (E));
+                  Valid : constant True_Or_Explain :=
+                    Type_Has_Only_Valid_Values
+                      (Ret,
+                       (if Is_Scalar_Type (Ret) then Esize (Ret) else Uint_0),
+                       Source_Name (E) & " has size ");
+               begin
+                  if not Valid.Ok then
+                     Nb_Warn := Nb_Warn + 1;
+                     Warnings (Nb_Warn) := To_Unbounded_String ("valid reads");
+                  end if;
+               end;
 
                --  Emit composite warning
 

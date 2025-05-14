@@ -371,11 +371,25 @@ package SPARK_Util.Types is
       Explanation : out Unbounded_String);
    --  same as Check_Known_RM_Size, but for Esize
 
+   procedure Check_Known_Size_For_Object
+     (Obj         : Node_Id;
+      Size        : out Uint;
+      Explanation : out Unbounded_String;
+      Size_Str    : out Unbounded_String);
+   --  Compute known size for an object. If no size was computed, Explanation
+   --  contains the reason for this. If a size was found, Size_Str contains a
+   --  string that can be used in error messages to explain the source of the
+   --  size.
+
    function Type_Has_Only_Valid_Values
-     (Typ       : Type_Kind_Id;
-      Use_Esize : Boolean) return True_Or_Explain;
+     (ArgTyp   : Type_Kind_Id;
+      Size     : Uint;
+      Size_Str : String)
+      return True_Or_Explain
+   with Pre => ((Size /= Uint_0) = Is_Scalar_Type (ArgTyp));
    --  Return True if Type is known to have only valid values. Otherwise,
    --  return an explanation for why Ty might have invalid values.
+   --  If Typ is scalar, use the passed size to check for invalid values.
 
    function Contains_Access_Subcomponents (Typ : Type_Kind_Id) return Boolean;
    --  Returns True if Typ has access subcomponents

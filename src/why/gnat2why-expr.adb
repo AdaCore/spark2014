@@ -20385,16 +20385,16 @@ package body Gnat2Why.Expr is
 
                      Valid       : Boolean;
                      Explanation : Unbounded_String;
-
+                     Ret_Obj     : constant Type_Kind_Id :=
+                       Retysp (Etype (Obj));
                   begin
                      --  The check is needed only for overlays between two
                      --  SPARK objects.
 
                      if Supported_Alias then
-                        Suitable_For_UC_Target
-                          (Typ         => Retysp (Etype (Obj)),
-                           Use_Esize   => True,
-                           For_UC      => False,
+                        Suitable_For_UC_Target_Overlay_Wrap
+                          (Typ         => Ret_Obj,
+                           Obj         => Aliased_Object,
                            Result      => Valid,
                            Explanation => Explanation);
                         Emit_Static_Proof_Result
@@ -20433,22 +20433,21 @@ package body Gnat2Why.Expr is
                         declare
                            Valid       : Boolean;
                            Explanation : Unbounded_String;
-
+                           Pref        : constant Entity_Id :=
+                             Prefix (Address);
+                           Ret_Addr    : constant Type_Kind_Id :=
+                             Retysp (Etype (Pref));
                         begin
                            --  If Aliased_Object is constant, it is OK if if
                            --  its type permits invalid values as the alias
                            --  cannot be used to modify it.
 
                            if Is_Constant_In_SPARK (Aliased_Object) then
-                              Suitable_For_UC
-                                (Retysp (Etype (Prefix (Address))),
-                                 Valid, Explanation);
+                              Suitable_For_UC (Ret_Addr, Valid, Explanation);
                            else
-                              Suitable_For_UC_Target
-                                (Typ         =>
-                                   Retysp (Etype (Prefix (Address))),
-                                 Use_Esize   => True,
-                                 For_UC      => False,
+                              Suitable_For_UC_Target_Overlay_Wrap
+                                (Typ         => Ret_Addr,
+                                 Obj         => Pref,
                                  Result      => Valid,
                                  Explanation => Explanation);
                            end if;
@@ -20458,17 +20457,17 @@ package body Gnat2Why.Expr is
                               Explanation => To_String (Explanation));
 
                            Have_Same_Known_Esize
-                             (Retysp (Etype (Obj)),
-                              Retysp (Etype (Prefix (Address))),
+                             (Ret_Obj,
+                              Ret_Addr,
                               Valid, Explanation);
                            Emit_Static_Proof_Result
                              (Address, VC_UC_Same_Size, Valid, Current_Subp,
                               Explanation => To_String (Explanation));
 
-                           if Nkind (Prefix (Address)) in N_Has_Entity then
+                           if Nkind (Pref) in N_Has_Entity then
                               Objects_Have_Compatible_Alignments
                                 (Obj,
-                                 Entity (Prefix (Address)),
+                                 Entity (Pref),
                                  Valid, Explanation);
                            else
                               Valid := False;

@@ -63,6 +63,18 @@ package body SPARK_Util.Types is
    --  Declares_Iterable_Aspect: whether specific Aspect of E is
    --  declared by an anscestor. This ignores SPARK_Mode boundary.
 
+   procedure Scalar_Record_Component_Size
+     (Typ      : Type_Kind_Id;
+      Comp     : Entity_Id;
+      Size     : out Uint;
+      Size_Str : out Unbounded_String)
+     with Pre =>
+       (Ekind (Comp) = E_Component
+        and then Is_Scalar_Type (Retysp (Etype (Comp))));
+   --  Compute the expected size for a record component of scalar type. The
+   --  Size_Str contains a string that explains the origin of the computed
+   --  size.
+
    -----------------------------
    -- Acts_As_Incomplete_Type --
    -----------------------------
@@ -248,6 +260,62 @@ package body SPARK_Util.Types is
          end if;
       end if;
    end Check_Known_RM_Size;
+
+   ---------------------------------
+   -- Check_Known_Size_For_Object --
+   ---------------------------------
+
+   procedure Check_Known_Size_For_Object
+     (Obj         : Node_Id;
+      Size        : out Uint;
+      Explanation : out Unbounded_String;
+      Size_Str    : out Unbounded_String)
+   is
+   begin
+      case Nkind (Obj) is
+         when N_Indexed_Component =>
+            declare
+               Typ : constant Type_Kind_Id := Retysp (Etype (Prefix (Obj)));
+            begin
+               Size := Get_Attribute_Value (Typ, Attribute_Component_Size);
+               pragma Assert (not No (Size));
+               Size_Str :=
+                 To_Unbounded_String
+                   ("Component_Size for array type "
+                    & Type_Name_For_Explanation (Typ));
+            end;
+         when N_Selected_Component =>
+            Scalar_Record_Component_Size
+              (Retysp (Etype (Prefix (Obj))),
+               Entity (Selector_Name (Obj)),
+               Size,
+               Size_Str);
+         when N_Identifier | N_Expanded_Name | N_Defining_Identifier =>
+            declare
+               Ent : constant Entity_Id :=
+                 (if Nkind (Obj) = N_Defining_Identifier then Obj
+                  else Entity (Obj));
+            begin
+               --  For aliased objects, we need to take the Object_Size of the
+               --  type (ARM K.2 164 2/5).
+               --  Otherwise, we can take the size of the object, if available
+               --  (ARM K.2 229).
+
+               if Is_Aliased (Ent) or else not Known_Esize (Ent) then
+                  Check_Known_Esize (Etype (Ent), Size, Explanation);
+                  Size_Str :=
+                    To_Unbounded_String ("has Object_Size ");
+               else
+                  Size := Esize (Ent);
+                  Size_Str :=
+                    To_Unbounded_String
+                      ("object " & Source_Name (Ent) & " has size ");
+               end if;
+            end;
+         when others =>
+            raise Program_Error;
+      end case;
+   end Check_Known_Size_For_Object;
 
    --------------------------------
    -- Check_Needed_On_Conversion --
@@ -2230,6 +2298,37 @@ package body SPARK_Util.Types is
       return Result;
    end Root_Retysp;
 
+   ----------------------------------
+   -- Scalar_Record_Component_Size --
+   ----------------------------------
+
+   procedure Scalar_Record_Component_Size
+     (Typ      : Type_Kind_Id;
+      Comp     : Entity_Id;
+      Size     : out Uint;
+      Size_Str : out Unbounded_String) is
+   begin
+      if Present (Component_Clause (Comp)) then
+         Size :=
+           Expr_Value (Last_Bit (Component_Clause (Comp)))
+           - Expr_Value (First_Bit (Component_Clause (Comp)))
+           + Uint_1;
+         Size_Str := To_Unbounded_String
+           ("size of component "
+            & Source_Name (Comp)
+            & " is specified to be ");
+
+      --  ARM K.2 225
+
+      elsif Is_Packed (Typ) then
+         Size := RM_Size (Retysp (Etype (Comp)));
+         Size_Str := To_Unbounded_String ("has Size ");
+      else
+         Size := Esize (Retysp (Etype (Comp)));
+         Size_Str := To_Unbounded_String ("has Object_Size ");
+      end if;
+   end Scalar_Record_Component_Size;
+
    -------------------------
    -- Static_Array_Length --
    -------------------------
@@ -2472,189 +2571,201 @@ package body SPARK_Util.Types is
    --------------------------------
 
    function Type_Has_Only_Valid_Values
-     (Typ       : Type_Kind_Id;
-      Use_Esize : Boolean) return True_Or_Explain
+     (ArgTyp   : Type_Kind_Id;
+      Size     : Uint;
+      Size_Str : String)
+      return True_Or_Explain
    is
-      Top_Level_Ty  : constant Type_Kind_Id := Retysp (Typ);
-      Top_Use_Esize : constant Boolean := Use_Esize;
-      Res           : True_Or_Explain := (Ok => True);
+      Typ : constant Type_Kind_Id := Retysp (ArgTyp);
 
-      function Find_Invalid (Typ : Type_Kind_Id) return Test_Result;
-      --  Return Pass if Typ has invalid values, assuming its components have
-      --  valid values for composite types. It is meant to be used in a
-      --  traversal function that takes care of applying it to all
-      --  subcomponents of Typ.
+      function Typ_Name return String;
 
-      ------------------
-      -- Find_Invalid --
-      ------------------
+      --------------
+      -- Typ_Name --
+      --------------
 
-      function Find_Invalid (Typ : Type_Kind_Id) return Test_Result is
-         function Typ_Name return String is (Type_Name_For_Explanation (Typ));
-         Use_Esize  : constant Boolean :=
-           Typ = Top_Level_Ty and then Top_Use_Esize;
-      begin
-         --  Exclude tagged types, private types, and access types
+      function Typ_Name return String is (Type_Name_For_Explanation (Typ));
 
-         if Is_Tagged_Type (Typ) then
-            Res :=
-              (Ok          => False,
-               Explanation =>
-                 To_Unbounded_String (Typ_Name & " is a tagged type"));
-            return Pass;
+   begin
 
-         elsif Is_Incomplete_Or_Private_Type (Typ) then
-            Res :=
-              (Ok          => False,
-               Explanation =>
-                 To_Unbounded_String (Typ_Name & " is a private type"));
-            return Pass;
+      --  Exclude tagged types, private types, and access types
 
-         elsif Is_Concurrent_Type (Typ) then
-            pragma Annotate
-              (Xcov, Exempt_On, "The frontend crashes on UC on tasks and "
-               & "rejectes UC on protected types");
-            Res :=
-              (Ok          => False,
-               Explanation =>
-                 To_Unbounded_String (Typ_Name & " is a concurrent type"));
-            return Pass;
-            pragma Annotate (Xcov, Exempt_Off);
+      if Is_Tagged_Type (Typ) then
+         return
+           (Ok          => False,
+            Explanation =>
+              To_Unbounded_String (Typ_Name & " is a tagged type"));
 
-         elsif Is_Access_Type (Typ) then
-            Res :=
-              (Ok          => False,
-               Explanation =>
-                 To_Unbounded_String (Typ_Name & " is an access type"));
-            return Pass;
+      elsif Is_Incomplete_Or_Private_Type (Typ) then
+         return
+           (Ok          => False,
+            Explanation =>
+              To_Unbounded_String (Typ_Name & " is a private type"));
+
+      elsif Is_Concurrent_Type (Typ) then
+         pragma Annotate
+           (Xcov, Exempt_On, "The frontend crashes on UC on tasks and "
+            & "rejectes UC on protected types");
+         return
+           (Ok          => False,
+            Explanation =>
+              To_Unbounded_String (Typ_Name & " is a concurrent type"));
+         pragma Annotate (Xcov, Exempt_Off);
+
+      elsif Is_Access_Type (Typ) then
+         return
+           (Ok          => False,
+            Explanation =>
+              To_Unbounded_String (Typ_Name & " is an access type"));
 
          --  Types with constrained/immutable discriminants have invalid
          --  values. We could support mutable discriminants.
 
-         elsif Has_Discriminants (Typ) then
-            Res :=
-              (Ok          => False,
-               Explanation =>
-                 To_Unbounded_String (Typ_Name & " has discriminants"));
-            return Pass;
-         end if;
+      elsif Has_Discriminants (Typ) then
+         return
+           (Ok          => False,
+            Explanation =>
+              To_Unbounded_String (Typ_Name & " has discriminants"));
+      end if;
 
-         --  Some valid IEEE 754 values are not allowed in SPARK, such as NaN
+      --  Some valid IEEE 754 values are not allowed in SPARK, such as NaN
 
-         if Is_Floating_Point_Type (Typ) then
-            Res :=
-              (Ok          => False,
-               Explanation =>
-                 To_Unbounded_String ("floating-point types have invalid bit "
-                   & "patterns for SPARK"));
-            return Pass;
-         end if;
+      if Is_Floating_Point_Type (Typ) then
+         return
+           (Ok          => False,
+            Explanation =>
+              To_Unbounded_String ("floating-point types have invalid bit "
+                & "patterns for SPARK"));
+      end if;
 
-         --  We exclude predicates
+      --  We exclude predicates
 
-         if Has_Predicates (Typ) then
-            Res :=
-              (Ok          => False,
-               Explanation =>
-                 To_Unbounded_String
-                   (Typ_Name & " has predicates"));
-            return Pass;
-         end if;
+      if Has_Predicates (Typ) then
+         return
+           (Ok          => False,
+            Explanation =>
+              To_Unbounded_String
+                (Typ_Name & " has predicates"));
+      end if;
 
-         --  We exclude invariants. It is necessary to climb up the parent
-         --  chain to find potentially inherited invariants.
+      --  We exclude invariants. It is necessary to climb up the parent
+      --  chain to find potentially inherited invariants.
 
+      declare
+         Current : Type_Kind_Id := Typ;
+         Parent  : Type_Kind_Id;
+      begin
+         loop
+            if Has_Invariants_In_SPARK (Current) then
+               return
+                 (Ok          => False,
+                  Explanation =>
+                    To_Unbounded_String
+                      (Typ_Name & " has invariants"));
+            end if;
+
+            Parent := Retysp (Etype (Current));
+            exit when Current = Parent;
+            Current := Parent;
+         end loop;
+      end;
+
+      --  Constrained scalar types are also excluded
+
+      if Is_Scalar_Type (Typ) then
          declare
-            Current : Type_Kind_Id := Typ;
-            Parent  : Type_Kind_Id;
+            R        : constant Node_Id := Get_Range (Typ);
          begin
-            loop
-               if Has_Invariants_In_SPARK (Current) then
-                  Res :=
-                    (Ok          => False,
-                     Explanation =>
-                       To_Unbounded_String
-                         (Typ_Name & " has invariants"));
-                  return Pass;
-               end if;
+            --  Despite having a known Esize, we might not know the bounds
+            --  at compile time. Checking for this next.
 
-               Parent := Retysp (Etype (Current));
-               exit when Current = Parent;
-               Current := Parent;
-            end loop;
-         end;
+            if not Compile_Time_Known_Value (Low_Bound (R)) then
+               return
+                 (Ok          => False,
+                  Explanation =>
+                    To_Unbounded_String ("lower bound for " & Typ_Name
+                      & " is not known at compile time"));
+            end if;
 
-         --  Constrained scalar types are also excluded
+            if not Compile_Time_Known_Value (High_Bound (R)) then
+               return
+                 (Ok          => False,
+                  Explanation =>
+                    To_Unbounded_String ("upper bound for " & Typ_Name
+                      & " is not known at compile time"));
+            end if;
 
-         if Is_Scalar_Type (Typ) then
             declare
-               R        : constant Node_Id := Get_Range (Typ);
-
-               --  The size of scalar types is always known statically
-               pragma Assert (Known_Esize (Typ) and Known_RM_Size (Typ));
-               Typ_Size : constant Uint :=
-                 (if Use_Esize then Esize (Typ) else RM_Size (Typ));
+               Low        : constant Uint := Expr_Value (Low_Bound (R));
+               High       : constant Uint := Expr_Value (High_Bound (R));
+               Num_Values : constant Uint := High - Low + 1;
             begin
-               --  Despite having a known Esize, we might not know the bounds
-               --  at compile time. Checking for this next.
+               if 2 ** Size = Num_Values then
+                  return (Ok => True);
+               else
+                  --  We need to escape the string returned by UI_Image
+                  --  because it might contain # (for hex format)
 
-               if not Compile_Time_Known_Value (Low_Bound (R)) then
-                  Res :=
+                  return
                     (Ok          => False,
-                     Explanation =>
-                       To_Unbounded_String ("lower bound for " & Typ_Name
-                         & " is not known at compile time"));
-                  return Pass;
+                     Explanation => To_Unbounded_String
+                       (Typ_Name & " has "
+                        & Escape (UI_Image (Num_Values))
+                        & " values but " & Size_Str
+                        & Escape (UI_Image (Size)) & ", which allows "
+                        & Escape (UI_Image (2 ** Size))
+                        & " possible values"));
                end if;
-
-               if not Compile_Time_Known_Value (High_Bound (R)) then
-                  Res :=
-                    (Ok          => False,
-                     Explanation =>
-                       To_Unbounded_String ("upper bound for " & Typ_Name
-                         & " is not known at compile time"));
-                  return Pass;
-               end if;
-
+            end;
+         end;
+      elsif Is_Array_Type (Typ) then
+         declare
+            Comp_Ty   : constant Type_Kind_Id := Retysp (Component_Type (Typ));
+            Used_Size : Uint := Uint_0;
+            Size_Str  : Unbounded_String;
+         begin
+            if Is_Scalar_Type (Comp_Ty) then
+               --  ARM K.2 37
+               Used_Size :=
+                 Get_Attribute_Value (Typ, Attribute_Component_Size);
+               pragma Assert (not No (Used_Size));
+               Size_Str :=
+                 To_Unbounded_String
+                   ("Component_Size of " & Typ_Name & " is specified to be ");
+            end if;
+            return Type_Has_Only_Valid_Values
+              (Comp_Ty,
+               Used_Size,
+               To_String (Size_Str));
+         end;
+      elsif Is_Record_Type (Typ) then
+         declare
+            Comp      : Entity_Id := First_Component (Typ);
+            Used_Size : Uint;
+            Size_Str  : Unbounded_String;
+            Result    : True_Or_Explain;
+         begin
+            while Present (Comp) loop
+               Used_Size := Uint_0;
+               Size_Str := Null_Unbounded_String;
                declare
-                  Low        : constant Uint := Expr_Value (Low_Bound (R));
-                  High       : constant Uint := Expr_Value (High_Bound (R));
-                  Num_Values : constant Uint := High - Low + 1;
+                  Comp_Ty   : constant Type_Kind_Id := Retysp (Etype (Comp));
                begin
-                  if 2 ** Typ_Size = Num_Values then
-                     return Fail;
-                  else
-                     --  We need to escape the string returned by UI_Image
-                     --  because it might contain # (for hex format)
-
-                     Res :=
-                       (Ok          => False,
-                        Explanation => To_Unbounded_String
-                          (Typ_Name & " has "
-                           & Escape (UI_Image (Num_Values))
-                           & " values but has "
-                           & (if Use_Esize then "Object_Size " else "Size ")
-                           & Escape (UI_Image (Typ_Size))  & ", which allows "
-                           & Escape (UI_Image (2 ** Typ_Size))
-                           & " possible values"));
-                     return Pass;
+                  if Is_Scalar_Type (Comp_Ty) then
+                     Scalar_Record_Component_Size
+                       (Typ, Comp, Used_Size, Size_Str);
+                  end if;
+                  Result := Type_Has_Only_Valid_Values
+                    (Comp_Ty, Used_Size, To_String (Size_Str));
+                  if not Result.Ok then
+                     return Result;
                   end if;
                end;
-            end;
-         end if;
-
-         return Continue;
-      end Find_Invalid;
-
-      function Has_Invalid_Subcomponent is new Traverse_Subcomponents
-        (Find_Invalid);
-
-   begin
-      if Has_Invalid_Subcomponent (Top_Level_Ty) then
-         return Res;
-      else
-         return (Ok => True);
+               Next_Component (Comp);
+            end loop;
+         end;
       end if;
+      return (Ok => True);
    end Type_Has_Only_Valid_Values;
 
    ----------------------------------
