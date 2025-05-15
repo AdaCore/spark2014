@@ -3,7 +3,7 @@ iter_array.adb:5:45: info: index check proved (CVC5: 2 VC)
 iter_array.adb:6:19: info: assertion proved (CVC5: 1 VC)
 iter_array.adb:8:15: info: unrolling loop [info-unrolling-inlining]
 iter_array.adb:11:19: info: assertion proved (CVC5: 1 VC)
-iter_array.adb:13:21: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+iter_array.adb:17:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 iter_array.adb:19:30: info: loop invariant initialization proved (CVC5: 1 VC)
 iter_array.adb:19:30: info: loop invariant preservation proved (CVC5: 1 VC)
 iter_array.adb:19:55: info: index check proved (CVC5: 4 VC)

@@ -1,4 +1,5 @@
 p.adb:1:11: warning: subprogram "P" has no effect
 p.adb:2:19: high: "Output" is not initialized in "Set" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "Output" on all paths or make "Output" an IN OUT parameter]
 p.adb:13:27: info: unrolling loop [info-unrolling-inlining]
+p.adb:15:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 p.adb:17:10: info: no contextual analysis of "Set" (body not seen yet)

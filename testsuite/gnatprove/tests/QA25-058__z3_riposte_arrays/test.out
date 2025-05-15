@@ -39,7 +39,7 @@ arrays.adb:175:11: info: flow dependencies proved
 arrays.adb:178:22: high: assertion might fail (e.g. when A = (others => 0)) [possible fix: subprogram at line 174 should mention A in a precondition]
 arrays.adb:182:13: info: implicit aspect Always_Terminates on "Single_Char_Set" has been proved, subprogram will terminate
 arrays.adb:183:19: info: postcondition proved (CVC5: 2 VC)
-arrays.adb:188:26: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+arrays.adb:189:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 arrays.adb:191:33: info: loop invariant initialization proved (CVC5: 2 VC)
 arrays.adb:191:33: info: loop invariant preservation proved (CVC5: 2 VC)
 arrays.adb:191:41: info: range check proved (CVC5: 4 VC)
@@ -47,7 +47,7 @@ arrays.adb:192:57: medium: "R" might not be initialized
 arrays.adb:194:14: medium: "R" might not be initialized
 arrays.adb:197:13: info: implicit aspect Always_Terminates on "Single_Char_Set_Broken" has been proved, subprogram will terminate
 arrays.adb:199:22: medium: postcondition might fail, cannot prove Single_Char_Set_Broken'Result (I) = (I > C)
-arrays.adb:203:26: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+arrays.adb:204:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 arrays.adb:206:33: info: loop invariant initialization proved (CVC5: 2 VC)
 arrays.adb:206:33: info: loop invariant preservation proved (CVC5: 2 VC)
 arrays.adb:206:41: info: range check proved (CVC5: 4 VC)

@@ -3324,18 +3324,20 @@ package body Flow.Control_Flow_Graph is
       is
          Fully_Initialized : Flow_Id_Sets.Set;
 
-         type Target (Valid : Boolean := False)
+         type Target_Kind is (Precise, Imprecise, Invalid);
+
+         type Target (Kind : Target_Kind := Invalid)
             is record
-               case Valid is
-                  when True =>
+               case Kind is
+                  when Precise | Imprecise =>
                      Var : Flow_Id;
                      D   : Node_Lists.List;
-                  when False =>
+                  when Invalid =>
                      null;
                end case;
             end record;
 
-         Null_Target : constant Target := (Valid => False);
+         Null_Target : constant Target := (Kind => Invalid);
 
          Current_Loop : Node_Id       := Types.Empty;
          Active_Loops : Node_Sets.Set := Node_Sets.Empty_Set;
@@ -3346,15 +3348,12 @@ package body Flow.Control_Flow_Graph is
          --  CFG for checking whether a variable is defined on all paths in
          --  the current loop.
 
-         procedure Emit_Warning (W : Misc_Warning_Kind;
-                                 F : Flow_Id;
-                                 N : Node_Id)
-         with Pre => W in Warn_Init_Array | Warn_Init_Multidim_Array;
-         --  Emit warning W on node N
+         procedure Emit_Warning (T : Target; N : Node_Id);
+         --  Emit warning about T being written in node N
 
          function Get_Array_Index (N : Node_Id) return Target
          with Pre  => Present (N),
-              Post => (if Get_Array_Index'Result.Valid
+              Post => (if Get_Array_Index'Result.Kind = Precise
                        then Get_Array_Index'Result.Var.Kind in Direct_Mapping
                                                              | Record_Field
                         and then not Get_Array_Index'Result.D.Is_Empty
@@ -3364,17 +3363,9 @@ package body Flow.Control_Flow_Graph is
          --  and a list of loop parameters.
 
          function Fully_Defined_In_Original_Loop (T : Target) return Boolean
-         with Pre => T.Valid;
+         with Pre => T.Kind = Precise;
          --  Performs a mini-flow analysis on the current loop statements to
          --  see if T is defined on all paths (but not explicitly used).
-
-         function Is_Declared_Within_Current_Loop (F : Flow_Id) return Boolean
-         with Pre => F.Kind in Direct_Mapping | Record_Field;
-         --  Returns True iff F represents an object declared within the
-         --  currently analysed loop.
-         --  Note: this is similar to Scope_Within, but operating on the
-         --  syntactic level, because FOR loops do not act as scopes for
-         --  objects declared within them.
 
          procedure Potentially_Defined (N : Node_Id)
            with Pre => Nkind (N) in N_Subexpr;
@@ -3392,10 +3383,8 @@ package body Flow.Control_Flow_Graph is
          -- Emit_Warning --
          ------------------
 
-         procedure Emit_Warning (W : Misc_Warning_Kind;
-                                 F : Flow_Id;
-                                 N : Node_Id)
-         is
+         procedure Emit_Warning (T : Target; N : Node_Id) is
+            F    : Flow_Id renames T.Var;
             Obj : constant Entity_Id :=
               Get_Direct_Mapping_Id (Entire_Variable (F));
          begin
@@ -3404,8 +3393,13 @@ package body Flow.Control_Flow_Graph is
                 (Present (Obj) and then Ekind (Obj) = E_In_Out_Parameter)
               and then not Has_Relaxed_Initialization
                 (Get_Direct_Mapping_Id (F))
+              and then not FA.Generating_Globals
             then
-               Warning_Msg_N (W, N);
+               if T.D.Length = 1 then
+                  Warning_Msg_N (Warn_Init_Array, N);
+               else
+                  Warning_Msg_N (Warn_Init_Multidim_Array, N);
+               end if;
             end if;
          end Emit_Warning;
 
@@ -3415,8 +3409,16 @@ package body Flow.Control_Flow_Graph is
 
          function Get_Array_Index (N : Node_Id) return Target is
             F : Flow_Id;
-            T : Entity_Id;
             L : Node_Lists.List;
+
+            Exact : Boolean := True;
+            --  Assignment is considered exact until we find that it might not
+            --  precisely represent an assigned array.
+
+            Root  : Node_Id;
+            --  Used for descending into the root of the assigned object
+            --  and then back when constructing the assigned target.
+
          begin
             --  First, is this really an array access?
             --  ??? We are not supporting array slices yet
@@ -3427,59 +3429,73 @@ package body Flow.Control_Flow_Graph is
 
             --  Does the Prefix chain only contain record fields?
 
-            declare
-               Ptr : Node_Id := Prefix (N);
+            Root := Prefix (N);
 
-            begin
-               loop
-                  case Nkind (Ptr) is
-                     when N_Identifier | N_Expanded_Name =>
-                        exit;
-                     when N_Selected_Component =>
-                        Ptr := Prefix (Ptr);
-                     when others =>
-                        return Null_Target;
-                  end case;
-               end loop;
-            end;
+            loop
+               case Nkind (Root) is
+                  when N_Identifier | N_Expanded_Name =>
+                     exit;
+                  when N_Selected_Component =>
+                     Root := Prefix (Root);
+                  when others =>
+                     return Null_Target;
+               end case;
+            end loop;
 
             --  Construct the variable we're possibly fully defining
 
-            case Nkind (Prefix (N)) is
-               when N_Identifier | N_Expanded_Name =>
+            loop
+               case Nkind (Root) is
+                  when N_Identifier | N_Expanded_Name =>
 
-                  declare
-                     E : constant Entity_Id := Entity (Prefix (N));
-                  begin
-                     if Is_Protected_Component (E) then
-                        F :=
-                          Add_Component
-                            (Direct_Mapping_Id (Sinfo.Nodes.Scope (E)),
-                             E);
-                     elsif Is_Part_Of_Concurrent_Object (E) then
-                        F :=
-                          Add_Component
-                            (Direct_Mapping_Id
-                               (Etype (Encapsulating_State (E))),
-                             E);
-                     else
-                        F := Direct_Mapping_Id (E);
-                     end if;
+                     declare
+                        E : constant Entity_Id := Entity (Root);
+                     begin
 
-                     T := Get_Type (E, FA.B_Scope);
-                  end;
+                        --  Ignore objects declared within the loop itself
 
-               when N_Selected_Component =>
-                  F := Record_Field_Id (Prefix (N));
-                  T := Get_Type (Prefix (N), FA.B_Scope);
+                        if In_Subtree (E, Loop_N) then
+                           return Null_Target;
+                        end if;
 
-               when others =>
-                  raise Program_Error;
-            end case;
+                        if Is_Protected_Component (E) then
+                           F :=
+                             Add_Component
+                               (Direct_Mapping_Id (Sinfo.Nodes.Scope (E)),
+                                E);
+                        elsif Is_Part_Of_Concurrent_Object (E) then
+                           F :=
+                             Add_Component
+                               (Direct_Mapping_Id
+                                  (Etype (Encapsulating_State (E))),
+                                E);
+                        else
+                           F := Direct_Mapping_Id (E);
+                        end if;
+                     end;
+
+                  when N_Selected_Component =>
+                     F :=
+                       Add_Component (F,
+                         Unique_Component (Entity (Selector_Name (Root))));
+
+                  when N_Indexed_Component =>
+                     pragma Assert (Root = N);
+                     exit;
+
+                  when others =>
+                     raise Program_Error;
+               end case;
+
+               Root := Parent (Root);
+            end loop;
 
             --  Extract indices (and make sure they are simple and distinct)
 
             declare
+               T : constant Entity_Id :=
+                 Get_Type (Prefix (N), FA.B_Scope);
+
                Param_Expr  : Node_Id := First (Expressions (N)); --  LHS
                Index_Expr  : Node_Id := First_Index (T);         --  array
                Param_Range : Node_Id;
@@ -3575,13 +3591,7 @@ package body Flow.Control_Flow_Graph is
                         --  index type.
 
                         else
-                           Emit_Warning ((if Multi_Dim
-                                          then Warn_Init_Multidim_Array
-                                          else Warn_Init_Array),
-                                         F,
-                                         N);
-
-                           return Null_Target;
+                           Exact := False;
                         end if;
 
                         L.Append (Entity (Param_Expr));
@@ -3594,8 +3604,9 @@ package body Flow.Control_Flow_Graph is
                         --     A (I + 1) := 0;
                         --  end loop;
 
-                        Emit_Warning (Warn_Init_Array, F, N);
-                        return Null_Target;
+                        Exact := False;
+
+                        L.Append (Param_Expr);
                   end case;
 
                   Next (Param_Expr);
@@ -3604,9 +3615,15 @@ package body Flow.Control_Flow_Graph is
                end loop;
             end;
 
-            return (Valid => True,
-                    Var   => F,
-                    D     => L);
+            if Exact then
+               return (Kind => Precise,
+                       Var  => F,
+                       D    => L);
+            else
+               return (Kind => Imprecise,
+                       Var  => F,
+                       D    => L);
+            end if;
          end Get_Array_Index;
 
          ------------------------------------
@@ -3642,8 +3659,6 @@ package body Flow.Control_Flow_Graph is
                Touched.Insert (V);
 
                if A.Variables_Explicitly_Used.Contains (T.Var) then
-
-                  Emit_Warning (Warn_Init_Array, T.Var, Loop_N);
 
                   Fully_Defined := False;
                   Tv            := Flow_Graphs.Abort_Traversal;
@@ -3711,8 +3726,6 @@ package body Flow.Control_Flow_Graph is
                   Tv := Flow_Graphs.Skip_Children;
                elsif FA.Atr (V).Variables_Explicitly_Used.Contains (T.Var) then
 
-                  Emit_Warning (Warn_Init_Array, T.Var, Loop_N);
-
                   Fully_Defined := False;
                   Tv            := Flow_Graphs.Abort_Traversal;
 
@@ -3731,14 +3744,6 @@ package body Flow.Control_Flow_Graph is
             return Fully_Defined;
          end Fully_Defined_In_Original_Loop;
 
-         -------------------------------------
-         -- Is_Declared_Within_Current_Loop --
-         -------------------------------------
-
-         function Is_Declared_Within_Current_Loop (F : Flow_Id) return Boolean
-         is
-           (In_Subtree (Get_Direct_Mapping_Id (F), Loop_N));
-
          -------------------------
          -- Potentially_Defined --
          -------------------------
@@ -3746,12 +3751,18 @@ package body Flow.Control_Flow_Graph is
          procedure Potentially_Defined (N : Node_Id) is
             T : constant Target := Get_Array_Index (N);
          begin
-            if T.Valid
-              and then not Is_Declared_Within_Current_Loop (T.Var)
-              and then Fully_Defined_In_Original_Loop (T)
-            then
-               Fully_Initialized.Include (T.Var);
-            end if;
+            case T.Kind is
+               when Precise =>
+                  if Fully_Defined_In_Original_Loop (T) then
+                     Fully_Initialized.Include (T.Var);
+                  else
+                     Emit_Warning (T, N);
+                  end if;
+               when Imprecise =>
+                  Emit_Warning (T, N);
+               when Invalid =>
+                  null;
+            end case;
          end Potentially_Defined;
 
          -----------------

@@ -1,5 +1,5 @@
 test.adb:18:11: info: range check proved (CVC5: 2 VC)
-test.adb:19:07: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+test.adb:20:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 test.adb:20:36: info: index check proved (CVC5: 4 VC)
 test.adb:20:47: info: index check proved (CVC5: 4 VC)
 test.adb:22:13: info: loop invariant initialization proved (CVC5: 1 VC)
@@ -10,7 +10,7 @@ test.adb:23:24: info: index check proved (CVC5: 4 VC)
 test.adb:23:43: info: index check proved (CVC5: 4 VC)
 test.adb:23:56: info: index check proved (CVC5: 4 VC)
 test.adb:33:11: info: range check proved (CVC5: 2 VC)
-test.adb:34:07: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+test.adb:35:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 test.adb:35:36: info: index check proved (CVC5: 4 VC)
 test.adb:35:47: info: index check proved (CVC5: 4 VC)
 test.adb:37:13: info: loop invariant initialization proved (CVC5: 1 VC)

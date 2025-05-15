@@ -7,7 +7,7 @@ s.adb:24:22: info: assertion proved (CVC5: 1 VC)
 s.adb:27:33: info: loop invariant initialization proved (CVC5: 1 VC)
 s.adb:27:33: info: loop invariant preservation proved (CVC5: 1 VC)
 s.adb:30:22: info: assertion proved (CVC5: 1 VC)
-s.adb:35:31: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+s.adb:36:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 s.adb:39:33: info: loop invariant initialization proved (CVC5: 2 VC)
 s.adb:39:33: info: loop invariant preservation proved (CVC5: 2 VC)
 s.adb:40:36: medium: "Dest" might not be initialized
@@ -15,7 +15,7 @@ s.adb:40:42: info: index check proved (CVC5: 4 VC)
 s.adb:40:63: info: index check proved (CVC5: 4 VC)
 s.adb:42:43: info: index check proved (CVC5: 4 VC)
 s.adb:42:64: info: index check proved (CVC5: 4 VC)
-s.adb:48:39: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+s.adb:49:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 s.adb:52:33: info: loop invariant initialization proved (CVC5: 2 VC)
 s.adb:52:33: info: loop invariant preservation proved (CVC5: 2 VC)
 s.adb:53:36: medium: "Dest" might not be initialized
