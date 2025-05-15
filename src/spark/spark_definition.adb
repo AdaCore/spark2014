@@ -5389,11 +5389,11 @@ package body SPARK_Definition is
       elsif Nkind (N) in N_Op_Multiply | N_Op_Divide then
          declare
             L_Type    : constant Type_Kind_Id :=
-              Base_Type (Etype (Left_Opnd (N)));
+              Base_Retysp (Etype (Left_Opnd (N)));
             R_Type    : constant Type_Kind_Id :=
-              Base_Type (Etype (Right_Opnd (N)));
+              Base_Retysp (Etype (Right_Opnd (N)));
             Expr_Type : constant Type_Kind_Id := Etype (N);
-            E_Type    : constant Type_Kind_Id := Base_Type (Expr_Type);
+            E_Type    : constant Type_Kind_Id := Base_Retysp (Expr_Type);
 
             L_Type_Is_Fixed : constant Boolean :=
               Has_Fixed_Point_Type (L_Type);
