@@ -76,16 +76,16 @@ keccak-keccak_1600.ads:45:04: warning: in instantiation at keccak-keccakf.adb:65
 keccak-keccak_1600.ads:45:04: warning: in instantiation at keccak-keccakf.adb:66
 keccak-keccak_1600.ads:45:04: warning: in instantiation at keccak-keccakf.adb:67
 keccak-keccak_1600.ads:45:04: warning: in instantiation at keccak-keccakf.adb:68
-keccak-keccak_1600.ads:45:04: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
-keccak-keccak_1600.ads:45:04: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
-keccak-keccak_1600.ads:45:04: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
-keccak-keccak_1600.ads:45:04: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
-keccak-keccak_1600.ads:45:04: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
-keccak-keccak_1600.ads:45:04: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
-keccak-keccak_1600.ads:45:04: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
-keccak-keccak_1600.ads:45:04: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
-keccak-keccak_1600.ads:45:04: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
-keccak-keccak_1600.ads:45:04: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+keccak-keccak_1600.ads:45:04: warning: initialization of a multi-dimensional array in nested FOR loops is handled imprecisely [multidimensional-array-init]
+keccak-keccak_1600.ads:45:04: warning: initialization of a multi-dimensional array in nested FOR loops is handled imprecisely [multidimensional-array-init]
+keccak-keccak_1600.ads:45:04: warning: initialization of a multi-dimensional array in nested FOR loops is handled imprecisely [multidimensional-array-init]
+keccak-keccak_1600.ads:45:04: warning: initialization of a multi-dimensional array in nested FOR loops is handled imprecisely [multidimensional-array-init]
+keccak-keccak_1600.ads:45:04: warning: initialization of a multi-dimensional array in nested FOR loops is handled imprecisely [multidimensional-array-init]
+keccak-keccak_1600.ads:45:04: warning: initialization of a multi-dimensional array in nested FOR loops is handled imprecisely [multidimensional-array-init]
+keccak-keccak_1600.ads:45:04: warning: initialization of a multi-dimensional array in nested FOR loops is handled imprecisely [multidimensional-array-init]
+keccak-keccak_1600.ads:45:04: warning: initialization of a multi-dimensional array in nested FOR loops is handled imprecisely [multidimensional-array-init]
+keccak-keccak_1600.ads:45:04: warning: initialization of a multi-dimensional array in nested FOR loops is handled imprecisely [multidimensional-array-init]
+keccak-keccak_1600.ads:45:04: warning: initialization of a multi-dimensional array in nested FOR loops is handled imprecisely [multidimensional-array-init]
 keccak-keccak_1600.ads:53:04: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 keccak-keccak_1600.ads:53:04: info: in instantiation at keccak-keccakf-permutation.adb:35
 keccak-keccak_1600.ads:55:04: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]

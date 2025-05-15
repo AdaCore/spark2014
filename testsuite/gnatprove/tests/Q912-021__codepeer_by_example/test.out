@@ -106,7 +106,7 @@ cond_assign.adb:6:14: high: overflow check might fail [CWE 190], cannot prove lo
 context.adb:3:04: info: initialization of "X" proved
 context.adb:4:14: info: add a contract to analyze it separately from calling contexts
 context.adb:4:14: info: local subprogram "Local" only analyzed in the context of calls [info-unrolling-inlining]
-context.adb:6:24: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+context.adb:7:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 context.adb:7:25: info: overflow check proved (CVC5: 20 VC), in call inlined at context.adb:12
 context.adb:12:04: info: analyzing call to "Local" in context
 context.adb:12:04: info: in inlined body at line 6

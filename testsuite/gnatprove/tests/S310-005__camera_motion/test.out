@@ -45,6 +45,7 @@ camera_motion.adb:88:38: info: cannot unroll loop (too many loop iterations) [in
 camera_motion.adb:89:41: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 camera_motion.adb:91:39: medium: array index check might fail [reason for check: value must be a valid index into the array]
 camera_motion.adb:91:44: medium: array index check might fail [reason for check: value must be a valid index into the array]
+camera_motion.adb:92:16: warning: initialization of a multi-dimensional array in nested FOR loops is handled imprecisely [multidimensional-array-init]
 camera_motion.adb:92:50: info: overflow check proved (CVC5: 2 VC)
 camera_motion.adb:92:58: info: overflow check proved (CVC5: 2 VC)
 camera_motion.adb:99:04: info: no contextual analysis of "Square_Image" (unconstrained return type)
@@ -54,6 +55,7 @@ camera_motion.adb:102:07: medium: "Result" might not be initialized
 camera_motion.adb:102:14: info: range check proved (CVC5: 2 VC)
 camera_motion.adb:103:37: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 camera_motion.adb:104:40: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+camera_motion.adb:106:16: warning: initialization of a multi-dimensional array in nested FOR loops is handled imprecisely [multidimensional-array-init]
 camera_motion.adb:106:52: info: overflow check proved (CVC5: 2 VC)
 camera_motion.adb:113:13: info: add a contract to analyze it separately from calling contexts
 camera_motion.adb:113:13: info: implicit aspect Always_Terminates on "Get_Image_Statistics" has been proved, subprogram will terminate
@@ -88,6 +90,7 @@ camera_motion.adb:160:07: medium: "Result" might not be initialized
 camera_motion.adb:160:14: info: range check proved (CVC5: 2 VC)
 camera_motion.adb:161:37: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 camera_motion.adb:162:40: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+camera_motion.adb:167:16: warning: initialization of a multi-dimensional array in nested FOR loops is handled imprecisely [multidimensional-array-init]
 camera_motion.adb:174:04: info: no contextual analysis of "Filter_Image" (unconstrained return type)
 camera_motion.adb:174:13: info: implicit aspect Always_Terminates on "Filter_Image" has been proved, subprogram will terminate
 camera_motion.adb:179:07: info: initialization of "Sum" proved

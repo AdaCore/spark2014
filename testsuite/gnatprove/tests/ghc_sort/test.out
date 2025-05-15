@@ -171,7 +171,6 @@ ghc_sort.adb:107:07: info: range check proved
 ghc_sort.adb:110:09: info: length check proved
 ghc_sort.adb:110:12: info: length check proved
 ghc_sort.adb:110:12: info: predicate check proved
-ghc_sort.adb:111:32: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 ghc_sort.adb:112:33: info: loop invariant initialization proved
 ghc_sort.adb:112:33: info: loop invariant preservation proved
 ghc_sort.adb:112:38: info: range check proved
@@ -186,6 +185,7 @@ ghc_sort.adb:114:69: info: index check proved
 ghc_sort.adb:114:69: info: overflow check proved
 ghc_sort.adb:115:17: info: overflow check proved
 ghc_sort.adb:116:10: info: predicate check proved
+ghc_sort.adb:116:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 ghc_sort.adb:116:22: info: index check proved
 ghc_sort.adb:126:07: info: range check proved
 ghc_sort.adb:134:13: info: implicit aspect Always_Terminates on "All_Sorted" has been proved, subprogram will terminate
