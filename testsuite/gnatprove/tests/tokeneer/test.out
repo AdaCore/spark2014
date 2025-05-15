@@ -346,7 +346,7 @@ auditlog.adb:1436:07: info: for LogFileState before the call at auditlog.ads:306
 auditlog.adb:1436:07: info: invariant check proved
 auditlog.adb:1436:07: info: precondition proved
 auditlog.adb:1459:30: info: unrolling loop [info-unrolling-inlining]
-auditlog.adb:1459:30: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+auditlog.adb:1461:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 auditlog.ads:27:08: info: flow dependencies proved
 auditlog.ads:47:14: info: for LogFileState at the end of Init at auditlog.ads:306
 auditlog.ads:47:14: info: invariant check proved

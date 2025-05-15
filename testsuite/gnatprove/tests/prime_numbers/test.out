@@ -230,7 +230,7 @@ test_prime_and_coprime_numbers.adb:6:04: info: analyzing call to "Prove_Index_2_
 test_prime_and_coprime_numbers.adb:6:04: info: in instantiation at prime_and_coprime_numbers.adb:225
 test_prime_and_coprime_numbers.adb:6:04: info: in instantiation at prime_and_coprime_numbers.adb:327
 test_prime_and_coprime_numbers.adb:6:04: info: local subprogram "Prove_Index_2_Not_Prime" only analyzed in the context of calls [info-unrolling-inlining]
-test_prime_and_coprime_numbers.adb:6:04: warning: in instantiation at prime_and_coprime_numbers.adb:76
+test_prime_and_coprime_numbers.adb:6:04: warning: in instantiation at prime_and_coprime_numbers.adb:77
 test_prime_and_coprime_numbers.adb:6:04: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 test_prime_and_coprime_numbers.adb:9:04: info: initialization of "Coprimes" proved
 test_prime_and_coprime_numbers.adb:12:15: info: precondition proved

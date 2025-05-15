@@ -564,21 +564,22 @@ homothetical.adb:12:24: medium: float overflow check might fail [reason for chec
 homothetical.adb:13:17: info: precondition proved
 homothetical.adb:13:17: warning: call to "Sqrt" is not handled precisely [imprecise-call]
 homothetical.adb:13:28: info: float overflow check proved
-homothetical.adb:40:26: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 homothetical.adb:41:33: info: loop invariant initialization proved
 homothetical.adb:41:33: info: loop invariant preservation proved
 homothetical.adb:42:40: info: index check proved
+homothetical.adb:44:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 homothetical.adb:44:20: info: precondition proved
 homothetical.adb:47:13: warning: unused assignment
 homothetical.adb:48:13: warning: unused assignment
 homothetical.adb:50:29: info: assertion proved
 homothetical.adb:54:35: info: unrolling loop [info-unrolling-inlining]
-homothetical.adb:54:35: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 homothetical.adb:57:38: info: unrolling loop [info-unrolling-inlining]
+homothetical.adb:59:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 homothetical.adb:59:58: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
 homothetical.adb:59:69: medium: divide by zero might fail
 homothetical.adb:59:69: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
 homothetical.adb:59:77: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
+homothetical.adb:60:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 homothetical.adb:60:59: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
 homothetical.adb:60:70: medium: divide by zero might fail
 homothetical.adb:60:70: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]

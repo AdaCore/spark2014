@@ -223,7 +223,6 @@ p_max_array.adb:13:25: info: index check proved (CVC5: 2 VC)
 p_max_array.adb:15:17: info: overflow check proved (CVC5: 2 VC)
 p_max_array.adb:21:07: info: range check proved (CVC5: 2 VC)
 p_max_array.adb:21:34: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-p_max_array.adb:24:24: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 p_max_array.adb:25:33: info: loop invariant initialization proved (CVC5: 2 VC)
 p_max_array.adb:25:33: info: loop invariant preservation proved (CVC5: 2 VC)
 p_max_array.adb:26:33: info: loop invariant initialization proved (CVC5: 1 VC)
@@ -244,6 +243,8 @@ p_max_array.adb:31:36: info: overflow check proved (CVC5: 4 VC)
 p_max_array.adb:31:46: info: index check proved (CVC5: 4 VC)
 p_max_array.adb:31:46: info: overflow check proved (CVC5: 4 VC)
 p_max_array.adb:32:24: info: index check proved (CVC5: 2 VC)
+p_max_array.adb:33:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+p_max_array.adb:35:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 p_max_array.adb:35:25: info: index check proved (CVC5: 2 VC)
 p_max_array.adb:37:17: info: overflow check proved (CVC5: 2 VC)
 p_max_array.adb:46:33: info: loop invariant initialization proved (CVC5: 2 VC)
