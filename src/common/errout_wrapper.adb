@@ -169,24 +169,26 @@ package body Errout_Wrapper is
    is
       use Ada.Strings.Unbounded;
       Buf : Unbounded_String;
-      Index : Positive := Msg'First;
-      C : String_Lists.Cursor := Names.First;
+      Current_Name : String_Lists.Cursor := Names.First;
+      use type String_Lists.Cursor;
    begin
       --  Given that message objects hold lists of nodes, we need to do the
       --  replacement ourselves.
-      while Index in Msg'Range loop
-         if Msg (Index) = ''' then
-            Append (Buf, Msg (Index));
-            Index := Index + 1;
-            Append (Buf, Msg (Index));
-         elsif Msg (Index) = '&' then
-            Append (Buf, Names (C));
-            String_Lists.Next (C);
+      for C of Msg loop
+         if C = ''' then
+            Append (Buf, C);
+            Append (Buf, C);
+         elsif C = '&' then
+            Append (Buf, Names (Current_Name));
+            String_Lists.Next (Current_Name);
          else
-            Append (Buf, Msg (Index));
+            Append (Buf, C);
          end if;
-         Index := Index + 1;
       end loop;
+
+      --  All names should be substituted
+      pragma Assert (Current_Name = String_Lists.No_Element);
+
       return
         Message'(Length (Buf),
                  Node_Lists.Empty,
