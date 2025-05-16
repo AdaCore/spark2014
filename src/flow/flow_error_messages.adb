@@ -371,9 +371,7 @@ package body Flow_Error_Messages is
          end if;
       end if;
 
-      if With_Location
-        and then Instantiation_Location (Sloc (N)) /= No_Location
-      then
+      if With_Location then
 
          --  If we are dealing with an instantiation of a generic we change the
          --  message to point at the implementation of the generic and we
@@ -422,14 +420,14 @@ package body Flow_Error_Messages is
       Slc : Source_Ptr := (if Place_First then Fst else Sloc (N));
       Lst : Source_Ptr := Safe_Last_Sloc (N);
    begin
-      if Instantiation_Location (Slc) /= No_Location then
-         --  If we are dealing with an instantiation of a generic we change the
-         --  message to point at the implementation of the generic and we
-         --  mention where the generic is instantiated.
-         Fst := Original_Location (Fst);
-         Slc := Original_Location (Slc);
-         Lst := Original_Location (Lst);
-      end if;
+      --  If we are dealing with an instantiation of a generic we change the
+      --  message to point at the implementation of the generic and we mention
+      --  where the generic is instantiated.
+
+      Fst := Original_Location (Fst);
+      Slc := Original_Location (Slc);
+      Lst := Original_Location (Lst);
+
       return To_Span (First => Fst, Ptr => Slc, Last => Lst);
    end Compute_Sloc;
 
