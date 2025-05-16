@@ -55,7 +55,7 @@ skein.adb:333:17: info: local subprogram "Do_First_Key_Injection" only analyzed 
 skein.adb:348:14: info: data dependencies proved
 skein.adb:351:20: info: add a contract to analyze it separately from calling contexts
 skein.adb:351:20: info: local subprogram "Inject_Key" only analyzed in the context of calls [info-unrolling-inlining]
-skein.adb:354:38: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+skein.adb:355:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 skein.adb:355:45: info: division check proved, in call inlined at skein.adb:529
 skein.adb:355:45: info: division check proved, in call inlined at skein.adb:538
 skein.adb:358:58: info: division check proved, in call inlined at skein.adb:529
@@ -70,7 +70,6 @@ skein.adb:442:41: info: postcondition proved
 skein.adb:461:41: info: postcondition proved
 skein.adb:480:41: info: postcondition proved
 skein.adb:499:41: info: postcondition proved
-skein.adb:519:63: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 skein.adb:520:36: info: loop invariant initialization proved
 skein.adb:520:36: info: loop invariant preservation proved
 skein.adb:529:13: info: analyzing call to "Inject_Key" in context
@@ -95,7 +94,6 @@ skein.adb:542:17: info: add a contract to analyze it separately from calling con
 skein.adb:542:17: info: local subprogram "Update_Context" only analyzed in the context of calls [info-unrolling-inlining]
 skein.adb:555:11: info: range check proved
 skein.adb:555:66: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
-skein.adb:555:66: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 skein.adb:558:31: info: range check proved
 skein.adb:565:13: info: analyzing call to "Initialize_Key_Schedule" in context
 skein.adb:565:13: info: in inlined body at line 312
@@ -106,6 +104,8 @@ skein.adb:567:13: info: analyzing call to "Initialize_TS" in context
 skein.adb:569:13: info: analyzing call to "Get_64_LSB_First" in context
 skein.adb:569:13: info: in inlined body at line 244
 skein.adb:569:13: info: unrolling loop [info-unrolling-inlining]
+skein.adb:569:13: warning: in inlined body at line 248
+skein.adb:569:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 skein.adb:583:13: info: analyzing call to "Do_First_Key_Injection" in context
 skein.adb:583:13: warning: in inlined body at line 343
 skein.adb:583:13: warning: in inlined body at line 344

@@ -48,13 +48,13 @@ stable_marriage.adb:124:13: info: implicit aspect Always_Terminates on "Invert" 
 stable_marriage.adb:129:08: info: postcondition proved (altergo: 1 VC)
 stable_marriage.adb:130:33: info: precondition proved (CVC5: 1 VC)
 stable_marriage.adb:132:07: info: initialization of "Result" proved
-stable_marriage.adb:138:27: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 stable_marriage.adb:140:13: info: loop invariant initialization proved (CVC5: 1 VC)
 stable_marriage.adb:140:13: info: loop invariant preservation proved (altergo: 1 VC)
 stable_marriage.adb:140:21: info: range check proved (CVC5: 4 VC)
 stable_marriage.adb:141:24: info: index check proved (CVC5: 4 VC)
 stable_marriage.adb:141:32: info: precondition proved (CVC5: 2 VC)
 stable_marriage.adb:141:46: info: index check proved (CVC5: 4 VC)
+stable_marriage.adb:142:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 stable_marriage.adb:142:25: info: precondition proved (CVC5: 1 VC)
 stable_marriage.adb:167:07: info: initialization of "Ranking_2_Inverted" proved
 stable_marriage.adb:183:16: info: implicit aspect Always_Terminates on "All_Unmatched_G1_Set_Elements_Distinct" has been proved, subprogram will terminate
