@@ -236,7 +236,7 @@ package body Why.Gen.Scalars is
       Den_Small_Res : constant W_Name_Id :=
         New_Name (Symb => NID ("den_small_res"));
 
-      Small_L      : constant Ureal := Small_Value (Typ_Left);
+      Small_L      : constant Ureal := Small_Value (Retysp (Typ_Left));
       Num_Small_L   : constant W_Term_OId :=
         New_Integer_Constant (Value => Norm_Num (Small_L));
       Den_Small_L : constant W_Term_OId :=
@@ -244,7 +244,7 @@ package body Why.Gen.Scalars is
 
       Small_R       : constant Ureal :=
         (if Has_Fixed_Point_Type (Typ_Right) then
-           Small_Value (Typ_Right)
+           Small_Value (Retysp (Typ_Right))
          elsif Has_Integer_Type (Typ_Right) then
            Ureal_1
          else raise Program_Error);
@@ -255,7 +255,7 @@ package body Why.Gen.Scalars is
 
       Small_Op       : constant Ureal :=
         (if Has_Fixed_Point_Type (Typ_Result) then
-           Small_Value (Typ_Result)
+           Small_Value (Retysp (Typ_Result))
          elsif Has_Integer_Type (Typ_Result) then
            Ureal_1
          else raise Program_Error);
@@ -1444,16 +1444,16 @@ package body Why.Gen.Scalars is
    function Get_Fixed_Point_Mult_Div_Theory_Name
      (Typ_Left, Typ_Right, Typ_Result : Entity_Id) return Symbol
    is
-      L_Small   : constant Ureal := Small_Value (Typ_Left);
+      L_Small   : constant Ureal := Small_Value (Retysp (Typ_Left));
       R_Small   : constant Ureal :=
         (if Has_Fixed_Point_Type (Typ_Right) then
-           Small_Value (Typ_Right)
+           Small_Value (Retysp (Typ_Right))
          elsif Has_Signed_Integer_Type (Typ_Right) then
            Ureal_1
          else raise Program_Error);
       Res_Small : constant Ureal :=
         (if Has_Fixed_Point_Type (Typ_Result) then
-           Small_Value (Typ_Result)
+           Small_Value (Retysp (Typ_Result))
          elsif Has_Integer_Type (Typ_Result) then
            Ureal_1
          else raise Program_Error);
@@ -1474,7 +1474,7 @@ package body Why.Gen.Scalars is
    function Get_Fixed_Point_Theory (Typ : Entity_Id) return M_Fixed_Point_Type
    is
       Module_Name : constant Symbol :=
-        Get_Fixed_Point_Theory_Name (Typ => Typ);
+        Get_Fixed_Point_Theory_Name (Typ => Retysp (Typ));
    begin
       return M_Fixed_Points (Module_Name);
    end Get_Fixed_Point_Theory;

@@ -5586,8 +5586,8 @@ package body CE_RAC is
       if not Has_Fixed_Point_Type (Ty) then
          raise Program_Error;
       end if;
-      Num := From_String (UI_Image (Norm_Num (Small_Value (Ty))));
-      Den := From_String (UI_Image (Norm_Den (Small_Value (Ty))));
+      Num := From_String (UI_Image (Norm_Num (Small_Value (Retysp (Ty)))));
+      Den := From_String (UI_Image (Norm_Den (Small_Value (Retysp (Ty)))));
       return Num / Den;
    end Small;
 
