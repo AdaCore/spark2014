@@ -1,0 +1,8 @@
+volatile_uninit.adb:11:04: info: initialization of "Local_Index_Variable" proved
+volatile_uninit.adb:13:04: info: initialization of "Local_Integer" proved
+volatile_uninit.adb:18:53: info: range check proved (CVC5: 2 VC)
+volatile_uninit.adb:18:68: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+volatile_uninit.adb:22:53: info: range check proved (CVC5: 2 VC)
+volatile_uninit.adb:22:68: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+volatile_uninit.adb:26:53: info: range check proved (CVC5: 2 VC)
+volatile_uninit.adb:26:68: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
