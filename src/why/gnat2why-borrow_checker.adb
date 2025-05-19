@@ -4566,7 +4566,8 @@ package body Gnat2Why.Borrow_Checker is
 
          --  Unsupported INOX constructs
 
-         when N_Goto_When_Statement
+         when N_Continue_Statement
+            | N_Goto_When_Statement
             | N_Raise_When_Statement
             | N_Return_When_Statement
          =>
