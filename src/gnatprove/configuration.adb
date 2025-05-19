@@ -34,6 +34,7 @@ with GNATCOLL.Tribooleans;
 with Gnat2Why_Opts.Writing;
 with GNAT.Command_Line; use GNAT.Command_Line;
 with GNAT.Directory_Operations;
+with GNAT.Expect;
 with GNAT.OS_Lib;
 with GNAT.Regpat;       use GNAT.Regpat;
 with GNAT.Strings;      use GNAT.Strings;
@@ -1442,6 +1443,41 @@ package body Configuration is
    ----------------------------
 
    procedure Produce_Version_Output is
+
+      procedure Print_First_Line_Of_Output
+        (Command   : String;
+         Arguments : String_Lists.List;
+         Status    : out Integer);
+      --  Run the given command with the given arguments, and print the first
+      --  line of the output (with a single newline at the end in all cases).
+      --  Assumes that Command is in PATH or is an absolute path.
+
+      --------------------------------
+      -- Print_First_Line_Of_Output --
+      --------------------------------
+
+      procedure Print_First_Line_Of_Output
+        (Command : String; Arguments : String_Lists.List; Status : out Integer)
+      is
+         Local_Status : aliased Integer;
+         Arg_List     : GNAT.OS_Lib.Argument_List :=
+           Argument_List_Of_String_List (Arguments);
+         Output       : constant String :=
+           GNAT.Expect.Get_Command_Output
+             (Command, Arg_List, "", Local_Status'Access, True);
+         Last         : Integer := Output'Last;
+      begin
+         Status := Local_Status;
+         GNATCOLL.Utils.Free (Arg_List);
+         for C in Output'Range loop
+            if Output (C) in ASCII.LF | ASCII.CR then
+               Last := C - 1;
+               exit;
+            end if;
+         end loop;
+         Ada.Text_IO.Put_Line (Output (Output'First .. Last));
+      end Print_First_Line_Of_Output;
+
       Gnatwhy3          : constant String :=
         Ada.Directories.Compose (SPARK_Install.Libexec_Spark_Bin, "gnatwhy3");
       Alt_Ergo          : String_Access :=
@@ -1455,34 +1491,35 @@ package body Configuration is
       Status            : aliased Integer;
       Dash_Dash_Version : String_Lists.List;
       Dash_Version      : String_Lists.List;
+
    begin
       Dash_Dash_Version.Append ("--version");
       Dash_Version.Append ("-version");
       Ada.Text_IO.Put_Line (SPARK2014_Version_String);
-      Call_With_Status
+      Print_First_Line_Of_Output
         (Gnatwhy3, Arguments => Dash_Dash_Version, Status => Status);
 
       if Alt_Ergo /= null then
          Ada.Text_IO.Put (Alt_Ergo.all & ": ");
-         Call_With_Status
+         Print_First_Line_Of_Output
            (Alt_Ergo.all, Arguments => Dash_Dash_Version, Status => Status);
          Free (Alt_Ergo);
       end if;
       if Colibri /= null then
          Ada.Text_IO.Put (Colibri.all & ": ");
-         Call_With_Status
+         Print_First_Line_Of_Output
            (Colibri.all, Arguments => Dash_Dash_Version, Status => Status);
          Free (Colibri);
       end if;
       if CVC5 /= null then
          Ada.Text_IO.Put (CVC5.all & ": ");
-         Call_With_Status
+         Print_First_Line_Of_Output
            (CVC5.all, Arguments => Dash_Dash_Version, Status => Status);
          Free (CVC5);
       end if;
       if Z3 /= null then
          Ada.Text_IO.Put (Z3.all & ": ");
-         Call_With_Status
+         Print_First_Line_Of_Output
            (Z3.all, Arguments => Dash_Dash_Version, Status => Status);
          Free (Z3);
       end if;
