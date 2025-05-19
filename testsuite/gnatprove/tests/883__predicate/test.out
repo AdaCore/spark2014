@@ -9,4 +9,4 @@ test.adb:10:04: warning: analyzing unreferenced procedure "Test_2"
 test.adb:10:29: info: initialization of "O" proved
 test.adb:12:12: info: for inherited predicate at ext.ads:7
 test.adb:12:12: info: predicate check proved (CVC5: 1 VC)
-test.adb:12:12: medium: predicate check might fail [possible fix: subprogram at line 10 should mention X in a precondition]
+test.adb:12:12: medium: predicate check might fail (e.g. when X = (F => 0, G => 0)) [possible fix: subprogram at line 10 should mention X in a precondition]
