@@ -1,6 +1,7 @@
 p.adb:5:15: info: range check proved (CVC5: 2 VC)
 p.adb:6:10: warning: initialization of "X" has no effect
 p.adb:6:19: medium: range check might fail, cannot prove upper bound for 3 [reason for check: default component value must fit in the type]
+p.adb:13:04: info: initialization of "X" proved
 p.adb:13:12: info: range check proved (CVC5: 1 VC)
 p.adb:13:18: info: range check proved (CVC5: 2 VC)
 p.adb:15:19: info: assertion proved (CVC5: 1 VC)
