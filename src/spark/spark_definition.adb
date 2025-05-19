@@ -4050,6 +4050,9 @@ package body SPARK_Definition is
          when N_External_Initializer =>
             Mark_Unsupported (Lim_External_Initializer, N);
 
+         when N_Continue_Statement =>
+            Mark_Unsupported (Lim_Continue_Statement, N);
+
          --  Mark should not be called on other kinds
 
          when N_Abortable_Part

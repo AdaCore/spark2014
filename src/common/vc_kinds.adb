@@ -807,6 +807,8 @@ package body VC_Kinds is
            "a raise expression occurring in a precondition, unless it is only"
           & " used to change the reported error and can safely be interpreted "
           & "as False",
+         when Lim_Continue_Statement =>
+           "continue statement",
          when Lim_Constrained_Classwide =>
            "a type constraint on a classwide subtype declaration",
          when Lim_Contract_On_Derived_Private_Type =>
