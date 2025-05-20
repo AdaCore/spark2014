@@ -1,3 +1,2 @@
-large: True
 prove_all:
   check_counterexamples: false

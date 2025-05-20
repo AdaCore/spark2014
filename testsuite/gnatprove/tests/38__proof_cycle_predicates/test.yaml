@@ -1,2 +1,3 @@
+large: true
 prove_all:
   counterexample: false

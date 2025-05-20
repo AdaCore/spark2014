@@ -1,2 +1,4 @@
+large: true
 prove_all:
-  opt: ["-XTARGET=SPARK"]
+  opt:
+  - -XTARGET=SPARK
