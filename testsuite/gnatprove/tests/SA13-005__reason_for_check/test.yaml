@@ -1,4 +1,4 @@
-large: True
 prove_all:
-  opt: ["--output=oneline"]
-  counterexample: False
+  counterexample: false
+  opt:
+  - --output=oneline

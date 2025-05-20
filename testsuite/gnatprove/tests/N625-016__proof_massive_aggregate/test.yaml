@@ -1,6 +1,6 @@
-large: True
-comment: "CVC4 consumes >5GB of memory for this test"
+comment: CVC4 consumes >5GB of memory for this test
 memlimit: 100
 prove_all:
-  prover: ["z3"]
+  prover:
+  - z3
   steps: 1000

@@ -1,3 +1,7 @@
-comment: "Do not use colibri until we figure out the issue on V119-022"
+comment: Do not use colibri until we figure out the issue on V119-022
+large: true
 prove_all:
-  prover: ["cvc5", "z3", "altergo"]
+  prover:
+  - cvc5
+  - z3
+  - altergo

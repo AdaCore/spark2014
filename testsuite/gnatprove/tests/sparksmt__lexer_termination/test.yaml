@@ -1,4 +1,5 @@
-large: True
 prove_all:
-  sparklib: True
-  opt: ["-u", "lexer.adb"]
+  opt:
+  - -u
+  - lexer.adb
+  sparklib: true

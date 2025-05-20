@@ -1,8 +1,7 @@
-large: True
-replay: True
+replay: true
 prove_all:
+  counterexample: false
   prover: ["cvc5", "z3"]
-  counterexample: False
-  sparklib: True
+  sparklib: true
 session_opt:
   level: 4

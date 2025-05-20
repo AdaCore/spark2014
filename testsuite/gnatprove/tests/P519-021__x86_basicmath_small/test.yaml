@@ -1,6 +1,7 @@
-comment: "All VCs here are provable in theory, but there are various encoding issues making these very difficult problems."
-
+comment: All VCs here are provable in theory, but there are various encoding issues
+  making these very difficult problems.
 prove_all:
-  prover: ["cvc5"]
-  opt: ["--function-sandboxing=off"]
-large: True
+  opt:
+  - --function-sandboxing=off
+  prover:
+  - cvc5
