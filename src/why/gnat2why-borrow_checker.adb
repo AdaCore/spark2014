@@ -4391,13 +4391,24 @@ package body Gnat2Why.Borrow_Checker is
                begin
                   Perm_Expl := Get_Perm_And_Expl (E_Obj);
 
-                  if Perm_Expl.Perm /= Read_Write then
+                  if Perm_Expl.Perm not in Read_Perm then
                      Perm_Error_Subprogram_End
                        (E           => Obj,
                         Subp        => Subp,
                         Found_Perm  => Perm_Expl.Perm,
                         Expl        => Perm_Expl.Expl,
                         Exceptional => False);
+                  else
+                     Perm_Expl := Get_Perm_And_Expl
+                       (E_Obj, Under_Dereference => True);
+                     if Perm_Expl.Perm /= Read_Write then
+                        Perm_Error_Subprogram_End
+                          (E           => Obj,
+                           Subp        => Subp,
+                           Found_Perm  => Perm_Expl.Perm,
+                           Expl        => Perm_Expl.Expl,
+                           Exceptional => False);
+                     end if;
                   end if;
                end;
 
