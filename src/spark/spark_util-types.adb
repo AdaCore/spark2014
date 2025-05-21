@@ -300,6 +300,8 @@ package body SPARK_Util.Types is
                --  type (ARM K.2 164 2/5).
                --  Otherwise, we can take the size of the object, if available
                --  (ARM K.2 229).
+               --  If the size is not specified, for stand-alone objects (which
+               --  is the case here) GNAT uses the Object_Size of the type.
 
                if Is_Aliased (Ent) or else not Known_Esize (Ent) then
                   Check_Known_Esize (Etype (Ent), Size, Explanation);
@@ -2674,7 +2676,7 @@ package body SPARK_Util.Types is
 
       if Is_Scalar_Type (Typ) then
          declare
-            R        : constant Node_Id := Get_Range (Typ);
+            R : constant Node_Id := Get_Range (Typ);
          begin
             --  Despite having a known Esize, we might not know the bounds
             --  at compile time. Checking for this next.
@@ -2749,7 +2751,7 @@ package body SPARK_Util.Types is
                Used_Size := Uint_0;
                Size_Str := Null_Unbounded_String;
                declare
-                  Comp_Ty   : constant Type_Kind_Id := Retysp (Etype (Comp));
+                  Comp_Ty : constant Type_Kind_Id := Retysp (Etype (Comp));
                begin
                   if Is_Scalar_Type (Comp_Ty) then
                      Scalar_Record_Component_Size

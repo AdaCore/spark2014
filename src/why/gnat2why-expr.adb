@@ -20385,7 +20385,7 @@ package body Gnat2Why.Expr is
 
                      Valid       : Boolean;
                      Explanation : Unbounded_String;
-                     Ret_Obj     : constant Type_Kind_Id :=
+                     Obj_Ty      : constant Type_Kind_Id :=
                        Retysp (Etype (Obj));
                   begin
                      --  The check is needed only for overlays between two
@@ -20393,8 +20393,8 @@ package body Gnat2Why.Expr is
 
                      if Supported_Alias then
                         Suitable_For_UC_Target_Overlay_Wrap
-                          (Typ         => Ret_Obj,
-                           Obj         => Aliased_Object,
+                          (Typ         => Obj_Ty,
+                           Obj         => Obj,
                            Result      => Valid,
                            Explanation => Explanation);
                         Emit_Static_Proof_Result
@@ -20435,7 +20435,7 @@ package body Gnat2Why.Expr is
                            Explanation : Unbounded_String;
                            Pref        : constant Entity_Id :=
                              Prefix (Address);
-                           Ret_Addr    : constant Type_Kind_Id :=
+                           Addr_Ty     : constant Type_Kind_Id :=
                              Retysp (Etype (Pref));
                         begin
                            --  If Aliased_Object is constant, it is OK if if
@@ -20443,10 +20443,10 @@ package body Gnat2Why.Expr is
                            --  cannot be used to modify it.
 
                            if Is_Constant_In_SPARK (Aliased_Object) then
-                              Suitable_For_UC (Ret_Addr, Valid, Explanation);
+                              Suitable_For_UC (Addr_Ty, Valid, Explanation);
                            else
                               Suitable_For_UC_Target_Overlay_Wrap
-                                (Typ         => Ret_Addr,
+                                (Typ         => Addr_Ty,
                                  Obj         => Pref,
                                  Result      => Valid,
                                  Explanation => Explanation);
@@ -20457,8 +20457,8 @@ package body Gnat2Why.Expr is
                               Explanation => To_String (Explanation));
 
                            Have_Same_Known_Esize
-                             (Ret_Obj,
-                              Ret_Addr,
+                             (Obj_Ty,
+                              Addr_Ty,
                               Valid, Explanation);
                            Emit_Static_Proof_Result
                              (Address, VC_UC_Same_Size, Valid, Current_Subp,

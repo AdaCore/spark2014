@@ -1263,7 +1263,7 @@ package body Gnat2Why.Unchecked_Conversion is
       Result      : out Boolean;
       Explanation : out Unbounded_String)
    is
-      Size     : Uint := Uint_0;
+      Size : Uint := Uint_0;
    begin
       if Is_Scalar_Type (Typ) then
          --  ARM K.2 226
