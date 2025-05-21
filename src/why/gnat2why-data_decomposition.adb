@@ -137,7 +137,15 @@ package body Gnat2Why.Data_Decomposition is
                when Attribute_Object_Size =>
                   return Data_Entry.Object_Size;
                when Attribute_Component_Size =>
+                  pragma
+                    Annotate
+                      (Xcov,
+                       Exempt_On,
+                       "Currently the function is never called with "
+                       & "Attribute_Component_Size and an unknown "
+                       & "Component_Size, but it could happen in the future.");
                   return No_Uint;
+                  pragma Annotate (Xcov, Exempt_Off);
             end case;
          end if;
 
