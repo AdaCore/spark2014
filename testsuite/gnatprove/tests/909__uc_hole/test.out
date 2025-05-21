@@ -1,4 +1,4 @@
-b.adb:8:04: high: object is unsuitable for aliasing via address clause [possible explanation: type U8 has 256 values but has Object_Size 32, which allows 16#1000_0000_0# possible values; aliased object could have invalid values [SPARK RM 13.7]]
+b.adb:8:04: high: object is unsuitable for aliasing via address clause [possible explanation: type U8 has 256 values but object Y has size 32, which allows 16#1000_0000_0# possible values; aliased object could have invalid values [SPARK RM 13.7]]
 b.adb:8:04: info: address in address clause is compatible with object alignment (Trivial)
 b.adb:8:47: high: types of aliased objects do not have the same size [possible explanation: Object_Sizes of type U8 and type U32 differ]
 b.adb:8:47: info: object is suitable for aliasing via address clause (Trivial)

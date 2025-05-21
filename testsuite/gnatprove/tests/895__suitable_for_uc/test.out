@@ -6,7 +6,7 @@ test.adb:10:17: warning: unused variable "X"
 test.adb:10:39: warning: "Y" is not modified, could be IN
 test.adb:10:39: warning: unused variable "Y"
 test.adb:11:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: X must be aliased for its alignment to be known] [possible fix: overlaying object should have an Alignment representation clause]
-test.adb:11:07: high: object is unsuitable for aliasing via address clause [possible explanation: type Nat_Array doesn't have an Object_Size representation clause or aspect]
+test.adb:11:07: info: object is suitable for aliasing via address clause (Trivial)
 test.adb:11:44: high: types of aliased objects do not have the same size [possible explanation: type Nat_Array doesn't have an Object_Size representation clause or aspect]
 test.adb:11:44: info: object is suitable for aliasing via address clause (Trivial)
 test.adb:12:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: Y must be aliased for its alignment to be known] [possible fix: overlaying object should have an Alignment representation clause]
