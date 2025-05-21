@@ -7,7 +7,7 @@ is
 
    Zero   : T1 := 0.0;
    One    : T1 := 1.0;
-   Result : T2 := T2 (Zero / One);
+   Result : T2 := T2 (Zero / One);  --  @RANGE_CHECK:FAIL
 
 begin
    null;
