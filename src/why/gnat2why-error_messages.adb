@@ -37,6 +37,7 @@ with Ada.Unchecked_Deallocation;
 with Call;                   use Call;
 with CE_Display;             use CE_Display;
 with CE_RAC;                 use CE_RAC;
+with CE_Values;              use CE_Values;
 with Common_Containers;      use Common_Containers;
 with Comperr;                use Comperr;
 with Debug;                  use Debug;
@@ -46,8 +47,10 @@ with Flow_Refinement;        use Flow_Refinement;
 with Flow_Types;             use Flow_Types;
 with Flow_Utility;           use Flow_Utility;
 with Gnat2Why.Assumptions;   use Gnat2Why.Assumptions;
+with Gnat2Why.Driver;        use Gnat2Why.Driver;
 with Gnat2Why.Util;          use Gnat2Why.Util;
 with Gnat2Why_Args;          use Gnat2Why_Args;
+with Gnat2Why_Opts.Reading;
 with GNATCOLL.Utils;
 with Osint;                  use Osint;
 with Output;                 use Output;
@@ -841,9 +844,9 @@ package body Gnat2Why.Error_Messages is
          VC                 : VC_Info renames VC_Table (Rec.Id);
          Can_Relocate       : constant Boolean :=
            Rec.Kind not in VC_Precondition
-                         | VC_LSP_Kind
-                         | VC_Predicate_Check
-                         | VC_Predicate_Check_On_Default_Value;
+             | VC_LSP_Kind
+               | VC_Predicate_Check
+                 | VC_Predicate_Check_On_Default_Value;
          Node               : Node_Id;
          VC_Sloc            : constant Node_Id := VC.Node;
          Small_Step_Res     : CE_RAC.Result;
@@ -870,10 +873,15 @@ package body Gnat2Why.Error_Messages is
       --  Start of processing for Handle_Result
 
       begin
+         Parse_Gnattest_Values (Subp);
+         --  Try to retreive input values from gnattest if they exist
+
          if Gnat2Why_Args.Check_Counterexamples
            and then not Rec.Result
          then
-            if Cntexmp_Present then
+            if Cntexmp_Present
+              and Gnat2Why_Opts.Reading.Gnattest_Values = ""
+            then
                --  Check the counterexample like normal
 
                Check_Counterexample
@@ -899,7 +907,9 @@ package body Gnat2Why.Error_Messages is
             --  shouldn't be used.
 
             if VC.Kind not in VC_Warning_Kind
-              and then Last_Cnt.Giant_Step_Result.Res_Kind not in Res_Failure
+              and then
+                (Last_Cnt.Giant_Step_Result.Res_Kind not in Res_Failure
+                 or Gnat2Why_Opts.Reading.Gnattest_Values /= "")
               and then Ekind (Subp) in E_Function | E_Procedure
               and then To_Initialize_Present (Subp)
             then

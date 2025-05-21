@@ -123,9 +123,6 @@ package body CE_RAC is
    function Boolean_Value (B : Boolean; Ty : Entity_Id) return Value_Type;
    --  Make a boolean value, i.e. an enum value
 
-   function Character_Value (C : Character; Ty : Entity_Id) return Value_Type;
-   --  Make a character value, i.e. an enum value
-
    function Not_Null_Access_Value
      (Ty               : Entity_Id;
       Designated_Value : Value_Type)
@@ -346,13 +343,6 @@ package body CE_RAC is
    -- The evaluation environment and context --
    --------------------------------------------
 
-   package Entity_Bindings is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Entity_Id,
-      Element_Type    => Value_Access,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=");
-   --  Flat mapping of variables to bindings
-
    type Scopes is record
       Bindings         : Entity_Bindings.Map;
       Old_Attrs        : Node_To_Value.Map;
@@ -444,24 +434,30 @@ package body CE_RAC is
    --  Get the value of variable N from the counterexample
 
    type Value_Origin is
-     (From_Counterexample, From_Expr, From_Type_Default, From_Fuzzer);
+     (From_Counterexample,
+      From_Expr,
+      From_Type_Default,
+      From_Fuzzer,
+      From_Gnattest);
    --  The origin of a value in a call to Get
 
    function Get_Value
-     (N           :     Node_Id;
-      Ex          :     Node_Id;
-      Use_Default :     Boolean;
-      Use_Fuzzing :     Boolean;
-      Origin      : out Value_Origin)
+     (N            : Node_Id;
+      Ex           : Node_Id;
+      Use_Default  : Boolean;
+      Use_Fuzzing  : Boolean;
+      Use_Gnattest : Boolean;
+      Origin       : out Value_Origin)
       return Value_Type
    with
      Pre => Can_Get (N);
    --  Get a value for variable N using the first successful of the following
    --  strategies:
-   --  1) from the fuzzer (if Use_Fuzzing is True),
-   --  2) from the counterexample in the context,
-   --  3) from the evaluation of an expression Ex (if present),
-   --  4) or the type default (if Use_Default is True)
+   --  1) from gnattest (if the --gnattest_values was passed),
+   --  2) from the fuzzer (if Use_Fuzzing is True),
+   --  3) from the counterexample in the context,
+   --  4) from the evaluation of an expression Ex (if present),
+   --  5) or the type default (if Use_Default is True)
    --  If neither of the strategies provides a value, the function signals
    --  RAC_Incomplete.
 
@@ -1887,17 +1883,28 @@ package body CE_RAC is
    ---------------
 
    function Get_Value
-     (N           :     Node_Id;
-      Ex          :     Node_Id;
-      Use_Default :     Boolean;
-      Use_Fuzzing :     Boolean;
-      Origin      : out Value_Origin)
+     (N            : Node_Id;
+      Ex           : Node_Id;
+      Use_Default  : Boolean;
+      Use_Fuzzing  : Boolean;
+      Use_Gnattest : Boolean;
+      Origin       : out Value_Origin)
       return Value_Type
    is
       OV  : Opt_Value_Type;
       Res : Value_Type;
    begin
-      if Use_Fuzzing then
+      if Use_Gnattest and
+        Gnattest_Values.Values.all'Length - Gnattest_Values.Pos >= 0
+      then
+         declare
+            Bindings : constant Entity_Bindings.Map
+              := Gnattest_Values.Values.all (Gnattest_Values.Pos);
+         begin
+            Res := Bindings.Element (N).all;
+         end;
+         Origin := From_Gnattest;
+      elsif Use_Fuzzing then
          Res := Fuzz_Value (Etype (N));
          Origin := From_Fuzzer;
       else
@@ -1946,7 +1953,12 @@ package body CE_RAC is
 
    begin
       Val := new Value_Type'
-        (Get_Value (N, Expr, Default_Value, Use_Fuzzing, Origin));
+        (Get_Value (N            => N,
+                    Ex           => Expr,
+                    Use_Default  => Default_Value,
+                    Use_Fuzzing  => Use_Fuzzing,
+                    Use_Gnattest => False,
+                    Origin       => Origin));
 
       Ctx.Env (Ctx.Env.Last).Bindings.Insert (N, Val);
 
@@ -2477,20 +2489,30 @@ package body CE_RAC is
 
       function Cntexmp_Param_Scope return Scopes is
          Res    : Scopes;
-         Param  : Entity_Id  := First_Formal (E);
+         Param  : Entity_Id := First_Formal (E);
          Is_Out : Boolean;
          V      : Value_Type;
          Origin : Value_Origin;
       begin
          while Present (Param) loop
             Is_Out := Ekind (Param) = E_Out_Parameter;
-            V := Get_Value (Param, Empty, Is_Out, Fuzz_Formals, Origin);
+            V := Get_Value (N            => Param,
+                            Ex           => Empty,
+                            Use_Default  => Is_Out,
+                            Use_Fuzzing  => Fuzz_Formals,
+                            Use_Gnattest => True,
+                            Origin       => Origin);
             Res.Bindings.Insert (Param, new Value_Type'(V));
             RAC_Trace ("Initialize parameter "
                        & Get_Name_String (Chars (Param)) & " to "
                        & To_String (V) & " " & Value_Origin'Image (Origin), N);
             Next_Formal (Param);
          end loop;
+
+         if Gnat2Why_Opts.Reading.Gnattest_Values /= "" then
+            Gnattest_Values.Pos := Gnattest_Values.Pos + 1;
+         end if;
+
          return Res;
       end Cntexmp_Param_Scope;
 
@@ -2531,7 +2553,6 @@ package body CE_RAC is
       Sc        : Scopes;
 
    --  Start of processing for RAC_Call
-
    begin
       RAC_Trace ("call " & Get_Name_String (Chars (E)));
       Rem_Stack_Height_Push;

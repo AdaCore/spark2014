@@ -164,6 +164,11 @@ package Gnat2Why_Opts.Reading is
 
    Parallel_Why3 : Boolean;
 
+   --  Indicates a json file:line in which to read CE values. Passing this
+   --  command also enforces Limit_Subp_Name to the same argument.
+
+   Gnattest_Values : Unbounded_String;
+
    ---------------------------
    -- Loading option values --
    ---------------------------
