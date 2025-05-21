@@ -5415,7 +5415,7 @@ package body SPARK_Definition is
             --  fixed-point types provided the result is in the "perfect result
             --  set" according to Ada RM G.2.3(21).
 
-            if L_Type_Is_Fixed and R_Type_Is_Fixed then
+            if L_Type_Is_Fixed and R_Type_Is_Fixed and not E_Type_Is_Float then
                declare
                   L_Small : constant Ureal := Small_Value (L_Type);
                   R_Small : constant Ureal := Small_Value (R_Type);
