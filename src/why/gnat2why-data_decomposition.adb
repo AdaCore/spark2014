@@ -25,6 +25,7 @@
 
 with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Directories;
+with Ada.Strings.Hash;
 with Ada.Text_IO;
 with Call;                       use Call;
 with GNAT.OS_Lib;
@@ -96,6 +97,11 @@ package body Gnat2Why.Data_Decomposition is
             if Known_Esize (E) then
                return Esize (E);
             end if;
+
+         when Attribute_Component_Size =>
+            if Known_Component_Size (E) then
+               return Component_Size (E);
+            end if;
       end case;
 
       --  Otherwise check if data representation contains it
@@ -130,6 +136,16 @@ package body Gnat2Why.Data_Decomposition is
 
                when Attribute_Object_Size =>
                   return Data_Entry.Object_Size;
+               when Attribute_Component_Size =>
+                  pragma
+                    Annotate
+                      (Xcov,
+                       Exempt_On,
+                       "Currently the function is never called with "
+                       & "Attribute_Component_Size and an unknown "
+                       & "Component_Size, but it could happen in the future.");
+                  return No_Uint;
+                  pragma Annotate (Xcov, Exempt_Off);
             end case;
          end if;
 

@@ -5994,12 +5994,7 @@ package body Gnat2Why.Subprograms is
                  (Source, VC_UC_Source, Valid, E,
                   Explanation => To_String (Explanation));
 
-               Suitable_For_UC_Target
-                 (Typ         => Tar_Ty,
-                  Use_Esize   => False,
-                  For_UC      => True,
-                  Result      => Valid,
-                  Explanation => Explanation);
+               Suitable_For_UC_Target_UC_Wrap (Tar_Ty, Valid, Explanation);
                Emit_Static_Proof_Result
                  (Target, VC_UC_Target, Valid, E,
                   Explanation => To_String (Explanation));
