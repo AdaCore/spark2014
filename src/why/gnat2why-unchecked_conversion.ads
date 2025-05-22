@@ -88,12 +88,12 @@ package Gnat2Why.Unchecked_Conversion is
    --  Check if Typ is only made of integers. When returning False,
    --  return also the Explanation.
 
-   procedure Have_Same_Known_Esize
-     (A, B        :     Type_Kind_Id;
+   procedure Objects_Have_Same_Size
+     (A, B        :     Node_Id;
       Result      : out Boolean;
       Explanation : out Unbounded_String);
-   --  If types A and B have the same Esize, then set Result to True; otherwise
-   --  set Result to False and Explanation to a possible fix.
+   --  If objects A and B have the same size, then set Result to True;
+   --  otherwise set Result to False and Explanation to a possible fix.
 
    procedure Have_Same_Known_RM_Size
      (A, B        :     Type_Kind_Id;

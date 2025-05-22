@@ -281,8 +281,9 @@ package body SPARK_Util.Types is
                pragma Assert (not No (Size));
                Size_Str :=
                  To_Unbounded_String
-                   ("Component_Size for array type "
-                    & Type_Name_For_Explanation (Typ));
+                   ("Component_Size of "
+                    & Type_Name_For_Explanation (Typ)
+                    & " is");
             end;
          when N_Selected_Component =>
             Scalar_Record_Component_Size
@@ -306,12 +307,14 @@ package body SPARK_Util.Types is
                if Is_Aliased (Ent) or else not Known_Esize (Ent) then
                   Check_Known_Esize (Etype (Ent), Size, Explanation);
                   Size_Str :=
-                    To_Unbounded_String ("has Object_Size ");
+                    To_Unbounded_String
+                      (Type_Name_For_Explanation (Etype (Ent))
+                       & " has Object_Size");
                else
                   Size := Esize (Ent);
                   Size_Str :=
                     To_Unbounded_String
-                      ("object " & Source_Name (Ent) & " has size ");
+                      ("object " & Source_Name (Ent) & " has size");
                end if;
             end;
          when others =>
@@ -2308,26 +2311,31 @@ package body SPARK_Util.Types is
      (Typ      : Type_Kind_Id;
       Comp     : Entity_Id;
       Size     : out Uint;
-      Size_Str : out Unbounded_String) is
+      Size_Str : out Unbounded_String)
+   is
+      Comp_Ty : constant Type_Kind_Id := Retysp (Etype (Comp));
    begin
       if Present (Component_Clause (Comp)) then
          Size :=
            Expr_Value (Last_Bit (Component_Clause (Comp)))
            - Expr_Value (First_Bit (Component_Clause (Comp)))
            + Uint_1;
-         Size_Str := To_Unbounded_String
-           ("size of component "
-            & Source_Name (Comp)
-            & " is specified to be ");
+         Size_Str :=
+           To_Unbounded_String
+             ("size of component " & Source_Name (Comp) & " is");
 
       --  ARM K.2 225
 
       elsif Is_Packed (Typ) then
-         Size := RM_Size (Retysp (Etype (Comp)));
-         Size_Str := To_Unbounded_String ("has Size ");
+         Size := RM_Size (Comp_Ty);
+         Size_Str :=
+           To_Unbounded_String
+             (Type_Name_For_Explanation (Comp_Ty) & " has Size");
       else
          Size := Esize (Retysp (Etype (Comp)));
-         Size_Str := To_Unbounded_String ("has Object_Size ");
+         Size_Str :=
+           To_Unbounded_String
+             (Type_Name_For_Explanation (Comp_Ty) & " has Object_Size");
       end if;
    end Scalar_Record_Component_Size;
 
@@ -2713,7 +2721,7 @@ package body SPARK_Util.Types is
                      Explanation => To_Unbounded_String
                        (Typ_Name & " has "
                         & Escape (UI_Image (Num_Values))
-                        & " values but " & Size_Str
+                        & " values but " & Size_Str & " "
                         & Escape (UI_Image (Size)) & ", which allows "
                         & Escape (UI_Image (2 ** Size))
                         & " possible values"));
@@ -2733,7 +2741,7 @@ package body SPARK_Util.Types is
                pragma Assert (not No (Used_Size));
                Size_Str :=
                  To_Unbounded_String
-                   ("Component_Size of " & Typ_Name & " is specified to be ");
+                   ("Component_Size of " & Typ_Name & " is");
             end if;
             return Type_Has_Only_Valid_Values
               (Comp_Ty,

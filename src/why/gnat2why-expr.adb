@@ -20456,12 +20456,16 @@ package body Gnat2Why.Expr is
                              (Address, VC_UC_Target, Valid, Current_Subp,
                               Explanation => To_String (Explanation));
 
-                           Have_Same_Known_Esize
-                             (Obj_Ty,
-                              Addr_Ty,
-                              Valid, Explanation);
+                           Objects_Have_Same_Size
+                             (Obj,
+                              Pref,
+                              Valid,
+                              Explanation);
                            Emit_Static_Proof_Result
-                             (Address, VC_UC_Same_Size, Valid, Current_Subp,
+                             (Address,
+                              VC_UC_Same_Size,
+                              Valid,
+                              Current_Subp,
                               Explanation => To_String (Explanation));
 
                            if Nkind (Pref) in N_Has_Entity then
