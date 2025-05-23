@@ -1,12 +1,12 @@
 arrays.ads:15:04: info: address in address clause is compatible with object alignment (Trivial)
 arrays.ads:15:04: info: object is suitable for aliasing via address clause (Trivial)
 arrays.ads:16:04: warning: aliased objects must have the same volatility and atomic status [alias-volatile-atomic-mismatch]
-arrays.ads:16:26: high: types of aliased objects do not have the same size [possible explanation: Object_Sizes of type Tarr_2s and type Tarr_1s differ]
+arrays.ads:16:26: high: types of aliased objects do not have the same size [possible explanation: sizes of overlaid objects differ: type Tarr_2s has Object_Size 2080, while type Tarr_1s has Object_Size 2048]
 arrays.ads:16:26: info: object is suitable for aliasing via address clause (Trivial)
 arrays.ads:20:04: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: unknown alignment for object] [possible fix: overlaid object should have an Alignment representation clause]
 arrays.ads:20:04: high: object with non-trivial address clause or prefix of the 'Address reference does not have asynchronous writers
 arrays.ads:20:04: info: object is suitable for aliasing via address clause (Trivial)
 arrays.ads:21:04: warning: aliased objects must have the same volatility and atomic status [alias-volatile-atomic-mismatch]
-arrays.ads:21:26: high: types of aliased objects do not have the same size [possible explanation: Object_Sizes of type Tarr_3s and type Uint8 differ]
+arrays.ads:21:26: high: types of aliased objects do not have the same size [possible explanation: sizes of overlaid objects differ: type Tarr_3s has Object_Size 2048, while Component_Size of type Tarr_1s is 8]
 arrays.ads:21:26: info: object is suitable for aliasing via address clause (Trivial)
 arrays.ads:21:39: warning: alignment of object is not precisely known [imprecise-align]

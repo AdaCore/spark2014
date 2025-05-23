@@ -44,7 +44,7 @@ safe.adb:106:63: info: type is suitable for unchecked conversion (Trivial)
 safe.adb:107:13: info: types in unchecked conversion have the same size (Trivial)
 safe.adb:107:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 safe.adb:107:54: info: type is suitable as source for unchecked conversion (Trivial)
-safe.adb:107:64: high: type is unsuitable as a target for unchecked conversion [possible explanation: type My_Enum_Sub has 239 values but has Size 8, which allows 256 possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
+safe.adb:107:64: high: type is unsuitable as a target for unchecked conversion [possible explanation: type My_Enum_Sub has 239 values but Size 8, which allows 256 possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
 safe.adb:121:13: high: types used for unchecked conversion do not have the same size [possible explanation: type My_Rec doesn't have a Size representation clause or aspect]
 safe.adb:121:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion) [imprecise-unchecked-conversion]
 safe.adb:121:55: high: type is unsuitable as a source for unchecked conversion [possible explanation: type My_Rec doesn't have a Size representation clause or aspect; type My_Rec might have unused bits that are not modelled in SPARK]

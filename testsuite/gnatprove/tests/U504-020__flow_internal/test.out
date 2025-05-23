@@ -5,6 +5,6 @@ gf.adb:3:23: warning: unused variable "Buff_All"
 gf.adb:25:07: high: address in address clause might not be an integral multiple of alignment of object, in instantiation at main.ads:3 [possible explanation: Data_As_Array doesn't have an Alignment representation clause or aspect] [possible fix: overlaying object should have an Alignment representation clause]
 gf.adb:25:07: info: object is suitable for aliasing via address clause (Trivial), in instantiation at main.ads:3
 gf.adb:27:21: high: object is unsuitable for aliasing via address clause, in instantiation at main.ads:3 [possible explanation: floating-point types have invalid bit patterns for SPARK; aliased object could have invalid values [SPARK RM 13.7]]
-gf.adb:27:21: high: types of aliased objects do not have the same size, in instantiation at main.ads:3 [possible explanation: Object_Sizes of type Payload_As_Arr_Type and type Float differ]
+gf.adb:27:21: high: types of aliased objects do not have the same size, in instantiation at main.ads:3 [possible explanation: sizes of overlaid objects differ: type Payload_As_Arr_Type has Object_Size 80, while type Float has Object_Size 32]
 gf.adb:31:31: warning: "Data" is set by "In_Data" but not used after the call, in instantiation at main.ads:3
 gf.ads:4:25: info: initialization of "Data" proved, in instantiation at main.ads:3

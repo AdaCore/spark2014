@@ -70,11 +70,11 @@ imprecise.adb:88:76: info: type is suitable for unchecked conversion (Trivial)
 imprecise.adb:97:16: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type U32 and type P32 differ]
 imprecise.adb:97:16: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 imprecise.adb:97:64: info: type is suitable as source for unchecked conversion (Trivial)
-imprecise.adb:97:79: high: type is unsuitable as a target for unchecked conversion [possible explanation: type P32 has 16#7FFF_FFFF# values but has Size 31, which allows 16#8000_0000# possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
+imprecise.adb:97:79: high: type is unsuitable as a target for unchecked conversion [possible explanation: type P32 has 16#7FFF_FFFF# values but Size 31, which allows 16#8000_0000# possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
 imprecise.adb:100:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type U32 and type P32 differ]
 imprecise.adb:100:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 imprecise.adb:100:61: info: type is suitable as source for unchecked conversion (Trivial)
-imprecise.adb:100:76: high: type is unsuitable as a target for unchecked conversion [possible explanation: type P32 has 16#7FFF_FFFF# values but has Size 31, which allows 16#8000_0000# possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
+imprecise.adb:100:76: high: type is unsuitable as a target for unchecked conversion [possible explanation: type P32 has 16#7FFF_FFFF# values but Size 31, which allows 16#8000_0000# possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
 modular.adb:14:13: info: types in unchecked conversion have the same size (Trivial)
 modular.adb:14:64: info: type is suitable as source for unchecked conversion (Trivial)
 modular.adb:14:79: info: type is suitable for unchecked conversion (Trivial)
