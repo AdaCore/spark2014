@@ -63,6 +63,9 @@ package body Gnat2Why.Unchecked_Conversion is
    --  Size. If the size cannot be computed, Result is set to False and
    --  Explanation contains a string explaining why the size cannot be
    --  computed. This is used to check that a type has no holes.
+   --  Note: This procedure is currently only suitable for checks related to
+   --  Unchecked_Conversion, in particular for "suitable as a source of an
+   --  unchecked conversion".
 
    -----------------------------
    -- Have_Same_Known_RM_Size --
@@ -982,7 +985,7 @@ package body Gnat2Why.Unchecked_Conversion is
 
       if Is_Array_Type (Typ) then
 
-         --  Unconstarined types are not allowed as source or target of UC
+         --  Unconstrained types are not allowed as source or target of UC
 
          pragma Assert (Is_Constrained (Typ));
 
@@ -993,10 +996,15 @@ package body Gnat2Why.Unchecked_Conversion is
             Index     : Node_Id;
 
          begin
-            Compute_Size_Of_Components
-              (Comp_Typ, Result, Comp_Size, Explanation);
-            if not Result then
-               return;
+            if Is_Scalar_Type (Comp_Typ) then
+               Comp_Size :=
+                 Get_Attribute_Value (Typ, Attribute_Component_Size);
+            else
+               Compute_Size_Of_Components
+                 (Comp_Typ, Result, Comp_Size, Explanation);
+               if not Result then
+                  return;
+               end if;
             end if;
 
             Size := Comp_Size;
@@ -1036,12 +1044,18 @@ package body Gnat2Why.Unchecked_Conversion is
                Comp_Ty   : constant Type_Kind_Id :=
                  Retysp (Etype (Comp));
                Comp_Size : Uint;
+               Size_Str  : Unbounded_String;
             begin
-               Compute_Size_Of_Components
-                 (Comp_Ty, Result, Comp_Size, Explanation);
+               if Is_Scalar_Type (Comp_Ty) then
+                  Scalar_Record_Component_Size
+                    (Typ, Comp, Comp_Size, Size_Str);
+               else
+                  Compute_Size_Of_Components
+                    (Comp_Ty, Result, Comp_Size, Explanation);
 
-               if not Result then
-                  return;
+                  if not Result then
+                     return;
+                  end if;
                end if;
                Size := Size + Comp_Size;
             end;
@@ -1050,7 +1064,10 @@ package body Gnat2Why.Unchecked_Conversion is
       else
          pragma Assert (Is_Scalar_Type (Typ));
 
-         --  The size of scalar types is always known statically
+         --  We only come here if the top-level type is a scalar type. Also,
+         --  this procedure is only called for Unchecked conversion. It means
+         --  that RM_Size is the correct size to use here (ARM K.2 226).
+
          pragma Assert (Known_RM_Size (Typ));
          Size := RM_Size (Typ);
       end if;

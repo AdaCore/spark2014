@@ -172,7 +172,7 @@ the following example:
 
 |GNATprove| issues "high" unproved checks on both instances of
 ``Unchecked_Conversion``, as the source and target of ``Bad_Size`` have
-different sizes and ``With_Holes`` has invalid bits in its representation:
+different sizes and ``With_Holes`` has unused bits in its representation:
 
 .. literalinclude:: /examples/ug__unchecked_conversion/test.out
    :language: none

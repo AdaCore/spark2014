@@ -63,18 +63,6 @@ package body SPARK_Util.Types is
    --  Declares_Iterable_Aspect: whether specific Aspect of E is
    --  declared by an anscestor. This ignores SPARK_Mode boundary.
 
-   procedure Scalar_Record_Component_Size
-     (Typ      : Type_Kind_Id;
-      Comp     : Entity_Id;
-      Size     : out Uint;
-      Size_Str : out Unbounded_String)
-     with Pre =>
-       (Ekind (Comp) = E_Component
-        and then Is_Scalar_Type (Retysp (Etype (Comp))));
-   --  Compute the expected size for a record component of scalar type. The
-   --  Size_Str contains a string that explains the origin of the computed
-   --  size.
-
    -----------------------------
    -- Acts_As_Incomplete_Type --
    -----------------------------
