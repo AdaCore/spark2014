@@ -3102,7 +3102,11 @@ package body CE_RAC is
 
       function RAC_In (Negate : Boolean := False) return Value_Type;
 
-      function RAC_Op_Compare (Left, Right : Value_Type) return Boolean;
+      function RAC_Op_Compare
+        (Left, Right : Value_Type;
+         Op          : N_Op_Compare;
+         Typ         : Entity_Id)
+         return Boolean;
 
       function RAC_Unary_Op return Value_Type;
 
@@ -4008,7 +4012,10 @@ package body CE_RAC is
                end if;
 
             when N_Op_Compare =>
-               return Boolean_Value (RAC_Op_Compare (Left, Right), Etype (N));
+               return Boolean_Value
+                 (RAC_Op_Compare
+                    (Left, Right, Nkind (N), Retysp (Etype (Left_Opnd (N)))),
+                  Etype (N));
 
             when N_Op_And | N_Op_Or | N_Op_Xor =>
                if Is_Boolean_Type (Left_Type) then
@@ -4365,71 +4372,153 @@ package body CE_RAC is
       -- RAC_Op_Compare --
       --------------------
 
-      function RAC_Op_Compare (Left, Right : Value_Type) return Boolean is
-         Left_Type  : constant Type_Kind_Id := Etype (Left_Opnd (N));
-         Right_Type : constant Type_Kind_Id := Etype (Right_Opnd (N));
+      function RAC_Op_Compare
+        (Left, Right : Value_Type;
+         Op          : N_Op_Compare;
+         Typ         : Entity_Id)
+         return Boolean
+      is
       begin
-         case N_Op_Compare (Nkind (N)) is
+         case Op is
             when N_Op_Eq =>
                return Left = Right;
             when N_Op_Ne =>
                return Left /= Right;
             when others =>
-               declare
-                  Typ : constant Type_Kind_Id := Etype (Left_Opnd (N));
-               begin
-                  if Is_Array_Type (Typ) then
-                     RAC_Unsupported ("RAC_Op_Compare on arrays", N);
+               if Is_Array_Type (Typ) then
+                  declare
+                     I_Left  : Big_Integer := Left.First_Attr.Content;
+                     I_Right : Big_Integer := Right.First_Attr.Content;
+                     Comp_Ty : constant Type_Kind_Id :=
+                       Retysp (Component_Type (Typ));
+                  begin
+                     loop
+                        --  Handle the end of the search
 
-                  elsif Has_Fixed_Point_Type (Ty) then
-                     pragma Assert (Small (Left_Type) = Small (Right_Type),
-                                    "Fixed_points with different smalls");
-                     declare
-                        Fixed_L : constant Big_Integer :=
-                          Left.Scalar_Content.Fixed_Content;
-                        Fixed_R : constant Big_Integer :=
-                          Right.Scalar_Content.Fixed_Content;
-                     begin
-                        case N_Op_Compare (Nkind (N)) is
-                           when N_Op_Lt => return Fixed_L < Fixed_R;
-                           when N_Op_Le => return Fixed_L <= Fixed_R;
-                           when N_Op_Ge => return Fixed_L >= Fixed_R;
-                           when N_Op_Gt => return Fixed_L > Fixed_R;
+                        case Op is
+                           when N_Op_Lt =>
+                              if I_Right > Right.Last_Attr.Content then
+                                 return False;
+                              elsif I_Left > Left.Last_Attr.Content then
+                                 return True;
+                              end if;
+                           when N_Op_Le =>
+                              if I_Left > Left.Last_Attr.Content then
+                                 return True;
+                              elsif I_Right > Right.Last_Attr.Content then
+                                 return False;
+                              end if;
+                           when N_Op_Ge =>
+                              if I_Right > Right.Last_Attr.Content then
+                                 return True;
+                              elsif I_Left > Left.Last_Attr.Content then
+                                 return False;
+                              end if;
+                           when N_Op_Gt =>
+                              if I_Left > Left.Last_Attr.Content then
+                                 return False;
+                              elsif I_Right > Right.Last_Attr.Content then
+                                 return True;
+                              end if;
                            when others  => raise Program_Error;
                         end case;
-                     end;
 
-                  elsif Has_Floating_Point_Type (Typ) then
-                     declare
-                        L : constant CE_Values.Float_Value :=
-                          Value_Real (Left);
-                        R : constant CE_Values.Float_Value :=
-                          Value_Real (Right);
-                     begin
-                        case N_Op_Compare (Nkind (N)) is
-                           when N_Op_Lt => return L < R;
-                           when N_Op_Le => return L <= R;
-                           when N_Op_Ge => return L >= R;
-                           when N_Op_Gt => return L > R;
-                           when others  => raise Program_Error;
-                        end case;
-                     end;
+                        --  Compare values at I_Left and I_Right
 
-                  else
-                     declare
-                        L : constant Big_Integer := Value_Enum_Integer (Left);
-                        R : constant Big_Integer := Value_Enum_Integer (Right);
-                     begin
-                        case N_Op_Compare (Nkind (N)) is
-                           when N_Op_Lt => return L < R;
-                           when N_Op_Le => return L <= R;
-                           when N_Op_Ge => return L >= R;
-                           when N_Op_Gt => return L > R;
-                           when others  => raise Program_Error;
-                        end case;
-                     end;
-                  end if;
-               end;
+                        declare
+                           use Big_Integer_To_Value_Maps;
+                           C_Left  : constant Cursor :=
+                             Left.Array_Values.Find (I_Left);
+                           C_Right : constant Cursor :=
+                             Right.Array_Values.Find (I_Right);
+                           E_Left  : Value_Type;
+                           E_Right : Value_Type;
+
+                        begin
+                           --  Get the correct values if possible
+
+                           if Has_Element (C_Left) then
+                              E_Left := Left.Array_Values (C_Left).all;
+                           elsif Left.Array_Others = null then
+                              RAC_Incomplete
+                                ("missing value for OTHERS in array");
+                           else
+                              E_Left := Copy (Left.Array_Others.all);
+                           end if;
+                           if Has_Element (C_Right) then
+                              E_Right := Right.Array_Values (C_Right).all;
+                           elsif Right.Array_Others = null then
+                              RAC_Incomplete
+                                ("missing value for OTHERS in array");
+                           else
+                              E_Right := Copy (Right.Array_Others.all);
+                           end if;
+
+                           --  Compare them, if they are equal, the search
+                           --  continues.
+
+                           if RAC_Op_Compare
+                             (E_Left, E_Right, N_Op_Lt, Comp_Ty)
+                           then
+                              return Op in N_Op_Lt | N_Op_Le;
+                           elsif RAC_Op_Compare
+                             (E_Left, E_Right, N_Op_Gt, Comp_Ty)
+                           then
+                              return Op in N_Op_Gt | N_Op_Ge;
+                           end if;
+                        end;
+
+                        I_Left := I_Left + 1;
+                        I_Right := I_Right + 1;
+                     end loop;
+                  end;
+
+               elsif Has_Fixed_Point_Type (Ty) then
+                  declare
+                     Fixed_L : constant Big_Integer :=
+                       Left.Scalar_Content.Fixed_Content;
+                     Fixed_R : constant Big_Integer :=
+                       Right.Scalar_Content.Fixed_Content;
+                  begin
+                     case Op is
+                        when N_Op_Lt => return Fixed_L < Fixed_R;
+                        when N_Op_Le => return Fixed_L <= Fixed_R;
+                        when N_Op_Ge => return Fixed_L >= Fixed_R;
+                        when N_Op_Gt => return Fixed_L > Fixed_R;
+                        when others  => raise Program_Error;
+                     end case;
+                  end;
+
+               elsif Has_Floating_Point_Type (Typ) then
+                  declare
+                     L : constant CE_Values.Float_Value :=
+                       Value_Real (Left);
+                     R : constant CE_Values.Float_Value :=
+                       Value_Real (Right);
+                  begin
+                     case Op is
+                        when N_Op_Lt => return L < R;
+                        when N_Op_Le => return L <= R;
+                        when N_Op_Ge => return L >= R;
+                        when N_Op_Gt => return L > R;
+                        when others  => raise Program_Error;
+                     end case;
+                  end;
+
+               else
+                  declare
+                     L : constant Big_Integer := Value_Enum_Integer (Left);
+                     R : constant Big_Integer := Value_Enum_Integer (Right);
+                  begin
+                     case Op is
+                        when N_Op_Lt => return L < R;
+                        when N_Op_Le => return L <= R;
+                        when N_Op_Ge => return L >= R;
+                        when N_Op_Gt => return L > R;
+                        when others  => raise Program_Error;
+                     end case;
+                  end;
+               end if;
          end case;
       end RAC_Op_Compare;
 
