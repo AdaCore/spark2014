@@ -381,6 +381,18 @@ package SPARK_Util.Types is
    --  string that can be used in error messages to explain the source of the
    --  size.
 
+   procedure Scalar_Record_Component_Size
+     (Typ      : Type_Kind_Id;
+      Comp     : Entity_Id;
+      Size     : out Uint;
+      Size_Str : out Unbounded_String)
+     with Pre =>
+       (Ekind (Comp) = E_Component
+        and then Is_Scalar_Type (Retysp (Etype (Comp))));
+   --  Compute the expected size for a record component of scalar type. The
+   --  Size_Str contains a string that explains the origin of the computed
+   --  size.
+
    function Type_Has_Only_Valid_Values
      (ArgTyp   : Type_Kind_Id;
       Size     : Uint;
