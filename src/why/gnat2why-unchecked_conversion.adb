@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Doubly_Linked_Lists;
+with Errout_Wrapper;              use Errout_Wrapper;
 with Gnat2Why.Data_Decomposition; use Gnat2Why.Data_Decomposition;
 with Gnat2Why.Tables;             use Gnat2Why.Tables;
 with Snames;                      use Snames;
@@ -62,40 +63,6 @@ package body Gnat2Why.Unchecked_Conversion is
    --  Size. If the size cannot be computed, Result is set to False and
    --  Explanation contains a string explaining why the size cannot be
    --  computed. This is used to check that a type has no holes.
-
-   ---------------------------
-   -- Have_Same_Known_Esize --
-   ---------------------------
-
-   procedure Have_Same_Known_Esize
-     (A, B        :     Type_Kind_Id;
-      Result      : out Boolean;
-      Explanation : out Unbounded_String)
-   is
-      A_Esize, B_Esize : Uint;
-   begin
-      Check_Known_Esize (A, A_Esize, Explanation);
-      if No (A_Esize) then
-         Result := False;
-         return;
-      end if;
-      Check_Known_Esize (B, B_Esize, Explanation);
-      if No (B_Esize) then
-         Result := False;
-         return;
-      end if;
-      if A_Esize /= B_Esize then
-         Result := False;
-         Explanation :=
-           To_Unbounded_String ("Object_Sizes of "
-                                & Type_Name_For_Explanation (A)
-                                & " and " & Type_Name_For_Explanation (B)
-                                & " differ");
-         return;
-      end if;
-      Result := True;
-      Explanation := Null_Unbounded_String;
-   end Have_Same_Known_Esize;
 
    -----------------------------
    -- Have_Same_Known_RM_Size --
@@ -197,6 +164,41 @@ package body Gnat2Why.Unchecked_Conversion is
       return (Ok => True);
    end Is_UC_With_Precise_Definition;
 
+   ----------------------------
+   -- Objects_Have_Same_Size --
+   ----------------------------
+
+   procedure Objects_Have_Same_Size
+     (A, B        : Node_Id;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String)
+   is
+      A_Size, B_Size         : Uint;
+      A_Size_Str, B_Size_Str : Unbounded_String;
+   begin
+      Check_Known_Size_For_Object (A, A_Size, Explanation, A_Size_Str);
+      if No (A_Size) then
+         Result := False;
+         return;
+      end if;
+      Check_Known_Size_For_Object (B, B_Size, Explanation, B_Size_Str);
+      if No (B_Size) then
+         Result := False;
+         return;
+      end if;
+      if A_Size /= B_Size then
+         Result := False;
+         Explanation :=
+           To_Unbounded_String
+             ("sizes of overlaid objects differ: "
+              & To_String (A_Size_Str) & " " & Escape (UI_Image (A_Size))
+              & ", while "
+              & To_String (B_Size_Str) & " " & Escape (UI_Image (B_Size)));
+         return;
+      end if;
+      Result := True;
+      Explanation := Null_Unbounded_String;
+   end Objects_Have_Same_Size;
    --------------------------
    -- Precise_Composite_UC --
    --------------------------
@@ -1236,7 +1238,7 @@ package body Gnat2Why.Unchecked_Conversion is
       Explanation : out Unbounded_String)
    is
       Size     : Uint := Uint_0;
-      Size_Str : Unbounded_String := To_Unbounded_String ("has Size ");
+      Size_Str : Unbounded_String;
    begin
       if Is_Scalar_Type (Typ) then
          Check_Known_Size_For_Object (Obj, Size, Explanation, Size_Str);
@@ -1271,12 +1273,7 @@ package body Gnat2Why.Unchecked_Conversion is
          pragma Assert (not No (Size));
       end if;
       Suitable_For_UC_Target
-        (Typ,
-         Size,
-         "has Size ",
-         True,
-         Result,
-         Explanation);
+        (Typ, Size, "Size", True, Result, Explanation);
    end Suitable_For_UC_Target_UC_Wrap;
 
 end Gnat2Why.Unchecked_Conversion;
