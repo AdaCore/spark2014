@@ -23,7 +23,7 @@ do_checks.adb:94:51: medium: overflow check might fail, cannot prove lower bound
 do_checks.adb:103:16: medium: range check might fail
 do_checks.adb:109:16: info: range check proved (CVC5: 2 VC)
 do_checks.adb:109:65: medium: overflow check might fail, cannot prove lower bound for Zero - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
-do_checks.adb:118:30: high: range check might fail (e.g. when A = "hello world" and A'First = 1 and Zero = 0) [reason for check: slice bounds must fit in the underlying array] [possible fix: precondition of subprogram at line 5 should mention Zero]
+do_checks.adb:118:30: high: range check might fail (e.g. when A = "hello world" and Zero = 0) [reason for check: slice bounds must fit in the underlying array] [possible fix: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:118:52: medium: range check might fail [possible fix: add precondition (Zero .. 1 in Positive) to subprogram at line 5]
 do_checks.adb:125:30: info: range check proved (CVC5: 4 VC)
 do_checks.adb:125:52: info: range check proved (CVC5: 2 VC)

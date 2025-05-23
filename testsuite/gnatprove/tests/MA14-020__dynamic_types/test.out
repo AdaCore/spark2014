@@ -5,7 +5,7 @@ dynamic_in_post.adb:3:16: info: implicit aspect Always_Terminates on "Get_Last" 
 dynamic_in_post.adb:3:16: info: implicit aspect Always_Terminates on "Get_Last" has been proved, subprogram will terminate, in call inlined at dynamic_in_post.adb:35
 dynamic_in_post.adb:3:57: info: range check proved (CVC5: 4 VC)
 dynamic_in_post.adb:3:57: info: range check proved (CVC5: 4 VC), in call inlined at dynamic_in_post.adb:35
-dynamic_in_post.adb:7:22: high: assertion might fail, in call inlined at dynamic_in_post.adb:35 (e.g. when X = "hello" and X'First = 1 and Y = "you" and Y'First = 1)
+dynamic_in_post.adb:7:22: high: assertion might fail, in call inlined at dynamic_in_post.adb:35 (e.g. when X = "hello" and Y = "you")
 dynamic_in_post.adb:10:14: warning: subprogram "Test_2" has no effect
 dynamic_in_post.adb:11:07: info: no contextual analysis of "Test_2" (nested subprogram)
 dynamic_in_post.adb:11:16: info: implicit aspect Always_Terminates on "Get_Last" has been proved, subprogram will terminate
