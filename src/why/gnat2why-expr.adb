@@ -20937,10 +20937,11 @@ package body Gnat2Why.Expr is
 
                      if Supported_Alias then
                         Suitable_For_UC_Target_Overlay_Wrap
-                          (Typ         => Obj_Ty,
-                           Obj         => Obj,
-                           Result      => Valid,
-                           Explanation => Explanation);
+                          (Typ            => Obj_Ty,
+                           Obj            => Obj,
+                           Result         => Valid,
+                           Explanation    => Explanation,
+                           Check_Validity => not Is_Potentially_Invalid (Obj));
                         Emit_Static_Proof_Result
                           (Decl, VC_UC_Target, Valid, Current_Subp,
                            Explanation => To_String (Explanation));
@@ -20986,15 +20987,15 @@ package body Gnat2Why.Expr is
                            --  its type permits invalid values as the alias
                            --  cannot be used to modify it.
 
-                           if Is_Constant_In_SPARK (Aliased_Object) then
-                              Suitable_For_UC (Addr_Ty, Valid, Explanation);
-                           else
-                              Suitable_For_UC_Target_Overlay_Wrap
-                                (Typ         => Addr_Ty,
-                                 Obj         => Pref,
-                                 Result      => Valid,
-                                 Explanation => Explanation);
-                           end if;
+                           Suitable_For_UC_Target_Overlay_Wrap
+                             (Typ            => Addr_Ty,
+                              Obj            => Pref,
+                              Result         => Valid,
+                              Explanation    => Explanation,
+                              Check_Validity =>
+                                 not Is_Constant_In_SPARK (Aliased_Object)
+                                 and then not Is_Potentially_Invalid
+                                   (Aliased_Object));
 
                            Emit_Static_Proof_Result
                              (Address, VC_UC_Target, Valid, Current_Subp,
@@ -25111,6 +25112,12 @@ package body Gnat2Why.Expr is
                               end if;
                         end case;
 
+                        if E.Valid.Present then
+                           Prepend
+                             (New_Havoc_Call (E.Valid.Id),
+                              Havoc);
+                        end if;
+
                         if Havoc /= +Void then
                            if Dyn_Prop /= True_Pred then
                               Prepend
@@ -25120,11 +25127,6 @@ package body Gnat2Why.Expr is
                            Prepend (Havoc, T);
                         end if;
                      end;
-
-                     --  For now, volatile objects cannot be potentially
-                     --  invalid in SPARK.
-
-                     pragma Assert (not E.Valid.Present);
                   end if;
                end;
             end if;
@@ -25804,6 +25806,18 @@ package body Gnat2Why.Expr is
                     (Expr   => +Get_Valid_Id_From_Object
                          (Obj, Params.Ref_Allowed),
                      Domain => Term_Domain (Domain)));
+
+               --  If Obj has asynchronous writers, W_Expr will havoc the
+               --  validity flag of Obj. Put it in the let binding to ensure it
+               --  is done before the validity flag is evaluated.
+
+               if Has_Volatile (Obj)
+                 and then Has_Volatile_Property (Obj, Pragma_Async_Writers)
+               then
+                  Id_Def := W_Expr;
+                  Tmp_Id := New_Temp_Identifier (Typ => Get_Type (W_Expr));
+                  W_Expr := +Tmp_Id;
+               end if;
             end;
 
          when N_Function_Call =>

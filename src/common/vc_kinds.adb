@@ -990,8 +990,6 @@ package body VC_Kinds is
           & "initialization",
          when Lim_Potentially_Invalid_Subp_Access =>
            "an access to a subprogram annotated with Potentially_Invalid",
-         when Lim_Potentially_Invalid_Volatile =>
-           "an effectively volatile potentially invalid object",
          when Lim_Package_Before_Inv =>
            "a package declaration occurring in a loop before the loop "
           & "invariant",

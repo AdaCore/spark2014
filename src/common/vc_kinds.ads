@@ -560,7 +560,6 @@ package VC_Kinds is
       Lim_Potentially_Invalid_Private,
       Lim_Potentially_Invalid_Relaxed,
       Lim_Potentially_Invalid_Subp_Access,
-      Lim_Potentially_Invalid_Volatile,
       Lim_Predicate_With_Different_SPARK_Mode,
       Lim_Predicate_With_Different_Visibility,
       Lim_Primitive_Call_In_DIC,
@@ -1012,8 +1011,6 @@ package VC_Kinds is
           & "initialization",
          when Lim_Potentially_Invalid_Subp_Access =>
            "access to a subprogram annotated with Potentially_Invalid",
-         when Lim_Potentially_Invalid_Volatile =>
-           "effectively volatile potentially invalid object",
          when Lim_Primitive_Call_In_DIC =>
            "primitive calls in default initial condition",
          when Lim_Constrained_Classwide =>

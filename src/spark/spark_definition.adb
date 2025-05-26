@@ -4762,7 +4762,9 @@ package body SPARK_Definition is
                --  We emit a warning when the value read might not be valid.
                --  This addresses assumption SPARK_EXTERNAL_VALID.
 
-               if not Obj_Has_Only_Valid_Values (E) then
+               if not Obj_Has_Only_Valid_Values (E)
+                 and then not Is_Potentially_Invalid (E)
+               then
                   Nb_Warn := Nb_Warn + 1;
                   Warnings (Nb_Warn) := To_Unbounded_String ("valid reads");
                end if;
@@ -7410,8 +7412,6 @@ package body SPARK_Definition is
             if Has_Relaxed_Initialization (E) then
                Mark_Unsupported (Lim_Potentially_Invalid_Relaxed, E);
 
-            elsif Is_Effectively_Volatile (E) then
-               Mark_Unsupported (Lim_Potentially_Invalid_Volatile, E);
             else
                Mark_Potentially_Invalid_Type (E, Etype (E));
 
@@ -7499,9 +7499,6 @@ package body SPARK_Definition is
 
                if Has_Relaxed_Initialization (E) then
                   Mark_Unsupported (Lim_Potentially_Invalid_Relaxed, E);
-
-               elsif Is_Effectively_Volatile (E) then
-                  Mark_Unsupported (Lim_Potentially_Invalid_Volatile, E);
 
                else
                   Mark_Potentially_Invalid_Type (E, Etype (E));
@@ -12793,10 +12790,6 @@ package body SPARK_Definition is
       then
          Mark_Unsupported
            (Lim_Potentially_Invalid_Mutable_Discr,
-            N);
-      elsif Is_Effectively_Volatile (Rep_Ty) then
-         Mark_Unsupported
-           (Lim_Potentially_Invalid_Volatile,
             N);
 
       --  Private types whose full view is not in SPARK are not supported yet

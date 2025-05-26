@@ -1,6 +1,7 @@
 ext.ads:18:13: error: function returning a scalar that is not imported with Potentially_Invalid aspect is not allowed in SPARK
 ext.ads:18:13: error: violation of aspect SPARK_Mode at line 4
-ext.ads:29:04: error: effectively volatile potentially invalid object is not yet supported
+ext.ads:29:04: error: potentially invalid object with a part of a concurrent type is not allowed in SPARK
+ext.ads:29:04: error: violation of aspect SPARK_Mode at line 4
 ext.ads:33:04: error: potentially invalid object with a part of a concurrent type is not allowed in SPARK
 ext.ads:33:04: error: violation of aspect SPARK_Mode at line 4
 ext.ads:43:04: error: potentially invalid object marked Part_Of a protected object is not allowed in SPARK
@@ -50,10 +51,6 @@ ext.ads:208:04: error: potentially invalid object with a part with relaxed initi
 ext.ads:210:04: error: potentially invalid object with a part with relaxed initialization is not yet supported
 ext.ads:212:13: error: potentially invalid object with a part with relaxed initialization is not yet supported
 ext.ads:216:25: error: potentially invalid object with a part with relaxed initialization is not yet supported
-ext.ads:224:04: error: effectively volatile potentially invalid object is not yet supported
-ext.ads:226:04: error: effectively volatile potentially invalid object is not yet supported
-ext.ads:228:20: error: effectively volatile potentially invalid object is not yet supported
-ext.ads:230:13: error: effectively volatile potentially invalid object is not yet supported
 ext.ads:242:04: error: potentially invalid object with a part whose full view is not in SPARK is not yet supported
 ext.ads:246:04: error: potentially invalid object with a part whose full view is not in SPARK is not yet supported
 ext.ads:252:04: error: potentially invalid object with a part whose full view is not in SPARK is not yet supported
