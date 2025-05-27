@@ -1,0 +1,7 @@
+project Invalid_Warning is
+
+   package Compiler is
+      for Switches ("Ada") use ("-gnat2022");
+   end Compiler;
+
+end Invalid_Warning;

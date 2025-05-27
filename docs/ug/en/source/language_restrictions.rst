@@ -115,11 +115,15 @@ aspect syntax:
 Data Validity
 -------------
 
-|SPARK| reinforces the strong typing of Ada with a stricter initialization
-policy (see :ref:`Data Initialization Policy`), and thus provides no means
-of specifying that some input data may be invalid. This has some impact on
-language features that process or potentially produce invalid values. SPARK
-issues checks specific to data validity on two language constructs:
+In general, |SPARK| enforces that all read values are valid. The strong typing
+of Ada reinforced by a stricter initialization policy (see
+:ref:`Data Initialization Policy`) rules out most sources of invalid values.
+The remaining ones are excluded either by specific assumptions, for values
+created by non-SPARK code, effectively volatile objects, and imprecisely
+supported address clause (see :ref:`Complete List of Assumptions`), or by
+additional checks on language features that process or potentially produce
+invalid values. SPARK issues checks specific to data validity on two language
+constructs:
 
  * Calls to instances of  ``Unchecked_Conversion``
  * Objects with a supported address clause (so-called overlays). An address
@@ -206,6 +210,15 @@ does not handle addresses.
 
 .. literalinclude:: /examples/ug__uc_to_access/test.out
    :language: none
+
+It is possible to opt out of the strict validity checking and assumptions of
+|SPARK| on a case by case basis using the :ref:`Aspect Potentially_Invalid`.
+Objects subject to this aspect can hold invalid values. Validity checks are
+introduced by the tool on reads. Using ``Potentially_Invalid`` requires
+specifying data validity through contracts, and causes the tool to consider more
+potential program execution and to introduce additional checks. Thus,
+``Potentially_Invalid`` should only be used when needed as it requires more
+effort to verify data validity from both the user and the tool.
 
 .. index:: initialization
            Relaxed_Initialization; initialization policy

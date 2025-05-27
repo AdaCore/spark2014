@@ -88,7 +88,7 @@ package body CE_RAC is
      (K                => Scalar_K,
       AST_Ty           => Retysp (Ty),
       Scalar_Content   => new Scalar_Value_Type'(V),
-      Initialized_Attr => <>);
+      others           => <>);
    --  Make a value of kind scalar out of a scalar value
 
    function Enum_Value (E : Entity_Id; Ty : Entity_Id) return Value_Type is
@@ -117,7 +117,8 @@ package body CE_RAC is
       First_Attr   => (True, First),
       Last_Attr    => (True, Last),
       Array_Values => Values,
-      Array_Others => Other);
+      Array_Others => Other,
+      others       => <>);
    --  Make an array value
 
    function Boolean_Value (B : Boolean; Ty : Entity_Id) return Value_Type;
@@ -2362,7 +2363,8 @@ package body CE_RAC is
                          AST_Ty           => Ty,
                          Designated_Value => new Value_Type'(Designated_Value),
                          Is_Null          =>
-                           Opt_Boolean'(Present => True, Content => False));
+                           Opt_Boolean'(Present => True, Content => False),
+                         others           => <>);
    end Not_Null_Access_Value;
 
    -----------------------
@@ -2375,7 +2377,8 @@ package body CE_RAC is
                          AST_Ty           => Ty,
                          Designated_Value => null,
                          Is_Null          =>
-                           Opt_Boolean'(Present => True, Content => True));
+                           Opt_Boolean'(Present => True, Content => True),
+                         others           => <>);
    end Null_Access_Value;
 
    -----------------
@@ -3709,9 +3712,16 @@ package body CE_RAC is
                   end if;
                end;
 
-            when Snames.Name_Valid =>
+            when Snames.Name_Valid | Snames.Name_Valid_Scalars =>
                pragma Assert (No (Expressions (N)));
-               return Boolean_Value (True, Etype (N));
+
+               if Is_Potentially_Invalid_Expr (Prefix (N)) then
+                  RAC_Unsupported
+                    ("RAC_Attribute_Reference 'Valid or 'Valid_Scalars on"
+                     & " potentially invalid prefix", N);
+               else
+                  return Boolean_Value (True, Etype (N));
+               end if;
 
             when Snames.Name_Copy_Sign =>
 
@@ -4799,7 +4809,8 @@ package body CE_RAC is
                        First_Attr   => (Present => True, Content => Low),
                        Last_Attr    => (Present => True, Content => High),
                        Array_Values => Big_Integer_To_Value_Maps.Empty,
-                       Array_Others => Base_Array.Array_Others);
+                       Array_Others => Base_Array.Array_Others,
+                       others       => <>);
 
                if Low > High then
                   return Res;
@@ -5601,7 +5612,8 @@ package body CE_RAC is
       return (K                => Record_K,
               Record_Fields    => F,
               Constrained_Attr => <>,
-              AST_Ty           => Ty);
+              AST_Ty           => Ty,
+              others           => <>);
    end Record_Value;
 
    ---------------

@@ -55,6 +55,7 @@ VC_DISCRIMINANT_CHECK(run-time-check) - discriminant check - Check that the disc
 VC_TAG_CHECK(run-time-check) - tag check - Check that the tag of the given tagged object has the expected value. - MEDIUM
 VC_CEILING_INTERRUPT(run-time-check) - ceiling priority in Interrupt_Priority - Check that the ceiling priority specified for a protected object containing a procedure with an aspect Attach_Handler is in Interrupt_Priority. - MEDIUM
 VC_INITIALIZATION_CHECK(run-time-check) - use of an uninitialized variable - Check that a variable is initialized - MEDIUM
+VC_VALIDITY_CHECK(run-time-check) - validity check - Check that no invalid value is read - MEDIUM
 VC_INTERRUPT_RESERVED(run-time-check) - interrupt is reserved - Check that the interrupt specified by Attach_Handler is not reserved. - MEDIUM
 VC_INVARIANT_CHECK(run-time-check) - invariant check - Check that the given value respects the applicable type invariant. - MEDIUM
 VC_INVARIANT_CHECK_ON_DEFAULT_VALUE(run-time-check) - invariant check on default value - Check that the default value for the type respects the applicable type invariant. - MEDIUM
@@ -118,6 +119,7 @@ initialization-to-alias - initialization-to-alias - initialization of object is 
 is-valid-returns-true - is-valid-returns-true - function Is_Valid is assumed to return True - EASY
 generic-not-analyzed - generic-not-analyzed - GNATprove doesn't analyze generics, only instances - EASY
 no-possible-termination - no-possible-termination - procedure which does not return normally nor raises an exception cannot always terminate - EASY
+potentially-invalid-read - potentially-invalid-read - invalid data might be read in the contract of a subprogram without an analyzed body; the fact that the read data is valid is not checked by SPARK - EASY
 no-check-message-justified - no-check-message-justified - no check message justified by this pragma - EASY
 proved-check-justified - proved-check-justified - only proved check messages justified by this pragma - EASY
 deprecated-terminating - deprecated-terminating - Terminating, Always_Return, and Might_Not_Return annotations are ignored - EASY
@@ -128,6 +130,8 @@ precondition-statically-false - precondition-statically-false - precondition is 
 restriction-ignored - restriction-ignored - restriction is ignored (it is not yet supported) - EASY
 unreferenced-function - unreferenced-function - analyzing unreferenced function - EASY
 unreferenced-procedure - unreferenced-procedure - analyzing unreferenced procedure - EASY
+useless-potentially-invalid-func-result - useless-potentially-invalid-func-result - function result annotated with Potentially_Invalid cannot have invalid values - EASY
+useless-potentially-invalid-object - useless-potentially-invalid-object - object annotated with Potentially_Invalid cannot have invalid values - EASY
 useless-relaxed-init-func-result - useless-relaxed-init-func-result - function result annotated with Relaxed_Initialization cannot be partially initialized - EASY
 useless-relaxed-init-object - useless-relaxed-init-object - object annotated with Relaxed_Initialization cannot be partially initialized - EASY
 variant-no-recursion - variant-no-recursion - no recursive call visible on subprogram with Subprogram_Variant - EASY

@@ -1,0 +1,87 @@
+test_function_result.adb:21:28: info: data dependencies proved
+test_function_result.adb:22:16: info: implicit aspect Always_Terminates on "Id_OK" has been proved, subprogram will terminate
+test_function_result.adb:24:17: high: postcondition might fail (e.g. when Id_OK'Result'Valid_Scalars = False)
+test_function_result.adb:24:22: medium: validity check might fail
+test_function_result.adb:31:16: info: implicit aspect Always_Terminates on "Id_KO" has been proved, subprogram will terminate
+test_function_result.adb:32:09: info: data dependencies proved
+test_function_result.adb:37:17: medium: validity check might fail (e.g. when X'Valid_Scalars = False) [possible fix: subprogram at line 31 should mention X in a precondition]
+test_function_result.adb:40:16: info: implicit aspect Always_Terminates on "Id_Ext_OK" has been proved, subprogram will terminate
+test_function_result.adb:42:17: medium: postcondition might fail (e.g. when Id_Ext_OK'Result = (I => 1))
+test_function_result.adb:42:26: info: validity check proved (CVC5: 1 VC)
+test_function_result.adb:46:17: info: initialization of "Y" proved
+test_function_result.adb:47:18: medium: validity check might fail (e.g. when X'Valid_Scalars = False) [possible fix: subprogram at line 40 should mention X in a precondition]
+test_function_result.adb:51:16: info: implicit aspect Always_Terminates on "Id_Ext_KO" has been proved, subprogram will terminate
+test_function_result.adb:52:09: info: data dependencies proved
+test_function_result.adb:57:17: info: initialization of "Y" proved
+test_function_result.adb:58:18: medium: validity check might fail (e.g. when X'Valid_Scalars = False) [possible fix: subprogram at line 51 should mention X in a precondition]
+test_function_result.adb:62:16: info: implicit aspect Always_Terminates on "Id_Fun_OK" has been proved, subprogram will terminate
+test_function_result.adb:64:17: high: postcondition might fail (e.g. when Id_Fun_OK'Result'Valid_Scalars = False)
+test_function_result.adb:64:26: medium: validity check might fail
+test_function_result.adb:68:16: info: implicit aspect Always_Terminates on "Id_Fun_KO" has been proved, subprogram will terminate
+test_function_result.adb:69:09: info: data dependencies proved
+test_function_result.adb:72:47: medium: validity check might fail (e.g. when X'Valid_Scalars = False) [possible fix: subprogram at line 68 should mention X in a precondition]
+test_function_result.adb:79:34: info: data dependencies proved
+test_function_result.adb:85:16: info: implicit aspect Always_Terminates on "Read_Expr_Fun_1" has been proved, subprogram will terminate
+test_function_result.adb:88:16: info: implicit aspect Always_Terminates on "Read_Expr_Fun_2" has been proved, subprogram will terminate
+test_function_result.adb:91:16: info: implicit aspect Always_Terminates on "Read_Expr_Fun_3" has been proved, subprogram will terminate
+test_function_result.adb:110:22: info: assertion proved (CVC5: 1 VC)
+test_function_result.adb:110:22: info: validity check proved (CVC5: 1 VC)
+test_function_result.adb:111:22: info: assertion proved (CVC5: 1 VC)
+test_function_result.adb:111:22: info: validity check proved (CVC5: 1 VC)
+test_function_result.adb:112:22: info: assertion proved (CVC5: 1 VC)
+test_function_result.adb:112:22: info: validity check proved (CVC5: 1 VC)
+test_function_result.adb:113:22: info: assertion proved (CVC5: 1 VC)
+test_function_result.adb:113:22: info: validity check proved (CVC5: 1 VC)
+test_function_result.adb:114:22: info: assertion proved (CVC5: 1 VC)
+test_function_result.adb:114:22: info: validity check proved (CVC5: 1 VC)
+test_function_result.adb:115:22: medium: assertion might fail (e.g. when C6 = (I => 2))
+test_function_result.adb:115:22: medium: validity check might fail
+test_function_result.adb:120:29: info: data dependencies proved
+test_function_result.adb:132:27: info: data dependencies proved
+test_function_result.adb:133:20: info: validity check proved (CVC5: 1 VC)
+test_function_result.adb:135:25: info: assertion proved (CVC5: 1 VC)
+test_function_result.adb:137:25: info: assertion proved (CVC5: 1 VC)
+test_function_result.adb:138:27: info: validity check proved (CVC5: 1 VC)
+test_function_result.adb:140:25: info: assertion proved (CVC5: 1 VC)
+test_function_result.adb:143:12: warning: postcondition does not check the outcome of calling "P_Old_1" [-gnatw.t]
+test_function_result.adb:143:20: info: postcondition proved (CVC5: 1 VC)
+test_function_result.adb:147:12: warning: postcondition does not check the outcome of calling "P_Old_2" [-gnatw.t]
+test_function_result.adb:147:20: info: postcondition proved (CVC5: 1 VC)
+test_function_result.adb:147:20: info: validity check proved (CVC5: 1 VC)
+test_function_result.adb:151:12: warning: postcondition does not check the outcome of calling "P_Old_3" [-gnatw.t]
+test_function_result.adb:151:20: info: postcondition proved (Trivial: 1 VC)
+test_function_result.adb:151:20: info: validity check proved (CVC5: 1 VC)
+test_function_result.adb:151:20: warning: attribute "Valid" is assumed to return True [attribute-valid-always-true]
+test_function_result.adb:155:12: warning: postcondition does not check the outcome of calling "P_Old_4" [-gnatw.t]
+test_function_result.adb:155:20: info: postcondition proved (CVC5: 1 VC)
+test_function_result.adb:155:20: info: validity check proved (CVC5: 1 VC)
+test_function_result.adb:158:16: info: validity check proved (CVC5: 1 VC)
+test_function_result.adb:160:25: info: assertion proved (CVC5: 1 VC)
+test_function_result.adb:161:16: info: validity check proved (CVC5: 1 VC)
+test_function_result.adb:163:25: info: assertion proved (CVC5: 1 VC)
+test_function_result.adb:165:25: info: assertion proved (CVC5: 1 VC)
+test_function_result.adb:166:14: info: validity check proved (CVC5: 1 VC)
+test_function_result.adb:173:31: info: data dependencies proved
+test_function_result.adb:174:20: medium: validity check might fail
+test_function_result.adb:176:25: medium: assertion might fail (e.g. when B = False)
+test_function_result.adb:178:25: medium: assertion might fail (e.g. when C2'Valid_Scalars = False)
+test_function_result.adb:179:27: medium: validity check might fail
+test_function_result.adb:181:25: medium: assertion might fail (e.g. when I2'Valid = False)
+test_function_result.adb:184:12: warning: postcondition does not check the outcome of calling "P_Old_1" [-gnatw.t]
+test_function_result.adb:184:20: medium: postcondition might fail
+test_function_result.adb:188:12: warning: postcondition does not check the outcome of calling "P_Old_2" [-gnatw.t]
+test_function_result.adb:188:20: medium: postcondition might fail (e.g. when I = 0)
+test_function_result.adb:188:20: medium: validity check might fail
+test_function_result.adb:192:12: warning: postcondition does not check the outcome of calling "P_Old_3" [-gnatw.t]
+test_function_result.adb:192:20: info: postcondition proved (Trivial: 1 VC)
+test_function_result.adb:192:20: medium: validity check might fail (e.g. when I = 0)
+test_function_result.adb:192:20: warning: attribute "Valid" is assumed to return True [attribute-valid-always-true]
+test_function_result.adb:196:12: warning: postcondition does not check the outcome of calling "P_Old_4" [-gnatw.t]
+test_function_result.adb:196:20: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+test_function_result.adb:196:35: medium: validity check might fail (e.g. when I = 0) [possible explanation: enclosing 'Old attribute reference is unconditionally evaluated on subprogram entry]
+test_function_result.adb:199:16: medium: validity check might fail
+test_function_result.adb:201:25: medium: assertion might fail (e.g. when C2'Valid_Scalars = False)
+test_function_result.adb:202:16: medium: validity check might fail
+test_function_result.adb:204:25: medium: assertion might fail (e.g. when I2'Valid = False)
+test_function_result.adb:206:25: medium: assertion might fail (e.g. when B = False)
+test_function_result.adb:207:14: medium: validity check might fail

@@ -389,6 +389,19 @@ package body SPARK_Definition is
    --  Requires_No_Relaxed_Init_Check, so a check is introduced when it is
    --  marked.
 
+   procedure Check_Context_Of_Potentially_Invalid
+     (Ent  : Entity_Id;
+      Read : N_Subexpr_Id)
+   with Pre => No (Ent)
+     or else
+       (Ekind (Ent) in Object_Kind | E_Function
+        and then Is_Potentially_Invalid (Ent));
+   --  Read is a read of a potentially invalid object Ent, the result attribute
+   --  of a potentially invalid function E, or a call to such a function (in
+   --  which case Ent is Empty). If Read occurs in a postcondition, check that
+   --  it is guarded by a reference to the valid attribute on Ent if any. If it
+   --  is not the case, emit a warning.
+
    procedure Touch_Record_Fields_For_Eq
      (Ty           : Type_Kind_Id;
       Force_Predef : Boolean := False);
@@ -665,6 +678,15 @@ package body SPARK_Definition is
    --  @param Ty type which should be compatible with relaxed initialization.
    --  @param Own True if Ty is itself annotated with relaxed initialization.
 
+   procedure Mark_Potentially_Invalid_Type
+     (N  : Node_Id;
+      Ty : Type_Kind_Id)
+     with Pre => Entity_In_SPARK (Ty);
+   --  Checks restrictions on types of entities marked with a
+   --  Potentially_Invalid aspect.
+   --  @param N node on which violations should be emitted.
+   --  @param Ty type which should be compatible with Potentially_Invalid.
+
    procedure Mark_Component_Of_Component_Association
      (N : N_Component_Association_Id);
    --  Mark the component of a component association alone, assuming
@@ -777,6 +799,362 @@ package body SPARK_Definition is
             & " without", Expression);
       end if;
    end Check_Compatible_Access_Types;
+
+   ------------------------------------------
+   -- Check_Context_Of_Potentially_Invalid --
+   ------------------------------------------
+
+   procedure Check_Context_Of_Potentially_Invalid
+     (Ent  : Entity_Id;
+      Read : N_Subexpr_Id)
+   is
+      Ent_Is_Output : Boolean := False;
+      --  Whether Ent is an output of the enclosing subprogram. It is set
+      --  once such a subprogram has been found.
+      Ent_Is_Old    : Boolean := False;
+      --  Whether the reference to Ent is located under a reference to 'Old
+
+      function Is_Ent
+        (Expr     : N_Subexpr_Id;
+         Old_Seen : Boolean)
+         return Boolean
+      with Pre => Present (Ent);
+      --  Return True if Expr is a reference to Ent
+
+      function Valid_Guard
+        (Expr     : N_Subexpr_Id;
+         Pol      : Boolean;
+         Old_Seen : Boolean := False)
+         return Boolean
+      with Pre => Present (Ent);
+      --  Return True if Expr is a valid guard for an access to Obj when
+      --  evaluating to Pol. Old_Seen is True if Expr is located under a
+      --  reference to 'Old.
+
+      ------------
+      -- Is_Ent --
+      ------------
+
+      function Is_Ent
+        (Expr     : N_Subexpr_Id;
+         Old_Seen : Boolean)
+         return Boolean
+      is
+      begin
+         if Nkind (Expr) = N_Attribute_Reference
+           and then Attribute_Name (Expr) = Name_Old
+         then
+            return Is_Ent (Prefix (Expr), True);
+         end if;
+
+         return
+           (if Ekind (Ent) = E_Function
+            then Nkind (Expr) = N_Attribute_Reference
+            and then Attribute_Name (Expr) = Name_Result
+            and then Entity (Prefix (Expr)) = Ent
+            else Nkind (Expr) in N_Identifier | N_Expanded_Name
+            and then (not Ent_Is_Output or else Ent_Is_Old = Old_Seen)
+            and then Entity (Expr) = Ent);
+      end Is_Ent;
+
+      -----------------
+      -- Valid_Guard --
+      -----------------
+
+      function Valid_Guard
+        (Expr     : N_Subexpr_Id;
+         Pol      : Boolean;
+         Old_Seen : Boolean := False)
+         return Boolean
+      is
+      begin
+         case Nkind (Expr) is
+            when N_Attribute_Reference =>
+               if Attribute_Name (Expr) in Name_Valid
+                                         | Name_Valid_Scalars
+               then
+                  return Pol and then Is_Ent (Prefix (Expr), Old_Seen);
+               elsif Attribute_Name (Expr) = Name_Old then
+                  return Valid_Guard (Prefix (Expr), Pol, True);
+               else
+                  return False;
+               end if;
+
+            when N_Op_Not =>
+               return Valid_Guard (Right_Opnd (Expr), not Pol, Old_Seen);
+
+            when N_Op_Or | N_Op_And | N_And_Then | N_Or_Else =>
+               if Pol = (Nkind (Expr) in N_Op_And | N_And_Then) then
+                  return Valid_Guard (Left_Opnd (Expr), Pol, Old_Seen)
+                    or else Valid_Guard (Right_Opnd (Expr), Pol, Old_Seen);
+               else
+                  return Valid_Guard (Left_Opnd (Expr), Pol, Old_Seen)
+                    and then Valid_Guard (Right_Opnd (Expr), Pol, Old_Seen);
+               end if;
+
+            when others =>
+               return False;
+         end case;
+      end Valid_Guard;
+
+      N    : Node_Id := Read;
+      Par  : Node_Id := Parent (N);
+      CC   : Node_Id := Empty;
+      Subp : Entity_Id := Empty;
+
+   --  Start of processing for Check_Context_Of_Potentially_Invalid
+
+   begin
+      --  Warnings are not emitted in Global_Gen_Mode
+
+      if Gnat2Why_Args.Global_Gen_Mode then
+         return;
+      end if;
+
+      --  We do two traversals up the parent tree. First, we search for a
+      --  potentially enclosing subprogram contract and set Subp if one is
+      --  found. Ignore preconditions that always need to be self guarded.
+
+      loop
+         if Nkind (Par) = N_Pragma_Argument_Association then
+            declare
+               Prag_Id : constant Pragma_Id :=
+                 Get_Pragma_Id (Pragma_Name (Parent (Par)));
+            begin
+               if Prag_Id in Pragma_Postcondition
+                           | Pragma_Post_Class
+                           | Pragma_Contract_Cases
+                           | Pragma_Refined_Post
+               then
+                  Subp := Unique_Defining_Entity
+                    (Find_Related_Declaration_Or_Body
+                       (Parent (Par)));
+                  exit;
+               else
+                  return;
+               end if;
+            end;
+
+         --  If a component association occurs in a contract cases, store the
+         --  guard for later use.
+
+         elsif Nkind (Par) = N_Component_Association then
+            declare
+               G_Par : constant Node_Id := Parent (Parent (Par));
+
+            begin
+               if Nkind (G_Par) = N_Pragma_Argument_Association
+                 and then Get_Pragma_Id (Pragma_Name (Parent (G_Par))) =
+                   Pragma_Contract_Cases
+                 and then N = Expression (Par)
+               then
+                  CC := Par;
+               end if;
+            end;
+
+         elsif Nkind (Par) not in N_Subexpr then
+            return;
+         end if;
+
+         N := Par;
+         Par := Parent (N);
+      end loop;
+
+      --  Do not emit the warning if Subp's body has SPARK_Mode ON
+
+      declare
+         Body_E : constant Entity_Id := Get_Body_Entity (Subp);
+      begin
+         if Present (Body_E)
+           and then Get_SPARK_Mode_From_Annotation
+             (SPARK_Pragma_Of_Entity (Body_E)) = Opt.On
+         then
+            return;
+         end if;
+      end;
+
+      --  Set Ent_Is_Output
+
+      if No (Ent) then
+         null;
+      elsif Ekind (Ent) = E_Function then
+         Ent_Is_Output := True;
+      elsif Ekind (Ent) in Formal_Kind and then Scope (Ent) = Subp then
+         Ent_Is_Output := not Is_Constant_In_SPARK (Ent);
+      else
+         declare
+            Globals : Global_Flow_Ids;
+         begin
+            Get_Globals
+              (Subprogram          => Subp,
+               Scope               => (Ent => Subp, Part => Visible_Part),
+               Classwide           => False,
+               Globals             => Globals,
+               Use_Deduced_Globals => True,
+               Ignore_Depends      => False);
+
+            Ent_Is_Output :=
+              (for some F_Id of Globals.Outputs =>
+                 F_Id.Kind = Direct_Mapping and then F_Id.Node = Ent);
+         end;
+      end if;
+
+      N := Read;
+      Par := Parent (N);
+
+      --  Second traversal, we are in a contract, and we are looking for a
+      --  guard that would protect the read. Skip potential references to 'Old,
+      --  unless they occur on scalars, as evaluating an invalid scalar is an
+      --  error and references to Old are evaluated unconditionaly.
+
+      while Nkind (Par) = N_Attribute_Reference
+        and then Attribute_Name (Par) = Name_Old
+        and then not Has_Scalar_Type (Etype (Par))
+      loop
+         Ent_Is_Old := True;
+         N := Par;
+         Par := Parent (N);
+      end loop;
+
+      --  Get out of the way cases where the context does not require a
+      --  validity check.
+
+      if (Nkind (Par) = N_Attribute_Reference
+          and then Attribute_Name (Par) in Name_Valid
+                                         | Name_Valid_Scalars
+                                         | Name_Length
+                                         | Name_First
+                                         | Name_Last)
+        or else
+           (Nkind (Par) = N_Selected_Component
+            and then Ekind (Entity (Selector_Name (Par))) = E_Discriminant)
+        or else
+          (Nkind (Par) = N_Function_Call
+           and then Is_Potentially_Invalid (Get_Formal_From_Actual (N)))
+      then
+         return;
+      end if;
+
+      --  If there is no entity, there is no way for the read to be guarded
+
+      if No (Ent) then
+         null;
+
+      --  Climb up the parent chain looking for a guard protecting the access
+      --  to Ent. If one is found, exit the subprogram.
+
+      else
+         loop
+
+            --  References to Old are evaluated unconditionally, this might be
+            --  a read. Exit the loop.
+
+            if Nkind (Par)  = N_Attribute_Reference
+              and then Attribute_Name (Par) = Name_Old
+            then
+               Ent_Is_Old := True;
+               exit;
+
+            --  Check for guards in conditionals
+
+            elsif Nkind (Par) = N_If_Expression then
+               declare
+                  Cond      : constant Node_Id := First (Expressions (Par));
+                  Then_Part : constant Node_Id := Next (Cond);
+                  Else_Part : constant Node_Id := Next (Then_Part);
+               begin
+                  if (N = Then_Part and then Valid_Guard (Cond, True))
+                    or else (N = Else_Part and then Valid_Guard (Cond, False))
+                  then
+                     return;
+                  end if;
+               end;
+
+            elsif Nkind (Par) = N_And_Then then
+               if N = Right_Opnd (Par)
+                 and then Valid_Guard (Left_Opnd (Par), True)
+               then
+                  return;
+               end if;
+
+            elsif Nkind (Par) = N_Or_Else then
+               if N = Right_Opnd (Par)
+                 and then Valid_Guard (Left_Opnd (Par), False)
+               then
+                  return;
+               end if;
+
+            --  Stop the search if we reach something other than an expression
+
+            elsif Nkind (Par) not in N_Subexpr | N_Component_Association then
+               exit;
+            end if;
+
+            N := Par;
+            Par := Parent (N);
+         end loop;
+
+         --  If CC is set, we are in the consequence of a contract cases.
+         --  Look into the guards if Ent is an input.
+
+         if Present (CC)
+           and then (not Ent_Is_Output or Ent_Is_Old)
+         then
+
+            --  In the others choice, any guard is enough to protect the
+            --  others choice.
+
+            if Is_Others_Choice (Choices (CC)) then
+               declare
+                  Assoc   : Node_Id := Prev (CC);
+                  Choice  : Node_Id;
+               begin
+                  while Present (Assoc) loop
+                     Choice := First (Choices (Assoc));
+                     pragma Assert (No (Next (Choice)));
+                     if Valid_Guard (Choice, Pol => False, Old_Seen => True)
+                     then
+                        return;
+                     end if;
+                     Prev (Assoc);
+                  end loop;
+               end;
+
+            --  Go over the selected choice
+
+            else
+               declare
+                  Choice : constant Node_Id := First (Choices (CC));
+               begin
+                  pragma Assert (No (Next (Choice)));
+                  if Valid_Guard (Choice, Pol => True, Old_Seen => True) then
+                     return;
+                  end if;
+               end;
+            end if;
+         end if;
+
+         --  If Ent is an input, also consider the precondition if any. Do not
+         --  consider classwide preconditions, they could be relaxed.
+
+         if not Ent_Is_Output or Ent_Is_Old then
+            declare
+               Pre_List : constant Node_Lists.List := Find_Contracts
+                 (Subp, Pragma_Precondition, False, False);
+            begin
+               for Pre of Pre_List loop
+                  if Valid_Guard (Pre, Pol => True, Old_Seen => True) then
+                     return;
+                  end if;
+               end loop;
+            end;
+         end if;
+      end if;
+
+      --  Read is not guarded, emit a warning
+
+      Warning_Msg_N (Warn_Potentially_Invalid_Read, Read);
+   end Check_Context_Of_Potentially_Invalid;
 
    -------------------------------
    -- Check_Context_Of_Prophecy --
@@ -4383,30 +4761,11 @@ package body SPARK_Definition is
 
                --  We emit a warning when the value read might not be valid.
                --  This addresses assumption SPARK_EXTERNAL_VALID.
-               declare
-                  Ty          : constant Type_Kind_Id := Retysp (Etype (E));
-                  Size        : Uint := Uint_0;
-                  Explanation : Unbounded_String;
-                  Size_Str    : Unbounded_String;
-                  Valid       : True_Or_Explain;
-               begin
-                  Check_Known_Size_For_Object (E, Size, Explanation, Size_Str);
-                  if Is_Scalar_Type (Ty) and then No (Size) then
-                     Nb_Warn := Nb_Warn + 1;
-                     Warnings (Nb_Warn) := To_Unbounded_String ("valid reads");
-                  else
-                     Valid :=
-                       Type_Has_Only_Valid_Values
-                         (Ty,
-                          (if Is_Scalar_Type (Ty) then Size else Uint_0),
-                          To_String (Size_Str));
-                     if not Valid.Ok then
-                        Nb_Warn := Nb_Warn + 1;
-                        Warnings (Nb_Warn) :=
-                          To_Unbounded_String ("valid reads");
-                     end if;
-                  end if;
-               end;
+
+               if not Obj_Has_Only_Valid_Values (E) then
+                  Nb_Warn := Nb_Warn + 1;
+                  Warnings (Nb_Warn) := To_Unbounded_String ("valid reads");
+               end if;
 
                --  Emit composite warning
 
@@ -4854,7 +5213,6 @@ package body SPARK_Definition is
             | Attribute_Pos
             | Attribute_Pred
             | Attribute_Remainder
-            | Attribute_Result
             | Attribute_Rounding
             | Attribute_Succ
             | Attribute_Terminated
@@ -4913,6 +5271,16 @@ package body SPARK_Definition is
          =>
             Mark_Unsupported
               (Lim_Non_Static_Attribute, N, Name => Get_Name_String (Aname));
+
+         when Attribute_Result =>
+
+            --  If a potentially invalid object occurs in a postcondition,
+            --  emit a warning if we cannot acertain that the access is
+            --  properly guarded.
+
+            if Is_Potentially_Invalid (Entity (Prefix (N))) then
+               Check_Context_Of_Potentially_Invalid (Entity (Prefix (N)), N);
+            end if;
 
          --  We assume a maximal length for the image of any type. This length
          --  may be inaccurate for identifiers.
@@ -5190,6 +5558,14 @@ package body SPARK_Definition is
                   elsif Has_Aspect (Subp, Aspect_Relaxed_Initialization)
                   then
                      Mark_Unsupported (Lim_Access_To_Relaxed_Init_Subp, N);
+
+                  --  Subprograms annotated with potentially invalid need
+                  --  a special handling at call.
+
+                  elsif Has_Aspect (Subp, Aspect_Potentially_Invalid)
+                  then
+                     Mark_Unsupported
+                       (Lim_Potentially_Invalid_Subp_Access, N);
 
                   --  No_Return procedures can not be stored inside access
                   --  types.
@@ -6028,6 +6404,12 @@ package body SPARK_Definition is
                end if;
             end if;
          end;
+
+         --  Warn on reads of potentially invalid values in postconditions
+
+         if Ekind (E) = E_Function and then Is_Potentially_Invalid (E) then
+            Check_Context_Of_Potentially_Invalid (Empty, N);
+         end if;
 
          --  On supported unchecked conversions to access types, emit warnings
          --  stating that we assume the returned value to be valid and with no
@@ -7018,6 +7400,31 @@ package body SPARK_Definition is
             Touch_Record_Fields_For_Default_Init (T);
          end if;
 
+         if Ekind (E) in E_Variable | E_Constant
+           and then Has_Potentially_Invalid (E)
+         then
+            --  We do not support relaxed initialization on potentially
+            --  invalid objects, nor volatile potentially invalid objects for
+            --  now.
+
+            if Has_Relaxed_Initialization (E) then
+               Mark_Unsupported (Lim_Potentially_Invalid_Relaxed, E);
+
+            elsif Is_Effectively_Volatile (E) then
+               Mark_Unsupported (Lim_Potentially_Invalid_Volatile, E);
+            else
+               Mark_Potentially_Invalid_Type (E, Etype (E));
+
+               --  If E cannot have invalid values, emit a warning
+
+               if Obj_Has_Only_Valid_Values (E)
+                 and then Emit_Warning_Info_Messages
+               then
+                  Warning_Msg_N (Warn_Useless_Potentially_Invalid_Obj, E);
+               end if;
+            end if;
+         end if;
+
          --  If no violations were found and the object is annotated with
          --  relaxed initialization, populate the Relaxed_Init map.
 
@@ -7082,31 +7489,66 @@ package body SPARK_Definition is
          then
             Mark_Violation ("effectively volatile loop parameter", E);
 
-         --  If no violations were found and the object is annotated with
-         --  relaxed initialization, populate the Relaxed_Init map.
+         else
 
-         elsif not Violation_Detected
-           and then Is_Formal (E)
-           and then Has_Relaxed_Initialization (E)
-         then
+            if Is_Potentially_Invalid (E) then
 
-            --  Emit a warning when the annotation of an object with
-            --  Relaxed_Initialization has no effects.
+               --  We do not support relaxed initialization on potentially
+               --  invalid objects, nor volatile potentially invalid objects
+               --  for now.
 
-            if not Obj_Has_Relaxed_Init (E) then
-               if Emit_Warning_Info_Messages then
-                  Warning_Msg_N
-                    (Warn_Useless_Relaxed_Init_Obj,
-                     E,
-                     Continuations =>
-                       [Create
-                            ("Relaxed_Initialization annotation is useless")]);
+               if Has_Relaxed_Initialization (E) then
+                  Mark_Unsupported (Lim_Potentially_Invalid_Relaxed, E);
+
+               elsif Is_Effectively_Volatile (E) then
+                  Mark_Unsupported (Lim_Potentially_Invalid_Volatile, E);
+
+               else
+                  Mark_Potentially_Invalid_Type (E, Etype (E));
+
+                  --  If E cannot have invalid values, emit a warning
+
+                  if Obj_Has_Only_Valid_Values (E)
+                    and then Emit_Warning_Info_Messages
+                  then
+
+                     --  We would have to use the RM_Size for the formal
+                     --  paramater of Unchecked_Conversion instances, but they
+                     --  cannot be annotated with Potentially_Invalid.
+
+                     pragma Assert (not Is_Unchecked_Conversion_Instance (E));
+                     Warning_Msg_N (Warn_Useless_Potentially_Invalid_Obj, E);
+                  end if;
                end if;
-            else
-               Mark_Type_With_Relaxed_Init
-                 (N   => E,
-                  Ty  => T,
-                  Own => False);
+            end if;
+
+            --  If no violations were found and the object is annotated with
+            --  relaxed initialization, populate the Relaxed_Init map.
+
+            if not Violation_Detected
+              and then Is_Formal (E)
+              and then Has_Relaxed_Initialization (E)
+            then
+
+               --  Emit a warning when the annotation of an object with
+               --  Relaxed_Initialization has no effects.
+
+               if not Obj_Has_Relaxed_Init (E) then
+                  if Emit_Warning_Info_Messages then
+                     Warning_Msg_N
+                       (Warn_Useless_Relaxed_Init_Obj,
+                        E,
+                        Continuations =>
+                          [Create
+                               ("Relaxed_Initialization annotation is "
+                                & "useless")]);
+                  end if;
+               else
+                  Mark_Type_With_Relaxed_Init
+                    (N   => E,
+                     Ty  => T,
+                     Own => False);
+               end if;
             end if;
          end if;
       end Mark_Parameter_Entity;
@@ -7220,6 +7662,17 @@ package body SPARK_Definition is
                end if;
             end if;
 
+            --  Do not support potentially invalid borrowed parameters as
+            --  designated data cannot be potentially invalid.
+
+            if Is_Traversal_Function (Id)
+              and then Has_Potentially_Invalid (First_Formal (Id))
+            then
+               Mark_Violation
+                 ("traversal function with a potentially invalid traversed "
+                  & "parameter", Id);
+            end if;
+
             if Is_User_Defined_Equality (Id)
               and then Is_Primitive (Id)
             then
@@ -7269,6 +7722,12 @@ package body SPARK_Definition is
                            & " on record type", Id,
                            Cont_Msg => "consider introducing another recursive"
                            & " function and defining ""="" as a wrapper");
+
+                     --  Aspect potentially invalid requires a special handling
+                     elsif Has_Aspect (Id, Aspect_Potentially_Invalid) then
+                        Mark_Violation
+                          ("Potentially_Invalid aspect on the primitive"
+                           & " equality of a record type", Id);
                      end if;
                   end if;
                end;
@@ -7870,6 +8329,33 @@ package body SPARK_Definition is
                Mark_Violation
                  ("dispatching operation with Relaxed_Initialization aspect",
                   E);
+            end if;
+
+            if Has_Aspect (E, Aspect_Potentially_Invalid) then
+
+               --  Functions annotated with Potentially_Invalid must not have a
+               --  scalar type, unless the function is imported.
+
+               if Ekind (E) = E_Function
+                 and then Has_Scalar_Type (Etype (E))
+                 and then Is_Potentially_Invalid (E)
+                 and then not Is_Imported (E)
+               then
+                  Mark_Violation
+                    ("function returning a scalar that is not imported with "
+                     & "Potentially_Invalid aspect",
+                     E);
+
+               --  Dispatching operations shall not have a Potentially_Invalid
+               --  aspect.
+
+               elsif Is_Dispatching_Operation (E)
+                 and then Present (Find_Dispatching_Type (E))
+               then
+                  Mark_Violation
+                    ("dispatching operation with Potentially_Invalid aspect",
+                     E);
+               end if;
             end if;
 
             --  Warn on subprograms which have no ways to terminate
@@ -9052,6 +9538,25 @@ package body SPARK_Definition is
                   end if;
                end if;
             end;
+         end if;
+
+         if Is_Potentially_Invalid (E) then
+            --  We do not support relaxed initialization on potentially invalid
+            --  objects for now.
+
+            if Has_Relaxed_Initialization (E) then
+               Mark_Unsupported (Lim_Potentially_Invalid_Relaxed, E);
+            else
+               Mark_Potentially_Invalid_Type (E, Etype (E));
+
+               --  If E cannot have invalid values, emit a warning
+
+               if Fun_Has_Only_Valid_Values (E)
+                 and then Emit_Warning_Info_Messages
+               then
+                  Warning_Msg_N (Warn_Useless_Potentially_Invalid_Fun, E);
+               end if;
+            end if;
          end if;
 
          --  If no violations were found and the function is annotated with
@@ -10810,6 +11315,15 @@ package body SPARK_Definition is
                                        N   => Part);
                                  end if;
                               end if;
+
+                              --  Part of protected objects should not be
+                              --  potentially invalid.
+
+                              if Is_Potentially_Invalid (Part) then
+                                 Mark_Violation
+                                   ("potentially invalid object marked Part_Of"
+                                    & " a protected object", Part);
+                              end if;
                            end loop;
                         end if;
 
@@ -11687,6 +12201,14 @@ package body SPARK_Definition is
                   end;
                end if;
 
+               --  If a potentially invalid object occurs in a postcondition,
+               --  emit a warning if we cannot acertain that the access is
+               --  properly guarded.
+
+               if Is_Potentially_Invalid (E) then
+                  Check_Context_Of_Potentially_Invalid (E, N);
+               end if;
+
             --  Record components and discriminants are in SPARK if they are
             --  visible in the representative type of their scope. Do not
             --  report a violation if the type itself is not SPARK, as the
@@ -11865,6 +12387,11 @@ package body SPARK_Definition is
          if Is_Function_With_Side_Effects (Ent) then
             Mark_Violation
               ("function with side effects associated with aspect Iterable",
+               N);
+         end if;
+         if Has_Aspect (Ent, Aspect_Potentially_Invalid) then
+            Mark_Unsupported
+              (Lim_Potentially_Invalid_Iterable,
                N);
          end if;
          Get_Globals
@@ -12207,6 +12734,122 @@ package body SPARK_Definition is
       Violation_Detected := Save_Violation_Detected;
       Current_SPARK_Pragma := Save_SPARK_Pragma;
    end Mark_Package_Declaration;
+
+   -----------------------------------
+   -- Mark_Potentially_Invalid_Type --
+   -----------------------------------
+
+   procedure Mark_Potentially_Invalid_Type
+     (N  : Node_Id;
+      Ty : Type_Kind_Id)
+   is
+      Rep_Ty : constant Type_Kind_Id := Retysp (Ty);
+
+   begin
+      --  Raise violations on cases disallowed by the RM
+
+      if Is_Tagged_Type (Rep_Ty) then
+         Mark_Violation
+           ("potentially invalid object with a part of a tagged type",
+            N);
+      elsif Is_Access_Type (Rep_Ty) then
+         Mark_Violation
+           ("potentially invalid object with a part of an access type",
+            N);
+      elsif Is_Concurrent_Type (Rep_Ty) then
+         Mark_Violation
+           ("potentially invalid object with a part of a concurrent type",
+            N);
+      elsif Is_Unchecked_Union (Rep_Ty) then
+         Mark_Violation
+           ("potentially invalid object with a part of an Unchecked_Union "
+            & "type",
+            N);
+
+      --  Also disallow types with an ownership annotation
+
+      elsif Has_Ownership_Annotation (Rep_Ty) then
+         Mark_Violation
+           ("potentially invalid object with a part of an ownership type",
+            N);
+
+      --  Also reject currently unsupported cases
+
+      elsif Has_Relaxed_Init (Rep_Ty) then
+         Mark_Unsupported
+           (Lim_Potentially_Invalid_Relaxed,
+            N);
+      elsif Has_Predicates (Rep_Ty) then
+         Mark_Unsupported
+           (Lim_Potentially_Invalid_Predicates,
+            N);
+
+      --  Supporting mutable discriminants makes it possible to have invalid
+      --  values inside discriminant checks, both on assignments and on
+      --  component access, possibly on the LHS.
+
+      elsif Has_Discriminants (Rep_Ty)
+        and then Has_Mutable_Discriminants (Rep_Ty)
+      then
+         Mark_Unsupported
+           (Lim_Potentially_Invalid_Mutable_Discr,
+            N);
+      elsif Is_Effectively_Volatile (Rep_Ty) then
+         Mark_Unsupported
+           (Lim_Potentially_Invalid_Volatile,
+            N);
+
+      --  Private types whose full view is not in SPARK are not supported yet
+
+      elsif Full_View_Not_In_SPARK (Rep_Ty) then
+         Mark_Unsupported
+           (Lim_Potentially_Invalid_Private,
+            N);
+      end if;
+
+      --  Check for invariants on Ty or one of its ancestors
+
+      declare
+         Anc : Entity_Id := Rep_Ty;
+      begin
+         loop
+            Anc := Retysp (Etype (Anc));
+            if Has_Invariants_In_SPARK (Anc) then
+               Mark_Violation
+                 ("potentially invalid object with a part subject to a type"
+                  & " invariant",
+                  N);
+               exit;
+            end if;
+            exit when Retysp (Etype (Anc)) = Anc;
+         end loop;
+      end;
+
+      --  Check components of composite types
+
+      if Is_Array_Type (Rep_Ty) then
+         Mark_Potentially_Invalid_Type (N, Component_Type (Rep_Ty));
+
+      elsif Is_Record_Type (Rep_Ty) then
+         declare
+            Comp      : Opt_E_Component_Id := First_Component (Rep_Ty);
+            Comp_Type : Type_Kind_Id;
+
+         begin
+            while Present (Comp) loop
+               pragma Assert (Ekind (Comp) = E_Component);
+
+               if Component_Is_Visible_In_SPARK (Comp) then
+                  Comp_Type := Etype (Comp);
+                  Mark_Potentially_Invalid_Type (N, Comp_Type);
+               end if;
+
+               Next_Component (Comp);
+            end loop;
+         end;
+      end if;
+
+   end Mark_Potentially_Invalid_Type;
 
    -----------------
    -- Mark_Pragma --

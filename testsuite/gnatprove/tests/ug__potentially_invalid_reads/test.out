@@ -1,0 +1,8 @@
+ medium: validity check might fail
+--> potentially_invalid_reads.adb:105:20
+  105 |          Unsafe_Read (X, From);
+      |                       ^
+      + in value of subprogram parameter after the call at potentially_invalid_reads.adb:105
+      + possible fix: call at line 105 should mention X (for argument X) in a postcondition
+  105 |          Unsafe_Read (X, From);
+      |          ^

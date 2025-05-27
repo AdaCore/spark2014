@@ -148,6 +148,7 @@ package body Why.Atree.Modules is
               when Dispatch_Post_Axiom       => "___dispatch__post__axiom",
               when Refined_Post_Axiom        => "___refined__post__axiom",
               when Lemma_Axiom               => "___post_axiom",
+              when Validity_Wrapper          => "___validity_wrapper",
               when Type_Completion           => "___compl",
               when Type_Representative       => "___rep",
               when Record_Rep_Completion     => "___rep__compl",
@@ -211,6 +212,10 @@ package body Why.Atree.Modules is
          when Lemma_Axiom =>
             pragma Assert
               (Has_Automatic_Instantiation_Annotation (E));
+
+         when Validity_Wrapper =>
+            pragma Assert
+              (Ekind (E) = E_Function and then Is_Potentially_Invalid (E));
 
          when Type_Completion
             | Type_Representative
@@ -687,6 +692,10 @@ package body Why.Atree.Modules is
         New_Module
           (File => Ada_Model_File,
            Name => "Real_time__model");
+      Validity_Wrapper_Model :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => "Potentially_invalid_value");
 
       Constr_Arrays :=
         (1 => New_Module (File => Ada_Model_File,
@@ -2966,6 +2975,33 @@ package body Why.Atree.Modules is
                   Module => M_Prog,
                   Domain => EW_Prog,
                   Typ    => EW_Unit_Type));
+         end if;
+
+         if Is_Potentially_Invalid (E) then
+            declare
+               VM : constant W_Module_Id := E_Module (E, Validity_Wrapper);
+            begin
+               Insert_Symbol
+                 (E, WNE_Valid_Wrapper,
+                  New_Identifier
+                    (Symb   => NID ("__valid_wrapper"),
+                     Module => VM,
+                     Domain => EW_Term));
+               Insert_Symbol
+                 (E, WNE_Is_Valid,
+                  New_Identifier
+                    (Symb   => NID ("__is_valid"),
+                     Module => VM,
+                     Domain => EW_Term,
+                     Typ    => EW_Bool_Type));
+               Insert_Symbol
+                 (E, WNE_Valid_Value,
+                  New_Identifier
+                    (Symb   => NID ("__valid_value"),
+                     Module => VM,
+                     Domain => EW_Term,
+                     Typ    => Type_Of_Node (E)));
+            end;
          end if;
       end Insert_Subprogram_Symbols;
 

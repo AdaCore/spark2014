@@ -109,6 +109,9 @@ package Why.Gen.Binders is
       Is_Moved : Opt_Id;
       --  Optional move tree for objects containing allocated parts
 
+      Valid    : Opt_Id;
+      --  Optional validity flag for potentially invalid objects
+
       case Kind is
          --  Common case where mapping from Ada object to Why object is 1 to 1
 
@@ -174,12 +177,13 @@ package Why.Gen.Binders is
    --  only for local binders, and Keep that they should always be included.
 
    function Item_Array_Length
-     (Arr         : Item_Array;
-      Keep_Const  : Handling := Local_Only;
-      Ignore_Init : Boolean := False) return Natural;
+     (Arr                   : Item_Array;
+      Keep_Const            : Handling := Local_Only;
+      Ignore_Init_And_Valid : Boolean := False) return Natural;
    --  @param Arr an array of items.
    --  @param Keep_Const handling to be used for constant parts of Arr.
-   --  @param Ignore_Init whether initialization flags should be counted.
+   --  @param Ignore_Init_And_Valid whether top-level initialization and
+   --    validity flags should be counted.
    --  @return the number of variables that is introduced by Arr (counting
    --    items plus e.g. array bounds).
 
@@ -339,6 +343,7 @@ package Why.Gen.Binders is
        Local    => Get_Module (Get_Name (Id)) = Why_Empty,
        Init     => <>,
        Is_Moved => <>,
+       Valid    => <>,
        Main     => (Ada_Node => E,
                     B_Name   => Id,
                     B_Ent    => Null_Entity_Name,
@@ -496,5 +501,25 @@ package Why.Gen.Binders is
    procedure Effects_Append_Binder (Eff : W_Effects_Id; Binder : Item_Type);
    --  Append to effects Eff the variable associated with an item
    --  @param Binder variable to add to Eff
+
+   function Get_Init_Id_From_Object
+     (Obj         : Entity_Id;
+      Ref_Allowed : Boolean) return W_Expr_Id;
+   --  Return the init flag associated to Obj in the Symbol_Table if any.
+   --  Otherwise, return Why_Empty.
+
+   function Object_Has_Valid_Id (Obj : Entity_Id) return Boolean;
+   --  Return True is Obj has an associated validity flag
+
+   function Get_Valid_Id_From_Item
+     (Item        : Item_Type;
+      Ref_Allowed : Boolean) return W_Term_Id;
+   --  Return the valid flag of Item if any. Otherwise, return True_Term
+
+   function Get_Valid_Id_From_Object
+     (Obj         : Entity_Id;
+      Ref_Allowed : Boolean) return W_Term_Id;
+   --  Return the valid flag associated to Obj in the Symol_Table if any.
+   --  Otherwise, return True_Term.
 
 end Why.Gen.Binders;

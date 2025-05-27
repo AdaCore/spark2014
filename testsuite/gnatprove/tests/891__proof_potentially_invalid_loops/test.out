@@ -1,0 +1,19 @@
+test_loops.adb:7:27: info: initialization of "X" proved
+test_loops.adb:9:06: info: data dependencies proved
+test_loops.adb:14:25: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+test_loops.adb:15:17: info: validity check proved (CVC5: 1 VC)
+test_loops.adb:15:21: info: division check proved (CVC5: 1 VC)
+test_loops.adb:21:06: info: data dependencies proved
+test_loops.adb:25:25: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+test_loops.adb:26:17: medium: validity check might fail [possible fix: loop at line 25 should mention X in a loop invariant]
+test_loops.adb:26:21: info: division check proved (CVC5: 1 VC)
+test_loops.adb:30:27: info: initialization of "X" proved
+test_loops.adb:32:06: info: data dependencies proved
+test_loops.adb:37:25: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+test_loops.adb:41:20: medium: validity check might fail [possible fix: loop at line 37 should mention X in a loop invariant]
+test_loops.adb:41:24: info: division check proved (CVC5: 1 VC)
+test_loops.adb:46:27: info: initialization of "X" proved
+test_loops.adb:48:06: info: data dependencies proved
+test_loops.adb:53:25: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+test_loops.adb:57:20: info: validity check proved (CVC5: 1 VC)
+test_loops.adb:57:24: info: division check proved (CVC5: 1 VC)

@@ -56,30 +56,35 @@ package Gnat2Why.Unchecked_Conversion is
    --  conversion" of SPARK RM 13.9. It always uses the RM size.
 
    procedure Suitable_For_UC_Target
-     (Typ         :     Type_Kind_Id;
-      Size        :     Uint;
-      Size_Str    :     String;
-      For_UC      :     Boolean;
-      Result      : out Boolean;
-      Explanation : out Unbounded_String);
+     (Typ            :     Type_Kind_Id;
+      Size           :     Uint;
+      Size_Str       :     String;
+      For_UC         :     Boolean;
+      Result         : out Boolean;
+      Explanation    : out Unbounded_String;
+      Check_Validity : Boolean := True);
    --  This procedure implements the notion of "suitable as a target of an
    --  unchecked conversion" of SPARK RM 13.9. Possibility of invalid values is
    --  checked using the passed size.
    --  If For_UC is True, the explanation mentions UC, otherwise, it mentions
    --  aliased objects.
+   --  If Check_Validity is False, do not check that Typ does not have invalid
+   --  values.
 
    procedure Suitable_For_UC_Target_UC_Wrap
-     (Typ         :     Type_Kind_Id;
-      Result      : out Boolean;
-      Explanation : out Unbounded_String);
+     (Typ            :     Type_Kind_Id;
+      Result         : out Boolean;
+      Explanation    : out Unbounded_String;
+      Check_Validity : Boolean := True);
    --  Wrapper of Suitable_For_UC_Target, to be used with unchecked conversion.
    --  The RM_Size is used to check for invalid values.
 
    procedure Suitable_For_UC_Target_Overlay_Wrap
-     (Typ         :     Type_Kind_Id;
-      Obj         :     Node_Id;
-      Result      : out Boolean;
-      Explanation : out Unbounded_String);
+     (Typ            :     Type_Kind_Id;
+      Obj            :     Node_Id;
+      Result         : out Boolean;
+      Explanation    : out Unbounded_String;
+      Check_Validity : Boolean := True);
    --  Wrapper of Suitable_For_UC_Target, to be used with overlays.
 
    function Suitable_For_Precise_UC
@@ -121,21 +126,29 @@ package Gnat2Why.Unchecked_Conversion is
       Source_Type   : W_Type_Id;
       Target_Type   : W_Type_Id;
       Source_Status : Scalar_Status;
-      Target_Status : Scalar_Status)
+      Target_Status : Scalar_Status;
+      Ada_Function  : Opt_E_Function_Id := Empty)
       return W_Term_Id;
    --  Return Arg of Source_Type converted to Target_Type, when both are of
-   --  scalar types. Size is the shared size of both types, when arguments
-   --  of the UC are integer types, which is used for conversion from an
+   --  scalar types. Size is the shared size of both types, when arguments of
+   --  the UC are integer types, which is used for conversion from an
    --  Unsigned type to a Signed one. Otherwise it is No_Uint.
+   --  If Ada_Function is provided and its result is potentially invalid, wrap
+   --  the result in a validity wrapper. The validity flag is set to True iff
+   --  the return value is in the bounds of the return type of Ada_Function.
 
    function Precise_Composite_UC
-     (Arg         : W_Term_Id;
-      Source_Type : Type_Kind_Id;
-      Target_Type : Type_Kind_Id)
+     (Arg          : W_Term_Id;
+      Source_Type  : Type_Kind_Id;
+      Target_Type  : Type_Kind_Id;
+      Ada_Function : E_Function_Id)
       return W_Term_Id;
    --  Return Arg of Source_Type converted to Target_Type, when at least one
    --  is a composite type made up of integers. Convert Arg to a large-enough
    --  modular type, and convert that value to Target. If all types involved
    --  are modular, then this benefits from bitvector support in provers.
+   --  If the result of Ada_Function is potentially invalid, wrap it in a
+   --  validity wrapper. The validity flag is set to True iff all scalar
+   --  subcomponents of the return value are in the bounds of their subtype.
 
 end Gnat2Why.Unchecked_Conversion;

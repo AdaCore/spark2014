@@ -3411,6 +3411,13 @@ package body SPARK_Definition.Annotate is
             & "Unhide_Info shall not be inlined for proof",
             Arg3_Exp);
          return;
+      elsif Is_Potentially_Invalid (E)
+        and then Nodes.Length = 1
+      then
+         Error_Msg_N_If
+           ("function annotated with Inline_For_Proof with a postcondition "
+            & "shall not have a potentially invalid result", E);
+         return;
       end if;
 
       --  The body of expression functions is ignored for higher order
@@ -3921,6 +3928,11 @@ package body SPARK_Definition.Annotate is
          Error_Msg_N_If
            ("Entity parameter of a pragma Logical_Equal shall not have"
             & " contract cases", E);
+         return;
+      elsif Has_Aspect (E, Aspect_Potentially_Invalid) then
+         Error_Msg_N_If
+           ("Entity parameter of a pragma Logical_Equal shall not have"
+            & " a Potentially_Invalid aspect", E);
          return;
       elsif Potentially_Hidden_Entities.Contains (E) then
          Error_Msg_N_If
