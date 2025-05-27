@@ -55,8 +55,8 @@ package body SPARK_Register is
       function Process_Node (N : Node_Id) return Traverse_Result;
       --  Process a single node
 
-      procedure Process_Tree is
-        new Traverse_More_Proc (Process_Node, Process_Itypes => True);
+      procedure Process_Tree is new
+        Traverse_More_Proc (Process_Node, Process_Itypes => True);
       --  Recursively process an AST tree
 
       ------------------
@@ -64,12 +64,15 @@ package body SPARK_Register is
       ------------------
 
       function Process_Node (N : Node_Id) return Traverse_Result is
-         subtype Rewriten_Call is Node_Kind with
-           Static_Predicate => Rewriten_Call in N_Block_Statement
-                                              | N_Identifier
-                                              | N_Integer_Literal
-                                              | N_Null_Statement
-                                              | N_Qualified_Expression;
+         subtype Rewriten_Call is Node_Kind
+         with
+           Static_Predicate =>
+             Rewriten_Call
+             in N_Block_Statement
+              | N_Identifier
+              | N_Integer_Literal
+              | N_Null_Statement
+              | N_Qualified_Expression;
          --  Type with kinds of nodes that may represent rewritten subprogram
          --  calls.
          --  ??? this is quite subtle, perhaps we should just check the kind of
@@ -94,9 +97,7 @@ package body SPARK_Register is
             when N_Generic_Declaration =>
                return Skip;
 
-            when N_Package_Body
-               | N_Subprogram_Body
-            =>
+            when N_Package_Body | N_Subprogram_Body =>
                if Is_Generic_Unit (Unique_Defining_Entity (N)) then
                   return Skip;
                end if;
@@ -114,15 +115,14 @@ package body SPARK_Register is
          --  Register any object/subprogram appearing in an expression, which
          --  comes from an object/subprogram declaration.
 
-         if Nkind (N) in N_Has_Entity
-           and then Present (Entity (N))
-         then
+         if Nkind (N) in N_Has_Entity and then Present (Entity (N)) then
             declare
                E : constant Entity_Id := Entity (N);
 
-               subtype N_Call is Node_Kind with
-                 Static_Predicate => N_Call in N_Subprogram_Call
-                                             | N_Entry_Call_Statement;
+               subtype N_Call is Node_Kind
+               with
+                 Static_Predicate =>
+                   N_Call in N_Subprogram_Call | N_Entry_Call_Statement;
 
             begin
                case Ekind (E) is
@@ -130,6 +130,7 @@ package body SPARK_Register is
                      case Nkind (Parent (N)) is
                         --  Register ordinary subprogram calls and internal
                         --  calls to protected subprograms and entries.
+
                         when N_Call =>
 
                            --  Ignore calls to predicate functions
@@ -145,6 +146,7 @@ package body SPARK_Register is
 
                         --  Register external calls to protected subprograms
                         --  and entries.
+
                         when N_Selected_Component =>
                            case Nkind (Parent (Parent (N))) is
                               when N_Call =>
@@ -152,9 +154,10 @@ package body SPARK_Register is
 
                               --  Register calls to entry families, internal
                               --  and external.
+
                               when N_Indexed_Component =>
-                                 if Nkind (Parent (Parent (Parent (N)))) =
-                                   N_Entry_Call_Statement
+                                 if Nkind (Parent (Parent (Parent (N))))
+                                   = N_Entry_Call_Statement
                                  then
                                     Register_Entity (E);
                                  end if;
@@ -164,9 +167,9 @@ package body SPARK_Register is
                            end case;
 
                         when Rewriten_Call =>
-                           if Nkind (Original_Node (Parent (N))) in
-                             N_Subprogram_Call
-                               and then Ekind (E) /= E_Operator
+                           if Nkind (Original_Node (Parent (N)))
+                              in N_Subprogram_Call
+                             and then Ekind (E) /= E_Operator
                            then
                               Register_Entity (E);
                            end if;
@@ -187,9 +190,7 @@ package body SPARK_Register is
                         Register_Entity (E);
                      end if;
 
-                  when E_Loop_Parameter
-                     | Formal_Kind
-                  =>
+                  when E_Loop_Parameter | Formal_Kind =>
                      Register_Entity (E);
 
                   when E_Abstract_State =>
@@ -214,9 +215,8 @@ package body SPARK_Register is
          --  ??? this is a yet another reason for replacing front-end xrefs
          --  with something more precise and easier to control.
          if Nkind (N) in Rewriten_Call
-           and then Nkind (Original_Node (N)) in N_Subprogram_Call
-                                               | N_Pragma
-                                               | N_Op
+           and then Nkind (Original_Node (N))
+                    in N_Subprogram_Call | N_Pragma | N_Op
          then
             Process_Tree (Original_Node (N));
          end if;
@@ -226,9 +226,7 @@ package body SPARK_Register is
          --  not attached to the tree. We need to explicitly traverse its
          --  expression, which may contain references to objects and calls
          --  to functions.
-         if Nkind (N) in N_Object_Declaration
-                       | N_Subprogram_Declaration
-         then
+         if Nkind (N) in N_Object_Declaration | N_Subprogram_Declaration then
             Register_Aspect (Defining_Entity (N), Aspect_Address);
 
          --  On type declarations, register names from the literal aspects if
@@ -242,13 +240,11 @@ package body SPARK_Register is
             Register_Aggregate_Aspect (Defining_Entity (N));
          end if;
 
-         if Nkind (N) in N_Private_Type_Declaration
-                       | N_Full_Type_Declaration
+         if Nkind (N) in N_Private_Type_Declaration | N_Full_Type_Declaration
          then
             declare
                procedure Register_Iterable_Primitive
-                 (Typ : Entity_Id;
-                  Nam : Name_Id);
+                 (Typ : Entity_Id; Nam : Name_Id);
                --  For a type Typ register primitive Nam of aspect Iterable
 
                ---------------------------------
@@ -256,8 +252,7 @@ package body SPARK_Register is
                ---------------------------------
 
                procedure Register_Iterable_Primitive
-                 (Typ : Entity_Id;
-                  Nam : Name_Id)
+                 (Typ : Entity_Id; Nam : Name_Id)
                is
                   Prim : constant Entity_Id :=
                     Get_Iterable_Type_Primitive (Typ, Nam);
@@ -295,16 +290,12 @@ package body SPARK_Register is
          --  to the tree); just like DIC, it doesn't need to be registered,
          --  because it doesn't appear in Direct_Calls.
 
-         if Nkind (N) in N_Entity
-           and then Is_Type (N)
-         then
+         if Nkind (N) in N_Entity and then Is_Type (N) then
             --  Only care about DIC of a base type (because derived types and
             --  subtypes just reuse the same expression and we want to repeat
             --  the work).
 
-            if Has_Own_DIC (N)
-              and then N = Base_Type (N)
-            then
+            if Has_Own_DIC (N) and then N = Base_Type (N) then
                declare
                   DIC_Proc : constant Node_Id := Partial_DIC_Procedure (N);
                   DIC_Expr : Node_Id;
@@ -408,8 +399,9 @@ package body SPARK_Register is
                      when N_Accept_Statement =>
                         Register_Entity (Defining_Entity (N));
 
-                     when N_Access_To_Subprogram_Definition |
-                          N_Entry_Body_Formal_Part          =>
+                     when N_Access_To_Subprogram_Definition
+                        | N_Entry_Body_Formal_Part
+                     =>
                         null;
 
                      when others =>
@@ -417,9 +409,10 @@ package body SPARK_Register is
                   end case;
                end;
 
-            when N_Package_Declaration        |
-                 N_Protected_Type_Declaration |
-                 N_Task_Type_Declaration      =>
+            when N_Package_Declaration
+               | N_Protected_Type_Declaration
+               | N_Task_Type_Declaration
+            =>
                --  ??? is this needed for wrapper packages?
                Register_Entity (Defining_Entity (N));
 
@@ -464,7 +457,7 @@ package body SPARK_Register is
          end if;
       end Register_Aspect;
 
-   --  Start of processing for Register_Compilation_Unit
+      --  Start of processing for Register_Compilation_Unit
 
    begin
       --  Skip generic units; care only about their instances
