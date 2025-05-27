@@ -1051,9 +1051,7 @@ package body Gnat2Why.Unchecked_Conversion is
             end if;
 
          when Enumeration_Kind =>
-            if Has_Enumeration_Rep_Clause (Typ)
-              and then Enumeration_Rep (First_Literal (Typ)) /= Uint_0
-            then
+            if Has_Enumeration_Rep_Clause (Typ) then
                return False_With_Explain
                  ("enumeration with non-default representation");
             end if;
