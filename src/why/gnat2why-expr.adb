@@ -1309,8 +1309,9 @@ package body Gnat2Why.Expr is
      (N : N_Object_Declaration_Id)
       return W_Prog_Id
    is
-      Lvalue : Entity_Id := Defining_Identifier (N);
-      Rexpr  : constant Node_Id := Expression (N);
+      Lvalue   : Entity_Id := Defining_Identifier (N);
+      Do_Valid : constant Boolean := Object_Has_Valid_Id (Lvalue);
+      Rexpr    : constant Node_Id := Expression (N);
    begin
       --  We ignore part_of objects as a first approximation
 
@@ -1349,7 +1350,7 @@ package body Gnat2Why.Expr is
             --  Context and validity flag to handle potentially invalid values
 
             Is_Valid : W_Expr_Id :=
-              (if Binder.Valid.Present then +True_Prog else Why_Empty);
+              (if Do_Valid then +True_Prog else Why_Empty);
             Tmp_Id   : W_Identifier_Id := Why_Empty;
             Id_Def   : W_Expr_Id := Why_Empty;
 
@@ -1360,7 +1361,7 @@ package body Gnat2Why.Expr is
             --  Handle the potential propagation of invalid values
 
             if Propagates_Validity_Flag (N) then
-               pragma Assert (Binder.Valid.Present);
+               pragma Assert (Do_Valid);
                Why_Expr := +Transform_Potentially_Invalid_Expr
                  (Expr          => Rexpr,
                   Expected_Type => Why_Ty,
@@ -1391,13 +1392,14 @@ package body Gnat2Why.Expr is
 
             --  Handle the validity field if any
 
-            if Binder.Valid.Present then
+            if Do_Valid then
                if Is_Mutable_In_Why (Lvalue) then
                   Append
                     (Res,
                      New_Assignment
                        (Ada_Node => N,
-                        Name     => Binder.Valid.Id,
+                        Name     => +Get_Valid_Id_From_Object
+                          (Lvalue, Ref_Allowed => False),
                         Labels   => Symbol_Sets.Empty_Set,
                         Value    => +Is_Valid,
                         Typ      => EW_Bool_Type));
@@ -1409,7 +1411,8 @@ package body Gnat2Why.Expr is
                         Pred     =>
                           New_Comparison
                             (Symbol => Why_Eq,
-                             Left   => +Binder.Valid.Id,
+                             Left   => +Get_Valid_Id_From_Object
+                               (Lvalue, Body_Params.Ref_Allowed),
                              Right  => +Is_Valid)));
                end if;
             end if;
@@ -1709,7 +1712,7 @@ package body Gnat2Why.Expr is
 
             --  Add a binding for the validity wrapper if any
 
-            if Binder.Valid.Present and then Present (Tmp_Id) then
+            if Do_Valid and then Present (Tmp_Id) then
                Res :=
                  New_Typed_Binding
                    (Name    => Tmp_Id,
@@ -1815,13 +1818,14 @@ package body Gnat2Why.Expr is
 
             --  Set the validity field to True, no object is invalid by default
 
-            if Binder.Valid.Present then
+            if Do_Valid then
                pragma Assert (Is_Mutable_In_Why (Lvalue));
                Append
                  (Default_Checks,
                   New_Assignment
                     (Ada_Node => N,
-                     Name     => Binder.Valid.Id,
+                     Name     => +Get_Valid_Id_From_Object
+                       (Lvalue, Ref_Allowed => False),
                      Labels   => Symbol_Sets.Empty_Set,
                      Value    => True_Prog,
                      Typ      => EW_Bool_Type));
@@ -7157,15 +7161,15 @@ package body Gnat2Why.Expr is
       --  be considered as unintialized, but the check could be accepted.
 
       declare
-         Root_Binder : constant Item_Type := Ada_Ent_To_Why.Element
-           (Symbol_Table, Get_Root_Object (Actual));
+         Root : constant Entity_Id := Get_Root_Object (Actual);
       begin
-         if Root_Binder.Valid.Present then
+         if Object_Has_Valid_Id (Root) then
             Append
               (Store,
                New_Assignment
                  (Ada_Node => Actual,
-                  Name     => Root_Binder.Valid.Id,
+                  Name     => +Get_Valid_Id_From_Object
+                    (Root, Ref_Allowed => False),
                   Labels   => Symbol_Sets.Empty_Set,
                   Value    =>  New_Any_Expr
                     (Return_Type => EW_Bool_Type,
@@ -7510,11 +7514,8 @@ package body Gnat2Why.Expr is
 
       if Do_Valid then
          declare
-            Root_Binder : constant Item_Type :=
-              Ada_Ent_To_Why.Element
-                (Symbol_Table, Get_Root_Object (Actual));
-            pragma Assert (Root_Binder.Valid.Present);
-            Is_Valid    : constant W_Prog_Id :=
+            Root     : constant Entity_Id := Get_Root_Object (Actual);
+            Is_Valid : constant W_Prog_Id :=
               (if not Propagates_Validity_Flag (Actual)
                then True_Prog
                elsif Is_Simple_Actual (Actual)
@@ -7526,8 +7527,8 @@ package body Gnat2Why.Expr is
                      Labels      => Symbol_Sets.Empty_Set,
                      Post        => New_Conditional
                        (Condition => Pred_Of_Boolean_Term
-                            (+Get_Valid_Id_From_Item
-                                 (Root_Binder, Params.Ref_Allowed)),
+                            (+Get_Valid_Id_From_Object
+                                 (Root, Params.Ref_Allowed)),
                         Then_Part => Pred_Of_Boolean_Term
                           (+New_Result_Ident (Typ => EW_Bool_Type))))));
             --  Approximation of the validity status for partial updates. We
@@ -7540,7 +7541,8 @@ package body Gnat2Why.Expr is
               (Store,
                New_Assignment
                  (Ada_Node => Actual,
-                  Name     => Root_Binder.Valid.Id,
+                  Name     => +Get_Valid_Id_From_Object
+                    (Root, Ref_Allowed => False),
                   Labels   => Symbol_Sets.Empty_Set,
                   Value    => Is_Valid,
                   Typ      => EW_Bool_Type));
@@ -10559,8 +10561,8 @@ package body Gnat2Why.Expr is
                         Assume_Dynamic_Invariant
                           (+Reconstruct_Item (Item),
                            Get_Ada_Type_From_Item (Item),
-                           Valid => Get_Valid_Id_From_Item
-                             (Item, Ref_Allowed => True)));
+                           Valid => Get_Valid_Id_From_Object
+                             (Elt, Ref_Allowed => True)));
                   end;
                end if;
             end loop;
@@ -17613,9 +17615,8 @@ package body Gnat2Why.Expr is
 
       if Do_Valid then
          declare
-            Root_Binder : constant Item_Type := Ada_Ent_To_Why.Element
-              (Symbol_Table, Get_Root_Object (Lvalue));
-            Root_Valid  : constant W_Prog_Id :=
+            Root       : constant Entity_Id := Get_Root_Object (Lvalue);
+            Root_Valid : constant W_Prog_Id :=
               (if Nkind (Lvalue) in N_Identifier | N_Expanded_Name
                then +Is_Valid
                else New_And_Prog
@@ -17625,8 +17626,8 @@ package body Gnat2Why.Expr is
                      Labels      => Symbol_Sets.Empty_Set,
                      Post        => New_Conditional
                        (Condition => Pred_Of_Boolean_Term
-                            (+Get_Valid_Id_From_Item
-                                 (Root_Binder, Params.Ref_Allowed)),
+                            (+Get_Valid_Id_From_Object
+                                 (Root, Params.Ref_Allowed)),
                         Then_Part => Pred_Of_Boolean_Term
                           (+New_Result_Ident (Typ => EW_Bool_Type))))));
             --  Approximation of the validity status for partial updates. We
@@ -17638,7 +17639,8 @@ package body Gnat2Why.Expr is
             T := Sequence
               (T,
                New_Assignment
-                 (Name   => Root_Binder.Valid.Id,
+                 (Name   => +Get_Valid_Id_From_Object
+                      (Root, Ref_Allowed => False),
                   Value  => Root_Valid,
                   Typ    => EW_Bool_Type,
                   Labels => Symbol_Sets.Empty_Set));
@@ -25005,7 +25007,7 @@ package body Gnat2Why.Expr is
 
                   --  Introduce a validity check if the object has a Valid flag
 
-                  if E.Valid.Present
+                  if Object_Has_Valid_Id (Ent)
                     and then Domain = EW_Prog
                     and then not No_Validity_Check
                   then
@@ -25014,8 +25016,8 @@ package body Gnat2Why.Expr is
                           (Pred        => New_VC_Pred
                                (Expr,
                                 Pred_Of_Boolean_Term
-                                  (Get_Valid_Id_From_Item
-                                     (E, Params.Ref_Allowed)),
+                                  (Get_Valid_Id_From_Object
+                                     (Ent, Params.Ref_Allowed)),
                                 VC_Validity_Check),
                            Assert_Kind => EW_Assert),
                         T);
@@ -25047,8 +25049,8 @@ package body Gnat2Why.Expr is
                             (Expr   => +Var,
                              Ty     => Typ,
                              Params => Params,
-                             Valid  => Get_Valid_Id_From_Item
-                               (E, Params.Ref_Allowed));
+                             Valid  => Get_Valid_Id_From_Object
+                               (Ent, Params.Ref_Allowed));
                         Havoc    : W_Prog_Id := +Void;
                      begin
                         case E.Kind is
@@ -25112,9 +25114,11 @@ package body Gnat2Why.Expr is
                               end if;
                         end case;
 
-                        if E.Valid.Present then
+                        if Object_Has_Valid_Id (Ent) then
                            Prepend
-                             (New_Havoc_Call (E.Valid.Id),
+                             (New_Havoc_Call
+                                (+Get_Valid_Id_From_Object
+                                     (Ent, Ref_Allowed => False)),
                               Havoc);
                         end if;
 

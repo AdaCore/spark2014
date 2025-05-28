@@ -437,6 +437,24 @@ package body Why.Gen.Binders is
       return True_Term;
    end Get_Valid_Id_From_Item;
 
+   ------------------------------
+   -- Get_Valid_Id_From_Object --
+   ------------------------------
+
+   function Get_Valid_Id_From_Object
+     (Obj         : Entity_Id;
+      Ref_Allowed : Boolean) return W_Term_Id
+   is
+      C : constant Ada_Ent_To_Why.Cursor :=
+        Ada_Ent_To_Why.Find (Symbol_Table, Obj);
+   begin
+      if Ada_Ent_To_Why.Has_Element (C) then
+         return Get_Valid_Id_From_Item
+           (Ada_Ent_To_Why.Element (C), Ref_Allowed);
+      end if;
+      return True_Term;
+   end Get_Valid_Id_From_Object;
+
    ----------------------------
    -- Get_Why_Type_From_Item --
    ----------------------------
@@ -499,24 +517,6 @@ package body Why.Gen.Binders is
 
       end case;
    end Get_Why_Type_From_Item;
-
-   ------------------------------
-   -- Get_Valid_Id_From_Object --
-   ------------------------------
-
-   function Get_Valid_Id_From_Object
-     (Obj         : Entity_Id;
-      Ref_Allowed : Boolean) return W_Term_Id
-   is
-      C : constant Ada_Ent_To_Why.Cursor :=
-        Ada_Ent_To_Why.Find (Symbol_Table, Obj);
-   begin
-      if Ada_Ent_To_Why.Has_Element (C) then
-         return Get_Valid_Id_From_Item
-           (Ada_Ent_To_Why.Element (C), Ref_Allowed);
-      end if;
-      return True_Term;
-   end Get_Valid_Id_From_Object;
 
    -----------------------
    -- Item_Array_Length --
