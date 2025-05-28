@@ -1,0 +1,26 @@
+test.adb:13:04: info: address in address clause is compatible with object alignment (Trivial)
+test.adb:13:04: info: object is suitable for aliasing via address clause (Trivial)
+test.adb:13:41: high: object is unsuitable for aliasing via address clause [possible explanation: type Positive has 16#7FFF_FFFF# values but type Positive has Object_Size 32, which allows 16#1000_0000_0# possible values; aliased object could have invalid values [SPARK RM 13.7]]
+test.adb:13:41: info: types of aliased objects have the same size (Trivial)
+test.adb:16:04: high: object is unsuitable for aliasing via address clause [possible explanation: type Positive has 16#7FFF_FFFF# values but type Positive has Object_Size 32, which allows 16#1000_0000_0# possible values; aliased object could have invalid values [SPARK RM 13.7]]
+test.adb:16:04: info: address in address clause is compatible with object alignment (Trivial)
+test.adb:16:35: info: object is suitable for aliasing via address clause (Trivial)
+test.adb:16:35: info: types of aliased objects have the same size (Trivial)
+test.adb:20:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
+test.adb:20:04: warning: address specification on "X3" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid reads [imprecise-address-specification] [E0012]
+test.adb:20:04: warning: launch "gnatprove --explain=E0012" for more information
+test.adb:20:04: warning: make sure that all overlapping objects have Async_Writers set to True
+test.adb:22:18: warning: unused initial value of "X"
+test.adb:24:04: warning: analyzing unreferenced procedure "P1" [unreferenced-procedure]
+test.adb:26:10: warning: unused assignment
+test.adb:26:13: medium: validity check might fail [possible fix: subprogram at line 22 should mention X in a precondition]
+test.adb:30:18: warning: unused initial value of "X"
+test.adb:32:04: warning: analyzing unreferenced procedure "P2" [unreferenced-procedure]
+test.adb:34:10: warning: unused assignment
+test.adb:34:13: medium: validity check might fail [possible fix: subprogram at line 30 should mention X in a precondition]
+test.adb:38:18: warning: unused initial value of "X"
+test.adb:40:04: warning: analyzing unreferenced procedure "P3" [unreferenced-procedure]
+test.adb:42:10: warning: unused assignment
+test.adb:42:13: medium: validity check might fail (e.g. when X'Valid_Scalars = False) [possible fix: subprogram at line 38 should mention X in a precondition]
+test.adb:48:04: warning: analyzing unreferenced procedure "P4" [unreferenced-procedure]
+test.adb:50:12: medium: validity check might fail (e.g. when X'Valid_Scalars = False) [possible fix: subprogram at line 46 should mention X in a precondition]
