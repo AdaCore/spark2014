@@ -1457,7 +1457,7 @@ package body Gnat2Why.Unchecked_Conversion is
          pragma Assert (not No (Size));
       end if;
       Suitable_For_UC_Target
-        (Typ, Size, "Size ", True, Result, Explanation, Check_Validity);
+        (Typ, Size, "Size", True, Result, Explanation, Check_Validity);
    end Suitable_For_UC_Target_UC_Wrap;
 
 end Gnat2Why.Unchecked_Conversion;
