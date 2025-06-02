@@ -69,7 +69,7 @@ package body Libst.Reals.Errors with SPARK_Mode is
          --  Compute the error for the summation up to I - 1
          Error_For_SW_Rec (Weights, I - 1);
          --  Compute the error for the last addition
-         Lemma_Rounding_Error_Add (Sum_Weight_Rec (Weights, I - 1), Weights (I));
+         Lemma_Rounding_Error_Add (Sum_F, W);
          --  The weight is big enough that the absolute error term Eta can be
          --  ignored.
          pragma Assert (W = 0.0 or W >= Min_Weight);
