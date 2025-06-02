@@ -1,4 +1,4 @@
--- copyright 2012 David MENTRÉ <dmentre@linux-france.org>
+-- copyright 2012 David MENTRÃ‰ <dmentre@linux-france.org>
 
 --  Permission is hereby granted, free of charge, to any person or organization
 --  obtaining a copy of the software and accompanying documentation covered by
@@ -226,9 +226,12 @@ package body eVoting is
 
       for i in (Candidate_Number_t'First + 2)..last_candidate loop
          pragma Loop_Invariant
+           (for all J in Candidate_Number_t'First .. i - 1 =>
+               winners(J)'Initialized);
+         pragma Loop_Invariant
            (winners(Candidate_Number_t'First) = False and then
             Latest_Highest_Score < I and then
-            Winners(Latest_Highest_Score) and then
+            winners(Latest_Highest_Score) and then
               (for all J in Candidate_Number_T
                range (Candidate_Number_T'First + 1) .. I-1 =>
                  (if J > Latest_Highest_Score then
@@ -236,7 +239,7 @@ package body eVoting is
            and then
               (for all J in Candidate_Number_T
                range (Candidate_Number_T'First + 1) .. I - 1 =>
-                 (if Winners(J) then
+                 (if winners(J) then
                   Counters(Latest_Highest_Score) = Counters(J)
                   else
                   Counters(Latest_Highest_Score) > Counters(J))));
@@ -244,9 +247,12 @@ package body eVoting is
          if counters(i) > counters(latest_highest_score) then
             for J in Candidate_Number_T'First..I - 1 loop
                pragma Loop_Invariant
+                 (for all K in Candidate_Number_T'First..i - 2 =>
+                     winners(K)'Initialized);
+               pragma Loop_Invariant
                  (for all K in Candidate_Number_T range 0 .. J - 1 =>
-                  not Winners(K));
-               Winners(J) := False;
+                  not winners(K));
+               winners(J) := False;
             end loop;
             winners(i) := True;
             latest_highest_score := i;
@@ -258,13 +264,7 @@ package body eVoting is
          end if;
       end loop;
 
-      for I in Last_Candidate + 1..Candidate_Number_T'Last loop
-         pragma Loop_Invariant
-           ((for all J in Last_Candidate + 1..I-1 => not Winners(J)) and then
-            (for all J in Candidate_Number_T'First..Last_Candidate =>
-               Winners(J) = Winners'Loop_Entry(J)));
-         Winners(I) := False;
-      end loop;
+      winners(Last_Candidate + 1 .. winners'Last) := (others => False);
    end Compute_Winner;
 
    procedure Compute_Print_Results
