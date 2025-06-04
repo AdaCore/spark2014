@@ -1,0 +1,70 @@
+finally_ownership.adb:10:14: error: launch "gnatprove --explain=E0010" for more information
+finally_ownership.adb:10:14: error: object was moved at line 61 [E0010]
+finally_ownership.adb:10:14: error: return from "KO" with moved value for "X"
+finally_ownership.adb:11:14: error: launch "gnatprove --explain=E0010" for more information
+finally_ownership.adb:11:14: error: object was moved at line 78 [E0010]
+finally_ownership.adb:11:14: error: return from "KO2" with moved value for "X"
+finally_ownership.adb:12:14: error: launch "gnatprove --explain=E0010" for more information
+finally_ownership.adb:12:14: error: object was moved at line 98 [E0010]
+finally_ownership.adb:12:14: error: return from "KO3" with moved value for "X"
+finally_ownership.adb:13:14: error: launch "gnatprove --explain=E0010" for more information
+finally_ownership.adb:13:14: error: object was moved at line 118 [E0010]
+finally_ownership.adb:13:14: error: return from "KO4" with moved value for "X"
+finally_ownership.adb:14:13: error: launch "gnatprove --explain=E0010" for more information
+finally_ownership.adb:14:13: error: object was moved at line 141 [E0010]
+finally_ownership.adb:14:13: error: return from "KO5" with moved value for "X"
+finally_ownership.adb:15:13: error: launch "gnatprove --explain=E0010" for more information
+finally_ownership.adb:15:13: error: object was moved at line 160 [E0010]
+finally_ownership.adb:15:13: error: return from "KO6" with moved value for "X"
+finally_ownership.adb:26:07: info: initialization of "Y" proved
+finally_ownership.adb:32:10: warning: initialization of "R" has no effect
+finally_ownership.adb:53:07: info: initialization of "Y" proved
+finally_ownership.adb:66:14: error: launch "gnatprove --explain=E0010" for more information
+finally_ownership.adb:66:14: error: object was moved at line 61 [E0010]
+finally_ownership.adb:66:14: error: part of dereference from "X" is not writable
+finally_ownership.adb:70:07: info: initialization of "Y" proved
+finally_ownership.adb:83:19: error: launch "gnatprove --explain=E0010" for more information
+finally_ownership.adb:83:19: error: object was moved at line 78 [E0010]
+finally_ownership.adb:83:19: error: part of dereference from "X" is not writable
+finally_ownership.adb:89:07: info: initialization of "Y" proved
+finally_ownership.adb:91:07: error: launch "gnatprove --explain=E0010" for more information
+finally_ownership.adb:91:07: error: loop iteration terminates with moved value for "Y"
+finally_ownership.adb:91:07: error: object was moved at line 100 [E0010]
+finally_ownership.adb:103:20: error: launch "gnatprove --explain=E0010" for more information
+finally_ownership.adb:103:20: error: object was moved at line 98 [E0010]
+finally_ownership.adb:103:20: error: part of dereference from "X" is not writable
+finally_ownership.adb:109:07: info: initialization of "Y" proved
+finally_ownership.adb:123:17: error: launch "gnatprove --explain=E0010" for more information
+finally_ownership.adb:123:17: error: object was moved at line 118 [E0010]
+finally_ownership.adb:123:17: error: part of dereference from "X" is not writable
+finally_ownership.adb:131:07: info: initialization of "Y" proved
+finally_ownership.adb:147:17: error: launch "gnatprove --explain=E0010" for more information
+finally_ownership.adb:147:17: error: object was moved at line 141 [E0010]
+finally_ownership.adb:147:17: error: part of dereference from "X" is not writable
+finally_ownership.adb:151:07: info: initialization of "Y" proved
+finally_ownership.adb:165:17: error: launch "gnatprove --explain=E0010" for more information
+finally_ownership.adb:165:17: error: object was moved at line 160 [E0010]
+finally_ownership.adb:165:17: error: part of dereference from "X" is not writable
+finally_ownership.adb:174:08: error: launch "gnatprove --explain=E0010" for more information
+finally_ownership.adb:174:08: error: object was moved at line 172 [E0010]
+finally_ownership.adb:174:08: error: part of dereference from "Y" is not writable
+finally_ownership.adb:185:08: error: launch "gnatprove --explain=E0010" for more information
+finally_ownership.adb:185:08: error: object was moved at line 181 [E0010]
+finally_ownership.adb:185:08: error: part of dereference from "Y" is not writable
+finally_ownership.adb:198:13: error: launch "gnatprove --explain=E0010" for more information
+finally_ownership.adb:198:13: error: object was moved at line 194 [E0010]
+finally_ownership.adb:198:13: error: part of dereference from "Y" is not writable
+finally_ownership.adb:210:13: warning: statement has no effect
+finally_ownership.adb:215:16: error: launch "gnatprove --explain=E0010" for more information
+finally_ownership.adb:215:16: error: object was moved at line 211 [E0010]
+finally_ownership.adb:215:16: error: part of dereference from "Y" is not writable
+finally_ownership.adb:230:13: error: launch "gnatprove --explain=E0010" for more information
+finally_ownership.adb:230:13: error: object was moved at line 226 [E0010]
+finally_ownership.adb:230:13: error: part of dereference from "Y" is not writable
+finally_ownership.adb:247:08: error: launch "gnatprove --explain=E0010" for more information
+finally_ownership.adb:247:08: error: object was moved at line 240 [E0010]
+finally_ownership.adb:247:08: error: part of dereference from "Y" is not writable
+finally_ownership.adb:261:13: error: launch "gnatprove --explain=E0010" for more information
+finally_ownership.adb:261:13: error: object was moved at line 257 [E0010]
+finally_ownership.adb:261:13: error: part of dereference from "Y" is not writable
+gnatprove: error during flow analysis and proof
