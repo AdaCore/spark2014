@@ -5286,8 +5286,8 @@ package body SPARK_Definition is
             --  emit a warning if we cannot acertain that the access is
             --  properly guarded.
 
-            if Is_Potentially_Invalid (Entity (Prefix (N))) then
-               Check_Context_Of_Potentially_Invalid (Entity (Prefix (N)), N);
+            if Is_Potentially_Invalid (Entity (P)) then
+               Check_Context_Of_Potentially_Invalid (Entity (P), N);
             end if;
 
          --  We assume a maximal length for the image of any type. This length
