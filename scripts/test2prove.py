@@ -42,6 +42,53 @@ def run_gnattest(project_name, filename, line, nb_cases):
     )
 
 
+# run gnatfuzz with user-handed arguments
+def gnatfuzz(subcommand, subsubcommand, project_name, args):
+    subprocess.run(
+        ["gnatfuzz", subcommand, subsubcommand, f"-P{project_name}.gpr"] + args
+    )
+
+
+# generate 'better' test values with gnatfuzz
+def run_gnatfuzz(project_name, sub_id):
+    gnatfuzz(
+        "fuzz-everything", "test", project_name, [f"--subprogram-ids-to-test={sub_id}"]
+    )
+
+
+# retreive a subprogram's id according to gnatfuzz
+def get_subprogram_id(project_name, filename, line):
+    print(f"Running gnatfuzz at {(filename)}:{str(line)}")
+    gnatfuzz("fuzz-everything", "inspect", project_name, [])
+
+    json_path = os.path.join("obj", "gnatfuzz", "analyze.json")
+
+    try:
+        with open(json_path, "r") as f:
+            data = json.load(f)
+
+            subp = data.get("fuzzable_subprograms", {})
+            for sub in subp:
+
+                start_line = sub.get("start_line", {})
+                source_filename = sub.get("source_filename", {})
+
+                if str(start_line) == str(line) and filename in source_filename:
+                    return sub.get("id", {})
+
+            return None
+
+    except FileNotFoundError:
+        print(f"Error: {json_path} not found.")
+        return None
+    except json.JSONDecodeError:
+        print(f"Error: Invalid JSON format in {json_path}.")
+        return None
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        return None
+
+
 # retreive a subprogram's hash according to gnattest
 def get_hash(project_name, filename, line):
     print(
@@ -76,7 +123,7 @@ def get_test_case_from_gnattest(JSON_file, my_hash):
 
 
 # peform the entire pipeline
-def run(project_file, filename, line, nb_tests):
+def run(project_file, filename, line, nb_tests, gnatfuzz_mode):
     project_path = os.path.dirname(os.path.realpath(project_file))
 
     os.chdir(project_path)
@@ -86,6 +133,15 @@ def run(project_file, filename, line, nb_tests):
     hash_value = get_hash(project_name, os.path.join("src/", filename), line)
 
     run_gnattest(project_name, filename, line, nb_tests)
+
+    if gnatfuzz_mode:
+        print("running gnatfuzz")
+        subp_id = get_subprogram_id(project_name, filename, line)
+
+        if subp_id is None:
+            sys.exit("Subprogram ID not found in gnatfuzz JSON.")
+
+        run_gnatfuzz(project_name, subp_id)
 
     gnattest_json_path = os.path.join(
         project_path,
@@ -136,6 +192,15 @@ def main():
         dest="nb_tests",
     )
 
+    parser.add_argument(
+        "--use_gnatfuzz",
+        help="try to find CE candidates using gnatfuzz and symCC, requires to be in"
+        + " a gnatfuzz env",
+        required=False,
+        type=bool,
+        dest="gnatfuzz_mode",
+    )
+
     args = parser.parse_args()
 
     project_path = args.project_file
@@ -145,7 +210,7 @@ def main():
     if nb_tests < 1:
         sys.exit("-n must be at least 1.")
 
-    run(project_path, filename, line, nb_tests)
+    run(project_path, filename, line, nb_tests, args.gnatfuzz_mode)
 
 
 if __name__ == "__main__":
