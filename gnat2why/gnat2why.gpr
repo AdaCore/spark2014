@@ -52,8 +52,8 @@ project GNAT2Why is
          "flow-data_dependence_graph.adb",
 
          --  Exclude generated frontend files
-         "obj/einfo-entities.adb",
-         "obj/sinfo-nodes.adb");
+         "einfo-entities.adb",
+         "sinfo-nodes.adb");
 
    end Analyzer;
 
