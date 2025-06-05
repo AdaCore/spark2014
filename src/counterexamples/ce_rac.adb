@@ -5132,22 +5132,32 @@ package body CE_RAC is
       Arg1 : constant Node_Id := First (Pragma_Argument_Associations (N));
       Desc : constant String :=
         Get_Name_String (Chars (Pragma_Identifier (N)));
+      Expr : Node_Id;
    begin
       case Get_Pragma_Id (N) is
          when Pragma_Check =>
+            Expr := Expression (Next (Arg1));
+
+            --  If the expression is statically False, gnat2why expects the
+            --  VC_Assert on the N_Pragma Node.
+
+            if Compile_Time_Known_Value (Expr)
+              and then Value_Boolean (RAC_Expr (Expr)) = False
+            then
+               RAC_Failure
+                 (N, VC_Assert, EI => (Info => Integer (N), others => <>));
+            end if;
+
             if Is_Pragma_Check (N, Name_Loop_Invariant) then
                if Ctx.First_Loop_Iter then
-                  Check_Node
-                    (Expression (Next (Arg1)), Desc, VC_Loop_Invariant_Init);
+                  Check_Node (Expr, Desc, VC_Loop_Invariant_Init);
                else
-                  Check_Node
-                    (Expression (Next (Arg1)),
-                     Desc,
-                     VC_Loop_Invariant_Preserv);
+                  Check_Node (Expr, Desc, VC_Loop_Invariant_Preserv);
                end if;
             else
-               Check_Node (Expression (Next (Arg1)), Desc, VC_Assert);
+               Check_Node (Expr, Desc, VC_Assert);
             end if;
+
          when others =>
             RAC_Unsupported ("RAC_Pragma", N);
       end case;
