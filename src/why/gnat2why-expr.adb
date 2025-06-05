@@ -24571,7 +24571,7 @@ package body Gnat2Why.Expr is
       if Is_Potentially_Invalid (Subp)
         and then Validity_Check /= Keep_Wrapper
       then
-         T := New_Valid_Value_Access
+         T := New_Function_Valid_Value_Access
            (Ada_Node => Expr,
             Fun      => Subp,
             Name     => T,
@@ -25844,11 +25844,11 @@ package body Gnat2Why.Expr is
                   Typ       => New_Named_Type
                     (Get_Name (E_Symb (Fun, WNE_Valid_Wrapper))));
 
-               W_Expr := New_Valid_Value_Access
+               W_Expr := New_Function_Valid_Value_Access
                  (Fun  => Fun,
                   Name => +Tmp_Id);
 
-               Valid_Flag := +New_Is_Valid_Access
+               Valid_Flag := +New_Function_Is_Valid_Access
                  (Fun  => Fun,
                   Name => +Tmp_Id);
             end;
