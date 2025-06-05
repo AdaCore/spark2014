@@ -68,7 +68,7 @@ package Assumption_Types is
    --  in several JSON files, make sure to parse the entire file (calling
    --  From_JSON on all Subp_Type objects) before moving on to the next one.
 
-   --  The functinos To_Key/From_Key are there to allow generating strings from
+   --  The functions To_Key/From_Key are there to allow generating strings from
    --  Subp_Type, so that they can be used in JSON mappings.
 
    function Entity_Table return JSON_Value;
