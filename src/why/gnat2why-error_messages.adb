@@ -873,9 +873,6 @@ package body Gnat2Why.Error_Messages is
       --  Start of processing for Handle_Result
 
       begin
-         Parse_Gnattest_Values (Subp);
-         --  Try to retreive input values from gnattest if they exist
-
          if Gnat2Why_Args.Check_Counterexamples
            and then not Rec.Result
          then
@@ -936,6 +933,11 @@ package body Gnat2Why.Error_Messages is
                --  produces a good CE.
                Small_Step_Res_Tmp := Small_Step_Res;
                Verdict_Tmp := Verdict;
+
+               --  Reset cursor in GNATtest's CE candidate bank if it exists
+               if Gnat2Why_Opts.Reading.Gnattest_Values /= "" then
+                  CE_RAC.Gnattest_Values.Pos := 1;
+               end if;
 
                while Fuel.all > 0
                  and then
@@ -1254,6 +1256,11 @@ package body Gnat2Why.Error_Messages is
          if Has_Field (File, "timings") then
             Handle_Timings (Get (File, "timings"));
          end if;
+
+         --  Try to retreive input values from gnattest if they exist
+
+         Parse_Gnattest_Values (Subp);
+
          for Index in 1 .. Length (Results) loop
             Handle_Result (Get (Results, Index));
          end loop;
