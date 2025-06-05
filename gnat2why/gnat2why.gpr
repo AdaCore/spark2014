@@ -49,11 +49,7 @@ project GNAT2Why is
          "flow-analysis.adb",
          "flow-analysis-sanity.adb",
          "flow-control_flow_graph.adb",
-         "flow-data_dependence_graph.adb",
-
-         --  Exclude generated frontend files
-         "einfo-entities.adb",
-         "sinfo-nodes.adb");
+         "flow-data_dependence_graph.adb");
 
    end Analyzer;
 
