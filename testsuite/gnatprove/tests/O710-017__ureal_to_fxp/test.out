@@ -7,4 +7,4 @@ c45253a.adb:49:07: info: assertion proved (CVC5: 1 VC)
 c45253a.adb:53:29: info: analyzing call to "The_Delta" in context
 c45253a.adb:54:07: info: assertion proved (CVC5: 1 VC)
 c45253a.adb:57:07: info: analyzing call to "The_Delta" in context
-c45253a.adb:58:07: medium: assertion might fail
+c45253a.adb:58:07: high: assertion might fail

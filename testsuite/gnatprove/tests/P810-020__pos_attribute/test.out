@@ -11,7 +11,7 @@ main.adb:19:24: info: range check proved (CVC5: 2 VC)
 main.adb:19:33: warning: references to the "image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 main2.adb:4:11: high: all paths in "main2" raise exceptions or do not terminate normally
 main2.adb:21:19: info: assertion proved (Trivial)
-main2.adb:22:04: medium: assertion might fail
+main2.adb:22:04: high: assertion might fail
 main2.adb:23:04: warning: this statement is never reached
 main2.adb:23:33: warning: references to the "image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 main2.adb:24:04: warning: this statement is never reached
