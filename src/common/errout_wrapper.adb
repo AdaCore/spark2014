@@ -1,5 +1,4 @@
 with Ada.Characters.Handling; use Ada.Characters.Handling;
-with Ada.Strings.Unbounded;
 with Atree;                   use Atree;
 with Gnat2Why_Args;
 with Gnat2Why_Opts;           use Gnat2Why_Opts;
@@ -120,7 +119,7 @@ package body Errout_Wrapper is
          declare
             S : constant String :=
               (if Cont then Cont_Prefix else Prefix)
-              & Escape_For_Errout (Msg.Msg) & Expl_Code;
+              & Escape_For_Errout (To_String (Msg.Msg)) & Expl_Code;
             First_Node : constant Node_Id :=
               (if Names.Is_Empty then Types.Empty else First_Element (Names));
          begin
@@ -158,7 +157,9 @@ package body Errout_Wrapper is
       Secondary_Loc : Source_Ptr := No_Location;
       Explain_Code  : Explain_Code_Kind := EC_None) return Message is
    begin
-      return Message'(Msg'Length, Names, Secondary_Loc, Explain_Code, Msg);
+      return
+        Message'
+          (Names, Secondary_Loc, Explain_Code, To_Unbounded_String (Msg));
    end Create;
 
    function Create_N
@@ -167,7 +168,6 @@ package body Errout_Wrapper is
       Secondary_Loc : Source_Ptr := No_Location;
       Explain_Code  : Explain_Code_Kind := EC_None) return Message
    is
-      use Ada.Strings.Unbounded;
       Buf : Unbounded_String;
       Current_Name : String_Lists.Cursor := Names.First;
       use type String_Lists.Cursor;
@@ -190,11 +190,10 @@ package body Errout_Wrapper is
       pragma Assert (Current_Name = String_Lists.No_Element);
 
       return
-        Message'(Length (Buf),
-                 Node_Lists.Empty,
+        Message'(Node_Lists.Empty,
                  Secondary_Loc,
                  Explain_Code,
-                 To_String (Buf));
+                 Buf);
    end Create_N;
 
    function Create_N
@@ -325,7 +324,6 @@ package body Errout_Wrapper is
    ------------
 
    function Escape (S : String) return String is
-      use Ada.Strings.Unbounded;
       R : Unbounded_String := Null_Unbounded_String;
       J : Integer := S'First;
       C : Character;
@@ -348,7 +346,6 @@ package body Errout_Wrapper is
    -----------------------
 
    function Escape_For_Errout (S : String) return String is
-      use Ada.Strings.Unbounded;
       R : Unbounded_String := Null_Unbounded_String;
       J : Integer := S'First;
       C : Character;

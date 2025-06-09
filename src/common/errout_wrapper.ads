@@ -1,10 +1,11 @@
 with Ada.Containers.Indefinite_Doubly_Linked_Lists;
-with Common_Containers;   use Common_Containers;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Common_Containers;     use Common_Containers;
 with Errout;
 with GNATCOLL.JSON;
-with String_Utils;        use String_Utils;
-with Types;               use Types;
-with VC_Kinds;            use VC_Kinds;
+with String_Utils;          use String_Utils;
+with Types;                 use Types;
+with VC_Kinds;              use VC_Kinds;
 
 package Errout_Wrapper is
 
@@ -30,18 +31,19 @@ package Errout_Wrapper is
    function To_JSON (Kind : Msg_Severity) return GNATCOLL.JSON.JSON_Value;
    --  Return a JSON object (string) for the message kind
 
-   type Message (Len : Natural) is record
+   type Message is record
       Names         : Node_Lists.List;
       Secondary_Loc : Source_Ptr;
       Explain_Code  : Explain_Code_Kind;
-      Msg           : String (1 .. Len);
+      Msg           : Unbounded_String;
    end record;
    --  Type of a message. Note that this type encapsulates only the string
    --  object, it is different from an error, warning etc. The string may
    --  contain & and # characters. & refers to the names in the list of
    --  nodes, while # refers to the location.
 
-   No_Message : constant Message := Message'(0, [], No_Location, EC_None, "");
+   No_Message : constant Message :=
+     Message'([], No_Location, EC_None, Null_Unbounded_String);
 
    package Message_Lists is new Ada.Containers.Indefinite_Doubly_Linked_Lists
      (Message, "=");

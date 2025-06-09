@@ -140,6 +140,7 @@ package body Flow_Error_Messages is
       Explanation   : Unbounded_String := Null_Unbounded_String;
       CE            : Unbounded_String := Null_Unbounded_String;
       User_Message  : Unbounded_String := Null_Unbounded_String;
+      Fix           : Message := No_Message;
       Explain_Code  : Explain_Code_Kind := EC_None;
       Continuations : Message_Lists.List := Message_Lists.Empty;
       Suppr         : Suppressed_Message;
@@ -152,7 +153,6 @@ package body Flow_Error_Messages is
       Stats         : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
       Editor_Cmd    : Unbounded_String := Null_Unbounded_String;
    end record;
-   --  TODO add Fix element of type Message
 
    function Is_Specified_Line (Slc : Source_Ptr) return Boolean;
    --  Returns True if command line arguments "--limit-line" and
@@ -210,8 +210,7 @@ package body Flow_Error_Messages is
    --  but no reason has been given. Otherwise, the String_Id of the reason
    --  is provided.
 
-   function Print_Regular_Msg
-     (Obj : JSON_Result_Type; Fix : Message := No_Message) return Message_Id
+   function Print_Regular_Msg (Obj : JSON_Result_Type) return Message_Id
    with Post => Print_Regular_Msg'Result /= No_Message_Id;
    --  Print a regular error, warning or info message using the frontend
    --  mechanism. Return an Id which can be used to identify this message.
@@ -630,7 +629,8 @@ package body Flow_Error_Messages is
                   else "");
             begin
                Result.Explanation := To_Unbounded_String (Explanation_Msg);
-               Msg_Id := Print_Regular_Msg (Result, Fix_Msg);
+               Result.Fix := Fix_Msg;
+               Msg_Id := Print_Regular_Msg (Result);
             end;
          else
             Msg_Id := No_Message_Id;
@@ -1130,11 +1130,10 @@ package body Flow_Error_Messages is
                       (Get_Explanation (N, E, Tag, Explanation));
                   Result.CE := To_Unbounded_String (One_Liner);
                   Result.User_Message := To_Unbounded_String (User_Msg);
+                  Result.Fix :=
+                    Get_Fix_Or_Verdict (N, Tag, How_Proved, Verdict);
 
-                  Msg_Id :=
-                    Print_Regular_Msg
-                      (Result,
-                       Get_Fix_Or_Verdict (N, Tag, How_Proved, Verdict));
+                  Msg_Id := Print_Regular_Msg (Result);
                end;
             end if;
 
@@ -3893,8 +3892,7 @@ package body Flow_Error_Messages is
    -- Print_Regular_Msg --
    -----------------------
 
-   function Print_Regular_Msg
-     (Obj : JSON_Result_Type; Fix : Message := No_Message) return Message_Id
+   function Print_Regular_Msg (Obj : JSON_Result_Type) return Message_Id
    is
 
       Id            : constant Message_Id := Message_Id_Counter;
@@ -3962,14 +3960,15 @@ package body Flow_Error_Messages is
                     & "]"
                   else "");
                Fix_Msg         : constant String :=
-                 (if Fix /= No_Message then " [possible fix: " & Fix.Msg & "]"
+                 (if Obj.Fix /= No_Message
+                  then " [possible fix: " & To_String (Obj.Fix.Msg) & "]"
                   else "");
                Msg4            : constant String :=
                  To_String (Obj.Msg) & User_Msg & CE_Msg
                  & Details_Msg & Explanation_Msg & Fix_Msg;
             begin
-               pragma Assert (Fix.Names.Is_Empty);
-               Wrap_Error_Msg (Msg4, Fix.Secondary_Loc);
+               pragma Assert (Obj.Fix.Names.Is_Empty);
+               Wrap_Error_Msg (Msg4, Obj.Fix.Secondary_Loc);
             end;
 
          --  In pretty mode, print the message, then print all the extra
@@ -4009,12 +4008,14 @@ package body Flow_Error_Messages is
                      & Erroutc.SGR_Reset & To_String (Obj.Explanation)));
             end if;
 
-            if Fix /= No_Message then
+            if Obj.Fix /= No_Message then
                My_Conts.Append
                  (Create
-                    (Erroutc.SGR_Note & "possible fix: "
-                     & Erroutc.SGR_Reset & Fix.Msg,
-                     Secondary_Loc => Fix.Secondary_Loc));
+                    (Erroutc.SGR_Note
+                     & "possible fix: "
+                     & Erroutc.SGR_Reset
+                     & To_String (Obj.Fix.Msg),
+                     Secondary_Loc => Obj.Fix.Secondary_Loc));
             end if;
             Wrap_Error_Msg (To_String (Obj.Msg));
       end case;
