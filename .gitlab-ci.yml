@@ -280,7 +280,7 @@ pre-commit:
     - . /tmp/ci_env.sh
     - cd $ANOD_DEFAULT_SANDBOX_DIR
     - anod install gnat --latest
-    - anod install libgpr2
+    - anod install libgpr2 --latest
     - eval $(anod printenv gnat)
     - eval $(anod printenv libgpr2)
     - cd $CI_PROJECT_DIR
