@@ -130,6 +130,30 @@ package body Flow_Error_Messages is
    type Message_Id is new Integer range -1 .. Integer'Last;
    --  type used to identify a message issued by gnat2why
 
+   type JSON_Result_Type is record
+      Tag           : Unbounded_String;
+      Severity      : Msg_Severity;
+      Span          : Source_Span;
+      E             : Entity_Id;
+      Msg           : Unbounded_String;
+      Details       : Unbounded_String;
+      Explanation   : Unbounded_String;
+      CE            : Unbounded_String;
+      User_Message  : Unbounded_String;
+      Fix           : Message := No_Message;
+      Explain_Code  : Explain_Code_Kind := EC_None;
+      Continuations : Message_Lists.List;
+      Suppr         : Suppressed_Message;
+      How_Proved    : Prover_Category;
+      Tracefile     : Unbounded_String;
+      Cntexmp       : Cntexample_Data := (others => <>);
+      Check_Tree    : JSON_Value := Create_Object;
+      VC_File       : Unbounded_String;
+      VC_Loc        : Source_Ptr := No_Location;
+      Stats         : Prover_Stat_Maps.Map;
+      Editor_Cmd    : Unbounded_String;
+   end record;
+
    function Is_Specified_Line (Slc : Source_Ptr) return Boolean;
    --  Returns True if command line arguments "--limit-line" and
    --  "--limit-section" were not given, or
@@ -169,24 +193,9 @@ package body Flow_Error_Messages is
    --  @return a valid sloc or No_Location when called with Empty node
 
    procedure Add_Json_Msg
-     (Suppr      : Suppressed_Message;
-      Tag        : String;
-      Severity   : Msg_Severity;
-      Slc        : Source_Ptr;
-      Msg_List   : in out GNATCOLL.JSON.JSON_Array;
-      E          : Entity_Id;
-      Msg_Id     : Message_Id;
-      How_Proved : Prover_Category;
-      Tracefile  : String := "";
-      Cntexmp    : Cntexample_Data := (others => <>);
-      Check_Tree : JSON_Value;
-      VC_File    : String := "";
-      VC_Loc     : Source_Ptr := No_Location;
-      Stats      : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
-      Editor_Cmd : String := "");
-   --  Note that VC_Loc is the location of the verification check as opposed to
-   --  Slc which is the location of the first failing part of a VC (raised as
-   --  location for messages).
+     (Msg_List : in out GNATCOLL.JSON.JSON_Array;
+      Obj      : JSON_Result_Type;
+      Msg_Id   : Message_Id);
 
    function Warning_Is_Suppressed
      (N   : Node_Id;
@@ -201,18 +210,7 @@ package body Flow_Error_Messages is
    --  but no reason has been given. Otherwise, the String_Id of the reason
    --  is provided.
 
-   function Print_Regular_Msg
-     (Msg           : String;
-      Span          : Source_Span;
-      Severity      : Msg_Severity;
-      Details       : String := "";
-      Explanation   : String := "";
-      Fix           : Message := No_Message;
-      CE            : String := "";
-      User_Message  : String := "";
-      Explain_Code  : Explain_Code_Kind := EC_None;
-      Continuations : Message_Lists.List := Message_Lists.Empty)
-      return Message_Id
+   function Print_Regular_Msg (Obj : JSON_Result_Type) return Message_Id
    with Post => Print_Regular_Msg'Result /= No_Message_Id;
    --  Print a regular error, warning or info message using the frontend
    --  mechanism. Return an Id which can be used to identify this message.
@@ -251,60 +249,50 @@ package body Flow_Error_Messages is
    ------------------
 
    procedure Add_Json_Msg
-     (Suppr      : Suppressed_Message;
-      Tag        : String;
-      Severity   : Msg_Severity;
-      Slc        : Source_Ptr;
-      Msg_List   : in out GNATCOLL.JSON.JSON_Array;
-      E          : Entity_Id;
-      Msg_Id     : Message_Id;
-      How_Proved : Prover_Category;
-      Tracefile  : String := "";
-      Cntexmp    : Cntexample_Data := (others => <>);
-      Check_Tree : JSON_Value;
-      VC_File    : String := "";
-      VC_Loc     : Source_Ptr := No_Location;
-      Stats      : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
-      Editor_Cmd : String := "")
+     (Msg_List : in out GNATCOLL.JSON.JSON_Array;
+      Obj      : JSON_Result_Type;
+      Msg_Id   : Message_Id)
    is
       Value : constant JSON_Value := Create_Object;
-      File  : constant String     := File_Name (Slc);
-      Line  : constant Natural    := Positive (Get_Logical_Line_Number (Slc));
-      Col   : constant Natural    := Positive (Get_Column_Number (Slc));
+      File  : constant String := File_Name (Obj.Span.Ptr);
+      Line  : constant Natural :=
+         Positive (Get_Logical_Line_Number (Obj.Span.Ptr));
+      Col   : constant Natural := Positive (Get_Column_Number (Obj.Span.Ptr));
 
    begin
       Set_Field (Value, "file", File);
       Set_Field (Value, "line", Line);
       Set_Field (Value, "col", Col);
 
-      if Suppr.Suppression_Kind in Warning | Check then
+      if Obj.Suppr.Suppression_Kind in Warning | Check then
          declare
             Suppr_Reason : constant String :=
-              (if Suppr.Suppression_Kind = Check then To_String (Suppr.Msg)
+              (if Obj.Suppr.Suppression_Kind = Check
+               then To_String (Obj.Suppr.Msg)
                else "");
          begin
             Set_Field (Value, "suppressed", Suppr_Reason);
-            if Suppr.Suppression_Kind = Check then
+            if Obj.Suppr.Suppression_Kind = Check then
                Set_Field
-                 (Value, "annot_kind", To_String (Suppr.Annot_Kind));
+                 (Value, "annot_kind", To_String (Obj.Suppr.Annot_Kind));
                Set_Field
-                 (Value, "justif_msg", To_String (Suppr.Justification));
+                 (Value, "justif_msg", To_String (Obj.Suppr.Justification));
             end if;
          end;
       end if;
 
-      Set_Field (Value, "rule", Tag);
-      Set_Field (Value, "severity", To_JSON (Severity));
-      Set_Field (Value, "entity", To_JSON (Entity_To_Subp_Assumption (E)));
-      Set_Field (Value, "check_tree", Check_Tree);
+      Set_Field (Value, "rule", Obj.Tag);
+      Set_Field (Value, "severity", To_JSON (Obj.Severity));
+      Set_Field (Value, "entity", To_JSON (Entity_To_Subp_Assumption (Obj.E)));
+      Set_Field (Value, "check_tree", Obj.Check_Tree);
 
-      if VC_Loc /= No_Location then
+      if Obj.VC_Loc /= No_Location then
          declare
-            VC_File : constant String  := File_Name (VC_Loc);
+            VC_File : constant String  := File_Name (Obj.VC_Loc);
             VC_Line : constant Natural :=
-                         Positive (Get_Logical_Line_Number (VC_Loc));
+                         Positive (Get_Logical_Line_Number (Obj.VC_Loc));
             VC_Col  : constant Natural :=
-                         Positive (Get_Column_Number (VC_Loc));
+                         Positive (Get_Column_Number (Obj.VC_Loc));
          begin
             --  Note that vc_file already exists
             Set_Field (Value, "check_file", VC_File);
@@ -313,34 +301,35 @@ package body Flow_Error_Messages is
          end;
       end if;
 
-      if Tracefile /= "" then
-         Set_Field (Value, "tracefile", Tracefile);
+      if Obj.Tracefile /= "" then
+         Set_Field (Value, "tracefile", Obj.Tracefile);
       end if;
 
-      if not Cntexmp.Map.Is_Empty then
-         Set_Field (Value, "cntexmp", To_JSON (Cntexmp.Map));
+      if not Obj.Cntexmp.Map.Is_Empty then
+         Set_Field (Value, "cntexmp", To_JSON (Obj.Cntexmp.Map));
       end if;
 
-      if not Cntexmp.Input_As_JSON.Input_As_JSON.Is_Empty then
-         Set_Field (Value, "cntexmp_value", To_JSON (Cntexmp.Input_As_JSON));
+      if not Obj.Cntexmp.Input_As_JSON.Input_As_JSON.Is_Empty then
+         Set_Field (Value, "cntexmp_value",
+                   To_JSON (Obj.Cntexmp.Input_As_JSON));
       end if;
 
-      if VC_File /= "" then
-         Set_Field (Value, "vc_file", VC_File);
+      if Obj.VC_File /= "" then
+         Set_Field (Value, "vc_file", Obj.VC_File);
       end if;
 
-      if Editor_Cmd /= "" then
-         Set_Field (Value, "editor_cmd", Editor_Cmd);
+      if Obj.Editor_Cmd /= "" then
+         Set_Field (Value, "editor_cmd", Obj.Editor_Cmd);
       end if;
 
       if Msg_Id /= No_Message_Id then
          Set_Field (Value, "msg_id", Natural (Msg_Id));
       end if;
 
-      Set_Field (Value, "how_proved", To_JSON (How_Proved));
+      Set_Field (Value, "how_proved", To_JSON (Obj.How_Proved));
 
-      if not Stats.Is_Empty then
-         Set_Field (Value, "stats", To_JSON (Stats));
+      if not Obj.Stats.Is_Empty then
+         Set_Field (Value, "stats", To_JSON (Obj.Stats));
       end if;
 
       Append (Msg_List, Value);
@@ -517,7 +506,6 @@ package body Flow_Error_Messages is
 
       Info     : Annotated_Range;
 
-      Suppr             : String_Id  := No_String;
       Msg_Id, Ignore_Id : Message_Id;
 
       Dummy    : String_Sets.Cursor;
@@ -529,8 +517,19 @@ package body Flow_Error_Messages is
       --  True when we are only reporting legiality errors that require flow
       --  analysis.
 
-      Suppression : Suppressed_Message := No_Suppressed_Message;
-
+      Result : JSON_Result_Type :=
+        JSON_Result_Type'
+          (Tag           => To_Unbounded_String (Flow_Tag_Kind'Image (Tag)),
+           How_Proved    => PC_Flow,
+           Severity      => Severity,
+           Span          => Span,
+           E             => E,
+           Tracefile     => To_Unbounded_String (Tracefile),
+           Explain_Code  => Explain_Code,
+           Msg           => To_Unbounded_String (Msg3),
+           Details       => To_Unbounded_String (Details),
+           Continuations => Continuations,
+           others        => <>);
    --  Start of processing for Error_Msg_Flow
 
    begin
@@ -557,11 +556,11 @@ package body Flow_Error_Messages is
          else
             case Severity is
                when Warning_Kind =>
-                  Suppr := Warning_Is_Suppressed (N, Msg3, F1, F2, F3);
-                  Suppressed := Suppr /= No_String;
+                  Suppressed :=
+                    Warning_Is_Suppressed (N, Msg3, F1, F2, F3) /= No_String;
 
                   if Suppressed then
-                     Suppression := Suppressed_Warning;
+                     Result.Suppr := Suppressed_Warning;
                   end if;
 
                when Info_Kind =>
@@ -571,26 +570,23 @@ package body Flow_Error_Messages is
                   Check_Is_Annotated (N, Msg3, True, Info);
 
                   if Info.Present then
-                     Suppr := Info.Reason;
+                     Suppressed := True;
+                     Result.Suppr :=
+                       Suppressed_Message'
+                         (Suppression_Kind => Check,
+                          Msg              => Info.Reason,
+                          Annot_Kind       => Info.Kind,
+                          Justification    =>
+                            To_Unbounded_String (Justified_Message (Msg3)));
+                     Result.Msg :=
+                       To_Unbounded_String (Justified_Message (Msg3));
+                     Result.Severity := Info_Kind;
 
                      if Report_Mode /= GPR_Fail then
-                        Msg_Id := Print_Regular_Msg
-                          (Justified_Message (Msg3),
-                           Span,
-                           Info_Kind,
-                           Explain_Code => Explain_Code);
+                        Msg_Id := Print_Regular_Msg (Result);
                      end if;
-                  end if;
-
-                  Suppressed := Suppr /= No_String;
-
-                  if Suppressed then
-                     Suppression :=
-                       Suppressed_Message'(Check,
-                                           Suppr,
-                                           Info.Kind,
-                                           To_Unbounded_String
-                                             (Justified_Message (Msg3)));
+                  else
+                     Suppressed := False;
                   end if;
 
                when Error_Kind =>
@@ -632,13 +628,9 @@ package body Flow_Error_Messages is
                       (Explanation, Attach_Node, EF1, With_Location => False)
                   else "");
             begin
-               Msg_Id :=
-                 Print_Regular_Msg (Msg3, Span, Severity,
-                                    Details       => Details,
-                                    Explanation   => Explanation_Msg,
-                                    Fix           => Fix_Msg,
-                                    Explain_Code  => Explain_Code,
-                                    Continuations => Continuations);
+               Result.Explanation := To_Unbounded_String (Explanation_Msg);
+               Result.Fix := Fix_Msg;
+               Msg_Id := Print_Regular_Msg (Result);
             end;
          else
             Msg_Id := No_Message_Id;
@@ -649,17 +641,7 @@ package body Flow_Error_Messages is
          --  as if they were never emitted.
 
          if not (Check_All_Mode and Suppressed) then
-            Add_Json_Msg
-              (Suppr      => Suppression,
-               Tag        => Flow_Tag_Kind'Image (Tag),
-               How_Proved => PC_Flow,
-               Severity   => Severity,
-               Slc        => Slc,
-               Msg_List   => Flow_Msgs,
-               E          => E,
-               Tracefile  => Tracefile,
-               Check_Tree => Create_Object,
-               Msg_Id     => Msg_Id);
+            Add_Json_Msg (Flow_Msgs, Result, Msg_Id);
          end if;
 
       else
@@ -1032,12 +1014,25 @@ package body Flow_Error_Messages is
 
       Severity  : constant Msg_Severity :=
         Get_Severity (VC_Loc, Is_Proved, Tag, Verdict);
-      Suppr     : String_Id := No_String;
       Msg_Id    : Message_Id := No_Message_Id;
       Info      : Annotated_Range;
       Ignore_Id : Message_Id;
 
-      Cont_Msgs : Message_Lists.List;
+      Result : JSON_Result_Type :=
+        JSON_Result_Type'
+          (Msg        => To_Unbounded_String (Message),
+           Tag        => To_Unbounded_String (VC_Kind'Image (Tag)),
+           Severity   => Severity,
+           Span       => Span,
+           E          => E,
+           Cntexmp    => Pretty_Cntexmp,
+           Check_Tree => Check_Tree,
+           VC_File    => To_Unbounded_String (VC_File),
+           VC_Loc     => VC_Slc,
+           How_Proved => How_Proved,
+           Stats      => Stats,
+           Editor_Cmd => To_Unbounded_String (Editor_Cmd),
+           others     => <>);
 
    --  Start of processing for Error_Msg_Proof
 
@@ -1064,7 +1059,8 @@ package body Flow_Error_Messages is
               & " at " & File & ":" & Image (Integer (Line), 1);
 
          begin
-            Cont_Msgs.Append (Create (Compute_Message (Msg, Cont.Ada_Node)));
+            Result.Continuations.Append
+              (Create (Compute_Message (Msg, Cont.Ada_Node)));
          end;
       end loop;
 
@@ -1078,104 +1074,83 @@ package body Flow_Error_Messages is
       case Severity is
          when Check_Kind =>
             if Info.Present then
-               Suppr := Info.Reason;
+               Result.Suppr :=
+                 Suppressed_Message'
+                   (Suppression_Kind => Check,
+                    Msg              => Info.Reason,
+                    Annot_Kind       => Info.Kind,
+                    Justification    =>
+                      To_Unbounded_String (Justified_Message (N, Tag)));
 
                if Report_Mode /= GPR_Fail then
-                  Msg_Id :=
-                    Print_Regular_Msg (Justified_Message (VC_Loc, Tag),
-                                       Span, Info_Kind);
+                  Result.Msg :=
+                    To_Unbounded_String (Justified_Message (VC_Loc, Tag));
+                  Result.Severity := Info_Kind;
+                  Msg_Id := Print_Regular_Msg (Result);
                end if;
 
             else
                declare
                   One_Liner : constant String :=
-                    (if Gnat2Why_Args.Output_Mode = GPO_Brief then ""
+                    (if Gnat2Why_Args.Output_Mode = GPO_Brief
+                     then ""
 
                      --  Do not include a one-liner in the message for resource
                      --  leak checks, as the exact values of variables seldom
                      --  plays a role in that case. Keep the counterexample
                      --  though as the path is relevant.
 
-                     elsif Tag in VC_Resource_Leak
-                                | VC_Resource_Leak_At_End_Of_Scope
+                     elsif Tag
+                           in VC_Resource_Leak
+                            | VC_Resource_Leak_At_End_Of_Scope
                      then ""
 
                      --  When counterexample checking is enabled, only
                      --  print the counterexample if it is confirmed.
 
-                     elsif Verdict.Verdict_Category in
-                       Not_Checked | Cntexmp_Confirmed_Verdict_Category
-                     then
-                        Get_Cntexmp_One_Liner (Pretty_Cntexmp.Map, Slc)
+                     elsif Verdict.Verdict_Category
+                           in Not_Checked | Cntexmp_Confirmed_Verdict_Category
+                     then Get_Cntexmp_One_Liner (Pretty_Cntexmp.Map, Slc)
                      else "");
 
-                  Details : constant String :=
-                    (if Gnat2Why_Args.Output_Mode = GPO_Brief then ""
+                  Details  : constant Unbounded_String :=
+                    (if Gnat2Why_Args.Output_Mode = GPO_Brief
+                     then Null_Unbounded_String
                      elsif Check_Info.Details /= Null_Unbounded_String
-                     then To_String (Check_Info.Details)
-                     else Get_Details (N, E, Tag));
+                     then Check_Info.Details
+                     else To_Unbounded_String (Get_Details (N, E, Tag)));
                   User_Msg : constant String :=
                     (if Check_Info.User_Message /= No_String
                      then To_String (Check_Info.User_Message)
                      else "");
                begin
+                  Result.Details := Details;
+                  Result.Explanation :=
+                    To_Unbounded_String
+                      (Get_Explanation (N, E, Tag, Explanation));
+                  Result.CE := To_Unbounded_String (One_Liner);
+                  Result.User_Message := To_Unbounded_String (User_Msg);
+                  Result.Fix :=
+                    Get_Fix_Or_Verdict (N, Tag, How_Proved, Verdict);
 
-                  Msg_Id := Print_Regular_Msg
-                    (Message, Span, Severity,
-                     Details       => Details,
-                     Explanation   => Get_Explanation (N, E, Tag, Explanation),
-                     Fix           =>
-                       Get_Fix_Or_Verdict (N, Tag, How_Proved, Verdict),
-                     CE            => One_Liner,
-                     User_Message  => User_Msg,
-                     Continuations => Cont_Msgs);
+                  Msg_Id := Print_Regular_Msg (Result);
                end;
             end if;
 
          when Info_Kind =>
             if Report_Mode /= GPR_Fail then
-               Msg_Id :=
-                 Print_Regular_Msg
-                   (Message, Span, Severity,
-                    Continuations => Cont_Msgs);
+               Msg_Id := Print_Regular_Msg (Result);
             end if;
 
          when Warning_Kind =>
-            Msg_Id :=
-              Print_Regular_Msg
-                (Message, Span, Severity,
-                 Continuations => Cont_Msgs);
+            Msg_Id := Print_Regular_Msg (Result);
 
          when Error_Kind =>
             --  cannot happen
             raise Program_Error;
       end case;
 
-      Add_Json_Msg
-        (Suppr      => (if Info.Present
-                        and then Severity in Check_Kind
-                        then
-                           Suppressed_Message'(Suppression_Kind => Check,
-                                               Msg              => Suppr,
-                                               Annot_Kind       => Info.Kind,
-                                               Justification    =>
-                                                 To_Unbounded_String
-                                                   (Justified_Message
-                                                      (N, Tag)))
-                        else No_Suppressed_Message),
-         Tag        => VC_Kind'Image (Tag),
-         Severity   => Severity,
-         Slc        => Slc,
-         Msg_List   => Proof_Msgs,
-         Msg_Id     => Msg_Id,
-         E          => E,
-         Cntexmp    => Pretty_Cntexmp,
-         Check_Tree => Check_Tree,
-         VC_File    => VC_File,
-         VC_Loc     => VC_Slc,
-         How_Proved => How_Proved,
-         Stats      => Stats,
-         Editor_Cmd => Editor_Cmd);
+      Add_Json_Msg (Proof_Msgs, Result, Msg_Id);
 
    end Error_Msg_Proof;
 
@@ -3917,47 +3892,36 @@ package body Flow_Error_Messages is
    -- Print_Regular_Msg --
    -----------------------
 
-   function Print_Regular_Msg
-     (Msg           : String;
-      Span          : Source_Span;
-      Severity      : Msg_Severity;
-      Details       : String := "";
-      Explanation   : String := "";
-      Fix           : Message := No_Message;
-      CE            : String := "";
-      User_Message  : String := "";
-      Explain_Code  : Explain_Code_Kind := EC_None;
-      Continuations : Message_Lists.List := Message_Lists.Empty)
-      return Message_Id
+   function Print_Regular_Msg (Obj : JSON_Result_Type) return Message_Id
    is
 
-      Id       : constant Message_Id := Message_Id_Counter;
-      My_Conts : Message_Lists.List := Continuations;
+      Id            : constant Message_Id := Message_Id_Counter;
+      My_Conts      : Message_Lists.List := Obj.Continuations;
+      Is_Suppressed : constant Boolean := Obj.Suppr /= No_Suppressed_Message;
 
-      procedure Wrap_Error_Msg (Msg : String;
-                                Secondary_Loc : Source_Ptr := No_Location);
+      procedure Wrap_Error_Msg
+        (Msg : String; Secondary_Loc : Source_Ptr := No_Location);
 
       --------------------
       -- Wrap_Error_Msg --
       --------------------
 
-      procedure Wrap_Error_Msg (Msg : String;
-                                Secondary_Loc : Source_Ptr := No_Location)
+      procedure Wrap_Error_Msg
+        (Msg : String; Secondary_Loc : Source_Ptr := No_Location)
       is
          Actual_Msg : constant String :=
-           Msg &
-         (if Ide_Mode
-          then "['#" & Image (Integer (Id), 1) & "]"
-          else "");
+           Msg
+           & (if Ide_Mode then "['#" & Image (Integer (Id), 1) & "]" else "");
 
       begin
-         Error_Msg (Create
-                    (Actual_Msg,
-                       Explain_Code  => Explain_Code,
-                       Secondary_Loc => Secondary_Loc),
-                    Span,
-                    Severity,
-                    My_Conts);
+         Error_Msg
+           (Create
+              (Actual_Msg,
+               Explain_Code  => Obj.Explain_Code,
+               Secondary_Loc => Secondary_Loc),
+            Obj.Span,
+            Obj.Severity,
+            (if Is_Suppressed then Message_Lists.Empty_List else My_Conts));
       end Wrap_Error_Msg;
 
    --  Beginning of processing for Print_Regular_Msg
@@ -3968,7 +3932,7 @@ package body Flow_Error_Messages is
          --  In brief mode, just print the check message
 
          when GPO_Brief =>
-            Wrap_Error_Msg (Msg);
+            Wrap_Error_Msg (To_String (Obj.Msg));
 
          --  In oneline mode, append all the extra information to the
          --  main message and print it.
@@ -3976,30 +3940,35 @@ package body Flow_Error_Messages is
          when GPO_Oneline =>
             declare
                User_Msg        : constant String :=
-                 (if User_Message /= ""
-                  then " [user message: " & User_Message & "]"
+                 (if Obj.User_Message /= Null_Unbounded_String
+                  then " [user message: " & To_String (Obj.User_Message) & "]"
                   else "");
                CE_Msg          : constant String :=
-                 (if CE /= ""
-                  then " (e.g. when " & CE & ")"
+                 (if Obj.CE /= Null_Unbounded_String
+                  then " (e.g. when " & To_String (Obj.CE) & ")"
                   else "");
-               Details_Msg     : constant String :=
-                 (if Details /= ""
-                  then " [reason for check: " & Details & "]"
+               Details_Msg : constant String :=
+                 (if not Is_Suppressed
+                    and then Obj.Details /= Null_Unbounded_String
+                  then " [reason for check: " & To_String (Obj.Details) & "]"
                   else "");
                Explanation_Msg : constant String :=
-                 (if Explanation /= ""
-                  then " [possible explanation: " & Explanation & "]"
+                 (if Obj.Explanation /= Null_Unbounded_String
+                  then
+                    " [possible explanation: "
+                    & To_String (Obj.Explanation)
+                    & "]"
                   else "");
                Fix_Msg         : constant String :=
-                 (if Fix /= No_Message then " [possible fix: " & Fix.Msg & "]"
+                 (if Obj.Fix /= No_Message
+                  then " [possible fix: " & To_String (Obj.Fix.Msg) & "]"
                   else "");
                Msg4            : constant String :=
-                 Msg & User_Msg & CE_Msg
+                 To_String (Obj.Msg) & User_Msg & CE_Msg
                  & Details_Msg & Explanation_Msg & Fix_Msg;
             begin
-               pragma Assert (Fix.Names.Is_Empty);
-               Wrap_Error_Msg (Msg4, Fix.Secondary_Loc);
+               pragma Assert (Obj.Fix.Names.Is_Empty);
+               Wrap_Error_Msg (Msg4, Obj.Fix.Secondary_Loc);
             end;
 
          --  In pretty mode, print the message, then print all the extra
@@ -4011,42 +3980,44 @@ package body Flow_Error_Messages is
 
          when GPO_Pretty =>
 
-            if User_Message /= "" then
+            if Obj.User_Message /= Null_Unbounded_String then
                My_Conts.Append
                  (Create
                     (Erroutc.SGR_Note & "user message: "
-                     & Erroutc.SGR_Reset & User_Message));
+                     & Erroutc.SGR_Reset & To_String (Obj.User_Message)));
             end if;
 
-            if CE /= "" then
+            if Obj.CE /= "" then
                My_Conts.Append
                  (Create
                     (Erroutc.SGR_Note & "e.g. when "
-                     & Erroutc.SGR_Reset & CE));
+                     & Erroutc.SGR_Reset & To_String (Obj.CE)));
             end if;
 
-            if Details /= "" then
+            if not Is_Suppressed and then Obj.Details /= "" then
                My_Conts.Append
                  (Create
                     (Erroutc.SGR_Note & "reason for check: "
-                     & Erroutc.SGR_Reset & Details));
+                     & Erroutc.SGR_Reset & To_String (Obj.Details)));
             end if;
 
-            if Explanation /= "" then
+            if Obj.Explanation /= "" then
                My_Conts.Append
                  (Create
                     (Erroutc.SGR_Note & "possible explanation: "
-                     & Erroutc.SGR_Reset & Explanation));
+                     & Erroutc.SGR_Reset & To_String (Obj.Explanation)));
             end if;
 
-            if Fix /= No_Message then
+            if Obj.Fix /= No_Message then
                My_Conts.Append
                  (Create
-                    (Erroutc.SGR_Note & "possible fix: "
-                     & Erroutc.SGR_Reset & Fix.Msg,
-                     Secondary_Loc => Fix.Secondary_Loc));
+                    (Erroutc.SGR_Note
+                     & "possible fix: "
+                     & Erroutc.SGR_Reset
+                     & To_String (Obj.Fix.Msg),
+                     Secondary_Loc => Obj.Fix.Secondary_Loc));
             end if;
-            Wrap_Error_Msg (Msg);
+            Wrap_Error_Msg (To_String (Obj.Msg));
       end case;
 
       return Id;
