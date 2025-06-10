@@ -1464,7 +1464,7 @@ package VC_Kinds is
 
    type Cntexample_Data is record
       Map           : Cntexample_File_Maps.Map := Cntexample_File_Maps.Empty;
-      Input_As_JSON : Json_Formatted_Input     := (others => <>);
+      Input_As_JSON : Json_Formatted_Input;
    end record;
 
    type Cntexmp_Verdict_Category is

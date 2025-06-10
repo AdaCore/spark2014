@@ -146,13 +146,17 @@ package body Flow_Error_Messages is
       Suppr         : Suppressed_Message;
       How_Proved    : Prover_Category;
       Tracefile     : Unbounded_String;
-      Cntexmp       : Cntexample_Data := (others => <>);
+      Cntexmp       : Cntexample_Data;
       Check_Tree    : JSON_Value := Create_Object;
       VC_File       : Unbounded_String;
       VC_Loc        : Source_Ptr := No_Location;
       Stats         : Prover_Stat_Maps.Map;
       Editor_Cmd    : Unbounded_String;
-   end record;
+   end record
+   with
+     Predicate =>
+       JSON_Result_Type.Tag /= Null_Unbounded_String
+       and then JSON_Result_Type.Msg /= Null_Unbounded_String;
 
    function Is_Specified_Line (Slc : Source_Ptr) return Boolean;
    --  Returns True if command line arguments "--limit-line" and
