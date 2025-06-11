@@ -10,6 +10,9 @@ with Warnsw;                  use Warnsw;
 
 package body Errout_Wrapper is
 
+   Message_Id_Counter : Message_Id := 0;
+   --  counter used to generate Message_Ids
+
    function Escape_For_Errout (S : String) return String;
    --  Escape any special characters used in the error message (for example
    --  transforms "=>" into "='>" as > is a special insertion character. We
@@ -469,6 +472,17 @@ package body Errout_Wrapper is
 
       return To_String (R);
    end Escape_For_Errout;
+
+   ---------------------
+   -- Next_Message_Id --
+   ---------------------
+
+   function Next_Message_Id return Message_Id is
+      Result : constant Message_Id := Message_Id_Counter;
+   begin
+      Message_Id_Counter := @ + 1;
+      return Result;
+   end Next_Message_Id;
 
    ----------------
    -- Tag_Suffix --

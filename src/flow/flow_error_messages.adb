@@ -74,9 +74,6 @@ package body Flow_Error_Messages is
    Flow_Msgs_Set : String_Sets.Set;
    --  Container with flow-related messages; used to prevent duplicate messages
 
-   Message_Id_Counter : Message_Id := 0;
-   --  counter used to generate Message_Ids
-
    function Is_Unprovable_Check (Tag : VC_Kind; N : Node_Id) return Boolean;
    --  Return True if a check with kind Tag located at node N might be
    --  unprovable due to proof imprecision.
@@ -3769,7 +3766,7 @@ package body Flow_Error_Messages is
    function Print_Regular_Msg (Obj : JSON_Result_Type) return Message_Id
    is
 
-      Id            : constant Message_Id := Message_Id_Counter;
+      Id            : constant Message_Id := Next_Message_Id;
       My_Conts      : Message_Lists.List := Obj.Continuations;
       Is_Suppressed : constant Boolean := Obj.Suppr /= No_Suppressed_Message;
 
@@ -3801,7 +3798,6 @@ package body Flow_Error_Messages is
    --  Beginning of processing for Print_Regular_Msg
 
    begin
-      Message_Id_Counter := Message_Id_Counter + 1;
       case Gnat2Why_Args.Output_Mode is
          --  In brief mode, just print the check message
 

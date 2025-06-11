@@ -107,6 +107,9 @@ package Errout_Wrapper is
 
    No_Message_Id : constant Message_Id := -1;
 
+   function Next_Message_Id return Message_Id;
+   --  Return a fresh Message ID
+
    procedure Add_Json_Msg
      (Msg_List : in out GNATCOLL.JSON.JSON_Array;
       Obj      : JSON_Result_Type;
