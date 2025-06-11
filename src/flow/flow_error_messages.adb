@@ -25,44 +25,45 @@
 with Ada.Containers;
 with Ada.Float_Text_IO;
 with Ada.Strings.Fixed;
-with Ada.Text_IO;            use Ada.Text_IO;
-with Aspects;                use Aspects;
-with Assumption_Types;       use Assumption_Types;
-with Atree;                  use Atree;
-with CE_Display;             use CE_Display;
-with Checked_Types;          use Checked_Types;
-with Common_Containers;      use Common_Containers;
-with Einfo;                  use Einfo;
-with Einfo.Entities;         use Einfo.Entities;
-with Einfo.Utils;            use Einfo.Utils;
+with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
+with Ada.Text_IO;               use Ada.Text_IO;
+with Aspects;                   use Aspects;
+with Atree;                     use Atree;
+with CE_Display;                use CE_Display;
+with Checked_Types;             use Checked_Types;
+with Common_Containers;         use Common_Containers;
+with Einfo;                     use Einfo;
+with Einfo.Entities;            use Einfo.Entities;
+with Einfo.Utils;               use Einfo.Utils;
 with Errout;
 with Erroutc;
 with Flow_Generated_Globals.Phase_2;
-with Flow_Refinement;        use Flow_Refinement;
-with Flow_Utility;           use Flow_Utility;
+with Flow_Refinement;           use Flow_Refinement;
+with Flow_Utility;              use Flow_Utility;
 with Gnat2Why.Expr.Loops;
-with Gnat2Why.Util;          use Gnat2Why.Util;
-with Gnat2Why_Args;          use Gnat2Why_Args;
-with Gnat2Why_Opts;          use Gnat2Why_Opts;
-with GNATCOLL.Utils;         use GNATCOLL.Utils;
+with Gnat2Why.Util;             use Gnat2Why.Util;
+with Gnat2Why_Args;             use Gnat2Why_Args;
+with Gnat2Why_Opts;             use Gnat2Why_Opts;
+with GNATCOLL.Utils;            use GNATCOLL.Utils;
 with Lib.Xref;
-with Namet;                  use Namet;
-with Nlists;                 use Nlists;
-with Sem_Aggr;               use Sem_Aggr;
-with Sem_Aux;                use Sem_Aux;
-with Sem_Util;               use Sem_Util;
-with Sinfo.Nodes;            use Sinfo.Nodes;
-with Sinfo.Utils;            use Sinfo.Utils;
-with Sinput;                 use Sinput;
-with Snames;                 use Snames;
+with Namet;                     use Namet;
+with Nlists;                    use Nlists;
+with Sem_Aggr;                  use Sem_Aggr;
+with Sem_Aux;                   use Sem_Aux;
+with Sem_Util;                  use Sem_Util;
+with Sinfo.Nodes;               use Sinfo.Nodes;
+with Sinfo.Utils;               use Sinfo.Utils;
+with Sinput;                    use Sinput;
+with Snames;                    use Snames;
 with SPARK_Atree;
-with SPARK_Util.Hardcoded;   use SPARK_Util.Hardcoded;
-with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
-with SPARK_Util.Types;       use SPARK_Util.Types;
-with SPARK_Xrefs;            use SPARK_Xrefs;
-with Stringt;                use Stringt;
-with String_Utils;           use String_Utils;
-with Uintp;                  use Uintp;
+with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
+with SPARK_Util.Hardcoded;      use SPARK_Util.Hardcoded;
+with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
+with SPARK_Util.Types;          use SPARK_Util.Types;
+with SPARK_Xrefs;               use SPARK_Xrefs;
+with Stringt;                   use Stringt;
+with String_Utils;              use String_Utils;
+with Uintp;                     use Uintp;
 
 -------------------------
 -- Flow_Error_Messages --
@@ -72,6 +73,9 @@ package body Flow_Error_Messages is
 
    Flow_Msgs_Set : String_Sets.Set;
    --  Container with flow-related messages; used to prevent duplicate messages
+
+   Message_Id_Counter : Message_Id := 0;
+   --  counter used to generate Message_Ids
 
    function Is_Unprovable_Check (Tag : VC_Kind; N : Node_Id) return Boolean;
    --  Return True if a check with kind Tag located at node N might be
@@ -127,37 +131,6 @@ package body Flow_Error_Messages is
 
    function Justified_Message (Flow_Check_Message : String) return String;
 
-   type Message_Id is new Integer range -1 .. Integer'Last;
-   --  type used to identify a message issued by gnat2why
-
-   type JSON_Result_Type is record
-      Tag           : Unbounded_String;
-      Severity      : Msg_Severity;
-      Span          : Source_Span;
-      E             : Entity_Id;
-      Msg           : Unbounded_String;
-      Details       : Unbounded_String;
-      Explanation   : Unbounded_String;
-      CE            : Unbounded_String;
-      User_Message  : Unbounded_String;
-      Fix           : Message := No_Message;
-      Explain_Code  : Explain_Code_Kind := EC_None;
-      Continuations : Message_Lists.List;
-      Suppr         : Suppressed_Message;
-      How_Proved    : Prover_Category;
-      Tracefile     : Unbounded_String;
-      Cntexmp       : Cntexample_Data;
-      Check_Tree    : JSON_Value := Create_Object;
-      VC_File       : Unbounded_String;
-      VC_Loc        : Source_Ptr := No_Location;
-      Stats         : Prover_Stat_Maps.Map;
-      Editor_Cmd    : Unbounded_String;
-   end record
-   with
-     Predicate =>
-       JSON_Result_Type.Tag /= Null_Unbounded_String
-       and then JSON_Result_Type.Msg /= Null_Unbounded_String;
-
    function Is_Specified_Line (Slc : Source_Ptr) return Boolean;
    --  Returns True if command line arguments "--limit-line" and
    --  "--limit-section" were not given, or
@@ -196,11 +169,6 @@ package body Flow_Error_Messages is
    --                     first sloc of the node, instead of the topmost node
    --  @return a valid sloc or No_Location when called with Empty node
 
-   procedure Add_Json_Msg
-     (Msg_List : in out GNATCOLL.JSON.JSON_Array;
-      Obj      : JSON_Result_Type;
-      Msg_Id   : Message_Id);
-
    function Warning_Is_Suppressed
      (N   : Node_Id;
       Msg : String;
@@ -226,11 +194,6 @@ package body Flow_Error_Messages is
       Sep : Character := ':') return String;
    --  Obtain the location for the given vertex as in "foo.adb:12"
 
-   Flow_Msgs : GNATCOLL.JSON.JSON_Array;
-   --  This will hold all of the emitted flow messages in JSON format
-
-   Proof_Msgs : GNATCOLL.JSON.JSON_Array;
-
    use type Flow_Graphs.Vertex_Id;
 
    function Substitute
@@ -245,99 +208,6 @@ package body Flow_Error_Messages is
    --  with sloc of F.
 
    File_Counter : Natural := 0;
-   Message_Id_Counter : Message_Id := 0;
-   No_Message_Id : constant Message_Id := -1;
-
-   ------------------
-   -- Add_Json_Msg --
-   ------------------
-
-   procedure Add_Json_Msg
-     (Msg_List : in out GNATCOLL.JSON.JSON_Array;
-      Obj      : JSON_Result_Type;
-      Msg_Id   : Message_Id)
-   is
-      Value : constant JSON_Value := Create_Object;
-      File  : constant String := File_Name (Obj.Span.Ptr);
-      Line  : constant Natural :=
-         Positive (Get_Logical_Line_Number (Obj.Span.Ptr));
-      Col   : constant Natural := Positive (Get_Column_Number (Obj.Span.Ptr));
-
-   begin
-      Set_Field (Value, "file", File);
-      Set_Field (Value, "line", Line);
-      Set_Field (Value, "col", Col);
-
-      if Obj.Suppr.Suppression_Kind in Warning | Check then
-         declare
-            Suppr_Reason : constant String :=
-              (if Obj.Suppr.Suppression_Kind = Check
-               then To_String (Obj.Suppr.Msg)
-               else "");
-         begin
-            Set_Field (Value, "suppressed", Suppr_Reason);
-            if Obj.Suppr.Suppression_Kind = Check then
-               Set_Field
-                 (Value, "annot_kind", To_String (Obj.Suppr.Annot_Kind));
-               Set_Field
-                 (Value, "justif_msg", To_String (Obj.Suppr.Justification));
-            end if;
-         end;
-      end if;
-
-      Set_Field (Value, "rule", Obj.Tag);
-      Set_Field (Value, "severity", To_JSON (Obj.Severity));
-      Set_Field (Value, "entity", To_JSON (Entity_To_Subp_Assumption (Obj.E)));
-      Set_Field (Value, "check_tree", Obj.Check_Tree);
-
-      if Obj.VC_Loc /= No_Location then
-         declare
-            VC_File : constant String  := File_Name (Obj.VC_Loc);
-            VC_Line : constant Natural :=
-                         Positive (Get_Logical_Line_Number (Obj.VC_Loc));
-            VC_Col  : constant Natural :=
-                         Positive (Get_Column_Number (Obj.VC_Loc));
-         begin
-            --  Note that vc_file already exists
-            Set_Field (Value, "check_file", VC_File);
-            Set_Field (Value, "check_line", VC_Line);
-            Set_Field (Value, "check_col", VC_Col);
-         end;
-      end if;
-
-      if Obj.Tracefile /= "" then
-         Set_Field (Value, "tracefile", Obj.Tracefile);
-      end if;
-
-      if not Obj.Cntexmp.Map.Is_Empty then
-         Set_Field (Value, "cntexmp", To_JSON (Obj.Cntexmp.Map));
-      end if;
-
-      if not Obj.Cntexmp.Input_As_JSON.Input_As_JSON.Is_Empty then
-         Set_Field (Value, "cntexmp_value",
-                   To_JSON (Obj.Cntexmp.Input_As_JSON));
-      end if;
-
-      if Obj.VC_File /= "" then
-         Set_Field (Value, "vc_file", Obj.VC_File);
-      end if;
-
-      if Obj.Editor_Cmd /= "" then
-         Set_Field (Value, "editor_cmd", Obj.Editor_Cmd);
-      end if;
-
-      if Msg_Id /= No_Message_Id then
-         Set_Field (Value, "msg_id", Natural (Msg_Id));
-      end if;
-
-      Set_Field (Value, "how_proved", To_JSON (Obj.How_Proved));
-
-      if not Obj.Stats.Is_Empty then
-         Set_Field (Value, "stats", To_JSON (Obj.Stats));
-      end if;
-
-      Append (Msg_List, Value);
-   end Add_Json_Msg;
 
    ---------------------
    -- Compute_Message --
