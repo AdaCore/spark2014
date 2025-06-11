@@ -38,7 +38,14 @@ package body Errout_Wrapper is
       Explain_Code  : Explain_Code_Kind := EC_None) return Message;
    --  Same as Create, but the names can be provided as a list of Strings.
 
-   ------------------
+   function To_JSON (M : Message) return JSON_Value;
+   --  Transform message object into JSON (SARIF) message object
+
+   function Node_To_Name (N : Node_Id) return String;
+   --  Convert the node to a String. This is mostly a wrapper around
+   --  Source_Name.
+
+  ------------------
    -- Add_Json_Msg --
    ------------------
 
@@ -57,6 +64,7 @@ package body Errout_Wrapper is
       Set_Field (Value, "file", File);
       Set_Field (Value, "line", Line);
       Set_Field (Value, "col", Col);
+      Set_Field (Value, "message", To_JSON (Obj.Msg));
 
       if Obj.Suppr.Suppression_Kind in Warning | Check then
          declare
@@ -499,6 +507,21 @@ package body Errout_Wrapper is
       return Result;
    end Next_Message_Id;
 
+   ------------------
+   -- Node_To_Name --
+   ------------------
+
+   function Node_To_Name (N : Node_Id) return String is
+   begin
+      case Nkind (N) is
+         when N_Pragma =>
+            return Source_Name (Pragma_Identifier (N));
+
+         when others =>
+            return Source_Name (N);
+      end case;
+   end Node_To_Name;
+
    ----------------
    -- Tag_Suffix --
    ----------------
@@ -527,6 +550,23 @@ package body Errout_Wrapper is
            when Low_Check_Kind => "low");
    begin
       return GNATCOLL.JSON.Create (S);
+   end To_JSON;
+
+   function To_JSON (M : Message) return JSON_Value is
+      Result : constant JSON_Value := Create_Object;
+   begin
+      Set_Field (Result, "text", To_String (M.Msg));
+      if not M.Names.Is_Empty then
+         declare
+            Args : JSON_Array;
+         begin
+            for Node of M.Names loop
+               Append (Args, Create (Node_To_Name (Node)));
+            end loop;
+            Set_Field (Result, "arguments", Args);
+         end;
+      end if;
+      return Result;
    end To_JSON;
 
    -------------------
