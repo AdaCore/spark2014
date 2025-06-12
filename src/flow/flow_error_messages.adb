@@ -396,8 +396,7 @@ package body Flow_Error_Messages is
            Span          => Span,
            E             => E,
            Tracefile     => To_Unbounded_String (Tracefile),
-           Explain_Code  => Explain_Code,
-           Msg           => To_Unbounded_String (Msg3),
+              Msg           => Create (Msg3, Explain_Code => Explain_Code),
            Details       => To_Unbounded_String (Details),
            Continuations => Continuations,
            others        => <>);
@@ -450,7 +449,7 @@ package body Flow_Error_Messages is
                           Justification    =>
                             To_Unbounded_String (Justified_Message (Msg3)));
                      Result.Msg :=
-                       To_Unbounded_String (Justified_Message (Msg3));
+                       Create (Justified_Message (Msg3));
                      Result.Severity := Info_Kind;
 
                      if Report_Mode /= GPR_Fail then
@@ -891,7 +890,7 @@ package body Flow_Error_Messages is
 
       Result : JSON_Result_Type :=
         JSON_Result_Type'
-          (Msg        => To_Unbounded_String (Message),
+          (Msg        => Create (Message),
            Tag        => To_Unbounded_String (VC_Kind'Image (Tag)),
            Severity   => Severity,
            Span       => Span,
@@ -955,7 +954,7 @@ package body Flow_Error_Messages is
 
                if Report_Mode /= GPR_Fail then
                   Result.Msg :=
-                    To_Unbounded_String (Justified_Message (VC_Loc, Tag));
+                    Create (Justified_Message (VC_Loc, Tag));
                   Result.Severity := Info_Kind;
                   Msg_Id := Print_Regular_Msg (Result);
                end if;
@@ -3770,26 +3769,17 @@ package body Flow_Error_Messages is
       My_Conts      : Message_Lists.List := Obj.Continuations;
       Is_Suppressed : constant Boolean := Obj.Suppr /= No_Suppressed_Message;
 
-      procedure Wrap_Error_Msg
-        (Msg : String; Secondary_Loc : Source_Ptr := No_Location);
+      procedure Wrap_Error_Msg (Msg : Message);
 
       --------------------
       -- Wrap_Error_Msg --
       --------------------
 
-      procedure Wrap_Error_Msg
-        (Msg : String; Secondary_Loc : Source_Ptr := No_Location)
-      is
-         Actual_Msg : constant String :=
-           Msg
-           & (if Ide_Mode then "['#" & Image (Integer (Id), 1) & "]" else "");
-
+      procedure Wrap_Error_Msg (Msg : Message) is
       begin
          Error_Msg
-           (Create
-              (Actual_Msg,
-               Explain_Code  => Obj.Explain_Code,
-               Secondary_Loc => Secondary_Loc),
+           (Msg
+            & (if Ide_Mode then "['#" & Image (Integer (Id), 1) & "]" else ""),
             Obj.Span,
             Obj.Severity,
             (if Is_Suppressed then Message_Lists.Empty_List else My_Conts));
@@ -3802,7 +3792,7 @@ package body Flow_Error_Messages is
          --  In brief mode, just print the check message
 
          when GPO_Brief =>
-            Wrap_Error_Msg (To_String (Obj.Msg));
+            Wrap_Error_Msg (Obj.Msg);
 
          --  In oneline mode, append all the extra information to the
          --  main message and print it.
@@ -3817,7 +3807,7 @@ package body Flow_Error_Messages is
                  (if Obj.CE /= Null_Unbounded_String
                   then " (e.g. when " & To_String (Obj.CE) & ")"
                   else "");
-               Details_Msg : constant String :=
+               Details_Msg     : constant String :=
                  (if not Is_Suppressed
                     and then Obj.Details /= Null_Unbounded_String
                   then " [reason for check: " & To_String (Obj.Details) & "]"
@@ -3833,12 +3823,18 @@ package body Flow_Error_Messages is
                  (if Obj.Fix /= No_Message
                   then " [possible fix: " & To_String (Obj.Fix.Msg) & "]"
                   else "");
-               Msg4            : constant String :=
-                 To_String (Obj.Msg) & User_Msg & CE_Msg
-                 & Details_Msg & Explanation_Msg & Fix_Msg;
+               Msg4            : constant Message :=
+                 Obj.Msg
+                 & User_Msg
+                 & CE_Msg
+                 & Details_Msg
+                 & Explanation_Msg
+                 & Fix_Msg;
             begin
                pragma Assert (Obj.Fix.Names.Is_Empty);
-               Wrap_Error_Msg (Msg4, Obj.Fix.Secondary_Loc);
+               pragma Assert (Obj.Msg.Secondary_Loc = No_Location);
+               Wrap_Error_Msg
+                 ((Msg4 with delta Secondary_Loc => Obj.Fix.Secondary_Loc));
             end;
 
          --  In pretty mode, print the message, then print all the extra
@@ -3887,7 +3883,7 @@ package body Flow_Error_Messages is
                      & To_String (Obj.Fix.Msg),
                      Secondary_Loc => Obj.Fix.Secondary_Loc));
             end if;
-            Wrap_Error_Msg (To_String (Obj.Msg));
+            Wrap_Error_Msg (Obj.Msg);
       end case;
 
       return Id;

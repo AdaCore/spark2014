@@ -49,6 +49,15 @@ package Errout_Wrapper is
    package Message_Lists is new Ada.Containers.Indefinite_Doubly_Linked_Lists
      (Message, "=");
 
+   function "&" (M1, M2 : Message) return Message
+   with
+     Pre =>
+       (M1.Secondary_Loc = No_Location or else M2.Secondary_Loc = No_Location)
+       and then (M1.Explain_Code = EC_None or else M2.Explain_Code = EC_None)
+       and then (M1.Names.Is_Empty or else M2.Names.Is_Empty);
+
+   function "&" (M : Message; S : String) return Message;
+
    type Suppression is (Warning, Check, None);
    type Suppressed_Message (Suppression_Kind : Suppression := None) is record
       case Suppression_Kind is
@@ -75,13 +84,12 @@ package Errout_Wrapper is
       Severity      : Msg_Severity;
       Span          : Source_Span;
       E             : Entity_Id;
-      Msg           : Unbounded_String;
+      Msg           : Message;
       Details       : Unbounded_String;
       Explanation   : Unbounded_String;
       CE            : Unbounded_String;
       User_Message  : Unbounded_String;
       Fix           : Message := No_Message;
-      Explain_Code  : Explain_Code_Kind := EC_None;
       Continuations : Message_Lists.List;
       Suppr         : Suppressed_Message;
       How_Proved    : Prover_Category;
@@ -96,7 +104,7 @@ package Errout_Wrapper is
    with
      Predicate =>
        JSON_Result_Type.Tag /= Null_Unbounded_String
-       and then JSON_Result_Type.Msg /= Null_Unbounded_String;
+       and then JSON_Result_Type.Msg /= No_Message;
 
    Flow_Msgs : GNATCOLL.JSON.JSON_Array;
    Proof_Msgs : GNATCOLL.JSON.JSON_Array;
