@@ -3614,18 +3614,6 @@ package body Flow_Error_Messages is
       end if;
    end Get_Fix;
 
-   -------------------
-   -- Get_Flow_JSON --
-   -------------------
-
-   function Get_Flow_JSON return JSON_Array is (Flow_Msgs);
-
-   --------------------
-   -- Get_Proof_JSON --
-   --------------------
-
-   function Get_Proof_JSON return JSON_Array is (Proof_Msgs);
-
    ----------------------
    -- Is_Excluded_Line --
    ----------------------
@@ -3780,7 +3768,8 @@ package body Flow_Error_Messages is
             & (if Ide_Mode then "['#" & Image (Integer (Id), 1) & "]" else ""),
             Obj.Span,
             Obj.Severity,
-            (if Is_Suppressed then Message_Lists.Empty_List else My_Conts));
+            (if Is_Suppressed then Message_Lists.Empty_List else My_Conts),
+            Error_Entry => False);
       end Wrap_Error_Msg;
 
    --  Beginning of processing for Print_Regular_Msg
