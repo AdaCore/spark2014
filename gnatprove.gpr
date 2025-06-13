@@ -76,7 +76,7 @@ project GNATprove is
 
    package Linker is
       case Target is
-         when "x86-linux" | "x86_64-linux" =>
+         when "x86-linux" | "x86_64-linux" | "aarch64-linux" =>
             for Default_Switches ("Ada") use ("-pthread");
          when others =>
             null;
