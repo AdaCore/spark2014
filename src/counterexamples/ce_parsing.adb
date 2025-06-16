@@ -1074,7 +1074,9 @@ package body CE_Parsing is
                   begin
                      return (Float_K, (Float_64_K, F));
                   end;
-               elsif Is_Extended_Precision_Floating_Point_Type (Ty) then
+               elsif Is_Extended_Precision_Floating_Point_Type (Ty)
+                 and then Long_Long_Float'Size = 128
+               then
                   pragma Assert (Size (Exp) = 15);
                   pragma Assert (Size (Significand) = 63);
                   declare
