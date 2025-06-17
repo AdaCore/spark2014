@@ -49,13 +49,6 @@ package Errout_Wrapper is
    package Message_Lists is new Ada.Containers.Indefinite_Doubly_Linked_Lists
      (Message, "=");
 
-   function "&" (M1, M2 : Message) return Message
-   with
-     Pre =>
-       (M1.Secondary_Loc = No_Location or else M2.Secondary_Loc = No_Location)
-       and then (M1.Explain_Code = EC_None or else M2.Explain_Code = EC_None)
-       and then (M1.Names.Is_Empty or else M2.Names.Is_Empty);
-
    function "&" (M : Message; S : String) return Message;
 
    type Suppression is (Warning, Check, None);
@@ -106,9 +99,9 @@ package Errout_Wrapper is
        JSON_Result_Type.Tag /= Null_Unbounded_String
        and then JSON_Result_Type.Msg /= No_Message;
 
-   Flow_Msgs : GNATCOLL.JSON.JSON_Array;
+   Flow_Msgs  : GNATCOLL.JSON.JSON_Array;
    Proof_Msgs : GNATCOLL.JSON.JSON_Array;
-   --  variables to hold JSON objects for .spark file output
+   --  Variables to hold JSON objects for .spark file output
 
    type Message_Id is new Integer range -1 .. Integer'Last;
    --  type used to identify a message issued by gnat2why

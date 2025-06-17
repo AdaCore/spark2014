@@ -11,7 +11,7 @@ with Warnsw;                  use Warnsw;
 package body Errout_Wrapper is
 
    Message_Id_Counter : Message_Id := 0;
-   --  counter used to generate Message_Ids
+   --  Counter used to generate Message_Ids
 
    function Escape_For_Errout (S : String) return String;
    --  Escape any special characters used in the error message (for example
@@ -558,23 +558,6 @@ package body Errout_Wrapper is
             Continuations);
       end if;
    end Warning_Msg_N;
-
-   function "&" (M1, M2 : Message) return Message is
-   begin
-      return
-        Message'
-          (Msg           => M1.Msg & M2.Msg,
-           Secondary_Loc =>
-             (if M1.Secondary_Loc = No_Location
-              then M2.Secondary_Loc
-              else M1.Secondary_Loc),
-           Explain_Code  =>
-             (if M1.Explain_Code = EC_None
-              then M2.Explain_Code
-              else M1.Explain_Code),
-           Names         =>
-             (if M1.Names.Is_Empty then M2.Names else M1.Names));
-   end "&";
 
    function "&" (M : Message; S : String) return Message is
    begin
