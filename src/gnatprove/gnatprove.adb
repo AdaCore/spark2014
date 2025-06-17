@@ -265,6 +265,14 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("--target=" & CL_Switches.Target.all);
       end if;
 
+      if not Null_Or_Empty_String (CL_Switches.Autoconf) then
+         Args.Append ("--autoconf=" & CL_Switches.Autoconf.all);
+      end if;
+
+      if not Null_Or_Empty_String (CL_Switches.Config) then
+         Args.Append ("--config=" & CL_Switches.Config.all);
+      end if;
+
       for S of CL_Switches.GPR_Project_Path loop
          Args.Append ("-aP");
          Args.Append (S);
