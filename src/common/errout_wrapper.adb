@@ -1,10 +1,17 @@
 with Ada.Characters.Handling; use Ada.Characters.Handling;
+with Assumption_Types;        use Assumption_Types;
 with Atree;                   use Atree;
 with Gnat2Why_Args;
 with Gnat2Why_Opts;           use Gnat2Why_Opts;
+with Sinput;                  use Sinput;
+with SPARK_Util;              use SPARK_Util;
+with Stringt;                 use Stringt;
 with Warnsw;                  use Warnsw;
 
 package body Errout_Wrapper is
+
+   Message_Id_Counter : Message_Id := 0;
+   --  Counter used to generate Message_Ids
 
    function Escape_For_Errout (S : String) return String;
    --  Escape any special characters used in the error message (for example
@@ -31,6 +38,97 @@ package body Errout_Wrapper is
       Secondary_Loc : Source_Ptr := No_Location;
       Explain_Code  : Explain_Code_Kind := EC_None) return Message;
    --  Same as Create, but the names can be provided as a list of Strings.
+
+   ------------------
+   -- Add_Json_Msg --
+   ------------------
+
+   procedure Add_Json_Msg
+     (Msg_List : in out GNATCOLL.JSON.JSON_Array;
+      Obj      : JSON_Result_Type;
+      Msg_Id   : Message_Id)
+   is
+      Value : constant JSON_Value := Create_Object;
+      File  : constant String := File_Name (Obj.Span.Ptr);
+      Line  : constant Natural :=
+         Positive (Get_Logical_Line_Number (Obj.Span.Ptr));
+      Col   : constant Natural := Positive (Get_Column_Number (Obj.Span.Ptr));
+
+   begin
+      Set_Field (Value, "file", File);
+      Set_Field (Value, "line", Line);
+      Set_Field (Value, "col", Col);
+
+      if Obj.Suppr.Suppression_Kind in Warning | Check then
+         declare
+            Suppr_Reason : constant String :=
+              (if Obj.Suppr.Suppression_Kind = Check
+               then To_String (Obj.Suppr.Msg)
+               else "");
+         begin
+            Set_Field (Value, "suppressed", Suppr_Reason);
+            if Obj.Suppr.Suppression_Kind = Check then
+               Set_Field
+                 (Value, "annot_kind", To_String (Obj.Suppr.Annot_Kind));
+               Set_Field
+                 (Value, "justif_msg", To_String (Obj.Suppr.Justification));
+            end if;
+         end;
+      end if;
+
+      Set_Field (Value, "rule", Obj.Tag);
+      Set_Field (Value, "severity", To_JSON (Obj.Severity));
+      Set_Field (Value, "entity", To_JSON (Entity_To_Subp_Assumption (Obj.E)));
+      Set_Field (Value, "check_tree", Obj.Check_Tree);
+
+      if Obj.VC_Loc /= No_Location then
+         declare
+            VC_File : constant String  := File_Name (Obj.VC_Loc);
+            VC_Line : constant Natural :=
+                         Positive (Get_Logical_Line_Number (Obj.VC_Loc));
+            VC_Col  : constant Natural :=
+                         Positive (Get_Column_Number (Obj.VC_Loc));
+         begin
+            --  Note that vc_file already exists
+            Set_Field (Value, "check_file", VC_File);
+            Set_Field (Value, "check_line", VC_Line);
+            Set_Field (Value, "check_col", VC_Col);
+         end;
+      end if;
+
+      if Obj.Tracefile /= "" then
+         Set_Field (Value, "tracefile", Obj.Tracefile);
+      end if;
+
+      if not Obj.Cntexmp.Map.Is_Empty then
+         Set_Field (Value, "cntexmp", To_JSON (Obj.Cntexmp.Map));
+      end if;
+
+      if not Obj.Cntexmp.Input_As_JSON.Input_As_JSON.Is_Empty then
+         Set_Field (Value, "cntexmp_value",
+                   To_JSON (Obj.Cntexmp.Input_As_JSON));
+      end if;
+
+      if Obj.VC_File /= "" then
+         Set_Field (Value, "vc_file", Obj.VC_File);
+      end if;
+
+      if Obj.Editor_Cmd /= "" then
+         Set_Field (Value, "editor_cmd", Obj.Editor_Cmd);
+      end if;
+
+      if Msg_Id /= No_Message_Id then
+         Set_Field (Value, "msg_id", Natural (Msg_Id));
+      end if;
+
+      Set_Field (Value, "how_proved", To_JSON (Obj.How_Proved));
+
+      if not Obj.Stats.Is_Empty then
+         Set_Field (Value, "stats", To_JSON (Obj.Stats));
+      end if;
+
+      Append (Msg_List, Value);
+   end Add_Json_Msg;
 
    --------------------------
    -- Generic_Print_Result --
@@ -375,6 +473,17 @@ package body Errout_Wrapper is
       return To_String (R);
    end Escape_For_Errout;
 
+   ---------------------
+   -- Next_Message_Id --
+   ---------------------
+
+   function Next_Message_Id return Message_Id is
+      Result : constant Message_Id := Message_Id_Counter;
+   begin
+      Message_Id_Counter := @ + 1;
+      return Result;
+   end Next_Message_Id;
+
    ----------------
    -- Tag_Suffix --
    ----------------
@@ -449,5 +558,15 @@ package body Errout_Wrapper is
             Continuations);
       end if;
    end Warning_Msg_N;
+
+   function "&" (M : Message; S : String) return Message is
+   begin
+      return
+        Message'
+          (Names         => M.Names,
+           Secondary_Loc => M.Secondary_Loc,
+           Explain_Code  => M.Explain_Code,
+           Msg           => M.Msg & S);
+   end "&";
 
 end Errout_Wrapper;
