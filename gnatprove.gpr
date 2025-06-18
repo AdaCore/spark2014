@@ -60,14 +60,27 @@ project GNATprove is
 
    end Builder;
 
+   Semaphore_C_File_Switches := ();
+
+   case Target is
+      when "x86-linux" | "x86_64-linux" | "aarch64-linux" =>
+         -- On Linux, we need pthread for semaphores
+         Semaphore_C_File_Switches := ("-pthread");
+      when others =>
+         null;
+   end case;
+
    package Compiler is
       case Build is
          when "Debug" =>
             for Default_Switches ("Ada") use
                Common_Switches & ("-O0", "-gnata", "-gnatwae", "-gnatVa");
+               for Default_Switches ("C") use ("-g", "-O0");
+               for Switches ("semaphores_c.c") use Semaphore_C_File_Switches;
          when "Production" =>
-            for Default_Switches ("Ada") use
-               Common_Switches & ("-O2", "-gnatn");
+            for Default_Switches ("Ada") use Common_Switches & ("-O2", "-gnatn");
+            for Default_Switches ("C") use ("-O2");
+            for Switches ("semaphores_c.c") use Semaphore_C_File_Switches;
          when "Coverage" =>
             --  We don't do coverage of gnatprove yet, only gnat2why
             null;
