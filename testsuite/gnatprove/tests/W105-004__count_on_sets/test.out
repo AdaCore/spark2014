@@ -77,8 +77,6 @@ use_sets.adb:21:51: info: null exclusion check proved (CVC5: 1 VC)
 use_sets.adb:21:82: info: predicate check proved (Trivial: 1 VC)
 use_sets.adb:21:92: info: predicate check proved (Trivial: 1 VC)
 use_sets.adb:27:13: info: implicit aspect Always_Terminates on "Count_Values_In_Range" has been proved, subprogram will terminate
-use_sets.adb:27:45: warning: unused variable "A"
-use_sets.adb:27:48: warning: unused variable "B"
 use_sets.adb:28:14: info: postcondition proved (CVC5: 1 VC)
 use_sets.adb:28:35: info: predicate check proved (Trivial: 1 VC)
 use_sets.adb:28:46: info: predicate check proved (Trivial: 1 VC)

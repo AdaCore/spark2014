@@ -255,12 +255,13 @@ package body Flow_Types is
 
       --  For subprogram and entry calls it is enough to hash the call node,
       --  because it uniquely determines the entity of the called subprogram.
-      --  Same for elaboration of nested packages.
+      --  Same for elaboration of nested packages and higher-order actuals.
 
       elsif Present (SC.N) then
          pragma Assert (Nkind (SC.N) in N_Entry_Call_Statement
                                       | N_Package_Declaration
-                                      | N_Subprogram_Call);
+                                      | N_Subprogram_Call
+                          or else Is_Specialized_Actual (SC.N));
          return Node_Hash (SC.N);
 
       --  Otherwise, this is an indirect call to a user-defined equality
