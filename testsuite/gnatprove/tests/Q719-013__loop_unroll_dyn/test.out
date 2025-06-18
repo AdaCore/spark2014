@@ -33,7 +33,7 @@ loops_static.adb:53:19: info: index check proved (CVC5: 4 VC)
 loops_static.adb:54:20: warning: unused assignment
 loops_static.adb:58:42: high: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, 1 => 0) and I = 1 and J = 0) [possible fix: subprogram at loops_static.ads:8 should mention A in a precondition]
 loops_static.adb:58:45: info: index check proved (CVC5: 4 VC)
-loops_static.adb:60:07: medium: assertion might fail
+loops_static.adb:60:07: high: assertion might fail
 loops_static.adb:65:23: info: cannot unroll loop (local non-scalar declaration at line 70) [info-unrolling-inlining]
 loops_static.adb:66:13: high: array index check might fail (e.g. when A'First = 2 and A'Last = 0 and I = 1) [reason for check: value must be a valid index into the array]
 loops_static.adb:68:42: medium: assertion might fail, cannot prove A (J) = 0 [possible fix: loop at line 65 should mention A in a loop invariant]
@@ -56,7 +56,7 @@ loops_static.adb:89:22: info: index check proved (CVC5: 4 VC)
 loops_static.adb:90:23: warning: unused assignment
 loops_static.adb:95:42: high: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, 1 => 0) and I = 1 and J = 0) [possible fix: subprogram at loops_static.ads:12 should mention A in a precondition]
 loops_static.adb:95:45: info: index check proved (CVC5: 4 VC)
-loops_static.adb:97:07: medium: assertion might fail
+loops_static.adb:97:07: high: assertion might fail
 loops_static.adb:102:11: warning: unused assignment
 loops_static.adb:103:23: info: unrolling loop [info-unrolling-inlining]
 loops_static.adb:104:13: high: array index check might fail (e.g. when A'First = 2 and A'Last = 0 and I = 1) [reason for check: value must be a valid index into the array]
@@ -70,7 +70,7 @@ loops_static.adb:109:22: info: index check proved (CVC5: 4 VC)
 loops_static.adb:110:23: warning: unused assignment
 loops_static.adb:115:42: high: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, 1 => 0) and I = 1 and J = 0) [possible fix: subprogram at loops_static.ads:14 should mention A in a precondition]
 loops_static.adb:115:45: info: index check proved (CVC5: 4 VC)
-loops_static.adb:117:07: medium: assertion might fail
+loops_static.adb:117:07: high: assertion might fail
 loops_static.adb:122:11: warning: unused assignment
 loops_static.adb:123:23: info: unrolling loop [info-unrolling-inlining]
 loops_static.adb:124:13: high: array index check might fail (e.g. when A'First = 2 and A'Last = 0 and I = 1) [reason for check: value must be a valid index into the array]
@@ -83,7 +83,7 @@ loops_static.adb:129:22: info: index check proved (CVC5: 4 VC)
 loops_static.adb:130:23: warning: unused assignment
 loops_static.adb:135:42: high: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, 1 => 0) and I = 1 and J = 0) [possible fix: subprogram at loops_static.ads:16 should mention A in a precondition]
 loops_static.adb:135:45: info: index check proved (CVC5: 4 VC)
-loops_static.adb:137:07: medium: assertion might fail
+loops_static.adb:137:07: high: assertion might fail
 loops_static.adb:142:11: warning: unused assignment
 loops_static.adb:143:23: info: unrolling loop [info-unrolling-inlining]
 loops_static.adb:144:13: high: array index check might fail (e.g. when A'First = 2 and A'Last = 0 and I = 1) [reason for check: value must be a valid index into the array]
@@ -96,7 +96,7 @@ loops_static.adb:149:25: info: index check proved (CVC5: 4 VC)
 loops_static.adb:150:26: warning: unused assignment
 loops_static.adb:155:42: high: assertion might fail, cannot prove A (J) = 0 (e.g. when A = (0 => 1, 1 => 0) and I = 1 and J = 0) [possible fix: subprogram at loops_static.ads:18 should mention A in a precondition]
 loops_static.adb:155:45: info: index check proved (CVC5: 4 VC)
-loops_static.adb:157:07: medium: assertion might fail
+loops_static.adb:157:07: high: assertion might fail
 loops_static.adb:160:04: warning: analyzing unreferenced function "Loop9" [unreferenced-function]
 loops_static.adb:160:13: info: implicit aspect Always_Terminates on "Loop9" has been proved, subprogram will terminate
 loops_static.adb:163:23: info: unrolling loop [info-unrolling-inlining]
@@ -106,7 +106,7 @@ loops_static.adb:168:38: info: cannot unroll loop (too many loop iterations) [in
 loops_static.adb:169:25: info: index check proved (CVC5: 4 VC)
 loops_static.adb:176:42: high: assertion might fail, cannot prove R (J) = 0 (e.g. when A = (1 => 0, others => 1) and A'First = 0 and A'Last = 2 and I = 1 and J = 0 and R = (1 => 0, others => 1) and R'First = 0 and R'Last = 2)
 loops_static.adb:176:45: info: index check proved (CVC5: 4 VC)
-loops_static.adb:178:07: medium: assertion might fail
+loops_static.adb:178:07: high: assertion might fail
 loops_static.adb:180:07: warning: this statement is never reached
 loops_static.adb:186:23: info: cannot unroll loop (local non-scalar declaration at line 189) [info-unrolling-inlining]
 loops_static.adb:187:13: high: array index check might fail (e.g. when I = 1 and R'First = 2 and R'Last = 0) [reason for check: value must be a valid index into the array]
