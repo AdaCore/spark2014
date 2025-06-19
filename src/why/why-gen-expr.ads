@@ -808,7 +808,7 @@ package Why.Gen.Expr is
      Pre => Is_Potentially_Invalid (Fun);
    --  Type for the validity wrapper used for the result of Fun
 
-   function New_Is_Valid_Access
+   function New_Function_Is_Valid_Access
      (Fun  : E_Function_Id;
       Name : W_Expr_Id)
       return W_Expr_Id
@@ -816,7 +816,7 @@ package Why.Gen.Expr is
    --  Access to the validity flag in the validity wrapper used for the result
    --  of Fun.
 
-   function New_Valid_Value_Access
+   function New_Function_Valid_Value_Access
      (Ada_Node : Node_Id := Empty;
       Fun      : E_Function_Id;
       Name     : W_Expr_Id;
@@ -826,7 +826,7 @@ package Why.Gen.Expr is
      and then (if Do_Check then Present (Ada_Node));
    --  Access to the value in the validity wrapper used for the result of Fun
 
-   function New_Validity_Wrapper_Value
+   function New_Function_Validity_Wrapper_Value
      (Fun      : E_Function_Id;
       Is_Valid : W_Expr_Id;
       Value    : W_Expr_Id)

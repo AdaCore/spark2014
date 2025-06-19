@@ -3111,7 +3111,7 @@ package body Gnat2Why.Subprograms is
                Id_Def        => Id_Def,
                Valid_Flag    => Valid_Flag);
 
-            W_Def := +New_Validity_Wrapper_Value
+            W_Def := +New_Function_Validity_Wrapper_Value
               (Fun      => Function_Entity,
                Is_Valid => Valid_Flag,
                Value    => +W_Def);
@@ -6533,11 +6533,12 @@ package body Gnat2Why.Subprograms is
            +New_Result_Ident (Why_Type);
          Result_Value        : constant W_Term_Id :=
            (if Needs_Validity_Wrapper
-            then +New_Valid_Value_Access (Fun => E, Name => +Result_Id)
+            then +New_Function_Valid_Value_Access
+              (Fun => E, Name => +Result_Id)
             else +Result_Id);
          Result_Is_Valid     : constant W_Term_Id :=
            (if Needs_Validity_Wrapper
-            then +New_Is_Valid_Access (Fun => E, Name => +Result_Id)
+            then +New_Function_Is_Valid_Access (Fun => E, Name => +Result_Id)
             else True_Term);
          Logic_Why_Binders   : constant Binder_Array :=
            To_Binder_Array (Logic_Func_Binders);
@@ -7479,11 +7480,13 @@ package body Gnat2Why.Subprograms is
               New_Result_Ident (Why_Type);
             Result_Value        : constant W_Term_Id :=
               (if Needs_Validity_Wrapper
-               then +New_Valid_Value_Access (Fun => E, Name => +Result_Id)
+               then +New_Function_Valid_Value_Access
+                 (Fun => E, Name => +Result_Id)
                else +Result_Id);
             Result_Is_Valid     : constant W_Term_Id :=
               (if Needs_Validity_Wrapper
-               then +New_Is_Valid_Access (Fun => E, Name => +Result_Id)
+               then +New_Function_Is_Valid_Access
+                 (Fun => E, Name => +Result_Id)
                else True_Term);
             Dynamic_Prop_Result : constant W_Pred_Id :=
               +New_And_Then_Expr
@@ -7723,7 +7726,7 @@ package body Gnat2Why.Subprograms is
                         Id_Def        => Id_Def,
                         Valid_Flag    => Valid_Flag);
 
-                     Expr_Body := New_Validity_Wrapper_Value
+                     Expr_Body := New_Function_Validity_Wrapper_Value
                        (Fun      => E,
                         Is_Valid => Valid_Flag,
                         Value    => Expr_Body);
@@ -8886,10 +8889,12 @@ package body Gnat2Why.Subprograms is
       else
          return New_Typed_Binding
            (Name    => Result_Name,
-            Def     => +New_Valid_Value_Access (Fun => E, Name => +Result_Id),
+            Def     => +New_Function_Valid_Value_Access
+              (Fun => E, Name => +Result_Id),
             Context => New_Typed_Binding
               (Name    => Get_Valid_Flag_For_Id (Result_Name),
-               Def     => +New_Is_Valid_Access (Fun => E, Name => +Result_Id),
+               Def     => +New_Function_Is_Valid_Access
+                 (Fun => E, Name => +Result_Id),
                Context => Post));
       end if;
    end Wrap_Post_Of_Potentially_Invalid;

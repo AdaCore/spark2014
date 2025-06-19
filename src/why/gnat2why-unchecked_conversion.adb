@@ -864,7 +864,7 @@ package body Gnat2Why.Unchecked_Conversion is
             --  reconstruct the wrapper.
 
             if Do_Validity then
-               Def := +New_Validity_Wrapper_Value
+               Def := +New_Function_Validity_Wrapper_Value
                  (Fun      => Ada_Function,
                   Is_Valid => +Val.Is_Valid,
                   Value    => +Val.Value);
@@ -1011,7 +1011,7 @@ package body Gnat2Why.Unchecked_Conversion is
               (Tmp     => Conv_To_Base,
                Context => Binding_For_Temp
                  (Tmp     => Valid_Flag,
-                  Context => +New_Validity_Wrapper_Value
+                  Context => +New_Function_Validity_Wrapper_Value
                     (Fun      => Ada_Function,
                      Is_Valid => +Valid_Flag,
                      Value    => +New_Conditional

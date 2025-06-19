@@ -1117,8 +1117,8 @@ package body Gnat2Why.Expr.Loops.Inv is
                                    (if Init_Id /= Why_Empty then +Init_Id
                                     elsif Initialized then True_Term
                                     else False_Term),
-                                 Valid       => Get_Valid_Id_From_Item
-                                   (Binder, Ref_Allowed => True))),
+                                 Valid       => Get_Valid_Id_From_Object
+                                   (N, Ref_Allowed => True))),
 
                         --  If N is a local borrower and it is modified at
                         --  top-level in the loop (we have a reborrow), also
@@ -1186,7 +1186,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                         --
                         --    Loop_Id'Loop_Entry'Valid -> Loop_Id'Valid
 
-                        5 => (if Binder.Valid.Present
+                        5 => (if Object_Has_Valid_Id (N)
                               and then Status.Kind /= Object_And_Valid
                               then New_Conditional
                                    (Condition => +Get_Valid_Flag_For_Id
@@ -1195,8 +1195,8 @@ package body Gnat2Why.Expr.Loops.Inv is
                                               Loop_Id   => Loop_Id,
                                               No_Checks => True)),
                                     Then_Part => Pred_Of_Boolean_Term
-                                      (Get_Valid_Id_From_Item
-                                           (Binder, Body_Params.Ref_Allowed)))
+                                      (Get_Valid_Id_From_Object
+                                           (N, Body_Params.Ref_Allowed)))
                               else True_Pred)));
                end;
             end if;
