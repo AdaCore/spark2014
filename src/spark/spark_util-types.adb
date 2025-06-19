@@ -356,6 +356,28 @@ package body SPARK_Util.Types is
       end if;
    end Check_Needed_On_Conversion;
 
+   --------------------------------
+   -- Comp_Has_Only_Valid_Values --
+   --------------------------------
+
+   function Comp_Has_Only_Valid_Values
+     (Comp : E_Component_Id;
+      Rec  : Type_Kind_Id)
+      return True_Or_Explain
+   is
+      Comp_Ty   : constant Type_Kind_Id := Retysp (Etype (Comp));
+      Used_Size : Uint := Uint_0;
+      Size_Str  : Unbounded_String := Null_Unbounded_String;
+      Unused    : Unbounded_String;
+   begin
+      if Is_Scalar_Type (Comp_Ty) then
+         Record_Component_Size
+           (Rec, Comp, Used_Size, Size_Str, Unused);
+      end if;
+      return Type_Has_Only_Valid_Values
+        (Comp_Ty, Used_Size, To_String (Size_Str));
+   end Comp_Has_Only_Valid_Values;
+
    -----------------------------------
    -- Contains_Access_Subcomponents --
    -----------------------------------
@@ -2791,28 +2813,14 @@ package body SPARK_Util.Types is
          end;
       elsif Is_Record_Type (Typ) then
          declare
-            Comp      : Entity_Id := First_Component (Typ);
-            Used_Size : Uint;
-            Size_Str  : Unbounded_String;
-            Result    : True_Or_Explain;
+            Comp   : Entity_Id := First_Component (Typ);
+            Result : True_Or_Explain;
          begin
             while Present (Comp) loop
-               Used_Size := Uint_0;
-               Size_Str := Null_Unbounded_String;
-               declare
-                  Comp_Ty : constant Type_Kind_Id := Retysp (Etype (Comp));
-                  Unused   : Unbounded_String;
-               begin
-                  if Is_Scalar_Type (Comp_Ty) then
-                     Record_Component_Size
-                       (Typ, Comp, Used_Size, Size_Str, Unused);
-                  end if;
-                  Result := Type_Has_Only_Valid_Values
-                    (Comp_Ty, Used_Size, To_String (Size_Str));
-                  if not Result.Ok then
-                     return Result;
-                  end if;
-               end;
+               Result := Comp_Has_Only_Valid_Values (Comp, Typ);
+               if not Result.Ok then
+                  return Result;
+               end if;
                Next_Component (Comp);
             end loop;
          end;

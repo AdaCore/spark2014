@@ -7497,7 +7497,9 @@ package body SPARK_Definition is
 
          else
 
-            if Is_Potentially_Invalid (E) then
+            if Ekind (E) not in E_Loop_Parameter | E_Discriminant
+              and then Has_Potentially_Invalid (E)
+            then
 
                --  We do not support relaxed initialization on potentially
                --  invalid objects, nor volatile potentially invalid objects
@@ -9543,7 +9545,7 @@ package body SPARK_Definition is
             end;
          end if;
 
-         if Is_Potentially_Invalid (E) then
+         if Ekind (E) = E_Function and then Has_Potentially_Invalid (E) then
             --  We do not support relaxed initialization on potentially invalid
             --  objects for now.
 
@@ -12848,9 +12850,17 @@ package body SPARK_Definition is
          end;
       end if;
 
-      --  Include the base type in the set of potentially invalid types
+      --  Include the base type in the set of potentially invalid types. For
+      --  composite types, only include the type if it might have invalid
+      --  values to avoid generating empty validity types. For scalars, always
+      --  include the type as whether it has invalid values depends on the
+      --  use case.
 
-      Potentially_Invalid.Include (Base_Retysp (Rep_Ty));
+      if Is_Scalar_Type (Rep_Ty)
+        or else not Type_Has_Only_Valid_Values (Rep_Ty, Uint_0, "").Ok
+      then
+         Potentially_Invalid.Include (Base_Retysp (Rep_Ty));
+      end if;
 
    end Mark_Potentially_Invalid_Type;
 

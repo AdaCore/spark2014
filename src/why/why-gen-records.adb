@@ -1353,7 +1353,9 @@ package body Why.Gen.Records is
          end if;
 
          for Field of Get_Component_Set (E) loop
-            if Ekind (Field) = E_Component then
+            if Ekind (Field) = E_Component
+              and then not Comp_Has_Only_Valid_Values (Field, E).Ok
+            then
                Index := Index + 1;
                declare
                   F_Ty     : constant Entity_Id := Etype (Field);
@@ -1423,9 +1425,9 @@ package body Why.Gen.Records is
             end if;
          end loop;
 
-         pragma Assert (Index = Num_Fields);
+         pragma Assert (Index <= Num_Fields);
 
-         Is_Valid := New_And_Pred (Is_Valid_Conj);
+         Is_Valid := New_And_Pred (Is_Valid_Conj (1 .. Index));
 
          --  Introduce bindings for discriminants
 
@@ -1463,7 +1465,7 @@ package body Why.Gen.Records is
                Location    => No_Location,
                Labels      => Symbol_Sets.Empty_Set,
                Def         => New_Record_Aggregate
-                 (Associations => Valid_Assocs,
+                 (Associations => Valid_Assocs (1 .. Index),
                   Typ          => New_Named_Type (Name => Ty_Name))));
 
          --  Define Is_Valid

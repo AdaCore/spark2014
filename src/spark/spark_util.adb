@@ -4072,14 +4072,20 @@ package body SPARK_Util is
    function Is_Potentially_Invalid (E : Entity_Id) return Boolean is
    begin
       case Ekind (E) is
-         when E_Variable | Formal_Kind | E_Function =>
-            return Has_Potentially_Invalid (E);
+         when E_Function =>
+            return Has_Potentially_Invalid (E)
+              and then not Fun_Has_Only_Valid_Values (E);
+         when E_Variable | Formal_Kind =>
+            return Has_Potentially_Invalid (E)
+              and then not Obj_Has_Only_Valid_Values (E);
 
          when E_Constant =>
             if Is_Full_View (E) then
-               return Has_Potentially_Invalid (Partial_View (E));
+               return Has_Potentially_Invalid (Partial_View (E))
+                 and then not Obj_Has_Only_Valid_Values (E);
             else
-               return Has_Potentially_Invalid (E);
+               return Has_Potentially_Invalid (E)
+                 and then not Obj_Has_Only_Valid_Values (E);
             end if;
 
          when others =>
@@ -4109,8 +4115,15 @@ package body SPARK_Util is
                  and then Is_Potentially_Invalid (Entity (Prefix (Expr))));
 
          when N_Selected_Component =>
-            return Ekind (Entity (Selector_Name (Expr))) /= E_Discriminant
-              and then Is_Potentially_Invalid_Expr (Prefix (Expr));
+            declare
+               Pref : constant Node_Id := Prefix (Expr);
+               Comp : constant Entity_Id := Entity (Selector_Name (Expr));
+            begin
+               return Ekind (Comp) /= E_Discriminant
+                 and then not Comp_Has_Only_Valid_Values
+                   (Comp, Retysp (Etype (Pref))).Ok
+                 and then Is_Potentially_Invalid_Expr (Pref);
+            end;
 
          when N_Indexed_Component | N_Slice =>
             return Is_Potentially_Invalid_Expr (Prefix (Expr));

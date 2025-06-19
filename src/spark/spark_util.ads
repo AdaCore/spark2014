@@ -1434,7 +1434,8 @@ package SPARK_Util is
    --  the enclosing unit.
 
    function Is_Potentially_Invalid (E : Entity_Id) return Boolean;
-   --  Return True if E is subject to a Potentially_Invalid aspect
+   --  Return True if E is subject to a Potentially_Invalid aspect and it might
+   --  have invalid values.
 
    function Is_Potentially_Invalid_Expr (Expr : Node_Id) return Boolean;
    --  Return True if Expr might be invalid. It might happen for:
