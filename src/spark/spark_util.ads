@@ -1436,25 +1436,6 @@ package SPARK_Util is
    function Is_Potentially_Invalid (E : Entity_Id) return Boolean;
    --  Return True if E is subject to a Potentially_Invalid aspect
 
-   function Propagates_Potential_Invalidity
-     (Source : Entity_Id;
-      Target : Entity_Id)
-      return Boolean
-   with Pre => Is_Object (Target)
-     and then (Is_Object (Source) or else Ekind (Source) = E_Function);
-   --  Return True if Source might propagate its potentially invalid status
-   --  to target in an assignment statement, an object declaration, or
-   --  output parameter passing.
-   --  This function does not check the invalidity status of source, nor the
-   --  location of the propagation.
-
-   function Propagates_Potential_Invalidity (N : Node_Id) return Boolean;
-   --  Retyrns True on an assignment statement, an object declaration, or
-   --  an actual parameter of mode IN OUT or OUT that propagates the invalidity
-   --  status to its target.
-   --  ??? This function is not ready yet. For now, it does not take into
-   --  account locally potentially invalid objects.
-
    function Is_Potentially_Invalid_Expr (Expr : Node_Id) return Boolean;
    --  Return True if Expr might be invalid. It might happen for:
    --  * Potentially invalid or locally potentially invalid objects,
@@ -1470,8 +1451,6 @@ package SPARK_Util is
    --  an actual parameter of mode IN OUT or OUT that propagates the invalidity
    --  flag of its source to its target. Otherwise, a validity check should
    --  be issued.
-   --  ??? This function is not ready yet. For now, it does not take into
-   --  account locally potentially invalid objects.
 
    -----------------------------------------------
    --  Control-flow graph of statements/bodies  --
