@@ -110,6 +110,10 @@ install:
 	@echo "Generate Coq files by preprocessing context files:"
 	$(MAKE) -C include generate
 	$(CP) include/src/*.ad? $(INCLUDEDIR)
+	mkdir -p $(INCLUDEDIR)/full
+	mkdir -p $(INCLUDEDIR)/light
+	$(CP) include/src/full/*.ad? $(INCLUDEDIR)/full
+	$(CP) include/src/light/*.ad? $(INCLUDEDIR)/light
 	$(CP) include/*.gpr $(LIBDIR)
 	$(CP) include/*.gpr.templ $(LIBDIR)
 	$(CP) include/proof $(LIBDIR)
