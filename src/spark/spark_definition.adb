@@ -12443,6 +12443,7 @@ package body SPARK_Definition is
             | E_Task_Body
             | E_Void
             | Generic_Unit_Kind
+            | E_Assertion_Level
          =>
             raise Program_Error;
       end case;

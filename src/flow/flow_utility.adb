@@ -3526,7 +3526,13 @@ package body Flow_Utility is
                --  pragma Assert (not Ctx.Assume_In_Expression);
                null;
 
-            when E_Block | E_Exception | E_Label | E_Loop | E_Package =>
+            when E_Block
+               | E_Exception
+               | E_Label
+               | E_Loop
+               | E_Package
+               | E_Assertion_Level
+            =>
                --  Nothing to do for these directly; we get them while
                --  traversing a list of statements or an identifier.
                null;
