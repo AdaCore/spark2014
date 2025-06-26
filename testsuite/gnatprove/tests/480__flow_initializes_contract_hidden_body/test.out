@@ -1,0 +1,3 @@
+external.ads:4:03: info: flow dependencies proved
+test.ads:6:29: medium: initialization of "Test.State" does not depend on "External.State" (SPARK RM 7.1.5(11))
+test2.ads:6:29: medium: initialization of "Test2.State" does not depend on "External.State" (SPARK RM 7.1.5(11))
