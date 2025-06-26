@@ -1654,10 +1654,12 @@ Various kinds of ghost code are useful in different situations:
   parameters or global outputs.
 * `Ghost packages` provide a means to encapsulate all types and operations for
   a specific kind of ghost code.
-* `Imported ghost subprograms` are used to provide placeholders for properties
-  that are defined in a logical language, when using manual proof.
 * `Ghost generic formal parameters` are used to pass on ghost entities (types,
   objects, subprograms, packages) as parameters in a generic instantiation.
+* `Ghost models` work as an abstraction layer by providing a simplified view of
+  complex part of the program that can be used in contracts.
+* `Non-executable ghost code` represents concepts that cannot (easily) be
+  computed in the implementation.
 
 When the program is compiled with assertions (for example with switch
 ``-gnata`` in |GNAT Pro|), ghost code is executed like normal code. Ghost code
@@ -1948,54 +1950,6 @@ in a with-clause like for a non-ghost unit:
       ...
    end Account;
 
-Imported Ghost Subprograms
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-When using manual proof (see :ref:`GNATprove and Manual Proof`), it may be more
-convenient to define some properties in the logical language of the prover
-rather than in |SPARK|. In that case, ghost functions might be marked as
-imported, so that no implementation is needed. For example, the ghost procedure
-``Append_To_Log`` seen previously may be defined equivalently as a ghost
-imported function as follows:
-
-.. code-block:: ada
-
-   function Append_To_Log (Log : Log_type; Incr : in Integer) return Log_Type with
-     Ghost,
-     Import;
-
-where ``Log_Type`` is an Ada type used also as placeholder for a type in the
-logical language of the prover. To avoid any inconsistency between the
-interpretations of ``Log_Type`` in |GNATprove| and in the manual prover, it is
-preferable in such a case to mark the definition of ``Log_Type`` as not in
-|SPARK|, so that |GNATprove| does not make any assumptions on its content. This
-can be achieved by defining ``Log_Type`` as a private type and marking the
-private part of the enclosing package as not in |SPARK|:
-
-.. code-block:: ada
-
-   package Logging with
-     SPARK_Mode,
-     Ghost
-   is
-      type Log_Type is private;
-
-      function Append_To_Log (Log : Log_type; Incr : in Integer) return Log_Type with
-        Import;
-
-      ...
-
-   private
-      pragma SPARK_Mode (Off);
-
-      type Log_Type is new Integer;  --  Any definition is fine here
-   end Logging;
-
-A ghost imported subprogram cannot be executed, so calls to ``Append_To_Log``
-above should not be enabled during compilation, otherwise a compilation error
-is issued. Note also that |GNATprove| will not attempt proving the contract of
-a ghost imported subprogram, as it does not have its body.
-
 Ghost Generic Formal Parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -2204,6 +2158,64 @@ be stated as a postcondition of this function:
 
 More complex examples of models of data structure can be found in the
 :ref:`Formal Containers Library`.
+
+Non-Executable Ghost Code
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+It is possible to define entities
+that are not meant to be executed at all. This is useful to represent concepts
+that are useful in specification but that we cannot - or don't want to -
+compute at runtime. This might include logical concepts, such as unbounded
+quantification - using :ref:`Aspect and Pragma Iterable` - or logical equality
+(see :ref:`Annotation for Accessing the Logical Equality for a Type`), as well
+as parts of the program whose model is not accessible from the language, for
+example the file system (see :ref:`Input-Output Libraries`) or a memory model.
+
+To be usable inside contracts, these concepts need to be declared as Ada
+entities but their body or actual representation does not
+matter as they are not meant to be executed. In particular, ghost subprograms
+might be marked as imported, so an error will be raised at link time if a
+call is inadvertently enabled, or their bodies might be marked as SPARK_Mode Off
+and raise an exception. Ghost state might be represented using an abstract state
+on a package whose body is Off with no refinement or thanks to a private type
+with a dummy definition.
+
+For example, the ghost procedure ``Append_To_Log`` seen previously may be
+defined equivalently as a ghost imported function as follows:
+
+.. code-block:: ada
+
+   function Append_To_Log (Log : Log_type; Incr : in Integer) return Log_Type with
+     Ghost,
+     Import;
+
+where ``Log_Type`` is a private type whose actual defintion is hidden from
+|GNATprove|. This
+can be achieved by defining ``Log_Type`` as a private type and marking the
+private part of the enclosing package as not in |SPARK|:
+
+.. code-block:: ada
+
+   package Logging with
+     SPARK_Mode,
+     Ghost
+   is
+      type Log_Type is private;
+
+      function Append_To_Log (Log : Log_type; Incr : in Integer) return Log_Type with
+        Import;
+
+      ...
+
+   private
+      pragma SPARK_Mode (Off);
+
+      type Log_Type is new Integer;  --  Any definition is fine here
+   end Logging;
+
+Note that non-executable ghost subprograms should be used with care as
+|GNATprove| will not attempt to verify them as it does not have access to an
+implementation.
 
 Removal of Ghost Code
 ^^^^^^^^^^^^^^^^^^^^^
