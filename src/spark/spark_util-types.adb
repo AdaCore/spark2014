@@ -274,11 +274,12 @@ package body SPARK_Util.Types is
                     & " is");
             end;
          when N_Selected_Component =>
-            Scalar_Record_Component_Size
+            Record_Component_Size
               (Retysp (Etype (Prefix (Obj))),
                Entity (Selector_Name (Obj)),
                Size,
-               Size_Str);
+               Size_Str,
+               Explanation);
          when N_Identifier | N_Expanded_Name | N_Defining_Identifier =>
             declare
                Ent : constant Entity_Id :=
@@ -2342,11 +2343,12 @@ package body SPARK_Util.Types is
    -- Scalar_Record_Component_Size --
    ----------------------------------
 
-   procedure Scalar_Record_Component_Size
-     (Typ      : Type_Kind_Id;
-      Comp     : Entity_Id;
-      Size     : out Uint;
-      Size_Str : out Unbounded_String)
+   procedure Record_Component_Size
+     (Typ         : Type_Kind_Id;
+      Comp        : Entity_Id;
+      Size        : out Uint;
+      Size_Str    : out Unbounded_String;
+      Explanation : out Unbounded_String)
    is
       Comp_Ty : constant Type_Kind_Id := Retysp (Etype (Comp));
    begin
@@ -2362,17 +2364,21 @@ package body SPARK_Util.Types is
       --  ARM K.2 225
 
       elsif Is_Packed (Typ) then
-         Size := RM_Size (Comp_Ty);
-         Size_Str :=
-           To_Unbounded_String
-             (Type_Name_For_Explanation (Comp_Ty) & " has Size");
+         Check_Known_RM_Size (Comp_Ty, Size, Explanation);
+         if Present (Size) then
+            Size_Str :=
+              To_Unbounded_String
+                (Type_Name_For_Explanation (Comp_Ty) & " has Size");
+         end if;
       else
-         Size := Esize (Retysp (Etype (Comp)));
-         Size_Str :=
-           To_Unbounded_String
-             (Type_Name_For_Explanation (Comp_Ty) & " has Object_Size");
+         Check_Known_Esize (Comp_Ty, Size, Explanation);
+         if Present (Size) then
+            Size_Str :=
+              To_Unbounded_String
+                (Type_Name_For_Explanation (Comp_Ty) & " has Object_Size");
+         end if;
       end if;
-   end Scalar_Record_Component_Size;
+   end Record_Component_Size;
 
    -------------------------
    -- Static_Array_Length --
@@ -2795,10 +2801,11 @@ package body SPARK_Util.Types is
                Size_Str := Null_Unbounded_String;
                declare
                   Comp_Ty : constant Type_Kind_Id := Retysp (Etype (Comp));
+                  Unused   : Unbounded_String;
                begin
                   if Is_Scalar_Type (Comp_Ty) then
-                     Scalar_Record_Component_Size
-                       (Typ, Comp, Used_Size, Size_Str);
+                     Record_Component_Size
+                       (Typ, Comp, Used_Size, Size_Str, Unused);
                   end if;
                   Result := Type_Has_Only_Valid_Values
                     (Comp_Ty, Used_Size, To_String (Size_Str));
