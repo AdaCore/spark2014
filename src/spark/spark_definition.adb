@@ -12869,6 +12869,11 @@ package body SPARK_Definition is
         or else not Type_Has_Only_Valid_Values (Rep_Ty, Uint_0, "").Ok
       then
          Potentially_Invalid.Include (Base_Retysp (Rep_Ty));
+
+         --  Do not abstract away record types with potentially invalid values
+         --  as we don't handle potentially invalid values of private types.
+
+         Unused_Records.Exclude (Base_Retysp (Rep_Ty));
       end if;
 
    end Mark_Potentially_Invalid_Type;
