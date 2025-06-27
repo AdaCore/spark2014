@@ -1,0 +1,5 @@
+test.adb:5:06: info: data dependencies proved
+test.adb:6:14: info: postcondition proved (Trivial: 1 VC)
+test.adb:10:22: medium: assertion might fail [possible fix: subprogram at line 4 should mention G in a precondition]
+test.adb:21:07: warning: statement has no effect
+test.adb:22:07: info: only expected exception raised (CVC5: 1 VC)
