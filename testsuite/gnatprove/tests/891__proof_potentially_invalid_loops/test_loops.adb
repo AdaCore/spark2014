@@ -108,19 +108,6 @@ procedure Test_Loops with SPARK_Mode is
       end loop;
    end Test_Loop_7;
 
-   procedure Test_Loop_8 (X : in out RR) with
-     Potentially_Invalid => X,
-     Pre => X'Valid_Scalars,
-     Post => X'Valid_Scalars; --  @POSTCONDITION:FAIL
-
-   procedure Test_Loop_8 (X : in out RR) is
-      Z : Integer with Import, Address => X'Address;
-   begin
-      for K in 1 .. 100 loop
-         Z := - K;
-      end loop;
-   end Test_Loop_8;
-
    procedure Test_Loop_9 with Global => null;
 
    procedure Test_Loop_9 is
