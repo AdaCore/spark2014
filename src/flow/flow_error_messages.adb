@@ -1966,7 +1966,7 @@ package body Flow_Error_Messages is
                if Tag = VC_Initialization_Check
                  and then V.Kind = Direct_Mapping
                  and then Nkind (V.Node) in N_Entity
-                 and then Has_Relaxed_Initialization (V.Node)
+                 and then Obj_Has_Relaxed_Init (V.Node)
                then
                   Append (Expl, "'Initialized");
                end if;
