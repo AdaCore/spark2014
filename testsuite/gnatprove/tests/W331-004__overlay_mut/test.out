@@ -1,7 +1,9 @@
 firstbyte.adb:13:17: info: initialization of "output" proved
 firstbyte.adb:15:08: info: address in address clause is compatible with object alignment (Trivial)
 firstbyte.adb:15:08: info: object is suitable for aliasing via address clause (Trivial)
+firstbyte.adb:15:08: info: type is suitable as source for unchecked conversion (Trivial)
 firstbyte.adb:15:64: info: object is suitable for aliasing via address clause (Trivial)
+firstbyte.adb:15:64: info: type is suitable as source for unchecked conversion (Trivial)
 firstbyte.adb:15:64: info: types of aliased objects have the same size (Trivial)
 firstbyte.adb:20:15: info: add a contract to analyze it separately from calling contexts
 firstbyte.adb:20:15: info: local subprogram "temp_function2" only analyzed in the context of calls [info-unrolling-inlining]
@@ -13,7 +15,9 @@ firstbyte.adb:31:03: warning: references to the "Img" attribute are handled in a
 firstbyte_err.adb:13:17: info: initialization of "output" proved
 firstbyte_err.adb:15:08: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: input must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
 firstbyte_err.adb:15:08: info: object is suitable for aliasing via address clause (Trivial)
+firstbyte_err.adb:15:08: info: type is suitable as source for unchecked conversion (Trivial)
 firstbyte_err.adb:15:64: info: object is suitable for aliasing via address clause (Trivial)
+firstbyte_err.adb:15:64: info: type is suitable as source for unchecked conversion (Trivial)
 firstbyte_err.adb:15:64: info: types of aliased objects have the same size (Trivial)
 firstbyte_err.adb:20:15: info: add a contract to analyze it separately from calling contexts
 firstbyte_err.adb:20:15: info: local subprogram "temp_function2" only analyzed in the context of calls [info-unrolling-inlining]
