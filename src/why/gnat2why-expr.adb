@@ -20938,6 +20938,10 @@ package body Gnat2Why.Expr is
                      --  SPARK objects.
 
                      if Supported_Alias then
+                        Suitable_For_UC_Source (Obj_Ty, Valid, Explanation);
+                        Emit_Static_Proof_Result
+                          (Decl, VC_UC_Source, Valid, Current_Subp,
+                           Explanation => To_String (Explanation));
                         Suitable_For_UC_Target_Overlay_Wrap
                           (Typ            => Obj_Ty,
                            Obj            => Obj,
@@ -20985,6 +20989,12 @@ package body Gnat2Why.Expr is
                            Addr_Ty     : constant Type_Kind_Id :=
                              Retysp (Etype (Pref));
                         begin
+
+                           Suitable_For_UC_Source
+                             (Addr_Ty, Valid, Explanation);
+                           Emit_Static_Proof_Result
+                             (Address, VC_UC_Source, Valid, Current_Subp,
+                              Explanation => To_String (Explanation));
                            --  If Aliased_Object is constant, it is OK if if
                            --  its type permits invalid values as the alias
                            --  cannot be used to modify it.

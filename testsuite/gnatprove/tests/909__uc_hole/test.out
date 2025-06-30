@@ -1,17 +1,23 @@
 b.adb:8:04: high: object is unsuitable for aliasing via address clause [possible explanation: type U8 has 256 values but object Y has size 32, which allows 16#1000_0000_0# possible values; aliased object could have invalid values [SPARK RM 13.7]]
 b.adb:8:04: info: address in address clause is compatible with object alignment (Trivial)
+b.adb:8:04: info: type is suitable as source for unchecked conversion (Trivial)
 b.adb:8:47: info: object is suitable for aliasing via address clause (Trivial)
+b.adb:8:47: info: type is suitable as source for unchecked conversion (Trivial)
 b.adb:8:47: info: types of aliased objects have the same size (Trivial)
 b.adb:11:19: info: assertion proved (Trivial: 1 VC)
 b.adb:11:19: warning: attribute "Valid" is assumed to return True [attribute-valid-always-true]
 cover.adb:7:03: info: address in address clause is compatible with object alignment (Trivial)
 cover.adb:7:03: info: object is suitable for aliasing via address clause (Trivial)
+cover.adb:7:03: info: type is suitable as source for unchecked conversion (Trivial)
 cover.adb:7:27: info: object is suitable for aliasing via address clause (Trivial)
+cover.adb:7:27: info: type is suitable as source for unchecked conversion (Trivial)
 cover.adb:7:27: info: types of aliased objects have the same size (Trivial)
 cover.adb:15:03: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: unknown alignment for object] [possible fix: overlaying object should have an Alignment representation clause]
 cover.adb:15:03: high: object with non-trivial address clause or prefix of the 'Address reference does not have asynchronous writers
 cover.adb:15:03: info: object is suitable for aliasing via address clause (Trivial)
+cover.adb:15:03: info: type is suitable as source for unchecked conversion (Trivial)
 cover.adb:15:30: info: object is suitable for aliasing via address clause (Trivial)
+cover.adb:15:30: info: type is suitable as source for unchecked conversion (Trivial)
 cover.adb:15:30: info: types of aliased objects have the same size (Trivial)
 cover.adb:15:35: warning: alignment of object is not precisely known [imprecise-align]
 cover.adb:18:19: info: assertion proved (Trivial)
