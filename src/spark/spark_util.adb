@@ -5335,7 +5335,7 @@ package body SPARK_Util is
            Unique_Defining_Entity (Enclosing_Body);
          Body_Exit_Vertex : constant Vertex :=
            Vertex'(Kind => Body_Exit, Node => Body_Entity);
-         --  Target of return/exiting raises.
+         --  Target of return/exiting raises
 
          procedure Add_Edge (Src : Vertex; Tgt : Vertex);
          --  Add control edge from Src to Tgt.
@@ -5384,6 +5384,13 @@ package body SPARK_Util is
          --         for execution of the sequence, output value is the vertex
          --         at the start of the sequence.
 
+         procedure Connect_Transfer_Of_Control (Stmt : Node_Id);
+         --  For Stmt a statement or function call that may cause
+         --  transfer-of-control, links its completion (typically the Entrance
+         --  vertex, except for extended return) to all the potential
+         --  targets of the transfer of control. This takes care of linking the
+         --  required finalization sequences in between.
+
          procedure Insert_Neighborhood (V : Vertex; Depth : Natural);
          --  Insert new neighborhood for vertex V in All_Graphs,
          --  at given depth.
@@ -5425,13 +5432,13 @@ package body SPARK_Util is
                --  then we will never reach any meaningful exit path
                --  from it, so no edge needs to be added to the graph.
 
-               pragma Assert (Start.Kind = Plain);
+               pragma Assert (Start.Kind = Entrance);
                goto Finish;
             end if;
 
             case Nkind (Stmt) is
                when N_Block_Statement =>
-                  Exit_Temp := Vertex'(Kind => Block_Exit, Node => Stmt);
+                  Exit_Temp := Vertex'(Kind => Completion, Node => Stmt);
                   Insert_Neighborhood (Exit_Temp, Depth + 1);
                   Add_Edge (Exit_Temp, Exit_Vertex);
                   Cache_For_Statement
@@ -5486,21 +5493,7 @@ package body SPARK_Util is
                      then
                         --  Connect exceptional exits
 
-                        for Handler in Reachable_Handlers (Exc_Node).Iterate
-                        loop
-                           declare
-                              H_Node : constant Node_Id :=
-                                Node_Lists.Element (Handler);
-                           begin
-                              Add_Edge
-                                (Start,
-                                 (if Nkind (H_Node) = N_Subprogram_Body
-                                  then Body_Exit_Vertex
-                                  else
-                                    Starting_Vertex
-                                      (First (Statements (H_Node)))));
-                           end;
-                        end loop;
+                        Connect_Transfer_Of_Control (Exc_Node);
                      end if;
 
                      if Nkind (Stmt) /= N_Raise_Statement
@@ -5517,30 +5510,55 @@ package body SPARK_Util is
                   end;
 
                when N_Exit_Statement =>
-                  Add_Edge
-                    (Start,
-                     Loop_Exit_Nodes.Element
-                       (Loop_Entity_Of_Exit_Statement (Stmt)));
+                  Connect_Transfer_Of_Control (Stmt);
                   if Present (Condition (Stmt)) then
                      Add_Edge (Start, Exit_Vertex);
                   end if;
 
                when N_Extended_Return_Statement =>
-                  --  Return transfers to body's exit,
-                  --  ignore Exit_Vertex and use Body_Exit instead
 
-                  Exit_Temp := Body_Exit_Vertex;
+                  Exit_Temp := Vertex'(Kind => Completion, Node => Stmt);
+                  Insert_Neighborhood (Exit_Temp, Depth + 1);
                   Cache_For_Statement
                     (Handled_Statement_Sequence (Stmt), Depth + 1, Exit_Temp);
                   Cache_For_Statement_List
                     (Return_Object_Declarations (Stmt), Depth + 1, Exit_Temp);
                   Add_Edge (Start, Exit_Temp);
+                  Connect_Transfer_Of_Control (Stmt);
 
                when N_Goto_Statement =>
-                  Add_Edge
-                    (Start, Goto_Targets.Element (Entity (Name (Stmt))));
+                  Connect_Transfer_Of_Control (Stmt);
 
                when N_Handled_Sequence_Of_Statements =>
+
+                  Exit_Temp := Exit_Vertex;
+
+                  --  If there is a finally section, must process it first,
+                  --  so that vertices are inserted.
+
+                  declare
+                     Final_Section : constant List_Id :=
+                       Finally_Statements (Stmt);
+                  begin
+                     if Present (Final_Section) then
+                        declare
+                           Fin_Entry : constant Vertex :=
+                             Vertex'(Kind => Final_Entrance, Node => Stmt);
+                           Fin_Exit  : constant Vertex :=
+                             Vertex'(Kind => Final_Completion, Node => Stmt);
+                        begin
+                           Insert_Neighborhood (Fin_Entry, Depth + 1);
+                           Insert_Neighborhood (Fin_Exit, Depth + 2);
+                           Add_Edge (Fin_Exit, Exit_Temp);
+                           Exit_Temp := Fin_Exit;
+                           Cache_For_Statement_List
+                             (Final_Section, Depth + 2, Exit_Temp);
+                           Add_Edge (Fin_Entry, Exit_Temp);
+                           Exit_Temp := Fin_Entry;
+                        end;
+                     end if;
+                  end;
+
                   declare
                      Handler : Node_Id :=
                        First_Non_Pragma (Exception_Handlers (Stmt));
@@ -5549,13 +5567,15 @@ package body SPARK_Util is
                      --  vertices are inserted.
 
                      while Present (Handler) loop
-                        Exit_Temp := Exit_Vertex;
-                        Cache_For_Statement_List
-                          (Statements (Handler), Depth + 1, Exit_Temp);
-                        Next_Non_Pragma (Handler);
+                        declare
+                           Dummy : Vertex := Exit_Temp;
+                        begin
+                           Cache_For_Statement_List
+                             (Statements (Handler), Depth + 1, Dummy);
+                           Next_Non_Pragma (Handler);
+                        end;
                      end loop;
 
-                     Exit_Temp := Exit_Vertex;
                      Cache_For_Statement_List
                        (Statements (Stmt), Depth + 1, Exit_Temp);
                      Add_Edge (Start, Exit_Temp);
@@ -5626,9 +5646,8 @@ package body SPARK_Util is
                   end;
 
                when N_Simple_Return_Statement =>
-                  --  Return directly connects to body exit
 
-                  Add_Edge (Start, Body_Exit_Vertex);
+                  Connect_Transfer_Of_Control (Stmt);
 
                when N_Ignored_In_SPARK
                   | N_Itype_Reference
@@ -5681,6 +5700,117 @@ package body SPARK_Util is
             end loop;
          end Cache_For_Statement_List;
 
+         ---------------------------------
+         -- Connect_Transfer_Of_Control --
+         ---------------------------------
+
+         procedure Connect_Transfer_Of_Control (Stmt : Node_Id) is
+            function Enclosing_Stmt (Call : Node_Id) return Node_Id
+            renames Enclosing_Statement_Of_Call_To_Function_With_Side_Effects;
+            Preceding : Vertex :=
+              Vertex'
+                (Node =>
+                   (if Nkind (Stmt) = N_Function_Call
+                    then Enclosing_Stmt (Stmt)
+                    else Stmt),
+                 Kind =>
+                   (if Nkind (Stmt) = N_Extended_Return_Statement
+                    then Completion
+                    else Entrance));
+
+            procedure Connect_Scope_Finalization (Scop : Node_Id);
+            --  Connect any finalization associated to Scop to Preceding,
+            --  and update Preceding to the completion of that finalization.
+
+            procedure Connect_Target
+              (Destination : Node_Id; Exc_Set : Exception_Sets.Set);
+            --  Connect Preceding to Destination
+
+            function Target_Vertex (Destination : Node_Id) return Vertex;
+            --  Convert target to the correct vertex
+
+            procedure Do_Connect is new
+              Iter_Exited_Scopes
+                (Process => Connect_Scope_Finalization,
+                 Stop    => Connect_Target);
+            --  Connect everything
+
+            --------------------------------
+            -- Connect_Scope_Finalization --
+            --------------------------------
+
+            procedure Connect_Scope_Finalization (Scop : Node_Id) is
+            begin
+               case Nkind (Scop) is
+                  when N_Handled_Sequence_Of_Statements =>
+                     if Present (Finally_Statements (Scop)) then
+                        declare
+                           Fin_Entry : constant Vertex :=
+                             Vertex'(Kind => Final_Entrance, Node => Scop);
+                           Fin_Exit  : constant Vertex :=
+                             Vertex'(Kind => Final_Completion, Node => Scop);
+                        begin
+                           Add_Edge (Preceding, Fin_Entry);
+                           Preceding := Fin_Exit;
+                        end;
+                     end if;
+
+                  when others =>
+                     null;
+               end case;
+            end Connect_Scope_Finalization;
+
+            --------------------
+            -- Connect_Target --
+            --------------------
+
+            procedure Connect_Target
+              (Destination : Node_Id; Exc_Set : Exception_Sets.Set)
+            is
+               pragma Unreferenced (Exc_Set);
+            begin
+               Add_Edge (Preceding, Target_Vertex (Destination));
+            end Connect_Target;
+
+            -------------------
+            -- Target_Vertex --
+            -------------------
+
+            function Target_Vertex (Destination : Node_Id) return Vertex is
+            begin
+               case Nkind (Destination) is
+                  when N_Loop_Statement =>
+                     return
+                       Loop_Exit_Nodes.Element
+                         (Entity (Identifier (Destination)));
+
+                  when N_Exception_Handler =>
+                     return Starting_Vertex (First (Statements (Destination)));
+
+                  when N_Extended_Return_Statement =>
+                     return Vertex'(Kind => Completion, Node => Destination);
+
+                  when N_Entity =>
+                     case Ekind (Destination) is
+                        when E_Label =>
+                           return Goto_Targets.Element (Destination);
+
+                        when others =>
+                           pragma Assert (Destination = Body_Entity);
+                           return Body_Exit_Vertex;
+                     end case;
+
+                  when others =>
+                     raise Program_Error;
+               end case;
+            end Target_Vertex;
+
+            --  Start of processing for Connect_Transfer_Of_Control
+
+         begin
+            Do_Connect (Stmt);
+         end Connect_Transfer_Of_Control;
+
          -------------------------
          -- Insert_Neighborhood --
          -------------------------
@@ -5698,14 +5828,18 @@ package body SPARK_Util is
 
       begin
          declare
-            Body_Stmt  : constant Node_Id :=
+            Body_Stmt      : constant Node_Id :=
               Handled_Statement_Sequence (Enclosing_Body);
-            Body_Start : constant Vertex :=
-              Vertex'(Kind => Body_Entry, Node => Body_Entity);
-            Exit_Temp  : Vertex := Body_Exit_Vertex;
+            Body_Start     : constant Vertex :=
+              Vertex'(Kind => Entrance, Node => Body_Entity);
+            Body_Completes : constant Vertex :=
+              Vertex'(Kind => Completion, Node => Body_Entity);
+            Exit_Temp      : Vertex := Body_Completes;
          begin
             Insert_Neighborhood (Body_Exit_Vertex, 1);
+            Insert_Neighborhood (Body_Completes, 1);
             Insert_Neighborhood (Body_Start, 0);
+            Add_Edge (Body_Completes, Body_Exit_Vertex);
 
             --  Package bodies might not have Body_Stmt
 
@@ -5765,19 +5899,6 @@ package body SPARK_Util is
 
       end Predecessors;
 
-      ---------------------
-      -- Starting_Vertex --
-      ---------------------
-
-      function Starting_Vertex (N : Node_Id) return Vertex
-      is (Vertex'
-            (Kind =>
-               (case Nkind (N) is
-                  when N_Entity => Body_Entry,
-                  when N_Loop_Statement => Loop_Init,
-                  when others => Plain),
-             Node => N));
-
       -----------------
       -- Vertex_Hash --
       -----------------
@@ -5789,13 +5910,13 @@ package body SPARK_Util is
          Hash :=
            Hash
            + (case X.Kind is
-                when Plain => 0,
-                when Block_Exit => 1,
-                when Loop_Init => 2,
-                when Loop_Cond => 3,
-                when Loop_Iter => 4,
-                when Body_Entry => 5,
-                when Body_Exit => 6);
+                when Entrance => 0,
+                when Completion => 1,
+                when Loop_Cond => 2,
+                when Loop_Iter => 3,
+                when Body_Exit => 4,
+                when Final_Entrance => 5,
+                when Final_Completion => 6);
          return Hash;
       end Vertex_Hash;
 

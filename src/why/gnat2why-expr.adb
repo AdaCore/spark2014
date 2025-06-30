@@ -19597,7 +19597,7 @@ package body Gnat2Why.Expr is
          Append
            (Core,
             +Havoc_Borrowed_And_Check_No_Leaks_From_Scope
-              (N, Vertex'(Kind => Block_Exit, Node => N)));
+              (N, Vertex'(Kind => Completion, Node => N)));
 
          return Transform_Declarations_Block (Declarations (N), Core, Params);
       else

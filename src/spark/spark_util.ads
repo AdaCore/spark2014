@@ -1558,42 +1558,74 @@ package SPARK_Util is
       --  Local Graphs are indexed by nodes which are either statements
       --  or entities that have body.
 
+      subtype Has_Finalization is Node_Id
+      with
+        Predicate =>
+          (declare
+             N : constant Node_Id := Has_Finalization;
+           begin
+             Nkind (N) = N_Handled_Sequence_Of_Statements
+             and then Present (Finally_Statements (N)));
+      --  Construct with potentially attached finalization activities tracked
+      --  in the graph. Currently, only finally sections are tracked as they
+      --  are the only effectful ones. End-of-borrowing is treated like a
+      --  finalization in proof, but has essentially no side-effect, so we do
+      --  not need to track it explicitly.
+
       type Vertex_Kind is
-        (Plain,
-         Block_Exit,
-         Loop_Init,
+        (Entrance,
+         Completion,
          Loop_Cond,
          Loop_Iter,
-         Body_Entry,
-         Body_Exit);
-      --  Vertex kinds that can occur in the graph.
-      --  * Plain vertices: either local declarations or non-loop statements.
-      --    Those correspond to the execution from the start of the
-      --    local declaration/statements, and the outgoing edges
-      --    corresponds to all potential exit cases.
-      --  * Block_Exit vertices: represent the standard exit of a
-      --    block statement. Used for analysis that impacts post-processing
-      --    at end of scope.
-      --  * Loop vertices: those correspond to the three distinguished
-      --    parts of a loop statement.
-      --    + Loop_Init: the initialization, before the loop starts.
-      --      Performs declaration of (implicit) loop variable if any
-      --      and initialization of any (implicit) constant values
+         Body_Exit,
+         Final_Entrance,
+         Final_Completion);
+      --  Vertex kinds that can occur in the graph. The execution behavior
+      --  can be thought as being attached to outgoing edges.
+      --  * Entrance vertices: corresponds to the execution at the start of
+      --    a construct. For the vast majority of the construct, this is the
+      --    only vertex associated with the construct.
+      --    There is also an Entrance vertex for entities with a body,
+      --    corresponding to the entry point.
+      --  * Completion vertices: corresponds to the regular completion of
+      --    a construct. This is only present for non-loop statements
+      --    which may have attached finalization activities, that is:
+      --    + Handled sequence of statements, due to potential explicit finally
+      --      The completion vertex corresponds to regular completion of the
+      --      main sequence, this does not cover completion of individual
+      --      handlers and precedes the finally block if any.
+      --    + Anything that might have attached declarations
+      --      - Block statements
+      --      - Extended return statements
+      --      - Entity body
+      --    Loop statements are treated separately.
+      --  * Loop vertices: The structure of a loop is as follow:
+      --    + Entrance: the initialization, before the loop starts.
+      --      Performs initialization of any (implicit) constant values
       --      needed for iteration (example: evaluation of loop bounds,
-      --      or of Loop_Entry references).
+      --      or of Loop_Entry references), and initializing any implicit
+      --      loop cursor. This goes to Loop_Cond.
       --    + Loop_Cond: the condition, the first vertex of the actual loop,
       --      right after initialization. Corresponds to declaring
       --      the loop index if any (a constant) and testing the exit
-      --      condition.
+      --      condition. This is also the vertex at which the loop may instead
+      --      complete, in case the condition fails. As such, a Completion
+      --      vertex would be redundant.
       --    + Loop_Iter: the iteration, the last vertex of the actual loop,
-      --      right before returning to initialization. Corresponds to
-      --      'incrementation' of (implicit) loop variable (if any).
+      --      right before returning to Loop_Cond. Corresponds to
+      --      regular completion of the loop statements, right before loop
+      --      cursor (if any) is increased. This can be thought as the
+      --      Completion vertex for the loop body.
       --    The loop body is made up by vertices of internal statements.
-      --  * Source vertices (Body_Entry):
-      --    those corresponds to the entry point of bodies.
       --  * Sink vertices (Body_Exit):
       --    those corresponds to the exit paths of a body.
       --    All exit paths (regular and exceptionals) are merged together.
+      --    Body_Exit comes after everything associated to the body is done.
+      --    In particular, it is posterior to the body's completion vertex.
+      --  * Finalization interface vertices (Final_Entrance,Final_Completion)
+      --    Corresponds to entrance and regular completion vertices for a
+      --    a finalization subgraph. This currently cover only finally
+      --    sections.
 
       type Vertex is record
          Kind : Vertex_Kind;
@@ -1602,18 +1634,26 @@ package SPARK_Util is
       with
         Predicate =>
           (case Vertex.Kind is
-             when Plain =>
-               Nkind (Vertex.Node) not in N_Loop_Statement | N_Entity,
-             when Block_Exit => Nkind (Vertex.Node) in N_Block_Statement,
-             when Loop_Init .. Loop_Iter => Vertex.Node in N_Loop_Statement_Id,
-             when Body_Entry .. Body_Exit => Nkind (Vertex.Node) in N_Entity);
+             when Entrance => True,
+             when Completion =>
+               Nkind (Vertex.Node)
+               in N_Block_Statement
+                | N_Handled_Sequence_Of_Statements
+                | N_Extended_Return_Statement
+                | N_Entity,
+             when Loop_Cond | Loop_Iter => Vertex.Node in N_Loop_Statement_Id,
+             when Body_Exit => Nkind (Vertex.Node) in N_Entity,
+             when Final_Entrance | Final_Completion =>
+               Vertex.Node in Has_Finalization);
 
       function Starting_Vertex (N : Node_Id) return Vertex
-      with
-        Post => Starting_Vertex'Result.Kind in Plain | Loop_Init | Body_Entry;
+      is (Kind => Entrance, Node => N);
       --  Get starting vertex of construct/entity.
       --  For nodes which are not Graph_Id (e.g local declarations),
       --  this is the (plain) individual vertex corresponding to the node.
+      --  For nodes which do not have a matching graph (e.g local
+      --  declarations), this is the only individual vertex corresponding to
+      --  the node.
 
       function Vertex_Hash (X : Vertex) return Ada.Containers.Hash_Type;
 
