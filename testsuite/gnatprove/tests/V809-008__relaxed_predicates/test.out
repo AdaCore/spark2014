@@ -182,7 +182,7 @@ test_scalar_preds.adb:59:06: info: data dependencies proved
 test_scalar_preds.adb:63:17: info: predicate check proved (CVC5: 1 VC)
 test_scalar_preds.adb:71:06: info: data dependencies proved
 test_scalar_preds.adb:74:22: medium: assertion might fail [possible fix: subprogram at line 70 should mention X in a precondition]
-test_scalar_preds.adb:74:35: medium: initialization check might fail [possible fix: subprogram at line 70 should mention X in a precondition]
+test_scalar_preds.adb:74:35: medium: initialization check might fail [possible fix: subprogram at line 70 should mention X'Initialized in a precondition]
 test_scalar_preds.adb:78:06: info: data dependencies proved
 test_scalar_preds.adb:82:17: info: predicate check proved (CVC5: 1 VC)
 test_scalar_preds.adb:89:06: info: data dependencies proved
@@ -212,7 +212,7 @@ test_scalar_preds.adb:149:22: medium: assertion might fail [possible fix: subpro
 test_scalar_preds.adb:149:35: medium: initialization check might fail [possible fix: subprogram at line 144 should mention X'Initialized in a precondition]
 test_scalar_preds.adb:156:06: info: data dependencies proved
 test_scalar_preds.adb:159:22: medium: assertion might fail [possible fix: subprogram at line 155 should mention X in a precondition]
-test_scalar_preds.adb:159:35: medium: initialization check might fail [possible fix: subprogram at line 155 should mention X in a precondition]
+test_scalar_preds.adb:159:35: medium: initialization check might fail [possible fix: subprogram at line 155 should mention X'Initialized in a precondition]
 test_scalar_preds.adb:165:06: info: data dependencies proved
 test_scalar_preds.adb:169:22: info: assertion proved (CVC5: 1 VC)
 test_scalar_preds.adb:169:35: info: initialization check proved (CVC5: 1 VC)
@@ -240,7 +240,7 @@ test_scalar_preds.adb:225:22: info: assertion proved (CVC5: 1 VC)
 test_scalar_preds.adb:225:35: info: initialization check proved (CVC5: 1 VC)
 test_scalar_preds.adb:232:06: info: data dependencies proved
 test_scalar_preds.adb:235:22: medium: assertion might fail [possible fix: subprogram at line 231 should mention X in a precondition]
-test_scalar_preds.adb:235:35: medium: initialization check might fail [possible fix: subprogram at line 231 should mention X in a precondition]
+test_scalar_preds.adb:235:35: medium: initialization check might fail [possible fix: subprogram at line 231 should mention X'Initialized in a precondition]
 test_scalar_preds.adb:246:06: info: data dependencies proved
 test_scalar_preds.adb:249:22: info: assertion proved (CVC5: 1 VC)
 test_scalar_preds.adb:252:21: info: initialization of "X" proved
@@ -338,7 +338,7 @@ test_scalar_preds.adb:483:16: info: initialization check proved (CVC5: 1 VC)
 test_two_preds.adb:12:04: warning: analyzing unreferenced procedure "P" [unreferenced-procedure]
 test_two_preds.adb:12:14: warning: subprogram "P" has no effect
 test_two_preds.adb:16:12: info: predicate check proved (CVC5: 1 VC)
-test_two_preds.adb:16:13: medium: initialization check might fail (e.g. when X = (F => ?, G => 0) and X.F'Initialized = False and X.G'Initialized = True) [possible fix: subprogram at line 12 should mention X in a precondition]
+test_two_preds.adb:16:13: medium: initialization check might fail (e.g. when X = (F => ?, G => 0) and X.F'Initialized = False and X.G'Initialized = True) [possible fix: subprogram at line 12 should mention X'Initialized in a precondition]
 test_two_preds.adb:22:04: warning: analyzing unreferenced procedure "P" [unreferenced-procedure]
 test_two_preds.adb:22:14: warning: subprogram "P" has no effect
 test_two_preds.adb:22:17: warning: "X" cannot be partially initialized [useless-relaxed-init-object]
