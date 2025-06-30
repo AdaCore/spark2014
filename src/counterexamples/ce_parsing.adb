@@ -62,8 +62,8 @@ package body CE_Parsing is
 
    function Parse_Cnt_Value
      (Cnt_Labels : S_String_List.List;
-      Cnt_Value : Cntexmp_Value_Ptr;
-      AST_Ty : Entity_Id) return Value_Type;
+      Cnt_Value  : Cntexmp_Value_Ptr;
+      AST_Ty     : Entity_Id) return Value_Type;
    --  Parse the Why3 counterexample value Cnt_Value
 
    function New_Item (AST_Ty : Entity_Id) return Value_Type;
@@ -102,6 +102,12 @@ package body CE_Parsing is
    --  Go over a list of raw Why3 counterexample values and transform them into
    --  a map of counterexample values. If Obj is not empty, then only consider
    --  values applying to Obj at the current line (with modifier None).
+
+   procedure Parse_Valid_Flag
+     (Cnt_Value : Cntexmp_Value_Ptr;
+      Val       : in out Value_Type);
+   --  Parse a counterexample value for a validity tree and store the valid
+   --  flags in Val.
 
    procedure Set_Boolean_Flag
      (Cnt_Value : Cntexmp_Value_Ptr; Flag : in out Opt_Boolean);
@@ -157,8 +163,7 @@ package body CE_Parsing is
          return Value_Type'
            (K      => Multidim_K,
             AST_Ty => Ty,
-            Bounds => (Dim => Natural (Number_Dimensions (Ty)), others => <>),
-            others => <>);
+            Bounds => (Dim => Natural (Number_Dimensions (Ty)), others => <>));
       elsif Is_Record_Type_In_Why (Ty) then
          return Value_Type'(K      => Record_K,
                             AST_Ty => Ty,
@@ -181,8 +186,9 @@ package body CE_Parsing is
 
    function Parse_Cnt_Value
      (Cnt_Labels : S_String_List.List;
-      Cnt_Value : Cntexmp_Value_Ptr;
-      AST_Ty : Entity_Id) return Value_Type
+      Cnt_Value  : Cntexmp_Value_Ptr;
+      AST_Ty     : Entity_Id)
+      return Value_Type
    is
       use Cntexmp_Value_Array;
       Ty  : constant Entity_Id := Retysp (AST_Ty);
@@ -394,6 +400,7 @@ package body CE_Parsing is
                         if Nb_Slices = 3 then
                            declare
                               First_Part : constant String :=
+
                                 Slice (Label_Parts, 1);
                               Third_Part : constant String :=
                                 Slice (Label_Parts, 3);
@@ -618,73 +625,88 @@ package body CE_Parsing is
       Obj       : Entity_Id;
       Value_Map : in out Entity_To_Extended_Value_Maps.Map)
    is
+      Delayed_Attributes : Cntexample_Elt_Lists.List;
+      --  Attributes whose parsing is delayed until after the CE value of the
+      --  object has been parsed if any.
 
       function Is_Multidim_Label (Label, Attr_Label : String) return Boolean is
          (for some Dim in 1 .. 4 =>
              Label = Attr_Label & " (" & Trim (Dim'Image, Left) & ")");
 
-   begin
-      for Elt of Cnt_List loop
+      procedure Parse_Counterexample_Value
+        (Elt        : Cntexample_Elt;
+         Skip_Valid : Boolean := False);
+      --  Parse a single counterexample value. If Skip_Valid is set, store
+      --  references to the 'Valid attribute in Delayed_Attributes instead
+      --  of parsing them right away.
+
+      --------------------------------
+      -- Parse_Counterexample_Value --
+      --------------------------------
+
+      procedure Parse_Counterexample_Value
+        (Elt        : Cntexample_Elt;
+         Skip_Valid : Boolean := False)
+      is
+         Elt_Name   : constant String :=
+           Ada.Strings.Unbounded.To_String (Elt.Name);
+         Name_Parts : Slice_Set;
+
+      begin
+         --  Ignore error messages
+
+         if Elt.Kind = CEE_Error_Msg then
+            raise Parse_Error;
+         end if;
+
+         --  Split Name into sequence of parts
+
+         Create (S          => Name_Parts,
+                 From       => Elt_Name,
+                 Separators => ".'",
+                 Mode       => Single);
+
          declare
-            Elt_Name   : constant String :=
-              Ada.Strings.Unbounded.To_String (Elt.Name);
-            Name_Parts : Slice_Set;
+            Nb_Slices : constant Slice_Number := Slice_Count (Name_Parts);
+            Var       : constant Entity_Id :=
+              Get_Entity_Id (False, Slice (Name_Parts, 1));
+            --  The first part is the entity to which the counterexample
+            --  applies.
+
+            Var_Modifier  : Modifier :=
+              (case Elt.Kind is
+                  when CEE_Old    => Old,
+                  when CEE_Result => Result,
+                  when others     => None);
+            Is_Attribute  : Boolean := False;
+            Current_Slice : Slice_Number := 2;
+            Current_Ty    : Entity_Id;
+            Current_Val   : Value_Access;
 
          begin
-            --  Ignore error messages
+            --  The first part shall be an entity
 
-            if Elt.Kind = CEE_Error_Msg then
+            if Var = Empty then
                raise Parse_Error;
             end if;
 
-            --  Split Name into sequence of parts
+            Current_Ty := Retysp (Etype (Var));
 
-            Create (S          => Name_Parts,
-                    From       => Elt_Name,
-                    Separators => ".'",
-                    Mode       => Single);
+            --  Attributes 'Old, 'Loop_Entry, 'Index, 'Discriminants, and
+            --  'Fields can only occur at top-level. We handle them here.
 
-            declare
-               Nb_Slices : constant Slice_Number := Slice_Count (Name_Parts);
-               Var       : constant Entity_Id :=
-                 Get_Entity_Id (False, Slice (Name_Parts, 1));
-               --  The first part is the entity to which the counterexample
-               --  applies.
+            if Nb_Slices > 1 then
+               declare
+                  Top_Level_Attr : constant String :=
+                    Slice (Name_Parts, 2);
 
-               Var_Modifier  : Modifier :=
-                 (case Elt.Kind is
-                     when CEE_Old    => Old,
-                     when CEE_Result => Result,
-                     when others     => None);
-               Is_Attribute  : Boolean := False;
-               Current_Slice : Slice_Number := 2;
-               Current_Ty    : Entity_Id;
-               Current_Val   : Value_Access;
-
-            begin
-               --  The first part shall be an entity
-
-               if Var = Empty then
-                  raise Parse_Error;
-               end if;
-
-               Current_Ty := Retysp (Etype (Var));
-
-               --  Attributes 'Old, 'Loop_Entry, 'Index, 'Discriminants, and
-               --  'Fields can only occur at top-level. We handle them here.
-
-               if Nb_Slices > 1 then
-                  declare
-                     Top_Level_Attr : constant String :=
-                       Slice (Name_Parts, 2);
-
-                  begin
-                     if Top_Level_Attr = Old_Label then
-                        Var_Modifier := Old;
-                        Current_Slice := 3;
-                     elsif Top_Level_Attr = Loop_Entry_Label then
-                        Var_Modifier := Loop_Entry;
-                        Current_Slice := 3;
+               begin
+                  if Top_Level_Attr = Old_Label then
+                     Var_Modifier := Old;
+                     Current_Slice := 3;
+                  elsif Top_Level_Attr = Loop_Entry_Label then
+                     Var_Modifier := Loop_Entry;
+                     Current_Slice := 3;
 
                      --  Go to the enclosing quantified expression to find
                      --  the Why3 type on which the quantification is done.
@@ -692,307 +714,328 @@ package body CE_Parsing is
                      --  ultimate cursor type for a container.
                      --  ??? What about multidim arrays?
 
-                     elsif Top_Level_Attr = Index_Label then
-                        Var_Modifier := Index;
+                  elsif Top_Level_Attr = Index_Label then
+                     Var_Modifier := Index;
 
-                        declare
-                           function Is_Quantified_Expr
-                             (N : Node_Id) return Boolean
-                           is
-                             (Nkind (N) = N_Quantified_Expression);
-                           function Enclosing_Quantified_Expr is new
-                             First_Parent_With_Property (Is_Quantified_Expr);
+                     declare
+                        function Is_Quantified_Expr
+                          (N : Node_Id) return Boolean
+                        is
+                          (Nkind (N) = N_Quantified_Expression);
+                        function Enclosing_Quantified_Expr is new
+                          First_Parent_With_Property (Is_Quantified_Expr);
 
-                           Container : constant Entity_Id :=
-                             Get_Container_In_Iterator_Specification
-                               (Iterator_Specification
-                                  (Enclosing_Quantified_Expr (Var)));
-                           pragma Assert (Present (Container));
+                        Container : constant Entity_Id :=
+                          Get_Container_In_Iterator_Specification
+                            (Iterator_Specification
+                               (Enclosing_Quantified_Expr (Var)));
+                        pragma Assert (Present (Container));
 
-                           Container_Typ : constant Entity_Id :=
-                             Retysp (Etype (Container));
-                        begin
-                           if Is_Array_Type (Container_Typ) then
-                              Current_Ty := Retysp
-                                (Etype (First_Index (Container_Typ)));
-                           else
-                              Current_Ty :=
-                                Ultimate_Cursor_Type (Container_Typ);
-                           end if;
-                        end;
-                        Current_Slice := 3;
+                        Container_Typ : constant Entity_Id :=
+                          Retysp (Etype (Container));
+                     begin
+                        if Is_Array_Type (Container_Typ) then
+                           Current_Ty := Retysp
+                             (Etype (First_Index (Container_Typ)));
+                        else
+                           Current_Ty :=
+                             Ultimate_Cursor_Type (Container_Typ);
+                        end if;
+                     end;
+                     Current_Slice := 3;
 
                      --  Fields and discriminants are collapsed in a single
                      --  object.
 
-                     elsif Top_Level_Attr in Discr_Label | Field_Label then
-                        Current_Slice := 3;
-                     end if;
-                  end;
-               end if;
-
-               --  If Obj is set, skip the value if it does not apply to Obj or
-               --  if the modifier is not None.
-
-               if Present (Obj)
-                 and then (Var /= Obj or else Var_Modifier /= None)
-               then
-                  raise Parse_Error;
-               end if;
-
-               --  Search for the variable Ent in Value_Map. If we already have
-               --  an association for the Var_Modifier modifier for it,
-               --  retrieve it. Otherwise, create a new one.
-
-               declare
-                  use Entity_To_Extended_Value_Maps;
-                  Position : Cursor := Value_Map.Find (Var);
-                  Inserted : Boolean;
-                  Arr      : Extended_Value_Access;
-
-               begin
-                  if Position = No_Element then
-                     Arr (Var_Modifier) :=
-                       new Value_Type'(New_Item (Current_Ty));
-                     Value_Map.Insert
-                       (Key      => Var,
-                        New_Item => Arr,
-                        Position => Position,
-                        Inserted => Inserted);
-                     pragma Assert (Inserted);
-
-                  elsif Value_Map (Position) (Var_Modifier) = null then
-                     Value_Map (Position) (Var_Modifier) :=
-                       new Value_Type'(New_Item (Current_Ty));
+                  elsif Top_Level_Attr in Discr_Label | Field_Label then
+                     Current_Slice := 3;
                   end if;
-
-                  Current_Val := Value_Map (Position) (Var_Modifier);
                end;
+            end if;
 
-               --  Now handle record fields and normal attributes
+            --  If Obj is set, skip the value if it does not apply to Obj or
+            --  if the modifier is not None.
 
-               while Current_Slice <= Nb_Slices loop
-                  declare
-                     Label  : constant String :=
-                       Slice (Name_Parts, Current_Slice);
-                     Comp_E : constant Entity_Id :=
-                       Get_Entity_Id (False, Label);
-                  begin
-                     --  If Label does not cast into an entity_id it is treated
-                     --  as an attribute.
+            if Present (Obj)
+              and then (Var /= Obj or else Var_Modifier /= None)
+            then
+               raise Parse_Error;
+            end if;
 
-                     Is_Attribute := No (Comp_E);
+            --  Search for the variable Ent in Value_Map. If we already have
+            --  an association for the Var_Modifier modifier for it,
+            --  retrieve it. Otherwise, create a new one.
 
-                     --  Fields of access types do not have node ids, they are
-                     --  hanlded as special strings.
+            declare
+               use Entity_To_Extended_Value_Maps;
+               Position : Cursor := Value_Map.Find (Var);
+               Inserted : Boolean;
+               Arr      : Extended_Value_Access;
 
-                     if Label = All_Label then
-                        if Current_Val.K /= Access_K then
-                           raise Parse_Error;
-                        else
-                           Current_Ty := Retysp
-                             (Directly_Designated_Type (Current_Ty));
+            begin
+               if Position = No_Element then
+                  Arr (Var_Modifier) :=
+                    new Value_Type'(New_Item (Current_Ty));
+                  Value_Map.Insert
+                    (Key      => Var,
+                     New_Item => Arr,
+                     Position => Position,
+                     Inserted => Inserted);
+                  pragma Assert (Inserted);
 
-                           if Current_Val.Designated_Value = null then
-                              Current_Val.Designated_Value :=
-                                new Value_Type'(New_Item (Current_Ty));
-                           end if;
-                           Current_Val := Current_Val.Designated_Value;
-                           Is_Attribute := False;
+               elsif Value_Map (Position) (Var_Modifier) = null then
+                  Value_Map (Position) (Var_Modifier) :=
+                    new Value_Type'(New_Item (Current_Ty));
+               end if;
+
+               Current_Val := Value_Map (Position) (Var_Modifier);
+            end;
+
+            --  Now handle record fields and normal attributes
+
+            while Current_Slice <= Nb_Slices loop
+               declare
+                  Label  : constant String :=
+                    Slice (Name_Parts, Current_Slice);
+                  Comp_E : constant Entity_Id :=
+                    Get_Entity_Id (False, Label);
+               begin
+                  --  If Label does not cast into an entity_id it is treated
+                  --  as an attribute.
+
+                  Is_Attribute := No (Comp_E);
+
+                  --  Fields of access types do not have node ids, they are
+                  --  hanlded as special strings.
+
+                  if Label = All_Label then
+                     if Current_Val.K /= Access_K then
+                        raise Parse_Error;
+                     else
+                        Current_Ty := Retysp
+                          (Directly_Designated_Type (Current_Ty));
+
+                        if Current_Val.Designated_Value = null then
+                           Current_Val.Designated_Value :=
+                             new Value_Type'(New_Item (Current_Ty));
                         end if;
+                        Current_Val := Current_Val.Designated_Value;
+                        Is_Attribute := False;
+                     end if;
 
-                     elsif Label = Is_Null_Label then
-                        if Current_Val.K /= Access_K then
-                           raise Parse_Error;
-                        else
-                           Set_Boolean_Flag
-                             (Elt.Value, Current_Val.Is_Null);
-                        end if;
+                  elsif Label = Is_Null_Label then
+                     if Current_Val.K /= Access_K then
+                        raise Parse_Error;
+                     else
+                        Set_Boolean_Flag
+                          (Elt.Value, Current_Val.Is_Null);
+                     end if;
 
                      --  Regular attributes
 
-                     elsif Label = First_Label then
-                        if Current_Val.K /= Array_K then
+                  elsif Label = First_Label then
+                     if Current_Val.K /= Array_K then
+                        raise Parse_Error;
+                     else
+                        Set_Integer_Flag
+                          (Elt.Value, Current_Val.First_Attr);
+                     end if;
+
+                  elsif Label = Last_Label then
+                     if Current_Val.K /= Array_K then
+                        raise Parse_Error;
+                     else
+                        Set_Integer_Flag
+                          (Elt.Value, Current_Val.Last_Attr);
+                     end if;
+
+                  elsif Is_Multidim_Label (Label, First_Label) then
+                     declare
+                        Dim : constant Natural :=
+                          Natural'Value
+                            (Label (Label'Last - 1 .. Label'Last - 1));
+                     begin
+                        if Current_Val.K /= Multidim_K
+                          or else Dim > Current_Val.Bounds.Dim
+                        then
                            raise Parse_Error;
                         else
                            Set_Integer_Flag
-                             (Elt.Value, Current_Val.First_Attr);
+                             (Elt.Value,
+                              Current_Val.Bounds.Content (Dim).First);
                         end if;
+                     end;
 
-                     elsif Label = Last_Label then
-                        if Current_Val.K /= Array_K then
+                  elsif Is_Multidim_Label (Label, Last_Label) then
+                     declare
+                        Dim : constant Natural :=
+                          Natural'Value
+                            (Label (Label'Last - 1 .. Label'Last - 1));
+                     begin
+                        if Current_Val.K /= Multidim_K
+                          or else Dim > Current_Val.Bounds.Dim
+                        then
                            raise Parse_Error;
                         else
                            Set_Integer_Flag
-                             (Elt.Value, Current_Val.Last_Attr);
+                             (Elt.Value,
+                              Current_Val.Bounds.Content (Dim).Last);
                         end if;
+                     end;
 
-                     elsif Is_Multidim_Label (Label, First_Label) then
-                        declare
-                           Dim : constant Natural :=
-                             Natural'Value
-                               (Label (Label'Last - 1 .. Label'Last - 1));
-                        begin
-                           if Current_Val.K /= Multidim_K
-                             or else Dim > Current_Val.Bounds.Dim
-                           then
-                              raise Parse_Error;
-                           else
-                              Set_Integer_Flag
-                                (Elt.Value,
-                                 Current_Val.Bounds.Content (Dim).First);
-                           end if;
-                        end;
+                  elsif Label = Constrained_Label then
+                     if Current_Val.K /= Record_K then
+                        raise Parse_Error;
+                     else
+                        Set_Boolean_Flag
+                          (Elt.Value, Current_Val.Constrained_Attr);
+                     end if;
 
-                     elsif Is_Multidim_Label (Label, Last_Label) then
-                        declare
-                           Dim : constant Natural :=
-                             Natural'Value
-                               (Label (Label'Last - 1 .. Label'Last - 1));
-                        begin
-                           if Current_Val.K /= Multidim_K
-                             or else Dim > Current_Val.Bounds.Dim
-                           then
-                              raise Parse_Error;
-                           else
-                              Set_Integer_Flag
-                                (Elt.Value,
-                                 Current_Val.Bounds.Content (Dim).Last);
-                           end if;
-                        end;
+                  elsif Label = Initialized_Label then
+                     if Current_Val.K /= Scalar_K then
+                        raise Parse_Error;
+                     else
+                        Set_Boolean_Flag
+                          (Elt.Value, Current_Val.Initialized_Attr);
+                     end if;
 
-                     elsif Label = Constrained_Label then
-                        if Current_Val.K /= Record_K then
-                           raise Parse_Error;
-                        else
-                           Set_Boolean_Flag
-                             (Elt.Value, Current_Val.Constrained_Attr);
-                        end if;
+                  elsif Label = Valid_Label then
 
-                     elsif Label = Initialized_Label then
-                        if Current_Val.K /= Scalar_K then
-                           raise Parse_Error;
-                        else
-                           Set_Boolean_Flag
-                             (Elt.Value, Current_Val.Initialized_Attr);
-                        end if;
+                     --  If Skip_Valid is set, store Elt in the
+                     --  Delayed_Attributes list and skip the rest of the
+                     --  parsing.
 
-                     elsif Label = Valid_Label then
-                        Set_Boolean_Flag (Elt.Value, Current_Val.Valid_Attr);
+                     if Skip_Valid then
+                        Delayed_Attributes.Append (Elt);
+                        raise Parse_Error;
+                     else
+                        Parse_Valid_Flag (Elt.Value, Current_Val.all);
+                     end if;
 
                      --  Some labels are currently parsed as First@result,
                      --  where the @result part is not expected.
 
-                     elsif Is_Attribute then
-                        raise Parse_Error;
+                  elsif Is_Attribute then
+                     raise Parse_Error;
 
                      --  Regular record field
 
-                     else
-                        if Current_Val.K /= Record_K
-                          or else No
-                            (Search_Component_In_Type (Current_Ty, Comp_E))
-                        then
-                           raise Parse_Error;
-                        elsif not Current_Val.Record_Fields.Contains (Comp_E)
-                        then
-                           Current_Val.Record_Fields.Insert
-                             (Comp_E,
-                              new Value_Type'(New_Item (Etype (Comp_E))));
+                  else
+                     if Current_Val.K /= Record_K
+                       or else No
+                         (Search_Component_In_Type (Current_Ty, Comp_E))
+                     then
+                        raise Parse_Error;
+                     elsif not Current_Val.Record_Fields.Contains (Comp_E)
+                     then
+                        Current_Val.Record_Fields.Insert
+                          (Comp_E,
+                           new Value_Type'(New_Item (Etype (Comp_E))));
+                     end if;
+
+                     Current_Val := Current_Val.Record_Fields.Element
+                       (Comp_E);
+                     Current_Ty := Current_Val.AST_Ty;
+                  end if;
+               end;
+
+               --  If we have reached an attribute, iteration should be over
+
+               pragma Assert
+                 (if Is_Attribute then Current_Slice = Nb_Slices);
+               Current_Slice := Current_Slice + 1;
+            end loop;
+
+            --  If we do not have an attribute, we can now parse the Why3
+            --  counterexample value to merge it inside Val.
+            --  The later values in counterexample are considered to be
+            --  better values (in loop they correspond to the preservation
+            --  part which is often the complex one). So we override
+            --  existing values if there are some. A notable exception to
+            --  this rule are attributes which are only overriden when
+            --  present and record fields which are merged.
+
+            if not Is_Attribute then
+               declare
+                  use Entity_To_Value_Maps;
+                  New_Val : constant Value_Type :=
+                    Parse_Cnt_Value (Elt.Labels, Elt.Value, Current_Ty);
+               begin
+                  pragma Assert (Current_Val.K = New_Val.K);
+                  pragma Assert (Current_Val.AST_Ty = New_Val.AST_Ty);
+
+                  case Current_Val.K is
+                     when Scalar_K =>
+                        Current_Val.Scalar_Content :=
+                          New_Val.Scalar_Content;
+
+                        if New_Val.Initialized_Attr.Present then
+                           Current_Val.Initialized_Attr :=
+                             New_Val.Initialized_Attr;
                         end if;
 
-                        Current_Val := Current_Val.Record_Fields.Element
-                          (Comp_E);
-                        Current_Ty := Current_Val.AST_Ty;
-                     end if;
-                  end;
+                     when Multidim_K =>
+                        pragma Assert
+                          (Current_Val.Bounds.Dim = New_Val.Bounds.Dim);
 
-                  --  If we have reached an attribute, iteration should be over
-
-                  pragma Assert
-                    (if Is_Attribute then Current_Slice = Nb_Slices);
-                  Current_Slice := Current_Slice + 1;
-               end loop;
-
-               --  If we do not have an attribute, we can now parse the Why3
-               --  counterexample value to merge it inside Val.
-               --  The later values in counterexample are considered to be
-               --  better values (in loop they correspond to the preservation
-               --  part which is often the complex one). So we override
-               --  existing values if there are some. A notable exception to
-               --  this rule are attributes which are only overriden when
-               --  present and record fields which are merged.
-
-               if not Is_Attribute then
-                  declare
-                     use Entity_To_Value_Maps;
-                     New_Val : constant Value_Type :=
-                       Parse_Cnt_Value (Elt.Labels, Elt.Value, Current_Ty);
-                  begin
-                     pragma Assert (Current_Val.K = New_Val.K);
-                     pragma Assert (Current_Val.AST_Ty = New_Val.AST_Ty);
-
-                     case Current_Val.K is
-                        when Scalar_K =>
-                           Current_Val.Scalar_Content :=
-                             New_Val.Scalar_Content;
-
-                           if New_Val.Initialized_Attr.Present then
-                              Current_Val.Initialized_Attr :=
-                                New_Val.Initialized_Attr;
+                        for I in Current_Val.Bounds.Content'Range loop
+                           if New_Val.Bounds.Content (I).First.Present then
+                              Current_Val.Bounds.Content (I).First :=
+                                New_Val.Bounds.Content (I).First;
                            end if;
-
-                        when Multidim_K =>
-                           pragma Assert
-                             (Current_Val.Bounds.Dim = New_Val.Bounds.Dim);
-
-                           for I in Current_Val.Bounds.Content'Range loop
-                              if New_Val.Bounds.Content (I).First.Present then
-                                 Current_Val.Bounds.Content (I).First :=
-                                   New_Val.Bounds.Content (I).First;
-                              end if;
-                              if New_Val.Bounds.Content (I).Last.Present then
-                                 Current_Val.Bounds.Content (I).Last :=
-                                   New_Val.Bounds.Content (I).Last;
-                              end if;
-                           end loop;
-
-                        when Array_K =>
-                           Current_Val.Array_Values := New_Val.Array_Values;
-                           Current_Val.Array_Others := New_Val.Array_Others;
-
-                           if New_Val.First_Attr.Present then
-                              Current_Val.First_Attr := New_Val.First_Attr;
+                           if New_Val.Bounds.Content (I).Last.Present then
+                              Current_Val.Bounds.Content (I).Last :=
+                                New_Val.Bounds.Content (I).Last;
                            end if;
-                           if New_Val.Last_Attr.Present then
-                              Current_Val.Last_Attr := New_Val.Last_Attr;
-                           end if;
+                        end loop;
 
-                        when Record_K =>
-                           for Pos in New_Val.Record_Fields.Iterate loop
-                              Current_Val.Record_Fields.Include
-                                (Key (Pos), Element (Pos));
-                           end loop;
+                     when Array_K =>
+                        Current_Val.Array_Values := New_Val.Array_Values;
+                        Current_Val.Array_Others := New_Val.Array_Others;
 
-                           if New_Val.Constrained_Attr.Present then
-                              Current_Val.Constrained_Attr :=
-                                New_Val.Constrained_Attr;
-                           end if;
+                        if New_Val.First_Attr.Present then
+                           Current_Val.First_Attr := New_Val.First_Attr;
+                        end if;
+                        if New_Val.Last_Attr.Present then
+                           Current_Val.Last_Attr := New_Val.Last_Attr;
+                        end if;
 
-                        when Access_K =>
-                           Current_Val.Designated_Value :=
-                             New_Val.Designated_Value;
+                     when Record_K =>
+                        for Pos in New_Val.Record_Fields.Iterate loop
+                           Current_Val.Record_Fields.Include
+                             (Key (Pos), Element (Pos));
+                        end loop;
 
-                           if New_Val.Is_Null.Present then
-                              Current_Val.Is_Null := New_Val.Is_Null;
-                           end if;
-                     end case;
-                  end;
-               end if;
-            end;
-         exception
-            when Parse_Error => null;
+                        if New_Val.Constrained_Attr.Present then
+                           Current_Val.Constrained_Attr :=
+                             New_Val.Constrained_Attr;
+                        end if;
+
+                     when Access_K =>
+                        Current_Val.Designated_Value :=
+                          New_Val.Designated_Value;
+
+                        if New_Val.Is_Null.Present then
+                           Current_Val.Is_Null := New_Val.Is_Null;
+                        end if;
+                  end case;
+               end;
+            end if;
          end;
+      exception
+         when Parse_Error => null;
+      end Parse_Counterexample_Value;
+
+   begin
+      --  As the valid attributes are stored in a separate structure, delay
+      --  their parsing and update the relevant CE values afterwards.
+
+      for Elt of Cnt_List loop
+         Parse_Counterexample_Value (Elt, Skip_Valid => True);
+      end loop;
+
+      for Elt of Delayed_Attributes loop
+         Parse_Counterexample_Value (Elt);
       end loop;
    end Parse_Counterexample_Line;
 
@@ -1251,6 +1294,76 @@ package body CE_Parsing is
             raise Parse_Error;
       end case;
    end Parse_Scalar_Value;
+
+   ----------------------
+   -- Set_Boolean_Flag --
+   ----------------------
+
+   procedure Parse_Valid_Flag
+     (Cnt_Value : Cntexmp_Value_Ptr;
+      Val       : in out Value_Type)
+   is
+   begin
+      case Val.K is
+         when Scalar_K =>
+            Set_Boolean_Flag (Cnt_Value, Val.Valid_Attr);
+
+         when Record_K =>
+
+            --  Valid flag should be a record
+
+            if Cnt_Value.T /= Cnt_Record then
+               raise Parse_Error;
+            else
+
+               --  Go over the association in the Why3 counterexample to
+               --  store the fields inside Val.Record_Fields.
+
+               declare
+                  use Cntexmp_Value_Array;
+                  C : Cntexmp_Value_Array.Cursor := Cnt_Value.Fi.First;
+               begin
+                  while Has_Element (C) loop
+                     declare
+                        Comp_Name : String renames Key (C);
+                        Comp_E    : constant Entity_Id :=
+                          Get_Entity_Id (True, Comp_Name);
+
+                     begin
+                        if Comp_E /= Types.Empty then
+                           declare
+                              use Entity_To_Value_Maps;
+                              C_In_Ty  : constant Entity_Id :=
+                                Search_Component_In_Type
+                                  (Val.AST_Ty, Comp_E);
+                              Position : Entity_To_Value_Maps.Cursor;
+                              Inserted : Boolean;
+                           begin
+                              Val.Record_Fields.Insert
+                                (Key      => C_In_Ty,
+                                 New_Item => null,
+                                 Position => Position,
+                                 Inserted => Inserted);
+                              if Val.Record_Fields (Position) = null then
+                                 Val.Record_Fields (Position) :=
+                                   new Value_Type'
+                                     (New_Item (Retysp (Etype (C_In_Ty))));
+                              end if;
+                              Parse_Valid_Flag
+                                (Element (C),
+                                 Val.Record_Fields (Position).all);
+                           end;
+                        end if;
+                     end;
+                     Next (C);
+                  end loop;
+               end;
+            end if;
+
+         when others =>
+            raise Parse_Error;
+      end case;
+   end Parse_Valid_Flag;
 
    ----------------------
    -- Set_Boolean_Flag --

@@ -194,6 +194,10 @@ package SPARK_Definition is
    function Raise_Occurs_In_Pre (N : N_Raise_Expression_Id) return Boolean;
    --  Return True if N occurs in a precondition
 
+   function Type_Might_Be_Invalid (E : Type_Kind_Id) return Boolean;
+   --  Return True if E is a type used for a part of a potentially invalid
+   --  object or function result.
+
    ----------------------------------------------------------------------
    --  Marked entity collections
    ----------------------------------------------------------------------

@@ -166,8 +166,7 @@ package body CE_Fuzzer is
                          AST_Ty           => Ty,
                          Record_Fields    => Field_Values,
                          Constrained_Attr => (Present => True,
-                                              Content => Constrained),
-                         others           => <>);
+                                              Content => Constrained));
    end Fuzz_Record_Value;
 
 end CE_Fuzzer;

@@ -117,8 +117,7 @@ package body CE_RAC is
       First_Attr   => (True, First),
       Last_Attr    => (True, Last),
       Array_Values => Values,
-      Array_Others => Other,
-      others       => <>);
+      Array_Others => Other);
    --  Make an array value
 
    function Boolean_Value (B : Boolean; Ty : Entity_Id) return Value_Type;
@@ -2363,8 +2362,7 @@ package body CE_RAC is
                          AST_Ty           => Ty,
                          Designated_Value => new Value_Type'(Designated_Value),
                          Is_Null          =>
-                           Opt_Boolean'(Present => True, Content => False),
-                         others           => <>);
+                           Opt_Boolean'(Present => True, Content => False));
    end Not_Null_Access_Value;
 
    -----------------------
@@ -2377,8 +2375,7 @@ package body CE_RAC is
                          AST_Ty           => Ty,
                          Designated_Value => null,
                          Is_Null          =>
-                           Opt_Boolean'(Present => True, Content => True),
-                         others           => <>);
+                           Opt_Boolean'(Present => True, Content => True));
    end Null_Access_Value;
 
    -----------------
@@ -4898,8 +4895,7 @@ package body CE_RAC is
                        First_Attr   => (Present => True, Content => Low),
                        Last_Attr    => (Present => True, Content => High),
                        Array_Values => Big_Integer_To_Value_Maps.Empty,
-                       Array_Others => Base_Array.Array_Others,
-                       others       => <>);
+                       Array_Others => Base_Array.Array_Others);
 
                if Low > High then
                   return Res;
@@ -5711,8 +5707,7 @@ package body CE_RAC is
       return (K                => Record_K,
               Record_Fields    => F,
               Constrained_Attr => <>,
-              AST_Ty           => Ty,
-              others           => <>);
+              AST_Ty           => Ty);
    end Record_Value;
 
    ---------------

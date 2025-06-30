@@ -886,8 +886,7 @@ package body CE_Utils is
                   First_Attr   => First_Attr,
                   Last_Attr    => Last_Attr,
                   Array_Values => Array_Values,
-                  Array_Others => null,
-                  others       => <>);
+                  Array_Others => null);
             else
                N := First_Attr.Content;
                while N <= Last_Attr.Content loop
@@ -912,8 +911,7 @@ package body CE_Utils is
                   First_Attr   => First_Attr,
                   Last_Attr    => Last_Attr,
                   Array_Values => Array_Values,
-                  Array_Others => null,
-                  others       => <>);
+                  Array_Others => null);
             end if;
          end;
 

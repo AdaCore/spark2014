@@ -34,7 +34,7 @@ with Namet;                       use Namet;
 with Nlists;                      use Nlists;
 with Sinput;                      use Sinput;
 with Snames;                      use Snames;
-with SPARK_Definition;
+with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
 with SPARK_Util;                  use SPARK_Util;
 with SPARK_Util.Hardcoded;        use SPARK_Util.Hardcoded;
@@ -1292,6 +1292,200 @@ package body Why.Gen.Records is
 
       Close_Theory (Th, Kind => Definition_Theory, Defined_Entity => E);
    end Create_Rep_Record_Theory_If_Needed;
+
+   --------------------------------------------
+   -- Create_Validity_Tree_Theory_For_Record --
+   --------------------------------------------
+
+   procedure Create_Validity_Tree_Theory_For_Record
+     (Th : Theory_UC;
+      E  : Entity_Id)
+   is
+      Ty_Name : constant W_Name_Id := To_Name (WNE_Validity_Tree);
+
+   begin
+      --  Create a record type with a flag per component. No need to consider
+      --  discriminants nor record extensions, they cannot be invalid.
+      --  Also generate a is_valid function and a valid_value constant that
+      --  has all its fields to True.
+
+      declare
+         Num_Fields    : constant Natural := Count_Why_Regular_Fields (E);
+         Num_Discrs    : constant Natural := Count_Discriminants (E);
+         Binders_F     : Binder_Array (1 .. Num_Fields);
+         Valid_Assocs  : W_Field_Association_Array (1 .. Num_Fields);
+         Tree_Ident    : constant W_Identifier_Id :=
+           New_Identifier
+             (Name => "tree",
+              Typ  => New_Named_Type (Name => Ty_Name));
+         Discr_Ident   : constant W_Identifier_Id :=
+           (if Num_Discrs > 0
+            then New_Identifier
+              (Name => "discr",
+               Typ  => Field_Type_For_Discriminants (E))
+            else Why_Empty);
+         Discr_Ids     : W_Identifier_Array (1 .. Num_Discrs);
+         Discr_Def     : W_Term_Array (1 .. Num_Discrs);
+         Is_Valid_Conj : W_Pred_Array (1 .. Num_Fields);
+         Is_Valid      : W_Pred_Id;
+         Index         : Natural := 0;
+
+      begin
+         if Num_Discrs > 0 then
+            --  As discriminants may occur in bounds of types of other fields,
+            --  store them in the Symbol_Table.
+
+            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+            declare
+               Discr : Entity_Id := First_Discriminant (E);
+            begin
+               for Count in Discr_Ids'Range loop
+                  Discr_Ids (Count) := New_Temp_Identifier
+                    (Discr, EW_Abstract (Etype (Discr)));
+                  Insert_Tmp_Item_For_Entity (Discr, Discr_Ids (Count));
+                  Discr_Def (Count) := New_Record_Access
+                    (Name  => +Discr_Ident,
+                     Field => To_Why_Id (Discr, Rec => E));
+                  Next_Discriminant (Discr);
+               end loop;
+            end;
+         end if;
+
+         for Field of Get_Component_Set (E) loop
+            if Ekind (Field) = E_Component then
+               Index := Index + 1;
+               declare
+                  F_Ty     : constant Entity_Id := Etype (Field);
+                  F_Id_Typ : constant W_Type_Id :=
+                    Get_Validity_Tree_Type (F_Ty);
+                  F_Id     : constant W_Identifier_Id := To_Why_Id
+                    (Field,
+                     Rec   => E,
+                     Local => True,
+                     Typ   => F_Id_Typ);
+
+               begin
+                  --  Add a component for Field in Ty_Name
+
+                  Binders_F (Index) :=
+                    (B_Name   => F_Id,
+                     Labels   =>
+                       Get_Model_Trace_Label
+                         (E               => Field,
+                          Is_Record_Field => True),
+                     Ada_Node => Field,
+                     others   => <>);
+
+                  --  Fill an association for Field in Valid_Value
+
+                  Valid_Assocs (Index) := New_Field_Association
+                    (Domain => EW_Term,
+                     Field  => F_Id,
+                     Value  =>
+                       (if Has_Scalar_Type (F_Ty) then +True_Term
+                        else +E_Symb (F_Ty, WNE_Valid_Value)));
+
+                  --  Add a conjunct for Field in Is_Valid
+
+                  declare
+                     Field_Valid_Flag : constant W_Expr_Id :=
+                       New_Validity_Tree_Record_Access
+                         (Field => Field,
+                          Ty    => E,
+                          Local => True,
+                          Name  => +Tree_Ident);
+                  begin
+                     if Has_Scalar_Type (F_Ty) then
+                        Is_Valid_Conj (Index) :=
+                          Pred_Of_Boolean_Term (+Field_Valid_Flag);
+                     else
+                        Is_Valid_Conj (Index) :=
+                          +New_Is_Valid_Call_For_Constrained_Ty
+                          (+Field_Valid_Flag, F_Ty, EW_Pred, Logic_Params);
+                     end if;
+
+                     --  If E has discriminants, condition the conjunct to the
+                     --  presence of the field.
+
+                     if Num_Discrs > 0
+                       and then Ekind (Field) = E_Component
+                     then
+                        Is_Valid_Conj (Index) := New_Conditional
+                          (Condition => New_Call
+                             (Name => Discriminant_Check_Pred_Name
+                                  (E, Field, Local => False),
+                              Args => (1 => +Discr_Ident)),
+                           Then_Part => Is_Valid_Conj (Index));
+                     end if;
+                  end;
+               end;
+            end if;
+         end loop;
+
+         pragma Assert (Index = Num_Fields);
+
+         Is_Valid := New_And_Pred (Is_Valid_Conj);
+
+         --  Introduce bindings for discriminants
+
+         if Num_Discrs > 0 then
+
+            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+            for Count in Discr_Ids'Range loop
+               Is_Valid := New_Typed_Binding
+                 (Name    => Discr_Ids (Count),
+                  Def     => Discr_Def (Count),
+                  Context => Is_Valid);
+            end loop;
+         end if;
+
+         --  Define Ty_Name
+
+         Emit_Record_Declaration (Th      => Th,
+                                  Name    => Ty_Name,
+                                  Binders => Binders_F (1 .. Index));
+
+         Emit_Ref_Type_Definition (Th   => Th,
+                                   Name => Ty_Name);
+         Emit (Th, New_Havoc_Declaration (Name => Ty_Name));
+
+         --  Define Valid_Value
+
+         Emit
+           (Th,
+            New_Function_Decl
+              (Domain      => EW_Pterm,
+               Name        => To_Local (E_Symb (E, WNE_Valid_Value)),
+               Return_Type => New_Named_Type (Name => Ty_Name),
+               Binders     => Binder_Array'(1 .. 0 => <>),
+               Location    => No_Location,
+               Labels      => Symbol_Sets.Empty_Set,
+               Def         => New_Record_Aggregate
+                 (Associations => Valid_Assocs,
+                  Typ          => New_Named_Type (Name => Ty_Name))));
+
+         --  Define Is_Valid
+
+         Emit
+           (Th,
+            New_Function_Decl
+              (Domain   => EW_Pred,
+               Name     => To_Local (E_Symb (E, WNE_Is_Valid)),
+               Binders  => Binder_Array'
+                 (1 => (B_Name => Tree_Ident,
+                        others => <>)) &
+                 Binder_Array'
+                 (if Num_Discrs > 0
+                  then (2 => (B_Name => Discr_Ident,
+                              others => <>))
+                  else (1 .. 0 => <>)),
+               Location => No_Location,
+               Labels   => Symbol_Sets.Empty_Set,
+               Def      => +Is_Valid));
+      end;
+   end Create_Validity_Tree_Theory_For_Record;
 
    ------------------------
    -- Declare_Ada_Record --
@@ -4655,10 +4849,10 @@ package body Why.Gen.Records is
    is
       W_Field : constant W_Identifier_Id := To_Why_Id
         (Field,
-         Rec        => Ty,
-         Local      => Local,
-         Move_Trees => True,
-         Typ        => Get_Move_Tree_Type (Etype (Field)));
+         Rec       => Ty,
+         Local     => Local,
+         From_Tree => Move_Tree,
+         Typ       => Get_Move_Tree_Type (Etype (Field)));
    begin
       return New_Record_Access
         (Field => W_Field,
@@ -4679,9 +4873,9 @@ package body Why.Gen.Records is
    is
       W_Field : constant W_Identifier_Id := To_Why_Id
         (Field,
-         Rec        => Ty,
-         Move_Trees => True,
-         Typ        => Get_Move_Tree_Type (Etype (Field)));
+         Rec       => Ty,
+         From_Tree => Move_Tree,
+         Typ       => Get_Move_Tree_Type (Etype (Field)));
    begin
       return New_Record_Update
         (Name    => Name,
@@ -4787,6 +4981,57 @@ package body Why.Gen.Records is
          return Name;
       end if;
    end New_Tag_And_Ext_Update;
+
+   -------------------------------------
+   -- New_Validity_Tree_Record_Access --
+   -------------------------------------
+
+   function New_Validity_Tree_Record_Access
+     (Name  : W_Expr_Id;
+      Field : Entity_Id;
+      Ty    : Entity_Id;
+      Local : Boolean := False)
+      return W_Expr_Id
+   is
+      W_Field : constant W_Identifier_Id := To_Why_Id
+        (Field,
+         Rec       => Base_Retysp (Ty),
+         Local     => Local,
+         From_Tree => Validity_Tree,
+         Typ       => Get_Validity_Tree_Type (Etype (Field)));
+   begin
+      return New_Record_Access
+        (Field => W_Field,
+         Name  => Name,
+         Typ   => Get_Typ (W_Field));
+   end New_Validity_Tree_Record_Access;
+
+   -------------------------------------
+   -- New_Validity_Tree_Record_Update --
+   -------------------------------------
+
+   function New_Validity_Tree_Record_Update
+     (Name  : W_Prog_Id;
+      Field : Entity_Id;
+      Value : W_Prog_Id;
+      Ty    : Entity_Id)
+      return W_Prog_Id
+   is
+      W_Field : constant W_Identifier_Id := To_Why_Id
+        (Field,
+         Rec       => Base_Retysp (Ty),
+         From_Tree => Validity_Tree,
+         Typ       => Get_Validity_Tree_Type (Etype (Field)));
+   begin
+      return New_Record_Update
+        (Name    => Name,
+         Updates =>
+           (1 => New_Field_Association
+                (Domain => EW_Prog,
+                 Field  => W_Field,
+                 Value  => +Value)),
+         Typ     => Get_Type (+Name));
+   end New_Validity_Tree_Record_Update;
 
    ------------------------------------
    -- Oldest_Parent_With_Same_Fields --

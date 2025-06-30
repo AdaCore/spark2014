@@ -25,6 +25,6 @@ test.adb:34:13: medium: validity check might fail [possible fix: subprogram at l
 test.adb:38:18: warning: unused initial value of "X"
 test.adb:40:04: warning: analyzing unreferenced procedure "P3" [unreferenced-procedure]
 test.adb:42:10: warning: unused assignment
-test.adb:42:13: medium: validity check might fail (e.g. when X'Valid_Scalars = False) [possible fix: subprogram at line 38 should mention X in a precondition]
+test.adb:42:13: medium: validity check might fail (e.g. when X.F'Valid = False) [possible fix: subprogram at line 38 should mention X in a precondition]
 test.adb:48:04: warning: analyzing unreferenced procedure "P4" [unreferenced-procedure]
-test.adb:50:12: medium: validity check might fail (e.g. when X'Valid_Scalars = False) [possible fix: subprogram at line 46 should mention X in a precondition]
+test.adb:50:12: medium: validity check might fail (e.g. when X.F'Valid = False) [possible fix: subprogram at line 46 should mention X in a precondition]

@@ -253,10 +253,10 @@ package body Gnat2Why.Unchecked_Conversion is
       use Source_Elements;
 
       type Target_Value is record
-         Value    : W_Term_Id;
-         Is_Valid : W_Term_Id;
+         Value      : W_Term_Id;
+         Valid_Flag : W_Term_Id;
       end record with
-        Predicate => (Is_Valid /= Why_Empty) = Do_Validity;
+        Predicate => (Valid_Flag /= Why_Empty) = Do_Validity;
 
       --  Local subprograms
 
@@ -455,20 +455,20 @@ package body Gnat2Why.Unchecked_Conversion is
          --  Special case for Boolean
          if Is_Standard_Boolean_Type (Typ) then
             Res :=
-              (Value    => New_Conditional
+              (Value      => New_Conditional
                  (Condition =>
-                    +New_Comparison
-                      (Domain => EW_Term,
-                       Symbol => Why_Eq,
-                       Left   => Value,
-                       Right  =>
-                         New_Modular_Constant
-                           (Value => Uint_1,
-                            Typ   => Base)),
+                      +New_Comparison
+                    (Domain => EW_Term,
+                     Symbol => Why_Eq,
+                     Left   => Value,
+                     Right  =>
+                       New_Modular_Constant
+                         (Value => Uint_1,
+                          Typ   => Base)),
                   Then_Part => +True_Term,
                   Else_Part => +False_Term,
                   Typ       => EW_Bool_Type),
-               Is_Valid =>
+               Valid_Flag =>
                  (if Do_Validity
                   then New_Or_Term
                     (Left  => +New_Comparison
@@ -496,11 +496,11 @@ package body Gnat2Why.Unchecked_Conversion is
 
          elsif Is_Unsigned_Type (Typ) then
             Res :=
-              (Value    => +Insert_Scalar_Conversion
+              (Value      => +Insert_Scalar_Conversion
                  (Domain => EW_Term,
                   Expr   => Value,
                   To     => EW_Abstract (Typ)),
-               Is_Valid =>
+               Valid_Flag =>
                  (if Do_Validity
                   then Is_Valid_Scalar
                     (Typ,
@@ -551,11 +551,11 @@ package body Gnat2Why.Unchecked_Conversion is
                     Typ       => EW_Int_Type);
             begin
                Res :=
-                 (Value    => +Insert_Scalar_Conversion
+                 (Value      => +Insert_Scalar_Conversion
                       (Domain => EW_Term,
                        Expr   => B_Value,
                        To     => EW_Abstract (Typ)),
-                  Is_Valid =>
+                  Valid_Flag =>
                     (if Do_Validity
                      then Is_Valid_Scalar (Typ, +B_Value)
                      else Why_Empty));
@@ -567,7 +567,7 @@ package body Gnat2Why.Unchecked_Conversion is
 
          if Do_Validity then
             Res.Value := New_Conditional
-              (Condition => Res.Is_Valid,
+              (Condition => Res.Valid_Flag,
                Then_Part => Res.Value,
                Else_Part => +Why_Default_Value (EW_Term, Typ),
                Typ       => EW_Abstract (Typ));
@@ -676,8 +676,8 @@ package body Gnat2Why.Unchecked_Conversion is
                  Get_Component_Set (Typ);
                Assocs   : W_Field_Association_Array
                  (1 .. Integer (Comps.Length));
-               Is_Valid : W_Term_Id :=
-                 (if Do_Validity then True_Term else Why_Empty);
+               Flags    : W_Field_Association_Array
+                 (1 .. Integer (Comps.Length));
                Index    : Positive := 1;
             begin
                for Comp of Comps loop
@@ -700,7 +700,16 @@ package body Gnat2Why.Unchecked_Conversion is
                           Value  => +F_Value.Value);
 
                      if Do_Validity then
-                        Is_Valid := New_And_Term (Is_Valid, F_Value.Is_Valid);
+                        Flags (Index) :=
+                          New_Field_Association
+                            (Domain => EW_Term,
+                             Field  =>
+                               To_Why_Id
+                                 (Comp,
+                                  Local     => False,
+                                  Rec       => Base_Retysp (Typ),
+                                  From_Tree => Validity_Tree),
+                             Value  => +F_Value.Valid_Flag);
                      end if;
                   end;
                   Index := Index + 1;
@@ -717,7 +726,12 @@ package body Gnat2Why.Unchecked_Conversion is
                                  New_Record_Aggregate
                                    (Associations => Assocs))),
                        Typ          => EW_Abstract (Typ)),
-                  Is_Valid => Is_Valid);
+                  Valid_Flag =>
+                    (if Do_Validity
+                     then New_Record_Aggregate
+                       (Associations => Flags,
+                        Typ          => Get_Validity_Tree_Type (Typ))
+                     else Why_Empty));
             end;
 
          elsif Is_Array_Type (Typ) then
@@ -730,8 +744,9 @@ package body Gnat2Why.Unchecked_Conversion is
                  Expr_Value (High_Bound (Rng));
                Cur      : Uint;
                Ar       : W_Expr_Id := +E_Symb (Typ, WNE_Dummy);
-               Is_Valid : W_Term_Id :=
-                 (if Do_Validity then True_Term else Why_Empty);
+               Flags    : W_Term_Id :=
+                 (if Do_Validity then New_Valid_Value_For_Type (Typ)
+                  else Why_Empty);
             begin
                if Low <= High then
                   Cur := Low;
@@ -757,15 +772,19 @@ package body Gnat2Why.Unchecked_Conversion is
                            Domain   => EW_Term);
 
                         if Do_Validity then
-                           Is_Valid := New_And_Term
-                             (Is_Valid, C_Value.Is_Valid);
+                           Flags := +New_Validity_Tree_Array_Update
+                             (Name   => +Flags,
+                              Index  => (1 => Expr_Index (Typ, Cur)),
+                              Value  => +C_Value.Valid_Flag,
+                              Ty     => Typ,
+                              Domain => EW_Term);
                         end if;
                      end;
                      Cur := Cur + 1;
                   end loop;
                end if;
 
-               return (Value => +Ar, Is_Valid => Is_Valid);
+               return (Value => +Ar, Valid_Flag => Flags);
             end;
 
          else
@@ -865,9 +884,9 @@ package body Gnat2Why.Unchecked_Conversion is
 
             if Do_Validity then
                Def := +New_Function_Validity_Wrapper_Value
-                 (Fun      => Ada_Function,
-                  Is_Valid => +Val.Is_Valid,
-                  Value    => +Val.Value);
+                 (Fun        => Ada_Function,
+                  Valid_Flag => +Val.Valid_Flag,
+                  Value      => +Val.Value);
             end if;
          end;
       end if;
@@ -1004,7 +1023,7 @@ package body Gnat2Why.Unchecked_Conversion is
               (Insert_Simple_Conversion
                  (Expr => Conv, To => Target_Base_Type));
             Valid_Flag   : constant W_Term_Id := New_Temp_For_Expr
-                 (Is_Valid_Scalar (Range_Ty, Conv_To_Base));
+              (Is_Valid_Scalar (Range_Ty, Conv_To_Base));
 
          begin
             return Binding_For_Temp
@@ -1012,9 +1031,9 @@ package body Gnat2Why.Unchecked_Conversion is
                Context => Binding_For_Temp
                  (Tmp     => Valid_Flag,
                   Context => +New_Function_Validity_Wrapper_Value
-                    (Fun      => Ada_Function,
-                     Is_Valid => +Valid_Flag,
-                     Value    => +New_Conditional
+                    (Fun        => Ada_Function,
+                     Valid_Flag => +Valid_Flag,
+                     Value      => +New_Conditional
                        (Condition => Valid_Flag,
                         Then_Part => Insert_Simple_Conversion
                           (Expr => Conv_To_Base, To => Target_Type),

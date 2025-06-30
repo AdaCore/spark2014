@@ -127,6 +127,8 @@ package Why.Inter is
                   --  has visibility over the refined postcondition of the
                   --  subprogram. It has the appropriate refined contract.
 
+   type Tree_Kind is (No_Tree, Validity_Tree, Move_Tree);
+
    function To_Why_Id
      (E            : Entity_Id;
       Domain       : EW_Domain := EW_Prog;
@@ -136,7 +138,7 @@ package Why.Inter is
       Rec          : Entity_Id := Empty;
       Init_Decl    : Boolean := False;
       Hide_Info    : Boolean := False;
-      Move_Trees   : Boolean := False;
+      From_Tree    : Tree_Kind := No_Tree;
       Typ          : W_Type_Id := Why_Empty;
       Relaxed_Init : Boolean := False) return W_Identifier_Id
    with Pre => Ekind (E) in Subprogram_Kind
@@ -165,7 +167,8 @@ package Why.Inter is
    --  @param Init_Decl Use the initial declaration of a function, to avoid
    --         pulling its defining and post axioms.
    --  @param Hide_Info Use the special declarations without hidden information
-   --  @param Move_Trees Use symbol for the components of move trees
+   --  @param From_Tree Use symbol for the components of move trees (resp.
+   --         validity trees) if From_Tree is Move_Tree (resp. Validity_Tree).
    --  @param Typ Expected type of the id.
    --  @param Relaxed_Init True if the identifier should be located in the
    --         module for the init wrapper type.

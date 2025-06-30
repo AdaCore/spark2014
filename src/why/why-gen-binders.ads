@@ -514,12 +514,12 @@ package Why.Gen.Binders is
    function Get_Valid_Id_From_Item
      (Item        : Item_Type;
       Ref_Allowed : Boolean) return W_Term_Id;
-   --  Return the valid flag of Item if any. Otherwise, return True_Term
+   --  Return the valid flag of Item if any. Otherwise, return Why_Empty.
 
    function Get_Valid_Id_From_Object
      (Obj         : Entity_Id;
       Ref_Allowed : Boolean) return W_Term_Id;
-   --  Return the valid flag associated to Obj in the Symol_Table if any.
-   --  Otherwise, return True_Term.
+   --  Return the valid flag associated to Obj in the Symbol_Table if any.
+   --  Otherwise, return Why_Empty.
 
 end Why.Gen.Binders;

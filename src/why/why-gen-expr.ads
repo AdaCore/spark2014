@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Vectors;
 with GNATCOLL.Symbols;          use GNATCOLL.Symbols;
 with Gnat2Why.Util;             use Gnat2Why.Util;
 with Snames;                    use Snames;
@@ -808,7 +809,15 @@ package Why.Gen.Expr is
      Pre => Is_Potentially_Invalid (Fun);
    --  Type for the validity wrapper used for the result of Fun
 
-   function New_Function_Is_Valid_Access
+   function Get_Valid_Flag_For_Id
+     (Id : W_Identifier_Id;
+      Ty : Type_Kind_Id)
+      return W_Identifier_Id;
+   --  Function used to get the name of the validity flag from the name of an
+   --  identifier used for Old and Loop_Entry values as well as the result
+   --  name.
+
+   function New_Function_Valid_Flag_Access
      (Fun  : E_Function_Id;
       Name : W_Expr_Id)
       return W_Expr_Id
@@ -827,12 +836,57 @@ package Why.Gen.Expr is
    --  Access to the value in the validity wrapper used for the result of Fun
 
    function New_Function_Validity_Wrapper_Value
-     (Fun      : E_Function_Id;
-      Is_Valid : W_Expr_Id;
-      Value    : W_Expr_Id)
+     (Fun        : E_Function_Id;
+      Valid_Flag : W_Expr_Id;
+      Value      : W_Expr_Id)
       return W_Expr_Id
    with Pre => Is_Potentially_Invalid (Fun);
    --  Construct a value of the validity wrapper used for the result of Fun
+
+   function New_Is_Valid_Call_For_Constrained_Ty
+     (Tree   : W_Term_Id;
+      Ty     : Type_Kind_Id;
+      Domain : EW_Domain;
+      Params : Transformation_Params)
+      return W_Expr_Id
+   with Pre => Is_Constrained (Ty);
+   --  Construct a call to the Is_Valid function for Ty's validity trees on
+   --  Tree. The values of potential array bounds or discriminants are taken
+   --  from Ty's constraints.
+
+   function New_Is_Valid_Call_For_Expr
+     (Tree   : W_Expr_Id;
+      Ty     : Type_Kind_Id;
+      Expr   : W_Expr_Id;
+      Domain : EW_Domain)
+      return W_Expr_Id;
+   --  Construct a call to the Is_Valid function for Ty's validity trees on
+   --  Tree. The values of potential array bounds or discriminants are taken
+   --  from Expr.
+
+   function New_Valid_Value_For_Type (Ty : Type_Kind_Id) return W_Term_Id;
+   --  Return the Valid_Value constant of Ty's validity trees if any.
+   --  Otherwise, return True.
+
+   type Ref_Type is record
+      Mutable : Boolean;
+      Name    : W_Identifier_Id;
+      Value   : W_Expr_Id;
+   end record;
+   --  Represent a mapping from an identifier Name to an expression Value.
+   --  If Mutable is True, the mapping should be a reference.
+
+   package Ref_Type_Vectors is new Ada.Containers.Vectors
+     (Index_Type   => Positive,
+      Element_Type => Ref_Type);
+   subtype Ref_Context is Ref_Type_Vectors.Vector;
+
+   function Bindings_For_Ref_Context
+     (Expr    : W_Expr_Id;
+      Context : Ref_Context;
+      Domain  : EW_Domain)
+      return W_Expr_Id;
+   --  Generate bindings for elements of Context in Expr
 
    -------------------------------------
    -- Introducing temporary variables --

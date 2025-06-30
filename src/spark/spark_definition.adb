@@ -251,6 +251,9 @@ package body SPARK_Definition is
    Unused_Records : Hashed_Node_Sets.Set;
    --  Record types which can be abstracted away (their fields are unused)
 
+   Potentially_Invalid : Hashed_Node_Sets.Set;
+   --  Base types of potentially invalid values
+
    function Entity_In_SPARK (E : Entity_Id) return Boolean
      renames Entities_In_SPARK.Contains;
 
@@ -282,6 +285,9 @@ package body SPARK_Definition is
 
    function Is_Actions_Entity (E : Entity_Id) return Boolean
      renames Actions_Entity_Set.Contains;
+
+   function Type_Might_Be_Invalid (E : Type_Kind_Id) return Boolean is
+     (Potentially_Invalid.Contains (Base_Retysp (E)));
 
    function Is_Valid_Allocating_Context (Alloc : Node_Id) return Boolean;
    --  Return True if node Alloc is a valid allocating context (SPARK RM 4.8).
@@ -12841,6 +12847,10 @@ package body SPARK_Definition is
             end loop;
          end;
       end if;
+
+      --  Include the base type in the set of potentially invalid types
+
+      Potentially_Invalid.Include (Base_Retysp (Rep_Ty));
 
    end Mark_Potentially_Invalid_Type;
 
