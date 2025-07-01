@@ -3108,11 +3108,6 @@ package body Flow_Utility is
                  (Direct_Mapping_Id (Etype (Encapsulating_State (E))), E),
                Ctx.Scope);
 
-         elsif Ekind (E) in E_Constant | E_Variable
-           and then Present (Ultimate_Overlaid_Entity (E))
-         then
-            return Flatten_Variable (Ultimate_Overlaid_Entity (E), Ctx.Scope);
-
          else
             return Flatten_Variable (E, Ctx.Scope);
          end if;
@@ -3434,6 +3429,14 @@ package body Flow_Utility is
 
          if Ctx.Fold_Functions /= Inputs then
             return Flow_Id_Sets.Empty_Set;
+         end if;
+
+         --  Handle overlays before filtering constants without variable inputs
+
+         if Ekind (E) in E_Constant | E_Variable
+           and then Present (Ultimate_Overlaid_Entity (E))
+         then
+            return Do_Entity (Ultimate_Overlaid_Entity (E));
          end if;
 
          case Ekind (E) is
