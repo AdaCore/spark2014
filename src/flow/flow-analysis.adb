@@ -1923,6 +1923,10 @@ package body Flow.Analysis is
                  --  termination and have had some of their out edges removed.
                  not Atr.Is_Exceptional_Branch and then
 
+                 --  Suppression for vertices that belong to an exceptional
+                 --  path as it is defensive code.
+                 not Atr.Is_Exceptional_Path and then
+
                  --  Suppression for vertices that correspond to an assignment
                  --  to a record field, that comes from a record split, while
                  --  some of the other fields is effective.
