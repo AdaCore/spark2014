@@ -39,12 +39,12 @@
 --  in SPARK, and listed for translation, or not listed for translation if a
 --  violation was detected in the body.
 
-with Common_Containers; use Common_Containers;
-with Einfo.Entities;    use Einfo.Entities;
-with GNATCOLL.JSON;     use GNATCOLL.JSON;
-with Sem_Util;          use Sem_Util;
-with Sinfo.Nodes;       use Sinfo.Nodes;
-with Types;             use Types;
+with Common_Containers;                 use Common_Containers;
+with Einfo.Entities;                    use Einfo.Entities;
+with GNATCOLL.JSON;                     use GNATCOLL.JSON;
+with Sem_Util;                          use Sem_Util;
+with Sinfo.Nodes;                       use Sinfo.Nodes;
+with Types;                             use Types;
 
 package SPARK_Definition is
 
@@ -61,28 +61,24 @@ package SPARK_Definition is
    --  Marking procedures
    ----------------------------------------------------------------------
 
-   function Is_Clean_Context return Boolean
-   with Ghost;
+   function Is_Clean_Context return Boolean with Ghost;
    --  Returns True iff the global variables that should be manipulated by
    --  marking in a stack fashion have been properly restored.
 
    procedure Mark_Compilation_Unit (N : Node_Id)
-   with
-     Pre  =>
-       Nkind (N)
-       in N_Generic_Package_Declaration
-        | N_Generic_Subprogram_Declaration
-        | N_Generic_Package_Renaming_Declaration
-        | N_Generic_Function_Renaming_Declaration
-        | N_Generic_Procedure_Renaming_Declaration
-        | N_Package_Body
-        | N_Package_Declaration
-        | N_Package_Renaming_Declaration
-        | N_Subprogram_Body
-        | N_Subprogram_Declaration
-        | N_Subprogram_Renaming_Declaration
-       and then Is_Clean_Context,
-     Post => Is_Clean_Context;
+     with Pre => Nkind (N) in N_Generic_Package_Declaration
+                            | N_Generic_Subprogram_Declaration
+                            | N_Generic_Package_Renaming_Declaration
+                            | N_Generic_Function_Renaming_Declaration
+                            | N_Generic_Procedure_Renaming_Declaration
+                            | N_Package_Body
+                            | N_Package_Declaration
+                            | N_Package_Renaming_Declaration
+                            | N_Subprogram_Body
+                            | N_Subprogram_Declaration
+                            | N_Subprogram_Renaming_Declaration
+                  and then Is_Clean_Context,
+          Post => Is_Clean_Context;
    --  Put marks on a compilation unit. This should be called after all
    --  compilation units on which this compilation unit depends have been
    --  marked.
@@ -95,16 +91,13 @@ package SPARK_Definition is
    --  Returns True if entity E has already been considered for marking
    --  ??? Exposing this function seems suspiocious; it is only used by Retysp
 
-   function Entity_In_SPARK (E : Entity_Id) return Boolean
-   with
-     Pre =>
-       Ekind (E)
-       not in E_Abstract_State
-            | E_Package_Body
-            | E_Protected_Body
-            | E_Subprogram_Body
-            | E_Task_Body
-            | Generic_Unit_Kind;
+   function Entity_In_SPARK (E : Entity_Id) return Boolean with
+     Pre => Ekind (E) not in E_Abstract_State  |
+                             E_Package_Body    |
+                             E_Protected_Body  |
+                             E_Subprogram_Body |
+                             E_Task_Body       |
+                             Generic_Unit_Kind;
    --  Returns True if entity E is in SPARK. Note that E may be in SPARK
    --  without being marked by the user in SPARK, in which case it can be
    --  called from SPARK code, but no VC will be generated for E.
@@ -119,47 +112,44 @@ package SPARK_Definition is
    --  dedicated function), and generic units (which should be expanded by the
    --  front end).
 
-   function Entity_Spec_In_SPARK (E : Entity_Id) return Boolean
-   with
-     Pre =>
-       Ekind (E)
-       in Entry_Kind
-        | E_Function
-        | E_Package
-        | E_Procedure
-        | E_Protected_Type
-        | E_Task_Type
-        | E_Subprogram_Type;
+   function Entity_Spec_In_SPARK (E : Entity_Id) return Boolean with
+     Pre => Ekind (E) in Entry_Kind       |
+                         E_Function       |
+                         E_Package        |
+                         E_Procedure      |
+                         E_Protected_Type |
+                         E_Task_Type      |
+                         E_Subprogram_Type;
    --  @param E an entity
    --  @return True if the spec of E was marked in SPARK. Note this does not
    --    mean that the entity is valid SPARK, only that SPARK_Mode is On.
 
-   function Entity_Body_In_SPARK (E : Entity_Id) return Boolean
-   with
-     Pre =>
-       Ekind (E)
-       in Entry_Kind
-        | E_Function
-        | E_Package
-        | E_Procedure
-        | E_Protected_Type
-        | E_Task_Type
-        | E_Subprogram_Type;
+   function Entity_Body_In_SPARK (E : Entity_Id) return Boolean with
+     Pre => Ekind (E) in Entry_Kind       |
+                         E_Function       |
+                         E_Package        |
+                         E_Procedure      |
+                         E_Protected_Type |
+                         E_Task_Type      |
+                         E_Subprogram_Type;
    --  Returns True iff the body of E was marked in SPARK and contains no SPARK
    --  violations.
 
    function Entity_Body_Compatible_With_SPARK
-     (E : E_Function_Id) return Boolean
+     (E : E_Function_Id)
+      return Boolean
    with Pre => Is_Expression_Function_Or_Completion (E);
    --  Returns True iff the body of expression function E contains no SPARK
    --  violations.
 
-   function Private_Spec_In_SPARK (E : Entity_Id) return Boolean
-   with Pre => Ekind (E) in E_Package | E_Protected_Type | E_Task_Type;
+   function Private_Spec_In_SPARK (E : Entity_Id) return Boolean with
+     Pre => Ekind (E) in E_Package        |
+                         E_Protected_Type |
+                         E_Task_Type;
    --  Returns True iff the private part of spec is in SPARK
 
-   function Body_Statements_In_SPARK (E : E_Package_Id) return Boolean
-   with Pre => Entity_Body_In_SPARK (E);
+   function Body_Statements_In_SPARK (E : E_Package_Id) return Boolean with
+     Pre => Entity_Body_In_SPARK (E);
    --  Returns True iff the package body statements are in SPARK. Only
    --  applicable to packages, whose body itself is in SPARK.
 
@@ -173,7 +163,7 @@ package SPARK_Definition is
    --  marking as a JSON record.
 
    function Has_Relaxed_Init (E : Type_Kind_Id) return Boolean
-   with Post => (if Has_Relaxed_Init'Result then In_Relaxed_Init (E));
+     with Post => (if Has_Relaxed_Init'Result then In_Relaxed_Init (E));
    --  True if type E is annotated with relaxed initialization
 
    function In_Relaxed_Init (E : Type_Kind_Id) return Boolean;
@@ -198,7 +188,7 @@ package SPARK_Definition is
    --  Return True if E is the full view of an incomplete type
 
    function Get_Incomplete_Access (E : Type_Kind_Id) return Access_Kind_Id
-   with Pre => Has_Incomplete_Access (E);
+     with Pre => Has_Incomplete_Access (E);
    --  Return an access type to E
 
    function Raise_Occurs_In_Pre (N : N_Raise_Expression_Id) return Boolean;
@@ -213,23 +203,31 @@ package SPARK_Definition is
    ----------------------------------------------------------------------
 
    type Entity_Collection is (Entities_To_Translate)
-   with
-     Iterable =>
-       (First       => First_Cursor,
-        Next        => Next_Cursor,
-        Has_Element => Has_Element,
-        Element     => Get_Element);
+   with Iterable => (First       => First_Cursor,
+                     Next        => Next_Cursor,
+                     Has_Element => Has_Element,
+                     Element     => Get_Element);
 
    type Cursor is private;
 
-   function First_Cursor (Kind : Entity_Collection) return Cursor;
+   function First_Cursor
+     (Kind : Entity_Collection)
+      return Cursor;
 
-   function Next_Cursor (Kind : Entity_Collection; C : Cursor) return Cursor;
+   function Next_Cursor
+     (Kind : Entity_Collection;
+      C    : Cursor)
+      return Cursor;
 
-   function Has_Element (Kind : Entity_Collection; C : Cursor) return Boolean;
+   function Has_Element
+     (Kind : Entity_Collection;
+      C    : Cursor)
+      return Boolean;
 
    function Get_Element
-     (Kind : Entity_Collection; C : Cursor) return Entity_Id;
+     (Kind : Entity_Collection;
+      C    : Cursor)
+      return Entity_Id;
 
    Handler_Accesses : Node_Sets.Set;
    --  Occurrences of Handler'Access, which need to be flow-analyzed
