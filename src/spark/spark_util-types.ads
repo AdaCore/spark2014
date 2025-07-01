@@ -377,7 +377,8 @@ package SPARK_Util.Types is
       Size        : out Uint;
       Size_Str    : out Unbounded_String;
       Explanation : out Unbounded_String)
-   with Pre => (Ekind (Comp) = E_Component);
+     with Pre =>
+       (Ekind (Comp) = E_Component);
    --  Compute the expected size for a record component of scalar type. [Typ]
    --  is the containing record type. The Size_Str contains a string that
    --  explains the origin of the computed size.
