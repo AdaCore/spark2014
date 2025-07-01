@@ -4396,33 +4396,34 @@ package body SPARK_Util is
          return False;
       end if;
 
-      --  Its parent shall be a function call annotated with higher order
-      --  specialization.
+      --  And it shall be an actual of a call to function annotated with higher
+      --  order specialization.
 
       declare
-         Call : constant Node_Id := Parent (Expr);
-         Subp : constant Entity_Id :=
-           (if Nkind (Call) in N_Function_Call | N_Procedure_Call_Statement
-            then Get_Called_Entity (Call)
-            else Empty);
+         Call   : Node_Id;
+         Formal : Entity_Id;
+         Subp   : Entity_Id;
       begin
-         if No (Subp)
-           or else Ekind (Subp) not in E_Function | E_Procedure
-           or else not Has_Higher_Order_Specialization_Annotation (Subp)
-         then
-            return False;
-         end if;
+         Find_Actual (Expr, Formal, Call);
+
+         --  If Expr is indeed an actual parameter, then we will have both the
+         --  call and the coresponding formal; otherwise, we will have none.
+
+         pragma Assert (Present (Formal) = Present (Call));
 
          --  Expr shall be the actual parameter associated to an anonymous
          --  access-to-function formal parameter.
 
-         declare
-            Formal : constant Entity_Id := Get_Formal_From_Actual (Expr);
-         begin
-            return Present (Formal)
+         if Present (Call) then
+            Subp := Get_Called_Entity (Call);
+
+            return Ekind (Subp) in E_Function | E_Procedure
+              and then Has_Higher_Order_Specialization_Annotation (Subp)
               and then Ekind (Formal) = E_In_Parameter
               and then Is_Anonymous_Access_Type (Etype (Formal));
-         end;
+         else
+            return False;
+         end if;
       end;
    end Is_Specialized_Actual;
 
