@@ -35,8 +35,8 @@ with VC_Kinds;              use VC_Kinds;
 
 private package SPARK_Definition.Violations is
 
-   package Violation_Root_Causes is new
-     Ada.Containers.Indefinite_Hashed_Maps
+   package Violation_Root_Causes is
+     new Ada.Containers.Indefinite_Hashed_Maps
        (Key_Type        => Node_Id,
         Element_Type    => String,
         Hash            => Node_Hash,
@@ -56,10 +56,10 @@ private package SPARK_Definition.Violations is
    --  When processing incomplete types, this is set to the access type to the
    --  incomplete type; used to reference the type in the error message.
 
-   Emit_Messages : Boolean := True;
+   Emit_Messages        : Boolean := True;
    --  Messages are emitted only if this flag is set
 
-   Violation_Detected : Boolean := False;
+   Violation_Detected   : Boolean := False;
    --  Set to True when a violation is detected
 
    Violation_Root_Cause : Violation_Root_Causes.Map;
@@ -73,35 +73,36 @@ private package SPARK_Definition.Violations is
    --  saved/restored around Mark_Entity. Its value is not relevant outside
    --  of the analysis of an entity.
 
-   function Emit_Warning_Info_Messages return Boolean
-   is (Emit_Messages
-       and then Gnat2Why_Args.Limit_Subp = Null_Unbounded_String
-       and then Gnat2Why_Args.Limit_Name = Null_Unbounded_String);
+   function Emit_Warning_Info_Messages return Boolean is
+     (Emit_Messages
+      and then Gnat2Why_Args.Limit_Subp = Null_Unbounded_String
+      and then Gnat2Why_Args.Limit_Name = Null_Unbounded_String);
    --  Emit warning/info messages only when messages should be emitted, and
    --  analysis is not restricted to a single subprogram/line (typically during
    --  interactive use in IDEs), to avoid reporting messages on pieces of code
    --  not belonging to the analyzed subprogram/line.
 
    function Get_Violation_Root_Cause (N : Node_Id) return String
-   is (if Violation_Root_Cause.Contains (N)
-       then Violation_Root_Cause.Element (N)
-       else "");
    --  Return a message explaining the root cause of the violation in N not
    --  being in SPARK, if any, or the empty string otherwise.
+   is
+     (if Violation_Root_Cause.Contains (N) then
+           Violation_Root_Cause.Element (N)
+      else "");
 
    procedure Add_Violation_Root_Cause (N : Node_Id; Msg : String)
      --  Add a message explaining the root cause of the violation in N not
      --  being in SPARK.
-   with Pre => Emit_Messages and then Present (N) and then Msg /= "";
+     with Pre => Emit_Messages and then Present (N) and then Msg /= "";
 
    procedure Add_Violation_Root_Cause (N : Node_Id; From : Node_Id)
      --  Propagate the root cause message explaining the violation in From
      --  not being in SPARK to N.
-   with Pre => Emit_Messages;
+     with Pre => Emit_Messages;
 
    function SPARK_Pragma_Is (Mode : Opt.SPARK_Mode_Type) return Boolean
-   with
-     Global => (Input => (Current_SPARK_Pragma, Current_Delayed_Aspect_Type));
+   with Global => (Input => (Current_SPARK_Pragma,
+                             Current_Delayed_Aspect_Type));
    --  Returns True iff Current_SPARK_Pragma is not Empty, and corresponds to
    --  the given Mode.
 
@@ -112,8 +113,9 @@ private package SPARK_Definition.Violations is
       Name           : String := "";
       Cont_Msg       : Message := No_Message;
       Root_Cause_Msg : String := "")
-   with
-     Global => (Output => Violation_Detected, Input => Current_SPARK_Pragma);
+     with
+       Global => (Output => Violation_Detected,
+                  Input  => Current_SPARK_Pragma);
    --  Mark node N as an unsupported SPARK construct. An error message is
    --  issued if current SPARK_Mode is On. Cont_Msg is a continuous message
    --  when specified. If Root_Cause_Msg is set, the corresponding message is
@@ -128,12 +130,14 @@ private package SPARK_Definition.Violations is
       SRM_Reference  : String := "";
       Cont_Msg       : String := "";
       Root_Cause_Msg : String := "")
-   with
-     Global => (Output => Violation_Detected, Input => Current_SPARK_Pragma),
-     Pre    =>
-       SRM_Reference = ""
-       or else (SRM_Reference'Length > 9
-                and then Head (SRM_Reference, 9) = "SPARK RM ");
+     with
+       Global => (Output => Violation_Detected,
+                  Input  => Current_SPARK_Pragma),
+       Pre =>
+         SRM_Reference = ""
+          or else
+            (SRM_Reference'Length > 9
+             and then Head (SRM_Reference, 9) = "SPARK RM ");
    --  Mark node N as a violation of SPARK. An error message pointing to the
    --  current SPARK_Mode pragma/aspect is issued if current SPARK_Mode is On.
    --  If Explain_Code is set to a positive number, this is taken as an explain
@@ -145,17 +149,20 @@ private package SPARK_Definition.Violations is
    --  If Names is set, use this to replace & in error messages.
 
    procedure Mark_Violation
-     (N : Node_Id; From : Entity_Id; Cont_Msg : String := "")
-   with
-     Global => (Output => Violation_Detected, Input => Current_SPARK_Pragma);
+     (N        : Node_Id;
+      From     : Entity_Id;
+      Cont_Msg : String := "")
+     with Global => (Output => Violation_Detected,
+                     Input  => Current_SPARK_Pragma);
    --  Mark node N as a violation of SPARK, due to the use of entity
    --  From which is not in SPARK. An error message is issued if current
    --  SPARK_Mode is On.
 
    procedure Mark_Violation_In_Tasking (N : Node_Id)
-   with
-     Global => (Output => Violation_Detected, Input => Current_SPARK_Pragma),
-     Pre    => not Is_SPARK_Tasking_Configuration;
+     with
+       Global => (Output => Violation_Detected,
+                  Input  => Current_SPARK_Pragma),
+     Pre => not Is_SPARK_Tasking_Configuration;
    --  Mark node N as a violation of SPARK because of unsupported tasking
    --  configuration. An error message is issued if current SPARK_Mode is
    --  On.
@@ -177,15 +184,13 @@ private package SPARK_Definition.Violations is
    --  Restrictions pragmas). Returns True only if all the required settings
    --  are set.
 
-   function Sequential_Elaboration return Boolean
-   is
+   function Sequential_Elaboration return Boolean is
       --  Check if Partition_Elaboration_Policy is set to Sequential
-      (Partition_Elaboration_Policy = 'S');
+     (Partition_Elaboration_Policy = 'S');
 
-   function Is_SPARK_Tasking_Configuration return Boolean
-   is
+   function Is_SPARK_Tasking_Configuration return Boolean is
       --  Check tasking configuration required by SPARK and possibly mark
       --  violation on node N.
-      (GNATprove_Tasking_Profile and then Sequential_Elaboration);
+     (GNATprove_Tasking_Profile and then Sequential_Elaboration);
 
 end SPARK_Definition.Violations;

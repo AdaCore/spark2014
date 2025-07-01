@@ -55,10 +55,14 @@ package SPARK_Frame_Conditions is
    --  Extract xref information from low-level data structures
 
    procedure Collect_Direct_Computed_Globals
-     (E : Entity_Id; Inputs : out Node_Sets.Set; Outputs : out Node_Sets.Set)
-   with
-     Pre  => Ekind (E) in Entry_Kind | E_Function | E_Procedure | E_Task_Type,
-     Post => Outputs.Is_Subset (Of_Set => Inputs);
+     (E       :     Entity_Id;
+      Inputs  : out Node_Sets.Set;
+      Outputs : out Node_Sets.Set)
+   with Pre  => Ekind (E) in Entry_Kind
+                           | E_Function
+                           | E_Procedure
+                           | E_Task_Type,
+        Post => Outputs.Is_Subset (Of_Set => Inputs);
    --  Collect the Computed Globals information based on the current
    --  compilation unit alone.
    --
@@ -79,20 +83,18 @@ package SPARK_Frame_Conditions is
    --  of the current compilation unit, then Find_Entity will return it.
 
    subtype Registered_Kind is Entity_Kind
-   with
-     Static_Predicate =>
-       Registered_Kind
-       in E_Abstract_State
-        | E_Constant
-        | E_Loop_Parameter
-        | E_Variable
-        | Formal_Kind
-        | E_Protected_Type
-        | E_Task_Type
-        | E_Procedure
-        | E_Function
-        | Entry_Kind
-        | E_Package;
+     with Static_Predicate =>
+       Registered_Kind in E_Abstract_State
+                        | E_Constant
+                        | E_Loop_Parameter
+                        | E_Variable
+                        | Formal_Kind
+                        | E_Protected_Type
+                        | E_Task_Type
+                        | E_Procedure
+                        | E_Function
+                        | Entry_Kind
+                        | E_Package;
    --  Kinds of entities for which we register the mapping from Entity_Name to
    --  Entity_Id, i.e. entities that can either appear in the Global contract,
    --  or can have a Global/Initializes contract itself.
@@ -102,10 +104,8 @@ package SPARK_Frame_Conditions is
    --  Register a mapping from Entity_Name to Entity_Id for E
 
    function Find_Entity (E : Entity_Name) return Entity_Id
-   with
-     Post =>
-       (if Present (Find_Entity'Result)
-        then Ekind (Find_Entity'Result) in Registered_Kind);
+   with Post => (if Present (Find_Entity'Result)
+                 then Ekind (Find_Entity'Result) in Registered_Kind);
    --  Find the entity that belongs to the given Entity_Name. If no such entity
    --  could be found (i.e. when the entity is defined in the body of a with'ed
    --  unit), the empty node is returned.

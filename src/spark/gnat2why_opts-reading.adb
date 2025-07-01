@@ -35,13 +35,21 @@ package body Gnat2Why_Opts.Reading is
 
    procedure Load (Args_File : String; Source_File : String) is
 
-      function Get_Opt (V : JSON_Value; Field : String) return Boolean
-      is (Get (Get (V, Field)))
+      function Get_Opt
+        (V     : JSON_Value;
+         Field : String)
+         return Boolean
+      is
+        (Get (Get (V, Field)))
       with Pre => Has_Field (V, Field);
       --  Return the boolean value of the [Field] of the JSON record [V]
 
-      function Get_Opt (V : JSON_Value; Field : String) return Unbounded_String
-      is (Get (Get (V, Field)))
+      function Get_Opt
+        (V     : JSON_Value;
+         Field : String)
+         return Unbounded_String
+      is
+        (Get (Get (V, Field)))
       with Pre => Has_Field (V, Field);
       --  Return the string value of the [Field] of the JSON record [V]
 
@@ -58,10 +66,10 @@ package body Gnat2Why_Opts.Reading is
             else Get (V, "Ada"));
 
       begin
-         No_Loop_Unrolling := Get_Opt (R, No_Loop_Unrolling_Name);
-         No_Inlining := Get_Opt (R, No_Inlining_Name);
+         No_Loop_Unrolling     := Get_Opt (R, No_Loop_Unrolling_Name);
+         No_Inlining           := Get_Opt (R, No_Inlining_Name);
          Check_Counterexamples := Get_Opt (R, Check_Counterexamples_Name);
-         Mode := From_JSON (Get (R, GP_Mode_Name));
+         Mode                  := From_JSON (Get (R, GP_Mode_Name));
 
          if not Global_Gen_Mode then
             Proof_Warnings := Get_Opt (R, Proof_Warnings_Name);
@@ -79,23 +87,24 @@ package body Gnat2Why_Opts.Reading is
 
       V : constant JSON_Value := Read_File_Into_JSON (Args_File);
 
-      --  Start of processing for Load
+   --  Start of processing for Load
 
    begin
-      Global_Gen_Mode := Get_Opt (V, Global_Gen_Mode_Name);
-      Output_Mode := Output_Mode_Type'Value (Get (Get (V, Output_Mode_Name)));
-      Exclude_Line := Get_Opt (V, Exclude_Line_Name);
+      Global_Gen_Mode         := Get_Opt (V, Global_Gen_Mode_Name);
+      Output_Mode             :=
+        Output_Mode_Type'Value (Get (Get (V, Output_Mode_Name)));
+      Exclude_Line            := Get_Opt (V, Exclude_Line_Name);
 
-      Debug_Exec_RAC := Get_Opt (V, Debug_Exec_RAC_Name);
-      Debug_Mode := Get_Opt (V, Debug_Mode_Name);
-      Flow_Advanced_Debug := Get_Opt (V, Flow_Advanced_Debug_Name);
+      Debug_Exec_RAC          := Get_Opt (V, Debug_Exec_RAC_Name);
+      Debug_Mode              := Get_Opt (V, Debug_Mode_Name);
+      Flow_Advanced_Debug     := Get_Opt (V, Flow_Advanced_Debug_Name);
       Flow_Generate_Contracts := Get_Opt (V, Flow_Generate_Contracts_Name);
 
       if not Global_Gen_Mode then
-         Limit_Units := Get_Opt (V, Limit_Units_Name);
-         Limit_Subp := Get_Opt (V, Limit_Subp_Name);
-         Limit_Region := Get_Opt (V, Limit_Region_Name);
-         Limit_Name := Get_Opt (V, Limit_Name_Name);
+         Limit_Units     := Get_Opt (V, Limit_Units_Name);
+         Limit_Subp      := Get_Opt (V, Limit_Subp_Name);
+         Limit_Region    := Get_Opt (V, Limit_Region_Name);
+         Limit_Name      := Get_Opt (V, Limit_Name_Name);
          Gnattest_Values := Get_Opt (V, Gnattest_Values_Name);
 
          declare
@@ -112,11 +121,11 @@ package body Gnat2Why_Opts.Reading is
          Warning_Mode :=
            SPARK_Warning_Mode_Type'Value (Get (Get (V, Warning_Mode_Name)));
 
-         Flow_Show_GG := Get_Opt (V, Flow_Show_GG_Name);
+         Flow_Show_GG          := Get_Opt (V, Flow_Show_GG_Name);
          Proof_Generate_Guards := Get_Opt (V, Proof_Generate_Guards_Name);
-         Ide_Mode := Get_Opt (V, Ide_Mode_Name);
-         CWE := Get_Opt (V, CWE_Name);
-         Parallel_Why3 := Get_Opt (V, Parallel_Why3_Name);
+         Ide_Mode              := Get_Opt (V, Ide_Mode_Name);
+         CWE                   := Get_Opt (V, CWE_Name);
+         Parallel_Why3         := Get_Opt (V, Parallel_Why3_Name);
 
          Why3_Dir := Get_Opt (V, Why3_Dir_Name);
       end if;
