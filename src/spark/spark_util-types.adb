@@ -274,6 +274,7 @@ package body SPARK_Util.Types is
                Size,
                Size_Str,
                Explanation);
+
          when N_Identifier | N_Expanded_Name | N_Defining_Identifier =>
             declare
                Ent : constant Entity_Id :=
@@ -2783,7 +2784,7 @@ package body SPARK_Util.Types is
                Size_Str := Null_Unbounded_String;
                declare
                   Comp_Ty : constant Type_Kind_Id := Retysp (Etype (Comp));
-                  Unused   : Unbounded_String;
+                  Unused  : Unbounded_String;
                begin
                   if Is_Scalar_Type (Comp_Ty) then
                      Record_Component_Size

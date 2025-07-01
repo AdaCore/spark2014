@@ -285,8 +285,8 @@ package body SPARK_Definition is
    function Is_Actions_Entity (E : Entity_Id) return Boolean
    renames Actions_Entity_Set.Contains;
 
-   function Type_Might_Be_Invalid (E : Type_Kind_Id) return Boolean is
-     (Potentially_Invalid.Contains (Base_Retysp (E)));
+   function Type_Might_Be_Invalid (E : Type_Kind_Id) return Boolean
+   is (Potentially_Invalid.Contains (Base_Retysp (E)));
 
    function Is_Valid_Allocating_Context (Alloc : Node_Id) return Boolean;
    --  Return True if node Alloc is a valid allocating context (SPARK RM 4.8).
