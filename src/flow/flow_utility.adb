@@ -332,6 +332,11 @@ package body Flow_Utility is
       function Proc (N : Node_Id) return Traverse_Result is
          P : Node_Id;
       begin
+         if Is_Specialized_Actual (N) then
+            Function_Calls.Include
+              (Subprogram_Call'(N => N, E => Entity (Prefix (N))));
+         end if;
+
          case Nkind (N) is
             when N_Function_Call =>
                declare
@@ -2987,7 +2992,8 @@ package body Flow_Utility is
 
       function Do_Subprogram_Call (Callsite : Node_Id) return Flow_Id_Sets.Set
       with Pre => Nkind (Callsite) in N_Entry_Call_Statement
-                                    | N_Subprogram_Call;
+                                    | N_Subprogram_Call
+                  or else Is_Specialized_Actual (Callsite);
       --  Work out which variables (including globals) are used in the
       --  entry/subprogram call and add them to the given set. Do not follow
       --  children after calling this.
@@ -3119,7 +3125,13 @@ package body Flow_Utility is
 
       function Do_Subprogram_Call (Callsite : Node_Id) return Flow_Id_Sets.Set
       is
-         Subprogram : constant Entity_Id := Get_Called_Entity (Callsite);
+         Is_Higher_Order_Actual : constant Boolean :=
+           Is_Specialized_Actual (Callsite);
+
+         Subprogram : constant Entity_Id :=
+           (if Is_Higher_Order_Actual
+            then Entity (Prefix (Callsite))
+            else Get_Called_Entity (Callsite));
 
          Globals : Global_Flow_Ids;
 
@@ -3328,7 +3340,9 @@ package body Flow_Utility is
 
          --  Merge the actuals into the set of variables used
 
-         Handle_Parameters (Callsite);
+         if not Is_Higher_Order_Actual then
+            Handle_Parameters (Callsite);
+         end if;
 
          --  Determine the global effects of the called program
 
@@ -3336,6 +3350,8 @@ package body Flow_Utility is
             Get_Globals (Subprogram          => Subprogram,
                          Scope               => Ctx.Scope,
                          Classwide           =>
+                           not Is_Higher_Order_Actual
+                             and then
                            Flow_Classwide.Is_Dispatching_Call (Callsite),
                          Globals             => Globals,
                          Use_Deduced_Globals => Ctx.Use_Computed_Globals);
@@ -3653,6 +3669,11 @@ package body Flow_Utility is
          -----------------
 
          case The_Attribute is
+            when Attribute_Access =>
+               if Is_Specialized_Actual (N) then
+                  return Do_Subprogram_Call (N);
+               end if;
+
             when Attribute_Result =>
                pragma Assert (Ekind (Entity (Prefix (N))) = E_Function);
 
