@@ -272,9 +272,17 @@ build_docs:
     - publish-pages $CI_PROJECT_DIR/spark/html/lrm --target-subdir doc/lrm/$HTMLTARGETDIR --expires 30
     - publish-pages $CI_PROJECT_DIR/spark/html/ug --target-subdir doc/ug/$HTMLTARGETDIR --expires 30
 
-# Adjust pre-commit to give it access to gnatformat
-pre-commit:
-  before_script:
+format:
+  stage: build
+  services:
+     - image:pe-base
+     #Memory is bound to CPU and we need more than the 1Gig that 1 cpu provides
+     - cpu:4
+  rules:
+    - when: always
+  allow_failure: true
+  script:
+    - GENERIC_ANOD_CI_OPTIONS="--add-dep eng/toolchain/gnat"
     - generic_anod_ci $GENERIC_ANOD_CI_OPTIONS
     - cat /tmp/ci_env.sh
     - . /tmp/ci_env.sh
@@ -284,3 +292,6 @@ pre-commit:
     - eval $(anod printenv gnat)
     - eval $(anod printenv libgpr2)
     - cd $CI_PROJECT_DIR
+    - ln -s $ACI_SUBPROJECTS_ROOT/gnat gnat2why/gnat_src
+    - make -C gnat2why setup
+    - make check-format

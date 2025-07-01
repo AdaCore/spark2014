@@ -173,8 +173,7 @@ package Gnat2Why_Opts.Reading is
    -- Loading option values --
    ---------------------------
 
-   procedure Load (Args_File   : String;
-                   Source_File : String)
+   procedure Load (Args_File : String; Source_File : String)
    with Pre => Args_File /= "" and then Source_File /= "";
    --  Read the extra options information and set the corresponding global
    --  variables above.

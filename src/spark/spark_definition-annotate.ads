@@ -328,10 +328,8 @@ package SPARK_Definition.Annotate is
    --  of kind "Only_Null".
 
    procedure Mark_Pragma_Annotate
-     (N             : Node_Id;
-      Preceding     : Node_Id;
-      Consider_Next : Boolean)
-     with Pre => Is_Pragma_Annotate_GNATprove (N) and Present (Preceding);
+     (N : Node_Id; Preceding : Node_Id; Consider_Next : Boolean)
+   with Pre => Is_Pragma_Annotate_GNATprove (N) and Present (Preceding);
    --  Call this procedure to register a pragma Annotate. The "Preceding" node
    --  is the node in the tree to which this pragma refers to. If Consider_Next
    --  is true, "Preceding" must be part of a list, and the pragma will
@@ -361,6 +359,7 @@ package SPARK_Definition.Annotate is
             First   : Source_Ptr;    --  first source pointer
             Last    : Source_Ptr;    --  last source pointer
             Prgma   : Node_Id;       --  the pragma which this range belongs to
+
          when False =>
             null;
       end case;
@@ -404,8 +403,10 @@ package SPARK_Definition.Annotate is
    --  If a pragma Annotate Inline_For_Proof applies to E then returns the
    --  Ada expression that should be used instead of E.
 
-   function Find_Inline_Pragma (E : Entity_Id) return Node_Id with
-     Pre  => Present (Retrieve_Inline_Annotation (E))
+   function Find_Inline_Pragma (E : Entity_Id) return Node_Id
+   with
+     Pre  =>
+       Present (Retrieve_Inline_Annotation (E))
        or else Has_Logical_Eq_Annotation (E),
      Post => Is_Pragma_Annotate_GNATprove (Find_Inline_Pragma'Result);
    --  If a pragma Annotate Inline_For_Proof or Logical_Equal applies to E then
@@ -442,10 +443,10 @@ package SPARK_Definition.Annotate is
    --  Register entity E has having the No_Wrap_Around annotation, either
    --  directly or inherited through a parent type.
 
-   function To_String (Kind : Annotate_Kind) return String is
-     (case Kind is
+   function To_String (Kind : Annotate_Kind) return String
+   is (case Kind is
          when False_Positive => "false positive",
-         when Intentional    => "intentional");
+         when Intentional => "intentional");
    --  Return the string representation of the supplied annotation
 
    function Has_At_End_Borrow_Annotation (E : Entity_Id) return Boolean;
@@ -455,8 +456,7 @@ package SPARK_Definition.Annotate is
    --  Decide whether pragma Inline_For_Proof can be inferred for E
 
    function Is_Pragma_Annotate_Automatic_Instantiation
-     (N : Node_Id;
-      P : Entity_Id := Empty) return Boolean
+     (N : Node_Id; P : Entity_Id := Empty) return Boolean
    with Pre => Is_Pragma_Annotate_GNATprove (N);
    --  Return True if N is a pragma Annotate (GNATprove,
    --  Automatic_Instantiation, P). If P is Empty, accept any procedure entity.
@@ -475,44 +475,48 @@ package SPARK_Definition.Annotate is
    --  actually skipped.
 
    function Has_Own_Ownership_Annotation (E : Entity_Id) return Boolean
-     with Pre => Is_Type (E);
+   with Pre => Is_Type (E);
    --  Return True if E is annotated with ownership
 
    function Has_Ownership_Annotation (E : Entity_Id) return Boolean
-     with Pre => Is_Type (E);
+   with Pre => Is_Type (E);
    --  Return True if E has a possibly inherited ownership annotation and its
    --  full view is not in SPARK.
 
    function Needs_Ownership_Check (E : Entity_Id) return Boolean
-     with Pre => Is_Type (E);
+   with Pre => Is_Type (E);
    --  Return True if E is annotated with ownership, it needs reclamation, and
    --  its full view is in SPARK.
 
    function Needs_Reclamation (E : Entity_Id) return Boolean
-     with Pre => Is_Type (E)
-     and then Has_Ownership_Annotation (E);
+   with Pre => Is_Type (E) and then Has_Ownership_Annotation (E);
    --  Return True if E needs checks to ensure that the memory is reclaimed
 
-   type Reclamation_Kind is
-     (Reclaimed_Value, Is_Reclaimed, Needs_Reclamation);
+   type Reclamation_Kind is (Reclaimed_Value, Is_Reclaimed, Needs_Reclamation);
 
    procedure Get_Reclamation_Entity
      (E                  : Entity_Id;
       Reclamation_Entity : out Entity_Id;
       Kind               : out Reclamation_Kind;
       For_Check          : Boolean := False)
-   with Pre => Is_Type (E)
-     and then
-       (if For_Check then Needs_Ownership_Check (E)
-        else Has_Ownership_Annotation (E) and then Needs_Reclamation (E));
+   with
+     Pre =>
+       Is_Type (E)
+       and then (if For_Check
+                 then Needs_Ownership_Check (E)
+                 else
+                   Has_Ownership_Annotation (E)
+                   and then Needs_Reclamation (E));
    --  Retrieve the check function or constant for a type which needs
    --  reclamation if any. If For_Check is True, return the confirming
    --  annotation. Otherwise confirming annotations are ignored.
 
    function Get_Reclamation_Entity (E : Entity_Id) return Entity_Id
-   with Pre => Is_Type (E)
-     and then Has_Ownership_Annotation (E)
-     and then Needs_Reclamation (E);
+   with
+     Pre =>
+       Is_Type (E)
+       and then Has_Ownership_Annotation (E)
+       and then Needs_Reclamation (E);
    --  Same as above but only returns the check function
 
    procedure Infer_Ownership_Annotation (E : Type_Kind_Id);
@@ -520,11 +524,11 @@ package SPARK_Definition.Annotate is
    --  unused record components. E should be a root retysp here.
 
    function Has_Own_Predefined_Eq_Annotation (E : Entity_Id) return Boolean
-     with Pre => Is_Type (E);
+   with Pre => Is_Type (E);
    --  Return True if E is annotated with predefined equality
 
    function Has_Predefined_Eq_Annotation (E : Entity_Id) return Boolean
-     with Pre => Is_Type (E);
+   with Pre => Is_Type (E);
    --  Return True if E has a potentially inherited predefined equality
    --  annotation and its full view is not in SPARK.
 
@@ -535,9 +539,11 @@ package SPARK_Definition.Annotate is
    --  Return expected handling for the predefined equality on E
 
    function Get_Null_Value (E : Entity_Id) return Entity_Id
-   with Pre => Is_Type (E)
-     and then Has_Predefined_Eq_Annotation (E)
-     and then Get_Predefined_Eq_Kind (E) = Only_Null;
+   with
+     Pre =>
+       Is_Type (E)
+       and then Has_Predefined_Eq_Annotation (E)
+       and then Get_Predefined_Eq_Kind (E) = Only_Null;
    --  Return the null value for private types whose predefined equality is
    --  only allowed on null values.
 
@@ -559,17 +565,21 @@ package SPARK_Definition.Annotate is
    --  the function E.
 
    function Get_Lemmas_To_Specialize (E : Entity_Id) return Node_Sets.Set
-   with Pre => Ekind (E) = E_Function
-     and then Has_Higher_Order_Specialization_Annotation (E);
+   with
+     Pre =>
+       Ekind (E) = E_Function
+       and then Has_Higher_Order_Specialization_Annotation (E);
    --  Return a set of lemmas that should be specialized along with the
    --  function E.
 
    function Retrieve_Parameter_Specialization
      (E : Entity_Id) return Node_Maps.Map
-   with Pre => Ekind (E) = E_Procedure
-     and then Has_Automatic_Instantiation_Annotation (E)
-     and then Has_Higher_Order_Specialization_Annotation
-       (Retrieve_Automatic_Instantiation_Annotation (E));
+   with
+     Pre =>
+       Ekind (E) = E_Procedure
+       and then Has_Automatic_Instantiation_Annotation (E)
+       and then Has_Higher_Order_Specialization_Annotation
+                  (Retrieve_Automatic_Instantiation_Annotation (E));
    --  Return a mapping from the formal parameters of the function associated
    --  to a lemma procedure E to the formals of E. It should be used to
    --  construct a specialization of E from a specialization of the function.
@@ -603,18 +613,18 @@ package SPARK_Definition.Annotate is
                   Sets_Length         : Entity_Id := Empty;
 
                when Maps =>
-                  Key_Type            : Entity_Id;
-                  Has_Key             : Entity_Id := Empty;
-                  Default_Item        : Entity_Id := Empty;
-                  Equivalent_Keys     : Entity_Id := Empty;
-                  Maps_Get            : Entity_Id := Empty;
-                  Maps_Length         : Entity_Id := Empty;
+                  Key_Type        : Entity_Id;
+                  Has_Key         : Entity_Id := Empty;
+                  Default_Item    : Entity_Id := Empty;
+                  Equivalent_Keys : Entity_Id := Empty;
+                  Maps_Get        : Entity_Id := Empty;
+                  Maps_Length     : Entity_Id := Empty;
 
                when Seqs =>
-                  Index_Type          : Entity_Id := Empty;
-                  Seqs_Get            : Entity_Id := Empty;
-                  First               : Entity_Id := Empty;
-                  Last                : Entity_Id := Empty;
+                  Index_Type : Entity_Id := Empty;
+                  Seqs_Get   : Entity_Id := Empty;
+                  First      : Entity_Id := Empty;
+                  Last       : Entity_Id := Empty;
 
                when others =>
                   null;
@@ -645,8 +655,7 @@ package SPARK_Definition.Annotate is
    function Has_Aggregate_Annotation (E : Type_Kind_Id) return Boolean;
 
    function Get_Aggregate_Annotation
-     (E : Type_Kind_Id)
-      return Aggregate_Annotation
+     (E : Type_Kind_Id) return Aggregate_Annotation
    with Pre => Has_Aggregate_Annotation (E);
 
    function Has_Handler_Annotation (E : Type_Kind_Id) return Boolean;
@@ -654,14 +663,15 @@ package SPARK_Definition.Annotate is
    type Hide_Annotation_Kind is
      (Hide_Expr_Fun, Unhide_Expr_Fun, Unhide_Package_Body);
 
-   package Node_To_Hide_Annotation_Kind_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Node_Id,
-      Element_Type    => Hide_Annotation_Kind,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=");
+   package Node_To_Hide_Annotation_Kind_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Node_Id,
+        Element_Type    => Hide_Annotation_Kind,
+        Hash            => Node_Hash,
+        Equivalent_Keys => "=");
 
-   function Get_Hide_Annotations (E : Entity_Id) return
-     Node_To_Hide_Annotation_Kind_Maps.Map;
+   function Get_Hide_Annotations
+     (E : Entity_Id) return Node_To_Hide_Annotation_Kind_Maps.Map;
    --  Return all the hide or unhide annotations applying to E
 
    function Expr_Fun_Might_Be_Hidden (E : Entity_Id) return Boolean;
@@ -674,7 +684,7 @@ package SPARK_Definition.Annotate is
    --  Return True if the body of a nested package E is unhidden
 
    function Has_Mutable_In_Param_Annotation (E : Entity_Id) return Boolean
-     with Pre => Ekind (E) = E_In_Parameter;
+   with Pre => Ekind (E) = E_In_Parameter;
    --  Return True if E is a IN parameter annotated as mutable
 
    function Has_Hidden_Private_Part (E : Entity_Id) return Boolean;
