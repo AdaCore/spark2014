@@ -1,0 +1,9 @@
+test.adb:11:20: warning: "X" is not modified, could be IN
+test.adb:11:20: warning: unused variable "X"
+test.adb:13:04: warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
+test.adb:14:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: unknown alignment for object] [possible fix: overlaying object should have an Alignment representation clause]
+test.adb:14:07: high: object with non-trivial address clause or prefix of the 'Address reference does not have asynchronous writers
+test.adb:14:07: info: object is suitable for aliasing via address clause (Trivial)
+test.adb:14:43: info: object is suitable for aliasing via address clause (Trivial)
+test.adb:14:43: info: types of aliased objects have the same size (Trivial)
+test.adb:14:46: warning: alignment of object is not precisely known [imprecise-align]

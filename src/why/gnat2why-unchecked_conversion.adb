@@ -1229,8 +1229,9 @@ package body Gnat2Why.Unchecked_Conversion is
                Size_Str  : Unbounded_String;
             begin
                if Is_Scalar_Type (Comp_Ty) then
-                  Scalar_Record_Component_Size
-                    (Typ, Comp, Comp_Size, Size_Str);
+                  Record_Component_Size
+                    (Typ, Comp, Comp_Size, Size_Str, Explanation);
+                  pragma Assert (Present (Comp_Size));
                else
                   Compute_Size_Of_Components
                     (Comp_Ty, Result, Comp_Size, Explanation);
