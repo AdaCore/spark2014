@@ -33,3 +33,10 @@ repos:
         files: '\.opt$'
         language: system
         entry: e3-opt-check
+  - repo: local
+    hooks:
+      - id: check-gnatformat
+        name: Check for Ada formatting
+        files: ^src/gnatprove/.*\.ad(b|s)$
+        language: system
+        entry: gnatformat -P gnatprove
