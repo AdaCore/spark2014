@@ -4352,6 +4352,12 @@ package body SPARK_Util is
 
    function Is_Potentially_Invalid_Expr (Expr : Node_Id) return Boolean is
 
+      function Object_Can_Be_Invalid (Obj : Entity_Id) return Boolean
+      renames Is_Potentially_Invalid;
+      --  Whether Obj is considered (locally) invalid at the location of Expr.
+      --  For now, only consider annotated objects as potentially invalid.
+      --  ??? Handle locally potentially invalid
+
    begin
       case Nkind (Expr) is
          when N_Identifier | N_Expanded_Name =>
