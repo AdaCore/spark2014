@@ -21210,11 +21210,10 @@ package body Gnat2Why.Expr is
                           (Decl, VC_UC_Source, Valid, Current_Subp,
                            Explanation => To_String (Explanation));
                         Suitable_For_UC_Target_Overlay_Wrap
-                          (Typ            => Obj_Ty,
-                           Obj            => Obj,
-                           Result         => Valid,
-                           Explanation    => Explanation,
-                           Check_Validity => not Is_Potentially_Invalid (Obj));
+                          (Typ          => Obj_Ty,
+                           Obj          => Obj,
+                           Result       => Valid,
+                           Explanation  => Explanation);
                         Emit_Static_Proof_Result
                           (Decl, VC_UC_Target, Valid, Current_Subp,
                            Explanation => To_String (Explanation));
@@ -21272,9 +21271,7 @@ package body Gnat2Why.Expr is
                               Result         => Valid,
                               Explanation    => Explanation,
                               Check_Validity =>
-                                 not Is_Constant_In_SPARK (Aliased_Object)
-                                 and then not Is_Potentially_Invalid
-                                   (Aliased_Object));
+                                 not Is_Constant_In_SPARK (Aliased_Object));
 
                            Emit_Static_Proof_Result
                              (Address, VC_UC_Target, Valid, Current_Subp,

@@ -4937,7 +4937,10 @@ package body SPARK_Definition is
                   Names => [E]);
             end if;
 
-            --  We do not support overlays with Relaxed_Initialization yet
+            --  We do not support overlays with Relaxed_Initialization or
+            --  Potentially_Invalid. Indeed, such an overlay might make it
+            --  possible to read invalid/uninitialized data whose value cannot
+            --  be accounted for in Why.
 
             if Has_Relaxed_Initialization (E)
               or else Contains_Relaxed_Init_Parts (Etype (E))
@@ -4948,6 +4951,12 @@ package body SPARK_Definition is
                    (Etype (Aliased_Object)))
             then
                Mark_Unsupported (Lim_Relaxed_Init_Aliasing, E);
+            end if;
+
+            if Is_Potentially_Invalid (E)
+              or else Is_Potentially_Invalid (Aliased_Object)
+            then
+               Mark_Violation ("potentially invalid overlaid object", E);
             end if;
 
             --  Fill the map used to havoc overlaid objects
@@ -12860,6 +12869,11 @@ package body SPARK_Definition is
         or else not Type_Has_Only_Valid_Values (Rep_Ty, Uint_0, "").Ok
       then
          Potentially_Invalid.Include (Base_Retysp (Rep_Ty));
+
+         --  Do not abstract away record types with potentially invalid values
+         --  as we don't handle potentially invalid values of private types.
+
+         Unused_Records.Exclude (Base_Retysp (Rep_Ty));
       end if;
 
    end Mark_Potentially_Invalid_Type;

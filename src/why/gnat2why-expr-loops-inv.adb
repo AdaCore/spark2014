@@ -248,10 +248,9 @@ package body Gnat2Why.Expr.Loops.Inv is
    --         is not actually written.
 
    procedure Write_Aliases
-     (New_Write       : Object_Kind_Id;
-      Loop_Writes     : in out Write_Status_Maps.Map;
-      Invalid_Objects : in out Node_Sets.Set;
-      Relevant_Path   : Boolean);
+     (New_Write     : Object_Kind_Id;
+      Loop_Writes   : in out Write_Status_Maps.Map;
+      Relevant_Path : Boolean);
    --  Write all overlay alias of an objects, by calling Write_Entity on all
    --  said aliases. Those writes are not (a priori) discarded.
 
@@ -1477,8 +1476,7 @@ package body Gnat2Why.Expr.Loops.Inv is
             --  Aliases of the root of the actual are entirely written
 
             Write_Aliases
-              (Get_Root_Object (Actual), Loop_Writes, Invalid_Objects,
-               Relevant_Path);
+              (Get_Root_Object (Actual), Loop_Writes, Relevant_Path);
          end if;
       end Process_Param;
 
@@ -1595,8 +1593,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                --  Aliases of the left-hand side are entirely written
 
                Write_Aliases
-                 (Get_Root_Object (Lvalue), Loop_Writes, Invalid_Objects,
-                  Relevant);
+                 (Get_Root_Object (Lvalue), Loop_Writes, Relevant);
 
                if Nkind (Rvalue) = N_Function_Call then
                   Process_Call
@@ -1693,7 +1690,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                   --  written.
 
                   if not Is_Imported (E) then
-                     Write_Aliases (E, Loop_Writes, Invalid_Objects, Relevant);
+                     Write_Aliases (E, Loop_Writes, Relevant);
                   end if;
                end if;
 
@@ -1859,7 +1856,6 @@ package body Gnat2Why.Expr.Loops.Inv is
    procedure Write_Aliases
      (New_Write       : Object_Kind_Id;
       Loop_Writes     : in out Write_Status_Maps.Map;
-      Invalid_Objects : in out Node_Sets.Set;
       Relevant_Path   : Boolean)
    is
    begin
@@ -1868,11 +1864,9 @@ package body Gnat2Why.Expr.Loops.Inv is
                        Discard_Writes => False,
                        Relevant_Path  => Relevant_Path);
 
-         --  If Alias has a validity flag, add it to Invalid_Objects
+         --  Overlaid objects cannot be potentially invalid
 
-         if Object_Has_Valid_Id (Alias) then
-            Invalid_Objects.Include (Unique_Entity (Alias));
-         end if;
+         pragma Assert (not Object_Has_Valid_Id (Alias));
       end loop;
    end Write_Aliases;
 
