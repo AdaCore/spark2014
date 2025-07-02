@@ -821,6 +821,10 @@ package body Gnat2Why.Expr.Loops.Inv is
 
                   if not Is_Type (Component)
                     and then Component_Is_Present_In_Type (Expr_Ty, Component)
+                    and then
+                      (not For_Valid
+                       or else not Comp_Has_Only_Valid_Values
+                         (Component, Expr_Ty).Ok)
                   then
                      Handle_Record_Component (Component);
                   end if;

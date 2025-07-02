@@ -367,8 +367,7 @@ package body Gnat2Why.Expr is
       Params    : Transformation_Params;
       Index_Map : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
       return W_Prog_Id
-   with Pre => Present (Get_Root_Object (LHS))
-     and then Object_Has_Valid_Id (Get_Root_Object (LHS));
+   with Pre => Is_Potentially_Invalid_Expr (LHS);
    --  Compute a program updating the validity tree of the root of LHS for a
    --  write of New_Tree in LHS.
 
@@ -6265,6 +6264,7 @@ package body Gnat2Why.Expr is
             then +New_Validity_Tree_Array_Access
               (+Valid, Idx, Retysp (Ty), EW_Term)
             elsif Ekind (E) = E_Discriminant
+            or else Comp_Has_Only_Valid_Values (E, Retysp (Ty)).Ok
             then Why_Empty
             else +New_Validity_Tree_Record_Access (+Valid, E, Retysp (Ty)));
          T_Comp   : W_Pred_Id;
@@ -7199,7 +7199,7 @@ package body Gnat2Why.Expr is
       --  be considered as unintialized, but the check could be accepted.
 
       if Present (Actual)
-        and then Object_Has_Valid_Id (Get_Root_Object (Actual))
+        and then Is_Potentially_Invalid_Expr (Actual)
       then
          Append
            (Store,
@@ -7446,7 +7446,7 @@ package body Gnat2Why.Expr is
    is
       Do_Valid : constant Boolean :=
         Present (Actual)
-        and then Object_Has_Valid_Id (Get_Root_Object (Actual));
+        and then Is_Potentially_Invalid_Expr (Actual);
 
    begin
       --  Add a continuation locating the potential checks on the copy-back
@@ -17623,8 +17623,7 @@ package body Gnat2Why.Expr is
 
       T          : W_Prog_Id;
 
-      Do_Valid   : constant Boolean :=
-        Object_Has_Valid_Id (Get_Root_Object (Lvalue));
+      Do_Valid   : constant Boolean := Is_Potentially_Invalid_Expr (Lvalue);
       --  Whether we need to assign the validity flag of Lvalue
 
       --  Context and validity flag to handle potentially invalid values
@@ -22448,7 +22447,9 @@ package body Gnat2Why.Expr is
             else
                T := Transform_Slice
                  (Expr,
-                  Transform_Expr (Prefix (Expr), Domain, Local_Params),
+                  Transform_Expr
+                    (Prefix (Expr), Domain, Local_Params,
+                     No_Validity_Check => True),
                   Local_Params,
                   Domain);
             end if;
@@ -23591,11 +23592,7 @@ package body Gnat2Why.Expr is
                      Domain,
                      Local_Params,
                      No_Init_Check     => No_Init_Check,
-                     No_Validity_Check => No_Validity_Check
-                     or else
-                       (Nkind (Expr) = N_Selected_Component
-                        and then Ekind (Entity (Selector_Name (Expr))) =
-                            E_Discriminant)),
+                     No_Validity_Check => True),
                   Domain,
                   Local_Params,
                   No_Init_Check => No_Init_Check);

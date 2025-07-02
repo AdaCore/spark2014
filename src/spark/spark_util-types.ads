@@ -410,6 +410,12 @@ package SPARK_Util.Types is
    --  Wrapper on Type_Has_Only_Valid_Values for the return type of functions.
    --  It uses the Size of the return type.
 
+   function Comp_Has_Only_Valid_Values
+     (Comp : E_Component_Id;
+      Rec  : Type_Kind_Id)
+      return True_Or_Explain;
+   --  Wrapper on Type_Has_Only_Valid_Values for record components
+
    function Contains_Access_Subcomponents (Typ : Type_Kind_Id) return Boolean;
    --  Returns True if Typ has access subcomponents
 

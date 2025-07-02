@@ -26,7 +26,9 @@ test_loops.adb:106:25: info: cannot unroll loop (too many loop iterations) [info
 test_loops.adb:114:14: medium: postcondition might fail [possible fix: loop at line 119 should mention X and Z in a loop invariant]
 test_loops.adb:117:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: X must be aliased for its alignment to be known] [possible fix: overlaying object should have an Alignment representation clause]
 test_loops.adb:117:07: info: object is suitable for aliasing via address clause (Trivial)
+test_loops.adb:117:07: info: type is suitable as source for unchecked conversion (Trivial)
 test_loops.adb:117:43: info: object is suitable for aliasing via address clause (Trivial)
+test_loops.adb:117:43: info: type is suitable as source for unchecked conversion (Trivial)
 test_loops.adb:117:43: info: types of aliased objects have the same size (Trivial)
 test_loops.adb:117:43: info: validity check proved (CVC5: 1 VC)
 test_loops.adb:119:25: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
