@@ -326,6 +326,37 @@ using the ``--steps`` or ``--replay`` switches instead. The number of steps
 required to proved an example can be accessed by running |GNATprove| with the option
 ``--report=statistics``.
 
+.. index:: --proof-warnings
+
+By default, |GNATprove| doesn't check for dead code in your subprograms nor does
+it verify the logical consistency of subprogram contracts or assumptions. It is
+thus possible to write a contract or assumption that is always false, which may
+render subsequent analysis unsound, since False implies False is True. Contracts
+or assumptions may be always false because they contain a contradiction (e.g.,
+``X > 5 and X < 5``) or because their truth value is predetermined, e.g.:
+
+.. code-block:: ada
+
+  if X > 0 then
+    ...
+
+     pragma Assume (X < 0);
+
+     ...
+  end if;
+
+|GNATprove| offers a switch, ``--proof-warnings=on``, that uses proof to help
+identify unreachable branches and unreachable code and also to help identify
+subprogram contracts or assumptions that are always false. These issues are
+reported as warnings in |GNATprove|'s output.
+
+.. note::
+
+  The warnings issued by ``--proof-warnings=on`` are not guaranteed to
+  be complete: an absence of warnings does not guarantee the logical
+  consistenty of all subprogram contracts or assumptions; nor does it guarantee
+  an absence of dead branches or code.
+
 .. index:: -f
 
 By default, |GNATprove| avoids reanalyzing unchanged files, on a
