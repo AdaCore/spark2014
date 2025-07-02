@@ -1,3 +1,4 @@
+main.adb:5:24: info: initialization of "Ptr_Accesses.Allocated_Memory" proved
 main.adb:6:06: info: flow dependencies proved
 main.adb:35:06: info: data dependencies proved
 main.adb:38:07: info: initialization of "Y" proved

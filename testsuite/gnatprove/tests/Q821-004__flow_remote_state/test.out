@@ -1,2 +1,3 @@
+debuglog-client.ads:3:22: info: initialization of "Client.State" proved
 debuglog-client.ads:4:04: info: flow dependencies proved
 main.adb:7:19: info: assertion proved (CVC5: 1 VC)

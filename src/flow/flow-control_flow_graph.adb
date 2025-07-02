@@ -8178,6 +8178,23 @@ package body Flow.Control_Flow_Graph is
       then
          for State of Iter (Abstract_States (FA.Spec_Entity)) loop
             Create_Initial_And_Final_Vertices (E => State, FA => FA);
+
+            --  As with Do_Object_Declaration, mark the state as export when
+            --  it is present as a LHS of an Initializes contract.
+
+            if Present (Find_In_Initializes (State)) then
+               declare
+                  Final_Out_Id : constant Flow_Id :=
+                     Direct_Mapping_Id (State, Final_Value);
+
+                  Final_V_Id : constant Flow_Graphs.Vertex_Id :=
+                     FA.CFG.Get_Vertex (Final_Out_Id);
+
+                  Final_Atr : V_Attributes renames FA.Atr (Final_V_Id);
+               begin
+                  Final_Atr.Is_Export := True;
+               end;
+            end if;
          end loop;
       end if;
 
