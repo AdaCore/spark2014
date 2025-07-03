@@ -23,7 +23,11 @@ n04.adb:18:18: high: "var1" is not initialized
 n04.adb:20:13: error: launch "gnatprove --explain=E0010" for more information
 n04.adb:20:13: error: object was moved at line 28 [E0010]
 n04.adb:20:13: error: return from "Z_In" with moved value for "YY"
+n04.adb:24:08: error: dereference from "Z" is not writable
+n04.adb:24:08: error: object was declared as not writable at line 20
 n04.adb:24:12: high: "Z" must be a global output of "Z_In" (SPARK RM 6.1.4(18))
+n04.adb:28:05: error: "Z" is not writable
+n04.adb:28:05: error: object was declared as not writable at line 20
 n04.adb:28:07: high: "Z" must be a global output of "Z_In" (SPARK RM 6.1.4(18))
 n04.adb:36:03: info: initialization of "X" proved
 n04.adb:37:03: info: initialization of "Y" proved

@@ -309,8 +309,13 @@ package body Gnat2Why.Borrow_Checker is
 
       procedure Reset_Env (PE : in out Perm_Env);
       --  Procedure to remove all restrictions from a permission environment.
-      --  This is different from Free_Env in that all variables are kept in the
-      --  environment.
+      --  This is currently implemented by Free_Env since we can just default
+      --  to Default_Perm_Env, but the intent of the two procedures is
+      --  different. The implementation historically differed as well, since
+      --  for Reset_Env we need the environment to behave as if all variables
+      --  in the scope are still in it. For Free_Env we just want the
+      --  allocated ressources gone, essentially invalidating the environment.
+      --  We keep both routines in case the implementation diverges again.
 
       procedure Free_Tree (PT : in out Perm_Tree_Access);
       --  Procedure to free a permission tree
@@ -454,31 +459,7 @@ package body Gnat2Why.Borrow_Checker is
       -- Reset_Env --
       ---------------
 
-      procedure Reset_Env (PE : in out Perm_Env) is
-         E : Perm_Tree_Maps.Key_Option;
-      begin
-         E := Get_First_Key (PE);
-         while E.Present loop
-            declare
-               Perm : constant Perm_Kind :=
-                 (if Is_Read_Only (E.K) then Read_Only else Read_Write);
-               Tree : Perm_Tree_Access :=
-                 Perm_Tree_Maps.Get (Perm_Tree_Maps.Instance (PE), E.K);
-               New_Tree : constant Perm_Tree_Access :=
-                 new Perm_Tree_Wrapper'
-                   (Tree =>
-                      (Kind                => Entire_Object,
-                       Is_Node_Deep        => Is_Node_Deep (Tree),
-                       Explanation         => Explanation (Tree),
-                       Permission          => Perm,
-                       Children_Permission => Perm));
-            begin
-               Free_Tree (Tree);
-               Set (PE, E.K, New_Tree);
-               E := Get_Next_Key (PE);
-            end;
-         end loop;
-      end Reset_Env;
+      procedure Reset_Env (PE : in out Perm_Env) renames Free_Env;
 
       ---------------
       -- Free_Tree --
@@ -845,6 +826,7 @@ package body Gnat2Why.Borrow_Checker is
 
    procedure Check_Parameter_Or_Global
      (Expr       : Expr_Or_Ent;
+      Param      : Entity_Id;
       Typ        : Entity_Id;
       Kind       : Formal_Kind;
       Subp       : Entity_Id;
@@ -1004,10 +986,7 @@ package body Gnat2Why.Borrow_Checker is
 
    procedure Return_Parameter_Or_Global
      (Id          : Entity_Id;
-      Typ         : Entity_Id;
-      Kind        : Formal_Kind;
       Subp        : Entity_Id;
-      Global_Var  : Boolean;
       Exceptional : Boolean);
    --  Auxiliary procedure to Return_Parameters and Return_Globals
 
@@ -1082,7 +1061,6 @@ package body Gnat2Why.Borrow_Checker is
 
    procedure Setup_Parameter_Or_Global
      (Id         : Entity_Id;
-      Typ        : Entity_Id;
       Kind       : Formal_Kind;
       Subp       : Entity_Id;
       Global_Var : Boolean;
@@ -1109,14 +1087,16 @@ package body Gnat2Why.Borrow_Checker is
    --  a valid permission environment with all bindings in scope.
 
    Default_Perm_Env : Perm_Env;
-   --  Permission environment storing initial permissions for variables that
-   --  are not immediately put in the permission environment (for performance
-   --  reasons). Currently, we put shallow variables in there, as in > 95% of
-   --  the cases they are not involved in borrow-checking at all. We never put
-   --  deep variables in there as this could involve duplicating trees more
-   --  often.
-   --  ??? It is unclear what the performance impact of putting deep variables
-   --  in the initial permission environment would be.
+   --  Permission environment storing initial permissions for variables.
+   --  This is used:
+   --  * To guarantee consistency of permission decisions between environment
+   --    setup, reset, and expected permission at end-of-subprogram. This
+   --    effectively centralize the computation of the expected initial
+   --    permission.
+   --  * For performance reasons, to avoid put shallow variables in the
+   --    permission environments. In > 95% of the case, there are not
+   --    involved in borrow-checking at all. When they are truly needed,
+   --    we make a copy.
 
    function Query_Mutable_Tree
         (T           : in out Perm_Env;
@@ -1265,20 +1245,9 @@ package body Gnat2Why.Borrow_Checker is
    is
       Name_Is_Deep : constant Boolean := Is_Deep (Etype (Name));
       Tree         : Perm_Tree_Access;
-      Old_Tree     : Perm_Tree_Access;
+      Old_Tree     : constant Perm_Tree_Access :=
+        Query_Read_Only_Tree (Current_Perm_Env, Name);
    begin
-      --  For shallow variables, we add the permission tree to the initial
-      --  permission environment instead as a performance optimization.
-      --  See Query_Mutable_Tree_With_Default for rationale.
-
-      if Name_Is_Deep then
-         pragma Assert (Get (Default_Perm_Env, Name) = null);
-         Old_Tree := Get (Current_Perm_Env, Name);
-      else
-         pragma Assert (Get (Current_Perm_Env, Name) = null);
-         Old_Tree := Get (Default_Perm_Env, Name);
-      end if;
-
       --  During setup of package elaboration globals, entities can be
       --  referenced multiple times. This can also happen because we go through
       --  expression twice, but do not clean up (variable in declare
@@ -1305,11 +1274,8 @@ package body Gnat2Why.Borrow_Checker is
             Permission          => Perm,
             Children_Permission => Perm));
 
-      if Name_Is_Deep then
-         Set (Current_Perm_Env, Name, Tree);
-      else
-         Set (Default_Perm_Env, Name, Tree);
-      end if;
+      Set (Default_Perm_Env, Name, Tree);
+
    end Setup_Environment_For_Object;
 
    --------------
@@ -1619,6 +1585,7 @@ package body Gnat2Why.Borrow_Checker is
       begin
          Check_Parameter_Or_Global
            (Expr       => +Actual,
+            Param      => Formal,
             Typ        => Etype (Formal),
             Kind       => Ekind (Formal),
             Subp       => Subp,
@@ -1642,7 +1609,8 @@ package body Gnat2Why.Borrow_Checker is
          begin
             Check_Parameter_Or_Global
               (Expr       => (Is_Ent => True, Ent => Comp, Loc => Call),
-               Typ        => Retysp (Etype (Comp)),
+               Param      => Comp,
+               Typ        => Etype (Comp),
                Kind       => Kind,
                Subp       => Subp,
                Global_Var => False);
@@ -2444,7 +2412,8 @@ package body Gnat2Why.Borrow_Checker is
             begin
                Check_Parameter_Or_Global
                  (Expr       => (Is_Ent => True, Ent => Comp, Loc => Call),
-                  Typ        => Retysp (Etype (Comp)),
+                  Param      => Comp,
+                  Typ        => Etype (Comp),
                   Kind       => E_In_Parameter,
                   Subp       => Subp,
                   Global_Var => False);
@@ -3876,6 +3845,7 @@ package body Gnat2Why.Borrow_Checker is
 
    procedure Check_Parameter_Or_Global
      (Expr       : Expr_Or_Ent;
+      Param      : Entity_Id;
       Typ        : Entity_Id;
       Kind       : Formal_Kind;
       Subp       : Entity_Id;
@@ -3921,10 +3891,14 @@ package body Gnat2Why.Borrow_Checker is
             then
                Mode := Borrow;
 
-            --  Deep types other than access types define an observe
+            --  Deep types other than access types define an observe, with
+            --  exception of mutable in parameters
 
             elsif Is_Deep (Typ) then
-               Mode := Observe;
+               Mode :=
+                 (if Has_Mutable_In_Param_Annotation (Param)
+                  then Borrow
+                  else Observe);
 
             --  Otherwise the variable is read
 
@@ -3994,11 +3968,38 @@ package body Gnat2Why.Borrow_Checker is
       Check_Expr_Or_Ent (Expr, Mode);
    end Check_Parameter_Or_Global;
 
-   procedure Check_Globals_Inst is
-     new Handle_Globals (Check_Parameter_Or_Global);
+   procedure Check_Globals (Subp : Entity_Id; Loc : Node_Id) is
+      procedure Check_Global
+        (Expr       : Expr_Or_Ent;
+         Typ        : Entity_Id;
+         Kind       : Formal_Kind;
+         Subp       : Entity_Id;
+         Global_Var : Boolean);
 
-   procedure Check_Globals (Subp : Entity_Id; Loc : Node_Id) renames
-     Check_Globals_Inst;
+      procedure Check_Global
+        (Expr       : Expr_Or_Ent;
+         Typ        : Entity_Id;
+         Kind       : Formal_Kind;
+         Subp       : Entity_Id;
+         Global_Var : Boolean)
+      is
+      begin
+         Check_Parameter_Or_Global
+           (Expr       => Expr,
+            Param      => Expr.Ent,
+            Typ        => Typ,
+            Kind       => Kind,
+            Subp       => Subp,
+            Global_Var => Global_Var);
+      end Check_Global;
+
+      procedure Check_Globals_Inst is new Handle_Globals (Check_Global);
+
+   --  Start of processing for Check_Globals
+
+   begin
+      Check_Globals_Inst (Subp, Loc);
+   end Check_Globals;
 
    ------------------
    -- Check_Pragma --
@@ -5294,19 +5295,28 @@ package body Gnat2Why.Borrow_Checker is
 
    function Is_Read_Only (E : Entity_Id) return Boolean is
    begin
-      case Ekind (E) is
-         when E_Constant | E_In_Parameter =>
-            return Is_Constant_In_SPARK (E);
-         when E_Variable =>
-            declare
-               Typ : constant Entity_Id := Etype (E);
-            begin
-               return Is_Anonymous_Access_Object_Type (Typ)
-                 and then Is_Access_Constant (Typ);
-            end;
-         when others =>
-            return False;
-      end case;
+      if Ekind (E) = E_Variable then
+         declare
+            Typ : constant Entity_Id := Etype (E);
+         begin
+            if Is_Anonymous_Access_Object_Type (Typ)
+              and then Is_Access_Constant (Typ)
+            then
+               --  Strictly speaking, observers can be written. However, this
+               --  is irrelevant for the borrow-checker as we check such
+               --  assignments (re-observe) in a special way. The permission
+               --  for designated value is the relevant bit, and they are
+               --  read-only.
+
+               return True;
+            end if;
+         end;
+      end if;
+
+      --  Other cases are covered by Is_Constant_In_SPARK
+
+      return Is_Constant_In_SPARK (E);
+
    end Is_Read_Only;
 
    ------------------
@@ -6283,13 +6293,13 @@ package body Gnat2Why.Borrow_Checker is
          Subp       : Entity_Id;
          Global_Var : Boolean)
       is
+         pragma Unreferenced (Global_Var);
+         pragma Unreferenced (Typ);
+         pragma Unreferenced (Kind);
       begin
          Return_Parameter_Or_Global
            (Id          => Expr.Ent,
-            Typ         => Typ,
-            Kind        => Kind,
             Subp        => Subp,
-            Global_Var  => Global_Var,
             Exceptional => Exceptional);
       end Return_Global;
 
@@ -6307,63 +6317,54 @@ package body Gnat2Why.Borrow_Checker is
 
    procedure Return_Parameter_Or_Global
      (Id          : Entity_Id;
-      Typ         : Entity_Id;
-      Kind        : Formal_Kind;
       Subp        : Entity_Id;
-      Global_Var  : Boolean;
       Exceptional : Boolean)
    is
-      Typ_Is_Deep : constant Boolean := Is_Deep (Typ);
    begin
-      --  Shallow parameters and globals need not be considered if they are not
-      --  in the permission environment, as they keep their initial
-      --  permissions.
+      --  Ignore 'self' component of concurrent types. See
+      --  Setup_Parameter_Or_Global for the explanation.
 
-      if not Typ_Is_Deep and then Get (Current_Perm_Env, Id) = null
-      then
+      if Ekind (Id) in E_Protected_Type | E_Task_Type then
          return;
-
-      elsif Kind = E_In_Parameter then
-
-         --  If Id is a read-only global variable, it cannot have been moved.
-         --  Otherwise, the variable was declared with the permission from its
-         --  declaration, and not the one from the global contract to
-         --  have better error messages in the case of generated globals (see
-         --  Set_Parameter_Or_Global). So we need to check its permission here.
-
-         if Global_Var then
-            if Is_Read_Only (Id) then
-               return;
-            end if;
-
-         --  Anonymous access to constant is an observe
-
-         elsif Is_Anonymous_Access_Object_Type (Typ)
-           and then Is_Access_Constant (Typ)
-         then
-            return;
-
-         --  Deep types other than access types define an observe
-
-         elsif Typ_Is_Deep and then not Is_Access_Type (Typ) then
-            return;
-         end if;
       end if;
 
-      --  All other parameters and globals should return with mode RW to the
-      --  caller.
-
       declare
-         Tree : constant Perm_Tree_Access := Get (Current_Perm_Env, Id);
+         Expected_Perm_Tree : constant not null Perm_Tree_Access :=
+           Get (Default_Perm_Env, Id);
+         Expected_Perm      : constant Perm_Kind :=
+           Permission (Expected_Perm_Tree);
+         Current_Perm_Tree  : constant Perm_Tree_Access :=
+           Get (Current_Perm_Env, Id);
       begin
-         if Permission (Tree) /= Read_Write then
-            Perm_Error_Subprogram_End
-              (E           => Id,
-               Subp        => Subp,
-               Found_Perm  => Permission (Tree),
-               Expl        => Explanation (Tree),
-               Exceptional => Exceptional);
+
+         --  Parameters and globals need not to be considered if they are not
+         --  in the permission environment, as they keep their initial
+         --  permissions. Neither is it needed if they were initially
+         --  read-only, as then they cannot have been moved.
+
+         if Current_Perm_Tree = null
+           or else Expected_Perm = Read_Only
+         then
+            return;
          end if;
+
+         --  All other parameters and globals should return with mode RW to the
+         --  caller.
+
+         pragma Assert (Expected_Perm = Read_Write);
+
+         declare
+            Perm : constant Perm_Kind := Permission (Current_Perm_Tree);
+         begin
+            if Perm /= Read_Write then
+               Perm_Error_Subprogram_End
+                 (E           => Id,
+                  Subp        => Subp,
+                  Found_Perm  => Perm,
+                  Expl        => Explanation (Current_Perm_Tree),
+                  Exceptional => Exceptional);
+            end if;
+         end;
       end;
    end Return_Parameter_Or_Global;
 
@@ -6381,10 +6382,7 @@ package body Gnat2Why.Borrow_Checker is
       while Present (Formal) loop
          Return_Parameter_Or_Global
            (Id          => Formal,
-            Typ         => Retysp (Etype (Formal)),
-            Kind        => Ekind (Formal),
             Subp        => Subp,
-            Global_Var  => False,
             Exceptional => Exceptional);
          Next_Formal (Formal);
       end loop;
@@ -6407,10 +6405,7 @@ package body Gnat2Why.Borrow_Checker is
       begin
          Return_Parameter_Or_Global
            (Id          => Comp,
-            Typ         => Retysp (Etype (Comp)),
-            Kind        => E_In_Out_Parameter,
             Subp        => Subp,
-            Global_Var  => False,
             Exceptional => False);
       end Return_Component;
 
@@ -7176,6 +7171,8 @@ package body Gnat2Why.Borrow_Checker is
          Subp       : Entity_Id;
          Global_Var : Boolean)
       is
+         pragma Unreferenced (Typ);
+
          Expl : constant Node_Id :=
            (if Present (Pragma_Node)
             and then Global_Ids.Contains (Direct_Mapping_Id (Expr.Ent))
@@ -7188,7 +7185,6 @@ package body Gnat2Why.Borrow_Checker is
       begin
          Setup_Parameter_Or_Global
            (Id         => Expr.Ent,
-            Typ        => Typ,
             Kind       => Kind,
             Subp       => Subp,
             Global_Var => Global_Var,
@@ -7242,7 +7238,6 @@ package body Gnat2Why.Borrow_Checker is
 
    procedure Setup_Parameter_Or_Global
      (Id         : Entity_Id;
-      Typ        : Entity_Id;
       Kind       : Formal_Kind;
       Subp       : Entity_Id;
       Global_Var : Boolean;
@@ -7258,71 +7253,40 @@ package body Gnat2Why.Borrow_Checker is
       if Ekind (Id) in E_Task_Type | E_Protected_Type then
          return;
       end if;
-      case Kind is
-         when E_In_Parameter =>
 
-            --  Use the permission of the declaration for global variables to
-            --  have better error messages in the case of generated globals.
-            --  The problematic case is a global variable which is moved by
-            --  the subprogram, but is only read so flow analysis tags it as a
-            --  global input. It seems clearer to complain at the end of the
-            --  scope when the variable is not assigned back, than to emit a
-            --  strange message stating that the variable was declared as
-            --  read-only by a flow generated contract.
+      --  By default, we use the permission corresponding to the declaration.
+      --  We branch for special cases where the starting permissions may depend
+      --  on the context (globals and protected component).
 
-            if Global_Var then
-               Perm := (if Is_Read_Only (Id) then Read_Only else Read_Write);
+      --  For global variables, we normally use the mode given by the contract.
+      --  However, if the contract was generated, we prefer using the
+      --  permission of the declaration to have better error messages. The
+      --  problematic case is a global variable which is moved by the
+      --  subprogram, but is only read so flow analysis tags it as a global
+      --  input. It seems clearer to complain at the end of the scope when the
+      --  variable is not assigned back, than to emit a strange message stating
+      --  that the variable was declared as read-only by a flow generated
+      --  contract.
 
-            --  Inputs of functions without side effects have R permission
-            --  only. Protected functions are never allowed to modify protected
-            --  components.
+      if Global_Var
+        and then (Is_Subprogram_Or_Entry (Subp) or else Is_Task_Type (Subp))
+        and then Present (Find_Contract (Subp, Pragma_Global))
+      then
+         Perm := (if Kind = E_In_Parameter then Read_Only else Read_Write);
 
-            elsif Ekind (Subp) = E_Function
-              and then
-                (not Is_Function_With_Side_Effects (Subp)
-                 or else
-                   (Within_Protected_Type (Subp)
-                    and then Is_Protected_Component_Or_Discr_Or_Part_Of (Id)))
-            then
-               Perm := Read_Only;
+      --  Components of protected types are read-only for their functions,
+      --  and read-write otherwise
 
-            --  Anonymous access to constant is an observe
+      elsif Within_Protected_Type (Subp)
+        and then Is_Protected_Component_Or_Discr_Or_Part_Of (Id)
+      then
+         Perm := (if Ekind (Subp) = E_Function then Read_Only else Read_Write);
 
-            elsif Is_Anonymous_Access_Object_Type (Typ)
-              and then Is_Access_Constant (Typ)
-            then
-               Perm := Read_Only;
+      --  In all other cases, the context does not affect starting permission
 
-            --  Other access types are a borrow
-
-            elsif Is_Access_Type (Typ) then
-               Perm := Read_Write;
-
-            --  Deep types other than access types define an observe, and
-            --  shallow input parameters are Read_Only as well.
-
-            else
-               Perm := Read_Only;
-            end if;
-
-         when E_Out_Parameter
-            | E_In_Out_Parameter
-         =>
-
-            --  The first parameter of borrowing traversal functions might have
-            --  mode IN OUT. It cannot be modified.
-
-            if Ekind (Subp) = E_Function
-              and then not Is_Function_With_Side_Effects (Subp)
-            then
-               Perm := Read_Only;
-
-            --  Other parameters are read-write
-
-            else
-               Perm := Read_Write;
-            end if;
-      end case;
+      else
+         Perm := (if Is_Read_Only (Id) then Read_Only else Read_Write);
+      end if;
 
       Setup_Environment_For_Object (Id, Perm, Expl);
    end Setup_Parameter_Or_Global;
@@ -7338,7 +7302,6 @@ package body Gnat2Why.Borrow_Checker is
       while Present (Formal) loop
          Setup_Parameter_Or_Global
            (Id         => Formal,
-            Typ        => Retysp (Etype (Formal)),
             Kind       => Ekind (Formal),
             Subp       => Subp,
             Global_Var => False,
@@ -7364,7 +7327,6 @@ package body Gnat2Why.Borrow_Checker is
       begin
          Setup_Parameter_Or_Global
            (Id         => Comp,
-            Typ        => Retysp (Etype (Comp)),
             Kind       => Kind,
             Subp       => Subp,
             Global_Var => False,
