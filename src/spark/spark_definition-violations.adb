@@ -24,17 +24,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Namet;          use Namet;
-with Restrict;       use Restrict;
-with Rident;         use Rident;
-with Sem_Prag;       use Sem_Prag;
-with Tbuild;         use Tbuild;
+with Namet;    use Namet;
+with Restrict; use Restrict;
+with Rident;   use Rident;
+with Sem_Prag; use Sem_Prag;
+with Tbuild;   use Tbuild;
 
 package body SPARK_Definition.Violations is
 
    function Mark_Violation_Of_SPARK_Mode return Message
-     with Global => (Input => (Current_SPARK_Pragma,
-                               Current_Delayed_Aspect_Type));
+   with
+     Global => (Input => (Current_SPARK_Pragma, Current_Delayed_Aspect_Type));
    --  Issue an error continuation message for node N with the location of
    --  the violated SPARK_Mode pragma/aspect.
 
@@ -90,18 +90,17 @@ package body SPARK_Definition.Violations is
                return Chars (U1) = Chars (U2);
 
             elsif Nkind (U1) in N_Selected_Component | N_Expanded_Name
-              and then
-                Nkind (U2) in N_Selected_Component | N_Expanded_Name
+              and then Nkind (U2) in N_Selected_Component | N_Expanded_Name
             then
-               return Same_Unit (Prefix (U1), Prefix (U2))
-                 and then
-                   Same_Unit (Selector_Name (U1), Selector_Name (U2));
+               return
+                 Same_Unit (Prefix (U1), Prefix (U2))
+                 and then Same_Unit (Selector_Name (U1), Selector_Name (U2));
             else
                return False;
             end if;
          end Same_Unit;
 
-      --  Start of processing for Restriction_No_Dependence
+         --  Start of processing for Restriction_No_Dependence
 
       begin
          --  Loop to look for entry
@@ -131,7 +130,7 @@ package body SPARK_Definition.Violations is
       Child_Unit  : Node_Id;
       --  For constructing names of restricted units
 
-   --  Start of processing for GNATprove_Tasking_Profile
+      --  Start of processing for GNATprove_Tasking_Profile
 
    begin
       if Ravenscar_Profile_Cached then
@@ -163,16 +162,15 @@ package body SPARK_Definition.Violations is
          end if;
 
          declare
-            R : Restriction_Flags  renames Profile.Set;
+            R : Restriction_Flags renames Profile.Set;
             V : Restriction_Values renames Profile.Value;
          begin
             for J in R'Range loop
                if R (J)
                  and then (Restrictions.Set (J) = False
                            or else Restriction_Warnings (J)
-                           or else
-                             (J in All_Parameter_Restrictions
-                              and then Restrictions.Value (J) > V (J)))
+                           or else (J in All_Parameter_Restrictions
+                                    and then Restrictions.Value (J) > V (J)))
                then
                   --  Any code that complies with the Simple_Barriers
                   --  restriction (which is required by the Ravenscar
@@ -189,8 +187,9 @@ package body SPARK_Definition.Violations is
                   --  No_Implicit_Protected_Object_Allocations of the Jorvik
                   --  profile.
 
-                  elsif J in No_Implicit_Task_Allocations
-                           | No_Implicit_Protected_Object_Allocations
+                  elsif J
+                        in No_Implicit_Task_Allocations
+                         | No_Implicit_Protected_Object_Allocations
                     and then Restrictions.Set (No_Implicit_Heap_Allocations)
                   then
                      null;
@@ -215,7 +214,7 @@ package body SPARK_Definition.Violations is
          if Ada_Version >= Ada_2005 then
 
             Parent_Unit := Sel_Comp ("ada", "execution_time", No_Location);
-            Child_Unit  := Sel_Comp (Parent_Unit, "group_budgets");
+            Child_Unit := Sel_Comp (Parent_Unit, "group_budgets");
 
             if not Restriction_No_Dependence (Unit => Child_Unit) then
                Ravenscar_Profile_Result := False;
@@ -237,7 +236,7 @@ package body SPARK_Definition.Violations is
          if Ada_Version >= Ada_2012 then
 
             Parent_Unit := Sel_Comp ("system", "multiprocessors", No_Location);
-            Child_Unit  := Sel_Comp (Parent_Unit, "dispatching_domains");
+            Child_Unit := Sel_Comp (Parent_Unit, "dispatching_domains");
 
             if not Restriction_No_Dependence (Unit => Child_Unit) then
                Ravenscar_Profile_Result := False;
@@ -324,31 +323,22 @@ package body SPARK_Definition.Violations is
          end if;
 
          declare
-            Mess : constant Message :=
+            Mess  : constant Message :=
               Errout_Wrapper.Create
-                (To_String (Full_Msg),
-                 Names        => Names,
-                 Explain_Code => Code);
+                (To_String (Full_Msg), Names => Names, Explain_Code => Code);
             Conts : Message_Lists.List := Message_Lists.Empty;
          begin
             if Cont_Msg /= "" then
                Conts.Append (Create (Cont_Msg));
             end if;
             Conts.Append (Mark_Violation_Of_SPARK_Mode);
-            Error_Msg_N
-              (Mess,
-               N,
-               First         => True,
-               Continuations => Conts);
+            Error_Msg_N (Mess, N, First => True, Continuations => Conts);
          end;
       end if;
    end Mark_Violation;
 
    procedure Mark_Violation
-     (N        : Node_Id;
-      From     : Entity_Id;
-      Cont_Msg : String := "")
-   is
+     (N : Node_Id; From : Entity_Id; Cont_Msg : String := "") is
    begin
       --  Flag the violation, so that the current entity is marked
       --  accordingly.
@@ -367,19 +357,19 @@ package body SPARK_Definition.Violations is
          declare
             Root_Cause : constant String := Get_Violation_Root_Cause (From);
             Root_Msg   : constant String :=
-              (if Root_Cause = "" then ""
-               else " (due to " & Root_Cause & ")");
-            Conts : Message_Lists.List := Message_Lists.Empty;
+              (if Root_Cause = "" then "" else " (due to " & Root_Cause & ")");
+            Conts      : Message_Lists.List := Message_Lists.Empty;
          begin
             if Cont_Msg /= "" then
                Conts.Append (Create (Cont_Msg));
             end if;
             Conts.Append (Mark_Violation_Of_SPARK_Mode);
-            Error_Msg_N (Create ("& is not allowed in SPARK" & Root_Msg,
-                                 Names => [From]),
-                         N,
-                         First         => True,
-                         Continuations => Conts);
+            Error_Msg_N
+              (Create
+                 ("& is not allowed in SPARK" & Root_Msg, Names => [From]),
+               N,
+               First         => True,
+               Continuations => Conts);
          end;
       end if;
    end Mark_Violation;
@@ -428,23 +418,27 @@ package body SPARK_Definition.Violations is
    function Mark_Violation_Of_SPARK_Mode return Message is
    begin
       if Present (Current_SPARK_Pragma) then
-         return Create ("violation of " &
-                      (if From_Aspect_Specification (Current_SPARK_Pragma)
-                         then "aspect"
-                         else "pragma") &
-                          " SPARK_Mode #",
-                        Secondary_Loc => Sloc (Current_SPARK_Pragma));
+         return
+           Create
+             ("violation of "
+              & (if From_Aspect_Specification (Current_SPARK_Pragma)
+                 then "aspect"
+                 else "pragma")
+              & " SPARK_Mode #",
+              Secondary_Loc => Sloc (Current_SPARK_Pragma));
       elsif Present (Current_Incomplete_Type) then
-         return Create
-           ("access to incomplete type & is required to be in SPARK",
-            Secondary_Loc => Sloc (Current_Incomplete_Type),
-            Names         => [Current_Incomplete_Type]);
+         return
+           Create
+             ("access to incomplete type & is required to be in SPARK",
+              Secondary_Loc => Sloc (Current_Incomplete_Type),
+              Names         => [Current_Incomplete_Type]);
       else
          pragma Assert (Present (Current_Delayed_Aspect_Type));
-         return Create
-           ("delayed type aspect on & is required to be in SPARK",
-            Secondary_Loc => Sloc (Current_Delayed_Aspect_Type),
-            Names         => [Current_Delayed_Aspect_Type]);
+         return
+           Create
+             ("delayed type aspect on & is required to be in SPARK",
+              Secondary_Loc => Sloc (Current_Delayed_Aspect_Type),
+              Names         => [Current_Delayed_Aspect_Type]);
       end if;
    end Mark_Violation_Of_SPARK_Mode;
 
@@ -452,24 +446,24 @@ package body SPARK_Definition.Violations is
    -- SPARK_Pragma_Is --
    ---------------------
 
-   function SPARK_Pragma_Is (Mode : Opt.SPARK_Mode_Type) return Boolean is
-     (if Present (Current_Incomplete_Type)
-      or else (Present (Current_Delayed_Aspect_Type)
-               and then In_SPARK (Current_Delayed_Aspect_Type))
-      then Mode = Opt.On
-      --  Force SPARK_Mode => On for expressions of a delayed aspects, if the
-      --  type bearing this aspect was marked in SPARK, as we have assumed
-      --  it when marking everything between their declaration and freezing
-      --  point, so we cannot revert that. Also force it for completion of
-      --  incomplete types.
+   function SPARK_Pragma_Is (Mode : Opt.SPARK_Mode_Type) return Boolean
+   is (if Present (Current_Incomplete_Type)
+         or else (Present (Current_Delayed_Aspect_Type)
+                  and then In_SPARK (Current_Delayed_Aspect_Type))
+       then Mode = Opt.On
+       --  Force SPARK_Mode => On for expressions of a delayed aspects, if the
+       --  type bearing this aspect was marked in SPARK, as we have assumed
+       --  it when marking everything between their declaration and freezing
+       --  point, so we cannot revert that. Also force it for completion of
+       --  incomplete types.
 
-      elsif Present (Current_SPARK_Pragma)
-      then Get_SPARK_Mode_From_Annotation (Current_SPARK_Pragma) = Mode
-      --  In the usual case where Current_SPARK_Pragma is a pragma node, get
-      --  the current mode from the pragma.
+       elsif Present (Current_SPARK_Pragma)
+       then Get_SPARK_Mode_From_Annotation (Current_SPARK_Pragma) = Mode
+       --  In the usual case where Current_SPARK_Pragma is a pragma node, get
+       --  the current mode from the pragma.
 
-      else Mode = Opt.None
-      --  Otherwise there is no applicable pragma, so SPARK_Mode is None
-     );
+       --  Otherwise there is no applicable pragma, so SPARK_Mode is None
+
+       else Mode = Opt.None);
 
 end SPARK_Definition.Violations;

@@ -94,42 +94,39 @@ package body SPARK_Rewrite is
 
    procedure Rewrite_Null_Procedure (N : N_Subprogram_Declaration_Id) is
       Loc  : constant Source_Ptr := Sloc (N);
-      Spec : constant Node_Id    := Specification (N);
-      Subp : constant Entity_Id  := Defining_Entity (Spec);
+      Spec : constant Node_Id := Specification (N);
+      Subp : constant Entity_Id := Defining_Entity (Spec);
 
       Form      : Node_Id;
       Subp_Body : Entity_Id;
       Null_Stmt : constant Node_Id := Nmake.Make_Null_Statement (Loc);
       Null_Body : constant Node_Id :=
-        Nmake.Make_Subprogram_Body (Loc,
-          Specification              => New_Copy_Tree (Spec),
-          Declarations               => Nlists.New_List,
-          Handled_Statement_Sequence =>
-            Nmake.Make_Handled_Sequence_Of_Statements (Loc,
-              Statements => Nlists.New_List (Null_Stmt)));
+        Nmake.Make_Subprogram_Body
+          (Loc,
+           Specification              => New_Copy_Tree (Spec),
+           Declarations               => Nlists.New_List,
+           Handled_Statement_Sequence =>
+             Nmake.Make_Handled_Sequence_Of_Statements
+               (Loc, Statements => Nlists.New_List (Null_Stmt)));
    begin
       Set_Corresponding_Spec (Null_Body, Subp);
 
       --  Create new entities for body and formals
 
-      Subp_Body := Nmake.Make_Defining_Identifier
-        (Sloc (Subp), Chars (Subp));
+      Subp_Body := Nmake.Make_Defining_Identifier (Sloc (Subp), Chars (Subp));
       Mutate_Ekind (Subp_Body, E_Subprogram_Body);
       Set_Etype (Subp_Body, Etype (Defining_Entity (N)));
-      Set_Defining_Unit_Name
-        (Specification (Null_Body), Subp_Body);
+      Set_Defining_Unit_Name (Specification (Null_Body), Subp_Body);
       Set_Scope (Subp_Body, Scope (Subp));
       Set_SPARK_Pragma (Subp_Body, SPARK_Pragma (Subp));
 
-      Form := Nlists.First (Parameter_Specifications
-                     (Specification (Null_Body)));
+      Form :=
+        Nlists.First (Parameter_Specifications (Specification (Null_Body)));
       while Present (Form) loop
          declare
-            Param     : constant Entity_Id :=
-              Defining_Identifier (Form);
+            Param     : constant Entity_Id := Defining_Identifier (Form);
             New_Param : constant Entity_Id :=
-              Nmake.Make_Defining_Identifier
-                (Sloc (Param), Chars (Param));
+              Nmake.Make_Defining_Identifier (Sloc (Param), Chars (Param));
          begin
             Mutate_Ekind (New_Param, Ekind (Param));
             Set_Etype (New_Param, Etype (Param));
@@ -202,17 +199,16 @@ package body SPARK_Rewrite is
    procedure Rewrite_Subprogram_Instantiation (N : Node_Id) is
 
       function Wrapped_Instance (Wrapper_Package : Entity_Id) return Entity_Id
-      with Pre  => Is_Wrapper_Package (Wrapper_Package),
-           Post => Ekind (Wrapped_Instance'Result) in E_Function | E_Procedure;
+      with
+        Pre  => Is_Wrapper_Package (Wrapper_Package),
+        Post => Ekind (Wrapped_Instance'Result) in E_Function | E_Procedure;
       --  Returns entity of the wrapped instance
 
       ----------------------
       -- Wrapped_Instance --
       ----------------------
 
-      function Wrapped_Instance
-        (Wrapper_Package : Entity_Id)
-         return Entity_Id
+      function Wrapped_Instance (Wrapper_Package : Entity_Id) return Entity_Id
       is
          E : Entity_Id;
       begin
@@ -246,7 +242,7 @@ package body SPARK_Rewrite is
       Orig_Name_Id : constant Name_Id := Chars (Defining_Unit_Name (N));
       --  ??? how about homonyms?
 
-   --  Start of processing for Rewrite_Subprogram_Instantiation
+      --  Start of processing for Rewrite_Subprogram_Instantiation
 
    begin
       Set_Chars (Subprogram_Instance, Orig_Name_Id);
@@ -286,19 +282,20 @@ package body SPARK_Rewrite is
       Def_Ent : constant Entity_Id := Defining_Entity (N);
 
    begin
-      if Is_Wrapper_Package (Def_Ent)
-        and then Is_Compilation_Unit (Def_Ent)
+      if Is_Wrapper_Package (Def_Ent) and then Is_Compilation_Unit (Def_Ent)
       then
          --  Add a suffix just like in Analyze_Instance_And_Renamings
 
-         Set_Chars (Def_Ent,
-                    New_External_Name
-                      (Related_Id   => Chars (Def_Ent),
-                       Suffix       => "GP",
-                       Suffix_Index => Source_Offset (Sloc (Def_Ent))));
+         Set_Chars
+           (Def_Ent,
+            New_External_Name
+              (Related_Id   => Chars (Def_Ent),
+               Suffix       => "GP",
+               Suffix_Index => Source_Offset (Sloc (Def_Ent))));
 
-         --  ??? we could add the same suffix to package body, but apparently
-         --  there is no need for that.
+      --  ??? we could add the same suffix to package body, but apparently
+      --  there is no need for that.
+
       end if;
    end Rewrite_Wrapper_Package;
 
@@ -315,8 +312,8 @@ package body SPARK_Rewrite is
       function Rewrite_Node (N : Node_Id) return Traverse_Result;
       --  Apply expansion operations on a node
 
-      procedure Rewrite_Nodes is
-        new Traverse_More_Proc (Rewrite_Node, Process_Itypes => True);
+      procedure Rewrite_Nodes is new
+        Traverse_More_Proc (Rewrite_Node, Process_Itypes => True);
 
       --------------------
       -- Rewrite_Aspect --
@@ -340,12 +337,15 @@ package body SPARK_Rewrite is
       ------------------
 
       function Rewrite_Node (N : Node_Id) return Traverse_Result is
-         subtype Rewriten_Call is Node_Kind with
-           Static_Predicate => Rewriten_Call in N_Block_Statement
-                                              | N_Identifier
-                                              | N_Integer_Literal
-                                              | N_Null_Statement
-                                              | N_Qualified_Expression;
+         subtype Rewriten_Call is Node_Kind
+         with
+           Static_Predicate =>
+             Rewriten_Call
+             in N_Block_Statement
+              | N_Identifier
+              | N_Integer_Literal
+              | N_Null_Statement
+              | N_Qualified_Expression;
          --  ??? this is copy-pasted from SPARK_Register; refactor
 
       begin
@@ -358,11 +358,12 @@ package body SPARK_Rewrite is
          --  node which is ignored by gnat2why.
 
          if Gnat2Why_Args.Exclude_Line /= Null_Unbounded_String
-           and then Nkind (N) in N_Declaration
-                               | N_Later_Decl_Item
-                               | N_Statement_Other_Than_Procedure_Call
-                               | N_Procedure_Call_Statement
-                               | N_Pragma
+           and then Nkind (N)
+                    in N_Declaration
+                     | N_Later_Decl_Item
+                     | N_Statement_Other_Than_Procedure_Call
+                     | N_Procedure_Call_Statement
+                     | N_Pragma
            and then Flow_Error_Messages.Is_Excluded_Line (Sloc (N))
          then
             Rewrite (N, Nmake.Make_Call_Marker (Sloc (N)));
@@ -371,9 +372,8 @@ package body SPARK_Rewrite is
          --  Explicitly traverse rewritten subprogram calls and pragmas (e.g.
          --  pragma Debug).
          if Nkind (N) in Rewriten_Call
-           and then Nkind (Original_Node (N)) in N_Subprogram_Call
-                                               | N_Pragma
-                                               | N_Op
+           and then Nkind (Original_Node (N))
+                    in N_Subprogram_Call | N_Pragma | N_Op
          then
             Rewrite_Nodes (Original_Node (N));
          end if;
@@ -383,9 +383,7 @@ package body SPARK_Rewrite is
          --  not attached to the tree. We need to explicitly traverse its
          --  expression, which may contain references to objects and calls
          --  to functions.
-         if Nkind (N) in N_Object_Declaration
-                       | N_Subprogram_Declaration
-         then
+         if Nkind (N) in N_Object_Declaration | N_Subprogram_Declaration then
             Rewrite_Aspect (Defining_Entity (N), Aspect_Address);
 
          --  On type declarations, rewrite the literal aspects to use the
@@ -415,14 +413,15 @@ package body SPARK_Rewrite is
 
                elsif Analyzed (N) then
                   declare
-                     Aname   : constant Name_Id      := Attribute_Name (N);
+                     Aname   : constant Name_Id := Attribute_Name (N);
                      Attr_Id : constant Attribute_Id :=
                        Get_Attribute_Id (Aname);
                   begin
-                     if Attr_Id in Attribute_Object_Size
-                                 | Attribute_Size
-                                 | Attribute_VADS_Size
-                                 | Attribute_Value_Size
+                     if Attr_Id
+                        in Attribute_Object_Size
+                         | Attribute_Size
+                         | Attribute_VADS_Size
+                         | Attribute_Value_Size
                      then
                         Expand_Size_Attribute (N);
                      end if;
@@ -435,11 +434,7 @@ package body SPARK_Rewrite is
             --  Replace renamings and inherited subprograms by the subprogram
             --  they rename or inherit.
 
-            when N_Identifier
-               | N_Expanded_Name
-               | N_Op
-               | N_Operator_Symbol
-            =>
+            when N_Identifier | N_Expanded_Name | N_Op | N_Operator_Symbol =>
                Rewrite_Subprogram_Reference (N);
 
             when N_Subprogram_Instantiation =>
@@ -458,9 +453,7 @@ package body SPARK_Rewrite is
             when N_Generic_Declaration =>
                return Skip;
 
-            when N_Package_Body
-               | N_Subprogram_Body
-            =>
+            when N_Package_Body | N_Subprogram_Body =>
                if Is_Generic_Unit (Unique_Defining_Entity (N)) then
                   return Skip;
                end if;
@@ -548,7 +541,7 @@ package body SPARK_Rewrite is
          return OK;
       end Rewrite_Node;
 
-   --   Start of processing for Rewrite_Compilation_Unit
+      --   Start of processing for Rewrite_Compilation_Unit
 
    begin
       --  Avoid rewriting generic units which are only preanalyzed, which may
