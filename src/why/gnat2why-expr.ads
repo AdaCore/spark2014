@@ -975,6 +975,18 @@ package Gnat2Why.Expr is
    --  Same as above but only bind the nodes from Subset. If As_Old is True,
    --  the expressions in Map should be evaluated in the pre state.
 
+   function Bind_From_Mapping_In_Expr
+     (Params : Transformation_Params;
+      Expr   : W_Expr_Id;
+      N      : Node_Id;
+      Name   : W_Identifier_Id;
+      Domain : EW_Domain;
+      As_Old : Boolean := False)
+      return W_Expr_Id;
+   --  Introduce a mapping from the name Name to the Ada expression or entity N
+   --  in Expr. If As_Old is True, the expression should be evaluated in the
+   --  pre state.
+
 private
    use type Ada.Containers.Count_Type;
 

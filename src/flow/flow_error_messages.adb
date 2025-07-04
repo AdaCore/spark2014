@@ -1780,8 +1780,7 @@ package body Flow_Error_Messages is
                elsif not Dispatch
                  and then
                    (Has_Contracts (Subp, Pragma_Postcondition)
-                     or else
-                    Present (Get_Pragma (Subp, Pragma_Contract_Cases)))
+                     or else Has_Contracts (Subp, Pragma_Contract_Cases))
                then
                   null;
 
@@ -2236,12 +2235,8 @@ package body Flow_Error_Messages is
          then
             Handle_Precondition_Check : declare
                Subp : constant Entity_Id := SPARK_Atree.Get_Called_Entity (N);
-               Prag : constant Node_Id :=
-                 Get_Pragma (Subp, Pragma_Precondition);
-               Pre  : constant Node_Id :=
-                 (if Present (Prag) then
-                    Expression (First (Pragma_Argument_Associations (Prag)))
-                  else Empty);
+               Pres : constant Node_Lists.List :=
+                 Get_Pre_Post (Subp, Pragma_Precondition);
 
                Formal_To_Actual : Flow_Id_Surjection.Map;
 
@@ -2286,10 +2281,13 @@ package body Flow_Error_Messages is
                  SPARK_Atree.Iterate_Call_Parameters (Treat_Param);
 
             begin
-               if Present (Pre) then
+               if not Pres.Is_Empty then
                   Iterate_Call (N);
-                  Vars := Get_Variables_From_Expr (Pre, Pre, Formal_To_Actual);
                end if;
+               for Pre of Pres loop
+                  Vars.Union
+                    (Get_Variables_From_Expr (Pre, Pre, Formal_To_Actual));
+               end loop;
             end Handle_Precondition_Check;
 
          elsif Nkind (N) = N_Assignment_Statement then

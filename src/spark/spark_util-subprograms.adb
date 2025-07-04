@@ -407,6 +407,8 @@ package body SPARK_Util.Subprograms is
             | Pragma_Postcondition
             | Pragma_Refined_Post
             | Pragma_Initial_Condition
+            | Pragma_Contract_Cases
+            | Pragma_Subprogram_Variant
          =>
             if Name = Pragma_Refined_Post then
 
@@ -445,6 +447,9 @@ package body SPARK_Util.Subprograms is
                       Pre_Post_Conditions (Contr),
 
                     when Pragma_Initial_Condition => Classifications (Contr),
+
+                    when Pragma_Contract_Cases | Pragma_Subprogram_Variant =>
+                      Contract_Test_Cases (Contr),
 
                     when others => raise Program_Error);
 
@@ -653,26 +658,27 @@ package body SPARK_Util.Subprograms is
       return (if Has_Output then Infinite_Loop else Abnormal_Termination);
    end Get_Execution_Kind;
 
-   -----------------------------------
-   -- Get_Expr_From_Check_Only_Proc --
-   -----------------------------------
+   ------------------------------------
+   -- Get_Exprs_From_Check_Only_Proc --
+   ------------------------------------
 
-   function Get_Expr_From_Check_Only_Proc
-     (E : E_Procedure_Id) return Opt_N_Subexpr_Id
+   function Get_Exprs_From_Check_Only_Proc
+     (E : E_Procedure_Id) return Node_Lists.List
    is
       Body_N : constant Node_Id := Subprogram_Body (E);
       Stmts  : constant List_Id :=
         Statements (Handled_Statement_Sequence (Body_N));
       Stmt   : Node_Id;
       Arg    : Node_Id;
+      Result : Node_Lists.List;
 
    begin
       Stmt := First (Stmts);
 
       while Present (Stmt) loop
 
-         --  Return the second argument of the first pragma Check in the
-         --  statement list.
+         --  Append to Result the second argument of the all pragmas Check in
+         --  the statement list.
 
          if Nkind (Stmt) = N_Pragma
            and then Get_Pragma_Id (Pragma_Name (Stmt)) = Pragma_Check
@@ -682,7 +688,7 @@ package body SPARK_Util.Subprograms is
             pragma Assert (Present (Arg));
             Arg := Next (Arg);
             pragma Assert (Present (Arg));
-            return Get_Pragma_Arg (Arg);
+            Result.Append (Get_Pragma_Arg (Arg));
          end if;
 
          Next (Stmt);
@@ -693,15 +699,15 @@ package body SPARK_Util.Subprograms is
 
       pragma
         Assert
-          (Is_Invariant_Procedure (E)
-             and then Nkind (Last (Stmts)) = N_Procedure_Call_Statement
-             and then Is_Partial_Invariant_Procedure
-                        (Entity (Name (Last (Stmts)))));
+          (if Result.Is_Empty
+             then
+               Is_Invariant_Procedure (E)
+               and then Nkind (Last (Stmts)) = N_Procedure_Call_Statement
+               and then Is_Partial_Invariant_Procedure
+                          (Entity (Name (Last (Stmts)))));
 
-      --  Otherwise return Empty
-
-      return Empty;
-   end Get_Expr_From_Check_Only_Proc;
+      return Result;
+   end Get_Exprs_From_Check_Only_Proc;
 
    ------------------------------------
    -- Get_Expr_From_Return_Only_Func --
@@ -1577,7 +1583,7 @@ package body SPARK_Util.Subprograms is
 
         and then not Has_Contracts (E, Pragma_Precondition)
         and then not Has_Contracts (E, Pragma_Postcondition)
-        and then No (Get_Pragma (E, Pragma_Contract_Cases))
+        and then not Has_Contracts (E, Pragma_Contract_Cases)
       then
          --  which corresponds to a shift or rotate
 

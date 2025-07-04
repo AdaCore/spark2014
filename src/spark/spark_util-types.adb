@@ -114,10 +114,11 @@ package body SPARK_Util.Types is
    ------------------------------
 
    function Check_DIC_At_Declaration (E : Type_Kind_Id) return Boolean is
-      Default_Init_Subp : constant E_Procedure_Id := Partial_DIC_Procedure (E);
-      Default_Init_Expr : constant N_Subexpr_Id :=
-        Get_Expr_From_Check_Only_Proc (Default_Init_Subp);
-      Init_Param        : constant Formal_Kind_Id :=
+      Default_Init_Subp  : constant E_Procedure_Id :=
+        Partial_DIC_Procedure (E);
+      Default_Init_Exprs : constant Node_Lists.List :=
+        Get_Exprs_From_Check_Only_Proc (Default_Init_Subp);
+      Init_Param         : constant Formal_Kind_Id :=
         First_Formal (Default_Init_Subp);
 
       function Is_Ref_Through_Discr (N : Node_Id) return Boolean
@@ -177,7 +178,9 @@ package body SPARK_Util.Types is
         Traverse_More_Func (Process => Is_Type_Instance);
 
    begin
-      return Refers_To_Type_Instance (Default_Init_Expr) = Abandon;
+      return
+        (for some Expr of Default_Init_Exprs =>
+           Refers_To_Type_Instance (Expr) = Abandon);
    end Check_DIC_At_Declaration;
 
    -----------------------
@@ -1632,8 +1635,9 @@ package body SPARK_Util.Types is
          Rep_Ty := Base_Retysp (Rep_Ty);
          Proc := Partial_DIC_Procedure (Rep_Ty);
          if Present (Proc) then
-            Process_DIC_Expression
-              (First_Formal (Proc), Get_Expr_From_Check_Only_Proc (Proc));
+            for Expr of Get_Exprs_From_Check_Only_Proc (Proc) loop
+               Process_DIC_Expression (First_Formal (Proc), Expr);
+            end loop;
          end if;
 
          --  Go to parent subtype

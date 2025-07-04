@@ -28,7 +28,7 @@ ordering_buffers.adb:76:13: info: overflow check proved (CVC5: 2 VC)
 ordering_buffers.adb:77:22: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
 ordering_buffers.adb:80:22: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
 ordering_buffers.adb:83:22: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
-ordering_buffers.ads:15:09: info: default initial condition proved (CVC5: 2 VC)
+ordering_buffers.ads:16:06: info: default initial condition proved (CVC5: 2 VC)
 ordering_buffers.ads:18:17: info: precondition proved (CVC5: 2 VC)
 ordering_buffers.ads:18:52: info: range check proved (CVC5: 2 VC)
 ordering_buffers.ads:20:13: info: implicit aspect Always_Terminates on "Is_Null" has been proved, subprogram will terminate

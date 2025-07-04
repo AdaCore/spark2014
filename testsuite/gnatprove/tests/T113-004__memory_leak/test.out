@@ -120,7 +120,7 @@ glob.adb:17:07: medium: resource or memory leak might occur
 glob.adb:22:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 glob.adb:23:12: medium: pointer dereference check might fail (e.g. when X = null) [possible fix: subprogram at glob.ads:14 should mention X in a precondition]
 glob.adb:24:12: medium: resource or memory leak might occur [possible fix: subprogram at glob.ads:14 should mention Z in a precondition]
-glob.adb:30:09: info: initial condition proved (CVC5: 3 VC)
+glob.adb:30:30: info: initial condition proved (CVC5: 3 VC)
 glob.adb:32:10: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 glob.adb:32:10: info: initialization of "X" proved
 glob.adb:33:10: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)

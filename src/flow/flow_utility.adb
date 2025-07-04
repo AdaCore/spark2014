@@ -815,13 +815,16 @@ package body Flow_Utility is
                         or else Invariant_Assumed_In_Scope (Current, Scop.Ent)
                         or else Include_Invariant)
             then
-               Process_Expression
-                 (Get_Expr_From_Check_Only_Proc
-                    (Invariant_Procedure (Current)),
-                  Scop,
-                  Proof_Dependencies,
-                  Types_Seen,
-                  Constants_Seen);
+               for Expr of Get_Exprs_From_Check_Only_Proc
+                 (Invariant_Procedure (Current))
+               loop
+                  Process_Expression
+                    (Expr,
+                     Scop,
+                     Proof_Dependencies,
+                     Types_Seen,
+                     Constants_Seen);
+               end loop;
             end if;
 
             --  Explore the subtype chain of the type
@@ -2416,7 +2419,7 @@ package body Flow_Utility is
       return Node_Lists.List
    is
       P_Expr : Node_Lists.List;
-      P_CC   : Node_Id;
+      P_CC   : Node_Lists.List;
    begin
       case Ekind (E) is
          when Entry_Kind | E_Function | E_Procedure | E_Subprogram_Type =>
@@ -2424,7 +2427,7 @@ package body Flow_Utility is
                P_Expr := Find_Contracts (E, Pragma_Refined_Post);
             else
                P_Expr := Find_Contracts (E, Pragma_Postcondition);
-               P_CC   := Get_Pragma (E, Pragma_Contract_Cases);
+               P_CC   := Find_Contracts (E, Pragma_Contract_Cases);
 
                if Is_Dispatching_Operation (E) then
                   for Post of Classwide_Pre_Post (E, Pragma_Postcondition) loop
@@ -2434,14 +2437,10 @@ package body Flow_Utility is
 
                --  If a Contract_Cases aspect was found then we pull out
                --  every right-hand-side.
-               if Present (P_CC) then
+               for Aggr of P_CC loop
                   declare
                      Contract_Case : Node_Id :=
-                       First
-                         (Component_Associations
-                            (Expression
-                               (First
-                                  (Pragma_Argument_Associations (P_CC)))));
+                       First (Component_Associations (Aggr));
                   begin
                      loop
                         P_Expr.Append (Expression (Contract_Case));
@@ -2450,7 +2449,7 @@ package body Flow_Utility is
                         exit when No (Contract_Case);
                      end loop;
                   end;
-               end if;
+               end loop;
             end if;
 
          when E_Package =>
@@ -2477,8 +2476,8 @@ package body Flow_Utility is
       Precondition_Expressions : Node_Lists.List :=
         Find_Contracts (E, Pragma_Precondition);
 
-      Contract_Cases     : constant Node_Id :=
-        Get_Pragma (E, Pragma_Contract_Cases);
+      Contract_Cases     : constant Node_Lists.List :=
+        Find_Contracts (E, Pragma_Contract_Cases);
       Subprogram_Variant : constant Node_Id :=
         Get_Pragma (E, Pragma_Subprogram_Variant);
       Exit_Cases         : constant Node_Id :=
@@ -2494,16 +2493,10 @@ package body Flow_Utility is
       --  If a Contract_Cases aspect was found then we pull every condition
       --  apart from the others.
 
-      if Present (Contract_Cases) then
+      for Aggr of Contract_Cases loop
          declare
-            Contract_Case : Node_Id :=
-              First
-                (Component_Associations
-                   (Expression
-                      (First
-                         (Pragma_Argument_Associations (Contract_Cases)))));
-
-            Case_Guard : Node_Id;
+            Contract_Case : Node_Id := First (Component_Associations (Aggr));
+            Case_Guard    : Node_Id;
 
          begin
             loop
@@ -2518,7 +2511,7 @@ package body Flow_Utility is
                exit when No (Contract_Case);
             end loop;
          end;
-      end if;
+      end loop;
 
       --  If a Subprogram_Variant aspect was found then we add every
       --  expression to the returned list. Subprogram variants are treated

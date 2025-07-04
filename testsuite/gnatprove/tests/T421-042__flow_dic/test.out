@@ -1,4 +1,4 @@
-dic.adb:4:12: medium: default initial condition might fail
+dic.adb:4:59: medium: default initial condition might fail
 dic.adb:5:16: info: implicit aspect Always_Terminates on "Zero" has been proved, subprogram will terminate
 dic.adb:6:16: info: implicit aspect Always_Terminates on "Is_Zero" has been proved, subprogram will terminate
 dic.adb:8:51: info: in default value of private type at dic.adb:4

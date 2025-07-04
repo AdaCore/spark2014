@@ -6,18 +6,18 @@ package Default_Init with SPARK_Mode is
      Default_Initial_Condition => Arr_Ok (Arr);
    type Nat is private with
      Default_Initial_Condition => Nat_Ok (Nat);
-   type Wrong is private with --@DEFAULT_INITIAL_CONDITION:FAIL
-     Default_Initial_Condition => Wrong_Ok (Wrong);
+   type Wrong is private with
+     Default_Initial_Condition => Wrong_Ok (Wrong); --@DEFAULT_INITIAL_CONDITION:FAIL
    type Rte is private with
      Default_Initial_Condition => Rte_Ok (Rte); --@PRECONDITION:FAIL
-   type Glob1 is private with --@DEFAULT_INITIAL_CONDITION:FAIL
-     Default_Initial_Condition => Glob1_Ok (Glob1);
-   type Glob2 is private with --  @DEFAULT_INITIAL_CONDITION:FAIL
-     Default_Initial_Condition => Glob2_Ok (Glob2);
+   type Glob1 is private with
+     Default_Initial_Condition => Glob1_Ok (Glob1); --@DEFAULT_INITIAL_CONDITION:FAIL
+   type Glob2 is private with
+     Default_Initial_Condition => Glob2_Ok (Glob2); --  @DEFAULT_INITIAL_CONDITION:FAIL
    type Discr (B : Boolean) is private with
      Default_Initial_Condition => Discr_Ok (Discr);
-   type Mut_Discr (B : Boolean := False) is private with --  @DEFAULT_INITIAL_CONDITION:FAIL
-     Default_Initial_Condition => Mut_Discr_Ok (Mut_Discr);
+   type Mut_Discr (B : Boolean := False) is private with
+     Default_Initial_Condition => Mut_Discr_Ok (Mut_Discr); --  @DEFAULT_INITIAL_CONDITION:FAIL
 
    function Rec_Ok (X : Rec) return Boolean;
    function Arr_Ok (X : Arr) return Boolean;

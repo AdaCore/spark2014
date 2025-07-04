@@ -25,7 +25,7 @@ known_satellites.adb:35:22: info: index check proved (Z3: 2 VC)
 known_satellites.adb:46:31: info: index check proved (Z3: 2 VC)
 known_satellites.adb:53:23: info: index check proved (Z3: 2 VC)
 known_satellites.ads:9:03: info: flow dependencies proved
-known_satellites.ads:10:03: info: initial condition proved (Z3: 1 VC)
+known_satellites.ads:10:24: info: initial condition proved (Z3: 1 VC)
 known_satellites.ads:18:13: info: implicit aspect Always_Terminates on "Get_Satellite_Count" has been proved, subprogram will terminate
 known_satellites.ads:20:13: info: implicit aspect Always_Terminates on "Is_Satellite_Reference_Valid" has been proved, subprogram will terminate
 known_satellites.ads:30:07: info: initialization of "Reference" proved

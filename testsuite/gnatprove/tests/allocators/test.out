@@ -64,11 +64,11 @@ list_allocator.adb:116:30: info: loop invariant preservation proved
 list_allocator.adb:117:30: info: loop invariant initialization proved
 list_allocator.adb:117:30: info: loop invariant preservation proved
 list_allocator.ads:11:03: info: flow dependencies proved
-list_allocator.ads:12:03: info: initial condition proved
+list_allocator.ads:12:24: info: initial condition proved
 list_allocator.ads:23:13: info: implicit aspect Always_Terminates on "Is_Available" has been proved, subprogram will terminate
 list_allocator.ads:24:13: info: implicit aspect Always_Terminates on "Is_Allocated" has been proved, subprogram will terminate
 list_allocator.ads:26:13: info: implicit aspect Always_Terminates on "All_Available" has been proved, subprogram will terminate
-list_allocator.ads:29:06: info: initial condition proved
+list_allocator.ads:30:08: info: initial condition proved
 list_allocator.ads:34:38: info: predicate check proved
 list_allocator.ads:34:55: info: predicate check proved
 list_allocator.ads:35:21: info: predicate check proved
@@ -267,7 +267,7 @@ list_mod_allocator.adb:255:41: info: precondition proved
 list_mod_allocator.adb:257:07: info: assertion proved
 list_mod_allocator.adb:257:49: info: precondition proved
 list_mod_allocator.ads:11:03: info: flow dependencies proved
-list_mod_allocator.ads:12:03: info: initial condition proved
+list_mod_allocator.ads:12:24: info: initial condition proved
 list_mod_allocator.ads:23:13: info: implicit aspect Always_Terminates on "Is_Available" has been proved, subprogram will terminate
 list_mod_allocator.ads:24:13: info: implicit aspect Always_Terminates on "Is_Allocated" has been proved, subprogram will terminate
 list_mod_allocator.ads:26:13: info: implicit aspect Always_Terminates on "All_Available" has been proved, subprogram will terminate
@@ -328,7 +328,7 @@ simple_allocator.adb:86:53: info: index check proved
 simple_allocator.adb:93:44: info: index check proved
 simple_allocator.adb:94:16: info: index check proved
 simple_allocator.ads:8:03: info: flow dependencies proved
-simple_allocator.ads:9:03: info: initial condition proved
+simple_allocator.ads:9:24: info: initial condition proved
 simple_allocator.ads:18:13: info: implicit aspect Always_Terminates on "Is_Available" has been proved, subprogram will terminate
 simple_allocator.ads:19:13: info: implicit aspect Always_Terminates on "Is_Allocated" has been proved, subprogram will terminate
 simple_allocator.ads:21:13: info: implicit aspect Always_Terminates on "All_Available" has been proved, subprogram will terminate

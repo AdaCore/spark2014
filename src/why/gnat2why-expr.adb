@@ -153,18 +153,6 @@ package body Gnat2Why.Expr is
    --  Both can be True at once for packages with no bodies or generic
    --  instances.
 
-   function Bind_From_Mapping_In_Expr
-     (Params : Transformation_Params;
-      Expr   : W_Expr_Id;
-      N      : Node_Id;
-      Name   : W_Identifier_Id;
-      Domain : EW_Domain;
-      As_Old : Boolean)
-      return W_Expr_Id;
-   --  Introduce a mapping from the name Name to the Ada expression or entity N
-   --  in Expr. If As_Old is True, the expression should be evaluated in the
-   --  pre state.
-
    function Can_Be_Moved (Expr : Node_Or_Entity_Id) return Boolean;
    --  Return whether an expression can be moved. In proof, moving is only
    --  considered for types with allocated parts, so this function will return
@@ -2372,8 +2360,8 @@ package body Gnat2Why.Expr is
       --  if we are traversing its declaration if it has no body or if we are
       --  traversing its body if there is one.
 
-      Init_Cond   : constant Node_Id :=
-        Get_Pragma (E, Pragma_Initial_Condition);
+      Init_Conds  : constant Node_Lists.List :=
+        Find_Contracts (E, Pragma_Initial_Condition);
       Init_Map    : constant Dependency_Maps.Map :=
         (if Is_Wrapper_Package (E) then Dependency_Maps.Empty_Map
          else Parse_Initializes (E, Get_Flow_Scope (E)));
@@ -2415,17 +2403,16 @@ package body Gnat2Why.Expr is
 
       --  Assume initial condition if any when the body has been elaborated
 
-      if Nested_Body and then Present (Init_Cond) then
-         Append
-           (Assumes,
-            New_Assume_Statement
-              (Pred => Transform_Pred
-                   (Expression
-                        (First
-                           (Pragma_Argument_Associations
-                              (Init_Cond))),
-                    EW_Bool_Type,
-                    Params)));
+      if Nested_Body then
+         for Init_Cond of Init_Conds loop
+            Append
+              (Assumes,
+               New_Assume_Statement
+                 (Pred => Transform_Pred
+                      (Init_Cond,
+                       EW_Bool_Type,
+                       Params)));
+         end loop;
       end if;
    end Assume_For_Nested_Package;
 
@@ -2477,7 +2464,7 @@ package body Gnat2Why.Expr is
       N      : Node_Id;
       Name   : W_Identifier_Id;
       Domain : EW_Domain;
-      As_Old : Boolean)
+      As_Old : Boolean := False)
       return W_Expr_Id
    is
       Res : W_Expr_Id := Expr;
@@ -2940,7 +2927,8 @@ package body Gnat2Why.Expr is
       Ty_Ext    : constant Entity_Id := Retysp (Ty);
 
       DIC_Subp  : constant Entity_Id := Partial_DIC_Procedure (Ty);
-      DIC_Expr  : constant Node_Id := Get_Expr_From_Check_Only_Proc (DIC_Subp);
+      DIC_Exprs : constant Node_Lists.List :=
+        Get_Exprs_From_Check_Only_Proc (DIC_Subp);
       DIC_Param : constant Entity_Id := First_Formal (DIC_Subp);
       DIC_Check : W_Prog_Id := +Void;
 
@@ -2993,16 +2981,18 @@ package body Gnat2Why.Expr is
 
          Insert_Tmp_Item_For_Entity (DIC_Param, Tmp_Id);
 
-         DIC_Check := Sequence
-           (New_Ignore (Prog => Transform_Prog (Expr   => DIC_Expr,
-                                                Params => Params)),
-            New_Located_Assert
-              (Ada_Node =>
-                   (if Is_Full_View (Ty) then Partial_View (Ty) else Ty),
-               Kind     => EW_Check,
-               Reason   => VC_Default_Initial_Condition,
-               Pred     => Transform_Pred (Expr   => DIC_Expr,
-                                           Params => Params)));
+         for Expr of DIC_Exprs loop
+            DIC_Check := Sequence
+              ((1 => DIC_Check,
+                2 => New_Ignore (Prog => Transform_Prog (Expr   => Expr,
+                                                         Params => Params)),
+                3 => New_Located_Assert
+                  (Ada_Node => Expr,
+                   Kind     => EW_Check,
+                   Reason   => VC_Default_Initial_Condition,
+                   Pred     => Transform_Pred (Expr   => Expr,
+                                               Params => Params))));
+         end loop;
 
          DIC_Check := New_Typed_Binding
            (Name    => Tmp_Id,
@@ -3044,7 +3034,7 @@ package body Gnat2Why.Expr is
                       Labels      => Symbol_Sets.Empty_Set,
                       Return_Type => Type_Of_Node (Ty));
 
-      Inv_RTE   : W_Prog_Id;
+      Inv_RTE   : W_Prog_Id := +Void;
       Inv_Check : W_Prog_Id;
 
    begin
@@ -3060,21 +3050,25 @@ package body Gnat2Why.Expr is
       if Has_Invariants_In_SPARK (Base_Ty) then
          declare
             Inv_Subp  : constant Node_Id := Invariant_Procedure (Ty);
-            Inv_Expr  : constant Node_Id :=
-              Get_Expr_From_Check_Only_Proc (Inv_Subp);
+            Inv_Exprs : constant Node_Lists.List :=
+              Get_Exprs_From_Check_Only_Proc (Inv_Subp);
             Inv_Param : constant Entity_Id := First_Formal (Inv_Subp);
          begin
             Ada_Ent_To_Why.Push_Scope (Symbol_Table);
             Insert_Tmp_Item_For_Entity (Inv_Param, Tmp_Id);
-            Inv_RTE := Transform_Prog (Expr          => Inv_Expr,
-                                       Expected_Type => EW_Bool_Type,
-                                       Params        => Params);
-            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
 
-            Inv_RTE := New_Ignore (Inv_Expr, Inv_RTE);
+            for Expr of Inv_Exprs loop
+               Inv_RTE := Sequence
+                 (Inv_RTE,
+                  New_Ignore
+                    (Expr,
+                     Transform_Prog (Expr          => Expr,
+                                     Expected_Type => EW_Bool_Type,
+                                     Params        => Params)));
+            end loop;
+
+            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
          end;
-      else
-         Inv_RTE := +Void;
       end if;
 
       --  Check that the default values of the type and all its subtypes
@@ -28992,9 +28986,9 @@ package body Gnat2Why.Expr is
       Params   : Transformation_Params)
       return W_Pred_Id
    is
-      Result    : W_Pred_Id;
-      Inv_Expr  : constant Node_Id :=
-        Get_Expr_From_Check_Only_Proc (Inv_Subp);
+      Result    : W_Pred_Id := True_Pred;
+      Inv_Exprs : constant Node_Lists.List :=
+        Get_Exprs_From_Check_Only_Proc (Inv_Subp);
       Inv_Param : constant Entity_Id := First_Formal (Inv_Subp);
       Inv_Id    : constant W_Identifier_Id :=
         New_Temp_Identifier (Inv_Param, Get_Type (+Expr));
@@ -29009,10 +29003,14 @@ package body Gnat2Why.Expr is
 
       Insert_Tmp_Item_For_Entity (Inv_Param, Inv_Id);
 
-      --  Transform the invariant expression into Why3
+      --  Transform the invariant expressions into Why3
 
-      Result := Transform_Pred (Expr   => Inv_Expr,
-                                Params => Params);
+      for Expr of Inv_Exprs loop
+         Result := New_And_Pred
+           (Result,
+            Transform_Pred (Expr   => Expr,
+                            Params => Params));
+      end loop;
 
       --  Relate the name Inv_Id used in the invariant expression to the
       --  value Expr for which the invariant is checked.
@@ -29444,14 +29442,16 @@ package body Gnat2Why.Expr is
      (Ty        :        Type_Kind_Id;
       Variables : in out Flow_Id_Sets.Set)
    is
-      Rep_Type      : constant Entity_Id := Retysp (Ty);
-      Inv_Subp      : constant Node_Id := Invariant_Procedure (Rep_Type);
-      Type_Inv_Expr : constant Node_Id :=
-        Get_Expr_From_Check_Only_Proc (Inv_Subp);
-      Inv_Param     : constant Entity_Id := First_Formal (Inv_Subp);
+      Rep_Type       : constant Entity_Id := Retysp (Ty);
+      Inv_Subp       : constant Node_Id := Invariant_Procedure (Rep_Type);
+      Type_Inv_Exprs : constant Node_Lists.List :=
+        Get_Exprs_From_Check_Only_Proc (Inv_Subp);
+      Inv_Param      : constant Entity_Id := First_Formal (Inv_Subp);
 
    begin
-      Variables.Union (Get_Variables_For_Proof (Type_Inv_Expr, Rep_Type));
+      for Expr of Type_Inv_Exprs loop
+         Variables.Union (Get_Variables_For_Proof (Expr, Rep_Type));
+      end loop;
 
       --  Remove parameter of invariant procedure
 

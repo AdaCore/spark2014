@@ -1,5 +1,5 @@
 extension_pkg.adb:3:21: info: assertion proved (CVC5: 1 VC)
-extension_pkg.ads:4:08: info: initial condition proved (CVC5: 1 VC)
+extension_pkg.ads:4:29: info: initial condition proved (CVC5: 1 VC)
 extension_pkg.ads:9:23: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 extension_pkg.ads:9:28: warning: unused variable "X"
 extension_pkg.ads:10:23: info: implicit aspect Always_Terminates on "Op" has been proved, subprogram will terminate

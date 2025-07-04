@@ -91,3 +91,17 @@ warnings_on_lemmas.adb:110:25: info: null exclusion check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:110:28: info: null exclusion check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:110:44: info: null exclusion check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:110:47: info: null exclusion check proved (CVC5: 1 VC)
+warnings_on_lemmas.adb:112:14: info: implicit aspect Always_Terminates on "Lemma_Two_Calls_3" has been proved, subprogram will terminate
+warnings_on_lemmas.adb:112:14: warning: automatically instantiated lemma contains several calls to "Call_2" with different specializations [auto-lemma-different]
+warnings_on_lemmas.adb:112:14: warning: it will not be automatically instantiated on specializations of "Call_2"
+warnings_on_lemmas.adb:112:65: info: function contract feasibility proved (CVC5: 1 VC)
+warnings_on_lemmas.adb:118:08: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
+warnings_on_lemmas.adb:118:29: info: null exclusion check proved (CVC5: 1 VC)
+warnings_on_lemmas.adb:118:32: info: null exclusion check proved (CVC5: 1 VC)
+warnings_on_lemmas.adb:118:52: info: null exclusion check proved (CVC5: 1 VC)
+warnings_on_lemmas.adb:118:55: info: null exclusion check proved (CVC5: 1 VC)
+warnings_on_lemmas.adb:119:08: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
+warnings_on_lemmas.adb:119:29: info: null exclusion check proved (CVC5: 1 VC)
+warnings_on_lemmas.adb:119:32: info: null exclusion check proved (CVC5: 1 VC)
+warnings_on_lemmas.adb:119:48: info: null exclusion check proved (CVC5: 1 VC)
+warnings_on_lemmas.adb:119:51: info: null exclusion check proved (CVC5: 1 VC)

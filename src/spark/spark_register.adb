@@ -25,6 +25,7 @@
 
 with Aspects;                use Aspects;
 with Atree;                  use Atree;
+with Common_Containers;      use Common_Containers;
 with Einfo.Entities;         use Einfo.Entities;
 with Einfo.Utils;            use Einfo.Utils;
 with Namet;                  use Namet;
@@ -298,28 +299,25 @@ package body SPARK_Register is
             if Has_Own_DIC (N) and then N = Base_Type (N) then
                declare
                   DIC_Proc : constant Node_Id := Partial_DIC_Procedure (N);
-                  DIC_Expr : Node_Id;
 
                begin
                   --  Default_Initial_Condition may be given without any
                   --  expression, which means it defaults to True.
                   if Present (DIC_Proc) then
-                     DIC_Expr := Get_Expr_From_Check_Only_Proc (DIC_Proc);
-
-                     Process_Tree (DIC_Expr);
+                     for DIC_Expr of Get_Exprs_From_Check_Only_Proc (DIC_Proc)
+                     loop
+                        Process_Tree (DIC_Expr);
+                     end loop;
                   end if;
                end;
             end if;
 
             declare
-               Inv_Proc : constant Entity_Id := Invariant_Procedure (N);
-               Inv_Expr : Node_Id;
+               Inv_Proc  : constant Entity_Id := Invariant_Procedure (N);
+               Inv_Exprs : Node_Lists.List;
             begin
                if Present (Inv_Proc) then
-                  Inv_Expr := Get_Expr_From_Check_Only_Proc (Inv_Proc);
-
-                  if Present (Inv_Expr) then
-                     Process_Tree (Inv_Expr);
+                  Inv_Exprs := Get_Exprs_From_Check_Only_Proc (Inv_Proc);
 
                   --  If the invariant procedure has no expression then
                   --  it calls the partial invariant procedure, so get the
@@ -328,15 +326,16 @@ package body SPARK_Register is
                   --  of today is not allowed in SPARK, but it is better to
                   --  traverse it anyway.)
 
-                  else
-                     Inv_Expr :=
-                       Get_Expr_From_Check_Only_Proc
+                  if Inv_Exprs.Is_Empty then
+                     Inv_Exprs :=
+                       Get_Exprs_From_Check_Only_Proc
                          (Partial_Invariant_Procedure (N));
-
-                     pragma Assert (Present (Inv_Expr));
-
-                     Process_Tree (Inv_Expr);
+                     pragma Assert (not Inv_Exprs.Is_Empty);
                   end if;
+
+                  for Inv_Expr of Inv_Exprs loop
+                     Process_Tree (Inv_Expr);
+                  end loop;
                end if;
             end;
          end if;

@@ -7,7 +7,7 @@ initialization_and_elaboration-private_child.ads:8:13: info: implicit aspect Alw
 initialization_and_elaboration-private_child.ads:9:11: info: data dependencies proved
 initialization_and_elaboration.adb:14:53: info: initialization of "Private_Child.State" constituent of "Initialization_And_Elaboration.State" proved
 initialization_and_elaboration.ads:3:08: info: flow dependencies proved
-initialization_and_elaboration.ads:4:08: medium: initial condition might fail
+initialization_and_elaboration.ads:4:29: medium: initial condition might fail [possible fix: you should consider adding a postcondition to function Get_It or turning it into an expression function]
 initialization_and_elaboration.ads:7:11: info: data dependencies proved
 initialization_and_elaboration.ads:9:13: info: implicit aspect Always_Terminates on "Get_It" has been proved, subprogram will terminate
 initialization_and_elaboration.ads:10:11: info: data dependencies proved

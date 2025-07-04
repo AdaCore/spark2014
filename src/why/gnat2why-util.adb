@@ -1909,7 +1909,7 @@ package body Gnat2Why.Util is
 
         and then (Type_Needs_Dynamic_Invariant (Etype (E))
                   or else Has_Contracts (E, Pragma_Postcondition)
-                  or else Present (Get_Pragma (E, Pragma_Contract_Cases)));
+                  or else Has_Contracts (E, Pragma_Contract_Cases));
    end Use_Guard_For_Function;
 
    -----------------------------

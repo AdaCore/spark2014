@@ -20,9 +20,9 @@ generic_ring_buffer.adb:76:13: medium: predicate check might fail, cannot prove 
 generic_ring_buffer.adb:77:13: medium: in inlined predicate at generic_ring_buffer.ads:104, in instantiation at tester.adb:9
 generic_ring_buffer.adb:77:13: medium: predicate check might fail, cannot prove ((Count = 0 and Tail = Max_Size and Head = 1) or (Count = Max_Size + Tail - Head + 1) or (Count = Tail - Head + 1)), in instantiation at tester.adb:9 [possible fix: subprogram at generic_ring_buffer.ads:81 should mention Buffer in a precondition]
 generic_ring_buffer.adb:78:13: info: predicate check proved (CVC5: 5 VC), in instantiation at tester.adb:9
-generic_ring_buffer.ads:19:09: info: default initial condition proved (CVC5: 1 VC), in instantiation at tester.adb:9
 generic_ring_buffer.ads:19:09: info: in default value of private type at generic_ring_buffer.ads:19, in instantiation at tester.adb:9
 generic_ring_buffer.ads:19:09: info: predicate check proved on default value (CVC5: 5 VC), in instantiation at tester.adb:9
+generic_ring_buffer.ads:20:40: info: default initial condition proved (CVC5: 1 VC), in instantiation at tester.adb:9
 generic_ring_buffer.ads:24:13: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate, in instantiation at tester.adb:9
 generic_ring_buffer.ads:29:13: info: implicit aspect Always_Terminates on "Full" has been proved, subprogram will terminate, in instantiation at tester.adb:9
 generic_ring_buffer.ads:34:13: info: implicit aspect Always_Terminates on "Size" has been proved, subprogram will terminate, in instantiation at tester.adb:9

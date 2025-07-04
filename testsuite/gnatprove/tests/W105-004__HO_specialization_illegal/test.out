@@ -11,10 +11,11 @@ illegal.adb:83:35: error: subprogram annotated with Higher_Order_Specialization 
 illegal.adb:90:06: warning: postcondition does not mention function result [-gnatw.t]
 illegal.adb:90:36: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
 illegal.adb:98:31: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
-illegal.adb:108:06: warning: contract cases do not mention function result [-gnatw.t]
-illegal.adb:110:33: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
-illegal.adb:119:64: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
-illegal.adb:128:13: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
-illegal.adb:158:14: error: procedure annotated with the aspect Higher_Order_Specialization shall not propagate exceptions
-illegal.adb:169:14: error: procedure annotated with the aspect Higher_Order_Specialization shall have an Always_Terminates aspect of True
+illegal.adb:108:09: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
+illegal.adb:118:06: warning: contract cases do not mention function result [-gnatw.t]
+illegal.adb:120:33: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
+illegal.adb:129:64: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
+illegal.adb:138:13: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
+illegal.adb:168:14: error: procedure annotated with the aspect Higher_Order_Specialization shall not propagate exceptions
+illegal.adb:179:14: error: procedure annotated with the aspect Higher_Order_Specialization shall have an Always_Terminates aspect of True
 gnatprove: error during flow analysis and proof

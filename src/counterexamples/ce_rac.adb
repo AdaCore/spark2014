@@ -2533,7 +2533,7 @@ package body CE_RAC is
             null;
       end;
 
-      if Present (Get_Pragma (E, Pragma_Contract_Cases)) then
+      if Has_Contracts (E, Pragma_Contract_Cases) then
          RAC_Unsupported
            ("RAC_Call pragma contract cases",
             Get_Pragma (E, Pragma_Contract_Cases));

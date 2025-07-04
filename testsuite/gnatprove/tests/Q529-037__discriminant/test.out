@@ -7,7 +7,7 @@ bounded_stacks.adb:51:28: info: range check proved (CVC5: 2 VC), in instantiatio
 bounded_stacks.adb:59:24: info: index check proved (CVC5: 2 VC), in instantiation at integer_stacks.ads:4
 bounded_stacks.adb:71:29: medium: array index check might fail, in instantiation at integer_stacks.ads:4 [reason for check: value must be a valid index into the array]
 bounded_stacks.adb:71:49: medium: array index check might fail, in instantiation at integer_stacks.ads:4 [reason for check: value must be a valid index into the array]
-bounded_stacks.ads:6:09: info: default initial condition proved (CVC5: 1 VC), in instantiation at integer_stacks.ads:4
+bounded_stacks.ads:7:41: info: default initial condition proved (CVC5: 1 VC), in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:9:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:11:13: info: implicit aspect Always_Terminates on "Extent" has been proved, subprogram will terminate, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:13:13: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate, in instantiation at integer_stacks.ads:4

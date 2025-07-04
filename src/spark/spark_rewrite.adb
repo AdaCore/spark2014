@@ -26,6 +26,7 @@
 with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
 with Aspects;                use Aspects;
 with Atree;                  use Atree;
+with Common_Containers;      use Common_Containers;
 with Einfo.Entities;         use Einfo.Entities;
 with Einfo.Utils;            use Einfo.Utils;
 with Exp_Attr;               use Exp_Attr;
@@ -473,21 +474,19 @@ package body SPARK_Rewrite is
 
                if Comes_From_Source (Original_Node (N)) then
                   declare
-                     Ty       : constant Entity_Id := Defining_Entity (N);
-                     Inv_Proc : constant Entity_Id := Invariant_Procedure (Ty);
-                     Inv_Expr : Node_Id;
-                     DIC_Proc : Entity_Id;
-                     DIC_Expr : Node_Id;
+                     Ty        : constant Entity_Id := Defining_Entity (N);
+                     Inv_Proc  : constant Entity_Id :=
+                       Invariant_Procedure (Ty);
+                     Inv_Exprs : Node_Lists.List;
+                     DIC_Proc  : Entity_Id;
+                     DIC_Exprs : Node_Lists.List;
 
                   begin
                      --  ??? The following is slighly different from
                      --  SPARK_Register; both should be unified.
 
                      if Present (Inv_Proc) then
-                        Inv_Expr := Get_Expr_From_Check_Only_Proc (Inv_Proc);
-
-                        if Present (Inv_Expr) then
-                           Rewrite_Nodes (Inv_Expr);
+                        Inv_Exprs := Get_Exprs_From_Check_Only_Proc (Inv_Proc);
 
                         --  If the invariant procedure has no expression then
                         --  it calls the partial invariant procedure, so get
@@ -496,27 +495,29 @@ package body SPARK_Rewrite is
                         --  part, which as of today is not allowed in SPARK,
                         --  but it is better to traverse it anyway.)
 
-                        else
-                           Inv_Expr :=
-                             Get_Expr_From_Check_Only_Proc
+                        if Inv_Exprs.Is_Empty then
+                           Inv_Exprs :=
+                             Get_Exprs_From_Check_Only_Proc
                                (Partial_Invariant_Procedure (Ty));
-
-                           pragma Assert (Present (Inv_Expr));
-
-                           Rewrite_Nodes (Inv_Expr);
                         end if;
+
+                        pragma Assert (not Inv_Exprs.Is_Empty);
+
+                        for Inv_Expr of Inv_Exprs loop
+                           Rewrite_Nodes (Inv_Expr);
+                        end loop;
                      end if;
 
                      if Has_Own_DIC (Ty) then
                         DIC_Proc := Partial_DIC_Procedure (Ty);
 
                         if Present (DIC_Proc) then
-                           DIC_Expr :=
-                             Get_Expr_From_Check_Only_Proc (DIC_Proc);
+                           DIC_Exprs :=
+                             Get_Exprs_From_Check_Only_Proc (DIC_Proc);
 
-                           if Present (DIC_Expr) then
+                           for DIC_Expr of DIC_Exprs loop
                               Rewrite_Nodes (DIC_Expr);
-                           end if;
+                           end loop;
                         end if;
                      end if;
                   end;

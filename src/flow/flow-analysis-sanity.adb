@@ -620,151 +620,156 @@ package body Flow.Analysis.Sanity is
                        | N_Private_Extension_Declaration
            and then Has_Invariants_In_SPARK (Typ)
          then
-            declare
-               Expr : constant Node_Id :=
-                 Get_Expr_From_Check_Only_Proc (Invariant_Procedure (Typ));
+            for Expr of
+              Get_Exprs_From_Check_Only_Proc (Invariant_Procedure (Typ))
+            loop
+               declare
+                  Funcalls  : Call_Sets.Set;
+                  Indcalls  : Node_Sets.Set;
+                  Proofdeps : Node_Sets.Set;
+                  Unused    : Tasking_Info;
 
-               Funcalls  : Call_Sets.Set;
-               Indcalls  : Node_Sets.Set;
-               Proofdeps : Node_Sets.Set;
-               Unused    : Tasking_Info;
+               begin
+                  --  Check 7.3.2(3) [which is really 4.4(2)] (no variable
+                  --  inputs).
 
-            begin
-               --  Check 7.3.2(3) [which is really 4.4(2)] (no variable inputs)
+                  Detect_Variable_Inputs
+                    (N        => Expr,
+                     Err_Desc => "invariant");
 
-               Detect_Variable_Inputs
-                 (N        => Expr,
-                  Err_Desc => "invariant");
+                  Pick_Generated_Info
+                    (Expr,
+                     Scop               => Get_Flow_Scope (Expr),
+                     Function_Calls     => Funcalls,
+                     Indirect_Calls     => Indcalls,
+                     Proof_Dependencies => Proofdeps,
+                     Tasking            => Unused,
+                     Generating_Globals => False);
 
-               Pick_Generated_Info
-                 (Expr,
-                  Scop               => Get_Flow_Scope (Expr),
-                  Function_Calls     => Funcalls,
-                  Indirect_Calls     => Indcalls,
-                  Proof_Dependencies => Proofdeps,
-                  Tasking            => Unused,
-                  Generating_Globals => False);
+                  for SC of Funcalls loop
 
-               for SC of Funcalls loop
+                     --  Check 7.3.2(11) (no calls via access-to-subprogram)
 
-                  --  Check 7.3.2(11) (no calls via access-to-subprogram)
+                     if Ekind (SC.E) = E_Subprogram_Type then
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Msg      =>
+                             "call via access-to-subprogram " &
+                             "in the invariant of & might not terminate",
+                           Severity => High_Check_Kind,
+                           Tag      => Subprogram_Termination,
+                           N        => Expr,
+                           F1       => Direct_Mapping_Id (Typ),
+                           SRM_Ref  => "7.3.2(11)");
 
-                  if Ekind (SC.E) = E_Subprogram_Type then
-                     Error_Msg_Flow
-                        (FA       => FA,
-                           Msg    =>
-                              "call via access-to-subprogram " &
-                              "in the invariant of & might not terminate",
-                         Severity => High_Check_Kind,
-                         Tag      => Subprogram_Termination,
-                         N        => Expr,
-                         F1       => Direct_Mapping_Id (Typ),
-                         SRM_Ref  => "7.3.2(11)");
+                     --  Check 7.3.2(11) (no dispatching calls)
 
-                  --  Check 7.3.2(11) (no dispatching calls)
+                     elsif Nkind (SC.N) in N_Subprogram_Call
+                       and then Flow_Classwide.Is_Dispatching_Call (SC.N)
+                     then
+                        Error_Msg_Flow
+                          (FA          => FA,
+                           Msg         =>
+                             "dispatching call " &
+                             "in the invariant of & might not terminate",
+                           Explanation => "call could hide recursive calls",
+                           Severity    => High_Check_Kind,
+                           Tag         => Subprogram_Termination,
+                           N           => Expr,
+                           F1          => Direct_Mapping_Id (Typ),
+                           SRM_Ref     => "7.3.2(11)");
 
-                  elsif Nkind (SC.N) in N_Subprogram_Call
-                    and then Flow_Classwide.Is_Dispatching_Call (SC.N)
-                  then
-                     Error_Msg_Flow
-                        (FA          => FA,
-                         Msg         =>
-                           "dispatching call " &
-                           "in the invariant of & might not terminate",
-                         Explanation => "call could hide recursive calls",
-                         Severity    => High_Check_Kind,
-                         Tag         => Subprogram_Termination,
-                         N           => Expr,
-                         F1          => Direct_Mapping_Id (Typ),
-                         SRM_Ref     => "7.3.2(11)");
+                     --  Check 7.3.2(5) (no calls to boundary subprograms)
 
-                  --  Check 7.3.2(5) (no calls to boundary subprograms)
+                     elsif Is_Boundary_Subprogram_For_Type (SC.E, Typ) then
 
-                  elsif Is_Boundary_Subprogram_For_Type (SC.E, Typ) then
+                        --  Check formal parameters
 
-                     --  Check formal parameters
+                        declare
+                           Formal : Opt_Formal_Kind_Id := First_Formal (SC.E);
+                        begin
+                           while Present (Formal) loop
+                              if Has_Subcomponents_Of_Type
+                                (Etype (Formal), Typ)
+                              then
+                                 Error_Msg_Flow
+                                   (FA       => FA,
+                                    Msg      =>
+                                      "cannot call boundary subprogram & " &
+                                      "for type & in its own invariant",
+                                    Severity => High_Check_Kind,
+                                    Tag      => Call_In_Type_Invariant,
+                                    N        => Expr,
+                                    F1       => Direct_Mapping_Id (SC.E),
+                                    F2       => Direct_Mapping_Id (Typ),
+                                    SRM_Ref  => "7.3.2(5)");
+                                 exit;
+                              end if;
+                              Next_Formal (Formal);
+                           end loop;
+                        end;
 
-                     declare
-                        Formal : Opt_Formal_Kind_Id := First_Formal (SC.E);
-                     begin
-                        while Present (Formal) loop
-                           if Has_Subcomponents_Of_Type (Etype (Formal), Typ)
-                           then
-                              Error_Msg_Flow
-                                (FA       => FA,
-                                 Msg      =>
-                                   "cannot call boundary subprogram & " &
-                                   "for type & in its own invariant",
-                                 Severity => High_Check_Kind,
-                                 Tag      => Call_In_Type_Invariant,
-                                 N        => Expr,
-                                 F1       => Direct_Mapping_Id (SC.E),
-                                 F2       => Direct_Mapping_Id (Typ),
-                                 SRM_Ref  => "7.3.2(5)");
-                              exit;
-                           end if;
-                           Next_Formal (Formal);
-                        end loop;
-                     end;
+                        --  Check global parameters
 
-                     --  Check global parameters
+                        declare
+                           Inputs, Outputs : Flow_Id_Sets.Set;
+                        begin
+                           Get_Proof_Globals
+                             (Subprogram      => SC.E,
+                              Reads           => Inputs,
+                              Writes          => Outputs,
+                              Erase_Constants => False);
 
-                     declare
-                        Inputs, Outputs : Flow_Id_Sets.Set;
-                     begin
-                        Get_Proof_Globals
-                          (Subprogram      => SC.E,
-                           Reads           => Inputs,
-                           Writes          => Outputs,
-                           Erase_Constants => False);
+                           --  Functions will be checked for side effects, so
+                           --  here we only examine inputs and ignore outputs.
 
-                        --  Functions will be checked for side effects, so here
-                        --  we only examine inputs and ignore outputs.
+                           for Input of Inputs loop
+                              if Input.Kind = Direct_Mapping
+                                and then
+                                  Has_Subcomponents_Of_Type
+                                    (Etype (Get_Direct_Mapping_Id (Input)),
+                                     Typ)
+                              then
+                                 Error_Msg_Flow
+                                   (FA       => FA,
+                                    Msg      =>
+                                      "cannot call boundary subprogram & " &
+                                      "for type & with global & " &
+                                      "in its own invariant",
+                                    Severity => High_Check_Kind,
+                                    Tag      => Call_In_Type_Invariant,
+                                    N        => Expr,
+                                    F1       => Direct_Mapping_Id (SC.E),
+                                    F2       => Direct_Mapping_Id (Typ),
+                                    F3       => Input,
+                                    SRM_Ref  => "7.3.2(5)");
 
-                        for Input of Inputs loop
-                           if Input.Kind = Direct_Mapping
-                             and then
-                               Has_Subcomponents_Of_Type
-                                 (Etype (Get_Direct_Mapping_Id (Input)), Typ)
-                           then
-                              Error_Msg_Flow
-                                (FA       => FA,
-                                 Msg      =>
-                                   "cannot call boundary subprogram & " &
-                                   "for type & with global & " &
-                                   "in its own invariant",
-                                 Severity => High_Check_Kind,
-                                 Tag      => Call_In_Type_Invariant,
-                                 N        => Expr,
-                                 F1       => Direct_Mapping_Id (SC.E),
-                                 F2       => Direct_Mapping_Id (Typ),
-                                 F3       => Input,
-                                 SRM_Ref  => "7.3.2(5)");
+                              --  If we don't have the Entity_Id of a global,
+                              --  then we don't have its Etype either. Force
+                              --  the user to provide an explicit Global
+                              --  contract.
 
-                           --  If we don't have the Entity_Id of a global,
-                           --  then we don't have its Etype either. Force the
-                           --  user to provide an explicit Global contract.
-
-                           elsif Input.Kind = Magic_String then
-                              Error_Msg_Flow
-                                (FA       => FA,
-                                 Msg      =>
-                                   "cannot call boundary subprogram & " &
-                                   "for type & with implicit global & " &
-                                   "in its own invariant",
-                                 Severity => High_Check_Kind,
-                                 Tag      => Call_In_Type_Invariant,
-                                 N        => Expr,
-                                 F1       => Direct_Mapping_Id (SC.E),
-                                 F2       => Direct_Mapping_Id (Typ),
-                                 F3       => Input,
-                                 SRM_Ref  => "7.3.2(5)");
-                           end if;
-                        end loop;
-                     end;
-                  end if;
-               end loop;
-            end;
+                              elsif Input.Kind = Magic_String then
+                                 Error_Msg_Flow
+                                   (FA       => FA,
+                                    Msg      =>
+                                      "cannot call boundary subprogram & " &
+                                      "for type & with implicit global & " &
+                                      "in its own invariant",
+                                    Severity => High_Check_Kind,
+                                    Tag      => Call_In_Type_Invariant,
+                                    N        => Expr,
+                                    F1       => Direct_Mapping_Id (SC.E),
+                                    F2       => Direct_Mapping_Id (Typ),
+                                    F3       => Input,
+                                    SRM_Ref  => "7.3.2(5)");
+                              end if;
+                           end loop;
+                        end;
+                     end if;
+                  end loop;
+               end;
+            end loop;
          end if;
       end Check_Type_Aspects;
 

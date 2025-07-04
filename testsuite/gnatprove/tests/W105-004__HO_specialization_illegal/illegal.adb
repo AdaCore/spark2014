@@ -102,6 +102,16 @@ is
 
    function Use_In_CC1 (F : not null access function return Integer) return Integer is (F.all);
 
+   function Use_In_CC1_bis (F : access function return Integer) return Integer with
+     Annotate => (GNATprove, Higher_Order_Specialization),
+     Contract_Cases =>
+       (F /= null =>
+          Use_In_CC1_bis'Result = F.all,
+        others                   =>
+          True);
+
+   function Use_In_CC1_bis (F : access function return Integer) return Integer is (F.all);
+
    --  Non specializable use of formal in posts of a contract cases
    function Use_In_CC2 (F : not null access function return Integer) return Integer with
      Annotate => (GNATprove, Higher_Order_Specialization),
