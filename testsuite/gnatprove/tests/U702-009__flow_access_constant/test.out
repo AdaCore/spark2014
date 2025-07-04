@@ -2,4 +2,5 @@ g.adb:5:21: info: flow dependencies proved, in instantiation at g.adb:9
 g.adb:6:07: medium: resource or memory leak might occur at end of scope, in instantiation at g.adb:9
 g.adb:9:29: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 h.ads:1:16: info: flow dependencies proved
+r.ads:1:46: info: initialization of "R.State" proved
 r.ads:1:53: info: flow dependencies proved

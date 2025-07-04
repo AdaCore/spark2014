@@ -1,3 +1,4 @@
+p.ads:2:26: info: initialization of "P.State" proved
 p.ads:3:08: info: flow dependencies proved
 p.ads:15:13: info: implicit aspect Always_Terminates on "F1" has been proved, subprogram will terminate
 p.ads:15:43: info: data dependencies proved
