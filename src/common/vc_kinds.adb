@@ -53,8 +53,8 @@ package body VC_Kinds is
 
            when VC_Division_Check => "369",
 
-           --  CWE-119: Improper Restriction of Operations within the Bounds of a
-           --  Memory Buffer.
+           --  CWE-119: Improper Restriction of Operations within the Bounds of
+           --  a Memory Buffer.
 
            when VC_Index_Check => "119",
 
@@ -62,8 +62,8 @@ package body VC_Kinds is
 
            when VC_Overflow_Check => "190",
 
-           --  CWE-739: CWE CATEGORY: CERT C Secure Coding Section 05 - Floating
-           --  Point (FLP)
+           --  CWE-739: CWE CATEGORY: CERT C Secure Coding Section 05 -
+           --  Floating Point (FLP)
 
            when VC_FP_Overflow_Check => "739",
 
@@ -179,8 +179,8 @@ package body VC_Kinds is
 
            when Dead_Code => "561",
 
-           --  CWE-362: Concurrent Execution using Shared Resource with Improper
-           --  Synchronization ('Race Condition')
+           --  CWE-362: Concurrent Execution using Shared Resource with
+           --  Improper Synchronization ('Race Condition')
 
            when Concurrent_Access => "362",
 
@@ -701,9 +701,9 @@ package body VC_Kinds is
            "procedure which does not return normally nor raises an exception"
            & " cannot always terminate",
          when Warn_Potentially_Invalid_Read =>
-           "invalid data might be read in the contract of a subprogram without "
-           & "an analyzed body; the fact that the read data is valid is not"
-           & " checked by SPARK",
+           "invalid data might be read in the contract of a subprogram "
+           & "without an analyzed body; the fact that the read data is valid "
+           & "is not checked by SPARK",
          when Warn_Pragma_Annotate_No_Check =>
            "no check message justified by this pragma",
          when Warn_Pragma_Annotate_Proved_Check =>
@@ -778,15 +778,15 @@ package body VC_Kinds is
          --  Flow limitations
          when Warn_Imprecise_GG =>
            "Global generation might wrongly classify an Output item as an "
-           & "In_Out for subprograms that call other subprograms with no Global "
-           & "contract",
+           & "In_Out for subprograms that call other subprograms with no "
+           & "Global contract",
          when Warn_Init_Array =>
            "Initialization of arrays inside FOR loops is only recognized when "
            & "assignments to array element are directly indexed by the loop"
            & "parameter",
          when Warn_Init_Multidim_Array =>
-           "Initialization of multi-dimensional array inside FOR loops is only "
-           & "recognized when array bounds are static",
+           "Initialization of multi-dimensional array inside FOR loops is "
+           & "only recognized when array bounds are static",
          when Warn_Alias_Array =>
            "Aliasing checks might be spurious for actual parameters that are "
            & "array components",
@@ -798,15 +798,15 @@ package body VC_Kinds is
          when Warn_Contracts_Recursive =>
            "Explicit and implicit postconditions of a recursive subprogram "
            & "cannot be used on (mutually) recursive calls occurring inside "
-           & "assertions and contracts, but will still be available in regular "
-           & "code",
+           & "assertions and contracts, but will still be available in "
+           & "regular code",
          when Warn_DIC_Ignored =>
            "The Default_Initial_Condition of a type won't be assumed on "
            & "subcomponents initialized by default inside assertions and "
            & "contracts, but will still be available in regular code",
          when Warn_Imprecise_Address =>
-           "The adress of objects is not precisely known if it is not supplied "
-           & "through an address clause",
+           "The adress of objects is not precisely known if it is not "
+           & "supplied through an address clause",
          when Warn_Imprecise_Align =>
            "The alignment of an object might not be known for proof if it is "
            & "not supplied through an attribute definition clause",
@@ -816,21 +816,22 @@ package body VC_Kinds is
            & "and nothing will be known about its result",
          when Warn_Component_Size =>
            "the value of attribute Component_Size might not be known for "
-           & "proof if it is not supplied through an attribute definition clause",
+           & "proof if it is not supplied through an attribute definition "
+           & "clause",
          when Warn_Record_Component_Attr =>
            "the value of attributes First_Bit, Last_Bit, and Position on "
            & "record components are handled in an imprecise way if the record "
            & "does not have a record representation clause",
          when Warn_Imprecise_Size =>
-           "The attributes Size, Object_Size or Value_Size might not be handled"
-           & " precisely, nothing will be known about their evaluation",
+           "The attributes Size, Object_Size or Value_Size might not be "
+           & "handled precisely, nothing will be known about their evaluation",
          when Warn_Imprecise_UC =>
            "Unchecked conversion might not be handled precisely by SPARK, "
            & "nothing will be known about their result",
          when Warn_Imprecise_Value =>
-           "References to the attribute Value are handled in an imprecise way; "
-           & "its precondition is impossible to prove and nothing will be known "
-           & "about the evaluation of the attribute reference",
+           "References to the attribute Value are handled in an imprecise "
+           & "way; its precondition is impossible to prove and nothing will "
+           & "be known about the evaluation of the attribute reference",
          when Warn_Imprecise_Image =>
            "References to the attributes Image and Img are handled in an "
            & "imprecise way; nothing will be known about the evaluation of the"
@@ -844,20 +845,22 @@ package body VC_Kinds is
            & "is not known to be true, due to elaboration order",
          when Warn_No_Reclam_Func =>
            "No reclamation function or reclaimed value was found for an "
-           & "ownership type, which may make it impossible to prove that values "
-           & "of this type are reclaimed",
+           & "ownership type, which may make it impossible to prove that "
+           & "values of this type are reclaimed",
          when Warn_Num_Variant =>
-           "For recursive expression functions with a numeric (not structural) "
-           & "Subprogram_Variant, the definition of the expression function "
-           & "might not be available for recursive calls occurring inside "
-           & "assertions and contracts, but will still be available in regular "
-           & "code",
+           "For recursive expression functions with a numeric (not "
+           & "structural) Subprogram_Variant, the definition of the "
+           & "expression function might not be available for recursive calls  "
+           & "occurring inside assertions and contracts, but will still be "
+           & "available in regular code",
          when Warn_Map_Length_Aggregates =>
            "A type with predefined map aggregates doesn't have a Length "
-           & "function; the length of aggregates will not be known for this type",
+           & "function; the length of aggregates will not be known for "
+           & "this type",
          when Warn_Set_Length_Aggregates =>
            "A type with predefined set aggregates doesn't have a Length "
-           & "function; the length of aggregates will not be known for this type",
+           & "function; the length of aggregates will not be known for "
+           & "this type",
          when Warn_Relaxed_Init_Mutable_Discr =>
            "The tool enforces that mutable discriminants of standalone objects"
            & " and parameters with relaxed initialization are always"
@@ -936,8 +939,8 @@ package body VC_Kinds is
            "a subtype predicate on a classwide type",
          when Lim_Complex_Raise_Expr_In_Prec =>
            "a raise expression occurring in a precondition, unless it is only"
-           & " used to change the reported error and can safely be interpreted "
-           & "as False",
+           & " used to change the reported error and can safely be "
+           & "interpreted as False",
          when Lim_Continue_Statement => "continue statement",
          when Lim_Constrained_Classwide =>
            "a type constraint on a classwide subtype declaration",
@@ -972,8 +975,8 @@ package body VC_Kinds is
            "aspect ""Exceptional_Cases"" on dispatching operations",
          when Lim_Exceptional_Cases_Ownership =>
            "procedure which might propagate exceptions with parameters of mode"
-           & " ""in out"" or ""out"" subjected to ownership which might not be "
-           & "passed by reference",
+           & " ""in out"" or ""out"" subjected to ownership which might not "
+           & "be passed by reference",
          when Lim_Exit_Cases_Dispatch =>
            "aspect ""Exit_Cases"" on dispatching operations",
          when Lim_Program_Exit_Dispatch =>
@@ -1002,8 +1005,8 @@ package body VC_Kinds is
            & "invariant",
          when Lim_Hidden_Private_Relaxed_Init =>
            "private type whose full view contains only subcomponents whose "
-           & "type is annotated with Relaxed_Initialization in a package whose "
-           & "private part is hidden for proof",
+           & "type is annotated with Relaxed_Initialization in a package "
+           & "whose private part is hidden for proof",
          when Lim_Img_On_Non_Scalar =>
            "a reference to the ""Image"" or ""Img"" attribute on a type or "
            & "an object of a type which is not a scalar type",
@@ -1058,8 +1061,8 @@ package body VC_Kinds is
          when Lim_Multiple_Inheritance_Mixed_SPARK_Mode =>
            "a primitive operation which is implicitly inherited from several"
            & " progenitor types in a tagged derivation, and for which two of"
-           & " these progenitors provide incompatible values for the SPARK mode"
-           & " of the inherited subprogram",
+           & " these progenitors provide incompatible values for the SPARK "
+           & " mode of the inherited subprogram",
          when Lim_Multiple_Inheritance_Root =>
            "a primitive operation which is inherited both from the parent type"
            & " and from an interface in a tagged derivation",
@@ -1116,8 +1119,8 @@ package body VC_Kinds is
            & " view",
          when Lim_Predicate_With_Different_Visibility =>
            "a private type declared in a package whose private part is hidden"
-           & " for proof annotated with two subtype predicates, one on the full"
-           & " view and one on the private view",
+           & " for proof annotated with two subtype predicates, one on the "
+           & " full view and one on the private view",
          when Lim_Primitive_Call_In_DIC =>
            "a call to a primitive operation of a tagged type T occurring in "
            & "the default initial condition of T with the type instance as a "

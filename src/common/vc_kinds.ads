@@ -734,8 +734,8 @@ package VC_Kinds is
          when Warn_Assumed_Always_Terminates =>
            "no Always_Terminates aspect available for &",
          when Warn_Assumed_Global_Null => "no Global contract available for &",
-         --  The warning message is customized depending on the assumptions that
-         --  need to be checked.
+         --  The warning message is customized depending on the assumptions
+         --  that need to be checked.
          when Warn_Imprecisely_Supported_Address =>
            "address specification on & is imprecisely supported",
 
@@ -753,8 +753,8 @@ package VC_Kinds is
 
          --  Tool limitations
          when Warn_Comp_Relaxed_Init =>
-           "& is handled as if it was annotated with Relaxed_Initialization as "
-           & "all its components are annotated that way",
+           "& is handled as if it was annotated with Relaxed_Initialization "
+           & "as all its components are annotated that way",
          when Warn_Full_View_Visible =>
            "full view of & declared # is visible when analyzing &",
 
@@ -765,8 +765,8 @@ package VC_Kinds is
          when Warn_Init_Array =>
            "initialization of an array in FOR loop is handled imprecisely",
          when Warn_Init_Multidim_Array =>
-           "initialization of a multi-dimensional array in nested FOR loops is "
-           & "handled imprecisely",
+           "initialization of a multi-dimensional array in nested FOR loops "
+           & "is handled imprecisely",
          when Warn_Tagged_Untangling =>
            "flow of dependencies on & is handled imprecisely",
 
@@ -792,12 +792,12 @@ package VC_Kinds is
            "imprecise handling of Unchecked_Conversion (&)",
          when Warn_Imprecise_Value =>
            "references to the ""Value"" attribute are handled in an imprecise "
-           & "way, so the precondition is impossible to prove and nothing will "
-           & "be known about the evaluation of the attribute reference",
+           & "way, so the precondition is impossible to prove and nothing "
+           & "will be known about the evaluation of the attribute reference",
          when Warn_Imprecise_Image =>
            "references to the & attribute are handled in an"
-           & " imprecise way, so nothing will be known about the evaluation of "
-           & "the attribute reference apart from a bound on its length",
+           & " imprecise way, so nothing will be known about the evaluation"
+           & " of the attribute reference apart from a bound on its length",
          when Warn_Loop_Entity =>
            "The initial value of & declared before the loop invariant "
            & "is not visible after the invariant; it shall be restated in the "
@@ -884,8 +884,8 @@ package VC_Kinds is
            "aspect ""Exceptional_Cases"" on dispatching operation",
          when Lim_Exceptional_Cases_Ownership =>
            "procedure which might propagate exceptions with parameters of mode"
-           & " ""in out"" or ""out"" subjected to ownership which might not be "
-           & "passed by reference",
+           & " ""in out"" or ""out"" subjected to ownership which might not "
+           & "be passed by reference",
          when Lim_Exit_Cases_Dispatch =>
            "aspect ""Exit_Cases"" on dispatching operation",
          when Lim_Program_Exit_Dispatch =>
