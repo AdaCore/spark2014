@@ -36,11 +36,12 @@ package String_Utils is
    package String_Lists is new
      Ada.Containers.Indefinite_Doubly_Linked_Lists (String);
 
-   package String_Sets is new Ada.Containers.Indefinite_Hashed_Sets
-     (Element_Type        => String,
-      Hash                => Ada.Strings.Hash,
-      Equivalent_Elements => "=",
-      "="                 => "=");
+   package String_Sets is new
+     Ada.Containers.Indefinite_Hashed_Sets
+       (Element_Type        => String,
+        Hash                => Ada.Strings.Hash,
+        Equivalent_Elements => "=",
+        "="                 => "=");
 
    use type String_Lists.Cursor;
 
@@ -62,32 +63,31 @@ package String_Utils is
    function Hash_Image (N : Ada.Containers.Hash_Type) return String;
    --  Generate a string from a hash, without the leading space
 
-   function Null_Or_Empty_String (S : GNAT.Strings.String_Access)
-                                  return Boolean
-   is
-     (S = null or else S.all = "");
+   function Null_Or_Empty_String
+     (S : GNAT.Strings.String_Access) return Boolean
+   is (S = null or else S.all = "");
    --  Return True iff S is null or the empty string
 
-   function To_Unbounded_String (X : Boolean) return Unbounded_String is
-     (To_Unbounded_String (if X then "True" else "False"));
+   function To_Unbounded_String (X : Boolean) return Unbounded_String
+   is (To_Unbounded_String (if X then "True" else "False"));
    --  Function to print booleans
 
    function Trimi (S : String; C : Character) return String;
    --  Return a copy of S with all occurences of C removed
 
-   function Case_Insensitive_Find (SL : String_Lists.List; Item : String)
-                                   return String_Lists.Cursor;
+   function Case_Insensitive_Find
+     (SL : String_Lists.List; Item : String) return String_Lists.Cursor;
    --  @param SL a list of strings
    --  @param Item a string to be found in the list
    --  @return True if a String S is in the list SL which is equal modulo
    --    casing to Item
 
-   function Case_Insensitive_Contains (SL : String_Lists.List; Item : String)
-                                       return Boolean is
-     (Case_Insensitive_Find (SL, Item) /= String_Lists.No_Element);
+   function Case_Insensitive_Contains
+     (SL : String_Lists.List; Item : String) return Boolean
+   is (Case_Insensitive_Find (SL, Item) /= String_Lists.No_Element);
 
-   function Contains (S, Sub : String) return Boolean is
-     (Ada.Strings.Fixed.Index (Source => S, Pattern => Sub) /= 0)
+   function Contains (S, Sub : String) return Boolean
+   is (Ada.Strings.Fixed.Index (Source => S, Pattern => Sub) /= 0)
    with Pre => Sub /= "";
    --  Returns True iff string S contains substring Sub
 

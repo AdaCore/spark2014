@@ -24,8 +24,8 @@
 
 with Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
-with GNATCOLL.JSON;                      use GNATCOLL.JSON;
-with GNATCOLL.Symbols;                   use GNATCOLL.Symbols;
+with GNATCOLL.JSON;    use GNATCOLL.JSON;
+with GNATCOLL.Symbols; use GNATCOLL.Symbols;
 
 package Assumption_Types is
 
@@ -41,9 +41,10 @@ package Assumption_Types is
 
    function Base_Sloc_File (Subp : Base_Sloc) return String;
 
-   package Sloc_Lists is new Ada.Containers.Doubly_Linked_Lists
-     (Element_Type => Base_Sloc,
-      "="          => "=");
+   package Sloc_Lists is new
+     Ada.Containers.Doubly_Linked_Lists
+       (Element_Type => Base_Sloc,
+        "="          => "=");
 
    subtype My_Sloc is Sloc_Lists.List;
    --  The type of slocs used in assumptions and more generally in the report
@@ -107,5 +108,6 @@ private
    type Subp_Type is access constant Subp_Type_Rec;
    Null_Subp : constant Subp_Type := null;
 
-   function Is_Null (S : Subp_Type) return Boolean is (S = null);
+   function Is_Null (S : Subp_Type) return Boolean
+   is (S = null);
 end Assumption_Types;

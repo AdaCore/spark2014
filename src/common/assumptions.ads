@@ -23,22 +23,18 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;                     use Ada.Containers;
+with Ada.Containers; use Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Ordered_Sets;
 
-with Assumption_Types;      use Assumption_Types;
+with Assumption_Types; use Assumption_Types;
 
-with GNATCOLL.JSON;         use GNATCOLL.JSON;
+with GNATCOLL.JSON; use GNATCOLL.JSON;
 
 package Assumptions is
 
    type Claim_Kind is
-     (Claim_Init,
-      Claim_Pre,
-      Claim_Post,
-      Claim_Effects,
-      Claim_AoRTE);
+     (Claim_Init, Claim_Pre, Claim_Post, Claim_Effects, Claim_AoRTE);
 
    type Token is record
       Predicate : Claim_Kind;
@@ -48,29 +44,29 @@ package Assumptions is
    function Hash_Token (X : Token) return Ada.Containers.Hash_Type;
 
    pragma Annotate (Xcov, Exempt_On, "Not called from gnat2why");
-   function Hash_Token (X : Token) return Ada.Containers.Hash_Type is
-     (Ada.Containers.Hash_Type (Claim_Kind'Pos (X.Predicate)) +
-          3 * Hash (X.Arg));
+   function Hash_Token (X : Token) return Ada.Containers.Hash_Type
+   is (Ada.Containers.Hash_Type (Claim_Kind'Pos (X.Predicate))
+       + 3 * Hash (X.Arg));
    pragma Annotate (Xcov, Exempt_Off);
 
-   function "<" (Left, Right : Token) return Boolean is
-     (Left.Predicate < Right.Predicate or else
-        (Left.Predicate = Right.Predicate and then
-         Left.Arg < Right.Arg));
+   function "<" (Left, Right : Token) return Boolean
+   is (Left.Predicate < Right.Predicate
+       or else (Left.Predicate = Right.Predicate
+                and then Left.Arg < Right.Arg));
 
-   package Token_Sets is new Ada.Containers.Ordered_Sets
-     (Element_Type        => Token,
-      "<"                 => "<",
-      "="                 => "=");
+   package Token_Sets is new
+     Ada.Containers.Ordered_Sets
+       (Element_Type => Token,
+        "<"          => "<",
+        "="          => "=");
 
    type Rule is record
       Claim       : Token;
       Assumptions : Token_Sets.Set;
    end record;
 
-   package Rule_Lists is new Ada.Containers.Doubly_Linked_Lists
-     (Element_Type => Rule,
-      "="          => "=");
+   package Rule_Lists is new
+     Ada.Containers.Doubly_Linked_Lists (Element_Type => Rule, "=" => "=");
 
    function To_String (T : Token) return String;
    --  return a human-readable presentation of the assumption/claim
