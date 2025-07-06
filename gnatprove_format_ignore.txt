@@ -6,8 +6,6 @@ assumption_types.adb
 assumption_types.ads
 call.adb
 call.ads
-errout_wrapper.adb
-errout_wrapper.ads
 gnat2why_opts.ads
 hash_cons.adb
 hash_cons.ads
