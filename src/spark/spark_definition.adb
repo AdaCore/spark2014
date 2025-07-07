@@ -2557,6 +2557,15 @@ package body SPARK_Definition is
       --    has been found after the statement sequence in the loop.
       --    Updated to True if it occurrs in Stmts.
 
+      procedure Check_Loop_Invariant_Placement
+        (Stmt        : N_Handled_Sequence_Of_Statements_Id;
+         In_Handled  : Boolean;
+         Goto_Labels : in out Node_Sets.Set;
+         Inv_Found   : in out Boolean);
+      --  Version of Check_Loop_Invariant_Placement for handled sequence of
+      --  statements. When the invariant was already found, also scan handlers
+      --  for potential non-scalar object declaration.
+
       procedure Check_Loop_Invariant_Placement (Stmts : List_Id);
       --  Same as above with missing parameters In_Handled, Goto_Labels, and
       --  Inv_Found initialized by the value they are expected to have for the
@@ -2606,16 +2615,12 @@ package body SPARK_Definition is
             if Nkind (N) = N_Block_Statement then
 
                Check_Loop_Invariant_Placement
-                 (Statements (Handled_Statement_Sequence (N)),
-                  In_Handled
-                  or else Present
-                            (Exception_Handlers
-                               (Handled_Statement_Sequence (N))),
+                 (Handled_Statement_Sequence (N),
+                  In_Handled,
                   Goto_Labels,
                   Inv_Found);
 
-               --  Check declarations. Never look into handlers,
-               --  loop invariants cannot occur there.
+               --  Check declarations
 
                Check_Loop_Invariant_Placement
                  (Declarations (N), In_Handled, Goto_Labels, Inv_Found);
@@ -2710,7 +2715,7 @@ package body SPARK_Definition is
                         Goto_Labels,
                         Inv_Found);
                      Check_Loop_Invariant_Placement
-                       (Statements (Handled_Statement_Sequence (N)),
+                       (Handled_Statement_Sequence (N),
                         In_Handled,
                         Goto_Labels,
                         Inv_Found);
@@ -2760,6 +2765,37 @@ package body SPARK_Definition is
             end loop;
          end if;
 
+      end Check_Loop_Invariant_Placement;
+
+      procedure Check_Loop_Invariant_Placement
+        (Stmt        : N_Handled_Sequence_Of_Statements_Id;
+         In_Handled  : Boolean;
+         Goto_Labels : in out Node_Sets.Set;
+         Inv_Found   : in out Boolean) is
+      begin
+         if Inv_Found then
+            --  Objects may be declared in handlers. If we are before the
+            --  invariant, we need to check that they are non-scalar.
+
+            declare
+               Handler : Node_Id :=
+                 First_Non_Pragma (Exception_Handlers (Stmt));
+            begin
+               while Present (Handler) loop
+                  Check_Loop_Invariant_Placement
+                    (Statements (Handler), In_Handled, Goto_Labels, Inv_Found);
+                  Next_Non_Pragma (Handler);
+               end loop;
+            end;
+         end if;
+
+         --  In all cases, scan the main sequence.
+
+         Check_Loop_Invariant_Placement
+           (Statements (Stmt),
+            In_Handled or else Present (Exception_Handlers (Stmt)),
+            Goto_Labels,
+            Inv_Found);
       end Check_Loop_Invariant_Placement;
 
       -------------------------
