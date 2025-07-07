@@ -1093,7 +1093,7 @@ package body CE_RAC is
                              Annotate
                                (Xcov,
                                 Exempt_On,
-                                "potentially malformed externally produced CEs");
+                                "malformed externally produced CEs");
                            V.Record_Fields.Insert
                              (Discr,
                               new Value_Type'
@@ -2138,13 +2138,14 @@ package body CE_RAC is
          when Exn_RAC_Exit =>
             Ctx.Env (Ctx.Env.First).Bindings.Exclude (Id);
 
-            --  Do not remove the loop parameter from the context in case of RAC
-            --  failure, as the value will be needed for counterexample display.
+            --  Do not remove the loop parameter from the context in case of
+            --  RAC failure, as the value will be needed for counterexample
+            --  display.
          when Exn_RAC_Failure =>
             raise;
 
-            --  The call to Iteration will raise local exception Break to return
-            --  early from the iteration.
+            --  The call to Iteration will raise local exception Break to
+            --  return early from the iteration.
          when others =>
             Ctx.Env (Ctx.Env.First).Bindings.Exclude (Id);
             raise;

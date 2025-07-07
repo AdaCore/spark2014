@@ -84,8 +84,8 @@ package body CE_Values is
                                  = Char_Literal_Value (V2.Enum_Entity)
                                else V1.Enum_Entity = V2.Enum_Entity),
                    when Integer_K => V1.Integer_Content = V2.Integer_Content,
-                   --  The 2 following cases are currently unused as the rac does not
-                   --  support real values.
+                   --  The 2 following cases are currently unused as the rac
+                   --  does not support real values.
                    when Float_K => V1.Float_Content = V2.Float_Content,
                    when Fixed_K => V1.Fixed_Content = V2.Fixed_Content));
 
@@ -195,10 +195,11 @@ package body CE_Values is
                                          V1,
                                          Checked_V2)
                              and then
-                             --  If the length of the set containing all checked
-                             --  indices is smaller than the total number of indices to
-                             --  check (i.e. the values maps did not cover the whole
-                             --  arrays) then the "others" values need to be checked for
+                             --  If the length of the set containing all
+                             --  checked indices is smaller than the total
+                             --  number of indices to check (i.e. the values
+                             --  maps did not cover the whole arrays) then the
+                             --  "others" values need to be checked for
                              --  equality.
                              (To_Big_Integer
                                 (Integer

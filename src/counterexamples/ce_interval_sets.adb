@@ -67,12 +67,10 @@ package body CE_Interval_Sets is
    -- Has_Containing_Interval --
    -----------------------------
 
-   function Has_Containing_Interval
-     (L : Interval_Set; X : N)
-      return Boolean
-             --  Test if an interval in the set is "=" to [X; X] (in the term of
-             --  equivalent_terms which means overlapping).
+   function Has_Containing_Interval (L : Interval_Set; X : N) return Boolean
    is (L.Contains (Interval'(L_Bound => X, R_Bound => X)));
+   --  Test if an interval in the set is "=" to [X; X] (in the term of
+   --  equivalent_terms which means overlapping).
 
    -----------
    -- Clear --

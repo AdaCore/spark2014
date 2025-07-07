@@ -885,14 +885,11 @@ package body CE_Display is
                  = Element_Line
       then
 
-         --  Uninitialized procedure parameter
+         --  Cover cases of uninitialized procedure parameter and uninitialized
+         --  variable
 
          return
-           Ekind (Element_Decl)
-           = E_Out_Parameter
-
-             --  Uninitialized variable
-
+           Ekind (Element_Decl) = E_Out_Parameter
            or else (Ekind (Element_Decl) = E_Variable
                     and then not Is_Quantified_Loop_Param (Element_Decl)
                     and then Nkind (Enclosing_Declaration (Element_Decl))

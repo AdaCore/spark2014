@@ -649,9 +649,9 @@ package body CE_Utils is
 
       procedure Remove_Extra_Vars (Cntexmp : in out Cntexample_File_Maps.Map)
       is
-         --  Here we assume that Create_Pretty_Cntexmp just was used. So, there is
-         --  a complete counterexample with, in particular, Previous_Lines filled
-         --  and other lines all filled.
+         --  Here we assume that Create_Pretty_Cntexmp just was used. So, there
+         --  is a complete counterexample with, in particular, Previous_Lines
+         --  filled and other lines all filled.
       begin
          for Fcur in Cntexmp.Iterate loop
             declare
