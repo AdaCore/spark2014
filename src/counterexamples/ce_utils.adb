@@ -25,22 +25,22 @@
 
 with Ada.Characters.Handling;
 with Ada.Numerics.Big_Numbers.Big_Integers;
-use  Ada.Numerics.Big_Numbers.Big_Integers;
+use Ada.Numerics.Big_Numbers.Big_Integers;
 with Ada.Numerics.Big_Numbers.Big_Reals;
 use Ada.Numerics.Big_Numbers.Big_Reals;
-with Ada.Strings.Fixed;           use Ada.Strings.Fixed;
+with Ada.Strings.Fixed;                     use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;
 with Atree;
-with CE_RAC;                      use CE_RAC;
+with CE_RAC;                                use CE_RAC;
 with Einfo.Entities;
-with Gnat2Why.Tables;             use Gnat2Why.Tables;
-with Gnat2Why.Util;               use Gnat2Why.Util;
+with Gnat2Why.Tables;                       use Gnat2Why.Tables;
+with Gnat2Why.Util;                         use Gnat2Why.Util;
 with Namet;
-with Nlists;                      use Nlists;
-with Sinput;                      use Sinput;
-with SPARK_Definition;            use SPARK_Definition;
-with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
-with SPARK_Util;                  use SPARK_Util;
+with Nlists;                                use Nlists;
+with Sinput;                                use Sinput;
+with SPARK_Definition;                      use SPARK_Definition;
+with SPARK_Definition.Annotate;             use SPARK_Definition.Annotate;
+with SPARK_Util;                            use SPARK_Util;
 
 package body CE_Utils is
 
@@ -81,8 +81,8 @@ package body CE_Utils is
 
             else
                V := Constant_Value (E);
-               return Present (V)
-                 and then Compile_Time_Known_Value_Or_Aggr (V);
+               return
+                 Present (V) and then Compile_Time_Known_Value_Or_Aggr (V);
             end if;
          end;
 
@@ -116,8 +116,8 @@ package body CE_Utils is
                begin
                   Cass := First (Component_Associations (Op));
                   while Present (Cass) loop
-                     if not
-                       Compile_Time_Known_Value_Or_Aggr (Expression (Cass))
+                     if not Compile_Time_Known_Value_Or_Aggr
+                              (Expression (Cass))
                      then
                         return False;
                      end if;
@@ -145,17 +145,15 @@ package body CE_Utils is
    -- Compile_Time_Known_And_Constant --
    -------------------------------------
 
-   function Compile_Time_Known_And_Constant
-     (E : Entity_Id) return Boolean
-   is
+   function Compile_Time_Known_And_Constant (E : Entity_Id) return Boolean is
    begin
       if Ekind (E) = E_Constant then
          declare
             Decl : constant Node_Id := Enclosing_Declaration (E);
             Expr : constant Node_Id := Expression (Decl);
          begin
-            return Present (Expr)
-              and then Compile_Time_Known_Value_Or_Aggr (Expr);
+            return
+              Present (Expr) and then Compile_Time_Known_Value_Or_Aggr (Expr);
          end;
       end if;
 
@@ -167,20 +165,17 @@ package body CE_Utils is
    ----------------------------------
 
    function Component_Is_Removed_In_Type
-     (Ty   : Entity_Id;
-      Comp : Entity_Id;
-      Vals : Entity_To_Value_Maps.Map) return Boolean
+     (Ty : Entity_Id; Comp : Entity_Id; Vals : Entity_To_Value_Maps.Map)
+      return Boolean
    is
 
       function Eval_Discrete_Choices
-        (Choices : List_Id;
-         Discr   : Big_Integer) return Boolean;
+        (Choices : List_Id; Discr : Big_Integer) return Boolean;
       --  Evaluate Discr in Choices assuming Choices contains only static
       --  values.
 
       function Eval_Others_Choice
-        (Info   : Component_Info;
-         Discr  : Big_Integer) return Boolean;
+        (Info : Component_Info; Discr : Big_Integer) return Boolean;
       --  Return True is Discr in Choices returns True for all Choices in
       --  Info.Parent_Var_Part, assuming all the choices contains only static
       --  values.
@@ -190,8 +185,7 @@ package body CE_Utils is
       ---------------------------
 
       function Eval_Discrete_Choices
-        (Choices : List_Id;
-         Discr   : Big_Integer) return Boolean
+        (Choices : List_Id; Discr : Big_Integer) return Boolean
       is
          Choice : Node_Id := First (Choices);
       begin
@@ -208,7 +202,7 @@ package body CE_Utils is
             then
                pragma Assert (Has_Static_Predicate (Etype (Choice)));
                if Eval_Discrete_Choices
-                 (Static_Discrete_Predicate (Etype (Choice)), Discr)
+                    (Static_Discrete_Predicate (Etype (Choice)), Discr)
                then
                   return True;
                end if;
@@ -226,8 +220,10 @@ package body CE_Utils is
                   High       : constant Node_Id := High_Bound (Range_Node);
                   Fst, Lst   : Big_Integer;
                begin
-                  pragma Assert (Compile_Time_Known_Value (Low)
-                                 and then Compile_Time_Known_Value (High));
+                  pragma
+                    Assert
+                      (Compile_Time_Known_Value (Low)
+                         and then Compile_Time_Known_Value (High));
                   Fst := From_String (UI_Image (Expr_Value (Low)));
                   Lst := From_String (UI_Image (Expr_Value (High)));
 
@@ -262,8 +258,7 @@ package body CE_Utils is
       ------------------------
 
       function Eval_Others_Choice
-        (Info   : Component_Info;
-         Discr  : Big_Integer) return Boolean
+        (Info : Component_Info; Discr : Big_Integer) return Boolean
       is
          Var_Part : constant Node_Id := Info.Parent_Var_Part;
          Var      : Node_Id := First (Variants (Var_Part));
@@ -285,7 +280,7 @@ package body CE_Utils is
       Comp_Info : constant Component_Info_Map := Get_Variant_Info (Ty);
       Info      : Component_Info;
 
-   --  Start of processing for Component_Is_Removed_In_Type
+      --  Start of processing for Component_Is_Removed_In_Type
 
    begin
       --  If Comp is not a component, it cannot be discriminant dependant
@@ -301,8 +296,7 @@ package body CE_Utils is
 
       while Present (Info.Parent_Variant) loop
          declare
-            Discr   : constant Node_Id :=
-              Entity (Name (Info.Parent_Var_Part));
+            Discr   : constant Node_Id := Entity (Name (Info.Parent_Var_Part));
             Cur     : constant Entity_To_Value_Maps.Cursor :=
               Vals.Find (Discr);
             Val     : Value_Type;
@@ -336,14 +330,15 @@ package body CE_Utils is
                        Val.Scalar_Content.Enum_Entity;
                   begin
                      if Nkind (Ent) = N_Character_Literal then
-                        Int_Val := From_String
-                          (UI_Image (Char_Literal_Value (Ent)));
+                        Int_Val :=
+                          From_String (UI_Image (Char_Literal_Value (Ent)));
                      else
                         pragma Assert (Ekind (Ent) = E_Enumeration_Literal);
-                        Int_Val := From_String
-                          (UI_Image (Enumeration_Pos (Ent)));
+                        Int_Val :=
+                          From_String (UI_Image (Enumeration_Pos (Ent)));
                      end if;
                   end;
+
                when others =>
                   raise Program_Error;
             end case;
@@ -355,8 +350,9 @@ package body CE_Utils is
                Cond : constant Boolean :=
                  (if Is_Others_Choice (Discrete_Choices (Info.Parent_Variant))
                   then Eval_Others_Choice (Info, Int_Val)
-                  else Eval_Discrete_Choices
-                    (Discrete_Choices (Info.Parent_Variant), Int_Val));
+                  else
+                    Eval_Discrete_Choices
+                      (Discrete_Choices (Info.Parent_Variant), Int_Val));
             begin
                if not Cond then
                   return True;
@@ -378,28 +374,29 @@ package body CE_Utils is
    -- Compute_Filename_Previous --
    -------------------------------
 
-   function Compute_Filename_Previous (Filename    : String;
-                                       Is_Previous : out Boolean;
-                                       Ada_Node    : in out Node_Id)
-                                       return String
+   function Compute_Filename_Previous
+     (Filename : String; Is_Previous : out Boolean; Ada_Node : in out Node_Id)
+      return String
    is
 
       Match : constant String := "'@Loop";
    begin
-      if Filename'Length >= Match'Length and then
-        Filename (Filename'First .. Filename'First + Match'Length - 1) =
-        Match
+      if Filename'Length >= Match'Length
+        and then Filename (Filename'First .. Filename'First + Match'Length - 1)
+                 = Match
       then
          declare
             Number_At_Tick : constant Natural :=
-              Index (Source  => Filename (Filename'First + Match'Length ..
-                       Filename'Last),
-                     Pattern => "'");
+              Index
+                (Source  =>
+                   Filename (Filename'First + Match'Length .. Filename'Last),
+                 Pattern => "'");
          begin
             Ada_Node :=
-              Get_Entity_Id (False,
-                             Filename (Filename'First + Match'Length ..
-                                   Number_At_Tick - 2));
+              Get_Entity_Id
+                (False,
+                 Filename
+                   (Filename'First + Match'Length .. Number_At_Tick - 2));
             Is_Previous := True;
             return Filename (Number_At_Tick + 1 .. Filename'Last);
          end;
@@ -417,7 +414,8 @@ package body CE_Utils is
    begin
       return Node_Id (N);
    exception
-      when others => return Empty;
+      when others =>
+         return Empty;
    end Convert_Node;
 
    -----------------------------
@@ -425,9 +423,7 @@ package body CE_Utils is
    -----------------------------
 
    procedure Find_First_Static_Range
-     (N   : Node_Id;
-      Fst : out Uint;
-      Lst : out Uint)
+     (N : Node_Id; Fst : out Uint; Lst : out Uint)
    is
       Fst_Found, Lst_Found : Boolean := False;
       Current              : Node_Id := N;
@@ -481,8 +477,9 @@ package body CE_Utils is
    -- Get_Id_From_Name --
    ----------------------
 
-   function Get_Id_From_Name (E : Callable_Kind_Id; Name : String)
-                                       return Entity_Id is
+   function Get_Id_From_Name
+     (E : Callable_Kind_Id; Name : String) return Entity_Id
+   is
       use Ada.Characters.Handling;
       Id : Entity_Id := First_Formal (E);
    begin
@@ -497,22 +494,19 @@ package body CE_Utils is
    ------------------------
 
    --  Body intentionally hidden from spec file
-   function Is_Visible_In_Type (Rec  : Entity_Id;
-                                Comp : Entity_Id)
-                                return Boolean
-   is
-     (Ekind (Comp) = E_Discriminant
-      or else (not Is_Type (Comp)
-               and then Component_Is_Present_In_Type
-                 (Rec, Search_Component_In_Type (Rec, Comp))));
+   function Is_Visible_In_Type
+     (Rec : Entity_Id; Comp : Entity_Id) return Boolean
+   is (Ekind (Comp) = E_Discriminant
+       or else (not Is_Type (Comp)
+                and then Component_Is_Present_In_Type
+                           (Rec, Search_Component_In_Type (Rec, Comp))));
 
    ---------------------
    -- Prefix_Elements --
    ---------------------
 
    function Prefix_Elements
-     (Elems : S_String_List.List;
-      Pref  : String) return S_String_List.List
+     (Elems : S_String_List.List; Pref : String) return S_String_List.List
    is
       use Ada.Strings.Unbounded;
       L : S_String_List.List;
@@ -530,19 +524,19 @@ package body CE_Utils is
    package body Remove_Vars is
 
       function Get_Line_Encapsulating_Function (A : Node_Id) return Natural
-        with Pre => Nkind (A) = N_Pragma;
+      with Pre => Nkind (A) = N_Pragma;
       --  Get the line of the definition of the function in which a
       --  Loop_Invariant is defined.
 
       function Get_Line_Encapsulating_Loop (A : Node_Id) return Natural
-        with Pre => Nkind (A) = N_Pragma;
+      with Pre => Nkind (A) = N_Pragma;
       --  Get the line of the definition of the directly encapsulating loop of
       --  a Loop_Invariant.
 
-      procedure Eliminate_Between (Other_Lines : out Cntexample_Line_Maps.Map;
-                                   Previous_Line :
-                                   Cntexample_Elt_Lists.List;
-                                   Node                   : Integer);
+      procedure Eliminate_Between
+        (Other_Lines   : out Cntexample_Line_Maps.Map;
+         Previous_Line : Cntexample_Elt_Lists.List;
+         Node          : Integer);
       --  Eliminate the counterexamples variables that are present in
       --  Previous_Line from Other_Lines. These should have a location between
       --  the encapsulating function of Node and the encapsulating loop of
@@ -554,8 +548,8 @@ package body CE_Utils is
 
       function Get_Line_Encapsulating_Loop (A : Node_Id) return Natural is
 
-         function Is_Loop_Stmt (N : Node_Id) return Boolean is
-           (Nkind (N) = N_Loop_Statement);
+         function Is_Loop_Stmt (N : Node_Id) return Boolean
+         is (Nkind (N) = N_Loop_Statement);
 
          function Enclosing_Loop_Stmt is new
            First_Parent_With_Property (Is_Loop_Stmt);
@@ -568,22 +562,27 @@ package body CE_Utils is
                Prev_Parent : constant Node_Id := Nlists.Prev (Parent_Node);
             begin
                if Present (Prev_Parent) then
-                  return Natural
-                    (Get_Logical_Line_Number (Sloc (Prev_Parent)));
+                  return
+                    Natural (Get_Logical_Line_Number (Sloc (Prev_Parent)));
                else
                   --  Loop is the first statement so we try to return just
                   --  before the N_Handled_Sequence_Of_Statements (to avoid
                   --  removing data from the loop).
-                  return Natural (Get_Logical_Line_Number
-                                  (Sloc (Atree.Parent (Parent_Node)))) - 1;
+                  return
+                    Natural
+                      (Get_Logical_Line_Number
+                         (Sloc (Atree.Parent (Parent_Node))))
+                    - 1;
                end if;
             end;
          else
-            return Natural (Get_Logical_Line_Number
-                            (Sloc (Atree.Parent (Parent_Node))));
+            return
+              Natural
+                (Get_Logical_Line_Number (Sloc (Atree.Parent (Parent_Node))));
          end if;
       exception
-         when others => return 0;
+         when others =>
+            return 0;
       end Get_Line_Encapsulating_Loop;
 
       -------------------------------------
@@ -592,26 +591,28 @@ package body CE_Utils is
 
       function Get_Line_Encapsulating_Function (A : Node_Id) return Natural is
       begin
-         return Natural (Get_Logical_Line_Number (Sloc
-                         (Directly_Enclosing_Subprogram_Or_Entry (A))));
+         return
+           Natural
+             (Get_Logical_Line_Number
+                (Sloc (Directly_Enclosing_Subprogram_Or_Entry (A))));
       exception
-         when others => return 0;
+         when others =>
+            return 0;
       end Get_Line_Encapsulating_Function;
 
       -----------------------
       -- Eliminate_Between --
       -----------------------
 
-      procedure Eliminate_Between (Other_Lines   :
-                                     out Cntexample_Line_Maps.Map;
-                                   Previous_Line :
-                                     Cntexample_Elt_Lists.List;
-                                   Node          : Integer)
+      procedure Eliminate_Between
+        (Other_Lines   : out Cntexample_Line_Maps.Map;
+         Previous_Line : Cntexample_Elt_Lists.List;
+         Node          : Integer)
       is
-         Node_LI : constant Node_Id := Convert_Node (Node);
-         B       : constant Natural :=
+         Node_LI   : constant Node_Id := Convert_Node (Node);
+         B         : constant Natural :=
            Get_Line_Encapsulating_Function (Node_LI);
-         E       : constant Natural := Get_Line_Encapsulating_Loop (Node_LI);
+         E         : constant Natural := Get_Line_Encapsulating_Loop (Node_LI);
          use Cntexample_Elt_Lists;
          use Cntexample_Line_Maps;
          New_Lines : Cntexample_Line_Maps.Map := Empty_Map;
@@ -625,8 +626,8 @@ package body CE_Utils is
                   for V in Previous_Line.Iterate loop
                      declare
                         Cur : Cntexample_Elt_Lists.Cursor :=
-                                Cntexample_Elt_Lists.Find (Line_Variables,
-                                                           Element (V));
+                          Cntexample_Elt_Lists.Find
+                            (Line_Variables, Element (V));
                      begin
                         if Has_Element (Cur) then
                            Line_Variables.Delete (Cur);
@@ -648,30 +649,27 @@ package body CE_Utils is
 
       procedure Remove_Extra_Vars (Cntexmp : in out Cntexample_File_Maps.Map)
       is
-      --  Here we assume that Create_Pretty_Cntexmp just was used. So, there is
-      --  a complete counterexample with, in particular, Previous_Lines filled
-      --  and other lines all filled.
+         --  Here we assume that Create_Pretty_Cntexmp just was used. So, there is
+         --  a complete counterexample with, in particular, Previous_Lines filled
+         --  and other lines all filled.
       begin
          for Fcur in Cntexmp.Iterate loop
             declare
-               File : Cntexample_Lines :=
+               File         : Cntexample_Lines :=
                  Cntexample_File_Maps.Element
-                          (Cntexmp,
-                           Cntexample_File_Maps.Key (Fcur));
+                   (Cntexmp, Cntexample_File_Maps.Key (Fcur));
                Previous_Loc : Previous_Line_Maps.Map renames
-                                File.Previous_Lines;
+                 File.Previous_Lines;
 
             begin
                for C in Previous_Loc.Iterate loop
                   declare
                      Previous_Elt : constant Previous_Line :=
                        Previous_Loc.Element (Previous_Line_Maps.Key (C));
-                     Node_LI      : constant Integer :=
-                       Previous_Elt.Ada_Node;
+                     Node_LI      : constant Integer := Previous_Elt.Ada_Node;
                   begin
-                     Eliminate_Between (File.Other_Lines,
-                                        Previous_Elt.Line_Cnt,
-                                        Node_LI);
+                     Eliminate_Between
+                       (File.Other_Lines, Previous_Elt.Line_Cnt, Node_LI);
                   end;
                end loop;
                Cntexmp.Replace_Element (Fcur, File);
@@ -685,66 +683,65 @@ package body CE_Utils is
    -- To_Value_Access --
    ---------------------
 
-   function To_Value_Access (Entity    : Entity_Id;
-                             JSON_Data : GNATCOLL.JSON.JSON_Value)
-                             return CE_Values.Value_Access is
+   function To_Value_Access
+     (Entity : Entity_Id; JSON_Data : GNATCOLL.JSON.JSON_Value)
+      return CE_Values.Value_Access
+   is
 
       ------------------------
       -- Create_Float_Value --
       ------------------------
 
-      function Create_Float_Value (T     : Type_Kind_Id;
-                                   Input : String)
-                                   return  CE_Values.Scalar_Value_Access
-        with Pre => Is_Floating_Point_Type (T);
+      function Create_Float_Value
+        (T : Type_Kind_Id; Input : String) return CE_Values.Scalar_Value_Access
+      with Pre => Is_Floating_Point_Type (T);
 
-      function Create_Float_Value (T     : Type_Kind_Id;
-                                   Input : String)
-                                   return CE_Values.Scalar_Value_Access
+      function Create_Float_Value
+        (T : Type_Kind_Id; Input : String) return CE_Values.Scalar_Value_Access
       is
          Raw : constant Big_Real := From_Quotient_String (Input);
       begin
          if Is_Single_Precision_Floating_Point_Type (T) then
             declare
-               package Float_32_Conversions is
-                 new Float_Conversions (Num => Float);
+               package Float_32_Conversions is new
+                 Float_Conversions (Num => Float);
             begin
-               return new
-                 CE_Values.Scalar_Value_Type'
-                   (K => Float_K,
+               return
+                 new CE_Values.Scalar_Value_Type'
+                   (K             => Float_K,
                     Float_Content =>
-                      CE_Values.Float_Value'(K
-                        => Float_32_K,
-                        Content_32
-                        => Float_32_Conversions.From_Big_Real (Raw)));
+                      CE_Values.Float_Value'
+                        (K          => Float_32_K,
+                         Content_32 =>
+                           Float_32_Conversions.From_Big_Real (Raw)));
             end;
          elsif Is_Double_Precision_Floating_Point_Type (T) then
             declare
-               package Float_64_Conversions is
-                 new Float_Conversions (Num => Long_Float);
+               package Float_64_Conversions is new
+                 Float_Conversions (Num => Long_Float);
             begin
-               return new
-                 CE_Values.Scalar_Value_Type'
-                   (K => Float_K,
+               return
+                 new CE_Values.Scalar_Value_Type'
+                   (K             => Float_K,
                     Float_Content =>
-                      CE_Values.Float_Value'(K
-                        => Float_64_K,
-                        Content_64
-                        => Float_64_Conversions.From_Big_Real (Raw)));
+                      CE_Values.Float_Value'
+                        (K          => Float_64_K,
+                         Content_64 =>
+                           Float_64_Conversions.From_Big_Real (Raw)));
             end;
          else
             declare
-               package Float_Ext_Conversions is
-                 new Float_Conversions (Num => Long_Long_Float);
+               package Float_Ext_Conversions is new
+                 Float_Conversions (Num => Long_Long_Float);
             begin
-               return new
-                 CE_Values.Scalar_Value_Type'
-                   (K => Float_K,
+               return
+                 new CE_Values.Scalar_Value_Type'
+                   (K             => Float_K,
                     Float_Content =>
-                      CE_Values.Float_Value'(K
-                        => Extended_K,
-                        Ext_Content
-                        => Float_Ext_Conversions.From_Big_Real (Raw)));
+                      CE_Values.Float_Value'
+                        (K           => Extended_K,
+                         Ext_Content =>
+                           Float_Ext_Conversions.From_Big_Real (Raw)));
             end;
          end if;
       end Create_Float_Value;
@@ -760,16 +757,16 @@ package body CE_Utils is
             begin
                Val :=
                  new CE_Values.Scalar_Value_Type'
-                   (K => Integer_K,
+                   (K               => Integer_K,
                     Integer_Content =>
-                      From_String
-                        (GNATCOLL.JSON.Get (JSON_Data)));
+                      From_String (GNATCOLL.JSON.Get (JSON_Data)));
 
-               Res := new CE_Values.Value_Type'
-                 (K              => Scalar_K,
-                  AST_Ty         => Res_Type,
-                  Scalar_Content => Val,
-                  others         => <>);
+               Res :=
+                 new CE_Values.Value_Type'
+                   (K              => Scalar_K,
+                    AST_Ty         => Res_Type,
+                    Scalar_Content => Val,
+                    others         => <>);
             end;
          else
             raise Program_Error with "ill-formated JSON  (integer)";
@@ -778,19 +775,20 @@ package body CE_Utils is
       elsif Is_Floating_Point_Type (Res_Type) then
          if Has_Field (JSON_Data, "quotient")
            and then JSON_Data.Get ("value").Kind
-           = GNATCOLL.JSON.JSON_String_Type
+                    = GNATCOLL.JSON.JSON_String_Type
          then
             declare
-               Str_Value : constant String := GNATCOLL.JSON.Get
-                 (JSON_Data.Get ("value"));
-               Val       : constant CE_Values.Scalar_Value_Access
-                 := Create_Float_Value (Res_Type, Str_Value);
+               Str_Value : constant String :=
+                 GNATCOLL.JSON.Get (JSON_Data.Get ("value"));
+               Val       : constant CE_Values.Scalar_Value_Access :=
+                 Create_Float_Value (Res_Type, Str_Value);
             begin
-               Res := new CE_Values.Value_Type'
-                 (K              => Scalar_K,
-                  AST_Ty         => Res_Type,
-                  Scalar_Content => Val,
-                  others         => <>);
+               Res :=
+                 new CE_Values.Value_Type'
+                   (K              => Scalar_K,
+                    AST_Ty         => Res_Type,
+                    Scalar_Content => Val,
+                    others         => <>);
             end;
          else
             raise Program_Error with "ill-formated JSON (float)";
@@ -799,8 +797,8 @@ package body CE_Utils is
       elsif Is_Character_Type (Res_Type) then
          if JSON_Data.Kind = GNATCOLL.JSON.JSON_String_Type then
             declare
-               C   : constant Character := Character'Value
-                 (GNATCOLL.JSON.Get (JSON_Data));
+               C : constant Character :=
+                 Character'Value (GNATCOLL.JSON.Get (JSON_Data));
             begin
                Res := new Value_Type'(Character_Value (C, Res_Type));
             end;
@@ -812,44 +810,40 @@ package body CE_Utils is
          if JSON_Data.Kind = GNATCOLL.JSON.JSON_String_Type then
             declare
                use Ada.Characters.Handling;
-               Enum_Name : constant String
-                 := GNATCOLL.JSON.Get (JSON_Data);
+               Enum_Name : constant String := GNATCOLL.JSON.Get (JSON_Data);
                E         : Entity_Id := First_Literal (Res_Type);
                Val       : CE_Values.Scalar_Value_Access;
             begin
-               while To_Upper (Enum_Name) /=
-                 To_Upper (Namet.Get_Name_String (Chars (E)))
+               while To_Upper (Enum_Name)
+                 /= To_Upper (Namet.Get_Name_String (Chars (E)))
                loop
                   E := Next_Literal (E);
                end loop;
                Val :=
                  new CE_Values.Scalar_Value_Type'
-                   (K => Enum_K,
-                    Enum_Entity => E);
+                   (K => Enum_K, Enum_Entity => E);
 
-               Res := new CE_Values.Value_Type'
-                 (K              => Scalar_K,
-                  AST_Ty         => Res_Type,
-                  Scalar_Content => Val,
-                  others         => <>);
+               Res :=
+                 new CE_Values.Value_Type'
+                   (K              => Scalar_K,
+                    AST_Ty         => Res_Type,
+                    Scalar_Content => Val,
+                    others         => <>);
             end;
          end if;
 
-      elsif Is_Array_Type (Res_Type) and then
-        Has_Field (JSON_Data, "sizes") and then
-        Has_Field (JSON_Data, "array")
+      elsif Is_Array_Type (Res_Type)
+        and then Has_Field (JSON_Data, "sizes")
+        and then Has_Field (JSON_Data, "array")
       then
          declare
-            Size_Arr     : constant JSON_Array
-              := Get (JSON_Data, "sizes");
-            Size_Obj     : constant JSON_Value
-              := Get (Size_Arr, 1);
-            Size         : constant Valid_Big_Integer := From_String
-              (GNATCOLL.JSON.Get (Size_Obj));
-            Arr          : constant JSON_Array
-              := Get (JSON_Data, "array");
+            Size_Arr : constant JSON_Array := Get (JSON_Data, "sizes");
+            Size_Obj : constant JSON_Value := Get (Size_Arr, 1);
+            Size     : constant Valid_Big_Integer :=
+              From_String (GNATCOLL.JSON.Get (Size_Obj));
+            Arr      : constant JSON_Array := Get (JSON_Data, "array");
 
-            N            : Valid_Big_Integer := 1;
+            N : Valid_Big_Integer := 1;
 
             First_Attr   : Opt_Big_Integer;
             Last_Attr    : Opt_Big_Integer;
@@ -860,16 +854,13 @@ package body CE_Utils is
                --  Gnattest specifies bounds iff they are something
                --  else than (0 .. Size - 1)
                declare
-                  Dimensions : constant JSON_Value
-                    := Get (Get (JSON_Data, "dimensions"), 1);
-                  First      : constant Valid_Big_Integer
-                    := From_String
-                      (GNATCOLL.JSON.Get
-                         (Get (Dimensions, "First")));
-                  Last       : constant Valid_Big_Integer
-                    := From_String
-                      (GNATCOLL.JSON.Get
-                         (Get (Dimensions, "Last")));
+                  Dimensions : constant JSON_Value :=
+                    Get (Get (JSON_Data, "dimensions"), 1);
+                  First      : constant Valid_Big_Integer :=
+                    From_String
+                      (GNATCOLL.JSON.Get (Get (Dimensions, "First")));
+                  Last       : constant Valid_Big_Integer :=
+                    From_String (GNATCOLL.JSON.Get (Get (Dimensions, "Last")));
                begin
                   First_Attr := (Present => True, Content => First);
                   Last_Attr := (Present => True, Content => Last);
@@ -880,13 +871,14 @@ package body CE_Utils is
             end if;
 
             if Size <= 0 then
-               Res := new CE_Values.Value_Type'
-                 (K            => Array_K,
-                  AST_Ty       => Res_Type,
-                  First_Attr   => First_Attr,
-                  Last_Attr    => Last_Attr,
-                  Array_Values => Array_Values,
-                  Array_Others => null);
+               Res :=
+                 new CE_Values.Value_Type'
+                   (K            => Array_K,
+                    AST_Ty       => Res_Type,
+                    First_Attr   => First_Attr,
+                    Last_Attr    => Last_Attr,
+                    Array_Values => Array_Values,
+                    Array_Others => null);
             else
                N := First_Attr.Content;
                while N <= Last_Attr.Content loop
@@ -894,70 +886,68 @@ package body CE_Utils is
                      --  regardless of the actual ADA array indexes,
                      --  the array within the json is always indexed
                      --  on (1 .. Size)
-                     Elt : constant JSON_Value
-                       := Get (Arr, To_Integer
-                               (N - First_Attr.Content + 1));
+                     Elt : constant JSON_Value :=
+                       Get (Arr, To_Integer (N - First_Attr.Content + 1));
                   begin
-                     Array_Values.Include (N, To_Value_Access
-                                           (Component_Type (Res_Type),
-                                              Elt));
+                     Array_Values.Include
+                       (N, To_Value_Access (Component_Type (Res_Type), Elt));
                   end;
                   N := N + 1;
                end loop;
 
-               Res := new CE_Values.Value_Type'
-                 (K            => Array_K,
-                  AST_Ty       => Res_Type,
-                  First_Attr   => First_Attr,
-                  Last_Attr    => Last_Attr,
-                  Array_Values => Array_Values,
-                  Array_Others => null);
+               Res :=
+                 new CE_Values.Value_Type'
+                   (K            => Array_K,
+                    AST_Ty       => Res_Type,
+                    First_Attr   => First_Attr,
+                    Last_Attr    => Last_Attr,
+                    Array_Values => Array_Values,
+                    Array_Others => null);
             end if;
          end;
 
       elsif Is_Record_Type (Res_Type) then
          if Has_Field (JSON_Data, "components") then
             declare
-               Components          : constant JSON_Value
-                 := Get (JSON_Data, "components");
-               Discriminants       : constant JSON_Value
-                 := Get (JSON_Data, "discriminants");
-               Record_Fields       : Entity_To_Value_Maps.Map;
-               Component_Set       : constant Component_Sets.Set
-                 := Get_Component_Set (Res_Type);
-               Comp                : Value_Access;
+               Components    : constant JSON_Value :=
+                 Get (JSON_Data, "components");
+               Discriminants : constant JSON_Value :=
+                 Get (JSON_Data, "discriminants");
+               Record_Fields : Entity_To_Value_Maps.Map;
+               Component_Set : constant Component_Sets.Set :=
+                 Get_Component_Set (Res_Type);
+               Comp          : Value_Access;
             begin
                for Comp_Id of Component_Set loop
-                  if Has_Field (Components, Source_Name (Comp_Id))
-                  then  --  "regular" field
-                     Comp := To_Value_Access
-                       (Comp_Id,
-                        Get (Components, Source_Name (Comp_Id)));
+                  if Has_Field (Components, Source_Name (Comp_Id)) then
+                     --  "regular" field
+                     Comp :=
+                       To_Value_Access
+                         (Comp_Id, Get (Components, Source_Name (Comp_Id)));
                      Record_Fields.Include (Comp_Id, Comp);
-                  elsif Has_Field (Discriminants,
-                                   Source_Name (Comp_Id))
-                  then  --  discriminant field
-                     Comp := To_Value_Access
-                       (Comp_Id,
-                        Get (Discriminants, Source_Name (Comp_Id)));
+                  elsif Has_Field (Discriminants, Source_Name (Comp_Id)) then
+                     --  discriminant field
+                     Comp :=
+                       To_Value_Access
+                         (Comp_Id, Get (Discriminants, Source_Name (Comp_Id)));
                      Record_Fields.Include (Comp_Id, Comp);
                   end if;
-                  exit when Comp_Id = Einfo.Entities.Last_Entity
-                    (Res_Type);
+                  exit when Comp_Id = Einfo.Entities.Last_Entity (Res_Type);
                end loop;
-               Res := new CE_Values.Value_Type'
-                 (K             => Record_K,
-                  AST_Ty        => Res_Type,
-                  Record_Fields => Record_Fields,
-                  others        => <>);
+               Res :=
+                 new CE_Values.Value_Type'
+                   (K             => Record_K,
+                    AST_Ty        => Res_Type,
+                    Record_Fields => Record_Fields,
+                    others        => <>);
             end;
          else
             raise Program_Error with "ill-formated JSON (record)";
          end if;
 
       else
-         raise Program_Error with
-           "unsupported or invalid data in gnattest JSON.";
+         raise Program_Error
+           with "unsupported or invalid data in gnattest JSON.";
       end if;
 
       return Res;
@@ -990,9 +980,9 @@ package body CE_Utils is
             Right : String renames Val (Cut + 1 .. Val'Last);
          begin
             return
-              UI_From_String (Left) * Uint_10 ** Int (Right'Length)
-                +
-              UI_From_String (Right);
+              UI_From_String (Left)
+              * Uint_10**Int (Right'Length)
+              + UI_From_String (Right);
          end;
    end UI_From_String;
 
@@ -1017,8 +1007,7 @@ package body CE_Utils is
          --  a Contains iterable annotation is provided, no temporary
          --  should be introduced for "for of" quantification.
 
-         pragma Assert
-           (Iterable_Info.Kind = SPARK_Definition.Annotate.Model);
+         pragma Assert (Iterable_Info.Kind = SPARK_Definition.Annotate.Model);
 
          --  Prepend the name of the Model function to the container name
          --  and refine value on model type.

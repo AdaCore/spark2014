@@ -28,15 +28,15 @@
 
 with Ada.Containers.Hashed_Maps;
 with Ada.Numerics.Big_Numbers.Big_Integers;
-use  Ada.Numerics.Big_Numbers.Big_Integers;
+use Ada.Numerics.Big_Numbers.Big_Integers;
 with Ada.Numerics.Big_Numbers.Big_Reals;
 use Ada.Numerics.Big_Numbers.Big_Reals;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with CE_Values;             use CE_Values;
-with Common_Containers;     use Common_Containers;
-with SPARK_Atree.Entities;  use SPARK_Atree.Entities;
-with Types;                 use Types;
-with VC_Kinds;              use VC_Kinds;
+with Ada.Strings.Unbounded;                 use Ada.Strings.Unbounded;
+with CE_Values;                             use CE_Values;
+with Common_Containers;                     use Common_Containers;
+with SPARK_Atree.Entities;                  use SPARK_Atree.Entities;
+with Types;                                 use Types;
+with VC_Kinds;                              use VC_Kinds;
 
 package CE_RAC is
 
@@ -49,11 +49,12 @@ package CE_RAC is
    --  If the fuzzer is used, the fuel must be shared and modified by each call
    --  to the small-step RAC.
 
-   package Entity_Bindings is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Entity_Id,
-      Element_Type    => Value_Access,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=");
+   package Entity_Bindings is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Entity_Id,
+        Element_Type    => Value_Access,
+        Hash            => Node_Hash,
+        Equivalent_Keys => "=");
    --  Flat mapping of variables to bindings
 
    type Value_List is array (Integer range <>) of Entity_Bindings.Map;
@@ -72,16 +73,12 @@ package CE_RAC is
    Gnattest_Values : Param_Values;
    --  Global value holding the data extracted from gnattest.
 
-   procedure Check_Fuel_Decrease
-     (Fuel   : Fuel_Access;
-      Amount : Fuel_Type := 1);
+   procedure Check_Fuel_Decrease (Fuel : Fuel_Access; Amount : Fuel_Type := 1);
    --  Check fuel and decrease by Amount. Raise RAC_Incomplete when fuel
    --  becomes zero. Do nothing for negative values of Fuel.
 
    function Find_Binding
-     (E       : Entity_Id;
-      Do_Init : Boolean := True)
-      return Value_Access
+     (E : Entity_Id; Do_Init : Boolean := True) return Value_Access
    with Post => (if Do_Init then Find_Binding'Result /= null);
    --  Find the binding of a variable in the context environment. If not found
    --  and Do_Init is True, it is assumed to be a global constant and
@@ -91,23 +88,23 @@ package CE_RAC is
    --  Look into the context for the reference to a 'Old attribute
 
    function Find_Loop_Entry_Value
-     (N       : Node_Id;
-      Loop_Id : Entity_Id)
-      return Opt_Value_Type;
+     (N : Node_Id; Loop_Id : Entity_Id) return Opt_Value_Type;
    --  Look into the context for the reference to a 'Loop_Entry attribute
 
-   package Node_To_Value is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Node_Id,
-      Element_Type    => Value_Type,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=");
+   package Node_To_Value is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Node_Id,
+        Element_Type    => Value_Type,
+        Hash            => Node_Hash,
+        Equivalent_Keys => "=");
 
-   package Node_To_Node_To_Value is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Node_Id,
-      Element_Type    => Node_To_Value.Map,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=",
-      "="             => Node_To_Value."=");
+   package Node_To_Node_To_Value is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Node_Id,
+        Element_Type    => Node_To_Value.Map,
+        Hash            => Node_Hash,
+        Equivalent_Keys => "=",
+        "="             => Node_To_Value."=");
 
    function All_Initial_Values return Node_To_Value.Map;
    --  Get all input values used by the RAC instance
@@ -116,11 +113,8 @@ package CE_RAC is
    --  Get all intermediate values used by the RAC instance
 
    procedure Get_Integer_Type_Bounds
-     (Ty       :     Entity_Id;
-      Fst, Lst : out Big_Integer)
-   with
-     Pre => Is_Integer_Type (Ty)
-       or else Is_Enumeration_Type (Ty);
+     (Ty : Entity_Id; Fst, Lst : out Big_Integer)
+   with Pre => Is_Integer_Type (Ty) or else Is_Enumeration_Type (Ty);
    --  Write the first and last value of a type Ty in Fst and Lst
 
    function Integer_Value (I : Big_Integer; N : Node_Id) return Value_Type;
@@ -132,15 +126,10 @@ package CE_RAC is
 
    function Real_Value (R : Big_Real; N : Node_Id) return Value_Type;
    function Real_Value
-     (R : CE_Values.Float_Value;
-      N : Node_Id)
-      return Value_Type;
+     (R : CE_Values.Float_Value; N : Node_Id) return Value_Type;
 
    function Fixed_Point_Value
-     (F : Big_Integer;
-      S : Big_Real;
-      N : Node_Id)
-      return Value_Type;
+     (F : Big_Integer; S : Big_Real; N : Node_Id) return Value_Type;
    --  Construct a fixed-point value after checking against type bounds.
 
    function Small (Ty : Entity_Id) return Big_Real;
@@ -156,8 +145,7 @@ package CE_RAC is
       Do_Sideeffects : Boolean := False;
       Fuel           : Fuel_Access := null;
       Stack_Height   : Integer := -1;
-      Use_Fuzzing    : Boolean := False)
-      return Result;
+      Use_Fuzzing    : Boolean := False) return Result;
    --  Runtime assertion checking execution of subprogram E using the
    --  counterexample Cntexmp as an oracle for program parameters. When
    --  Do_Sideeffects is True, then builtins are interpreted with side effects.
@@ -170,11 +158,13 @@ package CE_RAC is
    --  randomly chosen values will be used for the program's variables rather
    --  than the values provided by the counterexample.
 
-   procedure RAC_Stuck (Reason : String) with No_Return;
+   procedure RAC_Stuck (Reason : String)
+   with No_Return;
    --  Raise Exn_RAC_Stuck and set result, i.e. the RAC execution failed
    --  due to a false assumption.
 
-   procedure RAC_Unsupported (Str : String; N : Node_Id) with No_Return;
+   procedure RAC_Unsupported (Str : String; N : Node_Id)
+   with No_Return;
    --  Raise Exn_RAC_Incomplete and set result, i.e. the RAC execution could
    --  not complete due to unsupported or unimplemented features.
 
@@ -196,8 +186,9 @@ package CE_RAC is
    type Result (Res_Kind : Result_Kind := Res_Not_Executed) is record
       case Res_Kind is
          when Res_Normal =>
-            Res_Value   : Opt_Value_Type;
+            Res_Value : Opt_Value_Type;
             --  The result value of toplevel RAC call
+
          when Res_Failure =>
             Res_Node    : Node_Id;
             --  The node of the check that failed (only set by RAC)
@@ -207,11 +198,9 @@ package CE_RAC is
             --  The ID of the check that failed (not set by RAC)
             Res_EI      : Prover_Extra_Info;
             --  Extra information about the failing part of the check if any
-         when Res_Incomplete
-            | Res_Stuck
-            | Res_Not_Executed
-         =>
-            Res_Reason  : Unbounded_String;
+
+         when Res_Incomplete | Res_Stuck | Res_Not_Executed =>
+            Res_Reason : Unbounded_String;
       end case;
    end record;
 
@@ -221,12 +210,11 @@ package CE_RAC is
 
    function To_String (Res : Result) return String;
 
-   function Reason (Res : Result) return String is
-     (case Res.Res_Kind is
+   function Reason (Res : Result) return String
+   is (case Res.Res_Kind is
          when Res_Incomplete | Res_Stuck | Res_Not_Executed =>
-            To_String (Res.Res_Reason),
-         when Res_Normal | Res_Failure                      =>
-            "");
+           To_String (Res.Res_Reason),
+         when Res_Normal | Res_Failure => "");
    --  Return the reason for a result ("" for failure and normal)
 
    function Do_RAC_Info return Boolean;

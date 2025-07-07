@@ -23,15 +23,15 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;               use Ada.Containers;
+with Ada.Containers;    use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Vectors;
 with Ada.Numerics.Discrete_Random;
-with CE_RAC;                       use CE_RAC;
-with Common_Containers;            use Common_Containers;
-with Einfo.Entities;               use Einfo.Entities;
-with SPARK_Atree;                  use SPARK_Atree;
-with SPARK_Util.Types;             use SPARK_Util.Types;
+with CE_RAC;            use CE_RAC;
+with Common_Containers; use Common_Containers;
+with Einfo.Entities;    use Einfo.Entities;
+with SPARK_Atree;       use SPARK_Atree;
+with SPARK_Util.Types;  use SPARK_Util.Types;
 
 package body CE_Fuzzer is
 
@@ -47,6 +47,7 @@ package body CE_Fuzzer is
       case K is
          when Integer_K =>
             Integer_Values : Big_Integer_Vector.Vector;
+
          when others =>
             null;
       end case;
@@ -58,6 +59,7 @@ package body CE_Fuzzer is
       case K is
          when Scalar_K =>
             Scalar_Values : Scalar_Fuzz_Values;
+
          when others =>
             null;
       end case;
@@ -93,8 +95,8 @@ package body CE_Fuzzer is
             type Known_Values is array (1 .. 3) of Big_Integer;
 
             Other_Values : constant Known_Values := (-1, 0, 1);
-            Values       :          Big_Integer_Vector.Vector;
-            Fst, Lst     :          Big_Integer;
+            Values       : Big_Integer_Vector.Vector;
+            Fst, Lst     : Big_Integer;
          begin
             --  Fill the vector with values we know often highlight bugs
 
@@ -123,7 +125,7 @@ package body CE_Fuzzer is
          --  the index in the vector is the remainder of the euclidean division
          --  of the random Index_Type by the number of possible values.
 
-         Index     : constant Index_Type :=
+         Index : constant Index_Type :=
            Random_Index_Generator.Random (Gen) rem Nb_Values;
 
       begin
@@ -136,12 +138,10 @@ package body CE_Fuzzer is
    -- Fuzz_Record_Value --
    -----------------------
 
-   function Fuzz_Record_Value (Ty : Entity_Id) return Value_Type
-   is
+   function Fuzz_Record_Value (Ty : Entity_Id) return Value_Type is
       Constrained  : constant Boolean := Has_Discriminants (Ty);
-      Field        :          Entity_Id :=
-        First_Component_Or_Discriminant (Ty);
-      Field_Values :          Entity_To_Value_Maps.Map;
+      Field        : Entity_Id := First_Component_Or_Discriminant (Ty);
+      Field_Values : Entity_To_Value_Maps.Map;
    begin
       while Present (Field) loop
          declare
@@ -162,11 +162,12 @@ package body CE_Fuzzer is
          end;
       end loop;
 
-      return Value_Type'(K                => Record_K,
-                         AST_Ty           => Ty,
-                         Record_Fields    => Field_Values,
-                         Constrained_Attr => (Present => True,
-                                              Content => Constrained));
+      return
+        Value_Type'
+          (K                => Record_K,
+           AST_Ty           => Ty,
+           Record_Fields    => Field_Values,
+           Constrained_Attr => (Present => True, Content => Constrained));
    end Fuzz_Record_Value;
 
 end CE_Fuzzer;

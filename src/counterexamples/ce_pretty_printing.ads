@@ -54,12 +54,12 @@ package CE_Pretty_Printing is
    function Print_Value (Value : Value_Type) return CNT_Unbounded_String;
    --  Return a string for a counterexample value. Attributes are ignored.
 
-   function Serialize_Float (F : CE_Values.Float_Value)
-                             return GNATCOLL.JSON.JSON_Value;
+   function Serialize_Float
+     (F : CE_Values.Float_Value) return GNATCOLL.JSON.JSON_Value;
    --  Create a serialized JSON object from a Float_Value.
 
-   function Serialize_Value (Value : CE_Values.Value_Type)
-                             return GNATCOLL.JSON.JSON_Value;
+   function Serialize_Value
+     (Value : CE_Values.Value_Type) return GNATCOLL.JSON.JSON_Value;
    --  Create a serialized JSON object from any kind of Value_Type.
 
 end CE_Pretty_Printing;

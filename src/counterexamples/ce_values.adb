@@ -23,24 +23,24 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Characters.Handling;   use Ada.Characters.Handling;
+with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Containers.Ordered_Sets;
-with Ada.Strings;               use Ada.Strings;
-with Ada.Strings.Fixed;         use Ada.Strings.Fixed;
-with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
+with Ada.Strings;             use Ada.Strings;
+with Ada.Strings.Fixed;       use Ada.Strings.Fixed;
+with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
 with CE_RAC;
-with Gnat2Why.Tables;           use Gnat2Why.Tables;
-with Namet;                     use Namet;
-with SPARK_Atree;               use SPARK_Atree;
-with Uintp;                     use Uintp;
+with Gnat2Why.Tables;         use Gnat2Why.Tables;
+with Namet;                   use Namet;
+with SPARK_Atree;             use SPARK_Atree;
+with Uintp;                   use Uintp;
 
 package body CE_Values is
 
    function Enum_Entity_To_String (E : Entity_Id) return String;
    --  Return a string for an enum entity
 
-   function To_String (Value : Opt_Big_Integer) return String is
-     (if Value.Present then To_String (Value.Content) else "UNDEFINED");
+   function To_String (Value : Opt_Big_Integer) return String
+   is (if Value.Present then To_String (Value.Content) else "UNDEFINED");
    --  Convert an optional big integer into a string
 
    function To_String (V : Scalar_Value_Type) return String;
@@ -52,59 +52,53 @@ package body CE_Values is
    function To_String
      (Fst, Lst : Opt_Big_Integer;
       M        : Big_Integer_To_Value_Maps.Map;
-      O        : Value_Access)
-      return String;
+      O        : Value_Access) return String;
    --  Convert the fields of an array value to a string
 
    function To_String
-     (F : Entity_To_Value_Maps.Map;
-      B : Opt_Boolean) return String;
+     (F : Entity_To_Value_Maps.Map; B : Opt_Boolean) return String;
    --  Convert the fields of a record value to a string
 
-   function To_String
-     (V : Value_Access;
-      N : Opt_Boolean) return String;
+   function To_String (V : Value_Access; N : Opt_Boolean) return String;
    --  Convert the fields of an access value to a string
 
    ---------
    -- "=" --
    ---------
 
-   function "=" (V1, V2 : Float_Value) return Boolean is
-     (V1.K = V2.K
-      and then
-        (case V1.K is
-         when Float_32_K => V1.Content_32 = V2.Content_32,
-         when Float_64_K => V1.Content_64 = V2.Content_64,
-         when Extended_K => V1.Ext_Content = V2.Ext_Content));
+   function "=" (V1, V2 : Float_Value) return Boolean
+   is (V1.K = V2.K
+       and then (case V1.K is
+                   when Float_32_K => V1.Content_32 = V2.Content_32,
+                   when Float_64_K => V1.Content_64 = V2.Content_64,
+                   when Extended_K => V1.Ext_Content = V2.Ext_Content));
 
-   function "=" (V1, V2 : Scalar_Value_Type) return Boolean is
-     (V1.K = V2.K
-      and then
-        (case V1.K is
-            when Enum_K    =>
-              Nkind (V1.Enum_Entity) = Nkind (V2.Enum_Entity)
-              and then
-                (if Nkind (V1.Enum_Entity) = N_Character_Literal
-                then Char_Literal_Value (V1.Enum_Entity) =
-                  Char_Literal_Value (V2.Enum_Entity)
-                else V1.Enum_Entity = V2.Enum_Entity),
-            when Integer_K => V1.Integer_Content = V2.Integer_Content,
-            --  The 2 following cases are currently unused as the rac does not
-            --  support real values.
-            when Float_K   => V1.Float_Content = V2.Float_Content,
-            when Fixed_K   => V1.Fixed_Content = V2.Fixed_Content));
+   function "=" (V1, V2 : Scalar_Value_Type) return Boolean
+   is (V1.K = V2.K
+       and then (case V1.K is
+                   when Enum_K =>
+                     Nkind (V1.Enum_Entity) = Nkind (V2.Enum_Entity)
+                     and then (if Nkind (V1.Enum_Entity) = N_Character_Literal
+                               then
+                                 Char_Literal_Value (V1.Enum_Entity)
+                                 = Char_Literal_Value (V2.Enum_Entity)
+                               else V1.Enum_Entity = V2.Enum_Entity),
+                   when Integer_K => V1.Integer_Content = V2.Integer_Content,
+                   --  The 2 following cases are currently unused as the rac does not
+                   --  support real values.
+                   when Float_K => V1.Float_Content = V2.Float_Content,
+                   when Fixed_K => V1.Fixed_Content = V2.Fixed_Content));
 
    function "=" (V1, V2 : Value_Type) return Boolean is
 
-      package Checked_Indices_Set is new Ada.Containers.Ordered_Sets
-        (Element_Type => Big_Integer);
+      package Checked_Indices_Set is new
+        Ada.Containers.Ordered_Sets (Element_Type => Big_Integer);
       --  Set of the indices that have been checked in an array.
 
       function Check_Array_Values
-        (Arr1_Values :     Big_Integer_To_Value_Maps.Map;
-         Arr1_First  :     Big_Integer;
-         Arr2        :     Value_Type;
+        (Arr1_Values : Big_Integer_To_Value_Maps.Map;
+         Arr1_First  : Big_Integer;
+         Arr2        : Value_Type;
          Checked     : out Checked_Indices_Set.Set) return Boolean;
       --  Check that all the named components of the first array (which are all
       --  stored in Arr1_Values) are equal to the element at the same position
@@ -119,25 +113,25 @@ package body CE_Values is
       ------------------------
 
       function Check_Array_Values
-        (Arr1_Values :     Big_Integer_To_Value_Maps.Map;
-         Arr1_First  :     Big_Integer;
-         Arr2        :     Value_Type;
+        (Arr1_Values : Big_Integer_To_Value_Maps.Map;
+         Arr1_First  : Big_Integer;
+         Arr2        : Value_Type;
          Checked     : out Checked_Indices_Set.Set) return Boolean
       is
          use Big_Integer_To_Value_Maps;
 
-         Arr2_Values : constant Map          := Arr2.Array_Values;
+         Arr2_Values : constant Map := Arr2.Array_Values;
          Arr2_Others : constant Value_Access := Arr2.Array_Others;
 
       begin
          for C1 in Arr1_Values.Iterate loop
             declare
-               Checked_C :          Checked_Indices_Set.Cursor;
-               Inserted  :          Boolean;
+               Checked_C : Checked_Indices_Set.Cursor;
+               Inserted  : Boolean;
                Position  : constant Big_Integer := Key (C1) - Arr1_First;
                Offset    : constant Big_Integer :=
                  Position + Arr2.First_Attr.Content;
-               C2        : constant Cursor      := Arr2_Values.Find (Offset);
+               C2        : constant Cursor := Arr2_Values.Find (Offset);
             begin
                if (Has_Element (C2) and then Element (C1) = Element (C2))
                  or else Element (C1) = Arr2_Others
@@ -169,15 +163,15 @@ package body CE_Values is
             return V1.Scalar_Content.all = V2.Scalar_Content.all;
 
          when Record_K =>
-            return Entity_To_Value_Maps."="
-              (V1.Record_Fields, V2.Record_Fields);
+            return
+              Entity_To_Value_Maps."=" (V1.Record_Fields, V2.Record_Fields);
 
          --  Multidimensional arrays are not supported yet
 
          when Multidim_K =>
             raise Program_Error;
 
-         when Array_K  =>
+         when Array_K =>
             declare
                use Checked_Indices_Set;
 
@@ -187,27 +181,30 @@ package body CE_Values is
                Checked_V2 : Set;
             begin
                if Length_V1.Present and Length_V2.Present then
-                  return (Length_V1.Content = 0 and then Length_V2.Content = 0)
+                  return
+                    (Length_V1.Content = 0 and then Length_V2.Content = 0)
                     or else (Length_V1.Content = Length_V2.Content
-                    and then
-                      Check_Array_Values
-                        (V1.Array_Values, V1.First_Attr.Content, V2,
-                         Checked_V1)
-                    and then
-                      Check_Array_Values
-                        (V2.Array_Values, V2.First_Attr.Content, V1,
-                         Checked_V2)
-                    and then
-                  --  If the length of the set containing all checked
-                  --  indices is smaller than the total number of indices to
-                  --  check (i.e. the values maps did not cover the whole
-                  --  arrays) then the "others" values need to be checked for
-                  --  equality.
-                      (To_Big_Integer
-                        (Integer
-                           (Length (Union (Checked_V1, Checked_V2)))) =
-                             Length_V1.Content
-                      or else V1.Array_Others = V2.Array_Others));
+                             and then Check_Array_Values
+                                        (V1.Array_Values,
+                                         V1.First_Attr.Content,
+                                         V2,
+                                         Checked_V1)
+                             and then Check_Array_Values
+                                        (V2.Array_Values,
+                                         V2.First_Attr.Content,
+                                         V1,
+                                         Checked_V2)
+                             and then
+                             --  If the length of the set containing all checked
+                             --  indices is smaller than the total number of indices to
+                             --  check (i.e. the values maps did not cover the whole
+                             --  arrays) then the "others" values need to be checked for
+                             --  equality.
+                             (To_Big_Integer
+                                (Integer
+                                   (Length (Union (Checked_V1, Checked_V2))))
+                              = Length_V1.Content
+                              or else V1.Array_Others = V2.Array_Others));
                else
                   CE_RAC.RAC_Stuck
                     ("Missing index of array, cannot compute length");
@@ -226,23 +223,25 @@ package body CE_Values is
                raise Program_Error;
             end if;
 
-            return (V1.Is_Null.Present and then V1.Is_Null.Content
-                    and then V2.Is_Null.Present and then V2.Is_Null.Content);
+            return
+              (V1.Is_Null.Present
+               and then V1.Is_Null.Content
+               and then V2.Is_Null.Present
+               and then V2.Is_Null.Content);
       end case;
    end "=";
 
-   function "=" (V1, V2 : Value_Access) return Boolean is
-     (if Default_Equal (V1, null)
-      then Default_Equal (V2, null)
-      else not Default_Equal (V2, null) and then V1.all = V2.all);
+   function "=" (V1, V2 : Value_Access) return Boolean
+   is (if Default_Equal (V1, null)
+       then Default_Equal (V2, null)
+       else not Default_Equal (V2, null) and then V1.all = V2.all);
 
    ---------------------
    -- Div_Fixed_Point --
    ---------------------
 
    function Div_Fixed_Point
-     (Fixed_L, Fixed_R            : Big_Integer;
-      Small_L, Small_R, Small_Res : Big_Real)
+     (Fixed_L, Fixed_R : Big_Integer; Small_L, Small_R, Small_Res : Big_Real)
       return Big_Integer
    is
       N_L   : constant Big_Integer := Numerator (Small_L);
@@ -286,8 +285,8 @@ package body CE_Values is
    begin
       if V.First_Attr.Present and V.Last_Attr.Present then
          Length := V.Last_Attr.Content - V.First_Attr.Content + 1;
-         return (Present => True,
-                 Content => (if Length > 0 then Length else 0));
+         return
+           (Present => True, Content => (if Length > 0 then Length else 0));
       else
          return (Present => False);
       end if;
@@ -297,30 +296,30 @@ package body CE_Values is
    -- Valid_Value --
    -----------------
 
-   function Valid_Value
-     (V : Value_Type) return Boolean is
+   function Valid_Value (V : Value_Type) return Boolean is
    begin
       case V.K is
 
-      when Record_K =>
-         declare
-            use Entity_To_Value_Maps;
-         begin
-            for Cur in V.Record_Fields.Iterate loop
-               declare
-                  C_Key : constant Entity_Id := Key (Cur);
-                  C_Ty  : constant Entity_Id :=
-                    Search_Component_In_Type (V.AST_Ty, C_Key);
-               begin
-                  if not Present (C_Ty) and then not Is_Tagged_Type (V.AST_Ty)
-                  then
-                     return False;
-                  elsif Present (C_Ty) and then C_Key /= C_Ty then
-                     return False;
-                  end if;
-               end;
-            end loop;
-         end;
+         when Record_K =>
+            declare
+               use Entity_To_Value_Maps;
+            begin
+               for Cur in V.Record_Fields.Iterate loop
+                  declare
+                     C_Key : constant Entity_Id := Key (Cur);
+                     C_Ty  : constant Entity_Id :=
+                       Search_Component_In_Type (V.AST_Ty, C_Key);
+                  begin
+                     if not Present (C_Ty)
+                       and then not Is_Tagged_Type (V.AST_Ty)
+                     then
+                        return False;
+                     elsif Present (C_Ty) and then C_Key /= C_Ty then
+                        return False;
+                     end if;
+                  end;
+               end loop;
+            end;
 
          when others =>
             null;
@@ -359,6 +358,7 @@ package body CE_Values is
    begin
       if V.AST_Ty = T_New then
          return;  --  No change of the actual type.
+
       end if;
 
       if V.K = Record_K then
@@ -371,7 +371,7 @@ package body CE_Values is
             for C in Old_Fields.Iterate loop
                declare
                   Comp_In_T_New : constant Entity_Id :=
-                     Search_Component_In_Type (T_New, Key (C));
+                    Search_Component_In_Type (T_New, Key (C));
                begin
                   if Present (Comp_In_T_New) then
                      V.Record_Fields.Insert (Comp_In_T_New, Element (C));
@@ -402,22 +402,26 @@ package body CE_Values is
 
    function Is_Valid (R : Float_Value) return Boolean is
 
-      function Is_NaN (R : Float_Value) return Boolean is
-        (case R.K is
+      function Is_NaN (R : Float_Value) return Boolean
+      is (case R.K is
             when Float_32_K => R.Content_32 /= R.Content_32,
             when Float_64_K => R.Content_64 /= R.Content_64,
             when Extended_K => R.Ext_Content /= R.Ext_Content);
 
-      function Is_Infinity (R : Float_Value) return Boolean is
-        (case R.K is
+      function Is_Infinity (R : Float_Value) return Boolean
+      is (case R.K is
             when Float_32_K => abs R.Content_32 > Float'Last,
             when Float_64_K => abs R.Content_64 > Long_Float'Last,
             when Extended_K => abs R.Ext_Content > Long_Long_Float'Last);
 
    begin
       return not Is_NaN (R) and then not Is_Infinity (R);
-      pragma Annotate (GNATSAS, False_Positive, "condition predetermined",
-                       "Is_NaN will return True on NaN values");
+      pragma
+        Annotate
+          (GNATSAS,
+           False_Positive,
+           "condition predetermined",
+           "Is_NaN will return True on NaN values");
    end Is_Valid;
 
    pragma Unsuppress (Validity_Check);
@@ -427,8 +431,7 @@ package body CE_Values is
    ----------------------
 
    function Mult_Fixed_Point
-     (Fixed_L, Fixed_R            : Big_Integer;
-      Small_L, Small_R, Small_Res : Big_Real)
+     (Fixed_L, Fixed_R : Big_Integer; Small_L, Small_R, Small_Res : Big_Real)
       return Big_Integer
    is
       N_L   : constant Big_Integer := Numerator (Small_L);
@@ -471,23 +474,22 @@ package body CE_Values is
    begin
       return
         (case V.K is
-            when Float_32_K => V.Content_32'Image,
-            when Float_64_K => V.Content_64'Image,
-            when Extended_K => V.Ext_Content'Image);
+           when Float_32_K => V.Content_32'Image,
+           when Float_64_K => V.Content_64'Image,
+           when Extended_K => V.Ext_Content'Image);
    end To_String;
 
    pragma Unsuppress (Validity_Check);
 
-   function To_String (V : Scalar_Value_Type) return String is
-     (case V.K is
-         when Enum_K    => Enum_Entity_To_String (V.Enum_Entity),
+   function To_String (V : Scalar_Value_Type) return String
+   is (case V.K is
+         when Enum_K => Enum_Entity_To_String (V.Enum_Entity),
          when Integer_K => To_String (V.Integer_Content),
-         when Fixed_K   => To_String (V.Fixed_Content),
-         when Float_K   => To_String (V.Float_Content));
+         when Fixed_K => To_String (V.Fixed_Content),
+         when Float_K => To_String (V.Float_Content));
 
    function To_String
-     (F : Entity_To_Value_Maps.Map;
-      B : Opt_Boolean) return String
+     (F : Entity_To_Value_Maps.Map; B : Opt_Boolean) return String
    is
       use Entity_To_Value_Maps;
       Res : Unbounded_String;
@@ -502,8 +504,9 @@ package body CE_Values is
       end if;
 
       while Has_Element (C) loop
-         Append (Res, Get_Name_String (Chars (Key (C)))
-                 & " = " & To_String (F (C).all));
+         Append
+           (Res,
+            Get_Name_String (Chars (Key (C))) & " = " & To_String (F (C).all));
          Next (C);
          if Has_Element (C) then
             Append (Res, ", ");
@@ -515,28 +518,27 @@ package body CE_Values is
    function To_String
      (Fst, Lst : Opt_Big_Integer;
       M        : Big_Integer_To_Value_Maps.Map;
-      O        : Value_Access)
-      return String
+      O        : Value_Access) return String
    is
       use Big_Integer_To_Value_Maps;
       Res : Unbounded_String;
    begin
-      Append (Res, "'First => " & To_String (Fst)
-              & ", 'Last => " & To_String (Lst));
+      Append
+        (Res,
+         "'First => " & To_String (Fst) & ", 'Last => " & To_String (Lst));
       for C in M.Iterate loop
-         Append (Res, ", "
-                 & To_String (Key (C)) & " => "
-                 & To_String (M (C).all) & ",");
+         Append
+           (Res,
+            ", " & To_String (Key (C)) & " => " & To_String (M (C).all) & ",");
       end loop;
-      Append (Res, ", others => " &
-              (if O = null then "UNDEFINED" else To_String (O.all)));
+      Append
+        (Res,
+         ", others => "
+         & (if O = null then "UNDEFINED" else To_String (O.all)));
       return To_String ("(" & Res & ")");
    end To_String;
 
-   function To_String
-     (V : Value_Access;
-      N : Opt_Boolean) return String
-   is
+   function To_String (V : Value_Access; N : Opt_Boolean) return String is
    begin
       if N.Present and then N.Content then
          return "NULL";
@@ -552,34 +554,48 @@ package body CE_Values is
    begin
       for Dim in B.Content'Range loop
          if B.Content (Dim).First.Present then
-            Append (Res, "'First (" & Trim (Dim'Image, Left) & ") => "
-                    & To_String (B.Content (Dim).First.Content) & ", ");
+            Append
+              (Res,
+               "'First ("
+               & Trim (Dim'Image, Left)
+               & ") => "
+               & To_String (B.Content (Dim).First.Content)
+               & ", ");
          end if;
          if B.Content (Dim).Last.Present then
-            Append (Res, "'Last (" & Trim (Dim'Image, Left) & ") => "
-                    & To_String (B.Content (Dim).Last.Content) & ", ");
+            Append
+              (Res,
+               "'Last ("
+               & Trim (Dim'Image, Left)
+               & ") => "
+               & To_String (B.Content (Dim).Last.Content)
+               & ", ");
          end if;
       end loop;
       return To_String ("(" & Res & "others => ?)");
    end To_String;
 
-   function To_String (V : Value_Type) return String is
-     (case V.K is
-         when Scalar_K   =>
+   function To_String (V : Value_Type) return String
+   is (case V.K is
+         when Scalar_K =>
            (if V.Initialized_Attr.Present
-            then "('Initialize => " & V.Initialized_Attr.Content'Image
+            then
+              "('Initialize => "
+              & V.Initialized_Attr.Content'Image
               & ", Value => "
             else "")
-           & (if V.Scalar_Content = null then "UNDEFINED"
+           & (if V.Scalar_Content = null
+              then "UNDEFINED"
               else To_String (V.Scalar_Content.all))
            & (if V.Initialized_Attr.Present then ")" else ""),
-         when Record_K   => To_String (V.Record_Fields, V.Constrained_Attr),
-         when Array_K    => To_String
-           (V.First_Attr, V.Last_Attr, V.Array_Values, V.Array_Others),
+         when Record_K => To_String (V.Record_Fields, V.Constrained_Attr),
+         when Array_K =>
+           To_String
+             (V.First_Attr, V.Last_Attr, V.Array_Values, V.Array_Others),
          when Multidim_K => To_String (V.Bounds),
-         when Access_K   => To_String (V.Designated_Value, V.Is_Null));
+         when Access_K => To_String (V.Designated_Value, V.Is_Null));
 
-   function To_String (V : Opt_Value_Type) return String is
-     (if V.Present then To_String (V.Content) else "NONE");
+   function To_String (V : Opt_Value_Type) return String
+   is (if V.Present then To_String (V.Content) else "NONE");
 
 end CE_Values;
