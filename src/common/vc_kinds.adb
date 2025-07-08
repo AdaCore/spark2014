@@ -850,7 +850,7 @@ package body VC_Kinds is
          when Warn_Num_Variant =>
            "For recursive expression functions with a numeric (not "
            & "structural) Subprogram_Variant, the definition of the "
-           & "expression function might not be available for recursive calls  "
+           & "expression function might not be available for recursive calls "
            & "occurring inside assertions and contracts, but will still be "
            & "available in regular code",
          when Warn_Map_Length_Aggregates =>
