@@ -5112,6 +5112,11 @@ package body Gnat2Why.Subprograms is
               not From_Aspect_Specification (Decl)
             then
                Post_Prags.Append (Decl);
+
+            --  Stop the search if a new declaration is found
+
+            elsif Decl_Starts_Pragma_Annotate_Range (Decl) then
+               exit;
             end if;
             Next (Decl);
          end loop;
@@ -5122,10 +5127,10 @@ package body Gnat2Why.Subprograms is
       ------------------
 
       function Post_As_Pred return W_Pred_Id is
-         Params : constant Transformation_Params :=
+         Params      : constant Transformation_Params :=
            (Contract_Body_Params with delta Old_Policy  => As_Old);
          Mark_Params : Transformation_Params := Params;
-         Post_N    : Node_Id;
+         Post_N      : Node_Id;
       begin
          Mark_Params.Gen_Marker := GM_Toplevel;
 

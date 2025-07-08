@@ -653,15 +653,19 @@ package body Gnat2Why.Util is
       Domain : EW_Domain)
       return W_Expr_Id
    is
+      use type Ada.Containers.Count_Type;
       Cur_Spec     : W_Expr_Id;
       Local_Params : Transformation_Params := Params;
    begin
       --  For specs we usually want the pretty-printing markers. This flag is a
       --  no-op for Domains other than EW_Pred.
 
-      if Local_Params.Gen_Marker = GM_None then
+      if Nodes.Length > 1 then
+         Local_Params.Gen_Marker := GM_Label;
+      elsif Local_Params.Gen_Marker = GM_None then
          Local_Params.Gen_Marker := GM_Toplevel;
       end if;
+
       if Nodes.Is_Empty then
          return Bool_True (Domain);
       end if;
