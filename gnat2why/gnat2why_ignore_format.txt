@@ -1,14 +1,5 @@
 back_end.adb
 back_end.ads
-checked_types.ads
-common_containers.adb
-common_containers.ads
-common_iterators.adb
-common_iterators.ads
-debug-timing.adb
-debug-timing.ads
-errout_wrapper.adb
-errout_wrapper.ads
 flow.adb
 flow.ads
 flow-analysis.adb
@@ -110,10 +101,6 @@ gnat2why-util.adb
 gnat2why-util.ads
 graphs.adb
 graphs.ads
-hashing.adb
-hashing.ads
-outputs.adb
-outputs.ads
 spark_atree.adb
 spark_atree.ads
 spark_atree-entities.adb
