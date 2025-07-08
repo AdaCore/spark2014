@@ -48,22 +48,19 @@ package Gnat2Why_Opts is
    type Output_Mode_Type is
      (GPO_Brief,          --  Output minimal information on one line
       GPO_Oneline,        --  Output all information on one line, to be used
-                          --  for regression tests and inside the IDE which is
-                          --  responsible for breaking the messages in relevant
-                          --  chunks.
-                          --
+      --  for regression tests and inside the IDE which is
+      --  responsible for breaking the messages in relevant
+      --  chunks.
+      --
       GPO_Pretty_Simple,  --  Output information relevant for command-line
-                          --  usage, split here over multiple lines.
-                          --
+      --  usage, split here over multiple lines.
+      --
       GPO_Pretty_Color);  --  Same as GPO_Pretty plus colored output
 
    subtype GPO_Pretty is
      Output_Mode_Type range GPO_Pretty_Simple .. GPO_Pretty_Color;
 
-   type Report_Mode_Type is (GPR_Fail,
-                             GPR_All,
-                             GPR_Provers,
-                             GPR_Statistics);
+   type Report_Mode_Type is (GPR_Fail, GPR_All, GPR_Provers, GPR_Statistics);
    --  The modes for reporting of VCs.
    --    GPR_Fail means that only unproved VCs will be reported
    --    GPR_All means that all VCs will be reported

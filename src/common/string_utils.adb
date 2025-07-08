@@ -24,7 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Handling;
-with GNATCOLL.Utils;        use GNATCOLL.Utils;
+with GNATCOLL.Utils; use GNATCOLL.Utils;
 with GNAT.Case_Util;
 
 package body String_Utils is
@@ -49,8 +49,9 @@ package body String_Utils is
    -- Case_Insensitive_Find --
    ---------------------------
 
-   function Case_Insensitive_Find (SL : String_Lists.List; Item : String)
-                                   return String_Lists.Cursor is
+   function Case_Insensitive_Find
+     (SL : String_Lists.List; Item : String) return String_Lists.Cursor
+   is
       use String_Lists;
    begin
       for C in SL.Iterate loop
