@@ -193,17 +193,24 @@ package SPARK_Util.Subprograms is
                  | Pragma_Postcondition
                  | Pragma_Refined_Post
                  | Pragma_Initial_Condition
-       and then not (Classwide and Inherited),
+                 | Pragma_Contract_Cases
+                 | Pragma_Subprogram_Variant
+       and then (if Name in Pragma_Precondition | Pragma_Postcondition
+                 then not (Classwide and Inherited)
+                 else not Classwide and not Inherited),
      Post =>
        (for all Expr of Find_Contracts'Result =>
-          Nkind (Expr) in N_Subexpr and then Is_Boolean_Type (Etype (Expr)))
-       and then (if Name not in Pragma_Precondition | Pragma_Postcondition
-                 then Find_Contracts'Result.Length <= 1);
+          (if Name in Pragma_Contract_Cases | Pragma_Subprogram_Variant
+           then Nkind (Expr) = N_Aggregate
+           else
+             Nkind (Expr) in N_Subexpr
+             and then Is_Boolean_Type (Etype (Expr))));
    --  @param E entry, subprogram, package, task or protected type
    --  @param Name contract pragma identifier
    --  @param Classwide True when asking for the classwide version of contract
    --  @param Inherited True when asking only for inherited contracts
-   --  @return list of Boolean-valued expressions for pragma Name of E
+   --  @return list of Boolean-valued expressions or aggregates for pragma
+   --     Name of E
    --
    --  Note: the return value is a list and not a single expression, because
    --  pragmas Precondition/Postcondition (as opposed to Pre/Post) can be
@@ -211,9 +218,7 @@ package SPARK_Util.Subprograms is
    --  into individual conjuncts of the AND THEN operators for a more precise
    --  diagnostics of a failed contract.
    --
-   --  ??? The returned list is only needed for Preconditions and
-   --  Postconditions; for other contracts we could have simpler
-   --  API (especially since they can't be classwide nor inherited).
+   --  Other contracts might also be duplicated due to assertion levels.
    --
    --  ??? contract should detect invalid combinations of Ekind (E) and Name,
    --      just like it is done in Find_Contract.
@@ -307,20 +312,17 @@ package SPARK_Util.Subprograms is
    --     completed by an expression_function)
    --  @return the corresponding N_Expression_Function original node
 
-   function Get_Expr_From_Check_Only_Proc
-     (E : E_Procedure_Id) return Opt_N_Subexpr_Id
+   function Get_Exprs_From_Check_Only_Proc
+     (E : E_Procedure_Id) return Node_Lists.List
    with
-     Pre  =>
+     Pre =>
        Is_DIC_Procedure (E)
        or else Is_Invariant_Procedure (E)
-       or else Is_Partial_Invariant_Procedure (E),
-     Post =>
-       (if Is_DIC_Procedure (E) or else Is_Partial_Invariant_Procedure (E)
-        then Nkind (Get_Expr_From_Check_Only_Proc'Result) in N_Subexpr);
+       or else Is_Partial_Invariant_Procedure (E);
    --  @param E a Default_Initial_Condition or Type_Invariant procedure
-   --  @return the expression in the first pragma Check found in the body of E
-   --     (or Empty for an invariant procedure given for the public declaration
-   --     of a private type, which is not supported in SPARK)
+   --  @return the expressions in all pragmas Check found in the body of E
+   --     (or Empty_List for an invariant procedure given for the public
+   --     declaration of a private type, which is not supported in SPARK)
    --  Extract a condition checked for aspect Default_Initialization and
    --  Type_Invariant.
 
@@ -410,7 +412,10 @@ package SPARK_Util.Subprograms is
                 in Pragma_Precondition
                  | Pragma_Postcondition
                  | Pragma_Refined_Post
-                 | Pragma_Initial_Condition;
+                 | Pragma_Initial_Condition
+                 | Pragma_Contract_Cases
+       and then (if Name not in Pragma_Precondition | Pragma_Postcondition
+                 then not Classwide and not Inherited);
    --  @param E subprogram or package
    --  @param Name contract name
    --  @param Classwide True when asking for the classwide version of contract

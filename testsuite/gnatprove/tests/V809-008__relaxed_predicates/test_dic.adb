@@ -21,9 +21,9 @@ procedure Test_DIC with SPARK_Mode is
       function F (X : T2) return Boolean;
 
       --  The DIC does not hold
-      type T3 is private with --@DEFAULT_INITIAL_CONDITION:FAIL
+      type T3 is private with
         Relaxed_Initialization,
-        Default_Initial_Condition => F (T3);
+        Default_Initial_Condition => F (T3); --@DEFAULT_INITIAL_CONDITION:FAIL
 
       function F (X : T3) return Boolean;
 

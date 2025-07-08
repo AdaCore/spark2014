@@ -2181,11 +2181,11 @@ package body SPARK_Definition.Annotate is
 
          declare
             Pre  : constant Node_Lists.List :=
-              Find_Contracts (Lemma, Pragma_Precondition, False, False);
+              Find_Contracts (Lemma, Pragma_Precondition);
             Post : constant Node_Lists.List :=
-              Find_Contracts (Lemma, Pragma_Postcondition, False, False);
-            CC   : constant Node_Id :=
-              Get_Pragma (Lemma, Pragma_Contract_Cases);
+              Find_Contracts (Lemma, Pragma_Postcondition);
+            CC   : constant Node_Lists.List :=
+              Find_Contracts (Lemma, Pragma_Contract_Cases);
          begin
             for N of Pre loop
                Check_Contract_Of_Lemma (N);
@@ -2199,7 +2199,12 @@ package body SPARK_Definition.Annotate is
                   goto Violation_Found;
                end if;
             end loop;
-            Check_Contract_Of_Lemma (CC);
+            for N of CC loop
+               Check_Contract_Of_Lemma (N);
+               if Violation then
+                  goto Violation_Found;
+               end if;
+            end loop;
          end;
 
          <<Violation_Found>>
@@ -2567,9 +2572,8 @@ package body SPARK_Definition.Annotate is
 
       pragma
         Assert
-          (No
-             (Get_Pragma
-                (Directly_Designated_Type (E), Pragma_Contract_Cases)));
+          (not Has_Contracts
+                 (Directly_Designated_Type (E), Pragma_Contract_Cases));
 
       Handler_Annotations.Insert (Base_Retysp (E));
    end Check_Handler_Annotation;
@@ -3324,11 +3328,11 @@ package body SPARK_Definition.Annotate is
 
          declare
             Pre      : constant Node_Lists.List :=
-              Find_Contracts (E, Pragma_Precondition, False, False);
+              Find_Contracts (E, Pragma_Precondition);
             Post     : constant Node_Lists.List :=
-              Find_Contracts (E, Pragma_Postcondition, False, False);
-            CC       : constant Node_Id :=
-              Get_Pragma (E, Pragma_Contract_Cases);
+              Find_Contracts (E, Pragma_Postcondition);
+            CC       : constant Node_Lists.List :=
+              Find_Contracts (E, Pragma_Contract_Cases);
             Variants : constant Node_Id :=
               Get_Pragma (E, Pragma_Subprogram_Variant);
          begin
@@ -3344,7 +3348,12 @@ package body SPARK_Definition.Annotate is
                   goto Violation_Found;
                end if;
             end loop;
-            Find_Unsupported_Use_Of_Formal (CC);
+            for N of CC loop
+               Find_Unsupported_Use_Of_Formal (N);
+               if Present (Violation) then
+                  goto Violation_Found;
+               end if;
+            end loop;
             Find_Unsupported_Use_Of_Formal (Variants);
          end;
 
@@ -4030,7 +4039,7 @@ package body SPARK_Definition.Annotate is
             & " post-conditions",
             E);
          return;
-      elsif Present (Get_Pragma (E, Pragma_Contract_Cases)) then
+      elsif Has_Contracts (E, Pragma_Contract_Cases) then
          Error_Msg_N_If
            ("Entity parameter of a pragma Logical_Equal shall not have"
             & " contract cases",

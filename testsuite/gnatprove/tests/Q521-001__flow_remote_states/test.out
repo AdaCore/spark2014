@@ -15,7 +15,7 @@ pumpunit.adb:120:49: info: range check proved (CVC5: 2 VC)
 pumpunit.adb:147:68: info: initialization of "cur_pump" constituent of "Children" proved
 pumpunit.adb:174:33: info: overflow check proved (CVC5: 2 VC)
 pumpunit.ads:8:04: info: flow dependencies proved
-pumpunit.ads:9:04: info: initial condition proved (CVC5: 1 VC)
+pumpunit.ads:9:25: info: initial condition proved (CVC5: 1 VC)
 pumpunit.ads:15:13: info: implicit aspect Always_Terminates on "get_outstanding" has been proved, subprogram will terminate
 pumpunit.ads:16:07: info: data dependencies proved
 pumpunit.ads:17:07: info: flow dependencies proved

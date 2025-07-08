@@ -6,8 +6,8 @@ package Bounded_Strings is
    subtype Index_Type is Positive range 1 .. Maximum_Bound;
    subtype Length_Type is Natural range 0 .. Maximum_Bound;
 
-   type Bounded_String(Bound : Index_Type) is private --@DEFAULT_INITIAL_CONDITION:PASS
-     with Default_Initial_Condition => Length(Bounded_String) = 0;
+   type Bounded_String(Bound : Index_Type) is private
+     with Default_Initial_Condition => Length(Bounded_String) = 0; --@DEFAULT_INITIAL_CONDITION:PASS
 
    -- Returns the number of characters stored in this bounded string.
    function Length(Source : Bounded_String) return Length_Type

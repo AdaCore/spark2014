@@ -1,21 +1,21 @@
 procedure Test_DIC with SPARK_Mode is
    package Nested is
-      type P1 (X : Boolean) is private with --@DEFAULT_INITIAL_CONDITION:NONE
-        Default_Initial_Condition => X;
-      type P2 (X : Boolean) is private with --@DEFAULT_INITIAL_CONDITION:NONE
-        Default_Initial_Condition => P2.X;
-      type P3 (X : Boolean) is private with --@DEFAULT_INITIAL_CONDITION:FAIL
-        Default_Initial_Condition => S3'(P3).X;
+      type P1 (X : Boolean) is private with
+        Default_Initial_Condition => X; --@DEFAULT_INITIAL_CONDITION:NONE
+      type P2 (X : Boolean) is private with
+        Default_Initial_Condition => P2.X; --@DEFAULT_INITIAL_CONDITION:NONE
+      type P3 (X : Boolean) is private with
+        Default_Initial_Condition => S3'(P3).X; --@DEFAULT_INITIAL_CONDITION:FAIL
       function F3 (X : P3) return Boolean;
       subtype S3 is P3 with
         Predicate => F3 (P3'(S3));
-      type P4 (X : Boolean) is private with --@DEFAULT_INITIAL_CONDITION:FAIL
-        Default_Initial_Condition => S4 (P4).X;
+      type P4 (X : Boolean) is private with
+        Default_Initial_Condition => S4 (P4).X; --@DEFAULT_INITIAL_CONDITION:FAIL
       function F4 (X : P4) return Boolean;
       subtype S4 is P4 with
         Predicate => F4 (P4'(S4));
-      type P5 (X : Boolean) is private with --@DEFAULT_INITIAL_CONDITION:FAIL
-        Default_Initial_Condition => Id (P5).X;
+      type P5 (X : Boolean) is private with
+        Default_Initial_Condition => Id (P5).X; --@DEFAULT_INITIAL_CONDITION:FAIL
       function Id (X : P5) return P5;
    private
       type P1 (X : Boolean) is record

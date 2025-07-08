@@ -1,4 +1,4 @@
-use_stack.adb:4:24: info: initial condition proved (CVC5: 1 VC)
+use_stack.adb:4:45: info: initial condition proved (CVC5: 1 VC)
 use_stack.adb:6:16: info: implicit aspect Always_Terminates on "Is_Full" has been proved, subprogram will terminate
 use_stack.adb:7:16: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate
 use_stack.adb:8:16: info: implicit aspect Always_Terminates on "Peek" has been proved, subprogram will terminate

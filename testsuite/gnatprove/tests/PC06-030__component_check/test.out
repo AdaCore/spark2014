@@ -6,6 +6,6 @@ add_field.ads:14:20: warning: cannot call "Init_Array" before body seen [enabled
 add_field.ads:14:20: warning: no Global contract available for "Init_Array" [assumed-global-null]
 add_field.ads:16:19: info: assertion proved (CVC5: 1 VC)
 add_field.ads:16:46: info: index check proved (CVC5: 2 VC)
-use_var.ads:1:34: info: initial condition proved (CVC5: 1 VC)
+use_var.ads:1:55: info: initial condition proved (CVC5: 1 VC)
 use_var.ads:2:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 use_var.ads:9:07: info: range check proved (CVC5: 2 VC)

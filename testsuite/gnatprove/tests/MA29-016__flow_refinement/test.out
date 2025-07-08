@@ -88,7 +88,7 @@ levels.adb:71:09: info: data dependencies proved
 levels.adb:71:24: low: unused global "Y0" constituent of "Abs_0"
 levels.adb:71:36: low: unused global "Nested_1.Abs_1" constituent of "Levels.Abs_0"
 levels.adb:87:09: info: flow dependencies proved
-levels.adb:88:09: medium: initial condition might fail
+levels.adb:88:30: medium: initial condition might fail [possible fix: subprogram at line 70 should mention X2 in a precondition]
 levels.adb:91:19: info: implicit aspect Always_Terminates on "Read_Partial_2" has been proved, subprogram will terminate
 levels.adb:92:15: info: data dependencies proved
 levels.adb:127:25: medium: refined postcondition might fail [possible fix: you should consider adding a postcondition to function Read_Partial_1 and function Read_Partial_2 and function Read_Partial_0 or turning them into expression functions]

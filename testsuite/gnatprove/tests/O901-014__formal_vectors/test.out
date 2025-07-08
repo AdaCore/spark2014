@@ -6,7 +6,7 @@ aida-containers-formal_vectors.adb:94:24: medium: precondition might fail, in in
 aida-containers-formal_vectors.adb:105:24: medium: precondition might fail, cannot prove I in First_Index (Container) .. Last_Index (Container), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:116:31: medium: precondition might fail, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:126:31: medium: precondition might fail, in instantiation at hnco-test2.ads:8
-aida-containers-formal_vectors.ads:19:09: medium: default initial condition might fail, in instantiation at hnco-test2.ads:8
+aida-containers-formal_vectors.ads:20:35: medium: default initial condition might fail, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:31:13: info: implicit aspect Always_Terminates on "Empty_Vector" has been proved, subprogram will terminate, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:33:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate, in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.ads:34:06: info: data dependencies proved, in instantiation at hnco-test2.ads:8

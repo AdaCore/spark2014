@@ -4200,20 +4200,14 @@ package body SPARK_Definition is
               and then Nkind (Unit (Library_Unit (N))) = N_Package_Declaration
             then
                declare
-                  Package_E : constant E_Package_Id :=
+                  Package_E  : constant E_Package_Id :=
                     Defining_Entity (Unit (Library_Unit (N)));
-                  Init_Cond : constant Opt_N_Pragma_Id :=
-                    Get_Pragma (Package_E, Pragma_Initial_Condition);
+                  Init_Conds : constant Node_Lists.List :=
+                    Find_Contracts (Package_E, Pragma_Initial_Condition);
                begin
-                  if Present (Init_Cond) then
-                     declare
-                        Expr : constant N_Subexpr_Id :=
-                          Expression
-                            (First (Pragma_Argument_Associations (Init_Cond)));
-                     begin
-                        Mark (Expr);
-                     end;
-                  end if;
+                  for Expr of Init_Conds loop
+                     Mark (Expr);
+                  end loop;
                end;
             end if;
 
@@ -6898,27 +6892,35 @@ package body SPARK_Definition is
 
                         Mark_Iterable_Aspect (Iterable_Aspect);
 
+                        --  Error messages have been emitted for the violations
+                        --  so the flag can be reset.
+                        Violation_Detected := False;
+
                      end;
                   else
                      declare
                         Subp  : constant E_Procedure_Id := N;
-                        Expr  : constant Node_Id :=
-                          Get_Expr_From_Check_Only_Proc (Subp);
+                        Exprs : constant Node_Lists.List :=
+                          Get_Exprs_From_Check_Only_Proc (Subp);
                         Param : constant Formal_Kind_Id := First_Formal (Subp);
                      begin
                         --  Delayed type aspects can't be processed recursively
                         pragma Assert (No (Current_Delayed_Aspect_Type));
-                        Current_Delayed_Aspect_Type := Etype (Param);
-                        Mark_Entity (Param);
 
-                        pragma Assert (not Violation_Detected);
-                        Mark (Expr);
+                        for Expr of Exprs loop
+                           Current_Delayed_Aspect_Type := Etype (Param);
+                           Mark_Entity (Param);
+
+                           pragma Assert (not Violation_Detected);
+
+                           Mark (Expr);
+
+                           --  Error messages have been emitted for the
+                           --  violations so the flag can be reset.
+                           Violation_Detected := False;
+                        end loop;
                      end;
                   end if;
-
-                  --  Error messages have been emitted for the violations
-                  --  so the flag can be reset.
-                  Violation_Detected := False;
 
                   --  Restore global variable to its initial value
                   Current_Delayed_Aspect_Type := Empty;
@@ -8034,11 +8036,8 @@ package body SPARK_Definition is
                Prag := Next_Pragma (Prag);
             end loop;
 
-            Prag := Get_Pragma (E, Pragma_Contract_Cases);
-            if Present (Prag) then
+            for Aggr of Find_Contracts (E, Pragma_Contract_Cases) loop
                declare
-                  Aggr          : constant Node_Id :=
-                    Expression (First (Pragma_Argument_Associations (Prag)));
                   Case_Guard    : Node_Id;
                   Conseq        : Node_Id;
                   Contract_Case : Node_Id :=
@@ -8055,7 +8054,7 @@ package body SPARK_Definition is
                      Next (Contract_Case);
                   end loop;
                end;
-            end if;
+            end loop;
 
             Prag := Get_Pragma (E, Pragma_Exceptional_Cases);
             if Present (Prag) then
@@ -8316,6 +8315,15 @@ package body SPARK_Definition is
 
             Prag := Get_Pragma (E, Pragma_Subprogram_Variant);
             if Present (Prag) then
+
+               --  We do not support more than one subprogram variant even with
+               --  different assertion levels.
+
+               if Find_Contracts (E, Pragma_Subprogram_Variant).Length > 1 then
+                  Mark_Violation
+                    ("multiple subprogram variants on a subprogram", Prag);
+               end if;
+
                declare
                   Aggr : constant Node_Id :=
                     Expression (First (Pragma_Argument_Associations (Prag)));
@@ -10090,21 +10098,23 @@ package body SPARK_Definition is
             --  For now, reject DIC with primitive calls which would have to
             --  be rechecked on derived types.
 
-            if Expression_Contains_Primitives_Calls_Of
-                 (Get_Expr_From_Check_Only_Proc (Partial_DIC_Procedure (E)), E)
-            then
-               Mark_Unsupported (Lim_Primitive_Call_In_DIC, E);
-            else
-               declare
-                  Delayed_Mapping : constant Node_Id :=
-                    (if Present (Current_SPARK_Pragma)
-                     then Current_SPARK_Pragma
-                     else E);
-               begin
-                  Delayed_Type_Aspects.Include
-                    (Partial_DIC_Procedure (E), Delayed_Mapping);
-               end;
-            end if;
+            for Expr of
+              Get_Exprs_From_Check_Only_Proc (Partial_DIC_Procedure (E))
+            loop
+               if Expression_Contains_Primitives_Calls_Of (Expr, E) then
+                  Mark_Unsupported (Lim_Primitive_Call_In_DIC, E);
+               end if;
+            end loop;
+
+            declare
+               Delayed_Mapping : constant Node_Id :=
+                 (if Present (Current_SPARK_Pragma)
+                  then Current_SPARK_Pragma
+                  else E);
+            begin
+               Delayed_Type_Aspects.Include
+                 (Partial_DIC_Procedure (E), Delayed_Mapping);
+            end;
          end if;
 
          --  A derived type cannot have explicit discriminants
@@ -12742,18 +12752,13 @@ package body SPARK_Definition is
       --  Mark the initial condition if present
 
       declare
-         Init_Cond : constant Node_Id :=
-           Get_Pragma (Id, Pragma_Initial_Condition);
+         Init_Conds : constant Node_Lists.List :=
+           Find_Contracts (Id, Pragma_Initial_Condition);
 
       begin
-         if Present (Init_Cond) then
-            declare
-               Expr : constant Node_Id :=
-                 Expression (First (Pragma_Argument_Associations (Init_Cond)));
-            begin
-               Mark (Expr);
-            end;
-         end if;
+         for Expr of Init_Conds loop
+            Mark (Expr);
+         end loop;
       end;
 
       Mark_Stmt_Or_Decl_List (Vis_Decls);

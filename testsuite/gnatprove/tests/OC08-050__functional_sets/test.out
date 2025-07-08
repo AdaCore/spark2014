@@ -17,7 +17,7 @@ allocator.adb:66:53: info: index check proved (CVC5: 4 VC)
 allocator.adb:73:44: info: index check proved (CVC5: 2 VC)
 allocator.adb:74:16: info: index check proved (CVC5: 2 VC)
 allocator.ads:8:03: info: flow dependencies proved
-allocator.ads:9:03: info: initial condition proved (CVC5: 1 VC)
+allocator.ads:9:24: info: initial condition proved (CVC5: 1 VC)
 allocator.ads:18:13: info: implicit aspect Always_Terminates on "Is_Available" has been proved, subprogram will terminate
 allocator.ads:19:13: info: implicit aspect Always_Terminates on "Is_Allocated" has been proved, subprogram will terminate
 allocator.ads:21:13: info: implicit aspect Always_Terminates on "All_Available" has been proved, subprogram will terminate

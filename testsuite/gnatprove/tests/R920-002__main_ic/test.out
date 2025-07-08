@@ -5,4 +5,4 @@ main2.adb:5:19: high: assertion might fail (e.g. when I = 0)
 other.adb:7:07: high: precondition might fail (e.g. when I = 10) [possible fix: subprogram at other.ads:3 should mention I in a precondition]
 other.adb:13:07: info: precondition proved (CVC5: 1 VC)
 other.ads:3:14: warning: subprogram "P1" has no effect
-pack.ads:1:19: info: initial condition proved (CVC5: 1 VC)
+pack.ads:1:40: info: initial condition proved (CVC5: 1 VC)

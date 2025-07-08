@@ -97,12 +97,12 @@ package body Gnat2Why.Subprograms.Pointers is
       return W_Prog_Id
    is
       Need_Post_Check  : constant Boolean :=
-        not Find_Contracts (To, Pragma_Postcondition).Is_Empty
-        or else Present (Get_Pragma (To, Pragma_Contract_Cases));
+        Has_Contracts (To, Pragma_Postcondition)
+        or else Has_Contracts (To, Pragma_Contract_Cases);
       --  True if we need to check the compatibility of postconditions
 
       Need_Pre_Check   : constant Boolean :=
-        not Find_Contracts (From, Pragma_Precondition).Is_Empty;
+        Has_Contracts (From, Pragma_Precondition);
       --  True if we need to check the compatibility of preconditions
 
    begin

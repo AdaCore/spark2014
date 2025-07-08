@@ -18,7 +18,7 @@ multiset.adb:40:25: info: predicate check proved (Trivial: 1 VC)
 multiset.adb:60:14: info: precondition proved (CVC5: 1 VC)
 multiset.adb:60:14: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 multiset.adb:61:13: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
-multiset.ads:17:09: info: default initial condition proved (CVC5: 1 VC)
+multiset.ads:18:35: info: default initial condition proved (CVC5: 1 VC)
 multiset.ads:18:35: info: for Container before the call at multiset.ads:25
 multiset.ads:18:35: info: invariant check proved (CVC5: 1 VC)
 multiset.ads:25:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate
