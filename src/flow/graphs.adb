@@ -511,7 +511,10 @@ package body Graphs is
       --  reverse topological order, which is exactly the order we need here.
 
       for U in Component_Id range 1 .. Component_Id (Current_Component) loop
-         for V:Component_Id of CG (U) loop
+         --  Exempt from formatting due to eng/ide/gnatformat#194
+         --!format off
+         for V : Component_Id of CG (U) loop
+         --!format on
             Succ (U).Union (Succ (V));
             Succ (U).Include (V);
          end loop;

@@ -2075,13 +2075,6 @@ package body Flow_Generated_Globals.Phase_2 is
                      when others =>
                         null;
                   end case;
-               --
-               --                    for Kind in Tasking_Info_Kind loop
-               --                       if not Contr.Tasking (Kind).Is_Empty then
-               --                          Dump (Kind'Img, Contr.Tasking (Kind));
-               --                       end if;
-               --                    end loop;
-               --  Ada.Text_IO.New_Line;
                end;
             end if;
          end Dump_Contract;

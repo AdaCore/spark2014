@@ -2048,18 +2048,15 @@ package body Flow.Analysis is
          declare
             Atr : V_Attributes renames FA.Atr (V);
          begin
+            --  Suppress the warning on nodes in instances or inlined code.
+            --  Also suppress the warning on nodes flagged with Warnings_Off
+            --  (right now, it happens when the unreachable code comes from
+            --  a statically known condition involving a constant with
+            --  Warnings => Off).
+
             if Atr.Is_Original_Program_Node
-
-              --  Suppress the warning on nodes in instances or inlined code
-
               and then Instantiation_Location (Sloc (Atr.Error_Location))
                        = No_Location
-
-                         --  Suppress the warning on nodes flagged with Warnings_Off
-                         --  (right now, it happens when the unreachable code comes from
-                         --  a statically known condition involving a constant with
-                         --  Warnings => Off).
-
               and then not Atr.Warnings_Off
             then
                Error_Msg_Flow
@@ -6430,15 +6427,17 @@ package body Flow.Analysis is
                         --  a message is emitted. In this case, the
                         --  Always_Terminates aspect is trusted.
 
+                        --  disable formatting for deeply nested condition
+                        --!format off
                         elsif Get_Termination_Condition (SC.E)
-                          = (Static, False)
-                          or else (Get_Termination_Condition (SC.E).Kind
-                                   = Unspecified
-                                   and then (Calls_Potentially_Nonreturning_Subprogram
-                                                  (SC.E)
-                                             or else Is_Directly_Nonreturning
-                                                       (SC.E)))
+                              = (Static, False)
+                          or else
+                          (Get_Termination_Condition (SC.E).Kind = Unspecified
+                           and then (Calls_Potentially_Nonreturning_Subprogram
+                                       (SC.E)
+                                     or else Is_Directly_Nonreturning (SC.E)))
                         then
+                        --!format on
                            Proved := False;
                            Error_Msg_Flow
                              (FA       => FA,

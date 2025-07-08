@@ -1218,15 +1218,15 @@ package body Flow_Error_Messages is
                --  Val having size Siz bits.
                function Insert_Value_Size (Val, Siz : String) return String
                is
-                  --  A floating-point overflow check is improbable in practice.
-                  --  The user should be notified that values should be bounded,
-                  --  rather than reminding her of the absurdly high bound of
-                  --  floats that may be violated only in theory.
+                  --  A floating-point overflow check is improbable in
+                  --  practice.  The user should be notified that values should
+                  --  be bounded, rather than reminding her of the absurdly
+                  --  high bound of floats that may be violated only in theory.
                   (if Tag = VC_FP_Overflow_Check
                    then Val & " must be bounded"
 
-                     --  Overflow on fixed-point operation is really against the
-                     --  the underlying machine integer. Spell that out.
+                     --  Overflow on fixed-point operation is really against
+                     --  the the underlying machine integer. Spell that out.
                    elsif Nkind (N) in N_Has_Etype
                      and then Is_Fixed_Point_Type (Retysp (Etype (N)))
                    then
@@ -1235,7 +1235,8 @@ package body Flow_Error_Messages is
                      & Siz
                      & "-bits machine integer"
 
-                     --  Remind the user of the size of the machine integer used
+                     --  Remind the user of the size of the machine integer
+                     --  used.
                    else
                      Val & " must fit in a " & Siz & "-bits machine integer");
 
@@ -1286,7 +1287,8 @@ package body Flow_Error_Messages is
 
                when N_Simple_Return_Statement =>
                   return
-                    "returned value must fit in the result type of the function";
+                    "returned value must fit in the result type of the "
+                    & "function";
 
                when N_Parameter_Association
                   | N_Function_Call
@@ -1355,7 +1357,8 @@ package body Flow_Error_Messages is
                           Assert
                             (Is_From_Hardcoded_Unit (Etype (N), Big_Integers));
                         return
-                          "expression of type Big_Integer must be non-negative";
+                          "expression of type Big_Integer must be "
+                          & "non-negative";
                      else
                         return Value & " must fit in component type";
                      end if;
@@ -1363,7 +1366,8 @@ package body Flow_Error_Messages is
 
                when N_Range =>
                   return
-                    "bounds of non-empty range must fit in the underlying type";
+                    "bounds of non-empty range must fit in the "
+                    & "underlying type";
 
                when N_Aggregate =>
                   return "";
@@ -3195,9 +3199,9 @@ package body Flow_Error_Messages is
                   when N_Empty =>
                      null;
 
-                  --  If we bump into an object declaration, remove the declared
-                  --  variable and replace it with the variables it is assigned
-                  --  from.
+                  --  If we bump into an object declaration, remove the
+                  --  declared variable and replace it with the variables it
+                  --  is assigned from.
 
                   when N_Object_Declaration =>
                      declare
@@ -3208,8 +3212,8 @@ package body Flow_Error_Messages is
                           Direct_Mapping_Id (Var);
                         Expr_Vars : Flow_Id_Sets.Set;
                      begin
-                        --  If this variable is currently tracked, replace it with
-                        --  the variables in its initializing expression.
+                        --  If this variable is currently tracked, replace it
+                        --  with the variables in its initializing expression.
 
                         if Check_Vars.Contains (Id) and then Present (Expr)
                         then
@@ -3220,11 +3224,12 @@ package body Flow_Error_Messages is
                         end if;
                      end;
 
-                  --  If we bump into an assignment to some entire variable, where
-                  --  the value assigned does not depend on any variable, then
-                  --  it's likely that the prover has all the relevant information
-                  --  about the value of this variable for the proof. Remove this
-                  --  variable from the set of variables tracked.
+                  --  If we bump into an assignment to some entire variable,
+                  --  where the value assigned does not depend on any
+                  --  variable, then it's likely that the prover has all the
+                  --  relevant information about the value of this variable
+                  --  for the proof. Remove this variable from the set of
+                  --  variables tracked.
 
                   when N_Assignment_Statement =>
                      declare
@@ -3234,7 +3239,8 @@ package body Flow_Error_Messages is
                         Id        : Flow_Id;
                         Expr_Vars : Flow_Id_Sets.Set;
                      begin
-                        --  See if this is an assignment to an entire variable...
+                        --  See if this is an assignment to an entire
+                        --  variable...
 
                         if Nkind (Lhs) in N_Has_Entity then
                            Var := Entity (Lhs);
@@ -3246,14 +3252,15 @@ package body Flow_Error_Messages is
                               Expr_Vars :=
                                 Get_Filtered_Variables_For_Proof (Expr, N);
 
-                              --  and it is assigned a value that does not depend
-                              --  on any variable. In that case, remove the
-                              --  variable from the set of variables tracked.
+                              --  and it is assigned a value that does not
+                              --  depend on any variable. In that case,
+                              --  remove the variable from the set of
+                              --  variables tracked.
 
                               --  ??? Currently Expr_Vars may contain variables
                               --  that are only Proof_In globals to a call in
-                              --  Expr, which ideally should be discarded here
-                              --  for better precision.
+                              --  Expr, which ideally should be discarded
+                              --  here for better precision.
 
                               if Expr_Vars.Is_Empty then
                                  Check_Vars.Delete (Id);
@@ -3287,23 +3294,24 @@ package body Flow_Error_Messages is
                               Var := SPARK_Atree.Get_Entire_Object (Actual);
                               Id := Direct_Mapping_Id (Var);
 
-                              --  Include the actual in the variables written in
-                              --  the call.
+                              --  Include the actual in the variables written
+                              --  in the call.
 
                               Write_Vars.Include (Id);
 
                               --  Store the mapping formal->actual for possibly
-                              --  removing the actual when the formal is mentioned
-                              --  in the postcondition.
+                              --  removing the actual when the formal is
+                              --  mentioned in the postcondition.
 
                               Formal_To_Actual.Insert
                                 (Direct_Mapping_Id (Formal), Id);
 
-                              --  Store the mapping actual->formal for expressing
-                              --  the explanation in terms of formal parameters
-                              --  missing from the postcondition. We use Include
-                              --  instead of Insert here as the same actual could
-                              --  correspond to multiple formals.
+                              --  Store the mapping actual->formal for
+                              --  expressing the explanation in terms of formal
+                              --  parameters missing from the postcondition. We
+                              --  use Include instead of Insert here as the
+                              --  same actual could correspond to multiple
+                              --  formals.
 
                               Actual_To_Formal.Include
                                 (Id, Direct_Mapping_Id (Formal));
@@ -3329,7 +3337,8 @@ package body Flow_Error_Messages is
 
                         Iterate_Call (Stmt);
 
-                        --  Retrieve those variables mentioned in a postcondition
+                        --  Retrieve those variables mentioned in a
+                        --  postcondition.
 
                         Info_Vars.Clear;
                         Pragmas := Get_Pre_Post (Proc, Pragma_Postcondition);
@@ -3371,8 +3380,8 @@ package body Flow_Error_Messages is
                                (To_String (Expl),
                                 Secondary_Loc => Secondary_Loc);
 
-                        --  Otherwise, continue the search only for the variables
-                        --  that are not modified in the call.
+                        --  Otherwise, continue the search only for the
+                        --  variables that are not modified in the call.
 
                         else
                            Check_Vars.Difference (Write_Vars);
@@ -3391,9 +3400,9 @@ package body Flow_Error_Messages is
                           Gnat2Why.Expr.Loops.Get_Loop_Invariant (Stmt);
 
                         --  Compute those variables mentioned in the loop test.
-                        --  Even if the loop test is not added as loop invariant,
-                        --  this information may be available to prove the
-                        --  property.
+                        --  Even if the loop test is not added as loop
+                        --  invariant, this information may be available to
+                        --  prove the property.
 
                         Info_Vars.Clear;
 
@@ -3425,7 +3434,8 @@ package body Flow_Error_Messages is
                            end case;
                         end;
 
-                        --  Retrieve those variables mentioned in a loop invariant
+                        --  Retrieve those variables mentioned in a loop
+                        --  invariant.
 
                         for Prag of Pragmas loop
                            declare
@@ -3476,11 +3486,11 @@ package body Flow_Error_Messages is
 
                         --  Otherwise, continue the search only if all the
                         --  variables involved in the check are not modified in
-                        --  the loop. Otherwise, it's likely that the information
-                        --  provided in a loop invariant is either insufficient
-                        --  or that the problem lies with prover capabilities. On
-                        --  both cases, the explanation does not lie beyond the
-                        --  loop itself.
+                        --  the loop. Otherwise, it's likely that the
+                        --  information provided in a loop invariant is either
+                        --  insufficient or that the problem lies with prover
+                        --  capabilities. On both cases, the explanation does
+                        --  not lie beyond the loop itself.
 
                         elsif Check_Vars.Overlap (Write_Vars) then
                            goto END_OF_SEARCH;
@@ -3505,8 +3515,8 @@ package body Flow_Error_Messages is
                              or else Get_Pragma (Proc, Get_Pragma_Id (Prag_N))
                                      /= Prag_N
                            then
-                              --  Retrieve the next explanation node to continue
-                              --  the search.
+                              --  Retrieve the next explanation node to
+                              --  continue the search.
 
                               Stmt := Get_Previous_Explain_Node (Stmt);
 
@@ -3514,10 +3524,10 @@ package body Flow_Error_Messages is
                            end if;
                         end if;
 
-                        --  If we're looking for an explanation for a check inside
-                        --  a postcondition attached to that subprogram, restart
-                        --  the search from the last statement of the subprogram
-                        --  body.
+                        --  If we're looking for an explanation for a check
+                        --  inside a postcondition attached to that subprogram,
+                        --  restart the search from the last statement of the
+                        --  subprogram body.
 
                         if not Restarted_Search
                           and then Present (Prag_N)
@@ -3536,8 +3546,8 @@ package body Flow_Error_Messages is
                                      (Statements
                                         (Handled_Statement_Sequence (Body_N)));
 
-                                 --  Retrieve the next explanation node to restart
-                                 --  the search.
+                                 --  Retrieve the next explanation node to
+                                 --  restart the search.
 
                                  if Nkind (Stmt) not in Explain_Node_Kind then
                                     Stmt := Get_Previous_Explain_Node (Stmt);
@@ -3598,7 +3608,8 @@ package body Flow_Error_Messages is
                            In_Vars  => Read_Vars,
                            Out_Vars => Out_Vars);
 
-                        --  Retrieve those variables mentioned in a precondition
+                        --  Retrieve those variables mentioned in a
+                        --  precondition.
 
                         Info_Vars.Clear;
                         Pragmas := Get_Pre_Post (Proc, Pragma_Precondition);
@@ -3606,9 +3617,9 @@ package body Flow_Error_Messages is
                            Info_Vars.Union (Get_Variables_From_Expr (Expr, N));
                         end loop;
 
-                        --  Compute variables that are both relevant for proving
-                        --  the property and read in the subprogram with no
-                        --  information on the input value.
+                        --  Compute variables that are both relevant for
+                        --  proving the property and read in the subprogram
+                        --  with no information on the input value.
 
                         Vars := Check_Vars and (Read_Vars - Info_Vars);
 
@@ -4384,9 +4395,10 @@ package body Flow_Error_Messages is
                               else
                                  if Has_Variable_Input (Var) then
 
-                                    --  Constant of an access-to-variable type that
-                                    --  has variable input can be assigned, so it
-                                    --  behaves like a variable.
+                                    --  Constant of an access-to-variable type
+                                    --  that has variable input can be
+                                    --  assigned, so it behaves like a
+                                    --  variable.
 
                                     if Is_Access_Variable (Etype (Var)) then
                                        null;
@@ -4434,10 +4446,10 @@ package body Flow_Error_Messages is
                               Append (R, " constituent of ");
                               Append_Quote;
 
-                              --  If the scope of the constituent is different from
-                              --  the scope of its abstract state then we want to
-                              --  prefix the name of the abstract state with its
-                              --  immediate scope.
+                              --  If the scope of the constituent is different
+                              --  from the scope of its abstract state then we
+                              --  want to prefix the name of the abstract state
+                              --  with its immediate scope.
 
                               if State_Scope /= Constituent_Scope then
                                  Append (Buf, Chars (State_Scope));
@@ -4447,11 +4459,12 @@ package body Flow_Error_Messages is
                                  Buf.Length := 0;
                               end if;
 
-                              --  We append the abstract state. Note that we are not
-                              --  using Flow_Id_To_String because of the special
-                              --  handling above. In fact, we only add a prefix when
-                              --  the immediate scope of the constituent is different
-                              --  than the immediate scope of the abstract state.
+                              --  We append the abstract state. Note that we
+                              --  are not using Flow_Id_To_String because of
+                              --  the special handling above. In fact, we only
+                              --  add a prefix when the immediate scope of the
+                              --  constituent is different than the immediate
+                              --  scope of the abstract state.
 
                               Append (Buf, Chars (State_Id));
                               Errout.Adjust_Name_Case (Buf, Sloc (State_Id));
@@ -4524,8 +4537,8 @@ package body Flow_Error_Messages is
                            end;
 
                         when others =>
-                           --  Can't really add source information for stuff that
-                           --  doesn't come from the tree.
+                           --  Can't really add source information for stuff
+                           --  that doesn't come from the tree.
                            null;
                      end case;
                   end if;

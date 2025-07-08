@@ -4625,10 +4625,10 @@ package body Flow_Utility is
                           not Introduces_Private_Fields (Old_T, New_T, Scope)
                         else False);
                      --  Normally, one of Old_T and New_T is an ancestor of the
-                     --  other. However, when we peek into declarations of nested
-                     --  packages without adjusting the visibility, we can
-                     --  encounter conversions for which this derivation is not
-                     --  visible.
+                     --  other. However, when we peek into declarations of
+                     --  nested packages without adjusting the visibility,
+                     --  we can encounter conversions for which this
+                     --  derivation is not visible.
 
                      New_Comps : Flow_Id_Sets.Set;
                      The_Ext   : constant Flow_Id :=
@@ -4648,8 +4648,8 @@ package body Flow_Utility is
                         New_Comps.Include (The_Ext);
                      end if;
 
-                     --  Go over M to remove additional components not present in
-                     --  New_T. Merge their inputs into default.
+                     --  Go over M to remove additional components not present
+                     --  in New_T. Merge their inputs into default.
 
                      for C in M.Iterate loop
                         declare
@@ -4658,14 +4658,15 @@ package body Flow_Utility is
 
                         begin
                            --  The conversion might be from or to an ancestor
-                           --  type. In the first case, the extension might flow
-                           --  into missing components and the private part. In
-                           --  the second case, the private part and additional
-                           --  components might flow into the extension.
-                           --  Handle both cases at once by merging the extension
-                           --  and the private part into Default and back again.
-                           --  The case where both type have the same private part
-                           --  is handled specifically for more precision.
+                           --  type. In the first case, the extension might
+                           --  flow into missing components and the private
+                           --  part. In the second case, the private part and
+                           --  additional components might flow into the
+                           --  extension.  Handle both cases at once by merging
+                           --  the extension and the private part into Default
+                           --  and back again.  The case where both type have
+                           --  the same private part is handled specifically
+                           --  for more precision.
 
                            if not New_Comps.Contains (K)
                              or else K = The_Ext
@@ -4679,7 +4680,8 @@ package body Flow_Utility is
                         end;
                      end loop;
 
-                     --  Add missing components from New_T. They depend on Default
+                     --  Add missing components from New_T. They depend on
+                     --  Default.
 
                      for K of New_Comps loop
                         New_Map.Insert (K, Default);
@@ -5345,17 +5347,12 @@ package body Flow_Utility is
                   Choice : Node_Id := First (Discrete_Choices (N));
                begin
                   loop
-                     --  Choices in array component appear in various forms
-
+                     --  Choices in array component appear in various forms:
                      --  "(Low .. High => ...)"
-                     if Nkind (Choice)
-                       = N_Range
-
-                         --  "(A_Subtype range Low .. High => ...)"
-                       or else Nkind (Choice)
-                               = N_Subtype_Indication
-
-                                 --  "(A_Subtype => ...)"
+                     --  "(A_Subtype range Low .. High => ...)"
+                     --  "(A_Subtype => ...)"
+                     if Nkind (Choice) = N_Range
+                       or else Nkind (Choice) = N_Subtype_Indication
                        or else (Is_Entity_Name (Choice)
                                 and then Is_Type (Entity (Choice)))
                      then
@@ -5504,8 +5501,9 @@ package body Flow_Utility is
                                     Fold_Functions => Fold_Functions));
 
                            --  The frontend should have rejected all other code
-                           --  constructs. Therefore anything else we find in this
-                           --  action list has been synthesised so we ignore it.
+                           --  constructs. Therefore anything else we find in
+                           --  this action list has been synthesised so we
+                           --  ignore it.
 
                            when others =>
                               pragma Assert (not Comes_From_Source (Action));
@@ -7789,8 +7787,8 @@ package body Flow_Utility is
                            when Private_Part =>
 
                               --  If Map_Root has a private part, then it might
-                              --  be written by the assignment if Assigned_Ty has
-                              --  private fields.
+                              --  be written by the assignment if Assigned_Ty
+                              --  has private fields.
 
                               if New_Comps.Contains
                                    ((New_Typ_Id

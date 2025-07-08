@@ -8032,9 +8032,9 @@ package body Flow.Control_Flow_Graph is
                end;
 
             when Kind_Package =>
-               --  Packages have no obvious globals, but we can extract a list of
-               --  global variables used from the optional rhs of the initializes
-               --  clause:
+               --  Packages have no obvious globals, but we can extract a list
+               --  of global variables used from the optional rhs of the
+               --  initializes clause:
                --
                --     Initializes => (State => (Global_A, ...),
                --
@@ -8045,8 +8045,8 @@ package body Flow.Control_Flow_Graph is
                --  allowed to initialize their own state.
                declare
                   Inputs_Seen : Flow_Id_Sets.Set;
-                  --  An entity might occur on several RHS of Initializes aspect;
-                  --  with this set we avoid duplicates.
+                  --  An entity might occur on several RHS of Initializes
+                  --  aspect; with this set we avoid duplicates.
 
                   Unused   : Flow_Id_Sets.Cursor;
                   Inserted : Boolean;
@@ -8074,9 +8074,9 @@ package body Flow.Control_Flow_Graph is
                   end loop;
                end;
 
-               --  If a Refined_State aspect exists then create initial and final
-               --  vertices for constituents declared in other (private child)
-               --  units.
+               --  If a Refined_State aspect exists then create initial and
+               --  final vertices for constituents declared in other (private
+               --  child) units.
 
                if Entity_Body_In_SPARK (FA.Spec_Entity)
                  and then Has_Non_Null_Abstract_State (FA.Spec_Entity)
@@ -8087,8 +8087,9 @@ package body Flow.Control_Flow_Graph is
                           Iter (Refinement_Constituents (State))
                         loop
                            if not Entity_Is_In_Main_Unit (Constituent) then
-                              --  ??? we should also set Is_Export flag, just like
-                              --  when processing constituents from the same unit.
+                              --  ??? we should also set Is_Export flag, just
+                              --  like when processing constituents from the
+                              --  same unit.
 
                               Create_Initial_And_Final_Vertices
                                 (E => Constituent, FA => FA);

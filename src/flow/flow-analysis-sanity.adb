@@ -881,19 +881,24 @@ package body Flow.Analysis.Sanity is
                      --  * a component or part of a protected type accessed
                      --    from within a protected function.
 
+                     --  The frontend introduces a variable for the current
+                     --  instance in a predicate, which should not lead to an
+                     --  error here.
+
+                     --  disable formatting for deeply nested condition
+                     --!format off
                      if not (Is_Bound (F)
                              or else (Is_Constant_Object (Var)
                                       and then (not Is_Access_Variable
                                                       (Etype (Var))
-                                                --  The frontend introduces a variable for
-                                                --  the current instance in a predicate,
-                                                --  which should not lead to an error here.
                                                 or else not Comes_From_Source
                                                               (Var)))
                              or else Is_Record_Discriminant (F)
                              or else (Ekind (Var) = E_Protected_Type
-                                      and then (Is_Protected_Discriminant (F)
-                                                or else Is_Within_Protected_Function)))
+                                      and then
+                                       (Is_Protected_Discriminant (F)
+                                        or else Is_Within_Protected_Function)))
+                     --!format on
                      then
                         Emit_Error (F);
                      end if;
