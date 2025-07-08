@@ -30,10 +30,12 @@ package body Debug.Timing is
    -- External_Timing --
    ---------------------
 
-   procedure Register_Timing (Timer  : in out Time_Token;
-                              Entity : Subp_Type;
-                              Msg    : String;
-                              Time   : Duration) is
+   procedure Register_Timing
+     (Timer  : in out Time_Token;
+      Entity : Subp_Type;
+      Msg    : String;
+      Time   : Duration)
+   is
       use Timings;
       package Duration_IO is new Ada.Text_IO.Fixed_IO (Duration);
 
@@ -70,7 +72,7 @@ package body Debug.Timing is
       procedure Insert_Entity (Key : Subp_Type; Element : in out Timings.Map)
       is
          pragma Unreferenced (Key);
-         C : Timings.Cursor;
+         C      : Timings.Cursor;
          Unused : Boolean;
       begin
          Element.Insert (Msg, 0.0, C, Unused);
@@ -88,20 +90,17 @@ package body Debug.Timing is
    -- Timing_Start --
    ------------------
 
-   procedure Timing_Start (Timer : out Time_Token)
-   is
+   procedure Timing_Start (Timer : out Time_Token) is
    begin
-      Timer := (History => Entity_Maps.Empty_Map,
-                Start   => Ada.Calendar.Clock);
+      Timer := (History => Entity_Maps.Empty_Map, Start => Ada.Calendar.Clock);
    end Timing_Start;
 
    ----------------------------
    -- Timing_Phase_Completed --
    ----------------------------
 
-   procedure Timing_Phase_Completed (Timer  : in out Time_Token;
-                                     Entity : Subp_Type;
-                                     Msg    : String)
+   procedure Timing_Phase_Completed
+     (Timer : in out Time_Token; Entity : Subp_Type; Msg : String)
    is
 
       use Ada.Calendar;
@@ -118,8 +117,7 @@ package body Debug.Timing is
    -- Timing_History --
    --------------------
 
-   function Timing_History (Timer : Time_Token) return JSON_Value
-   is
+   function Timing_History (Timer : Time_Token) return JSON_Value is
       Result : constant JSON_Value := Create_Object;
    begin
       for P in Timer.History.Iterate loop

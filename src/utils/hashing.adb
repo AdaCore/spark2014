@@ -29,12 +29,12 @@ package body Hashing is
    -- Generic_Integer_Hash --
    --------------------------
 
-   function Generic_Integer_Hash (N : Integer)
-                                  return Ada.Containers.Hash_Type
+   function Generic_Integer_Hash (N : Integer) return Ada.Containers.Hash_Type
    is
-      function To_HT is
-         new Ada.Unchecked_Conversion (Source => Integer,
-                                       Target => Ada.Containers.Hash_Type);
+      function To_HT is new
+        Ada.Unchecked_Conversion
+          (Source => Integer,
+           Target => Ada.Containers.Hash_Type);
    begin
       --  We can do something more clever here in the future.
       return To_HT (N);

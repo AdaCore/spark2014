@@ -46,8 +46,8 @@ package Errout_Wrapper is
    No_Message : constant Message :=
      Message'([], No_Location, EC_None, Null_Unbounded_String);
 
-   package Message_Lists is new Ada.Containers.Indefinite_Doubly_Linked_Lists
-     (Message, "=");
+   package Message_Lists is new
+     Ada.Containers.Indefinite_Doubly_Linked_Lists (Message, "=");
 
    function "&" (M : Message; S : String) return Message;
 
@@ -58,6 +58,7 @@ package Errout_Wrapper is
             Msg           : String_Id;
             Annot_Kind    : Annotate_Kind;
             Justification : Unbounded_String;
+
          when others =>
             null;
       end case;
@@ -198,7 +199,7 @@ package Errout_Wrapper is
    --  Escape the special characters # and & in the error message
 
    function Compilation_Errors return Boolean
-     renames Errout.Compilation_Errors;
+   renames Errout.Compilation_Errors;
 
    procedure Finalize (Last_Call : Boolean) renames Errout.Finalize;
    --  ??? TODO remove
