@@ -155,6 +155,7 @@ data_package.ads:3:01: info: flow dependencies proved
 data_package.ads:6:04: info: initialization of "Data_1" proved
 data_package.ads:7:04: info: initialization of "Data_2" proved
 data_package.ads:8:04: info: initialization of "Data_3" proved
+external_interface.ads:2:36: info: initialization of "External_Interface.File_System" proved
 external_interface.ads:2:49: info: flow dependencies proved
 stack.adb:9:21: high: array index check might fail (e.g. when Top = 0) [reason for check: value must be a valid index into the array] [possible fix: subprogram at stack.ads:12 should mention Top in a precondition]
 stack.adb:10:18: info: range check proved (CVC5: 2 VC)
