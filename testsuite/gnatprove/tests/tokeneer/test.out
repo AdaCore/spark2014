@@ -41,6 +41,7 @@ admin.ads:206:22: info: postcondition proved
 admin.ads:219:13: info: implicit aspect Always_Terminates on "SecurityOfficerIsPresent" has been proved, subprogram will terminate
 admin.ads:220:11: info: data dependencies proved
 admin.ads:274:27: info: index check proved
+admintoken-interfac.ads:25:28: info: initialization of "Interfac.Status" constituent of "AdminToken.Status" proved
 admintoken-interfac.ads:28:08: info: flow dependencies proved
 admintoken.adb:48:42: info: initialization of "AuthCert" constituent of "State" proved
 admintoken.adb:49:42: info: initialization of "IDCert" constituent of "State" proved
@@ -1068,6 +1069,7 @@ configuration.ads:48:11: info: flow dependencies proved
 configuration.ads:67:07: info: initialization of "DataValid" proved
 configuration.ads:68:11: info: data dependencies proved
 configuration.ads:74:11: info: flow dependencies proved
+display-interfac.ads:22:27: info: initialization of "Interfac.Output" constituent of "Display.Output" proved
 display-interfac.ads:24:08: info: flow dependencies proved
 display.adb:120:13: info: add a contract to analyze it separately from calling contexts
 display.adb:120:13: info: implicit aspect Always_Terminates on "CombineLines" has been proved, subprogram will terminate
@@ -1128,6 +1130,7 @@ display.ads:148:11: info: data dependencies proved
 display.ads:154:11: info: flow dependencies proved
 display.ads:173:11: info: data dependencies proved
 display.ads:174:11: info: flow dependencies proved
+displayapi.ads:24:21: info: initialization of "DisplayAPI.State" proved
 displayapi.ads:25:03: info: flow dependencies proved
 door.adb:59:11: info: data dependencies proved
 door.adb:68:11: info: flow dependencies proved
@@ -1470,6 +1473,7 @@ enrolment.ads:56:24: info: initialization of "Description" proved
 enrolment.ads:57:11: info: data dependencies proved
 enrolment.ads:63:11: info: flow dependencies proved
 enrolment.ads:78:22: info: postcondition proved
+floppy.ads:25:28: info: initialization of "Floppy.Output" proved
 floppy.ads:26:08: info: flow dependencies proved
 iandatypes.ads:35:13: info: implicit aspect Always_Terminates on "FarT_Image" has been proved, subprogram will terminate
 iandatypes.ads:36:12: info: predicate check justified
@@ -1488,6 +1492,7 @@ keyboard.ads:78:11: info: data dependencies proved
 keyboard.ads:79:11: info: flow dependencies proved
 keyboard.ads:91:11: info: data dependencies proved
 keyboard.ads:92:11: info: flow dependencies proved
+keystore-interfac.ads:23:27: info: initialization of "Interfac.Store" constituent of "KeyStore.Store" proved
 keystore-interfac.ads:24:08: info: flow dependencies proved
 keystore-interfac.ads:95:13: info: implicit aspect Always_Terminates on "ReturnValueT_Image" has been proved, subprogram will terminate
 keystore-interfac.ads:96:20: info: predicate check justified
@@ -1847,6 +1852,9 @@ screen.ads:95:11: info: data dependencies proved
 screen.ads:102:11: info: flow dependencies proved
 screen.ads:137:11: info: data dependencies proved
 screen.ads:143:11: info: flow dependencies proved
+spark_io.ads:15:27: info: initialization of "Spark_IO.State" proved
+spark_io.ads:16:27: info: initialization of "Spark_IO.Inputs" proved
+spark_io.ads:17:27: info: initialization of "Spark_IO.Outputs" proved
 spark_io.ads:18:08: info: flow dependencies proved
 stats.adb:49:57: info: overflow check proved
 stats.adb:64:51: info: overflow check proved
@@ -2171,6 +2179,8 @@ userentry.ads:160:11: info: flow dependencies proved
 userentry.ads:264:13: info: postcondition proved
 userentry.ads:288:11: info: data dependencies proved
 userentry.ads:294:11: info: flow dependencies proved
+usertoken-interfac.ads:28:28: info: initialization of "Interfac.Status" constituent of "UserToken.Status" proved
+usertoken-interfac.ads:31:28: info: initialization of "Interfac.Output" constituent of "UserToken.Output" proved
 usertoken-interfac.ads:33:08: info: flow dependencies proved
 usertoken.adb:118:11: info: data dependencies proved
 usertoken.adb:118:33: info: initialization of "IDCert" constituent of "State" proved

@@ -265,6 +265,7 @@ calculate.adb:7:26: info: justified that incorrect dependency "A => C"
 calculate.adb:12:11: high: overflow check might fail, cannot prove upper bound for C + 1 (e.g. when C = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 3 should mention C in a precondition]
 circle_demo.adb:10:04: info: initialization of "My_Circle" proved
 circle_demo.adb:14:14: info: precondition proved (CVC5: 1 VC)
+console_io.ads:14:21: info: initialization of "Console_IO.IO_Subsystem" proved
 console_io.ads:15:03: info: flow dependencies proved
 contains.adb:2:10: info: implicit aspect Always_Terminates on "Contains" has been proved, subprogram will terminate
 contains.adb:7:04: info: initialization of "Result_Index" proved
@@ -777,7 +778,9 @@ interval.ads:6:13: medium: for the result of Make at interval.ads:6
 interval.ads:6:13: medium: invariant check might fail
 interval.ads:9:09: info: invariant check proved on default value (CVC5: 1 VC)
 interval.ads:17:13: info: implicit aspect Always_Terminates on "Has_Valid_Order" has been proved, subprogram will terminate
+interval_tree.ads:4:23: info: initialization of "Interval_Tree.Internal_Tree" proved
 interval_tree.ads:5:05: info: flow dependencies proved
+interval_tree_wrapper.ads:5:25: info: initialization of "Interval_Tree_Wrapper.Underlying_Tree" proved
 interval_tree_wrapper.ads:6:07: info: flow dependencies proved
 led_display.adb:8:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 led_display.adb:8:04: warning: address specification on "Value" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [imprecise-address-specification] [E0012]

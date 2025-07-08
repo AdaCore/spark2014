@@ -295,6 +295,7 @@ hermes-oid.ads:43:08: info: flow dependencies proved
 hermes-oid.ads:53:42: info: initialization of "Result" proved
 hermes-oid.ads:53:68: info: initialization of "Octet_Count" proved
 hermes-oid.ads:55:08: info: flow dependencies proved
+logger.ads:14:25: info: initialization of "Logger.Log_Stream" proved
 logger.ads:15:06: info: flow dependencies proved
 messages.adb:18:20: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 messages.adb:21:13: info: loop invariant initialization proved (CVC5: 3 VC)
