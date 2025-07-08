@@ -23,9 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with CE_Values;     use CE_Values;
-with Types;         use Types;
-with VC_Kinds;      use VC_Kinds;
+with CE_Values; use CE_Values;
+with Types;     use Types;
+with VC_Kinds;  use VC_Kinds;
 
 package CE_Display is
 
@@ -34,8 +34,7 @@ package CE_Display is
       VC_Loc  : Source_Ptr;
       VC_Node : Node_Id;
       VC_K    : VC_Kind;
-      Subp    : Entity_Id)
-      return Cntexample_Data;
+      Subp    : Entity_Id) return Cntexample_Data;
    --  Create pretty printed counterexample.
    --  Note that deep copy of Cntexmp is made and thus the content of
    --  Cntexmp is not impacted by pretty printing.
@@ -46,24 +45,18 @@ package CE_Display is
    --  @return pretty printed counterexample.
 
    function Get_Cntexmp_One_Liner
-     (Cntexmp : Cntexample_File_Maps.Map;
-      VC_Loc  : Source_Ptr)
-      return String;
+     (Cntexmp : Cntexample_File_Maps.Map; VC_Loc : Source_Ptr) return String;
    --  Get the part of the counterexample corresponding to the location of
    --  the construct that triggers VC.
 
    function Get_Environment_CE
-     (N    : Node_Id;
-      K    : VC_Kind;
-      Subp : Node_Id)
-      return Cntexample_Data;
+     (N : Node_Id; K : VC_Kind; Subp : Node_Id) return Cntexample_Data;
    --  Get the elements of the evaluation environment used in the construct
    --  that triggers a VC, with N the AST node corresponding to that construct
    --  and Subp the enclosing subprogram.
 
    function Remap_VC_Info
-     (Cntexmp : Cntexample_File_Maps.Map;
-      VC_Loc  : Source_Ptr)
+     (Cntexmp : Cntexample_File_Maps.Map; VC_Loc : Source_Ptr)
       return Cntexample_File_Maps.Map;
    --  Map counterexample information related to the current VC to the
    --  location of the check in the Ada file.
