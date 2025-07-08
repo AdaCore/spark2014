@@ -8,7 +8,8 @@ type_invariant_legal.adb:41:14: info: range check proved (CVC5: 2 VC)
 type_invariant_legal.adb:47:14: medium: range check might fail, cannot prove lower bound for X - 1 (e.g. when X = 0) [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: precondition of subprogram at line 5 should mention X]
 type_invariant_legal.ads:7:13: info: implicit aspect Always_Terminates on "Pub" has been proved, subprogram will terminate
 type_invariant_legal.ads:7:13: medium: for the result of Pub at type_invariant_legal.ads:7
-type_invariant_legal.ads:7:13: medium: invariant check might fail (e.g. when Pub'Result = 0)
+type_invariant_legal.ads:7:13: medium: in inlined invariant at type_invariant_legal.ads:15
+type_invariant_legal.ads:7:13: medium: invariant check might fail, cannot prove T /= 0 (e.g. when Pub'Result = 0)
 type_invariant_legal.ads:8:13: info: for the result of E_Pub at type_invariant_legal.ads:8
 type_invariant_legal.ads:8:13: info: implicit aspect Always_Terminates on "E_Pub" has been proved, subprogram will terminate
 type_invariant_legal.ads:8:13: info: invariant check proved (CVC5: 1 VC)
@@ -17,8 +18,10 @@ type_invariant_legal.ads:11:14: info: for X at the end of Pub_Out at type_invari
 type_invariant_legal.ads:11:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal.ads:11:23: info: initialization of "X" proved
 type_invariant_legal.ads:12:14: medium: for X at the end of Pub_In_Out at type_invariant_legal.ads:12
-type_invariant_legal.ads:12:14: medium: invariant check might fail (e.g. when X = 1)
-type_invariant_legal.ads:15:09: medium: invariant check might fail on default value
+type_invariant_legal.ads:12:14: medium: in inlined invariant at type_invariant_legal.ads:15
+type_invariant_legal.ads:12:14: medium: invariant check might fail, cannot prove T /= 0 (e.g. when X = 1)
+type_invariant_legal.ads:15:09: medium: in inlined invariant at type_invariant_legal.ads:15
+type_invariant_legal.ads:15:09: medium: invariant check might fail on default value, cannot prove T /= 0
 type_invariant_legal.ads:17:13: info: implicit aspect Always_Terminates on "Priv" has been proved, subprogram will terminate
 type_invariant_legal.ads:18:13: info: implicit aspect Always_Terminates on "E_Priv" has been proved, subprogram will terminate
 type_invariant_legal_2.adb:3:14: warning: subprogram "Priv_In" has no effect
@@ -30,7 +33,8 @@ type_invariant_legal_2.adb:21:14: info: precondition proved (Trivial: 1 VC)
 type_invariant_legal_2.adb:22:14: info: for X before the call at type_invariant_legal_2.ads:13
 type_invariant_legal_2.adb:22:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_2.adb:30:14: medium: for X before the call at type_invariant_legal_2.ads:12
-type_invariant_legal_2.adb:30:14: medium: invariant check might fail (e.g. when X = 0) [possible fix: precondition of subprogram at line 3 should mention X]
+type_invariant_legal_2.adb:30:14: medium: in inlined invariant at type_invariant_legal_2.ads:20
+type_invariant_legal_2.adb:30:14: medium: invariant check might fail, cannot prove T /= 0 (e.g. when X = 0) [possible fix: precondition of subprogram at line 3 should mention X]
 type_invariant_legal_2.adb:31:14: info: precondition proved (Trivial: 1 VC)
 type_invariant_legal_2.adb:32:14: info: for X before the call at type_invariant_legal_2.ads:13
 type_invariant_legal_2.adb:32:14: info: invariant check proved (CVC5: 1 VC)
@@ -47,21 +51,25 @@ type_invariant_legal_2.adb:54:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_2.adb:62:09: warning: unused assignment
 type_invariant_legal_2.adb:62:14: info: range check proved (CVC5: 2 VC)
 type_invariant_legal_2.adb:63:14: medium: for X before the call at type_invariant_legal_2.ads:12
-type_invariant_legal_2.adb:63:14: medium: invariant check might fail (e.g. when X = 0) [possible fix: subprogram at type_invariant_legal_2.ads:17 should mention X in a precondition]
+type_invariant_legal_2.adb:63:14: medium: in inlined invariant at type_invariant_legal_2.ads:20
+type_invariant_legal_2.adb:63:14: medium: invariant check might fail, cannot prove T /= 0 (e.g. when X = 0) [possible fix: subprogram at type_invariant_legal_2.ads:17 should mention X in a precondition]
 type_invariant_legal_2.adb:64:14: info: precondition proved (Trivial: 1 VC)
 type_invariant_legal_2.adb:65:07: info: precondition proved (Trivial: 1 VC)
 type_invariant_legal_2.adb:66:14: medium: for X before the call at type_invariant_legal_2.ads:13
-type_invariant_legal_2.adb:66:14: medium: invariant check might fail (e.g. when X = 0) [possible fix: call at line 65 should mention X (for argument X) in a postcondition]
+type_invariant_legal_2.adb:66:14: medium: in inlined invariant at type_invariant_legal_2.ads:20
+type_invariant_legal_2.adb:66:14: medium: invariant check might fail, cannot prove T /= 0 (e.g. when X = 0) [possible fix: call at line 65 should mention X (for argument X) in a postcondition]
 type_invariant_legal_2.adb:74:09: warning: unused assignment
 type_invariant_legal_2.adb:74:14: medium: range check might fail, cannot prove lower bound for X - 1 (e.g. when X = 0) [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: precondition of subprogram at line 5 should mention X]
 type_invariant_legal_2.adb:75:14: medium: for X before the call at type_invariant_legal_2.ads:12
-type_invariant_legal_2.adb:75:14: medium: invariant check might fail (e.g. when X = 0) [possible fix: precondition of subprogram at line 5 should mention X]
+type_invariant_legal_2.adb:75:14: medium: in inlined invariant at type_invariant_legal_2.ads:20
+type_invariant_legal_2.adb:75:14: medium: invariant check might fail, cannot prove T /= 0 (e.g. when X = 0) [possible fix: precondition of subprogram at line 5 should mention X]
 type_invariant_legal_2.adb:76:14: info: precondition proved (Trivial: 1 VC)
 type_invariant_legal_2.adb:78:14: info: for X before the call at type_invariant_legal_2.ads:13
 type_invariant_legal_2.adb:78:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_2.adb:83:04: warning: analyzing unreferenced procedure "Extra_Test" [unreferenced-procedure]
 type_invariant_legal_2.adb:85:07: medium: for X before the call at type_invariant_legal_2.ads:17
-type_invariant_legal_2.adb:85:07: medium: invariant check might fail (e.g. when X = 0)
+type_invariant_legal_2.adb:85:07: medium: in inlined invariant at type_invariant_legal_2.ads:20
+type_invariant_legal_2.adb:85:07: medium: invariant check might fail, cannot prove T /= 0 (e.g. when X = 0)
 type_invariant_legal_2.adb:86:07: info: precondition proved (Trivial: 1 VC)
 type_invariant_legal_2.ads:12:13: info: implicit aspect Always_Terminates on "Pub" has been proved, subprogram will terminate
 type_invariant_legal_2.ads:12:18: warning: unused variable "X"
@@ -74,7 +82,8 @@ type_invariant_legal_2.ads:16:23: info: initialization of "X" proved
 type_invariant_legal_2.ads:17:14: info: for X at the end of Pub_In_Out at type_invariant_legal_2.ads:17
 type_invariant_legal_2.ads:17:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_2.ads:17:26: warning: unused initial value of "X"
-type_invariant_legal_2.ads:20:09: medium: invariant check might fail on default value
+type_invariant_legal_2.ads:20:09: medium: in inlined invariant at type_invariant_legal_2.ads:20
+type_invariant_legal_2.ads:20:09: medium: invariant check might fail on default value, cannot prove T /= 0
 type_invariant_legal_2.ads:22:13: info: implicit aspect Always_Terminates on "Priv" has been proved, subprogram will terminate
 type_invariant_legal_2.ads:22:19: warning: unused variable "X"
 type_invariant_legal_2.ads:23:13: info: implicit aspect Always_Terminates on "E_Priv" has been proved, subprogram will terminate
@@ -138,7 +147,8 @@ type_invariant_legal_4.adb:57:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_4.adb:64:09: warning: unused assignment
 type_invariant_legal_4.adb:64:14: info: range check proved (CVC5: 2 VC)
 type_invariant_legal_4.adb:65:14: medium: for X before the call at type_invariant_legal_4.ads:21
-type_invariant_legal_4.adb:65:14: medium: invariant check might fail (e.g. when X = 0) [possible fix: subprogram at type_invariant_legal_4.ads:16 should mention X in a precondition]
+type_invariant_legal_4.adb:65:14: medium: in inlined invariant at type_invariant_legal_4.ads:19
+type_invariant_legal_4.adb:65:14: medium: invariant check might fail, cannot prove T /= 0 (e.g. when X = 0) [possible fix: subprogram at type_invariant_legal_4.ads:16 should mention X in a precondition]
 type_invariant_legal_4.adb:66:14: info: for X before the call at type_invariant_legal_4.ads:21
 type_invariant_legal_4.adb:66:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_4.adb:66:14: info: precondition proved (Trivial: 1 VC)
@@ -150,7 +160,8 @@ type_invariant_legal_4.adb:69:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_4.adb:76:09: warning: unused assignment
 type_invariant_legal_4.adb:76:14: info: range check proved (CVC5: 2 VC)
 type_invariant_legal_4.adb:77:14: medium: for X before the call at type_invariant_legal_4.ads:21
-type_invariant_legal_4.adb:77:14: medium: invariant check might fail (e.g. when X = 0) [possible fix: precondition of subprogram at line 7 should mention X]
+type_invariant_legal_4.adb:77:14: medium: in inlined invariant at type_invariant_legal_4.ads:19
+type_invariant_legal_4.adb:77:14: medium: invariant check might fail, cannot prove T /= 0 (e.g. when X = 0) [possible fix: precondition of subprogram at line 7 should mention X]
 type_invariant_legal_4.adb:78:14: info: for X before the call at type_invariant_legal_4.ads:21
 type_invariant_legal_4.adb:78:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_4.adb:78:14: info: precondition proved (Trivial: 1 VC)
@@ -174,7 +185,8 @@ type_invariant_legal_4.ads:15:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_4.ads:15:27: info: data dependencies proved
 type_invariant_legal_4.ads:16:14: info: for X at the end of Pub_In_Out at type_invariant_legal_4.ads:21
 type_invariant_legal_4.ads:16:14: info: invariant check proved (CVC5: 1 VC)
-type_invariant_legal_4.ads:19:09: medium: invariant check might fail on default value
+type_invariant_legal_4.ads:19:09: medium: in inlined invariant at type_invariant_legal_4.ads:19
+type_invariant_legal_4.ads:19:09: medium: invariant check might fail on default value, cannot prove T /= 0
 type_invariant_legal_4.ads:21:04: info: at the end of the elaboration of package at type_invariant_legal_4.ads:7
 type_invariant_legal_4.ads:21:04: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_4.ads:23:13: info: implicit aspect Always_Terminates on "Priv" has been proved, subprogram will terminate
@@ -228,7 +240,8 @@ type_invariant_legal_5.adb:59:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_5.adb:66:09: warning: unused assignment
 type_invariant_legal_5.adb:66:14: info: range check proved (CVC5: 2 VC)
 type_invariant_legal_5.adb:67:14: medium: for X before the call at type_invariant_legal_5.ads:24
-type_invariant_legal_5.adb:67:14: medium: invariant check might fail (e.g. when X = 0) [possible fix: subprogram at type_invariant_legal_5.ads:19 should mention X in a precondition]
+type_invariant_legal_5.adb:67:14: medium: in inlined invariant at type_invariant_legal_5.ads:22
+type_invariant_legal_5.adb:67:14: medium: invariant check might fail, cannot prove T /= 0 (e.g. when X = 0) [possible fix: subprogram at type_invariant_legal_5.ads:19 should mention X in a precondition]
 type_invariant_legal_5.adb:68:14: info: for X before the call at type_invariant_legal_5.ads:24
 type_invariant_legal_5.adb:68:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_5.adb:68:14: info: precondition proved (Trivial: 1 VC)
@@ -240,7 +253,8 @@ type_invariant_legal_5.adb:71:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_5.adb:78:09: warning: unused assignment
 type_invariant_legal_5.adb:78:14: info: range check proved (CVC5: 2 VC)
 type_invariant_legal_5.adb:79:14: medium: for X before the call at type_invariant_legal_5.ads:24
-type_invariant_legal_5.adb:79:14: medium: invariant check might fail (e.g. when X = 0) [possible fix: precondition of subprogram at line 8 should mention X]
+type_invariant_legal_5.adb:79:14: medium: in inlined invariant at type_invariant_legal_5.ads:22
+type_invariant_legal_5.adb:79:14: medium: invariant check might fail, cannot prove T /= 0 (e.g. when X = 0) [possible fix: precondition of subprogram at line 8 should mention X]
 type_invariant_legal_5.adb:80:14: info: for X before the call at type_invariant_legal_5.ads:24
 type_invariant_legal_5.adb:80:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_5.adb:80:14: info: precondition proved (Trivial: 1 VC)
@@ -268,7 +282,8 @@ type_invariant_legal_5.ads:19:14: info: for X at the end of Pub_In_Out at type_i
 type_invariant_legal_5.ads:19:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_5.ads:19:14: warning: unused initial value of "X" constituent of "State"
 type_invariant_legal_5.ads:19:30: info: data dependencies proved
-type_invariant_legal_5.ads:22:09: medium: invariant check might fail on default value
+type_invariant_legal_5.ads:22:09: medium: in inlined invariant at type_invariant_legal_5.ads:22
+type_invariant_legal_5.ads:22:09: medium: invariant check might fail on default value, cannot prove T /= 0
 type_invariant_legal_5.ads:24:04: info: at the end of the elaboration of package at type_invariant_legal_5.ads:7
 type_invariant_legal_5.ads:24:04: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_5.ads:26:13: info: implicit aspect Always_Terminates on "Priv" has been proved, subprogram will terminate
@@ -283,11 +298,13 @@ type_invariant_legal_6.adb:12:07: medium: implicit aspect Always_Terminates on "
 type_invariant_legal_6.adb:12:14: info: for X before the call at external_6.ads:5
 type_invariant_legal_6.adb:12:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_6.adb:17:14: medium: for X before the call at external_6.ads:5
-type_invariant_legal_6.adb:17:14: medium: invariant check might fail (e.g. when X = 0) [possible fix: precondition of subprogram at line 5 should mention X]
+type_invariant_legal_6.adb:17:14: medium: in inlined invariant at type_invariant_legal_6.ads:16
+type_invariant_legal_6.adb:17:14: medium: invariant check might fail, cannot prove T /= 0 (e.g. when X = 0) [possible fix: precondition of subprogram at line 5 should mention X]
 type_invariant_legal_6.adb:22:07: info: for X before the call at external_6.ads:6
 type_invariant_legal_6.adb:22:07: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_6.adb:27:07: medium: for X before the call at external_6.ads:6
-type_invariant_legal_6.adb:27:07: medium: invariant check might fail (e.g. when X = 0)
+type_invariant_legal_6.adb:27:07: medium: in inlined invariant at type_invariant_legal_6.ads:16
+type_invariant_legal_6.adb:27:07: medium: invariant check might fail, cannot prove T /= 0 (e.g. when X = 0)
 type_invariant_legal_6.adb:32:07: warning: statement has no effect
 type_invariant_legal_6.adb:32:14: warning: "X" is set by "Write" but not used after the call
 type_invariant_legal_6.adb:33:07: info: for X before the call at external_6.ads:8
@@ -295,7 +312,8 @@ type_invariant_legal_6.adb:33:07: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_6.adb:33:07: warning: statement has no effect
 type_invariant_legal_6.adb:33:19: warning: "X" is set by "Read_Write" but not used after the call
 type_invariant_legal_6.adb:35:07: medium: for X before the call at external_6.ads:8
-type_invariant_legal_6.adb:35:07: medium: invariant check might fail (e.g. when X = 0)
+type_invariant_legal_6.adb:35:07: medium: in inlined invariant at type_invariant_legal_6.ads:16
+type_invariant_legal_6.adb:35:07: medium: invariant check might fail, cannot prove T /= 0 (e.g. when X = 0)
 type_invariant_legal_6.adb:40:07: warning: statement has no effect
 type_invariant_legal_6.adb:40:14: warning: "X" is set by "Write" but not used after the call
 type_invariant_legal_6.adb:41:07: info: for X before the call at external_6.ads:8
@@ -303,19 +321,23 @@ type_invariant_legal_6.adb:41:07: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_6.adb:41:07: warning: statement has no effect
 type_invariant_legal_6.adb:41:19: warning: "X" is set by "Read_Write" but not used after the call
 type_invariant_legal_6.adb:43:07: medium: for X before the call at external_6.ads:8
-type_invariant_legal_6.adb:43:07: medium: invariant check might fail (e.g. when X = 0)
+type_invariant_legal_6.adb:43:07: medium: in inlined invariant at type_invariant_legal_6.ads:16
+type_invariant_legal_6.adb:43:07: medium: invariant check might fail, cannot prove T /= 0 (e.g. when X = 0)
 type_invariant_legal_6.adb:48:07: info: for X before the call at external_6.ads:8
 type_invariant_legal_6.adb:48:07: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_6.adb:48:07: warning: statement has no effect
 type_invariant_legal_6.adb:48:19: warning: "X" is set by "Read_Write" but not used after the call
 type_invariant_legal_6.adb:50:07: medium: for X before the call at external_6.ads:8
-type_invariant_legal_6.adb:50:07: medium: invariant check might fail (e.g. when X = 0)
+type_invariant_legal_6.adb:50:07: medium: in inlined invariant at type_invariant_legal_6.ads:16
+type_invariant_legal_6.adb:50:07: medium: invariant check might fail, cannot prove T /= 0 (e.g. when X = 0)
 type_invariant_legal_6.adb:55:07: medium: for X before the call at external_6.ads:8
-type_invariant_legal_6.adb:55:07: medium: invariant check might fail (e.g. when X = 0)
+type_invariant_legal_6.adb:55:07: medium: in inlined invariant at type_invariant_legal_6.ads:16
+type_invariant_legal_6.adb:55:07: medium: invariant check might fail, cannot prove T /= 0 (e.g. when X = 0)
 type_invariant_legal_6.adb:55:07: warning: statement has no effect
 type_invariant_legal_6.adb:55:19: warning: "X" is set by "Read_Write" but not used after the call
 type_invariant_legal_6.adb:57:07: medium: for X before the call at external_6.ads:8
-type_invariant_legal_6.adb:57:07: medium: invariant check might fail (e.g. when X = 0)
+type_invariant_legal_6.adb:57:07: medium: in inlined invariant at type_invariant_legal_6.ads:16
+type_invariant_legal_6.adb:57:07: medium: invariant check might fail, cannot prove T /= 0 (e.g. when X = 0)
 type_invariant_legal_6.ads:10:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
 type_invariant_legal_6.ads:11:14: warning: subprogram "Pub_In" has no effect
 type_invariant_legal_6.ads:12:14: info: for X at the end of Pub_Out at type_invariant_legal_6.ads:12
@@ -324,4 +346,5 @@ type_invariant_legal_6.ads:12:23: info: initialization of "X" proved
 type_invariant_legal_6.ads:13:14: info: for X at the end of Pub_In_Out at type_invariant_legal_6.ads:13
 type_invariant_legal_6.ads:13:14: info: invariant check proved (CVC5: 1 VC)
 type_invariant_legal_6.ads:13:26: warning: unused initial value of "X"
-type_invariant_legal_6.ads:16:09: medium: invariant check might fail on default value
+type_invariant_legal_6.ads:16:09: medium: in inlined invariant at type_invariant_legal_6.ads:16
+type_invariant_legal_6.ads:16:09: medium: invariant check might fail on default value, cannot prove T /= 0

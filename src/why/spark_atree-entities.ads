@@ -783,6 +783,8 @@ package SPARK_Atree.Entities is
 
    function Is_Predicate_Function (Subp : Subprogram_Kind_Id) return Boolean;
 
+   function Is_Invariant_Procedure (Subp : Subprogram_Kind_Id) return Boolean;
+
    function Next_Formal (Formal : Formal_Kind_Id) return Opt_Formal_Kind_Id;
 
    procedure Next_Formal (Formal : in out Opt_Formal_Kind_Id);

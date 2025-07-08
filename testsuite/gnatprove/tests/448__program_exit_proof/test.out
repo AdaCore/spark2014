@@ -34,7 +34,8 @@ test.adb:149:13: warning: unused assignment
 test.adb:154:17: info: for GT at the end of Call_P1_Bad_Inv at test.adb:133
 test.adb:154:17: info: invariant check proved (CVC5: 1 VC)
 test.adb:154:17: medium: for GT on program exit at test.adb:133
-test.adb:154:17: medium: invariant check might fail
+test.adb:154:17: medium: in inlined invariant at test.adb:129
+test.adb:154:17: medium: invariant check might fail, cannot prove T >= 0
 test.adb:155:25: info: program exit postcondition proved (CVC5: 1 VC)
 test.adb:171:17: info: for GT at the end of Call_P3 at test.adb:133
 test.adb:171:17: info: for GT on program exit at test.adb:133

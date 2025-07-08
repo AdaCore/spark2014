@@ -47,7 +47,8 @@ iterable_invariant.ads:25:28: warning: unused variable "Y" in disjunct [-gnatw.t
 iterable_invariant.ads:28:09: info: invariant check proved on default value (CVC5: 1 VC)
 iterable_invariant.ads:30:25: info: in default value of private type at iterable_invariant.ads:3
 iterable_invariant.ads:30:25: info: range check proved (CVC5: 2 VC)
-iterable_invariant.ads:34:19: medium: invariant check might fail
+iterable_invariant.ads:34:19: medium: in inlined invariant at iterable_invariant.ads:29
+iterable_invariant.ads:34:19: medium: invariant check might fail, cannot prove Container /= Invalid_Value
 iterable_invariant.ads:34:27: warning: unused variable "X" [-gnatw.t]
 iterable_invariant.ads:35:06: warning: postcondition does not check the outcome of calling "Forbidden_Quantification" [-gnatw.t]
 iterable_invariant.ads:35:14: medium: postcondition might fail (e.g. when C = Correct_Value)

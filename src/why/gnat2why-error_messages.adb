@@ -1062,9 +1062,14 @@ package body Gnat2Why.Error_Messages is
                  Present (Subp_Body)
                  and then Is_Predicate_Function
                    (Unique_Defining_Entity (Subp_Body));
-               --  To know whether we are inlining an expression function or
-               --  a predicate, look for the encolsing subprogram body, and
-               --  check if it is a predicate function.
+               In_Invariant : constant Boolean :=
+                 Present (Subp_Body)
+                 and then Is_Invariant_Procedure
+                   (Unique_Defining_Entity (Subp_Body));
+               --  To know whether we are inlining an expression function,
+               --  a predicate, or a type invariant look for the encolsing
+               --  subprogram body, and check if it is a predicate function or
+               --  an invariant procedure.
 
             begin
                Check_Info.Continuation.Append
@@ -1073,7 +1078,8 @@ package body Gnat2Why.Error_Messages is
                      To_Unbounded_String
                        ("in inlined " &
                         (if In_Predicate then "predicate"
-                           else "expression function body"))));
+                         elsif In_Invariant then "invariant"
+                         else "expression function body"))));
             end;
          end if;
 

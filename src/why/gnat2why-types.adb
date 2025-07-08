@@ -627,7 +627,7 @@ package body Gnat2Why.Types is
                   Name     => To_Local (E_Symb (E, WNE_Type_Invariant)),
                   Def      => +Def,
                   Location => No_Location,
-                  Labels   => Symbol_Sets.Empty_Set,
+                  Labels   => Symbol_Sets.To_Set (NID (GP_Inline_Marker)),
                   Binders  =>
                     Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg,
                                                     others => <>))

@@ -29008,8 +29008,9 @@ package body Gnat2Why.Expr is
       for Expr of Inv_Exprs loop
          Result := New_And_Pred
            (Result,
-            Transform_Pred (Expr   => Expr,
-                            Params => Params));
+            Transform_Pred
+              (Expr   => Expr,
+               Params => (Params with delta Gen_Marker => GM_Label)));
       end loop;
 
       --  Relate the name Inv_Id used in the invariant expression to the
