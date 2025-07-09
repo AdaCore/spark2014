@@ -1,0 +1,69 @@
+# File to store xfail/skip information in a central location rather than split
+# over multiple test.opt files.
+# At the top level we have two fields:
+# - location: the folder relative to the file that contains tests
+# - rules: a list of rules.
+# Each rule contains these fields:
+# - description: the skip/xfail reason
+# - issue:       an associated issue
+# - discs:       the rule only applies when all these discriminants are present
+# - action:      one of "xfail" or "skip"
+# - tests:       a list of tests
+
+location: "tests"
+rules:
+  - description: minor platform diffs for ARM
+    issue: eng/spark/spark2014#965
+    discs: ["aarch64-linux"]
+    action: skip
+    tests:
+      - 247__container_aggregate_capacity
+      - 281__sorts
+      - 308__counterexample
+      - 325__difficult_proofs
+      - 668__container_aggr_scalar
+      - 67__unbounded_strings
+      - 921__relaxed_mutable_discrs
+      - K406-013__formal_lists
+      - L315-003__contract
+      - M523-040__global_v2_tests
+      - M809-005__float_basics
+      - MA03-015__warnings
+      - N122-016__switches
+      - N122-021__succ_floats
+      - NC01-041__float_range
+      - NC06-004__init
+      - O325-024__abstract_state
+      - O512-022__prefix_sum
+      - O826-006__float_exponential
+      - OA05-076__dynamic_inv_assert_and_cut
+      - P530-022__loopinv
+      - PB16-052__float_invariant
+      - PC14-014__functional
+      - Q424-012__succ_floats_copy_z3
+      - QA31-008__von_neumann_redone
+      - S325-002__recpointers
+      - S515-024__pointer_traversal
+      - T212-013__relaxed_init
+      - T727-043__mergesort
+      - T928-002__at_end_borrow
+      - TU__refined_post_illegal
+      - U129-014__sqrt_error_bounds
+      - U730-017__IPV4_parsing
+      - UA21-035__relaxed_ce
+      - UB05-006__long_long_float
+      - V520-005__borrow_examples
+      - V803-008__counterex_fuzz_record
+      - V906-009__formal_ordered_maps
+      - V906-009__formal_ordered_sets
+      - W110-016__relaxed_init_user_equality
+      - allocators
+      - float_error_bounds
+      - ghc_sort
+      - openETCS
+      - pointer_based_maps
+      - proofinuse__floating_point
+      - spark_book
+      - sparkskein
+      - trajectory_computation
+      - ug__at_end_borrow
