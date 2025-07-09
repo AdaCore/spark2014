@@ -1,2 +1,13 @@
 w.adb:4:14: warning: subprogram "Test" has no effect
+w.adb:5:41: medium: array index check might fail [reason for check: result of division must be a valid index into the array] [possible fix: add precondition (1 / J in 1 .. 1) to subprogram at line 4]
+w.adb:5:41: medium: divide by zero might fail [possible fix: add precondition (J /= 0) to subprogram at line 4]
+w.adb:6:41: info: index check proved (CVC5: 2 VC)
+w.adb:6:41: medium: divide by zero might fail [possible fix: add precondition (J /= 0) to subprogram at line 4]
+w.adb:7:41: info: index check proved (CVC5: 2 VC)
+w.adb:7:41: medium: divide by zero might fail [possible fix: add precondition (J /= 0) to subprogram at line 4]
+w.adb:7:45: info: range check proved (CVC5: 2 VC)
+w.adb:10:40: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 4 should mention Y]
+w.adb:11:40: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 4 should mention Y]
+w.adb:12:40: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 4 should mention Y]
+w.adb:12:47: info: range check proved (CVC5: 2 VC)
 w.adb:19:04: info: precondition proved (Trivial: 1 VC)
