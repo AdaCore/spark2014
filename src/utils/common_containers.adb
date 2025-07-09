@@ -26,21 +26,24 @@ with Sem_Util; use Sem_Util;
 
 package body Common_Containers is
 
-   package Symbol_To_Entity_Name_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Symbol,
-      Element_Type    => Entity_Name,
-      Hash            => GNATCOLL.Symbols.Hash,
-      Equivalent_Keys => "=");
+   package Symbol_To_Entity_Name_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Symbol,
+        Element_Type    => Entity_Name,
+        Hash            => GNATCOLL.Symbols.Hash,
+        Equivalent_Keys => "=");
 
-   package Entity_Id_To_Entity_Name_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Entity_Id,
-      Element_Type    => Entity_Name,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=");
+   package Entity_Id_To_Entity_Name_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Entity_Id,
+        Element_Type    => Entity_Name,
+        Hash            => Node_Hash,
+        Equivalent_Keys => "=");
 
-   package Entity_Name_To_Symbol_Vectors is new Ada.Containers.Vectors
-     (Index_Type   => Entity_Name,
-      Element_Type => Symbol);
+   package Entity_Name_To_Symbol_Vectors is new
+     Ada.Containers.Vectors
+       (Index_Type   => Entity_Name,
+        Element_Type => Symbol);
 
    Intern_Strings : constant Symbol_Table_Access := Allocate;
 
@@ -61,10 +64,11 @@ package body Common_Containers is
       Next_Num : constant Entity_Name := String_Cache.Last_Index + 1;
 
    begin
-      Symbol_Cache.Insert (Key      => Sym,
-                           New_Item => Next_Num,
-                           Position => Position,
-                           Inserted => Inserted);
+      Symbol_Cache.Insert
+        (Key      => Sym,
+         New_Item => Next_Num,
+         Position => Position,
+         Inserted => Inserted);
 
       if Inserted then
          String_Cache.Append (Sym);
@@ -79,10 +83,11 @@ package body Common_Containers is
       Position : Entity_Id_To_Entity_Name_Maps.Cursor;
       Inserted : Boolean;
    begin
-      Name_Cache.Insert (Key      => E,
-                         New_Item => Entity_Name'Last, -- dummy value
-                         Position => Position,
-                         Inserted => Inserted);
+      Name_Cache.Insert
+        (Key      => E,
+         New_Item => Entity_Name'Last, -- dummy value
+         Position => Position,
+         Inserted => Inserted);
 
       if Inserted then
          Name_Cache (Position) := To_Entity_Name (Unique_Name (E));
