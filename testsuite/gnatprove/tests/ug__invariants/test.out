@@ -30,10 +30,11 @@
 --> invariants.adb:27:04
       + at the end of the elaboration of package at invariants.ads:1
 
- medium: invariant check might fail
+ medium: invariant check might fail, cannot prove Is_Valid (Stack)
 --> invariants.adb:33:14
    33 |       procedure Push_Internal (E : Element) with
       |                 ^~~~~~~~~~~~~
+      + in inlined invariant at invariants.ads:36
       + for The_Stack at the end of Push_Internal at invariants.adb:27
       + e.g. when E = 1
 
@@ -82,10 +83,11 @@
  info: implicit aspect Always_Terminates on "Size" has been proved, subprogram will terminate
 --> invariants.ads:19:13
 
- medium: invariant check might fail
+ medium: invariant check might fail, cannot prove Is_Valid (Stack)
 --> invariants.ads:21:14
    21 |       procedure Push (E : Element) with
       |                 ^~~~
+      + in inlined invariant at invariants.ads:36
       + for The_Stack at the end of Push at invariants.adb:27
       + e.g. when E = 1
 

@@ -1,6 +1,7 @@
 external.adb:4:42: info: precondition proved (Trivial: 1 VC)
 external.adb:4:42: medium: for X before the call at external_util.ads:3
-external.adb:4:42: medium: invariant check might fail [possible fix: subprogram at external.ads:5 should mention X in a precondition]
+external.adb:4:42: medium: in inlined invariant at external.ads:10
+external.adb:4:42: medium: invariant check might fail, cannot prove F (T) [possible fix: subprogram at external.ads:5 should mention X in a precondition]
 external.ads:5:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 external.ads:5:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
 external.ads:5:51: medium: postcondition might fail
@@ -23,7 +24,8 @@ local_global.adb:4:17: warning: subprogram "P" has no effect
 local_global.adb:6:25: medium: assertion might fail [possible fix: precondition of subprogram at line 4 should mention G]
 local_global.adb:9:07: info: precondition proved (Trivial: 1 VC)
 local_global.adb:9:07: medium: for G before the call at local_global.adb:3
-local_global.adb:9:07: medium: invariant check might fail
+local_global.adb:9:07: medium: in inlined invariant at local_global.ads:11
+local_global.adb:9:07: medium: invariant check might fail, cannot prove F (T)
 local_global.ads:6:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 local_global.ads:6:13: warning: function contract might not be available on implicit recursive calls [contracts-recursive]
 local_global.ads:6:16: warning: unused variable "X"

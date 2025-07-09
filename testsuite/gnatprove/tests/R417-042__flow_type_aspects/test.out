@@ -17,10 +17,12 @@ termination.adb:19:10: medium: implicit aspect Always_Terminates on "Rec_Func" c
 termination.adb:21:10: medium: implicit aspect Always_Terminates on "Rec_Func" could be incorrect, subprogram is recursive [possible fix: annotate "Rec_Func" with a Subprogram_Variant aspect]
 termination.ads:7:13: info: implicit aspect Always_Terminates on "Another_Nonterminating_Func" has been proved, subprogram will terminate
 termination.ads:39:13: info: implicit aspect Always_Terminates on "Infinite_Loop2" has been proved, subprogram will terminate
-termination.ads:44:09: medium: invariant check might fail on default value
+termination.ads:44:09: medium: in inlined invariant at termination.ads:44
+termination.ads:44:09: medium: invariant check might fail on default value, cannot prove Infinite_Loop2
 termination.ads:46:09: info: invariant check proved on default value (CVC5: 1 VC)
 termination.ads:49:09: info: invariant check proved on default value (CVC5: 2 VC)
-termination.ads:53:09: medium: invariant check might fail on default value
+termination.ads:53:09: medium: in inlined invariant at termination.ads:56
+termination.ads:53:09: medium: invariant check might fail on default value, cannot prove Infinite_Loop2
 termination.ads:54:07: info: range check proved (CVC5: 2 VC)
 termination.ads:54:30: info: in default value of private type at termination.ads:37
 termination.ads:54:30: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)

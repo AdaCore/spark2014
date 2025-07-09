@@ -177,7 +177,8 @@ test_invariants.ads:10:33: info: exceptional case proved (Trivial: 1 VC)
 test_invariants.ads:14:14: info: for X at the end of Q at test_invariants.ads:14
 test_invariants.ads:14:14: info: invariant check proved (CVC5: 1 VC)
 test_invariants.ads:14:14: medium: for X at the end of Q at test_invariants.ads:14
-test_invariants.ads:14:14: medium: invariant check might fail (e.g. when B = True and X = (F => 0, G => 1))
+test_invariants.ads:14:14: medium: in inlined invariant at test_invariants.ads:23
+test_invariants.ads:14:14: medium: invariant check might fail, cannot prove F < G (e.g. when B = True and X = (F => 0, G => 1))
 test_invariants.ads:14:14: medium: on exceptional exit at test_invariants.adb:12
 test_invariants.ads:15:33: info: exceptional case proved (Trivial: 1 VC)
 test_invariants.ads:19:09: info: invariant check proved on default value (CVC5: 1 VC)

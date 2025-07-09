@@ -1,27 +1,33 @@
 q1.adb:13:07: warning: analyzing unreferenced procedure "Q1" [unreferenced-procedure]
 q1.adb:15:10: medium: for X before the call at q1.ads:35
-q1.adb:15:10: medium: invariant check might fail (e.g. when X = (F1 => -1, F2 => 0, F3 => 0, F4 => 0, F5 => 0))
+q1.adb:15:10: medium: in inlined invariant at q1.ads:19
+q1.adb:15:10: medium: invariant check might fail, cannot prove T1 >= 0 (e.g. when X = (F1 => -1, F2 => 0, F3 => 0, F4 => 0, F5 => 0))
 q1.adb:21:10: medium: for X before the call at q1.ads:35
-q1.adb:21:10: medium: invariant check might fail (e.g. when X = (F1 => 0, F2 => 0, F3 => 0, F4 => -1, F5 => 0))
+q1.adb:21:10: medium: in inlined invariant at q1.ads:41
+q1.adb:21:10: medium: invariant check might fail, cannot prove T4 >= 0 (e.g. when X = (F1 => 0, F2 => 0, F3 => 0, F4 => -1, F5 => 0))
 q1.adb:27:10: medium: for X before the call at q1.ads:35
-q1.adb:27:10: medium: invariant check might fail (e.g. when X = (F1 => -1, F2 => 0, F3 => 0, F4 => 0, F5 => 0))
+q1.adb:27:10: medium: in inlined invariant at q1.ads:19
+q1.adb:27:10: medium: invariant check might fail, cannot prove T1 >= 0 (e.g. when X = (F1 => -1, F2 => 0, F3 => 0, F4 => 0, F5 => 0))
 q1.adb:33:10: info: for X before the call at q1.ads:35
 q1.adb:33:10: info: invariant check proved (CVC5: 2 VC; Trivial: 1 VC)
 q1.adb:36:07: warning: analyzing unreferenced procedure "Q5" [unreferenced-procedure]
 q1.adb:38:10: medium: for X before the call at q1.adb:3
-q1.adb:38:10: medium: invariant check might fail (e.g. when X = (F1 => -1, F2 => 0, F3 => 0, F4 => 0, F5 => 0))
+q1.adb:38:10: medium: in inlined invariant at q1.ads:19
+q1.adb:38:10: medium: invariant check might fail, cannot prove T1 >= 0 (e.g. when X = (F1 => -1, F2 => 0, F3 => 0, F4 => 0, F5 => 0))
 q1.adb:44:10: info: for X before the call at q1.adb:3
 q1.adb:44:10: info: invariant check proved (CVC5: 1 VC; Trivial: 1 VC)
 q1.adb:60:07: info: at the end of the elaboration of package at q1.ads:8
 q1.adb:60:07: info: invariant check proved (CVC5: 2 VC; Trivial: 1 VC)
 q1.adb:60:07: medium: at the end of the elaboration of package at q1.ads:2
-q1.adb:60:07: medium: invariant check might fail (e.g. when G = (F1 => 0, F2 => 0, F3 => 0, F4 => -1, F5 => 0))
+q1.adb:60:07: medium: in inlined invariant at q1.ads:41
+q1.adb:60:07: medium: invariant check might fail, cannot prove T4 >= 0 (e.g. when G = (F1 => 0, F2 => 0, F3 => 0, F4 => -1, F5 => 0))
 q1.adb:63:10: info: for X before the call at q1.ads:35
 q1.adb:63:10: info: invariant check proved (CVC5: 2 VC; Trivial: 1 VC)
 q1.adb:64:10: info: for X before the call at q1.adb:3
 q1.adb:64:10: info: invariant check proved (CVC5: 1 VC; Trivial: 1 VC)
 q1.ads:10:17: medium: for G at the end of Q at q1.adb:60
-q1.ads:10:17: medium: invariant check might fail
+q1.ads:10:17: medium: in inlined invariant at q1.ads:41
+q1.ads:10:17: medium: invariant check might fail, cannot prove T4 >= 0
 q1.ads:15:15: info: invariant check proved on default value (CVC5: 1 VC)
 q1.ads:15:82: info: in default value of private type at q1.ads:13
 q1.ads:15:82: info: range check proved (CVC5: 2 VC)

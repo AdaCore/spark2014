@@ -589,7 +589,7 @@ double_list.adb:50:07: info: initialization of "New_Pointer" proved, in instanti
 double_list.adb:67:25: info: range check proved (CVC5: 2 VC), in instantiation at list_handler.adb:8
 double_list.ads:7:26: info: initialization of "Integer_List.Internal_List" constituent of "List_Handler.List" proved, in instantiation at list_handler.adb:8
 double_list.ads:8:05: info: flow dependencies proved, in instantiation at list_handler.adb:8
-double_list.ads:9:05: info: initial condition proved (CVC5: 1 VC), in instantiation at list_handler.adb:8
+double_list.ads:9:26: info: initial condition proved (CVC5: 1 VC), in instantiation at list_handler.adb:8
 double_list.ads:17:08: info: data dependencies proved, in instantiation at list_handler.adb:8
 double_list.ads:18:08: info: flow dependencies proved, in instantiation at list_handler.adb:8
 double_list.ads:19:19: info: postcondition proved (CVC5: 1 VC), in instantiation at list_handler.adb:8
@@ -775,7 +775,8 @@ initializer_demo.ads:14:13: info: implicit aspect Always_Terminates on "Add_Elem
 initializer_demo.ads:22:13: info: implicit aspect Always_Terminates on "Adjust_Pair" has been proved, subprogram will terminate
 interval.ads:6:13: info: implicit aspect Always_Terminates on "Make" has been proved, subprogram will terminate
 interval.ads:6:13: medium: for the result of Make at interval.ads:6
-interval.ads:6:13: medium: invariant check might fail
+interval.ads:6:13: medium: in inlined invariant at interval.ads:15
+interval.ads:6:13: medium: invariant check might fail, cannot prove Has_Valid_Order(Interval)
 interval.ads:9:09: info: invariant check proved on default value (CVC5: 1 VC)
 interval.ads:17:13: info: implicit aspect Always_Terminates on "Has_Valid_Order" has been proved, subprogram will terminate
 interval_tree.ads:4:23: info: initialization of "Interval_Tree.Internal_Tree" proved

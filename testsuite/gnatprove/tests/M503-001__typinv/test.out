@@ -64,24 +64,29 @@ inside_out.adb:5:14: info: add a contract to analyze it separately from calling 
 inside_out.adb:5:14: info: local subprogram "Body_Update" only analyzed in the context of calls [info-unrolling-inlining]
 inside_out.adb:7:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
 inside_out.adb:16:07: medium: for X before the call at inside_out.ads:7
-inside_out.adb:16:07: medium: invariant check might fail, in call inlined at inside_out.adb:58 (e.g. when Mode = Bod and X = 0)
+inside_out.adb:16:07: medium: in inlined invariant at inside_out.ads:15
+inside_out.adb:16:07: medium: invariant check might fail, cannot prove T /= 0, in call inlined at inside_out.adb:58 (e.g. when Mode = Bod and X = 0)
 inside_out.adb:20:08: medium: for X before the call at inside_out.ads:9
 inside_out.adb:20:08: medium: implicit aspect Always_Terminates on "Body_Get" could be incorrect, "Body_Get" and "Get" are mutually recursive [possible fix: annotate "Body_Get" and "Get" with Subprogram_Variant aspects]
-inside_out.adb:20:08: medium: invariant check might fail (e.g. when Mode = Rec and X = 0) [possible fix: subprogram at line 7 should mention X and Mode in a precondition]
+inside_out.adb:20:08: medium: in inlined invariant at inside_out.ads:15
+inside_out.adb:20:08: medium: invariant check might fail, cannot prove T /= 0 (e.g. when Mode = Rec and X = 0) [possible fix: subprogram at line 7 should mention X and Mode in a precondition]
 inside_out.adb:30:15: info: overflow check proved (CVC5: 2 VC)
 inside_out.adb:45:13: info: analyzing call to "Body_Create" in context
 inside_out.adb:56:13: medium: for X before the call at inside_out.ads:7
-inside_out.adb:56:13: medium: invariant check might fail (e.g. when Mode = Rec and X = 0)
+inside_out.adb:56:13: medium: in inlined invariant at inside_out.ads:15
+inside_out.adb:56:13: medium: invariant check might fail, cannot prove T /= 0 (e.g. when Mode = Rec and X = 0)
 inside_out.adb:58:13: info: analyzing call to "Body_Update" in context
 inside_out.adb:68:13: medium: implicit aspect Always_Terminates on "Get" could be incorrect, subprogram is recursive [possible fix: annotate "Get" with a Subprogram_Variant aspect]
 inside_out.adb:68:20: info: for X before the call at inside_out.ads:9
 inside_out.adb:68:20: info: invariant check proved (CVC5: 1 VC)
 inside_out.adb:70:13: medium: implicit aspect Always_Terminates on "Get" could be incorrect, "Get" and "Body_Get" are mutually recursive [possible fix: annotate "Get" and "Body_Get" with Subprogram_Variant aspects]
 inside_out.ads:5:14: medium: for X at the end of Create at inside_out.ads:5
-inside_out.ads:5:14: medium: invariant check might fail (e.g. when Mode = Prv)
+inside_out.ads:5:14: medium: in inlined invariant at inside_out.ads:15
+inside_out.ads:5:14: medium: invariant check might fail, cannot prove T /= 0 (e.g. when Mode = Prv)
 inside_out.ads:5:22: info: initialization of "X" proved
 inside_out.ads:7:14: medium: for X at the end of Update at inside_out.ads:7
-inside_out.ads:7:14: medium: invariant check might fail (e.g. when Mode = Prv and X = -1)
+inside_out.ads:7:14: medium: in inlined invariant at inside_out.ads:15
+inside_out.ads:7:14: medium: invariant check might fail, cannot prove T /= 0 (e.g. when Mode = Prv and X = -1)
 inside_out.ads:7:22: warning: unused initial value of "X"
 inside_out.ads:9:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
 inside_out.ads:13:09: info: invariant check proved on default value (CVC5: 1 VC)
