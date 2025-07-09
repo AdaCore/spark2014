@@ -1,0 +1,2 @@
+w.adb:4:14: warning: subprogram "Test" has no effect
+w.adb:19:04: info: precondition proved (Trivial: 1 VC)
