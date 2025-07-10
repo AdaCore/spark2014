@@ -25,12 +25,9 @@ package body Errout_Wrapper is
    procedure Print
      (Msg           : Message;
       Kind          : Msg_Severity := Error_Kind;
-      First_Node    : Node_Id := Empty;
       Continuations : Message_Lists.List := Message_Lists.Empty);
    --  Prepare the call to the Errout backend, e.g. Errout.Error_Msg_N.
    --  The actual call shall be made by the generic argument procedure.
-   --  First_Node - this node, if present, is used to set the map of names, and
-   --               is passed to Locate_Message.
 
    function Create_N
      (Msg           : String;
@@ -45,6 +42,26 @@ package body Errout_Wrapper is
    function Node_To_Name (N : Node_Id) return String;
    --  Convert the node to a String. This is mostly a wrapper around
    --  Source_Name.
+
+   function Contains_Placeholder (S : String) return Boolean;
+   --  Return True if S contains a '&' name placeholder.
+
+   function Add_Default_Name (Msg : Message; N : Node_Id) return Message;
+   --  If the message doesn't contain any names, add the node N as a single
+   --  name.
+
+   ----------------------
+   -- Add_Default_Name --
+   ----------------------
+
+   function Add_Default_Name (Msg : Message; N : Node_Id) return Message is
+      Names : constant Node_Lists.List :=
+        (if Present (N) and then Msg.Names.Is_Empty
+         then Node_Lists.List'([N])
+         else Node_Lists.List'(Msg.Names));
+   begin
+      return (Msg with delta Names => Names);
+   end Add_Default_Name;
 
    ------------------
    -- Add_Json_Msg --
@@ -148,7 +165,6 @@ package body Errout_Wrapper is
    procedure Print
      (Msg           : Message;
       Kind          : Msg_Severity := Error_Kind;
-      First_Node    : Node_Id := Empty;
       Continuations : Message_Lists.List := Message_Lists.Empty)
    is
 
@@ -203,11 +219,7 @@ package body Errout_Wrapper is
            (if Msg.Explain_Code = EC_None
             then ""
             else " '[" & To_String (Msg.Explain_Code) & "']");
-         Names       : constant Node_Lists.List :=
-           (if Present (First_Node) and then Msg.Names.Is_Empty
-            then Node_Lists.List'([First_Node])
-            else Node_Lists.List'(Msg.Names));
-         C           : Cursor := Names.First;
+         C           : Cursor := Msg.Names.First;
       begin
          Errout.Error_Msg_Sloc := Msg.Secondary_Loc;
          if Has_Element (C) then
@@ -234,7 +246,9 @@ package body Errout_Wrapper is
               & Escape_For_Errout (To_String (Msg.Msg))
               & Expl_Code;
             First_Node : constant Node_Id :=
-              (if Names.Is_Empty then Types.Empty else First_Element (Names));
+              (if Msg.Names.Is_Empty
+               then Types.Empty
+               else First_Element (Msg.Names));
          begin
             Locate_Message (S, First_Node);
          end;
@@ -260,6 +274,27 @@ package body Errout_Wrapper is
          end if;
       end;
    end Print;
+
+   --------------------------
+   -- Contains_Placeholder --
+   --------------------------
+
+   function Contains_Placeholder (S : String) return Boolean is
+      Skip : Boolean := False;
+   begin
+      for C of S loop
+         if Skip then
+            Skip := False;
+         else
+            if C = ''' then
+               Skip := True;
+            elsif C = '&' then
+               return True;
+            end if;
+         end if;
+      end loop;
+      return False;
+   end Contains_Placeholder;
 
    ------------
    -- Create --
@@ -373,8 +408,7 @@ package body Errout_Wrapper is
       if Error_Entry then
          Add_Json_Msg (Warnings_Errors, Result);
       end if;
-      Local_Print_Result
-        (Msg, Kind, First_Node => Empty, Continuations => Continuations);
+      Local_Print_Result (Msg, Kind, Continuations => Continuations);
    end Error_Msg;
 
    -----------------
@@ -410,18 +444,23 @@ package body Errout_Wrapper is
 
       procedure Local_Print_Result is new Print (Node_Locate);
 
-      Result : constant JSON_Result_Type :=
+      My_Msg   : constant Message := Add_Default_Name (Msg, N);
+      My_Conts : Message_Lists.List;
+      Result   : JSON_Result_Type :=
         (Severity => Kind,
          Tag      => To_Unbounded_String ("error"),
          Span     => To_Span (Sloc (N)),
-         Msg      => Msg,
+         Msg      => My_Msg,
          others   => <>);
    begin
+      for Msg of Continuations loop
+         My_Conts.Append (Add_Default_Name (Msg, N));
+      end loop;
+      Result.Continuations := My_Conts;
       if Error_Entry then
          Add_Json_Msg (Warnings_Errors, Result);
       end if;
-      Local_Print_Result
-        (Msg, Kind, First_Node => N, Continuations => Continuations);
+      Local_Print_Result (My_Msg, Kind, Continuations => My_Conts);
    end Error_Msg_N;
 
    -----------------
@@ -578,10 +617,11 @@ package body Errout_Wrapper is
    end To_JSON;
 
    function To_JSON (M : Message) return JSON_Value is
-      Result : constant JSON_Value := Create_Object;
+      Result   : constant JSON_Value := Create_Object;
+      Msg_Text : constant String := To_String (M.Msg);
    begin
-      Set_Field (Result, "text", To_String (M.Msg));
-      if not M.Names.Is_Empty then
+      Set_Field (Result, "text", Msg_Text);
+      if not M.Names.Is_Empty and then Contains_Placeholder (Msg_Text) then
          declare
             Args : JSON_Array;
          begin
