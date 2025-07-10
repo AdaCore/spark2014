@@ -48,7 +48,7 @@ package body Flow_Generated_Globals.Phase_2.Traversal is
          end loop;
       end Dump_Tree;
 
-   --  Start of processing for Dump_Tree
+      --  Start of processing for Dump_Tree
 
    begin
       if XXX then
@@ -61,25 +61,24 @@ package body Flow_Generated_Globals.Phase_2.Traversal is
    -- Is_Leaf --
    -------------
 
-   function Is_Leaf (E : Entity_Name) return Boolean is
-     (Scope_Map (E).Units.Is_Empty);
+   function Is_Leaf (E : Entity_Name) return Boolean
+   is (Scope_Map (E).Units.Is_Empty);
 
    ------------------
    -- Parent_Scope --
    ------------------
 
-   function Parent_Scope (E : Entity_Name) return Entity_Name is
-     (Scope_Map (E).Parent);
+   function Parent_Scope (E : Entity_Name) return Entity_Name
+   is (Scope_Map (E).Parent);
 
    ----------------------------
    -- Register_Nested_Scopes --
    ----------------------------
 
    procedure Register_Nested_Scopes
-     (Entity  : Entity_Name;
-      Parents : Name_Lists.List)
+     (Entity : Entity_Name; Parents : Name_Lists.List)
    is
-      Outer     : Entity_Name          := Standard_Standard;
+      Outer     : Entity_Name := Standard_Standard;
       Outer_Pos : Nested_Scopes.Cursor := Scope_Map.Find (Standard_Standard);
       --  The outer scope (which we need to know when inserting the inner one)
       --  and its position in the map (which we need to know when populating
@@ -120,10 +119,7 @@ package body Flow_Generated_Globals.Phase_2.Traversal is
    --------------------------
 
    function Scope_Within_Or_Same
-     (Inner : Entity_Name;
-      Outer : Entity_Name)
-      return Boolean
-   is
+     (Inner : Entity_Name; Outer : Entity_Name) return Boolean is
    begin
       --  Detect same scopes
 
@@ -140,7 +136,8 @@ package body Flow_Generated_Globals.Phase_2.Traversal is
       --  the predefined System package).
 
       else
-         return Scope_Map.Contains (Inner)
+         return
+           Scope_Map.Contains (Inner)
            and then Scope_Within_Or_Same (Parent_Scope (Inner), Outer);
       end if;
    end Scope_Within_Or_Same;
@@ -152,8 +149,8 @@ begin
    Scope_Map.Insert
      (Key      => Standard_Standard,
       New_Item => (Units => <>, Parent => Null_Entity_Name));
-   --  ??? Having this code in package elaboration means it is needlessly
-   --  executed in phase 1. Ideally it should be done just before resolving
-   --  globals in phase 2 and the container should be cleared afterwards, to
-   --  free as much memory for provers as possible.
+--  ??? Having this code in package elaboration means it is needlessly
+--  executed in phase 1. Ideally it should be done just before resolving
+--  globals in phase 2 and the container should be cleared afterwards, to
+--  free as much memory for provers as possible.
 end Flow_Generated_Globals.Phase_2.Traversal;

@@ -33,13 +33,11 @@ package body Flow.Data_Dependence_Graph is
 
    procedure Create (FA : in out Flow_Analysis_Graphs) is
 
-      function Edge_Selector (A, B : Flow_Graphs.Vertex_Id)
-                              return Boolean;
+      function Edge_Selector (A, B : Flow_Graphs.Vertex_Id) return Boolean;
       --  Check if we should go down the given edge based on colour
 
       function Potential_Definite_Calls
-        (Calls : Node_Sets.Set)
-         return Flow_Id_Sets.Set;
+        (Calls : Node_Sets.Set) return Flow_Id_Sets.Set;
       --  Returns subprograms whose calls need to be checked for being
       --  definitive (as opposed to being conditional or being only called
       --  in assertions).
@@ -53,29 +51,25 @@ package body Flow.Data_Dependence_Graph is
       -- Edge_Selector --
       -------------------
 
-      function Edge_Selector (A, B : Flow_Graphs.Vertex_Id)
-                              return Boolean is
-        (case FA.CFG.Edge_Colour (A, B) is
-            when EC_Default | EC_Inf   => True,
+      function Edge_Selector (A, B : Flow_Graphs.Vertex_Id) return Boolean
+      is (case FA.CFG.Edge_Colour (A, B) is
+            when EC_Default | EC_Inf => True,
             when EC_Barrier | EC_Abend => False,
-            when others                => raise Program_Error);
+            when others => raise Program_Error);
 
       ------------------------------
       -- Potential_Definite_Calls --
       ------------------------------
 
       function Potential_Definite_Calls
-        (Calls : Node_Sets.Set)
-         return Flow_Id_Sets.Set
+        (Calls : Node_Sets.Set) return Flow_Id_Sets.Set
       is
          Check : Flow_Id_Sets.Set;
       begin
-         if FA.Generating_Globals
-           and then FA.Is_Generative
-         then
+         if FA.Generating_Globals and then FA.Is_Generative then
             for E of Calls loop
                if (Ekind (E) in E_Procedure | E_Entry
-                    or else Is_Function_With_Side_Effects (E))
+                   or else Is_Function_With_Side_Effects (E))
                  and then (not Has_User_Supplied_Globals (E)
                            or else Rely_On_Generated_Global (E, FA.B_Scope))
                then
@@ -99,9 +93,10 @@ package body Flow.Data_Dependence_Graph is
          use type Flow_Id_Sets.Set;
 
          Combined_Defined : constant Flow_Id_Sets.Set :=
-           Atr_Def.Variables_Defined or Atr_Def.Volatiles_Read or
-           Potential_Definite_Calls
-             (To_Subprograms (Atr_Def.Subprogram_Calls));
+           Atr_Def.Variables_Defined
+           or Atr_Def.Volatiles_Read
+           or Potential_Definite_Calls
+                (To_Subprograms (Atr_Def.Subprogram_Calls));
 
          use type Flow_Graphs.Vertex_Id;
 
@@ -174,17 +169,16 @@ package body Flow.Data_Dependence_Graph is
                   elsif FA.Generating_Globals
                     and then FA.Is_Generative
                     and then Var.Kind = Direct_Mapping
-                    and then
-                      (declare
-                         E : constant Entity_Id := Get_Direct_Mapping_Id (Var);
-                       begin
-                         Ekind (E) in E_Procedure | E_Entry
-                           or else
-                         (Ekind (E) = E_Function
-                           and then Is_Function_With_Side_Effects (E)))
-                    and then
-                      (for some SC of Atr.Subprogram_Calls =>
-                         SC.E = Get_Direct_Mapping_Id (Var))
+                    and then (declare
+                                E : constant Entity_Id :=
+                                  Get_Direct_Mapping_Id (Var);
+                              begin
+                                Ekind (E) in E_Procedure | E_Entry
+                                or else (Ekind (E) = E_Function
+                                         and then Is_Function_With_Side_Effects
+                                                    (E)))
+                    and then (for some SC of Atr.Subprogram_Calls =>
+                                SC.E = Get_Direct_Mapping_Id (Var))
                   then
                      TV_U := Flow_Graphs.Skip_Children;
 
@@ -234,10 +228,11 @@ package body Flow.Data_Dependence_Graph is
                end if;
 
                --  Flag all def-used chains rooted at V_D
-               FA.CFG.DFS (Start         => V_D,
-                           Include_Start => False,
-                           Visitor       => Visitor'Access,
-                           Edge_Selector => Edge_Selector'Access);
+               FA.CFG.DFS
+                 (Start         => V_D,
+                  Include_Start => False,
+                  Visitor       => Visitor'Access,
+                  Edge_Selector => Edge_Selector'Access);
 
                for Vol of Atr_Def.Volatiles_Written loop
                   declare
@@ -263,7 +258,7 @@ package body Flow.Data_Dependence_Graph is
 
       Unused : Flow_Graphs.Simple_Traversal_Instruction;
 
-   --  Start of processing for Create
+      --  Start of processing for Create
 
    begin
       FA.DDG := FA.CFG.Create;
@@ -272,8 +267,8 @@ package body Flow.Data_Dependence_Graph is
       --  vertices can have 'Initial_Grouping in-neighbours themselves, but
       --  they do not affect DDG.
 
-      for V_D of FA.CFG.Get_Collection
-        (FA.Start_Vertex, Flow_Graphs.In_Neighbours)
+      for V_D of
+        FA.CFG.Get_Collection (FA.Start_Vertex, Flow_Graphs.In_Neighbours)
       loop
          pragma Assert (FA.CFG.Get_Key (V_D).Variant = Initial_Value);
          Process (V_D, Unused);

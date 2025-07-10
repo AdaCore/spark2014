@@ -27,15 +27,13 @@
 private package Flow.Analysis.Sanity is
 
    procedure Check_Function_Side_Effects
-     (FA   : in out Flow_Analysis_Graphs;
-      Sane :    out Boolean);
+     (FA : in out Flow_Analysis_Graphs; Sane : out Boolean);
    --  Make sure no functions with side effects have been flagged during
    --  analysis.
    --  In debug mode we emit an error message that analysis is aborted here.
 
    procedure Check_Expressions
-     (FA   : in out Flow_Analysis_Graphs;
-      Sane :    out Boolean);
+     (FA : in out Flow_Analysis_Graphs; Sane : out Boolean);
    --  Emits errors:
    --     * Enforce SRM 4.4(2): certain expressions must be variable-free
    --
@@ -47,8 +45,7 @@ private package Flow.Analysis.Sanity is
    --  subprogram may raise checks.
 
    procedure Check_Illegal_Writes_And_All_Variables_Known
-     (FA   : in out Flow_Analysis_Graphs;
-      Sane :    out Boolean);
+     (FA : in out Flow_Analysis_Graphs; Sane : out Boolean);
    --  First enforces a number of rules concerning illegal updates:
    --     * A package may not update another package's state during elaboration
    --     * A global in may not be updated
@@ -58,14 +55,12 @@ private package Flow.Analysis.Sanity is
    --  package.
 
    procedure Check_Generated_Refined_Global
-     (FA   : in out Flow_Analysis_Graphs;
-      Sane :    out Boolean);
+     (FA : in out Flow_Analysis_Graphs; Sane : out Boolean);
    --  Checks if the generated Refined_Global contract is correct with respect
    --  to the user-provided Global/Depends contract.
 
    procedure Check_Side_Effects_In_Protected_Functions
-     (FA   : in out Flow_Analysis_Graphs;
-      Sane :    out Boolean);
+     (FA : in out Flow_Analysis_Graphs; Sane : out Boolean);
    --  Checks for side effects in protected functions. It detects functions
    --  that make uses of volatile variables with Effective_Reads and which are
    --  declared as Part_Of the PO. Issues an error message when this happens.

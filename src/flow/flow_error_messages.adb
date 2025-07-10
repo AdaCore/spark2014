@@ -79,19 +79,15 @@ package body Flow_Error_Messages is
    --  unprovable due to proof imprecision.
 
    function Get_Details
-     (N   : Node_Id;
-      E   : Entity_Id;
-      Tag : VC_Kind) return String;
+     (N : Node_Id; E : Entity_Id; Tag : VC_Kind) return String;
    --  Given the node N associated to an unproved check of kind Tag, return a
    --  detailed message explaining why this check is issued (typically in the
    --  case of a length/range/overflow/index check), or the empty string.
    --  E should be the entity analyzed when the check is emitted.
 
    function Get_Explanation
-     (N           : Node_Id;
-      E           : Entity_Id;
-      Tag         : VC_Kind;
-      Explanation : String) return String;
+     (N : Node_Id; E : Entity_Id; Tag : VC_Kind; Explanation : String)
+      return String;
    --  @param N node associated to an unproved check
    --  @param E the entity analyzed when the check is emitted
    --  @param Tag associated unproved check
@@ -110,9 +106,7 @@ package body Flow_Error_Messages is
    --  @param Info additional informations on the check
    --  @result message part suggesting a fix to make the unproved check proved
 
-   function Proved_Message
-     (Node : Node_Id;
-      Kind : VC_Kind) return String;
+   function Proved_Message (Node : Node_Id; Kind : VC_Kind) return String;
    --  Return the message string for a proved VC
 
    generic
@@ -142,21 +136,22 @@ package body Flow_Error_Messages is
       F1            : Flow_Id := Null_Flow_Id;
       F2            : Flow_Id := Null_Flow_Id;
       F3            : Flow_Id := Null_Flow_Id;
-      With_Location : Boolean := True)
-      return String with
-      Pre => (if Present (F2) then Present (F1)) and then
-             (if Present (F3) then Present (F2));
+      With_Location : Boolean := True) return String
+   with
+     Pre =>
+       (if Present (F2) then Present (F1))
+       and then (if Present (F3) then Present (F2));
    --  Substitute flow nodes
    --  @param With_Location by default, add more precise location for
    --                       instantiated and inlined code
 
    function Compute_Sloc
-     (N           : Node_Id;
-      Place_First : Boolean := False)
-      return Source_Span
-   with Post => (if Present (N)
-                 then Compute_Sloc'Result.Ptr >= First_Source_Ptr
-                 else Compute_Sloc'Result.Ptr = No_Location);
+     (N : Node_Id; Place_First : Boolean := False) return Source_Span
+   with
+     Post =>
+       (if Present (N)
+        then Compute_Sloc'Result.Ptr >= First_Source_Ptr
+        else Compute_Sloc'Result.Ptr = No_Location);
    --  Computes a better sloc for reporting of results than the Ada Node by
    --  taking generics into account.
    --  @param N the node for which we compute the sloc; might be Empty (e.g.
@@ -171,8 +166,7 @@ package body Flow_Error_Messages is
       Msg : String;
       F1  : Flow_Id := Null_Flow_Id;
       F2  : Flow_Id := Null_Flow_Id;
-      F3  : Flow_Id := Null_Flow_Id)
-      return String_Id;
+      F3  : Flow_Id := Null_Flow_Id) return String_Id;
    --  Check if the warning for the given node, message and flow id is
    --  suppressed. If the function returns No_String, the warning is not
    --  suppressed. If it returns Null_String_Id the warning is suppressed,
@@ -194,9 +188,7 @@ package body Flow_Error_Messages is
    use type Flow_Graphs.Vertex_Id;
 
    function Substitute
-     (S    : Unbounded_String;
-      F    : Flow_Id;
-      Flag : Source_Ptr)
+     (S : Unbounded_String; F : Flow_Id; Flag : Source_Ptr)
       return Unbounded_String
    with Pre => not Is_Internal (F);
    --  Find the first '&' or '%' and substitute with the given flow id, with or
@@ -216,8 +208,7 @@ package body Flow_Error_Messages is
       F1            : Flow_Id := Null_Flow_Id;
       F2            : Flow_Id := Null_Flow_Id;
       F3            : Flow_Id := Null_Flow_Id;
-      With_Location : Boolean := True)
-      return String
+      With_Location : Boolean := True) return String
    is
       M : Unbounded_String := To_Unbounded_String (Msg);
    begin
@@ -252,10 +243,10 @@ package body Flow_Error_Messages is
 
                Context :=
                  To_Unbounded_String
-                   (if Comes_From_Inlined_Body (Loc) then
-                      ", in call inlined at "
-                    elsif Comes_From_Inherited_Pragma (Loc) then
-                      ", in inherited contract at "
+                   (if Comes_From_Inlined_Body (Loc)
+                    then ", in call inlined at "
+                    elsif Comes_From_Inherited_Pragma (Loc)
+                    then ", in inherited contract at "
                     else ", in instantiation at ");
 
                Loc := Instantiation_Location (Loc);
@@ -273,8 +264,7 @@ package body Flow_Error_Messages is
    ------------------
 
    function Compute_Sloc
-     (N           : Node_Id;
-      Place_First : Boolean := False) return Source_Span
+     (N : Node_Id; Place_First : Boolean := False) return Source_Span
    is
       Fst : Source_Ptr := Safe_First_Sloc (N);
       Slc : Source_Ptr := (if Place_First then Fst else Sloc (N));
@@ -296,9 +286,8 @@ package body Flow_Error_Messages is
    --------------------
 
    function Error_Location
-     (G : Flow_Graphs.Graph;
-      M : Attribute_Maps.Map;
-      V : Flow_Graphs.Vertex_Id) return Node_Or_Entity_Id
+     (G : Flow_Graphs.Graph; M : Attribute_Maps.Map; V : Flow_Graphs.Vertex_Id)
+      return Node_Or_Entity_Id
    is
       Loc : constant Node_Or_Entity_Id := M (V).Error_Location;
    begin
@@ -312,6 +301,7 @@ package body Flow_Error_Messages is
             case K.Kind is
                when Direct_Mapping | Record_Field =>
                   return Get_Direct_Mapping_Id (K);
+
                when others =>
                   raise Program_Error;
             end case;
@@ -326,29 +316,29 @@ package body Flow_Error_Messages is
    procedure Error_Msg_Flow
      (E             : Entity_Id;
       Msg           : String;
-      Details       : String             := "";
-      Explanation   : String             := "";
-      Fix           : String             := "";
+      Details       : String := "";
+      Explanation   : String := "";
+      Fix           : String := "";
       Severity      : Msg_Severity;
       N             : Node_Id;
       Suppressed    : out Boolean;
-      F1            : Flow_Id            := Null_Flow_Id;
-      F2            : Flow_Id            := Null_Flow_Id;
-      F3            : Flow_Id            := Null_Flow_Id;
-      EF1           : Flow_Id            := Null_Flow_Id;
-      FF1           : Flow_Id            := Null_Flow_Id;
-      FF2           : Flow_Id            := Null_Flow_Id;
-      Tag           : Flow_Tag_Kind      := Empty_Tag;
-      Explain_Code  : Explain_Code_Kind  := EC_None;
-      SRM_Ref       : String             := "";
-      Tracefile     : String             := "";
+      F1            : Flow_Id := Null_Flow_Id;
+      F2            : Flow_Id := Null_Flow_Id;
+      F3            : Flow_Id := Null_Flow_Id;
+      EF1           : Flow_Id := Null_Flow_Id;
+      FF1           : Flow_Id := Null_Flow_Id;
+      FF2           : Flow_Id := Null_Flow_Id;
+      Tag           : Flow_Tag_Kind := Empty_Tag;
+      Explain_Code  : Explain_Code_Kind := EC_None;
+      SRM_Ref       : String := "";
+      Tracefile     : String := "";
       Continuations : Message_Lists.List := Message_Lists.Empty)
    is
 
       Msg2 : constant String :=
-        Msg &
-        (if CWE and Severity /= Info_Kind then CWE_Message (Tag) else "") &
-        (if SRM_Ref'Length > 0 then " (SPARK RM " & SRM_Ref & ")" else "");
+        Msg
+        & (if CWE and Severity /= Info_Kind then CWE_Message (Tag) else "")
+        & (if SRM_Ref'Length > 0 then " (SPARK RM " & SRM_Ref & ")" else "");
 
       Attach_Node : constant Node_Id :=
         (if Instantiation_Location (Sloc (Original_Node (N))) = No_Location
@@ -365,17 +355,17 @@ package body Flow_Error_Messages is
       --  N_Aggregate whose Sloc is on the opening bracket (this is perhaps an
       --  artefact from parsing) and not to the component entity.
 
-      Msg3 : constant String      := Compute_Message (Msg2, Attach_Node,
-                                                      F1, F2, F3);
+      Msg3 : constant String :=
+        Compute_Message (Msg2, Attach_Node, F1, F2, F3);
       Span : constant Source_Span := Compute_Sloc (Attach_Node);
-      Slc  : constant Source_Ptr  := Span.Ptr;
+      Slc  : constant Source_Ptr := Span.Ptr;
 
       Msg_Str : constant String :=
-        Msg3 &
-        Source_Ptr'Image (Slc) &
-        Integer'Image (Msg_Severity'Pos (Severity));
+        Msg3
+        & Source_Ptr'Image (Slc)
+        & Integer'Image (Msg_Severity'Pos (Severity));
 
-      Info     : Annotated_Range;
+      Info : Annotated_Range;
 
       Msg_Id, Ignore_Id : Message_Id;
 
@@ -384,7 +374,7 @@ package body Flow_Error_Messages is
 
       Check_All_Mode : constant Boolean :=
         Gnat2Why_Args.Mode = GPM_Check_All
-          or else Has_Skip_Flow_And_Proof_Annotation (E);
+        or else Has_Skip_Flow_And_Proof_Annotation (E);
       --  True when we are only reporting legiality errors that require flow
       --  analysis.
 
@@ -396,19 +386,18 @@ package body Flow_Error_Messages is
            Span          => Span,
            E             => E,
            Tracefile     => To_Unbounded_String (Tracefile),
-              Msg           => Create (Msg3, Explain_Code => Explain_Code),
+           Msg           => Create (Msg3, Explain_Code => Explain_Code),
            Details       => To_Unbounded_String (Details),
            Continuations => Continuations,
            others        => <>);
-   --  Start of processing for Error_Msg_Flow
+      --  Start of processing for Error_Msg_Flow
 
    begin
       --  If the message we are about to emit has already been emitted in the
       --  past then do nothing.
 
-      Flow_Msgs_Set.Insert (New_Item => Msg_Str,
-                            Position => Dummy,
-                            Inserted => Inserted);
+      Flow_Msgs_Set.Insert
+        (New_Item => Msg_Str, Position => Dummy, Inserted => Inserted);
 
       if Inserted then
 
@@ -420,6 +409,7 @@ package body Flow_Error_Messages is
             case Severity is
                when Error_Kind =>
                   Suppressed := False;
+
                when others =>
                   Suppressed := True;
             end case;
@@ -448,8 +438,7 @@ package body Flow_Error_Messages is
                           Annot_Kind       => Info.Kind,
                           Justification    =>
                             To_Unbounded_String (Justified_Message (Msg3)));
-                     Result.Msg :=
-                       Create (Justified_Message (Msg3));
+                     Result.Msg := Create (Justified_Message (Msg3));
                      Result.Severity := Info_Kind;
 
                      if Report_Mode /= GPR_Fail then
@@ -467,7 +456,7 @@ package body Flow_Error_Messages is
                   --  deals with the warnings-as-errors handling for the whole
                   --  unit.
 
-                  Suppressed       := False;
+                  Suppressed := False;
                   Found_Flow_Error := True;
             end case;
          end if;
@@ -485,15 +474,17 @@ package body Flow_Error_Messages is
             --  avoid long unreadable messages for command-line use.
 
             declare
-               Fix_Msg     : constant Message :=
-                 (if Fix /= "" then
-                     Create
-                       (Compute_Message
+               Fix_Msg : constant Message :=
+                 (if Fix /= ""
+                  then
+                    Create
+                      (Compute_Message
                          (Fix, Attach_Node, FF1, FF2, With_Location => False))
                   else No_Message);
 
                Explanation_Msg : constant String :=
-                 (if Explanation /= "" then
+                 (if Explanation /= ""
+                  then
                     Compute_Message
                       (Explanation, Attach_Node, EF1, With_Location => False)
                   else "");
@@ -523,21 +514,21 @@ package body Flow_Error_Messages is
    procedure Error_Msg_Flow
      (FA            : in out Flow_Analysis_Graphs;
       Msg           : String;
-      Details       : String                := "";
-      Explanation   : String                := "";
-      Fix           : String                := "";
+      Details       : String := "";
+      Explanation   : String := "";
+      Fix           : String := "";
       Severity      : Msg_Severity;
       N             : Node_Id;
-      F1            : Flow_Id               := Null_Flow_Id;
-      F2            : Flow_Id               := Null_Flow_Id;
-      F3            : Flow_Id               := Null_Flow_Id;
-      EF1           : Flow_Id               := Null_Flow_Id;
-      FF1           : Flow_Id               := Null_Flow_Id;
-      FF2           : Flow_Id               := Null_Flow_Id;
-      Tag           : Flow_Tag_Kind         := Empty_Tag;
-      Explain_Code  : Explain_Code_Kind     := EC_None;
-      SRM_Ref       : String                := "";
-      Path          : Vertex_Sets.Set       := Vertex_Sets.Empty_Set;
+      F1            : Flow_Id := Null_Flow_Id;
+      F2            : Flow_Id := Null_Flow_Id;
+      F3            : Flow_Id := Null_Flow_Id;
+      EF1           : Flow_Id := Null_Flow_Id;
+      FF1           : Flow_Id := Null_Flow_Id;
+      FF2           : Flow_Id := Null_Flow_Id;
+      Tag           : Flow_Tag_Kind := Empty_Tag;
+      Explain_Code  : Explain_Code_Kind := EC_None;
+      SRM_Ref       : String := "";
+      Path          : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
       Vertex        : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
       Continuations : Message_Lists.List := Message_Lists.Empty)
    is
@@ -558,8 +549,7 @@ package body Flow_Error_Messages is
       -- Write_Tracefile --
       ---------------------
 
-      function Write_Tracefile (Set : Vertex_Sets.Set) return String
-      is
+      function Write_Tracefile (Set : Vertex_Sets.Set) return String is
          FD        : Ada.Text_IO.File_Type;
          Tracefile : constant String := Fresh_Trace_File;
       begin
@@ -590,28 +580,29 @@ package body Flow_Error_Messages is
          then ""
          else Write_Tracefile (Path));
 
-   --  Start of processing for Error_Msg_Flow
+      --  Start of processing for Error_Msg_Flow
 
    begin
-      Error_Msg_Flow (E             => FA.Spec_Entity,
-                      Msg           => Debug_Msg,
-                      Details       => Details,
-                      Explanation   => Explanation,
-                      Fix           => Fix,
-                      Severity      => Severity,
-                      N             => N,
-                      Suppressed    => Suppressed,
-                      F1            => F1,
-                      F2            => F2,
-                      F3            => F3,
-                      EF1           => EF1,
-                      FF1           => FF1,
-                      FF2           => FF2,
-                      Tag           => Tag,
-                      SRM_Ref       => SRM_Ref,
-                      Explain_Code  => Explain_Code,
-                      Tracefile     => Tracefile,
-                      Continuations => Continuations);
+      Error_Msg_Flow
+        (E             => FA.Spec_Entity,
+         Msg           => Debug_Msg,
+         Details       => Details,
+         Explanation   => Explanation,
+         Fix           => Fix,
+         Severity      => Severity,
+         N             => N,
+         Suppressed    => Suppressed,
+         F1            => F1,
+         F2            => F2,
+         F3            => F3,
+         EF1           => EF1,
+         FF1           => FF1,
+         FF2           => FF2,
+         Tag           => Tag,
+         SRM_Ref       => SRM_Ref,
+         Explain_Code  => Explain_Code,
+         Tracefile     => Tracefile,
+         Continuations => Continuations);
 
       --  Set the Errors_Or_Warnings flag to True for this entity if we are
       --  with anything but a suppressed warning.
@@ -634,29 +625,28 @@ package body Flow_Error_Messages is
    ---------------------
 
    procedure Error_Msg_Proof
-     (N             : Node_Id;
-      Extra_Msg     : String;
-      Is_Proved     : Boolean;
-      Tag           : VC_Kind;
-      Cntexmp       : JSON_Value;
-      Verdict       : Cntexmp_Verdict;
-      Check_Tree    : JSON_Value;
-      VC_File       : String;
-      VC_Loc        : Node_Id;
-      Editor_Cmd    : String;
-      Explanation   : String;
-      E             : Entity_Id;
-      How_Proved    : Prover_Category;
-      Stats         : Prover_Stat_Maps.Map;
-      Check_Info    : Check_Info_Type;
-      CE_From_RAC   : Boolean := False)
+     (N           : Node_Id;
+      Extra_Msg   : String;
+      Is_Proved   : Boolean;
+      Tag         : VC_Kind;
+      Cntexmp     : JSON_Value;
+      Verdict     : Cntexmp_Verdict;
+      Check_Tree  : JSON_Value;
+      VC_File     : String;
+      VC_Loc      : Node_Id;
+      Editor_Cmd  : String;
+      Explanation : String;
+      E           : Entity_Id;
+      How_Proved  : Prover_Category;
+      Stats       : Prover_Stat_Maps.Map;
+      Check_Info  : Check_Info_Type;
+      CE_From_RAC : Boolean := False)
    is
       function Get_Fix_Or_Verdict
         (N          : Node_Id;
          Tag        : VC_Kind;
          How_Proved : Prover_Category;
-         Verdict    : Cntexmp_Verdict)
-         return Message;
+         Verdict    : Cntexmp_Verdict) return Message;
       --  Return a fix, or the verdict if the fix was not found and the
       --  verdict is a subcontract weakness
 
@@ -680,8 +670,7 @@ package body Flow_Error_Messages is
         (N          : Node_Id;
          Tag        : VC_Kind;
          How_Proved : Prover_Category;
-         Verdict    : Cntexmp_Verdict)
-         return Message
+         Verdict    : Cntexmp_Verdict) return Message
       is
          Fix            : constant Message :=
            Get_Fix (N, Tag, How_Proved, Check_Info.Fix_Info);
@@ -699,9 +688,12 @@ package body Flow_Error_Messages is
             case Verdict.Verdict_Category is
                when Subcontract_Weakness =>
                   return
-                    Create ("add or complete related loop invariants "
-                            & "or postconditions");
-               when others => null;
+                    Create
+                      ("add or complete related loop invariants "
+                       & "or postconditions");
+
+               when others =>
+                  null;
             end case;
          end if;
 
@@ -739,7 +731,7 @@ package body Flow_Error_Messages is
 
          elsif Tag = VC_UC_Alignment
            and then Present
-             (Supported_Alias (SPARK_Atree.Get_Address_Expr (N)))
+                      (Supported_Alias (SPARK_Atree.Get_Address_Expr (N)))
          then
             Result := High_Check_Kind;
 
@@ -747,9 +739,7 @@ package body Flow_Error_Messages is
          --  construct that is statically known to raise an exception. Issue a
          --  high severity message in such a case.
 
-         elsif Tag = VC_Raise
-           and then Nkind (N) in N_Raise_xxx_Error
-         then
+         elsif Tag = VC_Raise and then Nkind (N) in N_Raise_xxx_Error then
             Result := High_Check_Kind;
 
          --  Range checks on concatenation of strings are likely to be
@@ -801,8 +791,9 @@ package body Flow_Error_Messages is
       begin
          --  Check if VC is not proved or statistics are enabled
 
-         if not Is_Proved or else
-           Gnat2Why_Args.Report_Mode not in GPR_Statistics | GPR_Provers
+         if not Is_Proved
+           or else Gnat2Why_Args.Report_Mode
+                   not in GPR_Statistics | GPR_Provers
          then
             return "";
          end if;
@@ -854,33 +845,29 @@ package body Flow_Error_Messages is
 
       --  Local variables
 
-      Msg : constant String :=
+      Msg         : constant String :=
         (if Is_Proved
          then Proved_Message (VC_Loc, Tag) & Stat_Message
-         else Not_Proved_Message (VC_Loc, Tag)
-         & (if CWE then CWE_Message (Tag) else ""))
+         else
+           Not_Proved_Message (VC_Loc, Tag)
+           & (if CWE then CWE_Message (Tag) else ""))
         & Extra_Msg
         & (if VC_File /= "" then ", vc file: " & VC_File else "");
-      Message        : constant String          := Compute_Message (Msg, N);
-      Place_First    : constant Boolean         := Locate_On_First_Token (Tag);
-      Span           : constant Source_Span     :=
-        Compute_Sloc (N, Place_First);
-      Slc            : constant Source_Ptr      := Span.Ptr;
-      VC_Span        : constant Source_Span     := Compute_Sloc (VC_Loc,
-                                                             Place_First);
-      VC_Slc         : constant Source_Ptr      := VC_Span.Ptr;
+      Message     : constant String := Compute_Message (Msg, N);
+      Place_First : constant Boolean := Locate_On_First_Token (Tag);
+      Span        : constant Source_Span := Compute_Sloc (N, Place_First);
+      Slc         : constant Source_Ptr := Span.Ptr;
+      VC_Span     : constant Source_Span := Compute_Sloc (VC_Loc, Place_First);
+      VC_Slc      : constant Source_Ptr := VC_Span.Ptr;
 
       Pretty_Cntexmp : constant Cntexample_Data :=
         (if CE_From_RAC
          then
-           (Verdict.CE with delta Map =>
-                Remap_VC_Info (Verdict.CE.Map, Slc))
-         elsif Verdict.Verdict_Category in
-           Not_Checked | Cntexmp_Confirmed_Verdict_Category
-         then
-            Create_Pretty_Cntexmp (From_JSON (Cntexmp), Slc, N, Tag, E)
-         else
-            VC_Kinds.Cntexample_Data'(others => <>));
+           (Verdict.CE with delta Map => Remap_VC_Info (Verdict.CE.Map, Slc))
+         elsif Verdict.Verdict_Category
+               in Not_Checked | Cntexmp_Confirmed_Verdict_Category
+         then Create_Pretty_Cntexmp (From_JSON (Cntexmp), Slc, N, Tag, E)
+         else VC_Kinds.Cntexample_Data'(others => <>));
 
       Severity  : constant Msg_Severity :=
         Get_Severity (VC_Loc, Is_Proved, Tag, Verdict);
@@ -904,29 +891,30 @@ package body Flow_Error_Messages is
            Editor_Cmd => To_Unbounded_String (Editor_Cmd),
            others     => <>);
 
-   --  Start of processing for Error_Msg_Proof
+      --  Start of processing for Error_Msg_Proof
 
    begin
       --  Proof (why3) will only report messages that are relevant wrt
       --  limit-line option, but Interval messages will be issued for all
       --  lines. So we add this extra filter here.
 
-      if How_Proved = PC_Trivial
-        and then not Is_Specified_Line (Slc)
-      then
+      if How_Proved = PC_Trivial and then not Is_Specified_Line (Slc) then
          return;
       end if;
 
       for Cont of reverse Check_Info.Continuation loop
          declare
-            Loc  : constant Source_Ptr := Sloc
-              (Errout.First_Node (Cont.Ada_Node));
+            Loc  : constant Source_Ptr :=
+              Sloc (Errout.First_Node (Cont.Ada_Node));
             File : constant String := File_Name (Loc);
             Line : constant Physical_Line_Number :=
               Get_Physical_Line_Number (Loc);
             Msg  : constant String :=
               To_String (Cont.Message)
-              & " at " & File & ":" & Image (Integer (Line), 1);
+              & " at "
+              & File
+              & ":"
+              & Image (Integer (Line), 1);
 
          begin
             Result.Continuations.Append
@@ -953,8 +941,7 @@ package body Flow_Error_Messages is
                       To_Unbounded_String (Justified_Message (N, Tag)));
 
                if Report_Mode /= GPR_Fail then
-                  Result.Msg :=
-                    Create (Justified_Message (VC_Loc, Tag));
+                  Result.Msg := Create (Justified_Message (VC_Loc, Tag));
                   Result.Severity := Info_Kind;
                   Msg_Id := Print_Regular_Msg (Result);
                end if;
@@ -1041,9 +1028,7 @@ package body Flow_Error_Messages is
    -----------------
 
    function Get_Details
-     (N   : Node_Id;
-      E   : Entity_Id;
-      Tag : VC_Kind) return String
+     (N : Node_Id; E : Entity_Id; Tag : VC_Kind) return String
    is
 
       Par : Node_Id := Atree.Parent (N);
@@ -1056,30 +1041,28 @@ package body Flow_Error_Messages is
       --  Name of the operation to use in more detailed message
       Oper : constant String :=
         (case Nkind (N) is
-            when N_Op_Add      => "addition",
-            when N_Op_Subtract => "subtraction",
-            when N_Op_Multiply => "multiplication",
-            when N_Op_Divide   => "division",
-            when N_Op_Abs      => "absolute value",
-            when N_Op_Minus    => "negation",
-            when N_Op_Expon    => "exponentiation",
-            when N_Op_Concat   => "concatenation",
-            when others        => "operation");
+           when N_Op_Add => "addition",
+           when N_Op_Subtract => "subtraction",
+           when N_Op_Multiply => "multiplication",
+           when N_Op_Divide => "division",
+           when N_Op_Abs => "absolute value",
+           when N_Op_Minus => "negation",
+           when N_Op_Expon => "exponentiation",
+           when N_Op_Concat => "concatenation",
+           when others => "operation");
 
       --  Name of value to use in more detailed message
       Value : constant String :=
-        (if Nkind (N) not in N_Op then
-            "value"
-         elsif Tag = VC_FP_Overflow_Check then
-            "result of floating-point " & Oper
+        (if Nkind (N) not in N_Op
+         then "value"
+         elsif Tag = VC_FP_Overflow_Check
+         then "result of floating-point " & Oper
          elsif Nkind (N) in N_Has_Etype
            and then Is_Fixed_Point_Type (Retysp (Etype (N)))
-         then
-            "result of fixed-point " & Oper
-         else
-            "result of " & Oper);
+         then "result of fixed-point " & Oper
+         else "result of " & Oper);
 
-   --  Start of processing for Get_Details
+      --  Start of processing for Get_Details
 
    begin
       --  The structure of the code is taken from
@@ -1096,8 +1079,7 @@ package body Flow_Error_Messages is
       --  Skip type conversions inserted by the frontend to find a suitable
       --  explanation.
 
-      while Nkind (Par) in N_Type_Conversion
-                         | N_Unchecked_Type_Conversion
+      while Nkind (Par) in N_Type_Conversion | N_Unchecked_Type_Conversion
         and then not Comes_From_Source (Par)
       loop
          Arg := Par;
@@ -1106,27 +1088,33 @@ package body Flow_Error_Messages is
 
       case Tag is
          when VC_Termination_Check =>
-            if Nkind (N) in N_Function_Call
-                          | N_Procedure_Call_Statement
-                          | N_Entry_Call_Statement
+            if Nkind (N)
+               in N_Function_Call
+                | N_Procedure_Call_Statement
+                | N_Entry_Call_Statement
               and then Is_Ghost_Entity (Get_Called_Entity (N))
               and then not Is_Ghost_Entity (E)
             then
-               return "ghost calls occurring inside non-ghost code "
+               return
+                 "ghost calls occurring inside non-ghost code "
                  & "should always terminate";
             elsif Has_Implicit_Always_Terminates (E) then
                declare
                   E_Name : constant String :=
-                    (if Ekind (E) = E_Package then "package elaboration"
-                     elsif Ekind (E) = E_Function then "functions"
+                    (if Ekind (E) = E_Package
+                     then "package elaboration"
+                     elsif Ekind (E) = E_Function
+                     then "functions"
                      else "automatically instantiated lemmas");
                begin
                   return E_Name & " should always terminate in SPARK";
                end;
 
             elsif Present (Get_Pragma (E, Pragma_Always_Terminates)) then
-               return (if Ekind (E) = E_Entry then "entry" else "procedure")
-                 & " """ & Source_Name (E)
+               return
+                 (if Ekind (E) = E_Entry then "entry" else "procedure")
+                 & " """
+                 & Source_Name (E)
                  & """ has an Always_Terminates aspect";
 
             --  Search for an enclosing package with an Always_Terminates
@@ -1139,11 +1127,16 @@ package body Flow_Error_Messages is
                   while Present (Scop) and then Ekind (Scop) = E_Package loop
                      if Present (Get_Pragma (Scop, Pragma_Always_Terminates))
                      then
-                        return (if Ekind (E) = E_Entry then "entry"
-                                else "procedure")
-                          & " """ & Source_Name (E) & """ has an implicit "
+                        return
+                          (if Ekind (E) = E_Entry
+                           then "entry"
+                           else "procedure")
+                          & " """
+                          & Source_Name (E)
+                          & """ has an implicit "
                           & "Always_Terminates aspect inherited from """
-                          & Source_Name (Scop) & '"';
+                          & Source_Name (Scop)
+                          & '"';
                      end if;
                      Scop := Scope (Scop);
                   end loop;
@@ -1158,7 +1151,8 @@ package body Flow_Error_Messages is
               and then Is_Ghost_Entity (Get_Called_Entity (N))
               and then not Is_Ghost_Entity (E)
             then
-               return "ghost procedure calls should not propagate exceptions"
+               return
+                 "ghost procedure calls should not propagate exceptions"
                  & " to non-ghost code";
             else
                return "";
@@ -1173,15 +1167,16 @@ package body Flow_Error_Messages is
             --  cases.
 
             case Nkind (N) is
-            when N_Assignment_Statement =>
-               return "source and destination arrays for the assignment"
-                 & " must have the same length";
+               when N_Assignment_Statement =>
+                  return
+                    "source and destination arrays for the assignment"
+                    & " must have the same length";
 
-            when N_Op_Boolean =>
-               return "both array operands must have the same length";
+               when N_Op_Boolean =>
+                  return "both array operands must have the same length";
 
-            when others =>
-               null;
+               when others =>
+                  null;
             end case;
 
             --  In the remaining cases, look for the parent node as interesting
@@ -1189,55 +1184,60 @@ package body Flow_Error_Messages is
 
             case Nkind (Par) is
 
-            when N_Type_Conversion
-               | N_Unchecked_Type_Conversion
-            =>
-               pragma Assert (Comes_From_Source (Par));
-               return
-                 Value & " must have same length as the target array type"
-                 & " of the conversion";
+               when N_Type_Conversion | N_Unchecked_Type_Conversion =>
+                  pragma Assert (Comes_From_Source (Par));
+                  return
+                    Value
+                    & " must have same length as the target array type"
+                    & " of the conversion";
 
-            when N_Qualified_Expression =>
-               return Value & " must have the same length as the array type"
-                 & " of the qualification";
+               when N_Qualified_Expression =>
+                  return
+                    Value
+                    & " must have the same length as the array type"
+                    & " of the qualification";
 
-            when N_Parameter_Association
-               | N_Function_Call
-               | N_Procedure_Call_Statement
-               | N_Entry_Call_Statement
-            =>
-               return "argument array must have the same length"
-                 & " as the parameter array type";
+               when N_Parameter_Association
+                  | N_Function_Call
+                  | N_Procedure_Call_Statement
+                  | N_Entry_Call_Statement
+               =>
+                  return
+                    "argument array must have the same length"
+                    & " as the parameter array type";
 
-            when others =>
-               return "array must be of the appropriate length";
+               when others =>
+                  return "array must be of the appropriate length";
             end case;
 
-         when VC_FP_Overflow_Check
-            | VC_Overflow_Check
-         =>
-            Overflow_Case : declare
+         when VC_FP_Overflow_Check | VC_Overflow_Check =>
+            Overflow_Case :
+            declare
 
                --  Generate a suitable detailed message for a check on value
                --  Val having size Siz bits.
-               function Insert_Value_Size (Val, Siz : String) return String is
-                 --  A floating-point overflow check is improbable in practice.
-                 --  The user should be notified that values should be bounded,
-                 --  rather than reminding her of the absurdly high bound of
-                 --  floats that may be violated only in theory.
-                 (if Tag = VC_FP_Overflow_Check then
-                     Val & " must be bounded"
+               function Insert_Value_Size (Val, Siz : String) return String
+               is
+                  --  A floating-point overflow check is improbable in
+                  --  practice.  The user should be notified that values should
+                  --  be bounded, rather than reminding her of the absurdly
+                  --  high bound of floats that may be violated only in theory.
+                  (if Tag = VC_FP_Overflow_Check
+                   then Val & " must be bounded"
 
-                  --  Overflow on fixed-point operation is really against the
-                  --  the underlying machine integer. Spell that out.
-                  elsif Nkind (N) in N_Has_Etype
-                    and then Is_Fixed_Point_Type (Retysp (Etype (N)))
-                  then
-                     Val & " must fit in the underlying " &
-                     Siz & "-bits machine integer"
+                     --  Overflow on fixed-point operation is really against
+                     --  the the underlying machine integer. Spell that out.
+                   elsif Nkind (N) in N_Has_Etype
+                     and then Is_Fixed_Point_Type (Retysp (Etype (N)))
+                   then
+                     Val
+                     & " must fit in the underlying "
+                     & Siz
+                     & "-bits machine integer"
 
-                  --  Remind the user of the size of the machine integer used
-                  else
+                     --  Remind the user of the size of the machine integer
+                     --  used.
+                   else
                      Val & " must fit in a " & Siz & "-bits machine integer");
 
                Size : constant String := UI_Image (Esize (Etype (N)));
@@ -1258,7 +1258,8 @@ package body Flow_Error_Messages is
             if Nkind (N) = N_Slice then
                return "slice bounds must fit in the underlying array";
             elsif Nkind (N) = N_Aggregate and then Is_Null_Aggregate (N) then
-               return "high bound of empty array aggregate must be a valid"
+               return
+                 "high bound of empty array aggregate must be a valid"
                  & " value of the base type";
             end if;
 
@@ -1267,136 +1268,158 @@ package body Flow_Error_Messages is
 
             case Nkind (Par) is
 
-            when N_Assignment_Statement =>
-               return Value & " must fit in the target type of the assignment";
+               when N_Assignment_Statement =>
+                  return
+                    Value & " must fit in the target type of the assignment";
 
-            when N_Indexed_Component =>
-               return Value & " must be a valid index into the array";
+               when N_Indexed_Component =>
+                  return Value & " must be a valid index into the array";
 
-            when N_Type_Conversion
-               | N_Unchecked_Type_Conversion
-            =>
-               pragma Assert (Comes_From_Source (Par));
-               return
-                 Value & " must be convertible to the target type"
-                 & " of the conversion";
+               when N_Type_Conversion | N_Unchecked_Type_Conversion =>
+                  pragma Assert (Comes_From_Source (Par));
+                  return
+                    Value
+                    & " must be convertible to the target type"
+                    & " of the conversion";
 
-            when N_Qualified_Expression =>
-               return Value & " must fit in the type of the qualification";
+               when N_Qualified_Expression =>
+                  return Value & " must fit in the type of the qualification";
 
-            when N_Simple_Return_Statement =>
-               return
-                 "returned value must fit in the result type of the function";
+               when N_Simple_Return_Statement =>
+                  return
+                    "returned value must fit in the result type of the "
+                    & "function";
 
-            when N_Parameter_Association
-               | N_Function_Call
-               | N_Procedure_Call_Statement
-               | N_Entry_Call_Statement
-            =>
-               declare
-                  Param : constant Entity_Id := Get_Formal_From_Actual (Arg);
-               begin
-                  case Formal_Kind'(Ekind (Param)) is
-                     when E_In_Parameter =>
-                        return "input value must fit in parameter type";
-                     when E_Out_Parameter =>
-                        return "output value must fit in argument type";
-                     when E_In_Out_Parameter =>
-                        return "input value must fit in parameter type and "
-                          & "output value must fit in argument type";
-                  end case;
-               end;
+               when N_Parameter_Association
+                  | N_Function_Call
+                  | N_Procedure_Call_Statement
+                  | N_Entry_Call_Statement
+               =>
+                  declare
+                     Param : constant Entity_Id :=
+                       Get_Formal_From_Actual (Arg);
+                  begin
+                     case Formal_Kind'(Ekind (Param)) is
+                        when E_In_Parameter =>
+                           return "input value must fit in parameter type";
 
-            when N_Attribute_Reference =>
-               Attribute : declare
-                  Aname   : constant Name_Id := Attribute_Name (Par);
-                  Attr_Id : constant Attribute_Id := Get_Attribute_Id (Aname);
-               begin
-                  case Attr_Id is
-                     when Attribute_Pred =>
-                        return "value cannot be minimum value of the type";
-                     when Attribute_Succ =>
-                        return "value cannot be maximum value of the type";
-                     when Attribute_Val =>
-                        return "value must correspond to position in the type";
-                     when Attribute_Enum_Val =>
-                        return "value must correspond to representation"
-                          & " in the type";
+                        when E_Out_Parameter =>
+                           return "output value must fit in argument type";
+
+                        when E_In_Out_Parameter =>
+                           return
+                             "input value must fit in parameter type and "
+                             & "output value must fit in argument type";
+                     end case;
+                  end;
+
+               when N_Attribute_Reference =>
+                  Attribute :
+                  declare
+                     Aname   : constant Name_Id := Attribute_Name (Par);
+                     Attr_Id : constant Attribute_Id :=
+                       Get_Attribute_Id (Aname);
+                  begin
+                     case Attr_Id is
+                        when Attribute_Pred =>
+                           return "value cannot be minimum value of the type";
+
+                        when Attribute_Succ =>
+                           return "value cannot be maximum value of the type";
+
+                        when Attribute_Val =>
+                           return
+                             "value must correspond to position in the type";
+
+                        when Attribute_Enum_Val =>
+                           return
+                             "value must correspond to representation"
+                             & " in the type";
+
+                        when others =>
+                           return "";
+                     end case;
+                  end Attribute;
+
+               when N_Op_Expon =>
+                  return "exponent value must fit in type Natural";
+
+               when N_Component_Association =>
+                  declare
+                     Ancestor : constant Node_Id := Parent (Parent (Par));
+                     --  Construct enclosing the aggregate
+                  begin
+                     if Nkind (Ancestor) = N_Pragma_Argument_Association
+                       and then Pragma_Name (Parent (Ancestor))
+                                = Name_Subprogram_Variant
+                     then
+                        pragma
+                          Assert
+                            (Is_From_Hardcoded_Unit (Etype (N), Big_Integers));
+                        return
+                          "expression of type Big_Integer must be "
+                          & "non-negative";
+                     else
+                        return Value & " must fit in component type";
+                     end if;
+                  end;
+
+               when N_Range =>
+                  return
+                    "bounds of non-empty range must fit in the "
+                    & "underlying type";
+
+               when N_Aggregate =>
+                  return "";
+
+               --  We only expect range checks on aspects for default values
+
+               when N_Aspect_Specification =>
+                  case Aspects.Get_Aspect_Id (Par) is
+                     when Aspects.Aspect_Default_Component_Value =>
+                        return
+                          "default component value must fit"
+                          & " in the component type";
+
+                     when Aspects.Aspect_Default_Value =>
+                        return "default value must fit in the type";
+
                      when others =>
-                        return "";
+                        raise Program_Error;
                   end case;
-               end Attribute;
 
-            when N_Op_Expon =>
-               return "exponent value must fit in type Natural";
+               --  We expect range checks on defaults of record fields and
+               --  discriminants.
 
-            when N_Component_Association =>
-               declare
-                  Ancestor : constant Node_Id := Parent (Parent (Par));
-                  --  Construct enclosing the aggregate
-               begin
-                  if Nkind (Ancestor) = N_Pragma_Argument_Association
-                    and then Pragma_Name (Parent (Ancestor)) =
-                      Name_Subprogram_Variant
-                  then
-                     pragma Assert
-                       (Is_From_Hardcoded_Unit (Etype (N), Big_Integers));
+               when N_Object_Declaration
+                  | N_Component_Declaration
+                  | N_Discriminant_Specification
+               =>
+                  return "default component value must fit in the type";
+
+               when N_If_Expression =>
+                  return "value must fit in the type of the expression";
+
+               when N_Case_Expression_Alternative =>
+                  return "value must fit in the type of the expression";
+
+               when N_Allocator =>
+                  return
+                    "value must fit in the designated type of the allocator";
+
+               when N_Pragma_Argument_Association =>
+                  if Pragma_Name (Parent (Par)) = Name_Loop_Variant then
+                     pragma
+                       Assert
+                         (Is_From_Hardcoded_Unit (Etype (N), Big_Integers));
                      return
                        "expression of type Big_Integer must be non-negative";
                   else
-                     return Value & " must fit in component type";
+                     return "";
                   end if;
-               end;
 
-            when N_Range =>
-               return
-                 "bounds of non-empty range must fit in the underlying type";
-
-            when N_Aggregate =>
-               return "";
-
-            --  We only expect range checks on aspects for default values
-
-            when N_Aspect_Specification =>
-               case Aspects.Get_Aspect_Id (Par) is
-                  when Aspects.Aspect_Default_Component_Value =>
-                     return "default component value must fit" &
-                       " in the component type";
-                  when Aspects.Aspect_Default_Value =>
-                     return "default value must fit in the type";
-                  when others =>
-                     raise Program_Error;
-               end case;
-
-            --  We expect range checks on defaults of record fields and
-            --  discriminants.
-
-            when N_Object_Declaration
-               | N_Component_Declaration
-               | N_Discriminant_Specification
-            =>
-               return "default component value must fit in the type";
-
-            when N_If_Expression =>
-               return "value must fit in the type of the expression";
-
-            when N_Case_Expression_Alternative =>
-               return "value must fit in the type of the expression";
-
-            when N_Allocator =>
-               return "value must fit in the designated type of the allocator";
-
-            when N_Pragma_Argument_Association =>
-               if Pragma_Name (Parent (Par)) = Name_Loop_Variant then
-                  pragma Assert
-                    (Is_From_Hardcoded_Unit (Etype (N), Big_Integers));
-                  return "expression of type Big_Integer must be non-negative";
-               else
+               when others =>
                   return "";
-               end if;
-
-            when others =>
-               return "";
             end case;
 
          when others =>
@@ -1409,11 +1432,8 @@ package body Flow_Error_Messages is
    ---------------------
 
    function Get_Explanation
-     (N           : Node_Id;
-      E           : Entity_Id;
-      Tag         : VC_Kind;
-      Explanation : String) return String
-   is
+     (N : Node_Id; E : Entity_Id; Tag : VC_Kind; Explanation : String)
+      return String is
    begin
       --  If an explanation is passed on by the caller, take it
 
@@ -1424,7 +1444,8 @@ package body Flow_Error_Messages is
       --  On unprovable checks, advise --info
 
       if Is_Unprovable_Check (Tag, N) then
-         return "the check might be unprovable due to proof limitations; use "
+         return
+           "the check might be unprovable due to proof limitations; use "
            & "--info for more information";
 
       --  Add an explanation for range checks on empty aggregates
@@ -1433,26 +1454,30 @@ package body Flow_Error_Messages is
         and then Nkind (N) = N_Aggregate
         and then Is_Null_Aggregate (N)
       then
-         return "empty aggregates cannot be used if there is no element before"
+         return
+           "empty aggregates cannot be used if there is no element before"
            & " the first element of their index type";
 
       elsif Tag = VC_Termination_Check
-        and then Nkind (N) in N_Function_Call
-                            | N_Procedure_Call_Statement
-                            | N_Entry_Call_Statement
+        and then Nkind (N)
+                 in N_Function_Call
+                  | N_Procedure_Call_Statement
+                  | N_Entry_Call_Statement
       then
          declare
             Subp : constant Entity_Id := Get_Called_Entity (N);
          begin
             if Is_Function_Type (Subp) then
-               return "calls through access-to-subprograms might hide "
+               return
+                 "calls through access-to-subprograms might hide "
                  & "recursive calls";
             elsif Present (Controlling_Argument (N)) then
                return "dispatching calls might hide recursive calls";
             elsif Flow_Generated_Globals.Phase_2.Mutually_Recursive (Subp, E)
               and then No (Get_Pragma (Subp, Pragma_Subprogram_Variant))
             then
-               return "termination of recursive calls requires a"
+               return
+                 "termination of recursive calls requires a"
                  & " Subprogram_Variant";
             end if;
          end;
@@ -1462,16 +1487,16 @@ package body Flow_Error_Messages is
         and then Has_Access_Type (Etype (N))
       then
          declare
-            Target_Typ : constant Entity_Id :=
-              Retysp (Etype (N));
-            To_Const   : constant Boolean :=
-              Is_Access_Constant (Target_Typ);
+            Target_Typ : constant Entity_Id := Retysp (Etype (N));
+            To_Const   : constant Boolean := Is_Access_Constant (Target_Typ);
             To_Gen     : constant Boolean :=
               Is_General_Access_Type (Target_Typ);
          begin
             if To_Gen or else To_Const then
-               return "conversion to "
-                 & (if To_Const then "access-to-constant"
+               return
+                 "conversion to "
+                 & (if To_Const
+                    then "access-to-constant"
                     else "general access")
                  & " type leaks memory";
             end if;
@@ -1484,23 +1509,23 @@ package body Flow_Error_Messages is
 
       elsif Tag in VC_RTE_Kind | VC_Precondition | VC_Precondition_Main then
          declare
-            function Is_Old_Or_Loop_Entry (N : Node_Id) return Boolean is
-              (Nkind (N) = N_Attribute_Reference
-               and then Attribute_Name (N) in Name_Old | Name_Loop_Entry);
+            function Is_Old_Or_Loop_Entry (N : Node_Id) return Boolean
+            is (Nkind (N) = N_Attribute_Reference
+                and then Attribute_Name (N) in Name_Old | Name_Loop_Entry);
 
             function Enclosing_Old_Or_Loop_Entry is new
               First_Parent_With_Property (Is_Old_Or_Loop_Entry);
 
             Par : constant Node_Id := Enclosing_Old_Or_Loop_Entry (N);
          begin
-            if Present (Par)
-              and then Is_Potentially_Unevaluated (Par)
-            then
+            if Present (Par) and then Is_Potentially_Unevaluated (Par) then
                if Attribute_Name (Par) = Name_Old then
-                  return "enclosing 'Old attribute reference is "
+                  return
+                    "enclosing 'Old attribute reference is "
                     & "unconditionally evaluated on subprogram entry";
                else
-                  return "enclosing 'Loop_Entry attribute reference is "
+                  return
+                    "enclosing 'Loop_Entry attribute reference is "
                     & "unconditionally evaluated on loop entry";
                end if;
             end if;
@@ -1511,11 +1536,16 @@ package body Flow_Error_Messages is
       then
          declare
             Contract : constant String :=
-              (if Tag = VC_Postcondition then "postcondition"
+              (if Tag = VC_Postcondition
+               then "postcondition"
                else "contract case");
          begin
-            return "validity of the " & Contract & " of " & Source_Name (E) &
-              " should be implied by its refined postcondition";
+            return
+              "validity of the "
+              & Contract
+              & " of "
+              & Source_Name (E)
+              & " should be implied by its refined postcondition";
          end;
       end if;
 
@@ -1527,17 +1557,13 @@ package body Flow_Error_Messages is
    --------------------------------------
 
    function Get_Filtered_Variables_For_Proof
-     (Expr    : Node_Id;
-      Context : Node_Id)
-      return Flow_Id_Sets.Set
+     (Expr : Node_Id; Context : Node_Id) return Flow_Id_Sets.Set
    is
-      Expr_Vars : Flow_Id_Sets.Set :=
-        Get_Variables_For_Proof (Expr, Context);
+      Expr_Vars : Flow_Id_Sets.Set := Get_Variables_For_Proof (Expr, Context);
    begin
       --  Exclude the special abstract state __HEAP
       Expr_Vars.Exclude
-        (Magic_String_Id (To_Entity_Name
-         (SPARK_Xrefs.Name_Of_Heap_Variable)));
+        (Magic_String_Id (To_Entity_Name (SPARK_Xrefs.Name_Of_Heap_Variable)));
 
       return Expr_Vars;
    end Get_Filtered_Variables_For_Proof;
@@ -1561,14 +1587,15 @@ package body Flow_Error_Messages is
       -- Local subprograms --
       -----------------------
 
-      function Is_Stmt_Or_Prag_Or_Decl (N : Node_Id) return Boolean is
-        (Nkind (N) in N_Procedure_Call_Statement
-                    | N_Pragma
-                    | N_Statement_Other_Than_Procedure_Call
-                    | N_Declaration
-                    | N_Later_Decl_Item
-                    | N_Label
-                    | N_Handled_Sequence_Of_Statements);
+      function Is_Stmt_Or_Prag_Or_Decl (N : Node_Id) return Boolean
+      is (Nkind (N)
+          in N_Procedure_Call_Statement
+           | N_Pragma
+           | N_Statement_Other_Than_Procedure_Call
+           | N_Declaration
+           | N_Later_Decl_Item
+           | N_Label
+           | N_Handled_Sequence_Of_Statements);
 
       function Enclosing_Stmt_Or_Prag_Or_Decl is new
         First_Parent_With_Property (Is_Stmt_Or_Prag_Or_Decl);
@@ -1578,14 +1605,16 @@ package body Flow_Error_Messages is
       --  access-to-function types in [Calls].
 
       subtype Explain_Node_Kind is Node_Kind
-        with Static_Predicate =>
-          Explain_Node_Kind in N_Empty
-                             | N_Assignment_Statement
-                             | N_Object_Declaration
-                             | N_Procedure_Call_Statement
-                             | N_Loop_Statement
-                             | N_Subprogram_Body
-                             | N_Subprogram_Declaration;
+      with
+        Static_Predicate =>
+          Explain_Node_Kind
+          in N_Empty
+           | N_Assignment_Statement
+           | N_Object_Declaration
+           | N_Procedure_Call_Statement
+           | N_Loop_Statement
+           | N_Subprogram_Body
+           | N_Subprogram_Declaration;
 
       function Explain_Output_Variables
         (Vars : Flow_Id_Sets.Set) return Unbounded_String;
@@ -1606,24 +1635,27 @@ package body Flow_Error_Messages is
       function Get_Loop_Condition_Or_Variable
         (Stmt : Node_Id) return Node_Or_Entity_Id
       with
-        Post => No (Get_Loop_Condition_Or_Variable'Result)
+        Post =>
+          No (Get_Loop_Condition_Or_Variable'Result)
           or else Nkind (Get_Loop_Condition_Or_Variable'Result) in N_Subexpr
-          or else
-            Ekind (Get_Loop_Condition_Or_Variable'Result) = E_Loop_Parameter;
+          or else Ekind (Get_Loop_Condition_Or_Variable'Result)
+                  = E_Loop_Parameter;
       --  Get the loop condition for a WHILE loop or the loop variable for a
       --  FOR loop. Return Empty for a plain loop.
 
       function Get_Pre_Post
-        (Proc    : Entity_Id;
-         Prag_Id : Pragma_Id) return Node_Lists.List
-      with Pre  => Prag_Id in Pragma_Precondition | Pragma_Postcondition,
-           Post => (for all Expr of Get_Pre_Post'Result =>
-                       Nkind (Expr) in N_Subexpr
-                       and then Is_Boolean_Type (Etype (Expr)));
+        (Proc : Entity_Id; Prag_Id : Pragma_Id) return Node_Lists.List
+      with
+        Pre  => Prag_Id in Pragma_Precondition | Pragma_Postcondition,
+        Post =>
+          (for all Expr of Get_Pre_Post'Result =>
+             Nkind (Expr) in N_Subexpr
+             and then Is_Boolean_Type (Etype (Expr)));
       --  Return the list of expressions mentioned in a precondition or a
       --  postcondition, including the class-wide ones.
 
-      function Get_Previous_Explain_Node (N : Node_Id) return Node_Id with
+      function Get_Previous_Explain_Node (N : Node_Id) return Node_Id
+      with
         Pre  => Is_Stmt_Or_Prag_Or_Decl (N),
         Post => Nkind (Get_Previous_Explain_Node'Result) in Explain_Node_Kind;
       --  Return the statement preceding [N] that is relevant in explaining an
@@ -1649,8 +1681,7 @@ package body Flow_Error_Messages is
          Context : Node_Id;
          Map     : Flow_Id_Surjection.Map := Flow_Id_Surjection.Empty_Map)
          return Flow_Id_Sets.Set
-      with
-        Pre => Nkind (Expr) in N_Subexpr;
+      with Pre => Nkind (Expr) in N_Subexpr;
       --  @param Expr expression
       --  @param Context relevant context for interpreting flow ids
       --  @param Map map of flow ids to apply on expression to find additional
@@ -1659,8 +1690,7 @@ package body Flow_Error_Messages is
       --  expression [Expr].
 
       function Get_Variables_From_Node
-        (N   : Node_Id;
-         Tag : VC_Kind) return Flow_Id_Sets.Set;
+        (N : Node_Id; Tag : VC_Kind) return Flow_Id_Sets.Set;
       --  Return the set of flow ids to consider for the check of kind Tag
       --  associated to node N.
 
@@ -1684,14 +1714,14 @@ package body Flow_Error_Messages is
          procedure Add (Expl : in out Unbounded_String; More : String);
          --  Append More to explanation Expl
 
-         function Callee_Name (Subp : Entity_Id) return String is
-           (if Nkind (Subp) = N_Defining_Operator_Symbol then
-               "operator " & Source_Name (Subp)
-            elsif Ekind (Subp) = E_Function then
-               "function " & Source_Name (Subp)
-            else
-               "type " &
-                 Source_Name
+         function Callee_Name (Subp : Entity_Id) return String
+         is (if Nkind (Subp) = N_Defining_Operator_Symbol
+             then "operator " & Source_Name (Subp)
+             elsif Ekind (Subp) = E_Function
+             then "function " & Source_Name (Subp)
+             else
+               "type "
+               & Source_Name
                    (Defining_Entity (Associated_Node_For_Itype (Subp))))
          with Pre => Ekind (Subp) in E_Function | E_Subprogram_Type;
 
@@ -1729,14 +1759,14 @@ package body Flow_Error_Messages is
 
          --  Local variables
 
-         Expl                 : Unbounded_String;
-         Regular_Callees,
-         Dispatching_Callees,
-         Indirect_Callees     : Entity_Sets.Set;
+         Expl                                                   :
+           Unbounded_String;
+         Regular_Callees, Dispatching_Callees, Indirect_Callees :
+           Entity_Sets.Set;
 
          use type Ada.Containers.Count_Type;
 
-      --  Start of processing for Explain_Calls
+         --  Start of processing for Explain_Calls
 
       begin
          for Call of Calls loop
@@ -1769,8 +1799,8 @@ package body Flow_Error_Messages is
                --  This is a dispatching call with Post'Class specified
 
                elsif Dispatch
-                 and then Has_Contracts (Subp, Pragma_Postcondition,
-                                         Classwide => True)
+                 and then Has_Contracts
+                            (Subp, Pragma_Postcondition, Classwide => True)
                then
                   null;
 
@@ -1778,9 +1808,8 @@ package body Flow_Error_Messages is
                --  specified.
 
                elsif not Dispatch
-                 and then
-                   (Has_Contracts (Subp, Pragma_Postcondition)
-                     or else Has_Contracts (Subp, Pragma_Contract_Cases))
+                 and then (Has_Contracts (Subp, Pragma_Postcondition)
+                           or else Has_Contracts (Subp, Pragma_Contract_Cases))
                then
                   null;
 
@@ -1802,9 +1831,7 @@ package body Flow_Error_Messages is
 
                --  Case 1: regular function call
 
-               elsif Ekind (Subp) = E_Function
-                 and then not Dispatch
-               then
+               elsif Ekind (Subp) = E_Function and then not Dispatch then
                   Regular_Callees.Include (Subp);
 
                --  Case 2: dispatching function call
@@ -1815,47 +1842,50 @@ package body Flow_Error_Messages is
                --  Case 3: indirect function call
 
                else
-                  pragma Assert (Ekind (Subp) in E_Subprogram_Type
-                                               | E_Access_Subprogram_Type);
+                  pragma
+                    Assert
+                      (Ekind (Subp)
+                       in E_Subprogram_Type | E_Access_Subprogram_Type);
                   Indirect_Callees.Include (Subp);
                end if;
             end;
          end loop;
 
          if not Regular_Callees.Is_Empty then
-            Add (Expl,
-                 "adding a postcondition to " &
-                 Callee_Names (Regular_Callees) &
-                 " or turning " &
-                 (if Regular_Callees.Length = 1 then
-                    "it into an expression function"
-                  else
-                    "them into expression functions") &
-                 --  If at least one of the callees has no body, that means
-                 --  it comes from a different unit. It might already be
-                 --  be defined as an expression function in the unit body,
-                 --  so emphasize that what matters here is that it is so in
-                 --  the unit spec.
-                 (if (for some Callee of Regular_Callees =>
-                         No (Get_Body_Entity (Callee)))
-                  then
-                    (if Regular_Callees.Length = 1 then
-                       " in its unit spec"
-                     else
-                       " in their unit spec")
-                   else ""));
+            Add
+              (Expl,
+               "adding a postcondition to "
+               & Callee_Names (Regular_Callees)
+               & " or turning "
+               & (if Regular_Callees.Length = 1
+                  then "it into an expression function"
+                  else "them into expression functions")
+               &
+               --  If at least one of the callees has no body, that means
+               --  it comes from a different unit. It might already be
+               --  be defined as an expression function in the unit body,
+               --  so emphasize that what matters here is that it is so in
+               --  the unit spec.
+                                   (if (for some Callee of Regular_Callees =>
+                                          No (Get_Body_Entity (Callee)))
+                                    then
+                                      (if Regular_Callees.Length = 1
+                                       then " in its unit spec"
+                                       else " in their unit spec")
+                                    else ""));
          end if;
 
          if not Dispatching_Callees.Is_Empty then
-            Add (Expl,
-                 "adding a classwide postcondition to " &
-                 Callee_Names (Dispatching_Callees));
+            Add
+              (Expl,
+               "adding a classwide postcondition to "
+               & Callee_Names (Dispatching_Callees));
          end if;
 
          if not Indirect_Callees.Is_Empty then
-            Add (Expl,
-                 "adding a postcondition to " &
-                 Callee_Names (Indirect_Callees));
+            Add
+              (Expl,
+               "adding a postcondition to " & Callee_Names (Indirect_Callees));
          end if;
 
          if Expl /= "" then
@@ -1877,8 +1907,7 @@ package body Flow_Error_Messages is
          First_Var : Boolean := True;
       begin
          for V of Nodes loop
-            if Is_Array_Type (Etype (V))
-              or else Has_Discriminants (Etype (V))
+            if Is_Array_Type (Etype (V)) or else Has_Discriminants (Etype (V))
             then
                if First_Var then
                   First_Var := False;
@@ -1902,9 +1931,13 @@ package body Flow_Error_Messages is
 
                      Discr := First_Discriminant (Etype (V));
                      while Present (Discr) loop
-                        Append (Expl, " or " & Str & "."
-                                & Flow_Id_To_String (Direct_Mapping_Id (Discr),
-                                                     Pretty => True));
+                        Append
+                          (Expl,
+                           " or "
+                           & Str
+                           & "."
+                           & Flow_Id_To_String
+                               (Direct_Mapping_Id (Discr), Pretty => True));
                         Next_Discriminant (Discr);
                      end loop;
                   end if;
@@ -1952,9 +1985,11 @@ package body Flow_Error_Messages is
                      Append (Expl, "'Initialized");
                   end if;
 
-                  Append (Expl, " (for argument "
-                          & Flow_Id_To_String (V, Pretty => True)
-                          & ")");
+                  Append
+                    (Expl,
+                     " (for argument "
+                     & Flow_Id_To_String (V, Pretty => True)
+                     & ")");
                end;
             else
                Append (Expl, Flow_Id_To_String (V, Pretty => True));
@@ -1996,7 +2031,7 @@ package body Flow_Error_Messages is
 
          procedure Get_All_Calls is new Traverse_More_Proc (Add_Call);
 
-      --  Start of processing for Get_Calls_From_Node
+         --  Start of processing for Get_Calls_From_Node
 
       begin
          Get_All_Calls (N);
@@ -2078,11 +2113,9 @@ package body Flow_Error_Messages is
       ------------------
 
       function Get_Pre_Post
-        (Proc    : Entity_Id;
-         Prag_Id : Pragma_Id) return Node_Lists.List
+        (Proc : Entity_Id; Prag_Id : Pragma_Id) return Node_Lists.List
       is
-         Prag       : Node_Lists.List :=
-           Find_Contracts (Proc, Prag_Id);
+         Prag       : Node_Lists.List := Find_Contracts (Proc, Prag_Id);
          Class_Prag : constant Node_Lists.List :=
            Find_Contracts (Proc, Prag_Id, Classwide => True);
       begin
@@ -2160,7 +2193,7 @@ package body Flow_Error_Messages is
          Map     : Flow_Id_Surjection.Map := Flow_Id_Surjection.Empty_Map)
          return Flow_Id_Sets.Set
       is
-         Expr_Vars : constant Flow_Id_Sets.Set :=
+         Expr_Vars   : constant Flow_Id_Sets.Set :=
            Get_Filtered_Variables_For_Proof (Expr, Context);
          Mapped_Vars : Flow_Id_Sets.Set;
 
@@ -2181,8 +2214,7 @@ package body Flow_Error_Messages is
       -----------------------------
 
       function Get_Variables_From_Node
-        (N   : Node_Id;
-         Tag : VC_Kind) return Flow_Id_Sets.Set
+        (N : Node_Id; Tag : VC_Kind) return Flow_Id_Sets.Set
       is
 
          function Is_Choice_Of_Aggr (N : Node_Id) return Boolean;
@@ -2207,8 +2239,9 @@ package body Flow_Error_Messages is
                   return False;
                end if;
 
-               exit when Nkind (Parent (Par)) not in N_Indexed_Component
-                                                   | N_Selected_Component;
+               exit when
+                 Nkind (Parent (Par))
+                 not in N_Indexed_Component | N_Selected_Component;
 
                if Par /= Prefix (Parent (Par)) then
                   return False;
@@ -2216,12 +2249,13 @@ package body Flow_Error_Messages is
                Par := Parent (Par);
             end loop;
 
-            return Nkind (Parent (Par)) = N_Component_Association
+            return
+              Nkind (Parent (Par)) = N_Component_Association
               and then Is_List_Member (Par)
               and then List_Containing (Par) = Choices (Parent (Par))
-              and then
-                (not Is_Array_Type (Etype (Parent (Parent (Par))))
-                 or else Is_Deep_Choice (Par, Etype (Parent (Parent (Par)))));
+              and then (not Is_Array_Type (Etype (Parent (Parent (Par))))
+                        or else Is_Deep_Choice
+                                  (Par, Etype (Parent (Parent (Par)))));
          end Is_Choice_Of_Aggr;
 
          Vars : Flow_Id_Sets.Set;
@@ -2230,33 +2264,27 @@ package body Flow_Error_Messages is
          --  the called subprogram as source for the explanation, and translate
          --  back variables mentioned in the precondition into actuals.
 
-         if Tag = VC_Precondition
-           and then Nkind (N) in N_Subprogram_Call
-         then
-            Handle_Precondition_Check : declare
+         if Tag = VC_Precondition and then Nkind (N) in N_Subprogram_Call then
+            Handle_Precondition_Check :
+            declare
                Subp : constant Entity_Id := SPARK_Atree.Get_Called_Entity (N);
                Pres : constant Node_Lists.List :=
                  Get_Pre_Post (Subp, Pragma_Precondition);
 
                Formal_To_Actual : Flow_Id_Surjection.Map;
 
-               procedure Treat_Param
-                 (Formal : Entity_Id; Actual : Node_Id);
+               procedure Treat_Param (Formal : Entity_Id; Actual : Node_Id);
                --  Fill the mapping formal->actual
 
                -----------------
                -- Treat_Param --
                -----------------
 
-               procedure Treat_Param
-                 (Formal : Entity_Id; Actual : Node_Id)
-               is
+               procedure Treat_Param (Formal : Entity_Id; Actual : Node_Id) is
                   Var : Entity_Id;
                   Id  : Flow_Id;
                begin
-                  if Ekind (Formal) in E_In_Parameter
-                                     | E_In_Out_Parameter
-                  then
+                  if Ekind (Formal) in E_In_Parameter | E_In_Out_Parameter then
                      Var := SPARK_Atree.Get_Entire_Object (Actual);
 
                      --  We only insert into the mapping when the actual is
@@ -2312,8 +2340,10 @@ package body Flow_Error_Messages is
             null;
 
          else
-            pragma Assert (Nkind (N) in N_Subexpr
-                           and then Nkind (N) /= N_Procedure_Call_Statement);
+            pragma
+              Assert
+                (Nkind (N) in N_Subexpr
+                   and then Nkind (N) /= N_Procedure_Call_Statement);
 
             Vars := Get_Filtered_Variables_For_Proof (N, N);
          end if;
@@ -2327,15 +2357,13 @@ package body Flow_Error_Messages is
 
       function Has_Attribute_Result (N : Node_Id) return Boolean is
 
-         function Is_Function_Result (N : Node_Id) return Traverse_Result is
-           (if Is_Attribute_Result (N)
-            then Abandon
-            else OK);
+         function Is_Function_Result (N : Node_Id) return Traverse_Result
+         is (if Is_Attribute_Result (N) then Abandon else OK);
 
-         function Check_Function_Result is
-           new Traverse_More_Func (Is_Function_Result);
+         function Check_Function_Result is new
+           Traverse_More_Func (Is_Function_Result);
 
-      --  Start of processing for Has_Attribute_Result
+         --  Start of processing for Has_Attribute_Result
 
       begin
          return Check_Function_Result (N) = Abandon;
@@ -2382,8 +2410,7 @@ package body Flow_Error_Messages is
                  --  The reference may be modified through a dereference
 
                  or else (Is_Access_Type (Etype (Ent))
-                          and then Nkind (Parent (N)) =
-                            N_Selected_Component)
+                          and then Nkind (Parent (N)) = N_Selected_Component)
                then
                   return Abandon;
                end if;
@@ -2402,7 +2429,7 @@ package body Flow_Error_Messages is
 
          function Find_Post_State is new Traverse_More_Func (Is_Post_State);
 
-      --  Start of processing for Has_Post_State
+         --  Start of processing for Has_Post_State
 
       begin
          return Find_Post_State (N) = Abandon;
@@ -2416,7 +2443,7 @@ package body Flow_Error_Messages is
       --  It is fine to use this function here even if not always correct, as
       --  it's only used for adding or not an explanation.
 
-   --  Start of processing for Get_Fix
+      --  Start of processing for Get_Fix
 
    begin
       --  On unprovable checks, avoid producing an incorrect possible fix
@@ -2428,8 +2455,7 @@ package body Flow_Error_Messages is
          pragma Assert (Nkind (N) = N_Object_Declaration);
          declare
             Obj    : constant Entity_Id := Defining_Identifier (N);
-            Expr   : constant Node_Id :=
-              SPARK_Atree.Get_Address_Expr (N);
+            Expr   : constant Node_Id := SPARK_Atree.Get_Address_Expr (N);
             Common : constant String :=
               "should have an Alignment representation clause";
          begin
@@ -2438,8 +2464,8 @@ package body Flow_Error_Messages is
             if not Known_Alignment (Obj) then
                return Create ("overlaying object " & Common);
             elsif Nkind (Expr) = N_Attribute_Reference
-              and then
-                Get_Attribute_Id (Attribute_Name (Expr)) = Attribute_Address
+              and then Get_Attribute_Id (Attribute_Name (Expr))
+                       = Attribute_Address
               and then (Nkind (Prefix (Expr)) not in N_Has_Entity
                         or else not Known_Alignment (Entity (Prefix (Expr))))
             then
@@ -2508,7 +2534,7 @@ package body Flow_Error_Messages is
       elsif Present (Enclosing_Subp)
         and then Is_Subprogram (Enclosing_Subp)
         and then (Is_DIC_Procedure (Enclosing_Subp)
-                   or else Is_Invariant_Procedure (Enclosing_Subp))
+                  or else Is_Invariant_Procedure (Enclosing_Subp))
       then
          return No_Message;
 
@@ -2532,14 +2558,15 @@ package body Flow_Error_Messages is
                case Kind is
                   when Larger_Source | Larger_Target =>
                      Typ : Type_Kind_Id;
+
                   when others =>
                      null;
                end case;
             end record;
 
             function Get_Larger_Type
-              (Source, Target : Type_Kind_Id;
-               Target_Value   : Uint) return Larger_Type;
+              (Source, Target : Type_Kind_Id; Target_Value : Uint)
+               return Larger_Type;
             --  Return a type larger than Source and Target for performing
             --  the comparison of a value in type Source with Target_Value,
             --  if possible.
@@ -2563,8 +2590,8 @@ package body Flow_Error_Messages is
             ---------------------
 
             function Get_Larger_Type
-              (Source, Target : Type_Kind_Id;
-               Target_Value   : Uint) return Larger_Type
+              (Source, Target : Type_Kind_Id; Target_Value : Uint)
+               return Larger_Type
             is
                --  Consider first subtypes as candidate larger types, instead
                --  of base types which may be compiler-generated types. But
@@ -2580,12 +2607,12 @@ package body Flow_Error_Messages is
                  Type_High_Bound (Etype (Source));
 
                Lo_Src_Value : constant Uint :=
-                 (if Nkind (Lo_Src) = N_Integer_Literal then
-                    SPARK_Atree.Expr_Value (Lo_Src)
+                 (if Nkind (Lo_Src) = N_Integer_Literal
+                  then SPARK_Atree.Expr_Value (Lo_Src)
                   else No_Uint);
                Hi_Src_Value : constant Uint :=
-                 (if Nkind (Hi_Src) = N_Integer_Literal then
-                    SPARK_Atree.Expr_Value (Hi_Src)
+                 (if Nkind (Hi_Src) = N_Integer_Literal
+                  then SPARK_Atree.Expr_Value (Hi_Src)
                   else No_Uint);
 
                Lo_Tgt : constant N_Subexpr_Id :=
@@ -2594,12 +2621,12 @@ package body Flow_Error_Messages is
                  Type_High_Bound (Etype (Target));
 
                Lo_Tgt_Value : constant Uint :=
-                 (if Nkind (Lo_Tgt) = N_Integer_Literal then
-                    SPARK_Atree.Expr_Value (Lo_Tgt)
+                 (if Nkind (Lo_Tgt) = N_Integer_Literal
+                  then SPARK_Atree.Expr_Value (Lo_Tgt)
                   else No_Uint);
                Hi_Tgt_Value : constant Uint :=
-                 (if Nkind (Hi_Tgt) = N_Integer_Literal then
-                    SPARK_Atree.Expr_Value (Hi_Tgt)
+                 (if Nkind (Hi_Tgt) = N_Integer_Literal
+                  then SPARK_Atree.Expr_Value (Hi_Tgt)
                   else No_Uint);
 
                Large : Larger_Type;
@@ -2618,8 +2645,8 @@ package body Flow_Error_Messages is
                     and then Target_Value <= Hi_Src_Value
                     and then not Is_Universal_Numeric_Type (Base_Source)
                   then
-                     Large := Larger_Type'(Kind => Larger_Source,
-                                           Typ  => Base_Source);
+                     Large :=
+                       Larger_Type'(Kind => Larger_Source, Typ => Base_Source);
 
                   --  Detect the case where Base_Target type is larger, so
                   --  that the value in type Source could be converted to
@@ -2629,8 +2656,8 @@ package body Flow_Error_Messages is
                     and then Lo_Tgt_Value >= Hi_Src_Value
                     and then not Is_Universal_Numeric_Type (Base_Target)
                   then
-                     Large := Larger_Type'(Kind => Larger_Target,
-                                           Typ  => Base_Target);
+                     Large :=
+                       Larger_Type'(Kind => Larger_Target, Typ => Base_Target);
                   end if;
                end if;
 
@@ -2669,12 +2696,12 @@ package body Flow_Error_Messages is
                --  array/record type whose bounds/discriminants are passed as
                --  inputs, contrary to what we do for parameters.
 
-               Get_Proof_Globals (Subprogram      => Subp,
-                                  Reads           => In_Vars,
-                                  Writes          => Ignore_Vars,
-                                  Erase_Constants => True,
-                                  Scop            =>
-                                    (Ent => Subp, Part => Body_Part));
+               Get_Proof_Globals
+                 (Subprogram      => Subp,
+                  Reads           => In_Vars,
+                  Writes          => Ignore_Vars,
+                  Erase_Constants => True,
+                  Scop            => (Ent => Subp, Part => Body_Part));
 
                --  Include the formals in the variables read/written in the
                --  subprogram.
@@ -2687,8 +2714,8 @@ package body Flow_Error_Messages is
                      while Present (Formal) loop
                         Id := Direct_Mapping_Id (Formal);
 
-                        if Ekind (Formal) in E_In_Parameter
-                                           | E_In_Out_Parameter
+                        if Ekind (Formal)
+                           in E_In_Parameter | E_In_Out_Parameter
                         then
                            --  Include the formal in the variables read in the
                            --  subprogram.
@@ -2700,8 +2727,7 @@ package body Flow_Error_Messages is
 
                         elsif not Is_Constrained (Etype (Formal))
                           and then (Is_Array_Type (Etype (Formal))
-                                      or else
-                                    Has_Discriminants (Etype (Formal)))
+                                    or else Has_Discriminants (Etype (Formal)))
                         then
                            Out_Vars.Insert (Id);
                         end if;
@@ -2755,12 +2781,12 @@ package body Flow_Error_Messages is
 
             Check_Inside_Assertion : constant Boolean :=
               Nkind (Instr) = N_Pragma
-                and then Get_Pragma_Id (Pragma_Name (Instr)) in
-                   Pragma_Precondition
-                 | Pragma_Postcondition
-                 | Pragma_Contract_Cases
-                 | Pragma_Check
-                 | Pragma_Loop_Variant;
+              and then Get_Pragma_Id (Pragma_Name (Instr))
+                       in Pragma_Precondition
+                        | Pragma_Postcondition
+                        | Pragma_Contract_Cases
+                        | Pragma_Check
+                        | Pragma_Loop_Variant;
             --  Check is inside an assertion
 
             Check_Vars : Flow_Id_Sets.Set := Get_Variables_From_Node (N, Tag);
@@ -2807,16 +2833,16 @@ package body Flow_Error_Messages is
 
             if Check_Inside_Pre then
                declare
-                  function Is_Conjunct (N : Node_Id) return Boolean is
-                    (Nkind (Parent (N)) in N_Pragma | N_Op_And);
+                  function Is_Conjunct (N : Node_Id) return Boolean
+                  is (Nkind (Parent (N)) in N_Pragma | N_Op_And);
 
                   function Get_Conjunct is new
                     First_Parent_With_Property (Is_Conjunct);
 
-                  Conjunct   : constant Node_Id :=
+                  Conjunct : constant Node_Id :=
                     (if Is_Conjunct (N) then N else Get_Conjunct (N));
-                  Par        : constant Node_Id := Parent (Conjunct);
-                  Previous   : Node_Id;
+                  Par      : constant Node_Id := Parent (Conjunct);
+                  Previous : Node_Id;
 
                   Check_Vars : Flow_Id_Sets.Set :=
                     Get_Variables_From_Node (N, Tag);
@@ -2832,9 +2858,10 @@ package body Flow_Error_Messages is
                      Check_Vars.Intersection (Vars);
 
                      if not Check_Vars.Is_Empty then
-                        return Create
-                          ("use ""and then"" instead of ""and"""
-                           & " in precondition");
+                        return
+                          Create
+                            ("use ""and then"" instead of ""and"""
+                             & " in precondition");
                      end if;
                   end if;
                end;
@@ -2843,12 +2870,11 @@ package body Flow_Error_Messages is
             --  If an overflow check is reported inside an assertion, suggest
             --  to use pragma Overflow_Mode or -gnato13 or Big_Integers.
 
-            if Check_Inside_Assertion
-              and then Tag = VC_Overflow_Check
-            then
-               return Create
-                 ("use pragma Overflow_Mode or switch -gnato13 or "
-                  & "unit SPARK.Big_Integers");
+            if Check_Inside_Assertion and then Tag = VC_Overflow_Check then
+               return
+                 Create
+                   ("use pragma Overflow_Mode or switch -gnato13 or "
+                    & "unit SPARK.Big_Integers");
             end if;
 
             --  Filter out variables which are generated by the compiler
@@ -2895,188 +2921,233 @@ package body Flow_Error_Messages is
 
                if (for all V of Check_Vars =>
                      Input_Vars.Contains (V)
-                       and then V.Kind = Direct_Mapping
-                       and then Nkind (V.Node) in N_Entity
-                       and then not Is_Mutable_In_Why (V.Node))
+                     and then V.Kind = Direct_Mapping
+                     and then Nkind (V.Node) in N_Entity
+                     and then not Is_Mutable_In_Why (V.Node))
                then
                   --  Do not deal with range checks on string concatenation or
                   --  Succ/Pred on enumerations yet.
 
-                  if Tag in VC_Range_Kind
-                    and then Is_Integer_Type (Etype (N))
+                  if Tag in VC_Range_Kind and then Is_Integer_Type (Etype (N))
                   then
                      declare
                         Typ : constant Type_Kind_Id :=
-                          (if Present (Info.Range_Check_Ty) then
-                             Info.Range_Check_Ty
-                           else
-                             Etype (N));
+                          (if Present (Info.Range_Check_Ty)
+                           then Info.Range_Check_Ty
+                           else Etype (N));
                         Lo  : constant N_Subexpr_Id := Type_Low_Bound (Typ);
                         Hi  : constant N_Subexpr_Id := Type_High_Bound (Typ);
 
                         Lo_Value : constant Uint :=
-                          (if Nkind (Lo) = N_Integer_Literal then
-                             SPARK_Atree.Expr_Value (Lo)
+                          (if Nkind (Lo) = N_Integer_Literal
+                           then SPARK_Atree.Expr_Value (Lo)
                            else No_Uint);
                         Hi_Value : constant Uint :=
-                          (if Nkind (Hi) = N_Integer_Literal then
-                             SPARK_Atree.Expr_Value (Hi)
+                          (if Nkind (Hi) = N_Integer_Literal
+                           then SPARK_Atree.Expr_Value (Hi)
                            else No_Uint);
 
                         Larger_Typ : constant Larger_Type :=
                           (if Info.Bound_Info = Low_Bound
                              and then Present (Lo_Value)
                            then
-                              Get_Larger_Type (Source       => Etype (N),
-                                               Target       => Typ,
-                                               Target_Value => Lo_Value)
+                             Get_Larger_Type
+                               (Source       => Etype (N),
+                                Target       => Typ,
+                                Target_Value => Lo_Value)
                            elsif Info.Bound_Info = High_Bound
                              and then Present (Hi_Value)
                            then
-                              Get_Larger_Type (Source       => Etype (N),
-                                               Target       => Typ,
-                                               Target_Value => Hi_Value)
-                           else
-                              Larger_Type'(Kind => Larger_None));
+                             Get_Larger_Type
+                               (Source       => Etype (N),
+                                Target       => Typ,
+                                Target_Value => Hi_Value)
+                           else Larger_Type'(Kind => Larger_None));
 
                         Use_Typ    : constant Boolean :=
                           Comes_From_Source (Typ)
-                            or else Is_Standard_Type (Typ);
+                          or else Is_Standard_Type (Typ);
                         Lo_Image   : constant String :=
-                          (if Use_Typ then
-                             Source_Name (Typ) & "'First"
-                           elsif Present (Lo_Value) then
-                              UI_Image (Lo_Value, Decimal)
-                           else
-                             String_Of_Node (Lo));
+                          (if Use_Typ
+                           then Source_Name (Typ) & "'First"
+                           elsif Present (Lo_Value)
+                           then UI_Image (Lo_Value, Decimal)
+                           else String_Of_Node (Lo));
                         Hi_Image   : constant String :=
-                          (if Use_Typ then
-                             Source_Name (Typ) & "'Last"
-                           elsif Present (Hi_Value) then
-                              UI_Image (Hi_Value, Decimal)
-                           else
-                             String_Of_Node (Hi));
+                          (if Use_Typ
+                           then Source_Name (Typ) & "'Last"
+                           elsif Present (Hi_Value)
+                           then UI_Image (Hi_Value, Decimal)
+                           else String_Of_Node (Hi));
                         Constraint : constant String :=
-                          (if Info.Bound_Info = Low_Bound then
-                              " >= " &
-                              (if Larger_Typ.Kind = Larger_Source then
-                                 Source_Name (Larger_Typ.Typ)
-                                 & "(" & Lo_Image & ")"
-                               else Lo_Image)
-                           elsif Info.Bound_Info = High_Bound then
-                              " <= " &
-                              (if Larger_Typ.Kind = Larger_Source then
-                                 Source_Name (Larger_Typ.Typ)
-                                 & "(" & Hi_Image & ")"
-                               else Hi_Image)
-                           elsif Use_Typ then
-                              " in " & Source_Name (Typ)
-                           else
-                              " in " & Lo_Image & " .. " & Hi_Image);
+                          (if Info.Bound_Info = Low_Bound
+                           then
+                             " >= "
+                             & (if Larger_Typ.Kind = Larger_Source
+                                then
+                                  Source_Name (Larger_Typ.Typ)
+                                  & "("
+                                  & Lo_Image
+                                  & ")"
+                                else Lo_Image)
+                           elsif Info.Bound_Info = High_Bound
+                           then
+                             " <= "
+                             & (if Larger_Typ.Kind = Larger_Source
+                                then
+                                  Source_Name (Larger_Typ.Typ)
+                                  & "("
+                                  & Hi_Image
+                                  & ")"
+                                else Hi_Image)
+                           elsif Use_Typ
+                           then " in " & Source_Name (Typ)
+                           else " in " & Lo_Image & " .. " & Hi_Image);
 
                         --  When possible, put the suggested precondition in
                         --  a form that will avoid overflows. So we prefer
                         --  (A <= Integer'Last - B) to (A + B in Integer) when
                         --  we know that B is non-negative.
-                        Pre        : constant String :=
-                          (if Nkind (N) = N_Op_Add then
-                            (declare
-                               Left_Str  : constant String :=
-                                 String_Of_Node (Left_Opnd (N));
-                               Right_Str : constant String :=
-                                 String_Of_Node (Right_Opnd (N));
-                               Pos_Right  : constant String :=
-                                 Left_Str & " <= " & Hi_Image & " - "
-                                 & Right_Str;
-                               Neg_Right  : constant String :=
-                                 Left_Str & " >= " & Lo_Image & " - "
-                                 & Right_Str;
-                               Pos_Left : constant String :=
-                                 Right_Str & " <= " & Hi_Image & " - "
-                                 & Left_Str;
-                               Neg_Left  : constant String :=
-                                 Right_Str & " >= " & Lo_Image & " - "
-                                 & Left_Str;
-                             begin
+                        Pre      : constant String :=
+                          (if Nkind (N) = N_Op_Add
+                           then
+                             (declare
+                                Left_Str  : constant String :=
+                                  String_Of_Node (Left_Opnd (N));
+                                Right_Str : constant String :=
+                                  String_Of_Node (Right_Opnd (N));
+                                Pos_Right : constant String :=
+                                  Left_Str
+                                  & " <= "
+                                  & Hi_Image
+                                  & " - "
+                                  & Right_Str;
+                                Neg_Right : constant String :=
+                                  Left_Str
+                                  & " >= "
+                                  & Lo_Image
+                                  & " - "
+                                  & Right_Str;
+                                Pos_Left  : constant String :=
+                                  Right_Str
+                                  & " <= "
+                                  & Hi_Image
+                                  & " - "
+                                  & Left_Str;
+                                Neg_Left  : constant String :=
+                                  Right_Str
+                                  & " >= "
+                                  & Lo_Image
+                                  & " - "
+                                  & Left_Str;
+                              begin
                                 (case Sign_Is_Known (Right_Opnd (N)) is
                                    when Positive_Or_Null => Pos_Right,
                                    when Negative_Or_Null => Neg_Right,
-                                   when Unknown          =>
+                                   when Unknown =>
                                      (case Sign_Is_Known (Left_Opnd (N)) is
                                         when Positive_Or_Null => Pos_Left,
                                         when Negative_Or_Null => Neg_Left,
-                                        when Unknown          =>
-                                          "if " & Right_Str & " >= 0 then "
-                                          & Pos_Right & " else " & Neg_Right)))
+                                        when Unknown =>
+                                          "if "
+                                          & Right_Str
+                                          & " >= 0 then "
+                                          & Pos_Right
+                                          & " else "
+                                          & Neg_Right)))
 
-                          elsif Nkind (N) = N_Op_Subtract then
-                            (declare
-                               Left_Str  : constant String :=
-                                 String_Of_Node (Left_Opnd (N));
-                               Right_Str : constant String :=
-                                 String_Of_Node (Right_Opnd (N));
-                               Neg_Right  : constant String :=
-                                 Left_Str & " <= " & Hi_Image & " + "
-                                 & Right_Str;
-                               Pos_Right  : constant String :=
-                                 Left_Str & " >= " & Lo_Image & " + "
-                                 & Right_Str;
-                               Pos_Left : constant String :=
-                                 Right_Str & " >= " & Left_Str & " - "
-                                 & Hi_Image;
-                               Neg_Left  : constant String :=
-                                 Right_Str & " <= " & Left_Str & " - "
-                                 & Lo_Image;
-                             begin
+                           elsif Nkind (N) = N_Op_Subtract
+                           then
+                             (declare
+                                Left_Str  : constant String :=
+                                  String_Of_Node (Left_Opnd (N));
+                                Right_Str : constant String :=
+                                  String_Of_Node (Right_Opnd (N));
+                                Neg_Right : constant String :=
+                                  Left_Str
+                                  & " <= "
+                                  & Hi_Image
+                                  & " + "
+                                  & Right_Str;
+                                Pos_Right : constant String :=
+                                  Left_Str
+                                  & " >= "
+                                  & Lo_Image
+                                  & " + "
+                                  & Right_Str;
+                                Pos_Left  : constant String :=
+                                  Right_Str
+                                  & " >= "
+                                  & Left_Str
+                                  & " - "
+                                  & Hi_Image;
+                                Neg_Left  : constant String :=
+                                  Right_Str
+                                  & " <= "
+                                  & Left_Str
+                                  & " - "
+                                  & Lo_Image;
+                              begin
                                 (case Sign_Is_Known (Right_Opnd (N)) is
                                    when Positive_Or_Null => Pos_Right,
                                    when Negative_Or_Null => Neg_Right,
-                                   when Unknown          =>
+                                   when Unknown =>
                                      (case Sign_Is_Known (Left_Opnd (N)) is
                                         when Positive_Or_Null => Pos_Left,
                                         when Negative_Or_Null => Neg_Left,
-                                        when Unknown          =>
-                                          "if " & Right_Str & " >= 0 then "
-                                          & Pos_Right & " else " & Neg_Right)))
+                                        when Unknown =>
+                                          "if "
+                                          & Right_Str
+                                          & " >= 0 then "
+                                          & Pos_Right
+                                          & " else "
+                                          & Neg_Right)))
 
-                           elsif Larger_Typ.Kind = Larger_Target then
-                              Source_Name (Larger_Typ.Typ)
-                              & "(" & String_Of_Node (N) & ")"
-                              & Constraint
-                           else
-                              String_Of_Node (N) & Constraint);
+                           elsif Larger_Typ.Kind = Larger_Target
+                           then
+                             Source_Name (Larger_Typ.Typ)
+                             & "("
+                             & String_Of_Node (N)
+                             & ")"
+                             & Constraint
+                           else String_Of_Node (N) & Constraint);
                         Line_Num : constant String :=
                           Get_Line_Number (N, Sloc (Enclosing_Subp));
                      begin
                         return
-                          Create ("add precondition (" & Pre
-                                  & ") to subprogram "
-                                  & Line_Num,
-                                  Secondary_Loc => Secondary_Loc);
+                          Create
+                            ("add precondition ("
+                             & Pre
+                             & ") to subprogram "
+                             & Line_Num,
+                             Secondary_Loc => Secondary_Loc);
                      end;
 
                   elsif Tag in VC_Division_Check then
                      declare
-                        pragma Assert
-                          (if Nkind (N) = N_Attribute_Reference
-                           then Attribute_Name (N) = Name_Remainder);
+                        pragma
+                          Assert
+                            (if Nkind (N) = N_Attribute_Reference
+                               then Attribute_Name (N) = Name_Remainder);
                         Opnd : constant Opt_N_Extended_Subexpr_Id :=
                           Info.Divisor;
                      begin
                         if Present (Opnd) then
                            declare
-                              Name : constant String :=
-                                (if Nkind (Opnd) in N_Defining_Identifier then
-                                   Source_Name (Opnd)
-                                 else
-                                    String_Of_Node (Opnd));
+                              Name     : constant String :=
+                                (if Nkind (Opnd) in N_Defining_Identifier
+                                 then Source_Name (Opnd)
+                                 else String_Of_Node (Opnd));
                               Line_Num : constant String :=
                                 Get_Line_Number (N, Sloc (Enclosing_Subp));
                            begin
                               return
                                 Create
-                                  ("add precondition (" & Name & " /= 0"
-                                   & ") to subprogram " & Line_Num,
+                                  ("add precondition ("
+                                   & Name
+                                   & " /= 0"
+                                   & ") to subprogram "
+                                   & Line_Num,
                                    Secondary_Loc => Secondary_Loc);
                            end;
                         end if;
@@ -3109,9 +3180,10 @@ package body Flow_Error_Messages is
                begin
                   if Present (Formal)
                     and then Ekind (Formal) = E_Out_Parameter
-                    and then Tag not in VC_Length_Check
-                                      | VC_Discriminant_Check
-                                      | VC_Resource_Leak
+                    and then Tag
+                             not in VC_Length_Check
+                                  | VC_Discriminant_Check
+                                  | VC_Resource_Leak
                   then
                      null;
                   else
@@ -3124,473 +3196,514 @@ package body Flow_Error_Messages is
 
             while Present (Stmt) loop
                case Explain_Node_Kind'(Nkind (Stmt)) is
-               when N_Empty =>
-                  null;
+                  when N_Empty =>
+                     null;
 
-               --  If we bump into an object declaration, remove the declared
-               --  variable and replace it with the variables it is assigned
-               --  from.
+                  --  If we bump into an object declaration, remove the
+                  --  declared variable and replace it with the variables it
+                  --  is assigned from.
 
-               when N_Object_Declaration =>
-                  declare
-                     Var       : constant Entity_Id :=
-                       Defining_Identifier (Stmt);
-                     Expr      : constant Node_Id := Expression (Stmt);
-                     Id        : constant Flow_Id := Direct_Mapping_Id (Var);
-                     Expr_Vars : Flow_Id_Sets.Set;
-                  begin
-                     --  If this variable is currently tracked, replace it with
-                     --  the variables in its initializing expression.
+                  when N_Object_Declaration =>
+                     declare
+                        Var       : constant Entity_Id :=
+                          Defining_Identifier (Stmt);
+                        Expr      : constant Node_Id := Expression (Stmt);
+                        Id        : constant Flow_Id :=
+                          Direct_Mapping_Id (Var);
+                        Expr_Vars : Flow_Id_Sets.Set;
+                     begin
+                        --  If this variable is currently tracked, replace it
+                        --  with the variables in its initializing expression.
 
-                     if Check_Vars.Contains (Id)
-                       and then Present (Expr)
-                     then
-                        Expr_Vars :=
-                          Get_Filtered_Variables_For_Proof (Expr, N);
-                        Check_Vars.Delete (Id);
-                        Check_Vars.Union (Expr_Vars);
-                     end if;
-                  end;
-
-               --  If we bump into an assignment to some entire variable, where
-               --  the value assigned does not depend on any variable, then
-               --  it's likely that the prover has all the relevant information
-               --  about the value of this variable for the proof. Remove this
-               --  variable from the set of variables tracked.
-
-               when N_Assignment_Statement =>
-                  declare
-                     Lhs       : constant Node_Id := Name (Stmt);
-                     Expr      : constant Node_Id := Expression (Stmt);
-                     Var       : Entity_Id;
-                     Id        : Flow_Id;
-                     Expr_Vars : Flow_Id_Sets.Set;
-                  begin
-                     --  See if this is an assignment to an entire variable...
-
-                     if Nkind (Lhs) in N_Has_Entity then
-                        Var := Entity (Lhs);
-                        Id  := Direct_Mapping_Id (Var);
-
-                        --  and this variable is currently tracked...
-
-                        if Check_Vars.Contains (Id) then
+                        if Check_Vars.Contains (Id) and then Present (Expr)
+                        then
                            Expr_Vars :=
                              Get_Filtered_Variables_For_Proof (Expr, N);
-
-                           --  and it is assigned a value that does not depend
-                           --  on any variable. In that case, remove the
-                           --  variable from the set of variables tracked.
-
-                           --  ??? Currently Expr_Vars may contain variables
-                           --  that are only Proof_In globals to a call in
-                           --  Expr, which ideally should be discarded here
-                           --  for better precision.
-
-                           if Expr_Vars.Is_Empty then
-                              Check_Vars.Delete (Id);
-                           end if;
+                           Check_Vars.Delete (Id);
+                           Check_Vars.Union (Expr_Vars);
                         end if;
-                     end if;
-                  end;
+                     end;
 
-               when N_Procedure_Call_Statement =>
-                  declare
-                     Formal_To_Actual : Flow_Id_Surjection.Map;
-                     Actual_To_Formal : Flow_Id_Surjection.Map;
+                  --  If we bump into an assignment to some entire variable,
+                  --  where the value assigned does not depend on any
+                  --  variable, then it's likely that the prover has all the
+                  --  relevant information about the value of this variable
+                  --  for the proof. Remove this variable from the set of
+                  --  variables tracked.
 
-                     procedure Treat_Param
-                       (Formal : Entity_Id; Actual : Node_Id);
-                     --  Get the parameters written in the call
-
-                     -----------------
-                     -- Treat_Param --
-                     -----------------
-
-                     procedure Treat_Param
-                       (Formal : Entity_Id; Actual : Node_Id)
-                     is
-                        Var : Entity_Id;
-                        Id  : Flow_Id;
+                  when N_Assignment_Statement =>
+                     declare
+                        Lhs       : constant Node_Id := Name (Stmt);
+                        Expr      : constant Node_Id := Expression (Stmt);
+                        Var       : Entity_Id;
+                        Id        : Flow_Id;
+                        Expr_Vars : Flow_Id_Sets.Set;
                      begin
-                        if Ekind (Formal) in E_Out_Parameter
-                                           | E_In_Out_Parameter
-                        then
-                           Var := SPARK_Atree.Get_Entire_Object (Actual);
+                        --  See if this is an assignment to an entire
+                        --  variable...
+
+                        if Nkind (Lhs) in N_Has_Entity then
+                           Var := Entity (Lhs);
                            Id := Direct_Mapping_Id (Var);
 
-                           --  Include the actual in the variables written in
-                           --  the call.
+                           --  and this variable is currently tracked...
 
-                           Write_Vars.Include (Id);
+                           if Check_Vars.Contains (Id) then
+                              Expr_Vars :=
+                                Get_Filtered_Variables_For_Proof (Expr, N);
 
-                           --  Store the mapping formal->actual for possibly
-                           --  removing the actual when the formal is mentioned
-                           --  in the postcondition.
+                              --  and it is assigned a value that does not
+                              --  depend on any variable. In that case,
+                              --  remove the variable from the set of
+                              --  variables tracked.
 
-                           Formal_To_Actual.Insert
-                             (Direct_Mapping_Id (Formal), Id);
+                              --  ??? Currently Expr_Vars may contain variables
+                              --  that are only Proof_In globals to a call in
+                              --  Expr, which ideally should be discarded
+                              --  here for better precision.
 
-                           --  Store the mapping actual->formal for expressing
-                           --  the explanation in terms of formal parameters
-                           --  missing from the postcondition. We use Include
-                           --  instead of Insert here as the same actual could
-                           --  correspond to multiple formals.
-
-                           Actual_To_Formal.Include
-                             (Id, Direct_Mapping_Id (Formal));
+                              if Expr_Vars.Is_Empty then
+                                 Check_Vars.Delete (Id);
+                              end if;
+                           end if;
                         end if;
-                     end Treat_Param;
-
-                     procedure Iterate_Call is new
-                       SPARK_Atree.Iterate_Call_Parameters (Treat_Param);
-
-                     Proc : constant Entity_Id :=
-                       SPARK_Atree.Get_Called_Entity (Stmt);
-
-                  begin
-                     --  Get the variables written in the call, both global
-                     --  variables and parameters.
-
-                     Get_Proof_Globals (Subprogram      => Proc,
-                                        Reads           => Ignore_Vars,
-                                        Writes          => Write_Vars,
-                                        Erase_Constants => True,
-                                        Scop            =>
-                                          Get_Flow_Scope (Stmt));
-
-                     Iterate_Call (Stmt);
-
-                     --  Retrieve those variables mentioned in a postcondition
-
-                     Info_Vars.Clear;
-                     Pragmas := Get_Pre_Post (Proc, Pragma_Postcondition);
-                     for Expr of Pragmas loop
-                        Info_Vars.Union (Get_Variables_From_Expr
-                                          (Expr, N, Formal_To_Actual));
-                     end loop;
-
-                     --  Compute variables that are both relevant for
-                     --  proving the property and written in the call with
-                     --  no information on the updated value.
-
-                     Vars := Check_Vars and (Write_Vars - Info_Vars);
-
-                     --  These variables are a possible explanation for the
-                     --  proof failure.
-
-                     if not Vars.Is_Empty then
-                        Expl := Explain_Variables (Vars, Actual_To_Formal);
-
-                        if Pragmas.Is_Empty then
-                           Expl := "call "
-                             & Get_Line_Number (N, Sloc (Stmt))
-                             & " should mention " & Expl
-                             & " in a postcondition";
-                        else
-                           Expl := "postcondition of call "
-                             & Get_Line_Number (N, Sloc (Stmt))
-                             & " should mention " & Expl;
-                        end if;
-
-                        return Create (To_String (Expl),
-                                       Secondary_Loc => Secondary_Loc);
-
-                     --  Otherwise, continue the search only for the variables
-                     --  that are not modified in the call.
-
-                     else
-                        Check_Vars.Difference (Write_Vars);
-                     end if;
-                  end;
-
-               when N_Loop_Statement =>
-
-                  if not Is_Selected_For_Loop_Unrolling (Stmt) then
-
-                     --  Get the variables written in the loop
-
-                     Write_Vars :=
-                       Get_Loop_Writes (Entity (Identifier (Stmt)));
-                     Pragmas :=
-                       Gnat2Why.Expr.Loops.Get_Loop_Invariant (Stmt);
-
-                     --  Compute those variables mentioned in the loop test.
-                     --  Even if the loop test is not added as loop invariant,
-                     --  this information may be available to prove the
-                     --  property.
-
-                     Info_Vars.Clear;
-
-                     declare
-                        Cond_Or_Var : constant Node_Or_Entity_Id :=
-                          Get_Loop_Condition_Or_Variable (Stmt);
-                        Id          : Flow_Id;
-                     begin
-                        case Nkind (Cond_Or_Var) is
-                           when N_Empty =>
-                              null;
-
-                           --  The loop variable in a FOR loop is defined
-                           --  by the loop, so there is no need to continue
-                           --  tracking it past the loop. Remove it from
-                           --  Check_Vars.
-
-                           when N_Entity =>
-                              Id := Direct_Mapping_Id (Cond_Or_Var);
-                              Check_Vars.Exclude (Id);
-
-                           --  The condition in a WHILE loop is simply
-                           --  providing information on these variables
-                           --  for this loop. Add them from Info_Vars.
-
-                           when others =>
-                              Info_Vars :=
-                                Get_Variables_From_Expr (Cond_Or_Var, N);
-                        end case;
                      end;
 
-                     --  Retrieve those variables mentioned in a loop invariant
+                  when N_Procedure_Call_Statement =>
+                     declare
+                        Formal_To_Actual : Flow_Id_Surjection.Map;
+                        Actual_To_Formal : Flow_Id_Surjection.Map;
 
-                     for Prag of Pragmas loop
-                        declare
-                           Expr : constant Node_Id :=
-                             Expression (Next (First
-                               (Pragma_Argument_Associations (Prag))));
+                        procedure Treat_Param
+                          (Formal : Entity_Id; Actual : Node_Id);
+                        --  Get the parameters written in the call
+
+                        -----------------
+                        -- Treat_Param --
+                        -----------------
+
+                        procedure Treat_Param
+                          (Formal : Entity_Id; Actual : Node_Id)
+                        is
+                           Var : Entity_Id;
+                           Id  : Flow_Id;
                         begin
-                           Info_Vars.Union (Get_Variables_From_Expr (Expr, N));
-                        end;
-                     end loop;
+                           if Ekind (Formal)
+                              in E_Out_Parameter | E_In_Out_Parameter
+                           then
+                              Var := SPARK_Atree.Get_Entire_Object (Actual);
+                              Id := Direct_Mapping_Id (Var);
 
-                     --  Compute variables that are both relevant for
-                     --  proving the property and written in the loop with
-                     --  no information on the updated value.
+                              --  Include the actual in the variables written
+                              --  in the call.
 
-                     Vars := Check_Vars and (Write_Vars - Info_Vars);
+                              Write_Vars.Include (Id);
 
-                     --  These variables are a possible explanation for the
-                     --  proof failure.
+                              --  Store the mapping formal->actual for possibly
+                              --  removing the actual when the formal is
+                              --  mentioned in the postcondition.
 
-                     if not Vars.Is_Empty then
-                        Expl := Explain_Variables (Vars);
+                              Formal_To_Actual.Insert
+                                (Direct_Mapping_Id (Formal), Id);
 
-                        if Pragmas.Is_Empty then
-                           Expl := "loop "
-                             & Get_Line_Number (N, Sloc (Stmt))
-                             & " should mention " & Expl
-                             & " in a loop invariant";
+                              --  Store the mapping actual->formal for
+                              --  expressing the explanation in terms of formal
+                              --  parameters missing from the postcondition. We
+                              --  use Include instead of Insert here as the
+                              --  same actual could correspond to multiple
+                              --  formals.
+
+                              Actual_To_Formal.Include
+                                (Id, Direct_Mapping_Id (Formal));
+                           end if;
+                        end Treat_Param;
+
+                        procedure Iterate_Call is new
+                          SPARK_Atree.Iterate_Call_Parameters (Treat_Param);
+
+                        Proc : constant Entity_Id :=
+                          SPARK_Atree.Get_Called_Entity (Stmt);
+
+                     begin
+                        --  Get the variables written in the call, both global
+                        --  variables and parameters.
+
+                        Get_Proof_Globals
+                          (Subprogram      => Proc,
+                           Reads           => Ignore_Vars,
+                           Writes          => Write_Vars,
+                           Erase_Constants => True,
+                           Scop            => Get_Flow_Scope (Stmt));
+
+                        Iterate_Call (Stmt);
+
+                        --  Retrieve those variables mentioned in a
+                        --  postcondition.
+
+                        Info_Vars.Clear;
+                        Pragmas := Get_Pre_Post (Proc, Pragma_Postcondition);
+                        for Expr of Pragmas loop
+                           Info_Vars.Union
+                             (Get_Variables_From_Expr
+                                (Expr, N, Formal_To_Actual));
+                        end loop;
+
+                        --  Compute variables that are both relevant for
+                        --  proving the property and written in the call with
+                        --  no information on the updated value.
+
+                        Vars := Check_Vars and (Write_Vars - Info_Vars);
+
+                        --  These variables are a possible explanation for the
+                        --  proof failure.
+
+                        if not Vars.Is_Empty then
+                           Expl := Explain_Variables (Vars, Actual_To_Formal);
+
+                           if Pragmas.Is_Empty then
+                              Expl :=
+                                "call "
+                                & Get_Line_Number (N, Sloc (Stmt))
+                                & " should mention "
+                                & Expl
+                                & " in a postcondition";
+                           else
+                              Expl :=
+                                "postcondition of call "
+                                & Get_Line_Number (N, Sloc (Stmt))
+                                & " should mention "
+                                & Expl;
+                           end if;
+
+                           return
+                             Create
+                               (To_String (Expl),
+                                Secondary_Loc => Secondary_Loc);
+
+                        --  Otherwise, continue the search only for the
+                        --  variables that are not modified in the call.
+
                         else
-                           Expl := "loop invariant "
-                             & Get_Line_Number
-                                 (N, Sloc (Pragmas.First_Element))
-                             & " should mention " & Expl;
+                           Check_Vars.Difference (Write_Vars);
                         end if;
+                     end;
 
-                        return Create (To_String (Expl),
-                                       Secondary_Loc => Secondary_Loc);
+                  when N_Loop_Statement =>
 
-                     --  Otherwise, continue the search only if all the
-                     --  variables involved in the check are not modified in
-                     --  the loop. Otherwise, it's likely that the information
-                     --  provided in a loop invariant is either insufficient
-                     --  or that the problem lies with prover capabilities. On
-                     --  both cases, the explanation does not lie beyond the
-                     --  loop itself.
+                     if not Is_Selected_For_Loop_Unrolling (Stmt) then
 
-                     elsif Check_Vars.Overlap (Write_Vars) then
-                        goto END_OF_SEARCH;
-                     end if;
-                  end if;
+                        --  Get the variables written in the loop
 
-               when N_Subprogram_Body
-                  | N_Subprogram_Declaration
-               =>
-                  declare
-                     Proc : constant Entity_Id :=
-                       SPARK_Atree.Unique_Defining_Entity (Stmt);
-                     Out_Vars : Flow_Id_Sets.Set;
+                        Write_Vars :=
+                          Get_Loop_Writes (Entity (Identifier (Stmt)));
+                        Pragmas :=
+                          Gnat2Why.Expr.Loops.Get_Loop_Invariant (Stmt);
 
-                  begin
-                     --  A subprogram declaration is the explaining node
-                     --  for checks that happen in the precondition or
-                     --  postcondition attached to this subprogram. Check
-                     --  whether we are in the case, otherwise continue the
-                     --  search.
+                        --  Compute those variables mentioned in the loop test.
+                        --  Even if the loop test is not added as loop
+                        --  invariant, this information may be available to
+                        --  prove the property.
 
-                     if Nkind (Stmt) = N_Subprogram_Declaration then
-                        if No (Prag_N)
-                          or else
-                            Get_Pragma (Proc, Get_Pragma_Id (Prag_N)) /= Prag_N
-                        then
-                           --  Retrieve the next explanation node to continue
-                           --  the search.
+                        Info_Vars.Clear;
 
-                           Stmt := Get_Previous_Explain_Node (Stmt);
-
-                           goto SEARCH;
-                        end if;
-                     end if;
-
-                     --  If we're looking for an explanation for a check inside
-                     --  a postcondition attached to that subprogram, restart
-                     --  the search from the last statement of the subprogram
-                     --  body.
-
-                     if not Restarted_Search
-                       and then Present (Prag_N)
-                       and then Get_Pragma_Id (Prag_N) in
-                                  Pragma_Post
-                                | Pragma_Postcondition
-                                | Pragma_Post_Class
-                                | Pragma_Refined_Post
-                     then
                         declare
-                           Body_N : constant Node_Id := Get_Body (Proc);
+                           Cond_Or_Var : constant Node_Or_Entity_Id :=
+                             Get_Loop_Condition_Or_Variable (Stmt);
+                           Id          : Flow_Id;
                         begin
-                           if Present (Body_N) then
-                              Stmt := Last (Statements
-                                        (Handled_Statement_Sequence (Body_N)));
+                           case Nkind (Cond_Or_Var) is
+                              when N_Empty =>
+                                 null;
 
-                              --  Retrieve the next explanation node to restart
-                              --  the search.
+                              --  The loop variable in a FOR loop is defined
+                              --  by the loop, so there is no need to continue
+                              --  tracking it past the loop. Remove it from
+                              --  Check_Vars.
 
-                              if Nkind (Stmt) not in Explain_Node_Kind then
-                                 Stmt := Get_Previous_Explain_Node (Stmt);
-                              end if;
+                              when N_Entity =>
+                                 Id := Direct_Mapping_Id (Cond_Or_Var);
+                                 Check_Vars.Exclude (Id);
 
-                              Restarted_Search := True;
+                              --  The condition in a WHILE loop is simply
+                              --  providing information on these variables
+                              --  for this loop. Add them from Info_Vars.
+
+                              when others =>
+                                 Info_Vars :=
+                                   Get_Variables_From_Expr (Cond_Or_Var, N);
+                           end case;
+                        end;
+
+                        --  Retrieve those variables mentioned in a loop
+                        --  invariant.
+
+                        for Prag of Pragmas loop
+                           declare
+                              Expr : constant Node_Id :=
+                                Expression
+                                  (Next
+                                     (First
+                                        (Pragma_Argument_Associations
+                                           (Prag))));
+                           begin
+                              Info_Vars.Union
+                                (Get_Variables_From_Expr (Expr, N));
+                           end;
+                        end loop;
+
+                        --  Compute variables that are both relevant for
+                        --  proving the property and written in the loop with
+                        --  no information on the updated value.
+
+                        Vars := Check_Vars and (Write_Vars - Info_Vars);
+
+                        --  These variables are a possible explanation for the
+                        --  proof failure.
+
+                        if not Vars.Is_Empty then
+                           Expl := Explain_Variables (Vars);
+
+                           if Pragmas.Is_Empty then
+                              Expl :=
+                                "loop "
+                                & Get_Line_Number (N, Sloc (Stmt))
+                                & " should mention "
+                                & Expl
+                                & " in a loop invariant";
+                           else
+                              Expl :=
+                                "loop invariant "
+                                & Get_Line_Number
+                                    (N, Sloc (Pragmas.First_Element))
+                                & " should mention "
+                                & Expl;
+                           end if;
+
+                           return
+                             Create
+                               (To_String (Expl),
+                                Secondary_Loc => Secondary_Loc);
+
+                        --  Otherwise, continue the search only if all the
+                        --  variables involved in the check are not modified in
+                        --  the loop. Otherwise, it's likely that the
+                        --  information provided in a loop invariant is either
+                        --  insufficient or that the problem lies with prover
+                        --  capabilities. On both cases, the explanation does
+                        --  not lie beyond the loop itself.
+
+                        elsif Check_Vars.Overlap (Write_Vars) then
+                           goto END_OF_SEARCH;
+                        end if;
+                     end if;
+
+                  when N_Subprogram_Body | N_Subprogram_Declaration =>
+                     declare
+                        Proc     : constant Entity_Id :=
+                          SPARK_Atree.Unique_Defining_Entity (Stmt);
+                        Out_Vars : Flow_Id_Sets.Set;
+
+                     begin
+                        --  A subprogram declaration is the explaining node
+                        --  for checks that happen in the precondition or
+                        --  postcondition attached to this subprogram. Check
+                        --  whether we are in the case, otherwise continue the
+                        --  search.
+
+                        if Nkind (Stmt) = N_Subprogram_Declaration then
+                           if No (Prag_N)
+                             or else Get_Pragma (Proc, Get_Pragma_Id (Prag_N))
+                                     /= Prag_N
+                           then
+                              --  Retrieve the next explanation node to
+                              --  continue the search.
+
+                              Stmt := Get_Previous_Explain_Node (Stmt);
+
                               goto SEARCH;
                            end if;
+                        end if;
+
+                        --  If we're looking for an explanation for a check
+                        --  inside a postcondition attached to that subprogram,
+                        --  restart the search from the last statement of the
+                        --  subprogram body.
+
+                        if not Restarted_Search
+                          and then Present (Prag_N)
+                          and then Get_Pragma_Id (Prag_N)
+                                   in Pragma_Post
+                                    | Pragma_Postcondition
+                                    | Pragma_Post_Class
+                                    | Pragma_Refined_Post
+                        then
+                           declare
+                              Body_N : constant Node_Id := Get_Body (Proc);
+                           begin
+                              if Present (Body_N) then
+                                 Stmt :=
+                                   Last
+                                     (Statements
+                                        (Handled_Statement_Sequence (Body_N)));
+
+                                 --  Retrieve the next explanation node to
+                                 --  restart the search.
+
+                                 if Nkind (Stmt) not in Explain_Node_Kind then
+                                    Stmt := Get_Previous_Explain_Node (Stmt);
+                                 end if;
+
+                                 Restarted_Search := True;
+                                 goto SEARCH;
+                              end if;
+                           end;
+                        end if;
+
+                        --  Report the missing precondition on the spec of the
+                        --  subprogram if any.
+
+                        declare
+                           Subp_Spec : constant Node_Id :=
+                             Subprogram_Spec (Proc);
+                        begin
+                           if Present (Subp_Spec) then
+                              Stmt := Subp_Spec;
+                           end if;
                         end;
-                     end if;
 
-                     --  Report the missing precondition on the spec of the
-                     --  subprogram if any.
+                        --  Do not try to explain unproved postcondition checks
+                        --  by missing information in the precondition, as it's
+                        --  unlikely the cause. In such a case, stop the search
+                        --  for an explanation.
 
-                     declare
-                        Subp_Spec : constant Node_Id := Subprogram_Spec (Proc);
-                     begin
-                        if Present (Subp_Spec) then
-                           Stmt := Subp_Spec;
+                        if Tag
+                           in VC_Postcondition
+                            | VC_Refined_Post
+                            | VC_Contract_Case
+                        then
+                           goto END_OF_SEARCH;
+                        end if;
+
+                        --  For a check inside a postcondition, only explain
+                        --  it by missing information in the precondition if
+                        --  the corresponding node does not possibly refer
+                        --  to post-state. Otherwise, stop the search for
+                        --  an explanation.
+
+                        if Present (Prag_N)
+                          and then Get_Pragma_Id (Prag_N)
+                                   in Pragma_Post
+                                    | Pragma_Postcondition
+                                    | Pragma_Post_Class
+                                    | Pragma_Refined_Post
+                          and then Has_Post_State (N)
+                        then
+                           goto END_OF_SEARCH;
+                        end if;
+
+                        --  Get the subprogram inputs
+
+                        Get_Subprogram_Inputs
+                          (Subp     => Proc,
+                           In_Vars  => Read_Vars,
+                           Out_Vars => Out_Vars);
+
+                        --  Retrieve those variables mentioned in a
+                        --  precondition.
+
+                        Info_Vars.Clear;
+                        Pragmas := Get_Pre_Post (Proc, Pragma_Precondition);
+                        for Expr of Pragmas loop
+                           Info_Vars.Union (Get_Variables_From_Expr (Expr, N));
+                        end loop;
+
+                        --  Compute variables that are both relevant for
+                        --  proving the property and read in the subprogram
+                        --  with no information on the input value.
+
+                        Vars := Check_Vars and (Read_Vars - Info_Vars);
+
+                        --  Compute output variables that are both relevant for
+                        --  proving the property and whose bounds/discriminants
+                        --  are possibly read in the subprogram with no
+                        --  information on the input value.
+
+                        Out_Vars := Check_Vars and (Out_Vars - Info_Vars);
+
+                        --  These variables are a possible explanation for the
+                        --  proof failure.
+
+                        if not Vars.Is_Empty then
+                           Expl := Explain_Variables (Vars);
+
+                           if Is_Predicate_Function (Proc) then
+                              Expl :=
+                                "predicate "
+                                & Get_Line_Number (N, Sloc (Stmt))
+                                & " should mention "
+                                & Expl
+                                & " in a guard G as in (if G then Condition)";
+
+                           elsif Pragmas.Is_Empty then
+                              Expl :=
+                                "subprogram "
+                                & Get_Line_Number (N, Sloc (Stmt))
+                                & " should mention "
+                                & Expl
+                                & " in a precondition";
+                           else
+                              Expl :=
+                                "precondition of subprogram "
+                                & Get_Line_Number (N, Sloc (Stmt))
+                                & " should mention "
+                                & Expl;
+                           end if;
+
+                           return
+                             Create
+                               (To_String (Expl),
+                                Secondary_Loc => Secondary_Loc);
+
+                        elsif not Out_Vars.Is_Empty then
+                           Expl := Explain_Output_Variables (Out_Vars);
+
+                           if Pragmas.Is_Empty then
+                              Expl :=
+                                "subprogram "
+                                & Get_Line_Number (N, Sloc (Stmt))
+                                & " should mention "
+                                & Expl
+                                & " in a precondition";
+                           else
+                              Expl :=
+                                "precondition of subprogram "
+                                & Get_Line_Number (N, Sloc (Stmt))
+                                & " should mention "
+                                & Expl;
+                           end if;
+
+                           return
+                             Create
+                               (To_String (Expl),
+                                Secondary_Loc => Secondary_Loc);
+
+                        --  Stop the search for an explanation at the first
+                        --  subprogram body, as proof is done modularly on
+                        --  subprograms.
+
+                        else
+                           goto END_OF_SEARCH;
                         end if;
                      end;
-
-                     --  Do not try to explain unproved postcondition checks
-                     --  by missing information in the precondition, as it's
-                     --  unlikely the cause. In such a case, stop the search
-                     --  for an explanation.
-
-                     if Tag in VC_Postcondition
-                             | VC_Refined_Post
-                             | VC_Contract_Case
-                     then
-                        goto END_OF_SEARCH;
-                     end if;
-
-                     --  For a check inside a postcondition, only explain
-                     --  it by missing information in the precondition if
-                     --  the corresponding node does not possibly refer
-                     --  to post-state. Otherwise, stop the search for
-                     --  an explanation.
-
-                     if Present (Prag_N)
-                       and then Get_Pragma_Id (Prag_N) in
-                                  Pragma_Post
-                                | Pragma_Postcondition
-                                | Pragma_Post_Class
-                                | Pragma_Refined_Post
-                       and then Has_Post_State (N)
-                     then
-                        goto END_OF_SEARCH;
-                     end if;
-
-                     --  Get the subprogram inputs
-
-                     Get_Subprogram_Inputs (Subp     => Proc,
-                                            In_Vars  => Read_Vars,
-                                            Out_Vars => Out_Vars);
-
-                     --  Retrieve those variables mentioned in a precondition
-
-                     Info_Vars.Clear;
-                     Pragmas := Get_Pre_Post (Proc, Pragma_Precondition);
-                     for Expr of Pragmas loop
-                        Info_Vars.Union (Get_Variables_From_Expr (Expr, N));
-                     end loop;
-
-                     --  Compute variables that are both relevant for proving
-                     --  the property and read in the subprogram with no
-                     --  information on the input value.
-
-                     Vars := Check_Vars and (Read_Vars - Info_Vars);
-
-                     --  Compute output variables that are both relevant for
-                     --  proving the property and whose bounds/discriminants
-                     --  are possibly read in the subprogram with no
-                     --  information on the input value.
-
-                     Out_Vars := Check_Vars and (Out_Vars - Info_Vars);
-
-                     --  These variables are a possible explanation for the
-                     --  proof failure.
-
-                     if not Vars.Is_Empty then
-                        Expl := Explain_Variables (Vars);
-
-                        if Is_Predicate_Function (Proc) then
-                           Expl := "predicate "
-                             & Get_Line_Number (N, Sloc (Stmt))
-                             & " should mention " & Expl
-                             & " in a guard G as in (if G then Condition)";
-
-                        elsif Pragmas.Is_Empty then
-                           Expl := "subprogram "
-                             & Get_Line_Number (N, Sloc (Stmt))
-                             & " should mention " & Expl
-                             & " in a precondition";
-                        else
-                           Expl := "precondition of subprogram "
-                             & Get_Line_Number (N, Sloc (Stmt))
-                             & " should mention " & Expl;
-                        end if;
-
-                        return Create (To_String (Expl),
-                                       Secondary_Loc => Secondary_Loc);
-
-                     elsif not Out_Vars.Is_Empty then
-                        Expl := Explain_Output_Variables (Out_Vars);
-
-                        if Pragmas.Is_Empty then
-                           Expl := "subprogram "
-                             & Get_Line_Number (N, Sloc (Stmt))
-                             & " should mention " & Expl
-                             & " in a precondition";
-                        else
-                           Expl := "precondition of subprogram "
-                             & Get_Line_Number (N, Sloc (Stmt))
-                             & " should mention " & Expl;
-                        end if;
-
-                        return Create (To_String (Expl),
-                                       Secondary_Loc => Secondary_Loc);
-
-                     --  Stop the search for an explanation at the first
-                     --  subprogram body, as proof is done modularly on
-                     --  subprograms.
-
-                     else
-                        goto END_OF_SEARCH;
-                     end if;
-                  end;
                end case;
 
                Stmt := Get_Previous_Explain_Node (Stmt);
 
-            << SEARCH >>
+               <<SEARCH>>
 
             end loop;
 
-            << END_OF_SEARCH >>
+            <<END_OF_SEARCH>>
 
             --  No explanation was found based on the variables referenced in
             --  the node associated to the check. Look for function calls in
@@ -3600,9 +3713,7 @@ package body Flow_Error_Messages is
             --  skipped, and in general we don't expect such an explanation to
             --  be relevant).
 
-            if Tag not in VC_Precondition
-                        | VC_Precondition_Main
-                        | VC_Raise
+            if Tag not in VC_Precondition | VC_Precondition_Main | VC_Raise
             then
                return
                  Create (To_String (Explain_Calls (Get_Calls_From_Node (N))));
@@ -3627,8 +3738,9 @@ package body Flow_Error_Messages is
             Line : constant Physical_Line_Number :=
               Get_Physical_Line_Number (Slc);
          begin
-            Result := To_String (Gnat2Why_Args.Exclude_Line) =
-              File & ":" & Image (Value => Positive (Line), Min_Width => 1);
+            Result :=
+              To_String (Gnat2Why_Args.Exclude_Line)
+              = File & ":" & Image (Value => Positive (Line), Min_Width => 1);
          end;
       end if;
 
@@ -3654,8 +3766,8 @@ package body Flow_Error_Messages is
       begin
 
          for Line_Spec of Gnat2Why_Args.Limit_Lines loop
-            if Line_Spec =
-              File & ":" & Image (Value => Positive (Line), Min_Width => 1)
+            if Line_Spec
+              = File & ":" & Image (Value => Positive (Line), Min_Width => 1)
             then
                return True;
             end if;
@@ -3664,21 +3776,25 @@ package body Flow_Error_Messages is
          if Gnat2Why_Args.Limit_Region /= Null_Unbounded_String then
             declare
                Fst_Colon_Index : constant Natural :=
-                 Index (Source  => Limit_Region,
-                        Pattern => ":");
+                 Index (Source => Limit_Region, Pattern => ":");
                Snd_Colon_Index : constant Natural :=
-                 Index (Source  => Limit_Region,
-                        Pattern => ":",
-                        From    => Fst_Colon_Index + 1);
+                 Index
+                   (Source  => Limit_Region,
+                    Pattern => ":",
+                    From    => Fst_Colon_Index + 1);
             begin
                if File = Slice (Limit_Region, 1, Fst_Colon_Index - 1)
-                 and then Positive (Line) in
-                 Integer'Value (Slice (Limit_Region,
-                                Fst_Colon_Index + 1,
-                                Snd_Colon_Index - 1))
-                 .. Integer'Value (Slice (Limit_Region,
-                                   Snd_Colon_Index + 1,
-                                   Length (Limit_Region)))
+                 and then Positive (Line)
+                          in Integer'Value
+                               (Slice
+                                  (Limit_Region,
+                                   Fst_Colon_Index + 1,
+                                   Snd_Colon_Index - 1))
+                           .. Integer'Value
+                                (Slice
+                                   (Limit_Region,
+                                    Snd_Colon_Index + 1,
+                                    Length (Limit_Region)))
                then
                   return True;
                end if;
@@ -3732,24 +3848,24 @@ package body Flow_Error_Messages is
    -----------------------
 
    function Justified_Message (Node : Node_Id; Kind : VC_Kind) return String is
-      function Inst is new VC_Message
-        (Verb   => "justified",
-         Prefix => "justified that ",
-         Suffix => " justified");
+      function Inst is new
+        VC_Message
+          (Verb   => "justified",
+           Prefix => "justified that ",
+           Suffix => " justified");
    begin
       return Inst (Node, Kind);
    end Justified_Message;
 
-   function Justified_Message (Flow_Check_Message : String) return String is
-     ("justified that " & Flow_Check_Message);
+   function Justified_Message (Flow_Check_Message : String) return String
+   is ("justified that " & Flow_Check_Message);
    --  Return the message string for a justified flow check message
 
    -----------------------
    -- Print_Regular_Msg --
    -----------------------
 
-   function Print_Regular_Msg (Obj : JSON_Result_Type) return Message_Id
-   is
+   function Print_Regular_Msg (Obj : JSON_Result_Type) return Message_Id is
 
       Id            : constant Message_Id := Next_Message_Id;
       My_Conts      : Message_Lists.List := Obj.Continuations;
@@ -3772,7 +3888,7 @@ package body Flow_Error_Messages is
             Error_Entry => False);
       end Wrap_Error_Msg;
 
-   --  Beginning of processing for Print_Regular_Msg
+      --  Beginning of processing for Print_Regular_Msg
 
    begin
       case Gnat2Why_Args.Output_Mode is
@@ -3836,29 +3952,37 @@ package body Flow_Error_Messages is
             if Obj.User_Message /= Null_Unbounded_String then
                My_Conts.Append
                  (Create
-                    (Erroutc.SGR_Note & "user message: "
-                     & Erroutc.SGR_Reset & To_String (Obj.User_Message)));
+                    (Erroutc.SGR_Note
+                     & "user message: "
+                     & Erroutc.SGR_Reset
+                     & To_String (Obj.User_Message)));
             end if;
 
             if Obj.CE /= "" then
                My_Conts.Append
                  (Create
-                    (Erroutc.SGR_Note & "e.g. when "
-                     & Erroutc.SGR_Reset & To_String (Obj.CE)));
+                    (Erroutc.SGR_Note
+                     & "e.g. when "
+                     & Erroutc.SGR_Reset
+                     & To_String (Obj.CE)));
             end if;
 
             if not Is_Suppressed and then Obj.Details /= "" then
                My_Conts.Append
                  (Create
-                    (Erroutc.SGR_Note & "reason for check: "
-                     & Erroutc.SGR_Reset & To_String (Obj.Details)));
+                    (Erroutc.SGR_Note
+                     & "reason for check: "
+                     & Erroutc.SGR_Reset
+                     & To_String (Obj.Details)));
             end if;
 
             if Obj.Explanation /= "" then
                My_Conts.Append
                  (Create
-                    (Erroutc.SGR_Note & "possible explanation: "
-                     & Erroutc.SGR_Reset & To_String (Obj.Explanation)));
+                    (Erroutc.SGR_Note
+                     & "possible explanation: "
+                     & Erroutc.SGR_Reset
+                     & To_String (Obj.Explanation)));
             end if;
 
             if Obj.Fix /= No_Message then
@@ -3880,9 +4004,8 @@ package body Flow_Error_Messages is
    -- Not_Proved_Message --
    ------------------------
 
-   function Not_Proved_Message
-     (Node : Node_Id;
-      Kind : VC_Kind) return String is
+   function Not_Proved_Message (Node : Node_Id; Kind : VC_Kind) return String
+   is
    begin
       --  Any change in the messages issued for a check should be reflected in
       --    - GPS plug-in spark2014.py
@@ -3891,91 +4014,131 @@ package body Flow_Error_Messages is
       case Kind is
          --  VC_RTE_Kind - run-time checks
 
-         when VC_Division_Check            =>
+         when VC_Division_Check =>
             return "divide by zero might fail";
-         when VC_Index_Check               =>
+
+         when VC_Index_Check =>
             return "array index check might fail";
-         when VC_Overflow_Check            =>
+
+         when VC_Overflow_Check =>
             return "overflow check might fail";
-         when VC_FP_Overflow_Check            =>
+
+         when VC_FP_Overflow_Check =>
             return "float overflow check might fail";
-         when VC_Range_Check               =>
+
+         when VC_Range_Check =>
             return "range check might fail";
-         when VC_Predicate_Check           =>
+
+         when VC_Predicate_Check =>
             return "predicate check might fail";
+
          when VC_Predicate_Check_On_Default_Value =>
             return "predicate check might fail on default value";
+
          when VC_Null_Pointer_Dereference =>
             return "pointer dereference check might fail";
+
          when VC_Null_Exclusion =>
             return "null exclusion check might fail";
+
          when VC_Dynamic_Accessibility_Check =>
             return "dynamic accessibility check might fail";
+
          when VC_Resource_Leak =>
             return "resource or memory leak might occur";
+
          when VC_Resource_Leak_At_End_Of_Scope =>
             return "resource or memory leak might occur at end of scope";
-         when VC_Invariant_Check           =>
+
+         when VC_Invariant_Check =>
             return "invariant check might fail";
+
          when VC_Invariant_Check_On_Default_Value =>
             return "invariant check might fail on default value";
-         when VC_Length_Check              =>
+
+         when VC_Length_Check =>
             return "length check might fail";
-         when VC_Discriminant_Check        =>
+
+         when VC_Discriminant_Check =>
             return "discriminant check might fail";
-         when VC_Tag_Check                 =>
+
+         when VC_Tag_Check =>
             return "tag check might fail";
-         when VC_Ceiling_Interrupt         =>
+
+         when VC_Ceiling_Interrupt =>
             return "ceiling priority might not be in Interrupt_Priority";
-         when VC_Interrupt_Reserved        =>
+
+         when VC_Interrupt_Reserved =>
             return "this interrupt might be reserved";
+
          when VC_Ceiling_Priority_Protocol =>
             return "ceiling priority protocol might not be respected";
-         when VC_Task_Termination          =>
+
+         when VC_Task_Termination =>
             return "the task might terminate, which is not allowed in SPARK";
 
          --  VC_Assert_Kind - assertions
 
-         when VC_Initial_Condition         =>
+         when VC_Initial_Condition =>
             return "initial condition might fail";
+
          when VC_Default_Initial_Condition =>
             return "default initial condition might fail";
-         when VC_Precondition              =>
+
+         when VC_Precondition =>
             return "precondition might fail";
-         when VC_Precondition_Main         =>
+
+         when VC_Precondition_Main =>
             return "precondition of main program might fail";
-         when VC_Postcondition             =>
+
+         when VC_Postcondition =>
             return "postcondition might fail";
-         when VC_Refined_Post              =>
+
+         when VC_Refined_Post =>
             return "refined postcondition might fail";
-         when VC_Contract_Case             =>
+
+         when VC_Contract_Case =>
             return "contract case might fail";
-         when VC_Disjoint_Cases            =>
+
+         when VC_Disjoint_Cases =>
             return "contract or exit cases might not be disjoint";
-         when VC_Complete_Cases            =>
+
+         when VC_Complete_Cases =>
             return "contract cases might not be complete";
-         when VC_Exceptional_Case          =>
+
+         when VC_Exceptional_Case =>
             return "exceptional case might fail";
-         when VC_Program_Exit_Post         =>
+
+         when VC_Program_Exit_Post =>
             return "program exit postcondition might fail";
-         when VC_Exit_Case                 =>
+
+         when VC_Exit_Case =>
             return "exit case might fail";
-         when VC_Loop_Invariant            =>
+
+         when VC_Loop_Invariant =>
             return "loop invariant might fail";
-         when VC_Loop_Invariant_Init       =>
+
+         when VC_Loop_Invariant_Init =>
             return "loop invariant might fail in first iteration";
-         when VC_Loop_Invariant_Preserv    =>
-            return "loop invariant might not be preserved by an arbitrary " &
-              "iteration";
-         when VC_Loop_Variant              =>
+
+         when VC_Loop_Invariant_Preserv =>
+            return
+              "loop invariant might not be preserved by an arbitrary "
+              & "iteration";
+
+         when VC_Loop_Variant =>
             return "loop variant might fail";
-         when VC_Assert                    =>
+
+         when VC_Assert =>
             return "assertion might fail";
-         when VC_Assert_Premise            =>
+
+         when VC_Assert_Premise =>
             return "assertion premise might fail";
-         when VC_Assert_Step               =>
+
+         when VC_Assert_Step =>
             return "assertion step might fail";
-         when VC_Raise                     =>
+
+         when VC_Raise =>
             --  Give explanations for exceptions which frontend statically
             --  determined to always happen, should the given node be executed.
 
@@ -3988,12 +4151,16 @@ package body Flow_Error_Messages is
                case RT_Exception_Code'Val (UI_To_Int (Reason (Node))) is
                   when CE_Range_Check_Failed =>
                      return Not_Proved_Message (Node, VC_Range_Check);
+
                   when CE_Index_Check_Failed =>
                      return Not_Proved_Message (Node, VC_Index_Check);
+
                   when CE_Divide_By_Zero =>
                      return Not_Proved_Message (Node, VC_Division_Check);
+
                   when CE_Access_Check_Failed =>
                      return Not_Proved_Message (Node, VC_Null_Exclusion);
+
                   when SE_Infinite_Recursion =>
 
                      --  ??? This message should be reflected in the "Messages
@@ -4013,106 +4180,131 @@ package body Flow_Error_Messages is
                end case;
             end if;
             return "unexpected exception might be raised";
-         when VC_Unexpected_Program_Exit   =>
+
+         when VC_Unexpected_Program_Exit =>
             return "call might exit the program";
-         when VC_Feasible_Post             =>
+
+         when VC_Feasible_Post =>
             return "contract of function might not be feasible";
-         when VC_Inline_Check              =>
-            return "Inline_For_Proof or Logical_Equal annotation might be"
+
+         when VC_Inline_Check =>
+            return
+              "Inline_For_Proof or Logical_Equal annotation might be"
               & " incorrect";
-         when VC_Container_Aggr_Check      =>
+
+         when VC_Container_Aggr_Check =>
             return "Container_Aggregates annotation might be incorrect";
-         when VC_Reclamation_Check         =>
-            return "reclamation entity might not be consistent with "
+
+         when VC_Reclamation_Check =>
+            return
+              "reclamation entity might not be consistent with "
               & "reclamation on the full view";
-         when VC_Subprogram_Variant        =>
+
+         when VC_Subprogram_Variant =>
             return "subprogram variant might fail";
-         when VC_Termination_Check         =>
+
+         when VC_Termination_Check =>
             declare
                Statement : constant String :=
                  (case Nkind (Node) is
-                     when N_Procedure_Call_Statement
-                        | N_Entry_Call_Statement
-                        | N_Function_Call
-                     => "call",
-                     when N_Loop_Statement => "loop",
-                     when others           => raise Program_Error);
+                    when N_Procedure_Call_Statement
+                       | N_Entry_Call_Statement
+                       | N_Function_Call
+                    =>
+                      "call",
+                    when N_Loop_Statement => "loop",
+                    when others => raise Program_Error);
             begin
                return Statement & " might not terminate";
             end;
-         when VC_UC_Source                 =>
+
+         when VC_UC_Source =>
             return "type is unsuitable as a source for unchecked conversion";
 
-         when VC_UC_Target                 =>
+         when VC_UC_Target =>
             declare
-               Common : constant String :=
-                 " is unsuitable ";
+               Common : constant String := " is unsuitable ";
             begin
                if Nkind (Node) in N_Attribute_Reference | N_Object_Declaration
                then
-                  return "object" & Common &
-                    "for aliasing via address clause";
+                  return "object" & Common & "for aliasing via address clause";
                else
-                  return "type" & Common
-                    & "as a target for unchecked conversion";
+                  return
+                    "type" & Common & "as a target for unchecked conversion";
                end if;
             end;
 
-         when VC_UC_Same_Size              =>
+         when VC_UC_Same_Size =>
             declare
                Prefix : constant String :=
-                 (if Nkind (Node) = N_Attribute_Reference then
-                       "types of aliased objects"
+                 (if Nkind (Node) = N_Attribute_Reference
+                  then "types of aliased objects"
                   else "types used for unchecked conversion");
             begin
                return Prefix & " do not have the same size";
             end;
 
          when VC_UC_Alignment =>
-            return "address in address clause might not be an integral " &
-              "multiple of alignment of object";
-         when VC_Initialization_Check        =>
+            return
+              "address in address clause might not be an integral "
+              & "multiple of alignment of object";
+
+         when VC_Initialization_Check =>
             return "initialization check might fail";
-         when VC_Validity_Check              =>
+
+         when VC_Validity_Check =>
             return "validity check might fail";
+
          when VC_Unchecked_Union_Restriction =>
-            return "operation on unchecked union type will raise"
+            return
+              "operation on unchecked union type will raise"
               & " Program_Error";
 
          when VC_UC_Volatile =>
-            return "object with non-trivial address clause or prefix of the " &
-              "'Address reference does not have asynchronous writers";
+            return
+              "object with non-trivial address clause or prefix of the "
+              & "'Address reference does not have asynchronous writers";
 
          --  VC_LSP_Kind - Liskov Substitution Principle
 
-         when VC_Weaker_Pre                =>
-            return "precondition might be stronger than "
+         when VC_Weaker_Pre =>
+            return
+              "precondition might be stronger than "
               & "class-wide precondition";
-         when VC_Trivial_Weaker_Pre        =>
-            return "precondition is stronger than the default "
+
+         when VC_Trivial_Weaker_Pre =>
+            return
+              "precondition is stronger than the default "
               & "class-wide precondition of True";
-         when VC_Stronger_Post             =>
-            return "postcondition might be weaker than "
+
+         when VC_Stronger_Post =>
+            return
+              "postcondition might be weaker than "
               & "class-wide postcondition";
-         when VC_Weaker_Classwide_Pre      =>
+
+         when VC_Weaker_Classwide_Pre =>
             return
               "class-wide precondition might be stronger than overridden one";
-         when VC_Stronger_Classwide_Post   =>
+
+         when VC_Stronger_Classwide_Post =>
             return
               "class-wide postcondition might be weaker than overridden one";
 
-         when VC_Weaker_Pre_Access         =>
-            return "precondition of target might not be strong enough to"
+         when VC_Weaker_Pre_Access =>
+            return
+              "precondition of target might not be strong enough to"
               & " imply precondition of source";
-         when VC_Stronger_Post_Access      =>
-            return "postcondition of source might not be strong enough to"
+
+         when VC_Stronger_Post_Access =>
+            return
+              "postcondition of source might not be strong enough to"
               & " imply postcondition of target";
 
          --  VC_Warning_Kind - warnings
 
          --  Warnings should only be issued when the VC is proved
 
-         when VC_Warning_Kind              =>
+         when VC_Warning_Kind =>
             raise Program_Error;
       end case;
    end Not_Proved_Message;
@@ -4132,13 +4324,11 @@ package body Flow_Error_Messages is
    ----------------
 
    function Substitute
-     (S    : Unbounded_String;
-      F    : Flow_Id;
-      Flag : Source_Ptr)
+     (S : Unbounded_String; F : Flow_Id; Flag : Source_Ptr)
       return Unbounded_String
    is
       R      : Unbounded_String := Null_Unbounded_String;
-      Do_Sub : Boolean          := True;
+      Do_Sub : Boolean := True;
       Quote  : Boolean;
 
       procedure Append_Quote;
@@ -4155,200 +4345,218 @@ package body Flow_Error_Messages is
          end if;
       end Append_Quote;
 
-   --  Start of processing for Substitute
+      --  Start of processing for Substitute
 
    begin
       for Index in Positive range 1 .. Length (S) loop
          if Do_Sub then
             case Element (S, Index) is
-            when '&' | '#' | '%' =>
-               Quote := Element (S, Index) in '&' | '#';
+               when '&' | '#' | '%' =>
+                  Quote := Element (S, Index) in '&' | '#';
 
-               case F.Kind is
-               when Null_Value =>
-                  raise Program_Error;
+                  case F.Kind is
+                     when Null_Value =>
+                        raise Program_Error;
 
-               when Synthetic_Null_Export =>
-                  Append_Quote;
-                  Append (R, "null");
+                     when Synthetic_Null_Export =>
+                        Append_Quote;
+                        Append (R, "null");
 
-               when Direct_Mapping | Record_Field =>
-                  if Is_Private_Part (F) then
-                     Append (R, "private part of ");
-                     Append_Quote;
-                     Append (R, Flow_Id_To_String
-                               ((F with delta Facet => Normal_Part)));
-                  elsif Is_Extension (F) then
-                     Append (R, "extension of ");
-                     Append_Quote;
-                     Append (R, Flow_Id_To_String
-                               ((F with delta Facet => Normal_Part)));
-                  elsif Nkind (Get_Direct_Mapping_Id (F)) in N_Entity
-                    and then Ekind (Get_Direct_Mapping_Id (F)) = E_Constant
-                    and then
-                      not Is_Access_Variable
-                            (Etype (Get_Direct_Mapping_Id (F)))
-                  then
-                     declare
-                        Var : constant Entity_Id := Get_Direct_Mapping_Id (F);
-
-                     begin
-                        if Nkind (Original_Node (Parent (Var))) =
-                          N_Object_Renaming_Declaration
+                     when Direct_Mapping | Record_Field =>
+                        if Is_Private_Part (F) then
+                           Append (R, "private part of ");
+                           Append_Quote;
+                           Append
+                             (R,
+                              Flow_Id_To_String
+                                ((F with delta Facet => Normal_Part)));
+                        elsif Is_Extension (F) then
+                           Append (R, "extension of ");
+                           Append_Quote;
+                           Append
+                             (R,
+                              Flow_Id_To_String
+                                ((F with delta Facet => Normal_Part)));
+                        elsif Nkind (Get_Direct_Mapping_Id (F)) in N_Entity
+                          and then Ekind (Get_Direct_Mapping_Id (F))
+                                   = E_Constant
+                          and then not Is_Access_Variable
+                                         (Etype (Get_Direct_Mapping_Id (F)))
                         then
-                           Append (R, "renaming of a function call ");
-                        else
-                           if Has_Variable_Input (Var) then
+                           declare
+                              Var : constant Entity_Id :=
+                                Get_Direct_Mapping_Id (F);
 
-                              --  Constant of an access-to-variable type that
-                              --  has variable input can be assigned, so it
-                              --  behaves like a variable.
-
-                              if Is_Access_Variable (Etype (Var)) then
-                                 null;
+                           begin
+                              if Nkind (Original_Node (Parent (Var)))
+                                = N_Object_Renaming_Declaration
+                              then
+                                 Append (R, "renaming of a function call ");
                               else
-                                 Append (R, "constant with variable input ");
+                                 if Has_Variable_Input (Var) then
+
+                                    --  Constant of an access-to-variable type
+                                    --  that has variable input can be
+                                    --  assigned, so it behaves like a
+                                    --  variable.
+
+                                    if Is_Access_Variable (Etype (Var)) then
+                                       null;
+                                    else
+                                       Append
+                                         (R, "constant with variable input ");
+                                    end if;
+                                 else
+                                    Append
+                                      (R, "constant without variable input ");
+                                 end if;
                               end if;
-                           else
-                              Append (R, "constant without variable input ");
-                           end if;
+                           end;
+                           Append_Quote;
+                           Append (R, Flow_Id_To_String (F));
+                        elsif Nkind (Get_Direct_Mapping_Id (F))
+                          = N_Defining_Operator_Symbol
+                        then
+                           Append (R, "overriding operator ");
+                           Append_Quote;
+                           Append (R, Flow_Id_To_String (F));
+                        elsif Is_Constituent (F) then
+                           declare
+                              Buf : Bounded_String;
+
+                              Constituent_Id : constant Entity_Id :=
+                                Get_Direct_Mapping_Id (F);
+
+                              State_Id : constant Entity_Id :=
+                                Encapsulating_State (Constituent_Id);
+                              --  Encapsulating state of the constituent
+
+                              Constituent_Scope : constant Entity_Id :=
+                                Scope (Constituent_Id);
+                              --  Immediate scope of the constituent
+
+                              State_Scope : constant Entity_Id :=
+                                Scope (State_Id);
+                              --  Immediate scope of the abstract state
+
+                           begin
+                              Append_Quote;
+                              Append (R, Flow_Id_To_String (F));
+                              Append_Quote;
+                              Append (R, " constituent of ");
+                              Append_Quote;
+
+                              --  If the scope of the constituent is different
+                              --  from the scope of its abstract state then we
+                              --  want to prefix the name of the abstract state
+                              --  with its immediate scope.
+
+                              if State_Scope /= Constituent_Scope then
+                                 Append (Buf, Chars (State_Scope));
+                                 Errout.Adjust_Name_Case
+                                   (Buf, Sloc (State_Scope));
+                                 Append (R, To_String (Buf) & ".");
+                                 Buf.Length := 0;
+                              end if;
+
+                              --  We append the abstract state. Note that we
+                              --  are not using Flow_Id_To_String because of
+                              --  the special handling above. In fact, we only
+                              --  add a prefix when the immediate scope of the
+                              --  constituent is different than the immediate
+                              --  scope of the abstract state.
+
+                              Append (Buf, Chars (State_Id));
+                              Errout.Adjust_Name_Case (Buf, Sloc (State_Id));
+                              Append (R, To_String (Buf));
+                           end;
+                        else
+                           Append_Quote;
+                           Append (R, Flow_Id_To_String (F));
                         end if;
-                     end;
-                     Append_Quote;
-                     Append (R, Flow_Id_To_String (F));
-                  elsif Nkind (Get_Direct_Mapping_Id (F)) =
-                     N_Defining_Operator_Symbol
-                  then
-                     Append (R, "overriding operator ");
-                     Append_Quote;
-                     Append (R, Flow_Id_To_String (F));
-                  elsif Is_Constituent (F) then
-                     declare
-                        Buf : Bounded_String;
 
-                        Constituent_Id : constant Entity_Id :=
-                          Get_Direct_Mapping_Id (F);
-
-                        State_Id : constant Entity_Id :=
-                          Encapsulating_State (Constituent_Id);
-                        --  Encapsulating state of the constituent
-
-                        Constituent_Scope : constant Entity_Id :=
-                          Scope (Constituent_Id);
-                        --  Immediate scope of the constituent
-
-                        State_Scope : constant Entity_Id := Scope (State_Id);
-                        --  Immediate scope of the abstract state
-
-                     begin
+                     when Magic_String =>
+                        --  ??? we may want to use __gnat_decode() here instead
                         Append_Quote;
-                        Append (R, Flow_Id_To_String (F));
-                        Append_Quote;
-                        Append (R, " constituent of ");
-                        Append_Quote;
-
-                        --  If the scope of the constituent is different from
-                        --  the scope of its abstract state then we want to
-                        --  prefix the name of the abstract state with its
-                        --  immediate scope.
-
-                        if State_Scope /= Constituent_Scope then
-                           Append (Buf, Chars (State_Scope));
-                           Errout.Adjust_Name_Case (Buf, Sloc (State_Scope));
-                           Append (R, To_String (Buf) & ".");
-                           Buf.Length := 0;
-                        end if;
-
-                        --  We append the abstract state. Note that we are not
-                        --  using Flow_Id_To_String because of the special
-                        --  handling above. In fact, we only add a prefix when
-                        --  the immediate scope of the constituent is different
-                        --  than the immediate scope of the abstract state.
-
-                        Append (Buf, Chars (State_Id));
-                        Errout.Adjust_Name_Case (Buf, Sloc (State_Id));
-                        Append (R, To_String (Buf));
-                     end;
-                  else
-                     Append_Quote;
-                     Append (R, Flow_Id_To_String (F));
-                  end if;
-
-               when Magic_String =>
-                  --  ??? we may want to use __gnat_decode() here instead
-                  Append_Quote;
-                  declare
-                     F_Name_String : constant String :=
-                       Strip_Child_Prefixes (To_String (F.Name));
-
-                  begin
-                     if F_Name_String = Name_Of_Heap_Variable then
-                        Append (R, "memory accessed through objects of " &
-                                   "access type");
-                     else
                         declare
-                           Index : Positive := F_Name_String'First;
+                           F_Name_String : constant String :=
+                             Strip_Child_Prefixes (To_String (F.Name));
 
                         begin
-                           --  Replace __ with . in the magic string
-                           while Index <= F_Name_String'Last loop
-                              case F_Name_String (Index) is
-                              when '_' =>
-                                 if Index < F_Name_String'Last
-                                   and then F_Name_String (Index + 1) = '_'
-                                 then
-                                    Append (R, '.');
-                                    Index := Index + 2;
-                                 else
-                                    Append (R, '_');
-                                    Index := Index + 1;
-                                 end if;
+                           if F_Name_String = Name_Of_Heap_Variable then
+                              Append
+                                (R,
+                                 "memory accessed through objects of "
+                                 & "access type");
+                           else
+                              declare
+                                 Index : Positive := F_Name_String'First;
 
-                              when others =>
-                                 Append (R, F_Name_String (Index));
-                                 Index := Index + 1;
-                              end case;
-                           end loop;
+                              begin
+                                 --  Replace __ with . in the magic string
+                                 while Index <= F_Name_String'Last loop
+                                    case F_Name_String (Index) is
+                                       when '_' =>
+                                          if Index < F_Name_String'Last
+                                            and then F_Name_String (Index + 1)
+                                                     = '_'
+                                          then
+                                             Append (R, '.');
+                                             Index := Index + 2;
+                                          else
+                                             Append (R, '_');
+                                             Index := Index + 1;
+                                          end if;
+
+                                       when others =>
+                                          Append (R, F_Name_String (Index));
+                                          Index := Index + 1;
+                                    end case;
+                                 end loop;
+                              end;
+                           end if;
                         end;
-                     end if;
-                  end;
-               end case;
-
-               Append_Quote;
-
-               if Element (S, Index) = '#' then
-                  case F.Kind is
-                  when Direct_Mapping | Record_Field =>
-                     declare
-                        N : constant Node_Id := Get_Direct_Mapping_Id (F);
-
-                     begin
-                        Erroutc.Msglen := 0;
-                        Erroutc.Set_Msg_Insertion_Line_Number (Sloc (N), Flag);
-                        Append (R, ' ');
-                        Append (R, Erroutc.Msg_Buffer (1 .. Erroutc.Msglen));
-                     end;
-                  when others =>
-                     --  Can't really add source information for stuff that
-                     --  doesn't come from the tree.
-                     null;
                   end case;
-               end if;
 
-               Do_Sub := False;
+                  Append_Quote;
 
-            when '@' =>
-               declare
-                  N : constant Node_Id := Get_Direct_Mapping_Id (F);
+                  if Element (S, Index) = '#' then
+                     case F.Kind is
+                        when Direct_Mapping | Record_Field =>
+                           declare
+                              N : constant Node_Id :=
+                                Get_Direct_Mapping_Id (F);
 
-               begin
-                  Erroutc.Msglen := 0;
-                  Erroutc.Set_Msg_Insertion_Line_Number (Sloc (N), Flag);
-                  Append (R, Erroutc.Msg_Buffer (1 .. Erroutc.Msglen));
-               end;
+                           begin
+                              Erroutc.Msglen := 0;
+                              Erroutc.Set_Msg_Insertion_Line_Number
+                                (Sloc (N), Flag);
+                              Append (R, ' ');
+                              Append
+                                (R, Erroutc.Msg_Buffer (1 .. Erroutc.Msglen));
+                           end;
 
-            when others =>
-               Append (R, Element (S, Index));
+                        when others =>
+                           --  Can't really add source information for stuff
+                           --  that doesn't come from the tree.
+                           null;
+                     end case;
+                  end if;
+
+                  Do_Sub := False;
+
+               when '@' =>
+                  declare
+                     N : constant Node_Id := Get_Direct_Mapping_Id (F);
+
+                  begin
+                     Erroutc.Msglen := 0;
+                     Erroutc.Set_Msg_Insertion_Line_Number (Sloc (N), Flag);
+                     Append (R, Erroutc.Msg_Buffer (1 .. Erroutc.Msglen));
+                  end;
+
+               when others =>
+                  Append (R, Element (S, Index));
             end case;
          else
             Append (R, Element (S, Index));
@@ -4362,11 +4570,12 @@ package body Flow_Error_Messages is
    -- Substitute_Message --
    ------------------------
 
-   function Substitute_Message (Text : String;
-                                N    : Node_Id;
-                                F1   : Flow_Id;
-                                F2   : Flow_Id := Null_Flow_Id;
-                                F3   : Flow_Id := Null_Flow_Id) return String
+   function Substitute_Message
+     (Text : String;
+      N    : Node_Id;
+      F1   : Flow_Id;
+      F2   : Flow_Id := Null_Flow_Id;
+      F3   : Flow_Id := Null_Flow_Id) return String
    is
       M : Unbounded_String := To_Unbounded_String (Text);
    begin
@@ -4387,79 +4596,128 @@ package body Flow_Error_Messages is
    function VC_Message (Node : Node_Id; Kind : VC_Kind) return String is
    begin
       case Kind is
-         when VC_Division_Check            =>
+         when VC_Division_Check =>
             return "division check " & Verb;
-         when VC_Index_Check               => return "index check " & Verb;
-         when VC_Overflow_Check            =>
+
+         when VC_Index_Check =>
+            return "index check " & Verb;
+
+         when VC_Overflow_Check =>
             return "overflow check " & Verb;
-         when VC_FP_Overflow_Check         =>
+
+         when VC_FP_Overflow_Check =>
             return "float overflow check " & Verb;
-         when VC_Range_Check               => return "range check " & Verb;
-         when VC_Predicate_Check           =>
+
+         when VC_Range_Check =>
+            return "range check " & Verb;
+
+         when VC_Predicate_Check =>
             return "predicate check " & Verb;
+
          when VC_Predicate_Check_On_Default_Value =>
             return "predicate check " & Verb & " on default value";
+
          when VC_Null_Pointer_Dereference =>
             return "pointer dereference check " & Verb;
+
          when VC_Null_Exclusion =>
             return "null exclusion check " & Verb;
+
          when VC_Dynamic_Accessibility_Check =>
             return "dynamic accessibility check " & Verb;
+
          when VC_Resource_Leak =>
             return "absence of resource or memory leak " & Verb;
+
          when VC_Resource_Leak_At_End_Of_Scope =>
-            return "absence of resource or memory leak at end of scope "
-              & Verb;
-         when VC_Invariant_Check           =>
+            return
+              "absence of resource or memory leak at end of scope " & Verb;
+
+         when VC_Invariant_Check =>
             return "invariant check " & Verb;
+
          when VC_Invariant_Check_On_Default_Value =>
             return "invariant check " & Verb & " on default value";
-         when VC_Length_Check              => return "length check " & Verb;
-         when VC_Discriminant_Check        =>
+
+         when VC_Length_Check =>
+            return "length check " & Verb;
+
+         when VC_Discriminant_Check =>
             return "discriminant check " & Verb;
-         when VC_Tag_Check                 => return "tag check " & Verb;
-         when VC_Ceiling_Interrupt         =>
+
+         when VC_Tag_Check =>
+            return "tag check " & Verb;
+
+         when VC_Ceiling_Interrupt =>
             return "ceiling priority in Interrupt_Priority " & Verb;
-         when VC_Interrupt_Reserved        =>
+
+         when VC_Interrupt_Reserved =>
             return "availability of interrupt " & Verb;
+
          when VC_Ceiling_Priority_Protocol =>
             return Prefix & "ceiling priority protocol is respected";
-         when VC_Task_Termination          =>
+
+         when VC_Task_Termination =>
             return "nontermination of task " & Verb;
 
-         when VC_Initial_Condition         =>
+         when VC_Initial_Condition =>
             return "initial condition " & Verb;
+
          when VC_Default_Initial_Condition =>
             return "default initial condition " & Verb;
-         when VC_Precondition              =>
+
+         when VC_Precondition =>
             return "precondition " & Verb;
-         when VC_Precondition_Main         =>
+
+         when VC_Precondition_Main =>
             return "precondition of main program " & Verb;
-         when VC_Postcondition             => return "postcondition " & Verb;
-         when VC_Refined_Post              => return "refined post " & Verb;
-         when VC_Contract_Case             => return "contract case " & Verb;
-         when VC_Disjoint_Cases   =>
+
+         when VC_Postcondition =>
+            return "postcondition " & Verb;
+
+         when VC_Refined_Post =>
+            return "refined post " & Verb;
+
+         when VC_Contract_Case =>
+            return "contract case " & Verb;
+
+         when VC_Disjoint_Cases =>
             return "disjoint contract or exit cases " & Verb;
-         when VC_Complete_Cases   =>
+
+         when VC_Complete_Cases =>
             return "complete contract cases " & Verb;
-         when VC_Exceptional_Case          =>
+
+         when VC_Exceptional_Case =>
             return "exceptional case " & Verb;
-         when VC_Program_Exit_Post         =>
+
+         when VC_Program_Exit_Post =>
             return "program exit postcondition " & Verb;
-         when VC_Exit_Case          =>
+
+         when VC_Exit_Case =>
             return "exit case " & Verb;
-         when VC_Loop_Invariant            =>
+
+         when VC_Loop_Invariant =>
             return "loop invariant " & Verb;
-         when VC_Loop_Invariant_Init       =>
+
+         when VC_Loop_Invariant_Init =>
             return "loop invariant initialization " & Verb;
-         when VC_Loop_Invariant_Preserv    =>
+
+         when VC_Loop_Invariant_Preserv =>
             return "loop invariant preservation " & Verb;
-         when VC_Loop_Variant              => return "loop variant " & Verb;
-         when VC_Assert                    => return "assertion " & Verb;
-         when VC_Assert_Premise            =>
+
+         when VC_Loop_Variant =>
+            return "loop variant " & Verb;
+
+         when VC_Assert =>
+            return "assertion " & Verb;
+
+         when VC_Assert_Premise =>
             return "assertion premise " & Verb;
-         when VC_Assert_Step               => return "assertion step " & Verb;
-         when VC_Raise                     =>
+
+         when VC_Assert_Step =>
+            return "assertion step " & Verb;
+
+         when VC_Raise =>
             --  Give explanations for exceptions which frontend statically
             --  determined to always happen, but backend proved to be
             --  unreachable.
@@ -4468,10 +4726,13 @@ package body Flow_Error_Messages is
                case RT_Exception_Code'Val (UI_To_Int (Reason (Node))) is
                   when CE_Range_Check_Failed =>
                      return VC_Message (Node, VC_Range_Check);
+
                   when CE_Index_Check_Failed =>
                      return VC_Message (Node, VC_Index_Check);
+
                   when CE_Divide_By_Zero =>
                      return VC_Message (Node, VC_Division_Check);
+
                   when SE_Infinite_Recursion =>
                      return "infinite recursion " & Verb & " unreachable";
 
@@ -4484,103 +4745,138 @@ package body Flow_Error_Messages is
                end case;
             end if;
             return Prefix & "only expected exception raised";
-         when VC_Unexpected_Program_Exit         =>
+
+         when VC_Unexpected_Program_Exit =>
             return "call cannot exit the program " & Verb;
-         when VC_Feasible_Post             =>
+
+         when VC_Feasible_Post =>
             return "function contract feasibility " & Verb;
-         when VC_Inline_Check              =>
+
+         when VC_Inline_Check =>
             return "Inline_For_Proof or Logical_Equal annotation " & Verb;
-         when VC_Container_Aggr_Check      =>
+
+         when VC_Container_Aggr_Check =>
             return "Container_Aggregates annotation " & Verb;
-         when VC_Reclamation_Check         =>
+
+         when VC_Reclamation_Check =>
             return "reclamation entity consistency " & Verb;
-         when VC_Subprogram_Variant        =>
+
+         when VC_Subprogram_Variant =>
             return "subprogram variant " & Verb;
-         when VC_Termination_Check         =>
+
+         when VC_Termination_Check =>
             declare
                Statement : constant String :=
                  (case Nkind (Node) is
-                     when N_Procedure_Call_Statement
-                        | N_Entry_Call_Statement
-                        | N_Function_Call
-                     => "call",
-                     when N_Loop_Statement => "loop",
-                     when others           => raise Program_Error);
+                    when N_Procedure_Call_Statement
+                       | N_Entry_Call_Statement
+                       | N_Function_Call
+                    =>
+                      "call",
+                    when N_Loop_Statement => "loop",
+                    when others => raise Program_Error);
             begin
                return "conditional " & Statement & " termination " & Verb;
             end;
-         when VC_UC_Source                 =>
-            return Prefix
-              & "type is suitable as source for unchecked conversion";
-         when VC_UC_Target                 =>
+
+         when VC_UC_Source =>
+            return
+              Prefix & "type is suitable as source for unchecked conversion";
+
+         when VC_UC_Target =>
             declare
                Common : constant String := " is suitable for ";
             begin
                if Nkind (Node) in N_Attribute_Reference | N_Object_Declaration
                then
-                  return Prefix & "object" & Common &
-                    "aliasing via address clause";
+                  return
+                    Prefix & "object" & Common & "aliasing via address clause";
                else
                   return Prefix & "type" & Common & "unchecked conversion";
                end if;
             end;
 
-         when VC_UC_Same_Size              =>
+         when VC_UC_Same_Size =>
             if Nkind (Node) = N_Attribute_Reference then
                return Prefix & "types of aliased objects have the same size";
             else
-               return Prefix
-                 & "types in unchecked conversion have the same size";
+               return
+                 Prefix & "types in unchecked conversion have the same size";
             end if;
 
          when VC_UC_Alignment =>
-            return Prefix
+            return
+              Prefix
               & "address in address clause is compatible with object "
               & "alignment";
 
          when VC_UC_Volatile =>
-            return Prefix
+            return
+              Prefix
               & "object with non-trivial address clause and prefix of the"
               & " 'Address attribute have asynchronous writers";
 
-         when VC_Weaker_Pre                =>
-            return Prefix & "precondition is weaker than"
+         when VC_Weaker_Pre =>
+            return
+              Prefix
+              & "precondition is weaker than"
               & " class-wide precondition";
-         when VC_Trivial_Weaker_Pre        =>
+
+         when VC_Trivial_Weaker_Pre =>
             return Prefix & "precondition is always True";
-         when VC_Stronger_Post             =>
-            return Prefix & "postcondition is stronger"
+
+         when VC_Stronger_Post =>
+            return
+              Prefix
+              & "postcondition is stronger"
               & " than class-wide postcondition";
-         when VC_Weaker_Classwide_Pre      =>
-            return Prefix
-              & "class-wide precondition is weaker than overridden one";
-         when VC_Stronger_Classwide_Post   =>
-            return Prefix & "class-wide postcondition is stronger"
+
+         when VC_Weaker_Classwide_Pre =>
+            return
+              Prefix & "class-wide precondition is weaker than overridden one";
+
+         when VC_Stronger_Classwide_Post =>
+            return
+              Prefix
+              & "class-wide postcondition is stronger"
               & " than overridden one";
-         when VC_Weaker_Pre_Access         =>
-            return Prefix & "precondition of target is strong enough to imply"
+
+         when VC_Weaker_Pre_Access =>
+            return
+              Prefix
+              & "precondition of target is strong enough to imply"
               & " precondition of source";
-         when VC_Stronger_Post_Access      =>
-            return Prefix & "postcondition of source is strong enough to imply"
+
+         when VC_Stronger_Post_Access =>
+            return
+              Prefix
+              & "postcondition of source is strong enough to imply"
               & " postcondition of target";
-         when VC_Initialization_Check      =>
+
+         when VC_Initialization_Check =>
             return "initialization check " & Verb;
-         when VC_Validity_Check            =>
+
+         when VC_Validity_Check =>
             return "validity check " & Verb;
+
          when VC_Unchecked_Union_Restriction =>
             return "operation on unchecked union type " & Verb;
 
          --  VC_Warning_Kind - warnings
 
-         when VC_Inconsistent_Pre          =>
+         when VC_Inconsistent_Pre =>
             return Prefix & "precondition is always False";
-         when VC_Inconsistent_Post         =>
+
+         when VC_Inconsistent_Post =>
             return Prefix & "postcondition is always False";
-         when VC_Inconsistent_Assume         =>
+
+         when VC_Inconsistent_Assume =>
             return Prefix & "pragma Assume is always False";
-         when VC_Unreachable_Branch        =>
+
+         when VC_Unreachable_Branch =>
             return "unreachable branch" & Suffix;
-         when VC_Dead_Code                 =>
+
+         when VC_Dead_Code =>
             return "unreachable code" & Suffix;
       end case;
    end VC_Message;
@@ -4601,8 +4897,10 @@ package body Flow_Error_Messages is
       Line_Number : constant Logical_Line_Number :=
         Get_Logical_Line_Number (Loc);
    begin
-      return Get_Name_String (File_Name (SFI)) & Sep &
-        Image (Natural (Line_Number), 1);
+      return
+        Get_Name_String (File_Name (SFI))
+        & Sep
+        & Image (Natural (Line_Number), 1);
    end Vertex_Sloc_Location;
 
    ---------------------------
@@ -4614,8 +4912,7 @@ package body Flow_Error_Messages is
       Msg : String;
       F1  : Flow_Id := Null_Flow_Id;
       F2  : Flow_Id := Null_Flow_Id;
-      F3  : Flow_Id := Null_Flow_Id)
-      return String_Id
+      F3  : Flow_Id := Null_Flow_Id) return String_Id
    is
 
       function Warning_Disabled_For_Entity return Boolean;
@@ -4630,25 +4927,21 @@ package body Flow_Error_Messages is
 
          function Is_Entity_And_Has_Warnings_Off
            (N : Node_Or_Entity_Id) return Boolean
-         is
-           ((Nkind (N) in N_Has_Entity
-               and then Present (Entity (N))
-               and then Has_Warnings_Off (Entity (N)))
-               or else
-            (Nkind (N) in N_Entity
-               and then Has_Warnings_Off (N)));
+         is ((Nkind (N) in N_Has_Entity
+              and then Present (Entity (N))
+              and then Has_Warnings_Off (Entity (N)))
+             or else (Nkind (N) in N_Entity and then Has_Warnings_Off (N)));
          --  Returns True if N is an entity and Has_Warnings_Off (N)
 
-         function Is_Entity_And_Has_Warnings_Off
-           (F : Flow_Id) return Boolean
-         is
-           (F.Kind in Direct_Mapping | Record_Field
-              and then
-            Is_Entity_And_Has_Warnings_Off (Get_Direct_Mapping_Id (F)));
+         function Is_Entity_And_Has_Warnings_Off (F : Flow_Id) return Boolean
+         is (F.Kind in Direct_Mapping | Record_Field
+             and then Is_Entity_And_Has_Warnings_Off
+                        (Get_Direct_Mapping_Id (F)));
 
       begin
          --  ??? if Fn is not present, then there is no point to check F(n+1)
-         return Is_Entity_And_Has_Warnings_Off (N)
+         return
+           Is_Entity_And_Has_Warnings_Off (N)
            or else Is_Entity_And_Has_Warnings_Off (F1)
            or else Is_Entity_And_Has_Warnings_Off (F2)
            or else Is_Entity_And_Has_Warnings_Off (F3);
@@ -4656,18 +4949,15 @@ package body Flow_Error_Messages is
 
       Suppr_Reason : String_Id := Erroutc.Warnings_Suppressed (Sloc (N));
 
-   --  Start of processing for Warning_Is_Suppressed
+      --  Start of processing for Warning_Is_Suppressed
 
    begin
       if Suppr_Reason = No_String then
          Suppr_Reason :=
            Erroutc.Warning_Specifically_Suppressed
-             (Loc => Sloc (N),
-              Msg => Msg'Unrestricted_Access);
+             (Loc => Sloc (N), Msg => Msg'Unrestricted_Access);
 
-         if Suppr_Reason = No_String
-           and then Warning_Disabled_For_Entity
-         then
+         if Suppr_Reason = No_String and then Warning_Disabled_For_Entity then
             Suppr_Reason := Null_String_Id;
          end if;
       end if;

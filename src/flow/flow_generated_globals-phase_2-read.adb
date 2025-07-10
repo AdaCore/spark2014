@@ -41,9 +41,9 @@ package body Flow_Generated_Globals.Phase_2.Read is
    Token_Start : Positive;
 
    function Get_Token return String
-   with Pre  => Token_Start <= Length (Buffer),
-        Post => Get_Token'Result'First = 1
-                and then Get_Token'Result'Length > 0;
+   with
+     Pre  => Token_Start <= Length (Buffer),
+     Post => Get_Token'Result'First = 1 and then Get_Token'Result'Length > 0;
    --  Returns the next token from the current line and increments the position
    --  of where the next token starts.
    --
@@ -85,9 +85,8 @@ package body Flow_Generated_Globals.Phase_2.Read is
          subtype Token is String (1 .. Length);
 
          Match : constant String :=
-           Ada.Strings.Unbounded.Slice (Source => Buffer,
-                                        Low    => First,
-                                        High   => Last);
+           Ada.Strings.Unbounded.Slice
+             (Source => Buffer, Low => First, High => Last);
       begin
          return Token (Match);
       end;
@@ -132,9 +131,7 @@ package body Flow_Generated_Globals.Phase_2.Read is
    procedure Serialize (Names : in out Name_Sets.Set; Label : String := "") is
       Size : Natural;
    begin
-      if Label /= ""
-        and then Get_Token /= Label
-      then
+      if Label /= "" and then Get_Token /= Label then
          raise Program_Error;
       end if;
 
@@ -149,9 +146,7 @@ package body Flow_Generated_Globals.Phase_2.Read is
    is
       Size : Natural;
    begin
-      if Label /= ""
-        and then Get_Token /= Label
-      then
+      if Label /= "" and then Get_Token /= Label then
          raise Program_Error;
       end if;
 
@@ -173,9 +168,7 @@ package body Flow_Generated_Globals.Phase_2.Read is
 
    procedure Serialize_Discrete (A : out T; Label : String := "") is
    begin
-      if Label /= ""
-        and then Get_Token /= Label
-      then
+      if Label /= "" and then Get_Token /= Label then
          raise Program_Error;
       end if;
 

@@ -89,12 +89,13 @@ package body Flow_Sanity is
          begin
             for Var of Get_Vars (Expr) loop
                if not Proof_Context.Contains (Var) then
-                  Error_Msg_Flow (E          => E,
-                                  Msg        => Msg,
-                                  F1         => To_Global (Var),
-                                  Severity   => Error_Kind,
-                                  N          => Error_Loc,
-                                  Suppressed => Unused);
+                  Error_Msg_Flow
+                    (E          => E,
+                     Msg        => Msg,
+                     F1         => To_Global (Var),
+                     Severity   => Error_Kind,
+                     N          => Error_Loc,
+                     Suppressed => Unused);
                end if;
             end loop;
          end Check_Expr;
@@ -166,7 +167,7 @@ package body Flow_Sanity is
 
          use type Flow_Id_Sets.Set;
 
-      --  Start of processing for Check_Incomplete_Globals
+         --  Start of processing for Check_Incomplete_Globals
 
       begin
          Get_Proof_Globals
@@ -176,12 +177,7 @@ package body Flow_Sanity is
             Erase_Constants => False,
             Scop            => Get_Flow_Scope (E));
 
-         Proof_Context :=
-           Reads
-             or
-           Writes
-             or
-           To_Flow_Id_Set (Get_Formals (E));
+         Proof_Context := Reads or Writes or To_Flow_Id_Set (Get_Formals (E));
 
          --  Include aliases of formal parameters
 
@@ -212,8 +208,9 @@ package body Flow_Sanity is
                  (Expr          => Pre,
                   Proof_Context => Proof_Context,
                   Error_Loc     => Error_Loc,
-                  Msg           => "reference to global & in Pre'Class " &
-                                   "is not yet supported");
+                  Msg           =>
+                    "reference to global & in Pre'Class "
+                    & "is not yet supported");
             end loop;
 
             for Post of Get_Postcondition_Expressions (E, Refined => False)
@@ -222,8 +219,9 @@ package body Flow_Sanity is
                  (Expr          => Post,
                   Proof_Context => Proof_Context,
                   Error_Loc     => Error_Loc,
-                  Msg           => "reference to global & in Post'Class " &
-                                   "is not yet supported");
+                  Msg           =>
+                    "reference to global & in Post'Class "
+                    & "is not yet supported");
             end loop;
 
             return;
@@ -237,8 +235,9 @@ package body Flow_Sanity is
               (Expr          => Expression (Get_Expression_Function (E)),
                Proof_Context => Proof_Context,
                Error_Loc     => Error_Loc,
-               Msg           => "& is referenced in expression function " &
-                                "but missing from the Global");
+               Msg           =>
+                 "& is referenced in expression function "
+                 & "but missing from the Global");
          end if;
 
          for Pre of Get_Precondition_Expressions (E) loop
@@ -246,8 +245,8 @@ package body Flow_Sanity is
               (Expr          => Pre,
                Proof_Context => Proof_Context,
                Error_Loc     => Error_Loc,
-               Msg           => "& is referenced in Pre " &
-                                "but missing from the Global");
+               Msg           =>
+                 "& is referenced in Pre " & "but missing from the Global");
          end loop;
 
          for Post of Get_Postcondition_Expressions (E, Refined => False) loop
@@ -255,24 +254,22 @@ package body Flow_Sanity is
               (Expr          => Post,
                Proof_Context => Proof_Context,
                Error_Loc     => Error_Loc,
-               Msg           => "& is referenced in Post " &
-                                "but missing from the Global");
+               Msg           =>
+                 "& is referenced in Post " & "but missing from the Global");
          end loop;
       end Check_Incomplete_Global;
 
-   --  Start of processing for Check_Incomplete_Globals
+      --  Start of processing for Check_Incomplete_Globals
 
    begin
       for E of Entities_To_Translate loop
          if Ekind (E) in E_Entry | E_Function | E_Procedure
-           and then
-             (Has_User_Supplied_Globals (E)
-                or else
-              (not Flow_Generated_Globals.Phase_2.GG_Has_Globals (E)
-               and then not Is_Ignored_Internal (E)))
-           and then
-             (if Ekind (E) = E_Function
-              then not Is_Predicate_Function (E))
+           and then (Has_User_Supplied_Globals (E)
+                     or else (not Flow_Generated_Globals.Phase_2.GG_Has_Globals
+                                    (E)
+                              and then not Is_Ignored_Internal (E)))
+           and then (if Ekind (E) = E_Function
+                     then not Is_Predicate_Function (E))
          then
             Check_Incomplete_Global (E);
          end if;

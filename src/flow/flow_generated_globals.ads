@@ -23,13 +23,13 @@
 
 --  This package implements writing, reading and computing global contracts
 
-with Atree;                              use Atree;
-with Common_Containers;                  use Common_Containers;
-with Einfo.Entities;                     use Einfo.Entities;
-with Flow;                               use Flow;
-with Flow_Types;                         use Flow_Types;
-with GNATCOLL.Terminal;                  use GNATCOLL.Terminal;
-with Types;                              use Types;
+with Atree;             use Atree;
+with Common_Containers; use Common_Containers;
+with Einfo.Entities;    use Einfo.Entities;
+with Flow;              use Flow;
+with Flow_Types;        use Flow_Types;
+with GNATCOLL.Terminal; use GNATCOLL.Terminal;
+with Types;             use Types;
 
 package Flow_Generated_Globals is
 
@@ -119,11 +119,10 @@ package Flow_Generated_Globals is
    --
    ----------------------------------------------------------------------
 
-   type GG_Mode_T is (GG_No_Mode,
-                      GG_Read_Mode,
-                      GG_Write_Mode) with Ghost;
+   type GG_Mode_T is (GG_No_Mode, GG_Read_Mode, GG_Write_Mode) with Ghost;
 
-   function GG_Mode return GG_Mode_T with Ghost;
+   function GG_Mode return GG_Mode_T
+   with Ghost;
    --  Returns the current mode
 
    type Globals_Origin_T is (Origin_User, Origin_Flow, Origin_Frontend);
@@ -139,9 +138,12 @@ package Flow_Generated_Globals is
       Conditional_Calls : Name_Sets.Set;  --  Flow
       Definite_Calls    : Name_Sets.Set;  --  Flow/Frontend
    end record
-   with Dynamic_Predicate => Disjoint (Call_Names.Proof_Calls,
-                                       Call_Names.Conditional_Calls,
-                                       Call_Names.Definite_Calls);
+   with
+     Dynamic_Predicate =>
+       Disjoint
+         (Call_Names.Proof_Calls,
+          Call_Names.Conditional_Calls,
+          Call_Names.Definite_Calls);
 
    type Flow_Names is record
       Proper  : Global_Names;
@@ -159,20 +161,20 @@ package Flow_Generated_Globals is
    --  Tasking objects accessed by a given entity
 
    type Partial_Contract is record
-      Name              : Entity_Name;
-      Local             : Boolean;
-      Kind              : Entity_Kind;
-      Is_Protected      : Boolean;
-      Is_Library_Level  : Boolean;
-      Origin            : Globals_Origin_T;
-      Parents           : Name_Lists.List;
+      Name             : Entity_Name;
+      Local            : Boolean;
+      Kind             : Entity_Kind;
+      Is_Protected     : Boolean;
+      Is_Library_Level : Boolean;
+      Origin           : Globals_Origin_T;
+      Parents          : Name_Lists.List;
 
-      Globals           : Flow_Names;
+      Globals : Flow_Names;
 
-      Local_Packages    : Name_Sets.Set;
-      Local_Variables   : Name_Sets.Set;
+      Local_Packages  : Name_Sets.Set;
+      Local_Variables : Name_Sets.Set;
 
-      Tasking           : Name_Tasking_Info;
+      Tasking : Name_Tasking_Info;
 
       Always_Terminates : Boolean;
       Has_Subp_Variant  : Boolean;
@@ -185,11 +187,12 @@ package Flow_Generated_Globals is
    --  Protected types instances
    ----------------------------------------------------------------------
 
-   type Priority_Kind is (Nonstatic,
-                          Static,
-                          Default_Prio,
-                          Default_Interrupt_Prio,
-                          Last_Interrupt_Prio);
+   type Priority_Kind is
+     (Nonstatic,
+      Static,
+      Default_Prio,
+      Default_Interrupt_Prio,
+      Last_Interrupt_Prio);
    --  Kind of expression that denotes a protected object priority
 
    type Priority_Value is record
@@ -211,12 +214,11 @@ package Flow_Generated_Globals is
    --  * Instances = -1 stands for "many" instances, i.e. we are not able to
    --    determine the exact number.
 
-   type Task_Object is
-      record
-         Name      : Entity_Name;
-         Instances : Instance_Number;
-         Node      : Node_Id;
-      end record;
+   type Task_Object is record
+      Name      : Entity_Name;
+      Instances : Instance_Number;
+      Node      : Node_Id;
+   end record;
    --  Task object with the name of the library-level object and task type
    --  instances (which can be many, e.g. for task arrays or records with two
    --  components of a given task type).
@@ -224,13 +226,15 @@ package Flow_Generated_Globals is
    --  Error messages related to a task object will be attached to Node.
 
 private
-   Current_Mode : GG_Mode_T := GG_No_Mode with Ghost;
+   Current_Mode : GG_Mode_T := GG_No_Mode
+   with Ghost;
 
    -------------
    -- GG_Mode --
    -------------
 
-   function GG_Mode return GG_Mode_T is (Current_Mode);
+   function GG_Mode return GG_Mode_T
+   is (Current_Mode);
 
    Term_Info : GNATCOLL.Terminal.Terminal_Info;
    --  For colored debug output; ??? should be global for Flow
@@ -242,7 +246,8 @@ private
    Debug_Partial_Contracts : constant Boolean := True and XXX;
    --  Display contracts as they are built
 
-   procedure Debug_Traversal (E : Entity_Id) with Pre => Present (E);
+   procedure Debug_Traversal (E : Entity_Id)
+   with Pre => Present (E);
    --  Display order of traversal
 
    Variable_Input : constant Entity_Name := To_Entity_Name ("__VARIABLE");

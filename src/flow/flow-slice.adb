@@ -41,8 +41,7 @@ package body Flow.Slice is
    function Internal_Dependency
      (FA      : Flow_Analysis_Graphs;
       V_Final : Flow_Graphs.Vertex_Id;
-      IPFA    : Boolean)
-      return Vertex_Sets.Set;
+      IPFA    : Boolean) return Vertex_Sets.Set;
    --  Helper function to compute the dependencies for a single vertex
 
    -------------------------
@@ -52,8 +51,7 @@ package body Flow.Slice is
    function Internal_Dependency
      (FA      : Flow_Analysis_Graphs;
       V_Final : Flow_Graphs.Vertex_Id;
-      IPFA    : Boolean)
-      return Vertex_Sets.Set
+      IPFA    : Boolean) return Vertex_Sets.Set
    is
       Deps : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
 
@@ -83,25 +81,29 @@ package body Flow.Slice is
 
             when Final_Value =>
                raise Program_Error;
+
             when In_View | Out_View =>
                if IPFA then
                   Deps.Insert (V);
                end if;
+
             when Initial_Grouping | Final_Grouping =>
                null;
+
             when Normal_Use =>
                null;
          end case;
          TV := Flow_Graphs.Continue;
       end Visitor;
 
-   --  Start of processing for Internal_Dependency
+      --  Start of processing for Internal_Dependency
 
    begin
-      FA.PDG.DFS (Start         => V_Final,
-                  Include_Start => False,
-                  Visitor       => Visitor'Access,
-                  Reversed      => True);
+      FA.PDG.DFS
+        (Start         => V_Final,
+         Include_Start => False,
+         Visitor       => Visitor'Access,
+         Reversed      => True);
       return Deps;
    end Internal_Dependency;
 
@@ -114,14 +116,11 @@ package body Flow.Slice is
    ----------------
 
    function Dependency
-     (FA      : Flow_Analysis_Graphs;
-      V_Final : Flow_Graphs.Vertex_Id)
+     (FA : Flow_Analysis_Graphs; V_Final : Flow_Graphs.Vertex_Id)
       return Flow_Id_Sets.Set
    is
       Tmp : constant Vertex_Sets.Set :=
-        Internal_Dependency (FA      => FA,
-                             V_Final => V_Final,
-                             IPFA    => False);
+        Internal_Dependency (FA => FA, V_Final => V_Final, IPFA => False);
 
       Deps : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
@@ -136,14 +135,10 @@ package body Flow.Slice is
    ---------------------
 
    function IPFA_Dependency
-     (FA      : Flow_Analysis_Graphs;
-      V_Final : Flow_Graphs.Vertex_Id)
-      return Vertex_Sets.Set
-   is
+     (FA : Flow_Analysis_Graphs; V_Final : Flow_Graphs.Vertex_Id)
+      return Vertex_Sets.Set is
    begin
-      return Internal_Dependency (FA      => FA,
-                                  V_Final => V_Final,
-                                  IPFA    => True);
+      return Internal_Dependency (FA => FA, V_Final => V_Final, IPFA => True);
    end IPFA_Dependency;
 
    ---------------------------------
@@ -151,57 +146,53 @@ package body Flow.Slice is
    ---------------------------------
 
    function Compute_Dependency_Relation
-     (FA : Flow_Analysis_Graphs)
-      return Dependency_Maps.Map
+     (FA : Flow_Analysis_Graphs) return Dependency_Maps.Map
    is
 
       function Flow_Equivalent (F : Flow_Id) return Flow_Id
-      with Pre  => F.Kind in Direct_Mapping
-                           | Record_Field
-                           | Magic_String,
-           Post => Flow_Equivalent'Result.Kind in Direct_Mapping
-                                                | Magic_String
-                     and then
-                   Flow_Equivalent'Result.Variant = Normal_Use;
+      with
+        Pre  => F.Kind in Direct_Mapping | Record_Field | Magic_String,
+        Post =>
+          Flow_Equivalent'Result.Kind in Direct_Mapping | Magic_String
+          and then Flow_Equivalent'Result.Variant = Normal_Use;
       --  Given a flow id, return the view the dependency relation cares about
 
       ---------------------
       -- Flow_Equivalent --
       ---------------------
 
-      function Flow_Equivalent (F : Flow_Id) return Flow_Id is
-        (Change_Variant (Entire_Variable (F), Normal_Use));
+      function Flow_Equivalent (F : Flow_Id) return Flow_Id
+      is (Change_Variant (Entire_Variable (F), Normal_Use));
 
-      In_Vertices   : Vertex_Sets.Set     := Vertex_Sets.Empty_Set;
-      Out_Vertices  : Vertex_Sets.Set     := Vertex_Sets.Empty_Set;
+      In_Vertices  : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+      Out_Vertices : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
 
-      Unused_Inputs : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      Unused_Inputs : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
 
-      Out_Discrim   : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      Out_Discrim : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
       --  We need to keep track of discriminated or unconstrained out
       --  parameters, as the implicit input (the discriminant) is
       --  never unused. So if it is unused after all we silently take
       --  it out the Unused_Inputs set, so that we don't produce a
       --  flow error about a missing null dependency.
 
-      DM            : Dependency_Maps.Map := Dependency_Maps.Empty_Map;
+      DM : Dependency_Maps.Map := Dependency_Maps.Empty_Map;
 
       use type Vertex_Sets.Set;
 
-   --  Start of processing for Compute_Dependency_Relation
+      --  Start of processing for Compute_Dependency_Relation
 
    begin
       --  Determine all out vertices
 
-      for V_Final of FA.CFG.Get_Collection
-        (FA.End_Vertex, Flow_Graphs.Out_Neighbours)
+      for V_Final of
+        FA.CFG.Get_Collection (FA.End_Vertex, Flow_Graphs.Out_Neighbours)
       loop
          declare
             F_Final : Flow_Id renames FA.PDG.Get_Key (V_Final);
 
-            function V_Initial return Flow_Graphs.Vertex_Id is
-              (FA.PDG.Get_Vertex
-                 (Change_Variant (F_Final, Initial_Value)))
+            function V_Initial return Flow_Graphs.Vertex_Id
+            is (FA.PDG.Get_Vertex (Change_Variant (F_Final, Initial_Value)))
             with Pure_Function;
             --  Returns the corresponding 'Initial vertex. We use this to
             --  detect uninitialized outputs; otherwise they would appear in
@@ -221,12 +212,9 @@ package body Flow.Slice is
             if FA.Atr (V_Final).Is_Export
               and then Is_Variable (F_Final)
               and then not Synthetic (F_Final)
-              and then not
-                (FA.PDG.In_Neighbour_Count (V_Final) = 1
-                   and then
-                 FA.PDG.Parent (V_Final) = V_Initial
-                   and then
-                 not FA.Atr (V_Initial).Is_Initialized)
+              and then not (FA.PDG.In_Neighbour_Count (V_Final) = 1
+                            and then FA.PDG.Parent (V_Final) = V_Initial
+                            and then not FA.Atr (V_Initial).Is_Initialized)
             then
                Out_Vertices.Insert (V_Final);
             end if;
@@ -235,8 +223,8 @@ package body Flow.Slice is
 
       --  Determine all input vertices
 
-      for V_Initial of FA.CFG.Get_Collection
-        (FA.Start_Vertex, Flow_Graphs.In_Neighbours)
+      for V_Initial of
+        FA.CFG.Get_Collection (FA.Start_Vertex, Flow_Graphs.In_Neighbours)
       loop
          declare
             F_Initial : Flow_Id renames FA.PDG.Get_Key (V_Initial);
@@ -279,9 +267,7 @@ package body Flow.Slice is
 
             --  Compute dependencies (and filter out local variables)
             Deps : constant Vertex_Sets.Set :=
-              Internal_Dependency (FA      => FA,
-                                   V_Final => V_Out,
-                                   IPFA    => False)
+              Internal_Dependency (FA => FA, V_Final => V_Out, IPFA => False)
               and In_Vertices;
 
             F_Out_Position : Dependency_Maps.Cursor;
@@ -291,9 +277,8 @@ package body Flow.Slice is
          begin
             --  Initialize map entry with empty set or do nothing if an entry
             --  is already there.
-            DM.Insert (Key      => F_Out,
-                       Position => F_Out_Position,
-                       Inserted => Dummy);
+            DM.Insert
+              (Key => F_Out, Position => F_Out_Position, Inserted => Dummy);
 
             for V_In of Deps loop
                F_In := Flow_Equivalent (FA.PDG.Get_Key (V_In));
@@ -390,10 +375,9 @@ package body Flow.Slice is
          --  according to the flow graphs, but still should appear in the
          --  generated Initializes.
 
-         function Is_Empty (E : Entity_Id) return Boolean is
-           (case Ekind (E) is
-               when E_Abstract_State        =>
-                  Has_Null_Refinement (E),
+         function Is_Empty (E : Entity_Id) return Boolean
+         is (case Ekind (E) is
+               when E_Abstract_State => Has_Null_Refinement (E),
                --  ??? The intention is to check the Refined_State of the
                --  currently analysed package, but see what happens here:
                --
@@ -405,10 +389,9 @@ package body Flow.Slice is
                --    end Outer;
 
                when E_Constant | E_Variable =>
-                  Is_Empty_Record_Type (Get_Type (E, FA.B_Scope)),
+                 Is_Empty_Record_Type (Get_Type (E, FA.B_Scope)),
 
-               when others                  =>
-                  raise Program_Error);
+               when others => raise Program_Error);
 
          ----------------
          -- Is_Written --
@@ -418,7 +401,7 @@ package body Flow.Slice is
             Comp_Initial : constant Flow_Graphs.Vertex_Id :=
               FA.PDG.Get_Vertex (Change_Variant (Comp, Initial_Value));
 
-            Comp_Final   : constant Flow_Graphs.Vertex_Id :=
+            Comp_Final : constant Flow_Graphs.Vertex_Id :=
               FA.PDG.Get_Vertex (Change_Variant (Comp, Final_Value));
             --  'Initial and 'Final vertices for Comp, respectively
 
@@ -431,12 +414,11 @@ package body Flow.Slice is
             --  otherwise, its final value can't depend on its initial value
 
             else
-               return
-                 not FA.PDG.Edge_Exists (Comp_Initial, Comp_Final);
+               return not FA.PDG.Edge_Exists (Comp_Initial, Comp_Final);
             end if;
          end Is_Written;
 
-      --  Start of processing for Get_Local_Definite_Writes
+         --  Start of processing for Get_Local_Definite_Writes
 
       begin
          --  Detect initialized local variables
@@ -468,7 +450,7 @@ package body Flow.Slice is
       --  while we populate them we don't want to care about the predicate on
       --  the result type.
 
-   --  Start of processing for Compute_Globals
+      --  Start of processing for Compute_Globals
 
    begin
       --  Detect ordinary inputs, i.e. non-proof ones, and classify calls into
@@ -491,16 +473,21 @@ package body Flow.Slice is
 
             for SC of A.Subprogram_Calls loop
 
-               pragma Assert (Ekind (SC.E) in Entry_Kind
-                                            | E_Function
-                                            | E_Procedure
-                                            | E_Package
-                                            | E_Subprogram_Type);
+               pragma
+                 Assert
+                   (Ekind (SC.E)
+                    in Entry_Kind
+                     | E_Function
+                     | E_Procedure
+                     | E_Package
+                     | E_Subprogram_Type);
 
                --  We don't expect calls to predicate functions in the CFG
 
-               pragma Assert (if Ekind (SC.E) = E_Function
-                              then not Is_Predicate_Function (SC.E));
+               pragma
+                 Assert
+                   (if Ekind (SC.E) = E_Function
+                      then not Is_Predicate_Function (SC.E));
 
                if Ekind (SC.E) = E_Package then
 
@@ -594,14 +581,14 @@ package body Flow.Slice is
 
          begin
             for Comp of FS loop
-               V_Initial := FA.PDG.Get_Vertex
-                 (Change_Variant (Comp, Initial_Value));
+               V_Initial :=
+                 FA.PDG.Get_Vertex (Change_Variant (Comp, Initial_Value));
 
                --  If the corresponding 'Initial vertex has Out_Neighbours then
                --  it is used.
 
-               Is_Used := Is_Used
-                 or else FA.PDG.Out_Neighbour_Count (V_Initial) > 0;
+               Is_Used :=
+                 Is_Used or else FA.PDG.Out_Neighbour_Count (V_Initial) > 0;
 
                --  Check if this read will render the global an In_Out
 
@@ -611,8 +598,7 @@ package body Flow.Slice is
                   pragma Assert (Is_Used);
 
                   if Is_Discriminant (Comp) or else Is_Bound (Comp) then
-                     if Is_Constituent (G)
-                       or else Is_Implicit_Constituent (G)
+                     if Is_Constituent (G) or else Is_Implicit_Constituent (G)
                      then
                         Is_Ignored_Read := False;
                      else
@@ -626,13 +612,13 @@ package body Flow.Slice is
                --  If the corresponding 'Final vertex has a single in neighbour
                --  who is the 'Initial vertex then it must be an input.
 
-               V_Final := FA.PDG.Get_Vertex
-                 (Change_Variant (Comp, Final_Value));
+               V_Final :=
+                 FA.PDG.Get_Vertex (Change_Variant (Comp, Final_Value));
 
-               Is_Written := Is_Written
-                 or else
-                   not (FA.PDG.In_Neighbour_Count (V_Final) = 1
-                        and then FA.PDG.Parent (V_Final) = V_Initial);
+               Is_Written :=
+                 Is_Written
+                 or else not (FA.PDG.In_Neighbour_Count (V_Final) = 1
+                              and then FA.PDG.Parent (V_Final) = V_Initial);
 
                --  If everything is already known then exit early
                if Is_Written and not Is_Ignored_Read then
@@ -666,9 +652,8 @@ package body Flow.Slice is
          end;
       end loop;
 
-      Globals := (Proof_Ins => Proof_Ins,
-                  Inputs    => Inputs,
-                  Outputs   => Outputs);
+      Globals :=
+        (Proof_Ins => Proof_Ins, Inputs => Inputs, Outputs => Outputs);
 
       --  Only needed for packages
       if FA.Kind = Kind_Package then

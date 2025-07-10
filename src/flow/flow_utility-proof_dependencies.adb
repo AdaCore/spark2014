@@ -25,7 +25,7 @@ with Gnat2Why.Tables;           use Gnat2Why.Tables;
 with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
 with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
 
-with Sinfo.Utils;               use Sinfo.Utils;
+with Sinfo.Utils; use Sinfo.Utils;
 
 package body Flow_Utility.Proof_Dependencies is
 
@@ -69,10 +69,8 @@ package body Flow_Utility.Proof_Dependencies is
 
       Profile : constant Entity_Id := Directly_Designated_Type (Typ);
    begin
-      Process_Expressions
-        (Find_Contracts (Profile, Pragma_Precondition));
-      Process_Expressions
-        (Find_Contracts (Profile, Pragma_Postcondition));
+      Process_Expressions (Find_Contracts (Profile, Pragma_Precondition));
+      Process_Expressions (Find_Contracts (Profile, Pragma_Postcondition));
    end Process_Access_To_Subprogram_Contracts;
 
    ------------------------------
@@ -80,8 +78,7 @@ package body Flow_Utility.Proof_Dependencies is
    ------------------------------
 
    procedure Process_Dispatching_Call
-     (N                  : Node_Id;
-      Proof_Dependencies : in out Node_Sets.Set)
+     (N : Node_Id; Proof_Dependencies : in out Node_Sets.Set)
    is
       Called_Subp      : constant Entity_Id := Get_Called_Entity (N);
       Dispatching_Type : constant Entity_Id :=
@@ -92,8 +89,7 @@ package body Flow_Utility.Proof_Dependencies is
       Descendant_E     : Entity_Id;
    begin
       for Descendant of Descendants loop
-         Descendant_E := Corresponding_Primitive
-           (Called_Subp, Descendant);
+         Descendant_E := Corresponding_Primitive (Called_Subp, Descendant);
          Proof_Dependencies.Include (Descendant_E);
       end loop;
    end Process_Dispatching_Call;
@@ -103,8 +99,7 @@ package body Flow_Utility.Proof_Dependencies is
    -------------------------------------------
 
    procedure Process_Indirect_Dispatching_Equality
-     (Ty                 : Node_Id;
-      Proof_Dependencies : in out Node_Sets.Set)
+     (Ty : Node_Id; Proof_Dependencies : in out Node_Sets.Set)
    is
 
       procedure Traverse_Ancestors;
@@ -117,8 +112,7 @@ package body Flow_Utility.Proof_Dependencies is
 
       procedure Traverse_Ancestors is
          Base_Ty   : Type_Kind_Id := Base_Retysp (Ty);
-         Parent_Ty : Opt_Type_Kind_Id :=
-           Parent_Retysp (Base_Ty);
+         Parent_Ty : Opt_Type_Kind_Id := Parent_Retysp (Base_Ty);
       begin
          loop
             if not Use_Predefined_Equality_For_Type (Base_Ty) then
@@ -156,17 +150,13 @@ package body Flow_Utility.Proof_Dependencies is
    -----------------------
 
    procedure Process_Access_Attribute
-     (N                  : Node_Id;
-      Proof_Dependencies : in out Node_Sets.Set)
+     (N : Node_Id; Proof_Dependencies : in out Node_Sets.Set)
    is
       P : constant Node_Id := Prefix (N);
       E : constant Entity_Id :=
-        (if Is_Entity_Name (P) then Entity (P)
-         else Empty);
+        (if Is_Entity_Name (P) then Entity (P) else Empty);
    begin
-      if Present (E)
-        and then Ekind (E) in E_Function | E_Procedure
-      then
+      if Present (E) and then Ekind (E) in E_Function | E_Procedure then
          Proof_Dependencies.Include (E);
       end if;
    end Process_Access_Attribute;
@@ -176,8 +166,7 @@ package body Flow_Utility.Proof_Dependencies is
    -------------------------------------------
 
    procedure Process_Iterable_For_Proof_Annotation
-     (N : Node_Id;
-      Proof_Dependencies : in out Node_Sets.Set)
+     (N : Node_Id; Proof_Dependencies : in out Node_Sets.Set)
    is
       Typ           : Entity_Id := Etype (Name (N));
       Found         : Boolean;
@@ -189,17 +178,12 @@ package body Flow_Utility.Proof_Dependencies is
       if Nkind (Parent (Parent (N))) /= N_Loop_Statement then
 
          loop
-            Retrieve_Iterable_Annotation (Typ,
-                                          Found,
-                                          Iterable_Info);
+            Retrieve_Iterable_Annotation (Typ, Found, Iterable_Info);
 
             if Found
-              and then
-                Iterable_Info.Kind
-                  = SPARK_Definition.Annotate.Model
+              and then Iterable_Info.Kind = SPARK_Definition.Annotate.Model
             then
-               Proof_Dependencies.Include
-                 (Iterable_Info.Entity);
+               Proof_Dependencies.Include (Iterable_Info.Entity);
 
                Typ := Etype (Iterable_Info.Entity);
             else
@@ -216,8 +200,7 @@ package body Flow_Utility.Proof_Dependencies is
 
          elsif Typ /= Etype (Name (N)) then
             Proof_Dependencies.Include
-              (Get_Iterable_Type_Primitive
-                 (Typ, Name_Has_Element));
+              (Get_Iterable_Type_Primitive (Typ, Name_Has_Element));
             Proof_Dependencies.Include
               (Get_Iterable_Type_Primitive (Typ, Name_Element));
          end if;
@@ -250,9 +233,7 @@ package body Flow_Utility.Proof_Dependencies is
    -----------------------------------
 
    procedure Process_Reclamation_Functions
-     (Typ                : Type_Kind_Id;
-      Proof_Dependencies : in out Node_Sets.Set)
-   is
+     (Typ : Type_Kind_Id; Proof_Dependencies : in out Node_Sets.Set) is
    begin
       for Part of Get_Reclaimed_Parts (Typ) loop
          declare

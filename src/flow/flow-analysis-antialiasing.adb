@@ -46,31 +46,33 @@ package body Flow.Analysis.Antialiasing is
    Trace_Antialiasing : constant Boolean := False;
    --  Enable this for gratuitous tracing output for aliasing detection
 
-   subtype Computed_Aliasing_Result is Aliasing_Check_Result
-     range Impossible .. Definite_Aliasing;
+   subtype Computed_Aliasing_Result is
+     Aliasing_Check_Result range Impossible .. Definite_Aliasing;
 
-   subtype Non_Obvious_Aliasing_Check_Result is Aliasing_Check_Result
-     range No_Aliasing .. Definite_Aliasing;
+   subtype Non_Obvious_Aliasing_Check_Result is
+     Aliasing_Check_Result range No_Aliasing .. Definite_Aliasing;
 
-   package Aliasing_Statuses is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Node_Id,
-      Element_Type    => Computed_Aliasing_Result,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=");
+   package Aliasing_Statuses is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Node_Id,
+        Element_Type    => Computed_Aliasing_Result,
+        Hash            => Node_Hash,
+        Equivalent_Keys => "=");
 
    Aliasing_Status : Aliasing_Statuses.Map := Aliasing_Statuses.Empty_Map;
 
-   function Check_Ranges (Range_A : Node_Id;
-                          Range_B : Node_Id)
-                          return Non_Obvious_Aliasing_Check_Result;
+   function Check_Ranges
+     (Range_A : Node_Id; Range_B : Node_Id)
+      return Non_Obvious_Aliasing_Check_Result;
    --  Checks two ranges for potential overlap
 
-   function Aliasing (A,        B        : Node_Id;
-                      A_Formal, B_Formal : Entity_Id)
-                      return Computed_Aliasing_Result
-   with Pre => (Is_Formal (A_Formal)
-                  or else Is_Function_With_Side_Effects (A_Formal))
-               and then (No (B_Formal) or else Is_Formal (B_Formal));
+   function Aliasing
+     (A, B : Node_Id; A_Formal, B_Formal : Entity_Id)
+      return Computed_Aliasing_Result
+   with
+     Pre =>
+       (Is_Formal (A_Formal) or else Is_Function_With_Side_Effects (A_Formal))
+       and then (No (B_Formal) or else Is_Formal (B_Formal));
    --  Returns if A and B alias
 
    function Is_Immutable (F : Entity_Id) return Boolean
@@ -81,12 +83,12 @@ package body Flow.Analysis.Antialiasing is
    --  in SPARK User's Guide.
 
    function Is_Conservatively_By_Copy_Type (F : Entity_Id) return Boolean
-     with Pre => Is_Formal (F) and then Is_Immutable (F);
+   with Pre => Is_Formal (F) and then Is_Immutable (F);
    --  Check whether the (formal immutable) parameter should be regarded as a
    --  by-copy type for the purposes of aliasing.
 
-   function Is_Anonymous_Access_To_Constant (Typ : Entity_Id) return Boolean is
-     (Is_Anonymous_Access_Type (Typ) and then Is_Access_Constant (Typ))
+   function Is_Anonymous_Access_To_Constant (Typ : Entity_Id) return Boolean
+   is (Is_Anonymous_Access_Type (Typ) and then Is_Access_Constant (Typ))
    with Pre => (Is_Type (Typ));
    --  Implement anonymous access-to-constant via the intersection of
    --  'anonymous access' and 'access constant'.
@@ -98,11 +100,12 @@ package body Flow.Analysis.Antialiasing is
       B_Formal : Entity_Id;
       Error_N  : Node_Id;
       Status   : in out Computed_Aliasing_Result)
-   with Pre => (Is_Formal (A_Formal)
-                  or else Is_Function_With_Side_Effects (A_Formal))
-               and then (No (B_Formal) or else Is_Formal (B_Formal))
-               and then Nkind (Error_N) in N_Subexpr,
-        Post => Status >= Status'Old;
+   with
+     Pre  =>
+       (Is_Formal (A_Formal) or else Is_Function_With_Side_Effects (A_Formal))
+       and then (No (B_Formal) or else Is_Formal (B_Formal))
+       and then Nkind (Error_N) in N_Subexpr,
+     Post => Status >= Status'Old;
    --  Checks the two nodes for aliasing and issues an error message if
    --  appropriate. The formal of A can be a function entity, which represents
    --  the LHS of assignment that has call with side effects as the RHS. The
@@ -111,21 +114,22 @@ package body Flow.Analysis.Antialiasing is
    --  aliasing.
 
    procedure Trace_Line (Txt : String);
-   procedure Trace_Two_Nodes (Text1     : String;
-                              Node1     : Node_Id;
-                              Text2     : String := "";
-                              Node2     : Node_Id;
-                              Text3     : String := "";
-                              Two_Lines : Boolean := False);
+   procedure Trace_Two_Nodes
+     (Text1     : String;
+      Node1     : Node_Id;
+      Text2     : String := "";
+      Node2     : Node_Id;
+      Text3     : String := "";
+      Two_Lines : Boolean := False);
    --  Emit debug information if Trace_Antialiasing is True
 
    ------------------
    -- Check_Ranges --
    ------------------
 
-   function Check_Ranges (Range_A : Node_Id;
-                          Range_B : Node_Id)
-                          return Non_Obvious_Aliasing_Check_Result
+   function Check_Ranges
+     (Range_A : Node_Id; Range_B : Node_Id)
+      return Non_Obvious_Aliasing_Check_Result
    is
       function LT (A, B : Node_Id) return Boolean;
       --  Return true iff A < B
@@ -143,39 +147,39 @@ package body Flow.Analysis.Antialiasing is
       -- LT --
       --------
 
-      function LT (A, B : Node_Id) return Boolean is
-        (Compile_Time_Compare (A, B, True) = LT);
+      function LT (A, B : Node_Id) return Boolean
+      is (Compile_Time_Compare (A, B, True) = LT);
 
       --------
       -- GE --
       --------
 
-      function GE (A, B : Node_Id) return Boolean is
-        (Compile_Time_Compare (A, B, True) in GE | GT | EQ);
+      function GE (A, B : Node_Id) return Boolean
+      is (Compile_Time_Compare (A, B, True) in GE | GT | EQ);
 
       -----------
       -- Empty --
       -----------
 
-      function Empty (A, B : Node_Id) return Boolean is
-        (Compile_Time_Compare (A, B, True) = GT);
+      function Empty (A, B : Node_Id) return Boolean
+      is (Compile_Time_Compare (A, B, True) = GT);
 
       ----------
       -- Full --
       ----------
 
-      function Full (A, B : Node_Id) return Boolean is
-        (Compile_Time_Compare (A, B, True) in LT | LE | EQ);
+      function Full (A, B : Node_Id) return Boolean
+      is (Compile_Time_Compare (A, B, True) in LT | LE | EQ);
 
       Range_Expr_A : constant Node_Id := Get_Range (Range_A);
       Range_Expr_B : constant Node_Id := Get_Range (Range_B);
 
-      AL : constant Node_Id := Low_Bound  (Range_Expr_A);
+      AL : constant Node_Id := Low_Bound (Range_Expr_A);
       AH : constant Node_Id := High_Bound (Range_Expr_A);
-      BL : constant Node_Id := Low_Bound  (Range_Expr_B);
+      BL : constant Node_Id := Low_Bound (Range_Expr_B);
       BH : constant Node_Id := High_Bound (Range_Expr_B);
 
-   --  Start of processing for Check_Range
+      --  Start of processing for Check_Range
 
    begin
       if Empty (AL, AH)
@@ -187,10 +191,10 @@ package body Flow.Analysis.Antialiasing is
          --  one of them is empty.
          return No_Aliasing;
 
-      elsif Full (AL, AH) and then Full (BL, BH) and then
-        ((GE (AH, BL) and then GE (BH, AL))
-           or else
-         (GE (BH, AL) and then GE (AH, BL)))
+      elsif Full (AL, AH)
+        and then Full (BL, BH)
+        and then ((GE (AH, BL) and then GE (BH, AL))
+                  or else (GE (BH, AL) and then GE (AH, BL)))
       then
          --  We definitely have overlapping, non-empty ranges
          return Definite_Aliasing;
@@ -205,9 +209,9 @@ package body Flow.Analysis.Antialiasing is
    -- Aliasing --
    --------------
 
-   function Aliasing (A,        B        : Node_Id;
-                      A_Formal, B_Formal : Entity_Id)
-                      return Computed_Aliasing_Result
+   function Aliasing
+     (A, B : Node_Id; A_Formal, B_Formal : Entity_Id)
+      return Computed_Aliasing_Result
    is
       function Is_Interesting (N : Node_Id) return Boolean
       with Pre => Nkind (N) in N_Defining_Identifier | N_Subexpr;
@@ -228,7 +232,7 @@ package body Flow.Analysis.Antialiasing is
 
             when
                --  Direct name
-                 N_Identifier
+               N_Identifier
                | N_Expanded_Name
                | N_Defining_Identifier
 
@@ -309,8 +313,7 @@ package body Flow.Analysis.Antialiasing is
       end Is_Conversion;
 
       function Down_One_Level (N : Node_Id) return Node_Id
-      with Pre => Is_Interesting (N)
-                  and then not Is_Root (Nkind (N));
+      with Pre => Is_Interesting (N) and then not Is_Root (Nkind (N));
       --  Goes down the parse tree by one level. For example:
       --     * R.X.Y       ->  R.X
       --     * R.X         ->  R
@@ -318,10 +321,11 @@ package body Flow.Analysis.Antialiasing is
       --     * Wibble (X)  ->  X
 
       function Path_To_Root (N : Node_Id) return Node_Lists.List
-      with Pre  => Nkind (N) in N_Defining_Identifier | N_Subexpr,
-           Post => Path_To_Root'Result.Is_Empty
-                     or else
-                   Is_Root (Nkind (Path_To_Root'Result.First_Element));
+      with
+        Pre  => Nkind (N) in N_Defining_Identifier | N_Subexpr,
+        Post =>
+          Path_To_Root'Result.Is_Empty
+          or else Is_Root (Nkind (Path_To_Root'Result.First_Element));
       --  Calls Down_One_Level, prepending the result of each such call to the
       --  returned list, until we find an identifier. For example:
       --    * R.X.Y       ->  [R, R.X, R.X.Y]
@@ -333,19 +337,22 @@ package body Flow.Analysis.Antialiasing is
       --  root object; otherwise, the returned list is empty.
       --  Up_Ignoring_Conversions is the opposite of this routine.
 
-      function Root_Count (Path : Node_Lists.List) return Natural with Ghost;
+      function Root_Count (Path : Node_Lists.List) return Natural
+      with Ghost;
       --  Returns the number of root nodes on the path
 
       function Get_Root_Entity (N : Node_Or_Entity_Id) return Entity_Id
-      with Pre  => Is_Root (Nkind (N)),
-           Post => Is_Object (Get_Root_Entity'Result);
+      with
+        Pre  => Is_Root (Nkind (N)),
+        Post => Is_Object (Get_Root_Entity'Result);
       --  Returns the entity attached to N, which is either an identifier of an
       --  actual or a defining entity of a global.
 
       procedure Up_Ignoring_Conversions (L : in out Node_Lists.List)
-      with Pre  => Is_Interesting (L.First_Element) and then L.Length > 1,
-        Post => Is_Interesting (L.First_Element)
-        and then L.Length < L'Old.Length;
+      with
+        Pre  => Is_Interesting (L.First_Element) and then L.Length > 1,
+        Post =>
+          Is_Interesting (L.First_Element) and then L.Length < L'Old.Length;
       --  Goes up the parse tree; usually only one level but if we find a type
       --  conversion of some kind we keep going.
 
@@ -471,8 +478,9 @@ package body Flow.Analysis.Antialiasing is
 
          --  Otherwise it is a sequence starting from an (expanded) name
 
-         pragma Assert
-           (Nkind (Path.First_Element) in N_Identifier | N_Expanded_Name);
+         pragma
+           Assert
+             (Nkind (Path.First_Element) in N_Identifier | N_Expanded_Name);
 
          for Node of Path loop
             if Is_Root (Nkind (Node)) then
@@ -488,13 +496,12 @@ package body Flow.Analysis.Antialiasing is
       -- Up_Ignoring_Conversions --
       -----------------------------
 
-      procedure Up_Ignoring_Conversions
-        (L : in out Node_Lists.List)
-      is
+      procedure Up_Ignoring_Conversions (L : in out Node_Lists.List) is
       begin
          loop
             L.Delete_First;
-            exit when not Is_Conversion (Original_Node (L.First_Element))
+            exit when
+              not Is_Conversion (Original_Node (L.First_Element))
               or else L.Length = 1;
          end loop;
       end Up_Ignoring_Conversions;
@@ -507,26 +514,26 @@ package body Flow.Analysis.Antialiasing is
 
       Definitive_Result : Boolean := True;
 
-   --  Start of processing for Aliasing
+      --  Start of processing for Aliasing
 
    begin
-      Trace_Two_Nodes (Text1 => "antialiasing: checking ",
-                       Node1 => A,
-                       Text2 => " <--> ",
-                       Node2 => B);
+      Trace_Two_Nodes
+        (Text1 => "antialiasing: checking ",
+         Node1 => A,
+         Text2 => " <--> ",
+         Node2 => B);
 
       --  Check the cases involving two actual parameters, with immutable
       --  and/or anonymous acess constant 'in' formal parameter(s) from the
       --  SPARK RM 6.4.2(3).
       declare
-         A_Is_Immutable : constant Boolean :=
+         A_Is_Immutable                             : constant Boolean :=
            Is_Formal (A_Formal) and then Is_Immutable (A_Formal);
-         A_Is_Anonymous_Access_Constant_In : constant Boolean :=
+         A_Is_Anonymous_Access_Constant_In          : constant Boolean :=
            Ekind (A_Formal) = E_In_Parameter
            and then Is_Anonymous_Access_To_Constant (Etype (A_Formal));
-         B_Present_And_Immutable : constant Boolean :=
-           Present (B_Formal)
-           and then Is_Immutable (B_Formal);
+         B_Present_And_Immutable                    : constant Boolean :=
+           Present (B_Formal) and then Is_Immutable (B_Formal);
          B_Present_And_Anonymous_Access_Constant_In : constant Boolean :=
            Present (B_Formal)
            and then Ekind (B_Formal) = E_In_Parameter
@@ -534,20 +541,21 @@ package body Flow.Analysis.Antialiasing is
       begin
          --  Determine if two actual parameters are both either immutable or
          --  anonymous access-to-constant "in" parameters.
-         if (A_Is_Immutable
-             or else A_Is_Anonymous_Access_Constant_In)
+         if (A_Is_Immutable or else A_Is_Anonymous_Access_Constant_In)
            and then (B_Present_And_Immutable
                      or else B_Present_And_Anonymous_Access_Constant_In)
          then
-            Trace_Line ("   -> formal parameters A and B are both either " &
-                          "immutable  " &
-                          "or mode 'in' anonymous access-to-constant");
+            Trace_Line
+              ("   -> formal parameters A and B are both either "
+               & "immutable  "
+               & "or mode 'in' anonymous access-to-constant");
             return Impossible;
 
          --  Determine if at least one of the corresponding formal
          --  parameters is immutable and a by-copy type.
 
-         elsif A_Is_Immutable and then Present (B_Formal)
+         elsif A_Is_Immutable
+           and then Present (B_Formal)
            and then Is_Conservatively_By_Copy_Type (A_Formal)
          then
             Trace_Line ("   -> A does not require aa checking");
@@ -577,9 +585,9 @@ package body Flow.Analysis.Antialiasing is
                      or else B_Present_And_Anonymous_Access_Constant_In)
          then
             Trace_Line
-              ("   -> function with side effect and formal which is either" &
-                 "immutable " &
-                 "or mode 'in' anonymous access-to-constant");
+              ("   -> function with side effect and formal which is either"
+               & "immutable "
+               & "or mode 'in' anonymous access-to-constant");
             return Impossible;
 
          end if;
@@ -604,11 +612,12 @@ package body Flow.Analysis.Antialiasing is
       Head_A := List_A.First_Element; --  Root node of A
       Head_B := List_B.First_Element; --  Root node of B
 
-      Trace_Two_Nodes (Text1     => "   -> root of A: ",
-                       Node1     => Head_A,
-                       Text2     => "   -> root of B: ",
-                       Node2     => Head_B,
-                       Two_Lines => True);
+      Trace_Two_Nodes
+        (Text1     => "   -> root of A: ",
+         Node1     => Head_A,
+         Text2     => "   -> root of B: ",
+         Node2     => Head_B,
+         Two_Lines => True);
 
       pragma Assert (Root_Count (List_A) = 1);
       pragma Assert (Root_Count (List_B) = 1);
@@ -689,15 +698,16 @@ package body Flow.Analysis.Antialiasing is
             --     A (5)       <-->  A (J).Wibble
             --     A (1 .. 3)  <-->  A (K .. L)
 
-            Trace_Two_Nodes (Text1 => "   -> checking same structure at ",
-                             Node1 => Head_A,
-                             Text2 => " <--> ",
-                             Node2 => Head_B);
+            Trace_Two_Nodes
+              (Text1 => "   -> checking same structure at ",
+               Node1 => Head_A,
+               Text2 => " <--> ",
+               Node2 => Head_B);
 
             case Nkind (Head_A) is
                when N_Selected_Component =>
-                  if Entity (Selector_Name (Head_A)) /=
-                     Entity (Selector_Name (Head_B))
+                  if Entity (Selector_Name (Head_A))
+                    /= Entity (Selector_Name (Head_B))
                   then
                      Trace_Line ("   -> selectors differ");
                      return No_Aliasing;
@@ -725,8 +735,7 @@ package body Flow.Analysis.Antialiasing is
                               null;
 
                            when LE | GE | Unknown =>
-                              Warning_Msg_N
-                                (Warn_Alias_Array, A);
+                              Warning_Msg_N (Warn_Alias_Array, A);
                               Definitive_Result := False;
                         end case;
 
@@ -736,8 +745,9 @@ package body Flow.Analysis.Antialiasing is
                   end;
 
                when N_Slice =>
-                  case Check_Ranges (Discrete_Range (Head_A),
-                                     Discrete_Range (Head_B)) is
+                  case Check_Ranges
+                         (Discrete_Range (Head_A), Discrete_Range (Head_B))
+                  is
                      when No_Aliasing =>
                         Trace_Two_Nodes
                           (Text1 => "   -> slice ",
@@ -761,10 +771,10 @@ package body Flow.Analysis.Antialiasing is
                   raise Why.Unexpected_Node;
             end case;
 
-         elsif (Nkind (Head_A) = N_Slice and then
-                  Nkind (Head_B) = N_Indexed_Component) or else
-           (Nkind (Head_A) = N_Indexed_Component and then
-              Nkind (Head_B) = N_Slice)
+         elsif (Nkind (Head_A) = N_Slice
+                and then Nkind (Head_B) = N_Indexed_Component)
+           or else (Nkind (Head_A) = N_Indexed_Component
+                    and then Nkind (Head_B) = N_Slice)
          then
 
             --  We also need to check this. One possibility:
@@ -861,9 +871,7 @@ package body Flow.Analysis.Antialiasing is
          when Impossible =>
             return;
 
-         when Possible_Aliasing
-            | Definite_Aliasing
-         =>
+         when Possible_Aliasing | Definite_Aliasing =>
             null;
 
          when No_Aliasing =>
@@ -891,26 +899,25 @@ package body Flow.Analysis.Antialiasing is
       Append
         (Msg,
          (case Current_Status is
-             when No_Aliasing       => " proved",
-             when Possible_Aliasing => " might be aliased",
-             when Definite_Aliasing => " are aliased",
-             when Impossible        => raise Program_Error));
+            when No_Aliasing => " proved",
+            when Possible_Aliasing => " might be aliased",
+            when Definite_Aliasing => " are aliased",
+            when Impossible => raise Program_Error));
 
-      Error_Msg_Flow (FA       => FA,
-                      Msg      => To_String (Msg),
-                      Severity =>
-                        (case Current_Status is
-                         when No_Aliasing       => Info_Kind,
-                         when Possible_Aliasing => Medium_Check_Kind,
-                         when Definite_Aliasing => High_Check_Kind,
-                         when Impossible        => raise Program_Error),
-                      N        => Error_N,
-                      F1       => Direct_Mapping_Id (A_Formal),
-                      F2       => Direct_Mapping_Id (B_Node),
-                      Tag      => Aliasing,
-                      SRM_Ref  => (if Current_Status = No_Aliasing
-                                   then ""
-                                   else "6.4.2"));
+      Error_Msg_Flow
+        (FA       => FA,
+         Msg      => To_String (Msg),
+         Severity =>
+           (case Current_Status is
+              when No_Aliasing => Info_Kind,
+              when Possible_Aliasing => Medium_Check_Kind,
+              when Definite_Aliasing => High_Check_Kind,
+              when Impossible => raise Program_Error),
+         N        => Error_N,
+         F1       => Direct_Mapping_Id (A_Formal),
+         F2       => Direct_Mapping_Id (B_Node),
+         Tag      => Aliasing,
+         SRM_Ref  => (if Current_Status = No_Aliasing then "" else "6.4.2"));
 
       --  Update the aliasing Status only if the Current_Status is worse (in
       --  terms of the ordering given by the type Computed_Aliasing_Result).
@@ -923,8 +930,7 @@ package body Flow.Analysis.Antialiasing is
    --------------------------
 
    procedure Check_Procedure_Call
-     (FA : in out Flow_Analysis_Graphs;
-      N  : Node_Id)
+     (FA : in out Flow_Analysis_Graphs; N : Node_Id)
    is
       procedure Check_Parameter (Formal : Entity_Id; Actual : Node_Id);
       --  Check parameters against other parameters and globals.
@@ -946,11 +952,12 @@ package body Flow.Analysis.Antialiasing is
       --  parameters once we have seen our parameter we compare against.
 
       function Visible_Globals (FS : Flow_Id_Sets.Set) return Node_Sets.Set
-      with Post => (for all E of Visible_Globals'Result =>
-                       Is_Global_Entity (E)
-                         or else
-                       (Ekind (E) = E_Constant
-                        and then not Has_Variable_Input (E)));
+      with
+        Post =>
+          (for all E of Visible_Globals'Result =>
+             Is_Global_Entity (E)
+             or else (Ekind (E) = E_Constant
+                      and then not Has_Variable_Input (E)));
       --  Returns the subset of FS that is represented by Entity_Ids, which are
       --  globals except when a constant without variable input wrongly appears
       --  in a user-written contract.
@@ -959,7 +966,7 @@ package body Flow.Analysis.Antialiasing is
       --  Global outputs and in_outs. For aliasing these behave as OUT and
       --  IN_OUT formal parameters, respectively.
 
-      Reads_Only      : Node_Sets.Set;
+      Reads_Only : Node_Sets.Set;
       --  Global inputs and proof_ins (which for aliasing behave as immutable
       --  IN formal parameters). Note that global access types are never
       --  regarded as purely mode "in" (unlike the similar case for formal
@@ -977,8 +984,7 @@ package body Flow.Analysis.Antialiasing is
                  Use_Computed_Globals    => True,
                  Assume_In_Expression    => True,
                  Expand_Internal_Objects => False))
-         else
-           Flow_Id_Sets.Empty_Set);
+         else Flow_Id_Sets.Empty_Set);
       --  Objects referenced from the LHS of the assignment statement where the
       --  RHS is a call to function with side effects; when the call happens in
       --  an object declaration, there can be no aliasing, because the object
@@ -994,7 +1000,7 @@ package body Flow.Analysis.Antialiasing is
          Formal_Is_Immutable : constant Boolean := Is_Immutable (Formal);
 
          Other_Formal : Entity_Id := Next_Formal (Formal);
-         Other_Actual : Node_Id   := Next_Actual (Actual);
+         Other_Actual : Node_Id := Next_Actual (Actual);
          --  Formal/Actual will be checked against formals/actuals that follow
          --  them; this way we check each pair of them exactly once.
 
@@ -1029,8 +1035,9 @@ package body Flow.Analysis.Antialiasing is
                     and then Is_Anonymous_Access_To_Constant (Etype (Formal)))
          then
             if not Reads_Only.Is_Empty then
-               Trace_Line ("   -> A does not require aa checking against " &
-                             "read-only globals");
+               Trace_Line
+                 ("   -> A does not require aa checking against "
+                  & "read-only globals");
             end if;
          else
             for G of Reads_Only loop
@@ -1053,8 +1060,9 @@ package body Flow.Analysis.Antialiasing is
            and then Is_Conservatively_By_Copy_Type (Formal)
          then
             if not Writes_Or_Reads.Is_Empty then
-               Trace_Line ("   -> A does not require aa checking against " &
-                             "OUT or IN_OUT globals");
+               Trace_Line
+                 ("   -> A does not require aa checking against "
+                  & "OUT or IN_OUT globals");
             end if;
          else
             for G of Writes_Or_Reads loop
@@ -1093,8 +1101,7 @@ package body Flow.Analysis.Antialiasing is
       -- Visible_Globals --
       ---------------------
 
-      function Visible_Globals (FS : Flow_Id_Sets.Set) return Node_Sets.Set
-      is
+      function Visible_Globals (FS : Flow_Id_Sets.Set) return Node_Sets.Set is
          Results : Node_Sets.Set;
       begin
          for F of FS loop
@@ -1124,20 +1131,21 @@ package body Flow.Analysis.Antialiasing is
 
       use type Node_Sets.Set;
 
-   --  Start of processing for Check_Procedure_Call
+      --  Start of processing for Check_Procedure_Call
 
    begin
       if Ekind (Called_Thing) /= E_Subprogram_Type then
-         Get_Globals (Subprogram => Called_Thing,
-                      Scope      => FA.B_Scope,
-                      Classwide  => Flow_Classwide.Is_Dispatching_Call (N),
-                      Globals    => Globals);
+         Get_Globals
+           (Subprogram => Called_Thing,
+            Scope      => FA.B_Scope,
+            Classwide  => Flow_Classwide.Is_Dispatching_Call (N),
+            Globals    => Globals);
       end if;
 
       Writes_Or_Reads := Visible_Globals (Globals.Outputs);
-      Reads_Only      :=
-        (Visible_Globals (Globals.Inputs) - Writes_Or_Reads) or
-          Visible_Globals (Globals.Proof_Ins);
+      Reads_Only :=
+        (Visible_Globals (Globals.Inputs) - Writes_Or_Reads)
+        or Visible_Globals (Globals.Proof_Ins);
 
       --  Check formal parameters against other parameters and globals
 
@@ -1181,8 +1189,8 @@ package body Flow.Analysis.Antialiasing is
 
       Aliasing_Status.Insert (N, Status);
 
-      --  ??? Need to check for aliasing between abstract state and computed
-      --  globals.
+   --  ??? Need to check for aliasing between abstract state and computed
+   --  globals.
 
    end Check_Procedure_Call;
 
@@ -1190,14 +1198,15 @@ package body Flow.Analysis.Antialiasing is
    -- Get_Aliasing_Status_For_Proof --
    -----------------------------------
 
-   function Get_Aliasing_Status_For_Proof (N : Node_Id)
-                                           return Aliasing_Check_Result
+   function Get_Aliasing_Status_For_Proof
+     (N : Node_Id) return Aliasing_Check_Result
    is
       C : constant Aliasing_Statuses.Cursor := Aliasing_Status.Find (N);
    begin
-      return (if Aliasing_Statuses.Has_Element (C)
-              then Aliasing_Status (C)
-              else Unchecked);
+      return
+        (if Aliasing_Statuses.Has_Element (C)
+         then Aliasing_Status (C)
+         else Unchecked);
    end Get_Aliasing_Status_For_Proof;
 
    --  Debug routines, localised to declutter code coverage analysis
@@ -1206,8 +1215,7 @@ package body Flow.Analysis.Antialiasing is
    -- Trace_Line --
    ----------------
 
-   procedure Trace_Line (Txt : String)
-   is
+   procedure Trace_Line (Txt : String) is
    begin
       if Trace_Antialiasing then
          Write_Line (Txt);
@@ -1218,13 +1226,13 @@ package body Flow.Analysis.Antialiasing is
    -- Trace_Two_Nodes --
    ---------------------
 
-   procedure Trace_Two_Nodes (Text1     : String;
-                              Node1     : Node_Id;
-                              Text2     : String := "";
-                              Node2     : Node_Id;
-                              Text3     : String := "";
-                              Two_Lines : Boolean := False)
-   is
+   procedure Trace_Two_Nodes
+     (Text1     : String;
+      Node1     : Node_Id;
+      Text2     : String := "";
+      Node2     : Node_Id;
+      Text3     : String := "";
+      Two_Lines : Boolean := False) is
    begin
       if Trace_Antialiasing then
          Write_Str (Text1);

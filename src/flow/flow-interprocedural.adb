@@ -30,16 +30,15 @@ with SPARK_Util;     use SPARK_Util;
 package body Flow.Interprocedural is
 
    procedure Add_Simple_Procedure_Dependency
-     (FA : in out Flow_Analysis_Graphs;
-      V  : Flow_Graphs.Vertex_Id);
+     (FA : in out Flow_Analysis_Graphs; V : Flow_Graphs.Vertex_Id);
    --  Add dependencies for a simple procedure call where we cannot perform
    --  IPFA.
 
-   function Find_Parameter_Vertex (FA        : Flow_Analysis_Graphs;
-                                   Callsite  : Flow_Graphs.Vertex_Id;
-                                   Parameter : Flow_Id)
-                                   return Flow_Graphs.Vertex_Id
-     with Pre => Parameter.Variant in In_View | Out_View;
+   function Find_Parameter_Vertex
+     (FA        : Flow_Analysis_Graphs;
+      Callsite  : Flow_Graphs.Vertex_Id;
+      Parameter : Flow_Id) return Flow_Graphs.Vertex_Id
+   with Pre => Parameter.Variant in In_View | Out_View;
    --  Search for the relevant parameter vertex for a given call
 
    ---------------------------
@@ -49,8 +48,7 @@ package body Flow.Interprocedural is
    function Find_Parameter_Vertex
      (FA        : Flow_Analysis_Graphs;
       Callsite  : Flow_Graphs.Vertex_Id;
-      Parameter : Flow_Id)
-      return Flow_Graphs.Vertex_Id
+      Parameter : Flow_Id) return Flow_Graphs.Vertex_Id
    is
       Atr : V_Attributes renames FA.Atr (Callsite);
 
@@ -66,7 +64,7 @@ package body Flow.Interprocedural is
          declare
             Call_Cluster : constant Flow_Graphs.Cluster_Id :=
               FA.CFG.Get_Cluster (Callsite);
-            V : Flow_Graphs.Vertex_Id := Callsite;
+            V            : Flow_Graphs.Vertex_Id := Callsite;
             use Flow_Graphs;
          begin
             loop
@@ -102,7 +100,7 @@ package body Flow.Interprocedural is
       --   ??? why do we scan all out-neigbhour, can't we just find it in O(1)?
       for V of Params loop
          declare
-            F : Flow_Id      renames FA.CDG.Get_Key (V);
+            F : Flow_Id renames FA.CDG.Get_Key (V);
             A : V_Attributes renames FA.Atr (V);
 
          begin
@@ -112,17 +110,15 @@ package body Flow.Interprocedural is
                pragma Assert (A.Parameter_Formal.Kind = Direct_Mapping);
                pragma Assert (F.Kind = Direct_Mapping);
 
-               if Parameter.Kind = Direct_Mapping and then
-                 Parameter.Variant = F.Variant and then
-                 Get_Direct_Mapping_Id (Parameter) =
-                 Get_Direct_Mapping_Id (A.Parameter_Formal)
+               if Parameter.Kind = Direct_Mapping
+                 and then Parameter.Variant = F.Variant
+                 and then Get_Direct_Mapping_Id (Parameter)
+                          = Get_Direct_Mapping_Id (A.Parameter_Formal)
                then
                   return V;
                end if;
 
-            elsif A.Is_Global_Parameter
-              or else A.Is_Implicit_Parameter
-            then
+            elsif A.Is_Global_Parameter or else A.Is_Implicit_Parameter then
                --  Global and implicit parameters can be direct mappings,
                --  magic strings or synthetic null exports, but in any case
                --  the parameter and the formal will always match in kind.
@@ -130,23 +126,23 @@ package body Flow.Interprocedural is
                   when Direct_Mapping =>
                      if Parameter.Kind = Direct_Mapping
                        and then A.Parameter_Formal.Variant = Parameter.Variant
-                       and then Get_Direct_Mapping_Id (Parameter) =
-                                  Get_Direct_Mapping_Id (A.Parameter_Formal)
+                       and then Get_Direct_Mapping_Id (Parameter)
+                                = Get_Direct_Mapping_Id (A.Parameter_Formal)
                      then
                         return V;
                      end if;
 
                   when Magic_String =>
-                     if Parameter.Kind = Magic_String and then
-                       A.Parameter_Formal.Variant = Parameter.Variant and then
-                       Parameter.Name = A.Parameter_Formal.Name
+                     if Parameter.Kind = Magic_String
+                       and then A.Parameter_Formal.Variant = Parameter.Variant
+                       and then Parameter.Name = A.Parameter_Formal.Name
                      then
                         return V;
                      end if;
 
                   when Synthetic_Null_Export =>
-                     if Parameter.Kind = Synthetic_Null_Export and then
-                       A.Parameter_Formal.Variant = Parameter.Variant
+                     if Parameter.Kind = Synthetic_Null_Export
+                       and then A.Parameter_Formal.Variant = Parameter.Variant
                      then
                         return V;
                      end if;
@@ -156,9 +152,7 @@ package body Flow.Interprocedural is
 
                end case;
 
-            elsif A.Is_Call_Exception
-              or else A.Is_Param_Havoc
-            then
+            elsif A.Is_Call_Exception or else A.Is_Param_Havoc then
                null;
 
             else
@@ -181,8 +175,7 @@ package body Flow.Interprocedural is
    -------------------------------------
 
    procedure Add_Simple_Procedure_Dependency
-     (FA : in out Flow_Analysis_Graphs;
-      V  : Flow_Graphs.Vertex_Id)
+     (FA : in out Flow_Analysis_Graphs; V : Flow_Graphs.Vertex_Id)
    is
       N : constant Node_Id := Get_Direct_Mapping_Id (FA.CFG.Get_Key (V));
       pragma Assert (Nkind (N) in N_Subprogram_Call | N_Entry_Call_Statement);
@@ -205,28 +198,22 @@ package body Flow.Interprocedural is
 
       procedure Add_TD_Edge (A, B : Flow_Id) is
          V_A : constant Flow_Graphs.Vertex_Id :=
-           Find_Parameter_Vertex
-             (FA,
-              V,
-              Change_Variant (A, In_View));
+           Find_Parameter_Vertex (FA, V, Change_Variant (A, In_View));
 
          V_B : constant Flow_Graphs.Vertex_Id :=
-           Find_Parameter_Vertex
-             (FA,
-              V,
-              Change_Variant (B, Out_View));
+           Find_Parameter_Vertex (FA, V, Change_Variant (B, Out_View));
       begin
          FA.TDG.Add_Edge (V_A, V_B, EC_TDG);
       end Add_TD_Edge;
 
-   --  Start of processing for Add_Simple_Procedure_Dependency
+      --  Start of processing for Add_Simple_Procedure_Dependency
 
    begin
       if Ekind (Called_Thing) /= E_Subprogram_Type
         and then Has_Depends (Called_Thing)
         and then (not FA.Generating_Globals
-                    or else not Rely_On_Generated_Global (Called_Thing,
-                                                          FA.B_Scope))
+                  or else not Rely_On_Generated_Global
+                                (Called_Thing, FA.B_Scope))
       then
          --  We have a dependency aspect, so we should use it if:
          --     a) we have already synthesized its refined version
@@ -240,16 +227,16 @@ package body Flow.Interprocedural is
             Deps : Dependency_Maps.Map;
 
          begin
-            Get_Depends (Subprogram           => Called_Thing,
-                         Scope                => FA.B_Scope,
-                         Classwide            =>
-                           Flow_Classwide.Is_Dispatching_Call (N),
-                         Depends              => Deps,
-                         Use_Computed_Globals => not FA.Generating_Globals);
+            Get_Depends
+              (Subprogram           => Called_Thing,
+               Scope                => FA.B_Scope,
+               Classwide            => Flow_Classwide.Is_Dispatching_Call (N),
+               Depends              => Deps,
+               Use_Computed_Globals => not FA.Generating_Globals);
 
             for C in Deps.Iterate loop
                declare
-                  Output : Flow_Id          renames Dependency_Maps.Key (C);
+                  Output : Flow_Id renames Dependency_Maps.Key (C);
                   Inputs : Flow_Id_Sets.Set renames Deps (C);
 
                begin
@@ -258,10 +245,11 @@ package body Flow.Interprocedural is
                   for Input of Inputs loop
                      --  Output could be a null node, in which case we do not
                      --  add any edges.
-                     Add_TD_Edge (Input,
-                                  (if Present (Output)
-                                   then Output
-                                   else Null_Export_Flow_Id));
+                     Add_TD_Edge
+                       (Input,
+                        (if Present (Output)
+                         then Output
+                         else Null_Export_Flow_Id));
                   end loop;
                end;
             end loop;
@@ -283,16 +271,17 @@ package body Flow.Interprocedural is
          begin
             --  Collect all the globals first
             if Ekind (Called_Thing) /= E_Subprogram_Type then
-               Get_Globals (Subprogram          => Called_Thing,
-                            Scope               => FA.B_Scope,
-                            Classwide           =>
-                              Flow_Classwide.Is_Dispatching_Call (N),
-                            Globals             => Globals,
-                            Use_Deduced_Globals => not FA.Generating_Globals);
+               Get_Globals
+                 (Subprogram          => Called_Thing,
+                  Scope               => FA.B_Scope,
+                  Classwide           =>
+                    Flow_Classwide.Is_Dispatching_Call (N),
+                  Globals             => Globals,
+                  Use_Deduced_Globals => not FA.Generating_Globals);
 
                Remove_Constants (Globals.Inputs);
 
-               Inputs.Move  (Source => Globals.Inputs);
+               Inputs.Move (Source => Globals.Inputs);
                Outputs.Move (Source => Globals.Outputs);
             end if;
 
@@ -357,7 +346,8 @@ package body Flow.Interprocedural is
                   declare
                      Output_V : constant Flow_Graphs.Vertex_Id :=
                        Find_Parameter_Vertex
-                         (FA, V,
+                         (FA,
+                          V,
                           Change_Variant (Null_Export_Flow_Id, Out_View));
 
                   begin
@@ -384,11 +374,9 @@ package body Flow.Interprocedural is
                         declare
                            Dependency_Allowed : constant Boolean :=
                              Output_Is_Ghost
-                               or else
-                             Is_Abstract_State (Output)
-                               or else
-                             (not Ghost_Subprogram
-                              and then not Is_Ghost_Entity (Input));
+                             or else Is_Abstract_State (Output)
+                             or else (not Ghost_Subprogram
+                                      and then not Is_Ghost_Entity (Input));
                            --  Ghost outputs can always be modified; non-ghost
                            --  abstract states too, because they might contain
                            --  ghost constituents; non-ghost outputs can only
