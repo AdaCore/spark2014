@@ -46,11 +46,6 @@ package Flow_Error_Messages is
    --  special variables __HEAP and SPARK.Heap.Dynamic_Memory used to model
    --  (de)allocation.
 
-   function Get_Flow_JSON return JSON_Array;
-   function Get_Proof_JSON return JSON_Array;
-   --  Call these functions to get the messages of proof and flow in JSON form.
-   --  Should be called only when analysis is finished.
-
    function Fresh_Trace_File return String;
    --  Returns a name for a trace file. This name should be unique for the
    --  project.

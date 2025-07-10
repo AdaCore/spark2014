@@ -46,7 +46,6 @@ with Einfo.Utils;                     use Einfo.Utils;
 with Errout_Wrapper;                  use Errout_Wrapper;
 with Flow;                            use Flow;
 with Flow.Analysis.Assumptions;       use Flow.Analysis.Assumptions;
-with Flow_Error_Messages;             use Flow_Error_Messages;
 with Flow_Generated_Globals.Phase_1;
 with Flow_Generated_Globals.Traversal;
 with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
@@ -361,12 +360,13 @@ package body Gnat2Why.Driver is
         (Full, "progress", Create (Analysis_Progress'Image (Progress)));
       Set_Field
         (Full, "stop_reason", Create (Stop_Reason_Type'Image (Stop_Reason)));
+      Set_Field (Full, "warn_error", Create (Warnings_Errors));
       if Progress >= Progress_Flow then
-         Set_Field (Full, "flow", Create (Get_Flow_JSON));
+         Set_Field (Full, "flow", Create (Flow_Msgs));
       end if;
       if Progress >= Progress_Proof then
          Set_Field (Full, "pragma_assume", Create (Get_Pragma_Assume_JSON));
-         Set_Field (Full, "proof", Create (Get_Proof_JSON));
+         Set_Field (Full, "proof", Create (Proof_Msgs));
       end if;
       Set_Field (Full, "assumptions", Get_Assume_JSON);
 

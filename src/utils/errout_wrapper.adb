@@ -3,6 +3,7 @@ with Assumption_Types;        use Assumption_Types;
 with Atree;                   use Atree;
 with Gnat2Why_Args;
 with Gnat2Why_Opts;           use Gnat2Why_Opts;
+with Sinfo.Nodes;             use Sinfo.Nodes;
 with Sinput;                  use Sinput;
 with SPARK_Util;              use SPARK_Util;
 with Stringt;                 use Stringt;
@@ -38,6 +39,13 @@ package body Errout_Wrapper is
       Explain_Code  : Explain_Code_Kind := EC_None) return Message;
    --  Same as Create, but the names can be provided as a list of Strings.
 
+   function To_JSON (M : Message) return JSON_Value;
+   --  Transform message object into JSON (SARIF) message object
+
+   function Node_To_Name (N : Node_Id) return String;
+   --  Convert the node to a String. This is mostly a wrapper around
+   --  Source_Name.
+
    ------------------
    -- Add_Json_Msg --
    ------------------
@@ -45,7 +53,7 @@ package body Errout_Wrapper is
    procedure Add_Json_Msg
      (Msg_List : in out GNATCOLL.JSON.JSON_Array;
       Obj      : JSON_Result_Type;
-      Msg_Id   : Message_Id)
+      Msg_Id   : Message_Id := No_Message_Id)
    is
       Value : constant JSON_Value := Create_Object;
       File  : constant String := File_Name (Obj.Span.Ptr);
@@ -57,6 +65,7 @@ package body Errout_Wrapper is
       Set_Field (Value, "file", File);
       Set_Field (Value, "line", Line);
       Set_Field (Value, "col", Col);
+      Set_Field (Value, "message", To_JSON (Obj.Msg));
 
       if Obj.Suppr.Suppression_Kind in Warning | Check then
          declare
@@ -77,7 +86,10 @@ package body Errout_Wrapper is
 
       Set_Field (Value, "rule", Obj.Tag);
       Set_Field (Value, "severity", To_JSON (Obj.Severity));
-      Set_Field (Value, "entity", To_JSON (Entity_To_Subp_Assumption (Obj.E)));
+      if Present (Obj.E) then
+         Set_Field
+           (Value, "entity", To_JSON (Entity_To_Subp_Assumption (Obj.E)));
+      end if;
       Set_Field (Value, "check_tree", Obj.Check_Tree);
 
       if Obj.VC_Loc /= No_Location then
@@ -321,7 +333,8 @@ package body Errout_Wrapper is
      (Msg           : Message;
       Span          : Source_Span;
       Kind          : Msg_Severity := Error_Kind;
-      Continuations : Message_Lists.List := Message_Lists.Empty)
+      Continuations : Message_Lists.List := Message_Lists.Empty;
+      Error_Entry   : Boolean := True)
    is
 
       procedure Span_Locate (Msg : String; First_Node : Node_Id);
@@ -347,9 +360,19 @@ package body Errout_Wrapper is
 
       procedure Local_Print_Result is new Print (Span_Locate);
 
+      Result : constant JSON_Result_Type :=
+        (Severity => Kind,
+         Tag      => To_Unbounded_String ("error"),
+         Span     => Span,
+         Msg      => Msg,
+         others   => <>);
+
       --  Beginning of processing for Error_Msg
 
    begin
+      if Error_Entry then
+         Add_Json_Msg (Warnings_Errors, Result);
+      end if;
       Local_Print_Result
         (Msg, Kind, First_Node => Empty, Continuations => Continuations);
    end Error_Msg;
@@ -363,7 +386,8 @@ package body Errout_Wrapper is
       N             : Node_Id;
       Kind          : Msg_Severity := Error_Kind;
       First         : Boolean := False;
-      Continuations : Message_Lists.List := Message_Lists.Empty)
+      Continuations : Message_Lists.List := Message_Lists.Empty;
+      Error_Entry   : Boolean := True)
    is
 
       procedure Node_Locate (Msg : String; First_Node : Node_Id);
@@ -386,7 +410,16 @@ package body Errout_Wrapper is
 
       procedure Local_Print_Result is new Print (Node_Locate);
 
+      Result : constant JSON_Result_Type :=
+        (Severity => Kind,
+         Tag      => To_Unbounded_String ("error"),
+         Span     => To_Span (Sloc (N)),
+         Msg      => Msg,
+         others   => <>);
    begin
+      if Error_Entry then
+         Add_Json_Msg (Warnings_Errors, Result);
+      end if;
       Local_Print_Result
         (Msg, Kind, First_Node => N, Continuations => Continuations);
    end Error_Msg_N;
@@ -499,6 +532,21 @@ package body Errout_Wrapper is
       return Result;
    end Next_Message_Id;
 
+   ------------------
+   -- Node_To_Name --
+   ------------------
+
+   function Node_To_Name (N : Node_Id) return String is
+   begin
+      case Nkind (N) is
+         when N_Pragma =>
+            return Source_Name (Pragma_Identifier (N));
+
+         when others =>
+            return Source_Name (N);
+      end case;
+   end Node_To_Name;
+
    ----------------
    -- Tag_Suffix --
    ----------------
@@ -527,6 +575,23 @@ package body Errout_Wrapper is
            when Low_Check_Kind => "low");
    begin
       return GNATCOLL.JSON.Create (S);
+   end To_JSON;
+
+   function To_JSON (M : Message) return JSON_Value is
+      Result : constant JSON_Value := Create_Object;
+   begin
+      Set_Field (Result, "text", To_String (M.Msg));
+      if not M.Names.Is_Empty then
+         declare
+            Args : JSON_Array;
+         begin
+            for Node of M.Names loop
+               Append (Args, Create (Node_To_Name (Node)));
+            end loop;
+            Set_Field (Result, "arguments", Args);
+         end;
+      end if;
+      return Result;
    end To_JSON;
 
    -------------------
@@ -560,18 +625,33 @@ package body Errout_Wrapper is
       N             : Node_Id;
       Msg           : Message;
       First         : Boolean := False;
-      Continuations : Message_Lists.List := Message_Lists.Empty) is
+      Continuations : Message_Lists.List := Message_Lists.Empty)
+   is
+      Suppressed : constant Boolean :=
+        Warning_Status (Kind) not in WS_Enabled | WS_Error;
+      Severity   : constant Msg_Severity :=
+        (if Warning_Status (Kind) = WS_Error
+         then Error_Kind
+         else Warning_Kind);
    begin
-      if Warning_Status (Kind) in WS_Enabled | WS_Error then
-         Error_Msg_N
-           (Msg,
-            N,
-            (if Warning_Status (Kind) = WS_Enabled
-             then Warning_Kind
-             else Error_Kind),
-            First,
-            Continuations);
+      if not Suppressed then
+         Error_Msg_N (Msg, N, Severity, First, Continuations, False);
       end if;
+      declare
+         Result : constant JSON_Result_Type :=
+           JSON_Result_Type'
+             (Msg      => Msg,
+              Severity => Severity,
+              Tag      => To_Unbounded_String (Kind_Name (Kind)),
+              Span     => To_Span (Sloc (N)),
+              Suppr    =>
+                (if Suppressed
+                 then Suppressed_Warning
+                 else No_Suppressed_Message),
+              others   => <>);
+      begin
+         Add_Json_Msg (Warnings_Errors, Result);
+      end;
    end Warning_Msg_N;
 
    function "&" (M : Message; S : String) return Message is
