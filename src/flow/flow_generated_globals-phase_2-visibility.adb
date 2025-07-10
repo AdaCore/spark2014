@@ -24,11 +24,11 @@
 
 with Ada.Containers.Hashed_Maps;
 with Ada.Strings.Fixed;
-with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Gnat2Why_Args;
 with Graphs;
-with Lib;                        use Lib;
+with Lib;                   use Lib;
 with Sem_Util;
 
 package body Flow_Generated_Globals.Phase_2.Visibility is
@@ -41,27 +41,30 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
    function Hash (S : Name_Scope) return Ada.Containers.Hash_Type
    with Pre => S /= Null_Name_Scope;
 
-   type Edge_Kind is (Rule_Own,
-                      Rule_Instance,
-                      Rule_Up_Spec,
-                      Rule_Down_Spec,
-                      Rule_Up_Priv,
-                      Rule_Up_Body);
+   type Edge_Kind is
+     (Rule_Own,
+      Rule_Instance,
+      Rule_Up_Spec,
+      Rule_Down_Spec,
+      Rule_Up_Priv,
+      Rule_Up_Body);
    --  ??? same as in phase 1
 
    package Scope_Graphs is new
-     Graphs (Vertex_Key   => Name_Scope,
-             Edge_Colours => Edge_Kind,
-             Null_Key     => Null_Name_Scope,
-             Key_Hash     => Hash,
-             Test_Key     => "=");
+     Graphs
+       (Vertex_Key   => Name_Scope,
+        Edge_Colours => Edge_Kind,
+        Null_Key     => Null_Name_Scope,
+        Key_Hash     => Hash,
+        Test_Key     => "=");
 
    package Name_Info_Maps is new
-     Ada.Containers.Hashed_Maps (Key_Type        => Entity_Name,
-                                 Element_Type    => Name_Info_T,
-                                 Hash            => Name_Hash,
-                                 Equivalent_Keys => "=",
-                                 "="             => "=");
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Entity_Name,
+        Element_Type    => Name_Info_T,
+        Hash            => Name_Hash,
+        Equivalent_Keys => "=",
+        "="             => "=");
 
    Hierarchy_Info : Name_Info_Maps.Map;
    Scope_Graph    : Scope_Graphs.Graph := Scope_Graphs.Create;
@@ -78,12 +81,12 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
    --  Initializes of a parent package with Part_Ofs its state located in
    --  its private children and abstract state in all children.
 
-   function Present (E : Any_Entity_Name) return Boolean is
-     (E /= Null_Entity_Name);
+   function Present (E : Any_Entity_Name) return Boolean
+   is (E /= Null_Entity_Name);
 
-   function Is_Child          (Info : Name_Info_T) return Boolean;
-   function Is_Nested         (Info : Name_Info_T) return Boolean;
-   function Is_Instance       (Info : Name_Info_T) return Boolean;
+   function Is_Child (Info : Name_Info_T) return Boolean;
+   function Is_Nested (Info : Name_Info_T) return Boolean;
+   function Is_Instance (Info : Name_Info_T) return Boolean;
    function Is_Instance_Child (Info : Name_Info_T) return Boolean;
    --  Utility routines for the hierarchy data
 
@@ -142,11 +145,11 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
          use type Scope_Graphs.Vertex_Id;
 
          procedure Connect (Source, Target : Scope_Graphs.Vertex_Id)
-         with Pre => Source /= Scope_Graphs.Null_Vertex
-                       and
-                     Target /= Scope_Graphs.Null_Vertex
-                       and
-                     Source /= Target;
+         with
+           Pre =>
+             Source /= Scope_Graphs.Null_Vertex
+             and Target /= Scope_Graphs.Null_Vertex
+             and Source /= Target;
          --  Add edge from Source to Target
 
          -------------
@@ -159,7 +162,7 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
             Scope_Graph.Add_Edge (Source, Target, Rule);
          end Connect;
 
-      --  Start of processing for Connect
+         --  Start of processing for Connect
 
       begin
          ----------------------------------------------------------------------
@@ -192,21 +195,21 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
             if Is_Instance_Child (Info) then
                Connect
                  (Spec_V,
-                  Scope_Graph.Get_Vertex ((Ent  => Info.Instance_Parent,
-                                           Part => Visible_Part)));
+                  Scope_Graph.Get_Vertex
+                    ((Ent => Info.Instance_Parent, Part => Visible_Part)));
 
                if Info.Is_Package then
                   Connect
                     (Priv_V,
-                     Scope_Graph.Get_Vertex ((Ent  => Info.Instance_Parent,
-                                              Part => Private_Part)));
+                     Scope_Graph.Get_Vertex
+                       ((Ent => Info.Instance_Parent, Part => Private_Part)));
                end if;
 
             else
                Connect
                  (Spec_V,
-                  Scope_Graph.Get_Vertex ((Ent  => Info.Template,
-                                           Part => Visible_Part)));
+                  Scope_Graph.Get_Vertex
+                    ((Ent => Info.Template, Part => Visible_Part)));
 
                --  Generic units acquire visibility from where they are
                --  instantiated, so they can "see" subprograms used to
@@ -220,10 +223,12 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
                   Scope_Graph.Get_Vertex
                     (if Is_Nested (Info)
                      then Info.Container
-                     else (Ent  => Info.Parent,
-                           Part => (if Info.Is_Private
-                                    then Private_Part
-                                    else Visible_Part))));
+                     else
+                       (Ent  => Info.Parent,
+                        Part =>
+                          (if Info.Is_Private
+                           then Private_Part
+                           else Visible_Part))));
                --  ??? The code for the target scope is repeated in rules
                --  Rule_Up_Spec and Rule_Down_Spec; this should be refactored.
 
@@ -235,14 +240,14 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
                if Info.Is_Package then
                   Connect
                     (Priv_V,
-                     Scope_Graph.Get_Vertex ((Ent  => Info.Template,
-                                              Part => Private_Part)));
+                     Scope_Graph.Get_Vertex
+                       ((Ent => Info.Template, Part => Private_Part)));
                end if;
 
                Connect
                  (Body_V,
-                  Scope_Graph.Get_Vertex ((Ent  => Info.Template,
-                                           Part => Body_Part)));
+                  Scope_Graph.Get_Vertex
+                    ((Ent => Info.Template, Part => Body_Part)));
 
                --  For generic subprograms instantiated in the wrapper packages
                --  we need the visibility from the instantiated subprogram body
@@ -279,10 +284,12 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
                Scope_Graph.Get_Vertex
                  (if Is_Nested (Info)
                   then Info.Container
-                  else (Ent  => Info.Parent,
-                        Part => (if Info.Is_Private
-                                 then Private_Part
-                                 else Visible_Part))));
+                  else
+                    (Ent  => Info.Parent,
+                     Part =>
+                       (if Info.Is_Private
+                        then Private_Part
+                        else Visible_Part))));
          end if;
 
          ----------------------------------------------------------------------
@@ -303,12 +310,13 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
          --  something instantiated inside it).
 
          Connect
-           (Scope_Graph.Get_Vertex (if Is_Nested (Info)
-                                    then Info.Container
-                                    else (Ent  => Info.Parent,
-                                          Part => (if Info.Is_Private
-                                                   then Private_Part
-                                                   else Visible_Part))),
+           (Scope_Graph.Get_Vertex
+              (if Is_Nested (Info)
+               then Info.Container
+               else
+                 (Ent  => Info.Parent,
+                  Part =>
+                    (if Info.Is_Private then Private_Part else Visible_Part))),
             Spec_V);
 
          ----------------------------------------------------------------------
@@ -318,15 +326,11 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
          --  This rule deals with upwards visibility for the private part of a
          --  child package or subprogram. It doesn't apply to instances.
 
-         if Is_Child (Info)
-           and then not Is_Instance (Info)
-         then
+         if Is_Child (Info) and then not Is_Instance (Info) then
             Connect
-              ((if Info.Is_Package
-                then Priv_V
-                else Body_V),
-               Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
-                                        Part => Private_Part)));
+              ((if Info.Is_Package then Priv_V else Body_V),
+               Scope_Graph.Get_Vertex
+                 ((Ent => Info.Parent, Part => Private_Part)));
          end if;
 
          ----------------------------------------------------------------------
@@ -338,17 +342,15 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
          --  enclosing scope's body, since it is impossible to complete the
          --  body anywhere else. Again, it doesn't apply to instances.
 
-         if Is_Nested (Info)
-           and then not Is_Instance (Info)
-         then
+         if Is_Nested (Info) and then not Is_Instance (Info) then
             Connect
               (Body_V,
-               Scope_Graph.Get_Vertex ((Ent  => Info.Container.Ent,
-                                        Part => Body_Part)));
+               Scope_Graph.Get_Vertex
+                 ((Ent => Info.Container.Ent, Part => Body_Part)));
          end if;
       end Connect;
 
-   --  Start of processing for Connect_Flow_Scopes
+      --  Start of processing for Connect_Flow_Scopes
 
    begin
       --  The Standard package is special: create vertices for its visible and
@@ -401,21 +403,22 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
       --  Sanity check: all vertices should be now connected to Standard
 
       declare
-         Standard_Spec : constant Name_Scope := (Ent  => Standard_Standard,
-                                                 Part => Visible_Part)
-           with Ghost;
+         Standard_Spec : constant Name_Scope :=
+           (Ent => Standard_Standard, Part => Visible_Part)
+         with Ghost;
 
          Standard : constant Scope_Graphs.Vertex_Id :=
            Scope_Graph.Get_Vertex (Standard_Spec)
-           with Ghost;
+         with Ghost;
 
          use Scope_Graphs;
 
       begin
-         pragma Assert
-           (for all V of Scope_Graph.Get_Collection (All_Vertices) =>
-              (if V /= Standard
-               then Scope_Graph.Edge_Exists (Components, V, Standard)));
+         pragma
+           Assert
+             (for all V of Scope_Graph.Get_Collection (All_Vertices) =>
+                (if V /= Standard
+                 then Scope_Graph.Edge_Exists (Components, V, Standard)));
       end;
 
    end Connect_Name_Scopes;
@@ -444,29 +447,29 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
    -- Is_Child --
    --------------
 
-   function Is_Child (Info : Name_Info_T) return Boolean is
-     (Present (Info.Parent));
+   function Is_Child (Info : Name_Info_T) return Boolean
+   is (Present (Info.Parent));
 
    -----------------
    -- Is_Instance --
    -----------------
 
-   function Is_Instance (Info : Name_Info_T) return Boolean is
-     (Present (Info.Template));
+   function Is_Instance (Info : Name_Info_T) return Boolean
+   is (Present (Info.Template));
 
    -----------------------
    -- Is_Instance_Child --
    -----------------------
 
-   function Is_Instance_Child (Info : Name_Info_T) return Boolean is
-     (Present (Info.Instance_Parent));
+   function Is_Instance_Child (Info : Name_Info_T) return Boolean
+   is (Present (Info.Instance_Parent));
 
    ---------------
    -- Is_Nested --
    ---------------
 
-   function Is_Nested (Info : Name_Info_T) return Boolean is
-     (Info.Container /= Null_Name_Scope);
+   function Is_Nested (Info : Name_Info_T) return Boolean
+   is (Info.Container /= Null_Name_Scope);
 
    ----------
    -- Hash --
@@ -483,8 +486,7 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
    -----------
 
    pragma Annotate (Xcov, Exempt_On, "Debugging code");
-   procedure Print (G : Scope_Graphs.Graph)
-   is
+   procedure Print (G : Scope_Graphs.Graph) is
       use Scope_Graphs;
 
       function NDI (G : Graph; V : Vertex_Id) return Node_Display_Info;
@@ -502,27 +504,26 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
       -- NDI --
       ---------
 
-      function NDI (G : Graph; V : Vertex_Id) return Node_Display_Info
-      is
+      function NDI (G : Graph; V : Vertex_Id) return Node_Display_Info is
          S : constant Name_Scope := G.Get_Key (V);
 
          Label : constant String :=
-           To_String (S.Ent) &
-         (case S.Part is
-             when Visible_Part => " (Spec)",
-             when Private_Part => " (Priv)",
-             when Body_Part    => " (Body)",
-             when Null_Part    => raise Program_Error);
+           To_String (S.Ent)
+           & (case S.Part is
+                when Visible_Part => " (Spec)",
+                when Private_Part => " (Priv)",
+                when Body_Part => " (Body)",
+                when Null_Part => raise Program_Error);
 
       begin
-         return (Show        => True,
-                 Shape       => Shape_None,
-                 Colour      =>
-                   To_Unbounded_String
-                     (if S.Ent = Standard_Standard then "blue"
-                      else ""),
-                 Fill_Colour => Null_Unbounded_String,
-                 Label       => To_Unbounded_String (Label));
+         return
+           (Show        => True,
+            Shape       => Shape_None,
+            Colour      =>
+              To_Unbounded_String
+                (if S.Ent = Standard_Standard then "blue" else ""),
+            Fill_Colour => Null_Unbounded_String,
+            Label       => To_Unbounded_String (Label));
       end NDI;
 
       ---------
@@ -544,14 +545,14 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
             Shape  => Edge_Normal,
             Colour => Null_Unbounded_String,
             Label  => Null_Unbounded_String);
-         --  ??? Label should reflect the Colour argument, but the current
-         --  names of the rules are too long and produce unreadable graphs.
+      --  ??? Label should reflect the Colour argument, but the current
+      --  names of the rules are too long and produce unreadable graphs.
       end EDI;
 
       Filename : constant String :=
         Sem_Util.Unique_Name (Main_Unit_Entity) & "_visibility_2";
 
-   --  Start of processing for Print
+      --  Start of processing for Print
 
    begin
       G.Write_Pdf_File
@@ -571,8 +572,7 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
       Source : constant Scope_Graphs.Vertex_Id :=
         Scope_Graph.Get_Vertex (From);
 
-      Target : constant Scope_Graphs.Vertex_Id :=
-        Scope_Graph.Get_Vertex (To);
+      Target : constant Scope_Graphs.Vertex_Id := Scope_Graph.Get_Vertex (To);
 
       procedure Is_Target
         (V           : Scope_Graphs.Vertex_Id;
@@ -607,15 +607,15 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
          --  ??? the above code produces no output in gdb; use Ada.Text_IO
 
          Ada.Text_IO.Put_Line
-           (To_String (S.Ent) &
-              " | " &
-            (case Declarative_Part'(S.Part) is
-                  when Visible_Part => "spec",
-                  when Private_Part => "priv",
-                  when Body_Part    => "body"));
+           (To_String (S.Ent)
+            & " | "
+            & (case Declarative_Part'(S.Part) is
+                 when Visible_Part => "spec",
+                 when Private_Part => "priv",
+                 when Body_Part => "body"));
       end Print_Vertex;
 
-   --  Start of processing for Print_Path
+      --  Start of processing for Print_Path
 
    begin
       Scope_Graphs.Shortest_Path
@@ -638,38 +638,39 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
       Inserted : Boolean;
       Position : Name_Info_Maps.Cursor;
 
-      procedure Add (Map      : in out Name_Graphs.Map;
-                     Key      : Entity_Name;
-                     New_Item : Entity_Name);
+      procedure Add
+        (Map      : in out Name_Graphs.Map;
+         Key      : Entity_Name;
+         New_Item : Entity_Name);
 
       ---------
       -- Add --
       ---------
 
-      procedure Add (Map      : in out Name_Graphs.Map;
-                     Key      : Entity_Name;
-                     New_Item : Entity_Name)
+      procedure Add
+        (Map      : in out Name_Graphs.Map;
+         Key      : Entity_Name;
+         New_Item : Entity_Name)
       is
          Inserted : Boolean;
          Position : Name_Graphs.Cursor;
 
       begin
-         Map.Insert (Key      => Key,
-                     Position => Position,
-                     Inserted => Inserted);
+         Map.Insert (Key => Key, Position => Position, Inserted => Inserted);
 
          Map (Position).Insert (New_Item);
       end Add;
 
-   --  Start of processing for Register_Name_Scope
+      --  Start of processing for Register_Name_Scope
 
    begin
       --  We first need info for all vertices and then we connect them
 
-      Hierarchy_Info.Insert (Key      => E,
-                             New_Item => Info,
-                             Position => Position,
-                             Inserted => Inserted);
+      Hierarchy_Info.Insert
+        (Key      => E,
+         New_Item => Info,
+         Position => Position,
+         Inserted => Inserted);
 
       ----------------------------------------------------------------------
       --  Create vertices
@@ -707,9 +708,7 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
    ---------------------------------
 
    function State_Refinement_Is_Visible
-     (State : Entity_Name;
-      From  : Name_Scope)
-      return Boolean
+     (State : Entity_Name; From : Name_Scope) return Boolean
    is
       Looking_At : constant Name_Scope :=
         (Ent => Scope (State), Part => Body_Part);
@@ -722,11 +721,12 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
       --  keep it for now, to be on the safe side, as I don't know
       --  what Non_Trivial_Path_Exists says when called with the same vertices.
 
-      return From = Looking_At
+      return
+        From = Looking_At
         or else Scope_Graph.Edge_Exists
-          (Components,
-           Scope_Graph.Get_Vertex (From),
-           Scope_Graph.Get_Vertex (Looking_At));
+                  (Components,
+                   Scope_Graph.Get_Vertex (From),
+                   Scope_Graph.Get_Vertex (Looking_At));
    end State_Refinement_Is_Visible;
 
    ------------------------
@@ -734,9 +734,7 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
    ------------------------
 
    function Part_Of_Is_Visible
-     (State : Entity_Name;
-      From  : Name_Scope)
-      return Boolean
+     (State : Entity_Name; From : Name_Scope) return Boolean
    is
       Looking_At : constant Name_Scope :=
         (Ent => Scope (State), Part => Private_Part);
@@ -744,11 +742,12 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
    begin
       --  ??? see the comment about From = Looking_At
 
-      return From = Looking_At
+      return
+        From = Looking_At
         or else Scope_Graph.Edge_Exists
-          (Components,
-           Scope_Graph.Get_Vertex (From),
-           Scope_Graph.Get_Vertex (Looking_At));
+                  (Components,
+                   Scope_Graph.Get_Vertex (From),
+                   Scope_Graph.Get_Vertex (Looking_At));
    end Part_Of_Is_Visible;
 
    -----------
@@ -761,10 +760,9 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
       use Ada.Strings.Fixed;
 
       S : constant String := To_String (EN);
-      J : constant Natural := Index (Source  => S,
-                                     Pattern => "__",
-                                     From    => S'Last,
-                                     Going   => Backward);
+      J : constant Natural :=
+        Index
+          (Source => S, Pattern => "__", From => S'Last, Going => Backward);
       --  Given "xxx__yyy__zzz" we trim the trailing "__zzz"
 
    begin
@@ -775,13 +773,14 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
    -- Child_Packages --
    --------------------
 
-   function Child_Packages (Parent_Package : Entity_Name)
-                            return Name_Sets.Set
+   function Child_Packages (Parent_Package : Entity_Name) return Name_Sets.Set
    is
       C : constant Name_Graphs.Cursor := Children.Find (Parent_Package);
    begin
-      return (if Name_Graphs.Has_Element (C) then Children (C)
-              else Name_Sets.Empty_Set);
+      return
+        (if Name_Graphs.Has_Element (C)
+         then Children (C)
+         else Name_Sets.Empty_Set);
    end Child_Packages;
 
 end Flow_Generated_Globals.Phase_2.Visibility;

@@ -48,11 +48,13 @@ package body Flow_Debug is
             case C is
                when Ada.Characters.Latin_1.CR =>
                   null;
+
                when Ada.Characters.Latin_1.LF =>
                   if Prev not in '(' | ')' then
                      Append (Temp_String, ' ');
                   end if;
                   Prev := C;
+
                when others =>
                   Append (Temp_String, C);
                   Prev := C;
@@ -126,7 +128,7 @@ package body Flow_Debug is
       Indent;
       for C in M.Iterate loop
          declare
-            K : Flow_Id          renames Flow_Id_Maps.Key (C);
+            K : Flow_Id renames Flow_Id_Maps.Key (C);
             V : Flow_Id_Sets.Set renames M (C);
          begin
             Sprint_Flow_Id (K);
@@ -153,7 +155,7 @@ package body Flow_Debug is
       Indent;
       for C in M.Iterate loop
          declare
-            A : Flow_Id          renames Dependency_Maps.Key (C);
+            A : Flow_Id renames Dependency_Maps.Key (C);
             D : Flow_Id_Sets.Set renames M (C);
          begin
             Sprint_Flow_Id (A);
@@ -176,11 +178,12 @@ package body Flow_Debug is
    begin
       if Present (S.Ent) then
          Sprint_Node (S.Ent);
-         Write_Str ("|" &
-                    (case Declarative_Part'(S.Part) is
-                        when Visible_Part => "spec",
-                        when Private_Part => "priv",
-                        when Body_Part    => "body"));
+         Write_Str
+           ("|"
+            & (case Declarative_Part'(S.Part) is
+                 when Visible_Part => "spec",
+                 when Private_Part => "priv",
+                 when Body_Part => "body"));
       else
          Write_Str ("null_flow_scope");
       end if;

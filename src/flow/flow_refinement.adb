@@ -21,20 +21,20 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;                 use Ada.Containers;
+with Ada.Containers; use Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
 
-with Nlists;                         use Nlists;
-with Output;                         use Output;
-with Sem_Aux;                        use Sem_Aux;
-with Sem_Prag;                       use Sem_Prag;
-with Sinfo.Utils;                    use Sinfo.Utils;
-with Sprint;                         use Sprint;
+with Nlists;      use Nlists;
+with Output;      use Output;
+with Sem_Aux;     use Sem_Aux;
+with Sem_Prag;    use Sem_Prag;
+with Sinfo.Utils; use Sinfo.Utils;
+with Sprint;      use Sprint;
 
-with Common_Iterators;               use Common_Iterators;
+with Common_Iterators; use Common_Iterators;
 
-with Flow_Debug;                     use Flow_Debug;
-with Flow_Utility;                   use Flow_Utility;
+with Flow_Debug;   use Flow_Debug;
+with Flow_Utility; use Flow_Utility;
 with Flow_Visibility;
 
 package body Flow_Refinement is
@@ -43,52 +43,48 @@ package body Flow_Refinement is
    -- Is_Visible --
    ----------------
 
-   function Is_Visible (Target_Scope : Flow_Scope;
-                        Looking_From : Flow_Scope)
-                        return Boolean
-   is
+   function Is_Visible
+     (Target_Scope : Flow_Scope; Looking_From : Flow_Scope) return Boolean is
    begin
       --  As far as flow analysis is concerned, there are no generics, only
       --  instances, so we should not ask about visibility of generic units.
       --  (The locations of generics and their instances impact visibility,
       --  but this already captured in the visibility graph.)
 
-      pragma Assert (if Present (Target_Scope)
-                     then not Is_Generic_Unit (Target_Scope.Ent));
+      pragma
+        Assert
+          (if Present (Target_Scope)
+             then not Is_Generic_Unit (Target_Scope.Ent));
 
-      pragma Assert (if Present (Looking_From)
-                     then not Is_Generic_Unit (Looking_From.Ent));
+      pragma
+        Assert
+          (if Present (Looking_From)
+             then not Is_Generic_Unit (Looking_From.Ent));
 
-      return Flow_Visibility.Is_Visible
-        (Looking_From => Looking_From,
-         Looking_At   => Target_Scope);
-      --  ??? this routine only flips the order or parameters between what is
-      --  more readable in flow and what the underlying Edge_Exists expects.
+      return
+        Flow_Visibility.Is_Visible
+          (Looking_From => Looking_From, Looking_At => Target_Scope);
+   --  ??? this routine only flips the order or parameters between what is
+   --  more readable in flow and what the underlying Edge_Exists expects.
    end Is_Visible;
 
-   function Is_Visible (N : Node_Id;
-                        S : Flow_Scope)
-                        return Boolean
-   is
+   function Is_Visible (N : Node_Id; S : Flow_Scope) return Boolean is
       Target_Scope : constant Flow_Scope := Get_Flow_Scope (N);
    begin
       return Is_Visible (Target_Scope, S);
    end Is_Visible;
 
-   function Is_Visible (F : Flow_Id;
-                        S : Flow_Scope)
-                        return Boolean
-   is
-     (case F.Kind is
+   function Is_Visible (F : Flow_Id; S : Flow_Scope) return Boolean
+   is (case F.Kind is
          when Direct_Mapping | Record_Field => Is_Visible (F.Node, S),
-         when others                        => raise Program_Error);
+         when others => raise Program_Error);
 
    -------------------------
    -- Is_Globally_Visible --
    -------------------------
 
-   function Is_Globally_Visible (N : Node_Id) return Boolean is
-     (Is_Visible (N, Null_Flow_Scope));
+   function Is_Globally_Visible (N : Node_Id) return Boolean
+   is (Is_Visible (N, Null_Flow_Scope));
 
    ---------------------------------
    -- Is_Visible_From_Other_Units --
@@ -96,8 +92,7 @@ package body Flow_Refinement is
 
    function Is_Visible_From_Other_Units (E : Entity_Id) return Boolean is
 
-      Looking_At : constant Flow_Scope :=
-        (Ent => E, Part => Visible_Part);
+      Looking_At : constant Flow_Scope := (Ent => E, Part => Visible_Part);
       --  We don't use Get_Flow_Scope here because top-level subprograms
       --  declared directly in the .adb file have all their Node_Ids belonging
       --  the body and Get_Flow_Scope would (rightly) return the body scope.
@@ -109,9 +104,10 @@ package body Flow_Refinement is
 
       Looking_From : constant Flow_Scope :=
         (Ent  => Main_Entity,
-         Part => (if Ekind (Main_Entity) = E_Package
-                  then Private_Part
-                  else Visible_Part));
+         Part =>
+           (if Ekind (Main_Entity) = E_Package
+            then Private_Part
+            else Visible_Part));
       --  If E itself is visible from the main entity of this unit, then it can
       --  be also seen from the other units. If the main entity is a package,
       --  then we check visibility from its private part, because anything
@@ -129,21 +125,22 @@ package body Flow_Refinement is
    begin
       return
         (if Is_Child_Unit (S.Ent)
-         then (Ent  => Scope (S.Ent),
-               Part => (if Private_Present (Enclosing_Comp_Unit_Node (S.Ent))
-                        then Private_Part
-                        else S.Part))
+         then
+           (Ent  => Scope (S.Ent),
+            Part =>
+              (if Private_Present (Enclosing_Comp_Unit_Node (S.Ent))
+               then Private_Part
+               else S.Part))
          else Get_Flow_Scope (Unit_Declaration_Node (S.Ent)));
-      --  Call to Get_Flow_Scope on a declaration node returns the scope where
-      --  S.Ent is declared, not the scope of the S.Ent itself.
+   --  Call to Get_Flow_Scope on a declaration node returns the scope where
+   --  S.Ent is declared, not the scope of the S.Ent itself.
    end Get_Enclosing_Flow_Scope;
 
    --------------------
    -- Get_Flow_Scope --
    --------------------
 
-   function Get_Flow_Scope (N : Node_Id) return Flow_Scope
-   is
+   function Get_Flow_Scope (N : Node_Id) return Flow_Scope is
       Context      : Node_Id := N;
       Prev_Context : Node_Id := Empty;
 
@@ -156,11 +153,10 @@ package body Flow_Refinement is
             --  restart the query at where the stub is.
 
             when N_Subunit =>
-               pragma Assert
-                 (Prev_Context = Proper_Body (Context));
+               pragma Assert (Prev_Context = Proper_Body (Context));
 
                Prev_Context := Empty;
-               Context      := Corresponding_Stub (Context);
+               Context := Corresponding_Stub (Context);
 
                pragma Assert (Nkind (Context) in N_Body_Stub);
 
@@ -179,11 +175,12 @@ package body Flow_Refinement is
                --  frontend instantiates a generic body].
 
                if Present (Prev_Context) then
-                  return (Ent  => Unique_Defining_Entity (Context),
-                          Part => Body_Part);
+                  return
+                    (Ent  => Unique_Defining_Entity (Context),
+                     Part => Body_Part);
                else
                   Prev_Context := Context;
-                  Context      := Parent (Context);
+                  Context := Parent (Context);
                end if;
 
             when N_Entry_Body
@@ -202,19 +199,16 @@ package body Flow_Refinement is
                                  or else Is_Invariant_Procedure (E))
                      then
                         --  ??? redirect to where the type is declared
-                        Context :=
-                          Declaration_Node (Etype (First_Formal (E)));
+                        Context := Declaration_Node (Etype (First_Formal (E)));
 
                      --  Likewise for expression of the generated dispatching
                      --  equality.
 
                      elsif Is_Tagged_Predefined_Eq (E) then
-                        Context :=
-                          Declaration_Node (Etype (First_Formal (E)));
+                        Context := Declaration_Node (Etype (First_Formal (E)));
 
                      else
-                        return (Ent  => E,
-                                Part => Body_Part);
+                        return (Ent => E, Part => Body_Part);
                      end if;
                   else
                      if Ekind (E) = E_Procedure
@@ -222,18 +216,15 @@ package body Flow_Refinement is
                                  or else Is_Invariant_Procedure (E))
                      then
                         --  ??? redirect to where the type is declared
-                        Context :=
-                          Declaration_Node (Etype (First_Formal (E)));
+                        Context := Declaration_Node (Etype (First_Formal (E)));
                      else
                         Prev_Context := Context;
-                        Context      := Parent (Context);
+                        Context := Parent (Context);
                      end if;
                   end if;
                end;
 
-            when N_Protected_Definition
-               | N_Task_Definition
-            =>
+            when N_Protected_Definition | N_Task_Definition =>
                --  Concurrent types have visible and private parts, but as
                --  far as state refinement it concerned, this does not matter.
                --
@@ -243,8 +234,9 @@ package body Flow_Refinement is
                --  ??? Defining_Entity doesn't work for concurrent definition;
                --  we need to call Parent to get to their declarations (there
                --  is no point in fixing this before the above ??? is decided).
-               return (Ent  => Defining_Entity (Parent (Context)),
-                       Part => Visible_Part);
+               return
+                 (Ent  => Defining_Entity (Parent (Context)),
+                  Part => Visible_Part);
 
             when N_Package_Specification =>
                declare
@@ -254,8 +246,10 @@ package body Flow_Refinement is
 
                begin
                   --  We have to decide if we come from visible or private part
-                  pragma Assert (Present (Prev_Context)
-                                 and then Context = Parent (Prev_Context));
+                  pragma
+                    Assert
+                      (Present (Prev_Context)
+                         and then Context = Parent (Prev_Context));
 
                   --  For an expression function we want to get the same
                   --  Flow_Scope we would get if it was a function with a body.
@@ -273,16 +267,15 @@ package body Flow_Refinement is
                   --  a dedicated check for the private part.
 
                   elsif Is_List_Member (Prev_Context)
-                    and then List_Containing (Prev_Context) =
-                             Private_Declarations (Context)
+                    and then List_Containing (Prev_Context)
+                             = Private_Declarations (Context)
                   then
                      Part := Private_Part;
                   else
                      Part := Visible_Part;
                   end if;
 
-                  return (Ent  => Ent,
-                          Part => Part);
+                  return (Ent => Ent, Part => Part);
                end;
 
             --  Front end rewrites aspects into pragmas with empty parents. In
@@ -295,26 +288,29 @@ package body Flow_Refinement is
                --  analysing any subprogram), but is needed for proof (which
                --  simply calls Get_Flow_Scope as needed).
 
-               if Get_Pragma_Id (Context) in Pragma_Contract_Cases
-                                           | Pragma_Initial_Condition
-                                           | Pragma_Precondition
-                                           | Pragma_Postcondition
+               if Get_Pragma_Id (Context)
+                  in Pragma_Contract_Cases
+                   | Pragma_Initial_Condition
+                   | Pragma_Precondition
+                   | Pragma_Postcondition
                then
                   if From_Aspect_Specification (Context) then
-                     if Ekind (Entity (Corresponding_Aspect (Context))) in
-                          Access_Subprogram_Kind
+                     if Ekind (Entity (Corresponding_Aspect (Context)))
+                        in Access_Subprogram_Kind
                      then
-                        pragma Assert
-                          (Get_Pragma_Id (Context) in Pragma_Precondition
-                                                    | Pragma_Postcondition);
+                        pragma
+                          Assert
+                            (Get_Pragma_Id (Context)
+                             in Pragma_Precondition | Pragma_Postcondition);
                      else
                         return
                           (Ent  => Entity (Corresponding_Aspect (Context)),
                            Part => Body_Part);
                      end if;
                   else
-                     return (Ent  => Unique_Defining_Entity (Parent (Context)),
-                             Part => Body_Part);
+                     return
+                       (Ent  => Unique_Defining_Entity (Parent (Context)),
+                        Part => Body_Part);
                   end if;
                end if;
 
@@ -335,21 +331,22 @@ package body Flow_Refinement is
                if Present (Prev_Context) then
                   if Is_Tagged_Predefined_Eq (Defining_Entity (Context)) then
                      Prev_Context := Context;
-                     Context      :=
+                     Context :=
                        Declaration_Node
                          (Etype (First_Formal (Defining_Entity (Context))));
                   else
-                     return (Ent  => Defining_Entity (Context),
-                             Part => Visible_Part);
+                     return
+                       (Ent  => Defining_Entity (Context),
+                        Part => Visible_Part);
                   end if;
                else
                   Prev_Context := Context;
-                  Context      := Parent (Context);
+                  Context := Parent (Context);
                end if;
 
             when others =>
                Prev_Context := Context;
-               Context      := Parent (Context);
+               Context := Parent (Context);
          end case;
 
          exit when No (Context);
@@ -362,9 +359,8 @@ package body Flow_Refinement is
    -- Subprogram_Refinement_Is_Visible --
    --------------------------------------
 
-   function Subprogram_Refinement_Is_Visible (E : Entity_Id;
-                                              S : Flow_Scope)
-                                              return Boolean
+   function Subprogram_Refinement_Is_Visible
+     (E : Entity_Id; S : Flow_Scope) return Boolean
    is
       Body_N : constant Node_Id := Get_Body (E);
       --  The outer-most node of the body of E, so that its Get_Flow_Scope will
@@ -372,61 +368,56 @@ package body Flow_Refinement is
       --  itself.
 
    begin
-      return Present (Body_N)
-        and then Is_Visible (Get_Flow_Scope (Body_N), S);
+      return Present (Body_N) and then Is_Visible (Get_Flow_Scope (Body_N), S);
    end Subprogram_Refinement_Is_Visible;
 
    ---------------------------------
    -- State_Refinement_Is_Visible --
    ---------------------------------
 
-   function State_Refinement_Is_Visible (E : E_Abstract_State_Id;
-                                         S : Flow_Scope)
-                                         return Boolean
-   is
+   function State_Refinement_Is_Visible
+     (E : E_Abstract_State_Id; S : Flow_Scope) return Boolean is
    begin
       --  State refinement is visible iff the body of its enclosing package is
       --  visible.
 
-      return Is_Visible (Target_Scope => (Ent => Scope (E), Part => Body_Part),
-                         Looking_From => S);
+      return
+        Is_Visible
+          (Target_Scope => (Ent => Scope (E), Part => Body_Part),
+           Looking_From => S);
    end State_Refinement_Is_Visible;
 
    ------------------------
    -- Is_Fully_Contained --
    ------------------------
 
-   function Is_Fully_Contained (State   : Entity_Id;
-                                Outputs : Node_Sets.Set;
-                                Scop    : Flow_Scope)
-                                return Boolean
-   is
+   function Is_Fully_Contained
+     (State : Entity_Id; Outputs : Node_Sets.Set; Scop : Flow_Scope)
+      return Boolean is
    begin
-      return Node_Sets.Is_Subset (Subset =>
-                                    Down_Project (State, Body_Scope (Scop)),
-                                  Of_Set => Outputs);
+      return
+        Node_Sets.Is_Subset
+          (Subset => Down_Project (State, Body_Scope (Scop)),
+           Of_Set => Outputs);
    end Is_Fully_Contained;
 
-   function Is_Fully_Contained (State   : Flow_Id;
-                                Outputs : Flow_Id_Sets.Set;
-                                Scop    : Flow_Scope)
-                                return Boolean
-   is
-     (case State.Kind is
+   function Is_Fully_Contained
+     (State : Flow_Id; Outputs : Flow_Id_Sets.Set; Scop : Flow_Scope)
+      return Boolean
+   is (case State.Kind is
          when Direct_Mapping =>
-            Is_Fully_Contained (State.Node, To_Node_Set (Outputs), Scop),
-         when others         =>
-            raise Program_Error);
+           Is_Fully_Contained (State.Node, To_Node_Set (Outputs), Scop),
+         when others => raise Program_Error);
 
    ----------------
    -- Up_Project --
    ----------------
 
-   procedure Up_Project (Vars      :     Node_Sets.Set;
-                         Scope     :     Flow_Scope;
-                         Projected : out Node_Sets.Set;
-                         Partial   : out Node_Sets.Set)
-   is
+   procedure Up_Project
+     (Vars      : Node_Sets.Set;
+      Scope     : Flow_Scope;
+      Projected : out Node_Sets.Set;
+      Partial   : out Node_Sets.Set) is
    begin
       Projected.Clear;
       Partial.Clear;
@@ -451,11 +442,7 @@ package body Flow_Refinement is
       end loop;
    end Up_Project;
 
-   function Up_Project
-     (Var   : Flow_Id;
-      Scope : Flow_Scope)
-      return Flow_Id
-   is
+   function Up_Project (Var : Flow_Id; Scope : Flow_Scope) return Flow_Id is
    begin
       if Var.Kind = Direct_Mapping
         and then Is_Constituent (Get_Direct_Mapping_Id (Var))
@@ -473,13 +460,16 @@ package body Flow_Refinement is
             --  ??? repetition of code for Entity_Id/Entity_Name/Flow_Id and
             --  their sets and maps deserves a non-trivial rewrite.
 
-            Up_Project (Node_Sets.To_Set (Get_Direct_Mapping_Id (Var)),
-                        Scope, Projected_Entity, Partial_Entity);
+            Up_Project
+              (Node_Sets.To_Set (Get_Direct_Mapping_Id (Var)),
+               Scope,
+               Projected_Entity,
+               Partial_Entity);
 
             --  Either Projected_Entity is empty and Partial_Entity is a
             --  singleton set, or the other way round.
-            pragma Assert
-              (Projected_Entity.Length + Partial_Entity.Length = 1);
+            pragma
+              Assert (Projected_Entity.Length + Partial_Entity.Length = 1);
 
             if Partial_Entity.Is_Empty then
                return Var;
@@ -492,17 +482,17 @@ package body Flow_Refinement is
       end if;
    end Up_Project;
 
-   procedure Up_Project (Vars           :     Global_Nodes;
-                         Projected_Vars : out Global_Nodes;
-                         Scope          : Flow_Scope)
+   procedure Up_Project
+     (Vars           : Global_Nodes;
+      Projected_Vars : out Global_Nodes;
+      Scope          : Flow_Scope)
    is
       --  ??? the following code for up-projecting generated Refined_Global
       --  has much in common with code for up-projecting Refined_Depends;
       --  they should be refactored.
 
       function Visible_View (E : Entity_Id) return Entity_Id
-      with Pre  => Present (E),
-           Post => Present (Visible_View'Result);
+      with Pre => Present (E), Post => Present (Visible_View'Result);
       --  Return the most precise representation of F visible from Scope
 
       procedure Add_Mapping (Item : Entity_Id);
@@ -519,8 +509,7 @@ package body Flow_Refinement is
          Repr : constant Entity_Id := Visible_View (Item);
 
       begin
-         Projection_Map.Insert (Key      => Item,
-                                New_Item => Repr);
+         Projection_Map.Insert (Key => Item, New_Item => Repr);
 
          Visible_Views.Include (Repr);
       end Add_Mapping;
@@ -536,12 +525,13 @@ package body Flow_Refinement is
          Up_Project (Node_Sets.To_Set (E), Scope, Projected, Partial);
          pragma Assert (Partial.Length + Projected.Length = 1);
 
-         return (if Projected.Is_Empty
-                 then Partial (Partial.First)
-                 else Projected (Projected.First));
+         return
+           (if Projected.Is_Empty
+            then Partial (Partial.First)
+            else Projected (Projected.First));
       end Visible_View;
 
-   --  Start of processing of Up_Project
+      --  Start of processing of Up_Project
 
    begin
       --  First, up-project all globals to their most precise representation
@@ -601,9 +591,8 @@ package body Flow_Refinement is
             --  this state is not fully written, then it must be added to
             --  projected inputs.
             if Item /= Projected_Item
-              and then not Is_Fully_Contained (Projected_Item,
-                                               Vars.Outputs,
-                                               Scope)
+              and then not Is_Fully_Contained
+                             (Projected_Item, Vars.Outputs, Scope)
             then
                Projected_Vars.Inputs.Include (Projected_Item);
             end if;
@@ -628,17 +617,17 @@ package body Flow_Refinement is
 
    end Up_Project;
 
-   procedure Up_Project (Vars           :     Global_Flow_Ids;
-                         Projected_Vars : out Global_Flow_Ids;
-                         Scope          : Flow_Scope)
+   procedure Up_Project
+     (Vars           : Global_Flow_Ids;
+      Projected_Vars : out Global_Flow_Ids;
+      Scope          : Flow_Scope)
    is
       --  ??? the following code for up-projecting generated Refined_Global
       --  has much in common with code for up-projecting Refined_Depends;
       --  they should be refactored.
 
       function Visible_View (F : Flow_Id) return Flow_Id
-      with Pre  => Present (F),
-           Post => Present (Visible_View'Result);
+      with Pre => Present (F), Post => Present (Visible_View'Result);
       --  Return the most precise representation of F visible from Scope
 
       procedure Add_Mapping (Item : Flow_Id)
@@ -650,8 +639,8 @@ package body Flow_Refinement is
 
       Original : constant Global_Flow_Ids :=
         (Proof_Ins => Change_Variant (Vars.Proof_Ins, Normal_Use),
-         Inputs    => Change_Variant (Vars.Inputs,    Normal_Use),
-         Outputs   => Change_Variant (Vars.Outputs,   Normal_Use));
+         Inputs    => Change_Variant (Vars.Inputs, Normal_Use),
+         Outputs   => Change_Variant (Vars.Outputs, Normal_Use));
       --  Original contract with Normal_Use instead of In_View/Out_View
       --  variants to simplify comparing proof_ins, inputs and outputs.
 
@@ -663,8 +652,7 @@ package body Flow_Refinement is
          Repr : constant Flow_Id := Visible_View (Item);
 
       begin
-         Projection_Map.Insert (Key      => Item,
-                                New_Item => Repr);
+         Projection_Map.Insert (Key => Item, New_Item => Repr);
 
          Visible_Views.Include (Repr);
       end Add_Mapping;
@@ -678,7 +666,7 @@ package body Flow_Refinement is
          return Up_Project (F, Scope);
       end Visible_View;
 
-   --  Start of processing of Up_Project
+      --  Start of processing of Up_Project
 
    begin
       --  First, up-project all globals to their most precise representation
@@ -738,9 +726,8 @@ package body Flow_Refinement is
             --  this state is not fully written, then it must be added to
             --  projected inputs.
             if Item /= Projected_Item
-              and then not Is_Fully_Contained (Projected_Item,
-                                               Original.Outputs,
-                                               Scope)
+              and then not Is_Fully_Contained
+                             (Projected_Item, Original.Outputs, Scope)
             then
                Projected_Vars.Inputs.Include (Projected_Item);
             end if;
@@ -767,13 +754,14 @@ package body Flow_Refinement is
 
       Projected_Vars :=
         (Proof_Ins => Change_Variant (Projected_Vars.Proof_Ins, In_View),
-         Inputs    => Change_Variant (Projected_Vars.Inputs,    In_View),
-         Outputs   => Change_Variant (Projected_Vars.Outputs,   Out_View));
+         Inputs    => Change_Variant (Projected_Vars.Inputs, In_View),
+         Outputs   => Change_Variant (Projected_Vars.Outputs, Out_View));
    end Up_Project;
 
-   procedure Up_Project (Deps           : Dependency_Maps.Map;
-                         Projected_Deps : out Dependency_Maps.Map;
-                         Scope          : Flow_Scope)
+   procedure Up_Project
+     (Deps           : Dependency_Maps.Map;
+      Projected_Deps : out Dependency_Maps.Map;
+      Scope          : Flow_Scope)
    is
       LHS_Constituents : Flow_Id_Sets.Set;
       --  Constituents that are appear on the LHS of the dependency map
@@ -787,7 +775,8 @@ package body Flow_Refinement is
       Visible_Views  : Flow_Id_Sets.Set;
       Projection_Map : Flow_Id_Surjection.Map;
 
-      procedure Check_Direct_Mappings (Deps : Dependency_Maps.Map) with Ghost;
+      procedure Check_Direct_Mappings (Deps : Dependency_Maps.Map)
+      with Ghost;
       --  A sanity check: this up-projection routine is only dealing with
       --  explicit Depends/Refined_Depends contracts and only when those
       --  contracts are known to not miss any objects (which is enforced by
@@ -804,8 +793,7 @@ package body Flow_Refinement is
       --  are not visible in the body of the current subprogram.
 
       function Visible_View (F : Flow_Id) return Flow_Id
-      with Pre  => Present (F),
-           Post => Present (Visible_View'Result);
+      with Pre => Present (F), Post => Present (Visible_View'Result);
       --  Return the most precise representation of F visible from Scope
 
       ---------------------------
@@ -846,13 +834,11 @@ package body Flow_Refinement is
 
          return
            Is_Abstract_State (F)
-             and then
-           Is_Visible
-             (Target_Scope =>
-                (Sinfo.Nodes.Scope (F.Node), Private_Part),
-              Looking_From => Body_Scope (Scope))
-             and then
-           Down_Project (F, Body_Scope (Scope)).Contains (F);
+           and then Is_Visible
+                      (Target_Scope =>
+                         (Sinfo.Nodes.Scope (F.Node), Private_Part),
+                       Looking_From => Body_Scope (Scope))
+           and then Down_Project (F, Body_Scope (Scope)).Contains (F);
       end Is_Hidden_Constituent;
 
       ------------------
@@ -864,7 +850,7 @@ package body Flow_Refinement is
          return Up_Project (F, Scope);
       end Visible_View;
 
-   --  Start of processing for Up_Project
+      --  Start of processing for Up_Project
 
    begin
       Check_Direct_Mappings (Deps);
@@ -888,8 +874,7 @@ package body Flow_Refinement is
                Repr : constant Flow_Id := Visible_View (Item);
 
             begin
-               Projection_Map.Include (Key      => Item,
-                                       New_Item => Repr);
+               Projection_Map.Include (Key => Item, New_Item => Repr);
 
                Visible_Views.Include (Repr);
             end Add_Mapping;
@@ -940,9 +925,7 @@ package body Flow_Refinement is
             Var : Flow_Id renames Dependency_Maps.Key (Clause);
 
          begin
-            if Is_Constituent (Var)
-              or else Is_Hidden_Constituent (Var)
-            then
+            if Is_Constituent (Var) or else Is_Hidden_Constituent (Var) then
                LHS_Constituents.Insert (Var);
             end if;
          end;
@@ -953,7 +936,7 @@ package body Flow_Refinement is
 
       for Clause in Deps.Iterate loop
          declare
-            LHS : Flow_Id          renames Dependency_Maps.Key (Clause);
+            LHS : Flow_Id renames Dependency_Maps.Key (Clause);
             RHS : Flow_Id_Sets.Set renames Deps (Clause);
 
             Projected_RHS    : Flow_Id_Sets.Set;
@@ -980,8 +963,8 @@ package body Flow_Refinement is
                   --  constituents behave as if they would be updated with
                   --  their old values.
 
-                  if not Is_Fully_Contained (LHS_State, LHS_Constituents,
-                                             Scope)
+                  if not Is_Fully_Contained
+                           (LHS_State, LHS_Constituents, Scope)
                   then
                      Projected_RHS.Include (LHS_State);
                   end if;
@@ -990,9 +973,10 @@ package body Flow_Refinement is
                   --  without crashing if State is already in the map (i.e.
                   --  it was inserted when up-projecting another constituent).
 
-                  Projected_Deps.Insert (Key      => LHS_State,
-                                         Position => Projected_Clause,
-                                         Inserted => Unused);
+                  Projected_Deps.Insert
+                    (Key      => LHS_State,
+                     Position => Projected_Clause,
+                     Inserted => Unused);
                end;
 
             --  Otherwise, the LHS was transparently projected and will be used
@@ -1006,9 +990,10 @@ package body Flow_Refinement is
                      else Null_Flow_Id);
 
                begin
-                  Projected_Deps.Insert (Key      => LHS_Object,
-                                         Position => Projected_Clause,
-                                         Inserted => Unused);
+                  Projected_Deps.Insert
+                    (Key      => LHS_Object,
+                     Position => Projected_Clause,
+                     Inserted => Unused);
 
                   if Present (LHS_Object) then
                      Non_Null_RHSs.Union (Projected_RHS);
@@ -1030,9 +1015,10 @@ package body Flow_Refinement is
       if Dependency_Maps.Has_Element (Null_Clause) then
          Projected_Deps (Null_Clause).Difference (Non_Null_RHSs);
 
-         --  ??? it is tempting to remove the "null => null" clause here, just
-         --  like it is in Compute_Dependency_Relation, but apparently this
-         --  cause crashes when processing unconstrained record types
+      --  ??? it is tempting to remove the "null => null" clause here, just
+      --  like it is in Compute_Dependency_Relation, but apparently this
+      --  cause crashes when processing unconstrained record types
+
       end if;
 
       Check_Direct_Mappings (Projected_Deps);
@@ -1042,10 +1028,8 @@ package body Flow_Refinement is
    -- Get_Contract_Node --
    -----------------------
 
-   function Get_Contract_Node (E : Entity_Id;
-                               S : Flow_Scope;
-                               C : Contract_T)
-                               return Node_Id
+   function Get_Contract_Node
+     (E : Entity_Id; S : Flow_Scope; C : Contract_T) return Node_Id
    is
       Prag : Node_Id;
 
@@ -1055,18 +1039,19 @@ package body Flow_Refinement is
            Find_Contract
              (E,
               (case C is
-                  when Global_Contract  => Pragma_Refined_Global,
-                  when Depends_Contract => Pragma_Refined_Depends));
+                 when Global_Contract => Pragma_Refined_Global,
+                 when Depends_Contract => Pragma_Refined_Depends));
       else
          Prag := Empty;
       end if;
 
       if No (Prag) then
          Prag :=
-           Find_Contract (E,
-                          (case C is
-                              when Global_Contract  => Pragma_Global,
-                              when Depends_Contract => Pragma_Depends));
+           Find_Contract
+             (E,
+              (case C is
+                 when Global_Contract => Pragma_Global,
+                 when Depends_Contract => Pragma_Depends));
       end if;
 
       return Prag;
@@ -1076,9 +1061,7 @@ package body Flow_Refinement is
    -- Down_Project --
    ------------------
 
-   function Down_Project (Var : Entity_Id;
-                          S   : Flow_Scope)
-                          return Node_Sets.Set
+   function Down_Project (Var : Entity_Id; S : Flow_Scope) return Node_Sets.Set
    is
       P : Node_Sets.Set;
 
@@ -1121,7 +1104,7 @@ package body Flow_Refinement is
          end if;
       end Expand;
 
-   --  Start of processing for Down_Project
+      --  Start of processing for Down_Project
 
    begin
       Expand (Var);
@@ -1129,9 +1112,8 @@ package body Flow_Refinement is
       return P;
    end Down_Project;
 
-   function Down_Project (Vars : Node_Sets.Set;
-                          S    : Flow_Scope)
-                          return Node_Sets.Set
+   function Down_Project
+     (Vars : Node_Sets.Set; S : Flow_Scope) return Node_Sets.Set
    is
       P : Node_Sets.Set;
    begin
@@ -1142,26 +1124,26 @@ package body Flow_Refinement is
       return P;
    end Down_Project;
 
-   function Down_Project (Var : Flow_Id;
-                          S   : Flow_Scope)
-                          return Flow_Id_Sets.Set
-   is
+   function Down_Project
+     (Var : Flow_Id; S : Flow_Scope) return Flow_Id_Sets.Set is
    begin
       case Var.Kind is
          when Direct_Mapping =>
             return
-              To_Flow_Id_Set (Down_Project (Get_Direct_Mapping_Id (Var), S),
-                              View => Var.Variant);
+              To_Flow_Id_Set
+                (Down_Project (Get_Direct_Mapping_Id (Var), S),
+                 View => Var.Variant);
+
          when Magic_String =>
             return Flow_Id_Sets.To_Set (Var);
+
          when others =>
             raise Program_Error;
       end case;
    end Down_Project;
 
-   function Down_Project (Vars : Flow_Id_Sets.Set;
-                          S    : Flow_Scope)
-                          return Flow_Id_Sets.Set
+   function Down_Project
+     (Vars : Flow_Id_Sets.Set; S : Flow_Scope) return Flow_Id_Sets.Set
    is
       P : Flow_Id_Sets.Set;
    begin
@@ -1209,9 +1191,9 @@ package body Flow_Refinement is
                   --  left-hand sides of its Initializes aspect might include
                   --  objects from the package body that are promoted to
                   --  implicit abstract states.
-                  pragma Assert (F.Kind in Direct_Mapping
-                                         | Magic_String
-                                         | Null_Value);
+                  pragma
+                    Assert
+                      (F.Kind in Direct_Mapping | Magic_String | Null_Value);
 
                   if F.Kind = Direct_Mapping
                     and then Get_Direct_Mapping_Id (F) = Target_Ent
@@ -1239,9 +1221,8 @@ package body Flow_Refinement is
    -- Is_Initialized_At_Elaboration --
    -----------------------------------
 
-   function Is_Initialized_At_Elaboration (E : N_Entity_Id;
-                                           S : Flow_Scope)
-                                           return Boolean
+   function Is_Initialized_At_Elaboration
+     (E : N_Entity_Id; S : Flow_Scope) return Boolean
    is
       Trace : constant Boolean := False;
       --  Enable this for some tracing output
@@ -1259,9 +1240,11 @@ package body Flow_Refinement is
            Ada.Containers.Doubly_Linked_Lists (Element_Type => Flow_Scope);
 
          function Heritage (S : Flow_Scope) return Scope_Lists.List
-           with Post => not Heritage'Result.Is_Empty and then
-                        No (Heritage'Result.First_Element) and then
-                        Heritage'Result.Last_Element = S;
+         with
+           Post =>
+             not Heritage'Result.Is_Empty
+             and then No (Heritage'Result.First_Element)
+             and then Heritage'Result.Last_Element = S;
          --  Determine all ancestors of S up to and including Standard
 
          --------------
@@ -1271,7 +1254,7 @@ package body Flow_Refinement is
          function Heritage (S : Flow_Scope) return Scope_Lists.List is
 
             function Ancestor (S : Flow_Scope) return Flow_Scope
-              with Pre => Present (S);
+            with Pre => Present (S);
             --  Determine the immediate ancestor of S
 
             --------------
@@ -1292,7 +1275,7 @@ package body Flow_Refinement is
             Context : Flow_Scope := S;
             L       : Scope_Lists.List;
 
-         --  Start of processing for Heritage
+            --  Start of processing for Heritage
 
          begin
             loop
@@ -1312,7 +1295,7 @@ package body Flow_Refinement is
 
          Last_Common_Ancestor : Scope_Lists.Cursor;
 
-      --  Start of processing for Common_Ancestor
+         --  Start of processing for Common_Ancestor
 
       begin
          loop
@@ -1334,13 +1317,13 @@ package body Flow_Refinement is
          end loop;
       end Common_Ancestor;
 
-      Ent  : Entity_Id  := E;
+      Ent  : Entity_Id := E;
       Ptr  : Flow_Scope := Get_Flow_Scope (E);
       Init : Boolean;
 
       Common_Scope : constant Flow_Scope := Common_Ancestor (Ptr, S);
 
-   --  Start of processing for Is_Initialized_At_Elaboration
+      --  Start of processing for Is_Initialized_At_Elaboration
 
    begin
       pragma Annotate (Xcov, Exempt_On, "Debugging code");
@@ -1370,11 +1353,11 @@ package body Flow_Refinement is
             when E_Abstract_State =>
                null;
 
-            when E_Constant       =>
+            when E_Constant =>
                --  Constants are always initialized at elaboration
                return True;
 
-            when E_Variable       =>
+            when E_Variable =>
                if Is_Concurrent_Type (Etype (Ent)) then
                   --  Instances of a protected type are always fully default
                   --  initialized.
@@ -1391,7 +1374,7 @@ package body Flow_Refinement is
                   return True;
                end if;
 
-            when others           =>
+            when others =>
                raise Program_Error;
          end case;
 
@@ -1404,9 +1387,9 @@ package body Flow_Refinement is
             end if;
             pragma Annotate (Xcov, Exempt_Off);
 
-            if Ekind (Ent) = E_Variable and then
-              Present (Encapsulating_State (Ent)) and then
-              Get_Flow_Scope (Encapsulating_State (Ent)).Ent = Ptr.Ent
+            if Ekind (Ent) = E_Variable
+              and then Present (Encapsulating_State (Ent))
+              and then Get_Flow_Scope (Encapsulating_State (Ent)).Ent = Ptr.Ent
             then
                pragma Annotate (Xcov, Exempt_On, "Debugging code");
                if Trace then
@@ -1414,8 +1397,8 @@ package body Flow_Refinement is
                end if;
                pragma Annotate (Xcov, Exempt_Off);
 
-               Init := Present (Find_In_Initializes
-                                  (Encapsulating_State (Ent)));
+               Init :=
+                 Present (Find_In_Initializes (Encapsulating_State (Ent)));
             end if;
             return Init;
          end if;
@@ -1435,45 +1418,39 @@ package body Flow_Refinement is
    ----------------------------------------------
 
    function Mentions_State_With_Ambiguous_Refinement
-     (N     : Node_Id;
-      Scope : Flow_Scope)
-      return Boolean
+     (N : Node_Id; Scope : Flow_Scope) return Boolean
    is
 
-      Decl_Id : constant Entity_Id := Unique_Defining_Entity
-        (Find_Related_Declaration_Or_Body (N));
+      Decl_Id : constant Entity_Id :=
+        Unique_Defining_Entity (Find_Related_Declaration_Or_Body (N));
       --  Declaration of the entity to which the pragma N is attached
 
       Spec_Id : constant Entity_Id :=
-        (if Is_Single_Task_Object (Decl_Id)
-         then Etype (Decl_Id)
-         else Decl_Id);
+        (if Is_Single_Task_Object (Decl_Id) then Etype (Decl_Id) else Decl_Id);
       --  If this is a single task object, then get the corresponding task type
 
       Globals : constant Raw_Global_Nodes :=
         (case Get_Pragma_Id (N) is
-            when Pragma_Depends => Parse_Depends_Contract (Spec_Id, N),
-            when Pragma_Global  => Parse_Global_Contract (Spec_Id, N),
-            when others         => raise Program_Error);
+           when Pragma_Depends => Parse_Depends_Contract (Spec_Id, N),
+           when Pragma_Global => Parse_Global_Contract (Spec_Id, N),
+           when others => raise Program_Error);
       --  Globals of Spec_Id, taken either from the Depends or Global contract
 
-      function Has_Ambiguous_Refinement (E : Entity_Id) return Boolean is
-        (Down_Project (E, Scope).Length > 1);
+      function Has_Ambiguous_Refinement (E : Entity_Id) return Boolean
+      is (Down_Project (E, Scope).Length > 1);
       --  Returns True iff refinement of E is ambiguous, i.e. it is an abstract
       --  state with more than one constituent.
 
-   --  Start of processing for Mentions_State_With_Ambiguous_Refinement
+      --  Start of processing for Mentions_State_With_Ambiguous_Refinement
 
    begin
       --  Detect global inputs or proof_ins with ambiguous refinement; global
       --  outputs always have all of their constituents in the refinement.
 
       return
-        (for some Input of Globals.Inputs =>
-           Has_Ambiguous_Refinement (Input))
-          or else
-        (for some Proof_In of Globals.Proof_Ins =>
-           Has_Ambiguous_Refinement (Proof_In));
+        (for some Input of Globals.Inputs => Has_Ambiguous_Refinement (Input))
+        or else (for some Proof_In of Globals.Proof_Ins =>
+                   Has_Ambiguous_Refinement (Proof_In));
 
    end Mentions_State_With_Ambiguous_Refinement;
 
@@ -1482,10 +1459,8 @@ package body Flow_Refinement is
    -----------------------
 
    function Refinement_Needed (E : Entity_Id) return Boolean is
-      Depends_N : constant Node_Id :=
-        Find_Contract (E, Pragma_Depends);
-      Global_N  : constant Node_Id :=
-        Find_Contract (E, Pragma_Global);
+      Depends_N : constant Node_Id := Find_Contract (E, Pragma_Depends);
+      Global_N  : constant Node_Id := Find_Contract (E, Pragma_Global);
 
       Refined_Depends_N : constant Node_Id :=
         Find_Contract (E, Pragma_Refined_Depends);
@@ -1499,22 +1474,24 @@ package body Flow_Refinement is
         --  1) No Global and no Depends aspect
         (No (Global_N) and then No (Depends_N) and then not Is_Pure (E))
 
-          or else
+        or else
 
         --  2) Global refers to state abstraction with visible refinement but
         --     no Refined_Global is present.
-        (Present (Global_N) and then
-         No (Refined_Global_N) and then
-         No (Refined_Depends_N) and then  -- ???
+        (Present (Global_N)
+         and then No (Refined_Global_N)
+         and then No (Refined_Depends_N)
+         and then  -- ???
          Mentions_State_With_Ambiguous_Refinement (Global_N, B_Scope))
 
-          or else
+        or else
 
         --  3) Depends refers to state abstraction with visible refinement but
         --     no Refined_Depends is present.
-        (Present (Depends_N) and then
-         No (Refined_Depends_N) and then
-         No (Refined_Global_N) and then  -- ???
+        (Present (Depends_N)
+         and then No (Refined_Depends_N)
+         and then No (Refined_Global_N)
+         and then  -- ???
          Mentions_State_With_Ambiguous_Refinement (Depends_N, B_Scope));
    end Refinement_Needed;
 
@@ -1522,9 +1499,8 @@ package body Flow_Refinement is
    -- Nested_Within_Concurrent_Type --
    -----------------------------------
 
-   function Nested_Within_Concurrent_Type (T : Concurrent_Kind_Id;
-                                           S : Flow_Scope)
-                                           return Boolean
+   function Nested_Within_Concurrent_Type
+     (T : Concurrent_Kind_Id; S : Flow_Scope) return Boolean
    is (Present (S) and then Sem_Util.Scope_Within_Or_Same (S.Ent, T));
 
    -------------------------------------
@@ -1532,11 +1508,8 @@ package body Flow_Refinement is
    -------------------------------------
 
    function Is_Boundary_Subprogram_For_Type
-     (Subprogram : Callable_Kind_Id;
-      Typ        : Type_Kind_Id)
-      return Boolean
-   is
-     (Scope_Within_Or_Same (Scope (Subprogram), Scope (Typ))
-      and then Is_Globally_Visible (Subprogram));
+     (Subprogram : Callable_Kind_Id; Typ : Type_Kind_Id) return Boolean
+   is (Scope_Within_Or_Same (Scope (Subprogram), Scope (Typ))
+       and then Is_Globally_Visible (Subprogram));
 
 end Flow_Refinement;

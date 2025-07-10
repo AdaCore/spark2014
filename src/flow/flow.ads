@@ -24,13 +24,13 @@
 with Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
-with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
-with Common_Containers;          use Common_Containers;
-with Einfo.Entities;             use Einfo.Entities;
-with Einfo.Utils;                use Einfo.Utils;
-with Flow_Dependency_Maps;       use Flow_Dependency_Maps;
-with Flow_Types;                 use Flow_Types;
-with Types;                      use Types;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Common_Containers;     use Common_Containers;
+with Einfo.Entities;        use Einfo.Entities;
+with Einfo.Utils;           use Einfo.Utils;
+with Flow_Dependency_Maps;  use Flow_Dependency_Maps;
+with Flow_Types;            use Flow_Types;
+with Types;                 use Types;
 
 package Flow is
 
@@ -52,33 +52,37 @@ package Flow is
    --  Flow_Graphs
    ----------------------------------------------------------------------
 
-   package Attribute_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Flow_Graphs.Vertex_Id,
-      Element_Type    => V_Attributes,
-      Hash            => Flow_Graphs.Vertex_Hash,
-      Equivalent_Keys => Flow_Graphs."=");
+   package Attribute_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Flow_Graphs.Vertex_Id,
+        Element_Type    => V_Attributes,
+        Hash            => Flow_Graphs.Vertex_Hash,
+        Equivalent_Keys => Flow_Graphs."=");
 
-   procedure Print_Graph_Vertex (G : Flow_Graphs.Graph;
-                                 M : Attribute_Maps.Map;
-                                 V : Flow_Graphs.Vertex_Id);
+   procedure Print_Graph_Vertex
+     (G : Flow_Graphs.Graph;
+      M : Attribute_Maps.Map;
+      V : Flow_Graphs.Vertex_Id);
    --  Print a human-readable representation for the given vertex.
 
    ----------------------------------------------------------------------
    --  Utility packages
    ----------------------------------------------------------------------
 
-   package Vertex_Sets is new Ada.Containers.Hashed_Sets
-     (Element_Type        => Flow_Graphs.Vertex_Id,
-      Hash                => Flow_Graphs.Vertex_Hash,
-      Equivalent_Elements => Flow_Graphs."=",
-      "="                 => Flow_Graphs."=");
+   package Vertex_Sets is new
+     Ada.Containers.Hashed_Sets
+       (Element_Type        => Flow_Graphs.Vertex_Id,
+        Hash                => Flow_Graphs.Vertex_Hash,
+        Equivalent_Elements => Flow_Graphs."=",
+        "="                 => Flow_Graphs."=");
 
-   package Vertex_To_Vertex_Set_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Flow_Graphs.Vertex_Id,
-      Element_Type    => Vertex_Sets.Set,
-      Hash            => Flow_Graphs.Vertex_Hash,
-      Equivalent_Keys => Flow_Graphs."=",
-      "="             => Vertex_Sets."=");
+   package Vertex_To_Vertex_Set_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Flow_Graphs.Vertex_Id,
+        Element_Type    => Vertex_Sets.Set,
+        Hash            => Flow_Graphs.Vertex_Hash,
+        Equivalent_Keys => Flow_Graphs."=",
+        "="             => Vertex_Sets."=");
 
    ----------------------------------------------------------------------
    --  Flow_Analysis_Graphs
@@ -107,24 +111,25 @@ package Flow is
    function Hash (E : Entry_Call) return Ada.Containers.Hash_Type;
    --  Hash function needed to instantiate container package
 
-   package Entry_Call_Sets is new Ada.Containers.Hashed_Sets
-     (Element_Type        => Entry_Call,
-      Hash                => Hash,
-      Equivalent_Elements => "=");
+   package Entry_Call_Sets is new
+     Ada.Containers.Hashed_Sets
+       (Element_Type        => Entry_Call,
+        Hash                => Hash,
+        Equivalent_Elements => "=");
 
-   type Tasking_Info_Kind is (Entry_Calls,
-                              Suspends_On,
-                              Unsynch_Accesses,
-                              Locks);
+   type Tasking_Info_Kind is
+     (Entry_Calls, Suspends_On, Unsynch_Accesses, Locks);
    pragma Ordered (Tasking_Info_Kind);
    --  Tasking-related information collected for subprograms, entries, tasks
    --  and package elaborations. Used both for ownership (aka. exclusivity)
    --  checks and for ceiling priority protocol checks.
 
-   subtype Tasking_Owning_Kind is Tasking_Info_Kind
-     range Entry_Calls ..
-           -- Suspends_On
-           Unsynch_Accesses;
+   subtype Tasking_Owning_Kind is
+     Tasking_Info_Kind
+       range Entry_Calls
+             ..
+             -- Suspends_On
+             Unsynch_Accesses;
    --  Tasking-related information used for ownership checks
    --
    --  Note: it is intentionally defined with range and not with
@@ -136,7 +141,7 @@ package Flow is
 
    type Flow_Analysis_Graphs_Root
      (Kind               : Analyzed_Subject_Kind := Kind_Subprogram;
-      Generating_Globals : Boolean               := False)
+      Generating_Globals : Boolean := False)
    is record
       Spec_Entity : Entity_Id;
       B_Scope     : Flow_Scope;
@@ -256,12 +261,13 @@ package Flow is
    subtype Flow_Analysis_Graphs is Flow_Analysis_Graphs_Root
    with Dynamic_Predicate => Is_Valid (Flow_Analysis_Graphs);
 
-   package Analysis_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Entity_Id,
-      Element_Type    => Flow_Analysis_Graphs,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
+   package Analysis_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Entity_Id,
+        Element_Type    => Flow_Analysis_Graphs,
+        Hash            => Node_Hash,
+        Equivalent_Keys => "=",
+        "="             => "=");
 
    ----------------------------------------------------------------------
    --  Debug
@@ -285,28 +291,30 @@ package Flow is
    --  Main entry to flo analysis
    ----------------------------------------------------------------------
 
-   procedure Flow_Analyse_CUnit (GNAT_Root   : Node_Id;
-                                 Found_Error : out Boolean);
+   procedure Flow_Analyse_CUnit
+     (GNAT_Root : Node_Id; Found_Error : out Boolean);
    --  Flow analyses the current compilation unit
 
    procedure Generate_Globals (GNAT_Root : Node_Id);
    --  Generate flow globals for the current compilation unit
 
    function Flow_Analyse_Entity
-     (E                  : Entity_Id;
-      Generating_Globals : Boolean)
-      return Flow_Analysis_Graphs
-   with Pre => Ekind (E) in E_Function
-                          | E_Procedure
-                          | E_Task_Type
-                          | E_Protected_Type
-                          | E_Entry
-                          | E_Package
-               and then (if Ekind (E) = E_Procedure
-                         then not Is_DIC_Procedure (E)
-                            and then not Is_Invariant_Procedure (E)
-                         elsif Ekind (E) = E_Function
-                         then not Is_Predicate_Function (E));
+     (E : Entity_Id; Generating_Globals : Boolean) return Flow_Analysis_Graphs
+   with
+     Pre =>
+       Ekind (E)
+       in E_Function
+        | E_Procedure
+        | E_Task_Type
+        | E_Protected_Type
+        | E_Entry
+        | E_Package
+       and then (if Ekind (E) = E_Procedure
+                 then
+                   not Is_DIC_Procedure (E)
+                   and then not Is_Invariant_Procedure (E)
+                 elsif Ekind (E) = E_Function
+                 then not Is_Predicate_Function (E));
    --  Flow analyse entity E. Do nothing for entities with no body or not in
    --  SPARK 2014.
 

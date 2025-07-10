@@ -52,6 +52,7 @@ with Why;
 
 with Flow_Generated_Globals.ALI_Serialization;
 use Flow_Generated_Globals.ALI_Serialization;
+
 package body Flow_Generated_Globals.Partial is
 
    use type Node_Sets.Set;
@@ -77,9 +78,9 @@ package body Flow_Generated_Globals.Partial is
    --  package.
 
    function To_List (E : Entity_Id) return Node_Lists.List
-   with Post => To_List'Result.Length = 1
-                  and then
-                To_List'Result.First_Element = E;
+   with
+     Post =>
+       To_List'Result.Length = 1 and then To_List'Result.First_Element = E;
    --  Returns a singleton list with E
 
    --  ??? this could go into Common_Containers; in particular, To_List has
@@ -107,7 +108,8 @@ package body Flow_Generated_Globals.Partial is
    --  Preliminaries
    ----------------------------------------------------------------------------
 
-   function Is_Caller_Entity (E : Entity_Id) return Boolean with Ghost;
+   function Is_Caller_Entity (E : Entity_Id) return Boolean
+   with Ghost;
    --  Returns True iff E represent an entity is can call other routines
 
    function Is_Callable (E : Entity_Id) return Boolean;
@@ -115,9 +117,8 @@ package body Flow_Generated_Globals.Partial is
 
    function Scope_Truly_Within_Or_Same
      (Inner, Outer : Entity_Id) return Boolean
-   is
-     (Is_In_Analyzed_Files (Inner)
-      and then Scope_Within_Or_Same (Inner, Outer))
+   is (Is_In_Analyzed_Files (Inner)
+       and then Scope_Within_Or_Same (Inner, Outer))
    with Pre => Is_In_Analyzed_Files (Outer);
    --  Determines if entity E is the same as Analyzed or is "truly" within,
    --  i.e. in the same compilation unit as Analyzed and inside Analyzed. (It
@@ -129,8 +130,8 @@ package body Flow_Generated_Globals.Partial is
    -- Is_Caller_Entity --
    ----------------------
 
-   function Is_Caller_Entity (E : Entity_Id) return Boolean is
-     (Ekind (E) in Flow_Generated_Globals.Traversal.Container_Scope);
+   function Is_Caller_Entity (E : Entity_Id) return Boolean
+   is (Ekind (E) in Flow_Generated_Globals.Traversal.Container_Scope);
    --  ??? Container_Scope isn't the best name; rethink
    --  ??? not sure how Protected_Type fits here
 
@@ -188,11 +189,12 @@ package body Flow_Generated_Globals.Partial is
    --  ### This record contains all the contracts we generate and is
    --  _fully_ populated by Do_Global.
 
-   package Entity_Contract_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Entity_Id,  --  ??? some Checked_Entity_Id
-      Element_Type    => Contract,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=");
+   package Entity_Contract_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Entity_Id,  --  ??? some Checked_Entity_Id
+        Element_Type    => Contract,
+        Hash            => Node_Hash,
+        Equivalent_Keys => "=");
    --  Containers with contracts generated based on the current compilation
    --  unit alone.
 
@@ -201,15 +203,16 @@ package body Flow_Generated_Globals.Partial is
       Globals : Flow_Nodes;
    end record;
 
-   package Global_Patch_Lists is new Ada.Containers.Doubly_Linked_Lists
-     (Element_Type => Global_Patch);
+   package Global_Patch_Lists is new
+     Ada.Containers.Doubly_Linked_Lists (Element_Type => Global_Patch);
 
-   package Constant_Graphs is new Graphs
-     (Vertex_Key   => Entity_Id,
-      Key_Hash     => Node_Hash,
-      Edge_Colours => No_Colours,
-      Null_Key     => Entity_Id'Last,
-      Test_Key     => "=");
+   package Constant_Graphs is new
+     Graphs
+       (Vertex_Key   => Entity_Id,
+        Key_Hash     => Node_Hash,
+        Edge_Colours => No_Colours,
+        Null_Key     => Entity_Id'Last,
+        Test_Key     => "=");
    --  Graphs for resolving constants without variable input within the current
    --  compilation unit.
    --
@@ -232,17 +235,16 @@ package body Flow_Generated_Globals.Partial is
    --  Direct contract based on the analysis of E, when body is available
 
    function Preanalyze_Spec (E : Entity_Id) return Contract
-   with Pre => (if Entity_In_SPARK (E)
-                then not Entity_Body_In_SPARK (E));
+   with Pre => (if Entity_In_SPARK (E) then not Entity_Body_In_SPARK (E));
    --  Direct contract based on the analysis of E, when only spec is available
 
    function Categorize_Calls
      (E         : Entity_Id;
       Analyzed  : Entity_Id;
-      Contracts : Entity_Contract_Maps.Map)
-   return Call_Nodes
-   with Pre => Is_Caller_Entity (E) and then
-               Scope_Truly_Within_Or_Same (E, Analyzed);
+      Contracts : Entity_Contract_Maps.Map) return Call_Nodes
+   with
+     Pre =>
+       Is_Caller_Entity (E) and then Scope_Truly_Within_Or_Same (E, Analyzed);
    --  Categorize calls from E to entities nested within Analyzed into Proof,
    --  Conditional and Definite calls.
    --
@@ -256,18 +258,16 @@ package body Flow_Generated_Globals.Partial is
       Function_Calls     : out Node_Sets.Set;
       Proof_Dependencies : out Node_Sets.Set;
       Indirect_Calls     : out Node_Sets.Set)
-   with Pre => Ekind (E) in Entry_Kind
-                          | E_Function
-                          | E_Procedure,
-        Post => (for all Call of Function_Calls =>
-                    Ekind (Call) in E_Function | E_Subprogram_Type);
+   with
+     Pre  => Ekind (E) in Entry_Kind | E_Function | E_Procedure,
+     Post =>
+       (for all Call of Function_Calls =>
+          Ekind (Call) in E_Function | E_Subprogram_Type);
    --  Return function calls, proof dependencies and indirect calls in
    --  the contract of E, i.e. in its Pre, Post and Contract_Cases.
 
    function Contract_Globals
-     (E       : Entity_Id;
-      Refined : Boolean)
-      return Global_Nodes;
+     (E : Entity_Id; Refined : Boolean) return Global_Nodes;
    --  Return globals from the Global and Depends contracts of E (or from their
    --  refined variants iff Refined is True).
 
@@ -275,8 +275,7 @@ package body Flow_Generated_Globals.Partial is
    --  Display Label followed by the entity name of E
 
    procedure Do_Global
-     (Analyzed  :        Entity_Id;
-      Contracts : in out Entity_Contract_Maps.Map)
+     (Analyzed : Entity_Id; Contracts : in out Entity_Contract_Maps.Map)
    with Pre => Is_Caller_Entity (Analyzed);
    --  ### Overview
    --
@@ -304,8 +303,7 @@ package body Flow_Generated_Globals.Partial is
    --  don't modify any other mappings directly (indirectly via
    --  recursive calls to Do_Global).
 
-   procedure Do_Preanalysis
-     (Contracts : in out Entity_Contract_Maps.Map);
+   procedure Do_Preanalysis (Contracts : in out Entity_Contract_Maps.Map);
    --  ### This is actually the first thing we do (before any call to
    --  Do_Global). We call Preanalyze_Spec or _Body for all entities
    --  we will ultimately analyze and place initial mappings into
@@ -317,9 +315,7 @@ package body Flow_Generated_Globals.Partial is
    --  Collect contracts on the intraprocedural analysis alone
 
    function Down_Project
-     (G      : Global_Nodes;
-      Caller : Entity_Id)
-      return Global_Nodes;
+     (G : Global_Nodes; Caller : Entity_Id) return Global_Nodes;
    --  Project globals G to their refined globals, as they are seen from Caller
 
    procedure Dump (Contracts : Entity_Contract_Maps.Map; Analyzed : Entity_Id);
@@ -332,10 +328,11 @@ package body Flow_Generated_Globals.Partial is
    procedure Filter_Local (E : Entity_Id; G : in out Global_Nodes);
    --  Same as above, lifted to container with Proof_In/Input/Output globals
 
-   procedure Fold (Folded    :        Entity_Id;
-                   Analyzed  :        Entity_Id;
-                   Contracts :        Entity_Contract_Maps.Map;
-                   Patches   : in out Global_Patch_Lists.List);
+   procedure Fold
+     (Folded    : Entity_Id;
+      Analyzed  : Entity_Id;
+      Contracts : Entity_Contract_Maps.Map;
+      Patches   : in out Global_Patch_Lists.List);
    --  Main workhorse for the partial generated globals
    --
    --  ### As we call Fold from Do_Global, initially Folded and
@@ -361,7 +358,7 @@ package body Flow_Generated_Globals.Partial is
    --  Print graph with dependencies between constants with variable input
 
    procedure Resolve_Constants
-     (Contracts      :     Entity_Contract_Maps.Map;
+     (Contracts      : Entity_Contract_Maps.Map;
       Constant_Graph : out Constant_Graphs.Graph);
    --  Create a graph rooted at constants in Globals of subprogram from the
    --  current compilation unit. This code has very much in common with code
@@ -369,23 +366,21 @@ package body Flow_Generated_Globals.Partial is
    --  be somehow refactored.
 
    function Resolved_Inputs
-     (E              : Entity_Id;
-      Constant_Graph : Constant_Graphs.Graph)
+     (E : Entity_Id; Constant_Graph : Constant_Graphs.Graph)
       return Node_Lists.List
-   with Pre  => Ekind (E) = E_Constant,
-        Post => (Resolved_Inputs'Result = Variable
-                  or else
-                (for all E of Resolved_Inputs'Result =>
+   with
+     Pre  => Ekind (E) = E_Constant,
+     Post =>
+       (Resolved_Inputs'Result = Variable
+        or else (for all E of Resolved_Inputs'Result =>
                    Ekind (E) in E_Function | E_Procedure
-                     and then
-                   not Is_In_Analyzed_Files (E)));
+                   and then not Is_In_Analyzed_Files (E)));
    --  Returns either a singleton list representing a variable input or a
    --  list with subprograms from other compilation unit called (directly
    --  or indirectly) in the initialization of E.
 
    procedure Strip_Constants
-     (From           : in out Flow_Nodes;
-      Constant_Graph :        Constant_Graphs.Graph);
+     (From : in out Flow_Nodes; Constant_Graph : Constant_Graphs.Graph);
    --  Filter constants without variable from contract
 
    procedure Write_Constants_To_ALI (Constant_Graph : Constant_Graphs.Graph);
@@ -393,8 +388,8 @@ package body Flow_Generated_Globals.Partial is
    --  other compilation units.
 
    procedure Write_Contracts_To_ALI
-     (E              :        Entity_Id;
-      Constant_Graph :        Constant_Graphs.Graph;
+     (E              : Entity_Id;
+      Constant_Graph : Constant_Graphs.Graph;
       Contracts      : in out Entity_Contract_Maps.Map)
    with Pre => Is_Caller_Entity (E);
    --  Strip constants from contract and write in to the ALI writer (probably
@@ -408,8 +403,7 @@ package body Flow_Generated_Globals.Partial is
    -- Preanalyze_Body --
    ---------------------
 
-   function Preanalyze_Body (E : Entity_Id) return Contract
-   is
+   function Preanalyze_Body (E : Entity_Id) return Contract is
       FA : constant Flow_Analysis_Graphs :=
         Flow_Analyse_Entity (E, Generating_Globals => True);
 
@@ -445,13 +439,9 @@ package body Flow_Generated_Globals.Partial is
 
       else
          case Ekind (E) is
-            when Entry_Kind
-               | E_Function
-               | E_Procedure
-               | E_Task_Type
-            =>
+            when Entry_Kind | E_Function | E_Procedure | E_Task_Type =>
                --  Use globals from spec, but calls and tasking info from body
-               Contr.Globals.Proper  := Contract_Globals (E, Refined => False);
+               Contr.Globals.Proper := Contract_Globals (E, Refined => False);
                Contr.Globals.Refined := Contract_Globals (E, Refined => True);
 
             when E_Package =>
@@ -531,11 +521,10 @@ package body Flow_Generated_Globals.Partial is
       if Ekind (E) = E_Package
         and then Has_Non_Null_Abstract_State (E)
         and then Present (Body_Entity (E))
-        and then
-          (No (SPARK_Pragma (Body_Entity (E)))
-             or else
-           Get_SPARK_Mode_From_Annotation
-             (SPARK_Pragma (Body_Entity (E))) = Opt.On)
+        and then (No (SPARK_Pragma (Body_Entity (E)))
+                  or else Get_SPARK_Mode_From_Annotation
+                            (SPARK_Pragma (Body_Entity (E)))
+                          = Opt.On)
       then
          GG_Register_State_Refinement (E);
       end if;
@@ -549,10 +538,9 @@ package body Flow_Generated_Globals.Partial is
       --  library-level packages, which cannot be called from the outside.
       Contr.Nonreturning :=
         (FA.Kind = Kind_Subprogram
-          or else
-         (FA.Kind = Kind_Package
-          and then Entity_Body_In_SPARK (FA.Spec_Entity)))
-         and then not FA.Has_Only_Terminating_Constructs;
+         or else (FA.Kind = Kind_Package
+                  and then Entity_Body_In_SPARK (FA.Spec_Entity)))
+        and then not FA.Has_Only_Terminating_Constructs;
 
       Contr.No_Body := False;
 
@@ -566,7 +554,7 @@ package body Flow_Generated_Globals.Partial is
          else Meaningless);
 
       --  Deal with tasking-related stuff
-      Contr.Tasking     := FA.Tasking;
+      Contr.Tasking := FA.Tasking;
       Contr.Entry_Calls := FA.Entries;
 
       return Contr;
@@ -583,9 +571,9 @@ package body Flow_Generated_Globals.Partial is
       function Unsynchronized_Globals (G : Global_Nodes) return Node_Sets.Set;
       --  Returns unsynchronized globals from G
 
-      function Has_No_Body_Yet (E : Entity_Id) return Boolean is
-        (Ekind (E) in E_Function | E_Procedure
-         and then No (Subprogram_Body_Entity (E)));
+      function Has_No_Body_Yet (E : Entity_Id) return Boolean
+      is (Ekind (E) in E_Function | E_Procedure
+          and then No (Subprogram_Body_Entity (E)));
       --  Returns True if subprogram E does not have a body yet (no .adb)
 
       ----------------------------
@@ -611,7 +599,7 @@ package body Flow_Generated_Globals.Partial is
             end loop;
          end Collect_Unsynchronized;
 
-      --  Start of processing for Unsynchronized_Globals
+         --  Start of processing for Unsynchronized_Globals
 
       begin
          Collect_Unsynchronized (G.Proof_Ins);
@@ -621,7 +609,7 @@ package body Flow_Generated_Globals.Partial is
          return Unsynch;
       end Unsynchronized_Globals;
 
-   --  Start of processing for Preanalyze_Spec
+      --  Start of processing for Preanalyze_Spec
 
    begin
       -------------------------------------------------------------------------
@@ -641,16 +629,11 @@ package body Flow_Generated_Globals.Partial is
       --  things simple and to give users some control over the often
       --  unreliable approximation based on the frontend cross-references.
 
-      if Ekind (E) in Entry_Kind
-                    | E_Function
-                    | E_Procedure
-                    | E_Task_Type
-      then
+      if Ekind (E) in Entry_Kind | E_Function | E_Procedure | E_Task_Type then
          if Has_User_Supplied_Globals (E) then
 
-            Contr.Globals.Proper  := Contract_Globals (E, Refined => False);
-            Contr.Globals.Refined :=
-              Down_Project (Contr.Globals.Proper, E);
+            Contr.Globals.Proper := Contract_Globals (E, Refined => False);
+            Contr.Globals.Refined := Down_Project (Contr.Globals.Proper, E);
 
             --  ??? not sure what happens about refined globals
 
@@ -701,9 +684,9 @@ package body Flow_Generated_Globals.Partial is
                   if Ekind (Call) = E_Subprogram_Type then
                      null;
 
-                     --  Likewise, ignore calls to abstract functions (since
-                     --  procedures or entries cannot be called in contracts),
-                     --  because we assume abstract subprograms to be pure.
+                  --  Likewise, ignore calls to abstract functions (since
+                  --  procedures or entries cannot be called in contracts),
+                  --  because we assume abstract subprograms to be pure.
 
                   elsif Ekind (Call) = E_Function
                     and then Is_Abstract_Subprogram (Call)
@@ -738,8 +721,7 @@ package body Flow_Generated_Globals.Partial is
                      else
                         Contr.Direct_Calls.Union
                           (Called_Primitive_Equalities
-                             (Typ,
-                              Nkind (N) in N_Op));
+                             (Typ, Nkind (N) in N_Op));
                      end if;
                   end;
                end loop;
@@ -809,14 +791,12 @@ package body Flow_Generated_Globals.Partial is
          --  * imported/intrinsic/have no body yet (no .adb) and are not
          --    annotated with No_Return.
 
-         Contr.Nonreturning := not
-           (Is_Ignored_Internal (E)
-              or else
-            ((Is_Imported (E)
-               or else
-              Is_Intrinsic (E)
-               or else
-              Has_No_Body_Yet (E)) and then not No_Return (E)));
+         Contr.Nonreturning :=
+           not (Is_Ignored_Internal (E)
+                or else ((Is_Imported (E)
+                          or else Is_Intrinsic (E)
+                          or else Has_No_Body_Yet (E))
+                         and then not No_Return (E)));
 
          --  For library-level packages and protected-types the non-blocking
          --  status is meaningless. Otherwise, it is either a user instance of
@@ -826,10 +806,11 @@ package body Flow_Generated_Globals.Partial is
 
          Contr.Nonblocking :=
            (if Is_Callee (E)
-            then (if Is_Ignored_Internal (E)
-                    and then Ekind (E) in E_Function | E_Procedure
-                  then not Is_Predefined_Potentially_Blocking (E)
-                  else False)
+            then
+              (if Is_Ignored_Internal (E)
+                 and then Ekind (E) in E_Function | E_Procedure
+               then not Is_Predefined_Potentially_Blocking (E)
+               else False)
             else Meaningless);
 
          --  In a contract it is syntactically not allowed to suspend on a
@@ -847,7 +828,7 @@ package body Flow_Generated_Globals.Partial is
          pragma Assert (Contr.Direct_Calls.Is_Empty);
 
          Contr.Nonreturning := Meaningless;
-         Contr.Nonblocking  := Meaningless;
+         Contr.Nonblocking := Meaningless;
       end if;
 
       Contr.No_Body := Has_No_Body_Yet (E);
@@ -862,8 +843,7 @@ package body Flow_Generated_Globals.Partial is
    function Categorize_Calls
      (E         : Entity_Id;
       Analyzed  : Entity_Id;
-      Contracts : Entity_Contract_Maps.Map)
-      return Call_Nodes
+      Contracts : Entity_Contract_Maps.Map) return Call_Nodes
    is
       Original : Call_Nodes renames Contracts (E).Globals.Calls;
 
@@ -960,12 +940,14 @@ package body Flow_Generated_Globals.Partial is
          if Is_Overloadable (Pick) and then Is_Abstract_Subprogram (Pick) then
             Ada.Text_IO.Put_Line
               ("[Categorize_Calls] call to abstract subprogram = "
-               & Full_Source_Name (E) & " -> " & Full_Source_Name (Pick));
+               & Full_Source_Name (E)
+               & " -> "
+               & Full_Source_Name (Pick));
             raise Why.Not_Implemented;
          end if;
       end Crash_On_Abstract_Callee;
 
-   --  Start of processing for Categorize_Calls
+      --  Start of processing for Categorize_Calls
 
    begin
       --  Definitive calls are the easiest to find and the implementation is
@@ -980,7 +962,8 @@ package body Flow_Generated_Globals.Partial is
       --  conditional and proof calls they are split into subsets for handling
       --  different inductive cases.
 
-      Find_Definite_Calls : declare
+      Find_Definite_Calls :
+      declare
          Todo : Node_Sets.Set := Original.Definite_Calls;
          Done : Node_Sets.Set;
 
@@ -1010,8 +993,7 @@ package body Flow_Generated_Globals.Partial is
 
          pragma Assert (Original.Definite_Calls.Is_Subset (Of_Set => Done));
 
-         Node_Sets.Move (Target => O_Definite,
-                         Source => Done);
+         Node_Sets.Move (Target => O_Definite, Source => Done);
       end Find_Definite_Calls;
 
       --  Conditional calls are more difficult to find, but the implementation
@@ -1019,13 +1001,15 @@ package body Flow_Generated_Globals.Partial is
       --  subprograms: those called definitively and those called
       --  conditionally.
 
-      Find_Conditional_Calls : declare
+      Find_Conditional_Calls :
+      declare
          type Calls is record
             Conditional, Definite : Node_Sets.Set;
          end record;
 
-         Todo : Calls := (Conditional => Original.Conditional_Calls,
-                          Definite    => Original.Definite_Calls);
+         Todo : Calls :=
+           (Conditional => Original.Conditional_Calls,
+            Definite    => Original.Definite_Calls);
 
          Done : Calls;
 
@@ -1086,24 +1070,26 @@ package body Flow_Generated_Globals.Partial is
             end if;
          end loop;
 
-         pragma Assert
-           (Original.Conditional_Calls.Is_Subset (Of_Set => Done.Conditional));
+         pragma
+           Assert
+             (Original.Conditional_Calls.Is_Subset
+                (Of_Set => Done.Conditional));
 
-         Node_Sets.Move (Target => O_Conditional,
-                         Source => Done.Conditional);
+         Node_Sets.Move (Target => O_Conditional, Source => Done.Conditional);
       end Find_Conditional_Calls;
 
       --  Proof calls turns out to be not really harder than conditional calls;
       --  their implementation follows the very same pattern.
 
-      Find_Proof_Calls : declare
+      Find_Proof_Calls :
+      declare
          type Calls is record
             Proof, Other : Node_Sets.Set;
          end record;
 
-         Todo : Calls := (Proof => Original.Proof_Calls,
-                          Other => Original.Conditional_Calls or
-                                   Original.Definite_Calls);
+         Todo : Calls :=
+           (Proof => Original.Proof_Calls,
+            Other => Original.Conditional_Calls or Original.Definite_Calls);
 
          Done : Calls;
 
@@ -1126,10 +1112,10 @@ package body Flow_Generated_Globals.Partial is
 
                      begin
                         Todo.Proof.Union
-                          ((Picked.Proof_Calls or
-                              Picked.Conditional_Calls or
-                              Picked.Definite_Calls)
-                             - Done.Proof);
+                          ((Picked.Proof_Calls
+                            or Picked.Conditional_Calls
+                            or Picked.Definite_Calls)
+                           - Done.Proof);
                      end;
                   end if;
 
@@ -1151,13 +1137,11 @@ package body Flow_Generated_Globals.Partial is
                           Contracts (Pick).Globals.Calls;
 
                      begin
-                        Todo.Proof.Union
-                          (Picked.Proof_Calls - Done.Proof);
+                        Todo.Proof.Union (Picked.Proof_Calls - Done.Proof);
 
                         Todo.Other.Union
-                          ((Picked.Conditional_Calls or
-                              Picked.Definite_Calls)
-                             - Done.Other);
+                          ((Picked.Conditional_Calls or Picked.Definite_Calls)
+                           - Done.Other);
                      end;
                   end if;
 
@@ -1170,8 +1154,7 @@ package body Flow_Generated_Globals.Partial is
 
          pragma Assert (Original.Proof_Calls.Is_Subset (Of_Set => Done.Proof));
 
-         Node_Sets.Move (Target => O_Proof,
-                         Source => Done.Proof);
+         Node_Sets.Move (Target => O_Proof, Source => Done.Proof);
       end Find_Proof_Calls;
 
       --  Finally, overlapping. For proof calls it is just like in slicing.
@@ -1185,9 +1168,10 @@ package body Flow_Generated_Globals.Partial is
       --  contracts; if a callee is called conditionally then we must read its
       --  outputs (and it doesn't matter if it is also called definitively).
 
-      return (Proof_Calls       => O_Proof - O_Conditional - O_Definite,
-              Conditional_Calls => O_Conditional,
-              Definite_Calls    => O_Definite - O_Conditional);
+      return
+        (Proof_Calls       => O_Proof - O_Conditional - O_Definite,
+         Conditional_Calls => O_Conditional,
+         Definite_Calls    => O_Definite - O_Conditional);
    end Categorize_Calls;
 
    --------------------
@@ -1236,15 +1220,14 @@ package body Flow_Generated_Globals.Partial is
          end loop;
       end Collect_Calls;
 
-   --  Start of processing for Contract_Calls
+      --  Start of processing for Contract_Calls
 
    begin
       for Expr of Get_Precondition_Expressions (E) loop
          Collect_Calls (Expr);
       end loop;
 
-      for Expr of Get_Postcondition_Expressions (E, Refined => False)
-      loop
+      for Expr of Get_Postcondition_Expressions (E, Refined => False) loop
          Collect_Calls (Expr);
       end loop;
    end Contract_Calls;
@@ -1254,18 +1237,15 @@ package body Flow_Generated_Globals.Partial is
    ----------------------
 
    function Contract_Globals
-     (E : Entity_Id;
-      Refined : Boolean)
-      return Global_Nodes
+     (E : Entity_Id; Refined : Boolean) return Global_Nodes
    is
       Globals : Global_Flow_Ids;
 
    begin
       Get_Globals
         (Subprogram          => E,
-         Scope               => Get_Flow_Scope (if Refined
-                                                then Get_Body_Entity (E)
-                                                else E),
+         Scope               =>
+           Get_Flow_Scope (if Refined then Get_Body_Entity (E) else E),
          Classwide           => False,
          Globals             => Globals,
          Use_Deduced_Globals => False);
@@ -1285,9 +1265,10 @@ package body Flow_Generated_Globals.Partial is
       Remove_Constants (Globals.Proof_Ins);
       Remove_Constants (Globals.Inputs);
 
-      return (Proof_Ins => To_Node_Set (Globals.Proof_Ins),
-              Inputs    => To_Node_Set (Globals.Inputs),
-              Outputs   => To_Node_Set (Globals.Outputs));
+      return
+        (Proof_Ins => To_Node_Set (Globals.Proof_Ins),
+         Inputs    => To_Node_Set (Globals.Inputs),
+         Outputs   => To_Node_Set (Globals.Outputs));
    end Contract_Globals;
 
    --------------
@@ -1296,10 +1277,9 @@ package body Flow_Generated_Globals.Partial is
 
    function Disjoint (A, B, C : Node_Sets.Set) return Boolean is
    begin
-      return not
-        (for some E of A => B.Contains (E) or else C.Contains (E))
-          or else
-        (for some E of B => C.Contains (E));
+      return
+        not (for some E of A => B.Contains (E) or else C.Contains (E))
+        or else (for some E of B => C.Contains (E));
    end Disjoint;
 
    -----------
@@ -1320,9 +1300,7 @@ package body Flow_Generated_Globals.Partial is
    ---------------
 
    procedure Do_Global
-     (Analyzed  :        Entity_Id;
-      Contracts : in out Entity_Contract_Maps.Map)
-   is
+     (Analyzed : Entity_Id; Contracts : in out Entity_Contract_Maps.Map) is
    begin
       Current_Error_Node := Analyzed;
 
@@ -1330,17 +1308,16 @@ package body Flow_Generated_Globals.Partial is
          Do_Global (Child, Contracts);
       end loop;
 
-      if Analyzed = Root_Entity
-        or else not Is_Leaf (Analyzed)
-      then
+      if Analyzed = Root_Entity or else not Is_Leaf (Analyzed) then
          declare
             Patches : Global_Patch_Lists.List;
 
          begin
-            Fold (Analyzed  => Analyzed,
-                  Folded    => Analyzed,
-                  Contracts => Contracts,
-                  Patches   => Patches);
+            Fold
+              (Analyzed  => Analyzed,
+               Folded    => Analyzed,
+               Contracts => Contracts,
+               Patches   => Patches);
             --  ### We do call fold here (even if the root is a leaf)
             --  because we've done the refined globals and we need to
             --  consider what goes into the spec.
@@ -1393,9 +1370,7 @@ package body Flow_Generated_Globals.Partial is
    ----------
 
    pragma Annotate (Xcov, Exempt_On, "Debugging code");
-   procedure Dump
-     (Contracts : Entity_Contract_Maps.Map;
-      Analyzed  : Entity_Id)
+   procedure Dump (Contracts : Entity_Contract_Maps.Map; Analyzed : Entity_Id)
    is
       procedure Dump (E : Entity_Id);
 
@@ -1428,7 +1403,7 @@ package body Flow_Generated_Globals.Partial is
 
          C : constant Entity_Contract_Maps.Cursor := Contracts.Find (E);
 
-      --  Start of processing for Dump
+         --  Start of processing for Dump
 
       begin
          for Child of Scope_Map (E) loop
@@ -1445,48 +1420,53 @@ package body Flow_Generated_Globals.Partial is
                   Term_Info.Set_Style (Bright);
                end if;
 
-               Ada.Text_IO.Put_Line (Indent &
-                                       Ekind (E)'Image & ": " &
-                                       Full_Source_Name (E));
+               Ada.Text_IO.Put_Line
+                 (Indent & Ekind (E)'Image & ": " & Full_Source_Name (E));
 
                if Highlight then
                   Term_Info.Set_Style (Normal);
                end if;
 
-               Dump ("Global",         Contr.Globals.Proper);
+               Dump ("Global", Contr.Globals.Proper);
                Dump ("Refined_Global", Contr.Globals.Refined);
 
                if not Contr.Globals.Calls.Proof_Calls.Is_Empty
                  or else not Contr.Globals.Calls.Conditional_Calls.Is_Empty
                  or else not Contr.Globals.Calls.Definite_Calls.Is_Empty
---                   or else not Contr.Remote_Calls.Is_Empty
+                 --                   or else not Contr.Remote_Calls.Is_Empty
                then
                   Ada.Text_IO.Put_Line (Indent & Indent & "Calls:");
-                  Dump (Indent & Indent & "Proof      ",
-                        Contr.Globals.Calls.Proof_Calls);
-                  Dump (Indent & Indent & "Conditional",
-                        Contr.Globals.Calls.Conditional_Calls);
-                  Dump (Indent & Indent & "Definite   ",
-                        Contr.Globals.Calls.Definite_Calls);
---                    Dump (Indent & Indent & "Remote     ",
---                          Contr.Remote_Calls);
+                  Dump
+                    (Indent & Indent & "Proof      ",
+                     Contr.Globals.Calls.Proof_Calls);
+                  Dump
+                    (Indent & Indent & "Conditional",
+                     Contr.Globals.Calls.Conditional_Calls);
+                  Dump
+                    (Indent & Indent & "Definite   ",
+                     Contr.Globals.Calls.Definite_Calls);
+               --                    Dump (Indent & Indent & "Remote     ",
+               --                          Contr.Remote_Calls);
+
                end if;
 
                case Ekind (E) is
                   --  when E_Function | E_Procedure =>
-                     --  Ada.Text_IO.Put_Line
-                     --    (Indent & Indent & "Nonblocking  : " &
-                     --     Boolean'Image (Contr.Nonblocking));
-                     --  Ada.Text_IO.Put_Line
-                     --    (Indent & Indent & "Nonreturning : " &
-                     --     Boolean'Image (Contr.Nonreturning));
+                  --  Ada.Text_IO.Put_Line
+                  --    (Indent & Indent & "Nonblocking  : " &
+                  --     Boolean'Image (Contr.Nonblocking));
+                  --  Ada.Text_IO.Put_Line
+                  --    (Indent & Indent & "Nonreturning : " &
+                  --     Boolean'Image (Contr.Nonreturning));
 
                   when E_Package =>
-                     Dump (Indent & "Initializes  (proper)",
-                           Contr.Globals.Initializes.Proper);
+                     Dump
+                       (Indent & "Initializes  (proper)",
+                        Contr.Globals.Initializes.Proper);
 
-                     Dump (Indent & "Initializes  (refined)",
-                           Contr.Globals.Initializes.Refined);
+                     Dump
+                       (Indent & "Initializes  (refined)",
+                        Contr.Globals.Initializes.Refined);
 
                   when others =>
                      null;
@@ -1543,7 +1523,7 @@ package body Flow_Generated_Globals.Partial is
          end if;
       end Dump;
 
-   --  Start of processing for Dump
+      --  Start of processing for Dump
 
    begin
       if Debug_Partial_Contracts then
@@ -1582,8 +1562,7 @@ package body Flow_Generated_Globals.Partial is
          end if;
       end loop;
 
-      Node_Sets.Move (Target => Nodes,
-                      Source => Remote);
+      Node_Sets.Move (Target => Nodes, Source => Remote);
    end Filter_Local;
 
    procedure Filter_Local (E : Entity_Id; G : in out Global_Nodes) is
@@ -1597,10 +1576,11 @@ package body Flow_Generated_Globals.Partial is
    -- Fold --
    ----------
 
-   procedure Fold (Folded    :        Entity_Id;
-                   Analyzed  :        Entity_Id;
-                   Contracts :        Entity_Contract_Maps.Map;
-                   Patches   : in out Global_Patch_Lists.List)
+   procedure Fold
+     (Folded    : Entity_Id;
+      Analyzed  : Entity_Id;
+      Contracts : Entity_Contract_Maps.Map;
+      Patches   : in out Global_Patch_Lists.List)
    is
       Folded_Scope : constant Flow_Scope :=
         (Ent => Folded, Part => Visible_Part);
@@ -1613,16 +1593,15 @@ package body Flow_Generated_Globals.Partial is
       Original : Flow_Nodes renames Full_Contract.Globals;
 
       function Callee_Globals
-        (Callee : Entity_Id;
-         Caller : Entity_Id)
-         return Global_Nodes
+        (Callee : Entity_Id; Caller : Entity_Id) return Global_Nodes
       with Pre => Is_Caller_Entity (Callee);
       --  Returns entities that contribute to the refined globals of Caller due
       --  to a call to Callee.
 
       function Collect (E : Entity_Id) return Flow_Nodes
-      with Pre => Is_Caller_Entity (E),
-           Post => Is_Empty (Collect'Result.Proper);
+      with
+        Pre  => Is_Caller_Entity (E),
+        Post => Is_Empty (Collect'Result.Proper);
       --  ### This will go through all calls down the tree (so in our
       --  picture if we are at proc_1 we will not look at calls to
       --  pkg, but we do collect calls to proc_2) and collect their
@@ -1636,37 +1615,32 @@ package body Flow_Generated_Globals.Partial is
       --------------------
 
       function Callee_Globals
-        (Callee : Entity_Id;
-         Caller : Entity_Id)
-         return Global_Nodes
-      is
+        (Callee : Entity_Id; Caller : Entity_Id) return Global_Nodes is
       begin
          if Scope_Truly_Within_Or_Same (Callee, Analyzed) then
             declare
                Callee_Globals : Flow_Nodes renames Contracts (Callee).Globals;
 
             begin
-               if Callee = Analyzed
-                 or else Parent_Scope (Callee) = Analyzed
+               if Callee = Analyzed or else Parent_Scope (Callee) = Analyzed
                then
                   --  ??? flatten the condition, e.g. make it a function
                   if (case Ekind (Callee) is
-                         when E_Package        =>
-                            Present (Get_Pragma (Callee, Pragma_Initializes)),
+                        when E_Package =>
+                          Present (Get_Pragma (Callee, Pragma_Initializes)),
 
-                         when Entry_Kind
-                            | E_Function
-                            | E_Procedure
-                            | E_Task_Type
-                         =>
-                         Entity_In_SPARK (Callee)
-                           and then not Entity_Body_In_SPARK (Callee)
-                           and then Has_User_Supplied_Globals (Callee),
+                        when Entry_Kind
+                           | E_Function
+                           | E_Procedure
+                           | E_Task_Type
+                        =>
+                          Entity_In_SPARK (Callee)
+                          and then not Entity_Body_In_SPARK (Callee)
+                          and then Has_User_Supplied_Globals (Callee),
 
-                         when E_Protected_Type =>
-                            Meaningless,
+                        when E_Protected_Type => Meaningless,
 
-                         when others           => raise Program_Error)
+                        when others => raise Program_Error)
                   then
                      Debug ("Folding with down-projected globals:", Callee);
                      return Down_Project (Callee_Globals.Proper, Caller);
@@ -1793,9 +1767,10 @@ package body Flow_Generated_Globals.Partial is
             Result_Inputs.Union (Proof_Ins_Outs);
          end;
 
-         Result.Refined := (Proof_Ins => Result_Proof_Ins,
-                            Inputs    => Result_Inputs,
-                            Outputs   => Result_Outputs);
+         Result.Refined :=
+           (Proof_Ins => Result_Proof_Ins,
+            Inputs    => Result_Inputs,
+            Outputs   => Result_Outputs);
 
          return Result;
       end Collect;
@@ -1804,7 +1779,7 @@ package body Flow_Generated_Globals.Partial is
 
       Update : Flow_Nodes;
 
-   --  Start of processing for Fold
+      --  Start of processing for Fold
 
    begin
       for Child of Scope_Map (Folded) loop
@@ -1841,8 +1816,7 @@ package body Flow_Generated_Globals.Partial is
 
                Update.Initializes.Refined.Union
                  ((Update.Refined.Outputs - Update.Refined.Inputs)
-                    and
-                  Full_Contract.Local_Variables);
+                  and Full_Contract.Local_Variables);
 
                --  Pick initialized items from nested packages whose
                --  Initializes contract is being generated. Those items
@@ -1860,19 +1834,22 @@ package body Flow_Generated_Globals.Partial is
                   end loop;
                end loop;
 
-               Up_Project (Update.Initializes.Refined, Folded_Scope,
-                           Projected, Partial);
+               Up_Project
+                 (Update.Initializes.Refined,
+                  Folded_Scope,
+                  Projected,
+                  Partial);
 
                for State of Partial loop
-                  if Is_Fully_Contained (State, Update.Initializes.Refined,
-                                         Folded_Scope)
+                  if Is_Fully_Contained
+                       (State, Update.Initializes.Refined, Folded_Scope)
                   then
                      Projected.Include (State);
                   end if;
                end loop;
 
-               Node_Sets.Move (Target => Update.Initializes.Proper,
-                               Source => Projected);
+               Node_Sets.Move
+                 (Target => Update.Initializes.Proper, Source => Projected);
 
                --  We use Outputs only to compute the Initializes. Now we clear
                --  them to make sure that the remaining GG computation does not
@@ -1899,8 +1876,7 @@ package body Flow_Generated_Globals.Partial is
       --  Filter_Local (Analyzed, Update.Remote_Calls);
       --  ### Remove this above commented out
 
-      Patches.Append (Global_Patch'(Entity  => Folded,
-                                    Globals => Update));
+      Patches.Append (Global_Patch'(Entity => Folded, Globals => Update));
    end Fold;
 
    --------------------
@@ -1908,7 +1884,7 @@ package body Flow_Generated_Globals.Partial is
    --------------------
 
    function Frontend_Calls (E : Entity_Id) return Node_Sets.Set
-     renames Computed_Calls;
+   renames Computed_Calls;
 
    ----------------------
    -- Frontend_Globals --
@@ -1919,9 +1895,9 @@ package body Flow_Generated_Globals.Partial is
       Outputs : Node_Sets.Set;
 
       function Remove_Constants_Without_Variable_Input
-        (Nodes : Node_Sets.Set)
-         return Node_Sets.Set
-      with Post =>
+        (Nodes : Node_Sets.Set) return Node_Sets.Set
+      with
+        Post =>
           Remove_Constants_Without_Variable_Input'Result.Is_Subset
             (Of_Set => Nodes);
       --  Frontend attempts to reject constants without variable input, but
@@ -1933,15 +1909,13 @@ package body Flow_Generated_Globals.Partial is
       ---------------------------------------------
 
       function Remove_Constants_Without_Variable_Input
-        (Nodes : Node_Sets.Set)
-         return Node_Sets.Set
+        (Nodes : Node_Sets.Set) return Node_Sets.Set
       is
          Result : Node_Sets.Set;
       begin
          for N of Nodes loop
             if Ekind (N) = E_Constant then
-               if Is_Access_Variable (Etype (N))
-                 or else Has_Variable_Input (N)
+               if Is_Access_Variable (Etype (N)) or else Has_Variable_Input (N)
                then
                   Result.Insert (N);
                end if;
@@ -1954,16 +1928,17 @@ package body Flow_Generated_Globals.Partial is
          return Result;
       end Remove_Constants_Without_Variable_Input;
 
-   --  Start of processing for Frontend_Globals
+      --  Start of processing for Frontend_Globals
 
    begin
       --  Collect frontend globals using only info from the current compilation
       --  unit.
       Collect_Direct_Computed_Globals (E, Inputs, Outputs);
 
-      return (Inputs    => Remove_Constants_Without_Variable_Input (Inputs),
-              Outputs   => Remove_Constants_Without_Variable_Input (Outputs),
-              Proof_Ins => <>);
+      return
+        (Inputs    => Remove_Constants_Without_Variable_Input (Inputs),
+         Outputs   => Remove_Constants_Without_Variable_Input (Outputs),
+         Proof_Ins => <>);
 
    end Frontend_Globals;
 
@@ -1972,8 +1947,8 @@ package body Flow_Generated_Globals.Partial is
    ------------------------
 
    procedure Generate_Contracts (GNAT_Root : Node_Id) is
-      procedure GG_Register_Flow_Scopes is
-        new Iterate_Flow_Scopes (GG_Register_Flow_Scope);
+      procedure GG_Register_Flow_Scopes is new
+        Iterate_Flow_Scopes (GG_Register_Flow_Scope);
 
    begin
       Dump_Tree;
@@ -2036,34 +2011,32 @@ package body Flow_Generated_Globals.Partial is
 
    function Is_Callee (E : Entity_Id) return Boolean is
    begin
-      return Is_Callable (E)
-        or else (Ekind (E) = E_Package
-                 and then not Is_Compilation_Unit (E));
+      return
+        Is_Callable (E)
+        or else (Ekind (E) = E_Package and then not Is_Compilation_Unit (E));
    end Is_Callee;
 
    --------------
    -- Is_Empty --
    --------------
 
-   function Is_Empty (G : Global_Nodes) return Boolean is
-     (G.Proof_Ins.Is_Empty and then
-      G.Inputs.Is_Empty and then
-      G.Outputs.Is_Empty);
+   function Is_Empty (G : Global_Nodes) return Boolean
+   is (G.Proof_Ins.Is_Empty
+       and then G.Inputs.Is_Empty
+       and then G.Outputs.Is_Empty);
 
    -----------------
    -- Is_Callable --
    -----------------
 
-   function Is_Callable (E : Entity_Id) return Boolean is
-     (Ekind (E) in Entry_Kind | E_Function | E_Procedure);
+   function Is_Callable (E : Entity_Id) return Boolean
+   is (Ekind (E) in Entry_Kind | E_Function | E_Procedure);
 
    --------------------
    -- Do_Preanalysis --
    --------------------
 
-   procedure Do_Preanalysis
-     (Contracts : in out Entity_Contract_Maps.Map)
-   is
+   procedure Do_Preanalysis (Contracts : in out Entity_Contract_Maps.Map) is
       procedure Preanalyze (E : Entity_Id);
 
       ----------------
@@ -2082,25 +2055,21 @@ package body Flow_Generated_Globals.Partial is
          Debug_Traversal (E);
 
          case Ekind (E) is
-            when Entry_Kind
-               | E_Function
-               | E_Procedure
-               | E_Task_Type
-            =>
-               Contr := (if Entity_In_SPARK (E)
-                         and then
-                           (Entity_Body_In_SPARK (E)
-                            or else
-                              (Is_Expression_Function_Or_Completion (E)
-                               and then
-                               Entity_Body_Compatible_With_SPARK (E)))
-                         then Preanalyze_Body (E)
-                         else Preanalyze_Spec (E));
+            when Entry_Kind | E_Function | E_Procedure | E_Task_Type =>
+               Contr :=
+                 (if Entity_In_SPARK (E)
+                    and then (Entity_Body_In_SPARK (E)
+                              or else (Is_Expression_Function_Or_Completion (E)
+                                       and then Entity_Body_Compatible_With_SPARK
+                                                     (E)))
+                  then Preanalyze_Body (E)
+                  else Preanalyze_Spec (E));
 
             when E_Package =>
-               Contr := (if Entity_In_SPARK (E)
-                         then Preanalyze_Body (E)
-                         else Preanalyze_Spec (E));
+               Contr :=
+                 (if Entity_In_SPARK (E)
+                  then Preanalyze_Body (E)
+                  else Preanalyze_Spec (E));
 
             when E_Protected_Type =>
                --   ??? perhaps we should do something, but now we don't
@@ -2112,13 +2081,10 @@ package body Flow_Generated_Globals.Partial is
 
          --  Terminating stuff, picked no matter if body is in SPARK
          Contr.Always_Terminates :=
-           (if Ekind (E) in E_Entry
-                          | E_Function
-                          | E_Procedure
-                          | E_Package
-            then Get_Termination_Condition (E) = (Static, True)
-                   or else
-                 Get_Termination_Condition (E).Kind = Dynamic
+           (if Ekind (E) in E_Entry | E_Function | E_Procedure | E_Package
+            then
+              Get_Termination_Condition (E) = (Static, True)
+              or else Get_Termination_Condition (E).Kind = Dynamic
             else Meaningless);
 
          --  Subprogram_Variant stuff, picked no matter if body is in SPARK.
@@ -2126,11 +2092,9 @@ package body Flow_Generated_Globals.Partial is
          --  enclosing subprogram, for termination analysis purposes.
          Contr.Has_Subp_Variant :=
            (if Is_Callable (E)
-               or else (Ekind (E) = E_Package
-                          and then
-                        Present (Subprograms.Enclosing_Subprogram (E)))
-            then Has_Subprogram_Variant
-              (Subprograms.Enclosing_Subprogram (E))
+              or else (Ekind (E) = E_Package
+                       and then Present (Subprograms.Enclosing_Subprogram (E)))
+            then Has_Subprogram_Variant (Subprograms.Enclosing_Subprogram (E))
             else Meaningless);
 
          Contr.Calls_Current_Task :=
@@ -2157,9 +2121,7 @@ package body Flow_Generated_Globals.Partial is
    ------------------
 
    function Down_Project
-     (G      : Global_Nodes;
-      Caller : Entity_Id)
-      return Global_Nodes
+     (G : Global_Nodes; Caller : Entity_Id) return Global_Nodes
    is
       Analyzed_View : constant Flow_Scope := (Caller, Body_Part);
 
@@ -2167,8 +2129,8 @@ package body Flow_Generated_Globals.Partial is
       return
         Global_Nodes'
           (Proof_Ins => Down_Project (G.Proof_Ins, Analyzed_View),
-           Inputs    => Down_Project (G.Inputs,    Analyzed_View),
-           Outputs   => Down_Project (G.Outputs,   Analyzed_View));
+           Inputs    => Down_Project (G.Inputs, Analyzed_View),
+           Outputs   => Down_Project (G.Outputs, Analyzed_View));
    end Down_Project;
 
    -----------
@@ -2176,8 +2138,7 @@ package body Flow_Generated_Globals.Partial is
    -----------
 
    pragma Annotate (Xcov, Exempt_On, "Debugging code");
-   procedure Print (G : Constant_Graphs.Graph)
-   is
+   procedure Print (G : Constant_Graphs.Graph) is
       use Constant_Graphs;
 
       function NDI (G : Graph; V : Vertex_Id) return Node_Display_Info;
@@ -2195,24 +2156,24 @@ package body Flow_Generated_Globals.Partial is
       -- NDI --
       ---------
 
-      function NDI (G : Graph; V : Vertex_Id) return Node_Display_Info
-      is
+      function NDI (G : Graph; V : Vertex_Id) return Node_Display_Info is
          E : constant Entity_Id := G.Get_Key (V);
       begin
          if E = Variable_Input then
-            return (Show        => True,
-                    Shape       => Node_Shape_T'First,
-                    Colour      => Null_Unbounded_String,
-                    Fill_Colour => To_Unbounded_String ("gray"),
-                    Label       => To_Unbounded_String ("Variable input"));
+            return
+              (Show        => True,
+               Shape       => Node_Shape_T'First,
+               Colour      => Null_Unbounded_String,
+               Fill_Colour => To_Unbounded_String ("gray"),
+               Label       => To_Unbounded_String ("Variable input"));
          else
-            return (Show        => True,
-                    Shape       => (if Ekind (E) = E_Constant
-                                    then Shape_Oval
-                                    else Shape_Box),
-                    Colour      => Null_Unbounded_String,
-                    Fill_Colour => Null_Unbounded_String,
-                    Label       => To_Unbounded_String (Full_Source_Name (E)));
+            return
+              (Show        => True,
+               Shape       =>
+                 (if Ekind (E) = E_Constant then Shape_Oval else Shape_Box),
+               Colour      => Null_Unbounded_String,
+               Fill_Colour => Null_Unbounded_String,
+               Label       => To_Unbounded_String (Full_Source_Name (E)));
          end if;
       end NDI;
 
@@ -2242,7 +2203,7 @@ package body Flow_Generated_Globals.Partial is
         Unique_Name (Unique_Main_Unit_Entity) & "_constants_1";
       --  ??? this fails on subprogram instantiation as compilation units
 
-   --  Start of processing for Print_Graph
+      --  Start of processing for Print_Graph
 
    begin
       G.Write_Pdf_File
@@ -2257,7 +2218,7 @@ package body Flow_Generated_Globals.Partial is
    -----------------------
 
    procedure Resolve_Constants
-     (Contracts      :     Entity_Contract_Maps.Map;
+     (Contracts      : Entity_Contract_Maps.Map;
       Constant_Graph : out Constant_Graphs.Graph)
    is
       --  ??? honestly, I just do not know how if we should care about both
@@ -2279,37 +2240,33 @@ package body Flow_Generated_Globals.Partial is
       -------------------------------------------------------------------------
 
       function Represent_Variable_Inputs
-        (Inputs : Node_Lists.List)
-         return Boolean
-      is
-        (Inputs = Variable
-           or else
-        (for all E of Inputs =>
-           Ekind (E) in E_Constant | Entry_Kind | E_Function | E_Procedure))
-        with Ghost;
+        (Inputs : Node_Lists.List) return Boolean
+      is (Inputs = Variable
+          or else (for all E of Inputs =>
+                     Ekind (E)
+                     in E_Constant | Entry_Kind | E_Function | E_Procedure))
+      with Ghost;
       --  A sanity-checking utility for routines that grow the constant graph
 
-      function Direct_Inputs_Of_Constant
-        (E : Entity_Id)
-         return Node_Lists.List
-        with Pre  => Ekind (E) = E_Constant and then Has_Variable_Input (E),
-             Post => Represent_Variable_Inputs
-                        (Direct_Inputs_Of_Constant'Result);
+      function Direct_Inputs_Of_Constant (E : Entity_Id) return Node_Lists.List
+      with
+        Pre  => Ekind (E) = E_Constant and then Has_Variable_Input (E),
+        Post => Represent_Variable_Inputs (Direct_Inputs_Of_Constant'Result);
       --  Returns variable inputs of the initialization of constant E
 
       function Direct_Inputs_Of_Subprogram
-        (E : Entity_Id)
-         return Node_Lists.List
-        with Pre  => Ekind (E) in Entry_Kind | E_Function | E_Procedure,
-             Post => Represent_Variable_Inputs
-                        (Direct_Inputs_Of_Subprogram'Result);
+        (E : Entity_Id) return Node_Lists.List
+      with
+        Pre  => Ekind (E) in Entry_Kind | E_Function | E_Procedure,
+        Post => Represent_Variable_Inputs (Direct_Inputs_Of_Subprogram'Result);
       --  Returns variable inputs coming from the globals or calls of
       --  subprogram E.
 
       function Pick_Constants (From : Global_Set) return Node_Lists.List
-      with Post => Pick_Constants'Result.Length <= From.Length
-                     and then
-                   (for all E of Pick_Constants'Result =>
+      with
+        Post =>
+          Pick_Constants'Result.Length <= From.Length
+          and then (for all E of Pick_Constants'Result =>
                       Ekind (E) = E_Constant);
       --  Selects constants from the given set
 
@@ -2345,9 +2302,7 @@ package body Flow_Generated_Globals.Partial is
       -- Direct_Inputs_Of_Constant --
       -------------------------------
 
-      function Direct_Inputs_Of_Constant
-        (E : Entity_Id)
-         return Node_Lists.List
+      function Direct_Inputs_Of_Constant (E : Entity_Id) return Node_Lists.List
       is
          Full : Entity_Id;
          Expr : Node_Id;
@@ -2430,9 +2385,7 @@ package body Flow_Generated_Globals.Partial is
       ---------------------------------
 
       function Direct_Inputs_Of_Subprogram
-        (E : Entity_Id)
-         return Node_Lists.List
-      is
+        (E : Entity_Id) return Node_Lists.List is
       begin
          --  ??? protected entries and protected subprograms always have
          --  variable input; volatile functions are perhaps similar.
@@ -2441,8 +2394,8 @@ package body Flow_Generated_Globals.Partial is
             declare
                Globals : Flow_Nodes renames Contracts (E).Globals;
 
-               function Has_Variables (G : Global_Set) return Boolean is
-                  (for some C of G => Ekind (C) /= E_Constant);
+               function Has_Variables (G : Global_Set) return Boolean
+               is (for some C of G => Ekind (C) /= E_Constant);
 
                Inputs : Node_Lists.List;
 
@@ -2515,10 +2468,10 @@ package body Flow_Generated_Globals.Partial is
          end if;
       end Seed_Exposed_Constant;
 
-      procedure Seed_Exposed_Constants is
-         new Iterate_Constants_In_Main_Unit (Seed_Exposed_Constant);
+      procedure Seed_Exposed_Constants is new
+        Iterate_Constants_In_Main_Unit (Seed_Exposed_Constant);
 
-   --  Start of processing for Resolve_Constants
+      --  Start of processing for Resolve_Constants
 
    begin
       Constant_Graph := Constant_Graphs.Create;
@@ -2553,14 +2506,12 @@ package body Flow_Generated_Globals.Partial is
 
             Variable_Inputs : constant Node_Lists.List :=
               (case Ekind (E) is
-                  when E_Constant                            =>
-                     Direct_Inputs_Of_Constant (E),
+                 when E_Constant => Direct_Inputs_Of_Constant (E),
 
-                  when Entry_Kind | E_Function | E_Procedure =>
-                     Direct_Inputs_Of_Subprogram (E),
+                 when Entry_Kind | E_Function | E_Procedure =>
+                   Direct_Inputs_Of_Subprogram (E),
 
-                  when others                                =>
-                     raise Program_Error);
+                 when others => raise Program_Error);
 
             LHS : constant Constant_Graphs.Vertex_Id :=
               Constant_Graph.Get_Vertex (E);
@@ -2602,8 +2553,7 @@ package body Flow_Generated_Globals.Partial is
    ---------------------
 
    function Resolved_Inputs
-     (E              : Entity_Id;
-      Constant_Graph : Constant_Graphs.Graph)
+     (E : Entity_Id; Constant_Graph : Constant_Graphs.Graph)
       return Node_Lists.List
    is
       Inputs : Node_Lists.List;
@@ -2613,12 +2563,10 @@ package body Flow_Generated_Globals.Partial is
       else
          for V of
            Constant_Graph.Get_Collection
-             (Constant_Graph.Get_Vertex (E),
-              Constant_Graphs.Out_Neighbours)
+             (Constant_Graph.Get_Vertex (E), Constant_Graphs.Out_Neighbours)
          loop
             declare
-               Input : constant Entity_Id :=
-                 Constant_Graph.Get_Key (V);
+               Input : constant Entity_Id := Constant_Graph.Get_Key (V);
 
             begin
                if Ekind (Input) in E_Function | E_Procedure
@@ -2638,13 +2586,12 @@ package body Flow_Generated_Globals.Partial is
    ---------------------
 
    procedure Strip_Constants
-     (From           : in out Flow_Nodes;
-      Constant_Graph :        Constant_Graphs.Graph)
+     (From : in out Flow_Nodes; Constant_Graph : Constant_Graphs.Graph)
    is
 
       procedure Strip (From : in out Global_Nodes);
       procedure Strip (From : in out Global_Set)
-        with Post => From.Is_Subset (From'Old);
+      with Post => From.Is_Subset (From'Old);
 
       -----------
       -- Strip --
@@ -2671,19 +2618,18 @@ package body Flow_Generated_Globals.Partial is
             end if;
          end loop;
 
-         Node_Sets.Move (Target => From,
-                         Source => Filtered);
+         Node_Sets.Move (Target => From, Source => Filtered);
       end Strip;
 
-   --  Start of processing for Strip_Constants
+      --  Start of processing for Strip_Constants
 
    begin
       Strip (From.Proper);
       Strip (From.Refined);
       Strip (From.Initializes.Proper);
       Strip (From.Initializes.Refined);
-      --  ??? stripping the refined Initializes is excessive, because currently
-      --  they are not written to the ALI file but that needs to be revisited
+   --  ??? stripping the refined Initializes is excessive, because currently
+   --  they are not written to the ALI file but that needs to be revisited
    end Strip_Constants;
 
    ----------------------------
@@ -2722,10 +2668,10 @@ package body Flow_Generated_Globals.Partial is
          end if;
       end Write_Constant;
 
-      procedure Write_Constants is
-         new Iterate_Constants_In_Main_Unit (Write_Constant);
+      procedure Write_Constants is new
+        Iterate_Constants_In_Main_Unit (Write_Constant);
 
-   --  Start of processing for Write_Constants_To_ALI
+      --  Start of processing for Write_Constants_To_ALI
 
    begin
       Write_Constants;
@@ -2736,8 +2682,8 @@ package body Flow_Generated_Globals.Partial is
    ----------------------------
 
    procedure Write_Contracts_To_ALI
-     (E              :        Entity_Id;
-      Constant_Graph :        Constant_Graphs.Graph;
+     (E              : Entity_Id;
+      Constant_Graph : Constant_Graphs.Graph;
       Contracts      : in out Entity_Contract_Maps.Map)
    is
       Contr : Contract renames Contracts (E);
@@ -2752,18 +2698,17 @@ package body Flow_Generated_Globals.Partial is
          Strip_Constants (Contr.Globals, Constant_Graph);
 
          GG_Register_Calls (E, Contr.Direct_Calls, EK_Direct_Calls);
-         GG_Register_Calls (E,
-                            Contr.Proof_Dependencies,
-                            EK_Proof_Dependencies);
+         GG_Register_Calls
+           (E, Contr.Proof_Dependencies, EK_Proof_Dependencies);
 
          GG_Register_Global_Info
            (E                 => E,
             Local             => not Is_Visible_From_Other_Units (E),
-            Is_Protected      => Ekind (E) in E_Function | E_Procedure
-                                   and then Ekind (Scope (E)) =
-                                            E_Protected_Type,
-            Is_Library_Level  => Ekind (E) = E_Package
-                                   and then Is_Library_Level_Entity (E),
+            Is_Protected      =>
+              Ekind (E) in E_Function | E_Procedure
+              and then Ekind (Scope (E)) = E_Protected_Type,
+            Is_Library_Level  =>
+              Ekind (E) = E_Package and then Is_Library_Level_Entity (E),
             Origin            => Origin_Flow,      --  ??? dummy
             Globals           => Contr.Globals,
 

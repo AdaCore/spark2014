@@ -25,7 +25,8 @@ package body Flow.Control_Dependence_Graph is
 
    procedure Create (FA : in out Flow_Analysis_Graphs) is
 
-      procedure Sanity_Check (V, CV : Flow_Graphs.Vertex_Id) with Ghost;
+      procedure Sanity_Check (V, CV : Flow_Graphs.Vertex_Id)
+      with Ghost;
       --  Apply sanity checking to V and CV, which are a call parameter vertex
       --  and its corresponding call vertex, respectively.
 
@@ -77,7 +78,7 @@ package body Flow.Control_Dependence_Graph is
 
       Reversed_CFG : Flow_Graphs.Graph;
 
-   --  Start of processing for Create
+      --  Start of processing for Create
 
    begin
       --  Reverse CFG and add an edge from end -> start
@@ -130,17 +131,15 @@ package body Flow.Control_Dependence_Graph is
             --  exceptional executions is selected, but there we would need a
             --  havoc vertex on every exceptional execution paths.
 
-            elsif A.Is_Call_Exception
-              or else A.Is_Param_Havoc
-            then
+            elsif A.Is_Call_Exception or else A.Is_Param_Havoc then
                declare
                   Prev    : Flow_Graphs.Vertex_Id := V;
                   In_Deps : Vertex_Sets.Set;
                begin
                   --  Collect incoming edges and remove them
 
-                  for In_Dep
-                    of FA.CDG.Get_Collection (V, Flow_Graphs.In_Neighbours)
+                  for In_Dep of
+                    FA.CDG.Get_Collection (V, Flow_Graphs.In_Neighbours)
                   loop
                      In_Deps.Insert (In_Dep);
                   end loop;
@@ -167,8 +166,9 @@ package body Flow.Control_Dependence_Graph is
                         elsif Prev_Atr.Is_Global_Parameter
                           or else Prev_Atr.Is_Implicit_Parameter
                         then
-                           pragma Assert
-                             (Prev_Atr.Parameter_Formal.Variant
+                           pragma
+                             Assert
+                               (Prev_Atr.Parameter_Formal.Variant
                                 in In_View | Out_View);
                            if Prev_Atr.Parameter_Formal.Variant = In_View then
                               if Prev_Atr.Is_Assertion then

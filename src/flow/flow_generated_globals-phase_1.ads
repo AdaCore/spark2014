@@ -36,31 +36,32 @@ package Flow_Generated_Globals.Phase_1 is
    -----------------
 
    procedure GG_Register_Constant_Calls
-     (E     : Entity_Id;
-      Calls : Node_Lists.List)
-   with Pre  => GG_Mode = GG_Write_Mode
-                and then Ekind (E) = E_Constant
-                and then (for all C of Calls =>
-                             Ekind (C) in E_Function | E_Procedure
-                               and then not Is_In_Analyzed_Files (C)),
-        Post => GG_Mode = GG_Write_Mode;
+     (E : Entity_Id; Calls : Node_Lists.List)
+   with
+     Pre  =>
+       GG_Mode = GG_Write_Mode
+       and then Ekind (E) = E_Constant
+       and then (for all C of Calls =>
+                   Ekind (C) in E_Function | E_Procedure
+                   and then not Is_In_Analyzed_Files (C)),
+     Post => GG_Mode = GG_Write_Mode;
 
    procedure GG_Register_Calls
-     (E     : Entity_Id;
-      Calls : Node_Sets.Set;
-      Kind  : ALI_Entry_Kind)
-   with Pre  => GG_Mode = GG_Write_Mode and then
-                Ekind (E) in Entry_Kind  |
-                             E_Function  |
-                             E_Package   |
-                             E_Procedure |
-                             E_Task_Type and then
-                (for all C of Calls => Ekind (C) in Entry_Kind
-                                                  | E_Function
-                                                  | E_Package
-                                                  | E_Procedure) and then
-                Kind in EK_Direct_Calls | EK_Proof_Dependencies,
-        Post => GG_Mode = GG_Write_Mode;
+     (E : Entity_Id; Calls : Node_Sets.Set; Kind : ALI_Entry_Kind)
+   with
+     Pre  =>
+       GG_Mode = GG_Write_Mode
+       and then Ekind (E)
+                in Entry_Kind
+                 | E_Function
+                 | E_Package
+                 | E_Procedure
+                 | E_Task_Type
+       and then (for all C of Calls =>
+                   Ekind (C)
+                   in Entry_Kind | E_Function | E_Package | E_Procedure)
+       and then Kind in EK_Direct_Calls | EK_Proof_Dependencies,
+     Post => GG_Mode = GG_Write_Mode;
    --  Register Calls as direct calls or proof dependencies depending on Kind,
    --  without caring if they are proof-only, definite or conditional.
 
@@ -84,30 +85,26 @@ package Flow_Generated_Globals.Phase_1 is
       No_Body           : Boolean;
       Nonreturning      : Boolean;
       Nonblocking       : Boolean)
-   with Pre  => GG_Mode = GG_Write_Mode,
-        Post => GG_Mode = GG_Write_Mode;
+   with Pre => GG_Mode = GG_Write_Mode, Post => GG_Mode = GG_Write_Mode;
    --  Register information needed later to compute globals. It also stores
    --  information related to volatiles and remote states.
 
    procedure GG_Register_State_Refinement (E : Entity_Id)
-   with Pre  => GG_Mode = GG_Write_Mode
-                  and then Ekind (E) = E_Package,
-        Post => GG_Mode = GG_Write_Mode;
+   with
+     Pre  => GG_Mode = GG_Write_Mode and then Ekind (E) = E_Package,
+     Post => GG_Mode = GG_Write_Mode;
    --  Register information related to state abstractions and their
    --  refinements. This will later be used to return the appropriate view
    --  depending on the caller (as opposed to always returning the most
    --  refined view). It also stores information related to external states.
 
-   procedure GG_Register_Task_Object (Typ       : Entity_Id;
-                                      Object    : Entity_Id;
-                                      Instances : Instance_Number)
-   with Pre  => GG_Mode = GG_Write_Mode,
-        Post => GG_Mode = GG_Write_Mode;
+   procedure GG_Register_Task_Object
+     (Typ : Entity_Id; Object : Entity_Id; Instances : Instance_Number)
+   with Pre => GG_Mode = GG_Write_Mode, Post => GG_Mode = GG_Write_Mode;
    --  Register an instance of a task object
 
    procedure GG_Register_Flow_Scope (E : Entity_Id; Info : Hierarchy_Info_T)
-   with Pre  => GG_Mode = GG_Write_Mode,
-        Post => GG_Mode = GG_Write_Mode;
+   with Pre => GG_Mode = GG_Write_Mode, Post => GG_Mode = GG_Write_Mode;
    --  Register information about a flow scope of E
 
    -------------
@@ -115,15 +112,15 @@ package Flow_Generated_Globals.Phase_1 is
    -------------
 
    procedure GG_Write_Initialize (GNAT_Root : Node_Id)
-   with Pre  => GG_Mode = GG_No_Mode
-        and then Nkind (GNAT_Root) = N_Compilation_Unit,
-        Post => GG_Mode = GG_Write_Mode;
+   with
+     Pre  =>
+       GG_Mode = GG_No_Mode and then Nkind (GNAT_Root) = N_Compilation_Unit,
+     Post => GG_Mode = GG_Write_Mode;
    --  Must be called before the first call to GG_Write_Global_Info and
    --  GG_Write_Package_Info.
 
    procedure GG_Write_Finalize
-   with Pre  => GG_Mode = GG_Write_Mode,
-        Post => GG_Mode = GG_No_Mode;
+   with Pre => GG_Mode = GG_Write_Mode, Post => GG_Mode = GG_No_Mode;
    --  Appends all collected information to the ALI file
 
 end Flow_Generated_Globals.Phase_1;

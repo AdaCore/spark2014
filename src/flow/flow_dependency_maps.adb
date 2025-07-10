@@ -36,9 +36,10 @@ with SPARK_Util;                     use SPARK_Util;
 package body Flow_Dependency_Maps is
 
    function Parse_Raw_Dependency_Map (N : Node_Id) return Dependency_Maps.Map
-   with Pre => Get_Pragma_Id (N) in Pragma_Depends
-                                  | Pragma_Refined_Depends
-                                  | Pragma_Initializes;
+   with
+     Pre =>
+       Get_Pragma_Id (N)
+       in Pragma_Depends | Pragma_Refined_Depends | Pragma_Initializes;
    --  Helper function to parse something that looks like a dependency map; in
    --  particular we can parse either a depends or an initializes aspect.
    --
@@ -51,9 +52,7 @@ package body Flow_Dependency_Maps is
 
    function Parse_Raw_Dependency_Map (N : Node_Id) return Dependency_Maps.Map
    is
-      function LHS_Entity
-        (LHS     : Node_Id;
-         Context : Entity_Id) return Entity_Id
+      function LHS_Entity (LHS : Node_Id; Context : Entity_Id) return Entity_Id
       with Pre => Is_Attribute_Result (LHS) or else Is_Entity_Name (LHS);
       --  Extract the entity from the LHS in the given Context
 
@@ -61,9 +60,7 @@ package body Flow_Dependency_Maps is
       -- LHS_Entity --
       ----------------
 
-      function LHS_Entity
-        (LHS     : Node_Id;
-         Context : Entity_Id) return Entity_Id
+      function LHS_Entity (LHS : Node_Id; Context : Entity_Id) return Entity_Id
       is
       begin
          if Is_Attribute_Result (LHS) then
@@ -105,7 +102,7 @@ package body Flow_Dependency_Maps is
       Inputs  : Node_Sets.Set;
       Outputs : Flow_Id_Sets.Set;
 
-   --  Start of processing for Parse_Raw_Dependency_Map
+      --  Start of processing for Parse_Raw_Dependency_Map
 
    begin
       --  Aspect is written either as:
@@ -127,8 +124,9 @@ package body Flow_Dependency_Maps is
             E : constant Entity_Id := Entity (Original_Node (Row));
 
          begin
-            M.Insert (Direct_Mapping_Id (Canonical_Entity (E, Context)),
-                      Flow_Id_Sets.Empty_Set);
+            M.Insert
+              (Direct_Mapping_Id (Canonical_Entity (E, Context)),
+               Flow_Id_Sets.Empty_Set);
          end;
          Next (Row);
       end loop;
@@ -158,12 +156,8 @@ package body Flow_Dependency_Maps is
                   Next (LHS);
                end loop;
 
-            when N_Attribute_Reference
-               | N_Identifier
-               | N_Expanded_Name
-            =>
-               Outputs.Insert
-                 (Direct_Mapping_Id (LHS_Entity (LHS, Context)));
+            when N_Attribute_Reference | N_Identifier | N_Expanded_Name =>
+               Outputs.Insert (Direct_Mapping_Id (LHS_Entity (LHS, Context)));
 
             when N_Null =>
                --  null => ...
@@ -219,13 +213,12 @@ package body Flow_Dependency_Maps is
             --  nothing, since both Outputs and Inputs are empty.
             if not Inputs.Is_Empty then
                --  No explicit outputs means null
-               M.Insert (Key      => Null_Flow_Id,
-                         New_Item => To_Flow_Id_Set (Inputs));
+               M.Insert
+                 (Key => Null_Flow_Id, New_Item => To_Flow_Id_Set (Inputs));
             end if;
          else
             for Output of Outputs loop
-               M.Insert (Key      => Output,
-                         New_Item => To_Flow_Id_Set (Inputs));
+               M.Insert (Key => Output, New_Item => To_Flow_Id_Set (Inputs));
             end loop;
          end if;
 
@@ -239,19 +232,15 @@ package body Flow_Dependency_Maps is
    -- Parse_Depends --
    -------------------
 
-   function Parse_Depends
-     (N : Node_Id)
-      return Dependency_Maps.Map renames
-     Parse_Raw_Dependency_Map;
+   function Parse_Depends (N : Node_Id) return Dependency_Maps.Map
+   renames Parse_Raw_Dependency_Map;
 
    -----------------------
    -- Parse_Initializes --
    -----------------------
 
    function Parse_Initializes
-     (P    : Entity_Id;
-      Scop : Flow_Scope)
-      return Dependency_Maps.Map
+     (P : Entity_Id; Scop : Flow_Scope) return Dependency_Maps.Map
    is
       Initializes : constant Node_Id := Get_Pragma (P, Pragma_Initializes);
 
@@ -293,9 +282,10 @@ package body Flow_Dependency_Maps is
                begin
                   --  Try to insert an empty set, do nothing if another value
                   --  is already in the map.
-                  M.Insert (Key      => Direct_Mapping_Id (State),
-                            Position => Position,
-                            Inserted => Inserted);
+                  M.Insert
+                    (Key      => Direct_Mapping_Id (State),
+                     Position => Position,
+                     Inserted => Inserted);
                end;
             end if;
          end loop;

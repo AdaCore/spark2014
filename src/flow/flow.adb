@@ -89,14 +89,13 @@ package body Flow is
 
    Whitespace : constant Ada.Strings.Maps.Character_Set :=
      Ada.Strings.Maps.To_Set
-       (Ada.Characters.Latin_1.Space &
-        Ada.Characters.Latin_1.CR &
-        Ada.Characters.Latin_1.LF);
+       (Ada.Characters.Latin_1.Space
+        & Ada.Characters.Latin_1.CR
+        & Ada.Characters.Latin_1.LF);
 
    Linebreak : constant Ada.Strings.Maps.Character_Set :=
      Ada.Strings.Maps.To_Set
-       (Ada.Characters.Latin_1.CR &
-        Ada.Characters.Latin_1.LF);
+       (Ada.Characters.Latin_1.CR & Ada.Characters.Latin_1.LF);
 
    procedure Build_Graphs_For_Analysis (FA_Graphs : out Analysis_Maps.Map);
    --  Build flow graphs for the current compilation unit; phase 2
@@ -117,11 +116,9 @@ package body Flow is
    -- Debug_Print_Generated_Contracts --
    -------------------------------------
 
-   procedure Debug_Print_Generated_Contracts (FA : Flow_Analysis_Graphs)
-   is
-      procedure Print_Named_Flow_Id_Set (Name        : String;
-                                         S           : Flow_Id_Sets.Set;
-                                         Print_Empty : Boolean);
+   procedure Debug_Print_Generated_Contracts (FA : Flow_Analysis_Graphs) is
+      procedure Print_Named_Flow_Id_Set
+        (Name : String; S : Flow_Id_Sets.Set; Print_Empty : Boolean);
       --  Debug procedure to pretty print the contents of S, indended under
       --  Name.
 
@@ -129,10 +126,8 @@ package body Flow is
       -- Print_Named_Flow_Id_Set --
       -----------------------------
 
-      procedure Print_Named_Flow_Id_Set (Name        : String;
-                                         S           : Flow_Id_Sets.Set;
-                                         Print_Empty : Boolean)
-      is
+      procedure Print_Named_Flow_Id_Set
+        (Name : String; S : Flow_Id_Sets.Set; Print_Empty : Boolean) is
       begin
          if not S.Is_Empty or else Print_Empty then
             Write_Str (Name);
@@ -149,7 +144,7 @@ package body Flow is
          end if;
       end Print_Named_Flow_Id_Set;
 
-   --  Start of processing for Debug_Print_Generated_Contracts
+      --  Start of processing for Debug_Print_Generated_Contracts
 
    begin
       Write_Str ("Generated contracts for ");
@@ -179,9 +174,7 @@ package body Flow is
 
                for LHS of Ordered_LHS loop
                   Print_Named_Flow_Id_Set
-                    (Flow_Id_To_String (LHS),
-                     M (LHS),
-                     True);
+                    (Flow_Id_To_String (LHS), M (LHS), True);
                end loop;
                Outdent;
             end if;
@@ -211,7 +204,7 @@ package body Flow is
             begin
                Print_Named_Flow_Id_Set ("Proof_In", Globals.Proof_Ins, False);
 
-               Print_Named_Flow_Id_Set ("Input",  RO, False);
+               Print_Named_Flow_Id_Set ("Input", RO, False);
                Print_Named_Flow_Id_Set ("In_Out", RW, False);
                Print_Named_Flow_Id_Set ("Output", WO, False);
             end Print;
@@ -219,18 +212,16 @@ package body Flow is
             Globals : Global_Flow_Ids;
 
          begin
-            GG_Get_Globals (E       => FA.Spec_Entity,
-                            S       => FA.S_Scope,
-                            Globals => Globals);
+            GG_Get_Globals
+              (E => FA.Spec_Entity, S => FA.S_Scope, Globals => Globals);
             Write_Str ("Global =>");
             Write_Eol;
             Indent;
             Print (Globals);
             Outdent;
 
-            GG_Get_Globals (E       => FA.Spec_Entity,
-                            S       => FA.B_Scope,
-                            Globals => Globals);
+            GG_Get_Globals
+              (E => FA.Spec_Entity, S => FA.B_Scope, Globals => Globals);
             Write_Str ("Refined_Global =>");
             Write_Eol;
             Indent;
@@ -249,8 +240,7 @@ package body Flow is
    procedure Write_Flow_GG_To_JSON_File (Arr : JSON_Array);
    --  Writes out to disk a JSON file of flow analysis' generated globals
 
-   procedure GG_To_JSON (FA  : Flow_Analysis_Graphs;
-                         Arr : in out JSON_Array);
+   procedure GG_To_JSON (FA : Flow_Analysis_Graphs; Arr : in out JSON_Array);
    --  Convert the flow-analysis generated contracts from FA to JSON format
 
    --------------------------------
@@ -258,12 +248,10 @@ package body Flow is
    --------------------------------
 
    procedure Write_Flow_GG_To_JSON_File (Arr : JSON_Array) is
-      FD : Ada.Text_IO.File_Type;
+      FD        : Ada.Text_IO.File_Type;
       File_Name : constant String :=
-        Ada.Directories.Compose
-          (Name      => Unit_Name,
-           Extension => "gg");
-      Full : constant JSON_Value := Create_Object;
+        Ada.Directories.Compose (Name => Unit_Name, Extension => "gg");
+      Full      : constant JSON_Value := Create_Object;
 
    begin
       Set_Field (Full, "contracts", Create (Arr));
@@ -276,11 +264,9 @@ package body Flow is
    -- GG_To_JSON --
    ----------------
 
-   procedure GG_To_JSON (FA  : Flow_Analysis_Graphs;
-                         Arr : in out JSON_Array)
-   is
+   procedure GG_To_JSON (FA : Flow_Analysis_Graphs; Arr : in out JSON_Array) is
       function To_JSON (S : Flow_Id_Sets.Set) return JSON_Array
-        with Pre => (for all Obj of S => Obj.Variant = Normal_Use);
+      with Pre => (for all Obj of S => Obj.Variant = Normal_Use);
       --  Returns the generated globals for the given set, if any, for the
       --  current program unit.
 
@@ -289,8 +275,9 @@ package body Flow is
       --  Proof_In) for the current program unit.
 
       function To_JSON (E : Entity_Id) return JSON_Value
-        with Pre  => Is_Global_Entity (E),
-             Post => Kind (To_JSON'Result) = JSON_String_Type;
+      with
+        Pre  => Is_Global_Entity (E),
+        Post => Kind (To_JSON'Result) = JSON_String_Type;
       --  Returns the full source name for E
 
       function To_JSON return JSON_Value;
@@ -312,12 +299,12 @@ package body Flow is
                S       => (if Refined then FA.B_Scope else FA.S_Scope),
                Globals => Globals);
 
-            Set_Field (Result,
-                       Standard_Ada_Case (Get_Name_String
-                         (if Refined
-                          then Name_Refined_Global
-                          else Name_Global)),
-                       To_JSON (Globals));
+            Set_Field
+              (Result,
+               Standard_Ada_Case
+                 (Get_Name_String
+                    (if Refined then Name_Refined_Global else Name_Global)),
+               To_JSON (Globals));
          end loop;
 
          --  Result looks like:
@@ -336,24 +323,23 @@ package body Flow is
       function To_JSON (Globals : Global_Flow_Ids) return JSON_Value is
          Result : constant JSON_Value := Create_Object;
 
-         procedure Set_Field_Unless_Empty (Name : Name_Id;
-                                           S    : Flow_Id_Sets.Set);
+         procedure Set_Field_Unless_Empty
+           (Name : Name_Id; S : Flow_Id_Sets.Set);
          --  Only append to Result if S is non-empty
 
          -----------------------------
          --  Set_Field_Unless_Empty --
          -----------------------------
 
-         procedure Set_Field_Unless_Empty (Name : Name_Id;
-                                           S    : Flow_Id_Sets.Set)
+         procedure Set_Field_Unless_Empty
+           (Name : Name_Id; S : Flow_Id_Sets.Set)
          is
             Obj : constant JSON_Array := To_JSON (S);
 
          begin
             if not Is_Empty (Obj) then
-               Set_Field (Result,
-                          Standard_Ada_Case (Get_Name_String (Name)),
-                          Obj);
+               Set_Field
+                 (Result, Standard_Ada_Case (Get_Name_String (Name)), Obj);
             end if;
          end Set_Field_Unless_Empty;
 
@@ -365,11 +351,11 @@ package body Flow is
          Outputs : constant Flow_Id_Sets.Set :=
            Change_Variant (Globals.Outputs, Normal_Use);
 
-      --  Start of processing for To_JSON
+         --  Start of processing for To_JSON
 
       begin
-         Set_Field_Unless_Empty (Name_Proof_In,
-            Change_Variant (Globals.Proof_Ins, Normal_Use));
+         Set_Field_Unless_Empty
+           (Name_Proof_In, Change_Variant (Globals.Proof_Ins, Normal_Use));
          Set_Field_Unless_Empty (Name_Input, Inputs - Outputs);
          Set_Field_Unless_Empty (Name_In_Out, Inputs and Outputs);
          Set_Field_Unless_Empty (Name_Output, Outputs - Inputs);
@@ -389,10 +375,12 @@ package body Flow is
                   if not Is_Heap_Variable (F.Node) then
                      Append (Variables, To_JSON (F.Node));
                   end if;
+
                when Magic_String =>
                   if not Is_Heap_Variable (F.Name) then
                      Append (Variables, Create (Pretty_Print (F.Name)));
                   end if;
+
                when others =>
                   raise Program_Error;
             end case;
@@ -416,7 +404,7 @@ package body Flow is
 
       Obj : JSON_Value;
 
-   --  Start of processing for GG_To_JSON
+      --  Start of processing for GG_To_JSON
 
    begin
       --  ??? ignore generated Initializes for now
@@ -436,11 +424,10 @@ package body Flow is
             Result : constant JSON_Value := Create_Object;
             Slc    : constant Source_Ptr :=
               Sloc (Enclosing_Declaration (FA.Spec_Entity));
-            File   : constant String     := File_Name (Slc);
-            Line   : constant Positive   :=
+            File   : constant String := File_Name (Slc);
+            Line   : constant Positive :=
               Positive (Get_Physical_Line_Number (Slc));
-            Col    : constant Positive   :=
-              Positive (Get_Column_Number (Slc));
+            Col    : constant Positive := Positive (Get_Column_Number (Slc));
 
          begin
             Set_Field (Result, "file", File);
@@ -458,9 +445,8 @@ package body Flow is
    ------------------------
 
    pragma Annotate (Xcov, Exempt_On, "Debugging code");
-   procedure Print_Graph_Vertex (G : Flow_Graphs.Graph;
-                                 M : Attribute_Maps.Map;
-                                 V : Flow_Graphs.Vertex_Id)
+   procedure Print_Graph_Vertex
+     (G : Flow_Graphs.Graph; M : Attribute_Maps.Map; V : Flow_Graphs.Vertex_Id)
    is
       F : constant Flow_Id := G.Get_Key (V);
       A : V_Attributes renames M (V);
@@ -482,34 +468,37 @@ package body Flow is
       -- Flow_Id_Image --
       -------------------
 
-      function Flow_Id_Image (F : Flow_Id) return String is
-        ((case F.Kind is
+      function Flow_Id_Image (F : Flow_Id) return String
+      is ((case F.Kind is
              when Direct_Mapping =>
-                (if Nkind (Get_Direct_Mapping_Id (F)) in N_Entity
-                 then Flow_Id_To_String (F)
-                 else Node_Or_Entity_Id'Image (Get_Direct_Mapping_Id (F))),
-             when others         =>
-                Flow_Id_To_String (F)) & "|" & F.Variant'Img);
+               (if Nkind (Get_Direct_Mapping_Id (F)) in N_Entity
+                then Flow_Id_To_String (F)
+                else Node_Or_Entity_Id'Image (Get_Direct_Mapping_Id (F))),
+             when others => Flow_Id_To_String (F))
+          & "|"
+          & F.Variant'Img);
 
-   --  Start of processing for Print_Graph_Vertex
+      --  Start of processing for Print_Graph_Vertex
 
    begin
-      Write_Line ("Graph vertex [" &
-                    Natural'Image (G.Vertex_To_Natural (V)) &
-                    "] (" &
-                    Flow_Id_Image (F) &
-                    "):");
+      Write_Line
+        ("Graph vertex ["
+         & Natural'Image (G.Vertex_To_Natural (V))
+         & "] ("
+         & Flow_Id_Image (F)
+         & "):");
 
       Indent;
 
       Format_Item ("Is_Null_Node", Boolean'Image (A.Is_Null_Node));
-      Format_Item ("Is_Exceptional_Branch",
-                   Boolean'Image (A.Is_Exceptional_Branch));
-      Format_Item ("Is_Exceptional_Path",
-                   Boolean'Image (A.Is_Exceptional_Path));
+      Format_Item
+        ("Is_Exceptional_Branch", Boolean'Image (A.Is_Exceptional_Branch));
+      Format_Item
+        ("Is_Exceptional_Path", Boolean'Image (A.Is_Exceptional_Path));
       Format_Item ("Is_Program_Node", Boolean'Image (A.Is_Program_Node));
-      Format_Item ("Is_Original_Program_Node",
-                   Boolean'Image (A.Is_Original_Program_Node));
+      Format_Item
+        ("Is_Original_Program_Node",
+         Boolean'Image (A.Is_Original_Program_Node));
       Format_Item ("Is_Assertion", Boolean'Image (A.Is_Assertion));
       Format_Item ("Is_Default_Init", Boolean'Image (A.Is_Default_Init));
       Format_Item ("Is_Loop_Entry", Boolean'Image (A.Is_Loop_Entry));
@@ -521,11 +510,11 @@ package body Flow is
       Format_Item ("Is_Constant", Boolean'Image (A.Is_Constant));
       Format_Item ("Is_Callsite", Boolean'Image (A.Is_Callsite));
       Format_Item ("Is_Parameter", Boolean'Image (A.Is_Parameter));
-      Format_Item ("Is_Global_Parameter",
-                   Boolean'Image (A.Is_Global_Parameter));
+      Format_Item
+        ("Is_Global_Parameter", Boolean'Image (A.Is_Global_Parameter));
       Format_Item ("Is_Neverending", Boolean'Image (A.Is_Neverending));
-      Format_Item ("Is_Declaration_Node",
-                   Boolean'Image (A.Is_Declaration_Node));
+      Format_Item
+        ("Is_Declaration_Node", Boolean'Image (A.Is_Declaration_Node));
       Format_Item ("Execution", Execution_Kind_T'Image (A.Execution));
       Format_Item ("Perform_IPFA", Boolean'Image (A.Perform_IPFA));
 
@@ -558,21 +547,19 @@ package body Flow is
    -- Is_Valid --
    --------------
 
-   function Is_Valid (X : Flow_Analysis_Graphs_Root)
-                      return Boolean
-   is (X.Kind = (case Ekind (X.Spec_Entity) is
-                 when E_Function | E_Procedure | E_Entry => Kind_Subprogram,
-                 when E_Task_Type                        => Kind_Task,
-                 when E_Package                          => Kind_Package,
-                 when others                             =>
-                   raise Program_Error)
+   function Is_Valid (X : Flow_Analysis_Graphs_Root) return Boolean
+   is (X.Kind
+       = (case Ekind (X.Spec_Entity) is
+            when E_Function | E_Procedure | E_Entry => Kind_Subprogram,
+            when E_Task_Type => Kind_Task,
+            when E_Package => Kind_Package,
+            when others => raise Program_Error)
        and then (if not X.Generating_Globals
                  then
                    X.GG.Globals.Is_Empty
                    and then X.GG.Local_Variables.Is_Empty
                    and then X.Entries.Is_Empty
-                   and then (for all Info of X.Tasking => Info.Is_Empty))
-      );
+                   and then (for all Info of X.Tasking => Info.Is_Empty)));
 
    -----------------
    -- Print_Graph --
@@ -586,11 +573,10 @@ package body Flow is
       Start_Vertex           : Vertex_Id := Null_Vertex;
       Helper_End_Vertex      : Vertex_Id := Null_Vertex;
       Exceptional_End_Vertex : Vertex_Id := Null_Vertex;
-      End_Vertex             : Vertex_Id := Null_Vertex) is
+      End_Vertex             : Vertex_Id := Null_Vertex)
+   is
 
-      function NDI
-        (G : Graph;
-         V : Vertex_Id) return Node_Display_Info;
+      function NDI (G : Graph; V : Vertex_Id) return Node_Display_Info;
       --  Pretty-printing for each vertex in the dot output.
 
       function EDI
@@ -605,18 +591,16 @@ package body Flow is
       -- NDI --
       ---------
 
-      function NDI
-        (G : Graph;
-         V : Vertex_Id) return Node_Display_Info
-      is
-         Rv : Node_Display_Info := Node_Display_Info'
-           (Show        => True,
-            Shape       => Node_Shape_T'First,
-            Colour      => Null_Unbounded_String,
-            Fill_Colour => Null_Unbounded_String,
-            Label       => Null_Unbounded_String);
+      function NDI (G : Graph; V : Vertex_Id) return Node_Display_Info is
+         Rv : Node_Display_Info :=
+           Node_Display_Info'
+             (Show        => True,
+              Shape       => Node_Shape_T'First,
+              Colour      => Null_Unbounded_String,
+              Fill_Colour => Null_Unbounded_String,
+              Label       => Null_Unbounded_String);
 
-         F : Flow_Id      renames G.Get_Key (V);
+         F : Flow_Id renames G.Get_Key (V);
          A : V_Attributes renames M (V);
 
          NBSP : constant String := "&nbsp;";
@@ -652,15 +636,13 @@ package body Flow is
             --  added by the node printing routine anyway. Trim both.
 
             Append
-              (Rv.Label,
-               Ada.Strings.Fixed.Trim
-                 (S, Whitespace, Linebreak));
+              (Rv.Label, Ada.Strings.Fixed.Trim (S, Whitespace, Linebreak));
          end Append_To_Label;
 
          Output_Buffer : constant Saved_Output_Buffer := Save_Output_Buffer;
          --  Store previous buffer and indentation settings
 
-      --  Start of processing for NDI
+         --  Start of processing for NDI
 
       begin
          Set_Special_Output (Append_To_Label'Unrestricted_Access);
@@ -675,26 +657,30 @@ package body Flow is
          elsif V = Start_Vertex then
             Write_Str ("start");
             Rv.Shape := Shape_None;
-            Rv.Show  := G.In_Neighbour_Count (V) > 0 or else
-              G.Out_Neighbour_Count (V) > 0;
+            Rv.Show :=
+              G.In_Neighbour_Count (V) > 0
+              or else G.Out_Neighbour_Count (V) > 0;
 
          elsif V = Helper_End_Vertex then
             Write_Str ("helper end");
             Rv.Shape := Shape_None;
-            Rv.Show  := G.In_Neighbour_Count (V) > 0 or else
-              G.Out_Neighbour_Count (V) > 0;
+            Rv.Show :=
+              G.In_Neighbour_Count (V) > 0
+              or else G.Out_Neighbour_Count (V) > 0;
 
          elsif V = Exceptional_End_Vertex then
             Write_Str ("exceptional end");
             Rv.Shape := Shape_None;
-            Rv.Show  := G.In_Neighbour_Count (V) > 0 or else
-              G.Out_Neighbour_Count (V) > 0;
+            Rv.Show :=
+              G.In_Neighbour_Count (V) > 0
+              or else G.Out_Neighbour_Count (V) > 0;
 
          elsif V = End_Vertex then
             Write_Str ("end");
             Rv.Shape := Shape_None;
-            Rv.Show  := G.In_Neighbour_Count (V) > 0 or else
-              G.Out_Neighbour_Count (V) > 0;
+            Rv.Show :=
+              G.In_Neighbour_Count (V) > 0
+              or else G.Out_Neighbour_Count (V) > 0;
 
          elsif F.Kind = Synthetic_Null_Export then
             case F.Variant is
@@ -703,7 +689,7 @@ package body Flow is
 
                when Final_Value =>
                   Rv.Colour := To_Unbounded_String ("chartreuse");
-                  Rv.Shape  := Shape_None;
+                  Rv.Shape := Shape_None;
                   Write_Str ("null");
 
                when others =>
@@ -777,9 +763,9 @@ package body Flow is
 
          elsif A.Pretty_Print_Kind = Pretty_Print_Package then
             Write_Str
-              ("package " &
-               Get_Name_String
-                 (Chars (Defining_Entity (Get_Direct_Mapping_Id (F)))));
+              ("package "
+               & Get_Name_String
+                   (Chars (Defining_Entity (Get_Direct_Mapping_Id (F)))));
 
          elsif A.Pretty_Print_Kind = Pretty_Print_Reclaim then
             Write_Str ("reclaim");
@@ -902,8 +888,10 @@ package body Flow is
                            Sprint_Comma_List (Discrete_Choices (N));
 
                         when N_Block_Statement =>
-                           pragma Assert
-                             (Nkind (Original_Node (N)) in N_Subprogram_Call);
+                           pragma
+                             Assert
+                               (Nkind (Original_Node (N))
+                                in N_Subprogram_Call);
                            Rv.Shape := Shape_Box;
                            Write_Str ("inlined call ");
                            Print_Node (Original_Node (N));
@@ -933,8 +921,7 @@ package body Flow is
                            if No (Iteration_Scheme (N)) then
                               --  Basic loop
                               Write_Str ("loop");
-                           elsif Present
-                             (Condition (Iteration_Scheme (N)))
+                           elsif Present (Condition (Iteration_Scheme (N)))
                            then
                               --  While loop.
                               Write_Str ("while ");
@@ -1019,8 +1006,8 @@ package body Flow is
                   null;
             end case;
 
-            if not A.Loops.Is_Empty and then not (A.Is_Parameter or
-                                                  A.Is_Global_Parameter)
+            if not A.Loops.Is_Empty
+              and then not (A.Is_Parameter or A.Is_Global_Parameter)
             then
                Write_Str ("\nLoops:");
                for Loop_Identifier of A.Loops loop
@@ -1109,10 +1096,13 @@ package body Flow is
          case A.Execution is
             when Normal_Execution =>
                null;
+
             when Barrier =>
                Write_Str ("\nExecution: BARRIER");
+
             when Abnormal_Termination =>
                Write_Str ("\nExecution: ABEND");
+
             when Infinite_Loop =>
                Write_Str ("\nExecution: INF");
          end case;
@@ -1148,10 +1138,11 @@ package body Flow is
          pragma Unreferenced (G, A, B, Marked);
 
          Rv : Edge_Display_Info :=
-           Edge_Display_Info'(Show   => True,
-                              Shape  => Edge_Normal,
-                              Colour => Null_Unbounded_String,
-                              Label  => Null_Unbounded_String);
+           Edge_Display_Info'
+             (Show   => True,
+              Shape  => Edge_Normal,
+              Colour => Null_Unbounded_String,
+              Label  => Null_Unbounded_String);
       begin
          case Colour is
             when EC_Default =>
@@ -1159,7 +1150,7 @@ package body Flow is
 
             when EC_Barrier =>
                Rv.Colour := To_Unbounded_String ("gold");
-               Rv.Label  := To_Unbounded_String ("barrier");
+               Rv.Label := To_Unbounded_String ("barrier");
 
             when EC_Abend =>
                --  Using the same colour as for barriers, since this one
@@ -1167,11 +1158,11 @@ package body Flow is
                --  But in some debug modes you can see it, and they are
                --  reasonably similar...
                Rv.Colour := To_Unbounded_String ("gold");
-               Rv.Label  := To_Unbounded_String ("abend");
+               Rv.Label := To_Unbounded_String ("abend");
 
             when EC_Inf =>
                Rv.Colour := To_Unbounded_String ("chartreuse"); --  Hi Martin!
-               Rv.Label  := To_Unbounded_String ("inf");
+               Rv.Label := To_Unbounded_String ("inf");
 
             when EC_DDG =>
                Rv.Colour := To_Unbounded_String ("red");
@@ -1182,7 +1173,7 @@ package body Flow is
          return Rv;
       end EDI;
 
-   --  Start of processing for Print_Graph
+      --  Start of processing for Print_Graph
 
    begin
       if Gnat2Why_Args.Debug_Mode then
@@ -1205,23 +1196,21 @@ package body Flow is
    -- Flow_Analyse_Entity --
    -------------------------
 
-   function Flow_Analyse_Entity (E                  : Entity_Id;
-                                 Generating_Globals : Boolean)
-                                 return Flow_Analysis_Graphs
+   function Flow_Analyse_Entity
+     (E : Entity_Id; Generating_Globals : Boolean) return Flow_Analysis_Graphs
    is
-      FA : Flow_Analysis_Graphs_Root
-        (Kind               => (case Ekind (E) is
-                                when E_Function
-                                   | E_Procedure
-                                   | E_Entry     => Kind_Subprogram,
-                                when E_Task_Type => Kind_Task,
-                                when E_Package   => Kind_Package,
-                                when others      => raise Program_Error),
-         Generating_Globals => Generating_Globals);
+      FA :
+        Flow_Analysis_Graphs_Root
+          (Kind =>
+             (case Ekind (E) is
+                when E_Function | E_Procedure | E_Entry => Kind_Subprogram,
+                when E_Task_Type => Kind_Task,
+                when E_Package => Kind_Package,
+                when others => raise Program_Error),
+           Generating_Globals => Generating_Globals);
 
-      Phase : constant String := (if Generating_Globals
-                                  then "Global generation"
-                                  else "Flow analysis");
+      Phase : constant String :=
+        (if Generating_Globals then "Global generation" else "Flow analysis");
 
       procedure Debug (Str : String);
       --  Write debug string
@@ -1229,9 +1218,8 @@ package body Flow is
       procedure Debug (Str : String; V : Boolean);
       --  Write debug string followed by yes or no, depending on V
 
-      procedure Debug (Condition : Boolean;
-                       Graph     : Flow_Graphs.Graph;
-                       Suffix    : String);
+      procedure Debug
+        (Condition : Boolean; Graph : Flow_Graphs.Graph; Suffix : String);
       --  If Condition is True then dump Graph to file with Suffix file name;
       --  otherwise, do nothing.
 
@@ -1256,9 +1244,8 @@ package body Flow is
          Debug (Str & (if V then "yes" else "no"));
       end Debug;
 
-      procedure Debug (Condition : Boolean;
-                       Graph     : Flow_Graphs.Graph;
-                       Suffix    : String) is
+      procedure Debug
+        (Condition : Boolean; Graph : Flow_Graphs.Graph; Suffix : String) is
       begin
          if Condition then
             Print_Graph
@@ -1282,71 +1269,68 @@ package body Flow is
       pragma Annotate (Xcov, Exempt_On, "Debugging code");
       procedure Debug_GG_Source is
       begin
-         if Gnat2Why_Args.Flow_Advanced_Debug
-           and then FA.Generating_Globals
+         if Gnat2Why_Args.Flow_Advanced_Debug and then FA.Generating_Globals
          then
             case FA.Kind is
-            when Kind_Subprogram | Kind_Task =>
-               if not FA.Is_Generative then
-                  Debug ("skipped" & (if Present (FA.Global_N)
-                         then "(global found)"
-                         elsif Present (FA.Depends_N)
-                         then "(depends found)"
-                         else "pure"));
-               end if;
-
-               Debug ("Spec in SPARK: ", Entity_In_SPARK (E));
-               Debug ("Body in SPARK: ", Entity_Body_In_SPARK (E));
-
-            when Kind_Package =>
-               if not FA.Is_Generative then
-                  Debug ("skipped (package spec)");
-                  if Entity_Body_In_SPARK (FA.Spec_Entity) then
-                     Debug ("skipped (package body)");
+               when Kind_Subprogram | Kind_Task =>
+                  if not FA.Is_Generative then
+                     Debug
+                       ("skipped"
+                        & (if Present (FA.Global_N)
+                           then "(global found)"
+                           elsif Present (FA.Depends_N)
+                           then "(depends found)"
+                           else "pure"));
                   end if;
-               else
-                  Debug ("Spec in SPARK: ", True);
-                  if Entity_Body_In_SPARK (FA.Spec_Entity) then
-                     Debug ("Body in SPARK: ", True);
+
+                  Debug ("Spec in SPARK: ", Entity_In_SPARK (E));
+                  Debug ("Body in SPARK: ", Entity_Body_In_SPARK (E));
+
+               when Kind_Package =>
+                  if not FA.Is_Generative then
+                     Debug ("skipped (package spec)");
+                     if Entity_Body_In_SPARK (FA.Spec_Entity) then
+                        Debug ("skipped (package body)");
+                     end if;
+                  else
+                     Debug ("Spec in SPARK: ", True);
+                     if Entity_Body_In_SPARK (FA.Spec_Entity) then
+                        Debug ("Body in SPARK: ", True);
+                     end if;
                   end if;
-               end if;
             end case;
          end if;
       end Debug_GG_Source;
       pragma Annotate (Xcov, Exempt_Off);
 
-   --  Start of processing for Flow_Analyse_Entity
+      --  Start of processing for Flow_Analyse_Entity
 
    begin
       Current_Error_Node := E;
 
-      FA.Spec_Entity                     := E;
-      FA.Start_Vertex                    := Null_Vertex;
-      FA.Helper_End_Vertex               := Null_Vertex;
-      FA.Exceptional_End_Vertex          := Null_Vertex;
-      FA.End_Vertex                      := Null_Vertex;
-      FA.CFG                             := Create;
-      FA.DDG                             := Create;
-      FA.CDG                             := Create;
-      FA.TDG                             := Create;
-      FA.PDG                             := Create;
-      FA.Errors_Or_Warnings              := False;
-      FA.Data_Dependency_Errors          := False;
-      FA.Flow_Dependency_Errors          := False;
+      FA.Spec_Entity := E;
+      FA.Start_Vertex := Null_Vertex;
+      FA.Helper_End_Vertex := Null_Vertex;
+      FA.Exceptional_End_Vertex := Null_Vertex;
+      FA.End_Vertex := Null_Vertex;
+      FA.CFG := Create;
+      FA.DDG := Create;
+      FA.CDG := Create;
+      FA.TDG := Create;
+      FA.PDG := Create;
+      FA.Errors_Or_Warnings := False;
+      FA.Data_Dependency_Errors := False;
+      FA.Flow_Dependency_Errors := False;
       FA.Has_Only_Terminating_Constructs := True;
       FA.Has_Only_Nonblocking_Statements := True;
-      FA.Has_Only_Exceptional_Paths      := False;
+      FA.Has_Only_Exceptional_Paths := False;
 
       --  Generate Globals (gg) or Flow Analysis (fa)
-      FA.Base_Filename := To_Unbounded_String (if Generating_Globals
-                                               then "gg_"
-                                               else "fa_");
+      FA.Base_Filename :=
+        To_Unbounded_String (if Generating_Globals then "gg_" else "fa_");
 
       case Ekind (E) is
-         when E_Entry     |
-              E_Task_Type |
-              E_Function  |
-              E_Procedure =>
+         when E_Entry | E_Task_Type | E_Function | E_Procedure =>
             --  For subprograms without explicit specs Get_Flow_Scope always
             --  return the Body_Part; however, Visible_Part for the spec scope
             --  is still fine and enables some sanity-checking assertions.
@@ -1358,18 +1342,17 @@ package body Flow is
 
             FA.Is_Main :=
               (case Ekind (E) is
-               when E_Function
-                  | E_Procedure => Might_Be_Main (E)
-                                   or else Is_Interrupt_Handler (E),
-               when E_Entry     => False,
-               when E_Task_Type => True,
-               when others      => raise Program_Error);
+                 when E_Function | E_Procedure =>
+                   Might_Be_Main (E) or else Is_Interrupt_Handler (E),
+                 when E_Entry => False,
+                 when E_Task_Type => True,
+                 when others => raise Program_Error);
 
             FA.Depends_N := Find_Contract (E, Pragma_Depends);
-            FA.Global_N  := Find_Contract (E, Pragma_Global);
+            FA.Global_N := Find_Contract (E, Pragma_Global);
 
             FA.Refined_Depends_N := Find_Contract (E, Pragma_Refined_Depends);
-            FA.Refined_Global_N  := Find_Contract (E, Pragma_Refined_Global);
+            FA.Refined_Global_N := Find_Contract (E, Pragma_Refined_Global);
 
             FA.Is_Generative := Refinement_Needed (E);
 
@@ -1402,13 +1385,18 @@ package body Flow is
 
       pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Gnat2Why_Args.Flow_Advanced_Debug then
-         Write_Line (Character'Val (8#33#) & "[32m" &
-                     Phase & " (cons) of " &
-                     FA.Kind'Img &
-                     " " &
-                     Character'Val (8#33#) & "[1m" &
-                     Get_Name_String (Chars (E)) &
-                     Character'Val (8#33#) & "[0m");
+         Write_Line
+           (Character'Val (8#33#)
+            & "[32m"
+            & Phase
+            & " (cons) of "
+            & FA.Kind'Img
+            & " "
+            & Character'Val (8#33#)
+            & "[1m"
+            & Get_Name_String (Chars (E))
+            & Character'Val (8#33#)
+            & "[0m");
 
          Indent;
 
@@ -1480,7 +1468,7 @@ package body Flow is
 
          Debug (Debug_Print_Intermediates, FA.CDG, "cdg");
          Debug (Debug_Print_Intermediates, FA.DDG, "ddg");
-         Debug (Debug_Print_PDG,           FA.PDG, "pdg");
+         Debug (Debug_Print_PDG, FA.PDG, "pdg");
       end if;
 
       pragma Annotate (Xcov, Exempt_On, "Debugging code");
@@ -1557,15 +1545,15 @@ package body Flow is
          end case;
 
          if Build then
-            FA_Graphs.Insert (Key      => E,
-                              New_Item => Flow_Analyse_Entity
-                                            (E,
-                                             Generating_Globals => False));
+            FA_Graphs.Insert
+              (Key      => E,
+               New_Item =>
+                 Flow_Analyse_Entity (E, Generating_Globals => False));
          end if;
 
       end Build_Graphs_For_Entity;
 
-   --  Start of processing for Build_Graphs_For_Analysis
+      --  Start of processing for Build_Graphs_For_Analysis
 
    begin
       if Present (Root_Entity) then
@@ -1604,17 +1592,13 @@ package body Flow is
 
                for Var of
                  To_Ordered_Flow_Id_Set
-                   (Globals.Proof_Ins
-                      or
-                    Globals.Inputs
-                      or
-                    Globals.Outputs)
+                   (Globals.Proof_Ins or Globals.Inputs or Globals.Outputs)
                loop
                   if not Is_Synchronized (Var) then
                      Error_Msg_Flow
                        (E          => Context,
                         Msg        =>
-                           "handler & with unsychchronized global &",
+                          "handler & with unsychchronized global &",
                         N          => N,
                         Severity   => Medium_Check_Kind,
                         Tag        => Concurrent_Access,
@@ -1648,7 +1632,7 @@ package body Flow is
 
          if Ekind (E) in Entry_Kind | E_Function | E_Procedure | E_Task_Type
            and then SPARK_Util.Subprograms.Analysis_Requested
-             (E, With_Inlined => True)
+                      (E, With_Inlined => True)
            and then Entity_Spec_In_SPARK (E)
          then
             --  We emit similar check messages if we analyse a body, so to
@@ -1664,7 +1648,7 @@ package body Flow is
          end if;
       end Check_Contracts;
 
-   --  Start of processing for Check_Specification_Contracts
+      --  Start of processing for Check_Specification_Contracts
 
    begin
       if Present (Root_Entity) then
@@ -1676,8 +1660,8 @@ package body Flow is
    -- Flow_Analyse_CUnit --
    ------------------------
 
-   procedure Flow_Analyse_CUnit (GNAT_Root   : Node_Id;
-                                 Found_Error : out Boolean)
+   procedure Flow_Analyse_CUnit
+     (GNAT_Root : Node_Id; Found_Error : out Boolean)
    is
       FA_Graphs : Analysis_Maps.Map := Analysis_Maps.Empty_Map;
       --  All analysis results are stashed here in case we need them later
@@ -1700,13 +1684,17 @@ package body Flow is
       for FA of FA_Graphs loop
          pragma Annotate (Xcov, Exempt_On, "Debugging code");
          if Gnat2Why_Args.Flow_Advanced_Debug then
-            Write_Line (Character'Val (8#33#) & "[32m" &
-                          "Flow analysis (errors) for " &
-                          FA.Kind'Img &
-                          " " &
-                          Character'Val (8#33#) & "[1m" &
-                          Get_Name_String (Chars (FA.Spec_Entity)) &
-                          Character'Val (8#33#) & "[0m");
+            Write_Line
+              (Character'Val (8#33#)
+               & "[32m"
+               & "Flow analysis (errors) for "
+               & FA.Kind'Img
+               & " "
+               & Character'Val (8#33#)
+               & "[1m"
+               & Get_Name_String (Chars (FA.Spec_Entity))
+               & Character'Val (8#33#)
+               & "[0m");
          end if;
          pragma Annotate (Xcov, Exempt_Off);
 
@@ -1750,15 +1738,15 @@ package body Flow is
                   --  analysis of the subprogram then emit the
                   --  relevant claim.
                   if not FA.Errors_Or_Warnings then
-                     Register_Claim (Claim'(E    => FA.Spec_Entity,
-                                            Kind => Claim_Effects));
+                     Register_Claim
+                       (Claim'(E => FA.Spec_Entity, Kind => Claim_Effects));
                   end if;
 
                when Kind_Package =>
                   declare
                      Have_Full_Package_Code : constant Boolean :=
-                       not Unit_Requires_Body (FA.Spec_Entity,
-                                               Do_Abstract_States => True)
+                       not Unit_Requires_Body
+                             (FA.Spec_Entity, Do_Abstract_States => True)
                        or else Present (Body_Entity (FA.Spec_Entity));
                      --  Some analysis only makes sense if we have already the
                      --  full code for a package, i.e. it is not just the spec
@@ -1809,8 +1797,9 @@ package body Flow is
             then
                Error_Msg_Flow
                  (FA       => FA,
-                  Msg      => "Current_Task should not be called from " &
-                              "an entry body & (RM C.7.1(17))",
+                  Msg      =>
+                    "Current_Task should not be called from "
+                    & "an entry body & (RM C.7.1(17))",
                   N        => FA.Spec_Entity,
                   F1       => Direct_Mapping_Id (FA.Spec_Entity),
                   Tag      => Call_To_Current_Task,
@@ -1823,8 +1812,9 @@ package body Flow is
             then
                Error_Msg_Flow
                  (FA       => FA,
-                  Msg      => "Current_Task should not be called from " &
-                              "an interrupt handler & (RM C.7.1(17))",
+                  Msg      =>
+                    "Current_Task should not be called from "
+                    & "an interrupt handler & (RM C.7.1(17))",
                   N        => FA.Spec_Entity,
                   F1       => Direct_Mapping_Id (FA.Spec_Entity),
                   Tag      => Call_To_Current_Task,
@@ -1840,8 +1830,7 @@ package body Flow is
 
          case FA.Kind is
             when Kind_Subprogram | Kind_Task =>
-               if Present (FA.Global_N)
-                 and then not FA.Data_Dependency_Errors
+               if Present (FA.Global_N) and then not FA.Data_Dependency_Errors
                then
                   Error_Msg_Flow
                     (FA       => FA,
@@ -1851,8 +1840,7 @@ package body Flow is
                      Severity => Info_Kind);
                end if;
 
-               if Present (FA.Depends_N)
-                 and then not FA.Flow_Dependency_Errors
+               if Present (FA.Depends_N) and then not FA.Flow_Dependency_Errors
                then
                   Error_Msg_Flow
                     (FA       => FA,
@@ -1890,9 +1878,12 @@ package body Flow is
 
       pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Gnat2Why_Args.Flow_Advanced_Debug then
-         Write_Line (Character'Val (8#33#) & "[33m" &
-                       "Flow analysis complete for current CU" &
-                       Character'Val (8#33#) & "[0m");
+         Write_Line
+           (Character'Val (8#33#)
+            & "[33m"
+            & "Flow analysis complete for current CU"
+            & Character'Val (8#33#)
+            & "[0m");
       end if;
       pragma Annotate (Xcov, Exempt_Off);
 
@@ -1915,8 +1906,8 @@ package body Flow is
    -- Generate_Globals --
    ----------------------
 
-   procedure Generate_Globals (GNAT_Root : Node_Id) renames
-     Flow_Generated_Globals.Partial.Generate_Contracts;
+   procedure Generate_Globals (GNAT_Root : Node_Id)
+   renames Flow_Generated_Globals.Partial.Generate_Contracts;
 
    ----------
    -- Hash --
@@ -1927,8 +1918,10 @@ package body Flow is
 
    begin
       --  ??? constants for hashing are picked from the air
-      return Ada.Containers.Hash_Type (E.Prefix) * 17
-           + Ada.Containers.Hash_Type (E.Entr)   * 19;
+      return
+        Ada.Containers.Hash_Type (E.Prefix)
+        * 17
+        + Ada.Containers.Hash_Type (E.Entr) * 19;
    end Hash;
 
 end Flow;

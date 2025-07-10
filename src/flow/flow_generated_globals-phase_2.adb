@@ -21,25 +21,25 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNAT.Regpat;                      use GNAT.Regpat;
+with GNAT.Regpat;           use GNAT.Regpat;
 with Ada.Strings.Fixed;
-with Ada.Strings.Unbounded;            use Ada.Strings.Unbounded;
-with Ada.Text_IO;                      use Ada.Text_IO;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Text_IO;           use Ada.Text_IO;
 
-with Assumption_Types;                 use Assumption_Types;
+with Assumption_Types; use Assumption_Types;
 
-with ALI;                              use ALI;
-with Namet;                            use Namet;
-with Osint;                            use Osint;
-with Output;                           use Output;
+with ALI;    use ALI;
+with Namet;  use Namet;
+with Osint;  use Osint;
+with Output; use Output;
 
-with Call;                             use Call;
-with Debug.Timing;                     use Debug.Timing;
+with Call;                      use Call;
+with Debug.Timing;              use Debug.Timing;
 with Gnat2Why_Args;
-with SPARK2014VSN;                     use SPARK2014VSN;
-with SPARK_Definition.Annotate;        use SPARK_Definition.Annotate;
-with SPARK_Frame_Conditions;           use SPARK_Frame_Conditions;
-with SPARK_Xrefs;                      use SPARK_Xrefs;
+with SPARK2014VSN;              use SPARK2014VSN;
+with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
+with SPARK_Frame_Conditions;    use SPARK_Frame_Conditions;
+with SPARK_Xrefs;               use SPARK_Xrefs;
 
 with Common_Iterators;                 use Common_Iterators;
 with Flow_Refinement;                  use Flow_Refinement;
@@ -62,7 +62,8 @@ package body Flow_Generated_Globals.Phase_2 is
    GG_Generated : Boolean := False;
    --  Set to True by GG_Read once the Global Graph has been generated.
 
-   GG_State_Constituents : Boolean := False with Ghost;
+   GG_State_Constituents : Boolean := False
+   with Ghost;
    --  Set to True by GG_Read once the mappings between abstract states and
    --  their constituents have been populated.
 
@@ -89,12 +90,13 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Regexp for predefined entities
 
    Internal : constant Pattern_Matcher :=
-     Compile ("^(ada|interfaces|system|gnat)__") with Ghost;
+     Compile ("^(ada|interfaces|system|gnat)__")
+   with Ghost;
    pragma Unreferenced (Internal); --  ???
    --  Regexp for internal entities; for these we do not generate ALI info
 
-   Wrapper_Package : constant Pattern_Matcher :=
-     Compile ("GP[1-9][0-9]*$") with Ghost;
+   Wrapper_Package : constant Pattern_Matcher := Compile ("GP[1-9][0-9]*$")
+   with Ghost;
    --  Regexp for wrapper packages
 
    ----------------------------------------------------
@@ -115,8 +117,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
    type Phase is (GG_Phase_1, GG_Phase_2);
 
-   Tasking_Info_Bag :
-     array (Phase, Tasking_Info_Kind) of Name_Graphs.Map :=
+   Tasking_Info_Bag : array (Phase, Tasking_Info_Kind) of Name_Graphs.Map :=
      (others => (others => Name_Graphs.Empty_Map));
    --  Maps from subprogram names to accessed objects
    --
@@ -124,12 +125,13 @@ package body Flow_Generated_Globals.Phase_2 is
    --  subprogram and stored in the ALI file. In phase 2 it is populated
    --  with objects directly and indirectly accessed by each subprogram.
 
-   package Entity_Name_Graphs is new Graphs
-     (Vertex_Key   => Entity_Name,
-      Edge_Colours => No_Colours,
-      Null_Key     => Entity_Name'Last,
-      Key_Hash     => Name_Hash,
-      Test_Key     => "=");
+   package Entity_Name_Graphs is new
+     Graphs
+       (Vertex_Key   => Entity_Name,
+        Edge_Colours => No_Colours,
+        Null_Key     => Entity_Name'Last,
+        Key_Hash     => Name_Hash,
+        Test_Key     => "=");
    --  Note: Null_Key is required by the Graphs API, but not used here; the
    --  'Last value is a dummy one.
 
@@ -202,8 +204,8 @@ package body Flow_Generated_Globals.Phase_2 is
 
    use type Entity_Name_Graphs.Vertex_Id;
 
-   package Entity_Name_To_Priorities_Maps is
-     new Ada.Containers.Hashed_Maps
+   package Entity_Name_To_Priorities_Maps is new
+     Ada.Containers.Hashed_Maps
        (Key_Type        => Entity_Name,
         Element_Type    => Object_Priority_Lists.List,
         Hash            => Name_Hash,
@@ -214,11 +216,12 @@ package body Flow_Generated_Globals.Phase_2 is
 
    Protected_Objects : Entity_Name_To_Priorities_Maps.Map;
 
-   package Entity_Contract_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Entity_Name,
-      Element_Type    => Flow_Names,
-      Hash            => Name_Hash,
-      Equivalent_Keys => "=");
+   package Entity_Contract_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Entity_Name,
+        Element_Type    => Flow_Names,
+        Hash            => Name_Hash,
+        Equivalent_Keys => "=");
 
    type Global_Patch is record
       Entity   : Entity_Name;
@@ -229,8 +232,8 @@ package body Flow_Generated_Globals.Phase_2 is
    --  the same intermediate contracts no matter in what order the entities
    --  are processed.
 
-   package Global_Patch_Lists is new Ada.Containers.Doubly_Linked_Lists
-     (Element_Type => Global_Patch);
+   package Global_Patch_Lists is new
+     Ada.Containers.Doubly_Linked_Lists (Element_Type => Global_Patch);
 
    Global_Contracts : Entity_Contract_Maps.Map;
 
@@ -238,18 +241,19 @@ package body Flow_Generated_Globals.Phase_2 is
 
    use Name_Graphs;
 
-   package Constant_Graphs is new Graphs
-     (Vertex_Key   => Entity_Name,
-      Key_Hash     => Name_Hash,
-      Edge_Colours => No_Colours,
-      Null_Key     => Entity_Name'Last,
-      Test_Key     => "=");
+   package Constant_Graphs is new
+     Graphs
+       (Vertex_Key   => Entity_Name,
+        Key_Hash     => Name_Hash,
+        Edge_Colours => No_Colours,
+        Null_Key     => Entity_Name'Last,
+        Test_Key     => "=");
 
    ----------------------------------------------------------------------
    --  Debug flags
    ----------------------------------------------------------------------
 
-   Debug_GG_Read_Timing              : constant Boolean := False;
+   Debug_GG_Read_Timing : constant Boolean := False;
    --  Enables timing information for gg_read
 
    ----------------------------------------------------------------------
@@ -260,7 +264,7 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Mapping from abstract states to their constituents, i.e.
    --  abstract_state -> {constituents}
 
-   Comp_State_Map : Name_Maps.Map   := Name_Maps.Empty_Map;
+   Comp_State_Map : Name_Maps.Map := Name_Maps.Empty_Map;
    --  A reverse of the above mapping, i.e. constituent -> abstract_state
 
    State_Part_Map : Name_Graphs.Map := Name_Graphs.Empty_Map;
@@ -327,11 +331,12 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Local subprograms
    ----------------------------------------------------------------------
 
-   package Phase_1_Info_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Entity_Name,
-      Element_Type    => Partial_Contract,
-      Hash            => Name_Hash,
-      Equivalent_Keys => "=");
+   package Phase_1_Info_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Entity_Name,
+        Element_Type    => Partial_Contract,
+        Hash            => Name_Hash,
+        Equivalent_Keys => "=");
    --  Container for information read from ALI files
 
    Phase_1_Info : Phase_1_Info_Maps.Map;
@@ -341,16 +346,15 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Calls from constants to subprograms in their initialization expressions
    --  ??? this should be map from Entity_Name to Name_Lists.List
 
-   function Calls_Potentially_Nonreturning_Subprogram (EN : Entity_Name)
-                                                       return Boolean;
+   function Calls_Potentially_Nonreturning_Subprogram
+     (EN : Entity_Name) return Boolean;
    --  See comment for Calls_Potentially_Nonreturning_Subprogram with
    --  Entity_Id as an input.
 
    function Categorize_Calls
      (EN        : Entity_Name;
       Analyzed  : Entity_Name;
-      Contracts : Entity_Contract_Maps.Map)
-      return Call_Names;
+      Contracts : Entity_Contract_Maps.Map) return Call_Names;
    --  Equivalent of a routine with the same name from phase 1, but operating
    --  on sets of Entity_Names. Refactoring them to avoid code reuse is
    --  terribly painful, because they operate on containers with different
@@ -363,8 +367,7 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Returns True iff EN is a predefined entity
 
    procedure Register_Task_Object
-     (Type_Name : Entity_Name;
-      Object    : Task_Object);
+     (Type_Name : Entity_Name; Object : Task_Object);
    --  Register an instance Object whose type is a task type Type_Name; this
    --  will be either an explicit instance or the implicit environment task
    --  for the "main" subprogram.
@@ -373,8 +376,7 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Returns callees of a Caller
 
    function Generated_Proof_Dependencies
-     (Caller : Entity_Name)
-      return Name_Sets.Set;
+     (Caller : Entity_Name) return Name_Sets.Set;
    --  Returns the proof dependencies of a Caller. Those correspond to the
    --  subprograms and package elaboration whose contract will be pulled by
    --  proof to verify Caller.
@@ -387,47 +389,40 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Returns True iff there is an edge in the subprogram call graph that
    --  connects EN1 to EN2.
 
-   function Is_Directly_Nonreturning (EN : Entity_Name) return Boolean is
-     (Phase_1_Info.Contains (EN) and then Phase_1_Info (EN).Nonreturning);
+   function Is_Directly_Nonreturning (EN : Entity_Name) return Boolean
+   is (Phase_1_Info.Contains (EN) and then Phase_1_Info (EN).Nonreturning);
    --  See comment for Is_Directly_Nonreturning with Entity_Id as an input
 
-   function Is_Directly_Nonreturning (E : Entity_Id) return Boolean is
-     (Is_Directly_Nonreturning (To_Entity_Name (E)));
+   function Is_Directly_Nonreturning (E : Entity_Id) return Boolean
+   is (Is_Directly_Nonreturning (To_Entity_Name (E)));
 
    function Part_Of_Constituents (State : Entity_Name) return Name_Sets.Set
-      with Pre => GG_Is_Abstract_State (State);
+   with Pre => GG_Is_Abstract_State (State);
    --  Returns a set union of the known Part_Of constituents of abstract State
    --  and the state entity itself (to represent the unknown constituents.)
 
    function Down_Project
-     (Var    : Entity_Name;
-      Caller : Entity_Name)
-      return Name_Sets.Set;
+     (Var : Entity_Name; Caller : Entity_Name) return Name_Sets.Set;
    --  If Var is an abstract state whose refinement is visible in the body of
    --  Caller, then return the state constituents; otherwise, return a
    --  singleton set with Var itself.
 
    function Down_Project
-     (Vars   : Name_Sets.Set;
-      Caller : Entity_Name)
-      return Name_Sets.Set;
+     (Vars : Name_Sets.Set; Caller : Entity_Name) return Name_Sets.Set;
    --  Same as above but lifted to sets of variables
 
    function Down_Project
-     (G      : Global_Names;
-      Caller : Entity_Name)
-      return Global_Names;
+     (G : Global_Names; Caller : Entity_Name) return Global_Names;
    --  Same as above but lifted to sets with proof_ins, inputs and outputs
    --  ??? When down-projecting a partially visible proof_in abstract state
    --  we might get overlapping with its input/output constituents; fixit.
 
    function Up_Project
-     (Var   : Entity_Name;
-      Scope : Name_Scope)
-      return Entity_Name
-   with Post => Up_Project'Result = Var
-                  or else
-                GG_Is_Abstract_State (Up_Project'Result);
+     (Var : Entity_Name; Scope : Name_Scope) return Entity_Name
+   with
+     Post =>
+       Up_Project'Result = Var
+       or else GG_Is_Abstract_State (Up_Project'Result);
    --  Opposite of Down_Project: constituent Var that is no longer visible at
    --  Scope is converted to its encapsulating abstract state; object that
    --  remain visible is returned unchanged.
@@ -435,21 +430,22 @@ package body Flow_Generated_Globals.Phase_2 is
    --  ??? This routine historically belongs to Flow_Refinement, but we can't
    --  have it there and keep name visibility a private child of Phase_2.
 
-   procedure Up_Project (Vars      :     Name_Sets.Set;
-                         Scope     :     Name_Scope;
-                         Projected : out Name_Sets.Set;
-                         Partial   : out Name_Sets.Set);
+   procedure Up_Project
+     (Vars      : Name_Sets.Set;
+      Scope     : Name_Scope;
+      Projected : out Name_Sets.Set;
+      Partial   : out Name_Sets.Set);
    --  Same as above but lifted to sets of objects
 
-   procedure Up_Project (Vars           :     Global_Names;
-                         Projected_Vars : out Global_Names;
-                         Scope          :     Name_Scope);
+   procedure Up_Project
+     (Vars           : Global_Names;
+      Projected_Vars : out Global_Names;
+      Scope          : Name_Scope);
    --  Same as above but lifted to sets with proof_ins, inputs and outputs
 
-   function Is_Fully_Contained (State   : Entity_Name;
-                                Outputs : Name_Sets.Set;
-                                Scop    : Name_Scope)
-                                return Boolean;
+   function Is_Fully_Contained
+     (State : Entity_Name; Outputs : Name_Sets.Set; Scop : Name_Scope)
+      return Boolean;
    --  Returns True iff all constituents of State that are visible when
    --  up-projecting to Scop are among Outputs.
 
@@ -470,9 +466,10 @@ package body Flow_Generated_Globals.Phase_2 is
    function Generated_Calls (Caller : Entity_Name) return Name_Sets.Set is
       C : constant Name_Graphs.Cursor := Direct_Calls.Find (Caller);
    begin
-      return (if Name_Graphs.Has_Element (C)
-              then Direct_Calls (C)
-              else Name_Sets.Empty_Set);
+      return
+        (if Name_Graphs.Has_Element (C)
+         then Direct_Calls (C)
+         else Name_Sets.Empty_Set);
    end Generated_Calls;
 
    function Generated_Calls (E : Entity_Id) return Node_Lists.List is
@@ -490,22 +487,22 @@ package body Flow_Generated_Globals.Phase_2 is
    ----------------------------------
 
    function Generated_Proof_Dependencies
-     (Caller : Entity_Name)
-      return Name_Sets.Set
+     (Caller : Entity_Name) return Name_Sets.Set
    is
       C : constant Name_Graphs.Cursor := Proof_Dependencies.Find (Caller);
    begin
-      return (if Name_Graphs.Has_Element (C)
-              then Proof_Dependencies (C)
-              else Name_Sets.Empty_Set);
+      return
+        (if Name_Graphs.Has_Element (C)
+         then Proof_Dependencies (C)
+         else Name_Sets.Empty_Set);
    end Generated_Proof_Dependencies;
 
    --------------------------
    -- GG_Is_Abstract_State --
    --------------------------
 
-   function GG_Is_Abstract_State (EN : Entity_Name) return Boolean renames
-     State_Abstractions.Contains;
+   function GG_Is_Abstract_State (EN : Entity_Name) return Boolean
+   renames State_Abstractions.Contains;
 
    --------------------
    -- GG_Get_Globals --
@@ -514,9 +511,8 @@ package body Flow_Generated_Globals.Phase_2 is
    Null_Globals_Reported : Node_Sets.Set;
    --  Prevents repeated reports about giving null globals
 
-   procedure GG_Get_Globals (E       : Entity_Id;
-                             S       : Flow_Scope;
-                             Globals : out Global_Flow_Ids)
+   procedure GG_Get_Globals
+     (E : Entity_Id; S : Flow_Scope; Globals : out Global_Flow_Ids)
    is
       C : constant Entity_Contract_Maps.Cursor :=
         Global_Contracts.Find (To_Entity_Name (E));
@@ -541,7 +537,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
       use type Flow_Id_Sets.Set;
 
-   --  Start of processing for GG_Get_Globals
+      --  Start of processing for GG_Get_Globals
 
    begin
       if Entity_Contract_Maps.Has_Element (C) then
@@ -556,17 +552,19 @@ package body Flow_Generated_Globals.Phase_2 is
          --  when down-projecting a partially visible Proof_In abstract state
          --  into its constituents that also happen to be Inputs or Outputs.
 
-         Globals.Inputs    := Down_Project (Globals.Inputs,    S);
-         Globals.Outputs   := Down_Project (Globals.Outputs,   S);
-         Globals.Proof_Ins := Down_Project (Globals.Proof_Ins, S)
-           - Globals.Inputs - Globals.Outputs;
+         Globals.Inputs := Down_Project (Globals.Inputs, S);
+         Globals.Outputs := Down_Project (Globals.Outputs, S);
+         Globals.Proof_Ins :=
+           Down_Project (Globals.Proof_Ins, S)
+           - Globals.Inputs
+           - Globals.Outputs;
 
          --  Convert to In_View/Out_View variants, as returned by Get_Globals
 
          Globals :=
            (Proof_Ins => Change_Variant (Globals.Proof_Ins, In_View),
-            Inputs    => Change_Variant (Globals.Inputs,    In_View),
-            Outputs   => Change_Variant (Globals.Outputs,   Out_View));
+            Inputs    => Change_Variant (Globals.Inputs, In_View),
+            Outputs   => Change_Variant (Globals.Outputs, Out_View));
 
       else
          Globals.Proof_Ins.Clear;
@@ -580,13 +578,12 @@ package body Flow_Generated_Globals.Phase_2 is
                Unused   : Node_Sets.Cursor;
 
             begin
-               Null_Globals_Reported.Insert (New_Item => E,
-                                             Position => Unused,
-                                             Inserted => Inserted);
+               Null_Globals_Reported.Insert
+                 (New_Item => E, Position => Unused, Inserted => Inserted);
 
                if Inserted then
-                  Ada.Text_IO.Put_Line ("Giving null globals for "
-                                        & Full_Source_Name (E));
+                  Ada.Text_IO.Put_Line
+                    ("Giving null globals for " & Full_Source_Name (E));
                end if;
             end;
          end if;
@@ -624,20 +621,15 @@ package body Flow_Generated_Globals.Phase_2 is
                   null;
                else
                   DM.Insert
-                    (Key      => Null_Flow_Id,
-                     New_Item => Inputs or Proof_Ins);
+                    (Key => Null_Flow_Id, New_Item => Inputs or Proof_Ins);
                end if;
             else
                for LHS of Final.Initializes loop
-                  DM.Insert
-                    (Key      => Get_Flow_Id (LHS),
-                     New_Item => Inputs);
+                  DM.Insert (Key => Get_Flow_Id (LHS), New_Item => Inputs);
                end loop;
 
                if not Proof_Ins.Is_Empty then
-                  DM.Insert
-                    (Key      => Null_Flow_Id,
-                     New_Item => Proof_Ins);
+                  DM.Insert (Key => Null_Flow_Id, New_Item => Proof_Ins);
                end if;
             end if;
 
@@ -658,15 +650,15 @@ package body Flow_Generated_Globals.Phase_2 is
    -- GG_Has_Globals --
    --------------------
 
-   function GG_Has_Globals (E : Entity_Id) return Boolean is
-     (Global_Contracts.Contains (To_Entity_Name (E)));
+   function GG_Has_Globals (E : Entity_Id) return Boolean
+   is (Global_Contracts.Contains (To_Entity_Name (E)));
 
    -------------------
    -- Is_Predefined --
    -------------------
 
-   function Is_Predefined (EN : Entity_Name) return Boolean is
-     (Match (Predefined, Strip_Child_Prefixes (To_String (EN))));
+   function Is_Predefined (EN : Entity_Name) return Boolean
+   is (Match (Predefined, Strip_Child_Prefixes (To_String (EN))));
 
    -----------------
    -- GG_Complete --
@@ -698,7 +690,8 @@ package body Flow_Generated_Globals.Phase_2 is
          --  tasks and main-like subprograms. Vertices correspond to
          --  callable entities (i.e. entries, functions and procedures).
 
-         Add_Tasking_Edges : declare
+         Add_Tasking_Edges :
+         declare
             Stack : Name_Sets.Set;
             --  Subprograms from which we still need to add edges
 
@@ -761,7 +754,8 @@ package body Flow_Generated_Globals.Phase_2 is
          --  we create a call graph with vertices corresponding to callable
          --  entities (i.e. entries, functions and procedures).
 
-         Add_Protected_Operation_Edges : declare
+         Add_Protected_Operation_Edges :
+         declare
             Stack : Name_Sets.Set;
             --  We collect protected operations in SPARK and use them as seeds
             --  to grow the call graph.
@@ -831,7 +825,8 @@ package body Flow_Generated_Globals.Phase_2 is
          --  where vertices correspond to subprograms and edges to subprogram
          --  calls.
 
-         Add_Subprogram_Edges : declare
+         Add_Subprogram_Edges :
+         declare
             Stack : Name_Sets.Set;
             --  We collect called subprograms and use them as seeds to grow the
             --  graph.
@@ -894,7 +889,8 @@ package body Flow_Generated_Globals.Phase_2 is
          --  graph where vertices correspond to subprograms and packages and
          --  edges to subprogram calls.
 
-         Add_Proof_Dependencies : declare
+         Add_Proof_Dependencies :
+         declare
             Remaining : Name_Sets.Set;
             --  We collect called subprograms and use them as seeds to grow the
             --  graph.
@@ -919,8 +915,7 @@ package body Flow_Generated_Globals.Phase_2 is
             while not Remaining.Is_Empty loop
 
                declare
-                  Caller   : constant Entity_Name :=
-                    Remaining (Remaining.First);
+                  Caller : constant Entity_Name := Remaining (Remaining.First);
                   --  Name of the caller
 
                   V_Caller : constant Entity_Name_Graphs.Vertex_Id :=
@@ -932,8 +927,9 @@ package body Flow_Generated_Globals.Phase_2 is
                begin
                   --  Add callees and proof dependencies of the caller into the
                   --  graph.
-                  for Callee of Generated_Calls (Caller).Union
-                                  (Generated_Proof_Dependencies (Caller))
+                  for Callee of
+                    Generated_Calls (Caller).Union
+                      (Generated_Proof_Dependencies (Caller))
                   loop
                      --  Get vertex for the callee
                      V_Callee := Call_Graph.Get_Vertex (Callee);
@@ -964,7 +960,8 @@ package body Flow_Generated_Globals.Phase_2 is
          --  closure. We ensure in marking that, when a lemma entity is marked,
          --  the associated function is marked too.
 
-         Add_Lemma_Subprogram_Edges : begin
+         Add_Lemma_Subprogram_Edges :
+         begin
             Lemma_Module_Dependency_Graph := Proof_Module_Dependency_Graph;
 
             --  Add vertex for phantom calls to lemma procedure from their
@@ -993,7 +990,8 @@ package body Flow_Generated_Globals.Phase_2 is
             Lemma_Module_Dependency_Graph.Close;
          end Add_Lemma_Subprogram_Edges;
 
-         Add_Ceiling_Priority_Edges : declare
+         Add_Ceiling_Priority_Edges :
+         declare
             Stack : Name_Sets.Set;
             --  We collect protected operations in SPARK and use them as seeds
             --  to grow the call graph.
@@ -1006,10 +1004,7 @@ package body Flow_Generated_Globals.Phase_2 is
             --  First collect SPARK-compliant protected operations, task types
             --  and main-like subprograms in the current compilation unit.
             for E of Entities_To_Translate loop
-               if Ekind (E) in E_Entry
-                             | E_Task_Type
-                             | E_Function
-                             | E_Procedure
+               if Ekind (E) in E_Entry | E_Task_Type | E_Function | E_Procedure
                  and then Analysis_Requested (E, With_Inlined => True)
                  and then (Is_Entry (E)
                            or else Is_Task_Type (E)
@@ -1106,12 +1101,16 @@ package body Flow_Generated_Globals.Phase_2 is
             when N_Package_Body =>
                if Nkind (Original_Node (U)) in N_Subprogram_Instantiation then
 
-                  S := Alias (Related_Instance
-                              (Defining_Unit_Name (Specification
-                                 (Unit (Library_Unit (GNAT_Root))))));
+                  S :=
+                    Alias
+                      (Related_Instance
+                         (Defining_Unit_Name
+                            (Specification
+                               (Unit (Library_Unit (GNAT_Root))))));
 
-                  --  ??? A generic subprogram is never a main program
-                  --  ??? If it is a child unit, get its simple name
+               --  ??? A generic subprogram is never a main program
+               --  ??? If it is a child unit, get its simple name
+
                else
                   S := Types.Empty;
                end if;
@@ -1124,13 +1123,12 @@ package body Flow_Generated_Globals.Phase_2 is
             declare
                Main_Entity_Name : constant Entity_Name := To_Entity_Name (S);
             begin
-               Register_Task_Object (Type_Name => Main_Entity_Name,
-                                     Object    =>
-                                       (Name      => Main_Entity_Name,
-                                        Instances => 1,
-                                        Node      => S));
-               --  Register the main-like subprogram as a task, but use the
-               --  same entity name for type and object name.
+               Register_Task_Object
+                 (Type_Name => Main_Entity_Name,
+                  Object    =>
+                    (Name => Main_Entity_Name, Instances => 1, Node => S));
+            --  Register the main-like subprogram as a task, but use the
+            --  same entity name for type and object name.
             end;
          end if;
       end Detect_Main_Subprogram;
@@ -1192,8 +1190,8 @@ package body Flow_Generated_Globals.Phase_2 is
                               Inserted => Inserted);
 
                            for Var of Phase_1_Info (S_C) loop
-                              Tasking_Info_Bag (GG_Phase_2, Kind) (T_C).
-                                Union (GG_Expand_Abstract_State (Var));
+                              Tasking_Info_Bag (GG_Phase_2, Kind) (T_C).Union
+                                (GG_Expand_Abstract_State (Var));
                            end loop;
                         end if;
                      end;
@@ -1218,7 +1216,7 @@ package body Flow_Generated_Globals.Phase_2 is
          end loop;
       end Process_Tasking_Graph;
 
-   --  Start of processing for GG_Complete
+      --  Start of processing for GG_Complete
 
    begin
       Detect_Main_Subprogram (GNAT_Root);
@@ -1238,8 +1236,7 @@ package body Flow_Generated_Globals.Phase_2 is
       --  In case we print timing information
 
       procedure Load_GG_Info_From_ALI
-        (ALI_File_Name     : File_Name_Type;
-         For_Current_CUnit : Boolean);
+        (ALI_File_Name : File_Name_Type; For_Current_CUnit : Boolean);
       --  Loads the GG info from an ALI file and stores them in the
       --  Subprogram_Info_List, State_Comp_Map and volatile info sets.
 
@@ -1251,8 +1248,7 @@ package body Flow_Generated_Globals.Phase_2 is
       ---------------------------
 
       procedure Load_GG_Info_From_ALI
-        (ALI_File_Name     : File_Name_Type;
-         For_Current_CUnit : Boolean)
+        (ALI_File_Name : File_Name_Type; For_Current_CUnit : Boolean)
       is
          pragma Unreferenced (For_Current_CUnit);
 
@@ -1272,9 +1268,11 @@ package body Flow_Generated_Globals.Phase_2 is
          --  Issues an error about the ALI file being corrupted and suggests
          --  the usage of "gnatprove --clean".
 
-         procedure Parse_GG_Line (Line : String) with
-           Pre => Line'Length >= 3 and then
-                  Line (Line'First .. Line'First + 2) = "GG ";
+         procedure Parse_GG_Line (Line : String)
+         with
+           Pre =>
+             Line'Length >= 3
+             and then Line (Line'First .. Line'First + 2) = "GG ";
          --  Parse single line of the GG section
 
          ------------------------
@@ -1285,9 +1283,11 @@ package body Flow_Generated_Globals.Phase_2 is
          begin
             Close (ALI_File);
             Abort_With_Message
-              ("Corrupted ali file detected (" & ALI_File_Name_Str & "): " &
-                 Msg &
-                 ". Call gnatprove with ""--clean"".");
+              ("Corrupted ali file detected ("
+               & ALI_File_Name_Str
+               & "): "
+               & Msg
+               & ". Call gnatprove with ""--clean"".");
          end Corrupted_ALI_File;
 
          -------------------
@@ -1310,8 +1310,8 @@ package body Flow_Generated_Globals.Phase_2 is
 
                procedure Serialize is new Serialize_Discrete (Entity_Kind);
                procedure Serialize is new Serialize_Discrete (Boolean);
-               procedure Serialize is new Serialize_Discrete
-                 (Globals_Origin_T);
+               procedure Serialize is new
+                 Serialize_Discrete (Globals_Origin_T);
 
                procedure Serialize (G : out Global_Names; Label : String);
                procedure Serialize (V : out Name_Tasking_Info);
@@ -1327,8 +1327,8 @@ package body Flow_Generated_Globals.Phase_2 is
                procedure Serialize (G : out Global_Names; Label : String) is
                begin
                   Serialize (G.Proof_Ins, Label & "proof_in");
-                  Serialize (G.Inputs,    Label & "input");
-                  Serialize (G.Outputs,   Label & "output");
+                  Serialize (G.Inputs, Label & "input");
+                  Serialize (G.Outputs, Label & "output");
                end Serialize;
 
                procedure Serialize (V : out Name_Tasking_Info) is
@@ -1347,7 +1347,7 @@ package body Flow_Generated_Globals.Phase_2 is
                   V := Boolean'Invalid_Value;
                end Unused;
 
-            --  Start of processing for Serialize
+               --  Start of processing for Serialize
 
             begin
                Serialize (V.Local, "local");
@@ -1364,30 +1364,29 @@ package body Flow_Generated_Globals.Phase_2 is
                end if;
                Serialize (V.Origin);
                Serialize (V.Parents);
-               Serialize (V.Globals.Proper,  "proper_");
+               Serialize (V.Globals.Proper, "proper_");
                Serialize (V.Globals.Refined, "refined_");
                if V.Kind = E_Package then
                   Serialize (V.Globals.Initializes, "initializes");
-                  Serialize (V.Globals.Refined_Initializes,
-                                                    "refined_initializes");
+                  Serialize
+                    (V.Globals.Refined_Initializes, "refined_initializes");
                end if;
-               Serialize (V.Globals.Calls.Proof_Calls,
-                          "calls_proof");
-               Serialize (V.Globals.Calls.Definite_Calls,
-                          "calls");
-               Serialize (V.Globals.Calls.Conditional_Calls,
-                          "calls_conditional");
+               Serialize (V.Globals.Calls.Proof_Calls, "calls_proof");
+               Serialize (V.Globals.Calls.Definite_Calls, "calls");
+               Serialize
+                 (V.Globals.Calls.Conditional_Calls, "calls_conditional");
 
                if V.Kind = E_Package then
                   Serialize (V.Local_Packages, "local_packages");
                   Serialize (V.Local_Variables, "local_var");
                end if;
 
-               if V.Kind in Entry_Kind
-                          | E_Function
-                          | E_Procedure
-                          | E_Task_Type
-                          | E_Package
+               if V.Kind
+                  in Entry_Kind
+                   | E_Function
+                   | E_Procedure
+                   | E_Task_Type
+                   | E_Package
                then
                   --  ??? use Is_Proper_Callee here
                   if V.Kind = E_Task_Type then
@@ -1436,7 +1435,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
             K : ALI_Entry_Kind;
 
-         --  Parse_GG_Line
+            --  Parse_GG_Line
 
          begin
             New_GG_Line (Line);
@@ -1458,9 +1457,10 @@ package body Flow_Generated_Globals.Phase_2 is
 
                   begin
                      Serialize (State);
-                     State_Comp_Map.Insert (Key      => State,
-                                            Position => State_Pos,
-                                            Inserted => Inserted);
+                     State_Comp_Map.Insert
+                       (Key      => State,
+                        Position => State_Pos,
+                        Inserted => Inserted);
                      pragma Assert (Inserted);
 
                      Serialize (State_Comp_Map (State_Pos));
@@ -1486,22 +1486,24 @@ package body Flow_Generated_Globals.Phase_2 is
                      Serialize (Part_Ofs);
                      pragma Assert (not Part_Ofs.Is_Empty);
 
-                     State_Part_Map.Insert (Key      => State,
-                                            Position => State_Pos,
-                                            Inserted => Inserted);
+                     State_Part_Map.Insert
+                       (Key      => State,
+                        Position => State_Pos,
+                        Inserted => Inserted);
 
                      State_Part_Map (State_Pos).Union (Part_Ofs);
 
                      for Part_Of of Part_Ofs loop
-                        Part_State_Map.Insert (Key      => Part_Of,
-                                               New_Item => State,
-                                               Position => Part_Pos,
-                                               Inserted => Inserted);
+                        Part_State_Map.Insert
+                          (Key      => Part_Of,
+                           New_Item => State,
+                           Position => Part_Pos,
+                           Inserted => Inserted);
 
-                        pragma Assert
-                          (Inserted
-                             or else
-                           Part_State_Map (Part_Pos) = State);
+                        pragma
+                          Assert
+                            (Inserted
+                               or else Part_State_Map (Part_Pos) = State);
                      end loop;
 
                      State_Abstractions.Include (State);
@@ -1523,9 +1525,9 @@ package body Flow_Generated_Globals.Phase_2 is
                   Serialize (Constants);
 
                when EK_Volatiles =>
-                  Serialize (Async_Readers_Vars,    "AR");
-                  Serialize (Async_Writers_Vars,    "AW");
-                  Serialize (Effective_Reads_Vars,  "ER");
+                  Serialize (Async_Readers_Vars, "AR");
+                  Serialize (Async_Writers_Vars, "AW");
+                  Serialize (Effective_Reads_Vars, "ER");
                   Serialize (Effective_Writes_Vars, "EW");
 
                when EK_Synchronized =>
@@ -1545,17 +1547,14 @@ package body Flow_Generated_Globals.Phase_2 is
 
                      --  Move global information to separate container
                      Phase_1_Info.Insert
-                       (Key      => Entity,
-                        Position => Pos,
-                        Inserted => Inserted);
+                       (Key => Entity, Position => Pos, Inserted => Inserted);
 
                      pragma Assert (Inserted);
 
                      Serialize (Phase_1_Info (Pos));
 
                      Global_Contracts.Insert
-                       (Key      => Entity,
-                        New_Item => Phase_1_Info (Pos).Globals);
+                       (Key => Entity, New_Item => Phase_1_Info (Pos).Globals);
 
                      --  ??? Clear the original map as a sanity check
                      --  Clear (Phase_1_Info (Entity_Pos).Globals);
@@ -1563,8 +1562,7 @@ package body Flow_Generated_Globals.Phase_2 is
                      for Kind in Tasking_Info_Kind loop
                         if not Phase_1_Info (Pos).Tasking (Kind).Is_Empty then
                            Tasking_Info_Bag (GG_Phase_1, Kind).Insert
-                             (Entity,
-                              Phase_1_Info (Pos).Tasking (Kind));
+                             (Entity, Phase_1_Info (Pos).Tasking (Kind));
                         end if;
                      end loop;
 
@@ -1593,9 +1591,10 @@ package body Flow_Generated_Globals.Phase_2 is
 
                   begin
                      Serialize (Const);
-                     Constant_Calls.Insert (Key      => Const,
-                                            Position => Const_Pos,
-                                            Inserted => Inserted);
+                     Constant_Calls.Insert
+                       (Key      => Const,
+                        Position => Const_Pos,
+                        Inserted => Inserted);
 
                      pragma Assert (Inserted);
 
@@ -1635,13 +1634,11 @@ package body Flow_Generated_Globals.Phase_2 is
                      --  an empty list.
 
                      Protected_Objects.Insert
-                       (Key      => Variable,
-                        Position => C,
-                        Inserted => Dummy);
+                       (Key => Variable, Position => C, Inserted => Dummy);
 
                      Protected_Objects (C).Append
-                       (Priority_Value'(Kind  => Prio_Kind,
-                                        Value => Prio_Value));
+                       (Priority_Value'
+                          (Kind => Prio_Kind, Value => Prio_Value));
                   end;
 
                when EK_Task_Instance =>
@@ -1657,9 +1654,10 @@ package body Flow_Generated_Globals.Phase_2 is
 
                      Register_Task_Object
                        (Typ,
-                        Task_Object'(Name      => Object,
-                                     Instances => Instances,
-                                     Node      => Find_Entity (Object)));
+                        Task_Object'
+                          (Name      => Object,
+                           Instances => Instances,
+                           Node      => Find_Entity (Object)));
                   end;
 
                when EK_Max_Queue_Length =>
@@ -1676,8 +1674,7 @@ package body Flow_Generated_Globals.Phase_2 is
                      --  and therefore we use Include.
 
                      Max_Queue_Lengths.Include
-                       (Key      => Entry_Name,
-                        New_Item => Max_Queue_Length);
+                       (Key => Entry_Name, New_Item => Max_Queue_Length);
                   end;
 
                when EK_Direct_Calls =>
@@ -1692,9 +1689,10 @@ package body Flow_Generated_Globals.Phase_2 is
                   begin
                      Serialize (Caller);
 
-                     Direct_Calls.Insert (Key      => Caller,
-                                          Position => Caller_Pos,
-                                          Inserted => Inserted);
+                     Direct_Calls.Insert
+                       (Key      => Caller,
+                        Position => Caller_Pos,
+                        Inserted => Inserted);
 
                      pragma Assert (Inserted, "name clash");
 
@@ -1713,9 +1711,10 @@ package body Flow_Generated_Globals.Phase_2 is
                   begin
                      Serialize (Caller);
 
-                     Proof_Dependencies.Insert (Key      => Caller,
-                                                Position => Caller_Pos,
-                                                Inserted => Inserted);
+                     Proof_Dependencies.Insert
+                       (Key      => Caller,
+                        Position => Caller_Pos,
+                        Inserted => Inserted);
 
                      pragma Assert (Inserted, "name clash");
 
@@ -1773,7 +1772,7 @@ package body Flow_Generated_Globals.Phase_2 is
             Terminate_GG_Line;
          end Parse_GG_Line;
 
-      --  Start of processing for Load_GG_Info_From_ALI
+         --  Start of processing for Load_GG_Info_From_ALI
 
       begin
          Open (ALI_File, In_File, ALI_File_Name_Str);
@@ -1789,8 +1788,10 @@ package body Flow_Generated_Globals.Phase_2 is
 
                   begin
                      if Header = "QQ " then
-                        Found_Version := Line = "QQ SPARKVERSION " &
-                          SPARK2014_Static_Version_String;
+                        Found_Version :=
+                          Line
+                          = "QQ SPARKVERSION "
+                            & SPARK2014_Static_Version_String;
 
                      elsif Header = "GG " then
                         if Found_Version then
@@ -1835,7 +1836,7 @@ package body Flow_Generated_Globals.Phase_2 is
       end Note_Time;
       pragma Annotate (Xcov, Exempt_Off);
 
-   --  Start of processing for GG_Resolve
+      --  Start of processing for GG_Resolve
 
    begin
       Current_Mode := GG_Read_Mode;
@@ -1864,7 +1865,8 @@ package body Flow_Generated_Globals.Phase_2 is
 
       Note_Time ("gg_read - edges added");
 
-      Resolve_Globals : declare
+      Resolve_Globals :
+      declare
 
          use type Ada.Containers.Count_Type;
 
@@ -1878,33 +1880,33 @@ package body Flow_Generated_Globals.Phase_2 is
          procedure Dump_Main_Unit_Contracts (Highlight : Entity_Name);
          --  Debug utilities
 
-         procedure Filter_Local
-           (E : Entity_Name; Names : in out Name_Sets.Set)
+         procedure Filter_Local (E : Entity_Name; Names : in out Name_Sets.Set)
          with Post => Names.Is_Subset (Names'Old);
          --  Filter out items from Names declared within E
 
-         procedure Fold (Folded    :        Entity_Name;
-                         Analyzed  :        Entity_Name;
-                         Contracts :        Entity_Contract_Maps.Map;
-                         Patches   : in out Global_Patch_Lists.List)
+         procedure Fold
+           (Folded    : Entity_Name;
+            Analyzed  : Entity_Name;
+            Contracts : Entity_Contract_Maps.Map;
+            Patches   : in out Global_Patch_Lists.List)
          with Post => Patches.Length >= Patches.Length'Old;
          --  Resolve globals of Folded and append the update to Patches
 
-         procedure Do_Global (Analyzed  :        Entity_Name;
-                              Contracts : in out Entity_Contract_Maps.Map);
+         procedure Do_Global
+           (Analyzed  : Entity_Name;
+            Contracts : in out Entity_Contract_Maps.Map);
          --  Recursively resolve globals of Folded and entities nested in it;
          --  update Contracts.
 
          procedure Resolve_Constants
-           (Contracts      :     Entity_Contract_Maps.Map;
+           (Contracts      : Entity_Contract_Maps.Map;
             Constant_Graph : out Constant_Graphs.Graph);
          --  Create graph with dependencies between constants and their inputs
 
          function Resolved_To_Variable_Input
-           (E              : Entity_Name;
-            Constant_Graph : Constant_Graphs.Graph)
+           (E : Entity_Name; Constant_Graph : Constant_Graphs.Graph)
             return Boolean
-           with Pre => Constant_Calls.Contains (E);
+         with Pre => Constant_Calls.Contains (E);
          --  Returns True iff the initialization expression of E is resolved as
          --  dependend on a variable input.
 
@@ -1916,8 +1918,7 @@ package body Flow_Generated_Globals.Phase_2 is
          --  packages into account as well.
 
          procedure Strip_Constants
-           (From           : in out Flow_Names;
-            Constant_Graph :        Constant_Graphs.Graph);
+           (From : in out Flow_Names; Constant_Graph : Constant_Graphs.Graph);
          --  Filter constants without variable from contract
 
          Highlighted : Any_Entity_Name := Null_Entity_Name;
@@ -2023,7 +2024,7 @@ package body Flow_Generated_Globals.Phase_2 is
                end if;
             end Dump;
 
-         --  Start of processing for Dump_Entity_Contract
+            --  Start of processing for Dump_Entity_Contract
 
          begin
             --  ??? For protected types we don't record ALI info now
@@ -2041,20 +2042,21 @@ package body Flow_Generated_Globals.Phase_2 is
                   end if;
 
                   Ada.Text_IO.Put_Line
-                    (Indent &
-                     Ekind (Scop)'Image & ": " &
-                     Full_Source_Name (Scop) &
-                     " (" &
-                     Ada.Strings.Fixed.Trim
-                       (Source => Entity_Name'Image (Scop_Name),
-                        Side   => Left) &
-                     ")");
+                    (Indent
+                     & Ekind (Scop)'Image
+                     & ": "
+                     & Full_Source_Name (Scop)
+                     & " ("
+                     & Ada.Strings.Fixed.Trim
+                         (Source => Entity_Name'Image (Scop_Name),
+                          Side   => Left)
+                     & ")");
 
                   if Scop_Name = Highlighted then
                      Term_Info.Set_Style (Normal);
                   end if;
 
-                  Dump ("Global",         Contr.Proper);
+                  Dump ("Global", Contr.Proper);
                   Dump ("Refined_Global", Contr.Refined);
                   Dump (Contr.Calls);
 
@@ -2073,13 +2075,13 @@ package body Flow_Generated_Globals.Phase_2 is
                      when others =>
                         null;
                   end case;
---
---                    for Kind in Tasking_Info_Kind loop
---                       if not Contr.Tasking (Kind).Is_Empty then
---                          Dump (Kind'Img, Contr.Tasking (Kind));
---                       end if;
---                    end loop;
-                  --  Ada.Text_IO.New_Line;
+               --
+               --                    for Kind in Tasking_Info_Kind loop
+               --                       if not Contr.Tasking (Kind).Is_Empty then
+               --                          Dump (Kind'Img, Contr.Tasking (Kind));
+               --                       end if;
+               --                    end loop;
+               --  Ada.Text_IO.New_Line;
                end;
             end if;
          end Dump_Contract;
@@ -2103,31 +2105,29 @@ package body Flow_Generated_Globals.Phase_2 is
          -- Filter_Local --
          ------------------
 
-         procedure Filter_Local
-           (E : Entity_Name; Names : in out Name_Sets.Set)
+         procedure Filter_Local (E : Entity_Name; Names : in out Name_Sets.Set)
          is
             Remote : Name_Sets.Set;
          begin
             for N of Names loop
-               if Is_Heap_Variable (N)
-                 or else not Scope_Within_Or_Same (N, E)
+               if Is_Heap_Variable (N) or else not Scope_Within_Or_Same (N, E)
                then
                   Remote.Insert (N);
                end if;
             end loop;
 
-            Name_Sets.Move (Target => Names,
-                            Source => Remote);
+            Name_Sets.Move (Target => Names, Source => Remote);
          end Filter_Local;
 
          ----------
          -- Fold --
          ----------
 
-         procedure Fold (Folded    :        Entity_Name;
-                         Analyzed  :        Entity_Name;
-                         Contracts :        Entity_Contract_Maps.Map;
-                         Patches   : in out Global_Patch_Lists.List)
+         procedure Fold
+           (Folded    : Entity_Name;
+            Analyzed  : Entity_Name;
+            Contracts : Entity_Contract_Maps.Map;
+            Patches   : in out Global_Patch_Lists.List)
          is
             Original : Flow_Names;
             --  In phase 1 this is a renaming, so we don't create a copy. In
@@ -2137,21 +2137,21 @@ package body Flow_Generated_Globals.Phase_2 is
             --  analysing its parent System unit.
 
             function Callee_Globals
-              (Callee : Entity_Name;
-               Caller : Entity_Name)
-               return Global_Names;
+              (Callee : Entity_Name; Caller : Entity_Name) return Global_Names;
 
             function Collect (Caller : Entity_Name) return Flow_Names
-              with Post => Is_Empty (Collect'Result.Proper)
+            with
+              Post =>
+                Is_Empty (Collect'Result.Proper)
                 and then Collect'Result.Initializes.Is_Empty
                 and then Collect'Result.Refined_Initializes.Is_Empty;
 
             pragma Annotate (Xcov, Exempt_On, "Ghost code");
-            function Is_Empty (Globals : Global_Names) return Boolean is
-              (Globals.Proof_Ins.Is_Empty
-                 and then Globals.Inputs.Is_Empty
-                 and then Globals.Outputs.Is_Empty)
-              with Ghost;
+            function Is_Empty (Globals : Global_Names) return Boolean
+            is (Globals.Proof_Ins.Is_Empty
+                and then Globals.Inputs.Is_Empty
+                and then Globals.Outputs.Is_Empty)
+            with Ghost;
             --  Returns True iff the Globals contract is empty
             pragma Annotate (Xcov, Exempt_Off);
 
@@ -2160,9 +2160,7 @@ package body Flow_Generated_Globals.Phase_2 is
             --------------------
 
             function Callee_Globals
-              (Callee : Entity_Name;
-               Caller : Entity_Name)
-               return Global_Names
+              (Callee : Entity_Name; Caller : Entity_Name) return Global_Names
             is
                C : constant Entity_Contract_Maps.Cursor :=
                  Contracts.Find (Callee);
@@ -2170,7 +2168,7 @@ package body Flow_Generated_Globals.Phase_2 is
             begin
                if Entity_Contract_Maps.Has_Element (C)
                  and then Scope_Within_Or_Same
-                   (Inner => Callee, Outer => Analyzed)
+                            (Inner => Callee, Outer => Analyzed)
                then
                   return Down_Project (Contracts (C).Proper, Caller);
                else
@@ -2212,8 +2210,7 @@ package body Flow_Generated_Globals.Phase_2 is
                      if Patch.Entity = Local then
                         Result_Proof_Ins.Union
                           (Patch.Contract.Proper.Proof_Ins);
-                        Result_Inputs.Union
-                          (Patch.Contract.Proper.Inputs);
+                        Result_Inputs.Union (Patch.Contract.Proper.Inputs);
                         exit;
                      end if;
                   end loop;
@@ -2227,21 +2224,20 @@ package body Flow_Generated_Globals.Phase_2 is
                   for Child of Child_Packages (Caller) loop
                      --  Wrapper packages and generics have no generated
                      --  contracts. ??? they should be filtered earlier
-                     pragma Assert
-                       (Contracts.Contains (Child)
-                          or else
-                        Match
-                          (Wrapper_Package,
-                           Strip_Child_Prefixes (To_String (Child)))
-                          or else
-                        True);  --  ??? generic package
+                     pragma
+                       Assert
+                         (Contracts.Contains (Child)
+                            or else Match
+                                      (Wrapper_Package,
+                                       Strip_Child_Prefixes
+                                         (To_String (Child)))
+                            or else True);  --  ??? generic package
 
                      for Patch of Patches loop
                         if Patch.Entity = Child then
                            Result_Proof_Ins.Union
                              (Patch.Contract.Proper.Proof_Ins);
-                           Result_Inputs.Union
-                             (Patch.Contract.Proper.Inputs);
+                           Result_Inputs.Union (Patch.Contract.Proper.Inputs);
                            exit;
                         end if;
                      end loop;
@@ -2331,7 +2327,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
             Update : Flow_Names;
 
-         --  Start of processing for Fold
+            --  Start of processing for Fold
 
          begin
             Debug ("Folding", Folded);
@@ -2352,8 +2348,10 @@ package body Flow_Generated_Globals.Phase_2 is
 
             --  ... and then up-project them as necessary
 
-            Up_Project (Update.Refined, Update.Proper,
-                        (Ent => Folded, Part => Visible_Part));
+            Up_Project
+              (Update.Refined,
+               Update.Proper,
+               (Ent => Folded, Part => Visible_Part));
 
             pragma Assert (Phase_1_Info.Contains (Folded));
 
@@ -2376,8 +2374,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
                   Update.Refined_Initializes.Union
                     ((Update.Refined.Outputs - Update.Refined.Inputs)
-                       and
-                     States_And_Objects (Folded));
+                     and States_And_Objects (Folded));
 
                   --  Pull objects initialized in child packages into own
                   --  refined outputs, so that Part_Of constituents declared
@@ -2415,19 +2412,22 @@ package body Flow_Generated_Globals.Phase_2 is
                      end loop;
                   end loop;
 
-                  Up_Project (Update.Refined_Initializes, Folded_Scope,
-                              Projected, Partial);
+                  Up_Project
+                    (Update.Refined_Initializes,
+                     Folded_Scope,
+                     Projected,
+                     Partial);
 
                   for State of Partial loop
-                     if Is_Fully_Contained (State, Update.Refined_Initializes,
-                                            Folded_Scope)
+                     if Is_Fully_Contained
+                          (State, Update.Refined_Initializes, Folded_Scope)
                      then
                         Projected.Include (State);
                      end if;
                   end loop;
 
-                  Name_Sets.Move (Target => Update.Initializes,
-                                  Source => Projected);
+                  Name_Sets.Move
+                    (Target => Update.Initializes, Source => Projected);
 
                   Initialized_Vars_And_States.Union (Update.Initializes);
 
@@ -2462,8 +2462,7 @@ package body Flow_Generated_Globals.Phase_2 is
             Filter_Local (Analyzed, Update.Calls.Conditional_Calls);
 
             Patches.Append
-              (Global_Patch'(Entity   => Folded,
-                             Contract => Update));
+              (Global_Patch'(Entity => Folded, Contract => Update));
 
          end Fold;
 
@@ -2471,9 +2470,9 @@ package body Flow_Generated_Globals.Phase_2 is
          -- Do_Global --
          ---------------
 
-         procedure Do_Global (Analyzed  :        Entity_Name;
-                              Contracts : in out Entity_Contract_Maps.Map)
-         is
+         procedure Do_Global
+           (Analyzed  : Entity_Name;
+            Contracts : in out Entity_Contract_Maps.Map) is
          begin
             Debug ("Do_Global", Analyzed);
 
@@ -2481,16 +2480,15 @@ package body Flow_Generated_Globals.Phase_2 is
                Do_Global (Child, Contracts);
             end loop;
 
-            if Analyzed = Standard_Standard
-              or else not Is_Leaf (Analyzed)
-            then
+            if Analyzed = Standard_Standard or else not Is_Leaf (Analyzed) then
                declare
                   Patches : Global_Patch_Lists.List;
                begin
-                  Fold (Folded    => Analyzed,
-                        Analyzed  => Analyzed,
-                        Contracts => Contracts,
-                        Patches   => Patches);
+                  Fold
+                    (Folded    => Analyzed,
+                     Analyzed  => Analyzed,
+                     Contracts => Contracts,
+                     Patches   => Patches);
 
                   for Patch of Patches loop
                      Contracts (Patch.Entity) := Patch.Contract;
@@ -2504,7 +2502,7 @@ package body Flow_Generated_Globals.Phase_2 is
          -----------------------
 
          procedure Resolve_Constants
-           (Contracts      :     Entity_Contract_Maps.Map;
+           (Contracts      : Entity_Contract_Maps.Map;
             Constant_Graph : out Constant_Graphs.Graph)
          is
             Todo : Name_Sets.Set;
@@ -2512,9 +2510,10 @@ package body Flow_Generated_Globals.Phase_2 is
             --  (directly or indirectly) in their initialization expressions.
 
             function To_List (E : Entity_Name) return Name_Lists.List
-            with Post => To_List'Result.Length = 1
-                           and then
-                         To_List'Result.First_Element = E;
+            with
+              Post =>
+                To_List'Result.Length = 1
+                and then To_List'Result.First_Element = E;
             --  Returns a singleton list with E
 
             -------------
@@ -2540,27 +2539,25 @@ package body Flow_Generated_Globals.Phase_2 is
             -------------------------------------------------------------------
 
             procedure Append
-              (List : in out Name_Lists.List;
-               Set  :        Name_Sets.Set)
+              (List : in out Name_Lists.List; Set : Name_Sets.Set)
             with Post => List.Length = List.Length'Old + Set.Length;
 
             function Direct_Inputs_Of_Constant
-              (E : Entity_Name)
-               return Name_Lists.List;
+              (E : Entity_Name) return Name_Lists.List;
             --  Returns variable inputs of the initialization of constant E
 
             function Direct_Inputs_Of_Subprogram
-              (E : Entity_Name)
-               return Name_Lists.List
+              (E : Entity_Name) return Name_Lists.List
             with Pre => Contracts.Contains (E);
             --  Returns variable inputs coming from the globals or calls of
             --  subprogram E.
 
             function Pick_Constants (From : Name_Sets.Set) return Name_Sets.Set
-              with Post => Pick_Constants'Result.Is_Subset (Of_Set => From)
-                             and then
-                           (for all E of Pick_Constants'Result =>
-                               Constant_Calls.Contains (E));
+            with
+              Post =>
+                Pick_Constants'Result.Is_Subset (Of_Set => From)
+                and then (for all E of Pick_Constants'Result =>
+                            Constant_Calls.Contains (E));
             --  Returns constants contained in the given set
 
             procedure Seed (Constants : Name_Sets.Set);
@@ -2575,9 +2572,7 @@ package body Flow_Generated_Globals.Phase_2 is
             ------------
 
             procedure Append
-              (List : in out Name_Lists.List;
-               Set  :        Name_Sets.Set)
-            is
+              (List : in out Name_Lists.List; Set : Name_Sets.Set) is
             begin
                for E of Set loop
                   List.Append (E);
@@ -2589,8 +2584,7 @@ package body Flow_Generated_Globals.Phase_2 is
             -------------------------------
 
             function Direct_Inputs_Of_Constant
-              (E : Entity_Name)
-               return Name_Lists.List
+              (E : Entity_Name) return Name_Lists.List
             is
                S : Name_Sets.Set renames Constant_Calls (E);
                L : Name_Lists.List;
@@ -2608,13 +2602,12 @@ package body Flow_Generated_Globals.Phase_2 is
             ---------------------------------
 
             function Direct_Inputs_Of_Subprogram
-              (E : Entity_Name)
-               return Name_Lists.List
+              (E : Entity_Name) return Name_Lists.List
             is
                Globals : Flow_Names renames Contracts (E);
 
-               function Has_Variables (G : Name_Sets.Set) return Boolean is
-                 (for some C of G => not Constant_Calls.Contains (C));
+               function Has_Variables (G : Name_Sets.Set) return Boolean
+               is (for some C of G => not Constant_Calls.Contains (C));
 
                Inputs : Name_Lists.List;
 
@@ -2640,9 +2633,7 @@ package body Flow_Generated_Globals.Phase_2 is
             -- Pick_Constants --
             --------------------
 
-            function Pick_Constants
-              (From : Name_Sets.Set)
-               return Name_Sets.Set
+            function Pick_Constants (From : Name_Sets.Set) return Name_Sets.Set
             is
                Constants : Name_Sets.Set;
             begin
@@ -2667,7 +2658,7 @@ package body Flow_Generated_Globals.Phase_2 is
                end loop;
             end Seed;
 
-         --  Start of processing for Resolve_Constants
+            --  Start of processing for Resolve_Constants
 
          begin
             Constant_Graph := Constant_Graphs.Create;
@@ -2751,7 +2742,8 @@ package body Flow_Generated_Globals.Phase_2 is
                      Up_Project
                        (States_And_Objects (Child),
                         Name_Scope'(E, Visible_Part),
-                        Projected, Partial);
+                        Projected,
+                        Partial);
                      Local_Variables.Union (Projected);
                      Local_Variables.Union (Partial);
                   end;
@@ -2770,24 +2762,21 @@ package body Flow_Generated_Globals.Phase_2 is
          --------------------------------
 
          function Resolved_To_Variable_Input
-           (E              : Entity_Name;
-            Constant_Graph : Constant_Graphs.Graph)
+           (E : Entity_Name; Constant_Graph : Constant_Graphs.Graph)
             return Boolean
-         is
-           (Constant_Graph.Edge_Exists (E, Variable_Input));
+         is (Constant_Graph.Edge_Exists (E, Variable_Input));
 
          ---------------------
          -- Strip_Constants --
          ---------------------
 
          procedure Strip_Constants
-           (From           : in out Flow_Names;
-            Constant_Graph :        Constant_Graphs.Graph)
+           (From : in out Flow_Names; Constant_Graph : Constant_Graphs.Graph)
          is
 
             procedure Strip (From : in out Global_Names);
             procedure Strip (From : in out Name_Sets.Set)
-              with Post => From.Is_Subset (From'Old);
+            with Post => From.Is_Subset (From'Old);
 
             -----------
             -- Strip --
@@ -2812,11 +2801,10 @@ package body Flow_Generated_Globals.Phase_2 is
                   end if;
                end loop;
 
-               Name_Sets.Move (Target => From,
-                               Source => Filtered);
+               Name_Sets.Move (Target => From, Source => Filtered);
             end Strip;
 
-         --  Start of processing for Strip_Constants
+            --  Start of processing for Strip_Constants
 
          begin
             Strip (From.Proper);
@@ -2824,7 +2812,7 @@ package body Flow_Generated_Globals.Phase_2 is
             Strip (From.Initializes);
          end Strip_Constants;
 
-      --  Start of processing for Resolve_Globals
+         --  Start of processing for Resolve_Globals
 
       begin
          --  Library-level renamings have no root entity; ignore them
@@ -2861,8 +2849,8 @@ package body Flow_Generated_Globals.Phase_2 is
 
             Iterate_Main_Unit (Register_Entity'Access);
 
-            Do_Global (Analyzed  => Standard_Standard,
-                       Contracts => Global_Contracts);
+            Do_Global
+              (Analyzed => Standard_Standard, Contracts => Global_Contracts);
 
             --  Only debug output from now on
             Debug_Traversal (Root_Entity);
@@ -2906,9 +2894,8 @@ package body Flow_Generated_Globals.Phase_2 is
    --------------------------
 
    function Component_Priorities
-     (Obj : Entity_Name)
-      return Object_Priority_Lists.List
-      renames Protected_Objects.Element;
+     (Obj : Entity_Name) return Object_Priority_Lists.List
+   renames Protected_Objects.Element;
 
    ---------------------------------------
    -- Directly_Called_Protected_Objects --
@@ -2948,7 +2935,7 @@ package body Flow_Generated_Globals.Phase_2 is
          end;
       end Collect_Objects_From_Subprogram;
 
-   --  Start of processing for Directly_Called_Protected_Objects
+      --  Start of processing for Directly_Called_Protected_Objects
 
    begin
       --  Collect objects from the caller subprogram itself
@@ -2965,9 +2952,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
       --  For a (possibly) main subprogram we also consider protected objects
       --  that are accessed in elaborations.
-      if E = Root_Entity
-        and then Is_Subprogram (E)
-        and then Might_Be_Main (E)
+      if E = Root_Entity and then Is_Subprogram (E) and then Might_Be_Main (E)
       then
          Res.Union (Directly_Called_POs_In_Elaborations);
       end if;
@@ -2980,8 +2965,7 @@ package body Flow_Generated_Globals.Phase_2 is
    ------------------------
 
    function Find_In_Refinement (AS : Entity_Id; C : Entity_Id) return Boolean
-   is
-     (State_Comp_Map (To_Entity_Name (AS)).Contains (To_Entity_Name (C)));
+   is (State_Comp_Map (To_Entity_Name (AS)).Contains (To_Entity_Name (C)));
 
    -----------------
    -- Has_No_Body --
@@ -2991,8 +2975,9 @@ package body Flow_Generated_Globals.Phase_2 is
       C : constant Phase_1_Info_Maps.Cursor :=
         Phase_1_Info.Find (To_Entity_Name (E));
    begin
-      return (not Phase_1_Info_Maps.Has_Element (C)
-                or else Phase_1_Info (C).No_Body);
+      return
+        (not Phase_1_Info_Maps.Has_Element (C)
+         or else Phase_1_Info (C).No_Body);
    end Has_No_Body;
 
    ----------------------
@@ -3004,8 +2989,9 @@ package body Flow_Generated_Globals.Phase_2 is
         State_Part_Map.Find (State);
    begin
       if Name_Graphs.Has_Element (Part_Map_Cursor) then
-         return Name_Sets.Union (State_Part_Map (Part_Map_Cursor),
-            Name_Sets.To_Set (State));
+         return
+           Name_Sets.Union
+             (State_Part_Map (Part_Map_Cursor), Name_Sets.To_Set (State));
       else
          --  [Empty set] union [State]
          return Name_Sets.To_Set (State);
@@ -3039,7 +3025,8 @@ package body Flow_Generated_Globals.Phase_2 is
    -- GG_Has_Been_Generated --
    ---------------------------
 
-   function GG_Has_Been_Generated return Boolean is (GG_Generated);
+   function GG_Has_Been_Generated return Boolean
+   is (GG_Generated);
 
    ----------------------------------------
    -- GG_State_Constituents_Map_Is_Ready --
@@ -3055,83 +3042,81 @@ package body Flow_Generated_Globals.Phase_2 is
    ------------------------
 
    function GG_Is_Ghost_Entity (EN : Entity_Name) return Boolean
-     renames Ghost_Entities.Contains;
+   renames Ghost_Entities.Contains;
 
    --------------------
    -- GG_Is_Constant --
    --------------------
 
    function GG_Is_Constant (EN : Entity_Name) return Boolean
-     renames Constants.Contains;
+   renames Constants.Contains;
 
    ----------------------
    -- GG_Is_CAE_Entity --
    ----------------------
 
    function GG_Is_CAE_Entity (EN : Entity_Name) return Boolean
-     renames CAE_Entities.Contains;
+   renames CAE_Entities.Contains;
 
    --------------------------
    -- GG_Has_Async_Readers --
    --------------------------
 
    function GG_Has_Async_Readers (EN : Entity_Name) return Boolean
-     renames Async_Readers_Vars.Contains;
+   renames Async_Readers_Vars.Contains;
 
    --------------------------
    -- GG_Has_Async_Writers --
    --------------------------
 
    function GG_Has_Async_Writers (EN : Entity_Name) return Boolean
-     renames Async_Writers_Vars.Contains;
+   renames Async_Writers_Vars.Contains;
 
    ----------------------------
    -- GG_Has_Effective_Reads --
    ----------------------------
 
    function GG_Has_Effective_Reads (EN : Entity_Name) return Boolean
-     renames Effective_Reads_Vars.Contains;
+   renames Effective_Reads_Vars.Contains;
 
    -----------------------------
    -- GG_Has_Effective_Writes --
    -----------------------------
 
    function GG_Has_Effective_Writes (EN : Entity_Name) return Boolean
-     renames Effective_Writes_Vars.Contains;
+   renames Effective_Writes_Vars.Contains;
 
    -----------------------
    -- GG_Is_Constituent --
    -----------------------
 
-   function GG_Is_Constituent (EN : Entity_Name) return Boolean is
-     (Comp_State_Map.Contains (EN) or else Part_State_Map.Contains (EN));
+   function GG_Is_Constituent (EN : Entity_Name) return Boolean
+   is (Comp_State_Map.Contains (EN) or else Part_State_Map.Contains (EN));
 
    --------------------------------------
    -- GG_Is_Initialized_At_Elaboration --
    --------------------------------------
 
-   function GG_Is_Initialized_At_Elaboration
-     (EN : Entity_Name)
-      return Boolean is
-     (Initialized_Vars_And_States.Contains (EN)
-        or else GG_Has_Async_Writers (EN));
+   function GG_Is_Initialized_At_Elaboration (EN : Entity_Name) return Boolean
+   is (Initialized_Vars_And_States.Contains (EN)
+       or else GG_Has_Async_Writers (EN));
 
    -------------------------------
    -- GG_Is_Part_Of_Constituent --
    -------------------------------
 
    function GG_Is_Part_Of_Constituent (EN : Entity_Name) return Boolean
-     renames Part_State_Map.Contains;
+   renames Part_State_Map.Contains;
 
    --------------------
    -- GG_Is_Volatile --
    --------------------
 
    function GG_Is_Volatile (EN : Entity_Name) return Boolean
-     renames Volatile_Vars.Contains;
+   renames Volatile_Vars.Contains;
 
    function GG_Is_Synchronized (EN : Entity_Name) return Boolean
-     renames Synchronized_Vars.Contains;
+   renames Synchronized_Vars.Contains;
 
    ----------------------------------------
    -- Has_Potentially_Blocking_Statement --
@@ -3161,9 +3146,7 @@ package body Flow_Generated_Globals.Phase_2 is
    -- Potentially_Blocking_Callee --
    ---------------------------------
 
-   function Potentially_Blocking_Callee
-     (E : Entity_Id)
-      return Any_Entity_Name
+   function Potentially_Blocking_Callee (E : Entity_Id) return Any_Entity_Name
    is
       EN : constant Entity_Name := To_Entity_Name (E);
       --  Entity name, as it appears in the call graph
@@ -3180,8 +3163,8 @@ package body Flow_Generated_Globals.Phase_2 is
       --  results on different platforms, where hashes might not be reliable).
 
    begin
-      for V of Protected_Operation_Call_Graph.
-        Get_Collection (Caller, Out_Neighbours)
+      for V of
+        Protected_Operation_Call_Graph.Get_Collection (Caller, Out_Neighbours)
       loop
          declare
             Callee : constant Entity_Name :=
@@ -3202,8 +3185,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
             if not Is_Predefined (Callee)
               and then (not Phase_1_Info_Maps.Has_Element (C)
-                          or else
-                        not Phase_1_Info (C).Nonblocking)
+                        or else not Phase_1_Info (C).Nonblocking)
             then
                if First_Callee = Null_Entity_Name then
                   First_Callee := Callee;
@@ -3222,9 +3204,7 @@ package body Flow_Generated_Globals.Phase_2 is
    ----------------------------------------
 
    function Potentially_Blocking_External_Call
-     (E       : Entity_Id;
-      Context : Entity_Id)
-      return External_Call
+     (E : Entity_Id; Context : Entity_Id) return External_Call
    is
       EN : constant Entity_Name := To_Entity_Name (E);
       --  Entity name, as it appears in the call graph
@@ -3251,8 +3231,9 @@ package body Flow_Generated_Globals.Phase_2 is
 
       begin
          --  Iterate over subprograms called by subprogram S
-         for V of Protected_Operation_Call_Graph.
-           Get_Collection (Subp_V, Out_Neighbours)
+         for V of
+           Protected_Operation_Call_Graph.Get_Collection
+             (Subp_V, Out_Neighbours)
          loop
             declare
                Callee : constant Entity_Name :=
@@ -3262,9 +3243,7 @@ package body Flow_Generated_Globals.Phase_2 is
                Callee_E : constant Entity_Id := Find_Entity (Callee);
 
             begin
-               if Present (Callee_E)
-                 and then Scope (Callee_E) = Context
-               then
+               if Present (Callee_E) and then Scope (Callee_E) = Context then
                   return Callee_E;
                end if;
             end;
@@ -3274,11 +3253,11 @@ package body Flow_Generated_Globals.Phase_2 is
          return Types.Empty;
       end Calls_Same_Target_Type;
 
-   --  Start of processing for Potentially_Blocking_External_Call
+      --  Start of processing for Potentially_Blocking_External_Call
 
    begin
-      for V of Protected_Operation_Call_Graph.
-        Get_Collection (Caller, Out_Neighbours)
+      for V of
+        Protected_Operation_Call_Graph.Get_Collection (Caller, Out_Neighbours)
       loop
          declare
             Callee : constant Entity_Name :=
@@ -3291,8 +3270,7 @@ package body Flow_Generated_Globals.Phase_2 is
             --  Check for external calls to a protected subprogram with
             --  the same target type as that of the protected action.
             if Callee_E = Types.Empty
-              or else not Scope_Within_Or_Same (Scope (Callee_E),
-                                                Context)
+              or else not Scope_Within_Or_Same (Scope (Callee_E), Context)
             then
                declare
                   Protected_Subp : constant Entity_Id :=
@@ -3300,8 +3278,9 @@ package body Flow_Generated_Globals.Phase_2 is
 
                begin
                   if Present (Protected_Subp) then
-                     return (Protected_Subprogram => Protected_Subp,
-                             External_Callee      => Callee);
+                     return
+                       (Protected_Subprogram => Protected_Subp,
+                        External_Callee      => Callee);
                   end if;
                end;
             end if;
@@ -3309,16 +3288,17 @@ package body Flow_Generated_Globals.Phase_2 is
 
       end loop;
 
-      return (Protected_Subprogram => Types.Empty,
-              External_Callee      => Null_Entity_Name);
+      return
+        (Protected_Subprogram => Types.Empty,
+         External_Callee      => Null_Entity_Name);
    end Potentially_Blocking_External_Call;
 
    -----------------------------------------------
    -- Calls_Potentially_Nonreturning_Subprogram --
    -----------------------------------------------
 
-   function Calls_Potentially_Nonreturning_Subprogram (EN : Entity_Name)
-                                                       return Boolean
+   function Calls_Potentially_Nonreturning_Subprogram
+     (EN : Entity_Name) return Boolean
    is
 
       ----------------------------
@@ -3326,9 +3306,8 @@ package body Flow_Generated_Globals.Phase_2 is
       ----------------------------
 
       function Has_Subprogram_Variant (Callee : Entity_Name) return Boolean
-      is
-        (Phase_1_Info.Contains (Callee)
-         and then Phase_1_Info (Callee).Has_Subp_Variant);
+      is (Phase_1_Info.Contains (Callee)
+          and then Phase_1_Info (Callee).Has_Subp_Variant);
 
       --  Calls_Potentially_Nonreturning_Subprogram explores the call graph
       --  of EN. It maintains a stack of entities to analyze. For each entity
@@ -3352,7 +3331,7 @@ package body Flow_Generated_Globals.Phase_2 is
       Stack    : Name_Sets.Set;
       --  Call graph nodes to visit
 
-   --  Start of processing of Calls_Potentially_Nonreturning_Subprogram
+      --  Start of processing of Calls_Potentially_Nonreturning_Subprogram
 
    begin
       --  Insert the analyzed entity in the sets
@@ -3371,16 +3350,15 @@ package body Flow_Generated_Globals.Phase_2 is
                --  Always_Terminates aspect, do not analyze it.
 
                if not Is_Predefined (Callee)
-                 and then
-                   (Phase_1_Info.Contains (Callee)
-                    and then not Phase_1_Info (Callee).Always_Terminates)
+                 and then (Phase_1_Info.Contains (Callee)
+                           and then not Phase_1_Info (Callee)
+                                          .Always_Terminates)
                then
 
                   --  Two first cases of Is_Potentially_Nonreturning_Internal
                   if Is_Directly_Nonreturning (Callee)
-                    or else
-                      (Is_Recursive (Callee)
-                       and then not Has_Subprogram_Variant (Callee))
+                    or else (Is_Recursive (Callee)
+                             and then not Has_Subprogram_Variant (Callee))
                   then
                      return True;
                   end if;
@@ -3411,17 +3389,15 @@ package body Flow_Generated_Globals.Phase_2 is
       return False;
    end Calls_Potentially_Nonreturning_Subprogram;
 
-   function Calls_Potentially_Nonreturning_Subprogram (E : Entity_Id)
-                                                       return Boolean
-   is
-     (Calls_Potentially_Nonreturning_Subprogram (To_Entity_Name (E)));
+   function Calls_Potentially_Nonreturning_Subprogram
+     (E : Entity_Id) return Boolean
+   is (Calls_Potentially_Nonreturning_Subprogram (To_Entity_Name (E)));
 
    ------------------------------------------
    -- Is_Potentially_Nonreturning_Internal --
    ------------------------------------------
 
-   function Is_Potentially_Nonreturning_Internal (E : Entity_Id)
-                                                  return Boolean
+   function Is_Potentially_Nonreturning_Internal (E : Entity_Id) return Boolean
    is
       EN : constant Entity_Name := To_Entity_Name (E);
    begin
@@ -3434,81 +3410,79 @@ package body Flow_Generated_Globals.Phase_2 is
       --  from their enclosing subprograms.
       return
         Is_Directly_Nonreturning (EN)
-          or else
-        (Is_Recursive (EN)
-         and then not Phase_1_Info (EN).Has_Subp_Variant)
-          or else
-        Calls_Potentially_Nonreturning_Subprogram (EN);
+        or else (Is_Recursive (EN)
+                 and then not Phase_1_Info (EN).Has_Subp_Variant)
+        or else Calls_Potentially_Nonreturning_Subprogram (EN);
    end Is_Potentially_Nonreturning_Internal;
 
    ------------------
    -- Is_Recursive --
    ------------------
 
-   function Is_Recursive (EN : Entity_Name) return Boolean is
-     (Subprogram_Call_Graph.Contains (EN)
-      and then Subprogram_Call_Graph.Edge_Exists (EN, EN));
+   function Is_Recursive (EN : Entity_Name) return Boolean
+   is (Subprogram_Call_Graph.Contains (EN)
+       and then Subprogram_Call_Graph.Edge_Exists (EN, EN));
 
-   function Is_Recursive (E : Entity_Id) return Boolean is
-     (Is_Recursive (To_Entity_Name (E)));
+   function Is_Recursive (E : Entity_Id) return Boolean
+   is (Is_Recursive (To_Entity_Name (E)));
 
    ------------------------
    -- Mutually_Recursive --
    ------------------------
 
-   function Mutually_Recursive (EN1, EN2 : Entity_Name) return Boolean is
-     (Subprogram_Call_Graph.Contains (EN1)
-      and then Subprogram_Call_Graph.Contains (EN2)
-      and then Subprogram_Call_Graph.Edge_Exists (EN1, EN2)
-      and then Subprogram_Call_Graph.Edge_Exists (EN2, EN1));
+   function Mutually_Recursive (EN1, EN2 : Entity_Name) return Boolean
+   is (Subprogram_Call_Graph.Contains (EN1)
+       and then Subprogram_Call_Graph.Contains (EN2)
+       and then Subprogram_Call_Graph.Edge_Exists (EN1, EN2)
+       and then Subprogram_Call_Graph.Edge_Exists (EN2, EN1));
 
-   function Mutually_Recursive (E1, E2 : Entity_Id) return Boolean is
-     (Mutually_Recursive (To_Entity_Name (E1), To_Entity_Name (E2)));
+   function Mutually_Recursive (E1, E2 : Entity_Id) return Boolean
+   is (Mutually_Recursive (To_Entity_Name (E1), To_Entity_Name (E2)));
 
    ----------------------------
    -- Lemma_Module_Cyclicity --
    ----------------------------
 
-   function Lemma_Module_Cyclic (EN1, EN2 : Entity_Name) return Boolean is
-     (Lemma_Module_Dependency_Graph.Contains (EN1)
-      and then Lemma_Module_Dependency_Graph.Contains (EN2)
-      and then Lemma_Module_Dependency_Graph.Edge_Exists (EN1, EN2)
-      and then Lemma_Module_Dependency_Graph.Edge_Exists (EN2, EN1));
+   function Lemma_Module_Cyclic (EN1, EN2 : Entity_Name) return Boolean
+   is (Lemma_Module_Dependency_Graph.Contains (EN1)
+       and then Lemma_Module_Dependency_Graph.Contains (EN2)
+       and then Lemma_Module_Dependency_Graph.Edge_Exists (EN1, EN2)
+       and then Lemma_Module_Dependency_Graph.Edge_Exists (EN2, EN1));
 
-   function Lemma_Module_Cyclic (E1, E2 : Entity_Id) return Boolean is
-     (Lemma_Module_Cyclic (To_Entity_Name (E1), To_Entity_Name (E2)));
+   function Lemma_Module_Cyclic (E1, E2 : Entity_Id) return Boolean
+   is (Lemma_Module_Cyclic (To_Entity_Name (E1), To_Entity_Name (E2)));
 
    ----------------------------
    -- Proof_Module_Cyclicity --
    ----------------------------
 
-   function Proof_Module_Cyclic (EN1, EN2 : Entity_Name) return Boolean is
-     (Proof_Module_Dependency_Graph.Contains (EN1)
-      and then Proof_Module_Dependency_Graph.Contains (EN2)
-      and then Proof_Module_Dependency_Graph.Edge_Exists (EN1, EN2)
-      and then Proof_Module_Dependency_Graph.Edge_Exists (EN2, EN1));
+   function Proof_Module_Cyclic (EN1, EN2 : Entity_Name) return Boolean
+   is (Proof_Module_Dependency_Graph.Contains (EN1)
+       and then Proof_Module_Dependency_Graph.Contains (EN2)
+       and then Proof_Module_Dependency_Graph.Edge_Exists (EN1, EN2)
+       and then Proof_Module_Dependency_Graph.Edge_Exists (EN2, EN1));
 
-   function Proof_Module_Cyclic (E1, E2 : Entity_Id) return Boolean is
-     (Proof_Module_Cyclic (To_Entity_Name (E1), To_Entity_Name (E2)));
+   function Proof_Module_Cyclic (E1, E2 : Entity_Id) return Boolean
+   is (Proof_Module_Cyclic (To_Entity_Name (E1), To_Entity_Name (E2)));
 
-   function Proof_Module_Cyclic (E : Entity_Id) return Boolean is
-     (Proof_Module_Cyclic (To_Entity_Name (E), To_Entity_Name (E)));
+   function Proof_Module_Cyclic (E : Entity_Id) return Boolean
+   is (Proof_Module_Cyclic (To_Entity_Name (E), To_Entity_Name (E)));
 
    ------------------------
    -- Calls_Current_Task --
    ------------------------
 
-   function Calls_Current_Task (E : Entity_Id) return Boolean is
-     (Protected_Operation_Call_Graph.Contains (Current_Task)
-        and then Protected_Operation_Call_Graph.Edge_Exists
-          (To_Entity_Name (E), Current_Task));
+   function Calls_Current_Task (E : Entity_Id) return Boolean
+   is (Protected_Operation_Call_Graph.Contains (Current_Task)
+       and then Protected_Operation_Call_Graph.Edge_Exists
+                  (To_Entity_Name (E), Current_Task));
 
    -----------------------
    -- Refinement_Exists --
    -----------------------
 
-   function Refinement_Exists (AS : Entity_Id) return Boolean is
-     (State_Comp_Map.Contains (To_Entity_Name (AS)));
+   function Refinement_Exists (AS : Entity_Id) return Boolean
+   is (State_Comp_Map.Contains (To_Entity_Name (AS)));
 
    ------------------------------
    -- GG_Expand_Abstract_State --
@@ -3538,8 +3512,7 @@ package body Flow_Generated_Globals.Phase_2 is
    --------------------------
 
    procedure Register_Task_Object
-     (Type_Name : Entity_Name;
-      Object    : Task_Object)
+     (Type_Name : Entity_Name; Object : Task_Object)
    is
       C : Task_Instances_Maps.Cursor;
       --  Cursor with a list of instances of a given task type
@@ -3551,9 +3524,8 @@ package body Flow_Generated_Globals.Phase_2 is
    begin
       --  Find a list of instances of the task type; if it does not exist then
       --  initialize with an empty list.
-      Task_Instances.Insert (Key      => Type_Name,
-                             Position => C,
-                             Inserted => Dummy);
+      Task_Instances.Insert
+        (Key => Type_Name, Position => C, Inserted => Dummy);
 
       Task_Instances (C).Insert (Object);
    end Register_Task_Object;
@@ -3563,9 +3535,7 @@ package body Flow_Generated_Globals.Phase_2 is
    ---------------------
 
    function Tasking_Objects
-     (Kind : Tasking_Owning_Kind;
-      Subp : Entity_Name)
-      return Name_Sets.Set
+     (Kind : Tasking_Owning_Kind; Subp : Entity_Name) return Name_Sets.Set
    is
       Phase_2_Info : Name_Graphs.Map renames
         Tasking_Info_Bag (GG_Phase_2, Kind);
@@ -3573,9 +3543,8 @@ package body Flow_Generated_Globals.Phase_2 is
       C : constant Name_Graphs.Cursor := Phase_2_Info.Find (Subp);
 
    begin
-      return (if Has_Element (C)
-              then Phase_2_Info (C)
-              else Name_Sets.Empty_Set);
+      return
+        (if Has_Element (C) then Phase_2_Info (C) else Name_Sets.Empty_Set);
    end Tasking_Objects;
 
    --------------------------------------------------------------------------
@@ -3603,7 +3572,7 @@ package body Flow_Generated_Globals.Phase_2 is
          if not Tasking_Info_Bag (P, Kind).Is_Empty then
             for C in Tasking_Info_Bag (P, Kind).Iterate loop
                declare
-                  Subp : Entity_Name   renames Key (C);
+                  Subp : Entity_Name renames Key (C);
                   Objs : Name_Sets.Set renames Tasking_Info_Bag (P, Kind) (C);
                begin
                   if not Objs.Is_Empty then
@@ -3635,9 +3604,9 @@ package body Flow_Generated_Globals.Phase_2 is
          begin
             return
               (case Info.Kind is
-                  when Entry_Kind               => True,
-                  when E_Function | E_Procedure => Info.Is_Protected,
-                  when others                   => False);
+                 when Entry_Kind => True,
+                 when E_Function | E_Procedure => Info.Is_Protected,
+                 when others => False);
          end;
       else
          return False;
@@ -3651,15 +3620,15 @@ package body Flow_Generated_Globals.Phase_2 is
    function Categorize_Calls
      (EN        : Entity_Name;
       Analyzed  : Entity_Name;
-      Contracts : Entity_Contract_Maps.Map)
-      return Call_Names
+      Contracts : Entity_Contract_Maps.Map) return Call_Names
    is
       Original : Call_Names renames Contracts (EN).Calls;
 
       O_Proof, O_Conditional, O_Definite : Name_Sets.Set;
 
    begin
-      Find_Definitive_Calls : declare
+      Find_Definitive_Calls :
+      declare
          Todo : Name_Sets.Set := Original.Definite_Calls;
          Done : Name_Sets.Set;
 
@@ -3688,17 +3657,18 @@ package body Flow_Generated_Globals.Phase_2 is
 
          pragma Assert (Original.Definite_Calls.Is_Subset (Of_Set => Done));
 
-         Name_Sets.Move (Target => O_Definite,
-                         Source => Done);
+         Name_Sets.Move (Target => O_Definite, Source => Done);
       end Find_Definitive_Calls;
 
-      Find_Conditional_Calls : declare
+      Find_Conditional_Calls :
+      declare
          type Calls is record
             Conditional, Definite : Name_Sets.Set;
          end record;
 
-         Todo : Calls := (Conditional => Original.Conditional_Calls,
-                          Definite    => Original.Definite_Calls);
+         Todo : Calls :=
+           (Conditional => Original.Conditional_Calls,
+            Definite    => Original.Definite_Calls);
 
          Done : Calls;
 
@@ -3757,21 +3727,23 @@ package body Flow_Generated_Globals.Phase_2 is
             end if;
          end loop;
 
-         pragma Assert
-           (Original.Conditional_Calls.Is_Subset (Of_Set => Done.Conditional));
+         pragma
+           Assert
+             (Original.Conditional_Calls.Is_Subset
+                (Of_Set => Done.Conditional));
 
-         Name_Sets.Move (Target => O_Conditional,
-                         Source => Done.Conditional);
+         Name_Sets.Move (Target => O_Conditional, Source => Done.Conditional);
       end Find_Conditional_Calls;
 
-      Find_Proof_Calls : declare
+      Find_Proof_Calls :
+      declare
          type Calls is record
             Proof, Other : Name_Sets.Set;
          end record;
 
-         Todo : Calls := (Proof => Original.Proof_Calls,
-                          Other => Original.Conditional_Calls or
-                                   Original.Definite_Calls);
+         Todo : Calls :=
+           (Proof => Original.Proof_Calls,
+            Other => Original.Conditional_Calls or Original.Definite_Calls);
 
          Done : Calls;
 
@@ -3793,9 +3765,9 @@ package body Flow_Generated_Globals.Phase_2 is
 
                      begin
                         Todo.Proof.Union
-                          ((Picked.Proof_Calls or
-                            Picked.Conditional_Calls or
-                            Picked.Definite_Calls)
+                          ((Picked.Proof_Calls
+                            or Picked.Conditional_Calls
+                            or Picked.Definite_Calls)
                            - Done.Proof);
                      end;
                   end if;
@@ -3817,12 +3789,10 @@ package body Flow_Generated_Globals.Phase_2 is
                         Picked : Call_Names renames Contracts (Pick).Calls;
 
                      begin
-                        Todo.Proof.Union
-                          (Picked.Proof_Calls - Done.Proof);
+                        Todo.Proof.Union (Picked.Proof_Calls - Done.Proof);
 
                         Todo.Other.Union
-                          ((Picked.Conditional_Calls or
-                            Picked.Definite_Calls)
+                          ((Picked.Conditional_Calls or Picked.Definite_Calls)
                            - Done.Other);
                      end;
                   end if;
@@ -3836,13 +3806,13 @@ package body Flow_Generated_Globals.Phase_2 is
 
          pragma Assert (Original.Proof_Calls.Is_Subset (Of_Set => Done.Proof));
 
-         Name_Sets.Move (Target => O_Proof,
-                         Source => Done.Proof);
+         Name_Sets.Move (Target => O_Proof, Source => Done.Proof);
       end Find_Proof_Calls;
 
-      return (Proof_Calls       => O_Proof - O_Conditional - O_Definite,
-              Conditional_Calls => O_Conditional,
-              Definite_Calls    => O_Definite - O_Conditional);
+      return
+        (Proof_Calls       => O_Proof - O_Conditional - O_Definite,
+         Conditional_Calls => O_Conditional,
+         Definite_Calls    => O_Definite - O_Conditional);
    end Categorize_Calls;
 
    -------
@@ -3859,8 +3829,8 @@ package body Flow_Generated_Globals.Phase_2 is
       -- Compare_Names --
       -------------------
 
-      function Compare_Names return Boolean is
-        (To_String (Left.Name) < To_String (Right.Name));
+      function Compare_Names return Boolean
+      is (To_String (Left.Name) < To_String (Right.Name));
 
       --  Local variables
       Has_Left_Node  : constant Boolean := Present (Left.Node);
@@ -3869,9 +3839,7 @@ package body Flow_Generated_Globals.Phase_2 is
       --  Start of processing for "<"
 
    begin
-      if Has_Left_Node
-        and then Has_Right_Node
-      then
+      if Has_Left_Node and then Has_Right_Node then
          declare
             Left_In_Analyzed : constant Boolean :=
               Is_In_Analyzed_Files (Left.Node);
@@ -3880,14 +3848,14 @@ package body Flow_Generated_Globals.Phase_2 is
               Is_In_Analyzed_Files (Right.Node);
 
          begin
-            return (if Left_In_Analyzed and Right_In_Analyzed then
-                      Left.Node < Right.Node
-                    elsif Left_In_Analyzed then
-                      True
-                    elsif Right_In_Analyzed then
-                      False
-                    else
-                      Compare_Names);
+            return
+              (if Left_In_Analyzed and Right_In_Analyzed
+               then Left.Node < Right.Node
+               elsif Left_In_Analyzed
+               then True
+               elsif Right_In_Analyzed
+               then False
+               else Compare_Names);
          end;
       elsif Has_Left_Node then
          return True;
@@ -3903,8 +3871,7 @@ package body Flow_Generated_Globals.Phase_2 is
    -----------
 
    pragma Annotate (Xcov, Exempt_On, "Debugging code");
-   procedure Print (G : Constant_Graphs.Graph)
-   is
+   procedure Print (G : Constant_Graphs.Graph) is
       use Constant_Graphs;
 
       function NDI (G : Graph; V : Vertex_Id) return Node_Display_Info;
@@ -3922,24 +3889,26 @@ package body Flow_Generated_Globals.Phase_2 is
       -- NDI --
       ---------
 
-      function NDI (G : Graph; V : Vertex_Id) return Node_Display_Info
-      is
+      function NDI (G : Graph; V : Vertex_Id) return Node_Display_Info is
          E : constant Entity_Name := G.Get_Key (V);
       begin
          if E = Variable_Input then
-            return (Show        => True,
-                    Shape       => Node_Shape_T'First,
-                    Colour      => Null_Unbounded_String,
-                    Fill_Colour => To_Unbounded_String ("gray"),
-                    Label       => To_Unbounded_String ("Variable input"));
+            return
+              (Show        => True,
+               Shape       => Node_Shape_T'First,
+               Colour      => Null_Unbounded_String,
+               Fill_Colour => To_Unbounded_String ("gray"),
+               Label       => To_Unbounded_String ("Variable input"));
          else
-            return (Show        => True,
-                    Shape       => (if Constant_Calls.Contains (E)
-                                    then Shape_Oval
-                                    else Shape_Box),
-                    Colour      => Null_Unbounded_String,
-                    Fill_Colour => Null_Unbounded_String,
-                    Label       => To_Unbounded_String (To_String (E)));
+            return
+              (Show        => True,
+               Shape       =>
+                 (if Constant_Calls.Contains (E)
+                  then Shape_Oval
+                  else Shape_Box),
+               Colour      => Null_Unbounded_String,
+               Fill_Colour => Null_Unbounded_String,
+               Label       => To_Unbounded_String (To_String (E)));
          end if;
       end NDI;
 
@@ -3968,7 +3937,7 @@ package body Flow_Generated_Globals.Phase_2 is
       Filename : constant String :=
         Unique_Name (Unique_Main_Unit_Entity) & "_constants_2";
 
-   --  Start of processing for Print_Graph
+      --  Start of processing for Print_Graph
 
    begin
       if Gnat2Why_Args.Flow_Advanced_Debug then
@@ -3985,18 +3954,13 @@ package body Flow_Generated_Globals.Phase_2 is
    ------------------
 
    function Down_Project
-     (G      : Global_Names;
-      Caller : Entity_Name)
-      return Global_Names
-   is
-     (Proof_Ins => Down_Project (G.Proof_Ins, Caller),
-      Inputs    => Down_Project (G.Inputs,    Caller),
-      Outputs   => Down_Project (G.Outputs,   Caller));
+     (G : Global_Names; Caller : Entity_Name) return Global_Names
+   is (Proof_Ins => Down_Project (G.Proof_Ins, Caller),
+       Inputs    => Down_Project (G.Inputs, Caller),
+       Outputs   => Down_Project (G.Outputs, Caller));
 
    function Down_Project
-     (Vars   : Name_Sets.Set;
-      Caller : Entity_Name)
-      return Name_Sets.Set
+     (Vars : Name_Sets.Set; Caller : Entity_Name) return Name_Sets.Set
    is
       Projected : Name_Sets.Set;
    begin
@@ -4008,12 +3972,9 @@ package body Flow_Generated_Globals.Phase_2 is
    end Down_Project;
 
    function Down_Project
-     (Var    : Entity_Name;
-      Caller : Entity_Name)
-      return Name_Sets.Set
+     (Var : Entity_Name; Caller : Entity_Name) return Name_Sets.Set
    is
-      Target_Scope : constant Name_Scope :=
-        (Ent => Caller, Part => Body_Part);
+      Target_Scope : constant Name_Scope := (Ent => Caller, Part => Body_Part);
 
    begin
       if Is_Heap_Variable (Var) then
@@ -4053,23 +4014,18 @@ package body Flow_Generated_Globals.Phase_2 is
    -- Is_Fully_Contained --
    ------------------------
 
-   function Is_Fully_Contained (State   : Entity_Name;
-                                Outputs : Name_Sets.Set;
-                                Scop    : Name_Scope)
-                                return Boolean
-   is
-     (Name_Sets.Is_Subset (Subset => Down_Project (State, Scop.Ent),
-                           Of_Set => Outputs));
+   function Is_Fully_Contained
+     (State : Entity_Name; Outputs : Name_Sets.Set; Scop : Name_Scope)
+      return Boolean
+   is (Name_Sets.Is_Subset
+         (Subset => Down_Project (State, Scop.Ent), Of_Set => Outputs));
 
    ----------------
    -- Up_Project --
    ----------------
 
    function Up_Project
-     (Var   : Entity_Name;
-      Scope : Name_Scope)
-      return Entity_Name
-   is
+     (Var : Entity_Name; Scope : Name_Scope) return Entity_Name is
    begin
       if GG_Is_Constituent (Var) then
 
@@ -4097,11 +4053,11 @@ package body Flow_Generated_Globals.Phase_2 is
       end if;
    end Up_Project;
 
-   procedure Up_Project (Vars      :     Name_Sets.Set;
-                         Scope     :     Name_Scope;
-                         Projected : out Name_Sets.Set;
-                         Partial   : out Name_Sets.Set)
-   is
+   procedure Up_Project
+     (Vars      : Name_Sets.Set;
+      Scope     : Name_Scope;
+      Projected : out Name_Sets.Set;
+      Partial   : out Name_Sets.Set) is
    begin
       Projected.Clear;
       Partial.Clear;
@@ -4134,9 +4090,10 @@ package body Flow_Generated_Globals.Phase_2 is
       end loop;
    end Up_Project;
 
-   procedure Up_Project (Vars           :     Global_Names;
-                         Projected_Vars : out Global_Names;
-                         Scope          :     Name_Scope)
+   procedure Up_Project
+     (Vars           : Global_Names;
+      Projected_Vars : out Global_Names;
+      Scope          : Name_Scope)
    is
       --  ??? the following code for up-projecting generated Refined_Global
       --  has much in common with code for up-projecting Refined_Depends;
@@ -4159,8 +4116,7 @@ package body Flow_Generated_Globals.Phase_2 is
          Repr : constant Entity_Name := Visible_View (Item);
 
       begin
-         Projection_Map.Insert (Key      => Item,
-                                New_Item => Repr);
+         Projection_Map.Insert (Key => Item, New_Item => Repr);
 
          Visible_Views.Include (Repr);
       end Add_Mapping;
@@ -4174,7 +4130,7 @@ package body Flow_Generated_Globals.Phase_2 is
          return Up_Project (E, Scope);
       end Visible_View;
 
-   --  Start of processing of Up_Project
+      --  Start of processing of Up_Project
 
    begin
       --  First, up-project all globals to their most precise representation
@@ -4234,9 +4190,8 @@ package body Flow_Generated_Globals.Phase_2 is
             --  this state is not fully written, then it must be added to
             --  projected inputs.
             if Item /= Projected_Item
-              and then not Is_Fully_Contained (Projected_Item,
-                                               Vars.Outputs,
-                                               Scope)
+              and then not Is_Fully_Contained
+                             (Projected_Item, Vars.Outputs, Scope)
             then
                Projected_Vars.Inputs.Include (Projected_Item);
             end if;
@@ -4342,8 +4297,9 @@ package body Flow_Generated_Globals.Phase_2 is
                      then Change_Variant (F, Normal_Use)
                      elsif Present (Partial_View (E))
                        and then Entity_In_SPARK (Partial_View (E))
-                     then Change_Variant (Direct_Mapping_Id (Partial_View (E)),
-                                          Normal_Use)
+                     then
+                       Change_Variant
+                         (Direct_Mapping_Id (Partial_View (E)), Normal_Use)
                      else Magic_String_Id (To_Entity_Name (E)));
 
                   return Aliases;

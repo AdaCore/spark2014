@@ -74,12 +74,15 @@ package body Flow_Types is
             end if;
       end case;
 
-      pragma Assert_And_Cut (Left.Kind = Right.Kind and then
-                             Left.Kind in Direct_Mapping |
-                                          Record_Field |
-                                          Synthetic_Null_Export |
-                                          Magic_String and then
-                             Left.Variant = Right.Variant);
+      pragma
+        Assert_And_Cut
+          (Left.Kind = Right.Kind
+             and then Left.Kind
+                      in Direct_Mapping
+                       | Record_Field
+                       | Synthetic_Null_Export
+                       | Magic_String
+             and then Left.Variant = Right.Variant);
 
       case Left.Kind is
          when Null_Value =>
@@ -93,7 +96,8 @@ package body Flow_Types is
                return False;
             end if;
 
-            return Left.Kind = Direct_Mapping
+            return
+              Left.Kind = Direct_Mapping
               or else Left.Component = Right.Component;
 
          when Magic_String =>
@@ -122,9 +126,7 @@ package body Flow_Types is
          when Null_Value =>
             return False;
 
-         when Direct_Mapping
-            | Record_Field
-         =>
+         when Direct_Mapping | Record_Field =>
             if Left.Node /= Right.Node then
                return Unique_Name (Left.Node) < Unique_Name (Right.Node);
             end if;
@@ -139,7 +141,7 @@ package body Flow_Types is
 
             if Left.Kind = Record_Field then
                declare
-                  Left_Len  : constant Ada.Containers.Count_Type :=
+                  Left_Len : constant Ada.Containers.Count_Type :=
                     Left.Component.Length;
 
                   Right_Len : constant Ada.Containers.Count_Type :=
@@ -153,7 +155,7 @@ package body Flow_Types is
                         --  at that point we return the result of their
                         --  comparison.
                         declare
-                           Left_Comp  : constant Entity_Id :=
+                           Left_Comp : constant Entity_Id :=
                              Left.Component (J);
 
                            Right_Comp : constant Entity_Id :=
@@ -161,8 +163,9 @@ package body Flow_Types is
 
                         begin
                            if Left_Comp /= Right_Comp then
-                              return Unique_Name (Left_Comp) <
-                                Unique_Name (Right_Comp);
+                              return
+                                Unique_Name (Left_Comp)
+                                < Unique_Name (Right_Comp);
                            end if;
                         end;
                      end loop;
@@ -198,12 +201,17 @@ package body Flow_Types is
       case N.Kind is
          when Null_Value =>
             return Generic_Integer_Hash (-1);
+
          when Synthetic_Null_Export =>
             return Generic_Integer_Hash (-2 - Flow_Id_Variant'Pos (N.Variant));
+
          when Direct_Mapping =>
-            return Generic_Integer_Hash
-              (Integer (N.Node) + 7919 * Variable_Facet_T'Pos (N.Facet)
+            return
+              Generic_Integer_Hash
+                (Integer (N.Node)
+                 + 7919 * Variable_Facet_T'Pos (N.Facet)
                  + 6079 * Flow_Id_Variant'Pos (N.Variant));
+
          when Record_Field =>
             declare
                use Interfaces;
@@ -235,6 +243,7 @@ package body Flow_Types is
                N.Component.Iterate (Hash_Component'Access);
                return Ada.Containers.Hash_Type (H);
             end;
+
          when Magic_String =>
             return
               Generic_Integer_Hash
@@ -258,10 +267,13 @@ package body Flow_Types is
       --  Same for elaboration of nested packages and higher-order actuals.
 
       elsif Present (SC.N) then
-         pragma Assert (Nkind (SC.N) in N_Entry_Call_Statement
-                                      | N_Package_Declaration
-                                      | N_Subprogram_Call
-                          or else Is_Specialized_Actual (SC.N));
+         pragma
+           Assert
+             (Nkind (SC.N)
+              in N_Entry_Call_Statement
+               | N_Package_Declaration
+               | N_Subprogram_Call
+                or else Is_Specialized_Actual (SC.N));
          return Node_Hash (SC.N);
 
       --  Otherwise, this is an indirect call to a user-defined equality
@@ -279,9 +291,8 @@ package body Flow_Types is
 
    function Direct_Mapping_Id
      (N       : Node_Or_Entity_Id;
-      Variant : Flow_Id_Variant  := Normal_Use;
-      Facet   : Variable_Facet_T := Normal_Part)
-      return Flow_Id
+      Variant : Flow_Id_Variant := Normal_Use;
+      Facet   : Variable_Facet_T := Normal_Part) return Flow_Id
    is
       Canonical_Node : Node_Or_Entity_Id;
    begin
@@ -294,31 +305,31 @@ package body Flow_Types is
          Canonical_Node := N;
       end if;
 
-      return (Kind    => Direct_Mapping,
-              Variant => Variant,
-              Node    => Canonical_Node,
-              Facet   => Facet);
+      return
+        (Kind    => Direct_Mapping,
+         Variant => Variant,
+         Node    => Canonical_Node,
+         Facet   => Facet);
    end Direct_Mapping_Id;
 
    ---------------------------
    -- Get_Direct_Mapping_Id --
    ---------------------------
 
-   function Get_Direct_Mapping_Id (F : Flow_Id) return Node_Id is (F.Node);
+   function Get_Direct_Mapping_Id (F : Flow_Id) return Node_Id
+   is (F.Node);
 
    ---------------------
    -- Record_Field_Id --
    ---------------------
 
-   function Record_Field_Id
-     (N : Node_Id)
-      return Flow_Id
-   is
-      F : Flow_Id := (Kind      => Record_Field,
-                      Variant   => Normal_Use,
-                      Node      => <>,
-                      Facet     => Normal_Part,
-                      Component => Entity_Vectors.Empty_Vector);
+   function Record_Field_Id (N : Node_Id) return Flow_Id is
+      F : Flow_Id :=
+        (Kind      => Record_Field,
+         Variant   => Normal_Use,
+         Node      => <>,
+         Facet     => Normal_Part,
+         Component => Entity_Vectors.Empty_Vector);
       P : Node_Id := N;
    begin
       loop
@@ -351,19 +362,16 @@ package body Flow_Types is
    -- Add_Component --
    -------------------
 
-   function Add_Component
-     (F    : Flow_Id;
-      Comp : Entity_Id)
-      return Flow_Id
-   is
+   function Add_Component (F : Flow_Id; Comp : Entity_Id) return Flow_Id is
       Tmp : Flow_Id :=
         (Kind      => Record_Field,
          Variant   => F.Variant,
          Node      => F.Node,
          Facet     => F.Facet,
-         Component => (if F.Kind = Record_Field
-                       then F.Component
-                       else Entity_Vectors.Empty_Vector));
+         Component =>
+           (if F.Kind = Record_Field
+            then F.Component
+            else Entity_Vectors.Empty_Vector));
 
    begin
       Tmp.Component.Append (Comp);
@@ -378,14 +386,17 @@ package body Flow_Types is
    function Belongs_To_Concurrent_Type (F : Flow_Id) return Boolean is
    begin
       if F.Kind = Record_Field
-        and then Ekind (Get_Direct_Mapping_Id (F)) in E_Protected_Type
-                                                    | E_Task_Type
+        and then Ekind (Get_Direct_Mapping_Id (F))
+                 in E_Protected_Type | E_Task_Type
       then
          declare
-            Comp : constant Entity_Id := F.Component.First_Element with Ghost;
+            Comp : constant Entity_Id := F.Component.First_Element
+            with Ghost;
          begin
-            pragma Assert (Is_Part_Of_Concurrent_Object (Comp)
-                             or else Is_Concurrent_Component_Or_Discr (Comp));
+            pragma
+              Assert
+                (Is_Part_Of_Concurrent_Object (Comp)
+                   or else Is_Concurrent_Component_Or_Discr (Comp));
             return True;
          end;
       else
@@ -397,10 +408,10 @@ package body Flow_Types is
    -- Is_Discriminant --
    ---------------------
 
-   function Is_Discriminant (F : Flow_Id) return Boolean is
-     (F.Kind = Record_Field
-      and then F.Facet = Normal_Part
-      and then Ekind (F.Component.Last_Element) = E_Discriminant);
+   function Is_Discriminant (F : Flow_Id) return Boolean
+   is (F.Kind = Record_Field
+       and then F.Facet = Normal_Part
+       and then Ekind (F.Component.Last_Element) = E_Discriminant);
 
    ---------------------------
    -- Is_Input_Discriminant --
@@ -450,12 +461,12 @@ package body Flow_Types is
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
 
             begin
-               return (Ekind (E) in E_Abstract_State | Object_Kind
-                       and then Has_Volatile (E))
-                 or else
-                   (Ekind (E) in E_Task_Type | E_Protected_Type
-                    and then F.Kind = Record_Field
-                    and then Has_Volatile (F.Component.First_Element));
+               return
+                 (Ekind (E) in E_Abstract_State | Object_Kind
+                  and then Has_Volatile (E))
+                 or else (Ekind (E) in E_Task_Type | E_Protected_Type
+                          and then F.Kind = Record_Field
+                          and then Has_Volatile (F.Component.First_Element));
             end;
 
          when Synthetic_Null_Export =>
@@ -473,22 +484,25 @@ package body Flow_Types is
       case F.Kind is
          when Synthetic_Null_Export =>
             return True;
+
          when Magic_String =>
-            return GG_Is_Volatile (F.Name)
-              and then GG_Has_Async_Readers (F.Name);
+            return
+              GG_Is_Volatile (F.Name) and then GG_Has_Async_Readers (F.Name);
+
          when others =>
             declare
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
             begin
-               return (Ekind (E) in E_Abstract_State | Object_Kind
-                 and then Has_Volatile (E)
-                 and then Has_Volatile_Property (E, Pragma_Async_Readers))
-                   or else
-                 (Ekind (E) in E_Task_Type | E_Protected_Type
-                  and then F.Kind = Record_Field
-                  and then Has_Volatile (F.Component.First_Element)
-                  and then Has_Volatile_Property (F.Component.First_Element,
-                                                  Pragma_Async_Readers));
+               return
+                 (Ekind (E) in E_Abstract_State | Object_Kind
+                  and then Has_Volatile (E)
+                  and then Has_Volatile_Property (E, Pragma_Async_Readers))
+                 or else (Ekind (E) in E_Task_Type | E_Protected_Type
+                          and then F.Kind = Record_Field
+                          and then Has_Volatile (F.Component.First_Element)
+                          and then Has_Volatile_Property
+                                     (F.Component.First_Element,
+                                      Pragma_Async_Readers));
             end;
       end case;
    end Has_Async_Readers;
@@ -502,22 +516,25 @@ package body Flow_Types is
       case F.Kind is
          when Synthetic_Null_Export =>
             return False;
+
          when Magic_String =>
-            return GG_Is_Volatile (F.Name)
-              and then GG_Has_Async_Writers (F.Name);
+            return
+              GG_Is_Volatile (F.Name) and then GG_Has_Async_Writers (F.Name);
+
          when others =>
             declare
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
             begin
-               return (Ekind (E) in E_Abstract_State | Object_Kind
-                 and then Has_Volatile (E)
-                 and then Has_Volatile_Property (E, Pragma_Async_Writers))
-                   or else
-                 (Ekind (E) in E_Task_Type | E_Protected_Type
-                  and then F.Kind = Record_Field
-                  and then Has_Volatile (F.Component.First_Element)
-                  and then Has_Volatile_Property (F.Component.First_Element,
-                                                  Pragma_Async_Writers));
+               return
+                 (Ekind (E) in E_Abstract_State | Object_Kind
+                  and then Has_Volatile (E)
+                  and then Has_Volatile_Property (E, Pragma_Async_Writers))
+                 or else (Ekind (E) in E_Task_Type | E_Protected_Type
+                          and then F.Kind = Record_Field
+                          and then Has_Volatile (F.Component.First_Element)
+                          and then Has_Volatile_Property
+                                     (F.Component.First_Element,
+                                      Pragma_Async_Writers));
             end;
       end case;
    end Has_Async_Writers;
@@ -531,22 +548,25 @@ package body Flow_Types is
       case F.Kind is
          when Synthetic_Null_Export =>
             return False;
+
          when Magic_String =>
-            return GG_Is_Volatile (F.Name)
-              and then GG_Has_Effective_Reads (F.Name);
+            return
+              GG_Is_Volatile (F.Name) and then GG_Has_Effective_Reads (F.Name);
+
          when others =>
             declare
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
             begin
-               return (Ekind (E) in E_Abstract_State | Object_Kind
-                 and then Has_Volatile (E)
-                 and then Has_Volatile_Property (E, Pragma_Effective_Reads))
-                   or else
-                 (Ekind (E) in E_Task_Type | E_Protected_Type
-                  and then F.Kind = Record_Field
-                  and then Has_Volatile (F.Component.First_Element)
-                  and then Has_Volatile_Property (F.Component.First_Element,
-                                                  Pragma_Effective_Reads));
+               return
+                 (Ekind (E) in E_Abstract_State | Object_Kind
+                  and then Has_Volatile (E)
+                  and then Has_Volatile_Property (E, Pragma_Effective_Reads))
+                 or else (Ekind (E) in E_Task_Type | E_Protected_Type
+                          and then F.Kind = Record_Field
+                          and then Has_Volatile (F.Component.First_Element)
+                          and then Has_Volatile_Property
+                                     (F.Component.First_Element,
+                                      Pragma_Effective_Reads));
 
             end;
       end case;
@@ -561,22 +581,26 @@ package body Flow_Types is
       case F.Kind is
          when Synthetic_Null_Export =>
             return True;
+
          when Magic_String =>
-            return GG_Is_Volatile (F.Name)
+            return
+              GG_Is_Volatile (F.Name)
               and then GG_Has_Effective_Writes (F.Name);
+
          when others =>
             declare
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
             begin
-               return (Ekind (E) in E_Abstract_State | Object_Kind
-                 and then Has_Volatile (E)
-                 and then Has_Volatile_Property (E, Pragma_Effective_Writes))
-                   or else
-                 (Ekind (E) in E_Task_Type | E_Protected_Type
-                  and then F.Kind = Record_Field
-                  and then Has_Volatile (F.Component.First_Element)
-                  and then Has_Volatile_Property (F.Component.First_Element,
-                                                  Pragma_Effective_Writes));
+               return
+                 (Ekind (E) in E_Abstract_State | Object_Kind
+                  and then Has_Volatile (E)
+                  and then Has_Volatile_Property (E, Pragma_Effective_Writes))
+                 or else (Ekind (E) in E_Task_Type | E_Protected_Type
+                          and then F.Kind = Record_Field
+                          and then Has_Volatile (F.Component.First_Element)
+                          and then Has_Volatile_Property
+                                     (F.Component.First_Element,
+                                      Pragma_Effective_Writes));
             end;
       end case;
    end Has_Effective_Writes;
@@ -604,55 +628,50 @@ package body Flow_Types is
    -----------------------
 
    function Is_Abstract_State (F : Flow_Id) return Boolean
-   is
-     (Present (F)
-      and then
-        (case F.Kind is
-            when Direct_Mapping => Is_Abstract_State (F.Node),
-            when Magic_String   => GG_Is_Abstract_State (F.Name),
-            when others         => False));
+   is (Present (F)
+       and then (case F.Kind is
+                   when Direct_Mapping => Is_Abstract_State (F.Node),
+                   when Magic_String => GG_Is_Abstract_State (F.Name),
+                   when others => False));
 
    --------------------
    -- Is_Constituent --
    --------------------
 
    function Is_Constituent (F : Flow_Id) return Boolean
-   is
-     (case F.Kind is
+   is (case F.Kind is
          when Direct_Mapping | Record_Field => Is_Constituent (F.Node),
-         when Magic_String                  => GG_Is_Constituent (F.Name),
-         when others                        => False);
+         when Magic_String => GG_Is_Constituent (F.Name),
+         when others => False);
 
    -----------------------------
    -- Is_Implicit_Constituent --
    -----------------------------
 
-   function Is_Implicit_Constituent (F : Flow_Id) return Boolean is
-     (F.Kind in Direct_Mapping | Record_Field
-        and then Is_Implicit_Constituent (F.Node));
+   function Is_Implicit_Constituent (F : Flow_Id) return Boolean
+   is (F.Kind in Direct_Mapping | Record_Field
+       and then Is_Implicit_Constituent (F.Node));
 
    -------------------------
    -- Encapsulating_State --
    -------------------------
 
    function Encapsulating_State (F : Flow_Id) return Flow_Id
-   is
-     (case F.Kind is
+   is (case F.Kind is
          when Direct_Mapping | Record_Field =>
-            Direct_Mapping_Id (Encapsulating_State (F.Node), F.Variant),
-         when Magic_String                  =>
-            Magic_String_Id (GG_Encapsulating_State (F.Name), F.Variant),
-         when others                        =>
-            raise Program_Error);
+           Direct_Mapping_Id (Encapsulating_State (F.Node), F.Variant),
+         when Magic_String =>
+           Magic_String_Id (GG_Encapsulating_State (F.Name), F.Variant),
+         when others => raise Program_Error);
 
    ------------------------
    -- Is_Function_Entity --
    ------------------------
 
-   function Is_Function_Entity (F : Flow_Id) return Boolean is
-     (F.Kind in Direct_Mapping | Record_Field
-      and then Nkind (F.Node) in N_Entity
-      and then Ekind (F.Node) = E_Function);
+   function Is_Function_Entity (F : Flow_Id) return Boolean
+   is (F.Kind in Direct_Mapping | Record_Field
+       and then Nkind (F.Node) in N_Entity
+       and then Ekind (F.Node) = E_Function);
 
    -----------------
    -- Is_Internal --
@@ -692,35 +711,30 @@ package body Flow_Types is
    ---------------------
 
    function Magic_String_Id
-     (S       : Entity_Name;
-      Variant : Flow_Id_Variant := Normal_Use)
-      return Flow_Id is
+     (S : Entity_Name; Variant : Flow_Id_Variant := Normal_Use) return Flow_Id
+   is
    begin
-      return (Kind    => Magic_String,
-              Variant => Variant,
-              Name    => S);
+      return (Kind => Magic_String, Variant => Variant, Name => S);
    end Magic_String_Id;
 
    --------------------
    -- Change_Variant --
    --------------------
 
-   function Change_Variant (F       : Flow_Id;
-                            Variant : Flow_Id_Variant)
-                            return Flow_Id
-   is
+   function Change_Variant
+     (F : Flow_Id; Variant : Flow_Id_Variant) return Flow_Id is
    begin
       case F.Kind is
          when Null_Value =>
             raise Program_Error;
+
          when others =>
             return (F with delta Variant => Variant);
       end case;
    end Change_Variant;
 
-   function Change_Variant (FS      : Flow_Id_Sets.Set;
-                            Variant : Flow_Id_Variant)
-                            return Flow_Id_Sets.Set
+   function Change_Variant
+     (FS : Flow_Id_Sets.Set; Variant : Flow_Id_Variant) return Flow_Id_Sets.Set
    is
       New_Flow_Id_Set : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
@@ -769,10 +783,11 @@ package body Flow_Types is
 
          when Direct_Mapping | Record_Field =>
             return
-              Flow_Id'(Kind    => Direct_Mapping,
-                       Variant => F.Variant,
-                       Node    => F.Node,
-                       Facet   => Normal_Part);
+              Flow_Id'
+                (Kind    => Direct_Mapping,
+                 Variant => F.Variant,
+                 Node    => F.Node,
+                 Facet   => Normal_Part);
 
          when Null_Value =>
             raise Program_Error;
@@ -800,28 +815,38 @@ package body Flow_Types is
       case F.Variant is
          when Normal_Use =>
             null;
+
          when Initial_Value =>
             Output.Write_Str ("'initial");
+
          when Final_Value =>
             Output.Write_Str ("'final");
+
          when Initial_Grouping =>
             Output.Write_Str ("'group'initial");
+
          when Final_Grouping =>
             Output.Write_Str ("'group'final");
+
          when In_View =>
             Output.Write_Str ("'in");
+
          when Out_View =>
             Output.Write_Str ("'out");
       end case;
       case F.Kind is
          when Null_Value =>
             null;
+
          when Synthetic_Null_Export =>
             Output.Write_Str (" (synthetic)");
+
          when Direct_Mapping =>
             Output.Write_Str (" (direct)");
+
          when Record_Field =>
             Output.Write_Str (" (record)");
+
          when Magic_String =>
             Output.Write_Str (" (magic)");
       end case;
@@ -829,12 +854,14 @@ package body Flow_Types is
          case F.Kind is
             when Direct_Mapping =>
                Output.Write_Str (" <" & Image (Natural (F.Node), 1) & ">");
+
             when Record_Field =>
                Output.Write_Str (" <" & Image (Natural (F.Node), 1));
                for C of F.Component loop
                   Output.Write_Str ("|" & Image (Natural (C), 1));
                end loop;
                Output.Write_Str (">");
+
             when others =>
                null;
          end case;
@@ -900,9 +927,7 @@ package body Flow_Types is
    -----------------------
 
    function Flow_Id_To_String
-     (F      : Flow_Id;
-      Pretty : Boolean := False)
-      return String
+     (F : Flow_Id; Pretty : Boolean := False) return String
    is
       function Get_Unmangled_Name (N : Node_Id) return String;
 
@@ -942,7 +967,7 @@ package body Flow_Types is
 
       R : Unbounded_String := Null_Unbounded_String;
 
-   --  Start of processing Flow_Id_To_String
+      --  Start of processing Flow_Id_To_String
 
    begin
       --  Return "Prefix.State" instead of just "State" for abstract states and
@@ -953,10 +978,9 @@ package body Flow_Types is
 
       if F.Kind in Direct_Mapping | Record_Field
         and then (Is_Abstract_State (F.Node)
-                    or else
-                  (Is_Constituent (F.Node)
-                     and then
-                   Scope (F.Node) /= Scope (Encapsulating_State (F.Node))))
+                  or else (Is_Constituent (F.Node)
+                           and then Scope (F.Node)
+                                    /= Scope (Encapsulating_State (F.Node))))
       then
          Append (R, Get_Unmangled_Name (Scope (F.Node)));
          Append (R, '.');
@@ -971,8 +995,8 @@ package body Flow_Types is
 
          when Direct_Mapping =>
             if Nkind (Get_Direct_Mapping_Id (F)) in N_Entity
-               and then Ekind (Get_Direct_Mapping_Id (F)) = E_Function
-               and then Is_Operator_Symbol_Name (Chars (F.Node))
+              and then Ekind (Get_Direct_Mapping_Id (F)) = E_Function
+              and then Is_Operator_Symbol_Name (Chars (F.Node))
             then
                Append (R, Escape (Get_Operator_Symbol (F.Node)));
             else
@@ -996,9 +1020,9 @@ package body Flow_Types is
             end if;
 
          when Magic_String =>
-            Append (R, (if Pretty
-                        then Pretty_Print (F.Name)
-                        else To_String (F.Name)));
+            Append
+              (R,
+               (if Pretty then Pretty_Print (F.Name) else To_String (F.Name)));
       end case;
 
       if F.Kind in Direct_Mapping | Record_Field then
@@ -1045,10 +1069,8 @@ package body Flow_Types is
    function Is_Easily_Printable (F : Flow_Id) return Boolean is
    begin
       case F.Kind is
-         when Null_Value            |
-              Record_Field          |
-              Magic_String          |
-              Synthetic_Null_Export =>
+         when Null_Value | Record_Field | Magic_String | Synthetic_Null_Export
+         =>
             return True;
 
          when Direct_Mapping =>
@@ -1061,8 +1083,8 @@ package body Flow_Types is
    -- To_Ordered_Flow_Id_Set --
    ----------------------------
 
-   function To_Ordered_Flow_Id_Set (S : Flow_Id_Sets.Set)
-                                    return Ordered_Flow_Id_Sets.Set
+   function To_Ordered_Flow_Id_Set
+     (S : Flow_Id_Sets.Set) return Ordered_Flow_Id_Sets.Set
    is
       OS : Ordered_Flow_Id_Sets.Set := Ordered_Flow_Id_Sets.Empty_Set;
    begin
@@ -1076,8 +1098,7 @@ package body Flow_Types is
    -- To_Entire_Variables --
    -------------------------
 
-   function To_Entire_Variables (S : Flow_Id_Sets.Set)
-                                 return Flow_Id_Sets.Set
+   function To_Entire_Variables (S : Flow_Id_Sets.Set) return Flow_Id_Sets.Set
    is
       R : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
@@ -1091,16 +1112,13 @@ package body Flow_Types is
    -- To_Name --
    -------------
 
-   function To_Name (F : Flow_Id) return Entity_Name is
-     (case F.Kind is
-         when Direct_Mapping =>
-            To_Entity_Name (F.Node),
+   function To_Name (F : Flow_Id) return Entity_Name
+   is (case F.Kind is
+         when Direct_Mapping => To_Entity_Name (F.Node),
 
-         when Magic_String   =>
-            F.Name,
+         when Magic_String => F.Name,
 
-         when others         =>
-            raise Program_Error);
+         when others => raise Program_Error);
 
    -----------------
    -- To_Node_Set --
@@ -1121,19 +1139,19 @@ package body Flow_Types is
    --------------------
 
    function To_Flow_Id_Set
-     (S    : Node_Sets.Set;
-      View : Flow_Id_Variant := Normal_Use)
+     (S : Node_Sets.Set; View : Flow_Id_Variant := Normal_Use)
       return Flow_Id_Sets.Set
    is
       FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
       for E of S loop
-         pragma Assert
-           (Ekind (E) = E_Constant  --  Avoid calling Has_Variable_Input
-              or else               --  by Is_Global_Entity during marking.
-            Is_Global_Entity (E)
-              or else
-            Is_Subprogram_Or_Entry (E) or else Ekind (E) = E_Package);
+         pragma
+           Assert
+             (Ekind (E) = E_Constant  --  Avoid calling Has_Variable_Input
+                or else               --  by Is_Global_Entity during marking.
+                Is_Global_Entity (E)
+                or else Is_Subprogram_Or_Entry (E)
+                or else Ekind (E) = E_Package);
          --  Here we only process globals (including constants without
          --  variable inputs that wrongly appear in user-written contracts) or
          --  subprograms for which we decide conditional-vs-definitive calls

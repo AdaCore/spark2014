@@ -28,8 +28,7 @@
 private package Flow_Generated_Globals.Phase_2.Traversal is
 
    procedure Register_Nested_Scopes
-     (Entity  : Entity_Name;
-      Parents : Name_Lists.List)
+     (Entity : Entity_Name; Parents : Name_Lists.List)
    with Pre => not Parents.Contains (Entity);
    --  In phase 1 we register the hierarchy relationship while traversing the
    --  AST; here we register it while reading the ALI files.
@@ -40,11 +39,13 @@ private package Flow_Generated_Globals.Phase_2.Traversal is
    type Nested is record
       Units  : Name_Sets.Set;
       Parent : Any_Entity_Name;
-   end record with
-     Iterable => (First       => First_Cursor,
-                  Next        => Next_Cursor,
-                  Has_Element => Has_Element,
-                  Element     => Get_Element);
+   end record
+   with
+     Iterable =>
+       (First       => First_Cursor,
+        Next        => Next_Cursor,
+        Has_Element => Has_Element,
+        Element     => Get_Element);
    --  In phase 1 the Units component is intentionally a list, which is more
    --  efficient (we know there are no duplicate items when we construct it
    --  while traversing the AST and we never query it with Contains).
@@ -56,29 +57,24 @@ private package Flow_Generated_Globals.Phase_2.Traversal is
    --  For aspect Iterable
 
    function Next_Cursor
-     (Cont     : Nested;
-      Position : Name_Sets.Cursor)
-      return Name_Sets.Cursor;
+     (Cont : Nested; Position : Name_Sets.Cursor) return Name_Sets.Cursor;
    --  For aspect Iterable
 
    function Has_Element
-     (Cont     : Nested;
-      Position : Name_Sets.Cursor)
-      return Boolean;
+     (Cont : Nested; Position : Name_Sets.Cursor) return Boolean;
    --  For aspect Iterable
 
    function Get_Element
-     (Cont     : Nested;
-      Position : Name_Sets.Cursor)
-      return Entity_Name;
+     (Cont : Nested; Position : Name_Sets.Cursor) return Entity_Name;
    --  For aspect Iterable
 
    package Nested_Scopes is new
-     Ada.Containers.Hashed_Maps (Key_Type        => Entity_Name,
-                                 Element_Type    => Nested,
-                                 Hash            => Name_Hash,
-                                 Equivalent_Keys => "=",
-                                 "="             => "=");
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Entity_Name,
+        Element_Type    => Nested,
+        Hash            => Name_Hash,
+        Equivalent_Keys => "=",
+        "="             => "=");
 
    Scope_Map : Nested_Scopes.Map;
    --  Hierarchical container with entities processed by the flow analysis,
@@ -96,9 +92,7 @@ private package Flow_Generated_Globals.Phase_2.Traversal is
    --  Returns the parent scope of E (in the flow nesting sense)
 
    function Scope_Within_Or_Same
-     (Inner : Entity_Name;
-      Outer : Entity_Name)
-      return Boolean;
+     (Inner : Entity_Name; Outer : Entity_Name) return Boolean;
    --  Same as version for Entity_Ids, but for Entity_Names
 
 private
@@ -107,40 +101,31 @@ private
    -- First_Cursor --
    ------------------
 
-   function First_Cursor (Cont : Nested) return Name_Sets.Cursor is
-     (Cont.Units.First);
+   function First_Cursor (Cont : Nested) return Name_Sets.Cursor
+   is (Cont.Units.First);
 
    -----------------
    -- Next_Cursor --
    -----------------
 
    function Next_Cursor
-     (Cont     : Nested;
-      Position : Name_Sets.Cursor)
-      return Name_Sets.Cursor
-   is
-     (Name_Sets.Next (Position));
+     (Cont : Nested; Position : Name_Sets.Cursor) return Name_Sets.Cursor
+   is (Name_Sets.Next (Position));
 
    -----------------
    -- Has_Element --
    -----------------
 
    function Has_Element
-     (Cont     : Nested;
-      Position : Name_Sets.Cursor)
-      return Boolean
-   is
-     (Name_Sets.Has_Element (Position));
+     (Cont : Nested; Position : Name_Sets.Cursor) return Boolean
+   is (Name_Sets.Has_Element (Position));
 
    -----------------
    -- Get_Element --
    -----------------
 
    function Get_Element
-     (Cont     : Nested;
-      Position : Name_Sets.Cursor)
-      return Entity_Name
-   is
-     (Name_Sets.Element (Position));
+     (Cont : Nested; Position : Name_Sets.Cursor) return Entity_Name
+   is (Name_Sets.Element (Position));
 
 end Flow_Generated_Globals.Phase_2.Traversal;
