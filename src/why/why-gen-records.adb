@@ -1231,8 +1231,8 @@ package body Why.Gen.Records is
           (WF_Context,
            Get_Rep_Record_Completion (E),
            Comment =>
-             "Module for completing the tagged record theory associated to type "
-             & """"
+             "Module for completing the tagged record theory associated to "
+             & "type """
              & Get_Name_String (Chars (E))
              & """"
              & (if Sloc (E) > 0

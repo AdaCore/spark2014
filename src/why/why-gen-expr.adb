@@ -2728,10 +2728,10 @@ package body Why.Gen.Expr is
          elsif (Why_Type_Is_Fixed (Base_Why_Type (From))
                 and then not Why_Type_Is_Float (Base_Why_Type (To)))
 
-           --       or if From is a modular type and To is neither a modular nor
-           --       a float, insert a conversion to int since we only support
-           --       direct conversion from bitvector to int, float or another
-           --       bitvector types.
+           --  or if From is a modular type and To is neither a modular nor
+           --  a float, insert a conversion to int since we only support
+           --  direct conversion from bitvector to int, float or another
+           --  bitvector types.
 
            or else (Why_Type_Is_BitVector (Base_Why_Type (From))
                     and then not Why_Type_Is_BitVector (Base_Why_Type (To))

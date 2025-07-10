@@ -122,26 +122,26 @@ package Why.Gen.Binders is
          when Regular
 
             --  Case corresponding to the "self" object used in task types,
-            --  protected subprograms and entries, which can be seen as "0 to 1"
-            --  mapping. See also the general description of protected types in
-            --  gnat2why.
+            --  protected subprograms and entries, which can be seen as "0 to
+            --  1" mapping. See also the general description of protected types
+            --  in gnat2why.
 
             | Concurrent_Self
          =>
             Main : Binder_Type;
 
-            --  Case of unconstrained arrays, where extra objects are created to
-            --  represent the bounds.
+            --  Case of unconstrained arrays, where extra objects are created
+            --  to represent the bounds.
 
          when UCArray =>
             Content : Binder_Type;
             Dim     : Positive;
             Bounds  : Array_Bounds;
 
-            --  Case of pointers, with disjoint parts for their value and is_null
-            --  components, as well as a Mutable boolean registering whether the
-            --  pointer itself is mutable (as opposed to its designated value
-            --  only).
+            --  Case of pointers, with disjoint parts for their value and
+            --  is_null components, as well as a Mutable boolean registering
+            --  whether the pointer itself is mutable (as opposed to its
+            --  designated value only).
 
          when Pointer =>
             P_Typ   : Entity_Id;
@@ -160,9 +160,9 @@ package Why.Gen.Binders is
             Constr : Opt_Id;
             Tag    : Opt_Id;
 
-            --  Case of subprograms where we need different translations when used
-            --  in programs or in assertions, plus possibly refined and dispatch
-            --  versions.
+            --  Case of subprograms where we need different translations when
+            --  used in programs or in assertions, plus possibly refined and
+            --  dispatch versions.
 
          when Subp =>
             For_Logic      : Opt_Id;

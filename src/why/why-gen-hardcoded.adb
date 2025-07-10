@@ -534,9 +534,10 @@ package body Why.Gen.Hardcoded is
                                W_Expr     =>
 
                                --  Do_Range_Check takes integer types in entry,
-                               --  but in GNAT2why, Big_Integer is not an integer
-                               --  type. We add this dummy node to treat Args (1)
-                               --  as an integer type in Do_Range_Check.
+                               --  but in GNAT2why, Big_Integer is not an
+                               --  integer type. We add this dummy node to
+                               --  treat Args (1) as an integer type in
+                               --  Do_Range_Check.
 
                                    New_Label
                                       (Ada_Node => Ada_Node,
