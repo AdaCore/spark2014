@@ -2441,9 +2441,9 @@ the Initialized attribute, provides a mechanism for safely (i.e., without
 introducing the possibility of improperly reading an uninitialized scalar)
 referencing partially initialized Inputs and Outputs.
 
-The Relaxed_Initialization aspect may be specified for a type, for
-a standalone object, or (at least in effect - see
-below for details) for a parameter or function result of a subprogram or entry.
+The Relaxed_Initialization aspect may be specified for a type or for a
+subprogram or entry, where it effectively applies to one or more of its formal
+parameters and the return object of a function.
 The prefix of an Initialized attribute reference shall denote an object.
 
 .. container:: heading
@@ -2482,7 +2482,7 @@ The prefix of an Initialized attribute reference shall denote an object.
    initialization.
 
 2. A Relaxed_Initialization aspect specification for a formal parameter
-   of a callable entity or for a function's result is expressed syntactically
+   of a subprogram or entry or for a function's result is expressed syntactically
    as an aspect_specification of the declaration of the enclosing callable
    entity.  [This is expressed this way because Ada does not
    provide syntax for specifying aspects for subprogram/entry parameters,
@@ -2500,7 +2500,7 @@ The prefix of an Initialized attribute reference shall denote an object.
    More precisely, the Relaxed_Initialization aspect for a subprogram
    or entry (or a generic subprogram) is specified by
    an ``aspect_specification`` where the ``aspect_mark`` is
-   Relaxed_Initialization and the ``aspect_definition`` follows the
+   Relaxed_Initialization and the ``aspect_definition`` has the
    following grammar for ``profile_aspect_spec``:
 
    ::
@@ -2535,16 +2535,16 @@ The prefix of an Initialized attribute reference shall denote an object.
    Relaxed_Initialization aspect specification for a subprogram, a
    generic subprogram, or an entry.
 
-   * Each parameter_name shall name a parameter of the given callable
-     entity and no parameter shall be named more than once. It is not
+   * Each parameter_name shall name a parameter of the given subprogram or entry
+     and no parameter shall be named more than once. It is not
      required that every parameter be named.
 
    * Each aspect_definition within a profile_aspect_spec shall be as for a
      Boolean aspect.
 
    * The form of profile_spec_item that includes a Result
-     attribute reference shall only be provided if the given callable
-     entity is a function or generic function; in that case, the prefix
+     attribute reference shall only be provided if the given subprogram or entry
+     is a function or generic function; in that case, the prefix
      of the attribute reference shall denote that function or generic
      function. Such a Result attribute reference is allowed,
      other language restrictions on the use of Result attribute
