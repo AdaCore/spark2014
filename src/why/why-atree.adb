@@ -58,10 +58,10 @@ package body Why.Atree is
 
    procedure Initialize is
       Empty_Node : constant Why_Node (W_Unused_At_Start) :=
-                     (Kind     => W_Unused_At_Start,
-                      Ada_Node => Empty,
-                      Domain   => EW_Prog,
-                      Checked  => True);
+        (Kind     => W_Unused_At_Start,
+         Ada_Node => Empty,
+         Domain   => EW_Prog,
+         Checked  => True);
    begin
       Node_Table.Append (Empty_Node);
       pragma Assert (Node_Table.Last_Index = Why_Empty);
@@ -73,8 +73,7 @@ package body Why.Atree is
 
    function New_List return Why_Node_List is
       New_Item : constant List_Info :=
-        (Checked => False,
-         Content => Why_Node_Lists.Empty_List);
+        (Checked => False, Content => Why_Node_Lists.Empty_List);
    begin
       List_Table.Append (New_Item);
       return List_Table.Last_Index;
@@ -90,10 +89,7 @@ package body Why.Atree is
       return Node_Table.Last_Index;
    end New_Why_Node_Id;
 
-   function New_Why_Node_Id
-     (Kind : W_Any_Node)
-     return Why_Node_Id
-   is
+   function New_Why_Node_Id (Kind : W_Any_Node) return Why_Node_Id is
       New_Node : Why_Node (Kind);
    begin
       New_Node.Ada_Node := Empty;
@@ -114,18 +110,14 @@ package body Why.Atree is
    -- Update_Validity_Status --
    ----------------------------
 
-   procedure Update_Validity_Status
-     (Node_Id : Why_Node_Id;
-      Checked : Boolean)
+   procedure Update_Validity_Status (Node_Id : Why_Node_Id; Checked : Boolean)
    is
    begin
       Node_Table (Node_Id).Checked := Checked;
    end Update_Validity_Status;
 
    procedure Update_Validity_Status
-     (List_Id : Why_Node_List;
-      Checked : Boolean)
-   is
+     (List_Id : Why_Node_List; Checked : Boolean) is
    begin
       List_Table (List_Id).Checked := Checked;
    end Update_Validity_Status;

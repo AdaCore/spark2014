@@ -28,8 +28,8 @@ with Outputs; use Outputs;
 package Why.Atree.To_Json is
 
    procedure Why_Node_To_Json (O : Output_Id; Node : Why_Node)
-     with Pre => Node.Checked;
+   with Pre => Node.Checked;
 
-   procedure Why_Node_Lists_List_To_Json (O : Output_Id;
-                                          L : Why_Node_Lists.List);
+   procedure Why_Node_Lists_List_To_Json
+     (O : Output_Id; L : Why_Node_Lists.List);
 end Why.Atree.To_Json;

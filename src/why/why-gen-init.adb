@@ -58,13 +58,11 @@ package body Why.Gen.Init is
       Domain             : EW_Domain;
       Exclude_Components : Exclude_Components_Kind;
       No_Predicate_Check : Boolean := False;
-      Use_Pred           : Boolean := True)
-      return W_Expr_Id
+      Use_Pred           : Boolean := True) return W_Expr_Id
    is
 
       function Is_Initialized_For_Comp
-        (C_Expr : W_Term_Id; C_Ty : Entity_Id; E : Entity_Id)
-         return W_Pred_Id;
+        (C_Expr : W_Term_Id; C_Ty : Entity_Id; E : Entity_Id) return W_Pred_Id;
       --  Call Compute_Is_Initialized recursively
 
       function Is_Initialized_For_Comp
@@ -77,8 +75,7 @@ package body Why.Gen.Init is
       -----------------------------
 
       function Is_Initialized_For_Comp
-        (C_Expr : W_Term_Id; C_Ty : Entity_Id; E : Entity_Id)
-         return W_Pred_Id
+        (C_Expr : W_Term_Id; C_Ty : Entity_Id; E : Entity_Id) return W_Pred_Id
       is
       begin
          --  E may be a type standing for the private part of a type whose
@@ -86,11 +83,12 @@ package body Why.Gen.Init is
 
          if Present (E) and then Is_Type (E) then
             if Get_Relaxed_Init (Get_Type (+C_Expr)) then
-               return +Pred_Of_Boolean_Term
-                 (New_Record_Access
-                    (Name   => +C_Expr,
-                     Field  => E_Symb (E, WNE_Private_Attr_Init),
-                     Typ    => EW_Bool_Type));
+               return
+                 +Pred_Of_Boolean_Term
+                    (New_Record_Access
+                       (Name  => +C_Expr,
+                        Field => E_Symb (E, WNE_Private_Attr_Init),
+                        Typ   => EW_Bool_Type));
             else
                return True_Pred;
             end if;
@@ -110,27 +108,30 @@ package body Why.Gen.Init is
                declare
                   C_Exclude_Components : constant Exclude_Components_Kind :=
                     (if Exclude_Components = For_Eq
-                     and then not Use_Predefined_Equality_For_Type (C_Ty)
+                       and then not Use_Predefined_Equality_For_Type (C_Ty)
                      then Relaxed
                      else Exclude_Components);
                begin
-                  return +Compute_Is_Initialized
-                    (E                  => C_Ty,
-                     Name               => +C_Expr,
-                     Params             => Params,
-                     Domain             => EW_Pred,
-                     Exclude_Components => C_Exclude_Components);
+                  return
+                    +Compute_Is_Initialized
+                       (E                  => C_Ty,
+                        Name               => +C_Expr,
+                        Params             => Params,
+                        Domain             => EW_Pred,
+                        Exclude_Components => C_Exclude_Components);
                end;
             end if;
          end if;
       end Is_Initialized_For_Comp;
 
-      function Is_Initialized_For_Array is new Build_Predicate_For_Array
-        (Is_Initialized_For_Comp);
+      function Is_Initialized_For_Array is new
+        Build_Predicate_For_Array (Is_Initialized_For_Comp);
 
-      function Is_Initialized_For_Record is new Build_Predicate_For_Record
-        (Is_Initialized_For_Comp, Is_Initialized_For_Comp,
-         Ignore_Private_State => False);
+      function Is_Initialized_For_Record is new
+        Build_Predicate_For_Record
+          (Is_Initialized_For_Comp,
+           Is_Initialized_For_Comp,
+           Ignore_Private_State => False);
 
       Rep_Ty : constant Opt_Type_Kind_Id :=
         (if Present (E) then Retysp (E) else Empty);
@@ -138,7 +139,7 @@ package body Why.Gen.Init is
       R      : W_Expr_Id;
       Tmp    : constant W_Expr_Id := New_Temp_For_Expr (+Name);
 
-   --  Start of processing for Compute_Is_Initialized
+      --  Start of processing for Compute_Is_Initialized
 
    begin
       --  An object is necessarily initialized if it does not have a wrapper
@@ -180,10 +181,11 @@ package body Why.Gen.Init is
            and then not No_Predicate_Check
            and then Exclude_Components = Relaxed
          then
-            P := New_Call (Name => E_Symb (E => Rep_Ty,
-                                           S => WNE_Is_Initialized_Pred),
-                           Args => (1 => +Tmp),
-                           Typ  => EW_Bool_Type);
+            P :=
+              New_Call
+                (Name => E_Symb (E => Rep_Ty, S => WNE_Is_Initialized_Pred),
+                 Args => (1 => +Tmp),
+                 Typ  => EW_Bool_Type);
 
          --  Initialization of composite types
 
@@ -196,10 +198,12 @@ package body Why.Gen.Init is
             if Has_Defaulted_Discriminants (Rep_Ty)
               and then not Is_Constrained (Rep_Ty)
             then
-               P := New_And_Pred
-                 (Left  => P,
-                  Right => Pred_Of_Boolean_Term
-                    (New_Init_Attribute_Access (Rep_Ty, +Tmp)));
+               P :=
+                 New_And_Pred
+                   (Left  => P,
+                    Right =>
+                      Pred_Of_Boolean_Term
+                        (New_Init_Attribute_Access (Rep_Ty, +Tmp)));
             end if;
 
          elsif Has_Access_Type (Rep_Ty) then
@@ -213,8 +217,9 @@ package body Why.Gen.Init is
                --  is relaxed.
 
                if Get_Relaxed_Init (Get_Type (+Name)) then
-                  P := Pred_Of_Boolean_Term
-                    (New_Init_Attribute_Access (Rep_Ty, +Tmp));
+                  P :=
+                    Pred_Of_Boolean_Term
+                      (New_Init_Attribute_Access (Rep_Ty, +Tmp));
                else
                   P := True_Pred;
                end if;
@@ -224,26 +229,31 @@ package body Why.Gen.Init is
                --  value.
 
                if Exclude_Components /= For_Eq
-                 and then
-                   not (Has_Relaxed_Init (Des_Ty)
-                        and then Exclude_Components = Relaxed)
+                 and then not (Has_Relaxed_Init (Des_Ty)
+                               and then Exclude_Components = Relaxed)
                then
-                  P := New_And_Pred
-                    (Left  => P,
-                     Right => New_Conditional
-                       (Condition => New_Not
-                            (Right => Pred_Of_Boolean_Term
-                                 (New_Pointer_Is_Null_Access
-                                    (Rep_Ty, +Tmp))),
-                        Then_Part => +Compute_Is_Initialized
-                          (E                  => Des_Ty,
-                           Name               => New_Pointer_Value_Access
-                             (E      => Rep_Ty,
-                              Name   => +Tmp,
-                              Domain => EW_Term),
-                           Params             => Params,
-                           Domain             => EW_Pred,
-                           Exclude_Components => Exclude_Components)));
+                  P :=
+                    New_And_Pred
+                      (Left  => P,
+                       Right =>
+                         New_Conditional
+                           (Condition =>
+                              New_Not
+                                (Right =>
+                                   Pred_Of_Boolean_Term
+                                     (New_Pointer_Is_Null_Access
+                                        (Rep_Ty, +Tmp))),
+                            Then_Part =>
+                              +Compute_Is_Initialized
+                                 (E                  => Des_Ty,
+                                  Name               =>
+                                    New_Pointer_Value_Access
+                                      (E      => Rep_Ty,
+                                       Name   => +Tmp,
+                                       Domain => EW_Term),
+                                  Params             => Params,
+                                  Domain             => EW_Pred,
+                                  Exclude_Components => Exclude_Components)));
                end if;
             end;
          else
@@ -256,30 +266,26 @@ package body Why.Gen.Init is
            and then Is_Init_Wrapper_Type (Get_Type (+Tmp))
          then
             declare
-               Typ_Pred     : constant W_Pred_Id :=
+               Typ_Pred : constant W_Pred_Id :=
                  Compute_Dynamic_Predicate
                    (Insert_Simple_Conversion
                       (Expr => +Tmp, To => EW_Abstract (Rep_Ty)),
-                    Rep_Ty, Params);
+                    Rep_Ty,
+                    Params);
                --  Don't use the wrapper type to avoid duplicating the
                --  initialization checks already performed.
 
             begin
                if not Is_True_Boolean (+Typ_Pred) then
-                  P := New_And_Pred (Left  => P,
-                                     Right => Typ_Pred);
+                  P := New_And_Pred (Left => P, Right => Typ_Pred);
                end if;
             end;
          end if;
 
-         R := Boolean_Expr_Of_Pred
-           (W      => +P,
-            Domain => Domain);
+         R := Boolean_Expr_Of_Pred (W => +P, Domain => Domain);
 
          if not Is_True_Boolean (+P) then
-            R := Binding_For_Temp (Domain  => Domain,
-                                   Tmp     => Tmp,
-                                   Context => R);
+            R := Binding_For_Temp (Domain => Domain, Tmp => Tmp, Context => R);
          end if;
 
          return R;
@@ -295,8 +301,8 @@ package body Why.Gen.Init is
       if Is_Scalar_Type (E) then
          Declare_Simple_Wrapper_Type
            (Th           => Th,
-            W_Nam        => To_Why_Type
-              (E, Local => True, Relaxed_Init => True),
+            W_Nam        =>
+              To_Why_Type (E, Local => True, Relaxed_Init => True),
             Init_Val     => To_Local (E_Symb (E, WNE_Init_Value)),
             Attr_Init    => To_Local (E_Symb (E, WNE_Attr_Init)),
             Of_Wrapper   => To_Local (E_Symb (E, WNE_Of_Wrapper)),
@@ -329,17 +335,15 @@ package body Why.Gen.Init is
       Dummy        : W_Identifier_Id;
       Default_Init : Boolean)
    is
-      W_Ty      : constant W_Type_Id := New_Named_Type (W_Nam);
-      A_Ident   : constant W_Identifier_Id :=
+      W_Ty     : constant W_Type_Id := New_Named_Type (W_Nam);
+      A_Ident  : constant W_Identifier_Id :=
         New_Identifier (Name => "a", Typ => W_Ty);
-      A_Binder  : constant Binder_Array :=
-        (1 => (B_Name => A_Ident,
-               others => <>));
-      X_Ident   : constant W_Identifier_Id :=
+      A_Binder : constant Binder_Array :=
+        (1 => (B_Name => A_Ident, others => <>));
+      X_Ident  : constant W_Identifier_Id :=
         New_Identifier (Name => "x", Typ => Get_Typ (Init_Val));
-      X_Binder  : constant Binder_Array :=
-        (1 => (B_Name => X_Ident,
-               others => <>));
+      X_Binder : constant Binder_Array :=
+        (1 => (B_Name => X_Ident, others => <>));
 
    begin
       --  Wrappers have two fields, a value field and an initialization
@@ -350,13 +354,13 @@ package body Why.Gen.Init is
          Name    => W_Nam,
          Binders =>
            (1 =>
-                (B_Name => Init_Val,
-                 Labels => Get_Model_Trace_Label ("'" & Init_Val_Label),
-                 others => <>),
+              (B_Name => Init_Val,
+               Labels => Get_Model_Trace_Label ("'" & Init_Val_Label),
+               others => <>),
             2 =>
-              (B_Name   => Attr_Init,
-               Labels   => Get_Model_Trace_Label ("'" & Initialized_Label),
-               others   => <>)));
+              (B_Name => Attr_Init,
+               Labels => Get_Model_Trace_Label ("'" & Initialized_Label),
+               others => <>)));
 
       --  Declare conversion functions to and from the wrapper type
 
@@ -369,9 +373,11 @@ package body Why.Gen.Init is
             Location    => No_Location,
             Labels      => Symbol_Sets.Empty_Set,
             Return_Type => Get_Typ (Init_Val),
-            Def         => New_Record_Access (Name  => +A_Ident,
-                                              Field => Init_Val,
-                                              Typ   => Get_Typ (Init_Val))));
+            Def         =>
+              New_Record_Access
+                (Name  => +A_Ident,
+                 Field => Init_Val,
+                 Typ   => Get_Typ (Init_Val))));
       Emit
         (Th,
          New_Function_Decl
@@ -384,11 +390,13 @@ package body Why.Gen.Init is
             Def         =>
               New_Record_Aggregate
                 (Associations =>
-                     (1 => New_Field_Association
+                   (1 =>
+                      New_Field_Association
                         (Domain => EW_Term,
                          Field  => Init_Val,
                          Value  => +X_Ident),
-                      2 => New_Field_Association
+                    2 =>
+                      New_Field_Association
                         (Domain => EW_Term,
                          Field  => Attr_Init,
                          Value  => +True_Term)))));
@@ -406,15 +414,14 @@ package body Why.Gen.Init is
          New_Axiom
            (Ada_Node => Empty,
             Name     => NID (Img (Get_Symb (Get_Name (Dummy))) & "__def"),
-            Def      => New_Comparison
-              (Symbol => Why_Eq,
-               Left   => New_Record_Access
-                 (Field => Attr_Init,
-                  Name  => +Dummy,
-                  Typ   => EW_Bool_Type),
-               Right  => (if Default_Init then True_Term else False_Term)),
-            Dep       =>
-              New_Axiom_Dep (Name => Dummy, Kind => EW_Axdep_Func)));
+            Def      =>
+              New_Comparison
+                (Symbol => Why_Eq,
+                 Left   =>
+                   New_Record_Access
+                     (Field => Attr_Init, Name => +Dummy, Typ => EW_Bool_Type),
+                 Right  => (if Default_Init then True_Term else False_Term)),
+            Dep      => New_Axiom_Dep (Name => Dummy, Kind => EW_Axdep_Func)));
    end Declare_Simple_Wrapper_Type;
 
    ---------------------
@@ -426,8 +433,10 @@ package body Why.Gen.Init is
       case Get_Type_Kind (Ty) is
          when EW_Abstract =>
             return EW_Abstract (Get_Ada_Node (+Ty), Relaxed_Init => True);
+
          when EW_Split =>
             return EW_Split (Get_Ada_Node (+Ty), Relaxed_Init => True);
+
          when EW_Builtin =>
             pragma Assert (Ty = EW_Bool_Type);
             return M_Boolean_Init_Wrapper.Wrapper_Ty;
@@ -444,40 +453,41 @@ package body Why.Gen.Init is
       Name     : W_Expr_Id;
       Domain   : EW_Domain;
       Do_Check : Boolean := True;
-      Details  : String := "")
-      return W_Expr_Id
+      Details  : String := "") return W_Expr_Id
    is
       T : W_Expr_Id;
    begin
       if Domain = EW_Prog
         and then Do_Check
-        and then (Has_Mutable_Discriminants (E)
-                  or else Is_Access_Type (E))
+        and then (Has_Mutable_Discriminants (E) or else Is_Access_Type (E))
         and then Is_Init_Wrapper_Type (Get_Type (Name))
       then
          declare
             Msg : constant String :=
-              (if Is_Access_Type (E) then "for pointer allocation"
+              (if Is_Access_Type (E)
+               then "for pointer allocation"
                else "for mutable discriminants");
             Tmp : constant W_Expr_Id := New_Temp_For_Expr (Name);
          begin
             Continuation_Stack.Append
               (Continuation_Type'
-                 (Ada_Node => E,
-                  Message  => To_Unbounded_String (Msg)));
-            T := +Sequence
-              (Left  => New_Located_Assert
-                 (Ada_Node   => Ada_Node,
-                  Reason     => VC_Initialization_Check,
-                  Kind       => EW_Assert,
-                  Pred       => Pred_Of_Boolean_Term
-                    (New_Init_Attribute_Access (E, +Tmp)),
-                  Check_Info => New_Check_Info (Details => Details)),
-               Right => +Tmp);
+                 (Ada_Node => E, Message => To_Unbounded_String (Msg)));
+            T :=
+              +Sequence
+                 (Left  =>
+                    New_Located_Assert
+                      (Ada_Node   => Ada_Node,
+                       Reason     => VC_Initialization_Check,
+                       Kind       => EW_Assert,
+                       Pred       =>
+                         Pred_Of_Boolean_Term
+                           (New_Init_Attribute_Access (E, +Tmp)),
+                       Check_Info => New_Check_Info (Details => Details)),
+                  Right => +Tmp);
             Continuation_Stack.Delete_Last;
 
-            T := Binding_For_Temp
-              (Tmp => Tmp, Context => T, Domain => EW_Prog);
+            T :=
+              Binding_For_Temp (Tmp => Tmp, Context => T, Domain => EW_Prog);
          end;
       else
          T := Name;
@@ -495,8 +505,7 @@ package body Why.Gen.Init is
       Name               : W_Expr_Id;
       Domain             : EW_Domain;
       Exclude_Components : Exclude_Components_Kind;
-      No_Predicate_Check : Boolean := False)
-      return W_Expr_Id
+      No_Predicate_Check : Boolean := False) return W_Expr_Id
    is
       Tmp : constant W_Expr_Id := New_Temp_For_Expr (Name);
       T   : W_Expr_Id;
@@ -507,29 +516,34 @@ package body Why.Gen.Init is
       --  these subcomponents (Exclude_Components is not Relaxed).
 
       if Domain = EW_Prog
-        and then
-          (Is_Init_Wrapper_Type (Get_Type (Name))
-           or else
-             (Exclude_Components /= Relaxed
-              and then Contains_Relaxed_Init_Parts (E, Ignore_Top => True)))
+        and then (Is_Init_Wrapper_Type (Get_Type (Name))
+                  or else (Exclude_Components /= Relaxed
+                           and then Contains_Relaxed_Init_Parts
+                                      (E, Ignore_Top => True)))
       then
-         T := +Sequence
+         T :=
+           +Sequence
               (Ada_Node => Get_Ada_Node (+Tmp),
-               Left     => New_Located_Assert
-                 (Ada_Node => Ada_Node,
-                  Pred     => +Compute_Is_Initialized
-                    (E, +Tmp,
-                     Params             => Body_Params,
-                     Exclude_Components => Exclude_Components,
-                     No_Predicate_Check => No_Predicate_Check,
-                     Domain             => EW_Pred),
-                  Reason   => VC_Initialization_Check,
-                  Kind     => EW_Assert),
+               Left     =>
+                 New_Located_Assert
+                   (Ada_Node => Ada_Node,
+                    Pred     =>
+                      +Compute_Is_Initialized
+                         (E,
+                          +Tmp,
+                          Params             => Body_Params,
+                          Exclude_Components => Exclude_Components,
+                          No_Predicate_Check => No_Predicate_Check,
+                          Domain             => EW_Pred),
+                    Reason   => VC_Initialization_Check,
+                    Kind     => EW_Assert),
                Right    => +Tmp);
-         T := Binding_For_Temp (Ada_Node => Get_Ada_Node (+Tmp),
-                                Domain   => Domain,
-                                Tmp      => Tmp,
-                                Context  => T);
+         T :=
+           Binding_For_Temp
+             (Ada_Node => Get_Ada_Node (+Tmp),
+              Domain   => Domain,
+              Tmp      => Tmp,
+              Context  => T);
          return T;
       else
          return Name;
@@ -550,8 +564,7 @@ package body Why.Gen.Init is
    -------------------------------
 
    function New_Init_Attribute_Access
-     (E    : Entity_Id;
-      Name : W_Term_Id) return W_Term_Id
+     (E : Entity_Id; Name : W_Term_Id) return W_Term_Id
    is
       Field : W_Identifier_Id;
 
@@ -572,9 +585,8 @@ package body Why.Gen.Init is
          Field := M_Boolean_Init_Wrapper.Attr_Init;
       end if;
 
-      return New_Record_Access (Name   => Name,
-                                Field  => Field,
-                                Typ    => EW_Bool_Type);
+      return
+        New_Record_Access (Name => Name, Field => Field, Typ => EW_Bool_Type);
    end New_Init_Attribute_Access;
 
 end Why.Gen.Init;

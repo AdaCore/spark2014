@@ -23,17 +23,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Checked_Types;          use Checked_Types;
-with GNATCOLL.Symbols;       use GNATCOLL.Symbols;
-with Snames;                 use Snames;
-with SPARK_Util;             use SPARK_Util;
-with String_Utils;           use String_Utils;
-with Types;                  use Types;
-with Why.Atree.Accessors;    use Why.Atree.Accessors;
-with Why.Ids;                use Why.Ids;
-with Why.Inter;              use Why.Inter;
-with Why.Sinfo;              use Why.Sinfo;
-with Why.Types;              use Why.Types;
+with Checked_Types;       use Checked_Types;
+with GNATCOLL.Symbols;    use GNATCOLL.Symbols;
+with Snames;              use Snames;
+with SPARK_Util;          use SPARK_Util;
+with String_Utils;        use String_Utils;
+with Types;               use Types;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Ids;             use Why.Ids;
+with Why.Inter;           use Why.Inter;
+with Why.Sinfo;           use Why.Sinfo;
+with Why.Types;           use Why.Types;
 
 package Why.Gen.Names is
    --  This package provides ways to manipulate subprogram names and
@@ -50,9 +50,9 @@ package Why.Gen.Names is
    --  Return Symbol for Name
 
    function Conversion_Name
-     (From : W_Type_Id;
-      To   : W_Type_Id) return W_Identifier_Id
-     with Pre =>
+     (From : W_Type_Id; To : W_Type_Id) return W_Identifier_Id
+   with
+     Pre =>
        (if Get_Type_Kind (From) = EW_Builtin
           and then Get_Type_Kind (To) in EW_Abstract | EW_Split
         then Base_Why_Type (To) = From
@@ -61,12 +61,10 @@ package Why.Gen.Names is
         then Base_Why_Type (From) = To);
    --  Return the name of the conversion function between the two types
 
-   function Range_Pred_Name
-     (Ty : Entity_Id) return W_Identifier_Id;
+   function Range_Pred_Name (Ty : Entity_Id) return W_Identifier_Id;
    --  Return the name of the "in_range" predicate for the type
 
-   function Dynamic_Prop_Name
-     (Ty : Entity_Id) return W_Identifier_Id;
+   function Dynamic_Prop_Name (Ty : Entity_Id) return W_Identifier_Id;
    --  Return the name of the "dynamic_property" predicate for the type
 
    function Range_Check_Name
@@ -136,27 +134,24 @@ package Why.Gen.Names is
    --     or otherwise dependent on the current compilation unit
 
    function New_Temp_Identifier
-     (Ada_Node  : Node_Id   := Empty;
+     (Ada_Node  : Node_Id := Empty;
       Typ       : W_Type_Id := Why.Types.Why_Empty;
-      Base_Name : String    := "") return W_Identifier_Id;
+      Base_Name : String := "") return W_Identifier_Id;
    --  @param Base_Name optional basis for the name of the temporary
    --  @return a new unique identifier
 
    function New_Generated_Identifier
-     (Ada_Node  : Node_Id   := Empty;
+     (Ada_Node  : Node_Id := Empty;
       Typ       : W_Type_Id := Why.Types.Why_Empty;
-      Base_Name : String    := "";
+      Base_Name : String := "";
       Attrs     : String_Sets.Set) return W_Identifier_Id;
 
    function New_Temp_Identifiers
-     (Num : Positive;
-      Typ : W_Type_Id) return W_Identifier_Array;
+     (Num : Positive; Typ : W_Type_Id) return W_Identifier_Array;
    --  Return an array of new unique identifiers with Num elements
 
    function New_Module
-     (Ada_Node : Node_Id := Empty;
-      File     : Symbol;
-      Name     : String)
+     (Ada_Node : Node_Id := Empty; File : Symbol; Name : String)
       return W_Module_Id;
    --  Build a new module id with the given File and Name elements. The Name
    --  will be capitalized because that's required by Why3 syntax.
@@ -171,19 +166,17 @@ package Why.Gen.Names is
    --  the name of the corresponding entity in logic space.
 
    function Logic_Function_Name
-     (E                      : Function_Kind_Id;
-      Selector_Name          : Selection_Kind := Why.Inter.Standard;
-      Specialization_Module  : Symbol := No_Symbol)
-      return W_Identifier_Id;
+     (E                     : Function_Kind_Id;
+      Selector_Name         : Selection_Kind := Why.Inter.Standard;
+      Specialization_Module : Symbol := No_Symbol) return W_Identifier_Id;
    --  Compute the name to be used to call a function or a function profile in
    --  the logic domain. If Specialization_Module is supplied, then the name is
    --  taken from the M_HO_Specializations map.
 
    function Guard_Predicate_Name
-     (E                      : Function_Kind_Id;
-      Selector_Name          : Selection_Kind := Why.Inter.Standard;
-      Specialization_Module  : Symbol := No_Symbol)
-      return W_Identifier_Id;
+     (E                     : Function_Kind_Id;
+      Selector_Name         : Selection_Kind := Why.Inter.Standard;
+      Specialization_Module : Symbol := No_Symbol) return W_Identifier_Id;
    --  Compute the name to be used for the guard of a function or a function
    --  profile. If Specialization_Module is supplied, then the name is taken
    --  from the M_HO_Specializations map.
@@ -196,15 +189,15 @@ package Why.Gen.Names is
    Post_Refine_Axiom   : constant String := "post_refine_axiom";
    --  suffix for a postcondition axiom
 
-   Compat_Axiom        : constant String := "compat_axiom";
+   Compat_Axiom : constant String := "compat_axiom";
    --  suffix for compatibility axiom suffix for dispatching calls
 
-   Function_Guard      : constant String := "function_guard";
+   Function_Guard : constant String := "function_guard";
    --  suffix for guards of functions defining axioms
-   Specific_Post       : constant String := "specific_post";
+   Specific_Post  : constant String := "specific_post";
    --  suffix for specific postcondition of dispatching procedures
 
-   Pledge_Axiom        : constant String := "pledge_axiom";
+   Pledge_Axiom : constant String := "pledge_axiom";
    --  suffix for defining axiom for pledges of traversal expression functions
 
    --  Labels for counterexamples:
@@ -235,10 +228,10 @@ package Why.Gen.Names is
 
    type Why_Name_Enum is
      (
-      --  Suffix appended to the name of an object to build the name of
-      --  the aggregate function used as initialization expression in the
-      --  declaration of the object.
-      WNE_Aggregate_Def_Suffix,
+     --  Suffix appended to the name of an object to build the name of
+     --  the aggregate function used as initialization expression in the
+     --  declaration of the object.
+     WNE_Aggregate_Def_Suffix,
 
       WNE_Array_Base_Range_Pred,
       WNE_Array_Base_Range_Pred_2,
@@ -488,46 +481,46 @@ package Why.Gen.Names is
 
    function Attr_To_Why_Name (A : Attribute_Id) return Why_Name_Enum;
 
-   function Attr_Append (Base     : String;
-                         A        : Attribute_Id;
-                         Count    : Positive;
-                         Typ      : W_Type_Id;
-                         Module   : W_Module_Id := Why.Types.Why_Empty;
-                         Ada_Node : Node_Id := Empty) return W_Identifier_Id;
+   function Attr_Append
+     (Base     : String;
+      A        : Attribute_Id;
+      Count    : Positive;
+      Typ      : W_Type_Id;
+      Module   : W_Module_Id := Why.Types.Why_Empty;
+      Ada_Node : Node_Id := Empty) return W_Identifier_Id;
 
-   function Attr_Append (Base  : W_Identifier_Id;
-                         A     : Attribute_Id;
-                         Count : Positive;
-                         Typ   : W_Type_Id) return W_Identifier_Id;
+   function Attr_Append
+     (Base  : W_Identifier_Id;
+      A     : Attribute_Id;
+      Count : Positive;
+      Typ   : W_Type_Id) return W_Identifier_Id;
 
-   function Discr_Append (Base : W_Identifier_Id;
-                          Typ  : W_Type_Id) return W_Identifier_Id;
+   function Discr_Append
+     (Base : W_Identifier_Id; Typ : W_Type_Id) return W_Identifier_Id;
 
-   function Field_Append (Base : W_Identifier_Id;
-                          Typ  : W_Type_Id) return W_Identifier_Id;
+   function Field_Append
+     (Base : W_Identifier_Id; Typ : W_Type_Id) return W_Identifier_Id;
 
    function Ref_Append (Base : W_Name_Id) return W_Name_Id;
 
-   function Content_Append (Base : W_Name_Id;
-                            Typ  : W_Type_Id) return W_Identifier_Id;
+   function Content_Append
+     (Base : W_Name_Id; Typ : W_Type_Id) return W_Identifier_Id;
 
-   function Value_Append (Base : W_Identifier_Id;
-                          Typ  : W_Type_Id) return W_Identifier_Id;
+   function Value_Append
+     (Base : W_Identifier_Id; Typ : W_Type_Id) return W_Identifier_Id;
 
-   function Is_Null_Append (Base : W_Identifier_Id;
-                            Typ  : W_Type_Id) return W_Identifier_Id;
+   function Is_Null_Append
+     (Base : W_Identifier_Id; Typ : W_Type_Id) return W_Identifier_Id;
 
-   function Is_Moved_Append (Base : W_Identifier_Id;
-                             Typ  : W_Type_Id) return W_Identifier_Id;
+   function Is_Moved_Append
+     (Base : W_Identifier_Id; Typ : W_Type_Id) return W_Identifier_Id;
 
    function Init_Append (Base : W_Identifier_Id) return W_Identifier_Id;
 
    function Havoc_Append (Base : W_Name_Id) return W_Identifier_Id;
 
    function Valid_Append
-     (Base : W_Identifier_Id;
-      Typ  : W_Type_Id)
-      return W_Identifier_Id;
+     (Base : W_Identifier_Id; Typ : W_Type_Id) return W_Identifier_Id;
 
    function Variant_Append
      (Base     : String;
@@ -538,9 +531,8 @@ package Why.Gen.Names is
 
    function To_String (W : Why_Name_Enum) return String;
 
-   function To_Ident (W        : Why_Name_Enum;
-                      Ada_Node : Node_Id := Empty)
-                      return W_Identifier_Id;
+   function To_Ident
+     (W : Why_Name_Enum; Ada_Node : Node_Id := Empty) return W_Identifier_Id;
 
    function To_Name (W : Why_Name_Enum) return W_Name_Id;
 
