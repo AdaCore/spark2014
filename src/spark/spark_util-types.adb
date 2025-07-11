@@ -2463,8 +2463,13 @@ package body SPARK_Util.Types is
    is
 
       Seen : Hashed_Node_Sets.Set;
-      --  Set of access types already traversed. This is used to avoid infinite
-      --  recursion on recursive structures.
+      --  Types already traversed. This is used to avoid infinite recursion on
+      --  recursive structures.
+
+      Inserted : Boolean;
+      Position : Hashed_Node_Sets.Cursor;
+      --  For checking if type has been already traversed. We keep these
+      --  variables global to avoid repeated finalization of the cursor.
 
       function Traverse_Type (Typ : Type_Kind_Id) return Boolean;
       --  Traverse Typ and its subcomponents
@@ -2561,12 +2566,9 @@ package body SPARK_Util.Types is
            and then not Is_Access_Subprogram_Type (Rep_Ty)
          then
             declare
-               Inserted : Boolean;
-               Position : Hashed_Node_Sets.Cursor;
-               Des_Ty   : constant Type_Kind_Id :=
+               Des_Ty : constant Type_Kind_Id :=
                  Directly_Designated_Type (Rep_Ty);
             begin
-               Seen.Insert (Rep_Ty, Position, Inserted);
 
                return
                  Inserted
@@ -2593,6 +2595,15 @@ package body SPARK_Util.Types is
          Rep_Ty : constant Type_Kind_Id := Retysp (Typ);
 
       begin
+         Seen.Insert (Rep_Ty, Position, Inserted);
+
+         --  If type has been already processed, then its test must have
+         --  failed, so there is no need to test it again.
+
+         if not Inserted then
+            return False;
+         end if;
+
          --  Apply Test to the current type
 
          case Test (Rep_Ty) is
