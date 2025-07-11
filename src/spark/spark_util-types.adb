@@ -2462,7 +2462,7 @@ package body SPARK_Util.Types is
       Traverse_Ancestors : Boolean := False) return Boolean
    is
 
-      Seen : Node_Sets.Set;
+      Seen : Hashed_Node_Sets.Set;
       --  Set of access types already traversed. This is used to avoid infinite
       --  recursion on recursive structures.
 
@@ -2562,7 +2562,7 @@ package body SPARK_Util.Types is
          then
             declare
                Inserted : Boolean;
-               Position : Node_Sets.Cursor;
+               Position : Hashed_Node_Sets.Cursor;
                Des_Ty   : constant Type_Kind_Id :=
                  Directly_Designated_Type (Rep_Ty);
             begin
