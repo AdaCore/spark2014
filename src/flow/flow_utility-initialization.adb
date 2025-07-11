@@ -264,6 +264,10 @@ package body Flow_Utility.Initialization is
                            CItem := First_Non_Pragma (Component_Items (CList));
                            while Present (CItem) loop
                               Process_Component (Defining_Identifier (CItem));
+                              --  Optimization: exit when already decided
+                              if FDI and NDI then
+                                 return Mixed_Initialization;
+                              end if;
                               Next_Non_Pragma (CItem);
                            end loop;
 
@@ -329,6 +333,10 @@ package body Flow_Utility.Initialization is
                         CItem := First_Non_Pragma (Component_Items (CList));
                         while Present (CItem) loop
                            Process_Component (Defining_Identifier (CItem));
+                           --  Optimization: exit when already decided
+                           if FDI and NDI then
+                              return Mixed_Initialization;
+                           end if;
                            Next_Non_Pragma (CItem);
                         end loop;
 
@@ -342,6 +350,10 @@ package body Flow_Utility.Initialization is
                               while Present (CItem) loop
                                  Process_Component
                                    (Defining_Identifier (CItem));
+                                 --  Optimization: exit when already decided
+                                 if FDI and NDI then
+                                    return Mixed_Initialization;
+                                 end if;
                                  Next_Non_Pragma (CItem);
                               end loop;
                               Next_Non_Pragma (Variant);
