@@ -1034,6 +1034,16 @@ package SPARK_Util is
    --  Same as above but with an object. Look through the definition of
    --  constants.
 
+   function Is_Non_Exec_Assertion_Level (Level : Entity_Id) return Boolean;
+   --  Return true on an assertion level that cannot be enabled at runtime
+
+   function In_Statically_Leaking_Context
+     (Expr : N_Subexpr_Id; Ignore_Non_Exec : Boolean) return Boolean;
+   --  Return True if Expr occurs in a context where it is statically known
+   --  to not be possible to reclaim. This happens for expressions that are
+   --  part of an assertion pragma. If Ignore_Non_Exec is True, only consider
+   --  pragmas that can be enabled at runtime.
+
    function Is_Traversal_Function_Call (Expr : Node_Id) return Boolean;
    --  @param Expr any node
    --  @return True iff Expr is a call to a traversal function

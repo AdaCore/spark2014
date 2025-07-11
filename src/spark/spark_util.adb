@@ -1886,7 +1886,8 @@ package body SPARK_Util is
        and then Is_Access_Type (Retysp (Etype (Expression (Expr))))
        and then not Is_Access_Constant (Retysp (Etype (Expression (Expr))))
        and then not Is_Rooted_In_Constant (Expression (Expr))
-       and then not In_Assertion_Expression_Pragma (Expr));
+       and then not In_Statically_Leaking_Context
+                      (Expr, Ignore_Non_Exec => False));
 
    --------------------------------------------
    -- Directly_Enclosing_Subprogram_Or_Entry --
@@ -3378,6 +3379,36 @@ package body SPARK_Util is
         and then Str_Name (Str_Name'Last) in 's' | 'b';
    end In_SPARK_Library_Unit;
 
+   -----------------------------------
+   -- In_Statically_Leaking_Context --
+   -----------------------------------
+
+   function In_Statically_Leaking_Context
+     (Expr : N_Subexpr_Id; Ignore_Non_Exec : Boolean) return Boolean
+   is
+      function Is_Pragma_Or_Unit (N : Node_Id) return Boolean
+      is (Nkind (N)
+          in N_Pragma
+           | N_Package_Body
+           | N_Package_Declaration
+           | N_Subprogram_Body);
+
+      function Enclosing_Pragma_Or_Unit is new
+        First_Parent_With_Property (Is_Pragma_Or_Unit);
+
+      Par : constant Node_Id := Enclosing_Pragma_Or_Unit (Expr);
+   begin
+
+      return
+        Present (Par)
+        and then Nkind (Par) = N_Pragma
+        and then Assertion_Expression_Pragma (Get_Pragma_Id (Par))
+        and then (if Ignore_Non_Exec
+                  then
+                    not Is_Non_Exec_Assertion_Level
+                          (Pragma_Ghost_Assertion_Level (Par)));
+   end In_Statically_Leaking_Context;
+
    -------------------------------------
    -- Is_Access_Attribute_Of_Function --
    -------------------------------------
@@ -4085,6 +4116,13 @@ package body SPARK_Util is
    begin
       return Is_Subprogram_Or_Entry (Scop) or else Ekind (Scop) = E_Block;
    end Is_Local_Context;
+
+   ---------------------------------
+   -- Is_Non_Exec_Assertion_Level --
+   ---------------------------------
+
+   function Is_Non_Exec_Assertion_Level (Level : Entity_Id) return Boolean
+   is (Is_Same_Or_Depends_On_Level (Level, Standard_Level_Static));
 
    ---------------------------------
    -- Is_Not_Hidden_Discriminant  --

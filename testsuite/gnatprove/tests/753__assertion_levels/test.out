@@ -1,0 +1,20 @@
+main.adb:7:13: info: implicit aspect Always_Terminates on "Create" has been proved, subprogram will terminate
+main.adb:9:13: info: implicit aspect Always_Terminates on "Read" has been proved, subprogram will terminate
+main.adb:11:04: medium: resource or memory leak might occur at end of scope
+main.adb:14:04: warning: analyzing unreferenced procedure "Test_Silver" [unreferenced-procedure]
+main.adb:15:07: medium: resource or memory leak might occur at end of scope
+main.adb:19:22: info: assertion proved (CVC5: 1 VC)
+main.adb:19:22: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
+main.adb:20:30: info: assertion proved (CVC5: 1 VC)
+main.adb:21:22: info: assertion proved (CVC5: 1 VC)
+main.adb:21:28: medium: resource or memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
+main.adb:22:30: info: assertion proved (CVC5: 1 VC)
+main.adb:25:04: warning: analyzing unreferenced procedure "Test_Gold" [unreferenced-procedure]
+main.adb:29:22: info: assertion proved (CVC5: 1 VC)
+main.adb:30:22: info: assertion proved (CVC5: 1 VC)
+main.adb:34:29: info: assertion proved (CVC5: 1 VC)
+main.adb:34:29: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
+main.adb:35:27: info: assertion proved (CVC5: 1 VC)
+main.adb:36:29: info: assertion proved (CVC5: 1 VC)
+main.adb:36:35: medium: resource or memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
+main.adb:37:27: info: assertion proved (CVC5: 1 VC)

@@ -2715,10 +2715,12 @@ package body Gnat2Why.Expr is
       --  borrow checker. Here we check that all pointers in the designated
       --  value, if any, are moved (null being a special case of moved).
 
-      Typ : constant Entity_Id :=
+      Typ  : constant Entity_Id :=
         (if Is_Uncheck_Dealloc
          then Retysp (Directly_Designated_Type (Init_Typ))
          else Init_Typ);
+      Root : constant Entity_Id :=
+        (if Nkind (N) = N_Defining_Identifier then N else Get_Root_Object (N));
 
       Result : W_Prog_Id := +Void;
       Kind   : constant VC_Kind :=
@@ -2727,10 +2729,19 @@ package body Gnat2Why.Expr is
          else VC_Resource_Leak);
 
    begin
-      --  Nothing to check on borrow/observe of anonymous access type
+      --  Nothing to check on borrow/observe of anonymous access type. Do not
+      --  emit checks for memory leaks for ghost entities that cannot be
+      --  enabled at runtime.
 
       if Contains_Allocated_Parts (Typ)
         and then not Is_Anonymous_Access_Type (Typ)
+        and then (not Is_Ghost_Entity (Current_Subp)
+                  or else not Is_Non_Exec_Assertion_Level
+                                (Ghost_Assertion_Level (Current_Subp)))
+        and then not (Present (Root)
+                      and then Is_Ghost_Entity (Root)
+                      and then Is_Non_Exec_Assertion_Level
+                                 (Ghost_Assertion_Level (Root)))
       then
          declare
             Val     : constant W_Expr_Id :=
@@ -10982,7 +10993,10 @@ package body Gnat2Why.Expr is
                --  type.
 
                if Is_Access_Type (Retysp (Etype (Expr))) then
-                  pragma Assert (not In_Assertion_Expression_Pragma (Expr));
+                  pragma
+                    Assert
+                      (not In_Statically_Leaking_Context
+                             (Expr, Ignore_Non_Exec => False));
 
                   declare
                      Target_Typ : constant Entity_Id := Retysp (Etype (Expr));
@@ -24274,12 +24288,16 @@ package body Gnat2Why.Expr is
                     Directly_Designated_Type (Expr_Type);
 
                begin
-                  --  Insert static resource leak if needed
-
                   if Domain = EW_Prog
                     and then (if To_Gen or else To_Const
                               then not Value_Is_Never_Leaked (Expr)
-                              else In_Assertion_Expression_Pragma (Expr))
+                              else
+                                In_Statically_Leaking_Context
+                                  (Expr, Ignore_Non_Exec => True))
+                    and then not (Is_Ghost_Entity (Current_Subp)
+                                  and then Is_Non_Exec_Assertion_Level
+                                             (Ghost_Assertion_Level
+                                                (Current_Subp)))
                   then
                      Emit_Static_Proof_Result
                        (Expr,
@@ -25646,7 +25664,11 @@ package body Gnat2Why.Expr is
 
          if Is_Allocating_Function (Subp)
            and then Contains_Allocated_Parts (Etype (Subp))
-           and then In_Assertion_Expression_Pragma (Expr)
+           and then In_Statically_Leaking_Context
+                      (Expr, Ignore_Non_Exec => True)
+           and then not (Is_Ghost_Entity (Current_Subp)
+                         and then Is_Non_Exec_Assertion_Level
+                                    (Ghost_Assertion_Level (Current_Subp)))
          then
             Emit_Static_Proof_Result
               (Expr,
