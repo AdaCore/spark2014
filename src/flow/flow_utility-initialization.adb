@@ -540,6 +540,7 @@ package body Flow_Utility.Initialization is
                end if;
 
             else
+               pragma Assert (Etype (Typ) /= Typ);
                return Default_Initialization (Etype (Typ));
             end if;
 
