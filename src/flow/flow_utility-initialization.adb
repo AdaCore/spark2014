@@ -525,9 +525,9 @@ package body Flow_Utility.Initialization is
          when others =>
             pragma Assert (Is_Itype (Typ));
 
-            --  We recurse into the underlying type, except for access and
-            --  array types, where it could be an infinite recursion. Instead
-            --  for those we do the same analysis as for fully declared types.
+            --  We recurse into the underlying type, except for types, where
+            --  it could be an infinite recursion. Instead for those we do the
+            --  same analysis as for fully declared types.
 
             if Is_Access_Type (Typ) then
                return Full_Default_Initialization;
@@ -537,6 +537,13 @@ package body Flow_Utility.Initialization is
                   return Full_Default_Initialization;
                else
                   return Default_Initialization (Component_Type (Typ));
+               end if;
+
+            elsif Is_Scalar_Type (Typ) then
+               if Has_Default_Aspect (Typ) then
+                  return Full_Default_Initialization;
+               else
+                  return No_Default_Initialization;
                end if;
 
             else
