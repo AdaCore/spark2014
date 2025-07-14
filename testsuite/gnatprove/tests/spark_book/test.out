@@ -855,6 +855,8 @@ palindrome.adb:7:07: info: initialization of "Left_Index" proved
 palindrome.adb:7:07: info: initialization of "Left_Index" proved, in call inlined at palindrome.adb:36
 palindrome.adb:8:07: info: initialization of "Right_Index" proved
 palindrome.adb:8:07: info: initialization of "Right_Index" proved, in call inlined at palindrome.adb:36
+palindrome.adb:10:22: info: range check proved (CVC5: 4 VC), in call inlined at palindrome.adb:36
+palindrome.adb:10:26: info: range check proved (CVC5: 2 VC), in call inlined at palindrome.adb:36
 palindrome.adb:11:22: info: range check proved (CVC5: 4 VC), in call inlined at palindrome.adb:36
 palindrome.adb:11:26: info: range check proved (CVC5: 2 VC), in call inlined at palindrome.adb:36
 palindrome.adb:13:31: info: loop variant proved (CVC5: 1 VC), in call inlined at palindrome.adb:36
