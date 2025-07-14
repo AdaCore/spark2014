@@ -15,21 +15,25 @@ tictactoe.adb:95:07: info: initialization of "Score" proved
 tictactoe.adb:97:07: warning: initialization of "P" has no effect
 tictactoe.adb:100:61: info: unrolling loop [info-unrolling-inlining]
 tictactoe.adb:102:33: info: unrolling loop [info-unrolling-inlining]
-tictactoe.adb:105:30: info: unrolling loop [info-unrolling-inlining]
+tictactoe.adb:105:33: info: unrolling loop [info-unrolling-inlining]
 tictactoe.adb:108:34: info: overflow check proved (CVC5: 96 VC)
 tictactoe.adb:110:34: info: overflow check proved (CVC5: 96 VC)
-tictactoe.adb:115:28: info: unrolling loop [info-unrolling-inlining]
-tictactoe.adb:127:10: info: precondition proved (CVC5: 2 VC)
-tictactoe.adb:131:22: info: assertion proved (CVC5: 1 VC)
-tictactoe.adb:133:31: info: unrolling loop [info-unrolling-inlining]
-tictactoe.adb:134:37: info: unrolling loop [info-unrolling-inlining]
-tictactoe.adb:136:16: info: precondition proved (CVC5: 18 VC)
+tictactoe.adb:115:20: info: index check proved (CVC5: 32 VC)
+tictactoe.adb:115:28: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+tictactoe.adb:116:32: info: index check proved (CVC5: 32 VC)
+tictactoe.adb:116:38: info: index check proved (CVC5: 32 VC)
+tictactoe.adb:118:27: info: index check proved (CVC5: 32 VC)
+tictactoe.adb:127:10: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+tictactoe.adb:131:22: info: assertion proved (altergo: 1 VC)
+tictactoe.adb:133:28: info: unrolling loop [info-unrolling-inlining]
+tictactoe.adb:134:32: info: unrolling loop [info-unrolling-inlining]
+tictactoe.adb:136:16: info: precondition proved (CVC5: 9 VC; altergo: 9 VC)
 tictactoe.adb:145:28: info: unrolling loop [info-unrolling-inlining]
 tictactoe.adb:146:23: info: unrolling loop [info-unrolling-inlining]
 tictactoe.adb:161:07: info: initialization of "Score" proved
 tictactoe.adb:162:07: info: initialization of "P" proved
 tictactoe.adb:164:30: info: unrolling loop [info-unrolling-inlining]
-tictactoe.adb:167:27: info: unrolling loop [info-unrolling-inlining]
+tictactoe.adb:167:30: info: unrolling loop [info-unrolling-inlining]
 tictactoe.adb:171:31: info: overflow check proved (CVC5: 48 VC)
 tictactoe.adb:173:31: info: overflow check proved (CVC5: 48 VC)
 tictactoe.ads:12:13: info: implicit aspect Always_Terminates on "One_Free_Slot" has been proved, subprogram will terminate

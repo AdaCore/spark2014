@@ -102,7 +102,7 @@ is
          for S of All_Solutions loop
             Score := 0;
 
-            for I in S'Range loop
+            for I in Line'Range loop
                P := S (I);
                if My_Board (P.X)(P.Y) = Computer then
                   Score := Score + 1;
@@ -130,8 +130,8 @@ is
 
       pragma Assert (Num_Free_Slots > 0);
 
-      for I in My_Board'Range loop
-         for J in My_Board(I)'Range loop
+      for I in Board'Range loop
+         for J in Column'Range loop
             if My_Board (I)(J) = Empty then
                Play((I, J), Computer);
                return;
@@ -164,7 +164,7 @@ is
       for S of All_Solutions loop
          Score := 0;
 
-         for I in S'Range loop
+         for I in Line'Range loop
             P := S (I);
 
             if My_Board (P.X)(P.Y) = Computer then
