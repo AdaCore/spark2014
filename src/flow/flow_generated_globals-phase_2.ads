@@ -366,6 +366,14 @@ package Flow_Generated_Globals.Phase_2 is
    --  Returns True iff the E calls potentially nonreturning subprograms,
    --  trusting their Always_Terminates aspects.
 
+   function Calls_Via_Access_To_Subprogram (E : Entity_Id) return Boolean
+   with
+     Pre =>
+       GG_Has_Been_Generated
+       and then Entity_In_SPARK (E)
+       and then Ekind (E) = E_Function;
+   --  Returns True iff E calls other subprograms through access-to-subprogram
+
    function Is_Directly_Nonreturning (E : Entity_Id) return Boolean
    with
      Pre =>

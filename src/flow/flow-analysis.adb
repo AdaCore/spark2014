@@ -6394,24 +6394,27 @@ package body Flow.Analysis is
                      if Ekind (SC.E) = E_Package then
                         null;
 
+                     --  Calls via access-to-procedures are not supported;
+                     --  access-to-functions are checked when creating the
+                     --  access.
+
                      elsif Ekind (SC.E) = E_Subprogram_Type then
 
-                        Proved := False;
-                        Error_Msg_Flow
-                          (FA          => FA,
-                           Msg         =>
-                             Check_Msg
-                               ("call via access-to-subprogram "
-                                & "might be nonterminating"),
-                           Explanation =>
-                             (if Is_Function_Type (SC.E)
-                              then "call could hide recursive calls"
-                              else ""),
-                           Severity    => Medium_Check_Kind,
-                           N           => Atr.Error_Location,
-                           F1          => Spec_Entity_Id,
-                           Tag         => Subprogram_Termination,
-                           Vertex      => V);
+                        if not Is_Function_Type (SC.E) then
+                           Proved := False;
+                           Error_Msg_Flow
+                             (FA       => FA,
+                              Msg      =>
+                                Check_Msg
+                                  ("call via "
+                                   & "access-to-subprogram "
+                                   & "might be nonterminating"),
+                              Severity => Medium_Check_Kind,
+                              N        => Atr.Error_Location,
+                              F1       => Spec_Entity_Id,
+                              Tag      => Subprogram_Termination,
+                              Vertex   => V);
+                        end if;
 
                      elsif Nkind (SC.N) in N_Subprogram_Call
                        and then Flow_Classwide.Is_Dispatching_Call (SC.N)
@@ -6665,23 +6668,26 @@ package body Flow.Analysis is
                     and then Get_Termination_Condition (SC.E, Compute => True)
                              = (Static, False)
                   then
-                     --  For calls via access-to-subprogram don't mention
+                     --  For calls via access-to-procedures don't mention
                      --  the subprogram name (both because it wouldn't be
                      --  terribly useful and because it could be an itype).
                      --  Also, don't emit a possible fix, because
                      --  access-to-subprograms types cannot be annotated
-                     --  with Always_Terminates anyway.
+                     --  with Always_Terminates anyway. Access-to-functions
+                     --  are checked when the access is created.
 
                      if Ekind (SC.E) = E_Subprogram_Type then
-                        Error_Msg_Flow
-                          (FA       => FA,
-                           Msg      =>
-                             "call to ghost access-to-subprogram "
-                             & "might be nonterminating",
-                           Severity => Medium_Check_Kind,
-                           N        => Atr.Error_Location,
-                           Tag      => Subprogram_Termination,
-                           Vertex   => V);
+                        if not Is_Function_Type (SC.E) then
+                           Error_Msg_Flow
+                             (FA       => FA,
+                              Msg      =>
+                                "call to ghost access-to-procedure "
+                                & "might be nonterminating",
+                              Severity => Medium_Check_Kind,
+                              N        => Atr.Error_Location,
+                              Tag      => Subprogram_Termination,
+                              Vertex   => V);
+                        end if;
 
                      --  For calls to ordinary subprograms with statically
                      --  false termination the check is certain and clear,

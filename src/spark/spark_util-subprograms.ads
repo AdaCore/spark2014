@@ -477,6 +477,11 @@ package SPARK_Util.Subprograms is
    --  @param E any entity
    --  @return True iff E is an allocating function (SPARK RM 4.8)
 
+   function Is_Procedure_Type (E : Entity_Id) return Boolean
+   is (Ekind (E) = E_Subprogram_Type
+       and then Etype (E) = Stand.Standard_Void_Type);
+   --  Return True if E is a subprogram type corresponding to a procedure
+
    function Is_Function_Type (E : Entity_Id) return Boolean
    is (Ekind (E) = E_Subprogram_Type
        and then Etype (E) /= Stand.Standard_Void_Type);

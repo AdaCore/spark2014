@@ -43,8 +43,6 @@ is
      (L = null or else (P (L.Value) and then For_All_List (L.Next, P)))
    with
      Subprogram_Variant => (Structural => L);
-   pragma Annotate (GNATprove, False_Positive, "call via access-to-subprogram",
-                    "We only call For_All_List on terminating functions");
 
    type Relation is access function (X, Y : Component_T) return Boolean;
 
@@ -59,7 +57,5 @@ is
          and then For_All_List (L1.Next, L2.Next, P)))
    with
      Subprogram_Variant => (Structural => L1);
-   pragma Annotate (GNATprove, False_Positive, "call via access-to-subprogram",
-                    "We only call For_All_List on terminating functions");
 
 end Loop_Types;

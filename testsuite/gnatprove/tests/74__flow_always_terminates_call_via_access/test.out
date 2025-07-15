@@ -1,0 +1,55 @@
+main.adb:1:11: info: aspect Always_Terminates on "Main" has been proved, subprogram will terminate
+main.adb:2:04: info: function contract feasibility proved (Trivial: 1 VC)
+main.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+main.adb:5:07: info: no contextual analysis of "F" (nested subprogram)
+main.adb:5:16: info: implicit aspect Always_Terminates on "FF" has been proved, subprogram will terminate
+main.adb:6:20: medium: call via access-to-function might not terminate [reason for check: functions should always terminate in SPARK] [possible explanation: calls via access-to-subprograms inside function taken as access might hide recursive calls]
+main.adb:8:19: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:12:14: info: precondition proved (Trivial: 1 VC)
+test.adb:4:04: info: function contract feasibility proved (CVC5: 1 VC)
+test.adb:7:13: info: implicit aspect Always_Terminates on "No_Call" has been proved, subprogram will terminate
+test.adb:9:13: info: implicit aspect Always_Terminates on "Call" has been proved, subprogram will terminate
+test.adb:12:28: medium: call via access-to-function might not terminate [possible explanation: calls via access-to-subprograms inside function taken as access might hide recursive calls]
+test.adb:22:16: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:25:04: warning: analyzing unreferenced function "NOK" [unreferenced-function]
+test.adb:25:13: info: implicit aspect Always_Terminates on "NOK" has been proved, subprogram will terminate
+test.adb:26:23: medium: call via access-to-function might not terminate [reason for check: functions should always terminate in SPARK] [possible explanation: calls via access-to-subprograms inside function taken as access might hide recursive calls]
+test.adb:28:16: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:31:14: info: aspect Always_Terminates on "POK" has been proved, subprogram will terminate
+test.adb:31:19: info: initialization of "I" proved
+test.adb:34:14: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:37:14: info: aspect Always_Terminates on "PNOK" has been proved, subprogram will terminate
+test.adb:37:20: info: initialization of "I" proved
+test.adb:38:23: medium: call via access-to-function might not terminate [reason for check: procedure "PNOK" has an Always_Terminates aspect] [possible explanation: calls via access-to-subprograms inside function taken as access might hide recursive calls]
+test.adb:40:14: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:43:14: info: aspect Always_Terminates on "P_Test_With_Annot" has been proved, subprogram will terminate
+test.adb:43:33: info: initialization of "I" proved
+test.adb:45:07: warning: statement has no effect
+test.adb:45:12: warning: "I" is set by "POK" but not used after the call
+test.adb:49:23: info: initialization of "I" proved
+test.adb:52:14: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:55:24: info: initialization of "I" proved
+test.adb:56:23: medium: call via access-to-function might not terminate [possible explanation: calls via access-to-subprograms inside function taken as access might hide recursive calls]
+test.adb:58:14: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:61:14: info: aspect Always_Terminates on "P_Test_With_Infer" has been proved, subprogram will terminate
+test.adb:61:33: info: initialization of "I" proved
+test.adb:63:07: info: precondition proved (Trivial: 1 VC)
+test.adb:63:07: warning: statement has no effect
+test.adb:63:16: warning: "I" is set by "InferOK" but not used after the call
+test.adb:64:07: info: precondition proved (Trivial: 1 VC)
+test.adb:67:29: info: initialization of "I" proved
+test.adb:70:09: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:70:09: medium: aspect Always_Terminates on "P_Proc_Access" could be incorrect, call via access-to-subprogram might be nonterminating
+test.adb:73:14: info: aspect Always_Terminates on "P_Global_OK" has been proved, subprogram will terminate
+test.adb:73:27: info: initialization of "I" proved
+test.adb:75:09: warning: unused assignment
+test.adb:75:25: medium: pointer dereference check might fail [possible fix: subprogram at line 73 should mention Glob_No_Call in a precondition]
+test.adb:76:22: medium: pointer dereference check might fail [possible fix: subprogram at line 73 should mention Glob_Call in a precondition]
+test.adb:79:04: warning: analyzing unreferenced procedure "P_Ghost_Terminates" [unreferenced-procedure]
+test.adb:79:14: warning: subprogram "P_Ghost_Terminates" has no effect
+test.adb:80:23: info: precondition of target is strong enough to imply precondition of source (Trivial: 1 VC)
+test.adb:82:30: medium: call via access-to-function might not terminate [possible explanation: calls via access-to-subprograms inside function taken as access might hide recursive calls]
+test.adb:85:09: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:85:09: medium: call to ghost access-to-procedure might be nonterminating
+test.adb:86:24: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:87:21: info: pointer dereference check proved (CVC5: 1 VC)

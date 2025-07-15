@@ -790,6 +790,12 @@ only part of a program:
   comply with the assumptions described in [SPARK_EXTERNAL],
   [SPARK_ALIASING_ADDRESS] and [SPARK_EXTERNAL_VALID].
 
+* [ADA_EXTERNAL_ACCESS]
+  If an object of an access-to-function type is created outside of SPARK, calls
+  to the designated function occurring in SPARK code shall always terminate
+  (in particular, such a call shall not create an infinite chain of recursive
+  calls).
+
 * [ADA_PRIVATE_TYPES]
   Private types whose full view is not analyzed, yet are used in
   SPARK code, need to comply with the implicit or explicit contracts used by

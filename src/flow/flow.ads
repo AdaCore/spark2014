@@ -179,11 +179,15 @@ package Flow is
       All_Vars : Flow_Id_Sets.Set;
       --  Flattened variables accessible in the body
 
+      Calls_Via_Access : Boolean;
+      --  True for subprograms that call other subprograms via
+      --  access-to-subprogram.
+
       Has_Only_Terminating_Constructs : Boolean;
       --  False for entities that contain constructs that may not terminate,
       --  i.e. a:
       --  * dispatching calls
-      --  * calls via access-to-subprogram
+      --  * calls via access-to-procedure
       --  * call to subprograms from the standard library annotated with
       --    No_Return
       --  * plain loop
