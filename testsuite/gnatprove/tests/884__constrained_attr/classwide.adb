@@ -4,6 +4,8 @@ procedure Classwide is
    end record;
 
    X : T'Class := T'(C => 1);
+   Y : constant T'Class := T'(C => 1);
 begin
    pragma Assert (not X'Constrained); --@ASSERT:PASS
+   pragma Assert (Y'Constrained); --@ASSERT:PASS
 end;
