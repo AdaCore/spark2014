@@ -1651,8 +1651,15 @@ follows:
 
    pragma Assertion_Policy (Ghost => Check);
 
+or through :ref:`Assertion Levels`.
+
 |GNATprove| checks that ghost code cannot have an effect on the behavior of the
-program. |GNAT Pro| compiler also performs some of these checks, although not
+program. If pragma ``Assertion_Policy`` is used to disable some ghost code while
+retaining other, |GNATprove| also makes sure that no disabled ghost entity is
+used in enabled ghost code - so the program can compile - and that disabled
+ghost code cannot have an effect on enabled ghost entities - so the program
+always behaves as if all ghost code was enabled and the verification remains
+sound. |GNAT Pro| compiler also performs some of these checks, although not
 all of them. Apart from these checks, |GNATprove| treats ghost code like normal
 code during its analyses.
 
@@ -2159,7 +2166,9 @@ might be marked as imported, so an error will be raised at link time if a
 call is inadvertently enabled, or their bodies might be marked as SPARK_Mode Off
 and raise an exception. Ghost state might be represented using an abstract state
 on a package whose body is Off with no refinement or thanks to a private type
-with a dummy definition.
+with a dummy definition. It is possible to use non-executable
+:ref:`Assertion Levels` to ensure that such ghost code is never enabled at
+runtime.
 
 For example, the ghost procedure ``Append_To_Log`` seen previously may be
 defined equivalently as a ghost imported function as follows:
@@ -2198,17 +2207,132 @@ Note that non-executable ghost subprograms should be used with care as
 |GNATprove| will not attempt to verify them as it does not have access to an
 implementation.
 
+Assertion Levels
+^^^^^^^^^^^^^^^^
+As explained in SPARK RM 11.4.3, assertion levels can be used to group
+together ghost entities, contracts, and assertions that can be enabled or
+disabled together through an ``Assertion_Policy`` pragma. As an example, in the
+following snippet, it makes it possible to disable together the definition of
+``X`` and the first assertion while retaining the rest of the ghost code:
+
+.. code-block:: ada
+
+   pragma Assertion_Policy (L2 => Check);
+   pragma Assertion_Policy (L1 => Ignore);
+
+   X : Integer := 12 with Ghost => L1;
+   Y : Integer := 0  with Ghost => L2;
+
+   pragma Assert (L1 => X = 12);
+   pragma Assert (L2 => Y = 0);
+
+There are two predefined assertion levels: ``Runtime`` and ``Static``. The
+``Runtime`` level is always enabled whereas the ``Static`` level is always
+ignored. As an example, they can be used in the following snippet to get the
+same behavior as in the example above, and so, no matter what compiler options
+or ``Assertion_Policy`` pragmas are used.
+
+.. code-block:: ada
+
+   X : Integer := 12 with Ghost => Static;
+   Y : Integer := 0  with Ghost => Runtime;
+
+   pragma Assert (Static  => X = 12);
+   pragma Assert (Runtime => Y = 0);
+
+It is possible for users to declare their own assertion level using the
+``Assertion_Level`` pragma at the configuration level. However, it should be
+used with care, as such levels are visible everywhere, which might lead to
+conflicts particularly when using libraries. To avoid this issue, it might be
+interesting to define a shared project defining assertion levels for all related
+libraries and to use explicit names.
+
+.. code-block:: ada
+
+   pragma Assertion_Level (L1);
+   pragma Assertion_Level (L2);
+
+When assertion levels are used, |GNATprove| enforces level-based compatibility
+rules in addition to the policy-based compatibility rules explained at the
+beginning of :ref:`Ghost Code`. For example, using a ghost variable ``X`` of
+level ``L1`` inside an assertion of an unrelated assertion level ``L2`` is
+rejected. These rules ensure that enabling or disabling an assertion level won't
+cause the code to stop compiling.
+
+.. code-block:: ada
+
+   X : Integer := 12 with Ghost => L1;
+   pragma Assert (L1 => X = 12);  --  Rejected
+
+If ghost entities or assertions do not have
+an associated assertion level, then they are not subject to the
+level-based compatibility rules. The policy-based rules remain though.
+
+.. code-block:: ada
+
+   pragma Assertion_Policy (L => Ignore);
+
+   X : Integer := 12 with Ghost => L;
+
+   pragma Assertion_Policy (Assert => Ignore);
+   pragma Assert (X = 12);  --  Accepted
+
+   pragma Assertion_Policy (Assert => Check);
+   pragma Assert (X = 12);  --  Rejected
+
+When declaring an assertion level, it is possible to give a list of levels it
+depends on as follows:
+
+.. code-block:: ada
+
+   pragma Assertion_Level (Silver);
+   pragma Assertion_Level (Gold, Depends => Silver);
+   pragma Assertion_Level (Platinum, Depends => [Gold, Static]);
+
+An assertion level can only be enabled if all the levels it depends on are
+enabled too. This is enforced automatically in the following way:
+
+  * Enabling a level through ``Assertion_Policy`` also enables all levels
+    it depends on. For example, enabling ``Gold`` would automatically enable
+    ``Silver``.
+
+  * Disabling a level through ``Assertion_Policy`` also disables all levels
+    that depend on it. So, disabling ``Silver`` would automatically disable
+    ``Gold``.
+
+This property makes it possible to use an entity of a given level inside a
+context of a level that depends on it. For example, it would be possible to use
+an entity of level ``Silver`` in an assertion of level ``Gold``. It is similar
+to the possibility of referencing a non-ghost entity from a (necessarily ghost)
+assertion. Dependency is transitive, so here ``Platinum`` also depends on
+``Silver`` even if it is implicit.
+
+As explained before, the ``Static`` assertion level cannot be enabled at
+runtime. As per the rules above, it is also the case of all levels that depend
+on ``Static``, like ``Platinum`` for example. Static and the levels that depend
+on it can be used in particular for :ref:`Non-Executable Ghost Code`, to ensure
+that it is never enabled at runtime.
+
+For the purpose of level-based
+compatibility rules, levels depending on ``Static`` are handled specifically. In
+particular, it is possible to use any ghost entity in the context of such a
+level. Indeed, as such levels can never be enabled at runtime, it does not
+matter whether entities referred in it are enabled or not. For example, it is
+OK to use an entity of levels ``L1`` or ``Silver`` in an assertion of level
+``Static`` even if ``Static`` does not depend on these levels:
+
+.. code-block:: ada
+
+   X : Integer := 12 with Ghost => L1;
+   Y : Integer := 12 with Ghost => Silver;
+   pragma Assert (Static => X = Y); --  Accepted
+
 Removal of Ghost Code
 ^^^^^^^^^^^^^^^^^^^^^
 
 By default, |GNAT Pro| completely discards ghost code during compilation, so
-that no ghost code is present in the object code or the executable. This
-ensures that, even if parts of the ghost could have side effects when executed
-(writing to variables, performing system calls, raising exceptions, etc.), by
-default the compiler ensures that it cannot have any effect on the behavior of
-the program.
-
-This is also essential in domains submitted to certification where all
+that no ghost code is present in the object code or the executable.
+This is essential in domains submitted to certification where all
 instructions in the object code should be traceable to source code and
 requirements, and where testing should ensure coverage of the object code. As
 ghost code is not present in the object code, there is no additional cost for
