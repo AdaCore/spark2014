@@ -3026,22 +3026,51 @@ package body Gnat2Why.Borrow_Checker is
         (Exiting_Env : Perm_Env;
          Entry_Env   : Perm_Env)
       is
-         Comp_Entry            : Perm_Tree_Maps.Key_Option;
-         Iter_Entry, Iter_Exit : Perm_Tree_Access;
+         Comp_Entry : Perm_Tree_Maps.Key_Option;
 
-      begin
-         Comp_Entry := Get_First_Key (Entry_Env);
-         while Comp_Entry.Present loop
-            Iter_Entry := Query_Read_Only_Tree (Entry_Env, Comp_Entry.K);
-            pragma Assert (Iter_Entry /= null);
-            Iter_Exit := Query_Read_Only_Tree (Exiting_Env, Comp_Entry.K);
-            pragma Assert (Iter_Exit /= null);
+         procedure Do_Check (Key_Opt : Perm_Tree_Maps.Key_Option)
+           with Pre => Key_Opt.Present;
+         --  Loop body, do the check on one key. Split out because the loop
+         --  is split in two parts.
+
+         procedure Do_Check (Key_Opt : Perm_Tree_Maps.Key_Option) is
+            Iter_Entry : constant not null Perm_Tree_Access :=
+              Query_Read_Only_Tree (Entry_Env, Key_Opt.K);
+            Iter_Exit : constant not null Perm_Tree_Access :=
+              Query_Read_Only_Tree (Exiting_Env, Key_Opt.K);
+         begin
             Check_Is_Less_Restrictive_Tree
               (New_Tree  => Iter_Exit,
                Orig_Tree => Iter_Entry,
                E         => Comp_Entry.K);
+         end Do_Check;
+
+      --  Start of processing for Check_Is_Less_Restrictive_Env
+
+      begin
+         --  There is no guarantee the set of keys actually in any of the
+         --  environment is a subset of the other, so we need to iterate both.
+         --  For keys that are in neither, the matching permissions are both
+         --  that of the default environment, hence are guaranteed to match.
+
+         Comp_Entry := Get_First_Key (Entry_Env);
+         while Comp_Entry.Present loop
+            Do_Check (Comp_Entry);
             Comp_Entry := Get_Next_Key (Entry_Env);
          end loop;
+
+         Comp_Entry := Get_First_Key (Exiting_Env);
+         while Comp_Entry.Present loop
+
+            --  Prevent duplicated iteration
+
+            if Get (Entry_Env, Comp_Entry.K) = null then
+               Do_Check (Comp_Entry);
+            end if;
+
+            Comp_Entry := Get_Next_Key (Exiting_Env);
+         end loop;
+
       end Check_Is_Less_Restrictive_Env;
 
       ------------------------------------
