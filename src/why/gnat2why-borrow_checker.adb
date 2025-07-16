@@ -23,7 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;
+with Ada.Containers;            use Ada.Containers;
+with Ada.Containers.Vectors;
 with Ada.Unchecked_Deallocation;
 with Atree;                     use Atree;
 with Checked_Types;             use Checked_Types;
@@ -910,8 +911,13 @@ package body Gnat2Why.Borrow_Checker is
    --  A function that takes an exit statement node and returns the entity of
    --  the loop that this statement is exiting from.
 
-   procedure Merge_Env (Source : in out Perm_Env; Target : in out Perm_Env);
+   procedure Merge_Env
+     (Source : in out Perm_Env;
+      Target : in out Perm_Env;
+      Filter : Boolean := False);
    --  Merge Target and Source into Target, and then deallocate the Source
+   --  If Filter is True, first filter source by the variables declared in
+   --  scopes, as tracked by Default_Perm_Env.
 
    procedure BC_Error
      (Msg           : Message;
@@ -1167,6 +1173,43 @@ package body Gnat2Why.Borrow_Checker is
 
    Permission_Error  : Boolean := False;
    --  Should be set to true when an error message is emitted
+
+   ----------------------
+   -- Scope management --
+   ----------------------
+
+   package Object_Scope is
+
+      --  The following procedure track the objects declared in the current
+      --  scope. They are tracked in an implicit stack, divided in consecutive
+      --  sectors. These sectors can be empty. The initial value of the
+      --  implicit stack is empty, with a single empty sector.
+
+      procedure Push_Object (E : Entity_Id);
+      --  Push a new object on the implicit stack, within the last sector. This
+      --  should be called when processing a declaration of a construct, before
+      --  processing the sub-construct that see the declaration.
+
+      procedure Push_Scope;
+      --  Add a new empty sector at the end of the object stack
+
+      procedure Pop_Scope;
+      --  Remove the last sector at the end of the object stack. The
+      --  corresponding object entities are also removed from Default/Current
+      --  permission environments.
+      --
+      --  In essence, if there is a call to Push_Scope when we start processing
+      --  a construct, there should be a call to Pop_Scope at the end.
+      --
+      --  Pop_Scope can only be called if there are at least 2 sectors in the
+      --  implicit stack. That is, the initial sector cannot be popped, only
+      --  sectors introduced by Push_Scope can.
+
+      function Is_Initial_Value return Boolean with Ghost;
+      --  For sanity checking: return whether the implicit stack is at its
+      --  initial value.
+
+   end Object_Scope;
 
    --------------------
    -- Handle_Globals --
@@ -5384,7 +5427,11 @@ package body Gnat2Why.Borrow_Checker is
    -- Merge_Env --
    ---------------
 
-   procedure Merge_Env (Source : in out Perm_Env; Target : in out Perm_Env) is
+   procedure Merge_Env
+     (Source : in out Perm_Env;
+      Target : in out Perm_Env;
+      Filter : Boolean := False)
+   is
 
       --  Local subprograms
 
@@ -5616,7 +5663,11 @@ package body Gnat2Why.Borrow_Checker is
          pragma Assert (CompTarget /= null);
 
          if CompSource /= null then
-            Merge_Trees (CompTarget, CompSource);
+            if not (Filter and then
+                    Get (Default_Perm_Env, KeyTarget.K) = null)
+            then
+               Merge_Trees (CompTarget, CompSource);
+            end if;
             Remove (Source, KeyTarget.K);
             Free_Tree (CompSource);
          end if;
@@ -5639,7 +5690,11 @@ package body Gnat2Why.Borrow_Checker is
 
             pragma Assert (CompSource /= null);
 
-            if CompTarget /= null then
+            Remove (Source, KeySource.K);
+
+            if Filter and then Get (Default_Perm_Env, KeySource.K) = null then
+               Free_Tree (CompSource);
+            elsif CompTarget /= null then
                Merge_Trees (CompTarget, CompSource);
                Remove (Source, KeySource.K);
                Free_Tree (CompSource);
@@ -5652,6 +5707,75 @@ package body Gnat2Why.Borrow_Checker is
          end loop;
       end;
    end Merge_Env;
+
+   ------------------
+   -- Object_Scope --
+   ------------------
+
+   package body Object_Scope is
+
+      package Index_Vectors is new Ada.Containers.Vectors
+        (Index_Type => Positive, Element_Type => Node_Vectors.Extended_Index);
+
+      Object_Stack  : Node_Vectors.Vector;
+      --  Stack of objects declared in the current scope
+
+      Scoping_Stack : Index_Vectors.Vector;
+      --  Stack to keep the implicit sector delimitation. The stack stores the
+      --  last index of sectors before the current 'open' sector (the one that
+      --  can be extended by Push_Object).
+
+      ----------------------
+      -- Is_Initial_Value --
+      ----------------------
+
+      function Is_Initial_Value return Boolean is
+        (Object_Stack.Is_Empty and then Scoping_Stack.Is_Empty);
+
+      ---------------
+      -- Pop_Scope --
+      ---------------
+
+      procedure Pop_Scope is
+         pragma Assert (not Scoping_Stack.Is_Empty);
+         Index : Node_Vectors.Extended_Index :=
+           Object_Stack.Last_Index;
+         Limit : constant Node_Vectors.Extended_Index :=
+           Scoping_Stack.Last_Element;
+         Total : constant Count_Type := Count_Type (Index - Limit);
+      begin
+         while Index /= Limit loop
+            declare
+               E : constant Entity_Id := Object_Stack.Element (Index);
+            begin
+               Remove (Default_Perm_Env, E);
+               Remove (Current_Perm_Env, E);
+            end;
+            Index := Index - 1;
+         end loop;
+         Object_Stack.Delete_Last (Count => Total);
+         Scoping_Stack.Delete_Last;
+      end Pop_Scope;
+
+      -----------------
+      -- Push_Object --
+      -----------------
+
+      procedure Push_Object (E : Entity_Id) is
+      begin
+         Object_Stack.Append (E);
+      end Push_Object;
+
+      ----------------
+      -- Push_Scope --
+      ----------------
+
+      procedure Push_Scope is
+      begin
+         Scoping_Stack.Append (Object_Stack.Last_Index);
+      end Push_Scope;
+
+   end Object_Scope;
 
    ----------------
    -- Perm_Error --
