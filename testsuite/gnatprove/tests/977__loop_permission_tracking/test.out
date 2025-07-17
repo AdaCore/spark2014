@@ -1,0 +1,5 @@
+foo.adb:3:04: info: initialization of "X" proved
+foo.adb:5:04: error: launch "gnatprove --explain=E0010" for more information
+foo.adb:5:04: error: loop iteration terminates with moved value for "X"
+foo.adb:5:04: error: object was moved at line 7 [E0010]
+gnatprove: error during flow analysis and proof
