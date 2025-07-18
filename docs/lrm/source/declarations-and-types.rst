@@ -985,7 +985,10 @@ X.Link is poisoned by the assignment to Y.]
     borrow.]
 
 17. A path rooted at a non-ghost object shall only be moved, or borrowed, if
-    the target object of the move or borrow is itself non-ghost.  [This rule is
+    the target object of the move or borrow is itself non-ghost. In the same
+    way, if the target object of a move or borrow is a disabled ghost object,
+    then the moved or borrowed path shall be rooted at a disabled ghost object.
+    [This rule is
     meant to avoid introducing aliases between a non-ghost variable and a ghost
     variable. Otherwise writes or deallocation through the ghost variable would
     have an effect on the non-ghost underlying memory.]

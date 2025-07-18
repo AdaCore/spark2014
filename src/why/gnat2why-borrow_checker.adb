@@ -1360,16 +1360,18 @@ package body Gnat2Why.Borrow_Checker is
 
       --  SPARK RM 3.10(17): A path rooted at a non-ghost object shall only
       --  be moved, or borrowed, if the target object of the move or borrow
-      --  is itself non-ghost.
+      --  is itself non-ghost and if the target object of a move or borrow is a
+      --  disabled ghost object, then the moved or borrowed path shall be
+      --  rooted at a disabled ghost object.
 
       procedure Check_Assignment_To_Ghost
         (Target_Root : Entity_Id; Expr_Root : Entity_Id; Mode : Checking_Mode)
       is
       begin
-         if Is_Ghost_Entity (Target_Root)
-           and then Present (Expr_Root)
-           and then not Is_Ghost_Entity (Expr_Root)
-         then
+         if not Is_Ghost_Entity (Target_Root) or else No (Expr_Root) then
+            null;
+
+         elsif not Is_Ghost_Entity (Expr_Root) then
             BC_Error
               (Create
                  ("non-ghost object & cannot be "
@@ -1378,6 +1380,20 @@ package body Gnat2Why.Borrow_Checker is
                        when Move => "moved",
                        when others => raise Program_Error)
                   & " in an assignment to ghost object &",
+                  Names => [Expr_Root, Target_Root]),
+               Expr);
+
+         elsif not Is_Checked_Ghost_Entity (Target_Root)
+           and then Is_Checked_Ghost_Entity (Expr_Root)
+         then
+            BC_Error
+              (Create
+                 ("enabled ghost object & cannot be "
+                  & (case Mode is
+                       when Borrow => "borrowed",
+                       when Move => "moved",
+                       when others => raise Program_Error)
+                  & " in an assignment to disabled ghost object &",
                   Names => [Expr_Root, Target_Root]),
                Expr);
          end if;
@@ -3984,16 +4000,29 @@ package body Gnat2Why.Borrow_Checker is
          declare
             Root : constant Entity_Id := Get_Root_Object (Expr.Expr);
          begin
-            if Present (Root) and then not Is_Ghost_Entity (Root) then
+            --  Here, errors should only occur with mode Borrow as Free and
+            --  Move are associated with IN OUT parameters that should be
+            --  rejected by the frontend.
+
+            if No (Root) then
+               null;
+            elsif not Is_Ghost_Entity (Root) then
+               pragma Assert (Mode = Borrow);
                BC_Error
                  (Create
-                    ("non-ghost object & cannot be "
-                     & (case Mode is
-                          when Borrow => "borrowed",
-                          when Free => "freed",
-                          when Move => "moved",
-                          when others => raise Program_Error)
+                    ("non-ghost object & cannot be borrowed"
                      & " in a call to ghost subprogram &",
+                     Names => [Root, Subp]),
+                  Expr.Expr);
+
+            elsif not Is_Checked_Ghost_Entity (Subp)
+              and then Is_Checked_Ghost_Entity (Root)
+            then
+               pragma Assert (Mode = Borrow);
+               BC_Error
+                 (Create
+                    ("enabled ghost object & cannot be borrowed"
+                     & " in a call to disabled ghost subprogram &",
                      Names => [Root, Subp]),
                   Expr.Expr);
             end if;
