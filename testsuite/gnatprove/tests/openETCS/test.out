@@ -27,9 +27,10 @@ deceleration_curve.adb:61:31: medium: overflow check might fail, cannot prove up
 deceleration_curve.adb:70:36: info: division check proved (CVC5: 1 VC)
 deceleration_curve.adb:70:36: info: range check proved (CVC5: 2 VC)
 deceleration_curve.adb:80:09: info: precondition proved (CVC5: 1 VC)
-deceleration_curve.adb:86:67: info: cannot unroll loop (too many loop iterations)
+deceleration_curve.adb:86:67: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 deceleration_curve.adb:88:19: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop at line 86 should mention location and speed in a loop invariant]
 deceleration_curve.adb:88:21: info: precondition proved (Z3: 1 VC)
+deceleration_curve.adb:88:21: warning: call to "Sqrt" is not handled precisely [imprecise-call]
 deceleration_curve.adb:88:32: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop at line 86 should mention speed in a loop invariant]
 deceleration_curve.adb:89:13: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop at line 86 should mention location and speed in a loop invariant]
 deceleration_curve.adb:89:29: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop at line 86 should mention location and speed in a loop invariant]
@@ -37,11 +38,12 @@ deceleration_curve.adb:90:13: medium: float overflow check might fail [reason fo
 deceleration_curve.adb:90:46: info: division check proved (CVC5: 1 VC)
 deceleration_curve.adb:90:46: info: float overflow check proved (Trivial)
 deceleration_curve.adb:105:09: high: precondition might fail (e.g. when Braking_Curve = (curve => (others => (location => 5001, speed => 0.0)), end_point => 5001)) [possible fix: subprogram at deceleration_curve.ads:85 should mention Braking_Curve in a precondition]
-deceleration_curve.adb:105:60: info: cannot unroll loop (too many loop iterations)
+deceleration_curve.adb:105:60: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 deceleration_curve.adb:106:10: warning: assuming "Put" always terminates
 deceleration_curve.adb:106:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:106:10: warning: no Always_Terminates aspect available for "Put" [assumed-always-terminates]
 deceleration_curve.adb:106:10: warning: no Global contract available for "Put" [assumed-global-null]
+deceleration_curve.adb:106:24: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 deceleration_curve.adb:107:10: warning: assuming "Put" always terminates
 deceleration_curve.adb:107:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:107:10: warning: no Always_Terminates aspect available for "Put" [assumed-always-terminates]
@@ -50,6 +52,7 @@ deceleration_curve.adb:108:10: warning: assuming "Put" always terminates
 deceleration_curve.adb:108:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:108:10: warning: no Always_Terminates aspect available for "Put" [assumed-always-terminates]
 deceleration_curve.adb:108:10: warning: no Global contract available for "Put" [assumed-global-null]
+deceleration_curve.adb:108:30: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 deceleration_curve.adb:109:12: medium: in inlined expression function body at units.ads:42
 deceleration_curve.adb:109:12: medium: precondition might fail, cannot prove Speed >= 0.0 [possible fix: subprogram at deceleration_curve.ads:85 should mention Braking_Curve in a precondition]
 deceleration_curve.adb:110:10: warning: assuming "New_Line" always terminates
@@ -193,8 +196,8 @@ step_function.adb:112:13: info: loop invariant preservation proved (Trivial: 1 V
 step_function.adb:113:16: medium: "Merge.Step" might not be initialized
 step_function.adb:113:29: info: index check proved (CVC5: 4 VC)
 step_function.adb:115:13: info: loop invariant initialization proved (CVC5: 1 VC)
+step_function.adb:115:13: info: loop invariant preservation proved (Z3: 1 VC)
 step_function.adb:116:15: medium: "Merge.Step" might not be initialized
-step_function.adb:116:15: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Merge.Step(i-1).Delimiter < Merge.Step(i).Delimiter
 step_function.adb:116:27: info: index check proved (CVC5: 4 VC)
 step_function.adb:116:54: info: index check proved (CVC5: 4 VC)
 step_function.adb:120:13: info: loop invariant initialization proved (CVC5: 1 VC)
@@ -213,7 +216,7 @@ step_function.adb:133:30: info: index check proved (CVC5: 4 VC)
 step_function.adb:133:45: medium: "Merge.Step" might not be initialized
 step_function.adb:133:56: info: index check proved (CVC5: 4 VC)
 step_function.adb:135:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
-step_function.adb:137:20: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (for some j in 0..im-1 => SFun2.Step(i).Delimiter = Merge.Step(j).Delimiter)
+step_function.adb:135:13: info: loop invariant preservation proved (Trivial: 1 VC; Z3: 1 VC)
 step_function.adb:138:36: info: index check proved (CVC5: 4 VC)
 step_function.adb:138:51: medium: "Merge.Step" might not be initialized
 step_function.adb:138:62: info: index check proved (CVC5: 4 VC)
@@ -262,7 +265,7 @@ step_function.ads:74:50: info: index check proved (CVC5: 2 VC)
 step_function.ads:78:26: info: index check proved (CVC5: 2 VC)
 step_function.ads:80:53: info: index check proved (CVC5: 2 VC)
 step_function.ads:86:06: info: postcondition proved (CVC5: 6 VC)
-step_function.ads:104:13: medium: postcondition might fail, cannot prove (for some j in Num_Delimiters_Range'First..Merge.Number_Of_Delimiters => (Merge.Step(j).Delimiter = SFun1.Step(i).Delimiter))
+step_function.ads:101:04: medium: postcondition might fail, cannot prove Is_Valid(Merge)
 step_function.ads:106:30: info: index check proved (CVC5: 2 VC)
 step_function.ads:106:56: info: index check proved (CVC5: 2 VC)
 step_function.ads:111:30: info: index check proved (CVC5: 2 VC)
@@ -295,11 +298,11 @@ step_function_test.adb:51:19: info: assertion proved (Z3: 1 VC)
 step_function_test.adb:51:19: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 step_function_test.adb:54:19: info: assertion proved (CVC5: 1 VC; Z3: 1 VC)
 step_function_test.adb:56:04: info: precondition proved (CVC5: 3 VC; Z3: 2 VC)
-step_function_test.adb:58:38: info: unrolling loop
+step_function_test.adb:58:38: info: unrolling loop [info-unrolling-inlining]
 step_function_test.adb:61:22: info: precondition proved (Z3: 26 VC)
 step_function_test.adb:61:22: medium: assertion might fail
 step_function_test.adb:62:28: info: precondition proved (CVC5: 13 VC; Z3: 13 VC)
-step_function_test.adb:62:49: info: precondition proved (CVC5: 7 VC; Z3: 19 VC)
+step_function_test.adb:62:49: info: precondition proved (CVC5: 8 VC; Z3: 18 VC)
 step_function_test.adb:65:19: info: precondition proved (Z3: 2 VC)
 step_function_test.adb:65:19: medium: assertion might fail
 step_function_test.adb:66:19: info: precondition proved (Z3: 2 VC)

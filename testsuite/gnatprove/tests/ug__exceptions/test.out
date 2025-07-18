@@ -1,33 +1,98 @@
-exceptions.adb:10:08: info: postcondition proved
-exceptions.adb:10:40: info: index check proved
-exceptions.adb:11:23: info: index check proved
-exceptions.adb:11:35: info: index check proved
-exceptions.adb:11:38: info: overflow check proved
-exceptions.adb:13:21: info: exceptional case proved
-exceptions.adb:13:58: info: index check proved
-exceptions.adb:19:22: info: range check proved
-exceptions.adb:23:25: info: overflow check proved
-exceptions.adb:25:13: info: loop invariant initialization proved
-exceptions.adb:25:13: info: loop invariant preservation proved
-exceptions.adb:25:56: info: index check proved
-exceptions.adb:27:13: info: loop invariant preservation proved
-exceptions.adb:27:13: info: loop invariant initialization proved
-exceptions.adb:27:45: info: index check proved
-exceptions.adb:27:64: info: index check proved
-exceptions.adb:27:67: info: overflow check proved
-exceptions.adb:31:29: info: initialization of "A" proved
-exceptions.adb:31:51: info: initialization of "Success" proved
-exceptions.adb:32:14: info: postcondition proved
-exceptions.adb:32:56: info: index check proved
-exceptions.adb:34:55: info: index check proved
-exceptions.adb:34:67: info: index check proved
-exceptions.adb:34:70: info: overflow check proved
-exceptions.adb:38:07: info: only expected exception raised
-exceptions.adb:42:12: info: length check proved
-exceptions.adb:47:42: info: index check proved
-exceptions.adb:49:08: info: postcondition proved
-exceptions.adb:49:40: info: index check proved
-exceptions.adb:50:23: info: index check proved
-exceptions.adb:50:35: info: index check proved
-exceptions.adb:50:38: info: overflow check proved
-exceptions.adb:54:07: info: only expected exception raised
+ info: postcondition proved
+--> exceptions.adb:10:08
+
+ info: index check proved
+--> exceptions.adb:10:40
+
+ info: index check proved
+--> exceptions.adb:11:23
+
+ info: index check proved
+--> exceptions.adb:11:35
+
+ info: overflow check proved
+--> exceptions.adb:11:38
+
+ info: exceptional case proved
+--> exceptions.adb:13:21
+
+ info: index check proved
+--> exceptions.adb:13:58
+
+ info: range check proved
+--> exceptions.adb:19:22
+
+ info: overflow check proved
+--> exceptions.adb:23:25
+
+ info: loop invariant initialization proved
+--> exceptions.adb:25:13
+
+ info: loop invariant preservation proved
+--> exceptions.adb:25:13
+
+ info: index check proved
+--> exceptions.adb:25:56
+
+ info: loop invariant initialization proved
+--> exceptions.adb:27:13
+
+ info: loop invariant preservation proved
+--> exceptions.adb:27:13
+
+ info: index check proved
+--> exceptions.adb:27:45
+
+ info: index check proved
+--> exceptions.adb:27:64
+
+ info: overflow check proved
+--> exceptions.adb:27:67
+
+ info: initialization of "A" proved
+--> exceptions.adb:31:29
+
+ info: initialization of "Success" proved
+--> exceptions.adb:31:51
+
+ info: postcondition proved
+--> exceptions.adb:32:14
+
+ info: index check proved
+--> exceptions.adb:32:56
+
+ info: index check proved
+--> exceptions.adb:34:55
+
+ info: index check proved
+--> exceptions.adb:34:67
+
+ info: overflow check proved
+--> exceptions.adb:34:70
+
+ info: only expected exception raised
+--> exceptions.adb:38:07
+
+ info: length check proved
+--> exceptions.adb:42:12
+
+ info: index check proved
+--> exceptions.adb:47:42
+
+ info: postcondition proved
+--> exceptions.adb:49:08
+
+ info: index check proved
+--> exceptions.adb:49:40
+
+ info: index check proved
+--> exceptions.adb:50:23
+
+ info: index check proved
+--> exceptions.adb:50:35
+
+ info: overflow check proved
+--> exceptions.adb:50:38
+
+ info: only expected exception raised
+--> exceptions.adb:54:07

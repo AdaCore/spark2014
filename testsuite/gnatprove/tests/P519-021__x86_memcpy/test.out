@@ -310,11 +310,11 @@ memcpy.ads:32:48: warning: assuming "InRange64" has no effect on global items
 memcpy.ads:32:48: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.ads:33:47: warning: assuming "InSafeRegion64" has no effect on global items
 memcpy.ads:33:47: warning: no Global contract available for "InSafeRegion64" [assumed-global-null]
+memcpy.ads:35:14: info: postcondition proved (CVC5: 11 VC; Trivial: 1 VC)
 memcpy.ads:46:21: warning: assuming "InRange64" has no effect on global items
 memcpy.ads:46:21: warning: no Global contract available for "InRange64" [assumed-global-null]
 memcpy.ads:46:70: warning: assuming "InSafeRegion64" has no effect on global items
 memcpy.ads:46:70: warning: no Global contract available for "InSafeRegion64" [assumed-global-null]
-memcpy.ads:48:12: medium: postcondition might fail, cannot prove (X86.Memory(i) = X86.Memory'Old(i))
 memcpy.ads:52:06: info: data dependencies proved
 memcpy.ads:53:31: info: initialization of "RAX" proved
 memcpy.ads:53:40: info: initialization of "CarryFlag" proved

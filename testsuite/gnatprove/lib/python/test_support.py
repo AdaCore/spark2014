@@ -199,7 +199,7 @@ def check_counterexamples():
                 msg_list = []
 
                 def str_elem(val):
-                    return val["name"] + " = " + val["value"]
+                    return str(val["name"]) + " = " + str(val["value"])
 
                 def location(arg):
                     return arg[0]
@@ -307,6 +307,7 @@ def is_rte_tag(tag):
         "CEILING_PRIORITY_PROTOCOL",
         "INTERRUPT_RESERVED",
         "TASK_TERMINATION",
+        "VALIDITY_CHECK",
     )
 
 
@@ -346,6 +347,7 @@ def is_spark_assertion_tag(tag):
         "REFINED_POST",
         "SUBPROGRAM_VARIANT",
         "EXCEPTIONAL_CASE",
+        "PROGRAM_EXIT_POST",
         "EXIT_CASE",
     )
 
@@ -355,6 +357,7 @@ def is_other_proof_tag(tag):
     return tag in (
         "INITIAL_CONDITION",
         "RAISE",
+        "UNEXPECTED_PROGRAM_EXIT",
         "TRIVIAL_PRE",
         "WEAKER_PRE",
         "STRONGER_POST",
@@ -506,6 +509,8 @@ def check_marks(strlist):
                 return "RESOURCE_LEAK"
         elif "dereference check" in text:
             return "DEREFERENCE_CHECK"
+        elif "validity check" in text:
+            return "VALIDITY_CHECK"
         elif "operation on unchecked union type" in text:
             return "UU_RESTRICTION"
         elif "ceiling priority" in text:
@@ -536,6 +541,10 @@ def check_marks(strlist):
                 return "PRECONDITION"
         elif "refined post" in text:
             return "REFINED_POST"
+        elif "program exit postcondition" in text:
+            return "PROGRAM_EXIT_POST"
+        elif "exit the program" in text:
+            return "UNEXPECTED_PROGRAM_EXIT"
         elif "postcondition" in text:
             if "class-wide" in text and "overridden" in text:
                 return "STRONGER_CLASSWIDE_POST"
@@ -1215,7 +1224,8 @@ def check_output_file(sort=False):
 
 def sparklib_exec_test(project_file="test.gpr", binary="./obj/test"):
     gprbuild(opt=["-P", project_file])
-    Run([binary])
+    p = Run([binary])
+    print(p.out)
 
 
 def print_version():

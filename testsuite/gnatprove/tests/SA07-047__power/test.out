@@ -1,3 +1,3 @@
 test.adb:6:16: info: implicit aspect Always_Terminates on "X" has been proved, subprogram will terminate
-test.adb:8:29: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
+test.adb:8:29: info: overflow check proved (CVC5: 1 VC; colibri: 1 VC)
 test.ads:5:14: info: implicit aspect Always_Terminates on "Test" has been proved, subprogram will terminate

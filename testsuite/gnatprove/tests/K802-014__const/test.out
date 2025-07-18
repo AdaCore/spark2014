@@ -2,7 +2,7 @@ a.adb:7:07: warning: analyzing unreferenced function "Test" [unreferenced-functi
 a.adb:7:16: info: implicit aspect Always_Terminates on "Test" has been proved, subprogram will terminate
 a.adb:18:07: warning: analyzing unreferenced function "Test" [unreferenced-function]
 a.adb:18:16: info: implicit aspect Always_Terminates on "Test" has been proved, subprogram will terminate
-a.adb:26:19: info: unrolling loop
+a.adb:26:19: info: unrolling loop [info-unrolling-inlining]
 a.adb:29:10: warning: analyzing unreferenced function "Test" [unreferenced-function]
 a.adb:29:19: info: implicit aspect Always_Terminates on "Test" has been proved, subprogram will terminate
 a.adb:40:17: warning: subprogram "Outer" has no effect

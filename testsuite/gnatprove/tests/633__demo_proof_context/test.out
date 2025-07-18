@@ -1,5 +1,5 @@
 p.adb:3:14: info: add a contract to analyze it separately from calling contexts
-p.adb:3:14: info: local subprogram "Local_Proc" only analyzed in the context of calls
+p.adb:3:14: info: local subprogram "Local_Proc" only analyzed in the context of calls [info-unrolling-inlining]
 p.adb:9:13: info: loop invariant initialization proved (CVC5: 2 VC; Trivial: 2 VC), in call inlined at p.adb:19
 p.adb:9:13: info: loop invariant preservation proved (Trivial: 2 VC; altergo: 2 VC), in call inlined at p.adb:19
 p.adb:10:33: info: index check proved (CVC5: 8 VC), in call inlined at p.adb:19
@@ -40,6 +40,6 @@ q.adb:18:22: info: assertion proved (CVC5: 1 VC)
 q.adb:18:24: info: index check proved (CVC5: 2 VC)
 q.adb:18:32: info: index check proved (CVC5: 2 VC)
 q_initial.adb:5:03: info: data dependencies proved
-q_initial.adb:12:22: info: assertion proved (Z3: 1 VC)
+q_initial.adb:12:22: info: assertion proved (CVC5: 1 VC)
 q_initial.adb:12:24: info: index check proved (CVC5: 2 VC)
 q_initial.adb:12:32: info: index check proved (CVC5: 2 VC)

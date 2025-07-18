@@ -19,9 +19,9 @@ p.ads:4:14: warning: subprogram "Functional_Sets" has no effect
 p.ads:6:14: info: aspect Always_Terminates on "Big_Intervals" has been proved, subprogram will terminate
 p.ads:6:14: warning: subprogram "Big_Intervals" has no effect
 soundness_tests.adb:24:13: high: types used for unchecked conversion do not have the same size [possible explanation: type Vector doesn't have a Size representation clause or aspect]
-soundness_tests.adb:24:13: info: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion)
-soundness_tests.adb:24:51: high: type is unsuitable for unchecked conversion [possible explanation: type Vector is a private type]
-soundness_tests.adb:24:62: high: type is unsuitable as a target for unchecked conversion [possible explanation: type Vector is a private type]
+soundness_tests.adb:24:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion) [imprecise-unchecked-conversion]
+soundness_tests.adb:24:51: high: type is unsuitable as a source for unchecked conversion [possible explanation: type Vector is not entirely visible in SPARK]
+soundness_tests.adb:24:62: high: type is unsuitable as a target for unchecked conversion [possible explanation: type Vector is not entirely visible in SPARK]
 soundness_tests.adb:30:07: info: precondition proved (CVC5: 1 VC)
 soundness_tests.adb:32:11: info: precondition proved (CVC5: 1 VC)
 soundness_tests.adb:32:11: info: precondition proved (Trivial: 1 VC)

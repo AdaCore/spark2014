@@ -2,7 +2,7 @@ p1.adb:4:07: info: initialization of "V" proved
 p1.adb:7:12: medium: precondition might fail
 p1.ads:6:13: info: implicit aspect Always_Terminates on "All_In" has been proved, subprogram will terminate
 p1.ads:8:06: info: data dependencies proved
-p1.ads:10:14: info: postcondition proved (CVC5: 1 VC)
+p1.ads:10:14: info: postcondition proved (Z3: 1 VC)
 p1.ads:12:09: info: invariant check proved on default value (CVC5: 1 VC)
 p1.ads:12:74: info: in default value of private type at p1.ads:5
 p1.ads:12:74: info: range check proved (CVC5: 2 VC)

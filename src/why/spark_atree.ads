@@ -557,9 +557,9 @@ package SPARK_Atree is
    --  Same as Sem_Aux.Get_Called_Entity except that, on intrinsic operators,
    --  it returns the associated function instead of the operator name.
 
-   function Get_Enclosing_Object (N : Node_Id) return Entity_Id with
+   function Get_Entire_Object (N : Node_Id) return Entity_Id with
      Pre => Nkind (N) in N_Subexpr;
-   --  Copied from Sem_Util.Get_Enclosing_Object except that it does not
+   --  Similar to Sem_Util.Get_Enclosing_Object except that it does not
    --  return Empty on dereferences of access objects.
    --  It can only return Empty when called on expressions which are not paths.
 
@@ -839,6 +839,9 @@ package SPARK_Atree is
 
    function Compile_Time_Known_Value (N : Node_Id) return Boolean renames
      Sem_Eval.Compile_Time_Known_Value;
+
+   function Compile_Time_Known_Bounds (T : Entity_Id) return Boolean renames
+     Sem_Eval.Compile_Time_Known_Bounds;
 
    function Expr_Value (N : Node_Id) return Uint with
      Pre => Compile_Time_Known_Value (N);

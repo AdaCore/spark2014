@@ -173,21 +173,23 @@ package body Why.Gen.Records is
    --  back.
 
    function Discriminant_Check_Pred_Call
-     (E     : Entity_Id;
-      Field : Entity_Id;
-      Arg   : W_Identifier_Id)
-      return W_Pred_Id;
+     (E           : Entity_Id;
+      Field       : Entity_Id;
+      Arg         : W_Identifier_Id;
+      Reuse_Discr : Boolean)
+      return W_Pred_Id
+   with Pre => Might_Need_Discriminant_Check (Field);
    --  Given a record field, return a call to its discriminant check
-   --  predicate, with the given argument. If that predicate is defined
-   --  elsewhere (i.e. in the module for the root record type) prefix the
-   --  call accordingly and add a conversion.
+   --  predicate, with the given argument. If Reuse_Discr is True, that
+   --  predicate is defined elsewhere (i.e. in the module for the root record
+   --  type). Prefix the call accordingly.
 
    function Discriminant_Check_Pred_Name
-     (E            : Entity_Id;
-      Field        : Entity_Id;
-      Local        : Boolean;
-      Relaxed_Init : Boolean := False)
-      return W_Identifier_Id;
+     (E      : Entity_Id;
+      Field : Entity_Id;
+      Local : Boolean)
+      return W_Identifier_Id
+   with Pre => Might_Need_Discriminant_Check (Field);
    --  Given a record field, return the name of its discrimant check
    --  predicate. If Local is true, do not prefix the identifier.
    --  If the current record type is not a root type, return the name of the
@@ -2605,6 +2607,13 @@ package body Why.Gen.Records is
       R_Binder  : constant Binder_Array :=
         (1 => (B_Name => A_Ident,
                others => <>));
+      D_Ident   : constant W_Identifier_Id :=
+        New_Identifier
+          (Name => "d",
+           Typ  => New_Named_Type (To_Name (WNE_Rec_Split_Discrs)));
+      D_Binder  : constant Binder_Array :=
+        (1 => (B_Name => D_Ident,
+               others => <>));
 
       procedure Declare_Protected_Access_Function (Field : Entity_Id);
       --  Declare a program access function for a field, whose precondition
@@ -2615,8 +2624,8 @@ package body Why.Gen.Records is
       --  @param Field a record field or disciminant.
 
       function Compute_Discriminant_Check (Field : Entity_Id) return W_Pred_Id;
-      --  Compute the discriminant check for an access to the given field, as a
-      --  predicate which can be used as a precondition.
+      --  Compute the discriminant check for an access to the given field in
+      --  D_Ident, as a predicate.
 
       function Compute_Others_Choice
         (Info  : Component_Info;
@@ -2646,10 +2655,7 @@ package body Why.Gen.Records is
             declare
                Ada_Discr : constant Node_Id :=
                  Entity (Name (Info.Parent_Var_Part));
-               R_Access  : constant W_Expr_Id :=
-                 New_Record_Access
-                   (Name  => +A_Ident,
-                    Field => To_Ident (WNE_Rec_Split_Discrs));
+               R_Access  : constant W_Expr_Id := +D_Ident;
                Discr_Acc : constant W_Expr_Id := New_Record_Access
                  (Name  => R_Access,
                   Field => To_Why_Id
@@ -2740,8 +2746,10 @@ package body Why.Gen.Records is
                      (Name  => R_Access,
                       Field => Why_Name)));
          Precond   : constant W_Pred_Id :=
-           (if Ekind (Field) /= E_Component then True_Pred
-            else Discriminant_Check_Pred_Call (E, Field, A_Ident));
+           (if not Might_Need_Discriminant_Check (Field)
+            then True_Pred
+            else Discriminant_Check_Pred_Call
+              (E, Field, A_Ident, Reuse_Discr));
       begin
          Emit (Th,
                New_Function_Decl
@@ -2798,24 +2806,26 @@ package body Why.Gen.Records is
 
       for Field of Get_Component_Set (E) loop
 
-         --  We generate a discriminant check predicate.
-         --  ??? maybe only do that if the type has discriminants
+         --  We generate a discriminant check predicate in Root type only
 
-         if Ekind (Field) = E_Component then
+         if Has_Discriminants (E)
+           and then not Reuse_Discr
+           and then Ekind (Field) = E_Component
+         then
             declare
                Pred_Name : constant W_Identifier_Id :=
                  Discriminant_Check_Pred_Name (E, Field, True);
-               Pre_Cond  : constant W_Pred_Id :=
+               Def       : constant W_Pred_Id :=
                  Compute_Discriminant_Check (Field);
             begin
                Emit (Th,
                      New_Function_Decl
                        (Domain   => EW_Pred,
                         Name     => Pred_Name,
-                        Binders  => R_Binder,
+                        Binders  => D_Binder,
                         Location => No_Location,
                         Labels   => Symbol_Sets.Empty_Set,
-                        Def      => +Pre_Cond));
+                        Def      => +Def));
             end;
          end if;
 
@@ -3379,12 +3389,11 @@ package body Why.Gen.Records is
                                             Enclosing_Id => Fields_Id,
                                             Is_Private   => Is_Type (Comp),
                                             Field_Type   =>
-                                              (if Is_Type (Comp) then
-                                                    Comp
+                                              (if Is_Type (Comp) then Comp
                                                else Retysp (Etype (Comp))));
                                        Always_Present : constant Boolean :=
-                                         not Has_Discriminants (E)
-                                         or else Ekind (Comp) /= E_Component;
+                                         not Might_Need_Discriminant_Check
+                                           (Comp);
                                     begin
                                        Conj_I := Conj_I + 1;
                                        Conjuncts (Conj_I) :=
@@ -3394,7 +3403,8 @@ package body Why.Gen.Records is
                                             (Op     => EW_Imply,
                                              Left   =>
                                                Discriminant_Check_Pred_Call
-                                                 (E, Comp, A_Ident),
+                                                 (E, Comp, A_Ident,
+                                                  Reuse_Discr => not Is_Root),
                                              Right  => Comparison));
                                     end;
 
@@ -3818,15 +3828,19 @@ package body Why.Gen.Records is
    ----------------------------------
 
    function Discriminant_Check_Pred_Call
-     (E     : Entity_Id;
-      Field : Entity_Id;
-      Arg   : W_Identifier_Id)
+     (E           : Entity_Id;
+      Field       : Entity_Id;
+      Arg         : W_Identifier_Id;
+      Reuse_Discr : Boolean)
       return W_Pred_Id is
    begin
       return
         New_Call
-          (Name => Discriminant_Check_Pred_Name (E, Field, True),
-           Args => (1 => +Arg));
+          (Name => Discriminant_Check_Pred_Name (E, Field, not Reuse_Discr),
+           Args => (1 =>
+           New_Record_Access
+             (Name  => +Arg,
+              Field => To_Ident (WNE_Rec_Split_Discrs))));
    end Discriminant_Check_Pred_Call;
 
    ----------------------------------
@@ -3834,10 +3848,9 @@ package body Why.Gen.Records is
    ----------------------------------
 
    function Discriminant_Check_Pred_Name
-     (E            : Entity_Id;
-      Field        : Entity_Id;
-      Local        : Boolean;
-      Relaxed_Init : Boolean := False)
+     (E     : Entity_Id;
+      Field : Entity_Id;
+      Local : Boolean)
       return W_Identifier_Id
    is
       Orig : constant Entity_Id := Representative_Component (Field);
@@ -3850,8 +3863,7 @@ package body Why.Gen.Records is
             Id := New_Identifier
               (Domain   => EW_Pred,
                Ada_Node => E,
-               Module   => E_Module
-                 (E, (if Relaxed_Init then Init_Wrapper else Regular)),
+               Module   => E_Module (Root_Retysp (E), Regular),
                Name     => Name);
          end if;
       end return;
@@ -4442,22 +4454,18 @@ package body Why.Gen.Records is
       Ty       : Entity_Id)
       return W_Expr_Id
    is
-      Relaxed_Init : constant Boolean := Get_Relaxed_Init (Get_Type (+Name));
-      --  Use the init wrapper type if needed
    begin
-      --  Do not emit checks for part of variables or discriminants
-
-      if Ekind (Field) = E_Component then
+      if Might_Need_Discriminant_Check (Field) then
          declare
             Pred_Name : constant W_Identifier_Id :=
-              Discriminant_Check_Pred_Name
-                (Ty, Field, Local => False, Relaxed_Init => Relaxed_Init);
+              Discriminant_Check_Pred_Name (Ty, Field, Local => False);
          begin
             return
               New_Call
                 (Ada_Node => Ada_Node,
                  Name     => Pred_Name,
-                 Args     => (1 => Name),
+                 Args     =>
+                   (1 => New_Discriminants_Access (Name => Name, Ty => Ty)),
                  Domain   => Domain,
                  Typ      => EW_Bool_Type);
          end;

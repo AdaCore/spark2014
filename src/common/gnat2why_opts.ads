@@ -96,8 +96,8 @@ private
    Flow_Generate_Contracts_Name : constant String := "flow_generate_contracts";
    Flow_Show_GG_Name            : constant String := "flow_show_gg";
    Global_Gen_Mode_Name         : constant String := "global_gen_mode";
+   Gnattest_Values_Name         : constant String := "gnattest_values";
    Ide_Mode_Name                : constant String := "ide_mode";
-   Info_Messages_Name           : constant String := "info_messages";
    Limit_Lines_Name             : constant String := "limit_lines";
    Limit_Name_Name              : constant String := "limit_name";
    Limit_Region_Name            : constant String := "limit_region";

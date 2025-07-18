@@ -316,6 +316,12 @@ package body Flow_Generated_Globals.Partial is
 
    --  Collect contracts on the intraprocedural analysis alone
 
+   function Down_Project
+     (G      : Global_Nodes;
+      Caller : Entity_Id)
+      return Global_Nodes;
+   --  Project globals G to their refined globals, as they are seen from Caller
+
    procedure Dump (Contracts : Entity_Contract_Maps.Map; Analyzed : Entity_Id);
    --  Display contracts highlighing the analyzed entity
 
@@ -642,7 +648,9 @@ package body Flow_Generated_Globals.Partial is
       then
          if Has_User_Supplied_Globals (E) then
 
-            Contr.Globals.Proper := Contract_Globals (E, Refined => False);
+            Contr.Globals.Proper  := Contract_Globals (E, Refined => False);
+            Contr.Globals.Refined :=
+              Down_Project (Contr.Globals.Proper, E);
 
             --  ??? not sure what happens about refined globals
 
@@ -1623,9 +1631,6 @@ package body Flow_Generated_Globals.Partial is
       --
       --  Note this logic is done in Categorize_Calls.
 
-      function Down_Project (G : Global_Nodes; Caller : Entity_Id)
-                             return Global_Nodes;
-
       --------------------
       -- Callee_Globals --
       --------------------
@@ -1794,23 +1799,6 @@ package body Flow_Generated_Globals.Partial is
 
          return Result;
       end Collect;
-
-      ------------------
-      -- Down_Project --
-      ------------------
-
-      function Down_Project (G : Global_Nodes; Caller : Entity_Id)
-                             return Global_Nodes
-      is
-         Analyzed_View : constant Flow_Scope := (Caller, Body_Part);
-
-      begin
-         return
-           Global_Nodes'
-             (Proof_Ins => Down_Project (G.Proof_Ins, Analyzed_View),
-              Inputs    => Down_Project (G.Inputs,    Analyzed_View),
-              Outputs   => Down_Project (G.Outputs,   Analyzed_View));
-      end Down_Project;
 
       --  Local variables
 
@@ -2163,6 +2151,25 @@ package body Flow_Generated_Globals.Partial is
       end if;
       pragma Annotate (Xcov, Exempt_Off);
    end Do_Preanalysis;
+
+   ------------------
+   -- Down_Project --
+   ------------------
+
+   function Down_Project
+     (G      : Global_Nodes;
+      Caller : Entity_Id)
+      return Global_Nodes
+   is
+      Analyzed_View : constant Flow_Scope := (Caller, Body_Part);
+
+   begin
+      return
+        Global_Nodes'
+          (Proof_Ins => Down_Project (G.Proof_Ins, Analyzed_View),
+           Inputs    => Down_Project (G.Inputs,    Analyzed_View),
+           Outputs   => Down_Project (G.Outputs,   Analyzed_View));
+   end Down_Project;
 
    -----------
    -- Print --

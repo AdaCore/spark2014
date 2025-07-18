@@ -49,6 +49,29 @@ package CE_RAC is
    --  If the fuzzer is used, the fuel must be shared and modified by each call
    --  to the small-step RAC.
 
+   package Entity_Bindings is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Entity_Id,
+      Element_Type    => Value_Access,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=");
+   --  Flat mapping of variables to bindings
+
+   type Value_List is array (Integer range <>) of Entity_Bindings.Map;
+   --  List of (unordered) subprogram parameter bindings, used to store
+   --  gnattest CE values.
+
+   type Value_List_Access is access Value_List;
+
+   type Param_Values is record
+      Values : Value_List_Access;
+      Pos    : Natural;
+   end record;
+   --  Holds a list of CE value as well as the position of the next one that
+   --  shall be read.
+
+   Gnattest_Values : Param_Values;
+   --  Global value holding the data extracted from gnattest.
+
    procedure Check_Fuel_Decrease
      (Fuel   : Fuel_Access;
       Amount : Fuel_Type := 1);
@@ -79,8 +102,18 @@ package CE_RAC is
       Hash            => Node_Hash,
       Equivalent_Keys => "=");
 
+   package Node_To_Node_To_Value is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Node_To_Value.Map,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => Node_To_Value."=");
+
    function All_Initial_Values return Node_To_Value.Map;
    --  Get all input values used by the RAC instance
+
+   function All_Located_Values return Node_To_Node_To_Value.Map;
+   --  Get all intermediate values used by the RAC instance
 
    procedure Get_Integer_Type_Bounds
      (Ty       :     Entity_Id;
@@ -94,11 +127,28 @@ package CE_RAC is
    --  Construct an integer value after checking against type bounds or
    --  applying modulo for type Etype (N), signaling errors for node N.
 
+   function Character_Value (C : Character; Ty : Entity_Id) return Value_Type;
+   --  Make a character value, i.e. an enum value
+
    function Real_Value (R : Big_Real; N : Node_Id) return Value_Type;
    function Real_Value
      (R : CE_Values.Float_Value;
       N : Node_Id)
       return Value_Type;
+
+   function Fixed_Point_Value
+     (F : Big_Integer;
+      S : Big_Real;
+      N : Node_Id)
+      return Value_Type;
+   --  Construct a fixed-point value after checking against type bounds.
+
+   function Small (Ty : Entity_Id) return Big_Real;
+   --  Retreive small of a fixed-point type entity.
+
+   function Is_Zero (V : Value_Type) return Boolean;
+   --  Return true iff V is Scalar and equals zero. Throw a program error
+   --  otherwise.
 
    function RAC_Execute
      (E              : Entity_Id;

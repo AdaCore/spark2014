@@ -2,11 +2,11 @@ range_check_aggr.adb:19:15: info: range check proved (CVC5: 2 VC), in instantiat
 range_check_aggr.adb:29:17: warning: subprogram "PC1" has no effect, in instantiation at range_check_aggr.adb:41
 range_check_aggr.adb:38:07: medium: range check might fail, cannot prove lower bound for F_STATIC_VALUE, in instantiation at range_check_aggr.adb:41 [reason for check: value must fit in component type]
 range_check_aggr.adb:38:07: medium: range check might fail, cannot prove lower bound for L_STATIC_VALUE, in instantiation at range_check_aggr.adb:41
-range_check_aggr.adb:38:07: medium: range check might fail, cannot prove lower bound for S_STATIC_VALUE, in instantiation at range_check_aggr.adb:41 (e.g. when LOWER = 20 and UPPER = NUMBER'Last-1) [possible fix: add or complete related loop invariants or postconditions]
-range_check_aggr.adb:38:07: medium: range check might fail, cannot prove lower bound for T_STATIC_VALUE, in instantiation at range_check_aggr.adb:41 (e.g. when LOWER = 86 and UPPER = NUMBER'Last-1) [possible fix: add or complete related loop invariants or postconditions]
+range_check_aggr.adb:38:07: medium: range check might fail, cannot prove lower bound for S_STATIC_VALUE, in instantiation at range_check_aggr.adb:41 [possible fix: add or complete related loop invariants or postconditions]
+range_check_aggr.adb:38:07: medium: range check might fail, cannot prove lower bound for T_STATIC_VALUE, in instantiation at range_check_aggr.adb:41 [possible fix: add or complete related loop invariants or postconditions]
 range_check_aggr.adb:41:04: info: add a contract to analyze it separately from calling contexts
 range_check_aggr.adb:41:04: info: analyzing call to "PC1" in context
 range_check_aggr.adb:41:04: info: in instantiation at line 29
 range_check_aggr.adb:41:04: info: in instantiation at line 38
-range_check_aggr.adb:41:04: info: local subprogram "PC1" only analyzed in the context of calls
+range_check_aggr.adb:41:04: info: local subprogram "PC1" only analyzed in the context of calls [info-unrolling-inlining]
 range_check_aggr.adb:41:14: warning: subprogram "NEW_PC" has no effect

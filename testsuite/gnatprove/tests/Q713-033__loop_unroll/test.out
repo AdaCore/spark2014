@@ -1,7 +1,7 @@
 binary_search.adb:13:07: info: initialization of "Left" proved
 binary_search.adb:14:07: info: initialization of "Right" proved
 binary_search.adb:15:07: info: initialization of "Med" proved
-binary_search.adb:25:24: info: unrolling loop
+binary_search.adb:25:24: info: unrolling loop [info-unrolling-inlining]
 binary_search.adb:32:22: info: range check proved (CVC5: 20 VC)
 binary_search.adb:32:39: info: division check proved (CVC5: 10 VC)
 binary_search.adb:35:25: info: range check proved (CVC5: 20 VC)
@@ -14,10 +14,10 @@ langley.adb:5:13: info: implicit aspect Always_Terminates on "Add" has been prov
 langley.adb:7:14: info: postcondition proved (CVC5: 1 VC)
 langley.adb:7:63: info: overflow check proved (CVC5: 2 VC)
 langley.adb:10:07: info: initialization of "Sum" proved
-langley.adb:12:27: info: unrolling loop
+langley.adb:12:27: info: unrolling loop [info-unrolling-inlining]
 langley.adb:13:25: info: overflow check proved (CVC5: 20 VC)
 lcp.adb:14:04: info: initialization of "L" proved
-lcp.adb:17:19: info: unrolling loop
+lcp.adb:17:19: info: unrolling loop [info-unrolling-inlining]
 lcp.adb:18:24: info: overflow check proved (CVC5: 20 VC)
 lcp.adb:19:33: info: overflow check proved (CVC5: 20 VC)
 lcp.adb:20:36: info: index check proved (CVC5: 20 VC)
@@ -26,7 +26,7 @@ lcp.adb:20:48: info: index check proved (CVC5: 20 VC)
 lcp.adb:20:48: info: overflow check proved (CVC5: 20 VC)
 lcp.adb:21:14: info: overflow check proved (CVC5: 20 VC)
 lcp.ads:10:10: info: implicit aspect Always_Terminates on "LCP" has been proved, subprogram will terminate
-lcp.ads:14:05: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC)
+lcp.ads:14:05: info: postcondition proved (CVC5: 2 VC)
 lcp.ads:14:47: info: index check proved (CVC5: 2 VC)
 lcp.ads:14:47: info: overflow check proved (CVC5: 2 VC)
 lcp.ads:14:59: info: index check proved (CVC5: 2 VC)
@@ -49,13 +49,13 @@ lcp.ads:20:49: info: overflow check proved (CVC5: 2 VC)
 lcp.ads:21:07: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 loopstat.adb:2:04: info: initialization of "K" proved
 loopstat.adb:4:04: info: initialization of "A" proved
-loopstat.adb:8:21: info: unrolling loop
+loopstat.adb:8:21: info: unrolling loop [info-unrolling-inlining]
 loopstat.adb:9:14: info: overflow check proved (CVC5: 20 VC)
 loopstat.adb:11:19: info: assertion proved (CVC5: 1 VC)
-loopstat.adb:14:21: info: unrolling loop
-loopstat.adb:15:24: info: unrolling loop
+loopstat.adb:14:21: info: unrolling loop [info-unrolling-inlining]
+loopstat.adb:15:24: info: unrolling loop [info-unrolling-inlining]
 loopstat.adb:16:17: info: overflow check proved (CVC5: 200 VC)
 loopstat.adb:19:19: info: assertion proved (CVC5: 1 VC)
-loopstat.adb:21:21: info: unrolling loop
+loopstat.adb:21:21: info: unrolling loop [info-unrolling-inlining]
 loopstat.adb:24:19: info: assertion proved (CVC5: 1 VC)
 loopstat.adb:24:45: info: index check proved (CVC5: 2 VC)

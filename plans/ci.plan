@@ -43,3 +43,8 @@ def test_acats():
     anod_install("gprbuild", target="host", query_range=20)
     anod_install("spark2014", qualifier="assertions,coverage")
     anod_test("acats-4-gnatprove-baseline", qualifier="assertions,coverage")
+
+def test_sparklib():
+    anod_install("e3-for-testing", query_range=20)
+    anod_install("spark2014", qualifier="assertions,coverage")
+    anod_test("sparklib", qualifier="assertions,large")

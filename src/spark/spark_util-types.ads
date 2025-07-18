@@ -194,10 +194,13 @@ package SPARK_Util.Types is
    --  @returns True if one of E's partial view
    --    (including E itself) declares an Iterable aspect.
 
-   function Has_Unconstrained_UU_Component (Typ : Type_Kind_Id) return Boolean;
+   function Has_UU_Component
+     (Typ                : Type_Kind_Id;
+      Unconstrained_Only : Boolean := False) return Boolean;
    --  Returns True iff Typ has a component visible in SPARK whose type is an
-   --  unchecked union type which is unconstrained. Predefined equality on
-   --  these types is defined to raise Program_Error in Ada for now, even if
+   --  unchecked union type. If Unconstrained_Only, only look for unconstrained
+   --  types. Predefined equality on types with unconstrained unchecked union
+   --  parts is defined to raise Program_Error in Ada for now, even if
    --  the primitive equality of the components is redefined. To be changed
    --  when the wording and the compiler are fixed (code might be shared with
    --  Predefined_Eq_Uses_Pointer_Eq).
@@ -350,40 +353,62 @@ package SPARK_Util.Types is
      Pre => Has_Predicates (Ty) and then not Is_Full_View (Ty);
    --  Return the view of Ty on which its predicate is defined
 
-   procedure Suitable_For_UC
+   function Type_Name_For_Explanation (Typ : Type_Kind_Id) return String;
+   --  This function computes a user-visible string to represent the type in
+   --  argument.
+
+   procedure Check_Known_RM_Size
      (Typ         :     Type_Kind_Id;
-      Use_Esize   :     Boolean;
-      Result      : out Boolean;
+      RM_Size     : out Uint;
       Explanation : out Unbounded_String);
-   --  This procedure implements the notion of "suitable for unchecked
-   --  conversion" of SPARK RM 13.9.
+   --  If the RM_Size of the type is known, assign its value to parameter
+   --  RM_Size. Otherwise, set it to No_Uint and save an explanation string
+   --  in Explanation.
 
-   procedure Suitable_For_UC_Target
+   procedure Check_Known_Esize
      (Typ         :     Type_Kind_Id;
-      Use_Esize   :     Boolean;
-      Result      : out Boolean;
+      Esize       : out Uint;
       Explanation : out Unbounded_String);
-   --  This procedure implements the notion of "suitable as a target of an
-   --  unchecked conversion" of SPARK RM 13.9.
+   --  same as Check_Known_RM_Size, but for Esize
 
-   function Suitable_For_Precise_UC
-     (Arg_Typ : Type_Kind_Id)
-      return True_Or_Explain;
-   --  Check if Typ is only made of integers. When returning False,
-   --  return also the Explanation.
+   procedure Check_Known_Size_For_Object
+     (Obj         : Node_Id;
+      Size        : out Uint;
+      Explanation : out Unbounded_String;
+      Size_Str    : out Unbounded_String);
+   --  Compute known size for an object. If no size was computed, Explanation
+   --  contains the reason for this. If a size was found, Size_Str contains a
+   --  string that can be used in error messages to explain the source of the
+   --  size.
 
-   procedure Have_Same_Known_Esize
-     (A, B        :     Type_Kind_Id;
-      Result      : out Boolean;
-      Explanation : out Unbounded_String);
-   --  If types A and B have the same Esize, then set Result to True; otherwise
-   --  set Result to False and Explanation to a possible fix.
+   procedure Scalar_Record_Component_Size
+     (Typ      : Type_Kind_Id;
+      Comp     : Entity_Id;
+      Size     : out Uint;
+      Size_Str : out Unbounded_String)
+     with Pre =>
+       (Ekind (Comp) = E_Component
+        and then Is_Scalar_Type (Retysp (Etype (Comp))));
+   --  Compute the expected size for a record component of scalar type. The
+   --  Size_Str contains a string that explains the origin of the computed
+   --  size.
 
-   procedure Have_Same_Known_RM_Size
-     (A, B        :     Type_Kind_Id;
-      Result      : out Boolean;
-      Explanation : out Unbounded_String);
-   --  Same as Have_Same_Known_Esize, but checks the RM_Size.
+   function Type_Has_Only_Valid_Values
+     (ArgTyp   : Type_Kind_Id;
+      Size     : Uint;
+      Size_Str : String)
+      return True_Or_Explain
+   with Pre => ((Size /= Uint_0) = Is_Scalar_Type (ArgTyp));
+   --  Return True if Type is known to have only valid values. Otherwise,
+   --  return an explanation for why Ty might have invalid values.
+   --  If Typ is scalar, use the passed size to check for invalid values.
+
+   function Obj_Has_Only_Valid_Values (Obj : Entity_Id) return Boolean;
+   --  Wrapper on Type_Has_Only_Valid_Values for objects
+
+   function Fun_Has_Only_Valid_Values (Fun : Entity_Id) return Boolean;
+   --  Wrapper on Type_Has_Only_Valid_Values for the return type of functions.
+   --  It uses the Size of the return type.
 
    function Contains_Access_Subcomponents (Typ : Type_Kind_Id) return Boolean;
    --  Returns True if Typ has access subcomponents

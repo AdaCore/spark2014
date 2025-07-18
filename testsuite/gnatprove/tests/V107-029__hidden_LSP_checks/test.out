@@ -7,7 +7,7 @@ fl1.ads:11:20: info: postcondition proved (CVC5: 1 VC), in inherited contract at
 fl1.ads:14:20: info: postcondition proved (CVC5: 1 VC)
 fl1.ads:14:20: info: postcondition proved (CVC5: 1 VC), in inherited contract at fl1.ads:19
 fl1.ads:14:20: info: postcondition proved (CVC5: 1 VC), in inherited contract at fl1.ads:25
-fl1.ads:14:20: medium: postcondition might fail, in inherited contract at fl1.ads:33
+fl1.ads:14:20: medium: postcondition might fail, in inherited contract at fl1.ads:33 (e.g. when X = (F => 1, G => False)) [possible fix: add or complete related loop invariants or postconditions]
 fl1.ads:18:13: info: implicit aspect Always_Terminates on "Get_F" has been proved, subprogram will terminate
 fl1.ads:20:13: info: precondition is weaker than class-wide precondition (CVC5: 1 VC)
 fl1.ads:24:13: info: implicit aspect Always_Terminates on "Get_F" has been proved, subprogram will terminate

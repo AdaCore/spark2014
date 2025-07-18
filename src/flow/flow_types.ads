@@ -140,7 +140,7 @@ package Flow_Types is
                              Private_Part,    --  for private types
                              Extension_Part,  --  for tagged types
                              The_Tag,         --  for tagged types
-                             The_Bounds       --  for unconstrained arrays
+                             The_Bounds       --  for unconstrained objects
                              );
    --  Not all things can be represented by just X. For example a discriminated
    --  private type might need X'Private_Part and X.D. Most Flow_Id objects
@@ -418,6 +418,10 @@ package Flow_Types is
    function Is_Constituent (F : Flow_Id) return Boolean;
    --  Checks if F is a constituent of an abstract state
 
+   function Is_Implicit_Constituent (F : Flow_Id) return Boolean;
+   --  Checks if F is a constituent of an implicit abstract state that
+   --  implicitly represents an object hidden inside a package.
+
    function Is_Function_Entity (F : Flow_Id) return Boolean;
    --  Checks if F is a function entity (and thus used to capture the
    --  function's return value).
@@ -581,7 +585,8 @@ package Flow_Types is
                                 Pretty_Print_Reclaim,
                                 Pretty_Print_Call_Exception,
                                 Pretty_Print_Param_Havoc,
-                                Pretty_Print_Param_Scrub);
+                                Pretty_Print_Param_Scrub,
+                                Pretty_Print_Program_Exit);
 
    type Subprogram_Call is record
       N : Node_Id;    --  node of the subprogram call
@@ -689,9 +694,6 @@ package Flow_Types is
       Is_Parameter                 : Boolean;
       --  True if this vertex models an argument to a procedure call
 
-      Is_Discr_Or_Bounds_Parameter : Boolean;
-      --  If true this only captures the discriminants or bounds of a parameter
-
       Is_Global_Parameter          : Boolean;
       --  True if this vertex models a global for a procedure or function call
 
@@ -765,6 +767,12 @@ package Flow_Types is
       --  Which loops are we a member of (identified by loop name/label). For
       --  loop stability analysis.
 
+      First_Field                  : Flow_Graphs.Vertex_Id;
+      --  For vertices coming from declarations and assignments of record
+      --  objects, it points to the first vertex in the CFG that represents
+      --  the sequence of vertices with variable useds and variables defined
+      --  for every record component.
+
       Record_RHS                   : Flow_Graphs.Vertex_Id;
       --  Vertex with a variables used on the RHS of a record assignment
 
@@ -788,53 +796,53 @@ package Flow_Types is
    end record;
 
    Null_Attributes : constant V_Attributes :=
-     V_Attributes'(Is_Null_Node                    => False,
-                   In_Nested_Package               => False,
-                   Is_Program_Node                 => False,
-                   Is_Original_Program_Node        => False,
-                   Is_Dead_Path                    => False,
-                   Is_Exceptional_Branch           => False,
-                   Is_Exceptional_Path             => False,
-                   Is_Assertion                    => False,
-                   Is_Package_Initialization       => False,
-                   Is_Default_Init                 => False,
-                   Is_Loop_Entry                   => False,
-                   Is_Initialized                  => False,
-                   Is_Global                       => False,
-                   Is_Import                       => False,
-                   Is_Export                       => False,
-                   Mode                            => Mode_Invalid,
-                   Is_Constant                     => False,
-                   Is_Callsite                     => False,
-                   Is_Parameter                    => False,
-                   Is_Discr_Or_Bounds_Parameter    => False,
-                   Is_Global_Parameter             => False,
-                   Is_Implicit_Parameter           => False,
-                   Is_Call_Exception               => False,
-                   Is_Param_Havoc                  => False,
-                   Is_Neverending                  => False,
-                   Is_Declaration_Node             => False,
-                   Execution                       => Normal_Execution,
-                   Perform_IPFA                    => False,
-                   Call_Vertex                     => Null_Flow_Id,
-                   Parameter_Actual                => Null_Flow_Id,
-                   Parameter_Formal                => Null_Flow_Id,
-                   Default_Init_Var                => Null_Flow_Id,
-                   Default_Init_Val                => Empty,
-                   Variables_Defined               => Flow_Id_Sets.Empty_Set,
-                   Variables_Used                  => Flow_Id_Sets.Empty_Set,
-                   Variables_Read                  => Flow_Id_Sets.Empty_Set,
-                   Variables_Explicitly_Used       => Flow_Id_Sets.Empty_Set,
-                   Volatiles_Read                  => Flow_Id_Sets.Empty_Set,
-                   Volatiles_Written               => Flow_Id_Sets.Empty_Set,
-                   Subprogram_Calls                => Call_Sets.Empty_Set,
-                   Indirect_Calls                  => Node_Sets.Empty_Set,
-                   Loops                           => Node_Sets.Empty_Set,
-                   Record_RHS                      => Flow_Graphs.Null_Vertex,
-                   Error_Location                  => Empty,
-                   Aux_Node                        => Empty,
-                   Warnings_Off                    => False,
-                   Pretty_Print_Kind               => Pretty_Print_Null);
+     V_Attributes'(Is_Null_Node              => False,
+                   In_Nested_Package         => False,
+                   Is_Program_Node           => False,
+                   Is_Original_Program_Node  => False,
+                   Is_Dead_Path              => False,
+                   Is_Exceptional_Branch     => False,
+                   Is_Exceptional_Path       => False,
+                   Is_Assertion              => False,
+                   Is_Package_Initialization => False,
+                   Is_Default_Init           => False,
+                   Is_Loop_Entry             => False,
+                   Is_Initialized            => False,
+                   Is_Global                 => False,
+                   Is_Import                 => False,
+                   Is_Export                 => False,
+                   Mode                      => Mode_Invalid,
+                   Is_Constant               => False,
+                   Is_Callsite               => False,
+                   Is_Parameter              => False,
+                   Is_Global_Parameter       => False,
+                   Is_Implicit_Parameter     => False,
+                   Is_Call_Exception         => False,
+                   Is_Param_Havoc            => False,
+                   Is_Neverending            => False,
+                   Is_Declaration_Node       => False,
+                   Execution                 => Normal_Execution,
+                   Perform_IPFA              => False,
+                   Call_Vertex               => Null_Flow_Id,
+                   Parameter_Actual          => Null_Flow_Id,
+                   Parameter_Formal          => Null_Flow_Id,
+                   Default_Init_Var          => Null_Flow_Id,
+                   Default_Init_Val          => Empty,
+                   Variables_Defined         => Flow_Id_Sets.Empty_Set,
+                   Variables_Used            => Flow_Id_Sets.Empty_Set,
+                   Variables_Read            => Flow_Id_Sets.Empty_Set,
+                   Variables_Explicitly_Used => Flow_Id_Sets.Empty_Set,
+                   Volatiles_Read            => Flow_Id_Sets.Empty_Set,
+                   Volatiles_Written         => Flow_Id_Sets.Empty_Set,
+                   Subprogram_Calls          => Call_Sets.Empty_Set,
+                   Indirect_Calls            => Node_Sets.Empty_Set,
+                   Loops                     => Node_Sets.Empty_Set,
+                   First_Field               => Flow_Graphs.Null_Vertex,
+                   Record_RHS                => Flow_Graphs.Null_Vertex,
+                   Error_Location            => Empty,
+                   Aux_Node                  => Empty,
+                   Warnings_Off              => False,
+                   Pretty_Print_Kind         => Pretty_Print_Null);
 
    Null_Node_Attributes : constant V_Attributes :=
      (Null_Attributes with delta Is_Null_Node    => True,

@@ -2,7 +2,7 @@ test_relaxed_access_call.adb:9:18: info: for parameter X at the end of the subpr
 test_relaxed_access_call.adb:9:18: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:13:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:16:18: medium: for parameter X at the end of the subprogram at test_relaxed_access_call.adb:16
-test_relaxed_access_call.adb:16:18: medium: initialization check might fail (e.g. when Y = False)
+test_relaxed_access_call.adb:16:18: medium: initialization check might fail
 test_relaxed_access_call.adb:21:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:27:23: info: initialization of "Y" proved
 test_relaxed_access_call.adb:27:45: info: data dependencies proved
@@ -38,7 +38,7 @@ test_relaxed_access_call.adb:136:13: info: initialization check proved (CVC5: 1 
 test_relaxed_access_call.adb:137:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:140:28: info: data dependencies proved
 test_relaxed_access_call.adb:143:07: medium: resource or memory leak might occur at end of scope
-test_relaxed_access_call.adb:146:07: medium: precondition might fail
+test_relaxed_access_call.adb:146:07: medium: precondition might fail (e.g. when B = False and X = (F => null))
 test_relaxed_access_call.adb:146:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:151:21: info: initialization of "Y" proved
 test_relaxed_access_call.adb:152:06: info: data dependencies proved
@@ -48,7 +48,7 @@ test_relaxed_access_call.adb:159:09: info: absence of resource or memory leak pr
 test_relaxed_access_call.adb:162:30: info: data dependencies proved
 test_relaxed_access_call.adb:167:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:167:09: warning: unused assignment
-test_relaxed_access_call.adb:168:07: medium: precondition might fail (e.g. when V.all = 0 and V.all'Initialized = True)
+test_relaxed_access_call.adb:168:07: medium: precondition might fail (e.g. when B = False)
 test_relaxed_access_call.adb:168:07: medium: resource or memory leak might occur
 test_relaxed_access_call.adb:171:21: info: initialization of "Y" proved
 test_relaxed_access_call.adb:172:06: info: data dependencies proved
@@ -60,7 +60,7 @@ test_relaxed_access_call.adb:182:30: info: data dependencies proved
 test_relaxed_access_call.adb:187:09: info: pointer dereference check proved (CVC5: 1 VC)
 test_relaxed_access_call.adb:187:13: warning: unused assignment
 test_relaxed_access_call.adb:188:07: info: absence of resource or memory leak proved (CVC5: 1 VC)
-test_relaxed_access_call.adb:188:07: medium: precondition might fail (e.g. when C.all'Initialized = False)
+test_relaxed_access_call.adb:188:07: medium: precondition might fail (e.g. when B = False)
 test_relaxed_access_params.adb:18:18: info: for parameter X at the end of the subprogram at test_relaxed_access_params.adb:18
 test_relaxed_access_params.adb:18:18: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_access_params.adb:18:37: info: initialization of "Y" proved
@@ -118,7 +118,7 @@ test_relaxed_access_params.adb:128:31: medium: initialization check might fail
 test_relaxed_access_params.adb:129:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_params.adb:129:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 test_relaxed_access_params.adb:136:06: info: flow dependencies proved
-test_relaxed_access_params.adb:140:24: info: cannot unroll loop (too many loop iterations)
+test_relaxed_access_params.adb:140:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 test_relaxed_access_params.adb:141:10: medium: for pointer allocation at test_relaxed_access_params.adb:132
 test_relaxed_access_params.adb:141:10: medium: initialization check might fail [possible fix: loop at line 140 should mention X'Initialized in a loop invariant]
 test_relaxed_access_params.adb:141:16: info: range check proved (CVC5: 2 VC)

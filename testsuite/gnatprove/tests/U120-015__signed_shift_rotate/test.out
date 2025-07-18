@@ -8,7 +8,7 @@ signed.adb:13:09: info: no contextual analysis of "Shift_Left" (body not seen ye
 signed.adb:13:09: warning: assuming "Shift_Left" has no effect on global items
 signed.adb:13:09: warning: no Global contract available for "Shift_Left" [assumed-global-null]
 signed.adb:13:21: info: overflow check proved (CVC5: 2 VC)
-signed.adb:14:19: info: assertion proved (altergo: 1 VC)
+signed.adb:14:19: info: assertion proved (colibri: 1 VC)
 signed.adb:14:24: info: overflow check proved (CVC5: 2 VC)
 signed.adb:14:28: info: overflow check proved (CVC5: 2 VC)
 signed.adb:16:09: info: no contextual analysis of "Shift_Left" (body not seen yet)
@@ -40,7 +40,7 @@ signed.adb:34:19: info: assertion proved (colibri: 1 VC)
 signed.adb:38:09: info: no contextual analysis of "Shift_Right_Arithmetic" (body not seen yet)
 signed.adb:38:09: warning: assuming "Shift_Right_Arithmetic" has no effect on global items
 signed.adb:38:09: warning: no Global contract available for "Shift_Right_Arithmetic" [assumed-global-null]
-signed.adb:39:19: info: assertion proved (altergo: 1 VC)
+signed.adb:39:19: info: assertion proved (colibri: 1 VC)
 signed.adb:39:25: info: division check proved (CVC5: 1 VC)
 signed.adb:41:09: info: no contextual analysis of "Shift_Right_Arithmetic" (body not seen yet)
 signed.adb:41:09: warning: assuming "Shift_Right_Arithmetic" has no effect on global items

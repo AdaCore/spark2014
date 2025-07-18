@@ -1,9 +1,9 @@
-test_pack.adb:7:32: high: float overflow check might fail (e.g. when Measured = 8.5735196E+37 and Pid = (Desired => -2.5454716E+38, Error => 3.4028235E+38)) [reason for check: result of floating-point subtraction must be bounded]
+test_pack.adb:7:32: high: float overflow check might fail (e.g. when Measured = 7.2002554E+32 and Pid = (Desired => -3.4028164E+38, Error => 3.4028235E+38)) [reason for check: result of floating-point subtraction must be bounded]
 test_pack.ads:10:06: info: flow dependencies proved
 test_pack.ads:12:43: info: float overflow check proved (CVC5: 1 VC)
 test_pack.ads:14:42: info: float overflow check proved (CVC5: 1 VC)
-wibble.adb:6:12: info: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion)
 wibble.adb:6:12: info: types in unchecked conversion have the same size (Trivial)
+wibble.adb:6:12: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 wibble.adb:6:61: info: type is suitable as source for unchecked conversion (Trivial)
-wibble.adb:7:61: high: type is unsuitable as a target for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK]
+wibble.adb:7:61: high: type is unsuitable as a target for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
 wibble.adb:11:03: medium: precondition might fail, cannot prove Pid.Desired >= Float'First + Measured

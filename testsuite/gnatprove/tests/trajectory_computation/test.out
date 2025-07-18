@@ -137,7 +137,7 @@ complex_trajectory.adb:70:30: info: float overflow check proved (Trivial)
 complex_trajectory.adb:70:41: info: range check proved (Trivial)
 complex_trajectory.adb:70:44: info: float overflow check proved (Trivial)
 complex_trajectory.adb:70:52: info: float overflow check proved (Trivial)
-complex_trajectory.adb:71:22: info: assertion proved (colibri: 1 VC)
+complex_trajectory.adb:71:22: medium: assertion might fail
 complex_trajectory.adb:71:45: info: range check proved (Trivial)
 complex_trajectory.adb:71:50: info: float overflow check proved (Trivial)
 complex_trajectory.adb:71:63: info: range check proved (Trivial)
@@ -211,7 +211,7 @@ complex_trajectory_overflow.adb:37:22: medium: assertion might fail
 complex_trajectory_overflow.adb:37:40: info: range check proved (Trivial)
 complex_trajectory_overflow.adb:37:43: info: float overflow check proved (Trivial)
 complex_trajectory_overflow.adb:37:54: info: float overflow check proved (Trivial)
-complex_trajectory_overflow.adb:38:22: info: assertion proved (colibri: 1 VC)
+complex_trajectory_overflow.adb:38:22: info: assertion proved (Z3: 1 VC)
 complex_trajectory_overflow.adb:38:42: info: range check proved (Trivial)
 complex_trajectory_overflow.adb:38:47: info: float overflow check proved (Trivial)
 complex_trajectory_overflow.adb:39:22: medium: assertion might fail

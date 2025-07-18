@@ -43,8 +43,8 @@ binary_fixed.adb:54:28: info: overflow check proved (altergo: 2 VC)
 binary_fixed.adb:61:07: info: initialization of "Z" proved
 binary_fixed.adb:64:17: info: division check proved (altergo: 1 VC)
 binary_fixed.adb:64:17: info: overflow check proved (altergo: 2 VC)
-binary_fixed.adb:64:17: info: range check proved (altergo: 2 VC)
-binary_fixed.adb:65:25: info: assertion proved (altergo: 1 VC)
+binary_fixed.adb:64:17: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
+binary_fixed.adb:65:25: info: assertion proved (CVC5: 1 VC)
 binary_fixed.adb:67:14: info: division check proved (altergo: 1 VC)
 binary_fixed.adb:67:14: info: overflow check proved (altergo: 2 VC)
 binary_fixed.adb:67:14: info: range check proved (altergo: 2 VC)
@@ -144,7 +144,7 @@ decimal_fixed.adb:61:07: info: initialization of "Z" proved
 decimal_fixed.adb:64:17: info: division check proved (altergo: 1 VC)
 decimal_fixed.adb:64:17: info: overflow check proved (altergo: 2 VC)
 decimal_fixed.adb:64:17: info: range check proved (altergo: 2 VC)
-decimal_fixed.adb:65:25: info: assertion proved (altergo: 1 VC)
+decimal_fixed.adb:65:25: info: assertion proved (CVC5: 1 VC)
 decimal_fixed.adb:67:14: info: division check proved (altergo: 1 VC)
 decimal_fixed.adb:67:14: info: overflow check proved (altergo: 2 VC)
 decimal_fixed.adb:67:14: info: range check proved (altergo: 2 VC)
@@ -243,8 +243,8 @@ ordinary_fixed.adb:54:28: info: overflow check proved (altergo: 2 VC)
 ordinary_fixed.adb:61:07: info: initialization of "Z" proved
 ordinary_fixed.adb:64:17: info: division check proved (altergo: 1 VC)
 ordinary_fixed.adb:64:17: info: overflow check proved (altergo: 2 VC)
-ordinary_fixed.adb:64:17: info: range check proved (altergo: 2 VC)
-ordinary_fixed.adb:65:25: info: assertion proved (altergo: 1 VC)
+ordinary_fixed.adb:64:17: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
+ordinary_fixed.adb:65:25: info: assertion proved (CVC5: 1 VC)
 ordinary_fixed.adb:67:14: info: division check proved (altergo: 1 VC)
 ordinary_fixed.adb:67:14: info: overflow check proved (altergo: 2 VC)
 ordinary_fixed.adb:67:14: info: range check proved (altergo: 2 VC)
@@ -298,11 +298,11 @@ ordinary_fixed.ads:15:14: warning: subprogram "Test_Multiply" has no effect
 ordinary_fixed.ads:18:14: warning: subprogram "Test_Divide" has no effect
 ordinary_fixed.ads:21:14: warning: subprogram "Test_Type_Conversion" has no effect
 ordinary_fixed.ads:24:14: warning: subprogram "Test_Compare" has no effect
-dynamic_fixed.adb:4:21: info: unrolling loop
+dynamic_fixed.adb:4:21: info: unrolling loop [info-unrolling-inlining]
 dynamic_fixed.adb:6:18: info: range check proved (CVC5: 20 VC)
 dynamic_fixed.adb:6:40: info: range check proved (CVC5: 20 VC)
 dynamic_fixed.adb:7:19: info: range check proved (CVC5: 20 VC)
-dynamic_fixed.adb:9:25: medium: assertion might fail (e.g. when I = 1)
+dynamic_fixed.adb:9:25: high: assertion might fail (e.g. when I = 1)
 dynamic_fixed.adb:10:25: info: assertion proved (Trivial)
 unsupported.adb:19:13: error: operation between incompatible fixed-point types is not yet supported
 unsupported.adb:20:13: error: operation between incompatible fixed-point types is not yet supported

@@ -157,7 +157,8 @@ package body CE_Parsing is
          return Value_Type'
            (K      => Multidim_K,
             AST_Ty => Ty,
-            Bounds => (Dim => Natural (Number_Dimensions (Ty)), others => <>));
+            Bounds => (Dim => Natural (Number_Dimensions (Ty)), others => <>),
+            others => <>);
       elsif Is_Record_Type_In_Why (Ty) then
          return Value_Type'(K      => Record_K,
                             AST_Ty => Ty,
@@ -278,16 +279,14 @@ package body CE_Parsing is
                   while Has_Element (C) loop
                      declare
                         Comp_Name : String renames Key (C);
-
+                        Comp_Elem : Cntexmp_Value_Ptr renames Element (C);
                      begin
                         --  if the key is "rt", then Element (C) is a record
                         --  with the bounds
                         if Comp_Name = "rt" then
                            declare
-                              Cnt_Bounds : Cntexmp_Value_Ptr
-                                renames Element (C);
                               C : Cntexmp_Value_Array.Cursor :=
-                                Cnt_Bounds.Fi.First;
+                                Comp_Elem.Fi.First;
                            begin
                               while Has_Element (C) loop
                                  declare
@@ -306,13 +305,11 @@ package body CE_Parsing is
                                  end;
                               end loop;
                            end;
-                        else
+                        elsif Comp_Elem.T = Cnt_Array then
                            --  Go over the association in the Why3
                            --  counterexample. If we fail to parse an element,
                            --  continue with the next.
                            declare
-                              Comp_Elem : Cntexmp_Value_Ptr renames
-                                Element (C);
                               Comp_Ty : constant Entity_Id :=
                                 Retysp (Component_Type (Ty));
                               Comp    : Value_Type;
@@ -341,8 +338,7 @@ package body CE_Parsing is
                                          (From_String (Key (C)),
                                           new Value_Type'(Comp));
                                     exception
-                                       when Parse_Error =>
-                                          null;
+                                       when Parse_Error => null;
                                     end;
                                     Next (C);
                                  end loop;
@@ -372,6 +368,9 @@ package body CE_Parsing is
             --  - if yes, we reconstruct the record by extracting the field
             --  name from the attribute,
             --  - if no, we expect the Why3 counterexample to be a record.
+            --  NOTE: This only happens when parsing values directly inferred
+            --  from a prover model. When the counterexample is taken from Why3
+            --  RAC, all expected fields should be present.
 
             declare
                Field_Attr_Present : Boolean := False;
@@ -459,14 +458,16 @@ package body CE_Parsing is
                         begin
                            if Comp_E /= Types.Empty then
                               declare
-                                 Comp_Ty : constant Entity_Id :=
+                                 Comp_Ty      : constant Entity_Id :=
                                    Retysp (Etype (Comp_E));
-                                 Comp    : Value_Type;
+                                 Comp_E_in_Ty : constant Entity_Id :=
+                                   Search_Component_In_Type (AST_Ty, Comp_E);
+                                 Comp         : Value_Type;
                               begin
                                  Comp := Parse_Cnt_Value
                                    (Cnt_Labels, Element (C), Comp_Ty);
                                  Val.Record_Fields.Insert
-                                   (Comp_E, new Value_Type'(Comp));
+                                   (Comp_E_in_Ty, new Value_Type'(Comp));
                               exception
                                  when Parse_Error =>
                                     null;
@@ -478,6 +479,7 @@ package body CE_Parsing is
                         end;
                         Next (C);
                      end loop;
+                     pragma Assert (Valid_Value (Val));
                   end;
                end if;
 
@@ -875,6 +877,9 @@ package body CE_Parsing is
                              (Elt.Value, Current_Val.Initialized_Attr);
                         end if;
 
+                     elsif Label = Valid_Label then
+                        Set_Boolean_Flag (Elt.Value, Current_Val.Valid_Attr);
+
                      --  Some labels are currently parsed as First@result,
                      --  where the @result part is not expected.
 
@@ -1069,7 +1074,9 @@ package body CE_Parsing is
                   begin
                      return (Float_K, (Float_64_K, F));
                   end;
-               elsif Is_Extended_Precision_Floating_Point_Type (Ty) then
+               elsif Is_Extended_Precision_Floating_Point_Type (Ty)
+                 and then Long_Long_Float'Size = 128
+               then
                   pragma Assert (Size (Exp) = 15);
                   pragma Assert (Size (Significand) = 63);
                   declare

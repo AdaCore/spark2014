@@ -1,4 +1,4 @@
-algorithm.adb:86:07: info: cannot unroll loop (too many loop iterations)
+algorithm.adb:86:07: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 algorithm.adb:94:65: info: division check proved (CVC5: 1 VC)
 algorithm.adb:94:65: info: float overflow check proved (Trivial)
 algorithm.adb:95:19: warning: statement has no effect
@@ -19,7 +19,7 @@ algorithm.adb:117:25: warning: statement has no effect
 algorithm.adb:118:28: warning: this statement is never reached
 algorithm.adb:119:28: warning: this statement is never reached
 algorithm.adb:120:28: warning: this statement is never reached
-algorithm.adb:149:10: info: cannot unroll loop (too many loop iterations)
+algorithm.adb:149:10: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 algorithm.adb:152:63: info: range check proved (Trivial)
 algorithm.adb:152:70: info: float overflow check proved (CVC5: 1 VC)
 algorithm.adb:156:70: info: float overflow check proved (CVC5: 1 VC)
@@ -154,6 +154,7 @@ algorithm.adb:468:34: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:468:76: info: discriminant check proved (CVC5: 1 VC)
 algorithm.adb:469:22: warning: this statement is never reached
 algorithm.adb:470:22: warning: this statement is never reached
+algorithm.adb:470:37: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 algorithm.adb:470:58: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:470:100: info: discriminant check proved (CVC5: 1 VC)
 algorithm.adb:470:119: info: precondition proved (CVC5: 1 VC)
@@ -163,6 +164,7 @@ algorithm.adb:473:34: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:473:71: info: discriminant check proved (CVC5: 1 VC)
 algorithm.adb:474:22: warning: this statement is never reached
 algorithm.adb:475:22: warning: this statement is never reached
+algorithm.adb:475:37: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 algorithm.adb:475:58: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:475:95: info: discriminant check proved (CVC5: 1 VC)
 algorithm.adb:475:114: info: precondition proved (CVC5: 1 VC)
@@ -230,7 +232,7 @@ algorithm.adb:587:10: warning: this statement is never reached
 algorithm.adb:588:10: warning: this statement is never reached
 algorithm.adb:591:31: info: assertion proved (Trivial: 1 VC)
 algorithm.adb:603:31: info: assertion proved (Trivial: 1 VC)
-algorithm.adb:605:37: info: cannot unroll loop (too many loop iterations)
+algorithm.adb:605:37: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 algorithm.adb:607:67: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop at line 605 should mention This in a loop invariant]
 algorithm.adb:607:101: info: range check proved (Trivial)
 algorithm.adb:607:111: info: division check proved (CVC5: 1 VC)
@@ -287,6 +289,7 @@ algorithm.adb:724:13: warning: this statement is never reached
 algorithm.adb:726:10: warning: statement has no effect
 algorithm.adb:727:13: warning: this statement is never reached
 algorithm.adb:728:13: warning: this statement is never reached
+algorithm.adb:728:23: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 algorithm.adb:729:13: warning: this statement is never reached
 algorithm.adb:730:13: warning: this statement is never reached
 algorithm.adb:730:25: info: precondition proved (CVC5: 1 VC)
@@ -323,6 +326,7 @@ algorithm.adb:802:07: warning: statement has no effect
 algorithm.adb:803:10: warning: this statement is never reached
 algorithm.adb:804:10: warning: this statement is never reached
 algorithm.adb:805:10: warning: this statement is never reached
+algorithm.adb:805:25: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 algorithm.adb:808:31: info: assertion proved (CVC5: 1 VC)
 algorithm.adb:825:31: info: assertion proved (CVC5: 1 VC)
 algorithm.adb:828:43: info: float overflow check proved (CVC5: 1 VC)
@@ -336,13 +340,16 @@ algorithm.adb:841:10: warning: this statement is never reached
 algorithm.adb:842:10: warning: this statement is never reached
 algorithm.adb:843:10: warning: this statement is never reached
 algorithm.adb:844:10: warning: this statement is never reached
+algorithm.adb:844:20: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 algorithm.adb:845:10: warning: this statement is never reached
 algorithm.adb:848:31: info: assertion proved (CVC5: 1 VC)
 algorithm.adb:850:07: warning: statement has no effect
 algorithm.adb:851:10: warning: this statement is never reached
 algorithm.adb:852:10: warning: this statement is never reached
+algorithm.adb:852:20: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 algorithm.adb:853:10: warning: this statement is never reached
 algorithm.adb:854:10: warning: this statement is never reached
+algorithm.adb:854:25: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 algorithm.adb:857:31: info: assertion proved (CVC5: 1 VC)
 algorithm.adb:859:16: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:861:49: info: float overflow check proved (CVC5: 1 VC)
@@ -352,7 +359,7 @@ algorithm.adb:861:64: info: float overflow check proved (Trivial)
 algorithm.adb:862:38: info: float overflow check proved (CVC5: 1 VC)
 algorithm.adb:862:40: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:862:47: info: precondition proved (CVC5: 1 VC)
-algorithm.adb:863:22: info: assertion proved (Z3: 1 VC)
+algorithm.adb:863:22: info: assertion proved (colibri: 1 VC)
 algorithm.adb:863:44: info: float overflow check proved (altergo: 1 VC)
 algorithm.adb:864:22: medium: assertion might fail
 algorithm.adb:864:76: info: assertion proved (CVC5: 2 VC)
@@ -365,7 +372,7 @@ algorithm.adb:866:22: info: assertion proved (Z3: 1 VC)
 algorithm.adb:866:45: info: float overflow check proved (altergo: 1 VC)
 algorithm.adb:866:72: info: division check proved (altergo: 1 VC)
 algorithm.adb:866:72: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
-algorithm.adb:867:38: info: float overflow check proved (Z3: 1 VC)
+algorithm.adb:867:38: info: float overflow check proved (altergo: 1 VC)
 algorithm.adb:867:40: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:867:47: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:867:76: info: float overflow check proved (altergo: 1 VC)
@@ -389,8 +396,10 @@ algorithm.adb:874:68: info: float overflow check proved (colibri: 1 VC)
 algorithm.adb:878:07: warning: statement has no effect
 algorithm.adb:879:10: warning: this statement is never reached
 algorithm.adb:880:10: warning: this statement is never reached
+algorithm.adb:880:20: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 algorithm.adb:881:10: warning: this statement is never reached
 algorithm.adb:882:10: warning: this statement is never reached
+algorithm.adb:882:25: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 algorithm.ads:43:38: info: range check proved (CVC5: 2 VC)
 algorithm.ads:68:13: info: implicit aspect Always_Terminates on "isFilterClear" has been proved, subprogram will terminate
 algorithm.ads:76:13: info: implicit aspect Always_Terminates on "isRisingGapSafe" has been proved, subprogram will terminate

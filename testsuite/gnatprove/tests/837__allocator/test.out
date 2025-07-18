@@ -1,0 +1,7 @@
+test.adb:10:04: error: "Y1" is not allowed in SPARK (due to move as part of an allocator or a conversion to an access-to-constant type which does not occur directly inside an assignment statement, an object declaration, or a simple return statement)
+test.adb:10:04: error: violation of aspect SPARK_Mode at line 1
+test.adb:10:20: error: move as part of an allocator or a conversion to an access-to-constant type which does not occur directly inside an assignment statement, an object declaration, or a simple return statement is not yet supported
+test_bc.adb:16:24: error: launch "gnatprove --explain=E0010" for more information
+test_bc.adb:16:24: error: object was moved at line 15 [E0010]
+test_bc.adb:16:24: error: part of dereference from "X3" is not readable
+gnatprove: error during flow analysis and proof

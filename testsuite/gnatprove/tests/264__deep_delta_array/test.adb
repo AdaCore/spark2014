@@ -10,7 +10,7 @@ procedure Test with SPARK_Mode is
      Pre => I in X'Range
      and then J in X'Range
      and then K in X'Range
-     and then L  in X'Range;
+     and then L in X'Range;
 
    procedure Test (X : in out My_Arr; I, J, K, L : Positive) is
       X_Old : constant My_Arr := X with Ghost;
@@ -31,7 +31,7 @@ procedure Test with SPARK_Mode is
      Pre => I in X'Range
      and then J in X'Range
      and then K in X'Range
-     and then L  in X'Range;
+     and then L in X'Range;
 
    procedure Test_Bad (X : in out My_Arr; I, J, K, L : Positive) is
       X_Old : constant My_Arr := X with Ghost;

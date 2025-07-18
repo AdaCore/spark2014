@@ -1,0 +1,45 @@
+test.adb:12:04: warning: analyzing unreferenced procedure "Call_P1" [unreferenced-procedure]
+test.adb:12:14: warning: subprogram "Call_P1" has no effect
+test.adb:14:07: medium: call might exit the program
+test.adb:32:14: warning: subprogram "Call_F1_Ghost" has no effect
+test.adb:38:12: medium: call might exit the program [possible fix: you should consider adding a postcondition to function F1 or turning it into an expression function in its unit spec]
+test.adb:41:04: warning: analyzing unreferenced procedure "Call_P2_No_Exit_OK" [unreferenced-procedure]
+test.adb:43:07: medium: call might exit the program
+test.adb:46:04: warning: analyzing unreferenced procedure "Call_P2_No_Exit_Bad" [unreferenced-procedure]
+test.adb:49:07: info: call cannot exit the program proved (CVC5: 1 VC)
+test.adb:55:22: info: program exit postcondition proved (CVC5: 1 VC)
+test.adb:64:22: medium: program exit postcondition might fail [possible fix: subprogram at line 63 should mention G in a precondition]
+test.adb:73:22: info: program exit postcondition proved (CVC5: 1 VC)
+test.adb:81:22: medium: program exit postcondition might fail [possible fix: subprogram at line 80 should mention G in a precondition]
+test.adb:90:14: warning: subprogram "Call_P1_Post_Old" has no effect
+test.adb:91:22: info: program exit postcondition proved (CVC5: 1 VC)
+test.adb:102:14: medium: exit case might fail
+test.adb:102:14: medium: on program exit from Call_P2_Exit_Cases_Bad at test.adb:100
+test.adb:112:14: info: exit case proved (CVC5: 1 VC)
+test.adb:112:14: info: on program exit from Call_P2_Exit_Cases_OK at test.adb:110
+test.adb:113:22: info: program exit postcondition proved (Trivial: 1 VC)
+test.adb:127:12: info: invariant check proved on default value (CVC5: 1 VC)
+test.adb:128:26: info: in default value of private type at test.adb:125
+test.adb:128:26: info: range check proved (CVC5: 2 VC)
+test.adb:133:07: info: at the end of the elaboration of package at test.adb:124
+test.adb:133:07: info: invariant check proved (CVC5: 1 VC)
+test.adb:137:17: info: for GT at the end of Call_P1_OK_Inv at test.adb:133
+test.adb:137:17: info: for GT on program exit at test.adb:133
+test.adb:137:17: info: invariant check proved (CVC5: 1 VC)
+test.adb:137:17: info: invariant check proved (CVC5: 1 VC)
+test.adb:138:25: info: program exit postcondition proved (CVC5: 1 VC)
+test.adb:145:17: info: for GT at the end of Call_P1_No_Inv at test.adb:133
+test.adb:145:17: info: invariant check proved (CVC5: 1 VC)
+test.adb:149:13: warning: unused assignment
+test.adb:154:17: info: for GT at the end of Call_P1_Bad_Inv at test.adb:133
+test.adb:154:17: info: invariant check proved (CVC5: 1 VC)
+test.adb:154:17: medium: for GT on program exit at test.adb:133
+test.adb:154:17: medium: invariant check might fail
+test.adb:155:25: info: program exit postcondition proved (CVC5: 1 VC)
+test.adb:171:17: info: for GT at the end of Call_P3 at test.adb:133
+test.adb:171:17: info: for GT on program exit at test.adb:133
+test.adb:171:17: info: invariant check proved (CVC5: 1 VC)
+test.adb:171:17: info: invariant check proved (CVC5: 1 VC)
+test.adb:172:25: info: program exit postcondition proved (CVC5: 1 VC)
+test.adb:175:10: info: for GT before the call at test.adb:133
+test.adb:175:10: info: invariant check proved (CVC5: 1 VC)

@@ -1,13 +1,13 @@
 default command-line output
 ---------------------------
-
-incr.adb:3:11: medium: overflow check might fail, cannot prove upper bound for X + 1
-    3 |   X := X + 1;
-      |        ~~^~~
-  reason for check: result of addition must fit in a 32-bits machine integer
-  possible fix: subprogram at line 1 should mention X in a precondition
-    1 |procedure Incr (X : in out Integer) is
-      |^ here
+ medium: overflow check might fail, cannot prove upper bound for X + 1
+--> incr.adb:3:11
+    3 |       X := X + 1;
+      |            ~~^~~
+      + reason for check: result of addition must fit in a 32-bits machine integer
+      + possible fix: subprogram at line 1 should mention X in a precondition
+    1 |    procedure Incr (X : in out Integer) is
+      |    ^
 
 brief output
 ------------
@@ -15,15 +15,15 @@ incr.adb:3:11: high: overflow check might fail, cannot prove upper bound for X +
 
 pretty output
 -------------
-
-incr.adb:3:11: high: overflow check might fail, cannot prove upper bound for X + 1
-    3 |   X := X + 1;
-      |        ~~^~~
-  e.g. when X = Integer'Last
-  reason for check: result of addition must fit in a 32-bits machine integer
-  possible fix: subprogram at line 1 should mention X in a precondition
-    1 |procedure Incr (X : in out Integer) is
-      |^ here
+ high: overflow check might fail, cannot prove upper bound for X + 1
+--> incr.adb:3:11
+    3 |       X := X + 1;
+      |            ~~^~~
+      + e.g. when X = Integer'Last
+      + reason for check: result of addition must fit in a 32-bits machine integer
+      + possible fix: subprogram at line 1 should mention X in a precondition
+    1 |    procedure Incr (X : in out Integer) is
+      |    ^
 
 one-line output
 ---------------

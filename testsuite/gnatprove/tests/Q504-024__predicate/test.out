@@ -1,4 +1,4 @@
-bar.adb:4:18: info: unrolling loop
+bar.adb:4:18: info: unrolling loop [info-unrolling-inlining]
 bar.adb:5:25: medium: assertion might fail (e.g. when X = False)
 bar.ads:3:13: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
 bar.ads:4:13: info: implicit aspect Always_Terminates on "Bizarre" has been proved, subprogram will terminate

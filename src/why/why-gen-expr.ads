@@ -162,6 +162,15 @@ package Why.Gen.Expr is
    --  [spark__branch.bool__content <- Condition;
    --  ("node_id:If_Node" spark__branch).bool__content]
 
+   function New_Ada_Dispatching_Equality
+     (Typ         : Type_Kind_Id;
+      Domain      : EW_Domain;
+      Left, Right : W_Expr_Id)
+     return W_Expr_Id;
+   --  Generate a boolean term which expresses the translation of "Left =
+   --  Right" in Ada semantics, where the equality is dispatching on Typ
+   --  or its class-wide type.
+
    function New_Ada_Equality
      (Typ         : Type_Kind_Id;
       Domain      : EW_Domain;
@@ -795,6 +804,36 @@ package Why.Gen.Expr is
    --  @param Id Identifier of a variable
    --  @result Program havocing the value of Id
 
+   function Validity_Wrapper_Type (Fun : E_Function_Id) return W_Type_Id with
+     Pre => Is_Potentially_Invalid (Fun);
+   --  Type for the validity wrapper used for the result of Fun
+
+   function New_Function_Is_Valid_Access
+     (Fun  : E_Function_Id;
+      Name : W_Expr_Id)
+      return W_Expr_Id
+   with Pre => Is_Potentially_Invalid (Fun);
+   --  Access to the validity flag in the validity wrapper used for the result
+   --  of Fun.
+
+   function New_Function_Valid_Value_Access
+     (Ada_Node : Node_Id := Empty;
+      Fun      : E_Function_Id;
+      Name     : W_Expr_Id;
+      Do_Check : Boolean := False)
+      return W_Expr_Id
+   with Pre => Is_Potentially_Invalid (Fun)
+     and then (if Do_Check then Present (Ada_Node));
+   --  Access to the value in the validity wrapper used for the result of Fun
+
+   function New_Function_Validity_Wrapper_Value
+     (Fun      : E_Function_Id;
+      Is_Valid : W_Expr_Id;
+      Value    : W_Expr_Id)
+      return W_Expr_Id
+   with Pre => Is_Potentially_Invalid (Fun);
+   --  Construct a value of the validity wrapper used for the result of Fun
+
    -------------------------------------
    -- Introducing temporary variables --
    -------------------------------------
@@ -850,5 +889,12 @@ package Why.Gen.Expr is
       Context  : W_Prog_Id)
       return W_Prog_Id
    is (+W_Expr_Id'(Binding_For_Temp (Ada_Node, EW_Prog, +Tmp, +Context)));
+
+   function Binding_For_Temp
+     (Ada_Node : Node_Id := Empty;
+      Tmp      : W_Term_Id;
+      Context  : W_Term_Id)
+      return W_Term_Id
+   is (+W_Expr_Id'(Binding_For_Temp (Ada_Node, EW_Term, +Tmp, +Context)));
 
 end Why.Gen.Expr;

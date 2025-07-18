@@ -25,7 +25,6 @@ with Ada.Containers;                  use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 
 with Aspects;                         use Aspects;
-with Exp_Util;                        use Exp_Util;
 with Errout_Wrapper;                  use Errout_Wrapper;
 with Namet;                           use Namet;
 with Nlists;                          use Nlists;
@@ -37,6 +36,7 @@ with Sem_Type;                        use Sem_Type;
 with Sinfo.Utils;                     use Sinfo.Utils;
 with Sprint;                          use Sprint;
 with Treepr;                          use Treepr;
+with Uintp;                           use Uintp;
 
 with Common_Iterators;                use Common_Iterators;
 with Gnat2Why_Args;
@@ -152,6 +152,54 @@ package body Flow_Utility is
    --  Extract proof dependencies and functions calls from Expr and add
    --  them to Proof_Dependencies.
 
+   function Is_Ancestor
+     (Anc   : Entity_Id;
+      Ty    : Entity_Id;
+      Scope : Flow_Scope)
+      return Boolean;
+   --  Return True if Anc is visibly an ancestor of Ty
+
+   function Introduces_Private_Fields
+     (Ty    : Entity_Id;
+      Anc   : Entity_Id;
+      Scope : Flow_Scope)
+      return Boolean
+   with Pre => Is_Ancestor (Anc, Ty, Scope);
+   --  Return True if Ty has private fields that are not in Anc
+
+   function Component_Visible_In_Type
+     (C : Entity_Id;
+      T : Type_Kind_Id;
+      S : Flow_Scope) return Boolean
+   is
+     (Is_Visible (C, S)
+      and then
+        (not Is_Tagged_Type (T) or else Is_Ancestor (Scope (C), T, S)));
+   --  C is visible in T if it is visible, and T is visibly derived from C's
+   --  scope in S.
+
+   function Get_Specific_Type_From_Classwide
+     (E    : Class_Wide_Kind_Id;
+      Scop : Flow_Scope)
+   return Type_Kind_Id
+   is
+     (Get_Type (Etype (Base_Type (E)), Scop));
+   --  Get the specific type from a classwide type
+
+   function Join
+     (A, B   : Flow_Id;
+      Offset : Natural := 0)
+         return Flow_Id
+     with Pre => A.Kind in Direct_Mapping | Record_Field and then
+                 B.Kind in Direct_Mapping | Record_Field,
+          Post => Join'Result.Facet = B.Facet;
+   --  Glues components of B to A, starting at offset. For example
+   --  consider A = Obj.X and B = R.X.Y and Offset = 1. Then joining
+   --  will return Obj.X.Y.
+   --
+   --  Similarly, if A = Obj.X and B = R.X'Private_Part and Offset = 1,
+   --  then joining will produce Obj.X'Private_Part.
+
    ----------------------------------------------------------------------
    -- Constants with variable inputs --
    ----------------------------------------------------------------------
@@ -216,7 +264,7 @@ package body Flow_Utility is
       if Ekind (Typ) = E_Record_Subtype then
          return Ancestor (Parent_Typ);
       else
-         if Parent_Typ = Typ then
+         if Parent_Typ = Typ or else Full_View (Parent_Typ) = Typ then
             return Empty;
          else
             pragma Assert (Present (Parent_Typ));
@@ -1044,9 +1092,9 @@ package body Flow_Utility is
                end if;
                pragma Annotate (Xcov, Exempt_Off);
 
-               while Is_Class_Wide_Type (T) loop
-                  T := Get_Type (Etype (T), Scope);
-               end loop;
+               if Is_Class_Wide_Type (T) then
+                  T := Get_Specific_Type_From_Classwide (T, Scope);
+               end if;
 
                pragma Assert (Is_Type (T));
 
@@ -1067,6 +1115,8 @@ package body Flow_Utility is
                case Type_Kind'(Ekind (T)) is
                   when Private_Nonrecord_Kind =>
                      Debug ("processing private type");
+
+                     pragma Assert (not Is_Tagged_Type (T));
 
                      if Has_Discriminants (T) then
                         for C of Unique_Components (T) loop
@@ -1131,29 +1181,24 @@ package body Flow_Utility is
                   when Record_Kind =>
                      Debug ("processing record type");
 
-                     --  For types which don't have any visible component or
-                     --  non null private part, whether or not they are tagged
-                     --  or classwide, we add the variable itself...
+                     --  If T is not visible in Scope, add a private part.
+                     --  Ideally, this should never occur.
 
-                     if Unique_Components (T).Is_Empty then
-                        --  Note that this condition also holds when the
-                        --  components are hidden behind a SPARK_Mode => Off.
+                     Contains_Non_Visible := not Is_Visible (T, Scope);
 
-                        Results.Insert (F);
-                     else
-                        --  ...else we add each visible component
+                     --  We add each visible component
 
-                        for C of Unique_Components (T) loop
-                           if Is_Visible (C, Scope) then
-                              Results.Insert (Add_Component (F, C));
-                           else
-                              --  We set Contains_Non_Visible to True when the
-                              --  type of F has a non null private part.
+                     for C of Unique_Components (T) loop
 
-                              Contains_Non_Visible := True;
-                           end if;
-                        end loop;
-                     end if;
+                        if Component_Visible_In_Type (C, T, Scope) then
+                           Results.Insert (Add_Component (F, C));
+                        else
+                           --  We set Contains_Non_Visible to True when the
+                           --  type of F has a non null private part.
+
+                           Contains_Non_Visible := True;
+                        end if;
+                     end loop;
 
                      --  We iterate over the ancestors of type T to check
                      --  whether it derives from a private type (whose full
@@ -1170,13 +1215,11 @@ package body Flow_Utility is
                            --  from a private type in the private part where it
                            --  is fully declared.
 
-                           if Is_Private_Type (Typ) then
-                              pragma Assert (Present (Full_View (Typ)));
+                           Typ := Get_Type (Base_Type (Typ), Scope);
 
-                              if not Is_Visible (Full_View (Typ), Scope) then
-                                 Contains_Non_Visible := True;
-                                 exit;
-                              end if;
+                           if Is_Private_Type (Typ) then
+                              Contains_Non_Visible := True;
+                              exit;
                            end if;
 
                            Typ := Ancestor (Typ);
@@ -1187,6 +1230,14 @@ package body Flow_Utility is
                      if Contains_Non_Visible then
                         Results.Insert
                           ((F with delta Facet => Private_Part));
+                     end if;
+
+                     --  For types which don't have any visible component or
+                     --  non null private part, whether or not they are tagged
+                     --  or classwide, we add the variable itself.
+
+                     if Results.Is_Empty then
+                        Results.Insert (F);
                      end if;
 
                      if Classwide then
@@ -1287,6 +1338,7 @@ package body Flow_Utility is
 
    procedure Get_Assignment_Target_Properties
      (N                  :     Node_Id;
+      Scope              :     Flow_Scope;
       Partial_Definition : out Boolean;
       View_Conversion    : out Boolean;
       Map_Root           : out Flow_Id;
@@ -1308,7 +1360,6 @@ package body Flow_Utility is
       --  the root node which should be an entire variable.
 
       Seq := Node_Lists.Empty_List;
-
       while Nkind (Root_Node) in Interesting_Nodes loop
          Seq.Prepend (Root_Node);
 
@@ -1331,7 +1382,7 @@ package body Flow_Utility is
       if Is_Protected_Component (Root_Entity) then
          Map_Root :=
            Add_Component
-             (Direct_Mapping_Id (Scope (Root_Entity)),
+             (Direct_Mapping_Id (Sinfo.Nodes.Scope (Root_Entity)),
               Root_Entity);
 
       elsif Is_Part_Of_Concurrent_Object (Root_Entity) then
@@ -1359,7 +1410,6 @@ package body Flow_Utility is
       --  assignment (the defined variable is implicitly used).
 
       Partial_Definition := False;
-      View_Conversion    := False;
 
       for N of Seq loop
          case Interesting_Nodes (Nkind (N)) is
@@ -1368,16 +1418,38 @@ package body Flow_Utility is
                   Partial_Definition := True;
                   exit;
                else
-                  Map_Root :=
-                    Add_Component
-                      (Map_Root,
-                       Unique_Component (Entity (Selector_Name (N))));
+                  declare
+                     Field      : constant Entity_Id :=
+                       Unique_Component (Entity (Selector_Name (N)));
+                     Components : constant Flow_Id_Sets.Set :=
+                       Get_Components (Map_Root, Scope);
+                     New_Comp   : constant Flow_Id :=
+                       Add_Component (Map_Root, Field);
+                  begin
+                     if Components.Contains (New_Comp) then
+                        Map_Root := New_Comp;
+                     else
+                        --  If Map_Root's type is an ancestor of the type
+                        --  declaring Field, then Field is necessarily part of
+                        --  the extension. Otherwise, we are in presence of
+                        --  invisible private derivations. Assume partial
+                        --  definition of the whole object.
+
+                        if Is_Ancestor
+                          (Get_Type (Map_Root, Scope),
+                           Get_Type (Sinfo.Nodes.Scope (Field), Scope),
+                           Scope)
+                        then
+                           Map_Root :=
+                             (Map_Root with delta Facet => Extension_Part);
+                        end if;
+                        Partial_Definition := True;
+                        exit;
+                     end if;
+                  end;
                end if;
 
-            when N_Type_Conversion =>
-               View_Conversion := True;
-
-            when N_Unchecked_Type_Conversion =>
+            when N_Type_Conversion | N_Unchecked_Type_Conversion =>
                null;
 
             when N_Indexed_Component | N_Slice | N_Explicit_Dereference =>
@@ -1386,10 +1458,35 @@ package body Flow_Utility is
          end case;
       end loop;
 
+      View_Conversion := Nkind (N) = N_Type_Conversion
+        and then Is_Tagged_Type (Get_Type (Etype (N), Scope));
+
+      --  On view conversions, if the root type and the ultimately written
+      --  types are not visibly descendants of each others we won't be able to
+      --  properly track which parts are written.
+
+      if View_Conversion
+        and then not Partial_Definition
+        and then not Is_Class_Wide_Type (Get_Type (Etype (N), Scope))
+      then
+         declare
+            Old_Ty : constant Entity_Id := Get_Type (Map_Root, Scope);
+            New_Ty : constant Entity_Id := Get_Type (Etype (N), Scope);
+
+         begin
+            if not Is_Ancestor (Old_Ty, New_Ty, Scope)
+              and then not Is_Ancestor (New_Ty, Old_Ty, Scope)
+            then
+               Partial_Definition := True;
+            end if;
+         end;
+      end if;
+
       --  Sanity-check: the Map_Root part of the results should be the same as
       --  what would be returned by Path_To_Flow_Id.
 
-      pragma Assert (Root_Overlaid or else Map_Root = Path_To_Flow_Id (N));
+      pragma Assert
+        (Root_Overlaid or else Map_Root = Path_To_Flow_Id (N, Scope));
    end Get_Assignment_Target_Properties;
 
    -----------------
@@ -2204,6 +2301,106 @@ package body Flow_Utility is
    function Get_Loop_Writes (E : Entity_Id) return Flow_Id_Sets.Set
      renames Loop_Info.Element;
 
+   ------------------------------------
+   --  Get_Outputs_From_Program_Exit --
+   ------------------------------------
+
+   function Get_Outputs_From_Program_Exit
+     (E                    : Entity_Id;
+      Scope                : Flow_Scope;
+      Use_Computed_Globals : Boolean)
+      return Flow_Id_Sets.Set
+   is
+      Prag : constant Node_Id := Get_Pragma (E, Pragma_Program_Exit);
+
+   begin
+      if Present (Prag) then
+         declare
+            Assoc : constant List_Id :=
+              Pragma_Argument_Associations (Prag);
+
+            pragma Assert (No (Assoc) or else List_Length (Assoc) = 1);
+            --  Pragma has one optional argument
+
+         begin
+            --  Collect variables read in the expression.
+
+            if Present (Assoc) then
+               return
+                 Get_All_Variables
+                   (Expression (First (Assoc)),
+                    Scope                => Scope,
+                    Target_Name          => Null_Flow_Id,
+                    Use_Computed_Globals => Use_Computed_Globals,
+                    Skip_Old             => True);
+            end if;
+         end;
+      end if;
+
+      return Flow_Id_Sets.Empty_Set;
+   end Get_Outputs_From_Program_Exit;
+
+   -----------------------------------
+   -- Get_Outputs_From_Program_Exit --
+   -----------------------------------
+
+   function Get_Outputs_From_Program_Exit
+     (E    : Entity_Id;
+      Scop : Node_Id)
+      return Flow_Id_Sets.Set
+   is
+      Prag : constant Node_Id := Get_Pragma (E, Pragma_Program_Exit);
+      Res  : Flow_Id_Sets.Set;
+
+   begin
+      if No (Prag) then
+         return Res;
+      end if;
+
+      declare
+         Assoc         : constant List_Id :=
+           Pragma_Argument_Associations (Prag);
+         pragma Assert (No (Assoc) or else List_Length (Assoc) = 1);
+         Post          : Node_Id;
+         Reads, Writes : Flow_Id_Sets.Set;
+
+      begin
+         if No (Assoc) then
+            return Res;
+         end if;
+
+         Post := Expression (First (Assoc));
+
+         --  Collect all variables read in Post (except under 'Old)
+
+         Res.Union (Get_Variables_For_Proof (Post, Scop, Skip_Old => True));
+
+         --  Only keep E's outputs
+
+         Get_Proof_Globals
+           (Subprogram      => E,
+            Reads           => Reads,
+            Writes          => Writes,
+            Erase_Constants => True,
+            Scop            => Get_Flow_Scope (Scop));
+
+         --  Include the protected type for procedures and entries declared
+         --  directly within protected types. They are handled in flow as if
+         --  they had an implicit self parameter of mode in out.
+
+         if Present (Scope (E))
+           and then Ekind (Scope (E)) = E_Protected_Type
+           and then Ekind (E) in E_Procedure | E_Entry
+         then
+            Writes.Include (Direct_Mapping_Id (Scope (E)));
+         end if;
+
+         Res.Intersection (Writes);
+      end;
+
+      return Res;
+   end Get_Outputs_From_Program_Exit;
+
    -----------------------------------
    -- Get_Postcondition_Expressions --
    -----------------------------------
@@ -2700,7 +2897,8 @@ package body Flow_Utility is
       Target_Name             : Flow_Id;
       Use_Computed_Globals    : Boolean;
       Assume_In_Expression    : Boolean := True;
-      Expand_Internal_Objects : Boolean := False)
+      Expand_Internal_Objects : Boolean := False;
+      Skip_Old                : Boolean := False)
       return Flow_Id_Sets.Set
    is
       Vars : Flow_Id_Sets.Set;
@@ -2715,7 +2913,8 @@ package body Flow_Utility is
                            Use_Computed_Globals    => Use_Computed_Globals,
                            Assume_In_Expression    => Assume_In_Expression,
                            Expand_Internal_Objects => Expand_Internal_Objects,
-                           Consider_Extensions     => False));
+                           Consider_Extensions     => False,
+                           Skip_Old                => Skip_Old));
       end loop;
 
       return Vars;
@@ -2736,8 +2935,9 @@ package body Flow_Utility is
    end record;
 
    function Get_Variables_Internal
-     (N   : Node_Id;
-      Ctx : Get_Variables_Context)
+     (N        : Node_Id;
+      Ctx      : Get_Variables_Context;
+      Skip_Old : Boolean := False)
       return Flow_Id_Sets.Set
    with Pre => (if Ctx.Assume_In_Expression then Nkind (N) in N_Subexpr);
    --  Internal version with a context that we'll use to recurse
@@ -2754,7 +2954,8 @@ package body Flow_Utility is
       Use_Computed_Globals    : Boolean;
       Assume_In_Expression    : Boolean := True;
       Expand_Internal_Objects : Boolean := False;
-      Consider_Extensions     : Boolean := False)
+      Consider_Extensions     : Boolean := False;
+      Skip_Old                : Boolean := False)
       return Flow_Id_Sets.Set
    is
       Ctx : constant Get_Variables_Context :=
@@ -2767,7 +2968,7 @@ package body Flow_Utility is
          Consider_Extensions     => Consider_Extensions);
 
    begin
-      return Get_Variables_Internal (N, Ctx);
+      return Get_Variables_Internal (N, Ctx, Skip_Old);
    end Get_Variables;
 
    ----------------------------
@@ -2775,8 +2976,9 @@ package body Flow_Utility is
    ----------------------------
 
    function Get_Variables_Internal
-     (N   : Node_Id;
-      Ctx : Get_Variables_Context)
+     (N        : Node_Id;
+      Ctx      : Get_Variables_Context;
+      Skip_Old : Boolean := False)
       return Flow_Id_Sets.Set
    is
       ----------------------------------------------------
@@ -2949,11 +3151,14 @@ package body Flow_Utility is
          procedure Handle_Parameter (Formal : Entity_Id; Actual : Node_Id) is
             function May_Use_Extensions return Boolean is
               (Has_Extensions_Visible (Subprogram)
-                 or else
-               Is_Class_Wide_Type (Get_Type (Formal, Ctx.Scope)));
+               or else Is_Class_Wide_Type (Get_Type (Formal, Ctx.Scope))
+               or else
+                 (Flow_Classwide.Is_Dispatching_Call (Callsite)
+                  and then Is_Controlling_Formal (Formal)));
             --  True if we have the aspect set (so we know the subprogram might
-            --  convert to a classwide type), or we're dealing with a classwide
-            --  type directly (since that may or may not have extensions).
+            --  convert to a classwide type), we're dealing with a classwide
+            --  type directly (since that may or may not have extensions), or
+            --  the call is dispatching.
 
          begin
             --  When detecting Inputs and Null_Deps we use the Depends
@@ -3621,14 +3826,35 @@ package body Flow_Utility is
                return Variables;
 
             when Attribute_Constrained =>
-               for F of Recurse (Prefix (N)) loop
-                  if Is_Bound (F)
-                    or else Is_Discriminant (F)
-                  then
-                     Variables.Include (F);
-                  end if;
-               end loop;
-               return Variables;
+
+               --  Mimic how proof recognizes when GNAT expands 'Constrained
+               --  into an extra formal that is passed at runtime. ??? This is
+               --  pessimistic, e.g. a formal of a constrained type has its
+               --  'Constrained known statically.
+
+               if Ctx.Fold_Functions = Inputs
+                 and then Is_Entity_Name (Prefix (N))
+                 and then Ekind (Entity (Prefix (N))) in E_In_Out_Parameter
+                                                       | E_Out_Parameter
+                 and then
+                   Has_Discriminants
+                     (Get_Type (Entity (Prefix (N)), Ctx.Scope))
+               then
+                  return
+                    Flow_Id_Sets.To_Set
+                      (Direct_Mapping_Id
+                         (Entity (Prefix (N)), Facet => The_Bounds));
+
+               --  Otherwise, the attribute is known statically, but the prefix
+               --  is still evaluated and we capture this as null dependencies.
+
+               elsif Ctx.Fold_Functions = Null_Deps
+                 and then not Statically_Names_Object (Prefix (N))
+               then
+                  return Recurse (Prefix (N), Fold_Functions => Inputs);
+               else
+                  return Flow_Id_Sets.Empty_Set;
+               end if;
 
             when Attribute_Alignment
                | Attribute_Size
@@ -3724,6 +3950,11 @@ package body Flow_Utility is
                   HB : Node_Id;
                   --  Low and high bounds, respectively
 
+                  Dims  : Pos;
+                  Index : Node_Id;
+                  --  Number of dimensions and index for multi-dimensional
+                  --  arrays.
+
                begin
                   --  ??? We don't use Get_Type, because currently for a record
                   --  component with per-object constraints it returns its
@@ -3765,8 +3996,22 @@ package body Flow_Utility is
 
                   if Is_Constrained (T) then
                      if Is_Array_Type (T) then
-                        LB := Type_Low_Bound  (Get_Index_Subtype (N));
-                        HB := Type_High_Bound (Get_Index_Subtype (N));
+                        if Present (Expressions (N)) then
+                           Dims :=
+                             UI_To_Int (Intval (First (Expressions (N))));
+                           Index := First_Index (T);
+
+                           for J in 1 .. Dims - 1 loop
+                              Next_Index (Index);
+                           end loop;
+
+                           LB := Type_Low_Bound  (Etype (Index));
+                           HB := Type_High_Bound (Etype (Index));
+
+                        else
+                           LB := Type_Low_Bound  (Etype (First_Index (T)));
+                           HB := Type_High_Bound (Etype (First_Index (T)));
+                        end if;
                      else
                         pragma Assert (Is_Scalar_Type (T));
                         LB := Low_Bound (Scalar_Range (T));
@@ -3817,6 +4062,14 @@ package body Flow_Utility is
                --  The address of anything is totally separate from anything
                --  flow analysis cares about, so we ignore it.
                return Flow_Id_Sets.Empty_Set;
+
+            when Attribute_Old =>
+               --  If Skip_Old is True, ignore the attribute. Otherwise, we
+               --  just need the usual.
+
+               if Skip_Old then
+                  return Flow_Id_Sets.Empty_Set;
+               end if;
 
             when Attribute_Callable
                | Attribute_Caller
@@ -4083,7 +4336,8 @@ package body Flow_Utility is
            or else
              ((Is_Attribute_Update (Root_Node)
                  or else
-               Nkind (Root_Node) = N_Delta_Aggregate)
+               Nkind (Root_Node) in N_Delta_Aggregate
+                                  | N_Type_Conversion)
               and then
               Is_Record_Type (Unchecked_Full_Type (Etype (Root_Node))))
            or else
@@ -4100,7 +4354,8 @@ package body Flow_Utility is
             end if;
 
             Root_Node :=
-              (if Nkind (Root_Node) = N_Delta_Aggregate
+              (if Nkind (Root_Node) in N_Delta_Aggregate
+                                     | N_Type_Conversion
                then Expression (Root_Node)
                else Prefix (Root_Node));
 
@@ -4189,7 +4444,9 @@ package body Flow_Utility is
                         end loop;
                      end;
 
-                  when N_Selected_Component =>
+                  when N_Selected_Component
+                     | N_Type_Conversion
+                  =>
                      null;
 
                   when others =>
@@ -4411,6 +4668,83 @@ package body Flow_Utility is
 
                   Current_Field := Add_Component (Current_Field, Comp);
                   Comp_Id       := Comp_Id + 1;
+               end;
+
+            when N_Type_Conversion =>
+               declare
+                  New_T     : constant Entity_Id :=
+                    Get_Type (Etype (N), Scope);
+                  Old_T     : constant Entity_Id :=
+                    Get_Type (Etype (Expression (N)), Scope);
+                  Same_Priv : constant Boolean :=
+                    (if not Is_Tagged_Type (Old_T) then True
+                     elsif Is_Ancestor (Old_T, New_T, Scope)
+                     then not Introduces_Private_Fields (New_T, Old_T, Scope)
+                     elsif Is_Ancestor (New_T, Old_T, Scope)
+                     then not Introduces_Private_Fields (Old_T, New_T, Scope)
+                     else False);
+                  --  Normally, one of Old_T and New_T is an ancestor of the
+                  --  other. However, when we peek into declarations of nested
+                  --  packages without adjusting the visibility, we can
+                  --  encounter conversions for which this derivation is not
+                  --  visible.
+
+                  New_Comps : Flow_Id_Sets.Set;
+                  The_Ext   : constant Flow_Id :=
+                    (Current_Field with delta Facet => Extension_Part);
+                  The_Priv  : constant Flow_Id :=
+                    (Current_Field with delta Facet => Private_Part);
+                  Default   : Flow_Id_Sets.Set;
+                  New_Map   : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
+               begin
+                  for K of Flatten_Variable
+                    (Direct_Mapping_Id (New_T), Scope)
+                  loop
+                     New_Comps.Insert (Join (Current_Field, K));
+                  end loop;
+
+                  if Is_Tagged_Type (New_T) then
+                     New_Comps.Include (The_Ext);
+                  end if;
+
+                  --  Go over M to remove additional components not present in
+                  --  New_T. Merge their inputs into default.
+
+                  for C in M.Iterate loop
+                     declare
+                        K : Flow_Id          renames Flow_Id_Maps.Key (C);
+                        V : Flow_Id_Sets.Set renames M (C);
+
+                     begin
+                        --  The conversion might be from or to an ancestor
+                        --  type. In the first case, the extension might flow
+                        --  into missing components and the private part. In
+                        --  the second case, the private part and additional
+                        --  components might flow into the extension.
+                        --  Handle both cases at once by merging the extension
+                        --  and the private part into Default and back again.
+                        --  The case where both type have the same private part
+                        --  is handled specifically for more precision.
+
+                        if not New_Comps.Contains (K)
+                          or else K = The_Ext
+                          or else (not Same_Priv and K = The_Priv)
+                        then
+                           Default.Union (V);
+                        else
+                           New_Map.Insert (K, V);
+                           New_Comps.Delete (K);
+                        end if;
+                     end;
+                  end loop;
+
+                  --  Add missing components from New_T. They depend on Default
+
+                  for K of New_Comps loop
+                     New_Map.Insert (K, Default);
+                  end loop;
+
+                  M.Move (Source => New_Map);
                end;
 
             when others =>
@@ -4646,14 +4980,8 @@ package body Flow_Utility is
                   T : constant Entity_Id := Get_Type (N, Ctx.Scope);
                begin
                   if Is_Record_Type (T) then
-                     if Is_Tagged_Type (T) then
-                        --  ??? Precise analysis is disabled for tagged types,
-                        --      so we just do the usual instead.
-                        null;
-                     else
-                        Variables.Union (Untangle_With_Context (N));
-                        return Skip;
-                     end if;
+                     Variables.Union (Untangle_With_Context (N));
+                     return Skip;
                   else
                      pragma Assert (Is_Array_Type (T));
 
@@ -4744,15 +5072,16 @@ package body Flow_Utility is
                          (N,
                           Map_Root                =>
                             Direct_Mapping_Id (Etype (N)),
-                          Map_Type                =>
-                            Get_Type (N, Ctx.Scope),
+                          Map_Type                => Get_Type (N, Ctx.Scope),
                           Target_Name             => Ctx.Target_Name,
                           Scope                   => Ctx.Scope,
                           Fold_Functions          => Ctx.Fold_Functions,
                           Use_Computed_Globals    =>
                             Ctx.Use_Computed_Globals,
                           Expand_Internal_Objects =>
-                            Ctx.Expand_Internal_Objects);
+                            Ctx.Expand_Internal_Objects,
+                          Extensions_Irrelevant   =>
+                             not Ctx.Consider_Extensions);
 
                   begin
                      for FS of M loop
@@ -5313,8 +5642,9 @@ package body Flow_Utility is
    -----------------------------
 
    function Get_Variables_For_Proof
-     (Expr_N  : Node_Id;
-      Scope_N : Node_Id)
+     (Expr_N   : Node_Id;
+      Scope_N  : Node_Id;
+      Skip_Old : Boolean := False)
       return Flow_Id_Sets.Set
    is
       function Enclosing_Declaration_Or_Statement (N : Node_Id) return Node_Id;
@@ -5322,7 +5652,9 @@ package body Flow_Utility is
       --  arbitrary node N.
       --  ??? This is copy-pasted from sem_res.adb; refactor
 
-      function Resolve_Target_Name (N : Node_Id) return Flow_Id
+      function Resolve_Target_Name
+        (N     : Node_Id;
+         Scope : Flow_Scope) return Flow_Id
       with Pre => Nkind (N) in N_Subexpr;
       --  If the node N is a subexpression of an assignment statement with
       --  target_names, it returns the Flow_Id of the object represented by
@@ -5361,13 +5693,16 @@ package body Flow_Utility is
       -- Resolve_Target_Name --
       -------------------------
 
-      function Resolve_Target_Name (N : Node_Id) return Flow_Id is
+      function Resolve_Target_Name
+        (N     : Node_Id;
+         Scope : Flow_Scope) return Flow_Id
+      is
          Stmt : constant Node_Id := Enclosing_Declaration_Or_Statement (N);
       begin
          if Nkind (Stmt) = N_Assignment_Statement
            and then Has_Target_Names (Stmt)
          then
-            return Path_To_Flow_Id (Name (Stmt));
+            return Path_To_Flow_Id (Name (Stmt), Scope);
          else
             return Null_Flow_Id;
          end if;
@@ -5375,8 +5710,9 @@ package body Flow_Utility is
 
       --  Local variables
       Entire_Variables : Flow_Id_Sets.Set;
-
-      Target_Name : constant Flow_Id := Resolve_Target_Name (Expr_N);
+      Scope            : constant Flow_Scope := Get_Flow_Scope (Scope_N);
+      Target_Name      : constant Flow_Id :=
+        Resolve_Target_Name (Expr_N, Scope);
 
    --  Start of processing for Get_Variables_For_Proof
 
@@ -5386,11 +5722,12 @@ package body Flow_Utility is
 
       for V of Get_All_Variables
         (Expr_N,
-         Scope                   => Get_Flow_Scope (Scope_N),
+         Scope                   => Scope,
          Target_Name             => Target_Name,
          Use_Computed_Globals    => True,
          Assume_In_Expression    => True,
-         Expand_Internal_Objects => False)
+         Expand_Internal_Objects => False,
+         Skip_Old                => Skip_Old)
       loop
          if not Is_Bound (V) then
             Entire_Variables.Include (Entire_Variable (V));
@@ -5561,6 +5898,71 @@ package body Flow_Utility is
 
       return Results;
    end Ignore_Record_Type_Discriminants;
+
+   -------------------------------
+   -- Introduces_Private_Fields --
+   -------------------------------
+
+   function Introduces_Private_Fields
+     (Ty    : Entity_Id;
+      Anc   : Entity_Id;
+      Scope : Flow_Scope)
+      return Boolean
+   is
+      B_Anc : constant Entity_Id := Get_Type (Base_Type (Anc), Scope);
+      S_Anc : constant Entity_Id :=
+        (if Is_Class_Wide_Type (B_Anc)
+         then Get_Specific_Type_From_Classwide (B_Anc, Scope)
+         else B_Anc);
+      T     : Entity_Id :=
+        (if Is_Class_Wide_Type (Ty)
+         then Get_Specific_Type_From_Classwide (Base_Type (Ty), Scope)
+         else Ty);
+   begin
+      loop
+         T := Get_Type (Base_Type (T), Scope);
+
+         if T = S_Anc then
+            return False;
+         elsif Is_Private_Type (T) then
+            return True;
+         end if;
+         T := Ancestor (T);
+         pragma Assert (Present (T));
+      end loop;
+   end Introduces_Private_Fields;
+
+   -----------------
+   -- Is_Ancestor --
+   -----------------
+
+   function Is_Ancestor
+     (Anc   : Entity_Id;
+      Ty    : Entity_Id;
+      Scope : Flow_Scope)
+      return Boolean
+   is
+      B_Anc : constant Entity_Id := Get_Type (Base_Type (Anc), Scope);
+      S_Anc : constant Entity_Id :=
+        (if Is_Class_Wide_Type (B_Anc)
+         then Get_Specific_Type_From_Classwide (B_Anc, Scope)
+         else B_Anc);
+      T     : Entity_Id :=
+        (if Is_Class_Wide_Type (Ty)
+         then Get_Specific_Type_From_Classwide (Base_Type (Ty), Scope)
+         else Ty);
+   begin
+      loop
+         T := Get_Type (Base_Type (T), Scope);
+
+         if T = S_Anc then
+            return True;
+         end if;
+         T := Ancestor (T);
+         exit when No (T);
+      end loop;
+      return False;
+   end Is_Ancestor;
 
    ---------------------
    -- Is_Ghost_Entity --
@@ -5797,6 +6199,62 @@ package body Flow_Utility is
        and then Present (Encapsulating_State (N))
        and then Ekind (Encapsulating_State (N)) = E_Abstract_State);
 
+   -----------------------------
+   -- Is_Implicit_Constituent --
+   -----------------------------
+
+   function Is_Implicit_Constituent (N : Node_Id) return Boolean is
+
+      function In_Body_Or_Private_Part (Item : Node_Id) return Boolean
+        with Pre => Nkind (Item) in N_Object_Declaration
+                                  | N_Package_Declaration;
+      --  Returns True if Item is declared in body or private part of a
+      --  package, or in a private desendant of a library-level pacakge.
+
+      -----------------------------
+      -- In_Body_Or_Private_Part --
+      -----------------------------
+
+      function In_Body_Or_Private_Part (Item : Node_Id) return Boolean is
+         Context : constant Node_Id := Parent (Item);
+      begin
+         case Nkind (Context) is
+            when N_Package_Body =>
+               pragma Assert (List_Containing (Item) = Declarations (Context));
+               return True;
+
+            when N_Package_Specification =>
+               if List_Containing (Item) = Private_Declarations (Context) then
+                  return True;
+
+               elsif List_Containing (Item) = Visible_Declarations (Context)
+               then
+                  return In_Body_Or_Private_Part (Parent (Context));
+
+               else
+                  raise Program_Error;
+               end if;
+
+            --  Compilation unit may contain a package where objects are
+            --  declared, but it won't contain the objects themselves.
+
+            when N_Compilation_Unit =>
+               pragma Assert (Nkind (Item) = N_Package_Declaration);
+               return Is_Private_Descendant (Defining_Entity (Item));
+
+            when others =>
+               return False;
+         end case;
+      end In_Body_Or_Private_Part;
+
+   begin
+      return Nkind (N) in N_Entity
+        and then Ekind (N) in E_Constant | E_Variable
+        and then Ekind (Scope (N)) = E_Package
+        and then No (Encapsulating_State (N))
+        and then In_Body_Or_Private_Part (Parent (N));
+   end Is_Implicit_Constituent;
+
    -----------------------
    -- Is_Abstract_State --
    -----------------------
@@ -5805,6 +6263,30 @@ package body Flow_Utility is
    is
      (Nkind (N) in N_Entity
       and then Ekind (N) = E_Abstract_State);
+
+   ----------
+   -- Join --
+   ----------
+
+   function Join
+     (A, B   : Flow_Id;
+      Offset : Natural := 0)
+         return Flow_Id
+   is
+      F : Flow_Id := A;
+      N : Natural := 0;
+   begin
+      if B.Kind = Record_Field then
+         for C of B.Component loop
+            if N >= Offset then
+               F := Add_Component (F, C);
+            end if;
+            N := N + 1;
+         end loop;
+      end if;
+      F.Facet := B.Facet;
+      return F;
+   end Join;
 
    ------------------------------
    -- Rely_On_Generated_Global --
@@ -6383,7 +6865,8 @@ package body Flow_Utility is
       Fold_Functions          : Reference_Kind;
       Use_Computed_Globals    : Boolean;
       Expand_Internal_Objects : Boolean;
-      Extensions_Irrelevant   : Boolean := True)
+      Extensions_Irrelevant   : Boolean;
+      Top_Level               : Boolean := True)
       return Flow_Id_Maps.Map
    is
       --  !!! Join/Merge need to be able to deal with private parts and
@@ -6417,27 +6900,14 @@ package body Flow_Utility is
              Fold_Functions          => Fold_Functions,
              Use_Computed_Globals    => Use_Computed_Globals,
              Expand_Internal_Objects => Expand_Internal_Objects,
-             Extensions_Irrelevant   => Ext_Irrelevant))
+             Extensions_Irrelevant   => Ext_Irrelevant,
+             Top_Level               => False))
       with Pre => Nkind (N) in N_Subexpr
                     and then
                   (if not Extensions_Irrelevant
                    then not Ext_Irrelevant);
       --  Helpful wrapper for recursing. Note that once extensions are not
       --  irrelevant its not right to start ignoring them again.
-
-      function Join
-        (A, B   : Flow_Id;
-         Offset : Natural := 0)
-         return Flow_Id
-      with Pre => A.Kind in Direct_Mapping | Record_Field and then
-                  B.Kind in Direct_Mapping | Record_Field,
-           Post => Join'Result.Facet = B.Facet;
-      --  Glues components of B to A, starting at offset. For example
-      --  consider A = Obj.X and B = R.X.Y and Offset = 1. Then joining
-      --  will return Obj.X.Y.
-      --
-      --  Similarly, if A = Obj.X and B = R.X'Private_Part and Offset = 1,
-      --  then joining will produce Obj.X'Private_Part.
 
       procedure Merge
         (M         : in out Flow_Id_Maps.Map;
@@ -6467,29 +6937,145 @@ package body Flow_Utility is
       --  ??? Pre should include "Is_Object_Reference (Pref)", but currently
       --  it would fail on nested delta aggregates (TA01-056).
 
-      ----------
-      -- Join --
-      ----------
+      procedure Apply_Conversion
+        (T_From : Entity_Id;
+         T_To   : Entity_Id;
+         Source : Flow_Id_Maps.Map;
+         Target : in out Flow_Id_Maps.Map);
+      --  Convert the map Source of type T_From to a map for an object of type
+      --  T_To.
 
-      function Join
-        (A, B   : Flow_Id;
-         Offset : Natural := 0)
-         return Flow_Id
+      ----------------------
+      -- Apply_Conversion --
+      ----------------------
+
+      procedure Apply_Conversion
+        (T_From : Entity_Id;
+         T_To   : Entity_Id;
+         Source : Flow_Id_Maps.Map;
+         Target : in out Flow_Id_Maps.Map)
       is
-         F : Flow_Id := A;
-         N : Natural := 0;
+         Valid_To_Fields : Flow_Id_Sets.Set;
+
+         The_Ext   : constant Flow_Id :=
+           (Map_Root with delta Facet => Extension_Part);
+         The_Tg    : constant Flow_Id :=
+           (Map_Root with delta Facet => The_Tag);
+         The_Priv  : constant Flow_Id :=
+           (Map_Root with delta Facet => Private_Part);
+         Same_Priv : constant Boolean :=
+           (if not Is_Tagged_Type (T_To) then True
+            elsif Is_Ancestor (T_From, T_To, Scope)
+            then not Introduces_Private_Fields (T_To, T_From, Scope)
+            elsif Is_Ancestor (T_To, T_From, Scope)
+            then not Introduces_Private_Fields (T_From, T_To, Scope)
+            else False);
+         --  The private parts of From and To contains the same fields.
+         --  Normally, we should always be in a case where either T_From is
+         --  an ancestor of T_To or the opposite, but it might not be the case
+         --  if we are peeking into private declarations of nested packages.
+
+         Default  : Flow_Id_Sets.Set;
+         Position : Flow_Id_Maps.Cursor;
+         Unused   : Boolean;
+
       begin
-         if B.Kind = Record_Field then
-            for C of B.Component loop
-               if N >= Offset then
-                  F := Add_Component (F, C);
-               end if;
-               N := N + 1;
-            end loop;
+         pragma Annotate (Xcov, Exempt_On, "Debugging code");
+         if Debug_Trace_Untangle_Record then
+            Write_Str ("from: ");
+            Sprint_Node_Inline (T_From);
+            Write_Str (" (" & Ekind (T_From)'Img & ")");
+            Write_Str (" to: ");
+            Sprint_Node_Inline (T_To);
+            Write_Str (" (" & Ekind (T_To)'Img & ")");
+            Write_Eol;
+
+            Write_Str ("temporary map: ");
+            Print_Flow_Map (Source);
          end if;
-         F.Facet := B.Facet;
-         return F;
-      end Join;
+         pragma Annotate (Xcov, Exempt_Off);
+
+         for F of Flatten_Variable (Direct_Mapping_Id (T_To), Scope) loop
+            Valid_To_Fields.Insert (Join (Map_Root, F));
+         end loop;
+
+         if not Valid_To_Fields.Contains (The_Ext)
+           and then Is_Tagged_Type (T_To)
+           and then not Extensions_Irrelevant
+         then
+            Valid_To_Fields.Insert (The_Ext);
+         end if;
+
+         --  Handle all fields of Source but the extension. If the field is
+         --  valid in T_To, then insert it in M. Otherwise, put its
+         --  dependencies in Default.
+
+         for C in Source.Iterate loop
+            declare
+               Output   : Flow_Id          renames Flow_Id_Maps.Key (C);
+               Inputs   : Flow_Id_Sets.Set renames Source (C);
+               C_Target : Flow_Id_Sets.Cursor :=
+                 Valid_To_Fields.Find (Output);
+
+            begin
+               if Flow_Id_Sets.Has_Element (C_Target)
+                 and then Output /= The_Ext
+                 and then (Output /= The_Priv or else Same_Priv)
+               then
+                  Target.Insert (Output, Inputs);
+                  Valid_To_Fields.Delete (C_Target);
+               else
+                  Default.Union (Inputs);
+               end if;
+            end;
+         end loop;
+
+         --  If T_To is an ancestor of T_From, all the additional fields of
+         --  Source flow into the extension if any. Otherwise, they might flow
+         --  into the private part too if any.
+
+         if Valid_To_Fields.Contains (The_Ext) then
+            Target.Insert (The_Ext, Default);
+            Valid_To_Fields.Delete (The_Ext);
+         end if;
+
+         if Valid_To_Fields.Contains (The_Priv)
+           and then not Is_Ancestor (T_To, T_From, Scope)
+         then
+            Target.Insert (The_Priv, Default);
+            Valid_To_Fields.Delete (The_Priv);
+         end if;
+
+         --  Handle the missing To fields. If T_From is an ancestor of T_To,
+         --  all remaining valid fields of T_To depend on the extension of Tmp.
+         --  Otherwise, they might also depend on the private part if any.
+
+         Default.Clear;
+
+         declare
+            C : constant Flow_Id_Maps.Cursor :=
+              Source.Find (The_Ext);
+         begin
+            if Flow_Id_Maps.Has_Element (C) then
+               Default := Source (C);
+            end if;
+         end;
+
+         if Source.Contains (The_Priv)
+           and then not Same_Priv
+           and then not Is_Ancestor (T_From, T_To, Scope)
+         then
+            Default.Union (Source (The_Priv));
+         end if;
+
+         for Output of Valid_To_Fields loop
+            Target.Insert (Output, Default);
+         end loop;
+
+         if Valid_To_Fields.Contains (The_Tg) then
+            Target.Insert (The_Tg, Position, Unused);
+         end if;
+      end Apply_Conversion;
 
       -----------
       -- Merge --
@@ -6500,10 +7086,31 @@ package body Flow_Utility is
          Component : Entity_Id;
          Input     : Node_Id)
       is
-         F   : constant Flow_Id := Add_Component (Map_Root, Component);
+         F   : Flow_Id := Add_Component (Map_Root, Component);
          Tmp : Flow_Id_Maps.Map;
+
       begin
-         if Present (Input) then
+         --  In private declarations of nested packages, it might happen that
+         --  we parse an aggregate whose components are not visible in the
+         --  current scope. Use the private part instead.
+
+         if not Component_Visible_In_Type (Component, Map_Type, Scope) then
+            F := (Map_Root with delta Facet => Private_Part);
+            declare
+               Inputs   : constant Flow_Id_Sets.Set :=
+                 (if Present (Input) then Get_Vars_Wrapper (Input)
+                  else Flow_Id_Sets.Empty_Set);
+               Position : Flow_Id_Maps.Cursor;
+               Inserted : Boolean;
+
+            begin
+               M.Insert (F, Inputs, Position, Inserted);
+               if not Inserted then
+                  M (Position).Union (Inputs);
+               end if;
+            end;
+
+         elsif Present (Input) then
             if Is_Record_Type (Get_Type (Component, Scope)) then
                Tmp := Recurse_On (Input, F);
 
@@ -6545,15 +7152,37 @@ package body Flow_Utility is
          Assocs : List_Id)
          return Flow_Id_Maps.Map
       is
-         Assoc  : Node_Id;
-         Output : Node_Id;
-         Input  : Node_Id;
-         F      : Flow_Id;
+         Assoc   : Node_Id;
+         Output  : Node_Id;
+         Input   : Node_Id;
+         F       : Flow_Id;
+         Partial : Boolean;
 
-         Deep_Choice_Partial : Boolean;
-         Deep_Choice_Root    : Node_Id;
-         Deep_Choice_Seq     : Node_Lists.List;
-         Deep_Choice_Vars    : Flow_Id_Sets.Set;
+         procedure Add_Component_To_F (C : Entity_Id; T : Type_Kind_Id);
+         --  Add C to F. If F is not visible in T, add the private part instead
+         --  and set Partial to True.
+         --  This happens because we sometimes analyze code with the wrong
+         --  visibility in the private part of nested packages.
+
+         ------------------------
+         -- Add_Component_To_F --
+         ------------------------
+
+         procedure Add_Component_To_F (C : Entity_Id; T : Type_Kind_Id) is
+         begin
+            if Component_Visible_In_Type (C, T, Scope) then
+               F := Add_Component (F, C);
+            else
+               F := (F with delta facet => Private_Part);
+               Partial := True;
+            end if;
+         end Add_Component_To_F;
+
+         Partial_Choice_Root   : Node_Id;
+         Partial_Choice_Vars   : Flow_Id_Sets.Set;
+         --  For handling partial assignments
+
+         Deep_Choice_Seq       : Node_Lists.List;
          --  For handling deep delta aggregates
 
          Class_Wide_Conversion : constant Boolean :=
@@ -6573,41 +7202,41 @@ package body Flow_Utility is
          while Present (Assoc) loop
             pragma Assert (Nkind (Assoc) = N_Component_Association);
 
-            Deep_Choice_Partial := False;
-
             Input  := Expression (Assoc);
             Output := First (Choices (Assoc));
+
+            F := Map_Root;
+            Partial := False;
+            Partial_Choice_Root := Output;
+            Deep_Choice_Seq := Node_Lists.Empty_List;
 
             if Sem_Aggr.Is_Deep_Choice (Output, Etype (Pref)) then
 
                --  Determine the root node and the sequence of its selected
                --  and indexed components.
-
-               Deep_Choice_Root := Output;
-               Deep_Choice_Seq  := Node_Lists.Empty_List;
-               while not Is_Root_Prefix_Of_Deep_Choice (Deep_Choice_Root) loop
-                  Deep_Choice_Seq.Prepend (Deep_Choice_Root);
-                  Deep_Choice_Root := Prefix (Deep_Choice_Root);
+               while not Is_Root_Prefix_Of_Deep_Choice (Partial_Choice_Root)
+               loop
+                  Deep_Choice_Seq.Prepend (Partial_Choice_Root);
+                  Partial_Choice_Root := Prefix (Partial_Choice_Root);
                end loop;
 
                --  Build the assigned target Flow_Id and determine whether this
                --  is a partial update (like partially assigned arrays).
 
-               F :=
-                 Add_Component
-                   (Map_Root,
-                    Unique_Component (Entity (Deep_Choice_Root)));
+               Add_Component_To_F
+                 (Unique_Component (Entity (Partial_Choice_Root)),
+                  Get_Type (N, Scope));
 
                for N of Deep_Choice_Seq loop
+                  exit when Partial;
                   case Nkind (N) is
                      when N_Selected_Component =>
-                        F :=
-                          Add_Component
-                            (F,
-                             Unique_Component (Entity (Selector_Name (N))));
+                        Add_Component_To_F
+                          (Unique_Component (Entity (Selector_Name (N))),
+                           Get_Type (F, Scope));
 
                      when N_Indexed_Component =>
-                        Deep_Choice_Partial := True;
+                        Partial := True;
                         exit;
 
                      when others =>
@@ -6616,20 +7245,21 @@ package body Flow_Utility is
                end loop;
 
             else
-               F :=
-                 Add_Component (Map_Root, Unique_Component (Entity (Output)));
+               Add_Component_To_F
+                 (Unique_Component (Entity (Output)),
+                  Get_Type (N, Scope));
             end if;
 
             --  Partial update is handled like a self-assignment, i.e. it uses
             --  the current value, variables from the index expressions and
             --  from the input expression.
 
-            if Deep_Choice_Partial then
+            if Partial then
 
                --  For a partial update collect variables from its index
                --  expressions.
 
-               Deep_Choice_Vars := Flow_Id_Sets.Empty_Set;
+               Partial_Choice_Vars := Flow_Id_Sets.Empty_Set;
 
                for N of Deep_Choice_Seq loop
                   case Nkind (N) is
@@ -6642,7 +7272,8 @@ package body Flow_Utility is
                         begin
                            Expr := First (Expressions (N));
                            while Present (Expr) loop
-                              Deep_Choice_Vars.Union (Get_Vars_Wrapper (Expr));
+                              Partial_Choice_Vars.Union
+                                (Get_Vars_Wrapper (Expr));
                               Next (Expr);
                            end loop;
                         end;
@@ -6652,9 +7283,9 @@ package body Flow_Utility is
                   end case;
                end loop;
 
-               Deep_Choice_Vars.Union (M (F));
-               Deep_Choice_Vars.Union (Get_Vars_Wrapper (Input));
-               M.Replace (F, Deep_Choice_Vars);
+               Partial_Choice_Vars.Union (M (F));
+               Partial_Choice_Vars.Union (Get_Vars_Wrapper (Input));
+               M.Replace (F, Partial_Choice_Vars);
 
             elsif Is_Record_Type (Get_Type (F, Scope)) then
                for C in Recurse_On (Input, F).Iterate loop
@@ -6704,6 +7335,20 @@ package body Flow_Utility is
          Write_Eol;
       end if;
       pragma Annotate (Xcov, Exempt_Off);
+
+      --  If we are at top level, convert to the type of Map_Root
+
+      if Top_Level then
+         declare
+            N_Ty    : constant Entity_Id := Get_Type (N, Scope);
+            Base_Ty : constant Entity_Id := Get_Type (Map_Root, Scope);
+            Tmp     : constant Flow_Id_Maps.Map := Recurse_On (N, Map_Root);
+         begin
+            Apply_Conversion (N_Ty, Base_Ty, Tmp, M);
+         end;
+
+         goto Result_Untangle;
+      end if;
 
       case Nkind (N) is
          when N_Aggregate =>
@@ -6765,25 +7410,37 @@ package body Flow_Utility is
             pragma Annotate (Xcov, Exempt_Off);
 
             declare
+               Ty  : constant Entity_Id :=
+                 Get_Type (Etype (Prefix (N)), Scope);
                Tmp : constant Flow_Id_Maps.Map :=
-                 Recurse_On (Prefix (N),
-                             Direct_Mapping_Id (Etype (Prefix (N))));
+                 Recurse_On (Prefix (N), Direct_Mapping_Id (Ty));
 
                Selector : constant Entity_Id :=
                  Unique_Component (Entity (Selector_Name (N)));
 
             begin
-               for C in Tmp.Iterate loop
-                  declare
-                     Output : Flow_Id          renames Flow_Id_Maps.Key (C);
-                     Inputs : Flow_Id_Sets.Set renames Tmp (C);
+               if Component_Visible_In_Type (Selector, Ty, Scope) then
+                  for C in Tmp.Iterate loop
+                     declare
+                        Output : Flow_Id          renames Flow_Id_Maps.Key (C);
+                        Inputs : Flow_Id_Sets.Set renames Tmp (C);
 
+                     begin
+                        if Output.Component.First_Element = Selector then
+                           M.Insert (Join (Map_Root, Output, 1), Inputs);
+                        end if;
+                     end;
+                  end loop;
+               else
+                  declare
+                     Inputs : constant Flow_Id_Sets.Set :=
+                       Tmp.Element
+                         ((Direct_Mapping_Id (Ty) with delta
+                            facet => Private_Part));
                   begin
-                     if Output.Component.First_Element = Selector then
-                        M.Insert (Join (Map_Root, Output, 1), Inputs);
-                     end if;
+                     M.Insert (Map_Root, Inputs);
                   end;
-               end loop;
+               end if;
             end;
 
          when N_Identifier | N_Expanded_Name | N_Target_Name =>
@@ -6938,13 +7595,9 @@ package body Flow_Utility is
                Write_Eol;
             end if;
             pragma Annotate (Xcov, Exempt_Off);
-
             declare
                T_From : constant Entity_Id := Get_Type (Expression (N), Scope);
                T_To   : constant Entity_Id := Get_Type (N, Scope);
-
-               --  To_Class_Wide : constant Boolean :=
-               --    Is_Class_Wide_Type (T_To);
 
                Class_Wide_Conversion : constant Boolean :=
                  not Is_Class_Wide_Type (T_From)
@@ -6959,62 +7612,8 @@ package body Flow_Utility is
                --  If we convert to a classwide type then any extensions
                --  are no longer irrelevant.
 
-               Valid_To_Fields : Flow_Id_Sets.Set;
-
-               The_Ext : constant Flow_Id :=
-                 (Map_Root with delta Facet => Extension_Part);
-
-               The_Tg : constant Flow_Id :=
-                 (Map_Root with delta Facet => The_Tag);
-
-               Position : Flow_Id_Maps.Cursor;
-               Unused   : Boolean;
-
             begin
-               pragma Annotate (Xcov, Exempt_On, "Debugging code");
-               if Debug_Trace_Untangle_Record then
-                  Write_Str ("from: ");
-                  Sprint_Node_Inline (T_From);
-                  Write_Str (" (" & Ekind (T_From)'Img & ")");
-                  Write_Str (" to: ");
-                  Sprint_Node_Inline (T_To);
-                  Write_Str (" (" & Ekind (T_To)'Img & ")");
-                  Write_Eol;
-
-                  Write_Str ("temporary map: ");
-                  Print_Flow_Map (Tmp);
-               end if;
-               pragma Annotate (Xcov, Exempt_Off);
-
-               for F of Flatten_Variable (T_To, Scope) loop
-                  Valid_To_Fields.Insert (Join (Map_Root, F));
-               end loop;
-
-               for C in Tmp.Iterate loop
-                  declare
-                     Output : Flow_Id          renames Flow_Id_Maps.Key (C);
-                     Inputs : Flow_Id_Sets.Set renames Tmp (C);
-                     Target : Flow_Id_Sets.Cursor :=
-                       Valid_To_Fields.Find (Output);
-
-                  begin
-                     if Flow_Id_Sets.Has_Element (Target) then
-                        M.Insert (Output, Inputs);
-                        Valid_To_Fields.Delete (Target);
-                     elsif Valid_To_Fields.Contains (The_Ext) then
-                        M.Insert (The_Ext, Position, Unused);
-                        M (Position).Union (Inputs);
-                     end if;
-                  end;
-               end loop;
-
-               if Valid_To_Fields.Contains (The_Tg) then
-                  M.Insert (The_Tg, Position, Unused);
-               end if;
-
-               if Valid_To_Fields.Contains (The_Ext) then
-                  M.Insert (The_Ext, Position, Unused);
-               end if;
+               Apply_Conversion (T_From, T_To, Tmp, M);
             end;
 
          when N_Expression_With_Actions | N_Qualified_Expression =>
@@ -7089,6 +7688,8 @@ package body Flow_Utility is
             end;
       end case;
 
+      <<Result_Untangle>>
+
       pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Debug_Trace_Untangle_Record then
          Outdent;
@@ -7109,9 +7710,14 @@ package body Flow_Utility is
      (N                    :     Node_Id;
       Scope                :     Flow_Scope;
       Use_Computed_Globals :     Boolean;
+      Force_Extension      :     Boolean := False;
+      View_Conversion      : out Boolean;
+      Map_Root             : out Flow_Id;
       Vars_Defined         : out Flow_Id_Sets.Set;
       Vars_Used            : out Flow_Id_Sets.Set;
-      Partial_Definition   : out Boolean)
+      Partial_Definition   : out Boolean;
+      Partial_Ext          : out Boolean;
+      Partial_Priv         : out Boolean)
    is
       function Get_Vars_Wrapper (N : Node_Id) return Flow_Id_Sets.Set
       is (Get_Variables
@@ -7123,12 +7729,8 @@ package body Flow_Utility is
       with Pre => Nkind (N) in N_Subexpr;
       --  Returns inputs referenced in expression N
 
-      Unused                   : Boolean;
-      Base_Node                : Flow_Id;
-      Seq                      : Node_Lists.List;
-
-      Idx                      : Positive;
-      Process_Type_Conversions : Boolean;
+      Seq : Node_Lists.List;
+      Idx : Positive;
 
    --  Start of processing for Untangle_Assignment_Target
 
@@ -7145,9 +7747,10 @@ package body Flow_Utility is
       Get_Assignment_Target_Properties
         (N,
          Partial_Definition => Partial_Definition,
-         View_Conversion    => Unused,
-         Map_Root           => Base_Node,
-         Seq                => Seq);
+         View_Conversion    => View_Conversion,
+         Map_Root           => Map_Root,
+         Seq                => Seq,
+         Scope              => Scope);
 
       pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Debug_Trace_Untangle then
@@ -7158,8 +7761,8 @@ package body Flow_Utility is
          end loop;
          Outdent;
 
-         Write_Str ("Base_Node: ");
-         Print_Flow_Id (Base_Node);
+         Write_Str ("Map_Root: ");
+         Print_Flow_Id (Map_Root);
          Write_Eol;
       end if;
       pragma Annotate (Xcov, Exempt_Off);
@@ -7167,12 +7770,12 @@ package body Flow_Utility is
       --  We now set the variable(s) defined and will start to establish
       --  other variables that might be used.
 
-      Vars_Defined := Flatten_Variable (Base_Node, Scope);
+      Vars_Defined := Flatten_Variable (Map_Root, Scope);
       Vars_Used    := Flow_Id_Sets.Empty_Set;
 
       --  Assignment to an unconstrained record doesn't modify its bounds
 
-      Vars_Defined.Exclude ((Base_Node with delta Facet => The_Bounds));
+      Vars_Defined.Exclude ((Map_Root with delta Facet => The_Bounds));
 
       pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Debug_Trace_Untangle then
@@ -7184,10 +7787,6 @@ package body Flow_Utility is
       --  We go through the sequence. At each point we might do one of the
       --  following, depending on the operation:
       --
-      --    * Type conversion: we trim the variables defined to remove the
-      --      fields we no longer change. For this we use Idx to work out
-      --      which level of components (in the Flow_Id) we are looking at.
-      --
       --    * Array index and slice: we process the expressions and add to
       --      the variables used in code and proof. We also make sure to
       --      not process any future type conversions as flow analysis can
@@ -7195,50 +7794,10 @@ package body Flow_Utility is
       --
       --    * Component selection: we increment Idx.
 
-      Process_Type_Conversions := True;
-      Idx                      := 1;
+      Idx := 1;
 
       for N of Seq loop
          case Valid_Assignment_Kinds (Nkind (N)) is
-            when N_Type_Conversion =>
-               if Process_Type_Conversions then
-                  declare
-                     Old_Typ  : constant Entity_Id := Etype (Expression (N));
-                     New_Typ  : constant Entity_Id := Etype (N);
-
-                     Old_Vars : constant Flow_Id_Sets.Set := Vars_Defined;
-
-                     function In_Type (Old_Comp : Entity_Id) return Boolean is
-                       (for some New_Comp of Unique_Components (New_Typ) =>
-                           New_Comp = Old_Comp);
-
-                  begin
-                     if Is_Tagged_Type (Old_Typ)
-                       and then Is_Tagged_Type (New_Typ)
-                     then
-                        Vars_Defined := Flow_Id_Sets.Empty_Set;
-                        for F of Old_Vars loop
-                           if F.Kind = Record_Field
-                             and then In_Type (F.Component (Idx))
-                           then
-                              Vars_Defined.Insert (F);
-                           elsif F.Kind = Direct_Mapping then
-                              case F.Facet is
-                                 when Extension_Part =>
-                                    if Is_Class_Wide_Type (New_Typ) then
-                                       Vars_Defined.Insert (F);
-                                    end if;
-                                 when others =>
-                                    Vars_Defined.Insert (F);
-                              end case;
-                           end if;
-                        end loop;
-                     else
-                        Process_Type_Conversions := False;
-                     end if;
-                  end;
-               end if;
-
             when N_Indexed_Component =>
                declare
                   Expr : Node_Id := First (Expressions (N));
@@ -7249,7 +7808,6 @@ package body Flow_Utility is
                      Next (Expr);
                   end loop;
                end;
-               Process_Type_Conversions := False;
 
             when N_Slice =>
                declare
@@ -7261,14 +7819,15 @@ package body Flow_Utility is
                   Vars_Used.Union (Get_Vars_Wrapper (HB));
                end;
 
-               Process_Type_Conversions := False;
-
             when N_Selected_Component =>
                Idx := Idx + 1;
 
             when N_Unchecked_Type_Conversion
-               | N_Explicit_Dereference
-            =>
+               | N_Type_Conversion
+             =>
+               null;
+
+            when N_Explicit_Dereference =>
                null;
 
             when others =>
@@ -7277,11 +7836,104 @@ package body Flow_Utility is
          end case;
       end loop;
 
-      if Nkind (N) = N_Type_Conversion
-        and then Is_Class_Wide_Type (Etype (N))
-        and then Extensions_Visible (Base_Node, Scope)
+      Partial_Ext := False;
+      Partial_Priv := False;
+
+      --  On assignments to view conversions, the whole object might not be
+      --  written even if Partial_Definition is False. Compute the assigned
+      --  components.
+
+      if View_Conversion
+        and then not Partial_Definition
       then
-         Vars_Defined.Include ((Base_Node with delta Facet => Extension_Part));
+         declare
+            Assigned_Ty : constant Entity_Id := Get_Type (Etype (N), Scope);
+            Base_Ty     : constant Entity_Id := Get_Type (Map_Root, Scope);
+         begin
+            --  If Assigned_Ty a specific ancestor of Base_Ty, trim the fields
+            --  that do not occur in the assigned part.
+
+            if not Is_Class_Wide_Type (Assigned_Ty)
+              and then not Force_Extension
+              and then Is_Ancestor (Assigned_Ty, Base_Ty, Scope)
+            then
+               declare
+                  Old_Vars   : constant Flow_Id_Sets.Set := Vars_Defined;
+                  New_Typ_Id : constant Flow_Id :=
+                    Direct_Mapping_Id (Assigned_Ty);
+                  New_Comps  : constant Flow_Id_Sets.Set :=
+                    Get_Components (New_Typ_Id, Scope);
+               begin
+                  Vars_Defined := Flow_Id_Sets.Empty_Set;
+                  for F of Old_Vars loop
+                     if F.Kind = Record_Field
+                       and then New_Comps.Contains
+                         (Add_Component (New_Typ_Id, F.Component (Idx)))
+                     then
+                        Vars_Defined.Insert (F);
+                     elsif F.Kind = Direct_Mapping then
+                        case F.Facet is
+                        when Extension_Part =>
+
+                           --  The extension cannot be written
+
+                           null;
+
+                        when Private_Part =>
+
+                           --  If Map_Root has a private part, then it might
+                           --  be written by the assignment if Assigned_Ty has
+                           --  private fields.
+
+                           if New_Comps.Contains
+                             ((New_Typ_Id with delta Facet => Private_Part))
+                           then
+                              Vars_Defined.Insert (F);
+
+                              --  If Base_Ty has additional private fields
+                              --  compared to Assigned_Ty, then the private
+                              --  fields is only partially written.
+
+                              Partial_Priv := Introduces_Private_Fields
+                                (Base_Ty, Assigned_Ty, Scope);
+                           end if;
+
+                        when others =>
+                           raise Program_Error;
+                        end case;
+                     end if;
+                  end loop;
+               end;
+
+            --  Otherwise, the extension might be assigned if it is visible
+
+            else
+               pragma Assert
+                 (Is_Class_Wide_Type (Assigned_Ty)
+                  or else Force_Extension
+                  or else Is_Ancestor (Base_Ty, Assigned_Ty, Scope));
+
+               declare
+                  The_Ext : constant Flow_Id :=
+                    (Map_Root with delta Facet => Extension_Part);
+
+               begin
+                  if Extensions_Visible (Map_Root, Scope) then
+                     Vars_Defined.Include (The_Ext);
+                  end if;
+
+                  --  When the Assigned_Ty is not a classwide type, the
+                  --  extension might not be completly set.
+
+                  if Vars_Defined.Contains (The_Ext)
+                    and then not Is_Class_Wide_Type (Assigned_Ty)
+                    and then not Force_Extension
+                  then
+                     Partial_Ext := True;
+                  end if;
+               end;
+            end if;
+         end;
       end if;
 
       pragma Annotate (Xcov, Exempt_On, "Debugging code");
@@ -7558,7 +8210,8 @@ package body Flow_Utility is
    -- Path_To_Flow_Id --
    ---------------------
 
-   function Path_To_Flow_Id (Expr : Node_Id) return Flow_Id is
+   function Path_To_Flow_Id (Expr : Node_Id; Scop : Flow_Scope) return Flow_Id
+   is
       Seq : Node_Lists.List;
       --  A sequence of nodes on the path expression; we use a list here,
       --  because it makes an expression like "A.B.C" easy to process
@@ -7643,10 +8296,34 @@ package body Flow_Utility is
                null;
 
             when N_Selected_Component =>
-               Obj :=
-                 Add_Component
-                   (Obj,
-                    Unique_Component (Entity (Selector_Name (N))));
+               declare
+                  Field      : constant Entity_Id :=
+                    Unique_Component (Entity (Selector_Name (N)));
+                  Components : constant Flow_Id_Sets.Set :=
+                    Get_Components (Obj, Scop);
+                  New_Comp   : constant Flow_Id :=
+                    Add_Component (Obj, Field);
+               begin
+                  if Components.Contains (New_Comp) then
+                     Obj := New_Comp;
+                  else
+
+                     --  If Map_Root's type is an ancestor of the type
+                     --  declaring Field, then Field is necessarily part of
+                     --  the extension. Otherwise, we are in presence of
+                     --  invisible private derivation. We cannot know which
+                     --  parts of the object is updated.
+
+                     if Is_Ancestor
+                       (Get_Type (Obj, Scop),
+                        Get_Type (Scope (Field), Scop),
+                        Scop)
+                     then
+                        Obj := (Obj with delta Facet => Extension_Part);
+                     end if;
+                     return Obj;
+                  end if;
+               end;
 
             when others =>
                raise Program_Error;

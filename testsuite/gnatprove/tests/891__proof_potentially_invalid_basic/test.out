@@ -1,0 +1,106 @@
+test_basic.adb:12:14: warning: subprogram "Test_Assign" has no effect
+test_basic.adb:17:07: info: initialization of "Y" proved
+test_basic.adb:20:22: info: assertion proved (CVC5: 1 VC)
+test_basic.adb:22:22: info: assertion proved (CVC5: 1 VC)
+test_basic.adb:23:15: medium: validity check might fail (e.g. when X3'Valid_Scalars = False) [possible fix: precondition of subprogram at line 12 should mention X3]
+test_basic.adb:24:22: info: assertion proved (CVC5: 1 VC)
+test_basic.adb:26:22: medium: assertion might fail (e.g. when Y'Valid_Scalars = False)
+test_basic.adb:29:26: info: initialization of "Y" proved
+test_basic.adb:31:14: info: postcondition proved (CVC5: 2 VC)
+test_basic.adb:37:14: warning: subprogram "Test_Call" has no effect
+test_basic.adb:43:07: info: initialization of "Y" proved
+test_basic.adb:46:22: info: assertion proved (CVC5: 1 VC)
+test_basic.adb:48:22: info: assertion proved (CVC5: 1 VC)
+test_basic.adb:49:15: medium: validity check might fail (e.g. when X3'Valid_Scalars = False) [possible fix: precondition of subprogram at line 37 should mention X3]
+test_basic.adb:50:22: info: assertion proved (CVC5: 1 VC)
+test_basic.adb:52:22: medium: assertion might fail (e.g. when Y'Valid_Scalars = False)
+test_basic.adb:55:14: warning: subprogram "Test_Call_2" has no effect
+test_basic.adb:61:07: info: initialization of "Y" proved
+test_basic.adb:63:16: info: in value of subprogram parameter after the call at test_basic.adb:63
+test_basic.adb:63:16: info: validity check proved (CVC5: 1 VC)
+test_basic.adb:64:16: info: in value of subprogram parameter after the call at test_basic.adb:64
+test_basic.adb:64:16: info: validity check proved (CVC5: 1 VC)
+test_basic.adb:65:16: medium: in value of subprogram parameter after the call at test_basic.adb:65
+test_basic.adb:65:16: medium: validity check might fail (e.g. when Y = (I => 1))
+test_basic.adb:66:22: info: assertion proved (Trivial: 1 VC)
+test_basic.adb:66:22: warning: attribute "Valid_Scalars" is assumed to return True [attribute-valid-always-true]
+test_basic.adb:69:28: info: initialization of "Y" proved
+test_basic.adb:69:44: info: data dependencies proved
+test_basic.adb:75:14: warning: subprogram "Test_Call_3" has no effect
+test_basic.adb:80:07: info: initialization of "Y" proved
+test_basic.adb:83:14: info: validity check proved (CVC5: 1 VC)
+test_basic.adb:84:22: info: assertion proved (CVC5: 1 VC)
+test_basic.adb:86:22: info: assertion proved (CVC5: 1 VC)
+test_basic.adb:87:14: medium: validity check might fail (e.g. when X3'Valid_Scalars = False) [possible fix: precondition of subprogram at line 75 should mention X3]
+test_basic.adb:88:22: info: assertion proved (CVC5: 1 VC)
+test_basic.adb:91:14: warning: subprogram "Test_Declare" has no effect
+test_basic.adb:100:25: info: assertion proved (CVC5: 1 VC)
+test_basic.adb:105:25: info: assertion proved (CVC5: 1 VC)
+test_basic.adb:108:22: medium: validity check might fail (e.g. when X3'Valid_Scalars = False) [possible fix: precondition of subprogram at line 91 should mention X3]
+test_basic.adb:110:25: info: assertion proved (CVC5: 1 VC)
+test_basic.adb:115:25: medium: assertion might fail (e.g. when Y'Valid_Scalars = False) [possible fix: precondition of subprogram at line 91 should mention X4]
+test_basic.adb:119:14: warning: subprogram "Test_Declare_Cst" has no effect
+test_basic.adb:128:25: info: assertion proved (CVC5: 1 VC)
+test_basic.adb:133:25: info: assertion proved (CVC5: 1 VC)
+test_basic.adb:136:31: medium: validity check might fail (e.g. when X3'Valid_Scalars = False) [possible fix: precondition of subprogram at line 119 should mention X3]
+test_basic.adb:138:25: info: assertion proved (CVC5: 1 VC)
+test_basic.adb:143:25: medium: assertion might fail (e.g. when Y'Valid_Scalars = False) [possible fix: precondition of subprogram at line 119 should mention X4]
+test_basic.adb:151:40: info: data dependencies proved
+test_basic.adb:155:22: info: assertion proved (CVC5: 1 VC)
+test_basic.adb:156:22: medium: assertion might fail (e.g. when C2'Valid_Scalars = False)
+test_basic.adb:159:14: warning: subprogram "Test_Old" has no effect
+test_basic.adb:161:34: warning: "X2" is not modified, could be IN
+test_basic.adb:164:09: warning: postcondition does not check the outcome of calling "Test_Old_1" [-gnatw.t]
+test_basic.adb:164:17: info: postcondition proved (CVC5: 1 VC)
+test_basic.adb:166:07: info: no contextual analysis of "Test_Old" (nested subprogram)
+test_basic.adb:171:30: warning: "X1" is not modified, could be IN
+test_basic.adb:171:34: warning: unused initial value of "X2"
+test_basic.adb:174:09: warning: postcondition does not check the outcome of calling "Test_Old_2" [-gnatw.t]
+test_basic.adb:174:17: medium: postcondition might fail (e.g. when X2'Old'Valid_Scalars = False)
+test_basic.adb:181:30: warning: "X1" is not modified, could be IN
+test_basic.adb:181:34: warning: unused initial value of "X2"
+test_basic.adb:184:09: warning: postcondition does not check the outcome of calling "Test_Old_3" [-gnatw.t]
+test_basic.adb:184:17: info: postcondition proved (Trivial: 1 VC)
+test_basic.adb:184:17: medium: validity check might fail (e.g. when X2'Valid_Scalars = False)
+test_basic.adb:184:17: warning: attribute "Valid_Scalars" is assumed to return True [attribute-valid-always-true]
+test_basic.adb:194:14: warning: subprogram "Test_Loop_Entry" has no effect
+test_basic.adb:196:41: warning: "X2" is not modified, could be IN
+test_basic.adb:200:07: info: no contextual analysis of "Test_Loop_Entry" (nested subprogram)
+test_basic.adb:203:36: info: loop invariant initialization proved (CVC5: 1 VC)
+test_basic.adb:203:36: info: loop invariant preservation proved (CVC5: 1 VC)
+test_basic.adb:208:37: warning: "X1" is not modified, could be IN
+test_basic.adb:215:36: info: loop invariant preservation proved (CVC5: 1 VC)
+test_basic.adb:215:36: medium: loop invariant might fail in first iteration (e.g. when X2'Loop_Entry = (I => 1))
+test_basic.adb:220:37: warning: "X1" is not modified, could be IN
+test_basic.adb:227:36: info: loop invariant initialization proved (Trivial: 1 VC)
+test_basic.adb:227:36: info: loop invariant preservation proved (Trivial: 1 VC)
+test_basic.adb:227:36: medium: validity check might fail (e.g. when X2'Valid_Scalars = False) [possible fix: loop invariant at line 227 should mention X2]
+test_basic.adb:227:36: warning: attribute "Valid_Scalars" is assumed to return True [attribute-valid-always-true]
+test_basic.adb:232:37: warning: "X1" is not modified, could be IN
+test_basic.adb:239:36: info: loop invariant initialization proved (Trivial: 1 VC)
+test_basic.adb:239:36: info: loop invariant preservation proved (Trivial: 1 VC)
+test_basic.adb:239:36: warning: attribute "Valid" is assumed to return True [attribute-valid-always-true]
+test_basic.adb:239:38: medium: validity check might fail
+test_basic.adb:251:13: info: implicit aspect Always_Terminates on "Read_V" has been proved, subprogram will terminate
+test_basic.adb:253:06: info: data dependencies proved
+test_basic.adb:256:14: info: validity check proved (CVC5: 1 VC)
+test_basic.adb:259:13: info: implicit aspect Always_Terminates on "Read_V_Bad" has been proved, subprogram will terminate
+test_basic.adb:260:06: info: data dependencies proved
+test_basic.adb:263:14: medium: validity check might fail (e.g. when V'Valid_Scalars = False) [possible fix: subprogram at line 259 should mention V in a precondition]
+test_basic.adb:266:13: info: implicit aspect Always_Terminates on "Read_V_Inv" has been proved, subprogram will terminate
+test_basic.adb:268:06: info: data dependencies proved
+test_basic.adb:289:22: info: assertion proved (CVC5: 2 VC)
+test_basic.adb:291:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+test_basic.adb:292:47: medium: assertion might fail, cannot prove X2_Old'Valid_Scalars (e.g. when X2_Old'Valid_Scalars = False)
+test_basic.adb:293:16: info: validity check proved (CVC5: 1 VC)
+test_basic.adb:294:22: info: assertion proved (CVC5: 2 VC)
+test_basic.adb:295:16: medium: validity check might fail (e.g. when X4'Valid_Scalars = False) [possible fix: precondition of subprogram at line 280 should mention X4]
+test_basic.adb:298:47: medium: assertion might fail, cannot prove Y1'Valid_Scalars (e.g. when Y1'Valid_Scalars = False) [possible fix: precondition of subprogram at line 280 should mention Y1]
+test_basic.adb:299:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+test_basic.adb:306:23: warning: unused initial value of "X"
+test_basic.adb:307:33: info: exceptional case proved (Trivial: 1 VC)
+test_basic.adb:316:25: medium: "X" might not be initialized in "Exp_Store" [reason for check: OUT parameter should be fully initialized on return] [possible explanation: value of "X" is unknown following exceptional exit] [possible fix: initialize "X" on all paths or annotate it with aspect Relaxed_Initialization]
+test_basic.adb:317:33: info: exceptional case proved (Trivial: 1 VC)
+test_basic.adb:322:07: info: only expected exception raised (CVC5: 1 VC)
+test_basic.adb:325:10: high: "X" is not initialized [possible explanation: value of "X" is unknown following exceptional exit]
+test_basic.adb:325:25: medium: assertion might fail

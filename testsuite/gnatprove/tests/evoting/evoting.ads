@@ -1,6 +1,6 @@
 -- Ada_eVoting: Toy electronic voting program in Ada
 
--- copyright 2012 David MENTRÉ <dmentre@linux-france.org>
+-- copyright 2012 David MENTRÃ‰ <dmentre@linux-france.org>
 
 --  Permission is hereby granted, free of charge, to any person or organization
 --  obtaining a copy of the software and accompanying documentation covered by
@@ -114,7 +114,10 @@ package eVoting is
                          counters(winner) = counters(i))))
                    and then
                 (for all i in (last_candidate + 1)..Candidate_Number_t'Last =>
-                   Winners(I) = False);
+                   winners(I) = False)
+                   and then
+                winners'Initialized,
+      Relaxed_Initialization => winners;
 
    procedure Compute_Print_Results
      (program_phase  : Program_Phase_t;

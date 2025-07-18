@@ -1,6 +1,6 @@
 flight_manager.adb:9:16: info: add a contract to analyze it separately from calling contexts
 flight_manager.adb:9:16: info: implicit aspect Always_Terminates on "My_Abs" has been proved, subprogram will terminate
-flight_manager.adb:9:16: info: local subprogram "My_Abs" only analyzed in the context of calls
+flight_manager.adb:9:16: info: local subprogram "My_Abs" only analyzed in the context of calls [info-unrolling-inlining]
 flight_manager.adb:13:20: medium: overflow check might fail, cannot prove upper bound for -I, in call inlined at flight_manager.adb:21 [reason for check: result of negation must fit in a 32-bits machine integer]
 flight_manager.adb:19:07: info: initialization of "Max" proved
 flight_manager.adb:21:14: info: analyzing call to "My_Abs" in context

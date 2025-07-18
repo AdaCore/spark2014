@@ -5,6 +5,7 @@ basics.adb:16:14: info: discriminant check proved (CVC5: 1 VC)
 basics.adb:16:21: info: discriminant check proved (CVC5: 1 VC)
 basics.adb:16:24: info: overflow check proved (CVC5: 2 VC)
 basics.adb:23:16: info: justified that formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
+basics.adb:23:16: warning: aliasing check on components of an array is handled imprecisely [alias-array]
 basics.adb:23:19: info: index check proved (CVC5: 2 VC)
 basics.adb:23:26: info: index check proved (CVC5: 2 VC)
 basics.adb:32:07: info: precondition proved (CVC5: 1 VC)

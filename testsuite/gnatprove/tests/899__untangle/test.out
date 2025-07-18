@@ -1,0 +1,134 @@
+nested_private.adb:5:03: info: initialization of "O1" proved
+nested_private.adb:5:07: info: initialization of "O2" proved
+nested_private.adb:5:11: info: initialization of "O3" proved
+nested_private.adb:5:15: info: initialization of "O4" proved
+nested_private.adb:5:19: info: initialization of "O5" proved
+nested_private.adb:5:23: info: initialization of "O6" proved
+nested_private.adb:5:27: info: initialization of "O7" proved
+nested_private.adb:9:06: medium: missing dependency "O2 => I1"
+nested_private.adb:11:06: medium: missing dependency "O4 => I4"
+nested_private.adb:13:06: medium: missing dependency "O6 => I6"
+nested_private.adb:14:12: medium: incorrect dependency "O7 => I5"
+test_assignment.adb:5:14: warning: subprogram "Public" has no effect
+test_assignment.adb:14:40: info: initialization of "D" proved
+test_assignment.adb:14:43: info: initialization of "E" proved
+test_assignment.adb:14:46: info: initialization of "F" proved
+test_assignment.adb:15:09: info: flow dependencies proved
+test_assignment.adb:17:07: info: no contextual analysis of "Public" (nested subprogram)
+test_assignment.adb:27:40: info: initialization of "D" proved
+test_assignment.adb:27:43: info: initialization of "E" proved
+test_assignment.adb:27:46: info: initialization of "F" proved
+test_assignment.adb:28:09: info: flow dependencies proved
+test_assignment.adb:31:10: warning: initialization of "X" has no effect
+test_assignment.adb:34:25: info: tag check proved (CVC5: 1 VC)
+test_assignment.adb:40:40: info: initialization of "D" proved
+test_assignment.adb:40:43: info: initialization of "E" proved
+test_assignment.adb:40:46: info: initialization of "F" proved
+test_assignment.adb:41:09: info: flow dependencies proved
+test_assignment.adb:50:22: info: tag check proved (CVC5: 1 VC)
+test_assignment.adb:53:40: info: initialization of "D" proved
+test_assignment.adb:53:43: info: initialization of "E" proved
+test_assignment.adb:53:46: info: initialization of "F" proved
+test_assignment.adb:54:09: info: flow dependencies proved
+test_assignment.adb:57:10: warning: initialization of "X" has no effect
+test_assignment.adb:60:12: info: tag check proved (CVC5: 1 VC)
+test_assignment.adb:63:22: info: tag check proved (CVC5: 1 VC)
+test_assignment.adb:69:14: warning: subprogram "Private_Root" has no effect
+test_assignment.adb:70:07: info: no contextual analysis of "Private_Root" (nested package declaration)
+test_assignment.adb:83:16: warning: not dispatching (must be defined in a package spec) [enabled by default]
+test_assignment.adb:90:37: info: initialization of "D" proved
+test_assignment.adb:90:40: info: initialization of "E" proved
+test_assignment.adb:91:09: info: flow dependencies proved
+test_assignment.adb:102:37: info: initialization of "D" proved
+test_assignment.adb:102:40: info: initialization of "E" proved
+test_assignment.adb:103:09: info: flow dependencies proved
+test_assignment.adb:106:10: warning: initialization of "X" has no effect
+test_assignment.adb:109:25: info: tag check proved (CVC5: 1 VC)
+test_assignment.adb:114:37: info: initialization of "D" proved
+test_assignment.adb:114:40: info: initialization of "E" proved
+test_assignment.adb:115:09: info: flow dependencies proved
+test_assignment.adb:122:22: info: tag check proved (CVC5: 1 VC)
+test_assignment.adb:126:37: info: initialization of "D" proved
+test_assignment.adb:126:40: info: initialization of "E" proved
+test_assignment.adb:127:09: info: flow dependencies proved
+test_assignment.adb:130:10: warning: initialization of "X" has no effect
+test_assignment.adb:133:12: info: tag check proved (CVC5: 1 VC)
+test_assignment.adb:134:22: info: tag check proved (CVC5: 1 VC)
+test_assignment.adb:141:14: warning: subprogram "Private_Child" has no effect
+test_assignment.adb:145:07: info: no contextual analysis of "Private_Child" (nested package declaration)
+test_assignment.adb:161:40: info: initialization of "D" proved
+test_assignment.adb:161:43: info: initialization of "E" proved
+test_assignment.adb:161:46: info: initialization of "F" proved
+test_assignment.adb:162:09: info: flow dependencies proved
+test_assignment.adb:175:40: info: initialization of "D" proved
+test_assignment.adb:175:43: info: initialization of "E" proved
+test_assignment.adb:175:46: info: initialization of "F" proved
+test_assignment.adb:176:09: info: flow dependencies proved
+test_assignment.adb:179:10: warning: initialization of "X" has no effect
+test_assignment.adb:183:25: info: tag check proved (CVC5: 1 VC)
+test_assignment.adb:189:40: info: initialization of "D" proved
+test_assignment.adb:189:43: info: initialization of "E" proved
+test_assignment.adb:189:46: info: initialization of "F" proved
+test_assignment.adb:190:09: info: flow dependencies proved
+test_assignment.adb:200:27: info: tag check proved (CVC5: 1 VC)
+test_assignment.adb:203:40: info: initialization of "D" proved
+test_assignment.adb:203:43: info: initialization of "E" proved
+test_assignment.adb:203:46: info: initialization of "F" proved
+test_assignment.adb:204:09: info: flow dependencies proved
+test_assignment.adb:207:10: warning: initialization of "X" has no effect
+test_assignment.adb:211:12: info: tag check proved (CVC5: 1 VC)
+test_assignment.adb:214:27: info: tag check proved (CVC5: 1 VC)
+test_assignment.adb:220:14: warning: subprogram "Private_Private" has no effect
+test_assignment.adb:221:07: info: no contextual analysis of "Private_Private" (nested package declaration)
+test_assignment.adb:248:37: info: initialization of "D" proved
+test_assignment.adb:248:40: info: initialization of "E" proved
+test_assignment.adb:249:21: medium: missing dependency "D => A"
+test_assignment.adb:261:37: info: initialization of "D" proved
+test_assignment.adb:261:40: info: initialization of "E" proved
+test_assignment.adb:262:09: info: flow dependencies proved
+test_assignment.adb:265:10: warning: initialization of "X" has no effect
+test_assignment.adb:268:25: info: tag check proved (CVC5: 1 VC)
+test_assignment.adb:273:37: info: initialization of "D" proved
+test_assignment.adb:273:40: info: initialization of "E" proved
+test_assignment.adb:274:09: info: flow dependencies proved
+test_assignment.adb:282:29: info: tag check proved (CVC5: 1 VC)
+test_assignment.adb:285:37: info: initialization of "D" proved
+test_assignment.adb:285:40: info: initialization of "E" proved
+test_assignment.adb:286:09: info: flow dependencies proved
+test_assignment.adb:289:10: warning: initialization of "X" has no effect
+test_assignment.adb:292:12: info: tag check proved (CVC5: 1 VC)
+test_assignment.adb:294:29: info: tag check proved (CVC5: 1 VC)
+test_get_variables.adb:6:16: info: implicit aspect Always_Terminates on "Read_D" has been proved, subprogram will terminate
+test_get_variables.adb:11:16: info: implicit aspect Always_Terminates on "Read_D" has been proved, subprogram will terminate
+test_get_variables.adb:17:13: info: implicit aspect Always_Terminates on "Read1" has been proved, subprogram will terminate
+test_get_variables.adb:19:13: info: implicit aspect Always_Terminates on "Read2" has been proved, subprogram will terminate
+test_get_variables.adb:23:24: info: tag check proved (CVC5: 1 VC)
+test_get_variables.adb:23:24: info: tag check proved (CVC5: 1 VC), in call inlined at test_get_variables.adb:31
+test_get_variables.adb:28:13: info: implicit aspect Always_Terminates on "Read3" has been proved, subprogram will terminate
+test_get_variables.adb:31:14: info: analyzing call to "Read2" in context
+test_get_variables.adb:34:37: info: initialization of "C" proved
+test_get_variables.adb:35:06: info: flow dependencies proved
+test_get_variables.adb:43:37: info: initialization of "C" proved
+test_get_variables.adb:44:06: info: flow dependencies proved
+test_get_variables.adb:48:12: info: no contextual analysis of "Read2" (possible check on parameters)
+test_get_variables.adb:51:37: info: initialization of "C" proved
+test_get_variables.adb:52:06: info: flow dependencies proved
+test_get_variables.adb:59:37: info: initialization of "C" proved
+test_get_variables.adb:60:06: info: flow dependencies proved
+test_get_variables.adb:67:37: info: initialization of "C" proved
+test_get_variables.adb:69:28: high: "R" is not initialized
+test_get_variables.adb:70:06: info: flow dependencies proved
+test_get_variables.adb:74:22: info: tag check proved (CVC5: 1 VC)
+test_get_variables.adb:78:37: info: initialization of "C" proved
+test_get_variables.adb:80:28: high: "R" is not initialized
+test_get_variables.adb:81:06: info: flow dependencies proved
+test_get_variables.adb:85:22: info: tag check proved (CVC5: 1 VC)
+test_get_variables.adb:86:12: info: no contextual analysis of "Read2" (possible check on parameters)
+test_get_variables.adb:89:37: info: initialization of "C" proved
+test_get_variables.adb:91:28: high: "R" is not initialized
+test_get_variables.adb:92:06: info: flow dependencies proved
+test_get_variables.adb:96:22: info: tag check proved (CVC5: 1 VC)
+test_get_variables.adb:100:37: info: initialization of "C" proved
+test_get_variables.adb:102:28: high: "R" is not initialized
+test_get_variables.adb:103:06: info: flow dependencies proved
+test_get_variables.adb:107:22: info: tag check proved (CVC5: 1 VC)

@@ -610,7 +610,7 @@ loop involves a reborrow (in this case the value of the borrower at the end
 of the borrow is modified inside the loop and needs to be described in the
 invariant). Let us consider the following example:
 
-.. literalinclude:: /examples/ug__long__at_end_borrow/list_borrows.adb
+.. literalinclude:: /examples/ug__at_end_borrow/list_borrows.adb
    :language: ada
    :linenos:
 
@@ -689,7 +689,7 @@ changes that can be made to ``X`` during the rest of the borrow, there is no
 look ahead. Both ``Tail`` and ``Set_All_To_Zero`` can be entirely verified
 by |GNATprove|:
 
-.. literalinclude:: /examples/ug__long__at_end_borrow/test.out
+.. literalinclude:: /examples/ug__at_end_borrow/test.out
    :language: none
    :linenos:
 
@@ -1879,7 +1879,7 @@ subprogram calls unless the parameters are of an access-to-variable type. Ada,
 however, does not enforce the same restriction. In particular, if a parameter of
 mode ``in`` is of a private type which is ultimately an access-to-variable type,
 then the subprogram might modify the value it designates. The
-``Mutable_In_Parameter`` annotation is designed to make it possible to interact
+``Mutable_In_Parameters`` annotation is designed to make it possible to interact
 with existing Ada libraries from |SPARK| code, even if the libraries are not
 abiding by the language restrictions. It allows annotating an entry, procedure,
 or function with side effects so that all its parameters of mode ``in`` of

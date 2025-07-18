@@ -1,4 +1,5 @@
 prove_all:
   sparklib: True
   no_fail: True
+  steps: 500
   opt: ["-u", "lexer.adb"]

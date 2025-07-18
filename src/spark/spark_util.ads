@@ -162,6 +162,7 @@ package SPARK_Util is
       --  Message associated with an assertion/check pragma by the user
       Fix_Info     : Fix_Info_Type;
       Continuation : Continuation_Vectors.Vector;
+      Details      : Unbounded_String := Null_Unbounded_String;
    end record;
    --  Extra information for checks that is useful for generating better
    --  messages.
@@ -314,6 +315,29 @@ package SPARK_Util is
 
    function Dispatching_Contract (L : Node_Lists.List) return Node_Lists.List;
    --  Same as above but with a list of classwide pre- or postconditions
+
+   procedure Set_Call_Simulates_Contract_Dispatch (N : Node_Id)
+     with Pre =>
+       Nkind (N) in N_Function_Call | N_Op_Eq | N_Membership_Test
+       and then
+         (if Nkind (N) = N_Function_Call
+          then Present (Controlling_Argument (N)));
+   --  Register that a dispatching call is one produced by GNATprove to model
+   --  contract dispatch.
+   --
+   --  When a dispatching call is performed, the subprogram and the contract
+   --  are resolved as a whole. GNATprove creates a contract containing
+   --  dispatching calls to simulate selection of the contract, breaking down
+   --  that wholesale selection in pieces. However, these calls do not mirror
+   --  real dispatching calls. In particular, there is no associated runtime
+   --  tag check. The equality operator (and membership tests that
+   --  implicitly use it) may also appear due to primitive equality, which
+   --  should be modeled by calls to dispatching equality. Due to the
+   --  differences in handling, we need a way to distinguish these cases.
+
+   function Call_Simulates_Contract_Dispatch (N : Node_Id) return Boolean;
+   --  Return True if N is a function call that has been introduced to simulate
+   --  contract dispatch.
 
    -----------------------------------------
    -- General queries related to entities --
@@ -938,6 +962,12 @@ package SPARK_Util is
    --  However, the front end rejects these two cases. For the SPARK back end,
    --  this routine gives correct results.
 
+   function Is_In_Toplevel_Move (N : N_Subexpr_Id) return Boolean;
+   --  Return True if N occurs directly at a place where moves are alloxed, ie
+   --  as the expression of an object declaration occuring outside of a
+   --  declare block, as the lefthand side of an assignment, or in a simple
+   --  return statement.
+
    function Is_Path_Expression (Expr : N_Subexpr_Id) return Boolean;
    --  Return whether Expr corresponds to a path
 
@@ -1057,7 +1087,7 @@ package SPARK_Util is
 
    function Path_Contains_Witness
      (Expr : N_Subexpr_Id;
-      Test : access function (N : Node_Id) return Boolean)
+      Test : not null access function (N : Node_Id) return Boolean)
       return Boolean
      with Pre => Is_Path_Expression (Expr);
    --  Check whether the path contains a node satisfying predicate Test.
@@ -1387,6 +1417,40 @@ package SPARK_Util is
       return Boolean
    is
      (not Get_Raised_Exceptions (Call_Or_Stmt, True).Is_Empty);
+
+   function Has_Program_Exit (E : Entity_Id) return Boolean;
+   --  Return True if E has a program exit postcondition which is not
+   --  statically False or if it has an Exit_Cases contract with at least one
+   --  Program_Exit case.
+
+   function Get_Program_Exit (E : Entity_Id) return Node_Id with
+     Pre => Has_Program_Exit (E);
+   --  Return E's program exit postcondition or Empty if there is none.
+
+   function Might_Exit_Program (Call : Node_Id) return Boolean with
+     Pre => Nkind (Call) in N_Subprogram_Call
+                          | N_Entry_Call_Statement;
+   --  Return True if Call might exit the whole program in a way expected by
+   --  the enclosing unit.
+
+   function Is_Potentially_Invalid (E : Entity_Id) return Boolean;
+   --  Return True if E is subject to a Potentially_Invalid aspect
+
+   function Is_Potentially_Invalid_Expr (Expr : Node_Id) return Boolean;
+   --  Return True if Expr might be invalid. It might happen for:
+   --  * Potentially invalid or locally potentially invalid objects,
+   --  * Reference to the 'Result attribute of a function potentially invalid
+   --    function,
+   --  * Call to a potentially invalid function, and
+   --  * References to 'Old and 'Loop_Entry if the prefix is not a scalar and
+   --    might be invalid.
+   --  Other expressions require a validity check.
+
+   function Propagates_Validity_Flag (N : Node_Id) return Boolean;
+   --  Returns True on an assignment statement, an object declaration, or
+   --  an actual parameter of mode IN OUT or OUT that propagates the invalidity
+   --  flag of its source to its target. Otherwise, a validity check should
+   --  be issued.
 
    -----------------------------------------------
    --  Control-flow graph of statements/bodies  --

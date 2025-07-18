@@ -23,8 +23,10 @@ area_math.adb:249:76: info: index check proved (CVC5: 4 VC)
 area_math.adb:252:19: info: predicate check proved (CVC5: 4 VC)
 area_math.adb:252:40: info: overflow check proved (CVC5: 4 VC)
 area_math.adb:253:19: info: predicate check proved (CVC5: 4 VC)
+area_math.adb:253:19: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 area_math.adb:253:32: info: index check proved (CVC5: 4 VC)
 area_math.adb:254:19: info: predicate check proved (CVC5: 4 VC)
+area_math.adb:254:19: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 area_math.adb:254:30: info: index check proved (CVC5: 4 VC)
 area_math.adb:256:28: info: assertion proved (CVC5: 2 VC)
 area_math.adb:259:28: info: assertion proved (CVC5: 2 VC)

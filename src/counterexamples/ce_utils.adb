@@ -23,12 +23,19 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Characters.Handling;
 with Ada.Numerics.Big_Numbers.Big_Integers;
 use  Ada.Numerics.Big_Numbers.Big_Integers;
+with Ada.Numerics.Big_Numbers.Big_Reals;
+use Ada.Numerics.Big_Numbers.Big_Reals;
 with Ada.Strings.Fixed;           use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;
 with Atree;
+with CE_RAC;                      use CE_RAC;
+with Einfo.Entities;
 with Gnat2Why.Tables;             use Gnat2Why.Tables;
+with Gnat2Why.Util;               use Gnat2Why.Util;
+with Namet;
 with Nlists;                      use Nlists;
 with Sinput;                      use Sinput;
 with SPARK_Definition;            use SPARK_Definition;
@@ -470,6 +477,21 @@ package body CE_Utils is
          return Empty;
    end Get_Entity_Id;
 
+   ----------------------
+   -- Get_Id_From_Name --
+   ----------------------
+
+   function Get_Id_From_Name (E : Callable_Kind_Id; Name : String)
+                                       return Entity_Id is
+      use Ada.Characters.Handling;
+      Id : Entity_Id := First_Formal (E);
+   begin
+      while To_Upper (Short_Name (Id)) /= To_Upper (Name) loop
+         Id := Next_Formal (Id);
+      end loop;
+      return Id;
+   end Get_Id_From_Name;
+
    ------------------------
    -- Is_Visible_In_Type --
    ------------------------
@@ -658,6 +680,290 @@ package body CE_Utils is
       end Remove_Extra_Vars;
 
    end Remove_Vars;
+
+   ---------------------
+   -- To_Value_Access --
+   ---------------------
+
+   function To_Value_Access (Entity    : Entity_Id;
+                             JSON_Data : GNATCOLL.JSON.JSON_Value)
+                             return CE_Values.Value_Access is
+
+      ------------------------
+      -- Create_Float_Value --
+      ------------------------
+
+      function Create_Float_Value (T     : Type_Kind_Id;
+                                   Input : String)
+                                   return  CE_Values.Scalar_Value_Access
+        with Pre => Is_Floating_Point_Type (T);
+
+      function Create_Float_Value (T     : Type_Kind_Id;
+                                   Input : String)
+                                   return CE_Values.Scalar_Value_Access
+      is
+         Raw : constant Big_Real := From_Quotient_String (Input);
+      begin
+         if Is_Single_Precision_Floating_Point_Type (T) then
+            declare
+               package Float_32_Conversions is
+                 new Float_Conversions (Num => Float);
+            begin
+               return new
+                 CE_Values.Scalar_Value_Type'
+                   (K => Float_K,
+                    Float_Content =>
+                      CE_Values.Float_Value'(K
+                        => Float_32_K,
+                        Content_32
+                        => Float_32_Conversions.From_Big_Real (Raw)));
+            end;
+         elsif Is_Double_Precision_Floating_Point_Type (T) then
+            declare
+               package Float_64_Conversions is
+                 new Float_Conversions (Num => Long_Float);
+            begin
+               return new
+                 CE_Values.Scalar_Value_Type'
+                   (K => Float_K,
+                    Float_Content =>
+                      CE_Values.Float_Value'(K
+                        => Float_64_K,
+                        Content_64
+                        => Float_64_Conversions.From_Big_Real (Raw)));
+            end;
+         else
+            declare
+               package Float_Ext_Conversions is
+                 new Float_Conversions (Num => Long_Long_Float);
+            begin
+               return new
+                 CE_Values.Scalar_Value_Type'
+                   (K => Float_K,
+                    Float_Content =>
+                      CE_Values.Float_Value'(K
+                        => Extended_K,
+                        Ext_Content
+                        => Float_Ext_Conversions.From_Big_Real (Raw)));
+            end;
+         end if;
+      end Create_Float_Value;
+
+      Res_Type : constant Type_Kind_Id := Retysp (Etype (Entity));
+      Res      : CE_Values.Value_Access;
+   begin
+
+      if Is_Integer_Type (Res_Type) then
+         if JSON_Data.Kind = GNATCOLL.JSON.JSON_String_Type then
+            declare
+               Val : CE_Values.Scalar_Value_Access;
+            begin
+               Val :=
+                 new CE_Values.Scalar_Value_Type'
+                   (K => Integer_K,
+                    Integer_Content =>
+                      From_String
+                        (GNATCOLL.JSON.Get (JSON_Data)));
+
+               Res := new CE_Values.Value_Type'
+                 (K              => Scalar_K,
+                  AST_Ty         => Res_Type,
+                  Scalar_Content => Val,
+                  others         => <>);
+            end;
+         else
+            raise Program_Error with "ill-formated JSON  (integer)";
+         end if;
+
+      elsif Is_Floating_Point_Type (Res_Type) then
+         if Has_Field (JSON_Data, "quotient")
+           and then JSON_Data.Get ("value").Kind
+           = GNATCOLL.JSON.JSON_String_Type
+         then
+            declare
+               Str_Value : constant String := GNATCOLL.JSON.Get
+                 (JSON_Data.Get ("value"));
+               Val       : constant CE_Values.Scalar_Value_Access
+                 := Create_Float_Value (Res_Type, Str_Value);
+            begin
+               Res := new CE_Values.Value_Type'
+                 (K              => Scalar_K,
+                  AST_Ty         => Res_Type,
+                  Scalar_Content => Val,
+                  others         => <>);
+            end;
+         else
+            raise Program_Error with "ill-formated JSON (float)";
+         end if;
+
+      elsif Is_Character_Type (Res_Type) then
+         if JSON_Data.Kind = GNATCOLL.JSON.JSON_String_Type then
+            declare
+               C   : constant Character := Character'Value
+                 (GNATCOLL.JSON.Get (JSON_Data));
+            begin
+               Res := new Value_Type'(Character_Value (C, Res_Type));
+            end;
+         else
+            raise Program_Error with "ill-formated JSON (character)";
+         end if;
+
+      elsif Is_Enumeration_Type (Res_Type) then
+         if JSON_Data.Kind = GNATCOLL.JSON.JSON_String_Type then
+            declare
+               use Ada.Characters.Handling;
+               Enum_Name : constant String
+                 := GNATCOLL.JSON.Get (JSON_Data);
+               E         : Entity_Id := First_Literal (Res_Type);
+               Val       : CE_Values.Scalar_Value_Access;
+            begin
+               while To_Upper (Enum_Name) /=
+                 To_Upper (Namet.Get_Name_String (Chars (E)))
+               loop
+                  E := Next_Literal (E);
+               end loop;
+               Val :=
+                 new CE_Values.Scalar_Value_Type'
+                   (K => Enum_K,
+                    Enum_Entity => E);
+
+               Res := new CE_Values.Value_Type'
+                 (K              => Scalar_K,
+                  AST_Ty         => Res_Type,
+                  Scalar_Content => Val,
+                  others         => <>);
+            end;
+         end if;
+
+      elsif Is_Array_Type (Res_Type) and then
+        Has_Field (JSON_Data, "sizes") and then
+        Has_Field (JSON_Data, "array")
+      then
+         declare
+            Size_Arr     : constant JSON_Array
+              := Get (JSON_Data, "sizes");
+            Size_Obj     : constant JSON_Value
+              := Get (Size_Arr, 1);
+            Size         : constant Valid_Big_Integer := From_String
+              (GNATCOLL.JSON.Get (Size_Obj));
+            Arr          : constant JSON_Array
+              := Get (JSON_Data, "array");
+
+            N            : Valid_Big_Integer := 1;
+
+            First_Attr   : Opt_Big_Integer;
+            Last_Attr    : Opt_Big_Integer;
+            Array_Values : Big_Integer_To_Value_Maps.Map;
+         begin
+
+            if Has_Field (JSON_Data, "dimensions") then
+               --  Gnattest specifies bounds iff they are something
+               --  else than (0 .. Size - 1)
+               declare
+                  Dimensions : constant JSON_Value
+                    := Get (Get (JSON_Data, "dimensions"), 1);
+                  First      : constant Valid_Big_Integer
+                    := From_String
+                      (GNATCOLL.JSON.Get
+                         (Get (Dimensions, "First")));
+                  Last       : constant Valid_Big_Integer
+                    := From_String
+                      (GNATCOLL.JSON.Get
+                         (Get (Dimensions, "Last")));
+               begin
+                  First_Attr := (Present => True, Content => First);
+                  Last_Attr := (Present => True, Content => Last);
+               end;
+            else
+               First_Attr := (Present => True, Content => 0);
+               Last_Attr := (Present => True, Content => Size - 1);
+            end if;
+
+            if Size <= 0 then
+               Res := new CE_Values.Value_Type'
+                 (K            => Array_K,
+                  AST_Ty       => Res_Type,
+                  First_Attr   => First_Attr,
+                  Last_Attr    => Last_Attr,
+                  Array_Values => Array_Values,
+                  Array_Others => null,
+                  others       => <>);
+            else
+               N := First_Attr.Content;
+               while N <= Last_Attr.Content loop
+                  declare
+                     --  regardless of the actual ADA array indexes,
+                     --  the array within the json is always indexed
+                     --  on (1 .. Size)
+                     Elt : constant JSON_Value
+                       := Get (Arr, To_Integer
+                               (N - First_Attr.Content + 1));
+                  begin
+                     Array_Values.Include (N, To_Value_Access
+                                           (Component_Type (Res_Type),
+                                              Elt));
+                  end;
+                  N := N + 1;
+               end loop;
+
+               Res := new CE_Values.Value_Type'
+                 (K            => Array_K,
+                  AST_Ty       => Res_Type,
+                  First_Attr   => First_Attr,
+                  Last_Attr    => Last_Attr,
+                  Array_Values => Array_Values,
+                  Array_Others => null,
+                  others       => <>);
+            end if;
+         end;
+
+      elsif Is_Record_Type (Res_Type) then
+         if Has_Field (JSON_Data, "components") then
+            declare
+               Components          : constant JSON_Value
+                 := Get (JSON_Data, "components");
+               Discriminants       : constant JSON_Value
+                 := Get (JSON_Data, "discriminants");
+               Record_Fields       : Entity_To_Value_Maps.Map;
+               Component_Set       : constant Component_Sets.Set
+                 := Get_Component_Set (Res_Type);
+               Comp                : Value_Access;
+            begin
+               for Comp_Id of Component_Set loop
+                  if Has_Field (Components, Source_Name (Comp_Id))
+                  then  --  "regular" field
+                     Comp := To_Value_Access
+                       (Comp_Id,
+                        Get (Components, Source_Name (Comp_Id)));
+                     Record_Fields.Include (Comp_Id, Comp);
+                  elsif Has_Field (Discriminants,
+                                   Source_Name (Comp_Id))
+                  then  --  discriminant field
+                     Comp := To_Value_Access
+                       (Comp_Id,
+                        Get (Discriminants, Source_Name (Comp_Id)));
+                     Record_Fields.Include (Comp_Id, Comp);
+                  end if;
+                  exit when Comp_Id = Einfo.Entities.Last_Entity
+                    (Res_Type);
+               end loop;
+               Res := new CE_Values.Value_Type'
+                 (K             => Record_K,
+                  AST_Ty        => Res_Type,
+                  Record_Fields => Record_Fields,
+                  others        => <>);
+            end;
+         else
+            raise Program_Error with "ill-formated JSON (record)";
+         end if;
+
+      else
+         raise Program_Error with
+           "unsupported or invalid data in gnattest JSON.";
+      end if;
+
+      return Res;
+   end To_Value_Access;
 
    --------------------
    -- UI_From_String --

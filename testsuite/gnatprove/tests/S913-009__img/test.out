@@ -1,3 +1,6 @@
 test_img.ads:2:10: info: implicit aspect Always_Terminates on "S" has been proved, subprogram will terminate
 test_img.ads:2:45: info: range check proved (CVC5: 4 VC)
+test_img.ads:2:45: warning: references to the "Img" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+test_img.ads:2:52: warning: references to the "Img" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 test_img.ads:2:63: info: overflow check proved (CVC5: 2 VC)
+test_img.ads:2:71: warning: references to the "Img" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]

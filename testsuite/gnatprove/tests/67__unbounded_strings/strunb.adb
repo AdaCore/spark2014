@@ -769,6 +769,9 @@ is
       Going   : Direction := Forward) return Natural
    is
    begin
+      pragma Assert
+        (for all J in 1 .. Source.Last =>
+           Element (Source, J) = String (Source.Reference (1 .. Source.Last)) (J));
       return Search.Index
         (String (Source.Reference (1 .. Source.Last)), Set, From, Test, Going);
    end Index;
@@ -1230,6 +1233,9 @@ is
       Left   : Maps.Character_Set;
       Right  : Maps.Character_Set)
    is
+      pragma Assert
+        (for all J in 1 .. Source.Last =>
+           Element (Source, J) = String (Source.Reference (1 .. Source.Last)) (J));
       pragma Assert (Index (Source, Left, Outside, Forward) =
                        Fixed.Index (String (Source.Reference (1 .. Source.Last)), Left, Outside, Forward));
       pragma Assert (Index (Source, Right, Outside, Backward) =

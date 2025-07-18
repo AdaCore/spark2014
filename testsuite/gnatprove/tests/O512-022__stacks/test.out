@@ -22,7 +22,8 @@ main.adb:36:17: medium: precondition might fail [possible fix: loop at line 18 s
 stacks.adb:11:22: medium: overflow check might fail, cannot prove upper bound for S.Top + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
 stacks.adb:12:16: medium: array index check might fail [reason for check: value must be a valid index into the array]
 stacks.adb:21:22: info: range check proved (CVC5: 2 VC)
-stacks.adb:27:35: info: cannot unroll loop (too many loop iterations)
+stacks.adb:27:35: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+stacks.adb:28:22: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 stacks.adb:28:38: medium: array index check might fail [reason for check: value must be a valid index into the array]
 stacks.ads:8:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate
 stacks.ads:18:13: info: implicit aspect Always_Terminates on "Is_Full" has been proved, subprogram will terminate

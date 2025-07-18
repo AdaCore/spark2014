@@ -11,10 +11,10 @@ test_callback.adb:25:58: info: overflow check proved (CVC5: 2 VC)
 test_callback.adb:34:14: info: postcondition proved (CVC5: 1 VC)
 test_callback.adb:37:07: medium: implicit aspect Always_Terminates on "Call_Incr_Fun" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
 test_callback.adb:37:48: info: precondition proved (CVC5: 1 VC)
-test_callback.adb:42:14: medium: postcondition might fail (e.g. when Call_Incr_Bad'Result = 100 and X = 100)
+test_callback.adb:42:14: medium: postcondition might fail
 test_callback.adb:45:07: medium: implicit aspect Always_Terminates on "Call_Incr_Bad" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
 test_callback.adb:45:14: medium: precondition might fail (e.g. when X = 100)
-test_callback.adb:50:14: medium: postcondition might fail (e.g. when Call_Incr_Bad2'Result = 49 and X = 50)
+test_callback.adb:50:14: medium: postcondition might fail
 test_callback.adb:53:07: medium: implicit aspect Always_Terminates on "Call_Incr_Bad2" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
 test_callback.adb:53:14: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 48 should mention F]
 test_callback.adb:53:14: medium: precondition might fail (e.g. when X = 50)

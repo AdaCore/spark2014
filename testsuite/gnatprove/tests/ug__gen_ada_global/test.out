@@ -1,5 +1,5 @@
-
-gen_ada_global.adb:25:10: high: "V" is not an input in the Global contract of subprogram "Set_Global_Conditionally" at line 19
-   25 |         Set_Global;
-      |         ^~~~~~~~~~
-  either make "V" an input in the Global contract or initialize it before use
+ high: "V" is not an input in the Global contract of subprogram "Set_Global_Conditionally" at line 19
+--> gen_ada_global.adb:25:10
+   25 |             Set_Global;
+      |             ^~~~~~~~~~
+      + either make "V" an input in the Global contract or initialize it before use

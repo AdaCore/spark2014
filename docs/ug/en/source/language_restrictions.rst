@@ -115,11 +115,15 @@ aspect syntax:
 Data Validity
 -------------
 
-|SPARK| reinforces the strong typing of Ada with a stricter initialization
-policy (see :ref:`Data Initialization Policy`), and thus provides no means
-of specifying that some input data may be invalid. This has some impact on
-language features that process or potentially produce invalid values. SPARK
-issues checks specific to data validity on two language constructs:
+In general, |SPARK| enforces that all read values are valid. The strong typing
+of Ada reinforced by a stricter initialization policy (see
+:ref:`Data Initialization Policy`) rules out most sources of invalid values.
+The remaining ones are excluded either by specific assumptions, for values
+created by non-SPARK code, effectively volatile objects, and imprecisely
+supported address clause (see :ref:`Complete List of Assumptions`), or by
+additional checks on language features that process or potentially produce
+invalid values. SPARK issues checks specific to data validity on two language
+constructs:
 
  * Calls to instances of  ``Unchecked_Conversion``
  * Objects with a supported address clause (so-called overlays). An address
@@ -159,6 +163,24 @@ also :ref:`Sizes of Objects`). Similarly, for object declarations with an
 Address clause or aspect that refers to the ``'Address`` of another object,
 |SPARK| checks that both objects have the same known ``Object_Size``.
 
+As calls to instances of ``Unchecked_Conversion`` are handled as function calls
+by |GNATprove|, it is necessary to ensure that they will never return
+different results when given the same input. This is enforced by checking that
+the source type doesn't have any unused bit in its representation, whose value
+might be different in otherwise equal values. These checks are illustrated in
+the following example:
+
+.. literalinclude:: /examples/ug__unchecked_conversion/test_unchecked_conversion.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| issues "high" unproved checks on both instances of
+``Unchecked_Conversion``, as the source and target of ``Bad_Size`` have
+different sizes and ``With_Holes`` has unused bits in its representation:
+
+.. literalinclude:: /examples/ug__unchecked_conversion/test.out
+   :language: none
+
 |SPARK| allows conversions from (suitable) integer types or
 ``System.Address_Type`` to general access-to-object types. When
 calling such instances of ``Unchecked_Conversion``, |GNATprove| makes
@@ -188,6 +210,15 @@ does not handle addresses.
 
 .. literalinclude:: /examples/ug__uc_to_access/test.out
    :language: none
+
+It is possible to opt out of the strict validity checking and assumptions of
+|SPARK| on a case by case basis using the :ref:`Aspect Potentially_Invalid`.
+Objects subject to this aspect can hold invalid values. Validity checks are
+introduced by the tool on reads. Using ``Potentially_Invalid`` requires
+specifying data validity through contracts, and causes the tool to consider more
+potential program execution and to introduce additional checks. Thus,
+``Potentially_Invalid`` should only be used when needed as it requires more
+effort to verify data validity from both the user and the tool.
 
 .. index:: initialization
            Relaxed_Initialization; initialization policy
@@ -257,6 +288,44 @@ While a user can justify individually such messages with pragma ``Annotate``
 to then ensure correct initialization of subcomponents that are read, as
 |GNATprove| relies during proof on the property that data is properly
 initialized before being read.
+
+Even if a parameter has mode ``out`` or a global item has mode ``Output``, it
+sometimes has parts which are inputs of the subprogram. This includes both
+discriminants of records and array bounds. If the record or array has a
+constrained subtype, then reading the bounds or discriminant is not a read of
+the object. If it is unconstrained however, the bounds and discriminants are
+actual inputs of the subprogram. They cannot be considered to be outputs, as, in
+general, array bounds and discriminants of records are immutable in Ada.
+As a result, their initial value is considered as initialized by |GNATprove|
+and they are expected to be listed as inputs in :ref:`Flow Dependencies` of the
+subprogram. As an example, the parameter ``S`` of the procedure ``P_String``
+below has mode ``out``. However, its bounds are really inputs of the procedure:
+
+.. literalinclude:: /examples/ug__data_initialization/data_initialization_2.ads
+   :language: ada
+   :linenos:
+
+As a result, they are considered to be initialized inside the body of
+``P_String``, and they can be read even before ``S`` is assigned:
+
+.. literalinclude:: /examples/ug__data_initialization/data_initialization_2.adb
+   :language: ada
+   :linenos:
+
+Even though array bounds are always constant for a given object, record
+discriminants might be mutable if they are declared with a default value, like
+the ``Present`` discriminant of the ``Int_Option`` type defined above. The
+same rule applies to these discriminants however, and they are still considered
+to be inputs of the subprogram even if the parameter has mode ``out`` like the
+parameter ``O`` of ``P_Option``. This allows handling cases where the
+discriminants of the actual parameter happen to be constrained, like in
+``Call_P_Option``.
+
+.. note::
+
+  If a strict subcomponent or designated part of a parameter of mode ``out``
+  or a global of mode ``Output`` has unconstrained array bounds or
+  discriminants, then they are not considered as inputs of the subprogram.
 
 Note also the various low check messages and warnings that |GNATprove| issues
 on unused parameters, global items and assignments, also based on the stricter

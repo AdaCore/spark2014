@@ -28,7 +28,6 @@ package body VC_Kinds is
    function To_JSON (S : Prover_Stat)               return JSON_Value;
    function To_JSON (L : Cntexample_Lines)          return JSON_Value;
    function To_JSON (C : Cntexample_Elt)            return JSON_Value;
-   function To_JSON (L : Cntexample_Elt_Lists.List) return JSON_Value;
    function To_JSON (K : CEE_Kind)                  return JSON_Value;
 
    function From_JSON (V : JSON_Value) return Cntexample_Lines;
@@ -107,6 +106,7 @@ package body VC_Kinds is
             | VC_Refined_Post
             | VC_Exceptional_Case
             | VC_Exit_Case
+            | VC_Program_Exit_Post
             | VC_Contract_Case             => "682",
 
          --  CWE-843 Access of Resource Using Incompatible Type ('Type
@@ -149,6 +149,7 @@ package body VC_Kinds is
             | VC_Assert
             | VC_Assert_Premise
             | VC_Assert_Step
+            | VC_Unexpected_Program_Exit
             | VC_Raise
             | VC_Reclamation_Check
             | VC_Feasible_Post
@@ -165,6 +166,7 @@ package body VC_Kinds is
             | VC_UC_Alignment
             | VC_Unchecked_Union_Restriction
             | VC_UC_Volatile
+            | VC_Validity_Check
          => "");
    end CWE_ID;
 
@@ -353,16 +355,19 @@ package body VC_Kinds is
          when VC_Contract_Case                    =>
             return "Check that all cases of the contract case evaluate to " &
               "true at the end of the subprogram.";
-         when VC_Disjoint_Cases          =>
+         when VC_Disjoint_Cases                   =>
             return "Check that the cases of the contract or exit cases" &
               " aspect are all mutually disjoint.";
-         when VC_Complete_Cases          =>
+         when VC_Complete_Cases                   =>
             return "Check that the cases of the contract cases aspect cover " &
               "the state space that is allowed by the precondition aspect.";
          when VC_Exceptional_Case                 =>
             return "Check that all cases of the exceptional cases evaluate " &
               "to true on exceptional exits.";
-         when VC_Exit_Case                 =>
+         when VC_Program_Exit_Post                =>
+            return "Check that the program exit postcondition evaluates to " &
+              "true when the program is exited.";
+         when VC_Exit_Case                        =>
             return "Check that, for all cases of the exit cases, the exit " &
               "happens as specified.";
          when VC_Loop_Invariant                   =>
@@ -386,6 +391,9 @@ package body VC_Kinds is
             return "Check that raise expressions can never be reached and " &
               "that all exceptions raised by raise statement and procedure " &
               "calls are expected.";
+         when VC_Unexpected_Program_Exit          =>
+            return "Check that a subprogram call cannot exit the whole "
+              & "program.";
          when VC_Feasible_Post                    =>
             return "Check that an abstract function or access-to-function " &
               "type is feasible.";
@@ -455,6 +463,8 @@ package body VC_Kinds is
             return "Warn if code is found to be unreachable";
          when VC_Initialization_Check             =>
             return "Check that a variable is initialized";
+         when VC_Validity_Check                   =>
+            return "Check that no invalid value is read";
          when VC_Unchecked_Union_Restriction      =>
             return "Check restrictions imposed on expressions of an unchecked"
               & " union type";
@@ -547,7 +557,7 @@ package body VC_Kinds is
         when Warn_Alias_Different_Volatility  =>
           "aliased objects should have the same volatile properties",
         when Warn_Attribute_Valid =>
-          "attribute Valid is assumed to return True",
+          "attribute Valid or Valid_Scalars is assumed to return True",
         when Warn_Auto_Lemma_Calls =>
           "the automatically instantiated lemma contains calls which"
           & " cannot be arbitrarily specialized",
@@ -570,6 +580,10 @@ package body VC_Kinds is
         when Warn_No_Possible_Termination =>
           "procedure which does not return normally nor raises an exception"
           & " cannot always terminate",
+        when Warn_Potentially_Invalid_Read =>
+          "invalid data might be read in the contract of a subprogram without "
+          & "an analyzed body; the fact that the read data is valid is not"
+          & " checked by SPARK",
         when Warn_Pragma_Annotate_No_Check =>
           "no check message justified by this pragma",
         when Warn_Pragma_Annotate_Proved_Check =>
@@ -591,6 +605,12 @@ package body VC_Kinds is
           "analyzing unreferenced function",
         when Warn_Unreferenced_Procedure =>
           "analyzing unreferenced procedure",
+        when Warn_Useless_Potentially_Invalid_Obj =>
+          "object annotated with Potentially_Invalid cannot have "
+          & "invalid values",
+        when Warn_Useless_Potentially_Invalid_Fun =>
+          "function result annotated with Potentially_Invalid cannot have "
+          & "invalid values",
         when Warn_Useless_Relaxed_Init_Fun =>
           "function result annotated with Relaxed_Initialization cannot be"
           & " partially initialized",
@@ -614,13 +634,126 @@ package body VC_Kinds is
           & "ignored, and "
           & "reads should be valid",
 
-        --  Warnings only issued when using switch --pedantic
+        --  Warnings enabled by --pedantic switch
         when Warn_Image_Attribute_Length =>
           "string attribute has an implementation-defined length",
         when Warn_Operator_Reassociation =>
           "possible operator reassociation due to missing parentheses",
         when Warn_Representation_Attribute_Value =>
-          "representation attribute has an implementation-defined value");
+          "representation attribute has an implementation-defined value",
+
+        --  Warnings enabled by --info switch
+        when Warn_Unit_Not_SPARK =>
+          "A unit whose analysis has been requested on the command-line is "
+        & "not annotated with SPARK_Mode Pragma",
+
+        --  Other tool limitations
+        when Warn_Comp_Relaxed_Init =>
+          "If all components of a given type are annotated with "
+        & " Relaxed_Initialization, the containing type is treated as if "
+        & "it had the same annotation",
+        when Warn_Full_View_Visible =>
+          "The full view of an incomplete type deferred to the body of a "
+        & "withed unit might be visible by GNATprove",
+
+        --  Flow limitations
+        when Warn_Imprecise_GG =>
+          "Global generation might wrongly classify an Output item as an "
+        & "In_Out for subprograms that call other subprograms with no Global "
+        & "contract",
+        when Warn_Init_Array =>
+          "Initialization of arrays inside FOR loops is only recognized when "
+        & "assignments to array element are directly indexed by the loop"
+        & "parameter",
+        when Warn_Init_Multidim_Array =>
+          "Initialization of multi-dimensional array inside FOR loops is only "
+        & "recognized when array bounds are static",
+        when Warn_Alias_Array =>
+          "Aliasing checks might be spurious for actual parameters that are "
+        & "array components",
+        when Warn_Tagged_Untangling =>
+          "Assignments to record objects might cause spurious data "
+        & "dependencies in some components of the assigned object",
+
+        --  Proof limitations
+        when Warn_Contracts_Recursive =>
+          "Explicit and implicit postconditions of a recursive subprogram "
+        & "cannot be used on (mutually) recursive calls occurring inside "
+        & "assertions and contracts, but will still be available in regular "
+        & "code",
+        when Warn_DIC_Ignored =>
+          "The Default_Initial_Condition of a type won't be assumed on "
+        & "subcomponents initialized by default inside assertions and "
+        & "contracts, but will still be available in regular code",
+        when Warn_Imprecise_Address =>
+          "The adress of objects is not precisely known if it is not supplied "
+        & "through an address clause",
+        when Warn_Imprecise_Align =>
+          "The alignment of an object might not be known for proof if it is "
+        & "not supplied through an attribute definition clause",
+        when Warn_Imprecise_Call =>
+          "The behavior of a call might not be known by SPARK and handled in "
+        & "an imprecise way; its precondition might be impossible to prove "
+        & "and nothing will be known about its result",
+        when Warn_Component_Size =>
+          "the value of attribute Component_Size might not be known for "
+        & "proof if it is not supplied through an attribute definition clause",
+        when Warn_Record_Component_Attr =>
+          "the value of attributes First_Bit, Last_Bit, and Position on "
+        & "record components are handled in an imprecise way if the record "
+        & "does not have a record representation clause",
+        when Warn_Imprecise_Size =>
+          "The attributes Size, Object_Size or Value_Size might not be handled"
+        & " precisely, nothing will be known about their evaluation",
+        when Warn_Imprecise_UC =>
+          "Unchecked conversion might not be handled precisely by SPARK, "
+        & "nothing will be known about their result",
+        when Warn_Imprecise_Value =>
+          "References to the attribute Value are handled in an imprecise way; "
+        & "its precondition is impossible to prove and nothing will be known "
+        & "about the evaluation of the attribute reference",
+        when Warn_Imprecise_Image =>
+          "References to the attributes Image and Img are handled in an "
+        & "imprecise way; nothing will be known about the evaluation of the"
+        & " attribute reference apart from a bound on its length",
+        when Warn_Loop_Entity =>
+         "The initial value of constants declared before the loop invariant "
+        & "is not visible after the invariant; it shall be restated in the "
+        & "invariant if necessary",
+        when Warn_Init_Cond_Ignored =>
+          "The initial condition of a withed package might be ignored if it "
+        & "is not known to be true, due to elaboration order",
+        when Warn_No_Reclam_Func =>
+          "No reclamation function or reclaimed value was found for an "
+        & "ownership type, which may make it impossible to prove that values "
+        & "of this type are reclaimed",
+        when Warn_Num_Variant =>
+          "For recursive expression functions with a numeric (not structural) "
+        & "Subprogram_Variant, the definition of the expression function "
+        & "might not be available for recursive calls occurring inside "
+        & "assertions and contracts, but will still be available in regular "
+        & "code",
+        when Warn_Map_Length_Aggregates =>
+          "A type with predefined map aggregates doesn't have a Length "
+        & "function; the length of aggregates will not be known for this type",
+        when Warn_Set_Length_Aggregates =>
+          "A type with predefined set aggregates doesn't have a Length "
+        & "function; the length of aggregates will not be known for this type",
+        when Warn_Relaxed_Init_Mutable_Discr =>
+          "The tool enforces that mutable discriminants of standalone objects"
+        & " and parameters with relaxed initialization are always"
+        & " initialized",
+        when Warn_Predef_Eq_Null =>
+          "A type is annotated with Only_Null as value for the "
+        & "Predefined_Equality annotation, but no constant annotated with "
+        & "Null_Value is found; this will result in all calls to the "
+        & "predefined equality being rejected",
+
+        --  Info messages enabled by default
+        when Warn_Info_Unrolling_Inlining =>
+          "These messages are issued when the tool is unrolling loops or "
+        & "inlining subprograms, or unable to do so"
+     );
 
    function Description (Kind : Unsupported_Kind) return String is
      (case Kind is
@@ -654,6 +787,8 @@ package body VC_Kinds is
           & " with Relaxed_Initialization",
          when Lim_Access_To_Subp_With_Exc =>
            "access attribute on a procedure which might raise exceptions",
+         when Lim_Access_To_Subp_With_Prog_Exit =>
+           "access to procedure which might exit the program",
          when Lim_Address_Attr_In_Unsupported_Context =>
            "a reference to the ""Address"" attribute occuring within a "
           & "subtype indication, a range constraint, or a quantified"
@@ -685,6 +820,8 @@ package body VC_Kinds is
            "a raise expression occurring in a precondition, unless it is only"
           & " used to change the reported error and can safely be interpreted "
           & "as False",
+         when Lim_Continue_Statement =>
+           "continue statement",
          when Lim_Constrained_Classwide =>
            "a type constraint on a classwide subtype declaration",
          when Lim_Contract_On_Derived_Private_Type =>
@@ -722,6 +859,12 @@ package body VC_Kinds is
           & "passed by reference",
          when Lim_Exit_Cases_Dispatch =>
            "aspect ""Exit_Cases"" on dispatching operations",
+         when Lim_Program_Exit_Dispatch =>
+           "aspect ""Program_Exit"" on dispatching operations",
+         when Lim_Program_Exit_Global_Modified_In_Callee =>
+            "call which might exit the program and leave outputs "
+          & "mentioned in the exit postcondition of its enclosing subprogram"
+          & " in an inconsistent state",
          when Lim_Ext_Aggregate_With_Type_Ancestor =>
            "an extension aggregate whose ancestor part is a subtype mark",
          when Lim_Extension_Case_Pattern_Matching =>
@@ -784,8 +927,10 @@ package body VC_Kinds is
          when Lim_Max_Modulus =>
            "a modular type with a modulus greater than 2 ** 128",
          when Lim_Move_To_Access_Constant =>
-           "a move operation occuring as part of a conversion to an "
-          & "access-to-constant type",
+           "a move operation occuring as part of  an allocator or a conversion"
+          & " to an access-to-constant type which does not occur directly"
+          & " inside an assignment statement, an object declaration, or a"
+          & " simple return statement",
          when Lim_No_Return_Function =>
            "a function annotated as No_Return",
          when Lim_Non_Static_Attribute =>
@@ -830,6 +975,21 @@ package body VC_Kinds is
            "a dispatching primitive subprogram overriding declared for a"
           & " private untagged type with no specific precondition and a"
           & " class-wide precondition inherited from ancestor",
+         when Lim_Potentially_Invalid_Iterable =>
+           "a Potentially_Invalid aspect on a function associated to the"
+          & " aspect Iterable",
+         when Lim_Potentially_Invalid_Mutable_Discr =>
+           "a part of potentially invalid object with mutable discriminants",
+         when Lim_Potentially_Invalid_Predicates =>
+           "a potentially invalid object with a part subject to predicates",
+         when Lim_Potentially_Invalid_Private =>
+           "a potentially invalid object with a part whose full view is not in"
+          & " SPARK",
+         when Lim_Potentially_Invalid_Relaxed =>
+           "a potentially invalid object with a part annotated with relaxed "
+          & "initialization",
+         when Lim_Potentially_Invalid_Subp_Access =>
+           "an access to a subprogram annotated with Potentially_Invalid",
          when Lim_Package_Before_Inv =>
            "a package declaration occurring in a loop before the loop "
           & "invariant",
@@ -859,20 +1019,9 @@ package body VC_Kinds is
          when Lim_Relaxed_Init_Aliasing =>
             "an object annotated with Relaxed_Initialization"
           & " is part of an overlay",
-         when Lim_Relaxed_Init_Concurrent_Type =>
-           "a concurrent type used as a subcomponent of a type or"
-          & " an object annotated with Relaxed_Initialization",
          when Lim_Relaxed_Init_Invariant =>
            "a type annotated with an invariant used as a subcomponent of a"
           & " type or an object annotated with Relaxed_Initialization",
-         when Lim_Relaxed_Init_Part_Of_Variable =>
-           "a variable annotated both with Relaxed_Initialization and as "
-          & "Part_Of a concurrent object",
-         when Lim_Relaxed_Init_Protected_Component =>
-           "a protected component annotated with Relaxed_Initialization",
-         when Lim_Relaxed_Init_Tagged_Type =>
-           "a tagged type used as a subcomponent of a type or"
-          & " an object annotated with Relaxed_Initialization",
          when Lim_Relaxed_Init_Variant_Part =>
             "a subtype with a discriminant constraint containing only"
           & " subcomponents whose type is annotated with"
@@ -1398,6 +1547,7 @@ package body VC_Kinds is
              when VC_Disjoint_Cases => "disjoint contract or exit cases",
              when VC_Complete_Cases => "complete contract cases",
              when VC_Exceptional_Case => "exceptional case",
+             when VC_Program_Exit_Post => "program exit postcondition",
              when VC_Exit_Case => "exit case",
              when VC_Loop_Invariant => "loop invariant",
              when VC_Loop_Invariant_Init =>
@@ -1411,6 +1561,7 @@ package body VC_Kinds is
              when VC_Assert_Premise => "assertion premise",
              when VC_Assert_Step => "assertion step",
              when VC_Raise => "raised exception",
+             when VC_Unexpected_Program_Exit => "unexpected program exit",
              when VC_Feasible_Post => "feasible function",
              when VC_Inline_Check =>
                "Inline_For_Proof or Logical_Equal annotation",
@@ -1423,6 +1574,7 @@ package body VC_Kinds is
              when VC_UC_Same_Size => "unchecked conversion size check",
              when VC_UC_Alignment => "alignment check",
              when VC_UC_Volatile => "volatile overlay check",
+             when VC_Validity_Check => "validity check",
              when VC_Weaker_Pre =>
                "precondition weaker than class-wide precondition",
              when VC_Trivial_Weaker_Pre =>
@@ -1544,13 +1696,16 @@ package body VC_Kinds is
          when Warn_Auto_Lemma_Specializable => "auto-lemma-specializable",
          when Warn_Initialization_To_Alias => "initialization-to-alias",
          when Warn_Function_Is_Valid => "is-valid-returns-true",
-        when Warn_Generic_Not_Analyzed => "generic-not-analyzed",
+         when Warn_Generic_Not_Analyzed => "generic-not-analyzed",
          when Warn_No_Possible_Termination => "no-possible-termination",
+         when Warn_Potentially_Invalid_Read =>
+            "potentially-invalid-read",
          when Warn_Pragma_Annotate_No_Check => "no-check-message-justified",
          when Warn_Pragma_Annotate_Proved_Check => "proved-check-justified",
-         when Warn_Pragma_Annotate_Terminating |
-              Warn_Pragma_External_Axiomatization =>
-              "deprecated-feature",
+         when Warn_Pragma_Annotate_Terminating =>
+            "deprecated-terminating",
+         when Warn_Pragma_External_Axiomatization =>
+            "deprecated-external-axiomatization",
          when Warn_Pragma_Ignored => "ignored-pragma",
          when Warn_Pragma_Overflow_Mode => "overflow-mode-ignored",
          when Warn_Precondition_Statically_False =>
@@ -1560,6 +1715,10 @@ package body VC_Kinds is
             "unreferenced-function",
          when Warn_Unreferenced_Procedure =>
             "unreferenced-procedure",
+         when Warn_Useless_Potentially_Invalid_Fun =>
+            "useless-potentially-invalid-func-result",
+        when Warn_Useless_Potentially_Invalid_Obj =>
+            "useless-potentially-invalid-object",
          when Warn_Useless_Relaxed_Init_Fun =>
             "useless-relaxed-init-func-result",
         when Warn_Useless_Relaxed_Init_Obj =>
@@ -1575,13 +1734,48 @@ package body VC_Kinds is
          when Warn_Assumed_Global_Null =>
             "assumed-global-null",
 
-         --  Warnings only issued when using switch --pedantic
+         --  Warnings enabled by --pedantic switch
          when Warn_Image_Attribute_Length =>
             "image-attribute-length",
          when Warn_Operator_Reassociation =>
             "operator-reassociation",
-        when Warn_Representation_Attribute_Value =>
-            "representation-attribute-value");
+         when Warn_Representation_Attribute_Value =>
+            "representation-attribute-value",
+
+         --  Warnings enabled by --info switch
+         when Warn_Alias_Array => "alias-array",
+         when Warn_Comp_Relaxed_Init => "component-relaxed-init",
+         when Warn_Contracts_Recursive => "contracts-recursive",
+         when Warn_DIC_Ignored => "dic-ignored",
+         when Warn_Full_View_Visible => "full-view-visible",
+         when Warn_Imprecise_Address => "imprecise-address",
+         when Warn_Imprecise_Align => "imprecise-align",
+         when Warn_Imprecise_Call => "imprecise-call",
+         when Warn_Imprecise_GG => "imprecise-global-generation",
+         when Warn_Init_Array => "array-initialization",
+         when Warn_Init_Multidim_Array => "multidimensional-array-init",
+         when Warn_Component_Size => "imprecise-component-size",
+         when Warn_Record_Component_Attr =>
+            "imprecise-record-component-attribute",
+         when Warn_Imprecise_Size => "imprecise-size",
+         when Warn_Imprecise_UC   => "imprecise-unchecked-conversion",
+         when Warn_Imprecise_Value => "imprecise-value",
+         when Warn_Imprecise_Image => "imprecise-image",
+         when Warn_Loop_Entity => "constants-in-loops",
+         when Warn_Init_Cond_Ignored => "init-cond-ignored",
+         when Warn_No_Reclam_Func => "no-reclamation-function",
+         when Warn_Num_Variant => "numeric-variant",
+         when Warn_Map_Length_Aggregates => "map-length-aggregates",
+         when Warn_Set_Length_Aggregates => "set-length-aggregates",
+         when Warn_Relaxed_Init_Mutable_Discr =>
+            "relaxed-mutable-discriminants",
+         when Warn_Tagged_Untangling => "tagged-assignment",
+         when Warn_Predef_Eq_Null => "predefined-equality-null",
+         when Warn_Unit_Not_SPARK => "unit-not-spark",
+
+         --  Info messages enabled by default
+         when Warn_Info_Unrolling_Inlining => "info-unrolling-inlining"
+     );
 
    pragma Annotate (Xcov, Exempt_Off);
 
@@ -1771,6 +1965,8 @@ package body VC_Kinds is
             Set_Field (Obj, "full_value", To_JSON (C.Value.all));
          when Pretty_Printed =>
             Set_Field (Obj, "value", C.Val_Str.Str);
+         when Json_Format =>
+            Set_Field (Obj, "value", C.JSON_Obj);
       end case;
       return Obj;
    end To_JSON;
@@ -1794,6 +1990,17 @@ package body VC_Kinds is
             when Not_In_SPARK => "no");
    begin
       return Create (S);
+   end To_JSON;
+
+   function To_JSON (S : Json_Formatted_Input)
+                     return JSON_Value
+   is
+      Obj : constant JSON_Value := Create_Object;
+   begin
+      Set_Field (Obj, "subp_file", S.File);
+      Set_Field (Obj, "subp_line", S.Line);
+      Set_Field (Obj, "inputs", To_JSON (S.Input_As_JSON));
+      return Obj;
    end To_JSON;
 
    function To_JSON (M : GP_Mode) return JSON_Value is

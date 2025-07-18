@@ -24,7 +24,6 @@ is
       end case;
    end record;
    pragma Convention (C, Sigval_T);
-   pragma Unchecked_Union (Sigval_T);
 
    type Connection_Id_T is range -1 .. Interfaces.C.int'last with
       Size => Interfaces.C.int'size;

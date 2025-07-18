@@ -39,6 +39,7 @@ with Opt;
 with Osint;
 with SPARK_Definition;
 with System;
+with VC_Kinds;
 
 package body Back_End is
 
@@ -110,6 +111,7 @@ package body Back_End is
 
       use type System.Address;
       use type Gnat2Why_Opts.Output_Mode_Type;
+      use type VC_Kinds.Warning_Enabled_Status;
 
    begin
       --  If save_argv is non null, it means we are part of gnat1+gnat2why
@@ -185,7 +187,10 @@ package body Back_End is
       end if;
 
       Debug_Flag_M := Gnat2Why_Args.No_Inlining;
-      Debug_Flag_Underscore_F := Gnat2Why_Args.Info_Messages;
+      --  Make this depend on the value for the unrolling warnings
+      Debug_Flag_Underscore_F :=
+        VC_Kinds.Warning_Status
+          (VC_Kinds.Warn_Info_Unrolling_Inlining) /= VC_Kinds.WS_Disabled;
 
    end Scan_Compiler_Arguments;
 

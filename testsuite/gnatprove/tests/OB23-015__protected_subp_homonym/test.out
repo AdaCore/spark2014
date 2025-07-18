@@ -5,10 +5,10 @@ p.ads:8:07: error: violation of pragma SPARK_Mode at test.adc:1
 p.ads:11:04: error: "PT" is not allowed in SPARK (due to protected component with no default initialization)
 p.ads:11:04: error: violation of pragma SPARK_Mode at test.adc:1
 q.adb:7:17: info: add a contract to analyze it separately from calling contexts
-q.adb:7:17: info: local subprogram "Set" only analyzed in the context of calls
+q.adb:7:17: info: local subprogram "Set" only analyzed in the context of calls [info-unrolling-inlining]
 q.adb:9:12: warning: unused assignment, in call inlined at q.adb:18
 q.adb:12:17: info: add a contract to analyze it separately from calling contexts
-q.adb:12:17: info: local subprogram "Set" only analyzed in the context of calls
+q.adb:12:17: info: local subprogram "Set" only analyzed in the context of calls [info-unrolling-inlining]
 q.adb:14:12: warning: unused assignment, in call inlined at q.adb:19
 q.adb:18:07: info: analyzing call to "Set" in context
 q.adb:19:07: info: analyzing call to "Set" in context
@@ -20,10 +20,10 @@ s.ads:8:07: error: violation of pragma SPARK_Mode at test.adc:1
 s.ads:11:04: error: "PT" is not allowed in SPARK (due to protected component with no default initialization)
 s.ads:11:04: error: violation of pragma SPARK_Mode at test.adc:1
 t-tt.adb:6:14: info: add a contract to analyze it separately from calling contexts
-t-tt.adb:6:14: info: local subprogram "Set" only analyzed in the context of calls
+t-tt.adb:6:14: info: local subprogram "Set" only analyzed in the context of calls [info-unrolling-inlining]
 t-tt.adb:8:09: warning: unused assignment, in call inlined at t-tt.adb:17
 t-tt.adb:11:14: info: add a contract to analyze it separately from calling contexts
-t-tt.adb:11:14: info: local subprogram "Set" only analyzed in the context of calls
+t-tt.adb:11:14: info: local subprogram "Set" only analyzed in the context of calls [info-unrolling-inlining]
 t-tt.adb:13:09: warning: unused assignment, in call inlined at t-tt.adb:18
 t-tt.adb:17:04: info: analyzing call to "Set" in context
 t-tt.adb:18:04: info: analyzing call to "Set" in context

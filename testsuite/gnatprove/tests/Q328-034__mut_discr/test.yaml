@@ -1,2 +1,4 @@
+large: true
 prove_all:
-  opt: ["--proof-warnings=on"]
+  opt:
+  - --proof-warnings=on

@@ -32,7 +32,6 @@ with Aspects;                        use Aspects;
 with Assumption_Types;               use Assumption_Types;
 with Checked_Types;                  use Checked_Types;
 with Common_Iterators;               use Common_Iterators;
-with Debug;
 with Einfo.Utils;                    use Einfo.Utils;
 with Elists;                         use Elists;
 with Errout;
@@ -40,6 +39,7 @@ with Errout_Wrapper;                 use Errout_Wrapper;
 with Exp_Util;                       use Exp_Util;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
+with Flow_Refinement;                use Flow_Refinement;
 with Flow_Utility;                   use Flow_Utility;
 with Flow_Utility.Initialization;    use Flow_Utility.Initialization;
 with Flow_Types;                     use Flow_Types;
@@ -47,7 +47,6 @@ with Gnat2Why_Args;
 with Lib;                            use Lib;
 with Namet;                          use Namet;
 with Nlists;                         use Nlists;
-with Nmake;
 with Opt;                            use Opt;
 with Restrict;                       use Restrict;
 with Rident;                         use Rident;
@@ -69,7 +68,6 @@ with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 with SPARK_Util.Types;               use SPARK_Util.Types;
 with Stand;                          use Stand;
 with String_Utils;                   use String_Utils;
-with Tbuild;
 with Uintp;                          use Uintp;
 with Urealp;                         use Urealp;
 with VC_Kinds;                       use VC_Kinds;
@@ -211,6 +209,12 @@ package body SPARK_Definition is
    --  them when they are encountered as it might pull entities in an
    --  inappropiate order. We mark them at the end and raise an error if they
    --  are not in SPARK.
+
+   Requires_No_Relaxed_Init_Check : Hashed_Node_Sets.Set;
+   --  Register whether an element of Access_To_Incomplete_Types shall be
+   --  checked for absence of parts with Relaxed_Init.
+   --  We could change the structure to also store the appropriate violation
+   --  message to have better messages.
 
    Access_To_Incomplete_Views : Node_Maps.Map;
    --  Links full views of incomplete types to an access type designating the
@@ -370,6 +374,33 @@ package body SPARK_Definition is
    --  The retysp view of Current_Marked_Entity's dispatching type must have
    --  all visible ancestors in SPARK, so this must not be called blindly in
    --  presence of violations.
+
+   procedure Check_No_Relaxed_Init_Part
+     (Typ            : Type_Kind_Id;
+      N              : Node_Id;
+      Msg            : String;
+      Names          : Node_Lists.List := Node_Lists.Empty;
+      Cont_Msg       : String := "";
+      Root_Cause_Msg : String := "");
+   --  Check that Typ has no subcomponent with relaxed initialization. If
+   --  such a component is found, a violation is raised using the other
+   --  parameters of the procedure.
+   --  If an access to an unmarked type is found, store it in
+   --  Requires_No_Relaxed_Init_Check, so a check is introduced when it is
+   --  marked.
+
+   procedure Check_Context_Of_Potentially_Invalid
+     (Ent  : Entity_Id;
+      Read : N_Subexpr_Id)
+   with Pre => No (Ent)
+     or else
+       (Ekind (Ent) in Object_Kind | E_Function
+        and then Is_Potentially_Invalid (Ent));
+   --  Read is a read of a potentially invalid object Ent, the result attribute
+   --  of a potentially invalid function E, or a call to such a function (in
+   --  which case Ent is Empty). If Read occurs in a postcondition, check that
+   --  it is guarded by a reference to the valid attribute on Ent if any. If it
+   --  is not the case, emit a warning.
 
    procedure Touch_Record_Fields_For_Eq
      (Ty           : Type_Kind_Id;
@@ -647,6 +678,15 @@ package body SPARK_Definition is
    --  @param Ty type which should be compatible with relaxed initialization.
    --  @param Own True if Ty is itself annotated with relaxed initialization.
 
+   procedure Mark_Potentially_Invalid_Type
+     (N  : Node_Id;
+      Ty : Type_Kind_Id)
+     with Pre => Entity_In_SPARK (Ty);
+   --  Checks restrictions on types of entities marked with a
+   --  Potentially_Invalid aspect.
+   --  @param N node on which violations should be emitted.
+   --  @param Ty type which should be compatible with Potentially_Invalid.
+
    procedure Mark_Component_Of_Component_Association
      (N : N_Component_Association_Id);
    --  Mark the component of a component association alone, assuming
@@ -706,6 +746,7 @@ package body SPARK_Definition is
 
    begin
       if Is_Incomplete_Type (Expected_Type)
+        or else not Most_Underlying_Type_In_SPARK (Expected_Type)
         or else not Is_Access_Type (Root_Retysp (Expected_Type))
       then
          return;
@@ -758,6 +799,362 @@ package body SPARK_Definition is
             & " without", Expression);
       end if;
    end Check_Compatible_Access_Types;
+
+   ------------------------------------------
+   -- Check_Context_Of_Potentially_Invalid --
+   ------------------------------------------
+
+   procedure Check_Context_Of_Potentially_Invalid
+     (Ent  : Entity_Id;
+      Read : N_Subexpr_Id)
+   is
+      Ent_Is_Output : Boolean := False;
+      --  Whether Ent is an output of the enclosing subprogram. It is set
+      --  once such a subprogram has been found.
+      Ent_Is_Old    : Boolean := False;
+      --  Whether the reference to Ent is located under a reference to 'Old
+
+      function Is_Ent
+        (Expr     : N_Subexpr_Id;
+         Old_Seen : Boolean)
+         return Boolean
+      with Pre => Present (Ent);
+      --  Return True if Expr is a reference to Ent
+
+      function Valid_Guard
+        (Expr     : N_Subexpr_Id;
+         Pol      : Boolean;
+         Old_Seen : Boolean := False)
+         return Boolean
+      with Pre => Present (Ent);
+      --  Return True if Expr is a valid guard for an access to Obj when
+      --  evaluating to Pol. Old_Seen is True if Expr is located under a
+      --  reference to 'Old.
+
+      ------------
+      -- Is_Ent --
+      ------------
+
+      function Is_Ent
+        (Expr     : N_Subexpr_Id;
+         Old_Seen : Boolean)
+         return Boolean
+      is
+      begin
+         if Nkind (Expr) = N_Attribute_Reference
+           and then Attribute_Name (Expr) = Name_Old
+         then
+            return Is_Ent (Prefix (Expr), True);
+         end if;
+
+         return
+           (if Ekind (Ent) = E_Function
+            then Nkind (Expr) = N_Attribute_Reference
+            and then Attribute_Name (Expr) = Name_Result
+            and then Entity (Prefix (Expr)) = Ent
+            else Nkind (Expr) in N_Identifier | N_Expanded_Name
+            and then (not Ent_Is_Output or else Ent_Is_Old = Old_Seen)
+            and then Entity (Expr) = Ent);
+      end Is_Ent;
+
+      -----------------
+      -- Valid_Guard --
+      -----------------
+
+      function Valid_Guard
+        (Expr     : N_Subexpr_Id;
+         Pol      : Boolean;
+         Old_Seen : Boolean := False)
+         return Boolean
+      is
+      begin
+         case Nkind (Expr) is
+            when N_Attribute_Reference =>
+               if Attribute_Name (Expr) in Name_Valid
+                                         | Name_Valid_Scalars
+               then
+                  return Pol and then Is_Ent (Prefix (Expr), Old_Seen);
+               elsif Attribute_Name (Expr) = Name_Old then
+                  return Valid_Guard (Prefix (Expr), Pol, True);
+               else
+                  return False;
+               end if;
+
+            when N_Op_Not =>
+               return Valid_Guard (Right_Opnd (Expr), not Pol, Old_Seen);
+
+            when N_Op_Or | N_Op_And | N_And_Then | N_Or_Else =>
+               if Pol = (Nkind (Expr) in N_Op_And | N_And_Then) then
+                  return Valid_Guard (Left_Opnd (Expr), Pol, Old_Seen)
+                    or else Valid_Guard (Right_Opnd (Expr), Pol, Old_Seen);
+               else
+                  return Valid_Guard (Left_Opnd (Expr), Pol, Old_Seen)
+                    and then Valid_Guard (Right_Opnd (Expr), Pol, Old_Seen);
+               end if;
+
+            when others =>
+               return False;
+         end case;
+      end Valid_Guard;
+
+      N    : Node_Id := Read;
+      Par  : Node_Id := Parent (N);
+      CC   : Node_Id := Empty;
+      Subp : Entity_Id := Empty;
+
+   --  Start of processing for Check_Context_Of_Potentially_Invalid
+
+   begin
+      --  Warnings are not emitted in Global_Gen_Mode
+
+      if Gnat2Why_Args.Global_Gen_Mode then
+         return;
+      end if;
+
+      --  We do two traversals up the parent tree. First, we search for a
+      --  potentially enclosing subprogram contract and set Subp if one is
+      --  found. Ignore preconditions that always need to be self guarded.
+
+      loop
+         if Nkind (Par) = N_Pragma_Argument_Association then
+            declare
+               Prag_Id : constant Pragma_Id :=
+                 Get_Pragma_Id (Pragma_Name (Parent (Par)));
+            begin
+               if Prag_Id in Pragma_Postcondition
+                           | Pragma_Post_Class
+                           | Pragma_Contract_Cases
+                           | Pragma_Refined_Post
+               then
+                  Subp := Unique_Defining_Entity
+                    (Find_Related_Declaration_Or_Body
+                       (Parent (Par)));
+                  exit;
+               else
+                  return;
+               end if;
+            end;
+
+         --  If a component association occurs in a contract cases, store the
+         --  guard for later use.
+
+         elsif Nkind (Par) = N_Component_Association then
+            declare
+               G_Par : constant Node_Id := Parent (Parent (Par));
+
+            begin
+               if Nkind (G_Par) = N_Pragma_Argument_Association
+                 and then Get_Pragma_Id (Pragma_Name (Parent (G_Par))) =
+                   Pragma_Contract_Cases
+                 and then N = Expression (Par)
+               then
+                  CC := Par;
+               end if;
+            end;
+
+         elsif Nkind (Par) not in N_Subexpr then
+            return;
+         end if;
+
+         N := Par;
+         Par := Parent (N);
+      end loop;
+
+      --  Do not emit the warning if Subp's body has SPARK_Mode ON
+
+      declare
+         Body_E : constant Entity_Id := Get_Body_Entity (Subp);
+      begin
+         if Present (Body_E)
+           and then Get_SPARK_Mode_From_Annotation
+             (SPARK_Pragma_Of_Entity (Body_E)) = Opt.On
+         then
+            return;
+         end if;
+      end;
+
+      --  Set Ent_Is_Output
+
+      if No (Ent) then
+         null;
+      elsif Ekind (Ent) = E_Function then
+         Ent_Is_Output := True;
+      elsif Ekind (Ent) in Formal_Kind and then Scope (Ent) = Subp then
+         Ent_Is_Output := not Is_Constant_In_SPARK (Ent);
+      else
+         declare
+            Globals : Global_Flow_Ids;
+         begin
+            Get_Globals
+              (Subprogram          => Subp,
+               Scope               => (Ent => Subp, Part => Visible_Part),
+               Classwide           => False,
+               Globals             => Globals,
+               Use_Deduced_Globals => True,
+               Ignore_Depends      => False);
+
+            Ent_Is_Output :=
+              (for some F_Id of Globals.Outputs =>
+                 F_Id.Kind = Direct_Mapping and then F_Id.Node = Ent);
+         end;
+      end if;
+
+      N := Read;
+      Par := Parent (N);
+
+      --  Second traversal, we are in a contract, and we are looking for a
+      --  guard that would protect the read. Skip potential references to 'Old,
+      --  unless they occur on scalars, as evaluating an invalid scalar is an
+      --  error and references to Old are evaluated unconditionaly.
+
+      while Nkind (Par) = N_Attribute_Reference
+        and then Attribute_Name (Par) = Name_Old
+        and then not Has_Scalar_Type (Etype (Par))
+      loop
+         Ent_Is_Old := True;
+         N := Par;
+         Par := Parent (N);
+      end loop;
+
+      --  Get out of the way cases where the context does not require a
+      --  validity check.
+
+      if (Nkind (Par) = N_Attribute_Reference
+          and then Attribute_Name (Par) in Name_Valid
+                                         | Name_Valid_Scalars
+                                         | Name_Length
+                                         | Name_First
+                                         | Name_Last)
+        or else
+           (Nkind (Par) = N_Selected_Component
+            and then Ekind (Entity (Selector_Name (Par))) = E_Discriminant)
+        or else
+          (Nkind (Par) = N_Function_Call
+           and then Is_Potentially_Invalid (Get_Formal_From_Actual (N)))
+      then
+         return;
+      end if;
+
+      --  If there is no entity, there is no way for the read to be guarded
+
+      if No (Ent) then
+         null;
+
+      --  Climb up the parent chain looking for a guard protecting the access
+      --  to Ent. If one is found, exit the subprogram.
+
+      else
+         loop
+
+            --  References to Old are evaluated unconditionally, this might be
+            --  a read. Exit the loop.
+
+            if Nkind (Par)  = N_Attribute_Reference
+              and then Attribute_Name (Par) = Name_Old
+            then
+               Ent_Is_Old := True;
+               exit;
+
+            --  Check for guards in conditionals
+
+            elsif Nkind (Par) = N_If_Expression then
+               declare
+                  Cond      : constant Node_Id := First (Expressions (Par));
+                  Then_Part : constant Node_Id := Next (Cond);
+                  Else_Part : constant Node_Id := Next (Then_Part);
+               begin
+                  if (N = Then_Part and then Valid_Guard (Cond, True))
+                    or else (N = Else_Part and then Valid_Guard (Cond, False))
+                  then
+                     return;
+                  end if;
+               end;
+
+            elsif Nkind (Par) = N_And_Then then
+               if N = Right_Opnd (Par)
+                 and then Valid_Guard (Left_Opnd (Par), True)
+               then
+                  return;
+               end if;
+
+            elsif Nkind (Par) = N_Or_Else then
+               if N = Right_Opnd (Par)
+                 and then Valid_Guard (Left_Opnd (Par), False)
+               then
+                  return;
+               end if;
+
+            --  Stop the search if we reach something other than an expression
+
+            elsif Nkind (Par) not in N_Subexpr | N_Component_Association then
+               exit;
+            end if;
+
+            N := Par;
+            Par := Parent (N);
+         end loop;
+
+         --  If CC is set, we are in the consequence of a contract cases.
+         --  Look into the guards if Ent is an input.
+
+         if Present (CC)
+           and then (not Ent_Is_Output or Ent_Is_Old)
+         then
+
+            --  In the others choice, any guard is enough to protect the
+            --  others choice.
+
+            if Is_Others_Choice (Choices (CC)) then
+               declare
+                  Assoc   : Node_Id := Prev (CC);
+                  Choice  : Node_Id;
+               begin
+                  while Present (Assoc) loop
+                     Choice := First (Choices (Assoc));
+                     pragma Assert (No (Next (Choice)));
+                     if Valid_Guard (Choice, Pol => False, Old_Seen => True)
+                     then
+                        return;
+                     end if;
+                     Prev (Assoc);
+                  end loop;
+               end;
+
+            --  Go over the selected choice
+
+            else
+               declare
+                  Choice : constant Node_Id := First (Choices (CC));
+               begin
+                  pragma Assert (No (Next (Choice)));
+                  if Valid_Guard (Choice, Pol => True, Old_Seen => True) then
+                     return;
+                  end if;
+               end;
+            end if;
+         end if;
+
+         --  If Ent is an input, also consider the precondition if any. Do not
+         --  consider classwide preconditions, they could be relaxed.
+
+         if not Ent_Is_Output or Ent_Is_Old then
+            declare
+               Pre_List : constant Node_Lists.List := Find_Contracts
+                 (Subp, Pragma_Precondition, False, False);
+            begin
+               for Pre of Pre_List loop
+                  if Valid_Guard (Pre, Pol => True, Old_Seen => True) then
+                     return;
+                  end if;
+               end loop;
+            end;
+         end if;
+      end if;
+
+      --  Read is not guarded, emit a warning
+
+      Warning_Msg_N (Warn_Potentially_Invalid_Read, Read);
+   end Check_Context_Of_Potentially_Invalid;
 
    -------------------------------
    -- Check_Context_Of_Prophecy --
@@ -1133,6 +1530,78 @@ package body SPARK_Definition is
          Next (Assoc);
       end loop;
    end Check_No_Deep_Duplicates_In_Assoc;
+
+   --------------------------------
+   -- Check_No_Relaxed_Init_Part --
+   --------------------------------
+
+   procedure Check_No_Relaxed_Init_Part
+     (Typ            : Type_Kind_Id;
+      N              : Node_Id;
+      Msg            : String;
+      Names          : Node_Lists.List := Node_Lists.Empty;
+      Cont_Msg       : String := "";
+      Root_Cause_Msg : String := "")
+   is
+      function Check_No_Relaxed_Init (C_Typ : Type_Kind_Id) return Test_Result;
+      --  Function traversing a given subcomponent and raising a violation if
+      --  it has a subcomponent with relaxed initialization.
+
+      ---------------------------
+      -- Check_No_Relaxed_Init --
+      ---------------------------
+
+      function Check_No_Relaxed_Init (C_Typ : Type_Kind_Id) return Test_Result
+      is
+      begin
+         if Has_Relaxed_Init (C_Typ) then
+            Mark_Violation
+              (Msg            => Msg,
+               N              => N,
+               Names          => Names,
+               Cont_Msg       => Cont_Msg,
+               Root_Cause_Msg => Root_Cause_Msg);
+            return Pass;
+
+         --  Protected components cannot have relaxed initialization
+
+         elsif Ekind (C_Typ) in Concurrent_Kind then
+            return Fail;
+
+         --  The type designated by an access to object type might not be
+         --  marked. In this case, register that it needs to be checked for
+         --  absence of parts with relaxed initialization.
+
+         elsif Is_Access_Object_Type (C_Typ) then
+            declare
+               Des_Ty : Entity_Id := Directly_Designated_Type (C_Typ);
+            begin
+               if Is_Incomplete_Type (Des_Ty)
+                 and then Present (Full_View (Des_Ty))
+               then
+                  Des_Ty := Full_View (Des_Ty);
+               end if;
+
+               if not Entity_Marked (Des_Ty) then
+                  pragma Assert (Access_To_Incomplete_Types.Contains (C_Typ));
+                  Requires_No_Relaxed_Init_Check.Include (Des_Ty);
+                  return Fail;
+               end if;
+            end;
+
+            return Continue;
+         else
+            return Continue;
+         end if;
+      end Check_No_Relaxed_Init;
+
+      function Check_No_Relaxed_Init_Subcomps is new Traverse_Subcomponents
+        (Check_No_Relaxed_Init);
+
+      Unused : constant Boolean := Check_No_Relaxed_Init_Subcomps (Typ);
+   begin
+      null;
+   end Check_No_Relaxed_Init_Part;
 
    ----------------------------------------------
    -- Check_Not_Inherited_From_Several_Sources --
@@ -1598,6 +2067,7 @@ package body SPARK_Definition is
                   Mark_Violation
                     ("borrow or observe of a non-traversal function call",
                      Root_Expr,
+                     Code          => EC_Incorrect_Source_Of_Borrow,
                      SRM_Reference => "SPARK RM 3.10(4)");
                elsif No (Root_Expr) or else No (Get_Root_Object (Root_Expr))
                then
@@ -1605,6 +2075,7 @@ package body SPARK_Definition is
                     ("borrow or observe of an expression which is not part "
                      & "of stand-alone object or parameter",
                      Alt_Expr,
+                     Code          => EC_Incorrect_Source_Of_Borrow,
                      SRM_Reference => "SPARK RM 3.10(4)");
                elsif No (First_Root) then
                   First_Root := Get_Root_Object (Root_Expr);
@@ -1634,7 +2105,7 @@ package body SPARK_Definition is
       elsif not In_Observe
         and then Is_Constant_In_SPARK (Root)
         and then
-          not (Ekind (Root) = E_In_Parameter
+          not (Ekind (Root) in Formal_Kind
                and then Ekind (Scope (Root)) = E_Function
                and then Is_Borrowing_Traversal_Function (Scope (Root))
                and then Root = First_Formal (Scope (Root)))
@@ -2588,9 +3059,9 @@ package body SPARK_Definition is
                --  to access-to-constant types as the allocator type is
                --  not itself of a deep type.
 
-               if Is_Access_Constant (Retysp (Etype (N)))
-                 and then Nkind (Expression (N)) = N_Qualified_Expression
-               then
+               if Is_Access_Constant (Retysp (Etype (N))) then
+                  pragma Assert
+                    (Nkind (Expression (N)) = N_Qualified_Expression);
                   declare
                      Des_Ty : Type_Kind_Id :=
                        Directly_Designated_Type (Retysp (Etype (N)));
@@ -2599,9 +3070,21 @@ package body SPARK_Definition is
                         Des_Ty := Full_View (Des_Ty);
                      end if;
 
-                     if Is_Deep (Des_Ty) then
+                     if Is_Deep (Des_Ty)
+                       and then not Is_Rooted_In_Constant (Expression (N))
+                     then
                         Check_Source_Of_Move
                           (Expression (N), To_Constant => True);
+
+                        --  Moving a tracked object inside an expression is
+                        --  only supported in simple contexts, like 'Access.
+
+                        if Is_Path_Expression (Expression (N))
+                          and then Present (Get_Root_Object (Expression (N)))
+                          and then not Is_In_Toplevel_Move (N)
+                        then
+                           Mark_Unsupported (Lim_Move_To_Access_Constant, N);
+                        end if;
                      end if;
                   end;
                end if;
@@ -2613,6 +3096,10 @@ package body SPARK_Definition is
             declare
                Var  : constant Node_Id := Name (N);
                Expr : constant Node_Id := Expression (N);
+               Root : constant Entity_Id :=
+                 (if Is_Path_Expression (Var)
+                  then Get_Root_Object (Var, Through_Traversal => False)
+                  else Empty);
             begin
                Mark (Var);
                Mark (Expr);
@@ -2623,16 +3110,24 @@ package body SPARK_Definition is
                --  functions). Otherwise there is no way to update the
                --  corresponding path permission.
 
-               if not Is_Path_Expression (Var)
-                 or else No (Get_Root_Object
-                             (Var, Through_Traversal => False))
-               then
+               if No (Root) then
                   Mark_Violation ("assignment to a complex expression", Var);
 
                --  Assigned object should not be a constant
 
-               elsif Is_Constant_In_SPARK (Get_Root_Object (Var)) then
+               elsif Is_Constant_In_SPARK (Root) then
                   Mark_Violation ("assignment into a constant object", Var);
+
+               --  Assigned object should not be a constant borrower unless
+               --  the assignment is a reborrow.
+
+               elsif not Is_Anonymous_Access_Type (Etype (Var))
+                 and then Is_Local_Borrower (Root)
+                 and then Is_Constant_Borrower (Root)
+               then
+                  Mark_Violation
+                    ("assignment into a parameter of a traversal function",
+                     Var);
 
                --  Assigned object should not be inside an access-to-constant
                --  type.
@@ -2668,8 +3163,7 @@ package body SPARK_Definition is
                   if Is_Path_Expression (Expr)
                     and then Present (Get_Root_Object (Expr))
                     and then Get_Root_Object
-                    (Get_Observed_Or_Borrowed_Expr (Expr)) /=
-                      Get_Root_Object (Var)
+                    (Get_Observed_Or_Borrowed_Expr (Expr)) /= Root
                   then
                      Mark_Violation
                        ((if Is_Access_Constant (Etype (Var))
@@ -3234,8 +3728,8 @@ package body SPARK_Definition is
 
             --  In most cases, it is enough to look at the record type (the
             --  most underlying one) to see whether the access is in SPARK. An
-            --  exception is the access to discrimants to a private type whose
-            --  full view is not in SPARK.
+            --  exception is the access to discriminants to a private type
+            --  whose full view is not in SPARK.
 
             if not Retysp_In_SPARK (Etype (Prefix (N))) then
                Mark_Violation (N, From  => Etype (Prefix (N)));
@@ -3456,11 +3950,12 @@ package body SPARK_Definition is
                elsif Conversion_Is_Move_To_Constant (N) then
                   Check_Source_Of_Move (Expression (N), To_Constant => True);
 
-                  --  Moving a tracked object inside an expression is not
-                  --  supported yet.
+                  --  Moving a tracked object in a conversion is only supported
+                  --  in simple contexts, like 'Access.
 
                   if Is_Path_Expression (Expression (N))
                     and then Present (Get_Root_Object (Expression (N)))
+                    and then not Is_In_Toplevel_Move (N)
                   then
                      Mark_Unsupported (Lim_Move_To_Access_Constant, N);
                   end if;
@@ -3933,6 +4428,9 @@ package body SPARK_Definition is
          when N_External_Initializer =>
             Mark_Unsupported (Lim_External_Initializer, N);
 
+         when N_Continue_Statement =>
+            Mark_Unsupported (Lim_Continue_Statement, N);
+
          --  Mark should not be called on other kinds
 
          when N_Abortable_Part
@@ -4264,18 +4762,12 @@ package body SPARK_Definition is
                --  We emit a warning when the value read might not be valid.
                --  This addresses assumption SPARK_EXTERNAL_VALID.
 
-               declare
-                  Valid       : Boolean;
-                  Explanation : Unbounded_String;
-               begin
-                  Suitable_For_UC_Target
-                    (Retysp (Etype (E)), True, Valid, Explanation);
-
-                  if not Valid then
-                     Nb_Warn := Nb_Warn + 1;
-                     Warnings (Nb_Warn) := To_Unbounded_String ("valid reads");
-                  end if;
-               end;
+               if not Obj_Has_Only_Valid_Values (E)
+                 and then not Is_Potentially_Invalid (E)
+               then
+                  Nb_Warn := Nb_Warn + 1;
+                  Warnings (Nb_Warn) := To_Unbounded_String ("valid reads");
+               end if;
 
                --  Emit composite warning
 
@@ -4441,9 +4933,13 @@ package body SPARK_Definition is
 
             --  We do not support overlays with Relaxed_Initialization yet
 
-            if Has_Relaxed_Initialization (E) or else
-              (Ekind (Aliased_Object) /= E_Loop_Parameter
-               and then Has_Relaxed_Initialization (Aliased_Object))
+            if Has_Relaxed_Initialization (E)
+              or else Contains_Relaxed_Init_Parts (Etype (E))
+              or else
+                ((Ekind (Aliased_Object) /= E_Loop_Parameter
+                  and then Has_Relaxed_Initialization (Aliased_Object))
+                 or else Contains_Relaxed_Init_Parts
+                   (Etype (Aliased_Object)))
             then
                Mark_Unsupported (Lim_Relaxed_Init_Aliasing, E);
             end if;
@@ -4719,13 +5215,14 @@ package body SPARK_Definition is
             | Attribute_Pos
             | Attribute_Pred
             | Attribute_Remainder
-            | Attribute_Result
             | Attribute_Rounding
             | Attribute_Succ
             | Attribute_Terminated
             | Attribute_Truncation
             | Attribute_Update
             | Attribute_Val
+            | Attribute_Valid
+            | Attribute_Valid_Scalars
             | Attribute_Value
          =>
             null;
@@ -4776,6 +5273,16 @@ package body SPARK_Definition is
          =>
             Mark_Unsupported
               (Lim_Non_Static_Attribute, N, Name => Get_Name_String (Aname));
+
+         when Attribute_Result =>
+
+            --  If a potentially invalid object occurs in a postcondition,
+            --  emit a warning if we cannot acertain that the access is
+            --  properly guarded.
+
+            if Is_Potentially_Invalid (Entity (Prefix (N))) then
+               Check_Context_Of_Potentially_Invalid (Entity (Prefix (N)), N);
+            end if;
 
          --  We assume a maximal length for the image of any type. This length
          --  may be inaccurate for identifiers.
@@ -4870,18 +5377,8 @@ package body SPARK_Definition is
                  (Warn_Representation_Attribute_Value,
                   N,
                   Create_N
-                    (Warning_Message (Warn_Representation_Attribute_Value),
+                    (Warn_Representation_Attribute_Value,
                      Names => [To_String (Aname, Sloc (N))]));
-            end if;
-
-         when Attribute_Valid =>
-            if Emit_Warning_Info_Messages
-              and then SPARK_Pragma_Is (Opt.On)
-            then
-               Warning_Msg_N
-                 (Warn_Attribute_Valid,
-                  N,
-                  First => True);
             end if;
 
          --  Attribute Initialized is used on prefixes with relaxed
@@ -4894,6 +5391,13 @@ package body SPARK_Definition is
          when Attribute_Initialized =>
             if not Retysp_In_SPARK (Etype (P)) then
                Mark_Violation (N, From => Etype (P));
+
+            --  Initialized on a prefix with parts of an unchecked union type
+            --  is rejected by the frontend.
+
+            elsif Has_UU_Component (Etype (P)) then
+               raise Program_Error;
+
             elsif Nkind (P) = N_Selected_Component
               and then Ekind (Entity (Selector_Name (P))) = E_Discriminant
             then
@@ -5008,201 +5512,207 @@ package body SPARK_Definition is
             end if;
 
          when Attribute_Access =>
-            declare
-               Par : constant Node_Id := Parent (N);
-            begin
-               --  We support 'Access if it is directly prefixed by a
-               --  subprogram name.
+            --  We support 'Access if it is directly prefixed by a
+            --  subprogram name.
 
-               if Nkind (P) in N_Identifier | N_Expanded_Name
-                 and then Is_Subprogram (Entity (P))
-               then
-                  declare
-                     Subp : constant Subprogram_Kind_Id := Entity (P);
-                  begin
-                     if not In_SPARK (Subp) then
-                        Mark_Violation (N, From => P);
+            if Nkind (P) in N_Identifier | N_Expanded_Name
+              and then Is_Subprogram (Entity (P))
+            then
+               declare
+                  Subp : constant Subprogram_Kind_Id := Entity (P);
+               begin
+                  if not In_SPARK (Subp) then
+                     Mark_Violation (N, From => P);
 
-                     --  Dispatching operations need a specialised version that
-                     --  called on classwide types. We do not support them is
-                     --  currently.
+                  --  Dispatching operations need a specialised version that
+                  --  called on classwide types. We do not support them is
+                  --  currently.
 
-                     elsif Is_Dispatching_Operation (Subp) then
-                        Mark_Unsupported (Lim_Access_To_Dispatch_Op, N);
+                  elsif Is_Dispatching_Operation (Subp) then
+                     Mark_Unsupported (Lim_Access_To_Dispatch_Op, N);
 
-                     --  Functions with side effects, volatile functions and
-                     --  subprograms declared within a protected object have
-                     --  an implicit global parameter. We do not support taking
-                     --  their access.
+                  --  Functions with side effects, volatile functions and
+                  --  subprograms declared within a protected object have
+                  --  an implicit global parameter. We do not support taking
+                  --  their access.
 
-                     elsif Ekind (Subp) = E_Function
-                       and then Is_Function_With_Side_Effects (Subp)
-                       and then not Has_Handler_Annotation (Etype (N))
-                     then
-                        Mark_Violation
-                          ("access to function with side effects", N);
+                  elsif Ekind (Subp) = E_Function
+                    and then Is_Function_With_Side_Effects (Subp)
+                    and then not Has_Handler_Annotation (Etype (N))
+                  then
+                     Mark_Violation
+                       ("access to function with side effects", N);
 
-                     elsif Ekind (Subp) = E_Function
-                       and then Is_Volatile_Function (Subp)
-                       and then not Has_Handler_Annotation (Etype (N))
-                     then
-                        Mark_Violation ("access to volatile function", N);
+                  elsif Ekind (Subp) = E_Function
+                    and then Is_Volatile_Function (Subp)
+                    and then not Has_Handler_Annotation (Etype (N))
+                  then
+                     Mark_Violation ("access to volatile function", N);
 
-                     elsif Within_Protected_Type (Subp) then
-                        Mark_Violation
-                          ("access to subprogram declared within a protected"
-                           & " object", N);
+                  elsif Within_Protected_Type (Subp) then
+                     Mark_Violation
+                       ("access to subprogram declared within a protected"
+                        & " object", N);
 
-                     --  Subprograms annotated with relaxed initialization need
-                     --  a special handling at call.
+                  --  Subprograms annotated with relaxed initialization need
+                  --  a special handling at call.
 
-                     elsif Has_Aspect (Subp, Aspect_Relaxed_Initialization)
-                     then
-                        Mark_Unsupported (Lim_Access_To_Relaxed_Init_Subp, N);
+                  elsif Has_Aspect (Subp, Aspect_Relaxed_Initialization)
+                  then
+                     Mark_Unsupported (Lim_Access_To_Relaxed_Init_Subp, N);
 
-                     --  No_Return procedures can not be stored inside access
-                     --  types.
+                  --  Subprograms annotated with potentially invalid need
+                  --  a special handling at call.
 
-                     elsif No_Return (Subp) then
-                        Mark_Unsupported (Lim_Access_To_No_Return_Subp, N);
+                  elsif Has_Aspect (Subp, Aspect_Potentially_Invalid)
+                  then
+                     Mark_Unsupported
+                       (Lim_Potentially_Invalid_Subp_Access, N);
 
-                     --  Subprograms which might raise exceptions can not be
-                     --  stored inside access types.
+                  --  No_Return procedures can not be stored inside access
+                  --  types.
 
-                     elsif Has_Exceptional_Contract (Subp) then
-                        Mark_Unsupported (Lim_Access_To_Subp_With_Exc, N);
+                  elsif No_Return (Subp) then
+                     Mark_Unsupported (Lim_Access_To_No_Return_Subp, N);
 
-                     --  Subprograms with an exit cases contract necessarily
-                     --  allow abnormal return.
+                  --  Subprograms which might raise exceptions can not be
+                  --  stored inside access types.
 
-                     elsif Present (Get_Pragma (Subp, Pragma_Exit_Cases)) then
-                        raise Program_Error;
+                  elsif Has_Exceptional_Contract (Subp) then
+                     Mark_Unsupported (Lim_Access_To_Subp_With_Exc, N);
 
-                     --  Subprogram with non-null Global contract (either
-                     --  explicit or generated). Global accesses are allowed
-                     --  for specialized actuals of functions annotated with
-                     --  higher order specialization and for
-                     --  access-to-subprogram types annotated with Handler.
+                  --  Subprograms which might exit the program can not be
+                  --  stored inside access types.
 
-                     elsif not Is_Specialized_Actual (N) then
-                        if Has_Handler_Annotation (Etype (N)) then
+                  elsif Has_Program_Exit (Subp) then
+                     Mark_Unsupported
+                       (Lim_Access_To_Subp_With_Prog_Exit, N);
 
-                           --  Postpone check for handler accesses until
-                           --  Skip_Flow_And_Proof annotations are picked.
+                  --  Subprograms with an exit cases contract necessarily
+                  --  allow abnormal return.
 
-                           if not Gnat2Why_Args.Global_Gen_Mode then
-                              Handler_Accesses.Insert (N);
-                           end if;
-                        else
-                           declare
-                              Globals : Global_Flow_Ids;
-                           begin
-                              Get_Globals
-                                (Subprogram          => Subp,
-                                 Scope               =>
-                                   (Ent => Subp, Part => Visible_Part),
-                                 Classwide           => False,
-                                 Globals             => Globals,
-                                 Use_Deduced_Globals =>
-                                    not Gnat2Why_Args.Global_Gen_Mode,
-                                 Ignore_Depends      => False);
+                  elsif Present (Get_Pragma (Subp, Pragma_Exit_Cases)) then
+                     raise Program_Error;
 
-                              if not Globals.Proof_Ins.Is_Empty
-                                or else not Globals.Inputs.Is_Empty
-                                or else not Globals.Outputs.Is_Empty
-                              then
-                                 Mark_Violation
-                                   ("access to subprogram with global effects",
-                                    N);
-                              end if;
-                           end;
+                  --  Subprogram with non-null Global contract (either
+                  --  explicit or generated). Global accesses are allowed
+                  --  for specialized actuals of functions annotated with
+                  --  higher order specialization and for
+                  --  access-to-subprogram types annotated with Handler.
+
+                  elsif not Is_Specialized_Actual (N) then
+                     if Has_Handler_Annotation (Etype (N)) then
+
+                        --  Postpone check for handler accesses until
+                        --  Skip_Flow_And_Proof annotations are picked.
+
+                        if not Gnat2Why_Args.Global_Gen_Mode then
+                           Handler_Accesses.Insert (N);
                         end if;
+                     else
+                        declare
+                           Globals : Global_Flow_Ids;
+                        begin
+                           Get_Globals
+                             (Subprogram          => Subp,
+                              Scope               =>
+                                (Ent => Subp, Part => Visible_Part),
+                              Classwide           => False,
+                              Globals             => Globals,
+                              Use_Deduced_Globals =>
+                                 not Gnat2Why_Args.Global_Gen_Mode,
+                              Ignore_Depends      => False);
+
+                           if not Globals.Proof_Ins.Is_Empty
+                             or else not Globals.Inputs.Is_Empty
+                             or else not Globals.Outputs.Is_Empty
+                           then
+                              Mark_Violation
+                                ("access to subprogram with global effects",
+                                 N);
+                           end if;
+                        end;
                      end if;
-                  end;
+                  end if;
+               end;
 
-               --  N should visibly be of an access type
+            --  N should visibly be of an access type
 
-               elsif not Is_Access_Type (Retysp (Etype (N))) then
-                  Mark_Violation
-                    ("Access attribute of a private type", N);
-                  return;
+            elsif not Is_Access_Type (Retysp (Etype (N))) then
+               Mark_Violation
+                 ("Access attribute of a private type", N);
+               return;
 
-               --  The prefix must be a path rooted inside an object
+            --  The prefix must be a path rooted inside an object
 
-               elsif not Is_Access_Object_Type (Retysp (Etype (N)))
-                 or else not Is_Path_Expression (P)
-               then
-                  Mark_Violation
-                    ("Access attribute on a complex expression", N);
-                  return;
+            elsif not Is_Access_Object_Type (Retysp (Etype (N)))
+              or else not Is_Path_Expression (P)
+            then
+               Mark_Violation
+                 ("Access attribute on a complex expression", N);
+               return;
 
-               elsif No (Get_Root_Object (P)) then
-                  Mark_Violation
-                    ("Access attribute of a path not rooted inside an object",
-                     N);
-                  return;
+            elsif No (Get_Root_Object (P)) then
+               Mark_Violation
+                 ("Access attribute of a path not rooted inside an object",
+                  N);
+               return;
 
-               --  For a named access-to-constant type, mark the prefix before
-               --  checking whether it is rooted at a constant part of an
-               --  object.
+            --  For a named access-to-constant type, mark the prefix before
+            --  checking whether it is rooted at a constant part of an
+            --  object.
 
-               elsif not Is_Anonymous_Access_Type (Etype (N))
-                 and then Is_Access_Constant (Retysp (Etype (N)))
-               then
+            elsif not Is_Anonymous_Access_Type (Etype (N))
+              and then Is_Access_Constant (Retysp (Etype (N)))
+            then
 
-                  Mark (P);
-                  pragma Assert (List_Length (Exprs) = 0);
+               Mark (P);
+               pragma Assert (List_Length (Exprs) = 0);
 
-                  declare
-                     Root : constant Object_Kind_Id := Get_Root_Object (P);
-                  begin
-                     --  Reject paths not rooted inside a constant part of an
-                     --  object. Parameters of mode IN are not considered
-                     --  constants as the actual might be a variable.
-                     --  Also reject paths rooted inside observers which can
-                     --  really be parts of variables.
+               declare
+                  Root : constant Object_Kind_Id := Get_Root_Object (P);
+               begin
+                  --  Reject paths not rooted inside a constant part of an
+                  --  object. Parameters of mode IN are not considered
+                  --  constants as the actual might be a variable.
+                  --  Also reject paths rooted inside observers which can
+                  --  really be parts of variables.
 
-                     if (Is_Anonymous_Access_Object_Type (Etype (Root))
-                         or else not Is_Constant_In_SPARK (Root)
-                         or else Ekind (Root) = E_In_Parameter)
-                       and then not Traverse_Access_To_Constant (P)
-                     then
-                        Mark_Violation
-                          ("Access attribute of a named access-to-constant"
-                           & " type whose prefix is not a constant part of an"
-                           & " object", N);
-                     end if;
-                  end;
+                  if (Is_Anonymous_Access_Object_Type (Etype (Root))
+                      or else not Is_Constant_In_SPARK (Root)
+                      or else Ekind (Root) = E_In_Parameter)
+                    and then not Traverse_Access_To_Constant (P)
+                  then
+                     Mark_Violation
+                       ("Access attribute of a named access-to-constant"
+                        & " type whose prefix is not a constant part of an"
+                        & " object", N);
+                  end if;
+               end;
 
-                  --  We can return here, the prefix has already been marked
+               --  We can return here, the prefix has already been marked
 
-                  return;
+               return;
 
-               --  'Access of an anonymous access-to-object type or named
-               --  access-to-variable type must occur directly inside an
-               --  assignment statement, an object declaration, or a simple
-               --  return statement from a non-expression function. We don't
-               --  need to worry about declare expressions, 'Access is not
-               --  allowed there.
-               --  This is because the expression introduces a borrower/an
-               --  observer/a move that we only handle currently inside
-               --  declarations, assignments and on return of traversal
-               --  functions. We could consider allowing it inside
-               --  non-traversal function calls (probaly easy) or inside
-               --  procedure calls (would require special handling in flow and
-               --  proof).
+            --  'Access of an anonymous access-to-object type or named
+            --  access-to-variable type must occur directly inside an
+            --  assignment statement, an object declaration, or a simple
+            --  return statement from a non-expression function. We don't
+            --  need to worry about declare expressions, 'Access is not
+            --  allowed there.
+            --  This is because the expression introduces a borrower/an
+            --  observer/a move that we only handle currently inside
+            --  declarations, assignments and on return of traversal
+            --  functions. We could consider allowing it inside
+            --  non-traversal function calls (probaly easy) or inside
+            --  procedure calls (would require special handling in flow and
+            --  proof).
 
-               elsif No (Par)
-                 or else Nkind (Par) not in N_Assignment_Statement
-                                          | N_Object_Declaration
-                                          | N_Simple_Return_Statement
-                 or else N /= Expression (Par)
-               then
-                  Mark_Unsupported
-                    (Lim_Access_Attr_With_Ownership_In_Unsupported_Context, N);
-                  return;
-               end if;
-            end;
+            elsif not Is_In_Toplevel_Move (N) then
+               Mark_Unsupported
+                 (Lim_Access_Attr_With_Ownership_In_Unsupported_Context, N);
+               return;
+            end if;
 
          when others =>
             Mark_Violation
@@ -5278,11 +5788,11 @@ package body SPARK_Definition is
       elsif Nkind (N) in N_Op_Multiply | N_Op_Divide then
          declare
             L_Type    : constant Type_Kind_Id :=
-              Base_Type (Etype (Left_Opnd (N)));
+              Base_Retysp (Etype (Left_Opnd (N)));
             R_Type    : constant Type_Kind_Id :=
-              Base_Type (Etype (Right_Opnd (N)));
+              Base_Retysp (Etype (Right_Opnd (N)));
             Expr_Type : constant Type_Kind_Id := Etype (N);
-            E_Type    : constant Type_Kind_Id := Base_Type (Expr_Type);
+            E_Type    : constant Type_Kind_Id := Base_Retysp (Expr_Type);
 
             L_Type_Is_Fixed : constant Boolean :=
               Has_Fixed_Point_Type (L_Type);
@@ -5301,7 +5811,7 @@ package body SPARK_Definition is
             --  fixed-point types provided the result is in the "perfect result
             --  set" according to Ada RM G.2.3(21).
 
-            if L_Type_Is_Fixed and R_Type_Is_Fixed then
+            if L_Type_Is_Fixed and R_Type_Is_Fixed and not E_Type_Is_Float then
                declare
                   L_Small : constant Ureal := Small_Value (L_Type);
                   R_Small : constant Ureal := Small_Value (R_Type);
@@ -5510,7 +6020,15 @@ package body SPARK_Definition is
          if Is_Anonymous_Access_Object_Type (Etype (Formal))
            and then not Is_Function_Or_Function_Type (E)
          then
-            if not Is_Null_Owning_Access (Actual) then
+
+            --  Allow null objects and objects of a named access-to-constant
+            --  type as they are not subject to ownership.
+
+            if not Is_Null_Owning_Access (Actual)
+              and then not
+                (Is_Named_Access_Type (Retysp (Etype (Actual)))
+                 and then Is_Access_Constant (Retysp (Etype (Actual))))
+            then
                Check_Source_Of_Borrow_Or_Observe
                  (Actual, Is_Access_Constant (Etype (Formal)));
             end if;
@@ -5546,23 +6064,33 @@ package body SPARK_Definition is
                        """out"" parameter",
                      when others             =>
                         raise Program_Error);
+               Root : constant Entity_Id :=
+                 (if Is_Path_Expression (Actual)
+                  then Get_Root_Object (Actual, Through_Traversal => False)
+                  else Empty);
             begin
                --  Actual should represent a part of an object
 
-               if not Is_Path_Expression (Actual)
-                 or else
-                   No (Get_Root_Object (Actual, Through_Traversal => False))
-               then
+               if No (Root) then
                   if not Is_Null_Owning_Access (Actual) then
                      Mark_Violation
                        ("expression as " & Mode, Actual);
                   end if;
 
-               --  The root object of Actual should not be a constant objects
+               --  The root object of Actual should not be a constant object
 
-               elsif Is_Constant_In_SPARK (Get_Root_Object (Actual)) then
+               elsif Is_Constant_In_SPARK (Root) then
                   Mark_Violation
                     ("constant object as " & Mode, Actual);
+
+               --  The root object of Actual should not be a constant borrower
+
+               elsif Is_Local_Borrower (Root)
+                 and then Is_Constant_Borrower (Root)
+               then
+                  Mark_Violation
+                    ("parameter of a traversal function as " & Mode,
+                     Actual);
 
                --  The actual should not be inside an access-to-constant type
 
@@ -5849,7 +6377,9 @@ package body SPARK_Definition is
                or else (Is_Ignored_Internal (E)
                  and then not Is_Ignored_Internal (N)))
               and then not Is_Unchecked_Conversion_Instance (E)
-              and then not Is_Unchecked_Deallocation_Instance (E);
+              and then not Is_Unchecked_Deallocation_Instance (E)
+              and then not Is_Predicate_Function (E)
+              and then not Is_Abstract_Subprogram (E);
 
          begin
             if Might_Have_Flow_Assumptions then
@@ -5876,6 +6406,12 @@ package body SPARK_Definition is
                end if;
             end if;
          end;
+
+         --  Warn on reads of potentially invalid values in postconditions
+
+         if Ekind (E) = E_Function and then Is_Potentially_Invalid (E) then
+            Check_Context_Of_Potentially_Invalid (Empty, N);
+         end if;
 
          --  On supported unchecked conversions to access types, emit warnings
          --  stating that we assume the returned value to be valid and with no
@@ -5904,6 +6440,119 @@ package body SPARK_Definition is
                     [Create (Cont, Names => [E])]);
             end;
          end if;
+      end if;
+
+      if Has_Program_Exit (E) and then GG_Has_Been_Generated then
+         declare
+            function Is_Body (N : Node_Id) return Boolean is
+              (Nkind (N) in N_Entity_Body);
+
+            function Enclosing_Body is
+              new First_Parent_With_Property (Is_Body);
+
+            Scop : constant Entity_Id := Unique_Defining_Entity
+              (Enclosing_Body (N));
+         begin
+            if Has_Program_Exit (Scop) then
+               declare
+                  E_Outputs    : Flow_Id_Sets.Set;
+                  Scop_Outputs : constant Flow_Id_Sets.Set :=
+                    Get_Outputs_From_Program_Exit (Scop, Scop);
+                  Dummy        : Flow_Id_Sets.Set;
+
+                  procedure Do_Violation
+                    (N        : Node_Id;
+                     G_Name   : String;
+                     Add_Cont : Boolean);
+                  --  Raise an error stating that a global G_Name of Scop is
+                  --  modified in N. If Add_Cont is True, emit a continuation
+                  --  advising to mention G_Name in the postcondition of E.
+
+                  procedure Check_Param
+                    (Formal : Formal_Kind_Id;
+                     Actual : N_Subexpr_Id);
+                  --  Raise an error on Actual if it is rooted at a global of
+                  --  Scop unless it is passed by copy.
+
+                  ------------------
+                  -- Do_Violation --
+                  ------------------
+
+                  procedure Do_Violation
+                    (N        : Node_Id;
+                     G_Name   : String;
+                     Add_Cont : Boolean)
+                  is
+                  begin
+                     Mark_Unsupported
+                       (Kind           =>
+                          Lim_Program_Exit_Global_Modified_In_Callee,
+                        N              => N,
+                        Names          => [Scop],
+                        Name           => G_Name,
+                        Root_Cause_Msg =>
+                          "call which might exit the program and leave outputs"
+                        & " in an inconsistent state",
+                        Cont_Msg       =>
+                          (if Add_Cont
+                           then Create
+                             ("consider mentioning " & G_Name & " in the"
+                              & " exit postcondition of &",
+                              [E])
+                           else No_Message));
+                  end Do_Violation;
+
+                  -----------------
+                  -- Check_Param --
+                  -----------------
+
+                  procedure Check_Param
+                    (Formal : Formal_Kind_Id;
+                     Actual : N_Subexpr_Id)
+                  is
+                     Root : Entity_Id;
+                  begin
+                     if Is_Constant_In_SPARK (Formal)
+                       or else By_Copy (Formal)
+                     then
+                        return;
+                     else
+                        Root := Get_Root_Object (Actual);
+                        pragma Assert (Present (Root));
+                        if Scop_Outputs.Contains (Direct_Mapping_Id (Root))
+                        then
+                           Do_Violation (Actual, Source_Name (Root), False);
+                        end if;
+                     end if;
+                  end Check_Param;
+
+                  procedure Check_Actuals is new
+                    Iterate_Call_Parameters (Check_Param);
+               begin
+                  Check_Actuals (N);
+
+                  Get_Proof_Globals
+                    (Subprogram      => E,
+                     Reads           => Dummy,
+                     Writes          => E_Outputs,
+                     Erase_Constants => True,
+                     Scop            => Get_Flow_Scope (Scop));
+                  E_Outputs.Difference
+                    (Get_Outputs_From_Program_Exit (E, Scop));
+                  E_Outputs.Intersection (Scop_Outputs);
+
+                  for G of To_Ordered_Flow_Id_Set (E_Outputs) loop
+                     Do_Violation
+                       (N,
+                        (case G.Kind is
+                            when Direct_Mapping => Source_Name (G.Node),
+                            when Magic_String   => To_String (G.Name),
+                            when others         => raise Program_Error),
+                        Add_Cont => True);
+                  end loop;
+               end;
+            end if;
+         end;
       end if;
 
       --  Check that the parameter of a function annotated with At_End_Borrow
@@ -5936,7 +6585,7 @@ package body SPARK_Definition is
 
             Is_Borrowed_Parameter  : constant Boolean :=
               Nkind (Fst_Actual) in N_Identifier | N_Expanded_Name
-              and then Ekind (Entity (Fst_Actual)) = E_In_Parameter
+              and then Ekind (Entity (Fst_Actual)) in Formal_Kind
               and then Is_Borrowing_Traversal_Function
                 (Scope (Entity (Fst_Actual)))
               and then Entity (Fst_Actual) =
@@ -6274,14 +6923,11 @@ package body SPARK_Definition is
                           and then Main_Unit_Entity /= Unique_Entity
                             (Enclosing_Unit (Des_Ty))
                         then
-                           Error_Msg_N
-                             ("full view of & declared # is visible when "
-                              & "analyzing "
-                              & Source_Name (Main_Unit_Entity),
+                           Warning_Msg_N
+                             (Warn_Full_View_Visible,
                               Main_Unit_Entity,
-                              Names         => [Des_Ty],
-                              Secondary_Loc => Sloc (Des_Ty),
-                              Kind          => Info_Kind);
+                              Names => [Des_Ty, Main_Unit_Entity],
+                              Secondary_Loc => Sloc (Des_Ty));
                         end if;
 
                         Des_Ty := Full_View (Des_Ty);
@@ -6312,7 +6958,6 @@ package body SPARK_Definition is
                         Mark_Unsupported (Lim_Type_Inv_Access_Type, E);
 
                      else
-
                         --  Attempt to insert the view in the incomplete views
                         --  map if the designated type is not already present
                         --  (which can happen if there are several access types
@@ -6350,7 +6995,6 @@ package body SPARK_Definition is
                      Current_Incomplete_Type := Empty;
                   end;
                end if;
-
                Access_To_Incomplete_Types.Delete_First;
             end;
          else
@@ -6699,6 +7343,15 @@ package body SPARK_Definition is
                   "volatile object", "its type",
                   Srcpos_Bearer => E);
             end if;
+
+            --  Effectively volatile objects should not have parts with relaxed
+            --  initialization.
+
+            Check_No_Relaxed_Init_Part
+              (T,
+               Msg => "effectively volatile object with components annotated "
+               & "with relaxed initialization",
+               N   => N);
          end if;
 
          --  Do not allow type invariants on volatile data with asynchronous
@@ -6747,6 +7400,29 @@ package body SPARK_Definition is
 
          elsif Ekind (E) = E_Variable and then not Is_Imported (E) then
             Touch_Record_Fields_For_Default_Init (T);
+         end if;
+
+         if Ekind (E) in E_Variable | E_Constant
+           and then Has_Potentially_Invalid (E)
+         then
+            --  We do not support relaxed initialization on potentially
+            --  invalid objects, nor volatile potentially invalid objects for
+            --  now.
+
+            if Has_Relaxed_Initialization (E) then
+               Mark_Unsupported (Lim_Potentially_Invalid_Relaxed, E);
+
+            else
+               Mark_Potentially_Invalid_Type (E, Etype (E));
+
+               --  If E cannot have invalid values, emit a warning
+
+               if Obj_Has_Only_Valid_Values (E)
+                 and then Emit_Warning_Info_Messages
+               then
+                  Warning_Msg_N (Warn_Useless_Potentially_Invalid_Obj, E);
+               end if;
+            end if;
          end if;
 
          --  If no violations were found and the object is annotated with
@@ -6813,31 +7489,63 @@ package body SPARK_Definition is
          then
             Mark_Violation ("effectively volatile loop parameter", E);
 
-         --  If no violations were found and the object is annotated with
-         --  relaxed initialization, populate the Relaxed_Init map.
+         else
 
-         elsif not Violation_Detected
-           and then Is_Formal (E)
-           and then Has_Relaxed_Initialization (E)
-         then
+            if Is_Potentially_Invalid (E) then
 
-            --  Emit a warning when the annotation of an object with
-            --  Relaxed_Initialization has no effects.
+               --  We do not support relaxed initialization on potentially
+               --  invalid objects, nor volatile potentially invalid objects
+               --  for now.
 
-            if not Obj_Has_Relaxed_Init (E) then
-               if Emit_Warning_Info_Messages then
-                  Warning_Msg_N
-                    (Warn_Useless_Relaxed_Init_Obj,
-                     E,
-                     Continuations =>
-                       [Create
-                            ("Relaxed_Initialization annotation is useless")]);
+               if Has_Relaxed_Initialization (E) then
+                  Mark_Unsupported (Lim_Potentially_Invalid_Relaxed, E);
+
+               else
+                  Mark_Potentially_Invalid_Type (E, Etype (E));
+
+                  --  If E cannot have invalid values, emit a warning
+
+                  if Obj_Has_Only_Valid_Values (E)
+                    and then Emit_Warning_Info_Messages
+                  then
+
+                     --  We would have to use the RM_Size for the formal
+                     --  paramater of Unchecked_Conversion instances, but they
+                     --  cannot be annotated with Potentially_Invalid.
+
+                     pragma Assert (not Is_Unchecked_Conversion_Instance (E));
+                     Warning_Msg_N (Warn_Useless_Potentially_Invalid_Obj, E);
+                  end if;
                end if;
-            else
-               Mark_Type_With_Relaxed_Init
-                 (N   => E,
-                  Ty  => T,
-                  Own => False);
+            end if;
+
+            --  If no violations were found and the object is annotated with
+            --  relaxed initialization, populate the Relaxed_Init map.
+
+            if not Violation_Detected
+              and then Is_Formal (E)
+              and then Has_Relaxed_Initialization (E)
+            then
+
+               --  Emit a warning when the annotation of an object with
+               --  Relaxed_Initialization has no effects.
+
+               if not Obj_Has_Relaxed_Init (E) then
+                  if Emit_Warning_Info_Messages then
+                     Warning_Msg_N
+                       (Warn_Useless_Relaxed_Init_Obj,
+                        E,
+                        Continuations =>
+                          [Create
+                               ("Relaxed_Initialization annotation is "
+                                & "useless")]);
+                  end if;
+               else
+                  Mark_Type_With_Relaxed_Init
+                    (N   => E,
+                     Ty  => T,
+                     Own => False);
+               end if;
             end if;
          end if;
       end Mark_Parameter_Entity;
@@ -6858,11 +7566,37 @@ package body SPARK_Definition is
          --  Mark violations related to parameters, result and contract
 
          procedure Process_Class_Wide_Condition
-           (Expr    : N_Subexpr_Id;
-            Spec_Id : Subprogram_Kind_Id);
-         --  Replace the type of all references to the controlling formal of
-         --  subprogram Spec_Id found in expression Expr with the corresponding
-         --  class-wide type.
+           (Expr    :     N_Subexpr_Id;
+            Spec_Id :     Subprogram_Kind_Id;
+            Valid   : out Boolean);
+         --  According to ARM 6.1.1, controlling formals in a class-wide
+         --  contracts are interpreted as having a notional type descending
+         --  from the real tagged type. So does a controlling result attribute.
+         --  This notional type propagates from formals/result up in the tree
+         --  through chains of controlling parameters/results. And possibly
+         --  back down through following these in reverse, e.g in F(A,B(X))
+         --  A can have the notional type as output.
+         --
+         --  For correct interpretation of contracts in dispatching calls, we
+         --  need to interpret this notional type as a class-wide type, so we
+         --  need to replace it in Expr by the class-wide type. However, the
+         --  front-end does not provide an explicit realization of this type,
+         --  so we need to perform manual selection and replacement. Since
+         --  proof is the only client, and do not make any difference between
+         --  representation of tagged types and their class-wide types, it
+         --  suffices to mark all calls on the (implicit) notional type as
+         --  dispatching, by setting an adequate controlling argument.
+         --
+         --  Process_Class_Wide_Condition perform that replacement of calls
+         --  involving the notional type by dispatching calls. If this
+         --  replacement fails, Valid is set to False.
+
+         procedure Sanitize_Class_Wide_Condition (Expr : N_Subexpr_Id);
+         --  Workaround: currently, the front-end may generate class-wide
+         --  conditions which are mistyped at dependent expressions
+         --  (if/case/declare), as the type of dependent expressions is not
+         --  mirrored to that of the full construct. This procedure fix the
+         --  types in-place.
 
          ---------------------------------
          -- Mark_Function_Specification --
@@ -6909,14 +7643,10 @@ package body SPARK_Definition is
                  ("anonymous access type for result for "
                   & "non-traversal functions", Id);
 
-            --  If Id is a borrowing traversal function, its first parameter
-            --  must have an anonymous access-to-variable type.
+            --  If Id is a borrowing traversal function, it shall not be a
+            --  volatile function.
 
             elsif Is_Borrowing_Traversal_Function (Id) then
-               if not Is_Anonymous_Access_Type (Etype (First_Formal (Id)))
-                 or else not Is_Access_Variable (Etype (First_Formal (Id)))
-               then
-                  Mark_Unsupported (Lim_Borrow_Traversal_First_Param, Id);
 
                --  For now we don't support volatile borrowing traversal
                --  functions.
@@ -6924,9 +7654,20 @@ package body SPARK_Definition is
                --  cannot call the function in the term domain to update the
                --  value of the borrowed parameter at end.
 
-               elsif Is_Volatile_Func then
+               if Is_Volatile_Func then
                   Mark_Unsupported (Lim_Borrow_Traversal_Volatile, Id);
                end if;
+            end if;
+
+            --  Do not support potentially invalid borrowed parameters as
+            --  designated data cannot be potentially invalid.
+
+            if Is_Traversal_Function (Id)
+              and then Has_Potentially_Invalid (First_Formal (Id))
+            then
+               Mark_Violation
+                 ("traversal function with a potentially invalid traversed "
+                  & "parameter", Id);
             end if;
 
             if Is_User_Defined_Equality (Id)
@@ -6978,6 +7719,12 @@ package body SPARK_Definition is
                            & " on record type", Id,
                            Cont_Msg => "consider introducing another recursive"
                            & " function and defining ""="" as a wrapper");
+
+                     --  Aspect potentially invalid requires a special handling
+                     elsif Has_Aspect (Id, Aspect_Potentially_Invalid) then
+                        Mark_Violation
+                          ("Potentially_Invalid aspect on the primitive"
+                           & " equality of a record type", Id);
                      end if;
                   end if;
                end;
@@ -7006,8 +7753,8 @@ package body SPARK_Definition is
                --  expression itself for a better error message.
 
                if not Is_Volatile_Func
-                 and then (Ekind (Id) /= E_Function
-                           or else not Is_Predicate_Function (Id))
+                 and then not (Ekind (Id) = E_Function
+                                 and then Is_Predicate_Function (Id))
                  and then Is_Effectively_Volatile_For_Reading (Etype (Formal))
                then
                   Mark_Violation
@@ -7025,8 +7772,12 @@ package body SPARK_Definition is
                         Mark_Violation ("function with ""out"" parameter", Id);
 
                      when E_In_Out_Parameter =>
-                        Mark_Violation
-                          ("function with ""in out"" parameter", Id);
+                        if not Is_Borrowing_Traversal_Function (Id)
+                          or else Formal /= First_Formal (Id)
+                        then
+                           Mark_Violation
+                             ("function with ""in out"" parameter", Id);
+                        end if;
 
                      when E_In_Parameter =>
                         null;
@@ -7209,14 +7960,22 @@ package body SPARK_Definition is
                --  possible newly created itypes.
 
                if Class_Present (Prag) then
+                  Sanitize_Class_Wide_Condition (Expr);
                   declare
                      New_Expr : constant Node_Id :=
                        New_Copy_Tree (Source => Expr);
+                     Valid    : Boolean;
                   begin
-                     Process_Class_Wide_Condition (New_Expr, E);
-                     Mark (New_Expr);
-                     Set_Dispatching_Contract (Expr, New_Expr);
-                     Set_Parent (New_Expr, Prag);
+                     Process_Class_Wide_Condition (New_Expr, E, Valid);
+
+                     --  If the replacement could not be done through, no need
+                     --  to try marking the new expression.
+
+                     if Valid then
+                        Mark (New_Expr);
+                        Set_Dispatching_Contract (Expr, New_Expr);
+                        Set_Parent (New_Expr, Prag);
+                     end if;
                   end;
                end if;
 
@@ -7296,6 +8055,96 @@ package body SPARK_Definition is
                      Mark (Expression (Exceptional_Case));
                      Next (Exceptional_Case);
                   end loop;
+               end;
+            end if;
+
+            Prag := Get_Pragma (E, Pragma_Program_Exit);
+            if Present (Prag) then
+
+               --  The frontend rejects Program_Exit on functions without side
+               --  effects.
+               pragma Assert (Ekind (E) /= E_Function
+                              or else Is_Function_With_Side_Effects (E));
+
+               --  The frontend does not allow Program_Exit on entries
+
+               if Ekind (E) = E_Entry then
+                  raise Program_Error;
+               --  Exiting the program is an effect, it shall not occur in
+               --  ghost code.
+
+               elsif Is_Ghost_Entity (E) then
+                  Mark_Violation
+                    ("aspect ""Program_Exit"" on ghost operations", E);
+
+               --  Reject dispatching operations for now. Supporting them would
+               --  require handling Liskov on program exit postconditions.
+
+               elsif Is_Dispatching_Operation (E)
+                 and then Present (Find_Dispatching_Type (E))
+               then
+                  Mark_Unsupported (Lim_Program_Exit_Dispatch, Prag);
+               end if;
+
+               declare
+                  Assoc : constant List_Id :=
+                    Pragma_Argument_Associations (Prag);
+                  pragma Assert (No (Assoc) or else List_Length (Assoc) = 1);
+                  Cond  : constant Node_Id :=
+                    (if No (Assoc) then Empty
+                     else Expression (First (Assoc)));
+               begin
+                  if Present (Cond) then
+                     Mark (Cond);
+
+                     --  Check that outputs of E mentioned in Cond are
+                     --  stand-alone objects.
+
+                     if GG_Has_Been_Generated then
+                        for Obj of To_Ordered_Flow_Id_Set
+                          (Get_Outputs_From_Program_Exit (E, E))
+                        loop
+                           if Obj.Kind = Direct_Mapping then
+                              declare
+                                 Ent      : constant Entity_Id :=
+                                   Get_Direct_Mapping_Id (Obj);
+                                 Cont_Str : constant String :=
+                                   "Outputs mentioned in the "
+                                   & "expression of an aspect Program_Exit "
+                                   & "shall be a stand-alone objects";
+                                 Root_Str : constant String :=
+                                   "Output mentioned in the "
+                                   & "expression of an aspect Program_Exit "
+                                   & "which is not a stand-alone objects";
+                              begin
+                                 case Ekind (Ent) is
+                                    when Protected_Kind =>
+                                       Mark_Violation
+                                         ("reference to the implicit self "
+                                          & "parameter of the protected "
+                                          & "operation & in the expression of "
+                                          & "its ""Program_Exit"" aspect",
+                                          Cond,
+                                          [E],
+                                          Cont_Msg       => Cont_Str,
+                                          Root_Cause_Msg => Root_Str);
+                                    when Constant_Or_Variable_Kind =>
+                                       null;
+                                    when others =>
+                                       Mark_Violation
+                                         ("reference to &, output of &, in the"
+                                          & " expression of its "
+                                          & """Program_Exit"" aspect",
+                                          Cond,
+                                          [Ent, E],
+                                          Cont_Msg       => Cont_Str,
+                                          Root_Cause_Msg => Root_Str);
+                                 end case;
+                              end;
+                           end if;
+                        end loop;
+                     end if;
+                  end if;
                end;
             end if;
 
@@ -7394,10 +8243,10 @@ package body SPARK_Definition is
                   end loop;
 
                   --  Reject exit cases on subprograms which do not allow
-                  --  abnormal termination. For now, this only includes raising
-                  --  exceptions.
+                  --  abnormal termination. This only includes exiting the
+                  --  program and raising exceptions.
 
-                  if Exc_Set.Is_Empty then
+                  if Exc_Set.Is_Empty and then not Has_Program_Exit (E) then
                      Mark_Violation
                        ("Exit_Case on subprogram which can only return "
                         & "normally",
@@ -7467,11 +8316,51 @@ package body SPARK_Definition is
                end;
             end if;
 
+            --  Dispatching operations shall not have a Relaxed_Initialization
+            --  aspect.
+
+            if Has_Aspect (E, Aspect_Relaxed_Initialization)
+              and then Is_Dispatching_Operation (E)
+              and then Present (Find_Dispatching_Type (E))
+            then
+               Mark_Violation
+                 ("dispatching operation with Relaxed_Initialization aspect",
+                  E);
+            end if;
+
+            if Has_Aspect (E, Aspect_Potentially_Invalid) then
+
+               --  Functions annotated with Potentially_Invalid must not have a
+               --  scalar type, unless the function is imported.
+
+               if Ekind (E) = E_Function
+                 and then Has_Scalar_Type (Etype (E))
+                 and then Is_Potentially_Invalid (E)
+                 and then not Is_Imported (E)
+               then
+                  Mark_Violation
+                    ("function returning a scalar that is not imported with "
+                     & "Potentially_Invalid aspect",
+                     E);
+
+               --  Dispatching operations shall not have a Potentially_Invalid
+               --  aspect.
+
+               elsif Is_Dispatching_Operation (E)
+                 and then Present (Find_Dispatching_Type (E))
+               then
+                  Mark_Violation
+                    ("dispatching operation with Potentially_Invalid aspect",
+                     E);
+               end if;
+            end if;
+
             --  Warn on subprograms which have no ways to terminate
 
             if Ekind (E) = E_Procedure
               and then No_Return (E)
               and then not Has_Exceptional_Contract (E)
+              and then not Has_Program_Exit (E)
               and then Get_Termination_Condition (E) = (Static, True)
             then
                if Emit_Warning_Info_Messages then
@@ -7578,107 +8467,682 @@ package body SPARK_Definition is
          ----------------------------------
 
          procedure Process_Class_Wide_Condition
-           (Expr    : N_Subexpr_Id;
-            Spec_Id : Subprogram_Kind_Id)
+           (Expr    :     N_Subexpr_Id;
+            Spec_Id :     Subprogram_Kind_Id;
+            Valid   : out Boolean)
          is
             Disp_Typ : constant Opt_Type_Kind_Id :=
               SPARK_Util.Subprograms.Find_Dispatching_Type (Spec_Id);
 
-            function Replace_Type (N : Node_Id) return Traverse_Result;
-            --  Within the expression for a Pre'Class or Post'Class aspect for
-            --  a primitive subprogram of a tagged type Disp_Typ, a name that
-            --  denotes a formal parameter of type Disp_Typ is treated as
-            --  having type Disp_Typ'Class. This is used to create a suitable
-            --  pre- or postcondition expression for analyzing dispatching
-            --  calls.
+            type Notional_Status is (None, Arg_Only, Result);
+            function Call_Notional_Status
+              (N : N_Function_Call_Id)
+               return Notional_Status;
+            --  Return where a function call may have argument/results
+            --  interpreted to have the notional type of ARM 6.1.1, based on
+            --  the function name alone. This does not make any contextual
+            --  analysis, it is intended for use within said analysis.
+            --  * None: none of the argument may have notional type. This
+            --          matches functions which are not primitives of Disp_Typ.
+            --  * Arg_Only: only some (and necessarily at least one) of the
+            --              arguments may have the notional type. This matches
+            --              functions which are primitives of Disp_Typ and
+            --              dispatch solely on arguments.
+            --  * Result: the result, and possibly some of the arguments, may
+            --            have the notional type. This matches functions which
+            --            are primitives of Disp_Typ and dispatch on result.
+            --            Such calls may chain the notional type through them,
+            --            between result and arguments (in any direction).
 
-            ------------------
-            -- Replace_Type --
-            ------------------
+            function Collect_Controlling_Formals return Node_Sets.Set;
+            --  Collect all controlling formals of Spec_Id.
 
-            function Replace_Type (N : Node_Id) return Traverse_Result is
-               Context : constant Node_Id    := Parent (N);
-               Loc     : constant Source_Ptr := Sloc (N);
-               Ref     : Node_Id := N;
-               CW_Typ  : Opt_Type_Kind_Id := Empty;
-               Ent     : Formal_Kind_Id;
-               Typ     : Type_Kind_Id;
+            function Collect_Notional_Leaf_Occurrences
+              (Formals : Node_Sets.Set)
+               return Node_Lists.List;
+            --  Collect all leaf occurrences of the notional type in Expr, that
+            --  is occurrences of controlling formal and result attribute.
+
+            function Collect_Replacement_Roots
+              (Leaves : Node_Lists.List)
+               return Node_Lists.List
+              with Pre => Present (Disp_Typ);
+            --  The notional type propagates from formals/results (leaves) up
+            --  in the expression tree through tagged primitives of Disp_Typ,
+            --  propagating further on parameters/results. It also propagates
+            --  up under type-preserving construct or anonymous-access related
+            --  constructs (.all, 'Access, 'Old, declare-expr....).
+            --  Collect_Replacement_Roots collects the outermost elements of
+            --  such propagation chains from Leaves and returns them. The
+            --  elements of Leaves should all have the notional types or
+            --  anonymous access to it, the expected value for Leaves is the
+            --  occurrence of formals of Spec_Id (plus result). Note that
+            --  function calls controlled by the notional type may be roots if
+            --  they do not have controlling results. They block propagation,
+            --  but still take the notional type into account.
+
+            procedure Replace_Calls
+              (Root        : Node_Id;
+               Formals     : Node_Sets.Set;
+               Controlling : Node_Id);
+            --  Replace top-down from Root the primitive calls involving the
+            --  (implicit) notional type by dispatching calls, using
+            --  Controlling (any of the controlling formals) as the controlling
+            --  parameter for calls that may be controlled from result. We
+            --  could replace types by their class-wide equivalent, but proof
+            --  is the only client of the transformed expression, and it does
+            --  not make any difference of representation between class-wide
+            --  types and regular types.
+            --
+            --  Formals is used to validate that ultimately reached variables
+            --  are formals of Spec_Id. (At the time of writing, front-end does
+            --  not control that contract would type-check using the notional
+            --  type instead of the real tagged type).
+
+            ---------------------------------
+            -- Collect_Controlling_Formals --
+            ---------------------------------
+
+            function Collect_Controlling_Formals return Node_Sets.Set is
+               Formal  : Opt_Formal_Kind_Id := First_Formal (Spec_Id);
+            begin
+               return Formals : Node_Sets.Set do
+                  while Present (Formal) loop
+                     if Is_Controlling_Formal (Formal) then
+                        Formals.Insert (Formal);
+                     end if;
+                     Next_Formal (Formal);
+                  end loop;
+               end return;
+            end Collect_Controlling_Formals;
+
+            ---------------------------------------
+            -- Collect_Notional_Leaf_Occurrences --
+            ---------------------------------------
+
+            function Collect_Notional_Leaf_Occurrences
+              (Formals : Node_Sets.Set)
+               return Node_Lists.List
+            is
+            begin
+               return Bag : Node_Lists.List do
+                  declare
+                     function Collect_Occurrence
+                       (N : Node_Id)
+                        return Traverse_Result;
+
+                     ------------------------
+                     -- Collect_Occurrence --
+                     ------------------------
+
+                     function Collect_Occurrence
+                       (N : Node_Id)
+                        return Traverse_Result
+                     is
+                     begin
+                        if Nkind (N) = N_Attribute_Reference
+                          and then Attribute_Name (N) = Name_Result
+                          and then Has_Controlling_Result (Spec_Id)
+                        then
+                           Bag.Append (N);
+                        elsif Is_Entity_Name (N) then
+                           declare
+                              E : constant Entity_Id := Entity (N);
+                           begin
+                              if Present (E) and then Formals.Contains (E) then
+                                 Bag.Append (N);
+                              end if;
+                           end;
+                        end if;
+                        return OK;
+                     end Collect_Occurrence;
+
+                     procedure Collect_Occurrences is
+                       new Traverse_More_Proc (Collect_Occurrence);
+
+                  begin
+                     Collect_Occurrences (Expr);
+                  end;
+               end return;
+            end Collect_Notional_Leaf_Occurrences;
+
+            --------------------------
+            -- Call_Notional_Status --
+            --------------------------
+
+            function Call_Notional_Status
+              (N : N_Function_Call_Id)
+               return Notional_Status
+            is
+               Nm     : constant Node_Id := Name (N);
+               E      : Entity_Id;
+               E_D_Ty : Type_Kind_Id;
+            begin
+               --  This test is essentially imported from exp_util.adb
+               --  (reconstruction of class-wide postcondition upon
+               --   overriding).
+               --  The Is_Ancestor direction was wrong for our purposes. It
+               --  appears to not matter in exp_util since the functions that
+               --  are found are the internal inherited primitives rather than
+               --  the primitive they alias, but here it does matter.
+
+               if Is_Entity_Name (Nm) then
+                  E := Entity (Nm);
+                  if Is_Dispatching_Operation (E) then
+                     E_D_Ty := Find_Dispatching_Type (E);
+                     if Present (E_D_Ty)
+                       and then Is_Ancestor (E_D_Ty, Disp_Typ)
+                     then
+                        if Has_Controlling_Result (E) then
+                           return Result;
+                        else
+                           return Arg_Only;
+                        end if;
+                     end if;
+                  end if;
+               end if;
+               return None;
+            end Call_Notional_Status;
+
+            -------------------------------
+            -- Collect_Replacement_Roots --
+            -------------------------------
+
+            function Collect_Replacement_Roots
+              (Leaves : Node_Lists.List)
+               return Node_Lists.List
+            is
+               Processed : Node_Sets.Set;
+               --  Cache already processed nodes to avoid duplicates
 
             begin
-               --  For references to the Old attribute, convert the attribute
-               --  reference and not the prefix only.
+               return Roots : Node_Lists.List do
+                  for Leaf of Leaves loop
+                     declare
+                        Cursor   : Node_Id := Leaf;
+                        Above    : Node_Id;
+                        Position : Node_Sets.Cursor;
+                        Inserted : Boolean;
+                     begin
+                        Inner : while not Processed.Contains (Cursor) loop
+                           Above := Parent (Cursor);
 
-               if Is_Attribute_Old (N) then
-                  Ref := Prefix (N);
-               end if;
+                           --  Skip intermediate nodes in case expressions and
+                           --  function calls.
 
-               if Is_Entity_Name (Ref)
-                 and then Present (Entity (Ref))
-                 and then Is_Formal (Entity (Ref))
-               then
-                  Ent := Entity (Ref);
-                  Typ := Etype (Ent);
+                           if Nkind (Above) in N_Case_Expression_Alternative
+                                             | N_Parameter_Association
+                           then
+                              Above := Parent (Above);
+                           end if;
 
-                  if Nkind (Context) = N_Type_Conversion then
-                     null;
+                           case Nkind (Above) is
+                              when N_Function_Call =>
+                                 --  Sanity checking: check cursor is among the
+                                 --  actuals. There should be no other
+                                 --  subexpressions in a function call
+                                 --  (except access-to-subprogram, but that
+                                 --   is incompatible with a tagged type).
 
-                  --  Do not perform the type replacement for selector names
-                  --  in parameter associations. These carry an entity for
-                  --  reference purposes, but semantically they are just
-                  --  identifiers.
+                                 declare
+                                    Actual : Node_Id := First_Actual (Above);
+                                 begin
+                                    while Actual /= Cursor loop
+                                       if No (Actual) then
+                                          raise Program_Error;
 
-                  elsif Nkind (Context) = N_Parameter_Association
-                    and then Selector_Name (Context) = N
-                  then
-                     null;
+                                       end if;
+                                       Next_Actual (Actual);
+                                    end loop;
+                                 end;
 
-                  elsif Retysp (Typ) = Disp_Typ then
-                     CW_Typ := Class_Wide_Type (Typ);
-                  end if;
+                                 --  Notional arguments may propagate to the
+                                 --  call from its argument.
 
-                  if Present (CW_Typ) then
-                     Rewrite (Ref,
-                       Nmake.Make_Type_Conversion (Loc,
-                         Subtype_Mark =>
-                           Tbuild.New_Occurrence_Of (CW_Typ, Loc),
-                         Expression   => Tbuild.New_Occurrence_Of (Ent, Loc)));
+                                 declare
+                                    Status : constant Notional_Status :=
+                                      Call_Notional_Status (Above);
+                                 begin
+                                    case Status is
+                                       when None =>
+                                          goto End_Propagation;
+                                       when Result =>
+                                          goto Continue_Propagation;
+                                       when Arg_Only =>
+                                          goto Dispatching_Root;
+                                    end case;
+                                 end;
+                              when N_Attribute_Reference =>
+                                 --  Notional type propagates through
+                                 --  'Old/'Loop_Entry/'Access.
 
-                     if Ref /= N then
-                        Set_Etype (Ref, CW_Typ);
+                                 if Attribute_Name (Above) in Name_Old
+                                                            | Name_Loop_Entry
+                                                            | Name_Access
+                                 then
+                                    goto Continue_Propagation;
+                                 else
+                                    raise Program_Error;
+                                 end if;
+
+                              when N_If_Expression =>
+                                 --  Notional type propagates through dependent
+                                 --  expressions of if expressions.
+
+                                 --  Sanity checking
+
+                                 declare
+                                    Dep_Expr : Node_Id :=
+                                      First (Expressions (Above));
+                                 begin
+                                    pragma Assert (Present (Dep_Expr));
+                                    pragma Assert (Dep_Expr /= Cursor);
+                                    Next (Dep_Expr);
+                                    while Dep_Expr /= Cursor loop
+                                       if No (Dep_Expr) then
+                                          --  This should not happen, the only
+                                          --  other subexpression of a if
+                                          --  expression should be the
+                                          --  conditional expression itself,
+                                          --  which cannot be tagged.
+
+                                          raise Program_Error;
+
+                                       end if;
+                                       Next (Dep_Expr);
+                                    end loop;
+                                 end;
+                                 goto Continue_Propagation;
+
+                              when N_Case_Expression =>
+                                 --  Notional type propagates through dependent
+                                 --  expressions of case expressions.
+
+                                 --  Sanity checking
+
+                                 declare
+                                    Dep_Alt : Node_Id :=
+                                      First (Alternatives (Above));
+                                 begin
+                                    loop
+                                       if No (Dep_Alt) then
+                                          --  This should not happen by same
+                                          --  rationale as for if expressions,
+                                          --  other subexpressions of a case
+                                          --  expressions should not have a
+                                          --  tagged type.
+
+                                          raise Program_Error;
+
+                                       end if;
+                                       exit when Expression (Dep_Alt) = Cursor;
+                                       Next (Dep_Alt);
+                                    end loop;
+                                    goto Continue_Propagation;
+                                 end;
+
+                              when N_Expression_With_Actions =>
+                                 --  Notional type propagates through dependent
+                                 --  expressions of declare expressions.
+
+                                 pragma Assert (Cursor = Expression (Above));
+                                 goto Continue_Propagation;
+
+                              when N_Explicit_Dereference =>
+                                 pragma Assert (Prefix (Above) = Cursor);
+                                 goto Continue_Propagation;
+
+                              when N_Type_Conversion
+                                 | N_Qualified_Expression
+                                 | N_Selected_Component
+                              =>
+                                 --  Type conversion blocks propagation of
+                                 --  notional type, so do extracting a field.
+
+                                 pragma Assert (Prefix (Above) = Cursor);
+                                 goto End_Propagation;
+
+                              when N_Op_Eq =>
+                                 --  The equal operator blocks propagation of
+                                 --  notional type, but takes it into account,
+                                 --  unless the type is an (anonymous) access.
+
+                                 pragma Assert
+                                   (Left_Opnd (Above) = Cursor
+                                    or else Right_Opnd (Above) = Cursor);
+                                 if Is_Access_Object_Type (Etype (Cursor)) then
+                                    goto End_Propagation;
+                                 else
+                                    goto Dispatching_Root;
+                                 end if;
+
+                              when N_Membership_Test =>
+                                 --  Membership tests against values implicitly
+                                 --  use dispatching equality, the behavior
+                                 --  is similar to the equal operator.
+
+                                 --  Sanity checking
+
+                                 if Left_Opnd (Above) /= Cursor
+                                   and then Right_Opnd (Above) /= Cursor
+                                 then
+                                    declare
+                                       Alt : Node_Id :=
+                                         First (Alternatives (Above));
+                                    begin
+                                       while Alt /= Cursor loop
+                                          if No (Alt) then
+                                             raise Program_Error;
+                                          end if;
+                                          Next (Alt);
+                                       end loop;
+                                    end;
+                                 end if;
+
+                                 --  Same distinction as equality
+
+                                 if Is_Access_Object_Type (Etype (Cursor)) then
+                                    goto End_Propagation;
+                                 else
+                                    goto Dispatching_Root;
+                                 end if;
+
+                              when others =>
+
+                                 --  Other cases are unexpected and we are not
+                                 --  sure what should happen.
+
+                                 raise Program_Error;
+                           end case;
+
+                           --  Cases where the propagation stops, so we get a
+                           --  root.
+
+                           <<End_Propagation>>
+                           Processed.Insert (Cursor);
+                           Roots.Append (Cursor);
+                           exit Inner;
+
+                           --  Case where the propagation stops, but the Above
+                           --  node takes the notional type into account, so it
+                           --  should be a root.
+
+                           <<Dispatching_Root>>
+                           Processed.Insert (Cursor);
+                           Processed.Insert
+                             (Above, Position, Inserted);
+                           if Inserted then
+                              Roots.Append (Above);
+                           end if;
+                           exit Inner;
+
+                           --  Cases where the propagation continue further
+
+                           <<Continue_Propagation>>
+                           Processed.Insert (Cursor);
+                           Cursor := Above;
+                        end loop Inner;
+                     end;
+                  end loop;
+               end return;
+            end Collect_Replacement_Roots;
+
+            -------------------
+            -- Replace_Calls --
+            -------------------
+
+            procedure Replace_Calls
+              (Root        : Node_Id;
+               Formals     : Node_Sets.Set;
+               Controlling : Node_Id)
+            is
+            begin
+               case Nkind (Root) is
+                  when N_Function_Call =>
+                     if Call_Notional_Status (Root) = None then
+                        --  This one should not even type-check in the first
+                        --  place.
+
+                        raise Program_Error;
+                     else
+                        --  Make the call dispatching and propagates to any
+                        --  controlling parameters.
+
+                        declare
+                           Formal          : Node_Id := First_Formal
+                             (Get_Called_Entity (Root));
+                           Actual          : Node_Id := First_Actual (Root);
+                        begin
+                           while Present (Formal) loop
+                              pragma Assert (Present (Actual));
+                              if Is_Controlling_Formal (Formal) then
+                                 Replace_Calls (Actual, Formals, Controlling);
+                              end if;
+                              Next_Formal (Formal);
+                              Next_Actual (Actual);
+                           end loop;
+                           pragma Assert (No (Actual));
+
+                           Set_Controlling_Argument (Root, Controlling);
+                           Set_Call_Simulates_Contract_Dispatch (Root);
+                        end;
                      end if;
 
-                     Set_Etype (N, CW_Typ);
+                  when N_Type_Conversion | N_Qualified_Expression =>
+                     --  Yet other cases that should not even type-check in the
+                     --  first place. Conversion is fine when propagating up
+                     --  (it blocks propagation by converting the notional
+                     --  type), but never down since there is no way to name
+                     --  the notional type at all.
 
-                     --  When changing the type of an argument to a potential
-                     --  dispatching call, make the call dispatching indeed by
-                     --  setting its controlling argument.
+                     raise Program_Error;
 
-                     if Nkind (Context) = N_Function_Call
-                       and then
-                         Is_Dispatching_Operation (Get_Called_Entity (Context))
+                  when N_Explicit_Dereference =>
+                     Replace_Calls (Prefix (Root), Formals, Controlling);
+
+                  when N_Attribute_Reference =>
+                     if Attribute_Name (Root) in Name_Old
+                                               | Name_Loop_Entry
+                                               | Name_Access
                      then
-                        Set_Controlling_Argument (Context, N);
+                        Replace_Calls (Prefix (Root), Formals, Controlling);
+                     elsif Attribute_Name (Root) = Name_Result
+                       and then Has_Controlling_Result (Spec_Id)
+                     then
+                        null;
+                     else
+                        raise Program_Error;
                      end if;
-                  end if;
-               end if;
 
-               return OK;
-            end Replace_Type;
+                  when N_Identifier | N_Expanded_Name =>
+                     if not Formals.Contains (Entity (Root)) then
+                        raise Program_Error;
+                     end if;
 
-            procedure Replace_Types is new Traverse_More_Proc (Replace_Type);
+                  when N_If_Expression =>
+                     declare
+                        Dep_Expr : Node_Id := First (Expressions (Root));
+                     begin
+                        --  First expression is test condition
+
+                        pragma Assert (Present (Dep_Expr));
+                        Next (Dep_Expr);
+
+                        while Present (Dep_Expr) loop
+                           Replace_Calls (Dep_Expr, Formals, Controlling);
+                           Next (Dep_Expr);
+                        end loop;
+
+                     end;
+
+                  when N_Case_Expression =>
+                     declare
+                        Dep_Alt : Node_Id := First (Alternatives (Root));
+                     begin
+
+                        while Present (Dep_Alt) loop
+                           Replace_Calls
+                             (Expression (Dep_Alt), Formals, Controlling);
+                           Next (Dep_Alt);
+                        end loop;
+                     end;
+
+                  when N_Expression_With_Actions =>
+                     Replace_Calls (Expression (Root), Formals, Controlling);
+
+                  when N_Op_Eq =>
+                     --  Treat dispatching equality as a dispatching function
+                     --  call.
+
+                     Set_Call_Simulates_Contract_Dispatch (Root);
+                     Replace_Calls (Left_Opnd (Root), Formals, Controlling);
+                     Replace_Calls (Right_Opnd (Root), Formals, Controlling);
+
+                  when N_Membership_Test =>
+                     --  Membership test may implicitly use equality
+
+                     Set_Call_Simulates_Contract_Dispatch (Root);
+                     Replace_Calls (Left_Opnd (Root), Formals, Controlling);
+                     declare
+                        Right : constant Node_Id := Right_Opnd (Root);
+                        Alt   : Node_Id := First (Alternatives (Root));
+                     begin
+                        if Present (Right)
+                          and then Alternative_Uses_Eq (Right)
+                        then
+                           Replace_Calls (Right, Formals, Controlling);
+                        end if;
+                        while Present (Alt) loop
+                           if Alternative_Uses_Eq (Alt) then
+                              Replace_Calls (Alt, Formals, Controlling);
+                           end if;
+                           Next (Alt);
+                        end loop;
+                     end;
+
+                  when others =>
+                     --  We do not know what should happen in other cases
+
+                     raise Program_Error;
+               end case;
+            end Replace_Calls;
 
          --  Start of processing for Process_Class_Wide_Condition
 
          begin
+            Valid := Present (Disp_Typ);
+
             --  In the case of a private type that is not visibly tagged, we
             --  can get also a derived type inheriting classwide contracts that
             --  is also not visibly tagged, making Find_Dispatching_Type return
             --  Empty here. Do nothing as this case is marked as a violation
             --  already.
-            if Present (Disp_Typ) then
-               Replace_Types (Expr);
+
+            if Valid then
+               declare
+                  Formals : constant Node_Sets.Set :=
+                    Collect_Controlling_Formals;
+                  Leaves  : constant Node_Lists.List :=
+                    Collect_Notional_Leaf_Occurrences (Formals);
+               begin
+                  --  There is no work to be done if the notional type does not
+                  --  occur in the contracts, for example for a static True/
+                  --  False contract. Otherwise, any leaf provides a
+                  --  controlling argument we can use.
+                  if not Leaves.Is_Empty then
+                     declare
+                        Controlling : constant Node_Id := Leaves.First_Element;
+                     begin
+                        for Root of Collect_Replacement_Roots (Leaves) loop
+                           Replace_Calls (Root, Formals, Controlling);
+                        end loop;
+                     end;
+                  end if;
+               end;
             end if;
          end Process_Class_Wide_Condition;
+
+         -----------------------------------
+         -- Sanitize_Class_Wide_Condition --
+         -----------------------------------
+
+         procedure Sanitize_Class_Wide_Condition (Expr : N_Subexpr_Id) is
+            Visited : Node_Sets.Set;
+            --  Register handled nodes to prevent work duplication.
+
+            procedure Handle_Node (N : Node_Id);
+            --  Traverse nested subtrees of depedent subexpressions
+            --  (if/case/declare expressions) bottom-up, setting the Etype
+            --  to that of children.
+            --  Called on every subexpression of an expression through
+            --  Traverse_More_Proc, using Visited to prevent work duplication.
+            --  ??? Is there a bottom-up alternative to Traverse_More_Proc we
+            --  could use instead ?
+
+            function Process (N : Node_Id) return Traverse_Result;
+            --  Adapt Handle_Node to expected prototype for Traverse_More_Proc
+
+            -----------------
+            -- Handle_Node --
+            -----------------
+
+            procedure Handle_Node (N : Node_Id) is
+            begin
+               if not Visited.Contains (N) then
+                  Visited.Insert (N);
+                  case Nkind (N) is
+                     when N_If_Expression =>
+                        declare
+                           Then_Expr : constant Node_Id :=
+                             Next (First (Expressions (N)));
+                           Dep_Expr  : Node_Id := Then_Expr;
+                        begin
+                           while Present (Dep_Expr) loop
+                              Handle_Node (Dep_Expr);
+                              Next (Dep_Expr);
+                           end loop;
+                           Set_Etype (N, Etype (Then_Expr));
+                        end;
+                     when N_Case_Expression =>
+                        declare
+                           Dep_Alt  : Node_Id := First (Alternatives (N));
+                           Dep_Expr : constant Node_Id := Expression (Dep_Alt);
+                        begin
+                           while Present (Dep_Alt) loop
+                              Handle_Node (Dep_Alt);
+                              Next (Dep_Alt);
+                           end loop;
+                           Set_Etype (N, Etype (Dep_Expr));
+                        end;
+                     when N_Expression_With_Actions =>
+                        declare
+                           Dep_Expr : constant Node_Id := Expression (N);
+                        begin
+                           Handle_Node (Dep_Expr);
+                           Set_Etype (N, Etype (Dep_Expr));
+                        end;
+                     when others =>
+                     null;
+                  end case;
+               end if;
+            end Handle_Node;
+
+            -------------
+            -- Process --
+            -------------
+
+            function Process (N : Node_Id) return Traverse_Result is
+            begin
+               Handle_Node (N);
+               return OK;
+            end Process;
+
+            procedure Traverse is new Traverse_More_Proc (Process);
+
+            --  Start of processing for Sanitize_Class_Wide_Condition
+         begin
+            Traverse (Expr);
+         end Sanitize_Class_Wide_Condition;
 
       --  Start of processing for Mark_Subprogram_Entity
 
@@ -7819,9 +9283,13 @@ package body SPARK_Definition is
                      E);
 
                --  Precise unchecked conversion accesses record fields, update
-               --  the Unused_Records set.
+               --  the Unused_Records set. Avoid calling touch on access types
+               --  as designated type might not be marked yet. Such conversions
+               --  are never precisely supported in SPARK.
 
-               elsif Is_UC_With_Precise_Definition (E).Ok then
+               elsif not Contains_Access_Subcomponents (To)
+                 and then not Contains_Access_Subcomponents (From)
+               then
                   Touch_All_Record_Fields (To);
                   Touch_All_Record_Fields (From);
                end if;
@@ -8067,6 +9535,25 @@ package body SPARK_Definition is
                   end if;
                end if;
             end;
+         end if;
+
+         if Is_Potentially_Invalid (E) then
+            --  We do not support relaxed initialization on potentially invalid
+            --  objects for now.
+
+            if Has_Relaxed_Initialization (E) then
+               Mark_Unsupported (Lim_Potentially_Invalid_Relaxed, E);
+            else
+               Mark_Potentially_Invalid_Type (E, Etype (E));
+
+               --  If E cannot have invalid values, emit a warning
+
+               if Fun_Has_Only_Valid_Values (E)
+                 and then Emit_Warning_Info_Messages
+               then
+                  Warning_Msg_N (Warn_Useless_Potentially_Invalid_Fun, E);
+               end if;
+            end if;
          end if;
 
          --  If no violations were found and the function is annotated with
@@ -8988,6 +10475,13 @@ package body SPARK_Definition is
 
                if not In_SPARK (Component_Typ) then
                   Mark_Violation (E, From => Component_Typ);
+
+               elsif Is_Effectively_Volatile (E) then
+                  Check_No_Relaxed_Init_Part
+                    (E,
+                     Msg => "part of effectively volatile type with relaxed "
+                     & "initialization",
+                     N   => E);
                end if;
 
                --  Mark default aspect if any
@@ -9019,7 +10513,6 @@ package body SPARK_Definition is
             --  long_long_float should not pose any fundamental problem.
 
             if Is_Modular_Integer_Type (E)
-              and then Present (Modulus (E))
               and then Modulus (E) > UI_Expon (Uint_2, Uint_128)
             then
                pragma Annotate
@@ -9407,7 +10900,8 @@ package body SPARK_Definition is
                     and then Underlying_Type (Etype (E)) /= E
                     and then Is_Tagged_Type (E);
                   Needs_No_UU_Check : constant Boolean := Is_Tagged_Ext
-                    and then not Has_Unconstrained_UU_Component (Etype (E));
+                    and then not Has_UU_Component
+                      (Etype (E), Unconstrained_Only => True);
                   --  True if we need to make sure that the type contains no
                   --  component with an unconstrained unchecked union type.
                   --  We reject them for tagged types whose root type does not
@@ -9446,23 +10940,36 @@ package body SPARK_Definition is
                                     Root_Cause_Msg =>
                                       "owning component of tagged extension");
 
-                              --  Do not check for relaxed initialization if
-                              --  the type is deep as some of the designated
-                              --  types might not be marked yet.
-                              --  ??? A crash might still happen if the
-                              --  extension contains access-to-constant types.
-
-                              elsif Contains_Relaxed_Init_Parts (Comp_Type)
-                              then
-                                 Mark_Violation
-                                   ("component & of tagged extension & with"
+                              else
+                                 Check_No_Relaxed_Init_Part
+                                   (Comp_Type,
+                                    Msg            =>
+                                      "component & of tagged extension & with"
                                     & " relaxed initialization",
-                                    Comp,
-                                    Names => [Comp, E],
+                                    N              => Comp,
+                                    Names          => [Comp, E],
                                     Root_Cause_Msg =>
                                       "component of tagged extension with"
                                     & " relaxed Initialization");
                               end if;
+
+                           --  Also check absence of components with
+                           --  Relaxed_Init in unchecked unions and effectively
+                           --  volatile types.
+
+                           elsif Is_Unchecked_Union (E)
+                             or else Is_Effectively_Volatile (E)
+                           then
+                              Check_No_Relaxed_Init_Part
+                                (Comp_Type,
+                                 Msg => "part of "
+                                 & (if Is_Unchecked_Union (E)
+                                   then "Unchecked_Union"
+                                   else "effectively volatile")
+                                 & " type with relaxed initialization",
+                                 N   =>
+                                   (if Is_Nouveau_Type (E) then Comp
+                                    else E));
                            end if;
 
                            --  Check that the component is not of an anonymous
@@ -9487,8 +10994,8 @@ package body SPARK_Definition is
                                ((Is_Unchecked_Union (Base_Retysp (Comp_Type))
                                  and then
                                    not Is_Constrained (Retysp (Comp_Type)))
-                                or else Has_Unconstrained_UU_Component
-                                  (Comp_Type))
+                                or else Has_UU_Component
+                                  (Comp_Type, Unconstrained_Only => True))
                            then
                               Mark_Unsupported (Lim_UU_Tagged_Comp, Comp);
                            end if;
@@ -9752,16 +11259,14 @@ package body SPARK_Definition is
                               Mark_Violation (Comp, From => Etype (Comp));
                            end if;
 
-                           --  Initialization by proof of protected components
-                           --  is not supported yet.
-                           --  ??? This call might raise Program_Error if
-                           --  Etype (Comp) has a subcomponent designating an
-                           --  unmarked incomplete or private type.
+                           --  Initialization by proof of effectively volatile
+                           --  parts.
 
-                           if Contains_Relaxed_Init_Parts (Etype (Comp)) then
-                              Mark_Unsupported
-                                (Lim_Relaxed_Init_Protected_Component, Comp);
-                           end if;
+                           Check_No_Relaxed_Init_Part
+                             (Etype (Comp),
+                              Msg => "part of effectively volatile type with "
+                              & "relaxed initialization",
+                              N   => Comp);
 
                            Next_Component (Comp);
                         end loop;
@@ -9788,19 +11293,33 @@ package body SPARK_Definition is
                               end if;
 
                               --  Initialization by proof of Part_Of variables
-                              --  is not supported yet.
-                              --  ??? This call might raise Program_Error if
-                              --  Etype (Part) has a subcomponent designating
-                              --  an unmarked incomplete or private type.
+                              --  is not allowed in SPARK.
 
                               if Ekind (Part) = E_Variable
                                 and then Retysp_In_SPARK (Etype (Part))
-                                and then (Obj_Has_Relaxed_Init (Part)
-                                          or else Contains_Relaxed_Init_Parts
-                                            (Etype (Part)))
                               then
-                                 Mark_Unsupported
-                                   (Lim_Relaxed_Init_Part_Of_Variable, Part);
+                                 if Obj_Has_Relaxed_Init (Part) then
+                                    Mark_Violation
+                                      ("part of effectively volatile type with"
+                                       & " relaxed initialization",
+                                       Part);
+                                 else
+                                    Check_No_Relaxed_Init_Part
+                                      (Etype (Part),
+                                       Msg =>
+                                         "part of effectively volatile type "
+                                       & "with relaxed initialization",
+                                       N   => Part);
+                                 end if;
+                              end if;
+
+                              --  Part of protected objects should not be
+                              --  potentially invalid.
+
+                              if Is_Potentially_Invalid (Part) then
+                                 Mark_Violation
+                                   ("potentially invalid object marked Part_Of"
+                                    & " a protected object", Part);
                               end if;
                            end loop;
                         end if;
@@ -9897,6 +11416,22 @@ package body SPARK_Definition is
 
          end if;
 
+         --  If necessary, check that Des_Ty does not have parts with
+         --  Relaxed_Initialization. We could improve the error message if this
+         --  occurs in practice.
+
+         if not Violation_Detected
+           and then Requires_No_Relaxed_Init_Check.Contains (E)
+         then
+            Check_No_Relaxed_Init_Part
+              (E,
+               N   => E,
+               Msg =>
+                 "designated type with Relaxed_Initialization");
+         end if;
+
+         Requires_No_Relaxed_Init_Check.Exclude (E);
+
          --  Check the user defined equality of record types if any, as they
          --  can be used silently as part of the classwide equality.
 
@@ -9966,18 +11501,13 @@ package body SPARK_Definition is
 
                else
                   if Emit_Warning_Info_Messages
-                    and then Debug.Debug_Flag_Underscore_F
                     and then Has_Predicates (E)
                     and then Comes_From_Source (E)
                   then
-                     Error_Msg_N
-                       (Create
-                          ("& is handled as if it was annotated with"
-                           & " Relaxed_Initialization as all its components"
-                           & " are annotated that way",
-                           Names => [E]),
+                     Warning_Msg_N
+                       (Warn_Comp_Relaxed_Init,
                         E,
-                        Kind => Info_Kind,
+                        Names => [E],
                         Continuations =>
                           [Create
                                ("consider annotating & with"
@@ -10668,6 +12198,14 @@ package body SPARK_Definition is
                   end;
                end if;
 
+               --  If a potentially invalid object occurs in a postcondition,
+               --  emit a warning if we cannot acertain that the access is
+               --  properly guarded.
+
+               if Is_Potentially_Invalid (E) then
+                  Check_Context_Of_Potentially_Invalid (E, N);
+               end if;
+
             --  Record components and discriminants are in SPARK if they are
             --  visible in the representative type of their scope. Do not
             --  report a violation if the type itself is not SPARK, as the
@@ -10846,6 +12384,11 @@ package body SPARK_Definition is
          if Is_Function_With_Side_Effects (Ent) then
             Mark_Violation
               ("function with side effects associated with aspect Iterable",
+               N);
+         end if;
+         if Has_Aspect (Ent, Aspect_Potentially_Invalid) then
+            Mark_Unsupported
+              (Lim_Potentially_Invalid_Iterable,
                N);
          end if;
          Get_Globals
@@ -11189,6 +12732,118 @@ package body SPARK_Definition is
       Current_SPARK_Pragma := Save_SPARK_Pragma;
    end Mark_Package_Declaration;
 
+   -----------------------------------
+   -- Mark_Potentially_Invalid_Type --
+   -----------------------------------
+
+   procedure Mark_Potentially_Invalid_Type
+     (N  : Node_Id;
+      Ty : Type_Kind_Id)
+   is
+      Rep_Ty : constant Type_Kind_Id := Retysp (Ty);
+
+   begin
+      --  Raise violations on cases disallowed by the RM
+
+      if Is_Tagged_Type (Rep_Ty) then
+         Mark_Violation
+           ("potentially invalid object with a part of a tagged type",
+            N);
+      elsif Is_Access_Type (Rep_Ty) then
+         Mark_Violation
+           ("potentially invalid object with a part of an access type",
+            N);
+      elsif Is_Concurrent_Type (Rep_Ty) then
+         Mark_Violation
+           ("potentially invalid object with a part of a concurrent type",
+            N);
+      elsif Is_Unchecked_Union (Rep_Ty) then
+         Mark_Violation
+           ("potentially invalid object with a part of an Unchecked_Union "
+            & "type",
+            N);
+
+      --  Also disallow types with an ownership annotation
+
+      elsif Has_Ownership_Annotation (Rep_Ty) then
+         Mark_Violation
+           ("potentially invalid object with a part of an ownership type",
+            N);
+
+      --  Also reject currently unsupported cases
+
+      elsif Has_Relaxed_Init (Rep_Ty) then
+         Mark_Unsupported
+           (Lim_Potentially_Invalid_Relaxed,
+            N);
+      elsif Has_Predicates (Rep_Ty) then
+         Mark_Unsupported
+           (Lim_Potentially_Invalid_Predicates,
+            N);
+
+      --  Supporting mutable discriminants makes it possible to have invalid
+      --  values inside discriminant checks, both on assignments and on
+      --  component access, possibly on the LHS.
+
+      elsif Has_Discriminants (Rep_Ty)
+        and then Has_Mutable_Discriminants (Rep_Ty)
+      then
+         Mark_Unsupported
+           (Lim_Potentially_Invalid_Mutable_Discr,
+            N);
+
+      --  Private types whose full view is not in SPARK are not supported yet
+
+      elsif Full_View_Not_In_SPARK (Rep_Ty) then
+         Mark_Unsupported
+           (Lim_Potentially_Invalid_Private,
+            N);
+      end if;
+
+      --  Check for invariants on Ty or one of its ancestors
+
+      declare
+         Anc : Entity_Id := Rep_Ty;
+      begin
+         loop
+            Anc := Retysp (Etype (Anc));
+            if Has_Invariants_In_SPARK (Anc) then
+               Mark_Violation
+                 ("potentially invalid object with a part subject to a type"
+                  & " invariant",
+                  N);
+               exit;
+            end if;
+            exit when Retysp (Etype (Anc)) = Anc;
+         end loop;
+      end;
+
+      --  Check components of composite types
+
+      if Is_Array_Type (Rep_Ty) then
+         Mark_Potentially_Invalid_Type (N, Component_Type (Rep_Ty));
+
+      elsif Is_Record_Type (Rep_Ty) then
+         declare
+            Comp      : Opt_E_Component_Id := First_Component (Rep_Ty);
+            Comp_Type : Type_Kind_Id;
+
+         begin
+            while Present (Comp) loop
+               pragma Assert (Ekind (Comp) = E_Component);
+
+               if Component_Is_Visible_In_SPARK (Comp) then
+                  Comp_Type := Etype (Comp);
+                  Mark_Potentially_Invalid_Type (N, Comp_Type);
+               end if;
+
+               Next_Component (Comp);
+            end loop;
+         end;
+      end if;
+
+   end Mark_Potentially_Invalid_Type;
+
    -----------------
    -- Mark_Pragma --
    -----------------
@@ -11492,6 +13147,7 @@ package body SPARK_Definition is
             | Pragma_Pre_Class
             | Pragma_Predicate
             | Pragma_Predicate_Failure
+            | Pragma_Program_Exit
             | Pragma_Provide_Shift_Operators
             | Pragma_Pure_Function
             | Pragma_Restriction_Warnings
@@ -12358,11 +14014,20 @@ package body SPARK_Definition is
       if Has_Invariants_In_SPARK (Ty) then
          Mark_Unsupported (Lim_Relaxed_Init_Invariant, N);
       elsif Is_Tagged_Type (Rep_Ty) then
-         Mark_Unsupported (Lim_Relaxed_Init_Tagged_Type, N);
+         Mark_Violation
+           ("tagged type or object with relaxed initialization",
+            N);
       elsif Is_Access_Subprogram_Type (Rep_Ty) then
          Mark_Unsupported (Lim_Relaxed_Init_Access_Type, N);
-      elsif Is_Concurrent_Type (Rep_Ty) then
-         Mark_Unsupported (Lim_Relaxed_Init_Concurrent_Type, N);
+      elsif Is_Effectively_Volatile (Rep_Ty) then
+         Mark_Violation
+           ("effectively volatile type or object with relaxed initialization",
+            N);
+      elsif Is_Unchecked_Union (Rep_Ty) then
+         Mark_Violation
+           ("part of type or object with relaxed initialization of "
+            & "Unchecked_Union type",
+            N);
       end if;
 
       --  Using conversions, expressions of any ancestor of Rep_Ty can also
@@ -12371,10 +14036,26 @@ package body SPARK_Definition is
       --  Descendants are not added to the map. They are handled specifically
       --  in routines deciding whether a type might be partially initialized.
 
-      if Retysp (Etype (Rep_Ty)) /= Rep_Ty
-        and then not Is_Scalar_Type (Rep_Ty)
-      then
-         Mark_Type_With_Relaxed_Init (N, Retysp (Etype (Rep_Ty)));
+      if Retysp (Etype (Rep_Ty)) /= Rep_Ty then
+
+         --  On scalars, we still need to look at potential ancestors to check
+         --  whether they have a type invariant.
+
+         if Is_Scalar_Type (Rep_Ty) then
+            declare
+               Anc : Entity_Id := Rep_Ty;
+            begin
+               while Retysp (Etype (Anc)) /= Anc loop
+                  Anc := Retysp (Etype (Anc));
+                  if Has_Invariants_In_SPARK (Anc) then
+                     Mark_Unsupported (Lim_Relaxed_Init_Invariant, N);
+                     exit;
+                  end if;
+               end loop;
+            end;
+         else
+            Mark_Type_With_Relaxed_Init (N, Retysp (Etype (Rep_Ty)));
+         end if;
       end if;
 
       --  Components of composite types can be partially initialized

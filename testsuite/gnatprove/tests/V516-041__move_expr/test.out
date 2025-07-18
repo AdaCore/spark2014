@@ -1,5 +1,5 @@
-main.adb:3:12: info: checks for ressource or memory reclamation will be unprovable
-main.adb:3:12: info: no reclamation function nor reclaimed value found for type with ownership "T"
+main.adb:3:12: warning: checks for ressource or memory reclamation will be unprovable
+main.adb:3:12: warning: no reclamation function nor reclaimed value found for type with ownership "T" [no-reclamation-function]
 main.adb:19:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 main.adb:19:04: info: initialization of "X" proved
 main.adb:20:04: medium: resource or memory leak might occur at end of scope

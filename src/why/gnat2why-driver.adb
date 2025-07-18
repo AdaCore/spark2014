@@ -36,6 +36,8 @@ with Atree;                           use Atree;
 with Binderr;
 with Call;                            use Call;
 with CE_RAC;                          use CE_RAC;
+with CE_Utils;                        use CE_Utils;
+with CE_Values;                       use CE_Values;
 with Common_Containers;               use Common_Containers;
 with Debug;                           use Debug;
 with Debug.Timing;                    use Debug.Timing;
@@ -51,11 +53,12 @@ with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
 with Flow_Types;                      use Flow_Types;
 with Flow_Utility;                    use Flow_Utility;
 with Flow_Visibility;                 use Flow_Visibility;
+with Gnat2Why_Opts.Reading;           use Gnat2Why_Opts.Reading;
 with GNAT.OS_Lib;                     use GNAT.OS_Lib;
 with GNAT.SHA1;
 with GNAT.Source_Info;
 with GNATCOLL.JSON;                   use GNATCOLL.JSON;
-with GNATCOLL.Utils;
+with GNATCOLL.Utils;                  use GNATCOLL.Utils;
 with Gnat2Why.Assumptions;            use Gnat2Why.Assumptions;
 with Gnat2Why.Borrow_Checker;         use Gnat2Why.Borrow_Checker;
 with Gnat2Why.Data_Decomposition;     use Gnat2Why.Data_Decomposition;
@@ -375,6 +378,83 @@ package body Gnat2Why.Driver is
       Ada.Text_IO.Close (FD);
    end Create_JSON_File;
 
+   procedure Parse_Gnattest_Values (E : Entity_Id)
+   is
+      JSON_File_Name : constant Unbounded_String
+        := Gnat2Why_Opts.Reading.Gnattest_Values;
+      Json_Data      : JSON_Value;
+      R              : Read_Result;
+
+   begin
+      if JSON_File_Name = "" then
+         CE_RAC.Gnattest_Values.Values := new Value_List (1 .. 0);
+         CE_RAC.Gnattest_Values.Pos := 2;
+         return;
+      end if;
+
+      if not Ada.Directories.Exists (To_String (JSON_File_Name)) then
+         raise Program_Error with "Can not find "
+           & To_String (JSON_File_Name) & ".";
+      end if;
+
+      R := GNATCOLL.JSON.Read_File (To_String (JSON_File_Name));
+
+      if R.Success then
+         Json_Data := R.Value;
+      else
+         raise Program_Error with "Failed to read "
+           & To_String (JSON_File_Name);
+      end if;
+
+      declare
+         Test_Vectors : constant GNATCOLL.JSON.JSON_Array
+           := Get (Json_Data);
+      begin
+         declare
+            Length : constant Natural
+              := GNATCOLL.JSON.Length (Test_Vectors);
+         begin
+            CE_RAC.Gnattest_Values.Values
+              := new Value_List (1 .. Length);
+            CE_RAC.Gnattest_Values.Pos := 1;
+            for I in 1 .. Length
+            loop
+               declare
+                  Bidings      : Entity_Bindings.Map;
+                  Param_Values : constant GNATCOLL.JSON.JSON_Array
+                    := Get (Test_Vectors, I).Get ("param_values");
+                  Param_Values_Length : constant Natural
+                    := GNATCOLL.JSON.Length (Param_Values);
+               begin
+                  for Param in 1 .. Param_Values_Length
+                  loop
+                     declare
+                        Param_Value : constant GNATCOLL.JSON.JSON_Value
+                          := Get (Param_Values, Param);
+                     begin
+                        declare
+                           Name     : constant GNATCOLL.JSON.JSON_Value
+                             := Param_Value.Get ("name");
+                           Value    : constant GNATCOLL.JSON.JSON_Value
+                             := Param_Value.Get ("value");
+                           Param_Id : constant Entity_Id
+                             := Get_Id_From_Name (E,
+                                                  Get (Name));
+                           V        : constant Value_Access
+                             := To_Value_Access (Param_Id,
+                                                 Value);
+                        begin
+                           Bidings.Include (Param_Id, V);
+                        end;
+                     end;
+                  end loop;
+                  CE_RAC.Gnattest_Values.Values.all (I) := Bidings;
+               end;
+            end loop;
+         end;
+      end;
+   end Parse_Gnattest_Values;
+
    -----------------------
    -- Prescan_ALI_Files --
    -----------------------
@@ -529,10 +609,17 @@ package body Gnat2Why.Driver is
    procedure Do_Ownership_Checking (Error_Found : out Boolean) is
    begin
       for E of Entities_To_Translate loop
+
+         --  Do not check At_End_Borrow functions, they might break the
+         --  ownership policy.
+
+         if not Has_At_End_Borrow_Annotation (E) then
+
          --  Set error node so that bugbox information will be correct
 
-         Current_Error_Node := E;
-         Borrow_Checker.Check_Entity (E);
+            Current_Error_Node := E;
+            Borrow_Checker.Check_Entity (E);
+         end if;
       end loop;
 
       --  If an error was found then print all errors/warnings and return
@@ -755,13 +842,12 @@ package body Gnat2Why.Driver is
             if Gnat2Why_Args.Limit_Units
               and then No (SPARK_Pragma (Root))
             then
-               Error_Msg_N
-                 ("SPARK_Mode not applied to this compilation unit",
+               Warning_Msg_N
+                 (Warn_Unit_Not_SPARK,
                   GNAT_Root,
-                  Info_Kind,
                   Continuations =>
-                    ["only enclosed declarations with SPARK_Mode"
-                     & " will be analyzed"]);
+                    [Create ("only enclosed declarations with SPARK_Mode"
+                             & " will be analyzed")]);
             end if;
          end;
 
@@ -871,7 +957,7 @@ package body Gnat2Why.Driver is
                --  Return the name of the assertion that is triggered for at
                --  the given VC.
 
-               Res : constant Result := CE_RAC.RAC_Execute
+               Res : constant CE_RAC.Result := CE_RAC.RAC_Execute
                  (Unique_Main_Unit_Entity,
                   VC_Kinds.Cntexample_File_Maps.Empty,
                   Do_Sideeffects => True);
@@ -1018,7 +1104,7 @@ package body Gnat2Why.Driver is
    -------------------
 
    function Get_Skip_Flow_And_Proof_JSON return JSON_Array is
-      Result : JSON_Array := Empty_Array;
+      Result : JSON_Array := GNATCOLL.JSON.Empty_Array;
    begin
       for Elt of Skipped_Flow_And_Proof loop
          Append (Result,
@@ -1032,7 +1118,7 @@ package body Gnat2Why.Driver is
    -------------------
 
    function Get_Skip_Proof_JSON return JSON_Array is
-      Result : JSON_Array := Empty_Array;
+      Result : JSON_Array := GNATCOLL.JSON.Empty_Array;
    begin
       for Elt of Skipped_Proof loop
          Append (Result,
@@ -1053,6 +1139,10 @@ package body Gnat2Why.Driver is
       --  For now we allow the -g/-O/-f/-m/-W/-w, -nostdlib, -pipe and
       --  -save-temps/-save-temps=.. switches, even though they will have no
       --  effect. This permits compatibility with existing scripts.
+      --  The below condition also covers some front-end switches such as
+      --  "-gnat*", but this is harmless as the routine is only used for
+      --  deciding whether a switch that appears on the command-line should be
+      --  rejected.
 
       return
         Is_Switch (Switch)
@@ -1060,7 +1150,7 @@ package body Gnat2Why.Driver is
                     or else Switch (First .. Last) = "nostdlib"
                     or else Switch (First .. Last) = "pipe"
                     or else
-                      (Switch'Length >= 10
+                      (Switch'Length >= 11
                        and then Switch (First .. First + 9) = "save-temps"));
    end Is_Back_End_Switch;
 
@@ -1248,14 +1338,15 @@ package body Gnat2Why.Driver is
                --  This subprogram is only analyzed contextually. In the case
                --  that it is referenced without being called (by taking its
                --  address for example) or if all calls are in non-SPARK code,
-               --  the subprogram may not be analyzed at all. Warn the user if
-               --  --info is set.
+               --  the subprogram may not be analyzed at all.
 
                when Contextually_Analyzed =>
-                  if Debug.Debug_Flag_Underscore_F then
+                  if Warning_Status (Warn_Info_Unrolling_Inlining) = WS_Enabled
+                  then
                      Error_Msg_N
-                       ("local subprogram &" &
-                          " only analyzed in the context of calls",
+                       ("local subprogram &"
+                        &  " only analyzed in the context of calls"
+                        & Tag_Suffix (Warn_Info_Unrolling_Inlining),
                         E,
                         Kind => Info_Kind,
                         Continuations =>

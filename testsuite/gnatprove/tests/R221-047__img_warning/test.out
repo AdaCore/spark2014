@@ -1,11 +1,20 @@
 p_warn.ads:6:19: info: assertion proved (CVC5: 1 VC)
 p_warn.ads:6:21: warning: attribute "Img" has an implementation-defined length [image-attribute-length]
+p_warn.ads:6:21: warning: references to the "Img" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 p_warn.ads:7:19: info: assertion proved (CVC5: 1 VC)
 p_warn.ads:7:26: warning: attribute "Image" has an implementation-defined length [image-attribute-length]
+p_warn.ads:7:26: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 p_warn.ads:11:19: info: assertion proved (CVC5: 1 VC)
+p_warn.ads:11:21: warning: references to the "Img" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 p_warn.ads:12:19: info: assertion proved (CVC5: 1 VC)
+p_warn.ads:12:26: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 p_warn.ads:16:19: info: assertion proved (CVC5: 1 VC)
+p_warn.ads:16:21: warning: references to the "Img" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 p_warn.ads:17:19: info: assertion proved (CVC5: 1 VC)
+p_warn.ads:17:36: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 p_warn.ads:21:19: info: assertion proved (CVC5: 1 VC)
+p_warn.ads:21:21: warning: references to the "Img" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 p_warn.ads:22:19: info: assertion proved (CVC5: 1 VC)
+p_warn.ads:22:38: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 p_warn.ads:23:19: medium: assertion might fail
+p_warn.ads:23:38: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]

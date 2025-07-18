@@ -69,7 +69,7 @@ package body Libst.Reals.Errors with SPARK_Mode is
          --  Compute the error for the summation up to I - 1
          Error_For_SW_Rec (Weights, I - 1);
          --  Compute the error for the last addition
-         Lemma_Rounding_Error_Add (Sum_Weight_Rec (Weights, I - 1), Weights (I));
+         Lemma_Rounding_Error_Add (Sum_F, W);
          --  The weight is big enough that the absolute error term Eta can be
          --  ignored.
          pragma Assert (W = 0.0 or W >= Min_Weight);
@@ -388,11 +388,21 @@ package body Libst.Reals.Errors with SPARK_Mode is
       Aggregate_Bounds (Num_F, Den_F, Res_F, Num_R, Den_R, Num_A, Res_R, Res_A);
    end Error_For_Average;
 
+   --  Lemma: divison on reals is monotonic
+
    procedure Div_Monotonic (A, B, C : Big_Real)
      with Ghost,
      Pre => C > Big_Real'(0.0) and A <= B,
      Post => A / C <= B / C;
    procedure Div_Monotonic (A, B, C : Big_Real) is null;
+
+   --  Lemma: absolute value and division on reals are commutative
+
+   procedure Div_Abs_Commutative (X, Y : Big_Real) with
+     Ghost,
+     Pre  => Y > 0.0,
+     Post => abs (X / Y) = abs X / Y;
+   procedure Div_Abs_Commutative (X, Y : Big_Real) is null;
 
    procedure Precise_Bounds_For_Average
      (Weights : Weight_Array;
@@ -425,10 +435,8 @@ package body Libst.Reals.Errors with SPARK_Mode is
       --  Sum_Weight is more than Min_Weight on real numbers
       Min_For_SW (Max_Index);
       pragma Assert (Sum_Weight (Weights) >= To_Big_Real (Min_Weight));
-      pragma Assert
-        (abs (Big_Real'(Weighted_Average (Weights, Values)))
-         = abs (Weighted_Sum_Rec (Weights, Values, Max_Index))
-         / Sum_Weight (Weights));
+      Div_Abs_Commutative
+        (Weighted_Sum_Rec (Weights, Values, Max_Index), Sum_Weight (Weights));
       Div_Monotonic
         (abs (Weighted_Sum_Rec (Weights, Values, Max_Index)),
          Weighted_Sum_Abs_Rec (Weights, Values, Max_Index),

@@ -1,8 +1,9 @@
+ warning: statement has no effect
+--> gen_refined_global.adb:14:07
+   14 |          Set_Global;
+      |          ^~~~~~~~~~
 
-gen_refined_global.adb:14:07: warning: statement has no effect
-   14 |      Set_Global;
-      |      ^~~~~~~~~~
-
-gen_refined_global.adb:14:07: warning: "V" constituent of "State" is set by "Set_Global" but not used after the call
-   14 |      Set_Global;
-      |      ^~~~~~~~~~
+ warning: "V" constituent of "State" is set by "Set_Global" but not used after the call
+--> gen_refined_global.adb:14:07
+   14 |          Set_Global;
+      |          ^~~~~~~~~~

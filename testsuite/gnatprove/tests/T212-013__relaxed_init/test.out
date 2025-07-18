@@ -15,7 +15,7 @@ test_init_by_proof.adb:39:25: info: overflow check proved (CVC5: 2 VC)
 test_init_by_proof.adb:44:14: warning: subprogram "Test_Init_Attr" has no effect
 test_init_by_proof.adb:48:22: info: assertion proved (CVC5: 1 VC)
 test_init_by_proof.adb:51:14: warning: subprogram "Test_Init_Attr_2" has no effect
-test_init_by_proof.adb:55:22: medium: assertion might fail
+test_init_by_proof.adb:55:22: medium: assertion might fail (e.g. when X = (X => 0, Y => 0, Z => True) and X.Y'Initialized = True and Y = (X => 0, Y => 0, Z => ?) and Y.X'Initialized = True and Y.Y'Initialized = True and Y.Z'Initialized = False)
 test_init_by_proof.adb:58:04: warning: analyzing unreferenced procedure "P1" [unreferenced-procedure]
 test_init_by_proof.adb:58:14: warning: subprogram "P1" has no effect
 test_init_by_proof.adb:60:25: info: initialization check proved (CVC5: 1 VC)
@@ -51,7 +51,7 @@ test_init_by_proof.adb:121:13: high: "X2.X" is not initialized
 test_init_by_proof.adb:122:15: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof.adb:124:04: warning: analyzing unreferenced procedure "P9" [unreferenced-procedure]
 test_init_by_proof.adb:124:14: warning: subprogram "P9" has no effect
-test_init_by_proof.adb:126:19: medium: initialization check might fail (e.g. when X = (X => ?, Y => 0, Z => True) and X.X'Initialized = False and X.Y'Initialized = True and X.Z'Initialized = True)
+test_init_by_proof.adb:126:19: medium: initialization check might fail (e.g. when X = (X => 0, Y => 0, Z => ?) and X.X'Initialized = True and X.Y'Initialized = True and X.Z'Initialized = False)
 test_init_by_proof.adb:130:04: warning: analyzing unreferenced procedure "P10" [unreferenced-procedure]
 test_init_by_proof.adb:130:14: warning: subprogram "P10" has no effect
 test_init_by_proof.adb:136:13: info: initialization check proved (CVC5: 1 VC)
@@ -67,7 +67,7 @@ test_init_by_proof_conv.adb:10:27: info: range check proved (CVC5: 1 VC)
 test_init_by_proof_conv.adb:12:27: info: range check proved (CVC5: 1 VC)
 test_init_by_proof_conv.adb:18:35: info: discriminant check proved (CVC5: 1 VC)
 test_init_by_proof_conv.adb:19:24: info: discriminant check proved (CVC5: 1 VC)
-test_init_by_proof_conv.adb:19:26: medium: initialization check might fail (e.g. when X = (D => True, G => ?))
+test_init_by_proof_conv.adb:19:26: medium: initialization check might fail (e.g. when X = (D => True, G => ?) and X.G.F'Initialized = False)
 test_init_by_proof_mem.adb:14:28: info: range check proved (CVC5: 2 VC)
 test_init_by_proof_mem.adb:21:16: info: range check proved (CVC5: 2 VC)
 test_init_by_proof_mem.adb:22:16: info: range check proved (CVC5: 2 VC)

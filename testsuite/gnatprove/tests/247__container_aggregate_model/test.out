@@ -96,7 +96,7 @@ main.adb:265:22: info: assertion proved (CVC5: 1 VC)
 main.adb:265:22: info: predicate check proved (Trivial: 1 VC)
 main.adb:265:43: info: predicate check proved (Trivial: 1 VC)
 main.adb:266:22: info: assertion proved (CVC5: 2 VC)
-main.adb:267:38: info: unrolling loop
+main.adb:267:38: info: unrolling loop [info-unrolling-inlining]
 main.adb:268:25: info: assertion proved (CVC5: 5 VC)
 main.adb:268:25: info: precondition proved (CVC5: 5 VC)
 main.adb:270:22: info: assertion proved (CVC5: 1 VC)
@@ -114,7 +114,7 @@ main.adb:291:16: info: keys shall be distinct for maps aggregates at main.adb:19
 main.adb:291:16: info: precondition proved (CVC5: 10 VC)
 main.adb:292:16: info: keys shall be distinct for maps aggregates at main.adb:198
 main.adb:292:16: info: precondition proved (Trivial: 1 VC)
-main.adb:294:38: info: unrolling loop
+main.adb:294:38: info: unrolling loop [info-unrolling-inlining]
 main.adb:295:25: info: assertion proved (CVC5: 5 VC)
 main.adb:297:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:298:22: info: assertion proved (CVC5: 1 VC)
@@ -130,7 +130,7 @@ main.adb:318:16: info: precondition proved (CVC5: 1 VC)
 main.adb:319:16: info: all elements shall fit in index type for sequence aggregates at main.adb:23
 main.adb:319:16: info: precondition proved (Trivial: 1 VC)
 main.adb:321:22: info: assertion proved (CVC5: 1 VC)
-main.adb:322:40: info: unrolling loop
+main.adb:322:40: info: unrolling loop [info-unrolling-inlining]
 main.adb:323:25: info: assertion proved (CVC5: 5 VC)
 main.adb:323:25: info: precondition proved (CVC5: 10 VC)
 main.adb:325:22: info: assertion proved (CVC5: 1 VC)

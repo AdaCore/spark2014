@@ -24,7 +24,7 @@ instr-child.adb:15:46: info: division check proved (CVC5: 1 VC)
 instr-child.adb:16:32: info: overflow check proved (CVC5: 2 VC)
 instr-child.adb:16:39: info: division check proved (CVC5: 1 VC)
 instr-child.ads:7:14: warning: subprogram "Display_Value" has no effect
-instr.adb:6:24: info: cannot unroll loop (too many loop iterations)
+instr.adb:6:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 instr.adb:7:18: medium: array index check might fail [reason for check: value must be a valid index into the array]
 instr.adb:14:07: warning: assuming "New_Line" always terminates
 instr.adb:14:07: warning: assuming "New_Line" has no effect on global items

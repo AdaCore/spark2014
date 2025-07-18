@@ -1,12 +1,12 @@
 early_exits.adb:10:14: info: postcondition proved (Z3: 1 VC)
 early_exits.adb:14:33: info: in reconstructed value at the end of the borrow at early_exits.adb:14
 early_exits.adb:14:33: info: null exclusion check proved (altergo: 1 VC)
-early_exits.adb:16:31: info: cannot unroll loop (local non-scalar declaration at line 18)
+early_exits.adb:16:31: info: cannot unroll loop (local non-scalar declaration at line 18) [info-unrolling-inlining]
 early_exits.adb:18:39: info: in reconstructed value at the end of the borrow at early_exits.adb:18
 early_exits.adb:18:39: info: in reconstructed value at the end of the borrow at early_exits.adb:18
 early_exits.adb:18:39: info: null exclusion check proved (CVC5: 1 VC)
 early_exits.adb:18:39: info: null exclusion check proved (CVC5: 15 VC)
-early_exits.adb:20:33: info: unrolling loop
+early_exits.adb:20:33: info: unrolling loop [info-unrolling-inlining]
 early_exits.adb:21:24: info: pointer dereference check proved (CVC5: 15 VC)
 early_exits.adb:22:24: info: pointer dereference check proved (CVC5: 15 VC)
 early_exits.adb:25:31: info: pointer dereference check proved (CVC5: 15 VC)

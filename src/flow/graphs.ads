@@ -144,6 +144,11 @@ package Graphs is
    --  Creates a new graph with all the vertices from G, but no edges. Both
    --  graphs are frozen by this operation.
 
+   procedure Move (Target : in out Graph; Source : in out Graph)
+   with Post => Source.Num_Vertices = 0 and Source.Num_Edges = 0;
+   --  Clears Target (if it's not empty), and then moves (not copies) the
+   --  graph from Source to Target.
+
    ----------------------------------------------------------------------
    --  Vertex operations
    ----------------------------------------------------------------------

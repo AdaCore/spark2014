@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
-with Debug;
 with Gnat2Why_Args;
 with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr.Loops.Inv; use Gnat2Why.Expr.Loops.Inv;
@@ -58,15 +57,23 @@ package body Gnat2Why.Expr.Loops is
    In_Loop_Initial_Statements : Boolean := False with Ghost;
    --  Ghost variable. True when analyzing the initial statements of a loop
 
+   Imprecise_Constants : Entity_Sets.Set;
+   --  Scalar constants occurring before loop invariants in enclosing loops
+   --  whose value is not precisely known after the invariant. This set is
+   --  maintained by Transform_Loop_Statement so it always contains constants
+   --  whose value is not precisely known at the analyzed program point.
+
    function Is_In_Loop_Initial_Statements return Boolean is
      (In_Loop_Initial_Statements);
 
    procedure Get_Loop_Invariant
-     (Loop_Stmts      : Node_Lists.List;
-      Initial_Stmts   : out Node_Lists.List;
-      Loop_Invariants : out Node_Lists.List;
-      Loop_Variants   : out Node_Lists.List;
-      Final_Stmts     : out Node_Lists.List);
+     (Loop_Stmts          : Node_Lists.List;
+      Initial_Stmts       : out Node_Lists.List;
+      Loop_Invariants     : out Node_Lists.List;
+      Loop_Variants       : out Node_Lists.List;
+      Final_Stmts         : out Node_Lists.List;
+      Frame_Constants     : out Entity_Sets.Set;
+      Imprecise_Constants : out Entity_Sets.Set);
    --  Loop_Stmts is a flattened list of statements and declarations in a loop
    --  body. It includes the statements and declarations that appear directly
    --  in the main list inside the loop, and recursively all inner declarations
@@ -88,6 +95,11 @@ package body Gnat2Why.Expr.Loops is
    --   * Final_Stmts is the list of final statements and declarations
    --     after the last select loop (in)variant, or all the statements of the
    --     loop if there is no loop (in)variant in the loop.
+   --   * Frame_Constants is the set of all (scalar) constants declared just
+   --     before the invariant. Their values are assumed in the invariant.
+   --   * Imprecise_Constants is the set of other (scalar) constants declared
+   --     before the invariant. Their values might not be known after the
+   --     invariant.
 
    function Transform_Loop_Variant
      (Stmt   : N_Pragma_Id;
@@ -361,11 +373,13 @@ package body Gnat2Why.Expr.Loops is
    ------------------------
 
    procedure Get_Loop_Invariant
-     (Loop_Stmts      : Node_Lists.List;
-      Initial_Stmts   : out Node_Lists.List;
-      Loop_Invariants : out Node_Lists.List;
-      Loop_Variants   : out Node_Lists.List;
-      Final_Stmts     : out Node_Lists.List)
+     (Loop_Stmts          : Node_Lists.List;
+      Initial_Stmts       : out Node_Lists.List;
+      Loop_Invariants     : out Node_Lists.List;
+      Loop_Variants       : out Node_Lists.List;
+      Final_Stmts         : out Node_Lists.List;
+      Frame_Constants     : out Entity_Sets.Set;
+      Imprecise_Constants : out Entity_Sets.Set)
    is
       function Is_Last_Invariant_Or_Variant_In_Loop
         (N : Node_Id)
@@ -427,6 +441,22 @@ package body Gnat2Why.Expr.Loops is
 
                else
                   Initial_Stmts.Append (N);
+
+                  --  Store all constant encountered before the invariant in
+                  --  Frame_Constants. When a statement is encountered, move
+                  --  constants from Frame_Constants to Imprecise_Constants.
+
+                  if Nkind (N) = N_Object_Declaration
+                    and then Ekind (Defining_Identifier (N)) = E_Constant
+                  then
+                     Frame_Constants.Insert (Defining_Identifier (N));
+
+                  elsif Nkind (N) not in N_Declaration | N_Ignored_In_SPARK
+                    and then not Frame_Constants.Is_Empty
+                  then
+                     Imprecise_Constants.Union (Frame_Constants);
+                     Frame_Constants.Clear;
+                  end if;
                end if;
 
             when In_Selected_Block =>
@@ -474,10 +504,13 @@ package body Gnat2Why.Expr.Loops is
       end loop;
 
       --  If no loop (in)variant was found, put all statements and declarations
-      --  in the list Final_Stmts, leaving the list Initial_Stmts empty.
+      --  in the list Final_Stmts, leaving the list Initial_Stmts empty. Also
+      --  clear the Frame_Constants and Imprecise_Constants sets.
 
       if Cur_State = Before_Selected_Block then
          Final_Stmts.Move (Source => Initial_Stmts);
+         Frame_Constants.Clear;
+         Imprecise_Constants.Clear;
       end if;
    end Get_Loop_Invariant;
 
@@ -485,22 +518,33 @@ package body Gnat2Why.Expr.Loops is
      (Loop_Stmt : N_Loop_Statement_Id)
       return Node_Lists.List
    is
-      Loop_Body       : constant List_Id := Statements (Loop_Stmt);
-      Loop_Stmts      : Node_Lists.List;
-      Initial_Stmts   : Node_Lists.List;
-      Final_Stmts     : Node_Lists.List;
-      Loop_Invariants : Node_Lists.List;
-      Loop_Variants   : Node_Lists.List;
+      Loop_Body           : constant List_Id := Statements (Loop_Stmt);
+      Loop_Stmts          : Node_Lists.List;
+      Initial_Stmts       : Node_Lists.List;
+      Final_Stmts         : Node_Lists.List;
+      Loop_Invariants     : Node_Lists.List;
+      Loop_Variants       : Node_Lists.List;
+      Frame_Constants     : Entity_Sets.Set;
+      Imprecise_Constants : Entity_Sets.Set;
    begin
       Loop_Stmts := Get_Flat_Statement_And_Declaration_List (Loop_Body);
       Get_Loop_Invariant
-        (Loop_Stmts      => Loop_Stmts,
-         Initial_Stmts   => Initial_Stmts,
-         Loop_Invariants => Loop_Invariants,
-         Loop_Variants   => Loop_Variants,
-         Final_Stmts     => Final_Stmts);
+        (Loop_Stmts          => Loop_Stmts,
+         Initial_Stmts       => Initial_Stmts,
+         Loop_Invariants     => Loop_Invariants,
+         Loop_Variants       => Loop_Variants,
+         Final_Stmts         => Final_Stmts,
+         Frame_Constants     => Frame_Constants,
+         Imprecise_Constants => Imprecise_Constants);
       return Loop_Invariants;
    end Get_Loop_Invariant;
+
+   --------------------------------------
+   -- Imprecise_Constant_Value_In_Loop --
+   --------------------------------------
+
+   function Imprecise_Constant_Value_In_Loop (E : Entity_Id) return Boolean is
+     (Imprecise_Constants.Contains (E));
 
    ------------------------------
    -- Transform_Exit_Statement --
@@ -697,6 +741,8 @@ package body Gnat2Why.Expr.Loops is
       Final_Stmts     : Node_Lists.List;
       Loop_Invariants : Node_Lists.List;
       Loop_Variants   : Node_Lists.List;
+      Frame_Constants : Entity_Sets.Set;
+      Other_Constants : Entity_Sets.Set;
 
       Initial_Prog    : W_Prog_Id;
       Final_Prog      : W_Prog_Id;
@@ -772,16 +818,20 @@ package body Gnat2Why.Expr.Loops is
 
       Loop_Stmts := Get_Flat_Statement_And_Declaration_List (Loop_Body);
       Get_Loop_Invariant
-        (Loop_Stmts      => Loop_Stmts,
-         Initial_Stmts   => Initial_Stmts,
-         Loop_Invariants => Loop_Invariants,
-         Loop_Variants   => Loop_Variants,
-         Final_Stmts     => Final_Stmts);
+        (Loop_Stmts          => Loop_Stmts,
+         Initial_Stmts       => Initial_Stmts,
+         Loop_Invariants     => Loop_Invariants,
+         Loop_Variants       => Loop_Variants,
+         Final_Stmts         => Final_Stmts,
+         Frame_Constants     => Frame_Constants,
+         Imprecise_Constants => Other_Constants);
 
       declare
-         Why_Invariants : W_Pred_Array (1 .. Integer (Loop_Invariants.Length));
-         Save_Loop_Init : constant Boolean := In_Loop_Initial_Statements
+         Why_Invariants       : W_Pred_Array
+           (1 .. Integer (Loop_Invariants.Length));
+         Save_Loop_Init       : constant Boolean := In_Loop_Initial_Statements
            with Ghost;
+         Save_Imprecise_Const : Entity_Sets.Set := Imprecise_Constants;
 
       begin
          --  Transform statements before and after the loop invariants
@@ -790,7 +840,11 @@ package body Gnat2Why.Expr.Loops is
          Initial_Prog := Transform_Loop_Body_Statements
            (Initial_Stmts, Params);
          In_Loop_Initial_Statements := Save_Loop_Init;
-         Final_Prog   := Transform_Loop_Body_Statements (Final_Stmts, Params);
+
+         Save_Imprecise_Const := Imprecise_Constants;
+         Imprecise_Constants.Union (Other_Constants);
+         Final_Prog := Transform_Loop_Body_Statements (Final_Stmts, Params);
+         Imprecise_Constants.Move (Save_Imprecise_Const);
 
          --  Generate the implicit invariant for the dynamic properties of
          --  objects modified in the loop.
@@ -798,8 +852,9 @@ package body Gnat2Why.Expr.Loops is
          Dyn_Types_Inv :=
            Generate_Frame_Condition
              (Stmt,
-              Low_Id             => +Low_Id,
-              High_Id            => +High_Id);
+              Low_Id          => +Low_Id,
+              High_Id         => +High_Id,
+              Frame_Constants => Frame_Constants);
 
          --  Generate the loop invariants VCs
 
@@ -1633,9 +1688,11 @@ package body Gnat2Why.Expr.Loops is
                   --    (forall tmp. old !i <= tmp < !i -> not cond)
 
                   Other_Filter := New_Universal_Quantif
-                    (Variables => (1 => Index_Tmp),
+                    (Binders   =>
+                       (1 => New_Binder (Domain => EW_Pred,
+                                         Name => Index_Tmp,
+                                         Arg_Type => Loop_Index_Type)),
                      Labels    => Symbol_Sets.Empty_Set,
-                     Var_Type  => Loop_Index_Type,
                      Pred      => New_Conditional
                        (Condition => Tmp_Range,
                         Then_Part => New_Not
@@ -1729,8 +1786,8 @@ package body Gnat2Why.Expr.Loops is
                Candidate_For_Loop_Unrolling
                  (Loop_Stmt   => Stmt,
                   Output_Info =>
-                    Debug.Debug_Flag_Underscore_F
-                      and not Gnat2Why_Args.No_Loop_Unrolling,
+                    Warning_Status (Warn_Info_Unrolling_Inlining) = WS_Enabled
+                      and then not Gnat2Why_Args.No_Loop_Unrolling,
                   Result      => Unroll,
                   Low_Val     => Low_Val,
                   High_Val    => High_Val);

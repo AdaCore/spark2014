@@ -1,6 +1,6 @@
 test.adb:6:13: info: add a contract to analyze it separately from calling contexts
 test.adb:6:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-test.adb:6:13: info: local subprogram "F" only analyzed in the context of calls
+test.adb:6:13: info: local subprogram "F" only analyzed in the context of calls [info-unrolling-inlining]
 test.adb:11:04: warning: analyzing unreferenced function "F" [unreferenced-function]
 test.adb:11:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 test.adb:16:04: warning: analyzing unreferenced function "Test_01" [unreferenced-function]

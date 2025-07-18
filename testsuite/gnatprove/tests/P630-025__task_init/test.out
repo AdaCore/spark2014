@@ -51,7 +51,7 @@ decadriver.adb:250:51: info: range check proved (CVC5: 2 VC)
 decadriver.adb:252:51: info: range check proved (CVC5: 2 VC)
 decadriver.adb:259:26: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Initialize"
 decadriver.adb:260:39: info: range check proved (CVC5: 2 VC)
-decadriver.adb:266:48: info: unrolling loop
+decadriver.adb:266:48: info: unrolling loop [info-unrolling-inlining]
 decadriver.adb:267:29: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Initialize"
 decadriver.adb:267:56: info: range check proved (CVC5: 24 VC)
 decadriver.adb:276:26: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Initialize"

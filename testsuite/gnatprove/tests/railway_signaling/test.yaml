@@ -1,7 +1,6 @@
-large: True
-timeout: 1500
-replay: True
 prove_all:
-  counterexample: False
+  counterexample: false
+replay: true
 session_opt:
   level: 4
+timeout: 1500

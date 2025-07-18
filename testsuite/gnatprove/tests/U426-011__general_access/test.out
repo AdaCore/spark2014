@@ -2,7 +2,6 @@ bad_gen_access.adb:9:14: error: instance of Unchecked_Deallocation with a genera
 bad_gen_access.adb:9:14: error: violation of aspect SPARK_Mode at line 3
 bad_gen_access.adb:14:19: warning: assuming "F" has no effect on global items
 bad_gen_access.adb:14:19: warning: no Global contract available for "F" [assumed-global-null]
-bad_gen_access.adb:15:19: error: move as part of a conversion to an access-to-constant type is not yet supported
 bad_gen_access.adb:16:19: warning: assuming "F" has no effect on global items
 bad_gen_access.adb:16:19: warning: no Global contract available for "F" [assumed-global-null]
 bad_gen_access.adb:24:12: error: conversion from an anonymous access type to a named access type is not allowed in SPARK
@@ -35,9 +34,10 @@ ext.ads:70:42: medium: resource or memory leak might occur [possible explanation
 ext.ads:71:42: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
 ext.ads:72:42: medium: resource or memory leak might occur [possible explanation: allocator inside an assertion leaks memory]
 gen_access.adb:7:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-gen_access.adb:9:04: medium: resource or memory leak might occur at end of scope
+gen_access.adb:9:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 gen_access.adb:10:19: warning: assuming "F" has no effect on global items
 gen_access.adb:10:19: warning: no Global contract available for "F" [assumed-global-null]
+gen_access.adb:11:21: medium: resource or memory leak might occur [possible explanation: conversion to general access type leaks memory]
 gen_access.adb:12:21: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
 gen_access.adb:15:28: warning: assuming "Mk" has no effect on global items
 gen_access.adb:15:28: warning: no Global contract available for "Mk" [assumed-global-null]
@@ -69,7 +69,7 @@ gen_access.adb:60:04: info: absence of resource or memory leak at end of scope p
 gen_access.adb:60:17: warning: assuming "Mk_List" has no effect on global items
 gen_access.adb:60:17: warning: no Global contract available for "Mk_List" [assumed-global-null]
 gen_access.adb:61:04: medium: resource or memory leak might occur at end of scope
-gen_access.adb:62:04: medium: resource or memory leak might occur at end of scope
+gen_access.adb:62:04: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
 gen_access.adb:62:25: warning: assuming "Mk_List" has no effect on global items
 gen_access.adb:62:25: warning: no Global contract available for "Mk_List" [assumed-global-null]
 gen_access.adb:63:04: medium: resource or memory leak might occur at end of scope
@@ -83,18 +83,18 @@ gen_access.adb:67:79: info: dynamic accessibility check proved (Trivial)
 gen_access.adb:70:13: info: implicit aspect Always_Terminates on "All_Null" has been proved, subprogram will terminate
 gen_access.adb:71:47: info: subprogram variant proved (Trivial)
 gen_access.adb:71:61: info: pointer dereference check proved (CVC5: 1 VC)
-gen_access.adb:75:14: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
+gen_access.adb:75:14: info: postcondition proved (CVC5: 1 VC)
 gen_access.adb:81:33: info: loop invariant initialization proved (CVC5: 1 VC)
 gen_access.adb:81:33: info: loop invariant preservation proved (CVC5: 1 VC)
-gen_access.adb:83:13: info: loop invariant initialization proved (CVC5: 2 VC; Trivial: 2 VC)
-gen_access.adb:83:13: info: loop invariant preservation proved (CVC5: 2 VC; Trivial: 2 VC)
+gen_access.adb:83:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+gen_access.adb:83:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
 gen_access.adb:83:37: info: pointer dereference check proved (CVC5: 2 VC)
 gen_access.adb:83:73: info: pointer dereference check proved (CVC5: 2 VC)
 gen_access.adb:84:11: info: pointer dereference check proved (CVC5: 1 VC)
 gen_access.adb:84:14: medium: resource or memory leak might occur
 gen_access.adb:85:16: info: pointer dereference check proved (CVC5: 1 VC)
 gen_access.adb:92:14: info: postcondition proved (CVC5: 2 VC)
-gen_access.adb:96:10: info: precondition proved (CVC5: 2 VC; Trivial: 1 VC)
+gen_access.adb:96:10: info: precondition proved (CVC5: 1 VC)
 gen_access.adb:96:10: warning: statement has no effect
 gen_access.adb:96:22: info: pointer dereference check proved (CVC5: 1 VC)
 gen_access.adb:96:22: warning: "L.N" is set by "Delete" but not used after the call
@@ -134,5 +134,5 @@ gen_access.adb:134:22: info: pointer dereference check proved (CVC5: 1 VC)
 gen_access.adb:134:24: info: pointer dereference check proved (CVC5: 1 VC)
 gen_access.adb:134:26: info: pointer dereference check proved (CVC5: 1 VC)
 gen_access.adb:134:28: info: pointer dereference check proved (CVC5: 1 VC)
-gen_access.adb:137:04: info: precondition proved (CVC5: 2 VC; Trivial: 1 VC)
+gen_access.adb:137:04: info: precondition proved (CVC5: 1 VC)
 gnatprove: error during flow analysis and proof

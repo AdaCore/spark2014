@@ -1,7 +1,9 @@
 main.adb:14:04: info: no contextual analysis of "Print_Set" (object renaming)
-main.adb:18:20: info: cannot unroll loop (too many loop iterations)
+main.adb:18:20: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+main.adb:19:18: warning: references to the "Img" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 main.adb:24:04: info: no contextual analysis of "Print_Part" (object renaming)
-main.adb:28:20: info: cannot unroll loop (too many loop iterations)
+main.adb:28:20: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+main.adb:29:18: warning: references to the "Img" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 main.adb:39:04: info: initialization of "NP" proved
 main.adb:40:04: info: initialization of "Count" proved
 main.adb:43:04: info: precondition proved (CVC5: 6 VC)
@@ -14,7 +16,7 @@ part.adb:8:49: info: index check proved (CVC5: 2 VC)
 part.adb:10:51: info: index check proved (CVC5: 2 VC)
 part.adb:10:63: info: index check proved (CVC5: 2 VC)
 part.adb:12:14: info: add a contract to analyze it separately from calling contexts
-part.adb:12:14: info: local subprogram "Split_Partition" only analyzed in the context of calls
+part.adb:12:14: info: local subprogram "Split_Partition" only analyzed in the context of calls [info-unrolling-inlining]
 part.adb:22:27: info: index check proved (CVC5: 2 VC)
 part.adb:24:10: info: index check proved (CVC5: 2 VC)
 part.adb:24:19: info: index check proved (CVC5: 2 VC)

@@ -1,0 +1,4 @@
+prunt.adb:11:21: high: float overflow check might fail (e.g. when T1 = -1.1984620899E+308) [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at prunt.ads:28 should mention T1 in a precondition]
+prunt.ads:28:13: info: implicit aspect Always_Terminates on "Crackle_At_Time" has been proved, subprogram will terminate
+small.adb:1:10: info: implicit aspect Always_Terminates on "Small" has been proved, subprogram will terminate
+small.adb:6:16: info: float overflow check proved (CVC5: 1 VC)

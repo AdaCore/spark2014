@@ -11,13 +11,13 @@ ext_part_classwide.adb:80:13: info: only expected exception raised (CVC5: 1 VC)
 ext_part_classwide.adb:80:31: medium: "R.A" might not be initialized
 ext_part_classwide.adb:80:31: warning: "R.A" is set by "Raise_Exception" but not used after the call
 ext_part_classwide.adb:82:13: info: no contextual analysis of "Initialize" (exception handler)
-ext_part_classwide.adb:83:16: medium: "R.A" might not be initialized
+ext_part_classwide.adb:83:16: medium: "R.A" might not be initialized [possible explanation: value of "R.A" is unknown following exceptional exit]
 ext_part_classwide.adb:83:31: medium: assertion might fail
 ext_part_classwide.adb:83:31: medium: extension of "R" might not be initialized
 ext_part_classwide.adb:102:13: info: only expected exception raised (CVC5: 1 VC)
 ext_part_classwide.adb:102:31: warning: "R.A" is set by "Raise_Exception" but not used after the call
 ext_part_classwide.adb:104:13: info: no contextual analysis of "Initialize" (exception handler)
-ext_part_classwide.adb:105:16: medium: "R.A" might not be initialized
+ext_part_classwide.adb:105:16: medium: "R.A" might not be initialized [possible explanation: value of "R.A" is unknown following exceptional exit]
 ext_part_classwide.adb:105:31: medium: assertion might fail [possible fix: call at line 99 should mention R (for argument R) in a postcondition]
 ext_part_classwide.adb:119:07: warning: analyzing unreferenced procedure "Initialize" [unreferenced-procedure]
 ext_part_classwide.adb:125:25: medium: assertion might fail
@@ -28,7 +28,7 @@ ext_part_classwide.adb:143:10: medium: "R" might not be initialized
 ext_part_classwide.adb:143:25: medium: assertion might fail
 ext_part_classwide.adb:160:13: info: only expected exception raised (CVC5: 1 VC)
 ext_part_classwide.adb:162:13: info: no contextual analysis of "Initialize" (exception handler)
-ext_part_classwide.adb:170:10: medium: "R.A" might not be initialized
+ext_part_classwide.adb:170:10: medium: "R.A" might not be initialized [possible explanation: value of "R.A" is unknown following exceptional exit]
 ext_part_classwide.adb:170:25: medium: assertion might fail [possible fix: call at line 157 should mention R (for argument R) in a postcondition]
 ext_part_classwide.adb:182:07: warning: analyzing unreferenced procedure "Initialize" [unreferenced-procedure]
 ext_part_classwide.adb:185:25: medium: assertion might fail [possible fix: call at line 184 should mention R (for argument R) in a postcondition]
@@ -45,23 +45,23 @@ ext_part_extensions_visible.adb:42:29: info: initialization of "R" proved
 ext_part_extensions_visible.adb:59:29: high: "R.A" is not initialized in "Initialize" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R.A" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 ext_part_extensions_visible.adb:59:29: high: extension of "R" is not initialized in "Initialize" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize extension of "R" on all paths or make "R" an IN OUT parameter]
 ext_part_extensions_visible.adb:59:29: warning: unused variable "R"
-ext_part_extensions_visible.adb:72:29: medium: "R.A" might not be initialized in "Initialize" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R.A" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+ext_part_extensions_visible.adb:72:29: medium: "R.A" might not be initialized in "Initialize" [reason for check: OUT parameter should be fully initialized on return] [possible explanation: value of "R.A" is unknown following exceptional exit] [possible fix: initialize "R.A" on all paths or annotate it with aspect Relaxed_Initialization]
 ext_part_extensions_visible.adb:72:29: medium: extension of "R" might not be initialized in "Initialize" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize extension of "R" on all paths or make "R" an IN OUT parameter]
 ext_part_extensions_visible.adb:79:13: info: only expected exception raised (CVC5: 1 VC)
 ext_part_extensions_visible.adb:79:31: medium: "R.A" might not be initialized
-ext_part_extensions_visible.adb:93:29: medium: "R.A" might not be initialized in "Initialize" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R.A" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+ext_part_extensions_visible.adb:93:29: medium: "R.A" might not be initialized in "Initialize" [reason for check: OUT parameter should be fully initialized on return] [possible explanation: value of "R.A" is unknown following exceptional exit] [possible fix: initialize "R.A" on all paths or annotate it with aspect Relaxed_Initialization]
 ext_part_extensions_visible.adb:98:13: info: only expected exception raised (CVC5: 1 VC)
 ext_part_extensions_visible.adb:113:29: high: extension of "R" is not initialized in "Initialize" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize extension of "R" on all paths or make "R" an IN OUT parameter]
 ext_part_extensions_visible.adb:113:29: medium: "R.A" might not be initialized in "Initialize" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R.A" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 ext_part_extensions_visible.adb:128:29: medium: "R.A" might not be initialized in "Initialize" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R.A" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 ext_part_extensions_visible.adb:128:29: medium: extension of "R" might not be initialized in "Initialize" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize extension of "R" on all paths or make "R" an IN OUT parameter]
-ext_part_extensions_visible.adb:143:29: medium: "R.A" might not be initialized in "Initialize" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R.A" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+ext_part_extensions_visible.adb:143:29: medium: "R.A" might not be initialized in "Initialize" [reason for check: OUT parameter should be fully initialized on return] [possible explanation: value of "R.A" is unknown following exceptional exit] [possible fix: initialize "R.A" on all paths or annotate it with aspect Relaxed_Initialization]
 ext_part_extensions_visible.adb:148:13: info: only expected exception raised (CVC5: 1 VC)
 ext_part_extensions_visible.adb:167:29: high: extension of "R" is not initialized in "Initialize" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize extension of "R" on all paths or make "R" an IN OUT parameter]
 ext_part_extensions_visible.adb:180:29: medium: extension of "R" might not be initialized in "Initialize" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize extension of "R" on all paths or make "R" an IN OUT parameter]
 ext_part_extensions_visible.adb:197:29: info: initialization of "R" proved
 normal_components.adb:15:07: high: "S" is not initialized
-normal_components.adb:15:22: medium: assertion might fail, cannot prove S.D.A = S.D.B (e.g. when S = (C => 0, D => (A => 1, B => 0)))
+normal_components.adb:15:22: medium: assertion might fail, cannot prove S.D.A = S.D.B (e.g. when S = (C => 0, D => (A => 0, B => 1)))
 normal_components.adb:17:07: high: "S.D" is not initialized
 normal_components.adb:17:22: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:19:22: high: "S.D.A" is not initialized
@@ -128,7 +128,7 @@ normal_components.adb:90:22: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:91:22: high: "T.C" is not initialized
 normal_components.adb:91:22: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:106:07: high: "S.D" is not initialized
-normal_components.adb:106:22: medium: assertion might fail, cannot prove S.D.A = S.D.B (e.g. when S = (C => 0, D => (A => 1, B => 0)))
+normal_components.adb:106:22: medium: assertion might fail, cannot prove S.D.A = S.D.B (e.g. when S = (C => 0, D => (A => 0, B => 1)))
 normal_components.adb:106:48: medium: "S.C" might not be initialized
 normal_components.adb:108:07: high: "S.D" is not initialized
 normal_components.adb:108:22: info: assertion proved (CVC5: 1 VC)
@@ -248,18 +248,18 @@ normal_components.adb:270:22: high: "T.D.B" is not initialized
 normal_components.adb:270:22: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:271:22: info: assertion proved (CVC5: 1 VC)
 normal_components.adb:282:10: info: only expected exception raised (CVC5: 1 VC)
-normal_components.adb:285:13: high: "S" is not initialized
+normal_components.adb:285:13: high: "S" is not initialized [possible explanation: value of "S" is unknown following exceptional exit]
 normal_components.adb:285:28: medium: assertion might fail, cannot prove S.D.A = S.D.B
-normal_components.adb:287:13: high: "S.D" is not initialized
+normal_components.adb:287:13: high: "S.D" is not initialized [possible explanation: value of "S.D" is unknown following exceptional exit]
 normal_components.adb:287:28: info: assertion proved (CVC5: 1 VC)
-normal_components.adb:289:28: high: "S.D.A" is not initialized
+normal_components.adb:289:28: high: "S.D.A" is not initialized [possible explanation: value of "S.D.A" is unknown following exceptional exit]
 normal_components.adb:289:28: info: assertion proved (CVC5: 1 VC)
-normal_components.adb:289:36: high: "S.C" is not initialized
-normal_components.adb:291:28: high: "S.D.A" is not initialized
+normal_components.adb:289:36: high: "S.C" is not initialized [possible explanation: value of "S.C" is unknown following exceptional exit]
+normal_components.adb:291:28: high: "S.D.A" is not initialized [possible explanation: value of "S.D.A" is unknown following exceptional exit]
 normal_components.adb:291:28: medium: assertion might fail
-normal_components.adb:292:28: high: "S.D.B" is not initialized
+normal_components.adb:292:28: high: "S.D.B" is not initialized [possible explanation: value of "S.D.B" is unknown following exceptional exit]
 normal_components.adb:292:28: info: assertion proved (CVC5: 1 VC)
-normal_components.adb:293:28: high: "S.C" is not initialized
+normal_components.adb:293:28: high: "S.C" is not initialized [possible explanation: value of "S.C" is unknown following exceptional exit]
 normal_components.adb:293:28: info: assertion proved (CVC5: 1 VC)
 p.ads:43:14: info: aspect Always_Terminates on "Initialize_Empty_Class" has been proved, subprogram will terminate
 p.ads:43:38: high: "R" is not initialized in "Initialize_Empty_Class" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
@@ -286,11 +286,11 @@ private_part.adb:49:07: high: "R" is not initialized
 private_part.adb:49:22: info: assertion proved (CVC5: 1 VC)
 private_part.adb:64:10: info: only expected exception raised (CVC5: 1 VC)
 private_part.adb:64:28: medium: "R.A" might not be initialized
-private_part.adb:67:13: medium: "R.A" might not be initialized
+private_part.adb:67:13: medium: "R.A" might not be initialized [possible explanation: value of "R.A" is unknown following exceptional exit]
 private_part.adb:67:28: info: assertion proved (CVC5: 1 VC)
 private_part.adb:67:28: medium: private part of "R" might not be initialized
 private_part.adb:81:10: info: only expected exception raised (CVC5: 1 VC)
-private_part.adb:84:13: medium: "R.A" might not be initialized
+private_part.adb:84:13: medium: "R.A" might not be initialized [possible explanation: value of "R.A" is unknown following exceptional exit]
 private_part.adb:84:28: info: assertion proved (CVC5: 1 VC)
 private_part.adb:100:22: info: assertion proved (CVC5: 1 VC)
 private_part.adb:100:26: high: private part of "R" is not initialized
@@ -298,7 +298,7 @@ private_part.adb:100:26: medium: "R.A" might not be initialized
 private_part.adb:110:07: medium: "R" might not be initialized
 private_part.adb:110:22: info: assertion proved (CVC5: 1 VC)
 private_part.adb:123:10: info: only expected exception raised (CVC5: 1 VC)
-private_part.adb:130:13: medium: "R.A" might not be initialized
+private_part.adb:130:13: medium: "R.A" might not be initialized [possible explanation: value of "R.A" is unknown following exceptional exit]
 private_part.adb:130:28: info: assertion proved (CVC5: 1 VC)
 private_part.adb:142:22: info: assertion proved (CVC5: 1 VC)
 private_part.adb:142:26: high: private part of "R" is not initialized

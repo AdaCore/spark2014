@@ -220,11 +220,9 @@ package body Xtree_Sinfo is
       -------------------------
 
       New_Field (W_Universal_Quantif,
-                 "Variables", "W_Identifier", Id_Some);
+                 "Binders", "W_Binder", Id_Some);
       New_Field (W_Universal_Quantif,
                  "Labels", "Symbol_Set");
-      New_Field (W_Universal_Quantif,
-                 "Var_Type", "W_Type", Id_One);
       New_Field (W_Universal_Quantif,
                  "Triggers", "W_Triggers", Id_Lone);
       New_Field (W_Universal_Quantif,
@@ -235,11 +233,9 @@ package body Xtree_Sinfo is
       ---------------------------
 
       New_Field (W_Existential_Quantif,
-                 "Variables", "W_Identifier", Id_Some);
+                 "Binders", "W_Binder", Id_Some);
       New_Field (W_Existential_Quantif,
                  "Labels", "Symbol_Set");
-      New_Field (W_Existential_Quantif,
-                 "Var_Type", "W_Type", Id_One);
       New_Field (W_Existential_Quantif,
                  "Pred", "W_Pred", Id_One);
 

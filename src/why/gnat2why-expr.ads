@@ -67,11 +67,13 @@ package Gnat2Why.Expr is
      (Expr          : W_Term_Id;
       Ty            : Type_Kind_Id;
       Initialized   : Boolean := True;
+      Valid         : W_Term_Id := True_Term;
       Only_Var      : Boolean := True;
       Top_Predicate : Boolean := True)
       return W_Prog_Id;
    --  @param Expr Why3 expression on which to assume the dynamic invariant
    --  @param Ty type of expression [Expr]
+   --  @param Valid a term encoding the validity of Expr
    --  @param Initialized True iff Expr is known to be initialized
    --  @param Only_Var True iff the dynamic invariant should only consider
    --     the variable parts of [Expr].
@@ -292,6 +294,7 @@ package Gnat2Why.Expr is
       Ty             : Type_Kind_Id;
       Params         : Transformation_Params;
       Initialized    : W_Term_Id := True_Term;
+      Valid          : W_Term_Id := True_Term;
       Only_Var       : W_Term_Id := True_Term;
       Top_Predicate  : W_Term_Id := True_Term;
       All_Global_Inv : Boolean := True;
@@ -302,6 +305,7 @@ package Gnat2Why.Expr is
    --  @param Initialized true term iff Expr is known to be initialized. If
    --     Expr has an initialization wrapper type, then Initialized is not
    --     used.
+   --  @param Valid true term iff Expr is valid if it is initialized.
    --  @param Only_Var true term iff the dynamic invariant should only consider
    --     the variable parts of [Expr].
    --  @param Top_Predicate true term iff the dynamic invariant should consider
@@ -368,6 +372,7 @@ package Gnat2Why.Expr is
       Ty             : Type_Kind_Id;
       Params         : Transformation_Params;
       Initialized    : W_Term_Id := True_Term;
+      Valid          : W_Term_Id := True_Term;
       Only_Var       : W_Term_Id := True_Term;
       Top_Predicate  : Boolean := True;
       All_Global_Inv : Boolean := True)
@@ -468,13 +473,6 @@ package Gnat2Why.Expr is
    --  N is an expression or object which can be moved. Return the type that
    --  should be used to querry its move tree. It might not be the type of N
    --  on case of view conversions or unconstrained formal parameters.
-
-   function Get_Pure_Logic_Term_If_Possible
-     (Expr          : N_Subexpr_Id;
-      Expected_Type : W_Type_Id)
-      return W_Term_Id;
-   --  If Expr can be translated into a pure logic term (without dereference),
-   --  return this term. Otherwise, return Why_Empty.
 
    function Get_Variants_Exprs
      (E      : Callable_Kind_Id;
@@ -603,9 +601,10 @@ package Gnat2Why.Expr is
    --  done in a range accomodating both T_Type (if set) and the bounds' type.
 
    function Transform_Attribute_Old
-     (Expr   : N_Subexpr_Id;
-      Domain : EW_Domain;
-      Params : Transformation_Params)
+     (Expr              : N_Subexpr_Id;
+      Domain            : EW_Domain;
+      Params            : Transformation_Params;
+      No_Validity_Check : Boolean := False)
       return W_Expr_Id;
    --  Translate Expr'Old into Why
 
@@ -649,11 +648,12 @@ package Gnat2Why.Expr is
           (Choices, Choice_Type, +Matched_Expr, EW_Pred, Params));
 
    function Transform_Expr
-     (Expr          : N_Subexpr_Id;
-      Expected_Type : W_Type_Id;
-      Domain        : EW_Domain;
-      Params        : Transformation_Params;
-      No_Read       : Boolean := False)
+     (Expr              : N_Subexpr_Id;
+      Expected_Type     : W_Type_Id;
+      Domain            : EW_Domain;
+      Params            : Transformation_Params;
+      No_Init_Check     : Boolean := False;
+      No_Validity_Check : Boolean := False)
       return W_Expr_Id;
    --  Compute an expression in Why having the expected type for the given Ada
    --  expression node. The formal "Domain" decides if we return a predicate,
@@ -661,17 +661,19 @@ package Gnat2Why.Expr is
    --  for example in the context of a program (whether the domain is EW_Prog
    --  for program text or EW_Pred/EW_Term for contract). If Ref_Allowed is
    --  False, then references are not allowed, for example in the context of an
-   --  axiom or a logic function definition. If No_Read is True, the expression
-   --  is not considered to be read and predicate checks and initialization
-   --  checks for discriminants will not be emitted on expressions annotated
-   --  with Relaxed_Initialization.
+   --  axiom or a logic function definition. If No_Init_Check is True, the
+   --  expression does not need to be initialized and predicate checks and
+   --  initialization checks for discriminants will not be emitted on
+   --  expressions annotated with Relaxed_Initialization. If No_Validity_Check
+   --  is True, do not emit validity check if expr is potentially invalid.
 
    function Transform_Prog
-     (Expr          : N_Subexpr_Id;
-      Expected_Type : W_Type_Id;
-      Params        : Transformation_Params;
-      Checks        : Boolean := True;
-      No_Read       : Boolean := False)
+     (Expr              : N_Subexpr_Id;
+      Expected_Type     : W_Type_Id;
+      Params            : Transformation_Params;
+      Checks            : Boolean := True;
+      No_Init_Check     : Boolean := False;
+      No_Validity_Check : Boolean := False)
       return W_Prog_Id
    is
      (+Transform_Expr
@@ -679,7 +681,8 @@ package Gnat2Why.Expr is
          Expected_Type,
          (if Checks then EW_Prog else EW_Pterm),
          Params,
-         No_Read));
+         No_Init_Check,
+         No_Validity_Check));
 
    function Transform_Term
      (Expr          : N_Subexpr_Id;
@@ -698,25 +701,28 @@ package Gnat2Why.Expr is
      (+Transform_Expr (Expr, Expected_Type, EW_Pred, Params));
 
    function Transform_Expr
-     (Expr    : N_Subexpr_Id;
-      Domain  : EW_Domain;
-      Params  : Transformation_Params;
-      No_Read : Boolean := False)
+     (Expr              : N_Subexpr_Id;
+      Domain            : EW_Domain;
+      Params            : Transformation_Params;
+      No_Init_Check     : Boolean := False;
+      No_Validity_Check : Boolean := False)
       return W_Expr_Id;
    --  Same as above, but derive the Expected_Type from the Ada Expr
 
    function Transform_Prog
-     (Expr    : N_Subexpr_Id;
-      Params  : Transformation_Params;
-      Checks  : Boolean := True;
-      No_Read : Boolean := False)
+     (Expr              : N_Subexpr_Id;
+      Params            : Transformation_Params;
+      Checks            : Boolean := True;
+      No_Init_Check     : Boolean := False;
+      No_Validity_Check : Boolean := False)
       return W_Prog_Id
    is
      (+Transform_Expr
         (Expr,
          (if Checks then EW_Prog else EW_Pterm),
          Params,
-         No_Read));
+         No_Init_Check,
+         No_Validity_Check));
 
    function Transform_Term
      (Expr   : N_Subexpr_Id;
@@ -744,16 +750,58 @@ package Gnat2Why.Expr is
    --  Expr.
 
    function Transform_Identifier
-     (Params   : Transformation_Params;
-      Expr     : Node_Id;
-      Ent      : Entity_Id;
-      Domain   : EW_Domain;
-      Selector : Selection_Kind := Why.Inter.Standard)
-      return W_Expr_Id;
+     (Params            : Transformation_Params;
+      Expr              : Node_Id;
+      Ent               : Entity_Id;
+      Domain            : EW_Domain;
+      Selector          : Selection_Kind := Why.Inter.Standard;
+      No_Init_Check     : Boolean := False;
+      No_Validity_Check : Boolean := False) return W_Expr_Id;
    --  Transform an Ada identifier to a Why item.
    --
    --  This also deals with volatility, so that an object with a Async_Writers
    --  is suitably havoc'd before being read.
+
+   procedure Transform_Potentially_Invalid_Expr
+     (Expr       : N_Subexpr_Id;
+      Domain     : EW_Domain;
+      Params     : Transformation_Params;
+      Tmp_Id     : out W_Identifier_Id;
+      Id_Def     : out W_Expr_Id;
+      W_Expr     : out W_Expr_Id;
+      Valid_Flag : out W_Term_Id;
+      As_Old     : Boolean := False)
+   with
+     Pre  => Is_Potentially_Invalid_Expr (Expr),
+     Post => (Tmp_Id = Why_Empty) = (Id_Def = Why_Empty);
+   --  Transform a potentially invalid expression. Store the transformed
+   --  expression into W_Expr and its valid flag into Valid_Flag.
+   --  A constant binding Tmp_Id = Id_Def might be needed to translate function
+   --  calls only once even though they are used both in the expression and in
+   --  the valid flag. If it is not needed, Tmp_Id and Id_Def are set to
+   --  Why_Empty.
+
+   function Transform_Potentially_Invalid_Expr
+     (Expr          : Node_Id;
+      Expected_Type : W_Type_Id;
+      Domain        : EW_Domain;
+      Params        : Transformation_Params;
+      Tmp_Id        : out W_Identifier_Id;
+      Id_Def        : out W_Expr_Id;
+      Valid_Flag    : out W_Expr_Id)
+      return W_Expr_Id
+   with
+     Post => (Tmp_Id = Why_Empty) = (Id_Def = Why_Empty)
+       and then
+         (if not Is_Potentially_Invalid_Expr (Expr)
+          then Is_True_Boolean (Valid_Flag));
+   --  Transform an expression that might be potentially invalid. Return the
+   --  transformed expression and set Valid_Flag to the valid flag that should
+   --  be used for it.
+   --  A constant binding Tmp_Id = Id_Def might be needed to translate function
+   --  calls only once even though they are used both in the expression and in
+   --  the valid flag. If it is not needed, Tmp_Id and Id_Def are set to
+   --  Why_Empty.
 
    function Transform_Pragma
      (Prag   : N_Pragma_Id;
@@ -855,10 +903,6 @@ package Gnat2Why.Expr is
    --  @param Ty a type with a visible type invariant
    --  @param Variables used in the expression for Ty's invariant
 
-   function Void_Sequence return W_Statement_Sequence_Id;
-   --  Returns a sequence statement with only one void statement (this avoids
-   --  visible calls to New_Statement_Sequence for non sequential statements).
-
    function Warn_On_Dead_Branch
      (N       : N_Subexpr_Id;
       W       : W_Prog_Id;
@@ -900,6 +944,10 @@ package Gnat2Why.Expr is
    --  Name to use for occurrences of F'Result in the postcondition. It should
    --  be equal to Why_Empty when we are not translating a postcondition of a
    --  function.
+
+   function Get_Valid_Id_For_Result (Fun : Entity_Id) return W_Term_Id;
+   --  Return the valid flag used for Result_Name if Fun has a potentially
+   --  invalid result. Otherwise, return True_Term.
 
    Self_Name       : W_Identifier_Id := Why_Empty;
    Self_Is_Mutable : Boolean := False;
@@ -969,7 +1017,7 @@ private
    with Pre => (if Pattern.Kind = DRecord and then Pattern.Constr.Present
                 then Constr_Expr /= Why_Empty)
      and Args'Length >=
-       Item_Array_Length ((1 => Pattern), Ignore_Init => True),
+       Item_Array_Length ((1 => Pattern), Ignore_Init_And_Valid => True),
      Post => Need_Store or Context.Length = Context.Length'Old;
    --  Split a Why expression into parts that will be used to call a
    --  subprogram. The parts are stored in Args. Pattern is an item

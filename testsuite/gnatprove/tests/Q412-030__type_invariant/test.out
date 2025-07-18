@@ -1,11 +1,9 @@
-instance-child.ads:2:18: warning: file name does not match unit name, should be "varinput-instance_child.ads" [enabled by default]
-instance-child.ads:2:55: error: actual for formal object with mode in cannot depend on variable input "G3" [E0007]
-instance-child.ads:2:55: error: launch "gnatprove --explain=E0007" for more information
-instance-child.ads:2:55: error: use instead a constant initialized to the expression with variable input
-package_instance-child.ads:2:17: warning: file name does not match unit name, should be "varinput-package_instance_child.ads" [enabled by default]
-package_instance-child.ads:2:62: error: actual for formal object with mode in cannot depend on variable input "G3" [E0007]
-package_instance-child.ads:2:62: error: launch "gnatprove --explain=E0007" for more information
-package_instance-child.ads:2:62: error: use instead a constant initialized to the expression with variable input
+varinput-instance_child.ads:2:55: error: actual for formal object with mode in cannot depend on variable input "G3" [E0007]
+varinput-instance_child.ads:2:55: error: launch "gnatprove --explain=E0007" for more information
+varinput-instance_child.ads:2:55: error: use instead a constant initialized to the expression with variable input
+varinput-package_instance_child.ads:2:62: error: actual for formal object with mode in cannot depend on variable input "G3" [E0007]
+varinput-package_instance_child.ads:2:62: error: launch "gnatprove --explain=E0007" for more information
+varinput-package_instance_child.ads:2:62: error: use instead a constant initialized to the expression with variable input
 varinput.adb:13:40: error: actual for formal object with mode in cannot depend on variable input "G2" [E0007]
 varinput.adb:13:40: error: launch "gnatprove --explain=E0007" for more information
 varinput.adb:13:40: error: use instead a constant initialized to the expression with variable input
@@ -37,5 +35,3 @@ varinput.ads:47:31: error: actual for formal object with mode in cannot depend o
 varinput.ads:47:31: error: launch "gnatprove --explain=E0007" for more information
 varinput.ads:47:31: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof
-instance-child.ads: warning: unit name "VARINPUT.INSTANCE_CHILD" does not match source name
-package_instance-child.ads: warning: unit name "VARINPUT.PACKAGE_INSTANCE_CHILD" does not match source name

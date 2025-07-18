@@ -1,5 +1,5 @@
-test_pred_on_array.adb:3:09: info: "E_Arr" is handled as if it was annotated with Relaxed_Initialization as all its components are annotated that way
-test_pred_on_array.adb:3:09: info: consider annotating "E_Arr" with Relaxed_Initialization
+test_pred_on_array.adb:3:09: warning: "E_Arr" is handled as if it was annotated with Relaxed_Initialization as all its components are annotated that way [component-relaxed-init]
+test_pred_on_array.adb:3:09: warning: consider annotating "E_Arr" with Relaxed_Initialization
 test_pred_on_array.adb:4:62: info: index check proved (CVC5: 2 VC)
 test_pred_on_array.adb:6:36: info: data dependencies proved
 test_pred_on_array.adb:8:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -39,8 +39,8 @@ test_pred_on_array.adb:44:18: info: predicate check proved (CVC5: 1 VC)
 test_pred_on_array.adb:44:18: medium: predicate check might fail [possible fix: precondition of subprogram at line 42 should mention X'Length or X'First or X'Last]
 test_pred_on_array.adb:47:07: info: predicate check proved (CVC5: 1 VC)
 test_pred_on_array.adb:47:10: info: index check proved (CVC5: 2 VC)
-test_pred_on_array.adb:50:09: info: "E_Rec" is handled as if it was annotated with Relaxed_Initialization as all its components are annotated that way
-test_pred_on_array.adb:50:09: info: consider annotating "E_Rec" with Relaxed_Initialization
+test_pred_on_array.adb:50:09: warning: "E_Rec" is handled as if it was annotated with Relaxed_Initialization as all its components are annotated that way [component-relaxed-init]
+test_pred_on_array.adb:50:09: warning: consider annotating "E_Rec" with Relaxed_Initialization
 test_pred_on_array.adb:55:36: info: data dependencies proved
 test_pred_on_array.adb:57:22: info: assertion proved (CVC5: 1 VC)
 test_pred_on_array.adb:60:22: info: data dependencies proved
@@ -68,7 +68,7 @@ test_pred_on_array.adb:102:22: info: assertion proved (Trivial: 1 VC)
 test_pred_on_array.adb:105:22: info: data dependencies proved
 test_pred_on_array.adb:108:13: medium: initialization check might fail (e.g. when X'Initialized = False)
 test_pred_on_array.adb:111:18: medium: for parameter X at the end of the subprogram at test_pred_on_array.adb:111
-test_pred_on_array.adb:111:18: medium: initialization check might fail [possible fix: add or complete related loop invariants or postconditions]
+test_pred_on_array.adb:111:18: medium: initialization check might fail
 test_pred_on_array.adb:111:18: warning: unused variable "X"
 test_pred_on_array.adb:111:39: info: data dependencies proved
 test_pred_on_array.adb:116:13: info: implicit aspect Always_Terminates on "F5" has been proved, subprogram will terminate

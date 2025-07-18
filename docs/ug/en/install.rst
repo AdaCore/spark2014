@@ -50,15 +50,10 @@ Installation under Windows
 --------------------------
 
 If not already done, first run the GNAT Studio installer by e.g. double clicking
-on `gnatstudio-<version>-i686-pc-mingw32.exe` and follow the instructions.
-
-.. note::
-
-  If you're using GNAT Community instead of GNAT Pro, you should run instead
-  the GNAT Community installer, which installs GNAT Studio and SPARK.
+on `gnatstudio-{version}-x86_64-windows64-bin.exe` and follow the instructions.
 
 Then similarly run the |GNATprove| installer, by e.g. double clicking on
-`spark-<version>-x86-windows-bin.exe`. If you intend to install |GNATprove| in
+`spark-pro-{version}-x86_64-windows64-bin.exe`. If you intend to install |GNATprove| in
 a location where a previous installation of |GNATprove| exists, we recommend
 that you uninstall the previous installation first.
 
@@ -78,14 +73,9 @@ tarball and then run the install, e.g.::
 
 Then follow the instructions displayed.
 
-.. note::
-
-  If you're using GNAT Community instead of GNAT Pro, you should install
-  instead the GNAT Community package, which installs GNAT Studio and SPARK.
-
 Then do the same with the SPARK tarball, e.g.::
 
-  $ gzip -dc spark-<version>-<platform>-bin.tar.gz | tar xf -
+  $ gzip -dc spark-pro-<version>-<platform>-bin.tar.gz | tar xf -
   $ cd spark-<version>-<platform>-bin
   $ ./doinstall
 

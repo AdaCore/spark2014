@@ -26,55 +26,55 @@ enums.adb:49:11: info: data dependencies proved
 enums.adb:54:22: medium: assertion might fail [possible fix: subprogram at line 48 should mention X in a precondition]
 enums.adb:56:22: medium: assertion might fail [possible fix: subprogram at line 48 should mention Y in a precondition]
 imprecise.adb:12:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type U32 and type U16 differ]
-imprecise.adb:12:13: info: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size)
+imprecise.adb:12:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [imprecise-unchecked-conversion]
 imprecise.adb:12:60: info: type is suitable as source for unchecked conversion (Trivial)
 imprecise.adb:12:75: info: type is suitable for unchecked conversion (Trivial)
-imprecise.adb:18:13: info: imprecise handling of Unchecked_Conversion (component offset not known)
 imprecise.adb:18:13: info: types in unchecked conversion have the same size (Trivial)
+imprecise.adb:18:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
 imprecise.adb:18:60: info: type is suitable as source for unchecked conversion (Trivial)
 imprecise.adb:18:75: info: type is suitable for unchecked conversion (Trivial)
 imprecise.adb:27:13: info: types in unchecked conversion have the same size (Trivial)
 imprecise.adb:27:60: info: type is suitable as source for unchecked conversion (Trivial)
 imprecise.adb:27:74: info: type is suitable for unchecked conversion (Trivial)
-imprecise.adb:37:13: info: imprecise handling of Unchecked_Conversion (type has reverse storage order)
 imprecise.adb:37:13: info: types in unchecked conversion have the same size (Trivial)
+imprecise.adb:37:13: warning: imprecise handling of Unchecked_Conversion (type has reverse storage order) [imprecise-unchecked-conversion]
 imprecise.adb:37:60: info: type is suitable as source for unchecked conversion (Trivial)
 imprecise.adb:37:75: info: type is suitable for unchecked conversion (Trivial)
-imprecise.adb:47:13: info: imprecise handling of Unchecked_Conversion (type with biased representation)
 imprecise.adb:47:13: info: types in unchecked conversion have the same size (Trivial)
+imprecise.adb:47:13: warning: imprecise handling of Unchecked_Conversion (type with biased representation) [imprecise-unchecked-conversion]
 imprecise.adb:47:60: info: type is suitable as source for unchecked conversion (Trivial)
 imprecise.adb:47:75: info: type is suitable for unchecked conversion (Trivial)
-imprecise.adb:57:13: info: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion)
 imprecise.adb:57:13: info: types in unchecked conversion have the same size (Trivial)
+imprecise.adb:57:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 imprecise.adb:57:60: info: type is suitable as source for unchecked conversion (Trivial)
-imprecise.adb:57:75: high: type is unsuitable as a target for unchecked conversion [possible explanation: type R6 has discriminants]
-imprecise.adb:66:13: info: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion)
+imprecise.adb:57:75: high: type is unsuitable as a target for unchecked conversion [possible explanation: type R6 has discriminants; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
 imprecise.adb:66:13: info: types in unchecked conversion have the same size (Trivial)
+imprecise.adb:66:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 imprecise.adb:66:60: info: type is suitable as source for unchecked conversion (Trivial)
 imprecise.adb:66:76: high: type is unsuitable as a target for unchecked conversion [possible explanation: type R7 is a tagged type]
-imprecise.adb:72:13: info: imprecise handling of Unchecked_Conversion (array has multiple dimensions)
 imprecise.adb:72:13: info: types in unchecked conversion have the same size (Trivial)
+imprecise.adb:72:13: warning: imprecise handling of Unchecked_Conversion (array has multiple dimensions) [imprecise-unchecked-conversion]
 imprecise.adb:72:61: info: type is suitable as source for unchecked conversion (Trivial)
 imprecise.adb:72:75: info: type is suitable for unchecked conversion (Trivial)
-imprecise.adb:78:13: info: imprecise handling of Unchecked_Conversion (type has reverse storage order)
 imprecise.adb:78:13: info: types in unchecked conversion have the same size (Trivial)
+imprecise.adb:78:13: warning: imprecise handling of Unchecked_Conversion (type has reverse storage order) [imprecise-unchecked-conversion]
 imprecise.adb:78:61: info: type is suitable as source for unchecked conversion (Trivial)
 imprecise.adb:78:75: info: type is suitable for unchecked conversion (Trivial)
-imprecise.adb:83:13: info: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion)
 imprecise.adb:83:13: info: types in unchecked conversion have the same size (Trivial)
+imprecise.adb:83:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 imprecise.adb:83:61: info: type is suitable as source for unchecked conversion (Trivial)
-imprecise.adb:83:76: high: type is unsuitable as a target for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK]
+imprecise.adb:83:76: high: type is unsuitable as a target for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
 imprecise.adb:88:13: info: types in unchecked conversion have the same size (Trivial)
 imprecise.adb:88:61: info: type is suitable as source for unchecked conversion (Trivial)
 imprecise.adb:88:76: info: type is suitable for unchecked conversion (Trivial)
 imprecise.adb:97:16: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type U32 and type P32 differ]
-imprecise.adb:97:16: info: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion)
+imprecise.adb:97:16: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 imprecise.adb:97:64: info: type is suitable as source for unchecked conversion (Trivial)
-imprecise.adb:97:79: high: type is unsuitable as a target for unchecked conversion [possible explanation: type P32 has 16#7FFF_FFFF# values but has Size 31]
+imprecise.adb:97:79: high: type is unsuitable as a target for unchecked conversion [possible explanation: type P32 has 16#7FFF_FFFF# values but Size 31, which allows 16#8000_0000# possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
 imprecise.adb:100:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type U32 and type P32 differ]
-imprecise.adb:100:13: info: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion)
+imprecise.adb:100:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 imprecise.adb:100:61: info: type is suitable as source for unchecked conversion (Trivial)
-imprecise.adb:100:76: high: type is unsuitable as a target for unchecked conversion [possible explanation: type P32 has 16#7FFF_FFFF# values but has Size 31]
+imprecise.adb:100:76: high: type is unsuitable as a target for unchecked conversion [possible explanation: type P32 has 16#7FFF_FFFF# values but Size 31, which allows 16#8000_0000# possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
 modular.adb:14:13: info: types in unchecked conversion have the same size (Trivial)
 modular.adb:14:64: info: type is suitable as source for unchecked conversion (Trivial)
 modular.adb:14:79: info: type is suitable for unchecked conversion (Trivial)
@@ -172,7 +172,7 @@ signed.adb:15:64: info: type is suitable as source for unchecked conversion (Tri
 signed.adb:15:78: info: type is suitable for unchecked conversion (Trivial)
 signed.adb:18:11: info: data dependencies proved
 signed.adb:23:22: medium: assertion might fail [possible fix: subprogram at line 17 should mention X in a precondition]
-signed.adb:24:22: medium: assertion might fail [possible fix: subprogram at line 17 should mention X in a precondition]
+signed.adb:24:22: info: assertion proved (colibri: 1 VC)
 signed.adb:26:22: medium: assertion might fail [possible fix: subprogram at line 17 should mention Y in a precondition]
 signed.adb:27:22: medium: assertion might fail [possible fix: subprogram at line 17 should mention Y in a precondition]
 signed.adb:61:13: info: types in unchecked conversion have the same size (Trivial)
@@ -242,6 +242,7 @@ uc_mixed.ads:27:69: info: type is suitable as source for unchecked conversion (T
 uc_mixed.ads:27:87: info: type is suitable for unchecked conversion (Trivial)
 uc_mixed.ads:29:14: warning: subprogram "Test" has no effect
 uc_sign.adb:9:28: info: range check proved (CVC5: 2 VC)
+uc_sign.adb:9:31: warning: references to the "Img" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 uc_sign.adb:10:23: info: assertion proved (CVC5: 1 VC)
 uc_sign.ads:29:13: info: types in unchecked conversion have the same size (Trivial)
 uc_sign.ads:29:64: info: type is suitable as source for unchecked conversion (Trivial)
@@ -267,20 +268,20 @@ unsigned.adb:16:67: info: type is suitable as source for unchecked conversion (T
 unsigned.adb:16:82: info: type is suitable for unchecked conversion (Trivial)
 unsigned.adb:19:11: info: data dependencies proved
 unsigned.adb:24:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-unsigned.adb:25:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
+unsigned.adb:25:22: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
 unsigned.adb:27:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-unsigned.adb:28:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
+unsigned.adb:28:22: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
 unsigned.adb:30:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-unsigned.adb:31:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
+unsigned.adb:31:22: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
 unsigned.adb:33:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-unsigned.adb:34:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
+unsigned.adb:34:22: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
 unsigned.adb:38:11: info: data dependencies proved
 unsigned.adb:43:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-unsigned.adb:44:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
+unsigned.adb:44:22: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
 unsigned.adb:46:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-unsigned.adb:47:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
+unsigned.adb:47:22: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
 unsigned.adb:49:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-unsigned.adb:50:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
+unsigned.adb:50:22: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
 unsigned.adb:54:11: info: data dependencies proved
 unsigned.adb:59:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 unsigned.adb:60:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)

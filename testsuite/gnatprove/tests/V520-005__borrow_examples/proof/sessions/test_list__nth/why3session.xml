@@ -32,14 +32,14 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="0"><result status="valid" steps="30"/></proof>
-  <proof prover="1"><result status="valid" steps="2138"/></proof>
-  <proof prover="2"><result status="valid" steps="4756"/></proof>
+  <proof prover="0"><result status="valid" steps="31"/></proof>
+  <proof prover="1"><result status="valid" steps="2081"/></proof>
+  <proof prover="2"><result status="valid" steps="4935"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="2149"/></proof>
+  <proof prover="1"><result status="valid" steps="2088"/></proof>
   <proof prover="2"><result status="highfailure"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
@@ -51,17 +51,17 @@
   </goal>
   <goal name="def&#39;vc.10" proved="true">
   <proof prover="0"><result status="valid" steps="14"/></proof>
-  <proof prover="1"><result status="valid" steps="1057"/></proof>
-  <proof prover="2"><result status="valid" steps="1651"/></proof>
-  <proof prover="4"><result status="valid" steps="96"/></proof>
+  <proof prover="1"><result status="valid" steps="1152"/></proof>
+  <proof prover="2"><result status="valid" steps="1721"/></proof>
+  <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.12" proved="true">
-  <proof prover="0"><result status="valid" steps="32"/></proof>
-  <proof prover="1"><result status="valid" steps="2866"/></proof>
-  <proof prover="2"><result status="valid" steps="5593"/></proof>
+  <proof prover="0"><result status="valid" steps="34"/></proof>
+  <proof prover="1"><result status="valid" steps="2829"/></proof>
+  <proof prover="2"><result status="valid" steps="6318"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
  </transf>

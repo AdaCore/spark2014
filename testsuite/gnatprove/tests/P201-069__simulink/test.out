@@ -71,31 +71,37 @@ simulink_functions.adb:45:13: info: types in unchecked conversion have the same 
 simulink_functions.adb:45:67: info: type is suitable as source for unchecked conversion (Trivial)
 simulink_functions.adb:46:67: info: type is suitable for unchecked conversion (Trivial)
 simulink_functions.adb:48:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type Unsigned_32 and type Unsigned_16 differ]
-simulink_functions.adb:48:13: info: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size)
+simulink_functions.adb:48:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [imprecise-unchecked-conversion]
 simulink_functions.adb:48:65: info: type is suitable as source for unchecked conversion (Trivial)
 simulink_functions.adb:49:67: info: type is suitable for unchecked conversion (Trivial)
 simulink_functions.adb:50:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type Unsigned_32 and type Unsigned_8 differ]
-simulink_functions.adb:50:13: info: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size)
+simulink_functions.adb:50:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [imprecise-unchecked-conversion]
 simulink_functions.adb:50:64: info: type is suitable as source for unchecked conversion (Trivial)
 simulink_functions.adb:51:67: info: type is suitable for unchecked conversion (Trivial)
 simulink_functions.adb:52:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type Unsigned_32 and type Integer_16 differ]
-simulink_functions.adb:52:13: info: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size)
+simulink_functions.adb:52:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [imprecise-unchecked-conversion]
 simulink_functions.adb:52:67: info: type is suitable as source for unchecked conversion (Trivial)
 simulink_functions.adb:53:67: info: type is suitable for unchecked conversion (Trivial)
 simulink_functions.adb:54:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type Unsigned_32 and type Integer_8 differ]
-simulink_functions.adb:54:13: info: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size)
+simulink_functions.adb:54:13: warning: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size) [imprecise-unchecked-conversion]
 simulink_functions.adb:54:66: info: type is suitable as source for unchecked conversion (Trivial)
 simulink_functions.adb:55:67: info: type is suitable for unchecked conversion (Trivial)
-simulink_functions.adb:171:47: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:55 should mention F in a precondition]
-simulink_functions.adb:180:52: medium: overflow check might fail [reason for check: value must fit in a 64-bits machine integer] [possible fix: subprogram at simulink_functions.ads:56 should mention F in a precondition]
+simulink_functions.adb:171:47: low: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
+simulink_functions.adb:171:47: warning: call to "Exp" is not handled precisely [imprecise-call]
+simulink_functions.adb:180:52: low: overflow check might fail [reason for check: value must fit in a 64-bits machine integer] [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
+simulink_functions.adb:180:52: warning: call to "Exp" is not handled precisely [imprecise-call]
 simulink_functions.adb:189:47: info: overflow check proved (CVC5: 1 VC)
 simulink_functions.adb:189:47: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:58 should mention F in a precondition]
+simulink_functions.adb:189:47: warning: call to "Log" is not handled precisely [imprecise-call]
 simulink_functions.adb:199:14: info: overflow check proved (CVC5: 1 VC)
 simulink_functions.adb:199:14: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:59 should mention F in a precondition]
+simulink_functions.adb:199:14: warning: call to "Log" is not handled precisely [imprecise-call]
 simulink_functions.adb:208:47: info: overflow check proved (CVC5: 1 VC)
 simulink_functions.adb:208:47: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:61 should mention F in a precondition]
+simulink_functions.adb:208:47: warning: call to "Log" is not handled precisely [imprecise-call]
 simulink_functions.adb:219:14: info: overflow check proved (CVC5: 1 VC)
 simulink_functions.adb:219:14: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:62 should mention F in a precondition]
+simulink_functions.adb:219:14: warning: call to "Log" is not handled precisely [imprecise-call]
 simulink_functions.adb:234:40: medium: overflow check might fail, cannot prove upper bound for abs (Left) [reason for check: result of absolute value must fit in a 8-bits machine integer] [possible fix: add precondition (abs (Left) <= 127) to subprogram at simulink_functions.ads:64]
 simulink_functions.adb:234:51: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:234:51: info: range check proved (CVC5: 2 VC)
@@ -135,29 +141,29 @@ simulink_functions.adb:283:37: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:297:30: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:310:30: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:323:30: info: division check proved (CVC5: 1 VC)
-simulink_functions.adb:336:22: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at simulink_functions.ads:72 should mention Left and Right in a precondition]
+simulink_functions.adb:336:22: info: float overflow check proved (colibri: 1 VC)
 simulink_functions.adb:336:42: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:336:42: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at simulink_functions.ads:72 should mention Left and Right in a precondition]
 simulink_functions.adb:336:51: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at simulink_functions.ads:72 should mention Left and Right in a precondition]
-simulink_functions.adb:349:22: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at simulink_functions.ads:73 should mention Left and Right in a precondition]
+simulink_functions.adb:349:22: info: float overflow check proved (colibri: 1 VC)
 simulink_functions.adb:349:47: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:349:47: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at simulink_functions.ads:73 should mention Left and Right in a precondition]
 simulink_functions.adb:349:56: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at simulink_functions.ads:73 should mention Left and Right in a precondition]
-simulink_functions.adb:362:22: medium: overflow check might fail, cannot prove lower bound for Left - Integer_8 (Float'Floor (Float (Left) / Float (Right))) * Right [reason for check: result of subtraction must fit in a 8-bits machine integer] [possible fix: add precondition (if Integer_8 (Float'Floor (Float (Left) / Float (Right))) * Right >= 0 then Left >= -128 + Integer_8 (Float'Floor (Float (Left) / Float (Right))) * Right else Left <= 127 + Integer_8 (Float'Floor (Float (Left) / Float (Right))) * Right) to subprogram at simulink_functions.ads:75]
+simulink_functions.adb:362:22: info: overflow check proved (colibri: 2 VC)
 simulink_functions.adb:363:29: medium: range check might fail, cannot prove upper bound for Float'Floor (Float (Left) / Float (Right)) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:75 should mention Left and Right in a precondition]
 simulink_functions.adb:363:44: info: range check proved (Trivial)
 simulink_functions.adb:363:50: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:363:50: info: float overflow check proved (colibri: 1 VC)
 simulink_functions.adb:363:59: info: range check proved (Trivial)
 simulink_functions.adb:363:68: medium: overflow check might fail, cannot prove lower bound for Integer_8 (Float'Floor (Float (Left) / Float (Right))) * Right [reason for check: result of multiplication must fit in a 8-bits machine integer] [possible fix: add precondition (Integer_8 (Float'Floor (Float (Left) / Float (Right))) * Right >= -128) to subprogram at simulink_functions.ads:75]
-simulink_functions.adb:376:22: medium: overflow check might fail, cannot prove lower bound for Left - Integer_16 (Float'Floor (Float (Left) / Float (Right))) * Right [reason for check: result of subtraction must fit in a 16-bits machine integer] [possible fix: add precondition (if Integer_16 (Float'Floor (Float (Left) / Float (Right))) * Right >= 0 then Left >= -32768 + Integer_16 (Float'Floor (Float (Left) / Float (Right))) * Right else Left <= 32767 + Integer_16 (Float'Floor (Float (Left) / Float (Right))) * Right) to subprogram at simulink_functions.ads:76]
+simulink_functions.adb:376:22: info: overflow check proved (colibri: 2 VC)
 simulink_functions.adb:377:30: medium: range check might fail, cannot prove upper bound for Float'Floor (Float (Left) / Float (Right)) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:76 should mention Left and Right in a precondition]
 simulink_functions.adb:377:45: info: range check proved (Trivial)
 simulink_functions.adb:377:51: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:377:51: info: float overflow check proved (colibri: 1 VC)
 simulink_functions.adb:377:60: info: range check proved (Trivial)
 simulink_functions.adb:377:69: medium: overflow check might fail, cannot prove lower bound for Integer_16 (Float'Floor (Float (Left) / Float (Right))) * Right [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: add precondition (Integer_16 (Float'Floor (Float (Left) / Float (Right))) * Right >= -32768) to subprogram at simulink_functions.ads:76]
-simulink_functions.adb:390:22: medium: overflow check might fail, cannot prove lower bound for Left - Integer_32 (Float'Floor (Float (Left) / Float (Right))) * Right [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if Integer_32 (Float'Floor (Float (Left) / Float (Right))) * Right >= 0 then Left >= -2147483648 + Integer_32 (Float'Floor (Float (Left) / Float (Right))) * Right else Left <= 2147483647 + Integer_32 (Float'Floor (Float (Left) / Float (Right))) * Right) to subprogram at simulink_functions.ads:77]
+simulink_functions.adb:390:22: info: overflow check proved (colibri: 2 VC)
 simulink_functions.adb:391:30: medium: range check might fail, cannot prove upper bound for Float'Floor (Float (Left) / Float (Right)) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:77 should mention Left and Right in a precondition]
 simulink_functions.adb:391:45: info: range check proved (Trivial)
 simulink_functions.adb:391:51: info: division check proved (CVC5: 1 VC)
@@ -167,18 +173,18 @@ simulink_functions.adb:391:69: medium: overflow check might fail, cannot prove l
 simulink_functions.adb:404:30: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:417:30: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:430:30: info: division check proved (CVC5: 1 VC)
-simulink_functions.adb:443:22: medium: overflow check might fail, cannot prove lower bound for Left - Integer (Float'Floor (Float (Left) / Float (Right))) * Right [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (if Integer (Float'Floor (Float (Left) / Float (Right))) * Right >= 0 then Left >= Integer'First + Integer (Float'Floor (Float (Left) / Float (Right))) * Right else Left <= Integer'Last + Integer (Float'Floor (Float (Left) / Float (Right))) * Right) to subprogram at simulink_functions.ads:83]
+simulink_functions.adb:443:22: info: overflow check proved (colibri: 2 VC)
 simulink_functions.adb:444:27: medium: range check might fail, cannot prove upper bound for Float'Floor (Float (Left) / Float (Right)) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:83 should mention Left and Right in a precondition]
 simulink_functions.adb:444:42: info: range check proved (Trivial)
 simulink_functions.adb:444:48: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:444:48: info: float overflow check proved (colibri: 1 VC)
 simulink_functions.adb:444:57: info: range check proved (Trivial)
 simulink_functions.adb:444:66: medium: overflow check might fail, cannot prove lower bound for Integer (Float'Floor (Float (Left) / Float (Right))) * Right [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (Integer (Float'Floor (Float (Left) / Float (Right))) * Right >= Integer'First) to subprogram at simulink_functions.ads:83]
-simulink_functions.adb:457:22: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at simulink_functions.ads:84 should mention Left and Right in a precondition]
+simulink_functions.adb:457:22: info: float overflow check proved (colibri: 1 VC)
 simulink_functions.adb:457:42: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:457:42: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at simulink_functions.ads:84 should mention Left and Right in a precondition]
 simulink_functions.adb:457:51: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at simulink_functions.ads:84 should mention Left and Right in a precondition]
-simulink_functions.adb:470:22: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at simulink_functions.ads:85 should mention Left and Right in a precondition]
+simulink_functions.adb:470:22: info: float overflow check proved (colibri: 1 VC)
 simulink_functions.adb:470:47: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:470:47: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at simulink_functions.ads:85 should mention Left and Right in a precondition]
 simulink_functions.adb:470:56: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at simulink_functions.ads:85 should mention Left and Right in a precondition]
@@ -197,57 +203,89 @@ simulink_functions.adb:509:39: info: overflow check proved (CVC5: 2 VC)
 simulink_functions.adb:522:30: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:535:30: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:548:30: info: division check proved (CVC5: 1 VC)
-simulink_functions.adb:558:19: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at simulink_functions.ads:95 should mention Left and Right in a precondition]
+simulink_functions.adb:558:19: info: float overflow check proved (colibri: 1 VC)
 simulink_functions.adb:558:44: medium: divide by zero might fail [possible fix: add precondition (Right /= 0) to subprogram at simulink_functions.ads:95]
 simulink_functions.adb:558:44: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at simulink_functions.ads:95 should mention Left and Right in a precondition]
 simulink_functions.adb:558:53: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at simulink_functions.ads:95 should mention Left and Right in a precondition]
-simulink_functions.adb:567:19: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at simulink_functions.ads:96 should mention Left and Right in a precondition]
+simulink_functions.adb:567:19: info: float overflow check proved (colibri: 1 VC)
 simulink_functions.adb:567:49: medium: divide by zero might fail [possible fix: add precondition (Right /= 0) to subprogram at simulink_functions.ads:96]
 simulink_functions.adb:567:49: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at simulink_functions.ads:96 should mention Left and Right in a precondition]
 simulink_functions.adb:567:58: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at simulink_functions.ads:96 should mention Left and Right in a precondition]
 simulink_functions.adb:577:26: info: precondition proved (CVC5: 1 VC)
 simulink_functions.adb:577:26: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:98 should mention I in a precondition]
+simulink_functions.adb:577:26: warning: call to "Sqrt" is not handled precisely [imprecise-call]
 simulink_functions.adb:577:39: info: range check proved (Trivial)
 simulink_functions.adb:587:27: info: precondition proved (CVC5: 1 VC)
 simulink_functions.adb:587:27: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:99 should mention I in a precondition]
+simulink_functions.adb:587:27: warning: call to "Sqrt" is not handled precisely [imprecise-call]
 simulink_functions.adb:587:40: info: range check proved (Trivial)
 simulink_functions.adb:597:27: info: precondition proved (CVC5: 1 VC)
 simulink_functions.adb:597:27: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:100 should mention I in a precondition]
+simulink_functions.adb:597:27: warning: call to "Sqrt" is not handled precisely [imprecise-call]
 simulink_functions.adb:597:40: info: range check proved (Trivial)
 simulink_functions.adb:607:25: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:102 should mention I in a precondition]
 simulink_functions.adb:607:25: medium: range check might fail, cannot prove lower bound for Sqrt (Float (I)) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:102 should mention I in a precondition]
+simulink_functions.adb:607:25: warning: call to "Sqrt" is not handled precisely [imprecise-call]
 simulink_functions.adb:607:38: info: range check proved (Trivial)
 simulink_functions.adb:617:26: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:103 should mention I in a precondition]
 simulink_functions.adb:617:26: medium: range check might fail, cannot prove lower bound for Sqrt (Float (I)) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:103 should mention I in a precondition]
+simulink_functions.adb:617:26: warning: call to "Sqrt" is not handled precisely [imprecise-call]
 simulink_functions.adb:617:39: info: range check proved (Trivial)
 simulink_functions.adb:627:26: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:104 should mention I in a precondition]
 simulink_functions.adb:627:26: medium: range check might fail, cannot prove lower bound for Sqrt (Float (I)) [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:104 should mention I in a precondition]
+simulink_functions.adb:627:26: warning: call to "Sqrt" is not handled precisely [imprecise-call]
 simulink_functions.adb:627:39: info: range check proved (Trivial)
 simulink_functions.adb:637:21: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:106 should mention F in a precondition]
 simulink_functions.adb:637:21: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:106 should mention F in a precondition]
+simulink_functions.adb:637:21: warning: call to "Sqrt" is not handled precisely [imprecise-call]
 simulink_functions.adb:647:14: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:107 should mention F in a precondition]
+simulink_functions.adb:647:14: warning: call to "Sqrt" is not handled precisely [imprecise-call]
+simulink_functions.adb:978:47: warning: call to "Cos" is not handled precisely [imprecise-call]
+simulink_functions.adb:987:52: warning: call to "Cos" is not handled precisely [imprecise-call]
+simulink_functions.adb:996:47: warning: call to "Sin" is not handled precisely [imprecise-call]
+simulink_functions.adb:1005:52: warning: call to "Sin" is not handled precisely [imprecise-call]
 simulink_functions.adb:1014:47: info: overflow check proved (CVC5: 1 VC)
+simulink_functions.adb:1014:47: warning: call to "Tan" is not handled precisely [imprecise-call]
 simulink_functions.adb:1023:52: info: overflow check proved (CVC5: 1 VC)
+simulink_functions.adb:1023:52: warning: call to "Tan" is not handled precisely [imprecise-call]
 simulink_functions.adb:1032:47: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:151 should mention F in a precondition]
+simulink_functions.adb:1032:47: warning: call to "Arcsin" is not handled precisely [imprecise-call]
 simulink_functions.adb:1041:52: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:152 should mention LF in a precondition]
+simulink_functions.adb:1041:52: warning: call to "Arcsin" is not handled precisely [imprecise-call]
 simulink_functions.adb:1050:47: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:154 should mention F in a precondition]
+simulink_functions.adb:1050:47: warning: call to "Arccos" is not handled precisely [imprecise-call]
 simulink_functions.adb:1059:52: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:155 should mention LF in a precondition]
+simulink_functions.adb:1059:52: warning: call to "Arccos" is not handled precisely [imprecise-call]
 simulink_functions.adb:1068:47: info: precondition proved (CVC5: 1 VC)
+simulink_functions.adb:1068:47: warning: call to "Arctan" is not handled precisely [imprecise-call]
 simulink_functions.adb:1077:52: info: precondition proved (CVC5: 1 VC)
-simulink_functions.adb:1086:47: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:160 should mention F in a precondition]
-simulink_functions.adb:1095:52: medium: overflow check might fail [reason for check: value must fit in a 64-bits machine integer] [possible fix: subprogram at simulink_functions.ads:161 should mention LF in a precondition]
-simulink_functions.adb:1104:47: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:163 should mention F in a precondition]
-simulink_functions.adb:1113:52: medium: overflow check might fail [reason for check: value must fit in a 64-bits machine integer] [possible fix: subprogram at simulink_functions.ads:164 should mention LF in a precondition]
+simulink_functions.adb:1077:52: warning: call to "Arctan" is not handled precisely [imprecise-call]
+simulink_functions.adb:1086:47: low: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
+simulink_functions.adb:1086:47: warning: call to "Sinh" is not handled precisely [imprecise-call]
+simulink_functions.adb:1095:52: low: overflow check might fail [reason for check: value must fit in a 64-bits machine integer] [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
+simulink_functions.adb:1095:52: warning: call to "Sinh" is not handled precisely [imprecise-call]
+simulink_functions.adb:1104:47: low: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
+simulink_functions.adb:1104:47: warning: call to "Cosh" is not handled precisely [imprecise-call]
+simulink_functions.adb:1113:52: low: overflow check might fail [reason for check: value must fit in a 64-bits machine integer] [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
+simulink_functions.adb:1113:52: warning: call to "Cosh" is not handled precisely [imprecise-call]
+simulink_functions.adb:1122:47: warning: call to "Tanh" is not handled precisely [imprecise-call]
+simulink_functions.adb:1131:52: warning: call to "Tanh" is not handled precisely [imprecise-call]
 simulink_functions.adb:1140:47: info: overflow check proved (CVC5: 1 VC)
+simulink_functions.adb:1140:47: warning: call to "Arcsinh" is not handled precisely [imprecise-call]
 simulink_functions.adb:1149:52: info: overflow check proved (CVC5: 1 VC)
+simulink_functions.adb:1149:52: warning: call to "Arcsinh" is not handled precisely [imprecise-call]
 simulink_functions.adb:1158:47: info: overflow check proved (CVC5: 1 VC)
 simulink_functions.adb:1158:47: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:172 should mention F in a precondition]
+simulink_functions.adb:1158:47: warning: call to "Arccosh" is not handled precisely [imprecise-call]
 simulink_functions.adb:1167:52: info: overflow check proved (CVC5: 1 VC)
 simulink_functions.adb:1167:52: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:173 should mention LF in a precondition]
-simulink_functions.adb:1176:47: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:175 should mention F in a precondition]
+simulink_functions.adb:1167:52: warning: call to "Arccosh" is not handled precisely [imprecise-call]
+simulink_functions.adb:1176:47: low: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
 simulink_functions.adb:1176:47: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:175 should mention F in a precondition]
-simulink_functions.adb:1185:52: medium: overflow check might fail [reason for check: value must fit in a 64-bits machine integer] [possible fix: subprogram at simulink_functions.ads:176 should mention LF in a precondition]
+simulink_functions.adb:1176:47: warning: call to "Arctanh" is not handled precisely [imprecise-call]
+simulink_functions.adb:1185:52: low: overflow check might fail [reason for check: value must fit in a 64-bits machine integer] [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
 simulink_functions.adb:1185:52: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:176 should mention LF in a precondition]
+simulink_functions.adb:1185:52: warning: call to "Arctanh" is not handled precisely [imprecise-call]
 simulink_functions.adb:1194:21: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at simulink_functions.ads:178 should mention Left and Right in a precondition]
 simulink_functions.adb:1202:07: info: initialization of "Result" proved
 simulink_functions.adb:1209:31: info: division check proved (colibri: 1 VC)
@@ -267,10 +305,12 @@ simulink_functions.adb:1407:07: info: initialization of "Res" proved
 simulink_functions.adb:1423:07: info: initialization of "Res" proved
 simulink_functions.adb:1439:07: info: initialization of "Res" proved
 simulink_functions.adb:1455:07: info: initialization of "Res" proved
-simulink_functions.adb:1473:19: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:205 should mention Left and Right in a precondition]
+simulink_functions.adb:1473:19: low: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
 simulink_functions.adb:1473:19: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:205 should mention Left and Right in a precondition]
-simulink_functions.adb:1484:19: medium: overflow check might fail [reason for check: value must fit in a 64-bits machine integer] [possible fix: subprogram at simulink_functions.ads:206 should mention Left and Right in a precondition]
+simulink_functions.adb:1473:19: warning: call to "**" is not handled precisely [imprecise-call]
+simulink_functions.adb:1484:19: low: overflow check might fail [reason for check: value must fit in a 64-bits machine integer] [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
 simulink_functions.adb:1484:19: medium: precondition might fail [possible fix: subprogram at simulink_functions.ads:206 should mention Left and Right in a precondition]
+simulink_functions.adb:1484:19: warning: call to "**" is not handled precisely [imprecise-call]
 simulink_functions.adb:1494:19: medium: overflow check might fail, cannot prove lower bound for Left ** Natural (Right) [reason for check: result of exponentiation must fit in a 8-bits machine integer] [possible fix: add precondition (Left ** Natural (Right) >= -128) to subprogram at simulink_functions.ads:207]
 simulink_functions.adb:1494:31: medium: range check might fail, cannot prove lower bound for Right [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (Right >= Integer_8(Natural'First)) to subprogram at simulink_functions.ads:207]
 simulink_functions.adb:1504:19: medium: overflow check might fail, cannot prove lower bound for Left ** Natural (Right) [reason for check: result of exponentiation must fit in a 16-bits machine integer] [possible fix: add precondition (Left ** Natural (Right) >= -32768) to subprogram at simulink_functions.ads:208]

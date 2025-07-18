@@ -19,8 +19,7 @@ procedure Test_Indefinite_Vectors with SPARK_Mode is
          pragma Assert (C.all = 3);
       end;
       declare
-         V_Acc : access Vector := V'Access;
-         E     : constant access Integer := Reference (V_Acc, 3);
+         E : constant access Integer := Reference (V, 3);
       begin
          pragma Assert (E.all = 3);
          E.all := 5;

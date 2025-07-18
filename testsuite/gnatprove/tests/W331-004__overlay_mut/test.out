@@ -4,17 +4,21 @@ firstbyte.adb:15:08: info: object is suitable for aliasing via address clause (T
 firstbyte.adb:15:64: info: object is suitable for aliasing via address clause (Trivial)
 firstbyte.adb:15:64: info: types of aliased objects have the same size (Trivial)
 firstbyte.adb:20:15: info: add a contract to analyze it separately from calling contexts
-firstbyte.adb:20:15: info: local subprogram "temp_function2" only analyzed in the context of calls
+firstbyte.adb:20:15: info: local subprogram "temp_function2" only analyzed in the context of calls [info-unrolling-inlining]
 firstbyte.adb:26:05: info: initialization of "Tmp" proved
 firstbyte.adb:29:03: info: precondition proved (Trivial: 1 VC)
 firstbyte.adb:31:03: info: analyzing call to "temp_function2" in context
+firstbyte.adb:31:03: warning: in inlined body at line 22
+firstbyte.adb:31:03: warning: references to the "Img" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 firstbyte_err.adb:13:17: info: initialization of "output" proved
 firstbyte_err.adb:15:08: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: input must be aliased for its alignment to be known] [possible fix: overlaid object should have an Alignment representation clause]
 firstbyte_err.adb:15:08: info: object is suitable for aliasing via address clause (Trivial)
 firstbyte_err.adb:15:64: info: object is suitable for aliasing via address clause (Trivial)
 firstbyte_err.adb:15:64: info: types of aliased objects have the same size (Trivial)
 firstbyte_err.adb:20:15: info: add a contract to analyze it separately from calling contexts
-firstbyte_err.adb:20:15: info: local subprogram "temp_function2" only analyzed in the context of calls
+firstbyte_err.adb:20:15: info: local subprogram "temp_function2" only analyzed in the context of calls [info-unrolling-inlining]
 firstbyte_err.adb:26:05: info: initialization of "Tmp" proved
 firstbyte_err.adb:29:03: info: precondition proved (Trivial: 1 VC)
 firstbyte_err.adb:31:03: info: analyzing call to "temp_function2" in context
+firstbyte_err.adb:31:03: warning: in inlined body at line 22
+firstbyte_err.adb:31:03: warning: references to the "Img" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]

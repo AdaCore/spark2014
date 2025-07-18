@@ -4,7 +4,7 @@ pi_euler.adb:4:08: info: initialization of "Erreur" proved
 pi_euler.adb:9:34: medium: implicit aspect Always_Terminates on "Pi_Euler" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 pi_euler.adb:11:33: info: loop invariant initialization proved (altergo: 1 VC)
 pi_euler.adb:11:33: info: loop invariant preservation proved (altergo: 1 VC)
-pi_euler.adb:12:25: info: assertion proved (CVC5: 1 VC)
+pi_euler.adb:12:25: info: assertion proved (altergo: 1 VC)
 pi_euler.adb:12:36: info: range check proved (Trivial)
 pi_euler.adb:13:23: info: division check proved (altergo: 1 VC)
 pi_euler.adb:13:23: info: float overflow check proved (Trivial)

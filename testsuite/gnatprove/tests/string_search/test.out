@@ -27,6 +27,7 @@ string_search.adb:36:13: info: loop invariant initialization proved (CVC5: 1 VC)
 string_search.adb:36:13: info: loop invariant preservation proved (CVC5: 1 VC)
 string_search.adb:44:37: info: range check proved (CVC5: 2 VC)
 string_search.adb:44:45: info: overflow check proved (CVC5: 2 VC)
+string_search.adb:47:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 string_search.adb:47:40: info: range check proved (CVC5: 4 VC)
 string_search.adb:47:48: info: overflow check proved (CVC5: 4 VC)
 string_search.adb:47:52: info: overflow check proved (CVC5: 4 VC)
@@ -49,7 +50,7 @@ string_search.adb:54:105: info: index check proved (CVC5: 4 VC)
 string_search.adb:60:07: info: initialization of "Bad_Shift" proved
 string_search.adb:61:07: info: initialization of "I" proved
 string_search.adb:63:17: info: add a contract to analyze it separately from calling contexts
-string_search.adb:63:17: info: local subprogram "Prove_QS" only analyzed in the context of calls
+string_search.adb:63:17: info: local subprogram "Prove_QS" only analyzed in the context of calls [info-unrolling-inlining]
 string_search.adb:64:60: info: index check proved (CVC5: 4 VC), in call inlined at string_search.adb:85
 string_search.adb:64:60: info: overflow check proved (CVC5: 4 VC), in call inlined at string_search.adb:85
 string_search.adb:64:68: info: range check proved (CVC5: 4 VC), in call inlined at string_search.adb:85

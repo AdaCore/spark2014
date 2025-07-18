@@ -38,9 +38,7 @@ with GNATCOLL.JSON;    use GNATCOLL.JSON;
 with GNATCOLL.Mmap;
 with Memcache_Client;
 
-procedure SPARK_Memcached_Wrapper
-  with No_Return
-is
+procedure SPARK_Memcached_Wrapper with No_Return is
 
    --  This is a wrapper program, which caches identical invocations of
    --  gnatwhy3 and provers by hashing the input to the tool (commandline and
@@ -80,7 +78,7 @@ is
    --    command line argument
 
    procedure Report_Error (Msg : String)
-     with No_Return;
+   with No_Return;
    --  @param Msg error message to be reported
    --  Quit the program and transmit a message in gnatwhy3 style
 
@@ -88,8 +86,7 @@ is
    -- Hash_Binary --
    -----------------
 
-   procedure Hash_Binary (C : in out GNAT.SHA1.Context; Execname : String)
-   is
+   procedure Hash_Binary (C : in out GNAT.SHA1.Context; Execname : String) is
 
       function Compute_Hash_Filename (Exec : String) return String;
       --  Compute the hashfile name from the executable name by locating the
@@ -109,9 +106,12 @@ is
          declare
             Ext : constant String := Ada.Directories.Extension (Fn.all);
          begin
-            return Result : constant String :=
-              (if Ext = "" then Fn.all & ".hash"
-               else Fn (Fn'First .. Fn'Last - Ext'Length) & ".hash") do
+            return
+               Result : constant String :=
+                 (if Ext = ""
+                  then Fn.all & ".hash"
+                  else Fn (Fn'First .. Fn'Last - Ext'Length) & ".hash")
+            do
                Free (Fn);
             end return;
          end;
@@ -137,9 +137,7 @@ is
          begin
             if Arg = "-j" then
                I := I + 2;
-            elsif Arg = "--debug"
-              or else Arg = "--force"
-              or else Arg = "-f"
+            elsif Arg = "--debug" or else Arg = "--force" or else Arg = "-f"
             then
                I := I + 1;
             elsif Arg = "--why3-conf" then
@@ -187,8 +185,7 @@ is
 
    function Init_Client return Cache_Client.Cache'Class is
       Info  : String renames Argument (2);
-      Colon : constant Natural :=
-        Ada.Strings.Fixed.Index (Info, ":");
+      Colon : constant Natural := Ada.Strings.Fixed.Index (Info, ":");
 
       Wrong_Port_Msg : constant String :=
         ("port value should be an integer between 1 and 65535");
@@ -196,8 +193,8 @@ is
    begin
       if Colon = 0 then
          Report_Error
-           ("the expected format of option --memcached-server " &
-              "is hostname:portnumber, but no colon was found");
+           ("the expected format of option --memcached-server "
+            & "is hostname:portnumber, but no colon was found");
       end if;
       declare
          First  : String renames Info (Info'First .. Colon - 1);
@@ -213,7 +210,8 @@ is
             begin
                Port := Port_Type'Value (Info (Colon + 1 .. Info'Last));
             exception
-               when Constraint_Error => Report_Error (Wrong_Port_Msg);
+               when Constraint_Error =>
+                  Report_Error (Wrong_Port_Msg);
             end;
 
             if Port = No_Port then
@@ -281,8 +279,8 @@ begin
    declare
       Cache : Cache_Client.Cache'Class := Init_Client;
 
-      Key : constant String := Compute_Key;
-      Msg : constant String := Cache.Get (Key);
+      Key    : constant String := Compute_Key;
+      Msg    : constant String := Cache.Get (Key);
       Status : aliased Integer := 0;
    begin
       if Msg'Length /= 0 then
@@ -298,11 +296,8 @@ begin
                Cmd : String renames Argument (3);
 
                Msg : constant String :=
-                 Get_Command_Output (Cmd,
-                                     Arguments,
-                                     "",
-                                     Status'Access,
-                                     Err_To_Out => True);
+                 Get_Command_Output
+                   (Cmd, Arguments, "", Status'Access, Err_To_Out => True);
             begin
 
                --  We don't want to cache crashes of gnatwhy3; also we know
@@ -321,8 +316,6 @@ begin
       GNAT.OS_Lib.OS_Exit (Status);
    end;
 exception
-   when Error : GNAT.Sockets.Socket_Error
-              | GNAT.Sockets.Host_Error
-   =>
+   when Error : GNAT.Sockets.Socket_Error | GNAT.Sockets.Host_Error =>
       Report_Error (Ada.Exceptions.Exception_Message (Error));
 end SPARK_Memcached_Wrapper;

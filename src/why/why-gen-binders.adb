@@ -97,6 +97,10 @@ package body Why.Gen.Binders is
 
    procedure Effects_Append_Binder (Eff : W_Effects_Id; Binder : Item_Type) is
    begin
+      if Binder.Valid.Present and then Item_Is_Mutable (Binder) then
+         Effects_Append (Eff, Binder.Valid.Id);
+      end if;
+
       case Binder.Kind is
          when Regular
             | Concurrent_Self
@@ -326,6 +330,7 @@ package body Why.Gen.Binders is
                                   Local    => True,
                                   Init     => <>,
                                   Is_Moved => <>,
+                                  Valid    => <>,
                                   Main     =>
                                     Concurrent_Self_Binder (Prot_Ty));
                      I := I + 1;
@@ -349,6 +354,7 @@ package body Why.Gen.Binders is
                   Local    => False,
                   Init     => <>,
                   Is_Moved => <>,
+                  Valid    => <>,
                   Main     => (Ada_Node => Empty,
                                B_Name   => To_Why_Id (V, Local => False),
                                B_Ent    => V,
@@ -361,6 +367,33 @@ package body Why.Gen.Binders is
 
       return Binders (1 .. I - 1);
    end Get_Binders_From_Variables;
+
+   -----------------------------
+   -- Get_Init_Id_From_Object --
+   -----------------------------
+
+   function Get_Init_Id_From_Object
+     (Obj         : Entity_Id;
+      Ref_Allowed : Boolean) return W_Expr_Id
+   is
+      C    : constant Ada_Ent_To_Why.Cursor :=
+        Ada_Ent_To_Why.Find (Symbol_Table, Obj);
+      Item : Item_Type;
+   begin
+      if Ada_Ent_To_Why.Has_Element (C) then
+         Item := Ada_Ent_To_Why.Element (C);
+         if Item.Init.Present then
+            if Ref_Allowed then
+               return New_Deref
+                 (Right => Item.Init.Id,
+                  Typ   => Get_Typ (Item.Init.Id));
+            else
+               return +Item.Init.Id;
+            end if;
+         end if;
+      end if;
+      return Why_Empty;
+   end Get_Init_Id_From_Object;
 
    ------------------------------------------
    -- Get_Localized_Binders_From_Variables --
@@ -382,6 +415,45 @@ package body Why.Gen.Binders is
                            Only_Variables => Only_Variables);
       end return;
    end Get_Localized_Binders_From_Variables;
+
+   ----------------------------
+   -- Get_Valid_Id_From_Item --
+   ----------------------------
+
+   function Get_Valid_Id_From_Item
+     (Item        : Item_Type;
+      Ref_Allowed : Boolean) return W_Term_Id
+   is
+   begin
+      if Item.Valid.Present then
+         if Item_Is_Mutable (Item) and then Ref_Allowed then
+            return New_Deref
+              (Right => Item.Valid.Id,
+               Typ   => Get_Typ (Item.Valid.Id));
+         else
+            return +Item.Valid.Id;
+         end if;
+      end if;
+      return True_Term;
+   end Get_Valid_Id_From_Item;
+
+   ------------------------------
+   -- Get_Valid_Id_From_Object --
+   ------------------------------
+
+   function Get_Valid_Id_From_Object
+     (Obj         : Entity_Id;
+      Ref_Allowed : Boolean) return W_Term_Id
+   is
+      C : constant Ada_Ent_To_Why.Cursor :=
+        Ada_Ent_To_Why.Find (Symbol_Table, Obj);
+   begin
+      if Ada_Ent_To_Why.Has_Element (C) then
+         return Get_Valid_Id_From_Item
+           (Ada_Ent_To_Why.Element (C), Ref_Allowed);
+      end if;
+      return True_Term;
+   end Get_Valid_Id_From_Object;
 
    ----------------------------
    -- Get_Why_Type_From_Item --
@@ -422,15 +494,19 @@ package body Why.Gen.Binders is
 
          when Pointer =>
 
+            --  Use the wrapper type if either we have an init field or if the
+            --  designated value is of a wrapper type when the designated type
+            --  is not itself annotated with Relaxed_Initialization.
+
             declare
                Des_Ty       : constant Entity_Id :=
                  Directly_Designated_Type (B.P_Typ);
                Relaxed_Init : constant Boolean :=
-                 (if Has_Init_Wrapper (B.P_Typ)
-                     and not Has_Relaxed_Init (Des_Ty)
-                  then Get_Module (Get_Name (Get_Typ (B.Value.B_Name)))
-                     = E_Module (Des_Ty, Init_Wrapper)
-                  else False);
+                 B.Init.Present
+                 or else
+                   (Has_Init_Wrapper (B.P_Typ)
+                    and then not Has_Relaxed_Init (Des_Ty)
+                    and then Get_Relaxed_Init (Get_Typ (B.Value.B_Name)));
             begin
                return
                  EW_Abstract (B.P_Typ, Relaxed_Init => Relaxed_Init);
@@ -447,9 +523,9 @@ package body Why.Gen.Binders is
    -----------------------
 
    function Item_Array_Length
-     (Arr         : Item_Array;
-      Keep_Const  : Handling := Local_Only;
-      Ignore_Init : Boolean := False) return Natural
+     (Arr                   : Item_Array;
+      Keep_Const            : Handling := Local_Only;
+      Ignore_Init_And_Valid : Boolean := False) return Natural
    is
       function Keep_Local (Is_Local : Boolean) return Boolean is
         (case Keep_Const is
@@ -463,8 +539,16 @@ package body Why.Gen.Binders is
          declare
             B : constant Item_Type := Arr (Index);
          begin
-            if B.Init.Present and then not Ignore_Init then
-               Count := Count + 1;
+            if not Ignore_Init_And_Valid then
+               if B.Init.Present then
+                  Count := Count + 1;
+               end if;
+
+               if B.Valid.Present
+                 and then (Item_Is_Mutable (B) or else Keep_Local (B.Local))
+               then
+                  Count := Count + 1;
+               end if;
             end if;
 
             case B.Kind is
@@ -597,6 +681,14 @@ package body Why.Gen.Binders is
                B.Init.Id := Local_Name (B.Init.Id);
             end if;
 
+            --  The Valid field is only mutable if Mutable is True
+
+            if B.Valid.Present
+              and then (Item_Is_Mutable (B) or else not Only_Variables)
+            then
+               B.Valid.Id := Local_Name (B.Valid.Id);
+            end if;
+
             case B.Kind is
             when Concurrent_Self =>
                --  Concurrent self is already local
@@ -700,6 +792,9 @@ package body Why.Gen.Binders is
         and then Ekind (E) in E_Variable | E_Out_Parameter;
       --  We only need an initialization flag for variables and out parameters
       --  of elementary types.
+      Needs_Valid_Flag : constant Boolean :=
+        Is_Potentially_Invalid (E);
+      --  We only need a validity flag for potentially invalid objects
 
       function New_Init_Id (Name : W_Identifier_Id) return Opt_Id is
         (if Needs_Init_Flag
@@ -727,6 +822,11 @@ package body Why.Gen.Binders is
       --  Create an identifier for the move tree of E if it can be moved. No
       --  need for move trees in function declarations.
 
+      function New_Valid_Id (Name : W_Identifier_Id) return Opt_Id is
+        (if Needs_Valid_Flag
+         then (Present => True, Id => Valid_Append (Name))
+         else (Present => False));
+
    begin
       --  For procedures, use a regular binder
 
@@ -737,7 +837,10 @@ package body Why.Gen.Binders is
       if Ekind (E) in E_Procedure | E_Entry | E_Function then
          declare
             Typ            : constant W_Type_Id :=
-              (if Ekind (E) = E_Function then Type_Of_Node (E) else Why_Empty);
+              (if Ekind (E) /= E_Function then Why_Empty
+               elsif Is_Potentially_Invalid (E)
+               then Validity_Wrapper_Type (E)
+               else Type_Of_Node (E));
             For_Prog       : W_Identifier_Id;
             For_Logic      : Opt_Id;
             Refine_Prog    : Opt_Id;
@@ -780,6 +883,7 @@ package body Why.Gen.Binders is
                     False,
                     Init           => <>,
                     Is_Moved       => <>,
+                    Valid          => <>,
                     For_Logic      => For_Logic,
                     For_Prog       => For_Prog,
                     Refine_Prog    => Refine_Prog,
@@ -840,6 +944,7 @@ package body Why.Gen.Binders is
                     Local    => Local,
                     Init     => New_Init_Id (Name),
                     Is_Moved => New_Is_Moved_Id (Name),
+                    Valid    => New_Valid_Id (Name),
                     Content  => Binder,
                     Dim      => Dim,
                     Bounds   => Bounds);
@@ -866,6 +971,7 @@ package body Why.Gen.Binders is
                Local    => Local,
                Init     => New_Init_Id (Name),
                Is_Moved => New_Is_Moved_Id (Name),
+               Valid    => New_Valid_Id (Name),
                Typ      => Ty,
                others   => <>);
             Unconstr : constant Boolean := Has_Mutable_Discriminants (Ty);
@@ -956,6 +1062,7 @@ package body Why.Gen.Binders is
                  Local    => Local,
                  Init     => New_Init_Id (Name),
                  Is_Moved => New_Is_Moved_Id (Name),
+                 Valid    => New_Valid_Id (Name),
                  P_Typ    => Ty,
                  Mutable  => not Is_Constant_Object (E),
                  Value    =>
@@ -1005,8 +1112,11 @@ package body Why.Gen.Binders is
                            Mutable  => Is_Mutable_In_Why (E),
                            Labels   => <>);
          begin
-            return (Regular, Local,
-                    New_Init_Id (Name), New_Is_Moved_Id (Name),
+            return (Regular,
+                    Local,
+                    New_Init_Id (Name),
+                    New_Is_Moved_Id (Name),
+                    New_Valid_Id (Name),
                     Binder);
          end;
       end if;
@@ -1305,90 +1415,33 @@ package body Why.Gen.Binders is
       Pred     : W_Pred_Id)
       return W_Pred_Id
    is
-      Cnt : Natural;
-      Typ : W_Type_Id;
    begin
       if Binders'Length = 0 then
          return Pred;
 
-      elsif Binders'Length = 1 then
+      else
          return New_Universal_Quantif
            (Ada_Node  => Ada_Node,
-            Variables => (1 => Binders (Binders'First).B_Name),
-            Var_Type  => Get_Type (+Binders (Binders'First).B_Name),
+            Binders   => New_Binders (EW_Pred, Binders),
             Labels    => Symbol_Sets.Empty_Set,
             Triggers  => Triggers,
             Pred      => Pred);
-
-      else
-         --  Count all the binders that have the same type as the first one. We
-         --  only do that when we can compare equal types using the
-         --  Eq_Base_Type function, which excludes currently types which are
-         --  not of kind W_Type.
-
-         Typ := Get_Type (+(Binders (Binders'First).B_Name));
-
-         Cnt := 0;
-         for B of Binders loop
-            if Eq_In_Why (Get_Type (+B.B_Name), Typ) then
-               Cnt := Cnt + 1;
-            end if;
-         end loop;
-
-            pragma Assert (Cnt >= 1);
-
-         declare
-            Vars          : W_Identifier_Array (1 .. Cnt);
-            Other_Binders : Binder_Array (1 .. Binders'Length - Cnt);
-            Vars_Cnt      : Natural;
-            Others_Cnt    : Natural;
-         begin
-            --  Separate binders that have the same type as the first one
-            --  from the remaining binders.
-
-            Vars_Cnt   := 0;
-            Others_Cnt := 0;
-            Typ        := Get_Type (+Binders (Binders'First).B_Name);
-            for B of Binders loop
-               if Eq_In_Why (Get_Type (+B.B_Name), Typ) then
-                  Vars_Cnt := Vars_Cnt + 1;
-                  Vars (Vars_Cnt) := B.B_Name;
-               else
-                  Others_Cnt := Others_Cnt + 1;
-                  Other_Binders (Others_Cnt) := B;
-               end if;
-            end loop;
-
-            --  Quantify at the same time over all binders that have the
-            --  same type as the first one. This avoids the generation of
-            --  very deep Why3 expressions, whose traversal may lead to
-            --  stack overflow. However, avoid the recursive call in the
-            --  case where [Other_Binders] is empty. This makes sure that we
-            --  put the trigger on the axiom.
-
-            if Other_Binders'Length = 0 then
-               return New_Universal_Quantif
-                 (Ada_Node  => Ada_Node,
-                  Variables => Vars,
-                  Var_Type  => Typ,
-                  Labels    => Symbol_Sets.Empty_Set,
-                  Triggers  => Triggers,
-                  Pred      => Pred);
-            else
-               return New_Universal_Quantif
-                 (Ada_Node  => Ada_Node,
-                  Variables => Vars,
-                  Var_Type  => Typ,
-                  Labels    => Symbol_Sets.Empty_Set,
-                  Pred      =>
-                    New_Universal_Quantif (Ada_Node => Empty,
-                                           Binders  => Other_Binders,
-                                           Triggers => Triggers,
-                                           Pred     => Pred));
-            end if;
-         end;
       end if;
    end New_Universal_Quantif;
+
+   -------------------------
+   -- Object_Has_Valid_Id --
+   -------------------------
+
+   function Object_Has_Valid_Id (Obj : Entity_Id) return Boolean is
+      C : constant Ada_Ent_To_Why.Cursor :=
+        Ada_Ent_To_Why.Find (Symbol_Table, Obj);
+   begin
+      if Ada_Ent_To_Why.Has_Element (C) then
+         return Ada_Ent_To_Why.Element (C).Valid.Present;
+      end if;
+      return False;
+   end Object_Has_Valid_Id;
 
    ----------------------------------
    -- Push_Binders_To_Symbol_Table --
@@ -1486,6 +1539,14 @@ package body Why.Gen.Binders is
                Result (Count) :=
                  (B_Name  => Cur.Init.Id,
                   Mutable => True,
+                  others  => <>);
+               Count := Count + 1;
+            end if;
+
+            if Cur.Valid.Present then
+               Result (Count) :=
+                 (B_Name  => Cur.Valid.Id,
+                  Mutable => Item_Is_Mutable (Cur),
                   others  => <>);
                Count := Count + 1;
             end if;

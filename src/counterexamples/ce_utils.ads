@@ -24,6 +24,8 @@
 ------------------------------------------------------------------------------
 
 with CE_Values;            use CE_Values;
+with Checked_Types;        use Checked_Types;
+with GNATCOLL.JSON;        use GNATCOLL.JSON;
 with SPARK_Atree;          use SPARK_Atree;
 with SPARK_Atree.Entities; use SPARK_Atree.Entities;
 with SPARK_Util.Types;     use SPARK_Util.Types;
@@ -58,6 +60,10 @@ package CE_Utils is
    function Convert_Node (N : Integer) return Node_Id;
    --  Convert an integer to Node_Id. Return empty on exception.
 
+   function Get_Id_From_Name (E : Callable_Kind_Id; Name : String)
+                              return Entity_Id;
+   --  Return the entity id of the argument of E named Name.
+
    procedure Find_First_Static_Range
      (N   : Node_Id;
       Fst : out Uint;
@@ -87,7 +93,13 @@ package CE_Utils is
    function Prefix_Elements
      (Elems : S_String_List.List;
       Pref  : String) return S_String_List.List;
-   --  Return a copy of Elems where every string has been prefixed with Pref
+   --  Return a copy of Elems where every string has been prefixed with Pref.
+
+   function To_Value_Access (Entity    : Entity_Id;
+                             JSON_Data : GNATCOLL.JSON.JSON_Value)
+                             return CE_Values.Value_Access;
+   --  Create a Value_Access to a new Value_Type of the type indicated by
+   --  Entity and corresponding to the content of JSON_Data.
 
    function UI_From_String (Val : String) return Uint;
    --  Naive computation of a Uint form a string which is the representation of
@@ -104,6 +116,6 @@ package CE_Utils is
    end Remove_Vars;
 
    function Ultimate_Cursor_Type (Typ : Entity_Id) return Entity_Id;
-   --  Type on which the iteration is done in Why
+   --  Type on which the iteration is done in Why.
 
 end CE_Utils;

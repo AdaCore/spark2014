@@ -30,7 +30,7 @@ foo.adb:80:26: info: discriminant check proved (CVC5: 1 VC)
 foo.adb:84:26: info: initialization of "A" proved
 foo.adb:85:09: info: flow dependencies proved
 foo.adb:91:14: info: add a contract to analyze it separately from calling contexts
-foo.adb:91:14: info: local subprogram "Test_09_Ok" only analyzed in the context of calls
+foo.adb:91:14: info: local subprogram "Test_09_Ok" only analyzed in the context of calls [info-unrolling-inlining]
 foo.adb:91:26: info: initialization of "A" proved
 foo.adb:94:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in call inlined at foo.adb:102
 foo.adb:95:11: medium: array index check might fail, in call inlined at foo.adb:102 [reason for check: value must be a valid index into the array]
@@ -38,7 +38,7 @@ foo.adb:98:26: info: initialization of "A" proved
 foo.adb:99:09: info: flow dependencies proved
 foo.adb:102:07: info: analyzing call to "Test_09_Ok" in context
 foo.adb:105:14: info: add a contract to analyze it separately from calling contexts
-foo.adb:105:14: info: local subprogram "Test_11_Ok" only analyzed in the context of calls
+foo.adb:105:14: info: local subprogram "Test_11_Ok" only analyzed in the context of calls [info-unrolling-inlining]
 foo.adb:105:26: info: initialization of "A" proved
 foo.adb:109:25: info: discriminant check proved (CVC5: 1 VC), in call inlined at foo.adb:119
 foo.adb:111:26: info: discriminant check proved (CVC5: 1 VC), in call inlined at foo.adb:119
@@ -53,7 +53,8 @@ foo.adb:135:26: info: range check proved (CVC5: 2 VC)
 foo.adb:136:14: medium: range check might fail, cannot prove upper bound for Data'Length
 foo.adb:137:29: info: range check proved (CVC5: 2 VC)
 foo.adb:140:11: info: range check proved (CVC5: 2 VC)
-foo.adb:140:47: info: cannot unroll loop (too many loop iterations)
+foo.adb:140:47: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+foo.adb:141:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 foo.adb:141:26: medium: overflow check might fail, cannot prove upper bound for Data'First + I [reason for check: result of addition must fit in a 32-bits machine integer]
 foo.adb:141:30: info: index check proved (CVC5: 2 VC)
 foo.adb:141:30: info: overflow check proved (CVC5: 2 VC)

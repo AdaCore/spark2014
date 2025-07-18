@@ -1,35 +1,70 @@
-predicates.ads:17:31: info: division check proved
-predicates.ads:20:32: info: division check proved
-predicates.ads:23:58: info: division check proved
-predicates.ads:23:71: info: division check proved
-predicates.ads:30:13: info: implicit aspect Always_Terminates on "Get_GCD_Pos" has been proved, subprogram will terminate
-predicates.ads:32:17: info: range check proved
-predicates.ads:34:10: info: precondition proved
-predicates.ads:34:10: info: subprogram variant proved
-predicates.ads:34:28: info: overflow check proved
-predicates.ads:36:10: info: precondition proved
-predicates.ads:36:10: info: subprogram variant proved
-predicates.ads:36:28: info: overflow check proved
-predicates.ads:42:13: info: implicit aspect Always_Terminates on "Get_GCD" has been proved, subprogram will terminate
-predicates.ads:44:10: info: precondition proved
+ info: division check proved
+--> predicates.ads:17:31
 
-predicates.ads:44:23: high: overflow check might fail, cannot prove upper bound for abs (X)
-   44 |         Get_GCD_Pos (abs (X), abs (Y))
-      |                      ^~~~~~~
-  e.g. when X = Integer'First
-  reason for check: result of absolute value must fit in a 32-bits machine integer
-  possible fix: add precondition (abs (X) <= Integer'Last) to subprogram at line 42
-   42 |   function Get_GCD (X, Y : Integer) return Natural is
-      |            ^ here
+ info: division check proved
+--> predicates.ads:20:32
 
-predicates.ads:44:32: high: overflow check might fail, cannot prove upper bound for abs (Y)
-   44 |         Get_GCD_Pos (abs (X), abs (Y))
-      |                               ^~~~~~~
-  e.g. when Y = Integer'First
-  reason for check: result of absolute value must fit in a 32-bits machine integer
-  possible fix: add precondition (abs (Y) <= Integer'Last) to subprogram at line 42
-   42 |   function Get_GCD (X, Y : Integer) return Natural is
-      |            ^ here
-predicates.ads:45:13: info: precondition proved
-predicates.ads:57:07: info: range check proved
-predicates.ads:65:89: info: index check proved
+ info: division check proved
+--> predicates.ads:23:58
+
+ info: division check proved
+--> predicates.ads:23:71
+
+ info: implicit aspect Always_Terminates on "Get_GCD_Pos" has been proved, subprogram will terminate
+--> predicates.ads:30:13
+
+ info: range check proved
+--> predicates.ads:32:17
+
+ info: precondition proved
+--> predicates.ads:34:10
+
+ info: subprogram variant proved
+--> predicates.ads:34:10
+
+ info: overflow check proved
+--> predicates.ads:34:28
+
+ info: precondition proved
+--> predicates.ads:36:10
+
+ info: subprogram variant proved
+--> predicates.ads:36:10
+
+ info: overflow check proved
+--> predicates.ads:36:28
+
+ info: implicit aspect Always_Terminates on "Get_GCD" has been proved, subprogram will terminate
+--> predicates.ads:42:13
+
+ info: precondition proved
+--> predicates.ads:44:10
+
+ high: overflow check might fail, cannot prove upper bound for abs (X)
+--> predicates.ads:44:23
+   44 |             Get_GCD_Pos (abs (X), abs (Y))
+      |                          ^~~~~~~
+      + e.g. when X = Integer'First
+      + reason for check: result of absolute value must fit in a 32-bits machine integer
+      + possible fix: add precondition (abs (X) <= Integer'Last) to subprogram at line 42
+   42 |       function Get_GCD (X, Y : Integer) return Natural is
+      |                ^
+
+ high: overflow check might fail, cannot prove upper bound for abs (Y)
+--> predicates.ads:44:32
+   44 |             Get_GCD_Pos (abs (X), abs (Y))
+      |                                   ^~~~~~~
+      + e.g. when Y = Integer'First
+      + reason for check: result of absolute value must fit in a 32-bits machine integer
+      + possible fix: add precondition (abs (Y) <= Integer'Last) to subprogram at line 42
+   42 |       function Get_GCD (X, Y : Integer) return Natural is
+      |                ^
+
+ info: precondition proved
+--> predicates.ads:45:13
+
+ info: range check proved
+--> predicates.ads:57:07
+
+ info: index check proved
+--> predicates.ads:65:89

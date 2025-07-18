@@ -5,8 +5,8 @@ exp_le_last.adb:10:23: info: assertion proved (CVC5: 1 VC), in instantiation at 
 exp_le_last.adb:10:27: info: overflow check proved (CVC5: 2 VC), in instantiation at useit.ads:5
 exp_le_last.adb:11:22: info: assertion proved (CVC5: 1 VC), in instantiation at useit.ads:5
 exp_le_last.adb:11:26: info: overflow check proved (CVC5: 2 VC), in instantiation at useit.ads:5
-exp_le_last.adb:12:22: info: assertion proved (altergo: 1 VC), in instantiation at useit.ads:5
-exp_le_last.adb:12:24: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at useit.ads:5
+exp_le_last.adb:12:22: info: assertion proved (colibri: 1 VC), in instantiation at useit.ads:5
+exp_le_last.adb:12:24: info: overflow check proved (CVC5: 1 VC; colibri: 1 VC), in instantiation at useit.ads:5
 exp_le_last.adb:12:32: info: overflow check proved (CVC5: 2 VC), in instantiation at useit.ads:5
 exp_le_last.adb:12:32: info: range check proved (CVC5: 2 VC), in instantiation at useit.ads:5
 useit.ads:6:04: warning: subprogram "Bar" has no effect

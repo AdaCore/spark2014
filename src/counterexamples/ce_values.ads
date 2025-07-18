@@ -31,6 +31,7 @@ use Ada.Numerics.Big_Numbers.Big_Integers;
 with Ada.Numerics.Big_Numbers.Big_Reals;
 use Ada.Numerics.Big_Numbers.Big_Reals;
 with Common_Containers;        use Common_Containers;
+with SPARK_Atree.Entities;     use SPARK_Atree.Entities;
 with Types;                    use Types;
 
 package CE_Values is
@@ -47,6 +48,20 @@ package CE_Values is
             Ext_Content : Long_Long_Float;
       end case;
    end record;
+
+   function Mult_Fixed_Point
+     (Fixed_L, Fixed_R            : Big_Integer;
+      Small_L, Small_R, Small_Res : Big_Real)
+      return Big_Integer;
+   --  Multiply two fixed-point numbers L and R and scale the result so that
+   --  its small is equal to Small_Res
+
+   function Div_Fixed_Point
+     (Fixed_L, Fixed_R             : Big_Integer;
+      Small_L, Small_R, Small_Res : Big_Real)
+      return Big_Integer;
+   --  Divide two fixed-point numbers L and R and scale the result so that
+   --  its small is equal to Small_Res
 
    function Is_Zero (R : Float_Value) return Boolean is
      (case R.K is
@@ -259,7 +274,8 @@ package CE_Values is
    end record;
 
    type Value_Type (K : Value_Kind := Scalar_K) is record
-      AST_Ty : Entity_Id;
+      AST_Ty     : Entity_Id;
+      Valid_Attr : Opt_Boolean;
 
       case K is
          when Scalar_K   =>
@@ -327,6 +343,45 @@ package CE_Values is
    with
        Pre => V.K = Array_K;
    --  Return the length of the array if its first and last indices exist
+
+   function Valid_Value
+     (V : Value_Type) return Boolean
+     with Ghost;
+   --  A function to check in contracts and ghost code that the value V is
+   --  well-formed. In particular, the following check has been currenty
+   --  defined:
+   --
+   --  * If V is a record, then
+   --    * Each key C_Key in the Record_Fields map must be compatible with
+   --      V.AST_Ty in the sense that:
+   --      * A component C_Ty is found in V.AST_Ty by searching for C_Key via
+   --        Search_Component_In_Type and C_Key = C_Ty (i.e., the former isn't
+   --    * The following exception is made for tagged types: Fields in the
+   --      value are allowed to exist even when they do not exist in V.AST_Ty.
+   --      This relaxation allows for handling values that are upcast to a type
+   --      that might not contain such a field. (Note that erasing hidden
+   --      fields from the value would prevent the proper treatment of a
+   --      subsequent downcast.)
+   --
+   --  Note: To check values in the user's code the function Check_Value should
+   --  be used instead.
+
+   function Search_Component_In_Value
+     (Rec : Value_Type; Comp : Entity_Id) return Entity_Id
+   with
+     Pre =>
+       Rec.K = Record_K
+       and Ekind (Comp) in E_Discriminant | E_Component | Type_Kind;
+   --  Search among the component keys of the record value Rec for a key that
+   --  corresponds to Comp in the type of the record value (its AST_Ty). If the
+   --  corresponding key (component) is found it is returned. Otherwise, Empty
+   --  is returned.
+
+   procedure Update_Type (V : in out Value_Type; T_New : Entity_Id)
+   with Pre => Ekind (T_New) in Type_Kind, Post => Valid_Value (V);
+   --  Update the V.AST_Ty to New_Type. Adjust the structure of V if needed. It
+   --  is assumed that the existing value is compatible with both types.
+   --  However, the types could e.g. be different subtypes.
 
    function To_String (V : Float_Value) return String;
    --  Convert a float value to a string

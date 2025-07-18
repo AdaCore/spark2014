@@ -4,7 +4,7 @@ store.ads:8:06: info: data dependencies proved
 store.ads:9:06: info: flow dependencies proved
 store.ads:13:06: info: data dependencies proved
 store.ads:14:06: info: flow dependencies proved
-trace_test.adb:11:07: info: cannot unroll loop (too many loop iterations)
+trace_test.adb:11:07: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 trace_test.ads:12:06: info: data dependencies proved
 trace_test.ads:12:33: info: initialization of "Store.State" proved
 trace_test.ads:12:41: info: initialization of "Trace" proved

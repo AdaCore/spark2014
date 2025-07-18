@@ -1,4 +1,10 @@
-logging_no_dispatch.ads:10:13: info: implicit aspect Always_Terminates on "Log_Size" has been proved, subprogram will terminate
-range_logging_no_dispatch.ads:8:13: info: implicit aspect Always_Terminates on "Log_Size" has been proved, subprogram will terminate
-range_logging_no_dispatch.ads:10:13: info: implicit aspect Always_Terminates on "Log_Min" has been proved, subprogram will terminate
-range_logging_no_dispatch.ads:12:13: info: implicit aspect Always_Terminates on "Log_Max" has been proved, subprogram will terminate
+ info: implicit aspect Always_Terminates on "Log_Size" has been proved, subprogram will terminate
+--> range_logging_no_dispatch.ads:8:13
+
+ info: implicit aspect Always_Terminates on "Log_Min" has been proved, subprogram will terminate
+--> range_logging_no_dispatch.ads:10:13
+
+ info: implicit aspect Always_Terminates on "Log_Max" has been proved, subprogram will terminate
+--> range_logging_no_dispatch.ads:12:13
+ info: implicit aspect Always_Terminates on "Log_Size" has been proved, subprogram will terminate
+--> logging_no_dispatch.ads:10:13

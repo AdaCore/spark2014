@@ -66,15 +66,21 @@ text_io_warnings.adb:65:04: info: precondition proved (CVC5: 2 VC)
 text_io_warnings.adb:65:04: medium: unexpected exception might be raised
 text_io_warnings.adb:66:04: medium: unexpected exception might be raised
 text_io_warnings.adb:68:04: info: precondition proved (CVC5: 2 VC)
+text_io_warnings.adb:68:29: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 text_io_warnings.adb:68:37: info: precondition proved (CVC5: 2 VC)
+text_io_warnings.adb:69:21: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 text_io_warnings.adb:71:04: info: precondition proved (CVC5: 2 VC)
 text_io_warnings.adb:74:04: info: precondition proved (CVC5: 2 VC)
 text_io_warnings.adb:74:04: medium: unexpected exception might be raised
 text_io_warnings.adb:75:04: medium: unexpected exception might be raised
 text_io_warnings.adb:77:04: info: precondition proved (CVC5: 2 VC)
+text_io_warnings.adb:77:29: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 text_io_warnings.adb:77:37: info: precondition proved (CVC5: 2 VC)
+text_io_warnings.adb:78:21: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 text_io_warnings.adb:80:04: info: precondition proved (CVC5: 2 VC)
+text_io_warnings.adb:80:29: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 text_io_warnings.adb:80:37: info: precondition proved (CVC5: 2 VC)
+text_io_warnings.adb:81:21: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 text_io_warnings.adb:83:04: medium: precondition might fail, cannot prove (Line_Length (File) = 0 or else To <= Line_Length (File))
 text_io_warnings.adb:83:04: medium: unexpected exception might be raised
 text_io_warnings.adb:84:04: medium: precondition might fail [possible fix: call at line 83 should mention Ada.Text_Io.Current_Err and Ada.Text_Io.Current_In and Ada.Text_Io.Current_Out and Ada.Text_Io.File_System and Ada.Text_Io.Standard_Err and Ada.Text_Io.Standard_In and Ada.Text_Io.Standard_Out in a postcondition]
@@ -106,7 +112,7 @@ text_io_warnings.adb:125:04: info: precondition proved (CVC5: 2 VC)
 text_io_warnings.adb:125:04: medium: unexpected exception might be raised
 text_io_warnings.adb:126:04: info: precondition proved (CVC5: 2 VC)
 text_io_warnings.adb:127:04: medium: unexpected exception might be raised
-text_io_warnings.adb:130:04: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+text_io_warnings.adb:130:04: info: precondition proved (CVC5: 2 VC)
 text_io_warnings.adb:130:04: medium: unexpected exception might be raised
 text_io_warnings.adb:130:22: medium: in value of subprogram parameter after the call at text_io_warnings.adb:130
 text_io_warnings.adb:130:22: medium: initialization check might fail

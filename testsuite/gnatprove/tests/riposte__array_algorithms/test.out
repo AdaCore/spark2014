@@ -22,7 +22,6 @@ array_algorithms.ads:32:37: info: index check proved (CVC5: 2 VC)
 array_algorithms.ads:32:53: info: index check proved (CVC5: 2 VC)
 array_algorithms.ads:33:43: info: range check proved (CVC5: 2 VC)
 array_algorithms.ads:34:59: high: overflow check might fail, cannot prove lower bound for Location - 1 (e.g. when Location = Index_Type'First) [reason for check: result of subtraction must fit in a 32-bits machine integer]
-array_algorithms.ads:34:59: medium: overflow check might fail, cannot prove lower bound for Location - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer]
 array_algorithms.ads:34:69: info: index check proved (CVC5: 2 VC)
 array_algorithms.ads:34:77: info: index check proved (CVC5: 2 VC)
 array_algorithms.ads:35:28: info: range check proved (CVC5: 2 VC)
@@ -41,4 +40,4 @@ array_algorithms.ads:61:22: info: postcondition proved (CVC5: 6 VC)
 array_algorithms.ads:62:46: info: index check proved (CVC5: 2 VC)
 array_algorithms.ads:63:43: info: precondition proved (CVC5: 2 VC)
 array_algorithms.ads:64:47: info: precondition proved (CVC5: 2 VC)
-array_algorithms.ads:65:32: high: precondition might fail (e.g. when A'First = 0 and A'Last = -1 and Val = 0)
+array_algorithms.ads:65:32: high: precondition might fail (e.g. when A'First = 1 and A'Last = 0 and Val = 0)

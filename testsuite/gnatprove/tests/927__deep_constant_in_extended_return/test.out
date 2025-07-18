@@ -1,0 +1,9 @@
+test.adb:11:04: info: initialization of "V" proved
+test.adb:16:13: error: object was declared as not writable at line 22
+test.adb:16:13: error: return from "F" with moved value for "G"
+test.adb:29:07: info: initialization of "I" proved
+test.adb:29:07: info: initialization of "I" proved, in call inlined at test.adb:38
+test.adb:31:07: warning: "W" is set by "F" but not used after the call
+test.adb:33:15: warning: unused assignment
+test.adb:38:04: info: analyzing call to "Bad_Use_F" in context
+gnatprove: error during flow analysis and proof

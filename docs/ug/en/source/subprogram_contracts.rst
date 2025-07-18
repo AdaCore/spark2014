@@ -20,6 +20,8 @@ is made up of various optional parts:
 * The `exceptional contract` introduced by aspect ``Exceptional_Cases``
   specifies the exceptions that might be propagated by a procedure, along with
   exceptional postconditions.
+* The `program exit contract` introduced by aspect ``Program_Exit`` specifies
+  in which cases a subprogram might terminate the program abruptly.
 * The `exit cases` introduced by aspect ``Exit_Cases`` is a way to specify how
   a subprogram is allowed to exit by partioning the input domain. It can replace
   or complement a postcondition or an exceptional contract.
@@ -886,6 +888,105 @@ thanks to the precondition of ``Check_OK`` which states that parameter
    by ``raise_expressions`` cannot be handled or propagated. |GNATprove|
    makes sure that they never occur.
 
+.. index:: Program_Exit
+
+Contract for Abrupt Program Termination
+---------------------------------------
+
+*Specific to SPARK*
+
+A subprogram might sometimes cause the whole program to terminate abruptly. In
+general, this might happen either by mistake, because of a runtime error or an
+unexpected exception, or on purpose, for example because of an explicit call to
+``GNAT.OS_Lib.OS_Exit``. Unintended cases are ruled out in |SPARK|, as runtime
+errors (except for excessive memory usage) and unexpected exceptions are
+detected by |GNATprove|. Intended cases are allowed, but a subprogram with side
+effects that is supposed to potentially exit the whole program shall be
+annotated with the ``Program_Exit`` aspect. The boolean expression given by
+this aspect, if any, shall be true when the program is terminated.
+It can be used to reason about intended program termination. As an example,
+consider the following package:
+
+.. literalinclude:: /examples/ug__abrupt_program_exit/abrupt_program_exit.ads
+   :language: ada
+   :linenos:
+
+The ``Do_Exit`` procedure prints the error message ``Msg`` on standard error and
+terminates the program with the error code ``Status``. The
+``Error_Message_Type`` type is a tagged type that can be extanded by users of
+the library to encode their own error message. It has a ``To_String`` primitive
+used for printing the error message. The ghost functions ``Error_Status`` and
+``Error_Message`` allow callers of ``Do_Exit`` to specify and
+verify properties about potential abrupt terminations. The boolean expression
+of the ``Program_Exit`` aspect on ``Do_Exit`` links the results of
+these ghost functions to the ``Status`` and ``Msg`` parameters of ``Do_Exit``.
+Note that, even if it might terminate the program abruptly, ``Do_Exit`` can be
+annotated with ``Always_Terminates``. Exiting the program abruptly is considered
+as a valid termination. The ``No_Return`` aspect states that ``Do_Exit``
+never returns normally - it is compatible with the ``Always_Terminates``,
+``Do_Exit`` always terminates abnormally.
+
+These contracts allow verifying other subprograms that use ``Do_Exit`` to
+terminate the program abruptly. As an example, consider the ``Get_Digit``
+procedure that reads a digit on standard input and terminates the program if the
+input is ill-formed and the function which side effects ``Add`` that adds two
+digits and terminates the program if the result exceeds 10:
+
+.. literalinclude:: /examples/ug__abrupt_program_exit/use_abrupt_program_exit.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__abrupt_program_exit/use_abrupt_program_exit.adb
+   :language: ada
+   :linenos:
+
+The procedures ``Play`` and ``Auto_Play`` call the ``Get_Digit`` and ``Add``
+procedures. They propose a game where the user chooses two
+digits which are then added by the program. The program exit condition of
+``Play`` uses ``Error_Status`` and ``Error_Message`` to reason about the
+different cases in which the program might abruptly terminate. The
+procedure ``Auto_Play`` simulates a valid game, so it cannot cause an abrupt
+exit of the program.
+
+When a subprogram that might terminate the program is called,
+|GNATprove| verifies the program exit condition of the caller.
+If the caller has no ``Program_Exit`` aspect, it
+means that it is not allowed to terminate the program, and |GNATprove| verifies
+that either the call itself cannot occur - the branch is dead - or the called
+subprogram cannot exit the program - its ``Program_Exit`` aspect does not allow
+it.
+In our example, the program exit condition of ``Do_Exit`` is enough to prove
+the program exit conditions of ``Get_Digit``, ``Add``, and then ``Play``
+afterwards. As the program exit condition of ``Add`` states that
+the program can only be exited if ``X + Y`` is at least 10, |GNATprove| can
+check that it can safely be called inside ``Auto_Play``:
+
+.. literalinclude:: /examples/ug__abrupt_program_exit/test.out
+   :language: none
+
+As it should hold when the program terminates, the program exit condition is a
+postcondition. It can reference inputs of the subprogram, both global objects
+and parameters, potentially using the ``Old`` attribute if they can be modified
+by the subprogram. It can also reference global outputs in the post state (after
+the call), like ``Error_State`` here, but not parameters. Unlike for normal
+return and exception propagation, it is not necessary to leave outputs in a
+clean state when exiting the whole program, as their values cannot be used
+afterwards. In particular, |GNATprove| does not enforce initialization,
+reclamation, nor alias freedom on such outputs, unless they are mentioned in
+the program exit condition (in which case they need to be readable there).
+For example, when exiting from ``Get_Digit``, |GNATprove| only enforces the
+initialization of ``Error_State``, but not of ``X``.
+
+.. note::
+
+   Currently, there is no way to intentionally terminate the program abruptly in
+   SPARK. The body of leaf subprograms doing so will typically be either in
+   full Ada, like ``Program_Exit``, or in another language like C:
+
+   .. literalinclude:: /examples/ug__abrupt_program_exit/abrupt_program_exit.adb
+      :language: ada
+      :linenos:
+
 .. index:: Exit_Cases
 
 Exit Cases
@@ -893,15 +994,17 @@ Exit Cases
 
 *Specific to SPARK*
 
-There are several ways for a subprogram to terminate: it can return normally
-or propagate an exception. If a subprogram does not always terminate normally,
-then it is possible to annotate it with an ``Exit_Cases`` aspect. This aspect
-allows partitioning the input state into cases, specifying for each case what
-the expected termination kind is. It can be either:
+There are several ways for a subprogram to terminate: it can return normally,
+propagate an exception, or exit the program abruptly. If a subprogram does
+not always terminate normally, then it can have an
+``Exit_Cases`` aspect. This aspect allows partitioning the input state into
+cases, specifying for each case what the expected termination kind is. It can be
+either:
 
 * ``Normal_Return``, if the subprogram shall return normally,
-* ``Exception_Raised``, if it shall raise an (unspecified) exception, or
-* ``(Exception_Raised => E)``, if it shall raise the exception ``E``.
+* ``Exception_Raised``, if it shall raise an (unspecified) exception,
+* ``(Exception_Raised => E)``, if it shall raise the exception ``E``, or
+* ``Program_Exit``, if it might exit the program abruptly.
 
 As an example, consider the procedure ``Might_Return_Abnormally`` below:
 
@@ -914,14 +1017,16 @@ As an example, consider the procedure ``Might_Return_Abnormally`` below:
    :linenos:
 
 Its contract states that, if it terminates, it shall return normally if ``X`` is
-1, raise the exception ``E1`` is ``X`` is 2, and raise either ``E1`` or ``E2``,
-that is, any exception allowed by its exceptional contract, otherwise. The
-|GNATprove| tool generates verification conditions to make sure that these
-restrictions hold. As can be seen below, in this example, they are all proved.
+1, raise the exception ``E1`` is ``X`` is 2, raise either ``E1`` or ``E2``,
+that is, any exception allowed by its exceptional contract, if ``X`` is 3, and
+exit the program abruptly otherwise. The |GNATprove| tool generates verification
+conditions to make sure that these restrictions hold. As can be seen below, in
+this example, they are all proved.
 Note that there are sometimes several checks for a single exit case. For
-example here, two verifications are associated to the second case: one to make
-sure that the subprogram does not return normally, and one to check that the
-expected exception is propagated on exceptional exit:
+example here, three verifications are associated to the second case: one to make
+sure that the subprogram does not return normally, one to make sure that it does
+not exit the program abruptly, and one to check that the expected exception is
+propagated on exceptional exit:
 
 .. literalinclude:: /examples/ug__exit_cases_base/test.out
    :language: none
@@ -945,10 +1050,10 @@ and last cases where removed:
 .. literalinclude:: /examples/ug__exit_cases_incomplete/test.out
    :language: none
 
-In |SPARK|, as a general rule, postconditions, be they standard or exceptional
-postconditions, are only enforced if the subprogram terminates. Exit cases are
-similar, they do not force the program to terminate but only ensure that it
-terminates in the correct way if it does.
+In |SPARK|, as a general rule, postconditions, be they standard, exceptional, or
+program exit postconditions, are only enforced if the subprogram terminates.
+Exit cases are similar, they do not force the program to terminate but only
+ensure that it terminates in the correct way if it does.
 As an example, the exit cases contract of ``Might_Return_Abnormally`` is still
 verified if its body is replaced by an infinite loop. To enforce termination,
 :ref:`Contracts for Termination` should be used in addition to the exit cases.
@@ -964,12 +1069,16 @@ verified if its body is replaced by an infinite loop. To enforce termination,
 .. literalinclude:: /examples/ug__exit_cases_non_terminating/test.out
    :language: none
 
-If an exit cases mentioning exceptions is supplied on a subprogram which does
+If an exit cases mentioning ``Program_Exit`` is supplied on a subprogram which
+does not have a program exit contract, then by default, |GNATprove| will
+assume that it is allowed to terminate the program abruptly. Similarly,
+if an exit cases mentioning exceptions is supplied on a subprogram which does
 not have an exceptional contract, then by default, |GNATprove| will assume that
 it is allowed to propagate the exceptions listed in its exit cases. If some of
 these exceptions are unspecified, then it is allowed to propagate any exception.
-As an example, |GNATprove| will accept raise statements inside
-``Might_Return_Abnormally`` even if we remove its exceptional contract. However,
+As an example, |GNATprove| will accept the raise statements and the call to
+``OS_Exit`` inside ``Might_Return_Abnormally`` even if we remove its
+exceptional and program exit contracts. However,
 the default exceptional contract is imprecise in this case, as the propagated
 exception is not specified in the last exit case. As a result, when analyzing
 a caller like ``Call_Might_Return_Abnormally`` below, the analysis tool won't
@@ -988,23 +1097,25 @@ know that ``Might_Return_Abnormally`` only propagates ``E1`` or ``E2``:
 
 .. note::
 
-   Remark that exit cases are always equivalent to a conjunction of standard and
-   exceptional postconditions, possibly with a number of duplicates. As an
-   example, the exit cases of ``Might_Return_Abnormally`` is actually
-   equivalent to the combination of normal and exceptional cases below. The
-   postcondition states that ``Might_Return_Abnormally`` might only return
-   normally if ``X`` was equal to 1 before the call, while the exceptional
-   contract ensures both that neither ``E1`` nor ``E2`` can be propagates if
-   ``X`` was 1 before the call, and that only ``E1`` might be propagated if it
-   was 2:
+   Remark that exit cases are always equivalent to a conjunction of standard,
+   exceptional, and program exit postconditions, possibly with a number of
+   duplicates. As an example, the exit cases of ``Might_Return_Abnormally`` is
+   actually equivalent to the combination of normal, exceptional, and program
+   exit postconditions below. The postcondition states that
+   ``Might_Return_Abnormally`` might only return normally if ``X`` was equal to
+   1 before the call. The exceptional contract ensures that exceptions can
+   only be propagated if ``X`` was equal to 2 or 3 before the call, and that
+   ``E2`` can only be propagated if it was 3. Finally, the program exit
+   contracts prevents abrupt termination of the program if ``X`` was 1, 2, or 3:
 
    .. code-block:: ada
 
      procedure Might_Return_Abnormally (X : in out Integer) with
        Post => X'Old = 1,
        Exceptional_Cases =>
-           (E1 => X'Old /= 1,
-            E2 => X'Old not in 1 | 2);
+           (E1 => X'Old in 2 | 3,
+            E2 => X'Old = 3),
+       Program_Exit => X'Old not in 1 | 2 | 3;
 
    These alternative contracts are often harder to read though as they involve
    references to the ``Old`` attribute, negations, and duplications.

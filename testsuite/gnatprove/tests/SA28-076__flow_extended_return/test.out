@@ -3,7 +3,7 @@ id.adb:2:12: info: postcondition proved (CVC5: 2 VC)
 nest_return.adb:13:07: info: initialization of "Temp" proved
 nest_return.adb:37:19: info: initialization of "Temp" proved
 nest_return.adb:38:29: info: add a contract to analyze it separately from calling contexts
-nest_return.adb:38:29: info: local subprogram "Return_Proc" only analyzed in the context of calls
+nest_return.adb:38:29: info: local subprogram "Return_Proc" only analyzed in the context of calls [info-unrolling-inlining]
 nest_return.adb:38:55: info: initialization of "B" proved
 nest_return.adb:47:19: info: analyzing call to "Return_Proc" in context
 nest_return.ads:4:43: info: initialization of "Y" proved

@@ -1,6 +1,16 @@
-range_logging.ads:9:13: info: implicit aspect Always_Terminates on "Log_Min" has been proved, subprogram will terminate
-range_logging.ads:12:13: info: implicit aspect Always_Terminates on "Log_Max" has been proved, subprogram will terminate
-range_logging.ads:16:20: info: class-wide postcondition is stronger than overridden one
-range_logging.ads:22:20: info: class-wide precondition is weaker than overridden one
-range_logging.ads:23:20: info: class-wide postcondition is stronger than overridden one
-logging.ads:10:13: info: implicit aspect Always_Terminates on "Log_Size" has been proved, subprogram will terminate
+ info: implicit aspect Always_Terminates on "Log_Size" has been proved, subprogram will terminate
+--> logging.ads:10:13
+ info: implicit aspect Always_Terminates on "Log_Min" has been proved, subprogram will terminate
+--> range_logging.ads:9:13
+
+ info: implicit aspect Always_Terminates on "Log_Max" has been proved, subprogram will terminate
+--> range_logging.ads:12:13
+
+ info: class-wide postcondition is stronger than overridden one
+--> range_logging.ads:16:20
+
+ info: class-wide precondition is weaker than overridden one
+--> range_logging.ads:22:20
+
+ info: class-wide postcondition is stronger than overridden one
+--> range_logging.ads:23:20

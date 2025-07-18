@@ -1,27 +1,34 @@
+ medium: missing dependency "Log_In constituent of State => Log constituent of State"
+--> logging_in_abstract.adb:13:37
+   13 |         Refined_Depends => ((Log_Size, Log_In) =>+ null, Log =>+ (Log_Size, Log_In))
+      |                             ~~~~~~~~~~~^
 
-logging_in_abstract.adb:13:37: medium: missing dependency "Log_In constituent of State => Log constituent of State"
-   13 |     Refined_Depends => ((Log_Size, Log_In) =>+ null, Log =>+ (Log_Size, Log_In))
-      |                         ~~~~~~~~~~~^
+ medium: missing dependency "Log_In constituent of State => Log_Size constituent of State"
+--> logging_in_abstract.adb:13:37
+   13 |         Refined_Depends => ((Log_Size, Log_In) =>+ null, Log =>+ (Log_Size, Log_In))
+      |                             ~~~~~~~~~~~^
 
-logging_in_abstract.adb:13:37: medium: missing dependency "Log_In constituent of State => Log_Size constituent of State"
-   13 |     Refined_Depends => ((Log_Size, Log_In) =>+ null, Log =>+ (Log_Size, Log_In))
-      |                         ~~~~~~~~~~~^
+ high: overflow check might fail, cannot prove upper bound for Log_Size + 1
+--> logging_in_abstract.adb:16:28
+   16 |          Log_Size := Log_Size + 1;
+      |                      ~~~~~~~~~^~~
+      + e.g. when Log_Size = Natural'Last
+      + reason for check: result of addition must fit in a 32-bits machine integer
+      + possible fix: subprogram at logging_in_abstract.ads:5 should mention Log_Size in a precondition
+      --> logging_in_abstract.ads:5:04
+    5 |       procedure Get with
+      |       ^
 
-logging_in_abstract.adb:16:28: high: overflow check might fail, cannot prove upper bound for Log_Size + 1
-   16 |      Log_Size := Log_Size + 1;
-      |                  ~~~~~~~~~^~~
-  e.g. when Log_Size = Natural'Last
-  reason for check: result of addition must fit in a 32-bits machine integer
-  possible fix: subprogram at logging_in_abstract.ads:5 should mention Log_Size in a precondition
-    5 |   procedure Get with
-      |   ^ here
+ high: array index check might fail
+--> logging_in_abstract.adb:17:12
+   17 |          Log (Log_Size) := Log_In;
+      |               ^~~~~~~~
+      + e.g. when Log_Size = 101
+      + reason for check: value must be a valid index into the array
+      + possible fix: subprogram at logging_in_abstract.ads:5 should mention Log_Size in a precondition
+      --> logging_in_abstract.ads:5:04
+    5 |       procedure Get with
+      |       ^
 
-logging_in_abstract.adb:17:12: high: array index check might fail
-   17 |      Log (Log_Size) := Log_In;
-      |           ^~~~~~~~
-  e.g. when Log_Size = 101
-  reason for check: value must be a valid index into the array
-  possible fix: subprogram at logging_in_abstract.ads:5 should mention Log_Size in a precondition
-    5 |   procedure Get with
-      |   ^ here
-logging_in_abstract.ads:6:06: info: data dependencies proved
+ info: data dependencies proved
+--> logging_in_abstract.ads:6:06

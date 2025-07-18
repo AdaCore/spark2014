@@ -1,6 +1,6 @@
-names-data.ads:27:23: info: Initial_Condition of package "Names" is ignored
-names-data.ads:27:23: info: the elaboration of "Names" is not known to precede the elaboration of the current unit
-names-data.ads:27:23: info: use pragma Elaborate_Body in "Names" or pragma Elaborate in the current unit
+names-data.ads:27:23: warning: Initial_Condition of package "Names" is ignored [init-cond-ignored]
+names-data.ads:27:23: warning: the elaboration of "Names" is not known to precede the elaboration of the current unit
+names-data.ads:27:23: warning: use pragma Elaborate_Body in "Names" or pragma Elaborate in the current unit
 names-data.ads:52:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
 names-data.ads:70:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
 names.adb:40:04: info: initialization of "Char_Table" constituent of "Name_Table" proved

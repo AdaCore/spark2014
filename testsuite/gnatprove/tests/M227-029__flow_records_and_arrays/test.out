@@ -16,10 +16,10 @@ message_tests.adb:56:04: warning: analyzing unreferenced procedure "Undefined_Us
 message_tests.adb:56:32: info: initialization of "C" proved
 message_tests.adb:66:18: high: "F.B" is not initialized
 parameter_tests.adb:15:14: info: add a contract to analyze it separately from calling contexts
-parameter_tests.adb:15:14: info: local subprogram "Clear_Float" only analyzed in the context of calls
+parameter_tests.adb:15:14: info: local subprogram "Clear_Float" only analyzed in the context of calls [info-unrolling-inlining]
 parameter_tests.adb:15:27: info: initialization of "F" proved
 parameter_tests.adb:21:14: info: add a contract to analyze it separately from calling contexts
-parameter_tests.adb:21:14: info: local subprogram "Clear_Coordinate" only analyzed in the context of calls
+parameter_tests.adb:21:14: info: local subprogram "Clear_Coordinate" only analyzed in the context of calls [info-unrolling-inlining]
 parameter_tests.adb:21:32: info: initialization of "C" proved
 parameter_tests.adb:24:07: info: analyzing call to "Clear_Float" in context
 parameter_tests.adb:25:07: info: analyzing call to "Clear_Float" in context
@@ -51,12 +51,12 @@ untangle_tests.adb:40:10: info: index check proved (CVC5: 2 VC)
 untangle_tests.adb:44:04: warning: analyzing unreferenced procedure "Sieve" [unreferenced-procedure]
 untangle_tests.adb:44:21: info: initialization of "P" proved
 untangle_tests.adb:46:07: info: initialization of "N" proved
-untangle_tests.adb:51:46: info: cannot unroll loop (too many loop iterations)
+untangle_tests.adb:51:46: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 untangle_tests.adb:55:19: info: index check proved (CVC5: 2 VC)
 untangle_tests.adb:56:23: info: overflow check proved (CVC5: 2 VC)
 untangle_tests.adb:63:04: warning: analyzing unreferenced procedure "Transform" [unreferenced-procedure]
-untangle_tests.adb:67:51: info: cannot unroll loop (too many loop iterations)
-untangle_tests.adb:68:26: info: unrolling loop
+untangle_tests.adb:67:51: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+untangle_tests.adb:68:26: info: unrolling loop [info-unrolling-inlining]
 untangle_tests.adb:69:60: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop at line 67 should mention V and TL in a loop invariant]
 untangle_tests.adb:70:60: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop at line 67 should mention V and TL in a loop invariant]
 untangle_tests.adb:71:60: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: loop at line 67 should mention V and TL in a loop invariant]

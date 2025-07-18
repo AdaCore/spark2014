@@ -1,0 +1,1 @@
+main.adb:1:10: info: implicit aspect Always_Terminates on "Main" has been proved, subprogram will terminate

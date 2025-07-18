@@ -9,5 +9,5 @@ Generated contracts for Main
    Global =>
    Refined_Global =>
 main.adb:5:14: warning: subprogram "Test" has no effect
-main.adb:7:23: info: unrolling loop
+main.adb:7:23: info: unrolling loop [info-unrolling-inlining]
 main.adb:8:25: medium: assertion might fail

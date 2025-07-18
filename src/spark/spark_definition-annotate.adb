@@ -31,7 +31,6 @@ with Ada.Strings.Unbounded;        use Ada.Strings.Unbounded;
 with Aspects;                      use Aspects;
 with Checked_Types;                use Checked_Types;
 with Common_Containers;
-with Debug;
 with Errout;
 with Erroutc;
 with Errout_Wrapper;               use Errout_Wrapper;
@@ -688,7 +687,6 @@ package body SPARK_Definition.Annotate is
       function Is_Signed_Or_Big_Integer_Type (Ty : Entity_Id) return Boolean is
         (Is_Signed_Integer_Type (Ty)
          or else Is_RTE (Base_Type (Ty), RE_Big_Integer)
-         or else Is_RTE (Base_Type (Ty), RO_GH_Big_Integer)
          or else Is_RTE (Base_Type (Ty), RO_SP_Big_Integer));
 
       Ok : Boolean;
@@ -1904,18 +1902,6 @@ package body SPARK_Definition.Annotate is
          then
             Error_Msg_N_If
               ("At_End_Borrow function must have exactly one parameter", E);
-         elsif not Is_Anonymous_Access_Type (Etype (Path))
-           or else not Is_Access_Constant (Etype (Path))
-         then
-            Error_Msg_N_If
-              ("the parameter of an At_End_Borrow function must have an"
-               & " anonymous access-to-constant type", E);
-         elsif not Is_Anonymous_Access_Type (Etype (E))
-           or else not Is_Access_Constant (Etype (E))
-         then
-            Error_Msg_N_If
-              ("At_End_Borrow function must return an"
-               & " anonymous access-to-constant type", E);
          elsif not Is_Ghost_Entity (E) then
             Error_Msg_N_If
               ("At_End_Borrow function must be a ghost function", E);
@@ -2260,6 +2246,11 @@ package body SPARK_Definition.Annotate is
             & " Automatic_Instantiation shall not propagate exceptions",
             E);
          return;
+      elsif Has_Program_Exit (E) then
+
+         --  Ghost subprograms cannot exit the whole program
+
+         raise Program_Error;
       elsif Mutable_In_Params_Annotations.Contains (E) then
          Error_Msg_N_If
            ("procedure annotated with the " & Aspect_Or_Pragma
@@ -3009,6 +3000,11 @@ package body SPARK_Definition.Annotate is
                & " Higher_Order_Specialization shall not propagate exceptions",
                E);
             return;
+         elsif Has_Program_Exit (E) then
+
+            --  Ghost subprograms cannot exit the whole program
+
+            raise Program_Error;
          elsif Get_Termination_Condition (E) not in
            (Kind => Unspecified) | (Static, True)
          then
@@ -3414,6 +3410,13 @@ package body SPARK_Definition.Annotate is
            ("a function annotated with Annotate Hide_Info or "
             & "Unhide_Info shall not be inlined for proof",
             Arg3_Exp);
+         return;
+      elsif Is_Potentially_Invalid (E)
+        and then Nodes.Length = 1
+      then
+         Error_Msg_N_If
+           ("function annotated with Inline_For_Proof with a postcondition "
+            & "shall not have a potentially invalid result", E);
          return;
       end if;
 
@@ -3926,6 +3929,11 @@ package body SPARK_Definition.Annotate is
            ("Entity parameter of a pragma Logical_Equal shall not have"
             & " contract cases", E);
          return;
+      elsif Has_Aspect (E, Aspect_Potentially_Invalid) then
+         Error_Msg_N_If
+           ("Entity parameter of a pragma Logical_Equal shall not have"
+            & " a Potentially_Invalid aspect", E);
+         return;
       elsif Potentially_Hidden_Entities.Contains (E) then
          Error_Msg_N_If
            ("a function annotated with Annotate Hide_Info or "
@@ -4091,6 +4099,11 @@ package body SPARK_Definition.Annotate is
             & " cannot appear after an automatically instantiated lemma",
             Prag);
          return;
+      elsif Has_Depends (Scope) then
+         Error_Msg_N_If
+           ("pragma Annotate ""Mutable_In_Parameters"""
+            & " cannot appear after a subprogram with ""Depends"" contract",
+            Prag);
       end if;
 
       declare
@@ -5036,13 +5049,10 @@ package body SPARK_Definition.Annotate is
 
             if No (Annot.Sets_Length)
               and then Emit_Warning_Info_Messages
-              and then Debug.Debug_Flag_Underscore_F
             then
-               Error_Msg_N_If
-                 ("no ""Length"" function found for type with "
-                  & "predefined set aggregates &",
+               Warning_Msg_N_If
+                 (Warn_Set_Length_Aggregates,
                   Typ,
-                  Kind => Info_Kind,
                   Continuations =>
                     [Create
                          ("the cardinality of aggregates will be unknown")]);
@@ -5125,13 +5135,10 @@ package body SPARK_Definition.Annotate is
             if No (Annot.Maps_Length)
               and then Present (Annot.Has_Key)
               and then Emit_Warning_Info_Messages
-              and then Debug.Debug_Flag_Underscore_F
             then
-               Error_Msg_N_If
-                 ("no ""Length"" function found for type with "
-                  & "predefined map aggregates &",
+               Warning_Msg_N_If
+                 (Warn_Map_Length_Aggregates,
                   Typ,
-                  Kind => Info_Kind,
                   Continuations =>
                     [Create
                          ("the cardinality of aggregates will be unknown")]);
@@ -5390,6 +5397,10 @@ package body SPARK_Definition.Annotate is
          elsif Has_Exceptional_Contract (Annot.Add_Procedure) then
             Error_Msg_NE_If
               ("& procedure shall not propagate exceptions",
+               Typ, Annot.Add_Procedure);
+         elsif Has_Program_Exit (Annot.Add_Procedure) then
+            Error_Msg_NE_If
+              ("& procedure shall not exit the program",
                Typ, Annot.Add_Procedure);
          end if;
       end;
@@ -5933,10 +5944,13 @@ package body SPARK_Definition.Annotate is
    -------------------------------------
 
    function Has_Mutable_In_Param_Annotation (E : Entity_Id) return Boolean is
-     (Ekind (E) = E_In_Parameter
-      and then Mutable_In_Params_Annotations.Contains (Scope (E))
-      and then Mutable_In_Params_Annotations.Element
-        (Scope (E)).Contains (Retysp (Etype (E))));
+      Position : constant Common_Containers.Node_Graphs.Cursor :=
+        Mutable_In_Params_Annotations.Find (Scope (E));
+   begin
+      return Common_Containers.Node_Graphs.Has_Element (Position)
+        and then Mutable_In_Params_Annotations (Position).Contains
+                   (Retysp (Etype (E)));
+   end Has_Mutable_In_Param_Annotation;
 
    ----------------------------------
    -- Has_Own_Ownership_Annotation --
@@ -6360,15 +6374,14 @@ package body SPARK_Definition.Annotate is
 
             if No (Ent)
               and then Emit_Warning_Info_Messages
-              and then Debug.Debug_Flag_Underscore_F
             then
-               Error_Msg_N
-                 ("no reclamation function nor reclaimed value found "
-                  & "for type with ownership &", E,
-                  Kind => Info_Kind,
+               Warning_Msg_N
+                 (Warn_No_Reclam_Func,
+                  E,
                   Continuations =>
-                    ["checks for ressource or memory reclamation will be"
-                     & " unprovable"]);
+                    [Create
+                         ("checks for ressource or memory reclamation will be"
+                          & " unprovable")]);
             end if;
          end;
       end if;
@@ -6403,18 +6416,17 @@ package body SPARK_Definition.Annotate is
                end loop;
             end if;
 
-            if No (Ent)
-              and then Emit_Warning_Info_Messages
-              and then Debug.Debug_Flag_Underscore_F
+            if No (Ent) and then Emit_Warning_Info_Messages
             then
-               Error_Msg_N
-                 ("no null value found for type with predefined equality &",
+               Warning_Msg_N
+                 (Warn_Predef_Eq_Null,
                   E,
-                  Kind => Info_Kind,
                   Continuations =>
-                    ["consider annotating a constant with a pragma Annotate "
-                     & "(GNATprove, Predefined_Equality, ""Null_Value"""
-                     & ", ...)"]);
+                    [Create
+                         ("consider annotating a constant with a pragma "
+                          & "Annotate "
+                          & "(GNATprove, Predefined_Equality, ""Null_Value"""
+                          & ", ...)")]);
             end if;
          end;
       end if;
@@ -6760,7 +6772,7 @@ package body SPARK_Definition.Annotate is
                     (if Name in "always_return" | "terminating"
                      then """with Always_Terminates"""
                      else """with Always_Terminates => False"" or use an" &
-                       " exceptional contract") &
+                       " exceptional contract or program exit postcondition") &
                   (if not From_Aspect
                    then " on the corresponding entity"
                    else "");

@@ -1,4 +1,4 @@
-a.adb:11:35: info: unrolling loop
+a.adb:11:35: info: unrolling loop [info-unrolling-inlining]
 a.adb:12:10: high: "Global_AA" must be listed in the Global aspect of "initGlobalsA" (SPARK RM 6.1.4(15))
 a.adb:23:25: info: in value of subprogram parameter after the call at a.adb:23
 a.adb:23:25: info: initialization check proved (CVC5: 1 VC)
@@ -20,5 +20,7 @@ main.adb:10:04: info: initialization of "status" proved
 main.adb:15:07: info: precondition proved (CVC5: 1 VC)
 main.adb:16:07: medium: "Global_AA" might not be initialized after elaboration of main program "Main"
 main.adb:18:30: info: range check proved (CVC5: 2 VC)
+main.adb:18:33: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 main.adb:19:37: info: range check proved (CVC5: 2 VC)
+main.adb:19:45: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 main.adb:19:52: info: range check proved (CVC5: 2 VC)

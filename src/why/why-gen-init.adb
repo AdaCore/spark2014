@@ -434,33 +434,6 @@ package body Why.Gen.Init is
       end case;
    end EW_Init_Wrapper;
 
-   -----------------------------
-   -- Get_Init_Id_From_Object --
-   -----------------------------
-
-   function Get_Init_Id_From_Object
-     (Obj         : Entity_Id;
-      Ref_Allowed : Boolean) return W_Expr_Id
-   is
-      C    : constant Ada_Ent_To_Why.Cursor :=
-        Ada_Ent_To_Why.Find (Symbol_Table, Obj);
-      Item : Item_Type;
-   begin
-      if Ada_Ent_To_Why.Has_Element (C) then
-         Item := Ada_Ent_To_Why.Element (C);
-         if Item.Init.Present then
-            if Ref_Allowed then
-               return New_Deref
-                 (Right => Item.Init.Id,
-                  Typ   => Get_Typ (Item.Init.Id));
-            else
-               return +Item.Init.Id;
-            end if;
-         end if;
-      end if;
-      return Why_Empty;
-   end Get_Init_Id_From_Object;
-
    ---------------------------------
    -- Insert_Top_Level_Init_Check --
    ---------------------------------
@@ -470,7 +443,8 @@ package body Why.Gen.Init is
       E        : Entity_Id;
       Name     : W_Expr_Id;
       Domain   : EW_Domain;
-      Do_Check : Boolean := True)
+      Do_Check : Boolean := True;
+      Details  : String := "")
       return W_Expr_Id
    is
       T : W_Expr_Id;
@@ -493,11 +467,12 @@ package body Why.Gen.Init is
                   Message  => To_Unbounded_String (Msg)));
             T := +Sequence
               (Left  => New_Located_Assert
-                 (Ada_Node => Ada_Node,
-                  Reason   => VC_Initialization_Check,
-                  Kind     => EW_Assert,
-                  Pred     => Pred_Of_Boolean_Term
-                    (New_Init_Attribute_Access (E, +Tmp))),
+                 (Ada_Node   => Ada_Node,
+                  Reason     => VC_Initialization_Check,
+                  Kind       => EW_Assert,
+                  Pred       => Pred_Of_Boolean_Term
+                    (New_Init_Attribute_Access (E, +Tmp)),
+                  Check_Info => New_Check_Info (Details => Details)),
                Right => +Tmp);
             Continuation_Stack.Delete_Last;
 

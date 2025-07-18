@@ -582,12 +582,6 @@ package SPARK_Util.Subprograms is
    --  @param E any entity
    --  @return True iff E is a traversal function
 
-   function Is_UC_With_Precise_Definition
-     (E : Entity_Id)
-      return True_Or_Explain
-   with Pre => Is_Unchecked_Conversion_Instance (E);
-   --  Return whether E is an UC for which a precise definition is given
-
    function Is_Unary_Text_IO_Put_Line (E : Entity_Id) return Boolean;
    --  Return True iff E is the unary version of Ada.Text_IO.Put_Line
 

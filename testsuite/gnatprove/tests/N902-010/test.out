@@ -11,7 +11,7 @@ main.adb:7:04: info: precondition proved (CVC5: 2 VC)
 main.adb:7:04: medium: "a_stack_no_spark_contracts_with_body.sp" might not be initialized after elaboration of main program "Main"
 main.adb:7:04: medium: "a_stack_no_spark_contracts_with_body.vec" might not be initialized after elaboration of main program "Main"
 main.adb:7:19: warning: "My_Array" is set by "Reverse_Array" but not used after the call
-reverser_using_a_stack_with_body.adb:7:24: info: cannot unroll loop (too many loop iterations)
+reverser_using_a_stack_with_body.adb:7:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 reverser_using_a_stack_with_body.adb:9:10: info: precondition proved (CVC5: 1 VC)
-reverser_using_a_stack_with_body.adb:11:24: info: cannot unroll loop (too many loop iterations)
+reverser_using_a_stack_with_body.adb:11:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 reverser_using_a_stack_with_body.adb:13:10: info: precondition proved (CVC5: 1 VC)

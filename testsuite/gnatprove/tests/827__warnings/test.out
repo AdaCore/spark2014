@@ -1,0 +1,15 @@
+=== warning should be issued ===
+warn.adb:6:19: warning: precondition is statically False [precondition-statically-false]
+=== warning should not be issued ===
+=== warning should not be issued ===
+=== warning should not be issued ===
+=== warning should not be issued ===
+=== warning should be promoted to error ===
+warn.adb:6:19: error: precondition is statically False [precondition-statically-false]
+gnatprove: error during flow analysis and proof
+=== warning should be issued, as well as 'error during analysis' ===
+warn.adb:6:19: warning: precondition is statically False [precondition-statically-false]
+gnatprove: error during flow analysis and proof
+=== warning should be promoted to error ===
+warn.adb:6:19: error: precondition is statically False [precondition-statically-false]
+gnatprove: error during flow analysis and proof

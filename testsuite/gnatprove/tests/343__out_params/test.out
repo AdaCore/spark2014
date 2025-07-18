@@ -5,15 +5,17 @@ p.adb:18:27: info: data dependencies proved
 p.adb:24:07: info: precondition proved (CVC5: 1 VC)
 p.adb:24:11: info: for mutable discriminants at p.adb:3
 p.adb:24:11: info: initialization check proved (Trivial: 1 VC)
+p.adb:24:11: warning: mutable discriminants of a standalone object or parameter with relaxed initialization are enforced to always be initialized [relaxed-mutable-discriminants]
 p.adb:27:30: info: initialization of "Y" proved
 p.adb:28:06: info: flow dependencies proved
 p.adb:34:13: info: initialization check proved (CVC5: 1 VC)
 p.adb:34:19: info: initialization check proved (CVC5: 1 VC)
 p.adb:35:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 p.adb:38:28: info: data dependencies proved
-p.adb:44:07: medium: precondition might fail, cannot prove X'Initialized (e.g. when X = (D => True, others => ?))
+p.adb:44:07: medium: precondition might fail, cannot prove X'Initialized (e.g. when B = False and X = (D => True, A => 2, B => ?) and X'Constrained = False and X.A'Initialized = True and X.B'Initialized = False)
 p.adb:44:12: info: for mutable discriminants at p.adb:3
 p.adb:44:12: info: initialization check proved (Trivial: 1 VC)
+p.adb:44:12: warning: mutable discriminants of a standalone object or parameter with relaxed initialization are enforced to always be initialized [relaxed-mutable-discriminants]
 p.adb:49:31: info: initialization of "Y" proved
 p.adb:50:06: info: flow dependencies proved
 p.adb:57:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)

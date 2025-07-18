@@ -1,0 +1,6 @@
+c83e02a.adb:3:14: info: add a contract to analyze it separately from calling contexts
+c83e02a.adb:3:14: info: local subprogram "P2" only analyzed in the context of calls [info-unrolling-inlining]
+c83e02a.adb:3:14: warning: subprogram "P2" has no effect
+c83e02a.adb:9:12: info: discriminant check proved (CVC5: 1 VC), in call inlined at c83e02a.adb:13
+c83e02a.adb:13:04: info: analyzing call to "P2" in context
+c83e02a.adb:13:08: info: range check proved (CVC5: 2 VC), in call inlined at c83e02a.adb:13

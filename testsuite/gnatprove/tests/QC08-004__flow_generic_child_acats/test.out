@@ -1,4 +1,4 @@
-main.adb:11:04: info: cannot unroll loop (too many loop iterations)
+main.adb:11:04: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 main.adb:11:04: info: in instantiation at parent.adb:20
 main.adb:17:04: info: initialization of "Complex_One" proved
 main.adb:17:17: info: initialization of "Complex_Two" proved

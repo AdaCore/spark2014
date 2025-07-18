@@ -1,7 +1,6 @@
-large: True
-replay: True
 prove_all:
-  counterexample: False
-  no_fail: True
+  counterexample: false
+  no_fail: true
+replay: true
 session_opt:
   level: 4

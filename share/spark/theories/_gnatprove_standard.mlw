@@ -14,6 +14,9 @@ module Main
   (* exception used to translate Ada exceptions *)
   exception Ada__exc int
 
+  (* exception used to exit the whole program *)
+  exception Program_exit__exc
+
   (* The type for the heap, and the heap variable. This variable represents
      all effects that we cannot describe more precisely, and that do not
      interfere with other variables, i.e., writes through pointers, aliased
@@ -428,8 +431,6 @@ end
 
 module Real_Abs
   use export real.Abs
-  val abs (x : real) : real
-  ensures { result = abs x }
 end
 
 module Floating_power
@@ -1995,6 +1996,12 @@ module Array__1
       (* bounds *)
       has_bounds (slice a f l) f l
   meta "remove_unused:dependency" axiom slice_has_bounds, function slice
+
+  axiom slice_extensional :
+    forall a b : map, f l : I1.t [slice a f l | slice b f l].
+    slice a f l <> slice b f l ->
+    (exists i : I1.t. I1.le f i /\ I1.le i l /\ get (slice a f l) i <> get (slice b f l) i)
+  meta "remove_unused:dependency" axiom slice_extensional, function slice
 
   (* Concatenation is only defined for one-dimensional arrays; it appends a
      map to another. We do not really care about the valid ranges of the

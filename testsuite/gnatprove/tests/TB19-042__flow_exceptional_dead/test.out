@@ -1,7 +1,7 @@
 main.adb:6:04: warning: analyzing unreferenced procedure "Dead_Loop" [unreferenced-procedure]
 main.adb:6:14: warning: subprogram "Dead_Loop" has no effect
 main.adb:8:18: warning: loop range is null, loop will not execute [enabled by default]
-main.adb:8:23: info: cannot unroll loop (value of loop bounds)
+main.adb:8:23: info: cannot unroll loop (value of loop bounds) [info-unrolling-inlining]
 main.adb:9:10: warning: this statement is never reached
 main.adb:11:24: info: no contextual analysis of "Call" (body not seen yet)
 main.adb:11:24: warning: this statement is never reached

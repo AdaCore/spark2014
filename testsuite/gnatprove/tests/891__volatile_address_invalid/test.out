@@ -1,0 +1,26 @@
+test.adb:13:04: info: address in address clause is compatible with object alignment (Trivial)
+test.adb:13:04: info: object is suitable for aliasing via address clause (Trivial)
+test.adb:13:41: info: object is suitable for aliasing via address clause (Trivial)
+test.adb:13:41: info: types of aliased objects have the same size (Trivial)
+test.adb:13:41: info: validity check proved (CVC5: 1 VC)
+test.adb:16:04: info: address in address clause is compatible with object alignment (Trivial)
+test.adb:16:04: info: object is suitable for aliasing via address clause (Trivial)
+test.adb:16:56: info: object is suitable for aliasing via address clause (Trivial)
+test.adb:16:56: info: types of aliased objects have the same size (Trivial)
+test.adb:20:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
+test.adb:20:04: warning: address specification on "X3" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias [imprecise-address-specification] [E0012]
+test.adb:20:04: warning: launch "gnatprove --explain=E0012" for more information
+test.adb:20:04: warning: make sure that all overlapping objects have Async_Writers set to True
+test.adb:22:67: info: postcondition proved (Trivial: 1 VC)
+test.adb:30:22: info: assertion proved (CVC5: 1 VC)
+test.adb:32:22: medium: assertion might fail
+test.adb:35:67: info: postcondition proved (Trivial: 1 VC)
+test.adb:43:22: info: assertion proved (CVC5: 1 VC)
+test.adb:45:22: medium: assertion might fail
+test.adb:48:67: info: postcondition proved (Trivial: 1 VC)
+test.adb:56:22: info: assertion proved (CVC5: 1 VC)
+test.adb:59:67: info: postcondition proved (Trivial: 1 VC)
+test.adb:69:25: medium: assertion might fail (e.g. when L'Valid_Scalars = False)
+test.adb:73:28: medium: validity check might fail (e.g. when V'Valid_Scalars = False)
+test.adb:75:25: info: assertion proved (Trivial: 1 VC)
+test.adb:75:25: warning: attribute "Valid_Scalars" is assumed to return True [attribute-valid-always-true]

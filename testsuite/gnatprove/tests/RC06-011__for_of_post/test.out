@@ -1,4 +1,4 @@
-foo.adb:13:07: info: unrolling loop
+foo.adb:13:07: info: unrolling loop [info-unrolling-inlining]
 foo.adb:14:34: info: range check proved (Z3: 2 VC)
 foo.adb:18:34: info: range check proved (Z3: 2 VC)
 foo.ads:20:07: info: initialization of "Max" proved

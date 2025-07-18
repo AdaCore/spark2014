@@ -1,0 +1,128 @@
+ info: postcondition proved
+--> invariants.adb:5:14
+
+ info: index check proved
+--> invariants.adb:5:54
+
+ info: range check proved
+--> invariants.adb:6:11
+
+ info: range check proved
+--> invariants.adb:6:41
+
+ info: range check proved
+--> invariants.adb:10:24
+
+ info: index check proved
+--> invariants.adb:11:19
+
+ info: precondition proved
+--> invariants.adb:16:07
+
+ info: precondition proved
+--> invariants.adb:24:07
+
+ info: invariant check proved
+--> invariants.adb:24:07
+      + for S before the call at invariants.ads:13
+
+ info: invariant check proved
+--> invariants.adb:27:04
+      + at the end of the elaboration of package at invariants.ads:1
+
+ medium: invariant check might fail
+--> invariants.adb:33:14
+   33 |       procedure Push_Internal (E : Element) with
+      |                 ^~~~~~~~~~~~~
+      + for The_Stack at the end of Push_Internal at invariants.adb:27
+      + e.g. when E = 1
+
+ info: range check proved
+--> invariants.adb:37:40
+
+ info: index check proved
+--> invariants.adb:38:35
+
+ info: precondition proved
+--> invariants.adb:43:07
+
+ info: invariant check proved
+--> invariants.adb:43:07
+      + for The_Stack before the call at invariants.adb:27
+
+ info: precondition proved
+--> invariants.adb:51:07
+
+ info: invariant check proved
+--> invariants.adb:51:07
+      + for The_Stack before the call at invariants.adb:27
+
+ info: implicit aspect Always_Terminates on "Max" has been proved, subprogram will terminate
+--> invariants.ads:9:13
+
+ info: implicit aspect Always_Terminates on "Size" has been proved, subprogram will terminate
+--> invariants.ads:11:13
+
+ info: invariant check proved
+--> invariants.ads:13:14
+      + for S at the end of Push at invariants.ads:13
+
+ info: invariant check proved
+--> invariants.ads:14:13
+      + for S before the call at invariants.ads:11
+
+ info: invariant check proved
+--> invariants.ads:16:14
+      + for S at the end of Push_Zero at invariants.ads:16
+
+ info: invariant check proved
+--> invariants.ads:17:13
+      + for S before the call at invariants.ads:11
+
+ info: implicit aspect Always_Terminates on "Size" has been proved, subprogram will terminate
+--> invariants.ads:19:13
+
+ medium: invariant check might fail
+--> invariants.ads:21:14
+   21 |       procedure Push (E : Element) with
+      |                 ^~~~
+      + for The_Stack at the end of Push at invariants.adb:27
+      + e.g. when E = 1
+
+ info: invariant check proved
+--> invariants.ads:22:13
+      + for The_Stack before the call at invariants.adb:27
+
+ info: invariant check proved
+--> invariants.ads:24:14
+      + for The_Stack at the end of Push_Zero at invariants.adb:27
+
+ info: invariant check proved
+--> invariants.ads:25:13
+      + for The_Stack before the call at invariants.adb:27
+
+ info: invariant check proved on default value
+--> invariants.ads:31:09
+
+ info: implicit aspect Always_Terminates on "Is_Valid" has been proved, subprogram will terminate
+--> invariants.ads:38:13
+
+ info: index check proved
+--> invariants.ads:39:47
+
+ info: index check proved
+--> invariants.ads:41:57
+
+ medium: type "Stack_2" is not fully initialized
+--> invariants.ads:47:04
+   47 |       type Stack_2 is record
+      |       ^~~~~~~~~~~~~~~~~~~~~~
+      :
+   53 |           (for all I in 1 .. Stack_2.Size => Stack_2.Content (I) <= Stack_2.Max);
+      |           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ info: invariant check proved on default value
+--> invariants.ads:47:09
+
+ info: index check proved
+--> invariants.ads:53:60

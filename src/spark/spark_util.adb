@@ -57,6 +57,7 @@ with Sem_Type;                    use Sem_Type;
 with Sinfo.Utils;                 use Sinfo.Utils;
 with Stand;                       use Stand;
 with Stringt;                     use Stringt;
+with VC_Kinds;                    use VC_Kinds;
 
 package body SPARK_Util is
 
@@ -534,6 +535,10 @@ package body SPARK_Util is
    --  class-wide type, and corresponding calls to primitive subprograms are
    --  dispatching calls.
 
+   Call_Simulating_Contract_Dispatch : Node_Sets.Set;
+   --  Set registering individual function calls used to simulate resolution of
+   --  contract during dispatching calls.
+
    At_End_Borrow_Call_Map : Node_Maps.Map;
    --  Map from calls to functions annotated with At_End_Borrow to the related
    --  borrower entity.
@@ -593,6 +598,16 @@ package body SPARK_Util is
       At_End_Borrow_Call_Map.Insert (Call, Borrower, Position, Inserted);
       pragma Assert (Inserted or else Node_Maps.Element (Position) = Borrower);
    end Set_At_End_Borrow_Call;
+
+   ------------------------------------------
+   -- Set_Call_Simulates_Contract_Dispatch --
+   ------------------------------------------
+
+   procedure Set_Call_Simulates_Contract_Dispatch (N : Node_Id)
+   is
+   begin
+      Call_Simulating_Contract_Dispatch.Insert (N);
+   end Set_Call_Simulates_Contract_Dispatch;
 
    ------------------------------
    -- Set_Dispatching_Contract --
@@ -701,8 +716,7 @@ package body SPARK_Util is
 
    function Attr_Constrained_Statically_Known (N : Node_Id) return Boolean is
      (Nkind (N) not in N_Expanded_Name | N_Identifier
-      or else Ekind (Entity (N)) not in
-        E_Variable | E_Out_Parameter | E_In_Out_Parameter
+      or else Ekind (Entity (N)) not in E_Out_Parameter | E_In_Out_Parameter
       --  As an extension to Ada, GNAT allows Constrained on any object of a
       --  generic formal type. Unless the object has a type with discriminants,
       --  the result is statically True.
@@ -725,6 +739,16 @@ package body SPARK_Util is
       or else Is_Aliased (Obj)
       or else (Ekind (Obj) = E_In_Parameter
         and then Is_Access_Variable (Etype (Obj))));
+
+   --------------------------------------
+   -- Call_Simulates_Contract_Dispatch --
+   --------------------------------------
+
+   function Call_Simulates_Contract_Dispatch (N : Node_Id) return Boolean
+   is
+   begin
+      return Call_Simulating_Contract_Dispatch.Contains (N);
+   end Call_Simulates_Contract_Dispatch;
 
    ----------------------
    -- Canonical_Entity --
@@ -937,14 +961,16 @@ package body SPARK_Util is
 
          if Output_Info then
             if Result /= No_Unrolling then
-               Error_Msg_N ("unrolling loop",
+               Error_Msg_N ("unrolling loop"
+                            & Tag_Suffix (Warn_Info_Unrolling_Inlining),
                             Loop_Stmt,
                             Kind => Info_Kind);
 
             else
                pragma Assert (Reason /= "");
                Error_Msg_N
-                 ("cannot unroll loop (" & To_String (Reason) & ")",
+                 ("cannot unroll loop (" & To_String (Reason) & ")"
+                  & Tag_Suffix (Warn_Info_Unrolling_Inlining),
                   Loop_Stmt,
                   Secondary_Loc => Secondary_Loc,
                   Kind          => Info_Kind);
@@ -1178,6 +1204,7 @@ package body SPARK_Util is
       --  to non-ghost code.
 
       if Is_Ghost_Assignment (Stmt)
+        or else Is_Ghost_Declaration (Stmt)
         or else Is_Ghost_Procedure_Call (Stmt)
       then
          declare
@@ -2401,6 +2428,7 @@ package body SPARK_Util is
       --  to non-ghost code.
 
       if Is_Ghost_Assignment (Stmt)
+        or else Is_Ghost_Declaration (Stmt)
         or else Is_Ghost_Procedure_Call (Stmt)
       then
          declare
@@ -2577,6 +2605,29 @@ package body SPARK_Util is
 
       return Buf.Chars (2 .. Buf.Length - 1);
    end Get_Operator_Symbol;
+
+   ----------------------
+   -- Get_Program_Exit --
+   ----------------------
+
+   function Get_Program_Exit (E : Entity_Id) return Node_Id is
+      Prag : constant Node_Id := Get_Pragma (E, Pragma_Program_Exit);
+   begin
+      if No (Prag) then
+         return Empty;
+      end if;
+
+      declare
+         Assoc : constant List_Id := Pragma_Argument_Associations (Prag);
+
+      begin
+         if No (Assoc) then
+            return Empty;
+         end if;
+
+         return Expression (First (Assoc));
+      end;
+   end Get_Program_Exit;
 
    ---------------------------
    -- Get_Raised_Exceptions --
@@ -2878,6 +2929,65 @@ package body SPARK_Util is
    function Has_Exceptional_Contract (E : Entity_Id) return Boolean is
      (not Get_Exceptions_For_Subp (E).Is_Empty);
 
+   ----------------------
+   -- Has_Program_Exit --
+   ----------------------
+
+   function Has_Program_Exit (E : Entity_Id) return Boolean is
+      Prog_Prag : constant Node_Id := Get_Pragma (E, Pragma_Program_Exit);
+      Exit_Prag : constant Node_Id := Get_Pragma (E, Pragma_Exit_Cases);
+
+   begin
+      if Present (Prog_Prag) then
+         declare
+            Assoc : constant List_Id :=
+              Pragma_Argument_Associations (Prog_Prag);
+            pragma Assert (No (Assoc) or else List_Length (Assoc) = 1);
+            Post  : constant Node_Id :=
+              (if No (Assoc) then Empty else Expression (First (Assoc)));
+         begin
+            return No (Post)
+              or else not Compile_Time_Known_Value (Post)
+              or else not Is_False (Expr_Value (Post));
+         end;
+
+      --  If no program exit contract is supplied but there is an exit cases,
+      --  use it to infer whether E might exit the program.
+
+      elsif Present (Exit_Prag) then
+         declare
+            Aggr      : constant Node_Id :=
+              Expression (First (Pragma_Argument_Associations (Exit_Prag)));
+            Exit_Case : Node_Id :=
+              First (Component_Associations (Aggr));
+         begin
+            while Present (Exit_Case) loop
+               declare
+                  Exit_Kind : constant Node_Id := Expression (Exit_Case);
+               begin
+                  case Nkind (Exit_Kind) is
+                     when N_Identifier =>
+                        if Chars (Exit_Kind) = Name_Program_Exit then
+                           return True;
+                        end if;
+
+                     when N_Aggregate =>
+                        null;
+
+                     when others =>
+                        raise Program_Error;
+                  end case;
+               end;
+               Next (Exit_Case);
+            end loop;
+         end;
+         return False;
+
+      else
+         return False;
+      end if;
+   end Has_Program_Exit;
+
    ------------------
    -- Has_Volatile --
    ------------------
@@ -3060,14 +3170,30 @@ package body SPARK_Util is
       --  Search for the ultimate root of the borrow
 
       loop
-         Root := Get_Root_Object (Expression (Parent (Root)));
+         declare
+            Expr : constant Node_Id := Expression (Parent (Root));
+         begin
+            --  On illegal SPARK code, local borrowers might not have initial
+            --  expressions or the initial expression might not be a path or
+            --  not have a root. Return False in this case.
+
+            if No (Expr) or else not Is_Path_Expression (Expr) then
+               return False;
+            end if;
+            Root := Get_Root_Object (Expr);
+
+            if No (Root) then
+               return False;
+            end if;
+         end;
+
          exit when not Is_Local_Borrower (Root);
       end loop;
 
       --  Return True if it is the first parameter of a borrowing traversal
       --  function.
 
-      return Ekind (Root) = E_In_Parameter
+      return Ekind (Root) in E_In_Parameter | E_In_Out_Parameter
         and then Is_Borrowing_Traversal_Function (Scope (Root))
         and then Root = First_Formal (Scope (Root));
    end Is_Constant_Borrower;
@@ -3097,6 +3223,12 @@ package body SPARK_Util is
          when E_Constant =>
             return Comes_From_Declare_Expr (E)
               or else not Is_Access_Variable (Etype (E));
+
+         --  The first parameter of a borrowing traversal functions might be an
+         --  IN OUT parameter.
+
+         when E_In_Out_Parameter =>
+            return Is_Borrowing_Traversal_Function (Scope (E));
          when others =>
             return False;
       end case;
@@ -3644,11 +3776,28 @@ package body SPARK_Util is
    end Is_In_Statically_Dead_Branch;
 
    -----------------------
+   -- Is_In_Toplevel_Move --
+   -----------------------
+
+   function Is_In_Toplevel_Move (N : N_Subexpr_Id) return Boolean is
+      Context : constant Node_Id := Parent (N);
+   begin
+      return
+        Nkind (Context) in N_Assignment_Statement
+                         | N_Object_Declaration
+                         | N_Simple_Return_Statement
+          and then Present (Expression (Context))
+          and then Expression (Context) = N
+          and then Nkind (Parent (Context)) /=
+          N_Expression_With_Actions;
+   end Is_In_Toplevel_Move;
+
+   -----------------------
    -- Is_Local_Borrower --
    -----------------------
 
    function Is_Local_Borrower (E : Entity_Id) return Boolean is
-      T : constant Entity_Id := Retysp (Etype (E));
+      T : constant Entity_Id := Etype (E);
    begin
       return Ekind (E) in E_Variable | E_Constant
         and then Is_Anonymous_Access_Object_Type (T)
@@ -3915,6 +4064,54 @@ package body SPARK_Util is
             return Is_Path_Expression_Ann (Expr);
       end case;
    end Is_Path_Expression;
+
+   ----------------------------
+   -- Is_Potentially_Invalid --
+   ----------------------------
+
+   function Is_Potentially_Invalid (E : Entity_Id) return Boolean is
+   begin
+      case Ekind (E) is
+         when E_Variable | Formal_Kind | E_Function =>
+            return Has_Potentially_Invalid (E);
+
+         when E_Constant =>
+            if Is_Full_View (E) then
+               return Has_Potentially_Invalid (Partial_View (E));
+            else
+               return Has_Potentially_Invalid (E);
+            end if;
+
+         when others =>
+            return False;
+      end case;
+   end Is_Potentially_Invalid;
+
+   ---------------------------------
+   -- Is_Potentially_Invalid_Expr --
+   ---------------------------------
+
+   function Is_Potentially_Invalid_Expr (Expr : Node_Id) return Boolean is
+   begin
+      case Nkind (Expr) is
+         when N_Identifier | N_Expanded_Name =>
+            return Is_Potentially_Invalid (Entity (Expr));
+
+         when N_Function_Call =>
+            return Is_Potentially_Invalid (Get_Called_Entity (Expr));
+
+         when N_Attribute_Reference =>
+            return (Attribute_Name (Expr) in Name_Old | Name_Loop_Entry
+                    and then Is_Potentially_Invalid_Expr (Prefix (Expr))
+                    and then not Has_Scalar_Type (Etype (Expr)))
+              or else
+                (Attribute_Name (Expr) = Name_Result
+                 and then Is_Potentially_Invalid (Entity (Prefix (Expr))));
+
+         when others =>
+            return False;
+      end case;
+   end Is_Potentially_Invalid_Expr;
 
    ---------------
    -- Is_Pragma --
@@ -4410,7 +4607,8 @@ package body SPARK_Util is
 
    function Is_Writable_Parameter (E : Entity_Id) return Boolean is
    begin
-      return Is_Access_Variable (Base_Type (Etype (E)));
+      return Is_Access_Variable (Base_Type (Etype (E)))
+        or else Has_Mutable_In_Param_Annotation (E);
    end Is_Writable_Parameter;
 
    --------------------------------
@@ -5164,6 +5362,54 @@ package body SPARK_Util is
       end if;
    end May_Issue_Warning_On_Node;
 
+   ------------------------
+   -- Might_Exit_Program --
+   ------------------------
+
+   function Might_Exit_Program (Call : Node_Id) return Boolean is
+      function Is_Body (N : Node_Id) return Boolean is
+        (Nkind (N) in N_Entity_Body);
+
+      function Enclosing_Body is
+        new First_Parent_With_Property (Is_Body);
+
+      Callee : constant Entity_Id := Get_Called_Entity (Call);
+
+   begin
+      if Has_Program_Exit (Callee) then
+
+         --  Ghost function and procedure calls shall never exit the program
+
+         declare
+            Stmt   : constant Node_Id :=
+              (if Nkind (Call) = N_Function_Call
+               then Enclosing_Statement_Of_Call_To_Function_With_Side_Effects
+                 (Call)
+               else Call);
+         begin
+            if Is_Ghost_Assignment (Stmt)
+              or else Is_Ghost_Declaration (Stmt)
+              or else Is_Ghost_Procedure_Call (Stmt)
+            then
+               return False;
+            end if;
+         end;
+
+         --  A call to a function annotated with Program_Exit might exit the
+         --  program if it is located directly inside a subprogram annotated
+         --  with Program_Exit.
+
+         declare
+            Scop : constant Node_Id := Enclosing_Body (Call);
+         begin
+            return Present (Scop)
+              and then Has_Program_Exit (Unique_Defining_Entity (Scop));
+         end;
+      end if;
+
+      return False;
+   end Might_Exit_Program;
+
    ---------------------
    -- No_Deep_Updates --
    ---------------------
@@ -5599,7 +5845,7 @@ package body SPARK_Util is
 
    function Path_Contains_Witness
      (Expr : N_Subexpr_Id;
-      Test : access function (N : Node_Id) return Boolean)
+      Test : not null access function (N : Node_Id) return Boolean)
       return Boolean
    is
       function Path_Contains_Auxiliary (Subpath : N_Subexpr_Id) return Boolean;
@@ -5691,6 +5937,45 @@ package body SPARK_Util is
             return Path_Contains_Auxiliary (Expr);
       end case;
    end Path_Contains_Witness;
+
+   ------------------------------
+   -- Propagates_Validity_Flag --
+   ------------------------------
+
+   function Propagates_Validity_Flag (N : Node_Id) return Boolean is
+   begin
+      case Nkind (N) is
+         when N_Object_Declaration =>
+            return Present (Expression (N))
+              and then
+                (Nkind (Expression (N)) = N_Function_Call
+                 or else not Has_Scalar_Type (Etype (Defining_Identifier (N))))
+              and then Is_Potentially_Invalid (Defining_Identifier (N));
+
+         when N_Assignment_Statement =>
+            return
+              (Nkind (Expression (N)) = N_Function_Call
+               or else not Has_Scalar_Type (Etype (Name (N))))
+              and then Is_Potentially_Invalid (Get_Root_Object (Name (N)));
+
+         --  N should be an actual parameter of a call
+
+         when others =>
+
+            declare
+               Call   : Node_Id;
+               Formal : Entity_Id;
+            begin
+               Find_Actual (N, Formal, Call);
+
+               return Present (Call)
+                 and then Ekind (Formal) in E_In_Out_Parameter
+                                          | E_Out_Parameter
+                 and then Is_Potentially_Invalid (Formal)
+                 and then Is_Potentially_Invalid (Get_Root_Object (N));
+            end;
+      end case;
+   end Propagates_Validity_Flag;
 
    ------------------------
    -- Reachable_Handlers --

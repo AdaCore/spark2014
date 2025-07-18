@@ -380,11 +380,11 @@ to store the elements in a structure not subject to ownership like an array.
    executed. It could be implemented in |SPARK| by returning a deep copy of the
    argument list, reallocating all cells of the list in the result.
 
-.. literalinclude:: /examples/ug__long__map_access_list_incr_copy/p.ads
+.. literalinclude:: /examples/ug__map_access_list_incr_copy/p.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: /examples/ug__long__map_access_list_incr_copy/p.adb
+.. literalinclude:: /examples/ug__map_access_list_incr_copy/p.adb
    :language: ada
    :linenos:
 
@@ -406,7 +406,7 @@ elements of ``L``. The loop invariant in the middle states that the elements
 reachable through ``B`` have not been modified by the loop. |GNATprove| can
 verify these loop invariants as well as the postcondition of ``Map_List_Incr``:
 
-.. literalinclude:: /examples/ug__long__map_access_list_incr_copy/test.out
+.. literalinclude:: /examples/ug__map_access_list_incr_copy/test.out
    :language: none
 
 .. note::
@@ -935,11 +935,11 @@ to store the elements in a structure not subject to ownership like an array.
    executed. It could be implemented in |SPARK| by returning a deep copy of the
    argument list, reallocating all cells of the list in the result.
 
-.. literalinclude:: /examples/ug__long__update_access_list_zero/p.ads
+.. literalinclude:: /examples/ug__update_access_list_zero/p.ads
    :language: ada
    :linenos:
 
-.. literalinclude:: /examples/ug__long__update_access_list_zero/p.adb
+.. literalinclude:: /examples/ug__update_access_list_zero/p.adb
    :language: ada
    :linenos:
 
@@ -966,7 +966,7 @@ through ``B`` are related to their equivalent element in ``B_Old`` through
 |GNATprove| can verify these invariants as well as the postcondition of
 ``Update_List_Zero``:
 
-.. literalinclude:: /examples/ug__long__update_access_list_zero/test.out
+.. literalinclude:: /examples/ug__update_access_list_zero/test.out
    :language: none
 
 The second pattern of update loops that we consider now is the one that updates

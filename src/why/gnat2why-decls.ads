@@ -35,6 +35,7 @@ package Gnat2Why.Decls is
    with Pre => Ekind (E) in E_Constant
                           | E_Discriminant
                           | E_In_Parameter
+                          | E_In_Out_Parameter
                  or else
                Is_Quantified_Loop_Param (E);
    --  Generate a function declaration for objects that appear as constant

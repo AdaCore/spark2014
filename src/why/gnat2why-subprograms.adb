@@ -26,7 +26,6 @@
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Atree;
-with Debug;
 with Errout_Wrapper;                 use Errout_Wrapper;
 with Exp_Util;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
@@ -39,6 +38,7 @@ with Gnat2Why.Data_Decomposition;    use Gnat2Why.Data_Decomposition;
 with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;                  use Gnat2Why.Expr;
 with Gnat2Why.Tables;                use Gnat2Why.Tables;
+with Gnat2Why.Unchecked_Conversion;  use Gnat2Why.Unchecked_Conversion;
 with Gnat2Why_Args;
 with Namet;                          use Namet;
 with Nlists;                         use Nlists;
@@ -196,15 +196,18 @@ package body Gnat2Why.Subprograms is
    --  to define this identifier. If there is no "others" case, return with
    --  Others_Guard_Ident set to Why_Empty.
 
-   function Compute_Exit_Cases_Normal_Return_Checks
+   function Compute_Exit_Cases_Simple_Checks
      (E                  : Entity_Id;
+      Name               : Name_Id;
       Guard_Map          : Ada_To_Why_Ident.Map;
       Others_Guard_Ident : W_Identifier_Id) return W_Prog_Id;
    --  Returns in Result the Why program for checking the exit kind of
    --  enabled guard of the Exit_Cases pragma attached to subprogram E (if
-   --  any) on normal return. Guard_Map stores a mapping from guard AST nodes
+   --  any) on exit kind Name. Guard_Map stores a mapping from guard AST nodes
    --  to temporary Why names, so that the caller can compute the Why
-   --  expression for these in the pre-state, and bind them appropriately.
+   --  expression for these in the pre-state, and bind them appropriately. This
+   --  only works for "simple" exit kinds like Normal_Return and Program_Exit,
+   --  not for Raised_Exception which might be associated to a value.
 
    function Compute_Exit_Cases_Exceptional_Exit_Checks
      (E                  : Entity_Id;
@@ -217,12 +220,15 @@ package body Gnat2Why.Subprograms is
    --  nodes to temporary Why names, so that the caller can compute the Why
    --  expression for these in the pre-state, and bind them appropriately.
 
-   function Compute_Exit_Cases_Normal_Post
+   function Compute_Exit_Cases_Simple_Post
      (Params : Transformation_Params;
-      E      : Entity_Id)
+      E      : Entity_Id;
+      Name   : Name_Id)
       return W_Pred_Id;
-   --  Returns the postcondition corresponding to the Exit_Cases pragma for
-   --  subprogram E (if any).
+   --  Returns the postcondition for the exit kind Name corresponding to the
+   --  Exit_Cases pragma for subprogram E (if any). This only works for
+   --  "simple" exit kinds like Normal_Return and Program_Exit, not for
+   --  Raised_Exception which might be associated to a value.
 
    function Compute_Exit_Cases_Exceptional_Post
      (Params : Transformation_Params;
@@ -249,6 +255,15 @@ package body Gnat2Why.Subprograms is
    --  Returns the postcondition corresponding to the Exceptional_Cases pragma
    --  for subprogram E (if any), to be used in the raises effect of the
    --  program function.
+
+   function Compute_Program_Exit_Postcondition
+     (Params : Transformation_Params;
+      E      : Callable_Kind_Id)
+      return W_Pred_Id
+   with Pre => Has_Program_Exit (E);
+   --  Returns the postcondition corresponding to the Program_Exit pragma for
+   --  subprogram E (if any), to be used in the raises effect of the program
+   --  function.
 
    function Compute_Dynamic_Property_For_Effects
      (E           : Entity_Id;
@@ -417,6 +432,12 @@ package body Gnat2Why.Subprograms is
    --  borrow (if it contains a call to a pledge function). Introduce bindings
    --  for them.
 
+   function Wrap_Post_Of_Potentially_Invalid
+     (E    : Entity_Id;
+      Post : W_Pred_Id) return W_Pred_Id;
+   --  Introduce bindings for the value part and the validity flag of functions
+   --  with a potentially invalid result.
+
    ----------------------------------------------
    -- Assume_Initial_Condition_Of_Withed_Units --
    ----------------------------------------------
@@ -476,8 +497,7 @@ package body Gnat2Why.Subprograms is
             --  Otherwise raise a warning if --info is given and there is an
             --  Initial_Condition.
 
-            elsif Debug.Debug_Flag_Underscore_F
-              and then Nkind (Withed_Unit) = N_Package_Declaration
+            elsif Nkind (Withed_Unit) = N_Package_Declaration
             then
                declare
                   Init_Cond : constant Node_Id :=
@@ -487,12 +507,10 @@ package body Gnat2Why.Subprograms is
                     and then (Ekind (Main) /= E_Package_Body
                               or else Withed /= Unique_Entity (Main))
                   then
-                     Error_Msg_N
-                       (Create
-                          ("Initial_Condition of package & is ignored",
-                           Names => [Withed]),
+                     Warning_Msg_N
+                       (Warn_Init_Cond_Ignored,
                         Main,
-                        Kind => Info_Kind,
+                        Names => [Withed],
                         Continuations =>
                           [Create
                                ("the elaboration of & is not known to precede"
@@ -860,6 +878,8 @@ package body Gnat2Why.Subprograms is
          else Get_Pragma (E, Pragma_Contract_Cases));
       EC_Prag   : constant Node_Id :=
         Get_Pragma (E, Pragma_Exceptional_Cases);
+      PE_Prag   : constant Node_Id :=
+        Get_Pragma (E, Pragma_Program_Exit);
       Post_List : constant Node_Lists.List :=
         Find_Contracts (E, Pragma_Postcondition);
    begin
@@ -911,7 +931,7 @@ package body Gnat2Why.Subprograms is
 
       --  Go over exceptional cases to collect the old attributes
 
-      if  Present (EC_Prag) then
+      if Present (EC_Prag) then
          declare
             Aggr             : constant Node_Id :=
               Expression (First (Pragma_Argument_Associations (EC_Prag)));
@@ -923,6 +943,18 @@ package body Gnat2Why.Subprograms is
 
                Next (Exceptional_Case);
             end loop;
+         end;
+      end if;
+
+      --  Collect the old attributes in the program exit contract
+
+      if Present (PE_Prag) then
+         declare
+            Assoc : constant List_Id := Pragma_Argument_Associations (PE_Prag);
+         begin
+            if Present (Assoc) then
+               Collect_Old_Parts (Expression (First (Assoc)), Old_Parts);
+            end if;
          end;
       end if;
    end Collect_Old_For_Subprogram;
@@ -1076,6 +1108,7 @@ package body Gnat2Why.Subprograms is
                     Local    => True,
                     Init     => <>,
                     Is_Moved => <>,
+                    Valid    => <>,
                     Main     => Unit_Param));
       else
          return Binders;
@@ -1117,7 +1150,8 @@ package body Gnat2Why.Subprograms is
    is
      (New_And_Pred
         (Left  => Compute_Contract_Cases_Postcondition (Params, E),
-         Right => Compute_Exit_Cases_Normal_Post (Params, E)));
+         Right => Compute_Exit_Cases_Simple_Post
+           (Params, E, Name_Normal_Return)));
 
    -----------------------------------------
    -- Compute_Dynamic_Property_For_Inputs --
@@ -1278,6 +1312,8 @@ package body Gnat2Why.Subprograms is
                           Ty             => Ada_Type,
                           Params         => Params,
                           Initialized    => Init_Expr,
+                          Valid          => Get_Valid_Id_From_Item
+                            (Func_Why_Binders (I), Params.Ref_Allowed),
                           All_Global_Inv => All_Global_Inv);
                   begin
                      Dynamic_Prop_Effects := +New_And_Expr
@@ -1304,6 +1340,8 @@ package body Gnat2Why.Subprograms is
                           Domain => EW_Term),
                        Ty             => Ada_Type,
                        Params         => Params,
+                       Valid          => Get_Valid_Id_From_Item
+                         (Func_Why_Binders (I), Params.Ref_Allowed),
                        All_Global_Inv => All_Global_Inv);
                begin
                   Dynamic_Prop_Effects := +New_And_Expr
@@ -1341,12 +1379,14 @@ package body Gnat2Why.Subprograms is
                         Dyn_Prop : constant W_Pred_Id :=
                           Compute_Dynamic_Invariant
                             (Expr        =>
-                               +Transform_Identifier (Params   => Params,
-                                                      Expr     => Entity,
-                                                      Ent      => Entity,
-                                                      Domain   => EW_Term),
+                               +Transform_Identifier (Params => Params,
+                                                      Expr   => Entity,
+                                                      Ent    => Entity,
+                                                      Domain => EW_Term),
                              Ty          => Etype (Entity),
-                             Params      => Params,
+                             Params         => Params,
+                             Valid          => Get_Valid_Id_From_Object
+                               (Entity, Params.Ref_Allowed),
                              Initialized =>
                                (if Init_Id /= Why_Empty then +Init_Id
                                 else True_Term));
@@ -1599,10 +1639,12 @@ package body Gnat2Why.Subprograms is
             Dyn_Prop : constant W_Pred_Id :=
               (if Present (Ty_Node)
                then Compute_Dynamic_Inv_And_Initialization
-                 (Expr     => +Expr,
-                  Ty       => Ty_Node,
-                  Params   => Params,
-                  Only_Var => False_Term,
+                 (Expr           => +Expr,
+                  Ty             => Ty_Node,
+                  Params         => Params,
+                  Valid          => Get_Valid_Id_From_Item
+                    (B, Params.Ref_Allowed),
+                  Only_Var       => False_Term,
                   All_Global_Inv => All_Global_Inv
                     or else Ekind (Ada_Node) not in Formal_Kind
                     or else Enclosing_Unit (Ada_Node) /= Current_Subp)
@@ -1747,6 +1789,74 @@ package body Gnat2Why.Subprograms is
       return Outputs;
    end Compute_Outputs_With_Allocated_Parts;
 
+   ----------------------------------------
+   -- Compute_Program_Exit_Postcondition --
+   ----------------------------------------
+
+   function Compute_Program_Exit_Postcondition
+     (Params : Transformation_Params;
+      E      : Callable_Kind_Id)
+      return W_Pred_Id
+   is
+      Outputs   : constant Flow_Id_Sets.Set :=
+        Get_Outputs_From_Program_Exit (E, E);
+      Dyn_Props : W_Pred_Array (1 .. Natural (Outputs.Length));
+      Top       : Natural := 0;
+
+   begin
+      --  First compute the dynamic invariant (and potentially type invariant)
+      --  of globals mentioned in the Program_Exit post of E.
+
+      for F of Outputs loop
+         pragma Assert (F.Kind in Direct_Mapping | Magic_String);
+
+         --  Magic_String are global state with no attached entities. As
+         --  such state is translated as private in Why3, we do not need
+         --  to consider any dynamic invariant or type invariant for it.
+
+         if F.Kind = Direct_Mapping then
+
+            --  Concurrent self should not occur here
+            pragma Assert (Is_Object (Get_Direct_Mapping_Id (F)));
+
+            declare
+               Binder   : constant Item_Type :=
+                 Ada_Ent_To_Why.Element
+                   (Symbol_Table, Get_Direct_Mapping_Id (F));
+               Ada_Type : constant Entity_Id := Get_Ada_Type_From_Item
+                 (Binder);
+               Expr     : constant W_Term_Id :=
+                 Reconstruct_Item
+                   (Binder, Ref_Allowed => Params.Ref_Allowed);
+            begin
+               Top := Top + 1;
+               Dyn_Props (Top) := New_And_Pred
+                 (Left  => Compute_Dynamic_Inv_And_Initialization
+                    (Expr   => Expr,
+                     Ty     => Ada_Type,
+                     Params => Params,
+                     Valid   => Get_Valid_Id_From_Item
+                       (Binder, Params.Ref_Allowed)),
+                  Right => Compute_Type_Invariant
+                    (Expr   => Expr,
+                     Ty     => Ada_Type,
+                     Params => Params,
+                     Kind   => For_Check,
+                     Scop   => E));
+            end;
+         end if;
+      end loop;
+
+      --  Also include the program exit postcondition itself if any
+
+      return New_And_Pred
+        (Left  => New_And_Pred (Dyn_Props (1 .. Top)),
+         Right =>
+           (if Present (Get_Program_Exit (E))
+            then Transform_Pred (Get_Program_Exit (E), Params)
+            else True_Pred));
+   end Compute_Program_Exit_Postcondition;
+
    ------------------------------------
    -- Compute_Subprogram_Parameters  --
    ------------------------------------
@@ -1867,6 +1977,7 @@ package body Gnat2Why.Subprograms is
                Local    => True,
                Init     => <>,
                Is_Moved => <>,
+               Valid    => <>,
                Main     => Concurrent_Self_Binder
                  (Prot, Mutable => Ekind (E) /= E_Function));
             Count := 2;
@@ -1887,6 +1998,7 @@ package body Gnat2Why.Subprograms is
                Local    => True,
                Init     => <>,
                Is_Moved => <>,
+               Valid    => <>,
                Main     => Unit_Param (Short_Name (Formal), Formal));
          else
             Result (Count) := Mk_Item_Of_Entity
@@ -2565,7 +2677,7 @@ package body Gnat2Why.Subprograms is
                         when Name_Exception_Raised =>
                            null;
 
-                        when Name_Normal_Return =>
+                        when Name_Normal_Return | Name_Program_Exit =>
                            Append
                              (Result, New_Ignore
                                 (Prog => New_Located_Assert
@@ -2717,9 +2829,9 @@ package body Gnat2Why.Subprograms is
       end;
    end Compute_Exit_Cases_Exceptional_Post;
 
-   ------------------------------------
-   -- Compute_Exit_Cases_Normal_Post --
-   ------------------------------------
+   --------------------------------------
+   -- Compute_Exit_Cases_Simple_Checks --
+   --------------------------------------
 
    --  Pragma/aspect Exit_Cases (Guard1 => Exit_Kind1,
    --                            Guard2 => Exit_Kind2,
@@ -2727,114 +2839,14 @@ package body Gnat2Why.Subprograms is
    --                            GuardN => Exit_KindN
    --                          [,OTHERS => Exit_KindN+1]);
 
-   --  leads to the generation of a normal postcondition for the corresponding
-   --  Why program function.
+   --  leads to the generation of checks on exit kind Name. It is checked that
+   --  the guards that are not associated to Name evaluates to False.
 
-   --  If the this no OTHERS case or the OTHERS case in Normal_Return,
-   --  generate:
-   --
-   --  /\ not (old guardi)  --  if Exit_Kindi is not Normal_Return
-   --
-   --  Otherwise, generate:
-   --
-   --  \/ old guardi        --  if Exit_Kindi is Normal_Return
+   --  pragma Assert (not guardi); --  if Exit_Kindi is not Name
 
-   function Compute_Exit_Cases_Normal_Post
-     (Params : Transformation_Params;
-      E      : Entity_Id)
-      return W_Pred_Id
-   is
-      Prag : constant Node_Id := Get_Pragma (E, Pragma_Exit_Cases);
-
-   begin
-      --  If no Exit_Cases on this subprogram, return
-
-      if No (Prag) then
-         return True_Pred;
-      end if;
-
-      --  Process individual exit cases in reverse order, to see the others
-      --  case before the rest.
-
-      declare
-         Aggr           : constant Node_Id :=
-           Expression (First (Pragma_Argument_Associations (Prag)));
-         Assocs         : constant List_Id := Component_Associations (Aggr);
-         Exit_Case      : Node_Id := Last (Assocs);
-         Num_Cases      : constant Positive := Positive (List_Length (Assocs));
-         Others_Normal  : Boolean := True;
-         --  Set to False if we find an OTHERS choice which is not
-         --  Normal_Return.
-         Guards         : W_Pred_Array (1 .. Num_Cases);
-         Top            : Natural := 0;
-         Result         : W_Pred_Id;
-
-      begin
-         while Present (Exit_Case) loop
-            declare
-               Case_Guard : constant Node_Id :=
-                 First (Choice_List (Exit_Case));
-               Exit_Kind  : constant Node_Id := Expression (Exit_Case);
-               Is_Normal  : Boolean;
-            begin
-               case Nkind (Exit_Kind) is
-                  when N_Identifier =>
-                     Is_Normal := Chars (Exit_Kind) = Name_Normal_Return;
-
-                  when N_Aggregate =>
-                     Is_Normal := False;
-
-                  when others =>
-                     raise Program_Error;
-               end case;
-
-               --  If we have an OTHERS choice, set Others_Normal
-
-               if Nkind (Case_Guard) = N_Others_Choice then
-                  Others_Normal := Is_Normal;
-
-               --  Otherwise, aggregate guards of cases which are not the same
-               --  as the OTHERS choice.
-
-               elsif Is_Normal /= Others_Normal then
-                  Top := Top + 1;
-                  Guards (Top) :=
-                    +Transform_Attribute_Old (Case_Guard, EW_Pred, Params);
-               end if;
-            end;
-            Prev (Exit_Case);
-         end loop;
-
-         Result := New_Or_Pred (Guards (1 .. Top));
-
-         --  If Others_Normal is set, then we have aggregated guards for
-         --  abnormal termination. We need to add a negation.
-
-         if Others_Normal then
-            Result := New_Not (Right => Result);
-         end if;
-
-         return Result;
-      end;
-   end Compute_Exit_Cases_Normal_Post;
-
-   ---------------------------------------------
-   -- Compute_Exit_Cases_Normal_Return_Checks --
-   ---------------------------------------------
-
-   --  Pragma/aspect Exit_Cases (Guard1 => Exit_Kind1,
-   --                            Guard2 => Exit_Kind2,
-   --                               ...
-   --                            GuardN => Exit_KindN
-   --                          [,OTHERS => Exit_KindN+1]);
-
-   --  leads to the generation of checks on normal return. It is checked that
-   --  the guards that are not associated to Normal_Return evaluates to False.
-
-   --  pragma Assert (not guardi); --  if Exit_Kindi is not Normal_Return
-
-   function Compute_Exit_Cases_Normal_Return_Checks
+   function Compute_Exit_Cases_Simple_Checks
      (E                  : Entity_Id;
+      Name               : Name_Id;
       Guard_Map          : Ada_To_Why_Ident.Map;
       Others_Guard_Ident : W_Identifier_Id) return W_Prog_Id
    is
@@ -2856,12 +2868,16 @@ package body Gnat2Why.Subprograms is
          Exit_Case  : Node_Id :=
            First (Component_Associations (Aggr));
          Check_Info : Check_Info_Type := New_Check_Info;
+         Loc        : constant String :=
+           (case Name is
+               when Name_Normal_Return => "on normal return",
+               when Name_Program_Exit  => "on program exit",
+               when others             => raise Program_Error);
 
       begin
          Check_Info.Continuation.Append
            (Continuation_Type'
-              (E, To_Unbounded_String
-                   ("on normal return from " & Source_Name (E))));
+              (E, To_Unbounded_String (Loc & " from " & Source_Name (E))));
 
          while Present (Exit_Case) loop
             declare
@@ -2877,16 +2893,7 @@ package body Gnat2Why.Subprograms is
             begin
                case Nkind (Exit_Kind) is
                   when N_Identifier =>
-                     case Chars (Exit_Kind) is
-                        when Name_Exception_Raised =>
-                           Exclude := True;
-
-                        when Name_Normal_Return =>
-                           Exclude := False;
-
-                        when others =>
-                           raise Program_Error;
-                     end case;
+                     Exclude := Chars (Exit_Kind) /= Name;
 
                   when N_Aggregate =>
                      Exclude := True;
@@ -2911,7 +2918,107 @@ package body Gnat2Why.Subprograms is
       end;
 
       return Result;
-   end Compute_Exit_Cases_Normal_Return_Checks;
+   end Compute_Exit_Cases_Simple_Checks;
+
+   ------------------------------------
+   -- Compute_Exit_Cases_Simple_Post --
+   ------------------------------------
+
+   --  Pragma/aspect Exit_Cases (Guard1 => Exit_Kind1,
+   --                            Guard2 => Exit_Kind2,
+   --                               ...
+   --                            GuardN => Exit_KindN
+   --                          [,OTHERS => Exit_KindN+1]);
+
+   --  leads to the generation of a normal postcondition for the corresponding
+   --  Why program function.
+
+   --  If the this no OTHERS case or the OTHERS case is Name, generate:
+   --
+   --  /\ not (old guardi)  --  if Exit_Kindi is not Name
+   --
+   --  Otherwise, generate:
+   --
+   --  \/ old guardi        --  if Exit_Kindi is Name
+
+   function Compute_Exit_Cases_Simple_Post
+     (Params : Transformation_Params;
+      E      : Entity_Id;
+      Name   : Name_Id)
+      return W_Pred_Id
+   is
+      Prag : constant Node_Id := Get_Pragma (E, Pragma_Exit_Cases);
+
+   begin
+      --  If no Exit_Cases on this subprogram, return
+
+      if No (Prag) then
+         return True_Pred;
+      end if;
+
+      --  Process individual exit cases in reverse order, to see the others
+      --  case before the rest.
+
+      declare
+         Aggr           : constant Node_Id :=
+           Expression (First (Pragma_Argument_Associations (Prag)));
+         Assocs         : constant List_Id := Component_Associations (Aggr);
+         Exit_Case      : Node_Id := Last (Assocs);
+         Num_Cases      : constant Positive := Positive (List_Length (Assocs));
+         Others_Is_Name : Boolean := True;
+         --  Set to False if we find an OTHERS choice which is not Name
+         Guards         : W_Pred_Array (1 .. Num_Cases);
+         Top            : Natural := 0;
+         Result         : W_Pred_Id;
+
+      begin
+         while Present (Exit_Case) loop
+            declare
+               Case_Guard : constant Node_Id :=
+                 First (Choice_List (Exit_Case));
+               Exit_Kind  : constant Node_Id := Expression (Exit_Case);
+               Is_Name    : Boolean;
+            begin
+               case Nkind (Exit_Kind) is
+                  when N_Identifier =>
+                     Is_Name := Chars (Exit_Kind) = Name;
+
+                  when N_Aggregate =>
+                     Is_Name := False;
+
+                  when others =>
+                     raise Program_Error;
+               end case;
+
+               --  If we have an OTHERS choice, set Others_Is_Name
+
+               if Nkind (Case_Guard) = N_Others_Choice then
+                  Others_Is_Name := Is_Name;
+
+               --  Otherwise, aggregate guards of cases which are not the same
+               --  as the OTHERS choice.
+
+               elsif Is_Name /= Others_Is_Name then
+                  Top := Top + 1;
+                  Guards (Top) :=
+                    +Transform_Attribute_Old (Case_Guard, EW_Pred, Params);
+               end if;
+            end;
+            Prev (Exit_Case);
+         end loop;
+
+         Result := New_Or_Pred (Guards (1 .. Top));
+
+         --  If Others_Is_Name is set, then we have aggregated guards for
+         --  termination different from Name. We need to add a negation.
+
+         if Others_Is_Name then
+            Result := New_Not (Right => Result);
+         end if;
+
+         return Result;
+      end;
+   end Compute_Exit_Cases_Simple_Post;
 
    --------------------------
    -- Compute_Inlined_Expr --
@@ -2987,7 +3094,37 @@ package body Gnat2Why.Subprograms is
            );
          W_Def := Why_Empty;
 
-      --  Translate the Value expression in Why.
+      --  Reconstruct the wrapper for potentially invalid values
+
+      elsif Is_Potentially_Invalid (Function_Entity) then
+         declare
+            Tmp_Id     : W_Identifier_Id;
+            Id_Def     : W_Expr_Id;
+            Valid_Flag : W_Expr_Id;
+         begin
+            W_Def := +Transform_Potentially_Invalid_Expr
+              (Expr          => Value,
+               Expected_Type => Type_Of_Node (Function_Entity),
+               Domain        => EW_Term,
+               Params        => Params,
+               Tmp_Id        => Tmp_Id,
+               Id_Def        => Id_Def,
+               Valid_Flag    => Valid_Flag);
+
+            W_Def := +New_Function_Validity_Wrapper_Value
+              (Fun      => Function_Entity,
+               Is_Valid => Valid_Flag,
+               Value    => +W_Def);
+
+            if Present (Tmp_Id) then
+               W_Def := New_Typed_Binding
+                 (Name    => Tmp_Id,
+                  Def     => +Id_Def,
+                  Context => W_Def);
+            end if;
+         end;
+
+      --  Translate the Value expression in Why
 
       else
          W_Def := Transform_Term
@@ -3031,155 +3168,9 @@ package body Gnat2Why.Subprograms is
       Specialization_Module : Symbol := No_Symbol;
       More_Reads            : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
    is
-      --  Local subprograms
-
-      type Scalar_Status is
-        (Signed,    --  Signed integer type
-         Unsigned,  --  Unsigned integer type = signed with no negative value,
-                    --  also used for enumerations with default representation
-                    --  clauses.
-         Modular);  --  Modular integer type
-
-      function Get_Scalar_Status (Typ : Type_Kind_Id) return Scalar_Status is
-        (if Is_Modular_Integer_Type (Typ)   then Modular
-         elsif Is_Enumeration_Type (Typ)    then Unsigned
-         elsif Is_Unsigned_Type (Typ)       then Unsigned
-         elsif Is_Signed_Integer_Type (Typ) then Signed
-         else raise Program_Error);
-
-      function Precise_Integer_UC
-        (Arg           : W_Term_Id;
-         Size          : Uint;
-         Source_Type   : W_Type_Id;
-         Target_Type   : W_Type_Id;
-         Source_Status : Scalar_Status;
-         Target_Status : Scalar_Status)
-         return W_Term_Id;
-      --  Return Arg of Source_Type converted to Target_Type, when both are of
-      --  scalar types. Size is the shared size of both types, when arguments
-      --  of the UC are integer types, which is used for conversion from an
-      --  Unsigned type to a Signed one. Otherwise it is No_Uint.
-
-      ------------------------
-      -- Precise_Integer_UC --
-      ------------------------
-
-      function Precise_Integer_UC
-        (Arg           : W_Term_Id;
-         Size          : Uint;
-         Source_Type   : W_Type_Id;
-         Target_Type   : W_Type_Id;
-         Source_Status : Scalar_Status;
-         Target_Status : Scalar_Status)
-         return W_Term_Id
-      is
-         Source_Base_Type : constant W_Type_Id :=
-           Base_Why_Type_No_Bool (Source_Type);
-         Target_Base_Type : constant W_Type_Id :=
-           Base_Why_Type_No_Bool (Target_Type);
-         Conv : W_Term_Id;
-      begin
-         Conv :=
-           Insert_Simple_Conversion (Expr => Arg, To => Source_Base_Type);
-
-         if Source_Status = Target_Status then
-            null;  --  Trivial case of UC between identical types
-
-         elsif Source_Status = Unsigned
-           and then Target_Status = Modular
-         then
-            null;  --  Unsigned value can be directly converted to modular
-
-         elsif Source_Status = Modular
-           and then Target_Status = Unsigned
-         then
-            null;  --  Modular value can be directly converted to unsigned
-
-         --  Apply the appropriate UC function for conversions between Modular
-         --  and Signed.
-
-         elsif Source_Status = Modular
-           and then Target_Status = Signed
-         then
-            Conv := New_Call
-              (Name => MF_BVs (Source_Base_Type).UC_To_Int,
-               Args => (1 => +Conv),
-               Typ  => EW_Int_Type);
-
-         elsif Source_Status = Signed
-           and then Target_Status = Modular
-         then
-            Conv := New_Call
-              (Name => MF_BVs (Target_Base_Type).UC_Of_Int,
-               Args => (1 => +Conv),
-               Typ  => Target_Base_Type);
-
-         --  Otherwise, this is a conversion between Unsigned and Signed.
-         --  We need to consider the bit representation of that (possibly
-         --  negative) signed value, to see if the high bit is 1, in which
-         --  case the Signed value is negative.
-
-         elsif Source_Status = Unsigned
-           and then Target_Status = Signed
-         then
-            --  Generate the value
-            --  if Conv >= 2**(Size-1) then Conv-2**Size else Conv
-            declare
-               Top_Bit : constant W_Term_Id :=
-                 New_Integer_Constant
-                   (Value => Uint_2 ** (Size - Uint_1));
-               Negative_Value : constant W_Term_Id :=
-                 New_Call
-                   (Name   => Int_Infix_Subtr,
-                    Typ    => EW_Int_Type,
-                    Args   =>
-                      (1 => +Conv,
-                       2 => New_Integer_Constant (Value => 2 ** Size)));
-            begin
-               Conv := New_Conditional
-                 (Condition =>
-                    New_Comparison
-                      (Symbol => Int_Infix_Ge,
-                       Left   => Conv,
-                       Right  => Top_Bit),
-                  Then_Part => Negative_Value,
-                  Else_Part => Conv,
-                  Typ       => EW_Int_Type);
-            end;
-
-         else
-            pragma Assert (Source_Status = Signed);
-            pragma Assert (Target_Status = Unsigned);
-
-            --  Generate the value
-            --  if Conv < 0 then Conv+2**Size else Conv
-            declare
-               Large_Value : constant W_Term_Id :=
-                 New_Call
-                   (Name   => Int_Infix_Add,
-                    Typ    => EW_Int_Type,
-                    Args   =>
-                      (1 => +Conv,
-                       2 => New_Integer_Constant (Value => 2 ** Size)));
-            begin
-               Conv := New_Conditional
-                 (Condition =>
-                    New_Comparison
-                      (Symbol => Int_Infix_Lt,
-                       Left   => Conv,
-                       Right  => New_Integer_Constant (Value => Uint_0)),
-                  Then_Part => Large_Value,
-                  Else_Part => Conv,
-                  Typ       => EW_Int_Type);
-            end;
-         end if;
-
-         return Insert_Simple_Conversion (Expr => Conv, To => Target_Type);
-      end Precise_Integer_UC;
-
-      --  Local variables
-
-      Why_Type           : constant W_Type_Id := Type_Of_Node (E);
+      Why_Type           : constant W_Type_Id :=
+        (if Is_Potentially_Invalid (E) then Validity_Wrapper_Type (E)
+         else Type_Of_Node (E));
       Logic_Func_Binders : constant Item_Array := Compute_Binders
         (E, EW_Term, More_Reads);
       Logic_Why_Binders  : constant Binder_Array :=
@@ -3207,6 +3198,7 @@ package body Gnat2Why.Subprograms is
         (if Is_Expression_Function_Or_Completion (E)
          and then not Has_Contracts (E, Pragma_Postcondition)
          and then No (Get_Pragma (E, Pragma_Contract_Cases))
+         and then not Is_Recursive (E)
          then Symbol_Sets.To_Set (NID (GP_Inline_Marker))
          else Symbol_Sets.Empty_Set);
 
@@ -3230,31 +3222,29 @@ package body Gnat2Why.Subprograms is
 
             if not Precise_UC.Ok then
 
-               --  If --info is set, output information on reason for imprecise
-               --  handling of UC.
+               --  Output information on reason for imprecise handling of UC.
 
-               if Debug.Debug_Flag_Underscore_F then
-                  Error_Msg_N
-                    ("imprecise handling of Unchecked_Conversion ("
-                     & To_String (Precise_UC.Explanation) & ")",
-                     E,
-                     Kind => Info_Kind);
-               end if;
+               Warning_Msg_N
+                 (Warn_Imprecise_UC,
+                  E,
+                  Msg => Create_N
+                    (Warn_Imprecise_UC,
+                     Names => [To_String (Precise_UC.Explanation)]));
 
                Def := Why_Empty;
 
             elsif Is_Scalar_Type (Source_Type)
               and then Is_Scalar_Type (Target_Type)
             then
-               Def :=
-                 Precise_Integer_UC
-                   (Arg           => +Arg,
-                    Size          =>
-                      Get_Attribute_Value (Source_Type, Attribute_Size),
-                    Source_Type   => EW_Abstract (Source_Type),
-                    Target_Type   => Base_Why_Type_No_Bool (Target_Type),
-                    Source_Status => Get_Scalar_Status (Source_Type),
-                    Target_Status => Get_Scalar_Status (Target_Type));
+               Def := Precise_Integer_UC
+                 (Arg           => +Arg,
+                  Size          =>
+                    Get_Attribute_Value (Source_Type, Attribute_Size),
+                  Source_Type   => EW_Abstract (Source_Type),
+                  Target_Type   => Base_Why_Type_No_Bool (Target_Type),
+                  Source_Status => Get_Scalar_Status (Source_Type),
+                  Target_Status => Get_Scalar_Status (Target_Type),
+                  Ada_Function  => E);
 
             --  At least one of Source or Target is a composite type made up
             --  of integers. Convert Source to a large-enough modular type,
@@ -3262,549 +3252,12 @@ package body Gnat2Why.Subprograms is
             --  modular, then this benefits from bitvector support in provers.
 
             else
-               declare
-                  --  Representation of a subcomponent of Source
-                  type Source_Element is record
-                     Typ    : Type_Kind_Id;
-                     Offset : Uint;
-                     Size   : Uint;
-                     Expr   : W_Term_Id;
-                  end record;
-
-                  package Source_Elements is new
-                    Ada.Containers.Doubly_Linked_Lists (Source_Element);
-                  use Source_Elements;
-
-                  --  Local subprograms
-
-                  function Contribute_Value
-                    (Base   : W_Type_Id;
-                     Expr   : W_Expr_Id;
-                     Offset : Uint;
-                     Size   : Uint;
-                     Typ    : Type_Kind_Id)
-                     return W_Expr_Id;
-                  --  Given a scalar expression Expr of type Typ, return its
-                  --  contribution to a modular value of type Base, when its
-                  --  bit representation takes Size bits at a given Offset in
-                  --  Base.
-
-                  function Expr_Index
-                    (Typ : Type_Kind_Id;
-                     Idx : Uint)
-                     return W_Expr_Id;
-                  --  Return the expression for indexing into array of type Typ
-
-                  function Extract_Value
-                    (Base   : W_Type_Id;
-                     Bits   : W_Expr_Id;
-                     Offset : Uint;
-                     Size   : Uint;
-                     Typ    : Type_Kind_Id)
-                     return W_Expr_Id;
-                  --  Return (Bits and (2**(Offset+Size)-1)) / 2**(Offset) as
-                  --  a value of type Typ, to extract the value of an element
-                  --  from its bit representation.
-
-                  procedure Get_Source_Elements
-                    (Typ      : Type_Kind_Id;
-                     Offset   : Uint;
-                     Size     : Uint;
-                     Expr     : W_Term_Id;
-                     Elements : in out List);
-                  --  Retrieve the list of scalar elements from an object Expr
-                  --  of type Typ located at a given Offset and of a given
-                  --  Size, and append these to Elements.
-
-                  function Reconstruct_Value
-                    (Base   : W_Type_Id;
-                     Bits   : W_Expr_Id;
-                     Offset : Uint;
-                     Size   : Uint;
-                     Typ    : Type_Kind_Id)
-                     return W_Expr_Id;
-                  --  Given the representation Bits of modular type Base for
-                  --  the complete object, reconstruct the element of type Typ
-                  --  of a given Size at a given Offset.
-
-                  ----------------------
-                  -- Contribute_Value --
-                  ----------------------
-
-                  function Contribute_Value
-                    (Base   : W_Type_Id;
-                     Expr   : W_Expr_Id;
-                     Offset : Uint;
-                     Size   : Uint;
-                     Typ    : Type_Kind_Id)
-                     return W_Expr_Id
-                  is
-                     Value : W_Expr_Id;
-                  begin
-                     --  Special case for Boolean
-                     if Is_Standard_Boolean_Type (Typ) then
-                        Value :=
-                          New_Conditional
-                            (Domain    => EW_Term,
-                             Condition => Expr,
-                             Then_Part =>
-                               New_Modular_Constant
-                                 (Value => Uint_1,
-                                  Typ   => Base),
-                             Else_Part =>
-                               New_Modular_Constant
-                                 (Value => Uint_0,
-                                  Typ   => Base),
-                             Typ => Base);
-
-                     --  If the value is from a modular type, or from a signed
-                     --  type with no negative value, then simply convert it to
-                     --  Base.
-                     elsif Is_Unsigned_Type (Typ) then
-                        Value := Insert_Scalar_Conversion
-                          (Domain => EW_Term,
-                           Expr   => Expr,
-                           To     => Base);
-
-                     --  Otherwise, we need to consider the bit representation
-                     --  of that (possibly negative) signed value as Base, and
-                     --  extract the low Size bits with the expression
-                     --  (uc_of_int Expr) and (2**Size - 1)
-                     else
-                        Value :=
-                          New_Call
-                            (Domain   => EW_Term,
-                             Name     => MF_BVs (Base).BW_And,
-                             Typ      => Base,
-                             Args     =>
-                               (1 =>
-                                  New_Call
-                                    (Domain => EW_Term,
-                                     Name   => MF_BVs (Base).UC_Of_Int,
-                                     Args   =>
-                                       (1 =>
-                                          Insert_Scalar_Conversion
-                                            (Domain => EW_Term,
-                                             Expr   => Expr,
-                                             To     => EW_Int_Type)),
-                                     Typ    => Base),
-                                2 =>
-                                  New_Modular_Constant
-                                    (Value => Uint_2 ** Size - Uint_1,
-                                     Typ   => Base)));
-                     end if;
-
-                     --  Multiply this value by 2**Offset to get its
-                     --  contribution to the overall value.
-                     return
-                       New_Call
-                         (Domain   => EW_Term,
-                          Name     => MF_BVs (Base).Mult,
-                          Typ      => Base,
-                          Args     =>
-                            (1 =>
-                               New_Modular_Constant
-                                 (Value => Uint_2 ** Offset,
-                                  Typ   => Base),
-                             2 => Value));
-                  end Contribute_Value;
-
-                  ----------------
-                  -- Expr_Index --
-                  ----------------
-
-                  function Expr_Index
-                    (Typ : Type_Kind_Id;
-                     Idx : Uint)
-                     return W_Expr_Id
-                  is
-                     Index_Typ : constant Type_Kind_Id :=
-                       Etype (First_Index (Typ));
-                  begin
-                     if Is_Modular_Integer_Type (Index_Typ) then
-                        return
-                          New_Modular_Constant
-                            (Value => Idx,
-                             Typ   => Base_Why_Type_No_Bool (Index_Typ));
-                     else
-                        return New_Integer_Constant (Value => Idx);
-                     end if;
-                  end Expr_Index;
-
-                  -------------------
-                  -- Extract_Value --
-                  -------------------
-
-                  function Extract_Value
-                    (Base   : W_Type_Id;
-                     Bits   : W_Expr_Id;
-                     Offset : Uint;
-                     Size   : Uint;
-                     Typ    : Type_Kind_Id)
-                     return W_Expr_Id
-                  is
-                     Mask : constant W_Expr_Id :=
-                       New_Modular_Constant
-                         (Value => Uint_2 ** (Offset + Size) - Uint_1,
-                          Typ   => Base);
-                     Divisor : constant W_Expr_Id :=
-                       New_Modular_Constant
-                         (Value => Uint_2 ** Offset,
-                          Typ   => Base);
-                     --  Value is (Bits and (2**(Offset+Size)-1)) / 2**(Offset)
-                     Value : constant W_Expr_Id :=
-                       New_Call
-                         (Domain => EW_Term,
-                          Name   => MF_BVs (Base).Udiv,
-                          Typ    => Base,
-                          Args   =>
-                            (1 =>
-                               New_Call
-                                 (Domain => EW_Term,
-                                  Name   => MF_BVs (Base).BW_And,
-                                  Typ    => Base,
-                                  Args   =>
-                                    (1 => Bits,
-                                     2 => Mask)),
-                             2 => Divisor));
-                  begin
-                     --  Special case for Boolean
-                     if Is_Standard_Boolean_Type (Typ) then
-                        return
-                          New_Conditional
-                            (Domain    => EW_Term,
-                             Condition =>
-                               New_Comparison
-                                 (Domain => EW_Term,
-                                  Symbol => Why_Eq,
-                                  Left   => Value,
-                                  Right  =>
-                                    New_Modular_Constant
-                                      (Value => Uint_1,
-                                       Typ   => Base)),
-                             Then_Part => +True_Term,
-                             Else_Part => +False_Term,
-                             Typ       => EW_Bool_Type);
-
-                     --  If the value is to a modular type, or an enumeration
-                     --  with default 0-based representation, or to a signed
-                     --  type with no negative value, then simply convert it
-                     --  to Typ.
-                     elsif Is_Unsigned_Type (Typ) then
-                        return Insert_Scalar_Conversion
-                          (Domain => EW_Term,
-                           Expr   => Value,
-                           To     => EW_Abstract (Typ));
-
-                     --  Otherwise, we need to consider the bit representation
-                     --  of that (possibly negative) signed value, to see
-                     --  if the high bit is 1, in which case the value is
-                     --  negative. So we generate the value
-                     --  if Value >= 2**(Size-1) then Value-2**Size else Value
-                     else
-                        declare
-                           Top_Bit : constant W_Expr_Id :=
-                             New_Modular_Constant
-                               (Value => Uint_2 ** (Size - Uint_1),
-                                Typ   => Base);
-                           Negative_Value : constant W_Expr_Id :=
-                             New_Call
-                               (Domain => EW_Term,
-                                Name   => Int_Infix_Subtr,
-                                Typ    => EW_Int_Type,
-                                Args   =>
-                                  (1 =>
-                                     Insert_Scalar_Conversion
-                                       (Domain => EW_Term,
-                                        Expr   => Value,
-                                        To     => EW_Int_Type),
-                                   2 =>
-                                     New_Integer_Constant
-                                       (Value => 2 ** Size)));
-                        begin
-                           return New_Conditional
-                             (Domain    => EW_Term,
-                              Condition =>
-                                New_Comparison
-                                  (Domain => EW_Term,
-                                   Symbol => MF_BVs (Base).Uge,
-                                   Left   => Value,
-                                   Right  => Top_Bit),
-                              Then_Part =>
-                                Insert_Scalar_Conversion
-                                  (Domain => EW_Term,
-                                   Expr   => Negative_Value,
-                                   To     => EW_Abstract (Typ)),
-                              Else_Part =>
-                                Insert_Scalar_Conversion
-                                  (Domain => EW_Term,
-                                   Expr   => Value,
-                                   To     => EW_Abstract (Typ)),
-                              Typ => EW_Abstract (Typ));
-                        end;
-                     end if;
-                  end Extract_Value;
-
-                  --------------------------
-                  -- Get_Type_Offset_List --
-                  --------------------------
-
-                  procedure Get_Source_Elements
-                    (Typ      : Type_Kind_Id;
-                     Offset   : Uint;
-                     Size     : Uint;
-                     Expr     : W_Term_Id;
-                     Elements : in out List)
-                  is
-                  begin
-                     if Is_Scalar_Type (Typ) then
-                        Elements.Append
-                          (Source_Element'(Typ    => Typ,
-                                           Offset => Offset,
-                                           Size   => Size,
-                                           Expr   => Expr));
-
-                     elsif Is_Record_Type (Typ) then
-                        declare
-                           Comp : Node_Id := First_Component (Typ);
-                        begin
-                           while Present (Comp) loop
-                              Get_Source_Elements
-                                (Typ     => Retysp (Etype (Comp)),
-                                 Offset  =>
-                                   Offset + Component_Bit_Offset (Comp),
-                                 Size    => Esize (Comp),
-                                 Expr    => New_Ada_Record_Access
-                                   (Ada_Node => Types.Empty,
-                                    Name     => +Expr,
-                                    Ty       => Typ,
-                                    Field    => Comp),
-                                 Elements => Elements);
-                              Next_Component (Comp);
-                           end loop;
-                        end;
-
-                     elsif Is_Array_Type (Typ) then
-                        declare
-                           Index : constant Node_Id := First_Index (Typ);
-                           Rng   : constant Node_Id := Get_Range (Index);
-                           Low   : constant Uint :=
-                             Expr_Value (Low_Bound (Rng));
-                           High : constant Uint :=
-                             Expr_Value (High_Bound (Rng));
-                           Cur : Uint;
-                        begin
-                           if Low <= High then
-                              Cur := Low;
-                              while Cur <= High loop
-                                 Get_Source_Elements
-                                   (Typ      => Retysp (Component_Type (Typ)),
-                                    Offset   =>
-                                      (Cur - Low) * Component_Size (Typ),
-                                    Size     => Component_Size (Typ),
-                                    Expr     =>
-                                      New_Array_Access
-                                        (Ar    => Expr,
-                                         Index =>
-                                           (1 => Expr_Index (Typ, Cur))),
-                                    Elements => Elements);
-                                 Cur := Cur + Uint_1;
-                              end loop;
-                           end if;
-                        end;
-
-                     else
-                        raise Program_Error;
-                     end if;
-                  end Get_Source_Elements;
-
-                  -----------------------
-                  -- Reconstruct_Value --
-                  -----------------------
-
-                  function Reconstruct_Value
-                    (Base   : W_Type_Id;
-                     Bits   : W_Expr_Id;
-                     Offset : Uint;
-                     Size   : Uint;
-                     Typ    : Type_Kind_Id)
-                     return W_Expr_Id
-                  is
-                  begin
-                     if Is_Scalar_Type (Typ) then
-                        return Extract_Value
-                          (Base   => Base,
-                           Bits   => Bits,
-                           Offset => Offset,
-                           Size   => Size,
-                           Typ    => Typ);
-
-                     elsif Is_Record_Type (Typ) then
-                        declare
-                           Comps : constant Component_Sets.Set :=
-                             Get_Component_Set (Typ);
-                           Assocs : W_Field_Association_Array
-                             (1 .. Integer (Comps.Length));
-                           Index : Positive := 1;
-                        begin
-                           for Comp of Comps loop
-                              Assocs (Index) :=
-                                New_Field_Association
-                                  (Domain => EW_Term,
-                                   Field  =>
-                                     To_Why_Id
-                                       (Comp, Local => False, Rec => Typ),
-                                   Value  =>
-                                     Reconstruct_Value
-                                       (Base   => Base,
-                                        Bits   => Bits,
-                                        Offset =>
-                                          Offset + Component_Bit_Offset (Comp),
-                                        Size   => Esize (Comp),
-                                        Typ    => Retysp (Etype (Comp))));
-                              Index := Index + 1;
-                           end loop;
-
-                           return New_Record_Aggregate
-                             (Associations =>
-                                (1 => New_Field_Association
-                                   (Domain => EW_Term,
-                                    Field  =>
-                                      E_Symb (Typ, WNE_Rec_Split_Fields),
-                                    Value  =>
-                                      New_Record_Aggregate
-                                        (Associations => Assocs))),
-                              Typ          => EW_Abstract (Typ));
-                        end;
-
-                     elsif Is_Array_Type (Typ) then
-                        declare
-                           Index : constant Node_Id := First_Index (Typ);
-                           Rng   : constant Node_Id := Get_Range (Index);
-                           Low   : constant Uint :=
-                             Expr_Value (Low_Bound (Rng));
-                           High  : constant Uint :=
-                             Expr_Value (High_Bound (Rng));
-                           Cur   : Uint;
-                           Ar    : W_Expr_Id := +E_Symb (Typ, WNE_Dummy);
-                        begin
-                           if Low <= High then
-                              Cur := Low;
-                              while Cur <= High loop
-                                 Ar := New_Array_Update
-                                   (Ada_Node => Types.Empty,
-                                    Ar     => Ar,
-                                    Index  => (1 => Expr_Index (Typ, Cur)),
-                                    Value  =>
-                                      Reconstruct_Value
-                                       (Base   => Base,
-                                        Bits   => Bits,
-                                        Offset =>
-                                          Offset +
-                                          (Cur - Low) * Component_Size (Typ),
-                                        Size   =>
-                                          Component_Size (Typ),
-                                        Typ    =>
-                                          Retysp (Component_Type (Typ))),
-                                    Domain => EW_Term);
-                                 Cur := Cur + 1;
-                              end loop;
-                           end if;
-
-                           return Ar;
-                        end;
-
-                     else
-                        raise Program_Error;
-                     end if;
-                  end Reconstruct_Value;
-
-                  --  Local variables
-
-                  Conv         : W_Term_Id;
-                  Source_Elems : List;
-                  Target_Size  : constant Uint :=
-                    Get_Attribute_Value (Target_Type, Attribute_Size);
-                  Base         : constant W_Type_Id :=
-                    (if    Target_Size <=   Uint_8 then EW_BitVector_8_Type
-                     elsif Target_Size <=  Uint_16 then EW_BitVector_16_Type
-                     elsif Target_Size <=  Uint_32 then EW_BitVector_32_Type
-                     elsif Target_Size <=  Uint_64 then EW_BitVector_64_Type
-                     elsif Target_Size <= Uint_128 then EW_BitVector_128_Type
-                     else raise Program_Error);
-
-               begin
-                  --  1. Convert the argument to a value of modular type Base
-
-                  --  1.a Conversion from a scalar type should be identity or
-                  --  call to uc_of_int.
-
-                  if Is_Scalar_Type (Source_Type) then
-                     Conv :=
-                       Precise_Integer_UC
-                         (Arg           => +Arg,
-                          Size          => No_Uint,
-                          Source_Type   => EW_Abstract (Source_Type),
-                          Target_Type   => Base,
-                          Source_Status => Get_Scalar_Status (Source_Type),
-                          Target_Status => Modular);
-
-                  --  1.b Otherwise extract all scalar subcomponents from the
-                  --  composite value and sum up their contributions to the
-                  --  value of type Base.
-
-                  else
-                     Get_Source_Elements
-                       (Source_Type, Uint_0, Uint_0, +Arg, Source_Elems);
-                     Conv :=
-                       New_Modular_Constant (Value => Uint_0, Typ => Base);
-
-                     for Elem of Source_Elems loop
-                        Conv :=
-                          New_Call
-                            (Name     => MF_BVs (Base).Add,
-                             Typ      => Base,
-                             Args     =>
-                               (1 => +Conv,
-                                2 => Contribute_Value
-                                  (Base   => Base,
-                                   Expr   => +Elem.Expr,
-                                   Offset => Elem.Offset,
-                                   Size   => Elem.Size,
-                                   Typ    => Elem.Typ)));
-                     end loop;
-                  end if;
-
-                  --  2. Convert the converted argument to a value of the
-                  --  target type.
-
-                  --  2.a Conversion to a scalar type should be identity or
-                  --  call to uc_to_int.
-
-                  if Is_Scalar_Type (Target_Type) then
-                     Def :=
-                       Precise_Integer_UC
-                         (Arg           => Conv,
-                          Size          => No_Uint,
-                          Source_Type   => Base,
-                          Target_Type   => Base_Why_Type_No_Bool (Target_Type),
-                          Source_Status => Modular,
-                          Target_Status => Get_Scalar_Status (Target_Type));
-
-                  --  2.b Otherwise recursively reconstruct all scalar
-                  --  subcomponents from the value of type Base.
-
-                  else
-                     Def :=
-                       +Reconstruct_Value
-                         (Base   => Base,
-                          Bits   => +Conv,
-                          Offset => Uint_0,
-                          Size   =>
-                            Get_Attribute_Value (Target_Type, Attribute_Size),
-                          Typ    => Target_Type);
-                  end if;
-               end;
+               Def :=
+                 Precise_Composite_UC
+                   (Arg          => +Arg,
+                    Source_Type  => Source_Type,
+                    Target_Type  => Target_Type,
+                    Ada_Function => E);
             end if;
          end;
 
@@ -4282,6 +3735,8 @@ package body Gnat2Why.Subprograms is
       --  Declare a global variable to hold the result of a function
 
       if Ekind (E) = E_Function then
+         pragma Assert (not Is_Potentially_Invalid (E));
+
          Emit
            (Th,
             New_Global_Ref_Declaration
@@ -5127,8 +4582,9 @@ package body Gnat2Why.Subprograms is
                   E                  => E,
                   Guard_Map          => CC_Guard_Map,
                   Others_Guard_Ident => CC_Others_Guard_Ident),
-               3 => Compute_Exit_Cases_Normal_Return_Checks
+               3 => Compute_Exit_Cases_Simple_Checks
                  (E                  => E,
+                  Name               => Name_Normal_Return,
                   Guard_Map          => EC_Guard_Map,
                   Others_Guard_Ident => EC_Others_Guard_Ident)));
       end CC_EC_And_RTE_Post;
@@ -5267,6 +4723,8 @@ package body Gnat2Why.Subprograms is
            New_Temp_Identifier (Typ => Why_Type, Base_Name => "result");
 
       begin
+         pragma Assert (not Is_Potentially_Invalid (E));
+
          --  Store an immutable local name for the result that can be
          --  existentially quantified.
 
@@ -5326,10 +4784,12 @@ package body Gnat2Why.Subprograms is
             return New_Located_Assert
               (Ada_Node => E,
                Pred     => New_Existential_Quantif
-                 (Variables => (1 => Result_Id),
-                  Labels    => Symbol_Sets.Empty_Set,
-                  Var_Type  => Why_Type,
-                  Pred      => Post),
+                 (Binders  =>
+                      (1 => New_Binder (Domain   => EW_Pred,
+                                        Name     => Result_Id,
+                                        Arg_Type => Why_Type)),
+                  Labels   => Symbol_Sets.Empty_Set,
+                  Pred     => Post),
                Reason   => VC_Feasible_Post,
                Kind     => EW_Assert);
          end;
@@ -5417,6 +4877,8 @@ package body Gnat2Why.Subprograms is
          Params     : constant Transformation_Params := Contract_VC_Params;
       begin
          if Need_Check then
+            pragma Assert (not Is_Potentially_Invalid (E));
+
             declare
                Def : constant W_Term_Id :=
                  Compute_Inlined_Expr
@@ -5499,7 +4961,8 @@ package body Gnat2Why.Subprograms is
                          (Right => Result_Name,
                           Typ   => Get_Typ (Result_Name)),
                        Ty     => Etype (E),
-                       Params => Params);
+                       Params => Params,
+                       Valid  => Get_Valid_Id_For_Result (E));
 
                begin
                   --  For borrowing traversal functions, add the dynamic
@@ -5521,12 +4984,11 @@ package body Gnat2Why.Subprograms is
                                   (Expr    => New_Deref
                                        (Right => Brower_At_End,
                                         Typ   => Get_Typ (Brower_At_End)),
-                                   Ty     => Etype (E),
-                                   Params => Params),
+                                   Ty      => Etype (E),
+                                   Params  => Params),
                                 3 => Compute_Dynamic_Inv_And_Initialization
                                   (Expr   => +Borrowed_At_End,
-                                   Ty     => Etype
-                                     (First_Formal (E)),
+                                   Ty     => Etype (First_Formal (E)),
                                    Params => Params)));
                      end;
                   end if;
@@ -6080,6 +5542,20 @@ package body Gnat2Why.Subprograms is
                Location => No_Location,
                Ref_Type => Type_Of_Node (E)));
 
+         --  Add a validity flag for the result if it is potentially invalid
+
+         if Is_Potentially_Invalid (E) then
+            Emit
+              (Th,
+               New_Global_Ref_Declaration
+                 (Ada_Node => E,
+                  Name     => Get_Valid_Flag_For_Id (Result_Name),
+                  Labels   => Get_Counterexample_Labels
+                    (E, "'" & Initialized_Label),
+                  Location => No_Location,
+                  Ref_Type => EW_Bool_Type));
+         end if;
+
          --  If E is a traversal function returning a borrower, declare a
          --  reference borrower at end and a constant for the borrowed at end.
 
@@ -6154,11 +5630,13 @@ package body Gnat2Why.Subprograms is
 
       elsif Entity_Body_In_SPARK (E) then
          declare
-            Body_N     : constant Node_Id := Get_Body (E);
-            Raise_Stmt : constant W_Prog_Id :=
-              New_Raise
-                (Ada_Node => Body_N,
-                 Name     => M_Main.Return_Exc);
+            Body_N       : constant Node_Id := Get_Body (E);
+            Exceptions   : constant Boolean := Has_Exceptional_Contract (E);
+            Program_Exit : constant Boolean := Has_Program_Exit (E);
+            Num_Handlers : constant Natural :=
+              (if Exceptions then 1 else 0) + (if Program_Exit then 1 else 0);
+            Handlers     : W_Handler_Array (1 .. Num_Handlers);
+            Curr_Handler : Natural := 0;
 
          begin
             Get_Pre_Post_Pragmas (Declarations (Body_N));
@@ -6172,7 +5650,9 @@ package body Gnat2Why.Subprograms is
                     (Declarations (Body_N), Body_Params),
                   4 => Transform_Handled_Statements
                     (Handled_Statement_Sequence (Body_N), Body_Params),
-                  5 => Raise_Stmt));
+                  5 => New_Raise
+                    (Ada_Node => Body_N,
+                     Name     => M_Main.Return_Exc)));
 
             --  Enclose the subprogram body in a try-block, so that return
             --  statements can be translated as raising exceptions.
@@ -6202,91 +5682,233 @@ package body Gnat2Why.Subprograms is
                 3 => Check_Invariants_Of_Outputs,
                 4 => CC_EC_And_RTE_Post,
                 5 => Check_Inline_Annotation));
-         end;
 
-         --  Handling of Ada exceptions
+            --  Create a handler for Ada exceptions
 
-         if Has_Exceptional_Contract (E) then
-            declare
-               Body_N     : constant Node_Id := Get_Body (E);
-               Exc_Id     : constant W_Identifier_Id :=
-                 New_Temp_Identifier (Base_Name => "exc", Typ => EW_Int_Type);
-               Raise_Stmt : constant W_Prog_Id :=
-                 New_Raise
-                   (Ada_Node => Body_N,
-                    Name     => M_Main.Ada_Exc,
-                    Arg      => +Exc_Id);
-               Handler    : W_Prog_Id;
+            if Exceptions then
+               declare
+                  Exc_Id  : constant W_Identifier_Id :=
+                    New_Temp_Identifier
+                      (Base_Name => "exc", Typ => EW_Int_Type);
+                  Handler : W_Prog_Id;
 
-            begin
-               Effects_Append_To_Raises
-                 (Effects,
-                  New_Raise_Effect (Domain => EW_Prog,
-                                    Name   => M_Main.Ada_Exc));
+               begin
+                  Effects_Append_To_Raises
+                    (Effects,
+                     New_Raise_Effect (Domain => EW_Prog,
+                                       Name   => M_Main.Ada_Exc));
 
-               --  Handle the scope exit like on normal return. Do not check
-               --  initialization for parameters with Relaxed_Initialization as
-               --  it is not mandated by Ada.
-               --  We do not need to check for absence of memory leaks in
-               --  formal parameters which are not passed by reference and
-               --  therefore discarded, a such parameters are rejected in
-               --  marking.
+                  --  Handle the scope exit like on normal return. Do not check
+                  --  initialization for parameters with Relaxed_Initialization
+                  --  as it is not mandated by Ada.
+                  --  We do not need to check for absence of memory leaks in
+                  --  formal parameters which are not passed by reference and
+                  --  therefore discarded, a such parameters are rejected in
+                  --  marking.
 
-               Continuation_Stack.Append
-                 (Continuation_Type'
-                    (Ada_Node => Body_N,
-                     Message  =>
-                       To_Unbounded_String ("on exceptional exit")));
+                  Continuation_Stack.Append
+                    (Continuation_Type'
+                       (Ada_Node => Body_N,
+                        Message  =>
+                          To_Unbounded_String ("on exceptional exit")));
 
-               Handler := Sequence
-                 ((1 => +Havoc_Borrowed_And_Check_No_Leaks_From_Scope
-                   (E, Local_CFG.Vertex'(Kind => Local_CFG.Body_Exit,
-                                         Node => E)),
-                   2 => Check_Invariants_Of_Outputs (Exceptional => True)));
+                  Handler := Sequence
+                    ((1 => +Havoc_Borrowed_And_Check_No_Leaks_From_Scope
+                      (E, Local_CFG.Vertex'(Kind => Local_CFG.Body_Exit,
+                                            Node => E)),
+                      2 => Check_Invariants_Of_Outputs (Exceptional => True)));
 
-               Continuation_Stack.Delete_Last;
+                  Continuation_Stack.Delete_Last;
 
-               --  Check RTE + validity of exceptional cases and exit cases
-               --  on exceptional exit.
+                  --  Check RTE + validity of exceptional cases and exit cases
+                  --  on exceptional exit.
 
-               Handler := Sequence
-                 ((1 => Handler,
-                   2 => Compute_Exit_Cases_Exceptional_Exit_Checks
-                     (E, EC_Guard_Map, EC_Others_Guard_Ident, Exc_Id),
-                   3 => Check_Exceptional_Cases (Exc_Id)));
+                  Handler := Sequence
+                    ((1 => Handler,
+                      2 => Compute_Exit_Cases_Exceptional_Exit_Checks
+                        (E, EC_Guard_Map, EC_Others_Guard_Ident, Exc_Id),
+                      3 => Check_Exceptional_Cases (Exc_Id)));
 
-               --  Reraise the exception
+                  --  Reraise the exception
 
-               Handler := Sequence (Handler, Raise_Stmt);
+                  Handler := Sequence
+                    (Handler,
+                     New_Raise
+                       (Ada_Node => Body_N,
+                        Name     => M_Main.Ada_Exc,
+                        Arg      => +Exc_Id));
 
-               --  Add an artificial raise Ada_Exc to Why_Body so the handler
-               --  is not ignored when no Ada exception is raised and the
-               --  warning on dead branches will be emitted.
+                  Curr_Handler := Curr_Handler + 1;
+                  Handlers (Curr_Handler) := New_Handler
+                    (Name   => M_Main.Ada_Exc,
+                     Arg_Id => Exc_Id,
+                     Def    => Handler);
 
-               Why_Body := New_Try_Block
-                 (Prog    =>
-                    Sequence
-                      ((1 => Why_Body,
-                        2 => New_Conditional
-                          (Condition => False_Prog,
-                           Then_Part => New_Raise
-                             (Name => M_Main.Ada_Exc,
-                              Arg  => New_Integer_Constant (Value => Uint_0))),
-                        3 => Result_Var)),
-                  Handler =>
-                    (1 => New_Handler
-                         (Name   => M_Main.Ada_Exc,
-                          Arg_Id => Exc_Id,
-                          Def    => Handler)));
-            end;
+                  --  Add an artificial raise Ada_Exc to Why_Body so the
+                  --  handler is not ignored when no Ada exception is raised
+                  --  and the warning on dead branches will be emitted.
 
-         --  Otherwise simply append the result of the subprogram to the body
+                  Why_Body := Sequence
+                    (Left  => Why_Body,
+                     Right => New_Conditional
+                       (Condition => False_Prog,
+                        Then_Part => New_Raise
+                          (Name => M_Main.Ada_Exc,
+                           Arg  => New_Integer_Constant
+                             (Value => Uint_0))));
+               end;
+            end if;
 
-         else
+            --  Create a handler of Program_Exit
+
+            if Program_Exit then
+               declare
+                  Params     : constant Transformation_Params :=
+                    Contract_VC_Params;
+                  Loc        : constant String := " on program exit";
+                  Raise_Stmt : constant W_Prog_Id :=
+                    New_Raise
+                      (Ada_Node => Body_N,
+                       Name     => M_Main.Program_Exit_Exc);
+                  Handler    : W_Prog_Id := +Void;
+
+               begin
+                  Effects_Append_To_Raises
+                    (Effects,
+                     New_Raise_Effect (Domain => EW_Prog,
+                                       Name   => M_Main.Program_Exit_Exc));
+
+                  --  Do not havoc borrowers not check for memory leaks. It
+                  --  still necessary to check potential invariants of outputs
+                  --  mentioned in the program exit post of E.
+
+                  for F of Get_Outputs_From_Program_Exit (E, E) loop
+                     pragma Assert (F.Kind in Direct_Mapping | Magic_String);
+
+                     --  Magic_String are global state with no attached
+                     --  entities. As such state is translated as private in
+                     --  Why3, we do not need to consider any type invariant
+                     --  for it.
+
+                     if F.Kind = Direct_Mapping then
+
+                        --  Concurrent self should not occur here
+                        pragma Assert (Is_Object (Get_Direct_Mapping_Id (F)));
+
+                        declare
+                           Obj        : constant Entity_Id :=
+                             Get_Direct_Mapping_Id (F);
+                           Binder     : constant Item_Type :=
+                             Ada_Ent_To_Why.Element (Symbol_Table, Obj);
+                           Ada_Type   : constant Entity_Id :=
+                             Get_Ada_Type_From_Item (Binder);
+                           Expr       : constant W_Term_Id :=
+                             Reconstruct_Item
+                               (Binder, Ref_Allowed => Params.Ref_Allowed);
+                           Check_Info : Check_Info_Type := New_Check_Info;
+                           Inv        : constant W_Pred_Id :=
+                             Compute_Type_Invariant
+                               (Expr   => Expr,
+                                Ty     => Ada_Type,
+                                Params => Params,
+                                Kind   => For_Check,
+                                Scop   => E);
+
+                        begin
+                           if not Is_True_Boolean (+Inv) then
+                              Check_Info.Continuation.Append
+                                (Continuation_Type'
+                                   (Ada_Node => Obj,
+                                    Message  => To_Unbounded_String
+                                      ("for " & Source_Name (Obj) & Loc)));
+
+                              Handler := Sequence
+                                (Handler,
+                                 New_Assert
+                                   (Pred        => New_VC_Pred
+                                        (Ada_Node   => E,
+                                         Expr       => Inv,
+                                         Reason     => VC_Invariant_Check,
+                                         Check_Info => Check_Info),
+                                    Assert_Kind => EW_Assert));
+                           end if;
+                        end;
+                     end if;
+                  end loop;
+
+                  --  Check RTE + validity of program exit post and exit cases
+                  --  on exceptional exit.
+
+                  declare
+                     Program_Exit : constant Node_Id := Get_Program_Exit (E);
+                  begin
+                     if Present (Program_Exit) then
+                        Handler := Sequence
+                          ((1 => Handler,
+                            2 => New_Ignore
+                              (Program_Exit,
+                               Warn_On_Dead_Branch
+                                 (Program_Exit,
+                                  Transform_Prog (Program_Exit, Params),
+                                  Params.Phase,
+                                  Params.Warn_On_Dead)),
+
+                            3 => New_Assert
+                              (Ada_Node    => Program_Exit,
+                               Pred        => New_VC_Pred
+                                 (Program_Exit,
+                                  Transform_Pred (Program_Exit, Params),
+                                  VC_Program_Exit_Post),
+                               Assert_Kind => EW_Assert)));
+                     end if;
+                  end;
+
+                  Handler := Sequence
+                    (Left  => Handler,
+                     Right => Compute_Exit_Cases_Simple_Checks
+                       (E                  => E,
+                        Name               => Name_Program_Exit,
+                        Guard_Map          => EC_Guard_Map,
+                        Others_Guard_Ident => EC_Others_Guard_Ident));
+
+                  --  Reraise the exception
+
+                  Handler := Sequence (Handler, Raise_Stmt);
+
+                  Curr_Handler := Curr_Handler + 1;
+                  Handlers (Curr_Handler) := New_Handler
+                    (Name => M_Main.Program_Exit_Exc,
+                     Def  => Handler);
+
+                  --  Add an artificial raise Program_Exit_Exc to Why_Body so
+                  --  the handler is not ignored when no calls in E exits the
+                  --  program.
+
+                  Why_Body := Sequence
+                    (Left  => Why_Body,
+                     Right => New_Conditional
+                       (Condition => False_Prog,
+                        Then_Part => New_Raise
+                          (Name => M_Main.Program_Exit_Exc)));
+               end;
+            end if;
+
+            pragma Assert (Curr_Handler = Num_Handlers);
+
+            --  Append the result of the subprogram to the body
+
             Why_Body := Sequence
               ((1 => Why_Body,
                 2 => Result_Var));
-         end if;
+
+            --  If there are handlers, wrap the body in a try block
+
+            if Num_Handlers > 0 then
+               Why_Body := New_Try_Block
+                 (Prog    => Why_Body,
+                  Handler => Handlers);
+            end if;
+         end;
 
       --  Body is not in SPARK
 
@@ -6439,12 +6061,18 @@ package body Gnat2Why.Subprograms is
                Valid       : Boolean;
                Explanation : Unbounded_String;
             begin
-               Suitable_For_UC (Src_Ty, False, Valid, Explanation);
+               Suitable_For_UC_Source (Src_Ty, Valid, Explanation);
                Emit_Static_Proof_Result
                  (Source, VC_UC_Source, Valid, E,
                   Explanation => To_String (Explanation));
 
-               Suitable_For_UC_Target (Tar_Ty, False, Valid, Explanation);
+               --  If E is annotated with Potentially_Invalid, do not check
+               --  that its target type has only valid values.
+
+               Suitable_For_UC_Target_UC_Wrap
+                 (Tar_Ty, Valid, Explanation,
+                  Check_Validity => not Is_Potentially_Invalid (E));
+
                Emit_Static_Proof_Result
                  (Target, VC_UC_Target, Valid, E,
                   Explanation => To_String (Explanation));
@@ -6771,21 +6399,27 @@ package body Gnat2Why.Subprograms is
       Specialization_Module : Symbol := No_Symbol;
       More_Reads            : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
    is
-      Logic_Func_Binders : constant Item_Array := Compute_Binders
+      Needs_Validity_Wrapper : constant Boolean :=
+        Is_Potentially_Invalid (E);
+      Logic_Func_Binders     : constant Item_Array := Compute_Binders
         (E, EW_Term, More_Reads);
-      Params             : Transformation_Params;
-      Pre                : W_Pred_Id;
-      Post               : W_Pred_Id;
-      Dispatch_Pre       : W_Pred_Id := Why_Empty;
-      Dispatch_Post      : W_Pred_Id := Why_Empty;
-      Refined_Post       : W_Pred_Id := Why_Empty;
-      Why_Type           : W_Type_Id := Why_Empty;
+      Params                 : Transformation_Params;
+      Pre                    : W_Pred_Id;
+      Post                   : W_Pred_Id;
+      Dispatch_Pre           : W_Pred_Id := Why_Empty;
+      Dispatch_Post          : W_Pred_Id := Why_Empty;
+      Refined_Post           : W_Pred_Id := Why_Empty;
+      Why_Type               : W_Type_Id := Why_Empty;
 
    begin
       Params := (Logic_Params with delta Old_Policy => Ignore);
 
       if Is_Function_Or_Function_Type (E) then
-         Why_Type := Type_Of_Node (E);
+         if Needs_Validity_Wrapper then
+            Why_Type := Validity_Wrapper_Type (E);
+         else
+            Why_Type := Type_Of_Node (E);
+         end if;
       end if;
 
       --  Do not generate an axiom for the postcondition of volatile functions,
@@ -6817,9 +6451,7 @@ package body Gnat2Why.Subprograms is
               Type_Needs_Dynamic_Invariant (Etype (E));
          begin
 
-            if Debug.Debug_Flag_Underscore_F
-              and then (Has_Implicit_Contracts or else Has_Explicit_Contracts)
-            then
+            if Has_Implicit_Contracts or else Has_Explicit_Contracts then
                declare
                   String_For_Implicit : constant String :=
                     (if Has_Explicit_Contracts then ""
@@ -6828,12 +6460,12 @@ package body Gnat2Why.Subprograms is
                    (if Is_Recursive (E) then "recursive calls"
                     else "implicit recursive calls");
                begin
-                  Error_Msg_N
-                    (String_For_Implicit
-                     & "function contract might not be available on "
-                     & String_For_Rec,
+                  Warning_Msg_N
+                    (Warn_Contracts_Recursive,
                      E,
-                     Kind => Info_Kind);
+                     Create_N (Warn_Contracts_Recursive,
+                       Names => [String_For_Implicit, String_For_Rec])
+                     );
                end;
             end if;
          end;
@@ -6897,6 +6529,17 @@ package body Gnat2Why.Subprograms is
       end if;
 
       declare
+         Result_Id           : constant W_Identifier_Id :=
+           +New_Result_Ident (Why_Type);
+         Result_Value        : constant W_Term_Id :=
+           (if Needs_Validity_Wrapper
+            then +New_Function_Valid_Value_Access
+              (Fun => E, Name => +Result_Id)
+            else +Result_Id);
+         Result_Is_Valid     : constant W_Term_Id :=
+           (if Needs_Validity_Wrapper
+            then +New_Function_Is_Valid_Access (Fun => E, Name => +Result_Id)
+            else True_Term);
          Logic_Why_Binders   : constant Binder_Array :=
            To_Binder_Array (Logic_Func_Binders);
          Guard               : constant W_Pred_Id :=
@@ -6910,11 +6553,12 @@ package body Gnat2Why.Subprograms is
          Dynamic_Prop_Result : constant W_Pred_Id :=
            +New_And_Then_Expr
            (Left   => +Compute_Dynamic_Inv_And_Initialization
-              (Expr           => +New_Result_Ident (Why_Type),
+              (Expr           => Result_Value,
                Ty             => Etype (E),
                Only_Var       => False_Term,
                All_Global_Inv =>
                  Include_All_Global_Invariants_For_Subp (E),
+               Valid          => Result_Is_Valid,
                Params         => Params),
             Right  => +Compute_Type_Invariants_For_Subprogram
               (E, Params, False),
@@ -6944,8 +6588,6 @@ package body Gnat2Why.Subprograms is
                 (E,
                  Selector_Name         => Selector,
                  Specialization_Module => Specialization_Module);
-            Result_Id     : constant W_Identifier_Id :=
-              New_Result_Ident (Why_Type);
             Tag_B         : constant Binder_Array :=
               (if Selector = Dispatch then (1 => Tag_Binder)
                else (1 .. 0 => <>));
@@ -6966,7 +6608,7 @@ package body Gnat2Why.Subprograms is
                    (Symbol => Why_Eq,
                     Left   => New_Tag_Access
                       (Domain   => EW_Term,
-                       Name     => +New_Result_Ident (Why_Type),
+                       Name     => +Result_Value,
                        Ty       => Retysp (Etype (E))),
                     Right  =>
                       (if Ekind (E) = E_Function
@@ -6990,6 +6632,13 @@ package body Gnat2Why.Subprograms is
                         Args   => Get_Args_From_Binders
                           (Logic_Why_Binders, Ref_Allowed => False),
                         Params => Params)
+
+                     --  If the function returns a validity wrapper, introduce
+                     --  bindings for the value part and the validity flag of
+                     --  the result.
+
+                     elsif Needs_Validity_Wrapper
+                     then Wrap_Post_Of_Potentially_Invalid (E, Post)
                      else Post),
                   2 => Dynamic_Prop_Result,
                   3 => Tag_Comp));
@@ -7011,7 +6660,7 @@ package body Gnat2Why.Subprograms is
             Def           : constant W_Pred_Id := +New_Typed_Binding
               (Ada_Node => Empty,
                Domain   => EW_Pred,
-               Name     => +New_Result_Ident (Why_Type),
+               Name     => +Result_Id,
                Def      => Call,
                Context  => +Guarded_Post);
             Dep           : constant W_Axiom_Dep_Id :=
@@ -7324,6 +6973,7 @@ package body Gnat2Why.Subprograms is
                                  Local    => True,
                                  Init     => <>,
                                  Is_Moved => <>,
+                                 Valid    => <>,
                                  Main     =>
                                    (B_Name   =>
                                         New_Temp_Identifier
@@ -7567,10 +7217,18 @@ package body Gnat2Why.Subprograms is
 
       declare
          Use_Result_Name : constant Boolean := Ekind (E) = E_Function;
-         --  Store the result identifier in Result_Name
+         --  Store the result identifier in Result_Name. If the result of
+         --  the function is potentially invalid, use a temporary as the
+         --  function returns a validity wrapper.
+
       begin
          if Use_Result_Name then
-            Result_Name := New_Result_Ident (Type_Of_Node (E));
+            Result_Name :=
+              (if Is_Potentially_Invalid (E)
+               then New_Temp_Identifier
+                 (Base_Name => "result",
+                  Typ       => Type_Of_Node (E))
+               else New_Result_Ident (Type_Of_Node (E)));
             Result_Is_Mutable := False;
          end if;
 
@@ -7661,18 +7319,19 @@ package body Gnat2Why.Subprograms is
       Specialization_Module : Symbol := No_Symbol;
       More_Reads            : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
    is
-      Func_Binders     : constant Item_Array :=
+      Needs_Validity_Wrapper : constant Boolean := Is_Potentially_Invalid (E);
+      Func_Binders           : constant Item_Array :=
         Compute_Binders (E, EW_Prog, More_Reads);
-      Func_Why_Binders : constant Binder_Array :=
+      Func_Why_Binders       : constant Binder_Array :=
         To_Binder_Array (Func_Binders);
-      Params           : Transformation_Params;
-      Effects          : W_Effects_Id;
-      Pre              : W_Pred_Id;
-      Post             : W_Pred_Id;
-      Dispatch_Pre     : W_Pred_Id := Why_Empty;
-      Dispatch_Post    : W_Pred_Id := Why_Empty;
-      Refined_Post     : W_Pred_Id := Why_Empty;
-      Why_Type         : W_Type_Id := Why_Empty;
+      Params                 : Transformation_Params;
+      Effects                : W_Effects_Id;
+      Pre                    : W_Pred_Id;
+      Post                   : W_Pred_Id;
+      Dispatch_Pre           : W_Pred_Id := Why_Empty;
+      Dispatch_Post          : W_Pred_Id := Why_Empty;
+      Refined_Post           : W_Pred_Id := Why_Empty;
+      Why_Type               : W_Type_Id := Why_Empty;
 
    begin
       Params := (Logic_Params with delta Ref_Allowed => True);
@@ -7717,6 +7376,20 @@ package body Gnat2Why.Subprograms is
                      Compute_Exit_Cases_Exceptional_Post
                        (Params, E, Exc_Id))));
          end;
+      end if;
+
+      --  Potentially add program exit to the effects
+
+      if Has_Program_Exit (E) then
+         Effects_Append_To_Raises
+           (Effects,
+            New_Raise_Effect
+              (Domain => EW_Prog,
+               Name   => M_Main.Program_Exit_Exc,
+               Post   => New_And_Pred
+                 (Compute_Program_Exit_Postcondition (Params, E),
+                  Compute_Exit_Cases_Simple_Post
+                    (Params, E, Name_Program_Exit))));
       end if;
 
       Pre := Get_Static_Call_Contract (Params, E, Pragma_Precondition);
@@ -7795,20 +7468,35 @@ package body Gnat2Why.Subprograms is
 
       if Is_Function_Or_Function_Type (E) then
 
-         Why_Type := Type_Of_Node (E);
+         Why_Type :=
+           (if Needs_Validity_Wrapper then Validity_Wrapper_Type (E)
+            else Type_Of_Node (E));
 
          declare
             Logic_Func_Args     : constant W_Expr_Array :=
               Get_Args_From_Binders (Spec_Binders, Ref_Allowed => True)
-               & Compute_Args (E, Func_Why_Binders, More_Reads);
+              & Compute_Args (E, Func_Why_Binders, More_Reads);
+            Result_Id           : constant W_Identifier_Id :=
+              New_Result_Ident (Why_Type);
+            Result_Value        : constant W_Term_Id :=
+              (if Needs_Validity_Wrapper
+               then +New_Function_Valid_Value_Access
+                 (Fun => E, Name => +Result_Id)
+               else +Result_Id);
+            Result_Is_Valid     : constant W_Term_Id :=
+              (if Needs_Validity_Wrapper
+               then +New_Function_Is_Valid_Access
+                 (Fun => E, Name => +Result_Id)
+               else True_Term);
             Dynamic_Prop_Result : constant W_Pred_Id :=
               +New_And_Then_Expr
               (Left   => +Compute_Dynamic_Inv_And_Initialization
-                 (Expr           => +New_Result_Ident (Why_Type),
+                 (Expr           => Result_Value,
                   Ty             => Etype (E),
                   Only_Var       => False_Term,
                   All_Global_Inv =>
                     Include_All_Global_Invariants_For_Subp (E),
+                  Valid          => Result_Is_Valid,
                   Params         => Params),
                Right  => +Compute_Type_Invariants_For_Subprogram
                  (E, Params, False),
@@ -7861,6 +7549,13 @@ package body Gnat2Why.Subprograms is
                     (if Is_Borrowing_Traversal_Function (E)
                      then +Wrap_Post_Of_Traversal
                        (E, Post, Logic_Func_Args, Params)
+
+                     --  If the function returns a validity wrapper, introduce
+                     --  bindings for the value part and the validity flag of
+                     --  the result.
+
+                     elsif Needs_Validity_Wrapper
+                     then +Wrap_Post_Of_Potentially_Invalid (E, Post)
                      else +Post),
                   Domain => EW_Pred);
                Tag_Arg    : constant W_Expr_Array :=
@@ -7869,8 +7564,6 @@ package body Gnat2Why.Subprograms is
                Tag_B      : constant Binder_Array :=
                  (if Need_Tag then (1 => Tag_Binder)
                   else (1 .. 0 => <>));
-               Result_Id  : constant W_Identifier_Id :=
-                 New_Result_Ident (Why_Type);
                Pred_Args  : constant W_Expr_Array :=
                  +Result_Id & Tag_Arg & Logic_Func_Args;
 
@@ -7940,7 +7633,7 @@ package body Gnat2Why.Subprograms is
                         (Symbol => Why_Eq,
                          Left   => New_Tag_Access
                            (Domain   => EW_Term,
-                            Name     => +New_Result_Ident (Why_Type),
+                            Name     => +Result_Value,
                             Ty       => Retysp (Etype (E))),
                          Right  =>
                            (if Ekind (E) = E_Function
@@ -7955,7 +7648,7 @@ package body Gnat2Why.Subprograms is
                  (Domain      => EW_Prog,
                   Name        => Prog_Id,
                   Binders     => Tag_B & Spec_Binders & Func_Why_Binders,
-                  Return_Type => Type_Of_Node (E),
+                  Return_Type => Why_Type,
                   Labels      => Symbol_Sets.Empty_Set,
                   Location    => No_Location,
                   Effects     => Effects,
@@ -8013,18 +7706,54 @@ package body Gnat2Why.Subprograms is
                      else EW_Term);
                   Expr_Fun_N : constant Node_Id :=
                     Get_Expression_Function (E);
-                  Expr_Body : constant W_Expr_Id :=
-                    Transform_Expr (Expression (Expr_Fun_N),
-                                    Expected_Type => Why_Type,
-                                    Domain        => Domain,
-                                    Params        => Params);
-                  Res_Expr  : constant W_Expr_Id :=
-                    +New_Result_Ident (Why_Type);
-                  Eq_Expr   : constant W_Pred_Id :=
-                    (New_Call (Name => Why_Eq,
-                               Args => (Res_Expr, Expr_Body),
-                               Typ  => EW_Bool_Type));
+                  Expr_Body : W_Expr_Id;
+                  Eq_Expr   : W_Pred_Id;
+
+                  --  Handling of potentially invalid values
+
+                  Tmp_Id     : W_Identifier_Id;
+                  Id_Def     : W_Expr_Id;
+                  Valid_Flag : W_Expr_Id;
+
                begin
+                  if Needs_Validity_Wrapper then
+                     Expr_Body := Transform_Potentially_Invalid_Expr
+                       (Expr          => Expression (Expr_Fun_N),
+                        Expected_Type => Type_Of_Node (E),
+                        Domain        => Domain,
+                        Params        => Params,
+                        Tmp_Id        => Tmp_Id,
+                        Id_Def        => Id_Def,
+                        Valid_Flag    => Valid_Flag);
+
+                     Expr_Body := New_Function_Validity_Wrapper_Value
+                       (Fun      => E,
+                        Is_Valid => Valid_Flag,
+                        Value    => Expr_Body);
+
+                     Eq_Expr := New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => +Result_Id,
+                        Right  => +Expr_Body);
+
+                     if Present (Tmp_Id) then
+                        Eq_Expr := New_Typed_Binding
+                          (Name    => Tmp_Id,
+                           Def     => +Id_Def,
+                           Context => Eq_Expr);
+                     end if;
+                  else
+                     Expr_Body :=
+                       Transform_Expr (Expression (Expr_Fun_N),
+                                       Expected_Type => Why_Type,
+                                       Domain        => Domain,
+                                       Params        => Params);
+
+                     Eq_Expr := New_Call
+                       (Name => Why_Eq,
+                        Args => (+Result_Id, +Expr_Body));
+                  end if;
+
                   if Entity_Body_In_SPARK (E) and then Has_Refinement (E)
                   then
                      Refined_Post :=
@@ -8686,8 +8415,15 @@ package body Gnat2Why.Subprograms is
       end if;
 
       --  Store an appropriate value for the result identifier in Result_Name.
+      --  If the result of the function is potentially invalid, use a temporary
+      --  as the function returns a validity wrapper.
 
-      Result_Name := New_Result_Ident (Type_Of_Node (E));
+      Result_Name :=
+        (if Is_Potentially_Invalid (E)
+         then New_Temp_Identifier
+           (Base_Name => "result",
+            Typ       => Type_Of_Node (E))
+         else New_Result_Ident (Type_Of_Node (E)));
       Result_Is_Mutable := False;
 
       if Within_Protected_Type (E) then
@@ -8779,36 +8515,54 @@ package body Gnat2Why.Subprograms is
 
       --  Given an expression function F with expression E, define an axiom
       --  that states that: "for all <args> => F(<args>) = E".
-      --  There is no need to use the precondition here, as the above axiom
-      --  is always sound.
+      --  Except when F is recursive, there is no need to use the precondition
+      --  here, as the above axiom is always sound.
 
-      if Is_Standard_Boolean_Type (Etype (E)) then
-         Emit
-           (Expr_Fun_Axiom_Th,
-            New_Defining_Bool_Axiom
-              (Ada_Node => E,
-               Name     => Logic_Id,
-               Binders  => Flat_Binders,
-               Dep_Kind => EW_Axdep_Func,
-               Def      => Transform_Pred (Expr, Params)));
-
-      else
-         declare
-            Equ_Ty : constant W_Type_Id := Type_Of_Node (E);
-         begin
+      declare
+         Guard : W_Pred_Id := Why_Empty;
+      begin
+         if Is_Recursive (E) then
+            Guard := +New_And_Then_Expr
+              (Left   => +Compute_Guard_Formula (Logic_Func_Binders, Params),
+               Right  => +Compute_Type_Invariants_For_Subprogram
+                 (E, Params, True),
+               Domain => EW_Pred);
+            Guard := +New_And_Then_Expr
+              (Left   => +Guard,
+               Right  =>
+                 +Compute_Spec (Params, E, Pragma_Precondition, EW_Pred),
+               Domain => EW_Pred);
+         end if;
+         if Is_Standard_Boolean_Type (Etype (E)) then
             Emit
               (Expr_Fun_Axiom_Th,
-               New_Defining_Axiom
+               New_Defining_Bool_Axiom
                  (Ada_Node => E,
                   Name     => Logic_Id,
                   Binders  => Flat_Binders,
-                  Def      => +Transform_Expr
-                    (Expr,
-                     Expected_Type => Equ_Ty,
-                     Domain        => EW_Term,
-                     Params        => Params)));
-         end;
-      end if;
+                  Pre      => Guard,
+                  Dep_Kind => EW_Axdep_Func,
+                  Def      => Transform_Pred (Expr, Params)));
+
+         else
+            declare
+               Equ_Ty : constant W_Type_Id := Type_Of_Node (E);
+            begin
+               Emit
+                 (Expr_Fun_Axiom_Th,
+                  New_Defining_Axiom
+                    (Ada_Node => E,
+                     Name     => Logic_Id,
+                     Binders  => Flat_Binders,
+                     Pre      => Guard,
+                     Def      => +Transform_Expr
+                       (Expr,
+                        Expected_Type => Equ_Ty,
+                        Domain        => EW_Term,
+                        Params        => Params)));
+            end;
+         end if;
+      end;
 
       --  If the function is a traversal function add an axiom to assume the
       --  value of its borrowed at end function.
@@ -8903,26 +8657,22 @@ package body Gnat2Why.Subprograms is
 
          --  Raise a warning about missing definition on recursive calls
 
-         if Debug.Debug_Flag_Underscore_F then
-            declare
-               Scope               : constant Entity_Id :=
-                 Enclosing_Unit (E);
-               String_For_Scope    : constant String :=
-                 (if Present (Scope)
-                  and then Ekind (Scope) in
-                      E_Package | E_Function | E_Procedure | E_Entry
-                  and then Proof_Module_Cyclic (E, Scope)
-                  then " and on calls from enclosing unit"
-                  else "");
-            begin
-               Error_Msg_N
-                 ("expression function body of subprograms with a numeric "
-                  & "variant might not be available on recursive calls"
-                  & String_For_Scope,
-                  E,
-                  Kind => Info_Kind);
-            end;
-         end if;
+         declare
+            Scope               : constant Entity_Id :=
+              Enclosing_Unit (E);
+            String_For_Scope    : constant String :=
+              (if Present (Scope)
+               and then Ekind (Scope) in
+                   E_Package | E_Function | E_Procedure | E_Entry
+               and then Proof_Module_Cyclic (E, Scope)
+               then " and on calls from enclosing unit"
+               else "");
+         begin
+            Warning_Msg_N
+              (Warn_Num_Variant,
+               E,
+               Extra_Message => String_For_Scope);
+         end;
 
          Register_Proof_Cyclic_Function (E);
          Register_Dependency_For_Soundness (E_Module (E, Expr_Fun_Axiom), E);
@@ -8966,6 +8716,39 @@ package body Gnat2Why.Subprograms is
                    " defined at " & Build_Location_String (Sloc (E))
                 else "")
               & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      end if;
+
+      if Is_Potentially_Invalid (E) then
+         declare
+            Validity_Module : constant W_Module_Id :=
+              E_Module (E, Validity_Wrapper);
+            Validity_Th     : Theory_UC :=
+              Open_Theory
+                (WF_Context, Validity_Module,
+                 Comment =>
+                   "Module for the wrapper type for the potentially invalid"
+                 & " result of "
+                 & """" & Get_Name_String (Chars (E)) & """"
+                 & (if Sloc (E) > 0 then
+                      " defined at " & Build_Location_String (Sloc (E))
+                   else "")
+                 & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+            Subst           : constant W_Clone_Substitution_Array :=
+              (1 => New_Clone_Substitution
+                 (Kind      => EW_Type_Subst,
+                  Orig_Name => New_Name (Symb => NID ("__t")),
+                  Image     => Get_Name (+Type_Of_Node (E))));
+
+         begin
+            Emit (Validity_Th,
+                  New_Clone_Declaration
+                    (Theory_Kind   => EW_Theory,
+                     Clone_Kind    => EW_Export,
+                     Origin        => Validity_Wrapper_Model,
+                     As_Name       => No_Symbol,
+                     Substitutions => Subst));
+            Close_Theory (Validity_Th, Kind => Definition_Theory);
+         end;
       end if;
 
       --  No logic function is created for volatile functions and functions
@@ -9084,6 +8867,38 @@ package body Gnat2Why.Subprograms is
       end if;
    end Update_Symbol_Table_For_Inherited_Contracts;
 
+   --------------------------------------
+   -- Wrap_Post_Of_Potentially_Invalid --
+   --------------------------------------
+
+   function Wrap_Post_Of_Potentially_Invalid
+     (E    : Entity_Id;
+      Post : W_Pred_Id) return W_Pred_Id
+   is
+      Result_Id : constant W_Term_Id :=
+        +New_Result_Ident (Validity_Wrapper_Type (E));
+   begin
+      --  Generate:
+      --
+      --  let result_name = result.valid_name in
+      --  let result_name_valid = result.valid_id in
+      --    post
+
+      if Is_True_Boolean (+Post) then
+         return Post;
+      else
+         return New_Typed_Binding
+           (Name    => Result_Name,
+            Def     => +New_Function_Valid_Value_Access
+              (Fun => E, Name => +Result_Id),
+            Context => New_Typed_Binding
+              (Name    => Get_Valid_Flag_For_Id (Result_Name),
+               Def     => +New_Function_Is_Valid_Access
+                 (Fun => E, Name => +Result_Id),
+               Context => Post));
+      end if;
+   end Wrap_Post_Of_Potentially_Invalid;
+
    ----------------------------
    -- Wrap_Post_Of_Traversal --
    ----------------------------
@@ -9134,9 +8949,10 @@ package body Gnat2Why.Subprograms is
 
       return New_And_Pred
         (Left   => New_Universal_Quantif
-           (Variables => (1 => Brower_At_End),
+           (Binders => (1 => New_Binder (Domain => EW_Pred,
+                                         Name   => Brower_At_End,
+                                         Arg_Type => Get_Typ (Brower_At_End))),
             Labels    => Symbol_Sets.Empty_Set,
-            Var_Type  => Get_Typ (Brower_At_End),
             Triggers  => New_Triggers
               (Triggers =>
                    (1 => New_Trigger (Terms => (1 => +Borrowed_Call)))),
@@ -9158,12 +8974,10 @@ package body Gnat2Why.Subprograms is
                  (Name    => Borrowed_At_End,
                   Def     => +Borrowed_Call,
                   Context => New_And_Pred
-                    (Left   => New_Comparison
-                         (Symbol => Why_Eq,
-                          Left   => New_Pointer_Is_Null_Access
-                            (Borrowed_Ty, +Borrowed_At_End),
-                          Right  => New_Pointer_Is_Null_Access
-                            (Borrowed_Ty, Borrowed)),
+                    (Left   => New_Equality_Of_Preserved_Parts
+                         (Ty    => Borrowed_Ty,
+                          Expr1 => +Borrowed_At_End,
+                          Expr2 => Borrowed),
                      Right  => Post),
                   Typ     => EW_Bool_Type))),
          Right  => New_Comparison

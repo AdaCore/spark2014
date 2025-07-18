@@ -1,6 +1,6 @@
 myloops.adb:4:07: info: range check proved (CVC5: 2 VC)
 myloops.adb:7:14: info: add a contract to analyze it separately from calling contexts
-myloops.adb:7:14: info: local subprogram "Init_Arr" only analyzed in the context of calls
+myloops.adb:7:14: info: local subprogram "Init_Arr" only analyzed in the context of calls [info-unrolling-inlining]
 myloops.adb:7:24: high: "Y" is not initialized in "Init_Arr" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Y" on all paths, make "Y" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 myloops.adb:10:07: info: range check proved (CVC5: 2 VC), in call inlined at myloops.adb:17
 myloops.adb:10:07: warning: unused variable "Z"
