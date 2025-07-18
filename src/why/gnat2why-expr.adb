@@ -9082,7 +9082,10 @@ package body Gnat2Why.Expr is
       procedure Append (Scop : Node_Id);
       --  Collect exited scopes (for Iter_Exited_Scopes)
 
-      procedure Stop (Destination : Node_Id; Exc_Set : Exception_Sets.Set);
+      procedure Stop
+        (Destination : Node_Id;
+         Exc_Set     : Exception_Sets.Set;
+         Is_Continue : Boolean);
       --  Stop collection at first caught exception by raising Found
 
       procedure Iter_From is new
@@ -9107,8 +9110,12 @@ package body Gnat2Why.Expr is
       -- Stop --
       ----------
 
-      procedure Stop (Destination : Node_Id; Exc_Set : Exception_Sets.Set) is
-         pragma Unreferenced (Exc_Set);
+      procedure Stop
+        (Destination : Node_Id;
+         Exc_Set     : Exception_Sets.Set;
+         Is_Continue : Boolean)
+      is
+         pragma Unreferenced (Exc_Set, Is_Continue);
       begin
          if Nkind (Destination) = N_Exception_Handler then
             raise Found;

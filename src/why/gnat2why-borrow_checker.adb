@@ -4618,7 +4618,10 @@ package body Gnat2Why.Borrow_Checker is
       --  * When crossing through a finally, check the finally statements with
       --    current environment
 
-      procedure Stop (Destination : Node_Id; Exc_Set : Exception_Sets.Set);
+      procedure Stop
+        (Destination : Node_Id;
+         Exc_Set     : Exception_Sets.Set;
+         Is_Continue : Boolean);
       --  Deal with accumulating permission environment at destination of
       --  transfer of control. For transfer of control escaping the subprogram,
       --  check permission environments are in the expected state.
@@ -4671,7 +4674,12 @@ package body Gnat2Why.Borrow_Checker is
       -- Stop --
       ----------
 
-      procedure Stop (Destination : Node_Id; Exc_Set : Exception_Sets.Set) is
+      procedure Stop
+        (Destination : Node_Id;
+         Exc_Set     : Exception_Sets.Set;
+         Is_Continue : Boolean)
+      is
+         pragma Unreferenced (Is_Continue);
       begin
          case Nkind (Destination) is
             when N_Loop_Statement =>

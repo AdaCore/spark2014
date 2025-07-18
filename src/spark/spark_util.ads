@@ -1458,19 +1458,24 @@ package SPARK_Util is
    --  be issued.
 
    procedure Iter_Exited_Scopes_Ignore_Stops
-     (Destination : Node_Id; Exc_Set : Exception_Sets.Set)
+     (Destination : Node_Id;
+      Exc_Set     : Exception_Sets.Set;
+      Is_Continue : Boolean)
    is null;
 
    generic
       with procedure Process (Scop : Node_Id);
       with
-        procedure Stop (Destination : Node_Id; Exc_Set : Exception_Sets.Set)
-        is Iter_Exited_Scopes_Ignore_Stops;
+        procedure Stop
+          (Destination : Node_Id;
+           Exc_Set     : Exception_Sets.Set;
+           Is_Continue : Boolean) is Iter_Exited_Scopes_Ignore_Stops;
    procedure Iter_Exited_Scopes_With_Specified_Transfer
      (Start             : Node_Id;
       Goto_Labels       : Node_Sets.Set := Node_Sets.Empty_Set;
       Exception_Sources : Exception_Sets.Set := Exception_Sets.Empty_Set;
       Exited_Loops      : Node_Sets.Set := Node_Sets.Empty_Set;
+      Continued_Loops   : Node_Sets.Set := Node_Sets.Empty_Set;
       Return_Source     : Boolean := False);
    --  For Start a statement that can be exited by indirect transfer of
    --  control, iterates over scopes exited upon such indirect transfer.
@@ -1482,6 +1487,8 @@ package SPARK_Util is
    --    the expected set of exceptions.
    --  * Exited_Loops corresponds to exit statement sources. It provides the
    --    loops that are exited by such statements.
+   --  * Continued_Loops corresponds to continue statement sources. It provides
+   --    the loops whose iterations are completed by such statements.
    --  * Return_Source corresponds to (extended) return statement. Note that
    --    return statements nested within extended return statements do not exit
    --    the full body, instead they jump to the completion of the enclosing
@@ -1502,7 +1509,9 @@ package SPARK_Util is
    --  Stop is called once per reached destination, after all relevant scopes
    --  have been exited and no other. The arguments passed to Stop may be:
    --  * Goto label entities (targets of goto)
-   --  * Loop statements (targets of loop exit)
+   --  * Loop statements (targets of loop exit, or of loop continues).
+   --    Is_Continue is set to true if and only if the destination is that
+   --    of the loop continue (the end of the iteration rather than the loop).
    --  * Extended return statements (targets of inner return statements)
    --  * Exception handler. In this case, Exc_Sets contains the (non-empty)
    --    subset of exceptions that may reach the handler.
@@ -1520,8 +1529,10 @@ package SPARK_Util is
    generic
       with procedure Process (Scop : Node_Id);
       with
-        procedure Stop (Destination : Node_Id; Exc_Set : Exception_Sets.Set)
-        is Iter_Exited_Scopes_Ignore_Stops;
+        procedure Stop
+          (Destination : Node_Id;
+           Exc_Set     : Exception_Sets.Set;
+           Is_Continue : Boolean) is Iter_Exited_Scopes_Ignore_Stops;
    procedure Iter_Exited_Scopes (Source : Node_Id)
    with
      Pre =>
@@ -1531,6 +1542,7 @@ package SPARK_Util is
         | N_Raise_Statement
         | N_Goto_Statement
         | N_Exit_Statement
+        | N_Continue_Statement
         | N_Simple_Return_Statement
         | N_Extended_Return_Statement
        and then (if Nkind (Source) = N_Function_Call

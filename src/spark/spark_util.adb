@@ -4965,11 +4965,13 @@ package body SPARK_Util is
       Goto_Labels       : Node_Sets.Set := Node_Sets.Empty_Set;
       Exception_Sources : Exception_Sets.Set := Exception_Sets.Empty_Set;
       Exited_Loops      : Node_Sets.Set := Node_Sets.Empty_Set;
+      Continued_Loops   : Node_Sets.Set := Node_Sets.Empty_Set;
       Return_Source     : Boolean := False)
    is
       Remaining_Labels     : Node_Graphs.Map;
       Remaining_Exceptions : Exception_Sets.Set := Exception_Sources;
-      Remaining_Loops      : Node_Sets.Set := Exited_Loops;
+      Remaining_E_Loops    : Node_Sets.Set := Exited_Loops;
+      Remaining_C_Loops    : Node_Sets.Set := Continued_Loops;
       Remaining_Return     : Boolean := Return_Source;
       --  Track transfer of control not <<caught>> yet. For labels, the
       --  collection is indexed by sequence of statement, in order to detect
@@ -4987,7 +4989,8 @@ package body SPARK_Util is
 
       procedure Do_Stop
         (Destination : Node_Id;
-         Exc_Set     : Exception_Sets.Set := Exception_Sets.Empty_Set);
+         Exc_Set     : Exception_Sets.Set := Exception_Sets.Empty_Set;
+         Is_Continue : Boolean := False);
       --  Wrapper over client Stop procedure. Clear the buffered scopes,
       --  calling Process over each of them, before calling the actual Stop
       --  procedure.
@@ -4998,13 +5001,14 @@ package body SPARK_Util is
 
       procedure Do_Stop
         (Destination : Node_Id;
-         Exc_Set     : Exception_Sets.Set := Exception_Sets.Empty_Set) is
+         Exc_Set     : Exception_Sets.Set := Exception_Sets.Empty_Set;
+         Is_Continue : Boolean := False) is
       begin
          for N of Buffer loop
             Process (N);
          end loop;
          Buffer.Clear;
-         Stop (Destination, Exc_Set);
+         Stop (Destination, Exc_Set, Is_Continue);
       end Do_Stop;
 
       --  Start of processing for Iter_Exited_Scopes_With_Specified_Transfer
@@ -5033,7 +5037,8 @@ package body SPARK_Util is
       while Remaining_Return
         or else not Remaining_Labels.Is_Empty
         or else not Exception_Sources.Is_Empty
-        or else not Remaining_Loops.Is_Empty
+        or else not Remaining_E_Loops.Is_Empty
+        or else not Remaining_C_Loops.Is_Empty
       loop
 
          Prev := Scop;
@@ -5123,23 +5128,30 @@ package body SPARK_Util is
 
                Buffer.Append (Scop);
 
-            --  Exit loop statement scopes, and stop loop exits
+            --  Exit loop statement scopes, and stop loop exits/continues. Loop
+            --  continues are stopped before exiting loop statement scopes.
 
             when N_Loop_Statement =>
 
-               if Present (Iteration_Scheme (Scop))
-                 and then No (Condition (Iteration_Scheme (Scop)))
-               then
-                  Buffer.Append (Scop);
-               end if;
-
                declare
-                  Key    : constant Node_Id := Entity (Identifier (Scop));
-                  Cursor : Node_Sets.Cursor := Remaining_Loops.Find (Key);
+                  Key      : constant Node_Id := Entity (Identifier (Scop));
+                  Cursor_E : Node_Sets.Cursor := Remaining_E_Loops.Find (Key);
+                  Cursor_C : Node_Sets.Cursor := Remaining_C_Loops.Find (Key);
                begin
-                  if Node_Sets.Has_Element (Cursor) then
+                  if Node_Sets.Has_Element (Cursor_C) then
+                     Do_Stop (Scop, Is_Continue => True);
+                     Remaining_C_Loops.Delete (Cursor_C);
+                  end if;
+
+                  if Present (Iteration_Scheme (Scop))
+                    and then No (Condition (Iteration_Scheme (Scop)))
+                  then
+                     Buffer.Append (Scop);
+                  end if;
+
+                  if Node_Sets.Has_Element (Cursor_E) then
                      Do_Stop (Scop);
-                     Remaining_Loops.Delete (Cursor);
+                     Remaining_E_Loops.Delete (Cursor_E);
                   end if;
                end;
 
@@ -5186,13 +5198,25 @@ package body SPARK_Util is
               (Source,
                Goto_Labels => Node_Sets.To_Set (Entity (Name (Source))));
 
-         --  Exit statement. Exit all scopes until named loop.
+         --  Exit statement. Exit all scopes until named loop, including the
+         --  loop.
 
          when N_Exit_Statement =>
             Main_Iteration
               (Source,
                Exited_Loops =>
                  Node_Sets.To_Set (Loop_Entity_Of_Exit_Statement (Source)));
+
+         --  Continue statement. Exit all scopes until named loop, excluding
+         --  the loop.
+
+         when N_Continue_Statement =>
+
+            Main_Iteration
+              (Source,
+               Continued_Loops =>
+                 Node_Sets.To_Set
+                   (Loop_Entity_Of_Continue_Statement (Source)));
 
          --  Return statement. Exit all scopes until end of body.
 
@@ -5764,7 +5788,9 @@ package body SPARK_Util is
             --  and update Preceding to the completion of that finalization.
 
             procedure Connect_Target
-              (Destination : Node_Id; Exc_Set : Exception_Sets.Set);
+              (Destination : Node_Id;
+               Exc_Set     : Exception_Sets.Set;
+               Is_Continue : Boolean);
             --  Connect Preceding to Destination
 
             function Target_Vertex (Destination : Node_Id) return Vertex;
@@ -5806,9 +5832,11 @@ package body SPARK_Util is
             --------------------
 
             procedure Connect_Target
-              (Destination : Node_Id; Exc_Set : Exception_Sets.Set)
+              (Destination : Node_Id;
+               Exc_Set     : Exception_Sets.Set;
+               Is_Continue : Boolean)
             is
-               pragma Unreferenced (Exc_Set);
+               pragma Unreferenced (Exc_Set, Is_Continue);
             begin
                Add_Edge (Preceding, Target_Vertex (Destination));
             end Connect_Target;
