@@ -182,8 +182,8 @@ package body Gnat2Why.Borrow_Checker is
                Children_Permission : Perm_Kind;
 
                --  Unfolded path of access type. The permission of the object
-               --  pointed to is given in Get_All. The permission of the Is_Null
-               --  conceptual field is given in Null_Permission.
+               --  pointed to is given in Get_All. The permission of the
+               --  Is_Null conceptual field is given in Null_Permission.
 
             when Reference =>
                Null_Permission : Perm_Kind;
@@ -197,8 +197,8 @@ package body Gnat2Why.Borrow_Checker is
                Bounds_Permission : Perm_Kind;
                Get_Elem          : Perm_Tree_Access;
 
-               --  Unfolded path of record type. The permission of the components
-               --  is given in Component.
+               --  Unfolded path of record type. The permission of the
+               --  components is given in Component.
 
             when Record_Component =>
                Component : Perm_Tree_Maps.Instance;
@@ -2324,8 +2324,8 @@ package body Gnat2Why.Borrow_Checker is
             BC_Error
               (Create
                  ("actual for a call to a function annotated with"
-                  & " At_End_Borrow should be rooted at a borrower or a borrowed"
-                  & " expression"),
+                  & " At_End_Borrow should be rooted at a borrower or a"
+                  & " borrowed expression"),
                Actual);
          else
             Set_At_End_Borrow_Call (Expr, Brower);
@@ -3897,12 +3897,15 @@ package body Gnat2Why.Borrow_Checker is
             --  only. Protected functions are never allowed to modify protected
             --  components.
 
-            if Ekind (Subp) = E_Function
-              and then (not Is_Function_With_Side_Effects (Subp)
-                        or else (Within_Protected_Type (Subp)
-                                 and then Expr.Is_Ent
-                                 and then Is_Protected_Component_Or_Discr_Or_Part_Of
-                                               (Expr.Ent)))
+            --  nested expression exceeds line length
+            --!format off
+            if Ekind (Subp) = E_Function and then
+              (not Is_Function_With_Side_Effects (Subp)
+               or else (Within_Protected_Type (Subp)
+                        and then Expr.Is_Ent
+                        and then Is_Protected_Component_Or_Discr_Or_Part_Of
+                                   (Expr.Ent)))
+            --!format on
             then
                Mode := Read;
 
