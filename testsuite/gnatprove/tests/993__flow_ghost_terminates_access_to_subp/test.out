@@ -1,3 +1,12 @@
-foo.adb:4:17: info: initialization of "I" proved
-foo.adb:7:13: info: pointer dereference check proved (CVC5: 1 VC)
-foo.adb:14:10: info: pointer dereference check proved (CVC5: 1 VC)
+foo.adb:3:04: info: function contract feasibility proved (Trivial: 1 VC)
+foo.adb:5:13: info: implicit aspect Always_Terminates on "F1" has been proved, subprogram will terminate
+foo.adb:9:07: medium: implicit aspect Always_Terminates on "F2" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
+foo.adb:9:21: info: pointer dereference check proved (CVC5: 1 VC)
+foo.adb:12:17: info: initialization of "I" proved
+foo.adb:15:13: info: pointer dereference check proved (CVC5: 1 VC)
+foo.adb:25:10: info: pointer dereference check proved (CVC5: 1 VC)
+foo.adb:25:10: medium: call to ghost access-to-subprogram might be nonterminating
+foo.adb:26:07: medium: call to ghost access-to-subprogram might be nonterminating
+foo.adb:26:17: info: pointer dereference check proved (CVC5: 1 VC)
+foo.adb:27:07: medium: call to ghost access-to-subprogram might be nonterminating
+foo.adb:27:17: info: pointer dereference check proved (CVC5: 1 VC)
