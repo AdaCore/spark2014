@@ -898,6 +898,94 @@ def gnatprove(
                 print(line)
 
 
+def sarif_msg_text(result):
+    msg = result["message"]
+    fulltext = msg["text"]
+    if "arguments" in msg:
+        for index, value in enumerate(msg["arguments"]):
+            placeholder = f"{{{index}}}"
+            newvalue = (
+                value
+                if value.startswith('"') and value.endswith('"')
+                else f'"{value}"'  # noqa: B907
+            )
+            fulltext = fulltext.replace(placeholder, newvalue)
+    if "relatedLocations" in result:
+        loc_map = {str(loc["id"]): loc for loc in result["relatedLocations"]}
+
+    pattern = r"\[([^\]]+)\]\((\d+)\)"
+
+    def loc_text(loc):
+        return f'at line {loc["physicalLocation"]["region"]["startLine"]}'
+
+    def _replacer(match: re.Match) -> str:
+        original_link = match.group(0)
+        item_id = match.group(2)
+        loc = loc_map.get(item_id)
+
+        if loc:
+            return loc_text(loc)
+        else:
+            return original_link
+
+    return re.sub(pattern, _replacer, fulltext)
+
+
+ignore_patterns = [
+    # TODO SPARK violation messages appear differently in SARIF, need to investigate
+    "not allowed in SPARK",
+    "not yet supported",
+    # TODO these two messages is often issued for units other than the main
+    # unit and doesn't appear because of that
+    "function Is_Valid is assumed to return True",
+    'attribute "Valid" is assumed to return True',
+    # TODO we currently have trouble rendering the "at line ..." part of
+    # unrolling messages:
+    "cannot unroll loop",
+    # TODO I don't know why this message disappears:
+    "no Global contract available for",
+]
+
+
+def has_pattern(msg):
+    for pattern in ignore_patterns:
+        if pattern in msg:
+            return True
+
+
+def check_sarif(report):
+    potential_sarif_files = glob.glob("**/gnatprove.sarif")
+    if len(potential_sarif_files) == 0:
+        return
+    sarif_file = potential_sarif_files[0]
+    with open(sarif_file, "r") as f:
+        sarif = json.load(f)
+    # TODO don't work on test.out, but real test output instead
+    with open("test.out", "r") as f:
+        lines = f.readlines()
+
+    def contains(text):
+        for line in lines:
+            if text in line:
+                return True
+        return False
+
+    for result in sarif["runs"][0]["results"]:
+        # ignore if result suppressed
+        if "suppressions" in result and len(result["suppressions"]) > 0:
+            continue
+        # if in "report=fail" mode, ignore "proved" messages
+        if report == "fail" and result["kind"] == "pass":
+            continue
+        msg = sarif_msg_text(result)
+        if has_pattern(msg):
+            continue
+
+        if not contains(msg):
+            print("the following SARIF message text is not part of the tool output:")
+            print(msg)
+
+
 def prove_all(
     opt=None,
     steps=None,
@@ -923,6 +1011,7 @@ def prove_all(
     warnings="continue",
     sparklib=False,
     filter_sparklib=True,
+    skip_sarif_check=False,
 ):
     """Call gnatprove with standard options.
 
@@ -1000,6 +1089,11 @@ def prove_all(
         sparklib=sparklib,
         filter_sparklib=filter_sparklib,
     )
+    # TODO usage of sparklib generates too many mismatches for SARIF check for now
+    # TODO limitline or other
+    has_limit_switch = any("--limit" in s for s in fullopt)
+    if not skip_sarif_check and not sparklib and not has_limit_switch:
+        check_sarif(report)
 
 
 def do_flow(
@@ -1011,6 +1105,7 @@ def do_flow(
     sort_output=True,
     ada=default_ada,
     sparklib=False,
+    report=None,
 ):
     """
     Call gnatprove with standard options for flow. We do generate
@@ -1034,6 +1129,7 @@ def do_flow(
         sort_output=sort_output,
         ada=ada,
         sparklib=sparklib,
+        report=report,
     )
 
 
