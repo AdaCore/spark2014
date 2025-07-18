@@ -4407,8 +4407,15 @@ package body Gnat2Why.Borrow_Checker is
          --  accumulator for the given loop.
 
          when N_Exit_Statement =>
-            Check_Transfer_Of_Control
-              (Stmt, Unconditional => not Present (Condition (Stmt)));
+            declare
+               Cond     : constant Node_Id := Condition (Stmt);
+               Has_Cond : constant Boolean := Present (Cond);
+            begin
+               if Has_Cond then
+                  Check_Expression (Cond, Read);
+               end if;
+               Check_Transfer_Of_Control (Stmt, Unconditional => not Has_Cond);
+            end;
 
          --  On branches, analyze each branch independently on a fresh copy of
          --  the permission environment, then merge the resulting permission
