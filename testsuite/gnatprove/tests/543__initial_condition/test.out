@@ -7,7 +7,9 @@ rnd_test.adb:12:10: info: precondition proved (CVC5: 1 VC)
 rnd_test.adb:13:10: info: precondition proved (CVC5: 1 VC)
 rnd_test.adb:14:10: info: precondition proved (CVC5: 1 VC)
 rnd_test.adb:16:30: info: range check proved (CVC5: 2 VC)
+rnd_test.adb:16:50: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 rnd_test.adb:17:30: info: range check proved (CVC5: 2 VC)
+rnd_test.adb:17:50: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 rnd_test_2.adb:8:10: info: precondition of main program proved (Trivial: 1 VC)
 rnd_test_2.adb:10:04: info: initialization of "X" proved
 rnd_test_2.adb:10:07: info: initialization of "Y" proved
@@ -15,4 +17,6 @@ rnd_test_2.adb:12:10: medium: precondition might fail [possible fix: preconditio
 rnd_test_2.adb:13:10: info: precondition proved (CVC5: 1 VC)
 rnd_test_2.adb:14:10: info: precondition proved (CVC5: 1 VC)
 rnd_test_2.adb:16:30: info: range check proved (CVC5: 2 VC)
+rnd_test_2.adb:16:50: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 rnd_test_2.adb:17:30: info: range check proved (CVC5: 2 VC)
+rnd_test_2.adb:17:50: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]

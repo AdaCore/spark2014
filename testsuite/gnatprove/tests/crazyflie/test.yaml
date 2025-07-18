@@ -1,6 +1,7 @@
 prove_all:
   mode: flow
-  prover: ["cvc5"]
-  opt: ["-XMODE=Analyze"]
-large: True
+  opt:
+  - -XMODE=Analyze
+  prover:
+  - cvc5
 timeout: 1500

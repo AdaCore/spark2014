@@ -1,6 +1,6 @@
-
-linear_search.ads:13:07: error: function cannot have parameter of mode "out" or "in out" in SPARK [E0015]
-   13 |      At_Index : out Index) return Boolean;
-      |      ^~~~~~~~
-  launch "gnatprove --explain=E0015" for more information
+ error: function cannot have parameter of mode "out" or "in out" in SPARK [E0015]
+--> linear_search.ads:13:07
+   13 |          At_Index : out Index) return Boolean;
+      |          ^~~~~~~~
+      + launch "gnatprove --explain=E0015" for more information
 gnatprove: error during generation of Global contracts

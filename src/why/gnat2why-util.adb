@@ -25,6 +25,7 @@
 
 with Ada.Strings;                use Ada.Strings;
 with Ada.Strings.Fixed;          use Ada.Strings.Fixed;
+with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Unchecked_Deallocation;
 with Atree;
 with Flow_Types;
@@ -1188,7 +1189,14 @@ package body Gnat2Why.Util is
 
             return False;
 
-         when E_In_Out_Parameter | E_Out_Parameter | E_Protected_Type =>
+         when E_In_Out_Parameter | E_Out_Parameter =>
+
+            --  The first parameter of a borrowing traversal function might be
+            --  an IN OUT parameter.
+
+            return not Is_Constant_In_SPARK (E);
+
+         when E_Protected_Type =>
             return True;
 
          when E_Constant =>
@@ -1297,6 +1305,26 @@ package body Gnat2Why.Util is
               else
                  (Ada_To_Why_Ident.Empty_Map, Ada_To_Why_Ident.Empty_Map));
    end Map_For_Loop_Entry;
+
+   -----------------------------------
+   -- Might_Need_Discriminant_Check --
+   -----------------------------------
+
+   function Might_Need_Discriminant_Check
+     (Field : Entity_Id) return Boolean
+   is
+   begin
+      if Ekind (Field) /= E_Component then
+         return False;
+      else
+         declare
+            Ty : constant Type_Kind_Id := Original_Declaration (Field);
+         begin
+            return Has_Discriminants (Ty)
+              and then (not Is_Tagged_Type (Ty) or else Ty = Root_Retysp (Ty));
+         end;
+      end if;
+   end Might_Need_Discriminant_Check;
 
    -------------------------
    -- Name_For_Loop_Entry --
@@ -1560,12 +1588,16 @@ package body Gnat2Why.Util is
    function New_Check_Info
      (Range_Check_Ty : Opt_Type_Kind_Id := Empty;
       Divisor        : Node_Or_Entity_Id := Empty;
-      User_Message   : String_Id := No_String) return Check_Info_Type
+      User_Message   : String_Id := No_String;
+      Details        : String := "") return Check_Info_Type
    is ((User_Message => User_Message,
         Fix_Info     => (Range_Check_Ty => Range_Check_Ty,
                          Divisor        => Divisor,
                          Bound_Info     => No_Bound),
-        Continuation => Continuation_Stack));
+        Continuation => Continuation_Stack,
+        Details      =>
+          (if Details = "" then Null_Unbounded_String
+           else To_Unbounded_String (Details))));
 
    --------------------------------
    -- Nth_Index_Rep_Type_No_Bool --

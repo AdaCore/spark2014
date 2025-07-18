@@ -18,13 +18,13 @@
   </goal>
   <goal name="def&#39;vc.1" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="23739"/></proof>
+  <proof prover="1"><result status="valid" steps="23812"/></proof>
   <proof prover="2"><result status="valid" steps="21059"/></proof>
   <proof prover="4"><result status="failure" steps="0"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
   <proof prover="0"><result status="failure" steps="0"/></proof>
-  <proof prover="1"><result status="valid" steps="40796"/></proof>
+  <proof prover="1"><result status="valid" steps="40865"/></proof>
   <proof prover="2"><result status="failure" steps="0"/></proof>
   <proof prover="4"><result status="failure" steps="0"/></proof>
   </goal>
@@ -32,10 +32,10 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.4">
-  <proof prover="0"><result status="steplimitexceeded" steps="2280"/></proof>
-  <proof prover="1"><result status="unknown" steps="42367"/></proof>
+  <proof prover="0"><result status="steplimitexceeded" steps="10001"/></proof>
+  <proof prover="1"><result status="unknown" steps="42430"/></proof>
   <proof prover="2"><result status="unknown" steps="64884"/></proof>
-  <proof prover="4"><result status="unknown" steps="266"/></proof>
+  <proof prover="4"><result status="unknown" steps="297"/></proof>
   </goal>
  </transf>
  </goal>

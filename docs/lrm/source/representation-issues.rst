@@ -106,8 +106,9 @@ respect to the program semantics of |SPARK|.
 3. If an object ``X`` is overlaid on an object ``Y``, then the alignment of
    ``Y`` shall be an integral multiple of the alignment of ``X``.
 
-4. The type of an overlaid object shall be suitable as the target of an unchecked conversion
-   (see :ref:`Unchecked Type Conversions`);
+4. The type of an overlaid object shall be suitable for unchecked conversion
+   (see :ref:`Unchecked Type Conversions`); if it is mutable in SPARK,
+   it shall also be suitable as the target of an unchecked conversion;
 
 5. If the address clause of an object ``X`` is not of the form ``with Address
    => Y'Address`` for some object ``Y``, then ``X`` shall be volatile.
@@ -134,8 +135,14 @@ Unchecked Type Conversions
 A subtype ``S`` is said to be `suitable for unchecked conversion` if:
 
 - ``S`` is not of a tagged type, of an access type, of an immutably
-  limited type, of a type with discriminants, or of a private type whose
+  limited type, or of a private type whose
   completion fails to meet these requirements.
+
+- if ``S`` is a composite type, all components of ``S`` are also suitable for
+  unchecked conversion.
+
+A subtype ``S`` is said to be `suitable as the source of an unchecked
+conversion` if it is suitable for unchecked conversion, and, in addition:
 
 - if ``S`` is a floating-point type, its Size is not greater than the Size of
   the largest floating-point type on the target.
@@ -144,10 +151,11 @@ A subtype ``S`` is said to be `suitable for unchecked conversion` if:
   greater than the Size of the largest integer type on the target.
 
 - if ``S`` is a composite type, the Size N of ``S`` is the sum of the Size of
-  the components of ``S``, and all components of ``S`` are also suitable for
-  unchecked conversion.
+  the components of ``S``, and all components of ``S`` are also suitable as the
+  source for unchecked conversion.
 
-[Limits on the Size of scalar types are meant to allow the compiler to zero out
+[Sources of unchecked conversion shall not have unused bits.
+Limits on the Size of scalar types are meant to allow the compiler to zero out
 extra bits not used in the representation of the scalar value, when writing a
 value of the type (as GNAT ensures).]
 
@@ -178,9 +186,9 @@ could be misaligned (as GNAT ensures).
 1. The source and target subtypes of an instance of ``Unchecked_Conversion``
    shall have the same Size.
 
-2. The source and target subtypes shall be suitable for unchecked conversion
-   and the target subtype should be suitable as the target of an unchecked
-   conversion.
+2. The source subtype shall be suitable as the source of an unchecked
+   conversion and the target subtype should be suitable as the target of an
+   unchecked conversion.
 
 Data Validity
 ~~~~~~~~~~~~~

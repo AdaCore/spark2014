@@ -1,10 +1,12 @@
 neutrino.adb:10:24: info: in default initialization of array component at neutrino.adb:9
-neutrino.adb:10:24: info: in default initialization of component "Zero" at neutrino.adb:36
-neutrino.adb:10:24: info: in default value at neutrino.adb:108
+neutrino.adb:10:24: info: in default initialization of component "Zero" at neutrino.adb:35
+neutrino.adb:10:24: info: in default value at neutrino.adb:107
 neutrino.adb:10:24: info: range check proved (CVC5: 2 VC)
-neutrino.adb:103:04: info: initialization of "Status" proved
-neutrino.adb:105:25: info: cannot unroll loop (too many loop iterations)
-neutrino.adb:108:10: info: initialization of "Pulse" proved
-neutrino.adb:111:23: medium: in value of subprogram parameter after the call at neutrino.adb:111
-neutrino.adb:111:23: medium: initialization check might fail [possible fix: postcondition of call at line 110 should mention Pulse'Initialized (for argument Pulse)]
-neutrino.adb:130:19: medium: assertion might fail [possible fix: loop at line 105 should mention Status in a loop invariant]
+neutrino.adb:26:26: warning: discriminated record has no direct equivalent in C [-gnatwx]
+neutrino.adb:26:26: warning: use of convention for type "Sigval_T" is dubious [-gnatwx]
+neutrino.adb:102:04: info: initialization of "Status" proved
+neutrino.adb:104:25: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+neutrino.adb:107:10: info: initialization of "Pulse" proved
+neutrino.adb:110:23: medium: in value of subprogram parameter after the call at neutrino.adb:110
+neutrino.adb:110:23: medium: initialization check might fail [possible fix: postcondition of call at line 109 should mention Pulse'Initialized (for argument Pulse)]
+neutrino.adb:129:19: medium: assertion might fail [possible fix: loop at line 104 should mention Status in a loop invariant]

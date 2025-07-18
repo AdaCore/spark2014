@@ -9,6 +9,7 @@ main2.adb:9:05: warning: statement has no effect
 p.adb:10:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 p.adb:13:11: info: range check proved (CVC5: 2 VC)
 p.adb:17:12: info: discriminant check proved (CVC5: 1 VC)
+p.adb:22:08: medium: "X.D" is not set
 p.adb:25:08: warning: "Y" is set by "Read_Write" but not used after the call
 p.adb:25:08: warning: statement has no effect
 p.ads:7:33: info: data dependencies proved, in instantiation at main2.adb:4

@@ -18,6 +18,6 @@ nest_in_task.ads:9:14: info: ceiling priority protocol is respected (CVC5: 1 VC)
 nest_in_task.ads:9:14: info: nontermination of task proved (CVC5: 1 VC)
 recursion.adb:1:11: info: aspect Always_Terminates on "Recursion" has been proved, subprogram will terminate
 recursion.adb:3:17: warning: subprogram "P" has no effect
-recursion.adb:10:26: info: unrolling loop
+recursion.adb:10:26: info: unrolling loop [info-unrolling-inlining]
 recursion.adb:11:13: medium: aspect Always_Terminates on "P" could be incorrect, "P" and "Recursion" are mutually recursive [possible fix: annotate "P" and "Recursion" with Subprogram_Variant aspects]
 recursion.adb:16:07: medium: implicit aspect Always_Terminates on "Pack" could be incorrect, "Pack" and "P" are mutually recursive [possible fix: annotate "Pack" and "P" with Subprogram_Variant aspects]

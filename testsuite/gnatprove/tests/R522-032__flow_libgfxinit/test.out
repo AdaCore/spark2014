@@ -375,6 +375,7 @@ hw-gfx-gma-i2c.adb:189:19: warning: this statement is never reached
 hw-gfx-gma-i2c.adb:202:07: info: initialization of "GMBUS2" proved
 hw-gfx-gma-i2c.adb:203:07: info: initialization of "GMBUS3" proved
 hw-gfx-gma-i2c.adb:205:07: info: initialization of "Current" proved
+hw-gfx-gma-i2c.adb:237:19: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 hw-gfx-gma-i2c.ads:23:07: info: initialization of "Data" proved
 hw-gfx-gma-i2c.ads:24:07: info: initialization of "Success" proved
 hw-gfx-gma-panel.adb:61:13: info: implicit aspect Always_Terminates on "Div_Round_Up32" has been proved, subprogram will terminate
@@ -718,11 +719,11 @@ hw-gfx-gma-power_and_clocks_ironlake.adb:50:19: warning: this statement is never
 hw-gfx-gma-power_and_clocks_ironlake.adb:51:14: warning: assuming "U_Delay" always terminates
 hw-gfx-gma-power_and_clocks_ironlake.adb:51:14: warning: no Always_Terminates aspect available for "U_Delay" [assumed-always-terminates]
 hw-gfx-gma-power_and_clocks_ironlake.adb:51:14: warning: this statement is never reached
-hw-gfx-gma-registers.adb:41:04: warning: address specification on "MMIO" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to a potential alias, and valid reads [imprecise-address-specification] [E0012]
+hw-gfx-gma-registers.adb:41:04: warning: address specification on "MMIO" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [imprecise-address-specification] [E0012]
 hw-gfx-gma-registers.adb:41:04: warning: in instantiation at hw-mmio_range.adb:22
 hw-gfx-gma-registers.adb:41:04: warning: launch "gnatprove --explain=E0012" for more information
 hw-gfx-gma-registers.adb:41:04: warning: make sure that all overlapping objects have Async_Writers set to True
-hw-gfx-gma-registers.adb:54:04: warning: address specification on "MMIO" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to a potential alias, and valid reads [imprecise-address-specification] [E0012]
+hw-gfx-gma-registers.adb:54:04: warning: address specification on "MMIO" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [imprecise-address-specification] [E0012]
 hw-gfx-gma-registers.adb:54:04: warning: in instantiation at hw-mmio_range.adb:22
 hw-gfx-gma-registers.adb:54:04: warning: launch "gnatprove --explain=E0012" for more information
 hw-gfx-gma-registers.adb:54:04: warning: make sure that all overlapping objects have Async_Writers set to True
@@ -784,9 +785,9 @@ hw-gfx-gma-transcoder.adb:301:10: warning: this statement is never reached
 hw-gfx-gma-transcoder.adb:305:13: warning: this statement is never reached
 hw-gfx-gma-transcoder.ads:26:07: warning: unused initial value of "Scale"
 hw-gfx-gma-transcoder.ads:31:13: info: implicit aspect Always_Terminates on "BPC_Conf" has been proved, subprogram will terminate
-hw-gfx-gma.adb:68:04: warning: address specification on "MMIO" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to a potential alias, and valid reads [imprecise-address-specification] [E0012]
-hw-gfx-gma.adb:68:04: warning: address specification on "MMIO" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to a potential alias, and valid reads [imprecise-address-specification] [E0012]
-hw-gfx-gma.adb:68:04: warning: address specification on "MMIO" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to a potential alias, and valid reads [imprecise-address-specification] [E0012]
+hw-gfx-gma.adb:68:04: warning: address specification on "MMIO" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [imprecise-address-specification] [E0012]
+hw-gfx-gma.adb:68:04: warning: address specification on "MMIO" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [imprecise-address-specification] [E0012]
+hw-gfx-gma.adb:68:04: warning: address specification on "MMIO" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [imprecise-address-specification] [E0012]
 hw-gfx-gma.adb:68:04: warning: in instantiation at hw-mmio_range.adb:22
 hw-gfx-gma.adb:68:04: warning: in instantiation at hw-mmio_range.adb:22
 hw-gfx-gma.adb:68:04: warning: in instantiation at hw-mmio_range.adb:22
@@ -814,6 +815,9 @@ hw-gfx-gma.adb:240:16: info: implicit aspect Always_Terminates on "Full_Update" 
 hw-gfx-gma.adb:262:13: info: initialization of "Unplug_Detected" proved
 hw-gfx-gma.adb:281:13: info: initialization of "Success" proved
 hw-gfx-gma.adb:282:13: info: initialization of "Scaler_Available" proved
+hw-gfx-gma.adb:291:19: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+hw-gfx-gma.adb:302:19: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+hw-gfx-gma.adb:318:19: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 hw-gfx-gma.adb:356:16: info: implicit aspect Always_Terminates on "Cap_Add" has been proved, subprogram will terminate
 hw-gfx-gma.adb:382:16: high: "Dev.Address_State" constituent of "GMA.State" is not initialized
 hw-gfx-gma.adb:382:16: low: unused global "Dev.Address_State" constituent of "GMA.State"

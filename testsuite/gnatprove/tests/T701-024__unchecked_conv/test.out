@@ -1,7 +1,7 @@
-prover_crash.adb:8:16: info: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion)
 prover_crash.adb:8:16: info: types in unchecked conversion have the same size (Trivial)
+prover_crash.adb:8:16: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 prover_crash.adb:8:54: info: type is suitable as source for unchecked conversion (Trivial)
-prover_crash.adb:8:61: high: type is unsuitable as a target for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK]
+prover_crash.adb:8:61: high: type is unsuitable as a target for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
 prover_crash.adb:11:27: info: range check proved (CVC5: 2 VC)
 prover_crash.adb:11:42: medium: range check might fail, cannot prove upper bound for X + Y [reason for check: input value must fit in parameter type] [possible fix: add precondition (X <= Source'Last - Y) to subprogram at prover_crash.ads:11]
 prover_crash.ads:11:13: info: implicit aspect Always_Terminates on "Crash" has been proved, subprogram will terminate

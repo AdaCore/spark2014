@@ -1,3 +1,5 @@
+large: true
 prove_all:
+  opt:
+  - --z3-counterexample
   steps: 20000
-  opt: ["--z3-counterexample"]

@@ -29,9 +29,7 @@ with Ada.Text_IO;
 with GNAT.OS_Lib;      use GNAT.OS_Lib;
 with Named_Semaphores; use Named_Semaphores;
 
-procedure SPARK_Semaphore_Wrapper
-  with No_Return
-is
+procedure SPARK_Semaphore_Wrapper with No_Return is
 
    --  This is a wrapper program, which runs the wrapped program only if the
    --  named semaphore is available for locking.
@@ -43,7 +41,7 @@ is
    --  Invocation:
    --  spark_semaphore_wrapper command <args>
 
-   Ret  : Integer;
+   Ret : Integer;
 
    Args : String_List (1 .. Argument_Count - 1);
    --  Holds the arguments that will be passed to program to be spawned. We
@@ -58,7 +56,8 @@ begin
    end if;
    if not Ada.Environment_Variables.Exists (Env_Var_Name) then
       Ada.Text_IO.Put_Line
-        ("spark_semaphore_wrapper: " & Env_Var_Name
+        ("spark_semaphore_wrapper: "
+         & Env_Var_Name
          & "not set, semaphore name unknown");
       OS_Exit (1);
    end if;

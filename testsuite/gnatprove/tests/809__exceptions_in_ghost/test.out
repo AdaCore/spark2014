@@ -1,0 +1,2 @@
+test.adb:15:33: info: exceptional case proved (Trivial: 1 VC)
+test.adb:19:22: medium: unexpected exception might be raised

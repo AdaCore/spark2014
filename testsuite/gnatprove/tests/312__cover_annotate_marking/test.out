@@ -21,8 +21,8 @@ iterable_for_proof_marking.adb:119:64: error: entity argument of pragma Annotate
 ownership_marking.adb:18:62: error: "Is_Reclaimed" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 ownership_marking.adb:18:62: error: violation of aspect SPARK_Mode at line 1
 ownership_marking.adb:26:12: error: type shall not have multiple ownership annotations
-ownership_marking.adb:38:12: info: checks for ressource or memory reclamation will be unprovable
-ownership_marking.adb:38:12: info: no reclamation function nor reclaimed value found for type with ownership "Owned"
+ownership_marking.adb:38:12: warning: checks for ressource or memory reclamation will be unprovable
+ownership_marking.adb:38:12: warning: no reclamation function nor reclaimed value found for type with ownership "Owned" [no-reclamation-function]
 pragma_placement.ads:12:04: error: pragma Annotate Skip_Proof must be in aspect form for generic subprogram
 pragma_placement.ads:20:04: error: pragma Annotate Skip_Proof must immediately follow the beginning of package specification Foo_P
 pragma_placement.ads:43:04: error: pragma Annotate No_Wrap_Around must immediately follow the full type declaration of T

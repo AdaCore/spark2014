@@ -859,6 +859,9 @@ package SPARK_Atree.Entities is
    function Known_Alignment (Ent : Entity_Id) return Boolean with
      Pre => Is_Type (Ent) or else Is_Object (Ent);
 
+   function Known_Component_Size (Ent : Entity_Id) return Boolean
+     with Pre => Is_Type (Ent) or else Is_Object (Ent);
+
    function Known_Esize (Ent : Entity_Id) return Boolean with
      Pre => Is_Type (Ent) or else Is_Object (Ent);
 

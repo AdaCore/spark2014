@@ -1,4 +1,6 @@
-
-linear_search.ads:35:09: medium: contract case might fail
-   35>|        A(1) /= Val and then Value_Found_In_Range (A, Val, 2, 10) =>
-   36 |          Search'Result.Found,
+ medium: contract case might fail
+--> linear_search.ads:35:09
+   35 |            A(1) /= Val and then Value_Found_In_Range (A, Val, 2, 10) =>
+      |            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   36 |              Search'Result.Found,
+      |              ~~~~~~~~~~~~~~~~~~~

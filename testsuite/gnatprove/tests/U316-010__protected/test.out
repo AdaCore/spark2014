@@ -2,13 +2,13 @@ p.adb:4:10: info: address in address clause is compatible with object alignment 
 p.adb:4:10: warning: address specification on "A" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid reads [imprecise-address-specification] [E0012]
 p.adb:4:10: warning: launch "gnatprove --explain=E0012" for more information
 p.adb:4:10: warning: make sure that all overlapping objects have Async_Writers set to True
-p.adb:4:39: info: alignment of attribute address is not precisely known
+p.adb:4:39: warning: alignment of object is not precisely known [imprecise-align]
 p.adb:6:12: warning: unused assignment
 p.adb:6:19: high: "A" is not initialized
 p.adb:9:10: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 p.adb:9:10: warning: address specification on "A" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid reads [imprecise-address-specification] [E0012]
 p.adb:9:10: warning: launch "gnatprove --explain=E0012" for more information
 p.adb:9:10: warning: make sure that all overlapping objects have Async_Writers set to True
-p.adb:9:39: info: alignment of attribute address is not precisely known
+p.adb:9:39: warning: alignment of object is not precisely known [imprecise-align]
 p.adb:11:19: high: "A" is not initialized
 p.ads:4:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate

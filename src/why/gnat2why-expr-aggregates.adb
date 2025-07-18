@@ -2716,9 +2716,11 @@ package body Gnat2Why.Expr.Aggregates is
             return W_Pred_Id
          is
            (New_Universal_Quantif
-              (Variables => (1 => Var_Id),
+              (Binders   =>
+                   (1 => New_Binder (Domain   => EW_Pred,
+                                     Name     => Var_Id,
+                                     Arg_Type => Get_Typ (Var_Id))),
                Labels    => Symbol_Sets.Empty_Set,
-               Var_Type  => Get_Typ (Var_Id),
                Triggers  => New_Triggers
                  (Triggers =>
                       (1 => New_Trigger
@@ -5247,9 +5249,11 @@ package body Gnat2Why.Expr.Aggregates is
                      --  constrained to be in the range of the array.
 
                      Result := New_Universal_Quantif
-                       (Variables => (1 => Index),
+                       (Binders =>
+                          (1 => New_Binder (Domain => EW_Pred,
+                                            Name   => Index,
+                                            Arg_Type => Get_Typ (Index))),
                         Labels    => Symbol_Sets.Empty_Set,
-                        Var_Type  => Get_Typ (Index),
                         Triggers  => New_Triggers
                           (Triggers =>
                                (1 => New_Trigger (Terms => (1 => +New_Comp)),

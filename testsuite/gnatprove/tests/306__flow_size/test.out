@@ -14,20 +14,27 @@ full.adb:20:14: info: range check proved (CVC5: 2 VC)
 full.adb:21:20: info: range check proved (CVC5: 2 VC)
 full.adb:21:23: info: range check proved (CVC5: 2 VC)
 full.adb:22:12: info: range check proved (CVC5: 2 VC)
-full.adb:24:13: info: the value of "Size" attribute is handled in an imprecise way as "Object_Size" is not specified for subtype of "String"
 full.adb:24:13: medium: range check might fail, cannot prove upper bound for X.A'Size [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (X.A'Size <= Integer'Last) to subprogram at line 1]
-full.adb:25:13: info: the value of "Size" attribute is handled in an imprecise way as "Object_Size" is not specified for subtype of "A2d"
+full.adb:24:13: warning: "Object_Size" is not specified for subtype of "String"
+full.adb:24:13: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
 full.adb:25:13: medium: range check might fail, cannot prove upper bound for X.C'Size [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (X.C'Size <= Integer'Last) to subprogram at line 1]
-full.adb:26:11: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for object "X" and "Object_Size" is not specified for subtype of "T"
+full.adb:25:13: warning: "Object_Size" is not specified for subtype of "A2d"
+full.adb:25:13: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
 full.adb:26:11: medium: range check might fail, cannot prove upper bound for X'Size [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (X'Size <= Integer'Last) to subprogram at line 1]
-full.adb:27:11: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for type "S"
+full.adb:26:11: warning: it is not specified for object "X" and "Object_Size" is not specified for subtype of "T"
+full.adb:26:11: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
 full.adb:27:11: medium: range check might fail, cannot prove upper bound for S'Size [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (S'Size <= Integer'Last) to subprogram at line 1]
-full.adb:33:11: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for type "T"
-full.adb:34:16: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for type "String"
-full.adb:35:13: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for type "A2D"
+full.adb:27:11: warning: it is not specified for type "S"
+full.adb:27:11: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
+full.adb:33:11: warning: it is not specified for type "T"
+full.adb:33:11: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
+full.adb:34:16: warning: it is not specified for type "String"
+full.adb:34:16: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
+full.adb:35:13: warning: it is not specified for type "A2D"
+full.adb:35:13: warning: the value of attribute "Size" is handled in an imprecise way [imprecise-size]
 init.adb:9:19: info: assertion proved (Trivial: 1 VC)
 main.adb:5:14: info: add a contract to analyze it separately from calling contexts
-main.adb:5:14: info: local subprogram "Test" only analyzed in the context of calls
+main.adb:5:14: info: local subprogram "Test" only analyzed in the context of calls [info-unrolling-inlining]
 main.adb:6:07: info: initialization of "Y1" proved
 main.adb:6:07: info: initialization of "Y1" proved, in call inlined at main.adb:20
 main.adb:6:07: info: initialization of "Y1" proved, in call inlined at main.adb:21
@@ -51,7 +58,38 @@ main.adb:6:23: info: initialization of "Y5" proved, in call inlined at main.adb:
 main.adb:17:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 main.adb:18:04: warning: initialization of "S" has no effect
 main.adb:20:04: info: analyzing call to "Test" in context
+main.adb:20:04: warning: in inlined body at line 10
+main.adb:20:04: warning: in inlined body at line 11
+main.adb:20:04: warning: in inlined body at line 12
+main.adb:20:04: warning: in inlined body at line 13
+main.adb:20:04: warning: in inlined body at line 14
+main.adb:20:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+main.adb:20:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+main.adb:20:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+main.adb:20:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+main.adb:20:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 main.adb:21:04: info: analyzing call to "Test" in context
+main.adb:21:04: warning: in inlined body at line 10
+main.adb:21:04: warning: in inlined body at line 11
+main.adb:21:04: warning: in inlined body at line 12
+main.adb:21:04: warning: in inlined body at line 13
+main.adb:21:04: warning: in inlined body at line 14
+main.adb:21:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+main.adb:21:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+main.adb:21:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+main.adb:21:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+main.adb:21:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 main.adb:22:04: info: analyzing call to "Test" in context
+main.adb:22:04: warning: in inlined body at line 10
+main.adb:22:04: warning: in inlined body at line 11
+main.adb:22:04: warning: in inlined body at line 12
+main.adb:22:04: warning: in inlined body at line 13
+main.adb:22:04: warning: in inlined body at line 14
+main.adb:22:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+main.adb:22:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+main.adb:22:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+main.adb:22:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+main.adb:22:04: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+main.adb:42:21: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 main.adb:42:29: info: range check proved (CVC5: 4 VC)
 main.adb:42:39: info: range check proved (CVC5: 2 VC)

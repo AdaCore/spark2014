@@ -116,12 +116,6 @@ package Why.Gen.Init is
    --  entity which has a wrapper (simple private type, type with mutable
    --  discriminants, or scalar type).
 
-   function Get_Init_Id_From_Object
-     (Obj         : Entity_Id;
-      Ref_Allowed : Boolean) return W_Expr_Id;
-   --  Return the init flag associated to Obj in the Symol_Table if any.
-   --  Otherwise, return Why_Empty.
-
    function Insert_Initialization_Check
      (Ada_Node           : Node_Id;
       E                  : Entity_Id;
@@ -137,9 +131,11 @@ package Why.Gen.Init is
       E        : Entity_Id;
       Name     : W_Expr_Id;
       Domain   : EW_Domain;
-      Do_Check : Boolean := True)
+      Do_Check : Boolean := True;
+      Details  : String := "")
       return W_Expr_Id;
    --  If Domain = EW_Prog, insert a check that the mutable discriminants or
    --  pointer address of Name (if any) are initialized.
+   --  Details is used to generate the check details (aka reason for check).
 
 end Why.Gen.Init;

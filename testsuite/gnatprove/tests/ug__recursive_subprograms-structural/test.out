@@ -1,7 +1,20 @@
-recursive_subprograms.ads:12:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
-recursive_subprograms.ads:13:37: info: predicate check proved
-recursive_subprograms.ads:13:45: info: subprogram variant proved
-recursive_subprograms.ads:13:45: info: predicate check proved
-recursive_subprograms.ads:13:54: info: pointer dereference check proved
-recursive_subprograms.ads:13:61: info: predicate check proved
-recursive_subprograms.ads:13:63: info: predicate check proved
+ info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+--> recursive_subprograms.ads:12:13
+
+ info: predicate check proved
+--> recursive_subprograms.ads:13:37
+
+ info: subprogram variant proved
+--> recursive_subprograms.ads:13:45
+
+ info: predicate check proved
+--> recursive_subprograms.ads:13:45
+
+ info: pointer dereference check proved
+--> recursive_subprograms.ads:13:54
+
+ info: predicate check proved
+--> recursive_subprograms.ads:13:61
+
+ info: predicate check proved
+--> recursive_subprograms.ads:13:63

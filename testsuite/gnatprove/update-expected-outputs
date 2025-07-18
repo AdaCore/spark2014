@@ -4,6 +4,7 @@ import argparse
 from e3.fs import sync_tree
 from e3.gaia.api import GAIA
 from e3.testsuite.report.rewriting import BaseBaselineRewriter, RewritingError
+from e3.testsuite.report.index import ReportIndex
 from e3.testsuite.utils import ColorConfig
 from adacore_gitlab_scripts.util.e3_baseline_updates import (
     Gitlab,
@@ -12,6 +13,7 @@ from adacore_gitlab_scripts.util.e3_baseline_updates import (
 import os.path
 import tarfile
 import tempfile
+import yaml
 
 descr = """This script updates the outputs from a previous run of the
 testsuite."""
@@ -35,6 +37,9 @@ def parse_options():
         "--from-gitlab",
         dest="gitlab_id",
         help="Specify the Gitlab pipeline id to read outputs from",
+    )
+    parser.add_argument(
+        "--compute-time", default=True, action=argparse.BooleanOptionalAction
     )
     args = parser.parse_args()
     if (
@@ -100,8 +105,100 @@ def update_sessions_from_gaia(gaia_id):
         )
 
 
+def find_test_by_name(name):
+    for d in ["tests", "internal", "sparklib"]:
+        testdir = os.path.join(d, name)
+        if os.path.exists(testdir):
+            return testdir
+    return None
+
+
+def is_large(name):
+    testdir = find_test_by_name(name)
+    if testdir is not None:
+        yamlfile = os.path.join(testdir, "test.yaml")
+        if not os.path.exists(yamlfile):
+            return False
+        with open(yamlfile) as f:
+            data = yaml.safe_load(f)
+        if "large" not in data:
+            return False
+        if data["large"]:
+            return True
+        else:
+            return False
+        return False
+    return None
+
+
+def read_write_yaml(testname, fn):
+    testdir = find_test_by_name(testname)
+    if testdir is None:
+        print(f"Unable to find test dir to modify yaml file for {testname}")
+        return
+    yamlfile = os.path.join(testdir, "test.yaml")
+    if not os.path.exists(yamlfile):
+        data = {}
+    else:
+        with open(yamlfile, "r") as f:
+            data = yaml.safe_load(f)
+    data = fn(data)
+    if len(data) == 0:
+        os.remove(yamlfile)
+    else:
+        with open(yamlfile, "w") as f:
+            yaml.dump(data, f)
+
+
+def make_large(testname):
+    def set_large(d):
+        result = dict(d)
+        result["large"] = True
+        return result
+
+    print(f"Moving {testname} to large")
+    read_write_yaml(testname, set_large)
+
+
+def make_nonlarge(testname):
+    def erase_large(d):
+        result = dict(d)
+        del result["large"]
+        return result
+
+    print(f"Removing {testname} from large")
+    read_write_yaml(testname, erase_large)
+
+
+def compute_time(outputdir):
+    report = ReportIndex.read(outputdir)
+    for k, v in report.entries.items():
+        if v.time is not None:
+            large = is_large(k)
+            if v.time > 60:
+                if large:
+                    pass
+                else:
+                    make_large(k)
+            else:
+                if large:
+                    make_nonlarge(k)
+                else:
+                    pass
+        else:
+            print(f"No time information for test {k}")
+
+
 def main():
     args = parse_options()
+    if args.compute_time:
+        if args.gaia_id:
+            download_from_gaia(args.gaia_id)
+            tmpdir = download_from_gaia(args.gaia_id)
+            print(tmpdir)
+            compute_time(tmpdir)
+        elif args.outputdir:
+            compute_time(args.outputdir)
     if args.gaia_id:
         update_sessions_from_gaia(args.gaia_id)
         tmpdir = download_from_gaia(args.gaia_id)

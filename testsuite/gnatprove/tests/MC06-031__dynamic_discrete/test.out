@@ -1,4 +1,4 @@
-dynamic_ranges.adb:5:24: info: cannot unroll loop (too many loop iterations)
+dynamic_ranges.adb:5:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 dynamic_ranges.adb:7:20: info: range check proved (CVC5: 2 VC)
 dynamic_ranges.adb:15:34: info: range check proved (CVC5: 4 VC)
 dynamic_ranges.adb:17:22: info: assertion proved (CVC5: 1 VC)

@@ -246,16 +246,10 @@ package body Test_Map with SPARK_Mode is
       --  Reference
 
       declare
-         type Map_Access is access Map;
-         S   : Map_Access := new Map (10);
-
-         procedure Finalize is new Ada.Unchecked_Deallocation
-           (Object => Map,
-            Name   => Map_Access);
-
+         S : aliased Map (10);
       begin
-         Insert (S.all, 1, 4);
-         Insert (S.all, 2, 5);
+         Insert (S, 1, 4);
+         Insert (S, 2, 5);
 
          declare
             Ref  : access Integer := Reference (S, 2);
@@ -264,9 +258,9 @@ package body Test_Map with SPARK_Mode is
 
             Ref.all := 6;
          end;
-         pragma Assert (Element (S.all, 2) = 6);
+         pragma Assert (Element (S, 2) = 6);
 
-         C := Find (S.all, 2);
+         C := Find (S, 2);
 
          declare
             Ref : access Integer := Reference (S, C);
@@ -276,9 +270,7 @@ package body Test_Map with SPARK_Mode is
             Ref.all := 7;
          end;
 
-         pragma Assert (Element (S.all, C) = 7);
-
-         Finalize (S);
+         pragma Assert (Element (S, C) = 7);
       end;
       pragma Check (Proof_Only, False);
    end Large_Test;

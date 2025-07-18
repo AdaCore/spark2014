@@ -4,6 +4,7 @@
    "[ada]": {
       "editor.autoIndent": "none",
       "editor.formatOnType": false,
-      "editor.tabSize": 3
+      "editor.tabSize": 3,
+      "editor.rulers": [79]
    }
 }

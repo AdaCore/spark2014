@@ -1,0 +1,23 @@
+ high: types used for unchecked conversion do not have the same size
+--> test_unchecked_conversion.adb:5:13
+    5 |       function Bad_Size is new Ada.Unchecked_Conversion (Boolean, Character);
+      |                ^~~~~~~~
+      + possible explanation: Size of type Boolean and type Character differ
+
+ info: type is suitable as source for unchecked conversion
+--> test_unchecked_conversion.adb:5:55
+
+ info: type is suitable for unchecked conversion
+--> test_unchecked_conversion.adb:5:64
+
+ info: types in unchecked conversion have the same size
+--> test_unchecked_conversion.adb:14:13
+
+ high: type is unsuitable as a source for unchecked conversion
+--> test_unchecked_conversion.adb:14:55
+   14 |       function To_Chars is new Ada.Unchecked_Conversion (With_Holes, Character);
+      |                                                          ^~~~~~~~~~
+      + possible explanation: type With_Holes has minimal size 1, but Size was declared as 8; type With_Holes might have unused bits that are not modelled in SPARK
+
+ info: type is suitable for unchecked conversion
+--> test_unchecked_conversion.adb:14:67

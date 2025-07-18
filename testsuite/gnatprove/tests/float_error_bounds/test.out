@@ -31,6 +31,8 @@ libst-reals-errors.adb:67:93: info: predicate check proved
 libst-reals-errors.adb:70:10: info: subprogram variant proved
 libst-reals-errors.adb:70:39: info: range check proved
 libst-reals-errors.adb:72:10: info: precondition proved
+libst-reals-errors.adb:72:10: warning: assuming "Lemma_Rounding_Error_Add" has no effect on global items
+libst-reals-errors.adb:72:10: warning: no Global contract available for "Lemma_Rounding_Error_Add" [assumed-global-null]
 libst-reals-errors.adb:75:25: info: assertion proved
 libst-reals-errors.adb:77:10: info: precondition proved
 libst-reals-errors.adb:77:28: info: range check proved
@@ -106,6 +108,8 @@ libst-reals-errors.adb:187:66: info: predicate check proved
 libst-reals-errors.adb:197:42: info: range check proved
 libst-reals-errors.adb:198:42: info: range check proved
 libst-reals-errors.adb:207:10: info: precondition proved
+libst-reals-errors.adb:207:10: warning: assuming "Lemma_Rounding_Error_Mul" has no effect on global items
+libst-reals-errors.adb:207:10: warning: no Global contract available for "Lemma_Rounding_Error_Mul" [assumed-global-null]
 libst-reals-errors.adb:210:13: info: assertion proved
 libst-reals-errors.adb:210:33: info: float overflow check proved
 libst-reals-errors.adb:211:16: info: predicate check proved
@@ -119,8 +123,12 @@ libst-reals-errors.adb:218:10: info: precondition proved
 libst-reals-errors.adb:220:10: info: subprogram variant proved
 libst-reals-errors.adb:220:48: info: range check proved
 libst-reals-errors.adb:222:10: info: precondition proved
+libst-reals-errors.adb:222:10: warning: assuming "Lemma_Rounding_Error_Add" has no effect on global items
+libst-reals-errors.adb:222:10: warning: no Global contract available for "Lemma_Rounding_Error_Add" [assumed-global-null]
 libst-reals-errors.adb:222:45: info: float overflow check proved
 libst-reals-errors.adb:224:10: info: precondition proved
+libst-reals-errors.adb:224:10: warning: assuming "Lemma_Rounding_Error_Mul" has no effect on global items
+libst-reals-errors.adb:224:10: warning: no Global contract available for "Lemma_Rounding_Error_Mul" [assumed-global-null]
 libst-reals-errors.adb:230:10: info: precondition proved
 libst-reals-errors.adb:230:22: info: range check proved
 libst-reals-errors.adb:232:10: info: precondition proved
@@ -358,6 +366,8 @@ libst-reals-errors.adb:369:36: info: precondition proved
 libst-reals-errors.adb:376:22: info: assertion proved
 libst-reals-errors.adb:377:16: info: precondition proved
 libst-reals-errors.adb:379:07: info: precondition proved
+libst-reals-errors.adb:379:07: warning: assuming "Lemma_Rounding_Error_Div" has no effect on global items
+libst-reals-errors.adb:379:07: warning: no Global contract available for "Lemma_Rounding_Error_Div" [assumed-global-null]
 libst-reals-errors.adb:384:07: info: precondition proved
 libst-reals-errors.adb:384:19: info: range check proved
 libst-reals-errors.adb:384:26: info: predicate check proved
@@ -370,53 +380,57 @@ libst-reals-errors.adb:386:26: info: predicate check proved
 libst-reals-errors.adb:388:07: info: precondition proved
 libst-reals-errors.adb:388:25: info: range check proved
 libst-reals-errors.adb:388:32: info: predicate check proved
-libst-reals-errors.adb:393:13: info: predicate check proved
-libst-reals-errors.adb:393:25: info: predicate check proved
-libst-reals-errors.adb:393:36: info: predicate check proved
-libst-reals-errors.adb:393:41: info: predicate check proved
-libst-reals-errors.adb:394:14: info: postcondition proved
-libst-reals-errors.adb:394:14: info: predicate check proved
-libst-reals-errors.adb:394:16: info: division check proved
-libst-reals-errors.adb:394:18: info: predicate check proved
-libst-reals-errors.adb:394:23: info: predicate check proved
-libst-reals-errors.adb:394:25: info: division check proved
-libst-reals-errors.adb:394:27: info: predicate check proved
-libst-reals-errors.adb:406:17: info: postcondition proved
-libst-reals-errors.adb:406:17: info: predicate check proved
-libst-reals-errors.adb:406:55: info: predicate check proved
-libst-reals-errors.adb:407:17: info: predicate check proved
-libst-reals-errors.adb:411:13: info: subprogram variant proved
-libst-reals-errors.adb:411:27: info: range check proved
-libst-reals-errors.adb:418:22: info: assertion proved
-libst-reals-errors.adb:418:22: info: predicate check proved
-libst-reals-errors.adb:418:54: info: predicate check proved
-libst-reals-errors.adb:420:07: info: precondition proved
-libst-reals-errors.adb:424:22: info: assertion proved
-libst-reals-errors.adb:424:22: info: precondition proved
-libst-reals-errors.adb:424:22: info: predicate check proved
-libst-reals-errors.adb:427:22: info: assertion proved
-libst-reals-errors.adb:427:22: info: predicate check proved
-libst-reals-errors.adb:429:10: info: assertion proved
-libst-reals-errors.adb:429:23: info: predicate check proved
-libst-reals-errors.adb:429:25: info: precondition proved
-libst-reals-errors.adb:430:17: info: predicate check proved
-libst-reals-errors.adb:431:10: info: division check proved
-libst-reals-errors.adb:431:12: info: predicate check proved
-libst-reals-errors.adb:432:07: info: precondition proved
-libst-reals-errors.adb:433:15: info: predicate check proved
-libst-reals-errors.adb:437:10: info: assertion proved
-libst-reals-errors.adb:437:15: info: precondition proved
-libst-reals-errors.adb:437:15: info: predicate check proved
-libst-reals-errors.adb:438:13: info: precondition proved
-libst-reals-errors.adb:438:13: info: predicate check proved
-libst-reals-errors.adb:439:35: info: precondition proved
-libst-reals-errors.adb:440:22: info: precondition proved
-libst-reals-errors.adb:444:10: info: assertion proved
-libst-reals-errors.adb:444:28: info: precondition proved
-libst-reals-errors.adb:445:38: info: predicate check proved
-libst-reals-errors.adb:445:49: info: predicate check proved
-libst-reals-errors.adb:445:58: info: division check proved
-libst-reals-errors.adb:446:12: info: predicate check proved
+libst-reals-errors.adb:395:13: info: predicate check proved
+libst-reals-errors.adb:395:25: info: predicate check proved
+libst-reals-errors.adb:395:36: info: predicate check proved
+libst-reals-errors.adb:395:41: info: predicate check proved
+libst-reals-errors.adb:396:14: info: postcondition proved
+libst-reals-errors.adb:396:14: info: predicate check proved
+libst-reals-errors.adb:396:16: info: division check proved
+libst-reals-errors.adb:396:18: info: predicate check proved
+libst-reals-errors.adb:396:23: info: predicate check proved
+libst-reals-errors.adb:396:25: info: division check proved
+libst-reals-errors.adb:396:27: info: predicate check proved
+libst-reals-errors.adb:403:14: info: predicate check proved
+libst-reals-errors.adb:403:18: info: predicate check proved
+libst-reals-errors.adb:404:14: info: postcondition proved
+libst-reals-errors.adb:404:19: info: predicate check proved
+libst-reals-errors.adb:404:21: info: division check proved
+libst-reals-errors.adb:404:23: info: predicate check proved
+libst-reals-errors.adb:404:32: info: predicate check proved
+libst-reals-errors.adb:404:34: info: division check proved
+libst-reals-errors.adb:404:36: info: predicate check proved
+libst-reals-errors.adb:416:17: info: postcondition proved
+libst-reals-errors.adb:416:17: info: predicate check proved
+libst-reals-errors.adb:416:55: info: predicate check proved
+libst-reals-errors.adb:417:17: info: predicate check proved
+libst-reals-errors.adb:421:13: info: subprogram variant proved
+libst-reals-errors.adb:421:27: info: range check proved
+libst-reals-errors.adb:428:22: info: assertion proved
+libst-reals-errors.adb:428:22: info: predicate check proved
+libst-reals-errors.adb:428:54: info: predicate check proved
+libst-reals-errors.adb:430:07: info: precondition proved
+libst-reals-errors.adb:434:22: info: assertion proved
+libst-reals-errors.adb:434:22: info: precondition proved
+libst-reals-errors.adb:434:22: info: predicate check proved
+libst-reals-errors.adb:437:22: info: assertion proved
+libst-reals-errors.adb:437:22: info: predicate check proved
+libst-reals-errors.adb:438:07: info: precondition proved
+libst-reals-errors.adb:440:07: info: precondition proved
+libst-reals-errors.adb:441:15: info: predicate check proved
+libst-reals-errors.adb:445:10: info: assertion proved
+libst-reals-errors.adb:445:15: info: precondition proved
+libst-reals-errors.adb:445:15: info: predicate check proved
+libst-reals-errors.adb:446:13: info: precondition proved
+libst-reals-errors.adb:446:13: info: predicate check proved
+libst-reals-errors.adb:447:35: info: precondition proved
+libst-reals-errors.adb:448:22: info: precondition proved
+libst-reals-errors.adb:452:10: info: assertion proved
+libst-reals-errors.adb:452:28: info: precondition proved
+libst-reals-errors.adb:453:38: info: predicate check proved
+libst-reals-errors.adb:453:49: info: predicate check proved
+libst-reals-errors.adb:453:58: info: division check proved
+libst-reals-errors.adb:454:12: info: predicate check proved
 libst-reals-errors.ads:8:08: info: postcondition proved
 libst-reals-errors.ads:9:15: info: predicate check proved
 libst-reals-errors.ads:10:14: info: predicate check proved
@@ -425,9 +439,9 @@ libst-reals-errors.ads:15:08: info: postcondition proved
 libst-reals-errors.ads:15:50: info: predicate check proved
 libst-reals-errors.ads:16:13: info: predicate check proved
 libst-reals-errors.ads:16:24: info: predicate check proved
-libst-reals-errors.ads:19:13: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
-libst-reals-errors.ads:19:13: info: function contract might not be available on recursive calls
 libst-reals-errors.ads:19:13: info: implicit aspect Always_Terminates on "Weighted_Sum_Abs_Rec" has been proved, subprogram will terminate
+libst-reals-errors.ads:19:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
+libst-reals-errors.ads:19:13: warning: function contract might not be available on recursive calls [contracts-recursive]
 libst-reals-errors.ads:25:12: info: predicate check proved
 libst-reals-errors.ads:25:12: info: subprogram variant proved
 libst-reals-errors.ads:25:53: info: range check proved
@@ -477,9 +491,9 @@ libst-reals.ads:7:04: info: analyzing call to "Log2_Estimate" in context
 libst-reals.ads:7:04: info: analyzing call to "Minus_Log2_Estimate" in context
 libst-reals.ads:7:04: info: in instantiation at a-nbnbre.adb:256
 libst-reals.ads:7:04: info: in instantiation at a-nbnbre.adb:264
-libst-reals.ads:15:13: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
-libst-reals.ads:15:13: info: function contract might not be available on recursive calls
 libst-reals.ads:15:13: info: implicit aspect Always_Terminates on "Sum_Weight_Rec" has been proved, subprogram will terminate
+libst-reals.ads:15:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
+libst-reals.ads:15:13: warning: function contract might not be available on recursive calls [contracts-recursive]
 libst-reals.ads:20:12: info: predicate check proved
 libst-reals.ads:20:12: info: subprogram variant proved
 libst-reals.ads:20:39: info: range check proved
@@ -488,8 +502,8 @@ libst-reals.ads:22:14: info: postcondition proved
 libst-reals.ads:22:28: info: predicate check proved
 libst-reals.ads:22:39: info: predicate check proved
 libst-reals.ads:23:13: info: implicit aspect Always_Terminates on "Sum_Weight" has been proved, subprogram will terminate
-libst-reals.ads:27:13: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
 libst-reals.ads:27:13: info: implicit aspect Always_Terminates on "Weighted_Sum_Rec" has been proved, subprogram will terminate
+libst-reals.ads:27:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
 libst-reals.ads:33:12: info: predicate check proved
 libst-reals.ads:33:12: info: subprogram variant proved
 libst-reals.ads:33:49: info: range check proved
@@ -507,6 +521,8 @@ libst.adb:13:61: info: range check proved
 libst.adb:13:76: info: range check proved
 libst.adb:13:91: info: index check proved
 libst.adb:14:10: info: precondition proved
+libst.adb:14:10: warning: assuming "Lemma_Integer_Add_Exact" has no effect on global items
+libst.adb:14:10: warning: no Global contract available for "Lemma_Integer_Add_Exact" [assumed-global-null]
 libst.adb:14:44: info: range check proved
 libst.adb:15:17: info: subprogram variant proved
 libst.adb:15:44: info: range check proved
@@ -532,10 +548,16 @@ libst.adb:58:58: info: range check proved
 libst.adb:59:31: info: float overflow check proved
 libst.adb:59:42: info: range check proved
 libst.adb:60:10: info: precondition proved
+libst.adb:60:10: warning: assuming "Lemma_Integer_Mul_Exact" has no effect on global items
+libst.adb:60:10: warning: no Global contract available for "Lemma_Integer_Mul_Exact" [assumed-global-null]
 libst.adb:60:55: info: range check proved
 libst.adb:61:10: info: precondition proved
+libst.adb:61:10: warning: assuming "Lemma_Integer_Mul_Exact" has no effect on global items
+libst.adb:61:10: warning: no Global contract available for "Lemma_Integer_Mul_Exact" [assumed-global-null]
 libst.adb:61:53: info: range check proved
 libst.adb:62:10: info: precondition proved
+libst.adb:62:10: warning: assuming "Lemma_Integer_Add_Exact" has no effect on global items
+libst.adb:62:10: warning: no Global contract available for "Lemma_Integer_Add_Exact" [assumed-global-null]
 libst.adb:63:23: info: float overflow check proved
 libst.adb:63:34: info: range check proved
 libst.adb:64:17: info: subprogram variant proved
@@ -554,8 +576,8 @@ libst.adb:79:33: info: loop invariant preservation proved
 libst.adb:81:18: info: division check proved
 libst.adb:81:18: info: float overflow check proved
 libst.adb:81:18: info: range check proved
-libst.ads:30:13: info: function contract might not be available on recursive calls
 libst.ads:30:13: info: implicit aspect Always_Terminates on "Sum_Weight_Rec" has been proved, subprogram will terminate
+libst.ads:30:13: warning: function contract might not be available on recursive calls [contracts-recursive]
 libst.ads:36:14: info: postcondition proved
 libst.ads:37:34: info: subprogram variant proved
 libst.ads:37:61: info: range check proved
@@ -564,8 +586,8 @@ libst.ads:37:77: info: index check proved
 libst.ads:38:70: info: range check proved
 libst.ads:39:13: info: implicit aspect Always_Terminates on "Sum_Weight" has been proved, subprogram will terminate
 libst.ads:40:14: info: postcondition proved
-libst.ads:45:13: info: function contract might not be available on recursive calls
 libst.ads:45:13: info: implicit aspect Always_Terminates on "Weighted_Sum_Rec" has been proved, subprogram will terminate
+libst.ads:45:13: warning: function contract might not be available on recursive calls [contracts-recursive]
 libst.ads:52:14: info: postcondition proved
 libst.ads:54:16: info: subprogram variant proved
 libst.ads:54:53: info: range check proved

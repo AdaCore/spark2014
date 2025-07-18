@@ -47,11 +47,6 @@ with Tbuild;                 use Tbuild;
 
 package body SPARK_Rewrite is
 
-   procedure Rewrite_Fixed_Point_Mult_Div (N : Node_Id);
-   --  Rewrite the type conversion introduced on multiplication/division
-   --  between fixed-point values, to avoid the use of the universal-fixed
-   --  type used by the compiler as an overload resolution trick.
-
    procedure Rewrite_Null_Procedure (N : N_Subprogram_Declaration_Id);
    --  Rewrite a null procedure into an equivalent procedure body. We are doing
    --  it here to avoid interfering with freezing in the frontend, as a null
@@ -92,17 +87,6 @@ package body SPARK_Rewrite is
    --  of evaluation or expansion in the frontend, because the information that
    --  the parent expression is static is only available after the real literal
    --  node has been evaluated and expanded.
-
-   ----------------------------------
-   -- Rewrite_Fixed_Point_Mult_Div --
-   ----------------------------------
-
-   procedure Rewrite_Fixed_Point_Mult_Div (N : Node_Id) is
-      Expr : constant Node_Id := Expression (N);
-      Typ  : constant Entity_Id := Etype (N);
-   begin
-      Set_Etype (Expr, Typ);
-   end Rewrite_Fixed_Point_Mult_Div;
 
    ----------------------------
    -- Rewrite_Null_Procedure --
@@ -447,33 +431,6 @@ package body SPARK_Rewrite is
 
             when N_Real_Literal =>
                Rewrite_Real_Literal (N);
-
-            --  The multiplication and division operations on fixed-point
-            --  types have a return type of universal_fixed (with no bounds),
-            --  which is used as an overload resolution trick to allow
-            --  free conversion between certain real types on the result of
-            --  multiplication or division. The target non-universal type
-            --  determines the actual sort of multiplication or division
-            --  performed, and therefore determines the possibility of
-            --  overflow. In the compiler, the multiplication is expanded so
-            --  the operands are first converted to some common type, so back
-            --  ends don't see the universal_fixed Etype. Here, we are seeing
-            --  the unexpanded operation because we are running in a mode that
-            --  disables the expansion. Hence, we recognize the universal_fixed
-            --  case specially and in that case rewrite the AST to avoid the
-            --  conversion, by directly using the target type of the enclosing
-            --  conversion as the type of the multiplication or division.
-
-            when N_Type_Conversion =>
-               declare
-                  Expr : constant Node_Id := Expression (N);
-               begin
-                  if Nkind (Expr) in N_Op_Multiply | N_Op_Divide
-                    and then Etype (Expr) = Universal_Fixed
-                  then
-                     Rewrite_Fixed_Point_Mult_Div (N);
-                  end if;
-               end;
 
             --  Replace renamings and inherited subprograms by the subprogram
             --  they rename or inherit.

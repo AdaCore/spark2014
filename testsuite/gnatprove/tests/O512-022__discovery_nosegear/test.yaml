@@ -1,6 +1,7 @@
-large: True
-comment: "no counterexamples for SPARK discovery tests"
+comment: no counterexamples for SPARK discovery tests
 prove_all:
-  prover: ["altergo"]
+  counterexample: false
+  prover:
+  - altergo
   steps: 5000
-  counterexample: False
+timeout: 1500

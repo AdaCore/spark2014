@@ -1,13 +1,18 @@
 n01.adb:21:39: error: launch "gnatprove --explain=E0010" for more information
 n01.adb:21:39: error: object was moved at line 19 [E0010]
+n01.adb:21:39: error: part of "X" is not readable
 n01.adb:26:39: error: launch "gnatprove --explain=E0010" for more information
 n01.adb:26:39: error: object was moved at line 19 [E0010]
+n01.adb:26:39: error: part of "X" is not readable
+n01.adb:30:04: error: "X" is not writable
 n01.adb:30:04: error: launch "gnatprove --explain=E0010" for more information
 n01.adb:30:04: error: object was moved at line 19 [E0010]
 n01.adb:33:39: error: launch "gnatprove --explain=E0010" for more information
 n01.adb:33:39: error: object was moved at line 19 [E0010]
+n01.adb:33:39: error: part of "X" is not readable
 n011.adb:21:12: error: launch "gnatprove --explain=E0010" for more information
 n011.adb:21:12: error: object was moved at line 19 [E0010]
+n011.adb:21:12: error: part of "X" is not readable
 n02.adb:21:47: error: launch "gnatprove --explain=E0010" for more information
 n02.adb:21:47: error: object was moved at line 19 [E0010]
 n02.adb:21:47: error: part of dereference from "X" is not readable
@@ -31,14 +36,14 @@ n05.adb:22:19: warning: unused variable "A"
 n05.adb:29:20: warning: "A" is not modified, parameter type could be rewritten as 'access constant Integer'
 n05.adb:29:36: warning: "B" is not modified, parameter type could be rewritten as 'access constant Integer'
 n05.adb:29:52: info: initialization of "C" proved
-n05.adb:31:18: medium: pointer dereference check might fail (e.g. when A = null and B.all = 0) [possible fix: precondition of subprogram at line 29 should mention A]
-n05.adb:31:22: medium: overflow check might fail, cannot prove lower bound for A.all + B.all (e.g. when A.all = Integer'First and B.all = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at line 29 should mention A and B]
+n05.adb:31:18: medium: pointer dereference check might fail (e.g. when A = null) [possible fix: precondition of subprogram at line 29 should mention A]
+n05.adb:31:22: medium: overflow check might fail, cannot prove lower bound for A.all + B.all (e.g. when A.all = -1 and B.all = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at line 29 should mention A and B]
 n05.adb:31:26: medium: pointer dereference check might fail (e.g. when B = null) [possible fix: precondition of subprogram at line 29 should mention B]
 n05.adb:36:21: warning: "A" is not modified, could be IN
 n05.adb:36:41: warning: "B" is not modified, parameter type could be rewritten as 'access constant Integer'
 n05.adb:36:57: info: initialization of "C" proved
-n05.adb:38:18: medium: pointer dereference check might fail (e.g. when A = null and B.all = 0) [possible fix: subprogram at line 36 should mention A in a precondition]
-n05.adb:38:22: medium: overflow check might fail, cannot prove lower bound for A.all + B.all (e.g. when A.all = Integer'First and B.all = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 36 should mention A and B in a precondition]
+n05.adb:38:18: medium: pointer dereference check might fail (e.g. when A = null) [possible fix: subprogram at line 36 should mention A in a precondition]
+n05.adb:38:22: medium: overflow check might fail, cannot prove lower bound for A.all + B.all (e.g. when A.all = -1 and B.all = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 36 should mention A and B in a precondition]
 n05.adb:38:26: medium: pointer dereference check might fail (e.g. when B = null) [possible fix: subprogram at line 36 should mention B in a precondition]
 n05.adb:42:03: info: initialization of "AA0" proved
 n05.adb:42:08: info: initialization of "AA1" proved
@@ -139,6 +144,7 @@ test.adb:84:08: warning: "B" may be null [enabled by default]
 test.adb:87:08: info: analyzing call to "g" in context
 test.adb:89:03: error: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 test.adb:89:03: error: violation of aspect SPARK_Mode at line 7
-test.adb:89:08: error: borrow or observe of a non-traversal function call is not allowed in SPARK (SPARK RM 3.10(4))
+test.adb:89:08: error: borrow or observe of a non-traversal function call is not allowed in SPARK (SPARK RM 3.10(4)) [E0020]
+test.adb:89:08: error: launch "gnatprove --explain=E0020" for more information
 test.adb:89:08: error: violation of aspect SPARK_Mode at line 7
 gnatprove: error during flow analysis and proof

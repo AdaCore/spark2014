@@ -1,0 +1,25 @@
+test_mutable.adb:3:14: info: add a contract to analyze it separately from calling contexts
+test_mutable.adb:3:14: info: local subprogram "P_Only_Constrained" only analyzed in the context of calls [info-unrolling-inlining]
+test_mutable.adb:3:34: info: initialization of "X" proved
+test_mutable.adb:6:14: info: add a contract to analyze it separately from calling contexts
+test_mutable.adb:6:14: info: local subprogram "P_Only_Unconstrained" only analyzed in the context of calls [info-unrolling-inlining]
+test_mutable.adb:6:36: info: initialization of "X" proved
+test_mutable.adb:15:22: high: assertion might fail, in call inlined at test_mutable.adb:63 (e.g. when Y1 = (D1 => True, D2 => True, F => 10101) and Y1'Constrained = False)
+test_mutable.adb:15:22: high: assertion might fail, in call inlined at test_mutable.adb:73 (e.g. when Y1 = (D1 => True, D2 => True, F => 10101) and Y1'Constrained = False)
+test_mutable.adb:25:22: info: assertion proved (Trivial: 1 VC), in call inlined at test_mutable.adb:68
+test_mutable.adb:25:22: info: assertion proved (Trivial: 1 VC), in call inlined at test_mutable.adb:78
+test_mutable.adb:35:18: info: discriminant check proved (CVC5: 1 VC)
+test_mutable.adb:39:22: info: assertion proved (Trivial: 1 VC)
+test_mutable.adb:42:22: info: assertion proved (Trivial: 1 VC)
+test_mutable.adb:45:22: info: assertion proved (Trivial: 1 VC)
+test_mutable.adb:50:28: high: assertion might fail (e.g. when Y1 = (D1 => True, D2 => True, F => 10101) and Y1'Constrained = False)
+test_mutable.adb:54:28: high: assertion might fail (e.g. when Y1 = (D1 => True, D2 => True, F => 10101) and Y1'Constrained = False)
+test_mutable.adb:58:28: info: assertion proved (Trivial: 1 VC)
+test_mutable.adb:63:13: info: analyzing call to "P_Only_Constrained" in context
+test_mutable.adb:68:13: info: analyzing call to "P_Only_Unconstrained" in context
+test_mutable.adb:73:13: info: analyzing call to "P_Only_Constrained" in context
+test_mutable.adb:78:13: info: analyzing call to "P_Only_Unconstrained" in context
+test_mutable.adb:83:22: info: assertion proved (Trivial)
+test_mutable.ads:17:22: info: range check proved (CVC5: 1 VC)
+test_mutable.ads:17:28: info: range check proved (CVC5: 1 VC)
+test_mutable.ads:19:14: warning: subprogram "P" has no effect

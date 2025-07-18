@@ -24,10 +24,10 @@ test.adb:11:12: info: invariant check proved on default value (CVC5: 1 VC)
 test.adb:11:77: info: in default value of private type at test.adb:4
 test.adb:11:77: info: range check proved (CVC5: 2 VC)
 test.adb:17:17: medium: for Y at the end of Bad at test.adb:17
-test.adb:17:17: medium: invariant check might fail
+test.adb:17:17: medium: invariant check might fail [possible fix: add or complete related loop invariants or postconditions]
 test.adb:17:33: info: initialization of "Y" proved
 test.adb:25:20: medium: for Y at the end of Bad at test.adb:25
-test.adb:25:20: medium: invariant check might fail
+test.adb:25:20: medium: invariant check might fail [possible fix: add or complete related loop invariants or postconditions]
 test.adb:25:25: warning: unused variable "X"
 test.adb:25:38: info: initialization of "Y" proved
 test.adb:25:61: info: precondition is always True (Trivial: 1 VC)

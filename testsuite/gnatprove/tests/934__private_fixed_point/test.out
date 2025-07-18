@@ -1,0 +1,3 @@
+calendar.adb:4:51: high: overflow check might fail, cannot prove upper bound for X * Y (e.g. when X = 2200/1024 and Y = 999556096) [reason for check: result of fixed-point multiplication must fit in the underlying 32-bits machine integer] [possible fix: subprogram at calendar.ads:7 should mention X and Y in a precondition]
+calendar.adb:4:51: high: range check might fail, cannot prove upper bound for X * Y (e.g. when X = 2/1024 and Y = 512000512) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at calendar.ads:7 should mention X and Y in a precondition]
+calendar.ads:7:13: info: implicit aspect Always_Terminates on "Mult" has been proved, subprogram will terminate

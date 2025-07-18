@@ -10,6 +10,7 @@ n03.adb:27:16: info: pointer dereference check proved (CVC5: 1 VC)
 n03.adb:29:06: info: pointer dereference check proved (CVC5: 1 VC)
 n03.adb:31:04: medium: resource or memory leak might occur
 n03.adb:34:24: info: range check proved (CVC5: 2 VC)
+n03.adb:34:33: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 n03.adb:34:42: info: pointer dereference check proved (CVC5: 1 VC)
 n03.adb:37:07: info: absence of resource or memory leak proved (CVC5: 1 VC)
 n03.adb:37:07: warning: unused assignment
@@ -82,7 +83,8 @@ n10.adb:20:21: error: "A" is not readable
 n10.adb:20:21: error: launch "gnatprove --explain=E0010" for more information
 n10.adb:20:21: error: object was moved at line 19 [E0010]
 n10.adb:23:17: warning: unused assignment
-n11.adb:18:37: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(4))
+n11.adb:18:37: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(4)) [E0020]
+n11.adb:18:37: error: launch "gnatprove --explain=E0020" for more information
 n11.adb:18:37: error: violation of pragma SPARK_Mode at test.adc:3
 n11.adb:21:10: error: "T1" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
 n11.adb:21:10: error: violation of pragma SPARK_Mode at test.adc:3
@@ -106,11 +108,13 @@ n13.adb:19:10: warning: initialization of "B" has no effect
 n13.adb:25:20: error: "A" is not readable
 n13.adb:25:20: error: launch "gnatprove --explain=E0010" for more information
 n13.adb:25:20: error: object was moved at line 19 [E0010]
-n14.adb:21:37: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(4))
+n14.adb:21:37: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(4)) [E0020]
+n14.adb:21:37: error: launch "gnatprove --explain=E0020" for more information
 n14.adb:21:37: error: violation of pragma SPARK_Mode at test.adc:3
 n14.adb:24:36: error: "T2" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
 n14.adb:24:36: error: violation of pragma SPARK_Mode at test.adc:3
-n15.adb:21:37: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(4))
+n15.adb:21:37: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(4)) [E0020]
+n15.adb:21:37: error: launch "gnatprove --explain=E0020" for more information
 n15.adb:21:37: error: violation of pragma SPARK_Mode at test.adc:3
 n15.adb:24:25: error: "T2" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
 n15.adb:24:25: error: violation of pragma SPARK_Mode at test.adc:3

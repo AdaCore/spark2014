@@ -4,7 +4,8 @@ aida-strings-generic_immutable_unbounded_string.adb:21:50: info: range check pro
 aida-strings-generic_immutable_unbounded_string.adb:21:75: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 aida-strings-generic_immutable_unbounded_string.adb:23:17: info: range check proved (CVC5: 2 VC)
 aida-strings-generic_immutable_unbounded_string.adb:23:62: info: range check proved (CVC5: 2 VC)
-aida-strings-generic_immutable_unbounded_string.adb:23:83: info: cannot unroll loop (too many loop iterations)
+aida-strings-generic_immutable_unbounded_string.adb:23:83: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+aida-strings-generic_immutable_unbounded_string.adb:24:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 aida-strings-generic_immutable_unbounded_string.adb:24:19: info: index check proved (CVC5: 2 VC)
 aida-strings-generic_immutable_unbounded_string.adb:24:37: info: precondition proved (CVC5: 2 VC)
 aida-strings-generic_immutable_unbounded_string.adb:30:10: info: only expected exception raised (CVC5: 1 VC)

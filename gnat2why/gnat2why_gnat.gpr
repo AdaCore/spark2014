@@ -75,4 +75,8 @@ project GNAT2Why_GNAT is
       for Excluded_Units use ("Gnat1drv");
    end Coverage;
 
+   package Naming is
+      for Body ("Get_Targ") use "ada_get_targ.adb";
+   end Naming;
+
 end GNAT2Why_GNAT;

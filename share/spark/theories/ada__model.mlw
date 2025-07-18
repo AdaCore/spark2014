@@ -2580,3 +2580,18 @@ module Pledge
 
   val function __pledge_get __pledge_ty borrowed borrower : bool
 end
+
+(* Module for potentially invalid function result *)
+
+module Potentially_invalid_value
+  type __t
+
+  type __valid_wrapper =
+    { __is_valid    : bool;
+      __valid_value : __t }
+
+  val function __valid_value_ (x : __valid_wrapper) : __t
+    requires { x.__is_valid }
+    ensures { result = x.__valid_value }
+
+end

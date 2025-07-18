@@ -59,13 +59,13 @@ is
 
    function Local_Invariant return Boolean
    with Ghost,
-        Global => (Input => State);
+        Global => null;
    --  Internal invariant we maintain specific to the lexer.
 
    function Invariant return Boolean is
       (Names.Invariant and Local_Invariant)
    with Ghost,
-        Global => (Input => (State, Name_Table));
+        Global => (Input => Name_Table);
    --  The combined invariant we care about and maintain, as seen by the
    --  lexer.
 

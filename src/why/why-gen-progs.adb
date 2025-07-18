@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;
 with Common_Containers;       use Common_Containers;
 with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
@@ -113,6 +114,17 @@ package body Why.Gen.Progs is
       Emit_Static_Proof_Result (Ada_Node, To_VC_Kind (Check_Kind), True,
                                 Current_Subp);
    end Emit_Always_True_Range_Check;
+
+   ----------------------
+   -- Is_Void_Sequence --
+   ----------------------
+
+   function Is_Void_Sequence (S : W_Statement_Sequence_Id) return Boolean is
+      use type Ada.Containers.Count_Type;
+      L : constant Why_Node_Lists.List := Get_List (+Get_Statements (S));
+   begin
+      return L.Length = 1 and then L.First_Element = +Void;
+   end Is_Void_Sequence;
 
    --------------------------
    -- New_Absurd_Statement --
@@ -392,5 +404,13 @@ package body Why.Gen.Progs is
            (Statements => (Non_Void_Progs (Non_Void_Progs'First .. J - 1)));
       end if;
    end Sequence;
+
+   -------------------
+   -- Void_Sequence --
+   -------------------
+
+   function Void_Sequence return W_Statement_Sequence_Id is
+     (New_Statement_Sequence (Ada_Node => Empty,
+                              Statements => (1 .. 1 => +Void)));
 
 end Why.Gen.Progs;

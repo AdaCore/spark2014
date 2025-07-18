@@ -1,0 +1,52 @@
+aliasing_check_array.adb:6:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
+aliasing_check_array.adb:8:04: info: no contextual analysis of "Swap" (body not seen yet)
+aliasing_check_array.adb:8:04: warning: assuming "Swap" always terminates
+aliasing_check_array.adb:8:04: warning: assuming "Swap" has no effect on global items
+aliasing_check_array.adb:8:04: warning: no Always_Terminates aspect available for "Swap" [assumed-always-terminates]
+aliasing_check_array.adb:8:04: warning: no Global contract available for "Swap" [assumed-global-null]
+aliasing_check_array.adb:8:10: medium: formal parameters "I" and "J" might be aliased (SPARK RM 6.4.2)
+aliasing_check_array.adb:8:10: warning: aliasing check on components of an array is handled imprecisely [alias-array]
+aliasing_check_array.adb:8:13: info: index check proved (CVC5: 2 VC)
+aliasing_check_array.adb:8:13: info: precondition proved (Trivial: 1 VC)
+array_init.adb:7:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
+array_init.adb:9:04: info: range check proved (CVC5: 2 VC)
+array_init.adb:11:21: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+array_init.adb:12:07: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+array_init.adb:12:16: info: index check proved (CVC5: 2 VC)
+array_init.adb:12:16: info: overflow check proved (CVC5: 2 VC)
+array_init.adb:15:21: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+array_init.adb:20:22: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+array_init.adb:21:07: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+array_init.adb:21:10: info: index check proved (CVC5: 2 VC)
+array_init.adb:25:07: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+array_init.adb:27:30: info: loop invariant initialization proved (CVC5: 1 VC)
+array_init.adb:27:30: info: loop invariant preservation proved (CVC5: 1 VC)
+array_init.adb:27:59: medium: "A" might not be initialized
+array_init.adb:27:62: info: index check proved (CVC5: 4 VC)
+array_init.adb:31:30: info: loop invariant initialization proved (CVC5: 1 VC)
+array_init.adb:31:30: info: loop invariant preservation proved (CVC5: 1 VC)
+array_init.adb:31:63: medium: "A" might not be initialized
+array_init.adb:31:66: info: index check proved (CVC5: 4 VC)
+array_init.adb:33:07: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+array_init.adb:36:10: medium: "A" might not be initialized
+array_part_of.adb:6:26: info: unrolling loop [info-unrolling-inlining]
+array_part_of.ads:5:14: low: initialization of "PO" must be mentioned in the Initializes contract of "Array_Part_Of" (SPARK RM 7.1.5(9))
+imprecise_gg.adb:5:14: warning: subprogram "Read" has no effect
+imprecise_gg.adb:7:23: info: data dependencies proved
+imprecise_gg.adb:22:07: info: precondition proved (Trivial: 1 VC)
+imprecise_gg.adb:23:07: info: precondition proved (Trivial: 1 VC)
+imprecise_gg.adb:28:07: high: "G" is not an input in the Global contract of subprogram "Foo" at line 7
+imprecise_gg.adb:28:07: high: either make "G" an input in the Global contract or initialize it before use
+imprecise_gg.adb:28:07: info: precondition proved (Trivial: 1 VC)
+imprecise_untangling.adb:12:19: info: tag check proved (CVC5: 1 VC)
+imprecise_untangling.adb:13:19: info: tag check proved (CVC5: 1 VC)
+imprecise_untangling.adb:17:04: info: precondition proved (Trivial: 1 VC)
+imprecise_untangling.adb:17:07: high: "A" is not initialized
+imprecise_untangling.adb:17:10: high: "B" is not initialized
+multidim_array_init.adb:7:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
+multidim_array_init.adb:9:04: info: range check proved (CVC5: 2 VC)
+multidim_array_init.adb:11:21: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+multidim_array_init.adb:12:25: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+multidim_array_init.adb:13:10: warning: initialization of a multi-dimensional array in nested FOR loops is handled imprecisely [multidimensional-array-init]
+multidim_array_init.adb:13:16: info: index check proved (CVC5: 2 VC)
+multidim_array_init.adb:17:10: medium: "A" might not be initialized

@@ -411,6 +411,187 @@ result. However, it can be more convenient to use a function with side effects
 when binding SPARK code with C code where functions have very often
 side effects.
 
+.. index:: Potentially_Invalid
+
+.. _Aspect Potentially_Invalid:
+
+Aspect ``Potentially_Invalid``
+------------------------------
+
+*Specific to SPARK*
+
+In general, |GNATprove| requires all initialized values mentioned in |SPARK|
+code to be valid (see :ref:`Data Validity`). This is enforced by the combination
+of the initialization policy of |SPARK|, assumptions on data created or modified
+by non-|SPARK| code, and specific checks on unchecked conversions and objects
+with precisely supported address clauses.
+
+The ``Potentially_Invalid`` aspect can be used to instruct |GNATprove| that
+particular objects might have invalid values. It will cause it to generate
+validity checks when the object is accessed. More precisely, the
+``Potentially_Invalid`` aspect can be specified on standalone objects,
+subprogram parameters and function results as follows:
+
+.. code-block:: ada
+
+   type Int_8 is range -128 .. 127 with Size => 8;
+   subtype Nat_8 is Int_8 range 0 .. 127;
+
+   type My_Record is record
+      F, G, H, I : Nat_8;
+   end record;
+
+   G : My_Record with Potentially_Invalid;
+   procedure P (X, Y : in out My_Record) with
+     Potentially_Invalid => (X, Y);
+   function F return My_Record with
+     Potentially_Invalid => F'Result;
+
+Potentially invalid objects might be of a scalar type or of a composite type.
+However, the potentially invalid annotation on composite objects only applies to
+regular record fields or array components. Array bounds and record
+discriminants should always be valid even for objects annotated with
+``Potentially_Invalid``.
+
+As a general rule, a validity check is emitted each time a potentially invaid
+object is evaluated. However, if a composite object is potentially invalid, it
+can be copied into another potentially invalid object without trigerring a
+validity check. Instead, the validity status is propagated. This can happen
+in object declarations, assignments, on function return, on actual
+parameters in subprogram calls, and in references to the ``Old`` and
+``Loop_Entry`` attributes.
+As an example, no validity checks are emitted on the following code snippet. The
+validity statuses are propagated through the various copies involved:
+
+.. code-block:: ada
+
+   declare
+      C : My_Record := G with Potentially_Invalid;
+   begin
+      G := F;
+      P (C, G);
+   end;
+
+Copying an invalid scalar object is a bounded error in Ada. As a result, the
+validity status of a scalar object or call is in general not propagated and a
+validity check is emitted. As an exception, no validity checks are emitted for
+function calls occuring in declarations or assignments into potentially invalid
+scalar objects if the function is imported and its return type is the expected
+subtype. As an example, no validity check is emitted on the following call:
+
+.. code-block:: ada
+
+   function F_2 return Nat_8 with
+     Potentially_Invalid => F_2'Result, Import;
+
+   C_2 : Nat_8 := F_2 with Potentially_Invalid;
+
+It is also possible to annotate an instance of ``Ada.Unchecked_Conversion``
+with the ``Potentially_Invalid`` aspect, as examplified below:
+
+.. code-block:: ada
+
+   type Uint_32 is mod 2 ** 32;
+   function Unsafe_Read_Record is new Ada.Unchecked_Conversion (Uint_32, My_Record) with
+     Potentially_Invalid;
+
+A call to such an instance is considered to return a potentially invalid value,
+similarly to what is done for regular functions. It can be used to initialize
+composite as well as scalar objects, as long as the target type of the unchecked
+conversion and the object type match. Adding such an annotation to an instance
+of ``Ada.Unchecked_Conversion`` also causes |GNATprove| not to emit the
+checks that are usually generated to ensure that the target type of an unchecked
+conversion does not have invalid values. As a result, the example above is
+entirely proved even though ``Nat_8`` has invalid values.
+
+References to potentially invalid objects might not trigger validity checks if
+the object is not evaluated, or at least, only necessarily valid part of the
+object are evaluated. It is the case for the prefix of the ``Valid`` and
+``Valid_Scalars`` attributes and access to array bounds and discriminants of
+potentially invalid objects in particular. No validity checks are emitted in the
+following code as no potentially invalid parts of an object are evaluated:
+
+.. code-block:: ada
+
+   type My_Array is array (1 .. 4) of Nat_8;
+
+   pragma Assert (G'Valid_Scalars and C_Pos'Valid);
+   declare
+      V : My_Array with Potentially_Invalid;
+   begin
+      pragma Assert (V'Length = 4);
+   end;
+
+All other uses of potentially invalid objects trigger validity checks. A
+reference to the ``Valid`` or ``Valid_Scalar`` on a prefix that is not
+potentially invalid will result in a warning. The ``Potentially_Invalid_Reads``
+procedure is an example of how the feature might be used. The
+``Record_Or_Array`` type has a discriminant, it might be either a record or an
+array of non-negative integer values. The ``Unsafe_Read`` procedure uses
+unchecked conversion instances to initialize an object of this type, potentially
+creating invalid values. It reads the discriminant of its parameter. It does not
+trigger a validity check as discriminants of potentially invalid objects are
+necessarily valid. The ``Safe_Read`` procedure uses the ``Valid_Scalars``
+attribute to bail out with an exception if an invalid value is read. The two
+procedures ``Use_Safe_Read`` and ``Use_Unsafe_Read`` follow the same pattern.
+They first read a value, using either ``Safe_Read`` or ``Unsafe_Read``, and then
+apply some treatment on it using ``Treat_Array_Or_Record`` which only expects
+valid values, without any additional safe guard:
+
+.. literalinclude:: /examples/ug__potentially_invalid_reads/potentially_invalid_reads.adb
+   :language: ada
+   :linenos:
+
+Here |GNATprove| detects that an invalid value might be read in
+``Use_Unsafe_Read``. The rest of the example is entirely verified:
+
+.. literalinclude:: /examples/ug__potentially_invalid_reads/test.out
+   :language: none
+
+Validity of composite objects is handled in an imprecise way. In particular,
+if a component is accessed, then the validity of the whole object is verified.
+Similarly, assigning a valid value to a component will not cause |GNATprove| to
+consider the object as valid, even if all components end up being assigned.
+The object has to be assigned as a whole. For
+exemple, in the body of ``P`` below, |GNATprove| will emit a validity check on
+the reference to ``X.F`` in the first ``Assert`` pragma. The assertion itself
+therefore is easily proved as the prefix of the ``Valid`` attribute is not
+potentially invalid. |GNATprove| will emit a warning stating that the attribute
+is statically True. On the other hand, the second assertion is not proved even
+if both components of ``Y`` have been assigned valid values.
+
+.. literalinclude:: /examples/ug__potentially_invalid_composite/potentially_invalid_composite.adb
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__potentially_invalid_composite/test.out
+   :language: none
+
+.. note::
+
+   Assuming an out-of-bound value for a scalar object might create an
+   unsoundness in the logic of |SPARK|, and so, even if the object is annotated
+   with ``Potentially_Invalid``. This might result in incorrectly verified
+   checks. If the whole program is in |SPARK|, this cannot happen, as
+   |GNATprove| emits checks to ensure that potentially invalid values are never
+   read. If a program is not entirely written is |SPARK|, care should be taken
+   to never introduce such assumptions in code visible by |GNATprove|, in
+   particular in postconditions of non-|SPARK| subprograms. To help with this
+   review, the |GNATprove| tool emits a warning whenever a potentially
+   invalid object is read in the postcondition of a non-|SPARK| subprogram,
+   unless it can determine that the access is safe. As an example, |GNATprove|
+   will emit a warning on the ``Result`` attribute in the postcondition of
+   ``One_Bad`` but not in th  postcondition of ``One_OK`` as it can determine
+   that it is safe, due to the short-circuit conjunction with the ``Valid``
+   attribute:
+
+   .. literalinclude:: /examples/ug__potentially_invalid_warning/potentially_invalid_warning.adb
+      :language: ada
+      :linenos:
+
+   .. literalinclude:: /examples/ug__potentially_invalid_warning/test.out
+      :language: none
+
 .. index:: Loop_Entry
            loop; and Loop_Entry
 
@@ -1473,10 +1654,12 @@ Various kinds of ghost code are useful in different situations:
   parameters or global outputs.
 * `Ghost packages` provide a means to encapsulate all types and operations for
   a specific kind of ghost code.
-* `Imported ghost subprograms` are used to provide placeholders for properties
-  that are defined in a logical language, when using manual proof.
 * `Ghost generic formal parameters` are used to pass on ghost entities (types,
   objects, subprograms, packages) as parameters in a generic instantiation.
+* `Ghost models` work as an abstraction layer by providing a simplified view of
+  complex part of the program that can be used in contracts.
+* `Non-executable ghost code` represents concepts that cannot (easily) be
+  computed in the implementation.
 
 When the program is compiled with assertions (for example with switch
 ``-gnata`` in |GNAT Pro|), ghost code is executed like normal code. Ghost code
@@ -1767,54 +1950,6 @@ in a with-clause like for a non-ghost unit:
       ...
    end Account;
 
-Imported Ghost Subprograms
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-When using manual proof (see :ref:`GNATprove and Manual Proof`), it may be more
-convenient to define some properties in the logical language of the prover
-rather than in |SPARK|. In that case, ghost functions might be marked as
-imported, so that no implementation is needed. For example, the ghost procedure
-``Append_To_Log`` seen previously may be defined equivalently as a ghost
-imported function as follows:
-
-.. code-block:: ada
-
-   function Append_To_Log (Log : Log_type; Incr : in Integer) return Log_Type with
-     Ghost,
-     Import;
-
-where ``Log_Type`` is an Ada type used also as placeholder for a type in the
-logical language of the prover. To avoid any inconsistency between the
-interpretations of ``Log_Type`` in |GNATprove| and in the manual prover, it is
-preferable in such a case to mark the definition of ``Log_Type`` as not in
-|SPARK|, so that |GNATprove| does not make any assumptions on its content. This
-can be achieved by defining ``Log_Type`` as a private type and marking the
-private part of the enclosing package as not in |SPARK|:
-
-.. code-block:: ada
-
-   package Logging with
-     SPARK_Mode,
-     Ghost
-   is
-      type Log_Type is private;
-
-      function Append_To_Log (Log : Log_type; Incr : in Integer) return Log_Type with
-        Import;
-
-      ...
-
-   private
-      pragma SPARK_Mode (Off);
-
-      type Log_Type is new Integer;  --  Any definition is fine here
-   end Logging;
-
-A ghost imported subprogram cannot be executed, so calls to ``Append_To_Log``
-above should not be enabled during compilation, otherwise a compilation error
-is issued. Note also that |GNATprove| will not attempt proving the contract of
-a ghost imported subprogram, as it does not have its body.
-
 Ghost Generic Formal Parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -2023,6 +2158,64 @@ be stated as a postcondition of this function:
 
 More complex examples of models of data structure can be found in the
 :ref:`Formal Containers Library`.
+
+Non-Executable Ghost Code
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+It is possible to define entities
+that are not meant to be executed at all. This is useful to represent concepts
+that are useful in specification but that we cannot - or don't want to -
+compute at runtime. This might include logical concepts, such as unbounded
+quantification - using :ref:`Aspect and Pragma Iterable` - or logical equality
+(see :ref:`Annotation for Accessing the Logical Equality for a Type`), as well
+as parts of the program whose model is not accessible from the language, for
+example the file system (see :ref:`Input-Output Libraries`) or a memory model.
+
+To be usable inside contracts, these concepts need to be declared as Ada
+entities but their body or actual representation does not
+matter as they are not meant to be executed. In particular, ghost subprograms
+might be marked as imported, so an error will be raised at link time if a
+call is inadvertently enabled, or their bodies might be marked as SPARK_Mode Off
+and raise an exception. Ghost state might be represented using an abstract state
+on a package whose body is Off with no refinement or thanks to a private type
+with a dummy definition.
+
+For example, the ghost procedure ``Append_To_Log`` seen previously may be
+defined equivalently as a ghost imported function as follows:
+
+.. code-block:: ada
+
+   function Append_To_Log (Log : Log_type; Incr : in Integer) return Log_Type with
+     Ghost,
+     Import;
+
+where ``Log_Type`` is a private type whose actual defintion is hidden from
+|GNATprove|. This
+can be achieved by defining ``Log_Type`` as a private type and marking the
+private part of the enclosing package as not in |SPARK|:
+
+.. code-block:: ada
+
+   package Logging with
+     SPARK_Mode,
+     Ghost
+   is
+      type Log_Type is private;
+
+      function Append_To_Log (Log : Log_type; Incr : in Integer) return Log_Type with
+        Import;
+
+      ...
+
+   private
+      pragma SPARK_Mode (Off);
+
+      type Log_Type is new Integer;  --  Any definition is fine here
+   end Logging;
+
+Note that non-executable ghost subprograms should be used with care as
+|GNATprove| will not attempt to verify them as it does not have access to an
+implementation.
 
 Removal of Ghost Code
 ^^^^^^^^^^^^^^^^^^^^^

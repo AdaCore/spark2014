@@ -1,2 +1,5 @@
-assert_disabled.adb:9:19: info: assertion proved
-assert_disabled.adb:14:11: info: overflow check proved
+ info: assertion proved
+--> assert_disabled.adb:9:19
+
+ info: overflow check proved
+--> assert_disabled.adb:14:11

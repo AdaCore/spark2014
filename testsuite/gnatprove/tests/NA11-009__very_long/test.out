@@ -9,9 +9,10 @@ very_longs.adb:59:07: info: initialization of "R_Digit" proved
 very_longs.adb:60:07: info: initialization of "Sum" proved
 very_longs.adb:62:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs.adb:62:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:64:36: info: cannot unroll loop (too many loop iterations)
+very_longs.adb:64:36: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 very_longs.adb:65:48: info: index check proved (CVC5: 2 VC)
 very_longs.adb:66:48: info: index check proved (CVC5: 2 VC)
+very_longs.adb:69:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 very_longs.adb:69:29: info: index check proved (CVC5: 2 VC)
 very_longs.adb:76:28: info: initialization of "Result" proved
 very_longs.adb:76:52: info: initialization of "Borrow" proved
@@ -21,9 +22,10 @@ very_longs.adb:82:07: info: initialization of "R_Digit" proved
 very_longs.adb:83:07: info: initialization of "Difference" proved
 very_longs.adb:85:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs.adb:85:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:87:36: info: cannot unroll loop (too many loop iterations)
+very_longs.adb:87:36: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 very_longs.adb:88:51: info: index check proved (CVC5: 2 VC)
 very_longs.adb:89:51: info: index check proved (CVC5: 2 VC)
+very_longs.adb:96:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 very_longs.adb:96:29: info: index check proved (CVC5: 2 VC)
 very_longs.adb:112:07: info: initialization of "Result" proved
 very_longs.adb:112:26: info: range check proved (CVC5: 2 VC)
@@ -31,7 +33,8 @@ very_longs.adb:113:07: info: initialization of "Temp" proved
 very_longs.adb:115:21: info: assertion proved (CVC5: 1 VC)
 very_longs.adb:116:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs.adb:116:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:118:45: info: cannot unroll loop (too many loop iterations)
+very_longs.adb:118:45: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+very_longs.adb:119:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 very_longs.adb:119:29: info: index check proved (CVC5: 2 VC)
 very_longs.adb:119:50: info: division check proved (CVC5: 1 VC)
 very_longs.adb:119:50: info: range check proved (CVC5: 1 VC)
@@ -58,7 +61,7 @@ very_longs.adb:146:44: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:151:29: info: index check proved (CVC5: 2 VC)
 very_longs.adb:153:25: info: range check proved (CVC5: 2 VC)
 very_longs.adb:154:39: info: overflow check proved (CVC5: 2 VC)
-very_longs.adb:166:44: info: cannot unroll loop (too many loop iterations)
+very_longs.adb:166:44: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 very_longs.adb:167:27: info: index check proved (CVC5: 2 VC)
 very_longs.adb:167:46: info: index check proved (CVC5: 2 VC)
 very_longs.adb:171:27: info: index check proved (CVC5: 2 VC)
@@ -82,9 +85,10 @@ very_longs.adb:232:07: info: initialization of "Sum" proved
 very_longs.adb:233:07: info: initialization of "Carry" proved
 very_longs.adb:235:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs.adb:235:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:237:36: info: cannot unroll loop (too many loop iterations)
+very_longs.adb:237:36: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 very_longs.adb:238:48: info: index check proved (CVC5: 2 VC)
 very_longs.adb:239:48: info: index check proved (CVC5: 2 VC)
+very_longs.adb:242:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 very_longs.adb:242:29: info: index check proved (CVC5: 2 VC)
 very_longs.adb:249:07: info: initialization of "Result" proved
 very_longs.adb:249:31: info: range check proved (CVC5: 2 VC)
@@ -94,9 +98,10 @@ very_longs.adb:252:07: info: initialization of "Difference" proved
 very_longs.adb:253:07: info: initialization of "Borrow" proved
 very_longs.adb:255:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs.adb:255:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:257:36: info: cannot unroll loop (too many loop iterations)
+very_longs.adb:257:36: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 very_longs.adb:258:51: info: index check proved (CVC5: 2 VC)
 very_longs.adb:259:51: info: index check proved (CVC5: 2 VC)
+very_longs.adb:266:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 very_longs.adb:266:29: info: index check proved (CVC5: 2 VC)
 very_longs.adb:277:07: info: initialization of "Result" proved
 very_longs.adb:277:27: info: range check proved (CVC5: 2 VC)
@@ -107,13 +112,14 @@ very_longs.adb:281:07: info: initialization of "Temp" proved
 very_longs.adb:282:07: info: initialization of "Carry" proved
 very_longs.adb:285:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs.adb:285:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:288:36: info: cannot unroll loop (too many loop iterations)
-very_longs.adb:290:39: info: cannot unroll loop (too many loop iterations)
+very_longs.adb:288:36: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+very_longs.adb:290:39: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 very_longs.adb:291:51: info: index check proved (CVC5: 2 VC)
 very_longs.adb:292:51: info: index check proved (CVC5: 2 VC)
 very_longs.adb:293:18: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:294:61: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:294:65: info: index check proved (CVC5: 2 VC)
+very_longs.adb:296:22: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 very_longs.adb:296:37: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:296:41: info: index check proved (CVC5: 2 VC)
 very_longs.adb:306:07: info: initialization of "Result" proved
@@ -125,14 +131,16 @@ very_longs.adb:310:07: info: initialization of "Temp" proved
 very_longs.adb:311:07: info: initialization of "Carry" proved
 very_longs.adb:314:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs.adb:314:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:317:36: info: cannot unroll loop (too many loop iterations)
-very_longs.adb:319:39: info: cannot unroll loop (too many loop iterations)
+very_longs.adb:317:36: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+very_longs.adb:319:39: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 very_longs.adb:320:52: info: index check proved (CVC5: 2 VC)
 very_longs.adb:321:52: info: index check proved (CVC5: 2 VC)
 very_longs.adb:322:59: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:322:63: info: index check proved (CVC5: 2 VC)
+very_longs.adb:324:19: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 very_longs.adb:324:34: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:324:38: info: index check proved (CVC5: 2 VC)
+very_longs.adb:327:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 very_longs.adb:327:38: info: index check proved (CVC5: 2 VC)
 very_longs.adb:327:38: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:345:15: info: range check proved (CVC5: 2 VC)
@@ -147,24 +155,26 @@ very_longs.adb:361:42: info: range check proved (CVC5: 2 VC)
 very_longs.adb:362:07: info: initialization of "Q_Hat" proved
 very_longs.adb:363:07: info: initialization of "Current_Borrow" proved
 very_longs.adb:367:16: info: implicit aspect Always_Terminates on "Get_Shift_Distance" has been proved, subprogram will terminate
-very_longs.adb:373:30: info: unrolling loop
+very_longs.adb:373:30: info: unrolling loop [info-unrolling-inlining]
 very_longs.adb:383:33: info: initialization of "Result" proved
 very_longs.adb:385:11: info: flow dependencies proved
 very_longs.adb:389:10: info: initialization of "New_Overflow" proved
 very_longs.adb:390:10: info: initialization of "Overflow_Mask" proved
 very_longs.adb:392:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 very_longs.adb:392:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:394:44: info: cannot unroll loop (too many loop iterations)
+very_longs.adb:394:44: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 very_longs.adb:395:60: info: index check proved (CVC5: 2 VC)
+very_longs.adb:396:19: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 very_longs.adb:396:32: info: index check proved (CVC5: 2 VC)
 very_longs.adb:396:68: info: index check proved (CVC5: 2 VC)
+very_longs.adb:397:19: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 very_longs.adb:397:32: info: index check proved (CVC5: 2 VC)
 very_longs.adb:397:57: info: index check proved (CVC5: 2 VC)
 very_longs.adb:400:47: info: index check proved (CVC5: 2 VC)
 very_longs.adb:406:14: info: flow dependencies proved
 very_longs.adb:409:10: info: initialization of "New_Overflow" proved
 very_longs.adb:410:10: info: initialization of "Overflow_Mask" proved
-very_longs.adb:413:44: info: cannot unroll loop (too many loop iterations)
+very_longs.adb:413:44: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 very_longs.adb:414:60: info: index check proved (CVC5: 2 VC)
 very_longs.adb:415:32: info: index check proved (CVC5: 2 VC)
 very_longs.adb:415:68: info: index check proved (CVC5: 2 VC)
@@ -173,7 +183,7 @@ very_longs.adb:416:57: info: index check proved (CVC5: 2 VC)
 very_longs.adb:424:14: info: flow dependencies proved
 very_longs.adb:427:10: info: initialization of "New_Overflow" proved
 very_longs.adb:428:10: info: initialization of "Overflow_Mask" proved
-very_longs.adb:431:52: info: cannot unroll loop (too many loop iterations)
+very_longs.adb:431:52: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 very_longs.adb:432:48: info: index check proved (CVC5: 2 VC)
 very_longs.adb:433:32: info: index check proved (CVC5: 2 VC)
 very_longs.adb:433:69: info: index check proved (CVC5: 2 VC)
@@ -208,10 +218,11 @@ very_longs.adb:482:10: info: initialization of "Product" proved
 very_longs.adb:483:10: info: initialization of "Temporary_Digit" proved
 very_longs.adb:484:10: info: initialization of "Future_Borrow" proved
 very_longs.adb:488:14: info: range check proved (CVC5: 2 VC)
-very_longs.adb:488:61: info: cannot unroll loop (dynamic loop bounds)
+very_longs.adb:488:61: info: cannot unroll loop (dynamic loop bounds) [info-unrolling-inlining]
 very_longs.adb:489:59: info: index check proved (CVC5: 2 VC)
 very_longs.adb:493:46: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:493:62: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 476 should mention J in a precondition]
+very_longs.adb:500:14: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 very_longs.adb:500:29: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:500:45: info: index check proved (CVC5: 2 VC)
 very_longs.adb:502:48: info: overflow check proved (CVC5: 2 VC)
@@ -233,10 +244,11 @@ very_longs.adb:527:43: medium: range check might fail [reason for check: value m
 very_longs.adb:531:34: info: index check proved (CVC5: 2 VC)
 very_longs.adb:531:61: info: index check proved (CVC5: 2 VC)
 very_longs.adb:533:17: info: range check proved (CVC5: 2 VC)
-very_longs.adb:533:64: info: cannot unroll loop (dynamic loop bounds)
+very_longs.adb:533:64: info: cannot unroll loop (dynamic loop bounds) [info-unrolling-inlining]
 very_longs.adb:534:52: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:534:68: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at line 518 should mention J in a precondition]
 very_longs.adb:535:50: info: index check proved (CVC5: 2 VC)
+very_longs.adb:536:17: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 very_longs.adb:536:32: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:536:48: info: index check proved (CVC5: 2 VC)
 very_longs.adb:539:29: info: index check proved (CVC5: 2 VC)
@@ -255,13 +267,14 @@ very_longs.adb:553:07: info: precondition proved (CVC5: 1 VC)
 very_longs.adb:554:12: info: discriminant check proved (CVC5: 1 VC)
 very_longs.adb:558:11: info: range check proved (CVC5: 2 VC)
 very_longs.adb:558:54: info: overflow check proved (CVC5: 2 VC)
-very_longs.adb:558:58: info: cannot unroll loop (too many loop iterations)
+very_longs.adb:558:58: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 very_longs.adb:560:10: info: precondition proved (CVC5: 2 VC)
 very_longs.adb:560:13: info: range check proved (CVC5: 2 VC)
 very_longs.adb:563:13: info: range check proved (CVC5: 2 VC)
 very_longs.adb:566:13: info: range check proved (CVC5: 2 VC)
 very_longs.adb:572:11: info: range check proved (CVC5: 2 VC)
-very_longs.adb:572:58: info: cannot unroll loop (dynamic loop bounds)
+very_longs.adb:572:58: info: cannot unroll loop (dynamic loop bounds) [info-unrolling-inlining]
+very_longs.adb:573:19: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 very_longs.adb:573:32: info: index check proved (CVC5: 2 VC)
 very_longs.adb:573:64: info: index check proved (CVC5: 2 VC)
 very_longs.ads:12:13: info: implicit aspect Always_Terminates on "Make_From_Natural" has been proved, subprogram will terminate

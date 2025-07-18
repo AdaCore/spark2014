@@ -5,12 +5,12 @@ dynamic_preds.adb:17:21: info: predicate check proved (CVC5: 1 VC)
 dynamic_preds.adb:22:23: info: predicate check proved (CVC5: 1 VC)
 dynamic_preds.adb:23:23: info: predicate check proved (CVC5: 1 VC)
 dynamic_preds.adb:28:19: medium: in value of subprogram parameter after the call at dynamic_preds.adb:28
-dynamic_preds.adb:28:19: medium: predicate check might fail [possible fix: subprogram at dynamic_preds.ads:22 should mention X in a precondition]
+dynamic_preds.adb:28:19: medium: predicate check might fail (e.g. when X = (A => 0, B => 0)) [possible fix: subprogram at dynamic_preds.ads:22 should mention X in a precondition]
 dynamic_preds.adb:29:22: info: in value of subprogram parameter after the call at dynamic_preds.adb:29
 dynamic_preds.adb:29:22: info: predicate check proved (CVC5: 1 VC)
 dynamic_preds.adb:34:19: medium: in inlined predicate at dynamic_preds.ads:14
 dynamic_preds.adb:34:19: medium: in value of subprogram parameter after the call at dynamic_preds.adb:34
-dynamic_preds.adb:34:19: medium: predicate check might fail, cannot prove Ext_Even_Pair.A in Even [possible fix: subprogram at dynamic_preds.ads:23 should mention X in a precondition]
+dynamic_preds.adb:34:19: medium: predicate check might fail, cannot prove Ext_Even_Pair.A in Even (e.g. when X = (A => 0, B => 0)) [possible fix: subprogram at dynamic_preds.ads:23 should mention X in a precondition]
 dynamic_preds.adb:35:22: info: in value of subprogram parameter after the call at dynamic_preds.adb:35
 dynamic_preds.adb:35:22: info: predicate check proved (CVC5: 6 VC)
 dynamic_preds.adb:39:27: info: range check proved (CVC5: 2 VC)
@@ -87,7 +87,7 @@ dynamic_preds.ads:44:41: warning: unused initial value of "X"
 dynamic_preds.ads:45:19: info: postcondition proved (CVC5: 2 VC)
 dynamic_preds.ads:47:13: info: implicit aspect Always_Terminates on "Get_Even_Close_Pair" has been proved, subprogram will terminate
 dynamic_preds_array.adb:16:18: medium: in value of subprogram parameter after the call at dynamic_preds_array.adb:16
-dynamic_preds_array.adb:16:18: medium: predicate check might fail [possible fix: subprogram at dynamic_preds_array.ads:14 should mention X in a precondition]
+dynamic_preds_array.adb:16:18: medium: predicate check might fail (e.g. when X = 0) [possible fix: subprogram at dynamic_preds_array.ads:14 should mention X in a precondition]
 dynamic_preds_array.adb:17:21: info: in value of subprogram parameter after the call at dynamic_preds_array.adb:17
 dynamic_preds_array.adb:17:21: info: predicate check proved (CVC5: 1 VC)
 dynamic_preds_array.adb:22:23: info: predicate check proved (CVC5: 1 VC)
@@ -171,8 +171,8 @@ dynamic_preds_array.ads:35:13: info: implicit aspect Always_Terminates on "Get_E
 dynamic_preds_array.ads:36:13: info: implicit aspect Always_Terminates on "Get_Even_Close_Pair_Wrong" has been proved, subprogram will terminate
 dynamic_preds_array.ads:40:19: info: postcondition proved (CVC5: 2 VC)
 dynamic_preds_array.ads:42:13: info: implicit aspect Always_Terminates on "Get_Even_Close_Pair" has been proved, subprogram will terminate
-dynamic_preds_rte.adb:6:14: medium: predicate check might fail (e.g. when X = (A => 0, B => 0) and Y = 50000) [possible fix: subprogram at dynamic_preds_rte.ads:21 should mention Y in a precondition]
-dynamic_preds_rte.adb:6:14: medium: range check might fail, cannot prove lower bound for Y (e.g. when X = (A => 0, B => 0) and Y = -1) [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (Y >= Small'First) to subprogram at dynamic_preds_rte.ads:21]
+dynamic_preds_rte.adb:6:14: medium: predicate check might fail (e.g. when Y = 50000) [possible fix: subprogram at dynamic_preds_rte.ads:21 should mention Y in a precondition]
+dynamic_preds_rte.adb:6:14: medium: range check might fail, cannot prove lower bound for Y (e.g. when Y = -1) [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (Y >= Small'First) to subprogram at dynamic_preds_rte.ads:21]
 dynamic_preds_rte.adb:7:14: info: range check proved (CVC5: 2 VC)
 dynamic_preds_rte.adb:7:14: medium: predicate check might fail (e.g. when Y = 16668) [possible fix: subprogram at dynamic_preds_rte.ads:21 should mention Y in a precondition]
 dynamic_preds_rte.adb:12:18: info: overflow check proved (CVC5: 2 VC)

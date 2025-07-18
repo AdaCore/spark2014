@@ -1,14 +1,14 @@
-conversions_of_records.adb:20:13: info: imprecise handling of Unchecked_Conversion (type is unsuitable as source for unchecked conversion)
 conversions_of_records.adb:20:13: info: types in unchecked conversion have the same size (Trivial)
-conversions_of_records.adb:20:65: high: type is unsuitable for unchecked conversion [possible explanation: type Rec_A has minimal size 33, but Size was declared as 40]
-conversions_of_records.adb:21:65: high: type is unsuitable as a target for unchecked conversion [possible explanation: type Rec_B has minimal size 33, but Size was declared as 40]
+conversions_of_records.adb:20:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
+conversions_of_records.adb:20:65: info: type is suitable as source for unchecked conversion (Trivial)
+conversions_of_records.adb:21:65: high: type is unsuitable as a target for unchecked conversion [possible explanation: type Boolean has 2 values but type Boolean has Object_Size 8, which allows 256 possible values; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
 conversions_of_records.adb:25:26: info: initialization of "Y1" proved
 conversions_of_records.adb:26:26: info: initialization of "Y2" proved
 conversions_of_records.adb:27:09: info: flow dependencies proved
 conversions_of_records.adb:38:26: info: initialization of "Y1" proved
 conversions_of_records.adb:39:26: info: initialization of "Y2" proved
-conversions_of_records.adb:40:09: info: flow dependencies proved
+conversions_of_records.adb:40:32: medium: incorrect dependency "Y1 => X2"
+conversions_of_records.adb:41:28: medium: incorrect dependency "Y2 => X1"
 conversions_of_records.adb:51:26: info: initialization of "Y1" proved
 conversions_of_records.adb:52:26: info: initialization of "Y2" proved
-conversions_of_records.adb:53:21: medium: missing dependency "Y1 => X2"
-conversions_of_records.adb:54:21: medium: missing dependency "Y2 => X1"
+conversions_of_records.adb:53:09: info: flow dependencies proved

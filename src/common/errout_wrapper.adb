@@ -1,11 +1,17 @@
 with Ada.Characters.Handling; use Ada.Characters.Handling;
-with Ada.Strings.Unbounded;
+with Assumption_Types;        use Assumption_Types;
 with Atree;                   use Atree;
 with Gnat2Why_Args;
 with Gnat2Why_Opts;           use Gnat2Why_Opts;
+with Sinput;                  use Sinput;
+with SPARK_Util;              use SPARK_Util;
+with Stringt;                 use Stringt;
 with Warnsw;                  use Warnsw;
 
 package body Errout_Wrapper is
+
+   Message_Id_Counter : Message_Id := 0;
+   --  Counter used to generate Message_Ids
 
    function Escape_For_Errout (S : String) return String;
    --  Escape any special characters used in the error message (for example
@@ -25,6 +31,104 @@ package body Errout_Wrapper is
    --  The actual call shall be made by the generic argument procedure.
    --  First_Node - this node, if present, is used to set the map of names, and
    --               is passed to Locate_Message.
+
+   function Create_N
+     (Msg           : String;
+      Names         : String_Lists.List := String_Lists.Empty;
+      Secondary_Loc : Source_Ptr := No_Location;
+      Explain_Code  : Explain_Code_Kind := EC_None) return Message;
+   --  Same as Create, but the names can be provided as a list of Strings.
+
+   ------------------
+   -- Add_Json_Msg --
+   ------------------
+
+   procedure Add_Json_Msg
+     (Msg_List : in out GNATCOLL.JSON.JSON_Array;
+      Obj      : JSON_Result_Type;
+      Msg_Id   : Message_Id)
+   is
+      Value : constant JSON_Value := Create_Object;
+      File  : constant String := File_Name (Obj.Span.Ptr);
+      Line  : constant Natural :=
+         Positive (Get_Logical_Line_Number (Obj.Span.Ptr));
+      Col   : constant Natural := Positive (Get_Column_Number (Obj.Span.Ptr));
+
+   begin
+      Set_Field (Value, "file", File);
+      Set_Field (Value, "line", Line);
+      Set_Field (Value, "col", Col);
+
+      if Obj.Suppr.Suppression_Kind in Warning | Check then
+         declare
+            Suppr_Reason : constant String :=
+              (if Obj.Suppr.Suppression_Kind = Check
+               then To_String (Obj.Suppr.Msg)
+               else "");
+         begin
+            Set_Field (Value, "suppressed", Suppr_Reason);
+            if Obj.Suppr.Suppression_Kind = Check then
+               Set_Field
+                 (Value, "annot_kind", To_String (Obj.Suppr.Annot_Kind));
+               Set_Field
+                 (Value, "justif_msg", To_String (Obj.Suppr.Justification));
+            end if;
+         end;
+      end if;
+
+      Set_Field (Value, "rule", Obj.Tag);
+      Set_Field (Value, "severity", To_JSON (Obj.Severity));
+      Set_Field (Value, "entity", To_JSON (Entity_To_Subp_Assumption (Obj.E)));
+      Set_Field (Value, "check_tree", Obj.Check_Tree);
+
+      if Obj.VC_Loc /= No_Location then
+         declare
+            VC_File : constant String  := File_Name (Obj.VC_Loc);
+            VC_Line : constant Natural :=
+                         Positive (Get_Logical_Line_Number (Obj.VC_Loc));
+            VC_Col  : constant Natural :=
+                         Positive (Get_Column_Number (Obj.VC_Loc));
+         begin
+            --  Note that vc_file already exists
+            Set_Field (Value, "check_file", VC_File);
+            Set_Field (Value, "check_line", VC_Line);
+            Set_Field (Value, "check_col", VC_Col);
+         end;
+      end if;
+
+      if Obj.Tracefile /= "" then
+         Set_Field (Value, "tracefile", Obj.Tracefile);
+      end if;
+
+      if not Obj.Cntexmp.Map.Is_Empty then
+         Set_Field (Value, "cntexmp", To_JSON (Obj.Cntexmp.Map));
+      end if;
+
+      if not Obj.Cntexmp.Input_As_JSON.Input_As_JSON.Is_Empty then
+         Set_Field (Value, "cntexmp_value",
+                   To_JSON (Obj.Cntexmp.Input_As_JSON));
+      end if;
+
+      if Obj.VC_File /= "" then
+         Set_Field (Value, "vc_file", Obj.VC_File);
+      end if;
+
+      if Obj.Editor_Cmd /= "" then
+         Set_Field (Value, "editor_cmd", Obj.Editor_Cmd);
+      end if;
+
+      if Msg_Id /= No_Message_Id then
+         Set_Field (Value, "msg_id", Natural (Msg_Id));
+      end if;
+
+      Set_Field (Value, "how_proved", To_JSON (Obj.How_Proved));
+
+      if not Obj.Stats.Is_Empty then
+         Set_Field (Value, "stats", To_JSON (Obj.Stats));
+      end if;
+
+      Append (Msg_List, Value);
+   end Add_Json_Msg;
 
    --------------------------
    -- Generic_Print_Result --
@@ -71,15 +175,15 @@ package body Errout_Wrapper is
            (case Kind is
                when Error_Kind        => "",
                when Warning_Kind      => "?",
-               when Info_Kind         => "info: ?",
+               when Info_Kind         => "info: ",
                when Low_Check_Kind    => "low: ",
                when Medium_Check_Kind => "medium: ",
                when High_Check_Kind   => "high: ");
          Cont_Prefix : constant String :=
            (case Kind is
-               when Error_Kind               => "\",
-               when Warning_Kind | Info_Kind => "\?",
-               when Check_Kind               =>
+               when Error_Kind | Info_Kind => "\",
+               when Warning_Kind           => "\?",
+               when Check_Kind             =>
                  (if Gnat2Why_Args.Output_Mode in GPO_Pretty then "\"
                   else "\" & Prefix));
          use Node_Lists;
@@ -113,7 +217,7 @@ package body Errout_Wrapper is
          declare
             S : constant String :=
               (if Cont then Cont_Prefix else Prefix)
-              & Escape_For_Errout (Msg.Msg) & Expl_Code;
+              & Escape_For_Errout (To_String (Msg.Msg)) & Expl_Code;
             First_Node : constant Node_Id :=
               (if Names.Is_Empty then Types.Empty else First_Element (Names));
          begin
@@ -151,7 +255,9 @@ package body Errout_Wrapper is
       Secondary_Loc : Source_Ptr := No_Location;
       Explain_Code  : Explain_Code_Kind := EC_None) return Message is
    begin
-      return Message'(Msg'Length, Names, Secondary_Loc, Explain_Code, Msg);
+      return
+        Message'
+          (Names, Secondary_Loc, Explain_Code, To_Unbounded_String (Msg));
    end Create;
 
    function Create_N
@@ -160,32 +266,32 @@ package body Errout_Wrapper is
       Secondary_Loc : Source_Ptr := No_Location;
       Explain_Code  : Explain_Code_Kind := EC_None) return Message
    is
-      use Ada.Strings.Unbounded;
       Buf : Unbounded_String;
-      Index : Positive := Msg'First;
-      C : String_Lists.Cursor := Names.First;
+      Current_Name : String_Lists.Cursor := Names.First;
+      use type String_Lists.Cursor;
    begin
       --  Given that message objects hold lists of nodes, we need to do the
       --  replacement ourselves.
-      while Index in Msg'Range loop
-         if Msg (Index) = ''' then
-            Append (Buf, Msg (Index));
-            Index := Index + 1;
-            Append (Buf, Msg (Index));
-         elsif Msg (Index) = '&' then
-            Append (Buf, Names (C));
-            String_Lists.Next (C);
+      for C of Msg loop
+         if C = ''' then
+            Append (Buf, C);
+            Append (Buf, C);
+         elsif C = '&' then
+            Append (Buf, Names (Current_Name));
+            String_Lists.Next (Current_Name);
          else
-            Append (Buf, Msg (Index));
+            Append (Buf, C);
          end if;
-         Index := Index + 1;
       end loop;
+
+      --  All names should be substituted
+      pragma Assert (Current_Name = String_Lists.No_Element);
+
       return
-        Message'(Length (Buf),
-                 Node_Lists.Empty,
+        Message'(Node_Lists.Empty,
                  Secondary_Loc,
                  Explain_Code,
-                 To_String (Buf));
+                 Buf);
    end Create_N;
 
    function Create_N
@@ -316,7 +422,6 @@ package body Errout_Wrapper is
    ------------
 
    function Escape (S : String) return String is
-      use Ada.Strings.Unbounded;
       R : Unbounded_String := Null_Unbounded_String;
       J : Integer := S'First;
       C : Character;
@@ -339,7 +444,6 @@ package body Errout_Wrapper is
    -----------------------
 
    function Escape_For_Errout (S : String) return String is
-      use Ada.Strings.Unbounded;
       R : Unbounded_String := Null_Unbounded_String;
       J : Integer := S'First;
       C : Character;
@@ -368,6 +472,30 @@ package body Errout_Wrapper is
 
       return To_String (R);
    end Escape_For_Errout;
+
+   ---------------------
+   -- Next_Message_Id --
+   ---------------------
+
+   function Next_Message_Id return Message_Id is
+      Result : constant Message_Id := Message_Id_Counter;
+   begin
+      Message_Id_Counter := @ + 1;
+      return Result;
+   end Next_Message_Id;
+
+   ----------------
+   -- Tag_Suffix --
+   ----------------
+
+   function Tag_Suffix (Kind : Misc_Warning_Kind) return String is
+   begin
+      if Warning_Doc_Switch then
+         return " [" & Kind_Name (Kind) & "]";
+      else
+         return "";
+      end if;
+   end Tag_Suffix;
 
    -------------
    -- To_JSON --
@@ -404,9 +532,7 @@ package body Errout_Wrapper is
         (Kind,
          N,
          Create
-           (Warning_Message (Kind) & Extra_Message &
-            (if Warning_Doc_Switch then " [" & Kind_Name (Kind) & "]"
-               else ""),
+           (Warning_Message (Kind) & Extra_Message & Tag_Suffix (Kind),
             Names,
             Secondary_Loc,
             Explain_Code),
@@ -432,5 +558,15 @@ package body Errout_Wrapper is
             Continuations);
       end if;
    end Warning_Msg_N;
+
+   function "&" (M : Message; S : String) return Message is
+   begin
+      return
+        Message'
+          (Names         => M.Names,
+           Secondary_Loc => M.Secondary_Loc,
+           Explain_Code  => M.Explain_Code,
+           Msg           => M.Msg & S);
+   end "&";
 
 end Errout_Wrapper;

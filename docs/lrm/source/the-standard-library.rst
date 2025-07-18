@@ -223,14 +223,6 @@ to all floating-point approximations of its singularity points being too far
 from the singularity (all values that are a multiple of :math:`\pi` away from
 :math:`\pi / 2`).
 
-
-Random Number Generation (A.5.2)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The package Ada.Numerics.Float_Random and an instantiation of package
-Ada.Numerics.Discrete_Random is ostensibly in |SPARK| but the functions
-have side effects and should not be called from |SPARK| text.
-
 Input-Output (A.6)
 ------------------
 

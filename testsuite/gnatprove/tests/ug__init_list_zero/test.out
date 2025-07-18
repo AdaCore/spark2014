@@ -1,7 +1,20 @@
-init_list_zero.adb:6:11: info: postcondition proved
-init_list_zero.adb:11:30: info: loop invariant initialization proved
-init_list_zero.adb:11:30: info: loop invariant preservation proved
-init_list_zero.adb:11:49: info: precondition proved
-init_list_zero.adb:12:32: info: precondition proved
-init_list_zero.adb:13:07: info: precondition proved
-init_list_zero.adb:14:07: info: precondition proved
+ info: postcondition proved
+--> init_list_zero.adb:6:11
+
+ info: loop invariant initialization proved
+--> init_list_zero.adb:11:30
+
+ info: loop invariant preservation proved
+--> init_list_zero.adb:11:30
+
+ info: precondition proved
+--> init_list_zero.adb:11:49
+
+ info: precondition proved
+--> init_list_zero.adb:12:32
+
+ info: precondition proved
+--> init_list_zero.adb:13:07
+
+ info: precondition proved
+--> init_list_zero.adb:14:07

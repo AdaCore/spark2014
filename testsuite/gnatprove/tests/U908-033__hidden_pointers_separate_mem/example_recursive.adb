@@ -199,13 +199,9 @@ procedure Example_Recursive with SPARK_Mode is
       --  its designated value can be updated in place.
 
       declare
-         Mem_Access : access Memory_Type := M'Access;
+         F_Ptr : access Object'Class := Reference (M, F);
       begin
-         declare
-            F_Ptr      : access Object'Class := Reference (Mem_Access, F);
-         begin
-            L_Cell (F_Ptr.all).N := F;
-         end;
+         L_Cell (F_Ptr.all).N := F;
       end;
 
       pragma Assert (Valid_Memory (+M));
@@ -231,8 +227,7 @@ procedure Example_Recursive with SPARK_Mode is
       --  its designated value can be updated in place.
 
       declare
-         Mem_Access : access Memory_Type := L.M'Access;
-         F_Ptr      : access Object'Class := Reference (Mem_Access, L.F);
+         F_Ptr : access Object'Class := Reference (L.M, L.F);
       begin
          L_Cell (F_Ptr.all).N := New_P;
       end;
@@ -297,8 +292,7 @@ procedure Example_Recursive with SPARK_Mode is
       --  its designated value can be updated in place.
 
       declare
-         M1_Access : access Memory_Type := L1.M'Access;
-         F2_Ptr    : access Object'Class := Reference (M1_Access, L2.F);
+         F2_Ptr : access Object'Class := Reference (L1.M, L2.F);
       begin
          L_Cell (F2_Ptr.all).N := F1_Next;
       end;
@@ -346,8 +340,7 @@ procedure Example_Recursive with SPARK_Mode is
       --  its designated value can be updated in place.
 
       declare
-         M1_Access : access Memory_Type := L1.M'Access;
-         F1_Ptr    : access Object'Class := Reference (M1_Access, L1.F);
+         F1_Ptr : access Object'Class := Reference (L1.M, L1.F);
       begin
          L_Cell (F1_Ptr.all).N := F2_Next;
       end;

@@ -17,3 +17,4 @@ foo.adb:20:04: warning: analyzing unreferenced procedure "Test" [unreferenced-pr
 foo.adb:21:25: info: predicate check proved (CVC5: 1 VC)
 foo.adb:23:11: info: precondition proved (CVC5: 1 VC)
 foo.adb:23:11: info: precondition proved (Trivial: 1 VC)
+foo.adb:24:16: warning: references to the "Img" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]

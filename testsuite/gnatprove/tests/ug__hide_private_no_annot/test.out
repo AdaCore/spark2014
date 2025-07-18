@@ -1,3 +1,8 @@
-use_geometry.adb:5:03: info: data dependencies proved
-use_geometry.adb:8:19: info: assertion proved
-use_geometry.adb:10:07: info: assertion proved
+ info: data dependencies proved
+--> use_geometry.adb:5:03
+
+ info: assertion proved
+--> use_geometry.adb:8:19
+
+ info: assertion proved
+--> use_geometry.adb:10:07

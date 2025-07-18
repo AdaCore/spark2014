@@ -34,5 +34,5 @@ bounded_stacks.ads:44:06: info: data dependencies proved, in instantiation at in
 bounded_stacks.ads:45:06: info: flow dependencies proved, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:51:04: info: justified that type "Stack" is not fully initialized, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:52:07: info: range check proved (CVC5: 2 VC), in instantiation at integer_stacks.ads:4
-integer_stacks.ads:4:01: info: cannot unroll loop (too many loop iterations)
+integer_stacks.ads:4:01: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 integer_stacks.ads:4:01: info: in instantiation at bounded_stacks.adb:69

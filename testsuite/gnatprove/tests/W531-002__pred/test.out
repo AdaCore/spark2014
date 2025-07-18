@@ -1,3 +1,3 @@
 bad_array.adb:4:18: error: predicate on result subtype is not compatible with "Pos_Array"
-bad_array.adb:4:18: error: result subtype must be statically compatible with the function result type
+bad_array.adb:4:18: error: result subtype must be statically compatible with the function result subtype
 gnatprove: error during generation of Global contracts

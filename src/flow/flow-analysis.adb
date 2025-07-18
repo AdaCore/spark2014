@@ -974,7 +974,9 @@ package body Flow.Analysis is
                   --     default defined in the formal part of a generic unit
                   --   * are formal parameters of a null procedure
                   --   * are instantiations of a generic procedure's 'IN'
-                  --     parameter with an access type.
+                  --     parameter with an access type
+                  --   * are first parameters of a borrowing traversal function
+                  --     (which must be writable)
                   if Has_Pragma_Un (Var)
                     or else
                       Is_Or_Belongs_To_Concurrent_Object (F_Final)
@@ -983,6 +985,9 @@ package body Flow.Analysis is
                     or else
                       (Is_In_Access_Parameter
                        and then Is_Generic_Actual_Type (Etype (Var)))
+                    or else
+                     (Is_Borrowing_Traversal_Function (FA.Spec_Entity)
+                      and then Var = First_Formal (FA.Spec_Entity))
                   then
                      null;
                   elsif not Written_Exports.Contains
@@ -990,14 +995,26 @@ package body Flow.Analysis is
                   then
                      if Is_In_Access_Parameter then
                         declare
-                           E : constant Entity_Id :=
+                           Typ       : constant Entity_Id :=
                              Directly_Designated_Type (Etype (Var));
-                           Report_Id : constant Flow_Id := Direct_Mapping_Id
+                           E         : Entity_Id;
+                           Report_Id : Flow_Id;
+                        begin
+
+                           --  If Var points to the completion of a type, then
+                           --  we use the incomplete view in the message
+                           --  (because the full view is flagged as internal).
+                           if Present (Incomplete_View (Typ)) then
+                              E := Incomplete_View (Typ);
+                           else
+                              E := Typ;
+                           end if;
+
+                           Report_Id := Direct_Mapping_Id
                              (if Comes_From_Source (E)
-                              or else Is_Standard_Type (E)
+                                or else Is_Standard_Type (E)
                               then E
                               else Base_Type (E));
-                        begin
                            Error_Msg_Flow
                              (FA       => FA,
                               Msg      => "& is not modified, parameter type" &
@@ -1195,10 +1212,14 @@ package body Flow.Analysis is
                      --  The entire variable
 
                      Bound_Or_Discr : constant Boolean :=
-                       Is_Bound (Var) or else Is_Discriminant (Var);
-                     --  If this is an array bound or a discriminant, we only
-                     --  consider it if it is actually used. It is OK to not
-                     --  explicitly use it.
+                       (Is_Bound (Var) or else Is_Discriminant (Var))
+                         and then
+                         not (Is_Constituent (Var)
+                                or else Is_Implicit_Constituent (Var));
+                     --  If this is an array bound or a discriminant that will
+                     --  never be seen via its encapsulating abstract state,
+                     --  then we only consider it if it is actually used. It is
+                     --  OK to not explicitly use it.
 
                   begin
                      --  Using bounds or discriminants marks the entire
@@ -1790,14 +1811,49 @@ package body Flow.Analysis is
       function Other_Field_Is_Effective (V : Flow_Graphs.Vertex_Id)
                                          return Boolean
       is
-         C : constant Vertex_To_Vertex_Set_Maps.Cursor :=
-           FA.Other_Fields.Find (V);
+         My_First_Field : constant Flow_Graphs.Vertex_Id :=
+           FA.Atr (V).First_Field;
+         Other_Field : Flow_Graphs.Vertex_Id;
       begin
-         return Vertex_To_Vertex_Set_Maps.Has_Element (C)
-           and then
-             (for some Other_Field of FA.Other_Fields (C) =>
-                FA.PDG.Non_Trivial_Path_Exists
-                  (Other_Field, Is_Final_Use_Any_Export'Access));
+         --  Vertices representing declaration of / assignment to a record
+         --  object form a linear sequence in the CFG. We pick the first
+         --  vertex from this sequence and traverse the sequence looking
+         --  for a vertex that is effective.
+
+         Other_Field := My_First_Field;
+
+         --  This might be a simple declaration/assignment with no sequence
+         --  (e.g. for a scalar object) or perhaps the sequence ended with
+         --  no outgoing edges for some reason.
+
+         while Other_Field /= Flow_Graphs.Null_Vertex loop
+
+            --  Skip the current field
+
+            if Other_Field = V then
+               null;
+
+            --  Check if this field comes from the same declaration/assignment
+
+            elsif FA.Atr (Other_Field).First_Field = My_First_Field then
+               if FA.PDG.Non_Trivial_Path_Exists
+                 (Other_Field, Is_Final_Use_Any_Export'Access)
+               then
+                  return True;
+               end if;
+
+            --  Otherwise we are done
+
+            else
+               exit;
+            end if;
+
+            --  Proceed to the next field
+
+            Other_Field := FA.CFG.Child (Other_Field);
+         end loop;
+
+         return False;
       end Other_Field_Is_Effective;
 
    --  Start of processing for Find_Ineffective_Statements
@@ -1904,7 +1960,8 @@ package body Flow.Analysis is
                                  then
                                     Path_To_Flow_Id
                                       (Get_Direct_Mapping_Id
-                                        (Atr.Parameter_Actual))
+                                        (Atr.Parameter_Actual),
+                                       FA.B_Scope)
                                  else Atr.Parameter_Formal);
                               --  ??? Path_To_Flow_Id was meant to be used
                               --  in a borrow checker, but it also works for
@@ -2195,10 +2252,14 @@ package body Flow.Analysis is
            Get_Initial_Vertex (FA.PDG, Var);
 
          V_Initial_Atr : V_Attributes renames FA.Atr (V_Initial);
+         V_Start_Atr   : V_Attributes renames FA.Atr (Start);
 
-         N                 : Node_Or_Entity_Id;
-         Msg, Details, Fix : Unbounded_String;
-         Fix_F1, Fix_F2    : Flow_Id;
+         N                              : Node_Or_Entity_Id;
+         Msg, Details, Explanation, Fix : Unbounded_String;
+         Explanation_F1                 : Flow_Id;
+         Fix_F1, Fix_F2                 : Flow_Id;
+         --  Optional parameters for messages with the explanation and the fix,
+         --  respectively.
 
          V_Goal       : Flow_Graphs.Vertex_Id;
 
@@ -2267,8 +2328,11 @@ package body Flow.Analysis is
 
             procedure Add_Loc (V : Flow_Graphs.Vertex_Id) is
                F : Flow_Id renames FA.CFG.Get_Key (V);
+               A : V_Attributes renames FA.Atr (V);
             begin
-               if V /= To and then F.Kind = Direct_Mapping then
+               if (V = Start and then A.Is_Param_Havoc)
+                 or else (V /= To and then F.Kind = Direct_Mapping)
+               then
                   Path.Insert (V);
                end if;
             end Add_Loc;
@@ -2441,14 +2505,17 @@ package body Flow.Analysis is
                         Fix_F1 := Var;
 
                         --  Second possible fix
-                        if Is_Record_Part_Or_Array then
-                           Append (Fix, ", ");
-                        else
-                           Append (Fix, " or ");
+
+                        if not V_Start_Atr.Is_Param_Havoc then
+                           if Is_Record_Part_Or_Array then
+                              Append (Fix, ", ");
+                           else
+                              Append (Fix, " or ");
+                           end if;
+                           Append (Fix, "make & an IN OUT parameter");
+                           Fix_F2 := Entire_Variable
+                             (Change_Variant (Var, Normal_Use));
                         end if;
-                        Append (Fix, "make & an IN OUT parameter");
-                        Fix_F2 := Entire_Variable
-                          (Change_Variant (Var, Normal_Use));
 
                         --  Third possible fix
                         if Is_Record_Part_Or_Array then
@@ -2469,6 +2536,13 @@ package body Flow.Analysis is
                                  raise Program_Error));
                   --  ??? this message should be tuned for interrupt handlers
                end if;
+            end if;
+
+            --  Add reason for check when starting vertex is a parameter havoc
+            if V_Start_Atr.Is_Param_Havoc then
+               Append (Explanation, "value of & is unknown following "
+                                  & "exceptional exit");
+               Explanation_F1 := Var;
             end if;
 
             declare
@@ -2503,10 +2577,12 @@ package body Flow.Analysis is
                   Path          => Path,
                   Msg           => To_String (Msg),
                   Details       => To_String (Details),
+                  Explanation   => To_String (Explanation),
                   Fix           => To_String (Fix),
                   N             => N,
                   F1            => Var,
                   F2            => Direct_Mapping_Id (FA.Spec_Entity),
+                  EF1           => Explanation_F1,
                   FF1           => Fix_F1,
                   FF2           => Fix_F2,
                   Tag           => Uninitialized,
@@ -3284,10 +3360,6 @@ package body Flow.Analysis is
                        and then Parent_Atr.Is_Export
                        and then Ekind (FA.Spec_Entity) = E_Package
                        and then No (FA.Initializes_N))
-
-              --  Ignore implicit references to discriminants and bounds
-
-              or else Parent_Atr.Is_Discr_Or_Bounds_Parameter
 
             then
                null;
@@ -5367,10 +5439,10 @@ package body Flow.Analysis is
                N : constant Node_Id := Get_Direct_Mapping_Id (F);
             begin
                --  Subprogram calls that were inlined by the frontend are
-               --  represented as null statements with the original call
-               --  statement kept in the Original_Node.
+               --  represented as either null or block statements with the
+               --  original call statement kept in the Original_Node.
 
-               return Nkind (N) = N_Null_Statement
+               return Nkind (N) in N_Block_Statement | N_Null_Statement
                  and then Nkind (Original_Node (N)) in N_Subprogram_Call;
             end;
          else
@@ -5569,16 +5641,9 @@ package body Flow.Analysis is
                begin
                   for Var of To_Entire_Variables (Atr.Variables_Used) loop
 
-                     --  Any Synthetic_Null_Export global is treated as
-                     --  volatile; having one generated against the function
-                     --  is not in and of itself cause for a flow error
-
-                     if Synthetic (Var) then
-                        null;
-
                      --  Case 1: Volatile variables
 
-                     elsif Is_Volatile (Var) then
+                     if Is_Volatile (Var) then
                         pragma Assert (Present (Atr.Error_Location));
                         Error_Msg_Flow
                            (FA       => FA,
@@ -5663,19 +5728,19 @@ package body Flow.Analysis is
          --  instead of computing their union. The global Outputs of a
          --  function, after sanity checks, are known to be empty.
 
-         --  The function is volatile if one of its parameters is of a volatile
-         --  type for reading.
+         --  The function is volatile if one of its parameters or its result
+         --  type is of a volatile type for reading.
 
          Volatile_Effect_Found :=
             (for some F of Globals.Proof_Ins => Is_Volatile_For_Reading (F))
-            or else
-             (for some F of Globals.Inputs => Is_Volatile_For_Reading (F))
-            or else (for some F of Get_Explicit_Formals (FA.Spec_Entity)
-                       => Is_Effectively_Volatile_For_Reading (Etype (F)));
+              or else
+            (for some F of Globals.Inputs => Is_Volatile_For_Reading (F))
+              or else
+            Has_Effectively_Volatile_Profile (FA.Spec_Entity);
 
-         if not Is_Function_With_Side_Effects (FA.Spec_Entity) then
-            pragma Assert (Globals.Outputs.Is_Empty);
-         end if;
+         pragma Assert
+           (if not Is_Function_With_Side_Effects (FA.Spec_Entity)
+            then Globals.Outputs.Is_Empty);
       end;
 
       --  Emit messages about nonvolatile functions with volatile effects

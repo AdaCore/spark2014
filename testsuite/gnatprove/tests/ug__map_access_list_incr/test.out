@@ -1,16 +1,47 @@
-p.adb:10:33: info: loop invariant preservation proved
-p.adb:10:33: info: loop invariant initialization proved
-p.adb:10:62: info: null exclusion check proved
-p.adb:12:13: info: loop invariant initialization proved
-p.adb:12:13: info: loop invariant preservation proved
-p.adb:12:59: info: null exclusion check proved
-p.adb:13:61: info: null exclusion check proved
-p.adb:14:11: info: pointer dereference check proved
-p.adb:14:22: info: pointer dereference check proved
-p.adb:14:29: info: overflow check proved
-p.adb:15:16: info: pointer dereference check proved
-p.ads:6:13: info: implicit aspect Always_Terminates on "Small_Enough" has been proved, subprogram will terminate
-p.ads:8:13: info: implicit aspect Always_Terminates on "Bigger_Than_First" has been proved, subprogram will terminate
-p.ads:12:43: info: null exclusion check proved
-p.ads:13:14: info: postcondition proved
-p.ads:13:48: info: null exclusion check proved
+ info: loop invariant initialization proved
+--> p.adb:10:33
+
+ info: loop invariant preservation proved
+--> p.adb:10:33
+
+ info: null exclusion check proved
+--> p.adb:10:62
+
+ info: loop invariant preservation proved
+--> p.adb:12:13
+
+ info: loop invariant initialization proved
+--> p.adb:12:13
+
+ info: null exclusion check proved
+--> p.adb:12:59
+
+ info: null exclusion check proved
+--> p.adb:13:61
+
+ info: pointer dereference check proved
+--> p.adb:14:11
+
+ info: pointer dereference check proved
+--> p.adb:14:22
+
+ info: overflow check proved
+--> p.adb:14:29
+
+ info: pointer dereference check proved
+--> p.adb:15:16
+
+ info: implicit aspect Always_Terminates on "Small_Enough" has been proved, subprogram will terminate
+--> p.ads:6:13
+
+ info: implicit aspect Always_Terminates on "Bigger_Than_First" has been proved, subprogram will terminate
+--> p.ads:8:13
+
+ info: null exclusion check proved
+--> p.ads:12:43
+
+ info: postcondition proved
+--> p.ads:13:14
+
+ info: null exclusion check proved
+--> p.ads:13:48

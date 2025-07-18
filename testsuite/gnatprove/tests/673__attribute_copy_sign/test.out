@@ -1,2 +1,2 @@
 foo.adb:1:11: warning: subprogram "Foo" has no effect
-foo.adb:7:19: high: assertion might fail (e.g. when X = -0.0 and Y = -0.0) [possible fix: subprogram at line 1 should mention X in a precondition]
+foo.adb:7:19: medium: assertion might fail [possible fix: subprogram at line 1 should mention X in a precondition]

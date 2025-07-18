@@ -29,15 +29,22 @@ with VC_Kinds;        use VC_Kinds;
 
 procedure Table_Generator is
 
-   Target_Dir   : constant String := Compose ("en", "source");
-   Flow_Target  : constant String :=
+   Target_Dir                     : constant String :=
+     Compose ("en", "source");
+   Flow_Target                    : constant String :=
      Compose (Target_Dir, "flow_checks_table.rst");
-   Proof_Target : constant String :=
+   Proof_Target                   : constant String :=
      Compose (Target_Dir, "proof_checks_table.rst");
-   Warnings_Target  : constant String :=
+   Warnings_Target                : constant String :=
      Compose (Target_Dir, "misc_warnings_table.rst");
-   Limitations_Target  : constant String :=
+   Tool_Limitations_Target        : constant String :=
      Compose (Target_Dir, "unsupported_constructs.rst");
+   Other_Tool_Limitations_Target  : constant String :=
+     Compose (Target_Dir, "other_tool_limitations.rst");
+   Flow_Limitations_Target        : constant String :=
+     Compose (Target_Dir, "flow_limitations.rst");
+   Proof_Limitations_Target       : constant String :=
+     Compose (Target_Dir, "proof_limitations.rst");
 
    subtype Class_Tag is Character
    with Static_Predicate => Class_Tag in 'E' | 'C' | 'W';
@@ -50,7 +57,10 @@ procedure Table_Generator is
    --  "<CWE number> <link to CWE number>"
 
    procedure Produce_Flow_Checks_Table;
-   procedure Produce_Limitation_List;
+   procedure Produce_Tool_Limitation_List;
+   procedure Produce_Other_Tool_Limitation_List;
+   procedure Produce_Flow_Limitation_List;
+   procedure Produce_Proof_Limitation_List;
    procedure Produce_Proof_Checks_Table;
    procedure Produce_Misc_Warnings_Table;
 
@@ -110,29 +120,30 @@ procedure Table_Generator is
                   "suppressed or justified.");
    end Produce_Flow_Checks_Table;
 
-   -----------------------------
-   -- Produce_Limitation_List --
-   -----------------------------
+   ----------------------------------
+   -- Produce_Flow_Limitation_List --
+   ----------------------------------
 
-   procedure Produce_Limitation_List is
+   procedure Produce_Flow_Limitation_List is
       File : File_Type;
    begin
-      Create (File, Name => Limitations_Target);
-      Put_Line (File, "The following unsupported constructs " &
-                  "are detected by GNATprove and reported through an error " &
-                  "message:");
+      Create (File, Name => Flow_Limitations_Target);
+      Put_Line (File, "The following constructs are imprecisely supported in" &
+                  " flow analysis. They can be used safely but might lead to" &
+                  " unprovable checks. Warnings can be emitted by GNATprove" &
+                  " if the ``--info`` switch is used:");
       New_Line (File);
-      for Kind in Unsupported_Kind loop
+      for Kind in Flow_Limitation_Kind loop
          Put (File, "* ");
          Put (File, Description (Kind));
-         if Kind = Unsupported_Kind'Last then
+         if Kind = Flow_Limitation_Kind'Last then
             Put_Line (File, ".");
          else
             Put_Line (File, ",");
          end if;
          New_Line (File);
       end loop;
-   end Produce_Limitation_List;
+   end Produce_Flow_Limitation_List;
 
    ---------------------------------
    -- Produce_Misc_Warnings_Table --
@@ -193,7 +204,68 @@ procedure Table_Generator is
          Put (File, """" & Description (Kind) & """");
          New_Line (File);
       end loop;
+      New_Line (File);
+      Put_Line (File, "The following warnings are disabled by default, and " &
+                  "can be enabled collectively using switch ``--info``, "
+                & " or individually using switch ``-W``.");
+      New_Line (File);
+      Put_Line (File, ".. tabularcolumns:: |p{2in}|p{3in}|");
+      New_Line (File);
+      Put_Line (File, ".. csv-table::");
+      Put_Line (File, "   :header: ""Warning Tag"", ""Explanation""");
+      Put_Line (File, "   :widths: 2, 4");
+      New_Line (File);
+      for Kind in Info_Warning_Kind loop
+         Put (File, "    ");
+         Put (File, """" & Kind_Name (Kind) & """, ");
+         Put (File, """" & Description (Kind) & """");
+         New_Line (File);
+      end loop;
+      New_Line (File);
+      Put_Line (File, "The following info messages are issued by default, and "
+                &  "can be disabled using switch ``-A``.");
+      New_Line (File);
+      Put_Line (File, ".. tabularcolumns:: |p{2in}|p{3in}|");
+      New_Line (File);
+      Put_Line (File, ".. csv-table::");
+      Put_Line (File, "   :header: ""Warning Tag"", ""Explanation""");
+      Put_Line (File, "   :widths: 2, 4");
+      New_Line (File);
+      for Kind in Info_Msg_Kind loop
+         Put (File, "    ");
+         Put (File, """" & Kind_Name (Kind) & """, ");
+         Put (File, """" & Description (Kind) & """");
+         New_Line (File);
+      end loop;
    end Produce_Misc_Warnings_Table;
+
+   ----------------------------------------
+   -- Produce_Other_Tool_Limitation_List --
+   ----------------------------------------
+
+   procedure Produce_Other_Tool_Limitation_List is
+      File : File_Type;
+   begin
+      Create (File, Name => Other_Tool_Limitations_Target);
+      Put_Line (File, "The following constructs are incompletely supported." &
+                  " They can be used safely but might lead to unexpected " &
+                  "behavior. Warnings for these constructs can be enabled " &
+                  "individually using the ``-W`` switch and the tag " &
+                  "between parentheses, or collectively using the " &
+                  "``--info`` switch.");
+      New_Line (File);
+      for Kind in Other_Tool_Limitation_Kind loop
+         Put (File, "* ");
+         Put (File, Description (Kind));
+         Put (File, " (" & Kind_Name (Kind) & ")");
+         if Kind = Other_Tool_Limitation_Kind'Last then
+            Put_Line (File, ".");
+         else
+            Put_Line (File, ",");
+         end if;
+         New_Line (File);
+      end loop;
+   end Produce_Other_Tool_Limitation_List;
 
    --------------------------------
    -- Produce_Proof_Checks_Table --
@@ -271,11 +343,66 @@ procedure Table_Generator is
       end loop;
    end Produce_Proof_Checks_Table;
 
+   -----------------------------------
+   -- Produce_Proof_Limitation_List --
+   -----------------------------------
+
+   procedure Produce_Proof_Limitation_List is
+      File : File_Type;
+   begin
+      Create (File, Name => Proof_Limitations_Target);
+      Put_Line (File, "The following constructs are imprecisely supported " &
+                  "in proof. They can be used safely but might lead to " &
+                  "unexpected behavior. Warnings for these constructs can " &
+                  " be enabled individually using the ``-W`` switch and the " &
+                  "tag between parentheses, or collectively using the " &
+                  "``--info`` switch.");
+      New_Line (File);
+      for Kind in Proof_Limitation_Kind loop
+         Put (File, "* ");
+         Put (File, Description (Kind));
+         Put (File, " (" & Kind_Name (Kind) & ")");
+         if Kind = Proof_Limitation_Kind'Last then
+            Put_Line (File, ".");
+         else
+            Put_Line (File, ",");
+         end if;
+         New_Line (File);
+      end loop;
+   end Produce_Proof_Limitation_List;
+
+   ----------------------------------
+   -- Produce_Tool_Limitation_List --
+   ----------------------------------
+
+   procedure Produce_Tool_Limitation_List is
+      File : File_Type;
+   begin
+      Create (File, Name => Tool_Limitations_Target);
+      Put_Line (File, "The following unsupported constructs " &
+                  "are detected by GNATprove and reported through an error " &
+                  "message:");
+      New_Line (File);
+      for Kind in Unsupported_Kind loop
+         Put (File, "* ");
+         Put (File, Description (Kind));
+         if Kind = Unsupported_Kind'Last then
+            Put_Line (File, ".");
+         else
+            Put_Line (File, ",");
+         end if;
+         New_Line (File);
+      end loop;
+   end Produce_Tool_Limitation_List;
+
    --  Start of processing for Table_Generator
 
 begin
    Produce_Flow_Checks_Table;
    Produce_Proof_Checks_Table;
    Produce_Misc_Warnings_Table;
-   Produce_Limitation_List;
+   Produce_Tool_Limitation_List;
+   Produce_Other_Tool_Limitation_List;
+   Produce_Flow_Limitation_List;
+   Produce_Proof_Limitation_List;
 end Table_Generator;

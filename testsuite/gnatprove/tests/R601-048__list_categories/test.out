@@ -55,6 +55,7 @@ VC_DISCRIMINANT_CHECK(run-time-check) - discriminant check - Check that the disc
 VC_TAG_CHECK(run-time-check) - tag check - Check that the tag of the given tagged object has the expected value. - MEDIUM
 VC_CEILING_INTERRUPT(run-time-check) - ceiling priority in Interrupt_Priority - Check that the ceiling priority specified for a protected object containing a procedure with an aspect Attach_Handler is in Interrupt_Priority. - MEDIUM
 VC_INITIALIZATION_CHECK(run-time-check) - use of an uninitialized variable - Check that a variable is initialized - MEDIUM
+VC_VALIDITY_CHECK(run-time-check) - validity check - Check that no invalid value is read - MEDIUM
 VC_INTERRUPT_RESERVED(run-time-check) - interrupt is reserved - Check that the interrupt specified by Attach_Handler is not reserved. - MEDIUM
 VC_INVARIANT_CHECK(run-time-check) - invariant check - Check that the given value respects the applicable type invariant. - MEDIUM
 VC_INVARIANT_CHECK_ON_DEFAULT_VALUE(run-time-check) - invariant check on default value - Check that the default value for the type respects the applicable type invariant. - MEDIUM
@@ -75,11 +76,13 @@ VC_LOOP_INVARIANT(assertion) - loop invariant - Check that the loop invariant ev
 VC_LOOP_INVARIANT_INIT(assertion) - loop invariant in first iteration - Check that the loop invariant evaluates to True on the first iteration of the loop. - MEDIUM
 VC_LOOP_INVARIANT_PRESERV(assertion) - loop invariant after first iteration - Check that the loop invariant evaluates to True at each further iteration of the loop. - MEDIUM
 VC_LOOP_VARIANT(assertion) - loop variant - Check that the given loop variant decreases/increases as specified during each iteration of the loop. This implies termination of the loop. - MEDIUM
+VC_PROGRAM_EXIT_POST(assertion) - program exit postcondition - Check that the program exit postcondition evaluates to true when the program is exited. - MEDIUM
 VC_SUBPROGRAM_VARIANT(assertion) - subprogram variant - Check that the given subprogram variant decreases/increases as specified during each recursive call. This implies there will be no infinite recursion. - MEDIUM
 VC_ASSERT(assertion) - assertion - Check that the given assertion evaluates to True. - MEDIUM
 VC_ASSERT_STEP(assertion) - assertion step - Check that the side-condition of a cut operation evaluates to True. - MEDIUM
 VC_ASSERT_PREMISE(assertion) - assertion premise - Check that the premise of an assertion with cut operations evaluates to True. - MEDIUM
 VC_RAISE(assertion) - raised exception - Check that raise expressions can never be reached and that all exceptions raised by raise statement and procedure calls are expected. - MEDIUM
+VC_UNEXPECTED_PROGRAM_EXIT(assertion) - unexpected program exit - Check that a subprogram call cannot exit the whole program. - MEDIUM
 VC_FEASIBLE_POST(assertion) - feasible function - Check that an abstract function or access-to-function type is feasible. - MEDIUM
 VC_INLINE_CHECK(assertion) - Inline_For_Proof or Logical_Equal annotation - Check that an Annotate pragma with the Inline_For_Proof or Logical_Equal identifier is correct. - MEDIUM
 VC_CONTAINER_AGGR_CHECK(assertion) - Container_Aggregates annotation - Check the invariants used to translate container aggregates using the primitives provided by the Aggregate aspect and the Container_Aggregates annotation. - MEDIUM
@@ -107,7 +110,7 @@ VC_DEAD_CODE - unreachable code - Warn if code is found to be unreachable - EASY
 address-to-access-conversion - address-to-access-conversion - call to conversion function is assumed to return a valid access designating a valid value - EASY
 alias-volatile-atomic-mismatch - alias-volatile-atomic-mismatch - aliased objects should both be volatile or non-volatile, and both be atomic or non-atomic - EASY
 alias-volatile-prop-mismatch - alias-volatile-prop-mismatch - aliased objects should have the same volatile properties - EASY
-attribute-valid-always-true - attribute-valid-always-true - attribute Valid is assumed to return True - EASY
+attribute-valid-always-true - attribute-valid-always-true - attribute Valid or Valid_Scalars is assumed to return True - EASY
 auto-lemma-calls - auto-lemma-calls - the automatically instantiated lemma contains calls which cannot be arbitrarily specialized - EASY
 auto-lemma-different - auto-lemma-different - the automatically instantiated lemma contains calls to its associated function with different specializations - EASY
 auto-lemma-higher-order - auto-lemma-higher-order - the automatically instantiated lemma is not annotated with Higher_Order_Specialization - EASY
@@ -116,16 +119,19 @@ initialization-to-alias - initialization-to-alias - initialization of object is 
 is-valid-returns-true - is-valid-returns-true - function Is_Valid is assumed to return True - EASY
 generic-not-analyzed - generic-not-analyzed - GNATprove doesn't analyze generics, only instances - EASY
 no-possible-termination - no-possible-termination - procedure which does not return normally nor raises an exception cannot always terminate - EASY
+potentially-invalid-read - potentially-invalid-read - invalid data might be read in the contract of a subprogram without an analyzed body; the fact that the read data is valid is not checked by SPARK - EASY
 no-check-message-justified - no-check-message-justified - no check message justified by this pragma - EASY
 proved-check-justified - proved-check-justified - only proved check messages justified by this pragma - EASY
-deprecated-feature - deprecated-feature - Terminating, Always_Return, and Might_Not_Return annotations are ignored - EASY
-deprecated-feature - deprecated-feature - External Axiomatizations are not supported anymore, ignored - EASY
+deprecated-terminating - deprecated-terminating - Terminating, Always_Return, and Might_Not_Return annotations are ignored - EASY
+deprecated-external-axiomatization - deprecated-external-axiomatization - External Axiomatizations are not supported anymore, ignored - EASY
 ignored-pragma - ignored-pragma - pragma is ignored (it is not yet supported) - EASY
 overflow-mode-ignored - overflow-mode-ignored - pragma Overflow_Mode in code is ignored - EASY
 precondition-statically-false - precondition-statically-false - precondition is statically False - EASY
 restriction-ignored - restriction-ignored - restriction is ignored (it is not yet supported) - EASY
 unreferenced-function - unreferenced-function - analyzing unreferenced function - EASY
 unreferenced-procedure - unreferenced-procedure - analyzing unreferenced procedure - EASY
+useless-potentially-invalid-func-result - useless-potentially-invalid-func-result - function result annotated with Potentially_Invalid cannot have invalid values - EASY
+useless-potentially-invalid-object - useless-potentially-invalid-object - object annotated with Potentially_Invalid cannot have invalid values - EASY
 useless-relaxed-init-func-result - useless-relaxed-init-func-result - function result annotated with Relaxed_Initialization cannot be partially initialized - EASY
 useless-relaxed-init-object - useless-relaxed-init-object - object annotated with Relaxed_Initialization cannot be partially initialized - EASY
 variant-no-recursion - variant-no-recursion - no recursive call visible on subprogram with Subprogram_Variant - EASY
@@ -135,3 +141,31 @@ imprecise-address-specification - imprecise-address-specification - object with 
 image-attribute-length - image-attribute-length - string attribute has an implementation-defined length - EASY
 operator-reassociation - operator-reassociation - possible operator reassociation due to missing parentheses - EASY
 representation-attribute-value - representation-attribute-value - representation attribute has an implementation-defined value - EASY
+component-relaxed-init - component-relaxed-init - If all components of a given type are annotated with  Relaxed_Initialization, the containing type is treated as if it had the same annotation - EASY
+full-view-visible - full-view-visible - The full view of an incomplete type deferred to the body of a withed unit might be visible by GNATprove - EASY
+alias-array - alias-array - Aliasing checks might be spurious for actual parameters that are array components - EASY
+imprecise-global-generation - imprecise-global-generation - Global generation might wrongly classify an Output item as an In_Out for subprograms that call other subprograms with no Global contract - EASY
+array-initialization - array-initialization - Initialization of arrays inside FOR loops is only recognized when assignments to array element are directly indexed by the loopparameter - EASY
+multidimensional-array-init - multidimensional-array-init - Initialization of multi-dimensional array inside FOR loops is only recognized when array bounds are static - EASY
+tagged-assignment - tagged-assignment - Assignments to record objects might cause spurious data dependencies in some components of the assigned object - EASY
+contracts-recursive - contracts-recursive - Explicit and implicit postconditions of a recursive subprogram cannot be used on (mutually) recursive calls occurring inside assertions and contracts, but will still be available in regular code - EASY
+dic-ignored - dic-ignored - The Default_Initial_Condition of a type won't be assumed on subcomponents initialized by default inside assertions and contracts, but will still be available in regular code - EASY
+imprecise-address - imprecise-address - The adress of objects is not precisely known if it is not supplied through an address clause - EASY
+imprecise-align - imprecise-align - The alignment of an object might not be known for proof if it is not supplied through an attribute definition clause - EASY
+imprecise-call - imprecise-call - The behavior of a call might not be known by SPARK and handled in an imprecise way; its precondition might be impossible to prove and nothing will be known about its result - EASY
+imprecise-component-size - imprecise-component-size - the value of attribute Component_Size might not be known for proof if it is not supplied through an attribute definition clause - EASY
+imprecise-record-component-attribute - imprecise-record-component-attribute - the value of attributes First_Bit, Last_Bit, and Position on record components are handled in an imprecise way if the record does not have a record representation clause - EASY
+imprecise-size - imprecise-size - The attributes Size, Object_Size or Value_Size might not be handled precisely, nothing will be known about their evaluation - EASY
+imprecise-unchecked-conversion - imprecise-unchecked-conversion - Unchecked conversion might not be handled precisely by SPARK, nothing will be known about their result - EASY
+imprecise-value - imprecise-value - References to the attribute Value are handled in an imprecise way; its precondition is impossible to prove and nothing will be known about the evaluation of the attribute reference - EASY
+imprecise-image - imprecise-image - References to the attributes Image and Img are handled in an imprecise way; nothing will be known about the evaluation of the attribute reference apart from a bound on its length - EASY
+constants-in-loops - constants-in-loops - The initial value of constants declared before the loop invariant is not visible after the invariant; it shall be restated in the invariant if necessary - EASY
+no-reclamation-function - no-reclamation-function - No reclamation function or reclaimed value was found for an ownership type, which may make it impossible to prove that values of this type are reclaimed - EASY
+numeric-variant - numeric-variant - For recursive expression functions with a numeric (not structural) Subprogram_Variant, the definition of the expression function might not be available for recursive calls occurring inside assertions and contracts, but will still be available in regular code - EASY
+relaxed-mutable-discriminants - relaxed-mutable-discriminants - The tool enforces that mutable discriminants of standalone objects and parameters with relaxed initialization are always initialized - EASY
+map-length-aggregates - map-length-aggregates - A type with predefined map aggregates doesn't have a Length function; the length of aggregates will not be known for this type - EASY
+set-length-aggregates - set-length-aggregates - A type with predefined set aggregates doesn't have a Length function; the length of aggregates will not be known for this type - EASY
+predefined-equality-null - predefined-equality-null - A type is annotated with Only_Null as value for the Predefined_Equality annotation, but no constant annotated with Null_Value is found; this will result in all calls to the predefined equality being rejected - EASY
+init-cond-ignored - init-cond-ignored - The initial condition of a withed package might be ignored if it is not known to be true, due to elaboration order - EASY
+unit-not-spark - unit-not-spark - A unit whose analysis has been requested on the command-line is not annotated with SPARK_Mode Pragma - EASY
+info-unrolling-inlining - info-unrolling-inlining - These messages are issued when the tool is unrolling loops or inlining subprograms, or unable to do so - EASY

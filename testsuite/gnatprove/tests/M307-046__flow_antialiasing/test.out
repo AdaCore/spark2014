@@ -36,6 +36,7 @@ test.adb:183:04: warning: analyzing unreferenced procedure "Test_12" [unreferenc
 test.adb:186:15: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
 test.adb:189:04: warning: analyzing unreferenced procedure "Test_13" [unreferenced-procedure]
 test.adb:193:15: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
+test.adb:193:15: warning: aliasing check on components of an array is handled imprecisely [alias-array]
 test.adb:196:04: warning: analyzing unreferenced procedure "Test_14" [unreferenced-procedure]
 test.adb:199:07: info: analyzing call to "Swap" in context
 test.adb:199:21: info: non-aliasing of formal parameters "X" and "Y" proved

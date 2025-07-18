@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.0.1
+    rev: v5.0.0
     hooks:
     -   id: check-json
         exclude: ^\.vscode/
@@ -17,13 +17,13 @@ repos:
     -   id: check-empty-testoutopt
     -   id: check-testsuite-markers
   - repo: https://github.com/pycqa/flake8
-    rev: 7.0.0
+    rev: 7.1.1
     hooks:
     - id: flake8
       additional_dependencies:
         - flake8-bugbear
   - repo: https://github.com/ambv/black
-    rev: 24.2.0
+    rev: 24.10.0
     hooks:
     - id: black
   - repo: local
@@ -33,3 +33,10 @@ repos:
         files: '\.opt$'
         language: system
         entry: e3-opt-check
+  - repo: local
+    hooks:
+      - id: check-gnatformat
+        name: Check for Ada formatting
+        files: ^src/gnatprove/.*\.ad(b|s)$
+        language: system
+        entry: gnatformat -P gnatprove

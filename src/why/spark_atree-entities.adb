@@ -506,6 +506,9 @@ package body SPARK_Atree.Entities is
       or else (Einfo.Utils.Known_Static_Component_Bit_Offset (Obj)
                and then Einfo.Utils.Known_Static_Component_Size (Obj)));
 
+   function Known_Component_Size (Ent : Entity_Id) return Boolean renames
+     Einfo.Utils.Known_Component_Size;
+
    -----------------
    -- Known_Esize --
    -----------------

@@ -1,7 +1,7 @@
-convert.adb:9:13: info: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion)
 convert.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
+convert.adb:9:13: warning: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion) [imprecise-unchecked-conversion]
 convert.adb:10:07: info: type is suitable as source for unchecked conversion (Trivial)
-convert.adb:10:20: high: type is unsuitable as a target for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK]
+convert.adb:10:20: high: type is unsuitable as a target for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK; invalid values could result from the unchecked conversion [SPARK RM 13.9]]
 convert.adb:13:07: info: initialization of "Res_Hi" proved
 convert.adb:13:15: info: initialization of "Res_Mid" proved
 convert.adb:13:24: info: initialization of "Res_Lo" proved
@@ -55,8 +55,9 @@ convert.ads:76:63: info: float overflow check proved (Z3: 1 VC)
 convert.ads:79:23: medium: precondition might fail, cannot prove (Hi = 2.0**64 or else Hi <= Last_Float_As_Uns64)
 convert.ads:81:63: info: float overflow check proved (Z3: 1 VC)
 test_convert.adb:9:08: info: range check proved (Z3: 2 VC)
-test_convert.adb:9:44: info: cannot unroll loop (too many loop iterations)
+test_convert.adb:9:44: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 test_convert.adb:9:44: warning: statement has no effect
 test_convert.adb:10:09: warning: unused assignment
 test_convert.adb:12:35: info: range check proved (Z3: 2 VC)
+test_convert.adb:12:40: warning: references to the "Img" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 test_convert.adb:13:06: warning: unused assignment

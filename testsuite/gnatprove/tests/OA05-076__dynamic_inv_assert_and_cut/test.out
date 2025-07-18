@@ -6,6 +6,7 @@ lsc-bignum.adb:50:53: info: overflow check proved (Z3: 4 VC)
 lsc-bignum.adb:50:61: info: justified that "A" might not be initialized
 lsc-bignum.adb:50:64: info: index check proved (Z3: 4 VC)
 lsc-bignum.adb:52:10: warning: no check message justified by this pragma [no-check-message-justified]
+lsc-bignum.adb:57:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 lsc-bignum.adb:57:13: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:79:11: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:82:13: info: loop invariant initialization proved (Trivial: 2 VC; Z3: 2 VC)

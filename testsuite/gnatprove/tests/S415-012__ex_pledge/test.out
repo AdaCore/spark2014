@@ -1,10 +1,10 @@
-in_out_pledge.adb:11:14: info: implicit function contract might not be available on recursive calls
+in_out_pledge.adb:11:14: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
 in_out_pledge.adb:12:08: medium: implicit aspect Always_Terminates on "Length_Aux" could be incorrect, subprogram is recursive [possible fix: annotate "Length_Aux" with a Subprogram_Variant aspect]
 in_out_pledge.adb:13:27: info: pointer dereference check proved (CVC5: 1 VC)
 in_out_pledge.adb:15:15: info: overflow check proved (CVC5: 2 VC)
 in_out_pledge.adb:15:30: info: pointer dereference check proved (CVC5: 1 VC)
 in_out_pledge.adb:17:14: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
-in_out_pledge.adb:19:14: info: implicit function contract might not be available on recursive calls
+in_out_pledge.adb:19:14: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
 in_out_pledge.adb:20:08: medium: implicit aspect Always_Terminates on "Get_Nth_Val" could be incorrect, subprogram is recursive [possible fix: annotate "Get_Nth_Val" with a Subprogram_Variant aspect]
 in_out_pledge.adb:20:23: info: pointer dereference check proved (CVC5: 1 VC)
 in_out_pledge.adb:20:35: info: precondition proved (CVC5: 1 VC)
@@ -56,11 +56,11 @@ in_out_pledge.adb:78:17: info: pointer dereference check proved (CVC5: 1 VC)
 in_out_pledge.adb:81:25: info: assertion proved (CVC5: 1 VC)
 in_out_pledge.adb:82:25: info: assertion proved (CVC5: 1 VC)
 in_out_pledge.adb:82:30: info: pointer dereference check proved (CVC5: 1 VC)
-in_out_pledge.adb:83:25: info: assertion proved (CVC5: 1 VC)
+in_out_pledge.adb:83:25: medium: assertion might fail
 in_out_pledge.adb:83:30: info: pointer dereference check proved (CVC5: 1 VC)
 in_out_pledge.adb:83:35: info: pointer dereference check proved (CVC5: 1 VC)
-in_out_pledge.adb:84:25: info: assertion proved (CVC5: 1 VC)
 in_out_pledge.adb:84:25: info: precondition proved (CVC5: 1 VC)
+in_out_pledge.adb:84:25: medium: assertion might fail
 in_out_pledge.adb:85:25: info: assertion proved (CVC5: 1 VC)
 in_out_pledge.adb:85:30: info: pointer dereference check proved (CVC5: 1 VC)
 in_out_pledge.adb:85:35: info: pointer dereference check proved (CVC5: 1 VC)

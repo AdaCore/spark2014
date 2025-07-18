@@ -220,6 +220,7 @@ package Why.Gen.Names is
    Index_Label       : constant String := "Index";
    Loop_Entry_Label  : constant String := "Loop_Entry";
    Old_Label         : constant String := "Old";
+   Valid_Label       : constant String := "Valid";
 
    --  The following enumeration is used for two things:
    --    * a simple enumeration of strings, accessed using the "To_String"
@@ -470,7 +471,12 @@ package Why.Gen.Names is
       WNE_Of_Wrapper,             --  "of_wrapper"
       WNE_Private_Attr_Init,      --  "__main_attr__init"
       WNE_Private_To_Wrapper,     --  "__main_to_wrapper"
-      WNE_Private_Of_Wrapper      --  "__main_of_wrapper"
+      WNE_Private_Of_Wrapper,      --  "__main_of_wrapper"
+
+      --  Names for potentially invalid
+      WNE_Is_Valid,               --  "__is_valid"
+      WNE_Valid_Value,            --  "__valid_value"
+      WNE_Valid_Wrapper           --  "__valid_wrapper"
      );
 
    function Attr_To_Why_Name (A : Attribute_Id) return Why_Name_Enum;
@@ -510,6 +516,8 @@ package Why.Gen.Names is
    function Init_Append (Base : W_Identifier_Id) return W_Identifier_Id;
 
    function Havoc_Append (Base : W_Name_Id) return W_Identifier_Id;
+
+   function Valid_Append (Base : W_Identifier_Id) return W_Identifier_Id;
 
    function Variant_Append
      (Base     : String;
@@ -562,5 +570,11 @@ package Why.Gen.Names is
    --  @param From the BV type to convert from
    --  @param To the BV type to convert to
    --  @return the appropriate range check function
+
+   function Get_Valid_Flag_For_Id
+     (Id : W_Identifier_Id) return W_Identifier_Id;
+   --  Function used to get the name of the validity flag from the name of an
+   --  identifier used for Old and Loop_Entry values as well as the result
+   --  name.
 
 end Why.Gen.Names;

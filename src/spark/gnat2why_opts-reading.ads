@@ -136,10 +136,6 @@ package Gnat2Why_Opts.Reading is
 
    Proof_Warnings : Boolean;
 
-   --  Issue info messages related to gnatprove usage
-
-   Info_Messages : Boolean;
-
    --  Do not inline local functions to prove their code in the calling
    --  context.
 
@@ -167,6 +163,11 @@ package Gnat2Why_Opts.Reading is
    --  True if gnatwhy3 should be run in parallel
 
    Parallel_Why3 : Boolean;
+
+   --  Indicates a json file:line in which to read CE values. Passing this
+   --  command also enforces Limit_Subp_Name to the same argument.
+
+   Gnattest_Values : Unbounded_String;
 
    ---------------------------
    -- Loading option values --

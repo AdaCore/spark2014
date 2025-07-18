@@ -1,10 +1,10 @@
-
-diff.adb:6:11: high: range check might fail, cannot prove lower bound for X - Y
-    6 |   Z := X - Y;
-      |        ~~^~~
-  e.g. when X = 0
-        and Y = 1
-  reason for check: result of subtraction must fit in the target type of the assignment
-  possible fix: add precondition (X >= Natural'First + Y) to subprogram at line 1
-    1 |procedure Diff (X, Y : in Natural; Z : out Natural) with
-      |          ^ here
+ high: range check might fail, cannot prove lower bound for X - Y
+--> diff.adb:6:11
+    6 |       Z := X - Y;
+      |            ~~^~~
+      + e.g. when X = 0
+      and Y = 1
+      + reason for check: result of subtraction must fit in the target type of the assignment
+      + possible fix: add precondition (X >= Natural'First + Y) to subprogram at line 1
+    1 |    procedure Diff (X, Y : in Natural; Z : out Natural) with
+      |              ^

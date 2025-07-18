@@ -39,8 +39,7 @@ package body Gnat2Why_Opts.Writing is
    ------------------------------------
 
    function Pass_Extra_Options_To_Gnat2why
-     (Translation_Phase : Boolean;
-      Obj_Dir           : String) return String
+     (Translation_Phase : Boolean; Obj_Dir : String) return String
    is
       function Write_To_File (V : JSON_Value) return String;
       --  Write a textual representation of V to file
@@ -84,10 +83,9 @@ package body Gnat2Why_Opts.Writing is
 
       begin
          Set_Field (Obj, Check_Counterexamples_Name, FS.Check_Counterexamples);
-         Set_Field (Obj, No_Loop_Unrolling_Name,     FS.No_Loop_Unrolling);
-         Set_Field (Obj, No_Inlining_Name,           FS.No_Inlining);
-         Set_Field (Obj, Info_Messages_Name,         FS.Info);
-         Set_Field (Obj, GP_Mode_Name,               To_JSON (FS.Mode));
+         Set_Field (Obj, No_Loop_Unrolling_Name, FS.No_Loop_Unrolling);
+         Set_Field (Obj, No_Inlining_Name, FS.No_Inlining);
+         Set_Field (Obj, GP_Mode_Name, To_JSON (FS.Mode));
          Set_Field (Obj, Warning_Status_Name, To_JSON (FS.Warning_Status));
 
          --  Why3_Args are only needed in phase 2; also Compute_Why3_Args
@@ -98,8 +96,8 @@ package body Gnat2Why_Opts.Writing is
          if Translation_Phase then
             Set_Field (Obj, Proof_Warnings_Name, FS.Proof_Warnings);
 
-            Set_Field (Obj, Why3_Args_Name,
-                       To_JSON (Compute_Why3_Args (Obj_Dir, FS)));
+            Set_Field
+              (Obj, Why3_Args_Name, To_JSON (Compute_Why3_Args (Obj_Dir, FS)));
          end if;
 
          return Obj;
@@ -118,39 +116,44 @@ package body Gnat2Why_Opts.Writing is
 
       Obj : constant JSON_Value := Create_Object;
 
-   --  Start of processing for Pass_Extra_Options_To_Gnat2why
+      --  Start of processing for Pass_Extra_Options_To_Gnat2why
 
    begin
       Set_Field (Obj, Global_Gen_Mode_Name, not Translation_Phase);
-      Set_Field (Obj, Output_Mode_Name,
-                 Gnat2Why_Opts.Output_Mode_Type'Image (Output));
+      Set_Field
+        (Obj, Output_Mode_Name, Gnat2Why_Opts.Output_Mode_Type'Image (Output));
       Set_Field (Obj, Exclude_Line_Name, CL_Switches.Exclude_Line.all);
+      Set_Field (Obj, Gnattest_Values_Name, CL_Switches.Gnattest_Values.all);
 
       --  Always store debug options
 
-      Set_Field (Obj, Debug_Exec_RAC_Name,      Debug_Exec_RAC);
-      Set_Field (Obj, Debug_Mode_Name,          Debug);
+      Set_Field (Obj, Debug_Exec_RAC_Name, Debug_Exec_RAC);
+      Set_Field (Obj, Debug_Mode_Name, Debug);
       Set_Field (Obj, Flow_Advanced_Debug_Name, Flow_Extra_Debug);
-      Set_Field (Obj, Flow_Generate_Contracts_Name,
-                 not CL_Switches.No_Global_Generation);
+      Set_Field
+        (Obj,
+         Flow_Generate_Contracts_Name,
+         not CL_Switches.No_Global_Generation);
 
       --  Options needed only in phase 2
       if Translation_Phase then
-         Set_Field (Obj, Limit_Units_Name,  CL_Switches.U);
-         Set_Field (Obj, Limit_Subp_Name,   CL_Switches.Limit_Subp.all);
+         Set_Field (Obj, Limit_Units_Name, CL_Switches.U);
+         Set_Field (Obj, Limit_Subp_Name, CL_Switches.Limit_Subp.all);
          Set_Field (Obj, Limit_Region_Name, CL_Switches.Limit_Region.all);
          Set_Field (Obj, Limit_Name_Name, CL_Switches.Limit_Name.all);
          Set_Field (Obj, Limit_Lines_Name, To_JSON (Limit_Lines));
 
-         Set_Field (Obj, Report_Mode_Name,
-                    Gnat2Why_Opts.Report_Mode_Type'Image (Report));
+         Set_Field
+           (Obj,
+            Report_Mode_Name,
+            Gnat2Why_Opts.Report_Mode_Type'Image (Report));
 
-         Set_Field (Obj,
-                    Warning_Mode_Name,
-                    Gnat2Why_Opts.SPARK_Warning_Mode_Type'Image
-                      (Warning_Mode));
+         Set_Field
+           (Obj,
+            Warning_Mode_Name,
+            Gnat2Why_Opts.SPARK_Warning_Mode_Type'Image (Warning_Mode));
 
-         Set_Field (Obj, Flow_Show_GG_Name,     CL_Switches.Flow_Show_GG);
+         Set_Field (Obj, Flow_Show_GG_Name, CL_Switches.Flow_Show_GG);
 
          if CL_Switches.Function_Sandboxing.all = ""
            or else CL_Switches.Function_Sandboxing.all = "on"
@@ -161,9 +164,9 @@ package body Gnat2Why_Opts.Writing is
             Set_Field (Obj, Proof_Generate_Guards_Name, False);
          end if;
 
-         Set_Field (Obj, Ide_Mode_Name,         Configuration.IDE_Mode);
-         Set_Field (Obj, CWE_Name,              CL_Switches.CWE);
-         Set_Field (Obj, Parallel_Why3_Name,    Use_Semaphores);
+         Set_Field (Obj, Ide_Mode_Name, Configuration.IDE_Mode);
+         Set_Field (Obj, CWE_Name, CL_Switches.CWE);
+         Set_Field (Obj, Parallel_Why3_Name, Use_Semaphores);
 
          Set_Field (Obj, Why3_Dir_Name, Obj_Dir);
       end if;

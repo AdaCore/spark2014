@@ -52,9 +52,9 @@ test.adb:90:16: info: implicit aspect Always_Terminates on "Length" has been pro
 test.adb:91:17: info: postcondition proved (CVC5: 1 VC)
 test.adb:94:16: info: implicit aspect Always_Terminates on "Length_Rec" has been proved, subprogram will terminate
 test.adb:97:16: info: implicit aspect Always_Terminates on "Eq_Elem" has been proved, subprogram will terminate
-test.adb:112:16: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
-test.adb:112:16: info: function contract might not be available on recursive calls
 test.adb:112:16: info: implicit aspect Always_Terminates on "Length_Rec" has been proved, subprogram will terminate
+test.adb:112:16: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
+test.adb:112:16: warning: function contract might not be available on recursive calls [contracts-recursive]
 test.adb:115:17: info: postcondition proved (CVC5: 1 VC)
 test.adb:117:17: info: implicit aspect Always_Terminates on "Lemma_Length_Empty" has been proved, subprogram will terminate
 test.adb:120:69: info: range check proved (CVC5: 2 VC)
@@ -68,7 +68,7 @@ test.adb:138:13: info: precondition proved (CVC5: 1 VC)
 test.adb:138:13: info: subprogram variant proved (CVC5: 1 VC)
 test.adb:138:38: info: range check proved (CVC5: 2 VC)
 test.adb:144:20: info: add a contract to analyze it separately from calling contexts
-test.adb:144:20: info: local subprogram "Prove_Length" only analyzed in the context of calls
+test.adb:144:20: info: local subprogram "Prove_Length" only analyzed in the context of calls [info-unrolling-inlining]
 test.adb:149:19: info: loop invariant initialization proved (CVC5: 2 VC), in call inlined at test.adb:158
 test.adb:149:19: info: loop invariant preservation proved (CVC5: 2 VC), in call inlined at test.adb:158
 test.adb:158:10: info: analyzing call to "Prove_Length" in context
@@ -79,7 +79,7 @@ test.adb:182:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test.adb:182:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test.adb:182:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test.adb:182:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test.adb:182:09: info: Container_Aggregates annotation proved (CVC5: 5 VC)
+test.adb:182:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
 test.adb:182:09: info: after a call to Empty at test.adb:196
 test.adb:182:09: info: after a call to Empty at test.adb:196
 test.adb:182:09: info: after a call to Insert at test.adb:197
@@ -94,24 +94,24 @@ test.adb:196:16: info: implicit aspect Always_Terminates on "Empty" has been pro
 test.adb:197:17: info: aspect Always_Terminates on "Insert" has been proved, subprogram will terminate
 test.adb:199:17: info: during checks for container aggregates at test.adb:182
 test.adb:199:17: info: precondition proved (CVC5: 1 VC)
-test.adb:200:17: info: postcondition proved (CVC5: 9 VC; Trivial: 2 VC)
-test.adb:202:18: info: precondition proved (CVC5: 2 VC)
+test.adb:200:17: info: postcondition proved (CVC5: 6 VC; Trivial: 2 VC)
+test.adb:202:18: info: precondition proved (CVC5: 1 VC)
 test.adb:204:63: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
-test.adb:207:26: info: precondition proved (CVC5: 2 VC)
-test.adb:207:39: info: precondition proved (CVC5: 2 VC)
+test.adb:207:26: info: precondition proved (CVC5: 1 VC)
+test.adb:207:39: info: precondition proved (CVC5: 1 VC)
 test.adb:207:44: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
 test.adb:209:16: info: implicit aspect Always_Terminates on "Has_Key" has been proved, subprogram will terminate
 test.adb:213:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
-test.adb:213:16: info: implicit function contract might not be available on recursive calls
+test.adb:213:16: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
 test.adb:218:16: info: implicit aspect Always_Terminates on "Eq_Key" has been proved, subprogram will terminate
 test.adb:223:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
-test.adb:223:16: info: implicit function contract might not be available on recursive calls
+test.adb:223:16: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
 test.adb:243:43: info: pointer dereference check proved (CVC5: 1 VC)
 test.adb:243:56: info: subprogram variant proved (Trivial)
 test.adb:243:66: info: pointer dereference check proved (CVC5: 1 VC)
 test.adb:246:18: info: pointer dereference check proved (CVC5: 1 VC)
 test.adb:246:29: info: pointer dereference check proved (CVC5: 1 VC)
-test.adb:246:39: info: precondition proved (CVC5: 2 VC)
+test.adb:246:39: info: precondition proved (CVC5: 1 VC)
 test.adb:246:39: info: subprogram variant proved (Trivial)
 test.adb:246:45: info: pointer dereference check proved (CVC5: 1 VC)
 test.adb:249:34: info: subprogram variant proved (Trivial)
@@ -130,7 +130,7 @@ test.adb:283:17: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
 test.adb:286:44: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
 test.adb:288:16: info: implicit aspect Always_Terminates on "Default_Value" has been proved, subprogram will terminate
 test.adb:291:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
-test.adb:291:16: info: implicit function contract might not be available on recursive calls
+test.adb:291:16: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
 test.adb:295:16: info: implicit aspect Always_Terminates on "Eq_Key" has been proved, subprogram will terminate
 test.adb:314:40: info: pointer dereference check proved (CVC5: 1 VC)
 test.adb:314:51: info: pointer dereference check proved (CVC5: 1 VC)
@@ -158,10 +158,10 @@ test.adb:354:16: info: precondition proved (CVC5: 11 VC)
 test.adb:355:16: info: keys shall be distinct and all elements shall fit in the return type of "Length" for maps aggregates at test.adb:182
 test.adb:355:16: info: precondition proved (CVC5: 1 VC)
 test.adb:357:22: info: assertion proved (CVC5: 1 VC)
-test.adb:358:22: info: assertion proved (CVC5: 2 VC; Z3: 1 VC)
-test.adb:359:38: info: unrolling loop
+test.adb:358:22: info: assertion proved (CVC5: 2 VC)
+test.adb:359:38: info: unrolling loop [info-unrolling-inlining]
 test.adb:360:25: info: assertion proved (CVC5: 5 VC)
-test.adb:360:25: info: precondition proved (CVC5: 10 VC)
+test.adb:360:25: info: precondition proved (CVC5: 5 VC)
 test.adb:362:22: info: assertion proved (CVC5: 1 VC)
 test.adb:363:22: info: assertion proved (CVC5: 1 VC)
 test.adb:364:07: medium: assertion might fail
@@ -179,7 +179,7 @@ test.adb:392:16: info: keys shall be distinct for maps aggregates at test.adb:26
 test.adb:392:16: info: precondition proved (CVC5: 10 VC)
 test.adb:393:16: info: keys shall be distinct for maps aggregates at test.adb:266
 test.adb:393:16: info: precondition proved (Trivial: 1 VC)
-test.adb:395:38: info: unrolling loop
+test.adb:395:38: info: unrolling loop [info-unrolling-inlining]
 test.adb:396:25: info: assertion proved (CVC5: 5 VC)
 test.adb:398:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 test.adb:399:22: info: assertion proved (CVC5: 1 VC)
@@ -195,7 +195,7 @@ test.adb:418:16: info: precondition proved (CVC5: 1 VC)
 test.adb:419:16: info: all elements shall fit in index type for sequence aggregates at test.adb:13
 test.adb:419:16: info: precondition proved (Trivial: 1 VC)
 test.adb:421:22: info: assertion proved (CVC5: 1 VC)
-test.adb:422:40: info: unrolling loop
+test.adb:422:40: info: unrolling loop [info-unrolling-inlining]
 test.adb:423:25: info: assertion proved (CVC5: 5 VC)
 test.adb:423:25: info: precondition proved (CVC5: 5 VC)
 test.adb:425:22: info: assertion proved (CVC5: 1 VC)

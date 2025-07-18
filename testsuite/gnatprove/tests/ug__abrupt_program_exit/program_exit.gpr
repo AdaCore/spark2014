@@ -1,0 +1,11 @@
+project Program_Exit is
+
+   package Compiler is
+      for Switches ("Ada") use ("-gnat2022");
+   end Compiler;
+
+   package Prove is
+      for Proof_Switches ("Ada") use ("--report=all");
+   end Prove;
+
+end Program_Exit;

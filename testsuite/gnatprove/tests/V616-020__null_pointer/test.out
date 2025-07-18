@@ -13,4 +13,6 @@ carver_test.adb:14:09: info: predicate check proved on default value (CVC5: 2 VC
 carver_test.adb:16:11: info: discriminant check proved (CVC5: 2 VC; Trivial: 1 VC)
 carver_test.adb:16:15: info: precondition proved (CVC5: 3 VC)
 carver_test.adb:16:34: info: null exclusion check proved (CVC5: 1 VC)
+carver_test.adb:18:37: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+carver_test.adb:19:36: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 carver_test.ads:9:09: info: data dependencies proved

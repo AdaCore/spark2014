@@ -1,21 +1,62 @@
-exceptions_post.adb:10:08: info: postcondition proved
-exceptions_post.adb:10:40: info: index check proved
-exceptions_post.adb:11:23: info: index check proved
-exceptions_post.adb:11:35: info: index check proved
-exceptions_post.adb:11:38: info: overflow check proved
-exceptions_post.adb:13:21: info: exceptional case proved
-exceptions_post.adb:13:28: info: index check proved
-exceptions_post.adb:15:28: info: index check proved
-exceptions_post.adb:15:59: info: index check proved
-exceptions_post.adb:15:62: info: overflow check proved
-exceptions_post.adb:15:78: info: index check proved
-exceptions_post.adb:21:22: info: range check proved
-exceptions_post.adb:25:25: info: overflow check proved
-exceptions_post.adb:27:13: info: loop invariant initialization proved
-exceptions_post.adb:27:13: info: loop invariant preservation proved
-exceptions_post.adb:27:56: info: index check proved
-exceptions_post.adb:29:13: info: loop invariant preservation proved
-exceptions_post.adb:29:13: info: loop invariant initialization proved
-exceptions_post.adb:29:45: info: index check proved
-exceptions_post.adb:29:64: info: index check proved
-exceptions_post.adb:29:67: info: overflow check proved
+ info: postcondition proved
+--> exceptions_post.adb:10:08
+
+ info: index check proved
+--> exceptions_post.adb:10:40
+
+ info: index check proved
+--> exceptions_post.adb:11:23
+
+ info: index check proved
+--> exceptions_post.adb:11:35
+
+ info: overflow check proved
+--> exceptions_post.adb:11:38
+
+ info: exceptional case proved
+--> exceptions_post.adb:13:21
+
+ info: index check proved
+--> exceptions_post.adb:13:28
+
+ info: index check proved
+--> exceptions_post.adb:15:28
+
+ info: index check proved
+--> exceptions_post.adb:15:59
+
+ info: overflow check proved
+--> exceptions_post.adb:15:62
+
+ info: index check proved
+--> exceptions_post.adb:15:78
+
+ info: range check proved
+--> exceptions_post.adb:21:22
+
+ info: overflow check proved
+--> exceptions_post.adb:25:25
+
+ info: loop invariant initialization proved
+--> exceptions_post.adb:27:13
+
+ info: loop invariant preservation proved
+--> exceptions_post.adb:27:13
+
+ info: index check proved
+--> exceptions_post.adb:27:56
+
+ info: loop invariant initialization proved
+--> exceptions_post.adb:29:13
+
+ info: loop invariant preservation proved
+--> exceptions_post.adb:29:13
+
+ info: index check proved
+--> exceptions_post.adb:29:45
+
+ info: index check proved
+--> exceptions_post.adb:29:64
+
+ info: overflow check proved
+--> exceptions_post.adb:29:67

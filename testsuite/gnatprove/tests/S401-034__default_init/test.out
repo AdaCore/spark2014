@@ -1,8 +1,8 @@
 repro.adb:3:14: warning: subprogram "Proc" has no effect
-repro.adb:10:44: info: cannot unroll loop (too many loop iterations)
+repro.adb:10:44: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 repro.adb:11:33: info: index check proved (CVC5: 2 VC)
 repro.adb:11:37: medium: discriminant check might fail [possible fix: subprogram at repro.ads:40 should mention Arg in a precondition]
-repro.adb:11:44: info: unrolling loop
+repro.adb:11:44: info: unrolling loop [info-unrolling-inlining]
 repro.adb:12:13: info: precondition proved (Trivial: 14 VC)
 repro.adb:12:25: info: index check proved (CVC5: 28 VC)
 repro.adb:12:29: medium: discriminant check might fail [possible fix: subprogram at repro.ads:40 should mention Arg in a precondition]

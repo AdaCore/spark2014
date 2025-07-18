@@ -1,5 +1,5 @@
 skein.adb:27:14: info: add a contract to analyze it separately from calling contexts
-skein.adb:27:14: info: local subprogram "Put_64_LSB_First" only analyzed in the context of calls
+skein.adb:27:14: info: local subprogram "Put_64_LSB_First" only analyzed in the context of calls [info-unrolling-inlining]
 skein.adb:34:14: info: range check proved (CVC5: 2 VC), in call inlined at skein.adb:139
 skein.adb:35:29: medium: array index check might fail, in call inlined at skein.adb:139 [reason for check: result of addition must be a valid index into the array]
 skein.adb:36:77: info: division check proved (CVC5: 1 VC), in call inlined at skein.adb:139
@@ -7,12 +7,12 @@ skein.adb:36:77: medium: array index check might fail, in call inlined at skein.
 skein.adb:37:57: medium: range check might fail, cannot prove upper bound for 8 * (N and 7), in call inlined at skein.adb:139 [reason for check: result of multiplication must be convertible to the target type of the conversion]
 skein.adb:37:71: medium: range check might fail, in call inlined at skein.adb:139 [reason for check: result of operation must be convertible to the target type of the conversion] [possible fix: loop at line 124 should mention Local_Ctx in a loop invariant]
 skein.adb:42:14: info: add a contract to analyze it separately from calling contexts
-skein.adb:42:14: info: local subprogram "Skein_Start_New_Type" only analyzed in the context of calls
+skein.adb:42:14: info: local subprogram "Skein_Start_New_Type" only analyzed in the context of calls [info-unrolling-inlining]
 skein.adb:48:23: warning: unused assignment, in call inlined at skein.adb:127
 skein.adb:56:22: warning: unused assignment, in call inlined at skein.adb:127
 skein.adb:60:04: warning: analyzing unreferenced procedure "Zero_Pad" [unreferenced-procedure]
 skein.adb:64:11: info: range check proved (CVC5: 2 VC)
-skein.adb:64:98: info: cannot unroll loop (too many loop iterations)
+skein.adb:64:98: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 skein.adb:76:07: info: initialization of "Local_Ctx" proved
 skein.adb:77:07: info: initialization of "N" proved
 skein.adb:78:07: info: initialization of "Blocks_Done" proved
@@ -20,12 +20,13 @@ skein.adb:79:07: info: initialization of "Blocks_Required" proved
 skein.adb:80:07: info: initialization of "Byte_Count" proved
 skein.adb:81:07: info: initialization of "X" proved
 skein.adb:84:17: info: add a contract to analyze it separately from calling contexts
-skein.adb:84:17: info: local subprogram "Zero_Pad_B" only analyzed in the context of calls
+skein.adb:84:17: info: local subprogram "Zero_Pad_B" only analyzed in the context of calls [info-unrolling-inlining]
 skein.adb:87:14: info: range check proved (CVC5: 2 VC), in call inlined at skein.adb:111
 skein.adb:87:112: warning: statement has no effect, in call inlined at skein.adb:111
+skein.adb:88:22: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 skein.adb:88:29: warning: unused assignment, in call inlined at skein.adb:111
 skein.adb:92:17: info: add a contract to analyze it separately from calling contexts
-skein.adb:92:17: info: local subprogram "Set_B_Counter" only analyzed in the context of calls
+skein.adb:92:17: info: local subprogram "Set_B_Counter" only analyzed in the context of calls [info-unrolling-inlining]
 skein.adb:95:26: warning: unused assignment, in call inlined at skein.adb:125
 skein.adb:95:43: info: range check proved (CVC5: 2 VC), in call inlined at skein.adb:125
 skein.adb:96:26: warning: unused assignment, in call inlined at skein.adb:125
@@ -46,7 +47,7 @@ skein.adb:107:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 skein.adb:109:43: warning: unused assignment
 skein.adb:110:07: warning: statement has no effect
 skein.adb:111:10: info: analyzing call to "Zero_Pad_B" in context
-skein.adb:111:10: info: cannot unroll loop (too many loop iterations)
+skein.adb:111:10: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 skein.adb:111:10: info: in inlined body at line 87
 skein.adb:115:52: high: range check might fail, cannot prove lower bound for (Local_Ctx.H.Hash_Bit_Len + 7) / 8 (e.g. when Local_Ctx.H.Tweak_Words.Byte_Count_LSB = 63 and Local_Ctx.H.Tweak_Words.Byte_Count_MSB = 0 and Local_Ctx.H.Tweak_Words.Reserved = 0 and Local_Ctx.H.Tweak_Words.Tree_Level = 0 and Local_Ctx.H.Tweak_Words.Bit_Pad = True) [reason for check: result of division must fit in the target type of the assignment]
 skein.adb:115:52: info: division check proved (CVC5: 1 VC)
@@ -55,8 +56,10 @@ skein.adb:121:44: info: division check proved (CVC5: 1 VC)
 skein.adb:125:10: info: analyzing call to "Set_B_Counter" in context
 skein.adb:127:10: info: analyzing call to "Skein_Start_New_Type" in context
 skein.adb:139:10: info: analyzing call to "Put_64_LSB_First" in context
-skein.adb:139:10: info: cannot unroll loop (too many loop iterations)
+skein.adb:139:10: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 skein.adb:139:10: info: in inlined body at line 34
+skein.adb:139:10: warning: in inlined body at line 35
+skein.adb:139:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 skein.adb:146:37: medium: range check might fail, cannot prove upper bound for Blocks_Done + 1 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 124 should mention Blocks_Done in a loop invariant]
 skein.ads:132:31: info: initialization of "Hash" proved
 =========================
@@ -80,7 +83,7 @@ Concurrency . . . . .
 Total 28 7 (25%) 15 (54%) . 6 (21%)
 
 
-max steps used for successful proof: 409
+max steps used for successful proof: 410
 
 ============================
 Most difficult proved checks

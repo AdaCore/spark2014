@@ -1,0 +1,29 @@
+test.adb:3:26: info: data dependencies proved
+test.adb:6:33: info: loop invariant initialization proved (Trivial: 1 VC)
+test.adb:6:33: info: loop invariant preservation proved (Trivial: 1 VC)
+test.adb:10:28: info: assertion proved (CVC5: 1 VC)
+test.adb:15:26: info: data dependencies proved
+test.adb:21:36: info: loop invariant initialization proved (Trivial: 1 VC)
+test.adb:21:36: info: loop invariant preservation proved (Trivial: 1 VC)
+test.adb:22:28: info: assertion proved (CVC5: 1 VC)
+test.adb:27:26: info: data dependencies proved
+test.adb:35:28: info: assertion proved (CVC5: 2 VC)
+test.adb:36:36: info: loop invariant initialization proved (Trivial: 1 VC)
+test.adb:36:36: info: loop invariant preservation proved (Trivial: 1 VC)
+test.adb:41:26: info: data dependencies proved
+test.adb:44:25: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+test.adb:49:28: info: assertion proved (CVC5: 1 VC)
+test.adb:54:26: info: data dependencies proved
+test.adb:62:36: info: loop invariant initialization proved (Trivial: 1 VC)
+test.adb:62:36: info: loop invariant preservation proved (Trivial: 1 VC)
+test.adb:63:28: medium: assertion might fail (e.g. when C = 0 and I = 1) [possible fix: add or complete related loop invariants or postconditions]
+test.adb:63:28: warning: The initial value of "C" declared before the loop invariant is not visible after the invariant; it shall be restated in the invariant if necessary [constants-in-loops]
+test.adb:68:26: info: data dependencies proved
+test.adb:76:36: info: loop invariant initialization proved (Trivial: 1 VC)
+test.adb:76:36: info: loop invariant preservation proved (Trivial: 1 VC)
+test.adb:83:42: info: loop invariant initialization proved (Trivial: 1 VC)
+test.adb:83:42: info: loop invariant preservation proved (Trivial: 1 VC)
+test.adb:84:34: medium: assertion might fail (e.g. when C = 0 and I = 1) [possible fix: add or complete related loop invariants or postconditions]
+test.adb:84:34: warning: The initial value of "C" declared before the loop invariant is not visible after the invariant; it shall be restated in the invariant if necessary [constants-in-loops]
+test.adb:85:34: medium: assertion might fail (e.g. when D = 0 and J = 1) [possible fix: add or complete related loop invariants or postconditions]
+test.adb:85:34: warning: The initial value of "D" declared before the loop invariant is not visible after the invariant; it shall be restated in the invariant if necessary [constants-in-loops]

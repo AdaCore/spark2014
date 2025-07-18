@@ -1,0 +1,2 @@
+main.adb:10:34: error: operation between fixed-point and floating-point types is not yet supported
+gnatprove: error during flow analysis and proof

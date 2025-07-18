@@ -78,6 +78,7 @@ def compile_coq_files():
         os.path.join("map", "Occ.v"),
         os.path.join("map", "MapPermut.v"),
         os.path.join("map", "MapInjection.v"),
+        os.path.join("map", "MapExt.v"),
         os.path.join("set", "Set.v"),
         os.path.join("option", "Option.v"),
         os.path.join("list", "List.v"),

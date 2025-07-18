@@ -5,7 +5,7 @@ names.adb:59:30: info: range check proved (CVC5: 2 VC)
 names.adb:70:16: info: precondition proved (CVC5: 1 VC)
 names.adb:75:23: medium: precondition might fail [possible fix: loop at line 69 should mention Ptr in a loop invariant]
 names.adb:76:20: medium: precondition might fail [possible fix: loop at line 69 should mention Ptr in a loop invariant]
-names.adb:80:21: info: cannot unroll loop (too many loop iterations)
+names.adb:80:21: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 names.adb:81:10: medium: precondition might fail [possible fix: loop at line 80 should mention Char_Table in a loop invariant]
 names.adb:84:22: info: assertion proved (CVC5: 1 VC)
 names.adb:85:22: info: assertion proved (CVC5: 1 VC)
@@ -22,7 +22,7 @@ names.adb:116:37: medium: precondition might fail [possible fix: precondition of
 names.adb:119:17: info: initialization of "S" proved
 names.adb:119:17: info: range check proved (CVC5: 2 VC)
 names.adb:120:17: info: range check proved (CVC5: 2 VC)
-names.adb:120:44: info: cannot unroll loop (too many loop iterations)
+names.adb:120:44: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 names.adb:121:25: medium: precondition might fail [possible fix: precondition of subprogram at names.ads:15 should mention Char_Table]
 names.adb:122:48: medium: overflow check might fail, cannot prove upper bound for E.Table_Index + Char_Table_Index (I - 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at names.ads:15 should mention Entry_Table and N]
 names.adb:122:48: medium: range check might fail, cannot prove upper bound for E.Table_Index + Char_Table_Index (I - 1) [reason for check: input value must fit in parameter type] [possible fix: precondition of subprogram at names.ads:15 should mention Entry_Table and N]

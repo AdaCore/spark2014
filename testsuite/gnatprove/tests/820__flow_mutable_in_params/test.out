@@ -1,0 +1,27 @@
+bad.ads:9:04: error: pragma Annotate "Mutable_In_Parameters" cannot appear after a subprogram with "Depends" contract
+h.adb:21:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+h.adb:27:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+h.ads:2:09: info: in default value of private type at h.ads:2
+h.ads:2:09: info: null exclusion check proved (CVC5: 1 VC)
+h.ads:5:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
+h.ads:7:14: warning: subprogram "P" has no effect
+h.ads:8:14: info: postcondition proved (CVC5: 1 VC)
+h.ads:8:19: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
+h.ads:11:14: warning: subprogram "P2" has no effect
+h.ads:12:14: info: postcondition proved (CVC5: 2 VC)
+h.ads:12:19: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
+h.ads:12:40: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
+h.ads:15:13: info: implicit aspect Always_Terminates on "Copy" has been proved, subprogram will terminate
+h.ads:16:14: info: postcondition proved (CVC5: 1 VC)
+h.ads:18:13: info: implicit aspect Always_Terminates on "New_T" has been proved, subprogram will terminate
+j-c.ads:1:30: info: flow dependencies proved
+j-c.ads:2:04: info: initialization of "G" proved
+main.adb:5:04: info: initialization of "Result1" proved
+main.adb:6:04: info: initialization of "Result2" proved
+main.adb:7:08: info: flow dependencies proved
+main.adb:12:19: medium: assertion might fail
+try_h.adb:4:04: medium: resource or memory leak might occur at end of scope
+try_h.adb:6:08: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
+try_j.adb:5:04: medium: precondition might fail [possible fix: subprogram at line 3 should mention G in a precondition]
+try_j.adb:5:07: high: formal parameter "X" and global "G" are aliased (SPARK RM 6.4.2)
+gnatprove: error during flow analysis and proof

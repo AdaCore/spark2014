@@ -171,10 +171,6 @@ package Flow is
       Atr : Attribute_Maps.Map;
       --  The vertex attributes for the above graphs.
 
-      Other_Fields : Vertex_To_Vertex_Set_Maps.Map;
-      --  For a vertex corresponding to a record field this map will hold a
-      --  vertex set of the other record fields; only used in phase 2.
-
       All_Vars : Flow_Id_Sets.Set;
       --  Flattened variables accessible in the body
 

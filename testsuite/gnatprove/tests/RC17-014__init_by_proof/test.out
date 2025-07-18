@@ -52,7 +52,7 @@ init_by_proof.adb:56:26: info: index check proved (CVC5: 2 VC)
 init_by_proof.adb:56:29: info: division check proved (CVC5: 1 VC)
 init_by_proof.adb:62:21: info: range check proved (CVC5: 2 VC)
 init_by_proof.adb:65:39: info: overflow check proved (CVC5: 2 VC)
-init_by_proof.adb:65:52: info: cannot unroll loop (too many loop iterations)
+init_by_proof.adb:65:52: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 init_by_proof.adb:66:15: info: index check proved (CVC5: 2 VC)
 init_by_proof.adb:66:26: info: index check proved (CVC5: 2 VC)
 init_by_proof.adb:66:29: info: division check proved (CVC5: 1 VC)
@@ -182,7 +182,7 @@ var_init_by_proof.adb:18:11: warning: "X" is set by "P3" but not used after the 
 var_init_by_proof.adb:19:12: medium: initialization check might fail
 var_init_by_proof.adb:29:18: info: for parameter X at the end of the subprogram at var_init_by_proof.adb:29
 var_init_by_proof.adb:29:18: info: initialization check proved (CVC5: 1 VC)
-var_init_by_proof.adb:33:12: medium: initialization check might fail [possible fix: precondition of subprogram at line 29 should mention G]
+var_init_by_proof.adb:33:12: medium: initialization check might fail [possible fix: precondition of subprogram at line 29 should mention G'Initialized]
 var_init_by_proof.adb:42:09: info: initialization check proved (CVC5: 1 VC)
 var_init_by_proof.adb:43:04: medium: precondition might fail
 var_init_by_proof.adb:45:08: info: initialization check proved (CVC5: 1 VC)

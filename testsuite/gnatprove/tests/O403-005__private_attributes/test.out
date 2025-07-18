@@ -3,15 +3,18 @@ public_derives_private.ads:20:13: info: implicit aspect Always_Terminates on "Ge
 use_private_attributes.adb:6:07: info: initialization of "U1" proved
 use_private_attributes.adb:7:39: info: range check proved (CVC5: 2 VC)
 use_private_attributes.adb:10:22: info: assertion proved (CVC5: 1 VC)
-use_private_attributes.adb:11:22: info: assertion proved (CVC5: 1 VC)
-use_private_attributes.adb:12:22: info: assertion proved (CVC5: 1 VC)
-use_private_attributes.adb:13:22: info: assertion proved (CVC5: 1 VC)
+use_private_attributes.adb:11:22: info: assertion proved (Trivial: 1 VC)
+use_private_attributes.adb:12:22: info: assertion proved (Trivial: 1 VC)
+use_private_attributes.adb:13:22: info: assertion proved (Trivial: 1 VC)
 use_private_attributes.adb:14:10: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
+use_private_attributes.adb:14:10: warning: unused assignment
+use_private_attributes.adb:15:10: warning: unused assignment
 use_private_attributes.adb:15:13: medium: discriminant check might fail
+use_private_attributes.adb:16:09: warning: unused assignment
 use_private_attributes.adb:16:12: info: discriminant check proved (CVC5: 1 VC)
-use_private_attributes.adb:17:22: info: assertion proved (CVC5: 1 VC)
-use_private_attributes.adb:18:22: info: assertion proved (CVC5: 1 VC)
-use_private_attributes.adb:19:22: info: assertion proved (CVC5: 1 VC)
+use_private_attributes.adb:17:22: info: assertion proved (Trivial: 1 VC)
+use_private_attributes.adb:18:22: info: assertion proved (Trivial: 1 VC)
+use_private_attributes.adb:19:22: info: assertion proved (Trivial: 1 VC)
 use_private_attributes.adb:23:07: info: initialization of "R" proved
 use_private_attributes.adb:24:07: info: initialization of "F" proved
 use_private_attributes.adb:26:07: info: initialization of "P" proved

@@ -1,5 +1,5 @@
 lp.adb:19:11: info: index check proved (CVC5: 2 VC)
-lp.adb:19:23: info: cannot unroll loop (too many loop iterations)
+lp.adb:19:23: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 lp.adb:20:40: info: index check proved (CVC5: 2 VC)
 lp.adb:21:22: info: index check proved (CVC5: 2 VC)
 lp.adb:35:45: medium: assertion might fail, cannot prove 2 ** K in U64'Range

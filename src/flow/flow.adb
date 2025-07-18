@@ -70,8 +70,6 @@ with Why;
 
 package body Flow is
 
-   use type Ada.Containers.Count_Type;
-
    --  These debug options control which graphs to output.
 
    Debug_Print_CFG           : constant Boolean := True;
@@ -523,8 +521,6 @@ package body Flow is
       Format_Item ("Is_Constant", Boolean'Image (A.Is_Constant));
       Format_Item ("Is_Callsite", Boolean'Image (A.Is_Callsite));
       Format_Item ("Is_Parameter", Boolean'Image (A.Is_Parameter));
-      Format_Item ("Is_Discr_Or_Bounds_Parameter",
-                   Boolean'Image (A.Is_Discr_Or_Bounds_Parameter));
       Format_Item ("Is_Global_Parameter",
                    Boolean'Image (A.Is_Global_Parameter));
       Format_Item ("Is_Neverending", Boolean'Image (A.Is_Neverending));
@@ -735,19 +731,24 @@ package body Flow is
             if A.Variables_Defined.Is_Empty then
                null;
 
-            --  Otherwise there is exactly one defined variable (a single
-            --  record component).
+            --  Otherwise there might be multiple components being defined
+            --  by the same inputs.
 
             else
-               pragma Assert (A.Variables_Defined.Length = 1);
-
                declare
-                  Var_Def : Flow_Id renames
-                    A.Variables_Defined (A.Variables_Defined.First);
+                  First : Boolean := True;
                begin
-                  Write_Str (Flow_Id_To_String (Var_Def));
-                  Write_Str (" => ");
+                  for F of A.Variables_Defined loop
+                     if First then
+                        First := False;
+                     else
+                        Write_Str (", ");
+                     end if;
+                     Sprint_Flow_Id (F);
+                  end loop;
                end;
+
+               Write_Str (" => ");
             end if;
 
             declare
@@ -795,6 +796,10 @@ package body Flow is
             Rv.Shape := Shape_None;
             Write_Str ("param scrub");
 
+         elsif A.Pretty_Print_Kind = Pretty_Print_Program_Exit then
+            Rv.Shape := Shape_None;
+            Write_Str ("program exit");
+
          elsif A.Pretty_Print_Kind /= Pretty_Print_Null then
             raise Program_Error;
 
@@ -809,14 +814,10 @@ package body Flow is
                   Write_Str ("'in");
                   Write_Str (NBSP & ":=" & NBSP);
                   Print_Node (Get_Direct_Mapping_Id (A.Parameter_Actual));
-                  if A.Is_Discr_Or_Bounds_Parameter then
-                     Write_Str ("'discr_or_bounds");
-                  end if;
 
                when Out_View =>
                   pragma Assert (A.Parameter_Formal.Kind = Direct_Mapping);
                   pragma Assert (A.Parameter_Actual.Kind = Direct_Mapping);
-                  pragma Assert (not A.Is_Discr_Or_Bounds_Parameter);
                   Print_Node (Get_Direct_Mapping_Id (A.Parameter_Actual));
                   Write_Str (NBSP & ":=" & NBSP);
                   Print_Node (Get_Direct_Mapping_Id (A.Parameter_Formal));
@@ -833,13 +834,9 @@ package body Flow is
             Sprint_Flow_Id (A.Parameter_Formal);
             case A.Parameter_Formal.Variant is
                when In_View =>
-                  if A.Is_Discr_Or_Bounds_Parameter then
-                     Write_Str ("'discr_or_bounds");
-                  end if;
                   Write_Str ("'in");
 
                when Out_View =>
-                  pragma Assert (not A.Is_Discr_Or_Bounds_Parameter);
                   Write_Str ("'out");
 
                when others =>
@@ -903,6 +900,13 @@ package body Flow is
                            Rv.Shape := Shape_None;
                            Write_Str ("when ");
                            Sprint_Comma_List (Discrete_Choices (N));
+
+                        when N_Block_Statement =>
+                           pragma Assert
+                             (Nkind (Original_Node (N)) in N_Subprogram_Call);
+                           Rv.Shape := Shape_Box;
+                           Write_Str ("inlined call ");
+                           Print_Node (Original_Node (N));
 
                         when N_Defining_Identifier =>
                            case Ekind (N) is
@@ -1462,13 +1466,8 @@ package body Flow is
 
          --  Restore the original CFG
 
-         FA.CFG := FA.Full_CFG;  --  ??? we could have Graphs.Move
+         FA.CFG.Move (Source => FA.Full_CFG);
          FA.Atr.Move (Source => FA.Full_Atr);
-
-         --  Destroy the temporary copy of a full CFG, as we no longer need it
-
-         FA.Full_CFG := Flow_Graphs.Create;
-         pragma Assert (FA.Full_Atr.Is_Empty);
 
          --  We can only print the original graph now, after FA.Atr has been
          --  restored.

@@ -23,15 +23,13 @@
 
 --  This package provides mechanisms for emitting errors and warnings.
 
-with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
-with Errout_Wrapper;            use Errout_Wrapper;
-with Flow;                      use Flow;
-with Flow_Types;                use Flow_Types;
-with GNATCOLL.JSON;             use GNATCOLL.JSON;
-with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
-with SPARK_Util;                use SPARK_Util;
-with Types;                     use Types;
-with VC_Kinds;                  use VC_Kinds;
+with Errout_Wrapper; use Errout_Wrapper;
+with Flow;           use Flow;
+with Flow_Types;     use Flow_Types;
+with GNATCOLL.JSON;  use GNATCOLL.JSON;
+with SPARK_Util;     use SPARK_Util;
+with Types;          use Types;
+with VC_Kinds;       use VC_Kinds;
 
 package Flow_Error_Messages is
 
@@ -39,28 +37,6 @@ package Flow_Error_Messages is
 
    --  This boolean becomes True if we find a error during flow analysis which
    --  should stop further analysis (i.e. proof).
-
-   type Suppression is (Warning, Check, None);
-
-   type Suppressed_Message (Suppression_Kind : Suppression := None) is record
-      case Suppression_Kind is
-         when Check =>
-            Msg           : String_Id;
-            Annot_Kind    : Annotate_Kind;
-            Justification : Unbounded_String;
-         when others =>
-            null;
-      end case;
-   end record;
-   --  When a warning is suppressed, we can store its message; when a check is
-   --  suppressed, we can store its message, annotation kind and justification.
-
-   Suppressed_Warning : constant Suppressed_Message :=
-     Suppressed_Message'(Suppression_Kind => Warning);
-   --  This represents a suppressed warning
-
-   No_Suppressed_Message : constant Suppressed_Message :=
-     Suppressed_Message'(Suppression_Kind => None);
 
    function Get_Filtered_Variables_For_Proof
      (Expr    : Node_Id;
@@ -97,6 +73,7 @@ package Flow_Error_Messages is
       F1            : Flow_Id            := Null_Flow_Id;
       F2            : Flow_Id            := Null_Flow_Id;
       F3            : Flow_Id            := Null_Flow_Id;
+      EF1           : Flow_Id            := Null_Flow_Id;
       FF1           : Flow_Id            := Null_Flow_Id;
       FF2           : Flow_Id            := Null_Flow_Id;
       Tag           : Flow_Tag_Kind      := Empty_Tag;
@@ -148,6 +125,7 @@ package Flow_Error_Messages is
       F1            : Flow_Id               := Null_Flow_Id;
       F2            : Flow_Id               := Null_Flow_Id;
       F3            : Flow_Id               := Null_Flow_Id;
+      EF1           : Flow_Id               := Null_Flow_Id;
       FF1           : Flow_Id               := Null_Flow_Id;
       FF2           : Flow_Id               := Null_Flow_Id;
       Tag           : Flow_Tag_Kind         := Empty_Tag;

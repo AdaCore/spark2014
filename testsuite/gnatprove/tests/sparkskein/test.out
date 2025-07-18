@@ -5,14 +5,14 @@ skein.adb:128:35: info: range check proved
 skein.adb:180:13: info: types in unchecked conversion have the same size
 skein.adb:181:07: info: type is suitable as source for unchecked conversion
 skein.adb:181:20: info: type is suitable for unchecked conversion
-skein.adb:183:13: info: imprecise handling of Unchecked_Conversion (type size larger than 128 bits)
 skein.adb:183:13: info: types in unchecked conversion have the same size
+skein.adb:183:13: warning: imprecise handling of Unchecked_Conversion (type size larger than 128 bits) [imprecise-unchecked-conversion]
 skein.adb:184:32: info: type is suitable as source for unchecked conversion
 skein.adb:184:55: info: type is suitable for unchecked conversion
 skein.adb:190:13: info: implicit aspect Always_Terminates on "To_LittleEndian" has been proved, subprogram will terminate
 skein.adb:191:11: info: data dependencies proved
 skein.adb:205:14: info: add a contract to analyze it separately from calling contexts
-skein.adb:205:14: info: local subprogram "Put_64_LSB_First" only analyzed in the context of calls
+skein.adb:205:14: info: local subprogram "Put_64_LSB_First" only analyzed in the context of calls [info-unrolling-inlining]
 skein.adb:221:14: info: range check proved, in call inlined at skein.adb:857
 skein.adb:222:13: info: predicate check proved, in call inlined at skein.adb:857
 skein.adb:222:29: info: index check proved, in call inlined at skein.adb:857
@@ -21,7 +21,7 @@ skein.adb:224:44: info: index check proved, in call inlined at skein.adb:857
 skein.adb:225:35: info: range check proved, in call inlined at skein.adb:857
 skein.adb:225:49: info: range check proved, in call inlined at skein.adb:857
 skein.adb:231:14: info: add a contract to analyze it separately from calling contexts
-skein.adb:231:14: info: local subprogram "Get_64_LSB_First" only analyzed in the context of calls
+skein.adb:231:14: info: local subprogram "Get_64_LSB_First" only analyzed in the context of calls [info-unrolling-inlining]
 skein.adb:231:32: info: initialization of "Dst" proved
 skein.adb:246:52: info: range check proved, in call inlined at skein.adb:569
 skein.adb:249:25: info: index check proved, in call inlined at skein.adb:569
@@ -33,26 +33,29 @@ skein.adb:254:47: info: index check proved, in call inlined at skein.adb:569
 skein.adb:255:47: info: index check proved, in call inlined at skein.adb:569
 skein.adb:256:47: info: index check proved, in call inlined at skein.adb:569
 skein.adb:261:14: info: add a contract to analyze it separately from calling contexts
-skein.adb:261:14: info: local subprogram "Skein_Start_New_Type" only analyzed in the context of calls
+skein.adb:261:14: info: local subprogram "Skein_Start_New_Type" only analyzed in the context of calls [info-unrolling-inlining]
 skein.adb:284:11: info: data dependencies proved
 skein.adb:294:19: info: postcondition proved
 skein.adb:299:07: info: initialization of "TS" proved
 skein.adb:301:07: info: initialization of "X" proved
 skein.adb:302:07: info: initialization of "W" proved
 skein.adb:304:17: info: add a contract to analyze it separately from calling contexts
-skein.adb:304:17: info: local subprogram "Initialize_Key_Schedule" only analyzed in the context of calls
+skein.adb:304:17: info: local subprogram "Initialize_Key_Schedule" only analyzed in the context of calls [info-unrolling-inlining]
+skein.adb:313:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+skein.adb:315:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 skein.adb:315:30: info: justified that "KS" might not be initialized, in call inlined at skein.adb:565
 skein.adb:322:17: info: add a contract to analyze it separately from calling contexts
-skein.adb:322:17: info: local subprogram "Initialize_TS" only analyzed in the context of calls
+skein.adb:322:17: info: local subprogram "Initialize_TS" only analyzed in the context of calls [info-unrolling-inlining]
 skein.adb:323:10: info: initialization of "W0" proved
 skein.adb:323:10: info: initialization of "W0" proved, in call inlined at skein.adb:567
 skein.adb:324:10: info: initialization of "W1" proved
 skein.adb:324:10: info: initialization of "W1" proved, in call inlined at skein.adb:567
 skein.adb:333:17: info: add a contract to analyze it separately from calling contexts
-skein.adb:333:17: info: local subprogram "Do_First_Key_Injection" only analyzed in the context of calls
+skein.adb:333:17: info: local subprogram "Do_First_Key_Injection" only analyzed in the context of calls [info-unrolling-inlining]
 skein.adb:348:14: info: data dependencies proved
 skein.adb:351:20: info: add a contract to analyze it separately from calling contexts
-skein.adb:351:20: info: local subprogram "Inject_Key" only analyzed in the context of calls
+skein.adb:351:20: info: local subprogram "Inject_Key" only analyzed in the context of calls [info-unrolling-inlining]
+skein.adb:355:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 skein.adb:355:45: info: division check proved, in call inlined at skein.adb:529
 skein.adb:355:45: info: division check proved, in call inlined at skein.adb:538
 skein.adb:358:58: info: division check proved, in call inlined at skein.adb:529
@@ -71,23 +74,43 @@ skein.adb:520:36: info: loop invariant initialization proved
 skein.adb:520:36: info: loop invariant preservation proved
 skein.adb:529:13: info: analyzing call to "Inject_Key" in context
 skein.adb:529:13: info: in inlined body at line 354
-skein.adb:529:13: info: unrolling loop
+skein.adb:529:13: info: unrolling loop [info-unrolling-inlining]
+skein.adb:529:13: warning: in inlined body at line 358
+skein.adb:529:13: warning: in inlined body at line 359
+skein.adb:529:13: warning: in inlined body at line 360
+skein.adb:529:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+skein.adb:529:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+skein.adb:529:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 skein.adb:538:13: info: analyzing call to "Inject_Key" in context
 skein.adb:538:13: info: in inlined body at line 354
-skein.adb:538:13: info: unrolling loop
+skein.adb:538:13: info: unrolling loop [info-unrolling-inlining]
+skein.adb:538:13: warning: in inlined body at line 358
+skein.adb:538:13: warning: in inlined body at line 359
+skein.adb:538:13: warning: in inlined body at line 360
+skein.adb:538:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+skein.adb:538:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+skein.adb:538:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 skein.adb:542:17: info: add a contract to analyze it separately from calling contexts
-skein.adb:542:17: info: local subprogram "Update_Context" only analyzed in the context of calls
+skein.adb:542:17: info: local subprogram "Update_Context" only analyzed in the context of calls [info-unrolling-inlining]
 skein.adb:555:11: info: range check proved
-skein.adb:555:66: info: cannot unroll loop (too many loop iterations)
+skein.adb:555:66: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 skein.adb:558:31: info: range check proved
 skein.adb:565:13: info: analyzing call to "Initialize_Key_Schedule" in context
 skein.adb:565:13: info: in inlined body at line 312
-skein.adb:565:13: info: unrolling loop
+skein.adb:565:13: info: unrolling loop [info-unrolling-inlining]
+skein.adb:565:13: warning: in inlined body at line 310
+skein.adb:565:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 skein.adb:567:13: info: analyzing call to "Initialize_TS" in context
 skein.adb:569:13: info: analyzing call to "Get_64_LSB_First" in context
 skein.adb:569:13: info: in inlined body at line 244
-skein.adb:569:13: info: unrolling loop
+skein.adb:569:13: info: unrolling loop [info-unrolling-inlining]
+skein.adb:569:13: warning: in inlined body at line 248
+skein.adb:569:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 skein.adb:583:13: info: analyzing call to "Do_First_Key_Injection" in context
+skein.adb:583:13: warning: in inlined body at line 343
+skein.adb:583:13: warning: in inlined body at line 344
+skein.adb:583:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+skein.adb:583:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 skein.adb:593:13: info: analyzing call to "Update_Context" in context
 skein.adb:614:07: info: initialization of "Cfg" proved
 skein.adb:621:07: info: analyzing call to "Skein_Start_New_Type" in context
@@ -102,7 +125,7 @@ skein.adb:654:07: info: initialization of "Current_Msg_Offset" proved
 skein.adb:655:07: info: initialization of "Bytes_Hashed" proved
 skein.adb:656:07: info: initialization of "Tmp_B" proved
 skein.adb:658:17: info: add a contract to analyze it separately from calling contexts
-skein.adb:658:17: info: local subprogram "Copy_Msg_To_B" only analyzed in the context of calls
+skein.adb:658:17: info: local subprogram "Copy_Msg_To_B" only analyzed in the context of calls [info-unrolling-inlining]
 skein.adb:673:10: info: initialization of "Src" proved
 skein.adb:673:10: info: initialization of "Src" proved, in call inlined at skein.adb:716
 skein.adb:673:10: info: initialization of "Src" proved, in call inlined at skein.adb:756
@@ -146,10 +169,11 @@ skein.adb:774:07: info: initialization of "X" proved
 skein.adb:775:07: info: initialization of "Tmp_B" proved
 skein.adb:776:07: info: initialization of "Tmp_Byte_Count_Add" proved
 skein.adb:778:17: info: add a contract to analyze it separately from calling contexts
-skein.adb:778:17: info: local subprogram "Zero_Pad" only analyzed in the context of calls
+skein.adb:778:17: info: local subprogram "Zero_Pad" only analyzed in the context of calls [info-unrolling-inlining]
 skein.adb:780:14: info: range check proved, in call inlined at skein.adb:806
+skein.adb:784:22: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 skein.adb:788:17: info: add a contract to analyze it separately from calling contexts
-skein.adb:788:17: info: local subprogram "Set_Counter" only analyzed in the context of calls
+skein.adb:788:17: info: local subprogram "Set_Counter" only analyzed in the context of calls [info-unrolling-inlining]
 skein.adb:790:43: info: range check proved, in call inlined at skein.adb:834
 skein.adb:791:61: info: range check proved, in call inlined at skein.adb:834
 skein.adb:792:61: info: range check proved, in call inlined at skein.adb:834
@@ -162,7 +186,7 @@ skein.adb:802:12: info: length check proved
 skein.adb:802:15: info: predicate check proved
 skein.adb:802:15: info: range check proved
 skein.adb:806:10: info: analyzing call to "Zero_Pad" in context
-skein.adb:806:10: info: cannot unroll loop (too many loop iterations)
+skein.adb:806:10: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 skein.adb:806:10: info: in inlined body at line 782
 skein.adb:812:07: info: precondition proved
 skein.adb:813:51: info: predicate check proved
@@ -173,13 +197,31 @@ skein.adb:828:44: info: division check proved
 skein.adb:832:13: info: loop invariant initialization proved
 skein.adb:832:13: info: loop invariant preservation proved
 skein.adb:834:10: info: analyzing call to "Set_Counter" in context
+skein.adb:834:10: warning: in inlined body at line 790
+skein.adb:834:10: warning: in inlined body at line 791
+skein.adb:834:10: warning: in inlined body at line 792
+skein.adb:834:10: warning: in inlined body at line 793
+skein.adb:834:10: warning: in inlined body at line 794
+skein.adb:834:10: warning: in inlined body at line 795
+skein.adb:834:10: warning: in inlined body at line 796
+skein.adb:834:10: warning: in inlined body at line 797
+skein.adb:834:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+skein.adb:834:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+skein.adb:834:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+skein.adb:834:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+skein.adb:834:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+skein.adb:834:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+skein.adb:834:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+skein.adb:834:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 skein.adb:836:10: info: analyzing call to "Skein_Start_New_Type" in context
 skein.adb:844:10: info: precondition proved
 skein.adb:845:54: info: predicate check proved
 skein.adb:845:54: info: range check proved
 skein.adb:857:10: info: analyzing call to "Put_64_LSB_First" in context
-skein.adb:857:10: info: cannot unroll loop (too many loop iterations)
+skein.adb:857:10: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 skein.adb:857:10: info: in inlined body at line 221
+skein.adb:857:10: warning: in inlined body at line 222
+skein.adb:857:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 skein.adb:878:07: info: initialization of "Ctx" proved
 skein.adb:879:07: info: initialization of "Result" proved
 skein.adb:884:07: info: precondition proved

@@ -37,11 +37,14 @@ with Uintp;                 use Uintp;
 with Why.Atree.Accessors;   use Why.Atree.Accessors;
 with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Atree.Modules;     use Why.Atree.Modules;
+with Why.Conversions;       use Why.Conversions;
 with Why.Gen.Binders;       use Why.Gen.Binders;
 with Why.Gen.Decl;          use Why.Gen.Decl;
+with Why.Gen.Expr;          use Why.Gen.Expr;
 with Why.Gen.Hardcoded;     use Why.Gen.Hardcoded;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Pointers;      use Why.Gen.Pointers;
+with Why.Gen.Terms;         use Why.Gen.Terms;
 with Why.Ids;               use Why.Ids;
 with Why.Inter;             use Why.Inter;
 with Why.Sinfo;             use Why.Sinfo;
@@ -82,6 +85,20 @@ package body Gnat2Why.Decls is
                Labels      => Get_Counterexample_Labels (E),
                Location    => Safe_First_Sloc (E),
                Return_Type => Get_Typ (B.Main.B_Name)));
+
+      --  Generate a constant for the validity flag
+
+      if B.Valid.Present then
+         Emit (Th,
+               Why.Atree.Builders.New_Function_Decl
+                 (Domain      => EW_Pterm,
+                  Name        => To_Local (B.Valid.Id),
+                  Binders     => (1 .. 0 => <>),
+                  Labels      => Get_Counterexample_Labels
+                    (E, "'" & Valid_Label),
+                  Location    => Safe_First_Sloc (E),
+                  Return_Type => EW_Bool_Type));
+      end if;
 
       Close_Theory (Th,
                     Kind           => Definition_Theory,
@@ -173,16 +190,60 @@ package body Gnat2Why.Decls is
                   or else Is_Static_Expression (Expr))
       then
          declare
-            B  : constant Item_Type :=
+            B      : constant Item_Type :=
               Ada_Ent_To_Why.Element (Symbol_Table, E);
             pragma Assert (B.Kind = Regular and then not B.Main.Mutable);
-            Def : W_Term_Id;
+            Params : constant Transformation_Params :=
+              (Logic_Params with delta Ref_Allowed => True);
+            Def    : W_Term_Id;
+
+            --  Context and validity flag to handle potantially invalid values
+
+            Is_Valid : W_Expr_Id :=
+              (if B.Valid.Present then +True_Term else Why_Empty);
+            Tmp_Id   : W_Identifier_Id := Why_Empty;
+            Id_Def   : W_Expr_Id := Why_Empty;
 
          begin
-            Def := Get_Pure_Logic_Term_If_Possible
-              (Expr, Get_Typ (B.Main.B_Name));
+            --  Handle the potential propagation of invalid values
 
-            if Def /= Why_Empty then
+            if Propagates_Validity_Flag (Decl) then
+               pragma Assert (B.Valid.Present);
+               Def := +Transform_Potentially_Invalid_Expr
+                 (Expr          => Expr,
+                  Expected_Type => Get_Typ (B.Main.B_Name),
+                  Domain        => EW_Term,
+                  Params        => Params,
+                  Tmp_Id        => Tmp_Id,
+                  Id_Def        => Id_Def,
+                  Valid_Flag    => Is_Valid);
+            else
+               Def := Transform_Term (Expr, Get_Typ (B.Main.B_Name), Params);
+            end if;
+
+            --  We will generate separate defining axioms, so insert the
+            --  context inside Def and Is_Valid.
+
+            if B.Valid.Present and then Present (Tmp_Id) then
+               Def :=
+                 New_Typed_Binding
+                   (Name    => Tmp_Id,
+                    Def     => +Id_Def,
+                    Context => Def);
+               if not Is_True_Boolean (Is_Valid) then
+                  Is_Valid :=
+                    New_Typed_Binding
+                      (Name    => Tmp_Id,
+                       Def     => +Id_Def,
+                       Domain  => EW_Term,
+                       Context => Is_Valid);
+               end if;
+            end if;
+
+            --  Emit an axiom for the definition of B.Main if Def does not
+            --  contain any dereferences.
+
+            if not Has_Dereference_Or_Any_Or_Self (Def) then
                Emit
                  (Th,
                   New_Defining_Axiom
@@ -190,7 +251,20 @@ package body Gnat2Why.Decls is
                      Name     => B.Main.B_Name,
                      Binders  => (1 .. 0 => <>),
                      Def      => Def));
+            end if;
 
+            --  Also add an axioms of B.Valid.Id if any
+
+            if B.Valid.Present
+              and then not Has_Dereference_Or_Any_Or_Self (+Is_Valid)
+            then
+               Emit
+                 (Th,
+                  New_Defining_Axiom
+                    (Ada_Node => E,
+                     Name     => B.Valid.Id,
+                     Binders  => (1 .. 0 => <>),
+                     Def      => +Is_Valid));
             end if;
          end;
 
@@ -539,6 +613,18 @@ package body Gnat2Why.Decls is
                Location => Safe_First_Sloc (E),
                Labels   => Symbol_Sets.Empty_Set,
                Ref_Type => Get_Typ (Var.Is_Moved.Id)));
+      end if;
+
+      --  Generate a variable for the validity flag
+
+      if Var.Valid.Present then
+         Emit (Th,
+               New_Global_Ref_Declaration
+                 (Name        => To_Local (Var.Valid.Id),
+                  Labels      => Get_Counterexample_Labels
+                    (E, "'" & Valid_Label),
+                  Location    => Safe_First_Sloc (E),
+                  Ref_Type    => EW_Bool_Type));
       end if;
 
       --  Declare the variable for the value at end of E

@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Hash;
 with Snames; use Snames;
 with Types;  use Types;
 with Uintp;  use Uintp;
@@ -33,7 +32,8 @@ package Gnat2Why.Data_Decomposition is
    subtype Size_Attribute_Id is Attribute_Id with
      Static_Predicate => Size_Attribute_Id in Attribute_Size
                                             | Attribute_Value_Size
-                                            | Attribute_Object_Size;
+                                            | Attribute_Object_Size
+                                            | Attribute_Component_Size;
 
    subtype Repr_Attribute_Id is Attribute_Id with
      Static_Predicate => Repr_Attribute_Id in Attribute_Alignment

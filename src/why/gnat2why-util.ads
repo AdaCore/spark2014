@@ -423,7 +423,8 @@ package Gnat2Why.Util is
    function New_Check_Info
      (Range_Check_Ty : Opt_Type_Kind_Id := Empty;
       Divisor        : Node_Or_Entity_Id := Empty;
-      User_Message   : String_Id := No_String) return Check_Info_Type;
+      User_Message   : String_Id := No_String;
+      Details        : String := "") return Check_Info_Type;
    --  Construct a check info with the supplied information for the fix
    --  message and the current continuation stack.
 
@@ -483,6 +484,11 @@ package Gnat2Why.Util is
    --  @return the number of discriminants visible in the Retysp of E
    --  In the translation to Why, use Count_Discriminants instead of
    --  Has_Discriminant to avoid counting hidden discriminants.
+
+   function Might_Need_Discriminant_Check (Field : Entity_Id) return Boolean;
+   --  Field is a record field, discriminant, private type, or part_of
+   --  variable. Return True if a discriminant check might be needed when
+   --  accessing Field.
 
    function Get_Expr_Quantified_Over
      (N          : Node_Id;

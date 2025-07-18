@@ -1,6 +1,7 @@
-large: True
 prove_all:
-  no_fail: True
-  sparklib: True
-  opt: ["-u", "test_fixed_points.adb"]
+  no_fail: true
+  opt:
+  - -u
+  - test_fixed_points.adb
+  sparklib: true
   steps: 10000

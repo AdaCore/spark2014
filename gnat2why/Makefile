@@ -56,7 +56,6 @@ setup: setup_precheck
 	    -e "s^@PREFIX@^$(prefix)^" \
 	    -e "s^@GNAT1DIR@^$(gnat1dir)^" \
 	    sdefault.adb.in > obj/sdefault.adb
-	cp -f gnat_src/ada_get_targ.adb obj/get_targ.adb
 	for f in gnat1drv.adb ;\
 	do \
 	  cp -pf gnat_src/$$f obj-gnat2why; \
@@ -68,7 +67,7 @@ setup: setup_precheck
 	done
 	cd obj-tools && $(GPRBUILD) -q xsnamest && ./xsnamest && \
 	mv snames.ns ../obj/snames.ads && mv snames.nb ../obj/snames.adb && \
-	$(GPRBUILD) -q -j0 gen_il-main.adb -cargs -I../obj && ./gen_il-main && \
+	$(GPRBUILD) -q -j$(PROCS) gen_il-main.adb -cargs -I../obj && ./gen_il-main && \
 	mv $(GEN_IL_FILES) ../obj
 
 build: setup force

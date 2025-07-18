@@ -15,6 +15,8 @@ for prover in ["cvc5", "z3", "altergo"]:
             "0",
             "--quiet",
             "--output=oneline",
+            "-A",
+            "info-unrolling-inlining",
         ],
         info=False,
     )

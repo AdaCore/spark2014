@@ -577,7 +577,7 @@ package body Flow.Slice is
             Is_Written : Boolean := False;
             --  Innocent till found guilty
 
-            Only_Discr_Or_Bounds_Used : Boolean := True;
+            Is_Ignored_Read : Boolean := True;
             --  For distinguishing uses that do not make the global object an
             --  In_Out, see SPARK RM 6.1.4(18): "For purposes of determining
             --  whether an output of a subprogram shall have a mode_selector of
@@ -605,13 +605,22 @@ package body Flow.Slice is
 
                --  Check if this read will render the global an In_Out
 
-               if Only_Discr_Or_Bounds_Used
-                  and then FA.PDG.Out_Neighbour_Count (V_Initial) > 0
-                  and then
-                    not (Is_Discriminant (Comp) or else Is_Bound (Comp))
+               if Is_Ignored_Read
+                 and then FA.PDG.Out_Neighbour_Count (V_Initial) > 0
                then
                   pragma Assert (Is_Used);
-                  Only_Discr_Or_Bounds_Used := False;
+
+                  if Is_Discriminant (Comp) or else Is_Bound (Comp) then
+                     if Is_Constituent (G)
+                       or else Is_Implicit_Constituent (G)
+                     then
+                        Is_Ignored_Read := False;
+                     else
+                        null;
+                     end if;
+                  else
+                     Is_Ignored_Read := False;
+                  end if;
                end if;
 
                --  If the corresponding 'Final vertex has a single in neighbour
@@ -626,7 +635,7 @@ package body Flow.Slice is
                         and then FA.PDG.Parent (V_Final) = V_Initial);
 
                --  If everything is already known then exit early
-               if Is_Written and not Only_Discr_Or_Bounds_Used then
+               if Is_Written and not Is_Ignored_Read then
                   exit;
                end if;
             end loop;
@@ -636,7 +645,9 @@ package body Flow.Slice is
             if Is_Written then
                Outputs.Insert (G);
 
-               if not Only_Discr_Or_Bounds_Used then
+               if Is_Ignored_Read then
+                  null;
+               else
                   pragma Assert (Is_Used);
                   Inputs.Insert (G);
                end if;

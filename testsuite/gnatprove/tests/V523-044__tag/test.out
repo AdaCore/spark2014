@@ -5,7 +5,7 @@ main.adb:40:14: medium: postcondition might fail
 main.adb:46:06: info: data dependencies proved
 main.adb:48:14: info: postcondition proved (CVC5: 1 VC)
 main.adb:54:06: info: data dependencies proved
-main.adb:56:14: high: postcondition might fail (e.g. when R = (F => 1) and R'Constrained = False)
+main.adb:56:14: high: postcondition might fail (e.g. when R = (F => 0))
 main.adb:63:06: info: data dependencies proved
 main.adb:68:22: info: assertion proved (CVC5: 1 VC)
 main.adb:69:22: info: assertion proved (Trivial: 1 VC)
@@ -16,8 +16,8 @@ main.adb:73:22: info: assertion proved (CVC5: 1 VC)
 main.adb:74:22: info: assertion proved (CVC5: 1 VC)
 main.adb:75:22: info: assertion proved (CVC5: 1 VC)
 main.adb:79:06: info: data dependencies proved
-main.adb:86:28: high: assertion might fail (e.g. when RR = (F => 1))
-main.adb:88:28: high: assertion might fail (e.g. when RR = (F => 1))
+main.adb:86:28: medium: assertion might fail
+main.adb:88:28: medium: assertion might fail
 main.adb:90:28: medium: assertion might fail
 main.adb:92:28: medium: assertion might fail
 main.adb:94:28: medium: assertion might fail

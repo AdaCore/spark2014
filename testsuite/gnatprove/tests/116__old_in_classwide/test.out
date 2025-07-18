@@ -7,7 +7,7 @@ foo_bad.adb:39:04: info: tag check proved (CVC5: 1 VC)
 test.adb:8:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 test.adb:8:19: warning: unused variable "X"
 test.adb:11:23: info: postcondition proved (CVC5: 1 VC)
-test.adb:11:23: medium: postcondition might fail, in inherited contract at test.adb:21
+test.adb:11:23: medium: postcondition might fail, in inherited contract at test.adb:21 [possible fix: add or complete related loop invariants or postconditions]
 test.adb:19:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 test.adb:19:19: warning: unused variable "X"
 test_constrained_type.adb:6:14: info: postcondition proved (CVC5: 1 VC)

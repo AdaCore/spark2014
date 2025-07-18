@@ -37,6 +37,7 @@ with Ada.Unchecked_Deallocation;
 with Call;                   use Call;
 with CE_Display;             use CE_Display;
 with CE_RAC;                 use CE_RAC;
+with CE_Values;              use CE_Values;
 with Common_Containers;      use Common_Containers;
 with Comperr;                use Comperr;
 with Debug;                  use Debug;
@@ -46,13 +47,16 @@ with Flow_Refinement;        use Flow_Refinement;
 with Flow_Types;             use Flow_Types;
 with Flow_Utility;           use Flow_Utility;
 with Gnat2Why.Assumptions;   use Gnat2Why.Assumptions;
+with Gnat2Why.Driver;        use Gnat2Why.Driver;
 with Gnat2Why.Util;          use Gnat2Why.Util;
 with Gnat2Why_Args;          use Gnat2Why_Args;
+with Gnat2Why_Opts.Reading;
 with GNATCOLL.Utils;
 with Osint;                  use Osint;
 with Output;                 use Output;
 with Sinput;                 use Sinput;
 with SPARK_Atree.Entities;   use SPARK_Atree.Entities;
+with SPARK_Util.Types;       use SPARK_Util.Types;
 
 package body Gnat2Why.Error_Messages is
 
@@ -161,7 +165,10 @@ package body Gnat2Why.Error_Messages is
    VC_Table : Id_Tables.Vector := Id_Tables.Empty_Vector;
    --  This table maps ids to their VC_Info (entity and Ada node)
 
-   function Find_VC (N : Node_Id; Kind : VC_Kind) return VC_Id;
+   function Find_VC (N           : Node_Id;
+                     Kind        : VC_Kind;
+                     Expected_VC : VC_Id)
+                     return VC_Id;
    --  Find the key of a VC in VC_Table
 
    Registered_VCs_In_Why3 : Natural := 0;
@@ -407,13 +414,18 @@ package body Gnat2Why.Error_Messages is
    -- Find_VC --
    -------------
 
-   function Find_VC (N : Node_Id; Kind : VC_Kind) return VC_Id is
+   function Find_VC (N           : Node_Id;
+                     Kind        : VC_Kind;
+                     Expected_VC : VC_Id)
+                     return VC_Id is
    begin
       for C in VC_Table.Iterate loop
          if VC_Table (C).Node = N
-           and then VC_Table (C).Kind = Kind
+           and then VC_Kinds_Match (VC_Table (C).Kind, Kind)
          then
-            return VC_Id (Id_Tables.To_Index (C));
+            if Id_Tables.To_Index (C) = Expected_VC then
+               return VC_Id (Id_Tables.To_Index (C));
+            end if;
          end if;
       end loop;
 
@@ -660,7 +672,8 @@ package body Gnat2Why.Error_Messages is
 
          function To_Initialize_Present (E : Entity_Id) return Boolean;
          --  Determine if the subprogram has global variables that can be
-         --  initialized or if the function has IN parameters.
+         --  initialized, the subprogram has IN parameters, or the subprogram
+         --  has OUT parameters that can be constrained in the actual.
 
          function Small_Step_Rac
            (E           : Entity_Id;
@@ -685,18 +698,23 @@ package body Gnat2Why.Error_Messages is
             Verdict        : out Cntexmp_Verdict;
             Use_Fuzzing    :     Boolean := False)
          is
+            Slc : constant Source_Ptr := Sloc (VC.Node);
          begin
             Small_Step_Res :=
               Small_Step_Rac
-                (Subp, Cntexmp, VC.Node, Fuel, Use_Fuzzing);
-
+                (Subp,
+                 Remap_VC_Info (Cntexmp, Slc),
+                 VC.Node,
+                 Fuel,
+                 Use_Fuzzing);
             if Small_Step_Res.Res_Kind = CE_RAC.Res_Failure then
                begin
                   Small_Step_Res.Res_VC_Id :=
                     Natural
                       (Find_VC
                          (Small_Step_Res.Res_Node,
-                          Small_Step_Res.Res_VC_Kind));
+                          Small_Step_Res.Res_VC_Kind,
+                          Id));
                exception
                   when E : Program_Error =>
                      --  Find_VC raises a Program_Error when unsuccessful
@@ -742,7 +760,7 @@ package body Gnat2Why.Error_Messages is
             Get_Proof_Globals
               (E, Reads, Writes, False, Scope);
             --  Check that there are globals, i.e. that running the fuzzer
-            --  would have an effect. This is done to prevent the fuzzing
+            --  would have an effect on. This is done to prevent the fuzzing
             --  session to never stop when the verdict cannot be affected by
             --  the fuzzer.
 
@@ -758,6 +776,25 @@ package body Gnat2Why.Error_Messages is
                while Present (Param) loop
                   if Ekind (Param) /= E_Out_Parameter then
                      return True;
+                  else
+                     --  Check if the out parameter has properties whose
+                     --  initial settings can affect the result. For example,
+                     --  record discriminants.
+                     --
+                     --  TODO Other kinds of constraints should be added, such
+                     --  as tags, array constraints and generally any kind
+                     --  of subtype constraint (the actual could have a more
+                     --  constrained subtype than the formal).
+                     declare
+                        Param_Ty : constant Entity_Id :=
+                          Retysp (Etype (Param));
+                     begin
+                        if Is_Record_Type (Param_Ty)
+                          and then Has_Discriminants (Param_Ty)
+                        then
+                           return True;
+                        end if;
+                     end;
                   end if;
                   Next_Formal (Param);
                end loop;
@@ -807,9 +844,9 @@ package body Gnat2Why.Error_Messages is
          VC                 : VC_Info renames VC_Table (Rec.Id);
          Can_Relocate       : constant Boolean :=
            Rec.Kind not in VC_Precondition
-                         | VC_LSP_Kind
-                         | VC_Predicate_Check
-                         | VC_Predicate_Check_On_Default_Value;
+             | VC_LSP_Kind
+               | VC_Predicate_Check
+                 | VC_Predicate_Check_On_Default_Value;
          Node               : Node_Id;
          VC_Sloc            : constant Node_Id := VC.Node;
          Small_Step_Res     : CE_RAC.Result;
@@ -839,7 +876,9 @@ package body Gnat2Why.Error_Messages is
          if Gnat2Why_Args.Check_Counterexamples
            and then not Rec.Result
          then
-            if Cntexmp_Present then
+            if Cntexmp_Present
+              and Gnat2Why_Opts.Reading.Gnattest_Values = ""
+            then
                --  Check the counterexample like normal
 
                Check_Counterexample
@@ -865,7 +904,9 @@ package body Gnat2Why.Error_Messages is
             --  shouldn't be used.
 
             if VC.Kind not in VC_Warning_Kind
-              and then Last_Cnt.Giant_Step_Result.Res_Kind not in Res_Failure
+              and then
+                (Last_Cnt.Giant_Step_Result.Res_Kind not in Res_Failure
+                 or Gnat2Why_Opts.Reading.Gnattest_Values /= "")
               and then Ekind (Subp) in E_Function | E_Procedure
               and then To_Initialize_Present (Subp)
             then
@@ -892,6 +933,11 @@ package body Gnat2Why.Error_Messages is
                --  produces a good CE.
                Small_Step_Res_Tmp := Small_Step_Res;
                Verdict_Tmp := Verdict;
+
+               --  Reset cursor in GNATtest's CE candidate bank if it exists
+               if Gnat2Why_Opts.Reading.Gnattest_Values /= "" then
+                  CE_RAC.Gnattest_Values.Pos := 1;
+               end if;
 
                while Fuel.all > 0
                  and then
@@ -924,7 +970,6 @@ package body Gnat2Why.Error_Messages is
                   Small_Step_Res := Small_Step_Res_Tmp;
                   Verdict := Verdict_Tmp;
                end if;
-
             end if;
 
          else
@@ -1211,6 +1256,11 @@ package body Gnat2Why.Error_Messages is
          if Has_Field (File, "timings") then
             Handle_Timings (Get (File, "timings"));
          end if;
+
+         --  Try to retreive input values from gnattest if they exist
+
+         Parse_Gnattest_Values (Subp);
+
          for Index in 1 .. Length (Results) loop
             Handle_Result (Get (Results, Index));
          end loop;

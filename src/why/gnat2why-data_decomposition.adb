@@ -25,12 +25,13 @@
 
 with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Directories;
+with Ada.Strings.Hash;
 with Ada.Text_IO;
 with Call;                       use Call;
 with GNAT.OS_Lib;
 with GNATCOLL.JSON;              use GNATCOLL.JSON;
+with Lib;                        use Lib;
 with Namet;                      use Namet;
-with Sinput;                     use Sinput;
 with SPARK_Atree;                use SPARK_Atree;
 with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
 with SPARK_Util;                 use SPARK_Util;
@@ -96,6 +97,11 @@ package body Gnat2Why.Data_Decomposition is
             if Known_Esize (E) then
                return Esize (E);
             end if;
+
+         when Attribute_Component_Size =>
+            if Known_Component_Size (E) then
+               return Component_Size (E);
+            end if;
       end case;
 
       --  Otherwise check if data representation contains it
@@ -130,6 +136,16 @@ package body Gnat2Why.Data_Decomposition is
 
                when Attribute_Object_Size =>
                   return Data_Entry.Object_Size;
+               when Attribute_Component_Size =>
+                  pragma
+                    Annotate
+                      (Xcov,
+                       Exempt_On,
+                       "Currently the function is never called with "
+                       & "Attribute_Component_Size and an unknown "
+                       & "Component_Size, but it could happen in the future.");
+                  return No_Uint;
+                  pragma Annotate (Xcov, Exempt_Off);
             end case;
          end if;
 
@@ -219,11 +235,15 @@ package body Gnat2Why.Data_Decomposition is
    --  Start of processing for Read_Data_Decomposition_JSON_File
 
    begin
-      for SFI in 1 .. Last_Source_File loop
-         if Sinput.File_Type (SFI) = Src then
+      for J in Main_Unit .. Last_Unit loop
+
+         --  Ignore units with no compilation unit. Those are pragma
+         --  configuration units and they have no data decomposition.
+
+         if Present (Cunit (J)) then
             declare
                Source_File_Name : constant String :=
-                 Get_Name_String (File_Name (SFI));
+                 Get_Name_String (Unit_File_Name (J));
                JSON_File_Name : constant String :=
                  Ada.Directories.Compose
                    (Containing_Directory => Data_Representation_Subdir_Name,

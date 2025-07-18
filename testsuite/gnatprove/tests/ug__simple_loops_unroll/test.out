@@ -1,3 +1,8 @@
-simple_loops_unroll.adb:4:04: info: initialization of "Prop" proved
-simple_loops_unroll.adb:20:22: info: assertion proved
-simple_loops_unroll.adb:26:22: info: assertion proved
+ info: initialization of "Prop" proved
+--> simple_loops_unroll.adb:4:04
+
+ info: assertion proved
+--> simple_loops_unroll.adb:20:22
+
+ info: assertion proved
+--> simple_loops_unroll.adb:26:22

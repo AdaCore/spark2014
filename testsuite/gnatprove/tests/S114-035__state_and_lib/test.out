@@ -3,4 +3,6 @@ test.ads:5:19: info: initialization of "N" proved
 test.ads:7:06: info: data dependencies proved
 test.ads:8:25: low: unused global "Info.Valid"
 test.ads:9:25: low: unused global "Info.State"
+test.ads:10:17: warning: assuming "Is_Valid" has no effect on global items
+test.ads:10:17: warning: no Global contract available for "Is_Valid" [assumed-global-null]
 gnatprove: error during flow analysis and proof

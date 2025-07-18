@@ -1,4 +1,4 @@
-test_callback.adb:9:18: info: cannot unroll loop (too many loop iterations)
+test_callback.adb:9:18: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 test_callback.adb:19:14: warning: assuming "Relation" has no effect on global items
 test_callback.adb:19:14: warning: no Global contract available for "Relation" [assumed-global-null]
 test_callback.adb:23:34: info: null exclusion check proved (Trivial: 1 VC)

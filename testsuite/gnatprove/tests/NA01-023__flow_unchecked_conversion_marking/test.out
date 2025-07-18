@@ -1,4 +1,4 @@
-unchecked_conversion_issue.adb:13:13: info: imprecise handling of Unchecked_Conversion (component offset not known)
 unchecked_conversion_issue.adb:13:13: info: types in unchecked conversion have the same size (Trivial)
+unchecked_conversion_issue.adb:13:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
 unchecked_conversion_issue.adb:13:46: info: type is suitable as source for unchecked conversion (Trivial)
 unchecked_conversion_issue.adb:14:46: info: type is suitable for unchecked conversion (Trivial)

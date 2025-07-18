@@ -4,8 +4,10 @@ p.adb:7:04: info: initialization of "Buffer" proved
 p.adb:11:07: medium: unexpected exception might be raised
 p.adb:11:17: medium: in value of subprogram parameter after the call at p.adb:11
 p.adb:11:17: medium: initialization check might fail
-p.adb:12:26: medium: precondition might fail (e.g. when Buffer = "[[[[[[[[[[" and Last = 1) [possible fix: loop at line 10 should mention Unb_Str in a loop invariant]
+p.adb:12:26: medium: precondition might fail [possible fix: loop at line 10 should mention Unb_Str in a loop invariant]
 p.adb:12:28: info: range check proved (CVC5: 4 VC)
-p.adb:18:13: info: references to the "Value" attribute are handled in an imprecise way, so the precondition might be impossible to prove.
-p.adb:18:13: medium: precondition might fail [possible fix: loop at line 10 should mention Unb_Str in a loop invariant]
+p.adb:17:18: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
+p.adb:18:13: low: precondition might fail [possible explanation: the check might be unprovable due to proof limitations; use --info for more information]
 p.adb:18:13: medium: range check might fail, cannot prove lower bound for T'Value (S) [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 10 should mention Unb_Str in a loop invariant]
+p.adb:18:13: warning: references to the "Value" attribute are handled in an imprecise way, so the precondition is impossible to prove and nothing will be known about the evaluation of the attribute reference [imprecise-value]
+p.adb:19:18: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]

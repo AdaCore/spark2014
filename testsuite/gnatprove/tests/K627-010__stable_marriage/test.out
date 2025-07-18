@@ -2,11 +2,13 @@ stable_marriage.adb:9:13: info: loop invariant initialization proved (CVC5: 2 VC
 stable_marriage.adb:9:13: info: loop invariant preservation proved (CVC5: 2 VC)
 stable_marriage.adb:11:26: info: range check proved (CVC5: 4 VC)
 stable_marriage.adb:12:26: info: index check proved (CVC5: 4 VC)
+stable_marriage.adb:13:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 stable_marriage.adb:15:22: info: assertion proved (CVC5: 2 VC; altergo: 1 VC)
 stable_marriage.adb:30:13: info: loop invariant initialization proved (CVC5: 2 VC)
 stable_marriage.adb:30:13: info: loop invariant preservation proved (CVC5: 2 VC)
 stable_marriage.adb:32:26: info: range check proved (CVC5: 4 VC)
 stable_marriage.adb:33:26: info: index check proved (CVC5: 4 VC)
+stable_marriage.adb:34:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 stable_marriage.adb:36:22: info: assertion proved (CVC5: 2 VC; altergo: 1 VC)
 stable_marriage.adb:51:07: info: precondition proved (CVC5: 1 VC)
 stable_marriage.adb:54:13: info: loop invariant initialization proved (CVC5: 1 VC)
@@ -17,6 +19,7 @@ stable_marriage.adb:57:13: info: loop invariant initialization proved (CVC5: 1 V
 stable_marriage.adb:57:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
 stable_marriage.adb:58:29: info: range check proved (CVC5: 4 VC)
 stable_marriage.adb:59:28: info: index check proved (CVC5: 4 VC)
+stable_marriage.adb:60:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 stable_marriage.adb:71:07: info: precondition proved (CVC5: 1 VC)
 stable_marriage.adb:74:13: info: loop invariant initialization proved (CVC5: 1 VC)
 stable_marriage.adb:74:13: info: loop invariant preservation proved (altergo: 1 VC)
@@ -26,6 +29,7 @@ stable_marriage.adb:77:13: info: loop invariant initialization proved (CVC5: 1 V
 stable_marriage.adb:77:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
 stable_marriage.adb:78:29: info: range check proved (CVC5: 4 VC)
 stable_marriage.adb:79:28: info: index check proved (CVC5: 4 VC)
+stable_marriage.adb:80:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 stable_marriage.adb:87:07: info: initialization of "Inverted" proved
 stable_marriage.adb:89:19: info: precondition proved (CVC5: 1 VC)
 stable_marriage.adb:95:07: info: initialization of "Inverted" proved
@@ -39,6 +43,7 @@ stable_marriage.adb:113:13: info: loop invariant initialization proved (CVC5: 1 
 stable_marriage.adb:113:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
 stable_marriage.adb:114:29: info: range check proved (CVC5: 4 VC)
 stable_marriage.adb:115:35: info: index check proved (CVC5: 4 VC)
+stable_marriage.adb:117:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 stable_marriage.adb:124:13: info: implicit aspect Always_Terminates on "Invert" has been proved, subprogram will terminate
 stable_marriage.adb:129:08: info: postcondition proved (altergo: 1 VC)
 stable_marriage.adb:130:33: info: precondition proved (CVC5: 1 VC)
@@ -49,6 +54,7 @@ stable_marriage.adb:140:21: info: range check proved (CVC5: 4 VC)
 stable_marriage.adb:141:24: info: index check proved (CVC5: 4 VC)
 stable_marriage.adb:141:32: info: precondition proved (CVC5: 2 VC)
 stable_marriage.adb:141:46: info: index check proved (CVC5: 4 VC)
+stable_marriage.adb:142:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 stable_marriage.adb:142:25: info: precondition proved (CVC5: 1 VC)
 stable_marriage.adb:167:07: info: initialization of "Ranking_2_Inverted" proved
 stable_marriage.adb:183:16: info: implicit aspect Always_Terminates on "All_Unmatched_G1_Set_Elements_Distinct" has been proved, subprogram will terminate
@@ -71,12 +77,12 @@ stable_marriage.adb:247:30: info: range check proved (CVC5: 2 VC)
 stable_marriage.adb:249:52: info: index check proved (CVC5: 2 VC)
 stable_marriage.adb:252:39: info: range check proved (CVC5: 2 VC)
 stable_marriage.adb:254:17: info: add a contract to analyze it separately from calling contexts
-stable_marriage.adb:254:17: info: local subprogram "Select_And_Remove_An_Unmatched_G1" only analyzed in the context of calls
+stable_marriage.adb:254:17: info: local subprogram "Select_And_Remove_An_Unmatched_G1" only analyzed in the context of calls [info-unrolling-inlining]
 stable_marriage.adb:254:52: info: initialization of "Selected" proved
 stable_marriage.adb:262:55: info: index check proved (CVC5: 2 VC), in call inlined at stable_marriage.adb:297
 stable_marriage.adb:263:71: info: range check proved (CVC5: 2 VC), in call inlined at stable_marriage.adb:297
 stable_marriage.adb:266:17: info: add a contract to analyze it separately from calling contexts
-stable_marriage.adb:266:17: info: local subprogram "Add_An_Unmatched" only analyzed in the context of calls
+stable_marriage.adb:266:17: info: local subprogram "Add_An_Unmatched" only analyzed in the context of calls [info-unrolling-inlining]
 stable_marriage.adb:268:71: info: range check proved (CVC5: 2 VC), in call inlined at stable_marriage.adb:319
 stable_marriage.adb:268:71: info: range check proved (CVC5: 2 VC), in call inlined at stable_marriage.adb:324
 stable_marriage.adb:268:71: info: range check proved (CVC5: 2 VC), in call inlined at stable_marriage.adb:383
@@ -84,7 +90,7 @@ stable_marriage.adb:269:53: info: index check proved (CVC5: 2 VC), in call inlin
 stable_marriage.adb:269:53: info: index check proved (CVC5: 2 VC), in call inlined at stable_marriage.adb:324
 stable_marriage.adb:269:53: info: index check proved (CVC5: 2 VC), in call inlined at stable_marriage.adb:383
 stable_marriage.adb:275:18: info: precondition proved (CVC5: 1 VC)
-stable_marriage.adb:277:17: info: postcondition proved (CVC5: 7 VC; Trivial: 5 VC; Z3: 1 VC; altergo: 1 VC)
+stable_marriage.adb:277:17: info: postcondition proved (CVC5: 7 VC; Trivial: 5 VC; altergo: 2 VC)
 stable_marriage.adb:290:10: info: initialization of "G1" proved
 stable_marriage.adb:291:10: info: initialization of "G2" proved
 stable_marriage.adb:292:10: info: initialization of "Accepted" proved
@@ -102,13 +108,13 @@ stable_marriage.adb:319:13: info: analyzing call to "Add_An_Unmatched" in contex
 stable_marriage.adb:320:28: info: assertion proved (altergo: 1 VC)
 stable_marriage.adb:320:28: info: precondition proved (CVC5: 1 VC)
 stable_marriage.adb:324:13: info: analyzing call to "Add_An_Unmatched" in context
-stable_marriage.adb:331:25: info: assertion proved (altergo: 1 VC)
+stable_marriage.adb:331:25: info: assertion proved (Z3: 1 VC)
 stable_marriage.adb:334:13: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-stable_marriage.adb:342:13: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
+stable_marriage.adb:342:13: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
 stable_marriage.adb:344:29: info: range check proved (CVC5: 2 VC)
 stable_marriage.adb:346:51: info: index check proved (CVC5: 2 VC)
+stable_marriage.adb:349:13: info: assertion proved (Trivial: 1 VC; Z3: 1 VC; altergo: 1 VC)
 stable_marriage.adb:350:24: info: range check proved (CVC5: 2 VC)
-stable_marriage.adb:352:19: medium: assertion might fail, cannot prove (not Unmatched_G2_Set (Ranking_1 (G1_Id) (Rank)))
 stable_marriage.adb:352:61: info: index check proved (CVC5: 2 VC)
 stable_marriage.adb:353:54: info: index check proved (CVC5: 2 VC)
 stable_marriage.adb:354:33: info: precondition proved (CVC5: 1 VC)
@@ -117,9 +123,9 @@ stable_marriage.adb:356:59: info: index check proved (CVC5: 2 VC)
 stable_marriage.adb:358:25: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 stable_marriage.adb:360:40: info: range check proved (CVC5: 2 VC)
 stable_marriage.adb:362:61: info: index check proved (CVC5: 2 VC)
+stable_marriage.adb:365:13: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC; Z3: 1 VC)
 stable_marriage.adb:366:28: info: range check proved (CVC5: 2 VC)
 stable_marriage.adb:368:46: info: index check proved (CVC5: 2 VC)
-stable_marriage.adb:370:20: medium: assertion might fail, cannot prove (Result (Ranking_1 (G1_Id) (Ranking (Proposals_Made (G1_Id)))) = G1_Id)
 stable_marriage.adb:371:31: info: range check proved (CVC5: 2 VC)
 stable_marriage.adb:375:29: info: precondition proved (CVC5: 1 VC)
 stable_marriage.adb:378:33: info: loop invariant initialization proved (CVC5: 1 VC)
@@ -132,6 +138,8 @@ stable_marriage.adb:381:21: info: range check proved (CVC5: 4 VC)
 stable_marriage.adb:382:45: info: index check proved (CVC5: 4 VC)
 stable_marriage.adb:382:64: info: range check proved (CVC5: 4 VC)
 stable_marriage.adb:383:10: info: analyzing call to "Add_An_Unmatched" in context
+stable_marriage.adb:383:10: warning: in inlined body at line 269
+stable_marriage.adb:383:10: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 stable_marriage.adb:386:22: info: assertion proved (CVC5: 1 VC)
 stable_marriage.adb:388:22: info: assertion proved (CVC5: 2 VC)
 stable_marriage.adb:392:46: medium: implicit aspect Always_Terminates on "Matching" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]

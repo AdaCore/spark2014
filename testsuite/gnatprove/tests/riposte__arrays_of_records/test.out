@@ -25,12 +25,12 @@ arrays_of_records.adb:123:22: info: assertion proved (CVC5: 1 VC)
 arrays_of_records.adb:129:11: info: flow dependencies proved
 arrays_of_records.adb:130:22: high: postcondition might fail (e.g. when A(5).Flag = True and A(5).First_Value = 42 and A(5).Second_Value = 42 and A(17).Flag = True and A(17).First_Value = 23)
 arrays_of_records.adb:139:11: info: flow dependencies proved
-arrays_of_records.adb:141:22: high: postcondition might fail (e.g. when A(0).Flag = True and A(0).First_Value = 42 and A(0).Second_Value = 42 and A(1).Flag = True and A(1).First_Value = 23 and I = 1)
+arrays_of_records.adb:141:22: high: postcondition might fail (e.g. when A(0).Flag = True and A(0).First_Value = 23 and A(0).Second_Value = 42 and A(1).Flag = True and A(1).First_Value = 42 and I = 0)
 arrays_of_records.adb:152:11: info: flow dependencies proved
 arrays_of_records.adb:153:22: high: postcondition might fail (e.g. when A(5).Flag = True and A(5).First_Value = 42 and A(5).Second_Value = 42 and A(17).Flag = True and A(17).First_Value = 23)
 arrays_of_records.adb:160:22: info: assertion proved (CVC5: 1 VC)
 arrays_of_records.adb:166:11: info: flow dependencies proved
-arrays_of_records.adb:168:22: high: postcondition might fail (e.g. when A(0).Flag = True and A(0).First_Value = 42 and A(0).Second_Value = 42 and A(1).Flag = True and A(1).First_Value = 23 and I = 1)
+arrays_of_records.adb:168:22: high: postcondition might fail (e.g. when A(0).Flag = True and A(0).First_Value = 23 and A(0).Second_Value = Value'Last and A(1).Flag = True and A(1).First_Value = 42 and I = 0)
 arrays_of_records.adb:175:22: info: assertion proved (CVC5: 1 VC)
 arrays_of_records.adb:181:11: info: flow dependencies proved
 arrays_of_records.adb:182:22: high: postcondition might fail (e.g. when A(5).Flag = True and A(5).First_Value = 0 and A(5).Second_Value = 0 and A(17).Flag = True and A(17).First_Value = 0 and A'Old(5).Flag = True and A'Old(5).First_Value = 0 and A'Old(5).Second_Value = 0 and A'Old(17).Flag = True and A'Old(17).First_Value = 0)

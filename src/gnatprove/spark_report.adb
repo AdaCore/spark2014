@@ -47,6 +47,7 @@
 --     "mode" : string,
 --     "output_header" : bool,
 --     "quiet" : bool,
+--     "colors" : bool,
 --  }
 --  Note that all fields are optional and absence of a value indicates default
 --  values for the corresponding fields: the empty list for lists, "false" for
@@ -75,24 +76,24 @@ with Ada.Calendar;
 with Ada.Containers;
 with Ada.Command_Line;
 with Ada.Directories;
-with Ada.Strings.Unbounded;               use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;
-with Assumptions;                         use Assumptions;
-with Assumptions.Search;                  use Assumptions.Search;
-with Assumption_Types;                    use Assumption_Types;
-with Call;                                use Call;
+with Assumptions;           use Assumptions;
+with Assumptions.Search;    use Assumptions.Search;
+with Assumption_Types;      use Assumption_Types;
+with Call;                  use Call;
 with GNAT.Calendar.Time_IO;
 with GNAT.Directory_Operations.Iteration;
 with GNAT.OS_Lib;
-with GNATCOLL.JSON;                       use GNATCOLL.JSON;
-with GNATCOLL.Utils;                      use GNATCOLL.Utils;
-with Platform;                            use Platform;
-with Print_Table;                         use Print_Table;
-with Report_Database;                     use Report_Database;
-with SPARK2014VSN;                        use SPARK2014VSN;
+with GNATCOLL.JSON;         use GNATCOLL.JSON;
+with GNATCOLL.Utils;        use GNATCOLL.Utils;
+with Platform;              use Platform;
+with Print_Table;           use Print_Table;
+with Report_Database;       use Report_Database;
+with SPARK2014VSN;          use SPARK2014VSN;
 with System;
 with System.Storage_Elements;
-with VC_Kinds;                            use VC_Kinds;
+with VC_Kinds;              use VC_Kinds;
 
 procedure SPARK_Report is
 
@@ -106,9 +107,11 @@ procedure SPARK_Report is
    Quiet              : Boolean := False;
    Has_Limit_Switches : Boolean := False;
    Has_Errors         : Boolean := False;
-   Mode               : GP_Mode;
+   Colors             : Boolean := False;
 
-   Error_Code         : Integer := 0;
+   Mode : GP_Mode;
+
+   Error_Code : Integer := 0;
 
    function Parse_Command_Line return String;
    --  Parse the command line and set the variables Assumptions and Limit_Subp.
@@ -234,12 +237,15 @@ procedure SPARK_Report is
 
    procedure Dump_Summary_Table (Handle : Ada.Text_IO.File_Type) is
 
-      T : Table := Create_Table
-        (Lines => Summary_Entries'Pos (Summary_Entries'Last)
-                - Summary_Entries'Pos (Summary_Entries'First) + 2,
-         --  all categories (includes total) + label column
-         Cols  => 4 + 2);
-         --  all 5 types + label column + total column
+      T : Table :=
+        Create_Table
+          (Lines =>
+             Summary_Entries'Pos (Summary_Entries'Last)
+             - Summary_Entries'Pos (Summary_Entries'First)
+             + 2,
+           --  all categories (includes total) + label column
+           Cols  => 4 + 2);
+      --  all 5 types + label column + total column
 
       procedure Print_Table_Header;
       --  print the header of the table
@@ -325,8 +331,7 @@ procedure SPARK_Report is
       procedure Print_Table_Line (Line : Summary_Entries) is
          Elt   : Summary_Line renames Summary (Line);
          Total : constant Natural :=
-           Elt.Flow + Elt.Provers.Total +
-             Elt.Justified + Elt.Unproved;
+           Elt.Flow + Elt.Provers.Total + Elt.Justified + Elt.Unproved;
       begin
          Put_Cell (T, To_String (Line), Align => Left_Align);
          Put_Cell (T, Total);
@@ -341,12 +346,10 @@ procedure SPARK_Report is
       -- Print_Table_Total --
       -----------------------
 
-      procedure Print_Table_Total
-      is
+      procedure Print_Table_Total is
          Elt : Summary_Line renames Summary (Total);
          Tot : constant Natural :=
-           Elt.Flow + Elt.Provers.Total + Elt.Justified
-             + Elt.Unproved;
+           Elt.Flow + Elt.Provers.Total + Elt.Justified + Elt.Unproved;
       begin
          Put_Cell (T, To_String (Total), Align => Left_Align);
          Put_Cell (T, Tot);
@@ -417,7 +420,7 @@ procedure SPARK_Report is
          end if;
       end Put_Total_Cell;
 
-   --  Start of processing for Dump_Summary_Table
+      --  Start of processing for Dump_Summary_Table
 
    begin
       Compute_Total_Summary_Line;
@@ -452,9 +455,7 @@ procedure SPARK_Report is
          when Call_To_Current_Task =>
             return Runtime_Checks;
 
-         when Concurrent_Access
-            | Potentially_Blocking_In_Protected
-         =>
+         when Concurrent_Access | Potentially_Blocking_In_Protected =>
             return Concurrency;
 
          when Critical_Global_Missing
@@ -486,9 +487,7 @@ procedure SPARK_Report is
          =>
             return Flow_Dep;
 
-         when Call_In_Type_Invariant
-            | Subprogram_Termination
-         =>
+         when Call_In_Type_Invariant | Subprogram_Termination =>
             return Termination;
 
          when Dead_Code
@@ -542,15 +541,16 @@ procedure SPARK_Report is
          end if;
       end Severity_To_Msg_Kind;
 
-   --  Start of Processing for Handle_Flow_Items
+      --  Start of Processing for Handle_Flow_Items
 
    begin
       for Index in 1 .. Length (V) loop
          declare
-            Result : constant JSON_Value := Get (V, Index);
-            Severe : constant String     := Get (Get (Result, "severity"));
-            Subp   : constant Subp_Type  := From_JSON (Get (Result, "entity"));
-            Kind   : constant Flow_Tag_Kind :=
+            Result   : constant JSON_Value := Get (V, Index);
+            Severe   : constant String := Get (Get (Result, "severity"));
+            Subp     : constant Subp_Type :=
+              From_JSON (Get (Result, "entity"));
+            Kind     : constant Flow_Tag_Kind :=
               Flow_Tag_Kind'Value (Get (Get (Result, "rule")));
             Category : constant Possible_Entries :=
               Flow_Kind_To_Summary (Kind);
@@ -599,14 +599,14 @@ procedure SPARK_Report is
             File   : constant String := Get (Result, "file");
             Line   : constant Positive := Get (Result, "line");
             Column : constant Positive := Get (Result, "col");
-            Subp   : constant Subp_Type :=
-              From_JSON (Get (Result, "entity"));
+            Subp   : constant Subp_Type := From_JSON (Get (Result, "entity"));
          begin
-            Add_Pragma_Assume_Result (Unit   => Unit,
-                                      File   => File,
-                                      Line   => Line,
-                                      Column => Column,
-                                      Subp   => Subp);
+            Add_Pragma_Assume_Result
+              (Unit   => Unit,
+               File   => File,
+               Line   => Line,
+               Column => Column,
+               Subp   => Subp);
          end;
       end loop;
    end Handle_Pragma_Assume_Items;
@@ -620,13 +620,12 @@ procedure SPARK_Report is
       for Index in 1 .. Length (V) loop
          declare
             Result   : constant JSON_Value := Get (V, Index);
-            Severe   : constant String     := Get (Get (Result, "severity"));
-            Kind     : constant VC_Kind    :=
+            Severe   : constant String := Get (Get (Result, "severity"));
+            Kind     : constant VC_Kind :=
               VC_Kind'Value (Get (Get (Result, "rule")));
             Subp     : constant Subp_Type :=
               From_JSON (Get (Result, "entity"));
-            Category : constant Possible_Entries :=
-              VC_Kind_To_Summary (Kind);
+            Category : constant Possible_Entries := VC_Kind_To_Summary (Kind);
             Proved   : constant Boolean := Severe = "info";
             File     : constant String := Get (Get (Result, "file"));
             Line     : constant Positive := Get (Get (Result, "line"));
@@ -646,10 +645,7 @@ procedure SPARK_Report is
                   Line       => Line,
                   Column     => Column);
             else
-               Add_Proof_Result
-                 (Unit   => Unit,
-                  Subp   => Subp,
-                  Proved => Proved);
+               Add_Proof_Result (Unit => Unit, Subp => Subp, Proved => Proved);
                if Proved then
                   declare
                      Cat : constant Prover_Category :=
@@ -666,18 +662,21 @@ procedure SPARK_Report is
                            declare
                               M : Prover_Stat_Maps.Map;
                            begin
-                              M.Insert ("Trivial",
-                                        Prover_Stat'(Count     => 1,
-                                                     Max_Steps => 1,
-                                                     Max_Time  => 0.0));
+                              M.Insert
+                                ("Trivial",
+                                 Prover_Stat'
+                                   (Count     => 1,
+                                    Max_Steps => 1,
+                                    Max_Time  => 0.0));
                               Merge_Stat_Maps
                                 (Summary (Category).Provers.Provers, M);
                               Increment (Summary (Category).Provers.Total);
                            end;
+
                         when PC_Prover =>
                            if Has_Field (Result, "stats") then
                               declare
-                                 Stats : constant Prover_Stat_Maps.Map :=
+                                 Stats     : constant Prover_Stat_Maps.Map :=
                                    From_JSON (Get (Result, "stats"));
                                  Max_Steps : Natural;
                                  Max_Time  : Float;
@@ -698,6 +697,7 @@ procedure SPARK_Report is
                               end;
                            end if;
                            Increment (Summary (Category).Provers.Total);
+
                         when PC_Flow =>
                            --  we shouldn't encounter flow values here
                            raise Program_Error;
@@ -718,9 +718,7 @@ procedure SPARK_Report is
    procedure Handle_Source_Dir (Dir : String) is
 
       procedure Local_Handle_SPARK_File
-        (Item  : String;
-         Index : Positive;
-         Quit  : in out Boolean);
+        (Item : String; Index : Positive; Quit : in out Boolean);
       --  Wrapper for Handle_SPARK_File
 
       -----------------------------
@@ -728,10 +726,7 @@ procedure SPARK_Report is
       -----------------------------
 
       procedure Local_Handle_SPARK_File
-        (Item  : String;
-         Index : Positive;
-         Quit  : in out Boolean)
-      is
+        (Item : String; Index : Positive; Quit : in out Boolean) is
       begin
          pragma Unreferenced (Index);
          pragma Unreferenced (Quit);
@@ -739,21 +734,22 @@ procedure SPARK_Report is
       exception
          when others =>
             Ada.Text_IO.Put_Line
-               (Ada.Text_IO.Standard_Error,
-                "spark_report: error when processing file " & Item &
-                ", skipping");
+              (Ada.Text_IO.Standard_Error,
+               "spark_report: error when processing file "
+               & Item
+               & ", skipping");
             Ada.Text_IO.Put_Line
-               (Ada.Text_IO.Standard_Error,
-                "spark_report: try cleaning proofs to remove this error");
+              (Ada.Text_IO.Standard_Error,
+               "spark_report: try cleaning proofs to remove this error");
       end Local_Handle_SPARK_File;
 
       procedure Iterate_SPARK is new
-         GNAT.Directory_Operations.Iteration.Wildcard_Iterator
+        GNAT.Directory_Operations.Iteration.Wildcard_Iterator
           (Action => Local_Handle_SPARK_File);
 
       Save_Dir : constant String := Ada.Directories.Current_Directory;
 
-   --  Start of processing for Handle_Source_Dir
+      --  Start of processing for Handle_Source_Dir
 
    begin
       Ada.Directories.Set_Directory (Dir);
@@ -771,8 +767,8 @@ procedure SPARK_Report is
 
    procedure Handle_SPARK_File (Fn : String) is
 
-      Basename    : constant String := Ada.Directories.Base_Name (Fn);
-      Unit        : constant Unit_Type := Mk_Unit (Basename);
+      Basename : constant String := Ada.Directories.Base_Name (Fn);
+      Unit     : constant Unit_Type := Mk_Unit (Basename);
 
       procedure Handle_SPARK_Status (Name : UTF8_String; Value : JSON_Value);
       --  Handle one entry of the "spark" status map
@@ -789,12 +785,12 @@ procedure SPARK_Report is
             Subp         => From_Key (Name),
             SPARK_Status => SPARK_Status);
 
-            --  If at least one subprogram or package is fully in SPARK, then
-            --  record that SPARK_Mode is likely set at least somewhere.
+         --  If at least one subprogram or package is fully in SPARK, then
+         --  record that SPARK_Mode is likely set at least somewhere.
 
-            if SPARK_Status = All_In_SPARK then
-               SPARK_Mode_OK := True;
-            end if;
+         if SPARK_Status = All_In_SPARK then
+            SPARK_Mode_OK := True;
+         end if;
 
       end Handle_SPARK_Status;
 
@@ -816,10 +812,11 @@ procedure SPARK_Report is
       Stop_Reason : constant Stop_Reason_Type :=
         Stop_Reason_Type'Value (String'(Get (Dict, "stop_reason")));
 
-      SPARK_Status_Dict : constant JSON_Value := Get (Dict, "spark");
+      SPARK_Status_Dict        : constant JSON_Value := Get (Dict, "spark");
       Skip_Flow_And_Proof_List : constant JSON_Array :=
         Get (Dict, "skip_flow_proof");
-      Skip_Proof_List : constant JSON_Array := Get (Dict, "skip_proof");
+      Skip_Proof_List          : constant JSON_Array :=
+        Get (Dict, "skip_proof");
    begin
       Parse_Entity_Table (Get (Dict, "entities"));
       Add_Analysis_Progress (Unit, Analysis, Stop_Reason);
@@ -891,22 +888,23 @@ procedure SPARK_Report is
 
       procedure For_Each_Unit (Unit : Unit_Type) is
 
-         procedure For_Each_Subp (Subp     : Subp_Type;
-                                  Stat     : Stat_Rec;
-                                  Analysis : Analysis_Progress);
+         procedure For_Each_Subp
+           (Subp : Subp_Type; Stat : Stat_Rec; Analysis : Analysis_Progress);
 
          -------------------
          -- For_Each_Subp --
          -------------------
 
-         procedure For_Each_Subp (Subp     : Subp_Type;
-                                  Stat     : Stat_Rec;
-                                  Analysis : Analysis_Progress) is
+         procedure For_Each_Subp
+           (Subp : Subp_Type; Stat : Stat_Rec; Analysis : Analysis_Progress) is
 
          begin
-            Put (Handle,
-                 "  " & Subp_Name (Subp) & " at " &
-                   To_String (Subp_Sloc (Subp)));
+            Put
+              (Handle,
+               "  "
+               & Subp_Name (Subp)
+               & " at "
+               & To_String (Subp_Sloc (Subp)));
 
             if Stat.SPARK = All_In_SPARK then
                if Analysis < Progress_Flow then
@@ -916,29 +914,40 @@ procedure SPARK_Report is
                     (Handle,
                      " not analyzed (pragma Annotate Skip_Flow_And_Proof)");
                else
-                  Put (Handle,
-                       " flow analyzed ("
-                       & Image (Stat.Flow_Errors, 1) & " errors, "
-                       & Image (Stat.Flow_Checks, 1) & " checks, "
-                       & Image (Stat.Flow_Warnings, 1) & " warnings and "
-                       & Image (Natural (Stat.Pragma_Assumes.Length), 1)
-                       & " pragma Assume " & "statements)");
+                  Put
+                    (Handle,
+                     " flow analyzed ("
+                     & Image (Stat.Flow_Errors, 1)
+                     & " errors, "
+                     & Image (Stat.Flow_Checks, 1)
+                     & " checks, "
+                     & Image (Stat.Flow_Warnings, 1)
+                     & " warnings and "
+                     & Image (Natural (Stat.Pragma_Assumes.Length), 1)
+                     & " pragma Assume "
+                     & "statements)");
 
                   if Analysis = Progress_Proof then
                      if Has_Skip_Proof (Subp) then
-                        Put (Handle,
-                             ", proof skipped (pragma Annotate Skip_Proof)");
+                        Put
+                          (Handle,
+                           ", proof skipped (pragma Annotate Skip_Proof)");
                      else
                         Put (Handle, " and");
                         if Stat.Proof_Checks = Stat.Proof_Checks_OK then
-                           Put (Handle,
-                                " proved ("
-                                & Image (Stat.Proof_Checks, 1) & " checks)");
+                           Put
+                             (Handle,
+                              " proved ("
+                              & Image (Stat.Proof_Checks, 1)
+                              & " checks)");
                         else
-                           Put (Handle,
-                                " not proved," & Stat.Proof_Checks_OK'Img
-                                & " checks out of" & Stat.Proof_Checks'Img
-                                & " proved");
+                           Put
+                             (Handle,
+                              " not proved,"
+                              & Stat.Proof_Checks_OK'Img
+                              & " checks out of"
+                              & Stat.Proof_Checks'Img
+                              & " proved");
                         end if;
                      end if;
                   end if;
@@ -962,18 +971,23 @@ procedure SPARK_Report is
                            --  possible)".
 
                         begin
-                           Put_Line (Handle, "    "
-                                     --  file, line, column, e.g. "p.adb:42:6:"
-                                     & To_String (Msg.File)
-                                     & ":" & Image (Msg.Line, 1) & ":"
-                                     & Image (Msg.Column, 1) & ":"
+                           Put_Line
+                             (Handle,
+                              "    "
+                              --  file, line, column, e.g. "p.adb:42:6:"
+                              & To_String (Msg.File)
+                              & ":"
+                              & Image (Msg.Line, 1)
+                              & ":"
+                              & Image (Msg.Column, 1)
+                              & ":"
 
-                                     --  justification message, e.g. "overflow
-                                     --  check failed"
-                                     & (if Msg.Justif_Msg /= ""
-                                        then " " & To_String (Msg.Justif_Msg)
-                                        else "")
-                                     & To_String (Explanation));
+                              --  justification message, e.g. "overflow
+                              --  check failed"
+                              & (if Msg.Justif_Msg /= ""
+                                 then " " & To_String (Msg.Justif_Msg)
+                                 else "")
+                              & To_String (Explanation));
                         end;
                      end loop;
                   end if;
@@ -981,11 +995,14 @@ procedure SPARK_Report is
                   if not Stat.Pragma_Assumes.Is_Empty then
                      Put_Line (Handle, "   pragma Assume statements:");
                      for Assm of Stat.Pragma_Assumes loop
-                        Put_Line (Handle,
-                                  "    "
-                                  & Ada.Strings.Unbounded.To_String (Assm.File)
-                                  & ":" & Image (Assm.Line, 1)
-                                  & ":" & Image (Assm.Column, 1));
+                        Put_Line
+                          (Handle,
+                           "    "
+                           & Ada.Strings.Unbounded.To_String (Assm.File)
+                           & ":"
+                           & Image (Assm.Line, 1)
+                           & ":"
+                           & Image (Assm.Column, 1));
                      end loop;
                   end if;
 
@@ -1017,14 +1034,18 @@ procedure SPARK_Report is
             end if;
          end For_Each_Subp;
 
-      --  Start of processing for For_Each_Unit
+         --  Start of processing for For_Each_Unit
 
       begin
-         Put_Line (Handle,
-                   "in unit " & Unit_Name (Unit) & ", "
-                   & Image (Num_Subps_SPARK (Unit), 1)
-                   & " subprograms and packages out of "
-                   & Image (Num_Subps (Unit), 1) & " analyzed");
+         Put_Line
+           (Handle,
+            "in unit "
+            & Unit_Name (Unit)
+            & ", "
+            & Image (Num_Subps_SPARK (Unit), 1)
+            & " subprograms and packages out of "
+            & Image (Num_Subps (Unit), 1)
+            & " analyzed");
 
          if Unit_Progress (Unit) < Progress_Flow then
             Put (Handle, "flow analysis and ");
@@ -1051,17 +1072,24 @@ procedure SPARK_Report is
       function To_String (Reason : Stop_Reason_Type) return String is
       begin
          case Reason is
-            when Stop_Reason_None         => return "";
+            when Stop_Reason_None =>
+               return "";
+
             when Stop_Reason_Generic_Unit =>
                return "generic unit is not analyzed";
-            when Stop_Reason_Check_Mode   =>
+
+            when Stop_Reason_Check_Mode =>
                return "only SPARK_Mode checking was requested";
+
             when Stop_Reason_Flow_Mode =>
                return "only flow analysis was requested";
+
             when Stop_Reason_Error_Marking =>
                return "error during checking of SPARK_Mode";
+
             when Stop_Reason_Error_Flow =>
                return "error during flow analysis";
+
             when Stop_Reason_Error_Borrow =>
                return "error during ownership checking";
          end case;
@@ -1069,10 +1097,9 @@ procedure SPARK_Report is
 
       N_Un : constant Natural := Num_Units;
 
-      Unit_Str : constant String :=
-        (if N_Un = 1 then "unit" else "units");
+      Unit_Str : constant String := (if N_Un = 1 then "unit" else "units");
 
-   --  Start of processing for Print_Analysis_Report
+      --  Start of processing for Print_Analysis_Report
 
    begin
       Ada.Text_IO.Put_Line (Handle, "========================");
@@ -1103,9 +1130,8 @@ procedure SPARK_Report is
             Max := Elt.Max_Steps;
          end if;
       end loop;
-      Ada.Text_IO.Put_Line (Handle,
-                            "max steps used for successful proof:" &
-                              Natural'Image (Max));
+      Ada.Text_IO.Put_Line
+        (Handle, "max steps used for successful proof:" & Natural'Image (Max));
       Ada.Text_IO.New_Line (Handle);
    end Print_Max_Steps;
 
@@ -1153,8 +1179,7 @@ procedure SPARK_Report is
      (C         : Summary_Entries;
       Stats     : Prover_Stat_Maps.Map;
       Max_Steps : out Natural;
-      Max_Time  : out Float)
-   is
+      Max_Time  : out Float) is
    begin
       Merge_Stat_Maps (Summary (C).Provers.Provers, Stats);
 
@@ -1186,57 +1211,58 @@ procedure SPARK_Report is
 
       procedure Print_Switch_Entry (Name : UTF8_String; Value : JSON_Value) is
       begin
-         Put_Line (Handle,
-                   "   " & Name & ": " & Build_Switches_String (Get (Value)));
+         Put_Line
+           (Handle, "   " & Name & ": " & Build_Switches_String (Get (Value)));
       end Print_Switch_Entry;
 
       ---------------
       -- OS_String --
       ---------------
 
-      function OS_String return String is
-         (case Get_OS_Flavor is
-             when X86_Windows
-                | X86_64_Windows => "Windows",
-             when X86_Linux
-                | X86_64_Linux
-                | AArch64_Linux  => "Linux",
-             when X86_64_Darwin  => "Darwin",
-             when X86_64_FreeBSD => "FreeBSD",
-             when GNATSAS_OS    => "GNATSAS OS",
-             when AArch64_Darwin => "Darwin");
+      function OS_String return String
+      is (case Get_OS_Flavor is
+            when X86_Windows | X86_64_Windows => "Windows",
+            when X86_Linux | X86_64_Linux | AArch64_Linux => "Linux",
+            when X86_64_Darwin => "Darwin",
+            when X86_64_FreeBSD => "FreeBSD",
+            when GNATSAS_OS => "GNATSAS OS",
+            when AArch64_Darwin => "Darwin");
 
       Pointer_Size : constant :=
         System.Storage_Elements.Integer_Address'Size / System.Storage_Unit;
 
-   --  Start of processing for Show_Header
+      --  Start of processing for Show_Header
 
    begin
       Put_Line
         (Handle,
-         "date               : " &
-         GNAT.Calendar.Time_IO.Image (Date    => Ada.Calendar.Clock,
-                                      Picture => "%Y-%m-%d %H:%M:%S"));
+         "date               : "
+         & GNAT.Calendar.Time_IO.Image
+             (Date => Ada.Calendar.Clock, Picture => "%Y-%m-%d %H:%M:%S"));
+      Put_Line (Handle, "gnatprove version  : " & SPARK2014_Version_String);
       Put_Line
         (Handle,
-         "gnatprove version  : " & SPARK2014_Version_String);
-      Put_Line
-        (Handle,
-         "host               : " & OS_String &
-           Integer'Image (Pointer_Size * 8) & " bits");
+         "host               : "
+         & OS_String
+         & Integer'Image (Pointer_Size * 8)
+         & " bits");
 
       if Has_Field (Info, "cmdline") then
-         Put_Line (Handle, "command line       : " &
-                   Build_Switches_String (Get (Info, "cmdline")));
+         Put_Line
+           (Handle,
+            "command line       : "
+            & Build_Switches_String (Get (Info, "cmdline")));
       end if;
       if Has_Field (Info, "switches") then
-         Put_Line (Handle, "Switches attribute: " &
-                   Build_Switches_String (Get (Info, "switches")));
+         Put_Line
+           (Handle,
+            "Switches attribute: "
+            & Build_Switches_String (Get (Info, "switches")));
       end if;
       if Has_Field (Info, "proof_switches") then
          Put_Line (Handle, " Proof_Switches attribute:");
-         Map_JSON_Object (Get (Info, "proof_switches"),
-                          Print_Switch_Entry'Access);
+         Map_JSON_Object
+           (Get (Info, "proof_switches"), Print_Switch_Entry'Access);
       end if;
    end Show_Header;
 
@@ -1269,12 +1295,14 @@ procedure SPARK_Report is
             | VC_Ceiling_Priority_Protocol
             | VC_Task_Termination
             | VC_Raise
+            | VC_Unexpected_Program_Exit
             | VC_UC_Source
             | VC_UC_Target
             | VC_UC_Same_Size
             | VC_UC_Alignment
             | VC_Unchecked_Union_Restriction
             | VC_UC_Volatile
+            | VC_Validity_Check
          =>
             return Runtime_Checks;
 
@@ -1290,10 +1318,7 @@ procedure SPARK_Report is
          =>
             return Assertions;
 
-         when VC_Loop_Variant
-            | VC_Subprogram_Variant
-            | VC_Termination_Check
-         =>
+         when VC_Loop_Variant | VC_Subprogram_Variant | VC_Termination_Check =>
             return Termination;
 
          when VC_Initial_Condition
@@ -1306,6 +1331,7 @@ procedure SPARK_Report is
             | VC_Disjoint_Cases
             | VC_Complete_Cases
             | VC_Exceptional_Case
+            | VC_Program_Exit_Post
             | VC_Exit_Case
             | VC_Inline_Check
             | VC_Container_Aggr_Check
@@ -1324,8 +1350,7 @@ procedure SPARK_Report is
          =>
             return LSP;
 
-         when VC_Warning_Kind
-         =>
+         when VC_Warning_Kind =>
             return Warnings;
       end case;
    end VC_Kind_To_Summary;
@@ -1355,17 +1380,38 @@ procedure SPARK_Report is
    function To_String (S : Summary_Entries) return String is
    begin
       case S is
-         when Data_Dep             => return "Data Dependencies";
-         when Flow_Dep             => return "Flow Dependencies";
-         when Init                 => return "Initialization";
-         when Non_Aliasing         => return "Non-Aliasing";
-         when Runtime_Checks       => return "Run-time Checks";
-         when Assertions           => return "Assertions";
-         when Functional_Contracts => return "Functional Contracts";
-         when LSP                  => return "LSP Verification";
-         when Termination          => return "Termination";
-         when Concurrency          => return "Concurrency";
-         when Total                => return "Total";
+         when Data_Dep =>
+            return "Data Dependencies";
+
+         when Flow_Dep =>
+            return "Flow Dependencies";
+
+         when Init =>
+            return "Initialization";
+
+         when Non_Aliasing =>
+            return "Non-Aliasing";
+
+         when Runtime_Checks =>
+            return "Run-time Checks";
+
+         when Assertions =>
+            return "Assertions";
+
+         when Functional_Contracts =>
+            return "Functional Contracts";
+
+         when LSP =>
+            return "LSP Verification";
+
+         when Termination =>
+            return "Termination";
+
+         when Concurrency =>
+            return "Concurrency";
+
+         when Total =>
+            return "Total";
       end case;
    end To_String;
 
@@ -1375,24 +1421,20 @@ procedure SPARK_Report is
 
    Handle : File_Type;
 
-   Info   : constant JSON_Value :=
-     Read_File_Into_JSON (Source_Directories_File);
+   Info : constant JSON_Value := Read_File_Into_JSON (Source_Directories_File);
 
---  Start of processing for SPARK_Report
+   --  Start of processing for SPARK_Report
 
 begin
 
    --  Processing of config options
 
    Assumptions :=
-     Has_Field (Info, "assumptions")
-     and then Get (Info, "assumptions") = True;
+     Has_Field (Info, "assumptions") and then Get (Info, "assumptions") = True;
    Output_Header :=
      Has_Field (Info, "output_header")
      and then Get (Info, "output_header") = True;
-   Quiet :=
-     Has_Field (Info, "quiet")
-     and then Get (Info, "quiet") = True;
+   Quiet := Has_Field (Info, "quiet") and then Get (Info, "quiet") = True;
 
    Has_Limit_Switches :=
      Has_Field (Info, "has_limit_switches")
@@ -1400,6 +1442,7 @@ begin
 
    Mode := From_JSON (Get (Info, "mode"));
    Has_Errors := Get (Info, "has_errors");
+   Colors := Get (Info, "colors");
 
    if Has_Field (Info, "obj_dirs") then
       declare
@@ -1411,11 +1454,12 @@ begin
       end;
    end if;
 
-   Create (Handle,
-           Out_File,
-           Ada.Directories.Compose
-             (GNAT.Directory_Operations.Dir_Name (Source_Directories_File),
-              "gnatprove.out"));
+   Create
+     (Handle,
+      Out_File,
+      Ada.Directories.Compose
+        (GNAT.Directory_Operations.Dir_Name (Source_Directories_File),
+         "gnatprove.out"));
    if Assumptions then
       Compute_Assumptions;
    end if;
@@ -1453,12 +1497,14 @@ begin
               (if Has_Limit_Switches then "error" else "warning");
          begin
             Error_Code := 1;
-            Put_Line (Standard_Error,
-                      Err_Warn & ": no checks generated by GNATprove");
+            Put_Line
+              (Standard_Error,
+               Err_Warn & ": no checks generated by GNATprove");
             if Has_Limit_Switches then
-               Put_Line (Standard_Error,
-                         "possible reason: wrong parameters to switches"
-                         & " such as --limit-subp or --limit-line");
+               Put_Line
+                 (Standard_Error,
+                  "possible reason: wrong parameters to switches"
+                  & " such as --limit-subp or --limit-line");
             else
                Put_Line
                  (Standard_Error,
@@ -1471,6 +1517,38 @@ begin
             end if;
          end;
       end if;
+   end if;
+
+   --  Similarly, we print a success message if some checks exist and
+   --  all have been proved. Suppressed if we are in mode "quiet".
+
+   if not Quiet
+     and then not Has_Errors
+     and then Has_Check
+     and then not Has_Unproved_Check
+   then
+      declare
+         Sum          : Summary_Line renames Summary (Total);
+         Total_VCs    : constant Natural :=
+           Sum.Flow + Sum.Justified + Sum.Provers.Total + Sum.Unproved;
+         Enable_Green : constant String :=
+           (if Colors then ASCII.ESC & "[32m" & ASCII.ESC & "[K" else "");
+         Reset_Color  : constant String :=
+           (if Colors then ASCII.ESC & "[m" & ASCII.ESC & "[K" else "");
+         Checks       : constant String :=
+           (if Total_VCs = 1 then "check" else "checks");
+         Total        : constant String := Natural'Image (Total_VCs);
+      begin
+         Put_Line
+           (Enable_Green
+            & "Success:"
+            & Reset_Color
+            & " all checks proved ("
+            & Total (Total'First + 1 .. Total'Last)
+            & " "
+            & Checks
+            & ").");
+      end;
    end if;
 
    Print_Most_Difficult_Proved_Checks (Handle);

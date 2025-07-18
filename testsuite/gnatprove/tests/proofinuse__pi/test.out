@@ -84,6 +84,10 @@ pi_compute.adb:113:18: info: division check proved (CVC5: 1 VC)
 pi_compute.adb:113:18: info: float overflow check proved (CVC5: 1 VC)
 pi_compute.adb:114:22: info: assertion proved (CVC5: 1 VC)
 pi_compute.adb:119:46: info: range check proved (CVC5: 2 VC)
+pi_compute.adb:119:53: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 pi_compute.adb:120:47: info: range check proved (CVC5: 2 VC)
+pi_compute.adb:120:54: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 pi_compute.adb:121:45: info: range check proved (CVC5: 2 VC)
+pi_compute.adb:121:52: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]
 pi_compute.adb:122:45: info: range check proved (CVC5: 2 VC)
+pi_compute.adb:122:52: warning: references to the "Image" attribute are handled in an imprecise way, so nothing will be known about the evaluation of the attribute reference apart from a bound on its length [imprecise-image]

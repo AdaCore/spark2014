@@ -673,7 +673,8 @@ package SPARK_Definition.Annotate is
    function Has_Visible_Package_Body (E : Entity_Id) return Boolean;
    --  Return True if the body of a nested package E is unhidden
 
-   function Has_Mutable_In_Param_Annotation (E : Entity_Id) return Boolean;
+   function Has_Mutable_In_Param_Annotation (E : Entity_Id) return Boolean
+     with Pre => Ekind (E) = E_In_Parameter;
    --  Return True if E is a IN parameter annotated as mutable
 
    function Has_Hidden_Private_Part (E : Entity_Id) return Boolean;

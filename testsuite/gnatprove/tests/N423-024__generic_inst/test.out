@@ -7,6 +7,6 @@ context_b.adb:10:17: warning: subprogram "Check_Cond" has no effect, in instanti
 context_b.adb:18:25: info: assertion proved (CVC5: 1 VC), in instantiation at context_b.adb:24
 context_b.adb:22:13: info: implicit aspect Always_Terminates on "Greater_Than_Zero" has been proved, subprogram will terminate
 context_b.adb:26:14: info: add a contract to analyze it separately from calling contexts
-context_b.adb:26:14: info: local subprogram "Local" only analyzed in the context of calls
+context_b.adb:26:14: info: local subprogram "Local" only analyzed in the context of calls [info-unrolling-inlining]
 context_b.adb:26:14: warning: subprogram "Local" has no effect
 context_b.adb:31:04: info: analyzing call to "Local" in context

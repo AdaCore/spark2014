@@ -1300,6 +1300,19 @@ package body Graphs is
       G.Vertices (V_1).Out_Neighbours (V_2).Marked := True;
    end Mark_Edge;
 
+   ----------
+   -- Move --
+   ----------
+
+   procedure Move (Target : in out Graph; Source : in out Graph) is
+   begin
+      VL.Move (Target.Vertices, Source.Vertices);
+      Target.Default_Colour := Source.Default_Colour;
+      Target.Frozen         := Source.Frozen;
+      Target.Clusters       := Source.Clusters;
+      Key_To_Id_Maps.Move (Target.Key_To_Id, Source.Key_To_Id);
+   end Move;
+
    -----------------
    -- New_Cluster --
    -----------------

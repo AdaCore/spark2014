@@ -1,10 +1,12 @@
 with Ada.Containers.Indefinite_Doubly_Linked_Lists;
-with Common_Containers;   use Common_Containers;
+with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
+with Common_Containers;         use Common_Containers;
 with Errout;
-with GNATCOLL.JSON;
-with String_Utils;        use String_Utils;
-with Types;               use Types;
-with VC_Kinds;            use VC_Kinds;
+with GNATCOLL.JSON;             use GNATCOLL.JSON;
+with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
+with String_Utils;              use String_Utils;
+with Types;                     use Types;
+with VC_Kinds;                  use VC_Kinds;
 
 package Errout_Wrapper is
 
@@ -30,21 +32,89 @@ package Errout_Wrapper is
    function To_JSON (Kind : Msg_Severity) return GNATCOLL.JSON.JSON_Value;
    --  Return a JSON object (string) for the message kind
 
-   type Message (Len : Natural) is record
+   type Message is record
       Names         : Node_Lists.List;
       Secondary_Loc : Source_Ptr;
       Explain_Code  : Explain_Code_Kind;
-      Msg           : String (1 .. Len);
+      Msg           : Unbounded_String;
    end record;
    --  Type of a message. Note that this type encapsulates only the string
    --  object, it is different from an error, warning etc. The string may
    --  contain & and # characters. & refers to the names in the list of
    --  nodes, while # refers to the location.
 
-   No_Message : constant Message := Message'(0, [], No_Location, EC_None, "");
+   No_Message : constant Message :=
+     Message'([], No_Location, EC_None, Null_Unbounded_String);
 
    package Message_Lists is new Ada.Containers.Indefinite_Doubly_Linked_Lists
      (Message, "=");
+
+   function "&" (M : Message; S : String) return Message;
+
+   type Suppression is (Warning, Check, None);
+   type Suppressed_Message (Suppression_Kind : Suppression := None) is record
+      case Suppression_Kind is
+         when Check =>
+            Msg           : String_Id;
+            Annot_Kind    : Annotate_Kind;
+            Justification : Unbounded_String;
+         when others =>
+            null;
+      end case;
+   end record;
+   --  When a warning is suppressed, we can store its message; when a check is
+   --  suppressed, we can store its message, annotation kind and justification.
+
+   Suppressed_Warning : constant Suppressed_Message :=
+     Suppressed_Message'(Suppression_Kind => Warning);
+   --  This represents a suppressed warning
+
+   No_Suppressed_Message : constant Suppressed_Message :=
+     Suppressed_Message'(Suppression_Kind => None);
+
+   type JSON_Result_Type is record
+      Tag           : Unbounded_String;
+      Severity      : Msg_Severity;
+      Span          : Source_Span;
+      E             : Entity_Id;
+      Msg           : Message;
+      Details       : Unbounded_String;
+      Explanation   : Unbounded_String;
+      CE            : Unbounded_String;
+      User_Message  : Unbounded_String;
+      Fix           : Message := No_Message;
+      Continuations : Message_Lists.List;
+      Suppr         : Suppressed_Message;
+      How_Proved    : Prover_Category;
+      Tracefile     : Unbounded_String;
+      Cntexmp       : Cntexample_Data;
+      Check_Tree    : JSON_Value := Create_Object;
+      VC_File       : Unbounded_String;
+      VC_Loc        : Source_Ptr := No_Location;
+      Stats         : Prover_Stat_Maps.Map;
+      Editor_Cmd    : Unbounded_String;
+   end record
+   with
+     Predicate =>
+       JSON_Result_Type.Tag /= Null_Unbounded_String
+       and then JSON_Result_Type.Msg /= No_Message;
+
+   Flow_Msgs  : GNATCOLL.JSON.JSON_Array;
+   Proof_Msgs : GNATCOLL.JSON.JSON_Array;
+   --  Variables to hold JSON objects for .spark file output
+
+   type Message_Id is new Integer range -1 .. Integer'Last;
+   --  type used to identify a message issued by gnat2why
+
+   No_Message_Id : constant Message_Id := -1;
+
+   function Next_Message_Id return Message_Id;
+   --  Return a fresh Message ID
+
+   procedure Add_Json_Msg
+     (Msg_List : in out GNATCOLL.JSON.JSON_Array;
+      Obj      : JSON_Result_Type;
+      Msg_Id   : Message_Id);
 
    function Create
      (Msg           : String;
@@ -55,19 +125,13 @@ package Errout_Wrapper is
    --  secondary location via #, and it may contain an explain code.
 
    function Create_N
-     (Msg           : String;
-      Names         : String_Lists.List := String_Lists.Empty;
-      Secondary_Loc : Source_Ptr := No_Location;
-      Explain_Code  : Explain_Code_Kind := EC_None) return Message;
-   --  Same as Create, but the names can be provided as a list of Strings.
-
-   function Create_N
      (Kind          : Misc_Warning_Kind;
       Extra_Message : String := "";
       Names         : String_Lists.List := String_Lists.Empty;
       Secondary_Loc : Source_Ptr := No_Location;
       Explain_Code  : Explain_Code_Kind := EC_None) return Message;
-   --  Same as Create_N, but intended to produce a warning message.
+   --  Same as Create_N, but intended to produce a warning message, and the
+   --  Names are provided in String form.
 
    procedure Error_Msg_N
      (Msg           : Message;
@@ -123,6 +187,12 @@ package Errout_Wrapper is
       Continuations : Message_Lists.List := Message_Lists.Empty);
    --  Variant of Warning_Msg_N where the user creates the message object,
    --  ideally with the Create_N that takes a Misc_Warning_Kind.
+
+   function Tag_Suffix (Kind : Misc_Warning_Kind) return String;
+   --  If the option is set to print the tag for each warning message, then
+   --  this function returns the string " [tag]" (note the initial space),
+   --  where "tag" is the tag name of the warning kind.
+   --  If not, it returns the empty string.
 
    function Escape (S : String) return String;
    --  Escape the special characters # and & in the error message

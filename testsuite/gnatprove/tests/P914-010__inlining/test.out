@@ -1,7 +1,7 @@
 ex.adb:4:13: info: add a contract to analyze it separately from calling contexts
 ex.adb:4:13: info: implicit aspect Always_Terminates on "Count" has been proved, subprogram will terminate
-ex.adb:4:13: info: local subprogram "Count" only analyzed in the context of calls
+ex.adb:4:13: info: local subprogram "Count" only analyzed in the context of calls [info-unrolling-inlining]
 ex.adb:11:30: info: overflow check proved (CVC5: 12 VC; Z3: 22 VC), in call inlined at ex.adb:20
 ex.adb:20:17: info: analyzing call to "Count" in context
 ex.adb:20:17: info: in inlined body at line 9
-ex.adb:20:17: info: unrolling loop
+ex.adb:20:17: info: unrolling loop [info-unrolling-inlining]

@@ -1,0 +1,16 @@
+with "sparklib";
+
+project At_End_Borrow is
+
+   package Compiler is
+      for Switches ("Ada") use ("-gnat2022");
+   end Compiler;
+
+   package Prove is
+      --  Disable CVC5, because it causes this test to timeout, while all
+      --  provable checks are quickly proved by other provers. This appears
+      --  to only happen with CVC5-1.2.0, while CVC5-1.2.1 gives up quickly.
+      for Proof_Switches ("Ada") use ("--report=all", "--function-sandboxing=off", "-u", "list_borrows.adb", "--prover=z3,altergo");
+   end Prove;
+
+end At_End_Borrow;

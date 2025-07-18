@@ -20,8 +20,7 @@ procedure Test_Lists with SPARK_Mode is
          pragma Assert (C.all = 3);
       end;
       declare
-         L_Acc : access List := L'Access;
-         E     : constant access Integer := Reference (L_Acc, F);
+         E : constant access Integer := Reference (L, F);
       begin
          pragma Assert (E.all = 3);
          E.all := 5;

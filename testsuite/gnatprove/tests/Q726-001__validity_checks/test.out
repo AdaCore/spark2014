@@ -5,4 +5,4 @@ essai05.adb:9:13: info: implicit aspect Always_Terminates on "Conv" has been pro
 essai05.adb:13:07: medium: range check might fail
 essai05.adb:13:07: warning: initialization of "R" has no effect
 essai05.adb:13:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-essai05.adb:15:24: info: cannot unroll loop (too many loop iterations)
+essai05.adb:15:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]

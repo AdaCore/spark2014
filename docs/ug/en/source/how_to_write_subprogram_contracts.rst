@@ -47,6 +47,14 @@ objective:
   assumed to potentially propagate any exception
   (``Exceptional_Cases => (others => True)``).
 
+* program exit contract (``Program_Exit``)
+
+  As a default, procedures and functions with side effects are assumed to not
+  terminate the program abruptly  (``Program_Exit => False``). If they have an
+  exit they have an ``Exit_Cases`` aspect mentioning ``Program_Exit``, then the
+  subprogram is assumed to potentially terminate the program abruptly
+  (``Program_Exit => True``).
+
 * termination contract (``Always_Terminates``)
 
   The contract is generated from a body in SPARK and a default contract of

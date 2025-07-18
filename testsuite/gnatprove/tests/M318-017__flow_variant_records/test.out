@@ -8,12 +8,12 @@ definite.adb:34:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 definite.adb:37:28: info: initialization of "X" proved
 definite.adb:38:28: info: initialization of "Y" proved
 definite.adb:39:09: info: data dependencies proved
-definite.adb:39:31: info: initialization of "G" proved
 definite.adb:40:09: info: flow dependencies proved
+definite.adb:45:07: medium: "G.D" is not set
 definite.adb:48:25: info: initialization of "Y" proved
 definite.adb:49:09: info: data dependencies proved
-definite.adb:49:31: info: initialization of "G" proved
-definite.adb:50:09: info: flow dependencies proved
+definite.adb:50:26: medium: incorrect dependency "Y => G"
+definite.adb:54:12: medium: "G.D" is not set
 definite.adb:55:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 definite.adb:58:25: info: initialization of "X" proved
 definite.adb:59:09: info: data dependencies proved
@@ -22,8 +22,8 @@ definite.adb:65:15: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 definite.adb:67:15: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 definite.adb:69:15: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 definite.adb:74:09: info: data dependencies proved
-definite.adb:74:31: info: initialization of "G" proved
-definite.adb:75:09: info: flow dependencies proved
+definite.adb:75:26: medium: incorrect dependency "G => G"
+definite.adb:78:12: medium: "G.D" is not set
 definite.adb:80:15: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 definite.adb:82:15: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 definite.adb:84:15: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -36,7 +36,7 @@ definite.adb:96:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 definite.adb:99:30: info: initialization of "X" proved
 definite.adb:100:30: info: initialization of "Y" proved
 definite.adb:101:09: info: data dependencies proved
-definite.adb:101:30: info: initialization of "G" proved
+definite.adb:104:07: medium: "G.D" is not set
 definite.adb:107:23: info: initialization of "X" proved
 definite.adb:108:23: info: initialization of "Y" proved
 definite.adb:109:09: info: data dependencies proved

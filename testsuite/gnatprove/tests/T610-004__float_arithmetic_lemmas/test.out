@@ -70,10 +70,20 @@ test_arith.adb:100:28: info: range check proved (CVC5: 1 VC)
 test_arith.adb:100:31: info: range check proved (CVC5: 1 VC)
 test_arith.adb:100:34: info: range check proved (CVC5: 1 VC)
 test_arith.adb:102:19: info: assertion proved (CVC5: 2 VC)
+test_arith.adb:102:19: warning: assuming "Is_Integer_64" has no effect on global items
+test_arith.adb:102:19: warning: no Global contract available for "Is_Integer_64" [assumed-global-null]
 test_arith.adb:103:19: info: assertion proved (CVC5: 2 VC)
+test_arith.adb:103:19: warning: assuming "Is_Integer_32" has no effect on global items
+test_arith.adb:103:19: warning: no Global contract available for "Is_Integer_32" [assumed-global-null]
 test_arith.adb:104:19: info: assertion proved (CVC5: 1 VC)
+test_arith.adb:104:19: warning: assuming "Is_Integer" has no effect on global items
+test_arith.adb:104:19: warning: no Global contract available for "Is_Integer" [assumed-global-null]
 test_arith.adb:106:19: info: assertion proved (CVC5: 2 VC)
+test_arith.adb:106:19: warning: assuming "Is_Float" has no effect on global items
+test_arith.adb:106:19: warning: no Global contract available for "Is_Float" [assumed-global-null]
 test_arith.adb:107:19: info: assertion proved (CVC5: 2 VC)
+test_arith.adb:107:19: warning: assuming "Is_Float" has no effect on global items
+test_arith.adb:107:19: warning: no Global contract available for "Is_Float" [assumed-global-null]
 test_arith64.adb:12:57: info: initialization of "R1" proved
 test_arith64.adb:12:61: info: initialization of "R2" proved
 test_arith64.adb:14:14: info: postcondition proved (CVC5: 1 VC)
@@ -146,7 +156,17 @@ test_arith64.adb:100:28: info: range check proved (CVC5: 1 VC)
 test_arith64.adb:100:31: info: range check proved (CVC5: 1 VC)
 test_arith64.adb:100:34: info: range check proved (CVC5: 1 VC)
 test_arith64.adb:102:19: info: assertion proved (CVC5: 2 VC)
+test_arith64.adb:102:19: warning: assuming "Is_Integer_64" has no effect on global items
+test_arith64.adb:102:19: warning: no Global contract available for "Is_Integer_64" [assumed-global-null]
 test_arith64.adb:103:19: info: assertion proved (CVC5: 2 VC)
+test_arith64.adb:103:19: warning: assuming "Is_Integer_32" has no effect on global items
+test_arith64.adb:103:19: warning: no Global contract available for "Is_Integer_32" [assumed-global-null]
 test_arith64.adb:104:19: info: assertion proved (altergo: 1 VC)
+test_arith64.adb:104:19: warning: assuming "Is_Integer" has no effect on global items
+test_arith64.adb:104:19: warning: no Global contract available for "Is_Integer" [assumed-global-null]
 test_arith64.adb:106:19: info: assertion proved (CVC5: 2 VC)
+test_arith64.adb:106:19: warning: assuming "Is_Float" has no effect on global items
+test_arith64.adb:106:19: warning: no Global contract available for "Is_Float" [assumed-global-null]
 test_arith64.adb:107:19: info: assertion proved (CVC5: 2 VC)
+test_arith64.adb:107:19: warning: assuming "Is_Float" has no effect on global items
+test_arith64.adb:107:19: warning: no Global contract available for "Is_Float" [assumed-global-null]

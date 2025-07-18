@@ -468,7 +468,7 @@ package body Gnat2Why.Types is
                   New_Incompl_Acc   => New_Incompl_Acc,
                   Loc_Incompl_Acc_R => Loc_Incompl_Acc_R,
                   New_Incompl_Acc_R => New_Incompl_Acc_R,
-                  Expand_Incompl    => True);
+                  Expand_Incompl    => False);
 
                --  Copy new predicate symbols to the map of local symbols
 

@@ -21,7 +21,7 @@ aip-arp.adb:315:07: info: initialization of "Local" proved
 aip-arp.adb:321:16: info: implicit aspect Always_Terminates on "Netif_MAC" has been proved, subprogram will terminate
 aip-arp.adb:322:09: info: data dependencies proved
 aip-arp.adb:324:10: info: initialization of "Result" proved
-aip-arp.adb:324:10: warning: address specification on "Result" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid reads [imprecise-address-specification] [E0012]
+aip-arp.adb:324:10: warning: address specification on "Result" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias [imprecise-address-specification] [E0012]
 aip-arp.adb:324:10: warning: launch "gnatprove --explain=E0012" for more information
 aip-arp.adb:324:10: warning: make sure that all overlapping objects have Async_Writers set to True
 aip-arp.adb:396:25: warning: statement has no effect

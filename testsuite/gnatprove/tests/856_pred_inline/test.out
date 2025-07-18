@@ -1,0 +1,3 @@
+repr.ads:40:28: warning: "Meter" is not modified, could be IN
+repr.ads:41:17: medium: in inlined predicate at repr.ads:18
+repr.ads:41:17: medium: postcondition might fail, cannot prove S in One_Ten

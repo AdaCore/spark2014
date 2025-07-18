@@ -117,6 +117,7 @@ package Why.Atree.Modules is
    Incomp_Ty_Conv         : W_Module_Id;
    Pledge                 : W_Module_Id;
    Real_Time_Model        : W_Module_Id;
+   Validity_Wrapper_Model : W_Module_Id;
 
    Constr_Arrays                 : W_Module_Array (1 .. Max_Array_Dimensions);
    Unconstr_Arrays               : W_Module_Array (1 .. Max_Array_Dimensions);
@@ -139,6 +140,7 @@ package Why.Atree.Modules is
       Bool_Not          : W_Identifier_Id;
       Return_Exc        : W_Name_Id;
       Ada_Exc           : W_Name_Id;
+      Program_Exit_Exc  : W_Name_Id;
       String_Image_Type : W_Type_Id;
       Type_Of_Heap      : W_Type_Id;
       Spark_CE_Branch   : W_Identifier_Id;
@@ -800,6 +802,8 @@ package Why.Atree.Modules is
       Refined_Post_Axiom,        --  Refined post axiom
       Lemma_Axiom,               --  Post axiom of a lemma procedure annotated
                                  --  with Automatic_Instantiation.
+      Validity_Wrapper,          --  Defining a wrapper for functions returning
+                                 --  potentially invalid results.
       Type_Completion,           --  Type completion
       Type_Representative,       --  Representative module for a type
       Record_Rep_Completion,     --  Completion of representative module for a

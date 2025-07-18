@@ -13,7 +13,7 @@ test_goto.adb:10:15: warning: no Global contract available for "E" [assumed-glob
 test_goto.adb:12:16: info: no contextual analysis of "B" (body not seen yet)
 test_goto.adb:12:16: warning: assuming "B" has no effect on global items
 test_goto.adb:12:16: warning: no Global contract available for "B" [assumed-global-null]
-test_goto.adb:16:35: info: cannot unroll loop (too many loop iterations)
+test_goto.adb:16:35: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 test_goto.adb:17:29: medium: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 16 should mention X in a loop invariant]
 test_goto.adb:18:25: info: no contextual analysis of "B" (body not seen yet)
 test_goto.adb:18:25: warning: assuming "B" has no effect on global items
@@ -72,12 +72,12 @@ test_goto.adb:90:19: medium: assertion might fail [possible fix: loop invariant 
 test_goto.adb:90:19: warning: assuming "B" has no effect on global items
 test_goto.adb:90:19: warning: no Global contract available for "B" [assumed-global-null]
 test_goto_borrow.adb:9:12: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
-test_goto_borrow.adb:9:12: info: implicit function contract might not be available on recursive calls
+test_goto_borrow.adb:9:12: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
 test_goto_borrow.adb:11:41: info: subprogram variant proved (Trivial)
 test_goto_borrow.adb:11:50: info: pointer dereference check proved (CVC5: 1 VC)
 test_goto_borrow.adb:11:58: info: overflow check proved (CVC5: 2 VC)
 test_goto_borrow.adb:14:12: info: implicit aspect Always_Terminates on "Nth" has been proved, subprogram will terminate
-test_goto_borrow.adb:14:12: info: implicit function contract might not be available on recursive calls
+test_goto_borrow.adb:14:12: warning: implicit function contract might not be available on recursive calls [contracts-recursive]
 test_goto_borrow.adb:15:20: info: pointer dereference check proved (CVC5: 1 VC)
 test_goto_borrow.adb:15:31: info: precondition proved (CVC5: 1 VC)
 test_goto_borrow.adb:15:31: info: subprogram variant proved (Trivial)
@@ -87,7 +87,7 @@ test_goto_borrow.adb:19:13: info: implicit aspect Always_Terminates on "At_End_B
 test_goto_borrow.adb:20:07: info: dynamic accessibility check proved (Trivial)
 test_goto_borrow.adb:24:54: info: initialization of "Rest" proved
 test_goto_borrow.adb:24:84: info: initialization of "I" proved
-test_goto_borrow.adb:26:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC; Z3: 1 VC)
+test_goto_borrow.adb:26:14: info: postcondition proved (Trivial: 1 VC; Z3: 2 VC)
 test_goto_borrow.adb:27:48: info: precondition proved (CVC5: 1 VC)
 test_goto_borrow.adb:27:56: info: range check proved (CVC5: 2 VC)
 test_goto_borrow.adb:34:15: info: absence of resource or memory leak proved (CVC5: 1 VC)

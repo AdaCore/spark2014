@@ -21,13 +21,13 @@ c74402a.adb:104:26: warning: assuming "FAILED" has no effect on global items
 c74402a.adb:104:26: warning: no Always_Terminates aspect available for "FAILED" [assumed-always-terminates]
 c74402a.adb:104:26: warning: no Global contract available for "FAILED" [assumed-global-null]
 c74402a.adb:122:21: info: add a contract to analyze it separately from calling contexts
-c74402a.adb:122:21: info: local subprogram "G4" only analyzed in the context of calls
+c74402a.adb:122:21: info: local subprogram "G4" only analyzed in the context of calls [info-unrolling-inlining]
 c74402a.adb:122:21: warning: subprogram "G4" has no effect
 c74402a.adb:128:21: info: add a contract to analyze it separately from calling contexts
-c74402a.adb:128:21: info: local subprogram "G5" only analyzed in the context of calls
+c74402a.adb:128:21: info: local subprogram "G5" only analyzed in the context of calls [info-unrolling-inlining]
 c74402a.adb:128:21: warning: subprogram "G5" has no effect
 c74402a.adb:134:21: info: add a contract to analyze it separately from calling contexts
-c74402a.adb:134:21: info: local subprogram "G6" only analyzed in the context of calls
+c74402a.adb:134:21: info: local subprogram "G6" only analyzed in the context of calls [info-unrolling-inlining]
 c74402a.adb:134:21: warning: subprogram "G6" has no effect
 c74402a.adb:142:11: info: analyzing call to "G4" in context
 c74402a.adb:143:11: info: analyzing call to "G5" in context

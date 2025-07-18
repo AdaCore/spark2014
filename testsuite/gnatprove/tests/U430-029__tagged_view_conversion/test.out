@@ -1,5 +1,5 @@
 test_tagged_records_loop.adb:15:69: info: tag check proved (CVC5: 1 VC)
-test_tagged_records_loop.adb:18:24: info: cannot unroll loop (too many loop iterations)
+test_tagged_records_loop.adb:18:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 test_tagged_records_loop.adb:21:18: info: tag check proved (CVC5: 1 VC)
 test_tagged_records_loop.adb:25:10: info: assertion proved (CVC5: 1 VC)
 test_tagged_records_loop.adb:25:37: info: index check proved (CVC5: 2 VC)
@@ -15,7 +15,7 @@ test_tagged_records_loop.adb:48:13: info: loop invariant initialization proved (
 test_tagged_records_loop.adb:48:13: info: loop invariant preservation proved (CVC5: 1 VC)
 test_tagged_records_loop.adb:48:45: info: index check proved (CVC5: 4 VC)
 test_tagged_records_loop.adb:50:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
-test_tagged_records_loop.adb:50:13: info: loop invariant preservation proved (Trivial: 1 VC; Z3: 1 VC)
+test_tagged_records_loop.adb:50:13: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
 test_tagged_records_loop.adb:51:22: info: index check proved (CVC5: 4 VC)
 test_tagged_records_loop.adb:51:65: info: index check proved (CVC5: 4 VC)
 test_tagged_records_loop.adb:51:68: info: tag check proved (CVC5: 2 VC)

@@ -102,10 +102,13 @@ an *entire object*.
 
 
 6. The declaration of a function without side effects shall not have a
-   ``parameter_specification`` with a mode of **out** or **in out**. This rule
-   also applies to a ``subprogram_body`` for a function without side effects
-   for which no explicit declaration is given. A function without side effects
-   shall have no outputs other than its result.
+   ``parameter_specification`` with a mode of **out** or **in out** unless it
+   has a mode of **in out** and is the first parameter of a borrowing traversal
+   function (see :ref:`Access Types`). This rule also applies to a
+   ``subprogram_body`` for a function without side effects for which no explicit
+   declaration is given. A function without side effects shall have no outputs
+   other than its result. [A subprogram parameter of mode **in out** shall not
+   be an output of its borrowing traversal function].
 
 7. A subprogram parameter of mode **in** shall not be an output of its
    subprogram unless the type of the parameter is an access type and the
@@ -126,9 +129,14 @@ an *entire object*.
    aliased shall be fully initialized when the exception is propagated
    except for those that have relaxed initialization.
 
-10. A function without side effects shall always return normally.
+10. If a call exits the whole program, all global outputs of the callee
+    mentioned in the boolean expression of its aspect Program_Exit outside of
+    a reference to the Old attribute shall be fully initialized when the
+    program is exited except for those that have relaxed initialization.
 
-11. A call to a ghost procedure occurring outside of a ghost context shall
+11. A function without side effects shall always return normally.
+
+12. A call to a ghost procedure occurring outside of a ghost context shall
     always return normally.
 
 .. index:: precondition, postcondition
@@ -1492,6 +1500,9 @@ occur in them.
 
    Static Semantics
 
+An Exceptional_Cases aspect is an assertion (as defined in RM 11.4.2(1.1/3));
+its assertion expressions are the consequences of its exceptional cases.
+
 All prefixes of references to the Old attribute in exceptional cases are
 expected to be evaluated at the beginning of the call regardless of whether or
 not the particular exception is raised. This allows to introduce constants for
@@ -1531,13 +1542,69 @@ Exceptional_Cases aspects are ignored for execution.
    the verification conditions introduced when raising unexpected exceptions,
    there is always an exceptional case covering the propagated exception.]
 
+Program_Exit Aspects
+~~~~~~~~~~~~~~~~~~~~
+
+The aspect Program_Exit may be specified for subprograms with
+side effects; it can be used to indicate that a subprogram might exit the whole
+program, and provide a specific postcondition. The Program_Exit aspect is
+specified with an aspect_specification where the aspect_mark is Program_Exit and
+the optional aspect_definition is a boolean expression. A Program_Exit aspect
+with no aspect_definition is equivalent to a Program_Exit aspect with an
+aspect_definition of True.
+
+.. container:: heading
+
+   Name Resolution Rules
+
+The boolean expression in the aspect_definition should be resolved as a
+postcondition. In particular, references to the Old attribute are allowed to
+occur in it.
+
+.. container:: heading
+
+   Static Semantics
+
+A Program_Exit aspect is an assertion (as defined in RM 11.4.2(1.1/3)); its
+assertion expression is its boolean expression.
+
+1. If an output of a subprogram with side effects is mentioned in the boolean
+   expression of its aspect Program_Exit, then it shall either occur inside
+   the prefix of a reference to the Old attribute or be a stand-alone object.
+
+.. container:: heading
+
+   Dynamic Semantics
+
+Program_Exit aspects are ignored for execution.
+
+.. container:: heading
+
+   Legality Rules
+
+2. The Program_Exit aspect may only be specified for the initial
+   declaration of a subprogram with side effects (which may be a declaration, a
+   body or a body stub).
+
+.. container:: heading
+
+   Verification Rules
+
+3. A verification condition is introduced on calls to subprograms annotated with
+   the Program_Exit aspect. For calls occuring directly inside subprograms also
+   annotated with the Program_Exit aspect, it ensures that the boolean
+   expression of the Program_Exit aspect of the caller evaluates to True if the
+   callee exits the whole program. For other calls, it
+   ensures that the callee does not exit the whole program.
+
 Exit Cases
 ~~~~~~~~~~
 
 The aspect Exit_Cases may be specified for procedures and functions with side
 effects; it can be used to partition the input state into a list of cases and
 specify, for each case, how the subprogram is allowed to terminate (i.e. return
-normally or propagate an exception). The Exit_Cases aspect is specified with an
+normally, propagate an exception, or exit the whole program).
+The Exit_Cases aspect is specified with an
 ``aspect_specification`` where the ``aspect_mark`` is Exit_Cases and the
 ``aspect_definition`` must follow the grammar of ``exit_case_list`` given
 below.
@@ -1553,6 +1620,7 @@ below.
   EXIT_KIND      ::= Normal_Return
                    | Exception_Raised
                    | (Exception_Raised => exception_name)
+                   | Program_Exit
   GUARD          ::= Boolean_expression | OTHERS
 
 .. container:: heading
@@ -1561,6 +1629,13 @@ below.
 
 The boolean expressions in the guards should be resolved as regular
 preconditions.
+
+.. container:: heading
+
+   Static Semantics
+
+An Exit_Cases aspect is an assertion (as defined in RM 11.4.2(1.1/3)); its
+assertion expressions are the guards of its exit cases.
 
 .. container:: heading
 
@@ -1574,49 +1649,60 @@ Exit_Cases aspects are ignored for execution.
 
 1. A guard **others**, if present, shall appear in the last exit case.
 
-2. A subprogram annotated with Exit_Cases shall be allowed to propagate
-   exceptions. More precisely, if it is has an Exceptional_Cases aspect, then
-   the aspect should not contain only statically False consequences. Otherwise,
-   there should be at least one exit case other than Normal_Return.
+2. If all the exit cases of the Exit_Cases aspect of a subprogram are associated
+   with Normal_Return, then the subprogram shall have either an
+   Exceptional_Cases contract that does not contain only consequences which
+   are known to be False at compile time or a Program_Exit contract whose
+   postcondition is not known to be False at compile time.
+   [A subprogram annotated with Exit_Cases shall be allowed to either
+   propagate an exception or exit the program.]
 
 3. All exceptions mentioned in the Exit_Cases aspect of a subprogram shall be
    allowed by the Exceptional_Cases contract of the subprogram, if any.
+
+4. If the Exit_Cases aspect has at least one exit case associated with
+   Program_Exit, then the Program_Exit contract for the subprogram, if any,
+   shall not have a postcondition which is known to be False at compile time.
 
 .. container:: heading
 
    Verification Rules
 
-4. If a subprogram is annotated with Exit_Cases and there are at least two
+5. If a subprogram is annotated with Exit_Cases and there are at least two
    exit cases whose guards are not the **others** choice, then a verification
    condition is introduced to make sure that all the non-**others** guards are
    disjoint in the context of the precondition.
 
-5. If a subprogram annotated with Exit_Cases returns normally, then a
+6. If a subprogram annotated with Exit_Cases returns normally, then a
    verification condition is introduced to make sure that the exit kind of the
    exit case whose guard evaluates to True is Normal_Return, if there is one.
 
-6. If an exception raised in a subprogram annotated with Exit_Cases is not
+7. If an exception raised in a subprogram annotated with Exit_Cases is not
    handled and causes the subprogram body to complete, then a verification
    condition is introduced to make sure that the exit kind of the exit case
    whose guard evaluates to True, if there is one, is either Exception_Raised or
    (Exception_Raised => E), where E is resolved to the exception that is
    propagated.
 
+8. If a subprogram annotated with Exit_Cases exits the whole program, then a
+   verification condition is introduced to make sure that the exit kind of the
+   exit case whose guard evaluates to True is Program_Exit, if there is one.
+
 Always_Terminates Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The aspect Always_Terminates may be specified for subprograms with
 side effects; it can be used to provide a condition under which the subprogram
-shall necessarily complete (either return normally or raise an exception). This
+shall necessarily complete (either return normally, raise an exception, or
+exit the whole program). This
 aspect may also be specified on packages to provide a default for all
 subprograms with side effects declared in the package or in one of its nested
 packages. The Always_Terminates aspect is specified with an
 aspect_specification where the aspect_mark is Always_Terminates and the
 optional aspect_definition is a boolean expression. An Always_Terminates aspect
 with no aspect_definition is equivalent to an Always_Terminates aspect with an
-aspect_definition of True.  [An execution which does not complete can for
-example run forever, exit the whole program using GNAT.OS_Lib.OS_Exit, or
-transfer the control to another execution in a non-standard way.]
+aspect_definition of True. [The execution of a SPARK subprogram which does not
+complete necessarily runs forever. Other behaviors cannot be modeled in SPARK.]
 
 .. container:: heading
 
@@ -1628,6 +1714,9 @@ precondition.
 .. container:: heading
 
    Static Semantics
+
+An Always_Terminates aspect is an assertion (as defined in RM 11.4.2(1.1/3));
+its assertion expression is its boolean expression.
 
 1. If the aspect Always_Terminates is specified for a package, it shall not have
    an aspect definition.

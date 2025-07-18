@@ -3,3 +3,5 @@ main.adb:22:13: info: loop invariant initialization proved (CVC5: 2 VC), in inst
 main.adb:22:13: info: loop invariant preservation proved (CVC5: 2 VC), in instantiation at main.adb:38
 main.adb:28:28: info: assertion proved (CVC5: 2 VC), in instantiation at main.adb:38
 main.adb:36:21: info: range check proved (CVC5: 2 VC)
+main.adb:38:04: warning: in instantiation at line 29
+main.adb:38:04: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]

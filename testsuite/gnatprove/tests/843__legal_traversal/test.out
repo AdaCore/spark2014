@@ -1,0 +1,62 @@
+test_flow.adb:17:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+test_flow.adb:26:07: high: "X.A" must be a global output of "Modify_X" (SPARK RM 6.1.4(18))
+test_flow.adb:26:07: high: "X.C" must be a global output of "Modify_X" (SPARK RM 6.1.4(18))
+test_flow.adb:28:09: info: pointer dereference check proved (CVC5: 1 VC)
+test_flow.adb:31:18: medium: missing dependency "X => I"
+test_flow.adb:31:34: medium: incorrect dependency "null => I"
+test_flow.adb:35:09: info: pointer dereference check proved (CVC5: 1 VC)
+test_flow.adb:38:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
+test_flow.adb:42:15: info: dynamic accessibility check proved (Trivial)
+test_flow.adb:45:04: medium: resource or memory leak might occur at end of scope
+test_flow.adb:45:24: info: null exclusion check proved (CVC5: 1 VC)
+test_flow.adb:47:07: high: "Y.A" must be a global output of "Modify_Y" (SPARK RM 6.1.4(18))
+test_flow.adb:47:07: high: "Y.C" must be a global output of "Modify_Y" (SPARK RM 6.1.4(18))
+test_flow.adb:49:09: info: pointer dereference check proved (CVC5: 1 VC)
+test_flow.adb:52:18: medium: missing dependency "Y => I"
+test_flow.adb:52:34: medium: incorrect dependency "null => I"
+test_flow.adb:56:09: info: pointer dereference check proved (CVC5: 1 VC)
+test_legal.adb:9:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+test_legal.adb:16:13: info: implicit aspect Always_Terminates on "F_2" has been proved, subprogram will terminate
+test_legal.adb:21:14: medium: dynamic accessibility check might fail
+test_legal.adb:26:14: info: add a contract to analyze it separately from calling contexts
+test_legal.adb:26:14: info: local subprogram "Test" only analyzed in the context of calls [info-unrolling-inlining]
+test_legal.adb:32:14: info: add a contract to analyze it separately from calling contexts
+test_legal.adb:32:14: info: local subprogram "Test_2" only analyzed in the context of calls [info-unrolling-inlining]
+test_legal.adb:44:13: info: implicit aspect Always_Terminates on "F_3" has been proved, subprogram will terminate
+test_legal.adb:48:15: info: dynamic accessibility check proved (Trivial)
+test_legal.adb:51:13: info: implicit aspect Always_Terminates on "F_4" has been proved, subprogram will terminate
+test_legal.adb:56:14: info: dynamic accessibility check proved (Trivial)
+test_legal.adb:59:04: medium: resource or memory leak might occur at end of scope
+test_legal.adb:59:34: info: null exclusion check proved (CVC5: 1 VC)
+test_legal.adb:61:04: warning: analyzing unreferenced procedure "Test_3" [unreferenced-procedure]
+test_legal.adb:68:04: info: analyzing call to "Test" in context
+test_legal.adb:69:19: medium: assertion might fail
+test_legal.adb:70:04: info: analyzing call to "Test_2" in context
+test_legal.adb:71:19: medium: assertion might fail
+test_proof.adb:15:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
+test_proof.adb:15:85: info: dynamic accessibility check proved (Trivial)
+test_proof.adb:19:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
+test_proof.adb:23:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+test_proof.adb:24:14: info: postcondition proved (CVC5: 2 VC)
+test_proof.adb:24:70: info: pointer dereference check proved (CVC5: 1 VC)
+test_proof.adb:31:04: warning: analyzing unreferenced procedure "Bad_Call_F" [unreferenced-procedure]
+test_proof.adb:31:14: warning: subprogram "Bad_Call_F" has no effect
+test_proof.adb:37:12: info: pointer dereference check proved (CVC5: 1 VC)
+test_proof.adb:39:22: medium: assertion might fail (e.g. when X = (A => 1, C => 3))
+test_proof.adb:42:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
+test_proof.adb:46:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
+test_proof.adb:47:14: info: postcondition proved (CVC5: 2 VC)
+test_proof.adb:47:74: info: pointer dereference check proved (CVC5: 1 VC)
+test_proof.adb:51:15: info: dynamic accessibility check proved (Trivial)
+test_proof.adb:54:04: warning: analyzing unreferenced procedure "Bad_Call_G" [unreferenced-procedure]
+test_proof.adb:54:14: warning: subprogram "Bad_Call_G" has no effect
+test_proof.adb:55:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_proof.adb:55:35: info: null exclusion check proved (CVC5: 1 VC)
+test_proof.adb:60:12: info: pointer dereference check proved (CVC5: 1 VC)
+test_proof.adb:62:22: medium: assertion might fail
+test_proof.adb:66:04: medium: resource or memory leak might occur at end of scope
+test_proof.adb:66:24: info: null exclusion check proved (CVC5: 1 VC)
+test_proof.adb:71:09: info: pointer dereference check proved (CVC5: 1 VC)
+test_proof.adb:73:19: info: assertion proved (CVC5: 1 VC)
+test_proof.adb:78:09: info: pointer dereference check proved (CVC5: 1 VC)
+test_proof.adb:80:19: info: assertion proved (CVC5: 2 VC)

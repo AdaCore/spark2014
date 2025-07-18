@@ -1,10 +1,10 @@
 main.adb:5:13: info: add a contract to analyze it separately from calling contexts
 main.adb:5:13: info: implicit aspect Always_Terminates on "PROC1" has been proved, subprogram will terminate
-main.adb:5:13: info: local subprogram "PROC1" only analyzed in the context of calls
+main.adb:5:13: info: local subprogram "PROC1" only analyzed in the context of calls [info-unrolling-inlining]
 main.adb:5:20: warning: unused initial value of "A"
 main.adb:5:38: warning: unused initial value of "B"
 main.adb:7:23: warning: statement has no effect
 main.adb:8:10: warning: statement has no effect
 main.adb:21:07: info: analyzing call to "PROC1" in context
 main.adb:21:07: info: in inlined body at line 7
-main.adb:21:07: info: unrolling loop
+main.adb:21:07: info: unrolling loop [info-unrolling-inlining]

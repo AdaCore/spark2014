@@ -1,24 +1,24 @@
+ medium: range check might fail, cannot prove lower bound for Result + X
+--> counterex_unprovable.adb:20:27
+   20 |             Result := Result + X;
+      |                       ~~~~~~~^~~
+      + e.g. when Result = -91
+      and X = -10
+      + reason for check: result of addition must fit in the target type of the assignment
+      + possible fix: loop at line 19 should mention Result in a loop invariant
+   19 |          while J <= 2 loop
+      |                       ^
 
-counterex_unprovable.adb:20:27: medium: range check might fail, cannot prove lower bound for Result + X
-   20 |         Result := Result + X;
-      |                   ~~~~~~~^~~
-  e.g. when Result = Int'First
-        and X = -1
-  reason for check: result of addition must fit in the target type of the assignment
-  possible fix: loop at line 19 should mention Result in a loop invariant
-   19 |      while J <= 2 loop
-      |                   ^ here
+ medium: postcondition might fail
+--> counterex_unprovable.ads:13:14
+   13 |         Post => X = 2 * X'Old;
+      |                 ^~~~~~~~~~~~~
+      + e.g. when X'Old = 0
+      + possible fix: add or complete related loop invariants or postconditions
 
-counterex_unprovable.ads:13:14: medium: postcondition might fail
-   13 |     Post => X = 2 * X'Old;
-      |             ^~~~~~~~~~~~~
-  e.g. when X = 0
-        and X'Old = 1
-  possible fix: add or complete related loop invariants or postconditions
-
-counterex_unprovable.ads:17:14: medium: postcondition might fail
-   17 |     Post => X = 2 * X'Old;
-      |             ^~~~~~~~~~~~~
-  e.g. when X = -1
-        and X'Old = 0
-  possible fix: add or complete related loop invariants or postconditions
+ medium: postcondition might fail
+--> counterex_unprovable.ads:17:14
+   17 |         Post => X = 2 * X'Old;
+      |                 ^~~~~~~~~~~~~
+      + e.g. when X'Old = -1
+      + possible fix: add or complete related loop invariants or postconditions
