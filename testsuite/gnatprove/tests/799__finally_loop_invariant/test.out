@@ -1,0 +1,2 @@
+ko.adb:6:10: error: loop invariant in a list of statements with a finally section is not yet supported
+gnatprove: error during flow analysis and proof

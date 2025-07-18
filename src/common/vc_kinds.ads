@@ -526,7 +526,6 @@ package VC_Kinds is
       Lim_Ext_Aggregate_With_Type_Ancestor,
       Lim_Extension_Case_Pattern_Matching,
       Lim_External_Initializer,
-      Lim_Finally_Statements,
       Lim_Generic_In_Hidden_Private,
       Lim_Generic_In_Type_Inv,
       Lim_Goto_Cross_Inv,
@@ -542,6 +541,7 @@ package VC_Kinds is
       Lim_Iterator_In_Component_Assoc,
       Lim_Limited_Type_From_Limited_With,
       Lim_Loop_Inv_And_Handler,
+      Lim_Loop_Inv_And_Finally,
       Lim_Loop_With_Iterator_Filter,
       Lim_Max_Array_Dimension,
       Lim_Max_Modulus,
@@ -900,14 +900,14 @@ package VC_Kinds is
            "GNAT extension for case pattern matching",
          when Lim_External_Initializer =>
            "GNAT extension for embedded binary resources",
-         when Lim_Finally_Statements =>
-           "GNAT extension for finally statements",
          when Lim_Iterated_Element_Association =>
            "iterated element association",
          when Lim_Multidim_Iterator =>
            "iterator specification over multi-dimensional array",
          when Lim_Loop_Inv_And_Handler =>
            "loop invariant in a list of statements with an exception handler",
+         when Lim_Loop_Inv_And_Finally =>
+           "loop invariant in a list of statements with a finally section",
          when Lim_Loop_With_Iterator_Filter =>
            "loop on an iterator specification with an iterator filter",
          when Lim_Complex_Raise_Expr_In_Prec =>

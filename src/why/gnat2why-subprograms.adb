@@ -5685,9 +5685,11 @@ package body Gnat2Why.Subprograms is
 
             Why_Body := Sequence
               ((1 => Why_Body,
-                2 => +Havoc_Borrowed_And_Check_No_Leaks_From_Scope
-                  (E, Local_CFG.Vertex'(Kind => Local_CFG.Body_Exit,
-                                        Node => E)),
+                2 => +Finalization_Actions
+                  (E,
+                   Local_CFG.Vertex'(Kind => Local_CFG.Body_Exit,
+                                     Node => E),
+                   Body_Params),
                 3 => Transform_All_Pragmas
                   (Post_Prags, "checking of pragma postcondition")));
 
@@ -5734,9 +5736,11 @@ package body Gnat2Why.Subprograms is
                           To_Unbounded_String ("on exceptional exit")));
 
                   Handler := Sequence
-                    ((1 => +Havoc_Borrowed_And_Check_No_Leaks_From_Scope
-                      (E, Local_CFG.Vertex'(Kind => Local_CFG.Body_Exit,
-                                            Node => E)),
+                    ((1 => +Finalization_Actions
+                      (E,
+                       Local_CFG.Vertex'(Kind => Local_CFG.Body_Exit,
+                                         Node => E),
+                       Body_Params),
                       2 => Check_Invariants_Of_Outputs (Exceptional => True)));
 
                   Continuation_Stack.Delete_Last;

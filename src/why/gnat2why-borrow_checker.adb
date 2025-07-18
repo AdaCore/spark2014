@@ -755,12 +755,21 @@ package body Gnat2Why.Borrow_Checker is
    --  node used for error location, otherwise the error is reported on the
    --  borrower's declaration.
 
-   procedure Check_End_Of_Scopes (From : Node_Id; Stop : Node_Id);
-   --  Check that local borrowers in all scopes between From (a return, exit or
-   --  goto statement) and Stop (an enclosing block, loop, extended return
-   --  denoted by its entity, or subprogram body)
-   --  are in the Unrestricted state before releasing ownership back to the
-   --  borrowed object.
+   procedure Check_Transfer_Of_Control
+     (From          : Node_Id;
+      Unconditional : Boolean := False);
+   --  For From a transfer-of-control statements:
+   --  * Check the sequence of finally statements from From to any
+   --    reachable destination, accumulating the final environment in the
+   --    destination accumulator (Current_Loops_Accumulators,
+   --    Current_Goto_Accumulators, or Current_Exc_Accumulators)
+   --  * For exited scopes, check that local borrowers are in the unrestricted
+   --    state before releasing ownership back to the borrowed object.
+   --  If the subprogram is exited, permissions on globals/output parameters
+   --  are checked to be unrestricted as well.
+   --
+   --  If Unconditional is set to True, the transfer of control is considered
+   --  to always happen, and Current_Perm_Env is emptied as the path is cut.
 
    procedure Check_Expression (Expr : Node_Id; Mode : Extended_Checking_Mode)
      with Pre =>
@@ -1016,11 +1025,6 @@ package body Gnat2Why.Borrow_Checker is
    --  Takes a protecture procedure or entry as input, and checks that all
    --  protected components of the corresponding implicit parameter indeed
    --  have Read_Write permission at the end of the subprogram execution.
-
-   procedure Set_Environment_For_Exceptions (Call_Or_Stmt : Node_Id);
-   --  If Call_Or_Stmt raises handled exceptions, merge the environment
-   --  into the appropriate handlers accumulators and/or exit the enclosing
-   --  procedure. Also reset the current environment if necessary.
 
    procedure Set_Perm_Extensions
      (T    : Perm_Tree_Access;
@@ -1763,7 +1767,10 @@ package body Gnat2Why.Borrow_Checker is
       --  If Call might raise some exceptions, handle the exceptional paths
 
       if Might_Raise_Handled_Exceptions (Call) then
-         Set_Environment_For_Exceptions (Call);
+         Check_Transfer_Of_Control
+            (Call,
+             Unconditional => Nkind (Call) = N_Procedure_Call_Statement
+               and then No_Return (Get_Called_Entity (Call)));
       end if;
    end Check_Call_With_Side_Effects;
 
@@ -1965,26 +1972,6 @@ package body Gnat2Why.Borrow_Checker is
          Next (Decl);
       end loop;
    end Check_End_Of_Scope;
-
-   -------------------------
-   -- Check_End_Of_Scopes --
-   -------------------------
-
-   procedure Check_End_Of_Scopes (From : Node_Id; Stop : Node_Id) is
-      Cur : Node_Id := From;
-   begin
-      while Present (Cur) loop
-         if Nkind (Cur) in N_Block_Statement | N_Subprogram_Body then
-            Check_End_Of_Scope (Declarations (Cur), From);
-         end if;
-
-         exit when Cur = Stop
-           or else (Nkind (Cur) = N_Extended_Return_Statement
-                    and then Return_Statement_Entity (Cur) = Stop);
-
-         Cur := Parent (Cur);
-      end loop;
-   end Check_End_Of_Scopes;
 
    ------------------
    -- Check_Entity --
@@ -3623,6 +3610,12 @@ package body Gnat2Why.Borrow_Checker is
                Current_Perm_Env := Save_Env;
             end;
 
+            --  Go over the statements under finally (if any)
+
+            Object_Scope.Push_Scope;
+            Check_List (Finally_Statements (N));
+            Object_Scope.Pop_Scope;
+
          when N_Pragma =>
             Check_Pragma (N);
 
@@ -4388,64 +4381,11 @@ package body Gnat2Why.Borrow_Checker is
                Targ : constant Entity_Id :=
                  Return_Applies_To (Return_Statement_Entity (Stmt));
                Expr : constant Node_Id := Expression (Stmt);
-
             begin
-               --  For simple return inside extended return, return applies to
-               --  the extended return. Treat it as a goto to the end of said
-               --  extended return.
-
-               if Ekind (Targ) = E_Return_Statement then
-                  Check_End_Of_Scopes (From => Stmt, Stop => Targ);
-                  declare
-                     Return_Env       : constant Perm_Env_Access :=
-                       Get (Current_Extended_Return_Accumulators, Targ);
-                     Environment_Copy : constant Perm_Env_Access :=
-                       new Perm_Env;
-                  begin
-                     Copy_Env (Current_Perm_Env, Environment_Copy.all);
-                     if Return_Env = null then
-                        Set
-                          (Current_Extended_Return_Accumulators,
-                           Targ,
-                           Environment_Copy);
-                     else
-                        Merge_Env (Environment_Copy.all, Return_Env.all);
-                     end if;
-                  end;
-
-               --  Otherwise, return complete the subprogram
-
-               else
-
-                  if Present (Expr) then
-                     Check_Simple_Return_Expression (Expr, Targ);
-                  end if;
-
-                  Check_End_Of_Scopes
-                    (From => Stmt, Stop => Subprogram_Body (Targ));
-
-                  if Ekind (Targ) in E_Procedure | E_Entry
-                    or else (Ekind (Targ) = E_Function
-                             and then Is_Function_With_Side_Effects (Targ))
-                  then
-                     Return_Parameters (Targ);
-                  end if;
-                  Return_Globals (Targ);
-
-                  --  For operations directly inside protected objects, check
-                  --  the permission of protected components on return.
-
-                  if Ekind (Scope (Targ)) = E_Protected_Type
-                    and then (Is_Entry (Targ)
-                              or else Ekind (Targ) = E_Procedure)
-                  then
-                     Return_Protected_Components (Targ);
-                  end if;
+               if Present (Expr) then
+                  Check_Simple_Return_Expression (Expr, Targ);
                end if;
-
-               --  In either case, the path is cut
-
-               Reset_Env (Current_Perm_Env);
+               Check_Transfer_Of_Control (Stmt, Unconditional => True);
             end;
 
          when N_Extended_Return_Statement =>
@@ -4507,15 +4447,7 @@ package body Gnat2Why.Borrow_Checker is
                   end if;
                end;
 
-               Check_End_Of_Scopes
-                 (From => Stmt, Stop => Subprogram_Body (Subp));
-
-               if Is_Function_With_Side_Effects (Subp) then
-                  Return_Parameters (Subp);
-               end if;
-               Return_Globals (Subp);
-
-               Reset_Env (Current_Perm_Env);
+               Check_Transfer_Of_Control (Stmt, Unconditional => True);
             end;
             Object_Scope.Pop_Scope;
 
@@ -4523,33 +4455,8 @@ package body Gnat2Why.Borrow_Checker is
          --  accumulator for the given loop.
 
          when N_Exit_Statement =>
-            declare
-               Loop_Name         : constant Entity_Id := Loop_Of_Exit (Stmt);
-               Saved_Accumulator : constant Perm_Env_Access :=
-                 Get (Current_Loops_Accumulators, Loop_Name);
-               Environment_Copy  : constant Perm_Env_Access :=
-                 new Perm_Env;
-            begin
-               Copy_Env (Current_Perm_Env, Environment_Copy.all);
-
-               if Saved_Accumulator = null then
-                  Set (Current_Loops_Accumulators,
-                       Loop_Name, Environment_Copy);
-               else
-                  Merge_Env (Source => Environment_Copy.all,
-                             Target => Saved_Accumulator.all);
-               end if;
-
-               Check_End_Of_Scopes
-                 (From => Stmt, Stop => Loop_Statement_Of_Exit (Stmt));
-
-               --  For unconditional exits, reset permission environment as the
-               --  path is dead.
-
-               if not Present (Condition (Stmt)) then
-                  Reset_Env (Current_Perm_Env);
-               end if;
-            end;
+            Check_Transfer_Of_Control
+              (Stmt, Unconditional => not Present (Condition (Stmt)));
 
          --  On branches, analyze each branch independently on a fresh copy of
          --  the permission environment, then merge the resulting permission
@@ -4623,9 +4530,7 @@ package body Gnat2Why.Borrow_Checker is
             --  appropriate handlers accumulators and/or exit the enclosing
             --  procedure.
 
-            if Might_Raise_Handled_Exceptions (Stmt) then
-               Set_Environment_For_Exceptions (Stmt);
-            end if;
+            Check_Transfer_Of_Control (Stmt, Unconditional => True);
 
          when N_Null_Statement =>
             null;
@@ -4636,33 +4541,8 @@ package body Gnat2Why.Borrow_Checker is
          --  cut.
 
          when N_Goto_Statement =>
-            declare
-               Label_Entity     : constant Entity_Id := Entity (Name (Stmt));
-               Label_Env        : constant Perm_Env_Access :=
-                 Get (Current_Goto_Accumulators, Label_Entity);
-               Environment_Copy : constant Perm_Env_Access :=
-                 new Perm_Env;
-            begin
-               Copy_Env (Current_Perm_Env, Environment_Copy.all);
-               if Label_Env = null then
-                  Set
-                    (Current_Goto_Accumulators,
-                     Label_Entity,
-                     Environment_Copy);
-               else
-                  Merge_Env (Environment_Copy.all, Label_Env.all);
-               end if;
 
-               --  Check that all borrowers in the enclosing scopes, up to the
-               --  one with the target label, are in the Unrestricted state
-               --  before jumping to the label.
-
-               Check_End_Of_Scopes
-                 (From => Stmt,
-                  Stop => Statement_Enclosing_Label (Label_Entity));
-
-               Reset_Env (Current_Perm_Env);
-            end;
+            Check_Transfer_Of_Control (Stmt, Unconditional => True);
 
          --  Unsupported constructs in SPARK
 
@@ -4694,6 +4574,214 @@ package body Gnat2Why.Borrow_Checker is
             raise Program_Error;
       end case;
    end Check_Statement;
+
+   -------------------------------
+   -- Check_Transfer_Of_Control --
+   -------------------------------
+
+   procedure Check_Transfer_Of_Control
+     (From          : Node_Id;
+      Unconditional : Boolean := False)
+   is
+
+      Saved_Env : Perm_Env;
+
+      procedure Process (Scop : Node_Id);
+      --  Deal with scope exit:
+      --  * When escaping declaration scopes, check that borrowers are left
+      --    in unrestricted state
+      --  * When crossing through a finally, check the finally statements with
+      --    current environment
+
+      procedure Stop
+        (Destination : Node_Id;
+         Exc_Set     : Exception_Sets.Set);
+      --  Deal with accumulating permission environment at destination of
+      --  transfer of control. For transfer of control escaping the subprogram,
+      --  check permission environments are in the expected state.
+
+      procedure Main_Iteration is new Iter_Exited_Scopes
+        (Process, Stop => Stop);
+
+      -------------
+      -- Process --
+      -------------
+
+      procedure Process (Scop : Node_Id) is
+      begin
+         case Nkind (Scop) is
+            --  For exited blocks/bodies, check that declared borrowers are
+            --  in the unrestricted state.
+
+            when N_Block_Statement =>
+               Check_End_Of_Scope (Declarations (Scop), N => From);
+            when N_Entity =>
+               Check_End_Of_Scope (Declarations (Get_Body (Scop)), N => From);
+
+            --  For exiting paths through finally statements, carry the
+            --  permission environment through the finally section.
+
+            when N_Handled_Sequence_Of_Statements =>
+               if Present (Finally_Statements (Scop)) then
+                  Object_Scope.Push_Scope;
+                  Check_List (Finally_Statements (Scop));
+                  Object_Scope.Pop_Scope;
+               end if;
+
+            --  No ownership is supported in for loop cursor/objects right now,
+            --  and extended_return cannot declare borrowers nor observers, so
+            --  nothing needs to be done for these cases.
+
+            when N_Loop_Statement
+               | N_Iteration_Scheme
+               | N_Extended_Return_Statement =>
+               null;
+
+            when others =>
+               raise Program_Error;
+         end case;
+      end Process;
+
+      ----------
+      -- Stop --
+      ----------
+
+      procedure Stop
+        (Destination : Node_Id;
+         Exc_Set     : Exception_Sets.Set)
+      is
+      begin
+         case Nkind (Destination) is
+            when N_Loop_Statement =>
+               declare
+                  Loop_Name         : constant Entity_Id :=
+                    Entity (Identifier (Destination));
+                  Saved_Accumulator : constant Perm_Env_Access :=
+                    Get (Current_Loops_Accumulators, Loop_Name);
+                  Environment_Copy  : constant Perm_Env_Access :=
+                    new Perm_Env;
+               begin
+                  Copy_Env (Current_Perm_Env, Environment_Copy.all);
+
+                  if Saved_Accumulator = null then
+                     Set (Current_Loops_Accumulators,
+                          Loop_Name, Environment_Copy);
+                  else
+                     Merge_Env (Source => Environment_Copy.all,
+                                Target => Saved_Accumulator.all);
+                  end if;
+               end;
+
+            when N_Exception_Handler =>
+               --  Store the current environment in the
+               --  Current_Exc_Accumulators map for handler.
+
+               declare
+                  Handler_Env      : constant Perm_Env_Access :=
+                    Get (Current_Exc_Accumulators, Destination);
+                  Environment_Copy : constant Perm_Env_Access :=
+                    new Perm_Env;
+               begin
+                  Copy_Env (Current_Perm_Env, Environment_Copy.all);
+
+                  if Handler_Env = null then
+                     Set
+                       (Current_Exc_Accumulators,
+                        Destination,
+                        Environment_Copy);
+                  else
+                     Merge_Env
+                       (Environment_Copy.all, Handler_Env.all);
+                  end if;
+               end;
+
+            when N_Extended_Return_Statement =>
+               declare
+                  Return_Ent : constant Entity_Id :=
+                     Return_Statement_Entity (Destination);
+                  Return_Env       : constant Perm_Env_Access :=
+                     Get (Current_Extended_Return_Accumulators, Return_Ent);
+                  Environment_Copy : constant Perm_Env_Access :=
+                     new Perm_Env;
+               begin
+                  Copy_Env (Current_Perm_Env, Environment_Copy.all);
+                  if Return_Env = null then
+                     Set
+                       (Current_Extended_Return_Accumulators,
+                        Return_Ent,
+                        Environment_Copy);
+                  else
+                     Merge_Env (Environment_Copy.all, Return_Env.all);
+                  end if;
+               end;
+
+            when N_Entity =>
+               if Ekind (Destination) = E_Label then
+                  declare
+                     Label_Env        : constant Perm_Env_Access :=
+                       Get (Current_Goto_Accumulators, Destination);
+                     Environment_Copy : constant Perm_Env_Access :=
+                       new Perm_Env;
+                  begin
+                     Copy_Env (Current_Perm_Env, Environment_Copy.all);
+                     if Label_Env = null then
+                        Set
+                          (Current_Goto_Accumulators,
+                           Destination,
+                           Environment_Copy);
+                     else
+                        Merge_Env (Environment_Copy.all, Label_Env.all);
+                     end if;
+                  end;
+               else
+                  declare
+                     Subp : Entity_Id renames Destination;
+                  begin
+                     pragma Assert (Ekind (Subp) in Subprogram_Kind | E_Entry);
+
+                     --  Check out parameters and globals at exit
+
+                     if Ekind (Subp) in E_Procedure | E_Entry
+                       or else (Ekind (Subp) = E_Function
+                                and then Is_Function_With_Side_Effects (Subp))
+                     then
+                        Return_Parameters
+                          (Subp, Exceptional => not Exc_Set.Is_Empty);
+                     end if;
+                     Return_Globals
+                       (Subp, Exceptional => not Exc_Set.Is_Empty);
+
+                     --  For operations directly inside protected objects,
+                     --  check the permission of protected components on
+                     --  return.
+
+                     if Ekind (Scope (Subp)) = E_Protected_Type
+                       and then (Is_Entry (Subp)
+                                 or else Ekind (Subp) = E_Procedure)
+                     then
+                        Return_Protected_Components (Subp);
+                     end if;
+                  end;
+               end if;
+            when others =>
+               raise Program_Error;
+         end case;
+      end Stop;
+
+   begin
+      --  Save current permission environment. Not needed for unconditional
+      --  jumps as we reset the environment afterward anyway.
+
+      if not Unconditional then
+         Copy_Env (Current_Perm_Env, Saved_Env);
+      end if;
+      Main_Iteration (From);
+      if Unconditional then
+         Reset_Env (Current_Perm_Env);
+      else
+         Move_Env (Saved_Env, Current_Perm_Env);
+      end if;
+   end Check_Transfer_Of_Control;
 
    ----------------------------
    -- Found_Permission_Error --
@@ -6618,117 +6706,6 @@ package body Gnat2Why.Borrow_Checker is
          end if;
       end;
    end Return_Protected_Components;
-
-   -------------------------------------
-   -- Set_Environment_For_Exceptions --
-   -------------------------------------
-
-   procedure Set_Environment_For_Exceptions (Call_Or_Stmt : Node_Id) is
-      Handlers       : Node_Lists.List;
-      Proc_Body      : Node_Id := Empty;
-      Might_Continue : Boolean;
-      Stmt   : constant Node_Id :=
-        (if Nkind (Call_Or_Stmt) = N_Function_Call then
-           Enclosing_Statement_Of_Call_To_Function_With_Side_Effects
-             (Call_Or_Stmt)
-         else Call_Or_Stmt);
-
-   begin
-      --  Set Might_Continue to True iff the Stmt does not cut the execution
-      --  path completely.
-
-      case Nkind (Call_Or_Stmt) is
-         when N_Raise_Statement =>
-            Might_Continue := False;
-         when N_Procedure_Call_Statement =>
-            declare
-               Subp : constant Entity_Id := Get_Called_Entity (Call_Or_Stmt);
-            begin
-               Might_Continue := not No_Return (Subp);
-            end;
-         when N_Function_Call =>
-            pragma Assert (Is_Function_With_Side_Effects
-                           (Get_Called_Entity (Call_Or_Stmt)));
-            Might_Continue := True;
-         when others =>
-            raise Program_Error;
-      end case;
-
-      --  Retrieve the handlers associated to Stmt. Separate the unit body
-      --  from the list if any.
-
-      Handlers := Reachable_Handlers (Call_Or_Stmt);
-      if not Handlers.Is_Empty
-        and then Nkind (Handlers.Last_Element) in N_Entity_Body
-      then
-         Proc_Body := Handlers.Last_Element;
-         Handlers.Delete_Last;
-      end if;
-
-      --  Store the current environment in the
-      --  Current_Exc_Accumulators map for all accessible handlers.
-
-      for Handler of Handlers loop
-         declare
-            Handler_Env      : constant Perm_Env_Access :=
-              Get (Current_Exc_Accumulators, Handler);
-            Environment_Copy : constant Perm_Env_Access :=
-              new Perm_Env;
-         begin
-            Copy_Env (Current_Perm_Env, Environment_Copy.all);
-
-            if Handler_Env = null then
-               Set
-                 (Current_Exc_Accumulators,
-                  Handler,
-                  Environment_Copy);
-            else
-               Merge_Env
-                 (Environment_Copy.all, Handler_Env.all);
-            end if;
-         end;
-      end loop;
-
-      --  Check that all borrowers in the enclosing scopes
-      --  are in the Unrestricted state before jumping to the
-      --  handler. If the exception can exit the subprogram, take the
-      --  subprogram body, otherwise, take the last handled sequence
-      --  of statements.
-
-      if Present (Proc_Body) then
-         Check_End_Of_Scopes
-           (From => Stmt,
-            Stop => Proc_Body);
-      elsif not Handlers.Is_Empty then
-         Check_End_Of_Scopes
-           (From => Stmt,
-            Stop => Parent (Handlers.Last_Element));
-      end if;
-
-      --  If the exception can exit the enclosing subprogram, then
-      --  check the scope exit.
-
-      if Present (Proc_Body) then
-         declare
-            Subp : constant Entity_Id :=
-              Unique_Defining_Entity (Proc_Body);
-
-         begin
-            pragma Assert
-              (Ekind (Subp) = E_Procedure
-               or else (Ekind (Subp) = E_Function
-                 and then Is_Function_With_Side_Effects (Subp)));
-            Return_Parameters (Subp, Exceptional => True);
-            Return_Globals (Subp, Exceptional => True);
-         end;
-      end if;
-
-      --  If Might_Continue is False, the branch is dead
-
-      if not Might_Continue then
-         Reset_Env (Current_Perm_Env);
-      end if;
-   end Set_Environment_For_Exceptions;
 
    -------------------------
    -- Set_Perm_Extensions --
