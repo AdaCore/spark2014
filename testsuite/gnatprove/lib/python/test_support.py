@@ -942,8 +942,6 @@ ignore_patterns = [
     # TODO we currently have trouble rendering the "at line ..." part of
     # unrolling messages:
     "cannot unroll loop",
-    # TODO I don't know why this message disappears:
-    "no Global contract available for",
 ]
 
 
@@ -1011,7 +1009,7 @@ def prove_all(
     warnings="continue",
     sparklib=False,
     filter_sparklib=True,
-    skip_sarif_check=False,
+    enable_sarif_check=False,
 ):
     """Call gnatprove with standard options.
 
@@ -1089,10 +1087,9 @@ def prove_all(
         sparklib=sparklib,
         filter_sparklib=filter_sparklib,
     )
-    # TODO usage of sparklib generates too many mismatches for SARIF check for now
-    # TODO limitline or other
+    # usage of sparklib generates too many mismatches for SARIF check for now
     has_limit_switch = any("--limit" in s for s in fullopt)
-    if not skip_sarif_check and not sparklib and not has_limit_switch:
+    if enable_sarif_check and not sparklib and not has_limit_switch:
         check_sarif(report)
 
 
@@ -1106,6 +1103,7 @@ def do_flow(
     ada=default_ada,
     sparklib=False,
     report=None,
+    enable_sarif_check=False,
 ):
     """
     Call gnatprove with standard options for flow. We do generate
@@ -1130,6 +1128,7 @@ def do_flow(
         ada=ada,
         sparklib=sparklib,
         report=report,
+        enable_sarif_check=enable_sarif_check,
     )
 
 
