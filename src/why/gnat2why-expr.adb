@@ -21199,15 +21199,27 @@ package body Gnat2Why.Expr is
                      --  SPARK objects.
 
                      if Supported_Alias then
-                        Suitable_For_UC_Source (Obj_Ty, Valid, Explanation);
-                        Emit_Static_Proof_Result
-                          (Decl, VC_UC_Source, Valid, Current_Subp,
-                           Explanation => To_String (Explanation));
+
+                        --  If the overlay is constant, Obj cannot be modified.
+                        --  No need to check for source of UC.
+
+                        if not Is_Constant_In_SPARK (Obj) then
+                           Suitable_For_UC_Source (Obj_Ty, Valid, Explanation);
+                           Emit_Static_Proof_Result
+                             (Decl, VC_UC_Source, Valid, Current_Subp,
+                              Explanation => To_String (Explanation));
+                        end if;
+
+                        --  Don't emit validity checks if Obj is potentially
+                        --  invalid.
+
                         Suitable_For_UC_Target_Overlay_Wrap
-                          (Typ          => Obj_Ty,
-                           Obj          => Obj,
-                           Result       => Valid,
-                           Explanation  => Explanation);
+                          (Typ            => Obj_Ty,
+                           Obj            => Obj,
+                           Result         => Valid,
+                           Explanation    => Explanation,
+                           Check_Validity => not Is_Potentially_Invalid (Obj));
+
                         Emit_Static_Proof_Result
                           (Decl, VC_UC_Target, Valid, Current_Subp,
                            Explanation => To_String (Explanation));

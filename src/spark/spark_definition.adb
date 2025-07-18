@@ -4961,7 +4961,12 @@ package body SPARK_Definition is
                Mark_Unsupported (Lim_Relaxed_Init_Aliasing, E);
             end if;
 
-            if Is_Potentially_Invalid (E)
+            --  For constant overlays, the overlaying object cannot be used to
+            --  modify the overlaid object, so it is OK for it to have invalid
+            --  values.
+
+            if (Is_Potentially_Invalid (E)
+                and then not Is_Constant_In_SPARK (E))
               or else Is_Potentially_Invalid (Aliased_Object)
             then
                Mark_Violation ("potentially invalid overlaid object", E);

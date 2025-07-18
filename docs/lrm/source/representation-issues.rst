@@ -106,11 +106,18 @@ respect to the program semantics of |SPARK|.
 3. If an object ``X`` is overlaid on an object ``Y``, then the alignment of
    ``Y`` shall be an integral multiple of the alignment of ``X``.
 
-4. The type of an overlaid object shall be suitable as the source for unchecked
-   conversion (see :ref:`Unchecked Type Conversions`); if it is mutable in
-   SPARK, it shall also be suitable as the target of an unchecked conversion.
-   The object with the address clause shall also be suitable as the target of
-   an unchecked conversion.
+4. If an object ``X`` is overlaid on an object ``Y``, ``Y`` shall be suitable
+   as the source for unchecked conversion (see
+   :ref:`Unchecked Type Conversions`); if it is mutable in SPARK, it shall also
+   be suitable as the target of an unchecked conversion.
+   The overlaid object ``X`` shall be suitable for unchecked
+   conversion. If it is not annotated with the aspect `Potentially_Invalid`, it
+   shall also be suitable as the target of an unchecked conversion. Moreover,
+   if it is mutable in SPARK, it shall also be suitable as the source of an
+   unchecked conversion.
+   [A constant overlay is similar to an unchecked conversion from the object
+   mentioned in the address clause to the object with the address clause. A
+   variable overlay is a bidirectional unchecked conversion.]
 
 5. If the address clause of an object ``X`` is not of the form ``with Address
    => Y'Address`` for some object ``Y``, then ``X`` shall be volatile.
