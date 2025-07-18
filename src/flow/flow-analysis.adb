@@ -4360,6 +4360,54 @@ package body Flow.Analysis is
       end loop;
    end Check_Depends_Contract;
 
+   ------------------------------
+   -- Check_Ghost_Calls_Policy --
+   ------------------------------
+
+   procedure Check_Ghost_Calls_Policy (FA : in out Flow_Analysis_Graphs) is
+      Globals : Global_Flow_Ids;
+   begin
+      for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         declare
+            Atr : V_Attributes renames FA.Atr (V);
+         begin
+            --  Ignore vertices coming from elaboration of nested packages
+
+            if not Atr.In_Nested_Package then
+               for SC of Atr.Subprogram_Calls loop
+                  if Is_Ignored_Ghost_Node (SC.N)
+                    and then (Ekind (SC.E) = E_Procedure
+                              or else Is_Function_With_Side_Effects (SC.E))
+                  then
+                     Get_Globals
+                       (Subprogram => SC.E,
+                        Scope      => FA.B_Scope,
+                        Classwide  => False,
+                        Globals    => Globals);
+
+                     for Output of To_Ordered_Flow_Id_Set (Globals.Outputs)
+                     loop
+                        if Is_Checked_Ghost_Entity (Output) then
+                           Error_Msg_Flow
+                             (FA       => FA,
+                              Msg      =>
+                                "call to ignored ghost subprogram & "
+                                & "with checked ghost global output &",
+                              F1       => Direct_Mapping_Id (SC.E),
+                              F2       => Output,
+                              Severity => Medium_Check_Kind,
+                              N        => Atr.Error_Location,
+                              Tag      => Ghost_Wrong,  --  ???
+                              Vertex   => V);
+                        end if;
+                     end loop;
+                  end if;
+               end loop;
+            end if;
+         end;
+      end loop;
+   end Check_Ghost_Calls_Policy;
+
    ------------------------------------
    -- Check_Ghost_Subprogram_Outputs --
    ------------------------------------
