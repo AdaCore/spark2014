@@ -1048,8 +1048,20 @@ package SPARK_Util is
    --  @param Expr any node
    --  @return True iff Expr is a call to a traversal function
 
+   function Loop_Entity_Of_Loop_Jump_Statement (N : Node_Id) return Entity_Id
+   with Pre => Nkind (N) in N_Exit_Statement | N_Continue_Statement;
+   --  Return the Defining_Identifier of the loop that belongs to a
+   --  transfer-of-control statement associated to loops.
+
+   function Loop_Entity_Of_Continue_Statement
+     (N : N_Continue_Statement_Id) return Entity_Id
+   renames Loop_Entity_Of_Loop_Jump_Statement;
+   --  Return the Defining_Identifier of the loop that belongs to a continue
+   --  statement.
+
    function Loop_Entity_Of_Exit_Statement
-     (N : N_Exit_Statement_Id) return Entity_Id;
+     (N : N_Exit_Statement_Id) return Entity_Id
+   renames Loop_Entity_Of_Loop_Jump_Statement;
    --  Return the Defining_Identifier of the loop that belongs to an exit
    --  statement.
 

@@ -6030,12 +6030,11 @@ package body SPARK_Util is
       return To_String (Buf);
    end Location_String;
 
-   -----------------------------------
-   -- Loop_Entity_Of_Exit_Statement --
-   -----------------------------------
+   ----------------------------------------
+   -- Loop_Entity_Of_Loop_Jump_Statement --
+   ----------------------------------------
 
-   function Loop_Entity_Of_Exit_Statement
-     (N : N_Exit_Statement_Id) return Entity_Id
+   function Loop_Entity_Of_Loop_Jump_Statement (N : Node_Id) return Entity_Id
    is
       function Is_Loop_Statement (N : Node_Id) return Boolean
       is (Nkind (N) = N_Loop_Statement);
@@ -6049,14 +6048,14 @@ package body SPARK_Util is
       if Present (Name (N)) then
          return Entity (Name (N));
 
-      --  Otherwise the exit statement belongs to the innermost loop, so
-      --  simply go upwards (follow parent nodes) until we encounter the
-      --  loop.
+      --  Otherwise the transfer-of-control statement belongs to the innermost
+      --  loop, so simply go upwards (follow parent nodes) until we encounter
+      --  the loop.
 
       else
          return Entity (Identifier (Innermost_Loop_Stmt (N)));
       end if;
-   end Loop_Entity_Of_Exit_Statement;
+   end Loop_Entity_Of_Loop_Jump_Statement;
 
    -------------------------------
    -- May_Issue_Warning_On_Node --
