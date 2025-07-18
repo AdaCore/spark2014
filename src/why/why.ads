@@ -33,7 +33,7 @@ package Why is
    --  Use this exception for cases where an implementation is intended, but
    --  not done yet.
 
-   Not_SPARK       : exception;
+   Not_SPARK : exception;
    --  Use this exception for cases that are outside the subset defined by
    --  SPARK.
    --  ??? this exception currently not used

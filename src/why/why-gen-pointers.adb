@@ -23,37 +23,35 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;              use Ada.Containers;
+with Ada.Containers;      use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
-with Common_Containers;           use Common_Containers;
+with Common_Containers;   use Common_Containers;
 with GNAT.Source_Info;
-with GNATCOLL.Symbols;            use GNATCOLL.Symbols;
-with Gnat2Why.Expr;               use Gnat2Why.Expr;
-with Namet;                       use Namet;
-with Sinput;                      use Sinput;
-with Snames;                      use Snames;
-with VC_Kinds;                    use VC_Kinds;
-with Why.Atree.Accessors;         use Why.Atree.Accessors;
-with Why.Atree.Builders;          use Why.Atree.Builders;
-with Why.Atree.Modules;           use Why.Atree.Modules;
-with Why.Gen.Arrays;              use Why.Gen.Arrays;
-with Why.Gen.Decl;                use Why.Gen.Decl;
-with Why.Gen.Expr;                use Why.Gen.Expr;
-with Why.Gen.Init;                use Why.Gen.Init;
-with Why.Gen.Names;               use Why.Gen.Names;
-with Why.Gen.Progs;               use Why.Gen.Progs;
-with Why.Gen.Records;             use Why.Gen.Records;
-with Why.Gen.Terms;               use Why.Gen.Terms;
-with Why.Images;                  use Why.Images;
-with Why.Inter;                   use Why.Inter;
-with Why.Types;                   use Why.Types;
+with GNATCOLL.Symbols;    use GNATCOLL.Symbols;
+with Gnat2Why.Expr;       use Gnat2Why.Expr;
+with Namet;               use Namet;
+with Sinput;              use Sinput;
+with Snames;              use Snames;
+with VC_Kinds;            use VC_Kinds;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Atree.Modules;   use Why.Atree.Modules;
+with Why.Gen.Arrays;      use Why.Gen.Arrays;
+with Why.Gen.Decl;        use Why.Gen.Decl;
+with Why.Gen.Expr;        use Why.Gen.Expr;
+with Why.Gen.Init;        use Why.Gen.Init;
+with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Gen.Progs;       use Why.Gen.Progs;
+with Why.Gen.Records;     use Why.Gen.Records;
+with Why.Gen.Terms;       use Why.Gen.Terms;
+with Why.Images;          use Why.Images;
+with Why.Inter;           use Why.Inter;
+with Why.Types;           use Why.Types;
 
 package body Why.Gen.Pointers is
 
    procedure Declare_Rep_Pointer_Type
-     (Th           : Theory_UC;
-      E            : Entity_Id;
-      Relaxed_Init : Boolean := False)
+     (Th : Theory_UC; E : Entity_Id; Relaxed_Init : Boolean := False)
    with Pre => Is_Access_Type (E);
    --  Similar to Declare_Rep_Record_Type but for pointer types.
 
@@ -69,33 +67,30 @@ package body Why.Gen.Pointers is
    --  them here.
 
    procedure Declare_Rep_Pointer_Compl
-     (E            : Entity_Id;
-      Relaxed_Init : Boolean := False)
+     (E : Entity_Id; Relaxed_Init : Boolean := False)
    with Pre => Is_Access_Type (E);
    --  Declare a new module for completion of access types designating
    --  incomplete types.
 
    procedure Create_Rep_Pointer_Theory
-     (E            : Entity_Id;
-      Relaxed_Init : Boolean := False)
+     (E : Entity_Id; Relaxed_Init : Boolean := False)
    with Pre => Is_Access_Type (E);
    --  Declare a pointer type as a why record with two or three fields:
    --  pointer_value, is_null_pointer, and attr_init if Relaxed_Init is True.
    --  It also defines the needed functions to manipulate this type.
 
    function Dummy_Designated_Value
-     (E            : Type_Kind_Id;
-      Relaxed_Init : Boolean;
-      Local        : Boolean := False)
+     (E : Type_Kind_Id; Relaxed_Init : Boolean; Local : Boolean := False)
       return W_Expr_Id;
    --  Compute the dummy value to be used for values designated by E
 
-   package Pointer_Typ_To_Roots is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Entity_Id,
-      Element_Type    => Node_Id,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
+   package Pointer_Typ_To_Roots is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Entity_Id,
+        Element_Type    => Node_Id,
+        Hash            => Node_Hash,
+        Equivalent_Keys => "=",
+        "="             => "=");
 
    Pointer_Typ_To_Root : Pointer_Typ_To_Roots.Map;
    Completed_Types     : Node_Sets.Set;
@@ -121,12 +116,13 @@ package body Why.Gen.Pointers is
    --   * the name of the reference holding the value of the borrower at the
    --     end of the borrow in Brower_At_End.
 
-   package Borrow_Info_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Entity_Id,
-      Element_Type    => Borrow_Info,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
+   package Borrow_Info_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Entity_Id,
+        Element_Type    => Borrow_Info,
+        Hash            => Node_Hash,
+        Equivalent_Keys => "=",
+        "="             => "=");
 
    Borrow_Infos : Borrow_Info_Maps.Map;
    --  Maps borrowers to their borrowed object and their pledge
@@ -136,28 +132,29 @@ package body Why.Gen.Pointers is
    -----------------------------------------------------
 
    procedure Complete_Move_Tree_For_Incomplete_Access
-     (Th : Theory_UC;
-      E  : Entity_Id)
+     (Th : Theory_UC; E : Entity_Id)
    is
       Typ             : constant W_Type_Id :=
         (if Has_Init_Wrapper (E)
          then EW_Init_Wrapper (Type_Of_Node (E))
          else Type_Of_Node (E));
       Obj_Binder      : constant Binder_Type :=
-        (B_Name => New_Identifier (Name => "obj", Typ  => Typ),
-         others => <>);
+        (B_Name => New_Identifier (Name => "obj", Typ => Typ), others => <>);
       Concrete_Binder : constant Binder_Type :=
-        (B_Name => New_Identifier
-           (Name => "x",
-            Typ  => New_Named_Type (To_Name (WNE_Move_Tree))),
+        (B_Name =>
+           New_Identifier
+             (Name => "x", Typ => New_Named_Type (To_Name (WNE_Move_Tree))),
          others => <>);
       Abstract_Binder : constant Binder_Type :=
-        (B_Name => New_Identifier
-           (Name   => "x",
-            Typ    => New_Named_Type
-              (Name => New_Name
-                   (Symb   => NID (To_String (WNE_Move_Tree)),
-                    Module => E_Module (E, Incomp_Move_Tree)))),
+        (B_Name =>
+           New_Identifier
+             (Name => "x",
+              Typ  =>
+                New_Named_Type
+                  (Name =>
+                     New_Name
+                       (Symb   => NID (To_String (WNE_Move_Tree)),
+                        Module => E_Module (E, Incomp_Move_Tree)))),
          others => <>);
 
    begin
@@ -191,32 +188,38 @@ package body Why.Gen.Pointers is
             Location    => No_Location,
             Labels      => Symbol_Sets.Empty_Set,
             Return_Type => Get_Typ (Abstract_Binder.B_Name),
-            Post        => New_Comparison
-              (Symbol => Why_Eq,
-               Left   => +Concrete_Binder.B_Name,
-               Right  => New_Call
-                 (Name => To_Local (E_Symb (E, WNE_Move_Tree_Open)),
-                  Args =>
-                    (1 => +New_Result_Ident
-                         (Typ => Get_Typ (Abstract_Binder.B_Name)))))));
-      Emit (Th,
-            New_Defining_Bool_Axiom
-              (Name     => New_Identifier
-                 (Symb   =>
-                      NID (To_String (WNE_Is_Moved_Or_Reclaimed)),
-                  Module => E_Module (E, Incomp_Move_Tree),
-                  Domain => EW_Pred),
-               Fun_Name => To_String (WNE_Is_Moved_Or_Reclaimed),
-               Binders  => (1 => Abstract_Binder, 2 => Obj_Binder),
-               Def      => New_Call
-                 (Name => To_Local (E_Symb (E, WNE_Is_Moved_Or_Reclaimed)),
-                  Args => (1 => New_Call
-                           (Name   => To_Local
-                            (E_Symb (E, WNE_Move_Tree_Open)),
-                            Args   => (1 => +Abstract_Binder.B_Name),
-                            Domain => EW_Term),
-                           2 => +Obj_Binder.B_Name)),
-               Dep_Kind => EW_Axdep_Pred));
+            Post        =>
+              New_Comparison
+                (Symbol => Why_Eq,
+                 Left   => +Concrete_Binder.B_Name,
+                 Right  =>
+                   New_Call
+                     (Name => To_Local (E_Symb (E, WNE_Move_Tree_Open)),
+                      Args =>
+                        (1 =>
+                           +New_Result_Ident
+                              (Typ => Get_Typ (Abstract_Binder.B_Name)))))));
+      Emit
+        (Th,
+         New_Defining_Bool_Axiom
+           (Name     =>
+              New_Identifier
+                (Symb   => NID (To_String (WNE_Is_Moved_Or_Reclaimed)),
+                 Module => E_Module (E, Incomp_Move_Tree),
+                 Domain => EW_Pred),
+            Fun_Name => To_String (WNE_Is_Moved_Or_Reclaimed),
+            Binders  => (1 => Abstract_Binder, 2 => Obj_Binder),
+            Def      =>
+              New_Call
+                (Name => To_Local (E_Symb (E, WNE_Is_Moved_Or_Reclaimed)),
+                 Args =>
+                   (1 =>
+                      New_Call
+                        (Name   => To_Local (E_Symb (E, WNE_Move_Tree_Open)),
+                         Args   => (1 => +Abstract_Binder.B_Name),
+                         Domain => EW_Term),
+                    2 => +Obj_Binder.B_Name)),
+            Dep_Kind => EW_Axdep_Pred));
    end Complete_Move_Tree_For_Incomplete_Access;
 
    -------------------------------
@@ -242,8 +245,8 @@ package body Why.Gen.Pointers is
       --  Generate the predicate related to the access to a pointer value
       --  (cannot access a null pointer).
 
-      procedure Declare_Wrapper_Conversions (As_Axioms : Boolean) with
-        Pre => Relaxed_Init;
+      procedure Declare_Wrapper_Conversions (As_Axioms : Boolean)
+      with Pre => Relaxed_Init;
       --  Declare conversion functions to and from the wrapper type
 
       ---------------------
@@ -251,26 +254,28 @@ package body Why.Gen.Pointers is
       ---------------------
 
       Root     : constant Entity_Id := Root_Pointer_Type (E);
-      Is_Root  : constant Boolean   := Root = E;
+      Is_Root  : constant Boolean := Root = E;
       Ty_Name  : constant W_Name_Id := To_Name (WNE_Rec_Rep);
-      Abstr_Ty : constant W_Type_Id := New_Named_Type
-        (Name => Ty_Name, Relaxed_Init => Relaxed_Init);
+      Abstr_Ty : constant W_Type_Id :=
+        New_Named_Type (Name => Ty_Name, Relaxed_Init => Relaxed_Init);
 
       A_Ident  : constant W_Identifier_Id :=
         New_Identifier (Name => "a", Typ => Abstr_Ty);
       A_Binder : constant Binder_Array :=
-        (1 => (B_Name => A_Ident,
-               others => <>));
+        (1 => (B_Name => A_Ident, others => <>));
 
       ------------------------------
       -- Declare_Access_Functions --
       ------------------------------
 
       procedure Declare_Access_Function is
-         Null_Access_Name : constant String := To_String (WNE_Rec_Comp_Prefix)
-         & (Full_Name (E)) & To_String (WNE_Pointer_Value) & "__pred";
-         Value_Id         : constant W_Identifier_Id := To_Local
-           (E_Symb (E, WNE_Pointer_Value, Relaxed_Init));
+         Null_Access_Name : constant String :=
+           To_String (WNE_Rec_Comp_Prefix)
+           & (Full_Name (E))
+           & To_String (WNE_Pointer_Value)
+           & "__pred";
+         Value_Id         : constant W_Identifier_Id :=
+           To_Local (E_Symb (E, WNE_Pointer_Value, Relaxed_Init));
 
          --  The null exclusion defined here is related to the designated type
          --  (that gives the subtype_indication).
@@ -289,46 +294,54 @@ package body Why.Gen.Pointers is
          --  the designated value. Otherwise, the record field is enough.
 
          if Designates_Incomplete_Type (E) then
-            Emit (Th,
-                  New_Function_Decl
-                    (Domain      => EW_Pterm,
-                     Name        => Value_Id,
-                     Binders     => A_Binder,
-                     Location    => No_Location,
-                     Labels      => Symbol_Sets.Empty_Set,
-                     Return_Type => Get_Typ (Value_Id),
-                     Def         => New_Call
-                       (Domain => EW_Term,
-                        Name   =>
-                          To_Local (E_Symb (E, WNE_Open, Relaxed_Init)),
-                        Args   =>
-                          (1   => New_Record_Access
-                               (Name  => +A_Ident,
-                                Field => To_Local
-                                  (E_Symb
-                                     (E            => E,
-                                      S            => WNE_Pointer_Value_Abstr,
-                                      Relaxed_Init => Relaxed_Init)),
-                                Typ   =>
-                                  New_Named_Type
-                                    (Name => To_Local
-                                       (E_Symb
-                                     (E            => E,
-                                      S            => WNE_Private_Type,
-                                      Relaxed_Init => Relaxed_Init))))),
-                        Typ    => Get_Typ (Value_Id))));
+            Emit
+              (Th,
+               New_Function_Decl
+                 (Domain      => EW_Pterm,
+                  Name        => Value_Id,
+                  Binders     => A_Binder,
+                  Location    => No_Location,
+                  Labels      => Symbol_Sets.Empty_Set,
+                  Return_Type => Get_Typ (Value_Id),
+                  Def         =>
+                    New_Call
+                      (Domain => EW_Term,
+                       Name   => To_Local (E_Symb (E, WNE_Open, Relaxed_Init)),
+                       Args   =>
+                         (1 =>
+                            New_Record_Access
+                              (Name  => +A_Ident,
+                               Field =>
+                                 To_Local
+                                   (E_Symb
+                                      (E            => E,
+                                       S            => WNE_Pointer_Value_Abstr,
+                                       Relaxed_Init => Relaxed_Init)),
+                               Typ   =>
+                                 New_Named_Type
+                                   (Name =>
+                                      To_Local
+                                        (E_Symb
+                                           (E            => E,
+                                            S            => WNE_Private_Type,
+                                            Relaxed_Init => Relaxed_Init))))),
+                       Typ    => Get_Typ (Value_Id))));
          end if;
 
-         Emit (Th,
-               New_Function_Decl
-                 (Domain   => EW_Pred,
-                  Name     => +New_Identifier (Name => Null_Access_Name),
-                  Binders  => A_Binder,
-                  Location => No_Location,
-                  Labels   => Symbol_Sets.Empty_Set,
-                  Def      => New_Not (Domain => EW_Term,
-                                       Right  => New_Pointer_Is_Null_Access
-                                         (E, +A_Ident, Local => True))));
+         Emit
+           (Th,
+            New_Function_Decl
+              (Domain   => EW_Pred,
+               Name     => +New_Identifier (Name => Null_Access_Name),
+               Binders  => A_Binder,
+               Location => No_Location,
+               Labels   => Symbol_Sets.Empty_Set,
+               Def      =>
+                 New_Not
+                   (Domain => EW_Term,
+                    Right  =>
+                      New_Pointer_Is_Null_Access
+                        (E, +A_Ident, Local => True))));
 
          --  N_Null can never have Relaxed_Initialization, no need to declare
          --  a null pointer in the wrapper theory.
@@ -337,35 +350,39 @@ package body Why.Gen.Pointers is
             declare
                Null_Ptr    : constant W_Identifier_Id :=
                  To_Local (E_Symb (E, WNE_Null_Pointer));
-               Is_Nul_Cond : constant W_Pred_Id := New_Comparison
-                 (Symbol => Why_Eq,
-                  Left   => New_Pointer_Is_Null_Access
-                    (E, +Null_Ptr, Local => True),
-                  Right  => True_Term);
-               Val_Cond    : constant W_Pred_Id := New_Call
-                 (Name => To_Local
-                    (E_Symb (E, WNE_Dynamic_Property, Relaxed_Init)),
-                  Args => (1 => +Null_Ptr));
+               Is_Nul_Cond : constant W_Pred_Id :=
+                 New_Comparison
+                   (Symbol => Why_Eq,
+                    Left   =>
+                      New_Pointer_Is_Null_Access (E, +Null_Ptr, Local => True),
+                    Right  => True_Term);
+               Val_Cond    : constant W_Pred_Id :=
+                 New_Call
+                   (Name =>
+                      To_Local
+                        (E_Symb (E, WNE_Dynamic_Property, Relaxed_Init)),
+                    Args => (1 => +Null_Ptr));
                Axiom_Name  : constant String :=
                  To_String (WNE_Null_Pointer) & "__" & Def_Axiom;
             begin
-               Emit (Th,
-                     Why.Atree.Builders.New_Function_Decl
-                       (Domain      => EW_Pterm,
-                        Name        => Null_Ptr,
-                        Binders     => (1 .. 0 => <>),
-                        Location    => No_Location,
-                        Labels      => Symbol_Sets.Empty_Set,
-                        Return_Type => Abstr_Ty));
-               Emit (Th,
-                     New_Axiom
-                       (Ada_Node => E,
-                        Name     => NID (Axiom_Name),
-                        Def      => New_And_Pred (Is_Nul_Cond, Val_Cond),
-                        Dep      =>
-                          New_Axiom_Dep (
-                            Name => Null_Ptr,
-                            Kind => EW_Axdep_Func)));
+               Emit
+                 (Th,
+                  Why.Atree.Builders.New_Function_Decl
+                    (Domain      => EW_Pterm,
+                     Name        => Null_Ptr,
+                     Binders     => (1 .. 0 => <>),
+                     Location    => No_Location,
+                     Labels      => Symbol_Sets.Empty_Set,
+                     Return_Type => Abstr_Ty));
+               Emit
+                 (Th,
+                  New_Axiom
+                    (Ada_Node => E,
+                     Name     => NID (Axiom_Name),
+                     Def      => New_And_Pred (Is_Nul_Cond, Val_Cond),
+                     Dep      =>
+                       New_Axiom_Dep
+                         (Name => Null_Ptr, Kind => EW_Axdep_Func)));
             end;
          end if;
 
@@ -376,9 +393,11 @@ package body Why.Gen.Pointers is
               New_Call
                 (Name => Why_Eq,
                  Typ  => EW_Bool_Type,
-                 Args => (1 => +New_Result_Ident (Why_Empty),
-                          2 => +New_Pointer_Value_Access
-                            (E, E, +A_Ident, EW_Term, Local => True)));
+                 Args =>
+                   (1 => +New_Result_Ident (Why_Empty),
+                    2 =>
+                      +New_Pointer_Value_Access
+                         (E, E, +A_Ident, EW_Term, Local => True)));
 
             Precond : constant W_Pred_Id :=
               New_Call
@@ -389,31 +408,32 @@ package body Why.Gen.Pointers is
               New_Call
                 (Name => Why_Eq,
                  Typ  => EW_Bool_Type,
-                 Args => (1 => +New_Result_Ident (Why_Empty),
-                          2 => +A_Ident));
+                 Args => (1 => +New_Result_Ident (Why_Empty), 2 => +A_Ident));
 
          begin
-            Emit (Th,
-                  New_Function_Decl
-                    (Domain      => EW_Prog,
-                     Name        => To_Program_Space (Value_Id),
-                     Binders     => A_Binder,
-                     Labels      => Symbol_Sets.Empty_Set,
-                     Location    => No_Location,
-                     Return_Type => Get_Typ (Value_Id),
-                     Pre         => Precond,
-                     Post        => Post));
+            Emit
+              (Th,
+               New_Function_Decl
+                 (Domain      => EW_Prog,
+                  Name        => To_Program_Space (Value_Id),
+                  Binders     => A_Binder,
+                  Labels      => Symbol_Sets.Empty_Set,
+                  Location    => No_Location,
+                  Return_Type => Get_Typ (Value_Id),
+                  Pre         => Precond,
+                  Post        => Post));
 
-            Emit (Th,
-                  New_Function_Decl
-                    (Domain      => EW_Prog,
-                     Name        => To_Program_Space (Assign_Pointer),
-                     Binders     => A_Binder,
-                     Return_Type => Abstr_Ty,
-                     Location    => No_Location,
-                     Labels      => Symbol_Sets.Empty_Set,
-                     Pre         => Precond,
-                     Post        => Assign_Pointer_Post));
+            Emit
+              (Th,
+               New_Function_Decl
+                 (Domain      => EW_Prog,
+                  Name        => To_Program_Space (Assign_Pointer),
+                  Binders     => A_Binder,
+                  Return_Type => Abstr_Ty,
+                  Location    => No_Location,
+                  Labels      => Symbol_Sets.Empty_Set,
+                  Pre         => Precond,
+                  Post        => Assign_Pointer_Post));
 
          end;
       end Declare_Access_Function;
@@ -423,27 +443,25 @@ package body Why.Gen.Pointers is
       ---------------------------------------
 
       procedure Declare_Conversion_Check_Function is
-         Root_Name  : constant W_Name_Id := To_Why_Type
-           (Root, Relaxed_Init => Relaxed_Init);
+         Root_Name  : constant W_Name_Id :=
+           To_Why_Type (Root, Relaxed_Init => Relaxed_Init);
          Root_Abstr : constant W_Type_Id :=
            +New_Named_Type (Name => Root_Name, Relaxed_Init => Relaxed_Init);
          Des_Ty     : constant Entity_Id :=
            Retysp (Directly_Designated_Type (E));
 
-         R_Ident    : constant W_Identifier_Id :=
+         R_Ident : constant W_Identifier_Id :=
            New_Identifier (Name => "r", Typ => Root_Abstr);
-         R_Val      : constant W_Term_Id :=
-           New_Pointer_Value_Access
-             (E    => Root,
-              Name => +R_Ident);
-         Post       : constant W_Pred_Id :=
+         R_Val   : constant W_Term_Id :=
+           New_Pointer_Value_Access (E => Root, Name => +R_Ident);
+         Post    : constant W_Pred_Id :=
            New_Call
              (Name => Why_Eq,
               Typ  => EW_Bool_Type,
               Args => (+New_Result_Ident (Why_Empty), +R_Ident));
-         Num        : constant Positive :=
-           (if Has_Array_Type (Des_Ty) then
-                 2 * Positive (Number_Dimensions (Des_Ty))
+         Num     : constant Positive :=
+           (if Has_Array_Type (Des_Ty)
+            then 2 * Positive (Number_Dimensions (Des_Ty))
             else Count_Discriminants (Des_Ty));
          --  For arrays the range check function takes as parameters the
          --  expression and the bounds for Des_Ty. For records it should take
@@ -455,38 +473,35 @@ package body Why.Gen.Pointers is
          Check_Pred : W_Pred_Id := True_Pred;
 
       begin
-         R_Binder (Num + 1) :=
-           Binder_Type'(B_Name => R_Ident,
-                        others => <>);
+         R_Binder (Num + 1) := Binder_Type'(B_Name => R_Ident, others => <>);
          Args (Num + 1) := +R_Ident;
 
          if Has_Array_Type (Des_Ty) then
-            pragma Assert
-              (not Is_Constrained (Retysp (Directly_Designated_Type (Root))));
+            pragma
+              Assert
+                (not Is_Constrained
+                       (Retysp (Directly_Designated_Type (Root))));
             pragma Assert (Is_Constrained (Des_Ty));
 
             --  Get names and binders for Des_Ty bounds
 
             for Count in 1 .. Positive (Number_Dimensions (Des_Ty)) loop
-               Args (2 * Count - 1) := +To_Local
-                 (E_Symb (Des_Ty, WNE_Attr_First (Count)));
-               Args (2 * Count) := +To_Local
-                 (E_Symb (Des_Ty, WNE_Attr_Last (Count)));
+               Args (2 * Count - 1) :=
+                 +To_Local (E_Symb (Des_Ty, WNE_Attr_First (Count)));
+               Args (2 * Count) :=
+                 +To_Local (E_Symb (Des_Ty, WNE_Attr_Last (Count)));
                R_Binder (2 * Count - 1) :=
-                 Binder_Type'
-                   (B_Name => +Args (2 * Count - 1),
-                    others => <>);
+                 Binder_Type'(B_Name => +Args (2 * Count - 1), others => <>);
                R_Binder (2 * Count) :=
-                 Binder_Type'
-                   (B_Name => +Args (2 * Count),
-                    others => <>);
+                 Binder_Type'(B_Name => +Args (2 * Count), others => <>);
             end loop;
 
             --  Check that the bounds of R_Val match the bounds of Des_Ty
 
             Check_Pred :=
               New_Bounds_Equality
-                (R_Val, Args (1 .. Num),
+                (R_Val,
+                 Args (1 .. Num),
                  Dim => Positive (Number_Dimensions (Des_Ty)));
          else
 
@@ -494,23 +509,24 @@ package body Why.Gen.Pointers is
             --  check functions for records.
 
             pragma Assert (Has_Discriminants (Des_Ty));
-            pragma Assert
-              (not Is_Constrained (Retysp (Directly_Designated_Type (Root))));
+            pragma
+              Assert
+                (not Is_Constrained
+                       (Retysp (Directly_Designated_Type (Root))));
             pragma Assert (Is_Constrained (Des_Ty));
 
             declare
                Discr : Entity_Id := First_Discriminant (Des_Ty);
             begin
                for Count in 1 .. Num loop
-                  Args (Count) := +To_Why_Id
-                    (Discr,
-                     Local => True,
-                     Rec   => Root,
-                     Typ   => Base_Why_Type (Etype (Discr)));
+                  Args (Count) :=
+                    +To_Why_Id
+                       (Discr,
+                        Local => True,
+                        Rec   => Root,
+                        Typ   => Base_Why_Type (Etype (Discr)));
                   R_Binder (Count) :=
-                    Binder_Type'
-                      (B_Name => +Args (Count),
-                       others => <>);
+                    Binder_Type'(B_Name => +Args (Count), others => <>);
                   Next_Discriminant (Discr);
                end loop;
                pragma Assert (No (Discr));
@@ -519,9 +535,11 @@ package body Why.Gen.Pointers is
             Check_Pred :=
               New_Call
                 (Name => E_Symb (Root_Retysp (Des_Ty), WNE_Range_Pred),
-                 Args => Args (1 .. Num) & New_Discriminants_Access
-                   (Name   => +R_Val,
-                    Ty     => Retysp (Directly_Designated_Type (Root))),
+                 Args =>
+                   Args (1 .. Num)
+                   & New_Discriminants_Access
+                       (Name => +R_Val,
+                        Ty   => Retysp (Directly_Designated_Type (Root))),
                  Typ  => EW_Bool_Type);
          end if;
 
@@ -529,36 +547,38 @@ package body Why.Gen.Pointers is
 
          Check_Pred :=
            New_Conditional
-             (Condition => New_Not
-                (Right  =>
-                   Pred_Of_Boolean_Term
-                   (New_Pointer_Is_Null_Access
-                        (E     => Root,
-                         Name  => +R_Ident))),
+             (Condition =>
+                New_Not
+                  (Right =>
+                     Pred_Of_Boolean_Term
+                       (New_Pointer_Is_Null_Access
+                          (E => Root, Name => +R_Ident))),
               Then_Part => Check_Pred,
               Typ       => EW_Bool_Type);
 
-         Emit (Th,
-               New_Function_Decl
-                 (Domain   => EW_Pred,
-                  Name     => To_Local (E_Symb (E, WNE_Range_Pred)),
-                  Location => Safe_First_Sloc (E),
-                  Labels   => Symbol_Sets.Empty_Set,
-                  Binders  => R_Binder,
-                  Def      => +Check_Pred));
+         Emit
+           (Th,
+            New_Function_Decl
+              (Domain   => EW_Pred,
+               Name     => To_Local (E_Symb (E, WNE_Range_Pred)),
+               Location => Safe_First_Sloc (E),
+               Labels   => Symbol_Sets.Empty_Set,
+               Binders  => R_Binder,
+               Def      => +Check_Pred));
          Pre_Cond :=
-           New_Call (Name => To_Local (E_Symb (E, WNE_Range_Pred)),
-                     Args => Args);
-         Emit (Th,
-               New_Function_Decl
-                 (Domain      => EW_Prog,
-                  Name        => To_Local (E_Symb (E, WNE_Range_Check_Fun)),
-                  Binders     => R_Binder,
-                  Location    => Safe_First_Sloc (E),
-                  Labels      => Symbol_Sets.Empty_Set,
-                  Return_Type => Root_Abstr,
-                  Pre         => Pre_Cond,
-                  Post        => Post));
+           New_Call
+             (Name => To_Local (E_Symb (E, WNE_Range_Pred)), Args => Args);
+         Emit
+           (Th,
+            New_Function_Decl
+              (Domain      => EW_Prog,
+               Name        => To_Local (E_Symb (E, WNE_Range_Check_Fun)),
+               Binders     => R_Binder,
+               Location    => Safe_First_Sloc (E),
+               Labels      => Symbol_Sets.Empty_Set,
+               Return_Type => Root_Abstr,
+               Pre         => Pre_Cond,
+               Post        => Post));
       end Declare_Conversion_Check_Function;
 
       ----------------------------------
@@ -566,13 +586,11 @@ package body Why.Gen.Pointers is
       ----------------------------------
 
       procedure Declare_Conversion_Functions (As_Axioms : Boolean) is
-         R_Ident   : constant W_Identifier_Id :=
+         R_Ident  : constant W_Identifier_Id :=
            New_Identifier
-             (Name => "r",
-              Typ  => EW_Abstract (Root, Relaxed_Init));
-         R_Binder  : constant Binder_Array :=
-           (1 => (B_Name => R_Ident,
-                  others => <>));
+             (Name => "r", Typ => EW_Abstract (Root, Relaxed_Init));
+         R_Binder : constant Binder_Array :=
+           (1 => (B_Name => R_Ident, others => <>));
 
       begin
          declare
@@ -581,31 +599,35 @@ package body Why.Gen.Pointers is
             Def     : constant W_Term_Id :=
               Pointer_From_Split_Form
                 (A            =>
-                   (1 => Insert_Simple_Conversion
-                      (Domain         => EW_Term,
-                       Expr           => New_Pointer_Value_Access
-                         (Ada_Node       => Empty,
-                          E              => E,
-                          Name           => +A_Ident,
-                          Domain         => EW_Term,
-                          Local          => True),
-                       To             =>
-                         EW_Abstract
-                           (Des_Ty,
-                            Relaxed_Init =>
-                              (if Relaxed_Init then Has_Init_Wrapper (Des_Ty)
-                               else Has_Relaxed_Init (Des_Ty))),
-                       Force_No_Slide => True),
-                    2 => New_Pointer_Is_Null_Access
-                      (E     => E,
-                       Name  => +A_Ident,
-                       Local => True))
-                 & (if Relaxed_Init
-                    then (1 => New_Record_Access
-                          (Name   => +A_Ident,
-                           Field  => To_Local (E_Symb (E, WNE_Attr_Init)),
-                           Typ    => EW_Bool_Type))
-                   else (1 .. 0 => <>)),
+                   (1 =>
+                      Insert_Simple_Conversion
+                        (Domain         => EW_Term,
+                         Expr           =>
+                           New_Pointer_Value_Access
+                             (Ada_Node => Empty,
+                              E        => E,
+                              Name     => +A_Ident,
+                              Domain   => EW_Term,
+                              Local    => True),
+                         To             =>
+                           EW_Abstract
+                             (Des_Ty,
+                              Relaxed_Init =>
+                                (if Relaxed_Init
+                                 then Has_Init_Wrapper (Des_Ty)
+                                 else Has_Relaxed_Init (Des_Ty))),
+                         Force_No_Slide => True),
+                    2 =>
+                      New_Pointer_Is_Null_Access
+                        (E => E, Name => +A_Ident, Local => True))
+                   & (if Relaxed_Init
+                      then
+                        (1 =>
+                           New_Record_Access
+                             (Name  => +A_Ident,
+                              Field => To_Local (E_Symb (E, WNE_Attr_Init)),
+                              Typ   => EW_Bool_Type))
+                      else (1 .. 0 => <>)),
                  Ty           => Root,
                  Relaxed_Init => Relaxed_Init,
                  Force_Dummy  => True);
@@ -618,17 +640,17 @@ package body Why.Gen.Pointers is
                Emit
                  (Th,
                   New_Defining_Axiom
-                    (Name     => To_Local
-                         (E_Symb (E, WNE_To_Base, Relaxed_Init)),
-                     Binders  => A_Binder,
-                     Def      => Def));
+                    (Name    =>
+                       To_Local (E_Symb (E, WNE_To_Base, Relaxed_Init)),
+                     Binders => A_Binder,
+                     Def     => Def));
             else
                Emit
                  (Th,
                   New_Function_Decl
                     (Domain      => EW_Pterm,
-                     Name        => To_Local
-                       (E_Symb (E, WNE_To_Base, Relaxed_Init)),
+                     Name        =>
+                       To_Local (E_Symb (E, WNE_To_Base, Relaxed_Init)),
                      Binders     => A_Binder,
                      Location    => No_Location,
                      Labels      => Symbol_Sets.Empty_Set,
@@ -638,32 +660,37 @@ package body Why.Gen.Pointers is
          end;
 
          declare
-            Des_Ty  : constant Entity_Id := Directly_Designated_Type (E);
-            Def     : constant W_Term_Id :=
+            Des_Ty : constant Entity_Id := Directly_Designated_Type (E);
+            Def    : constant W_Term_Id :=
               Pointer_From_Split_Form
                 (A            =>
-                   (1 => Insert_Simple_Conversion
-                      (Domain         => EW_Term,
-                       Expr           => New_Pointer_Value_Access
-                         (Ada_Node       => Empty,
-                          E              => Root,
-                          Name           => +R_Ident,
-                          Domain         => EW_Term),
-                       To             =>
-                         EW_Abstract (Des_Ty,
-                           Relaxed_Init =>
-                             (if Relaxed_Init then Has_Init_Wrapper (Des_Ty)
-                              else Has_Relaxed_Init (Des_Ty))),
-                       Force_No_Slide => True),
-                    2 => New_Pointer_Is_Null_Access
-                      (E     => Root,
-                       Name  => +R_Ident))
-                 & (if Relaxed_Init
-                    then (1 => New_Record_Access
-                          (Name   => +R_Ident,
-                           Field  => E_Symb (Root, WNE_Attr_Init),
-                           Typ    => EW_Bool_Type))
-                    else (1 .. 0 => <>)),
+                   (1 =>
+                      Insert_Simple_Conversion
+                        (Domain         => EW_Term,
+                         Expr           =>
+                           New_Pointer_Value_Access
+                             (Ada_Node => Empty,
+                              E        => Root,
+                              Name     => +R_Ident,
+                              Domain   => EW_Term),
+                         To             =>
+                           EW_Abstract
+                             (Des_Ty,
+                              Relaxed_Init =>
+                                (if Relaxed_Init
+                                 then Has_Init_Wrapper (Des_Ty)
+                                 else Has_Relaxed_Init (Des_Ty))),
+                         Force_No_Slide => True),
+                    2 =>
+                      New_Pointer_Is_Null_Access (E => Root, Name => +R_Ident))
+                   & (if Relaxed_Init
+                      then
+                        (1 =>
+                           New_Record_Access
+                             (Name  => +R_Ident,
+                              Field => E_Symb (Root, WNE_Attr_Init),
+                              Typ   => EW_Bool_Type))
+                      else (1 .. 0 => <>)),
                  Ty           => E,
                  Local        => True,
                  Relaxed_Init => Relaxed_Init,
@@ -677,17 +704,17 @@ package body Why.Gen.Pointers is
                Emit
                  (Th,
                   New_Defining_Axiom
-                    (Name     => To_Local
-                         (E_Symb (E, WNE_Of_Base, Relaxed_Init)),
-                     Binders  => R_Binder,
-                     Def      => Def));
+                    (Name    =>
+                       To_Local (E_Symb (E, WNE_Of_Base, Relaxed_Init)),
+                     Binders => R_Binder,
+                     Def     => Def));
             else
                Emit
                  (Th,
                   New_Function_Decl
                     (Domain      => EW_Pterm,
-                     Name        => To_Local
-                       (E_Symb (E, WNE_Of_Base, Relaxed_Init)),
+                     Name        =>
+                       To_Local (E_Symb (E, WNE_Of_Base, Relaxed_Init)),
                      Binders     => R_Binder,
                      Location    => No_Location,
                      Labels      => Symbol_Sets.Empty_Set,
@@ -703,35 +730,36 @@ package body Why.Gen.Pointers is
 
       procedure Declare_Wrapper_Conversions (As_Axioms : Boolean) is
          X_Ident  : constant W_Identifier_Id :=
-           New_Identifier (Name => "x", Typ  => EW_Abstract (E));
+           New_Identifier (Name => "x", Typ => EW_Abstract (E));
          X_Binder : constant Binder_Array :=
-           (1 => (B_Name => X_Ident,
-                  others => <>));
+           (1 => (B_Name => X_Ident, others => <>));
          Des_Ty   : constant Entity_Id := Directly_Designated_Type (E);
 
       begin
          declare
             Def : constant W_Term_Id :=
               Pointer_From_Split_Form
-                (A  =>
-                   (1 => Insert_Simple_Conversion
-                      (Domain         => EW_Term,
-                       Expr           => New_Pointer_Value_Access
-                         (Ada_Node       => Empty,
-                          E              => E,
-                          Name           => +A_Ident,
-                          Domain         => EW_Term,
-                          Local          => True),
-                       To             =>
-                         EW_Abstract
-                           (Des_Ty, Relaxed_Init => Has_Relaxed_Init (Des_Ty)),
-                       Force_No_Slide => True),
-                    2 => New_Pointer_Is_Null_Access
-                      (E     => E,
-                       Name  => +A_Ident,
-                       Local => True)),
-                 Ty => E,
-                 Force_Dummy  => True);
+                (A           =>
+                   (1 =>
+                      Insert_Simple_Conversion
+                        (Domain         => EW_Term,
+                         Expr           =>
+                           New_Pointer_Value_Access
+                             (Ada_Node => Empty,
+                              E        => E,
+                              Name     => +A_Ident,
+                              Domain   => EW_Term,
+                              Local    => True),
+                         To             =>
+                           EW_Abstract
+                             (Des_Ty,
+                              Relaxed_Init => Has_Relaxed_Init (Des_Ty)),
+                         Force_No_Slide => True),
+                    2 =>
+                      New_Pointer_Is_Null_Access
+                        (E => E, Name => +A_Ident, Local => True)),
+                 Ty          => E,
+                 Force_Dummy => True);
             --  (value   = of_wrapper a.value,
             --   addr    = a.addr,
             --   is_null = a.is_null)
@@ -741,9 +769,9 @@ package body Why.Gen.Pointers is
                Emit
                  (Th,
                   New_Defining_Axiom
-                    (Name     => To_Local (E_Symb (E, WNE_Of_Wrapper)),
-                     Binders  => A_Binder,
-                     Def      => Def));
+                    (Name    => To_Local (E_Symb (E, WNE_Of_Wrapper)),
+                     Binders => A_Binder,
+                     Def     => Def));
             else
                Emit
                  (Th,
@@ -762,20 +790,21 @@ package body Why.Gen.Pointers is
             Def : constant W_Term_Id :=
               Pointer_From_Split_Form
                 (A            =>
-                   (1 => Insert_Simple_Conversion
-                      (Domain         => EW_Term,
-                       Expr           => New_Pointer_Value_Access
-                         (Ada_Node       => Empty,
-                          E              => E,
-                          Name           => +X_Ident,
-                          Domain         => EW_Term),
-                       To             =>
-                         EW_Abstract
-                           (Des_Ty, Relaxed_Init => Has_Init_Wrapper (Des_Ty)),
-                       Force_No_Slide => True),
-                    2 => New_Pointer_Is_Null_Access
-                      (E     => E,
-                       Name  => +X_Ident),
+                   (1 =>
+                      Insert_Simple_Conversion
+                        (Domain         => EW_Term,
+                         Expr           =>
+                           New_Pointer_Value_Access
+                             (Ada_Node => Empty,
+                              E        => E,
+                              Name     => +X_Ident,
+                              Domain   => EW_Term),
+                         To             =>
+                           EW_Abstract
+                             (Des_Ty,
+                              Relaxed_Init => Has_Init_Wrapper (Des_Ty)),
+                         Force_No_Slide => True),
+                    2 => New_Pointer_Is_Null_Access (E => E, Name => +X_Ident),
                     3 => +True_Term),
                  Ty           => E,
                  Local        => True,
@@ -791,10 +820,9 @@ package body Why.Gen.Pointers is
                Emit
                  (Th,
                   New_Defining_Axiom
-                    (Name     => To_Local
-                         (E_Symb (E, WNE_To_Wrapper)),
-                     Binders  => X_Binder,
-                     Def      => Def));
+                    (Name    => To_Local (E_Symb (E, WNE_To_Wrapper)),
+                     Binders => X_Binder,
+                     Def     => Def));
             else
                Emit
                  (Th,
@@ -810,7 +838,7 @@ package body Why.Gen.Pointers is
          end;
       end Declare_Wrapper_Conversions;
 
-   --  Start of processing for Complete_Rep_Pointer_Type
+      --  Start of processing for Complete_Rep_Pointer_Type
 
    begin
       Declare_Access_Function;
@@ -858,26 +886,30 @@ package body Why.Gen.Pointers is
       Ty_Name    : constant W_Name_Id := To_Name (WNE_Move_Tree);
       Tree_Ident : constant W_Identifier_Id :=
         New_Identifier
-          (Name => "tree",
-           Typ  => New_Named_Type (Name => Ty_Name));
+          (Name => "tree", Typ => New_Named_Type (Name => Ty_Name));
       Typ        : constant W_Type_Id :=
         (if Has_Init_Wrapper (E)
          then EW_Init_Wrapper (Type_Of_Node (E))
          else Type_Of_Node (E));
       Obj_Ident  : constant W_Identifier_Id :=
-        New_Identifier (Name => "obj", Typ  => Typ);
+        New_Identifier (Name => "obj", Typ => Typ);
       Th         : Theory_UC;
 
    begin
-      Th := Open_Theory
-        (WF_Context, E_Module (E, Incomp_Move_Tree),
-         Comment =>
-           "Module for the abstract move tree for the type "
-         & """" & Get_Name_String (Chars (E)) & """"
-         & (if Sloc (E) > 0 then
-              " defined at " & Build_Location_String (Sloc (E))
-           else "")
-         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      Th :=
+        Open_Theory
+          (WF_Context,
+           E_Module (E, Incomp_Move_Tree),
+           Comment =>
+             "Module for the abstract move tree for the type "
+             & """"
+             & Get_Name_String (Chars (E))
+             & """"
+             & (if Sloc (E) > 0
+                then " defined at " & Build_Location_String (Sloc (E))
+                else "")
+             & ", created in "
+             & GNAT.Source_Info.Enclosing_Entity);
 
       Emit (Th, New_Type_Decl (To_String (WNE_Move_Tree)));
 
@@ -886,11 +918,10 @@ package body Why.Gen.Pointers is
          New_Function_Decl
            (Domain   => EW_Pred,
             Name     => To_Local (E_Symb (E, WNE_Is_Moved_Or_Reclaimed)),
-            Binders  => Binder_Array'
-              (1 => (B_Name => Tree_Ident,
-                     others => <>),
-               2 => (B_Name => Obj_Ident,
-                     others => <>)),
+            Binders  =>
+              Binder_Array'
+                (1 => (B_Name => Tree_Ident, others => <>),
+                 2 => (B_Name => Obj_Ident, others => <>)),
             Location => No_Location,
             Labels   => Symbol_Sets.Empty_Set));
 
@@ -902,20 +933,18 @@ package body Why.Gen.Pointers is
    -----------------------------------------
 
    procedure Create_Move_Tree_Theory_For_Pointer
-     (Th : Theory_UC;
-      E  : Entity_Id)
+     (Th : Theory_UC; E : Entity_Id)
    is
       Ty_Name    : constant W_Name_Id := To_Name (WNE_Move_Tree);
       Tree_Ident : constant W_Identifier_Id :=
         New_Identifier
-          (Name => "tree",
-           Typ  => New_Named_Type (Name => Ty_Name));
+          (Name => "tree", Typ => New_Named_Type (Name => Ty_Name));
       Typ        : constant W_Type_Id :=
         (if Has_Init_Wrapper (E)
          then EW_Init_Wrapper (Type_Of_Node (E))
          else Type_Of_Node (E));
       Obj_Ident  : constant W_Identifier_Id :=
-        New_Identifier (Name => "obj", Typ  => Typ);
+        New_Identifier (Name => "obj", Typ => Typ);
       Des_Ty     : constant Entity_Id := Directly_Designated_Type (E);
       Def        : W_Pred_Id;
 
@@ -932,31 +961,40 @@ package body Why.Gen.Pointers is
             --  For incomplete designated types, use early declarations
 
          begin
-            Emit (Th,
-                  New_Type_Decl
-                    (Name  => Ty_Name,
-                     Alias => New_Named_Type
-                       (Name => New_Name
-                            (Symb   => NID (To_String (WNE_Move_Tree)),
-                             Module => Des_Module))));
+            Emit
+              (Th,
+               New_Type_Decl
+                 (Name  => Ty_Name,
+                  Alias =>
+                    New_Named_Type
+                      (Name =>
+                         New_Name
+                           (Symb   => NID (To_String (WNE_Move_Tree)),
+                            Module => Des_Module))));
 
             --  In __is_moved_or_reclaimed, check reclamation of the designated
             --  value if any.
 
-            Def := New_Or_Pred
-              (Left  => Pred_Of_Boolean_Term
-                 (New_Pointer_Is_Null_Access
-                      (Name => +Obj_Ident,
-                       E    => E)),
-               Right => New_Call
-                 (Name => New_Identifier
-                      (Symb   => NID (To_String (WNE_Is_Moved_Or_Reclaimed)),
-                       Module => Des_Module,
-                       Domain => EW_Pred),
-                  Args =>
-                    (1 => +Tree_Ident,
-                     2 => New_Pointer_Value_Access
-                       (E => E, Name => +Obj_Ident, Domain => EW_Term))));
+            Def :=
+              New_Or_Pred
+                (Left  =>
+                   Pred_Of_Boolean_Term
+                     (New_Pointer_Is_Null_Access (Name => +Obj_Ident, E => E)),
+                 Right =>
+                   New_Call
+                     (Name =>
+                        New_Identifier
+                          (Symb   =>
+                             NID (To_String (WNE_Is_Moved_Or_Reclaimed)),
+                           Module => Des_Module,
+                           Domain => EW_Pred),
+                      Args =>
+                        (1 => +Tree_Ident,
+                         2 =>
+                           New_Pointer_Value_Access
+                             (E      => E,
+                              Name   => +Obj_Ident,
+                              Domain => EW_Term))));
          end;
 
       --  If E is a pool-specific access-to-variable type, introduce toplevel
@@ -968,38 +1006,42 @@ package body Why.Gen.Pointers is
             Value_Field_Opt : constant Binder_Array :=
               (if Contains_Allocated_Parts (Des_Ty)
                then
-                 (1 => (B_Name =>
-                            To_Local (E_Symb (E, WNE_Move_Tree_Ptr_Value)),
-                        others => <>))
+                 (1 =>
+                    (B_Name => To_Local (E_Symb (E, WNE_Move_Tree_Ptr_Value)),
+                     others => <>))
                else (1 .. 0 => <>));
 
          begin
             Emit_Record_Declaration
               (Th      => Th,
                Name    => Ty_Name,
-               Binders => Binder_Array'
-                 (Binder_Type'
-                      (B_Name => To_Local
-                           (E_Symb (E, WNE_Move_Tree_Ptr_Is_Moved)),
+               Binders =>
+                 Binder_Array'
+                   (Binder_Type'
+                      (B_Name =>
+                         To_Local (E_Symb (E, WNE_Move_Tree_Ptr_Is_Moved)),
                        others => <>)
-                  & Value_Field_Opt));
+                    & Value_Field_Opt));
          end;
 
          --  In __is_moved_or_reclaimed predicate, check the is_moved flag and
          --  the reclamation on the type.
 
-         Def := New_Or_Pred
-           (Left  => Pred_Of_Boolean_Term
-              (New_Record_Access
-                   (Name  => +Tree_Ident,
-                    Field => To_Local (E_Symb (E, WNE_Move_Tree_Ptr_Is_Moved)),
-                    Typ   => EW_Bool_Type)),
-            Right => Pred_Of_Boolean_Term
-              (New_Pointer_Is_Null_Access (Name => +Obj_Ident, E => E)));
+         Def :=
+           New_Or_Pred
+             (Left  =>
+                Pred_Of_Boolean_Term
+                  (New_Record_Access
+                     (Name  => +Tree_Ident,
+                      Field =>
+                        To_Local (E_Symb (E, WNE_Move_Tree_Ptr_Is_Moved)),
+                      Typ   => EW_Bool_Type)),
+              Right =>
+                Pred_Of_Boolean_Term
+                  (New_Pointer_Is_Null_Access (Name => +Obj_Ident, E => E)));
       end if;
 
-      Emit_Ref_Type_Definition (Th   => Th,
-                                Name => Ty_Name);
+      Emit_Ref_Type_Definition (Th => Th, Name => Ty_Name);
 
       --  Create __is_moved_or_reclaimed predicate
 
@@ -1008,11 +1050,10 @@ package body Why.Gen.Pointers is
          New_Function_Decl
            (Domain   => EW_Pred,
             Name     => To_Local (E_Symb (E, WNE_Is_Moved_Or_Reclaimed)),
-            Binders  => Binder_Array'
-              (1 => (B_Name => Tree_Ident,
-                     others => <>),
-               2 => (B_Name => Obj_Ident,
-                     others => <>)),
+            Binders  =>
+              Binder_Array'
+                (1 => (B_Name => Tree_Ident, others => <>),
+                 2 => (B_Name => Obj_Ident, others => <>)),
             Location => No_Location,
             Labels   => Symbol_Sets.Empty_Set,
             Def      => +Def));
@@ -1023,24 +1064,28 @@ package body Why.Gen.Pointers is
    -------------------------------
 
    procedure Create_Rep_Pointer_Theory
-     (E            : Entity_Id;
-      Relaxed_Init : Boolean := False)
+     (E : Entity_Id; Relaxed_Init : Boolean := False)
    is
       Th : Theory_UC;
    begin
       Th :=
         Open_Theory
-          (WF_Context, E_Module
+          (WF_Context,
+           E_Module
              (E,
-              (if Relaxed_Init then Init_Wrapper_Pointer_Rep
+              (if Relaxed_Init
+               then Init_Wrapper_Pointer_Rep
                else Type_Representative)),
            Comment =>
              "Module for axiomatizing the pointer theory associated to type "
-           & """" & Get_Name_String (Chars (E)) & """"
-           & (if Sloc (E) > 0 then
-                " defined at " & Build_Location_String (Sloc (E))
-             else "")
-           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+             & """"
+             & Get_Name_String (Chars (E))
+             & """"
+             & (if Sloc (E) > 0
+                then " defined at " & Build_Location_String (Sloc (E))
+                else "")
+             & ", created in "
+             & GNAT.Source_Info.Enclosing_Entity);
 
       Declare_Rep_Pointer_Type (Th, E, Relaxed_Init);
 
@@ -1072,8 +1117,8 @@ package body Why.Gen.Pointers is
    -------------------------
 
    procedure Declare_Ada_Pointer (Th : Theory_UC; E : Entity_Id) is
-      Rep_Module : constant W_Module_Id := E_Module
-        (Repr_Pointer_Type (E), Type_Representative);
+      Rep_Module : constant W_Module_Id :=
+        E_Module (Repr_Pointer_Type (E), Type_Representative);
 
    begin
       --  Export the theory containing the pointer record definition.
@@ -1082,9 +1127,11 @@ package body Why.Gen.Pointers is
 
       --  Rename the representative record type as expected.
 
-      Emit (Th, New_Type_Decl (Name  => To_Why_Type (E, Local => True),
-                               Alias => +New_Named_Type
-                                 (Name => To_Name (WNE_Rec_Rep))));
+      Emit
+        (Th,
+         New_Type_Decl
+           (Name  => To_Why_Type (E, Local => True),
+            Alias => +New_Named_Type (Name => To_Name (WNE_Rec_Rep))));
       Emit
         (Th,
          Why.Atree.Builders.New_Function_Decl
@@ -1102,52 +1149,56 @@ package body Why.Gen.Pointers is
    -----------------------------
 
    procedure Declare_At_End_Function
-     (File    : Theory_UC;
-      E       : Entity_Id;
-      Binders : Binder_Array)
+     (File : Theory_UC; E : Entity_Id; Binders : Binder_Array)
    is
       Borrowed_Entity : constant Entity_Id := First_Formal (E);
       Current_Module  : constant W_Module_Id := E_Module (E);
-      Ty              : constant Entity_Id :=
-        Retysp (Etype (Borrowed_Entity));
+      Ty              : constant Entity_Id := Retysp (Etype (Borrowed_Entity));
       Borrowed_Id     : constant W_Identifier_Id :=
-        New_Identifier (Symb   => NID (Short_Name (E) & "__borrowed_at_end"),
-                        Typ    => Type_Of_Node (Ty),
-                        Module => Current_Module,
-                        Domain => EW_Prog);
+        New_Identifier
+          (Symb   => NID (Short_Name (E) & "__borrowed_at_end"),
+           Typ    => Type_Of_Node (Ty),
+           Module => Current_Module,
+           Domain => EW_Prog);
       Brower_Id       : constant W_Identifier_Id :=
-        New_Identifier (Symb   => NID (Short_Name (E) & "__result_at_end"),
-                        Typ    => Type_Of_Node (Etype (E)),
-                        Domain => EW_Prog);
+        New_Identifier
+          (Symb   => NID (Short_Name (E) & "__result_at_end"),
+           Typ    => Type_Of_Node (Etype (E)),
+           Domain => EW_Prog);
 
    begin
       --  Emit a declaration for a function computing the value of the borrowed
       --  parameter at the end of the borrow from the call parameters (Binders)
       --  and the value of the result at the end of the borrow.
 
-      Emit (File,
-            New_Function_Decl
-              (Domain      => EW_Pterm,
-               Name        => To_Local (Borrowed_Id),
-               Binders     => Binders &
-                 Binder_Type'(B_Name => Brower_Id,
-                              B_Ent  => Null_Entity_Name,
-                              Labels => Symbol_Sets.Empty_Set,
-                              others => <>),
-               Return_Type => Get_Typ (Borrowed_Id),
-               Labels      => Symbol_Sets.Empty_Set,
-               Location    => No_Location));
+      Emit
+        (File,
+         New_Function_Decl
+           (Domain      => EW_Pterm,
+            Name        => To_Local (Borrowed_Id),
+            Binders     =>
+              Binders
+              & Binder_Type'
+                  (B_Name => Brower_Id,
+                   B_Ent  => Null_Entity_Name,
+                   Labels => Symbol_Sets.Empty_Set,
+                   others => <>),
+            Return_Type => Get_Typ (Borrowed_Id),
+            Labels      => Symbol_Sets.Empty_Set,
+            Location    => No_Location));
 
       --  Update the Borrow_Infos map. Also insert a local name for the
       --  borrower at end. It will be used when generating VCs for the
       --  subprogram.
 
       Borrow_Infos.Insert
-        (E, Borrow_Info'(Borrowed_Entity => Borrowed_Entity,
-                         Borrowed_Expr   => Borrowed_Entity,
-                         Borrowed_Ty     => Ty,
-                         Borrowed_At_End => Borrowed_Id,
-                         Brower_At_End   => Brower_Id));
+        (E,
+         Borrow_Info'
+           (Borrowed_Entity => Borrowed_Entity,
+            Borrowed_Expr   => Borrowed_Entity,
+            Borrowed_Ty     => Ty,
+            Borrowed_At_End => Borrowed_Id,
+            Brower_At_End   => Brower_Id));
    end Declare_At_End_Function;
 
    ------------------------
@@ -1177,7 +1228,7 @@ package body Why.Gen.Pointers is
         and then Attribute_Name (Borrowed_Expr) = Name_Access
       then
          Borrowed_Expr := Prefix (Borrowed_Expr);
-         Borrowed_Ty   := Etype (Borrowed_Expr);
+         Borrowed_Ty := Etype (Borrowed_Expr);
       end if;
 
       --  For constant borrowers, the whole object can be considered to be
@@ -1187,9 +1238,7 @@ package body Why.Gen.Pointers is
       if Is_Constant_Borrower (E) then
          loop
             case Nkind (Borrowed_Expr) is
-               when N_Expanded_Name
-                  | N_Identifier
-               =>
+               when N_Expanded_Name | N_Identifier =>
                   Borrowed_Ty := Etype (Borrowed_Expr);
                   exit;
 
@@ -1220,20 +1269,24 @@ package body Why.Gen.Pointers is
          Current_Module : constant W_Module_Id := E_Module (E);
          Brower_Typ     : constant W_Type_Id := Type_Of_Node (Etype (E));
          Brower_Id      : constant W_Identifier_Id :=
-           New_Identifier (Symb   => NID (Short_Name (E) & "__brower_at_end"),
-                           Typ    =>
-                             (if Relaxed_Init then EW_Init_Wrapper (Brower_Typ)
-                              else Brower_Typ),
-                           Module => Current_Module,
-                           Domain => EW_Prog);
+           New_Identifier
+             (Symb   => NID (Short_Name (E) & "__brower_at_end"),
+              Typ    =>
+                (if Relaxed_Init
+                 then EW_Init_Wrapper (Brower_Typ)
+                 else Brower_Typ),
+              Module => Current_Module,
+              Domain => EW_Prog);
          Borrowed_Typ   : constant W_Type_Id := Type_Of_Node (Borrowed_Ty);
-         Borrowed_Id    : constant W_Identifier_Id := New_Identifier
-           (Symb   => NID (Short_Name (E) & "__borrowed_at_end"),
-            Typ    =>
-              (if Relaxed_Init then EW_Init_Wrapper (Borrowed_Typ)
-               else Borrowed_Typ),
-            Module => Current_Module,
-            Domain => EW_Prog);
+         Borrowed_Id    : constant W_Identifier_Id :=
+           New_Identifier
+             (Symb   => NID (Short_Name (E) & "__borrowed_at_end"),
+              Typ    =>
+                (if Relaxed_Init
+                 then EW_Init_Wrapper (Borrowed_Typ)
+                 else Borrowed_Typ),
+              Module => Current_Module,
+              Domain => EW_Prog);
          --  Use the borrowed type for the borrowed at end, since the
          --  invariants of the specific type of the borrowed expression might
          --  be broken during the borrow.
@@ -1243,33 +1296,38 @@ package body Why.Gen.Pointers is
          --  end of the borrow. We need a reference as this value can be
          --  modified on reborrows.
 
-         Emit (Th,
-               New_Global_Ref_Declaration (Name     => To_Local (Brower_Id),
-                                           Ref_Type => Get_Typ (Brower_Id),
-                                           Labels   => Symbol_Sets.Empty_Set,
-                                           Location => No_Location));
+         Emit
+           (Th,
+            New_Global_Ref_Declaration
+              (Name     => To_Local (Brower_Id),
+               Ref_Type => Get_Typ (Brower_Id),
+               Labels   => Symbol_Sets.Empty_Set,
+               Location => No_Location));
 
          --  Declare a global constant for the value of the borrowed expression
          --  at the end of the borrow. We assume its value on the borrow based
          --  on the value of the borrower at the end.
 
-         Emit (Th,
-               Why.Atree.Builders.New_Function_Decl
-                 (Domain      => EW_Pterm,
-                  Name        => To_Local (Borrowed_Id),
-                  Binders     => (1 .. 0 => <>),
-                  Labels      => Symbol_Sets.Empty_Set,
-                  Location    => No_Location,
-                  Return_Type => Get_Typ (Borrowed_Id)));
+         Emit
+           (Th,
+            Why.Atree.Builders.New_Function_Decl
+              (Domain      => EW_Pterm,
+               Name        => To_Local (Borrowed_Id),
+               Binders     => (1 .. 0 => <>),
+               Labels      => Symbol_Sets.Empty_Set,
+               Location    => No_Location,
+               Return_Type => Get_Typ (Borrowed_Id)));
 
          --  Store information in the Borrow_Infos map
 
          Borrow_Infos.Insert
-           (E, Borrow_Info'(Borrowed_Entity => Borrowed_Entity,
-                            Borrowed_Expr   => Borrowed_Expr,
-                            Borrowed_Ty     => Borrowed_Ty,
-                            Borrowed_At_End => Borrowed_Id,
-                            Brower_At_End   => Brower_Id));
+           (E,
+            Borrow_Info'
+              (Borrowed_Entity => Borrowed_Entity,
+               Borrowed_Expr   => Borrowed_Expr,
+               Borrowed_Ty     => Borrowed_Ty,
+               Borrowed_At_End => Borrowed_Id,
+               Brower_At_End   => Brower_Id));
       end;
    end Declare_At_End_Ref;
 
@@ -1277,9 +1335,7 @@ package body Why.Gen.Pointers is
    -- Declare_Init_Wrapper_For_Pointer --
    --------------------------------------
 
-   procedure Declare_Init_Wrapper_For_Pointer
-     (Th : Theory_UC;
-      E  : Entity_Id)
+   procedure Declare_Init_Wrapper_For_Pointer (Th : Theory_UC; E : Entity_Id)
    is
       Rep_Module : constant W_Module_Id :=
         E_Module (Repr_Pointer_Type (E), Init_Wrapper_Pointer_Rep);
@@ -1291,10 +1347,11 @@ package body Why.Gen.Pointers is
 
       --  Rename the representative record type as expected
 
-      Emit (Th, New_Type_Decl
-            (Name  => To_Why_Type (E, Local => True, Relaxed_Init => True),
-             Alias => +New_Named_Type
-               (Name => To_Name (WNE_Rec_Rep))));
+      Emit
+        (Th,
+         New_Type_Decl
+           (Name  => To_Why_Type (E, Local => True, Relaxed_Init => True),
+            Alias => +New_Named_Type (Name => To_Name (WNE_Rec_Rep))));
 
    end Declare_Init_Wrapper_For_Pointer;
 
@@ -1303,31 +1360,36 @@ package body Why.Gen.Pointers is
    -------------------------------
 
    procedure Declare_Rep_Pointer_Compl
-     (E            : Entity_Id;
-      Relaxed_Init : Boolean := False)
+     (E : Entity_Id; Relaxed_Init : Boolean := False)
    is
       Des_Ty : constant Entity_Id := Directly_Designated_Type (E);
       Th     : Theory_UC;
    begin
-      Th := Open_Theory
-        (WF_Context,
-         E_Module
-           (E,
-            (if Relaxed_Init then Init_Wrapper_Completion
-             else Type_Completion)),
-         Comment =>
-           "Module for completing the pointer theory associated to type "
-         & """" & Get_Name_String (Chars (E)) & """"
-         & (if Sloc (E) > 0 then
-              " defined at " & Build_Location_String (Sloc (E))
-           else "")
-         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      Th :=
+        Open_Theory
+          (WF_Context,
+           E_Module
+             (E,
+              (if Relaxed_Init
+               then Init_Wrapper_Completion
+               else Type_Completion)),
+           Comment =>
+             "Module for completing the pointer theory associated to type "
+             & """"
+             & Get_Name_String (Chars (E))
+             & """"
+             & (if Sloc (E) > 0
+                then " defined at " & Build_Location_String (Sloc (E))
+                else "")
+             & ", created in "
+             & GNAT.Source_Info.Enclosing_Entity);
 
       Add_With_Clause
         (Th,
          E_Module
            (Repr_Pointer_Type (E),
-            (if Relaxed_Init then Init_Wrapper_Pointer_Rep
+            (if Relaxed_Init
+             then Init_Wrapper_Pointer_Rep
              else Type_Representative)),
          EW_Import);
 
@@ -1337,64 +1399,74 @@ package body Why.Gen.Pointers is
 
       declare
          Abstr_Binder : constant Binder_Type :=
-           (B_Name => New_Identifier
-              (Domain => EW_Term,
-               Name   => New_Name (Symb => NID ("x")),
-               Typ    => EW_Abstract
-                 (Des_Ty,
-                  (if Relaxed_Init then Has_Init_Wrapper (Des_Ty)
-                   else Has_Relaxed_Init (Des_Ty)))),
+           (B_Name =>
+              New_Identifier
+                (Domain => EW_Term,
+                 Name   => New_Name (Symb => NID ("x")),
+                 Typ    =>
+                   EW_Abstract
+                     (Des_Ty,
+                      (if Relaxed_Init
+                       then Has_Init_Wrapper (Des_Ty)
+                       else Has_Relaxed_Init (Des_Ty)))),
             others => <>);
       begin
-         Emit (Th,
-               New_Function_Decl
-                 (Domain   => EW_Pred,
-                  Name     => To_Local
-                    (E_Symb (E, WNE_Static_Constraint, Relaxed_Init)),
-                  Binders  => Binder_Array'(1 => Abstr_Binder),
-                  Def      => (if Type_Has_Static_Constraints (Des_Ty)
-                               then +Compute_Dynamic_Invariant
-                                 (Expr           => +Abstr_Binder.B_Name,
-                                  Ty             => Des_Ty,
-                                  Params         => Logic_Params,
-                                  Initialized    => +True_Term,
-                                  Only_Var       => +False_Term,
-                                  Top_Predicate  => +True_Term,
-                                  All_Global_Inv => True,
-                                  Use_Pred       => False)
-                               else +True_Pred),
-                  Location => No_Location,
-                  Labels   => Symbol_Sets.Empty_Set));
+         Emit
+           (Th,
+            New_Function_Decl
+              (Domain   => EW_Pred,
+               Name     =>
+                 To_Local (E_Symb (E, WNE_Static_Constraint, Relaxed_Init)),
+               Binders  => Binder_Array'(1 => Abstr_Binder),
+               Def      =>
+                 (if Type_Has_Static_Constraints (Des_Ty)
+                  then
+                    +Compute_Dynamic_Invariant
+                       (Expr           => +Abstr_Binder.B_Name,
+                        Ty             => Des_Ty,
+                        Params         => Logic_Params,
+                        Initialized    => +True_Term,
+                        Only_Var       => +False_Term,
+                        Top_Predicate  => +True_Term,
+                        All_Global_Inv => True,
+                        Use_Pred       => False)
+                  else +True_Pred),
+               Location => No_Location,
+               Labels   => Symbol_Sets.Empty_Set));
       end;
 
-      Emit (Th,
-            New_Clone_Declaration
-              (Theory_Kind   => EW_Module,
-               Clone_Kind    => EW_Export,
-               As_Name       => No_Symbol,
-               Origin        => Incomp_Ty_Conv,
-               Substitutions =>
-                 (1 => New_Clone_Substitution
-                      (Kind      => EW_Type_Subst,
-                       Orig_Name => New_Name
-                         (Symb => NID ("abstr_ty")),
-                       Image     => To_Local
-                         (Get_Name (E_Symb (E, WNE_Private_Type)))),
-                  2 => New_Clone_Substitution
-                    (Kind      => EW_Type_Subst,
-                     Orig_Name => New_Name
-                       (Symb => NID ("comp_ty")),
-                     Image     => Get_Name
-                       (EW_Abstract
-                            (Des_Ty,
-                             (if Relaxed_Init then Has_Init_Wrapper (Des_Ty)
-                              else Has_Relaxed_Init (Des_Ty))))),
-                  3 => New_Clone_Substitution
-                    (Kind      => EW_Predicate,
-                     Orig_Name => New_Name
-                       (Symb => NID ("comp_valid")),
-                     Image     => To_Local
-                       (E_Symb (E, WNE_Static_Constraint, Relaxed_Init))))));
+      Emit
+        (Th,
+         New_Clone_Declaration
+           (Theory_Kind   => EW_Module,
+            Clone_Kind    => EW_Export,
+            As_Name       => No_Symbol,
+            Origin        => Incomp_Ty_Conv,
+            Substitutions =>
+              (1 =>
+                 New_Clone_Substitution
+                   (Kind      => EW_Type_Subst,
+                    Orig_Name => New_Name (Symb => NID ("abstr_ty")),
+                    Image     =>
+                      To_Local (Get_Name (E_Symb (E, WNE_Private_Type)))),
+               2 =>
+                 New_Clone_Substitution
+                   (Kind      => EW_Type_Subst,
+                    Orig_Name => New_Name (Symb => NID ("comp_ty")),
+                    Image     =>
+                      Get_Name
+                        (EW_Abstract
+                           (Des_Ty,
+                            (if Relaxed_Init
+                             then Has_Init_Wrapper (Des_Ty)
+                             else Has_Relaxed_Init (Des_Ty))))),
+               3 =>
+                 New_Clone_Substitution
+                   (Kind      => EW_Predicate,
+                    Orig_Name => New_Name (Symb => NID ("comp_valid")),
+                    Image     =>
+                      To_Local
+                        (E_Symb (E, WNE_Static_Constraint, Relaxed_Init))))));
 
       Complete_Rep_Pointer_Type
         (Th, E, Separated => True, Relaxed_Init => Relaxed_Init);
@@ -1430,9 +1502,7 @@ package body Why.Gen.Pointers is
    ------------------------------
 
    procedure Declare_Rep_Pointer_Type
-     (Th           : Theory_UC;
-      E            : Entity_Id;
-      Relaxed_Init : Boolean := False)
+     (Th : Theory_UC; E : Entity_Id; Relaxed_Init : Boolean := False)
    is
 
       procedure Declare_Equality_Function;
@@ -1448,28 +1518,29 @@ package body Why.Gen.Pointers is
       -- Local Variables --
       ---------------------
 
-      Ty_Name   : constant W_Name_Id  := To_Name (WNE_Rec_Rep);
-      Abstr_Ty  : constant W_Type_Id  := New_Named_Type
-        (Name => Ty_Name, Relaxed_Init => Relaxed_Init);
-      Value_Id  : constant W_Identifier_Id :=
+      Ty_Name  : constant W_Name_Id := To_Name (WNE_Rec_Rep);
+      Abstr_Ty : constant W_Type_Id :=
+        New_Named_Type (Name => Ty_Name, Relaxed_Init => Relaxed_Init);
+      Value_Id : constant W_Identifier_Id :=
         (if Designates_Incomplete_Type (E)
-         then W_Identifier_Id'(New_Identifier
-           (Symb =>
-              Get_Symb
-                (Get_Name (E_Symb (E, WNE_Pointer_Value_Abstr, Relaxed_Init))),
-            Domain => EW_Term,
-            Typ    =>
-              New_Named_Type
-                (To_Local
-                   (Get_Name (E_Symb (E, WNE_Private_Type))),
-                 Relaxed_Init)))
+         then
+           W_Identifier_Id'
+             (New_Identifier
+                (Symb   =>
+                   Get_Symb
+                     (Get_Name
+                        (E_Symb (E, WNE_Pointer_Value_Abstr, Relaxed_Init))),
+                 Domain => EW_Term,
+                 Typ    =>
+                   New_Named_Type
+                     (To_Local (Get_Name (E_Symb (E, WNE_Private_Type))),
+                      Relaxed_Init)))
          else To_Local (E_Symb (E, WNE_Pointer_Value, Relaxed_Init)));
 
-      A_Ident   : constant W_Identifier_Id :=
+      A_Ident  : constant W_Identifier_Id :=
         New_Identifier (Name => "a", Typ => Abstr_Ty);
-      A_Binder  : constant Binder_Array :=
-        (1 => (B_Name => A_Ident,
-               others => <>));
+      A_Binder : constant Binder_Array :=
+        (1 => (B_Name => A_Ident, others => <>));
 
       --------------------------
       -- Declare_Pointer_Type --
@@ -1498,14 +1569,13 @@ package body Why.Gen.Pointers is
                others => <>);
          end if;
 
-         Emit_Record_Declaration (Th           => Th,
-                                  Name         => Ty_Name,
-                                  Binders      => Binders_F,
-                                  SPARK_Record => True);
+         Emit_Record_Declaration
+           (Th           => Th,
+            Name         => Ty_Name,
+            Binders      => Binders_F,
+            SPARK_Record => True);
 
-         Emit_Ref_Type_Definition
-           (Th   => Th,
-            Name => Ty_Name);
+         Emit_Ref_Type_Definition (Th => Th, Name => Ty_Name);
 
          Emit (Th, New_Havoc_Declaration (Ty_Name));
 
@@ -1515,36 +1585,42 @@ package body Why.Gen.Pointers is
          declare
             Value_Access : constant W_Term_Id :=
               (if Designates_Incomplete_Type (E)
-               then New_Record_Access
-                 (Name  => +A_Ident,
-                  Field => To_Local
-                    (E_Symb
-                         (E            => E,
-                          S            => WNE_Pointer_Value_Abstr,
-                          Relaxed_Init => Relaxed_Init)))
-               else New_Pointer_Value_Access
-                 (E, E, +A_Ident, Local => True));
+               then
+                 New_Record_Access
+                   (Name  => +A_Ident,
+                    Field =>
+                      To_Local
+                        (E_Symb
+                           (E            => E,
+                            S            => WNE_Pointer_Value_Abstr,
+                            Relaxed_Init => Relaxed_Init)))
+               else New_Pointer_Value_Access (E, E, +A_Ident, Local => True));
 
          begin
-            Emit (Th,
-                  New_Function_Decl
-                    (Domain   => EW_Pred,
-                     Name     => To_Local
-                       (E_Symb (E, WNE_Dynamic_Property, Relaxed_Init)),
-                     Binders  => A_Binder,
-                     Location => No_Location,
-                     Labels   => Symbol_Sets.Empty_Set,
-                     Def      => New_Conditional
-                       (Domain    => EW_Pred,
-                        Condition => +Pred_Of_Boolean_Term
-                          (New_Pointer_Is_Null_Access
+            Emit
+              (Th,
+               New_Function_Decl
+                 (Domain   => EW_Pred,
+                  Name     =>
+                    To_Local (E_Symb (E, WNE_Dynamic_Property, Relaxed_Init)),
+                  Binders  => A_Binder,
+                  Location => No_Location,
+                  Labels   => Symbol_Sets.Empty_Set,
+                  Def      =>
+                    New_Conditional
+                      (Domain    => EW_Pred,
+                       Condition =>
+                         +Pred_Of_Boolean_Term
+                            (New_Pointer_Is_Null_Access
                                (E, +A_Ident, Local => True)),
-                        Then_Part => New_Comparison
-                          (Symbol => Why_Eq,
-                           Left   => +Value_Access,
-                           Right  => +Dummy_Designated_Value
-                             (E, Relaxed_Init, Local => True),
-                           Domain => EW_Pred))));
+                       Then_Part =>
+                         New_Comparison
+                           (Symbol => Why_Eq,
+                            Left   => +Value_Access,
+                            Right  =>
+                              +Dummy_Designated_Value
+                                 (E, Relaxed_Init, Local => True),
+                            Domain => EW_Pred))));
          end;
       end Declare_Pointer_Type;
 
@@ -1553,74 +1629,84 @@ package body Why.Gen.Pointers is
       -------------------------------
 
       procedure Declare_Equality_Function is
-         B_Ident           : constant W_Identifier_Id :=
+         B_Ident : constant W_Identifier_Id :=
            New_Identifier (Name => "b", Typ => Abstr_Ty);
 
-         Sec_Condition     : W_Pred_Id;
+         Sec_Condition : W_Pred_Id;
 
-         Comparison_Null   : constant W_Pred_Id :=
+         Comparison_Null : constant W_Pred_Id :=
            New_Comparison
-           (Symbol => Why_Eq,
-            Left   => New_Pointer_Is_Null_Access (E, +A_Ident, Local => True),
-            Right  => New_Pointer_Is_Null_Access (E, +B_Ident, Local => True));
+             (Symbol => Why_Eq,
+              Left   =>
+                New_Pointer_Is_Null_Access (E, +A_Ident, Local => True),
+              Right  =>
+                New_Pointer_Is_Null_Access (E, +B_Ident, Local => True));
 
          Comparison_Value : constant W_Pred_Id :=
            New_Comparison
-           (Symbol => Why_Eq,
-            Left   => New_Record_Access
-              (Name  => +A_Ident,
-               Field => Value_Id,
-               Typ   => Get_Typ (Value_Id)),
-            Right  => New_Record_Access
-              (Name  => +B_Ident,
-               Field => Value_Id,
-               Typ   => Get_Typ (Value_Id)));
+             (Symbol => Why_Eq,
+              Left   =>
+                New_Record_Access
+                  (Name  => +A_Ident,
+                   Field => Value_Id,
+                   Typ   => Get_Typ (Value_Id)),
+              Right  =>
+                New_Record_Access
+                  (Name  => +B_Ident,
+                   Field => Value_Id,
+                   Typ   => Get_Typ (Value_Id)));
 
       begin
          --  Compare Pointer_Null field and the pointer value if any. The
          --  second part should never be used.
 
-         Sec_Condition := New_Conditional
-           (Condition => New_Not (Right  => Pred_Of_Boolean_Term
-                                  (New_Pointer_Is_Null_Access
-                                       (E, +A_Ident, Local => True))),
-            Then_Part => Comparison_Value);
+         Sec_Condition :=
+           New_Conditional
+             (Condition =>
+                New_Not
+                  (Right =>
+                     Pred_Of_Boolean_Term
+                       (New_Pointer_Is_Null_Access
+                          (E, +A_Ident, Local => True))),
+              Then_Part => Comparison_Value);
 
          Emit
            (Th,
             New_Function_Decl
               (Domain      => EW_Pterm,
                Name        => To_Local (E_Symb (E, WNE_Bool_Eq)),
-               Binders     => A_Binder &
-                 Binder_Array'(1 => Binder_Type'(B_Name => B_Ident,
-                                                 others => <>)),
+               Binders     =>
+                 A_Binder
+                 & Binder_Array'
+                     (1 => Binder_Type'(B_Name => B_Ident, others => <>)),
                Return_Type => +EW_Bool_Type,
                Location    => No_Location,
                Labels      => Symbol_Sets.Empty_Set,
-               Def         =>
-                 +New_And_Pred (Comparison_Null, Sec_Condition)));
+               Def         => +New_And_Pred (Comparison_Null, Sec_Condition)));
       end Declare_Equality_Function;
 
-   --  Start of processing for Declare_Rep_Pointer_Type
+      --  Start of processing for Declare_Rep_Pointer_Type
 
    begin
       --  For types designating incomplete types, declare a new uninterpreted
       --  type for the value component and a dummy value.
 
       if Designates_Incomplete_Type (E) then
-         Emit (Th,
-               New_Type_Decl
-                 (Name => Img
-                    (Get_Symb (To_Local (E_Symb (E, WNE_Private_Type))))));
-         Emit (Th,
-               New_Function_Decl
-                 (Domain      => EW_Pterm,
-                  Name        => To_Local (E_Symb (E, WNE_Dummy_Abstr)),
-                  Items       => Item_Array'(1 .. 0 => <>),
-                  Return_Type =>
-                    New_Named_Type (To_Local (E_Symb (E, WNE_Private_Type))),
-                  Location    => No_Location,
-                  Labels      => Symbol_Sets.Empty_Set));
+         Emit
+           (Th,
+            New_Type_Decl
+              (Name =>
+                 Img (Get_Symb (To_Local (E_Symb (E, WNE_Private_Type))))));
+         Emit
+           (Th,
+            New_Function_Decl
+              (Domain      => EW_Pterm,
+               Name        => To_Local (E_Symb (E, WNE_Dummy_Abstr)),
+               Items       => Item_Array'(1 .. 0 => <>),
+               Return_Type =>
+                 New_Named_Type (To_Local (E_Symb (E, WNE_Private_Type))),
+               Location    => No_Location,
+               Labels      => Symbol_Sets.Empty_Set));
       end if;
 
       Declare_Pointer_Type;
@@ -1637,14 +1723,13 @@ package body Why.Gen.Pointers is
       else
          if Root_Pointer_Type (E) /= E then
             declare
-               Root      : constant Entity_Id := Root_Pointer_Type (E);
-               Root_Ty   : constant W_Type_Id := EW_Abstract
-                 (Root, Relaxed_Init);
-               R_Ident   : constant W_Identifier_Id :=
+               Root     : constant Entity_Id := Root_Pointer_Type (E);
+               Root_Ty  : constant W_Type_Id :=
+                 EW_Abstract (Root, Relaxed_Init);
+               R_Ident  : constant W_Identifier_Id :=
                  New_Identifier (Name => "r", Typ => Root_Ty);
-               R_Binder  : constant Binder_Array :=
-                 (1 => (B_Name => R_Ident,
-                        others => <>));
+               R_Binder : constant Binder_Array :=
+                 (1 => (B_Name => R_Ident, others => <>));
 
             begin
                Emit
@@ -1676,8 +1761,7 @@ package body Why.Gen.Pointers is
                     Typ  =>
                       EW_Abstract (E, Relaxed_Init => Has_Relaxed_Init (E)));
                X_Binder : constant Binder_Array :=
-                 (1 => (B_Name => X_Ident,
-                        others => <>));
+                 (1 => (B_Name => X_Ident, others => <>));
 
             begin
                Emit
@@ -1708,9 +1792,7 @@ package body Why.Gen.Pointers is
    ----------------------------
 
    function Dummy_Designated_Value
-     (E            : Type_Kind_Id;
-      Relaxed_Init : Boolean;
-      Local        : Boolean := False)
+     (E : Type_Kind_Id; Relaxed_Init : Boolean; Local : Boolean := False)
       return W_Expr_Id
    is
       Des_Ty : constant Entity_Id := Directly_Designated_Type (E);
@@ -1726,10 +1808,11 @@ package body Why.Gen.Pointers is
             return +Dummy;
          end;
       elsif Has_Relaxed_Init (Des_Ty) or else Relaxed_Init then
-         return Insert_Simple_Conversion
-           (Expr   => Why_Default_Value (EW_Term, Des_Ty),
-            To     => EW_Abstract (Des_Ty, Relaxed_Init => True),
-            Domain => EW_Term);
+         return
+           Insert_Simple_Conversion
+             (Expr   => Why_Default_Value (EW_Term, Des_Ty),
+              To     => EW_Abstract (Des_Ty, Relaxed_Init => True),
+              Domain => EW_Term);
       else
          return Why_Default_Value (EW_Term, Des_Ty);
       end if;
@@ -1739,53 +1822,51 @@ package body Why.Gen.Pointers is
    -- Get_Borrowed_At_End --
    -------------------------
 
-   function Get_Borrowed_At_End (E : Entity_Id) return W_Identifier_Id is
-     (Borrow_Infos (E).Borrowed_At_End);
+   function Get_Borrowed_At_End (E : Entity_Id) return W_Identifier_Id
+   is (Borrow_Infos (E).Borrowed_At_End);
 
    -------------------------
    -- Get_Borrowed_Entity --
    -------------------------
 
-   function Get_Borrowed_Entity (E : Entity_Id) return Entity_Id is
-     (Borrow_Infos (E).Borrowed_Entity);
+   function Get_Borrowed_Entity (E : Entity_Id) return Entity_Id
+   is (Borrow_Infos (E).Borrowed_Entity);
 
    -----------------------
    -- Get_Borrowed_Expr --
    -----------------------
 
-   function Get_Borrowed_Expr (E : Entity_Id) return Node_Id is
-     (Borrow_Infos (E).Borrowed_Expr);
+   function Get_Borrowed_Expr (E : Entity_Id) return Node_Id
+   is (Borrow_Infos (E).Borrowed_Expr);
 
    ---------------------
    -- Get_Borrowed_Ty --
    ---------------------
 
-   function Get_Borrowed_Typ (E : Entity_Id) return Entity_Id is
-     (Borrow_Infos (E).Borrowed_Ty);
+   function Get_Borrowed_Typ (E : Entity_Id) return Entity_Id
+   is (Borrow_Infos (E).Borrowed_Ty);
 
    -----------------------
    -- Get_Brower_At_End --
    -----------------------
 
-   function Get_Brower_At_End (E : Entity_Id) return W_Identifier_Id is
-     (Borrow_Infos (E).Brower_At_End);
+   function Get_Brower_At_End (E : Entity_Id) return W_Identifier_Id
+   is (Borrow_Infos (E).Brower_At_End);
 
    ------------------------------------
    -- Has_Predeclared_Init_Predicate --
    ------------------------------------
 
-   function Has_Predeclared_Init_Predicate (E : Entity_Id) return Boolean is
-     (Has_Incomplete_Access (E)
-      and then Has_Init_Wrapper (Retysp (Get_Incomplete_Access (E))));
+   function Has_Predeclared_Init_Predicate (E : Entity_Id) return Boolean
+   is (Has_Incomplete_Access (E)
+       and then Has_Init_Wrapper (Retysp (Get_Incomplete_Access (E))));
 
    ----------------------------------
    -- Insert_Pointer_Subtype_Check --
    ----------------------------------
 
    function Insert_Pointer_Subtype_Check
-     (Ada_Node : Node_Id;
-      Check_Ty : Entity_Id;
-      Expr     : W_Prog_Id)
+     (Ada_Node : Node_Id; Check_Ty : Entity_Id; Expr : W_Prog_Id)
       return W_Prog_Id
    is
       Relaxed_Init : constant Boolean := Get_Relaxed_Init (Get_Type (+Expr));
@@ -1800,21 +1881,25 @@ package body Why.Gen.Pointers is
       else
          --  Insert a check that the address of Expr is initialized
 
-         Ptr_Expr := +Insert_Top_Level_Init_Check
-           (Ada_Node => Ada_Node,
-            E        => Get_Ada_Node (+Get_Type (+Expr)),
-            Name     => +Ptr_Expr,
-            Domain   => EW_Prog);
+         Ptr_Expr :=
+           +Insert_Top_Level_Init_Check
+              (Ada_Node => Ada_Node,
+               E        => Get_Ada_Node (+Get_Type (+Expr)),
+               Name     => +Ptr_Expr,
+               Domain   => EW_Prog);
 
-         return New_VC_Call
-           (Ada_Node => Ada_Node,
-            Name     => E_Symb (Check_Ty, WNE_Range_Check_Fun, Relaxed_Init),
-            Progs    =>
-              Prepare_Args_For_Access_Subtype_Check
-                (Check_Ty, +Ptr_Expr, EW_Pterm, Body_Params),
-            Reason   => (if Has_Array_Type (Des_Ty) then VC_Range_Check
-                         else VC_Discriminant_Check),
-            Typ      => Get_Type (+Ptr_Expr));
+         return
+           New_VC_Call
+             (Ada_Node => Ada_Node,
+              Name     => E_Symb (Check_Ty, WNE_Range_Check_Fun, Relaxed_Init),
+              Progs    =>
+                Prepare_Args_For_Access_Subtype_Check
+                  (Check_Ty, +Ptr_Expr, EW_Pterm, Body_Params),
+              Reason   =>
+                (if Has_Array_Type (Des_Ty)
+                 then VC_Range_Check
+                 else VC_Discriminant_Check),
+              Typ      => Get_Type (+Ptr_Expr));
       end if;
    end Insert_Pointer_Subtype_Check;
 
@@ -1826,14 +1911,13 @@ package body Why.Gen.Pointers is
      (Ada_Node : Node_Id;
       Domain   : EW_Domain;
       Name     : W_Expr_Id;
-      Value    : W_Expr_Id)
-      return W_Expr_Id
+      Value    : W_Expr_Id) return W_Expr_Id
    is
       Tmp : constant W_Expr_Id := New_Temp_For_Expr (Name);
       Ty  : constant Entity_Id := Get_Ada_Node (+Get_Type (Name));
       T   : W_Expr_Id;
 
-      Relaxed_Init   : constant Boolean := Get_Relaxed_Init (Get_Type (+Name));
+      Relaxed_Init : constant Boolean := Get_Relaxed_Init (Get_Type (+Name));
       --  Use the init wrapper type if needed
 
       Selected_Field : constant W_Identifier_Id :=
@@ -1846,32 +1930,37 @@ package body Why.Gen.Pointers is
 
       Rec_Val     : constant W_Expr_Id :=
         (if Designates_Incomplete_Type (Repr_Pointer_Type (Ty))
-         then New_Call
-           (Domain => Domain,
-            Name   => E_Symb (Ty, WNE_Close, Relaxed_Init),
-            Args   => (1 => Value))
+         then
+           New_Call
+             (Domain => Domain,
+              Name   => E_Symb (Ty, WNE_Close, Relaxed_Init),
+              Args   => (1 => Value))
          else Value);
       Update_Expr : constant W_Expr_Id :=
-          New_Record_Update
-               (Ada_Node => Ada_Node,
-                Name     => Tmp,
-                Updates  =>
-                  (1 => New_Field_Association
-                     (Domain => Domain,
-                      Field  => Selected_Field,
-                      Value  => Rec_Val)),
-                Typ      => Get_Type (Name));
+        New_Record_Update
+          (Ada_Node => Ada_Node,
+           Name     => Tmp,
+           Updates  =>
+             (1 =>
+                New_Field_Association
+                  (Domain => Domain,
+                   Field  => Selected_Field,
+                   Value  => Rec_Val)),
+           Typ      => Get_Type (Name));
 
    begin
       if Domain = EW_Prog then
-         T := +Sequence
-           (+New_Ignore
-              (Ada_Node => Ada_Node,
-               Prog     => +New_Pointer_Value_Access (Ada_Node => Ada_Node,
-                                                      E        => Ty,
-                                                      Name     => Tmp,
-                                                      Domain   => Domain)),
-            +Update_Expr);
+         T :=
+           +Sequence
+              (+New_Ignore
+                  (Ada_Node => Ada_Node,
+                   Prog     =>
+                     +New_Pointer_Value_Access
+                        (Ada_Node => Ada_Node,
+                         E        => Ty,
+                         Name     => Tmp,
+                         Domain   => Domain)),
+               +Update_Expr);
       else
          T := Update_Expr;
       end if;
@@ -1884,25 +1973,21 @@ package body Why.Gen.Pointers is
    --------------------------------
 
    function New_Pointer_Is_Null_Access
-     (E     : Entity_Id;
-      Name  : W_Expr_Id;
-      Local : Boolean := False)
+     (E : Entity_Id; Name : W_Expr_Id; Local : Boolean := False)
       return W_Expr_Id
    is
       Relaxed_Init : constant Boolean := Get_Relaxed_Init (Get_Type (+Name));
       --  Use the init wrapper type if needed
 
-      Field        : W_Identifier_Id :=
-        E_Symb (E, WNE_Is_Null_Pointer, Relaxed_Init);
+      Field : W_Identifier_Id := E_Symb (E, WNE_Is_Null_Pointer, Relaxed_Init);
 
    begin
       if Local then
          Field := To_Local (Field);
       end if;
 
-      return New_Record_Access (Name  => +Name,
-                                Field => Field,
-                                Typ   => EW_Bool_Type);
+      return
+        New_Record_Access (Name => +Name, Field => Field, Typ => EW_Bool_Type);
    end New_Pointer_Is_Null_Access;
 
    ----------------------------------------
@@ -1910,10 +1995,7 @@ package body Why.Gen.Pointers is
    ----------------------------------------
 
    function New_Move_Tree_Pointer_Value_Access
-     (Ty     : Entity_Id;
-      Name   : W_Expr_Id;
-      Domain : EW_Domain)
-      return W_Expr_Id
+     (Ty : Entity_Id; Name : W_Expr_Id; Domain : EW_Domain) return W_Expr_Id
    is
       Des_Ty : constant Entity_Id := Directly_Designated_Type (Ty);
       Value  : W_Expr_Id := Name;
@@ -1931,23 +2013,23 @@ package body Why.Gen.Pointers is
             Field : constant W_Identifier_Id :=
               E_Symb (Ty, WNE_Move_Tree_Ptr_Value);
          begin
-            Value := New_Record_Access
-              (Name  => Value,
-               Field => Field,
-               Typ   => Get_Typ (Field));
+            Value :=
+              New_Record_Access
+                (Name => Value, Field => Field, Typ => Get_Typ (Field));
          end;
       end if;
 
       if Has_Incomplete_Access (Des_Ty) then
          declare
-            Open_Id : constant W_Identifier_Id := E_Symb
-              (Des_Ty, WNE_Move_Tree_Open);
+            Open_Id : constant W_Identifier_Id :=
+              E_Symb (Des_Ty, WNE_Move_Tree_Open);
          begin
-            return New_Call
-              (Name   => Open_Id,
-               Args   => (1 => Value),
-               Typ    => Get_Typ (Open_Id),
-               Domain => Domain);
+            return
+              New_Call
+                (Name   => Open_Id,
+                 Args   => (1 => Value),
+                 Typ    => Get_Typ (Open_Id),
+                 Domain => Domain);
          end;
       else
          return Value;
@@ -1959,10 +2041,7 @@ package body Why.Gen.Pointers is
    ----------------------------------------
 
    function New_Move_Tree_Pointer_Value_Update
-     (Ty    : Entity_Id;
-      Name  : W_Prog_Id;
-      Value : W_Prog_Id)
-      return W_Prog_Id
+     (Ty : Entity_Id; Name : W_Prog_Id; Value : W_Prog_Id) return W_Prog_Id
    is
       Des_Ty : constant Entity_Id := Directly_Designated_Type (Ty);
       Val    : W_Prog_Id := Value;
@@ -1977,26 +2056,29 @@ package body Why.Gen.Pointers is
 
       if Has_Incomplete_Access (Des_Ty) then
          declare
-            Close_Id : constant W_Identifier_Id := E_Symb
-              (Des_Ty, WNE_Move_Tree_Close);
+            Close_Id : constant W_Identifier_Id :=
+              E_Symb (Des_Ty, WNE_Move_Tree_Close);
          begin
-            Val := New_Call
-              (Name => Close_Id,
-               Args => (1 => +Val),
-               Typ  => Get_Typ (Close_Id));
+            Val :=
+              New_Call
+                (Name => Close_Id,
+                 Args => (1 => +Val),
+                 Typ  => Get_Typ (Close_Id));
          end;
       end if;
 
       if Is_General_Access_Type (Ty) then
          return Val;
       else
-         return New_Record_Update
-           (Name  => +Name,
-            Updates =>
-              (1 => New_Field_Association
-                   (Domain => EW_Prog,
-                    Field  => E_Symb (Ty, WNE_Move_Tree_Ptr_Value),
-                    Value  => +Val)));
+         return
+           New_Record_Update
+             (Name    => +Name,
+              Updates =>
+                (1 =>
+                   New_Field_Association
+                     (Domain => EW_Prog,
+                      Field  => E_Symb (Ty, WNE_Move_Tree_Ptr_Value),
+                      Value  => +Val)));
       end if;
    end New_Move_Tree_Pointer_Value_Update;
 
@@ -2009,39 +2091,39 @@ package body Why.Gen.Pointers is
       E        : Entity_Id;
       Name     : W_Expr_Id;
       Domain   : EW_Domain;
-      Local    : Boolean := False)
-      return W_Expr_Id
+      Local    : Boolean := False) return W_Expr_Id
    is
       Relaxed_Init : constant Boolean := Get_Relaxed_Init (Get_Type (+Name));
       --  Use the init wrapper type if needed
 
-      Field        : W_Identifier_Id :=
-        E_Symb (E, WNE_Pointer_Value, Relaxed_Init);
+      Field : W_Identifier_Id := E_Symb (E, WNE_Pointer_Value, Relaxed_Init);
 
    begin
       if Local then
-         Field :=  To_Local (Field);
+         Field := To_Local (Field);
       end if;
 
       if Domain = EW_Prog and then not Can_Never_Be_Null (E) then
          return
            +New_VC_Call
-           (Ada_Node => Ada_Node,
-            Name     => To_Program_Space (Field),
-            Progs    => (1 => +Name),
-            Reason   => VC_Null_Pointer_Dereference,
-            Typ      => Get_Typ (Field));
+              (Ada_Node => Ada_Node,
+               Name     => To_Program_Space (Field),
+               Progs    => (1 => +Name),
+               Reason   => VC_Null_Pointer_Dereference,
+               Typ      => Get_Typ (Field));
 
       elsif Designates_Incomplete_Type (Repr_Pointer_Type (Retysp (E))) then
-         return New_Call (Args   => (1 => Name),
-                          Name   => Field,
-                          Domain => Domain,
-                          Typ    => Get_Typ (Field));
+         return
+           New_Call
+             (Args   => (1 => Name),
+              Name   => Field,
+              Domain => Domain,
+              Typ    => Get_Typ (Field));
 
       else
-         return New_Record_Access (Name  => +Name,
-                                   Field => Field,
-                                   Typ   => Get_Typ (Field));
+         return
+           New_Record_Access
+             (Name => +Name, Field => Field, Typ => Get_Typ (Field));
       end if;
    end New_Pointer_Value_Access;
 
@@ -2053,8 +2135,7 @@ package body Why.Gen.Pointers is
      (Check_Ty : Entity_Id;
       Expr     : W_Expr_Id;
       Domain   : EW_Domain;
-      Params   : Transformation_Params)
-      return W_Expr_Array
+      Params   : Transformation_Params) return W_Expr_Array
    is
       Des_Ty : constant Entity_Id :=
         Retysp (Directly_Designated_Type (Retysp (Check_Ty)));
@@ -2072,15 +2153,17 @@ package body Why.Gen.Pointers is
             Args (Dim * 2 + 1) := +Expr;
             for Count in 1 .. Dim loop
                Args (2 * Count - 1) :=
-                 +Get_Array_Attr (Domain => Term_Domain (Domain),
-                                  Ty     => Des_Ty,
-                                  Attr   => Attribute_First,
-                                  Dim    => Count);
+                 +Get_Array_Attr
+                    (Domain => Term_Domain (Domain),
+                     Ty     => Des_Ty,
+                     Attr   => Attribute_First,
+                     Dim    => Count);
                Args (2 * Count) :=
-                 +Get_Array_Attr (Domain => Term_Domain (Domain),
-                                  Ty     => Des_Ty,
-                                  Attr   => Attribute_Last,
-                                  Dim    => Count);
+                 +Get_Array_Attr
+                    (Domain => Term_Domain (Domain),
+                     Ty     => Des_Ty,
+                     Attr   => Attribute_Last,
+                     Dim    => Count);
             end loop;
             return Args;
          end;
@@ -2089,8 +2172,9 @@ package body Why.Gen.Pointers is
 
       else
          pragma Assert (Has_Discriminants (Des_Ty));
-         return Get_Discriminants_Of_Subtype
-           (Des_Ty, Term_Domain (Domain), Params) & Expr;
+         return
+           Get_Discriminants_Of_Subtype (Des_Ty, Term_Domain (Domain), Params)
+           & Expr;
       end if;
    end Prepare_Args_For_Access_Subtype_Check;
 
@@ -2099,18 +2183,17 @@ package body Why.Gen.Pointers is
    -----------------------------
 
    function Pointer_From_Split_Form
-     (I           : Item_Type;
-      Ref_Allowed : Boolean)
-      return W_Term_Id
+     (I : Item_Type; Ref_Allowed : Boolean) return W_Term_Id
    is
       Des_Ty       : constant Entity_Id := Directly_Designated_Type (I.P_Typ);
       Relaxed_Init : constant Boolean :=
         I.Init.Present
-        or else
-          (if Has_Init_Wrapper (I.P_Typ) and then not Has_Relaxed_Init (Des_Ty)
-           then Get_Module (Get_Name (Get_Typ (I.Value.B_Name)))
-             = E_Module (Des_Ty, Init_Wrapper)
-           else False);
+        or else (if Has_Init_Wrapper (I.P_Typ)
+                   and then not Has_Relaxed_Init (Des_Ty)
+                 then
+                   Get_Module (Get_Name (Get_Typ (I.Value.B_Name)))
+                   = E_Module (Des_Ty, Init_Wrapper)
+                 else False);
       E            : constant Entity_Id := I.Value.Ada_Node;
       Ty           : constant Entity_Id := I.P_Typ;
       Value        : W_Expr_Id;
@@ -2140,12 +2223,12 @@ package body Why.Gen.Pointers is
          Attr_Init (1) := +True_Term;
       end if;
 
-      return Pointer_From_Split_Form
-        (Ada_Node     => E,
-         A            =>
-           (1 => Value, 2 => Is_Null) & Attr_Init,
-         Ty           => Ty,
-         Relaxed_Init => Relaxed_Init);
+      return
+        Pointer_From_Split_Form
+          (Ada_Node     => E,
+           A            => (1 => Value, 2 => Is_Null) & Attr_Init,
+           Ty           => Ty,
+           Relaxed_Init => Relaxed_Init);
    end Pointer_From_Split_Form;
 
    function Pointer_From_Split_Form
@@ -2154,19 +2237,18 @@ package body Why.Gen.Pointers is
       Ty           : Entity_Id;
       Local        : Boolean := False;
       Relaxed_Init : Boolean := False;
-      Force_Dummy  : Boolean := False)
-      return W_Term_Id
+      Force_Dummy  : Boolean := False) return W_Term_Id
    is
-      Ty_Ext     : constant Entity_Id := Retysp (Ty);
-      Value      : W_Expr_Id := A (1);
-      Is_Null    : constant W_Expr_Id := A (2);
-      S_Value    : W_Identifier_Id :=
+      Ty_Ext    : constant Entity_Id := Retysp (Ty);
+      Value     : W_Expr_Id := A (1);
+      Is_Null   : constant W_Expr_Id := A (2);
+      S_Value   : W_Identifier_Id :=
         (if Designates_Incomplete_Type (Repr_Pointer_Type (Ty_Ext))
          then E_Symb (Ty_Ext, WNE_Pointer_Value_Abstr, Relaxed_Init)
          else E_Symb (Ty_Ext, WNE_Pointer_Value, Relaxed_Init));
-      S_Is_Null  : W_Identifier_Id :=
+      S_Is_Null : W_Identifier_Id :=
         E_Symb (Ty_Ext, WNE_Is_Null_Pointer, Relaxed_Init);
-      W_Ty       : W_Type_Id := EW_Abstract (Ty_Ext, Relaxed_Init);
+      W_Ty      : W_Type_Id := EW_Abstract (Ty_Ext, Relaxed_Init);
 
    begin
       --  If Local use local names for the fields of Ty and for its abstract
@@ -2175,55 +2257,58 @@ package body Why.Gen.Pointers is
       if Local then
          S_Value := To_Local (S_Value);
          S_Is_Null := To_Local (S_Is_Null);
-         W_Ty := New_Named_Type
-           (New_Name (Symb => Get_Symb (Get_Name (W_Ty))));
+         W_Ty :=
+           New_Named_Type (New_Name (Symb => Get_Symb (Get_Name (W_Ty))));
       end if;
 
       --  If Ty designates an incomplete type, we need to reconstruct the
       --  abstract value.
 
       if Designates_Incomplete_Type (Repr_Pointer_Type (Ty_Ext)) then
-         Value := New_Call
-           (Domain => EW_Term,
-            Name   =>
-              (if Local
-               then To_Local (E_Symb (Ty_Ext, WNE_Close, Relaxed_Init))
-               else E_Symb (Ty_Ext, WNE_Close, Relaxed_Init)),
-            Args   => (1 => Value));
+         Value :=
+           New_Call
+             (Domain => EW_Term,
+              Name   =>
+                (if Local
+                 then To_Local (E_Symb (Ty_Ext, WNE_Close, Relaxed_Init))
+                 else E_Symb (Ty_Ext, WNE_Close, Relaxed_Init)),
+              Args   => (1 => Value));
       end if;
 
       --  To construct valid values, set the designated value to dummy when the
       --  pointer is null.
 
       if Force_Dummy then
-         Value := New_Conditional
-           (Domain    => EW_Term,
-            Condition => +Is_Null,
-            Then_Part => Dummy_Designated_Value (Ty_Ext, Relaxed_Init),
-            Else_Part => Value);
+         Value :=
+           New_Conditional
+             (Domain    => EW_Term,
+              Condition => +Is_Null,
+              Then_Part => Dummy_Designated_Value (Ty_Ext, Relaxed_Init),
+              Else_Part => Value);
       end if;
 
-      return New_Record_Aggregate
-        (Ada_Node     => Ada_Node,
-         Associations =>
-           (1 => New_Field_Association
-                (Domain => EW_Term,
-                 Field  => S_Value,
-                 Value  => Value),
-            2 => New_Field_Association
-                (Domain => EW_Term,
-                 Field  => S_Is_Null,
-                 Value  => Is_Null))
-         & (if Relaxed_Init
-            then (1 => New_Field_Association
-                  (Domain => EW_Term,
-                   Field  =>
-                     (if Local
-                      then To_Local (E_Symb (Ty_Ext, WNE_Attr_Init))
-                      else E_Symb (Ty_Ext, WNE_Attr_Init)),
-                   Value  => A (3)))
-            else (1 .. 0 => <>)),
-         Typ          => W_Ty);
+      return
+        New_Record_Aggregate
+          (Ada_Node     => Ada_Node,
+           Associations =>
+             (1 =>
+                New_Field_Association
+                  (Domain => EW_Term, Field => S_Value, Value => Value),
+              2 =>
+                New_Field_Association
+                  (Domain => EW_Term, Field => S_Is_Null, Value => Is_Null))
+             & (if Relaxed_Init
+                then
+                  (1 =>
+                     New_Field_Association
+                       (Domain => EW_Term,
+                        Field  =>
+                          (if Local
+                           then To_Local (E_Symb (Ty_Ext, WNE_Attr_Init))
+                           else E_Symb (Ty_Ext, WNE_Attr_Init)),
+                        Value  => A (3)))
+                else (1 .. 0 => <>)),
+           Typ          => W_Ty);
    end Pointer_From_Split_Form;
 
    -----------------------

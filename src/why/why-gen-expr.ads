@@ -24,22 +24,22 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Vectors;
-with GNATCOLL.Symbols;          use GNATCOLL.Symbols;
-with Gnat2Why.Util;             use Gnat2Why.Util;
-with Snames;                    use Snames;
-with SPARK_Atree;               use SPARK_Atree;
-with SPARK_Atree.Entities;      use SPARK_Atree.Entities;
-with Why.Atree.Modules;         use Why.Atree.Modules;
-with SPARK_Util;                use SPARK_Util;
-with Types;                     use Types;
-with Uintp;                     use Uintp;
-with VC_Kinds;                  use VC_Kinds;
-with Why.Atree.Builders;        use Why.Atree.Builders;
-with Why.Conversions;           use Why.Conversions;
-with Why.Ids;                   use Why.Ids;
-with Why.Inter;                 use Why.Inter;
-with Why.Sinfo;                 use Why.Sinfo;
-with Why.Types;                 use Why.Types;
+with GNATCOLL.Symbols;     use GNATCOLL.Symbols;
+with Gnat2Why.Util;        use Gnat2Why.Util;
+with Snames;               use Snames;
+with SPARK_Atree;          use SPARK_Atree;
+with SPARK_Atree.Entities; use SPARK_Atree.Entities;
+with Why.Atree.Modules;    use Why.Atree.Modules;
+with SPARK_Util;           use SPARK_Util;
+with Types;                use Types;
+with Uintp;                use Uintp;
+with VC_Kinds;             use VC_Kinds;
+with Why.Atree.Builders;   use Why.Atree.Builders;
+with Why.Conversions;      use Why.Conversions;
+with Why.Ids;              use Why.Ids;
+with Why.Inter;            use Why.Inter;
+with Why.Sinfo;            use Why.Sinfo;
+with Why.Types;            use Why.Types;
 
 package Why.Gen.Expr is
 
@@ -61,19 +61,17 @@ package Why.Gen.Expr is
 
    function Is_Void (W : W_Prog_Id) return Boolean;
 
-   function Bool_True (D : EW_Domain) return W_Expr_Id is
-     (New_Literal (Value => EW_True, Domain => D));
-   function Bool_False (D : EW_Domain) return W_Expr_Id is
-     (New_Literal (Value => EW_False, Domain => D));
+   function Bool_True (D : EW_Domain) return W_Expr_Id
+   is (New_Literal (Value => EW_True, Domain => D));
+   function Bool_False (D : EW_Domain) return W_Expr_Id
+   is (New_Literal (Value => EW_False, Domain => D));
 
    function Pred_Of_Boolean_Term (W : W_Term_Id) return W_Pred_Id;
    --  @param W a Why3 term expression
    --  @return the equivalent Why3 pred expression
 
    function Boolean_Expr_Of_Pred
-     (W      : W_Pred_Id;
-      Domain : EW_Domain)
-      return W_Expr_Id;
+     (W : W_Pred_Id; Domain : EW_Domain) return W_Expr_Id;
    --  @param W a Why3 pred expression
    --  @param Domain translation domain
    --  @return the equivalent Why3 expression, depending on the [Domain]
@@ -90,30 +88,29 @@ package Why.Gen.Expr is
    --  Check whether a conversion between those types might require sliding
 
    function New_And_Expr
-     (Left, Right : W_Expr_Id;
-      Domain      : EW_Domain)
-      return W_Expr_Id;
+     (Left, Right : W_Expr_Id; Domain : EW_Domain) return W_Expr_Id;
 
-   function New_And_Prog (Left, Right : W_Prog_Id) return W_Prog_Id is
-      (+New_And_Expr (+Left, +Right, EW_Prog));
+   function New_And_Prog (Left, Right : W_Prog_Id) return W_Prog_Id
+   is (+New_And_Expr (+Left, +Right, EW_Prog));
 
-   function New_And_Term (Left, Right : W_Term_Id) return W_Term_Id is
-      (+New_And_Expr (+Left, +Right, EW_Term));
+   function New_And_Term (Left, Right : W_Term_Id) return W_Term_Id
+   is (+New_And_Expr (+Left, +Right, EW_Term));
 
-   function New_And_Pred (Left, Right : W_Pred_Id) return W_Pred_Id is
-      (+New_And_Expr (+Left, +Right, EW_Pred));
+   function New_And_Pred (Left, Right : W_Pred_Id) return W_Pred_Id
+   is (+New_And_Expr (+Left, +Right, EW_Pred));
 
    function New_And_Expr
-     (Left, Right : W_Expr_Id;
-      Domain      : EW_Domain;
-      Base        : W_Type_Id)
+     (Left, Right : W_Expr_Id; Domain : EW_Domain; Base : W_Type_Id)
       return W_Expr_Id
-   with Pre => Base in EW_BitVector_8_Type
-                     | EW_BitVector_16_Type
-                     | EW_BitVector_32_Type
-                     | EW_BitVector_64_Type
-                     | EW_BitVector_128_Type
-                     | EW_Bool_Type;
+   with
+     Pre =>
+       Base
+       in EW_BitVector_8_Type
+        | EW_BitVector_16_Type
+        | EW_BitVector_32_Type
+        | EW_BitVector_64_Type
+        | EW_BitVector_128_Type
+        | EW_Bool_Type;
    --  Generate the expression "Left and Right"; choose the right "and"
    --  operation depending on "Base", e.g. for modular or boolean types.
 
@@ -123,38 +120,26 @@ package Why.Gen.Expr is
    --  True predicate.
 
    function New_And_Then_Expr
-     (Left, Right : W_Expr_Id;
-      Domain      : EW_Domain)
+     (Left, Right : W_Expr_Id; Domain : EW_Domain) return W_Expr_Id;
+
+   function New_Comparison
+     (Symbol : W_Identifier_Id; Left, Right : W_Expr_Id; Domain : EW_Domain)
       return W_Expr_Id;
 
    function New_Comparison
-     (Symbol      : W_Identifier_Id;
-      Left, Right : W_Expr_Id;
-      Domain      : EW_Domain)
-      return W_Expr_Id;
-
-   function New_Comparison
-     (Symbol      : W_Identifier_Id;
-      Left, Right : W_Prog_Id)
-      return W_Prog_Id
+     (Symbol : W_Identifier_Id; Left, Right : W_Prog_Id) return W_Prog_Id
    is (+W_Expr_Id'(New_Comparison (Symbol, +Left, +Right, EW_Prog)));
 
    function New_Comparison
-     (Symbol      : W_Identifier_Id;
-      Left, Right : W_Term_Id)
-      return W_Term_Id
+     (Symbol : W_Identifier_Id; Left, Right : W_Term_Id) return W_Term_Id
    is (+W_Expr_Id'(New_Comparison (Symbol, +Left, +Right, EW_Term)));
 
    function New_Comparison
-     (Symbol      : W_Identifier_Id;
-      Left, Right : W_Term_Id)
-      return W_Pred_Id
+     (Symbol : W_Identifier_Id; Left, Right : W_Term_Id) return W_Pred_Id
    is (+W_Expr_Id'(New_Comparison (Symbol, +Left, +Right, EW_Pred)));
 
    function New_Counterexample_Assign
-     (If_Node   : Node_Id;
-      Condition : W_Prog_Id)
-      return W_Prog_Id;
+     (If_Node : Node_Id; Condition : W_Prog_Id) return W_Prog_Id;
    --  This takes a condition of an if-statement (or case-statement)
    --  [Condition] and builds an assignment to a variable spark__branch with
    --  label [If_Node], which is then dereferenced to yield the value of the
@@ -164,18 +149,14 @@ package Why.Gen.Expr is
    --  ("node_id:If_Node" spark__branch).bool__content]
 
    function New_Ada_Dispatching_Equality
-     (Typ         : Type_Kind_Id;
-      Domain      : EW_Domain;
-      Left, Right : W_Expr_Id)
-     return W_Expr_Id;
+     (Typ : Type_Kind_Id; Domain : EW_Domain; Left, Right : W_Expr_Id)
+      return W_Expr_Id;
    --  Generate a boolean term which expresses the translation of "Left =
    --  Right" in Ada semantics, where the equality is dispatching on Typ
    --  or its class-wide type.
 
    function New_Ada_Equality
-     (Typ         : Type_Kind_Id;
-      Domain      : EW_Domain;
-      Left, Right : W_Expr_Id)
+     (Typ : Type_Kind_Id; Domain : EW_Domain; Left, Right : W_Expr_Id)
       return W_Expr_Id;
    --  Generate a boolean term which expresses the translation of "Left =
    --  Right" in Ada semantics, where the equality is the one of type Typ.
@@ -184,30 +165,29 @@ package Why.Gen.Expr is
    --  equality. Else, use the predefined equality.
 
    function New_Or_Expr
-     (Left, Right : W_Expr_Id;
-      Domain      : EW_Domain)
-      return W_Expr_Id;
+     (Left, Right : W_Expr_Id; Domain : EW_Domain) return W_Expr_Id;
 
-   function New_Or_Term (Left, Right : W_Term_Id) return W_Term_Id is
-     (+New_Or_Expr (+Left, +Right, EW_Term));
+   function New_Or_Term (Left, Right : W_Term_Id) return W_Term_Id
+   is (+New_Or_Expr (+Left, +Right, EW_Term));
 
-   function New_Or_Pred (Left, Right : W_Pred_Id) return W_Pred_Id is
-     (+New_Or_Expr (+Left, +Right, EW_Pred));
+   function New_Or_Pred (Left, Right : W_Pred_Id) return W_Pred_Id
+   is (+New_Or_Expr (+Left, +Right, EW_Pred));
 
-   function New_Or_Prog (Left, Right : W_Prog_Id) return W_Prog_Id is
-     (+New_Or_Expr (+Left, +Right, EW_Prog));
+   function New_Or_Prog (Left, Right : W_Prog_Id) return W_Prog_Id
+   is (+New_Or_Expr (+Left, +Right, EW_Prog));
 
    function New_Or_Expr
-     (Left, Right : W_Expr_Id;
-      Domain      : EW_Domain;
-      Base        : W_Type_Id)
+     (Left, Right : W_Expr_Id; Domain : EW_Domain; Base : W_Type_Id)
       return W_Expr_Id
-   with Pre => Base in EW_BitVector_8_Type
-                     | EW_BitVector_16_Type
-                     | EW_BitVector_32_Type
-                     | EW_BitVector_64_Type
-                     | EW_BitVector_128_Type
-                     | EW_Bool_Type;
+   with
+     Pre =>
+       Base
+       in EW_BitVector_8_Type
+        | EW_BitVector_16_Type
+        | EW_BitVector_32_Type
+        | EW_BitVector_64_Type
+        | EW_BitVector_128_Type
+        | EW_Bool_Type;
    --  Generate the expression "Left or Right"; choose the right "or" operation
    --  depending on "Base", e.g. for modular or boolean types.
 
@@ -217,51 +197,43 @@ package Why.Gen.Expr is
    --  False predicate.
 
    function New_Or_Else_Expr
-     (Left, Right : W_Expr_Id;
-      Domain      : EW_Domain)
-      return W_Expr_Id;
+     (Left, Right : W_Expr_Id; Domain : EW_Domain) return W_Expr_Id;
 
    function New_Xor_Expr
-     (Left, Right : W_Expr_Id;
-      Domain      : EW_Domain;
-      Base        : W_Type_Id)
+     (Left, Right : W_Expr_Id; Domain : EW_Domain; Base : W_Type_Id)
       return W_Expr_Id
-   with Pre => Base in EW_BitVector_8_Type
-                     | EW_BitVector_16_Type
-                     | EW_BitVector_32_Type
-                     | EW_BitVector_64_Type
-                     | EW_BitVector_128_Type
-                     | EW_Bool_Type;
+   with
+     Pre =>
+       Base
+       in EW_BitVector_8_Type
+        | EW_BitVector_16_Type
+        | EW_BitVector_32_Type
+        | EW_BitVector_64_Type
+        | EW_BitVector_128_Type
+        | EW_Bool_Type;
    --  Build an expression "Left xor Right", and choose the right xor operation
    --  depending on "Base", which is either EW_Bool_Type or EW_Int_Type.
 
    function Why_Default_Value
-     (Domain : EW_Domain;
-      E      : Type_Kind_Id)
-      return W_Expr_Id;
+     (Domain : EW_Domain; E : Type_Kind_Id) return W_Expr_Id;
    --  Return the default value for a given type
 
    function New_Simpl_Conditional
      (Condition : W_Expr_Id;
       Then_Part : W_Expr_Id;
       Else_Part : W_Expr_Id;
-      Domain    : EW_Domain)
-      return W_Expr_Id;
+      Domain    : EW_Domain) return W_Expr_Id;
    --  Conditional, simplify if condition is true/false.
 
    function New_Simpl_Conditional
-     (Condition : W_Prog_Id;
-      Then_Part : W_Prog_Id;
-      Else_Part : W_Prog_Id)
+     (Condition : W_Prog_Id; Then_Part : W_Prog_Id; Else_Part : W_Prog_Id)
       return W_Prog_Id
    is (+W_Expr_Id'
          (New_Simpl_Conditional
             (+Condition, +Then_Part, +Else_Part, EW_Prog)));
 
    function New_Simpl_Conditional
-     (Condition : W_Pred_Id;
-      Then_Part : W_Pred_Id;
-      Else_Part : W_Pred_Id)
+     (Condition : W_Pred_Id; Then_Part : W_Pred_Id; Else_Part : W_Pred_Id)
       return W_Pred_Id
    is (+W_Expr_Id'
          (New_Simpl_Conditional
@@ -283,8 +255,7 @@ package Why.Gen.Expr is
       Check                 : Boolean;
       Domain                : EW_Domain;
       Typ                   : W_Type_Id;
-      Specialization_Module : Symbol := No_Symbol)
-      return W_Expr_Id
+      Specialization_Module : Symbol := No_Symbol) return W_Expr_Id
    with Pre => (if Check then Domain = EW_Prog);
    --  If Check is True, build a call to Name(Args) with VC and location
    --  labels. Otherwise, build a call in the appropriate domain. In the
@@ -299,10 +270,8 @@ package Why.Gen.Expr is
       Check      : Boolean;
       Domain     : EW_Domain;
       Typ        : W_Type_Id;
-      Check_Info : Check_Info_Type := New_Check_Info)
-      return W_Expr_Id
-   with
-     Pre => (if Check then Domain = EW_Prog);
+      Check_Info : Check_Info_Type := New_Check_Info) return W_Expr_Id
+   with Pre => (if Check then Domain = EW_Prog);
    --  If Check is True, build a call to Name(Progs) using New_VC_Call. When
    --  Fix_Name is True, adjust Name to the program space. Otherwise, build a
    --  call in the appropriate domain.
@@ -313,8 +282,7 @@ package Why.Gen.Expr is
       Progs      : W_Expr_Array;
       Reason     : VC_Kind;
       Typ        : W_Type_Id;
-      Check_Info : Check_Info_Type := New_Check_Info)
-      return W_Prog_Id;
+      Check_Info : Check_Info_Type := New_Check_Info) return W_Prog_Id;
    --  Build a call to Name(Progs) with VC and location labels
 
    function New_VC_Expr
@@ -322,8 +290,7 @@ package Why.Gen.Expr is
       Expr       : W_Expr_Id;
       Reason     : VC_Kind;
       Domain     : EW_Domain;
-      Check_Info : Check_Info_Type := New_Check_Info)
-      return W_Expr_Id
+      Check_Info : Check_Info_Type := New_Check_Info) return W_Expr_Id
    with Pre => Present (Ada_Node) and then Domain /= EW_Term;
    --  Put VC and location labels on the expression
 
@@ -331,22 +298,18 @@ package Why.Gen.Expr is
      (Ada_Node   : Node_Id;
       Expr       : W_Pred_Id;
       Reason     : VC_Kind;
-      Check_Info : Check_Info_Type := New_Check_Info)
-      return W_Pred_Id
+      Check_Info : Check_Info_Type := New_Check_Info) return W_Pred_Id
    is (+New_VC_Expr (Ada_Node, +Expr, Reason, EW_Pred, Check_Info));
 
    function New_VC_Prog
      (Ada_Node   : Node_Id;
       Expr       : W_Prog_Id;
       Reason     : VC_Kind;
-      Check_Info : Check_Info_Type := New_Check_Info)
-      return W_Prog_Id
+      Check_Info : Check_Info_Type := New_Check_Info) return W_Prog_Id
    is (+New_VC_Expr (Ada_Node, +Expr, Reason, EW_Prog, Check_Info));
 
    function New_VC_Labels
-     (N          : Node_Id;
-      Reason     : VC_Kind;
-      Check_Info : Check_Info_Type)
+     (N : Node_Id; Reason : VC_Kind; Check_Info : Check_Info_Type)
       return Symbol_Set;
    --  Generate VC and location labels for the given Ada node, with the given
    --  VC reason
@@ -355,24 +318,20 @@ package Why.Gen.Expr is
      (Domain    : EW_Domain;
       Low, High : W_Expr_Id;
       Expr      : W_Expr_Id;
-      Pretty    : Boolean := False)
-      return W_Expr_Id;
+      Pretty    : Boolean := False) return W_Expr_Id;
    --  Build an expression (Low <= Expr and then Expr <= High), all
    --  comparisons being in Base_Type (int or real). If Pretty is set to true,
    --  the two parts of a conjunction get a GP_Pretty_Ada attribute, which can
    --  be used for identifying the unproved part of a range or overflow check.
 
    function New_Range_Expr
-     (Low, High : W_Term_Id;
-      Expr      : W_Term_Id)
-      return W_Pred_Id;
+     (Low, High : W_Term_Id; Expr : W_Term_Id) return W_Pred_Id;
 
    function New_Discrete_Add
      (Domain : EW_Domain;
       Left   : W_Expr_Id;
       Right  : W_Expr_Id;
-      Typ    : W_Type_Id := Why_Empty)
-      return W_Expr_Id;
+      Typ    : W_Type_Id := Why_Empty) return W_Expr_Id;
    --  @param Left Right the operand of the operation.
    --  @return an addition in either the representation type of Typ or
    --          the representation type of left if Typ is left empty; This
@@ -385,8 +344,7 @@ package Why.Gen.Expr is
      (Domain : EW_Domain;
       Left   : W_Expr_Id;
       Right  : W_Expr_Id;
-      Typ    : W_Type_Id := Why_Empty)
-      return W_Expr_Id;
+      Typ    : W_Type_Id := Why_Empty) return W_Expr_Id;
    --  @param Typ the type of the operation
    --  @param Left Right the operand of the operation.
    --  @return a substraction in either the representation type of Typ or
@@ -397,9 +355,7 @@ package Why.Gen.Expr is
    --  with modulars.
 
    function New_Discrete_Constant
-     (Ada_Node : Node_Id := Empty;
-      Value    : Uint;
-      Typ      : W_Type_Id)
+     (Ada_Node : Node_Id := Empty; Value : Uint; Typ : W_Type_Id)
       return W_Expr_Id;
    --  @param Value the value of the constant
    --  @param Typ the type of the constant
@@ -408,16 +364,12 @@ package Why.Gen.Expr is
    --          or an integer constant in all other cases.
 
    function New_Discrete_Constant
-     (Ada_Node : Node_Id := Empty;
-      Value    : Uint;
-      Typ      : W_Type_Id)
+     (Ada_Node : Node_Id := Empty; Value : Uint; Typ : W_Type_Id)
       return W_Term_Id
    is (+W_Expr_Id'(New_Discrete_Constant (Ada_Node, Value, Typ)));
 
    function New_Discrete_Constant
-     (Ada_Node : Node_Id := Empty;
-      Value    : Uint;
-      Typ      : W_Type_Id)
+     (Ada_Node : Node_Id := Empty; Value : Uint; Typ : W_Type_Id)
       return W_Prog_Id
    is (+W_Expr_Id'(New_Discrete_Constant (Ada_Node, Value, Typ)));
 
@@ -425,8 +377,7 @@ package Why.Gen.Expr is
      (Domain : EW_Domain;
       Ty     : Entity_Id;
       Expr   : W_Term_Id;
-      Params : Transformation_Params := Body_Params)
-      return W_Expr_Id
+      Params : Transformation_Params := Body_Params) return W_Expr_Id
    with Pre => Is_Type (Ty);
    --  Function to generate a call expressing that Expr is of the dynamic type
    --  Ty.
@@ -440,23 +391,19 @@ package Why.Gen.Expr is
    --  Returns the Why program that does range checking on W_Expr, for type Ty
 
    function Insert_Conversion_To_Rep_No_Bool
-     (Domain : EW_Domain;
-      Expr   : W_Expr_Id)
-      return W_Expr_Id;
+     (Domain : EW_Domain; Expr : W_Expr_Id) return W_Expr_Id;
    --  Convert argument to representation type or ew_int_id if expr is of
    --  type Bool.
 
    function Insert_Conversion_To_Rep_No_Bool
-     (Expr : W_Term_Id)
-      return W_Term_Id
+     (Expr : W_Term_Id) return W_Term_Id
    is (+Insert_Conversion_To_Rep_No_Bool (EW_Term, +Expr));
 
    function Do_Index_Check
      (Ada_Node : Node_Id;
       Arr_Expr : W_Term_Id;
       W_Expr   : W_Expr_Id;
-      Dim      : Positive)
-      return W_Prog_Id;
+      Dim      : Positive) return W_Prog_Id;
    --  Returns the Why program that does index checking on an index W_Expr in
    --  an array Arr_Expr.
 
@@ -468,8 +415,7 @@ package Why.Gen.Expr is
       Need_Check     : Boolean := False;
       Force_No_Slide : Boolean := False;
       Is_Qualif      : Boolean := False;
-      No_Init        : Boolean := False)
-      return W_Expr_Id;
+      No_Init        : Boolean := False) return W_Expr_Id;
    --  Generate a conversion between two Ada array types. If Range check
    --  is set, add a length or range check to the expression. Which
    --  kind of check, and against which type, is determined by calling
@@ -496,8 +442,7 @@ package Why.Gen.Expr is
       Expr     : W_Expr_Id;
       To       : W_Type_Id;
       Lvalue   : Boolean := False;
-      No_Init  : Boolean := False)
-      return W_Expr_Id;
+      No_Init  : Boolean := False) return W_Expr_Id;
    --  Returns the expression of type To that converts Expr possibly inserting
    --  checks during the conversion.
    --  @param Ada_Node node which causes the check to be inserted. This node
@@ -519,8 +464,7 @@ package Why.Gen.Expr is
       Domain         : EW_Domain;
       Expr           : W_Expr_Id;
       To             : W_Type_Id;
-      Force_No_Slide : Boolean := False)
-      return W_Expr_Id;
+      Force_No_Slide : Boolean := False) return W_Expr_Id;
    --  Returns the expression Expr converted to type To. No
    --  check is inserted in the conversion.
    --  @param Ada_Node node which causes the check to be inserted.
@@ -538,16 +482,18 @@ package Why.Gen.Expr is
       Expr           : W_Prog_Id;
       To             : W_Type_Id;
       Force_No_Slide : Boolean := False) return W_Prog_Id
-   is (+W_Expr_Id'(Insert_Simple_Conversion
-       (Ada_Node, EW_Term, +Expr, To, Force_No_Slide)));
+   is (+W_Expr_Id'
+         (Insert_Simple_Conversion
+            (Ada_Node, EW_Term, +Expr, To, Force_No_Slide)));
 
    function Insert_Simple_Conversion
      (Ada_Node       : Node_Id := Empty;
       Expr           : W_Term_Id;
       To             : W_Type_Id;
       Force_No_Slide : Boolean := False) return W_Term_Id
-   is (+W_Expr_Id'(Insert_Simple_Conversion
-       (Ada_Node, EW_Term, +Expr, To, Force_No_Slide)));
+   is (+W_Expr_Id'
+         (Insert_Simple_Conversion
+            (Ada_Node, EW_Term, +Expr, To, Force_No_Slide)));
 
    function Insert_Scalar_Conversion
      (Domain   : EW_Domain;
@@ -624,9 +570,8 @@ package Why.Gen.Expr is
    --  value (ie if want to skip predicate checks during the conversion).
 
    function Insert_Cnt_Loc_Label
-     (Ada_Node     : Node_Id;
-      E            : W_Expr_Id;
-      Is_Loop_Head : Boolean := False) return W_Expr_Id;
+     (Ada_Node : Node_Id; E : W_Expr_Id; Is_Loop_Head : Boolean := False)
+      return W_Expr_Id;
    --  Return E with a new label for the counterexample location of Ada_Node
 
    function New_Typed_Binding
@@ -634,16 +579,14 @@ package Why.Gen.Expr is
       Domain   : EW_Domain;
       Name     : W_Identifier_Id;
       Def      : W_Expr_Id;
-      Context  : W_Expr_Id)
-      return W_Expr_Id;
+      Context  : W_Expr_Id) return W_Expr_Id;
    --  same as New_Binding, but adds type information coming from Context
 
    function New_Typed_Binding
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Def      : W_Prog_Id;
-      Context  : W_Prog_Id)
-      return W_Prog_Id
+      Context  : W_Prog_Id) return W_Prog_Id
    is (+W_Expr_Id'
          (New_Typed_Binding (Ada_Node, EW_Prog, Name, +Def, +Context)));
 
@@ -651,8 +594,7 @@ package Why.Gen.Expr is
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Def      : W_Term_Id;
-      Context  : W_Pred_Id)
-      return W_Pred_Id
+      Context  : W_Pred_Id) return W_Pred_Id
    is (+W_Expr_Id'
          (New_Typed_Binding (Ada_Node, EW_Pred, Name, +Def, +Context)));
 
@@ -660,30 +602,31 @@ package Why.Gen.Expr is
      (Ada_Node : Node_Id := Empty;
       Name     : W_Identifier_Id;
       Def      : W_Term_Id;
-      Context  : W_Term_Id)
-      return W_Term_Id
+      Context  : W_Term_Id) return W_Term_Id
    is (+W_Expr_Id'
          (New_Typed_Binding (Ada_Node, EW_Term, Name, +Def, +Context)));
 
-   subtype Supported_Attribute_Id is Attribute_Id with
-     Static_Predicate => Supported_Attribute_Id in Attribute_Alignment
-                                                 | Attribute_Constrained
-                                                 | Attribute_First
-                                                 | Attribute_Last
-                                                 | Attribute_Modulus
-                                                 | Attribute_Image
-                                                 | Attribute_Value
-                                                 | Attribute_Value_Size
-                                                 | Attribute_Size
-                                                 | Attribute_Component_Size
-                                                 | Attribute_Tag;
+   subtype Supported_Attribute_Id is Attribute_Id
+   with
+     Static_Predicate =>
+       Supported_Attribute_Id
+       in Attribute_Alignment
+        | Attribute_Constrained
+        | Attribute_First
+        | Attribute_Last
+        | Attribute_Modulus
+        | Attribute_Image
+        | Attribute_Value
+        | Attribute_Value_Size
+        | Attribute_Size
+        | Attribute_Component_Size
+        | Attribute_Tag;
 
    function New_Attribute_Expr
      (Ty     : Entity_Id;
       Domain : EW_Domain;
       Attr   : Supported_Attribute_Id;
-      Params : Transformation_Params := Body_Params)
-      return W_Expr_Id
+      Params : Transformation_Params := Body_Params) return W_Expr_Id
    with Pre => Is_Type (Ty);
    --  Compute an expression for a type attribute Ty'Attr.
    --  @param Ty The entity for the Ada type.
@@ -701,8 +644,7 @@ package Why.Gen.Expr is
       Right_Type  : Type_Kind_Id;
       Return_Type : Type_Kind_Id;
       Domain      : EW_Domain;
-      Ada_Node    : Node_Id := Empty)
-      return W_Expr_Id
+      Ada_Node    : Node_Id := Empty) return W_Expr_Id
    with Pre => Op in N_Op_Add .. N_Op_Rem;
    --  @param Op arithmetic binary operator
    --  @param Left why expression for the left hand side
@@ -722,8 +664,7 @@ package Why.Gen.Expr is
       Left_Opnd  : W_Expr_Id := Why_Empty;
       Right_Opnd : W_Expr_Id;
       Rep_Type   : W_Type_Id;
-      Modulus    : Uint)
-      return W_Expr_Id
+      Modulus    : Uint) return W_Expr_Id
    with
      --  GNAT does not support non-binary modulus greater than 2**32, we can
      --  use that limit to simplify treatment here.
@@ -752,14 +693,16 @@ package Why.Gen.Expr is
       Left_Opnd  : W_Expr_Id := Why_Empty;
       Right_Opnd : W_Expr_Id;
       Rep_Type   : W_Type_Id;
-      Modulus    : Uint)
-      return W_Prog_Id
-   with Pre => Present (Ada_Node)
-     and then Op in N_Op_Minus
-                  | N_Op_Add
-                  | N_Op_Subtract
-                  | N_Op_Multiply
-                  | N_Op_Expon;
+      Modulus    : Uint) return W_Prog_Id
+   with
+     Pre =>
+       Present (Ada_Node)
+       and then Op
+                in N_Op_Minus
+                 | N_Op_Add
+                 | N_Op_Subtract
+                 | N_Op_Multiply
+                 | N_Op_Expon;
    --  For modular type Ada_Type with annotation No_Wrap_Around, a check must
    --  be emitted on unary operation - and binary operations - + * **
    --
@@ -777,10 +720,7 @@ package Why.Gen.Expr is
    --  @return the Why3 check expression
 
    function Apply_Modulus
-     (Op     : N_Op;
-      E      : Type_Kind_Id;
-      T      : W_Expr_Id;
-      Domain : EW_Domain)
+     (Op : N_Op; E : Type_Kind_Id; T : W_Expr_Id; Domain : EW_Domain)
       return W_Expr_Id;
    --  If E is a modular type, apply a modulus on T, else return T unchanged.
    --  Beware that for additions, substractions and multiplications on a
@@ -792,9 +732,7 @@ package Why.Gen.Expr is
    --  the modulus operation.
 
    function Transform_Compare_Op
-     (Op     : N_Op_Compare;
-      Ty     : W_Type_Id;
-      Domain : EW_Domain)
+     (Op : N_Op_Compare; Ty : W_Type_Id; Domain : EW_Domain)
       return W_Identifier_Id;
    --  Convert an Ada comparison operator to a Why relation symbol
 
@@ -805,22 +743,18 @@ package Why.Gen.Expr is
    --  @param Id Identifier of a variable
    --  @result Program havocing the value of Id
 
-   function Validity_Wrapper_Type (Fun : E_Function_Id) return W_Type_Id with
-     Pre => Is_Potentially_Invalid (Fun);
+   function Validity_Wrapper_Type (Fun : E_Function_Id) return W_Type_Id
+   with Pre => Is_Potentially_Invalid (Fun);
    --  Type for the validity wrapper used for the result of Fun
 
    function Get_Valid_Flag_For_Id
-     (Id : W_Identifier_Id;
-      Ty : Type_Kind_Id)
-      return W_Identifier_Id;
+     (Id : W_Identifier_Id; Ty : Type_Kind_Id) return W_Identifier_Id;
    --  Function used to get the name of the validity flag from the name of an
    --  identifier used for Old and Loop_Entry values as well as the result
    --  name.
 
    function New_Function_Valid_Flag_Access
-     (Fun  : E_Function_Id;
-      Name : W_Expr_Id)
-      return W_Expr_Id
+     (Fun : E_Function_Id; Name : W_Expr_Id) return W_Expr_Id
    with Pre => Is_Potentially_Invalid (Fun);
    --  Access to the validity flag in the validity wrapper used for the result
    --  of Fun.
@@ -829,16 +763,15 @@ package Why.Gen.Expr is
      (Ada_Node : Node_Id := Empty;
       Fun      : E_Function_Id;
       Name     : W_Expr_Id;
-      Do_Check : Boolean := False)
-      return W_Expr_Id
-   with Pre => Is_Potentially_Invalid (Fun)
-     and then (if Do_Check then Present (Ada_Node));
+      Do_Check : Boolean := False) return W_Expr_Id
+   with
+     Pre =>
+       Is_Potentially_Invalid (Fun)
+       and then (if Do_Check then Present (Ada_Node));
    --  Access to the value in the validity wrapper used for the result of Fun
 
    function New_Function_Validity_Wrapper_Value
-     (Fun        : E_Function_Id;
-      Valid_Flag : W_Expr_Id;
-      Value      : W_Expr_Id)
+     (Fun : E_Function_Id; Valid_Flag : W_Expr_Id; Value : W_Expr_Id)
       return W_Expr_Id
    with Pre => Is_Potentially_Invalid (Fun);
    --  Construct a value of the validity wrapper used for the result of Fun
@@ -847,8 +780,7 @@ package Why.Gen.Expr is
      (Tree   : W_Term_Id;
       Ty     : Type_Kind_Id;
       Domain : EW_Domain;
-      Params : Transformation_Params)
-      return W_Expr_Id
+      Params : Transformation_Params) return W_Expr_Id
    with Pre => Is_Constrained (Ty);
    --  Construct a call to the Is_Valid function for Ty's validity trees on
    --  Tree. The values of potential array bounds or discriminants are taken
@@ -858,8 +790,7 @@ package Why.Gen.Expr is
      (Tree   : W_Expr_Id;
       Ty     : Type_Kind_Id;
       Expr   : W_Expr_Id;
-      Domain : EW_Domain)
-      return W_Expr_Id;
+      Domain : EW_Domain) return W_Expr_Id;
    --  Construct a call to the Is_Valid function for Ty's validity trees on
    --  Tree. The values of potential array bounds or discriminants are taken
    --  from Expr.
@@ -876,15 +807,12 @@ package Why.Gen.Expr is
    --  Represent a mapping from an identifier Name to an expression Value.
    --  If Mutable is True, the mapping should be a reference.
 
-   package Ref_Type_Vectors is new Ada.Containers.Vectors
-     (Index_Type   => Positive,
-      Element_Type => Ref_Type);
+   package Ref_Type_Vectors is new
+     Ada.Containers.Vectors (Index_Type => Positive, Element_Type => Ref_Type);
    subtype Ref_Context is Ref_Type_Vectors.Vector;
 
    function Bindings_For_Ref_Context
-     (Expr    : W_Expr_Id;
-      Context : Ref_Context;
-      Domain  : EW_Domain)
+     (Expr : W_Expr_Id; Context : Ref_Context; Domain : EW_Domain)
       return W_Expr_Id;
    --  Generate bindings for elements of Context in Expr
 
@@ -904,8 +832,7 @@ package Why.Gen.Expr is
    --  or simply returns "Context" when no temp was in fact necessary.
 
    function New_Temp_For_Expr
-     (E         : W_Expr_Id;
-      Need_Temp : Boolean := True) return W_Expr_Id;
+     (E : W_Expr_Id; Need_Temp : Boolean := True) return W_Expr_Id;
    --  Return a temp variable for the given expression, and store the provided
    --  expression for later use. If Need_Temp is False, do not actually
    --  introduce a temp variable.
@@ -925,29 +852,22 @@ package Why.Gen.Expr is
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Tmp      : W_Expr_Id;
-      Context  : W_Expr_Id)
-      return W_Expr_Id;
+      Context  : W_Expr_Id) return W_Expr_Id;
    --  Introduce a let binding for Tmp on top of "Context". The value of Tmp is
    --  the one provided to the corresponding call to New_Temp_For_Expr.
 
    function Binding_For_Temp
-     (Ada_Node : Node_Id := Empty;
-      Tmp      : W_Term_Id;
-      Context  : W_Pred_Id)
+     (Ada_Node : Node_Id := Empty; Tmp : W_Term_Id; Context : W_Pred_Id)
       return W_Pred_Id
    is (+W_Expr_Id'(Binding_For_Temp (Ada_Node, EW_Pred, +Tmp, +Context)));
 
    function Binding_For_Temp
-     (Ada_Node : Node_Id := Empty;
-      Tmp      : W_Term_Id;
-      Context  : W_Prog_Id)
+     (Ada_Node : Node_Id := Empty; Tmp : W_Term_Id; Context : W_Prog_Id)
       return W_Prog_Id
    is (+W_Expr_Id'(Binding_For_Temp (Ada_Node, EW_Prog, +Tmp, +Context)));
 
    function Binding_For_Temp
-     (Ada_Node : Node_Id := Empty;
-      Tmp      : W_Term_Id;
-      Context  : W_Term_Id)
+     (Ada_Node : Node_Id := Empty; Tmp : W_Term_Id; Context : W_Term_Id)
       return W_Term_Id
    is (+W_Expr_Id'(Binding_For_Temp (Ada_Node, EW_Term, +Tmp, +Context)));
 

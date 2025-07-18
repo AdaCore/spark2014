@@ -23,18 +23,18 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Gnat2Why.Util;             use Gnat2Why.Util;
-with SPARK_Util;                use SPARK_Util;
-with Types;                     use Types;
-with VC_Kinds;                  use VC_Kinds;
-with SPARK_Atree;               use SPARK_Atree;
-with Why.Atree.Builders;        use Why.Atree.Builders;
-with Why.Atree.Modules;         use Why.Atree.Modules;
-with Why.Conversions;           use Why.Conversions;
-with Why.Gen.Expr;              use Why.Gen.Expr;
-with Why.Ids;                   use Why.Ids;
-with Why.Sinfo;                 use Why.Sinfo;
-with Why.Types;                 use Why.Types;
+with Gnat2Why.Util;      use Gnat2Why.Util;
+with SPARK_Util;         use SPARK_Util;
+with Types;              use Types;
+with VC_Kinds;           use VC_Kinds;
+with SPARK_Atree;        use SPARK_Atree;
+with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Atree.Modules;  use Why.Atree.Modules;
+with Why.Conversions;    use Why.Conversions;
+with Why.Gen.Expr;       use Why.Gen.Expr;
+with Why.Ids;            use Why.Ids;
+with Why.Sinfo;          use Why.Sinfo;
+with Why.Types;          use Why.Types;
 
 package Why.Gen.Progs is
 
@@ -68,41 +68,31 @@ package Why.Gen.Progs is
    ----------------------------------------------------------------------------
 
    pragma Annotate (Xcov, Exempt_On, "Ghost code");
-   function Has_Empty_Or_Unit_Type (Prog : W_Prog_Id) return Boolean is
-     (Get_Type (+Prog) = Why_Empty
-      or else Get_Type (+Prog) = EW_Unit_Type)
+   function Has_Empty_Or_Unit_Type (Prog : W_Prog_Id) return Boolean
+   is (Get_Type (+Prog) = Why_Empty or else Get_Type (+Prog) = EW_Unit_Type)
    with Ghost;
    pragma Annotate (Xcov, Exempt_Off);
 
-   procedure Append
-     (Left  : in out W_Prog_Id;
-      Right : W_Prog_Id)
+   procedure Append (Left : in out W_Prog_Id; Right : W_Prog_Id)
    with Pre => Has_Empty_Or_Unit_Type (Left);
 
-   procedure Append
-     (Left           : in out W_Prog_Id;
-      Right1, Right2 : W_Prog_Id)
-   with Pre => Has_Empty_Or_Unit_Type (Left)
-     and then Has_Empty_Or_Unit_Type (Right1);
+   procedure Append (Left : in out W_Prog_Id; Right1, Right2 : W_Prog_Id)
+   with
+     Pre =>
+       Has_Empty_Or_Unit_Type (Left) and then Has_Empty_Or_Unit_Type (Right1);
 
-   procedure Append
-     (Left  : in out W_Expr_Id;
-      Right : W_Prog_Id)
+   procedure Append (Left : in out W_Expr_Id; Right : W_Prog_Id)
    with Pre => Has_Empty_Or_Unit_Type (+Left);
 
-   procedure Append
-     (Left           : in out W_Expr_Id;
-      Right1, Right2 : W_Prog_Id)
-   with Pre => Has_Empty_Or_Unit_Type (+Left)
-     and then Has_Empty_Or_Unit_Type (Right1);
+   procedure Append (Left : in out W_Expr_Id; Right1, Right2 : W_Prog_Id)
+   with
+     Pre =>
+       Has_Empty_Or_Unit_Type (+Left) and then Has_Empty_Or_Unit_Type (Right1);
 
    procedure Append
-     (Left  : in out W_Statement_Sequence_Id;
-      Right : W_Statement_Sequence_Id);
+     (Left : in out W_Statement_Sequence_Id; Right : W_Statement_Sequence_Id);
 
-   procedure Append
-     (Left : in out W_Statement_Sequence_Id;
-      Right : W_Prog_Id);
+   procedure Append (Left : in out W_Statement_Sequence_Id; Right : W_Prog_Id);
 
    function Void_Sequence return W_Statement_Sequence_Id;
    --  Returns a sequence statement with only one void statement (this avoids
@@ -112,21 +102,17 @@ package Why.Gen.Progs is
    --  Returns True if S contains only one void statement
 
    procedure Emit_Always_True_Range_Check
-     (Ada_Node   : Node_Id;
-      Check_Kind : Scalar_Check_Kind);
+     (Ada_Node : Node_Id; Check_Kind : Scalar_Check_Kind);
 
    function New_Absurd_Statement
-     (Ada_Node : Node_Id;
-      Reason   : VC_Kind)
-      return W_Prog_Id;
+     (Ada_Node : Node_Id; Reason : VC_Kind) return W_Prog_Id;
    --  Absurd causes Why3 to prove that a branch is dead. It is then cut for
    --  the rest of the analysis.
 
    function New_Any_Statement
      (Ada_Node    : Node_Id := Empty;
       Post        : W_Pred_Id;
-      Return_Type : W_Type_Id := Why_Empty)
-      return W_Prog_Id;
+      Return_Type : W_Type_Id := Why_Empty) return W_Prog_Id;
    --  Generate a node of the form "any type requires ensures {post}"
    --  Such a node in Why is a bit like a function call with post and
    --  return type, but can be used at any place.
@@ -140,8 +126,7 @@ package Why.Gen.Progs is
       Pre         : W_Pred_Id;
       Post        : W_Pred_Id;
       Reason      : VC_Kind;
-      Return_Type : W_Type_Id := Why_Empty)
-      return W_Prog_Id
+      Return_Type : W_Type_Id := Why_Empty) return W_Prog_Id
    with Pre => Present (Ada_Node);
    --  Generate a node of the form "any type requires {pre} ensures {post}"
    --  Same as above except that a VC will be generated for the precondition
@@ -153,20 +138,17 @@ package Why.Gen.Progs is
    --  @return an any node
 
    function New_Assume_Statement
-     (Ada_Node : Node_Id := Empty;
-      Pred     : W_Pred_Id)
-     return W_Prog_Id;
+     (Ada_Node : Node_Id := Empty; Pred : W_Pred_Id) return W_Prog_Id;
    --  generate an assume statement, which inserts a hypothesis in the context
    --  @param Ada_Node Ada_Node used for the assume node
    --  @param Pred the predicate which will be inserted in the context
    --  @return an assume statement
 
    function New_Havoc_Statement
-     (Ada_Node : Node_Id := Empty;
-      Effects  : W_Effects_Id) return W_Prog_Id;
+     (Ada_Node : Node_Id := Empty; Effects : W_Effects_Id) return W_Prog_Id;
 
-   function New_Ignore (Ada_Node : Node_Id := Empty; Prog : W_Prog_Id)
-      return W_Prog_Id;
+   function New_Ignore
+     (Ada_Node : Node_Id := Empty; Prog : W_Prog_Id) return W_Prog_Id;
    --   Build the program "ignore(prog)" of return type "unit".
 
    function New_Located_Assert
@@ -174,64 +156,49 @@ package Why.Gen.Progs is
       Pred       : W_Pred_Id;
       Reason     : VC_Kind;
       Kind       : EW_Assert_Kind;
-      Check_Info : Check_Info_Type := New_Check_Info)
-      return W_Prog_Id;
+      Check_Info : Check_Info_Type := New_Check_Info) return W_Prog_Id;
 
    function New_Located_Abstract
      (Ada_Node   : Node_Id;
       Expr       : W_Prog_Id;
       Post       : W_Pred_Id;
       Reason     : VC_Kind;
-      Check_Info : Check_Info_Type := New_Check_Info)
-      return W_Prog_Id;
+      Check_Info : Check_Info_Type := New_Check_Info) return W_Prog_Id;
    --  build a located abstract Why3 program expression with a postcondition.
 
    function New_Simpl_Any_Prog
-     (T    : W_Type_Id;
-      Pred : W_Pred_OId := Why_Empty)
-      return W_Prog_Id;
+     (T : W_Type_Id; Pred : W_Pred_OId := Why_Empty) return W_Prog_Id;
    --  Build a "any" expression whose type is a simple type, satisfying
    --  proposition Pred.
 
-   procedure Prepend
-     (Left  : W_Prog_Id;
-      Right : in out W_Prog_Id)
+   procedure Prepend (Left : W_Prog_Id; Right : in out W_Prog_Id)
    with Pre => Has_Empty_Or_Unit_Type (Left);
 
-   procedure Prepend
-     (Left  : W_Prog_Id;
-      Right : in out W_Expr_Id)
+   procedure Prepend (Left : W_Prog_Id; Right : in out W_Expr_Id)
    with Pre => Has_Empty_Or_Unit_Type (Left);
 
-   procedure Prepend
-     (Left1, Left2  : W_Prog_Id;
-      Right         : in out W_Prog_Id)
-   with Pre => Has_Empty_Or_Unit_Type (Left1)
-     and then Has_Empty_Or_Unit_Type (Left2);
+   procedure Prepend (Left1, Left2 : W_Prog_Id; Right : in out W_Prog_Id)
+   with
+     Pre =>
+       Has_Empty_Or_Unit_Type (Left1) and then Has_Empty_Or_Unit_Type (Left2);
+
+   procedure Prepend (Left1, Left2 : W_Prog_Id; Right : in out W_Expr_Id)
+   with
+     Pre =>
+       Has_Empty_Or_Unit_Type (Left1) and then Has_Empty_Or_Unit_Type (Left2);
 
    procedure Prepend
-     (Left1, Left2  : W_Prog_Id;
-      Right         : in out W_Expr_Id)
-   with Pre => Has_Empty_Or_Unit_Type (Left1)
-     and then Has_Empty_Or_Unit_Type (Left2);
+     (Left : W_Statement_Sequence_Id; Right : in out W_Statement_Sequence_Id);
 
-   procedure Prepend
-     (Left  : W_Statement_Sequence_Id;
-      Right : in out W_Statement_Sequence_Id);
-
-   procedure Prepend
-     (Left  : W_Prog_Id;
-      Right : in out W_Statement_Sequence_Id)
+   procedure Prepend (Left : W_Prog_Id; Right : in out W_Statement_Sequence_Id)
    with Pre => Has_Empty_Or_Unit_Type (Left);
 
    function Sequence
-     (Ada_Node    : Node_Id;
-      Left, Right : W_Prog_Id)
-      return W_Prog_Id
+     (Ada_Node : Node_Id; Left, Right : W_Prog_Id) return W_Prog_Id
    with Pre => Has_Empty_Or_Unit_Type (Left);
 
-   function Sequence (Left, Right : W_Prog_Id) return W_Prog_Id is
-     (Sequence (Empty, Left, Right))
+   function Sequence (Left, Right : W_Prog_Id) return W_Prog_Id
+   is (Sequence (Empty, Left, Right))
    with Pre => Has_Empty_Or_Unit_Type (Left);
 
    function Sequence (Progs : W_Prog_Array) return W_Prog_Id

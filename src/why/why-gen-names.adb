@@ -51,13 +51,13 @@ package body Why.Gen.Names is
      (others => Why_Empty);
    --  This array is used to precompute all fixed idents
 
-   function Append_Num (S         : String;
-                        Count     : Positive;
-                        Namespace : Symbol := No_Symbol;
-                        Module    : W_Module_Id := Why.Types.Why_Empty;
-                        Typ       : W_Type_Id := Why.Types.Why_Empty;
-                        Ada_Node  : Node_Id := Empty)
-                        return W_Identifier_Id;
+   function Append_Num
+     (S         : String;
+      Count     : Positive;
+      Namespace : Symbol := No_Symbol;
+      Module    : W_Module_Id := Why.Types.Why_Empty;
+      Typ       : W_Type_Id := Why.Types.Why_Empty;
+      Ada_Node  : Node_Id := Empty) return W_Identifier_Id;
 
    function Append_Num (S : String; Count : Positive) return String;
 
@@ -76,41 +76,44 @@ package body Why.Gen.Names is
       Namespace : Symbol := No_Symbol;
       Module    : W_Module_Id := Why.Types.Why_Empty;
       Typ       : W_Type_Id := Why.Types.Why_Empty;
-      Ada_Node  : Node_Id := Empty) return W_Identifier_Id
-   is
+      Ada_Node  : Node_Id := Empty) return W_Identifier_Id is
    begin
-      return New_Identifier
-        (Domain    => EW_Term,
-         Name      => Append_Num (S, Count),
-         Module    => Module,
-         Namespace => Namespace,
-         Ada_Node  => Ada_Node,
-         Typ       => Typ);
+      return
+        New_Identifier
+          (Domain    => EW_Term,
+           Name      => Append_Num (S, Count),
+           Module    => Module,
+           Namespace => Namespace,
+           Ada_Node  => Ada_Node,
+           Typ       => Typ);
    end Append_Num;
 
    -----------------
    -- Attr_Append --
    -----------------
 
-   function Attr_Append (Base     : String;
-                         A        : Attribute_Id;
-                         Count    : Positive;
-                         Typ      : W_Type_Id;
-                         Module   : W_Module_Id := Why.Types.Why_Empty;
-                         Ada_Node : Node_Id := Empty) return W_Identifier_Id is
+   function Attr_Append
+     (Base     : String;
+      A        : Attribute_Id;
+      Count    : Positive;
+      Typ      : W_Type_Id;
+      Module   : W_Module_Id := Why.Types.Why_Empty;
+      Ada_Node : Node_Id := Empty) return W_Identifier_Id is
    begin
       return
-        Append_Num (S        => Base & "__" & To_String (Attr_To_Why_Name (A)),
-                    Count    => Count,
-                    Typ      => Typ,
-                    Module   => Module,
-                    Ada_Node => Ada_Node);
+        Append_Num
+          (S        => Base & "__" & To_String (Attr_To_Why_Name (A)),
+           Count    => Count,
+           Typ      => Typ,
+           Module   => Module,
+           Ada_Node => Ada_Node);
    end Attr_Append;
 
-   function Attr_Append (Base  : W_Identifier_Id;
-                         A     : Attribute_Id;
-                         Count : Positive;
-                         Typ   : W_Type_Id) return W_Identifier_Id
+   function Attr_Append
+     (Base  : W_Identifier_Id;
+      A     : Attribute_Id;
+      Count : Positive;
+      Typ   : W_Type_Id) return W_Identifier_Id
    is
       Name : constant W_Name_Id := Get_Name (Base);
    begin
@@ -128,21 +131,20 @@ package body Why.Gen.Names is
    -- Attr_To_Why_Name --
    ----------------------
 
-   function Attr_To_Why_Name (A : Attribute_Id) return Why_Name_Enum is
-     (case A is
+   function Attr_To_Why_Name (A : Attribute_Id) return Why_Name_Enum
+   is (case A is
          when Attribute_Constrained => WNE_Attr_Constrained,
-         when Attribute_First       => WNE_Attr_First,
-         when Attribute_Last        => WNE_Attr_Last,
-         when Attribute_Tag         => WNE_Attr_Tag,
-         when others                => raise Program_Error);
+         when Attribute_First => WNE_Attr_First,
+         when Attribute_Last => WNE_Attr_Last,
+         when Attribute_Tag => WNE_Attr_Tag,
+         when others => raise Program_Error);
 
    --------------------
    -- Content_Append --
    --------------------
 
-   function Content_Append (Base : W_Name_Id;
-                            Typ  : W_Type_Id) return W_Identifier_Id
-   is
+   function Content_Append
+     (Base : W_Name_Id; Typ : W_Type_Id) return W_Identifier_Id is
    begin
       return
         Append_Num
@@ -158,8 +160,7 @@ package body Why.Gen.Names is
    ---------------------
 
    function Conversion_Name
-     (From : W_Type_Id;
-      To   : W_Type_Id) return W_Identifier_Id
+     (From : W_Type_Id; To : W_Type_Id) return W_Identifier_Id
    is
       From_Kind : constant EW_Type := Get_Type_Kind (From);
       To_Kind   : constant EW_Type := Get_Type_Kind (To);
@@ -179,73 +180,66 @@ package body Why.Gen.Names is
                   --  'Rounding attribute.
 
                   elsif Why_Type_Is_Float (From) then
-                     return (if To = EW_Int_Type then
-                                MF_Floats (From).To_Int
-                             elsif To = EW_BitVector_8_Type then
-                                MF_Floats (From).To_BV8
-                             elsif To = EW_BitVector_16_Type then
-                                MF_Floats (From).To_BV16
-                             elsif To = EW_BitVector_32_Type then
-                                MF_Floats (From).To_BV32
-                             elsif To = EW_BitVector_64_Type then
-                                MF_Floats (From).To_BV64
-                             --  Conversions between 32-bits and 64-bits floats
-                             elsif From = EW_Float_64_Type
-                               and then To = EW_Float_32_Type
-                             then
-                                M_Float32_64_Conv.To_Small
-                             elsif From = EW_Float_32_Type
-                               and then To = EW_Float_64_Type
-                             then
-                                M_Float32_64_Conv.To_Large
-                             --  Conversions between 32-bits and 80-bits floats
-                             elsif From = EW_Float_80_Type
-                               and then To = EW_Float_32_Type
-                             then
-                                M_Float32_80_Conv.To_Small
-                             elsif From = EW_Float_32_Type
-                               and then To = EW_Float_80_Type
-                             then
-                                M_Float32_80_Conv.To_Large
-                             --  Conversions between 64-bits and 80-bits floats
-                             elsif From = EW_Float_80_Type
-                               and then To = EW_Float_64_Type
-                             then
-                                M_Float64_80_Conv.To_Small
-                             elsif From = EW_Float_64_Type
-                               and then To = EW_Float_80_Type
-                             then
-                                M_Float64_80_Conv.To_Large
-                             else
-                                raise Program_Error);
+                     return
+                       (if To = EW_Int_Type
+                        then MF_Floats (From).To_Int
+                        elsif To = EW_BitVector_8_Type
+                        then MF_Floats (From).To_BV8
+                        elsif To = EW_BitVector_16_Type
+                        then MF_Floats (From).To_BV16
+                        elsif To = EW_BitVector_32_Type
+                        then MF_Floats (From).To_BV32
+                        elsif To = EW_BitVector_64_Type
+                        then MF_Floats (From).To_BV64
+                        --  Conversions between 32-bits and 64-bits floats
+                        elsif From = EW_Float_64_Type
+                          and then To = EW_Float_32_Type
+                        then M_Float32_64_Conv.To_Small
+                        elsif From = EW_Float_32_Type
+                          and then To = EW_Float_64_Type
+                        then M_Float32_64_Conv.To_Large
+                        --  Conversions between 32-bits and 80-bits floats
+                        elsif From = EW_Float_80_Type
+                          and then To = EW_Float_32_Type
+                        then M_Float32_80_Conv.To_Small
+                        elsif From = EW_Float_32_Type
+                          and then To = EW_Float_80_Type
+                        then M_Float32_80_Conv.To_Large
+                        --  Conversions between 64-bits and 80-bits floats
+                        elsif From = EW_Float_80_Type
+                          and then To = EW_Float_64_Type
+                        then M_Float64_80_Conv.To_Small
+                        elsif From = EW_Float_64_Type
+                          and then To = EW_Float_80_Type
+                        then M_Float64_80_Conv.To_Large
+                        else raise Program_Error);
                   elsif From = EW_Bool_Type and then To = EW_Int_Type then
                      return M_Boolean.To_Int;
                   elsif From = EW_Int_Type and then To = EW_Bool_Type then
                      return M_Boolean.Of_Int;
-                  elsif Why_Type_Is_BitVector (From)
-                    and then To = EW_Int_Type
+                  elsif Why_Type_Is_BitVector (From) and then To = EW_Int_Type
                   then
                      return MF_BVs (From).To_Int;
 
-                  elsif Why_Type_Is_BitVector (From) and then
-                    Why_Type_Is_Float (To)
+                  elsif Why_Type_Is_BitVector (From)
+                    and then Why_Type_Is_Float (To)
                   then
-                     return (if From = EW_BitVector_8_Type then
-                                MF_Floats (To).Of_BV8
-                             elsif From = EW_BitVector_16_Type then
-                                MF_Floats (To).Of_BV16
-                             elsif From = EW_BitVector_32_Type then
-                                MF_Floats (To).Of_BV32
-                             elsif From = EW_BitVector_64_Type then
-                                MF_Floats (To).Of_BV64
-                             else raise Program_Error);
+                     return
+                       (if From = EW_BitVector_8_Type
+                        then MF_Floats (To).Of_BV8
+                        elsif From = EW_BitVector_16_Type
+                        then MF_Floats (To).Of_BV16
+                        elsif From = EW_BitVector_32_Type
+                        then MF_Floats (To).Of_BV32
+                        elsif From = EW_BitVector_64_Type
+                        then MF_Floats (To).Of_BV64
+                        else raise Program_Error);
 
-                  elsif From = EW_Int_Type
-                    and then Why_Type_Is_BitVector (To)
+                  elsif From = EW_Int_Type and then Why_Type_Is_BitVector (To)
                   then
                      return MF_BVs (To).Of_Int;
-                  elsif Why_Type_Is_BitVector (From) and then
-                    Why_Type_Is_BitVector (To)
+                  elsif Why_Type_Is_BitVector (From)
+                    and then Why_Type_Is_BitVector (To)
                   then
                      return Get_Modular_Converter (From, To);
                   --  Either the two objects are of the same type
@@ -260,8 +254,7 @@ package body Why.Gen.Names is
                      return
                        Get_Fixed_Point_Theory (Get_Ada_Node (+From)).To_Int;
                   elsif From = EW_Int_Type and then Why_Type_Is_Fixed (To) then
-                     return
-                       Get_Fixed_Point_Theory (Get_Ada_Node (+To)).Of_Int;
+                     return Get_Fixed_Point_Theory (Get_Ada_Node (+To)).Of_Int;
                   elsif From = EW_Bool_Type
                     and then To = M_Boolean_Init_Wrapper.Wrapper_Ty
                   then
@@ -274,29 +267,26 @@ package body Why.Gen.Names is
                      raise Program_Error;
                   end if;
 
-               when EW_Abstract
-                  | EW_Split
-               =>
+               when EW_Abstract | EW_Split =>
                   declare
                      A : constant Node_Id := Get_Ada_Node (+To);
                   begin
                      --  We're converting from the representation type
                      --  of a scalar kind
 
-                     pragma Assert
-                       (Base_Why_Type (To) = From and then
-                            (From = EW_Int_Type
-                             or else Why_Type_Is_BitVector (From)
-                             or else Why_Type_Is_Float (From)
-                             or else Why_Type_Is_Fixed (From)));
+                     pragma
+                       Assert
+                         (Base_Why_Type (To) = From
+                            and then (From = EW_Int_Type
+                                      or else Why_Type_Is_BitVector (From)
+                                      or else Why_Type_Is_Float (From)
+                                      or else Why_Type_Is_Fixed (From)));
 
                      return E_Symb (A, WNE_Of_Rep);
                   end;
             end case;
 
-         when EW_Abstract
-            | EW_Split
-         =>
+         when EW_Abstract | EW_Split =>
             case To_Kind is
                when EW_Builtin =>
                   declare
@@ -305,21 +295,20 @@ package body Why.Gen.Names is
                      --  We're converting to the representation type
                      --  of a discrete/float kind
 
-                     pragma Assert
-                       (Base_Why_Type (From) = To and then
-                            (To = EW_Int_Type
-                             or else Why_Type_Is_BitVector (To)
-                             or else Why_Type_Is_Float (To)
-                             or else Why_Type_Is_Fixed (To)));
+                     pragma
+                       Assert
+                         (Base_Why_Type (From) = To
+                            and then (To = EW_Int_Type
+                                      or else Why_Type_Is_BitVector (To)
+                                      or else Why_Type_Is_Float (To)
+                                      or else Why_Type_Is_Fixed (To)));
 
                      return E_Symb (A, WNE_To_Rep);
                   end;
 
                --  Case of a conversion between two record or array types
 
-               when EW_Abstract
-                  | EW_Split
-               =>
+               when EW_Abstract | EW_Split =>
                   declare
                      From_Node : constant Node_Id := Get_Ada_Node (+From);
                      To_Node   : constant Node_Id := Get_Ada_Node (+To);
@@ -334,23 +323,25 @@ package body Why.Gen.Names is
                              Root_Retysp (From_Node);
                            Relaxed_Init : constant Boolean :=
                              Is_Init_Wrapper_Type (From);
-                           pragma Assert
-                             (Relaxed_Init = Is_Init_Wrapper_Type (To));
+                           pragma
+                             Assert (Relaxed_Init = Is_Init_Wrapper_Type (To));
                         begin
                            if From_Base = From_Node then
-                              return E_Symb
-                                (To_Node, WNE_Of_Base, Relaxed_Init);
+                              return
+                                E_Symb (To_Node, WNE_Of_Base, Relaxed_Init);
                            else
-                              return E_Symb
-                                (From_Node, WNE_To_Base, Relaxed_Init);
+                              return
+                                E_Symb (From_Node, WNE_To_Base, Relaxed_Init);
                            end if;
                         end;
 
                      --  Conversions on array types use predefined functions
 
                      else
-                        pragma Assert (Has_Array_Type (From_Node)
-                                       and Has_Array_Type (To_Node));
+                        pragma
+                          Assert
+                            (Has_Array_Type (From_Node)
+                               and Has_Array_Type (To_Node));
                         return Get_Array_Conversion_Name (From_Node, To_Node);
                      end if;
                   end;
@@ -362,15 +353,15 @@ package body Why.Gen.Names is
    -- Discr_Append --
    ------------------
 
-   function Discr_Append (Base  : W_Identifier_Id;
-                          Typ   : W_Type_Id) return W_Identifier_Id
+   function Discr_Append
+     (Base : W_Identifier_Id; Typ : W_Type_Id) return W_Identifier_Id
    is
       Name : constant W_Name_Id := Get_Name (Base);
    begin
       return
         Append_Num
-          (S        => Img (Get_Symb (Name)) &
-             To_String (WNE_Rec_Split_Discrs),
+          (S        =>
+             Img (Get_Symb (Name)) & To_String (WNE_Rec_Split_Discrs),
            Count    => 1,
            Typ      => Typ,
            Module   => Get_Module (Name),
@@ -381,8 +372,7 @@ package body Why.Gen.Names is
    -- Dynamic_Prop_Name --
    -----------------------
 
-   function Dynamic_Prop_Name (Ty : Entity_Id) return W_Identifier_Id
-   is
+   function Dynamic_Prop_Name (Ty : Entity_Id) return W_Identifier_Id is
    begin
       if Is_Standard_Boolean_Type (Ty) then
          return M_Boolean.Dynamic_Prop;
@@ -395,15 +385,15 @@ package body Why.Gen.Names is
    -- Field_Append --
    ------------------
 
-   function Field_Append (Base  : W_Identifier_Id;
-                          Typ   : W_Type_Id) return W_Identifier_Id
+   function Field_Append
+     (Base : W_Identifier_Id; Typ : W_Type_Id) return W_Identifier_Id
    is
       Name : constant W_Name_Id := Get_Name (Base);
    begin
       return
         Append_Num
-          (S        => Img (Get_Symb (Name))
-           & To_String (WNE_Rec_Split_Fields),
+          (S        =>
+             Img (Get_Symb (Name)) & To_String (WNE_Rec_Split_Fields),
            Count    => 1,
            Typ      => Typ,
            Module   => Get_Module (Name),
@@ -423,8 +413,8 @@ package body Why.Gen.Names is
    -- Get_Modular_Converter --
    ---------------------------
 
-   function Get_Modular_Converter
-     (From, To : W_Type_Id) return W_Identifier_Id is
+   function Get_Modular_Converter (From, To : W_Type_Id) return W_Identifier_Id
+   is
    begin
       if From = EW_BitVector_8_Type then
 
@@ -548,24 +538,24 @@ package body Why.Gen.Names is
    function Guard_Predicate_Name
      (E                     : Function_Kind_Id;
       Selector_Name         : Selection_Kind := Why.Inter.Standard;
-      Specialization_Module : Symbol := No_Symbol)
-      return W_Identifier_Id
-   is
-     (if Specialization_Module /= No_Symbol
-      then M_HO_Specializations (E) (Specialization_Module).Guard_Id
-      elsif Ekind (E) = E_Function
-      then E_Symb (E, (case Selector_Name is
-                          when Why.Inter.Standard => WNE_Func_Guard,
-                          when Dispatch           => WNE_Dispatch_Func_Guard,
-                          when Refine             => WNE_Func_Guard))
-      else Get_Logic_Function_Guard (E));
+      Specialization_Module : Symbol := No_Symbol) return W_Identifier_Id
+   is (if Specialization_Module /= No_Symbol
+       then M_HO_Specializations (E) (Specialization_Module).Guard_Id
+       elsif Ekind (E) = E_Function
+       then
+         E_Symb
+           (E,
+            (case Selector_Name is
+               when Why.Inter.Standard => WNE_Func_Guard,
+               when Dispatch => WNE_Dispatch_Func_Guard,
+               when Refine => WNE_Func_Guard))
+       else Get_Logic_Function_Guard (E));
 
    ------------------
    -- Havoc_Append --
    ------------------
 
-   function Havoc_Append (Base : W_Name_Id) return W_Identifier_Id
-   is
+   function Havoc_Append (Base : W_Name_Id) return W_Identifier_Id is
    begin
       return
         Append_Num
@@ -605,16 +595,17 @@ package body Why.Gen.Names is
    -- Is_Moved_Append --
    ---------------------
 
-   function Is_Moved_Append (Base : W_Identifier_Id;
-                             Typ  : W_Type_Id) return W_Identifier_Id
+   function Is_Moved_Append
+     (Base : W_Identifier_Id; Typ : W_Type_Id) return W_Identifier_Id
    is
       Name : constant W_Name_Id := Get_Name (Base);
    begin
       return
         Append_Num
           (S        =>
-             Img (Get_Symb (Name)) & "__" &
-             To_String (WNE_Move_Tree_Ptr_Is_Moved),
+             Img (Get_Symb (Name))
+             & "__"
+             & To_String (WNE_Move_Tree_Ptr_Is_Moved),
            Count    => 1,
            Typ      => Typ,
            Module   => Get_Module (Name),
@@ -625,8 +616,8 @@ package body Why.Gen.Names is
    -- Is_Null_Append --
    --------------------
 
-   function Is_Null_Append (Base : W_Identifier_Id;
-                            Typ  : W_Type_Id) return W_Identifier_Id
+   function Is_Null_Append
+     (Base : W_Identifier_Id; Typ : W_Type_Id) return W_Identifier_Id
    is
       Name : constant W_Name_Id := Get_Name (Base);
    begin
@@ -646,19 +637,18 @@ package body Why.Gen.Names is
    function Logic_Function_Name
      (E                     : Function_Kind_Id;
       Selector_Name         : Selection_Kind := Why.Inter.Standard;
-      Specialization_Module : Symbol := No_Symbol)
-      return W_Identifier_Id
-   is
-     (if Specialization_Module /= No_Symbol
-      then M_HO_Specializations (E) (Specialization_Module).Fun_Id
-      elsif Ekind (E) = E_Function
-      then To_Why_Id
-        (E,
-         Domain    => EW_Term,
-         Local     => False,
-         Selector  => Selector_Name,
-         Init_Decl => True)
-      else Get_Logic_Function (E));
+      Specialization_Module : Symbol := No_Symbol) return W_Identifier_Id
+   is (if Specialization_Module /= No_Symbol
+       then M_HO_Specializations (E) (Specialization_Module).Fun_Id
+       elsif Ekind (E) = E_Function
+       then
+         To_Why_Id
+           (E,
+            Domain    => EW_Term,
+            Local     => False,
+            Selector  => Selector_Name,
+            Init_Decl => True)
+       else Get_Logic_Function (E));
 
    -------------
    -- New_Abs --
@@ -724,8 +714,7 @@ package body Why.Gen.Names is
       Name     : String;
       Typ      : W_Type_Id := Why.Types.Why_Empty;
       Attrs    : String_Utils.String_Sets.Set :=
-        String_Utils.String_Sets.Empty_Set)
-      return W_Identifier_Id is
+        String_Utils.String_Sets.Empty_Set) return W_Identifier_Id is
    begin
       return New_Identifier (Ada_Node, EW_Term, Name, Typ, Attrs);
    end New_Identifier;
@@ -737,11 +726,11 @@ package body Why.Gen.Names is
       Module    : W_Module_Id;
       Typ       : W_Type_Id := Why_Empty;
       Attrs     : String_Utils.String_Sets.Set :=
-        String_Utils.String_Sets.Empty_Set)
-      return W_Identifier_Id is
+        String_Utils.String_Sets.Empty_Set) return W_Identifier_Id is
    begin
-      return New_Identifier
-        (Ada_Node, EW_Term, Name, Namespace, Module, Typ, Attrs);
+      return
+        New_Identifier
+          (Ada_Node, EW_Term, Name, Namespace, Module, Typ, Attrs);
    end New_Identifier;
 
    function New_Identifier
@@ -750,8 +739,7 @@ package body Why.Gen.Names is
       Name     : String;
       Typ      : W_Type_Id := Why_Empty;
       Attrs    : String_Utils.String_Sets.Set :=
-        String_Utils.String_Sets.Empty_Set)
-      return W_Identifier_Id is
+        String_Utils.String_Sets.Empty_Set) return W_Identifier_Id is
    begin
       return
         New_Identifier
@@ -770,25 +758,27 @@ package body Why.Gen.Names is
       Module    : W_Module_Id;
       Typ       : W_Type_Id := Why_Empty;
       Attrs     : String_Utils.String_Sets.Set :=
-        String_Utils.String_Sets.Empty_Set)
-      return W_Identifier_Id is
+        String_Utils.String_Sets.Empty_Set) return W_Identifier_Id is
    begin
       return
-        New_Identifier (Ada_Node  => Ada_Node,
-                        Domain    => Domain,
-                        Symb      => NID (Name),
-                        Namespace => Namespace,
-                        Module    => Module,
-                        Typ       => Typ,
-                        Attrs     => Attrs);
+        New_Identifier
+          (Ada_Node  => Ada_Node,
+           Domain    => Domain,
+           Symb      => NID (Name),
+           Namespace => Namespace,
+           Module    => Module,
+           Typ       => Typ,
+           Attrs     => Attrs);
    end New_Identifier;
 
    function New_Identifier (Name : W_Name_Id) return W_Identifier_Id is
    begin
-      return New_Identifier (Ada_Node => Get_Ada_Node (+Name),
-                             Domain   => EW_Term,
-                             Symb     => Get_Symb (Name),
-                             Module   => Get_Module (Name));
+      return
+        New_Identifier
+          (Ada_Node => Get_Ada_Node (+Name),
+           Domain   => EW_Term,
+           Symb     => Get_Symb (Name),
+           Module   => Get_Module (Name));
    end New_Identifier;
 
    function New_Identifier
@@ -800,19 +790,21 @@ package body Why.Gen.Names is
       Module    : W_Module_Id := Why.Types.Why_Empty;
       Infix     : Boolean := False;
       Attrs     : String_Utils.String_Sets.Set :=
-        String_Utils.String_Sets.Empty_Set)
-      return W_Identifier_Id is
+        String_Utils.String_Sets.Empty_Set) return W_Identifier_Id is
    begin
       return
-        New_Identifier (Ada_Node => Ada_Node,
-                        Domain   => Domain,
-                        Name     => New_Name (Ada_Node  => Ada_Node,
-                                              Symb      => Symb,
-                                              Namespace => Namespace,
-                                              Infix     => Infix,
-                                              Module    => Module),
-                        Typ      => Typ,
-                        Labels   => Attrs);
+        New_Identifier
+          (Ada_Node => Ada_Node,
+           Domain   => Domain,
+           Name     =>
+             New_Name
+               (Ada_Node  => Ada_Node,
+                Symb      => Symb,
+                Namespace => Namespace,
+                Infix     => Infix,
+                Module    => Module),
+           Typ      => Typ,
+           Labels   => Attrs);
    end New_Identifier;
 
    ---------
@@ -829,9 +821,7 @@ package body Why.Gen.Names is
    ----------------
 
    function New_Module
-     (Ada_Node : Node_Id := Empty;
-      File     : Symbol;
-      Name     : String)
+     (Ada_Node : Node_Id := Empty; File : Symbol; Name : String)
       return W_Module_Id
    is
       S : constant Symbol := NID (Capitalize_First (Name));
@@ -846,7 +836,7 @@ package body Why.Gen.Names is
    New_Temp_Identifier_Counter : Natural := 0;
 
    function New_Temp_Identifier (Base_Name : String := "") return String is
-      Counter_Img : constant String :=
+      Counter_Img   : constant String :=
         Natural'Image (New_Temp_Identifier_Counter);
       Use_Base_Name : constant String :=
         (if Base_Name = "" then "" else Base_Name & "_");
@@ -856,33 +846,38 @@ package body Why.Gen.Names is
    end New_Temp_Identifier;
 
    function New_Temp_Identifier
-     (Ada_Node  : Node_Id   := Empty;
+     (Ada_Node  : Node_Id := Empty;
       Typ       : W_Type_Id := Why_Empty;
-      Base_Name : String    := "") return W_Identifier_Id is
+      Base_Name : String := "") return W_Identifier_Id
+   is
 
       Temp_Labels : String_Utils.String_Sets.Set :=
         String_Utils.String_Sets.Empty_Set;
    begin
-      String_Utils.String_Sets.Insert (Container => Temp_Labels,
-                                            New_Item  => "mlw:proxy_symbol");
+      String_Utils.String_Sets.Insert
+        (Container => Temp_Labels, New_Item => "mlw:proxy_symbol");
       String_Utils.String_Sets.Insert (Temp_Labels, "introduced");
-      return New_Identifier (Ada_Node => Ada_Node,
-                             Name     => New_Temp_Identifier (Base_Name),
-                             Typ      => Typ,
-                             Attrs    => Temp_Labels);
+      return
+        New_Identifier
+          (Ada_Node => Ada_Node,
+           Name     => New_Temp_Identifier (Base_Name),
+           Typ      => Typ,
+           Attrs    => Temp_Labels);
    end New_Temp_Identifier;
 
    function New_Generated_Identifier
-     (Ada_Node  : Node_Id   := Empty;
+     (Ada_Node  : Node_Id := Empty;
       Typ       : W_Type_Id := Why_Empty;
-      Base_Name : String    := "";
+      Base_Name : String := "";
       Attrs     : String_Utils.String_Sets.Set) return W_Identifier_Id is
 
    begin
-      return New_Identifier (Ada_Node => Ada_Node,
-                             Name     => New_Temp_Identifier (Base_Name),
-                             Typ      => Typ,
-                             Attrs    => Attrs);
+      return
+        New_Identifier
+          (Ada_Node => Ada_Node,
+           Name     => New_Temp_Identifier (Base_Name),
+           Typ      => Typ,
+           Attrs    => Attrs);
    end New_Generated_Identifier;
 
    --------------------------
@@ -890,11 +885,10 @@ package body Why.Gen.Names is
    --------------------------
 
    function New_Temp_Identifiers
-     (Num : Positive;
-      Typ : W_Type_Id) return W_Identifier_Array
+     (Num : Positive; Typ : W_Type_Id) return W_Identifier_Array
    is
       Result : constant W_Identifier_Array (1 .. Num) :=
-                 (others => +New_Temp_Identifier (Typ => Typ));
+        (others => +New_Temp_Identifier (Typ => Typ));
    begin
       return Result;
    end New_Temp_Identifiers;
@@ -939,70 +933,70 @@ package body Why.Gen.Names is
    -- To_String --
    ---------------
 
-   function To_String (W : Why_Name_Enum) return String is
-     (case W is
-         when WNE_Aggregate_Def_Suffix        => "__aggregate_def",
-         when WNE_Array_Component_Type        => "component_type",
-         when WNE_Array_Type                  => "__t",
-         when WNE_Array_BV_Suffix             => "_BV",
-         when WNE_Array_Comparison_Suffix     => "_Comp",
-         when WNE_Array_Concatenation_Suffix  => "__Concat",
-         when WNE_Array_Int_Suffix            => "_Int",
-         when WNE_Array_Logical_Op_Suffix     => "__Bool_Op",
-         when WNE_Array_Prefix                => "Array_",
+   function To_String (W : Why_Name_Enum) return String
+   is (case W is
+         when WNE_Aggregate_Def_Suffix => "__aggregate_def",
+         when WNE_Array_Component_Type => "component_type",
+         when WNE_Array_Type => "__t",
+         when WNE_Array_BV_Suffix => "_BV",
+         when WNE_Array_Comparison_Suffix => "_Comp",
+         when WNE_Array_Concatenation_Suffix => "__Concat",
+         when WNE_Array_Int_Suffix => "_Int",
+         when WNE_Array_Logical_Op_Suffix => "__Bool_Op",
+         when WNE_Array_Prefix => "Array_",
 
-         when WNE_Attr_Access                 => "attr__access",
-         when WNE_Attr_Constrained            => "attr__constrained",
-         when WNE_Attr_First                  => "first",
-         when WNE_Attr_Last                   => "last",
-         when WNE_Attr_Tag                    => "attr__tag",
-         when WNE_Axiom_Suffix                => "___axiom",
-         when WNE_Content                     => "__content",
-         when WNE_Dispatch_Module             => "Dispatch",
-         when WNE_Extract_Prefix              => "extract__",
-         when WNE_Fixed_Point_Prefix          => "Fixed_Point",
+         when WNE_Attr_Access => "attr__access",
+         when WNE_Attr_Constrained => "attr__constrained",
+         when WNE_Attr_First => "first",
+         when WNE_Attr_Last => "last",
+         when WNE_Attr_Tag => "attr__tag",
+         when WNE_Axiom_Suffix => "___axiom",
+         when WNE_Content => "__content",
+         when WNE_Dispatch_Module => "Dispatch",
+         when WNE_Extract_Prefix => "extract__",
+         when WNE_Fixed_Point_Prefix => "Fixed_Point",
          when WNE_Fixed_Point_Mult_Div_Prefix => "Fixed_Point_Mult_Div",
-         when WNE_Havoc                       => "__havoc",
-         when WNE_Hidden_Extension            => "rec__hidden_ext__",
-         when WNE_Hide_Extension              => "hide_ext__",
-         when WNE_Init_Wrapper_Suffix         => "__init_wrapper",
-         when WNE_Param_Prefix                => "param__",
-         when WNE_Rec_Rep                     => "__rep",
-         when WNE_Rec_Comp_Prefix             => "rec__",
-         when WNE_Rec_Extension_Suffix        => "ext__",
-         when WNE_Refine_Module               => "Refine",
-         when WNE_Hidden_Module               => "Hide",
-         when WNE_Ref                         => "__ref",
+         when WNE_Havoc => "__havoc",
+         when WNE_Hidden_Extension => "rec__hidden_ext__",
+         when WNE_Hide_Extension => "hide_ext__",
+         when WNE_Init_Wrapper_Suffix => "__init_wrapper",
+         when WNE_Param_Prefix => "param__",
+         when WNE_Rec_Rep => "__rep",
+         when WNE_Rec_Comp_Prefix => "rec__",
+         when WNE_Rec_Extension_Suffix => "ext__",
+         when WNE_Refine_Module => "Refine",
+         when WNE_Hidden_Module => "Hide",
+         when WNE_Ref => "__ref",
 
          --  these are used both by E_Symb function and by To_String
 
-         when WNE_Attr_Init                   => "__attr__init",
-         when WNE_Rec_Split_Discrs            => "__split_discrs",
-         when WNE_Rec_Split_Fields            => "__split_fields",
-         when WNE_Null_Pointer                => "__null_pointer",
-         when WNE_Is_Initialized_Pred         => "__is_initialized",
-         when WNE_Is_Null_Pointer             => "__is_null_pointer",
-         when WNE_Pointer_Value               => "__pointer_value",
-         when WNE_Close                       => "__close",
-         when WNE_Open                        => "__open",
-         when WNE_Static_Constraint           => "__static_constraint",
-         when WNE_Dummy_Abstr                 => "__dummy_abstr",
-         when WNE_Move_Tree                   => "__move_tree",
-         when WNE_Move_Tree_Ptr_Is_Moved      => "rec__is_moved__",
-         when WNE_Move_Tree_Ptr_Value         => "rec__value__",
-         when WNE_Move_Tree_Array_Get         => "__get",
-         when WNE_Move_Tree_Array_Set         => "__set",
-         when WNE_Move_Tree_Open              => "__open",
-         when WNE_Move_Tree_Close             => "__close",
-         when WNE_Is_Moved_Or_Reclaimed       => "__is_moved_or_reclaimed",
-         when WNE_Moved_Tree                  => "__moved_tree",
-         when WNE_Validity_Tree               => "__validity_tree",
-         when WNE_Valid_Flag                  => "__valid_flag",
-         when WNE_Valid_Value                 => "__valid_value",
-         when WNE_Is_Valid                    => "__is_valid",
-         when WNE_Validity_Tree_Get           => "__get",
-         when WNE_Validity_Tree_Set           => "__set",
-         when WNE_Validity_Tree_Slide         => "__slide",
+         when WNE_Attr_Init => "__attr__init",
+         when WNE_Rec_Split_Discrs => "__split_discrs",
+         when WNE_Rec_Split_Fields => "__split_fields",
+         when WNE_Null_Pointer => "__null_pointer",
+         when WNE_Is_Initialized_Pred => "__is_initialized",
+         when WNE_Is_Null_Pointer => "__is_null_pointer",
+         when WNE_Pointer_Value => "__pointer_value",
+         when WNE_Close => "__close",
+         when WNE_Open => "__open",
+         when WNE_Static_Constraint => "__static_constraint",
+         when WNE_Dummy_Abstr => "__dummy_abstr",
+         when WNE_Move_Tree => "__move_tree",
+         when WNE_Move_Tree_Ptr_Is_Moved => "rec__is_moved__",
+         when WNE_Move_Tree_Ptr_Value => "rec__value__",
+         when WNE_Move_Tree_Array_Get => "__get",
+         when WNE_Move_Tree_Array_Set => "__set",
+         when WNE_Move_Tree_Open => "__open",
+         when WNE_Move_Tree_Close => "__close",
+         when WNE_Is_Moved_Or_Reclaimed => "__is_moved_or_reclaimed",
+         when WNE_Moved_Tree => "__moved_tree",
+         when WNE_Validity_Tree => "__validity_tree",
+         when WNE_Valid_Flag => "__valid_flag",
+         when WNE_Valid_Value => "__valid_value",
+         when WNE_Is_Valid => "__is_valid",
+         when WNE_Validity_Tree_Get => "__get",
+         when WNE_Validity_Tree_Set => "__set",
+         when WNE_Validity_Tree_Slide => "__slide",
 
          --  please use these only in conjunction with E_Symb function
 
@@ -1106,16 +1100,14 @@ package body Why.Gen.Names is
             | WNE_Valid_Wrapper_Flag
             | WNE_Valid_Wrapper_Result
          =>
-            raise Program_Error);
+           raise Program_Error);
 
    --------------
    -- To_Ident --
    --------------
 
-   function To_Ident (W        : Why_Name_Enum;
-                      Ada_Node : Node_Id := Empty)
-                      return W_Identifier_Id
-   is
+   function To_Ident
+     (W : Why_Name_Enum; Ada_Node : Node_Id := Empty) return W_Identifier_Id is
    begin
       if No (Ada_Node) then
          if Pre_Computed_Idents (W) /= Why_Empty then
@@ -1138,17 +1130,17 @@ package body Why.Gen.Names is
    -- To_Local --
    --------------
 
-   function To_Local (Name : W_Identifier_Id) return W_Name_Id
-   is
+   function To_Local (Name : W_Identifier_Id) return W_Name_Id is
       W_Name : constant W_Name_Id := Get_Name (Name);
    begin
-      return New_Name (Ada_Node => Get_Ada_Node (+W_Name),
-                       Symb     => Get_Symb (W_Name),
-                       Module   => Why_Empty);
+      return
+        New_Name
+          (Ada_Node => Get_Ada_Node (+W_Name),
+           Symb     => Get_Symb (W_Name),
+           Module   => Why_Empty);
    end To_Local;
 
-   function To_Local (Name : W_Identifier_Id) return W_Identifier_Id
-   is
+   function To_Local (Name : W_Identifier_Id) return W_Identifier_Id is
       W_Name : constant W_Name_Id := Get_Name (Name);
    begin
       return
@@ -1164,9 +1156,11 @@ package body Why.Gen.Names is
 
    function To_Local (Name : W_Name_Id) return W_Name_Id is
    begin
-      return New_Name (Ada_Node => Get_Ada_Node (+Name),
-                       Symb     => Get_Symb (Name),
-                       Module   => Why_Empty);
+      return
+        New_Name
+          (Ada_Node => Get_Ada_Node (+Name),
+           Symb     => Get_Symb (Name),
+           Module   => Why_Empty);
    end To_Local;
 
    -------------
@@ -1183,8 +1177,7 @@ package body Why.Gen.Names is
    ----------------------
 
    function Range_Check_Name
-     (Ty : Entity_Id; R : Scalar_Check_Kind) return W_Identifier_Id
-   is
+     (Ty : Entity_Id; R : Scalar_Check_Kind) return W_Identifier_Id is
    begin
       if Is_Standard_Boolean_Type (Ty) then
          case R is
@@ -1207,18 +1200,17 @@ package body Why.Gen.Names is
          declare
             Name : constant Why_Name_Enum :=
               (case R is
-                  when RCK_Range_Not_First
-                     | RCK_Overflow_Not_First
-                     | RCK_FP_Overflow_Not_First
-                  =>
-                     WNE_Check_Not_First,
-                  when RCK_Range_Not_Last
-                     | RCK_Overflow_Not_Last
-                     | RCK_FP_Overflow_Not_Last
-                  =>
-                     WNE_Check_Not_Last,
-                  when others =>
-                     WNE_Range_Check_Fun);
+                 when RCK_Range_Not_First
+                    | RCK_Overflow_Not_First
+                    | RCK_FP_Overflow_Not_First
+                 =>
+                   WNE_Check_Not_First,
+                 when RCK_Range_Not_Last
+                    | RCK_Overflow_Not_Last
+                    | RCK_FP_Overflow_Not_Last
+                 =>
+                   WNE_Check_Not_Last,
+                 when others => WNE_Range_Check_Fun);
 
          begin
             return E_Symb (Ty, Name);
@@ -1230,8 +1222,7 @@ package body Why.Gen.Names is
    -- Range_Pred_Name --
    ---------------------
 
-   function Range_Pred_Name (Ty : Entity_Id) return W_Identifier_Id
-   is
+   function Range_Pred_Name (Ty : Entity_Id) return W_Identifier_Id is
    begin
       if Is_Standard_Boolean_Type (Ty) then
          return M_Boolean.Range_Pred;
@@ -1249,9 +1240,12 @@ package body Why.Gen.Names is
       N_Id   : constant Symbol := Get_Symb (Get_Name (Name));
       Img    : String renames Get (N_Id).all;
    begin
-      return New_Identifier
-        (Get_Ada_Node (+Name), EW_Prog, Img & Suffix,
-         Module => Get_Module (Get_Name (Name)));
+      return
+        New_Identifier
+          (Get_Ada_Node (+Name),
+           EW_Prog,
+           Img & Suffix,
+           Module => Get_Module (Get_Name (Name)));
    end To_Program_Space;
 
    ------------------
@@ -1259,9 +1253,7 @@ package body Why.Gen.Names is
    ------------------
 
    function Valid_Append
-     (Base : W_Identifier_Id;
-      Typ  : W_Type_Id)
-      return W_Identifier_Id
+     (Base : W_Identifier_Id; Typ : W_Type_Id) return W_Identifier_Id
    is
       Name : constant W_Name_Id := Get_Name (Base);
    begin
@@ -1278,15 +1270,14 @@ package body Why.Gen.Names is
    -- Value_Append --
    ------------------
 
-   function Value_Append (Base : W_Identifier_Id;
-                          Typ  : W_Type_Id) return W_Identifier_Id
+   function Value_Append
+     (Base : W_Identifier_Id; Typ : W_Type_Id) return W_Identifier_Id
    is
       Name : constant W_Name_Id := Get_Name (Base);
    begin
       return
         Append_Num
-          (S        => Img (Get_Symb (Name))
-           & To_String (WNE_Pointer_Value),
+          (S        => Img (Get_Symb (Name)) & To_String (WNE_Pointer_Value),
            Count    => 1,
            Typ      => Typ,
            Module   => Get_Module (Name),
@@ -1302,8 +1293,7 @@ package body Why.Gen.Names is
       Count    : Positive;
       Typ      : W_Type_Id;
       Module   : W_Module_Id := Why.Types.Why_Empty;
-      Ada_Node : Node_Id := Empty) return W_Identifier_Id
-   is
+      Ada_Node : Node_Id := Empty) return W_Identifier_Id is
    begin
       return
         Append_Num
@@ -1318,8 +1308,8 @@ package body Why.Gen.Names is
    -- WNE_Array_Base_Range_Pred --
    -------------------------------
 
-   function WNE_Array_Base_Range_Pred (I : Integer) return Why_Name_Enum is
-     (case I is
+   function WNE_Array_Base_Range_Pred (I : Integer) return Why_Name_Enum
+   is (case I is
          when 1 => WNE_Array_Base_Range_Pred,
          when 2 => WNE_Array_Base_Range_Pred_2,
          when 3 => WNE_Array_Base_Range_Pred_3,
@@ -1330,8 +1320,8 @@ package body Why.Gen.Names is
    -- WNE_Attr_First --
    --------------------
 
-   function WNE_Attr_First (I : Integer) return Why_Name_Enum is
-     (case I is
+   function WNE_Attr_First (I : Integer) return Why_Name_Enum
+   is (case I is
          when 1 => WNE_Attr_First,
          when 2 => WNE_Attr_First_2,
          when 3 => WNE_Attr_First_3,
@@ -1342,8 +1332,8 @@ package body Why.Gen.Names is
    -- WNE_Attr_Last --
    -------------------
 
-   function WNE_Attr_Last (I : Integer) return Why_Name_Enum is
-     (case I is
+   function WNE_Attr_Last (I : Integer) return Why_Name_Enum
+   is (case I is
          when 1 => WNE_Attr_Last,
          when 2 => WNE_Attr_Last_2,
          when 3 => WNE_Attr_Last_3,
@@ -1354,8 +1344,8 @@ package body Why.Gen.Names is
    -- WNE_Attr_Length --
    ---------------------
 
-   function WNE_Attr_Length (I : Integer) return Why_Name_Enum is
-     (case I is
+   function WNE_Attr_Length (I : Integer) return Why_Name_Enum
+   is (case I is
          when 1 => WNE_Attr_Length,
          when 2 => WNE_Attr_Length_2,
          when 3 => WNE_Attr_Length_3,
@@ -1366,8 +1356,8 @@ package body Why.Gen.Names is
    -- WNE_Index_Dynamic_Property --
    --------------------------------
 
-   function WNE_Index_Dynamic_Property (I : Integer) return Why_Name_Enum is
-     (case I is
+   function WNE_Index_Dynamic_Property (I : Integer) return Why_Name_Enum
+   is (case I is
          when 1 => WNE_Index_Dynamic_Property,
          when 2 => WNE_Index_Dynamic_Property_2,
          when 3 => WNE_Index_Dynamic_Property_3,
@@ -1378,8 +1368,8 @@ package body Why.Gen.Names is
    -- WNE_To_Int --
    ----------------
 
-   function WNE_To_Int (I : Integer) return Why_Name_Enum is
-     (case I is
+   function WNE_To_Int (I : Integer) return Why_Name_Enum
+   is (case I is
          when 1 => WNE_To_Int,
          when 2 => WNE_To_Int_2,
          when 3 => WNE_To_Int_3,
