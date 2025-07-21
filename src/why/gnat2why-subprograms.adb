@@ -646,8 +646,8 @@ package body Gnat2Why.Subprograms is
                declare
                   Obj_Prio_Expr : constant W_Term_Id :=
                     (case Obj_Prio.Kind is
-                       --  ??? if type of the component is visible we should try
-                       --  to transform the expression.
+                       --  ??? if type of the component is visible we should
+                       --  try to transform the expression.
                        when Nonstatic =>
                          +New_Attribute_Expr
                             (Domain => EW_Term,
@@ -3093,7 +3093,8 @@ package body Gnat2Why.Subprograms is
             Function_Entity,
             Kind          => Info_Kind,
             Continuations =>
-              ["inlining might cause circularity in the verification process"]);
+              ["inlining might cause circularity in the verification"
+               & " process"]);
          W_Def := Why_Empty;
 
       --  Reconstruct the wrapper for potentially invalid values
@@ -6742,9 +6743,9 @@ package body Gnat2Why.Subprograms is
                                 (Logic_Why_Binders, Ref_Allowed => False),
                             Params => Params)
 
-                       --  If the function returns a validity wrapper, introduce
-                       --  bindings for the value part and the validity flag of
-                       --  the result.
+                       --  If the function returns a validity wrapper,
+                       --  introduce bindings for the value part and the
+                       --  validity flag of the result.
 
                        elsif Needs_Validity_Wrapper
                        then Wrap_Post_Of_Potentially_Invalid (E, Post)
@@ -7040,7 +7041,8 @@ package body Gnat2Why.Subprograms is
                              +New_Comparison
                                 (Symbol => Why_Eq,
 
-                                 --  Conversion is needed for controlling result
+                                 --  Conversion is needed for controlling
+                                 --  result
 
                                  Left   =>
                                    Insert_Simple_Conversion
@@ -7702,9 +7704,9 @@ package body Gnat2Why.Subprograms is
                            +Wrap_Post_Of_Traversal
                               (E, Post, Logic_Func_Args, Params)
 
-                         --  If the function returns a validity wrapper, introduce
-                         --  bindings for the value part and the validity flag of
-                         --  the result.
+                         --  If the function returns a validity wrapper,
+                         --  introduce bindings for the value part and the
+                         --  validity flag of the result.
 
                          elsif Needs_Validity_Wrapper
                          then +Wrap_Post_Of_Potentially_Invalid (E, Post)

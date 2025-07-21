@@ -1581,15 +1581,14 @@ package body Gnat2Why.Driver is
 
    procedure Translate_Hidden_Globals (E : Entity_Id) is
    begin
+      --  For packages we don't translate objects from the RHS of their
+      --  (generated) Initializes contract, because such objects are either
+      --  visible (and thus translated anyway) or are pulled by subprograms
+      --  called from the Initial_Condition (and thus already translated).
       if (case Ekind (E) is
             when Entry_Kind | E_Task_Type => True,
             when E_Function | E_Procedure => Is_Translated_Subprogram (E),
-            when others => False
-            --  For packages we don't translate objects from the RHS of their
-            --  (generated) Initializes contract, because such objects are either
-            --  visible (and thus translated anyway) or are pulled by subprograms
-            --  called from the Initial_Condition (and thus already translated).
-         )
+            when others => False)
       then
          declare
             Reads       : Flow_Types.Flow_Id_Sets.Set;

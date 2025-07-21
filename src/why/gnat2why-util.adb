@@ -1076,8 +1076,8 @@ package body Gnat2Why.Util is
      (Obj : Entity_Id; Scope : Unit_Kind_Id) return Boolean is
    begin
       case Ekind (Scope) is
-         --  Inside a subprogram, global variables may be uninitialized if they do
-         --  not occur as reads of the subprogram.
+         --  Inside a subprogram, global variables may be uninitialized if they
+         --  do not occur as reads of the subprogram.
 
          when E_Function | E_Procedure | E_Entry =>
 
@@ -1105,9 +1105,9 @@ package body Gnat2Why.Util is
                end;
             end if;
 
-         --  Every global variable referenced inside a package elaboration must be
-         --  initialized. In the same way, tasks can only access synchronized or
-         --  Part_Of objects, which are always initialized.
+         --  Every global variable referenced inside a package elaboration must
+         --  be initialized. In the same way, tasks can only access
+         --  synchronized or Part_Of objects, which are always initialized.
 
          when E_Package | E_Task_Type =>
             return not Obj_Has_Relaxed_Init (Obj);
@@ -1679,12 +1679,18 @@ package body Gnat2Why.Util is
            --  the bounds and, for non static array types, potentially bound
            --  constraints.
 
-           or else (Is_Array_Type (Ty_Ext)
-                    and then (Include_Static
-                              or else (not Is_Static_Array_Type (Ty_Ext)
-                                       and then (Is_Constrained (Ty_Ext)
-                                                 or else Is_Fixed_Lower_Bound_Array_Subtype
-                                                              (Ty_Ext)))))
+           --  Nested expression gets indented too much
+           --!format off
+           or else
+             (Is_Array_Type (Ty_Ext)
+              and then
+                (Include_Static
+                 or else
+                   (not Is_Static_Array_Type (Ty_Ext)
+                    and then
+                      (Is_Constrained (Ty_Ext)
+                       or else Is_Fixed_Lower_Bound_Array_Subtype (Ty_Ext)))))
+           --!format on
 
            --  Types with discriminants might have variant parts. Components
            --  which are not present in an object are fixed by the dynamic

@@ -729,9 +729,10 @@ package body Gnat2Why.Error_Messages is
                  and then Exception_Identity (E)
                           /= RAC_Unexpected_Error'Identity
                              --  We accept RAC_Unexpected_Error for now
-                             --  ??? In Find_VC it can just result in RES_INCOMPLETE,
-                             --  during CE value import this could be RAC_Unsupported
-                             --  for now, and should be fixed
+                             --  ??? In Find_VC it can just result in
+                             --  RES_INCOMPLETE, during CE value import this
+                             --  could be RAC_Unsupported for now, and should
+                             -- be fixed
                then
                   raise;
                else
