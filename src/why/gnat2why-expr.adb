@@ -28982,8 +28982,8 @@ package body Gnat2Why.Expr is
                     Transform_Loop_Statement (Stmt_Or_Decl, Params));
             end;
 
-         when N_Exit_Statement =>
-            return Transform_Exit_Statement (Stmt_Or_Decl, Params);
+         when N_Exit_Statement | N_Continue_Statement =>
+            return Transform_Loop_Jump_Statement (Stmt_Or_Decl, Params);
 
          when N_Case_Statement =>
             declare

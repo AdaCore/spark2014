@@ -549,32 +549,6 @@ package body Gnat2Why.Expr.Loops is
    function Imprecise_Constant_Value_In_Loop (E : Entity_Id) return Boolean
    is (Imprecise_Constants.Contains (E));
 
-   ------------------------------
-   -- Transform_Exit_Statement --
-   ------------------------------
-
-   function Transform_Exit_Statement
-     (Stmt : N_Exit_Statement_Id; Params : Transformation_Params)
-      return W_Prog_Id
-   is
-      Exc_Name   : constant W_Name_Id :=
-        Loop_Exception_Name (Loop_Entity_Of_Exit_Statement (Stmt));
-      Raise_Stmt : W_Prog_Id := New_Raise (Ada_Node => Stmt, Name => Exc_Name);
-   begin
-      Prepend (Finalization_Actions_On_Jump (Stmt, Params), Raise_Stmt);
-
-      if No (Condition (Stmt)) then
-         return Raise_Stmt;
-      else
-         return
-           New_Conditional
-             (Ada_Node  => Stmt,
-              Condition =>
-                Transform_Prog (Condition (Stmt), EW_Bool_Type, Params),
-              Then_Part => +Raise_Stmt);
-      end if;
-   end Transform_Exit_Statement;
-
    ------------------------------------
    -- Transform_Loop_Body_Statements --
    ------------------------------------
@@ -597,6 +571,33 @@ package body Gnat2Why.Expr.Loops is
 
       return +Body_Prog;
    end Transform_Loop_Body_Statements;
+
+   -----------------------------------
+   -- Transform_Loop_Jump_Statement --
+   -----------------------------------
+
+   function Transform_Loop_Jump_Statement
+     (Stmt : Node_Id; Params : Transformation_Params) return W_Prog_Id
+   is
+      Exc_Name   : constant W_Name_Id :=
+        Loop_Exception_Name
+          (Loop_Entity_Of_Loop_Jump_Statement (Stmt),
+           Is_Continue => Stmt in N_Continue_Statement_Id);
+      Raise_Stmt : W_Prog_Id := New_Raise (Ada_Node => Stmt, Name => Exc_Name);
+   begin
+      Prepend (Finalization_Actions_On_Jump (Stmt, Params), Raise_Stmt);
+
+      if No (Condition (Stmt)) then
+         return Raise_Stmt;
+      else
+         return
+           New_Conditional
+             (Ada_Node  => Stmt,
+              Condition =>
+                Transform_Prog (Condition (Stmt), EW_Bool_Type, Params),
+              Then_Part => +Raise_Stmt);
+      end if;
+   end Transform_Loop_Jump_Statement;
 
    ------------------------------
    -- Transform_Loop_Statement --
@@ -1661,7 +1662,10 @@ package body Gnat2Why.Expr.Loops is
                            (Right =>
                               Transform_Prog (Filter, EW_Bool_Type, Params)),
                        Then_Part =>
-                         New_Raise (Name => Loop_Exception_Name (Loop_Id)));
+                         New_Raise
+                           (Name =>
+                              Loop_Exception_Name
+                                (Loop_Id, Is_Continue => False)));
                   --  if not cond then raise loop_exit;
 
                   Other_Filter : W_Pred_Id;
@@ -2058,14 +2062,14 @@ package body Gnat2Why.Expr.Loops is
       Body_Prog       : W_Prog_Id;
       Params          : Transformation_Params) return W_Prog_Id
    is
-      function Repeat_Loop return W_Prog_Id;
+      function Repeat_Loop (Loop_Body : W_Prog_Id) return W_Prog_Id;
       --  Repeat the loop body for each value of the index
 
       -----------------
       -- Repeat_Loop --
       -----------------
 
-      function Repeat_Loop return W_Prog_Id is
+      function Repeat_Loop (Loop_Body : W_Prog_Id) return W_Prog_Id is
          First_Val : constant Uint := (if Reversed then High_Val else Low_Val);
          Last_Val  : constant Uint := (if Reversed then Low_Val else High_Val);
          Cur_Val   : Uint;
@@ -2095,7 +2099,7 @@ package body Gnat2Why.Expr.Loops is
                  Labels => Symbol_Sets.Empty_Set,
                  Typ    => Loop_Index_Type);
             Cur_Idx := Cur_Idx + 1;
-            Stmt_List (Cur_Idx) := Body_Prog;
+            Stmt_List (Cur_Idx) := Loop_Body;
             Cur_Idx := Cur_Idx + 1;
 
             exit when Cur_Val = Last_Val;
@@ -2114,7 +2118,14 @@ package body Gnat2Why.Expr.Loops is
       -- Local Variables --
       ---------------------
 
-      Loop_Ident : constant W_Name_Id := Loop_Exception_Name (Loop_Id);
+      Exit_Ident : constant W_Name_Id :=
+        Loop_Exception_Name (Loop_Id, Is_Continue => False);
+      Cont_Ident : constant W_Name_Id :=
+        Loop_Exception_Name (Loop_Id, Is_Continue => True);
+      Loop_Body  : constant W_Prog_Id :=
+        New_Try_Block
+          (Prog    => Body_Prog,
+           Handler => (1 => New_Handler (Name => Cont_Ident, Def => +Void)));
 
       Try_Body : W_Prog_Id :=
         Bind_From_Mapping_In_Prog
@@ -2131,13 +2142,13 @@ package body Gnat2Why.Expr.Loops is
                              " of loop "
                              & Build_Location_String (Sloc (Loop_Id))
                            else ""))),
-                Repeat_Loop));
+                Repeat_Loop (Loop_Body)));
 
    begin
       Try_Body :=
         New_Try_Block
           (Prog    => Try_Body,
-           Handler => (1 => New_Handler (Name => Loop_Ident, Def => +Void)));
+           Handler => (1 => New_Handler (Name => Exit_Ident, Def => +Void)));
 
       return
         Sequence
@@ -2170,13 +2181,15 @@ package body Gnat2Why.Expr.Loops is
    --        variants { user_variants }
    --        code_after {
    --          assume { implicit_invariant };
-   --          loop_end;
+   --          try
+   --            loop_end;
+   --          with loop_continue -> void
    --          if exit_condition then
    --            raise loop_name;
    --          [Update_Stmt;]
    --        }
    --      end loop
-   --    with loop_name -> void
+   --    with loop_exit -> void
    --  end if
 
    function Wrap_Loop
@@ -2196,7 +2209,10 @@ package body Gnat2Why.Expr.Loops is
       Last_Inv           : Opt_N_Pragma_Id := Empty;
       Params             : Transformation_Params) return W_Prog_Id
    is
-      Loop_Ident  : constant W_Name_Id := Loop_Exception_Name (Loop_Id);
+      Exit_Ident  : constant W_Name_Id :=
+        Loop_Exception_Name (Loop_Id, Is_Continue => False);
+      Cont_Ident  : constant W_Name_Id :=
+        Loop_Exception_Name (Loop_Id, Is_Continue => True);
       Loop_Before : constant W_Prog_Id :=
         Sequence
           ((1 => Loop_Start,
@@ -2225,7 +2241,11 @@ package body Gnat2Why.Expr.Loops is
                    NID
                      ("Continuation of loop after loop"
                       & " invariant and variant")),
-            4 => Loop_End,
+            4 =>
+              New_Try_Block
+                (Prog    => Loop_End,
+                 Handler =>
+                   (1 => New_Handler (Name => Cont_Ident, Def => +Void))),
             5 =>
               New_Comment
                 (Comment =>
@@ -2239,7 +2259,7 @@ package body Gnat2Why.Expr.Loops is
             6 =>
               New_Conditional
                 (Condition => +Exit_Condition,
-                 Then_Part => New_Raise (Name => Loop_Ident)),
+                 Then_Part => New_Raise (Name => Exit_Ident)),
             7 => (if Update_Stmt = Why_Empty then +Void else Update_Stmt)));
 
       Loop_Stmt : constant W_Prog_Id :=
@@ -2282,7 +2302,7 @@ package body Gnat2Why.Expr.Loops is
       Loop_Try :=
         New_Try_Block
           (Prog    => Try_Body,
-           Handler => (1 => New_Handler (Name => Loop_Ident, Def => +Void)));
+           Handler => (1 => New_Handler (Name => Exit_Ident, Def => +Void)));
 
       --  Possibly warn on dead code, both when entering the loop and after the
       --  loop. Do not try to check whether the loop condition is statically
