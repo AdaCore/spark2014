@@ -27,16 +27,16 @@ with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Directories;
 with Ada.Strings.Hash;
 with Ada.Text_IO;
-with Call;                       use Call;
+with Call;                 use Call;
 with GNAT.OS_Lib;
-with GNATCOLL.JSON;              use GNATCOLL.JSON;
-with Lib;                        use Lib;
-with Namet;                      use Namet;
-with SPARK_Atree;                use SPARK_Atree;
-with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
-with SPARK_Util;                 use SPARK_Util;
-with String_Utils;               use String_Utils;
-with VC_Kinds;                   use VC_Kinds;
+with GNATCOLL.JSON;        use GNATCOLL.JSON;
+with Lib;                  use Lib;
+with Namet;                use Namet;
+with SPARK_Atree;          use SPARK_Atree;
+with SPARK_Atree.Entities; use SPARK_Atree.Entities;
+with SPARK_Util;           use SPARK_Util;
+with String_Utils;         use String_Utils;
+with VC_Kinds;             use VC_Kinds;
 
 package body Gnat2Why.Data_Decomposition is
 
@@ -62,8 +62,7 @@ package body Gnat2Why.Data_Decomposition is
    -------------------------
 
    function Get_Attribute_Value
-     (E       : Entity_Id;
-      Attr_Id : Repr_Attribute_Id) return Uint
+     (E : Entity_Id; Attr_Id : Repr_Attribute_Id) return Uint
    is
       Data_Entry : Data_Decomposition_Entry;
    begin
@@ -110,8 +109,7 @@ package body Gnat2Why.Data_Decomposition is
            Location_String (Sloc (E), Mode => Data_Decomposition_Mode);
       begin
          if Data_Decomposition_Table.Contains (Loc) then
-            Data_Entry :=
-              Data_Decomposition_Table.Element (Loc);
+            Data_Entry := Data_Decomposition_Table.Element (Loc);
          end if;
       end;
 
@@ -129,21 +127,20 @@ package body Gnat2Why.Data_Decomposition is
             return Data_Entry.Size;
          else
             case Size_Attribute_Id'(Attr_Id) is
-               when Attribute_Size
-                  | Attribute_Value_Size
-               =>
+               when Attribute_Size | Attribute_Value_Size =>
                   return Data_Entry.Value_Size;
 
                when Attribute_Object_Size =>
                   return Data_Entry.Object_Size;
+
                when Attribute_Component_Size =>
                   pragma
                     Annotate
                       (Xcov,
                        Exempt_On,
                        "Currently the function is never called with "
-                       & "Attribute_Component_Size and an unknown "
-                       & "Component_Size, but it could happen in the future.");
+                         & "Attribute_Component_Size and an unknown "
+                         & "Component_Size, but it could happen in the future.");
                   return No_Uint;
                   pragma Annotate (Xcov, Exempt_Off);
             end case;
@@ -187,10 +184,10 @@ package body Gnat2Why.Data_Decomposition is
          Location   : constant String := Get (JSON_Entry, "location");
          Data_Entry : Data_Decomposition_Entry;
       begin
-         Data_Entry.Size        := Handle_Field (JSON_Entry, "Size");
-         Data_Entry.Value_Size  := Handle_Field (JSON_Entry, "Value_Size");
+         Data_Entry.Size := Handle_Field (JSON_Entry, "Size");
+         Data_Entry.Value_Size := Handle_Field (JSON_Entry, "Value_Size");
          Data_Entry.Object_Size := Handle_Field (JSON_Entry, "Object_Size");
-         Data_Entry.Alignment   := Handle_Field (JSON_Entry, "Alignment");
+         Data_Entry.Alignment := Handle_Field (JSON_Entry, "Alignment");
 
          --  Subunits ("separates") may lead to duplicate entries for the same
          --  type or object, in files for the subunit and the main unit.
@@ -232,7 +229,7 @@ package body Gnat2Why.Data_Decomposition is
 
       File_Names : String_Sets.Set;
 
-   --  Start of processing for Read_Data_Decomposition_JSON_File
+      --  Start of processing for Read_Data_Decomposition_JSON_File
 
    begin
       for J in Main_Unit .. Last_Unit loop
@@ -244,7 +241,7 @@ package body Gnat2Why.Data_Decomposition is
             declare
                Source_File_Name : constant String :=
                  Get_Name_String (Unit_File_Name (J));
-               JSON_File_Name : constant String :=
+               JSON_File_Name   : constant String :=
                  Ada.Directories.Compose
                    (Containing_Directory => Data_Representation_Subdir_Name,
                     Name                 => Source_File_Name,
@@ -267,8 +264,9 @@ package body Gnat2Why.Data_Decomposition is
                end if;
             exception
                when others =>
-                  pragma Annotate
-                    (Xcov, Exempt_On, "only triggered by older buggy GNAT");
+                  pragma
+                    Annotate
+                      (Xcov, Exempt_On, "only triggered by older buggy GNAT");
                   Ada.Text_IO.Put_Line
                     (Ada.Text_IO.Standard_Error,
                      "error: GNAT generated an ill-formed JSON file "
