@@ -1193,7 +1193,8 @@ package body Gnat2Why.Expr.Loops.Inv is
 
                           --  Compute the dynamic property of Expr, taking into
                           --  account its initialization if it corresponds to a
-                          --  variable taken as input in the current subprogram.
+                          --  variable taken as input in the current
+                          --  subprogram.
 
                           2 =>
                             (if Status.Kind = Not_Written
@@ -1289,15 +1290,15 @@ package body Gnat2Why.Expr.Loops.Inv is
                           --  If Loop_Id has a validity flag, generate
                           --  preservation of validity flags.
                           --
-                          --  If Loop_Id cannot become invalid in the loop, also
-                          --  add:
+                          --  If Loop_Id cannot become invalid in the loop,
+                          --  also add:
                           --
                           --    is_valid Loop_Id_valid_flag'Loop_Entry
                           --       -> is_valid Loop_Id'Valid
                           --
-                          --  It is useful to avoid the need for loop invariants
-                          --  to preserve the validity of already entirely valid
-                          --  objects.
+                          --  It is useful to avoid the need for loop
+                          --  invariants to preserve the validity of already
+                          --  entirely valid objects.
 
                           5 =>
                             (if Object_Has_Valid_Id (N)
@@ -2381,8 +2382,8 @@ package body Gnat2Why.Expr.Loops.Inv is
 
             when N_Selected_Component =>
 
-               --  Call Update_Status on Prefix (New_Write) with Expected_Kind set
-               --  to Record_Components to create a status for it.
+               --  Call Update_Status on Prefix (New_Write) with Expected_Kind
+               --  set to Record_Components to create a status for it.
 
                Update_Status
                  (New_Write      => Prefix (New_Write),
@@ -2415,9 +2416,10 @@ package body Gnat2Why.Expr.Loops.Inv is
                          (Expected_Type, Updated_Component);
 
                   begin
-                     --  If no corresponding field is found, the field must not be
-                     --  visible in Expected_Type. This may occur if the entity is
-                     --  downcasted before being assigned. Just discard it.
+                     --  If no corresponding field is found, the field must not
+                     --  be visible in Expected_Type. This may occur if the
+                     --  entity is downcasted before being assigned. Just
+                     --  discard it.
 
                      if No (Expected_Component) then
                         declare
@@ -2447,7 +2449,8 @@ package body Gnat2Why.Expr.Loops.Inv is
                            Expected_Type := Types.Empty;
                         end;
 
-                     --  Otherwise update Expected_Component in Component_Status
+                     --  Otherwise update Expected_Component in
+                     --  Component_Status
 
                      else
                         One_Level_Update
@@ -2462,8 +2465,8 @@ package body Gnat2Why.Expr.Loops.Inv is
                end if;
 
             when N_Indexed_Component | N_Slice =>
-               --  Call Update_Status on Prefix (New_Write) with Expected_Kind set
-               --  to Array_Components to create a status for it.
+               --  Call Update_Status on Prefix (New_Write) with Expected_Kind
+               --  set to Array_Components to create a status for it.
 
                Update_Status
                  (New_Write      => Prefix (New_Write),
@@ -2512,7 +2515,8 @@ package body Gnat2Why.Expr.Loops.Inv is
                           new Write_Status'(Kind => Entire_Object);
 
                      --  Sanity check: the kind of a variable cannot change
-                     --  between Array_Elmt, Record_Components and Access_Value.
+                     --  between Array_Elmt, Record_Components and
+                     --  Access_Value.
 
                      elsif Expected_Kind /= Entire_Object
                        and then not (Updated_Status.Content_Status.Kind
@@ -2524,15 +2528,16 @@ package body Gnat2Why.Expr.Loops.Inv is
                                = Expected_Kind);
                      end if;
 
-                     --  Store the new write in Updated_Status.Write_Constraints
+                     --  Store the new write in
+                     --  Updated_Status.Write_Constraints
 
                      Updated_Status.Write_Constraints.Insert
                        (New_Write, Array_Data);
 
-                     --  If we are updating a slice of an array, it is exactly as
-                     --  if we were updating the array as a whole.
-                     --  For indexed components, we are updating the component's
-                     --  status.
+                     --  If we are updating a slice of an array, it is exactly
+                     --  as if we were updating the array as a whole.
+                     --  For indexed components, we are updating the
+                     --  component's status.
 
                      if Nkind (New_Write) = N_Indexed_Component then
                         Updated_Status := Updated_Status.Content_Status;
@@ -2544,8 +2549,8 @@ package body Gnat2Why.Expr.Loops.Inv is
 
             when N_Explicit_Dereference =>
 
-               --  Call Update_Status on Prefix (New_Write) with Expected_Kind set
-               --  to Access_Value to create a status for it.
+               --  Call Update_Status on Prefix (New_Write) with Expected_Kind
+               --  set to Access_Value to create a status for it.
 
                Update_Status
                  (New_Write      => Prefix (New_Write),
@@ -2590,8 +2595,9 @@ package body Gnat2Why.Expr.Loops.Inv is
                      Updated_Status.Value_Status :=
                        new Write_Status'(Kind => Entire_Object);
 
-                  --  Sanity check: the kind of a variable cannot change between
-                  --  Array_Elmt, Record_Components and Access_Value.
+                  --  Sanity check: the kind of a variable cannot change
+                  --  between Array_Elmt, Record_Components and
+                  --  Access_Value.
 
                   elsif Expected_Kind /= Entire_Object
                     and then not (Updated_Status.Value_Status.Kind

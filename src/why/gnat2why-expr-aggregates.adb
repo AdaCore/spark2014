@@ -55,12 +55,13 @@ package body Gnat2Why.Expr.Aggregates is
 
    package Association_Trees is
 
-      --  This package defines the tree structure which is used to aggregate the
-      --  associations inside deep delta aggregates. The structure is used as a
-      --  pattern for the structure of the base expression. It is extended on
-      --  demands depending on the (record) subcomponents which are effectively
-      --  mentioned in selectors. For array components, as the index values might
-      --  not be statically known, a single branch is created.
+      --  This package defines the tree structure which is used to aggregate
+      --  the associations inside deep delta aggregates. The structure is used
+      --  as a pattern for the structure of the base expression. It is extended
+      --  on demands depending on the (record) subcomponents which are
+      --  effectively mentioned in selectors. For array components, as the
+      --  index values might not be statically known, a single branch is
+      --  created.
       --
       --  The component associations in the aggregate are inserted in the tree
       --  in the following manner. Each node in the tree contains a sequence of
@@ -71,8 +72,9 @@ package body Gnat2Why.Expr.Aggregates is
       --  "partial", if the association updates a subcomponent of the prefix,
       --  or "entire" with an associated value. The last case corresponds to a
       --  write. If the tree has several branches after a write - e.g. .F is
-      --  written with the value V, but the tree mentions .F.G - then the write is
-      --  propagated to the subtree - .F.G is entirely written with the value V.G.
+      --  written with the value V, but the tree mentions .F.G - then the write
+      --  is propagated to the subtree - .F.G is entirely written with the
+      --  value V.G.
       --
       --  As an example, consider the following deep delta aggregate:
       --
@@ -93,7 +95,8 @@ package body Gnat2Why.Expr.Aggregates is
       --                  Values => ([I], ENTIRE: V), .., ([J], PARTIAL)
       --                  Fields =>
       --                     E =>
-      --                       Values => ([I], ENTIRE: V.E), .., ([J], ENTIRE: X)
+      --                       Values => ([I], ENTIRE: V.E), ..,
+      --                                  ([J], ENTIRE: X)
       --     H =>
       --        Values => ([], PRESERVED), ([], ENTIRE: W), ([], PRESERVED)
 
