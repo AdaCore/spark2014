@@ -5574,7 +5574,7 @@ package body SPARK_Util is
                      end if;
                   end;
 
-               when N_Exit_Statement =>
+               when N_Exit_Statement | N_Continue_Statement =>
                   Connect_Transfer_Of_Control (Stmt);
                   if Present (Condition (Stmt)) then
                      Add_Edge (Start, Exit_Vertex);
@@ -5793,7 +5793,9 @@ package body SPARK_Util is
                Is_Continue : Boolean);
             --  Connect Preceding to Destination
 
-            function Target_Vertex (Destination : Node_Id) return Vertex;
+            function Target_Vertex
+              (Destination : Node_Id; Is_Continue : Boolean := False)
+               return Vertex;
             --  Convert target to the correct vertex
 
             procedure Do_Connect is new
@@ -5836,22 +5838,28 @@ package body SPARK_Util is
                Exc_Set     : Exception_Sets.Set;
                Is_Continue : Boolean)
             is
-               pragma Unreferenced (Exc_Set, Is_Continue);
+               pragma Unreferenced (Exc_Set);
             begin
-               Add_Edge (Preceding, Target_Vertex (Destination));
+               Add_Edge (Preceding, Target_Vertex (Destination, Is_Continue));
             end Connect_Target;
 
             -------------------
             -- Target_Vertex --
             -------------------
 
-            function Target_Vertex (Destination : Node_Id) return Vertex is
+            function Target_Vertex
+              (Destination : Node_Id; Is_Continue : Boolean := False)
+               return Vertex is
             begin
                case Nkind (Destination) is
                   when N_Loop_Statement =>
-                     return
-                       Loop_Exit_Nodes.Element
-                         (Entity (Identifier (Destination)));
+                     if Is_Continue then
+                        return Vertex'(Kind => Loop_Iter, Node => Destination);
+                     else
+                        return
+                          Loop_Exit_Nodes.Element
+                            (Entity (Identifier (Destination)));
+                     end if;
 
                   when N_Exception_Handler =>
                      return Starting_Vertex (First (Statements (Destination)));
