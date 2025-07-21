@@ -26,11 +26,11 @@
 
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Ordered_Sets;
-with Common_Containers;           use Common_Containers;
-with Einfo.Entities;              use Einfo.Entities;
-with SPARK_Util;                  use SPARK_Util;
-with SPARK_Util.Types;            use SPARK_Util.Types;
-with Types;                       use Types;
+with Common_Containers; use Common_Containers;
+with Einfo.Entities;    use Einfo.Entities;
+with SPARK_Util;        use SPARK_Util;
+with SPARK_Util.Types;  use SPARK_Util.Types;
+with Types;             use Types;
 
 package Gnat2Why.Tables is
 
@@ -72,17 +72,19 @@ package Gnat2Why.Tables is
 
    type Component_Visibility is (Regular, Removed, Hidden, Duplicated);
 
-   package Component_Visibility_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Entity_Id,
-      Element_Type    => Component_Visibility,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=");
+   package Component_Visibility_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Entity_Id,
+        Element_Type    => Component_Visibility,
+        Hash            => Node_Hash,
+        Equivalent_Keys => "=");
 
    function Component_Is_Visible_In_Type (Rec, Comp : Entity_Id) return Boolean
    with
-     Pre => Retysp_Kind (Rec) in
-         Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind
-     and then Get_Component_Set (Rec).Contains (Comp);
+     Pre =>
+       Retysp_Kind (Rec)
+       in Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind
+       and then Get_Component_Set (Rec).Contains (Comp);
    --  @param Rec is a record type or a protected type
    --  @param Comp component of the record type or of one of its ancestors
    --  @return True if Comp is visible in Rec, that is, it has not been hidden
@@ -91,11 +93,13 @@ package Gnat2Why.Tables is
 
    function Component_Is_Present_In_Type (Rec, Comp : Entity_Id) return Boolean
    with
-     Pre  => Retysp_Kind (Rec) in
-         Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind
-     and then Get_Component_Set (Rec).Contains (Comp),
-     Post => Component_Is_Present_In_Type'Result =
-       (Get_Component_Visibility_Map (Rec) (Comp) /= Removed);
+     Pre  =>
+       Retysp_Kind (Rec)
+       in Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind
+       and then Get_Component_Set (Rec).Contains (Comp),
+     Post =>
+       Component_Is_Present_In_Type'Result
+       = (Get_Component_Visibility_Map (Rec) (Comp) /= Removed);
    --  @param Rec is a record type or a protected type
    --  @param Comp component of the record type or of one of its ancestors
    --  @return True if Comp is present in Rec, that is, it has not been removed
@@ -103,15 +107,14 @@ package Gnat2Why.Tables is
 
    function Get_Variant_Info (E : Entity_Id) return Component_Info_Map
    with
-     Pre => Retysp_Kind (E) in
-         Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind;
+     Pre =>
+       Retysp_Kind (E)
+       in Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind;
    --  @param E entity of a type translated as a record in why
    --  @return E's component info from map Comp_Info
 
    function Get_Component_Info
-     (M    : Component_Info_Map;
-      Comp : Node_Id)
-      return Component_Info;
+     (M : Component_Info_Map; Comp : Node_Id) return Component_Info;
    --  @param M is a Component_Info_Map for a record type
    --  @param Comp component or a variant part of the record type
    --  @return component info associated to Comp in M.
@@ -121,14 +124,17 @@ package Gnat2Why.Tables is
    --  For operands which are components, go to the root component before doing
    --  the comparison.
 
-   package Component_Sets is new Ada.Containers.Ordered_Sets
-     (Element_Type => Entity_Id,
-      "<"          => Lt_Components,
-      "="          => Eq_Components);
+   package Component_Sets is new
+     Ada.Containers.Ordered_Sets
+       (Element_Type => Entity_Id,
+        "<"          => Lt_Components,
+        "="          => Eq_Components);
 
-   function Get_Component_Set (E : Entity_Id) return Component_Sets.Set with
-     Pre => Retysp_Kind (E) in
-       Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind;
+   function Get_Component_Set (E : Entity_Id) return Component_Sets.Set
+   with
+     Pre =>
+       Retysp_Kind (E)
+       in Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind;
    --  @param E entity of a type translated as a record in why
    --  @return E the set of E's components. It also includes components which
    --  have been defined in E's ancestors but are hidden in E. Components that
@@ -137,11 +143,11 @@ package Gnat2Why.Tables is
    --  protected objects. Components have the most precise possible type.
 
    function Get_Component_Visibility_Map
-     (E : Entity_Id)
-      return Component_Visibility_Maps.Map
+     (E : Entity_Id) return Component_Visibility_Maps.Map
    with
-     Pre => Retysp_Kind (E) in
-         Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind;
+     Pre =>
+       Retysp_Kind (E)
+       in Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind;
    --  @param E entity of a type translated as a record in why
    --  @return E a map from E's components to their visibility. A component has
    --      visibility Regular if it is visible, Hidden if it has been hidden by
@@ -149,59 +155,63 @@ package Gnat2Why.Tables is
    --      regular field has the same name, and Removed if it was removed by
    --      a static constraint.
 
-   function Get_Descendant_Set (E : Entity_Id) return Node_Sets.Set with
-     Pre => Is_Tagged_Type (Retysp (E));
+   function Get_Descendant_Set (E : Entity_Id) return Node_Sets.Set
+   with Pre => Is_Tagged_Type (Retysp (E));
    --  @param E entity of a tagged type
    --  @return the set of visible descendants of E.
 
-   function Get_Extension_Components (E : Entity_Id) return Node_Sets.Set with
-     Pre => Is_Tagged_Type (E) and then Root_Retysp (E) = E;
+   function Get_Extension_Components (E : Entity_Id) return Node_Sets.Set
+   with Pre => Is_Tagged_Type (E) and then Root_Retysp (E) = E;
    --  @param E entity of the root of tagged hierarchy
    --  @return the set of the components declared in extensions of E
 
-   function Has_Private_Part (E : Entity_Id) return Boolean with
-     Pre => Retysp_Kind (E) in
-       Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind;
+   function Has_Private_Part (E : Entity_Id) return Boolean
+   with
+     Pre =>
+       Retysp_Kind (E)
+       in Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind;
    --  @param E entity of a type translated as a record in why
    --  @return True if E contains a component for its own private part
 
    function Has_Variant_Info (Rec, Comp : Entity_Id) return Boolean
    with
-     Pre => Retysp_Kind (Rec) in Incomplete_Or_Private_Kind | Record_Kind
-     and Ekind (Comp) = E_Component;
+     Pre =>
+       Retysp_Kind (Rec) in Incomplete_Or_Private_Kind | Record_Kind
+       and Ekind (Comp) = E_Component;
    --  @param Rec is a record type or a protected type
    --  @param Comp component of the record type or of one of its ancestors
    --  @return True if Comp is located under a variant.
 
    function Original_Declaration (Comp : Entity_Id) return Entity_Id
-   with
-     Pre => Ekind (Comp) in E_Discriminant | E_Component | Type_Kind;
+   with Pre => Ekind (Comp) in E_Discriminant | E_Component | Type_Kind;
    --  @param Comp component of the record type or of one of its ancestors
    --  @return the first type in the derivation of Scope (Comp) in which Comp
    --          appears.
 
    function Search_Component_In_Type (Rec, Comp : Entity_Id) return Entity_Id
    with
-     Pre => Retysp_Kind (Rec) in
-         Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind
-     and Ekind (Comp) in E_Discriminant | E_Component | Type_Kind;
+     Pre =>
+       Retysp_Kind (Rec)
+       in Incomplete_Or_Private_Kind | Record_Kind | Concurrent_Kind
+       and Ekind (Comp) in E_Discriminant | E_Component | Type_Kind;
    --  @param Rec is a record type or a protected type
    --  @param Comp component of the record type or of one of its ancestors
    --  @return the corresponding component stored in Rec's component
    --          information if any and empty otherwise.
    --          Also supports hidden components.
 
-   function Representative_Component (Comp : Entity_Id) return Entity_Id is
-     (Search_Component_In_Type (Original_Declaration (Comp), Comp));
+   function Representative_Component (Comp : Entity_Id) return Entity_Id
+   is (Search_Component_In_Type (Original_Declaration (Comp), Comp));
 
 private
 
-   package Component_Info_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Node_Id,
-      Element_Type    => Component_Info,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
+   package Component_Info_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Node_Id,
+        Element_Type    => Component_Info,
+        Hash            => Node_Hash,
+        Equivalent_Keys => "=",
+        "="             => "=");
 
    type Component_Info_Map is new Component_Info_Maps.Map with null record;
 

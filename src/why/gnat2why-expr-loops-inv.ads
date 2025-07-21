@@ -29,8 +29,7 @@ package Gnat2Why.Expr.Loops.Inv is
      (Loop_Stmt       : N_Loop_Statement_Id;
       Low_Id          : W_Expr_Id;
       High_Id         : W_Expr_Id;
-      Frame_Constants : Entity_Sets.Set)
-      return W_Pred_Id;
+      Frame_Constants : Entity_Sets.Set) return W_Pred_Id;
    --  Compute the frame condition of a loop statement. For now, only consider
    --  dynamic invariants of modified variables, and the part of the frame
    --  condition that states that unmodified record subcomponents keep their

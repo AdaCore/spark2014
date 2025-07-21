@@ -34,12 +34,13 @@ with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 
 package body Gnat2Why.Assumptions is
 
-   package Claim_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Claim,
-      Element_Type    => Claim_Sets.Set,
-      Hash            => Hash_Claim,
-      Equivalent_Keys => "=",
-      "="             => Claim_Sets."=");
+   package Claim_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Claim,
+        Element_Type    => Claim_Sets.Set,
+        Hash            => Hash_Claim,
+        Equivalent_Keys => "=",
+        "="             => Claim_Sets."=");
 
    function Claim_To_Token (C : Claim) return Token;
    --  Build an assumption token from a gnat2why claim
@@ -54,18 +55,14 @@ package body Gnat2Why.Assumptions is
    -- Assume_For_Claim --
    ----------------------
 
-   procedure Assume_For_Claim
-     (C      : Claim;
-      Assume : Claim_Lists.List)
-   is
+   procedure Assume_For_Claim (C : Claim; Assume : Claim_Lists.List) is
       Position : Claim_Maps.Cursor;
       Dummy    : Boolean;
 
    begin
       --  Attempt to insert an empty set and then put the assumption there
-      Claim_Assumptions.Insert (Key      => C,
-                                Position => Position,
-                                Inserted => Dummy);
+      Claim_Assumptions.Insert
+        (Key => C, Position => Position, Inserted => Dummy);
 
       for A of Assume loop
          Claim_Assumptions (Position).Include (A);
@@ -78,8 +75,7 @@ package body Gnat2Why.Assumptions is
 
    function Claim_To_Token (C : Claim) return Token is
    begin
-      return (Predicate => C.Kind,
-              Arg       => Entity_To_Subp_Assumption (C.E));
+      return (Predicate => C.Kind, Arg => Entity_To_Subp_Assumption (C.E));
    end Claim_To_Token;
 
    ---------------------
@@ -91,7 +87,7 @@ package body Gnat2Why.Assumptions is
    begin
       for C of Claims loop
          declare
-            S : Token_Sets.Set := Token_Sets.Empty_Set;
+            S  : Token_Sets.Set := Token_Sets.Empty_Set;
             Cu : constant Claim_Maps.Cursor := Claim_Assumptions.Find (C);
             use Claim_Maps;
          begin
@@ -100,8 +96,7 @@ package body Gnat2Why.Assumptions is
                   S.Include (Claim_To_Token (A));
                end loop;
             end if;
-            Rules.Append ((Claim       => Claim_To_Token (C),
-                           Assumptions => S));
+            Rules.Append ((Claim => Claim_To_Token (C), Assumptions => S));
          end;
       end loop;
 
@@ -118,14 +113,13 @@ package body Gnat2Why.Assumptions is
    -- Register_Assumptions_For_Call --
    -----------------------------------
 
-   procedure Register_Assumptions_For_Call (Caller, Callee : Entity_Id)
-   is
+   procedure Register_Assumptions_For_Call (Caller, Callee : Entity_Id) is
       Assumptions : Claim_Lists.List;
    begin
       Assumptions.Append ((Kind => Claim_Effects, E => Callee));
 
-      Assume_For_Claim (C      => (Kind => Claim_Effects, E => Caller),
-                        Assume => Assumptions);
+      Assume_For_Claim
+        (C => (Kind => Claim_Effects, E => Caller), Assume => Assumptions);
 
       if Has_Contracts (Callee, Pragma_Postcondition) then
          Assumptions.Append ((Kind => Claim_Post, E => Callee));
@@ -133,10 +127,10 @@ package body Gnat2Why.Assumptions is
 
       Assumptions.Append ((Kind => Claim_AoRTE, E => Callee));
 
-      Assume_For_Claim (C      => (Kind => Claim_Post, E => Caller),
-                        Assume => Assumptions);
-      Assume_For_Claim (C      => (Kind => Claim_AoRTE, E => Caller),
-                        Assume => Assumptions);
+      Assume_For_Claim
+        (C => (Kind => Claim_Post, E => Caller), Assume => Assumptions);
+      Assume_For_Claim
+        (C => (Kind => Claim_AoRTE, E => Caller), Assume => Assumptions);
    end Register_Assumptions_For_Call;
 
    ---------------------------
@@ -148,8 +142,12 @@ package body Gnat2Why.Assumptions is
       --  SPARK can't say anything about entities whose body is not in SPARK,
       --  so safe guard against this here.
 
-      if Ekind (E) in Entry_Kind | Subprogram_Kind | E_Package |
-                      E_Protected_Type | E_Task_Type
+      if Ekind (E)
+         in Entry_Kind
+          | Subprogram_Kind
+          | E_Package
+          | E_Protected_Type
+          | E_Task_Type
         and then not Entity_Body_In_SPARK (E)
       then
          return;
@@ -161,9 +159,7 @@ package body Gnat2Why.Assumptions is
       --  (for E whose Ekind = E_Package), currently ignored.
       --  ??? Add proper handling of Contract_Cases
 
-      if Ekind (E) in E_Function
-                    | E_Procedure
-                    | Entry_Kind
+      if Ekind (E) in E_Function | E_Procedure | Entry_Kind
         and then Has_Contracts (E, Pragma_Postcondition)
       then
          Register_Claim ((E => E, Kind => Claim_Post));
