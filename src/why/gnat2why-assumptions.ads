@@ -23,12 +23,12 @@
 -- gnat2why is maintained by AdaCore (http://www.adacore.com)               --
 --                                                                          --
 ------------------------------------------------------------------------------
-with Ada.Containers;                     use Ada.Containers;
+with Ada.Containers; use Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Sets;
-with Assumptions;                        use Assumptions;
+with Assumptions;    use Assumptions;
 with GNATCOLL.JSON;
-with Types;                              use Types;
+with Types;          use Types;
 
 package Gnat2Why.Assumptions is
 
@@ -43,24 +43,23 @@ package Gnat2Why.Assumptions is
    -- Hash_Claim --
    ----------------
 
-   function Hash_Claim (C : Claim) return Ada.Containers.Hash_Type is
-     (Hash_Type (Claim_Kind'Pos (C.Kind)) + 4 * Hash_Type (C.E));
+   function Hash_Claim (C : Claim) return Ada.Containers.Hash_Type
+   is (Hash_Type (Claim_Kind'Pos (C.Kind)) + 4 * Hash_Type (C.E));
 
-   package Claim_Sets is new Ada.Containers.Hashed_Sets
-     (Element_Type        => Claim,
-      Hash                => Hash_Claim,
-      Equivalent_Elements => "=",
-      "="                 => "=");
+   package Claim_Sets is new
+     Ada.Containers.Hashed_Sets
+       (Element_Type        => Claim,
+        Hash                => Hash_Claim,
+        Equivalent_Elements => "=",
+        "="                 => "=");
 
-   package Claim_Lists is new Ada.Containers.Doubly_Linked_Lists
-     (Element_Type => Claim);
+   package Claim_Lists is new
+     Ada.Containers.Doubly_Linked_Lists (Element_Type => Claim);
 
    procedure Register_Claim (C : Claim);
    --  This registers that the claim [C] has been established
 
-   procedure Assume_For_Claim
-     (C      : Claim;
-      Assume : Claim_Lists.List);
+   procedure Assume_For_Claim (C : Claim; Assume : Claim_Lists.List);
    --  Both procedures register that the claim C depends on the assumption(s)
    --  provided. Calling these procedures does not mean that claim C has been
    --  established.
