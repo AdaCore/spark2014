@@ -2,3 +2,6 @@ saturation.adb:11:06: info: complete contract cases proved (CVC5: 1 VC)
 saturation.adb:11:06: info: disjoint contract or exit cases proved (CVC5: 1 VC)
 saturation.adb:12:09: medium: contract case might fail (e.g. when Val = (Value => 2, Upper_Bound => 2) and Val'Old = (Value => 0, Upper_Bound => 2))
 saturation.adb:14:09: medium: contract case might fail (e.g. when Val = (Value => 2, Upper_Bound => 0) and Val'Old = (Value => 2, Upper_Bound => 0))
+counterexample expected for check at saturation.adb:12
+  trace at saturation.adb:10 --> Val = (Value => 0, Upper_Bound => 2)
+  trace at saturation.adb:12 --> Val = (Value => 2, Upper_Bound => 2) and Val'Old = (Value => 0, Upper_Bound => 2)
