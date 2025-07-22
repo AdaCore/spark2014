@@ -27,6 +27,7 @@ with Ada.Strings;                   use Ada.Strings;
 with Ada.Strings.Fixed;
 with Checks;                        use Checks;
 with Common_Containers;             use Common_Containers;
+with Elists;                        use Elists;
 with Eval_Fat;
 with Gnat2Why.Error_Messages;       use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;                 use Gnat2Why.Expr;
@@ -353,6 +354,39 @@ package body Why.Gen.Expr is
          return Context;
       end if;
    end Binding_For_Temp;
+
+   ------------------------------
+   -- Bindings_For_Ref_Context --
+   ------------------------------
+
+   function Bindings_For_Ref_Context
+     (Expr    : W_Expr_Id;
+      Context : Ref_Context;
+      Domain  : EW_Domain)
+      return W_Expr_Id
+   is
+      Res : W_Expr_Id := Expr;
+   begin
+      for J of reverse Context loop
+         if J.Mutable then
+            pragma Assert (Domain in EW_Prog | EW_Pterm);
+            Res :=
+              New_Binding_Ref
+                (Name    => J.Name,
+                 Def     => +J.Value,
+                 Context => +Res,
+                 Typ     => Get_Type (+Res));
+         else
+            Res :=
+              New_Typed_Binding
+                (Name    => J.Name,
+                 Def     => +J.Value,
+                 Context => Res,
+                 Domain  => Domain);
+         end if;
+      end loop;
+      return Res;
+   end Bindings_For_Ref_Context;
 
    --------------------------
    -- Boolean_Expr_Of_Pred --
@@ -766,6 +800,19 @@ package body Why.Gen.Expr is
       end case;
 
    end Get_Type;
+
+   ---------------------------
+   -- Get_Valid_Flag_For_Id --
+   ---------------------------
+
+   function Get_Valid_Flag_For_Id
+     (Id : W_Identifier_Id;
+      Ty : Type_Kind_Id)
+      return W_Identifier_Id
+   is
+     (Valid_Append (Id, Get_Validity_Tree_Type (Ty)));
+   --  For now, we simply append __valid at the end of Id's name. If we think
+   --  it is not safe enough, we can introduce a global map.
 
    ---------------------------------
    -- Initialize_Tables_Nth_Roots --
@@ -4377,6 +4424,199 @@ package body Why.Gen.Expr is
                        Args => (1 => +Id));
    end New_Havoc_Call;
 
+   ------------------------------------------
+   -- New_Is_Valid_Call_For_Constrained_Ty --
+   ------------------------------------------
+
+   function New_Is_Valid_Call_For_Constrained_Ty
+     (Tree   : W_Term_Id;
+      Ty     : Type_Kind_Id;
+      Domain : EW_Domain;
+      Params : Transformation_Params)
+      return W_Expr_Id
+   is
+
+      function Additional_Params_For_Is_Valid_Call return W_Expr_Array;
+      --  Compute the parameters that should be supplied in addition to the
+      --  validity tree in a call to Is_Valid for a constrained type Ty.
+
+      -----------------------------------------
+      -- Additional_Params_For_Is_Valid_Call --
+      -----------------------------------------
+
+      function Additional_Params_For_Is_Valid_Call return W_Expr_Array is
+         Rep_Ty : constant Type_Kind_Id := Retysp (Ty);
+      begin
+         if Has_Discriminants (Ty) then
+            pragma Assert (not Has_Mutable_Discriminants (Ty));
+            declare
+               Num_Discr : constant Natural := Count_Discriminants (Rep_Ty);
+               Assocs    : W_Field_Association_Array (1 .. Num_Discr);
+               Count     : Natural := 1;
+               Discr     : Entity_Id := First_Discriminant (Rep_Ty);
+               Elmt      : Elmt_Id := First_Elmt
+                 (Discriminant_Constraint (Rep_Ty));
+
+            begin
+               while Present (Discr) loop
+                  Assocs (Count) := New_Field_Association
+                    (Domain => Domain,
+                     Field  => To_Why_Id (Discr, Rec => Rep_Ty),
+                     Value  => Transform_Expr
+                       (Domain        => Term_Domain (Domain),
+                        Params        => Params,
+                        Expr          => Node (Elmt),
+                        Expected_Type => EW_Abstract (Etype (Discr))));
+                  Count := Count + 1;
+                  Next_Elmt (Elmt);
+                  Next_Discriminant (Discr);
+               end loop;
+
+               return (1 => New_Record_Aggregate
+                       (Associations => Assocs,
+                        Typ          =>
+                          Field_Type_For_Discriminants (Rep_Ty)));
+            end;
+         elsif Is_Array_Type (Rep_Ty) then
+            declare
+               Dim : constant Positive :=
+                 Positive (Number_Dimensions (Rep_Ty));
+               Pos : Natural := 0;
+            begin
+               return Res : W_Expr_Array (1 .. Dim * 2) do
+                  for I in 1 .. Dim loop
+                     Pos := Pos + 1;
+                     Res (Pos) := +Get_Array_Attr
+                       (Domain => Term_Domain (Domain),
+                        Ty     => Rep_Ty,
+                        Attr   => Attribute_First,
+                        Dim    => I,
+                        Params => Params);
+                     Pos := Pos + 1;
+                     Res (Pos) := +Get_Array_Attr
+                       (Domain => Term_Domain (Domain),
+                        Ty     => Rep_Ty,
+                        Attr   => Attribute_Last,
+                        Dim    => I,
+                        Params => Params);
+                  end loop;
+               end return;
+            end;
+         else
+            return (1 .. 0 => <>);
+         end if;
+      end Additional_Params_For_Is_Valid_Call;
+
+      Rep_Ty     : constant Type_Kind_Id := Retysp (Ty);
+      Other_Args : constant W_Expr_Array :=
+        Additional_Params_For_Is_Valid_Call;
+      Is_Valid   : constant W_Pred_Id := New_Call
+        (Name => E_Symb (Rep_Ty, WNE_Is_Valid),
+         Args => +Tree & Other_Args);
+   begin
+      case Domain is
+         when EW_Pred =>
+            return +Is_Valid;
+         when EW_Term =>
+            return +Boolean_Term_Of_Pred (Is_Valid);
+         when others =>
+            return +Boolean_Prog_Of_Pred (Is_Valid);
+      end case;
+   end New_Is_Valid_Call_For_Constrained_Ty;
+
+   --------------------------------
+   -- New_Is_Valid_Call_For_Expr --
+   --------------------------------
+
+   function New_Is_Valid_Call_For_Expr
+     (Tree   : W_Expr_Id;
+      Ty     : Type_Kind_Id;
+      Expr   : W_Expr_Id;
+      Domain : EW_Domain)
+      return W_Expr_Id
+   is
+
+      function Additional_Params_For_Is_Valid_Call return W_Expr_Array;
+      --  Compute the parameters that should be supplied in addition to the
+      --  validity tree in a call to Is_Valid from Expr.
+
+      -----------------------------------------
+      -- Additional_Params_For_Is_Valid_Call --
+      -----------------------------------------
+
+      function Additional_Params_For_Is_Valid_Call return W_Expr_Array is
+         Rep_Ty : constant Type_Kind_Id := Retysp (Ty);
+      begin
+         if Has_Discriminants (Ty) then
+            return (1 => New_Discriminants_Access
+                    (Name => Expr, Ty => Rep_Ty));
+         elsif Is_Array_Type (Rep_Ty) then
+            declare
+               Dim : constant Positive :=
+                 Positive (Number_Dimensions (Rep_Ty));
+               Pos : Natural := 0;
+            begin
+               return Res : W_Expr_Array (1 .. Dim * 2) do
+                  for I in 1 .. Dim loop
+                     Pos := Pos + 1;
+                     Res (Pos) := +Get_Array_Attr
+                       (Expr => +Expr,
+                        Attr => Attribute_First,
+                        Dim  => I);
+                     Pos := Pos + 1;
+                     Res (Pos) := +Get_Array_Attr
+                       (Expr => +Expr,
+                        Attr => Attribute_Last,
+                        Dim  => I);
+                  end loop;
+               end return;
+            end;
+         else
+            return (1 .. 0 => <>);
+         end if;
+      end Additional_Params_For_Is_Valid_Call;
+
+      Rep_Ty     : constant Type_Kind_Id := Retysp (Ty);
+      Other_Args : constant W_Expr_Array :=
+        Additional_Params_For_Is_Valid_Call;
+      Tmp        : constant W_Expr_Id := New_Temp_For_Expr (+Tree);
+      Res        : W_Expr_Id;
+
+   begin
+      --  For scalars, the tree is a single boolean
+
+      if Is_Scalar_Type (Rep_Ty) then
+         case Domain is
+            when EW_Pred =>
+               Res := +Pred_Of_Boolean_Term (+Tmp);
+            when others =>
+               Res := +Tmp;
+         end case;
+
+      else
+         declare
+            Is_Valid : constant W_Pred_Id := New_Call
+              (Name => E_Symb (Rep_Ty, WNE_Is_Valid),
+               Args => +Tmp & Other_Args,
+               Typ  => EW_Bool_Type);
+         begin
+            case Domain is
+               when EW_Pred =>
+                  Res := +Is_Valid;
+               when EW_Term =>
+                  Res := +Boolean_Term_Of_Pred (Is_Valid);
+               when others =>
+                  Res := +Boolean_Prog_Of_Pred (Is_Valid);
+            end case;
+         end;
+      end if;
+
+      return Binding_For_Temp
+        (Domain  => Domain,
+         Tmp     => Tmp,
+         Context => Res);
+   end New_Is_Valid_Call_For_Expr;
+
    ---------------------
    -- New_Shape_Label --
    ---------------------
@@ -4847,19 +5087,19 @@ package body Why.Gen.Expr is
       end if;
    end New_Function_Call;
 
-   ----------------------------------
-   -- New_Function_Is_Valid_Access --
-   ----------------------------------
+   ------------------------------------
+   -- New_Function_Valid_Flag_Access --
+   ------------------------------------
 
-   function New_Function_Is_Valid_Access
+   function New_Function_Valid_Flag_Access
      (Fun  : E_Function_Id;
       Name : W_Expr_Id)
       return W_Expr_Id
    is
      (New_Record_Access
         (Name  => Name,
-         Field => E_Symb (Fun, WNE_Is_Valid),
-         Typ   => EW_Bool_Type));
+         Field => E_Symb (Fun, WNE_Valid_Wrapper_Flag),
+         Typ   => Get_Validity_Tree_Type (Etype (Fun))));
 
    -------------------------------------
    -- New_Function_Valid_Value_Access --
@@ -4872,7 +5112,8 @@ package body Why.Gen.Expr is
       Do_Check : Boolean := False)
       return W_Expr_Id
    is
-      Value_Id : constant W_Identifier_Id := E_Symb (Fun, WNE_Valid_Value);
+      Value_Id : constant W_Identifier_Id := E_Symb
+        (Fun, WNE_Valid_Wrapper_Result);
    begin
       if Do_Check then
          return +New_VC_Call
@@ -4894,21 +5135,21 @@ package body Why.Gen.Expr is
    -----------------------------------------
 
    function New_Function_Validity_Wrapper_Value
-     (Fun      : E_Function_Id;
-      Is_Valid : W_Expr_Id;
-      Value    : W_Expr_Id)
+     (Fun        : E_Function_Id;
+      Valid_Flag : W_Expr_Id;
+      Value      : W_Expr_Id)
       return W_Expr_Id
    is
      (New_Record_Aggregate
         (Associations =>
              (1 => New_Field_Association
                   (Domain => EW_Term,
-                   Field  => E_Symb (Fun, WNE_Valid_Value),
+                   Field  => E_Symb (Fun, WNE_Valid_Wrapper_Result),
                    Value  => Value),
               2 => New_Field_Association
                 (Domain => EW_Term,
-                 Field  => E_Symb (Fun, WNE_Is_Valid),
-                 Value  => Is_Valid)),
+                 Field  => E_Symb (Fun, WNE_Valid_Wrapper_Flag),
+                 Value  => Valid_Flag)),
          Typ          => Validity_Wrapper_Type (Fun)));
 
    -----------------------
@@ -5046,6 +5287,20 @@ package body Why.Gen.Expr is
 
       return Labels;
    end New_VC_Labels;
+
+   ------------------------------
+   -- New_Valid_Value_For_Type --
+   ------------------------------
+
+   function New_Valid_Value_For_Type (Ty : Type_Kind_Id) return W_Term_Id is
+   begin
+      if Has_Scalar_Type (Ty) then
+         return True_Term;
+      else
+         return +E_Symb (Ty, WNE_Valid_Value);
+      end if;
+   end New_Valid_Value_For_Type;
+
    ------------------
    -- New_Xor_Expr --
    ------------------

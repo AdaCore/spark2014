@@ -30,9 +30,9 @@ with Ada.Numerics.Big_Numbers.Big_Integers;
 use Ada.Numerics.Big_Numbers.Big_Integers;
 with Ada.Numerics.Big_Numbers.Big_Reals;
 use Ada.Numerics.Big_Numbers.Big_Reals;
-with Common_Containers;        use Common_Containers;
-with SPARK_Atree.Entities;     use SPARK_Atree.Entities;
-with Types;                    use Types;
+with Common_Containers;                     use Common_Containers;
+with SPARK_Atree.Entities;                  use SPARK_Atree.Entities;
+with Types;                                 use Types;
 
 package CE_Values is
 
@@ -41,42 +41,42 @@ package CE_Values is
    type Float_Value (K : Float_Kind := Float_32_K) is record
       case K is
          when Float_32_K =>
-            Content_32  : Float;
+            Content_32 : Float;
+
          when Float_64_K =>
-            Content_64  : Long_Float;
+            Content_64 : Long_Float;
+
          when Extended_K =>
             Ext_Content : Long_Long_Float;
       end case;
    end record;
 
    function Mult_Fixed_Point
-     (Fixed_L, Fixed_R            : Big_Integer;
-      Small_L, Small_R, Small_Res : Big_Real)
+     (Fixed_L, Fixed_R : Big_Integer; Small_L, Small_R, Small_Res : Big_Real)
       return Big_Integer;
    --  Multiply two fixed-point numbers L and R and scale the result so that
    --  its small is equal to Small_Res
 
    function Div_Fixed_Point
-     (Fixed_L, Fixed_R             : Big_Integer;
-      Small_L, Small_R, Small_Res : Big_Real)
+     (Fixed_L, Fixed_R : Big_Integer; Small_L, Small_R, Small_Res : Big_Real)
       return Big_Integer;
    --  Divide two fixed-point numbers L and R and scale the result so that
    --  its small is equal to Small_Res
 
-   function Is_Zero (R : Float_Value) return Boolean is
-     (case R.K is
+   function Is_Zero (R : Float_Value) return Boolean
+   is (case R.K is
          when Float_32_K => R.Content_32 = 0.0,
          when Float_64_K => R.Content_64 = 0.0,
          when Extended_K => R.Ext_Content = 0.0);
 
-   function Is_First (R : Float_Value) return Boolean is
-     (case R.K is
+   function Is_First (R : Float_Value) return Boolean
+   is (case R.K is
          when Float_32_K => R.Content_32 = Float'First,
          when Float_64_K => R.Content_64 = Long_Float'First,
          when Extended_K => R.Ext_Content = Long_Long_Float'First);
 
-   function Is_Last (R : Float_Value) return Boolean is
-     (case R.K is
+   function Is_Last (R : Float_Value) return Boolean
+   is (case R.K is
          when Float_32_K => R.Content_32 = Float'Last,
          when Float_64_K => R.Content_64 = Long_Float'Last,
          when Extended_K => R.Ext_Content = Long_Long_Float'Last);
@@ -89,37 +89,34 @@ package CE_Values is
    generic
       with function Oper_Float_32 (R : Float) return Float;
       with function Oper_Float_64 (R : Long_Float) return Long_Float;
-      with function Oper_Float_Ext (R : Long_Long_Float)
-                                    return Long_Long_Float;
+      with
+        function Oper_Float_Ext (R : Long_Long_Float) return Long_Long_Float;
    function Generic_Unop (R : Float_Value) return Float_Value;
 
-   function Generic_Unop (R : Float_Value) return Float_Value is
-     (case R.K is
-         when Float_32_K =>
-           (Float_32_K, Oper_Float_32 (R.Content_32)),
-         when Float_64_K =>
-           (Float_64_K, Oper_Float_64 (R.Content_64)),
-         when Extended_K =>
-           (Extended_K, Oper_Float_Ext (R.Ext_Content)));
+   function Generic_Unop (R : Float_Value) return Float_Value
+   is (case R.K is
+         when Float_32_K => (Float_32_K, Oper_Float_32 (R.Content_32)),
+         when Float_64_K => (Float_64_K, Oper_Float_64 (R.Content_64)),
+         when Extended_K => (Extended_K, Oper_Float_Ext (R.Ext_Content)));
 
    function "-" is new Generic_Unop ("-", "-", "-");
    function "abs" is new Generic_Unop ("abs", "abs", "abs");
-   function Succ is
-     new Generic_Unop (Float'Succ, Long_Float'Succ, Long_Long_Float'Succ);
-   function Pred is
-     new Generic_Unop (Float'Pred, Long_Float'Pred, Long_Long_Float'Pred);
+   function Succ is new
+     Generic_Unop (Float'Succ, Long_Float'Succ, Long_Long_Float'Succ);
+   function Pred is new
+     Generic_Unop (Float'Pred, Long_Float'Pred, Long_Long_Float'Pred);
 
    generic
       with function Oper_Float_32 (L, R : Float) return Float;
       with function Oper_Float_64 (L, R : Long_Float) return Long_Float;
-      with function Oper_Float_Ext (L, R : Long_Long_Float)
-                                    return Long_Long_Float;
+      with
+        function Oper_Float_Ext
+          (L, R : Long_Long_Float) return Long_Long_Float;
    function Generic_Binop (L, R : Float_Value) return Float_Value
-   with
-     Pre => L.K = R.K;
+   with Pre => L.K = R.K;
 
-   function Generic_Binop (L, R : Float_Value) return Float_Value is
-     (case L.K is
+   function Generic_Binop (L, R : Float_Value) return Float_Value
+   is (case L.K is
          when Float_32_K =>
            (Float_32_K, Oper_Float_32 (L.Content_32, R.Content_32)),
          when Float_64_K =>
@@ -131,21 +128,20 @@ package CE_Values is
    function "-" is new Generic_Binop ("-", "-", "-");
    function "*" is new Generic_Binop ("*", "*", "*");
    function "/" is new Generic_Binop ("/", "/", "/");
-   function Min is
-     new Generic_Binop (Float'Min, Long_Float'Min, Long_Long_Float'Min);
-   function Max is
-     new Generic_Binop (Float'Max, Long_Float'Max, Long_Long_Float'Max);
+   function Min is new
+     Generic_Binop (Float'Min, Long_Float'Min, Long_Long_Float'Min);
+   function Max is new
+     Generic_Binop (Float'Max, Long_Float'Max, Long_Long_Float'Max);
 
    generic
       with function Compare_Float_32 (L, R : Float) return Boolean;
       with function Compare_Float_64 (L, R : Long_Float) return Boolean;
       with function Compare_Float_Ext (L, R : Long_Long_Float) return Boolean;
    function Generic_Compare (L, R : Float_Value) return Boolean
-   with
-     Pre => L.K = R.K;
+   with Pre => L.K = R.K;
 
-   function Generic_Compare (L, R : Float_Value) return Boolean is
-     (case L.K is
+   function Generic_Compare (L, R : Float_Value) return Boolean
+   is (case L.K is
          when Float_32_K => Compare_Float_32 (L.Content_32, R.Content_32),
          when Float_64_K => Compare_Float_64 (L.Content_64, R.Content_64),
          when Extended_K => Compare_Float_Ext (L.Ext_Content, R.Ext_Content));
@@ -155,26 +151,26 @@ package CE_Values is
    function ">" is new Generic_Compare (">", ">", ">");
    function ">=" is new Generic_Compare (">=", ">=", ">=");
 
-   function Conv_Real (Val : Float_Value; K : Float_Kind) return Float_Value is
-     (case K is
-        when Float_32_K =>
-          (Float_32_K,
-           (case Val.K is
-              when Float_32_K => Val.Content_32,
-              when Float_64_K => Float (Val.Content_64),
-              when Extended_K => Float (Val.Ext_Content))),
-        when Float_64_K =>
-          (Float_64_K,
-           (case Val.K is
-              when Float_32_K => Long_Float (Val.Content_32),
-              when Float_64_K => Val.Content_64,
-              when Extended_K => Long_Float (Val.Ext_Content))),
-        when Extended_K =>
-          (Extended_K,
-           (case Val.K is
-              when Float_32_K => Long_Long_Float (Val.Content_32),
-              when Float_64_K => Long_Long_Float (Val.Content_64),
-              when Extended_K => Val.Ext_Content)));
+   function Conv_Real (Val : Float_Value; K : Float_Kind) return Float_Value
+   is (case K is
+         when Float_32_K =>
+           (Float_32_K,
+            (case Val.K is
+               when Float_32_K => Val.Content_32,
+               when Float_64_K => Float (Val.Content_64),
+               when Extended_K => Float (Val.Ext_Content))),
+         when Float_64_K =>
+           (Float_64_K,
+            (case Val.K is
+               when Float_32_K => Long_Float (Val.Content_32),
+               when Float_64_K => Val.Content_64,
+               when Extended_K => Long_Float (Val.Ext_Content))),
+         when Extended_K =>
+           (Extended_K,
+            (case Val.K is
+               when Float_32_K => Long_Long_Float (Val.Content_32),
+               when Float_64_K => Long_Long_Float (Val.Content_64),
+               when Extended_K => Val.Ext_Content)));
 
    package Conv_Float32 is new Float_Conversions (Float);
    package Conv_Float64 is new Float_Conversions (Long_Float);
@@ -182,8 +178,11 @@ package CE_Values is
    function "=" (V1, V2 : Float_Value) return Boolean;
    --  Equality of floating point values
 
-   function Copy_Sign is new Generic_Binop
-     (Float'Copy_Sign, Long_Float'Copy_Sign, Long_Long_Float'Copy_Sign);
+   function Copy_Sign is new
+     Generic_Binop
+       (Float'Copy_Sign,
+        Long_Float'Copy_Sign,
+        Long_Long_Float'Copy_Sign);
 
    type Scalar_Kind is (Integer_K, Enum_K, Float_K, Fixed_K);
    --  Kind for a counterexample value for a scalar type
@@ -192,13 +191,16 @@ package CE_Values is
       case K is
          when Integer_K =>
             Integer_Content : Big_Integer;
+
          when Enum_K =>
-            Enum_Entity     : Entity_Id;
+            Enum_Entity : Entity_Id;
+
          when Float_K =>
-            Float_Content   : Float_Value;
+            Float_Content : Float_Value;
+
          when Fixed_K =>
-            Fixed_Content   : Big_Integer;
-            Small           : Big_Real;
+            Fixed_Content : Big_Integer;
+            Small         : Big_Real;
       end case;
    end record;
    --  Representation of scalar counterexample values. Integers are represented
@@ -229,15 +231,17 @@ package CE_Values is
    function "=" (V1, V2 : Value_Access) return Boolean;
    --  Redefine equality for Value_Access based on equality for Value_Type
 
-   package Entity_To_Value_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Entity_Id,
-      Element_Type    => Value_Access,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=");
+   package Entity_To_Value_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Entity_Id,
+        Element_Type    => Value_Access,
+        Hash            => Node_Hash,
+        Equivalent_Keys => "=");
    --  Map entities to counterexample values. It is used for fields of a record
    --  value.
 
-   package Big_Integer_To_Value_Maps is new Ada.Containers.Ordered_Maps
+   package Big_Integer_To_Value_Maps is new
+     Ada.Containers.Ordered_Maps
        (Key_Type     => Big_Integer,
         Element_Type => Value_Access);
    --  Values for a one-dimensional array. Keys may be integers or positions
@@ -247,6 +251,7 @@ package CE_Values is
       case Present is
          when True =>
             Content : Boolean;
+
          when False =>
             null;
       end case;
@@ -256,6 +261,7 @@ package CE_Values is
       case Present is
          when True =>
             Content : Big_Integer;
+
          when False =>
             null;
       end case;
@@ -274,24 +280,28 @@ package CE_Values is
    end record;
 
    type Value_Type (K : Value_Kind := Scalar_K) is record
-      AST_Ty     : Entity_Id;
-      Valid_Attr : Opt_Boolean;
+      AST_Ty : Entity_Id;
 
       case K is
-         when Scalar_K   =>
+         when Scalar_K =>
             Scalar_Content   : Scalar_Value_Access;
             Initialized_Attr : Opt_Boolean;
-         when Record_K   =>
+            Valid_Attr       : Opt_Boolean;
+
+         when Record_K =>
             Record_Fields    : Entity_To_Value_Maps.Map;
             Constrained_Attr : Opt_Boolean;
-         when Array_K    =>
-            First_Attr       : Opt_Big_Integer;
-            Last_Attr        : Opt_Big_Integer;
-            Array_Values     : Big_Integer_To_Value_Maps.Map;
-            Array_Others     : Value_Access;
+
+         when Array_K =>
+            First_Attr   : Opt_Big_Integer;
+            Last_Attr    : Opt_Big_Integer;
+            Array_Values : Big_Integer_To_Value_Maps.Map;
+            Array_Others : Value_Access;
+
          when Multidim_K =>
-            Bounds           : Multidim_Bounds;
-         when Access_K   =>
+            Bounds : Multidim_Bounds;
+
+         when Access_K =>
             Designated_Value : Value_Access;
             Is_Null          : Opt_Boolean;
       end case;
@@ -316,6 +326,7 @@ package CE_Values is
       case Present is
          when True =>
             Content : Value_Type;
+
          when False =>
             null;
       end case;
@@ -331,22 +342,21 @@ package CE_Values is
 
    type Extended_Value_Access is array (Modifier) of Value_Access;
 
-   package Entity_To_Extended_Value_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Entity_Id,
-      Element_Type    => Extended_Value_Access,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=");
+   package Entity_To_Extended_Value_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Entity_Id,
+        Element_Type    => Extended_Value_Access,
+        Hash            => Node_Hash,
+        Equivalent_Keys => "=");
    --  Map entities to counterexample values extended with a modifier. This is
    --  used when parsing all counterexample values supplied for a line.
 
    function Get_Array_Length (V : Value_Type) return Opt_Big_Integer
-   with
-       Pre => V.K = Array_K;
+   with Pre => V.K = Array_K;
    --  Return the length of the array if its first and last indices exist
 
-   function Valid_Value
-     (V : Value_Type) return Boolean
-     with Ghost;
+   function Valid_Value (V : Value_Type) return Boolean
+   with Ghost;
    --  A function to check in contracts and ghost code that the value V is
    --  well-formed. In particular, the following check has been currenty
    --  defined:

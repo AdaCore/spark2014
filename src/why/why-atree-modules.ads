@@ -29,6 +29,7 @@ with Common_Containers;    use Common_Containers;
 with Checked_Types;        use Checked_Types;
 with GNATCOLL.Symbols;
 with SPARK_Atree.Entities; use SPARK_Atree.Entities;
+with SPARK_Definition;     use SPARK_Definition;
 with VC_Kinds;             use VC_Kinds;
 with Why.Ids;              use Why.Ids;
 with Why.Gen.Names;        use Why.Gen.Names;
@@ -117,7 +118,6 @@ package Why.Atree.Modules is
    Incomp_Ty_Conv         : W_Module_Id;
    Pledge                 : W_Module_Id;
    Real_Time_Model        : W_Module_Id;
-   Validity_Wrapper_Model : W_Module_Id;
 
    Constr_Arrays                 : W_Module_Array (1 .. Max_Array_Dimensions);
    Unconstr_Arrays               : W_Module_Array (1 .. Max_Array_Dimensions);
@@ -819,7 +819,8 @@ package Why.Atree.Modules is
       Dispatch_Equality,         --  Dispatching equality
       Dispatch_Equality_Axiom,   --  Axiom for dispatching equality
       Move_Tree,                 --  Declarations for the move tree
-      Incomp_Move_Tree);         --  Same as above but uses an abstract type
+      Incomp_Move_Tree,          --  Same as above but uses an abstract type
+      Validity_Tree);            --  Declarations for the validity tree
 
    function E_Module
      (E : Entity_Id;
@@ -846,7 +847,11 @@ package Why.Atree.Modules is
    --  Compute the name of the theory for a profile
 
    function Get_Move_Tree_Type (E : Entity_Id) return W_Type_Id;
-   --  Compute the type of the move tree for T
+   --  Compute the type of the move tree for E
+
+   function Get_Validity_Tree_Type (E : Entity_Id) return W_Type_Id with
+     Pre => Type_Might_Be_Invalid (E);
+   --  Compute the type of the validity tree for E
 
    procedure Insert_Extra_Module
      (N    : Node_Id;

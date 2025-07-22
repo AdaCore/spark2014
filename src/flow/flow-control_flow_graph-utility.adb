@@ -21,19 +21,18 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;                     use Atree;
+with Atree;                  use Atree;
 with Flow_Classwide;
-with Flow_Utility;              use Flow_Utility;
-with Sem_Aux;                   use Sem_Aux;
-with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
+with Flow_Utility;           use Flow_Utility;
+with Sem_Aux;                use Sem_Aux;
+with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 
 package body Flow.Control_Flow_Graph.Utility is
 
    use type Flow_Id_Sets.Set;
 
    procedure Add_Volatile_Effects
-     (A      : in out V_Attributes;
-      Global : Flow_Id := Null_Flow_Id)
+     (A : in out V_Attributes; Global : Flow_Id := Null_Flow_Id)
    with Pre => (if Present (Global) then Global.Variant = Normal_Use);
    --  This helper procedure inspects the variables used by a particular
    --  vertex. Any with a volatile property causing reads or writes to be
@@ -52,9 +51,7 @@ package body Flow.Control_Flow_Graph.Utility is
    --------------------------
 
    procedure Add_Volatile_Effects
-     (A      : in out V_Attributes;
-      Global : Flow_Id := Null_Flow_Id)
-   is
+     (A : in out V_Attributes; Global : Flow_Id := Null_Flow_Id) is
    begin
       if Present (Global) then
          if Has_Effective_Reads (Global) then
@@ -81,9 +78,9 @@ package body Flow.Control_Flow_Graph.Utility is
    -- Process_Discriminants --
    ---------------------------
 
-   function Process_Discriminants (Intermediate_Vars_Used : Flow_Id_Sets.Set;
-                                   Var_Defined            : Flow_Id)
-                                   return Flow_Id_Sets.Set
+   function Process_Discriminants
+     (Intermediate_Vars_Used : Flow_Id_Sets.Set; Var_Defined : Flow_Id)
+      return Flow_Id_Sets.Set
    is
       Variables_Used : Flow_Id_Sets.Set;
       use type Ada.Containers.Count_Type;
@@ -98,14 +95,13 @@ package body Flow.Control_Flow_Graph.Utility is
             --  We have an intermediate "variable used" of the form T.X where
             --  T is a type and X a discriminant thereof. Such a construct may
             --  only be used to define a record component.
-            pragma Assert
-              (Im_Var.Component.Length = 1
-               and then
-               Ekind (Im_Var.Component.Last_Element) = E_Discriminant
-               and then
-               Var_Defined.Kind = Record_Field
-               and then
-               Var_Defined.Component.Length >= 1);
+            pragma
+              Assert
+                (Im_Var.Component.Length = 1
+                   and then Ekind (Im_Var.Component.Last_Element)
+                            = E_Discriminant
+                   and then Var_Defined.Kind = Record_Field
+                   and then Var_Defined.Component.Length >= 1);
             --  There are two cases to consider:
             --  1) Var_Defined is a discriminant; in this case an inner
             --  discriminant (e.g. A.B.C.Y) references an outer one (e.g.
@@ -120,18 +116,19 @@ package body Flow.Control_Flow_Graph.Utility is
             --  component via a check of its Scope.
 
             declare
-               Im_Var_Type : constant Entity_Id :=
+               Im_Var_Type      : constant Entity_Id :=
                  Get_Direct_Mapping_Id (Im_Var);
-               pragma Assert
-                 (Im_Var_Type = Scope (Im_Var.Component.Last_Element));
+               pragma
+                 Assert (Im_Var_Type = Scope (Im_Var.Component.Last_Element));
                Var_Defined_Copy : Flow_Id := Var_Defined;
             begin
                if Is_Discriminant (Var_Defined) then
                   Var_Defined_Copy.Component.Delete_Last; --  1st Chop
+
                else
                   loop
-                     if Scope (Var_Defined_Copy.Component.Last_Element) =
-                       Im_Var_Type
+                     if Scope (Var_Defined_Copy.Component.Last_Element)
+                       = Im_Var_Type
                      then
                         exit;
                      else
@@ -141,8 +138,10 @@ package body Flow.Control_Flow_Graph.Utility is
                   end loop;
                end if;
 
-               pragma Assert (Scope (Var_Defined_Copy.Component.Last_Element) =
-                                Im_Var_Type);
+               pragma
+                 Assert
+                   (Scope (Var_Defined_Copy.Component.Last_Element)
+                      = Im_Var_Type);
 
                Var_Defined_Copy.Component.Delete_Last; --  Final Chop
                Var_Defined_Copy.Component.Append
@@ -162,29 +161,29 @@ package body Flow.Control_Flow_Graph.Utility is
    ---------------------------
 
    function Make_Basic_Attributes
-     (Var_Def    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
-      Var_Ex_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
-      Var_Im_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
-      Subp_Calls : Call_Sets.Set       := Call_Sets.Empty_Set;
-      Indt_Calls : Node_Sets.Set       := Node_Sets.Empty_Set;
+     (Var_Def    : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      Var_Ex_Use : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      Var_Im_Use : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      Subp_Calls : Call_Sets.Set := Call_Sets.Empty_Set;
+      Indt_Calls : Node_Sets.Set := Node_Sets.Empty_Set;
       Vertex_Ctx : Vertex_Context;
-      E_Loc      : Node_Or_Entity_Id   := Empty;
+      E_Loc      : Node_Or_Entity_Id := Empty;
       Print_Hint : Pretty_Print_Kind_T := Pretty_Print_Null)
       return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
    begin
-      A.Is_Program_Node           := True;
-      A.Variables_Defined         := Var_Def;
-      A.Variables_Used            := Var_Ex_Use or Var_Im_Use;
+      A.Is_Program_Node := True;
+      A.Variables_Defined := Var_Def;
+      A.Variables_Used := Var_Ex_Use or Var_Im_Use;
       A.Variables_Explicitly_Used := Var_Ex_Use;
-      A.Subprogram_Calls          := Subp_Calls;
-      A.Indirect_Calls            := Indt_Calls;
-      A.Loops                     := Vertex_Ctx.Current_Loops;
-      A.In_Nested_Package         := Vertex_Ctx.In_Nested_Package;
-      A.Warnings_Off              := Vertex_Ctx.Warnings_Off;
-      A.Error_Location            := E_Loc;
-      A.Pretty_Print_Kind         := Print_Hint;
+      A.Subprogram_Calls := Subp_Calls;
+      A.Indirect_Calls := Indt_Calls;
+      A.Loops := Vertex_Ctx.Current_Loops;
+      A.In_Nested_Package := Vertex_Ctx.In_Nested_Package;
+      A.Warnings_Off := Vertex_Ctx.Warnings_Off;
+      A.Error_Location := E_Loc;
+      A.Pretty_Print_Kind := Print_Hint;
 
       Add_Volatile_Effects (A);
       return A;
@@ -199,19 +198,18 @@ package body Flow.Control_Flow_Graph.Utility is
       Var_Use         : Flow_Id_Sets.Set;
       Object_Returned : Entity_Id;
       Vertex_Ctx      : Vertex_Context;
-      E_Loc           : Node_Or_Entity_Id := Empty)
-      return V_Attributes
+      E_Loc           : Node_Or_Entity_Id := Empty) return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
    begin
-      A.Is_Program_Node           := True;
-      A.Variables_Defined         := Var_Def;
-      A.Variables_Used            := Var_Use;
+      A.Is_Program_Node := True;
+      A.Variables_Defined := Var_Def;
+      A.Variables_Used := Var_Use;
       A.Variables_Explicitly_Used := Var_Use;
-      A.Loops                     := Vertex_Ctx.Current_Loops;
-      A.Warnings_Off              := Vertex_Ctx.Warnings_Off;
-      A.Error_Location            := E_Loc;
-      A.Aux_Node                  := Object_Returned;
+      A.Loops := Vertex_Ctx.Current_Loops;
+      A.Warnings_Off := Vertex_Ctx.Warnings_Off;
+      A.Error_Location := E_Loc;
+      A.Aux_Node := Object_Returned;
 
       Add_Volatile_Effects (A);
       return A;
@@ -222,36 +220,35 @@ package body Flow.Control_Flow_Graph.Utility is
    ---------------------------------
 
    function Make_Sink_Vertex_Attributes
-     (Var_Use       : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
-      Subp_Calls    : Call_Sets.Set     := Call_Sets.Empty_Set;
-      Indt_Calls    : Node_Sets.Set     := Node_Sets.Empty_Set;
-      Aspect        : Type_Aspect       := No_Aspect;
-      Is_Assertion  : Boolean           := False;
-      Is_Loop_Entry : Boolean           := False;
-      Is_Fold_Check : Boolean           := False;
-      Is_Type_Decl  : Boolean           := False;
+     (Var_Use       : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      Subp_Calls    : Call_Sets.Set := Call_Sets.Empty_Set;
+      Indt_Calls    : Node_Sets.Set := Node_Sets.Empty_Set;
+      Aspect        : Type_Aspect := No_Aspect;
+      Is_Assertion  : Boolean := False;
+      Is_Loop_Entry : Boolean := False;
+      Is_Fold_Check : Boolean := False;
+      Is_Type_Decl  : Boolean := False;
       Vertex_Ctx    : Vertex_Context;
       E_Loc         : Node_Or_Entity_Id := Empty;
-      Execution     : Execution_Kind_T  := Normal_Execution)
-      return V_Attributes
+      Execution     : Execution_Kind_T := Normal_Execution) return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
    begin
       if Is_Type_Decl then
-         A.Variables_Read            := Var_Use;
+         A.Variables_Read := Var_Use;
       else
-         A.Variables_Used            := Var_Use;
+         A.Variables_Used := Var_Use;
          A.Variables_Explicitly_Used := Var_Use;
       end if;
 
-      A.Subprogram_Calls  := Subp_Calls;
-      A.Indirect_Calls    := Indt_Calls;
-      A.Is_Assertion      := Is_Assertion;
-      A.Is_Loop_Entry     := Is_Loop_Entry;
+      A.Subprogram_Calls := Subp_Calls;
+      A.Indirect_Calls := Indt_Calls;
+      A.Is_Assertion := Is_Assertion;
+      A.Is_Loop_Entry := Is_Loop_Entry;
       A.In_Nested_Package := Vertex_Ctx.In_Nested_Package;
-      A.Warnings_Off      := Vertex_Ctx.Warnings_Off;
-      A.Error_Location    := E_Loc;
-      A.Execution         := Execution;
+      A.Warnings_Off := Vertex_Ctx.Warnings_Off;
+      A.Error_Location := E_Loc;
+      A.Execution := Execution;
 
       if Is_Fold_Check then
          A.Pretty_Print_Kind := Pretty_Print_Folded_Function_Check;
@@ -259,6 +256,7 @@ package body Flow.Control_Flow_Graph.Utility is
          case Aspect is
             when DIC =>
                A.Pretty_Print_Kind := Pretty_Print_DIC;
+
             when No_Aspect =>
                null;
          end case;
@@ -274,13 +272,12 @@ package body Flow.Control_Flow_Graph.Utility is
 
    function Make_Aux_Vertex_Attributes
      (E_Loc     : Node_Or_Entity_Id := Empty;
-      Execution : Execution_Kind_T  := Normal_Execution)
-      return V_Attributes
+      Execution : Execution_Kind_T := Normal_Execution) return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
    begin
       A.Error_Location := E_Loc;
-      A.Execution      := Execution;
+      A.Execution := Execution;
 
       return A;
    end Make_Aux_Vertex_Attributes;
@@ -289,14 +286,14 @@ package body Flow.Control_Flow_Graph.Utility is
    -- Make_Record_Tree_Attributes --
    ---------------------------------
 
-   function Make_Record_Tree_Attributes (Leaf : V_Attributes)
-                                         return V_Attributes
+   function Make_Record_Tree_Attributes
+     (Leaf : V_Attributes) return V_Attributes
    is
       A : V_Attributes := Leaf;
    begin
-      A.Variables_Used            := Flow_Id_Sets.Empty_Set;
+      A.Variables_Used := Flow_Id_Sets.Empty_Set;
       A.Variables_Explicitly_Used := Flow_Id_Sets.Empty_Set;
-      A.Variables_Defined         := Flow_Id_Sets.Empty_Set;
+      A.Variables_Defined := Flow_Id_Sets.Empty_Set;
 
       return A;
    end Make_Record_Tree_Attributes;
@@ -307,26 +304,25 @@ package body Flow.Control_Flow_Graph.Utility is
 
    function Make_Call_Attributes
      (Callsite   : Node_Id;
-      Var_Use    : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
-      Subp_Calls : Call_Sets.Set     := Call_Sets.Empty_Set;
-      Indt_Calls : Node_Sets.Set     := Node_Sets.Empty_Set;
+      Var_Use    : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      Subp_Calls : Call_Sets.Set := Call_Sets.Empty_Set;
+      Indt_Calls : Node_Sets.Set := Node_Sets.Empty_Set;
       Vertex_Ctx : Vertex_Context;
-      E_Loc      : Node_Or_Entity_Id := Empty)
-      return V_Attributes
+      E_Loc      : Node_Or_Entity_Id := Empty) return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
       pragma Unreferenced (Callsite);
    begin
       A.Variables_Explicitly_Used := Var_Use;
-      A.Variables_Used            := Var_Use;
-      A.Subprogram_Calls          := Subp_Calls;
-      A.Indirect_Calls            := Indt_Calls;
-      A.Is_Program_Node           := True;
-      A.Loops                     := Vertex_Ctx.Current_Loops;
-      A.In_Nested_Package         := Vertex_Ctx.In_Nested_Package;
-      A.Warnings_Off              := Vertex_Ctx.Warnings_Off;
-      A.Is_Callsite               := True;
-      A.Error_Location            := E_Loc;
+      A.Variables_Used := Var_Use;
+      A.Subprogram_Calls := Subp_Calls;
+      A.Indirect_Calls := Indt_Calls;
+      A.Is_Program_Node := True;
+      A.Loops := Vertex_Ctx.Current_Loops;
+      A.In_Nested_Package := Vertex_Ctx.In_Nested_Package;
+      A.Warnings_Off := Vertex_Ctx.Warnings_Off;
+      A.Is_Callsite := True;
+      A.Error_Location := E_Loc;
 
       --  ??? The below is the logic for doing IPFA within a
       --  compilation unit. To be enabled by M227-027.
@@ -363,33 +359,31 @@ package body Flow.Control_Flow_Graph.Utility is
       Subp_Calls : Call_Sets.Set := Call_Sets.Empty_Set;
       Indt_Calls : Node_Sets.Set := Node_Sets.Empty_Set;
       Vertex_Ctx : Vertex_Context;
-      E_Loc      : Node_Or_Entity_Id)
-      return V_Attributes
+      E_Loc      : Node_Or_Entity_Id) return V_Attributes
    is
       Subprogram : constant Entity_Id := Get_Called_Entity (Callsite);
       Scope      : Flow_Scope renames FA.B_Scope;
 
       Ext_Relevant_To_Formal : constant Boolean :=
-        Has_Extensions_Visible (Subprogram) or else
-        Is_Class_Wide_Type (Get_Type (Formal, Scope))
-        or else
-          (Flow_Classwide.Is_Dispatching_Call (Callsite)
-           and then Ekind (Formal) in Formal_Kind
-           and then Is_Controlling_Formal (Formal));
+        Has_Extensions_Visible (Subprogram)
+        or else Is_Class_Wide_Type (Get_Type (Formal, Scope))
+        or else (Flow_Classwide.Is_Dispatching_Call (Callsite)
+                 and then Ekind (Formal) in Formal_Kind
+                 and then Is_Controlling_Formal (Formal));
 
       A : V_Attributes := Null_Attributes;
 
    begin
-      A.Is_Parameter      := True;
-      A.Subprogram_Calls  := Subp_Calls;
-      A.Indirect_Calls    := Indt_Calls;
-      A.Call_Vertex       := Direct_Mapping_Id (Callsite);
-      A.Parameter_Actual  := Direct_Mapping_Id (Actual);
-      A.Parameter_Formal  := Direct_Mapping_Id (Formal);
-      A.Loops             := Vertex_Ctx.Current_Loops;
+      A.Is_Parameter := True;
+      A.Subprogram_Calls := Subp_Calls;
+      A.Indirect_Calls := Indt_Calls;
+      A.Call_Vertex := Direct_Mapping_Id (Callsite);
+      A.Parameter_Actual := Direct_Mapping_Id (Actual);
+      A.Parameter_Formal := Direct_Mapping_Id (Formal);
+      A.Loops := Vertex_Ctx.Current_Loops;
       A.In_Nested_Package := Vertex_Ctx.In_Nested_Package;
-      A.Warnings_Off      := Vertex_Ctx.Warnings_Off;
-      A.Error_Location    := E_Loc;
+      A.Warnings_Off := Vertex_Ctx.Warnings_Off;
+      A.Error_Location := E_Loc;
 
       if In_Vertex then
          if Ekind (Formal) = E_Out_Parameter then
@@ -406,9 +400,10 @@ package body Flow.Control_Flow_Graph.Utility is
                --  type, then the callee is allowed to use the top-level
                --  discriminants, array bounds and tags.
 
-               pragma Assert
-                 (Is_Tagged_Type (Etype (Formal)) =
-                    Is_Tagged_Type (Formal_Type));
+               pragma
+                 Assert
+                   (Is_Tagged_Type (Etype (Formal))
+                      = Is_Tagged_Type (Formal_Type));
 
                --  ??? Extract top-level tag
 
@@ -439,8 +434,10 @@ package body Flow.Control_Flow_Graph.Utility is
                         Actual_Object := Expression (Actual_Object);
                      end loop;
 
-                     pragma Assert
-                       (Nkind (Actual_Object) /= N_Unchecked_Type_Conversion);
+                     pragma
+                       Assert
+                         (Nkind (Actual_Object)
+                            /= N_Unchecked_Type_Conversion);
 
                      --  If the actual parameter is constrained, then the
                      --  bounds can be picked like for the 'First/'Last.
@@ -453,7 +450,7 @@ package body Flow.Control_Flow_Graph.Utility is
 
                      if Is_Constrained (Actual_Type) then
 
-                        Index      := First_Index (Actual_Type);
+                        Index := First_Index (Actual_Type);
                         Index_Type := Etype (Index);
 
                         while Present (Index) loop
@@ -484,12 +481,12 @@ package body Flow.Control_Flow_Graph.Utility is
 
                      else
                         Get_Assignment_Target_Properties
-                           (Actual,
-                            Partial_Definition => Partial,
-                            View_Conversion    => Unused_Vc,
-                            Map_Root           => Map_Root,
-                            Seq                => Unused_Seq,
-                            Scope              => Scope);
+                          (Actual,
+                           Partial_Definition => Partial,
+                           View_Conversion    => Unused_Vc,
+                           Map_Root           => Map_Root,
+                           Seq                => Unused_Seq,
+                           Scope              => Scope);
 
                         --  If the bounds are located in a "blob", e.g. in an
                         --  array component or pointed-to object, then they are
@@ -503,7 +500,7 @@ package body Flow.Control_Flow_Graph.Utility is
 
                         elsif Has_Bounds (Map_Root, Scope) then
                            A.Variables_Used.Insert
-                              ((Map_Root with delta Facet => The_Bounds));
+                             ((Map_Root with delta Facet => The_Bounds));
                         end if;
 
                         --  Make sure that we have actually picked some
@@ -522,12 +519,12 @@ package body Flow.Control_Flow_Graph.Utility is
                then
 
                   Get_Assignment_Target_Properties
-                     (Actual,
-                      Partial_Definition => Partial,
-                      View_Conversion    => Unused_Vc,
-                      Map_Root           => Map_Root,
-                      Seq                => Unused_Seq,
-                      Scope              => Scope);
+                    (Actual,
+                     Partial_Definition => Partial,
+                     View_Conversion    => Unused_Vc,
+                     Map_Root           => Map_Root,
+                     Seq                => Unused_Seq,
+                     Scope              => Scope);
 
                   --  If the discrimnants are located in a "blob", e.g. in an
                   --  array component or pointed-to object, then they are
@@ -653,29 +650,28 @@ package body Flow.Control_Flow_Graph.Utility is
       Mode       : Param_Mode;
       Scope      : Flow_Scope;
       Vertex_Ctx : Vertex_Context;
-      E_Loc      : Node_Or_Entity_Id := Empty)
-      return V_Attributes
+      E_Loc      : Node_Or_Entity_Id := Empty) return V_Attributes
    is
       G : constant Flow_Id := Change_Variant (Global, Normal_Use);
-      A : V_Attributes     := Null_Attributes;
+      A : V_Attributes := Null_Attributes;
 
       Tmp : Flow_Id_Sets.Set;
    begin
       A.Is_Global_Parameter := True;
-      A.Call_Vertex         := Direct_Mapping_Id (Callsite);
-      A.Parameter_Formal    := Global;
-      A.Loops               := Vertex_Ctx.Current_Loops;
-      A.In_Nested_Package   := Vertex_Ctx.In_Nested_Package;
-      A.Warnings_Off        := Vertex_Ctx.Warnings_Off;
-      A.Error_Location      := E_Loc;
-      A.Is_Assertion        := Mode = Mode_Proof;
+      A.Call_Vertex := Direct_Mapping_Id (Callsite);
+      A.Parameter_Formal := Global;
+      A.Loops := Vertex_Ctx.Current_Loops;
+      A.In_Nested_Package := Vertex_Ctx.In_Nested_Package;
+      A.Warnings_Off := Vertex_Ctx.Warnings_Off;
+      A.Error_Location := E_Loc;
+      A.Is_Assertion := Mode = Mode_Proof;
 
       case Global.Variant is
          when In_View =>
             if Mode = Mode_Out then
                if G.Kind = Direct_Mapping
-                 and then
-                   Is_Unconstrained_Or_Tagged_Item (Get_Direct_Mapping_Id (G))
+                 and then Is_Unconstrained_Or_Tagged_Item
+                            (Get_Direct_Mapping_Id (G))
                then
                   for C of Get_Components (G, Scope) loop
                      if Is_Discriminant (C) then
@@ -731,8 +727,7 @@ package body Flow.Control_Flow_Graph.Utility is
       Subp_Calls  : Call_Sets.Set := Call_Sets.Empty_Set;
       Indt_Calls  : Node_Sets.Set := Node_Sets.Empty_Set;
       Vertex_Ctx  : Vertex_Context;
-      E_Loc       : Node_Or_Entity_Id)
-      return V_Attributes
+      E_Loc       : Node_Or_Entity_Id) return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
 
@@ -753,17 +748,16 @@ package body Flow.Control_Flow_Graph.Utility is
       --  flooded with assertions that check for ordinary formal parameters.
 
       if Is_External_Call (Call_Vertex) then
-         A.Is_Parameter     := True;
+         A.Is_Parameter := True;
          A.Subprogram_Calls := Subp_Calls;
-         A.Indirect_Calls   := Indt_Calls;
-         A.Call_Vertex      := Direct_Mapping_Id (Call_Vertex);
-         A.Parameter_Actual :=
-           Direct_Mapping_Id (Prefix (Name (Call_Vertex)));
+         A.Indirect_Calls := Indt_Calls;
+         A.Call_Vertex := Direct_Mapping_Id (Call_Vertex);
+         A.Parameter_Actual := Direct_Mapping_Id (Prefix (Name (Call_Vertex)));
          A.Parameter_Formal :=
            Direct_Mapping_Id (Sinfo.Nodes.Scope (Subprogram));
-         A.Loops            := Vertex_Ctx.Current_Loops;
-         A.Warnings_Off     := Vertex_Ctx.Warnings_Off;
-         A.Error_Location   := E_Loc;
+         A.Loops := Vertex_Ctx.Current_Loops;
+         A.Warnings_Off := Vertex_Ctx.Warnings_Off;
+         A.Error_Location := E_Loc;
 
          if In_Vertex then
             declare
@@ -828,20 +822,20 @@ package body Flow.Control_Flow_Graph.Utility is
 
          begin
             A.Is_Implicit_Parameter := True;
-            A.Call_Vertex           := Direct_Mapping_Id (Call_Vertex);
-            A.Parameter_Formal      :=
-              Change_Variant (Implicit,
-                              (if In_Vertex then In_View else Out_View));
-            A.Loops                 := Vertex_Ctx.Current_Loops;
-            A.In_Nested_Package     := Vertex_Ctx.In_Nested_Package;
-            A.Warnings_Off          := Vertex_Ctx.Warnings_Off;
-            A.Error_Location        := E_Loc;
+            A.Call_Vertex := Direct_Mapping_Id (Call_Vertex);
+            A.Parameter_Formal :=
+              Change_Variant
+                (Implicit, (if In_Vertex then In_View else Out_View));
+            A.Loops := Vertex_Ctx.Current_Loops;
+            A.In_Nested_Package := Vertex_Ctx.In_Nested_Package;
+            A.Warnings_Off := Vertex_Ctx.Warnings_Off;
+            A.Error_Location := E_Loc;
 
             if In_Vertex then
-               A.Variables_Used            := Implicit_Flat;
+               A.Variables_Used := Implicit_Flat;
                A.Variables_Explicitly_Used := Implicit_Flat;
             else
-               A.Variables_Defined         := Implicit_Flat;
+               A.Variables_Defined := Implicit_Flat;
             end if;
 
             --  For internal calls the implicit parameter acts as an ordinary
@@ -891,34 +885,31 @@ package body Flow.Control_Flow_Graph.Utility is
      (F_Ent : Flow_Id;
       Mode  : Param_Mode;
       E_Loc : Node_Or_Entity_Id := Empty;
-      S     : Flow_Scope        := Null_Flow_Scope)
-      return V_Attributes
+      S     : Flow_Scope := Null_Flow_Scope) return V_Attributes
    is
-      A          : V_Attributes       := Null_Attributes;
+      A          : V_Attributes := Null_Attributes;
       Entire_Var : constant Entity_Id :=
         Get_Direct_Mapping_Id (Entire_Variable (F_Ent));
 
    begin
       A.Error_Location := E_Loc;
-      A.Is_Constant    :=
-        Ekind (Entire_Var) in E_In_Parameter | E_Loop_Parameter;
-      A.Mode           := Mode;
+      A.Is_Constant := Ekind (Entire_Var) in E_In_Parameter | E_Loop_Parameter;
+      A.Mode := Mode;
 
       case F_Ent.Variant is
          when Initial_Value =>
 
-            A.Is_Initialized := A.Mode in Mode_In | Mode_In_Out
+            A.Is_Initialized :=
+              A.Mode in Mode_In | Mode_In_Out
               or else Ekind (Entire_Var) in E_Loop_Parameter | E_Constant
               or else (not Is_In_Analyzed_Files (Entire_Var)
-                         and then
-                       Is_Initialized_At_Elaboration (Entire_Var, S));
+                       and then Is_Initialized_At_Elaboration (Entire_Var, S));
 
             --  Is_Import is True for:
             --    * formal "in" and "in out" parameters
             --    * concurrent types (since they are implicit formal
             --      parameters), they components, discriminants and Part_Ofs
-            A.Is_Import :=
-              A.Mode in Mode_In | Mode_In_Out;
+            A.Is_Import := A.Mode in Mode_In | Mode_In_Out;
 
             --  Special handling of initialization and import status for
             --  discriminants, bounds and tags belonging to formal parameters
@@ -935,9 +926,7 @@ package body Flow.Control_Flow_Graph.Utility is
                   A.Is_Initialized := True;
                end if;
 
-            elsif Is_Bound (F_Ent)
-              or else Is_Record_Tag (F_Ent)
-            then
+            elsif Is_Bound (F_Ent) or else Is_Record_Tag (F_Ent) then
                --  Discriminants, array bounds and tags are *always*
                --  initialized. They are also implicit imports if they are
                --  out parameters.
@@ -953,16 +942,15 @@ package body Flow.Control_Flow_Graph.Utility is
                A.Is_Initialized := True;
             end if;
 
-            A.Variables_Defined := Flow_Id_Sets.To_Set (Change_Variant
-                                                          (F_Ent, Normal_Use));
+            A.Variables_Defined :=
+              Flow_Id_Sets.To_Set (Change_Variant (F_Ent, Normal_Use));
 
          when Final_Value =>
             A.Is_Export :=
-              A.Mode in Exported_Global_Modes
-              and then not Is_Bound (F_Ent);
+              A.Mode in Exported_Global_Modes and then not Is_Bound (F_Ent);
 
-            A.Variables_Used := Flow_Id_Sets.To_Set (Change_Variant
-                                                       (F_Ent, Normal_Use));
+            A.Variables_Used :=
+              Flow_Id_Sets.To_Set (Change_Variant (F_Ent, Normal_Use));
             A.Variables_Explicitly_Used := A.Variables_Used;
 
          when others =>
@@ -977,32 +965,29 @@ package body Flow.Control_Flow_Graph.Utility is
    -------------------------------------
 
    function Make_Global_Variable_Attributes
-     (F    : Flow_Id;
-      Mode : Param_Mode)
-      return V_Attributes
+     (F : Flow_Id; Mode : Param_Mode) return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
    begin
-      A.Is_Global   := True;
+      A.Is_Global := True;
       A.Is_Constant := Mode in In_Global_Modes;
-      A.Mode        := Mode;
+      A.Mode := Mode;
 
       case F.Variant is
          when Initial_Value =>
             if Mode in Initialized_Global_Modes
-              or else
-              ((Is_Input_Discriminant (F)
-                  or else Is_Bound (F)
-                  or else Is_Record_Tag (F))
-               and then
-                 not (Is_Constituent (F) or else Is_Implicit_Constituent (F)))
+              or else ((Is_Input_Discriminant (F)
+                        or else Is_Bound (F)
+                        or else Is_Record_Tag (F))
+                       and then not (Is_Constituent (F)
+                                     or else Is_Implicit_Constituent (F)))
             then
                --  Discriminants, array bounds and tags initialized imports,
                --  except when they belong to a constituent of an abstract
                --  state.
 
                A.Is_Initialized := True;
-               A.Is_Import      := True;
+               A.Is_Import := True;
             end if;
 
             A.Variables_Defined :=
@@ -1010,8 +995,8 @@ package body Flow.Control_Flow_Graph.Utility is
 
          when Final_Value =>
             --  Array bounds are not exported.
-            A.Is_Export := Mode in Exported_Global_Modes
-              and then not Is_Bound (F);
+            A.Is_Export :=
+              Mode in Exported_Global_Modes and then not Is_Bound (F);
 
             A.Variables_Used :=
               Flow_Id_Sets.To_Set (Change_Variant (F, Normal_Use));
@@ -1032,24 +1017,23 @@ package body Flow.Control_Flow_Graph.Utility is
      (FA         : Flow_Analysis_Graphs;
       Scope      : Flow_Scope;
       F          : Flow_Id;
-      Vertex_Ctx : Vertex_Context)
-      return V_Attributes
+      Vertex_Ctx : Vertex_Context) return V_Attributes
    is
-      A  : V_Attributes     := Null_Attributes;
+      A  : V_Attributes := Null_Attributes;
       DI : constant Node_Id := Get_Default_Initialization (F);
    begin
-      A.Is_Default_Init   := True;
-      A.Loops             := Vertex_Ctx.Current_Loops;
+      A.Is_Default_Init := True;
+      A.Loops := Vertex_Ctx.Current_Loops;
       A.In_Nested_Package := Vertex_Ctx.In_Nested_Package;
-      A.Warnings_Off      := Vertex_Ctx.Warnings_Off;
+      A.Warnings_Off := Vertex_Ctx.Warnings_Off;
       if Present (DI) then
          A.Error_Location := DI;
       else
          A.Error_Location := Etype (Get_Direct_Mapping_Id (F));
       end if;
 
-      A.Default_Init_Var  := F;
-      A.Default_Init_Val  := DI;
+      A.Default_Init_Var := F;
+      A.Default_Init_Val := DI;
 
       A.Variables_Defined := Flow_Id_Sets.To_Set (F);
       if Present (DI) then
@@ -1078,8 +1062,7 @@ package body Flow.Control_Flow_Graph.Utility is
       Inputs     : Flow_Id_Sets.Set;
       Scope      : Flow_Scope;
       Vertex_Ctx : Vertex_Context;
-      E_Loc      : Node_Or_Entity_Id)
-      return V_Attributes
+      E_Loc      : Node_Or_Entity_Id) return V_Attributes
    is
       A : V_Attributes;
 
@@ -1097,17 +1080,18 @@ package body Flow.Control_Flow_Graph.Utility is
          Split_Inputs.Union (Flatten_Variable (Input, Scope));
       end loop;
 
-      A := Make_Basic_Attributes
-        (Var_Def    => Split_State,
-         Var_Ex_Use => Split_Inputs,
-         Var_Im_Use =>
-           (if Present (The_State)
-              and then Is_Initialized_At_Elaboration (The_State, Scope)
-              and then Is_Initialized_In_Specification (The_State, Scope)
-            then Split_State
-            else Flow_Id_Sets.Empty_Set),
-         Vertex_Ctx => Vertex_Ctx,
-         E_Loc      => E_Loc);
+      A :=
+        Make_Basic_Attributes
+          (Var_Def    => Split_State,
+           Var_Ex_Use => Split_Inputs,
+           Var_Im_Use =>
+             (if Present (The_State)
+                and then Is_Initialized_At_Elaboration (The_State, Scope)
+                and then Is_Initialized_In_Specification (The_State, Scope)
+              then Split_State
+              else Flow_Id_Sets.Empty_Set),
+           Vertex_Ctx => Vertex_Ctx,
+           E_Loc      => E_Loc);
       A.Is_Package_Initialization := True;
       return A;
    end Make_Package_Initialization_Attributes;

@@ -23,7 +23,7 @@
 
 with Ada.Text_IO;
 with GNATCOLL.Utils;
-with SPARK_Util;     use SPARK_Util;
+with SPARK_Util; use SPARK_Util;
 
 package body Flow_Generated_Globals is
 
@@ -40,10 +40,12 @@ package body Flow_Generated_Globals is
       if Debug_Tree_Traversal then
          Term_Info.Set_Style (Dim);
          Ada.Text_IO.Put_Line
-           ("Finished " &
-              Full_Source_Name (E) &
-              " (" & GNATCOLL.Utils.Image (Integer (E), 1) & ")" &
-              " with contracts:");
+           ("Finished "
+            & Full_Source_Name (E)
+            & " ("
+            & GNATCOLL.Utils.Image (Integer (E), 1)
+            & ")"
+            & " with contracts:");
          Term_Info.Set_Style (Normal);
       end if;
    end Debug_Traversal;
@@ -56,14 +58,13 @@ package body Flow_Generated_Globals is
    pragma Annotate (Xcov, Exempt_On, "Assertion code");
    function Disjoint (A, B, C : Name_Sets.Set) return Boolean is
    begin
-      return not
-        (for some E of A => B.Contains (E) or else C.Contains (E))
-          or else
-        (for some E of B => C.Contains (E));
+      return
+        not (for some E of A => B.Contains (E) or else C.Contains (E))
+        or else (for some E of B => C.Contains (E));
    end Disjoint;
    pragma Annotate (Xcov, Exempt_Off);
 
---  Start of processing for Flow_Generated_Globals
+   --  Start of processing for Flow_Generated_Globals
 
 begin
    Term_Info.Init_For_Stdout (Colors => Yes);

@@ -1,18 +1,24 @@
 bytes.adb:7:07: info: range check proved (CVC5: 2 VC), in instantiation at use_bytes_gen.adb:11
 bytes.adb:8:07: info: address in address clause is compatible with object alignment (Trivial), in instantiation at use_bytes_gen.adb:11
 bytes.adb:8:07: info: object is suitable for aliasing via address clause (Trivial), in instantiation at use_bytes_gen.adb:11
+bytes.adb:8:07: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at use_bytes_gen.adb:11
 bytes.adb:9:25: info: object is suitable for aliasing via address clause (Trivial), in instantiation at use_bytes_gen.adb:11
+bytes.adb:9:25: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at use_bytes_gen.adb:11
 bytes.adb:9:25: info: types of aliased objects have the same size (Trivial), in instantiation at use_bytes_gen.adb:11
 bytes.adb:19:07: info: range check proved (CVC5: 2 VC), in instantiation at use_bytes_gen.adb:12
 bytes.adb:20:07: info: address in address clause is compatible with object alignment (Trivial), in instantiation at use_bytes_gen.adb:12
 bytes.adb:20:07: info: object is suitable for aliasing via address clause (Trivial), in instantiation at use_bytes_gen.adb:12
+bytes.adb:20:07: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at use_bytes_gen.adb:12
 bytes.adb:21:25: info: object is suitable for aliasing via address clause (Trivial), in instantiation at use_bytes_gen.adb:12
+bytes.adb:21:25: info: type is suitable as source for unchecked conversion (Trivial), in instantiation at use_bytes_gen.adb:12
 bytes.adb:21:25: info: types of aliased objects have the same size (Trivial), in instantiation at use_bytes_gen.adb:12
 bytes.adb:24:16: high: "Data" is not initialized, in instantiation at use_bytes_gen.adb:12
 use_bytes.adb:12:13: info: implicit aspect Always_Terminates on "Extract" has been proved, subprogram will terminate
 use_bytes.adb:15:07: info: address in address clause is compatible with object alignment (Trivial)
 use_bytes.adb:15:07: info: object is suitable for aliasing via address clause (Trivial)
+use_bytes.adb:15:07: info: type is suitable as source for unchecked conversion (Trivial)
 use_bytes.adb:16:25: info: object is suitable for aliasing via address clause (Trivial)
+use_bytes.adb:16:25: info: type is suitable as source for unchecked conversion (Trivial)
 use_bytes.adb:16:25: info: types of aliased objects have the same size (Trivial)
 use_bytes.adb:19:29: info: unrolling loop [info-unrolling-inlining]
 use_bytes.adb:26:19: high: assertion might fail (e.g. when R = (A => 0, B => 1, C => 41)) [possible fix: you should consider adding a postcondition to function Extract or turning it into an expression function]
@@ -20,7 +26,9 @@ use_bytes2.adb:15:13: info: implicit aspect Always_Terminates on "Extract" has b
 use_bytes2.adb:16:07: info: range check proved (CVC5: 2 VC)
 use_bytes2.adb:17:07: info: address in address clause is compatible with object alignment (Trivial)
 use_bytes2.adb:17:07: info: object is suitable for aliasing via address clause (Trivial)
+use_bytes2.adb:17:07: info: type is suitable as source for unchecked conversion (Trivial)
 use_bytes2.adb:18:25: info: object is suitable for aliasing via address clause (Trivial)
+use_bytes2.adb:18:25: info: type is suitable as source for unchecked conversion (Trivial)
 use_bytes2.adb:18:25: info: types of aliased objects have the same size (Trivial)
 use_bytes2.adb:21:29: info: unrolling loop [info-unrolling-inlining]
 use_bytes2.adb:28:19: high: assertion might fail (e.g. when R = (A => 0, B => 1, C => 41)) [possible fix: you should consider adding a postcondition to function Extract or turning it into an expression function]

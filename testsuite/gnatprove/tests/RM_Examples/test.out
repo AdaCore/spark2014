@@ -104,9 +104,9 @@ initialization_and_elaboration-private_child.ads:1:48: warning: Initial_Conditio
 initialization_and_elaboration-private_child.ads:1:48: warning: the elaboration of "Initialization_And_Elaboration" is not known to precede the elaboration of the current unit
 initialization_and_elaboration-private_child.ads:1:48: warning: use pragma Elaborate_Body in "Initialization_And_Elaboration" or pragma Elaborate in the current unit
 initialization_and_elaboration-private_child.ads:4:08: info: flow dependencies proved
-initialization_and_elaboration-private_child.ads:5:08: medium: initial condition might fail
+initialization_and_elaboration-private_child.ads:5:29: medium: initial condition might fail [possible fix: you should consider adding a postcondition to function Get_Something or turning it into an expression function in its unit spec]
 initialization_and_elaboration.ads:6:08: info: flow dependencies proved
-initialization_and_elaboration.ads:8:08: medium: initial condition might fail
+initialization_and_elaboration.ads:8:29: medium: initial condition might fail [possible fix: you should consider adding a postcondition to function Get_It or turning it into an expression function]
 initialization_and_elaboration.ads:13:11: info: data dependencies proved
 initialization_and_elaboration.ads:15:13: info: implicit aspect Always_Terminates on "Get_It" has been proved, subprogram will terminate
 initialization_and_elaboration.ads:16:11: info: data dependencies proved

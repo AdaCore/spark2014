@@ -31,8 +31,8 @@ private package Flow_Generated_Globals.Phase_2.Visibility is
    --  Just like Flow_Scope, but for Entity_Names
 
    type Name_Info_T is record
-      Is_Package      : Boolean;
-      Is_Private      : Boolean;
+      Is_Package : Boolean;
+      Is_Private : Boolean;
 
       Parent          : Any_Entity_Name;
       Instance_Parent : Any_Entity_Name;
@@ -52,20 +52,14 @@ private package Flow_Generated_Globals.Phase_2.Visibility is
    ----------------------------------------------------------------------------
 
    function State_Refinement_Is_Visible
-     (State : Entity_Name;
-      From  : Name_Scope)
-      return Boolean
+     (State : Entity_Name; From : Name_Scope) return Boolean
    with Pre => GG_Is_Abstract_State (State);
 
    function Part_Of_Is_Visible
-     (State : Entity_Name;
-      From  : Name_Scope)
-      return Boolean
+     (State : Entity_Name; From : Name_Scope) return Boolean
    with Pre => GG_Is_Abstract_State (State);
 
-   function Child_Packages
-     (Parent_Package : Entity_Name)
-      return Name_Sets.Set;
+   function Child_Packages (Parent_Package : Entity_Name) return Name_Sets.Set;
    --  Returns known child packages of Parent_Package as derived in phase 1, if
    --  any. ??? Add a precondition to ensure the Parent_Package is actually a
    --  package.

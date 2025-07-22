@@ -76,13 +76,9 @@ bad_moves_of_deep.adb:90:06: error: dereference from "X" is not writable
 bad_moves_of_deep.adb:90:06: error: launch "gnatprove --explain=E0010" for more information
 bad_moves_of_deep.adb:90:06: error: object was moved at line 9 [E0010]
 bad_moves_of_shallow.adb:10:25: error: illegal move during elaboration
-bad_moves_of_shallow.adb:13:14: error: launch "gnatprove --explain=E0010" for more information
-bad_moves_of_shallow.adb:13:14: error: object was moved at line 14 [E0010]
-bad_moves_of_shallow.adb:13:14: error: return from "Bad_1" with moved value for "X1"
 bad_moves_of_shallow.adb:13:25: info: data dependencies proved
-bad_moves_of_shallow.adb:16:22: error: "X1" is not readable
-bad_moves_of_shallow.adb:16:22: error: launch "gnatprove --explain=E0010" for more information
-bad_moves_of_shallow.adb:16:22: error: object was moved at line 14 [E0010]
+bad_moves_of_shallow.adb:14:24: error: object was declared as not writable at line 13
+bad_moves_of_shallow.adb:14:24: error: part of "X1" is not writable
 bad_moves_of_shallow.adb:19:14: error: launch "gnatprove --explain=E0010" for more information
 bad_moves_of_shallow.adb:19:14: error: object was moved at line 21 [E0010]
 bad_moves_of_shallow.adb:19:14: error: return from "Bad_2" with moved value for "X"

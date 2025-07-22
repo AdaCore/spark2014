@@ -719,6 +719,7 @@ spark-text_io.ads:701:24: medium: precondition might fail, cannot prove Is_Open 
 spark_ada_command_line.ads:61:09: warning: Initial_Condition of package "Text_IO" is ignored [init-cond-ignored]
 spark_ada_command_line.ads:61:09: warning: the elaboration of "Text_IO" is not known to precede the elaboration of the current unit
 spark_ada_command_line.ads:61:09: warning: use pragma Elaborate_Body in "Text_IO" or pragma Elaborate in the current unit
+spark_ada_command_line.ads:62:26: info: initialization of "SPARK_Ada_Command_Line.State" proved
 spark_ada_command_line.ads:63:08: info: flow dependencies proved
 spark_dns_main.adb:27:11: info: ceiling priority protocol is respected (CVC5: 1 VC)
 spark_dns_main.adb:28:08: info: data dependencies proved

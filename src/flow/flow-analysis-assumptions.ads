@@ -34,7 +34,7 @@ package Flow.Analysis.Assumptions is
    --  Return all the information registered for all pragma Assume statements
 
    procedure Register_Pragma_Assume_Statement (Prag : N_Pragma_Id)
-     with Pre => Is_Pragma_Check (Prag, Name_Assume);
+   with Pre => Is_Pragma_Check (Prag, Name_Assume);
    --  Registers a pragma Assume statment's filename, line, column, and
    --  subprogram info for the gnatprove summary report.
 

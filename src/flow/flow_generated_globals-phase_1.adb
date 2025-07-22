@@ -21,24 +21,24 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Aspects;                 use Aspects;
-with Einfo.Utils;             use Einfo.Utils;
-with Elists;                  use Elists;
-with Lib.Util;                use Lib.Util;
-with Namet;                   use Namet;
-with Osint.C;                 use Osint.C;
-with Sem_Aux;                 use Sem_Aux;
-with Sem_Eval;                use Sem_Eval;
-with Sem_Util;                use Sem_Util;
-with Sinfo.Utils;             use Sinfo.Utils;
-with Snames;                  use Snames;
-with Uintp;                   use Uintp;
+with Aspects;     use Aspects;
+with Einfo.Utils; use Einfo.Utils;
+with Elists;      use Elists;
+with Lib.Util;    use Lib.Util;
+with Namet;       use Namet;
+with Osint.C;     use Osint.C;
+with Sem_Aux;     use Sem_Aux;
+with Sem_Eval;    use Sem_Eval;
+with Sem_Util;    use Sem_Util;
+with Sinfo.Utils; use Sinfo.Utils;
+with Snames;      use Snames;
+with Uintp;       use Uintp;
 
-with Common_Iterators;        use Common_Iterators;
-with SPARK_Definition;        use SPARK_Definition;
-with SPARK_Frame_Conditions;  use SPARK_Frame_Conditions;
-with SPARK_Util.Subprograms;  use SPARK_Util.Subprograms;
-with SPARK2014VSN;            use SPARK2014VSN;
+with Common_Iterators;       use Common_Iterators;
+with SPARK_Definition;       use SPARK_Definition;
+with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
+with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
+with SPARK2014VSN;           use SPARK2014VSN;
 
 with Flow_Generated_Globals.Phase_1.Write;
 use Flow_Generated_Globals.Phase_1.Write;
@@ -85,20 +85,20 @@ package body Flow_Generated_Globals.Phase_1 is
    --  belonging to the same an object, i.e. (in the regexp syntax)
    --  "(package__)+object(__component)*__entry".
 
-   procedure GG_Register_Protected_Object (PO   : Entity_Id;
-                                           Prio : Priority_Value);
+   procedure GG_Register_Protected_Object
+     (PO : Entity_Id; Prio : Priority_Value);
    --  Register protected object and its priority
 
    function Protected_Type_Priority (Typ : Entity_Id) return Priority_Value
    with Pre => Is_Protected_Type (Typ);
    --  Return the priority associated to the protected type Typ
 
-   procedure Register_PO_Info (PO     : Entity_Id;
-                               PT     : Entity_Id;
-                               Prefix : String)
-   with Pre => Ekind (PO) = E_Variable
-               and then Is_Type (PT)
-               and then Prefix'Length > 0;
+   procedure Register_PO_Info (PO : Entity_Id; PT : Entity_Id; Prefix : String)
+   with
+     Pre =>
+       Ekind (PO) = E_Variable
+       and then Is_Type (PT)
+       and then Prefix'Length > 0;
    --  Register the protected object with its priorty and then Max_Queue_Length
    --  for an entry.
 
@@ -132,9 +132,7 @@ package body Flow_Generated_Globals.Phase_1 is
    --------------------------------
 
    procedure GG_Register_Constant_Calls
-     (E     : Entity_Id;
-      Calls : Node_Lists.List)
-   is
+     (E : Entity_Id; Calls : Node_Lists.List) is
    begin
       New_GG_Line (EK_Constant_Calls);
       Serialize (E);
@@ -147,9 +145,7 @@ package body Flow_Generated_Globals.Phase_1 is
    ------------------------------
 
    procedure GG_Register_Calls
-     (E     : Entity_Id;
-      Calls : Node_Sets.Set;
-      Kind  : ALI_Entry_Kind) is
+     (E : Entity_Id; Calls : Node_Sets.Set; Kind : ALI_Entry_Kind) is
    begin
       New_GG_Line (Kind);
       Serialize (E);
@@ -166,22 +162,19 @@ package body Flow_Generated_Globals.Phase_1 is
       --  expressions.
 
       for Call of Calls loop
-         pragma Assert
-           (if Is_Subprogram (Call)
-            and then Is_Generic_Actual_Subprogram (Call)
-            then
-              (case Ekind (Call) is
-                  when E_Procedure =>
-                    Null_Present (Subprogram_Specification (Call))
-                      or else
-                    Has_Aspects (Subprogram_Spec (Call))
-                      or else
-                    Nkind (Original_Node (Subprogram_Spec (Call))) =
-                      N_Subprogram_Renaming_Declaration,
-                  when E_Function  =>
-                    True,
-                  when others      =>
-                    raise Program_Error));
+         pragma
+           Assert
+             (if Is_Subprogram (Call)
+                  and then Is_Generic_Actual_Subprogram (Call)
+                then
+                  (case Ekind (Call) is
+                     when E_Procedure =>
+                       Null_Present (Subprogram_Specification (Call))
+                       or else Has_Aspects (Subprogram_Spec (Call))
+                       or else Nkind (Original_Node (Subprogram_Spec (Call)))
+                               = N_Subprogram_Renaming_Declaration,
+                     when E_Function => True,
+                     when others => raise Program_Error));
       end loop;
    end GG_Register_Calls;
 
@@ -211,8 +204,7 @@ package body Flow_Generated_Globals.Phase_1 is
       Nonblocking       : Boolean)
    is
       procedure Process_Volatiles_And_States
-        (Objects    : Node_Sets.Set;
-         Local_Vars : Boolean := False);
+        (Objects : Node_Sets.Set; Local_Vars : Boolean := False);
       --  Goes through Objects, finds volatiles and remote states and stores
       --  them in the appropriate containers. Local_Vars should be set to true
       --  when processing local variables for a run-time check that they do not
@@ -256,8 +248,8 @@ package body Flow_Generated_Globals.Phase_1 is
       procedure Serialize (G : Global_Nodes; Label : String) is
       begin
          Serialize (G.Proof_Ins, Label & "proof_in");
-         Serialize (G.Inputs,    Label & "input");
-         Serialize (G.Outputs,   Label & "output");
+         Serialize (G.Inputs, Label & "input");
+         Serialize (G.Outputs, Label & "output");
       end Serialize;
 
       procedure Serialize (Entries_Called : Entry_Call_Sets.Set) is
@@ -269,9 +261,10 @@ package body Flow_Generated_Globals.Phase_1 is
          for EC of Entries_Called loop
             --  For entry calls pretend that we are accessing an object
             --  Package_Name.Object_Name.Entry_Name.
-            Serialize (Full_Entry_Name (EC.Prefix) &
-                         "__" &
-                         Get_Name_String (Chars (EC.Entr)));
+            Serialize
+              (Full_Entry_Name (EC.Prefix)
+               & "__"
+               & Get_Name_String (Chars (EC.Entr)));
          end loop;
       end Serialize;
 
@@ -302,8 +295,7 @@ package body Flow_Generated_Globals.Phase_1 is
       ----------------------------------
 
       procedure Process_Volatiles_And_States
-        (Objects    : Node_Sets.Set;
-         Local_Vars : Boolean := False) is
+        (Objects : Node_Sets.Set; Local_Vars : Boolean := False) is
       begin
          for E of Objects loop
             if not Is_Heap_Variable (E) then
@@ -375,7 +367,7 @@ package body Flow_Generated_Globals.Phase_1 is
          end loop;
       end Process_Protected_Objects;
 
-   --  Start of processing for GG_Register_Global_Info
+      --  Start of processing for GG_Register_Global_Info
 
    begin
       New_GG_Line (EK_Globals);
@@ -391,7 +383,7 @@ package body Flow_Generated_Globals.Phase_1 is
       end if;
       Serialize (Origin);
       Serialize (Traversal_Parents (E));
-      Serialize (Globals.Proper,  "proper_");  -- ??? replace _ with :
+      Serialize (Globals.Proper, "proper_");  -- ??? replace _ with :
       Serialize (Globals.Refined, "refined_");
       if Ekind (E) = E_Package then
          Serialize (Globals.Initializes.Proper, "initializes");
@@ -399,8 +391,8 @@ package body Flow_Generated_Globals.Phase_1 is
          --  state, however this information is required by phase 2.
          Serialize (Globals.Initializes.Refined, "refined_initializes");
       end if;
-      Serialize (Globals.Calls.Proof_Calls,       "calls_proof");
-      Serialize (Globals.Calls.Definite_Calls,    "calls");
+      Serialize (Globals.Calls.Proof_Calls, "calls_proof");
+      Serialize (Globals.Calls.Definite_Calls, "calls");
       Serialize (Globals.Calls.Conditional_Calls, "calls_conditional");
 
       if Ekind (E) = E_Package then
@@ -408,11 +400,8 @@ package body Flow_Generated_Globals.Phase_1 is
          Serialize (Local_Variables, "local_var");
       end if;
 
-      if Ekind (E) in Entry_Kind
-                    | E_Function
-                    | E_Procedure
-                    | E_Task_Type
-                    | E_Package
+      if Ekind (E)
+         in Entry_Kind | E_Function | E_Procedure | E_Task_Type | E_Package
       then
          --  ??? use Is_Proper_Callee here
          if Ekind (E) /= E_Task_Type then
@@ -440,11 +429,11 @@ package body Flow_Generated_Globals.Phase_1 is
          --  object). Consequently, all of their global objects must be
          --  library-level as well.
 
-         pragma Assert
-           (Is_Library_Level_Entity (E)
-              or else
-            (Is_Concurrent_Type (Scope (E))
-             and then Is_Library_Level_Entity (Scope (E))));
+         pragma
+           Assert
+             (Is_Library_Level_Entity (E)
+                or else (Is_Concurrent_Type (Scope (E))
+                         and then Is_Library_Level_Entity (Scope (E))));
 
          --  Collect volatile variables and state abstractions; these sets are
          --  disjoint, so it is more efficient to process them separately
@@ -501,8 +490,7 @@ package body Flow_Generated_Globals.Phase_1 is
    -- Protected_Type_Priority --
    -----------------------------
 
-   function Protected_Type_Priority (Typ : Entity_Id) return Priority_Value
-   is
+   function Protected_Type_Priority (Typ : Entity_Id) return Priority_Value is
       Dummy : constant Int := 0;
       --  Dummy priority value, only used to ensure full initialization
 
@@ -511,28 +499,26 @@ package body Flow_Generated_Globals.Phase_1 is
    begin
       if Present (Priority_Expr) then
          if Is_OK_Static_Expression (Priority_Expr) then
-            return Priority_Value'(Kind  => Static,
-                                   Value =>
-                                     UI_To_Int (Expr_Value (Priority_Expr)));
+            return
+              Priority_Value'
+                (Kind  => Static,
+                 Value => UI_To_Int (Expr_Value (Priority_Expr)));
          else
-            return Priority_Value'(Kind  => Nonstatic,
-                                   Value => Dummy);
+            return Priority_Value'(Kind => Nonstatic, Value => Dummy);
          end if;
 
       else
          if Present (Get_Rep_Item (Typ, Name_Interrupt_Priority)) then
-            return Priority_Value'(Kind  => Last_Interrupt_Prio,
-                                   Value => Dummy);
+            return
+              Priority_Value'(Kind => Last_Interrupt_Prio, Value => Dummy);
 
-         elsif Has_Attach_Handler (Typ)
-           or else Has_Interrupt_Handler (Typ)
+         elsif Has_Attach_Handler (Typ) or else Has_Interrupt_Handler (Typ)
          then
-            return Priority_Value'(Kind  => Default_Interrupt_Prio,
-                                   Value => Dummy);
+            return
+              Priority_Value'(Kind => Default_Interrupt_Prio, Value => Dummy);
 
          else
-            return Priority_Value'(Kind  => Default_Prio,
-                                   Value => Dummy);
+            return Priority_Value'(Kind => Default_Prio, Value => Dummy);
          end if;
       end if;
    end Protected_Type_Priority;
@@ -541,8 +527,8 @@ package body Flow_Generated_Globals.Phase_1 is
    -- GG_Register_Protected_Object --
    ----------------------------------
 
-   procedure GG_Register_Protected_Object (PO   : Entity_Id;
-                                           Prio : Priority_Value)
+   procedure GG_Register_Protected_Object
+     (PO : Entity_Id; Prio : Priority_Value)
    is
       procedure Serialize is new
         Flow_Generated_Globals.Phase_1.Write.Serialize_Discrete
@@ -561,14 +547,11 @@ package body Flow_Generated_Globals.Phase_1 is
    -- Register_PO_Info --
    ----------------------
 
-   procedure Register_PO_Info (PO     : Entity_Id;
-                               PT     : Entity_Id;
-                               Prefix : String)
+   procedure Register_PO_Info (PO : Entity_Id; PT : Entity_Id; Prefix : String)
    is
    begin
       if Is_Protected_Type (PT) then
-         GG_Register_Protected_Object
-           (PO, Protected_Type_Priority (PT));
+         GG_Register_Protected_Object (PO, Protected_Type_Priority (PT));
 
          declare
             Ent : Entity_Id := First_Entity (PT);
@@ -577,9 +560,7 @@ package body Flow_Generated_Globals.Phase_1 is
             --  Register value of Max_Queue_Length for an entry
 
             while Present (Ent) loop
-               if Ekind (Ent) = E_Entry
-                 and then Entity_In_SPARK (Ent)
-               then
+               if Ekind (Ent) = E_Entry and then Entity_In_SPARK (Ent) then
                   declare
                      Max_Queue_Length : constant Nat :=
                        UI_To_Int (Get_Max_Queue_Length (Ent));
@@ -589,8 +570,7 @@ package body Flow_Generated_Globals.Phase_1 is
 
                   begin
                      GG_Register_Max_Queue_Length
-                       (Prefix & "__" &
-                          Get_Name_String (Chars (Ent)),
+                       (Prefix & "__" & Get_Name_String (Chars (Ent)),
                         Max_Queue_Length);
                   end;
                end if;
@@ -608,9 +588,7 @@ package body Flow_Generated_Globals.Phase_1 is
               and then Entity_In_SPARK (Etype (C))
             loop
                Register_PO_Info
-                 (PO,
-                  Etype (C),
-                  Prefix & "__" & Get_Name_String (Chars (C)));
+                 (PO, Etype (C), Prefix & "__" & Get_Name_String (Chars (C)));
                Next_Component (C);
             end loop;
          end;
@@ -648,10 +626,8 @@ package body Flow_Generated_Globals.Phase_1 is
    -- GG_Register_Task_Object --
    -----------------------------
 
-   procedure GG_Register_Task_Object (Typ       : Entity_Id;
-                                      Object    : Entity_Id;
-                                      Instances : Instance_Number)
-   is
+   procedure GG_Register_Task_Object
+     (Typ : Entity_Id; Object : Entity_Id; Instances : Instance_Number) is
    begin
       New_GG_Line (EK_Task_Instance);
       Serialize (Typ);
@@ -666,9 +642,7 @@ package body Flow_Generated_Globals.Phase_1 is
 
    procedure Register_Synchronized (E : Entity_Id) is
    begin
-      if Is_Library_Level_Entity (E)
-        and then Is_Synchronized (E)
-      then
+      if Is_Library_Level_Entity (E) and then Is_Synchronized (E) then
          Synchronized_Vars.Include (E);
       end if;
    end Register_Synchronized;
@@ -682,9 +656,7 @@ package body Flow_Generated_Globals.Phase_1 is
       --  Only register truly volatile objects, i.e. not constants of a
       --  volatile type (that may only come from code with SPARK_Mode => Off),
       --  because they only act as snapshots of some truly volatile objects.
-      if Has_Volatile (E)
-        and then Ekind (E) /= E_Constant
-      then
+      if Has_Volatile (E) and then Ekind (E) /= E_Constant then
          if Has_Volatile_Property (E, Pragma_Async_Readers) then
             Async_Readers_Vars.Include (E);
 
@@ -732,9 +704,9 @@ package body Flow_Generated_Globals.Phase_1 is
         or else not Effective_Writes_Vars.Is_Empty
       then
          New_GG_Line (EK_Volatiles);
-         Serialize (Async_Readers_Vars,    "AR");
-         Serialize (Async_Writers_Vars,    "AW");
-         Serialize (Effective_Reads_Vars,  "ER");
+         Serialize (Async_Readers_Vars, "AR");
+         Serialize (Async_Writers_Vars, "AW");
+         Serialize (Effective_Reads_Vars, "ER");
          Serialize (Effective_Writes_Vars, "EW");
          Terminate_GG_Line;
       end if;
@@ -829,9 +801,7 @@ package body Flow_Generated_Globals.Phase_1 is
 
       Terminate_GG_Line;
 
-      if Ekind (E) = E_Package
-        and then Has_Non_Null_Abstract_State (E)
-      then
+      if Ekind (E) = E_Package and then Has_Non_Null_Abstract_State (E) then
          for State of Iter (Abstract_States (E)) loop
             declare
                Part_Ofs : constant Elist_Id := Part_Of_Constituents (State);

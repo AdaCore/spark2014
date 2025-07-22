@@ -21,31 +21,31 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;                  use Ada.Containers;
+with Ada.Containers; use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 
-with Aspects;                         use Aspects;
-with Errout_Wrapper;                  use Errout_Wrapper;
-with Namet;                           use Namet;
-with Nlists;                          use Nlists;
-with Output;                          use Output;
-with Rtsfind;                         use Rtsfind;
-with Sem_Aggr;                        use Sem_Aggr;
-with Sem_Prag;                        use Sem_Prag;
-with Sem_Type;                        use Sem_Type;
-with Sinfo.Utils;                     use Sinfo.Utils;
-with Sprint;                          use Sprint;
-with Treepr;                          use Treepr;
-with Uintp;                           use Uintp;
+with Aspects;        use Aspects;
+with Errout_Wrapper; use Errout_Wrapper;
+with Namet;          use Namet;
+with Nlists;         use Nlists;
+with Output;         use Output;
+with Rtsfind;        use Rtsfind;
+with Sem_Aggr;       use Sem_Aggr;
+with Sem_Prag;       use Sem_Prag;
+with Sem_Type;       use Sem_Type;
+with Sinfo.Utils;    use Sinfo.Utils;
+with Sprint;         use Sprint;
+with Treepr;         use Treepr;
+with Uintp;          use Uintp;
 
-with Common_Iterators;                use Common_Iterators;
+with Common_Iterators;          use Common_Iterators;
 with Gnat2Why_Args;
 with Gnat2Why.Util;
-with SPARK_Definition;                use SPARK_Definition;
-with SPARK_Definition.Annotate;       use SPARK_Definition.Annotate;
-with SPARK_Frame_Conditions;          use SPARK_Frame_Conditions;
-with SPARK_Util.Subprograms;          use SPARK_Util.Subprograms;
-with SPARK_Util.Types;                use SPARK_Util.Types;
+with SPARK_Definition;          use SPARK_Definition;
+with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
+with SPARK_Frame_Conditions;    use SPARK_Frame_Conditions;
+with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
+with SPARK_Util.Types;          use SPARK_Util.Types;
 with Why;
 
 with Flow_Classwide;
@@ -63,13 +63,13 @@ package body Flow_Utility is
    --  Debug
    ----------------------------------------------------------------------
 
-   Debug_Trace_Get_Global      : constant Boolean := False;
+   Debug_Trace_Get_Global : constant Boolean := False;
    --  Enable this to debug Get_Global.
 
-   Debug_Trace_Flatten         : constant Boolean := False;
+   Debug_Trace_Flatten : constant Boolean := False;
    --  Enable this for tracing in Flatten_Variable.
 
-   Debug_Trace_Untangle        : constant Boolean := False;
+   Debug_Trace_Untangle : constant Boolean := False;
    --  Enable this to print the tree and def/use sets in each call of
    --  Untangle_Assignment_Target.
 
@@ -83,13 +83,15 @@ package body Flow_Utility is
    --  Loop information
    ----------------------------------------------------------------------
 
-   package Loop_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Entity_Id,
-      Element_Type    => Flow_Id_Sets.Set,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=");
+   package Loop_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Entity_Id,
+        Element_Type    => Flow_Id_Sets.Set,
+        Hash            => Node_Hash,
+        Equivalent_Keys => "=");
 
-   Loop_Info_Frozen : Boolean       := False with Ghost;
+   Loop_Info_Frozen : Boolean := False
+   with Ghost;
    Loop_Info        : Loop_Maps.Map := Loop_Maps.Empty_Map;
 
    ----------------------------------------------------------------------
@@ -97,17 +99,18 @@ package body Flow_Utility is
    ----------------------------------------------------------------------
 
    function Ancestor (Typ : Entity_Id) return Entity_Id
-   with Pre  => Is_Type (Typ),
-        Post => (if Present (Ancestor'Result)
-                 then Is_Type (Ancestor'Result));
+   with
+     Pre  => Is_Type (Typ),
+     Post => (if Present (Ancestor'Result) then Is_Type (Ancestor'Result));
    --  Helper function to iterate over a type ancestors. If Typ is a
    --  subtype, then skip the immediate ancestor. If no more ancestors
    --  are present, then return Empty.
 
    function Unique_Components (E : Entity_Id) return Node_Lists.List
-   with Pre  => Is_Type (E),
-        Post => (for all C of Unique_Components'Result =>
-                   Is_Unique_Component (C));
+   with
+     Pre  => Is_Type (E),
+     Post =>
+       (for all C of Unique_Components'Result => Is_Unique_Component (C));
    --  Return components in SPARK of the given entity E, similar to
    --  {First,Next}_Component_Or_Discriminant, with the difference that any
    --  components of private ancestors are included.
@@ -116,8 +119,9 @@ package body Flow_Utility is
    --    SPARK or the empty list if none exists.
 
    function First_Name_Node (N : Node_Id) return Node_Id
-   with Pre  => Nkind (N) in N_Identifier | N_Expanded_Name,
-        Post => Nkind (First_Name_Node'Result) = N_Identifier;
+   with
+     Pre  => Nkind (N) in N_Identifier | N_Expanded_Name,
+     Post => Nkind (First_Name_Node'Result) = N_Identifier;
    --  Returns the first node that represents a (possibly qualified) entity
    --  name, i.e. for "X" it will be the node of X itself and for "P.X" it will
    --  be the node of P.
@@ -153,46 +157,33 @@ package body Flow_Utility is
    --  them to Proof_Dependencies.
 
    function Is_Ancestor
-     (Anc   : Entity_Id;
-      Ty    : Entity_Id;
-      Scope : Flow_Scope)
-      return Boolean;
+     (Anc : Entity_Id; Ty : Entity_Id; Scope : Flow_Scope) return Boolean;
    --  Return True if Anc is visibly an ancestor of Ty
 
    function Introduces_Private_Fields
-     (Ty    : Entity_Id;
-      Anc   : Entity_Id;
-      Scope : Flow_Scope)
-      return Boolean
+     (Ty : Entity_Id; Anc : Entity_Id; Scope : Flow_Scope) return Boolean
    with Pre => Is_Ancestor (Anc, Ty, Scope);
    --  Return True if Ty has private fields that are not in Anc
 
    function Component_Visible_In_Type
-     (C : Entity_Id;
-      T : Type_Kind_Id;
-      S : Flow_Scope) return Boolean
-   is
-     (Is_Visible (C, S)
-      and then
-        (not Is_Tagged_Type (T) or else Is_Ancestor (Scope (C), T, S)));
+     (C : Entity_Id; T : Type_Kind_Id; S : Flow_Scope) return Boolean
+   is (Is_Visible (C, S)
+       and then (not Is_Tagged_Type (T)
+                 or else Is_Ancestor (Scope (C), T, S)));
    --  C is visible in T if it is visible, and T is visibly derived from C's
    --  scope in S.
 
    function Get_Specific_Type_From_Classwide
-     (E    : Class_Wide_Kind_Id;
-      Scop : Flow_Scope)
-   return Type_Kind_Id
-   is
-     (Get_Type (Etype (Base_Type (E)), Scop));
+     (E : Class_Wide_Kind_Id; Scop : Flow_Scope) return Type_Kind_Id
+   is (Get_Type (Etype (Base_Type (E)), Scop));
    --  Get the specific type from a classwide type
 
-   function Join
-     (A, B   : Flow_Id;
-      Offset : Natural := 0)
-         return Flow_Id
-     with Pre => A.Kind in Direct_Mapping | Record_Field and then
-                 B.Kind in Direct_Mapping | Record_Field,
-          Post => Join'Result.Facet = B.Facet;
+   function Join (A, B : Flow_Id; Offset : Natural := 0) return Flow_Id
+   with
+     Pre  =>
+       A.Kind in Direct_Mapping | Record_Field
+       and then B.Kind in Direct_Mapping | Record_Field,
+     Post => Join'Result.Facet = B.Facet;
    --  Glues components of B to A, starting at offset. For example
    --  consider A = Obj.X and B = R.X.Y and Offset = 1. Then joining
    --  will return Obj.X.Y.
@@ -214,12 +205,13 @@ package body Flow_Utility is
    --  We solve this by deciding the actual result in this routine and
    --  momoizing it in Has_Variable_Input.
 
-   package Entity_To_Boolean_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Entity_Id,
-      Element_Type    => Boolean,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
+   package Entity_To_Boolean_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Entity_Id,
+        Element_Type    => Boolean,
+        Hash            => Node_Hash,
+        Equivalent_Keys => "=",
+        "="             => "=");
 
    Variable_Input_Map : Entity_To_Boolean_Maps.Map;
    --  Map from constants to their memoized property of having variable inputs
@@ -229,26 +221,23 @@ package body Flow_Utility is
    ------------------------
 
    function Classwide_Pre_Post
-     (E        : Entity_Id;
-      Contract : Pragma_Id)
-      return Node_Lists.List
-   is (Find_Contracts (E         => E,
-                       Name      => Contract,
-                       Classwide => No (Overridden_Operation (E)),
-                       Inherited => Present (Overridden_Operation (E))))
-   with Pre => Is_Dispatching_Operation (E)
-     and then Contract in Pragma_Precondition
-                        | Pragma_Postcondition;
+     (E : Entity_Id; Contract : Pragma_Id) return Node_Lists.List
+   is (Find_Contracts
+         (E         => E,
+          Name      => Contract,
+          Classwide => No (Overridden_Operation (E)),
+          Inherited => Present (Overridden_Operation (E))))
+   with
+     Pre =>
+       Is_Dispatching_Operation (E)
+       and then Contract in Pragma_Precondition | Pragma_Postcondition;
    --  Return the list of the classwide pre- or post-conditions for entity E
 
    ---------------------
    -- Add_Loop_Writes --
    ---------------------
 
-   procedure Add_Loop_Writes
-     (Loop_E : Entity_Id;
-      Writes : Flow_Id_Sets.Set)
-   is
+   procedure Add_Loop_Writes (Loop_E : Entity_Id; Writes : Flow_Id_Sets.Set) is
    begin
       pragma Assert (not Loop_Info_Frozen);
       Loop_Info.Insert (Loop_E, Writes);
@@ -298,8 +287,7 @@ package body Flow_Utility is
       --  Pull proof dependencies from the expression of constant E
 
       procedure Process_Predicate_Expression
-        (Type_Instance   : Formal_Kind_Id;
-         Pred_Expression : Node_Id);
+        (Type_Instance : Formal_Kind_Id; Pred_Expression : Node_Id);
       --  Merge predicate function for the given type
 
       procedure Process_Predicates is new
@@ -310,8 +298,7 @@ package body Flow_Utility is
       ----------------------------------
 
       procedure Process_Predicate_Expression
-        (Type_Instance   : Formal_Kind_Id;
-         Pred_Expression : Node_Id)
+        (Type_Instance : Formal_Kind_Id; Pred_Expression : Node_Id)
       is
          pragma Unreferenced (Type_Instance);
       begin
@@ -332,12 +319,18 @@ package body Flow_Utility is
       function Proc (N : Node_Id) return Traverse_Result is
          P : Node_Id;
       begin
+         if Is_Specialized_Actual (N) then
+            Function_Calls.Include
+              (Subprogram_Call'(N => N, E => Entity (Prefix (N))));
+         end if;
+
          case Nkind (N) is
             when N_Function_Call =>
                declare
                   Called_Func : constant Entity_Id := Get_Called_Entity (N);
-                  pragma Assert
-                    (Ekind (Called_Func) in E_Function | E_Subprogram_Type);
+                  pragma
+                    Assert
+                      (Ekind (Called_Func) in E_Function | E_Subprogram_Type);
 
                begin
 
@@ -396,19 +389,19 @@ package body Flow_Utility is
                   P := Right_Opnd (N);
                   if Is_Entity_Name (P) and then Is_Type (Entity (P)) then
 
-                        --  The predicate is processed separately for proof
-                        --  dependencies because only the predicate on type P
-                        --  is executed, whereas proof pulls the entire set of
-                        --  predicates that apply to P.
+                     --  The predicate is processed separately for proof
+                     --  dependencies because only the predicate on type P
+                     --  is executed, whereas proof pulls the entire set of
+                     --  predicates that apply to P.
 
-                        Process_Type_Contracts_Internal
-                          (Typ                => Etype (P),
-                           Scop               => Scop,
-                           Include_Invariant  => False,
-                           Proof_Dependencies => Proof_Dependencies,
-                           Types_Seen         => Types_Seen,
-                           Constants_Seen     => Constants_Seen);
-                        Process_Predicates (Get_Type (P, Scop));
+                     Process_Type_Contracts_Internal
+                       (Typ                => Etype (P),
+                        Scop               => Scop,
+                        Include_Invariant  => False,
+                        Proof_Dependencies => Proof_Dependencies,
+                        Types_Seen         => Types_Seen,
+                        Constants_Seen     => Constants_Seen);
+                     Process_Predicates (Get_Type (P, Scop));
 
                   --  If the membership test involves a call to equality, then
                   --  we add N to the set of indirect calls.
@@ -505,10 +498,11 @@ package body Flow_Utility is
                        (N, Proof_Dependencies);
 
                   else
-                     pragma Assert
-                       (Of_Present (N)
-                        and then Has_Array_Type (Etype (Name (N)))
-                        and then Number_Dimensions (Etype (Name (N))) = 1);
+                     pragma
+                       Assert
+                         (Of_Present (N)
+                            and then Has_Array_Type (Etype (Name (N)))
+                            and then Number_Dimensions (Etype (Name (N))) = 1);
                   end if;
                end;
 
@@ -519,15 +513,14 @@ package body Flow_Utility is
                declare
                   E : constant Entity_Id := Entity (N);
                begin
-                  if Present (E)
-                    and then Ekind (E) in E_Constant | E_Variable
+                  if Present (E) and then Ekind (E) in E_Constant | E_Variable
                   then
                      Process_Type_Contracts_Internal
                        (Typ                => Etype (E),
                         Scop               => Scop,
-                        Include_Invariant  => not Scope_Within_Or_Same
-                                                (Outer => Scop.Ent,
-                                                 Inner => E),
+                        Include_Invariant  =>
+                          not Scope_Within_Or_Same
+                                (Outer => Scop.Ent, Inner => E),
                         Proof_Dependencies => Proof_Dependencies,
                         Types_Seen         => Types_Seen,
                         Constants_Seen     => Constants_Seen);
@@ -542,9 +535,7 @@ package body Flow_Utility is
             --  conversion or qualified expression are analyzed to fill
             --  Proof_Dependencies.
 
-            when N_Type_Conversion
-               | N_Qualified_Expression
-            =>
+            when N_Type_Conversion | N_Qualified_Expression =>
                Process_Type_Contracts_Internal
                  (Typ                => Etype (N),
                   Scop               => Scop,
@@ -576,8 +567,7 @@ package body Flow_Utility is
                        Get_Aggregate_Annotation (Etype (N));
 
                      procedure Add_Proof_Dependency (E : Entity_Id)
-                       with Pre => (if Present (E)
-                                    then Ekind (E) = E_Function);
+                     with Pre => (if Present (E) then Ekind (E) = E_Function);
                      --  Add proof dependency on E, if it is specified for
                      --  the container type.
 
@@ -595,14 +585,13 @@ package body Flow_Utility is
                   begin
                      if Present (Annot.Empty_Function) then
                         Function_Calls.Include
-                          (Subprogram_Call'(N => N,
-                                            E => Annot.Empty_Function));
+                          (Subprogram_Call'
+                             (N => N, E => Annot.Empty_Function));
                      end if;
 
                      if Present (Annot.Add_Procedure) then
                         Function_Calls.Include
-                          (Subprogram_Call'(N => N,
-                                            E => Annot.Add_Procedure));
+                          (Subprogram_Call'(N => N, E => Annot.Add_Procedure));
                      end if;
 
                      Add_Proof_Dependency (Annot.Capacity);
@@ -612,16 +601,19 @@ package body Flow_Utility is
                            Add_Proof_Dependency (Annot.Contains);
                            Add_Proof_Dependency (Annot.Equivalent_Elements);
                            Add_Proof_Dependency (Annot.Sets_Length);
+
                         when Maps =>
                            Add_Proof_Dependency (Annot.Has_Key);
                            Add_Proof_Dependency (Annot.Default_Item);
                            Add_Proof_Dependency (Annot.Equivalent_Keys);
                            Add_Proof_Dependency (Annot.Maps_Length);
                            Add_Proof_Dependency (Annot.Maps_Length);
+
                         when Seqs =>
                            Add_Proof_Dependency (Annot.Seqs_Get);
                            Add_Proof_Dependency (Annot.First);
                            Add_Proof_Dependency (Annot.Last);
+
                         when Model =>
                            Add_Proof_Dependency (Annot.Model);
                      end case;
@@ -641,10 +633,10 @@ package body Flow_Utility is
 
       procedure Process_Constant_Expression (E : Entity_Id) is
          Decl     : constant N_Object_Declaration_Id :=
-           Enclosing_Declaration (if Is_Partial_View (E)
-                                    and then Entity_In_SPARK (Full_View (E))
-                                  then Full_View (E)
-                                  else E);
+           Enclosing_Declaration
+             (if Is_Partial_View (E) and then Entity_In_SPARK (Full_View (E))
+              then Full_View (E)
+              else E);
          Expr     : constant Opt_N_Subexpr_Id := Expression (Decl);
          Position : Node_Sets.Cursor;
          Inserted : Boolean;
@@ -653,18 +645,15 @@ package body Flow_Utility is
 
          --  Process the expression of E
          if Inserted then
-            Process_Expression (Expr,
-                                Scop,
-                                Proof_Dependencies,
-                                Types_Seen,
-                                Constants_Seen);
+            Process_Expression
+              (Expr, Scop, Proof_Dependencies, Types_Seen, Constants_Seen);
          end if;
       end Process_Constant_Expression;
 
       procedure Traverse is new Traverse_More_Proc (Process => Proc);
       --  AST traversal procedure
 
-   --  Start of processing for Pick_Generated_Info_Internal
+      --  Start of processing for Pick_Generated_Info_Internal
 
    begin
       Traverse (N);
@@ -754,8 +743,7 @@ package body Flow_Utility is
       Constants_Seen     : in out Node_Sets.Set)
    is
       procedure Add_Predicates_To_Proof_Deps
-        (Type_Instance   : Formal_Kind_Id;
-         Pred_Expression : Node_Id)
+        (Type_Instance : Formal_Kind_Id; Pred_Expression : Node_Id)
       with Pre => Nkind (Pred_Expression) in N_Subexpr;
       --  Analyzes the predicate expression to fill Proof_Dependencies
 
@@ -781,16 +769,16 @@ package body Flow_Utility is
       ----------------------------------
 
       procedure Add_Predicates_To_Proof_Deps
-        (Type_Instance   : Formal_Kind_Id;
-         Pred_Expression : Node_Id)
+        (Type_Instance : Formal_Kind_Id; Pred_Expression : Node_Id)
       is
          pragma Unreferenced (Type_Instance);
       begin
-         Process_Expression (Pred_Expression,
-                             Scop,
-                             Proof_Dependencies,
-                             Types_Seen,
-                             Constants_Seen);
+         Process_Expression
+           (Pred_Expression,
+            Scop,
+            Proof_Dependencies,
+            Types_Seen,
+            Constants_Seen);
       end Add_Predicates_To_Proof_Deps;
 
       ---------------------------------
@@ -810,13 +798,16 @@ package body Flow_Utility is
                         or else Invariant_Assumed_In_Scope (Current, Scop.Ent)
                         or else Include_Invariant)
             then
-               Process_Expression
-                 (Get_Expr_From_Check_Only_Proc
-                    (Invariant_Procedure (Current)),
-                  Scop,
-                  Proof_Dependencies,
-                  Types_Seen,
-                  Constants_Seen);
+               for Expr of
+                 Get_Exprs_From_Check_Only_Proc (Invariant_Procedure (Current))
+               loop
+                  Process_Expression
+                    (Expr,
+                     Scop,
+                     Proof_Dependencies,
+                     Types_Seen,
+                     Constants_Seen);
+               end loop;
             end if;
 
             --  Explore the subtype chain of the type
@@ -844,7 +835,7 @@ package body Flow_Utility is
       Position : Node_Sets.Cursor;
       Inserted : Boolean;
 
-   --  Start of processing for Process_Type_Contracts_Internal
+      --  Start of processing for Process_Type_Contracts_Internal
 
    begin
       --  If we didn't analyze Typ yet, and it is not an access-to-subprogram
@@ -856,14 +847,10 @@ package body Flow_Utility is
          --  Access-to-subprogram types might be annotated with Pre and Post
          --  contracts. We process their expressions for proof dependencies.
 
-         if Is_Access_Subprogram_Type (Typ)
-           and then No (Parent_Retysp (Typ))
+         if Is_Access_Subprogram_Type (Typ) and then No (Parent_Retysp (Typ))
          then
             Process_Access_To_Subprogram_Contracts
-              (Typ,
-               Scop,
-               Proof_Dependencies,
-               True);
+              (Typ, Scop, Proof_Dependencies, True);
          end if;
 
          Discard := Visit_Subcomponents (Typ);
@@ -875,9 +862,7 @@ package body Flow_Utility is
    ---------------------------------
 
    function Called_Primitive_Equalities
-     (Ty           : Entity_Id;
-      Force_Predef : Boolean := False)
-      return Node_Sets.Set
+     (Ty : Entity_Id; Force_Predef : Boolean := False) return Node_Sets.Set
    is
       Calls : Node_Sets.Set;
 
@@ -912,8 +897,8 @@ package body Flow_Utility is
       --  Explore the subcomponents of type Ty to include all primitive
       --  equalities in Calls.
 
-      Discard : constant Boolean := Do_Components
-        (Ty, Skip_Discr => True, Traverse_Ancestors => True);
+      Discard : constant Boolean :=
+        Do_Components (Ty, Skip_Discr => True, Traverse_Ancestors => True);
    begin
       return Calls;
    end Called_Primitive_Equalities;
@@ -933,7 +918,7 @@ package body Flow_Utility is
             --  Local variables
 
             Ptr : Entity_Id;
-            T   : Entity_Id       := E;
+            T   : Entity_Id := E;
             L   : Node_Lists.List := Node_Lists.Empty_List;
             S   : Node_Sets.Set;
 
@@ -947,9 +932,10 @@ package body Flow_Utility is
 
                   begin
                      if Component_Is_Visible_In_SPARK (Ptr) then
-                        S.Insert (New_Item => Unique_Component (Ptr),
-                                  Position => Unused,
-                                  Inserted => Inserted);
+                        S.Insert
+                          (New_Item => Unique_Component (Ptr),
+                           Position => Unused,
+                           Inserted => Inserted);
                         if Inserted then
                            L.Append (Unique_Component (Ptr));
                         end if;
@@ -977,8 +963,7 @@ package body Flow_Utility is
    ----------------------------
 
    function Expand_Abstract_States
-     (Vars : Flow_Id_Sets.Set)
-      return Flow_Id_Sets.Set
+     (Vars : Flow_Id_Sets.Set) return Flow_Id_Sets.Set
    is
       Expanded : Flow_Id_Sets.Set;
 
@@ -995,21 +980,18 @@ package body Flow_Utility is
    ------------------------
 
    function Extensions_Visible
-     (E     : Entity_Id;
-      Scope : Flow_Scope)
-      return Boolean
+     (E : Entity_Id; Scope : Flow_Scope) return Boolean
    is
       T : constant Entity_Id := Get_Type (E, Scope);
    begin
-      return Is_Formal (E)
+      return
+        Is_Formal (E)
         and then Is_Tagged_Type (T)
         and then not Is_Class_Wide_Type (T)
         and then Has_Extensions_Visible (Sinfo.Nodes.Scope (E));
    end Extensions_Visible;
 
-   function Extensions_Visible (F     : Flow_Id;
-                                Scope : Flow_Scope)
-                                return Boolean
+   function Extensions_Visible (F : Flow_Id; Scope : Flow_Scope) return Boolean
    is
    begin
       case F.Kind is
@@ -1032,13 +1014,9 @@ package body Flow_Utility is
    --------------------
 
    function Get_Components
-     (F     : Flow_Id;
-      Scope : Flow_Scope)
-      return Flow_Id_Sets.Set
-   is
+     (F : Flow_Id; Scope : Flow_Scope) return Flow_Id_Sets.Set is
    begin
-      if F.Kind in Direct_Mapping | Record_Field
-        and then F.Facet = Normal_Part
+      if F.Kind in Direct_Mapping | Record_Field and then F.Facet = Normal_Part
       then
          pragma Annotate (Xcov, Exempt_On, "Debugging code");
          if Debug_Trace_Flatten then
@@ -1063,10 +1041,12 @@ package body Flow_Utility is
 
                Contains_Non_Visible : Boolean := False;
 
-               subtype Private_Nonrecord_Kind is Private_Kind with
+               subtype Private_Nonrecord_Kind is Private_Kind
+               with
                  Static_Predicate =>
-                   Private_Nonrecord_Kind not in E_Record_Type_With_Private |
-                                                 E_Record_Subtype_With_Private;
+                   Private_Nonrecord_Kind
+                   not in E_Record_Type_With_Private
+                        | E_Record_Subtype_With_Private;
                --  Non-record private types
 
                procedure Debug (Msg : String);
@@ -1132,12 +1112,13 @@ package body Flow_Utility is
                      end if;
 
                   when Concurrent_Kind =>
-                     Debug ("processing " &
-                            (case Ekind (T) is
-                               when Protected_Kind => "protected",
-                               when Task_Kind      => "task",
-                               when others         => raise Program_Error) &
-                              " type");
+                     Debug
+                       ("processing "
+                        & (case Ekind (T) is
+                             when Protected_Kind => "protected",
+                             when Task_Kind => "task",
+                             when others => raise Program_Error)
+                        & " type");
 
                      --  From the inside of a concurrent object include
                      --  discriminants, components and constituents which are a
@@ -1228,8 +1209,7 @@ package body Flow_Utility is
                      end;
 
                      if Contains_Non_Visible then
-                        Results.Insert
-                          ((F with delta Facet => Private_Part));
+                        Results.Insert ((F with delta Facet => Private_Part));
                      end if;
 
                      --  For types which don't have any visible component or
@@ -1246,10 +1226,7 @@ package body Flow_Utility is
                           ((F with delta Facet => Extension_Part));
                      end if;
 
-                  when Access_Kind
-                     | Array_Kind
-                     | Scalar_Kind
-                  =>
+                  when Access_Kind | Array_Kind | Scalar_Kind =>
                      Debug ("processing access or array or scalar type");
 
                      Results := Flow_Id_Sets.To_Set (F);
@@ -1264,9 +1241,7 @@ package body Flow_Utility is
                         Results.Insert ((F with delta Facet => The_Bounds));
                      end if;
 
-                  when E_Exception_Type
-                     | E_Subprogram_Type
-                     | Incomplete_Kind
+                  when E_Exception_Type | E_Subprogram_Type | Incomplete_Kind
                   =>
                      raise Program_Error;
 
@@ -1298,9 +1273,7 @@ package body Flow_Utility is
    ----------------------
 
    function Flatten_Variable
-     (F     : Flow_Id;
-      Scope : Flow_Scope)
-      return Flow_Id_Sets.Set
+     (F : Flow_Id; Scope : Flow_Scope) return Flow_Id_Sets.Set
    is
       Subcomponents : Flow_Id_Sets.Set;
       Components    : constant Flow_Id_Sets.Set := Get_Components (F, Scope);
@@ -1337,16 +1310,17 @@ package body Flow_Utility is
    --------------------------------------
 
    procedure Get_Assignment_Target_Properties
-     (N                  :     Node_Id;
-      Scope              :     Flow_Scope;
+     (N                  : Node_Id;
+      Scope              : Flow_Scope;
       Partial_Definition : out Boolean;
       View_Conversion    : out Boolean;
       Map_Root           : out Flow_Id;
       Seq                : out Node_Lists.List)
    is
       subtype Interesting_Nodes is Valid_Assignment_Kinds
-        with Static_Predicate => Interesting_Nodes not in
-          N_Identifier | N_Expanded_Name;
+      with
+        Static_Predicate =>
+          Interesting_Nodes not in N_Identifier | N_Expanded_Name;
 
       Root_Node   : Node_Id := N;
       Root_Entity : Entity_Id;
@@ -1365,18 +1339,15 @@ package body Flow_Utility is
 
          Root_Node :=
            (case Interesting_Nodes (Nkind (Root_Node)) is
-               when N_Type_Conversion
-                  | N_Unchecked_Type_Conversion
-               =>
-                  Expression (Root_Node),
+              when N_Type_Conversion | N_Unchecked_Type_Conversion =>
+                Expression (Root_Node),
 
-               when others =>
-                  Prefix (Root_Node));
+              when others => Prefix (Root_Node));
       end loop;
 
       pragma Assert (Nkind (Root_Node) in N_Identifier | N_Expanded_Name);
 
-      Root_Entity   := Entity (Root_Node);
+      Root_Entity := Entity (Root_Node);
       Root_Overlaid := False;
 
       if Is_Protected_Component (Root_Entity) then
@@ -1388,8 +1359,7 @@ package body Flow_Utility is
       elsif Is_Part_Of_Concurrent_Object (Root_Entity) then
          Map_Root :=
            Add_Component
-             (Direct_Mapping_Id
-                (Etype (Encapsulating_State (Root_Entity))),
+             (Direct_Mapping_Id (Etype (Encapsulating_State (Root_Entity))),
               Root_Entity);
 
       elsif Ekind (Root_Entity) in E_Constant | E_Variable
@@ -1436,9 +1406,9 @@ package body Flow_Utility is
                         --  definition of the whole object.
 
                         if Is_Ancestor
-                          (Get_Type (Map_Root, Scope),
-                           Get_Type (Sinfo.Nodes.Scope (Field), Scope),
-                           Scope)
+                             (Get_Type (Map_Root, Scope),
+                              Get_Type (Sinfo.Nodes.Scope (Field), Scope),
+                              Scope)
                         then
                            Map_Root :=
                              (Map_Root with delta Facet => Extension_Part);
@@ -1458,7 +1428,8 @@ package body Flow_Utility is
          end case;
       end loop;
 
-      View_Conversion := Nkind (N) = N_Type_Conversion
+      View_Conversion :=
+        Nkind (N) = N_Type_Conversion
         and then Is_Tagged_Type (Get_Type (Etype (N), Scope));
 
       --  On view conversions, if the root type and the ultimately written
@@ -1485,8 +1456,8 @@ package body Flow_Utility is
       --  Sanity-check: the Map_Root part of the results should be the same as
       --  what would be returned by Path_To_Flow_Id.
 
-      pragma Assert
-        (Root_Overlaid or else Map_Root = Path_To_Flow_Id (N, Scope));
+      pragma
+        Assert (Root_Overlaid or else Map_Root = Path_To_Flow_Id (N, Scope));
    end Get_Assignment_Target_Properties;
 
    -----------------
@@ -1494,11 +1465,11 @@ package body Flow_Utility is
    -----------------
 
    procedure Get_Depends
-     (Subprogram           :     Runnable_Kind_Id;
-      Scope                :     Flow_Scope;
-      Classwide            :     Boolean;
+     (Subprogram           : Runnable_Kind_Id;
+      Scope                : Flow_Scope;
+      Classwide            : Boolean;
       Depends              : out Dependency_Maps.Map;
-      Use_Computed_Globals :     Boolean := True)
+      Use_Computed_Globals : Boolean := True)
    is
       pragma Unreferenced (Classwide);
       --  For now we assume classwide globals are the same as the actual
@@ -1535,26 +1506,29 @@ package body Flow_Utility is
       --  Use the Refined_Global to trim the down-projected Depends
 
       if Trimming_Required then
-         pragma Assert
-           (Present (Find_Contract (Subprogram, Pragma_Depends))
-              and then
-            No (Find_Contract (Subprogram, Pragma_Refined_Depends)));
+         pragma
+           Assert
+             (Present (Find_Contract (Subprogram, Pragma_Depends))
+                and then No
+                           (Find_Contract
+                              (Subprogram, Pragma_Refined_Depends)));
 
          --  Collect all global Proof_Ins, Outputs and Inputs
 
-         Get_Globals (Subprogram          => Subprogram,
-                      Scope               => Scope,
-                      Classwide           => False,
-                      Globals             => Globals,
-                      Use_Deduced_Globals => Use_Computed_Globals,
-                      Ignore_Depends      => True);
+         Get_Globals
+           (Subprogram          => Subprogram,
+            Scope               => Scope,
+            Classwide           => False,
+            Globals             => Globals,
+            Use_Deduced_Globals => Use_Computed_Globals,
+            Ignore_Depends      => True);
 
          --  Change all variants to Normal_Use
 
          Globals :=
            (Proof_Ins => Change_Variant (Globals.Proof_Ins, Normal_Use),
-            Inputs    => Change_Variant (Globals.Inputs,    Normal_Use),
-            Outputs   => Change_Variant (Globals.Outputs,   Normal_Use));
+            Inputs    => Change_Variant (Globals.Inputs, Normal_Use),
+            Outputs   => Change_Variant (Globals.Outputs, Normal_Use));
 
          --  Add formal parameters
 
@@ -1599,10 +1573,10 @@ package body Flow_Utility is
 
          for C in Contract_Relation.Iterate loop
             declare
-               Output : Flow_Id          renames Dependency_Maps.Key (C);
+               Output : Flow_Id renames Dependency_Maps.Key (C);
                Input  : Flow_Id_Sets.Set renames Contract_Relation (C);
 
-               Refined_Input  : constant Flow_Id_Sets.Set :=
+               Refined_Input : constant Flow_Id_Sets.Set :=
                  Down_Project (Input, Scope);
 
                Trimmed_Output : constant Flow_Id_Sets.Set :=
@@ -1616,9 +1590,10 @@ package body Flow_Utility is
                for O of Trimmed_Output loop
                   declare
                      Trimmed_Input : constant Flow_Id_Sets.Set :=
-                       Refined_Input.Intersection (if O = Null_Flow_Id
-                                                   then Globals.Proof_Ins
-                                                   else Globals.Inputs);
+                       Refined_Input.Intersection
+                         (if O = Null_Flow_Id
+                          then Globals.Proof_Ins
+                          else Globals.Inputs);
 
                   begin
                      Depends.Insert (O, Trimmed_Input);
@@ -1637,7 +1612,7 @@ package body Flow_Utility is
                   then Down_Project (Dependency_Maps.Key (C), Scope)
                   else Flow_Id_Sets.To_Set (Null_Flow_Id));
 
-               D_In  : constant Flow_Id_Sets.Set :=
+               D_In : constant Flow_Id_Sets.Set :=
                  Down_Project (Contract_Relation (C), Scope);
 
             begin
@@ -1653,12 +1628,13 @@ package body Flow_Utility is
       --  RHS of the "null => RHS" dependence. This is an implicit dependency.
       ----------------------------------------------------------------------
 
-      Get_Globals (Subprogram          => Subprogram,
-                   Scope               => Scope,
-                   Classwide           => False,
-                   Globals             => Globals,
-                   Use_Deduced_Globals => Use_Computed_Globals,
-                   Ignore_Depends      => True);
+      Get_Globals
+        (Subprogram          => Subprogram,
+         Scope               => Scope,
+         Classwide           => False,
+         Globals             => Globals,
+         Use_Deduced_Globals => Use_Computed_Globals,
+         Ignore_Depends      => True);
 
       if not Globals.Proof_Ins.Is_Empty then
 
@@ -1670,9 +1646,8 @@ package body Flow_Utility is
             Unused   : Boolean;
 
          begin
-            Depends.Insert (Key      => Null_Flow_Id,
-                            Position => Position,
-                            Inserted => Unused);
+            Depends.Insert
+              (Key => Null_Flow_Id, Position => Position, Inserted => Unused);
 
             --  Change variant of Globals.Proof_Ins to Normal_Use
 
@@ -1699,9 +1674,10 @@ package body Flow_Utility is
          begin
             --  Attempt to insert a default, i.e. empty, dependency or do
             --  nothing if Current_Task_Type was already on the LHS.
-            Depends.Insert (Key      => Current_Task_Type,
-                            Position => Position,
-                            Inserted => Inserted);
+            Depends.Insert
+              (Key      => Current_Task_Type,
+               Position => Position,
+               Inserted => Inserted);
 
             --  Extend the dependency with Current_Task_Type or do nothing if
             --  if was already on the RHS.
@@ -1720,9 +1696,7 @@ package body Flow_Utility is
    -----------------
 
    function Get_Flow_Id
-     (Name : Entity_Name;
-      View : Flow_Id_Variant := Normal_Use)
-      return Flow_Id
+     (Name : Entity_Name; View : Flow_Id_Variant := Normal_Use) return Flow_Id
    is
       E : constant Entity_Id := Find_Entity (Name);
    begin
@@ -1740,9 +1714,7 @@ package body Flow_Utility is
    -------------------
 
    function Get_Functions
-     (N                  : Node_Id;
-      Include_Predicates : Boolean)
-      return Node_Sets.Set
+     (N : Node_Id; Include_Predicates : Boolean) return Node_Sets.Set
    is
       Funcalls  : Call_Sets.Set;
       Indcalls  : Node_Sets.Set;
@@ -1765,21 +1737,17 @@ package body Flow_Utility is
    ---------------------------
 
    function Parse_Global_Contract
-     (Subprogram  : Entity_Id;
-      Global_Node : Node_Id)
-      return Raw_Global_Nodes
+     (Subprogram : Entity_Id; Global_Node : Node_Id) return Raw_Global_Nodes
    is
       Globals : Raw_Global_Nodes;
 
       subtype Global_Name_Id is Name_Id
-        with Static_Predicate => Global_Name_Id in Name_Input
-                                                 | Name_In_Out
-                                                 | Name_Output
-                                                 | Name_Proof_In;
+      with
+        Static_Predicate =>
+          Global_Name_Id
+          in Name_Input | Name_In_Out | Name_Output | Name_Proof_In;
 
-      procedure Process
-        (The_Mode   : Global_Name_Id;
-         The_Global : Entity_Id);
+      procedure Process (The_Mode : Global_Name_Id; The_Global : Entity_Id);
       --  Add the given global to Reads, Writes or Proof_Ins, depending
       --  on the mode.
 
@@ -1787,12 +1755,8 @@ package body Flow_Utility is
       -- Process --
       -------------
 
-      procedure Process
-        (The_Mode   : Global_Name_Id;
-         The_Global : Entity_Id)
-      is
-         E : constant Entity_Id :=
-           Canonical_Entity (The_Global, Subprogram);
+      procedure Process (The_Mode : Global_Name_Id; The_Global : Entity_Id) is
+         E : constant Entity_Id := Canonical_Entity (The_Global, Subprogram);
 
       begin
          case The_Mode is
@@ -1817,14 +1781,14 @@ package body Flow_Utility is
 
       --  Local variables
 
-      pragma Assert
-        (List_Length (Pragma_Argument_Associations (Global_Node)) = 1);
+      pragma
+        Assert (List_Length (Pragma_Argument_Associations (Global_Node)) = 1);
 
-      PAA  : constant Node_Id :=
+      PAA : constant Node_Id :=
         First (Pragma_Argument_Associations (Global_Node));
       pragma Assert (Nkind (PAA) = N_Pragma_Argument_Association);
 
-   --  Start of processing for Parse_Global_Contract
+      --  Start of processing for Parse_Global_Contract
 
    begin
       if Nkind (Expression (PAA)) = N_Null then
@@ -1844,8 +1808,7 @@ package body Flow_Utility is
 
          begin
             loop
-               pragma Assert
-                 (Nkind (RHS) in N_Identifier | N_Expanded_Name);
+               pragma Assert (Nkind (RHS) in N_Identifier | N_Expanded_Name);
 
                Process (Name_Input, Entity (RHS));
 
@@ -1863,8 +1826,7 @@ package body Flow_Utility is
          --  A mixture of things.
 
          declare
-            Row : Node_Id :=
-              First (Component_Associations (Expression (PAA)));
+            Row : Node_Id := First (Component_Associations (Expression (PAA)));
 
          begin
             loop
@@ -1888,9 +1850,10 @@ package body Flow_Utility is
 
                         begin
                            loop
-                              pragma Assert
-                                (Nkind (Item) in N_Identifier
-                                               | N_Expanded_Name);
+                              pragma
+                                Assert
+                                  (Nkind (Item)
+                                   in N_Identifier | N_Expanded_Name);
 
                               Process (Mode, Entity (Item));
 
@@ -1925,9 +1888,9 @@ package body Flow_Utility is
    ----------------------------
 
    procedure Map_Generic_In_Formals
-     (Scop    :        Flow_Scope;
+     (Scop    : Flow_Scope;
       Objects : in out Flow_Id_Sets.Set;
-      Entire  :        Boolean := True)
+      Entire  : Boolean := True)
    is
       Mapped : Flow_Id_Sets.Set;
 
@@ -1942,11 +1905,9 @@ package body Flow_Utility is
                   E : constant Entity_Id := Get_Direct_Mapping_Id (Object);
 
                begin
-                  if Ekind (E) = E_Constant
-                    and then In_Generic_Actual (E)
-                  then
-                     if Scope_Within_Or_Same (Inner => Scop.Ent,
-                                              Outer => Scope (E))
+                  if Ekind (E) = E_Constant and then In_Generic_Actual (E) then
+                     if Scope_Within_Or_Same
+                          (Inner => Scop.Ent, Outer => Scope (E))
                      then
                         Mapped.Include (Object);
                      else
@@ -1988,8 +1949,7 @@ package body Flow_Utility is
          end case;
       end loop;
 
-      Flow_Id_Sets.Move (Target => Objects,
-                         Source => Mapped);
+      Flow_Id_Sets.Move (Target => Objects, Source => Mapped);
    end Map_Generic_In_Formals;
 
    -----------------
@@ -1997,19 +1957,17 @@ package body Flow_Utility is
    -----------------
 
    procedure Get_Globals
-     (Subprogram          :     Runnable_Kind_Id;
-      Scope               :     Flow_Scope;
-      Classwide           :     Boolean;
+     (Subprogram          : Runnable_Kind_Id;
+      Scope               : Flow_Scope;
+      Classwide           : Boolean;
       Globals             : out Global_Flow_Ids;
-      Use_Deduced_Globals :     Boolean := True;
-      Ignore_Depends      :     Boolean := False)
+      Use_Deduced_Globals : Boolean := True;
+      Ignore_Depends      : Boolean := False)
    is
-      Global_Node  : constant Node_Id := Get_Contract_Node (Subprogram,
-                                                            Scope,
-                                                            Global_Contract);
-      Depends_Node : constant Node_Id := Get_Contract_Node (Subprogram,
-                                                            Scope,
-                                                            Depends_Contract);
+      Global_Node  : constant Node_Id :=
+        Get_Contract_Node (Subprogram, Scope, Global_Contract);
+      Depends_Node : constant Node_Id :=
+        Get_Contract_Node (Subprogram, Scope, Depends_Contract);
 
       Use_Generated_Globals : constant Boolean :=
         Rely_On_Generated_Global (Subprogram, Scope);
@@ -2050,12 +2008,12 @@ package body Flow_Utility is
 
       pragma Annotate (Xcov, Exempt_Off);
 
-   --  Start of processing for Get_Globals
+      --  Start of processing for Get_Globals
 
    begin
       Globals.Proof_Ins := Flow_Id_Sets.Empty_Set;
-      Globals.Inputs    := Flow_Id_Sets.Empty_Set;
-      Globals.Outputs   := Flow_Id_Sets.Empty_Set;
+      Globals.Inputs := Flow_Id_Sets.Empty_Set;
+      Globals.Outputs := Flow_Id_Sets.Empty_Set;
 
       pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Debug_Trace_Get_Global then
@@ -2067,9 +2025,7 @@ package body Flow_Utility is
       end if;
       pragma Annotate (Xcov, Exempt_Off);
 
-      if Present (Global_Node)
-        and then not Use_Generated_Globals
-      then
+      if Present (Global_Node) and then not Use_Generated_Globals then
          Debug ("using user annotation");
 
          declare
@@ -2078,8 +2034,8 @@ package body Flow_Utility is
             ---------------------------------------------------------------
 
             Raw_Globals : constant Raw_Global_Nodes :=
-              Parse_Global_Contract (Subprogram  => Subprogram,
-                                     Global_Node => Global_Node);
+              Parse_Global_Contract
+                (Subprogram => Subprogram, Global_Node => Global_Node);
 
          begin
             ---------------------------------------------------------------
@@ -2091,14 +2047,14 @@ package body Flow_Utility is
 
             Globals :=
               (Proof_Ins =>
-                 To_Flow_Id_Set (Down_Project (Raw_Globals.Proof_Ins, Scope),
-                                 In_View),
+                 To_Flow_Id_Set
+                   (Down_Project (Raw_Globals.Proof_Ins, Scope), In_View),
                Inputs    =>
-                 To_Flow_Id_Set (Down_Project (Raw_Globals.Inputs, Scope),
-                                 In_View),
+                 To_Flow_Id_Set
+                   (Down_Project (Raw_Globals.Inputs, Scope), In_View),
                Outputs   =>
-                 To_Flow_Id_Set (Down_Project (Raw_Globals.Outputs, Scope),
-                                 Out_View));
+                 To_Flow_Id_Set
+                   (Down_Project (Raw_Globals.Outputs, Scope), Out_View));
 
             ---------------------------------------------------------------
             --  Step 3: If this query refers to Global of a subprogram that is
@@ -2127,7 +2083,7 @@ package body Flow_Utility is
             --  trimmed (based on a user-provided Refined_Depends aspect).
             if not Ignore_Depends
               and then Present (Depends_Node)
-              and then Pragma_Name (Global_Node)  = Name_Global
+              and then Pragma_Name (Global_Node) = Name_Global
               and then Pragma_Name (Depends_Node) = Name_Refined_Depends
               and then Mentions_State_With_Ambiguous_Refinement
                          (Global_Node, Scope)
@@ -2138,11 +2094,12 @@ package body Flow_Utility is
 
                begin
                   --  Read the Refined_Depends aspect
-                  Get_Depends (Subprogram           => Subprogram,
-                               Scope                => Scope,
-                               Classwide            => Classwide,
-                               Depends              => D_Map,
-                               Use_Computed_Globals => Use_Deduced_Globals);
+                  Get_Depends
+                    (Subprogram           => Subprogram,
+                     Scope                => Scope,
+                     Classwide            => Classwide,
+                     Depends              => D_Map,
+                     Use_Computed_Globals => Use_Deduced_Globals);
 
                   --  Gather all inputs
                   for RHS of D_Map loop
@@ -2158,8 +2115,8 @@ package body Flow_Utility is
          end;
 
          Debug ("proof ins", Globals.Proof_Ins);
-         Debug ("reads",     Globals.Inputs);
-         Debug ("writes",    Globals.Outputs);
+         Debug ("reads", Globals.Inputs);
+         Debug ("writes", Globals.Outputs);
 
       --  If we have no Global, but we do have a depends, we can
       --  reverse-engineer the Global. This also solves the issue where the
@@ -2181,18 +2138,19 @@ package body Flow_Utility is
          begin
             Debug ("reversing depends annotation");
 
-            Get_Depends (Subprogram           => Subprogram,
-                         Scope                => Scope,
-                         Classwide            => Classwide,
-                         Depends              => D_Map,
-                         Use_Computed_Globals => Use_Deduced_Globals);
+            Get_Depends
+              (Subprogram           => Subprogram,
+               Scope                => Scope,
+               Classwide            => Classwide,
+               Depends              => D_Map,
+               Use_Computed_Globals => Use_Deduced_Globals);
 
             --  Always OK to call direct_mapping here since you can't refer
             --  to hidden state in user-written depends contracts.
 
             for C in D_Map.Iterate loop
                declare
-                  Output : Flow_Id          renames Dependency_Maps.Key (C);
+                  Output : Flow_Id renames Dependency_Maps.Key (C);
                   Inputs : Flow_Id_Sets.Set renames D_Map (C);
                begin
                   --  Filter function'Result and parameters
@@ -2201,8 +2159,7 @@ package body Flow_Utility is
                         E : constant Entity_Id :=
                           Get_Direct_Mapping_Id (Output);
                      begin
-                        if E /= Subprogram
-                          and then not Params.Contains (E)
+                        if E /= Subprogram and then not Params.Contains (E)
                         then
                            Globals.Outputs.Include
                              (Change_Variant (Output, Out_View));
@@ -2211,19 +2168,19 @@ package body Flow_Utility is
                   end if;
 
                   for Input of Inputs loop
-                     pragma Assert (Input.Kind in Null_Value
-                                                | Magic_String
-                                                | Direct_Mapping);
+                     pragma
+                       Assert
+                         (Input.Kind
+                          in Null_Value | Magic_String | Direct_Mapping);
                      --  Unlike Output, which is either a Null_Value or a
                      --  Direct_Mapping, Input might be also a Magic_String,
                      --  when an extra "null => proof_in" dependency is added
                      --  from a generated Refined_Global.
 
                      if Input.Kind = Magic_String
-                       or else
-                        (Input.Kind = Direct_Mapping
-                           and then
-                         not Params.Contains (Get_Direct_Mapping_Id (Input)))
+                       or else (Input.Kind = Direct_Mapping
+                                and then not Params.Contains
+                                               (Get_Direct_Mapping_Id (Input)))
                      then
                         Globals.Inputs.Include
                           (Change_Variant (Input, In_View));
@@ -2240,7 +2197,7 @@ package body Flow_Utility is
                end;
             end loop;
 
-            Debug ("reads",  Globals.Inputs);
+            Debug ("reads", Globals.Inputs);
             Debug ("writes", Globals.Outputs);
          end;
 
@@ -2274,8 +2231,7 @@ package body Flow_Utility is
 
          Debug ("giving null globals for a pure entity");
 
-      elsif Gnat2Why_Args.Flow_Generate_Contracts
-        and then Use_Deduced_Globals
+      elsif Gnat2Why_Args.Flow_Generate_Contracts and then Use_Deduced_Globals
       then
 
          --  We don't have a global or a depends aspect so we look at the
@@ -2299,16 +2255,14 @@ package body Flow_Utility is
    ---------------------
 
    function Get_Loop_Writes (E : Entity_Id) return Flow_Id_Sets.Set
-     renames Loop_Info.Element;
+   renames Loop_Info.Element;
 
    ------------------------------------
    --  Get_Outputs_From_Program_Exit --
    ------------------------------------
 
    function Get_Outputs_From_Program_Exit
-     (E                    : Entity_Id;
-      Scope                : Flow_Scope;
-      Use_Computed_Globals : Boolean)
+     (E : Entity_Id; Scope : Flow_Scope; Use_Computed_Globals : Boolean)
       return Flow_Id_Sets.Set
    is
       Prag : constant Node_Id := Get_Pragma (E, Pragma_Program_Exit);
@@ -2316,8 +2270,7 @@ package body Flow_Utility is
    begin
       if Present (Prag) then
          declare
-            Assoc : constant List_Id :=
-              Pragma_Argument_Associations (Prag);
+            Assoc : constant List_Id := Pragma_Argument_Associations (Prag);
 
             pragma Assert (No (Assoc) or else List_Length (Assoc) = 1);
             --  Pragma has one optional argument
@@ -2345,9 +2298,7 @@ package body Flow_Utility is
    -----------------------------------
 
    function Get_Outputs_From_Program_Exit
-     (E    : Entity_Id;
-      Scop : Node_Id)
-      return Flow_Id_Sets.Set
+     (E : Entity_Id; Scop : Node_Id) return Flow_Id_Sets.Set
    is
       Prag : constant Node_Id := Get_Pragma (E, Pragma_Program_Exit);
       Res  : Flow_Id_Sets.Set;
@@ -2406,12 +2357,10 @@ package body Flow_Utility is
    -----------------------------------
 
    function Get_Postcondition_Expressions
-     (E       : Entity_Id;
-      Refined : Boolean)
-      return Node_Lists.List
+     (E : Entity_Id; Refined : Boolean) return Node_Lists.List
    is
       P_Expr : Node_Lists.List;
-      P_CC   : Node_Id;
+      P_CC   : Node_Lists.List;
    begin
       case Ekind (E) is
          when Entry_Kind | E_Function | E_Procedure | E_Subprogram_Type =>
@@ -2419,7 +2368,7 @@ package body Flow_Utility is
                P_Expr := Find_Contracts (E, Pragma_Refined_Post);
             else
                P_Expr := Find_Contracts (E, Pragma_Postcondition);
-               P_CC   := Get_Pragma (E, Pragma_Contract_Cases);
+               P_CC := Find_Contracts (E, Pragma_Contract_Cases);
 
                if Is_Dispatching_Operation (E) then
                   for Post of Classwide_Pre_Post (E, Pragma_Postcondition) loop
@@ -2429,14 +2378,10 @@ package body Flow_Utility is
 
                --  If a Contract_Cases aspect was found then we pull out
                --  every right-hand-side.
-               if Present (P_CC) then
+               for Aggr of P_CC loop
                   declare
                      Contract_Case : Node_Id :=
-                       First
-                         (Component_Associations
-                            (Expression
-                               (First
-                                  (Pragma_Argument_Associations (P_CC)))));
+                       First (Component_Associations (Aggr));
                   begin
                      loop
                         P_Expr.Append (Expression (Contract_Case));
@@ -2445,7 +2390,7 @@ package body Flow_Utility is
                         exit when No (Contract_Case);
                      end loop;
                   end;
-               end if;
+               end loop;
             end if;
 
          when E_Package =>
@@ -2472,8 +2417,8 @@ package body Flow_Utility is
       Precondition_Expressions : Node_Lists.List :=
         Find_Contracts (E, Pragma_Precondition);
 
-      Contract_Cases     : constant Node_Id :=
-        Get_Pragma (E, Pragma_Contract_Cases);
+      Contract_Cases     : constant Node_Lists.List :=
+        Find_Contracts (E, Pragma_Contract_Cases);
       Subprogram_Variant : constant Node_Id :=
         Get_Pragma (E, Pragma_Subprogram_Variant);
       Exit_Cases         : constant Node_Id :=
@@ -2489,16 +2434,10 @@ package body Flow_Utility is
       --  If a Contract_Cases aspect was found then we pull every condition
       --  apart from the others.
 
-      if Present (Contract_Cases) then
+      for Aggr of Contract_Cases loop
          declare
-            Contract_Case : Node_Id :=
-              First
-                (Component_Associations
-                   (Expression
-                      (First
-                         (Pragma_Argument_Associations (Contract_Cases)))));
-
-            Case_Guard : Node_Id;
+            Contract_Case : Node_Id := First (Component_Associations (Aggr));
+            Case_Guard    : Node_Id;
 
          begin
             loop
@@ -2513,7 +2452,7 @@ package body Flow_Utility is
                exit when No (Contract_Case);
             end loop;
          end;
-      end if;
+      end loop;
 
       --  If a Subprogram_Variant aspect was found then we add every
       --  expression to the returned list. Subprogram variants are treated
@@ -2544,8 +2483,7 @@ package body Flow_Utility is
               First
                 (Component_Associations
                    (Expression
-                      (First
-                         (Pragma_Argument_Associations (Exit_Cases)))));
+                      (First (Pragma_Argument_Associations (Exit_Cases)))));
 
             Case_Guard : Node_Id;
 
@@ -2573,11 +2511,11 @@ package body Flow_Utility is
    -----------------------
 
    procedure Get_Proof_Globals
-     (Subprogram      :     Runnable_Kind_Id;
+     (Subprogram      : Runnable_Kind_Id;
       Reads           : out Flow_Id_Sets.Set;
       Writes          : out Flow_Id_Sets.Set;
-      Erase_Constants :     Boolean;
-      Scop            :     Flow_Scope := Null_Flow_Scope)
+      Erase_Constants : Boolean;
+      Scop            : Flow_Scope := Null_Flow_Scope)
    is
       Globals : Global_Flow_Ids;
 
@@ -2591,17 +2529,20 @@ package body Flow_Utility is
          then Scop
          elsif Ekind (Subprogram) = E_Subprogram_Type
          then Get_Flow_Scope (Subprogram)
-         else (Ent  => Subprogram,
-               Part => (if Entity_Body_In_SPARK (Subprogram)
-                        then Body_Part
-                        else Visible_Part)));
+         else
+           (Ent  => Subprogram,
+            Part =>
+              (if Entity_Body_In_SPARK (Subprogram)
+               then Body_Part
+               else Visible_Part)));
 
       function Only_Mutable
-        (Objects : Flow_Id_Sets.Set)
-      return Flow_Id_Sets.Set
-      with Pre  => Erase_Constants,
-           Post => Flow_Id_Sets.Is_Subset (Subset => Only_Mutable'Result,
-                                           Of_Set => Objects);
+        (Objects : Flow_Id_Sets.Set) return Flow_Id_Sets.Set
+      with
+        Pre  => Erase_Constants,
+        Post =>
+          Flow_Id_Sets.Is_Subset
+            (Subset => Only_Mutable'Result, Of_Set => Objects);
       --  Returns those of Objects that are mutable in Why3
 
       ------------------
@@ -2609,8 +2550,7 @@ package body Flow_Utility is
       ------------------
 
       function Only_Mutable
-        (Objects : Flow_Id_Sets.Set)
-         return Flow_Id_Sets.Set
+        (Objects : Flow_Id_Sets.Set) return Flow_Id_Sets.Set
       is
          Mutable : Flow_Id_Sets.Set;
 
@@ -2624,7 +2564,7 @@ package body Flow_Utility is
                --  Otherwise the effect is significant for proof, keep it
 
                if Gnat2Why.Util.Is_Mutable_In_Why
-                 (Get_Direct_Mapping_Id (Object))
+                    (Get_Direct_Mapping_Id (Object))
                then
                   Mutable.Insert (Object);
                end if;
@@ -2651,7 +2591,7 @@ package body Flow_Utility is
       --  contract of the root type (which should also be a task type and also
       --  be in SPARK).
 
-   --  Start of processing for Get_Proof_Globals
+      --  Start of processing for Get_Proof_Globals
 
    begin
       --  We currently have no way to annotate subprogram types with globals,
@@ -2669,9 +2609,11 @@ package body Flow_Utility is
             pragma Assert (Present (E));
          end if;
 
-         pragma Assert (Ekind (E) = E_Task_Type
-                          and then not Is_Derived_Type (E)
-                          and then Entity_In_SPARK (E));
+         pragma
+           Assert
+             (Ekind (E) = E_Task_Type
+                and then not Is_Derived_Type (E)
+                and then Entity_In_SPARK (E));
       else
          E := Subprogram;
       end if;
@@ -2681,20 +2623,16 @@ package body Flow_Utility is
       --  itself, which is represented by the formal parameter of a predicate
       --  function).
 
-      if Ekind (E) = E_Function
-        and then Is_Predicate_Function (E)
-      then
+      if Ekind (E) = E_Function and then Is_Predicate_Function (E) then
          declare
             Param : constant Entity_Id := First_Formal (E);
 
          begin
-            for V of Get_Variables_For_Proof
-              (Expr_N  => Get_Expr_From_Return_Only_Func (E),
-               Scope_N => E)
+            for V of
+              Get_Variables_For_Proof
+                (Expr_N => Get_Expr_From_Return_Only_Func (E), Scope_N => E)
             loop
-               if V.Kind = Direct_Mapping
-                 and then V.Node = Param
-               then
+               if V.Kind = Direct_Mapping and then V.Node = Param then
                   null;
                else
                   Reads.Include (V);
@@ -2720,15 +2658,16 @@ package body Flow_Utility is
          --  Expand all variables; it is more efficent to process Proof_Ins and
          --  Reads separaterly, because they are disjoint and there is no point
          --  in computing their union.
-         Reads := Flow_Id_Sets.Union
-           (Expand_Abstract_States (Globals.Proof_Ins),
-            Expand_Abstract_States (Globals.Inputs));
+         Reads :=
+           Flow_Id_Sets.Union
+             (Expand_Abstract_States (Globals.Proof_Ins),
+              Expand_Abstract_States (Globals.Inputs));
 
          Writes := Expand_Abstract_States (Globals.Outputs);
       end if;
 
       if Erase_Constants then
-         Reads  := Only_Mutable (Reads);
+         Reads := Only_Mutable (Reads);
          Writes := Only_Mutable (Writes);
       end if;
    end Get_Proof_Globals;
@@ -2737,46 +2676,40 @@ package body Flow_Utility is
    -- Get_Type --
    --------------
 
-   function Get_Type
-     (F     : Flow_Id;
-      Scope : Flow_Scope)
-      return Entity_Id
-   is
+   function Get_Type (F : Flow_Id; Scope : Flow_Scope) return Entity_Id is
       E : constant Entity_Id :=
         (case F.Kind is
-         when Direct_Mapping => Get_Direct_Mapping_Id (F),
-         when Record_Field   => F.Component.Last_Element,
-         when others         => raise Program_Error);
+           when Direct_Mapping => Get_Direct_Mapping_Id (F),
+           when Record_Field => F.Component.Last_Element,
+           when others => raise Program_Error);
    begin
       return Get_Type (E, Scope);
    end Get_Type;
 
-   function Get_Type
-     (N     : Node_Id;
-      Scope : Flow_Scope)
-      return Entity_Id
-   is
+   function Get_Type (N : Node_Id; Scope : Flow_Scope) return Entity_Id is
       T : Entity_Id;
       --  Will be assigned the type of N
    begin
       T :=
-        (if Nkind (N) = N_Defining_Identifier
-           and then Is_Type (N)
+        (if Nkind (N) = N_Defining_Identifier and then Is_Type (N)
          then
-            --  If N is of Type_Kind then T is N
-            N
-         elsif Nkind (N) in N_Has_Etype then
-            --  If Etype is Present then use that
-            Etype (N)
+           --  If N is of Type_Kind then T is N
+           N
+         elsif Nkind (N) in N_Has_Etype
+         then
+           --  If Etype is Present then use that
+           Etype (N)
          else
-            --  We don't expect to get any other kind of node
-            raise Program_Error);
+           --  We don't expect to get any other kind of node
+           raise Program_Error);
 
       --  Deal with Abstract_State, which doesn't have a proper type
 
       if T = Standard_Void_Type then
-         pragma Assert (Nkind (N) = N_Defining_Identifier and then
-                        Ekind (N) = E_Abstract_State);
+         pragma
+           Assert
+             (Nkind (N) = N_Defining_Identifier
+                and then Ekind (N) = E_Abstract_State);
 
          return T;
       end if;
@@ -2807,10 +2740,11 @@ package body Flow_Utility is
                   --  which flow analysis handles as blobs anyway.
 
                   pragma Assert (Is_Base_Type (T));
-                  pragma Assert
-                    (Is_Array_Type (T)
-                     or else Is_Anonymous_Access_Type (T)
-                     or else Is_Fixed_Point_Type (T));
+                  pragma
+                    Assert
+                      (Is_Array_Type (T)
+                         or else Is_Anonymous_Access_Type (T)
+                         or else Is_Fixed_Point_Type (T));
 
                   return T;
                else
@@ -2898,23 +2832,23 @@ package body Flow_Utility is
       Use_Computed_Globals    : Boolean;
       Assume_In_Expression    : Boolean := True;
       Expand_Internal_Objects : Boolean := False;
-      Skip_Old                : Boolean := False)
-      return Flow_Id_Sets.Set
+      Skip_Old                : Boolean := False) return Flow_Id_Sets.Set
    is
       Vars : Flow_Id_Sets.Set;
 
    begin
       for Ref_Kind in Reference_Kind loop
          Vars.Union
-           (Get_Variables (N                       => N,
-                           Scope                   => Scope,
-                           Target_Name             => Target_Name,
-                           Fold_Functions          => Ref_Kind,
-                           Use_Computed_Globals    => Use_Computed_Globals,
-                           Assume_In_Expression    => Assume_In_Expression,
-                           Expand_Internal_Objects => Expand_Internal_Objects,
-                           Consider_Extensions     => False,
-                           Skip_Old                => Skip_Old));
+           (Get_Variables
+              (N                       => N,
+               Scope                   => Scope,
+               Target_Name             => Target_Name,
+               Fold_Functions          => Ref_Kind,
+               Use_Computed_Globals    => Use_Computed_Globals,
+               Assume_In_Expression    => Assume_In_Expression,
+               Expand_Internal_Objects => Expand_Internal_Objects,
+               Consider_Extensions     => False,
+               Skip_Old                => Skip_Old));
       end loop;
 
       return Vars;
@@ -2935,9 +2869,7 @@ package body Flow_Utility is
    end record;
 
    function Get_Variables_Internal
-     (N        : Node_Id;
-      Ctx      : Get_Variables_Context;
-      Skip_Old : Boolean := False)
+     (N : Node_Id; Ctx : Get_Variables_Context; Skip_Old : Boolean := False)
       return Flow_Id_Sets.Set
    with Pre => (if Ctx.Assume_In_Expression then Nkind (N) in N_Subexpr);
    --  Internal version with a context that we'll use to recurse
@@ -2955,8 +2887,7 @@ package body Flow_Utility is
       Assume_In_Expression    : Boolean := True;
       Expand_Internal_Objects : Boolean := False;
       Consider_Extensions     : Boolean := False;
-      Skip_Old                : Boolean := False)
-      return Flow_Id_Sets.Set
+      Skip_Old                : Boolean := False) return Flow_Id_Sets.Set
    is
       Ctx : constant Get_Variables_Context :=
         (Scope                   => Scope,
@@ -2976,9 +2907,7 @@ package body Flow_Utility is
    ----------------------------
 
    function Get_Variables_Internal
-     (N        : Node_Id;
-      Ctx      : Get_Variables_Context;
-      Skip_Old : Boolean := False)
+     (N : Node_Id; Ctx : Get_Variables_Context; Skip_Old : Boolean := False)
       return Flow_Id_Sets.Set
    is
       ----------------------------------------------------
@@ -2986,8 +2915,10 @@ package body Flow_Utility is
       ----------------------------------------------------
 
       function Do_Subprogram_Call (Callsite : Node_Id) return Flow_Id_Sets.Set
-      with Pre => Nkind (Callsite) in N_Entry_Call_Statement
-                                    | N_Subprogram_Call;
+      with
+        Pre =>
+          Nkind (Callsite) in N_Entry_Call_Statement | N_Subprogram_Call
+          or else Is_Specialized_Actual (Callsite);
       --  Work out which variables (including globals) are used in the
       --  entry/subprogram call and add them to the given set. Do not follow
       --  children after calling this.
@@ -3001,13 +2932,15 @@ package body Flow_Utility is
       --  calling this.
 
       function Merge_Entity (E : Entity_Id) return Flow_Id_Sets.Set
-      with Pre => Ekind (E) in E_Constant
-                             | E_Discriminant
-                             | E_Loop_Parameter
-                             | E_Variable
-                             | Formal_Kind
-                    or else
-                  Is_Concurrent_Component_Or_Discr (E);
+      with
+        Pre =>
+          Ekind (E)
+          in E_Constant
+           | E_Discriminant
+           | E_Loop_Parameter
+           | E_Variable
+           | Formal_Kind
+          or else Is_Concurrent_Component_Or_Discr (E);
       --  Return a set that can be merged into Variables, as above
 
       function Recurse
@@ -3015,7 +2948,7 @@ package body Flow_Utility is
          Consider_Extensions : Boolean := False;
          Fold_Functions      : Reference_Kind := Ctx.Fold_Functions)
          return Flow_Id_Sets.Set
-        with Pre => Present (N);
+      with Pre => Present (N);
       --  Helper function to recurse on N
 
       function Untangle_Record_Fields
@@ -3024,10 +2957,11 @@ package body Flow_Utility is
          Target_Name             : Flow_Id;
          Fold_Functions          : Reference_Kind;
          Use_Computed_Globals    : Boolean;
-         Expand_Internal_Objects : Boolean)
-         return Flow_Id_Sets.Set
-      with Pre => Nkind (N) in N_Selected_Component | N_Delta_Aggregate
-                    or else Is_Attribute_Update (N);
+         Expand_Internal_Objects : Boolean) return Flow_Id_Sets.Set
+      with
+        Pre =>
+          Nkind (N) in N_Selected_Component | N_Delta_Aggregate
+          or else Is_Attribute_Update (N);
       --  Process a node describing one or more record fields and return a
       --  variable set with all variables referenced.
       --
@@ -3044,21 +2978,23 @@ package body Flow_Utility is
       --  Scope, Use_Computed_Globals, Expand_Internal_Objects will be passed
       --  on to Get_Variables if necessary.
 
-      function Untangle_With_Context (N : Node_Id)
-                                      return Flow_Id_Sets.Set
+      function Untangle_With_Context (N : Node_Id) return Flow_Id_Sets.Set
       is (Untangle_Record_Fields
-           (N,
-            Scope                   => Ctx.Scope,
-            Target_Name             => Ctx.Target_Name,
-            Fold_Functions          => Ctx.Fold_Functions,
-            Use_Computed_Globals    => Ctx.Use_Computed_Globals,
-            Expand_Internal_Objects => Ctx.Expand_Internal_Objects))
-      with Pre => Ekind
-                    (Unchecked_Full_Type
-                       (Etype (if Nkind (N) = N_Delta_Aggregate
-                               then Expression (N)
-                               else Prefix (N))))
-                    in Record_Kind | Concurrent_Kind;
+            (N,
+             Scope                   => Ctx.Scope,
+             Target_Name             => Ctx.Target_Name,
+             Fold_Functions          => Ctx.Fold_Functions,
+             Use_Computed_Globals    => Ctx.Use_Computed_Globals,
+             Expand_Internal_Objects => Ctx.Expand_Internal_Objects))
+      with
+        Pre =>
+          Ekind
+            (Unchecked_Full_Type
+               (Etype
+                  (if Nkind (N) = N_Delta_Aggregate
+                   then Expression (N)
+                   else Prefix (N))))
+          in Record_Kind | Concurrent_Kind;
       --  Helper function to call Untangle_Record_Fields with the appropriate
       --  context. It can be called on types that have either components or
       --  discriminants.
@@ -3095,23 +3031,23 @@ package body Flow_Utility is
          if Is_Concurrent_Component_Or_Discr (E)
            or else Ekind (E) = E_Discriminant
          then
-            return Flatten_Variable
-              (F     => Add_Component (F    => Direct_Mapping_Id (Scope (E)),
-                                       Comp =>
-                                         (if Ekind (E) = E_Discriminant then
-                                               Unique_Component (E) else E)),
-               Scope => Ctx.Scope);
+            return
+              Flatten_Variable
+                (F     =>
+                   Add_Component
+                     (F    => Direct_Mapping_Id (Scope (E)),
+                      Comp =>
+                        (if Ekind (E) = E_Discriminant
+                         then Unique_Component (E)
+                         else E)),
+                 Scope => Ctx.Scope);
 
          elsif Is_Part_Of_Concurrent_Object (E) then
-            return Flatten_Variable
-              (Add_Component
-                 (Direct_Mapping_Id (Etype (Encapsulating_State (E))), E),
-               Ctx.Scope);
-
-         elsif Ekind (E) in E_Constant | E_Variable
-           and then Present (Ultimate_Overlaid_Entity (E))
-         then
-            return Flatten_Variable (Ultimate_Overlaid_Entity (E), Ctx.Scope);
+            return
+              Flatten_Variable
+                (Add_Component
+                   (Direct_Mapping_Id (Etype (Encapsulating_State (E))), E),
+                 Ctx.Scope);
 
          else
             return Flatten_Variable (E, Ctx.Scope);
@@ -3124,7 +3060,13 @@ package body Flow_Utility is
 
       function Do_Subprogram_Call (Callsite : Node_Id) return Flow_Id_Sets.Set
       is
-         Subprogram : constant Entity_Id := Get_Called_Entity (Callsite);
+         Is_Higher_Order_Actual : constant Boolean :=
+           Is_Specialized_Actual (Callsite);
+
+         Subprogram : constant Entity_Id :=
+           (if Is_Higher_Order_Actual
+            then Entity (Prefix (Callsite))
+            else Get_Called_Entity (Callsite));
 
          Globals : Global_Flow_Ids;
 
@@ -3149,12 +3091,11 @@ package body Flow_Utility is
          ----------------------
 
          procedure Handle_Parameter (Formal : Entity_Id; Actual : Node_Id) is
-            function May_Use_Extensions return Boolean is
-              (Has_Extensions_Visible (Subprogram)
-               or else Is_Class_Wide_Type (Get_Type (Formal, Ctx.Scope))
-               or else
-                 (Flow_Classwide.Is_Dispatching_Call (Callsite)
-                  and then Is_Controlling_Formal (Formal)));
+            function May_Use_Extensions return Boolean
+            is (Has_Extensions_Visible (Subprogram)
+                or else Is_Class_Wide_Type (Get_Type (Formal, Ctx.Scope))
+                or else (Flow_Classwide.Is_Dispatching_Call (Callsite)
+                         and then Is_Controlling_Formal (Formal)));
             --  True if we have the aspect set (so we know the subprogram might
             --  convert to a classwide type), we're dealing with a classwide
             --  type directly (since that may or may not have extensions), or
@@ -3193,7 +3134,8 @@ package body Flow_Utility is
                         V.Union
                           (Get_Variables_Internal
                              (Actual,
-                              (Ctx with delta
+                              (Ctx
+                               with delta
                                  Fold_Functions      => Inputs,
                                  Consider_Extensions => May_Use_Extensions)));
                      else
@@ -3205,10 +3147,10 @@ package body Flow_Utility is
             end case;
          end Handle_Parameter;
 
-         procedure Handle_Parameters is
-            new Iterate_Call_Parameters (Handle_Parameter);
+         procedure Handle_Parameters is new
+           Iterate_Call_Parameters (Handle_Parameter);
 
-      --  Start of processing for Do_Subprogram_Call
+         --  Start of processing for Do_Subprogram_Call
 
       begin
          --  Ignore calls to predicate functions, which come from the frontend
@@ -3227,12 +3169,13 @@ package body Flow_Utility is
                Depends : Dependency_Maps.Map;
 
             begin
-               Get_Depends (Subprogram           => Subprogram,
-                            Scope                => Ctx.Scope,
-                            Classwide            =>
-                              Flow_Classwide.Is_Dispatching_Call (Callsite),
-                            Depends              => Depends,
-                            Use_Computed_Globals => Ctx.Use_Computed_Globals);
+               Get_Depends
+                 (Subprogram           => Subprogram,
+                  Scope                => Ctx.Scope,
+                  Classwide            =>
+                    Flow_Classwide.Is_Dispatching_Call (Callsite),
+                  Depends              => Depends,
+                  Use_Computed_Globals => Ctx.Use_Computed_Globals);
 
                pragma Assert (Depends.Length in 1 .. 2);
                --  For functions Depends always mentions the 'Result
@@ -3279,15 +3222,14 @@ package body Flow_Utility is
                            V.Union
                              (if Is_External_Call (Callsite)
                               then Recurse (Prefix (Name (Callsite)))
-                              else Flatten_Variable (Implicit_Actual,
-                                                     Ctx.Scope));
+                              else
+                                Flatten_Variable (Implicit_Actual, Ctx.Scope));
                         end if;
                      else
                         V.Union
                           (if Is_External_Call (Callsite)
                            then Recurse (Prefix (Name (Callsite)))
-                           else Flatten_Variable (Implicit_Actual,
-                                                  Ctx.Scope));
+                           else Flatten_Variable (Implicit_Actual, Ctx.Scope));
                      end if;
 
                   when Proof_Ins =>
@@ -3306,8 +3248,8 @@ package body Flow_Utility is
                               V.Union
                                 (Get_Variables_Internal
                                    (Prefix (Name (Callsite)),
-                                    (Ctx with delta
-                                         Fold_Functions => Inputs)));
+                                    (Ctx
+                                     with delta Fold_Functions => Inputs)));
                            else
                               V.Union (Recurse (Prefix (Name (Callsite))));
                            end if;
@@ -3333,17 +3275,21 @@ package body Flow_Utility is
 
          --  Merge the actuals into the set of variables used
 
-         Handle_Parameters (Callsite);
+         if not Is_Higher_Order_Actual then
+            Handle_Parameters (Callsite);
+         end if;
 
          --  Determine the global effects of the called program
 
          if Ekind (Subprogram) /= E_Subprogram_Type then
-            Get_Globals (Subprogram          => Subprogram,
-                         Scope               => Ctx.Scope,
-                         Classwide           =>
-                           Flow_Classwide.Is_Dispatching_Call (Callsite),
-                         Globals             => Globals,
-                         Use_Deduced_Globals => Ctx.Use_Computed_Globals);
+            Get_Globals
+              (Subprogram          => Subprogram,
+               Scope               => Ctx.Scope,
+               Classwide           =>
+                 not Is_Higher_Order_Actual
+                 and then Flow_Classwide.Is_Dispatching_Call (Callsite),
+               Globals             => Globals,
+               Use_Deduced_Globals => Ctx.Use_Computed_Globals);
 
             Remove_Constants (Globals.Proof_Ins);
             Remove_Constants (Globals.Inputs);
@@ -3436,6 +3382,14 @@ package body Flow_Utility is
             return Flow_Id_Sets.Empty_Set;
          end if;
 
+         --  Handle overlays before filtering constants without variable inputs
+
+         if Ekind (E) in E_Constant | E_Variable
+           and then Present (Ultimate_Overlaid_Entity (E))
+         then
+            return Do_Entity (Ultimate_Overlaid_Entity (E));
+         end if;
+
          case Ekind (E) is
             --------------------------------------------
             -- Entities requiring some kind of action --
@@ -3452,15 +3406,15 @@ package body Flow_Utility is
                   declare
                      Obj_Decl : constant Node_Id := Parent (E);
 
-                     pragma Assert
-                       (Nkind (Obj_Decl) = N_Object_Declaration,
-                        "Bad parent of constant entity");
+                     pragma
+                       Assert
+                         (Nkind (Obj_Decl) = N_Object_Declaration,
+                          "Bad parent of constant entity");
 
                      Expr : constant Node_Id := Expression (Obj_Decl);
 
-                     pragma Assert
-                       (Present (Expr),
-                        "Constant has no expression");
+                     pragma
+                       Assert (Present (Expr), "Constant has no expression");
 
                   begin
                      return Recurse (Expr);
@@ -3525,8 +3479,8 @@ package body Flow_Utility is
                     and then Extensions_Visible (E, Ctx.Scope)
                   then
                      Vars.Include
-                       (Direct_Mapping_Id (Unique_Entity (E),
-                                           Facet => Extension_Part));
+                       (Direct_Mapping_Id
+                          (Unique_Entity (E), Facet => Extension_Part));
                   end if;
 
                   return Vars;
@@ -3540,8 +3494,9 @@ package body Flow_Utility is
                pragma Assert (not Ctx.Assume_In_Expression);
 
                --  These kinds of types are not allowed in SPARK (yet)
-               pragma Assert (Ekind (E) not in E_Exception_Type
-                                             | E_Subprogram_Type);
+               pragma
+                 Assert
+                   (Ekind (E) not in E_Exception_Type | E_Subprogram_Type);
 
                if Is_Scalar_Type (E) then
                   declare
@@ -3558,16 +3513,11 @@ package body Flow_Utility is
             -- Entities with no flow consequence --
             ---------------------------------------
 
-            when Named_Kind
-               | E_Enumeration_Literal
-            =>
+            when Named_Kind | E_Enumeration_Literal =>
                --  All of these are simply constants, with no flow concern
                null;
 
-            when E_Entry
-               | E_Function
-               | E_Procedure
-            =>
+            when E_Entry | E_Function | E_Procedure =>
                --  Dealt with when dealing with N_Subprogram_Call nodes, except
                --  when traversing the AST looking for first use of a variable.
                --  ??? the following assertion can fail on access to
@@ -3576,12 +3526,7 @@ package body Flow_Utility is
                --  pragma Assert (not Ctx.Assume_In_Expression);
                null;
 
-            when E_Block
-               | E_Exception
-               | E_Label
-               | E_Loop
-               | E_Package
-            =>
+            when E_Block | E_Exception | E_Label | E_Loop | E_Package =>
                --  Nothing to do for these directly; we get them while
                --  traversing a list of statements or an identifier.
                null;
@@ -3593,9 +3538,7 @@ package body Flow_Utility is
             --  Entities related to generic units are not in SPARK itself (we
             --  analyze instantiations instead of generics).
 
-            when Formal_Object_Kind
-               | Generic_Unit_Kind
-            =>
+            when Formal_Object_Kind | Generic_Unit_Kind =>
                raise Program_Error;
 
             --  Frontend rewrites calls to operators into function calls
@@ -3605,9 +3548,7 @@ package body Flow_Utility is
 
             --  Entry families are not in SPARK yet
 
-            when E_Entry_Family
-               | E_Entry_Index_Parameter
-            =>
+            when E_Entry_Family | E_Entry_Index_Parameter =>
                raise Program_Error;
 
             --  Abstract state cannot directly appear in expressions
@@ -3650,6 +3591,11 @@ package body Flow_Utility is
          -----------------
 
          case The_Attribute is
+            when Attribute_Access =>
+               if Is_Specialized_Actual (N) then
+                  return Do_Subprogram_Call (N);
+               end if;
+
             when Attribute_Result =>
                pragma Assert (Ekind (Entity (Prefix (N))) = E_Function);
 
@@ -3658,8 +3604,7 @@ package body Flow_Utility is
                --  expression the entire 'Result object must be initialized
                --  anyway.
 
-               return
-                 Flatten_Variable (Entity (Prefix (N)), Ctx.Scope);
+               return Flatten_Variable (Entity (Prefix (N)), Ctx.Scope);
 
             when Attribute_Update =>
                declare
@@ -3667,14 +3612,12 @@ package body Flow_Utility is
                   --  aggregate with component associations only.
 
                   Expr : constant Node_Id := First (Expressions (N));
-                  pragma Assert
-                    (No (Next (Expr))
-                       and then
-                     Nkind (Expr) = N_Aggregate
-                       and then
-                     No (Expressions (Expr))
-                       and then
-                     not Null_Record_Present (Expr));
+                  pragma
+                    Assert
+                      (No (Next (Expr))
+                         and then Nkind (Expr) = N_Aggregate
+                         and then No (Expressions (Expr))
+                         and then not Null_Record_Present (Expr));
 
                   Assoc  : Node_Id;
                   Choice : Node_Id;
@@ -3747,10 +3690,11 @@ package body Flow_Utility is
 
                            if Nkind (Choice) = N_Aggregate then
                               pragma Assert (Number_Dimensions (T) > 1);
-                              pragma Assert
-                                (No (Component_Associations (Choice))
-                                   and then
-                                 not Null_Record_Present (Choice));
+                              pragma
+                                Assert
+                                  (No (Component_Associations (Choice))
+                                     and then not Null_Record_Present
+                                                    (Choice));
 
                               Index := First (Expressions (Choice));
                               loop
@@ -3834,11 +3778,10 @@ package body Flow_Utility is
 
                if Ctx.Fold_Functions = Inputs
                  and then Is_Entity_Name (Prefix (N))
-                 and then Ekind (Entity (Prefix (N))) in E_In_Out_Parameter
-                                                       | E_Out_Parameter
-                 and then
-                   Has_Discriminants
-                     (Get_Type (Entity (Prefix (N)), Ctx.Scope))
+                 and then Ekind (Entity (Prefix (N)))
+                          in E_In_Out_Parameter | E_Out_Parameter
+                 and then Has_Discriminants
+                            (Get_Type (Entity (Prefix (N)), Ctx.Scope))
                then
                   return
                     Flow_Id_Sets.To_Set
@@ -3928,8 +3871,9 @@ package body Flow_Utility is
                      end if;
 
                   else
-                     pragma Assert
-                       (Is_Entity_Name (Pref) and then Is_Type (Pref_Type));
+                     pragma
+                       Assert
+                         (Is_Entity_Name (Pref) and then Is_Type (Pref_Type));
                   end if;
 
                   Get_Type_Size (Pref_Type);
@@ -3977,13 +3921,13 @@ package body Flow_Utility is
 
                   if Is_Constrained (T)
                     and then Is_Itype (T)
-                    and then Nkind
-                               (Associated_Node_For_Itype (T)) =
-                                  N_Component_Declaration
+                    and then Nkind (Associated_Node_For_Itype (T))
+                             = N_Component_Declaration
                   then
-                     pragma Assert
-                       (Nkind (Prefix (N)) in N_Explicit_Dereference
-                                            | N_Selected_Component);
+                     pragma
+                       Assert
+                         (Nkind (Prefix (N))
+                          in N_Explicit_Dereference | N_Selected_Component);
                      declare
                         Comp : constant Entity_Id :=
                           Defining_Identifier (Associated_Node_For_Itype (T));
@@ -4005,11 +3949,11 @@ package body Flow_Utility is
                               Next_Index (Index);
                            end loop;
 
-                           LB := Type_Low_Bound  (Etype (Index));
+                           LB := Type_Low_Bound (Etype (Index));
                            HB := Type_High_Bound (Etype (Index));
 
                         else
-                           LB := Type_Low_Bound  (Etype (First_Index (T)));
+                           LB := Type_Low_Bound (Etype (First_Index (T)));
                            HB := Type_High_Bound (Etype (First_Index (T)));
                         end if;
                      else
@@ -4081,7 +4025,7 @@ package body Flow_Utility is
                Variables.Union
                  (Flatten_Variable (RTE (RE_Tasking_State), Ctx.Scope));
 
-               --  We also need to do the usual
+            --  We also need to do the usual
 
             when others =>
                --  We just need to do the usual
@@ -4103,28 +4047,30 @@ package body Flow_Utility is
          --  attributes), then we have either already dealt with its prefix
          --  above (e.g. 'First) or this prefix is ignored below (e.g. 'Min).
 
-         if Is_Entity_Name (Prefix (N))
-           and then Is_Type (Entity (Prefix (N)))
+         if Is_Entity_Name (Prefix (N)) and then Is_Type (Entity (Prefix (N)))
          then
-            pragma Assert (The_Attribute in Attribute_Alignment
-                                          | Attribute_Ceiling
-                                          | Attribute_Component_Size
-                                          | Attribute_Copy_Sign
-                                          | Attribute_Enum_Rep
-                                          | Attribute_Enum_Val
-                                          | Attribute_Floor
-                                          | Attribute_Image
-                                          | Attribute_Max
-                                          | Attribute_Min
-                                          | Attribute_Mod
-                                          | Attribute_Pos
-                                          | Attribute_Pred
-                                          | Attribute_Remainder
-                                          | Attribute_Rounding
-                                          | Attribute_Succ
-                                          | Attribute_Truncation
-                                          | Attribute_Val
-                                          | Attribute_Value);
+            pragma
+              Assert
+                (The_Attribute
+                 in Attribute_Alignment
+                  | Attribute_Ceiling
+                  | Attribute_Component_Size
+                  | Attribute_Copy_Sign
+                  | Attribute_Enum_Rep
+                  | Attribute_Enum_Val
+                  | Attribute_Floor
+                  | Attribute_Image
+                  | Attribute_Max
+                  | Attribute_Min
+                  | Attribute_Mod
+                  | Attribute_Pos
+                  | Attribute_Pred
+                  | Attribute_Remainder
+                  | Attribute_Rounding
+                  | Attribute_Succ
+                  | Attribute_Truncation
+                  | Attribute_Val
+                  | Attribute_Value);
          else
             Variables.Union (Recurse (Prefix (N)));
          end if;
@@ -4155,22 +4101,21 @@ package body Flow_Utility is
          Target_Name             : Flow_Id;
          Fold_Functions          : Reference_Kind;
          Use_Computed_Globals    : Boolean;
-         Expand_Internal_Objects : Boolean)
-         return Flow_Id_Sets.Set
+         Expand_Internal_Objects : Boolean) return Flow_Id_Sets.Set
       is
-         M             : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
+         M : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
 
-         Root_Node     : Node_Id := N;
+         Root_Node : Node_Id := N;
 
-         Component     : Node_Lists.List := Node_Lists.Empty_List;
-         Seq           : Node_Lists.List := Node_Lists.Empty_List;
+         Component : Node_Lists.List := Node_Lists.Empty_List;
+         Seq       : Node_Lists.List := Node_Lists.Empty_List;
 
          Comp_Id       : Positive;
          Current_Field : Flow_Id;
 
-         All_Vars      : Flow_Id_Sets.Set          := Flow_Id_Sets.Empty_Set;
-         Depends_Vars  : Flow_Id_Sets.Set          := Flow_Id_Sets.Empty_Set;
-         Proof_Vars    : constant Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+         All_Vars     : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+         Depends_Vars : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+         Proof_Vars   : constant Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
 
          function Is_Ignored_Attribute (N : Node_Id) return Boolean;
          --  Returns True if N denotes an attribute 'Old or 'Loop_Entry, which
@@ -4178,17 +4123,16 @@ package body Flow_Utility is
 
          function Is_Ignored_Attribute (N : Node_Id) return Boolean
          is (Nkind (N) = N_Attribute_Reference
-               and then
-             Attribute_Name (N) in Name_Old | Name_Loop_Entry);
+             and then Attribute_Name (N) in Name_Old | Name_Loop_Entry);
 
          function Get_Vars_Wrapper (N : Node_Id) return Flow_Id_Sets.Set
          is (Get_Variables
-             (N,
-              Scope                   => Scope,
-              Target_Name             => Target_Name,
-              Fold_Functions          => Fold_Functions,
-              Use_Computed_Globals    => Use_Computed_Globals,
-              Expand_Internal_Objects => Expand_Internal_Objects));
+               (N,
+                Scope                   => Scope,
+                Target_Name             => Target_Name,
+                Fold_Functions          => Fold_Functions,
+                Use_Computed_Globals    => Use_Computed_Globals,
+                Expand_Internal_Objects => Expand_Internal_Objects));
 
          procedure Untangle_Delta_Fields (Assocs : List_Id)
          with Pre => Is_Non_Empty_List (Assocs);
@@ -4207,7 +4151,7 @@ package body Flow_Utility is
                --  HACK: skip deep choices for now until they are supported in
                --  flow.
                if not Sem_Aggr.Is_Deep_Choice
-                 (First (Choices (Component_Association)), Etype (N))
+                        (First (Choices (Component_Association)), Etype (N))
                then
                   declare
                      Choice : constant Node_Id :=
@@ -4263,8 +4207,7 @@ package body Flow_Utility is
                                    (Get_Variables
                                       (N                       => Expr,
                                        Scope                   => Scope,
-                                       Target_Name             =>
-                                         Target_Name,
+                                       Target_Name             => Target_Name,
                                        Fold_Functions          => Inputs,
                                        Use_Computed_Globals    =>
                                          Use_Computed_Globals,
@@ -4314,7 +4257,7 @@ package body Flow_Utility is
             Outdent;
          end Untangle_Delta_Fields;
 
-      --  Start of processing for Untangle_Record_Fields
+         --  Start of processing for Untangle_Record_Fields
 
       begin
          pragma Annotate (Xcov, Exempt_On, "Debugging code");
@@ -4333,20 +4276,16 @@ package body Flow_Utility is
          --  in which they access or update fields (bar, the_update, z).
 
          while Nkind (Root_Node) = N_Selected_Component
-           or else
-             ((Is_Attribute_Update (Root_Node)
-                 or else
-               Nkind (Root_Node) in N_Delta_Aggregate
-                                  | N_Type_Conversion)
-              and then
-              Is_Record_Type (Unchecked_Full_Type (Etype (Root_Node))))
-           or else
-             Is_Ignored_Attribute (Root_Node)
+           or else ((Is_Attribute_Update (Root_Node)
+                     or else Nkind (Root_Node)
+                             in N_Delta_Aggregate | N_Type_Conversion)
+                    and then Is_Record_Type
+                               (Unchecked_Full_Type (Etype (Root_Node))))
+           or else Is_Ignored_Attribute (Root_Node)
          loop
             if Nkind (Root_Node) = N_Selected_Component then
                Component.Prepend
-                 (Unique_Component
-                    (Entity (Selector_Name (Root_Node))));
+                 (Unique_Component (Entity (Selector_Name (Root_Node))));
             end if;
 
             if not Is_Ignored_Attribute (Root_Node) then
@@ -4354,8 +4293,7 @@ package body Flow_Utility is
             end if;
 
             Root_Node :=
-              (if Nkind (Root_Node) in N_Delta_Aggregate
-                                     | N_Type_Conversion
+              (if Nkind (Root_Node) in N_Delta_Aggregate | N_Type_Conversion
                then Expression (Root_Node)
                else Prefix (Root_Node));
 
@@ -4390,15 +4328,13 @@ package body Flow_Utility is
          --  declare expressions (because we can't do better with the current
          --  handling of declare expressions in flow).
 
-         if not (Nkind (Root_Node) in N_Identifier
-                                    | N_Expanded_Name
-                                    | N_Target_Name
-                   and then
-                 (if Nkind (Root_Node) = N_Identifier
-                  then not Comes_From_Declare_Expr (Entity (Root_Node)))
-                   and then
-                 Is_Record_Type
-                   (Unchecked_Full_Type (Etype (Root_Node))))
+         if not (Nkind (Root_Node)
+                 in N_Identifier | N_Expanded_Name | N_Target_Name
+                 and then (if Nkind (Root_Node) = N_Identifier
+                           then
+                             not Comes_From_Declare_Expr (Entity (Root_Node)))
+                 and then Is_Record_Type
+                            (Unchecked_Full_Type (Etype (Root_Node))))
          then
             return Vars : Flow_Id_Sets.Set do
 
@@ -4411,46 +4347,45 @@ package body Flow_Utility is
 
                for N of Seq loop
                   case Nkind (N) is
-                  when N_Attribute_Reference =>
-                     pragma Assert (Is_Attribute_Update (N));
-                     pragma Assert (List_Length (Expressions (N)) = 1);
+                     when N_Attribute_Reference =>
+                        pragma Assert (Is_Attribute_Update (N));
+                        pragma Assert (List_Length (Expressions (N)) = 1);
 
-                     declare
-                        Component_Association : Node_Id :=
-                          First (Component_Associations
-                                   (First (Expressions (N))));
+                        declare
+                           Component_Association : Node_Id :=
+                             First
+                               (Component_Associations
+                                  (First (Expressions (N))));
 
-                     begin
-                        loop
-                           Vars.Union
-                             (Get_Vars_Wrapper
-                                (Expression (Component_Association)));
-                           Next (Component_Association);
-                           exit when No (Component_Association);
-                        end loop;
-                     end;
+                        begin
+                           loop
+                              Vars.Union
+                                (Get_Vars_Wrapper
+                                   (Expression (Component_Association)));
+                              Next (Component_Association);
+                              exit when No (Component_Association);
+                           end loop;
+                        end;
 
-                  when N_Delta_Aggregate =>
-                     declare
-                        Component_Association : Node_Id :=
-                          First (Component_Associations (N));
-                     begin
-                        loop
-                           Vars.Union
-                             (Get_Vars_Wrapper
-                                (Expression (Component_Association)));
-                           Next (Component_Association);
-                           exit when No (Component_Association);
-                        end loop;
-                     end;
+                     when N_Delta_Aggregate =>
+                        declare
+                           Component_Association : Node_Id :=
+                             First (Component_Associations (N));
+                        begin
+                           loop
+                              Vars.Union
+                                (Get_Vars_Wrapper
+                                   (Expression (Component_Association)));
+                              Next (Component_Association);
+                              exit when No (Component_Association);
+                           end loop;
+                        end;
 
-                  when N_Selected_Component
-                     | N_Type_Conversion
-                  =>
-                     null;
+                     when N_Selected_Component | N_Type_Conversion =>
+                        null;
 
-                  when others =>
-                     raise Why.Unexpected_Node;
+                     when others =>
+                        raise Why.Unexpected_Node;
                   end case;
                end loop;
 
@@ -4466,9 +4401,10 @@ package body Flow_Utility is
 
          --  Ok, so the root is an entire object, so we can untangle it further
 
-         pragma Assert (Nkind (Root_Node) in N_Identifier
-                                           | N_Expanded_Name
-                                           | N_Target_Name);
+         pragma
+           Assert
+             (Nkind (Root_Node)
+              in N_Identifier | N_Expanded_Name | N_Target_Name);
 
          --  If the root is a constant without variable inputs and we are
          --  looking for genuine inputs, then we will find none.
@@ -4487,7 +4423,7 @@ package body Flow_Utility is
          --  a function of the Current_Field; see the Loop_Invariant below.
 
          if Nkind (Root_Node) = N_Target_Name then
-            Comp_Id       :=
+            Comp_Id :=
               (if Target_Name.Kind = Direct_Mapping
                then 1
                else Positive (Target_Name.Component.Length) + 1);
@@ -4496,26 +4432,28 @@ package body Flow_Utility is
             declare
                Root_Entity : constant Entity_Id := Entity (Root_Node);
 
-               pragma Assert
-                 (Ekind (Root_Entity) in E_Constant
-                                       | E_Variable
-                                       | E_Loop_Parameter -- for cursors
-                                       | Formal_Kind
-                    or else
-                  (Ekind (Root_Entity) in E_Discriminant | E_Component
-                     and then
-                   Is_Concurrent_Type (Sinfo.Nodes.Scope (Root_Entity))));
+               pragma
+                 Assert
+                   (Ekind (Root_Entity)
+                    in E_Constant
+                     | E_Variable
+                     | E_Loop_Parameter -- for cursors
+                     | Formal_Kind
+                      or else (Ekind (Root_Entity)
+                               in E_Discriminant | E_Component
+                               and then Is_Concurrent_Type
+                                          (Sinfo.Nodes.Scope (Root_Entity))));
 
             begin
                if Is_Protected_Component (Root_Entity) then
-                  Comp_Id       := 2;
+                  Comp_Id := 2;
                   Current_Field :=
                     Add_Component
                       (Direct_Mapping_Id (Sinfo.Nodes.Scope (Root_Entity)),
                        Root_Entity);
 
                elsif Is_Part_Of_Concurrent_Object (Root_Entity) then
-                  Comp_Id       := 2;
+                  Comp_Id := 2;
                   Current_Field :=
                     Add_Component
                       (Direct_Mapping_Id
@@ -4530,7 +4468,7 @@ package body Flow_Utility is
                       (Ultimate_Overlaid_Entity (Root_Entity), Scope);
 
                else
-                  Comp_Id       := 1;
+                  Comp_Id := 1;
                   Current_Field :=
                     Direct_Mapping_Id (Unique_Entity (Root_Entity));
                end if;
@@ -4590,11 +4528,12 @@ package body Flow_Utility is
          --  proof variables here.)
 
          for N of Seq loop
-            pragma Loop_Invariant
-              (Comp_Id =
-                 (if Current_Field.Kind = Direct_Mapping
-                  then 1
-                  else Positive (Current_Field.Component.Length) + 1));
+            pragma
+              Loop_Invariant
+                (Comp_Id
+                   = (if Current_Field.Kind = Direct_Mapping
+                      then 1
+                      else Positive (Current_Field.Component.Length) + 1));
 
             pragma Annotate (Xcov, Exempt_On, "Debugging code");
             if Debug_Trace_Untangle_Fields then
@@ -4604,151 +4543,155 @@ package body Flow_Utility is
             pragma Annotate (Xcov, Exempt_Off);
 
             case Nkind (N) is
-            when N_Delta_Aggregate =>
-               pragma Annotate (Xcov, Exempt_On, "Debugging code");
-               if Debug_Trace_Untangle_Fields then
-                  Write_Str ("Updating the map at ");
-                  Sprint_Flow_Id (Current_Field);
-                  Write_Eol;
-               end if;
-               pragma Annotate (Xcov, Exempt_Off);
-
-               Untangle_Delta_Fields (Component_Associations (N));
-
-            when N_Attribute_Reference =>
-               pragma Assert (Is_Attribute_Update (N));
-               pragma Assert (List_Length (Expressions (N)) = 1);
-
-               pragma Annotate (Xcov, Exempt_On, "Debugging code");
-               if Debug_Trace_Untangle_Fields then
-                  Write_Str ("Updating the map at ");
-                  Sprint_Flow_Id (Current_Field);
-                  Write_Eol;
-               end if;
-               pragma Annotate (Xcov, Exempt_Off);
-
-               Untangle_Delta_Fields
-                 (Component_Associations (First (Expressions (N))));
-
-            when N_Selected_Component =>
-               declare
-                  Comp : constant Entity_Id :=
-                    Unique_Component (Entity (Selector_Name (N)));
-
-                  New_Map : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
-
-               begin
-                  --  We trim the result map
-
+               when N_Delta_Aggregate =>
                   pragma Annotate (Xcov, Exempt_On, "Debugging code");
                   if Debug_Trace_Untangle_Fields then
-                     Write_Str ("Trimming for: ");
-                     Sprint_Node_Inline (Comp);
+                     Write_Str ("Updating the map at ");
+                     Sprint_Flow_Id (Current_Field);
                      Write_Eol;
                   end if;
                   pragma Annotate (Xcov, Exempt_Off);
 
-                  for C in M.Iterate loop
-                     declare
-                        K : Flow_Id          renames Flow_Id_Maps.Key (C);
-                        V : Flow_Id_Sets.Set renames M (C);
+                  Untangle_Delta_Fields (Component_Associations (N));
 
-                     begin
-                        if K.Kind = Record_Field
-                          and then Natural (K.Component.Length) >= Comp_Id
-                          and then K.Component (Comp_Id) = Comp
-                        then
-                           New_Map.Insert (K, V);
-                        end if;
-                     end;
-                  end loop;
+               when N_Attribute_Reference =>
+                  pragma Assert (Is_Attribute_Update (N));
+                  pragma Assert (List_Length (Expressions (N)) = 1);
 
-                  Flow_Id_Maps.Move (Target => M,
-                                     Source => New_Map);
-
-                  Current_Field := Add_Component (Current_Field, Comp);
-                  Comp_Id       := Comp_Id + 1;
-               end;
-
-            when N_Type_Conversion =>
-               declare
-                  New_T     : constant Entity_Id :=
-                    Get_Type (Etype (N), Scope);
-                  Old_T     : constant Entity_Id :=
-                    Get_Type (Etype (Expression (N)), Scope);
-                  Same_Priv : constant Boolean :=
-                    (if not Is_Tagged_Type (Old_T) then True
-                     elsif Is_Ancestor (Old_T, New_T, Scope)
-                     then not Introduces_Private_Fields (New_T, Old_T, Scope)
-                     elsif Is_Ancestor (New_T, Old_T, Scope)
-                     then not Introduces_Private_Fields (Old_T, New_T, Scope)
-                     else False);
-                  --  Normally, one of Old_T and New_T is an ancestor of the
-                  --  other. However, when we peek into declarations of nested
-                  --  packages without adjusting the visibility, we can
-                  --  encounter conversions for which this derivation is not
-                  --  visible.
-
-                  New_Comps : Flow_Id_Sets.Set;
-                  The_Ext   : constant Flow_Id :=
-                    (Current_Field with delta Facet => Extension_Part);
-                  The_Priv  : constant Flow_Id :=
-                    (Current_Field with delta Facet => Private_Part);
-                  Default   : Flow_Id_Sets.Set;
-                  New_Map   : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
-               begin
-                  for K of Flatten_Variable
-                    (Direct_Mapping_Id (New_T), Scope)
-                  loop
-                     New_Comps.Insert (Join (Current_Field, K));
-                  end loop;
-
-                  if Is_Tagged_Type (New_T) then
-                     New_Comps.Include (The_Ext);
+                  pragma Annotate (Xcov, Exempt_On, "Debugging code");
+                  if Debug_Trace_Untangle_Fields then
+                     Write_Str ("Updating the map at ");
+                     Sprint_Flow_Id (Current_Field);
+                     Write_Eol;
                   end if;
+                  pragma Annotate (Xcov, Exempt_Off);
 
-                  --  Go over M to remove additional components not present in
-                  --  New_T. Merge their inputs into default.
+                  Untangle_Delta_Fields
+                    (Component_Associations (First (Expressions (N))));
 
-                  for C in M.Iterate loop
-                     declare
-                        K : Flow_Id          renames Flow_Id_Maps.Key (C);
-                        V : Flow_Id_Sets.Set renames M (C);
+               when N_Selected_Component =>
+                  declare
+                     Comp : constant Entity_Id :=
+                       Unique_Component (Entity (Selector_Name (N)));
 
-                     begin
-                        --  The conversion might be from or to an ancestor
-                        --  type. In the first case, the extension might flow
-                        --  into missing components and the private part. In
-                        --  the second case, the private part and additional
-                        --  components might flow into the extension.
-                        --  Handle both cases at once by merging the extension
-                        --  and the private part into Default and back again.
-                        --  The case where both type have the same private part
-                        --  is handled specifically for more precision.
+                     New_Map : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
 
-                        if not New_Comps.Contains (K)
-                          or else K = The_Ext
-                          or else (not Same_Priv and K = The_Priv)
+                  begin
+                     --  We trim the result map
+
+                     pragma Annotate (Xcov, Exempt_On, "Debugging code");
+                     if Debug_Trace_Untangle_Fields then
+                        Write_Str ("Trimming for: ");
+                        Sprint_Node_Inline (Comp);
+                        Write_Eol;
+                     end if;
+                     pragma Annotate (Xcov, Exempt_Off);
+
+                     for C in M.Iterate loop
+                        declare
+                           K : Flow_Id renames Flow_Id_Maps.Key (C);
+                           V : Flow_Id_Sets.Set renames M (C);
+
+                        begin
+                           if K.Kind = Record_Field
+                             and then Natural (K.Component.Length) >= Comp_Id
+                             and then K.Component (Comp_Id) = Comp
+                           then
+                              New_Map.Insert (K, V);
+                           end if;
+                        end;
+                     end loop;
+
+                     Flow_Id_Maps.Move (Target => M, Source => New_Map);
+
+                     Current_Field := Add_Component (Current_Field, Comp);
+                     Comp_Id := Comp_Id + 1;
+                  end;
+
+               when N_Type_Conversion =>
+                  declare
+                     New_T     : constant Entity_Id :=
+                       Get_Type (Etype (N), Scope);
+                     Old_T     : constant Entity_Id :=
+                       Get_Type (Etype (Expression (N)), Scope);
+                     Same_Priv : constant Boolean :=
+                       (if not Is_Tagged_Type (Old_T)
+                        then True
+                        elsif Is_Ancestor (Old_T, New_T, Scope)
                         then
-                           Default.Union (V);
-                        else
-                           New_Map.Insert (K, V);
-                           New_Comps.Delete (K);
-                        end if;
-                     end;
-                  end loop;
+                          not Introduces_Private_Fields (New_T, Old_T, Scope)
+                        elsif Is_Ancestor (New_T, Old_T, Scope)
+                        then
+                          not Introduces_Private_Fields (Old_T, New_T, Scope)
+                        else False);
+                     --  Normally, one of Old_T and New_T is an ancestor of the
+                     --  other. However, when we peek into declarations of
+                     --  nested packages without adjusting the visibility,
+                     --  we can encounter conversions for which this
+                     --  derivation is not visible.
 
-                  --  Add missing components from New_T. They depend on Default
+                     New_Comps : Flow_Id_Sets.Set;
+                     The_Ext   : constant Flow_Id :=
+                       (Current_Field with delta Facet => Extension_Part);
+                     The_Priv  : constant Flow_Id :=
+                       (Current_Field with delta Facet => Private_Part);
+                     Default   : Flow_Id_Sets.Set;
+                     New_Map   : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
+                  begin
+                     for K of
+                       Flatten_Variable (Direct_Mapping_Id (New_T), Scope)
+                     loop
+                        New_Comps.Insert (Join (Current_Field, K));
+                     end loop;
 
-                  for K of New_Comps loop
-                     New_Map.Insert (K, Default);
-                  end loop;
+                     if Is_Tagged_Type (New_T) then
+                        New_Comps.Include (The_Ext);
+                     end if;
 
-                  M.Move (Source => New_Map);
-               end;
+                     --  Go over M to remove additional components not present
+                     --  in New_T. Merge their inputs into default.
 
-            when others =>
-               raise Why.Unexpected_Node;
+                     for C in M.Iterate loop
+                        declare
+                           K : Flow_Id renames Flow_Id_Maps.Key (C);
+                           V : Flow_Id_Sets.Set renames M (C);
+
+                        begin
+                           --  The conversion might be from or to an ancestor
+                           --  type. In the first case, the extension might
+                           --  flow into missing components and the private
+                           --  part. In the second case, the private part and
+                           --  additional components might flow into the
+                           --  extension.  Handle both cases at once by merging
+                           --  the extension and the private part into Default
+                           --  and back again.  The case where both type have
+                           --  the same private part is handled specifically
+                           --  for more precision.
+
+                           if not New_Comps.Contains (K)
+                             or else K = The_Ext
+                             or else (not Same_Priv and K = The_Priv)
+                           then
+                              Default.Union (V);
+                           else
+                              New_Map.Insert (K, V);
+                              New_Comps.Delete (K);
+                           end if;
+                        end;
+                     end loop;
+
+                     --  Add missing components from New_T. They depend on
+                     --  Default.
+
+                     for K of New_Comps loop
+                        New_Map.Insert (K, Default);
+                     end loop;
+
+                     M.Move (Source => New_Map);
+                  end;
+
+               when others =>
+                  raise Why.Unexpected_Node;
             end case;
 
             pragma Annotate (Xcov, Exempt_On, "Debugging code");
@@ -4815,8 +4758,10 @@ package body Flow_Utility is
                | N_Function_Call
                | N_Procedure_Call_Statement
             =>
-               pragma Assert (not Ctx.Assume_In_Expression or else
-                                Nkind (N) = N_Function_Call);
+               pragma
+                 Assert
+                   (not Ctx.Assume_In_Expression
+                      or else Nkind (N) = N_Function_Call);
 
                Variables.Union (Do_Subprogram_Call (N));
                return Skip;
@@ -4863,10 +4808,10 @@ package body Flow_Utility is
                   elsif Ekind (Entity (N)) = E_Constant
                     and then Is_Action (Parent (Entity (N)))
                   then
-                     pragma Assert
-                       (Comes_From_Declare_Expr (Entity (N))
-                          or else
-                        not Comes_From_Source (Entity (N)));
+                     pragma
+                       Assert
+                         (Comes_From_Declare_Expr (Entity (N))
+                            or else not Comes_From_Source (Entity (N)));
                      Variables.Union
                        (Recurse (Expression (Parent (Entity (N)))));
 
@@ -4887,9 +4832,10 @@ package body Flow_Utility is
                      --  when this routine is executed in a special mode for
                      --  statements.
 
-                     pragma Assert
-                       (if Is_Type (Entity (N))
-                        then not Ctx.Assume_In_Expression);
+                     pragma
+                       Assert
+                         (if Is_Type (Entity (N))
+                            then not Ctx.Assume_In_Expression);
 
                      Variables.Union (Do_Entity (Entity (N)));
                   end if;
@@ -4910,8 +4856,9 @@ package body Flow_Utility is
                if Is_Type (N) then
                   Variables.Union (Do_Entity (N));
                else
-                  pragma Assert (Is_Internal (N)
-                                  or else Is_Quantified_Loop_Param (N));
+                  pragma
+                    Assert
+                      (Is_Internal (N) or else Is_Quantified_Loop_Param (N));
                end if;
 
             when N_Aggregate =>
@@ -4941,8 +4888,10 @@ package body Flow_Utility is
                      --  Each component must be associated with either a box
                      --  or an expression. Expressions are detected and handled
                      --  elsewhere.
-                     pragma Assert
-                       (Box_Present (Assoc) xor Present (Expression (Assoc)));
+                     pragma
+                       Assert
+                         (Box_Present (Assoc)
+                            xor Present (Expression (Assoc)));
 
                      if Box_Present (Assoc) then
                         Any_Boxes := True;
@@ -5020,8 +4969,10 @@ package body Flow_Utility is
                                        end loop;
 
                                     else
-                                       pragma Assert
-                                         (Nkind (Pref) = N_Selected_Component);
+                                       pragma
+                                         Assert
+                                           (Nkind (Pref)
+                                              = N_Selected_Component);
                                     end if;
                                     Pref := Prefix (Pref);
                                  end loop;
@@ -5031,8 +4982,7 @@ package body Flow_Utility is
                                  Next (Choice);
                               end loop;
 
-                              Variables.Union
-                                (Recurse (Expression (Assoc)));
+                              Variables.Union (Recurse (Expression (Assoc)));
 
                               Next (Assoc);
                            end loop;
@@ -5076,12 +5026,11 @@ package body Flow_Utility is
                           Target_Name             => Ctx.Target_Name,
                           Scope                   => Ctx.Scope,
                           Fold_Functions          => Ctx.Fold_Functions,
-                          Use_Computed_Globals    =>
-                            Ctx.Use_Computed_Globals,
+                          Use_Computed_Globals    => Ctx.Use_Computed_Globals,
                           Expand_Internal_Objects =>
                             Ctx.Expand_Internal_Objects,
                           Extensions_Irrelevant   =>
-                             not Ctx.Consider_Extensions);
+                            not Ctx.Consider_Extensions);
 
                   begin
                      for FS of M loop
@@ -5116,8 +5065,8 @@ package body Flow_Utility is
                      --  of a component or of a discriminant, "(C => ...)".
 
                      if Nkind (Choice) in N_Identifier | N_Expanded_Name
-                       and then Ekind (Entity (Choice)) in E_Component
-                                                         | E_Discriminant
+                       and then Ekind (Entity (Choice))
+                                in E_Component | E_Discriminant
                      then
                         null;
 
@@ -5176,8 +5125,9 @@ package body Flow_Utility is
                else
                   --  Avoid <Record Type>.Discriminant constructs from default
                   --  expressions.
-                  Variables.Union (Ignore_Record_Type_Discriminants
-                                   (Recurse (Expression (N))));
+                  Variables.Union
+                    (Ignore_Record_Type_Discriminants
+                       (Recurse (Expression (N))));
                end if;
 
                return Skip;
@@ -5206,8 +5156,7 @@ package body Flow_Utility is
                   ----------------------------------
 
                   procedure Process_Predicate_Expression
-                    (Type_Instance   : Formal_Kind_Id;
-                     Pred_Expression : Node_Id)
+                    (Type_Instance : Formal_Kind_Id; Pred_Expression : Node_Id)
                   is
                   begin
                      --  Filter predicate function parameter from variables
@@ -5232,9 +5181,7 @@ package body Flow_Utility is
 
                   procedure Process_Type (E : Entity_Id) is
                      Typ : constant Entity_Id :=
-                       (if Is_Access_Type (E)
-                        then Designated_Type (E)
-                        else E);
+                       (if Is_Access_Type (E) then Designated_Type (E) else E);
 
                   begin
                      --  For scalar types recurse on their bounds
@@ -5291,9 +5238,7 @@ package body Flow_Utility is
                      --  x in t
 
                      P := Right_Opnd (N);
-                     if Is_Entity_Name (P)
-                        and then Is_Type (Entity (P))
-                     then
+                     if Is_Entity_Name (P) and then Is_Type (Entity (P)) then
                         Process_Type (Get_Type (P, Ctx.Scope));
                      else
                         Variables.Union (Recurse (P));
@@ -5305,8 +5250,7 @@ package body Flow_Utility is
 
                      P := First (Alternatives (N));
                      loop
-                        if Is_Entity_Name (P)
-                          and then Is_Type (Entity (P))
+                        if Is_Entity_Name (P) and then Is_Type (Entity (P))
                         then
                            Process_Type (Get_Type (P, Ctx.Scope));
                         else
@@ -5320,17 +5264,16 @@ package body Flow_Utility is
                end;
                return Skip;
 
-            when N_Qualified_Expression
-               | N_Unchecked_Type_Conversion
-            =>
+            when N_Qualified_Expression | N_Unchecked_Type_Conversion =>
                Variables.Union (Recurse (Expression (N)));
                return Skip;
 
             when N_Quantified_Expression =>
                declare
-                  pragma Assert
-                    (Present (Iterator_Specification (N)) xor
-                       Present (Loop_Parameter_Specification (N)));
+                  pragma
+                    Assert
+                      (Present (Iterator_Specification (N))
+                         xor Present (Loop_Parameter_Specification (N)));
 
                   E : constant Entity_Id :=
                     Defining_Identifier
@@ -5395,22 +5338,21 @@ package body Flow_Utility is
 
             when N_Iterated_Component_Association =>
 
-               pragma Assert (Present (Defining_Identifier (N))
-                              and then No (Iterator_Specification (N)));
+               pragma
+                 Assert
+                   (Present (Defining_Identifier (N))
+                      and then No (Iterator_Specification (N)));
 
                declare
                   Choice : Node_Id := First (Discrete_Choices (N));
                begin
                   loop
-                     --  Choices in array component appear in various forms
-
+                     --  Choices in array component appear in various forms:
                      --  "(Low .. High => ...)"
-                     if Nkind (Choice) = N_Range
-
                      --  "(A_Subtype range Low .. High => ...)"
-                       or else Nkind (Choice) = N_Subtype_Indication
-
                      --  "(A_Subtype => ...)"
+                     if Nkind (Choice) = N_Range
+                       or else Nkind (Choice) = N_Subtype_Indication
                        or else (Is_Entity_Name (Choice)
                                 and then Is_Type (Entity (Choice)))
                      then
@@ -5479,12 +5421,11 @@ package body Flow_Utility is
                   --  If the allocated expression is just a type name, then
                   --  pull dependencies coming from default expressions.
 
-                  if Is_Entity_Name (Expr)
-                    and then Is_Type (Entity (Expr))
+                  if Is_Entity_Name (Expr) and then Is_Type (Entity (Expr))
                   then
                      declare
-                        E : constant Node_Id := Entity (Expr);
-                        Typ : constant Entity_Id :=
+                        E        : constant Node_Id := Entity (Expr);
+                        Typ      : constant Entity_Id :=
                           (if Is_Access_Type (E)
                            then Designated_Type (E)
                            else E);
@@ -5547,24 +5488,25 @@ package body Flow_Utility is
                   begin
                      while Present (Action) loop
                         case Nkind (Action) is
-                        when N_Object_Declaration =>
-                           Variables.Union
-                             (Recurse
-                                (N              => Expression (Action),
-                                 Fold_Functions => Fold_Functions));
+                           when N_Object_Declaration =>
+                              Variables.Union
+                                (Recurse
+                                   (N              => Expression (Action),
+                                    Fold_Functions => Fold_Functions));
 
-                        when N_Object_Renaming_Declaration =>
-                           Variables.Union
-                             (Recurse
-                                (N              => Name (Action),
-                                 Fold_Functions => Fold_Functions));
+                           when N_Object_Renaming_Declaration =>
+                              Variables.Union
+                                (Recurse
+                                   (N              => Name (Action),
+                                    Fold_Functions => Fold_Functions));
 
-                        --  The frontend should have rejected all other code
-                        --  constructs. Therefore anything else we find in this
-                        --  action list has been synthesised so we ignore it.
+                           --  The frontend should have rejected all other code
+                           --  constructs. Therefore anything else we find in
+                           --  this action list has been synthesised so we
+                           --  ignore it.
 
-                        when others =>
-                           pragma Assert (not Comes_From_Source (Action));
+                           when others =>
+                              pragma Assert (not Comes_From_Source (Action));
                         end case;
                         Next (Action);
                      end loop;
@@ -5618,19 +5560,20 @@ package body Flow_Utility is
       --  have more assertions, e.g. about subtype names that can only appear
       --  in specific contexts.
 
-   --  Start of processing for Get_Variables_Internal
+      --  Start of processing for Get_Variables_Internal
 
    begin
       Traverse (N);
 
       --  Sanity check: no constants without variable inputs should come from
       --  the traversal.
-      pragma Assert
-        (for all V of Variables =>
-           (if V.Kind in Direct_Mapping | Record_Field
-              and then Ekind (V.Node) = E_Constant
-              and then not Is_Access_Variable (Etype (V.Node))
-            then Has_Variable_Input (V.Node)));
+      pragma
+        Assert
+          (for all V of Variables =>
+             (if V.Kind in Direct_Mapping | Record_Field
+                and then Ekind (V.Node) = E_Constant
+                and then not Is_Access_Variable (Etype (V.Node))
+              then Has_Variable_Input (V.Node)));
 
       Map_Generic_In_Formals (Ctx.Scope, Variables, Entire => False);
 
@@ -5642,9 +5585,7 @@ package body Flow_Utility is
    -----------------------------
 
    function Get_Variables_For_Proof
-     (Expr_N   : Node_Id;
-      Scope_N  : Node_Id;
-      Skip_Old : Boolean := False)
+     (Expr_N : Node_Id; Scope_N : Node_Id; Skip_Old : Boolean := False)
       return Flow_Id_Sets.Set
    is
       function Enclosing_Declaration_Or_Statement (N : Node_Id) return Node_Id;
@@ -5653,8 +5594,7 @@ package body Flow_Utility is
       --  ??? This is copy-pasted from sem_res.adb; refactor
 
       function Resolve_Target_Name
-        (N     : Node_Id;
-         Scope : Flow_Scope) return Flow_Id
+        (N : Node_Id; Scope : Flow_Scope) return Flow_Id
       with Pre => Nkind (N) in N_Subexpr;
       --  If the node N is a subexpression of an assignment statement with
       --  target_names, it returns the Flow_Id of the object represented by
@@ -5666,8 +5606,7 @@ package body Flow_Utility is
       -- Enclosing_Declaration_Or_Statement --
       ----------------------------------------
 
-      function Enclosing_Declaration_Or_Statement
-        (N : Node_Id) return Node_Id
+      function Enclosing_Declaration_Or_Statement (N : Node_Id) return Node_Id
       is
          Par : Node_Id;
 
@@ -5694,8 +5633,7 @@ package body Flow_Utility is
       -------------------------
 
       function Resolve_Target_Name
-        (N     : Node_Id;
-         Scope : Flow_Scope) return Flow_Id
+        (N : Node_Id; Scope : Flow_Scope) return Flow_Id
       is
          Stmt : constant Node_Id := Enclosing_Declaration_Or_Statement (N);
       begin
@@ -5714,20 +5652,21 @@ package body Flow_Utility is
       Target_Name      : constant Flow_Id :=
         Resolve_Target_Name (Expr_N, Scope);
 
-   --  Start of processing for Get_Variables_For_Proof
+      --  Start of processing for Get_Variables_For_Proof
 
    begin
       --  Ignore references to array bounds of objects (because they are never
       --  mutable).
 
-      for V of Get_All_Variables
-        (Expr_N,
-         Scope                   => Scope,
-         Target_Name             => Target_Name,
-         Use_Computed_Globals    => True,
-         Assume_In_Expression    => True,
-         Expand_Internal_Objects => False,
-         Skip_Old                => Skip_Old)
+      for V of
+        Get_All_Variables
+          (Expr_N,
+           Scope                   => Scope,
+           Target_Name             => Target_Name,
+           Use_Computed_Globals    => True,
+           Assume_In_Expression    => True,
+           Expand_Internal_Objects => False,
+           Skip_Old                => Skip_Old)
       loop
          if not Is_Bound (V) then
             Entire_Variables.Include (Entire_Variable (V));
@@ -5774,8 +5713,7 @@ package body Flow_Utility is
          Answer : constant Boolean := Has_Variable_Input_Internal (C);
 
       begin
-         Variable_Input_Map.Insert (Key      => C,
-                                    New_Item => Answer);
+         Variable_Input_Map.Insert (Key => C, New_Item => Answer);
 
          return Answer;
       end;
@@ -5807,7 +5745,7 @@ package body Flow_Utility is
       else
          --  We are dealing with a deferred constant so we need to get to the
          --  full view.
-         E    := Full_View (C);
+         E := Full_View (C);
          Expr := Expression (Declaration_Node (E));
       end if;
 
@@ -5817,12 +5755,13 @@ package body Flow_Utility is
          return False;
       end if;
 
-      Vars := Get_Variables
-        (Expr,
-         Scope                => Get_Flow_Scope (E),
-         Target_Name          => Null_Flow_Id,
-         Fold_Functions       => Inputs,
-         Use_Computed_Globals => GG_Has_Been_Generated);
+      Vars :=
+        Get_Variables
+          (Expr,
+           Scope                => Get_Flow_Scope (E),
+           Target_Name          => Null_Flow_Id,
+           Fold_Functions       => Inputs,
+           Use_Computed_Globals => GG_Has_Been_Generated);
       --  Note that Get_Variables calls Has_Variable_Input when it finds a
       --  constant. This means that there might be some mutual recursion here
       --  (but this should be fine).
@@ -5841,10 +5780,10 @@ package body Flow_Utility is
             --  ??? this code is duplicated in Direct_Inputs_Of_Constant
 
             return
-              (for some F of Get_Functions (Expr, Include_Predicates => False)
-                 => not Has_User_Supplied_Globals (F)
-                     and then
-                    not Is_Ignored_Internal (F));
+              (for some F of
+                 Get_Functions (Expr, Include_Predicates => False) =>
+                 not Has_User_Supplied_Globals (F)
+                 and then not Is_Ignored_Internal (F));
          end if;
 
       --  If any variable was found then return True
@@ -5859,18 +5798,13 @@ package body Flow_Utility is
    -- Has_Bounds --
    ----------------
 
-   function Has_Bounds
-     (F     : Flow_Id;
-      Scope : Flow_Scope)
-      return Boolean
-   is
+   function Has_Bounds (F : Flow_Id; Scope : Flow_Scope) return Boolean is
       T : Entity_Id;
    begin
       if F.Kind = Direct_Mapping then
          T := Get_Type (F.Node, Scope);
 
-         return Is_Array_Type (T)
-           and then not Is_Constrained (T);
+         return Is_Array_Type (T) and then not Is_Constrained (T);
       else
          return False;
       end if;
@@ -5880,17 +5814,17 @@ package body Flow_Utility is
    -- Ignore_Record_Type_Discriminants --
    --------------------------------------
 
-   function Ignore_Record_Type_Discriminants (Vars_Used : Flow_Id_Sets.Set)
-                                              return Flow_Id_Sets.Set
+   function Ignore_Record_Type_Discriminants
+     (Vars_Used : Flow_Id_Sets.Set) return Flow_Id_Sets.Set
    is
       Results : Flow_Id_Sets.Set;
    begin
       for Var_Used of Vars_Used loop
          if Is_Discriminant (Var_Used)
-           and then
-             Ekind (Get_Direct_Mapping_Id (Var_Used)) = E_Record_Type
+           and then Ekind (Get_Direct_Mapping_Id (Var_Used)) = E_Record_Type
          then
             null; --  Filter it out
+
          else
             Results.Insert (Var_Used);
          end if;
@@ -5904,10 +5838,7 @@ package body Flow_Utility is
    -------------------------------
 
    function Introduces_Private_Fields
-     (Ty    : Entity_Id;
-      Anc   : Entity_Id;
-      Scope : Flow_Scope)
-      return Boolean
+     (Ty : Entity_Id; Anc : Entity_Id; Scope : Flow_Scope) return Boolean
    is
       B_Anc : constant Entity_Id := Get_Type (Base_Type (Anc), Scope);
       S_Anc : constant Entity_Id :=
@@ -5937,10 +5868,7 @@ package body Flow_Utility is
    -----------------
 
    function Is_Ancestor
-     (Anc   : Entity_Id;
-      Ty    : Entity_Id;
-      Scope : Flow_Scope)
-      return Boolean
+     (Anc : Entity_Id; Ty : Entity_Id; Scope : Flow_Scope) return Boolean
    is
       B_Anc : constant Entity_Id := Get_Type (Base_Type (Anc), Scope);
       S_Anc : constant Entity_Id :=
@@ -5994,7 +5922,8 @@ package body Flow_Utility is
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
 
             begin
-               return Ekind (E) = E_Variable
+               return
+                 Ekind (E) = E_Variable
                  and then Is_Constant_After_Elaboration (E);
             end;
 
@@ -6015,6 +5944,7 @@ package body Flow_Utility is
       case Nkind (N) is
 
          --  On a function call, the usual routine works correctly
+
          when N_Function_Call =>
             pragma Assert (Is_Tagged_Predefined_Eq (Get_Called_Entity (N)));
 
@@ -6023,10 +5953,10 @@ package body Flow_Utility is
          --  On a membership test, if the left operand is a class-wide type
          --  and the right operand includes at least a constant or variable,
          --  then the equality function is called and it dispatches.
+
          when N_Membership_Test =>
 
-            if Is_Class_Wide_Type (Etype (Left_Opnd (N)))
-            then
+            if Is_Class_Wide_Type (Etype (Left_Opnd (N))) then
                declare
                   P : Node_Id;
 
@@ -6054,9 +5984,11 @@ package body Flow_Utility is
 
          --  On an operator, the equality dispatchs if one of the operands is
          --  of a class-wide type.
+
          when N_Op_Eq | N_Op_Ne =>
 
-            return Is_Class_Wide_Type (Etype (Left_Opnd (N)))
+            return
+              Is_Class_Wide_Type (Etype (Left_Opnd (N)))
               or else Is_Class_Wide_Type (Etype (Right_Opnd (N)));
 
          when others =>
@@ -6069,15 +6001,12 @@ package body Flow_Utility is
    -----------------------------------
 
    function Is_Initialized_At_Elaboration
-     (F : Flow_Id;
-      S : Flow_Scope)
-      return Boolean
-   is
+     (F : Flow_Id; S : Flow_Scope) return Boolean is
    begin
       case F.Kind is
          when Direct_Mapping | Record_Field =>
-            return Is_Initialized_At_Elaboration (Get_Direct_Mapping_Id (F),
-                                                  S);
+            return
+              Is_Initialized_At_Elaboration (Get_Direct_Mapping_Id (F), S);
 
          when Magic_String =>
             return GG_Is_Initialized_At_Elaboration (F.Name);
@@ -6095,9 +6024,7 @@ package body Flow_Utility is
    -------------------------------------
 
    function Is_Initialized_In_Specification
-     (F : Flow_Id;
-      S : Flow_Scope)
-      return Boolean
+     (F : Flow_Id; S : Flow_Scope) return Boolean
    is
       pragma Unreferenced (S);
    begin
@@ -6138,10 +6065,13 @@ package body Flow_Utility is
       while Nkind (Ptr) in Valid_Assignment_Kinds loop
          case Valid_Assignment_Kinds (Nkind (Ptr)) is
             --  ??? Check the return for dereference
+
             when N_Identifier | N_Expanded_Name =>
                return True;
+
             when N_Type_Conversion | N_Unchecked_Type_Conversion =>
                Ptr := Expression (Ptr);
+
             when N_Indexed_Component
                | N_Slice
                | N_Selected_Component
@@ -6165,7 +6095,8 @@ package body Flow_Utility is
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
             begin
                if Ekind (E) = E_Constant then
-                  return Is_Access_Variable (Etype (E))
+                  return
+                    Is_Access_Variable (Etype (E))
                     or else Has_Variable_Input (E);
                else
                   return True;
@@ -6191,11 +6122,8 @@ package body Flow_Utility is
    --------------------
 
    function Is_Constituent (N : Node_Id) return Boolean
-   is
-      (Nkind (N) in N_Entity
-       and then Ekind (N) in E_Abstract_State
-                           | E_Constant
-                           | E_Variable
+   is (Nkind (N) in N_Entity
+       and then Ekind (N) in E_Abstract_State | E_Constant | E_Variable
        and then Present (Encapsulating_State (N))
        and then Ekind (Encapsulating_State (N)) = E_Abstract_State);
 
@@ -6206,8 +6134,7 @@ package body Flow_Utility is
    function Is_Implicit_Constituent (N : Node_Id) return Boolean is
 
       function In_Body_Or_Private_Part (Item : Node_Id) return Boolean
-        with Pre => Nkind (Item) in N_Object_Declaration
-                                  | N_Package_Declaration;
+      with Pre => Nkind (Item) in N_Object_Declaration | N_Package_Declaration;
       --  Returns True if Item is declared in body or private part of a
       --  package, or in a private desendant of a library-level pacakge.
 
@@ -6248,7 +6175,8 @@ package body Flow_Utility is
       end In_Body_Or_Private_Part;
 
    begin
-      return Nkind (N) in N_Entity
+      return
+        Nkind (N) in N_Entity
         and then Ekind (N) in E_Constant | E_Variable
         and then Ekind (Scope (N)) = E_Package
         and then No (Encapsulating_State (N))
@@ -6260,19 +6188,13 @@ package body Flow_Utility is
    -----------------------
 
    function Is_Abstract_State (N : Node_Id) return Boolean
-   is
-     (Nkind (N) in N_Entity
-      and then Ekind (N) = E_Abstract_State);
+   is (Nkind (N) in N_Entity and then Ekind (N) = E_Abstract_State);
 
    ----------
    -- Join --
    ----------
 
-   function Join
-     (A, B   : Flow_Id;
-      Offset : Natural := 0)
-         return Flow_Id
-   is
+   function Join (A, B : Flow_Id; Offset : Natural := 0) return Flow_Id is
       F : Flow_Id := A;
       N : Natural := 0;
    begin
@@ -6293,12 +6215,10 @@ package body Flow_Utility is
    ------------------------------
 
    function Rely_On_Generated_Global
-     (E     : Entity_Id;
-      Scope : Flow_Scope)
-      return Boolean
-   is
+     (E : Entity_Id; Scope : Flow_Scope) return Boolean is
    begin
-      return Entity_Body_In_SPARK (E)
+      return
+        Entity_Body_In_SPARK (E)
         and then Is_Visible (Get_Body (E), Scope)
         and then Refinement_Needed (E);
    end Rely_On_Generated_Global;
@@ -6307,9 +6227,7 @@ package body Flow_Utility is
    -- Remove_Constants --
    ----------------------
 
-   procedure Remove_Constants
-     (Objects : in out Flow_Id_Sets.Set)
-   is
+   procedure Remove_Constants (Objects : in out Flow_Id_Sets.Set) is
       Constants : Flow_Id_Sets.Set;
       --  ??? list would be more efficient here, since we only Insert and
       --  Iterate, but sets are more intuitive; for now let's leave it.
@@ -6348,13 +6266,11 @@ package body Flow_Utility is
    ----------------------------------------------
 
    function Is_Generic_Actual_Without_Variable_Input
-     (E : Entity_Id)
-      return Boolean
-   is
-     (Ekind (E) = E_Constant
-      and then In_Generic_Actual (E)
-      and then not Is_Access_Variable (Etype (E))
-      and then not Has_Variable_Input (E));
+     (E : Entity_Id) return Boolean
+   is (Ekind (E) = E_Constant
+       and then In_Generic_Actual (E)
+       and then not Is_Access_Variable (Etype (E))
+       and then not Has_Variable_Input (E));
 
    ---------------------
    -- First_Name_Node --
@@ -6375,9 +6291,7 @@ package body Flow_Utility is
    -----------------------------
 
    function Search_Depends_Contract
-     (Unit   : Entity_Id;
-      Output : Entity_Id;
-      Input  : Entity_Id := Empty)
+     (Unit : Entity_Id; Output : Entity_Id; Input : Entity_Id := Empty)
       return Node_Id
    is
 
@@ -6455,8 +6369,8 @@ package body Flow_Utility is
                   loop
                      case Nkind (Single_Item) is
                         when N_Identifier | N_Expanded_Name =>
-                           if Canonical_Entity (Entity (Single_Item), Unit) =
-                             Output
+                           if Canonical_Entity (Entity (Single_Item), Unit)
+                             = Output
                            then
                               Needle := First_Name_Node (Single_Item);
                               if Present (Input) then
@@ -6466,8 +6380,9 @@ package body Flow_Utility is
                            end if;
 
                         when N_Attribute_Reference =>
-                           pragma Assert
-                             (Attribute_Name (Single_Item) = Name_Result);
+                           pragma
+                             Assert
+                               (Attribute_Name (Single_Item) = Name_Result);
 
                            if Entity (Prefix (Single_Item)) = Output then
                               Needle := First_Name_Node (Prefix (Single_Item));
@@ -6520,8 +6435,8 @@ package body Flow_Utility is
 
                begin
                   loop
-                     pragma Assert
-                       (Nkind (Item) in N_Identifier | N_Expanded_Name);
+                     pragma
+                       Assert (Nkind (Item) in N_Identifier | N_Expanded_Name);
 
                      if Canonical_Entity (Entity (Item), Unit) = Input then
                         Needle := First_Name_Node (Item);
@@ -6575,7 +6490,7 @@ package body Flow_Utility is
          end case;
       end Scan_Contract;
 
-   --  Start of processing for Search_Depends_Contract
+      --  Start of processing for Search_Depends_Contract
 
    begin
       Contract_N := Find_Contract (Unit, Pragma_Refined_Depends);
@@ -6588,9 +6503,7 @@ package body Flow_Utility is
 
          Scan_Contract (Expression (Get_Argument (Contract_N, Unit)));
 
-         return (if Present (Needle)
-                 then Needle
-                 else Contract_N);
+         return (if Present (Needle) then Needle else Contract_N);
       else
          return Unit;
       end if;
@@ -6602,9 +6515,7 @@ package body Flow_Utility is
    ---------------------------------
 
    function Search_Initializes_Contract
-     (Unit   : Entity_Id;
-      Output : Entity_Id;
-      Input  : Entity_Id := Empty)
+     (Unit : Entity_Id; Output : Entity_Id; Input : Entity_Id := Empty)
       return Node_Id
    is
       Contract : constant Node_Id := Get_Pragma (Unit, Pragma_Initializes);
@@ -6737,8 +6648,8 @@ package body Flow_Utility is
 
                begin
                   loop
-                     pragma Assert
-                       (Nkind (RHS) in N_Identifier | N_Expanded_Name);
+                     pragma
+                       Assert (Nkind (RHS) in N_Identifier | N_Expanded_Name);
 
                      if Canonical_Entity (Entity (RHS), Unit) = Input then
                         Needle := First_Name_Node (RHS);
@@ -6757,15 +6668,13 @@ package body Flow_Utility is
          end case;
       end Scan_Inputs;
 
-   --  Start of processing for Search_Initializes_Contract
+      --  Start of processing for Search_Initializes_Contract
 
    begin
       if Present (Contract) then
          Scan_Initialization_Spec (Expression (Get_Argument (Contract, Unit)));
 
-         return (if Present (Needle)
-                 then Needle
-                 else Contract);
+         return (if Present (Needle) then Needle else Contract);
       else
          return Unit;
       end if;
@@ -6779,9 +6688,7 @@ package body Flow_Utility is
    function Termination_Proved
      (I_Scheme           : Opt_N_Iteration_Scheme_Id;
       Loop_Writes        : Flow_Id_Sets.Set;
-      Generating_Globals : Boolean := False)
-      return Boolean
-   is
+      Generating_Globals : Boolean := False) return Boolean is
    begin
       --  Termination of plain or while loops is not automatically proved
 
@@ -6818,11 +6725,10 @@ package body Flow_Utility is
               --  loop writes), we check that the root object is not
               --  modified during the loop. Get_Root_Object will always
               --  return entire variables.
-              or else
-                (not Generating_Globals
-                 and then
-                   not Loop_Writes.Contains
-                     (Direct_Mapping_Id (Get_Root_Object (I_Name))))
+              or else (not Generating_Globals
+                       and then not Loop_Writes.Contains
+                                      (Direct_Mapping_Id
+                                         (Get_Root_Object (I_Name))))
             then
                return True;
             end if;
@@ -6839,8 +6745,7 @@ package body Flow_Utility is
    --------------------
 
    function To_Flow_Id_Set
-     (NS   : Name_Sets.Set;
-      View : Flow_Id_Variant := Normal_Use)
+     (NS : Name_Sets.Set; View : Flow_Id_Variant := Normal_Use)
       return Flow_Id_Sets.Set
    is
       FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
@@ -6866,8 +6771,7 @@ package body Flow_Utility is
       Use_Computed_Globals    : Boolean;
       Expand_Internal_Objects : Boolean;
       Extensions_Irrelevant   : Boolean;
-      Top_Level               : Boolean := True)
-      return Flow_Id_Maps.Map
+      Top_Level               : Boolean := True) return Flow_Id_Maps.Map
    is
       --  !!! Join/Merge need to be able to deal with private parts and
       --      extensions (i.e. non-normal facets).
@@ -6887,14 +6791,13 @@ package body Flow_Utility is
         (N              : Node_Id;
          Map_Root       : Flow_Id;
          Map_Type       : Entity_Id := Empty;
-         Ext_Irrelevant : Boolean   := Extensions_Irrelevant)
+         Ext_Irrelevant : Boolean := Extensions_Irrelevant)
          return Flow_Id_Maps.Map
       is (Untangle_Record_Assignment
             (N,
              Map_Root                => Map_Root,
-             Map_Type                => (if Present (Map_Type)
-                                         then Map_Type
-                                         else Get_Type (N, Scope)),
+             Map_Type                =>
+               (if Present (Map_Type) then Map_Type else Get_Type (N, Scope)),
              Target_Name             => Target_Name,
              Scope                   => Scope,
              Fold_Functions          => Fold_Functions,
@@ -6902,20 +6805,19 @@ package body Flow_Utility is
              Expand_Internal_Objects => Expand_Internal_Objects,
              Extensions_Irrelevant   => Ext_Irrelevant,
              Top_Level               => False))
-      with Pre => Nkind (N) in N_Subexpr
-                    and then
-                  (if not Extensions_Irrelevant
-                   then not Ext_Irrelevant);
+      with
+        Pre =>
+          Nkind (N) in N_Subexpr
+          and then (if not Extensions_Irrelevant then not Ext_Irrelevant);
       --  Helpful wrapper for recursing. Note that once extensions are not
       --  irrelevant its not right to start ignoring them again.
 
       procedure Merge
-        (M         : in out Flow_Id_Maps.Map;
-         Component : Entity_Id;
-         Input     : Node_Id)
-      with Pre => Is_Unique_Component (Component)
-                    and then
-                  (No (Input) or else Nkind (Input) in N_Subexpr);
+        (M : in out Flow_Id_Maps.Map; Component : Entity_Id; Input : Node_Id)
+      with
+        Pre =>
+          Is_Unique_Component (Component)
+          and then (No (Input) or else Nkind (Input) in N_Subexpr);
       --  Merge the assignment map for Input into our current assignment
       --  map M. For example, if the input is (X => A, Y => B) and
       --  Component is C, and Map_Root is Obj, then we include in M the
@@ -6929,9 +6831,7 @@ package body Flow_Utility is
       --  aggregate), then we add an empty map entry for it.
 
       function Untangle_Delta_Aggregate
-        (Pref   : Node_Id;
-         Assocs : List_Id)
-        return Flow_Id_Maps.Map
+        (Pref : Node_Id; Assocs : List_Id) return Flow_Id_Maps.Map
       with Pre => Is_Non_Empty_List (Assocs);
       --  Untangle delta aggregate or attribute Update
       --  ??? Pre should include "Is_Object_Reference (Pref)", but currently
@@ -6964,7 +6864,8 @@ package body Flow_Utility is
          The_Priv  : constant Flow_Id :=
            (Map_Root with delta Facet => Private_Part);
          Same_Priv : constant Boolean :=
-           (if not Is_Tagged_Type (T_To) then True
+           (if not Is_Tagged_Type (T_To)
+            then True
             elsif Is_Ancestor (T_From, T_To, Scope)
             then not Introduces_Private_Fields (T_To, T_From, Scope)
             elsif Is_Ancestor (T_To, T_From, Scope)
@@ -7012,10 +6913,9 @@ package body Flow_Utility is
 
          for C in Source.Iterate loop
             declare
-               Output   : Flow_Id          renames Flow_Id_Maps.Key (C);
+               Output   : Flow_Id renames Flow_Id_Maps.Key (C);
                Inputs   : Flow_Id_Sets.Set renames Source (C);
-               C_Target : Flow_Id_Sets.Cursor :=
-                 Valid_To_Fields.Find (Output);
+               C_Target : Flow_Id_Sets.Cursor := Valid_To_Fields.Find (Output);
 
             begin
                if Flow_Id_Sets.Has_Element (C_Target)
@@ -7053,8 +6953,7 @@ package body Flow_Utility is
          Default.Clear;
 
          declare
-            C : constant Flow_Id_Maps.Cursor :=
-              Source.Find (The_Ext);
+            C : constant Flow_Id_Maps.Cursor := Source.Find (The_Ext);
          begin
             if Flow_Id_Maps.Has_Element (C) then
                Default := Source (C);
@@ -7082,9 +6981,7 @@ package body Flow_Utility is
       -----------
 
       procedure Merge
-        (M         : in out Flow_Id_Maps.Map;
-         Component : Entity_Id;
-         Input     : Node_Id)
+        (M : in out Flow_Id_Maps.Map; Component : Entity_Id; Input : Node_Id)
       is
          F   : Flow_Id := Add_Component (Map_Root, Component);
          Tmp : Flow_Id_Maps.Map;
@@ -7098,7 +6995,8 @@ package body Flow_Utility is
             F := (Map_Root with delta Facet => Private_Part);
             declare
                Inputs   : constant Flow_Id_Sets.Set :=
-                 (if Present (Input) then Get_Vars_Wrapper (Input)
+                 (if Present (Input)
+                  then Get_Vars_Wrapper (Input)
                   else Flow_Id_Sets.Empty_Set);
                Position : Flow_Id_Maps.Cursor;
                Inserted : Boolean;
@@ -7116,7 +7014,7 @@ package body Flow_Utility is
 
                for C in Tmp.Iterate loop
                   declare
-                     Output : Flow_Id          renames Flow_Id_Maps.Key (C);
+                     Output : Flow_Id renames Flow_Id_Maps.Key (C);
                      Inputs : Flow_Id_Sets.Set renames Tmp (C);
                   begin
                      M.Insert (Output, Inputs);
@@ -7127,7 +7025,7 @@ package body Flow_Utility is
                   Outputs : constant Flow_Id_Sets.Set :=
                     Flatten_Variable (F, Scope);
 
-                  Inputs  : constant Flow_Id_Sets.Set :=
+                  Inputs : constant Flow_Id_Sets.Set :=
                     Get_Vars_Wrapper (Input);
 
                begin
@@ -7148,9 +7046,7 @@ package body Flow_Utility is
       ------------------------------
 
       function Untangle_Delta_Aggregate
-        (Pref   : Node_Id;
-         Assocs : List_Id)
-         return Flow_Id_Maps.Map
+        (Pref : Node_Id; Assocs : List_Id) return Flow_Id_Maps.Map
       is
          Assoc   : Node_Id;
          Output  : Node_Id;
@@ -7178,11 +7074,11 @@ package body Flow_Utility is
             end if;
          end Add_Component_To_F;
 
-         Partial_Choice_Root   : Node_Id;
-         Partial_Choice_Vars   : Flow_Id_Sets.Set;
+         Partial_Choice_Root : Node_Id;
+         Partial_Choice_Vars : Flow_Id_Sets.Set;
          --  For handling partial assignments
 
-         Deep_Choice_Seq       : Node_Lists.List;
+         Deep_Choice_Seq : Node_Lists.List;
          --  For handling deep delta aggregates
 
          Class_Wide_Conversion : constant Boolean :=
@@ -7192,17 +7088,18 @@ package body Flow_Utility is
          M : Flow_Id_Maps.Map;
 
       begin
-         M := Recurse_On (Pref,
-                          Map_Root,
-                          Ext_Irrelevant =>
-                             not (Class_Wide_Conversion or
-                              not Extensions_Irrelevant));
+         M :=
+           Recurse_On
+             (Pref,
+              Map_Root,
+              Ext_Irrelevant =>
+                not (Class_Wide_Conversion or not Extensions_Irrelevant));
 
          Assoc := First (Assocs);
          while Present (Assoc) loop
             pragma Assert (Nkind (Assoc) = N_Component_Association);
 
-            Input  := Expression (Assoc);
+            Input := Expression (Assoc);
             Output := First (Choices (Assoc));
 
             F := Map_Root;
@@ -7246,8 +7143,7 @@ package body Flow_Utility is
 
             else
                Add_Component_To_F
-                 (Unique_Component (Entity (Output)),
-                  Get_Type (N, Scope));
+                 (Unique_Component (Entity (Output)), Get_Type (N, Scope));
             end if;
 
             --  Partial update is handled like a self-assignment, i.e. it uses
@@ -7289,8 +7185,7 @@ package body Flow_Utility is
 
             elsif Is_Record_Type (Get_Type (F, Scope)) then
                for C in Recurse_On (Input, F).Iterate loop
-                  M.Replace (Flow_Id_Maps.Key (C),
-                             Flow_Id_Maps.Element (C));
+                  M.Replace (Flow_Id_Maps.Key (C), Flow_Id_Maps.Element (C));
                end loop;
             else
                M.Replace (F, Get_Vars_Wrapper (Input));
@@ -7310,7 +7205,7 @@ package body Flow_Utility is
 
       M : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
 
-   --  Start of processing for Untangle_Record_Assignment
+      --  Start of processing for Untangle_Record_Assignment
 
    begin
       pragma Annotate (Xcov, Exempt_On, "Debugging code");
@@ -7381,13 +7276,16 @@ package body Flow_Utility is
                while Present (Component_Association) loop
                   if Box_Present (Component_Association) then
                      Input := Empty;  -- ??? use default component expression
+
                   else
                      Input := Expression (Component_Association);
                   end if;
 
                   Target := First (Choices (Component_Association));
-                  Merge (M, Component => Unique_Component (Entity (Target)),
-                         Input        => Input);
+                  Merge
+                    (M,
+                     Component => Unique_Component (Entity (Target)),
+                     Input     => Input);
 
                   --  Multiple component updates are expanded into individual
                   --  component associations.
@@ -7422,7 +7320,7 @@ package body Flow_Utility is
                if Component_Visible_In_Type (Selector, Ty, Scope) then
                   for C in Tmp.Iterate loop
                      declare
-                        Output : Flow_Id          renames Flow_Id_Maps.Key (C);
+                        Output : Flow_Id renames Flow_Id_Maps.Key (C);
                         Inputs : Flow_Id_Sets.Set renames Tmp (C);
 
                      begin
@@ -7435,8 +7333,8 @@ package body Flow_Utility is
                   declare
                      Inputs : constant Flow_Id_Sets.Set :=
                        Tmp.Element
-                         ((Direct_Mapping_Id (Ty) with delta
-                            facet => Private_Part));
+                         ((Direct_Mapping_Id (Ty)
+                           with delta facet => Private_Part));
                   begin
                      M.Insert (Map_Root, Inputs);
                   end;
@@ -7455,9 +7353,10 @@ package body Flow_Utility is
               and then Comes_From_Declare_Expr (Entity (N))
             then
                --  Need to recurse into the declare expression
-               M := Recurse_On
-                 (N        => Expression (Declaration_Node (Entity (N))),
-                  Map_Root => Map_Root);
+               M :=
+                 Recurse_On
+                   (N        => Expression (Declaration_Node (Entity (N))),
+                    Map_Root => Map_Root);
             else
                declare
                   E : constant Entity_Id :=
@@ -7467,9 +7366,8 @@ package body Flow_Utility is
 
                   Is_Pure_Constant : constant Boolean :=
                     Fold_Functions /= Inputs
-                      or else
-                      (Ekind (E) = E_Constant
-                       and then not Has_Variable_Input (E));
+                    or else (Ekind (E) = E_Constant
+                             and then not Has_Variable_Input (E));
                   --  If we are assigning a pure constant, we don't really
                   --  want to see it (just like if we assign integer/string/...
                   --  literals then we don't want to see them in flow).
@@ -7491,17 +7389,18 @@ package body Flow_Utility is
                   --  LHS extension, its inputs and position in the map
 
                   RHS : Flow_Id_Sets.Set :=
-                    (if Nkind (N) = N_Target_Name then
-                       Flatten_Variable (Target_Name, Scope)
+                    (if Nkind (N) = N_Target_Name
+                     then Flatten_Variable (Target_Name, Scope)
 
-                     elsif Is_Concurrent_Component_Or_Discr (E) then
+                     elsif Is_Concurrent_Component_Or_Discr (E)
+                     then
                        Flatten_Variable
                          (Add_Component
-                            (Direct_Mapping_Id (Sinfo.Nodes.Scope (E)),
-                             E),
+                            (Direct_Mapping_Id (Sinfo.Nodes.Scope (E)), E),
                           Scope)
 
-                     elsif Is_Part_Of_Concurrent_Object (E) then
+                     elsif Is_Part_Of_Concurrent_Object (E)
+                     then
                        Flatten_Variable
                          (Add_Component
                             (Direct_Mapping_Id
@@ -7512,14 +7411,14 @@ package body Flow_Utility is
                      elsif Ekind (E) in E_Constant | E_Variable
                        and then Present (Ultimate_Overlaid_Entity (E))
                      then
-                        Flatten_Variable (Ultimate_Overlaid_Entity (E), Scope)
+                       Flatten_Variable (Ultimate_Overlaid_Entity (E), Scope)
 
                      else Flatten_Variable (E, Scope));
 
                begin
                   if (Is_Class_Wide_Type (Map_Type)
-                    and then not Is_Class_Wide_Type (Etype (N)))
-                      or else not Extensions_Irrelevant
+                      and then not Is_Class_Wide_Type (Etype (N)))
+                    or else not Extensions_Irrelevant
                   then
                      --  This is an implicit conversion to class wide, or we
                      --  for some other reason care specifically about the
@@ -7529,12 +7428,13 @@ package body Flow_Utility is
                         when N_Target_Name =>
                            if Extensions_Visible (Target_Name, Scope) then
                               RHS.Insert
-                                ((Target_Name with delta
-                                     Facet => Extension_Part));
+                                ((Target_Name
+                                  with delta Facet => Extension_Part));
 
-                              --  RHS.Insert
-                              --    ((Target_Name with delta
-                              --         Facet => The_Tag));
+                           --  RHS.Insert
+                           --    ((Target_Name with delta
+                           --         Facet => The_Tag));
+
                            end if;
 
                         when N_Identifier | N_Expanded_Name =>
@@ -7543,8 +7443,9 @@ package body Flow_Utility is
                                 (Direct_Mapping_Id
                                    (E, Facet => Extension_Part));
 
-                              --  RHS.Insert
-                              --    (Direct_Mapping_Id (E, Facet => The_Tag));
+                           --  RHS.Insert
+                           --    (Direct_Mapping_Id (E, Facet => The_Tag));
+
                            end if;
 
                         when others =>
@@ -7556,7 +7457,8 @@ package body Flow_Utility is
                      declare
                         F : constant Flow_Id :=
                           Join
-                            (Map_Root, Input,
+                            (Map_Root,
+                             Input,
                              Offset =>
                                (if Is_Concurrent_Component_Or_Discr (E)
                                   or else Is_Part_Of_Concurrent_Object (E)
@@ -7564,9 +7466,11 @@ package body Flow_Utility is
                                 else 0));
                      begin
                         if LHS.Contains (F) then
-                           M.Insert (F, (if Is_Pure_Constant
-                                         then Flow_Id_Sets.Empty_Set
-                                         else Flow_Id_Sets.To_Set (Input)));
+                           M.Insert
+                             (F,
+                              (if Is_Pure_Constant
+                               then Flow_Id_Sets.Empty_Set
+                               else Flow_Id_Sets.To_Set (Input)));
                         else
                            LHS_Ext_Inputs.Insert (Input);
                         end if;
@@ -7577,9 +7481,10 @@ package body Flow_Utility is
                     and then Is_Tagged_Type (Map_Type)
                   then
                      --  Attempt to insert an empty set
-                     M.Insert (Key      => LHS_Ext,
-                               Position => LHS_Ext_Position,
-                               Inserted => Unused);
+                     M.Insert
+                       (Key      => LHS_Ext,
+                        Position => LHS_Ext_Position,
+                        Inserted => Unused);
 
                      if not Is_Pure_Constant then
                         M (LHS_Ext_Position).Union (LHS_Ext_Inputs);
@@ -7604,11 +7509,12 @@ package body Flow_Utility is
                  and then Is_Class_Wide_Type (T_To);
 
                Tmp : constant Flow_Id_Maps.Map :=
-                 Recurse_On (Expression (N),
-                             Map_Root,
-                             Ext_Irrelevant =>
-                                not (Class_Wide_Conversion
-                                     or not Extensions_Irrelevant));
+                 Recurse_On
+                   (Expression (N),
+                    Map_Root,
+                    Ext_Irrelevant =>
+                      not (Class_Wide_Conversion
+                           or not Extensions_Irrelevant));
                --  If we convert to a classwide type then any extensions
                --  are no longer irrelevant.
 
@@ -7644,11 +7550,13 @@ package body Flow_Utility is
                        and then Is_Class_Wide_Type (Map_Type);
 
                   begin
-                     M := Recurse_On (Prefix (N),
-                                      Map_Root,
-                                      Ext_Irrelevant =>
-                                         not (Class_Wide_Conversion
-                                              or not Extensions_Irrelevant));
+                     M :=
+                       Recurse_On
+                         (Prefix (N),
+                          Map_Root,
+                          Ext_Irrelevant =>
+                            not (Class_Wide_Conversion
+                                 or not Extensions_Irrelevant));
                   end;
 
                when Name_Old =>
@@ -7707,10 +7615,10 @@ package body Flow_Utility is
    --------------------------------
 
    procedure Untangle_Assignment_Target
-     (N                    :     Node_Id;
-      Scope                :     Flow_Scope;
-      Use_Computed_Globals :     Boolean;
-      Force_Extension      :     Boolean := False;
+     (N                    : Node_Id;
+      Scope                : Flow_Scope;
+      Use_Computed_Globals : Boolean;
+      Force_Extension      : Boolean := False;
       View_Conversion      : out Boolean;
       Map_Root             : out Flow_Id;
       Vars_Defined         : out Flow_Id_Sets.Set;
@@ -7732,7 +7640,7 @@ package body Flow_Utility is
       Seq : Node_Lists.List;
       Idx : Positive;
 
-   --  Start of processing for Untangle_Assignment_Target
+      --  Start of processing for Untangle_Assignment_Target
 
    begin
       pragma Annotate (Xcov, Exempt_On, "Debugging code");
@@ -7771,7 +7679,7 @@ package body Flow_Utility is
       --  other variables that might be used.
 
       Vars_Defined := Flatten_Variable (Map_Root, Scope);
-      Vars_Used    := Flow_Id_Sets.Empty_Set;
+      Vars_Used := Flow_Id_Sets.Empty_Set;
 
       --  Assignment to an unconstrained record doesn't modify its bounds
 
@@ -7822,9 +7730,7 @@ package body Flow_Utility is
             when N_Selected_Component =>
                Idx := Idx + 1;
 
-            when N_Unchecked_Type_Conversion
-               | N_Type_Conversion
-             =>
+            when N_Unchecked_Type_Conversion | N_Type_Conversion =>
                null;
 
             when N_Explicit_Dereference =>
@@ -7843,9 +7749,7 @@ package body Flow_Utility is
       --  written even if Partial_Definition is False. Compute the assigned
       --  components.
 
-      if View_Conversion
-        and then not Partial_Definition
-      then
+      if View_Conversion and then not Partial_Definition then
          declare
             Assigned_Ty : constant Entity_Id := Get_Type (Etype (N), Scope);
             Base_Ty     : constant Entity_Id := Get_Type (Map_Root, Scope);
@@ -7868,38 +7772,41 @@ package body Flow_Utility is
                   for F of Old_Vars loop
                      if F.Kind = Record_Field
                        and then New_Comps.Contains
-                         (Add_Component (New_Typ_Id, F.Component (Idx)))
+                                  (Add_Component
+                                     (New_Typ_Id, F.Component (Idx)))
                      then
                         Vars_Defined.Insert (F);
                      elsif F.Kind = Direct_Mapping then
                         case F.Facet is
-                        when Extension_Part =>
+                           when Extension_Part =>
 
-                           --  The extension cannot be written
+                              --  The extension cannot be written
 
-                           null;
+                              null;
 
-                        when Private_Part =>
+                           when Private_Part =>
 
-                           --  If Map_Root has a private part, then it might
-                           --  be written by the assignment if Assigned_Ty has
-                           --  private fields.
+                              --  If Map_Root has a private part, then it might
+                              --  be written by the assignment if Assigned_Ty
+                              --  has private fields.
 
-                           if New_Comps.Contains
-                             ((New_Typ_Id with delta Facet => Private_Part))
-                           then
-                              Vars_Defined.Insert (F);
+                              if New_Comps.Contains
+                                   ((New_Typ_Id
+                                     with delta Facet => Private_Part))
+                              then
+                                 Vars_Defined.Insert (F);
 
-                              --  If Base_Ty has additional private fields
-                              --  compared to Assigned_Ty, then the private
-                              --  fields is only partially written.
+                                 --  If Base_Ty has additional private fields
+                                 --  compared to Assigned_Ty, then the private
+                                 --  fields is only partially written.
 
-                              Partial_Priv := Introduces_Private_Fields
-                                (Base_Ty, Assigned_Ty, Scope);
-                           end if;
+                                 Partial_Priv :=
+                                   Introduces_Private_Fields
+                                     (Base_Ty, Assigned_Ty, Scope);
+                              end if;
 
-                        when others =>
-                           raise Program_Error;
+                           when others =>
+                              raise Program_Error;
                         end case;
                      end if;
                   end loop;
@@ -7908,10 +7815,11 @@ package body Flow_Utility is
             --  Otherwise, the extension might be assigned if it is visible
 
             else
-               pragma Assert
-                 (Is_Class_Wide_Type (Assigned_Ty)
-                  or else Force_Extension
-                  or else Is_Ancestor (Base_Ty, Assigned_Ty, Scope));
+               pragma
+                 Assert
+                   (Is_Class_Wide_Type (Assigned_Ty)
+                      or else Force_Extension
+                      or else Is_Ancestor (Base_Ty, Assigned_Ty, Scope));
 
                declare
                   The_Ext : constant Flow_Id :=
@@ -7968,7 +7876,8 @@ package body Flow_Utility is
                when N_Record_Definition =>
                   --  Ordinary record declaration, we just check if its either
                   --  null or there are no components.
-                  return No (Component_List (Def))
+                  return
+                    No (Component_List (Def))
                     or else Null_Present (Component_List (Def));
 
                when N_Derived_Type_Definition =>
@@ -7977,12 +7886,11 @@ package body Flow_Utility is
                   begin
                      return
                        Is_Entity_Name (Subtype_Indication (Def))
-                         and then
-                       Is_Empty_Record_Type (Entity (Subtype_Indication (Def)))
-                         and then
-                       (No (Ext)
-                          or else Null_Present (Ext)
-                          or else No (Component_List (Ext)));
+                       and then Is_Empty_Record_Type
+                                  (Entity (Subtype_Indication (Def)))
+                       and then (No (Ext)
+                                 or else Null_Present (Ext)
+                                 or else No (Component_List (Ext)));
                   end;
 
                when others =>
@@ -7994,8 +7902,8 @@ package body Flow_Utility is
             --  deriving it from is null.
             return
               Is_Entity_Name (Subtype_Indication (Decl))
-                and then
-              Is_Empty_Record_Type (Entity (Subtype_Indication (Decl)));
+              and then Is_Empty_Record_Type
+                         (Entity (Subtype_Indication (Decl)));
 
          when others =>
             null;
@@ -8009,16 +7917,14 @@ package body Flow_Utility is
    -----------------------------
 
    function Is_Dummy_Abstract_State
-     (F : Flow_Id;
-      S : Flow_Scope)
-      return Boolean
-   is
+     (F : Flow_Id; S : Flow_Scope) return Boolean is
    begin
       if F.Kind = Direct_Mapping then
          declare
             E : constant Entity_Id := Get_Direct_Mapping_Id (F);
          begin
-            return Ekind (E) = E_Abstract_State
+            return
+              Ekind (E) = E_Abstract_State
               and then State_Refinement_Is_Visible (E, S)
               and then Has_Null_Refinement (E);
          end;
@@ -8068,9 +7974,10 @@ package body Flow_Utility is
 
       pragma Assert (Is_Pure (E) or else Is_Null_Procedure (E));
 
-      return (Proof_Ins => Node_Sets.Empty_Set,
-              Inputs    => Node_Sets.Empty_Set,
-              Outputs   => Node_Sets.Empty_Set);
+      return
+        (Proof_Ins => Node_Sets.Empty_Set,
+         Inputs    => Node_Sets.Empty_Set,
+         Outputs   => Node_Sets.Empty_Set);
    end Contract_Globals;
 
    ----------------------------
@@ -8078,9 +7985,7 @@ package body Flow_Utility is
    ----------------------------
 
    function Parse_Depends_Contract
-     (Subprogram   : Entity_Id;
-      Depends_Node : Node_Id)
-      return Raw_Global_Nodes
+     (Subprogram : Entity_Id; Depends_Node : Node_Id) return Raw_Global_Nodes
    is
       Raw_Depends : constant Dependency_Maps.Map :=
         Parse_Depends (Depends_Node);
@@ -8098,7 +8003,7 @@ package body Flow_Utility is
    begin
       for C in Raw_Depends.Iterate loop
          declare
-            Output : Flow_Id          renames Dependency_Maps.Key (C);
+            Output : Flow_Id renames Dependency_Maps.Key (C);
             Inputs : Flow_Id_Sets.Set renames Raw_Depends (C);
 
          begin
@@ -8110,8 +8015,7 @@ package body Flow_Utility is
                   Item : constant Entity_Id := Get_Direct_Mapping_Id (Output);
 
                begin
-                  if Item /= Subprogram
-                    and then not Params.Contains (Item)
+                  if Item /= Subprogram and then not Params.Contains (Item)
                   then
                      Globals.Outputs.Include (Item);
                   end if;
@@ -8157,8 +8061,7 @@ package body Flow_Utility is
 
    begin
       if Present (E) then
-         return Ekind (E) = E_Abstract_State
-           or else not Entity_In_SPARK (E);
+         return Ekind (E) = E_Abstract_State or else not Entity_In_SPARK (E);
       else
          return True;
       end if;
@@ -8168,8 +8071,7 @@ package body Flow_Utility is
    -- Find_In --
    -------------
 
-   function Find_In (User : Node_Sets.Set; G : Entity_Id) return Entity_Id
-   is
+   function Find_In (User : Node_Sets.Set; G : Entity_Id) return Entity_Id is
    begin
       if User.Contains (G) then
          return G;
@@ -8199,12 +8101,13 @@ package body Flow_Utility is
    -- Strip_Child_Prefixes --
    --------------------------
 
-   function Strip_Child_Prefixes (EN : String) return String is
-     (if EN'Length > Child_Prefix'Length and then
-      EN (EN'First .. EN'First + Child_Prefix'Length - 1) = Child_Prefix
-      then Strip_Child_Prefixes (EN
-                                 (EN'First + Child_Prefix'Length .. EN'Last))
-      else EN);
+   function Strip_Child_Prefixes (EN : String) return String
+   is (if EN'Length > Child_Prefix'Length
+         and then EN (EN'First .. EN'First + Child_Prefix'Length - 1)
+                  = Child_Prefix
+       then
+         Strip_Child_Prefixes (EN (EN'First + Child_Prefix'Length .. EN'Last))
+       else EN);
 
    ---------------------
    -- Path_To_Flow_Id --
@@ -8230,22 +8133,21 @@ package body Flow_Utility is
 
          N :=
            (case Nkind (N) is
-               when N_Explicit_Dereference
-                  | N_Indexed_Component
-                  | N_Slice
-                  | N_Selected_Component
-                  | N_Attribute_Reference
-               =>
-                  Prefix (N),
+              when N_Explicit_Dereference
+                 | N_Indexed_Component
+                 | N_Slice
+                 | N_Selected_Component
+                 | N_Attribute_Reference
+              =>
+                Prefix (N),
 
-               when N_Qualified_Expression
-                  | N_Type_Conversion
-                  | N_Unchecked_Type_Conversion
-               =>
-                  Expression (N),
+              when N_Qualified_Expression
+                 | N_Type_Conversion
+                 | N_Unchecked_Type_Conversion
+              =>
+                Expression (N),
 
-               when others =>
-                  raise Program_Error);
+              when others => raise Program_Error);
       end loop;
 
       if Nkind (N) = N_Null then
@@ -8257,32 +8159,27 @@ package body Flow_Utility is
 
       begin
          Obj :=
-           (if Is_Protected_Component (Root_Entity) then
+           (if Is_Protected_Component (Root_Entity)
+            then
               Add_Component
-                (Direct_Mapping_Id (Scope (Root_Entity)),
-                 Root_Entity)
+                (Direct_Mapping_Id (Scope (Root_Entity)), Root_Entity)
 
-            elsif Is_Part_Of_Concurrent_Object (Root_Entity) then
+            elsif Is_Part_Of_Concurrent_Object (Root_Entity)
+            then
               Add_Component
-                (Direct_Mapping_Id
-                   (Etype (Encapsulating_State (Root_Entity))),
+                (Direct_Mapping_Id (Etype (Encapsulating_State (Root_Entity))),
                  Root_Entity)
 
             elsif Ekind (Root_Entity) in E_Constant | E_Variable
               and then Present (Ultimate_Overlaid_Entity (Root_Entity))
-            then
-               Direct_Mapping_Id (Ultimate_Overlaid_Entity (Root_Entity))
+            then Direct_Mapping_Id (Ultimate_Overlaid_Entity (Root_Entity))
 
-            else
-               Direct_Mapping_Id (Unique_Entity (Root_Entity)));
+            else Direct_Mapping_Id (Unique_Entity (Root_Entity)));
       end;
 
       for N of Seq loop
          case Nkind (N) is
-            when N_Explicit_Dereference
-               | N_Indexed_Component
-               | N_Slice
-            =>
+            when N_Explicit_Dereference | N_Indexed_Component | N_Slice =>
                return Obj;
 
             when N_Attribute_Reference =>
@@ -8301,8 +8198,7 @@ package body Flow_Utility is
                     Unique_Component (Entity (Selector_Name (N)));
                   Components : constant Flow_Id_Sets.Set :=
                     Get_Components (Obj, Scop);
-                  New_Comp   : constant Flow_Id :=
-                    Add_Component (Obj, Field);
+                  New_Comp   : constant Flow_Id := Add_Component (Obj, Field);
                begin
                   if Components.Contains (New_Comp) then
                      Obj := New_Comp;
@@ -8315,9 +8211,9 @@ package body Flow_Utility is
                      --  parts of the object is updated.
 
                      if Is_Ancestor
-                       (Get_Type (Obj, Scop),
-                        Get_Type (Scope (Field), Scop),
-                        Scop)
+                          (Get_Type (Obj, Scop),
+                           Get_Type (Scope (Field), Scop),
+                           Scop)
                      then
                         Obj := (Obj with delta Facet => Extension_Part);
                      end if;

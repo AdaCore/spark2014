@@ -20,6 +20,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import yaml
 from typing import AnyStr, List, Optional
 
 # name for the entry in the test_env dict for the subprogram to call
@@ -27,6 +28,13 @@ call_entry = "call_name"
 # name for the entry in the test_env dict for arguments to
 # prove_all/do_flow/no_crash calls
 args_entry = "call_args"
+
+
+def is_sublist(main_list, sublist):
+    for elt in sublist:
+        if elt not in main_list:
+            return False
+    return True
 
 
 class SPARKControlCreator(AdaCoreLegacyTestControlCreator):
@@ -41,6 +49,19 @@ class SPARKControlCreator(AdaCoreLegacyTestControlCreator):
             and "large" not in self.system_tags
         ):
             return TestControl("large test", skip=True, xfail=False)
+        for rule in driver.env.skipped_reasons["rules"]:
+            if "discs" in rule:
+                if not is_sublist(driver.env.discs, rule["discs"]):
+                    continue
+            reason_string = f"{rule['description']} ({rule['issue']})"
+            if driver.test_name in rule["tests"]:
+                skip = False
+                xfail = False
+                if rule["action"] == "skip":
+                    skip = True
+                if rule["action"] == "xfail":
+                    xfail = True
+                return TestControl(reason_string, skip=skip, xfail=xfail)
         return super().create(driver)
 
     def __init__(
@@ -643,6 +664,11 @@ class SPARKTestsuite(Testsuite):
             self.env.discs += ["large"]
         else:
             self.env.only_large = False
+        if os.path.exists("mass_xfail.yaml"):
+            with open("mass_xfail.yaml", "r") as file:
+                self.env.skipped_reasons = yaml.safe_load(file)
+        else:
+            self.env.skipped_reasons = {"rules": []}
         self.env.only_replay = self.main.args.only_replay
         self.env.rewrite_baselines = self.main.args.rewrite
         self.why3_process = None

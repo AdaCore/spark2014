@@ -237,6 +237,8 @@ run-benchmark:
 
 format:
 	gnatformat -P gnatprove
+	gnatformat -P gnat2why/gnat2why.gpr --no-subprojects --ignore gnat2why/gnat2why_ignore_format.txt
 
 check-format:
 	gnatformat -P gnatprove --check
+	gnatformat -P gnat2why/gnat2why.gpr --check --no-subprojects --ignore gnat2why/gnat2why_ignore_format.txt

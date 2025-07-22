@@ -33,12 +33,11 @@ package SPARK_Util.Hardcoded is
       Elementary_Functions,
       Real_Time,
       System_Storage_Elements,
-      System
-     );
+      System);
    --  Enum type of the hardcoded units
 
-   subtype Hardcoded_Enum is Opt_Hardcoded_Enum range
-     Big_Integers .. Opt_Hardcoded_Enum'Last;
+   subtype Hardcoded_Enum is
+     Opt_Hardcoded_Enum range Big_Integers .. Opt_Hardcoded_Enum'Last;
 
    package Big_Integers_Names is
       Big_Integer              : constant String := "big_integer";
@@ -136,33 +135,30 @@ package SPARK_Util.Hardcoded is
    end Real_Time_Names;
 
    function Is_From_Hardcoded_Unit
-     (E    : Entity_Id;
-      Unit : Hardcoded_Enum)
-      return Boolean;
+     (E : Entity_Id; Unit : Hardcoded_Enum) return Boolean;
    --  Returns True iff E is from the hardcoded unit corresponding to Unit
 
    function Is_From_Hardcoded_Generic_Unit
-     (E    : Entity_Id;
-      Unit : Hardcoded_Enum)
-      return Boolean;
+     (E : Entity_Id; Unit : Hardcoded_Enum) return Boolean;
    --  Returns True iff E is from a generic unit defined in the hardcoded unit
    --  corresponding to Unit.
 
    function Is_Hardcoded_Entity (E : Entity_Id) return Boolean;
    --  Return True iff E is a hardcoded entity
 
-   function Is_Literal_Function (E : Entity_Id) return Boolean with
-     Post => (if Is_Literal_Function'Result then Is_Hardcoded_Entity (E));
+   function Is_Literal_Function (E : Entity_Id) return Boolean
+   with Post => (if Is_Literal_Function'Result then Is_Hardcoded_Entity (E));
    --  Return True iff E is a function used to encode literals. Those are
    --  handled specifically when they have string literals as parameters.
 
-   function Is_Imprecisely_Hardcoded (E : Entity_Id) return Boolean with
-     Pre => Is_Hardcoded_Entity (E) and then Ekind (E) in Subprogram_Kind;
+   function Is_Imprecisely_Hardcoded (E : Entity_Id) return Boolean
+   with Pre => Is_Hardcoded_Entity (E) and then Ekind (E) in Subprogram_Kind;
    --  Return True if E produces an imprecise result. This is used to emit
    --  warnings for users and to lower the severity of check messages for
    --  overflow on the result.
 
-   function Has_Imprecise_Precondition (E : Entity_Id) return Boolean with
+   function Has_Imprecise_Precondition (E : Entity_Id) return Boolean
+   with
      Pre  => Is_Hardcoded_Entity (E) and then Ekind (E) in Subprogram_Kind,
      Post =>
        (if Has_Imprecise_Precondition'Result
@@ -171,7 +167,7 @@ package SPARK_Util.Hardcoded is
    --  to lower the severity of the check message.
 
    function Get_Hardcoded_Unit (E : Entity_Id) return Hardcoded_Enum
-     with Pre => Is_Hardcoded_Entity (E);
+   with Pre => Is_Hardcoded_Entity (E);
    --  Returns the unit in which the hardcoded entity E is defined
 
    function Has_Stoele_Offset (E : Type_Kind_Id) return Boolean;
@@ -182,8 +178,8 @@ package SPARK_Util.Hardcoded is
    --  Return true if the entity is (a subtype of) the type
    --  System.Address;
 
-   function Get_Real_Time_Time_Unit (E : Entity_Id) return Ureal with
-     Pre => Is_From_Hardcoded_Unit (E, Real_Time);
+   function Get_Real_Time_Time_Unit (E : Entity_Id) return Ureal
+   with Pre => Is_From_Hardcoded_Unit (E, Real_Time);
    --  Return the value of Time_Unit from an entity of the package
    --  Ada.Real_Time.
 

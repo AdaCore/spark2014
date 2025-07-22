@@ -3,4 +3,4 @@ indirect.ads:4:04: info: initialization of "X" proved
 indirect.ads:5:14: warning: subprogram "Proc" has no effect
 p.ads:6:13: info: implicit aspect Always_Terminates on "P" has been proved, subprogram will terminate
 p.ads:7:20: info: postcondition proved (CVC5: 2 VC)
-q.ads:1:16: info: initial condition proved (CVC5: 1 VC)
+q.ads:1:37: info: initial condition proved (CVC5: 1 VC)

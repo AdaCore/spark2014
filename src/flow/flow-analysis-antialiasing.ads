@@ -25,20 +25,19 @@
 
 package Flow.Analysis.Antialiasing is
 
-   type Aliasing_Check_Result is (Impossible,
-                                  No_Aliasing,
-                                  Possible_Aliasing,
-                                  Definite_Aliasing,
-                                  Unchecked);
+   type Aliasing_Check_Result is
+     (Impossible,
+      No_Aliasing,
+      Possible_Aliasing,
+      Definite_Aliasing,
+      Unchecked);
    pragma Ordered (Aliasing_Check_Result);
    --  These statuses represent the computed aliasing status but Unchecked,
    --  which represents the case where a status has not been computed yet.
 
    procedure Check_Procedure_Call
-     (FA : in out Flow_Analysis_Graphs;
-      N  : Node_Id)
-   with Pre => Nkind (N) in N_Entry_Call_Statement
-                          | N_Subprogram_Call;
+     (FA : in out Flow_Analysis_Graphs; N : Node_Id)
+   with Pre => Nkind (N) in N_Entry_Call_Statement | N_Subprogram_Call;
    --  This procedure looks at an entry/procedure call statement (and at
    --  the call to function with side effects as well) and determines if it
    --  introduces aliasing that matters. For the full ruleset see the SPARK RM
@@ -54,10 +53,9 @@ package Flow.Analysis.Antialiasing is
    --  This procedure stores into a map the procedure call and its computed
    --  aliasing status.
 
-   function Get_Aliasing_Status_For_Proof (N : Node_Id)
-                                           return Aliasing_Check_Result
-   with Pre => Nkind (N) in N_Entry_Call_Statement
-                          | N_Subprogram_Call;
+   function Get_Aliasing_Status_For_Proof
+     (N : Node_Id) return Aliasing_Check_Result
+   with Pre => Nkind (N) in N_Entry_Call_Statement | N_Subprogram_Call;
    --  This procedure looks into the map containing information about the
    --  aliasing status for procedure call N (computed by Check_Procedure_Call).
    --  It returns the aliasing status if N has been stored in the map,

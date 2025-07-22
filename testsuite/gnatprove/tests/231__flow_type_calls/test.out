@@ -8,7 +8,8 @@ main.adb:14:16: medium: predicate check might fail
 main.adb:16:18: info: overflow check proved (CVC5: 2 VC)
 main.adb:21:19: info: assertion proved (CVC5: 1 VC)
 p.ads:4:04: info: function contract feasibility proved (Trivial: 1 VC)
-p.ads:4:09: medium: invariant check might fail on default value
+p.ads:4:09: medium: in inlined invariant at p.ads:4
+p.ads:4:09: medium: invariant check might fail on default value, cannot prove T.all
 p.ads:4:70: high: call via access-to-subprogram in the invariant of "T" might not terminate (SPARK RM 7.3.2(11))
 p.ads:4:70: medium: pointer dereference check might fail
 q.ads:2:09: medium: in default value of private type at q.ads:2

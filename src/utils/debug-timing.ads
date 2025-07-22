@@ -38,9 +38,8 @@ package Debug.Timing is
    procedure Timing_Start (Timer : out Time_Token);
    --  The beginning of time. Or at least in our way of counting ;)
 
-   procedure Timing_Phase_Completed (Timer  : in out Time_Token;
-                                     Entity : Subp_Type;
-                                     Msg    : String);
+   procedure Timing_Phase_Completed
+     (Timer : in out Time_Token; Entity : Subp_Type; Msg : String);
    --  Note how much time has elapsed since the last call of this procedure
    --  (or the call to Timing_Start if it is called for the first time).
    --  Make sure Msg is unique if you want to call Timing_History.
@@ -49,11 +48,12 @@ package Debug.Timing is
    --  Return the history so far as a mapping {string -> float} with
    --  elapsed phases (the string) and how long they took (the float).
 
-   procedure Register_Timing (Timer  : in out Time_Token;
-                              Entity : Subp_Type;
-                              Msg    : String;
-                              Time   : Duration)
-     with Pre => Time >= 0.0;
+   procedure Register_Timing
+     (Timer  : in out Time_Token;
+      Entity : Subp_Type;
+      Msg    : String;
+      Time   : Duration)
+   with Pre => Time >= 0.0;
    --  Inject a timing that comes from another source than this package. This
    --  allows to integrate timings from spawned processes into the output.
    --  Unlike timing coming from this package, the external times should be
@@ -68,18 +68,20 @@ private
    --  estimate timing, so the less-precise and potentially non-monotonic clock
    --  from Ada.Calendar is acceptable.
 
-   package Timings is new Ada.Containers.Indefinite_Hashed_Maps
-     (Key_Type        => String,
-      Element_Type    => Duration,
-      Hash            => Ada.Strings.Hash,
-      Equivalent_Keys => "=");
+   package Timings is new
+     Ada.Containers.Indefinite_Hashed_Maps
+       (Key_Type        => String,
+        Element_Type    => Duration,
+        Hash            => Ada.Strings.Hash,
+        Equivalent_Keys => "=");
 
-   package Entity_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Subp_Type,
-      Element_Type    => Timings.Map,
-      Hash            => Hash,
-      Equivalent_Keys => "=",
-      "="             => Timings."=");
+   package Entity_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Subp_Type,
+        Element_Type    => Timings.Map,
+        Hash            => Hash,
+        Equivalent_Keys => "=",
+        "="             => Timings."=");
 
    type Time_Token is record
       Start   : Ada.Calendar.Time;

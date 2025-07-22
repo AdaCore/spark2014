@@ -91,7 +91,7 @@ test_relaxed_access_params.adb:60:12: info: null exclusion check proved (CVC5: 1
 test_relaxed_access_params.adb:65:49: info: initialization of "Y" proved
 test_relaxed_access_params.adb:66:06: warning: "Globals" is not a valid aspect identifier [enabled by default]
 test_relaxed_access_params.adb:66:06: warning: possible misspelling of "Global" [enabled by default]
-test_relaxed_access_params.adb:70:13: medium: initialization check might fail [possible fix: subprogram at line 65 should mention X in a precondition]
+test_relaxed_access_params.adb:70:13: medium: initialization check might fail [possible fix: subprogram at line 65 should mention X'Initialized in a precondition]
 test_relaxed_access_params.adb:71:09: info: discriminant check proved (Trivial: 1 VC)
 test_relaxed_access_params.adb:71:09: medium: resource or memory leak might occur [possible fix: subprogram at line 65 should mention X in a precondition]
 test_relaxed_access_params.adb:71:12: info: null exclusion check proved (CVC5: 1 VC)
@@ -128,7 +128,7 @@ test_relaxed_access_params.adb:152:31: info: initialization of "Y" proved
 test_relaxed_access_params.adb:156:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_params.adb:159:34: info: initialization of "Y" proved
 test_relaxed_access_params.adb:163:12: medium: for pointer allocation at test_relaxed_access_params.adb:12
-test_relaxed_access_params.adb:163:12: medium: initialization check might fail (e.g. when X = (A => null)) [possible fix: subprogram at line 159 should mention X in a precondition]
+test_relaxed_access_params.adb:163:12: medium: initialization check might fail (e.g. when X = (A => null)) [possible fix: subprogram at line 159 should mention X'Initialized in a precondition]
 test_relaxed_access_params.adb:168:04: medium: resource or memory leak might occur at end of scope
 test_relaxed_access_params.adb:169:04: medium: resource or memory leak might occur at end of scope
 test_relaxed_access_params.adb:172:06: info: data dependencies proved

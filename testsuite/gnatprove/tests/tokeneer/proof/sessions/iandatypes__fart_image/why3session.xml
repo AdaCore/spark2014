@@ -16,14 +16,14 @@
   <goal name="def&#39;vc.0" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="valid" steps="937"/></proof>
-  <proof prover="2"><result status="highfailure"/></proof>
+  <proof prover="2"><result status="valid" steps="3846"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.1">
   <proof prover="0"><result status="unknown" steps="144"/></proof>
   <proof prover="1"><result status="unknown" steps="1297"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="4"><result status="unknown" steps="46"/></proof>
+  <proof prover="4"><result status="unknown" steps="57"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.1.0">
    <proof prover="3"><result status="unknown" steps="1659"/></proof>
@@ -37,9 +37,9 @@
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
+  <proof prover="0"><result status="valid" steps="161"/></proof>
   <proof prover="1"><result status="valid" steps="1297"/></proof>
-  <proof prover="2"><result status="highfailure"/></proof>
+  <proof prover="2"><result status="valid" steps="4573"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
  </transf>

@@ -541,17 +541,6 @@ package body Why.Gen.Names is
       end if;
    end Get_Modular_Converter_Range_Check;
 
-   ---------------------------
-   -- Get_Valid_Flag_For_Id --
-   ---------------------------
-
-   function Get_Valid_Flag_For_Id
-     (Id : W_Identifier_Id) return W_Identifier_Id
-   is
-     (Valid_Append (Id));
-   --  For now, we simply append __valid at the end of Id's name. If we think
-   --  it is not safe enough, we can introduce a global map.
-
    --------------------------
    -- Guard_Predicate_Name --
    --------------------------
@@ -1007,6 +996,13 @@ package body Why.Gen.Names is
          when WNE_Move_Tree_Close             => "__close",
          when WNE_Is_Moved_Or_Reclaimed       => "__is_moved_or_reclaimed",
          when WNE_Moved_Tree                  => "__moved_tree",
+         when WNE_Validity_Tree               => "__validity_tree",
+         when WNE_Valid_Flag                  => "__valid_flag",
+         when WNE_Valid_Value                 => "__valid_value",
+         when WNE_Is_Valid                    => "__is_valid",
+         when WNE_Validity_Tree_Get           => "__get",
+         when WNE_Validity_Tree_Set           => "__set",
+         when WNE_Validity_Tree_Slide         => "__slide",
 
          --  please use these only in conjunction with E_Symb function
 
@@ -1106,9 +1102,9 @@ package body Why.Gen.Names is
             | WNE_Type_Invariant
             | WNE_User_Eq
             | WNE_Empty
-            | WNE_Is_Valid
-            | WNE_Valid_Value
             | WNE_Valid_Wrapper
+            | WNE_Valid_Wrapper_Flag
+            | WNE_Valid_Wrapper_Result
          =>
             raise Program_Error);
 
@@ -1262,14 +1258,18 @@ package body Why.Gen.Names is
    -- Valid_Append --
    ------------------
 
-   function Valid_Append (Base : W_Identifier_Id) return W_Identifier_Id is
+   function Valid_Append
+     (Base : W_Identifier_Id;
+      Typ  : W_Type_Id)
+      return W_Identifier_Id
+   is
       Name : constant W_Name_Id := Get_Name (Base);
    begin
       return
         Append_Num
           (S        => Img (Get_Symb (Name)) & "__valid",
            Count    => 1,
-           Typ      => EW_Bool_Type,
+           Typ      => Typ,
            Module   => Get_Module (Name),
            Ada_Node => Get_Ada_Node (+Name));
    end Valid_Append;

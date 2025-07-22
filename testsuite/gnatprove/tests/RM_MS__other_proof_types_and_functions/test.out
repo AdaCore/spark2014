@@ -10,7 +10,7 @@ stack.adb:52:27: info: index check proved (CVC5: 2 VC)
 stack.adb:52:69: info: index check proved (CVC5: 2 VC)
 stack.adb:53:36: info: index check proved (CVC5: 2 VC)
 stack.ads:4:08: info: flow dependencies proved
-stack.ads:5:08: info: initial condition proved (CVC5: 1 VC)
+stack.ads:5:29: info: initial condition proved (CVC5: 1 VC)
 stack.ads:18:13: info: implicit aspect Always_Terminates on "Max_Stack_Size" has been proved, subprogram will terminate
 stack.ads:22:13: info: implicit aspect Always_Terminates on "Count" has been proved, subprogram will terminate
 stack.ads:23:11: info: data dependencies proved
@@ -46,7 +46,7 @@ stack_external_prover.adb:42:27: info: index check proved (CVC5: 2 VC)
 stack_external_prover.adb:42:69: medium: array index check might fail [reason for check: result of subtraction must be a valid index into the array]
 stack_external_prover.adb:43:36: info: index check proved (CVC5: 2 VC)
 stack_external_prover.ads:4:08: info: flow dependencies proved
-stack_external_prover.ads:5:08: medium: initial condition might fail
+stack_external_prover.ads:5:29: medium: initial condition might fail [possible fix: you should consider adding a postcondition to function Is_Empty or turning it into an expression function in its unit spec]
 stack_external_prover.ads:39:14: info: aspect Always_Terminates on "Push" has been proved, subprogram will terminate
 stack_external_prover.ads:40:11: info: data dependencies proved
 stack_external_prover.ads:43:23: medium: postcondition might fail, cannot prove Count = Count'Old + 1 [possible fix: you should consider adding a postcondition to function Count or turning it into an expression function in its unit spec]
@@ -72,7 +72,7 @@ stack_functional_spec.adb:56:27: info: index check proved (CVC5: 2 VC)
 stack_functional_spec.adb:56:69: info: index check proved (CVC5: 2 VC)
 stack_functional_spec.adb:57:36: info: index check proved (CVC5: 2 VC)
 stack_functional_spec.ads:5:08: info: flow dependencies proved
-stack_functional_spec.ads:6:08: info: initial condition proved (CVC5: 1 VC)
+stack_functional_spec.ads:6:29: info: initial condition proved (CVC5: 1 VC)
 stack_functional_spec.ads:19:13: info: implicit aspect Always_Terminates on "State" has been proved, subprogram will terminate
 stack_functional_spec.ads:20:11: info: data dependencies proved
 stack_functional_spec.ads:22:13: info: implicit aspect Always_Terminates on "Max_Stack_Size" has been proved, subprogram will terminate

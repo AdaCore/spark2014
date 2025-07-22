@@ -50,8 +50,7 @@ package body SPARK_Util.Subprograms is
    ------------------------
 
    function Analysis_Requested
-     (E            : Entity_Id;
-      With_Inlined : Boolean) return Analysis_Status is
+     (E : Entity_Id; With_Inlined : Boolean) return Analysis_Status is
    begin
       --  Either the analysis is requested for the complete unit, or if it is
       --  requested for a specific subprogram/task, check whether it is E.
@@ -97,7 +96,8 @@ package body SPARK_Util.Subprograms is
      (Call : Node_Id; Enclosing_Ent : Entity_Id) return Boolean
    is
       Called         : constant Entity_Id :=
-        (if Nkind (Call) in N_Op then Entity (Call)
+        (if Nkind (Call) in N_Op
+         then Entity (Call)
          else Get_Called_Entity (Call));
       Enclosing_Subp : Entity_Id := Enclosing_Ent;
 
@@ -123,13 +123,15 @@ package body SPARK_Util.Subprograms is
             --  statically False check.
 
             if Is_Subprogram_Or_Entry (Enclosing_Subp) then
-               return Flow_Generated_Globals.Phase_2.Mutually_Recursive
-                 (Enclosing_Subp, Called)
-                 and then
-                   (Present
-                      (Get_Pragma (Enclosing_Subp, Pragma_Subprogram_Variant))
-                    or else
-                     Present (Get_Pragma (Called, Pragma_Subprogram_Variant)));
+               return
+                 Flow_Generated_Globals.Phase_2.Mutually_Recursive
+                   (Enclosing_Subp, Called)
+                 and then (Present
+                             (Get_Pragma
+                                (Enclosing_Subp, Pragma_Subprogram_Variant))
+                           or else Present
+                                     (Get_Pragma
+                                        (Called, Pragma_Subprogram_Variant)));
 
             --  Concurrent types should be declared at library level
 
@@ -148,10 +150,7 @@ package body SPARK_Util.Subprograms is
    -- Compatible_Variants --
    -------------------------
 
-   function Compatible_Variants
-     (E1, E2 : Callable_Kind_Id)
-      return Boolean
-   is
+   function Compatible_Variants (E1, E2 : Callable_Kind_Id) return Boolean is
       Variants1 : constant Node_Id :=
         Get_Pragma (E1, Pragma_Subprogram_Variant);
       Variants2 : constant Node_Id :=
@@ -169,7 +168,7 @@ package body SPARK_Util.Subprograms is
          return True;
       else
          declare
-            Aggr1 : constant Node_Id :=
+            Aggr1    : constant Node_Id :=
               Expression (First (Pragma_Argument_Associations (Variants1)));
             Variant1 : Node_Id := First (Component_Associations (Aggr1));
             Aggr2    : constant Node_Id :=
@@ -178,15 +177,15 @@ package body SPARK_Util.Subprograms is
          begin
             while Present (Variant1) loop
                if No (Variant2)
-                 or else Chars (First (Choices (Variant1))) /=
-                   Chars (First (Choices (Variant2)))
-                 or else
-                   (Chars (First (Choices (Variant1))) /= Name_Structural
-                    and then
-                      Unique_Entity
-                        (Base_Type (Etype (Expression (Variant1)))) /=
-                      Unique_Entity
-                        (Base_Type (Etype (Expression (Variant2)))))
+                 or else Chars (First (Choices (Variant1)))
+                         /= Chars (First (Choices (Variant2)))
+                 or else (Chars (First (Choices (Variant1))) /= Name_Structural
+                          and then Unique_Entity
+                                     (Base_Type
+                                        (Etype (Expression (Variant1))))
+                                   /= Unique_Entity
+                                        (Base_Type
+                                           (Etype (Expression (Variant2)))))
                then
                   return False;
                end if;
@@ -203,16 +202,14 @@ package body SPARK_Util.Subprograms is
    -- Completion_Deferred_To_Body --
    ---------------------------------
 
-   function Completion_Deferred_To_Body
-     (E : Subprogram_Kind_Id) return Boolean
-   is
-     ((Ekind (Scope (E)) = E_Package
-      and then Present (Subprogram_Body (E))
-      and then Nkind (Parent (Subprogram_Body (E))) = N_Package_Body)
-      or else
-        (Ekind (Scope (E)) = E_Protected_Type
-         and then Present (Subprogram_Body (E))
-         and then Nkind (Parent (Subprogram_Body (E))) = N_Protected_Body));
+   function Completion_Deferred_To_Body (E : Subprogram_Kind_Id) return Boolean
+   is ((Ekind (Scope (E)) = E_Package
+        and then Present (Subprogram_Body (E))
+        and then Nkind (Parent (Subprogram_Body (E))) = N_Package_Body)
+       or else (Ekind (Scope (E)) = E_Protected_Type
+                and then Present (Subprogram_Body (E))
+                and then Nkind (Parent (Subprogram_Body (E)))
+                         = N_Protected_Body));
 
    -------------------------------
    -- Containing_Protected_Type --
@@ -240,9 +237,7 @@ package body SPARK_Util.Subprograms is
    -----------------------------
 
    function Corresponding_Primitive
-     (Subp : Subprogram_Kind_Id;
-      Ty   : Type_Kind_Id)
-      return Subprogram_Kind_Id
+     (Subp : Subprogram_Kind_Id; Ty : Type_Kind_Id) return Subprogram_Kind_Id
    is
    begin
       for Prim of Iter (Direct_Primitive_Operations (Ty)) loop
@@ -284,9 +279,7 @@ package body SPARK_Util.Subprograms is
    function Entry_Body (E : Entry_Kind_Id) return Opt_N_Entry_Body_Id is
       Ptr : constant Node_Id := Entry_Body_Entity (E);
    begin
-      return (if Present (Ptr)
-              then Parent (Ptr)
-              else Empty);
+      return (if Present (Ptr) then Parent (Ptr) else Empty);
    end Entry_Body;
 
    -----------------------
@@ -305,24 +298,19 @@ package body SPARK_Util.Subprograms is
    -------------------
 
    function Find_Contract
-     (E    : Entity_Id;
-      Prag : Pragma_Id)
-      return Opt_N_Pragma_Id
-   is
+     (E : Entity_Id; Prag : Pragma_Id) return Opt_N_Pragma_Id is
    begin
       case Prag is
-         when Pragma_Global
-            | Pragma_Depends
-         =>
-            return Get_Pragma ((if Ekind (E) = E_Task_Type
-                                  and then Is_Single_Concurrent_Type (E)
-                                then Anonymous_Object (E)
-                                else E),
-                               Prag);
+         when Pragma_Global | Pragma_Depends =>
+            return
+              Get_Pragma
+                ((if Ekind (E) = E_Task_Type
+                    and then Is_Single_Concurrent_Type (E)
+                  then Anonymous_Object (E)
+                  else E),
+                 Prag);
 
-         when Pragma_Refined_Global
-            | Pragma_Refined_Depends
-         =>
+         when Pragma_Refined_Global | Pragma_Refined_Depends =>
             declare
                Body_N : constant Node_Id := Get_Body (E);
             begin
@@ -335,18 +323,20 @@ package body SPARK_Util.Subprograms is
                   declare
                      Context : constant Node_Id := Parent (Body_N);
 
-                     pragma Assert
-                       (Nkind (Context) in N_Subunit
-                                         | N_Block_Statement
-                                         | N_Compilation_Unit
-                                         | N_Entry_Body
-                                         | N_Freeze_Entity
-                                         | N_Handled_Sequence_Of_Statements
-                                         | N_Protected_Body
-                                         | N_Package_Body
-                                         | N_Package_Specification
-                                         | N_Subprogram_Body
-                                         | N_Task_Body);
+                     pragma
+                       Assert
+                         (Nkind (Context)
+                          in N_Subunit
+                           | N_Block_Statement
+                           | N_Compilation_Unit
+                           | N_Entry_Body
+                           | N_Freeze_Entity
+                           | N_Handled_Sequence_Of_Statements
+                           | N_Protected_Body
+                           | N_Package_Body
+                           | N_Package_Specification
+                           | N_Subprogram_Body
+                           | N_Task_Body);
 
                   begin
                      return
@@ -378,8 +368,7 @@ package body SPARK_Util.Subprograms is
       Inherited : Boolean := False) return Node_Lists.List
    is
       function Filter_Classwide_Contracts
-        (Pragmas : Node_Lists.List;
-         From    : Entity_Id) return Node_Lists.List;
+        (Pragmas : Node_Lists.List; From : Entity_Id) return Node_Lists.List;
       --  Return the contracts from Contracts that are inherited from From
 
       --------------------------------
@@ -387,8 +376,7 @@ package body SPARK_Util.Subprograms is
       --------------------------------
 
       function Filter_Classwide_Contracts
-        (Pragmas : Node_Lists.List;
-         From    : Entity_Id) return Node_Lists.List
+        (Pragmas : Node_Lists.List; From : Entity_Id) return Node_Lists.List
       is
          Result : Node_Lists.List;
       begin
@@ -411,7 +399,7 @@ package body SPARK_Util.Subprograms is
       Class_Expected : constant Boolean := Classwide or Inherited;
       --  True iff the Class flag should be set on selected pragmas
 
-   --  Start of processing for Find_Contracts
+      --  Start of processing for Find_Contracts
 
    begin
       case Name is
@@ -419,6 +407,8 @@ package body SPARK_Util.Subprograms is
             | Pragma_Postcondition
             | Pragma_Refined_Post
             | Pragma_Initial_Condition
+            | Pragma_Contract_Cases
+            | Pragma_Subprogram_Variant
          =>
             if Name = Pragma_Refined_Post then
 
@@ -427,20 +417,20 @@ package body SPARK_Util.Subprograms is
                --  make no decision based on the presence, absence or contents
                --  of this contract.
 
-               pragma Assert
-                 (Entity_Body_In_SPARK (E)
-                  or else
-                    (Is_Expression_Function_Or_Completion (E)
-                     and then Entity_Body_Compatible_With_SPARK (E)));
+               pragma
+                 Assert
+                   (Entity_Body_In_SPARK (E)
+                      or else (Is_Expression_Function_Or_Completion (E)
+                               and then Entity_Body_Compatible_With_SPARK
+                                          (E)));
 
                declare
                   Body_E : constant Entity_Id := Get_Body_Entity (E);
                   --  ??? here we shall check for stubs, just like we do in
                   --  Find_Contracts above.
                begin
-                  Contr := (if Present (Body_E)
-                            then Contract (Body_E)
-                            else Empty);
+                  Contr :=
+                    (if Present (Body_E) then Contract (Body_E) else Empty);
                end;
 
             else
@@ -450,16 +440,18 @@ package body SPARK_Util.Subprograms is
             if Present (Contr) then
                Prag :=
                  (case Name is
-                     when Pragma_Precondition  |
-                          Pragma_Postcondition |
-                          Pragma_Refined_Post  =>
-                        Pre_Post_Conditions (Contr),
+                    when Pragma_Precondition
+                       | Pragma_Postcondition
+                       | Pragma_Refined_Post
+                    =>
+                      Pre_Post_Conditions (Contr),
 
-                     when Pragma_Initial_Condition =>
-                        Classifications (Contr),
+                    when Pragma_Initial_Condition => Classifications (Contr),
 
-                     when others =>
-                        raise Program_Error);
+                    when Pragma_Contract_Cases | Pragma_Subprogram_Variant =>
+                      Contract_Test_Cases (Contr),
+
+                    when others => raise Program_Error);
 
                while Present (Prag) loop
                   if Get_Pragma_Id (Prag) = Name
@@ -521,8 +513,7 @@ package body SPARK_Util.Subprograms is
    --------------------------------
 
    function Find_Dispatching_Parameter
-     (E : E_Procedure_Id)
-      return Formal_Kind_Id
+     (E : E_Procedure_Id) return Formal_Kind_Id
    is
       Formal : Entity_Id := First_Formal (E);
 
@@ -543,8 +534,7 @@ package body SPARK_Util.Subprograms is
    ---------------------------
 
    function Find_Dispatching_Type
-     (E : Subprogram_Kind_Id)
-      return Opt_Type_Kind_Id
+     (E : Subprogram_Kind_Id) return Opt_Type_Kind_Id
    is
       Subp   : constant Entity_Id := Ultimate_Alias (E);
       Formal : Entity_Id;
@@ -554,9 +544,7 @@ package body SPARK_Util.Subprograms is
       --  If E has a controlling result, the dispatching type is the result
       --  type.
 
-      if Ekind (Subp) = E_Function
-        and then Has_Controlling_Result (Subp)
-      then
+      if Ekind (Subp) = E_Function and then Has_Controlling_Result (Subp) then
          D_Type := Retysp (Etype (E));
 
       --  Otherwise, find a controling formal. There should always be one.
@@ -603,8 +591,7 @@ package body SPARK_Util.Subprograms is
    ------------------------
 
    function Get_Execution_Kind
-     (E        : E_Procedure_Id;
-      After_GG : Boolean := True) return Execution_Kind_T
+     (E : E_Procedure_Id; After_GG : Boolean := True) return Execution_Kind_T
    is
       function Has_Output return Boolean;
       --  Return True either when procedure E has output (parameter or global)
@@ -633,10 +620,9 @@ package body SPARK_Util.Subprograms is
 
          while Present (Formal) loop
             case Formal_Kind'(Ekind (Formal)) is
-               when E_Out_Parameter
-                  | E_In_Out_Parameter
-               =>
+               when E_Out_Parameter | E_In_Out_Parameter =>
                   return True;
+
                when E_In_Parameter =>
                   if Is_Writable_Parameter (Formal) then
                      return True;
@@ -650,11 +636,12 @@ package body SPARK_Util.Subprograms is
          --  supplied them.
 
          if After_GG or else Has_User_Supplied_Globals (E) then
-            Get_Globals (Subprogram          => E,
-                         Scope               => Get_Flow_Scope (E),
-                         Classwide           => True,
-                         Globals             => Globals,
-                         Use_Deduced_Globals => After_GG);
+            Get_Globals
+              (Subprogram          => E,
+               Scope               => Get_Flow_Scope (E),
+               Classwide           => True,
+               Globals             => Globals,
+               Use_Deduced_Globals => After_GG);
 
             return not Globals.Outputs.Is_Empty;
 
@@ -665,35 +652,33 @@ package body SPARK_Util.Subprograms is
          end if;
       end Has_Output;
 
-   --  Start of processing for Get_Execution_Kind
+      --  Start of processing for Get_Execution_Kind
 
    begin
-      return (if Has_Output
-              then Infinite_Loop
-              else Abnormal_Termination);
+      return (if Has_Output then Infinite_Loop else Abnormal_Termination);
    end Get_Execution_Kind;
 
-   -----------------------------------
-   -- Get_Expr_From_Check_Only_Proc --
-   -----------------------------------
+   ------------------------------------
+   -- Get_Exprs_From_Check_Only_Proc --
+   ------------------------------------
 
-   function Get_Expr_From_Check_Only_Proc
-     (E : E_Procedure_Id)
-      return Opt_N_Subexpr_Id
+   function Get_Exprs_From_Check_Only_Proc
+     (E : E_Procedure_Id) return Node_Lists.List
    is
       Body_N : constant Node_Id := Subprogram_Body (E);
       Stmts  : constant List_Id :=
         Statements (Handled_Statement_Sequence (Body_N));
       Stmt   : Node_Id;
       Arg    : Node_Id;
+      Result : Node_Lists.List;
 
    begin
       Stmt := First (Stmts);
 
       while Present (Stmt) loop
 
-         --  Return the second argument of the first pragma Check in the
-         --  statement list.
+         --  Append to Result the second argument of the all pragmas Check in
+         --  the statement list.
 
          if Nkind (Stmt) = N_Pragma
            and then Get_Pragma_Id (Pragma_Name (Stmt)) = Pragma_Check
@@ -703,7 +688,7 @@ package body SPARK_Util.Subprograms is
             pragma Assert (Present (Arg));
             Arg := Next (Arg);
             pragma Assert (Present (Arg));
-            return Get_Pragma_Arg (Arg);
+            Result.Append (Get_Pragma_Arg (Arg));
          end if;
 
          Next (Stmt);
@@ -712,26 +697,24 @@ package body SPARK_Util.Subprograms is
       --  If there is no pragma Check, there must be a call to the partial
       --  invariant procedure.
 
-      pragma Assert
-        (Is_Invariant_Procedure (E)
-           and then
-         Nkind (Last (Stmts)) = N_Procedure_Call_Statement
-           and then
-         Is_Partial_Invariant_Procedure (Entity (Name (Last (Stmts)))));
+      pragma
+        Assert
+          (if Result.Is_Empty
+             then
+               Is_Invariant_Procedure (E)
+               and then Nkind (Last (Stmts)) = N_Procedure_Call_Statement
+               and then Is_Partial_Invariant_Procedure
+                          (Entity (Name (Last (Stmts)))));
 
-      --  Otherwise return Empty
-
-      return Empty;
-   end Get_Expr_From_Check_Only_Proc;
+      return Result;
+   end Get_Exprs_From_Check_Only_Proc;
 
    ------------------------------------
    -- Get_Expr_From_Return_Only_Func --
    ------------------------------------
 
    function Get_Expr_From_Return_Only_Func
-     (E : E_Function_Id)
-      return Opt_N_Subexpr_Id
-   is
+     (E : E_Function_Id) return Opt_N_Subexpr_Id is
    begin
       return Predicate_Expression (E);
    end Get_Expr_From_Return_Only_Func;
@@ -741,8 +724,7 @@ package body SPARK_Util.Subprograms is
    -----------------------------
 
    function Get_Expression_Function
-     (E : E_Function_Id)
-      return N_Expression_Function_Id
+     (E : E_Function_Id) return N_Expression_Function_Id
    is
       Decl_N : constant Node_Id := Parent (Subprogram_Specification (E));
 
@@ -763,8 +745,7 @@ package body SPARK_Util.Subprograms is
    ----------------------------------------
 
    function Get_Priority_Or_Interrupt_Priority
-     (E : Entity_Id)
-      return Opt_N_Subexpr_Id
+     (E : Entity_Id) return Opt_N_Subexpr_Id
    is
       Priority_Node : constant Node_Id := Get_Rep_Item (E, Name_Priority);
       --  Note that the above will also find Name_Interrupt_Priority (see
@@ -778,11 +759,12 @@ package body SPARK_Util.Subprograms is
                     First (Pragma_Argument_Associations (Priority_Node));
 
                begin
-                  return (if Present (Arg)
-                          then Expression (Arg)
-                          --  Here priority defaults to
-                          --  Interrupt_Priority'Last.
-                          else Empty);
+                  return
+                    (if Present (Arg)
+                     then Expression (Arg)
+                     --  Here priority defaults to
+                     --  Interrupt_Priority'Last.
+                     else Empty);
                end;
 
             when N_Attribute_Definition_Clause =>
@@ -802,9 +784,7 @@ package body SPARK_Util.Subprograms is
    -------------------------------
 
    function Get_Termination_Condition
-     (E       : Entity_Id;
-      Compute : Boolean := False)
-      return Termination_Condition
+     (E : Entity_Id; Compute : Boolean := False) return Termination_Condition
    is
       Terminates_Pragma : constant Node_Id :=
         Get_Pragma (E, Pragma_Always_Terminates);
@@ -866,7 +846,8 @@ package body SPARK_Util.Subprograms is
          if Compute then
             declare
                Value : constant Boolean :=
-                 (if Ekind (E) in E_Subprogram_Type | E_Task_Type then False
+                 (if Ekind (E) in E_Subprogram_Type | E_Task_Type
+                  then False
                   else not Is_Potentially_Nonreturning_Internal (E));
             begin
                return (Static, Value);
@@ -881,8 +862,8 @@ package body SPARK_Util.Subprograms is
    -- Get_Unchecked_Conversion_Args --
    -----------------------------------
 
-   procedure Get_Unchecked_Conversion_Args (E              : Entity_Id;
-                                            Source, Target : out Node_Id)
+   procedure Get_Unchecked_Conversion_Args
+     (E : Entity_Id; Source, Target : out Node_Id)
    is
       Wrapper_Pkg : constant Node_Id :=
         Sinfo.Nodes.Defining_Unit_Name
@@ -954,19 +935,17 @@ package body SPARK_Util.Subprograms is
    -- Has_Implicit_Always_Terminates --
    ------------------------------------
 
-   function Has_Implicit_Always_Terminates
-     (E : Entity_Id) return Boolean
-   is
-     ((Ekind (E) = E_Function and then not Is_Function_With_Side_Effects (E))
-        or else Ekind (E) = E_Package
-        or else Has_Automatic_Instantiation_Annotation (E));
+   function Has_Implicit_Always_Terminates (E : Entity_Id) return Boolean
+   is ((Ekind (E) = E_Function and then not Is_Function_With_Side_Effects (E))
+       or else Ekind (E) = E_Package
+       or else Has_Automatic_Instantiation_Annotation (E));
 
    ---------------------------
    -- Includes_Current_Task --
    ---------------------------
 
-   function Includes_Current_Task (Calls : Node_Sets.Set) return Boolean is
-      (for some Call of Calls => Is_RTE (Call, RE_Current_Task));
+   function Includes_Current_Task (Calls : Node_Sets.Set) return Boolean
+   is (for some Call of Calls => Is_RTE (Call, RE_Current_Task));
 
    -------------------
    -- Has_Contracts --
@@ -976,8 +955,7 @@ package body SPARK_Util.Subprograms is
      (E         : Entity_Id;
       Name      : Pragma_Id;
       Classwide : Boolean := False;
-      Inherited : Boolean := False) return Boolean
-   is
+      Inherited : Boolean := False) return Boolean is
    begin
       --  If classwide or inherited is specified then check only there
 
@@ -988,7 +966,8 @@ package body SPARK_Util.Subprograms is
             return True;
          end if;
 
-         return Inherited
+         return
+           Inherited
            and then not Find_Contracts (E, Name, Inherited => True).Is_Empty;
 
       --  Otherwise check the ordinary contract
@@ -1002,58 +981,50 @@ package body SPARK_Util.Subprograms is
    -- Has_Extensions_Visible --
    ----------------------------
 
-   function Has_Extensions_Visible (E : Entity_Id) return Boolean is
-     (Present (Get_Pragma (E, Pragma_Extensions_Visible)));
+   function Has_Extensions_Visible (E : Entity_Id) return Boolean
+   is (Present (Get_Pragma (E, Pragma_Extensions_Visible)));
 
    --------------------
    -- Has_Refinement --
    --------------------
 
-   function Has_Refinement (E : Callable_Kind_Id) return Boolean is
-     ((Entity_Body_In_SPARK (E)
-      and then Has_Contracts (E, Pragma_Refined_Post))
-      or else (Is_Expression_Function_Or_Completion (E)
-        and then Completion_Deferred_To_Body (E)));
+   function Has_Refinement (E : Callable_Kind_Id) return Boolean
+   is ((Entity_Body_In_SPARK (E)
+        and then Has_Contracts (E, Pragma_Refined_Post))
+       or else (Is_Expression_Function_Or_Completion (E)
+                and then Completion_Deferred_To_Body (E)));
 
    ----------------------------
    -- Has_Subprogram_Variant --
    ----------------------------
 
-   function Has_Subprogram_Variant (E : Entity_Id) return Boolean is
-      (Present (Get_Pragma (E, Pragma_Subprogram_Variant)));
+   function Has_Subprogram_Variant (E : Entity_Id) return Boolean
+   is (Present (Get_Pragma (E, Pragma_Subprogram_Variant)));
 
    -------------------------------
    -- Has_User_Supplied_Globals --
    -------------------------------
 
-   function Has_User_Supplied_Globals (E : Entity_Id) return Boolean is
-     (Present (Find_Contract (E, Pragma_Global))
-        or else
-      Present (Find_Contract (E, Pragma_Depends))
-        or else
-      Is_Pure (E)
-        or else
-      Is_Null_Procedure (E)
-     );
+   function Has_User_Supplied_Globals (E : Entity_Id) return Boolean
+   is (Present (Find_Contract (E, Pragma_Global))
+       or else Present (Find_Contract (E, Pragma_Depends))
+       or else Is_Pure (E)
+       or else Is_Null_Procedure (E));
 
    -------------------------------
    -- Has_Visibility_On_Refined --
    -------------------------------
 
    function Has_Visibility_On_Refined
-     (From : Entity_Id;
-      Subp : Callable_Kind_Id)
-      return Boolean
+     (From : Entity_Id; Subp : Callable_Kind_Id) return Boolean
    is
 
-      function Get_Generic_Unit (Inst : Entity_Id) return Entity_Id with
-        Pre => Is_Generic_Instance (Inst);
+      function Get_Generic_Unit (Inst : Entity_Id) return Entity_Id
+      with Pre => Is_Generic_Instance (Inst);
       --  Return the generic entity associated to Inst
 
       function Has_Visibility
-        (From : Entity_Id;
-         Scop : Entity_Id)
-         return Boolean;
+        (From : Entity_Id; Scop : Entity_Id) return Boolean;
       --  Return True if entities declared in the body of Scop are visible from
       --  From.
 
@@ -1069,8 +1040,7 @@ package body SPARK_Util.Subprograms is
          end if;
 
          return
-           Generic_Parent
-             (Specification (Unit_Declaration_Node (Act_Inst)));
+           Generic_Parent (Specification (Unit_Declaration_Node (Act_Inst)));
       end Get_Generic_Unit;
 
       --------------------
@@ -1078,9 +1048,7 @@ package body SPARK_Util.Subprograms is
       --------------------
 
       function Has_Visibility
-        (From : Entity_Id;
-         Scop : Entity_Id)
-         return Boolean
+        (From : Entity_Id; Scop : Entity_Id) return Boolean
       is
          Curr_From : Entity_Id := From;
          Curr_Scop : Entity_Id := Scop;
@@ -1101,7 +1069,7 @@ package body SPARK_Util.Subprograms is
             if Curr_From = Curr_Scop
               or else (Is_Generic_Instance (Curr_From)
                        and then Has_Visibility
-                         (Get_Generic_Unit (Curr_From), Curr_Scop))
+                                  (Get_Generic_Unit (Curr_From), Curr_Scop))
             then
                return True;
             end if;
@@ -1123,11 +1091,8 @@ package body SPARK_Util.Subprograms is
    ------------------------------------
 
    function Has_Visibility_On_Refined_Expr
-     (Expr : Node_Id;
-      Subp : Callable_Kind_Id)
-      return Boolean
-   is
-    (Has_Visibility_On_Refined (Get_Flow_Scope (Expr).Ent, Subp));
+     (Expr : Node_Id; Subp : Callable_Kind_Id) return Boolean
+   is (Has_Visibility_On_Refined (Get_Flow_Scope (Expr).Ent, Subp));
 
    ----------------------------
    -- Is_Allocating_Function --
@@ -1135,13 +1100,12 @@ package body SPARK_Util.Subprograms is
 
    function Is_Allocating_Function (E : Entity_Id) return Boolean is
    begin
-      return Ekind (E) in E_Function | E_Subprogram_Type
+      --  A function is said to be an allocating function if the
+      --  result type of the function is a named access-to-variable
+      --  type or a composite owning type.
+      return
+        Ekind (E) in E_Function | E_Subprogram_Type
         and then Etype (E) /= Standard_Void_Type
-
-        --  A function is said to be an allocating function if the result type
-        --  of the function is a named access-to-variable type or a composite
-        --  owning type.
-
         and then not Is_Anonymous_Access_Object_Type (Etype (E))
         and then Is_Deep (Etype (E));
    end Is_Allocating_Function;
@@ -1151,18 +1115,16 @@ package body SPARK_Util.Subprograms is
    ----------------------------------------
 
    function Is_Possibly_Nonreturning_Procedure (E : Entity_Id) return Boolean
-   is
-     ((Is_Subprogram (E) and then No_Return (E))
-      or else Get_Termination_Condition (E) not in
-          (Kind => Unspecified) | (Static, True));
+   is ((Is_Subprogram (E) and then No_Return (E))
+       or else Get_Termination_Condition (E)
+               not in (Kind => Unspecified) | (Static, True));
 
    ----------------------------------------
    -- Is_Predefined_Potentially_Blocking --
    ----------------------------------------
 
    function Is_Predefined_Potentially_Blocking
-     (E : Subprogram_Kind_Id)
-      return Boolean
+     (E : Subprogram_Kind_Id) return Boolean
    is
       --  Detect:
       --    Ada.Task_Identification.Abort_Task
@@ -1216,8 +1178,8 @@ package body SPARK_Util.Subprograms is
       Scope_Id : Scope_Index := Scope_Index'Last;
       --  Indexing variable
 
-      function Scope_Name (Nth : Scope_Index) return Name_Id with
-        Pure_Function;
+      function Scope_Name (Nth : Scope_Index) return Name_Id
+      with Pure_Function;
       --  Return name of the Nth scope for the analyzed entity.
       --  For 0 the result is always Standard,
       --  For 1 the result is Ada/Interfaces/System or user-defined,
@@ -1230,10 +1192,10 @@ package body SPARK_Util.Subprograms is
       -- Scope_Name --
       ----------------
 
-      function Scope_Name (Nth : Scope_Index) return Name_Id is
-        (Chars (Scopes (Scope_Id + Nth)));
+      function Scope_Name (Nth : Scope_Index) return Name_Id
+      is (Chars (Scopes (Scope_Id + Nth)));
 
-   --  Start of processing for Is_Predefined_Potentially_Blocking
+      --  Start of processing for Is_Predefined_Potentially_Blocking
 
    begin
       --  Start from the called subprogram
@@ -1250,8 +1212,7 @@ package body SPARK_Util.Subprograms is
               and then Is_Generic_Instance (Parent_Scope)
             then
                Parent_Scope :=
-                 Entity
-                   (Name (Get_Unit_Instantiation_Node (Parent_Scope)));
+                 Entity (Name (Get_Unit_Instantiation_Node (Parent_Scope)));
             end if;
 
             Scope_Id := Scope_Id - 1;
@@ -1303,33 +1264,28 @@ package body SPARK_Util.Subprograms is
 
          --  Detect Ada.Dispatching.Yield
 
-         when Name_Dispatching
-         =>
+         when Name_Dispatching =>
             return Scope_Name (3) = Name_Yield;
 
          --  Detect all subprograms in
          --    Ada.Strings.[[Wide_]Wide_]Unbounded.[[Wide_]Wide_]Text_IO.
 
-         when Name_Strings
-         =>
+         when Name_Strings =>
             return
               (case Scope_Name (3) is
-                  when Name_Unbounded =>
-                     Scope_Name (4) = Name_Text_IO,
+                 when Name_Unbounded => Scope_Name (4) = Name_Text_IO,
 
-                  when Name_Wide_Unbounded =>
-                     Scope_Name (4) = Name_Wide_Text_IO,
+                 when Name_Wide_Unbounded =>
+                   Scope_Name (4) = Name_Wide_Text_IO,
 
-                  when Name_Wide_Wide_Unbounded =>
-                     Scope_Name (4) = Name_Wide_Wide_Text_IO,
+                 when Name_Wide_Wide_Unbounded =>
+                   Scope_Name (4) = Name_Wide_Wide_Text_IO,
 
-                  when others =>
-                     False);
+                 when others => False);
 
          --  Detect Ada.Synchronous_Barriers.Wait_For_Release
 
-         when Name_Synchronous_Barriers
-         =>
+         when Name_Synchronous_Barriers =>
             return Scope_Name (3) = Name_Wait_For_Release;
 
          --  Detect
@@ -1337,39 +1293,29 @@ package body SPARK_Util.Subprograms is
          --    Ada.Synchronous_Task_Control.EDF.
          --        Suspend_Until_True_And_Set_Deadline.
 
-         when Name_Synchronous_Task_Control
-         =>
+         when Name_Synchronous_Task_Control =>
             return
               Scope_Name (3) = Name_Suspend_Until_True
-                 or else
-              (Scope_Name (3) = Name_EDF
-                 and then
-               Scope_Name (4) = Name_Suspend_Until_True_And_Set_Deadline);
+              or else (Scope_Name (3) = Name_EDF
+                       and then Scope_Name (4)
+                                = Name_Suspend_Until_True_And_Set_Deadline);
 
          --  Detect Ada.Task_Identification.Abort_Task
 
-         when Name_Task_Identification
-         =>
+         when Name_Task_Identification =>
             return Scope_Name (3) = Name_Abort_Task;
 
-         when Name_Text_IO
-            | Name_Wide_Text_IO
-            | Name_Wide_Wide_Text_IO
-         =>
+         when Name_Text_IO | Name_Wide_Text_IO | Name_Wide_Wide_Text_IO =>
             case Scope_Name (3) is
                --  Operations on bounded/unbounded strings either print or read
                --  them and thus are potentially blocking.
 
-               when Name_Bounded_IO
-                  | Name_Unbounded_IO
-               =>
+               when Name_Bounded_IO | Name_Unbounded_IO =>
                   return True;
 
                --  These generics have both blocking and nonblocking Put/Get
 
-               when Name_Complex_IO
-                  | Text_IO_Package_Name
-               =>
+               when Name_Complex_IO | Text_IO_Package_Name =>
                   --  The name of the subprogram (i.e. Put or Get) makes
                   --  no difference (and it troublesome to know because of
                   --  overriding). Blocking/Nonblocking status is determined
@@ -1395,8 +1341,7 @@ package body SPARK_Util.Subprograms is
                --  and they are also detected by the name of the first formal
                --  parameter.
 
-               when Name_Editing
-               =>
+               when Name_Editing =>
                   return
                     Scope_Name (4) = Name_Decimal_IO
                     and then Ekind (E) = E_Procedure
@@ -1408,8 +1353,7 @@ package body SPARK_Util.Subprograms is
                --  exceptions, e.g. Mode/Name/Form/Is_Open. However, they can
                --  be blocking in other compilers, so assume the worst case.
 
-               when others
-               =>
+               when others =>
                   return True;
             end case;
 
@@ -1453,16 +1397,15 @@ package body SPARK_Util.Subprograms is
    -- Is_Borrowing_Traversal_Function --
    -------------------------------------
 
-   function Is_Borrowing_Traversal_Function (E : Entity_Id) return Boolean is
-      (Is_Traversal_Function (E) and then not Is_Access_Constant (Etype (E)));
+   function Is_Borrowing_Traversal_Function (E : Entity_Id) return Boolean
+   is (Is_Traversal_Function (E) and then not Is_Access_Constant (Etype (E)));
 
    ----------------------------------------
    -- Is_Hidden_Dispatching_Operation --
    ----------------------------------------
 
    function Is_Hidden_Dispatching_Operation
-     (E : Callable_Kind_Id)
-      return Boolean
+     (E : Callable_Kind_Id) return Boolean
    is
       Param : Entity_Id;
       Etyp  : Entity_Id;
@@ -1487,7 +1430,8 @@ package body SPARK_Util.Subprograms is
          Etyp := Directly_Designated_Type (Etyp);
       end if;
 
-      return Is_Incomplete_Or_Private_Type (Etyp)
+      return
+        Is_Incomplete_Or_Private_Type (Etyp)
         and then not Is_Tagged_Type (Etyp)
         and then Present (Subprogram_Spec (E))
         and then In_Visible_Declarations (Subprogram_Spec (E));
@@ -1497,9 +1441,7 @@ package body SPARK_Util.Subprograms is
    -- Is_Local_Subprogram_Always_Inlined --
    ----------------------------------------
 
-   function Is_Local_Subprogram_Always_Inlined
-     (E : Entity_Id)
-      return Boolean
+   function Is_Local_Subprogram_Always_Inlined (E : Entity_Id) return Boolean
    is
    begin
       --  Frontend inlining in GNATprove mode is disabled by switch -gnatdm
@@ -1524,7 +1466,8 @@ package body SPARK_Util.Subprograms is
             declare
                Spec : constant Node_Id := Subprogram_Spec (E);
             begin
-               return Present (Spec)
+               return
+                 Present (Spec)
                  and then Present (Body_To_Inline (Spec))
                  and then Nkind (Body_To_Inline (Spec)) not in N_Entity;
             end;
@@ -1540,7 +1483,8 @@ package body SPARK_Util.Subprograms is
 
    function Is_Null_Procedure (E : Entity_Id) return Boolean is
    begin
-      return Ekind (E) = E_Procedure
+      return
+        Ekind (E) = E_Procedure
         and then Null_Present (Subprogram_Specification (E));
    end Is_Null_Procedure;
 
@@ -1553,8 +1497,8 @@ package body SPARK_Util.Subprograms is
       return
         Is_Entry (E)
         or else (Is_Subprogram (E)
-                 and then Nkind (Parent (Sem_Aux.Unit_Declaration_Node (E))) =
-                     N_Protected_Definition);
+                 and then Nkind (Parent (Sem_Aux.Unit_Declaration_Node (E)))
+                          = N_Protected_Definition);
    end Is_Protected_Operation;
 
    -------------------------------------
@@ -1576,8 +1520,9 @@ package body SPARK_Util.Subprograms is
 
       function Check_Limit_Name (Limit_Str : String) return Boolean is
       begin
-         return Ada.Strings.Fixed.Equal_Case_Insensitive
-           (Limit_Str, Get_Name_String (Chars (E)));
+         return
+           Ada.Strings.Fixed.Equal_Case_Insensitive
+             (Limit_Str, Get_Name_String (Chars (E)));
       end Check_Limit_Name;
 
       ----------------------
@@ -1586,16 +1531,13 @@ package body SPARK_Util.Subprograms is
 
       function Check_Limit_Subp (Limit_Str : String) return Boolean is
       begin
-         if Ekind (E) in Subprogram_Kind
-                       | Task_Kind
-                       | Entry_Kind
-         then
+         if Ekind (E) in Subprogram_Kind | Task_Kind | Entry_Kind then
             return
               (Contains_Sloc
                  (SPARK_Util.Subprograms.Subp_Location (E), Limit_Str)
-               or else
-               Contains_Sloc
-                 (SPARK_Util.Subprograms.Subp_Body_Location (E), Limit_Str));
+               or else Contains_Sloc
+                         (SPARK_Util.Subprograms.Subp_Body_Location (E),
+                          Limit_Str));
          else
             return False;
          end if;
@@ -1608,10 +1550,9 @@ package body SPARK_Util.Subprograms is
       function Contains_Sloc (A, B : String) return Boolean is
          Ind : constant Natural := Index (A, B, A'First);
       begin
-         return Ind in A'Range and then
-           (A'Last < Ind + B'Length
-            or else
-            A (Ind + B'Length) = ':');
+         return
+           Ind in A'Range
+           and then (A'Last < Ind + B'Length or else A (Ind + B'Length) = ':');
       end Contains_Sloc;
 
       Limit_Subp_Str : constant String := To_String (Gnat2Why_Args.Limit_Subp);
@@ -1642,18 +1583,28 @@ package body SPARK_Util.Subprograms is
 
         and then not Has_Contracts (E, Pragma_Precondition)
         and then not Has_Contracts (E, Pragma_Postcondition)
-        and then No (Get_Pragma (E, Pragma_Contract_Cases))
+        and then not Has_Contracts (E, Pragma_Contract_Cases)
       then
          --  which corresponds to a shift or rotate
 
          case Name is
-            when Name_Shift_Right            => return N_Op_Shift_Right;
+            when Name_Shift_Right =>
+               return N_Op_Shift_Right;
+
             when Name_Shift_Right_Arithmetic =>
                return N_Op_Shift_Right_Arithmetic;
-            when Name_Shift_Left             => return N_Op_Shift_Left;
-            when Name_Rotate_Left            => return N_Op_Rotate_Left;
-            when Name_Rotate_Right           => return N_Op_Rotate_Right;
-            when others                      => null;
+
+            when Name_Shift_Left =>
+               return N_Op_Shift_Left;
+
+            when Name_Rotate_Left =>
+               return N_Op_Rotate_Left;
+
+            when Name_Rotate_Right =>
+               return N_Op_Rotate_Right;
+
+            when others =>
+               null;
          end case;
       end if;
 
@@ -1679,8 +1630,7 @@ package body SPARK_Util.Subprograms is
    --------------------------------------------
 
    function Is_System_Address_To_Access_Conversion
-     (E : Entity_Id)
-      return Boolean
+     (E : Entity_Id) return Boolean
    is
       Par : constant Node_Id := Parent (Scope (E));
    begin
@@ -1688,9 +1638,9 @@ package body SPARK_Util.Subprograms is
         (Get_Name_String (Chars (E)) = "to_pointer"
          and then Nkind (Par) in N_Package_Specification
          and then Present (Generic_Parent (Par))
-         and then
-           Is_RTU (Generic_Parent (Par),
-                   System_Address_To_Access_Conversions));
+         and then Is_RTU
+                    (Generic_Parent (Par),
+                     System_Address_To_Access_Conversions));
    end Is_System_Address_To_Access_Conversion;
 
    -----------------------------
@@ -1706,7 +1656,7 @@ package body SPARK_Util.Subprograms is
         and then Chars (Alias) = Name_Op_Eq
         and then Number_Formals (Alias) = 2
         and then Etype (First_Formal (Alias))
-                   = Etype (Next_Formal (First_Formal (Alias)))
+                 = Etype (Next_Formal (First_Formal (Alias)))
         and then Etype (Alias) = Standard_Boolean
       then
          pragma Assert (Is_Dispatching_Operation (Alias));
@@ -1722,15 +1672,12 @@ package body SPARK_Util.Subprograms is
 
    function Is_Traversal_Function (E : Entity_Id) return Boolean is
    begin
-      return Ekind (E) = E_Function
-
-        --  A function is said to be a traversal function if the result type of
-        --  the function is an anonymous access-to-object type,
-
+      --  A function is said to be a traversal function if the result type of
+      --  the function is an anonymous access-to-object type and the function
+      --  has at least one formal parameter.
+      return
+        Ekind (E) = E_Function
         and then Is_Anonymous_Access_Object_Type (Etype (E))
-
-        --  and the function has at least one formal parameter.
-
         and then Present (First_Formal (E));
    end Is_Traversal_Function;
 
@@ -1745,9 +1692,7 @@ package body SPARK_Util.Subprograms is
    begin
       --  Check that E is a unary procedure
 
-      if Ekind (E) /= E_Procedure
-        or else Number_Formals (E) /= 1
-      then
+      if Ekind (E) /= E_Procedure or else Number_Formals (E) /= 1 then
          return False;
       end if;
 
@@ -1776,9 +1721,7 @@ package body SPARK_Util.Subprograms is
    -- Is_Unchecked_Deallocation_Instance --
    ----------------------------------------
 
-   function Is_Unchecked_Deallocation_Instance
-     (E : Entity_Id)
-      return Boolean
+   function Is_Unchecked_Deallocation_Instance (E : Entity_Id) return Boolean
    is
    begin
       --  The following condition is based on how Exp_Unc_Deallocation is
@@ -1788,11 +1731,11 @@ package body SPARK_Util.Subprograms is
       return
         Is_Intrinsic (E)
         and then Present (Parent (E))
-        and then Parent (E) in
-          N_Subprogram_Specification_Id | N_Package_Specification_Id
+        and then Parent (E)
+                 in N_Subprogram_Specification_Id | N_Package_Specification_Id
         and then Present (Generic_Parent (Parent (E)))
         and then Chars (Generic_Parent (Parent (E)))
-                         = Name_Unchecked_Deallocation;
+                 = Name_Unchecked_Deallocation;
    end Is_Unchecked_Deallocation_Instance;
 
    -----------------------------
@@ -1816,9 +1759,9 @@ package body SPARK_Util.Subprograms is
       --  in a package if the package itself is declared directly inside a
       --  subprogram.
 
-      Mutually       : constant String :=
+      Mutually : constant String :=
         (if Called_Entity = Recursive_Subp then "" else "mutually ");
-      Prag           : Node_Id;
+      Prag     : Node_Id;
 
    begin
       --  We do not support recursive calls inside preconditions, as initial
@@ -1832,31 +1775,38 @@ package body SPARK_Util.Subprograms is
       end loop;
 
       if Present (Prag)
-        and then Get_Pragma_Id (Pragma_Name (Prag)) in
-          Pragma_Precondition | Pragma_Pre | Pragma_Pre_Class
+        and then Get_Pragma_Id (Pragma_Name (Prag))
+                 in Pragma_Precondition | Pragma_Pre | Pragma_Pre_Class
       then
          Result := False;
-         Explanation := To_Unbounded_String
-           (Mutually & "recursive call should not appear in a "
-            & "precondition");
+         Explanation :=
+           To_Unbounded_String
+             (Mutually
+              & "recursive call should not appear in a "
+              & "precondition");
       elsif Present (Prag)
-        and then Get_Pragma_Id (Pragma_Name (Prag)) in
-          Pragma_Subprogram_Variant
+        and then Get_Pragma_Id (Pragma_Name (Prag))
+                 in Pragma_Subprogram_Variant
       then
          Result := False;
-         Explanation := To_Unbounded_String
-           (Mutually & "recursive call should not appear in a "
-            & "subprogram variant");
+         Explanation :=
+           To_Unbounded_String
+             (Mutually
+              & "recursive call should not appear in a "
+              & "subprogram variant");
       elsif No (Recursive_Subp) then
          Result := False;
-         Explanation := To_Unbounded_String
-           (Mutually & "recursive call should be located directly"
-            & " inside a subprogram");
+         Explanation :=
+           To_Unbounded_String
+             (Mutually
+              & "recursive call should be located directly"
+              & " inside a subprogram");
       elsif not Compatible_Variants (Called_Entity, Recursive_Subp) then
          Result := False;
-         Explanation := To_Unbounded_String
-           ("mutually recursive subprograms should have"
-            & " compatible variants");
+         Explanation :=
+           To_Unbounded_String
+             ("mutually recursive subprograms should have"
+              & " compatible variants");
       else
          Explanation := To_Unbounded_String ("");
          Result := True;
@@ -1870,7 +1820,8 @@ package body SPARK_Util.Subprograms is
    function Is_Volatile_For_Internal_Calls (E : E_Function_Id) return Boolean
    is
    begin
-      return Ekind (E) = E_Function
+      return
+        Ekind (E) = E_Function
         and then Is_Protected_Type (Scope (E))
         and then Is_Enabled_Pragma (Get_Pragma (E, Pragma_Volatile_Function));
    end Is_Volatile_For_Internal_Calls;
@@ -1879,11 +1830,11 @@ package body SPARK_Util.Subprograms is
    -- Is_Wrapper_For_Dispatching_Result --
    ---------------------------------------
 
-   function Is_Wrapper_For_Dispatching_Result (E : Entity_Id) return Boolean is
-     (Ekind (E) = E_Function
-      and then Is_Wrapper (E)
-      and then not Is_Dispatch_Table_Wrapper (E)
-      and then Present (Subprogram_Body (E)));
+   function Is_Wrapper_For_Dispatching_Result (E : Entity_Id) return Boolean
+   is (Ekind (E) = E_Function
+       and then Is_Wrapper (E)
+       and then not Is_Dispatch_Table_Wrapper (E)
+       and then Present (Subprogram_Body (E)));
 
    -------------------
    -- Might_Be_Main --
@@ -1904,8 +1855,10 @@ package body SPARK_Util.Subprograms is
 
       Spec := Subprogram_Specification (E);
 
-      pragma Assert (Nkind (Spec) in N_Function_Specification |
-                                     N_Procedure_Specification);
+      pragma
+        Assert
+          (Nkind (Spec)
+           in N_Function_Specification | N_Procedure_Specification);
 
       --  Check if it has no parameters
       if Present (Parameter_Specifications (Spec)) then
@@ -1913,16 +1866,13 @@ package body SPARK_Util.Subprograms is
       end if;
 
       --  Check if it is a procedure or a function that returns an integer
-      return (case Nkind (Spec) is
-                 when N_Procedure_Specification =>
-                    True,
+      return
+        (case Nkind (Spec) is
+           when N_Procedure_Specification => True,
 
-                 when N_Function_Specification =>
-                    Is_Integer_Type (Etype (E)),
+           when N_Function_Specification => Is_Integer_Type (Etype (E)),
 
-                 when others =>
-                    raise Program_Error
-             );
+           when others => raise Program_Error);
    end Might_Be_Main;
 
    ---------------------------------
@@ -1932,8 +1882,7 @@ package body SPARK_Util.Subprograms is
    procedure Process_Referenced_Entities (E : Entity_Id) is
 
       procedure Process_All
-        (S    : Flow_Types.Flow_Id_Sets.Set;
-         Kind : Formal_Kind);
+        (S : Flow_Types.Flow_Id_Sets.Set; Kind : Formal_Kind);
       --  Process entities represented in S (as Flow_Ids)
 
       -----------------
@@ -1941,9 +1890,7 @@ package body SPARK_Util.Subprograms is
       -----------------
 
       procedure Process_All
-        (S    : Flow_Types.Flow_Id_Sets.Set;
-         Kind : Formal_Kind)
-      is
+        (S : Flow_Types.Flow_Id_Sets.Set; Kind : Formal_Kind) is
       begin
          for F of S loop
             case F.Kind is
@@ -1978,13 +1925,14 @@ package body SPARK_Util.Subprograms is
                --  Also get references to global constants with variable inputs
                --  even if they are constants in Why.
 
-               Flow_Utility.Get_Proof_Globals (Subprogram      => E,
-                                               Reads           => In_Ids,
-                                               Writes          => Out_Ids,
-                                               Erase_Constants => False);
+               Flow_Utility.Get_Proof_Globals
+                 (Subprogram      => E,
+                  Reads           => In_Ids,
+                  Writes          => Out_Ids,
+                  Erase_Constants => False);
 
-               In_Out_Ids := Flow_Types.Flow_Id_Sets.Intersection
-                 (Out_Ids, In_Ids);
+               In_Out_Ids :=
+                 Flow_Types.Flow_Id_Sets.Intersection (Out_Ids, In_Ids);
                In_Ids.Difference (In_Out_Ids);
                Out_Ids.Difference (In_Out_Ids);
 
@@ -2046,11 +1994,7 @@ package body SPARK_Util.Subprograms is
       Body_E : Entity_Id := Empty;
    begin
       case Ekind (E) is
-         when E_Function
-            | E_Procedure
-            | E_Task_Type
-            | Entry_Kind
-         =>
+         when E_Function | E_Procedure | E_Task_Type | Entry_Kind =>
             --  A derived task type has no body itself, so exclude this case
             if not Is_Derived_Type (E) then
                Body_E := Get_Body_Entity (E);
@@ -2066,10 +2010,7 @@ package body SPARK_Util.Subprograms is
             null;
       end case;
 
-      return
-        (if Present (Body_E)
-         then Subp_Location (Body_E)
-         else "");
+      return (if Present (Body_E) then Subp_Location (Body_E) else "");
    end Subp_Body_Location;
 
    -------------------
@@ -2078,8 +2019,8 @@ package body SPARK_Util.Subprograms is
 
    function Subp_Location (E : Entity_Id) return String is
       Slc : constant Source_Ptr :=
-        (if Is_Generic_Instance (Unique_Entity (E)) then
-           Sloc (Subprogram_Specification (E))
+        (if Is_Generic_Instance (Unique_Entity (E))
+         then Sloc (Subprogram_Specification (E))
          else Sloc (E));
    begin
       --  Compute the location string as a user would provide it with
@@ -2094,9 +2035,7 @@ package body SPARK_Util.Subprograms is
    ---------------------------------
 
    function Subp_Needs_Invariant_Checks
-     (E    : Callable_Kind_Id;
-      Scop : Entity_Id)
-      return Boolean
+     (E : Callable_Kind_Id; Scop : Entity_Id) return Boolean
    is
       Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
       Write_Ids : Flow_Types.Flow_Id_Sets.Set;
@@ -2110,7 +2049,7 @@ package body SPARK_Util.Subprograms is
          while Present (Formal) loop
             if Ekind (Formal) /= E_Out_Parameter
               and then Invariant_Check_Needed
-                (Etype (Formal), Subp => E, Scop => Scop)
+                         (Etype (Formal), Subp => E, Scop => Scop)
             then
                return True;
             end if;
@@ -2119,10 +2058,11 @@ package body SPARK_Util.Subprograms is
          end loop;
       end;
 
-      Flow_Utility.Get_Proof_Globals (Subprogram      => E,
-                                      Reads           => Read_Ids,
-                                      Writes          => Write_Ids,
-                                      Erase_Constants => True);
+      Flow_Utility.Get_Proof_Globals
+        (Subprogram      => E,
+         Reads           => Read_Ids,
+         Writes          => Write_Ids,
+         Erase_Constants => True);
 
       --  Consider invariants of the variables read by E. Do not relax
       --  invariants which are internal for E.
@@ -2143,7 +2083,8 @@ package body SPARK_Util.Subprograms is
                --  objects or concurrent types.
 
                if Invariant_Check_Needed
-                 ((if Is_Type (Obj) then Obj else Etype (Obj)), Scop => Scop)
+                    ((if Is_Type (Obj) then Obj else Etype (Obj)),
+                     Scop => Scop)
                then
                   return True;
                end if;
@@ -2166,12 +2107,12 @@ package body SPARK_Util.Subprograms is
    --  are also ignored and translated as an occurrence of the corresponding
    --  operator.
 
-   function Subprogram_Is_Ignored_For_Proof (E : Entity_Id) return Boolean is
-     (case Ekind (E) is
+   function Subprogram_Is_Ignored_For_Proof (E : Entity_Id) return Boolean
+   is (case Ekind (E) is
          when E_Procedure =>
-            Is_Invariant_Procedure (E) or else Is_DIC_Procedure (E),
-         when E_Function  => Is_Tagged_Predefined_Eq (E),
-         when others      => False);
+           Is_Invariant_Procedure (E) or else Is_DIC_Procedure (E),
+         when E_Function => Is_Tagged_Predefined_Eq (E),
+         when others => False);
 
    -----------------------------------
    -- Suspends_On_Suspension_Object --
@@ -2193,7 +2134,7 @@ package body SPARK_Util.Subprograms is
          Scop := Scope (Scop);
       end Scope_Up;
 
-   --  Start of processing for Suspends_On_Suspension_Object
+      --  Start of processing for Suspends_On_Suspension_Object
 
    begin
       if Chars (Scop) = Name_Suspend_Until_True then
@@ -2230,14 +2171,14 @@ package body SPARK_Util.Subprograms is
 
    function Get_Body (E : Entity_Id) return Node_Id is
    begin
-      return (case Ekind (E) is
-                 when Entry_Kind        => Entry_Body (E),
-                 when E_Function
-                    | E_Procedure       => Subprogram_Body (E),
-                 when E_Protected_Type  => Protected_Body (E),
-                 when E_Task_Type       => Task_Body (E),
-                 when E_Subprogram_Type => Empty,
-                 when others            => raise Program_Error);
+      return
+        (case Ekind (E) is
+           when Entry_Kind => Entry_Body (E),
+           when E_Function | E_Procedure => Subprogram_Body (E),
+           when E_Protected_Type => Protected_Body (E),
+           when E_Task_Type => Task_Body (E),
+           when E_Subprogram_Type => Empty,
+           when others => raise Program_Error);
    end Get_Body;
 
    ---------------------
@@ -2246,11 +2187,12 @@ package body SPARK_Util.Subprograms is
 
    function Get_Body_Entity (E : Entity_Id) return Entity_Id is
    begin
-      return (case Ekind (E) is
-                 when Entry_Kind      => Entry_Body_Entity (E),
-                 when E_Task_Type     => Task_Body_Entity (E),
-                 when Subprogram_Kind => Subprogram_Body_Entity (E),
-                 when others          => raise Program_Error);
+      return
+        (case Ekind (E) is
+           when Entry_Kind => Entry_Body_Entity (E),
+           when E_Task_Type => Task_Body_Entity (E),
+           when Subprogram_Kind => Subprogram_Body_Entity (E),
+           when others => raise Program_Error);
    end Get_Body_Entity;
 
 end SPARK_Util.Subprograms;

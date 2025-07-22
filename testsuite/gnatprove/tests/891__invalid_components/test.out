@@ -1,0 +1,158 @@
+test_components.adb:6:21: info: range check proved (CVC5: 2 VC)
+test_components.adb:13:16: info: range check proved (CVC5: 2 VC)
+test_components.adb:14:07: info: range check proved (CVC5: 2 VC)
+test_components.adb:17:14: warning: subprogram "Test_Access_OK" has no effect
+test_components.adb:18:25: warning: "X" is not modified, could be IN
+test_components.adb:22:07: info: no contextual analysis of "Test_Access_OK" (nested subprogram)
+test_components.adb:25:25: info: assertion proved (CVC5: 1 VC)
+test_components.adb:26:12: warning: unused assignment
+test_components.adb:26:16: info: validity check proved (CVC5: 1 VC)
+test_components.adb:27:25: medium: assertion might fail (e.g. when X = (D => 0, F1 => 0, F2 => ?) and X.F1'Valid = True and X.F2'Valid = False)
+test_components.adb:30:25: warning: "X" is not modified, could be IN
+test_components.adb:37:25: info: assertion proved (CVC5: 1 VC)
+test_components.adb:38:12: warning: unused assignment
+test_components.adb:38:20: info: validity check proved (CVC5: 1 VC)
+test_components.adb:39:25: medium: assertion might fail
+test_components.adb:42:25: warning: "X" is not modified, could be IN
+test_components.adb:44:16: info: range check proved (CVC5: 4 VC)
+test_components.adb:49:12: warning: unused assignment
+test_components.adb:49:15: info: range check proved (CVC5: 4 VC)
+test_components.adb:49:15: info: validity check proved (CVC5: 1 VC)
+test_components.adb:50:25: info: assertion proved (CVC5: 1 VC)
+test_components.adb:50:25: info: range check proved (CVC5: 4 VC)
+test_components.adb:51:25: info: range check proved (CVC5: 4 VC)
+test_components.adb:51:25: medium: assertion might fail
+test_components.adb:54:26: warning: "X" is not modified, could be IN
+test_components.adb:56:58: info: index check proved (CVC5: 2 VC)
+test_components.adb:61:25: info: assertion proved (CVC5: 1 VC)
+test_components.adb:61:26: info: range check proved (CVC5: 2 VC)
+test_components.adb:62:12: warning: unused assignment
+test_components.adb:62:16: info: range check proved (CVC5: 2 VC)
+test_components.adb:62:19: info: validity check proved (CVC5: 1 VC)
+test_components.adb:64:28: info: assertion proved (CVC5: 1 VC)
+test_components.adb:64:34: info: index check proved (CVC5: 2 VC)
+test_components.adb:65:15: warning: unused assignment
+test_components.adb:65:24: info: index check proved (CVC5: 2 VC)
+test_components.adb:65:26: info: validity check proved (CVC5: 1 VC)
+test_components.adb:67:25: medium: assertion might fail
+test_components.adb:67:26: info: range check proved (CVC5: 2 VC)
+test_components.adb:68:42: medium: assertion might fail, cannot prove X.G2 (2)'Valid_Scalars
+test_components.adb:68:48: info: index check proved (CVC5: 2 VC)
+test_components.adb:74:14: warning: subprogram "Test_Access_Bad" has no effect
+test_components.adb:75:25: warning: "X" is not modified, could be IN
+test_components.adb:77:17: info: postcondition proved (Trivial: 1 VC)
+test_components.adb:79:07: info: no contextual analysis of "Test_Access_Bad" (nested subprogram)
+test_components.adb:82:25: medium: assertion might fail (e.g. when X = (D => 0, F1 => ?, F2 => 0) and X.F1'Valid = False and X.F2'Valid = True) [possible fix: subprogram at line 75 should mention X in a precondition]
+test_components.adb:83:12: warning: unused assignment
+test_components.adb:83:16: medium: validity check might fail (e.g. when X = (D => 0, F1 => 0, F2 => ?) and X.F1'Valid = True and X.F2'Valid = False) [possible fix: subprogram at line 75 should mention X in a precondition]
+test_components.adb:86:25: warning: "X" is not modified, could be IN
+test_components.adb:88:17: info: postcondition proved (Trivial: 1 VC)
+test_components.adb:93:25: medium: assertion might fail [possible fix: subprogram at line 86 should mention X in a precondition]
+test_components.adb:94:12: warning: unused assignment
+test_components.adb:94:20: medium: validity check might fail [possible fix: subprogram at line 86 should mention X in a precondition]
+test_components.adb:97:25: warning: "X" is not modified, could be IN
+test_components.adb:99:17: info: postcondition proved (Trivial: 1 VC)
+test_components.adb:104:12: warning: unused assignment
+test_components.adb:104:15: info: range check proved (CVC5: 4 VC)
+test_components.adb:104:15: medium: validity check might fail [possible fix: subprogram at line 97 should mention X in a precondition]
+test_components.adb:105:25: info: range check proved (CVC5: 4 VC)
+test_components.adb:105:25: medium: assertion might fail [possible fix: subprogram at line 97 should mention X in a precondition]
+test_components.adb:108:26: warning: "X" is not modified, could be IN
+test_components.adb:110:17: info: postcondition proved (Trivial: 1 VC)
+test_components.adb:115:25: medium: assertion might fail [possible fix: subprogram at line 108 should mention X in a precondition]
+test_components.adb:115:26: info: range check proved (CVC5: 2 VC)
+test_components.adb:116:12: warning: unused assignment
+test_components.adb:116:16: info: range check proved (CVC5: 2 VC)
+test_components.adb:116:19: medium: validity check might fail [possible fix: subprogram at line 108 should mention X in a precondition]
+test_components.adb:118:28: medium: assertion might fail [possible fix: subprogram at line 108 should mention X in a precondition]
+test_components.adb:118:34: info: index check proved (CVC5: 2 VC)
+test_components.adb:119:15: warning: unused assignment
+test_components.adb:119:24: info: index check proved (CVC5: 2 VC)
+test_components.adb:119:26: medium: validity check might fail [possible fix: subprogram at line 108 should mention X in a precondition]
+test_components.adb:126:14: warning: subprogram "Test_Write_OK" has no effect
+test_components.adb:129:17: info: postcondition proved (CVC5: 1 VC)
+test_components.adb:131:07: info: no contextual analysis of "Test_Write_OK" (nested subprogram)
+test_components.adb:143:17: info: postcondition proved (CVC5: 1 VC)
+test_components.adb:148:22: info: discriminant check proved (CVC5: 2 VC)
+test_components.adb:158:17: info: postcondition proved (CVC5: 1 VC)
+test_components.adb:161:10: warning: unused variable "I"
+test_components.adb:163:17: info: range check proved (CVC5: 4 VC)
+test_components.adb:164:38: info: discriminant check proved (CVC5: 2 VC)
+test_components.adb:166:17: info: range check proved (CVC5: 4 VC)
+test_components.adb:167:38: info: discriminant check proved (CVC5: 2 VC)
+test_components.adb:169:28: info: discriminant check proved (CVC5: 2 VC)
+test_components.adb:174:17: info: postcondition proved (CVC5: 1 VC)
+test_components.adb:179:14: info: range check proved (CVC5: 2 VC)
+test_components.adb:180:14: info: range check proved (CVC5: 2 VC)
+test_components.adb:184:22: info: index check proved (CVC5: 4 VC)
+test_components.adb:185:22: info: index check proved (CVC5: 4 VC)
+test_components.adb:186:39: info: loop invariant initialization proved (CVC5: 1 VC)
+test_components.adb:186:39: info: loop invariant preservation proved (Z3: 1 VC)
+test_components.adb:186:68: info: index check proved (CVC5: 4 VC)
+test_components.adb:194:14: warning: subprogram "Test_Write_Bad" has no effect
+test_components.adb:197:17: medium: postcondition might fail (e.g. when X = (D => 0, F1 => 0, F2 => ?) and X.F1'Valid = True and X.F2'Valid = False)
+test_components.adb:199:07: info: no contextual analysis of "Test_Write_Bad" (nested subprogram)
+test_components.adb:208:17: medium: postcondition might fail
+test_components.adb:213:22: info: discriminant check proved (CVC5: 2 VC)
+test_components.adb:222:17: medium: postcondition might fail
+test_components.adb:225:10: warning: unused variable "I"
+test_components.adb:227:17: info: range check proved (CVC5: 4 VC)
+test_components.adb:228:38: info: discriminant check proved (CVC5: 2 VC)
+test_components.adb:230:17: info: range check proved (CVC5: 4 VC)
+test_components.adb:231:38: info: discriminant check proved (CVC5: 2 VC)
+test_components.adb:237:17: medium: postcondition might fail
+test_components.adb:242:14: info: range check proved (CVC5: 2 VC)
+test_components.adb:243:14: info: range check proved (CVC5: 2 VC)
+test_components.adb:247:22: info: index check proved (CVC5: 4 VC)
+test_components.adb:248:22: info: index check proved (CVC5: 4 VC)
+test_components.adb:249:39: info: loop invariant initialization proved (CVC5: 1 VC)
+test_components.adb:249:39: info: loop invariant preservation proved (Z3: 1 VC)
+test_components.adb:249:68: info: index check proved (CVC5: 4 VC)
+test_slide.adb:8:14: warning: subprogram "Test_OK" has no effect
+test_slide.adb:17:40: info: initialization of "Y" proved
+test_slide.adb:20:17: info: postcondition proved (CVC5: 2 VC)
+test_slide.adb:22:07: info: no contextual analysis of "Test_OK" (nested subprogram)
+test_slide.adb:24:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test_slide.adb:27:40: info: initialization of "Y" proved
+test_slide.adb:30:17: info: postcondition proved (CVC5: 2 VC)
+test_slide.adb:34:15: info: length check proved (CVC5: 6 VC; Trivial: 2 VC)
+test_slide.adb:43:13: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test_slide.adb:44:25: info: assertion proved (CVC5: 2 VC)
+test_slide.adb:49:17: info: postcondition proved (Trivial: 1 VC)
+test_slide.adb:54:25: info: assertion proved (CVC5: 2 VC)
+test_slide.adb:57:17: warning: subprogram "Decl" has no effect
+test_slide.adb:62:20: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test_slide.adb:64:25: info: assertion proved (CVC5: 2 VC)
+test_slide.adb:70:14: warning: subprogram "Test_Bad" has no effect
+test_slide.adb:78:17: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+test_slide.adb:80:40: info: initialization of "Y" proved
+test_slide.adb:83:17: medium: postcondition might fail
+test_slide.adb:83:20: info: index check proved (CVC5: 2 VC)
+test_slide.adb:83:34: info: index check proved (CVC5: 2 VC)
+test_slide.adb:85:07: info: no contextual analysis of "Test_Bad" (nested subprogram)
+test_slide.adb:87:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test_slide.adb:90:40: info: initialization of "Y" proved
+test_slide.adb:93:17: medium: postcondition might fail
+test_slide.adb:93:20: info: index check proved (CVC5: 2 VC)
+test_slide.adb:93:34: info: index check proved (CVC5: 2 VC)
+test_slide.adb:97:15: info: length check proved (CVC5: 6 VC; Trivial: 2 VC)
+test_slide.adb:106:10: info: precondition proved (CVC5: 2 VC)
+test_slide.adb:106:14: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test_slide.adb:107:25: medium: assertion might fail [possible fix: precondition of subprogram at line 100 should mention B]
+test_slide.adb:107:28: info: index check proved (CVC5: 2 VC)
+test_slide.adb:116:10: info: precondition proved (CVC5: 2 VC)
+test_slide.adb:117:25: medium: assertion might fail [possible fix: precondition of subprogram at line 110 should mention B]
+test_slide.adb:117:28: info: index check proved (CVC5: 2 VC)
+test_slide.adb:120:17: warning: subprogram "Decl" has no effect
+test_slide.adb:125:20: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test_slide.adb:127:25: medium: assertion might fail [possible fix: precondition of subprogram at line 120 should mention X]
+test_slide.adb:127:28: info: index check proved (CVC5: 2 VC)
+test_slide.adb:127:42: info: index check proved (CVC5: 2 VC)
+test_valid_components.adb:17:06: info: data dependencies proved
+test_valid_components.adb:23:22: info: assertion proved (Trivial: 1 VC)
+test_valid_components.adb:23:22: warning: attribute "Valid" is assumed to return True [attribute-valid-always-true]
+test_valid_components.adb:24:22: info: assertion proved (Trivial: 1 VC)
+test_valid_components.adb:24:22: warning: attribute "Valid_Scalars" is assumed to return True [attribute-valid-always-true]
+test_valid_components.adb:26:22: medium: assertion might fail (e.g. when X = (H1 => (F1 => ?, F2 => 0, F3 => 0), H2 => (G1 => 0, G2 => 0)) and X.H1.F1'Valid = False and X.H1.F2'Valid = True) [possible fix: subprogram at line 16 should mention X in a precondition]
+test_valid_components.adb:30:06: info: data dependencies proved
+test_valid_components.adb:38:22: medium: assertion might fail (e.g. when X = (H1 => (F1 => 1, F2 => ?, F3 => 1), H2 => (G1 => 1, G2 => 1)) and X.H1.F1'Valid = True and X.H1.F2'Valid = False) [possible fix: subprogram at line 29 should mention X in a precondition]

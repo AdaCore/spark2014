@@ -905,6 +905,12 @@ only part of a program:
     relaxed initialization (see :ref:`Aspect Relaxed_Initialization`) should be
     entirely initialized.
 
+  * the initialization and data validity policy of |SPARK| (implicit - parts of
+    the outputs of the subprogram that are considered to be initialized and
+    valid by |GNATprove| after the call should not depend on parts of its
+    inputs that are either invalid or considered as uninitialized by
+    |GNATprove|).
+
   * the ``Extensions_Visible`` aspect (explicit or implicit) - the subprogram
     shall neither access nor modify the invisible components of its parameters
     of a specific (not class-wide) tagged type unless it has the

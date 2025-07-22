@@ -27,11 +27,12 @@ with Ada.Containers.Ordered_Maps;
 
 package body Assumptions.Search is
 
-   package Goal_Maps is new Ada.Containers.Ordered_Maps
-     (Key_Type        => Token,
-      Element_Type    => Token_Sets.Set,
-      "<"             => "<",
-      "="             => Token_Sets."=");
+   package Goal_Maps is new
+     Ada.Containers.Ordered_Maps
+       (Key_Type     => Token,
+        Element_Type => Token_Sets.Set,
+        "<"          => "<",
+        "="          => Token_Sets."=");
 
    Goals : Goal_Maps.Map := Goal_Maps.Empty_Map;
 
@@ -42,8 +43,7 @@ package body Assumptions.Search is
    procedure Import (L : Rule_Lists.List) is
    begin
       for Elt of L loop
-         Goals.Insert (Key      => Elt.Claim,
-                       New_Item => Elt.Assumptions);
+         Goals.Insert (Key => Elt.Claim, New_Item => Elt.Assumptions);
          --  ??? Elt.Assumptions can be Moved to avoid copying
       end loop;
    end Import;
@@ -63,8 +63,7 @@ package body Assumptions.Search is
    begin
       while not Needed_Claims.Is_Empty loop
          declare
-            Cur_Token : constant Token :=
-              Needed_Claims (Needed_Claims.First);
+            Cur_Token : constant Token := Needed_Claims (Needed_Claims.First);
 
             Map_Cur : constant Goal_Maps.Cursor := Goals.Find (Cur_Token);
 
@@ -74,9 +73,10 @@ package body Assumptions.Search is
          begin
 
             if Goal_Maps.Has_Element (Map_Cur) then
-               Seen.Insert (New_Item => Cur_Token,
-                            Position => Unused,
-                            Inserted => Inserted);
+               Seen.Insert
+                 (New_Item => Cur_Token,
+                  Position => Unused,
+                  Inserted => Inserted);
 
                if Inserted then
                   Needed_Claims.Union (Goals (Map_Cur));

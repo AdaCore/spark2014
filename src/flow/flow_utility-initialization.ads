@@ -27,9 +27,11 @@
 package Flow_Utility.Initialization is
 
    function Get_Default_Initialization (F : Flow_Id) return Node_Id
-   with Pre  => F.Kind in Direct_Mapping | Record_Field,
-        Post => (if Present (Get_Default_Initialization'Result)
-                 then Nkind (Get_Default_Initialization'Result) in N_Subexpr);
+   with
+     Pre  => F.Kind in Direct_Mapping | Record_Field,
+     Post =>
+       (if Present (Get_Default_Initialization'Result)
+        then Nkind (Get_Default_Initialization'Result) in N_Subexpr);
    --  Get the default initialization expression for the given Flow_Id (this
    --  only really works for record fields and direct mappings; magic strings
    --  can only appear as globals and thus are always acting as initialized).
@@ -37,9 +39,7 @@ package Flow_Utility.Initialization is
    --  @return the default initialization expression of F
 
    function Is_Default_Initialized
-     (F          : Flow_Id;
-      Ignore_DIC : Boolean := False)
-      return Boolean
+     (F : Flow_Id; Ignore_DIC : Boolean := False) return Boolean
    with Pre => F.Kind in Direct_Mapping | Record_Field;
    --  Returns True if F is default initialized.
    --  @param F is the Flow_Id whose initialization we look for
@@ -75,9 +75,9 @@ package Flow_Utility.Initialization is
       --  A type where none of its content is fully default initialized
      );
 
-   function Default_Initialization (Typ        : Entity_Id;
-                                    Ignore_DIC : Boolean := False)
-                                    return Default_Initialization_Kind
+   function Default_Initialization
+     (Typ : Entity_Id; Ignore_DIC : Boolean := False)
+      return Default_Initialization_Kind
    with Pre => Is_Type (Typ);
    --  Determine default initialization kind that applies to a particular type.
    --  Private types are treated specially, so that they are either considered

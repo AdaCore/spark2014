@@ -24,7 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Sem_Type;
-with Stand;    use Stand;
+with Stand; use Stand;
 
 package SPARK_Util.Types is
 
@@ -65,65 +65,62 @@ package SPARK_Util.Types is
    --  confusion, the wrapper for function Einfo.Is_Such_And_Such_Type is
    --  called Has_Such_And_Such_Type.
 
-   function Has_Access_Type (T : Type_Kind_Id) return Boolean is
-     (Retysp_Kind (T) in Access_Kind);
+   function Has_Access_Type (T : Type_Kind_Id) return Boolean
+   is (Retysp_Kind (T) in Access_Kind);
 
-   function Has_Array_Type (T : Type_Kind_Id) return Boolean is
-     (Retysp_Kind (T) in Array_Kind);
+   function Has_Array_Type (T : Type_Kind_Id) return Boolean
+   is (Retysp_Kind (T) in Array_Kind);
 
-   function Has_Boolean_Type (T : Type_Kind_Id) return Boolean is
-     (Root_Type (Retysp (T)) = Standard_Boolean);
+   function Has_Boolean_Type (T : Type_Kind_Id) return Boolean
+   is (Root_Type (Retysp (T)) = Standard_Boolean);
 
-   function Has_Discrete_Type (T : Type_Kind_Id) return Boolean is
-     (Retysp_Kind (T) in Discrete_Kind);
+   function Has_Discrete_Type (T : Type_Kind_Id) return Boolean
+   is (Retysp_Kind (T) in Discrete_Kind);
 
-   function Has_Integer_Type (T : Type_Kind_Id) return Boolean is
-     (Retysp_Kind (T) in Integer_Kind);
+   function Has_Integer_Type (T : Type_Kind_Id) return Boolean
+   is (Retysp_Kind (T) in Integer_Kind);
 
-   function Has_Modular_Integer_Type (T : Type_Kind_Id) return Boolean is
-     (Retysp_Kind (T) in Modular_Integer_Kind);
+   function Has_Modular_Integer_Type (T : Type_Kind_Id) return Boolean
+   is (Retysp_Kind (T) in Modular_Integer_Kind);
 
-   function Has_Record_Type (T : Type_Kind_Id) return Boolean is
-     (Retysp_Kind (T) in Record_Kind);
+   function Has_Record_Type (T : Type_Kind_Id) return Boolean
+   is (Retysp_Kind (T) in Record_Kind);
 
-   function Has_Incomplete_Or_Private_Type (T : Type_Kind_Id) return Boolean is
-     (Retysp_Kind (T) in Incomplete_Or_Private_Kind);
+   function Has_Incomplete_Or_Private_Type (T : Type_Kind_Id) return Boolean
+   is (Retysp_Kind (T) in Incomplete_Or_Private_Kind);
 
-   function Has_Scalar_Type (T : Type_Kind_Id) return Boolean is
-     (Retysp_Kind (T) in Scalar_Kind);
+   function Has_Scalar_Type (T : Type_Kind_Id) return Boolean
+   is (Retysp_Kind (T) in Scalar_Kind);
 
-   function Has_Signed_Integer_Type (T : Type_Kind_Id) return Boolean is
-     (Retysp_Kind (T) in Signed_Integer_Kind);
+   function Has_Signed_Integer_Type (T : Type_Kind_Id) return Boolean
+   is (Retysp_Kind (T) in Signed_Integer_Kind);
 
-   function Has_Fixed_Point_Type (T : Type_Kind_Id) return Boolean is
-     (Retysp_Kind (T) in Fixed_Point_Kind);
+   function Has_Fixed_Point_Type (T : Type_Kind_Id) return Boolean
+   is (Retysp_Kind (T) in Fixed_Point_Kind);
 
-   function Has_Floating_Point_Type (T : Type_Kind_Id) return Boolean is
-     (Retysp_Kind (T) in Float_Kind);
+   function Has_Floating_Point_Type (T : Type_Kind_Id) return Boolean
+   is (Retysp_Kind (T) in Float_Kind);
 
    function Has_Single_Precision_Floating_Point_Type
-     (T : Type_Kind_Id)
-      return Boolean
+     (T : Type_Kind_Id) return Boolean
    is (Is_Single_Precision_Floating_Point_Type (Retysp (T)));
 
    function Has_Double_Precision_Floating_Point_Type
-     (T : Type_Kind_Id)
-      return Boolean
+     (T : Type_Kind_Id) return Boolean
    is (Is_Double_Precision_Floating_Point_Type (Retysp (T)));
 
    function Has_Extended_Precision_Floating_Point_Type
-     (T : Type_Kind_Id)
-      return Boolean
+     (T : Type_Kind_Id) return Boolean
    is (Is_Extended_Precision_Floating_Point_Type (Retysp (T)));
 
-   function Has_Static_Predicate (T : Type_Kind_Id) return Boolean is
-     (Einfo.Entities.Has_Static_Predicate (Retysp (T)));
+   function Has_Static_Predicate (T : Type_Kind_Id) return Boolean
+   is (Einfo.Entities.Has_Static_Predicate (Retysp (T)));
 
-   function Static_Discrete_Predicate (T : Type_Kind_Id) return List_Id is
-     (Einfo.Entities.Static_Discrete_Predicate (Retysp (T)));
+   function Static_Discrete_Predicate (T : Type_Kind_Id) return List_Id
+   is (Einfo.Entities.Static_Discrete_Predicate (Retysp (T)));
 
-   function Has_OK_Static_Scalar_Subtype (T : Type_Kind_Id) return Boolean with
-     Pre => Has_Scalar_Type (T);
+   function Has_OK_Static_Scalar_Subtype (T : Type_Kind_Id) return Boolean
+   with Pre => Has_Scalar_Type (T);
    --  Returns whether type T has a scalar subtype with statically known
    --  bounds that do not involve constraint errors. This includes looking
    --  past private types.
@@ -132,21 +129,22 @@ package SPARK_Util.Types is
    -- General Queries For Types --
    -------------------------------
 
-   function Can_Be_Default_Initialized (Typ : Type_Kind_Id) return Boolean is
-     ((not Has_Array_Type (Typ) or else Is_Constrained (Typ))
-      and then (Retysp_Kind (Typ) not in
-                   Record_Kind | Incomplete_Or_Private_Kind | Concurrent_Kind
-                or else not Has_Discriminants (Typ)
-                or else Is_Constrained (Typ)
-                or else Has_Defaulted_Discriminants (Typ))
-      and then not Is_Class_Wide_Type (Typ));
+   function Can_Be_Default_Initialized (Typ : Type_Kind_Id) return Boolean
+   is ((not Has_Array_Type (Typ) or else Is_Constrained (Typ))
+       and then (Retysp_Kind (Typ)
+                 not in Record_Kind
+                      | Incomplete_Or_Private_Kind
+                      | Concurrent_Kind
+                 or else not Has_Discriminants (Typ)
+                 or else Is_Constrained (Typ)
+                 or else Has_Defaulted_Discriminants (Typ))
+       and then not Is_Class_Wide_Type (Typ));
    --  Determine whether there can be default initialized variables of a type.
    --  @param Typ any type
    --  @return False if Typ is unconstrained.
 
    function Check_Needed_On_Conversion
-     (From, To : Type_Kind_Id)
-      return Boolean;
+     (From, To : Type_Kind_Id) return Boolean;
    --  @param From type of expression to be converted
    --  @param To target type of the conversion
    --  @return whether a check may be needed when converting an expression
@@ -159,23 +157,23 @@ package SPARK_Util.Types is
    --  types and should be used with extreme care.
 
    function Use_Predefined_Equality_For_Type
-     (Typ : Type_Kind_Id)
-      return Boolean;
+     (Typ : Type_Kind_Id) return Boolean;
    --  Return True if membership tests and equality of components of
    --  composite types of type Typ use the predefined equality and not the
    --  primitive one (ie. Type is not an unlimited record type or it does
    --  not have a redefined equality).
 
    function Use_Real_Eq_For_Private_Type (E : Type_Kind_Id) return Boolean
-   with Pre => Is_Incomplete_Or_Private_Type (E)
-     or else Is_Record_Type (E)
-     or else Is_Concurrent_Type (E);
+   with
+     Pre =>
+       Is_Incomplete_Or_Private_Type (E)
+       or else Is_Record_Type (E)
+       or else Is_Concurrent_Type (E);
    --  Return True if the predefined equality on a private type opaque for
    --  SPARK can be represented using Why3 equality.
 
    function Get_Parent_Type_If_Check_Needed
-     (N : N_Declaration_Id)
-      return Opt_Type_Kind_Id
+     (N : N_Declaration_Id) return Opt_Type_Kind_Id
    with Pre => Nkind (N) in N_Full_Type_Declaration | N_Subtype_Declaration;
    --  @param N a (sub)type declaration
    --  @return If the type declaration requires a check, return the "parent"
@@ -195,8 +193,8 @@ package SPARK_Util.Types is
    --    (including E itself) declares an Iterable aspect.
 
    function Has_UU_Component
-     (Typ                : Type_Kind_Id;
-      Unconstrained_Only : Boolean := False) return Boolean;
+     (Typ : Type_Kind_Id; Unconstrained_Only : Boolean := False)
+      return Boolean;
    --  Returns True iff Typ has a component visible in SPARK whose type is an
    --  unchecked union type. If Unconstrained_Only, only look for unconstrained
    --  types. Predefined equality on types with unconstrained unchecked union
@@ -206,40 +204,36 @@ package SPARK_Util.Types is
    --  Predefined_Eq_Uses_Pointer_Eq).
    --  Should be called on marked types.
 
-   function Invariant_Assumed_In_Main (Ty : Type_Kind_Id) return Boolean with
-     Pre => Has_Invariants_In_SPARK (Ty);
+   function Invariant_Assumed_In_Main (Ty : Type_Kind_Id) return Boolean
+   with Pre => Has_Invariants_In_SPARK (Ty);
    --  @param Ty type entity with an invariant
    --  @return True if Ty has a top level invariant which always holds in the
    --          current compilation unit and False if it might need to be
    --          checked.
 
    function Invariant_Assumed_In_Scope
-     (Ty   : Type_Kind_Id;
-      Scop : Entity_Id)
-      return Boolean
+     (Ty : Type_Kind_Id; Scop : Entity_Id) return Boolean
    with
-     Pre => Has_Invariants_In_SPARK (Ty)
+     Pre =>
+       Has_Invariants_In_SPARK (Ty)
        and then not Invariant_Assumed_In_Main (Ty);
    --  @param Ty type entity with an invariant which is not assumed in Main
    --  @return True if Ty has a top level invariant which always holds in Scop.
 
    function Invariant_Relaxed_For_Subprogram
-     (Ty   : Type_Kind_Id;
-      Subp : Entity_Id)
-      return Boolean
+     (Ty : Type_Kind_Id; Subp : Entity_Id) return Boolean
    with
      Pre  => Has_Invariants_In_SPARK (Ty),
      Post =>
        (if Invariant_Relaxed_For_Subprogram'Result
-        then Invariant_Assumed_In_Main (Ty)
-        or else not Invariant_Assumed_In_Scope (Ty, Subp));
+        then
+          Invariant_Assumed_In_Main (Ty)
+          or else not Invariant_Assumed_In_Scope (Ty, Subp));
    --  Return True if the invariant of Ty does not need to be checked for
    --  parameters on calls to Subp.
 
    function Invariant_Check_Needed
-     (Ty   : Type_Kind_Id;
-      Subp : Entity_Id := Empty;
-      Scop : Entity_Id := Empty)
+     (Ty : Type_Kind_Id; Subp : Entity_Id := Empty; Scop : Entity_Id := Empty)
       return Boolean;
    --  @param Ty type entity
    --  @param Subp optional subprogram. If provided, invariants relaxed for
@@ -252,8 +246,7 @@ package SPARK_Util.Types is
    --          from one of its components.
 
    function Has_Subcomponents_Of_Type
-     (Typ     : Type_Kind_Id;
-      Sub_Typ : Type_Kind_Id) return Boolean;
+     (Typ : Type_Kind_Id; Sub_Typ : Type_Kind_Id) return Boolean;
    --  Return True if Typ has subcomponents of a type derived from Sub_Typ
    --  including Sub_Typ itself.
 
@@ -265,7 +258,7 @@ package SPARK_Util.Types is
    --     so it is not necessary to recheck them on tagged derivations.
 
    function Check_DIC_At_Declaration (E : Type_Kind_Id) return Boolean
-     with Pre => Present (Partial_DIC_Procedure (E));
+   with Pre => Present (Partial_DIC_Procedure (E));
    --  @param E type entity with a DIC (inherited or not)
    --  @return True if the DIC expression depends on the current type instance.
    --        If it depends on the type instance, it is considered as a
@@ -280,8 +273,8 @@ package SPARK_Util.Types is
    --  @param T any type
    --  @returns True iff T is (a subtype of) a general access-to-variable type
 
-   function Is_Nouveau_Type (T : Type_Kind_Id) return Boolean is
-     (Etype (T) = T);
+   function Is_Nouveau_Type (T : Type_Kind_Id) return Boolean
+   is (Etype (T) = T);
    --  @param T any type
    --  @return True iff T is neither a derived type, nor a subtype, nor
    --     a classwide type (see description of Etype field in einfo.ads),
@@ -308,16 +301,15 @@ package SPARK_Util.Types is
    --  Returns True iff type E is System.Address
 
    function Find_View_For_Default_Checks
-     (E : Type_Kind_Id)
-      return Opt_Type_Kind_Id;
+     (E : Type_Kind_Id) return Opt_Type_Kind_Id;
    --  @param E type in Spark.
    --  @return Empty, or if E needs a specific module to check its default
    --    expression at declaration,
    --    the view that should be used for default checks of E
    --    (the least private view among private views)
 
-   function Needs_Default_Checks_At_Decl (E : Type_Kind_Id) return Boolean is
-     (Present (Find_View_For_Default_Checks (E)));
+   function Needs_Default_Checks_At_Decl (E : Type_Kind_Id) return Boolean
+   is (Present (Find_View_For_Default_Checks (E)));
    --  @param E type
    --  @return True if E needs a specific module to check its default
    --     expression at declaration
@@ -328,8 +320,7 @@ package SPARK_Util.Types is
    --  value.
 
    function Needs_Check_For_Aggregate_Annotation
-     (E : Type_Kind_Id)
-      return Boolean;
+     (E : Type_Kind_Id) return Boolean;
    --  Return True if E has a container aggregate annotation and the aggregate
    --  primitives are marked. It will be the case when analyzing the unit the
    --  container type is declared in and when analyzing aggregates from pulled
@@ -340,17 +331,16 @@ package SPARK_Util.Types is
    --  subcomponents of an access-to-variable type or a private type annotated
    --  with ownership).
 
-   function Has_Mutable_Discriminants (Ty : Type_Kind_Id) return Boolean is
-     (Has_Defaulted_Discriminants (Ty) and then not Is_Constrained (Ty));
+   function Has_Mutable_Discriminants (Ty : Type_Kind_Id) return Boolean
+   is (Has_Defaulted_Discriminants (Ty) and then not Is_Constrained (Ty));
 
    procedure Find_Predicate_Item
-     (Ty       :        Type_Kind_Id;
-      Rep_Item : in out Node_Id);
+     (Ty : Type_Kind_Id; Rep_Item : in out Node_Id);
    --  Go over the items linked from Rep_Item to search for a predicate
    --  pragma or aspect applying to Ty.
 
-   function Get_View_For_Predicate (Ty : Type_Kind_Id) return Entity_Id with
-     Pre => Has_Predicates (Ty) and then not Is_Full_View (Ty);
+   function Get_View_For_Predicate (Ty : Type_Kind_Id) return Entity_Id
+   with Pre => Has_Predicates (Ty) and then not Is_Full_View (Ty);
    --  Return the view of Ty on which its predicate is defined
 
    function Type_Name_For_Explanation (Typ : Type_Kind_Id) return String;
@@ -358,7 +348,7 @@ package SPARK_Util.Types is
    --  argument.
 
    procedure Check_Known_RM_Size
-     (Typ         :     Type_Kind_Id;
+     (Typ         : Type_Kind_Id;
       RM_Size     : out Uint;
       Explanation : out Unbounded_String);
    --  If the RM_Size of the type is known, assign its value to parameter
@@ -366,7 +356,7 @@ package SPARK_Util.Types is
    --  in Explanation.
 
    procedure Check_Known_Esize
-     (Typ         :     Type_Kind_Id;
+     (Typ         : Type_Kind_Id;
       Esize       : out Uint;
       Explanation : out Unbounded_String);
    --  same as Check_Known_RM_Size, but for Esize
@@ -381,22 +371,19 @@ package SPARK_Util.Types is
    --  string that can be used in error messages to explain the source of the
    --  size.
 
-   procedure Scalar_Record_Component_Size
-     (Typ      : Type_Kind_Id;
-      Comp     : Entity_Id;
-      Size     : out Uint;
-      Size_Str : out Unbounded_String)
-     with Pre =>
-       (Ekind (Comp) = E_Component
-        and then Is_Scalar_Type (Retysp (Etype (Comp))));
-   --  Compute the expected size for a record component of scalar type. The
-   --  Size_Str contains a string that explains the origin of the computed
-   --  size.
+   procedure Record_Component_Size
+     (Typ         : Type_Kind_Id;
+      Comp        : Entity_Id;
+      Size        : out Uint;
+      Size_Str    : out Unbounded_String;
+      Explanation : out Unbounded_String)
+   with Pre => (Ekind (Comp) = E_Component);
+   --  Compute the expected size for a record component of scalar type. [Typ]
+   --  is the containing record type. The Size_Str contains a string that
+   --  explains the origin of the computed size.
 
    function Type_Has_Only_Valid_Values
-     (ArgTyp   : Type_Kind_Id;
-      Size     : Uint;
-      Size_Str : String)
+     (ArgTyp : Type_Kind_Id; Size : Uint; Size_Str : String)
       return True_Or_Explain
    with Pre => ((Size /= Uint_0) = Is_Scalar_Type (ArgTyp));
    --  Return True if Type is known to have only valid values. Otherwise,
@@ -410,11 +397,15 @@ package SPARK_Util.Types is
    --  Wrapper on Type_Has_Only_Valid_Values for the return type of functions.
    --  It uses the Size of the return type.
 
+   function Comp_Has_Only_Valid_Values
+     (Comp : E_Component_Id; Rec : Type_Kind_Id) return True_Or_Explain;
+   --  Wrapper on Type_Has_Only_Valid_Values for record components
+
    function Contains_Access_Subcomponents (Typ : Type_Kind_Id) return Boolean;
    --  Returns True if Typ has access subcomponents
 
    function Contains_Allocated_Parts (Typ : Type_Kind_Id) return Boolean
-     with Post => (if Contains_Allocated_Parts'Result then Is_Deep (Typ));
+   with Post => (if Contains_Allocated_Parts'Result then Is_Deep (Typ));
    --  Returns True if Typ has subcomponents whose type is a pool specific
    --  access type or a private type annotated with ownership which needs
    --  reclamation (and these subcomponents are not in a constant part of Typ).
@@ -426,9 +417,7 @@ package SPARK_Util.Types is
    --  initialization.
 
    function Contains_Relaxed_Init_Parts
-     (Typ        : Type_Kind_Id;
-      Ignore_Top : Boolean := False)
-      return Boolean;
+     (Typ : Type_Kind_Id; Ignore_Top : Boolean := False) return Boolean;
    --  Returns True if Typ has subcomponents whose type is annotated with
    --  relaxed initialization.
    --  If Ignore_Top is True, ignore a potential Relaxed_Initialization
@@ -439,8 +428,9 @@ package SPARK_Util.Types is
 
    function Contains_Only_Relaxed_Init (Typ : Type_Kind_Id) return Boolean
    with
-     Post => (if Contains_Only_Relaxed_Init'Result
-              then Contains_Relaxed_Init_Parts (Typ));
+     Post =>
+       (if Contains_Only_Relaxed_Init'Result
+        then Contains_Relaxed_Init_Parts (Typ));
    --  Returns True if Typ has at least a subcomponent whose type is annotated
    --  with relaxed initialization and all its scalar subcomponents have this
    --  annotation.
@@ -493,24 +483,22 @@ package SPARK_Util.Types is
    --  constrained array types).
 
    generic
-      with procedure Process_DIC_Expression
-        (Type_Instance  : Formal_Kind_Id;
-         DIC_Expression : Node_Id);
+      with
+        procedure Process_DIC_Expression
+          (Type_Instance : Formal_Kind_Id; DIC_Expression : Node_Id);
    procedure Iterate_Applicable_DIC (Ty : Type_Kind_Id);
    --  Traverse all default initial conditions associated to the type Ty
 
    generic
-      with procedure Process_Pred_Expression
-        (Type_Instance   : Formal_Kind_Id;
-         Pred_Expression : Node_Id);
+      with
+        procedure Process_Pred_Expression
+          (Type_Instance : Formal_Kind_Id; Pred_Expression : Node_Id);
    procedure Iterate_Applicable_Predicates (Ty : Type_Kind_Id);
    --  Traverse all predicates associated to the type Ty
 
    function Predefined_Eq_Uses_Pointer_Eq
-     (Ty  : Type_Kind_Id;
-      Exp : out Unbounded_String)
-      return Boolean
-     with Pre => not Is_Concurrent_Type (Retysp (Ty));
+     (Ty : Type_Kind_Id; Exp : out Unbounded_String) return Boolean
+   with Pre => not Is_Concurrent_Type (Retysp (Ty));
    --  Retur True if the predefined equality of Ty uses the predefined equality
    --  on access types or on types on which the predefined equality is either
    --  completely disallowed or only allowed on null values. In this case, set
@@ -550,8 +538,7 @@ package SPARK_Util.Types is
    --  Count_Why_Top_Level_Fields that Retysp (E) = E ?
 
    function Get_Specific_Type_From_Classwide
-     (E : Class_Wide_Kind_Id)
-      return Type_Kind_Id;
+     (E : Class_Wide_Kind_Id) return Type_Kind_Id;
    --  Returns the specific type associated with a class wide type.
    --  If E's Etype is a fullview, returns its partial view instead.
    --  For classwide subtypes, return their Etype's specific type.
@@ -560,11 +547,8 @@ package SPARK_Util.Types is
    --  a full view is currently not available soon enough.
 
    function Get_Constraint_For_Discr
-     (Ty    : Type_Kind_Id;
-      Discr : E_Discriminant_Id)
-      return N_Subexpr_Id
-   with Pre => Has_Discriminants (Ty)
-               and then Is_Constrained (Ty);
+     (Ty : Type_Kind_Id; Discr : E_Discriminant_Id) return N_Subexpr_Id
+   with Pre => Has_Discriminants (Ty) and then Is_Constrained (Ty);
    --  @param Ty a constrained type with discriminants
    --  @param Discr a discriminant of Ty
    --  @return the constraint for Discr in Ty
@@ -578,8 +562,7 @@ package SPARK_Util.Types is
    --  renamings and ignores predefined equality of tagged types.
 
    function Has_Private_Fields (E : Type_Kind_Id) return Boolean
-     with Pre => Has_Incomplete_Or_Private_Type (E)
-        or else Has_Record_Type (E);
+   with Pre => Has_Incomplete_Or_Private_Type (E) or else Has_Record_Type (E);
    --  @param E a private or record type
    --  @return True iff E's translation into Why3 requires the use of a main
    --     field to represent invisible fields that are not derived from an
@@ -590,19 +573,20 @@ package SPARK_Util.Types is
    --  ??? Need to update comment to reflect dependence on Retysp of root by
    --  calling Full_View_Not_In_SPARK.
 
-   function Is_Ancestor (Anc, E : Type_Kind_Id) return Boolean is
-     (if not Is_Class_Wide_Type (Anc) then Sem_Type.Is_Ancestor (Anc, E)
-      else Sem_Type.Is_Ancestor (Get_Specific_Type_From_Classwide (Anc), E));
+   function Is_Ancestor (Anc, E : Type_Kind_Id) return Boolean
+   is (if not Is_Class_Wide_Type (Anc)
+       then Sem_Type.Is_Ancestor (Anc, E)
+       else Sem_Type.Is_Ancestor (Get_Specific_Type_From_Classwide (Anc), E));
    --  @param Anc A tagged type (which may or not be class-wide).
    --  @param E A tagged type (which may or not be class-wide).
    --  @return True if Anc is one of the ancestors of type E.
 
-   function Has_Empty_Variants (Typ : Type_Kind_Id) return Boolean with
-     Pre => Is_Record_Type (Typ);
+   function Has_Empty_Variants (Typ : Type_Kind_Id) return Boolean
+   with Pre => Is_Record_Type (Typ);
    --  Return True if Typ has variants which do not have any components
 
-   function Has_Shallow_Variants (Typ : Type_Kind_Id) return Boolean with
-     Pre => Is_Record_Type (Typ) and then Is_Deep (Typ);
+   function Has_Shallow_Variants (Typ : Type_Kind_Id) return Boolean
+   with Pre => Is_Record_Type (Typ) and then Is_Deep (Typ);
    --  Return True if Typ has variants which do not have any deep components
 
    --------------------------------
@@ -614,13 +598,11 @@ package SPARK_Util.Types is
    --  @return True iff E is a constrained array type with statically known
    --     bounds
 
-   function Has_Static_Array_Type (T : Type_Kind_Id) return Boolean is
-     (Is_Static_Array_Type (Retysp (T)));
+   function Has_Static_Array_Type (T : Type_Kind_Id) return Boolean
+   is (Is_Static_Array_Type (Retysp (T)));
 
    function Nth_Index_Type
-     (E   : Array_Kind_Id;
-      Dim : Positive)
-      return Type_Kind_Id;
+     (E : Array_Kind_Id; Dim : Positive) return Type_Kind_Id;
    --  @param E array type
    --  @param Dim dimension
    --  @return the argument E in the special case where E is a string literal
@@ -628,7 +610,7 @@ package SPARK_Util.Types is
    --    selected dimension
 
    function Static_Array_Length (E : Array_Kind_Id; Dim : Positive) return Uint
-     with Pre => Is_Static_Array_Type (E);
+   with Pre => Is_Static_Array_Type (E);
    --  @param E constrained array type with statically known bounds
    --  @param Dim dimension
    --  @return the static length of dimension Dim of E
@@ -638,8 +620,7 @@ package SPARK_Util.Types is
    -----------------------------------
 
    function Private_Declarations_Of_Task_Type
-     (E : E_Task_Type_Id)
-      return List_Id;
+     (E : E_Task_Type_Id) return List_Id;
    --  @param E a task type entity
    --  @return the list of visible declarations of the task type, or the empty
    --    list of not available
@@ -655,15 +636,13 @@ package SPARK_Util.Types is
    --    to what Subprogram_Body_Entity might produce.
 
    function Task_Type_Definition
-     (E : E_Task_Type_Id)
-      return Opt_N_Task_Definition_Id
+     (E : E_Task_Type_Id) return Opt_N_Task_Definition_Id
    is (Task_Definition (Parent (E)));
    --  @param E a task type entity
    --  @return the definition of the task type
 
    function Visible_Declarations_Of_Task_Type
-     (E : E_Task_Type_Id)
-      return List_Id;
+     (E : E_Task_Type_Id) return List_Id;
    --  @param E a task type entity
    --  @return the list of visible declarations of the task type, or the empty
    --    list if not available
@@ -673,35 +652,29 @@ package SPARK_Util.Types is
    ----------------------------------------
 
    function Private_Declarations_Of_Prot_Type
-     (E : Protected_Kind_Id)
-      return List_Id;
+     (E : Protected_Kind_Id) return List_Id;
    --  @param E a protected type entity
    --  @return the list of visible declarations of the protected type
 
    function Protected_Body
-     (E : Protected_Kind_Id)
-      return Opt_N_Protected_Body_Id;
+     (E : Protected_Kind_Id) return Opt_N_Protected_Body_Id;
    --  @param E protected type
    --  @return the protected body for the given type, similar to what
    --    subprogram_body might produce.
 
    function Protected_Type_Definition
-     (E : Protected_Kind_Id)
-      return Opt_N_Protected_Definition_Id;
+     (E : Protected_Kind_Id) return Opt_N_Protected_Definition_Id;
    --  @param E protected type
    --  @return the protected definition for the given type
 
-   function Requires_Interrupt_Priority
-     (E : Protected_Kind_Id)
-      return Boolean;
+   function Requires_Interrupt_Priority (E : Protected_Kind_Id) return Boolean;
    --  @param E the entity of a protected type
    --  @return True if E contains a protected procedure with Attach_Handler
    --  specified. Note that Interrupt_Handler cannot be True with the Ravenscar
    --  profile.
 
    function Visible_Declarations_Of_Prot_Type
-     (E : Protected_Kind_Id)
-      return List_Id;
+     (E : Protected_Kind_Id) return List_Id;
    --  @param E a protected type entity
    --  @return the list of visible declarations of the protected type
 
@@ -716,8 +689,7 @@ package SPARK_Util.Types is
    function Traverse_Subcomponents
      (Typ                : Type_Kind_Id;
       Skip_Discr         : Boolean := False;
-      Traverse_Ancestors : Boolean := False)
-      return Boolean;
+      Traverse_Ancestors : Boolean := False) return Boolean;
    --  Generic function which applies test to all subcomponents of Typ
    --  until one is found on which Test returns Pass. If Test returns
    --  Continue on a composite or an access subcomponent, the component types

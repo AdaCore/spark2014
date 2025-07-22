@@ -109,6 +109,15 @@ procedure Warnings_On_Lemmas with SPARK_Mode is
      Pre => B,
      Post => Call_2 (B, F, G) = Call_2 (B, F, H);
 
+   procedure Lemma_Two_Calls_3 (B : Boolean; F, G, H : not null access function return Integer) with
+     Always_Terminates,
+     Annotate => (GNATprove, Automatic_Instantiation),
+     Annotate => (GNATprove, Higher_Order_Specialization),
+     Ghost,
+     Contract_Cases =>
+      (not B  => Call_2 (B, F, G) = Call_2 (not B, G, F),
+       others => Call_2 (B, F, G) = Call_2 (B, F, H));
+
    procedure Lemma_Ok (B : Boolean; F, G : not null access function return Integer) is null;
    procedure Lemma_Ok_2 (B : Boolean; F, G : not null access function return Integer) is null;
    procedure Lemma_Ok_3 (B : Boolean; F, G : not null access function return Integer) is null;
@@ -121,6 +130,7 @@ procedure Warnings_On_Lemmas with SPARK_Mode is
    procedure Lemma_Partial_Call_3 (B : Boolean; F : not null access function return Integer; G : Named_F) is null;
    procedure Lemma_Two_Calls (B : Boolean; F, G : not null access function return Integer) is null;
    procedure Lemma_Two_Calls_2 (B : Boolean; F, G, H : not null access function return Integer) is null;
+   procedure Lemma_Two_Calls_3 (B : Boolean; F, G, H : not null access function return Integer) is null;
 begin
    null;
 end Warnings_On_Lemmas;

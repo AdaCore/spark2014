@@ -26,8 +26,7 @@
 package Flow.Slice is
 
    function Dependency
-     (FA      : Flow_Analysis_Graphs;
-      V_Final : Flow_Graphs.Vertex_Id)
+     (FA : Flow_Analysis_Graphs; V_Final : Flow_Graphs.Vertex_Id)
       return Flow_Id_Sets.Set;
    --  Compute all inputs the given vertex depends on. For IPFA please use the
    --  function IPFA_Dependency, which also includes dependencies on called
@@ -36,8 +35,7 @@ package Flow.Slice is
    --  Complexity is O(N)
 
    function IPFA_Dependency
-     (FA      : Flow_Analysis_Graphs;
-      V_Final : Flow_Graphs.Vertex_Id)
+     (FA : Flow_Analysis_Graphs; V_Final : Flow_Graphs.Vertex_Id)
       return Vertex_Sets.Set;
    pragma Unreferenced (IPFA_Dependency);
    --  Compute all inputs the given vertex depends on
@@ -45,8 +43,7 @@ package Flow.Slice is
    --  Complexity is O(N)
 
    function Compute_Dependency_Relation
-     (FA : Flow_Analysis_Graphs)
-      return Dependency_Maps.Map;
+     (FA : Flow_Analysis_Graphs) return Dependency_Maps.Map;
    --  Computes the actual dependency relation of the given subprogram
    --
    --  Complexity is O(N^2)
@@ -61,18 +58,21 @@ package Flow.Slice is
       Conditional_Calls     : out Node_Sets.Set;
       Local_Definite_Writes : out Node_Sets.Set;
       Local_Packages        : out Node_Sets.Set)
-   with Pre  => FA.Generating_Globals and FA.Is_Generative,
-        Post => Definite_Calls.Intersection (Conditional_Calls).Is_Empty
-                and then Proof_Calls.Intersection
-                           (Definite_Calls or Conditional_Calls).Is_Empty
-                and then Local_Definite_Writes.Is_Subset
-                           (Of_Set => FA.GG.Local_Variables)
-                and then (if Ekind (FA.Spec_Entity) = E_Package then
-                            (for all Local of Local_Packages =>
-                               Ekind (Local) = E_Package)
-                          else
-                            Local_Definite_Writes.Is_Empty
-                              and then Local_Packages.Is_Empty);
+   with
+     Pre  => FA.Generating_Globals and FA.Is_Generative,
+     Post =>
+       Definite_Calls.Intersection (Conditional_Calls).Is_Empty
+       and then Proof_Calls.Intersection (Definite_Calls or Conditional_Calls)
+                  .Is_Empty
+       and then Local_Definite_Writes.Is_Subset
+                  (Of_Set => FA.GG.Local_Variables)
+       and then (if Ekind (FA.Spec_Entity) = E_Package
+                 then
+                   (for all Local of Local_Packages =>
+                      Ekind (Local) = E_Package)
+                 else
+                   Local_Definite_Writes.Is_Empty
+                   and then Local_Packages.Is_Empty);
    --  Computes globals (and procedure calls) from the given graphs
    --  ??? this name has nothing to do with "computed globals" (aka Yannick's)
    --

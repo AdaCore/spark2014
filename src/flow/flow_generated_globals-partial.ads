@@ -43,24 +43,26 @@ package Flow_Generated_Globals.Partial is
    --  elaboration is handled as a call).
 
    subtype Callee_Set is Node_Sets.Set
-   with Dynamic_Predicate =>
-          (for all E of Callee_Set => Is_Callee (E));
+   with Dynamic_Predicate => (for all E of Callee_Set => Is_Callee (E));
 
    type Call_Nodes is record
       Proof_Calls       : Callee_Set;
       Conditional_Calls : Callee_Set;
       Definite_Calls    : Callee_Set;
    end record
-   with Dynamic_Predicate => Disjoint (Call_Nodes.Proof_Calls,
-                                       Call_Nodes.Conditional_Calls,
-                                       Call_Nodes.Definite_Calls);
+   with
+     Dynamic_Predicate =>
+       Disjoint
+         (Call_Nodes.Proof_Calls,
+          Call_Nodes.Conditional_Calls,
+          Call_Nodes.Definite_Calls);
 
    function Disjoint (A, B, C : Node_Sets.Set) return Boolean;
    --  Returns True iff sets A, B, C are mutually disjoint
 
    subtype Pkg_State_Set is Global_Set
-   with Dynamic_Predicate =>
-          (for all E of Pkg_State_Set => Is_Package_State (E));
+   with
+     Dynamic_Predicate => (for all E of Pkg_State_Set => Is_Package_State (E));
 
    type Initializes_Nodes is record
       Proper  : Pkg_State_Set;  --  ??? Abstract, just like in Flow_Nodes

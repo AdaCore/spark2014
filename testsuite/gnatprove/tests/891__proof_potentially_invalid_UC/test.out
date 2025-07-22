@@ -51,7 +51,7 @@ test_record_uc.adb:66:14: warning: subprogram "Test_1" has no effect
 test_record_uc.adb:68:30: info: validity check proved (CVC5: 1 VC)
 test_record_uc.adb:73:04: warning: analyzing unreferenced procedure "Test_2" [unreferenced-procedure]
 test_record_uc.adb:73:14: warning: subprogram "Test_2" has no effect
-test_record_uc.adb:75:30: medium: validity check might fail
+test_record_uc.adb:75:30: medium: validity check might fail (e.g. when X_m5_50 = (F => T_m5_50'First+3))
 test_record_uc.adb:80:04: warning: analyzing unreferenced procedure "Test_3" [unreferenced-procedure]
 test_record_uc.adb:80:14: warning: subprogram "Test_3" has no effect
 test_record_uc.adb:82:28: info: validity check proved (CVC5: 1 VC)

@@ -32,21 +32,21 @@ with Ada.Numerics.Big_Numbers.Big_Integers;
 use Ada.Numerics.Big_Numbers.Big_Integers;
 with Ada.Numerics.Big_Numbers.Big_Reals;
 use Ada.Numerics.Big_Numbers.Big_Reals;
-with Ada.Strings;              use Ada.Strings;
-with Ada.Strings.Fixed;        use Ada.Strings.Fixed;
+with Ada.Strings;                           use Ada.Strings;
+with Ada.Strings.Fixed;                     use Ada.Strings.Fixed;
 with Ada.Text_IO;
-with Casing;                   use Casing;
-with CE_Parsing;               use CE_Parsing;
-with CE_Utils;                 use CE_Utils;
-with Gnat2Why.Tables;          use Gnat2Why.Tables;
-with Namet;                    use Namet;
-with SPARK_Atree;              use SPARK_Atree;
-with SPARK_Atree.Entities;     use SPARK_Atree.Entities;
-with SPARK_Util;               use SPARK_Util;
-with SPARK_Util.Types;         use SPARK_Util.Types;
-with Stand;                    use Stand;
-with Types;                    use Types;
-with Uintp;                    use Uintp;
+with Casing;                                use Casing;
+with CE_Parsing;                            use CE_Parsing;
+with CE_Utils;                              use CE_Utils;
+with Gnat2Why.Tables;                       use Gnat2Why.Tables;
+with Namet;                                 use Namet;
+with SPARK_Atree;                           use SPARK_Atree;
+with SPARK_Atree.Entities;                  use SPARK_Atree.Entities;
+with SPARK_Util;                            use SPARK_Util;
+with SPARK_Util.Types;                      use SPARK_Util.Types;
+with Stand;                                 use Stand;
+with Types;                                 use Types;
+with Uintp;                                 use Uintp;
 
 package body CE_Pretty_Printing is
 
@@ -61,26 +61,27 @@ package body CE_Pretty_Printing is
    --  A location information for a component contains the type in which the
    --  component is declared first and the location of this first declaration.
 
-   function Get_Loc_Info (Comp : Entity_Id) return Component_Loc_Info is
-     ((Type_Ent => Original_Declaration (Comp),
-       Sloc     =>
+   function Get_Loc_Info (Comp : Entity_Id) return Component_Loc_Info
+   is ((Type_Ent => Original_Declaration (Comp),
+        Sloc     =>
           Sloc
             (Search_Component_In_Type (Original_Declaration (Comp), Comp))));
    --  Construct the location information of a record component or
    --  discriminant.
 
-   function "<" (X, Y : Component_Loc_Info) return Boolean is
-     ((X.Type_Ent /= Y.Type_Ent and then Is_Ancestor (X.Type_Ent, Y.Type_Ent))
-      or else (X.Type_Ent = Y.Type_Ent and then X.Sloc <= Y.Sloc));
+   function "<" (X, Y : Component_Loc_Info) return Boolean
+   is ((X.Type_Ent /= Y.Type_Ent and then Is_Ancestor (X.Type_Ent, Y.Type_Ent))
+       or else (X.Type_Ent = Y.Type_Ent and then X.Sloc <= Y.Sloc));
    --  Order on location information. A component F1 is declared first than
    --  another F2 if F1 is declared in an ancestor of the type in which F2 is
    --  declared, or if they are declared in the same type and F1 occurs before
    --  in the source code.
 
-   package Ordered_Sloc_Map is new Ada.Containers.Ordered_Maps
-     (Key_Type     => Component_Loc_Info,
-      Element_Type => CNT_Unbounded_String,
-      "<"          => "<");
+   package Ordered_Sloc_Map is new
+     Ada.Containers.Ordered_Maps
+       (Key_Type     => Component_Loc_Info,
+        Element_Type => CNT_Unbounded_String,
+        "<"          => "<");
    --  Map from sloc to strings, used to output component of record values in
    --  correct order.
 
@@ -107,25 +108,25 @@ package body CE_Pretty_Printing is
    -----------------------
 
    function Prefix_Names
-     (Elems : Name_Value_Lists.List;
-      Pref  : String) return Name_Value_Lists.List;
+     (Elems : Name_Value_Lists.List; Pref : String)
+      return Name_Value_Lists.List;
    --  Prefix all the names in Elems by Pref
 
    function Print_Access_Value (Value : Value_Type) return Value_And_Attributes
-     with Pre => Value.K = Access_K;
+   with Pre => Value.K = Access_K;
    --  Print value of an access type. Designated values are printed as
    --  allocators, new Ty'(V).
 
    function Print_Array_Value (Value : Value_Type) return Value_And_Attributes
-     with Pre => Value.K = Array_K;
+   with Pre => Value.K = Array_K;
    --  Print value of an array type in an aggregate-like syntax. When
    --  possible, string values are printed as string literals.
 
    generic
-      Bound_Type  : Big_Natural;
+      Bound_Type : Big_Natural;
       Bound_Value : Big_Natural;
    function Print_Discrete (Nb : Big_Integer; Ty : Entity_Id) return String
-     with Pre => Is_Discrete_Type (Ty);
+   with Pre => Is_Discrete_Type (Ty);
    --  This routine is used to alter printing for values of Discrete_Type.
    --  When a value is close enough to the bounds of its type (Bound_Value
    --  close) and the type is not too small (Range greater than Bound_Type)
@@ -135,9 +136,7 @@ package body CE_Pretty_Printing is
    --  V = - 127 is printed V = Byte'First + 1
 
    function Print_Fixed
-     (Small           : Big_Real;
-      Nb              : Big_Integer;
-      Always_Quotient : Boolean := False)
+     (Small : Big_Real; Nb : Big_Integer; Always_Quotient : Boolean := False)
       return String;
    --  If the computation of Small * Nb is an integer we print it as an
    --  integer. If not, we print Nb * Num (Small) / Den (Small) with Small
@@ -150,13 +149,13 @@ package body CE_Pretty_Printing is
    --  Print a counterexample value as a float
 
    function Print_Record_Value (Value : Value_Type) return Value_And_Attributes
-     with Pre => Value.K = Record_K;
+   with Pre => Value.K = Record_K;
    --  Print value of a record type in an aggregate like syntax. Hidden
    --  components are prefixed by the name of their enclosing type Ty.F => V.
 
    function Print_Scalar
-     (Value    : Scalar_Value_Type;
-      AST_Type : Entity_Id) return CNT_Unbounded_String;
+     (Value : Scalar_Value_Type; AST_Type : Entity_Id)
+      return CNT_Unbounded_String;
    --  Print a scalar counterexample value. The type is used to correctly print
    --  an Integer as a Character type for example.
 
@@ -187,9 +186,7 @@ package body CE_Pretty_Printing is
          Elems := Els;
       end if;
 
-      return (Str   => Str,
-              Count => Cnt,
-              Elems => Elems);
+      return (Str => Str, Count => Cnt, Elems => Elems);
    end Make_CNT_Unbounded_String;
 
    ------------------
@@ -197,8 +194,8 @@ package body CE_Pretty_Printing is
    ------------------
 
    function Prefix_Names
-     (Elems : Name_Value_Lists.List;
-      Pref  : String) return Name_Value_Lists.List
+     (Elems : Name_Value_Lists.List; Pref : String)
+      return Name_Value_Lists.List
    is
       Res : Name_Value_Lists.List := Elems;
    begin
@@ -212,16 +209,14 @@ package body CE_Pretty_Printing is
    -- Print_Access_Value --
    -------------------------
 
-   function Print_Access_Value
-     (Value : Value_Type) return Value_And_Attributes
+   function Print_Access_Value (Value : Value_Type) return Value_And_Attributes
    is
       Res : Value_And_Attributes;
 
    begin
       if Value.Is_Null.Present and then Value.Is_Null.Content then
          Res.Value :=
-           Make_CNT_Unbounded_String
-             (Str => To_Unbounded_String ("null"));
+           Make_CNT_Unbounded_String (Str => To_Unbounded_String ("null"));
 
       elsif Value.Designated_Value = null then
          Res.Value := Dont_Display;
@@ -250,8 +245,8 @@ package body CE_Pretty_Printing is
 
                Res.Value :=
                  Make_CNT_Unbounded_String
-                   (Str => "new " & Source_Name (Des_Ty)
-                      & "'(" & V.Value.Str & ")",
+                   (Str =>
+                      "new " & Source_Name (Des_Ty) & "'(" & V.Value.Str & ")",
                     Cnt => V.Value.Count,
                     Els => Elems);
 
@@ -273,10 +268,11 @@ package body CE_Pretty_Printing is
          Elem_Printed : CNT_Unbounded_String; -- Element value as printed
       end record;
 
-      package Sorted_Array is new Ada.Containers.Ordered_Maps
-        (Key_Type     => Big_Integer,
-         Element_Type => Array_Elem,
-         "<"          => "<");
+      package Sorted_Array is new
+        Ada.Containers.Ordered_Maps
+          (Key_Type     => Big_Integer,
+           Element_Type => Array_Elem,
+           "<"          => "<");
 
       procedure Add_Index
         (S_Array    : in out Sorted_Array.Map;
@@ -289,23 +285,25 @@ package body CE_Pretty_Printing is
       --  to a valid value of type Index_Type and both Index and Element
       --  can be printed.
 
-      function Is_Normal_Char (S : Unbounded_String) return Boolean is
-        (Length (S) = 3)
-      with Pre => Length (S) >= 3
+      function Is_Normal_Char (S : Unbounded_String) return Boolean
+      is (Length (S) = 3)
+      with
+        Pre =>
+          Length (S) >= 3
           and then Element (S, 1) = '''
           and then Element (S, Length (S)) = ''';
       --  Return True if S is the representation of a normal character
 
-      function Max_Exp_Others (String_Lit : Boolean) return Big_Natural is
-        (if String_Lit then Big_Natural'(15) else Big_Natural'(1));
+      function Max_Exp_Others (String_Lit : Boolean) return Big_Natural
+      is (if String_Lit then Big_Natural'(15) else Big_Natural'(1));
       --  Maximal number of elements for which the others value can be
       --  expanded.
       --  Decision: Only explicitly expand the others choice if it is less
       --  than 15 values for strings and 1 values for other arrays.
 
       function Parse_And_Print_Index
-        (Index      : Big_Integer;
-         Index_Type : Entity_Id) return CNT_Unbounded_String;
+        (Index : Big_Integer; Index_Type : Entity_Id)
+         return CNT_Unbounded_String;
       --  Use the parsing and pretty printing of scalars to transform an index
       --  value as a big integer into an appropriate string representation.
 
@@ -342,12 +340,13 @@ package body CE_Pretty_Printing is
       begin
          if Ind_Printed /= Dont_Display then
             if Element.Value /= Dont_Display then
-               S_Array.Include (Key      => Index,
-                                New_Item =>
-                                  (Ind_Printed  => Ind_Printed,
-                                   Elem_Printed => Element.Value));
-               String_Lit := String_Lit
-                 and then Is_Normal_Char (Element.Value.Str);
+               S_Array.Include
+                 (Key      => Index,
+                  New_Item =>
+                    (Ind_Printed  => Ind_Printed,
+                     Elem_Printed => Element.Value));
+               String_Lit :=
+                 String_Lit and then Is_Normal_Char (Element.Value.Str);
             end if;
 
             --  Store the attributes with their values
@@ -368,16 +367,17 @@ package body CE_Pretty_Printing is
       ---------------------------
 
       function Parse_And_Print_Index
-        (Index      : Big_Integer;
-         Index_Type : Entity_Id) return CNT_Unbounded_String
+        (Index : Big_Integer; Index_Type : Entity_Id)
+         return CNT_Unbounded_String
       is
          Value : Scalar_Value_Type;
       begin
-         Value := Parse_Scalar_Value
-           (Cntexmp_Value'
-              (T => Cnt_Integer,
-               I => To_Unbounded_String (To_String (Index))),
-            Index_Type);
+         Value :=
+           Parse_Scalar_Value
+             (Cntexmp_Value'
+                (T => Cnt_Integer,
+                 I => To_Unbounded_String (To_String (Index))),
+              Index_Type);
          return Print_Scalar (Value, Index_Type);
       exception
          when Parse_Error =>
@@ -396,17 +396,17 @@ package body CE_Pretty_Printing is
          Others_Val : out CNT_Unbounded_String;
          Attributes : out Name_Value_Lists.List)
       is
-         Fst_Index   : Node_Id := First_Index (Value.AST_Ty);
-         Index_Type  : Entity_Id;
+         Fst_Index  : Node_Id := First_Index (Value.AST_Ty);
+         Index_Type : Entity_Id;
 
          Others_Elem : Value_And_Attributes;
 
-         Attr_First  : Opt_Big_Integer := Value.First_Attr;
-         Attr_Last   : Opt_Big_Integer := Value.Last_Attr;
-         U_Fst       : Uint;
-         U_Lst       : Uint;
-         First       : Big_Integer;
-         Last        : Big_Integer;
+         Attr_First : Opt_Big_Integer := Value.First_Attr;
+         Attr_Last  : Opt_Big_Integer := Value.Last_Attr;
+         U_Fst      : Uint;
+         U_Lst      : Uint;
+         First      : Big_Integer;
+         Last       : Big_Integer;
 
       begin
          --  Empty arrays can have bounds in the base type of their index type
@@ -457,9 +457,8 @@ package body CE_Pretty_Printing is
             --  Reorder the elements inside S_Array
 
             declare
-               Index        : Big_Integer renames
-                 Big_Integer_To_Value_Maps.Key (C);
-               Elem         : Value_Access renames Value.Array_Values (C);
+               Index : Big_Integer renames Big_Integer_To_Value_Maps.Key (C);
+               Elem  : Value_Access renames Value.Array_Values (C);
 
                Elem_Printed : constant Value_And_Attributes :=
                  Print_Value (Elem.all);
@@ -472,8 +471,12 @@ package body CE_Pretty_Printing is
                  and then (First = Last or else Elem_Printed /= Others_Elem)
                then
                   Add_Index
-                    (S_Array, Attributes, String_Lit,
-                     Index, Index_Type, Elem_Printed);
+                    (S_Array,
+                     Attributes,
+                     String_Lit,
+                     Index,
+                     Index_Type,
+                     Elem_Printed);
                end if;
             end;
          end loop;
@@ -489,10 +492,14 @@ package body CE_Pretty_Printing is
          --  is supplied.
 
          elsif Others_Elem.Value /= Dont_Display
-           and then To_Big_Integer (Integer (S_Array.Length)) >=
-             Last - First + 1 -
-             Max_Exp_Others (String_Lit => String_Lit
-                               and then Is_Normal_Char (Others_Elem.Value.Str))
+           and then To_Big_Integer (Integer (S_Array.Length))
+                    >= Last
+                       - First
+                       + 1
+                       - Max_Exp_Others
+                           (String_Lit =>
+                              String_Lit
+                              and then Is_Normal_Char (Others_Elem.Value.Str))
            and then ((Attr_First.Present and then Attr_Last.Present)
                      or else Is_Static_Array_Type (Value.AST_Ty))
          then
@@ -502,14 +509,19 @@ package body CE_Pretty_Printing is
                while Index <= Last loop
                   if not S_Array.Contains (Index) then
                      Add_Index
-                       (S_Array, Attributes, String_Lit,
-                        Index, Index_Type, Others_Elem);
+                       (S_Array,
+                        Attributes,
+                        String_Lit,
+                        Index,
+                        Index_Type,
+                        Others_Elem);
                   end if;
                   Index := Index + 1;
                end loop;
             end;
-            pragma Assert
-              (To_Big_Integer (Integer (S_Array.Length)) = Last - First + 1);
+            pragma
+              Assert
+                (To_Big_Integer (Integer (S_Array.Length)) = Last - First + 1);
             Complete := True;
 
          else
@@ -531,8 +543,7 @@ package body CE_Pretty_Printing is
             if Attr_First.Present then
                declare
                   First_Str : constant CNT_Unbounded_String :=
-                    Parse_And_Print_Index
-                      (Attr_First.Content, Index_Type);
+                    Parse_And_Print_Index (Attr_First.Content, Index_Type);
                begin
                   if First_Str /= Dont_Display then
                      Attributes.Append
@@ -540,13 +551,11 @@ package body CE_Pretty_Printing is
                   end if;
                end;
             end if;
-            if (not Complete or else Last < First)
-              and then Attr_Last.Present
+            if (not Complete or else Last < First) and then Attr_Last.Present
             then
                declare
                   Last_Str : constant CNT_Unbounded_String :=
-                    Parse_And_Print_Index
-                      (Attr_Last.Content, Index_Type);
+                    Parse_And_Print_Index (Attr_Last.Content, Index_Type);
                begin
                   if Last_Str /= Dont_Display then
                      Attributes.Append
@@ -570,12 +579,11 @@ package body CE_Pretty_Printing is
 
       use S_String_List;
 
-   --  Start of processing for Print_Array_Value
+      --  Start of processing for Print_Array_Value
 
    begin
       Print_Elements
-        (Value, S_Array, Complete,
-         String_Lit, Others_Val, Res.Attributes);
+        (Value, S_Array, Complete, String_Lit, Others_Val, Res.Attributes);
 
       --  Print complete strings containing only normal characters as string
       --  literals.
@@ -588,8 +596,7 @@ package body CE_Pretty_Printing is
          if S = "" then
             Res.Value := Dont_Display;
          else
-            Res.Value := Make_CNT_Unbounded_String
-              (Str => '"' & S & '"');
+            Res.Value := Make_CNT_Unbounded_String (Str => '"' & S & '"');
          end if;
 
       --  Otherwise, use an aggregate notation
@@ -604,8 +611,9 @@ package body CE_Pretty_Printing is
                Elem_Printed : constant CNT_Unbounded_String :=
                  S_Array (C).Elem_Printed;
                C_Elems      : S_String_List.List :=
-                 Prefix_Elements (Elem_Printed.Elems,
-                                  To_String ('(' & Ind_Printed.Str & ')'));
+                 Prefix_Elements
+                   (Elem_Printed.Elems,
+                    To_String ('(' & Ind_Printed.Str & ')'));
             begin
                if S /= "" then
                   Append (S, ", ");
@@ -616,8 +624,7 @@ package body CE_Pretty_Printing is
                Count := Count + Elem_Printed.Count;
                Append (S, Ind_Printed.Str & " => " & Elem_Printed.Str);
 
-               Elems.Splice (Before => No_Element,
-                             Source => C_Elems);
+               Elems.Splice (Before => No_Element, Source => C_Elems);
             end;
          end loop;
 
@@ -625,8 +632,7 @@ package body CE_Pretty_Printing is
          --  others case. Don't add it if the others case is unknown and there
          --  are no specific cases.
 
-         if not Complete
-           and then (S /= "" or else Others_Val /= Dont_Display)
+         if not Complete and then (S /= "" or else Others_Val /= Dont_Display)
          then
             if S /= "" then
                Append (S, ", ");
@@ -647,10 +653,9 @@ package body CE_Pretty_Printing is
          if S = "" then
             Res.Value := Dont_Display;
          else
-            Res.Value := Make_CNT_Unbounded_String
-              (Str => "(" & S & ")",
-               Cnt => Count,
-               Els => Elems);
+            Res.Value :=
+              Make_CNT_Unbounded_String
+                (Str => "(" & S & ")", Cnt => Count, Els => Elems);
          end if;
       end if;
       return Res;
@@ -663,7 +668,7 @@ package body CE_Pretty_Printing is
    function Print_Discrete (Nb : Big_Integer; Ty : Entity_Id) return String is
 
       function Beautiful_Source_Name (Ty : Entity_Id) return String
-        with Pre => Is_Discrete_Type (Ty);
+      with Pre => Is_Discrete_Type (Ty);
       --  Does the same as Source_Name except for types defined in Standard
       --  which we print with Upper case letter after each '_'.
 
@@ -689,9 +694,9 @@ package body CE_Pretty_Printing is
 
       --  Local variables
 
-      Nb_Type  : Entity_Id := Ty;
+      Nb_Type : Entity_Id := Ty;
 
-   --  Start of processing for Print_Discrete
+      --  Start of processing for Print_Discrete
 
    begin
       --  Try to avoid base types introduced by the compiler if possible
@@ -763,7 +768,10 @@ package body CE_Pretty_Printing is
 
             elsif Diff_To_High < Bound_Value then
                Side := (if Nb < High_Bound then '-' else '+');
-               return Type_Name & "'Last" & Side
+               return
+                 Type_Name
+                 & "'Last"
+                 & Side
                  & Trim (To_String (Diff_To_High), Left);
 
             else
@@ -782,7 +790,10 @@ package body CE_Pretty_Printing is
 
             elsif Diff_To_Low < Bound_Value then
                Side := (if Nb < Low_Bound then '-' else '+');
-               return Type_Name & "'First" & Side
+               return
+                 Type_Name
+                 & "'First"
+                 & Side
                  & Trim (To_String (Diff_To_Low), Left);
 
             else
@@ -797,23 +808,23 @@ package body CE_Pretty_Printing is
    -----------------
 
    function Print_Fixed
-     (Small           : Big_Real;
-      Nb              : Big_Integer;
-      Always_Quotient : Boolean := False)
+     (Small : Big_Real; Nb : Big_Integer; Always_Quotient : Boolean := False)
       return String is
    begin
       declare
          Nb_Real : constant Big_Real := To_Big_Real (Nb) * Small;
       begin
          if Denominator (Nb_Real) = 1 then
-            return To_String (Numerator (Nb_Real))
+            return
+              To_String (Numerator (Nb_Real))
               & (if Always_Quotient then "/1" else "");
          else
             declare
                Num_Small : constant Big_Integer := Numerator (Small);
                Den_Small : constant Big_Integer := Denominator (Small);
             begin
-               return To_String (Nb)
+               return
+                 To_String (Nb)
                  & (if Num_Small /= 1
                     then "*" & Trim (To_String (Num_Small), Left)
                     else "")
@@ -831,11 +842,11 @@ package body CE_Pretty_Printing is
 
    function Print_Float (Nb : T_Float) return String is
       package F_IO is new Ada.Text_IO.Float_IO (T_Float);
-      Bound : constant Natural :=
+      Bound  : constant Natural :=
         (case K is
-            when Float_32_K => 32,
-            when Float_64_K => 64,
-            when Extended_K => 80);
+           when Float_32_K => 32,
+           when Float_64_K => 64,
+           when Extended_K => 80);
       Result : String (1 .. Bound);
 
    begin
@@ -846,23 +857,21 @@ package body CE_Pretty_Printing is
       --  double precision floating point numbers, respectively.
 
       if abs Nb < 1000.0 and then T_Float'Truncation (Nb) = Nb then
-         F_IO.Put (To   => Result,
-                   Item => Nb,
-                   Aft  => 0,
-                   Exp  => 0);
+         F_IO.Put (To => Result, Item => Nb, Aft => 0, Exp => 0);
       else
-         F_IO.Put (To   => Result,
-                   Item => Nb,
-                   --  In the case of long_float, we print 10 decimals
-                   --  and we print 7 in case of short float.
-                   Aft  => (case K is
-                               when Float_32_K => 7,
-                               when Float_64_K => 10,
-                               when Extended_K => 10),
-                   Exp  => 1);
+         F_IO.Put
+           (To   => Result,
+            Item => Nb,
+            --  In the case of long_float, we print 10 decimals
+            --  and we print 7 in case of short float.
+            Aft  =>
+              (case K is
+                 when Float_32_K => 7,
+                 when Float_64_K => 10,
+                 when Extended_K => 10),
+            Exp  => 1);
       end if;
-      return Trim (Source => Result,
-                   Side   => Both);
+      return Trim (Source => Result, Side => Both);
    end Print_Float;
 
    ------------------------
@@ -889,8 +898,7 @@ package body CE_Pretty_Printing is
       --  Ordered_Values and its attributes in Attributes.
 
       procedure Process_Component
-        (Comp     : Entity_Id;
-         Comp_Val : Value_And_Attributes);
+        (Comp : Entity_Id; Comp_Val : Value_And_Attributes);
       --  Go over counterexample values for record fields to fill
       --  the Ordered_Values map. Along the way, remove seen
       --  components from the Visibility_Map so that we can later
@@ -908,8 +916,7 @@ package body CE_Pretty_Printing is
          Comp_Name : constant String := Source_Name (Comp);
          Orig_Decl : constant Entity_Id := Original_Declaration (Comp);
          Prefix    : constant String :=
-           (if Ekind (Comp) /= E_Discriminant
-              and then Visibility = Duplicated
+           (if Ekind (Comp) /= E_Discriminant and then Visibility = Duplicated
             then Source_Name (Orig_Decl) & "."
             else "");
          --  Explanation. It is empty except for duplicated
@@ -921,7 +928,9 @@ package body CE_Pretty_Printing is
 
          if Val.Value /= Dont_Display
            and then not Component_Is_Removed_In_Type
-             (Ty => Value.AST_Ty, Comp => Comp, Vals => Value.Record_Fields)
+                          (Ty   => Value.AST_Ty,
+                           Comp => Comp,
+                           Vals => Value.Record_Fields)
          then
             Ordered_Values.Insert
               (Get_Loc_Info (Comp),
@@ -949,16 +958,14 @@ package body CE_Pretty_Printing is
       -----------------------
 
       procedure Process_Component
-        (Comp     : Entity_Id;
-         Comp_Val : Value_And_Attributes)
+        (Comp : Entity_Id; Comp_Val : Value_And_Attributes)
       is
          Visibility : Component_Visibility;
       begin
          if not Is_Type (Comp) then
             declare
                Orig_Comp : constant Entity_Id :=
-                 Search_Component_In_Type
-                   (Ada_Type, Comp);
+                 Search_Component_In_Type (Ada_Type, Comp);
             begin
                if Present (Orig_Comp) then
                   Visibility := Visibility_Map (Orig_Comp);
@@ -987,7 +994,7 @@ package body CE_Pretty_Printing is
          end if;
       end Process_Component;
 
-   --  Start of processing for Print_Record_Value
+      --  Start of processing for Print_Record_Value
 
    begin
       --  Add the 'Constrained to attributes if present
@@ -996,9 +1003,11 @@ package body CE_Pretty_Printing is
          declare
             Constr_Val : constant CNT_Unbounded_String :=
               Make_CNT_Unbounded_String
-                (Str => To_Unbounded_String
-                   (if Value.Constrained_Attr.Content then "True"
-                    else "False"));
+                (Str =>
+                   To_Unbounded_String
+                     (if Value.Constrained_Attr.Content
+                      then "True"
+                      else "False"));
          begin
             Attributes.Append
               ((Name  => To_Unbounded_String ("'Constrained"),
@@ -1011,12 +1020,10 @@ package body CE_Pretty_Printing is
 
       if Has_Discriminants (Ada_Type) then
          declare
-            Discr : Entity_Id :=
-              First_Discriminant (Ada_Type);
+            Discr : Entity_Id := First_Discriminant (Ada_Type);
          begin
             while Present (Discr) loop
-               Visibility_Map.Insert
-                 (Root_Discriminant (Discr), Regular);
+               Visibility_Map.Insert (Root_Discriminant (Discr), Regular);
                Next_Discriminant (Discr);
             end loop;
          end;
@@ -1045,8 +1052,8 @@ package body CE_Pretty_Printing is
       --  components.
 
       declare
-         Is_Before    : Boolean := False;
-         Need_Others  : Boolean := False;
+         Is_Before   : Boolean := False;
+         Need_Others : Boolean := False;
          --  True if there are more than one missing value or if
          --  the record contains invisible fields (component of type
          --  kind).
@@ -1054,9 +1061,9 @@ package body CE_Pretty_Printing is
          First_Unseen : Entity_Id := Empty;
          --  First component for which we are missing a value
 
-         Str_Val      : Unbounded_String := To_Unbounded_String ("(");
-         Count        : Natural := 0;
-         Elems        : S_String_List.List;
+         Str_Val : Unbounded_String := To_Unbounded_String ("(");
+         Count   : Natural := 0;
+         Elems   : S_String_List.List;
       begin
          for C in Visibility_Map.Iterate loop
             declare
@@ -1067,12 +1074,11 @@ package body CE_Pretty_Printing is
             begin
                if Visibility /= Removed
                  and then not Component_Is_Removed_In_Type
-                   (Ty   => Value.AST_Ty,
-                    Comp => Comp,
-                    Vals => Value.Record_Fields)
+                                (Ty   => Value.AST_Ty,
+                                 Comp => Comp,
+                                 Vals => Value.Record_Fields)
                then
-                  if Is_Type (Comp) or else Present (First_Unseen)
-                  then
+                  if Is_Type (Comp) or else Present (First_Unseen) then
                      Need_Others := True;
                      exit;
                   else
@@ -1089,8 +1095,8 @@ package body CE_Pretty_Printing is
          if not Need_Others and then Present (First_Unseen) then
             Get_Value_Of_Component
               (First_Unseen,
-               (Value      => Make_CNT_Unbounded_String
-                    (Str => To_Unbounded_String ("?")),
+               (Value      =>
+                  Make_CNT_Unbounded_String (Str => To_Unbounded_String ("?")),
                 Attributes => Name_Value_Lists.Empty_List),
                Visibility_Map.Element (First_Unseen));
          end if;
@@ -1099,12 +1105,11 @@ package body CE_Pretty_Printing is
          --  components in the right order.
 
          for V of Ordered_Values loop
-            Append (Str_Val,
-                    (if Is_Before then ", " else "") & V.Str);
+            Append (Str_Val, (if Is_Before then ", " else "") & V.Str);
             Is_Before := True;
             Count := Count + V.Count;
-            Elems.Splice (Before => S_String_List.No_Element,
-                          Source => V.Elems);
+            Elems.Splice
+              (Before => S_String_List.No_Element, Source => V.Elems);
          end loop;
 
          --  If there are more than one fields that are not
@@ -1112,18 +1117,16 @@ package body CE_Pretty_Printing is
          --  the field others.
 
          if Need_Others then
-            Append (Str_Val,
-                    (if Is_Before then ", " else "") &
-                      "others => ?");
+            Append (Str_Val, (if Is_Before then ", " else "") & "others => ?");
             Count := Count + 1;
          end if;
          Append (Str_Val, ')');
 
-         return (Value      => Make_CNT_Unbounded_String
-                 (Str => Str_Val,
-                  Cnt => Count,
-                  Els => Elems),
-                 Attributes => Attributes);
+         return
+           (Value      =>
+              Make_CNT_Unbounded_String
+                (Str => Str_Val, Cnt => Count, Els => Elems),
+            Attributes => Attributes);
       end;
    end Print_Record_Value;
 
@@ -1132,8 +1135,8 @@ package body CE_Pretty_Printing is
    ------------------
 
    function Print_Scalar
-     (Value    : Scalar_Value_Type;
-      AST_Type : Entity_Id) return CNT_Unbounded_String
+     (Value : Scalar_Value_Type; AST_Type : Entity_Id)
+      return CNT_Unbounded_String
    is
       function To_String (Value : Scalar_Value_Type) return String;
       --  Turn Value into a string
@@ -1151,9 +1154,8 @@ package body CE_Pretty_Printing is
                   --  Decision: generic values for Bound_Type and Bound_Value
                   --  are random for now. They can be adjusted in the future.
 
-                  function Pretty_Print is
-                    new Print_Discrete (Bound_Type  => 10,
-                                        Bound_Value => 5);
+                  function Pretty_Print is new
+                    Print_Discrete (Bound_Type => 10, Bound_Value => 5);
                begin
                   return Pretty_Print (Value.Integer_Content, AST_Type);
                end;
@@ -1193,7 +1195,8 @@ package body CE_Pretty_Printing is
                         --  character we are interested in. Just retrieve it
                         --  directly at Name_Buffer(2).
 
-                        return "'"
+                        return
+                          "'"
                           & Char_To_String_Representation (Name_Buffer (2))
                           & "'";
 
@@ -1215,22 +1218,24 @@ package body CE_Pretty_Printing is
                case Value.Float_Content.K is
                   when Float_32_K =>
                      declare
-                        function Print is new Print_Float
-                          (Float, Value.Float_Content.K);
+                        function Print is new
+                          Print_Float (Float, Value.Float_Content.K);
                      begin
                         return Print (Value.Float_Content.Content_32);
                      end;
+
                   when Float_64_K =>
                      declare
-                        function Print is new Print_Float
-                          (Long_Float, Value.Float_Content.K);
+                        function Print is new
+                          Print_Float (Long_Float, Value.Float_Content.K);
                      begin
                         return Print (Value.Float_Content.Content_64);
                      end;
+
                   when Extended_K =>
                      declare
-                        function Print is new Print_Float
-                          (Long_Long_Float, Value.Float_Content.K);
+                        function Print is new
+                          Print_Float (Long_Long_Float, Value.Float_Content.K);
                      begin
                         return Print (Value.Float_Content.Ext_Content);
                      end;
@@ -1238,14 +1243,15 @@ package body CE_Pretty_Printing is
          end case;
       end To_String;
 
-   --  Start of processing for Print_Scalar_Value
+      --  Start of processing for Print_Scalar_Value
 
    begin
       declare
          Result : constant String := To_String (Value);
       begin
-         return Make_CNT_Unbounded_String
-           (Str => To_Unbounded_String (Trim (Result, Both)));
+         return
+           Make_CNT_Unbounded_String
+             (Str => To_Unbounded_String (Trim (Result, Both)));
       end;
    exception
       when Parse_Error =>
@@ -1258,37 +1264,10 @@ package body CE_Pretty_Printing is
 
    function Print_Value (Value : Value_Type) return Value_And_Attributes is
    begin
-      --  Handling of invalid values
-
-      declare
-         Attributes : Name_Value_Lists.List;
-      begin
-         if Value.Valid_Attr.Present then
-            declare
-               Valid_Val : constant CNT_Unbounded_String :=
-                 Make_CNT_Unbounded_String
-                   (Str => To_Unbounded_String
-                      (if Value.Valid_Attr.Content then "True" else "False"));
-               Attr_Name : constant String :=
-                 (if Value.K = Scalar_K then "'Valid" else "'Valid_Scalars");
-            begin
-               Attributes.Append
-                 ((Name  => To_Unbounded_String (Attr_Name),
-                   Value => Valid_Val));
-            end;
-
-               --  Don't display scalar values if 'Initialized is False
-
-               if not Value.Valid_Attr.Content then
-                  return (Value => Dont_Display, Attributes => Attributes);
-               end if;
-         end if;
-      end;
-
       case Value.K is
          when Scalar_K =>
 
-            --  Don't display uninitialized values
+            --  Don't display uninitialized or invalid values
 
             declare
                Attributes : Name_Value_Lists.List;
@@ -1297,9 +1276,11 @@ package body CE_Pretty_Printing is
                   declare
                      Init_Val : constant CNT_Unbounded_String :=
                        Make_CNT_Unbounded_String
-                         (Str => To_Unbounded_String
-                            (if Value.Initialized_Attr.Content then "True"
-                             else "False"));
+                         (Str =>
+                            To_Unbounded_String
+                              (if Value.Initialized_Attr.Content
+                               then "True"
+                               else "False"));
                   begin
                      Attributes.Append
                        ((Name  => To_Unbounded_String ("'Initialized"),
@@ -1307,11 +1288,30 @@ package body CE_Pretty_Printing is
                   end;
                end if;
 
-               --  Don't display scalar values if 'Initialized is False
+               if Value.Valid_Attr.Present then
+                  declare
+                     Valid_Val : constant CNT_Unbounded_String :=
+                       Make_CNT_Unbounded_String
+                         (Str =>
+                            To_Unbounded_String
+                              (if Value.Valid_Attr.Content
+                               then "True"
+                               else "False"));
+                  begin
+                     Attributes.Append
+                       ((Name  => To_Unbounded_String ("'Valid"),
+                         Value => Valid_Val));
+                  end;
+               end if;
+
+               --  Don't display scalar values if 'Initialized or 'Valid is
+               --  False.
 
                if Value.Scalar_Content = null
                  or else (Value.Initialized_Attr.Present
                           and then not Value.Initialized_Attr.Content)
+                 or else (Value.Valid_Attr.Present
+                          and then not Value.Valid_Attr.Content)
                then
                   return (Value => Dont_Display, Attributes => Attributes);
                else
@@ -1337,15 +1337,19 @@ package body CE_Pretty_Printing is
                      declare
                         Bound_Val : constant CNT_Unbounded_String :=
                           Make_CNT_Unbounded_String
-                            (Str => To_Unbounded_String
-                               (Trim
-                                  (To_String
-                                      (Value.Bounds.Content (I).First.Content),
-                                   Left)));
+                            (Str =>
+                               To_Unbounded_String
+                                 (Trim
+                                    (To_String
+                                       (Value.Bounds.Content (I)
+                                          .First
+                                          .Content),
+                                     Left)));
                      begin
                         Attributes.Append
-                          ((Name  => To_Unbounded_String
-                               ("'First (" & Trim (I'Image, Left) & ")"),
+                          ((Name  =>
+                              To_Unbounded_String
+                                ("'First (" & Trim (I'Image, Left) & ")"),
                             Value => Bound_Val));
                      end;
                   end if;
@@ -1353,15 +1357,17 @@ package body CE_Pretty_Printing is
                      declare
                         Bound_Val : constant CNT_Unbounded_String :=
                           Make_CNT_Unbounded_String
-                            (Str => To_Unbounded_String
-                               (Trim
-                                  (To_String
-                                      (Value.Bounds.Content (I).Last.Content),
-                                   Left)));
+                            (Str =>
+                               To_Unbounded_String
+                                 (Trim
+                                    (To_String
+                                       (Value.Bounds.Content (I).Last.Content),
+                                     Left)));
                      begin
                         Attributes.Append
-                          ((Name  => To_Unbounded_String
-                               ("'Last (" & Trim (I'Image, Left) & ")"),
+                          ((Name  =>
+                              To_Unbounded_String
+                                ("'Last (" & Trim (I'Image, Left) & ")"),
                             Value => Bound_Val));
                      end;
                   end if;
@@ -1369,8 +1375,7 @@ package body CE_Pretty_Printing is
 
                --  Return Dont_Display
 
-               return (Value      => Dont_Display,
-                       Attributes => Attributes);
+               return (Value => Dont_Display, Attributes => Attributes);
             end;
 
          when Array_K =>
@@ -1382,8 +1387,7 @@ package body CE_Pretty_Printing is
    end Print_Value;
 
    function Print_Value (Value : Value_Type) return CNT_Unbounded_String is
-      Val_And_Attrs : constant Value_And_Attributes :=
-        Print_Value (Value);
+      Val_And_Attrs : constant Value_And_Attributes := Print_Value (Value);
 
    begin
       return Val_And_Attrs.Value;
@@ -1397,8 +1401,7 @@ package body CE_Pretty_Printing is
      (Name           : Unbounded_String;
       Value          : Value_Type;
       Pretty_Line    : in out Cntexample_Elt_Lists.List;
-      Is_Json_Format : Boolean := False)
-   is
+      Is_Json_Format : Boolean := False) is
    begin
       if Is_Json_Format then
          declare
@@ -1406,10 +1409,11 @@ package body CE_Pretty_Printing is
               Serialize_Value (Value);
          begin
             Pretty_Line.Append
-              (Cntexample_Elt'(K        => Json_Format,
-                               Kind     => CEE_Variable,
-                               Name     => Name,
-                               JSON_Obj => JSON_Obj));
+              (Cntexample_Elt'
+                 (K        => Json_Format,
+                  Kind     => CEE_Variable,
+                  Name     => Name,
+                  JSON_Obj => JSON_Obj));
          end;
       else
          declare
@@ -1419,10 +1423,11 @@ package body CE_Pretty_Printing is
             --  Append the pretty printed value of Value
             if Val_And_Attrs.Value /= Dont_Display then
                Pretty_Line.Append
-                 (Cntexample_Elt'(K        => Pretty_Printed,
-                                  Kind     => CEE_Variable,
-                                  Name     => Name,
-                                  Val_Str  => Val_And_Attrs.Value));
+                 (Cntexample_Elt'
+                    (K       => Pretty_Printed,
+                     Kind    => CEE_Variable,
+                     Name    => Name,
+                     Val_Str => Val_And_Attrs.Value));
             end if;
 
             --  Add the attributes
@@ -1433,10 +1438,11 @@ package body CE_Pretty_Printing is
             begin
                for Name_And_Value of Val_Attr loop
                   Pretty_Line.Append
-                    (Cntexample_Elt'(K       => Pretty_Printed,
-                                     Kind    => CEE_Variable,
-                                     Name    => Name_And_Value.Name,
-                                     Val_Str => Name_And_Value.Value));
+                    (Cntexample_Elt'
+                       (K       => Pretty_Printed,
+                        Kind    => CEE_Variable,
+                        Name    => Name_And_Value.Name,
+                        Val_Str => Name_And_Value.Value));
                end loop;
             end;
          end;
@@ -1447,54 +1453,54 @@ package body CE_Pretty_Printing is
    -- Serialize_Float --
    ---------------------
 
-   function Serialize_Float (F : CE_Values.Float_Value)
-                             return GNATCOLL.JSON.JSON_Value
+   function Serialize_Float
+     (F : CE_Values.Float_Value) return GNATCOLL.JSON.JSON_Value
    is
       use GNATCOLL.JSON;
       JSON_Obj : constant GNATCOLL.JSON.JSON_Value := Create_Object;
    begin
-      Set_Field (JSON_Obj,
-                 "quotient",
-                 False);
+      Set_Field (JSON_Obj, "quotient", False);
       case F.K is
          when Float_32_K =>
             declare
                Content_32 : constant Float := F.Content_32;
                F_Str      : String (1 .. Float'Digits * 3);
             begin
-               Ada.Float_Text_IO.Put (To => F_Str,
-                                      Item => Content_32,
-                                      Aft => Float'Digits,
-                                      Exp => 1);
-               Set_Field (JSON_Obj,
-                          "value",
-                          Create (Trim (F_Str, Ada.Strings.Left)));
+               Ada.Float_Text_IO.Put
+                 (To   => F_Str,
+                  Item => Content_32,
+                  Aft  => Float'Digits,
+                  Exp  => 1);
+               Set_Field
+                 (JSON_Obj, "value", Create (Trim (F_Str, Ada.Strings.Left)));
             end;
+
          when Float_64_K =>
             declare
                Content_64 : constant Long_Float := F.Content_64;
                F_Str      : String (1 .. Long_Float'Digits * 3);
             begin
-               Ada.Long_Float_Text_IO.Put (To => F_Str,
-                                           Item => Content_64,
-                                           Aft => Long_Float'Digits,
-                                           Exp => 1);
-               Set_Field (JSON_Obj,
-                          "value",
-                          Create (Trim (F_Str, Ada.Strings.Left)));
+               Ada.Long_Float_Text_IO.Put
+                 (To   => F_Str,
+                  Item => Content_64,
+                  Aft  => Long_Float'Digits,
+                  Exp  => 1);
+               Set_Field
+                 (JSON_Obj, "value", Create (Trim (F_Str, Ada.Strings.Left)));
             end;
+
          when others =>
             declare
                Ext_Content : constant Long_Long_Float := F.Ext_Content;
                F_Str       : String (1 .. Long_Long_Float'Digits * 3);
             begin
-               Ada.Long_Long_Float_Text_IO.Put (To => F_Str,
-                                                Item => Ext_Content,
-                                                Aft => Long_Long_Float'Digits,
-                                                Exp => 1);
-               Set_Field (JSON_Obj,
-                          "value",
-                          Create (Trim (F_Str, Ada.Strings.Left)));
+               Ada.Long_Long_Float_Text_IO.Put
+                 (To   => F_Str,
+                  Item => Ext_Content,
+                  Aft  => Long_Long_Float'Digits,
+                  Exp  => 1);
+               Set_Field
+                 (JSON_Obj, "value", Create (Trim (F_Str, Ada.Strings.Left)));
             end;
       end case;
       return JSON_Obj;
@@ -1504,50 +1510,58 @@ package body CE_Pretty_Printing is
    -- Serialize_Value --
    ---------------------
 
-   function Serialize_Value (Value : CE_Values.Value_Type)
-                             return GNATCOLL.JSON.JSON_Value
+   function Serialize_Value
+     (Value : CE_Values.Value_Type) return GNATCOLL.JSON.JSON_Value
    is
       use GNATCOLL.JSON;
       JSON_Obj : GNATCOLL.JSON.JSON_Value := Create_Object;
    begin
       case Value.K is
          when Scalar_K =>
-            if Value.Scalar_Content /= null
-            then
+            if Value.Scalar_Content /= null then
                case Value.Scalar_Content.K is
-               when Integer_K =>
-                  JSON_Obj := Create
-                    (Trim
-                       (To_String (Value.Scalar_Content.Integer_Content),
-                        Ada.Strings.Left));
-               when Float_K =>
-                  JSON_Obj := Serialize_Float
-                    (Value.Scalar_Content.Float_Content);
-               when Fixed_K =>
-                  Set_Field (JSON_Obj,
-                             "value",
-                             Create (Print_Fixed
-                               (Value.Scalar_Content.Small,
-                                  Value.Scalar_Content.Fixed_Content,
-                                  True)));
-                  Set_Field (JSON_Obj,
-                             "quotient",
-                             True);
-               when others =>
-                  case Nkind (Value.Scalar_Content.Enum_Entity) is
-                     when N_Character_Literal =>
-                        JSON_Obj := Create (To_String (Value)
-                                            (To_String (Value)'First)'Image);
-                     when others =>
-                        JSON_Obj := Create (To_String (Value));
-                  end case;
+                  when Integer_K =>
+                     JSON_Obj :=
+                       Create
+                         (Trim
+                            (To_String (Value.Scalar_Content.Integer_Content),
+                             Ada.Strings.Left));
+
+                  when Float_K =>
+                     JSON_Obj :=
+                       Serialize_Float (Value.Scalar_Content.Float_Content);
+
+                  when Fixed_K =>
+                     Set_Field
+                       (JSON_Obj,
+                        "value",
+                        Create
+                          (Print_Fixed
+                             (Value.Scalar_Content.Small,
+                              Value.Scalar_Content.Fixed_Content,
+                              True)));
+                     Set_Field (JSON_Obj, "quotient", True);
+
+                  when others =>
+                     case Nkind (Value.Scalar_Content.Enum_Entity) is
+                        when N_Character_Literal =>
+                           JSON_Obj :=
+                             Create
+                               (To_String (Value)
+                                  (To_String (Value)'First)'Image);
+
+                        when others =>
+                           JSON_Obj := Create (To_String (Value));
+                     end case;
                end case;
             end if;
+
          when Record_K =>
             declare
-               Components : constant GNATCOLL.JSON.JSON_Value := Create_Object;
-               Discriminants : constant GNATCOLL.JSON.JSON_Value
-                 := Create_Object;
+               Components    : constant GNATCOLL.JSON.JSON_Value :=
+                 Create_Object;
+               Discriminants : constant GNATCOLL.JSON.JSON_Value :=
+                 Create_Object;
             begin
                for Elt in Value.Record_Fields.Iterate loop
                   declare
@@ -1556,51 +1570,52 @@ package body CE_Pretty_Printing is
                   begin
                      case Ekind (Key (Elt)) is
                         when E_Discriminant =>
-                           Set_Field (Discriminants,
-                                      Name,
-                                      Serialize_Value
-                                        (Value.Record_Fields (Elt).all));
+                           Set_Field
+                             (Discriminants,
+                              Name,
+                              Serialize_Value (Value.Record_Fields (Elt).all));
+
                         when others =>
-                           Set_Field (Components,
-                                      Name,
-                                      Serialize_Value
-                                        (Value.Record_Fields (Elt).all));
+                           Set_Field
+                             (Components,
+                              Name,
+                              Serialize_Value (Value.Record_Fields (Elt).all));
                      end case;
                   end;
                end loop;
-               Set_Field (JSON_Obj,
-                          "discriminants",
-                          Discriminants);
-               Set_Field (JSON_Obj,
-                          "components",
-                          Components);
+               Set_Field (JSON_Obj, "discriminants", Discriminants);
+               Set_Field (JSON_Obj, "components", Components);
             end;
+
          when Array_K =>
             if Value.First_Attr.Present and Value.Last_Attr.Present then
                declare
-                  Aggregate  : constant GNATCOLL.JSON.JSON_Value
-                    := Create_Object;
-                  Min        : constant Valid_Big_Integer
-                    := Value.First_Attr.Content;
-                  Max        : constant Valid_Big_Integer
-                    := Value.Last_Attr.Content;
+                  Aggregate  : constant GNATCOLL.JSON.JSON_Value :=
+                    Create_Object;
+                  Min        : constant Valid_Big_Integer :=
+                    Value.First_Attr.Content;
+                  Max        : constant Valid_Big_Integer :=
+                    Value.Last_Attr.Content;
                   Size       : constant Valid_Big_Integer := Max - Min + 1;
                   Sizes      : GNATCOLL.JSON.JSON_Array := Empty_Array;
-                  Dimension  : constant GNATCOLL.JSON.JSON_Value
-                    := Create_Object;
+                  Dimension  : constant GNATCOLL.JSON.JSON_Value :=
+                    Create_Object;
                   Dimensions : GNATCOLL.JSON.JSON_Array := Empty_Array;
                begin
 
-                  Append (Sizes,
-                          Create (Trim (To_String (Size), Ada.Strings.Left)));
+                  Append
+                    (Sizes,
+                     Create (Trim (To_String (Size), Ada.Strings.Left)));
                   Set_Field (JSON_Obj, "sizes", Sizes);
 
-                  Set_Field (Dimension,
-                             "First",
-                             (Trim (To_String (Min), Ada.Strings.Left)));
-                  Set_Field (Dimension,
-                             "Last",
-                             (Trim (To_String (Max), Ada.Strings.Left)));
+                  Set_Field
+                    (Dimension,
+                     "First",
+                     (Trim (To_String (Min), Ada.Strings.Left)));
+                  Set_Field
+                    (Dimension,
+                     "Last",
+                     (Trim (To_String (Max), Ada.Strings.Left)));
                   Append (Dimensions, Dimension);
                   Set_Field (JSON_Obj, "dimensions", Dimensions);
 
@@ -1609,32 +1624,37 @@ package body CE_Pretty_Printing is
                         declare
                            use Big_Integer_To_Value_Maps;
                         begin
-                           Set_Field (Aggregate,
-                                      Trim (To_String (Key (Elt)),
-                                        Ada.Strings.Left),
-                                      Serialize_Value (Element (Elt).all));
+                           Set_Field
+                             (Aggregate,
+                              Trim (To_String (Key (Elt)), Ada.Strings.Left),
+                              Serialize_Value (Element (Elt).all));
                         end;
                      end loop;
                      if Value.Array_Others /= null then
-                        Set_Field (Aggregate, "others",
-                                   Serialize_Value (Value.Array_Others.all));
+                        Set_Field
+                          (Aggregate,
+                           "others",
+                           Serialize_Value (Value.Array_Others.all));
                      end if;
                   end if;
                   Set_Field (JSON_Obj, "aggregate", Aggregate);
                end;
             end if;
+
          when Multidim_K =>
-            JSON_Obj := Create
-              (Value.Bounds'Image);
+            JSON_Obj := Create (Value.Bounds'Image);
+
          when Access_K =>
-            if Value.Is_Null.Present and then not Value.Is_Null.Content
+            if Value.Is_Null.Present
+              and then not Value.Is_Null.Content
               and then Value.Designated_Value /= null
             then
                --  wrap the pointed object into a single field to differentiate
                --  it from non-access values
-               Set_Field (JSON_Obj,
-                          "designated value",
-                          Serialize_Value (Value.Designated_Value.all));
+               Set_Field
+                 (JSON_Obj,
+                  "designated value",
+                  Serialize_Value (Value.Designated_Value.all));
             end if;
       end case;
       return JSON_Obj;

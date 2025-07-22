@@ -46,8 +46,8 @@ package Errout_Wrapper is
    No_Message : constant Message :=
      Message'([], No_Location, EC_None, Null_Unbounded_String);
 
-   package Message_Lists is new Ada.Containers.Indefinite_Doubly_Linked_Lists
-     (Message, "=");
+   package Message_Lists is new
+     Ada.Containers.Indefinite_Doubly_Linked_Lists (Message, "=");
 
    function "&" (M : Message; S : String) return Message;
 
@@ -58,6 +58,7 @@ package Errout_Wrapper is
             Msg           : String_Id;
             Annot_Kind    : Annotate_Kind;
             Justification : Unbounded_String;
+
          when others =>
             null;
       end case;
@@ -76,7 +77,7 @@ package Errout_Wrapper is
       Tag           : Unbounded_String;
       Severity      : Msg_Severity;
       Span          : Source_Span;
-      E             : Entity_Id;
+      E             : Entity_Id := Empty;
       Msg           : Message;
       Details       : Unbounded_String;
       Explanation   : Unbounded_String;
@@ -85,7 +86,7 @@ package Errout_Wrapper is
       Fix           : Message := No_Message;
       Continuations : Message_Lists.List;
       Suppr         : Suppressed_Message;
-      How_Proved    : Prover_Category;
+      How_Proved    : Prover_Category := PC_Trivial;
       Tracefile     : Unbounded_String;
       Cntexmp       : Cntexample_Data;
       Check_Tree    : JSON_Value := Create_Object;
@@ -99,8 +100,9 @@ package Errout_Wrapper is
        JSON_Result_Type.Tag /= Null_Unbounded_String
        and then JSON_Result_Type.Msg /= No_Message;
 
-   Flow_Msgs  : GNATCOLL.JSON.JSON_Array;
-   Proof_Msgs : GNATCOLL.JSON.JSON_Array;
+   Warnings_Errors : GNATCOLL.JSON.JSON_Array;
+   Flow_Msgs       : GNATCOLL.JSON.JSON_Array;
+   Proof_Msgs      : GNATCOLL.JSON.JSON_Array;
    --  Variables to hold JSON objects for .spark file output
 
    type Message_Id is new Integer range -1 .. Integer'Last;
@@ -114,7 +116,7 @@ package Errout_Wrapper is
    procedure Add_Json_Msg
      (Msg_List : in out GNATCOLL.JSON.JSON_Array;
       Obj      : JSON_Result_Type;
-      Msg_Id   : Message_Id);
+      Msg_Id   : Message_Id := No_Message_Id);
 
    function Create
      (Msg           : String;
@@ -138,10 +140,13 @@ package Errout_Wrapper is
       N             : Node_Id;
       Kind          : Msg_Severity := Error_Kind;
       First         : Boolean := False;
-      Continuations : Message_Lists.List := Message_Lists.Empty);
+      Continuations : Message_Lists.List := Message_Lists.Empty;
+      Error_Entry   : Boolean := True);
    --  Issue a message using Kind as the message type. If First is True, locate
    --  the message at the start of the sloc range of the node, otherwise at the
    --  sloc of the node. Continuations are issued at the same location.
+   --  If Error_Entry is set, generate an entry in the table of
+   --  errors/warnings.
 
    procedure Error_Msg_N
      (Msg           : String;
@@ -160,7 +165,8 @@ package Errout_Wrapper is
      (Msg           : Message;
       Span          : Source_Span;
       Kind          : Msg_Severity := Error_Kind;
-      Continuations : Message_Lists.List := Message_Lists.Empty);
+      Continuations : Message_Lists.List := Message_Lists.Empty;
+      Error_Entry   : Boolean := True);
    --  Same as Error_Msg_N but accepts a Source_Span as location
 
    --  TODO overload with other warning kinds (VC and flow)
@@ -198,7 +204,7 @@ package Errout_Wrapper is
    --  Escape the special characters # and & in the error message
 
    function Compilation_Errors return Boolean
-     renames Errout.Compilation_Errors;
+   renames Errout.Compilation_Errors;
 
    procedure Finalize (Last_Call : Boolean) renames Errout.Finalize;
    --  ??? TODO remove

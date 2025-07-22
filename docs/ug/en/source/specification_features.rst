@@ -548,25 +548,6 @@ Here |GNATprove| detects that an invalid value might be read in
 .. literalinclude:: /examples/ug__potentially_invalid_reads/test.out
    :language: none
 
-Validity of composite objects is handled in an imprecise way. In particular,
-if a component is accessed, then the validity of the whole object is verified.
-Similarly, assigning a valid value to a component will not cause |GNATprove| to
-consider the object as valid, even if all components end up being assigned.
-The object has to be assigned as a whole. For
-exemple, in the body of ``P`` below, |GNATprove| will emit a validity check on
-the reference to ``X.F`` in the first ``Assert`` pragma. The assertion itself
-therefore is easily proved as the prefix of the ``Valid`` attribute is not
-potentially invalid. |GNATprove| will emit a warning stating that the attribute
-is statically True. On the other hand, the second assertion is not proved even
-if both components of ``Y`` have been assigned valid values.
-
-.. literalinclude:: /examples/ug__potentially_invalid_composite/potentially_invalid_composite.adb
-   :language: ada
-   :linenos:
-
-.. literalinclude:: /examples/ug__potentially_invalid_composite/test.out
-   :language: none
-
 .. note::
 
    Assuming an out-of-bound value for a scalar object might create an

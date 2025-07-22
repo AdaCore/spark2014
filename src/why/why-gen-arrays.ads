@@ -354,6 +354,35 @@ package Why.Gen.Arrays is
    --  Return a predicate stating that move trees at Index in Left_Arr and
    --  Right_Arr are equal.
 
+   function New_Validity_Tree_Array_Access
+     (Name   : W_Expr_Id;
+      Index  : W_Expr_Array;
+      Ty     : Entity_Id;
+      Domain : EW_Domain)
+      return W_Expr_Id
+   with Pre => Is_Array_Type (Ty);
+   --  Access to the validity tree of Name at Index
+
+   function New_Validity_Tree_Array_Update
+     (Name   : W_Expr_Id;
+      Index  : W_Expr_Array;
+      Value  : W_Expr_Id;
+      Ty     : Entity_Id;
+      Domain : EW_Domain)
+      return W_Expr_Id
+   with Pre => Is_Array_Type (Ty);
+   --  Update to the validity tree of Name at Index with Value
+
+   function New_Validity_Tree_Slide
+     (Tree   : W_Expr_Id;
+      Expr   : W_Expr_Id;
+      To     : W_Type_Id;
+      Domain : EW_Domain;
+      Params : Transformation_Params)
+      return W_Expr_Id;
+   --  Slide the validity tree Tree from the bounds of Expr to the bounds of
+   --  To for all its constrained indexes.
+
    procedure Add_Map_Arg
      (Domain  : EW_Domain;
       Args    : in out W_Expr_Array;
@@ -545,6 +574,12 @@ package Why.Gen.Arrays is
    with
      Pre => Has_Array_Type (E) and then Contains_Allocated_Parts (E);
    --  Create a module declaring a type for the reclamation trees for objects
+   --  of type E.
+
+   procedure Create_Validity_Tree_Theory_For_Array
+     (Th : Theory_UC;
+      E  : Entity_Id);
+   --  Create a module declaring a type for the validity trees for objects
    --  of type E.
 
    function Get_Array_Theory
