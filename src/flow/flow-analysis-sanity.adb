@@ -56,8 +56,7 @@ package body Flow.Analysis.Sanity is
    ---------------------------------
 
    procedure Check_Function_Side_Effects
-     (FA   : in out Flow_Analysis_Graphs;
-      Sane :    out Boolean)
+     (FA : in out Flow_Analysis_Graphs; Sane : out Boolean)
    is
       Globals : Global_Flow_Ids;
 
@@ -68,10 +67,11 @@ package body Flow.Analysis.Sanity is
         and then not Is_Function_With_Side_Effects (FA.Spec_Entity)
       then
 
-         Get_Globals (Subprogram => FA.Spec_Entity,
-                      Scope      => FA.B_Scope,
-                      Classwide  => False,
-                      Globals    => Globals);
+         Get_Globals
+           (Subprogram => FA.Spec_Entity,
+            Scope      => FA.B_Scope,
+            Classwide  => False,
+            Globals    => Globals);
 
          if not Globals.Outputs.Is_Empty then
 
@@ -80,8 +80,9 @@ package body Flow.Analysis.Sanity is
             for G of Globals.Outputs loop
                Error_Msg_Flow
                  (FA       => FA,
-                  Msg      => "function with output global & " &
-                              "is not allowed in SPARK",
+                  Msg      =>
+                    "function with output global & "
+                    & "is not allowed in SPARK",
                   N        => FA.Spec_Entity,
                   F1       => G,
                   Severity => Error_Kind,
@@ -92,8 +93,9 @@ package body Flow.Analysis.Sanity is
             if Gnat2Why_Args.Debug_Mode then
                Error_Msg_Flow
                  (FA       => FA,
-                  Msg      => "flow analysis of & abandoned due to " &
-                              "function with side effects",
+                  Msg      =>
+                    "flow analysis of & abandoned due to "
+                    & "function with side effects",
                   N        => FA.Spec_Entity,
                   Severity => Error_Kind,
                   F1       => Direct_Mapping_Id (FA.Spec_Entity));
@@ -109,8 +111,7 @@ package body Flow.Analysis.Sanity is
    -----------------------
 
    procedure Check_Expressions
-     (FA   : in out Flow_Analysis_Graphs;
-      Sane :    out Boolean)
+     (FA : in out Flow_Analysis_Graphs; Sane : out Boolean)
    is
       procedure Check_Actuals (E : Entity_Id)
       with Pre => Ekind (E) = E_Package;
@@ -130,8 +131,9 @@ package body Flow.Analysis.Sanity is
       --  Check array/record/protected component definition
 
       procedure Check_Default_Expression (N : Node_Id)
-      with Pre => Nkind (N) in N_Component_Declaration
-                             | N_Discriminant_Specification;
+      with
+        Pre =>
+          Nkind (N) in N_Component_Declaration | N_Discriminant_Specification;
       --  Check the default expression of component or discriminant, if
       --  present, i.e. SPARK RM 4.4(2) rules about:
       --  * the default expression of a component declaration
@@ -162,11 +164,14 @@ package body Flow.Analysis.Sanity is
       --  name is expected).
 
       procedure Check_Type_Aspects (N : Node_Id)
-      with Pre => Nkind (N) in N_Full_Type_Declaration
-                             | N_Subtype_Declaration
-                             | N_Incomplete_Type_Declaration
-                             | N_Private_Type_Declaration
-                             | N_Private_Extension_Declaration;
+      with
+        Pre =>
+          Nkind (N)
+          in N_Full_Type_Declaration
+           | N_Subtype_Declaration
+           | N_Incomplete_Type_Declaration
+           | N_Private_Type_Declaration
+           | N_Private_Extension_Declaration;
       --  Enforce SPARK RM 4.4(2) by checking:
       --  * a Dynamic_Predicate aspect specification
       --  * a Type_Invariant aspect specification
@@ -177,25 +182,23 @@ package body Flow.Analysis.Sanity is
       --  inputs, as per SPARK RM 4.4(2).
 
       procedure Detect_Variable_Inputs
-        (N        : Node_Id;
-         Err_Desc : String;
-         Cont     : String := "")
+        (N : Node_Id; Err_Desc : String; Cont : String := "")
       with Pre => Nkind (N) in N_Subexpr;
       --  Emit error for any object referenced within N which does NOT denote
       --  a constant, a bound or a discriminant (of an enclosing concurrent
       --  type).
 
-      procedure Traverse_Declarations_And_HSS       (N : Node_Id);
+      procedure Traverse_Declarations_And_HSS (N : Node_Id);
       procedure Traverse_Declarations_Or_Statements (L : List_Id);
-      procedure Traverse_Declaration_Or_Statement   (N : Node_Id);
+      procedure Traverse_Declaration_Or_Statement (N : Node_Id);
       procedure Traverse_Handled_Statement_Sequence (N : Node_Id);
       --  Traverse declarations and statements
 
-      procedure Traverse_Component_List             (N : Node_Id)
+      procedure Traverse_Component_List (N : Node_Id)
       with Pre => Nkind (N) = N_Component_List;
-      procedure Traverse_Component_Items            (L : List_Id);
-      procedure Traverse_Discriminants              (N : Node_Id);
-      procedure Traverse_Variant_Part               (N : Node_Id)
+      procedure Traverse_Component_Items (L : List_Id);
+      procedure Traverse_Discriminants (N : Node_Id);
+      procedure Traverse_Variant_Part (N : Node_Id)
       with Pre => Nkind (N) = N_Variant_Part;
       --  Traversals for components and discriminants
       --
@@ -204,17 +207,17 @@ package body Flow.Analysis.Sanity is
       --  arbitrarily nested variant parts).
 
       function Variables (N : Node_Id) return Flow_Id_Sets.Set
-      is
-        (Get_All_Variables (N                       => N,
-                            Scope                   => FA.B_Scope,
-                            Target_Name             => Null_Flow_Id,
-                            Use_Computed_Globals    => True,
-                            Expand_Internal_Objects =>
-                              --  Do not expand constants in inlined bodies,
-                              --  as this leads to spurious errors. Any
-                              --  relevant errors related to variable input
-                              --  are reported on the non-inlined code.
-                              not Comes_From_Inlined_Body (Sloc (N))));
+      is (Get_All_Variables
+            (N                       => N,
+             Scope                   => FA.B_Scope,
+             Target_Name             => Null_Flow_Id,
+             Use_Computed_Globals    => True,
+             Expand_Internal_Objects =>
+             --  Do not expand constants in inlined bodies,
+             --  as this leads to spurious errors. Any
+             --  relevant errors related to variable input
+             --  are reported on the non-inlined code.
+               not Comes_From_Inlined_Body (Sloc (N))));
       --  Wrapper around Get_Variables
 
       -------------------
@@ -269,10 +272,10 @@ package body Flow.Analysis.Sanity is
          --  (whose constraints need to be checked) or as an access_definition
          --  (which cannot depend on variable inputs).
 
-         pragma Assert
-           (Present (Subtype_Indication (N))
-              xor
-            Present (Access_Definition (N)));
+         pragma
+           Assert
+             (Present (Subtype_Indication (N))
+                xor Present (Access_Definition (N)));
 
          if Present (Subtype_Indication (N)) then
             Check_Subtype_Indication (Subtype_Indication (N));
@@ -290,8 +293,7 @@ package body Flow.Analysis.Sanity is
       begin
          if Present (Default_Expression) then
             Detect_Variable_Inputs
-              (N        => Default_Expression,
-               Err_Desc => "default initialization");
+              (N => Default_Expression, Err_Desc => "default initialization");
          end if;
       end Check_Default_Expression;
 
@@ -318,8 +320,9 @@ package body Flow.Analysis.Sanity is
                   Detect_Variable_Inputs
                     (N        => Pref,
                      Err_Desc => "renamed dereference",
-                     Cont     => "introduce a constant of an anonymous "
-                     & "access type for the prefix of the dereference");
+                     Cont     =>
+                       "introduce a constant of an anonymous "
+                       & "access type for the prefix of the dereference");
                end if;
             end;
 
@@ -350,8 +353,7 @@ package body Flow.Analysis.Sanity is
                begin
                   loop
                      Detect_Variable_Inputs
-                       (N        => Expr,
-                        Err_Desc => "renamed index");
+                       (N => Expr, Err_Desc => "renamed index");
                      Next (Expr);
                      exit when No (Expr);
                   end loop;
@@ -368,6 +370,7 @@ package body Flow.Analysis.Sanity is
                         else R),
                      Err_Desc => "renamed slice");
                end;
+
             when others =>
                null;
          end case;
@@ -389,12 +392,10 @@ package body Flow.Analysis.Sanity is
 
                begin
                   Detect_Variable_Inputs
-                    (N        => Lo,
-                     Err_Desc => "subtype constraint");
+                    (N => Lo, Err_Desc => "subtype constraint");
 
                   Detect_Variable_Inputs
-                    (N        => Hi,
-                     Err_Desc => "subtype constraint");
+                    (N => Hi, Err_Desc => "subtype constraint");
                end;
 
             when N_Range_Constraint =>
@@ -406,12 +407,10 @@ package body Flow.Analysis.Sanity is
 
                begin
                   Detect_Variable_Inputs
-                    (N        => Lo,
-                     Err_Desc => "subtype constraint");
+                    (N => Lo, Err_Desc => "subtype constraint");
 
                   Detect_Variable_Inputs
-                    (N        => Hi,
-                     Err_Desc => "subtype constraint");
+                    (N => Hi, Err_Desc => "subtype constraint");
                end;
 
             when N_Index_Or_Discriminant_Constraint =>
@@ -436,8 +435,8 @@ package body Flow.Analysis.Sanity is
                            if Is_Entity_Name (Constr)
                              and then Is_Type (Entity (Constr))
                            then
-                              pragma Assert
-                                (Is_Discrete_Type (Entity (Constr)));
+                              pragma
+                                Assert (Is_Discrete_Type (Entity (Constr)));
                            else
                               Detect_Variable_Inputs
                                 (N        => Constr,
@@ -450,9 +449,7 @@ package body Flow.Analysis.Sanity is
                   end loop;
                end;
 
-            when N_Delta_Constraint
-               | N_Digits_Constraint
-            =>
+            when N_Delta_Constraint | N_Digits_Constraint =>
 
                --  Ada LRM requires these constraints to be static, so no
                --  further action required here.
@@ -472,10 +469,11 @@ package body Flow.Analysis.Sanity is
       begin
          case Nkind (N) is
             when N_Access_Definition =>
-               pragma Assert
-                 (if Present (Subtype_Mark (N))
-                  then Is_Type (Entity (Subtype_Mark (N)))
-                  else Present (Access_To_Subprogram_Definition (N)));
+               pragma
+                 Assert
+                   (if Present (Subtype_Mark (N))
+                      then Is_Type (Entity (Subtype_Mark (N)))
+                      else Present (Access_To_Subprogram_Definition (N)));
 
             when N_Attribute_Reference =>
                pragma Assert (Is_Type_Attribute_Name (Attribute_Name (N)));
@@ -510,8 +508,8 @@ package body Flow.Analysis.Sanity is
                   Check_Subtype_Constraints (DSD);
 
                when N_Subtype_Indication =>
-                  pragma Assert
-                    (Nkind (Constraint (DSD)) = N_Range_Constraint);
+                  pragma
+                    Assert (Nkind (Constraint (DSD)) = N_Range_Constraint);
                   Check_Subtype_Constraints (Constraint (DSD));
 
                when N_Identifier | N_Expanded_Name =>
@@ -533,7 +531,7 @@ package body Flow.Analysis.Sanity is
 
       procedure Check_Type_Aspects (N : Node_Id) is
          Typ : constant Type_Kind_Id := Defining_Identifier (N);
-         Rep : Node_Id               := First_Rep_Item (Typ);
+         Rep : Node_Id := First_Rep_Item (Typ);
 
       begin
          --  Check that the type predicate expression, if present, does not
@@ -560,9 +558,7 @@ package body Flow.Analysis.Sanity is
                --  Check that the type predicate expression does not have
                --  variable inputs.
 
-               Detect_Variable_Inputs
-                 (N        => Expr,
-                  Err_Desc => "predicate");
+               Detect_Variable_Inputs (N => Expr, Err_Desc => "predicate");
 
                Pick_Generated_Info
                  (Expr,
@@ -581,30 +577,30 @@ package body Flow.Analysis.Sanity is
                for SC of Funcalls loop
                   if Ekind (SC.E) = E_Subprogram_Type then
                      Error_Msg_Flow
-                        (FA       => FA,
-                         Msg      =>
-                           "call via access-to-subprogram " &
-                           "in the predicate of & might not terminate",
-                         Severity => High_Check_Kind,
-                         Tag      => Subprogram_Termination,
-                         N        => Expr,
-                         F1       => Direct_Mapping_Id (Typ),
-                         SRM_Ref  => "3.2.4(4)");
+                       (FA       => FA,
+                        Msg      =>
+                          "call via access-to-subprogram "
+                          & "in the predicate of & might not terminate",
+                        Severity => High_Check_Kind,
+                        Tag      => Subprogram_Termination,
+                        N        => Expr,
+                        F1       => Direct_Mapping_Id (Typ),
+                        SRM_Ref  => "3.2.4(4)");
 
                   elsif Nkind (SC.N) in N_Subprogram_Call
                     and then Flow_Classwide.Is_Dispatching_Call (SC.N)
                   then
                      Error_Msg_Flow
-                        (FA          => FA,
-                         Msg         =>
-                           "dispatching call " &
-                           "in the predicate of & might not terminate",
-                         Explanation => "call could hide recursive calls",
-                         Severity    => High_Check_Kind,
-                         Tag         => Subprogram_Termination,
-                         N           => Expr,
-                         F1          => Direct_Mapping_Id (Typ),
-                         SRM_Ref     => "3.2.4(4)");
+                       (FA          => FA,
+                        Msg         =>
+                          "dispatching call "
+                          & "in the predicate of & might not terminate",
+                        Explanation => "call could hide recursive calls",
+                        Severity    => High_Check_Kind,
+                        Tag         => Subprogram_Termination,
+                        N           => Expr,
+                        F1          => Direct_Mapping_Id (Typ),
+                        SRM_Ref     => "3.2.4(4)");
                   end if;
                end loop;
             end;
@@ -616,155 +612,158 @@ package body Flow.Analysis.Sanity is
          --  public view of a type and therefore we call it on private type
          --  declarations or extensions.
 
-         if Nkind (N) in N_Private_Type_Declaration
-                       | N_Private_Extension_Declaration
+         if Nkind (N)
+            in N_Private_Type_Declaration | N_Private_Extension_Declaration
            and then Has_Invariants_In_SPARK (Typ)
          then
-            declare
-               Expr : constant Node_Id :=
-                 Get_Expr_From_Check_Only_Proc (Invariant_Procedure (Typ));
+            for Expr of
+              Get_Exprs_From_Check_Only_Proc (Invariant_Procedure (Typ))
+            loop
+               declare
+                  Funcalls  : Call_Sets.Set;
+                  Indcalls  : Node_Sets.Set;
+                  Proofdeps : Node_Sets.Set;
+                  Unused    : Tasking_Info;
 
-               Funcalls  : Call_Sets.Set;
-               Indcalls  : Node_Sets.Set;
-               Proofdeps : Node_Sets.Set;
-               Unused    : Tasking_Info;
+               begin
+                  --  Check 7.3.2(3) [which is really 4.4(2)] (no variable
+                  --  inputs).
 
-            begin
-               --  Check 7.3.2(3) [which is really 4.4(2)] (no variable inputs)
+                  Detect_Variable_Inputs (N => Expr, Err_Desc => "invariant");
 
-               Detect_Variable_Inputs
-                 (N        => Expr,
-                  Err_Desc => "invariant");
+                  Pick_Generated_Info
+                    (Expr,
+                     Scop               => Get_Flow_Scope (Expr),
+                     Function_Calls     => Funcalls,
+                     Indirect_Calls     => Indcalls,
+                     Proof_Dependencies => Proofdeps,
+                     Tasking            => Unused,
+                     Generating_Globals => False);
 
-               Pick_Generated_Info
-                 (Expr,
-                  Scop               => Get_Flow_Scope (Expr),
-                  Function_Calls     => Funcalls,
-                  Indirect_Calls     => Indcalls,
-                  Proof_Dependencies => Proofdeps,
-                  Tasking            => Unused,
-                  Generating_Globals => False);
+                  for SC of Funcalls loop
 
-               for SC of Funcalls loop
+                     --  Check 7.3.2(11) (no calls via access-to-subprogram)
 
-                  --  Check 7.3.2(11) (no calls via access-to-subprogram)
+                     if Ekind (SC.E) = E_Subprogram_Type then
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Msg      =>
+                             "call via access-to-subprogram "
+                             & "in the invariant of & might not terminate",
+                           Severity => High_Check_Kind,
+                           Tag      => Subprogram_Termination,
+                           N        => Expr,
+                           F1       => Direct_Mapping_Id (Typ),
+                           SRM_Ref  => "7.3.2(11)");
 
-                  if Ekind (SC.E) = E_Subprogram_Type then
-                     Error_Msg_Flow
-                        (FA       => FA,
-                           Msg    =>
-                              "call via access-to-subprogram " &
-                              "in the invariant of & might not terminate",
-                         Severity => High_Check_Kind,
-                         Tag      => Subprogram_Termination,
-                         N        => Expr,
-                         F1       => Direct_Mapping_Id (Typ),
-                         SRM_Ref  => "7.3.2(11)");
+                     --  Check 7.3.2(11) (no dispatching calls)
 
-                  --  Check 7.3.2(11) (no dispatching calls)
+                     elsif Nkind (SC.N) in N_Subprogram_Call
+                       and then Flow_Classwide.Is_Dispatching_Call (SC.N)
+                     then
+                        Error_Msg_Flow
+                          (FA          => FA,
+                           Msg         =>
+                             "dispatching call "
+                             & "in the invariant of & might not terminate",
+                           Explanation => "call could hide recursive calls",
+                           Severity    => High_Check_Kind,
+                           Tag         => Subprogram_Termination,
+                           N           => Expr,
+                           F1          => Direct_Mapping_Id (Typ),
+                           SRM_Ref     => "7.3.2(11)");
 
-                  elsif Nkind (SC.N) in N_Subprogram_Call
-                    and then Flow_Classwide.Is_Dispatching_Call (SC.N)
-                  then
-                     Error_Msg_Flow
-                        (FA          => FA,
-                         Msg         =>
-                           "dispatching call " &
-                           "in the invariant of & might not terminate",
-                         Explanation => "call could hide recursive calls",
-                         Severity    => High_Check_Kind,
-                         Tag         => Subprogram_Termination,
-                         N           => Expr,
-                         F1          => Direct_Mapping_Id (Typ),
-                         SRM_Ref     => "7.3.2(11)");
+                     --  Check 7.3.2(5) (no calls to boundary subprograms)
 
-                  --  Check 7.3.2(5) (no calls to boundary subprograms)
+                     elsif Is_Boundary_Subprogram_For_Type (SC.E, Typ) then
 
-                  elsif Is_Boundary_Subprogram_For_Type (SC.E, Typ) then
+                        --  Check formal parameters
 
-                     --  Check formal parameters
+                        declare
+                           Formal : Opt_Formal_Kind_Id := First_Formal (SC.E);
+                        begin
+                           while Present (Formal) loop
+                              if Has_Subcomponents_Of_Type
+                                   (Etype (Formal), Typ)
+                              then
+                                 Error_Msg_Flow
+                                   (FA       => FA,
+                                    Msg      =>
+                                      "cannot call boundary subprogram & "
+                                      & "for type & in its own invariant",
+                                    Severity => High_Check_Kind,
+                                    Tag      => Call_In_Type_Invariant,
+                                    N        => Expr,
+                                    F1       => Direct_Mapping_Id (SC.E),
+                                    F2       => Direct_Mapping_Id (Typ),
+                                    SRM_Ref  => "7.3.2(5)");
+                                 exit;
+                              end if;
+                              Next_Formal (Formal);
+                           end loop;
+                        end;
 
-                     declare
-                        Formal : Opt_Formal_Kind_Id := First_Formal (SC.E);
-                     begin
-                        while Present (Formal) loop
-                           if Has_Subcomponents_Of_Type (Etype (Formal), Typ)
-                           then
-                              Error_Msg_Flow
-                                (FA       => FA,
-                                 Msg      =>
-                                   "cannot call boundary subprogram & " &
-                                   "for type & in its own invariant",
-                                 Severity => High_Check_Kind,
-                                 Tag      => Call_In_Type_Invariant,
-                                 N        => Expr,
-                                 F1       => Direct_Mapping_Id (SC.E),
-                                 F2       => Direct_Mapping_Id (Typ),
-                                 SRM_Ref  => "7.3.2(5)");
-                              exit;
-                           end if;
-                           Next_Formal (Formal);
-                        end loop;
-                     end;
+                        --  Check global parameters
 
-                     --  Check global parameters
+                        declare
+                           Inputs, Outputs : Flow_Id_Sets.Set;
+                        begin
+                           Get_Proof_Globals
+                             (Subprogram      => SC.E,
+                              Reads           => Inputs,
+                              Writes          => Outputs,
+                              Erase_Constants => False);
 
-                     declare
-                        Inputs, Outputs : Flow_Id_Sets.Set;
-                     begin
-                        Get_Proof_Globals
-                          (Subprogram      => SC.E,
-                           Reads           => Inputs,
-                           Writes          => Outputs,
-                           Erase_Constants => False);
+                           --  Functions will be checked for side effects, so
+                           --  here we only examine inputs and ignore outputs.
 
-                        --  Functions will be checked for side effects, so here
-                        --  we only examine inputs and ignore outputs.
+                           for Input of Inputs loop
+                              if Input.Kind = Direct_Mapping
+                                and then Has_Subcomponents_Of_Type
+                                           (Etype
+                                              (Get_Direct_Mapping_Id (Input)),
+                                            Typ)
+                              then
+                                 Error_Msg_Flow
+                                   (FA       => FA,
+                                    Msg      =>
+                                      "cannot call boundary subprogram & "
+                                      & "for type & with global & "
+                                      & "in its own invariant",
+                                    Severity => High_Check_Kind,
+                                    Tag      => Call_In_Type_Invariant,
+                                    N        => Expr,
+                                    F1       => Direct_Mapping_Id (SC.E),
+                                    F2       => Direct_Mapping_Id (Typ),
+                                    F3       => Input,
+                                    SRM_Ref  => "7.3.2(5)");
 
-                        for Input of Inputs loop
-                           if Input.Kind = Direct_Mapping
-                             and then
-                               Has_Subcomponents_Of_Type
-                                 (Etype (Get_Direct_Mapping_Id (Input)), Typ)
-                           then
-                              Error_Msg_Flow
-                                (FA       => FA,
-                                 Msg      =>
-                                   "cannot call boundary subprogram & " &
-                                   "for type & with global & " &
-                                   "in its own invariant",
-                                 Severity => High_Check_Kind,
-                                 Tag      => Call_In_Type_Invariant,
-                                 N        => Expr,
-                                 F1       => Direct_Mapping_Id (SC.E),
-                                 F2       => Direct_Mapping_Id (Typ),
-                                 F3       => Input,
-                                 SRM_Ref  => "7.3.2(5)");
+                              --  If we don't have the Entity_Id of a global,
+                              --  then we don't have its Etype either. Force
+                              --  the user to provide an explicit Global
+                              --  contract.
 
-                           --  If we don't have the Entity_Id of a global,
-                           --  then we don't have its Etype either. Force the
-                           --  user to provide an explicit Global contract.
-
-                           elsif Input.Kind = Magic_String then
-                              Error_Msg_Flow
-                                (FA       => FA,
-                                 Msg      =>
-                                   "cannot call boundary subprogram & " &
-                                   "for type & with implicit global & " &
-                                   "in its own invariant",
-                                 Severity => High_Check_Kind,
-                                 Tag      => Call_In_Type_Invariant,
-                                 N        => Expr,
-                                 F1       => Direct_Mapping_Id (SC.E),
-                                 F2       => Direct_Mapping_Id (Typ),
-                                 F3       => Input,
-                                 SRM_Ref  => "7.3.2(5)");
-                           end if;
-                        end loop;
-                     end;
-                  end if;
-               end loop;
-            end;
+                              elsif Input.Kind = Magic_String then
+                                 Error_Msg_Flow
+                                   (FA       => FA,
+                                    Msg      =>
+                                      "cannot call boundary subprogram & "
+                                      & "for type & with implicit global & "
+                                      & "in its own invariant",
+                                    Severity => High_Check_Kind,
+                                    Tag      => Call_In_Type_Invariant,
+                                    N        => Expr,
+                                    F1       => Direct_Mapping_Id (SC.E),
+                                    F2       => Direct_Mapping_Id (Typ),
+                                    F3       => Input,
+                                    SRM_Ref  => "7.3.2(5)");
+                              end if;
+                           end loop;
+                        end;
+                     end if;
+                  end loop;
+               end;
+            end loop;
          end if;
       end Check_Type_Aspects;
 
@@ -773,9 +772,7 @@ package body Flow.Analysis.Sanity is
       ---------------------------
 
       procedure Detect_Variable_Inputs
-        (N        : Node_Id;
-         Err_Desc : String;
-         Cont     : String := "")
+        (N : Node_Id; Err_Desc : String; Cont : String := "")
       is
          function Is_Within_Protected_Function return Boolean;
          --  Returns True if we are inside a protected function, False if
@@ -809,9 +806,11 @@ package body Flow.Analysis.Sanity is
 
          procedure Emit_Error (F : Flow_Id) is
             Continuation : constant String :=
-              (if Cont'Length > 0 then Cont
-               else "use instead a constant initialized to the "
-               & "expression with variable input");
+              (if Cont'Length > 0
+               then Cont
+               else
+                 "use instead a constant initialized to the "
+                 & "expression with variable input");
          begin
             Error_Msg_Flow
               (FA            => FA,
@@ -821,57 +820,57 @@ package body Flow.Analysis.Sanity is
                N             => N,
                Severity      => Error_Kind,
                F1            => Entire_Variable (F),
-               Continuations =>
-                 [Create (Continuation)]);
+               Continuations => [Create (Continuation)]);
             Sane := False;
          end Emit_Error;
 
-      --  Start of processing for Detect_Variable_Inputs
+         --  Start of processing for Detect_Variable_Inputs
 
       begin
          for F of Variables (N) loop
             case F.Kind is
-               when Direct_Mapping
-                  | Record_Field
-               =>
+               when Direct_Mapping | Record_Field =>
                   declare
                      Var : constant Entity_Id := Get_Direct_Mapping_Id (F);
 
                      use type Ada.Containers.Count_Type;
                      --  For equality of Length
 
-                     function Is_Protected_Discriminant (F : Flow_Id)
-                                                         return Boolean
+                     function Is_Protected_Discriminant
+                       (F : Flow_Id) return Boolean
                      is (Ekind (F.Component.First_Element) = E_Discriminant)
-                     with Pre  => Ekind (Get_Direct_Mapping_Id (F)) =
-                                    E_Protected_Type
-                                  and then F.Kind = Record_Field,
-                          Post => (if Is_Protected_Discriminant'Result
-                                   then F.Component.Length = 1);
+                     with
+                       Pre  =>
+                         Ekind (Get_Direct_Mapping_Id (F)) = E_Protected_Type
+                         and then F.Kind = Record_Field,
+                       Post =>
+                         (if Is_Protected_Discriminant'Result
+                          then F.Component.Length = 1);
 
-                     function Is_Record_Discriminant (F : Flow_Id)
-                                                      return Boolean
+                     function Is_Record_Discriminant
+                       (F : Flow_Id) return Boolean
                      is (F.Kind = Record_Field
-                           and then
-                         Ekind (Get_Direct_Mapping_Id (F)) in
-                           Record_Kind | Private_Kind
-                           and then
-                         Ekind (F.Component.First_Element) = E_Discriminant)
-                       with Post => (if Is_Record_Discriminant'Result
-                                     then F.Component.Length = 1);
+                         and then Ekind (Get_Direct_Mapping_Id (F))
+                                  in Record_Kind | Private_Kind
+                         and then Ekind (F.Component.First_Element)
+                                  = E_Discriminant)
+                     with
+                       Post =>
+                         (if Is_Record_Discriminant'Result
+                          then F.Component.Length = 1);
 
                   begin
                      --  We call Get_Variables with Expand_Internal_Objects
                      --  parameter set. The only times we should get
                      --  an internal object here are for type discriminant
                      --  constructs and deferred constants.
-                     pragma Assert
-                       (if Is_Internal (Var)
-                        then
-                          (Is_Type (Var) and then Is_Discriminant (F))
-                            or else
-                          (Ekind (Var) = E_Constant
-                             and then Has_Completion (Var)));
+                     pragma
+                       Assert
+                         (if Is_Internal (Var)
+                            then
+                              (Is_Type (Var) and then Is_Discriminant (F))
+                              or else (Ekind (Var) = E_Constant
+                                       and then Has_Completion (Var)));
 
                      --  We emit an error if F is considered a variable, in
                      --  particular, when it is not:
@@ -882,23 +881,24 @@ package body Flow.Analysis.Sanity is
                      --  * a component or part of a protected type accessed
                      --    from within a protected function.
 
+                     --  The frontend introduces a variable for the current
+                     --  instance in a predicate, which should not lead to an
+                     --  error here.
+
+                     --  disable formatting for deeply nested condition
+                     --!format off
                      if not (Is_Bound (F)
-                               or else
-                             (Is_Constant_Object (Var)
-                              and then
-                                (not Is_Access_Variable (Etype (Var))
-                                 --  The frontend introduces a variable for
-                                 --  the current instance in a predicate,
-                                 --  which should not lead to an error here.
-                                 or else not Comes_From_Source (Var)))
-                               or else
-                             Is_Record_Discriminant (F)
-                               or else
-                             (Ekind (Var) = E_Protected_Type
-                              and then
-                                (Is_Protected_Discriminant (F)
-                                 or else
-                                 Is_Within_Protected_Function)))
+                             or else (Is_Constant_Object (Var)
+                                      and then (not Is_Access_Variable
+                                                      (Etype (Var))
+                                                or else not Comes_From_Source
+                                                              (Var)))
+                             or else Is_Record_Discriminant (F)
+                             or else (Ekind (Var) = E_Protected_Type
+                                      and then
+                                       (Is_Protected_Discriminant (F)
+                                        or else Is_Within_Protected_Function)))
+                     --!format on
                      then
                         Emit_Error (F);
                      end if;
@@ -982,11 +982,12 @@ package body Flow.Analysis.Sanity is
 
          --  Check type declarations affected by SPARK RM 4.4(2)
 
-         if Nkind (N) in N_Full_Type_Declaration
-                       | N_Subtype_Declaration
-                       | N_Incomplete_Type_Declaration
-                       | N_Private_Type_Declaration
-                       | N_Private_Extension_Declaration
+         if Nkind (N)
+            in N_Full_Type_Declaration
+             | N_Subtype_Declaration
+             | N_Incomplete_Type_Declaration
+             | N_Private_Type_Declaration
+             | N_Private_Extension_Declaration
          then
             Check_Type_Aspects (N);
          end if;
@@ -1093,8 +1094,7 @@ package body Flow.Analysis.Sanity is
                            Optional_Component_List := Empty;
 
                         when N_Record_Definition =>
-                           Optional_Component_List :=
-                             Component_List (Typ_Def);
+                           Optional_Component_List := Component_List (Typ_Def);
 
                            if Present (Optional_Component_List) then
                               Traverse_Component_List
@@ -1156,8 +1156,7 @@ package body Flow.Analysis.Sanity is
                --  Completions of incomplete types are rewritten from full type
                --  declarations to subtypes that do not come from source.
 
-               if Comes_From_Source (N)
-                 or else Is_Rewrite_Substitution (N)
+               if Comes_From_Source (N) or else Is_Rewrite_Substitution (N)
                then
                   Check_Subtype_Indication (Subtype_Indication (N));
                end if;
@@ -1270,19 +1269,16 @@ package body Flow.Analysis.Sanity is
                      procedure Collect_Indexes (Expr : Node_Id) is
                      begin
                         case Nkind (Expr) is
-                           when N_Expanded_Name
-                              | N_Identifier
-                           =>
+                           when N_Expanded_Name | N_Identifier =>
                               null;
 
-                           when N_Explicit_Dereference
-                              | N_Selected_Component
+                           when N_Explicit_Dereference | N_Selected_Component
                            =>
                               Collect_Indexes (Prefix (Expr));
 
                            when N_Attribute_Reference =>
-                              pragma Assert
-                                (Attribute_Name (Expr) = Name_Access);
+                              pragma
+                                Assert (Attribute_Name (Expr) = Name_Access);
                               Collect_Indexes (Prefix (Expr));
 
                            when N_Indexed_Component =>
@@ -1388,7 +1384,7 @@ package body Flow.Analysis.Sanity is
          end loop;
       end Traverse_Variant_Part;
 
-   --  Start of processing for Check_Expressions
+      --  Start of processing for Check_Expressions
 
    begin
       Sane := True;
@@ -1409,28 +1405,30 @@ package body Flow.Analysis.Sanity is
                  and then Is_Primitive (FA.Spec_Entity)
                then
                   declare
-                     Typ : constant Entity_Id :=
+                     Typ     : constant Entity_Id :=
                        Etype (First_Formal (FA.Spec_Entity));
                      Globals : Global_Flow_Ids;
                   begin
                      if Is_Record_Type (Unchecked_Full_Type (Typ))
                        and then not Is_Limited_Type (Retysp (Typ))
                      then
-                        Get_Globals (Subprogram => FA.Spec_Entity,
-                                     Scope      => FA.S_Scope,
-                                     Classwide  => False,
-                                     Globals    => Globals);
+                        Get_Globals
+                          (Subprogram => FA.Spec_Entity,
+                           Scope      => FA.S_Scope,
+                           Classwide  => False,
+                           Globals    => Globals);
 
-                        if not (Globals.Proof_Ins.Is_Empty and then
-                                Globals.Inputs.Is_Empty)
+                        if not (Globals.Proof_Ins.Is_Empty
+                                and then Globals.Inputs.Is_Empty)
                         then
                            Error_Msg_Flow
-                                (FA       => FA,
-                                 Msg      => "user-defined equality shall " &
-                                   "have a Global aspect of null",
-                                 SRM_Ref  => "6.6(1)",
-                                 N        => FA.Spec_Entity,
-                                 Severity => Error_Kind);
+                             (FA       => FA,
+                              Msg      =>
+                                "user-defined equality shall "
+                                & "have a Global aspect of null",
+                              SRM_Ref  => "6.6(1)",
+                              N        => FA.Spec_Entity,
+                              Severity => Error_Kind);
                         end if;
                      end if;
                   end;
@@ -1491,8 +1489,9 @@ package body Flow.Analysis.Sanity is
          if Gnat2Why_Args.Debug_Mode then
             Error_Msg_Flow
               (FA       => FA,
-               Msg      => "flow analysis of & abandoned due to" &
-                           " expressions with variable inputs",
+               Msg      =>
+                 "flow analysis of & abandoned due to"
+                 & " expressions with variable inputs",
                N        => FA.Spec_Entity,
                Severity => Error_Kind,
                F1       => Direct_Mapping_Id (FA.Spec_Entity));
@@ -1506,23 +1505,23 @@ package body Flow.Analysis.Sanity is
    --------------------------------------------------
 
    procedure Check_Illegal_Writes_And_All_Variables_Known
-     (FA   : in out Flow_Analysis_Graphs;
-      Sane :    out Boolean)
+     (FA : in out Flow_Analysis_Graphs; Sane : out Boolean)
    is
-      function In_Abstract_Contract (FA : Flow_Analysis_Graphs; G : Flow_Id)
-                                    return Boolean
-      with Pre => FA.Kind in Kind_Subprogram | Kind_Task
-                  and then (Present (FA.Refined_Global_N)
-                            or else Present (FA.Refined_Depends_N));
+      function In_Abstract_Contract
+        (FA : Flow_Analysis_Graphs; G : Flow_Id) return Boolean
+      with
+        Pre =>
+          FA.Kind in Kind_Subprogram | Kind_Task
+          and then (Present (FA.Refined_Global_N)
+                    or else Present (FA.Refined_Depends_N));
       --  Returns True if G can be found in the Global or Depends contract
 
       --------------------------
       -- In_Abstract_Contract --
       --------------------------
 
-      function In_Abstract_Contract (FA : Flow_Analysis_Graphs; G : Flow_Id)
-                                     return Boolean
-      is
+      function In_Abstract_Contract
+        (FA : Flow_Analysis_Graphs; G : Flow_Id) return Boolean is
       begin
          case G.Kind is
             when Magic_String =>
@@ -1539,21 +1538,20 @@ package body Flow.Analysis.Sanity is
 
                   Raw_Globals : constant Raw_Global_Nodes :=
                     (if Present (FA.Refined_Global_N)
-                     then Parse_Global_Contract (FA.Spec_Entity,
-                                                 FA.Global_N)
-                     else Parse_Depends_Contract (FA.Spec_Entity,
-                                                  FA.Depends_N));
+                     then Parse_Global_Contract (FA.Spec_Entity, FA.Global_N)
+                     else
+                       Parse_Depends_Contract (FA.Spec_Entity, FA.Depends_N));
 
                   use type Node_Sets.Set;
 
                   All_Globals : constant Node_Sets.Set :=
-                    Raw_Globals.Inputs or
-                    Raw_Globals.Outputs or
-                    Raw_Globals.Proof_Ins;
+                    Raw_Globals.Inputs
+                    or Raw_Globals.Outputs
+                    or Raw_Globals.Proof_Ins;
 
                begin
-                  return Present (Find_In (All_Globals,
-                                           Get_Direct_Mapping_Id (G)));
+                  return
+                    Present (Find_In (All_Globals, Get_Direct_Mapping_Id (G)));
                end;
 
             when others =>
@@ -1563,15 +1561,18 @@ package body Flow.Analysis.Sanity is
 
       Aspect_To_Fix : constant String :=
         (case FA.Kind is
-            when Kind_Subprogram | Kind_Task =>
-              (if    Present (FA.Refined_Global_N)  then "Refined_Global"
-               elsif Present (FA.Refined_Depends_N) then "Refined_Depends"
-               elsif Present (FA.Global_N)          then "Global"
-               elsif Present (FA.Depends_N)         then "Depends"
-               else                                      "Global"),
+           when Kind_Subprogram | Kind_Task =>
+             (if Present (FA.Refined_Global_N)
+              then "Refined_Global"
+              elsif Present (FA.Refined_Depends_N)
+              then "Refined_Depends"
+              elsif Present (FA.Global_N)
+              then "Global"
+              elsif Present (FA.Depends_N)
+              then "Depends"
+              else "Global"),
 
-            when Kind_Package                =>
-               "Initializes");
+           when Kind_Package => "Initializes");
       --  A string representation of the aspect that needs to be corrected; the
       --  preference in choosing a contract matches the preference hardcoded in
       --  Get_Global routine. If no contract is present, then ask the user to
@@ -1579,16 +1580,16 @@ package body Flow.Analysis.Sanity is
 
       Next_Aspect_To_Fix : constant String :=
         (case FA.Kind is
-            when Kind_Subprogram | Kind_Task =>
-               (if Present (FA.Global_N) and then Present (FA.Depends_N)
-                then "Global and Depends"
-                elsif Present (FA.Global_N)
-                then "Global"
-                elsif Present (FA.Depends_N)
-                then "Depends"
-                else ""),
+           when Kind_Subprogram | Kind_Task =>
+             (if Present (FA.Global_N) and then Present (FA.Depends_N)
+              then "Global and Depends"
+              elsif Present (FA.Global_N)
+              then "Global"
+              elsif Present (FA.Depends_N)
+              then "Depends"
+              else ""),
 
-            when Kind_Package                => "");
+           when Kind_Package => "");
       --  A string representation of the next aspect that needs to be
       --  corrected, i.e. this is the Global/Depends aspect if a global has
       --  been detected to be missing from a Refined_Global/Refined_Depends
@@ -1599,23 +1600,24 @@ package body Flow.Analysis.Sanity is
 
       Msg : constant String :=
         (case FA.Kind is
-            when Kind_Subprogram | Kind_Task =>
-              "must be listed in the " & Aspect_To_Fix & " aspect of",
-            when Kind_Package                =>
-              "must be mentioned as an input of the " & Aspect_To_Fix &
-              " aspect of");
+           when Kind_Subprogram | Kind_Task =>
+             "must be listed in the " & Aspect_To_Fix & " aspect of",
+           when Kind_Package =>
+             "must be mentioned as an input of the "
+             & Aspect_To_Fix
+             & " aspect of");
 
       SRM_Ref : constant String :=
         (case FA.Kind is
-            when Kind_Subprogram | Kind_Task => "6.1.4(15)",
-            when Kind_Package                => "7.1.5(11)");
+           when Kind_Subprogram | Kind_Task => "6.1.4(15)",
+           when Kind_Package => "7.1.5(11)");
       --  String representation of the violated SPARK RM rule
 
       Unknown_Globals_In_Package : Flow_Id_Sets.Set;
       --  Unknown global variables written in the elaboration of the analysed
       --  unit if it is a package.
 
-   --  Start of processing for Check_Illegal_Writes_And_All_Variables_Known
+      --  Start of processing for Check_Illegal_Writes_And_All_Variables_Known
 
    begin
       Sane := True;
@@ -1637,19 +1639,17 @@ package body Flow.Analysis.Sanity is
                declare
                   Corresp_Final_Vertex : constant Flow_Graphs.Vertex_Id :=
                     FA.PDG.Get_Vertex (Change_Variant (Var, Final_Value));
-                  pragma Assert
-                    (Corresp_Final_Vertex /= Flow_Graphs.Null_Vertex);
-                  Var_Atr : V_Attributes renames
+                  pragma
+                    Assert (Corresp_Final_Vertex /= Flow_Graphs.Null_Vertex);
+                  Var_Atr              : V_Attributes renames
                     FA.Atr (Corresp_Final_Vertex);
                begin
-                  if Var_Atr.Is_Global
-                    and then Var_Atr.Is_Constant
-                  then
+                  if Var_Atr.Is_Global and then Var_Atr.Is_Constant then
                      if FA.Kind = Kind_Package then
                         Error_Msg_Flow
                           (FA           => FA,
-                           Msg          => "cannot write & during" &
-                                           " elaboration of &",
+                           Msg          =>
+                             "cannot write & during" & " elaboration of &",
                            Explain_Code => EC_Write_In_Elaboration,
                            N            => Error_Location (FA.PDG, FA.Atr, V),
                            Severity     => High_Check_Kind,
@@ -1721,10 +1721,11 @@ package body Flow.Analysis.Sanity is
                then
                   declare
                      First_Var_Use : constant Node_Id :=
-                       First_Variable_Use (FA      => FA,
-                                           Var     => Var,
-                                           Kind    => Use_Any,
-                                           Precise => False);
+                       First_Variable_Use
+                         (FA      => FA,
+                          Var     => Var,
+                          Kind    => Use_Any,
+                          Precise => False);
 
                      Subprogram : constant Flow_Id :=
                        Direct_Mapping_Id (FA.Spec_Entity);
@@ -1746,7 +1747,7 @@ package body Flow.Analysis.Sanity is
                         declare
                            Missing : constant Flow_Id :=
                              (if Is_Constituent (Var)
-                              and then not Is_Visible (Var, FA.S_Scope)
+                                and then not Is_Visible (Var, FA.S_Scope)
                               then Encapsulating_State (Var)
                               else Entire_Variable (Var));
 
@@ -1802,21 +1803,26 @@ package body Flow.Analysis.Sanity is
                      --  the error message.
 
                      if Var.Kind in Direct_Mapping | Record_Field
-                       and then
-                         Scope_Within
-                           (Inner => Get_Direct_Mapping_Id (Var),
-                            Outer => FA.Spec_Entity)
+                       and then Scope_Within
+                                  (Inner => Get_Direct_Mapping_Id (Var),
+                                   Outer => FA.Spec_Entity)
                      then
-                        raise Program_Error with
-                          Full_Source_Name (FA.Spec_Entity) & " @" &
-                          V'Img & " : " &
-                          Flow_Id_To_String (Var);
+                        raise Program_Error
+                          with
+                            Full_Source_Name (FA.Spec_Entity)
+                            & " @"
+                            & V'Img
+                            & " : "
+                            & Flow_Id_To_String (Var);
                      else
-                        pragma Assert
-                          (False,
-                           Full_Source_Name (FA.Spec_Entity) & " @" &
-                             V'Img & " : " &
-                             Flow_Id_To_String (Var));
+                        pragma
+                          Assert
+                            (False,
+                             Full_Source_Name (FA.Spec_Entity)
+                               & " @"
+                               & V'Img
+                               & " : "
+                               & Flow_Id_To_String (Var));
                      end if;
                   end if;
                end if;
@@ -1830,25 +1836,25 @@ package body Flow.Analysis.Sanity is
    ------------------------------------
 
    procedure Check_Generated_Refined_Global
-     (FA   : in out Flow_Analysis_Graphs;
-      Sane :    out Boolean)
+     (FA : in out Flow_Analysis_Graphs; Sane : out Boolean)
    is
       Error_Loc : constant Node_Id :=
         (if Ekind (FA.Spec_Entity) = E_Package
          then Empty
-         else (if Present (FA.Global_N)
-               then FA.Global_N
-               else FA.Depends_N));
+         else (if Present (FA.Global_N) then FA.Global_N else FA.Depends_N));
       --  Location for posting errors; it is either the Global (preferred) or
       --  the Depends contract, just like in Get_Global routine, which prefers
       --  the Global but uses the Depends as a fallback.
 
-      procedure Check (Generated :     Flow_Id_Sets.Set;
-                       User      :     Flow_Id_Sets.Set;
-                       Missing   : out Flow_Id_Sets.Set;
-                       Unused    : out Flow_Id_Sets.Set)
-      with Post => Missing.Is_Subset (Of_Set => Generated) and then
-                   Unused.Is_Subset (Of_Set => User);
+      procedure Check
+        (Generated : Flow_Id_Sets.Set;
+         User      : Flow_Id_Sets.Set;
+         Missing   : out Flow_Id_Sets.Set;
+         Unused    : out Flow_Id_Sets.Set)
+      with
+        Post =>
+          Missing.Is_Subset (Of_Set => Generated)
+          and then Unused.Is_Subset (Of_Set => User);
       --  Compute missing and unused user globals based on generated and those
       --  provided by the user.
 
@@ -1859,14 +1865,14 @@ package body Flow.Analysis.Sanity is
       -- Check --
       -----------
 
-      procedure Check (Generated :     Flow_Id_Sets.Set;
-                       User      :     Flow_Id_Sets.Set;
-                       Missing   : out Flow_Id_Sets.Set;
-                       Unused    : out Flow_Id_Sets.Set)
-      is
+      procedure Check
+        (Generated : Flow_Id_Sets.Set;
+         User      : Flow_Id_Sets.Set;
+         Missing   : out Flow_Id_Sets.Set;
+         Unused    : out Flow_Id_Sets.Set) is
       begin
          Missing := Flow_Id_Sets.Empty_Set;
-         Unused  := User;
+         Unused := User;
 
          for G of Generated loop
             declare
@@ -1889,7 +1895,8 @@ package body Flow.Analysis.Sanity is
       procedure Error_Msg (Msg : String; Severity : Msg_Severity; F : Flow_Id)
       is
          Tag : constant Flow_Tag_Kind :=
-           (if Severity = Error_Kind then Critical_Global_Missing
+           (if Severity = Error_Kind
+            then Critical_Global_Missing
             else Global_Missing);
       begin
          Sane := False;
@@ -1927,7 +1934,7 @@ package body Flow.Analysis.Sanity is
       --  in individual containers to not worry about the type predicate of
       --  Global_Flow_Ids.
 
-   --  Start of processing for Check_Generated_Refined_Global
+      --  Start of processing for Check_Generated_Refined_Global
 
    begin
       Sane := True;
@@ -1936,8 +1943,8 @@ package body Flow.Analysis.Sanity is
       --  Global/Depends and generated Refined_Global.
 
       if not (Ekind (FA.Spec_Entity) /= E_Package
-                and then Has_User_Supplied_Globals (FA.Spec_Entity)
-                and then FA.Is_Generative)
+              and then Has_User_Supplied_Globals (FA.Spec_Entity)
+              and then FA.Is_Generative)
       then
          return;
       end if;
@@ -1945,33 +1952,36 @@ package body Flow.Analysis.Sanity is
       --  Read the user-written Global or Depends
 
       if Present (FA.Global_N) then
-         Raw_Globals := Parse_Global_Contract (Subprogram  => FA.Spec_Entity,
-                                               Global_Node => FA.Global_N);
+         Raw_Globals :=
+           Parse_Global_Contract
+             (Subprogram => FA.Spec_Entity, Global_Node => FA.Global_N);
 
       elsif Present (FA.Depends_N) then
-         Raw_Globals := Parse_Depends_Contract (Subprogram   => FA.Spec_Entity,
-                                                Depends_Node => FA.Depends_N);
+         Raw_Globals :=
+           Parse_Depends_Contract
+             (Subprogram => FA.Spec_Entity, Depends_Node => FA.Depends_N);
 
       else
-         pragma Assert
-           (Is_Pure (FA.Spec_Entity)
-              or else
-            Is_Null_Procedure (FA.Spec_Entity));
+         pragma
+           Assert
+             (Is_Pure (FA.Spec_Entity)
+                or else Is_Null_Procedure (FA.Spec_Entity));
       end if;
 
       --  Convert user-globals from Entity_Ids to Flow_Ids
 
       User_Global :=
         (Proof_Ins => To_Flow_Id_Set (Raw_Globals.Proof_Ins, In_View),
-         Inputs    => To_Flow_Id_Set (Raw_Globals.Inputs,    In_View),
-         Outputs   => To_Flow_Id_Set (Raw_Globals.Outputs,   Out_View));
+         Inputs    => To_Flow_Id_Set (Raw_Globals.Inputs, In_View),
+         Outputs   => To_Flow_Id_Set (Raw_Globals.Outputs, Out_View));
 
       --  Read the generated Refined_Global
 
-      Get_Globals (Subprogram => FA.Spec_Entity,
-                   Scope      => FA.B_Scope,
-                   Classwide  => False,
-                   Globals    => Generated_Refined_Global);
+      Get_Globals
+        (Subprogram => FA.Spec_Entity,
+         Scope      => FA.B_Scope,
+         Classwide  => False,
+         Globals    => Generated_Refined_Global);
 
       --  Up project actual globals
 
@@ -1979,43 +1989,50 @@ package body Flow.Analysis.Sanity is
 
       --  Detect inconsistent globals
 
-      Check (Generated => Generated_Global.Inputs,
-             User      => User_Global.Inputs,
-             Missing   => Missing_Inputs,
-             Unused    => Unused_Inputs);
+      Check
+        (Generated => Generated_Global.Inputs,
+         User      => User_Global.Inputs,
+         Missing   => Missing_Inputs,
+         Unused    => Unused_Inputs);
 
-      Check (Generated => Generated_Global.Outputs,
-             User      => User_Global.Outputs,
-             Missing   => Missing_Outputs,
-             Unused    => Unused_Outputs);
+      Check
+        (Generated => Generated_Global.Outputs,
+         User      => User_Global.Outputs,
+         Missing   => Missing_Outputs,
+         Unused    => Unused_Outputs);
 
-      Check (Generated => Generated_Global.Proof_Ins,
-             User      => User_Global.Proof_Ins,
-             Missing   => Missing_Proof_Ins,
-             Unused    => Unused_Proof_Ins);
+      Check
+        (Generated => Generated_Global.Proof_Ins,
+         User      => User_Global.Proof_Ins,
+         Missing   => Missing_Proof_Ins,
+         Unused    => Unused_Proof_Ins);
 
       --  Flag missing user globals
 
       for Missing of Missing_Inputs loop
          Error_Msg
-           (Msg      => "& must be a global " &
-                        (if Present
-                           (Find_In (User_Global.Outputs,
-                                     Change_Variant (Missing, Out_View)))
-                         then "In_Out of &"
-                         else "Input of &"),
+           (Msg      =>
+              "& must be a global "
+              & (if Present
+                      (Find_In
+                         (User_Global.Outputs,
+                          Change_Variant (Missing, Out_View)))
+                 then "In_Out of &"
+                 else "Input of &"),
             Severity => Medium_Check_Kind,
             F        => Missing);
       end loop;
 
       for Missing of Missing_Outputs loop
          Error_Msg
-           (Msg      => "& must be a global " &
-                        (if Present
-                           (Find_In (User_Global.Inputs,
-                                     Change_Variant (Missing, In_View)))
-                         then "In_Out of &"
-                         else "Output of &"),
+           (Msg      =>
+              "& must be a global "
+              & (if Present
+                      (Find_In
+                         (User_Global.Inputs,
+                          Change_Variant (Missing, In_View)))
+                 then "In_Out of &"
+                 else "Output of &"),
             Severity => High_Check_Kind,
             F        => Missing);
       end loop;
@@ -2063,9 +2080,7 @@ package body Flow.Analysis.Sanity is
    -----------------------------------------------
 
    procedure Check_Side_Effects_In_Protected_Functions
-     (FA   : in out Flow_Analysis_Graphs;
-      Sane :    out Boolean)
-   is
+     (FA : in out Flow_Analysis_Graphs; Sane : out Boolean) is
    begin
       Sane := True;
 
@@ -2084,11 +2099,13 @@ package body Flow.Analysis.Sanity is
                      then
                         Error_Msg_Flow
                           (FA       => FA,
-                           Msg      => "protected function with effective " &
-                                       "reads & is not allowed in SPARK",
-                           N        => (if Present (Atr.Error_Location)
-                                        then Atr.Error_Location
-                                        else FA.Spec_Entity),
+                           Msg      =>
+                             "protected function with effective "
+                             & "reads & is not allowed in SPARK",
+                           N        =>
+                             (if Present (Atr.Error_Location)
+                              then Atr.Error_Location
+                              else FA.Spec_Entity),
                            F1       => Var,
                            Severity => Error_Kind,
                            Tag      => Side_Effects,

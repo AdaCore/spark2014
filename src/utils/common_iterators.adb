@@ -29,40 +29,34 @@ package body Common_Iterators is
    -- ELW_First --
    ---------------
 
-   function ELW_First (L : Elist_Wrapper) return Elist_Wrapper_Cursor
-   is
+   function ELW_First (L : Elist_Wrapper) return Elist_Wrapper_Cursor is
       EL : constant Elist_Id := Elist_Id (L);
    begin
       return
-        Elist_Wrapper_Cursor (if Present (EL)
-                              then First_Elmt (EL)
-                              else No_Elmt);
+        Elist_Wrapper_Cursor
+          (if Present (EL) then First_Elmt (EL) else No_Elmt);
    end ELW_First;
 
    --------------
    -- ELW_Next --
    --------------
 
-   function ELW_Next (L : Elist_Wrapper;
-                      C : Elist_Wrapper_Cursor)
-                      return Elist_Wrapper_Cursor
+   function ELW_Next
+     (L : Elist_Wrapper; C : Elist_Wrapper_Cursor) return Elist_Wrapper_Cursor
    is
       pragma Unreferenced (L);
       E : constant Elmt_Id := Elmt_Id (C);
    begin
       return
-        Elist_Wrapper_Cursor (if Present (E)
-                              then Next_Elmt (E)
-                              else No_Elmt);
+        Elist_Wrapper_Cursor (if Present (E) then Next_Elmt (E) else No_Elmt);
    end ELW_Next;
 
    ---------------------
    -- ELW_Has_Element --
    ---------------------
 
-   function ELW_Has_Element (L : Elist_Wrapper;
-                             C : Elist_Wrapper_Cursor)
-                             return Boolean
+   function ELW_Has_Element
+     (L : Elist_Wrapper; C : Elist_Wrapper_Cursor) return Boolean
    is
       pragma Unreferenced (L);
       E : constant Elmt_Id := Elmt_Id (C);
@@ -74,9 +68,8 @@ package body Common_Iterators is
    -- ELW_Element --
    -----------------
 
-   function ELW_Element (L : Elist_Wrapper;
-                         C : Elist_Wrapper_Cursor)
-                         return Node_Or_Entity_Id
+   function ELW_Element
+     (L : Elist_Wrapper; C : Elist_Wrapper_Cursor) return Node_Or_Entity_Id
    is
       pragma Unreferenced (L);
       E : constant Elmt_Id := Elmt_Id (C);

@@ -34,30 +34,31 @@ package Outputs is
    --  into the corresponding stream.
 
    procedure Open_Current_File (Filename : String)
-     with Post => Indent_Level (Current_File) = 0;
+   with Post => Indent_Level (Current_File) = 0;
    --  Open Filename and set current file's output to the corresponding file
    --  descriptor.
 
    procedure Close_Current_File;
    --  Close current file
 
-   function Indent_Level (O : Output_Id) return Natural with Ghost;
+   function Indent_Level (O : Output_Id) return Natural
+   with Ghost;
    --  Returns the current indentation level of O
 
    procedure Absolute_Indent (O : Output_Id; Level : Natural)
-     with Post => Indent_Level (O) = Level;
+   with Post => Indent_Level (O) = Level;
    --  Set the indentation level of O to Level
 
    procedure Relative_Indent (O : Output_Id; Diff : Integer)
-     with Post => Indent_Level (O) = Indent_Level (O)'Old + Diff;
+   with Post => Indent_Level (O) = Indent_Level (O)'Old + Diff;
    --  Increase the indentation level of O by Level (or decrease it
    --  if Level is lesser than zero).
 
-   procedure P  (O : Output_Id; C : Character)
-     with Pre => Indent_Level (O) = 0;
+   procedure P (O : Output_Id; C : Character)
+   with Pre => Indent_Level (O) = 0;
    --  Put C to output O, but can only be used when indentation level is 0
 
-   procedure P  (O : Output_Id; S : String; As_String : Boolean := False);
+   procedure P (O : Output_Id; S : String; As_String : Boolean := False);
    --  Put S to output O, indenting it if need be. If As_String is true, the
    --  argument string is interpreted as a string literal.
 
@@ -71,7 +72,7 @@ package Outputs is
 private
 
    type Output_State is limited record
-      Indent   : Natural := 0;
+      Indent : Natural := 0;
       --  Indentation level
 
       New_Line : Boolean := False;
@@ -83,11 +84,9 @@ private
    Output_States : array (Output_Id) of Output_State;
 
    Output_Handles : array (Output_Id) of File_Type :=
-     (Stderr       => Standard_Error,
-      Stdout       => Standard_Output,
-      Current_File => <>);
+     (Stderr => Standard_Error, Stdout => Standard_Output, Current_File => <>);
 
-   function Indent_Level (O : Output_Id) return Natural is
-     (Output_States (O).Indent);
+   function Indent_Level (O : Output_Id) return Natural
+   is (Output_States (O).Indent);
 
 end Outputs;

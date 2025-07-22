@@ -8,7 +8,7 @@ dic.adb:3:04: info: initialization of "B" proved
 dic.adb:11:58: medium: overflow check might fail, cannot prove lower bound for R.X + R.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if R.Y >= 0 then R.X <= Integer'Last - R.Y else R.X >= Integer'First - R.Y) to subprogram at dic.ads:22]
 dic.adb:13:63: medium: overflow check might fail, cannot prove lower bound for Par.X + Par.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if Par.Y >= 0 then Par.X <= Integer'Last - Par.Y else Par.X >= Integer'First - Par.Y) to subprogram at dic.ads:24]
 dic.adb:17:14: medium: overflow check might fail, cannot prove lower bound for A.X + A.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at dic.ads:26 should mention A in a precondition]
-dic.ads:9:09: medium: default initial condition might fail
+dic.ads:10:40: medium: default initial condition might fail
 dic.ads:18:13: info: implicit aspect Always_Terminates on "Gimme_A_Pr_T" has been proved, subprogram will terminate
 dic.ads:20:13: info: implicit aspect Always_Terminates on "Evaluate" has been proved, subprogram will terminate
 dic.ads:22:13: info: implicit aspect Always_Terminates on "Add" has been proved, subprogram will terminate
@@ -18,8 +18,8 @@ dic2.adb:7:07: info: initialization of "T_Var" proved
 dic2.adb:8:07: info: initialization of "U_Var" proved
 dic2.adb:9:07: info: initialization of "R_Var" proved
 dic2.adb:11:22: info: assertion proved (CVC5: 2 VC)
-dic2.ads:2:09: info: default initial condition proved (CVC5: 1 VC)
-dic2.ads:5:09: info: default initial condition proved (CVC5: 1 VC)
+dic2.ads:3:40: info: default initial condition proved (CVC5: 1 VC)
+dic2.ads:6:40: info: default initial condition proved (CVC5: 1 VC)
 dic2.ads:13:13: info: implicit aspect Always_Terminates on "Foo" has been proved, subprogram will terminate
 dic2.ads:15:13: info: implicit aspect Always_Terminates on "Bar" has been proved, subprogram will terminate
 dic2.ads:17:14: warning: subprogram "Test" has no effect
@@ -30,8 +30,8 @@ dic2.ads:23:28: info: range check proved (CVC5: 2 VC)
 dic3.adb:7:07: info: initialization of "X" proved
 dic3.adb:8:07: info: initialization of "Y" proved
 dic3.adb:10:22: info: assertion proved (CVC5: 1 VC)
-dic3.ads:2:09: info: default initial condition proved (CVC5: 1 VC)
-dic3.ads:5:09: info: default initial condition proved (CVC5: 2 VC)
+dic3.ads:3:40: info: default initial condition proved (CVC5: 1 VC)
+dic3.ads:6:40: info: default initial condition proved (CVC5: 2 VC)
 dic3.ads:8:13: info: implicit aspect Always_Terminates on "To_Int" has been proved, subprogram will terminate
 dic3.ads:10:13: info: implicit aspect Always_Terminates on "To_Int" has been proved, subprogram will terminate
 dic3.ads:12:14: warning: subprogram "Test" has no effect

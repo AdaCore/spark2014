@@ -29,8 +29,8 @@ with SPARK_Definition; use SPARK_Definition;
 
 package Flow.Analysis is
 
-   procedure Sanity_Check (FA   : in out Flow_Analysis_Graphs;
-                           Sane :    out Boolean);
+   procedure Sanity_Check
+     (FA : in out Flow_Analysis_Graphs; Sane : out Boolean);
    --  Check the following basic properties:
    --     - is aliasing present (using the flag FA.Aliasing_Present)?
    --     - absence of variables in default initializations of record
@@ -111,8 +111,10 @@ package Flow.Analysis is
    --  inputs and if so emits a check. This enforces SPARK RM 7.2.2(16).
 
    procedure Check_Potentially_Blocking (FA : in out Flow_Analysis_Graphs)
-   with Pre => (if Ekind (FA.Spec_Entity) = E_Package
-                then not Is_Library_Level_Entity (FA.Spec_Entity));
+   with
+     Pre =>
+       (if Ekind (FA.Spec_Entity) = E_Package
+        then not Is_Library_Level_Entity (FA.Spec_Entity));
    --  Check for potentially blocking operations in protected actions
    --
    --  The current implementation emits a message for each statement that
@@ -206,11 +208,10 @@ package Flow.Analysis is
    --  of the caller.
 
    procedure Check_Constant_Global_Contracts (E : Entity_Id)
-   with Pre => Ekind (E) in E_Function
-                          | E_Procedure
-                          | Entry_Kind
-                          | E_Task_Type
-               and then not Entity_Body_In_SPARK (E);
+   with
+     Pre =>
+       Ekind (E) in E_Function | E_Procedure | Entry_Kind | E_Task_Type
+       and then not Entity_Body_In_SPARK (E);
    --  Check if the global contracts directly reference any constant without
    --  variable inputs. This enforces SPARK RM 6.1.4(16).
 
@@ -218,12 +219,12 @@ private
 
    type Var_Use_Kind is (Use_Read, Use_Write, Use_Any);
 
-   function First_Variable_Use (N        : Node_Id;
-                                Scope    : Flow_Scope;
-                                Var      : Flow_Id;
-                                Precise  : Boolean;
-                                Targeted : Boolean := False)
-                                return Node_Id;
+   function First_Variable_Use
+     (N        : Node_Id;
+      Scope    : Flow_Scope;
+      Var      : Flow_Id;
+      Precise  : Boolean;
+      Targeted : Boolean := False) return Node_Id;
    --  Given a node N, traverse the tree to find the most deeply nested node
    --  which still uses Var. If Precise is True look only for Var (for example
    --  R.Y), otherwise also look for the entire variable represented by Var (in
@@ -238,11 +239,11 @@ private
    --
    --  If we cannot find any suitable node we return N itself.
 
-   function First_Variable_Use (FA      : Flow_Analysis_Graphs;
-                                Var     : Flow_Id;
-                                Kind    : Var_Use_Kind;
-                                Precise : Boolean)
-                                return Node_Id;
+   function First_Variable_Use
+     (FA      : Flow_Analysis_Graphs;
+      Var     : Flow_Id;
+      Kind    : Var_Use_Kind;
+      Precise : Boolean) return Node_Id;
    --  Find a suitable node in the tree which uses the given variable. If
    --  Precise is True look only for Var (for example R.Y), otherwise we also
    --  look for the entire variable represented by Var (in our example we'd

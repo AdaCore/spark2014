@@ -97,7 +97,7 @@ package body Gnat2Why.Decls is
                   Labels      => Get_Counterexample_Labels
                     (E, "'" & Valid_Label),
                   Location    => Safe_First_Sloc (E),
-                  Return_Type => EW_Bool_Type));
+                  Return_Type => Get_Typ (B.Valid.Id)));
       end if;
 
       Close_Theory (Th,
@@ -199,10 +199,10 @@ package body Gnat2Why.Decls is
 
             --  Context and validity flag to handle potantially invalid values
 
-            Is_Valid : W_Expr_Id :=
-              (if B.Valid.Present then +True_Term else Why_Empty);
-            Tmp_Id   : W_Identifier_Id := Why_Empty;
-            Id_Def   : W_Expr_Id := Why_Empty;
+            Valid_Flag : W_Expr_Id :=
+              (if B.Valid.Present then +New_Valid_Value_For_Type (Etype (E))
+               else Why_Empty);
+            Context    : Ref_Context;
 
          begin
             --  Handle the potential propagation of invalid values
@@ -214,29 +214,28 @@ package body Gnat2Why.Decls is
                   Expected_Type => Get_Typ (B.Main.B_Name),
                   Domain        => EW_Term,
                   Params        => Params,
-                  Tmp_Id        => Tmp_Id,
-                  Id_Def        => Id_Def,
-                  Valid_Flag    => Is_Valid);
+                  Context       => Context,
+                  Valid_Flag    => Valid_Flag);
             else
                Def := Transform_Term (Expr, Get_Typ (B.Main.B_Name), Params);
             end if;
 
             --  We will generate separate defining axioms, so insert the
-            --  context inside Def and Is_Valid.
+            --  context inside Def and Valid_Flag.
 
-            if B.Valid.Present and then Present (Tmp_Id) then
-               Def :=
-                 New_Typed_Binding
-                   (Name    => Tmp_Id,
-                    Def     => +Id_Def,
-                    Context => Def);
-               if not Is_True_Boolean (Is_Valid) then
-                  Is_Valid :=
-                    New_Typed_Binding
-                      (Name    => Tmp_Id,
-                       Def     => +Id_Def,
-                       Domain  => EW_Term,
-                       Context => Is_Valid);
+            if B.Valid.Present then
+               Def := +Bindings_For_Ref_Context
+                 (Expr    => +Def,
+                  Context => Context,
+                  Domain  => EW_Term);
+
+               if Propagates_Validity_Flag (Decl)
+                 and then Is_Potentially_Invalid_Expr (Expr)
+               then
+                  Valid_Flag := Bindings_For_Ref_Context
+                    (Expr    => Valid_Flag,
+                     Context => Context,
+                     Domain  => EW_Term);
                end if;
             end if;
 
@@ -256,7 +255,7 @@ package body Gnat2Why.Decls is
             --  Also add an axioms of B.Valid.Id if any
 
             if B.Valid.Present
-              and then not Has_Dereference_Or_Any_Or_Self (+Is_Valid)
+              and then not Has_Dereference_Or_Any_Or_Self (+Valid_Flag)
             then
                Emit
                  (Th,
@@ -264,7 +263,7 @@ package body Gnat2Why.Decls is
                     (Ada_Node => E,
                      Name     => B.Valid.Id,
                      Binders  => (1 .. 0 => <>),
-                     Def      => +Is_Valid));
+                     Def      => +Valid_Flag));
             end if;
          end;
 
@@ -620,11 +619,11 @@ package body Gnat2Why.Decls is
       if Var.Valid.Present then
          Emit (Th,
                New_Global_Ref_Declaration
-                 (Name        => To_Local (Var.Valid.Id),
-                  Labels      => Get_Counterexample_Labels
+                 (Name     => To_Local (Var.Valid.Id),
+                  Labels   => Get_Counterexample_Labels
                     (E, "'" & Valid_Label),
-                  Location    => Safe_First_Sloc (E),
-                  Ref_Type    => EW_Bool_Type));
+                  Location => Safe_First_Sloc (E),
+                  Ref_Type => Get_Typ (Var.Valid.Id)));
       end if;
 
       --  Declare the variable for the value at end of E

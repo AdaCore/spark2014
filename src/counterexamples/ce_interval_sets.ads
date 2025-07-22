@@ -39,28 +39,27 @@ package CE_Interval_Sets is
       L_Bound : N;
       R_Bound : N;
    end record
-     with Dynamic_Predicate =>
-       Interval.L_Bound <= Interval.R_Bound;
+   with Dynamic_Predicate => Interval.L_Bound <= Interval.R_Bound;
 
-   function "<" (X, Y : Interval) return Boolean is
-     (X.R_Bound < Y.L_Bound);
+   function "<" (X, Y : Interval) return Boolean
+   is (X.R_Bound < Y.L_Bound);
    --  The order defined is intentionally not total for interval in general:
    --  overlapping intervals cannot be compared (X < Y or Y < X). So, we use
    --  the structure of ordered set to easily know if a new interval overlaps
    --  with one inside the set.
    --  X < Y means X is disjoint with Y and X is before Y.
 
-   function "=" (X, Y : Interval) return Boolean is
-     (not (X < Y) and not (Y < X));
+   function "=" (X, Y : Interval) return Boolean
+   is (not (X < Y) and not (Y < X));
    --  Equivalent_terms should be equal for the Ordered_Set data structure.
    --  Note that "and" is more efficient than "and then" in this context.
    --  X = Y means X overlaps with Y.
 
    type Interval_Set is tagged private;
 
-   function Merge_Interval (X, Y : Interval) return Interval is
-     (L_Bound => N'Min (X.L_Bound, Y.L_Bound),
-      R_Bound => N'Max (X.R_Bound, Y.R_Bound))
+   function Merge_Interval (X, Y : Interval) return Interval
+   is (L_Bound => N'Min (X.L_Bound, Y.L_Bound),
+       R_Bound => N'Max (X.R_Bound, Y.R_Bound))
    with Pre => (X = Y);
    --  This function takes two overlapping interval (X = Y) and merges them.
 
@@ -88,9 +87,10 @@ private
    --  because they could possibly break the Interval_Set. For example, by
    --  adding two overlapping intervals to the set.
    package Intervals is new
-     Ada.Containers.Ordered_Sets (Element_Type => Interval,
-                                  "="          => "=",
-                                  "<"          => "<");
+     Ada.Containers.Ordered_Sets
+       (Element_Type => Interval,
+        "="          => "=",
+        "<"          => "<");
 
    type Interval_Set is new Intervals.Set with null record;
 

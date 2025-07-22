@@ -57,9 +57,7 @@ package body CE_Display is
    --  Action on Str before printing the next element
 
    function Remap_VC_Info
-     (Cntexmp : Cntexample_File_Maps.Map;
-      VC_File : String;
-      VC_Line : Natural)
+     (Cntexmp : Cntexample_File_Maps.Map; VC_File : String; VC_Line : Natural)
       return Cntexample_File_Maps.Map;
    --  Map counterexample information related to the current VC to the
    --  location of the check in the Ada file.
@@ -67,8 +65,7 @@ package body CE_Display is
    --  JSON object representing the file where the construct is located.
 
    function Remove_Irrelevant_Branches
-     (Cntexmp : Cntexample_File_Maps.Map)
-      return Cntexample_File_Maps.Map;
+     (Cntexmp : Cntexample_File_Maps.Map) return Cntexample_File_Maps.Map;
    --  Remove counterexample branches that are not taken
 
    function Is_Ada_File_Name (File : String) return Boolean;
@@ -76,17 +73,15 @@ package body CE_Display is
    --  ??? This check is wrong, need to get rid of it
 
    function Is_Uninitialized
-     (Element_Decl : Entity_Id;
-      Element_File : String;
-      Element_Line : Natural)
+     (Element_Decl : Entity_Id; Element_File : String; Element_Line : Natural)
       return Boolean
    with Pre => Nkind (Element_Decl) in N_Entity;
    --  Return True if the counterexample element with given declaration at
    --  given position is uninitialized.
 
-   function Compare_Name (X, Y : Entity_Id) return Boolean is
-     (Source_Name (X) < Source_Name (Y)
-      or else (Source_Name (X) = Source_Name (Y) and then X < Y));
+   function Compare_Name (X, Y : Entity_Id) return Boolean
+   is (Source_Name (X) < Source_Name (Y)
+       or else (Source_Name (X) = Source_Name (Y) and then X < Y));
    --  Variables are stored in alphabetical order. Compare the entity id in
    --  case there are homonyms.
 
@@ -94,8 +89,8 @@ package body CE_Display is
      (Cntexmp_Line : Cntexample_Elt_Lists.List) return String;
    --  Reconstruct a string from a pretty printed one line counterexample
 
-   package Name_Ordered_Entities_Sets is
-     new Ada.Containers.Ordered_Sets
+   package Name_Ordered_Entities_Sets is new
+     Ada.Containers.Ordered_Sets
        (Element_Type => Entity_Id,
         "<"          => Compare_Name);
 
@@ -110,17 +105,15 @@ package body CE_Display is
    --    variables at a single source code location (line).
 
    function Reconstruct_Index_Value
-     (Value    : Unbounded_String;
-      Quant_Id : Entity_Id) return Unbounded_String;
+     (Value : Unbounded_String; Quant_Id : Entity_Id) return Unbounded_String;
    --  Reconstruct a string for the value of the Ada quantified variable
    --  in a FOR OF quantification from the value for the Why3 quantified
    --  variable.
 
    generic
-      with procedure Process_Entity
-        (E       : Entity_Id;
-         Mode    : Modifier;
-         Loop_Id : Entity_Id := Empty);
+      with
+        procedure Process_Entity
+          (E : Entity_Id; Mode : Modifier; Loop_Id : Entity_Id := Empty);
    procedure Process_Entities_For_One_Liner (N : Node_Id; K : VC_Kind);
    --  Traverse the node N related to a one liner and call Process_Entity on
    --  all relevant entities. Loop_Id is set to the relevant loop when Mode is
@@ -149,16 +142,16 @@ package body CE_Display is
    -----------------------
 
    procedure Build_Pretty_Line
-     (Variables                : Entity_To_Extended_Value_Maps.Map;
-      File                     : String;
-      Line                     : Natural;
-      Pretty_Line_Cntexmp_Arr  : out Cntexample_Elt_Lists.List;
-      Is_Json_Format           : Boolean := False)
+     (Variables               : Entity_To_Extended_Value_Maps.Map;
+      File                    : String;
+      Line                    : Natural;
+      Pretty_Line_Cntexmp_Arr : out Cntexample_Elt_Lists.List;
+      Is_Json_Format          : Boolean := False)
    is
       use Entity_To_Extended_Value_Maps;
       Ordered_Variables : Name_Ordered_Entities_Sets.Set;
 
-   --  Start of processing for Build_Pretty_Line
+      --  Start of processing for Build_Pretty_Line
 
    begin
       Pretty_Line_Cntexmp_Arr := Cntexample_Elt_Lists.Empty_List;
@@ -196,10 +189,13 @@ package body CE_Display is
                case Var_Mod is
                   when None | Index =>
                      null;
+
                   when Old =>
                      Append (Name, "'Old");
+
                   when Loop_Entry =>
                      Append (Name, "'Loop_Entry");
+
                   when CE_Values.Result =>
                      Append (Name, "'Result");
                end case;
@@ -220,26 +216,27 @@ package body CE_Display is
                         if Pretty_Value /= Dont_Display then
                            if Is_Json_Format then
                               Pretty_Line_Cntexmp_Arr.Append
-                                (Cntexample_Elt'(K        => Json_Format,
-                                                 Kind     => CEE_Variable,
-                                                 Name     => Name,
-                                                 JSON_Obj => Serialize_Value
-                                                   (Value)));
+                                (Cntexample_Elt'
+                                   (K        => Json_Format,
+                                    Kind     => CEE_Variable,
+                                    Name     => Name,
+                                    JSON_Obj => Serialize_Value (Value)));
                            else
                               Pretty_Value.Str :=
                                 Reconstruct_Index_Value
                                   (Pretty_Value.Str, Var);
 
                               Pretty_Line_Cntexmp_Arr.Append
-                                (Cntexample_Elt'(K        => Pretty_Printed,
-                                                 Kind     => CEE_Variable,
-                                                 Name     => Name,
-                                                 Val_Str  => Pretty_Value));
+                                (Cntexample_Elt'
+                                   (K       => Pretty_Printed,
+                                    Kind    => CEE_Variable,
+                                    Name    => Name,
+                                    Val_Str => Pretty_Value));
                            end if;
                         end if;
                      end;
 
-                     --  General case, add the counterexample value and its
+                  --  General case, add the counterexample value and its
                   --  attributes.
 
                   else
@@ -248,9 +245,8 @@ package body CE_Display is
 
                      if Value.K = Access_K
                        and then Value.Designated_Value /= null
-                       and then
-                         (not Value.Is_Null.Present
-                          or else not Value.Is_Null.Content)
+                       and then (not Value.Is_Null.Present
+                                 or else not Value.Is_Null.Content)
                      then
                         Append (Name, ".all");
                         Value := Value.Designated_Value.all;
@@ -274,8 +270,7 @@ package body CE_Display is
       VC_Loc  : Source_Ptr;
       VC_Node : Node_Id;
       VC_K    : VC_Kind;
-      Subp    : Entity_Id)
-      return Cntexample_Data
+      Subp    : Entity_Id) return Cntexample_Data
    is
       use Cntexample_File_Maps;
 
@@ -306,7 +301,7 @@ package body CE_Display is
          Variables               : Entity_To_Extended_Value_Maps.Map;
          Pretty_Line_Cntexmp_Arr : Cntexample_Elt_Lists.List;
 
-      --  Start of processing for Create_Pretty_Line
+         --  Start of processing for Create_Pretty_Line
 
       begin
          Parse_Counterexample_Line (Line_Cntexmp, Variables);
@@ -366,8 +361,9 @@ package body CE_Display is
             if not Pretty_Line_Cntexmp_Arr.Is_Empty then
                if Is_Previous then
                   Pretty_File_Cntexmp.Previous_Lines.Include
-                    (Line, (Line_Cnt => Pretty_Line_Cntexmp_Arr,
-                            Ada_Node => Integer (LI_Node)));
+                    (Line,
+                     (Line_Cnt => Pretty_Line_Cntexmp_Arr,
+                      Ada_Node => Integer (LI_Node)));
                else
                   Pretty_File_Cntexmp.Other_Lines.Include
                     (Line, Pretty_Line_Cntexmp_Arr);
@@ -382,23 +378,22 @@ package body CE_Display is
       VC_Line          : constant Natural :=
         Natural (Get_Logical_Line_Number (VC_Loc));
       Remapped_Cntexmp : constant Cntexample_File_Maps.Map :=
-        Remove_Irrelevant_Branches
-          (Remap_VC_Info (Cntexmp, VC_File, VC_Line));
+        Remove_Irrelevant_Branches (Remap_VC_Info (Cntexmp, VC_File, VC_Line));
       Pretty_Cntexmp   : Cntexample_File_Maps.Map :=
         Cntexample_File_Maps.Empty_Map;
 
-      Init_Loc          : constant Source_Ptr  := Sloc (Subp);
-      Init_File         : constant String := File_Name (Init_Loc);
-      Init_Line         : constant Natural :=
+      Init_Loc  : constant Source_Ptr := Sloc (Subp);
+      Init_File : constant String := File_Name (Init_Loc);
+      Init_Line : constant Natural :=
         Natural (Get_Logical_Line_Number (Init_Loc));
 
       --  Inputs of the subprogram in json format.
       --  They are located on the subprogram declaration.
       Init_Cntexmp_Line : Cntexample_Elt_Lists.List;
 
-      Variables         : Entity_To_Extended_Value_Maps.Map;
+      Variables : Entity_To_Extended_Value_Maps.Map;
 
-   --  Start of processing for Create_Pretty_Cntexmp
+      --  Start of processing for Create_Pretty_Cntexmp
 
    begin
       for File_C in Remapped_Cntexmp.Iterate loop
@@ -408,23 +403,20 @@ package body CE_Display is
             File                : constant String :=
               Compute_Filename_Previous (Key (File_C), Is_Previous, LI_Node);
             Pretty_File_Cntexmp : Cntexample_Lines :=
-              (if No_Element /= Pretty_Cntexmp.Find (File) then
-                  Element (Pretty_Cntexmp.Find (File))
+              (if No_Element /= Pretty_Cntexmp.Find (File)
+               then Element (Pretty_Cntexmp.Find (File))
                else
-                  Cntexample_Lines'(VC_Line        =>
-                                      Cntexample_Elt_Lists.Empty_List,
-                                    Other_Lines    =>
-                                      Cntexample_Line_Maps.Empty_Map,
-                                    Previous_Lines =>
-                                      Previous_Line_Maps.Empty_Map));
+                 Cntexample_Lines'
+                   (VC_Line        => Cntexample_Elt_Lists.Empty_List,
+                    Other_Lines    => Cntexample_Line_Maps.Empty_Map,
+                    Previous_Lines => Previous_Line_Maps.Empty_Map));
             Lines_Map           : Cntexample_Line_Maps.Map renames
               Element (File_C).Other_Lines;
 
          begin
             for Line_C in Lines_Map.Iterate loop
                declare
-                  Line : constant Natural :=
-                    Cntexample_Line_Maps.Key (Line_C);
+                  Line : constant Natural := Cntexample_Line_Maps.Key (Line_C);
                begin
                   Create_Pretty_Line
                     (Pretty_File_Cntexmp,
@@ -442,12 +434,12 @@ package body CE_Display is
                      Parse_Counterexample_Line (Lines_Map (Line_C), Variables);
 
                      if not Variables.Is_Empty then
-                        Build_Pretty_Line (Variables,
-                                           Init_File,
-                                           Init_Line,
-                                           Is_Json_Format => True,
-                                           Pretty_Line_Cntexmp_Arr =>
-                                             Init_Cntexmp_Line);
+                        Build_Pretty_Line
+                          (Variables,
+                           Init_File,
+                           Init_Line,
+                           Is_Json_Format          => True,
+                           Pretty_Line_Cntexmp_Arr => Init_Cntexmp_Line);
                      end if;
                   end if;
                end;
@@ -455,12 +447,11 @@ package body CE_Display is
 
             --  At this point, the information of VC_line is now in the
             --  Other_Lines field because Remap_VC_Info was applied.
-            if Is_Ada_File_Name (File) and then
-              (not Cntexample_Line_Maps.Is_Empty
-                (Pretty_File_Cntexmp.Other_Lines)
-              or else
-                not Previous_Line_Maps.Is_Empty
-                (Pretty_File_Cntexmp.Previous_Lines))
+            if Is_Ada_File_Name (File)
+              and then (not Cntexample_Line_Maps.Is_Empty
+                              (Pretty_File_Cntexmp.Other_Lines)
+                        or else not Previous_Line_Maps.Is_Empty
+                                      (Pretty_File_Cntexmp.Previous_Lines))
             then
                Pretty_Cntexmp.Include (File, Pretty_File_Cntexmp);
             end if;
@@ -469,10 +460,11 @@ package body CE_Display is
 
       Remove_Vars.Remove_Extra_Vars (Pretty_Cntexmp);
 
-      return Cntexample_Data'(Pretty_Cntexmp, Json_Formatted_Input'
-                                (Init_Cntexmp_Line,
-                                 To_Unbounded_String (Init_File),
-                                 Init_Line));
+      return
+        Cntexample_Data'
+          (Pretty_Cntexmp,
+           Json_Formatted_Input'
+             (Init_Cntexmp_Line, To_Unbounded_String (Init_File), Init_Line));
 
    end Create_Pretty_Cntexmp;
 
@@ -513,9 +505,7 @@ package body CE_Display is
 
                if Num_Elems > Max_Elems then
                   Num_Elems := Max_Elems;
-                  while Num_Elems > 0
-                    and then Has_Element (Cur_Elems)
-                  loop
+                  while Num_Elems > 0 and then Has_Element (Cur_Elems) loop
                      Before_Next_Element (Cntexmp_Line_Str);
                      Append (Cntexmp_Line_Str, Elt.Name);
                      Append (Cntexmp_Line_Str, Element (Cur_Elems));
@@ -540,17 +530,17 @@ package body CE_Display is
    ---------------------------
 
    function Get_Cntexmp_One_Liner
-     (Cntexmp : Cntexample_File_Maps.Map;
-      VC_Loc  : Source_Ptr)
-      return String
+     (Cntexmp : Cntexample_File_Maps.Map; VC_Loc : Source_Ptr) return String
    is
-      File : constant String := File_Name (VC_Loc);
-      Line : constant Logical_Line_Number := Get_Logical_Line_Number (VC_Loc);
-      File_Cur : constant Cntexample_File_Maps.Cursor := Cntexmp.Find (File);
+      File         : constant String := File_Name (VC_Loc);
+      Line         : constant Logical_Line_Number :=
+        Get_Logical_Line_Number (VC_Loc);
+      File_Cur     : constant Cntexample_File_Maps.Cursor :=
+        Cntexmp.Find (File);
       Cntexmp_Line : Cntexample_Elt_Lists.List :=
         Cntexample_Elt_Lists.Empty_List;
 
-   --  Start of processing for Get_Cntexmp_One_Liner
+      --  Start of processing for Get_Cntexmp_One_Liner
 
    begin
       if Cntexample_File_Maps.Has_Element (File_Cur) then
@@ -573,31 +563,23 @@ package body CE_Display is
    ------------------------
 
    function Get_Environment_CE
-     (N    : Node_Id;
-      K    : VC_Kind;
-      Subp : Node_Id)
-      return Cntexample_Data
+     (N : Node_Id; K : VC_Kind; Subp : Node_Id) return Cntexample_Data
    is
       Expl          : Entity_To_Extended_Value_Maps.Map;
       Input_As_JSON : Json_Formatted_Input;
 
-      procedure Insert_Expl
-        (E    : Entity_Id;
-         V    : Value_Type;
-         Mode : Modifier);
+      procedure Insert_Expl (E : Entity_Id; V : Value_Type; Mode : Modifier);
       --  Insert a single value in Expl
 
       procedure Accumulate_Expl_For_Entity
-        (E       : Entity_Id;
-         Mode    : Modifier;
-         Loop_Id : Entity_Id := Empty)
+        (E : Entity_Id; Mode : Modifier; Loop_Id : Entity_Id := Empty)
       with Pre => Mode = Loop_Entry or Loop_Id = Empty;
       --  Insert the value associated to E into Expl
 
-      function Is_Internal_Entity (E : Entity_Id) return Boolean is
-        (Is_Internal (E) or else
-             (Nkind (E) in N_Has_Chars
-              and then Namet.Is_Internal_Name (Chars (E))));
+      function Is_Internal_Entity (E : Entity_Id) return Boolean
+      is (Is_Internal (E)
+          or else (Nkind (E) in N_Has_Chars
+                   and then Namet.Is_Internal_Name (Chars (E))));
 
       procedure Insert_Cntexmp_Line
         (File    : String;
@@ -611,10 +593,7 @@ package body CE_Display is
       --------------------------------
 
       procedure Accumulate_Expl_For_Entity
-        (E       : Entity_Id;
-         Mode    : Modifier;
-         Loop_Id : Entity_Id := Empty)
-      is
+        (E : Entity_Id; Mode : Modifier; Loop_Id : Entity_Id := Empty) is
       begin
          case Mode is
             when None =>
@@ -637,8 +616,8 @@ package body CE_Display is
 
             when Loop_Entry =>
                declare
-                  Val : constant Opt_Value_Type := Find_Loop_Entry_Value
-                    (E, Loop_Id);
+                  Val : constant Opt_Value_Type :=
+                    Find_Loop_Entry_Value (E, Loop_Id);
                begin
                   if Val.Present then
                      Insert_Expl (E, Val.Content, Mode);
@@ -667,8 +646,7 @@ package body CE_Display is
         (File    : String;
          Line    : Natural;
          Value   : in out Cntexample_Elt_Lists.List;
-         Cntexmp : in out Cntexample_File_Maps.Map)
-      is
+         Cntexmp : in out Cntexample_File_Maps.Map) is
       begin
          if not Value.Is_Empty then
             declare
@@ -676,8 +654,7 @@ package body CE_Display is
                Line_Pos : Cntexample_Line_Maps.Cursor;
                Inserted : Boolean;
             begin
-               Cntexmp.Insert
-                 (File, (others => <>), File_Pos, Inserted);
+               Cntexmp.Insert (File, (others => <>), File_Pos, Inserted);
                Cntexmp (File_Pos).Other_Lines.Insert
                  (Line, Value, Line_Pos, Inserted);
                if not Inserted then
@@ -692,11 +669,7 @@ package body CE_Display is
       -- Insert_Expl --
       -----------------
 
-      procedure Insert_Expl
-        (E    : Entity_Id;
-         V    : Value_Type;
-         Mode : Modifier)
-      is
+      procedure Insert_Expl (E : Entity_Id; V : Value_Type; Mode : Modifier) is
          Position : Entity_To_Extended_Value_Maps.Cursor;
          Inserted : Boolean;
 
@@ -721,7 +694,7 @@ package body CE_Display is
 
       Cntexmp : Cntexample_File_Maps.Map;
 
-   --  Start of processing for Get_Environment_One_Liner
+      --  Start of processing for Get_Environment_One_Liner
 
    begin
       --  Find the relevant expression and accumulate information about used
@@ -732,7 +705,7 @@ package body CE_Display is
       --  Create a pretty one liner from Expl
 
       declare
-         VC_Loc          : constant Source_Ptr  := Sloc (N);
+         VC_Loc          : constant Source_Ptr := Sloc (N);
          VC_File         : constant String := File_Name (VC_Loc);
          VC_Line         : constant Natural :=
            Natural (Get_Logical_Line_Number (VC_Loc));
@@ -746,8 +719,7 @@ package body CE_Display is
                Position : Cntexample_File_Maps.Cursor;
                Inserted : Boolean;
             begin
-               Cntexmp.Insert
-                 (VC_File, (others => <>), Position, Inserted);
+               Cntexmp.Insert (VC_File, (others => <>), Position, Inserted);
                Cntexmp (Position).VC_Line := VC_Cntexmp_Line;
             end;
          end if;
@@ -758,7 +730,7 @@ package body CE_Display is
       declare
          Init_Cntexmp_JSON : Cntexample_Elt_Lists.List;
          Inputs            : Entity_To_Extended_Value_Maps.Map;
-         Init_Loc          : constant Source_Ptr  := Sloc (Subp);
+         Init_Loc          : constant Source_Ptr := Sloc (Subp);
          Init_File         : constant String := File_Name (Init_Loc);
          Init_Line         : constant Natural :=
            Natural (Get_Logical_Line_Number (Init_Loc));
@@ -785,21 +757,21 @@ package body CE_Display is
 
          Build_Pretty_Line (Inputs, Init_File, Init_Line, Init_Cntexmp_Line);
 
-         Build_Pretty_Line (Inputs,
-                            Init_File,
-                            Init_Line,
-                            Init_Cntexmp_JSON,
-                            Is_Json_Format => True);
+         Build_Pretty_Line
+           (Inputs,
+            Init_File,
+            Init_Line,
+            Init_Cntexmp_JSON,
+            Is_Json_Format => True);
 
          --  Insert the pretty printed values in a counterexample
 
          Insert_Cntexmp_Line
            (Init_File, Init_Line, Init_Cntexmp_Line, Cntexmp);
 
-         Input_As_JSON := Json_Formatted_Input'
-           (Init_Cntexmp_JSON,
-            To_Unbounded_String (Init_File),
-            Init_Line);
+         Input_As_JSON :=
+           Json_Formatted_Input'
+             (Init_Cntexmp_JSON, To_Unbounded_String (Init_File), Init_Line);
       end;
 
       --  Query located values of the RAC
@@ -807,7 +779,7 @@ package body CE_Display is
       for Cu_Loc in All_Located_Values.Iterate loop
          declare
             use Node_To_Node_To_Value;
-            Loc          : constant Source_Ptr  := Sloc (Key (Cu_Loc));
+            Loc          : constant Source_Ptr := Sloc (Key (Cu_Loc));
             File         : constant String := File_Name (Loc);
             Line         : constant Natural :=
               Natural (Get_Logical_Line_Number (Loc));
@@ -820,8 +792,7 @@ package body CE_Display is
                if not Is_Internal_Entity (Key (Cu)) then
                   Values.Insert
                     (Key (Cu),
-                     (None   => new Value_Type'(Element (Cu)),
-                      others => null));
+                     (None => new Value_Type'(Element (Cu)), others => null));
                end if;
             end loop;
 
@@ -837,8 +808,8 @@ package body CE_Display is
       --  unit.
 
       declare
-         function Is_Body_Or_Loop (N : Node_Id) return Boolean is
-           (Nkind (N) in N_Loop_Statement | N_Entity_Body);
+         function Is_Body_Or_Loop (N : Node_Id) return Boolean
+         is (Nkind (N) in N_Loop_Statement | N_Entity_Body);
 
          function Enclosing_Loop_Stmt is new
            First_Parent_With_Property (Is_Body_Or_Loop);
@@ -860,7 +831,7 @@ package body CE_Display is
                      Val               : constant Value_Access :=
                        Find_Binding (Id, False);
                      Loop_Map          : Entity_To_Extended_Value_Maps.Map;
-                     Loop_Loc          : constant Source_Ptr  := Sloc (P);
+                     Loop_Loc          : constant Source_Ptr := Sloc (P);
                      Loop_File         : constant String :=
                        File_Name (Loop_Loc);
                      Loop_Line         : constant Natural :=
@@ -892,8 +863,8 @@ package body CE_Display is
    function Is_Ada_File_Name (File : String) return Boolean is
    begin
       return
-        File'Length >= 4 and then
-        File ((File'Last - 2) .. File'Last) in "adb" | "ads";
+        File'Length >= 4
+        and then File ((File'Last - 2) .. File'Last) in "adb" | "ads";
    end Is_Ada_File_Name;
 
    ----------------------
@@ -901,11 +872,8 @@ package body CE_Display is
    ----------------------
 
    function Is_Uninitialized
-     (Element_Decl : Entity_Id;
-      Element_File : String;
-      Element_Line : Natural)
-      return Boolean
-   is
+     (Element_Decl : Entity_Id; Element_File : String; Element_Line : Natural)
+      return Boolean is
    begin
       --  Counterexample element can be uninitialized only if its location
       --  is the same as location of its declaration (otherwise it has been
@@ -913,26 +881,24 @@ package body CE_Display is
       --  analysis would issue an error in this case).
 
       if File_Name (Sloc (Element_Decl)) = Element_File
-        and then
-          Natural
-            (Get_Logical_Line_Number (Sloc (Element_Decl))) = Element_Line
+        and then Natural (Get_Logical_Line_Number (Sloc (Element_Decl)))
+                 = Element_Line
       then
 
-         --  Uninitialized procedure parameter
+         --  Cover cases of uninitialized procedure parameter and uninitialized
+         --  variable
 
-         return Ekind (Element_Decl) = E_Out_Parameter
-
-         --  Uninitialized variable
-
+         return
+           Ekind (Element_Decl) = E_Out_Parameter
            or else (Ekind (Element_Decl) = E_Variable
                     and then not Is_Quantified_Loop_Param (Element_Decl)
-                    and then Nkind (Enclosing_Declaration (Element_Decl)) =
-                      N_Object_Declaration
-                    and then
-                    No (Expression (Enclosing_Declaration (Element_Decl)))
-                    and then
-                    Default_Initialization
-                      (Etype (Element_Decl)) = No_Default_Initialization);
+                    and then Nkind (Enclosing_Declaration (Element_Decl))
+                             = N_Object_Declaration
+                    and then No
+                               (Expression
+                                  (Enclosing_Declaration (Element_Decl)))
+                    and then Default_Initialization (Etype (Element_Decl))
+                             = No_Default_Initialization);
 
       end if;
 
@@ -964,10 +930,8 @@ package body CE_Display is
 
       procedure Process_Basic_Entity (E : Entity_Id) is
       begin
-         if Ekind (E) in E_Variable
-                       | E_Constant
-                       | E_Loop_Parameter
-                       | Formal_Kind
+         if Ekind (E)
+            in E_Variable | E_Constant | E_Loop_Parameter | Formal_Kind
            and then not Is_Discriminal (E)
            and then not Is_Protected_Component_Or_Discr_Or_Part_Of (E)
          then
@@ -1119,22 +1083,22 @@ package body CE_Display is
 
             when N_Target_Name =>
                declare
-                  function Is_Assignment (N : Node_Id) return Boolean is
-                    (Nkind (N) = N_Assignment_Statement);
-                  function Find_Assignment is new First_Parent_With_Property
-                    (Is_Assignment);
+                  function Is_Assignment (N : Node_Id) return Boolean
+                  is (Nkind (N) = N_Assignment_Statement);
+                  function Find_Assignment is new
+                    First_Parent_With_Property (Is_Assignment);
                   Assign : constant Node_Id := Find_Assignment (N);
                begin
                   Process_All (Name (Assign));
                end;
 
-            when others => null;
+            when others =>
+               null;
          end case;
          return Atree.OK;
       end Process_Node;
 
-      procedure Process_All_Internal is new Traverse_More_Proc
-        (Process_Node);
+      procedure Process_All_Internal is new Traverse_More_Proc (Process_Node);
 
       procedure Process_All (N : Node_Id) renames Process_All_Internal;
    begin
@@ -1170,8 +1134,8 @@ package body CE_Display is
 
             if K = VC_Index_Check
               and then Nkind (Atree.Parent (N)) = N_Indexed_Component
-              and then not
-                Is_Static_Array_Type (Etype (Prefix (Atree.Parent (N))))
+              and then not Is_Static_Array_Type
+                             (Etype (Prefix (Atree.Parent (N))))
             then
                Process_All (N);
                Process_All (Prefix (Atree.Parent (N)));
@@ -1200,16 +1164,12 @@ package body CE_Display is
 
             --  For division checks, we only consider the right operand
 
-            elsif K = VC_Division_Check
-              and then Nkind (N) in N_Binary_Op
-            then
+            elsif K = VC_Division_Check and then Nkind (N) in N_Binary_Op then
                Process_All (Right_Opnd (N));
 
             --  For scalar range checks, include the bounds
 
-            elsif K = VC_Range_Check
-              and then Is_Scalar_Type (Etype (N))
-            then
+            elsif K = VC_Range_Check and then Is_Scalar_Type (Etype (N)) then
                Process_Basic_Entity (Etype (N));
                Process_All (N);
 
@@ -1224,13 +1184,16 @@ package body CE_Display is
                   case Nkind (Atree.Parent (N)) is
                      when N_Assignment_Statement =>
                         Exp_Ty := Etype (Name (Par));
+
                      when N_Object_Declaration =>
                         Exp_Ty := Etype (Defining_Identifier (Par));
+
                      when N_Type_Conversion
                         | N_Unchecked_Type_Conversion
                         | N_Qualified_Expression
-                        =>
+                     =>
                         Exp_Ty := Etype (Par);
+
                      when others =>
                         null;
                   end case;
@@ -1354,8 +1317,7 @@ package body CE_Display is
    -----------------------------
 
    function Reconstruct_Index_Value
-     (Value    : Unbounded_String;
-      Quant_Id : Entity_Id) return Unbounded_String
+     (Value : Unbounded_String; Quant_Id : Entity_Id) return Unbounded_String
    is
       function Refine_Container_Iterator_Value
         (R_Value        : Unbounded_String;
@@ -1409,52 +1371,60 @@ package body CE_Display is
             --  Contains iterable annotation is provided, no temporary
             --  should be introduced for "for of" quantification.
 
-            pragma Assert
-              (Iterable_Info.Kind = SPARK_Definition.Annotate.Model);
+            pragma
+              Assert (Iterable_Info.Kind = SPARK_Definition.Annotate.Model);
 
             --  Prepend the name of the Model function to the container name
 
-            return Refine_Container_Iterator_Value
-              (R_Value,
-               Etype (Iterable_Info.Entity),
-               Source_Name (Iterable_Info.Entity)
-               & " (" & Container_Name & ")");
+            return
+              Refine_Container_Iterator_Value
+                (R_Value,
+                 Etype (Iterable_Info.Entity),
+                 Source_Name (Iterable_Info.Entity)
+                 & " ("
+                 & Container_Name
+                 & ")");
          else
 
             --  We have found the ultimate model type
 
-            return Source_Name
-              (Get_Iterable_Type_Primitive (Cont_Typ, Name_Element))
-              & " (" & Container_Name & ", " & R_Value & ")";
+            return
+              Source_Name
+                (Get_Iterable_Type_Primitive (Cont_Typ, Name_Element))
+              & " ("
+              & Container_Name
+              & ", "
+              & R_Value
+              & ")";
          end if;
       end Refine_Container_Iterator_Value;
 
-      function Is_Quantified_Expr (N : Node_Id) return Boolean is
-        (Nkind (N) = N_Quantified_Expression);
+      function Is_Quantified_Expr (N : Node_Id) return Boolean
+      is (Nkind (N) = N_Quantified_Expression);
       function Enclosing_Quantified_Expr is new
         First_Parent_With_Property (Is_Quantified_Expr);
 
       Container : constant Entity_Id :=
         Get_Container_In_Iterator_Specification
-          (Iterator_Specification
-             (Enclosing_Quantified_Expr (Quant_Id)));
+          (Iterator_Specification (Enclosing_Quantified_Expr (Quant_Id)));
       pragma Assert (Present (Container));
 
-      Container_Typ : constant Entity_Id :=
-        Retysp (Etype (Container));
+      Container_Typ : constant Entity_Id := Retysp (Etype (Container));
 
    begin
       --  E = A (<value>)
 
       if Is_Array_Type (Container_Typ) then
-         return Source_Name (Container) & " (" & Value  & ")";
+         return Source_Name (Container) & " (" & Value & ")";
 
       --  E = Element (C, <value>)
 
       else
-         return Refine_Container_Iterator_Value
-           (Value, Container_Typ,
-            To_Unbounded_String (Source_Name (Container)));
+         return
+           Refine_Container_Iterator_Value
+             (Value,
+              Container_Typ,
+              To_Unbounded_String (Source_Name (Container)));
       end if;
    end Reconstruct_Index_Value;
 
@@ -1472,16 +1442,14 @@ package body CE_Display is
    --  of the CE).
 
    function Remove_Irrelevant_Branches
-     (Cntexmp : Cntexample_File_Maps.Map)
-      return Cntexample_File_Maps.Map
+     (Cntexmp : Cntexample_File_Maps.Map) return Cntexample_File_Maps.Map
    is
 
       package Supp_Lines is new Ce_Interval_Sets (N => Physical_Line_Number);
 
-      function Get_Interval_Case (N : Node_Id;
-                                  B : Boolean)
-                                  return Supp_Lines.Interval_Set
-        with Pre => Nkind (N) = N_Case_Statement_Alternative;
+      function Get_Interval_Case
+        (N : Node_Id; B : Boolean) return Supp_Lines.Interval_Set
+      with Pre => Nkind (N) = N_Case_Statement_Alternative;
       --  The case statement are translated to new ifs in Why3 so we can
       --  eliminate case by case (the order of branches is kept):
       --  * a branch is taken: we can remove all the subsequent "when"
@@ -1492,26 +1460,25 @@ package body CE_Display is
       --  * a branch is not taken: we can remove it as we are sure it is not
       --    taken
 
-      function Get_Interval_For_Branch (N : Node_Id)
-                                        return Supp_Lines.Interval
-        with Pre => Nkind (N) in N_If_Statement | N_Elsif_Part;
+      function Get_Interval_For_Branch (N : Node_Id) return Supp_Lines.Interval
+      with Pre => Nkind (N) in N_If_Statement | N_Elsif_Part;
 
-      function Get_Interval_For_Branch_Case (N : Node_Id)
-                                             return Supp_Lines.Interval
-        with Pre => Nkind (N) = N_Case_Statement_Alternative;
+      function Get_Interval_For_Branch_Case
+        (N : Node_Id) return Supp_Lines.Interval
+      with Pre => Nkind (N) = N_Case_Statement_Alternative;
 
-      function Get_Interval_If (N : Node_Id;
-                                B : Boolean)
-                                return Supp_Lines.Interval_Set
-        with Pre => Nkind (N) in N_If_Statement | N_Elsif_Part;
+      function Get_Interval_If
+        (N : Node_Id; B : Boolean) return Supp_Lines.Interval_Set
+      with Pre => Nkind (N) in N_If_Statement | N_Elsif_Part;
 
-      function Get_P (E : Entity_Id) return Physical_Line_Number is
-        (Get_Physical_Line_Number (Sloc (E)));
+      function Get_P (E : Entity_Id) return Physical_Line_Number
+      is (Get_Physical_Line_Number (Sloc (E)));
       --  Abbreviation for querying the first line of an entity
 
-      procedure Search_Labels (S : in out Supp_Lines.Interval_Set;
-                               L : S_String_List.List;
-                               V : Cntexmp_Value_Ptr);
+      procedure Search_Labels
+        (S : in out Supp_Lines.Interval_Set;
+         L : S_String_List.List;
+         V : Cntexmp_Value_Ptr);
       --  This procedure fills S with new values corresponding to branches that
       --  should not be taken for display of counterexamples.
 
@@ -1519,9 +1486,8 @@ package body CE_Display is
       -- Get_Interval_Case --
       -----------------------
 
-      function Get_Interval_Case (N : Node_Id;
-                                  B : Boolean)
-                                  return Supp_Lines.Interval_Set
+      function Get_Interval_Case
+        (N : Node_Id; B : Boolean) return Supp_Lines.Interval_Set
       is
          S : Supp_Lines.Interval_Set := Supp_Lines.Create;
       begin
@@ -1539,10 +1505,11 @@ package body CE_Display is
 
             if Present (Next (N)) then
                Supp_Lines.Insert
-                 (S, (L_Bound => Get_P (Next (N)),
-                      R_Bound =>
-                        Get_Physical_Line_Number (
-                          End_Location (Enclosing_Statement (N)))));
+                 (S,
+                  (L_Bound => Get_P (Next (N)),
+                   R_Bound =>
+                     Get_Physical_Line_Number
+                       (End_Location (Enclosing_Statement (N)))));
             end if;
 
          end if;
@@ -1553,8 +1520,7 @@ package body CE_Display is
       -- Get_Interval_For_Branch --
       -----------------------------
 
-      function Get_Interval_For_Branch (N : Node_Id)
-                                        return Supp_Lines.Interval
+      function Get_Interval_For_Branch (N : Node_Id) return Supp_Lines.Interval
       is
       begin
          if Nkind (N) = N_If_Statement then
@@ -1562,18 +1528,18 @@ package body CE_Display is
                Lbound : constant Physical_Line_Number :=
                  Get_P (Nlists.First (Then_Statements (N)));
                Rbound : constant Physical_Line_Number :=
-                 (if Present (Elsif_Parts (N)) then
-                    Get_P (First (Elsif_Parts (N))) - 1
+                 (if Present (Elsif_Parts (N))
+                  then Get_P (First (Elsif_Parts (N))) - 1
 
-                  elsif Present (Else_Statements (N)) then
-                    Get_P (First (Else_Statements (N))) - 1
+                  elsif Present (Else_Statements (N))
+                  then Get_P (First (Else_Statements (N))) - 1
 
-                  else
-                    Get_Physical_Line_Number (End_Location (N)));
+                  else Get_Physical_Line_Number (End_Location (N)));
 
             begin
-               return (L_Bound => Lbound,
-                       R_Bound => Physical_Line_Number'Max (Lbound, Rbound));
+               return
+                 (L_Bound => Lbound,
+                  R_Bound => Physical_Line_Number'Max (Lbound, Rbound));
             end;
 
          elsif Nkind (N) = N_Elsif_Part then
@@ -1581,20 +1547,21 @@ package body CE_Display is
                Lbound : constant Physical_Line_Number :=
                  Get_P (First (Then_Statements (N)));
                Rbound : constant Physical_Line_Number :=
-                 (if Present (Next (N)) then
-                    Get_P (Next (N)) - 1
+                 (if Present (Next (N))
+                  then Get_P (Next (N)) - 1
                   else
                     (if Present (Else_Statements (Enclosing_Statement (N)))
                      then
-                        Get_P (First
-                          (Else_Statements (Enclosing_Statement (N))))
+                       Get_P
+                         (First (Else_Statements (Enclosing_Statement (N))))
                      else
-                        Get_Physical_Line_Number
-                          (End_Location (Enclosing_Statement (N)))));
+                       Get_Physical_Line_Number
+                         (End_Location (Enclosing_Statement (N)))));
 
             begin
-               return (L_Bound => Get_P (First (Then_Statements (N))),
-                       R_Bound => Physical_Line_Number'Max (Lbound, Rbound));
+               return
+                 (L_Bound => Get_P (First (Then_Statements (N))),
+                  R_Bound => Physical_Line_Number'Max (Lbound, Rbound));
             end;
 
          else
@@ -1608,19 +1575,19 @@ package body CE_Display is
       -- Get_Interval_For_Branch_Case --
       ----------------------------------
 
-      function Get_Interval_For_Branch_Case (N : Node_Id)
-                                             return Supp_Lines.Interval
-      is
+      function Get_Interval_For_Branch_Case
+        (N : Node_Id) return Supp_Lines.Interval is
       begin
          if Present (Next (N)) then
-            return (L_Bound => Get_P (N),
-                    R_Bound =>
-                      Physical_Line_Number'Max (1, Get_P (Next (N)) - 1));
+            return
+              (L_Bound => Get_P (N),
+               R_Bound => Physical_Line_Number'Max (1, Get_P (Next (N)) - 1));
          else
-            return (L_Bound => Get_P (N),
-                    R_Bound =>
-                      Physical_Line_Number
-                        (End_Location (Enclosing_Statement (N))));
+            return
+              (L_Bound => Get_P (N),
+               R_Bound =>
+                 Physical_Line_Number
+                   (End_Location (Enclosing_Statement (N))));
          end if;
 
       end Get_Interval_For_Branch_Case;
@@ -1639,9 +1606,8 @@ package body CE_Display is
       --  * a branch is not taken: we can remove it as we are sure it is not
       --    taken
 
-      function Get_Interval_If (N : Node_Id;
-                                B : Boolean)
-                                return Supp_Lines.Interval_Set
+      function Get_Interval_If
+        (N : Node_Id; B : Boolean) return Supp_Lines.Interval_Set
       is
          S : Supp_Lines.Interval_Set := Supp_Lines.Create;
       begin
@@ -1660,15 +1626,15 @@ package body CE_Display is
             if Nkind (N) = N_If_Statement then
                if Present (Elsif_Parts (N)) then
                   Supp_Lines.Insert
-                    (S, (L_Bound => Get_P (First (Elsif_Parts (N))),
-                         R_Bound =>
-                           Get_Physical_Line_Number (End_Location (N))));
+                    (S,
+                     (L_Bound => Get_P (First (Elsif_Parts (N))),
+                      R_Bound => Get_Physical_Line_Number (End_Location (N))));
 
                elsif Present (Else_Statements (N)) then
                   Supp_Lines.Insert
-                    (S, (L_Bound => Get_P (First (Else_Statements (N))),
-                         R_Bound =>
-                           Get_Physical_Line_Number (End_Location (N))));
+                    (S,
+                     (L_Bound => Get_P (First (Else_Statements (N))),
+                      R_Bound => Get_Physical_Line_Number (End_Location (N))));
                else
 
                   --  No elsif or else branch so we don't need to remove
@@ -1680,10 +1646,11 @@ package body CE_Display is
 
                if Present (Next (N)) then
                   Supp_Lines.Insert
-                    (S, (L_Bound => Get_P (Next (N)),
-                         R_Bound =>
-                           Get_Physical_Line_Number (
-                             End_Location (Enclosing_Statement (N)))));
+                    (S,
+                     (L_Bound => Get_P (Next (N)),
+                      R_Bound =>
+                        Get_Physical_Line_Number
+                          (End_Location (Enclosing_Statement (N)))));
 
                else
 
@@ -1692,12 +1659,14 @@ package body CE_Display is
 
                   if Present (Else_Statements (Enclosing_Statement (N))) then
                      Supp_Lines.Insert
-                       (S, (L_Bound =>
-                                Get_P (First
-                                 (Else_Statements (Enclosing_Statement (N)))),
-                            R_Bound =>
-                              Get_Physical_Line_Number (
-                                End_Location (Enclosing_Statement (N)))));
+                       (S,
+                        (L_Bound =>
+                           Get_P
+                             (First
+                                (Else_Statements (Enclosing_Statement (N)))),
+                         R_Bound =>
+                           Get_Physical_Line_Number
+                             (End_Location (Enclosing_Statement (N)))));
                   end if;
                end if;
 
@@ -1713,36 +1682,33 @@ package body CE_Display is
       -- Search_Labels --
       -------------------
 
-      procedure Search_Labels (S : in out Supp_Lines.Interval_Set;
-                               L : S_String_List.List;
-                               V : Cntexmp_Value_Ptr)
-      is
+      procedure Search_Labels
+        (S : in out Supp_Lines.Interval_Set;
+         L : S_String_List.List;
+         V : Cntexmp_Value_Ptr) is
       begin
          for Elt of L loop
             declare
                Str : constant String := To_String (Elt);
             begin
 
-               if Str'Length > 10 and then
-                 Str (Str'First .. Str'First + 9) = "branch_id="
+               if Str'Length > 10
+                 and then Str (Str'First .. Str'First + 9) = "branch_id="
                then
 
                   declare
-                     N : constant Node_Id := Get_Entity_Id
-                       (False, Str (Str'First + 10 .. Str'Last));
+                     N : constant Node_Id :=
+                       Get_Entity_Id (False, Str (Str'First + 10 .. Str'Last));
                   begin
                      if Present (N) and V.T = Cnt_Boolean then
 
-                        if Nkind (N) in N_If_Statement | N_Elsif_Part
-                        then
+                        if Nkind (N) in N_If_Statement | N_Elsif_Part then
                            Supp_Lines.Insert_Union
-                             (S,
-                              Get_Interval_If (N, V.Bo));
+                             (S, Get_Interval_If (N, V.Bo));
 
                         elsif Nkind (N) = N_Case_Statement_Alternative then
                            Supp_Lines.Insert_Union
-                             (S,
-                              Get_Interval_Case (N, V.Bo));
+                             (S, Get_Interval_Case (N, V.Bo));
 
                         else
                            null;
@@ -1775,7 +1741,7 @@ package body CE_Display is
 
          declare
             Cnt_Line_Map : Cntexample_Line_Maps.Map :=
-                             Cntexample_Line_Maps.Empty_Map;
+              Cntexample_Line_Maps.Empty_Map;
          begin
 
             --  remove lines according to suppressed_lines collected
@@ -1785,12 +1751,12 @@ package body CE_Display is
                begin
 
                   if not Supp_Lines.Has_Containing_Interval
-                    (Suppressed_Lines,
-                     Physical_Line_Number (Line))
+                           (Suppressed_Lines, Physical_Line_Number (Line))
                   then
-                     Cntexample_Line_Maps.Insert (Cnt_Line_Map, Line,
-                                                  Cntexample_Line_Maps.Element
-                                                    (Cursor));
+                     Cntexample_Line_Maps.Insert
+                       (Cnt_Line_Map,
+                        Line,
+                        Cntexample_Line_Maps.Element (Cursor));
                   end if;
                end;
             end loop;
@@ -1806,9 +1772,7 @@ package body CE_Display is
    -------------------
 
    function Remap_VC_Info
-     (Cntexmp : Cntexample_File_Maps.Map;
-      VC_File : String;
-      VC_Line : Natural)
+     (Cntexmp : Cntexample_File_Maps.Map; VC_File : String; VC_Line : Natural)
       return Cntexample_File_Maps.Map
    is
       Remapped_Cntexmp : Cntexample_File_Maps.Map := Cntexmp;
@@ -1840,9 +1804,10 @@ package body CE_Display is
 
       Remapped_Cntexmp.Insert
         (Key      => VC_File,
-         New_Item => (Other_Lines    => Cntexample_Line_Maps.Empty_Map,
-                      VC_Line        => Cntexample_Elt_Lists.Empty_List,
-                      Previous_Lines => Previous_Line_Maps.Empty_Map),
+         New_Item =>
+           (Other_Lines    => Cntexample_Line_Maps.Empty_Map,
+            VC_Line        => Cntexample_Elt_Lists.Empty_List,
+            Previous_Lines => Previous_Line_Maps.Empty_Map),
          Position => C,
          Inserted => Inserted);
 
@@ -1852,8 +1817,7 @@ package body CE_Display is
    end Remap_VC_Info;
 
    function Remap_VC_Info
-     (Cntexmp : Cntexample_File_Maps.Map;
-      VC_Loc  : Source_Ptr)
+     (Cntexmp : Cntexample_File_Maps.Map; VC_Loc : Source_Ptr)
       return Cntexample_File_Maps.Map
    is
       File : constant String := File_Name (VC_Loc);

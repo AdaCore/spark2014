@@ -1,0 +1,2 @@
+foo.adb:12:16: error: non-scalar object declared before loop-invariant is not yet supported
+gnatprove: error during flow analysis and proof

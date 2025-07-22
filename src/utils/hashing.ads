@@ -28,7 +28,9 @@
 
 with Ada.Containers;
 
-package Hashing with Pure is
+package Hashing
+  with Pure
+is
 
    function Generic_Integer_Hash (N : Integer) return Ada.Containers.Hash_Type;
    pragma Inline (Generic_Integer_Hash);

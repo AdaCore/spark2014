@@ -167,7 +167,7 @@ prime_and_coprime_numbers.adb:323:57: info: division check proved, in instantiat
 prime_and_coprime_numbers.adb:325:23: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:8:24: info: initialization of "P.Prime_Data" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:9:03: info: flow dependencies proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:10:03: info: initial condition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:10:24: info: initial condition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:24:13: info: implicit aspect Always_Terminates on "Is_Prime" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:25:65: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:28:13: info: implicit aspect Always_Terminates on "Valid_Prime_Data" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6

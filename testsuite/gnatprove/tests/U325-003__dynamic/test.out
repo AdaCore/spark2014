@@ -2,5 +2,7 @@ dyn.adb:1:11: warning: subprogram "Dyn" has no effect
 dyn.adb:3:12: info: range check proved (CVC5: 2 VC)
 dyn.adb:6:04: high: object is unsuitable for aliasing via address clause [possible explanation: upper bound for type T is not known at compile time; aliased object could have invalid values [SPARK RM 13.7]]
 dyn.adb:6:04: info: address in address clause is compatible with object alignment (Trivial)
+dyn.adb:6:04: info: type is suitable as source for unchecked conversion (Trivial)
 dyn.adb:6:26: info: object is suitable for aliasing via address clause (Trivial)
+dyn.adb:6:26: info: type is suitable as source for unchecked conversion (Trivial)
 dyn.adb:6:26: info: types of aliased objects have the same size (Trivial)

@@ -37,8 +37,9 @@ package Flow_Classwide is
    --  Checks if the given call node is dispatching
 
    procedure Check_Classwide_Contracts (E : Entity_Id)
-   with Pre => Nkind (E) in N_Entity and then
-               Ekind (E) in E_Function | E_Procedure;
+   with
+     Pre =>
+       Nkind (E) in N_Entity and then Ekind (E) in E_Function | E_Procedure;
    --  Checks the classwide contracts of the given subprogram and if not valid
    --  then some error messages will have been issued. If the subprogram does
    --  not have a controlling parameter nor a result, this check procedure does

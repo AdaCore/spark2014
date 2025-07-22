@@ -56,8 +56,9 @@ package body Flow_Generated_Globals.Traversal is
    procedure Build_Tree (CU : Node_Id) is
 
       function Parent_Scope (E : Entity_Id) return Entity_Id
-        with Pre  => Ekind (E) in Container_Scope | E_Constant,
-             Post => Ekind (Parent_Scope'Result) in Container_Scope;
+      with
+        Pre  => Ekind (E) in Container_Scope | E_Constant,
+        Post => Ekind (Parent_Scope'Result) in Container_Scope;
 
       procedure Process (N : Node_Id);
       --  Process declaration to build the hierarchical scope structure
@@ -71,8 +72,7 @@ package body Flow_Generated_Globals.Traversal is
       function Parent_Scope (E : Entity_Id) return Entity_Id is
          P : Entity_Id := Scope (E);
       begin
-         while Ekind (P) not in Container_Scope
-           or else Is_Wrapper_Package (P)
+         while Ekind (P) not in Container_Scope or else Is_Wrapper_Package (P)
          loop
             P := Scope (P);
          end loop;
@@ -112,29 +112,33 @@ package body Flow_Generated_Globals.Traversal is
                   pragma Annotate (Xcov, Exempt_On, "Debugging code");
                   if Debug then
                      Ada.Text_IO.Put_Line
-                       (Full_Source_Name (P) & P'Img &
-                        " -> " &
-                        Full_Source_Name (E) & E'Img &
-                        " (" & Scope_Map.Length'Img & " )");
+                       (Full_Source_Name (P)
+                        & P'Img
+                        & " -> "
+                        & Full_Source_Name (E)
+                        & E'Img
+                        & " ("
+                        & Scope_Map.Length'Img
+                        & " )");
                   end if;
                   pragma Annotate (Xcov, Exempt_Off);
 
-                  Scope_Map.Insert (Key      => E,
-                                    New_Item => (Units  => <>,
-                                                 Parent => P));
+                  Scope_Map.Insert
+                    (Key => E, New_Item => (Units => <>, Parent => P));
                end;
             end if;
          end Insert;
 
-      --  Start of processing for Process
+         --  Start of processing for Process
 
       begin
          case Nkind (N) is
-            when N_Entry_Declaration          |
-                 N_Package_Declaration        |
-                 N_Protected_Type_Declaration |
-                 N_Subprogram_Declaration     |
-                 N_Task_Type_Declaration      =>
+            when N_Entry_Declaration
+               | N_Package_Declaration
+               | N_Protected_Type_Declaration
+               | N_Subprogram_Declaration
+               | N_Task_Type_Declaration
+            =>
                Insert (Defining_Entity (N));
 
             when N_Subprogram_Body =>
@@ -177,7 +181,7 @@ package body Flow_Generated_Globals.Traversal is
          end case;
       end Process;
 
-   --  Start of processing for Build_Tree
+      --  Start of processing for Build_Tree
 
    begin
       Traverse (CU);
@@ -204,7 +208,7 @@ package body Flow_Generated_Globals.Traversal is
          Ada.Text_IO.Put_Line ("***" & Full_Source_Name (E));
       end Dump;
 
-   --  Start of processing for Dump_Tree
+      --  Start of processing for Dump_Tree
 
    begin
       if Debug then
@@ -217,8 +221,8 @@ package body Flow_Generated_Globals.Traversal is
    -- Is_Leaf --
    -------------
 
-   function Is_Leaf (E : Entity_Id) return Boolean is
-     (Scope_Map (E).Units.Is_Empty);
+   function Is_Leaf (E : Entity_Id) return Boolean
+   is (Scope_Map (E).Units.Is_Empty);
 
    ------------------------------------
    -- Iterate_Constants_In_Main_Unit --
@@ -254,7 +258,7 @@ package body Flow_Generated_Globals.Traversal is
          Process (E);
       end Wrapper;
 
-   --  Start of processing for Iterate_Main_Unit
+      --  Start of processing for Iterate_Main_Unit
 
    begin
       --  Library-level renamings have no entities; ignore them
@@ -267,31 +271,31 @@ package body Flow_Generated_Globals.Traversal is
    -- Parent_Scope --
    ------------------
 
-   function Parent_Scope (E : Entity_Id) return Entity_Id is
-     (Scope_Map (E).Parent);
+   function Parent_Scope (E : Entity_Id) return Entity_Id
+   is (Scope_Map (E).Parent);
 
    -----------------
    -- Root_Entity --
    -----------------
 
-   function Root_Entity return Entity_Id is (Root);
+   function Root_Entity return Entity_Id
+   is (Root);
 
    -------------------------------
    -- Traverse_Compilation_Unit --
    -------------------------------
 
-   procedure Traverse_Compilation_Unit (CU : Node_Id)
-   is
-      procedure Traverse_Block                      (N : Node_Id);
-      procedure Traverse_Declaration_Or_Statement   (N : Node_Id);
-      procedure Traverse_Declarations_And_HSS       (N : Node_Id);
+   procedure Traverse_Compilation_Unit (CU : Node_Id) is
+      procedure Traverse_Block (N : Node_Id);
+      procedure Traverse_Declaration_Or_Statement (N : Node_Id);
+      procedure Traverse_Declarations_And_HSS (N : Node_Id);
       procedure Traverse_Declarations_Or_Statements (L : List_Id);
       procedure Traverse_Handled_Statement_Sequence (N : Node_Id);
-      procedure Traverse_Package_Body               (N : Node_Id);
-      procedure Traverse_Visible_And_Private_Parts  (N : Node_Id);
-      procedure Traverse_Protected_Body             (N : Node_Id);
-      procedure Traverse_Subprogram_Body            (N : Node_Id);
-      procedure Traverse_Task_Body                  (N : Node_Id);
+      procedure Traverse_Package_Body (N : Node_Id);
+      procedure Traverse_Visible_And_Private_Parts (N : Node_Id);
+      procedure Traverse_Protected_Body (N : Node_Id);
+      procedure Traverse_Subprogram_Body (N : Node_Id);
+      procedure Traverse_Task_Body (N : Node_Id);
 
       --  Traverse corresponding construct, calling Process on all declarations
 
@@ -299,8 +303,8 @@ package body Flow_Generated_Globals.Traversal is
       -- Traverse_Block --
       --------------------
 
-      procedure Traverse_Block (N : Node_Id) renames
-        Traverse_Declarations_And_HSS;
+      procedure Traverse_Block (N : Node_Id)
+      renames Traverse_Declarations_And_HSS;
 
       ---------------------------------------
       -- Traverse_Declaration_Or_Statement --
@@ -477,8 +481,8 @@ package body Flow_Generated_Globals.Traversal is
       -- Traverse_Package_Body --
       ---------------------------
 
-      procedure Traverse_Package_Body (N : Node_Id) renames
-        Traverse_Declarations_And_HSS;
+      procedure Traverse_Package_Body (N : Node_Id)
+      renames Traverse_Declarations_And_HSS;
 
       -----------------------------
       -- Traverse_Protected_Body --
@@ -493,15 +497,15 @@ package body Flow_Generated_Globals.Traversal is
       -- Traverse_Subprogram_Body --
       ------------------------------
 
-      procedure Traverse_Subprogram_Body (N : Node_Id) renames
-        Traverse_Declarations_And_HSS;
+      procedure Traverse_Subprogram_Body (N : Node_Id)
+      renames Traverse_Declarations_And_HSS;
 
       ------------------------
       -- Traverse_Task_Body --
       ------------------------
 
-      procedure Traverse_Task_Body (N : Node_Id) renames
-         Traverse_Declarations_And_HSS;
+      procedure Traverse_Task_Body (N : Node_Id)
+      renames Traverse_Declarations_And_HSS;
 
       ----------------------------------------
       -- Traverse_Visible_And_Private_Parts --
@@ -513,7 +517,7 @@ package body Flow_Generated_Globals.Traversal is
          Traverse_Declarations_Or_Statements (Private_Declarations (N));
       end Traverse_Visible_And_Private_Parts;
 
-   --  Start of processing for Traverse_Compilation_Unit
+      --  Start of processing for Traverse_Compilation_Unit
 
    begin
       Traverse_Declaration_Or_Statement (CU);

@@ -35,9 +35,9 @@ package body Flow_Utility.Initialization is
    -- Default_Initialization --
    ----------------------------
 
-   function Default_Initialization (Typ        : Entity_Id;
-                                    Ignore_DIC : Boolean := False)
-                                    return Default_Initialization_Kind
+   function Default_Initialization
+     (Typ : Entity_Id; Ignore_DIC : Boolean := False)
+      return Default_Initialization_Kind
    is
       FDI : Boolean := False;
       NDI : Boolean := False;
@@ -46,8 +46,9 @@ package body Flow_Utility.Initialization is
       --  initialized component.
 
       procedure Process_Component (Comp : Entity_Id)
-      with Pre  => Ekind (Comp) = E_Component,
-           Post => (if FDI'Old then FDI) and then (if NDI'Old then NDI);
+      with
+        Pre  => Ekind (Comp) = E_Component,
+        Post => (if FDI'Old then FDI) and then (if NDI'Old then NDI);
       --  Process component of a record or of a record extension
 
       -----------------------
@@ -66,9 +67,10 @@ package body Flow_Utility.Initialization is
       begin
          --  Don't expect internally generated components
 
-         pragma Assert
-           (Comes_From_Source (ORC)
-              or else Comes_From_Inlined_Body (Sloc (ORC)));
+         pragma
+           Assert
+             (Comes_From_Source (ORC)
+                or else Comes_From_Inlined_Body (Sloc (ORC)));
 
          --  When the component has a default expression, then it is default
          --  initialized no matter of its type.
@@ -110,20 +112,18 @@ package body Flow_Utility.Initialization is
 
       --  Local variables
 
-      Decl : Node_Id;
-      Def  : Node_Id;
+      Decl   : Node_Id;
+      Def    : Node_Id;
       Result : Default_Initialization_Kind;
 
-   --  Start of processing for Default_Initialization
+      --  Start of processing for Default_Initialization
 
    begin
       --  If we are considering implicit initializations and explicit
       --  Default_Initial_Condition was specified for the type, take it into
       --  account.
 
-      if not Ignore_DIC
-        and then Has_Own_DIC (Typ)
-      then
+      if not Ignore_DIC and then Has_Own_DIC (Typ) then
          declare
             --  For types with DIC, given either by an aspect or a pragma,
             --  frontend rewrites them into:
@@ -251,10 +251,10 @@ package body Flow_Utility.Initialization is
                      end if;
 
                      if Present (Record_Extension) then
-                        pragma Assert
-                          (Present (Component_List (Record_Extension))
-                             xor
-                           Null_Present (Record_Extension));
+                        pragma
+                          Assert
+                            (Present (Component_List (Record_Extension))
+                               xor Null_Present (Record_Extension));
 
                         if Null_Present (Record_Extension) then
                            null;
@@ -278,8 +278,9 @@ package body Flow_Utility.Initialization is
                         Result := Parent_Initialization;
 
                      elsif NDI then
-                        if Parent_Initialization in No_Default_Initialization
-                                                  | No_Possible_Initialization
+                        if Parent_Initialization
+                           in No_Default_Initialization
+                            | No_Possible_Initialization
                         then
                            Result := No_Default_Initialization;
                         else
@@ -359,8 +360,8 @@ package body Flow_Utility.Initialization is
                      elsif NDI then
                         Result := No_Default_Initialization;
 
-                        --  The type either has no components or they are all
-                        --  internally generated.
+                     --  The type either has no components or they are all
+                     --  internally generated.
 
                      else
                         if Ignore_DIC then
@@ -414,12 +415,13 @@ package body Flow_Utility.Initialization is
             --  the private part.
 
             if Present (SPARK_Pragma (Full_View (Typ)))
-              and then
-                Get_SPARK_Mode_From_Annotation (SPARK_Pragma (Full_View (Typ)))
-                  = Opt.Off
+              and then Get_SPARK_Mode_From_Annotation
+                         (SPARK_Pragma (Full_View (Typ)))
+                       = Opt.Off
             then
                declare
-                  S_Indication : constant Node_Id := Subtype_Indication (Decl);
+                  S_Indication          : constant Node_Id :=
+                    Subtype_Indication (Decl);
                   Parent_Initialization : Default_Initialization_Kind;
                begin
                   if Is_Entity_Name (S_Indication) then
@@ -438,9 +440,8 @@ package body Flow_Utility.Initialization is
                         | No_Default_Initialization
                      =>
                         return No_Default_Initialization;
-                     when Full_Default_Initialization
-                        | Mixed_Initialization
-                     =>
+
+                     when Full_Default_Initialization | Mixed_Initialization =>
                         return Mixed_Initialization;
                   end case;
                end;
@@ -480,9 +481,7 @@ package body Flow_Utility.Initialization is
          --  Concurrent types, looking from the outside, are initialized by
          --  default.
 
-         when N_Protected_Type_Declaration
-            | N_Task_Type_Declaration
-         =>
+         when N_Protected_Type_Declaration | N_Task_Type_Declaration =>
             return Full_Default_Initialization;
 
          --  Recurse into itypes created by component declarations
@@ -492,12 +491,12 @@ package body Flow_Utility.Initialization is
             pragma Assert (Is_Itype (Typ));
 
             declare
-               C_Def : constant Node_Id := Component_Definition (Decl);
+               C_Def        : constant Node_Id := Component_Definition (Decl);
                S_Indication : constant Node_Id := Subtype_Indication (C_Def);
                A_Definition : constant Node_Id := Access_Definition (C_Def);
             begin
-               pragma Assert
-                 (Present (S_Indication) xor Present (A_Definition));
+               pragma
+                 Assert (Present (S_Indication) xor Present (A_Definition));
 
                if Present (S_Indication) then
                   --  Itypes are only atteached to those component declarations
@@ -510,9 +509,11 @@ package body Flow_Utility.Initialization is
                     Default_Initialization
                       (Entity (Subtype_Mark (S_Indication)));
                else
-                  pragma Annotate
-                    (Xcov, Exempt_On,
-                     "Anonymous access types are rejected in marking");
+                  pragma
+                    Annotate
+                      (Xcov,
+                       Exempt_On,
+                       "Anonymous access types are rejected in marking");
                   return Full_Default_Initialization;
                   pragma Annotate (Xcov, Exempt_Off);
                end if;
@@ -524,9 +525,9 @@ package body Flow_Utility.Initialization is
          when others =>
             pragma Assert (Is_Itype (Typ));
 
-            --  We recurse into the underlying type, except for access and
-            --  array types, where it could be an infinite recursion. Instead
-            --  for those we do the same analysis as for fully declared types.
+            --  We recurse into the underlying type, except for types, where
+            --  it could be an infinite recursion. Instead for those we do the
+            --  same analysis as for fully declared types.
 
             if Is_Access_Type (Typ) then
                return Full_Default_Initialization;
@@ -538,7 +539,15 @@ package body Flow_Utility.Initialization is
                   return Default_Initialization (Component_Type (Typ));
                end if;
 
+            elsif Is_Scalar_Type (Typ) then
+               if Has_Default_Aspect (Typ) then
+                  return Full_Default_Initialization;
+               else
+                  return No_Default_Initialization;
+               end if;
+
             else
+               pragma Assert (Etype (Typ) /= Typ);
                return Default_Initialization (Etype (Typ));
             end if;
 
@@ -551,14 +560,11 @@ package body Flow_Utility.Initialization is
 
    function Get_Default_Initialization (F : Flow_Id) return Node_Id is
       function Get_Component_From_Aggregate
-        (A : Node_Id;
-         C : Entity_Id)
-         return Node_Id
+        (A : Node_Id; C : Entity_Id) return Node_Id
       with
-        Pre =>
+        Pre  =>
           Nkind (A) = N_Aggregate
-            and then
-          Ekind (C) in E_Component | E_Discriminant,
+          and then Ekind (C) in E_Component | E_Discriminant,
         Post =>
           (if Present (Get_Component_From_Aggregate'Result)
            then Nkind (Get_Component_From_Aggregate'Result) in N_Subexpr);
@@ -567,9 +573,11 @@ package body Flow_Utility.Initialization is
       --  return W.
 
       function Get_Simple_Default (E : Entity_Id) return Node_Id
-      with Pre  => Is_Type (E),
-           Post => (if Present (Get_Simple_Default'Result)
-                    then Nkind (Get_Simple_Default'Result) in N_Subexpr);
+      with
+        Pre  => Is_Type (E),
+        Post =>
+          (if Present (Get_Simple_Default'Result)
+           then Nkind (Get_Simple_Default'Result) in N_Subexpr);
       --  Recursively look for simple default values given by Default_Value and
       --  Default_Component_Value.
 
@@ -578,9 +586,7 @@ package body Flow_Utility.Initialization is
       ----------------------------------
 
       function Get_Component_From_Aggregate
-        (A : Node_Id;
-         C : Entity_Id)
-         return Node_Id
+        (A : Node_Id; C : Entity_Id) return Node_Id
       is
          N : Node_Id := First (Component_Associations (A));
       begin
@@ -609,8 +615,8 @@ package body Flow_Utility.Initialization is
          if Has_Aspect (E, Aspect_Default_Value) then
             return Expression (Find_Aspect (E, Aspect_Default_Value));
          elsif Has_Aspect (E, Aspect_Default_Component_Value) then
-            return Expression
-              (Find_Aspect (E, Aspect_Default_Component_Value));
+            return
+              Expression (Find_Aspect (E, Aspect_Default_Component_Value));
          else
             case Ekind (E) is
                when E_Array_Subtype =>
@@ -628,7 +634,7 @@ package body Flow_Utility.Initialization is
       N       : Node_Id;
       Comp_Id : Positive;
 
-   --  Start of processing for Get_Default_Initialization
+      --  Start of processing for Get_Default_Initialization
 
    begin
       case F.Kind is
@@ -659,9 +665,8 @@ package body Flow_Utility.Initialization is
                     and then Nkind (N) = N_Aggregate
                   loop
                      Comp_Id := Comp_Id + 1;
-                     N := Get_Component_From_Aggregate
-                       (N,
-                        F.Component (Comp_Id));
+                     N :=
+                       Get_Component_From_Aggregate (N, F.Component (Comp_Id));
                   end loop;
 
                   return N;
@@ -673,10 +678,7 @@ package body Flow_Utility.Initialization is
             --  We need to check if the type itself is always initialized
             return Get_Simple_Default (Etype (F.Component.Last_Element));
 
-         when Magic_String
-            | Synthetic_Null_Export
-            | Null_Value
-         =>
+         when Magic_String | Synthetic_Null_Export | Null_Value =>
             raise Program_Error;
       end case;
    end Get_Default_Initialization;
@@ -686,9 +688,7 @@ package body Flow_Utility.Initialization is
    ----------------------------
 
    function Is_Default_Initialized
-     (F          : Flow_Id;
-      Ignore_DIC : Boolean := False)
-      return Boolean
+     (F : Flow_Id; Ignore_DIC : Boolean := False) return Boolean
    is
 
       function Has_Full_Default_Initialization (E : Entity_Id) return Boolean;
@@ -713,11 +713,12 @@ package body Flow_Utility.Initialization is
                Typ := Etype (E);
          end case;
 
-         return Default_Initialization (Typ, Ignore_DIC) =
-                  Full_Default_Initialization;
+         return
+           Default_Initialization (Typ, Ignore_DIC)
+           = Full_Default_Initialization;
       end Has_Full_Default_Initialization;
 
-   --  Start of processing for Is_Default_Initialized
+      --  Start of processing for Is_Default_Initialized
 
    begin
       case F.Kind is
@@ -726,7 +727,8 @@ package body Flow_Utility.Initialization is
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
 
             begin
-               return Is_Imported (E)
+               return
+                 Is_Imported (E)
                  or else In_Generic_Actual (E)
                  or else Has_Full_Default_Initialization (E);
             end;
@@ -739,8 +741,9 @@ package body Flow_Utility.Initialization is
             end if;
 
             if Is_Discriminant (F) then
-               return Present (Discriminant_Default_Value
-                                 (F.Component.Last_Element));
+               return
+                 Present
+                   (Discriminant_Default_Value (F.Component.Last_Element));
 
             elsif Is_Record_Tag (F) then
                return True;
@@ -754,14 +757,11 @@ package body Flow_Utility.Initialization is
                  (for some Comp of reverse F.Component =>
                     (Has_Full_Default_Initialization (Comp)
                      or else Present (Expression (Parent (Comp)))))
-                   or else
-                 Has_Full_Default_Initialization (Get_Direct_Mapping_Id (F));
+                 or else Has_Full_Default_Initialization
+                           (Get_Direct_Mapping_Id (F));
             end if;
 
-         when Magic_String
-            | Null_Value
-            | Synthetic_Null_Export
-         =>
+         when Magic_String | Null_Value | Synthetic_Null_Export =>
             raise Program_Error;
       end case;
    end Is_Default_Initialized;

@@ -21,10 +21,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;         use Atree;
-with Flow_Types;    use Flow_Types;
+with Atree;      use Atree;
+with Flow_Types; use Flow_Types;
 with Gnat2Why_Args;
-with Types;         use Types;
+with Types;      use Types;
 
 package Flow_Visibility is
 
@@ -40,14 +40,12 @@ package Flow_Visibility is
    --  Creates edges in the visibility graph
 
    function Is_Visible
-     (Looking_From : Flow_Scope;
-      Looking_At   : Flow_Scope)
-      return Boolean;
+     (Looking_From : Flow_Scope; Looking_At : Flow_Scope) return Boolean;
    --  Returns True iff Looking_From has visibility of Looking_At
 
    type Hierarchy_Info_T is record
-      Is_Package      : Boolean;
-      Is_Private      : Boolean;
+      Is_Package : Boolean;
+      Is_Private : Boolean;
 
       Parent          : Entity_Id;
       Instance_Parent : Entity_Id;

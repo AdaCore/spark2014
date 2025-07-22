@@ -1,1 +1,2 @@
+p-q.ads:4:21: info: initialization of "Q.Hash" proved
 p-q.ads:5:03: info: flow dependencies proved

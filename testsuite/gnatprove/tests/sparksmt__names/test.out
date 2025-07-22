@@ -54,7 +54,7 @@ names.adb:180:39: info: loop invariant initialization proved (CVC5: 3 VC)
 names.adb:180:39: info: loop invariant preservation proved (CVC5: 3 VC)
 names.adb:194:31: info: precondition proved (CVC5: 2 VC)
 names.ads:30:04: info: flow dependencies proved
-names.ads:31:04: info: initial condition proved (CVC5: 3 VC)
+names.ads:31:25: info: initial condition proved (CVC5: 3 VC)
 names.ads:39:13: info: implicit aspect Always_Terminates on "Invariant" has been proved, subprogram will terminate
 names.ads:41:09: info: data dependencies proved
 names.ads:45:22: info: initialization of "N" proved

@@ -449,7 +449,9 @@ package body Gnat2Why.Types is
 
                --  Compute the predicate for E. Do not include any locally
                --  assumed predicate, they will be added separately depending
-               --  on the scope when the dynamic invariant is used.
+               --  on the scope when the dynamic invariant is used. Do not
+               --  handle validity flags. The dynamic invariant is expanded
+               --  if one is provided.
 
                Compute_Dynamic_Invariant
                  (Expr              => +Main_Arg,
@@ -458,6 +460,7 @@ package body Gnat2Why.Types is
                   Only_Var          => +Ovar_Arg,
                   Top_Predicate     => +Top_Arg,
                   All_Global_Inv    => +Inv_Arg,
+                  Valid             => Why_Empty,
                   Inv_Scop          => Empty,
                   Inv_Subp          => Empty,
                   Params            => Logic_Params,
@@ -624,7 +627,7 @@ package body Gnat2Why.Types is
                   Name     => To_Local (E_Symb (E, WNE_Type_Invariant)),
                   Def      => +Def,
                   Location => No_Location,
-                  Labels   => Symbol_Sets.Empty_Set,
+                  Labels   => Symbol_Sets.To_Set (NID (GP_Inline_Marker)),
                   Binders  =>
                     Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg,
                                                     others => <>))
@@ -1762,6 +1765,33 @@ package body Gnat2Why.Types is
         or else not Use_Predefined_Equality_For_Type (E)
       then
          Create_Additional_Equality_Theories (E);
+      end if;
+
+      --  Create a theory for validity trees of composite objects of type E if
+      --  necessary.
+
+      if Type_Might_Be_Invalid (E)
+        and then not Has_Scalar_Type (E)
+        and then E = Base_Retysp (E)
+      then
+         Th := Open_Theory
+           (WF_Context,
+            E_Module (E, Validity_Tree),
+            Comment =>
+              "Module for validity trees for objects of type "
+            & """" & Get_Name_String (Chars (E)) & """"
+            & (if Sloc (E) > 0 then
+                 " defined at " & Build_Location_String (Sloc (E))
+              else "")
+            & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+         if Has_Array_Type (E) then
+            Create_Validity_Tree_Theory_For_Array (Th, E);
+         else
+            Create_Validity_Tree_Theory_For_Record (Th, E);
+         end if;
+
+         Close_Theory (Th, Kind => Definition_Theory);
       end if;
    end Translate_Type;
 

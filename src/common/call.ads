@@ -33,12 +33,12 @@ package Call is
    --  Error status to communicate from spark_report to gnatprove that some
    --  checks were not proved. An arbitrary value of 42 is picked.
 
-   procedure Abort_With_Message (Msg : String) with
-     No_Return;
+   procedure Abort_With_Message (Msg : String)
+   with No_Return;
    --  Print the Msg to Standard Error and Exit with Error code 1
 
-   function Argument_List_Of_String_List (S : String_Lists.List)
-      return Argument_List;
+   function Argument_List_Of_String_List
+     (S : String_Lists.List) return Argument_List;
    --  Convert a String List into an Argument List
 
    procedure Call_With_Status

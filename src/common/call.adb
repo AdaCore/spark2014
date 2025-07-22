@@ -29,9 +29,7 @@ with GNATCOLL.Utils;
 
 package body Call is
 
-   procedure Print_Command_Line
-     (Command   : String;
-      Arguments : Argument_List);
+   procedure Print_Command_Line (Command : String; Arguments : Argument_List);
    --  Print the command line for debug purposes
 
    ------------------------
@@ -48,12 +46,12 @@ package body Call is
    -- Argument_List_Of_String_List --
    ----------------------------------
 
-   function Argument_List_Of_String_List (S : String_Lists.List)
-      return Argument_List
+   function Argument_List_Of_String_List
+     (S : String_Lists.List) return Argument_List
    is
       use String_Lists;
       Arguments : Argument_List := [1 .. Integer (S.Length) => <>];
-      Cnt       : Positive      := 1;
+      Cnt       : Positive := 1;
    begin
       for Elem of S loop
          Arguments (Cnt) := new String'(Elem);
@@ -75,8 +73,7 @@ package body Call is
       Verbose     : Boolean := False)
    is
       Executable : String_Access := Locate_Exec_On_Path (Command);
-      Arg_List   : Argument_List :=
-        Argument_List_Of_String_List (Arguments);
+      Arg_List   : Argument_List := Argument_List_Of_String_List (Arguments);
       Output_FD  : File_Descriptor;
    begin
       if Output_Name = "" then
@@ -95,8 +92,12 @@ package body Call is
          Ada.Text_IO.New_Line;
       end if;
 
-      Spawn (Executable.all, Arg_List, Output_FD, Status,
-             Err_To_Out => Output_Name /= "");
+      Spawn
+        (Executable.all,
+         Arg_List,
+         Output_FD,
+         Status,
+         Err_To_Out => Output_Name /= "");
 
       if Output_Name /= "" then
          Close (Output_FD);
@@ -112,9 +113,7 @@ package body Call is
    ------------------------
 
    pragma Annotate (Xcov, Exempt_On, "Not called from gnat2why");
-   procedure Print_Command_Line
-     (Command   : String;
-      Arguments : Argument_List)
+   procedure Print_Command_Line (Command : String; Arguments : Argument_List)
    is
    begin
       Ada.Text_IO.Put (Command);
@@ -147,8 +146,7 @@ package body Call is
    ---------------------------
 
    pragma Annotate (Xcov, Exempt_On, "Not called from gnat2why");
-   function Read_File_Into_String (Fn : String) return String
-   is
+   function Read_File_Into_String (Fn : String) return String is
       use GNATCOLL.Mmap;
       File   : Mapped_File;
       Region : Mapped_Region;

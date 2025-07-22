@@ -23,7 +23,7 @@
 
 with Ada.Containers.Hashed_Maps;
 with Gnat2Why_Args;
-with Stand;                      use Stand;
+with Stand; use Stand;
 
 package Flow_Generated_Globals.Traversal is
 
@@ -35,40 +35,37 @@ package Flow_Generated_Globals.Traversal is
    type Nested is record
       Units  : Node_Lists.List;
       Parent : Entity_Id;
-   end record with
-     Iterable => (First       => First_Cursor,
-                  Next        => Next_Cursor,
-                  Has_Element => Has_Element,
-                  Element     => Get_Element);
+   end record
+   with
+     Iterable =>
+       (First       => First_Cursor,
+        Next        => Next_Cursor,
+        Has_Element => Has_Element,
+        Element     => Get_Element);
    --  ??? add some type predicate
 
    function First_Cursor (Cont : Nested) return Node_Lists.Cursor;
    --  For aspect Iterable
 
    function Next_Cursor
-     (Cont     : Nested;
-      Position : Node_Lists.Cursor)
-      return Node_Lists.Cursor;
+     (Cont : Nested; Position : Node_Lists.Cursor) return Node_Lists.Cursor;
    --  For aspect Iterable
 
    function Has_Element
-     (Cont     : Nested;
-      Position : Node_Lists.Cursor)
-      return Boolean;
+     (Cont : Nested; Position : Node_Lists.Cursor) return Boolean;
    --  For aspect Iterable
 
    function Get_Element
-     (Cont     : Nested;
-      Position : Node_Lists.Cursor)
-      return Entity_Id;
+     (Cont : Nested; Position : Node_Lists.Cursor) return Entity_Id;
    --  For aspect Iterable
 
    package Nested_Scopes is new
-     Ada.Containers.Hashed_Maps (Key_Type        => Entity_Id,
-                                 Element_Type    => Nested,
-                                 Hash            => Node_Hash,
-                                 Equivalent_Keys => "=",
-                                 "="             => "=");
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Entity_Id,
+        Element_Type    => Nested,
+        Hash            => Node_Hash,
+        Equivalent_Keys => "=",
+        "="             => "=");
 
    Scope_Map : Nested_Scopes.Map;
    --  Hierarchical container with entities processed by the flow analysis,
@@ -80,26 +77,31 @@ package Flow_Generated_Globals.Traversal is
    --  ??? this is publicly visible only to make iteration easier
 
    subtype Container_Scope is Entity_Kind
-     with Static_Predicate => Container_Scope in Entry_Kind       |
-                                                 E_Function       |
-                                                 E_Package        |
-                                                 E_Procedure      |
-                                                 E_Protected_Type |
-                                                 E_Task_Type;
+   with
+     Static_Predicate =>
+       Container_Scope
+       in Entry_Kind
+        | E_Function
+        | E_Package
+        | E_Procedure
+        | E_Protected_Type
+        | E_Task_Type;
    --  ??? subtype from Checked_Entity_Id
 
    function Root_Entity return Entity_Id
-   with Post => No (Root_Entity'Result)
-                  or else
-                Ekind (Root_Entity'Result) in Container_Scope;
+   with
+     Post =>
+       No (Root_Entity'Result)
+       or else Ekind (Root_Entity'Result) in Container_Scope;
    --  Returns a cursor for the root scope; for custom iteration
 
    function Is_Leaf (E : Entity_Id) return Boolean;
    --  Returns True iff E is a leaf of the traversal tree
 
    function Parent_Scope (E : Entity_Id) return Entity_Id
-   with Pre  => Ekind (E) in Container_Scope,
-        Post => Ekind (Parent_Scope'Result) in Container_Scope;
+   with
+     Pre  => Ekind (E) in Container_Scope,
+     Post => Ekind (Parent_Scope'Result) in Container_Scope;
    --  Returns the parent scope of E (in the flow nesting sense)
 
    procedure Iterate_Main_Unit
@@ -115,10 +117,11 @@ package Flow_Generated_Globals.Traversal is
    --  available (and needed) in phase 1.
 
    function Traversal_Parents (E : Entity_Id) return Node_Lists.List
-   with Pre  => Ekind (E) in Container_Scope,
-        Post => (for all P of Traversal_Parents'Result =>
-                    Ekind (P) in Container_Scope
-                    and then P /= Standard_Standard);
+   with
+     Pre  => Ekind (E) in Container_Scope,
+     Post =>
+       (for all P of Traversal_Parents'Result =>
+          Ekind (P) in Container_Scope and then P /= Standard_Standard);
    --  Returns container scopes of E up to Standard, which is an ultimate scope
    --  of all program units. (The Standard itself is not among the results,
    --  because it would always appear there and it would carry no information).
@@ -129,40 +132,31 @@ private
    -- First_Cursor --
    ------------------
 
-   function First_Cursor (Cont : Nested) return Node_Lists.Cursor is
-     (Cont.Units.First);
+   function First_Cursor (Cont : Nested) return Node_Lists.Cursor
+   is (Cont.Units.First);
 
    -----------------
    -- Next_Cursor --
    -----------------
 
    function Next_Cursor
-     (Cont     : Nested;
-      Position : Node_Lists.Cursor)
-      return Node_Lists.Cursor
-   is
-     (Node_Lists.Next (Position));
+     (Cont : Nested; Position : Node_Lists.Cursor) return Node_Lists.Cursor
+   is (Node_Lists.Next (Position));
 
    -----------------
    -- Has_Element --
    -----------------
 
    function Has_Element
-     (Cont     : Nested;
-      Position : Node_Lists.Cursor)
-      return Boolean
-   is
-     (Node_Lists.Has_Element (Position));
+     (Cont : Nested; Position : Node_Lists.Cursor) return Boolean
+   is (Node_Lists.Has_Element (Position));
 
    -----------------
    -- Get_Element --
    -----------------
 
    function Get_Element
-     (Cont     : Nested;
-      Position : Node_Lists.Cursor)
-      return Entity_Id
-   is
-     (Node_Lists.Element (Position));
+     (Cont : Nested; Position : Node_Lists.Cursor) return Entity_Id
+   is (Node_Lists.Element (Position));
 
 end Flow_Generated_Globals.Traversal;

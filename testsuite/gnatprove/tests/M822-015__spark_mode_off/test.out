@@ -1,1 +1,4 @@
+spark_io.ads:15:28: info: initialization of "Spark_IO.State" proved
+spark_io.ads:15:35: info: initialization of "Spark_IO.Inputs" proved
+spark_io.ads:15:43: info: initialization of "Spark_IO.Outputs" proved
 spark_io.ads:16:09: info: flow dependencies proved

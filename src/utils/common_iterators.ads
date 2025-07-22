@@ -48,10 +48,12 @@ package Common_Iterators is
    -----------
 
    type Elist_Wrapper is private
-   with Iterable => (First       => ELW_First,
-                     Next        => ELW_Next,
-                     Has_Element => ELW_Has_Element,
-                     Element     => ELW_Element);
+   with
+     Iterable =>
+       (First       => ELW_First,
+        Next        => ELW_Next,
+        Has_Element => ELW_Has_Element,
+        Element     => ELW_Element);
 
    type Elist_Wrapper_Cursor is private;
 
@@ -67,17 +69,14 @@ package Common_Iterators is
 
    function ELW_First (L : Elist_Wrapper) return Elist_Wrapper_Cursor;
 
-   function ELW_Next (L : Elist_Wrapper;
-                      C : Elist_Wrapper_Cursor)
-                      return Elist_Wrapper_Cursor;
+   function ELW_Next
+     (L : Elist_Wrapper; C : Elist_Wrapper_Cursor) return Elist_Wrapper_Cursor;
 
-   function ELW_Has_Element (L : Elist_Wrapper;
-                             C : Elist_Wrapper_Cursor)
-                             return Boolean;
+   function ELW_Has_Element
+     (L : Elist_Wrapper; C : Elist_Wrapper_Cursor) return Boolean;
 
-   function ELW_Element (L : Elist_Wrapper;
-                         C : Elist_Wrapper_Cursor)
-                         return Node_Or_Entity_Id;
+   function ELW_Element
+     (L : Elist_Wrapper; C : Elist_Wrapper_Cursor) return Node_Or_Entity_Id;
 
 private
 

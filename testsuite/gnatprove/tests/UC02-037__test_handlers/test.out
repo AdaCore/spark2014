@@ -6,10 +6,7 @@ test_handlers.adb:32:17: info: overflow check proved (CVC5: 2 VC)
 test_handlers.adb:38:31: info: initialization of "Y" proved
 test_handlers.adb:39:14: info: postcondition proved (CVC5: 1 VC)
 test_handlers.adb:41:15: info: exceptional case proved (CVC5: 2 VC)
-test_handlers.adb:50:12: warning: unused assignment
-test_handlers.adb:53:12: warning: unused assignment
 test_handlers.adb:54:10: medium: unexpected exception might be raised
-test_handlers.adb:62:12: warning: unused assignment
 test_handlers.adb:62:17: info: overflow check proved (CVC5: 2 VC)
 test_handlers.adb:63:10: medium: unexpected exception might be raised
 test_handlers.adb:66:31: info: initialization of "Y" proved

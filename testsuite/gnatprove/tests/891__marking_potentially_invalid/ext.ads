@@ -156,6 +156,14 @@ package Ext with Spark_Mode is
      Import,
      Potentially_Invalid => (X, Y);
 
+   --  Overlays
+
+   X_Overlay_1 : R := (I => 13) with Potentially_Invalid;
+   Y_Overlay_1 : Integer with Import, Address => X_Overlay_1'Address;
+
+   X_Overlay_2 : Integer := 13;
+   Y_Overlay_2 : R with Potentially_Invalid, Import, Address => X_Overlay_2'Address;
+
    --  TOOL RESTRICTIONS
 
    --  Predicates

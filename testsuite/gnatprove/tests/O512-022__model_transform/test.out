@@ -29,3 +29,7 @@ model.ads:141:14: info: postcondition proved (CVC5: 2 VC)
 model.ads:147:14: info: postcondition proved (CVC5: 2 VC)
 model.ads:160:13: info: implicit aspect Always_Terminates on "Transform" has been proved, subprogram will terminate
 model.ads:163:06: info: postcondition proved (CVC5: 2 VC)
+model.ads:165:59: info: index check proved (CVC5: 2 VC)
+model.ads:168:43: info: range check proved (CVC5: 2 VC)
+model.ads:170:57: info: index check proved (CVC5: 2 VC)
+model.ads:173:43: info: range check proved (CVC5: 2 VC)

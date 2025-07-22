@@ -25,7 +25,7 @@
 
 package body Outputs is
 
-   procedure I  (O : Output_Id);
+   procedure I (O : Output_Id);
    --  If a new line has just been created, print as many spaces
    --  as the indentation level requires.
 
@@ -48,8 +48,8 @@ package body Outputs is
    procedure I (O : Output_Id) is
    begin
       if Output_States (O).New_Line then
-         Put (Output_Handles (O),
-           String'(1 .. Output_States (O).Indent => ' '));
+         Put
+           (Output_Handles (O), String'(1 .. Output_States (O).Indent => ' '));
          Output_States (O).New_Line := False;
       end if;
    end I;
@@ -80,12 +80,12 @@ package body Outputs is
    -- P --
    -------
 
-   procedure P  (O : Output_Id; C : Character) is
+   procedure P (O : Output_Id; C : Character) is
    begin
       Put (Output_Handles (O), C);
    end P;
 
-   procedure P  (O : Output_Id; S : String; As_String : Boolean := False) is
+   procedure P (O : Output_Id; S : String; As_String : Boolean := False) is
    begin
       I (O);
       if As_String then
@@ -134,21 +134,16 @@ package body Outputs is
    -- Relative_Indent --
    ---------------------
 
-   procedure Relative_Indent
-     (O    : Output_Id;
-      Diff : Integer) is
+   procedure Relative_Indent (O : Output_Id; Diff : Integer) is
    begin
-      Output_States (O).Indent :=
-        Natural (Output_States (O).Indent + Diff);
+      Output_States (O).Indent := Natural (Output_States (O).Indent + Diff);
    end Relative_Indent;
 
    ---------------------
    -- Absolute_Indent --
    ---------------------
 
-   procedure Absolute_Indent
-     (O     : Output_Id;
-      Level : Natural) is
+   procedure Absolute_Indent (O : Output_Id; Level : Natural) is
    begin
       Output_States (O).Indent := Level;
    end Absolute_Indent;

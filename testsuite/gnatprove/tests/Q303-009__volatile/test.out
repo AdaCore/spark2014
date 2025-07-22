@@ -1,7 +1,9 @@
 vol.adb:6:03: info: address in address clause is compatible with object alignment (Trivial)
 vol.adb:6:03: info: object is suitable for aliasing via address clause (Trivial)
+vol.adb:6:03: info: type is suitable as source for unchecked conversion (Trivial)
 vol.adb:9:03: warning: aliased objects must have the same volatility and atomic status [alias-volatile-atomic-mismatch]
 vol.adb:9:21: high: object is unsuitable for aliasing via address clause [possible explanation: floating-point types have invalid bit patterns for SPARK; aliased object could have invalid values [SPARK RM 13.7]]
+vol.adb:9:21: info: type is suitable as source for unchecked conversion (Trivial)
 vol.adb:9:21: info: types of aliased objects have the same size (Trivial)
 vol.adb:15:07: high: array index check might fail (e.g. when idx = 0) [reason for check: value must be a valid index into the array] [possible fix: add precondition (idx in 1 .. 10) to subprogram at vol.ads:4]
 vol.adb:22:14: high: array index check might fail (e.g. when idx = 0) [reason for check: value must be a valid index into the array] [possible fix: add precondition (idx in 1 .. 10) to subprogram at vol.ads:7]

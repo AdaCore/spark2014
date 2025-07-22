@@ -40,75 +40,79 @@ ext.ads:146:16: error: dispatching operation with Potentially_Invalid aspect is 
 ext.ads:146:16: error: violation of aspect SPARK_Mode at line 4
 ext.ads:155:13: error: Potentially_Invalid aspect on the primitive equality of a record type is not allowed in SPARK
 ext.ads:155:13: error: violation of aspect SPARK_Mode at line 4
-ext.ads:165:04: error: potentially invalid object with a part subject to predicates is not yet supported
-ext.ads:169:04: error: potentially invalid object with a part subject to predicates is not yet supported
-ext.ads:182:04: error: part of potentially invalid object with mutable discriminants is not yet supported
-ext.ads:186:04: error: part of potentially invalid object with mutable discriminants is not yet supported
-ext.ads:192:04: error: part of potentially invalid object with mutable discriminants is not yet supported
-ext.ads:198:04: error: potentially invalid object with a part with relaxed initialization is not yet supported
-ext.ads:202:04: error: potentially invalid object with a part with relaxed initialization is not yet supported
-ext.ads:208:04: error: potentially invalid object with a part with relaxed initialization is not yet supported
+ext.ads:162:04: error: potentially invalid overlaid object is not allowed in SPARK
+ext.ads:162:04: error: violation of aspect SPARK_Mode at line 4
+ext.ads:165:04: error: potentially invalid overlaid object is not allowed in SPARK
+ext.ads:165:04: error: violation of aspect SPARK_Mode at line 4
+ext.ads:173:04: error: potentially invalid object with a part subject to predicates is not yet supported
+ext.ads:177:04: error: potentially invalid object with a part subject to predicates is not yet supported
+ext.ads:190:04: error: part of potentially invalid object with mutable discriminants is not yet supported
+ext.ads:194:04: error: part of potentially invalid object with mutable discriminants is not yet supported
+ext.ads:200:04: error: part of potentially invalid object with mutable discriminants is not yet supported
+ext.ads:206:04: error: potentially invalid object with a part with relaxed initialization is not yet supported
 ext.ads:210:04: error: potentially invalid object with a part with relaxed initialization is not yet supported
-ext.ads:212:13: error: potentially invalid object with a part with relaxed initialization is not yet supported
-ext.ads:216:25: error: potentially invalid object with a part with relaxed initialization is not yet supported
-ext.ads:242:04: error: potentially invalid object with a part whose full view is not in SPARK is not yet supported
-ext.ads:246:04: error: potentially invalid object with a part whose full view is not in SPARK is not yet supported
-ext.ads:252:04: error: potentially invalid object with a part whose full view is not in SPARK is not yet supported
-ext.ads:260:36: error: access to a subprogram annotated with Potentially_Invalid is not yet supported
-ext.ads:268:25: error: Potentially_Invalid aspect on a function associated to the aspect Iterable is not yet supported
-ext.ads:279:13: error: traversal function with a potentially invalid traversed parameter is not allowed in SPARK
-ext.ads:279:13: error: violation of aspect SPARK_Mode at line 4
-ext.ads:283:13: error: traversal function with a potentially invalid traversed parameter is not allowed in SPARK
-ext.ads:283:13: error: violation of aspect SPARK_Mode at line 4
-ext.ads:289:13: error: Entity parameter of a pragma Logical_Equal shall not have a Potentially_Invalid aspect
-ext.ads:297:39: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
-ext.ads:306:13: error: function annotated with Inline_For_Proof with a postcondition shall not have a potentially invalid result
-ext.ads:308:27: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
-ext.ads:319:04: warning: "X_Val" cannot have invalid values [useless-potentially-invalid-object]
-ext.ads:321:13: warning: the result of "F_Val" cannot have invalid values [useless-potentially-invalid-func-result]
-ext.ads:324:21: warning: "X" cannot have invalid values [useless-potentially-invalid-object]
-ext.ads:337:18: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
-ext.ads:344:14: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
-ext.ads:350:18: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
-ext.ads:359:18: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
-ext.ads:366:14: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
-ext.ads:383:45: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
-ext.ads:388:51: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
-ext.ads:398:40: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
-ext.ads:408:45: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
-ext.ads:423:52: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
-ext.ads:433:48: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
-ext.ads:445:06: warning: postcondition does not check the outcome of calling "P_Read_Old_OK_1" [-gnatw.t]
-ext.ads:450:06: warning: postcondition does not check the outcome of calling "P_Read_Old_OK_2" [-gnatw.t]
-ext.ads:455:06: warning: postcondition does not check the outcome of calling "P_Read_Old_OK_3" [-gnatw.t]
-ext.ads:460:56: warning: contract case does not check the outcome of calling "P_Read_Old_OK_4" [-gnatw.t]
-ext.ads:465:65: warning: contract case does not check the outcome of calling "P_Read_Old_OK_5" [-gnatw.t]
-ext.ads:471:06: warning: postcondition does not check the outcome of calling "P_Read_Old_OK_6" [-gnatw.t]
-ext.ads:477:06: warning: postcondition does not check the outcome of calling "P_Read_Old_OK_7" [-gnatw.t]
-ext.ads:482:85: warning: contract case does not check the outcome of calling "P_Read_Old_OK_8" [-gnatw.t]
-ext.ads:487:62: warning: contract case does not check the outcome of calling "P_Read_Old_OK_9" [-gnatw.t]
-ext.ads:487:127: warning: contract case does not check the outcome of calling "P_Read_Old_OK_9" [-gnatw.t]
-ext.ads:492:50: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
-ext.ads:497:54: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
-ext.ads:502:06: warning: postcondition does not check the outcome of calling "P_Read_Old_KO_3" [-gnatw.t]
-ext.ads:502:54: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
-ext.ads:507:46: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
-ext.ads:513:14: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
-ext.ads:519:09: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
-ext.ads:520:22: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
-ext.ads:525:118: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
-ext.ads:525:128: warning: contract case does not check the outcome of calling "P_Read_Old_KO7" [-gnatw.t]
-ext.ads:530:41: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+ext.ads:216:04: error: potentially invalid object with a part with relaxed initialization is not yet supported
+ext.ads:218:04: error: potentially invalid object with a part with relaxed initialization is not yet supported
+ext.ads:220:13: error: potentially invalid object with a part with relaxed initialization is not yet supported
+ext.ads:224:25: error: potentially invalid object with a part with relaxed initialization is not yet supported
+ext.ads:250:04: error: potentially invalid object with a part whose full view is not in SPARK is not yet supported
+ext.ads:254:04: error: potentially invalid object with a part whose full view is not in SPARK is not yet supported
+ext.ads:260:04: error: potentially invalid object with a part whose full view is not in SPARK is not yet supported
+ext.ads:268:36: error: access to a subprogram annotated with Potentially_Invalid is not yet supported
+ext.ads:276:25: error: Potentially_Invalid aspect on a function associated to the aspect Iterable is not yet supported
+ext.ads:287:13: error: traversal function with a potentially invalid traversed parameter is not allowed in SPARK
+ext.ads:287:13: error: violation of aspect SPARK_Mode at line 4
+ext.ads:291:13: error: traversal function with a potentially invalid traversed parameter is not allowed in SPARK
+ext.ads:291:13: error: violation of aspect SPARK_Mode at line 4
+ext.ads:297:13: error: Entity parameter of a pragma Logical_Equal shall not have a Potentially_Invalid aspect
+ext.ads:305:39: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+ext.ads:314:13: error: function annotated with Inline_For_Proof with a postcondition shall not have a potentially invalid result
+ext.ads:316:27: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+ext.ads:327:04: warning: "X_Val" cannot have invalid values [useless-potentially-invalid-object]
+ext.ads:329:13: warning: the result of "F_Val" cannot have invalid values [useless-potentially-invalid-func-result]
+ext.ads:332:21: warning: "X" cannot have invalid values [useless-potentially-invalid-object]
+ext.ads:345:18: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+ext.ads:352:14: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+ext.ads:358:18: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+ext.ads:367:18: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+ext.ads:374:14: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+ext.ads:391:45: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+ext.ads:396:51: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+ext.ads:406:40: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+ext.ads:416:45: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+ext.ads:431:52: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+ext.ads:441:48: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+ext.ads:453:06: warning: postcondition does not check the outcome of calling "P_Read_Old_OK_1" [-gnatw.t]
+ext.ads:458:06: warning: postcondition does not check the outcome of calling "P_Read_Old_OK_2" [-gnatw.t]
+ext.ads:463:06: warning: postcondition does not check the outcome of calling "P_Read_Old_OK_3" [-gnatw.t]
+ext.ads:468:56: warning: contract case does not check the outcome of calling "P_Read_Old_OK_4" [-gnatw.t]
+ext.ads:473:65: warning: contract case does not check the outcome of calling "P_Read_Old_OK_5" [-gnatw.t]
+ext.ads:479:06: warning: postcondition does not check the outcome of calling "P_Read_Old_OK_6" [-gnatw.t]
+ext.ads:485:06: warning: postcondition does not check the outcome of calling "P_Read_Old_OK_7" [-gnatw.t]
+ext.ads:490:85: warning: contract case does not check the outcome of calling "P_Read_Old_OK_8" [-gnatw.t]
+ext.ads:495:62: warning: contract case does not check the outcome of calling "P_Read_Old_OK_9" [-gnatw.t]
+ext.ads:495:127: warning: contract case does not check the outcome of calling "P_Read_Old_OK_9" [-gnatw.t]
+ext.ads:500:50: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+ext.ads:505:54: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+ext.ads:510:06: warning: postcondition does not check the outcome of calling "P_Read_Old_KO_3" [-gnatw.t]
+ext.ads:510:54: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+ext.ads:515:46: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+ext.ads:521:14: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+ext.ads:527:09: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+ext.ads:528:22: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+ext.ads:533:118: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
+ext.ads:533:128: warning: contract case does not check the outcome of calling "P_Read_Old_KO7" [-gnatw.t]
+ext.ads:538:41: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
 test.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
 test.adb:9:13: warning: imprecise handling of Unchecked_Conversion (component offset not known) [imprecise-unchecked-conversion]
 test.adb:9:51: info: type is suitable as source for unchecked conversion (Trivial)
 test.adb:9:60: info: type is suitable for unchecked conversion (Trivial)
 test.adb:14:41: info: initialization of "Res" proved
-test.adb:16:14: medium: postcondition might fail (e.g. when Res = (I => 1) and X = 0)
-test.adb:16:14: medium: validity check might fail
+test.adb:16:14: medium: postcondition might fail (e.g. when Res = (I => 1) and Res.I'Valid = True and X = 0)
+test.adb:16:17: medium: validity check might fail
 test.adb:23:13: info: implicit aspect Always_Terminates on "F_Body_SPARK" has been proved, subprogram will terminate
 test.adb:25:14: medium: postcondition might fail (e.g. when F_Body_SPARK'Result = (I => 1) and X = 0)
-test.adb:25:26: medium: validity check might fail
+test.adb:25:33: medium: validity check might fail
 test.adb:29:14: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
 test.adb:38:24: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
 gnatprove: error during flow analysis and proof

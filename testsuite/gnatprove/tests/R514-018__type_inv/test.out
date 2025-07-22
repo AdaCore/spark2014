@@ -2,4 +2,5 @@ sorted.ads:4:13: info: implicit aspect Always_Terminates on "Is_Sorted" has been
 sorted.ads:6:39: info: index check proved (CVC5: 2 VC)
 sorted.ads:12:13: info: implicit aspect Always_Terminates on "Open" has been proved, subprogram will terminate
 sorted.ads:13:14: info: postcondition proved (CVC5: 1 VC)
-sorted.ads:15:09: medium: invariant check might fail on default value
+sorted.ads:15:09: medium: in inlined invariant at sorted.ads:16
+sorted.ads:15:09: medium: invariant check might fail on default value, cannot prove Is_Sorted (Sorted_Nat_Array)

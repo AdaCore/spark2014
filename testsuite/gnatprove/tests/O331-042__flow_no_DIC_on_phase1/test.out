@@ -1,4 +1,4 @@
-types.ads:4:09: info: default initial condition proved (CVC5: 1 VC)
+types.ads:4:70: info: default initial condition proved (CVC5: 1 VC)
 types.ads:5:13: info: implicit aspect Always_Terminates on "Valid" has been proved, subprogram will terminate
 types.ads:5:20: warning: unused variable "X"
 types.ads:8:04: medium: type "T" is not fully initialized

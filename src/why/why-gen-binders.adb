@@ -434,7 +434,7 @@ package body Why.Gen.Binders is
             return +Item.Valid.Id;
          end if;
       end if;
-      return True_Term;
+      return Why_Empty;
    end Get_Valid_Id_From_Item;
 
    ------------------------------
@@ -452,7 +452,7 @@ package body Why.Gen.Binders is
          return Get_Valid_Id_From_Item
            (Ada_Ent_To_Why.Element (C), Ref_Allowed);
       end if;
-      return True_Term;
+      return Why_Empty;
    end Get_Valid_Id_From_Object;
 
    ----------------------------
@@ -824,7 +824,8 @@ package body Why.Gen.Binders is
 
       function New_Valid_Id (Name : W_Identifier_Id) return Opt_Id is
         (if Needs_Valid_Flag
-         then (Present => True, Id => Valid_Append (Name))
+         then (Present => True,
+               Id      => Valid_Append (Name, Get_Validity_Tree_Type (Ty)))
          else (Present => False));
 
    begin

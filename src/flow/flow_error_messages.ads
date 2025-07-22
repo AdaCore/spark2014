@@ -39,61 +39,51 @@ package Flow_Error_Messages is
    --  should stop further analysis (i.e. proof).
 
    function Get_Filtered_Variables_For_Proof
-     (Expr    : Node_Id;
-      Context : Node_Id)
-      return Flow_Id_Sets.Set;
+     (Expr : Node_Id; Context : Node_Id) return Flow_Id_Sets.Set;
    --  Wrapper on Flow_Utility.Get_Variables_For_Proof that excludes the
    --  special variables __HEAP and SPARK.Heap.Dynamic_Memory used to model
    --  (de)allocation.
-
-   function Get_Flow_JSON return JSON_Array;
-   function Get_Proof_JSON return JSON_Array;
-   --  Call these functions to get the messages of proof and flow in JSON form.
-   --  Should be called only when analysis is finished.
 
    function Fresh_Trace_File return String;
    --  Returns a name for a trace file. This name should be unique for the
    --  project.
 
-   function Error_Location (G : Flow_Graphs.Graph;
-                            M : Attribute_Maps.Map;
-                            V : Flow_Graphs.Vertex_Id)
-                            return Node_Or_Entity_Id;
+   function Error_Location
+     (G : Flow_Graphs.Graph; M : Attribute_Maps.Map; V : Flow_Graphs.Vertex_Id)
+      return Node_Or_Entity_Id;
    --  Find a good place to raise an error for vertex V
 
    procedure Error_Msg_Flow
      (E             : Entity_Id;
       Msg           : String;
-      Details       : String             := "";
-      Explanation   : String             := "";
-      Fix           : String             := "";
+      Details       : String := "";
+      Explanation   : String := "";
+      Fix           : String := "";
       Severity      : Msg_Severity;
       N             : Node_Id;
       Suppressed    : out Boolean;
-      F1            : Flow_Id            := Null_Flow_Id;
-      F2            : Flow_Id            := Null_Flow_Id;
-      F3            : Flow_Id            := Null_Flow_Id;
-      EF1           : Flow_Id            := Null_Flow_Id;
-      FF1           : Flow_Id            := Null_Flow_Id;
-      FF2           : Flow_Id            := Null_Flow_Id;
-      Tag           : Flow_Tag_Kind      := Empty_Tag;
-      Explain_Code  : Explain_Code_Kind  := EC_None;
-      SRM_Ref       : String             := "";
-      Tracefile     : String             := "";
+      F1            : Flow_Id := Null_Flow_Id;
+      F2            : Flow_Id := Null_Flow_Id;
+      F3            : Flow_Id := Null_Flow_Id;
+      EF1           : Flow_Id := Null_Flow_Id;
+      FF1           : Flow_Id := Null_Flow_Id;
+      FF2           : Flow_Id := Null_Flow_Id;
+      Tag           : Flow_Tag_Kind := Empty_Tag;
+      Explain_Code  : Explain_Code_Kind := EC_None;
+      SRM_Ref       : String := "";
+      Tracefile     : String := "";
       Continuations : Message_Lists.List := Message_Lists.Empty)
-   with Pre => (if Present (F2) then Present (F1))
-     and then (if Present (F3) then Present (F2))
-     and then (if Present (FF2) then Present (FF1))
-     and then (if Severity in Check_Kind then Tag in Valid_Flow_Tag_Kind)
-     and then (case Tag is
-                 when Empty_Tag         =>
-                   True,
-                 when Flow_Error_Kind   =>
-                   Severity = Error_Kind,
-                 when Flow_Check_Kind   =>
-                   Severity in Check_Kind | Info_Kind,
-                 when Flow_Warning_Kind =>
-                   Severity = Warning_Kind);
+   with
+     Pre =>
+       (if Present (F2) then Present (F1))
+       and then (if Present (F3) then Present (F2))
+       and then (if Present (FF2) then Present (FF1))
+       and then (if Severity in Check_Kind then Tag in Valid_Flow_Tag_Kind)
+       and then (case Tag is
+                   when Empty_Tag => True,
+                   when Flow_Error_Kind => Severity = Error_Kind,
+                   when Flow_Check_Kind => Severity in Check_Kind | Info_Kind,
+                   when Flow_Warning_Kind => Severity = Warning_Kind);
    --  Output a message attached to the given node with a substitution
    --  using F1, F2 and F3. If not empty, the details, explanation and possible
    --  fix for the check are appended to the message with a substitution for
@@ -117,36 +107,34 @@ package Flow_Error_Messages is
    procedure Error_Msg_Flow
      (FA            : in out Flow_Analysis_Graphs;
       Msg           : String;
-      Details       : String                := "";
-      Explanation   : String                := "";
-      Fix           : String                := "";
+      Details       : String := "";
+      Explanation   : String := "";
+      Fix           : String := "";
       Severity      : Msg_Severity;
       N             : Node_Id;
-      F1            : Flow_Id               := Null_Flow_Id;
-      F2            : Flow_Id               := Null_Flow_Id;
-      F3            : Flow_Id               := Null_Flow_Id;
-      EF1           : Flow_Id               := Null_Flow_Id;
-      FF1           : Flow_Id               := Null_Flow_Id;
-      FF2           : Flow_Id               := Null_Flow_Id;
-      Tag           : Flow_Tag_Kind         := Empty_Tag;
-      Explain_Code  : Explain_Code_Kind     := EC_None;
-      SRM_Ref       : String                := "";
-      Path          : Vertex_Sets.Set       := Vertex_Sets.Empty_Set;
+      F1            : Flow_Id := Null_Flow_Id;
+      F2            : Flow_Id := Null_Flow_Id;
+      F3            : Flow_Id := Null_Flow_Id;
+      EF1           : Flow_Id := Null_Flow_Id;
+      FF1           : Flow_Id := Null_Flow_Id;
+      FF2           : Flow_Id := Null_Flow_Id;
+      Tag           : Flow_Tag_Kind := Empty_Tag;
+      Explain_Code  : Explain_Code_Kind := EC_None;
+      SRM_Ref       : String := "";
+      Path          : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
       Vertex        : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
-      Continuations : Message_Lists.List    := Message_Lists.Empty)
-   with Pre => (if Present (F2) then Present (F1))
-     and then (if Present (F3) then Present (F2))
-     and then (if Present (FF2) then Present (FF1))
-     and then (if Severity in Check_Kind then Tag in Valid_Flow_Tag_Kind)
-     and then (case Tag is
-                 when Empty_Tag         =>
-                   True,
-                 when Flow_Error_Kind   =>
-                   Severity = Error_Kind,
-                 when Flow_Check_Kind   =>
-                   Severity in Check_Kind | Info_Kind,
-                 when Flow_Warning_Kind =>
-                   Severity = Warning_Kind);
+      Continuations : Message_Lists.List := Message_Lists.Empty)
+   with
+     Pre =>
+       (if Present (F2) then Present (F1))
+       and then (if Present (F3) then Present (F2))
+       and then (if Present (FF2) then Present (FF1))
+       and then (if Severity in Check_Kind then Tag in Valid_Flow_Tag_Kind)
+       and then (case Tag is
+                   when Empty_Tag => True,
+                   when Flow_Error_Kind => Severity = Error_Kind,
+                   when Flow_Check_Kind => Severity in Check_Kind | Info_Kind,
+                   when Flow_Warning_Kind => Severity = Warning_Kind);
    --  As above but it also writes the tracefile.
    --
    --  Also:
@@ -160,36 +148,35 @@ package Flow_Error_Messages is
    --  Finally, for debug purposes, Vertex should be set to the vertex
    --  where the error was detected. This is printed in debug mode.
 
-   function Substitute_Message (Text : String;
-                                N    : Node_Id;
-                                F1   : Flow_Id;
-                                F2   : Flow_Id := Null_Flow_Id;
-                                F3   : Flow_Id := Null_Flow_Id) return String;
+   function Substitute_Message
+     (Text : String;
+      N    : Node_Id;
+      F1   : Flow_Id;
+      F2   : Flow_Id := Null_Flow_Id;
+      F3   : Flow_Id := Null_Flow_Id) return String;
    --  Does the same substitution as Error_Msg_Flow would do, but just returns
    --  the string.
 
-   function Not_Proved_Message
-     (Node : Node_Id;
-      Kind : VC_Kind) return String;
+   function Not_Proved_Message (Node : Node_Id; Kind : VC_Kind) return String;
    --  Return the message string for an unproved VC
 
    procedure Error_Msg_Proof
-     (N             : Node_Id;
-      Extra_Msg     : String;
-      Is_Proved     : Boolean;
-      Tag           : VC_Kind;
-      Cntexmp       : JSON_Value;
-      Verdict       : Cntexmp_Verdict;
-      Check_Tree    : JSON_Value;
-      VC_File       : String;
-      VC_Loc        : Node_Id;
-      Editor_Cmd    : String;
-      Explanation   : String;
-      E             : Entity_Id;
-      How_Proved    : Prover_Category;
-      Stats         : Prover_Stat_Maps.Map;
-      Check_Info    : Check_Info_Type;
-      CE_From_RAC   : Boolean := False);
+     (N           : Node_Id;
+      Extra_Msg   : String;
+      Is_Proved   : Boolean;
+      Tag         : VC_Kind;
+      Cntexmp     : JSON_Value;
+      Verdict     : Cntexmp_Verdict;
+      Check_Tree  : JSON_Value;
+      VC_File     : String;
+      VC_Loc      : Node_Id;
+      Editor_Cmd  : String;
+      Explanation : String;
+      E           : Entity_Id;
+      How_Proved  : Prover_Category;
+      Stats       : Prover_Stat_Maps.Map;
+      Check_Info  : Check_Info_Type;
+      CE_From_RAC : Boolean := False);
    --  register a message for proof (i.e. which corresponds to a check that is
    --  usually taken care of by proof)
    --  @param N the node on which this VC is placed

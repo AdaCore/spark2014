@@ -45,16 +45,18 @@ package body Assumption_Types is
    function "<" (Left, Right : Base_Sloc) return Boolean;
    function "<" (Left, Right : My_Sloc) return Boolean;
 
-   package Subp_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Subp_Type,
-      Element_Type    => Positive,
-      Hash            => Hash,
-      Equivalent_Keys => "=");
+   package Subp_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Subp_Type,
+        Element_Type    => Positive,
+        Hash            => Hash,
+        Equivalent_Keys => "=");
 
-   package Subp_Vectors is new Ada.Containers.Vectors
-     (Index_Type   => Positive,
-      Element_Type => Subp_Type,
-      "="          => "=");
+   package Subp_Vectors is new
+     Ada.Containers.Vectors
+       (Index_Type   => Positive,
+        Element_Type => Subp_Type,
+        "="          => "=");
 
    Subp_Vector : Subp_Vectors.Vector;
    Subp_Map    : Subp_Maps.Map;
@@ -77,9 +79,10 @@ package body Assumption_Types is
       Table : constant JSON_Value := Create_Object;
    begin
       for Index in Subp_Vector.First_Index .. Subp_Vector.Last_Index loop
-         Set_Field (Table,
-                    Positive'Image (Index),
-                    To_JSON_Internal (Subp_Vector (Index)));
+         Set_Field
+           (Table,
+            Positive'Image (Index),
+            To_JSON_Internal (Subp_Vector (Index)));
       end loop;
       return Table;
    end Entity_Table;
@@ -102,8 +105,7 @@ package body Assumption_Types is
    function From_JSON_Internal (V : JSON_Value) return Subp_Type is
    begin
       return
-        Mk_Subp (Get (Get (V, "name")),
-                 From_JSON (Get (Get (V, "sloc"))));
+        Mk_Subp (Get (Get (V, "name")), From_JSON (Get (Get (V, "sloc"))));
    end From_JSON_Internal;
 
    function From_JSON (V : JSON_Array) return My_Sloc is
@@ -113,8 +115,8 @@ package body Assumption_Types is
          declare
             JS_Base : constant JSON_Value := Get (V, Index);
          begin
-            Sloc.Append (Mk_Base_Sloc (Get (JS_Base, "file"),
-                                       Get (JS_Base, "line")));
+            Sloc.Append
+              (Mk_Base_Sloc (Get (JS_Base, "file"), Get (JS_Base, "line")));
          end;
       end loop;
       return Sloc;
@@ -158,17 +160,18 @@ package body Assumption_Types is
    end Hash;
 
    package Unique_Subps is new
-     Hash_Cons (Elt_Type    => Subp_Type_Rec,
-                Access_Type => Subp_Type,
-                Hash        => Hash,
-                "="         => "=");
+     Hash_Cons
+       (Elt_Type    => Subp_Type_Rec,
+        Access_Type => Subp_Type,
+        Hash        => Hash,
+        "="         => "=");
 
-   function Hash (S : Subp_Type) return Ada.Containers.Hash_Type renames
-     Unique_Subps.Hash;
+   function Hash (S : Subp_Type) return Ada.Containers.Hash_Type
+   renames Unique_Subps.Hash;
 
    pragma Annotate (Xcov, Exempt_On, "Not called from gnat2why");
-   function Hash (S : Unit_Type) return Ada.Containers.Hash_Type is
-     (Hash (Symbol (S)));
+   function Hash (S : Unit_Type) return Ada.Containers.Hash_Type
+   is (Hash (Symbol (S)));
    pragma Annotate (Xcov, Exempt_Off);
 
    ------------------
@@ -188,8 +191,7 @@ package body Assumption_Types is
    begin
       return
         Unique_Subps.Hash_Cons
-          (Subp_Type_Rec'(Name => Find (Symbol_Table, Name),
-                          Sloc => Sloc));
+          (Subp_Type_Rec'(Name => Find (Symbol_Table, Name), Sloc => Sloc));
    end Mk_Subp;
 
    -------------
@@ -228,7 +230,7 @@ package body Assumption_Types is
          Subp_Map.Insert (Elt, Index);
       end Parse_Entry;
 
-   --  Start of processing for Parse_Entity_Table
+      --  Start of processing for Parse_Entity_Table
 
    begin
       Subp_Map.Clear;
@@ -247,7 +249,8 @@ package body Assumption_Types is
    end Subp_Name;
 
    pragma Annotate (Xcov, Exempt_On, "Not called from gnat2why");
-   function Subp_Sloc (Subp : Subp_Type) return My_Sloc is (Subp.Sloc);
+   function Subp_Sloc (Subp : Subp_Type) return My_Sloc
+   is (Subp.Sloc);
    pragma Annotate (Xcov, Exempt_Off);
 
    -------------
@@ -320,9 +323,11 @@ package body Assumption_Types is
    -- "<" --
    ---------
 
-   function "<" (Left, Right : Base_Sloc) return Boolean is
-      (if Left.File < Right.File then True
-       elsif Right.File < Left.File then False
+   function "<" (Left, Right : Base_Sloc) return Boolean
+   is (if Left.File < Right.File
+       then True
+       elsif Right.File < Left.File
+       then False
        else Left.Line < Right.Line);
 
    function "<" (Left, Right : My_Sloc) return Boolean is
@@ -353,16 +358,18 @@ package body Assumption_Types is
       end if;
    end "<";
 
-   function "<" (Left, Right : Subp_Type) return Boolean is
-     (if Left.Name < Right.Name then True
-      elsif Right.Name < Left.Name then False
-      else Left.Sloc < Right.Sloc);
+   function "<" (Left, Right : Subp_Type) return Boolean
+   is (if Left.Name < Right.Name
+       then True
+       elsif Right.Name < Left.Name
+       then False
+       else Left.Sloc < Right.Sloc);
 
-   function "<" (Left, Right : Symbol) return Boolean is
-     (Get (Left, Empty_If_Null => True).all <
-          Get (Right, Empty_If_Null => True).all);
+   function "<" (Left, Right : Symbol) return Boolean
+   is (Get (Left, Empty_If_Null => True).all
+       < Get (Right, Empty_If_Null => True).all);
 
-   function "<" (Left, Right : Unit_Type) return Boolean is
-     (Symbol (Left) < Symbol (Right));
+   function "<" (Left, Right : Unit_Type) return Boolean
+   is (Symbol (Left) < Symbol (Right));
 
 end Assumption_Types;

@@ -35,8 +35,10 @@ test.adb:116:07: medium: precondition might fail [possible fix: subprogram at li
 test.adb:120:28: info: discriminant check proved (CVC5: 1 VC)
 test.adb:124:29: info: discriminant check proved (CVC5: 1 VC)
 test.adb:124:57: info: discriminant check proved (CVC5: 1 VC)
-test.adb:128:45: info: unrolling loop [info-unrolling-inlining]
-test.adb:129:31: info: discriminant check proved (CVC5: 5 VC)
+test.adb:128:34: info: discriminant check proved (CVC5: 1 VC)
+test.adb:128:45: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+test.adb:129:31: info: discriminant check proved (CVC5: 1 VC)
+test.adb:129:37: info: index check proved (CVC5: 2 VC)
 test.adb:161:34: info: index check proved (CVC5: 2 VC), in instantiation at test.adb:194
 test.adb:163:34: info: index check proved (CVC5: 2 VC), in instantiation at test.adb:194
 test.adb:170:13: info: implicit aspect Always_Terminates on "Found_None" has been proved, subprogram will terminate

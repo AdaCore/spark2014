@@ -1,3 +1,8 @@
+ info: initialization of "Abrupt_Program_Exit.Error_State" proved
+--> abrupt_program_exit.ads:3:21
+
+ info: flow dependencies proved
+--> abrupt_program_exit.ads:4:03
  info: initialization of "S" proved
 --> use_abrupt_program_exit.adb:6:07
 
@@ -100,5 +105,3 @@
 
  info: tag check proved
 --> use_abrupt_program_exit.ads:37:32
- info: flow dependencies proved
---> abrupt_program_exit.ads:4:03

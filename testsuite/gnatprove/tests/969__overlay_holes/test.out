@@ -1,0 +1,12 @@
+p.adb:10:13: info: types in unchecked conversion have the same size (Trivial)
+p.adb:10:61: info: type is suitable as source for unchecked conversion (Trivial)
+p.adb:10:70: info: type is suitable for unchecked conversion (Trivial)
+p.adb:12:13: info: implicit aspect Always_Terminates on "Bad" has been proved, subprogram will terminate
+p.adb:13:07: info: address in address clause is compatible with object alignment (Trivial)
+p.adb:13:07: info: object is suitable for aliasing via address clause (Trivial)
+p.adb:13:07: info: type is suitable as source for unchecked conversion (Trivial)
+p.adb:13:52: high: type is unsuitable as a source for unchecked conversion [possible explanation: type My_Bool has minimal size 1, but Size was declared as 32; type My_Bool might have unused bits that are not modelled in SPARK]
+p.adb:13:52: info: object is suitable for aliasing via address clause (Trivial)
+p.adb:13:52: info: types of aliased objects have the same size (Trivial)
+p.adb:21:19: info: assertion proved (CVC5: 1 VC)
+p.adb:22:19: info: assertion proved (CVC5: 1 VC)

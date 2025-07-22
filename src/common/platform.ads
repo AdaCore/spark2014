@@ -29,8 +29,15 @@ package Platform is
    --  code by GNAT SAS.
 
    type Host_Operating_System_Flavor is
-      (X86_Windows, X86_64_Windows, X86_Linux, X86_64_Linux, X86_64_Darwin,
-       X86_64_FreeBSD, GNATSAS_OS, AArch64_Darwin, AArch64_Linux);
+     (X86_Windows,
+      X86_64_Windows,
+      X86_Linux,
+      X86_64_Linux,
+      X86_64_Darwin,
+      X86_64_FreeBSD,
+      GNATSAS_OS,
+      AArch64_Darwin,
+      AArch64_Linux);
 
    function Get_OS_Flavor return Host_Operating_System_Flavor;
 

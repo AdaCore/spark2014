@@ -8,7 +8,7 @@ stacks.adb:34:28: info: range check proved (CVC5: 2 VC)
 stacks.adb:35:18: info: index check proved (CVC5: 2 VC)
 stacks.adb:40:28: info: range check proved (CVC5: 2 VC)
 stacks.adb:44:29: info: range check proved (CVC5: 2 VC)
-stacks.ads:7:09: info: default initial condition proved (CVC5: 1 VC)
+stacks.ads:8:35: info: default initial condition proved (CVC5: 1 VC)
 stacks.ads:12:13: info: implicit aspect Always_Terminates on "Size" has been proved, subprogram will terminate
 stacks.ads:14:13: info: function contract feasibility justified
 stacks.ads:18:08: info: postcondition proved (CVC5: 5 VC), in inherited contract at stacks.ads:45

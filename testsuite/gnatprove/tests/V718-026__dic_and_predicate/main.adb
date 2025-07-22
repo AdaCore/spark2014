@@ -20,8 +20,8 @@ procedure Main with SPARK_Mode is
 
    package P1 is
 
-      type T1 is private with  -- @PREDICATE_CHECK_ON_DEFAULT_VALUE:FAIL @DEFAULT_INITIAL_CONDITION:PASS
-        Default_Initial_Condition => P (Get (T1));
+      type T1 is private with  -- @PREDICATE_CHECK_ON_DEFAULT_VALUE:FAIL
+        Default_Initial_Condition => P (Get (T1)); -- @DEFAULT_INITIAL_CONDITION:PASS
 
       function Get (X : T1) return Integer;
 
@@ -42,8 +42,8 @@ procedure Main with SPARK_Mode is
 
    package P2 is
 
-      type T1 is private with  -- @DEFAULT_INITIAL_CONDITION:FAIL
-        Default_Initial_Condition => P (Get (T1));
+      type T1 is private with
+        Default_Initial_Condition => P (Get (T1));  -- @DEFAULT_INITIAL_CONDITION:FAIL
 
       function Get (X : T1) return Integer;
 
@@ -66,8 +66,8 @@ procedure Main with SPARK_Mode is
 
    package P3 is
 
-      type T1 is private with  -- @PREDICATE_CHECK_ON_DEFAULT_VALUE:FAIL @DEFAULT_INITIAL_CONDITION:PASS
-        Default_Initial_Condition => P (Get (T1));
+      type T1 is private with  -- @PREDICATE_CHECK_ON_DEFAULT_VALUE:FAIL
+        Default_Initial_Condition => P (Get (T1)); -- @DEFAULT_INITIAL_CONDITION:PASS
 
       function Get (X : T1) return Integer;
 
@@ -86,13 +86,13 @@ procedure Main with SPARK_Mode is
 
    package P4 is
 
-      type T1 is private with  -- @DEFAULT_INITIAL_CONDITION:FAIL
-        Default_Initial_Condition => P (Get (T1));
+      type T1 is private with
+        Default_Initial_Condition => P (Get (T1));  -- @DEFAULT_INITIAL_CONDITION:FAIL
 
       function Get (X : T1) return Integer;
 
-      type T2 is private with  -- @DEFAULT_INITIAL_CONDITION:PASS @PREDICATE_CHECK_ON_DEFAULT_VALUE:FAIL
-        Default_Initial_Condition => Q (Get (T2));
+      type T2 is private with  -- @PREDICATE_CHECK_ON_DEFAULT_VALUE:FAIL
+        Default_Initial_Condition => Q (Get (T2)); -- @DEFAULT_INITIAL_CONDITION:PASS
 
       function Get (X : T2) return Integer;
 
@@ -116,18 +116,18 @@ procedure Main with SPARK_Mode is
 
    package P5 is
 
-      type T1 is private with  -- @DEFAULT_INITIAL_CONDITION:FAIL
-        Default_Initial_Condition => P (Get (T1));
+      type T1 is private with
+        Default_Initial_Condition => P (Get (T1));  -- @DEFAULT_INITIAL_CONDITION:FAIL
 
       function Get (X : T1) return Integer;
 
-      type T2 is private with  -- @DEFAULT_INITIAL_CONDITION:PASS @PREDICATE_CHECK_ON_DEFAULT_VALUE:FAIL
-        Default_Initial_Condition => Q (Get (T2));
+      type T2 is private with  -- @PREDICATE_CHECK_ON_DEFAULT_VALUE:FAIL
+        Default_Initial_Condition => Q (Get (T2)); -- @DEFAULT_INITIAL_CONDITION:PASS
 
       function Get (X : T2) return Integer;
 
-      type T3 is private with  -- @DEFAULT_INITIAL_CONDITION:PASS @PREDICATE_CHECK_ON_DEFAULT_VALUE:FAIL
-        Default_Initial_Condition => R (Get (T3));
+      type T3 is private with  -- @PREDICATE_CHECK_ON_DEFAULT_VALUE:FAIL
+        Default_Initial_Condition => R (Get (T3)); -- @DEFAULT_INITIAL_CONDITION:PASS
 
       function Get (X : T3) return Integer;
 
@@ -155,8 +155,8 @@ procedure Main with SPARK_Mode is
 
    package P6 is
 
-      type T1 (D : Integer) is private with  -- @PREDICATE_CHECK_ON_DEFAULT_VALUE:PASS @DEFAULT_INITIAL_CONDITION:NONE
-        Default_Initial_Condition => P (D);
+      type T1 (D : Integer) is private with  -- @PREDICATE_CHECK_ON_DEFAULT_VALUE:PASS
+        Default_Initial_Condition => P (D);  -- @DEFAULT_INITIAL_CONDITION:NONE
 
    private
 
@@ -173,8 +173,8 @@ procedure Main with SPARK_Mode is
 
    package P7 is
 
-      type T1 (D : Integer) is tagged private with  -- @DEFAULT_INITIAL_CONDITION:NONE
-        Default_Initial_Condition => P (D);
+      type T1 (D : Integer) is tagged private with
+        Default_Initial_Condition => P (D);  -- @DEFAULT_INITIAL_CONDITION:NONE
 
       type T2 is new T1 with private;  -- @PREDICATE_CHECK_ON_DEFAULT_VALUE:PASS
 
@@ -200,8 +200,8 @@ procedure Main with SPARK_Mode is
       end record with
         Predicate => (P (D));
 
-      type T1 is new T with private with  -- @PREDICATE_CHECK_ON_DEFAULT_VALUE:PASS @DEFAULT_INITIAL_CONDITION:NONE
-        Default_Initial_Condition => P (T1.D);
+      type T1 is new T with private with  -- @PREDICATE_CHECK_ON_DEFAULT_VALUE:PASS
+        Default_Initial_Condition => P (T1.D); -- @DEFAULT_INITIAL_CONDITION:NONE
 
    private
 
@@ -215,11 +215,11 @@ procedure Main with SPARK_Mode is
 
    package P9 is
 
-      type T1 (D : Integer) is tagged private with  -- @DEFAULT_INITIAL_CONDITION:NONE
-        Default_Initial_Condition => P (D);
+      type T1 (D : Integer) is tagged private with
+        Default_Initial_Condition => P (D);  -- @DEFAULT_INITIAL_CONDITION:NONE
 
-      type T2 is new T1 with private with  -- @DEFAULT_INITIAL_CONDITION:PASS @PREDICATE_CHECK_ON_DEFAULT_VALUE:FAIL
-        Default_Initial_Condition => Q (Get (T2));
+      type T2 is new T1 with private with  -- @PREDICATE_CHECK_ON_DEFAULT_VALUE:FAIL
+        Default_Initial_Condition => Q (Get (T2));-- @DEFAULT_INITIAL_CONDITION:PASS
 
       function Get (X : T2'Class) return Integer;
 
@@ -243,13 +243,13 @@ procedure Main with SPARK_Mode is
 
    package P10 is
 
-      type T1 (D : Integer) is tagged private with  -- @DEFAULT_INITIAL_CONDITION:FAIL
-        Default_Initial_Condition => P (Get (T1));
+      type T1 (D : Integer) is tagged private with
+        Default_Initial_Condition => P (Get (T1));  -- @DEFAULT_INITIAL_CONDITION:FAIL
 
       function Get (X : T1'Class) return Integer;
 
-      type T2 is new T1 with private with  -- @DEFAULT_INITIAL_CONDITION:NONE  -- @PREDICATE_CHECK_ON_DEFAULT_VALUE:PASS
-        Default_Initial_Condition => Q (T2.D);
+      type T2 is new T1 with private with   -- @PREDICATE_CHECK_ON_DEFAULT_VALUE:PASS
+        Default_Initial_Condition => Q (T2.D);  -- @DEFAULT_INITIAL_CONDITION:NONE
 
    private
 
@@ -271,11 +271,11 @@ procedure Main with SPARK_Mode is
 
    package P11 is
 
-      type T1 (D : Integer) is tagged private with  -- @DEFAULT_INITIAL_CONDITION:NONE
-        Default_Initial_Condition => P (D);
+      type T1 (D : Integer) is tagged private with
+        Default_Initial_Condition => P (D);  -- @DEFAULT_INITIAL_CONDITION:NONE
 
-      type T2 is new T1 with private with  -- @DEFAULT_INITIAL_CONDITION:NONE  -- @PREDICATE_CHECK_ON_DEFAULT_VALUE:PASS
-        Default_Initial_Condition => Q (T2.D);
+      type T2 is new T1 with private with  -- @PREDICATE_CHECK_ON_DEFAULT_VALUE:PASS
+        Default_Initial_Condition => Q (T2.D);  -- @DEFAULT_INITIAL_CONDITION:NONE
 
    private
 
@@ -298,11 +298,11 @@ procedure Main with SPARK_Mode is
       type T1 (D : Integer) is tagged private with  -- @DEFAULT_INITIAL_CONDITION:NONE
         Default_Initial_Condition => P (D);
 
-      type T2 is new T1 with private with  -- @DEFAULT_INITIAL_CONDITION:NONE  -- @PREDICATE_CHECK_ON_DEFAULT_VALUE:PASS
-        Default_Initial_Condition => Q (T2.D);
+      type T2 is new T1 with private with  -- @PREDICATE_CHECK_ON_DEFAULT_VALUE:PASS
+        Default_Initial_Condition => Q (T2.D);  -- @DEFAULT_INITIAL_CONDITION:NONE
 
-      type T3 is new T2 with private with  -- @DEFAULT_INITIAL_CONDITION:NONE  -- @PREDICATE_CHECK_ON_DEFAULT_VALUE:PASS
-        Default_Initial_Condition => R (T3.D);
+      type T3 is new T2 with private with  -- @PREDICATE_CHECK_ON_DEFAULT_VALUE:PASS
+        Default_Initial_Condition => R (T3.D);  -- @DEFAULT_INITIAL_CONDITION:NONE
 
    private
 

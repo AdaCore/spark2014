@@ -1,5 +1,4 @@
 tag_check.adb:12:09: medium: tag check might fail
-tag_check.adb:12:09: warning: unused assignment
 tag_check.adb:13:07: medium: assertion might fail
 tag_check.adb:33:04: warning: analyzing unreferenced procedure "Use_Two" [unreferenced-procedure]
 tag_check.adb:33:14: warning: subprogram "Use_Two" has no effect
