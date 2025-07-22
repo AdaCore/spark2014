@@ -160,7 +160,7 @@ def matches(comp_reg, s, invert):
     return (invert and not m) or (not invert and m)
 
 
-def check_counterexamples():
+def verify_counterexamples():
     """Checks that marks in source code have a matching counterexample.
 
     Marks are strings in the source that have the format
