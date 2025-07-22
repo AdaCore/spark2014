@@ -1011,6 +1011,7 @@ def prove_all(
     mode="all",
     counterexample=True,
     check_counterexamples=True,
+    verify_ce=False,
     prover=default_provers,
     cache_allowed=True,
     report=None,
@@ -1105,10 +1106,13 @@ def prove_all(
         sparklib=sparklib,
         filter_sparklib=filter_sparklib,
     )
-    # usage of sparklib generates too many mismatches for SARIF check for now
+    # limit-switches don't play well with sarif output for now
     has_limit_switch = any("--limit" in s for s in fullopt)
+    # usage of sparklib generates too many mismatches for SARIF check for now
     if enable_sarif_check and not sparklib and not has_limit_switch:
         check_sarif(report)
+    if verify_ce:
+        verify_counterexamples()
 
 
 def do_flow(
