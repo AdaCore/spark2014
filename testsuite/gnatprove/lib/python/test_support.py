@@ -233,7 +233,7 @@ def verify_counterexamples():
                     results[(msg_file, msg_line)] = map(trace, msg_list)
 
     # check that marks in source code have a matching counterexample, and
-    # dislay the counterexample when found.
+    # display the counterexample when found.
     for f in files:
         with open(f, "r") as ff:
             for line, linestr in enumerate(ff):
