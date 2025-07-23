@@ -113,6 +113,13 @@ procedure SPARK_Report is
 
    Error_Code : Integer := 0;
 
+   End_Time : constant String :=
+     GNAT.Calendar.Time_IO.Image
+       (Date      => Ada.Calendar.Clock,
+        Picture   => "%Y-%m-%dT%H:%M:%SZ",
+        Time_Zone => 0);
+   --  End time of analysis, used for the reports. Time zone "0" is UTC.
+
    function Parse_Command_Line return String;
    --  Parse the command line and set the variables Assumptions and Limit_Subp.
    --  Return the name of the file which contains the object dirs to be
@@ -194,6 +201,9 @@ procedure SPARK_Report is
 
    procedure Show_Header (Handle : Ada.Text_IO.File_Type; Info : JSON_Value);
    --  Print header at start of generated file "gnatprove.out"
+
+   procedure Generate_SARIF_Report (Filename : String; Info : JSON_Value);
+   --  Generate SARIF report in "gnatprove.sarif"
 
    ---------------------------
    -- Build_Switches_String --
@@ -503,6 +513,13 @@ procedure SPARK_Report is
             return No_Entry;
       end case;
    end Flow_Kind_To_Summary;
+
+   ---------------------------
+   -- Generate_SARIF_Report --
+   ---------------------------
+
+   procedure Generate_SARIF_Report (Filename : String; Info : JSON_Value)
+   is separate;
 
    -------------------------
    -- Handle_Assume_Items --
@@ -1234,11 +1251,7 @@ procedure SPARK_Report is
       --  Start of processing for Show_Header
 
    begin
-      Put_Line
-        (Handle,
-         "date               : "
-         & GNAT.Calendar.Time_IO.Image
-             (Date => Ada.Calendar.Clock, Picture => "%Y-%m-%d %H:%M:%S"));
+      Put_Line (Handle, "date               : " & End_Time);
       Put_Line (Handle, "gnatprove version  : " & SPARK2014_Version_String);
       Put_Line
         (Handle,
@@ -1560,5 +1573,12 @@ begin
    if Has_Unproved_Check then
       Error_Code := Unproved_Checks_Error_Status;
    end if;
+
+   Generate_SARIF_Report
+     (Ada.Directories.Compose
+        (GNAT.Directory_Operations.Dir_Name (Source_Directories_File),
+         "gnatprove.sarif"),
+      Info);
+
    GNAT.OS_Lib.OS_Exit (Error_Code);
 end SPARK_Report;

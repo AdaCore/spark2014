@@ -289,8 +289,13 @@ format:
     - cd $ANOD_DEFAULT_SANDBOX_DIR
     - anod install gnat --latest
     - anod install libgpr2 --latest
+    - anod install vss -Qedge --latest
     - eval $(anod printenv gnat)
     - eval $(anod printenv libgpr2)
+    - eval $(anod printenv vss -Qedge)
+    - mkdir /tmp/sarif-ada
+    - e3-cathod source sarif-ada-src --latest --install /tmp/sarif-ada
+    - export GPR_PROJECT_PATH=/tmp/sarif-ada/gnat:$GPR_PROJECT_PATH
     - cd $CI_PROJECT_DIR
     - ln -s $ACI_SUBPROJECTS_ROOT/gnat gnat2why/gnat_src
     - make -C gnat2why setup
