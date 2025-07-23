@@ -23,21 +23,20 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Common_Containers;          use Common_Containers;
-with SPARK_Atree;                use SPARK_Atree;
-with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
-with SPARK_Definition;           use SPARK_Definition;
-with SPARK_Util;                 use SPARK_Util;
+with Common_Containers;    use Common_Containers;
+with SPARK_Atree;          use SPARK_Atree;
+with SPARK_Atree.Entities; use SPARK_Atree.Entities;
+with SPARK_Definition;     use SPARK_Definition;
+with SPARK_Util;           use SPARK_Util;
 
 package Gnat2Why.Decls is
 
    procedure Translate_Constant (E : Object_Kind_Id)
-   with Pre => Ekind (E) in E_Constant
-                          | E_Discriminant
-                          | E_In_Parameter
-                          | E_In_Out_Parameter
-                 or else
-               Is_Quantified_Loop_Param (E);
+   with
+     Pre =>
+       Ekind (E)
+       in E_Constant | E_Discriminant | E_In_Parameter | E_In_Out_Parameter
+       or else Is_Quantified_Loop_Param (E);
    --  Generate a function declaration for objects that appear as constant
    --  in Why.
 
