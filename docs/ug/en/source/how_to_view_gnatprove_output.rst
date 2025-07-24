@@ -139,6 +139,13 @@ The next contents in the file are statistics describing:
   both)
 * the results of this analysis
 
+Results in SARIF format
+-----------------------
+
+|GNATprove| generates a result file ``gnatprove.sarif`` in the ``gnatprove``
+subdirectory of the object directory of the project. This file contains the
+analysis results in SARIF format.
+
 
 Categories of Messages
 ----------------------
