@@ -62,10 +62,6 @@ Note that using this mechanism, you cannot replace the definitions provided
 with the SPARK tools for the provers ``altergo``, ``colibri``, ``cvc5`` and
 ``z3``.
 
-If more than one prover is specified, the provers are tried in order on each
-VC, until one of them succeeds or all fail. Interactive provers cannot be
-combined with other provers, so must appear on their own.
-
 Sharing Libraries of Theorems
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
