@@ -550,7 +550,7 @@ package body CE_RAC is
    --  Slide the values of Array_Values of V to the correct bounds described in
    --  E if necessary.
 
-   procedure Copy_Out_Parameters (Call : Node_Id; Sc : in out Scopes);
+   procedure Copy_Out_Parameters (Call : Node_Id; Sc : Scopes);
    --  Copy scalar values of out and in_out parameters from the parameter scope
    --  Sc to the environment.
 
@@ -1349,7 +1349,7 @@ package body CE_RAC is
    -- Copy_Out_Parameters --
    -------------------------
 
-   procedure Copy_Out_Parameters (Call : Node_Id; Sc : in out Scopes) is
+   procedure Copy_Out_Parameters (Call : Node_Id; Sc : Scopes) is
       procedure Process_Param (Formal : Entity_Id; Actual : Node_Id);
       --  Do the copy out for one parameter
 

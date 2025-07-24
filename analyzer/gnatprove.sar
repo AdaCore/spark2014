@@ -13,7 +13,66 @@
   "prjs": {
     "gnatprove.gpr": [
       {
-        "file_info": { "basename": "spark_report.adb", "path": "." },
+        "file_info": { "basename": "named_semaphores.adb", "path": "./" },
+        "subps": {
+          "named_semaphores.close": [
+            {
+              "msg_id": {
+                "tool_kind": [ "Infer", "Unassigned_parameter" ],
+                "key": "605936e4b92226e059779f1b58132a80",
+                "key_seq": 1
+              },
+              "data": [
+                {
+                  "date": "2025-07-14 09:50:03",
+                  "status": "Intentional",
+                  "author": "Johannes Kanig",
+                  "text": "",
+                  "from_source": false
+                }
+              ]
+            }
+          ],
+          "named_semaphores.release": [
+            {
+              "msg_id": {
+                "tool_kind": [ "Infer", "Unassigned_parameter" ],
+                "key": "605936e4b92226e059779f1b58132a80",
+                "key_seq": 1
+              },
+              "data": [
+                {
+                  "date": "2025-07-14 09:50:08",
+                  "status": "Intentional",
+                  "author": "Johannes Kanig",
+                  "text": "",
+                  "from_source": false
+                }
+              ]
+            }
+          ],
+          "named_semaphores.wait": [
+            {
+              "msg_id": {
+                "tool_kind": [ "Infer", "Unassigned_parameter" ],
+                "key": "605936e4b92226e059779f1b58132a80",
+                "key_seq": 1
+              },
+              "data": [
+                {
+                  "date": "2025-07-14 09:50:17",
+                  "status": "Intentional",
+                  "author": "Johannes Kanig",
+                  "text": "",
+                  "from_source": false
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "file_info": { "basename": "spark_report.adb", "path": "./" },
         "subps": {
           "spark_report": [
             {
