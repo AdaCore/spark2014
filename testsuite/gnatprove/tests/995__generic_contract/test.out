@@ -1,0 +1,3 @@
+main.adb:1:11: high: precondition might fail (e.g. when X = 0)
+main.adb:1:11: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+main.adb:8:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
