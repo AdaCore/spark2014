@@ -981,7 +981,8 @@ initialization of ``Error_State``, but not of ``X``.
 
    Currently, there is no way to intentionally terminate the program abruptly in
    SPARK. The body of leaf subprograms doing so will typically be either in
-   full Ada, like ``Program_Exit``, or in another language like C:
+   full Ada, like the subprograms in the package ``Abrupt_Program_Exit`` below,
+   or in another language like C:
 
    .. literalinclude:: /examples/ug__abrupt_program_exit/abrupt_program_exit.adb
       :language: ada

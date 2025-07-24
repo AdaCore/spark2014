@@ -13,7 +13,7 @@
   "prjs": {
     "gnat2why.gpr": [
       {
-        "file_info": { "basename": "ce_values.adb", "path": "." },
+        "file_info": { "basename": "ce_values.adb", "path": "./" },
         "subps": {
           "ce_values.\"=\"#3": [
             {
@@ -52,7 +52,7 @@
         }
       },
       {
-        "file_info": { "basename": "flow_error_messages.adb", "path": "." },
+        "file_info": { "basename": "flow_error_messages.adb", "path": "./" },
         "subps": {
           "flow_error_messages.get_fix": [
             {
@@ -109,7 +109,7 @@
       {
         "file_info": {
           "basename": "flow_generated_globals-phase_2.adb",
-          "path": "."
+          "path": "./"
         },
         "subps": {
           "flow_generated_globals.phase_2.gg_resolve._wrapped_statements.load_gg_info_from_ali.parse_gg_line.serialize#2": [
@@ -197,9 +197,112 @@
         }
       },
       {
+        "file_info": { "basename": "flow_utility.adb", "path": "./" },
+        "subps": {
+          "flow_utility.pick_generated_info_internal": [
+            {
+              "msg_id": {
+                "tool_kind": [ "Infer", "Unassigned_parameter" ],
+                "key": "70853b18863784d30483fca3e007e95e",
+                "key_seq": 1
+              },
+              "data": [
+                {
+                  "date": "2025-07-14 09:47:14",
+                  "status": "False Positive",
+                  "author": "Johannes Kanig",
+                  "text": "",
+                  "from_source": false
+                }
+              ]
+            },
+            {
+              "msg_id": {
+                "tool_kind": [ "Infer", "Unassigned_parameter" ],
+                "key": "779a34f9d6aadc9178b2c9ab5cdd8232",
+                "key_seq": 1
+              },
+              "data": [
+                {
+                  "date": "2025-07-14 09:47:21",
+                  "status": "False Positive",
+                  "author": "Johannes Kanig",
+                  "text": "",
+                  "from_source": false
+                }
+              ]
+            },
+            {
+              "msg_id": {
+                "tool_kind": [ "Infer", "Unassigned_parameter" ],
+                "key": "a7a0adfc0cf2e199bcc8eafeb7fae6d0",
+                "key_seq": 1
+              },
+              "data": [
+                {
+                  "date": "2025-07-14 09:47:27",
+                  "status": "False Positive",
+                  "author": "Johannes Kanig",
+                  "text": "",
+                  "from_source": false
+                }
+              ]
+            },
+            {
+              "msg_id": {
+                "tool_kind": [ "Infer", "Unassigned_parameter" ],
+                "key": "b37fbff1aad3d7490af89ee8d329f66e",
+                "key_seq": 1
+              },
+              "data": [
+                {
+                  "date": "2025-07-14 09:47:31",
+                  "status": "False Positive",
+                  "author": "Johannes Kanig",
+                  "text": "",
+                  "from_source": false
+                }
+              ]
+            },
+            {
+              "msg_id": {
+                "tool_kind": [ "Infer", "Unassigned_parameter" ],
+                "key": "b9bbf79255730949c92ef36daa3c7ad3",
+                "key_seq": 1
+              },
+              "data": [
+                {
+                  "date": "2025-07-14 09:47:34",
+                  "status": "False Positive",
+                  "author": "Johannes Kanig",
+                  "text": "",
+                  "from_source": false
+                }
+              ]
+            },
+            {
+              "msg_id": {
+                "tool_kind": [ "Infer", "Unassigned_parameter" ],
+                "key": "e3003eba45387098cc25c53b4193dfe5",
+                "key_seq": 1
+              },
+              "data": [
+                {
+                  "date": "2025-07-14 09:47:39",
+                  "status": "False Positive",
+                  "author": "Johannes Kanig",
+                  "text": "",
+                  "from_source": false
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
         "file_info": {
           "basename": "gnat2why-borrow_checker.adb",
-          "path": "."
+          "path": "./"
         },
         "subps": {
           "gnat2why.borrow_checker.merge_env": [
@@ -241,7 +344,7 @@
       {
         "file_info": {
           "basename": "gnat2why-error_messages.adb",
-          "path": "."
+          "path": "./"
         },
         "subps": {
           "gnat2why.error_messages.parse_why3_results.handle_result": [
@@ -267,7 +370,7 @@
       {
         "file_info": {
           "basename": "gnat2why-expr-aggregates.adb",
-          "path": "."
+          "path": "./"
         },
         "subps": {
           "gnat2why.expr.aggregates.generate_vcs_for_aggregate_annotation": [
@@ -331,7 +434,7 @@
         }
       },
       {
-        "file_info": { "basename": "gnat2why-expr.adb", "path": "." },
+        "file_info": { "basename": "gnat2why-expr.adb", "path": "./" },
         "subps": {
           "gnat2why.expr.transform_attribute_old": [
             {
@@ -356,7 +459,7 @@
       {
         "file_info": {
           "basename": "gnat2why-subprograms-pointers.adb",
-          "path": "."
+          "path": "./"
         },
         "subps": {
           "gnat2why.subprograms.pointers.new_subprogram_value_access": [
@@ -380,7 +483,7 @@
         }
       },
       {
-        "file_info": { "basename": "gnat2why-subprograms.adb", "path": "." },
+        "file_info": { "basename": "gnat2why-subprograms.adb", "path": "./" },
         "subps": {
           "gnat2why.subprograms.compute_args": [
             {
@@ -403,9 +506,32 @@
         }
       },
       {
+        "file_info": { "basename": "gnat2why-util.adb", "path": "./" },
+        "subps": {
+          "gnat2why.util.collect_attr_parts": [
+            {
+              "msg_id": {
+                "tool_kind": [ "Infer", "Unassigned_parameter" ],
+                "key": "29648aab94ad4aef8364cc6204e70d8f",
+                "key_seq": 1
+              },
+              "data": [
+                {
+                  "date": "2025-07-14 09:47:56",
+                  "status": "False Positive",
+                  "author": "Claire Dross",
+                  "text": "",
+                  "from_source": false
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
         "file_info": {
           "basename": "spark_definition-annotate.adb",
-          "path": "."
+          "path": "./"
         },
         "subps": {
           "spark_definition.annotate.check_pragma_annotate_gnatprove": [
@@ -461,7 +587,7 @@
         }
       },
       {
-        "file_info": { "basename": "why-gen-expr.adb", "path": "." },
+        "file_info": { "basename": "why-gen-expr.adb", "path": "./" },
         "subps": {
           "why.gen.expr.transform_compare_op": [
             {
@@ -660,7 +786,7 @@
         }
       },
       {
-        "file_info": { "basename": "why-gen-names.adb", "path": "." },
+        "file_info": { "basename": "why-gen-names.adb", "path": "./" },
         "subps": {
           "why.gen.names.get_modular_converter": [
             {
