@@ -184,53 +184,60 @@ def verify_counterexamples():
     # code.
     results = {}
 
-    for result_file in result_files:
-        with open(result_file, "r") as f:
-            result = json.load(f)
-            proof_result = result["proof"]
-            for msg in proof_result:
-                msg_file = msg["file"]
-                msg_line = msg["line"]
+    have_populated_dict = False
 
-                # list of strings for the trace attached to the counterexample.
-                # In fact we store here pairs of a location (file,line) and
-                # a string for the trace element, so that we can sort the trace
-                # based on location before displaying it.
-                msg_list = []
+    def compute_results_dict():
+        nonlocal results, have_populated_dict
+        if have_populated_dict:
+            return
+        have_populated_dict = True
+        for result_file in result_files:
+            with open(result_file, "r") as f:
+                result = json.load(f)
+                proof_result = result["proof"]
+                for msg in proof_result:
+                    msg_file = msg["file"]
+                    msg_line = msg["line"]
 
-                def str_elem(val):
-                    return str(val["name"]) + " = " + str(val["value"])
+                    # list of strings for the trace attached to the counterexample.
+                    # In fact we store here pairs of a location (file,line) and
+                    # a string for the trace element, so that we can sort the trace
+                    # based on location before displaying it.
+                    msg_list = []
 
-                def location(arg):
-                    return arg[0]
+                    def str_elem(val):
+                        return str(val["name"]) + " = " + str(val["value"])
 
-                def trace(arg):
-                    return arg[1]
+                    def location(arg):
+                        return arg[0]
 
-                if "cntexmp" in msg:
-                    for ff, file_value in msg["cntexmp"].items():
-                        if "current" in file_value:
-                            for line, values in file_value["current"].items():
-                                ctx = f"  trace at {ff}:{line} --> " + " and ".join(
-                                    map(str_elem, values)
-                                )
-                                msg_list.append(((ff, int(line)), ctx))
-                        if "previous" in file_value:
-                            for line, values in file_value["previous"].items():
-                                ctx = (
-                                    f"[PREVIOUS]  trace at {ff}:{line} --> "
-                                    + " and ".join(map(str_elem, values))
-                                )
-                                msg_list.append(((ff, int(line)), ctx))
+                    def trace(arg):
+                        return arg[1]
 
-                    # sort the trace elements based on location
-                    msg_list.sort(key=location)
+                    if "cntexmp" in msg:
+                        for ff, file_value in msg["cntexmp"].items():
+                            if "current" in file_value:
+                                for line, values in file_value["current"].items():
+                                    ctx = f"  trace at {ff}:{line} --> " + " and ".join(
+                                        map(str_elem, values)
+                                    )
+                                    msg_list.append(((ff, int(line)), ctx))
+                            if "previous" in file_value:
+                                for line, values in file_value["previous"].items():
+                                    ctx = (
+                                        f"[PREVIOUS]  trace at {ff}:{line} --> "
+                                        + " and ".join(map(str_elem, values))
+                                    )
+                                    msg_list.append(((ff, int(line)), ctx))
 
-                    # store only the list of trace elements, not locations.
-                    # Note that only the last counterexample for a given
-                    # location (msg_file,msg_line) is stored in results, when
-                    # multiple counterexamples are present on the same line.
-                    results[(msg_file, msg_line)] = map(trace, msg_list)
+                        # sort the trace elements based on location
+                        msg_list.sort(key=location)
+
+                        # store only the list of trace elements, not locations.
+                        # Note that only the last counterexample for a given
+                        # location (msg_file,msg_line) is stored in results, when
+                        # multiple counterexamples are present on the same line.
+                        results[(msg_file, msg_line)] = map(trace, msg_list)
 
     # check that marks in source code have a matching counterexample, and
     # display the counterexample when found.
@@ -239,6 +246,7 @@ def verify_counterexamples():
             for line, linestr in enumerate(ff):
                 line = line + 1  # first line in file is 1, not 0
                 for _mark in re.finditer(is_mark, linestr):
+                    compute_results_dict()
                     if (f, line) in results:
                         print(f"counterexample expected for check at {f}:{line}")
                         for ctx in results[(f, line)]:
@@ -1011,7 +1019,6 @@ def prove_all(
     mode="all",
     counterexample=True,
     check_counterexamples=True,
-    verify_ce=False,
     prover=default_provers,
     cache_allowed=True,
     report=None,
@@ -1111,8 +1118,7 @@ def prove_all(
     # usage of sparklib generates too many mismatches for SARIF check for now
     if enable_sarif_check and not sparklib and not has_limit_switch:
         check_sarif(report)
-    if verify_ce:
-        verify_counterexamples()
+    verify_counterexamples()
 
 
 def do_flow(

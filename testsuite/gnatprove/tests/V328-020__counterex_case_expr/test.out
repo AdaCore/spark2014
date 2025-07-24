@@ -13,3 +13,18 @@ case_expr.ads:11:12: info: implicit aspect Always_Terminates on "Case_Expr" has 
 case_expr.ads:13:12: info: implicit aspect Always_Terminates on "Case_Expr_Range" has been proved, subprogram will terminate
 case_expr.ads:15:12: info: implicit aspect Always_Terminates on "Case_Expr_In_Case_Expr" has been proved, subprogram will terminate
 case_expr.ads:17:13: warning: subprogram "Loop_Entry_In_Case_Expr" has no effect
+counterexample expected for check at case_expr.adb:22
+  trace at case_expr.adb:16 --> I = 2
+  trace at case_expr.adb:22 --> I = 2
+  trace at case_expr.ads:11 --> N = Two
+counterexample expected for check at case_expr.adb:37
+  trace at case_expr.adb:33 --> I = 1
+  trace at case_expr.adb:37 --> I = 1
+  trace at case_expr.ads:13 --> N = One
+counterexample expected for check at case_expr.adb:53
+  trace at case_expr.adb:48 --> I = 1
+  trace at case_expr.adb:53 --> I = 1
+counterexample expected for check at case_expr.adb:67
+  trace at case_expr.adb:62 --> A = (others => 1)
+  trace at case_expr.adb:64 --> J = 1
+  trace at case_expr.adb:65 --> A = (1 => 2, others => 1)

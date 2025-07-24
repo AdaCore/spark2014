@@ -6,3 +6,7 @@ s.adb:8:08: info: absence of resource or memory leak proved (CVC5: 1 VC)
 s.adb:8:11: info: range check proved (CVC5: 1 VC)
 s.adb:8:22: high: range check might fail (e.g. when HX = 0 and LX = 0)
 s.adb:8:26: info: range check proved (CVC5: 2 VC)
+counterexample expected for check at s.adb:8
+  trace at s.adb:1 --> HX = 0 and LX = 0
+  trace at s.adb:6 --> X = (L => 0, H => 0, C => null)
+  trace at s.adb:8 --> HX = 0 and LX = 0

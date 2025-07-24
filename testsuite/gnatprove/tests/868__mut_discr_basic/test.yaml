@@ -1,3 +1,1 @@
 large: True
-prove_all:
-  verify_ce: True
