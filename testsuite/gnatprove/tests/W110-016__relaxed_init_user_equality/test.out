@@ -15,9 +15,9 @@ equals.adb:43:53: info: initialization check proved (Trivial: 2 VC)
 equals.adb:43:57: info: initialization check proved (Trivial: 2 VC)
 equals.adb:46:16: info: implicit aspect Always_Terminates on "Use_Eq_Bad" has been proved, subprogram will terminate
 equals.adb:46:57: info: initialization check proved (Trivial: 2 VC)
-equals.adb:46:57: medium: initialization check might fail (e.g. when X = (C => (I => True, F => ?)) and X.C.F'Initialized = False and X.C.I'Initialized = True) [possible fix: subprogram at line 46 should mention X'Initialized in a precondition]
+equals.adb:46:57: medium: initialization check might fail (e.g. when X = (C => (I => True, F => ?)) and X.C.I'Initialized = True and X.C.F'Initialized = False) [possible fix: subprogram at line 46 should mention X'Initialized in a precondition]
 equals.adb:46:61: info: initialization check proved (Trivial: 2 VC)
-equals.adb:46:61: medium: initialization check might fail (e.g. when Y = (C => (I => True, F => ?)) and Y.C.F'Initialized = False and Y.C.I'Initialized = True) [possible fix: subprogram at line 46 should mention Y'Initialized in a precondition]
+equals.adb:46:61: medium: initialization check might fail (e.g. when Y = (C => (I => True, F => ?)) and Y.C.I'Initialized = True and Y.C.F'Initialized = False) [possible fix: subprogram at line 46 should mention Y'Initialized in a precondition]
 equals.adb:48:16: info: implicit aspect Always_Terminates on "Use_Eq_Bad" has been proved, subprogram will terminate
 equals.adb:48:57: medium: initialization check might fail [possible fix: subprogram at line 48 should mention X'Initialized in a precondition]
 equals.adb:48:61: medium: initialization check might fail [possible fix: subprogram at line 48 should mention Y'Initialized in a precondition]
