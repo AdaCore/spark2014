@@ -25,6 +25,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
+with Ada.Containers.Hashed_Sets;
 with SPARK_Atree;            use SPARK_Atree;
 with SPARK_Atree.Entities;   use SPARK_Atree.Entities;
 with SPARK_Definition;       use SPARK_Definition;
@@ -33,6 +34,22 @@ with SPARK_Util;             use SPARK_Util;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 
 package body Gnat2Why.Assumptions is
+
+   function Hash_Claim (C : Claim) return Ada.Containers.Hash_Type;
+
+   ----------------
+   -- Hash_Claim --
+   ----------------
+
+   function Hash_Claim (C : Claim) return Ada.Containers.Hash_Type
+   is (Hash_Type (Claim_Kind'Pos (C.Kind)) + 4 * Hash_Type (C.E));
+
+   package Claim_Sets is new
+     Ada.Containers.Hashed_Sets
+       (Element_Type        => Claim,
+        Hash                => Hash_Claim,
+        Equivalent_Elements => "=",
+        "="                 => "=");
 
    package Claim_Maps is new
      Ada.Containers.Hashed_Maps

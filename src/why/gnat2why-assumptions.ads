@@ -25,7 +25,6 @@
 ------------------------------------------------------------------------------
 with Ada.Containers; use Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
-with Ada.Containers.Hashed_Sets;
 with Assumptions;    use Assumptions;
 with GNATCOLL.JSON;
 with Types;          use Types;
@@ -36,22 +35,6 @@ package Gnat2Why.Assumptions is
       Kind : Claim_Kind;
       E    : Entity_Id;
    end record;
-
-   function Hash_Claim (C : Claim) return Ada.Containers.Hash_Type;
-
-   ----------------
-   -- Hash_Claim --
-   ----------------
-
-   function Hash_Claim (C : Claim) return Ada.Containers.Hash_Type
-   is (Hash_Type (Claim_Kind'Pos (C.Kind)) + 4 * Hash_Type (C.E));
-
-   package Claim_Sets is new
-     Ada.Containers.Hashed_Sets
-       (Element_Type        => Claim,
-        Hash                => Hash_Claim,
-        Equivalent_Elements => "=",
-        "="                 => "=");
 
    package Claim_Lists is new
      Ada.Containers.Doubly_Linked_Lists (Element_Type => Claim);
