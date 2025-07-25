@@ -23,11 +23,10 @@
 -- gnat2why is maintained by AdaCore (http://www.adacore.com)               --
 --                                                                          --
 ------------------------------------------------------------------------------
-with Ada.Containers; use Ada.Containers;
-with Ada.Containers.Doubly_Linked_Lists;
-with Assumptions;    use Assumptions;
+
+with Assumptions; use Assumptions;
 with GNATCOLL.JSON;
-with Types;          use Types;
+with Types;       use Types;
 
 package Gnat2Why.Assumptions is
 
@@ -36,16 +35,8 @@ package Gnat2Why.Assumptions is
       E    : Entity_Id;
    end record;
 
-   package Claim_Lists is new
-     Ada.Containers.Doubly_Linked_Lists (Element_Type => Claim);
-
    procedure Register_Claim (C : Claim);
    --  This registers that the claim [C] has been established
-
-   procedure Assume_For_Claim (C : Claim; Assume : Claim_Lists.List);
-   --  Both procedures register that the claim C depends on the assumption(s)
-   --  provided. Calling these procedures does not mean that claim C has been
-   --  established.
 
    procedure Register_Assumptions_For_Call (Caller, Callee : Entity_Id);
    --  For the call (caller -> callee), register the assumptions

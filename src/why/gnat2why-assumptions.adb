@@ -24,6 +24,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;         use Ada.Containers;
+with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with SPARK_Atree;            use SPARK_Atree;
@@ -43,6 +45,9 @@ package body Gnat2Why.Assumptions is
 
    function Hash_Claim (C : Claim) return Ada.Containers.Hash_Type
    is (Hash_Type (Claim_Kind'Pos (C.Kind)) + 4 * Hash_Type (C.E));
+
+   package Claim_Lists is new
+     Ada.Containers.Doubly_Linked_Lists (Element_Type => Claim);
 
    package Claim_Sets is new
      Ada.Containers.Hashed_Sets
@@ -67,24 +72,6 @@ package body Gnat2Why.Assumptions is
 
    Claims : Claim_Sets.Set := Claim_Sets.Empty_Set;
    --  All established claims
-
-   ----------------------
-   -- Assume_For_Claim --
-   ----------------------
-
-   procedure Assume_For_Claim (C : Claim; Assume : Claim_Lists.List) is
-      Position : Claim_Maps.Cursor;
-      Dummy    : Boolean;
-
-   begin
-      --  Attempt to insert an empty set and then put the assumption there
-      Claim_Assumptions.Insert
-        (Key => C, Position => Position, Inserted => Dummy);
-
-      for A of Assume loop
-         Claim_Assumptions (Position).Include (A);
-      end loop;
-   end Assume_For_Claim;
 
    --------------------
    -- Claim_To_Token --
@@ -131,7 +118,32 @@ package body Gnat2Why.Assumptions is
    -----------------------------------
 
    procedure Register_Assumptions_For_Call (Caller, Callee : Entity_Id) is
+
+      procedure Assume_For_Claim (C : Claim; Assume : Claim_Lists.List);
+      --  Both procedures register that the claim C depends on the
+      --  assumption(s) provided. Calling these procedures does not mean
+      --  that claim C has been established.
+
+      ----------------------
+      -- Assume_For_Claim --
+      ----------------------
+
+      procedure Assume_For_Claim (C : Claim; Assume : Claim_Lists.List) is
+         Position : Claim_Maps.Cursor;
+         Dummy    : Boolean;
+
+      begin
+         --  Attempt to insert an empty set and then put the assumption there
+         Claim_Assumptions.Insert
+           (Key => C, Position => Position, Inserted => Dummy);
+
+         for A of Assume loop
+            Claim_Assumptions (Position).Include (A);
+         end loop;
+      end Assume_For_Claim;
+
       Assumptions : Claim_Lists.List;
+
    begin
       Assumptions.Append ((Kind => Claim_Effects, E => Callee));
 
