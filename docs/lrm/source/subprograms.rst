@@ -246,6 +246,23 @@ that is described in Ada RM 6.1.1.]
 Subprogram Contracts
 ~~~~~~~~~~~~~~~~~~~~
 
+The syntax of all language-defined subprogram contracts is extended to allow
+splitting the contract into one or more parts associated with an assertion level
+(see :ref:`Pragma Assertion_Level`):
+
+.. container:: heading
+
+   Syntax
+
+::
+   level_and_expression ::= assertion_level => boolean_expression
+   level_and_expression_list ::= level_and_expression[, level_and_expression_list]
+
+The ``aspect_definition`` of subprogram contracts can be either a boolean
+expression or a ``level_and_expression_list``. In the second case, the boolean
+expressions are handled similarly to the boolean expression of the first case
+with respect to legality rules and name resolution.
+
 In order to extend Ada's support for specification of subprogram contracts
 (e.g., the Pre and Post) by providing more precise and/or concise contracts, the
 |SPARK| aspects, Global, Depends, and Contract_Cases are defined.
@@ -271,6 +288,17 @@ In order to extend Ada's support for specification of subprogram contracts
 See section :ref:`Contract Cases` for further detail on Contract_Case aspects, section
 :ref:`Global Aspects` for further detail on Global aspects and section :ref:`Depends Aspects`
 for further detail on Depends aspects.
+
+.. container:: heading
+
+   Dynamic Semantics
+
+4. The checks associated with a contract containing assertion levels are
+   performed in a similar fashion to regular contracts for each boolean
+   expression. The associated assertion level is taken into account when
+   determining whether each expression is
+   enabled. [Intuitively, the boolean expressions of a contract containing
+   assertion levels are joined together using a conjunction.]
 
 .. index:: Contract_Cases
 
@@ -346,6 +374,12 @@ the grammar of ``contract_case_list`` given below.
 where
 
    ``consequence ::=`` *Boolean_*\ ``expression``
+
+Similarly to other subprogram contracts, the ``aspect_specification`` of a
+Contract_Cases aspect can be a list of associations of an assertion level
+and a ``contract_case_list`` instead. In this case, each ``contract_case_list``
+is handled as for simple Contract_Cases aspects, but their execution semantic
+is governed by the associated assertion level.
 
 
 .. container:: heading
@@ -2117,24 +2151,34 @@ body (see Ada RM 7.2(4))].
    Static Semantics
 
 
-1. |SPARK| defines the Boolean-valued representation aspect Ghost.
+1. |SPARK| defines the representation aspect Ghost. It can be associated with
+   either a boolean value or an assertion level
+   (see :ref:`Pragma Assertion_Level`).
    Ghost is an aspect of all entities (e.g., subprograms, types, objects).
-   An entity whose Ghost aspect is True is said to be a ghost entity;
-   terms such as "ghost function" or "ghost variable" are defined analogously
-   (e.g., a function whose Ghost aspect is True is said to be a ghost function).
+   An entity whose Ghost aspect is either True or an assertion level is said to
+   be a ghost entity; terms such as "ghost function" or "ghost variable" are
+   defined analogously (e.g., a function whose Ghost aspect is either True or
+   an assertion level is said to be a ghost function).
    In addition, a subcomponent of a ghost object is a ghost object.
 
    Ghost is an assertion aspect.
    [This means that Ghost can be named in an Assertion_Policy pragma.]
 
+   [The assertion policy applicable to the declaration of a
+   Ghost entity may be associated either with an assertion level, if the
+   entity has an associated assertion level, or with the Ghost assertion kind
+   otherwise.]
 
-2. The Ghost aspect of an entity declared inside of a ghost entity (e.g.,
-   within the body of a ghost subprogram) is defined to be True.
+
+2. Unless explicitly provided, the Ghost aspect of an entity declared inside of
+   a ghost entity (e.g., within the body of a ghost subprogram) is defined to be
+   the Ghost aspect of its enclosing entity.
    The Ghost aspect of an entity implicitly declared as part of the
    explicit declaration of a ghost entity (e.g., an implicitly declared
    subprogram associated with the declaration of a ghost type) is defined
-   to be True. The Ghost aspect of a child of a ghost library unit
-   is defined to be True.
+   to be the Ghost aspect of the declared object.
+   Unless explicitly provided, the Ghost aspect of a child
+   of a ghost library unit is defined to be Ghost aspect of the library unit.
 
 
 3. A statement or pragma is said to be a "ghost statement" if
@@ -2149,19 +2193,68 @@ body (see Ada RM 7.2(4))].
 
    * it is an assertion pragma which encloses a name denoting a ghost entity.
 
+   The assertion policy applicable to an assignment statement whose target
+   is a ghost variable is the assertion policy applicable to the ghost variable
+   at the point of assignment. The assertion policy applicable to a call to a
+   ghost procedure is the assertion policy applicable to the ghost procedure
+   at the point of call. Assertion pragmas and specification aspects occurring
+   inside a disabled ghost entity or that apply to a disabled ghost entity are
+   considered to be disabled. Otherwise, the assertion policy applicable to
+   an assertion pragma or specification aspect may come either from its
+   assertion level if any, or from an assertion kind (e.g., Pre for a
+   precondition expression, Assert for the argument of an Assert pragma...).
+   The applicable assertion policy for other ghost statements is the assertion
+   policy applicable to the enclosing ghost subprogram or package.
 
-4. If the Ghost assertion policy in effect at the point of a
-   ghost statement or the declaration of a ghost entity is Ignore, then the
+
+4. If the assertion policy applicable to a ghost statement or the declaration of
+   a ghost entity is Ignore, then the
    elaboration of that construct (at run time) has no effect,
    other Ada or |SPARK| rules notwithstanding. Similarly, the elaboration
-   of the completion of a ghost entity has no effect if the Ghost
-   assertion policy in effect at the point of the entity's
-   initial declaration is Ignore.
-   [A Ghost assertion policy of Ignore can be used to ensure that
+   of the completion of a ghost entity has no effect if the assertion policy
+   applicable to the entity's initial declaration is Ignore.
+   [Assertion policy Ignore can be used to ensure that
    a compiler generates no code for ghost constructs.]
    Such a declaration is said to be a *disabled ghost declaration*;
    terms such as "disabled ghost type" and "disabled ghost subprogram"
    are defined analogously.
+
+5. A ghost entity A is said to be *assertion-level-dependent* on a
+   ghost entity B if either:
+
+   * A or B does not have an associated assertion level or
+
+   * both A and B have an associated assertion level and either:
+
+     * the associated assertion level of A depends on the associated assertion
+       level of B or
+
+     * the associated assertion level of A cannot be enabled. [It is Static or
+       depends on Static.]
+
+   In the same way, an assertion expression or specification aspect is said to
+   be *assertion-level-dependent* on a ghost entity if either:
+
+   * the ghost entity or the assertion or aspect does not have an associated
+     assertion level or
+
+   * both the ghost entity and the assertion or aspect have an associated
+     assertion level and either:
+
+     * the assertion level of the assertion or aspect depends on the assertion
+       level of the ghost entity or
+
+     * the assertion level of the assertion cannot be enabled.
+
+   [The following rules enforce that a reference to a ghost entity always occurs
+   in a context that is assertion-level-dependent on it. This ensures
+   that disabling or enabling an assertion
+   level won't cause the program to stop compiling. Ghost entities and
+   assertions without a level are exempted from this check so as not to force
+   the use of assertion levels in user code.]
+
+   Two ghost entities A and B are said to have a *matching assertion level* if
+   A is assertion-level-dependent on B and B is assertion-level-dependent on A.
 
 
 .. container:: heading
@@ -2169,7 +2262,7 @@ body (see Ada RM 7.2(4))].
    Legality Rules
 
 
-5. The Ghost aspect may only be specified [explicitly] for
+6. The Ghost aspect may only be specified [explicitly] for
    the declaration of a subprogram, a
    generic subprogram, a type (including a partial view thereof),
    an object (or list of objects, in the case of an ``aspect_specification``
@@ -2185,7 +2278,7 @@ body (see Ada RM 7.2(4))].
    ghost state abstractions, but these are described elsewhere.]
 
 
-6. A Ghost aspect value of False shall not be explicitly specified
+7. A Ghost aspect value of False shall not be explicitly specified
    except in a confirming aspect specification. [For example, a
    non-ghost declaration cannot occur within a ghost subprogram.]
 
@@ -2196,16 +2289,22 @@ body (see Ada RM 7.2(4))].
    point of a SPARK program shall be either Check or Ignore.
 
 
-7. A ghost type or object shall not be effectively volatile.
+8. A ghost type or object shall not be effectively volatile.
    A ghost object shall not be imported or exported.
    [In other words, no ghost objects for which reading or writing
    would constitute an external effect (see Ada RM 1.1.3).]
 
 
-8. A ghost primitive subprogram of a non-ghost type extension shall
+9. A ghost primitive subprogram of a non-ghost type extension shall
    not override an inherited non-ghost primitive subprogram.
    A non-ghost primitive subprogram of a type extension shall
    not override an inherited ghost primitive subprogram.
+   In addition, a ghost primitive subprogram of a type extension that
+   overrides an inherited ghost primitive subprogram shall have the same
+   Ghost aspect value as the overridden subprogram unless the ghost type
+   extension is assertion-level-dependent on the overridden subprogram. In this
+   case, the overriding subprogram shall have the same Ghost aspect value as
+   the type extension.
    [A ghost subprogram may be a primitive subprogram of a non-ghost tagged
    type.
    A ghost type extension may have a non-ghost parent type or progenitor;
@@ -2213,29 +2312,40 @@ body (see Ada RM 7.2(4))].
    non-ghost) subprograms.]
 
 
-9. A Ghost pragma which applies to a declaration occuring in the visible part
-   of a package shall not occur in the private part of that package.
-   [This rule is to ensure that the ghostliness of a visible entity can be
-   determined without having to look into the private part of the enclosing
-   package.]
+10. A Ghost pragma which applies to a declaration occuring in the visible part
+    of a package shall not occur in the private part of that package.
+    [This rule is to ensure that the ghostliness of a visible entity can be
+    determined without having to look into the private part of the enclosing
+    package.]
 
+11. If ghost entity is declared inside another ghost entity or as the child of
+    another ghost entity, then it shall be assertion-level-dependent
+    on its enclosing or parent ghost entity unless the declared entity is a
+    generic instance or a renaming declaration.
+    [This avoids enabled declarations in disabled scope.]
 
-10. A ghost entity shall only be referenced:
+12. A ghost entity shall only be referenced:
 
-    * from within an assertion expression; or
+    * from within an assertion expression that is
+      assertion-level-dependent on it; or
 
     * from within an aspect specification [(i.e., either an
       ``aspect_specification`` or an aspect-specifying pragma)]; or
 
-    * within the declaration or completion of a
-      ghost entity (e.g., from within the body of a ghost subprogram); or
+    * within the declaration or completion of a ghost entity that is
+      assertion-level-dependent on it
+      (e.g., from within the body of a ghost subprogram); or
 
-    * within a ghost statement; or
+    * within a call to a ghost procedure that is assertion-level-dependent on
+      it; or
+
+    * within an assignment statement whose target is a ghost variable that is
+      assertion-level-dependent on it; or
 
     * within a ``with_clause`` or ``use_clause``; or
 
-    * within a renaming_declaration which either renames a ghost entity
-      or occurs within a ghost subprogram or package; or
+    * within a renaming_declaration which either renames a ghost entity or
+      occurs within a ghost subprogram or package; or
 
     * within an actual parameter in a generic instantiation when the
       corresponding generic formal parameter is ghost.
@@ -2243,17 +2353,18 @@ body (see Ada RM 7.2(4))].
     A ghost attribute like ``Initialized`` shall only be referenced where a
     ghost entity would be allowed.
 
-11. A ghost entity shall not be referenced within an aspect specification
+13. A ghost entity shall not be referenced within an aspect specification
     [(including an aspect-specifying pragma)]
     which specifies an aspect of a non-ghost entity except in the
     following cases:
 
-    * the reference occurs within an assertion expression which is
-      not a predicate expression, unless the predicate is introduced
-      by aspect Ghost_Predicate; or
+    * the reference occurs within an assertion expression that is
+      assertion-level-dependent on it and is not a predicate expression,
+      unless the predicate is introduced by aspect Ghost_Predicate; or
 
     * the specified aspect is either Global, Depends,
-      Refined_Global, Refined_Depends, Initializes, or Refined_State.
+      Refined_Global, Refined_Depends, Initializes, or Refined_State on an
+      entity that is assertion-level-dependent on the ghost entity.
       [For example, the Global aspect of a non-ghost subprogram might
       refer to a ghost variable.]
 
@@ -2263,86 +2374,84 @@ body (see Ada RM 7.2(4))].
    there are also other reasons (e.g., case statements).]
 
 
-12. An **out** or **in out** mode actual parameter in a call to a ghost
-    subprogram shall be a ghost variable.
+14. An **out** or **in out** mode actual parameter in a call to a ghost
+    subprogram shall be a ghost variable. In addition, the variable and the
+    subprogram shall have matching assertion levels.
 
 
-13. In a generic declaration:
+15. In a generic declaration:
 
     * the default expression (if any) for a ghost generic formal object [both
       of mode **in** and] of access-to-variable type shall be a ghost object
+      with a matching assertion level
       [otherwise writing to a reachable part (see :ref:`Access Types`) of the
       ghost formal object would have an effect on a non-ghost variable]; and
 
     * the default subprogram (if any) for a ghost generic formal procedure
-      shall be a ghost procedure [otherwise a call to the ghost formal
+      shall be a ghost procedure with a matching assertion level
+      [otherwise a call to the ghost formal
       procedure could have effects on non-ghost variables, if the default
       non-ghost procedure is writing to non-ghost variables].
 
 
-14. In a generic instantiation:
+16. In a generic instantiation:
 
     * the actual parameter for a ghost generic formal object of mode **in out**
       or both of mode **in** and of access-to-variable type, shall be a ghost
-      object [otherwise writing to a reachable part (see :ref:`Access Types`)
+      object with a matching assertion level
+      [otherwise writing to a reachable part (see :ref:`Access Types`)
       of the ghost formal object would have an effect on a non-ghost variable];
 
     * the actual parameter for a ghost generic formal procedure shall be a
-      ghost procedure [otherwise a call to the ghost formal procedure could
+      ghost procedure with a matching assertion level
+      [otherwise a call to the ghost formal procedure could
       have effects on non-ghost variables, if the actual non-ghost procedure is
       writing to non-ghost variables]; and
 
     * the actual parameter for a ghost generic formal package shall be a ghost
-      package [otherwise an object or a procedure in the package could lead to
+      package with a matching assertion level
+      [otherwise an object or a procedure in the package could lead to
       the problems mentions in the two previous cases].
 
 
-15. If the Ghost assertion policy in effect at the point of the declaration
-    of a ghost entity is Ignore, then the Ghost assertion policy in effect
-    at the point of any reference to that entity outside of
-    an assertion expression shall be Ignore.
+17. If the assertion policy applicable to the declaration of a Ghost entity is
+    Ignore, then the assertion policy applicable to any reference
+    to that entity shall be Ignore except if the reference occurs in an
+    aspect specification for the aspects Global, Depends, Refined_Global,
+    Refined_Depends, Initializes, or Refined_State.
     If the Ghost assertion policy in effect at the point of the declaration
-    of a ghost variable is Check, then the Ghost assertion policy in effect
-    at the point of any assignment to a part of that variable shall be Check.
+    of a ghost variable is Check, then the assertion policy applicable
+    to any assignment to a part of that variable shall be Check.
     [This includes both assignment statements and passing a ghost variable
     as an **out** or **in out** mode actual parameter.]
 
 
-16. An Assertion_Policy pragma specifying a Ghost assertion policy
-    shall not occur within a ghost subprogram or package.
-    If a ghost entity has a completion then the Ghost assertion policies in
-    effect at the declaration and at the completion of the entity shall
+18. An Assertion_Policy pragma specifying a Ghost policy shall not occur within
+    a ghost subprogram or package.
+    Similarly, an Assertion_Policy pragma specifying an Assertion_Level policy
+    shall not occur within a ghost subprogram or package associated to an
+    assertion level which depends on this level.
+    If a ghost entity has a completion then the assertion policies applicable to
+    the declaration and to the completion of the entity shall
     be the same. [This rule applies to subprograms, packages, types,
     and deferred constants.]
 
-    The Ghost assertion policies in effect at the point of the declaration
-    of an entity and at the point of an aspect specification
-    which applies to that entity shall be the same.
+    The assertion policies applicable to the declaration of an entity and to an
+    aspect specification which applies to that entity shall be the same.
 
 
-17. The Ghost assertion policies in effect at the declaration of a
-    state abstraction and at the declaration of each constituent of that
-    abstraction shall be the same.
+19. If the assertion policy applicable to the declaration of a Ghost entity
+    state abstraction is Ignore, then the assertion policy applicable to the
+    declaration of each constituent of that
+    abstraction shall be Ignore. In addition, constituents of a ghost state
+    abstraction shall be assertion-level-dependent of it.
 
 
-18. The Ghost assertion policies in effect at the declaration of a
-    primitive subprogram of a ghost tagged type and at
-    the declaration of the ghost tagged type shall be the same.
-
-
-19. If a tagged type is not a disabled ghost type, and if a
+20. If a tagged type is not a disabled ghost type, and if a
     primitive operation of the tagged type overrides an inherited operation,
     then the corresponding operation of the ancestor type shall be
     a disabled ghost subprogram if and only if the overriding subprogram
     is a disabled ghost subprogram.
-
-
-20. If the Ghost assertion policy in effect at the point of the declaration
-    of a ghost entity is Ignore,
-    and this ghost entity occurs within an assertion expression,
-    then the assertion policy which governs the assertion
-    expression (e.g., Pre for a precondition expression, Assert for the
-    argument of an Assert pragma) shall [also] be Ignore.
 
 
 21. A ghost type shall not have a task or protected part.
@@ -2355,7 +2464,9 @@ body (see Ada RM 7.2(4))].
 
 22. A user-defined primitive equality operation on a non-ghost record type
     shall not be ghost, unless the record type has only limited views (see
-    :ref:`Overloading of Operators`).
+    :ref:`Overloading of Operators`). In addition, a user-defined primitive
+    equality operation on a ghost record type shall have a matching assertion
+    level.
 
     [This avoids the case where such a record type is a component of another
     non-ghost composite type, whose predefined non-ghost equality operation now
@@ -2369,11 +2480,16 @@ body (see Ada RM 7.2(4))].
 
 
 23. A ghost subprogram with side effects shall not have a non-ghost [global]
-    output.
+    output. In addition, [global] outputs of a ghost subprogram shall be
+    assertion-level-dependent on the subprogram. [This ensures that a
+    disabled ghost subprogram never modifies an enabled (ghost) state].
 
 
 24. An output of a non-ghost subprogram other than a state abstraction
-    or a ghost global shall not depend on a ghost input. [It is intended
+    or a ghost global shall not depend on a ghost input. In addition, if a ghost
+    output of a subprogram depends on one of its ghost inputs, then the output
+    should be assertion-level-dependent on the input.
+    [It is intended
     that this follows as a consequence of other rules. Although a
     non-ghost state abstraction output which depends on a ghost input may
     have a non-ghost constituent, other rules prevent such a non-ghost
@@ -2389,9 +2505,9 @@ body (see Ada RM 7.2(4))].
     effectively the same restrictions as a ghost subprogram with side effects.]
 
 
-26. If the Ghost assertion policy in effect at the point of the declaration of
-    a ghost variable or ghost state abstraction is Check, then the Ghost
-    assertion policy in effect at the point of any call to a procedural
+26. If the assertion policy applicable to the declaration of
+    a ghost variable or ghost state abstraction is Check, then the
+    assertion policy applicable to any call to a procedural
     subprogram for which that variable or state abstraction is a global output
     shall be Check.
 

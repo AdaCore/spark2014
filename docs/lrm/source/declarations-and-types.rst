@@ -114,6 +114,12 @@ itself. But the subtype cannot appear as a subtype_mark in a membership test.
 [As predicates participate in membership tests, a membership test may
 implicitly reference ghost entities in that case.]
 
+As with :ref:`Subprogram Contracts`, the boolean expression of a Predicate or
+Ghost_Predicate aspect can be split between different assertion levels and
+replaced by a ``level_and_expression_list``. In this case, each boolean
+expression is handled as for simple Predicate or Ghost_Predicate aspects, but
+their execution semantics is governed by the associated assertion level.
+
 .. container:: heading
 
    Legality Rules
@@ -988,7 +994,8 @@ X.Link is poisoned by the assignment to Y.]
     the target object of the move or borrow is itself non-ghost. In the same
     way, if the target object of a move or borrow is a disabled ghost object,
     then the moved or borrowed path shall be rooted at a disabled ghost object.
-    [This rule is
+    In addition, the target object of a move or borrow and the root of its
+    moved or borrowed path shall have matching assertion levels. [This rule is
     meant to avoid introducing aliases between a non-ghost variable and a ghost
     variable. Otherwise writes or deallocation through the ghost variable would
     have an effect on the non-ghost underlying memory.]

@@ -183,6 +183,18 @@ the value that an expression had upon entry to a given loop in much the same way
 that the ``Old`` attribute in a subprogram postcondition can be used to refer to
 the value an expression had upon entry to the subprogram.
 
+As with pragma Assert (see :ref:`Pragmas Assert and Assertion_Policy`),
+the Boolean parameter of a pragma Loop_Invariant
+can be split between different assertion levels and replaced by a
+``level_and_expression_list``. In this case, each boolean
+expression is handled as for simple Loop_Invariant pragmas, but their
+execution semantic is governed by the associated assertion level.
+
+It is also possible to replace the ``loop_variant_parameters`` by a list
+of associations of an assertion level and a ``loop_variant_parameters`` in
+a pragma Loop_Variant. Each association will then be handled as a separate
+pragma Loop_Variant.
+
 .. container:: heading
 
    Syntax
@@ -559,6 +571,12 @@ assertion and has a single Boolean parameter (an assertion expression)
 and may be used wherever pragma Assert is allowed, with the additional
 restriction that pragma Assert_And_Cut must be part of a
 ``sequence_of_statements``.
+
+As with pragma Assert (see :ref:`Pragmas Assert and Assertion_Policy`),
+the Boolean parameter can be split between different assertion levels and
+replaced by a ``level_and_expression_list``. In this case, each boolean
+expression is handled as for simple Assert_And_Cut or Assume pragmas, but their
+execution semantic is governed by the associated assertion level.
 
 Assert_And_Cut may be used when the given expression
 sums up all the work done so far in the enclosing ``sequence_of_statements``,
