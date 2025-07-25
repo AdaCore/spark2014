@@ -93,7 +93,7 @@ package body Gnat2Why.Assumptions is
          begin
             if Claim_Maps.Has_Element (Cu) then
                for A of Claim_Assumptions (Cu) loop
-                  S.Include (Claim_To_Token (A));
+                  S.Insert (Claim_To_Token (A));
                end loop;
             end if;
             Rules.Append ((Claim => Claim_To_Token (C), Assumptions => S));
