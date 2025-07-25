@@ -34,7 +34,7 @@ package Assumption_Types is
 
    type Base_Sloc is record
       File : Symbol;
-      Line : Integer;
+      Line : Positive;
    end record;
 
    Null_Subp : constant Subp_Type;
