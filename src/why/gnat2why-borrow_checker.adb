@@ -23,7 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;
+with Ada.Containers;            use Ada.Containers;
+with Ada.Containers.Vectors;
 with Ada.Unchecked_Deallocation;
 with Atree;                     use Atree;
 with Checked_Types;             use Checked_Types;
@@ -910,8 +911,22 @@ package body Gnat2Why.Borrow_Checker is
    --  A function that takes an exit statement node and returns the entity of
    --  the loop that this statement is exiting from.
 
-   procedure Merge_Env (Source : in out Perm_Env; Target : in out Perm_Env);
+   procedure Merge_Env
+     (Source : in out Perm_Env;
+      Target : in out Perm_Env;
+      Filter : Boolean := False);
    --  Merge Target and Source into Target, and then deallocate the Source
+   --  If Filter is True, first filter source by the variables declared in
+   --  scopes, as tracked by Default_Perm_Env.
+   --
+   --  A value of False remains relevant for accumulating environments at
+   --  join points (at the end of a conditional branch, or at statements that
+   --  transfer control). At such points, we are accumulating Current_Perm_env,
+   --  which is kept filtered, so additional filtering would be useless.
+   --  A more useful filter in these cases would be the objects declared in the
+   --  scope of the transfer-of-control target, to avoid accumulating values we
+   --  will filter later on, but keeping track of such information would be
+   --  more complex.
 
    procedure BC_Error
      (Msg           : Message;
@@ -1168,6 +1183,43 @@ package body Gnat2Why.Borrow_Checker is
    Permission_Error  : Boolean := False;
    --  Should be set to true when an error message is emitted
 
+   ----------------------
+   -- Scope management --
+   ----------------------
+
+   package Object_Scope is
+
+      --  The following procedure track the objects declared in the current
+      --  scope. They are tracked in an implicit stack, divided in consecutive
+      --  sectors. These sectors can be empty. The initial value of the
+      --  implicit stack is empty, with a single empty sector.
+
+      procedure Push_Object (E : Entity_Id);
+      --  Push a new object on the implicit stack, within the last sector. This
+      --  should be called when processing a declaration of a construct, before
+      --  processing the sub-construct that see the declaration.
+
+      procedure Push_Scope;
+      --  Add a new empty sector at the end of the object stack
+
+      procedure Pop_Scope;
+      --  Remove the last sector at the end of the object stack. The
+      --  corresponding object entities are also removed from Default/Current
+      --  permission environments.
+      --
+      --  In essence, if there is a call to Push_Scope when we start processing
+      --  a construct, there should be a call to Pop_Scope at the end.
+      --
+      --  Pop_Scope can only be called if there are at least 2 sectors in the
+      --  implicit stack. That is, the initial sector cannot be popped, only
+      --  sectors introduced by Push_Scope can.
+
+      function Is_Initial_Value return Boolean with Ghost;
+      --  For sanity checking: return whether the implicit stack is at its
+      --  initial value.
+
+   end Object_Scope;
+
    --------------------
    -- Handle_Globals --
    --------------------
@@ -1275,6 +1327,7 @@ package body Gnat2Why.Borrow_Checker is
             Children_Permission => Perm));
 
       Set (Default_Perm_Env, Name, Tree);
+      Object_Scope.Push_Object (Name);
 
    end Setup_Environment_For_Object;
 
@@ -1942,6 +1995,8 @@ package body Gnat2Why.Borrow_Checker is
    begin
       Reset (Default_Perm_Env);
       Reset (Current_Perm_Env);
+      pragma Assert (Object_Scope.Is_Initial_Value);
+      Object_Scope.Push_Scope;
       case Ekind (E) is
          when Type_Kind =>
             if Ekind (E) in E_Task_Type | E_Protected_Type
@@ -1988,6 +2043,7 @@ package body Gnat2Why.Borrow_Checker is
          when others =>
             raise Program_Error;
       end case;
+      Object_Scope.Pop_Scope;
 
    end Check_Entity;
 
@@ -2809,6 +2865,7 @@ package body Gnat2Why.Borrow_Checker is
             Read_Expression (Expression (Expr));
 
          when N_Quantified_Expression =>
+            Object_Scope.Push_Scope;
             declare
                For_In_Spec     : constant Node_Id :=
                  Loop_Parameter_Specification (Expr);
@@ -2848,12 +2905,8 @@ package body Gnat2Why.Borrow_Checker is
                end if;
 
                Read_Expression (Condition (Expr));
-
-               --  Environment cleanup.
-
-               Remove (Current_Perm_Env, Quantified_Var);
-               Remove (Default_Perm_Env, Quantified_Var);
             end;
+            Object_Scope.Pop_Scope;
 
          when N_Character_Literal
             | N_Numeric_Or_String_Literal
@@ -2887,8 +2940,10 @@ package body Gnat2Why.Borrow_Checker is
             --  the map for them. No need to handle local borrowers or
             --  observers which are not allowed.
 
+            Object_Scope.Push_Scope;
             Check_List (Actions (Expr));
             Check_Expression (Expression (Expr), Mode);
+            Object_Scope.Pop_Scope;
 
          --  Procedure calls are handled in Check_Node
 
@@ -2971,22 +3026,51 @@ package body Gnat2Why.Borrow_Checker is
         (Exiting_Env : Perm_Env;
          Entry_Env   : Perm_Env)
       is
-         Comp_Entry            : Perm_Tree_Maps.Key_Option;
-         Iter_Entry, Iter_Exit : Perm_Tree_Access;
+         Comp_Entry : Perm_Tree_Maps.Key_Option;
 
-      begin
-         Comp_Entry := Get_First_Key (Entry_Env);
-         while Comp_Entry.Present loop
-            Iter_Entry := Query_Read_Only_Tree (Entry_Env, Comp_Entry.K);
-            pragma Assert (Iter_Entry /= null);
-            Iter_Exit := Query_Read_Only_Tree (Exiting_Env, Comp_Entry.K);
-            pragma Assert (Iter_Exit /= null);
+         procedure Do_Check (Key_Opt : Perm_Tree_Maps.Key_Option)
+           with Pre => Key_Opt.Present;
+         --  Loop body, do the check on one key. Split out because the loop
+         --  is split in two parts.
+
+         procedure Do_Check (Key_Opt : Perm_Tree_Maps.Key_Option) is
+            Iter_Entry : constant not null Perm_Tree_Access :=
+              Query_Read_Only_Tree (Entry_Env, Key_Opt.K);
+            Iter_Exit : constant not null Perm_Tree_Access :=
+              Query_Read_Only_Tree (Exiting_Env, Key_Opt.K);
+         begin
             Check_Is_Less_Restrictive_Tree
               (New_Tree  => Iter_Exit,
                Orig_Tree => Iter_Entry,
                E         => Comp_Entry.K);
+         end Do_Check;
+
+      --  Start of processing for Check_Is_Less_Restrictive_Env
+
+      begin
+         --  There is no guarantee the set of keys actually in any of the
+         --  environment is a subset of the other, so we need to iterate both.
+         --  For keys that are in neither, the matching permissions are both
+         --  that of the default environment, hence are guaranteed to match.
+
+         Comp_Entry := Get_First_Key (Entry_Env);
+         while Comp_Entry.Present loop
+            Do_Check (Comp_Entry);
             Comp_Entry := Get_Next_Key (Entry_Env);
          end loop;
+
+         Comp_Entry := Get_First_Key (Exiting_Env);
+         while Comp_Entry.Present loop
+
+            --  Prevent duplicated iteration
+
+            if Get (Entry_Env, Comp_Entry.K) = null then
+               Do_Check (Comp_Entry);
+            end if;
+
+            Comp_Entry := Get_Next_Key (Exiting_Env);
+         end loop;
+
       end Check_Is_Less_Restrictive_Env;
 
       ------------------------------------
@@ -3345,15 +3429,13 @@ package body Gnat2Why.Borrow_Checker is
       --  Local variables
 
       Loop_Name : constant Entity_Id := Entity (Identifier (Stmt));
-      Loop_Env  : constant Perm_Env_Access := new Perm_Env;
+      Loop_Env  : Perm_Env;
       Scheme    : constant Node_Id := Iteration_Scheme (Stmt);
 
    --  Start of processing for Check_Loop_Statement
 
    begin
-      --  Save environment prior to the loop
-
-      Copy_Env (From => Current_Perm_Env, To => Loop_Env.all);
+      Object_Scope.Push_Scope;
 
       --  If the loop is not a plain-loop, then it may either never be entered,
       --  or it may be exited after a number of iterations. Hence add the
@@ -3420,13 +3502,18 @@ package body Gnat2Why.Borrow_Checker is
          end if;
       end if;
 
+      Copy_Env (Current_Perm_Env, Loop_Env);
+
+      Object_Scope.Push_Scope;
       Check_List (Statements (Stmt));
+      Object_Scope.Pop_Scope;
 
       --  Check that environment gets less restrictive at end of loop
 
       Check_Is_Less_Restrictive_Env
         (Exiting_Env => Current_Perm_Env,
-         Entry_Env   => Loop_Env.all);
+         Entry_Env   => Loop_Env);
+      Free_Env (Loop_Env);
 
       --  Set environment to the one for exiting the loop
 
@@ -3434,26 +3521,21 @@ package body Gnat2Why.Borrow_Checker is
          Exit_Env : constant Perm_Env_Access :=
            Get (Current_Loops_Accumulators, Loop_Name);
       begin
-         Free_Env (Current_Perm_Env);
-
          --  In the normal case, Exit_Env is not null and we use it. In the
          --  degraded case of a plain-loop without exit statements, Exit_Env is
-         --  null, and we use the initial permission environment at the start
-         --  of the loop to continue analysis. Any environment would be fine
-         --  here, since the code after the loop is dead code, but this way we
-         --  avoid spurious errors by having at least variables in scope inside
-         --  the environment.
+         --  null, and the code afterward is dead, so we use a reset
+         --  environment.
 
          if Exit_Env /= null then
             Copy_Env (From => Exit_Env.all, To => Current_Perm_Env);
-            Free_Env (Loop_Env.all);
             Free_Env (Exit_Env.all);
             Remove (Current_Loops_Accumulators, Loop_Name);
          else
-            Copy_Env (From => Loop_Env.all, To => Current_Perm_Env);
-            Free_Env (Loop_Env.all);
+            Reset_Env (Current_Perm_Env);
          end if;
       end;
+
+      Object_Scope.Pop_Scope;
    end Check_Loop_Statement;
 
    ----------------
@@ -3508,7 +3590,9 @@ package body Gnat2Why.Borrow_Checker is
             end;
 
          when N_Handled_Sequence_Of_Statements =>
+            Object_Scope.Push_Scope;
             Check_List (Statements (N));
+            Object_Scope.Pop_Scope;
 
             --  Go over the exception handlers. They start in the environment
             --  accumulated for them if any. Their output environment is merged
@@ -3528,8 +3612,10 @@ package body Gnat2Why.Borrow_Checker is
                      if Handler_Env /= null then
                         Remove (Current_Exc_Accumulators, Handler);
                         Current_Perm_Env := Handler_Env.all;
+                        Object_Scope.Push_Scope;
                         Check_List (Statements (Handler));
-                        Merge_Env (Current_Perm_Env, Save_Env);
+                        Object_Scope.Pop_Scope;
+                        Merge_Env (Current_Perm_Env, Save_Env, Filter => True);
                      end if;
                   end;
                   Next_Non_Pragma (Handler);
@@ -3560,7 +3646,7 @@ package body Gnat2Why.Borrow_Checker is
                  Get (Current_Goto_Accumulators, Label_Entity);
             begin
                if Label_Env /= null then
-                  Merge_Env (Label_Env.all, Current_Perm_Env);
+                  Merge_Env (Label_Env.all, Current_Perm_Env, Filter => True);
                   Remove (Current_Goto_Accumulators, Label_Entity);
                end if;
             end;
@@ -4215,6 +4301,7 @@ package body Gnat2Why.Borrow_Checker is
             end;
 
          when N_Block_Statement =>
+            Object_Scope.Push_Scope;
             Check_List (Declarations (Stmt));
             Check_Node (Handled_Statement_Sequence (Stmt));
             Check_End_Of_Scope (Declarations (Stmt));
@@ -4235,6 +4322,7 @@ package body Gnat2Why.Borrow_Checker is
                   Next (Decl);
                end loop;
             end;
+            Object_Scope.Pop_Scope;
 
          when N_Case_Statement =>
             declare
@@ -4254,8 +4342,10 @@ package body Gnat2Why.Borrow_Checker is
                --  First alternative
 
                Alt := First_Non_Pragma (Alternatives (Stmt));
+               Object_Scope.Push_Scope;
                Check_List (Statements (Alt));
                Next_Non_Pragma (Alt);
+               Object_Scope.Pop_Scope;
 
                --  Cleanup
 
@@ -4271,8 +4361,10 @@ package body Gnat2Why.Borrow_Checker is
 
                   --  Next alternative
 
+                  Object_Scope.Push_Scope;
                   Check_List (Statements (Alt));
                   Next_Non_Pragma (Alt);
+                  Object_Scope.Pop_Scope;
 
                   --  Merge Current_Perm_Env into New_Env
 
@@ -4357,6 +4449,7 @@ package body Gnat2Why.Borrow_Checker is
             end;
 
          when N_Extended_Return_Statement =>
+            Object_Scope.Push_Scope;
             declare
                Subp      : constant Entity_Id :=
                  Return_Applies_To (Return_Statement_Entity (Stmt));
@@ -4380,7 +4473,8 @@ package body Gnat2Why.Borrow_Checker is
                     Get (Current_Extended_Return_Accumulators, Return_Entity);
                begin
                   if Return_Env /= null then
-                     Merge_Env (Return_Env.all, Current_Perm_Env);
+                     Merge_Env
+                       (Return_Env.all, Current_Perm_Env, Filter => True);
                      Remove
                        (Current_Extended_Return_Accumulators, Return_Entity);
                   end if;
@@ -4423,6 +4517,7 @@ package body Gnat2Why.Borrow_Checker is
 
                Reset_Env (Current_Perm_Env);
             end;
+            Object_Scope.Pop_Scope;
 
          --  On loop exit, merge the current permission environment with the
          --  accumulator for the given loop.
@@ -4475,7 +4570,9 @@ package body Gnat2Why.Borrow_Checker is
 
                --  THEN branch
 
+               Object_Scope.Push_Scope;
                Check_List (Then_Statements (Stmt));
+               Object_Scope.Pop_Scope;
                Move_Env (Current_Perm_Env, New_Env);
 
                --  ELSIF branches
@@ -4490,7 +4587,9 @@ package body Gnat2Why.Borrow_Checker is
 
                      Copy_Env (Saved_Env, Current_Perm_Env);
                      Check_Expression (Condition (Branch), Read);
+                     Object_Scope.Push_Scope;
                      Check_List (Then_Statements (Branch));
+                     Object_Scope.Pop_Scope;
 
                      --  Merge current permission environment
 
@@ -4504,7 +4603,9 @@ package body Gnat2Why.Borrow_Checker is
                --  Restore current permission environment
 
                Copy_Env (Saved_Env, Current_Perm_Env);
+               Object_Scope.Push_Scope;
                Check_List (Else_Statements (Stmt));
+               Object_Scope.Pop_Scope;
 
                --  Merge current permission environment
 
@@ -5384,7 +5485,11 @@ package body Gnat2Why.Borrow_Checker is
    -- Merge_Env --
    ---------------
 
-   procedure Merge_Env (Source : in out Perm_Env; Target : in out Perm_Env) is
+   procedure Merge_Env
+     (Source : in out Perm_Env;
+      Target : in out Perm_Env;
+      Filter : Boolean := False)
+   is
 
       --  Local subprograms
 
@@ -5616,7 +5721,11 @@ package body Gnat2Why.Borrow_Checker is
          pragma Assert (CompTarget /= null);
 
          if CompSource /= null then
-            Merge_Trees (CompTarget, CompSource);
+            if not (Filter and then
+                    Get (Default_Perm_Env, KeyTarget.K) = null)
+            then
+               Merge_Trees (CompTarget, CompSource);
+            end if;
             Remove (Source, KeyTarget.K);
             Free_Tree (CompSource);
          end if;
@@ -5639,7 +5748,11 @@ package body Gnat2Why.Borrow_Checker is
 
             pragma Assert (CompSource /= null);
 
-            if CompTarget /= null then
+            Remove (Source, KeySource.K);
+
+            if Filter and then Get (Default_Perm_Env, KeySource.K) = null then
+               Free_Tree (CompSource);
+            elsif CompTarget /= null then
                Merge_Trees (CompTarget, CompSource);
                Remove (Source, KeySource.K);
                Free_Tree (CompSource);
@@ -5652,6 +5765,75 @@ package body Gnat2Why.Borrow_Checker is
          end loop;
       end;
    end Merge_Env;
+
+   ------------------
+   -- Object_Scope --
+   ------------------
+
+   package body Object_Scope is
+
+      package Index_Vectors is new Ada.Containers.Vectors
+        (Index_Type => Positive, Element_Type => Node_Vectors.Extended_Index);
+
+      Object_Stack  : Node_Vectors.Vector;
+      --  Stack of objects declared in the current scope
+
+      Scoping_Stack : Index_Vectors.Vector;
+      --  Stack to keep the implicit sector delimitation. The stack stores the
+      --  last index of sectors before the current 'open' sector (the one that
+      --  can be extended by Push_Object).
+
+      ----------------------
+      -- Is_Initial_Value --
+      ----------------------
+
+      function Is_Initial_Value return Boolean is
+        (Object_Stack.Is_Empty and then Scoping_Stack.Is_Empty);
+
+      ---------------
+      -- Pop_Scope --
+      ---------------
+
+      procedure Pop_Scope is
+         pragma Assert (not Scoping_Stack.Is_Empty);
+         Index : Node_Vectors.Extended_Index :=
+           Object_Stack.Last_Index;
+         Limit : constant Node_Vectors.Extended_Index :=
+           Scoping_Stack.Last_Element;
+         Total : constant Count_Type := Count_Type (Index - Limit);
+      begin
+         while Index /= Limit loop
+            declare
+               E : constant Entity_Id := Object_Stack.Element (Index);
+            begin
+               Remove (Default_Perm_Env, E);
+               Remove (Current_Perm_Env, E);
+            end;
+            Index := Index - 1;
+         end loop;
+         Object_Stack.Delete_Last (Count => Total);
+         Scoping_Stack.Delete_Last;
+      end Pop_Scope;
+
+      -----------------
+      -- Push_Object --
+      -----------------
+
+      procedure Push_Object (E : Entity_Id) is
+      begin
+         Object_Stack.Append (E);
+      end Push_Object;
+
+      ----------------
+      -- Push_Scope --
+      ----------------
+
+      procedure Push_Scope is
+      begin
+         Scoping_Stack.Append (Object_Stack.Last_Index);
+      end Push_Scope;
+
+   end Object_Scope;
 
    ----------------
    -- Perm_Error --
