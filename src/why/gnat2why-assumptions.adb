@@ -25,7 +25,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers;         use Ada.Containers;
-with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with SPARK_Atree;            use SPARK_Atree;
@@ -45,9 +44,6 @@ package body Gnat2Why.Assumptions is
 
    function Hash_Claim (C : Claim) return Ada.Containers.Hash_Type
    is (Hash_Type (Claim_Kind'Pos (C.Kind)) + 4 * Hash_Type (C.E));
-
-   package Claim_Lists is new
-     Ada.Containers.Doubly_Linked_Lists (Element_Type => Claim);
 
    package Claim_Sets is new
      Ada.Containers.Hashed_Sets
@@ -119,7 +115,7 @@ package body Gnat2Why.Assumptions is
 
    procedure Register_Assumptions_For_Call (Caller, Callee : Entity_Id) is
 
-      procedure Assume_For_Claim (C : Claim; Assume : Claim_Lists.List);
+      procedure Assume_For_Claim (C : Claim; Assume : Claim_Sets.Set);
       --  Both procedures register that the claim C depends on the
       --  assumption(s) provided. Calling these procedures does not mean
       --  that claim C has been established.
@@ -128,7 +124,7 @@ package body Gnat2Why.Assumptions is
       -- Assume_For_Claim --
       ----------------------
 
-      procedure Assume_For_Claim (C : Claim; Assume : Claim_Lists.List) is
+      procedure Assume_For_Claim (C : Claim; Assume : Claim_Sets.Set) is
          Position : Claim_Maps.Cursor;
          Dummy    : Boolean;
 
@@ -137,24 +133,22 @@ package body Gnat2Why.Assumptions is
          Claim_Assumptions.Insert
            (Key => C, Position => Position, Inserted => Dummy);
 
-         for A of Assume loop
-            Claim_Assumptions (Position).Include (A);
-         end loop;
+         Claim_Assumptions (Position).Union (Assume);
       end Assume_For_Claim;
 
-      Assumptions : Claim_Lists.List;
+      Assumptions : Claim_Sets.Set;
 
    begin
-      Assumptions.Append ((Kind => Claim_Effects, E => Callee));
+      Assumptions.Insert ((Kind => Claim_Effects, E => Callee));
 
       Assume_For_Claim
         (C => (Kind => Claim_Effects, E => Caller), Assume => Assumptions);
 
       if Has_Contracts (Callee, Pragma_Postcondition) then
-         Assumptions.Append ((Kind => Claim_Post, E => Callee));
+         Assumptions.Insert ((Kind => Claim_Post, E => Callee));
       end if;
 
-      Assumptions.Append ((Kind => Claim_AoRTE, E => Callee));
+      Assumptions.Insert ((Kind => Claim_AoRTE, E => Callee));
 
       Assume_For_Claim
         (C => (Kind => Claim_Post, E => Caller), Assume => Assumptions);
