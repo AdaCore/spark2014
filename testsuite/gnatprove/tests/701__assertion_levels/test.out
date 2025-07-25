@@ -1,0 +1,96 @@
+main.adb:8:14: warning: subprogram "Test_Precondition" has no effect
+main.adb:12:09: warning: postcondition does not check the outcome of calling "P1" [-gnatw.t]
+main.adb:12:17: info: postcondition proved (CVC5: 2 VC)
+main.adb:13:09: info: data dependencies proved
+main.adb:19:09: info: data dependencies proved
+main.adb:21:07: info: no contextual analysis of "Test_Precondition" (nested subprogram)
+main.adb:23:10: high: precondition might fail (e.g. when X = 101)
+main.adb:28:09: info: data dependencies proved
+main.adb:32:10: high: precondition might fail (e.g. when X = -1)
+main.adb:41:14: warning: subprogram "Test_Postcondition" has no effect
+main.adb:45:25: warning: postcondition does not check the outcome of calling "P1" [-gnatw.t]
+main.adb:46:25: warning: postcondition does not check the outcome of calling "P1" [-gnatw.t]
+main.adb:46:28: medium: postcondition might fail, cannot prove X <= 100 (e.g. when X = 101)
+main.adb:47:09: info: data dependencies proved
+main.adb:53:25: warning: postcondition does not check the outcome of calling "P2" [-gnatw.t]
+main.adb:53:28: high: postcondition might fail (e.g. when X = -1)
+main.adb:54:25: warning: postcondition does not check the outcome of calling "P2" [-gnatw.t]
+main.adb:55:09: info: data dependencies proved
+main.adb:66:17: info: postcondition proved (CVC5: 2 VC)
+main.adb:67:09: info: data dependencies proved
+main.adb:69:07: info: no contextual analysis of "Test_Postcondition" (nested subprogram)
+main.adb:80:14: warning: subprogram "Test_Contract_Cases" has no effect
+main.adb:85:23: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
+main.adb:85:30: warning: contract case does not check the outcome of calling "P1" [-gnatw.t]
+main.adb:85:36: info: contract case proved (Trivial: 2 VC)
+main.adb:86:23: medium: contract case might fail (e.g. when X = 101)
+main.adb:86:30: warning: contract case does not check the outcome of calling "P1" [-gnatw.t]
+main.adb:86:38: info: contract case proved (Trivial: 2 VC)
+main.adb:87:09: info: data dependencies proved
+main.adb:94:23: medium: contract case might fail (e.g. when X = -1)
+main.adb:94:30: warning: contract case does not check the outcome of calling "P2" [-gnatw.t]
+main.adb:94:36: info: contract case proved (Trivial: 2 VC)
+main.adb:95:23: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
+main.adb:95:30: warning: contract case does not check the outcome of calling "P2" [-gnatw.t]
+main.adb:95:38: info: contract case proved (Trivial: 2 VC)
+main.adb:96:09: info: data dependencies proved
+main.adb:109:17: info: postcondition proved (CVC5: 2 VC)
+main.adb:110:09: info: data dependencies proved
+main.adb:112:07: info: no contextual analysis of "Test_Contract_Cases" (nested subprogram)
+main.adb:123:14: warning: subprogram "Test_Predicate" has no effect
+main.adb:125:07: info: no contextual analysis of "Test_Predicate" (subtype declaration with predicate)
+main.adb:130:34: info: initialization of "Y" proved
+main.adb:135:15: medium: predicate check might fail (e.g. when X = 101)
+main.adb:138:34: info: initialization of "Y" proved
+main.adb:143:15: medium: predicate check might fail (e.g. when X = -1)
+main.adb:146:28: warning: unused initial value of "Y"
+main.adb:147:17: info: postcondition proved (CVC5: 2 VC)
+main.adb:160:14: warning: subprogram "Test_Invariant" has no effect
+main.adb:162:07: info: no contextual analysis of "Test_Invariant" (nested package declaration)
+main.adb:165:20: info: for Y at the end of P1 at main.adb:165
+main.adb:165:20: info: invariant check proved (CVC5: 2 VC)
+main.adb:165:37: info: initialization of "Y" proved
+main.adb:168:20: info: for Y at the end of P2 at main.adb:168
+main.adb:168:20: info: invariant check proved (CVC5: 2 VC)
+main.adb:168:37: info: initialization of "Y" proved
+main.adb:171:31: warning: unused initial value of "Y"
+main.adb:172:20: info: postcondition proved (CVC5: 2 VC)
+main.adb:175:15: info: invariant check proved on default value (CVC5: 2 VC)
+main.adb:179:29: info: in default value of private type at main.adb:163
+main.adb:179:29: info: range check proved (CVC5: 2 VC)
+main.adb:186:19: medium: in inlined invariant at main.adb:178
+main.adb:186:19: medium: invariant check might fail, cannot prove T <= 100 (e.g. when X = 101)
+main.adb:191:19: medium: in inlined invariant at main.adb:177
+main.adb:191:19: medium: invariant check might fail, cannot prove T >= 0 (e.g. when X = -1)
+main.adb:206:14: warning: subprogram "Test_DIC" has no effect
+main.adb:208:07: info: no contextual analysis of "Test_DIC" (nested package declaration)
+main.adb:211:25: medium: default initial condition might fail
+main.adb:212:25: info: default initial condition proved (CVC5: 1 VC)
+main.adb:214:19: info: implicit aspect Always_Terminates on "F1" has been proved, subprogram will terminate
+main.adb:215:19: info: implicit aspect Always_Terminates on "F2" has been proved, subprogram will terminate
+main.adb:219:29: info: in default value of private type at main.adb:209
+main.adb:219:29: info: range check proved (CVC5: 2 VC)
+main.adb:228:25: info: default initial condition proved (CVC5: 1 VC)
+main.adb:229:25: medium: default initial condition might fail
+main.adb:231:19: info: implicit aspect Always_Terminates on "F1" has been proved, subprogram will terminate
+main.adb:232:19: info: implicit aspect Always_Terminates on "F2" has been proved, subprogram will terminate
+main.adb:236:29: info: in default value of private type at main.adb:226
+main.adb:236:29: info: range check proved (CVC5: 2 VC)
+main.adb:259:20: info: initialization of "X" proved
+main.adb:260:17: info: postcondition proved (CVC5: 2 VC)
+main.adb:263:10: info: initialization of "Y" proved
+main.adb:274:14: warning: subprogram "Test_Initial_Condition" has no effect
+main.adb:276:07: info: no contextual analysis of "Test_Initial_Condition" (nested package declaration)
+main.adb:277:20: medium: initial condition might fail
+main.adb:278:20: info: initial condition proved (CVC5: 1 VC)
+main.adb:285:20: info: initial condition proved (CVC5: 1 VC)
+main.adb:286:20: medium: initial condition might fail
+main.adb:293:20: info: initial condition proved (CVC5: 1 VC)
+main.adb:294:20: info: initial condition proved (CVC5: 1 VC)
+main.adb:296:10: info: initialization of "X" proved
+main.adb:308:22: info: assertion proved (CVC5: 2 VC)
+main.adb:315:14: warning: subprogram "Subprogram_Variant" has no effect
+main.adb:317:17: warning: subprogram "Do_Smthg" has no effect
+main.adb:321:07: info: no contextual analysis of "Subprogram_Variant" (nested subprogram)
+main.adb:324:13: medium: subprogram variant might fail (e.g. when X = 1 and Y = 1) [possible fix: add or complete related loop invariants or postconditions]
+main.adb:324:28: info: range check proved (CVC5: 2 VC)

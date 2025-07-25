@@ -1396,6 +1396,28 @@ package body Gnat2Why.Borrow_Checker is
                   & " in an assignment to disabled ghost object &",
                   Names => [Expr_Root, Target_Root]),
                Expr);
+
+         elsif not Is_Same_Or_Depends_On_Level
+                     (Ghost_Assertion_Level (Target_Root),
+                      Ghost_Assertion_Level (Expr_Root))
+           or else not Is_Same_Or_Depends_On_Level
+                         (Ghost_Assertion_Level (Expr_Root),
+                          Ghost_Assertion_Level (Target_Root))
+         then
+            BC_Error
+              (Create
+                 ("ghost object & cannot be "
+                  & (case Mode is
+                       when Borrow => "borrowed",
+                       when Move => "moved",
+                       when others => raise Program_Error)
+                  & " in an assignment to ghost object &",
+                  Names => [Expr_Root, Target_Root]),
+               Expr,
+               Continuations =>
+                 [Create
+                    ("& and & should have matching assertion levels",
+                     Names => [Expr_Root, Target_Root])]);
          end if;
       end Check_Assignment_To_Ghost;
 
@@ -4025,6 +4047,24 @@ package body Gnat2Why.Borrow_Checker is
                      & " in a call to disabled ghost subprogram &",
                      Names => [Root, Subp]),
                   Expr.Expr);
+
+            elsif not Is_Same_Or_Depends_On_Level
+                        (Ghost_Assertion_Level (Subp),
+                         Ghost_Assertion_Level (Root))
+              or else not Is_Same_Or_Depends_On_Level
+                            (Ghost_Assertion_Level (Root),
+                             Ghost_Assertion_Level (Subp))
+            then
+               BC_Error
+                 (Create
+                    ("ghost object & cannot be borrowed"
+                     & " in a call to ghost subprogram &",
+                     Names => [Root, Subp]),
+                  Expr.Expr,
+                  Continuations =>
+                    [Create
+                       ("& and & should have matching assertion levels",
+                        Names => [Root, Subp])]);
             end if;
          end;
       end if;

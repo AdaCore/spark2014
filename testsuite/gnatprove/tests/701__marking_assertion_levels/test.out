@@ -1,0 +1,6 @@
+main.adb:11:09: error: multiple subprogram variants on a subprogram is not allowed in SPARK
+main.adb:11:09: error: violation of aspect SPARK_Mode at line 4
+main.adb:15:07: info: no contextual analysis of "Subprogram_Variant" (nested subprogram)
+main.adb:18:13: error: "Do_Smthg" is not allowed in SPARK (due to multiple subprogram variants on a subprogram)
+main.adb:18:13: error: violation of aspect SPARK_Mode at line 4
+gnatprove: error during flow analysis and proof
