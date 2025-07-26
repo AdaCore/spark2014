@@ -33,8 +33,9 @@ package Assumption_Types is
    type Unit_Type is private;
 
    type Base_Sloc is record
-      File : Symbol;
-      Line : Positive;
+      File   : Symbol;
+      Line   : Positive;
+      Column : Positive;
    end record;
 
    Null_Subp : constant Subp_Type;
@@ -79,7 +80,8 @@ package Assumption_Types is
    function To_JSON (S : Subp_Type) return JSON_Value;
    function To_Key (S : Subp_Type) return String;
 
-   function Mk_Base_Sloc (File : String; Line : Positive) return Base_Sloc;
+   function Mk_Base_Sloc
+     (File : String; Line : Positive; Column : Positive) return Base_Sloc;
    function Mk_Subp (Name : String; Sloc : My_Sloc) return Subp_Type;
    --  Build a subp object from its defining components
 

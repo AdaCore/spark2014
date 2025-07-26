@@ -2015,11 +2015,14 @@ package body SPARK_Util is
       begin
          loop
             declare
-               File : constant String := File_Name (Slc);
-               Line : constant Positive :=
+               File   : constant String := File_Name (Slc);
+               Line   : constant Positive :=
                  Positive (Get_Physical_Line_Number (Slc));
+               Column : constant Positive :=
+                 Positive (Get_Column_Number (Slc));
             begin
-               Sloc.Append (Mk_Base_Sloc (File => File, Line => Line));
+               Sloc.Append
+                 (Mk_Base_Sloc (File => File, Line => Line, Column => Column));
             end;
             Slc := Instantiation_Location (Slc);
 
