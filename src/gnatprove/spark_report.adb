@@ -76,6 +76,7 @@ with Ada.Calendar;
 with Ada.Containers;
 with Ada.Command_Line;
 with Ada.Directories;
+with Ada.Exceptions;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Assumptions;           use Assumptions;
@@ -749,7 +750,12 @@ procedure SPARK_Report is
          pragma Unreferenced (Quit);
          Handle_SPARK_File (Item);
       exception
-         when others =>
+         when E : others =>
+            pragma
+              Debug
+                (Ada.Text_IO.Put_Line
+                   (Ada.Text_IO.Standard_Error,
+                    "spark_report: " & Ada.Exceptions.Exception_Message (E)));
             Ada.Text_IO.Put_Line
               (Ada.Text_IO.Standard_Error,
                "spark_report: error when processing file "
