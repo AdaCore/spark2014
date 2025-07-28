@@ -2058,7 +2058,11 @@ package body Configuration is
          ------------------------
 
          procedure Process_Limit_Line (Spec : String) is
-            Regex : constant String := "^[^:]+:[0-9]+(?::[0-9]+:([^:]+))?$";
+            --  Matching sequences of file:line, separated by :
+            --  then optional :column:check suffix.
+            --  (?:...) is a non-capturing group
+            Regex : constant String :=
+              "^[^:]+:[0-9]+(?::[^:]+:[0-9+])*(?::[0-9]+:([^:]+))?$";
             MA    : Match_Array (0 .. 1);
             Kind  : VC_Kind;
             pragma Unreferenced (Kind);
