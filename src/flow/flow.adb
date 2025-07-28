@@ -1728,6 +1728,7 @@ package body Flow is
                      Analysis.Check_Always_Terminates (FA);
                      Analysis.Check_Ghost_Subprogram_Outputs (FA);
                   end if;
+                  Analysis.Check_Ghost_Calls_Policy (FA);
                   Analysis.Check_Ghost_Terminates (FA);
                   Analysis.Find_Input_Only_Used_In_Assertions (FA);
                   Analysis.Find_Illegal_Reads_Of_Proof_Ins (FA);

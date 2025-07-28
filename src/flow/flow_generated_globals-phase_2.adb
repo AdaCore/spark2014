@@ -288,8 +288,9 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Ghost information
    ----------------------------------------------------------------------
 
-   Ghost_Entities : Name_Sets.Set;
-   --  Entities annotated as ghost
+   Checked_Ghost_Entities : Name_Sets.Set;
+   Ignored_Ghost_Entities : Name_Sets.Set;
+   --  Entities annotated as ghost, with policy Check and Ignore, respectively
 
    ----------------------------------------------------------------------
    --  Constant information
@@ -1515,8 +1516,11 @@ package body Flow_Generated_Globals.Phase_2 is
                when EK_Predef_Init_Entities =>
                   Serialize (Initialized_Vars_And_States);
 
-               when EK_Ghost_Entities =>
-                  Serialize (Ghost_Entities);
+               when EK_Checked_Ghost_Entities =>
+                  Serialize (Checked_Ghost_Entities);
+
+               when EK_Ignored_Ghost_Entities =>
+                  Serialize (Ignored_Ghost_Entities);
 
                when EK_CAE_Entities =>
                   Serialize (CAE_Entities);
@@ -1858,6 +1862,14 @@ package body Flow_Generated_Globals.Phase_2 is
       Volatile_Vars.Union (Async_Writers_Vars);
       Volatile_Vars.Union (Effective_Reads_Vars);
       Volatile_Vars.Union (Effective_Writes_Vars);
+
+      --  Check consistenty of ghost policies coming from all the ALI files
+
+      pragma
+        Assert
+          (Name_Sets.Intersection
+             (Checked_Ghost_Entities, Ignored_Ghost_Entities)
+             .Is_Empty);
 
       GG_State_Constituents := True;
 
@@ -3034,8 +3046,21 @@ package body Flow_Generated_Globals.Phase_2 is
    -- GG_Is_Ghost_Entity --
    ------------------------
 
-   function GG_Is_Ghost_Entity (EN : Entity_Name) return Boolean
-   renames Ghost_Entities.Contains;
+   function GG_Is_Ghost_Entity (EN : Entity_Name) return Boolean is
+   begin
+      return
+        Checked_Ghost_Entities.Contains (EN)
+        or else Ignored_Ghost_Entities.Contains (EN);
+   end GG_Is_Ghost_Entity;
+
+   --------------------------------
+   -- GG_Is_Checked_Ghost_Entity --
+   --------------------------------
+
+   function GG_Is_Checked_Ghost_Entity (EN : Entity_Name) return Boolean is
+   begin
+      return Checked_Ghost_Entities.Contains (EN);
+   end GG_Is_Checked_Ghost_Entity;
 
    --------------------
    -- GG_Is_Constant --

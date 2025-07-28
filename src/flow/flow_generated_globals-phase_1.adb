@@ -65,8 +65,11 @@ package body Flow_Generated_Globals.Phase_1 is
    Constants : Node_Sets.Set;
    --  Constants
 
-   Ghost_Entities : Node_Sets.Set;
-   --  Entities marked with a Ghost aspect
+   Checked_Ghost_Entities : Node_Sets.Set;
+   --  Entities marked as Ghost, but with policy Checked
+
+   Ignored_Ghost_Entities : Node_Sets.Set;
+   --  Entities marked as Ghost, but with policy Ignore
 
    CAE_Entities : Node_Sets.Set;
    --  Entities marked with a Constant_After_Elaboration aspect
@@ -320,8 +323,10 @@ package body Flow_Generated_Globals.Phase_1 is
       procedure Process_Ghost (Objects : Node_Sets.Set) is
       begin
          for E of Objects loop
-            if Is_Ghost_Entity (E) then
-               Ghost_Entities.Include (E);
+            if Is_Checked_Ghost_Entity (E) then
+               Checked_Ghost_Entities.Include (E);
+            elsif Is_Ignored_Ghost_Entity (E) then
+               Ignored_Ghost_Entities.Include (E);
             end if;
          end loop;
       end Process_Ghost;
@@ -717,9 +722,15 @@ package body Flow_Generated_Globals.Phase_1 is
          Terminate_GG_Line;
       end if;
 
-      if not Ghost_Entities.Is_Empty then
-         New_GG_Line (EK_Ghost_Entities);
-         Serialize (Ghost_Entities);
+      if not Checked_Ghost_Entities.Is_Empty then
+         New_GG_Line (EK_Checked_Ghost_Entities);
+         Serialize (Checked_Ghost_Entities);
+         Terminate_GG_Line;
+      end if;
+
+      if not Ignored_Ghost_Entities.Is_Empty then
+         New_GG_Line (EK_Ignored_Ghost_Entities);
+         Serialize (Ignored_Ghost_Entities);
          Terminate_GG_Line;
       end if;
 
