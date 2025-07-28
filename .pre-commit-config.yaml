@@ -33,3 +33,16 @@ repos:
         files: '\.opt$'
         language: system
         entry: e3-opt-check
+  - repo: local
+    hooks:
+      - id: check-gnatformat-gnatprove
+        name: Check for Ada formatting in gnatprove project
+        files: ^src/(gnatprove|common)/.*\.ad(b|s)$
+        language: system
+        entry: gnatformat -P gnatprove --no-subprojects
+      - id: check-gnatformat-gnat2why
+        name: Check for Ada formatting in gnat2why project
+        files: ^src/(counterexamples|flow|spark|utils|why)/.*\.ad(b|s)$
+        exclude: ^src/why/xgen/.*
+        language: system
+        entry: gnatformat -P gnat2why/gnat2why --no-subprojects
