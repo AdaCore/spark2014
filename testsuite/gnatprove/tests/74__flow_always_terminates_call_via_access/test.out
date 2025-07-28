@@ -39,7 +39,7 @@ test.adb:63:16: warning: "I" is set by "InferOK" but not used after the call
 test.adb:64:07: info: precondition proved (Trivial: 1 VC)
 test.adb:67:29: info: initialization of "I" proved
 test.adb:70:09: info: pointer dereference check proved (CVC5: 1 VC)
-test.adb:70:09: medium: aspect Always_Terminates on "P_Proc_Access" could be incorrect, call via access-to-subprogram might be nonterminating
+test.adb:70:09: medium: aspect Always_Terminates on "P_Proc_Access" could be incorrect, call via access-to-procedure might be nonterminating
 test.adb:73:14: info: aspect Always_Terminates on "P_Global_OK" has been proved, subprogram will terminate
 test.adb:73:27: info: initialization of "I" proved
 test.adb:75:09: warning: unused assignment

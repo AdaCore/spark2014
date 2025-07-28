@@ -2,7 +2,7 @@ termination_explanations_and_fixes.adb:6:07: medium: aspect Always_Terminates on
 termination_explanations_and_fixes.adb:8:17: info: range check proved (CVC5: 2 VC)
 termination_explanations_and_fixes.adb:18:19: info: pointer dereference check proved (CVC5: 1 VC)
 termination_explanations_and_fixes.adb:29:14: info: pointer dereference check proved (CVC5: 1 VC)
-termination_explanations_and_fixes.adb:29:14: medium: aspect Always_Terminates on "Use_Acc_To_P" could be incorrect, call via access-to-subprogram might be nonterminating
+termination_explanations_and_fixes.adb:29:14: medium: aspect Always_Terminates on "Use_Acc_To_P" could be incorrect, call via access-to-procedure might be nonterminating
 termination_explanations_and_fixes.adb:45:08: medium: aspect Always_Terminates on "Use_Dispatching_F" could be incorrect, dispatching call to "Dispatching_F" might be nonterminating [possible explanation: call could hide recursive calls]
 termination_explanations_and_fixes.adb:50:07: medium: aspect Always_Terminates on "Use_Dispatching_P" could be incorrect, dispatching call to "Dispatching_P" might be nonterminating
 termination_explanations_and_fixes.adb:58:10: medium: implicit aspect Always_Terminates on "F_Rec" could be incorrect, subprogram is recursive [possible fix: annotate "F_Rec" with a Subprogram_Variant aspect]

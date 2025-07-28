@@ -6400,14 +6400,13 @@ package body Flow.Analysis is
 
                      elsif Ekind (SC.E) = E_Subprogram_Type then
 
-                        if not Is_Function_Type (SC.E) then
+                        if Is_Procedure_Type (SC.E) then
                            Proved := False;
                            Error_Msg_Flow
                              (FA       => FA,
                               Msg      =>
                                 Check_Msg
-                                  ("call via "
-                                   & "access-to-subprogram "
+                                  ("call via access-to-procedure "
                                    & "might be nonterminating"),
                               Severity => Medium_Check_Kind,
                               N        => Atr.Error_Location,
@@ -6677,7 +6676,7 @@ package body Flow.Analysis is
                      --  are checked when the access is created.
 
                      if Ekind (SC.E) = E_Subprogram_Type then
-                        if not Is_Function_Type (SC.E) then
+                        if Is_Procedure_Type (SC.E) then
                            Error_Msg_Flow
                              (FA       => FA,
                               Msg      =>

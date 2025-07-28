@@ -1000,7 +1000,7 @@ is
             Element (Translate'Result, K) = Mapping (Element (Source, K))),
      Global => null;
    pragma Annotate (GNATprove, False_Positive,
-                    "call via access-to-subprogram",
+                    "call via access-to-procedure",
                     "function Mapping must always terminate");
 
    procedure Translate
@@ -1014,7 +1014,7 @@ is
             Element (Source, K) = Mapping (To_String (Source)'Old (K))),
      Global => null;
    pragma Annotate (GNATprove, False_Positive,
-                    "call via access-to-subprogram",
+                    "call via access-to-procedure",
                     "function Mapping must always terminate");
 
    --  The Translate function has an analogous effect to the corresponding
