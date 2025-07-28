@@ -39,13 +39,6 @@ palindrom.adb:16:31: info: loop invariant initialization proved (CVC5: 1 VC)
 palindrom.adb:16:31: info: loop invariant preservation proved (CVC5: 1 VC)
 palindrom.adb:16:33: info: overflow check proved (CVC5: 4 VC)
 palindrom.adb:16:63: info: overflow check proved (CVC5: 4 VC)
-counterexample expected for check at palindrom.adb:12
-  trace at palindrom.adb:1 --> Str = (Positive'Last => 'NUL')
-  trace at palindrom.adb:6 --> Length = 1
-  trace at palindrom.adb:7 --> I = Integer'Last
-  trace at palindrom.adb:8 --> J = Integer'Last
-  trace at palindrom.adb:9 --> Stop = Integer'Last
-  trace at palindrom.adb:12 --> I = Integer'Last
 counterexample expected for check at arr_equal.adb:7
   trace at arr_equal.adb:5 --> B = False
   trace at arr_equal.adb:7 --> A = (0 => 42)
@@ -70,6 +63,13 @@ counterexample expected for check at arr_equal.adb:59
   trace at arr_equal.adb:57 --> B = False
   trace at arr_equal.adb:59 --> A = (-6 => 2, 2 => 3, 3 => 3, others => 1) and A'First = -7 and A'Last = 3
   trace at arr_equal.ads:19 --> A = (-6 => 2, 2 => 3, 3 => 3, others => 1) and A'First = -7 and A'Last = 3
+counterexample expected for check at palindrom.adb:12
+  trace at palindrom.adb:1 --> Str = (Positive'Last => 'NUL')
+  trace at palindrom.adb:6 --> Length = 1
+  trace at palindrom.adb:7 --> I = Integer'Last
+  trace at palindrom.adb:8 --> J = Integer'Last
+  trace at palindrom.adb:9 --> Stop = Integer'Last
+  trace at palindrom.adb:12 --> I = Integer'Last
 counterexample expected for check at arr_not_equal.adb:7
   trace at arr_not_equal.adb:5 --> B = False
   trace at arr_not_equal.adb:7 --> A'First = 1 and A'Last = 0

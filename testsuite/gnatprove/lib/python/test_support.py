@@ -242,7 +242,7 @@ def verify_counterexamples():
     # check that marks in source code have a matching counterexample, and
     # display the counterexample when found.
     for f in files:
-        with open(f, "r") as ff:
+        with open(f, "r", encoding="iso-8859-1") as ff:
             for line, linestr in enumerate(ff):
                 line = line + 1  # first line in file is 1, not 0
                 for _mark in re.finditer(is_mark, linestr):
