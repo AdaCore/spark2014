@@ -2457,7 +2457,7 @@ package body SPARK_Definition is
       --  even though a resource leak is certain to occur in that case if
       --  assertions are enabled, and will be reported by GNATprove.
 
-      if In_Assertion_Expression_Pragma (Alloc) then
+      if In_Statically_Leaking_Context (Alloc, Ignore_Non_Exec => False) then
          return True;
       end if;
 
