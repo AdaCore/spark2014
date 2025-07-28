@@ -1,5 +1,3 @@
-pragma Ignore_Pragma (Assertion_Policy);
-
 with SPARK.Containers.Formal.Doubly_Linked_Lists;
 --  with List_pkg;
 

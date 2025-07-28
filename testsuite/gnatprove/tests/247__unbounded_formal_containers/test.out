@@ -1,7 +1,7 @@
 main.adb:11:16: info: implicit aspect Always_Terminates on "Hash" has been proved, subprogram will terminate
 main.adb:13:12: info: data dependencies proved
 main.adb:17:40: info: data dependencies proved
-main.adb:20:28: info: all elements shall fit in index type and be smaller than "Aggr_Capacity" for sequence aggregates at spark-containers-formal-unbounded_doubly_linked_lists.ads:53, in instantiation at main.adb:18
+main.adb:20:28: info: all elements shall fit in index type and be smaller than "Aggr_Capacity" for sequence aggregates at spark-containers-formal-unbounded_doubly_linked_lists.ads:49, in instantiation at main.adb:18
 main.adb:20:28: info: precondition proved (CVC5: 2 VC)
 main.adb:22:22: info: assertion proved (CVC5: 1 VC)
 main.adb:23:22: info: assertion proved (CVC5: 1 VC)
@@ -14,7 +14,7 @@ main.adb:25:22: info: precondition proved (CVC5: 1 VC)
 main.adb:25:34: info: precondition proved (CVC5: 1 VC)
 main.adb:25:43: info: precondition proved (CVC5: 1 VC)
 main.adb:28:60: info: data dependencies proved
-main.adb:31:26: info: keys shall be distinct and all elements shall be smaller than "Aggr_Capacity" for maps aggregates at spark-containers-formal-unbounded_hashed_maps.ads:81, in instantiation at main.adb:29
+main.adb:31:26: info: keys shall be distinct and all elements shall be smaller than "Aggr_Capacity" for maps aggregates at spark-containers-formal-unbounded_hashed_maps.ads:77, in instantiation at main.adb:29
 main.adb:31:26: info: precondition proved (CVC5: 4 VC)
 main.adb:33:22: info: assertion proved (CVC5: 1 VC)
 main.adb:34:22: info: assertion proved (CVC5: 3 VC)
@@ -25,12 +25,12 @@ main.adb:36:22: info: precondition proved (CVC5: 1 VC)
 main.adb:37:22: info: assertion proved (CVC5: 1 VC)
 main.adb:37:22: info: precondition proved (CVC5: 1 VC)
 main.adb:40:60: info: data dependencies proved
-main.adb:43:26: info: elements shall be distinct and shall be smaller than "Aggr_Capacity" for set aggregates at spark-containers-formal-unbounded_hashed_sets.ads:80, in instantiation at main.adb:41
+main.adb:43:26: info: elements shall be distinct and shall be smaller than "Aggr_Capacity" for set aggregates at spark-containers-formal-unbounded_hashed_sets.ads:76, in instantiation at main.adb:41
 main.adb:43:26: info: precondition proved (CVC5: 4 VC)
 main.adb:45:22: info: assertion proved (CVC5: 1 VC)
 main.adb:46:22: info: assertion proved (CVC5: 3 VC)
 main.adb:49:47: info: data dependencies proved
-main.adb:52:26: info: keys shall be distinct and all elements shall be smaller than "Aggr_Capacity" for maps aggregates at spark-containers-formal-unbounded_ordered_maps.ads:80, in instantiation at main.adb:50
+main.adb:52:26: info: keys shall be distinct and all elements shall be smaller than "Aggr_Capacity" for maps aggregates at spark-containers-formal-unbounded_ordered_maps.ads:76, in instantiation at main.adb:50
 main.adb:52:26: info: precondition proved (CVC5: 4 VC)
 main.adb:54:22: info: assertion proved (CVC5: 1 VC)
 main.adb:55:22: info: assertion proved (CVC5: 1 VC)
@@ -52,7 +52,7 @@ main.adb:60:22: info: precondition proved (CVC5: 1 VC)
 main.adb:60:34: info: precondition proved (CVC5: 1 VC)
 main.adb:60:43: info: precondition proved (CVC5: 1 VC)
 main.adb:63:47: info: data dependencies proved
-main.adb:66:26: info: elements shall be distinct and shall be smaller than "Aggr_Capacity" for set aggregates at spark-containers-formal-unbounded_ordered_sets.ads:78, in instantiation at main.adb:64
+main.adb:66:26: info: elements shall be distinct and shall be smaller than "Aggr_Capacity" for set aggregates at spark-containers-formal-unbounded_ordered_sets.ads:76, in instantiation at main.adb:64
 main.adb:66:26: info: precondition proved (CVC5: 4 VC)
 main.adb:68:22: info: assertion proved (CVC5: 1 VC)
 main.adb:69:22: info: assertion proved (CVC5: 1 VC)
@@ -65,7 +65,7 @@ main.adb:71:22: info: precondition proved (CVC5: 1 VC)
 main.adb:71:34: info: precondition proved (CVC5: 1 VC)
 main.adb:71:43: info: precondition proved (CVC5: 1 VC)
 main.adb:74:42: info: data dependencies proved
-main.adb:77:32: info: all elements shall fit in index type and be smaller than "Aggr_Capacity" for sequence aggregates at spark-containers-formal-unbounded_vectors.ads:74, in instantiation at main.adb:75
+main.adb:77:32: info: all elements shall fit in index type and be smaller than "Aggr_Capacity" for sequence aggregates at spark-containers-formal-unbounded_vectors.ads:70, in instantiation at main.adb:75
 main.adb:77:32: info: precondition proved (CVC5: 2 VC)
 main.adb:79:22: info: assertion proved (CVC5: 1 VC)
 main.adb:80:22: info: assertion proved (CVC5: 1 VC)
@@ -74,3 +74,33 @@ main.adb:81:22: info: assertion proved (CVC5: 1 VC)
 main.adb:81:22: info: precondition proved (CVC5: 2 VC)
 main.adb:82:22: info: assertion proved (CVC5: 1 VC)
 main.adb:82:22: info: precondition proved (CVC5: 2 VC)
+main.adb:18:07: warning: check will fail at run time [-gnatw.a]
+main.adb:18:07: warning: check will fail at run time [-gnatw.a]
+main.adb:18:07: warning: in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:206 [-gnatw.a]
+main.adb:18:07: warning: in instantiation at spark-containers-formal-unbounded_doubly_linked_lists.ads:206 [-gnatw.a]
+main.adb:18:07: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
+main.adb:18:07: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
+main.adb:29:07: warning: check will fail at run time [-gnatw.a]
+main.adb:29:07: warning: check will fail at run time [-gnatw.a]
+main.adb:29:07: warning: in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:234 [-gnatw.a]
+main.adb:29:07: warning: in instantiation at spark-containers-formal-unbounded_hashed_maps.ads:234 [-gnatw.a]
+main.adb:29:07: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
+main.adb:29:07: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
+main.adb:41:07: warning: check will fail at run time [-gnatw.a]
+main.adb:41:07: warning: check will fail at run time [-gnatw.a]
+main.adb:41:07: warning: in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:279 [-gnatw.a]
+main.adb:41:07: warning: in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:279 [-gnatw.a]
+main.adb:41:07: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
+main.adb:41:07: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
+main.adb:50:07: warning: check will fail at run time [-gnatw.a]
+main.adb:50:07: warning: check will fail at run time [-gnatw.a]
+main.adb:50:07: warning: in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:256 [-gnatw.a]
+main.adb:50:07: warning: in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:256 [-gnatw.a]
+main.adb:50:07: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
+main.adb:50:07: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
+main.adb:64:07: warning: check will fail at run time [-gnatw.a]
+main.adb:64:07: warning: check will fail at run time [-gnatw.a]
+main.adb:64:07: warning: in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:321 [-gnatw.a]
+main.adb:64:07: warning: in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:321 [-gnatw.a]
+main.adb:64:07: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
+main.adb:64:07: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]

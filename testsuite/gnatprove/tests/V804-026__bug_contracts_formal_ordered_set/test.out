@@ -4,3 +4,9 @@ test.adb:9:13: info: range check proved (CVC5: 2 VC)
 test.adb:11:04: info: precondition proved (CVC5: 2 VC)
 test.adb:12:04: info: precondition proved (CVC5: 2 VC)
 test.adb:14:04: info: precondition proved (CVC5: 1 VC)
+sets.ads:4:03: warning: check will fail at run time [-gnatw.a]
+sets.ads:4:03: warning: check will fail at run time [-gnatw.a]
+sets.ads:4:03: warning: in instantiation at spark-containers-formal-ordered_sets.ads:334 [-gnatw.a]
+sets.ads:4:03: warning: in instantiation at spark-containers-formal-ordered_sets.ads:334 [-gnatw.a]
+sets.ads:4:03: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
+sets.ads:4:03: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
