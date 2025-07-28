@@ -1807,6 +1807,183 @@ to make sure that it matches their expected semantics. In particular,
 ``Is_Valid`` shall return True if and only if its parameter is a representation
 is a valid value of type ``T``.
 
+Dealing with Pointers at the SPARK Boundary
+-------------------------------------------
+
+When interfacing with non-|SPARK| code (full Ada or C for example) it is common
+to have to deal with pointers in the API. Properly handling such interfaces can
+be complex as |SPARK| enforces strong assumptions regarding aliasing and memory
+ownership. Sometimes, the pointers are used to enforce by-reference parameter
+passing. In this case, it can be easier to introduce a wrapper over the
+subprogram to use ``in out`` or ``out`` parameters instead. To ensure that the
+object is passed by reference, the ``aliased`` keyword can be used.
+
+As access types are supported in |SPARK|, it might be possible to keep visible
+pointers in the API. However, users should be careful
+here, as different kinds of access types are associated with different
+assumptions. A comprehensive overview of the kinds of access types and their
+models is provided in
+:ref:`Pointer Support, Ownership, and Dynamic Memory Management`. As an example,
+consider the following API where ``Read_Time_Stamp`` and ``Read_Data`` read
+respectively the ``Time_Stamp`` and ``Data`` components of their parameter while
+``Write_Time_Stamp`` and ``Write_Data`` modify it:
+
+.. code-block:: ada
+
+   package Messages is
+
+      type Message is private;
+
+      function Read_Time_Stamp (M : Message) return Integer;
+      function Read_Data (M : Message) return Big_Array;
+      procedure Write_Time_Stamp (M : in out Message);
+      procedure Write_Data (M : Message);
+      ...
+
+   private
+
+      type Data_Access is access Big_Array;
+
+      type Message is record
+         Time_Stamp : Integer;
+         Data       : Data_Access;
+      end record;
+
+   end Messages;
+
+The fact that ``Data_Access`` is a named, pool specific, access-to-variable
+type, means that |GNATprove| will enforce its strict
+:ref:`Memory Ownership Policy` on it and check reclamation. It will also assume
+that the ``Data`` components of two objects of type ``Message`` necessarily
+designate different memory objects. As a result, for this package to
+be compatible with |SPARK|, it is necessary to ensure that the API cannot create
+two messages with a shared ``Data`` component. In particular, a function
+returning an object of type ``Message`` will be considered to return a fresh,
+distinct object each time it is called. In addition, as ``Message`` is
+not itself an access type, parameters of mode ``in`` are considered to be
+entirely constant. Thus, the signature of ``Write_Data`` needs to be
+updated to account for the modification of the memory object designated by
+``M.Data``:
+
+.. code-block:: ada
+
+   procedure Write_Data (M : in out Message);
+
+In more complex use cases, pointers can be hidden from analysis
+behind a private type whose full view is not visible in |SPARK| using pragma or
+aspect ``SPARK_Mode``, see :ref:`Identifying SPARK Code`. If this is done, care
+should be taken to avoid breaking the assumption made by |GNATprove| on the rest
+of the program (see :ref:`Managing Assumptions`), with respect to ownership and
+parameter modes. If the pointers all designate constant data, then nothing
+more is necessary, provided there is no need to reclaim the
+allocated memory. Otherwise, potential aliases that could be visible from the
+|SPARK| part of the program should be accounted for. There are two
+possibilities: either non-aliasing should be inforced between objects or the
+memory accessible should to be modeled as a shared global state.
+
+The shared global solution is simpler to put in place and enforces less
+constraints, both on the non-|SPARK| API and on usage of the private type in
+|SPARK| code. However, the analysis results will be less precise as all writes
+access to a private object will affect the same global state and therefore
+potentially affect all read objects.
+
+The behavior of the API can be modeled usaging an abstract state ``Data_State``
+that represents the values designated by all objects of type ``Message``. It is
+modified by subprograms that write the ``Data`` component of a message, like
+``Write_Data``, and read by subprograms that access this component:
+
+.. code-block:: ada
+
+   package Messages with Abstract_State => Data_State is
+
+      type Message is private;
+
+      function Read_Time_Stamp (M : Message) return Integer with
+        Global => null;
+      function Read_Data (M : Message) return Big_Array with
+        Global => Data_State;
+      procedure Write_Time_Stamp (M : in out Message) with
+        Global => null;
+      procedure Write_Data (M : Message) with
+        Global => (In_Out => Data_State);
+      ...
+
+   private
+      pragma SPARK_Mode (Off);
+
+      type Data_Access is access Big_Array;
+
+      type Message is record
+         Time_Stamp : Integer;
+         Data       : Data_Access;
+      end record;
+
+   end Messages;
+
+This model is accurate regardless of whether the ``Data`` components of
+different objects might actually designate the same object in memory. However,
+it is imprecise, as calling ``Write_Data`` on a message will be considered to
+potentially affect the result of ``Read_Data`` on all messages.
+
+To be more precise, it is necessary to enforce non-aliasing between the objects
+that are visible form the |SPARK| part of the program. More precisely, modifying
+an object should not affect other objects. This property should be enforced by
+the API itself. In general, it means that it should not allow creating two
+objects that contain pointers to a single mutable object in memory. The property
+should also be preserved by |SPARK| code, which may require restraining copies
+if the object contains a pointer. This can be achieved either by making the type
+limited or by using an
+:ref:`Annotation for Enforcing Ownership Checking on a Private Type`. In this
+model, |GNATprove| effectively considers data accessible through a pointer from
+the object to be a part of the object. As a result, it might be necessary to
+change the mode of parameters or global dependencies for subprograms that
+write memory accessible through such a pointer. Indeed, the designated data
+is considered to be part of the object, so the modes should reflect the
+subprogram's effect on it accordingly. Here is how this solution could be used
+on our example. Note the the mode of the parameter of procedure ``Write_Data``
+has been changed to ``in out`` to model its write effect on the memory
+accessible from its ``Data`` field:
+
+.. code-block:: ada
+
+   package Messages is
+
+      type Message is private with
+         Annotate => (GNATprove, Ownership);
+
+      function Read_Time_Stamp (M : Message) return Integer with
+        Global => null;
+      function Read_Data (M : Message) return Big_Array with
+        Global => null;
+      procedure Write_Time_Stamp (M : in out Message) with
+        Global => null;
+      procedure Write_Data (M : in out Message) with
+        Global => null;
+      ...
+
+   private
+      pragma SPARK_Mode (Off);
+
+      type Data_Access is access Big_Array;
+
+      type Message is record
+         Time_Stamp : Integer;
+         Data       : Data_Access;
+      end record;
+
+   end Messages;
+
+This solution is only valid if the API of ``Messages`` cannot be used to
+create two different objects whose ``Data`` component designate the same
+memory object. In addition, it is more constraining on the user side, as
+messages are subject to the strict :ref:`Memory Ownership Policy` of |SPARK| to
+ensure :ref:`Absence of Interferences`. Compared to the previous alternative,
+it has the advantage of being more precise: all messages are considered to
+be distinct objects, so |GNATprove| will know that calling ``Write_Data`` on a
+message cannot affect the result of ``Read_Data`` on other messages. The
+ownership annotation also makes it possible to use the tool to prove reclamation
+if it is of interest.
+
 Pointer-Based Data Structures
 -----------------------------
 
@@ -1873,7 +2050,7 @@ assumption made by the tool on the rest of the program (see
 :ref:`Memory Ownership Policy` and more generally
 :ref:`Absence of Interferences`. In particular, if the underlying data structure
 uses pointers, it might be necessary to prevent the introduction of aliases
-through copies either by making the type limited of by using an
+through copies either by making the type limited or by using an
 :ref:`Annotation for Enforcing Ownership Checking on a Private Type`, unless
 memory management is taken care off internally - through controlled types for
 example.
