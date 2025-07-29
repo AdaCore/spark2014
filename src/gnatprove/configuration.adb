@@ -1564,6 +1564,10 @@ package body Configuration is
       --  Load the project file; This function requires the project file to be
       --  present.
 
+      procedure Parse_Proof_Switches (Com_Lin : String_List);
+      --  Parse the Switches and Proof_Switches attributes in project files.
+      --  The regular command line is needed to interpret them properly.
+
       procedure Postprocess;
       --  Read the switch variables set by command-line parsing and set the
       --  gnatprove variables.
@@ -1836,6 +1840,131 @@ package body Configuration is
             return null;
          end if;
       end List_From_Attr;
+
+      --------------------------
+      -- Parse_Proof_Switches --
+      --------------------------
+
+      procedure Parse_Proof_Switches (Com_Lin : String_List) is
+
+         function Concat3
+           (A, B : String_List_Access; C : String_List) return String_List;
+
+         function Concat4
+           (A, B, C : String_List_Access; D : String_List) return String_List;
+
+         procedure Reset_File_Specific_Switches;
+         --  Reset file-specific switches between parsing of the full
+         --  command-line for each file.
+
+         -------------
+         -- Concat3 --
+         -------------
+
+         function Concat3
+           (A, B : String_List_Access; C : String_List) return String_List is
+         begin
+            return
+              (if A = null then [] else A.all)
+              & (if B = null then [] else B.all)
+              & C;
+         end Concat3;
+
+         -------------
+         -- Concat4 --
+         -------------
+
+         function Concat4
+           (A, B, C : String_List_Access; D : String_List) return String_List
+         is
+         begin
+            return
+              (if A = null then [] else A.all)
+              & (if B = null then [] else B.all)
+              & (if C = null then [] else C.all)
+              & D;
+         end Concat4;
+
+         ----------------------------------
+         -- Reset_File_Specific_Switches --
+         ----------------------------------
+
+         procedure Reset_File_Specific_Switches is
+         begin
+            CL_Switches.Steps := Invalid_Steps;
+            CL_Switches.CE_Steps := Invalid_Steps;
+            CL_Switches.Timeout := null;
+            CL_Switches.Memlimit := 0;
+            CL_Switches.Proof := null;
+            CL_Switches.Prover := null;
+            CL_Switches.Level := Invalid_Level;
+            CL_Switches.Counterexamples := null;
+            CL_Switches.No_Inlining := False;
+            CL_Switches.Mode := null;
+            CL_Switches.No_Loop_Unrolling := False;
+            CL_Switches.Proof_Warnings := null;
+            CL_Switches.Proof_Warn_Timeout := Invalid_Timeout;
+         end Reset_File_Specific_Switches;
+
+         FS                 : File_Specific;
+         Prove_Switches     : constant String_List_Access :=
+           List_From_Attr
+             (Tree.Root_Project.Attribute ((+"Prove", +"Switches")));
+         Proof_Switches_Ada : constant String_List_Access :=
+           List_From_Attr
+             (Tree.Root_Project.Attribute
+                ((+"Prove", +"Proof_Switches"),
+                 Index => GPR2.Project.Attribute_Index.Create ("Ada")));
+         Parsed_Cmdline     : constant String_List :=
+           Concat3 (Prove_Switches, Proof_Switches_Ada, Com_Lin);
+
+      begin
+         --  parse all switches that apply to all files, concatenated in the
+         --  right order (most important is last).
+
+         Parse_Switches (All_Switches, Parsed_Cmdline);
+         Postprocess;
+         File_Specific_Postprocess (FS);
+         File_Specific_Map.Insert ("Ada", FS);
+
+         for Attr of
+           Tree.Root_Project.Attributes ((+"Prove", +"Proof_Switches"))
+         loop
+            if Attr.Index.Text not in "Ada" | "ada" then
+               Check_File_Part_Of_Project (Tree.Root_Project, Attr.Index.Text);
+               declare
+                  FS             : File_Specific;
+                  FS_Switches    : constant String_List_Access :=
+                    List_From_Attr (Attr);
+                  Parsed_Cmdline : constant String_List :=
+                    Concat4
+                      (Prove_Switches,
+                       Proof_Switches_Ada,
+                       FS_Switches,
+                       Com_Lin);
+               begin
+                  if FS_Switches /= null then
+
+                     --  parse the file switches to check if they contain
+                     --  invalid switches; this is for error reporting only.
+
+                     Parse_Switches (File_Specific_Only, FS_Switches.all);
+                  end if;
+
+                  --  parse all switches that apply to a single file,
+                  --  *including* the global switches. File-specific
+                  --  switches are more important than the other switches
+                  --  in the project file, but less so than the command
+                  --  line switches.
+
+                  Reset_File_Specific_Switches;
+                  Parse_Switches (All_Switches, Parsed_Cmdline);
+                  File_Specific_Postprocess (FS);
+                  File_Specific_Map.Insert (Attr.Index.Text, FS);
+               end;
+            end if;
+         end loop;
+      end Parse_Proof_Switches;
 
       -----------------
       -- Postprocess --
@@ -2742,172 +2871,50 @@ package body Configuration is
          end;
       end if;
 
+      Parse_Proof_Switches (Com_Lin);
+
+      --  Release copies of command line arguments; they were already parsed
+      --  twice and are no longer needed.
+      Free (Com_Lin);
+
+      --  Setting the socket name used by the why3server. This name has
+      --  to comply to several constraints:
+      --
+      --  - It has to be unique for each project. This is because we want to
+      --    allow simultaneous gnatprove runs on different projects, and on
+      --    Windows, sockets/named pipes live in a global name space.
+      --
+      --  - It should be the same for each invocation of gnatprove of a
+      --    given project. This is because we pass the socket name to
+      --    gnatwhy3 via gnat2why command line (via Gnat2why_Args more
+      --    precisely). If the command line changed on every invocation of
+      --    gnatprove, gprbuild would rerun gnat2why even when not
+      --    necessary.
+      --
+      --  What we have come up with until now is a hash of the project file
+      --  name (full path).
+
       declare
-         function Concat3
-           (A, B : String_List_Access; C : String_List) return String_List;
-
-         function Concat4
-           (A, B, C : String_List_Access; D : String_List) return String_List;
-
-         procedure Reset_File_Specific_Switches;
-         --  Reset file-specific switches between parsing of the full
-         --  command-line for each file.
-
-         -------------
-         -- Concat3 --
-         -------------
-
-         function Concat3
-           (A, B : String_List_Access; C : String_List) return String_List is
-         begin
-            return
-              (if A = null then [] else A.all)
-              & (if B = null then [] else B.all)
-              & C;
-         end Concat3;
-
-         -------------
-         -- Concat4 --
-         -------------
-
-         function Concat4
-           (A, B, C : String_List_Access; D : String_List) return String_List
-         is
-         begin
-            return
-              (if A = null then [] else A.all)
-              & (if B = null then [] else B.all)
-              & (if C = null then [] else C.all)
-              & D;
-         end Concat4;
-
-         ----------------------------------
-         -- Reset_File_Specific_Switches --
-         ----------------------------------
-
-         procedure Reset_File_Specific_Switches is
-         begin
-            CL_Switches.Steps := Invalid_Steps;
-            CL_Switches.CE_Steps := Invalid_Steps;
-            CL_Switches.Timeout := null;
-            CL_Switches.Memlimit := 0;
-            CL_Switches.Proof := null;
-            CL_Switches.Prover := null;
-            CL_Switches.Level := Invalid_Level;
-            CL_Switches.Counterexamples := null;
-            CL_Switches.No_Inlining := False;
-            CL_Switches.Mode := null;
-            CL_Switches.No_Loop_Unrolling := False;
-            CL_Switches.Proof_Warnings := null;
-            CL_Switches.Proof_Warn_Timeout := Invalid_Timeout;
-         end Reset_File_Specific_Switches;
-
+         PID_String  : constant String := Integer'Image (Get_Process_Id);
+         Socket_Dir  : constant String := Compute_Socket_Dir (Tree);
+         Socket_Base : constant String :=
+           "why3server_"
+           & PID_String (PID_String'First + 1 .. PID_String'Last)
+           & ".sock";
       begin
-
-         declare
-            FS                 : File_Specific;
-            Prove_Switches     : constant String_List_Access :=
-              List_From_Attr
-                (Tree.Root_Project.Attribute ((+"Prove", +"Switches")));
-            Proof_Switches_Ada : constant String_List_Access :=
-              List_From_Attr
-                (Tree.Root_Project.Attribute
-                   ((+"Prove", +"Proof_Switches"),
-                    Index => GPR2.Project.Attribute_Index.Create ("Ada")));
-            Parsed_Cmdline     : constant String_List :=
-              Concat3 (Prove_Switches, Proof_Switches_Ada, Com_Lin);
-         begin
-            --  parse all switches that apply to all files, concatenated in the
-            --  right order (most important is last).
-
-            Parse_Switches (All_Switches, Parsed_Cmdline);
-            Postprocess;
-            File_Specific_Postprocess (FS);
-            File_Specific_Map.Insert ("Ada", FS);
-
-            for Attr of
-              Tree.Root_Project.Attributes ((+"Prove", +"Proof_Switches"))
-            loop
-               if Attr.Index.Text not in "Ada" | "ada" then
-                  Check_File_Part_Of_Project
-                    (Tree.Root_Project, Attr.Index.Text);
-                  declare
-                     FS             : File_Specific;
-                     FS_Switches    : constant String_List_Access :=
-                       List_From_Attr (Attr);
-                     Parsed_Cmdline : constant String_List :=
-                       Concat4
-                         (Prove_Switches,
-                          Proof_Switches_Ada,
-                          FS_Switches,
-                          Com_Lin);
-                  begin
-                     if FS_Switches /= null then
-
-                        --  parse the file switches to check if they contain
-                        --  invalid switches; this is for error reporting only.
-
-                        Parse_Switches (File_Specific_Only, FS_Switches.all);
-                     end if;
-
-                     --  parse all switches that apply to a single file,
-                     --  *including* the global switches. File-specific
-                     --  switches are more important than the other switches
-                     --  in the project file, but less so than the command
-                     --  line switches.
-
-                     Reset_File_Specific_Switches;
-                     Parse_Switches (All_Switches, Parsed_Cmdline);
-                     File_Specific_Postprocess (FS);
-                     File_Specific_Map.Insert (Attr.Index.Text, FS);
-                  end;
-               end if;
-            end loop;
-         end;
-
-         --  Release copies of command line arguments; they were already parsed
-         --  twice and are no longer needed.
-         Free (Com_Lin);
-
-         --  Setting the socket name used by the why3server. This name has
-         --  to comply to several constraints:
-         --
-         --  - It has to be unique for each project. This is because we want to
-         --    allow simultaneous gnatprove runs on different projects, and on
-         --    Windows, sockets/named pipes live in a global name space.
-         --
-         --  - It should be the same for each invocation of gnatprove of a
-         --    given project. This is because we pass the socket name to
-         --    gnatwhy3 via gnat2why command line (via Gnat2why_Args more
-         --    precisely). If the command line changed on every invocation of
-         --    gnatprove, gprbuild would rerun gnat2why even when not
-         --    necessary.
-         --
-         --  What we have come up with until now is a hash of the project file
-         --  name (full path).
-
-         declare
-            PID_String  : constant String := Integer'Image (Get_Process_Id);
-            Socket_Dir  : constant String := Compute_Socket_Dir (Tree);
-            Socket_Base : constant String :=
-              "why3server_"
-              & PID_String (PID_String'First + 1 .. PID_String'Last)
-              & ".sock";
-         begin
-            Socket_Name :=
-              new String'
-                ((if Socket_Dir = ""
-                  then Socket_Base
-                  else Ada.Directories.Compose (Socket_Dir, Socket_Base)));
-            if Is_Coq_Prover (File_Specific_Map ("Ada")) then
-               Prepare_Prover_Lib
-                 (Tree
-                    .Root_Project
-                    .Object_Directory
-                    .Virtual_File
-                    .Display_Full_Name);
-            end if;
-         end;
+         Socket_Name :=
+           new String'
+             ((if Socket_Dir = ""
+               then Socket_Base
+               else Ada.Directories.Compose (Socket_Dir, Socket_Base)));
+         if Is_Coq_Prover (File_Specific_Map ("Ada")) then
+            Prepare_Prover_Lib
+              (Tree
+                 .Root_Project
+                 .Object_Directory
+                 .Virtual_File
+                 .Display_Full_Name);
+         end if;
       end;
 
       Sanitize_File_List (Tree);
