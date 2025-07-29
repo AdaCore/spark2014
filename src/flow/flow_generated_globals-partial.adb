@@ -715,7 +715,6 @@ package body Flow_Generated_Globals.Partial is
                         else Etype (Left_Opnd (N)));
                   begin
                      if Calls_Dispatching_Equality (N) then
-                        Contr.Nonreturning := True;
                         Process_Indirect_Dispatching_Equality
                           (Typ, Contr.Proof_Dependencies);
                      else
