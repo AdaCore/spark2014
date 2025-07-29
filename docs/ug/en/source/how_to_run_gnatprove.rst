@@ -707,6 +707,19 @@ screenshot which shows how symbols like :code:`=>` (arrow) or :code:`>=`
 
 .. image:: /static/firacode.png
 
+If on top of |GNATprove|, GNATtest is available on your PATH, additional operations
+for checks will appear in the Locations tab, under :menuselection:`SPARK`.
+These features require you to setup GNATtest's test generation feature as specified
+in the `GNATtest documentation <https://docs.adacore.com/live/wave/gnatdas/html/gnatdas_ug/gnattest/gnattest_part.html#setting-up-the-test-generation-runtime>`_.
+
+.. csv-table::
+   :header: "Submenu", "Action"
+   :widths: 1, 4
+
+   "Generate Executable Test",   "This runs GNATtest using the counter example for the current check as input if it exists, in order to generate an executable test case."
+   "Generate Counter Examples", "This runs GNATtest on the current check to generate a ``.ce`` file containing counter example candidates."
+   "Fuzz Counter Examples",      "Same as above, but uses GNATfuzz as a value generator. This requires GNATfuzz to be on your PATH."
+
 .. index:: Visual Studio Code
 
 Running GNATprove from Visual Studio Code
