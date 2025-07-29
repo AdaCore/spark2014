@@ -1380,6 +1380,16 @@ package SPARK_Util is
       end record;
    end Exception_Sets;
 
+   function Is_Ghost_With_Respect_To_Context (Call : N_Call_Id) return Boolean
+   with
+     Pre =>
+       (if Nkind (Call) = N_Function_Call
+        then Is_Function_Call_With_Side_Effects (Call));
+   --  Detect if a call with side effects is ghost respectively to the
+   --  enclosing calling context (the assertion level associated to the call
+   --  depends on the assertion level of the calling subprogram). In
+   --  particular, exceptions do not escape such calls.
+
    function Has_Exceptional_Contract (E : Entity_Id) return Boolean;
    --  Return True if E has an exceptional contract with cases which are not
    --  all statically False.

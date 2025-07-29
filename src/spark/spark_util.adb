@@ -1478,18 +1478,12 @@ package body SPARK_Util is
 
    procedure Collect_Reachable_Handlers (Call_Or_Stmt : Node_Id) is
 
-      function Is_Body (N : Node_Id) return Boolean
-      is (Nkind (N) in N_Entity_Body);
-
-      function Enclosing_Body is new First_Parent_With_Property (Is_Body);
-
-      Stmt    : constant Node_Id :=
+      Scop    : Node_Id :=
         (if Nkind (Call_Or_Stmt) = N_Function_Call
          then
            Enclosing_Statement_Of_Call_To_Function_With_Side_Effects
              (Call_Or_Stmt)
          else Call_Or_Stmt);
-      Scop    : Node_Id := Stmt;
       Prev    : Node_Id;
       Exc_Set : Exception_Sets.Set :=
         Get_Raised_Exceptions (Call_Or_Stmt, Only_Handled => False);
@@ -1500,20 +1494,11 @@ package body SPARK_Util is
       --  Ghost function and procedure calls shall never propagate exceptions
       --  to non-ghost code.
 
-      if Is_Ghost_Assignment (Stmt)
-        or else Is_Ghost_Declaration (Stmt)
-        or else Is_Ghost_Procedure_Call (Stmt)
+      if Call_Or_Stmt in N_Call_Id
+        and then Is_Ghost_With_Respect_To_Context (Call_Or_Stmt)
       then
-         declare
-            Caller : constant Entity_Id :=
-              Unique_Defining_Entity (Enclosing_Body (Stmt));
-         begin
-            if not Is_Ghost_Entity (Caller) then
-               Raise_To_Handlers_Map.Insert
-                 (Call_Or_Stmt, Node_Lists.Empty_List);
-               return;
-            end if;
-         end;
+         Raise_To_Handlers_Map.Insert (Call_Or_Stmt, Node_Lists.Empty_List);
+         return;
       end if;
 
       --  Go up the parent chain to collect all the potentially reachable
@@ -2705,18 +2690,12 @@ package body SPARK_Util is
    function Get_Handled_Exceptions
      (Call_Or_Stmt : Node_Id) return Exception_Sets.Set
    is
-      function Is_Body (N : Node_Id) return Boolean
-      is (Nkind (N) in N_Entity_Body);
-
-      function Enclosing_Body is new First_Parent_With_Property (Is_Body);
-
-      Stmt   : constant Node_Id :=
+      Scop   : Node_Id :=
         (if Nkind (Call_Or_Stmt) = N_Function_Call
          then
            Enclosing_Statement_Of_Call_To_Function_With_Side_Effects
              (Call_Or_Stmt)
          else Call_Or_Stmt);
-      Scop   : Node_Id := Stmt;
       Prev   : Node_Id;
       Result : Exception_Sets.Set := Exception_Sets.Empty_Set;
 
@@ -2724,18 +2703,10 @@ package body SPARK_Util is
       --  Ghost function and procedure calls shall never propagate exceptions
       --  to non-ghost code.
 
-      if Is_Ghost_Assignment (Stmt)
-        or else Is_Ghost_Declaration (Stmt)
-        or else Is_Ghost_Procedure_Call (Stmt)
+      if Call_Or_Stmt not in N_Call_Id
+        or else not Is_Ghost_With_Respect_To_Context (Call_Or_Stmt)
       then
-         declare
-            Caller : constant Entity_Id :=
-              Unique_Defining_Entity (Enclosing_Body (Stmt));
-         begin
-            if not Is_Ghost_Entity (Caller) then
-               return Result;
-            end if;
-         end;
+         return Result;
       end if;
 
       --  Traverse all the enclosing handlers and collect the handled
@@ -3851,6 +3822,38 @@ package body SPARK_Util is
    function Is_Function_Call_With_Side_Effects (N : Node_Id) return Boolean
    is (Nkind (N) = N_Function_Call
        and then Is_Function_With_Side_Effects (Get_Called_Entity (N)));
+
+   --------------------------------------
+   -- Is_Ghost_With_Respect_To_Context --
+   --------------------------------------
+
+   function Is_Ghost_With_Respect_To_Context (Call : N_Call_Id) return Boolean
+   is
+
+      function Is_Body (N : Node_Id) return Boolean
+      is (Nkind (N) in N_Entity_Body);
+
+      function Enclosing_Body is new First_Parent_With_Property (Is_Body);
+
+      Stmt : constant Node_Id :=
+        (if Nkind (Call) = N_Function_Call
+         then Enclosing_Statement_Of_Call_To_Function_With_Side_Effects (Call)
+         else Call);
+   begin
+      if Is_Ghost_Assignment (Stmt)
+        or else Is_Ghost_Declaration (Stmt)
+        or else Is_Ghost_Procedure_Call (Stmt)
+      then
+         declare
+            Caller : constant Entity_Id :=
+              Unique_Defining_Entity (Enclosing_Body (Stmt));
+         begin
+            return not Is_Ghost_Entity (Caller);
+         end;
+      else
+         return False;
+      end if;
+   end Is_Ghost_With_Respect_To_Context;
 
    ----------------------
    -- Is_Global_Entity --
@@ -6134,21 +6137,9 @@ package body SPARK_Util is
 
          --  Ghost function and procedure calls shall never exit the program
 
-         declare
-            Stmt : constant Node_Id :=
-              (if Nkind (Call) = N_Function_Call
-               then
-                 Enclosing_Statement_Of_Call_To_Function_With_Side_Effects
-                   (Call)
-               else Call);
-         begin
-            if Is_Ghost_Assignment (Stmt)
-              or else Is_Ghost_Declaration (Stmt)
-              or else Is_Ghost_Procedure_Call (Stmt)
-            then
-               return False;
-            end if;
-         end;
+         if Is_Ghost_With_Respect_To_Context (Call) then
+            return False;
+         end if;
 
          --  A call to a function annotated with Program_Exit might exit the
          --  program if it is located directly inside a subprogram annotated
