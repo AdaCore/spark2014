@@ -361,7 +361,7 @@ package Configuration is
    function To_String (P : Proof_Mode) return String;
    --  transform the proof mode into a string for gnatwhy3 command line option
 
-   function Prover_List (Source_File : String) return String;
+   function Prover_List return String;
    function Prover_List (FS : File_Specific) return String;
 
    function Artifact_Dir (Tree : GPR2.Project.Tree.Object) return Virtual_File;

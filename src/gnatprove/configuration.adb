@@ -1549,9 +1549,9 @@ package body Configuration is
       return To_String (Buf);
    end Prover_List;
 
-   function Prover_List (Source_File : String) return String is
+   function Prover_List return String is
    begin
-      return Prover_List (File_Specific_Map (Source_File));
+      return Prover_List (File_Specific_Map ("Ada"));
    end Prover_List;
 
    -----------------------
@@ -3061,7 +3061,7 @@ package body Configuration is
             then
               [1 => new String'("--prepare-shared"),
                2 => new String'("--prover"),
-               3 => new String'(Prover_List ("Ada")),
+               3 => new String'(Prover_List),
                4 => new String'("--proof-dir"),
                5 => new String'(Proof_Dir.all),
                6 => new String'("--why3-conf"),
@@ -3069,7 +3069,7 @@ package body Configuration is
             else
               [1 => new String'("--prepare-shared"),
                2 => new String'("--prover"),
-               3 => new String'(Prover_List ("Ada")),
+               3 => new String'(Prover_List),
                4 => new String'("--proof-dir"),
                5 => new String'(Proof_Dir.all)]);
          Res      : Boolean;
