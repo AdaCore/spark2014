@@ -5229,15 +5229,28 @@ package body SPARK_Util is
          --  Exception-raising constructs. Exit all scopes until all potential
          --  exceptions have been handled.
 
-         when N_Subprogram_Call | N_Entry_Call_Statement | N_Raise_Statement =>
+         when N_Raise_Statement =>
             Main_Iteration
-              ((if Nkind (Source) = N_Function_Call
-                then
-                  Enclosing_Statement_Of_Call_To_Function_With_Side_Effects
-                    (Source)
-                else Source),
+              (Source,
                Exception_Sources =>
                  Get_Raised_Exceptions (Source, Only_Handled => False));
+
+         --  For ghost calls in non-ghost context, exceptions are not
+         --  propagated.
+
+         when N_Subprogram_Call | N_Entry_Call_Statement =>
+            if Is_Ghost_With_Respect_To_Context (Source) then
+               return;
+            else
+               Main_Iteration
+                 ((if Nkind (Source) = N_Function_Call
+                   then
+                     Enclosing_Statement_Of_Call_To_Function_With_Side_Effects
+                       (Source)
+                   else Source),
+                  Exception_Sources =>
+                    Get_Raised_Exceptions (Source, Only_Handled => False));
+            end if;
 
          when others =>
             raise Program_Error;
