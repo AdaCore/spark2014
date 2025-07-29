@@ -1478,138 +1478,74 @@ package body SPARK_Util is
 
    procedure Collect_Reachable_Handlers (Call_Or_Stmt : Node_Id) is
 
-      Scop    : Node_Id :=
-        (if Nkind (Call_Or_Stmt) = N_Function_Call
-         then
-           Enclosing_Statement_Of_Call_To_Function_With_Side_Effects
-             (Call_Or_Stmt)
-         else Call_Or_Stmt);
-      Prev    : Node_Id;
-      Exc_Set : Exception_Sets.Set :=
-        Get_Raised_Exceptions (Call_Or_Stmt, Only_Handled => False);
-
       Handlers : Node_Lists.List;
+      --  Result list
 
-   begin
-      --  Ghost function and procedure calls shall never propagate exceptions
-      --  to non-ghost code.
+      procedure Collect_Handler
+        (Destination : Node_Id;
+         Exc_Set     : Exception_Sets.Set;
+         Is_Continue : Boolean);
+      --  Collect potential handler/entity body
 
-      if Call_Or_Stmt in N_Call_Id
-        and then Is_Ghost_With_Respect_To_Context (Call_Or_Stmt)
-      then
-         Raise_To_Handlers_Map.Insert (Call_Or_Stmt, Node_Lists.Empty_List);
-         return;
-      end if;
+      procedure Do_Nothing (Scop : Node_Id) is null;
+      procedure Collect_All is new
+        Iter_Exited_Scopes (Process => Do_Nothing, Stop => Collect_Handler);
 
-      --  Go up the parent chain to collect all the potentially reachable
-      --  handlers. Stop when Exc_Set is empty or the enclosing body is
-      --  reached.
+      ---------------------
+      -- Collect_Handler --
+      ---------------------
 
-      if not Exc_Set.Is_Empty then
-         Outer :
-         loop
-            --  If we are inside a handler, skip the enclosing handled sequence
-            --  of statements.
+      procedure Collect_Handler
+        (Destination : Node_Id;
+         Exc_Set     : Exception_Sets.Set;
+         Is_Continue : Boolean)
+      is
+         pragma Unreferenced (Is_Continue);
+      begin
+         if Nkind (Destination) = N_Exception_Handler then
+            pragma Assert (not Exc_Set.Is_Empty);
+            Handlers.Append (Destination);
 
-            if Nkind (Scop) = N_Exception_Handler then
-               Scop := Parent (Scop);
-            end if;
-            Prev := Scop;
-            Scop := Parent (Scop);
+            --  Also store the set of reachable exceptions in the
+            --  Raised_Exceptions map.
 
-            case Nkind (Scop) is
+            declare
+               Position : Node_To_Exceptions.Cursor;
+               Inserted : Boolean;
+            begin
+               Raised_Exceptions.Insert
+                 (Destination,
+                  (Exc_Set, Is_Blocked => False),
+                  Position,
+                  Inserted);
 
-               --  Stop the search if a body is found. Add the body to the list
-               --  if it handles some of the remaining exceptions.
+               if not Inserted then
 
-               when N_Entity_Body =>
+                  --  Sanity checking, the exception set should not have been
+                  --  used yet.
 
-                  Exc_Set.Intersection
-                    (Get_Exceptions_For_Subp (Unique_Defining_Entity (Scop)));
-
-                  if not Exc_Set.Is_Empty then
-                     Handlers.Append (Scop);
+                  if Raised_Exceptions (Position).Is_Blocked then
+                     raise Program_Error;
                   end if;
 
-                  exit Outer;
+                  Raised_Exceptions (Position).Exceptions.Union (Exc_Set);
+               end if;
+            end;
 
-               when N_Handled_Sequence_Of_Statements =>
+         --  Case of the entity body
 
-                  --  Stop the search if the exception come from the finally
-                  --  statements, as exceptions shall not escape finally blocks
-                  --  in SPARK.
+         elsif Nkind (Destination) in N_Entity
+           and then Ekind (Destination) /= E_Label
+         then
+            pragma Assert (not Exc_Set.Is_Empty);
+            Handlers.Append (Get_Body (Destination));
+         end if;
+      end Collect_Handler;
 
-                  exit Outer when
-                    Present (Finally_Statements (Scop))
-                    and then List_Containing (Prev)
-                             = Finally_Statements (Scop);
+      --  Start of processing for Collect_Reachable_Handlers
 
-                  --  Go over the handlers to accumulate those which are
-                  --  reachable from the current statement. The set of
-                  --  potentially raised exceptions is reduced along the
-                  --  search. If all exceptions have been encountered, the
-                  --  search is stopped.
-
-                  declare
-                     Handler : Node_Id;
-                  begin
-                     Handler := First_Non_Pragma (Exception_Handlers (Scop));
-                     while Present (Handler) loop
-                        declare
-                           Handler_Exc_Set : Exception_Sets.Set :=
-                             Get_Exceptions_From_Handler (Handler);
-                        begin
-                           Handler_Exc_Set.Intersection (Exc_Set);
-
-                           --  Handler can be reached from exceptions of
-                           --  Exc_Set. Append it to the list of reachable
-                           --  handlers. Also store the set of reachable
-                           --  exceptions in the Raised_Exceptions map.
-
-                           if not Handler_Exc_Set.Is_Empty then
-                              Handlers.Append (Handler);
-                              Exc_Set.Difference (Handler_Exc_Set);
-
-                              declare
-                                 Position : Node_To_Exceptions.Cursor;
-                                 Inserted : Boolean;
-                              begin
-                                 Raised_Exceptions.Insert
-                                   (Handler,
-                                    (Handler_Exc_Set, Is_Blocked => False),
-                                    Position,
-                                    Inserted);
-
-                                 if not Inserted then
-
-                                    --  Sanity checking, the exception
-                                    --  set should not have been used
-                                    --  yet.
-
-                                    if Raised_Exceptions (Position).Is_Blocked
-                                    then
-                                       raise Program_Error;
-                                    end if;
-
-                                    Raised_Exceptions (Position)
-                                      .Exceptions
-                                      .Union (Handler_Exc_Set);
-                                 end if;
-                              end;
-
-                              exit when Exc_Set.Is_Empty;
-                           end if;
-                        end;
-                        Next_Non_Pragma (Handler);
-                     end loop;
-                  end;
-
-               when others =>
-                  null;
-            end case;
-         end loop Outer;
-      end if;
-
+   begin
+      Collect_All (Call_Or_Stmt);
       Raise_To_Handlers_Map.Insert (Call_Or_Stmt, Handlers);
    end Collect_Reachable_Handlers;
 
@@ -2690,14 +2626,35 @@ package body SPARK_Util is
    function Get_Handled_Exceptions
      (Call_Or_Stmt : Node_Id) return Exception_Sets.Set
    is
-      Scop   : Node_Id :=
-        (if Nkind (Call_Or_Stmt) = N_Function_Call
-         then
-           Enclosing_Statement_Of_Call_To_Function_With_Side_Effects
-             (Call_Or_Stmt)
-         else Call_Or_Stmt);
-      Prev   : Node_Id;
       Result : Exception_Sets.Set := Exception_Sets.Empty_Set;
+
+      procedure Collect_Handled_By
+        (Destination : Node_Id;
+         Exc_Set     : Exception_Sets.Set;
+         Is_Continue : Boolean);
+      --  Collect exceptions handled at Destination
+
+      procedure Do_Nothing (Scop : Node_Id) is null;
+      procedure Collect_All is new
+        Iter_Exited_Scopes_With_Specified_Transfer
+          (Process => Do_Nothing,
+           Stop    => Collect_Handled_By);
+
+      ------------------------
+      -- Collect_Handled_By --
+      ------------------------
+
+      procedure Collect_Handled_By
+        (Destination : Node_Id;
+         Exc_Set     : Exception_Sets.Set;
+         Is_Continue : Boolean)
+      is
+         pragma Unreferenced (Destination, Is_Continue);
+      begin
+         Result.Union (Exc_Set);
+      end Collect_Handled_By;
+
+      --  Start of processing for Get_Handled_Exceptions
 
    begin
       --  Ghost function and procedure calls shall never propagate exceptions
@@ -2706,43 +2663,9 @@ package body SPARK_Util is
       if Call_Or_Stmt not in N_Call_Id
         or else not Is_Ghost_With_Respect_To_Context (Call_Or_Stmt)
       then
-         return Result;
+         Collect_All
+           (Call_Or_Stmt, Exception_Sources => Exception_Sets.All_Exceptions);
       end if;
-
-      --  Traverse all the enclosing handlers and collect the handled
-      --  exceptions.
-
-      loop
-         --  Ignore the enclosing handled sequences of statement if we are in a
-         --  handler.
-
-         if Nkind (Scop) = N_Exception_Handler then
-            Scop := Parent (Scop);
-         end if;
-         Prev := Scop;
-         Scop := Parent (Scop);
-
-         --  On handled sequences of statement, get the set of handled
-         --  exceptions, unless we are crossing a finally boundary. In this
-         --  case, no more exception can be handled.
-
-         if Nkind (Scop) = N_Handled_Sequence_Of_Statements then
-            exit when
-              Present (Finally_Statements (Scop))
-              and then List_Containing (Prev) = Finally_Statements (Scop);
-            Result.Union (Get_Exceptions_From_Handlers (Scop));
-
-         --  On subprogram bodies, get the expected exceptions from the
-         --  exceptional cases.
-
-         elsif Nkind (Scop) = N_Subprogram_Body then
-            Result.Union
-              (Get_Exceptions_For_Subp (Unique_Defining_Entity (Scop)));
-         end if;
-
-         exit when Nkind (Scop) in N_Entity_Body;
-      end loop;
-
       return Result;
    end Get_Handled_Exceptions;
 
