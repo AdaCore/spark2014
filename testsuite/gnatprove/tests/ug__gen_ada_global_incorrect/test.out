@@ -1,0 +1,7 @@
+ warning: analyzing unreferenced procedure "Test" [unreferenced-procedure]
+--> gen_ada_global_incorrect.adb:18:04
+   18 |       procedure Test is
+      |       ^~~~~~~~~~~~~~~~~
+      :
+   21 |       end Test;
+      |       ~~~~~~~~
