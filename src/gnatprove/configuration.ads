@@ -180,20 +180,22 @@ package Configuration is
    --  Mode - is the maximum analysis mode, taking into account the global
    --         and file-specific modes
 
-   Checks_As_Errors : Boolean;
-   Debug            : Boolean;
-   Debug_Exec_RAC   : Boolean;
-   GnateT_Switch    : GNAT.Strings.String_Access;
-   Limit_Lines      : String_Lists.List;
-   Mode             : GP_Mode := GPM_Check;
-   Only_Given       : Boolean;
-   Output           : Output_Mode_Type;
-   Parallel         : Integer;
-   Proof_Warnings   : Boolean;
-   Report           : Report_Mode_Type;
-   Use_Semaphores   : Boolean;
-   Warning_Mode     : Gnat2Why_Opts.SPARK_Warning_Mode_Type;
-   Warning_Status   : Warning_Status_Array := VC_Kinds.Warning_Status;
+   Checks_As_Errors  : Boolean;
+   Debug             : Boolean;
+   Debug_Exec_RAC    : Boolean;
+   GnateT_Switch     : GNAT.Strings.String_Access;
+   Limit_Lines       : String_Lists.List;
+   Mode              : GP_Mode := GPM_Check;
+   Only_Given        : Boolean;
+   Output            : Output_Mode_Type;
+   Parallel          : Integer;
+   Proof_Warnings    : Boolean;
+   Report            : Report_Mode_Type;
+   Use_Semaphores    : Boolean;
+   Warning_Mode      : Gnat2Why_Opts.SPARK_Warning_Mode_Type;
+   Warning_Status    : Warning_Status_Array := VC_Kinds.Warning_Status;
+   Has_Manual_Prover : Boolean;
+   Has_Coq_Prover    : Boolean;
 
    All_Projects      : Boolean renames CL_Switches.UU;
    Continue_On_Error : Boolean renames CL_Switches.K;
@@ -354,9 +356,6 @@ package Configuration is
    --    Out_Dir/gnatprove.out
 
    procedure Read_Command_Line (Tree : out Project.Tree.Object);
-
-   function Is_Manual_Prover (FS : File_Specific) return Boolean;
-   --  @return True iff the alternate prover is "coq" or "isabelle"
 
    function To_String (P : Proof_Mode) return String;
    --  transform the proof mode into a string for gnatwhy3 command line option

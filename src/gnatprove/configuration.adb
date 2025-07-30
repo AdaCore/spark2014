@@ -39,9 +39,11 @@ with GNAT.OS_Lib;
 with GNAT.Regpat;       use GNAT.Regpat;
 with GNAT.Strings;      use GNAT.Strings;
 with GPR2.Build.Compilation_Unit;
+with GPR2.Build.Compilation_Unit.Maps;
 with GPR2.Build.Source;
 with GPR2.Build.View_Db;
 with GPR2.KB;
+with GPR2.Log;
 with GPR2.Message;
 with GPR2.Options;
 with GPR2.Path_Name;
@@ -178,9 +180,6 @@ package body Configuration is
 
    procedure Check_Duplicate_Bodies (Msg : GPR2.Message.Object);
    --  Raise an error if the message is about duplicate bodies.
-
-   function Is_Coq_Prover (FS : File_Specific) return Boolean;
-   --  @return True iff one alternate prover is "coq"
 
    --  There are more than one "command lines" in gnatprove. For example, the
    --  project file defines switches that act as if they were appended to the
@@ -689,27 +688,6 @@ package body Configuration is
          return False;
       end if;
    end Has_gnateT_Switch;
-
-   ----------------------
-   -- Is_Manual_Prover --
-   ----------------------
-
-   function Is_Manual_Prover (FS : File_Specific) return Boolean is
-   begin
-      return
-        FS.Provers.Length = 1
-        and then (Case_Insensitive_Contains (FS.Provers, "coq")
-                  or else Case_Insensitive_Contains (FS.Provers, "isabelle"));
-   end Is_Manual_Prover;
-
-   -------------------
-   -- Is_Coq_Prover --
-   -------------------
-
-   function Is_Coq_Prover (FS : File_Specific) return Boolean is
-   begin
-      return Case_Insensitive_Contains (FS.Provers, "coq");
-   end Is_Coq_Prover;
 
    --------------------------
    -- No_Project_File_Mode --
@@ -1853,6 +1831,11 @@ package body Configuration is
          function Concat4
            (A, B, C : String_List_Access; D : String_List) return String_List;
 
+         procedure Expand_Ada_Switches (View : Project.View.Object);
+         --  Replace the "Ada" section of the File_Specific_Map by entries for
+         --  all files in the project, except for those which already have an
+         --  entry.
+
          procedure Reset_File_Specific_Switches;
          --  Reset file-specific switches between parsing of the full
          --  command-line for each file.
@@ -1884,6 +1867,26 @@ package body Configuration is
               & (if C = null then [] else C.all)
               & D;
          end Concat4;
+
+         procedure Expand_Ada_Switches (View : Project.View.Object) is
+
+            Gen : constant File_Specific := File_Specific_Map ("Ada");
+
+            Messages : GPR2.Log.Object;
+            pragma Unreferenced (Messages);
+            Units    : GPR2.Build.Compilation_Unit.Maps.Map := View.Own_Units;
+            Position : File_Specific_Maps.Cursor;
+            Inserted : Boolean;
+         begin
+            File_Specific_Map.Delete ("Ada");
+            for C in Units.Iterate loop
+               File_Specific_Map.Insert
+                 (Key      => String (Units (C).Main_Part.Source.Simple_Name),
+                  New_Item => Gen,
+                  Position => Position,
+                  Inserted => Inserted);
+            end loop;
+         end Expand_Ada_Switches;
 
          ----------------------------------
          -- Reset_File_Specific_Switches --
@@ -1926,6 +1929,12 @@ package body Configuration is
          Postprocess;
          File_Specific_Postprocess (FS);
          File_Specific_Map.Insert ("Ada", FS);
+         Has_Coq_Prover := Case_Insensitive_Contains (FS.Provers, "coq");
+         Has_Manual_Prover :=
+           FS.Provers.Length = 1
+           and then (Case_Insensitive_Contains (FS.Provers, "coq")
+                     or else Case_Insensitive_Contains
+                               (FS.Provers, "isabelle"));
 
          for Attr of
            Tree.Root_Project.Attributes ((+"Prove", +"Proof_Switches"))
@@ -1964,6 +1973,7 @@ package body Configuration is
                end;
             end if;
          end loop;
+         Expand_Ada_Switches (Tree.Root_Project);
       end Parse_Proof_Switches;
 
       -----------------
@@ -2482,7 +2492,7 @@ package body Configuration is
          FS.Counterexamples :=
            FS.Counterexamples
            and then SPARK_Install.CVC5_Present
-           and then not Is_Manual_Prover (FS)
+           and then not Has_Manual_Prover
            and then not CL_Switches.Output_Msg_Only;
 
          if CL_Switches.Check_Counterexamples.all = "" then
@@ -2907,7 +2917,7 @@ package body Configuration is
              ((if Socket_Dir = ""
                then Socket_Base
                else Ada.Directories.Compose (Socket_Dir, Socket_Base)));
-         if Is_Coq_Prover (File_Specific_Map ("Ada")) then
+         if Has_Coq_Prover then
             Prepare_Prover_Lib
               (Tree
                  .Root_Project
@@ -3206,7 +3216,7 @@ package body Configuration is
          --  the project directory so we give it an absolute path to the
          --  proof_dir.
          Args.Append (Proof_Dir.all);
-         if Is_Manual_Prover (File_Specific_Map ("Ada")) then
+         if Has_Manual_Prover then
             Prepare_Why3_Manual;
          end if;
       end if;
