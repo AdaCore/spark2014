@@ -2522,24 +2522,6 @@ package body Flow_Utility is
       Erase_Constants : Boolean;
       Scop            : Flow_Scope := Null_Flow_Scope)
    is
-      Globals : Global_Flow_Ids;
-
-      --  If explicit visibility scope is provided, then use it;
-      --  for access-to-subprograms use the visibility of their declaration;
-      --  otherwise use "the most precise globals" that make sense, i.e.
-      --  Refined_Global if subprogram body is in SPARK and Global otherwise.
-
-      S : constant Flow_Scope :=
-        (if Present (Scop)
-         then Scop
-         elsif Ekind (Subprogram) = E_Subprogram_Type
-         then Get_Flow_Scope (Subprogram)
-         else
-           (Ent  => Subprogram,
-            Part =>
-              (if Entity_Body_In_SPARK (Subprogram)
-               then Body_Part
-               else Visible_Part)));
 
       function Only_Mutable
         (Objects : Flow_Id_Sets.Set) return Flow_Id_Sets.Set
@@ -2595,6 +2577,9 @@ package body Flow_Utility is
       --  analysis do not provide it). For them, proof expects the Global
       --  contract of the root type (which should also be a task type and also
       --  be in SPARK).
+
+      Globals : Global_Flow_Ids;
+      Scope   : Flow_Scope;
 
       --  Start of processing for Get_Proof_Globals
 
@@ -2653,9 +2638,26 @@ package body Flow_Utility is
       --  Otherwise, we rely on the flow analysis
 
       else
+
+         --  If explicit visibility scope is provided, then use it; for
+         --  access-to-subprograms use the visibility of their declaration;
+         --  otherwise use "the most precise globals" that make sense,
+         --  i.e. Refined_Global if subprogram body is in SPARK and
+         --  Global otherwise.
+
+         Scope :=
+           (if Present (Scop)
+            then Scop
+            else
+              (Ent  => E,
+               Part =>
+                 (if Entity_Body_In_SPARK (E)
+                  then Body_Part
+                  else Visible_Part)));
+
          Get_Globals
            (Subprogram          => E,
-            Scope               => S,
+            Scope               => Scope,
             Classwide           => True,
             Globals             => Globals,
             Use_Deduced_Globals => True);
