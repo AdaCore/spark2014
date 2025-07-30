@@ -2195,14 +2195,21 @@ body (see Ada RM 7.2(4))].
 
    The assertion policy applicable to an assignment statement whose target
    is a ghost variable is the assertion policy applicable to the ghost variable
-   at the point of assignment. The assertion policy applicable to a call to a
+   at the point of assignment.
+
+   The assertion policy applicable to a call to a
    ghost procedure is the assertion policy applicable to the ghost procedure
-   at the point of call. Assertion pragmas and specification aspects occurring
-   inside a disabled ghost entity or that apply to a disabled ghost entity are
-   considered to be disabled. Otherwise, the assertion policy applicable to
+   at the point of call.
+
+   The assertion policy applicable to assertion pragmas
+   and specification aspects occurring inside a ghost entity or that apply to a
+   ghost entity whose applicable assertion policy is Ignore is Ignore.
+
+   Otherwise, the assertion policy applicable to
    an assertion pragma or specification aspect may come either from its
    assertion level if any, or from an assertion kind (e.g., Pre for a
    precondition expression, Assert for the argument of an Assert pragma...).
+
    The applicable assertion policy for other ghost statements is the assertion
    policy applicable to the enclosing ghost subprogram or package.
 
@@ -2324,23 +2331,23 @@ body (see Ada RM 7.2(4))].
     generic instance or a renaming declaration.
     [This avoids enabled declarations in disabled scope.]
 
-12. A ghost entity shall only be referenced:
+12. A ghost entity E shall only be referenced:
 
     * from within an assertion expression that is
-      assertion-level-dependent on it; or
+      assertion-level-dependent on E; or
 
     * from within an aspect specification [(i.e., either an
       ``aspect_specification`` or an aspect-specifying pragma)]; or
 
     * within the declaration or completion of a ghost entity that is
-      assertion-level-dependent on it
+      assertion-level-dependent on E
       (e.g., from within the body of a ghost subprogram); or
 
     * within a call to a ghost procedure that is assertion-level-dependent on
-      it; or
+      E; or
 
     * within an assignment statement whose target is a ghost variable that is
-      assertion-level-dependent on it; or
+      assertion-level-dependent on E; or
 
     * within a ``with_clause`` or ``use_clause``; or
 
@@ -2353,18 +2360,17 @@ body (see Ada RM 7.2(4))].
     A ghost attribute like ``Initialized`` shall only be referenced where a
     ghost entity would be allowed.
 
-13. A ghost entity shall not be referenced within an aspect specification
+13. A ghost entity E shall not be referenced within an aspect specification
     [(including an aspect-specifying pragma)]
-    which specifies an aspect of a non-ghost entity except in the
-    following cases:
+    which specifies an aspect of an entity that is either non-ghost or not
+    assertion-level-dependent on E except in the following cases:
 
     * the reference occurs within an assertion expression that is
-      assertion-level-dependent on it and is not a predicate expression,
+      assertion-level-dependent on E and is not a predicate expression,
       unless the predicate is introduced by aspect Ghost_Predicate; or
 
     * the specified aspect is either Global, Depends,
-      Refined_Global, Refined_Depends, Initializes, or Refined_State on an
-      entity that is assertion-level-dependent on the ghost entity.
+      Refined_Global, Refined_Depends, Initializes, or Refined_State.
       [For example, the Global aspect of a non-ghost subprogram might
       refer to a ghost variable.]
 
