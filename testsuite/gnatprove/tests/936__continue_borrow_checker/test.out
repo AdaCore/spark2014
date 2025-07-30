@@ -1,0 +1,33 @@
+main.adb:13:20: warning: "X" is not modified, could be IN
+main.adb:20:07: error: launch "gnatprove --explain=E0010" for more information
+main.adb:20:07: error: loop iteration terminates with moved value for "X"
+main.adb:20:07: error: object was moved at line 22 [E0010]
+main.adb:31:07: error: launch "gnatprove --explain=E0010" for more information
+main.adb:31:07: error: loop iteration terminates with moved value for "X"
+main.adb:31:07: error: object was moved at line 34 [E0010]
+main.adb:32:10: warning: loop continue condition is stable
+main.adb:32:10: warning: statement has no effect
+main.adb:34:13: warning: initialization of "Y" has no effect
+main.adb:57:25: error: borrower "Y_I" exits its scope with moved value
+main.adb:57:25: error: launch "gnatprove --explain=E0010" for more information
+main.adb:57:25: error: object was moved at line 55 [E0010]
+main.adb:63:25: warning: unreachable code [enabled by default]
+main.adb:66:19: warning: unreachable code [enabled by default]
+main.adb:86:25: error: borrower "Y_M" exits its scope with moved value
+main.adb:86:25: error: object was borrowed at line 80
+main.adb:91:25: warning: unreachable code [enabled by default]
+main.adb:94:19: warning: unreachable code [enabled by default]
+main.adb:115:25: error: borrower "Y_I" exits its scope with moved value
+main.adb:115:25: error: launch "gnatprove --explain=E0010" for more information
+main.adb:115:25: error: object was moved at line 113 [E0010]
+main.adb:123:19: warning: unreachable code [enabled by default]
+main.adb:163:19: warning: unreachable code [enabled by default]
+main.adb:193:18: error: "Y" is not readable
+main.adb:193:18: error: launch "gnatprove --explain=E0010" for more information
+main.adb:193:18: error: object was moved at line 190 [E0010]
+main.adb:204:32: warning: loop condition is stable
+main.adb:221:32: error: launch "gnatprove --explain=E0010" for more information
+main.adb:221:32: error: loop iteration terminates with moved value for "Y"
+main.adb:221:32: error: object was moved at line 223 [E0010]
+main.adb:221:32: warning: loop condition is stable
+gnatprove: error during flow analysis and proof

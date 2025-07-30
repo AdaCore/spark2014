@@ -1124,15 +1124,18 @@ package body Why.Inter is
    -------------------------
 
    function Loop_Exception_Name
-     (E : Entity_Id; Local : Boolean := False) return W_Name_Id
+     (E : Entity_Id; Is_Continue : Boolean; Local : Boolean := False)
+      return W_Name_Id
    is
-      Suffix : constant Symbol := NID (Capitalize_First (Short_Name (E)));
+      Suffix : constant String :=
+        (if Is_Continue then "__loop_continue" else "__loop_exit");
+      Name   : constant Symbol :=
+        NID (Capitalize_First (Short_Name (E)) & Suffix);
    begin
       if Local then
-         return New_Name (Ada_Node => E, Symb => Suffix);
+         return New_Name (Ada_Node => E, Symb => Name);
       else
-         return
-           New_Name (Ada_Node => E, Symb => Suffix, Module => E_Module (E));
+         return New_Name (Ada_Node => E, Symb => Name, Module => E_Module (E));
       end if;
    end Loop_Exception_Name;
 

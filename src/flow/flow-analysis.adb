@@ -3460,6 +3460,17 @@ package body Flow.Analysis is
                            N   => Cond_Id.Node);
                      end if;
 
+                  when N_Continue_Statement =>
+                     if Is_Stable
+                          (Loop_Id        =>
+                             Loop_Entity_Of_Continue_Statement (Cond_Id.Node),
+                           Condition_Vars => Cond_Atr.Variables_Used)
+                     then
+                        Error_Msg
+                          (Msg => "loop continue condition is stable",
+                           N   => Cond_Id.Node);
+                     end if;
+
                   when others =>
                      null;
                end case;

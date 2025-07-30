@@ -634,6 +634,16 @@ package body Flow.Control_Flow_Graph is
    --  The standard exits of all parts feed into the standard
    --  exits of the entire case statement.
 
+   procedure Do_Continue_Statement
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   with Pre => Nkind (N) = N_Continue_Statement;
+   --  Deal with continue statements in loops. We treat them as goto, storing
+   --  the continue vertex in the set associated to the loop entity in
+   --  Ctx.Goto_Jumps.
+
    procedure Do_Contract_Expression
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
@@ -2038,6 +2048,114 @@ package body Flow.Control_Flow_Graph is
       end if;
    end Do_Case_Statement;
 
+   ---------------------------
+   -- Do_Continue_Statement --
+   ---------------------------
+
+   procedure Do_Continue_Statement
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   is
+      V        : Flow_Graphs.Vertex_Id;
+      L        : Node_Id := N;
+      Funcalls : Call_Sets.Set;
+      Indcalls : Node_Sets.Set;
+      Cond     : constant Node_Id := Condition (N);
+
+      Mark : Borrowers_Markers.Cursor := Ctx.Borrow_Numbers.Last;
+      --  Once we know which loop the continue statement refers to, it will
+      --  point to the number of local borrowers in scope of that loop.
+
+      Top : Node_Lists.Cursor := Ctx.Borrowers.Last;
+      --  Iterator for the borrowers reclaimed when completing the current
+      --  iteration.
+
+      Position : Goto_Jump_Maps.Cursor;
+      Unused   : Boolean;
+
+   begin
+      --  Go up the tree until we find the loop whose iteration we completes
+      loop
+         L := Parent (L);
+         case Nkind (L) is
+            when N_Loop_Statement =>
+               --  When completing the iteration of a loop without name, we
+               --  complete the iteration of the first loop; when there is
+               --  a name, we look for the matching loop.
+               if No (Name (N))
+                 or else Entity (Identifier (L)) = Entity (Name (N))
+               then
+                  exit;
+               end if;
+
+            when N_Block_Statement =>
+               Borrowers_Markers.Previous (Mark);
+
+            when others =>
+               null;
+         end case;
+      end loop;
+
+      --  Conditional and unconditional continue are different. One requires an
+      --  extra vertex, the other does not.
+
+      if No (Cond) then
+         Add_Vertex (FA, Direct_Mapping_Id (N), Null_Node_Attributes, V);
+         CM.Insert
+           (Union_Id (N),
+            Graph_Connections'
+              (Standard_Entry => V, Standard_Exits => Vertex_Sets.Empty_Set));
+
+      else
+         Pick_Generated_Info
+           (Cond,
+            FA.B_Scope,
+            Function_Calls     => Funcalls,
+            Indirect_Calls     => Indcalls,
+            Proof_Dependencies => FA.Proof_Dependencies,
+            Tasking            => FA.Tasking,
+            Generating_Globals => FA.Generating_Globals);
+
+         Add_Vertex
+           (FA,
+            Direct_Mapping_Id (N),
+            Make_Basic_Attributes
+              (Var_Ex_Use =>
+                 Get_Variables
+                   (Cond,
+                    Scope                => FA.B_Scope,
+                    Target_Name          => Null_Flow_Id,
+                    Fold_Functions       => Inputs,
+                    Use_Computed_Globals => not FA.Generating_Globals),
+               Subp_Calls => Funcalls,
+               Indt_Calls => Indcalls,
+               Vertex_Ctx => Ctx.Vertex_Ctx,
+               E_Loc      => N),
+            V);
+         Ctx.Folded_Function_Checks.Append (Cond);
+         CM.Insert (Union_Id (N), Trivial_Connection (V));
+      end if;
+
+      --  When borrowers go out of scope, we pop them from the stack and
+      --  assign back to the borrowed objects. This way we keep track of
+      --  anything that happened while they were borrowed.
+
+      for J in Ctx.Borrow_Numbers (Mark) + 1 .. Ctx.Borrowers.Length loop
+         Reclaim_Borrower (Ctx.Borrowers (Top), FA, Last => V);
+         Node_Lists.Previous (Top);
+      end loop;
+
+      Ctx.Goto_Jumps.Insert
+        (Key      => Entity (Identifier (L)),
+         New_Item => Vertex_Sets.Empty_Set,
+         Position => Position,
+         Inserted => Unused);
+      Ctx.Goto_Jumps (Position).Insert (V);
+
+   end Do_Continue_Statement;
+
    ------------------------
    -- Do_Delay_Statement --
    ------------------------
@@ -2772,6 +2890,10 @@ package body Flow.Control_Flow_Graph is
       with Pre => Nkind (Loop_N) = N_Loop_Statement;
       --  Return true if the loop contains an exit or return statement
 
+      procedure Linkup_Continue_Statements (V : Flow_Graphs.Vertex_Id);
+      --  Link vertices of continue statements targeting the loop to V, and
+      --  then remove them from the context.
+
       procedure Do_Loop;
       --  Helper procedure to deal with normal loops.
       --
@@ -2916,6 +3038,20 @@ package body Flow.Control_Flow_Graph is
          return Get_Range (DSD);
       end Get_Loop_Range;
 
+      --------------------------------
+      -- Linkup_Continue_Statements --
+      --------------------------------
+
+      procedure Linkup_Continue_Statements (V : Flow_Graphs.Vertex_Id) is
+         C : Goto_Jump_Maps.Cursor :=
+           Ctx.Goto_Jumps.Find (Entity (Identifier (N)));
+      begin
+         if Goto_Jump_Maps.Has_Element (C) then
+            Linkup (FA, Froms => Ctx.Goto_Jumps (C), To => V);
+            Ctx.Goto_Jumps.Delete (C);
+         end if;
+      end Linkup_Continue_Statements;
+
       -------------
       -- Do_Loop --
       -------------
@@ -3035,6 +3171,8 @@ package body Flow.Control_Flow_Graph is
          --  Loop the loop: V -> body -> V
          Linkup (FA, V, CM (Union_Id (Statements (N))).Standard_Entry);
          Linkup (FA, CM (Union_Id (Statements (N))).Standard_Exits, V);
+
+         Linkup_Continue_Statements (V);
       end Do_Loop;
 
       -------------------
@@ -3081,6 +3219,8 @@ package body Flow.Control_Flow_Graph is
          --  Loop the loop: V -> body -> V
          Linkup (FA, V, CM (Union_Id (Statements (N))).Standard_Entry);
          Linkup (FA, CM (Union_Id (Statements (N))).Standard_Exits, V);
+
+         Linkup_Continue_Statements (V);
 
          --  Set Potentially_Neverending_Vertex to the added vertex
          Potentially_Neverending_Vertex := V;
@@ -3210,6 +3350,8 @@ package body Flow.Control_Flow_Graph is
             end if;
          end if;
 
+         Linkup_Continue_Statements (V);
+
          --  Set Potentially_Neverending_Vertex to the added vertex
          Potentially_Neverending_Vertex := V;
       end Do_For_Loop;
@@ -3236,6 +3378,7 @@ package body Flow.Control_Flow_Graph is
                   | N_Extended_Return_Statement
                   | N_Exit_Statement
                   | N_Goto_Statement
+                  | N_Continue_Statement
                =>
                   return Abandon;
 
@@ -3866,6 +4009,8 @@ package body Flow.Control_Flow_Graph is
          --  Loop the loop: V -> body -> V
          Linkup (FA, V, CM (Union_Id (Statements (N))).Standard_Entry);
          Linkup (FA, CM (Union_Id (Statements (N))).Standard_Exits, V);
+
+         Linkup_Continue_Statements (V);
 
          --  Set Potentially_Neverending_Vertex to the added vertex
          Potentially_Neverending_Vertex := V;
@@ -6804,6 +6949,9 @@ package body Flow.Control_Flow_Graph is
 
          when N_Case_Statement =>
             Do_Case_Statement (N, FA, CM, Ctx);
+
+         when N_Continue_Statement =>
+            Do_Continue_Statement (N, FA, CM, Ctx);
 
          when N_Object_Declaration =>
             Do_Object_Declaration (N, FA, CM, Ctx);
