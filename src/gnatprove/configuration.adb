@@ -1909,6 +1909,7 @@ package body Configuration is
             CL_Switches.Proof_Warn_Timeout := Invalid_Timeout;
          end Reset_File_Specific_Switches;
 
+         First : Boolean := True;
       begin
 
          for Cursor in
@@ -1982,6 +1983,15 @@ package body Configuration is
                      end;
                   end if;
                end loop;
+               if First then
+                  First := False;
+                  declare
+                     Default : constant File_Specific :=
+                       File_Specific_Map ("Ada");
+                  begin
+                     File_Specific_Map.Insert ("default", Default);
+                  end;
+               end if;
                Expand_Ada_Switches (View);
             end;
          end loop;
