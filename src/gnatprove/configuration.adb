@@ -1909,71 +1909,82 @@ package body Configuration is
             CL_Switches.Proof_Warn_Timeout := Invalid_Timeout;
          end Reset_File_Specific_Switches;
 
-         FS                 : File_Specific;
-         Prove_Switches     : constant String_List_Access :=
-           List_From_Attr
-             (Tree.Root_Project.Attribute ((+"Prove", +"Switches")));
-         Proof_Switches_Ada : constant String_List_Access :=
-           List_From_Attr
-             (Tree.Root_Project.Attribute
-                ((+"Prove", +"Proof_Switches"),
-                 Index => GPR2.Project.Attribute_Index.Create ("Ada")));
-         Parsed_Cmdline     : constant String_List :=
-           Concat3 (Prove_Switches, Proof_Switches_Ada, Com_Lin);
-
       begin
-         --  parse all switches that apply to all files, concatenated in the
-         --  right order (most important is last).
 
-         Parse_Switches (All_Switches, Parsed_Cmdline);
-         Postprocess;
-         File_Specific_Postprocess (FS);
-         File_Specific_Map.Insert ("Ada", FS);
-         Has_Coq_Prover := Case_Insensitive_Contains (FS.Provers, "coq");
-         Has_Manual_Prover :=
-           FS.Provers.Length = 1
-           and then (Case_Insensitive_Contains (FS.Provers, "coq")
-                     or else Case_Insensitive_Contains
-                               (FS.Provers, "isabelle"));
-
-         for Attr of
-           Tree.Root_Project.Attributes ((+"Prove", +"Proof_Switches"))
+         for Cursor in
+           Tree.Iterate
+             (Status =>
+                [GPR2.Project.S_Externally_Built =>
+                   GNATCOLL.Tribooleans.False])
          loop
-            if Attr.Index.Text not in "Ada" | "ada" then
-               Check_File_Part_Of_Project (Tree.Root_Project, Attr.Index.Text);
-               declare
-                  FS             : File_Specific;
-                  FS_Switches    : constant String_List_Access :=
-                    List_From_Attr (Attr);
-                  Parsed_Cmdline : constant String_List :=
-                    Concat4
-                      (Prove_Switches,
-                       Proof_Switches_Ada,
-                       FS_Switches,
-                       Com_Lin);
-               begin
-                  if FS_Switches /= null then
+            declare
+               View               : constant Project.View.Object :=
+                 Project.Tree.Element (Cursor);
+               FS                 : File_Specific;
+               Prove_Switches     : constant String_List_Access :=
+                 List_From_Attr (View.Attribute ((+"Prove", +"Switches")));
+               Proof_Switches_Ada : constant String_List_Access :=
+                 List_From_Attr
+                   (View.Attribute
+                      ((+"Prove", +"Proof_Switches"),
+                       Index => GPR2.Project.Attribute_Index.Create ("Ada")));
+               Parsed_Cmdline     : constant String_List :=
+                 Concat3 (Prove_Switches, Proof_Switches_Ada, Com_Lin);
+            begin
+               --  parse all switches that apply to all files, concatenated in
+               --  the right order (most important is last).
 
-                     --  parse the file switches to check if they contain
-                     --  invalid switches; this is for error reporting only.
+               Parse_Switches (All_Switches, Parsed_Cmdline);
+               Postprocess;
+               File_Specific_Postprocess (FS);
+               File_Specific_Map.Insert ("Ada", FS);
+               Has_Coq_Prover := Case_Insensitive_Contains (FS.Provers, "coq");
+               Has_Manual_Prover :=
+                 FS.Provers.Length = 1
+                 and then (Case_Insensitive_Contains (FS.Provers, "coq")
+                           or else Case_Insensitive_Contains
+                                     (FS.Provers, "isabelle"));
 
-                     Parse_Switches (File_Specific_Only, FS_Switches.all);
+               for Attr of View.Attributes ((+"Prove", +"Proof_Switches")) loop
+                  if Attr.Index.Text not in "Ada" | "ada" then
+                     Check_File_Part_Of_Project (View, Attr.Index.Text);
+                     declare
+                        FS             : File_Specific;
+                        FS_Switches    : constant String_List_Access :=
+                          List_From_Attr (Attr);
+                        Parsed_Cmdline : constant String_List :=
+                          Concat4
+                            (Prove_Switches,
+                             Proof_Switches_Ada,
+                             FS_Switches,
+                             Com_Lin);
+                     begin
+                        if FS_Switches /= null then
+
+                           --  parse the file switches to check if they contain
+                           --  invalid switches; this is for error reporting
+                           --  only.
+
+                           Parse_Switches
+                             (File_Specific_Only, FS_Switches.all);
+                        end if;
+
+                        --  parse all switches that apply to a single file,
+                        --  *including* the global switches. File-specific
+                        --  switches are more important than the other switches
+                        --  in the project file, but less so than the command
+                        --  line switches.
+
+                        Reset_File_Specific_Switches;
+                        Parse_Switches (All_Switches, Parsed_Cmdline);
+                        File_Specific_Postprocess (FS);
+                        File_Specific_Map.Insert (Attr.Index.Text, FS);
+                     end;
                   end if;
-
-                  --  parse all switches that apply to a single file,
-                  --  *including* the global switches. File-specific
-                  --  switches are more important than the other switches
-                  --  in the project file, but less so than the command
-                  --  line switches.
-
-                  Reset_File_Specific_Switches;
-                  Parse_Switches (All_Switches, Parsed_Cmdline);
-                  File_Specific_Postprocess (FS);
-                  File_Specific_Map.Insert (Attr.Index.Text, FS);
-               end;
-            end if;
+               end loop;
+               Expand_Ada_Switches (View);
+            end;
          end loop;
-         Expand_Ada_Switches (Tree.Root_Project);
       end Parse_Proof_Switches;
 
       -----------------
