@@ -27693,7 +27693,13 @@ package body Gnat2Why.Expr is
          else Empty);
 
    begin
-      if Present (Expr) then
+      --  The Priority aspect has no effect if it is specified for a subprogram
+      --  other than the main subprogram.
+
+      if Present (Expr)
+        and then (not Is_Subprogram (Current_Subp)
+                  or else Might_Be_Main (Current_Subp))
+      then
          declare
             --  Task Priorities (D.1 (17)):
             --
