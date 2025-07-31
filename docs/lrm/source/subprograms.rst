@@ -2276,9 +2276,8 @@ body (see Ada RM 7.2(4))].
    for an ``object_declaration`` having more than one ``defining_identifier``),
    a package, a generic package, or a generic formal parameter.
    The Ghost aspect may be specified via either an ``aspect_specification``
-   or via a pragma. The representation pragma Ghost takes a single
-   argument, a name denoting one or more entities whose Ghost aspect is
-   then specified to be True.
+   or via a pragma. The representation pragma Ghost takes the same argument
+   as the Ghost aspect.
    [In particular, |SPARK| does not currently include any form of
    ghost components of non-ghost record types, or ghost parameters of non-ghost
    subprograms. |SPARK| does define
