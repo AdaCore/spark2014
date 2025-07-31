@@ -7832,7 +7832,7 @@ package body SPARK_Definition is
 
                      --  A user-defined primitive equality operation on a
                      --  non-ghost record type shall not be ghost, unless the
-                     --  record type has only limited views (SPARK RM 6.9(22)).
+                     --  record type has only limited views (SPARK RM 6.9(23)).
                      elsif Is_Ghost_Entity (Id)
                        and then not Is_Ghost_Entity (Typ)
                      then
@@ -7840,7 +7840,7 @@ package body SPARK_Definition is
                           ("ghost function as user-defined equality"
                            & " on non-ghost record type",
                            Id,
-                           SRM_Reference => "SPARK RM 6.9(22)");
+                           SRM_Reference => "SPARK RM 6.9(23)");
 
                      --  A user-defined primitive equality operation on a
                      --  record type shall not have a subprogram variant.

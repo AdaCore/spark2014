@@ -26,7 +26,7 @@ deps.adb:62:12: info: flow dependencies proved
 deps.adb:68:04: info: initialization of "I" proved
 p.ads:2:13: info: initialization of "X" constituent of "State" proved
 p.ads:3:26: info: data dependencies proved
-q.ads:3:13: medium: ghost subprogram "Init" cannot have non-ghost global output "X" (SPARK RM 6.9(20))
+q.ads:3:13: medium: ghost subprogram "Init" cannot have non-ghost global output "X" (SPARK RM 6.9(24))
 q.ads:4:26: info: data dependencies proved
 q.ads:4:47: info: initialization of "X" proved
 r.ads:3:13: high: constant after elaboration "X" must not be an output of subprogram "Init" (SPARK RM 6.1.4(22))

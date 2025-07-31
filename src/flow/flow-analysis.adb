@@ -4449,7 +4449,7 @@ package body Flow.Analysis is
                   F2       => Output,
                   Severity => Medium_Check_Kind,
                   Tag      => Ghost_Wrong,
-                  SRM_Ref  => "6.9(20)");
+                  SRM_Ref  => "6.9(24)");
             end if;
          end loop;
       end if;
