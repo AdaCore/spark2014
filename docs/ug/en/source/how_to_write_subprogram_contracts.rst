@@ -730,6 +730,42 @@ execution.
 
 .. index:: main subprograms; writing contracts
 
+Verifying Contract Consistency
+------------------------------
+
+By default, |GNATprove| doesn't verify the logical consistency of subprogram
+contracts. It is thus possible to write a precondition that is always false,
+which allows anything to be proved in the subprogram body and subprogram
+postcondition since False implies False is True. Likewise, it's possible to
+write a postcondition that is always false, which allows anything to be
+proved after a call to the subprogram.
+
+When all code is in SPARK, these inconsistencies will eventually be found via
+proof. SPARK will not be able to prove that an always-false precondition is
+satisfied at the call site nor will SPARK prove that an always-false
+postcondition is satisfied by the subprogram body (unless there is an
+always-false assumption in the analysis).
+
+When all code is not in SPARK, which is expected due to the practical necessity
+of interfacing to other languages, the developer is usually responsible for
+ensuring that their contracts are consistent.
+
+|GNATprove| offers a switch, ``--proof-warnings=on`` that helps with this.
+For subprograms written in SPARK, ``--proof-warnings=on`` checks the subprogram
+contracts and assumptions directly, allowing problems to be spotted more
+quickly during development as compared to waiting for failed proofs at
+subprogram call sites. For subprograms not written in SPARK but that contain
+contracts, i.e., subprograms whose bodies are marked Import or SPARK_Mode Off,
+``--proof-warnings=on`` finds problems by detecting unreachable branches in
+the calling subprogram.
+
+.. note::
+
+  The warnings issued by ``--proof-warnings=on`` are not guaranteed to
+  be complete: an absence of warnings does not guarantee the logical
+  consistenty of all subprogram contracts or assumptions; nor does it guarantee
+  an absence of dead branches or code.
+
 Writing Contracts on Main Subprograms
 -------------------------------------
 
