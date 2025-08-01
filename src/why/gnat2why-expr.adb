@@ -20317,7 +20317,7 @@ package body Gnat2Why.Expr is
          Subp_Cond  : constant Termination_Condition :=
            Get_Termination_Condition (Subp, Compute => True);
          Ghost_Call : constant Boolean :=
-           Is_Ghost_Entity (Subp) and then not Is_Ghost_Entity (Current_Subp);
+           Is_Ghost_With_Respect_To_Context (Call);
 
       begin
          --  If the enclosing subprogram has a dynamic termination condition,
