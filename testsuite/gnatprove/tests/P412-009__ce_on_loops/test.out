@@ -38,6 +38,11 @@ counterexample expected for check at counter_example_loop_index.adb:25
   trace at counter_example_loop_index.adb:21 --> K = 0
   trace at counter_example_loop_index.adb:23 --> I = 52
   trace at counter_example_loop_index.adb:25 --> J = 51
+counterexample expected for check at counter_example_loop_index.adb:47
+  trace at counter_example_loop_index.adb:42 --> J = 0
+  trace at counter_example_loop_index.adb:43 --> K = 0
+  trace at counter_example_loop_index.adb:45 --> I = 51
+  trace at counter_example_loop_index.adb:47 --> J = 50
 counterexample expected for check at counter_example_loop_index.adb:61
   trace at counter_example_loop_index.adb:55 --> X = 0
   trace at counter_example_loop_index.adb:56 --> J = 0

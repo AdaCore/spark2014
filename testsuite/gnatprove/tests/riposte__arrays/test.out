@@ -86,3 +86,7 @@ counterexample expected for check at arrays.adb:144
   trace at arrays.adb:139 --> R = (A => (others => 5), Exists => False)
   trace at arrays.adb:143 --> R = (A => (others => 5), Exists => False)
   trace at arrays.adb:144 --> R = (A => (others => 5), Exists => False)
+counterexample expected for check at arrays.adb:148
+  trace at arrays.adb:139 --> R = (A => (3 => 5, others => 0), Exists => True)
+  trace at arrays.adb:143 --> R = (A => (3 => 5, others => 0), Exists => True)
+  trace at arrays.adb:148 --> R = (A => (3 => 5, others => 0), Exists => True)

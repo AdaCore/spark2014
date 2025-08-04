@@ -39,3 +39,58 @@ palindrom.adb:16:31: info: loop invariant initialization proved (CVC5: 1 VC)
 palindrom.adb:16:31: info: loop invariant preservation proved (CVC5: 1 VC)
 palindrom.adb:16:33: info: overflow check proved (CVC5: 4 VC)
 palindrom.adb:16:63: info: overflow check proved (CVC5: 4 VC)
+counterexample expected for check at arr_equal.adb:7
+  trace at arr_equal.adb:5 --> B = False
+  trace at arr_equal.adb:7 --> A = (0 => 42)
+  trace at arr_equal.ads:5 --> A = (0 => 42)
+counterexample expected for check at arr_equal.adb:16
+  trace at arr_equal.adb:14 --> B = False
+  trace at arr_equal.adb:16 --> A = (0 => 0, others => -2) and A'First = -2 and A'Last = 0
+  trace at arr_equal.ads:7 --> A = (0 => 0, others => -2) and A'First = -2 and A'Last = 0
+counterexample expected for check at arr_equal.adb:25
+  trace at arr_equal.adb:23 --> B = False
+  trace at arr_equal.adb:25 --> A = (0 => 0, others => -2) and A'First = -2 and A'Last = 0
+  trace at arr_equal.ads:10 --> A = (0 => 0, others => -2) and A'First = -2 and A'Last = 0
+counterexample expected for check at arr_equal.adb:34
+  trace at arr_equal.adb:32 --> B = False
+  trace at arr_equal.adb:34 --> A = (0 => 2, others => 3) and A'First = -2 and A'Last = 0
+  trace at arr_equal.ads:13 --> A = (0 => 2, others => 3) and A'First = -2 and A'Last = 0
+counterexample expected for check at arr_equal.adb:43
+  trace at arr_equal.adb:41 --> B = False
+  trace at arr_equal.adb:43 --> A = (0 => 2, others => -2) and A'First = -2 and A'Last = 0
+  trace at arr_equal.ads:16 --> A = (0 => 2, others => -2) and A'First = -2 and A'Last = 0
+counterexample expected for check at arr_equal.adb:59
+  trace at arr_equal.adb:57 --> B = False
+  trace at arr_equal.adb:59 --> A = (-6 => 2, 2 => 3, 3 => 3, others => 1) and A'First = -7 and A'Last = 3
+  trace at arr_equal.ads:19 --> A = (-6 => 2, 2 => 3, 3 => 3, others => 1) and A'First = -7 and A'Last = 3
+counterexample expected for check at arr_not_equal.adb:7
+  trace at arr_not_equal.adb:5 --> B = False
+  trace at arr_not_equal.adb:7 --> A'First = 1 and A'Last = 0
+  trace at arr_not_equal.ads:5 --> A'First = 1 and A'Last = 0
+counterexample expected for check at arr_not_equal.adb:16
+  trace at arr_not_equal.adb:14 --> B = False
+  trace at arr_not_equal.adb:16 --> A = (-2 => 1, -1 => 1, 0 => 1)
+  trace at arr_not_equal.ads:7 --> A = (-2 => 1, -1 => 1, 0 => 1)
+counterexample expected for check at arr_not_equal.adb:25
+  trace at arr_not_equal.adb:23 --> B = False
+  trace at arr_not_equal.adb:25 --> A = (others => 1) and A'First = -2 and A'Last = 0
+  trace at arr_not_equal.ads:10 --> A = (others => 1) and A'First = -2 and A'Last = 0
+counterexample expected for check at arr_not_equal.adb:34
+  trace at arr_not_equal.adb:32 --> B = False
+  trace at arr_not_equal.adb:34 --> A = (-2 => 1, -1 => 2, 0 => 3)
+  trace at arr_not_equal.ads:13 --> A = (-2 => 1, -1 => 2, 0 => 3)
+counterexample expected for check at arr_not_equal.adb:43
+  trace at arr_not_equal.adb:41 --> B = False
+  trace at arr_not_equal.adb:43 --> A = (-2 => 1, -1 => 2, 0 => 3)
+  trace at arr_not_equal.ads:16 --> A = (-2 => 1, -1 => 2, 0 => 3)
+counterexample expected for check at arr_not_equal.adb:59
+  trace at arr_not_equal.adb:57 --> B = False
+  trace at arr_not_equal.adb:59 --> A = (-9 => 3, -8 => 3, -6 => 4, -4 => 5, -2 => 2, -1 => 3, others => 1) and A'First = -10 and A'Last = 0
+  trace at arr_not_equal.ads:19 --> A = (-9 => 3, -8 => 3, -6 => 4, -4 => 5, -2 => 2, -1 => 3, others => 1) and A'First = -10 and A'Last = 0
+counterexample expected for check at palindrom.adb:12
+  trace at palindrom.adb:1 --> Str = (Positive'Last => 'NUL')
+  trace at palindrom.adb:6 --> Length = 1
+  trace at palindrom.adb:7 --> I = Integer'Last
+  trace at palindrom.adb:8 --> J = Integer'Last
+  trace at palindrom.adb:9 --> Stop = Integer'Last
+  trace at palindrom.adb:12 --> I = Integer'Last

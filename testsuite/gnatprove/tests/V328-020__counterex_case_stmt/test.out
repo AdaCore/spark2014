@@ -19,3 +19,42 @@ case_stmt.ads:37:13: warning: subprogram "Index_Range" has no effect
 case_stmt.ads:40:13: warning: subprogram "Index_Subtype" has no effect
 case_stmt.ads:43:13: warning: subprogram "Week_Range" has no effect
 case_stmt.ads:46:13: warning: subprogram "Week_Static_Predicate" has no effect
+counterexample expected for check at case_stmt.adb:11
+  trace at case_stmt.adb:11 --> A = Work
+  trace at case_stmt.ads:37 --> I = 10
+counterexample expected for check at case_stmt.adb:12
+  trace at case_stmt.adb:12 --> A = Party
+  trace at case_stmt.ads:37 --> I = Index'Last-1
+counterexample expected for check at case_stmt.adb:13
+  trace at case_stmt.adb:13 --> A = Sleep
+  trace at case_stmt.ads:37 --> I = 1
+counterexample expected for check at case_stmt.adb:25
+  trace at case_stmt.adb:25 --> J = 1
+  trace at case_stmt.ads:40 --> K = 10
+counterexample expected for check at case_stmt.adb:26
+  trace at case_stmt.adb:26 --> J = 2
+  trace at case_stmt.ads:40 --> K = 15
+counterexample expected for check at case_stmt.adb:27
+  trace at case_stmt.adb:27 --> J = 3
+  trace at case_stmt.ads:40 --> K = 1
+counterexample expected for check at case_stmt.adb:28
+  trace at case_stmt.adb:28 --> J = 4
+  trace at case_stmt.ads:40 --> K = 5
+counterexample expected for check at case_stmt.adb:40
+  trace at case_stmt.adb:40 --> A = Work
+  trace at case_stmt.ads:43 --> D = Mon
+counterexample expected for check at case_stmt.adb:41
+  trace at case_stmt.adb:41 --> A = Party
+  trace at case_stmt.ads:43 --> D = Fri
+counterexample expected for check at case_stmt.adb:42
+  trace at case_stmt.adb:42 --> A = Sleep
+  trace at case_stmt.ads:43 --> D = Sat
+counterexample expected for check at case_stmt.adb:54
+  trace at case_stmt.adb:54 --> A = Sleep
+  trace at case_stmt.ads:46 --> D = Sat
+counterexample expected for check at case_stmt.adb:55
+  trace at case_stmt.adb:55 --> A = Work
+  trace at case_stmt.ads:46 --> D = Wed
+counterexample expected for check at case_stmt.adb:56
+  trace at case_stmt.adb:56 --> A = Work
+  trace at case_stmt.ads:46 --> D = Thu
