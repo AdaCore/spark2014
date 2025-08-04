@@ -10,7 +10,7 @@ import sys
 from time import sleep
 from e3.os.fs import which
 from e3.env import Env
-from e3.os.process import Run
+from e3.os.process import Run, STDOUT
 from test_util import sort_key_for_errors
 
 
@@ -717,11 +717,29 @@ def gcc(src, opt=None):
     print_sorted(str.splitlines(process.out))
 
 
-def gprbuild(opt=None):
+def gprbuild(opt=None, sort_lines=True):
+    """Call gprbuld -q **opt. Sort the output if sort_lines is True."""
     if opt is None:
         opt = []
-    process = Run(["gprbuild", "-q"] + opt)
-    print_sorted(str.splitlines(process.out))
+    process = Run(["gprbuild", "-q"] + opt, error=STDOUT)
+    lines = str.splitlines(process.out)
+    if len(lines) == 0:
+        return
+
+    # Recognize the error markers for gprbuild 1 and gprbuild 2
+    # and replace them with single message.
+    error_found = False
+    if " phase failed" in lines[-1] or " failed with status" in lines[-1]:
+        error_found = True
+        lines = lines[:-1]
+
+    if sort_lines:
+        print_sorted(lines)
+    else:
+        for line in lines:
+            print(line)
+    if error_found:
+        print("[the gprbuild command failed]")
 
 
 def spark_install_path():
