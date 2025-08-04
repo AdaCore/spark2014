@@ -170,7 +170,7 @@ def verify_counterexamples():
     form in the output.
 
     """
-    files = glob.glob("*.ad?")
+    files = sorted(glob.glob("*.ad?"))
     result_files = glob.glob("gnatprove/*.spark")
     is_mark = re.compile(r"@COUNTEREXAMPLE")
 
