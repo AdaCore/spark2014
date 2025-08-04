@@ -991,8 +991,6 @@ package body VC_Kinds is
            "GNAT extension for case pattern matching",
          when Lim_External_Initializer =>
            "GNAT extension for embedded binary resources",
-         when Lim_Finally_Statements =>
-           "GNAT extension for finally statements",
          when Lim_Generic_In_Hidden_Private =>
            "instance of a generic unit declared in a package whose private "
            & "part is hidden outside of this package",
@@ -1039,6 +1037,8 @@ package body VC_Kinds is
          when Lim_Loop_Inv_And_Handler =>
            "a loop invariant in a list of statements with an exception "
            & "handler",
+         when Lim_Loop_Inv_And_Finally =>
+           "a loop invariant in a list of statements with a finally section",
          when Lim_Loop_With_Iterator_Filter =>
            "a loop with an iterator filter in its parameter specification",
          when Lim_Max_Array_Dimension =>

@@ -23,14 +23,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with SPARK_Atree;           use SPARK_Atree;
-with SPARK_Atree.Entities;  use SPARK_Atree.Entities;
-with Types;                 use Types;
-with Why.Atree.Accessors;   use Why.Atree.Accessors;
-with Why.Atree.Modules;     use Why.Atree.Modules;
-with Why.Atree.Traversal;   use Why.Atree.Traversal;
-with Why.Conversions;       use Why.Conversions;
-with Why.Gen.Expr;          use Why.Gen.Expr;
+with SPARK_Atree;          use SPARK_Atree;
+with SPARK_Atree.Entities; use SPARK_Atree.Entities;
+with Types;                use Types;
+with Why.Atree.Accessors;  use Why.Atree.Accessors;
+with Why.Atree.Modules;    use Why.Atree.Modules;
+with Why.Atree.Traversal;  use Why.Atree.Traversal;
+with Why.Conversions;      use Why.Conversions;
+with Why.Gen.Expr;         use Why.Gen.Expr;
 
 package body Why.Gen.Terms is
 
@@ -43,27 +43,23 @@ package body Why.Gen.Terms is
          Found : Boolean;
       end record;
 
-      procedure Deref_Pre_Op
-        (State : in out Collect_State;
-         Node  : W_Deref_Id);
+      procedure Deref_Pre_Op (State : in out Collect_State; Node : W_Deref_Id);
 
       ------------------
       -- Deref_Pre_Op --
       ------------------
 
-      procedure Deref_Pre_Op
-        (State : in out Collect_State;
-         Node  : W_Deref_Id) is
+      procedure Deref_Pre_Op (State : in out Collect_State; Node : W_Deref_Id)
+      is
          pragma Unreferenced (Node);
       begin
-         State.Found   := True;
+         State.Found := True;
          State.Control := Terminate_Immediately;
       end Deref_Pre_Op;
 
-      SS : Collect_State :=
-        (Control => Continue, Found => False);
+      SS : Collect_State := (Control => Continue, Found => False);
 
-   --  Start of processing for Has_Dereference
+      --  Start of processing for Has_Dereference
 
    begin
       Traverse (SS, W);
@@ -79,21 +75,16 @@ package body Why.Gen.Terms is
          Found : Boolean;
       end record;
 
-      procedure Deref_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Deref_Id);
+      procedure Deref_Pre_Op (State : in out Search_State; Node : W_Deref_Id);
 
       procedure Binding_Ref_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Binding_Ref_Id);
+        (State : in out Search_State; Node : W_Binding_Ref_Id);
 
       procedure Any_Expr_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Any_Expr_Id);
+        (State : in out Search_State; Node : W_Any_Expr_Id);
 
       procedure Identifier_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Identifier_Id);
+        (State : in out Search_State; Node : W_Identifier_Id);
       --  Search for occurrences of the "self" special parameter of protected
       --  subprograms, which can be identified by its Ada_Node pointing to the
       --  corresponding protected type.
@@ -102,13 +93,11 @@ package body Why.Gen.Terms is
       -- Deref_Pre_Op --
       ------------------
 
-      procedure Deref_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Deref_Id)
+      procedure Deref_Pre_Op (State : in out Search_State; Node : W_Deref_Id)
       is
          pragma Unreferenced (Node);
       begin
-         State.Found   := True;
+         State.Found := True;
          State.Control := Terminate_Immediately;
       end Deref_Pre_Op;
 
@@ -117,12 +106,11 @@ package body Why.Gen.Terms is
       ------------------------
 
       procedure Binding_Ref_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Binding_Ref_Id)
+        (State : in out Search_State; Node : W_Binding_Ref_Id)
       is
          pragma Unreferenced (Node);
       begin
-         State.Found   := True;
+         State.Found := True;
          State.Control := Terminate_Immediately;
       end Binding_Ref_Pre_Op;
 
@@ -131,12 +119,11 @@ package body Why.Gen.Terms is
       ---------------------
 
       procedure Any_Expr_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Any_Expr_Id)
+        (State : in out Search_State; Node : W_Any_Expr_Id)
       is
          pragma Unreferenced (Node);
       begin
-         State.Found   := True;
+         State.Found := True;
          State.Control := Terminate_Immediately;
       end Any_Expr_Pre_Op;
 
@@ -145,15 +132,12 @@ package body Why.Gen.Terms is
       -----------------------
 
       procedure Identifier_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Identifier_Id)
+        (State : in out Search_State; Node : W_Identifier_Id)
       is
          N : constant Node_Id := Get_Ada_Node (+Node);
       begin
-         if Nkind (N) in N_Entity
-           and then Is_Protected_Type (N)
-         then
-            State.Found   := True;
+         if Nkind (N) in N_Entity and then Is_Protected_Type (N) then
+            State.Found := True;
             State.Control := Terminate_Immediately;
          else
             State.Control := Abandon_Children;
@@ -162,7 +146,7 @@ package body Why.Gen.Terms is
 
       SS : Search_State := (Control => Continue, Found => False);
 
-   --  Start of Processing for Has_Dereference_Or_Any
+      --  Start of Processing for Has_Dereference_Or_Any
 
    begin
       Traverse (SS, +T);
@@ -173,14 +157,15 @@ package body Why.Gen.Terms is
    -- New_Old --
    -------------
 
-   function New_Old (Expr : W_Expr_Id; Domain : EW_Domain) return W_Expr_Id
-   is
+   function New_Old (Expr : W_Expr_Id; Domain : EW_Domain) return W_Expr_Id is
    begin
-      return New_Tagged (Ada_Node => Get_Ada_Node (+Expr),
-                         Def      => Expr,
-                         Tag      => Old_Tag,
-                         Domain   => Domain,
-                         Typ      => Get_Type (Expr));
+      return
+        New_Tagged
+          (Ada_Node => Get_Ada_Node (+Expr),
+           Def      => Expr,
+           Tag      => Old_Tag,
+           Domain   => Domain,
+           Typ      => Get_Type (Expr));
    end New_Old;
 
 end Why.Gen.Terms;

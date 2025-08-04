@@ -23,46 +23,38 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Namet;                           use Namet;
-with Snames;                          use Snames;
-with Why.Types;                       use Why.Types;
+with Namet;     use Namet;
+with Snames;    use Snames;
+with Why.Types; use Why.Types;
 
 package Gnat2Why.Subprograms.Pointers is
 
    procedure Declare_Access_To_Subprogram_Type
-     (Th : Theory_UC;
-      E  : Access_Kind_Id)
-   with
-     Pre => Is_Access_Subprogram_Type (E);
+     (Th : Theory_UC; E : Access_Kind_Id)
+   with Pre => Is_Access_Subprogram_Type (E);
    --  Declare a theory for an access to subprogram type by exporting the
    --  M_Subprogram_Access module. Also declare a specific range predicate
    --  which can be used to express that an access to subprogram object
    --  belongs to the specific access to subprogram type.
 
    procedure Complete_Access_To_Subprogram_Type
-     (Th : Theory_UC;
-      E  : Access_Kind_Id)
-   with
-     Pre => Is_Access_Subprogram_Type (E);
+     (Th : Theory_UC; E : Access_Kind_Id)
+   with Pre => Is_Access_Subprogram_Type (E);
    --  Declare a program function __call_ with appropriate contracts to call
    --  objects of type E in the program domain. For functions, also generate an
    --  axiom supplying the definition of the range predicate of E.
 
    procedure Create_Theory_For_Profile_If_Needed (E : Access_Kind_Id)
-   with
-     Pre => Is_Access_Subprogram_Type (E);
+   with Pre => Is_Access_Subprogram_Type (E);
    --  Create a theory for a profile E if no theory has been declared for the
    --  same profile. For function profiles, this theory contains a logic __call
    --  function which is shared between all access to subprogram types which
    --  have the same profile.
 
    function New_Dynamic_Property_For_Subprogram
-     (Ty     : Access_Kind_Id;
-      Expr   : W_Term_Id;
-      Params : Transformation_Params)
+     (Ty : Access_Kind_Id; Expr : W_Term_Id; Params : Transformation_Params)
       return W_Pred_Id
-   with
-     Pre => Is_Access_Subprogram_Type (Ty);
+   with Pre => Is_Access_Subprogram_Type (Ty);
    --  Compute the dynamic property of an access to subprogram expression. It
    --  calls the range predicate defined in the module for the subprogram type.
    --  For functions, this predicate supplies the contract of the access to
@@ -72,8 +64,7 @@ package Gnat2Why.Subprograms.Pointers is
      (Ada_Node : Entity_Id := Empty;
       Ty       : Access_Kind_Id;
       Expr     : W_Expr_Id;
-      Domain   : EW_Domain)
-      return W_Expr_Id;
+      Domain   : EW_Domain) return W_Expr_Id;
    --  Access the subprogram object designated by a subprogram access Expr. If
    --  Domain is EW_Prog, also perform dereference checks.
 
@@ -82,12 +73,11 @@ package Gnat2Why.Subprograms.Pointers is
       Expr       : W_Expr_Id := Why_Empty;
       From, To   : Entity_Id;
       Params     : Transformation_Params;
-      As_Closure : Boolean := False)
-      return W_Prog_Id
+      As_Closure : Boolean := False) return W_Prog_Id
    with
-     Pre => Is_Access_Subprogram_Type (To)
-       and then (Is_Subprogram (From)
-                  or else Is_Access_Subprogram_Type (From))
+     Pre =>
+       Is_Access_Subprogram_Type (To)
+       and then (Is_Subprogram (From) or else Is_Access_Subprogram_Type (From))
        and then (Is_Subprogram (From) or else Expr /= Why_Empty);
    --  Perform LSP checks to ensure that contracts of To are compatible with
    --  contracts of From. Expr is the Why expression for the subprogram
@@ -102,10 +92,10 @@ package Gnat2Why.Subprograms.Pointers is
    function Transform_Access_Attribute_Of_Subprogram
      (Expr   : N_Attribute_Reference_Id;
       Domain : EW_Domain;
-      Params : Transformation_Params)
-      return W_Expr_Id
+      Params : Transformation_Params) return W_Expr_Id
    with
-     Pre => Attribute_Name (Expr) = Name_Access
+     Pre =>
+       Attribute_Name (Expr) = Name_Access
        and then Is_Access_Subprogram_Type (Etype (Expr));
    --  Transform a reference to the 'Access attribute whose prefix in a
    --  subprogram name. A theory is introduced for accesses to a given

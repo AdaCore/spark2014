@@ -266,7 +266,7 @@ Entries for proof are of the following form::
     { "file"       : string,
       "line"       : int,
       "col"        : int,
-      "message"    : string,
+      "message"    : SARIF message object,
       "suppressed" : string,
       "rule"       : string,
       "severity"   : string,
@@ -274,11 +274,12 @@ Entries for proof are of the following form::
       "check_tree" : list goal,
       "msg_id"     : int,
       "how_proved" : string,
-      "entity"     : entity }
+      "entity"     : entity;
+      "relatedLocations" : SARIF relatedLocations object }
 
 * ("file", "line", "col") describe the source location of the message.
 * "rule" describes the kind of check.
-* "message" is the textual message for the check.
+* "message" -  a SARIF message object
 * "severity" describes the kind status of the message, possible values used
   by gnatwhy3 are "info", "low", "medium", "high" and "error".
 * "tracefile" contains the name of a trace file, if any.
@@ -293,6 +294,8 @@ Entries for proof are of the following form::
   which prover). A special value is "interval", which designates the special
   interval analysis, done in the frontend. It has its own column in the summary
   table.
+* "relatedLocations" - This field follows the SARIF definition for
+  "relatedLocations" and contains locations of interest for the result.
 * "check_tree" basically contains a copy of the session
   tree in JSON format. It's a tree structure whose nodes are goals,
   transformations and proof attempts::

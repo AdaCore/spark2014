@@ -23,9 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Ids;               use Why.Ids;
-with Why.Gen.Binders;       use Why.Gen.Binders;
-with Gnat2Why.Util;         use Gnat2Why.Util;
+with Why.Ids;         use Why.Ids;
+with Why.Gen.Binders; use Why.Gen.Binders;
+with Gnat2Why.Util;   use Gnat2Why.Util;
 
 package Why.Gen.Decl is
    --  This package contains all subprograms that are used to build Why
@@ -36,8 +36,7 @@ package Why.Gen.Decl is
    --  @return Declaration of an abstract logic type named Name
 
    function New_Type_Decl
-     (Name  : W_Name_Id;
-      Alias : W_Type_Id) return W_Declaration_Id;
+     (Name : W_Name_Id; Alias : W_Type_Id) return W_Declaration_Id;
    --  @param  Name name of the new type
    --  @param  Alias type that we want to copy
    --  @return Declaration of a logic type named Name which is transparently
@@ -47,9 +46,7 @@ package Why.Gen.Decl is
    --  @param  Name name of the type for which we want a havoc function
    --  @return Definition of a val havocing its only argument of type name__ref
 
-   procedure Emit
-     (Th   : Theory_UC;
-      Decl : W_Declaration_Id)
+   procedure Emit (Th : Theory_UC; Decl : W_Declaration_Id)
    with Pre => not Th.Finished;
    --  Append Decl to the list of declarations from the current theory in S
    --  @param S section of the Why file where the declaration will be emitted
@@ -81,9 +78,7 @@ package Why.Gen.Decl is
    --      of this record type will append the string "." and the SPARK source
    --      name of the field to the variable being projected.
 
-   procedure Emit_Ref_Type_Definition
-     (Th   : Theory_UC;
-      Name : W_Name_Id);
+   procedure Emit_Ref_Type_Definition (Th : Theory_UC; Name : W_Name_Id);
    --  Emit definition of a record type with one mutable field of type Name and
    --  counterexample projection from this type to this field.
    --  For more information about counterexample projections see documentation

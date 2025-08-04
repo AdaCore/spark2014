@@ -1,0 +1,19 @@
+p.adb:34:14: warning: subprogram "Parse_T1" has no effect
+p.adb:35:07: info: address in address clause is compatible with object alignment (Trivial)
+p.adb:35:07: info: object is suitable for aliasing via address clause (Trivial)
+p.adb:37:20: info: object is suitable for aliasing via address clause (Trivial)
+p.adb:37:20: info: type is suitable as source for unchecked conversion (Trivial)
+p.adb:37:20: info: types of aliased objects have the same size (Trivial)
+p.adb:39:17: warning: subprogram "Parse_T2_Unused_Bits" has no effect
+p.adb:40:10: info: address in address clause is compatible with object alignment (Trivial)
+p.adb:40:10: info: object is suitable for aliasing via address clause (Trivial)
+p.adb:42:23: info: object is suitable for aliasing via address clause (Trivial)
+p.adb:42:23: info: type is suitable as source for unchecked conversion (Trivial)
+p.adb:42:23: info: types of aliased objects have the same size (Trivial)
+p.adb:48:17: warning: subprogram "Parse_T2_Invalid_Values" has no effect
+p.adb:49:10: info: address in address clause is compatible with object alignment (Trivial)
+p.adb:49:10: info: object is suitable for aliasing via address clause (Trivial)
+p.adb:51:23: info: object is suitable for aliasing via address clause (Trivial)
+p.adb:51:23: info: type is suitable as source for unchecked conversion (Trivial)
+p.adb:51:23: info: types of aliased objects have the same size (Trivial)
+p.adb:62:34: info: validity check proved (CVC5: 1 VC)

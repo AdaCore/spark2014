@@ -236,9 +236,9 @@ run-benchmark:
 	testsuite/gnatprove/bench/gaia.py --testsuite-dir=testsuite/gnatprove $(RESULTSDIR)/results.json
 
 format:
-	gnatformat -P gnatprove
+	gnatformat -P gnatprove --no-subprojects
 	gnatformat -P gnat2why/gnat2why.gpr --no-subprojects --ignore gnat2why/gnat2why_ignore_format.txt
 
 check-format:
-	gnatformat -P gnatprove --check
+	gnatformat -P gnatprove --check --no-subprojects
 	gnatformat -P gnat2why/gnat2why.gpr --check --no-subprojects --ignore gnat2why/gnat2why_ignore_format.txt

@@ -161,18 +161,6 @@ package body Flow_Error_Messages is
    --                     first sloc of the node, instead of the topmost node
    --  @return a valid sloc or No_Location when called with Empty node
 
-   function Warning_Is_Suppressed
-     (N   : Node_Id;
-      Msg : String;
-      F1  : Flow_Id := Null_Flow_Id;
-      F2  : Flow_Id := Null_Flow_Id;
-      F3  : Flow_Id := Null_Flow_Id) return String_Id;
-   --  Check if the warning for the given node, message and flow id is
-   --  suppressed. If the function returns No_String, the warning is not
-   --  suppressed. If it returns Null_String_Id the warning is suppressed,
-   --  but no reason has been given. Otherwise, the String_Id of the reason
-   --  is provided.
-
    function Print_Regular_Msg (Obj : JSON_Result_Type) return Message_Id
    with Post => Print_Regular_Msg'Result /= No_Message_Id;
    --  Print a regular error, warning or info message using the frontend
@@ -4902,66 +4890,5 @@ package body Flow_Error_Messages is
         & Sep
         & Image (Natural (Line_Number), 1);
    end Vertex_Sloc_Location;
-
-   ---------------------------
-   -- Warning_Is_Suppressed --
-   ---------------------------
-
-   function Warning_Is_Suppressed
-     (N   : Node_Id;
-      Msg : String;
-      F1  : Flow_Id := Null_Flow_Id;
-      F2  : Flow_Id := Null_Flow_Id;
-      F3  : Flow_Id := Null_Flow_Id) return String_Id
-   is
-
-      function Warning_Disabled_For_Entity return Boolean;
-      --  Returns True if either of N, F1, F2 correspond to an entity that
-      --  Has_Warnings_Off.
-
-      ---------------------------------
-      -- Warning_Disabled_For_Entity --
-      ---------------------------------
-
-      function Warning_Disabled_For_Entity return Boolean is
-
-         function Is_Entity_And_Has_Warnings_Off
-           (N : Node_Or_Entity_Id) return Boolean
-         is ((Nkind (N) in N_Has_Entity
-              and then Present (Entity (N))
-              and then Has_Warnings_Off (Entity (N)))
-             or else (Nkind (N) in N_Entity and then Has_Warnings_Off (N)));
-         --  Returns True if N is an entity and Has_Warnings_Off (N)
-
-         function Is_Entity_And_Has_Warnings_Off (F : Flow_Id) return Boolean
-         is (F.Kind in Direct_Mapping | Record_Field
-             and then Is_Entity_And_Has_Warnings_Off
-                        (Get_Direct_Mapping_Id (F)));
-
-      begin
-         --  ??? if Fn is not present, then there is no point to check F(n+1)
-         return
-           Is_Entity_And_Has_Warnings_Off (N)
-           or else Is_Entity_And_Has_Warnings_Off (F1)
-           or else Is_Entity_And_Has_Warnings_Off (F2)
-           or else Is_Entity_And_Has_Warnings_Off (F3);
-      end Warning_Disabled_For_Entity;
-
-      Suppr_Reason : String_Id := Erroutc.Warnings_Suppressed (Sloc (N));
-
-      --  Start of processing for Warning_Is_Suppressed
-
-   begin
-      if Suppr_Reason = No_String then
-         Suppr_Reason :=
-           Erroutc.Warning_Specifically_Suppressed
-             (Loc => Sloc (N), Msg => Msg'Unrestricted_Access);
-
-         if Suppr_Reason = No_String and then Warning_Disabled_For_Entity then
-            Suppr_Reason := Null_String_Id;
-         end if;
-      end if;
-      return Suppr_Reason;
-   end Warning_Is_Suppressed;
 
 end Flow_Error_Messages;

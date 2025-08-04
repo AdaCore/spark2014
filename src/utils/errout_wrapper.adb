@@ -1,9 +1,12 @@
 with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Assumption_Types;        use Assumption_Types;
 with Atree;                   use Atree;
+with Einfo.Utils;             use Einfo.Utils;
+with Erroutc;
 with Gnat2Why_Args;
 with Gnat2Why_Opts;           use Gnat2Why_Opts;
 with Sinfo.Nodes;             use Sinfo.Nodes;
+with Sinfo.Utils;             use Sinfo.Utils;
 with Sinput;                  use Sinput;
 with SPARK_Util;              use SPARK_Util;
 with Stringt;                 use Stringt;
@@ -39,12 +42,15 @@ package body Errout_Wrapper is
    function To_JSON (M : Message) return JSON_Value;
    --  Transform message object into JSON (SARIF) message object
 
+   function To_SARIF_Msg_Text
+     (S : Unbounded_String; Contains_Placeholder : out Boolean) return String;
+   --  Processes the string object to remove quoting with ''' and replacing &
+   --  by SARIF indices. Set Contains_Placeholder to True if the original
+   --  string contained &.
+
    function Node_To_Name (N : Node_Id) return String;
    --  Convert the node to a String. This is mostly a wrapper around
    --  Source_Name.
-
-   function Contains_Placeholder (S : String) return Boolean;
-   --  Return True if S contains a '&' name placeholder.
 
    function Add_Default_Name (Msg : Message; N : Node_Id) return Message;
    --  If the message doesn't contain any names, add the node N as a single
@@ -83,6 +89,30 @@ package body Errout_Wrapper is
       Set_Field (Value, "line", Line);
       Set_Field (Value, "col", Col);
       Set_Field (Value, "message", To_JSON (Obj.Msg));
+
+      if Obj.Msg.Secondary_Loc /= No_Location then
+         declare
+            Locations     : JSON_Array;
+            Location      : constant JSON_Value := Create_Object;
+            Phys_Location : constant JSON_Value := Create_Object;
+            Region        : constant JSON_Value := Create_Object;
+            File          : constant String :=
+              File_Name (Obj.Msg.Secondary_Loc);
+            Line          : constant Natural :=
+              Positive (Get_Logical_Line_Number (Obj.Msg.Secondary_Loc));
+            Col           : constant Natural :=
+              Positive (Get_Column_Number (Obj.Msg.Secondary_Loc));
+         begin
+            Set_Field (Phys_Location, "uri", File);
+            Set_Field (Region, "startLine", Line);
+            Set_Field (Region, "startColumn", Col);
+            Set_Field (Phys_Location, "region", Region);
+            Set_Field (Location, "physicalLocation", Phys_Location);
+            Set_Field (Location, "id", Integer'(0));
+            Append (Locations, Location);
+            Set_Field (Value, "relatedLocations", Locations);
+         end;
+      end if;
 
       if Obj.Suppr.Suppression_Kind in Warning | Check then
          declare
@@ -158,9 +188,9 @@ package body Errout_Wrapper is
       Append (Msg_List, Value);
    end Add_Json_Msg;
 
-   --------------------------
-   -- Generic_Print_Result --
-   --------------------------
+   -----------
+   -- Print --
+   -----------
 
    procedure Print
      (Msg           : Message;
@@ -274,27 +304,6 @@ package body Errout_Wrapper is
          end if;
       end;
    end Print;
-
-   --------------------------
-   -- Contains_Placeholder --
-   --------------------------
-
-   function Contains_Placeholder (S : String) return Boolean is
-      Skip : Boolean := False;
-   begin
-      for C of S loop
-         if Skip then
-            Skip := False;
-         else
-            if C = ''' then
-               Skip := True;
-            elsif C = '&' then
-               return True;
-            end if;
-         end if;
-      end loop;
-      return False;
-   end Contains_Placeholder;
 
    ------------
    -- Create --
@@ -617,11 +626,13 @@ package body Errout_Wrapper is
    end To_JSON;
 
    function To_JSON (M : Message) return JSON_Value is
-      Result   : constant JSON_Value := Create_Object;
-      Msg_Text : constant String := To_String (M.Msg);
+      Result               : constant JSON_Value := Create_Object;
+      Contains_Placeholder : Boolean;
+      Msg_Text             : constant String :=
+        To_SARIF_Msg_Text (M.Msg, Contains_Placeholder);
    begin
       Set_Field (Result, "text", Msg_Text);
-      if not M.Names.Is_Empty and then Contains_Placeholder (Msg_Text) then
+      if not M.Names.Is_Empty and then Contains_Placeholder then
          declare
             Args : JSON_Array;
          begin
@@ -633,6 +644,112 @@ package body Errout_Wrapper is
       end if;
       return Result;
    end To_JSON;
+
+   -----------------------
+   -- To_SARIF_Msg_Text --
+   -----------------------
+
+   function To_SARIF_Msg_Text
+     (S : Unbounded_String; Contains_Placeholder : out Boolean) return String
+   is
+      Result  : Unbounded_String;
+      Counter : Integer := 0;
+      Index   : Integer := 1;
+      Len     : constant Integer := Length (S);
+   begin
+      Contains_Placeholder := False;
+      while Index in 1 .. Len loop
+         case Element (S, Index) is
+            when ''' =>
+               if Index < Len and then Element (S, Index + 1) in '&' | '#' then
+                  Append (Result, Element (S, Index + 1));
+                  Index := Index + 1;
+               else
+                  Append (Result, ''');
+               end if;
+
+            when '&' =>
+               declare
+                  Img : constant String := Counter'Img;
+               begin
+                  Append (Result, '{');
+                  Append (Result, Img (Img'First + 1 .. Img'Last));
+                  Append (Result, '}');
+               end;
+               Counter := Counter + 1;
+               Contains_Placeholder := True;
+
+            when '#' =>
+               Append (Result, "[here](0)");
+
+            when others =>
+               Append (Result, Element (S, Index));
+         end case;
+         Index := Index + 1;
+      end loop;
+      return To_String (Result);
+   end To_SARIF_Msg_Text;
+
+   ---------------------------
+   -- Warning_Is_Suppressed --
+   ---------------------------
+
+   function Warning_Is_Suppressed
+     (N   : Node_Id;
+      Msg : String;
+      F1  : Flow_Id := Null_Flow_Id;
+      F2  : Flow_Id := Null_Flow_Id;
+      F3  : Flow_Id := Null_Flow_Id) return String_Id
+   is
+
+      function Warning_Disabled_For_Entity return Boolean;
+      --  Returns True if either of N, F1, F2 correspond to an entity that
+      --  Has_Warnings_Off.
+
+      ---------------------------------
+      -- Warning_Disabled_For_Entity --
+      ---------------------------------
+
+      function Warning_Disabled_For_Entity return Boolean is
+
+         function Is_Entity_And_Has_Warnings_Off
+           (N : Node_Or_Entity_Id) return Boolean
+         is ((Nkind (N) in N_Has_Entity
+              and then Present (Entity (N))
+              and then Has_Warnings_Off (Entity (N)))
+             or else (Nkind (N) in N_Entity and then Has_Warnings_Off (N)));
+         --  Returns True if N is an entity and Has_Warnings_Off (N)
+
+         function Is_Entity_And_Has_Warnings_Off (F : Flow_Id) return Boolean
+         is (F.Kind in Direct_Mapping | Record_Field
+             and then Is_Entity_And_Has_Warnings_Off
+                        (Get_Direct_Mapping_Id (F)));
+
+      begin
+         --  ??? if Fn is not present, then there is no point to check F(n+1)
+         return
+           Is_Entity_And_Has_Warnings_Off (N)
+           or else Is_Entity_And_Has_Warnings_Off (F1)
+           or else Is_Entity_And_Has_Warnings_Off (F2)
+           or else Is_Entity_And_Has_Warnings_Off (F3);
+      end Warning_Disabled_For_Entity;
+
+      Suppr_Reason : String_Id := Erroutc.Warnings_Suppressed (Sloc (N));
+
+      --  Start of processing for Warning_Is_Suppressed
+
+   begin
+      if Suppr_Reason = No_String then
+         Suppr_Reason :=
+           Erroutc.Warning_Specifically_Suppressed
+             (Loc => Sloc (N), Msg => Msg'Unrestricted_Access);
+
+         if Suppr_Reason = No_String and then Warning_Disabled_For_Entity then
+            Suppr_Reason := Null_String_Id;
+         end if;
+      end if;
+      return Suppr_Reason;
+   end Warning_Is_Suppressed;
 
    -------------------
    -- Warning_Msg_N --
@@ -673,22 +790,34 @@ package body Errout_Wrapper is
         (if Warning_Status (Kind) = WS_Error
          then Error_Kind
          else Warning_Kind);
+      My_Msg     : constant Message := Add_Default_Name (Msg, N);
+      My_Conts   : Message_Lists.List;
    begin
+      for Msg of Continuations loop
+         My_Conts.Append (Add_Default_Name (Msg, N));
+      end loop;
       if not Suppressed then
-         Error_Msg_N (Msg, N, Severity, First, Continuations, False);
+         Error_Msg_N (Msg, N, Severity, First, My_Conts, False);
       end if;
       declare
-         Result : constant JSON_Result_Type :=
+         --  The message can be suppressed via the warning tags, or via pragma
+         --  Warnings (Off), check for the second way here.
+         Was_Suppressed : constant Boolean :=
+           Suppressed
+           or else Warning_Is_Suppressed (N, To_String (My_Msg.Msg))
+                   /= No_String;
+         Result         : constant JSON_Result_Type :=
            JSON_Result_Type'
-             (Msg      => Msg,
-              Severity => Severity,
-              Tag      => To_Unbounded_String (Kind_Name (Kind)),
-              Span     => To_Span (Sloc (N)),
-              Suppr    =>
-                (if Suppressed
+             (Msg           => My_Msg,
+              Severity      => Severity,
+              Tag           => To_Unbounded_String (Kind_Name (Kind)),
+              Span          => To_Span (Sloc (N)),
+              Suppr         =>
+                (if Was_Suppressed
                  then Suppressed_Warning
                  else No_Suppressed_Message),
-              others   => <>);
+              Continuations => My_Conts,
+              others        => <>);
       begin
          Add_Json_Msg (Warnings_Errors, Result);
       end;

@@ -23,49 +23,50 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
-with Flow_Utility;                   use Flow_Utility;
-with GNAT.Source_Info;               use GNAT.Source_Info;
-with Gnat2Why.Expr;                  use Gnat2Why.Expr;
-with Sinput;                         use Sinput;
-with SPARK_Util;                     use SPARK_Util;
-with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
-with SPARK_Util.Types;               use SPARK_Util.Types;
-with String_Utils;                   use String_Utils;
-with VC_Kinds;                       use VC_Kinds;
-with Why.Atree.Accessors;            use Why.Atree.Accessors;
-with Why.Atree.Builders;             use Why.Atree.Builders;
-with Why.Atree.Modules;              use Why.Atree.Modules;
-with Why.Conversions;                use Why.Conversions;
-with Why.Gen.Decl;                   use Why.Gen.Decl;
-with Why.Gen.Expr;                   use Why.Gen.Expr;
-with Why.Gen.Names;                  use Why.Gen.Names;
-with Why.Gen.Progs;                  use Why.Gen.Progs;
-with Why.Images;                     use Why.Images;
-with Why.Inter;                      use Why.Inter;
+with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
+with Flow_Utility;           use Flow_Utility;
+with GNAT.Source_Info;       use GNAT.Source_Info;
+with Gnat2Why.Expr;          use Gnat2Why.Expr;
+with Sinput;                 use Sinput;
+with SPARK_Util;             use SPARK_Util;
+with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
+with SPARK_Util.Types;       use SPARK_Util.Types;
+with String_Utils;           use String_Utils;
+with VC_Kinds;               use VC_Kinds;
+with Why.Atree.Accessors;    use Why.Atree.Accessors;
+with Why.Atree.Builders;     use Why.Atree.Builders;
+with Why.Atree.Modules;      use Why.Atree.Modules;
+with Why.Conversions;        use Why.Conversions;
+with Why.Gen.Decl;           use Why.Gen.Decl;
+with Why.Gen.Expr;           use Why.Gen.Expr;
+with Why.Gen.Names;          use Why.Gen.Names;
+with Why.Gen.Progs;          use Why.Gen.Progs;
+with Why.Images;             use Why.Images;
+with Why.Inter;              use Why.Inter;
 
 package body Gnat2Why.Subprograms.Pointers is
 
    Access_Ids : Ada_To_Why_Ident.Map := Ada_To_Why_Ident.Empty_Map;
    --  Maps Subprogram entities to the Why identifiers for their access
 
-   function Subp_Binder return Binder_Type is
-     (Ada_Node => Empty,
-      B_Name   => New_Temp_Identifier
-        (Typ       => M_Subprogram_Access.Subprogram_Type,
-         Base_Name => "subprogram"),
-      B_Ent    => Null_Entity_Name,
-      Mutable  => False,
-      Labels   => Symbol_Sets.Empty_Set);
+   function Subp_Binder return Binder_Type
+   is (Ada_Node => Empty,
+       B_Name   =>
+         New_Temp_Identifier
+           (Typ       => M_Subprogram_Access.Subprogram_Type,
+            Base_Name => "subprogram"),
+       B_Ent    => Null_Entity_Name,
+       Mutable  => False,
+       Labels   => Symbol_Sets.Empty_Set);
    --  Binder to be used for the parameter representing the subprogram in calls
    --  through access to subprograms.
 
    function Check_LSP_For_Subprogram_Access
-     (Ada_Node : Node_Id;
-      From, To : Entity_Id;
-      Params   : Transformation_Params)
+     (Ada_Node : Node_Id; From, To : Entity_Id; Params : Transformation_Params)
       return W_Prog_Id
-   with Pre => Present (Ada_Node)
+   with
+     Pre =>
+       Present (Ada_Node)
        and then Ekind (From) in Subprogram_Kind | E_Subprogram_Type
        and then Ekind (To) in Subprogram_Kind | E_Subprogram_Type;
    --  Introduce LSP checks to ensure that the contracts of From (if any) are
@@ -73,11 +74,12 @@ package body Gnat2Why.Subprograms.Pointers is
    --  already set and does not perform sandboxing.
 
    procedure Declare_Theory_For_Access_If_Needed
-     (Expr     :     Entity_Id;
-      Logic_Id : out W_Identifier_Id)
-   with Pre => Nkind (Expr) = N_Attribute_Reference
-     and then Nkind (Prefix (Expr)) in N_Has_Entity
-     and then Is_Subprogram (Entity (Prefix (Expr)));
+     (Expr : Entity_Id; Logic_Id : out W_Identifier_Id)
+   with
+     Pre =>
+       Nkind (Expr) = N_Attribute_Reference
+       and then Nkind (Prefix (Expr)) in N_Has_Entity
+       and then Is_Subprogram (Entity (Prefix (Expr)));
    --  Declare a theory containing a logic constant of type __subprogram
    --  standing for the object designated by every access to the prefix of
    --  Expr. If one already exists, none is created. Regardless, Logic_Id is
@@ -91,17 +93,15 @@ package body Gnat2Why.Subprograms.Pointers is
    -------------------------------------
 
    function Check_LSP_For_Subprogram_Access
-     (Ada_Node : Node_Id;
-      From, To : Entity_Id;
-      Params   : Transformation_Params)
+     (Ada_Node : Node_Id; From, To : Entity_Id; Params : Transformation_Params)
       return W_Prog_Id
    is
-      Need_Post_Check  : constant Boolean :=
+      Need_Post_Check : constant Boolean :=
         Has_Contracts (To, Pragma_Postcondition)
         or else Has_Contracts (To, Pragma_Contract_Cases);
       --  True if we need to check the compatibility of postconditions
 
-      Need_Pre_Check   : constant Boolean :=
+      Need_Pre_Check : constant Boolean :=
         Has_Contracts (From, Pragma_Precondition);
       --  True if we need to check the compatibility of preconditions
 
@@ -123,10 +123,12 @@ package body Gnat2Why.Subprograms.Pointers is
          From_Post        : W_Pred_Id;
          From_Post_Assume : W_Prog_Id;
          From_Effects     : W_Prog_Id;
-         Why_Body         : W_Prog_Id := Sequence
-           ((1 => New_Comment
-             (Comment => NID ("Assume the precondition of target")),
-             2 => To_Pre_Assume));
+         Why_Body         : W_Prog_Id :=
+           Sequence
+             ((1 =>
+                 New_Comment
+                   (Comment => NID ("Assume the precondition of target")),
+               2 => To_Pre_Assume));
 
       begin
          --  If From has a specific precondition, check that it is implied by
@@ -135,17 +137,20 @@ package body Gnat2Why.Subprograms.Pointers is
          if Need_Pre_Check then
             From_Pre :=
               +Compute_Spec (Params, From, Pragma_Precondition, EW_Pred);
-            From_Pre_Check := New_Located_Assert
-              (Ada_Node => Ada_Node,
-               Pred     => From_Pre,
-               Reason   => VC_Weaker_Pre_Access,
-               Kind     => EW_Assert);
+            From_Pre_Check :=
+              New_Located_Assert
+                (Ada_Node => Ada_Node,
+                 Pred     => From_Pre,
+                 Reason   => VC_Weaker_Pre_Access,
+                 Kind     => EW_Assert);
 
-            Why_Body := Sequence
-              ((1 => Why_Body,
-                2 => New_Comment
-                  (Comment => NID ("Check the precondition of source")),
-                3 => From_Pre_Check));
+            Why_Body :=
+              Sequence
+                ((1 => Why_Body,
+                  2 =>
+                    New_Comment
+                      (Comment => NID ("Check the precondition of source")),
+                  3 => From_Pre_Check));
          end if;
 
          --  If To has a specific postcondition, check that it necessarily
@@ -156,51 +161,56 @@ package body Gnat2Why.Subprograms.Pointers is
          if Need_Post_Check then
             To_Post :=
               +New_And_Expr
-              (Left   =>
-                 +Compute_Spec (Params, To, Pragma_Postcondition, EW_Pred),
-               Right  => +Compute_CC_And_EC_Postcondition (Params, To),
-               Domain => EW_Pred);
-            To_Post_RTE := New_Ignore
-              (Ada_Node => Ada_Node,
-               Prog     =>
-                 +Compute_Spec (Params, To, Pragma_Postcondition, EW_Prog));
-            To_Post_Check := New_Located_Assert
-              (Ada_Node => Ada_Node,
-               Pred     => To_Post,
-               Reason   => VC_Stronger_Post_Access,
-               Kind     => EW_Assert);
+                 (Left   =>
+                    +Compute_Spec (Params, To, Pragma_Postcondition, EW_Pred),
+                  Right  => +Compute_CC_And_EC_Postcondition (Params, To),
+                  Domain => EW_Pred);
+            To_Post_RTE :=
+              New_Ignore
+                (Ada_Node => Ada_Node,
+                 Prog     =>
+                   +Compute_Spec (Params, To, Pragma_Postcondition, EW_Prog));
+            To_Post_Check :=
+              New_Located_Assert
+                (Ada_Node => Ada_Node,
+                 Pred     => To_Post,
+                 Reason   => VC_Stronger_Post_Access,
+                 Kind     => EW_Assert);
             From_Post :=
               +New_And_Expr
-              (Left   =>
-                 +Compute_Spec (Params, From, Pragma_Postcondition, EW_Pred),
-               Right  => +Compute_CC_And_EC_Postcondition (Params, From),
-               Domain => EW_Pred);
-            From_Post_Assume :=
-              New_Assume_Statement (Pred => From_Post);
-            From_Effects :=
-              Compute_Call_Effects (Params, From);
+                 (Left   =>
+                    +Compute_Spec
+                       (Params, From, Pragma_Postcondition, EW_Pred),
+                  Right  => +Compute_CC_And_EC_Postcondition (Params, From),
+                  Domain => EW_Pred);
+            From_Post_Assume := New_Assume_Statement (Pred => From_Post);
+            From_Effects := Compute_Call_Effects (Params, From);
 
-            Why_Body := Sequence
-              ((1 => Why_Body,
-                2 => New_Comment
-                  (Comment =>
-                     NID ("Simulate the effect of a call to source")),
-                3 => From_Effects,
-                4 => New_Comment
-                  (Comment => NID ("Assume the postcondition of source")),
-                5 => From_Post_Assume,
-                6 => New_Comment
-                  (Comment =>
-                     NID ("Check RTE in the postcondition of target")),
-                7 => To_Post_RTE,
-                8 => New_Comment
-                  (Comment => NID ("Check the postcondition of target")),
-                9 => To_Post_Check));
+            Why_Body :=
+              Sequence
+                ((1 => Why_Body,
+                  2 =>
+                    New_Comment
+                      (Comment =>
+                         NID ("Simulate the effect of a call to source")),
+                  3 => From_Effects,
+                  4 =>
+                    New_Comment
+                      (Comment => NID ("Assume the postcondition of source")),
+                  5 => From_Post_Assume,
+                  6 =>
+                    New_Comment
+                      (Comment =>
+                         NID ("Check RTE in the postcondition of target")),
+                  7 => To_Post_RTE,
+                  8 =>
+                    New_Comment
+                      (Comment => NID ("Check the postcondition of target")),
+                  9 => To_Post_Check));
          end if;
 
          Prepend
-           (Compute_Dynamic_Property_For_Inputs (Params => Params,
-                                                 E      => To),
+           (Compute_Dynamic_Property_For_Inputs (Params => Params, E => To),
             Why_Body);
 
          if Need_Post_Check then
@@ -210,12 +220,13 @@ package body Gnat2Why.Subprograms.Pointers is
                Collect_Old_For_Subprogram (From, Old_Parts);
                Collect_Old_For_Subprogram (To, Old_Parts);
 
-               Why_Body := +Bind_From_Mapping_In_Expr
-                 (Params => Params,
-                  Map    => Map_For_Old,
-                  Expr   => +Why_Body,
-                  Domain => EW_Pterm,
-                  Subset => Old_Parts);
+               Why_Body :=
+                 +Bind_From_Mapping_In_Expr
+                    (Params => Params,
+                     Map    => Map_For_Old,
+                     Expr   => +Why_Body,
+                     Domain => EW_Pterm,
+                     Subset => Old_Parts);
             end;
          end if;
 
@@ -232,14 +243,12 @@ package body Gnat2Why.Subprograms.Pointers is
       Expr       : W_Expr_Id := Why_Empty;
       From, To   : Entity_Id;
       Params     : Transformation_Params;
-      As_Closure : Boolean := False)
-      return W_Prog_Id
+      As_Closure : Boolean := False) return W_Prog_Id
    is
-      From_Access            : constant Boolean := not Is_Subprogram (From);
-      From_Profile           : constant Entity_Id :=
+      From_Access  : constant Boolean := not Is_Subprogram (From);
+      From_Profile : constant Entity_Id :=
         (if From_Access then Directly_Designated_Type (From) else From);
-      To_Profile             : constant Entity_Id :=
-        Directly_Designated_Type (To);
+      To_Profile   : constant Entity_Id := Directly_Designated_Type (To);
 
       function Binders_For_Effects return Item_Array;
       --  Return binders for the effects of To, plus any additional one in From
@@ -256,22 +265,23 @@ package body Gnat2Why.Subprograms.Pointers is
             declare
                Dummy : Flow_Id_Sets.Set;
             begin
-               Flow_Utility.Get_Proof_Globals (Subprogram      => From_Profile,
-                                               Reads           => From_Reads,
-                                               Writes          => Dummy,
-                                               Erase_Constants => True);
+               Flow_Utility.Get_Proof_Globals
+                 (Subprogram      => From_Profile,
+                  Reads           => From_Reads,
+                  Writes          => Dummy,
+                  Erase_Constants => True);
             end;
          end if;
 
          return Compute_Binders_For_Effects (To_Profile, From_Reads);
       end Binders_For_Effects;
 
-      From_Formals           : constant Item_Array :=
+      From_Formals : constant Item_Array :=
         Compute_Subprogram_Parameters (From_Profile, EW_Prog);
-      To_Formals             : constant Item_Array (From_Formals'Range) :=
+      To_Formals   : constant Item_Array (From_Formals'Range) :=
         Compute_Subprogram_Parameters (To_Profile, EW_Prog);
-      Effects                : Item_Array := Binders_For_Effects;
-      Checks                 : W_Prog_Id;
+      Effects      : Item_Array := Binders_For_Effects;
+      Checks       : W_Prog_Id;
 
       --  As this check can occur anywhere during the translation, we need to
       --  preserve the result name.
@@ -315,9 +325,7 @@ package body Gnat2Why.Subprograms.Pointers is
             Node : constant Node_Id := Get_Ada_Node_From_Item (B);
          begin
             if Present (Node) then
-               Ada_Ent_To_Why.Insert (Symbol_Table,
-                                      Node,
-                                      From_Formals (I));
+               Ada_Ent_To_Why.Insert (Symbol_Table, Node, From_Formals (I));
             end if;
          end;
       end loop;
@@ -325,21 +333,20 @@ package body Gnat2Why.Subprograms.Pointers is
       --  For functions, we need an identifier for the result of the call. It
       --  is not necessary for handlers which cannot have a postcondition.
 
-      if Is_Function_Type (To_Profile)
-        and then not Has_Handler_Annotation (To)
+      if Is_Function_Type (To_Profile) and then not Has_Handler_Annotation (To)
       then
          Result_Is_Mutable := False;
          Result_Name :=
            New_Temp_Identifier
-             (Base_Name => "result",
-              Typ       => Type_Of_Node (To_Profile));
+             (Base_Name => "result", Typ => Type_Of_Node (To_Profile));
       end if;
 
-      Checks := Check_LSP_For_Subprogram_Access
-        (Ada_Node => Ada_Node,
-         From     => From_Profile,
-         To       => To_Profile,
-         Params   => Params);
+      Checks :=
+        Check_LSP_For_Subprogram_Access
+          (Ada_Node => Ada_Node,
+           From     => From_Profile,
+           To       => To_Profile,
+           Params   => Params);
 
       --  Bind the identifier for the result of the call. We could leave it
       --  undefined, as we assume the postcondition of the source subprogram
@@ -356,17 +363,19 @@ package body Gnat2Why.Subprograms.Pointers is
       --  prove the postcondition of functions (eg. if Expr was created as
       --  the 'Access attribute of a function with a precise postcondition).
 
-      if Is_Function_Type (To_Profile)
-        and then not Has_Handler_Annotation (To)
+      if Is_Function_Type (To_Profile) and then not Has_Handler_Annotation (To)
       then
          declare
-            Subp_Value   : constant W_Expr_Array :=
-              (if not From_Access then (1 .. 0 => <>)
-               else (1 => New_Subprogram_Value_Access
-                     (Ada_Node => Ada_Node,
-                      Ty       => From,
-                      Expr     => Expr,
-                      Domain   => EW_Pterm)));
+            Subp_Value : constant W_Expr_Array :=
+              (if not From_Access
+               then (1 .. 0 => <>)
+               else
+                 (1 =>
+                    New_Subprogram_Value_Access
+                      (Ada_Node => Ada_Node,
+                       Ty       => From,
+                       Expr     => Expr,
+                       Domain   => EW_Pterm)));
             --  We compute the access in the Pterm domain as we don't want to
             --  generate a dereference check here. This code will be protected
             --  by a conditional making sure that Expr is not null here.
@@ -376,42 +385,53 @@ package body Gnat2Why.Subprograms.Pointers is
             Formal_Args  : constant W_Expr_Array :=
               (if From_Formals'Length = 0 and From_Effects'Length = 0
                then (1 => +Void)
-               else Get_Args_From_Binders
-                 (To_Binder_Array (From_Formals & From_Effects),
-                  Ref_Allowed => Params.Ref_Allowed));
+               else
+                 Get_Args_From_Binders
+                   (To_Binder_Array (From_Formals & From_Effects),
+                    Ref_Allowed => Params.Ref_Allowed));
             Call_Id      : constant W_Identifier_Id :=
-              (if From_Access then Get_Logic_Function (To_Profile)
+              (if From_Access
+               then Get_Logic_Function (To_Profile)
                else To_Why_Id (From_Profile, Domain => EW_Pterm));
             Need_Guard   : constant Boolean :=
-              (if From_Access then Use_Guard_For_Function (To_Profile)
+              (if From_Access
+               then Use_Guard_For_Function (To_Profile)
                else Use_Guard_For_Function (From_Profile));
             Guard_Id     : constant W_Identifier_Id :=
-              (if From_Access then Get_Logic_Function_Guard (To_Profile)
+              (if From_Access
+               then Get_Logic_Function_Guard (To_Profile)
                else Guard_Predicate_Name (From_Profile));
 
          begin
             if Need_Guard then
-               Checks := Sequence
-                 (Ada_Node => Ada_Node,
-                  Left     => New_Assume_Statement
-                    (Ada_Node => Ada_Node,
-                     Pred     => New_Call
-                       (Name => Guard_Id,
-                        Args => (1 => +Result_Name) & Subp_Value & Formal_Args,
-                        Typ  => Get_Typ (Result_Name))),
-                  Right    => Checks);
+               Checks :=
+                 Sequence
+                   (Ada_Node => Ada_Node,
+                    Left     =>
+                      New_Assume_Statement
+                        (Ada_Node => Ada_Node,
+                         Pred     =>
+                           New_Call
+                             (Name => Guard_Id,
+                              Args =>
+                                (1 => +Result_Name) & Subp_Value & Formal_Args,
+                              Typ  => Get_Typ (Result_Name))),
+                    Right    => Checks);
             end if;
 
-            Checks := New_Binding
-              (Ada_Node => Ada_Node,
-               Name     => Result_Name,
-               Def      => +W_Expr_Id'(New_Call
-                 (Domain  => EW_Pterm,
-                  Name    => Call_Id,
-                  Args    => Subp_Value & Formal_Args,
-                  Typ     => Get_Typ (Result_Name))),
-               Context  => Checks,
-               Typ      => EW_Unit_Type);
+            Checks :=
+              New_Binding
+                (Ada_Node => Ada_Node,
+                 Name     => Result_Name,
+                 Def      =>
+                   +W_Expr_Id'
+                     (New_Call
+                        (Domain => EW_Pterm,
+                         Name   => Call_Id,
+                         Args   => Subp_Value & Formal_Args,
+                         Typ    => Get_Typ (Result_Name))),
+                 Context  => Checks,
+                 Typ      => EW_Unit_Type);
 
             --  Restore the result name
 
@@ -424,23 +444,27 @@ package body Gnat2Why.Subprograms.Pointers is
 
       for Binder of To_Binder_Array (From_Formals) loop
          if Binder.Mutable then
-            Checks := New_Binding_Ref
-              (Ada_Node => Ada_Node,
-               Name     => Binder.B_Name,
-               Def      => New_Any_Expr
-                 (Return_Type => Get_Typ (Binder.B_Name),
-                  Labels      => Symbol_Sets.Empty_Set),
-               Context  => Checks,
-               Typ      => EW_Unit_Type);
+            Checks :=
+              New_Binding_Ref
+                (Ada_Node => Ada_Node,
+                 Name     => Binder.B_Name,
+                 Def      =>
+                   New_Any_Expr
+                     (Return_Type => Get_Typ (Binder.B_Name),
+                      Labels      => Symbol_Sets.Empty_Set),
+                 Context  => Checks,
+                 Typ      => EW_Unit_Type);
          else
-            Checks := New_Binding
-              (Ada_Node => Ada_Node,
-               Name     => Binder.B_Name,
-               Def      => New_Any_Expr
-                 (Return_Type => Get_Typ (Binder.B_Name),
-                  Labels      => Symbol_Sets.Empty_Set),
-               Context  => Checks,
-               Typ      => EW_Unit_Type);
+            Checks :=
+              New_Binding
+                (Ada_Node => Ada_Node,
+                 Name     => Binder.B_Name,
+                 Def      =>
+                   New_Any_Expr
+                     (Return_Type => Get_Typ (Binder.B_Name),
+                      Labels      => Symbol_Sets.Empty_Set),
+                 Context  => Checks,
+                 Typ      => EW_Unit_Type);
          end if;
       end loop;
 
@@ -448,32 +472,35 @@ package body Gnat2Why.Subprograms.Pointers is
 
       for Binder of To_Binder_Array (Effects) loop
          if Binder.Mutable then
-            Checks := New_Binding_Ref
-              (Ada_Node => Ada_Node,
-               Name     => Binder.B_Name,
-               Def      => New_Any_Expr
-                 (Return_Type => Get_Typ (Binder.B_Name),
-                  Labels      => Symbol_Sets.Empty_Set),
-               Context  => Checks,
-               Typ      => EW_Unit_Type);
+            Checks :=
+              New_Binding_Ref
+                (Ada_Node => Ada_Node,
+                 Name     => Binder.B_Name,
+                 Def      =>
+                   New_Any_Expr
+                     (Return_Type => Get_Typ (Binder.B_Name),
+                      Labels      => Symbol_Sets.Empty_Set),
+                 Context  => Checks,
+                 Typ      => EW_Unit_Type);
          end if;
       end loop;
 
-      Checks := New_Ignore
-        (Ada_Node => Ada_Node,
-         Prog     => Checks);
+      Checks := New_Ignore (Ada_Node => Ada_Node, Prog => Checks);
 
       --  Only do the check if Expr is not null
 
       if From_Access then
-         Checks := New_Conditional
-           (Condition => New_Not
-              (Right  => New_Record_Access
-                   (Name  => +Expr,
-                    Field => M_Subprogram_Access.Rec_Is_Null,
-                    Typ   => EW_Bool_Type)),
-            Then_Part => Checks,
-            Typ       => EW_Unit_Type);
+         Checks :=
+           New_Conditional
+             (Condition =>
+                New_Not
+                  (Right =>
+                     New_Record_Access
+                       (Name  => +Expr,
+                        Field => M_Subprogram_Access.Rec_Is_Null,
+                        Typ   => EW_Bool_Type)),
+              Then_Part => Checks,
+              Typ       => EW_Unit_Type);
       end if;
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
@@ -486,11 +513,9 @@ package body Gnat2Why.Subprograms.Pointers is
    ----------------------------------------
 
    procedure Complete_Access_To_Subprogram_Type
-     (Th : Theory_UC;
-      E  : Access_Kind_Id)
+     (Th : Theory_UC; E : Access_Kind_Id)
    is
-      Spec_Binders : constant Binder_Array :=
-        Binder_Array'(1 => Subp_Binder);
+      Spec_Binders : constant Binder_Array := Binder_Array'(1 => Subp_Binder);
       Profile      : constant Entity_Id := Directly_Designated_Type (E);
 
    begin
@@ -520,11 +545,12 @@ package body Gnat2Why.Subprograms.Pointers is
         (Th           => Th,
          E            => Profile,
          Spec_Binders => Spec_Binders,
-         Spec_Guard   => +New_Call
-           (Domain  => EW_Pred,
-            Name    => E_Symb (E, WNE_Range_Pred),
-            Binders => Spec_Binders,
-            Typ     => EW_Bool_Type));
+         Spec_Guard   =>
+           +New_Call
+              (Domain  => EW_Pred,
+               Name    => E_Symb (E, WNE_Range_Pred),
+               Binders => Spec_Binders,
+               Typ     => EW_Bool_Type));
 
       Result_Name := Why_Empty;
       Result_Is_Mutable := False;
@@ -541,28 +567,32 @@ package body Gnat2Why.Subprograms.Pointers is
       Result_Is_Mutable_Save       : constant Boolean := Result_Is_Mutable;
       Theory_Name                  : constant Symbol :=
         Get_Specialization_Theory_Name (Call);
-      Module                       : constant W_Module_Id := New_Module
-        (File => No_Symbol,
-         Name => Img (Theory_Name));
-      Ax_Module                    : constant W_Module_Id := New_Module
-        (File => No_Symbol,
-         Name => Img (Theory_Name) & To_String (WNE_Axiom_Suffix));
-      Post_Module                  : constant W_Module_Id := New_Module
-        (File => No_Symbol,
-         Name => Img (Theory_Name) & "__post" & To_String (WNE_Axiom_Suffix));
+      Module                       : constant W_Module_Id :=
+        New_Module (File => No_Symbol, Name => Img (Theory_Name));
+      Ax_Module                    : constant W_Module_Id :=
+        New_Module
+          (File => No_Symbol,
+           Name => Img (Theory_Name) & To_String (WNE_Axiom_Suffix));
+      Post_Module                  : constant W_Module_Id :=
+        New_Module
+          (File => No_Symbol,
+           Name =>
+             Img (Theory_Name) & "__post" & To_String (WNE_Axiom_Suffix));
       Caller                       : constant Entity_Id :=
         Get_Called_Entity_For_Proof (Call);
       Fun_Name                     : constant String := Short_Name (Caller);
       Fun_Typ                      : constant W_Type_Id :=
-        (if Ekind (Caller) = E_Function then Type_Of_Node (Caller)
+        (if Ekind (Caller) = E_Function
+         then Type_Of_Node (Caller)
          else EW_Unit_Type);
       Fun_Id                       : constant W_Identifier_Id :=
         (if Ekind (Caller) = E_Function
-         then New_Identifier
-           (Domain => EW_Term,
-            Symb   => NID (Fun_Name),
-            Typ    => Fun_Typ,
-            Module => Module)
+         then
+           New_Identifier
+             (Domain => EW_Term,
+              Symb   => NID (Fun_Name),
+              Typ    => Fun_Typ,
+              Module => Module)
          else Why_Empty);
       Prog_Id                      : constant W_Identifier_Id :=
         New_Identifier
@@ -572,18 +602,20 @@ package body Gnat2Why.Subprograms.Pointers is
            Module => Ax_Module);
       Guard_Id                     : constant W_Identifier_Id :=
         (if Ekind (Caller) = E_Function
-         then New_Identifier
-           (Domain => EW_Pred,
-            Symb   => NID (Fun_Name & "__" & Function_Guard),
-            Module => Module)
+         then
+           New_Identifier
+             (Domain => EW_Pred,
+              Symb   => NID (Fun_Name & "__" & Function_Guard),
+              Module => Module)
          else Why_Empty);
       Variant_Id                   : constant W_Identifier_Id :=
         (if Present (Get_Pragma (Caller, Pragma_Subprogram_Variant))
-         then New_Identifier
-          (Domain => EW_Prog,
-           Symb   => NID (Fun_Name & "__check_subprogram_variants"),
-           Typ    => EW_Unit_Type,
-           Module => Ax_Module)
+         then
+           New_Identifier
+             (Domain => EW_Prog,
+              Symb   => NID (Fun_Name & "__check_subprogram_variants"),
+              Typ    => EW_Unit_Type,
+              Module => Ax_Module)
          else Why_Empty);
       More_Globals                 : Flow_Types.Flow_Id_Sets.Set;
       Th                           : Theory_UC;
@@ -602,34 +634,37 @@ package body Gnat2Why.Subprograms.Pointers is
 
       M_HO_Specializations (Position).Insert
         (Theory_Name,
-         M_HO_Specialization_Type'(Module      => Module,
-                                   Ax_Module   => Ax_Module,
-                                   Post_Module => Post_Module,
-                                   Guard_Id    => Guard_Id,
-                                   Prog_Id     => Prog_Id,
-                                   Fun_Id      => Fun_Id,
-                                   Variant_Id  => Variant_Id));
+         M_HO_Specialization_Type'
+           (Module      => Module,
+            Ax_Module   => Ax_Module,
+            Post_Module => Post_Module,
+            Guard_Id    => Guard_Id,
+            Prog_Id     => Prog_Id,
+            Fun_Id      => Fun_Id,
+            Variant_Id  => Variant_Id));
 
       --  Store the specialized parameters in the global
       --  Specialized_Call_Params map.
 
-      Specialized_Call_Params := Get_Specialized_Parameters
-        (Call, Specialized_Call_Params);
-      More_Globals := Get_Globals_From_Specialized_Parameters
-        (Specialized_Call_Params);
+      Specialized_Call_Params :=
+        Get_Specialized_Parameters (Call, Specialized_Call_Params);
+      More_Globals :=
+        Get_Globals_From_Specialized_Parameters (Specialized_Call_Params);
 
       --  Generate the logic function declarations
 
       Th :=
         Open_Theory
-          (WF_Context, Module,
+          (WF_Context,
+           Module,
            Comment =>
              "Module for declaring a specialized logic function symbol for"
-           & " the call to a subprogram with higher order specialization at "
-           & (if Sloc (Call) > 0 then
-                Build_Location_String (Sloc (Call))
-             else "<no location>")
-           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+             & " the call to a subprogram with higher order specialization at "
+             & (if Sloc (Call) > 0
+                then Build_Location_String (Sloc (Call))
+                else "<no location>")
+             & ", created in "
+             & GNAT.Source_Info.Enclosing_Entity);
 
       if Ekind (Caller) = E_Function then
          Declare_Logic_Functions
@@ -639,22 +674,23 @@ package body Gnat2Why.Subprograms.Pointers is
             More_Reads            => More_Globals);
       end if;
 
-      Close_Theory (Th,
-                    Kind => Definition_Theory);
+      Close_Theory (Th, Kind => Definition_Theory);
 
       --  Generate a module containing a program function
 
       Th :=
         Open_Theory
-          (WF_Context, Ax_Module,
+          (WF_Context,
+           Ax_Module,
            Comment =>
              "Module for generating a specialized program function symbol"
-           & " for the call to a subprogram with higher"
-           & " order specialization at "
-           & (if Sloc (Call) > 0 then
-                Build_Location_String (Sloc (Call))
-             else "<no location>")
-           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+             & " for the call to a subprogram with higher"
+             & " order specialization at "
+             & (if Sloc (Call) > 0
+                then Build_Location_String (Sloc (Call))
+                else "<no location>")
+             & ", created in "
+             & GNAT.Source_Info.Enclosing_Entity);
 
       Result_Name := New_Result_Ident (Fun_Typ);
       Result_Is_Mutable := False;
@@ -666,26 +702,26 @@ package body Gnat2Why.Subprograms.Pointers is
          Specialization_Module => Theory_Name,
          More_Reads            => More_Globals);
 
-      Close_Theory (Th,
-                    Kind => Definition_Theory);
+      Close_Theory (Th, Kind => Definition_Theory);
 
       Record_Extra_Dependency
-        (Defining_Module => Module,
-         Axiom_Module    => Ax_Module);
+        (Defining_Module => Module, Axiom_Module => Ax_Module);
 
       --  For functions, add an axiom for the specialization
 
       if Ekind (Caller) = E_Function then
          Th :=
            Open_Theory
-             (WF_Context, Post_Module,
+             (WF_Context,
+              Post_Module,
               Comment =>
                 "Module for generating an axiom for the call to a subprogram"
-              & " with higher order specialization at "
-              & (if Sloc (Call) > 0 then
-                   Build_Location_String (Sloc (Call))
-                else "<no location>")
-              & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+                & " with higher order specialization at "
+                & (if Sloc (Call) > 0
+                   then Build_Location_String (Sloc (Call))
+                   else "<no location>")
+                & ", created in "
+                & GNAT.Source_Info.Enclosing_Entity);
 
          Generate_Axiom_For_Post
            (Th                    => Th,
@@ -693,12 +729,10 @@ package body Gnat2Why.Subprograms.Pointers is
             Specialization_Module => Theory_Name,
             More_Reads            => More_Globals);
 
-         Close_Theory (Th,
-                       Kind => Definition_Theory);
+         Close_Theory (Th, Kind => Definition_Theory);
 
          Record_Extra_Dependency
-           (Defining_Module => Module,
-            Axiom_Module    => Post_Module);
+           (Defining_Module => Module, Axiom_Module => Post_Module);
       end if;
 
       --  Generate axioms for lemmas associated to Caller if any
@@ -720,10 +754,14 @@ package body Gnat2Why.Subprograms.Pointers is
                   M_Lemma_HO_Specializations.Insert
                     (Lemma, Name_Id_Module_Map.Empty_Map, Position, Inserted);
                   M_Lemma_HO_Specializations (Position).Insert
-                    (Theory_Name, +New_Module
-                       (File => No_Symbol,
-                        Name => Img (Theory_Name) & "__" & Short_Name (Lemma)
-                        & "___post_axiom"));
+                    (Theory_Name,
+                     +New_Module
+                        (File => No_Symbol,
+                         Name =>
+                           Img (Theory_Name)
+                           & "__"
+                           & Short_Name (Lemma)
+                           & "___post_axiom"));
                end;
 
                --  Store the associations for the specialized parameters of
@@ -773,9 +811,8 @@ package body Gnat2Why.Subprograms.Pointers is
    procedure Create_Theory_For_Profile_If_Needed (E : Access_Kind_Id) is
       Profile : constant Entity_Id := Directly_Designated_Type (E);
       Name    : constant Symbol := Get_Profile_Theory_Name (Profile);
-      Module  : constant W_Module_Id := New_Module
-        (File => No_Symbol,
-         Name => Img (Name));
+      Module  : constant W_Module_Id :=
+        New_Module (File => No_Symbol, Name => Img (Name));
 
       Th : Theory_UC;
    begin
@@ -787,38 +824,44 @@ package body Gnat2Why.Subprograms.Pointers is
 
       Th :=
         Open_Theory
-          (WF_Context, Module,
+          (WF_Context,
+           Module,
            Comment =>
              "Module for possibly declaring a call function associated to"
-           & "function profiles designated by type "
-           & """" & Get_Name_String (Chars (E)) & """"
-           & (if Sloc (E) > 0 then
-                " defined at " & Build_Location_String (Sloc (E))
-             else "")
-           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+             & "function profiles designated by type "
+             & """"
+             & Get_Name_String (Chars (E))
+             & """"
+             & (if Sloc (E) > 0
+                then " defined at " & Build_Location_String (Sloc (E))
+                else "")
+             & ", created in "
+             & GNAT.Source_Info.Enclosing_Entity);
 
       --  For functions, declare a __call logic function and a pred_call
       --  predicate which can be used for axiom guards.
 
       if Is_Function_Type (Profile) then
          declare
-            Call_Id : constant W_Identifier_Id := New_Identifier
-              (Domain => EW_Term,
-               Name   => New_Name
-                 (Symb      => NID ("__call"),
-                  Module    => Module),
-               Typ    => Type_Of_Node (Etype (Profile)));
-            Pred_Id : constant W_Identifier_Id := New_Identifier
-              (Domain => EW_Term,
-               Symb   => NID ("pred_call"),
-               Module => Module,
-               Typ    => EW_Bool_Type);
+            Call_Id : constant W_Identifier_Id :=
+              New_Identifier
+                (Domain => EW_Term,
+                 Name   => New_Name (Symb => NID ("__call"), Module => Module),
+                 Typ    => Type_Of_Node (Etype (Profile)));
+            Pred_Id : constant W_Identifier_Id :=
+              New_Identifier
+                (Domain => EW_Term,
+                 Symb   => NID ("pred_call"),
+                 Module => Module,
+                 Typ    => EW_Bool_Type);
          begin
             M_Subprogram_Profiles.Insert
-              (Name, M_Subprogram_Profile_Type'(Is_Function => True,
-                                                Call_Id     => Call_Id,
-                                                Pred_Id     => Pred_Id,
-                                                Module      => Module));
+              (Name,
+               M_Subprogram_Profile_Type'
+                 (Is_Function => True,
+                  Call_Id     => Call_Id,
+                  Pred_Id     => Pred_Id,
+                  Module      => Module));
 
             Declare_Logic_Functions
               (Th           => Th,
@@ -833,8 +876,9 @@ package body Gnat2Why.Subprograms.Pointers is
 
       else
          M_Subprogram_Profiles.Insert
-           (Name, M_Subprogram_Profile_Type'(Is_Function => False,
-                                             Module      => Module));
+           (Name,
+            M_Subprogram_Profile_Type'
+              (Is_Function => False, Module => Module));
       end if;
 
       Close_Theory (Th, Kind => Definition_Theory);
@@ -845,9 +889,7 @@ package body Gnat2Why.Subprograms.Pointers is
    ---------------------------------------
 
    procedure Declare_Access_To_Subprogram_Type
-     (Th : Theory_UC;
-      E  : Access_Kind_Id)
-   is
+     (Th : Theory_UC; E : Access_Kind_Id) is
    begin
       --  Export the theory containing the pointer record definition.
 
@@ -855,9 +897,11 @@ package body Gnat2Why.Subprograms.Pointers is
 
       --  Rename the representative record type as expected.
 
-      Emit (Th, New_Type_Decl (Name  => To_Why_Type (E, Local => True),
-                               Alias => +New_Named_Type
-                                 (Name => To_Name (WNE_Rec_Rep))));
+      Emit
+        (Th,
+         New_Type_Decl
+           (Name  => To_Why_Type (E, Local => True),
+            Alias => +New_Named_Type (Name => To_Name (WNE_Rec_Rep))));
       Emit
         (Th,
          Why.Atree.Builders.New_Function_Decl
@@ -883,11 +927,13 @@ package body Gnat2Why.Subprograms.Pointers is
          In_Range_Expr : constant W_Expr_Id :=
            (if not Is_Function_Type (Directly_Designated_Type (E))
             then +True_Pred
-            elsif No (Parent_Retysp (E)) then Why_Empty
-            else New_Call
-              (Name    => E_Symb (Parent_Retysp (E), WNE_Range_Pred),
-               Binders => (1 => Binder),
-               Domain  => EW_Pred));
+            elsif No (Parent_Retysp (E))
+            then Why_Empty
+            else
+              New_Call
+                (Name    => E_Symb (Parent_Retysp (E), WNE_Range_Pred),
+                 Binders => (1 => Binder),
+                 Domain  => EW_Pred));
       begin
          Emit
            (Th,
@@ -914,16 +960,17 @@ package body Gnat2Why.Subprograms.Pointers is
             else
                Insert_Item
                  (Profile,
-                  Item_Type'(Subp,
-                    Local     => False,
-                    Init      => <>,
-                    For_Logic =>
-                      (if Is_Function_Type (Profile)
-                       then (Present => True,
-                             Id      => Get_Logic_Function (Profile))
-                       else (Present => False)),
-                    For_Prog  => E_Symb (E, WNE_Pointer_Call),
-                    others    => <>));
+                  Item_Type'
+                    (Subp,
+                     Local     => False,
+                     Init      => <>,
+                     For_Logic =>
+                       (if Is_Function_Type (Profile)
+                        then
+                          (Present => True, Id => Get_Logic_Function (Profile))
+                        else (Present => False)),
+                     For_Prog  => E_Symb (E, WNE_Pointer_Call),
+                     others    => <>));
             end if;
          end;
       end if;
@@ -934,18 +981,13 @@ package body Gnat2Why.Subprograms.Pointers is
    -----------------------------------------
 
    procedure Declare_Theory_For_Access_If_Needed
-     (Expr     :    Entity_Id;
-      Logic_Id : out W_Identifier_Id)
+     (Expr : Entity_Id; Logic_Id : out W_Identifier_Id)
    is
-      Subp          : constant Entity_Id :=
-        Entity (Prefix (Expr));
-      Name          : constant String :=
+      Subp   : constant Entity_Id := Entity (Prefix (Expr));
+      Name   : constant String :=
         Get_Module_Name (E_Module (Subp)) & "__" & To_String (WNE_Attr_Access);
-      Module        : constant W_Module_Id :=
-        New_Module
-          (Ada_Node => Expr,
-           File     => No_Symbol,
-           Name     => Name);
+      Module : constant W_Module_Id :=
+        New_Module (Ada_Node => Expr, File => No_Symbol, Name => Name);
 
       --  Select files for the declaration and axiom
 
@@ -956,9 +998,9 @@ package body Gnat2Why.Subprograms.Pointers is
    begin
       Logic_Id :=
         New_Identifier
-          (Name   => New_Name
-             (Symb   => NID (To_String (WNE_Attr_Access)),
-              Module => Module),
+          (Name   =>
+             New_Name
+               (Symb => NID (To_String (WNE_Attr_Access)), Module => Module),
            Domain => EW_Pterm,
            Typ    => M_Subprogram_Access.Subprogram_Type);
 
@@ -983,129 +1025,140 @@ package body Gnat2Why.Subprograms.Pointers is
       Insert_Extra_Module (Expr, Module);
       Insert_Extra_Module
         (Expr,
-         New_Module (File => No_Symbol,
-                     Name => Name & To_String (WNE_Axiom_Suffix)),
+         New_Module
+           (File => No_Symbol, Name => Name & To_String (WNE_Axiom_Suffix)),
          Axiom);
 
       --  Generate the logic constant declaration
 
       Th :=
         Open_Theory
-          (WF_Context, E_Module (Expr),
+          (WF_Context,
+           E_Module (Expr),
            Comment =>
              "Module for declaring an abstract constant for the subprogram"
-           & " Access attribute at "
-           & (if Sloc (Expr) > 0 then
-                Build_Location_String (Sloc (Expr))
-             else "<no location>")
-           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+             & " Access attribute at "
+             & (if Sloc (Expr) > 0
+                then Build_Location_String (Sloc (Expr))
+                else "<no location>")
+             & ", created in "
+             & GNAT.Source_Info.Enclosing_Entity);
 
-      Emit (Th,
-            New_Function_Decl
-              (Domain      => EW_Pterm,
-               Name        => To_Local (Logic_Id),
-               Labels      => Symbol_Sets.Empty_Set,
-               Location    => No_Location,
-               Return_Type => M_Subprogram_Access.Subprogram_Type));
+      Emit
+        (Th,
+         New_Function_Decl
+           (Domain      => EW_Pterm,
+            Name        => To_Local (Logic_Id),
+            Labels      => Symbol_Sets.Empty_Set,
+            Location    => No_Location,
+            Return_Type => M_Subprogram_Access.Subprogram_Type));
 
-      Close_Theory (Th,
-                    Kind           => Definition_Theory,
-                    Defined_Entity => Expr);
+      Close_Theory (Th, Kind => Definition_Theory, Defined_Entity => Expr);
 
       Th :=
         Open_Theory
-          (WF_Context, E_Module (Expr, Axiom),
+          (WF_Context,
+           E_Module (Expr, Axiom),
            Comment =>
              "Module for defining the value of the subprogram Access"
-           & " attribute at "
-           & (if Sloc (Expr) > 0 then
-                Build_Location_String (Sloc (Expr))
-             else "<no location>")
-           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+             & " attribute at "
+             & (if Sloc (Expr) > 0
+                then Build_Location_String (Sloc (Expr))
+                else "<no location>")
+             & ", created in "
+             & GNAT.Source_Info.Enclosing_Entity);
 
       --  For functions, generate the axiom in a completion module. It states
       --  that __call and pred_call match the specific symbols for the Subp.
 
       if Ekind (Subp) = E_Function then
          declare
-            Why_Type     : constant W_Type_Id :=
-              Type_Of_Node (Etype (Subp));
-            Binders      : constant Item_Array := Compute_Subprogram_Parameters
-              (Subp, EW_Term);
+            Why_Type     : constant W_Type_Id := Type_Of_Node (Etype (Subp));
+            Binders      : constant Item_Array :=
+              Compute_Subprogram_Parameters (Subp, EW_Term);
             Args         : constant W_Expr_Array :=
-              (if Binders'Length = 0 then (1 => +Void)
-               else Get_Args_From_Binders
-                 (To_Binder_Array (Binders), Ref_Allowed => False));
+              (if Binders'Length = 0
+               then (1 => +Void)
+               else
+                 Get_Args_From_Binders
+                   (To_Binder_Array (Binders), Ref_Allowed => False));
             Id           : constant W_Identifier_Id :=
               To_Why_Id (Subp, Domain => EW_Term);
-            Call_Eq      : constant W_Pred_Id := +New_Comparison
-              (Symbol => Why_Eq,
-               Left   => New_Call
-                 (Domain => EW_Term,
-                  Name   => Id,
-                  Args   => Args,
-                  Typ    => Why_Type),
-               Right  => New_Call
-                 (Domain => EW_Term,
-                  Name   => Get_Logic_Function
-                    (Directly_Designated_Type (Etype (Expr))),
-                  Args   => +Logic_Id & Args,
-                  Typ    => Why_Type),
-               Domain => EW_Pred);
-            Result_Ident : constant W_Identifier_Id := New_Temp_Identifier
-              (Typ       => Why_Type,
-               Base_Name => "result");
+            Call_Eq      : constant W_Pred_Id :=
+              +New_Comparison
+                 (Symbol => Why_Eq,
+                  Left   =>
+                    New_Call
+                      (Domain => EW_Term,
+                       Name   => Id,
+                       Args   => Args,
+                       Typ    => Why_Type),
+                  Right  =>
+                    New_Call
+                      (Domain => EW_Term,
+                       Name   =>
+                         Get_Logic_Function
+                           (Directly_Designated_Type (Etype (Expr))),
+                       Args   => +Logic_Id & Args,
+                       Typ    => Why_Type),
+                  Domain => EW_Pred);
+            Result_Ident : constant W_Identifier_Id :=
+              New_Temp_Identifier (Typ => Why_Type, Base_Name => "result");
             Guard_Id     : constant W_Identifier_Id :=
               Get_Logic_Function_Guard
                 (Directly_Designated_Type (Etype (Expr)));
-            Pred_Eq      : constant W_Pred_Id := New_Connection
-              (Left  => New_Call
-                 (Name   => Guard_Predicate_Name (Subp),
-                  Args   => (1 => +Result_Ident) & Args,
-                  Typ    => EW_Bool_Type),
-               Right => New_Call
-                 (Name   => Guard_Id,
-                  Args   => (1 => +Result_Ident, 2 => +Logic_Id) & Args,
-                  Typ    => EW_Bool_Type),
-               Op    => EW_Equivalent);
+            Pred_Eq      : constant W_Pred_Id :=
+              New_Connection
+                (Left  =>
+                   New_Call
+                     (Name => Guard_Predicate_Name (Subp),
+                      Args => (1 => +Result_Ident) & Args,
+                      Typ  => EW_Bool_Type),
+                 Right =>
+                   New_Call
+                     (Name => Guard_Id,
+                      Args => (1 => +Result_Ident, 2 => +Logic_Id) & Args,
+                      Typ  => EW_Bool_Type),
+                 Op    => EW_Equivalent);
          begin
 
             --  ??? adding a dependency annotation on this axiom on Id results
             --  in unproved checks
 
-            Emit (Th,
-                  New_Guarded_Axiom
-                    (Name     => NID (Def_Axiom),
-                     Binders  => To_Binder_Array (Binders),
-                     Def      => Call_Eq,
-                     Dep      =>
-                       New_Axiom_Dep
-                         (Name => Get_Logic_Function
-                              (Directly_Designated_Type (Etype (Expr))),
-                          Kind => EW_Axdep_Func)));
+            Emit
+              (Th,
+               New_Guarded_Axiom
+                 (Name    => NID (Def_Axiom),
+                  Binders => To_Binder_Array (Binders),
+                  Def     => Call_Eq,
+                  Dep     =>
+                    New_Axiom_Dep
+                      (Name =>
+                         Get_Logic_Function
+                           (Directly_Designated_Type (Etype (Expr))),
+                       Kind => EW_Axdep_Func)));
 
-            Emit (Th,
-                  New_Guarded_Axiom
-                    (Name     => NID
-                       (Def_Axiom & "__" & Function_Guard),
-                     Binders  =>
-                       Binder_Type'(Ada_Node  => Empty,
-                                    B_Name    => +Result_Ident,
-                                    B_Ent     => Null_Entity_Name,
-                                    Mutable   => False,
-                                    Labels    => <>)
-                     & To_Binder_Array (Binders),
-                     Def      => Pred_Eq,
-                     Dep      => New_Axiom_Dep (Name => Guard_Id,
-                                                Kind => EW_Axdep_Pred)));
+            Emit
+              (Th,
+               New_Guarded_Axiom
+                 (Name    => NID (Def_Axiom & "__" & Function_Guard),
+                  Binders =>
+                    Binder_Type'
+                      (Ada_Node => Empty,
+                       B_Name   => +Result_Ident,
+                       B_Ent    => Null_Entity_Name,
+                       Mutable  => False,
+                       Labels   => <>)
+                    & To_Binder_Array (Binders),
+                  Def     => Pred_Eq,
+                  Dep     =>
+                    New_Axiom_Dep (Name => Guard_Id, Kind => EW_Axdep_Pred)));
          end;
       end if;
 
-      Close_Theory (Th,
-                    Kind           => Axiom_Theory,
-                    Defined_Entity => Expr);
+      Close_Theory (Th, Kind => Axiom_Theory, Defined_Entity => Expr);
 
-      --  No soundness dependency, this axiom in itself is never unsound.
+   --  No soundness dependency, this axiom in itself is never unsound.
    end Declare_Theory_For_Access_If_Needed;
 
    ---------------------------------------------
@@ -1125,10 +1178,11 @@ package body Gnat2Why.Subprograms.Pointers is
          begin
             --  Collect global variables potentially read and written
 
-            Flow_Utility.Get_Proof_Globals (Subprogram      => Actual,
-                                            Reads           => Local_Reads,
-                                            Writes          => Local_Writes,
-                                            Erase_Constants => True);
+            Flow_Utility.Get_Proof_Globals
+              (Subprogram      => Actual,
+               Reads           => Local_Reads,
+               Writes          => Local_Writes,
+               Erase_Constants => True);
             pragma Assert (Local_Writes.Is_Empty);
 
             Read_Ids.Union (Local_Reads);
@@ -1143,8 +1197,7 @@ package body Gnat2Why.Subprograms.Pointers is
    ------------------------------------
 
    function Get_Specialization_Theory_Name (Call : Node_Id) return Symbol is
-      Name   : Unbounded_String :=
-        To_Unbounded_String ("Higher_order_spec");
+      Name   : Unbounded_String := To_Unbounded_String ("Higher_order_spec");
       Caller : constant Entity_Id := Get_Called_Entity_For_Proof (Call);
 
       procedure Append_Param_To_Name (Formal : Entity_Id; Actual : Node_Id);
@@ -1181,8 +1234,8 @@ package body Gnat2Why.Subprograms.Pointers is
          end if;
       end Append_Param_To_Name;
 
-      procedure Append_Params is new Iterate_Call_Parameters
-        (Append_Param_To_Name);
+      procedure Append_Params is new
+        Iterate_Call_Parameters (Append_Param_To_Name);
    begin
       --  Add the name of the caller to name
 
@@ -1200,24 +1253,28 @@ package body Gnat2Why.Subprograms.Pointers is
    -----------------------------------------
 
    function New_Dynamic_Property_For_Subprogram
-     (Ty     : Access_Kind_Id;
-      Expr   : W_Term_Id;
-      Params : Transformation_Params)
+     (Ty : Access_Kind_Id; Expr : W_Term_Id; Params : Transformation_Params)
       return W_Pred_Id
    is (New_Conditional
-         (Condition   => New_Not
-            (Right  => Pred_Of_Boolean_Term
-               (W => New_Record_Access
-                    (Name  => Expr,
-                     Field => M_Subprogram_Access.Rec_Is_Null,
-                     Typ   => EW_Bool_Type))),
-          Then_Part   => New_Call
-            (Name   => E_Symb (Ty, WNE_Range_Pred),
-             Args   => (1 => +New_Record_Access
+         (Condition =>
+            New_Not
+              (Right =>
+                 Pred_Of_Boolean_Term
+                   (W =>
+                      New_Record_Access
                         (Name  => Expr,
-                         Field => M_Subprogram_Access.Rec_Value,
-                         Typ   => M_Subprogram_Access.Subprogram_Type)),
-             Typ    => EW_Bool_Type)));
+                         Field => M_Subprogram_Access.Rec_Is_Null,
+                         Typ   => EW_Bool_Type))),
+          Then_Part =>
+            New_Call
+              (Name => E_Symb (Ty, WNE_Range_Pred),
+               Args =>
+                 (1 =>
+                    +New_Record_Access
+                       (Name  => Expr,
+                        Field => M_Subprogram_Access.Rec_Value,
+                        Typ   => M_Subprogram_Access.Subprogram_Type)),
+               Typ  => EW_Bool_Type)));
    --  Use the range predicate to express that Expr has the contract of its
    --  type if it is not null.
 
@@ -1230,18 +1287,20 @@ package body Gnat2Why.Subprograms.Pointers is
       Ty       : Access_Kind_Id;
       Expr     : W_Expr_Id;
       Domain   : EW_Domain) return W_Expr_Id
-   is
-     (if Domain = EW_Prog and then not Can_Never_Be_Null (Ty)
-      then +New_VC_Call (Ada_Node => Ada_Node,
-                         Name     => M_Subprogram_Access.Rec_Value_Prog,
-                         Progs    => (1 => Expr),
-                         Reason   => VC_Null_Pointer_Dereference,
-                         Typ      => M_Subprogram_Access.Subprogram_Type)
-      else New_Record_Access
-        (Ada_Node => Ada_Node,
-         Name     => Expr,
-         Field    => M_Subprogram_Access.Rec_Value,
-         Typ      => M_Subprogram_Access.Subprogram_Type));
+   is (if Domain = EW_Prog and then not Can_Never_Be_Null (Ty)
+       then
+         +New_VC_Call
+            (Ada_Node => Ada_Node,
+             Name     => M_Subprogram_Access.Rec_Value_Prog,
+             Progs    => (1 => Expr),
+             Reason   => VC_Null_Pointer_Dereference,
+             Typ      => M_Subprogram_Access.Subprogram_Type)
+       else
+         New_Record_Access
+           (Ada_Node => Ada_Node,
+            Name     => Expr,
+            Field    => M_Subprogram_Access.Rec_Value,
+            Typ      => M_Subprogram_Access.Subprogram_Type));
 
    ----------------------------------------------
    -- Transform_Access_Attribute_Of_Subprogram --
@@ -1250,14 +1309,14 @@ package body Gnat2Why.Subprograms.Pointers is
    function Transform_Access_Attribute_Of_Subprogram
      (Expr   : N_Attribute_Reference_Id;
       Domain : EW_Domain;
-      Params : Transformation_Params)
-      return W_Expr_Id
+      Params : Transformation_Params) return W_Expr_Id
    is
       Logic_Id : W_Identifier_Id;
       Subp     : constant Entity_Id := Entity (Prefix (Expr));
       T        : W_Expr_Id;
 
-      procedure Check_No_Globals with Ghost;
+      procedure Check_No_Globals
+      with Ghost;
       --  Ghost procedure which checks that Subp has no global state.
       --  We use it to ease debugging while flow analysis does not reject
       --  this case.
@@ -1276,28 +1335,31 @@ package body Gnat2Why.Subprograms.Pointers is
             Writes          => Writes,
             Erase_Constants => False);
          pragma Assert (Writes.Is_Empty and Reads.Is_Empty);
-         --  If we stop here, it means that Subp has some global state,
-         --  which is not supported in SPARK.
+      --  If we stop here, it means that Subp has some global state,
+      --  which is not supported in SPARK.
       end Check_No_Globals;
 
-   --  Start of processing for Transform_Access_Attribute_Of_Subprogram
+      --  Start of processing for Transform_Access_Attribute_Of_Subprogram
 
    begin
       --  Handlers cannot be called. Use the dummy value of the profile.
 
       if Has_Handler_Annotation (Etype (Expr)) then
-         T := New_Record_Aggregate
-           (Ada_Node     => Expr,
-            Associations =>
-              (1 => New_Field_Association
-                   (Domain => Domain,
-                    Field  => M_Subprogram_Access.Rec_Is_Null,
-                    Value  => Bool_False (Domain)),
-               2 => New_Field_Association
-                 (Domain => Domain,
-                  Field  => M_Subprogram_Access.Rec_Value,
-                  Value  => +M_Subprogram_Access.Dummy)),
-            Typ          => EW_Abstract (Etype (Expr)));
+         T :=
+           New_Record_Aggregate
+             (Ada_Node     => Expr,
+              Associations =>
+                (1 =>
+                   New_Field_Association
+                     (Domain => Domain,
+                      Field  => M_Subprogram_Access.Rec_Is_Null,
+                      Value  => Bool_False (Domain)),
+                 2 =>
+                   New_Field_Association
+                     (Domain => Domain,
+                      Field  => M_Subprogram_Access.Rec_Value,
+                      Value  => +M_Subprogram_Access.Dummy)),
+              Typ          => EW_Abstract (Etype (Expr)));
 
       else
          Check_No_Globals;
@@ -1309,18 +1371,21 @@ package body Gnat2Why.Subprograms.Pointers is
 
          --  Construct a pointer value from the subprogram logic object
 
-         T := New_Record_Aggregate
-           (Ada_Node     => Expr,
-            Associations =>
-              (1 => New_Field_Association
-                   (Domain => Domain,
-                    Field  => M_Subprogram_Access.Rec_Is_Null,
-                    Value  => Bool_False (Domain)),
-               2 => New_Field_Association
-                 (Domain => Domain,
-                  Field  => M_Subprogram_Access.Rec_Value,
-                  Value  => +Logic_Id)),
-            Typ          => EW_Abstract (Etype (Expr)));
+         T :=
+           New_Record_Aggregate
+             (Ada_Node     => Expr,
+              Associations =>
+                (1 =>
+                   New_Field_Association
+                     (Domain => Domain,
+                      Field  => M_Subprogram_Access.Rec_Is_Null,
+                      Value  => Bool_False (Domain)),
+                 2 =>
+                   New_Field_Association
+                     (Domain => Domain,
+                      Field  => M_Subprogram_Access.Rec_Value,
+                      Value  => +Logic_Id)),
+              Typ          => EW_Abstract (Etype (Expr)));
       end if;
 
       --  In the program domain, we need to perform checks on conversions.
@@ -1330,21 +1395,24 @@ package body Gnat2Why.Subprograms.Pointers is
       --  mechanism.
 
       if Domain = EW_Prog then
-         T := +Sequence
-           (Ada_Node => Expr,
-            Left     => Checks_For_Subp_Conversion
+         T :=
+           +Sequence
               (Ada_Node => Expr,
-               From     => Subp,
-               To       => Etype (Expr),
-               Params   => Params),
-            Right    => +T);
+               Left     =>
+                 Checks_For_Subp_Conversion
+                   (Ada_Node => Expr,
+                    From     => Subp,
+                    To       => Etype (Expr),
+                    Params   => Params),
+               Right    => +T);
 
-         T := Insert_Subp_Pointer_Conversion
-           (Ada_Node   => Expr,
-            Domain     => EW_Prog,
-            Expr       => T,
-            To         => EW_Abstract (Etype (Expr)),
-            Need_Check => True);
+         T :=
+           Insert_Subp_Pointer_Conversion
+             (Ada_Node   => Expr,
+              Domain     => EW_Prog,
+              Expr       => T,
+              To         => EW_Abstract (Etype (Expr)),
+              Need_Check => True);
       end if;
 
       return T;

@@ -39,7 +39,7 @@ pragma Warnings (Off);
 --  common ancestor with the current package. So it hides compilation unit
 --  with the same name ("Sinfo"). Maybe we should think of renaming it to
 --  "Why.W_Sinfo".
-with Why.Sinfo;         use Why.Sinfo;
+with Why.Sinfo; use Why.Sinfo;
 pragma Warnings (On);
 
 package Why.Inter is
@@ -70,11 +70,9 @@ package Why.Inter is
    --  of dependencies for this entity.
 
    function Open_Theory
-     (P       : W_Section_Id;
-      Module  : W_Module_Id;
-      Comment : String)
-     return Theory_UC
-     with Post => Open_Theory'Result.Finished = False;
+     (P : W_Section_Id; Module : W_Module_Id; Comment : String)
+      return Theory_UC
+   with Post => Open_Theory'Result.Finished = False;
    --  Open a new theory in the file
 
    function Find_Decl (S : Symbol) return W_Theory_Declaration_Id;
@@ -90,9 +88,7 @@ package Why.Inter is
    --  added too.
 
    procedure Add_With_Clause
-     (T        : Theory_UC;
-      Module   : W_Module_Id;
-      Use_Kind : EW_Clone_Type);
+     (T : Theory_UC; Module : W_Module_Id; Use_Kind : EW_Clone_Type);
    --  Add use clause for Module to the list of declarations from T.
    --  @param T the theory where the use clause will be emitted
    --  @param Module module that we want to use
@@ -103,9 +99,7 @@ package Why.Inter is
    with Pre => Ekind (E) = E_Label;
 
    function Loop_Exception_Name
-     (E     : Entity_Id;
-      Local : Boolean := False)
-      return W_Name_Id
+     (E : Entity_Id; Local : Boolean := False) return W_Name_Id
    with Pre => Ekind (E) = E_Loop;
    --  Transform a loop entity into a name for a Why exception
 
@@ -117,15 +111,15 @@ package Why.Inter is
    --  variants.
    type Selection_Kind is
      (Standard,   --  Standard variant of the program function (defined outside
-                  --  any namespace, directly in the module for the program
-                  --  function).
+      --  any namespace, directly in the module for the program
+      --  function).
 
       Dispatch,   --  Variant of the program function used when the call is
-                  --  dispatching. It has the appropriate contract.
+      --  dispatching. It has the appropriate contract.
 
       Refine);    --  Variant of the program function used when the call
-                  --  has visibility over the refined postcondition of the
-                  --  subprogram. It has the appropriate refined contract.
+   --  has visibility over the refined postcondition of the
+   --  subprogram. It has the appropriate refined contract.
 
    type Tree_Kind is (No_Tree, Validity_Tree, Move_Tree);
 
@@ -141,12 +135,15 @@ package Why.Inter is
       From_Tree    : Tree_Kind := No_Tree;
       Typ          : W_Type_Id := Why_Empty;
       Relaxed_Init : Boolean := False) return W_Identifier_Id
-   with Pre => Ekind (E) in Subprogram_Kind
-                          | Entry_Kind
-                          | Named_Kind
-                          | Type_Kind
-                          | Object_Kind
-                          | E_Exception;
+   with
+     Pre =>
+       Ekind (E)
+       in Subprogram_Kind
+        | Entry_Kind
+        | Named_Kind
+        | Type_Kind
+        | Object_Kind
+        | E_Exception;
    --  The one and only way to transform an Ada Entity to a Why identifier.
    --  However, sometimes the exact way differs between program and logic
    --  worlds. There is also a local and a global name of each identifier. The
@@ -175,15 +172,12 @@ package Why.Inter is
    --  @result The Why identifier to be used for E.
 
    function To_Why_Id
-     (Obj   : Entity_Name;
-      Local : Boolean)
-      return W_Identifier_Id;
+     (Obj : Entity_Name; Local : Boolean) return W_Identifier_Id;
    --  This function should only be called for object references for effects
 
    function To_Why_Type
-     (E            : Entity_Id;
-      Local        : Boolean := False;
-      Relaxed_Init : Boolean := False) return W_Name_Id
+     (E : Entity_Id; Local : Boolean := False; Relaxed_Init : Boolean := False)
+      return W_Name_Id
    with Pre => Is_Type (E);
 
    function EW_Abstract
@@ -193,8 +187,8 @@ package Why.Inter is
    --  gnat2why encoding. For example, for N = Boolean the function returns
    --  EW_Bool_Type. For all the details, see the implementation.
 
-   function EW_Fixed_Type (E : Entity_Id) return W_Type_Id with
-     Pre => Has_Fixed_Point_Type (E);
+   function EW_Fixed_Type (E : Entity_Id) return W_Type_Id
+   with Pre => Has_Fixed_Point_Type (E);
    --  Return Why type for fixed point types with the same small as E. These
    --  types are always renamings of Main.__fixed, but they have an Ada node
    --  which may be used to retrieve the appropriate conversion functions.
@@ -265,13 +259,12 @@ package Why.Inter is
    --  @return Returns True if the type Ids have the same structure.
 
    procedure Record_Extra_Dependency
-     (Defining_Module : W_Module_Id;
-      Axiom_Module    : W_Module_Id);
+     (Defining_Module : W_Module_Id; Axiom_Module : W_Module_Id);
    --  Record an extra dependency between Defining_Module and Axiom_Module so
    --  the second is withed along with the first in VC modules.
 
-   procedure Register_Dependency_For_Soundness (M : W_Module_Id;
-                                                E : Entity_Id);
+   procedure Register_Dependency_For_Soundness
+     (M : W_Module_Id; E : Entity_Id);
    --  Register that M is an axiom module for E. This is used for cycle
    --  detection.
 
@@ -286,8 +279,7 @@ package Why.Inter is
    --  entities.
 
    function Why_Subp_Has_Precondition
-     (E        : Callable_Kind_Id;
-      Selector : Selection_Kind := Why.Inter.Standard)
+     (E : Callable_Kind_Id; Selector : Selection_Kind := Why.Inter.Standard)
       return Boolean;
    --  Return true whenever the Why declaration that corresponds to the given
    --  subprogram has a precondition.

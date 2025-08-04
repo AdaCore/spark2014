@@ -23,16 +23,16 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Gnat2Why.Util;            use Gnat2Why.Util;
-with SPARK_Atree;              use SPARK_Atree;
-with SPARK_Atree.Entities;     use SPARK_Atree.Entities;
-with SPARK_Util.Types;         use SPARK_Util.Types;
-with Types;                    use Types;
-with Why.Atree.Accessors;      use Why.Atree.Accessors;
-with Why.Atree.Modules;        use Why.Atree.Modules;
-with Why.Conversions;          use Why.Conversions;
-with Why.Ids;                  use Why.Ids;
-with Why.Sinfo;                use Why.Sinfo;
+with Gnat2Why.Util;        use Gnat2Why.Util;
+with SPARK_Atree;          use SPARK_Atree;
+with SPARK_Atree.Entities; use SPARK_Atree.Entities;
+with SPARK_Util.Types;     use SPARK_Util.Types;
+with Types;                use Types;
+with Why.Atree.Accessors;  use Why.Atree.Accessors;
+with Why.Atree.Modules;    use Why.Atree.Modules;
+with Why.Conversions;      use Why.Conversions;
+with Why.Ids;              use Why.Ids;
+with Why.Sinfo;            use Why.Sinfo;
 
 package Why.Gen.Init is
    --  This package encapsulates the encoding of initialization by proof.
@@ -51,16 +51,18 @@ package Why.Gen.Init is
    --  Of_Wrapper and To_Wrapper, as well as an initialized object with
    --  name Dummy. Dummy is initialized iff Default_Init is True.
 
-   procedure Declare_Init_Wrapper (Th : Theory_UC; E : Entity_Id) with
-     Pre => Is_Type (E);
+   procedure Declare_Init_Wrapper (Th : Theory_UC; E : Entity_Id)
+   with Pre => Is_Type (E);
    --  Add declarations for a wrapper type for E in P
 
    function Is_Init_Wrapper_Type (Typ : W_Type_Id) return Boolean;
 
-   function EW_Init_Wrapper (Ty : W_Type_Id) return W_Type_Id with
-     Pre => Ty = EW_Bool_Type
-     or else (Get_Type_Kind (Ty) in EW_Abstract | EW_Split
-              and then Has_Init_Wrapper (Get_Ada_Node (+Ty)));
+   function EW_Init_Wrapper (Ty : W_Type_Id) return W_Type_Id
+   with
+     Pre =>
+       Ty = EW_Bool_Type
+       or else (Get_Type_Kind (Ty) in EW_Abstract | EW_Split
+                and then Has_Init_Wrapper (Get_Ada_Node (+Ty)));
    --  Return the init wrapper type with the same Ada node and kind as Ty
 
    type Exclude_Components_Kind is (For_Eq, Relaxed, None);
@@ -72,9 +74,9 @@ package Why.Gen.Init is
       Domain             : EW_Domain;
       Exclude_Components : Exclude_Components_Kind;
       No_Predicate_Check : Boolean := False;
-      Use_Pred           : Boolean := True)
-      return W_Expr_Id
-   with Pre =>
+      Use_Pred           : Boolean := True) return W_Expr_Id
+   with
+     Pre =>
        (if Present (E) and then Contains_Access_Subcomponents (E)
         then Exclude_Components /= None);
    --  If Exclude_Components is None, the predicate symbol cannot be
@@ -109,8 +111,7 @@ package Why.Gen.Init is
    --  whenever possible.
 
    function New_Init_Attribute_Access
-     (E    : Entity_Id;
-      Name : W_Term_Id) return W_Term_Id;
+     (E : Entity_Id; Name : W_Term_Id) return W_Term_Id;
    --  Access the initialization flag of an expression of a wrapper type.
    --  Name shall be of the init wrapper type of Boolean or E shall be a type
    --  entity which has a wrapper (simple private type, type with mutable
@@ -122,8 +123,7 @@ package Why.Gen.Init is
       Name               : W_Expr_Id;
       Domain             : EW_Domain;
       Exclude_Components : Exclude_Components_Kind;
-      No_Predicate_Check : Boolean := False)
-      return W_Expr_Id;
+      No_Predicate_Check : Boolean := False) return W_Expr_Id;
    --  If Domain = EW_Prog, insert a check that Name is initialized
 
    function Insert_Top_Level_Init_Check
@@ -132,8 +132,7 @@ package Why.Gen.Init is
       Name     : W_Expr_Id;
       Domain   : EW_Domain;
       Do_Check : Boolean := True;
-      Details  : String := "")
-      return W_Expr_Id;
+      Details  : String := "") return W_Expr_Id;
    --  If Domain = EW_Prog, insert a check that the mutable discriminants or
    --  pointer address of Name (if any) are initialized.
    --  Details is used to generate the check details (aka reason for check).

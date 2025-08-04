@@ -23,7 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Sinput;           use Sinput;
+with Sinput; use Sinput;
 with SPARK_Util;
 
 package body Why.Images is
@@ -46,8 +46,8 @@ package body Why.Images is
       return M = 1;
    end Can_Be_Printed_In_Decimal_Notation;
 
-   function Img (Name : Symbol) return String is
-     (if Name = No_Symbol then "<>" else Get (Name).all);
+   function Img (Name : Symbol) return String
+   is (if Name = No_Symbol then "<>" else Get (Name).all);
 
    function Img (Node : Why_Node_Set) return String is
       Result : constant String := Why_Node_Set'Image (Node);
@@ -70,9 +70,14 @@ package body Why.Images is
    function Img (Ty : EW_Type) return String is
    begin
       case Ty is
-         when EW_Builtin  => return "builtin";
-         when EW_Abstract => return "[abstract node]";
-         when EW_Split    => return "[split node]";
+         when EW_Builtin =>
+            return "builtin";
+
+         when EW_Abstract =>
+            return "[abstract node]";
+
+         when EW_Split =>
+            return "[split node]";
       end case;
    end Img;
 
@@ -86,10 +91,7 @@ package body Why.Images is
    end P;
 
    procedure P
-     (O      : Output_Id;
-      Value  : Source_Ptr;
-      Marker : Symbol := No_Symbol)
-   is
+     (O : Output_Id; Value : Source_Ptr; Marker : Symbol := No_Symbol) is
    begin
       if Value > No_Location then
          declare
@@ -97,14 +99,20 @@ package body Why.Images is
             Line : constant Physical_Line_Number :=
               Get_Physical_Line_Number (Value);
             Mark : constant String :=
-              (if Marker = No_Symbol then ""
-               else "'@" & Img (Marker) & "@'");
+              (if Marker = No_Symbol then "" else "'@" & Img (Marker) & "@'");
 
             Sloc_Tag : constant String :=
-              "[#""" & Mark & File & """" &
-              Physical_Line_Number'Image (Line) & " " &
-              "0" & " " &  --  dummy column1 0
-              "0" & "]";   --  dummy column2 0
+              "[#"""
+              & Mark
+              & File
+              & """"
+              & Physical_Line_Number'Image (Line)
+              & " "
+              & "0"
+              & " "
+              &  --  dummy column1 0
+                                     "0"
+              & "]";   --  dummy column2 0
          begin
             P (O, Sloc_Tag);
          end;
@@ -128,7 +136,7 @@ package body Why.Images is
 
    procedure P (O : Output_Id; Value : Uint) is
       H         : constant array (Int range 0 .. 15) of Character :=
-                    "0123456789ABCDEF";
+        "0123456789ABCDEF";
       Base      : constant := 10;
       Abs_Value : Uint;
       S         : constant Uintp.Save_Mark := Mark;
@@ -194,7 +202,7 @@ package body Why.Images is
 
       declare
          Index : Natural := Natural (UI_Decimal_Digits_Hi (Abs_Value));
-         Buf : String (1 .. Index);
+         Buf   : String (1 .. Index);
       begin
          while Abs_Value >= Base loop
             Buf (Index) := H (UI_To_Int (Abs_Value rem Base));
@@ -258,7 +266,7 @@ package body Why.Images is
 
       procedure Print_Decimal_Notation (Num, Den : Uint) is
          Max          : constant Nat := Max_Number_Of_Decimals (Den);
-         Scale_Factor : constant Uint := UI_From_Int (10) ** Max;
+         Scale_Factor : constant Uint := UI_From_Int (10)**Max;
          Scale_Num    : constant Uint := Num * Scale_Factor;
          Scale_Result : constant Uint := Scale_Num / Den;
 
@@ -285,11 +293,11 @@ package body Why.Images is
          P (O, Fact_Part);
       end Print_Decimal_Notation;
 
-      Num    : constant Uint := Numerator (Value);
-      Den    : constant Uint := Denominator (Value);
-      Base   : constant Nat  := Rbase (Value);
+      Num  : constant Uint := Numerator (Value);
+      Den  : constant Uint := Denominator (Value);
+      Base : constant Nat := Rbase (Value);
 
-   --  Start of processing for P
+      --  Start of processing for P
 
    begin
       --  ??? Same remark as in the case of integer constants:
@@ -434,10 +442,10 @@ package body Why.Images is
    procedure P (O : Output_Id; Value : EW_Clone_Type) is
    begin
       case Value is
-         when EW_Import        =>
+         when EW_Import =>
             P (O, "      "); --  import is now the default
 
-         when EW_Export        =>
+         when EW_Export =>
             P (O, "export");
 
          when EW_Clone_Default =>
@@ -462,19 +470,19 @@ package body Why.Images is
          when EW_Type_Subst =>
             P (O, "type");
 
-         when EW_Function   =>
+         when EW_Function =>
             P (O, "function");
 
-         when EW_Predicate  =>
+         when EW_Predicate =>
             P (O, "predicate");
 
-         when EW_Namepace   =>
+         when EW_Namepace =>
             P (O, "namespace");
 
-         when EW_Lemma      =>
+         when EW_Lemma =>
             P (O, "lemma");
 
-         when EW_Goal       =>
+         when EW_Goal =>
             P (O, "goal");
       end case;
    end P;

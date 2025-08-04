@@ -1,2 +1,7 @@
-example.adb:14:04: error: GNAT extension for finally statements is not yet supported
-gnatprove: error during flow analysis and proof
+example.adb:6:04: info: initialization of "F" proved
+example.adb:9:04: info: precondition proved (CVC5: 1 VC)
+example.adb:9:04: medium: unexpected exception might be raised
+example.adb:10:04: info: precondition proved (CVC5: 2 VC)
+example.adb:11:04: info: precondition proved (CVC5: 2 VC)
+example.adb:12:04: info: precondition proved (CVC5: 2 VC)
+example.adb:15:04: info: precondition proved (CVC5: 1 VC)

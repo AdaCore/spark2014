@@ -1,5 +1,6 @@
 with "gnatcoll_core";
 with "gpr2";
+with "sarif";
 
 project GNATprove is
 

@@ -17,8 +17,11 @@ possible :ref:`Project Scenarios`:
 * the `migration` scenario: :ref:`Conversion of Existing SPARK Software to SPARK 2014`
 * the `frozen` scenario: :ref:`Analysis of Frozen Ada Software`
 
-The end of this section examines each of these scenarios in turn and describes
-how |SPARK| can be applied in each case.
+The section :ref:`Project Scenarios` examines each of these scenarios in turn
+and describes how |SPARK| can be applied in each case.
+
+The section :ref:`Best Practices` lists common cases that can be difficult to
+handle in |SPARK|, and explains the different possibilities.
 
 Levels of Software Assurance
 ============================
@@ -1517,3 +1520,360 @@ dereferenced in case of memory exhaustion:
 
 .. literalinclude:: /examples/ug__storage_error/storage.adb
    :language: ada
+
+Best Practices
+==============
+
+Some commonly used patterns are known to stretch the limits of the |SPARK|
+language and toolset. We explain here the various possibilities for handling
+them in practice.
+
+Logging
+-------
+
+Following the :ref:`Data Initialization Policy` of SPARK, data used for logging
+constitutes a global state that all subprograms performing logging should use
+explicitly or implicitly with mode ``In_Out`` - it is partially written by the
+subprogram - as exemplified below.
+
+.. code-block:: ada
+
+  procedure Do_Something with
+    Global => (In_Out => Logging_Data);
+
+  function Compute_Something return T with
+    Side_Effects,
+    Global => (In_Out => Logging_Data);
+
+However, this behavior can be quite cumbersome. First, it pollutes the
+``Global`` contracts, if the user wants to write them, as the effect of the
+logging data is generally common to all subprograms and not of interest for the
+functional behavior of the program. Second, and more importantly, it forces the
+user to turn all functions that perform logging into effectful functions, like
+``Compute_Something`` above. Indeed, by default, functions are not allowed to
+have side-effects - writing to global data for example - in |SPARK|. Functions
+that have such a behavior need to be annotated with the
+:ref:`aspect Side_Effects` and have heavy restrictions regarding where they can
+be called.
+
+To alleviate these difficulties, it is possible to hide the effect of logging
+from the |GNATprove| tool. This can be done by introducing one or several
+logging procedures with an explicit ``Global`` contract hiding their effect.
+As an example, the ``Do_Log`` procedure below hides the effect of a call to
+``Real_Do_Log``. If its body is verified by |GNATprove|, a failed check will be
+emitted for the ``Global`` contract of ``Do_Log``. This check can be accepted
+using :ref:`Direct Justification with Pragma Annotate` or the body of ``Do_Log``
+can be excluded from analysis using pragma or aspect ``SPARK_Mode``, see
+:ref:`Identifying SPARK Code`. In the rest of the program, the effect of logging
+will be ignored. For example, |GNATprove| will be able to verify the
+``Do_Something`` procedure without any complaint.
+
+.. code-block:: ada
+
+   package Logging is
+      procedure Do_Log (Msg : String) with
+        Global => null;
+      --  Logging function with no visible effect
+   end Logging;
+
+   package body Logging is
+      procedure Real_Do_Log (Msg : String) with
+        Global => (In_Out => Logging_Data);
+      --  Real logging function with an effect on Logging_Data
+
+      procedure Do_Log (Msg : String) is
+      begin
+         Real_Do_Log (Msg);
+      end Do_Log;
+   end Logging;
+
+   procedure Do_Something with
+     Global => null
+   is
+   begin
+      Logging.Do_Log ("foo");
+   end Do_Something;
+
+.. warning::
+
+  Since part of the code is hidden from analysis or a check is justified, it is
+  important to make sure that the rest of the analysis remains sound. In this
+  particular case, there should be *no subprogram visible from the program being
+  analyzed that reads, directly or indirectly, the value of the logging data*.
+  If such a read cannot be avoided, the input should be marked as volatile with
+  asynchronous writers (see :ref:`Properties of Volatile Variables`), and the
+  missing dependency should be taken into account if information flow is of
+  interest (see :ref:`Flow Dependencies`).
+
+
+Reads From Machine Representation
+---------------------------------
+
+To read (and possibly write) data efficiently in memory, it is possible in full
+Ada to reinterpret it as the machine representation of typed data. This can be
+done either through unchecked conversions, possibly of access types, to avoid
+copies, or through address clauses. These two features can also be used in
+|SPARK| for this purpose, but with a number of restrictions in particular
+related to :ref:`Data Validity` and some level of imprecision.
+
+Unchecked conversions cannot be applied on access types nor on types with
+discriminants. Using them might therefore involve copies, even if constant
+propagation in the compiler should get rid of most of them. Note that |SPARK|
+does not allow for unused bits in the representation of data used as a
+source of an unchecked conversion. This is not a problem when reading from an
+untyped memory segment, as demonstrated by ``To_Unused_Bits`` below, but could
+impact writes. By default, |GNATprove| also ensures that the target type of
+unchecked conversion cannot have invalid values. This can be avoided by using
+the :ref:`Aspect Potentially_Invalid` as demonstrated on ``To_Invalid_Values``.
+Note that |GNATprove| will emit validity checks whenever the result of such a
+conversion is read instead:
+
+.. code-block:: ada
+
+   type Bit_Array is array (Positive range <>) of Boolean;
+   type Bit_Array_64 is new Bit_Array (1 .. 64) with Pack;
+
+   type Unused_Bits is record
+      F : Integer;
+   end record with
+     Size => 64;
+   for Unused_Bits use record
+      F at 0 range 0 .. 31;
+   end record;
+
+   function To_Unused_Bits is new Ada.Unchecked_Conversion
+     (Bit_Array_64, Unused_Bits);
+
+   type Invalid_Values is record
+      G1 : Positive;
+      G2 : Integer;
+   end record with
+     Size => 64;
+
+   function To_Invalid_Values is new Ada.Unchecked_Conversion
+     (Bit_Array_64, Invalid_Values)
+   with Potentially_Invalid;
+
+Note that the result of an unchecked conversion is not always known precisely
+by the verification tool, depending on the complexity of the source and target
+types.
+
+Like in full Ada, address clauses can be used instead of unchecked conversion in
+|SPARK|. Objects with address clauses are only supported by |GNATprove| if
+they use an address clause of the form ``with Address => Y'Address`` where
+``Y`` is an object. This particular pattern is called an `overlay`.
+Other address clauses are handled as :ref:`Volatile Variables`,
+and imply a number of additional assumptions that need to be discharged
+manually. The restrictions imposed by |SPARK| on overlays are similar to those
+on unchecked conversions, except that the conversion is considered to be
+bidirectional if the overlay is mutable (both objects are variable), so both
+objects need to have neither invalid values nor unused bits (see
+:ref:`Data Validity`). If the overlay is constant (both objects are constant)
+then these restrictions are relaxed on the overlaying object, making it possible
+to use overlays to read untyped memory segments:
+
+.. code-block:: ada
+
+   procedure Parse_Unused_Bits (X : aliased Bit_Array_64) is
+      Z : aliased constant Unused_Bits with
+        Import,
+        Address => X'Address;
+   begin
+      if Z.F = 0 then
+         null;
+      end if;
+   end Parse_Unused_Bits;
+
+   procedure Parse_Invalid_Values (X : aliased Bit_Array_64) is
+      Z : aliased constant Invalid_Values with
+        Import,
+        Address => X'Address,
+        Potentially_Invalid;
+
+   begin
+      if Z.G2 = 0 then
+         null;
+      end if;
+
+      --  Z.G1 might have invalid values, so its validity shall be verified
+      if Z.G1'Valid and then Z.G1 = 0 then
+         null;
+      end if;
+   end Parse_Invalid_Values;
+
+Note that it is possible to create a constant overlay on a variable by passing
+it as a parameter of mode ``in`` to a subprogram. In the same way, it is
+possible to create an overlay with a part of an object by passing it as a
+parameter (of mode ``in`` or ``in out``) to a subprogram. For example, we could
+call ``Parse_Invalid_Values`` on a variable or a component of an object. Also
+note that, currently, the value of overlaid objects is not tracked precisely by
+|GNATprove|.
+
+All the possibilities discussed above have limitations and are sometimes
+imprecisely handled by |GNATprove|. Instead, it is possible to exclude from
+analysis a part of the program using pragma or aspect ``SPARK_Mode``, see
+:ref:`Identifying SPARK Code`. If this is done, care should be taken to avoid
+breaking the assumption made by the tool on the rest of the program (see
+:ref:`Managing Assumptions`), in particular with respect to data validity and
+volatility. As an example, the ``Machine_Representation_Access`` generic
+package can be a safe way to encapsulate an unsupported overlay, provided ``T``
+does not contain subcomponents of an access type:
+
+.. code-block:: ada
+
+   generic
+      type T is private;
+      Size : Natural;
+   package Machine_Representation_Access is
+      type Bit_Array is array (Positive range 1 .. Size) of Boolean with Pack;
+      pragma Compile_Time_Error
+        (Bit_Array'Object_Size /= T'Object_Size, "object sizes should match");
+
+      function Is_Valid (X : Bit_Array) return Boolean with
+        Ghost,
+        Import,
+        Global => null;
+
+      function Model (X : Bit_Array) return T with
+        Ghost,
+        Import,
+        Global => null,
+        Pre    => Is_Valid (X);
+
+      function Constant_Reference
+        (X : aliased Bit_Array) return not null access constant T
+      with
+        Pre    => Is_Valid (X),
+        Post   => Constant_Reference'Result.all = Model (X),
+        Global => null;
+
+      function At_End (X : Bit_Array) return Bit_Array is (X) with
+        Ghost,
+        Annotate => (GNATprove, At_End_Borrow);
+
+      function At_End (X : access constant T) return access constant T is (X)
+      with
+        Ghost,
+        Annotate => (GNATprove, At_End_Borrow);
+
+      function Reference
+        (X : aliased in out Bit_Array) return not null access T
+      with
+        Pre    => Is_Valid (X),
+        Post   => Is_Valid (At_End (X))
+        and then At_End (Reference'Result).all = Model (At_End (X)),
+        Global => null;
+   end Machine_Representation_Access;
+
+   package body Machine_Representation_Access with
+     SPARK_Mode => Off
+   is
+      function Constant_Reference
+        (X : aliased Bit_Array) return not null access constant T
+      is
+         Z : aliased constant T with Import, Address => X'Address;
+      begin
+         return Z'Unchecked_Access;
+      end Constant_Reference;
+
+      function Reference
+        (X : aliased in out Bit_Array) return not null access T
+      is
+         Z : aliased T with Import, Address => X'Address;
+      begin
+         return Z'Unchecked_Access;
+      end Reference;
+   end Machine_Representation_Access;
+
+The ``Constant_Reference`` and ``Reference`` functions are
+:ref:`Traversal Functions`. They can be used to read and potentially modify
+their parameter as a value of type ``T`` using local observers or borrowers as
+in the following example:
+
+.. code-block:: ada
+
+   declare
+      Y : access T := Reference (X);
+   begin
+      Y.F1 := 13;
+   end;
+   pragma Assert (Constant_Reference (X).F1 = 13);
+
+Note that, in this example, ``Is_Valid`` and ``Model`` are
+:ref:`Non-Executable Ghost Code`, so they can only be used in disabled ghost
+code and assertions, and not directly in the program. If a definition or a
+contract is given for these functions for some value of ``T``, it is necessary
+to make sure that it matches their expected semantics. In particular,
+``Is_Valid`` shall return True if and only if its parameter is a representation
+is a valid value of type ``T``.
+
+Pointer-Based Data Structures
+-----------------------------
+
+The :ref:`SPARK Libraries` offers a variety of containers that can be used to
+construct data-structures in a |SPARK|-compliant way. If it is possible, using
+such containers instead of a pointer-based data structure might be the easiest
+way forward. As the API of formal containers (see
+:ref:`Formal Containers Library`) is sometimes heavy, it can be better to
+wrap the instance in a package in order to offer a simplified API instead.
+As an example, the package ``My_Integer_Sets`` below uses formal hashed sets to
+implement a set of small integers:
+
+.. literalinclude:: /examples/ug__container_wrapper/my_integer_sets.ads
+   :language: ada
+
+Access types are supported in |SPARK| but they should comply with a strict
+:ref:`Memory Ownership Policy` to ensure :ref:`Absence of Interferences`. In
+particular, potential aliases between access types are heavily restricted. It
+is still possible to implement and verify pointer-based data structures in
+|SPARK|, provided they do not involve cycles nor sharing. Typically, linked
+lists or trees are supported, but not doubly linked lists or DAGs. Similarly,
+iteration over linked structures is possible but restricted, as it involves
+aliases. :ref:`Borrowing` can be used to traverse a list or search for a value
+in an ordered tree, but more complex traversals, in particular those involving
+a stack, are not possible, as borrowers cannot be stored inside data-structures.
+Using explicit pointers and ownership is still the easiest way to implement
+data-structures in |SPARK|, and should be preferred when it is possible. The
+data-structure or the algorithms used to traverse it can sometimes be adapted.
+As an example, it is possible to remove cycles in an implementation of
+red-black-trees by removing the pointer to the parent and using a recursive
+subprogram to rebalance the tree.
+
+As an alternative to the above, it is possible to replace pointers by indexes
+in an array. This can be done using an array per object, which requires making
+the structure bounded, or using a big global array. The second has the
+disadvantage of making it so all subprograms handling data-structures use the
+same memory array, resulting in contracts and proof activities being needed to
+check that modifying an object preserves the others. A somewhat similar result
+can be achieved using the ``SPARK.Pointers`` library which models pointers as
+a key in an abstract map of objects. The
+``SPARK.Pointers.Pointers_With_Aliasing`` package uses a single memory object
+per designated type, whereas the
+``SPARK.Pointers.Pointers_With_Aliasing_Separate_Memory`` package allows
+splitting memory into separate maps. In all cases, handling the structure of
+the object usually requires complex invariants and reasoning, so it can be
+heavy. The ``Simple_Allocator`` package below gives
+an example of how a custom allocator can be implemented using indexes inside an
+array. It uses a global array for the memory, but something similar can be
+done by introducing a memory type and adding the memory object as a parameter
+to ``Allocate`` and ``Free``:
+
+.. literalinclude:: /examples/ug__simple_allocators/simple_allocator.ads
+   :language: ada
+
+.. literalinclude:: /examples/ug__simple_allocators/simple_allocator.adb
+   :language: ada
+
+Finally, it is possible for a user to implement their data-structures using the
+whole expressivity of full Ada and hide it from |SPARK| analysis through pragma
+or aspect ``SPARK_Mode``, see :ref:`Identifying SPARK Code`. However, since part
+of the code is hidden from analysis, care should be taken to avoid breaking the
+assumption made by the tool on the rest of the program (see
+:ref:`Managing Assumptions`), in particular with respect to the
+:ref:`Memory Ownership Policy` and more generally
+:ref:`Absence of Interferences`. In particular, if the underlying data structure
+uses pointers, it might be necessary to prevent the introduction of aliases
+through copies either by making the type limited of by using an
+:ref:`Annotation for Enforcing Ownership Checking on a Private Type`, unless
+memory management is taken care off internally - through controlled types for
+example.

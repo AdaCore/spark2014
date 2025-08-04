@@ -23,30 +23,30 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings;                use Ada.Strings;
-with Ada.Strings.Fixed;          use Ada.Strings.Fixed;
-with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
+with Ada.Strings;               use Ada.Strings;
+with Ada.Strings.Fixed;         use Ada.Strings.Fixed;
+with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Ada.Unchecked_Deallocation;
 with Atree;
 with Flow_Types;
 with Flow_Utility;
-with GNATCOLL.Symbols;           use GNATCOLL.Symbols;
+with GNATCOLL.Symbols;          use GNATCOLL.Symbols;
 with Gnat2Why_Args;
-with Gnat2Why.Expr;              use Gnat2Why.Expr;
-with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
-with Nlists;                     use Nlists;
-with SPARK_Definition;           use SPARK_Definition;
-with SPARK_Definition.Annotate;  use SPARK_Definition.Annotate;
-with SPARK_Util.Hardcoded;       use SPARK_Util.Hardcoded;
-with String_Utils;               use String_Utils;
-with Why.Atree.Builders;         use Why.Atree.Builders;
-with Why.Atree.Modules;          use Why.Atree.Modules;
-with Why.Conversions;            use Why.Conversions;
-with Why.Gen.Expr;               use Why.Gen.Expr;
-with Why.Gen.Hardcoded;          use Why.Gen.Hardcoded;
-with Why.Gen.Names;              use Why.Gen.Names;
-with Why.Inter;                  use Why.Inter;
-with Why.Keywords;               use Why.Keywords;
+with Gnat2Why.Expr;             use Gnat2Why.Expr;
+with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
+with Nlists;                    use Nlists;
+with SPARK_Definition;          use SPARK_Definition;
+with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
+with SPARK_Util.Hardcoded;      use SPARK_Util.Hardcoded;
+with String_Utils;              use String_Utils;
+with Why.Atree.Builders;        use Why.Atree.Builders;
+with Why.Atree.Modules;         use Why.Atree.Modules;
+with Why.Conversions;           use Why.Conversions;
+with Why.Gen.Expr;              use Why.Gen.Expr;
+with Why.Gen.Hardcoded;         use Why.Gen.Hardcoded;
+with Why.Gen.Names;             use Why.Gen.Names;
+with Why.Inter;                 use Why.Inter;
+with Why.Keywords;              use Why.Keywords;
 
 package body Gnat2Why.Util is
 
@@ -60,17 +60,18 @@ package body Gnat2Why.Util is
 
    package body Ada_Ent_To_Why is
 
-      function Normalize_Entity (E : Entity_Id) return Entity_Id is
-        (if Nkind (E) in N_Entity then
-             (case Ekind (E) is
-                 when E_Discriminant =>
-                    Root_Discriminant (E),
-                 when E_Constant     =>
-                    (if Is_Partial_View (E)
-                     and then Entity_In_SPARK (Full_View (E))
-                     then Full_View (E) else E),
-                 when others         => E)
-         else E);
+      function Normalize_Entity (E : Entity_Id) return Entity_Id
+      is (if Nkind (E) in N_Entity
+          then
+            (case Ekind (E) is
+               when E_Discriminant => Root_Discriminant (E),
+               when E_Constant =>
+                 (if Is_Partial_View (E)
+                    and then Entity_In_SPARK (Full_View (E))
+                  then Full_View (E)
+                  else E),
+               when others => E)
+          else E);
       --  Entities of discriminants can vary when types are derived. We want to
       --  refer to the same item for every variants of a single discriminant
       --  entity. For constants whose full view is in SPARK, use the full
@@ -95,6 +96,7 @@ package body Gnat2Why.Util is
          case C.Kind is
             when CK_Ent =>
                return Ent_To_Why.Element (C.Ent_Cursor);
+
             when CK_Str =>
                return Name_To_Why_Map.Element (C.Name_Cursor);
          end case;
@@ -109,12 +111,11 @@ package body Gnat2Why.Util is
          C        : constant Ent_To_Why.Cursor := M.Entity_Ids.Find (Uniq_Ent);
       begin
          if Ent_To_Why.Has_Element (C) then
-            return Cursor'(CK_Ent,
-                           C,
-                           Name_To_Why_Map.No_Element);
+            return Cursor'(CK_Ent, C, Name_To_Why_Map.No_Element);
          else
-            return Cursor'(CK_Ent, Ent_To_Why.No_Element,
-                           Name_To_Why_Map.No_Element);
+            return
+              Cursor'
+                (CK_Ent, Ent_To_Why.No_Element, Name_To_Why_Map.No_Element);
          end if;
       end Find;
 
@@ -122,11 +123,11 @@ package body Gnat2Why.Util is
          C : constant Name_To_Why_Map.Cursor := M.Entity_Names.Find (E);
       begin
          if Name_To_Why_Map.Has_Element (C) then
-            return Cursor'(CK_Str, Ent_To_Why.No_Element,
-                           C);
+            return Cursor'(CK_Str, Ent_To_Why.No_Element, C);
          else
-            return Cursor'(CK_Ent, Ent_To_Why.No_Element,
-                           Name_To_Why_Map.No_Element);
+            return
+              Cursor'
+                (CK_Ent, Ent_To_Why.No_Element, Name_To_Why_Map.No_Element);
          end if;
       end Find;
 
@@ -140,12 +141,12 @@ package body Gnat2Why.Util is
          return M.Entity_Ids.Contains (Uniq_Ent);
       end Has_Element;
 
-      function Has_Element (C : Cursor) return Boolean
-      is
+      function Has_Element (C : Cursor) return Boolean is
       begin
          case C.Kind is
             when CK_Ent =>
                return Ent_To_Why.Has_Element (C.Ent_Cursor);
+
             when CK_Str =>
                return Name_To_Why_Map.Has_Element (C.Name_Cursor);
          end case;
@@ -155,11 +156,7 @@ package body Gnat2Why.Util is
       -- Insert --
       ------------
 
-      procedure Insert
-        (M : in out Map;
-         E :        Entity_Id;
-         W :        Item_Type)
-      is
+      procedure Insert (M : in out Map; E : Entity_Id; W : Item_Type) is
          Uniq_Ent : constant Entity_Id := Normalize_Entity (E);
          C        : Ent_To_Why.Cursor;
          Inserted : Boolean;
@@ -181,21 +178,18 @@ package body Gnat2Why.Util is
                --  reinserted
 
                M.Undo_Stack.Append
-                 (Action'(Kind       => Insert_Ent,
-                          Ins_Entity => Ent_To_Why.Key (C),
-                          Ins_Binder => Ent_To_Why.Element (C)));
+                 (Action'
+                    (Kind       => Insert_Ent,
+                     Ins_Entity => Ent_To_Why.Key (C),
+                     Ins_Binder => Ent_To_Why.Element (C)));
                M.Entity_Ids.Replace (Uniq_Ent, W);
                M.Undo_Stack.Append (Action'(Remove_Ent, Uniq_Ent));
             end if;
          end if;
       end Insert;
 
-      procedure Insert
-        (M : in out Map;
-         E :        Entity_Name;
-         W :        Item_Type)
-      is
-         C : Name_To_Why_Map.Cursor;
+      procedure Insert (M : in out Map; E : Entity_Name; W : Item_Type) is
+         C        : Name_To_Why_Map.Cursor;
          Inserted : Boolean;
       begin
          M.Entity_Names.Insert (E, W, C, Inserted);
@@ -215,9 +209,10 @@ package body Gnat2Why.Util is
                --  reinserted.
 
                M.Undo_Stack.Append
-                 (Action'(Kind => Insert_Name,
-                          Ins_Name => Name_To_Why_Map.Key (C),
-                          Ins_Binder => Name_To_Why_Map.Element (C)));
+                 (Action'
+                    (Kind       => Insert_Name,
+                     Ins_Name   => Name_To_Why_Map.Key (C),
+                     Ins_Binder => Name_To_Why_Map.Element (C)));
                M.Entity_Names.Replace (E, W);
                M.Undo_Stack.Append (Action'(Remove_Name, E));
             end if;
@@ -242,21 +237,25 @@ package body Gnat2Why.Util is
             case A.Kind is
                when Insert_Ent =>
                   M.Entity_Ids.Include (A.Ins_Entity, A.Ins_Binder);
+
                when Insert_Name =>
                   M.Entity_Names.Include (A.Ins_Name, A.Ins_Binder);
+
                when Remove_Ent =>
                   M.Entity_Ids.Delete (A.Rem_Entity);
+
                when Remove_Name =>
                   M.Entity_Names.Delete (A.Rem_Name);
+
                when Boundary =>
                   raise Program_Error;
             end case;
          end Apply_Action;
 
-         C : Undo_Stacks.Cursor := M.Undo_Stack.Last;
+         C   : Undo_Stacks.Cursor := M.Undo_Stack.Last;
          Tmp : Undo_Stacks.Cursor;
 
-      --  Start of processing for Pop_Scope
+         --  Start of processing for Pop_Scope
 
       begin
          while Undo_Stacks.Has_Element (C)
@@ -305,8 +304,7 @@ package body Gnat2Why.Util is
    ----------------------------
 
    procedure Get_Borrows_From_Decls
-     (Decls   :        List_Id;
-      Borrows : in out Node_Lists.List)
+     (Decls : List_Id; Borrows : in out Node_Lists.List)
    is
       Cur_Decl : Node_Id := First (Decls);
    begin
@@ -333,8 +331,10 @@ package body Gnat2Why.Util is
       Subp                : constant Entity_Id := Get_Called_Entity (N);
       Call_Through_Access : constant Boolean :=
         Ekind (Subp) = E_Subprogram_Type;
-      pragma Assert (if Call_Through_Access
-                     then Nkind (Name (N)) = N_Explicit_Dereference);
+      pragma
+        Assert
+          (if Call_Through_Access
+             then Nkind (Name (N)) = N_Explicit_Dereference);
       Position            : Node_Maps.Cursor;
       use type Node_Maps.Cursor;
 
@@ -361,8 +361,7 @@ package body Gnat2Why.Util is
    ---------------------------------------------
 
    function Get_Container_In_Iterator_Specification
-     (N : Node_Id)
-      return Node_Id
+     (N : Node_Id) return Node_Id
    is
       Iter : constant Node_Id := SPARK_Atree.Name (N);
    begin
@@ -374,13 +373,11 @@ package body Gnat2Why.Util is
    -------------------------------
 
    function Get_Counterexample_Labels
-     (E              : Entity_Id;
-      Append_To_Name : String := "")
-      return Symbol_Sets.Set
+     (E : Entity_Id; Append_To_Name : String := "") return Symbol_Sets.Set
    is
-      Labels : Symbol_Sets.Set;
-      Model_Trace : constant Symbol_Sets.Set := Get_Model_Trace_Label
-        (E, False, Append_To_Name);
+      Labels      : Symbol_Sets.Set;
+      Model_Trace : constant Symbol_Sets.Set :=
+        Get_Model_Trace_Label (E, False, Append_To_Name);
 
       E_Type : constant Type_Kind_Id := Retysp (Etype (E));
       --  Taking the full_view of the type to be able to match private
@@ -434,10 +431,7 @@ package body Gnat2Why.Util is
                   Labels.Include (Model_Projected);
                end if;
 
-            when Record_Kind
-               | Array_Kind
-               | Access_Kind
-            =>
+            when Record_Kind | Array_Kind | Access_Kind =>
                Labels := Model_Trace;
                Labels.Include (Model_Projected);
 
@@ -454,8 +448,7 @@ package body Gnat2Why.Util is
    ------------------
 
    procedure Add_To_Graph
-     (Map      : in out Why_Node_Graphs.Map;
-      From, To : Why_Node_Id)
+     (Map : in out Why_Node_Graphs.Map; From, To : Why_Node_Id)
    is
       Position : Why_Node_Graphs.Cursor;
       Ignored  : Boolean;
@@ -487,13 +480,20 @@ package body Gnat2Why.Util is
 
    function BitVector_Type_Size (Typ : W_Type_Id) return Uint is
    begin
-      return (if Typ = EW_BitVector_8_Type then Uint_8
-              elsif Typ = EW_BitVector_16_Type then Uint_16
-              elsif Typ = EW_BitVector_32_Type then Uint_32
-              elsif Typ = EW_BitVector_64_Type then Uint_64
-              elsif Typ = EW_BitVector_128_Type then Uint_128
-              elsif Typ = EW_BitVector_256_Type then UI_From_Int (256)
-              else raise Program_Error);
+      return
+        (if Typ = EW_BitVector_8_Type
+         then Uint_8
+         elsif Typ = EW_BitVector_16_Type
+         then Uint_16
+         elsif Typ = EW_BitVector_32_Type
+         then Uint_32
+         elsif Typ = EW_BitVector_64_Type
+         then Uint_64
+         elsif Typ = EW_BitVector_128_Type
+         then Uint_128
+         elsif Typ = EW_BitVector_256_Type
+         then UI_From_Int (256)
+         else raise Program_Error);
    end BitVector_Type_Size;
 
    -------------------------
@@ -510,8 +510,7 @@ package body Gnat2Why.Util is
       -- Recurse --
       -------------
 
-      procedure Recurse (Th : W_Theory_Declaration_Id)
-      is
+      procedure Recurse (Th : W_Theory_Declaration_Id) is
          N : constant Symbol := Get_Name (Th);
       begin
          if Seen.Contains (N) then
@@ -531,7 +530,7 @@ package body Gnat2Why.Util is
          Plan.Append (+Th);
       end Recurse;
 
-   --  Start of processing for Build_Printing_Plan
+      --  Start of processing for Build_Printing_Plan
 
    begin
       for Th of Why_Sections (WF_Main) loop
@@ -545,9 +544,7 @@ package body Gnat2Why.Util is
    ------------------------
 
    procedure Collect_Attr_Parts
-     (N         :        Node_Id;
-      Attr_Name :        Name_Id;
-      Parts     : in out Node_Sets.Set)
+     (N : Node_Id; Attr_Name : Name_Id; Parts : in out Node_Sets.Set)
    is
       function Old_Attribute (N : Node_Id) return Atree.Traverse_Result;
       --  Search for 'Old attibute and enter its prefix in the map
@@ -599,11 +596,11 @@ package body Gnat2Why.Util is
          return Atree.OK;
       end Loop_Entry_Attribute;
 
-      procedure Search_Old_Attributes is new Traverse_More_Proc
-        (Old_Attribute);
+      procedure Search_Old_Attributes is new
+        Traverse_More_Proc (Old_Attribute);
 
-      procedure Search_Loop_Entry_Attributes is new Traverse_More_Proc
-        (Loop_Entry_Attribute);
+      procedure Search_Loop_Entry_Attributes is new
+        Traverse_More_Proc (Loop_Entry_Attribute);
 
    begin
       if Attr_Name = Snames.Name_Old then
@@ -617,9 +614,7 @@ package body Gnat2Why.Util is
    end Collect_Attr_Parts;
 
    procedure Collect_Attr_Parts
-     (L         :        Node_Lists.List;
-      Attr_Name :        Name_Id;
-      Parts     : in out Node_Sets.Set)
+     (L : Node_Lists.List; Attr_Name : Name_Id; Parts : in out Node_Sets.Set)
    is
    begin
       for N of L loop
@@ -637,8 +632,7 @@ package body Gnat2Why.Util is
    end Collect_Old_Parts;
 
    procedure Collect_Old_Parts
-     (L     :        Node_Lists.List;
-      Parts : in out Node_Sets.Set) is
+     (L : Node_Lists.List; Parts : in out Node_Sets.Set) is
    begin
       Collect_Attr_Parts (L, Snames.Name_Old, Parts);
    end Collect_Old_Parts;
@@ -650,8 +644,7 @@ package body Gnat2Why.Util is
    function Compute_Spec
      (Params : Transformation_Params;
       Nodes  : Node_Lists.List;
-      Domain : EW_Domain)
-      return W_Expr_Id
+      Domain : EW_Domain) return W_Expr_Id
    is
       use type Ada.Containers.Count_Type;
       Cur_Spec     : W_Expr_Id;
@@ -680,9 +673,7 @@ package body Gnat2Why.Util is
             if Cur_Spec /= Why_Empty then
                Cur_Spec :=
                  New_And_Then_Expr
-                   (Left   => Why_Expr,
-                    Right  => Cur_Spec,
-                    Domain => Domain);
+                   (Left => Why_Expr, Right => Cur_Spec, Domain => Domain);
             else
                Cur_Spec := Why_Expr;
             end if;
@@ -696,8 +687,7 @@ package body Gnat2Why.Util is
      (Params : Transformation_Params;
       E      : Callable_Kind_Id;
       Kind   : Pragma_Id;
-      Domain : EW_Domain)
-      return W_Expr_Id
+      Domain : EW_Domain) return W_Expr_Id
    is
       Nodes : constant Node_Lists.List :=
         Find_Contracts (E, Kind, Classwide => False, Inherited => False);
@@ -753,9 +743,7 @@ package body Gnat2Why.Util is
    --------------------------------
 
    function Count_Why_Top_Level_Fields
-     (E            : Type_Kind_Id;
-      Relaxed_Init : Boolean := False)
-      return Natural
+     (E : Type_Kind_Id; Relaxed_Init : Boolean := False) return Natural
    is
       Count : Natural := 0;
 
@@ -800,20 +788,18 @@ package body Gnat2Why.Util is
    -------------------------
 
    function Create_Zero_Binding
-     (Vars : Why_Node_Lists.List;
-      Prog : W_Prog_Id)
-      return W_Prog_Id
+     (Vars : Why_Node_Lists.List; Prog : W_Prog_Id) return W_Prog_Id
    is
       Result : W_Prog_Id := Prog;
    begin
       for V of Vars loop
          Result :=
-           New_Binding_Ref (Name    => W_Identifier_Id (V),
-                            Def     =>
-                              New_Discrete_Constant (Value => Uint_0,
-                                                     Typ   => Get_Type (+V)),
-                            Context => Result,
-                            Typ     => Get_Type (+Prog));
+           New_Binding_Ref
+             (Name    => W_Identifier_Id (V),
+              Def     =>
+                New_Discrete_Constant (Value => Uint_0, Typ => Get_Type (+V)),
+              Context => Result,
+              Typ     => Get_Type (+Prog));
       end loop;
       return Result;
    end Create_Zero_Binding;
@@ -826,8 +812,7 @@ package body Gnat2Why.Util is
      (Params : Transformation_Params;
       E      : Callable_Kind_Id;
       Kind   : Pragma_Id;
-      Domain : EW_Domain)
-      return W_Expr_Id
+      Domain : EW_Domain) return W_Expr_Id
    is
       Conjuncts_List : Node_Lists.List :=
         Find_Contracts (E, Kind, Classwide => True);
@@ -842,9 +827,7 @@ package body Gnat2Why.Util is
    end Get_Dispatching_Call_Contract;
 
    function Get_Dispatching_Call_Contract
-     (Params : Transformation_Params;
-      E      : Callable_Kind_Id;
-      Kind   : Pragma_Id)
+     (Params : Transformation_Params; E : Callable_Kind_Id; Kind : Pragma_Id)
       return W_Pred_Id is
    begin
       return +Get_Dispatching_Call_Contract (Params, E, Kind, EW_Pred);
@@ -855,9 +838,7 @@ package body Gnat2Why.Util is
    ----------------------
 
    function Get_LSP_Contract
-     (Params : Transformation_Params;
-      E      : Callable_Kind_Id;
-      Kind   : Pragma_Id)
+     (Params : Transformation_Params; E : Callable_Kind_Id; Kind : Pragma_Id)
       return W_Pred_Id
    is
       Conjuncts_List : Node_Lists.List :=
@@ -875,17 +856,14 @@ package body Gnat2Why.Util is
    ------------------------------
 
    function Get_Expr_Quantified_Over
-     (N          : Node_Id;
-      Over_Range : Boolean)
-      return Node_Id
-   is
+     (N : Node_Id; Over_Range : Boolean) return Node_Id is
    begin
       if Over_Range then
-         return
-           Discrete_Subtype_Definition (Loop_Parameter_Specification (N));
+         return Discrete_Subtype_Definition (Loop_Parameter_Specification (N));
       else
-         return Get_Container_In_Iterator_Specification
-           (Iterator_Specification (N));
+         return
+           Get_Container_In_Iterator_Specification
+             (Iterator_Specification (N));
       end if;
    end Get_Expr_Quantified_Over;
 
@@ -922,18 +900,16 @@ package body Gnat2Why.Util is
             for N of Map (Cur_Ptr) loop
                declare
                   use Why_Node_Maps;
-                  Mask_Cu : constant Why_Node_Maps.Cursor :=
-                    Mask.Find (N);
+                  Mask_Cu : constant Why_Node_Maps.Cursor := Mask.Find (N);
                   Mask_N  : constant Why_Node_Id :=
-                    (if Has_Element (Mask_Cu) then Element (Mask_Cu)
-                     else N);
+                    (if Has_Element (Mask_Cu) then Element (Mask_Cu) else N);
                begin
-                  if Mask_N /= Why_Empty
-                    and then not Filter.Contains (Mask_N)
+                  if Mask_N /= Why_Empty and then not Filter.Contains (Mask_N)
                   then
-                     Result.Insert (New_Item => Mask_N,
-                                    Position => Ignored,
-                                    Inserted => Inserted);
+                     Result.Insert
+                       (New_Item => Mask_N,
+                        Position => Ignored,
+                        Inserted => Inserted);
 
                      if Inserted then
                         Work_Set.Include (Mask_N);
@@ -954,43 +930,40 @@ package body Gnat2Why.Util is
    ---------------------------
 
    function Get_Model_Trace_Label
-     (E               : Entity_Id;
-      Is_Record_Field : Boolean := False;
-      Append          : String := "")
+     (E : Entity_Id; Is_Record_Field : Boolean := False; Append : String := "")
       return Symbol_Sets.Set
    is
       S : Symbol_Sets.Set :=
-       (Symbol_Sets.To_Set
-          (NID
-             (Model_Trace_Label &
-              (if E = Empty
-               then ""
-               else
-                 (if Is_Record_Field
-                  then "."
-                  else "") &
-                 Trim (Entity_Id'Image (E), Left) &
-                 Append &
-               --  Add information whether labels are generated for a
-               --  variable holding result of a function.
-               (if Ekind (E) = E_Function then "@result" else "")))));
+        (Symbol_Sets.To_Set
+           (NID
+              (Model_Trace_Label
+               & (if E = Empty
+                  then ""
+                  else
+                    (if Is_Record_Field then "." else "")
+                    & Trim (Entity_Id'Image (E), Left)
+                    & Append
+                    &
+                    --  Add information whether labels are generated for a
+                    --  variable holding result of a function.
+                                                                (if Ekind (E)
+                                                                   = E_Function
+                                                                 then "@result"
+                                                                 else "")))));
    begin
       S.Include (NID ("name:" & Source_Name (E)));
       return S;
    end Get_Model_Trace_Label;
 
-   function Get_Model_Trace_Label (Name : String) return Symbol_Sets.Set is
-     (Symbol_Sets.To_Set (NID (Model_Trace_Label & Name)));
+   function Get_Model_Trace_Label (Name : String) return Symbol_Sets.Set
+   is (Symbol_Sets.To_Set (NID (Model_Trace_Label & Name)));
 
    -----------------------------
    -- Get_Quantified_Variable --
    -----------------------------
 
    function Get_Quantified_Variable
-     (N          : Node_Id;
-      Over_Range : Boolean)
-      return Entity_Id
-   is
+     (N : Node_Id; Over_Range : Boolean) return Entity_Id is
    begin
       if Over_Range then
          return Defining_Identifier (Loop_Parameter_Specification (N));
@@ -1004,20 +977,18 @@ package body Gnat2Why.Util is
    ------------------------------
 
    function Get_Referenced_Variables
-     (Why_Expr : W_Prog_Id;
-      Scope    : Entity_Id)
-      return Node_Sets.Set
+     (Why_Expr : W_Prog_Id; Scope : Entity_Id) return Node_Sets.Set
    is
       Include   : constant Node_Sets.Set := Compute_Ada_Node_Set (+Why_Expr);
       Variables : Node_Sets.Set;
    begin
       for N of Include loop
          if Nkind (N) in N_Entity
-           and then
-             (Ekind (N) in E_Variable | E_Loop_Parameter
-              or else (Ekind (N) = E_Constant
-                       and then (Is_Access_Variable (Etype (N))
-                                 or else Flow_Utility.Has_Variable_Input (N))))
+           and then (Ekind (N) in E_Variable | E_Loop_Parameter
+                     or else (Ekind (N) = E_Constant
+                              and then (Is_Access_Variable (Etype (N))
+                                        or else Flow_Utility.Has_Variable_Input
+                                                  (N))))
            and then not Is_Declared_In_Unit (N, Scope)
          then
             Variables.Insert (N);
@@ -1032,9 +1003,7 @@ package body Gnat2Why.Util is
    ------------------------------
 
    function Get_Static_Call_Contract
-     (Params : Transformation_Params;
-      E      : Callable_Kind_Id;
-      Kind   : Pragma_Id)
+     (Params : Transformation_Params; E : Callable_Kind_Id; Kind : Pragma_Id)
       return W_Pred_Id
    is
       Conjuncts_List : constant Node_Lists.List := Find_Contracts (E, Kind);
@@ -1050,9 +1019,9 @@ package body Gnat2Why.Util is
    -- Has_Post_Axiom --
    --------------------
 
-   function Has_Post_Axiom (E : Callable_Kind_Id) return Boolean is
-     (Ekind (E) not in E_Procedure | Entry_Kind
-      and then not Has_Pragma_Volatile_Function (E));
+   function Has_Post_Axiom (E : Callable_Kind_Id) return Boolean
+   is (Ekind (E) not in E_Procedure | Entry_Kind
+       and then not Has_Pragma_Volatile_Function (E));
    --  Do not generate an axiom for the postcondition of:
    --    * procedures or entries,
    --    * volatile functions and protected subprograms.
@@ -1082,13 +1051,10 @@ package body Gnat2Why.Util is
    --------------------------------
 
    procedure Insert_Tmp_Item_For_Entity
-     (E       : Entity_Id;
-      Name    : W_Identifier_Id;
-      Mutable : Boolean := False)
-   is
+     (E : Entity_Id; Name : W_Identifier_Id; Mutable : Boolean := False) is
    begin
-      Ada_Ent_To_Why.Insert (Symbol_Table, E,
-                             Mk_Tmp_Item_Of_Entity (E, Name, Mutable));
+      Ada_Ent_To_Why.Insert
+        (Symbol_Table, E, Mk_Tmp_Item_Of_Entity (E, Name, Mutable));
    end Insert_Tmp_Item_For_Entity;
 
    ----------------------------
@@ -1097,7 +1063,8 @@ package body Gnat2Why.Util is
 
    function Is_Initialized_At_Decl (Obj : Object_Kind_Id) return Boolean is
    begin
-      return Is_Constant_Object (Obj)
+      return
+        Is_Constant_Object (Obj)
         or else Present (Expression (Enclosing_Declaration (Obj)));
    end Is_Initialized_At_Decl;
 
@@ -1106,49 +1073,47 @@ package body Gnat2Why.Util is
    -----------------------------
 
    function Is_Initialized_In_Scope
-     (Obj   : Entity_Id;
-      Scope : Unit_Kind_Id)
-      return Boolean
-   is
+     (Obj : Entity_Id; Scope : Unit_Kind_Id) return Boolean is
    begin
       case Ekind (Scope) is
-      --  Inside a subprogram, global variables may be uninitialized if they do
-      --  not occur as reads of the subprogram.
+         --  Inside a subprogram, global variables may be uninitialized if they
+         --  do not occur as reads of the subprogram.
 
-      when E_Function | E_Procedure | E_Entry =>
+         when E_Function | E_Procedure | E_Entry =>
 
-         if Enclosing_Unit (Obj) = Scope
-           and then Ekind (Obj) /= E_Out_Parameter
-         then
-            return True;
-         elsif Obj_Has_Relaxed_Init (Obj) then
-            return False;
-         else
-            declare
-               use Flow_Types;
+            if Enclosing_Unit (Obj) = Scope
+              and then Ekind (Obj) /= E_Out_Parameter
+            then
+               return True;
+            elsif Obj_Has_Relaxed_Init (Obj) then
+               return False;
+            else
+               declare
+                  use Flow_Types;
 
-               Read_Ids  : Flow_Id_Sets.Set;
-               Write_Ids : Flow_Id_Sets.Set;
+                  Read_Ids  : Flow_Id_Sets.Set;
+                  Write_Ids : Flow_Id_Sets.Set;
 
-            begin
-               Flow_Utility.Get_Proof_Globals (Subprogram      => Scope,
-                                               Reads           => Read_Ids,
-                                               Writes          => Write_Ids,
-                                               Erase_Constants => False);
+               begin
+                  Flow_Utility.Get_Proof_Globals
+                    (Subprogram      => Scope,
+                     Reads           => Read_Ids,
+                     Writes          => Write_Ids,
+                     Erase_Constants => False);
 
-               return Read_Ids.Contains (Direct_Mapping_Id (Obj));
-            end;
-         end if;
+                  return Read_Ids.Contains (Direct_Mapping_Id (Obj));
+               end;
+            end if;
 
-      --  Every global variable referenced inside a package elaboration must be
-      --  initialized. In the same way, tasks can only access synchronized or
-      --  Part_Of objects, which are always initialized.
+         --  Every global variable referenced inside a package elaboration must
+         --  be initialized. In the same way, tasks can only access
+         --  synchronized or Part_Of objects, which are always initialized.
 
-      when E_Package | E_Task_Type =>
-         return not Obj_Has_Relaxed_Init (Obj);
+         when E_Package | E_Task_Type =>
+            return not Obj_Has_Relaxed_Init (Obj);
 
-      when others =>
-         raise Program_Error;
+         when others =>
+            raise Program_Error;
       end case;
    end Is_Initialized_In_Scope;
 
@@ -1174,7 +1139,8 @@ package body Gnat2Why.Util is
             --  Same for variables that are Part_Ofs protected objects; they
             --  are like components for proof.
 
-            return not Is_Quantified_Loop_Param (E)
+            return
+              not Is_Quantified_Loop_Param (E)
               and then not Is_Part_Of_Protected_Object (E);
 
          when E_Task_Type =>
@@ -1258,8 +1224,8 @@ package body Gnat2Why.Util is
    function Is_Private_Intrinsic_Op (N : N_Op_Id) return Boolean
    is (Ekind (Entity (N)) = E_Function
        and then Full_View_Not_In_SPARK (Etype (Right_Opnd (N)))
-       and then (if Nkind (N) in N_Binary_Op then
-                    Full_View_Not_In_SPARK (Etype (Left_Opnd (N)))));
+       and then (if Nkind (N) in N_Binary_Op
+                 then Full_View_Not_In_SPARK (Etype (Left_Opnd (N)))));
 
    ----------------------------
    -- Is_Simple_Private_Type --
@@ -1268,7 +1234,8 @@ package body Gnat2Why.Util is
    function Is_Simple_Private_Type (E : Type_Kind_Id) return Boolean is
       Ty : constant Type_Kind_Id := Retysp (E);
    begin
-      return Is_Incomplete_Or_Private_Type (Ty)
+      return
+        Is_Incomplete_Or_Private_Type (Ty)
         and then not Has_Discriminants (Ty)
         and then not Is_Tagged_Type (Ty);
    end Is_Simple_Private_Type;
@@ -1280,10 +1247,10 @@ package body Gnat2Why.Util is
    function Is_Range_Type_In_Why (T : Type_Kind_Id) return Boolean is
       Ty : constant Type_Kind_Id := Retysp (T);
    begin
-      return (Is_Signed_Integer_Type (Ty)
-                or else
-             (Is_Modular_Integer_Type (Ty)
-                and then Has_No_Bitwise_Operations_Annotation (Ty)))
+      return
+        (Is_Signed_Integer_Type (Ty)
+         or else (Is_Modular_Integer_Type (Ty)
+                  and then Has_No_Bitwise_Operations_Annotation (Ty)))
         and then not Type_Is_Modeled_As_Base (Ty);
    end Is_Range_Type_In_Why;
 
@@ -1304,19 +1271,17 @@ package body Gnat2Why.Util is
       use Loop_Entry_Nodes;
       C : constant Loop_Entry_Nodes.Cursor := Loop_Entry_Map.Find (Loop_Id);
    begin
-      return (if Has_Element (C) then
-                 Element (C)
-              else
-                 (Ada_To_Why_Ident.Empty_Map, Ada_To_Why_Ident.Empty_Map));
+      return
+        (if Has_Element (C)
+         then Element (C)
+         else (Ada_To_Why_Ident.Empty_Map, Ada_To_Why_Ident.Empty_Map));
    end Map_For_Loop_Entry;
 
    -----------------------------------
    -- Might_Need_Discriminant_Check --
    -----------------------------------
 
-   function Might_Need_Discriminant_Check
-     (Field : Entity_Id) return Boolean
-   is
+   function Might_Need_Discriminant_Check (Field : Entity_Id) return Boolean is
    begin
       if Ekind (Field) /= E_Component then
          return False;
@@ -1324,7 +1289,8 @@ package body Gnat2Why.Util is
          declare
             Ty : constant Type_Kind_Id := Original_Declaration (Field);
          begin
-            return Has_Discriminants (Ty)
+            return
+              Has_Discriminants (Ty)
               and then (not Is_Tagged_Type (Ty) or else Ty = Root_Retysp (Ty));
          end;
       end if;
@@ -1335,11 +1301,10 @@ package body Gnat2Why.Util is
    -------------------------
 
    function Name_For_Loop_Entry
-     (Attr : N_Attribute_Reference_Id)
-      return E_Loop_Id
+     (Attr : N_Attribute_Reference_Id) return E_Loop_Id
    is
-      function Is_Loop_Stmt (N : Node_Id) return Boolean is
-        (Nkind (N) = N_Loop_Statement);
+      function Is_Loop_Stmt (N : Node_Id) return Boolean
+      is (Nkind (N) = N_Loop_Statement);
 
       function Enclosing_Loop_Stmt is new
         First_Parent_With_Property (Is_Loop_Stmt);
@@ -1358,6 +1323,7 @@ package body Gnat2Why.Util is
          Loop_Id := Entity (Arg);
 
       --  Climb the parent chain to find the nearest enclosing loop
+
       else
          Loop_Stmt := Enclosing_Loop_Stmt (Attr);
          Loop_Id := Entity (Identifier (Loop_Stmt));
@@ -1367,8 +1333,7 @@ package body Gnat2Why.Util is
    end Name_For_Loop_Entry;
 
    function Name_For_Loop_Entry
-     (Attr : N_Attribute_Reference_Id)
-      return W_Identifier_Id
+     (Attr : N_Attribute_Reference_Id) return W_Identifier_Id
    is
       Loop_Id : constant E_Loop_Id := Name_For_Loop_Entry (Attr);
    begin
@@ -1378,20 +1343,17 @@ package body Gnat2Why.Util is
    function Name_For_Loop_Entry
      (Expr      : Node_Or_Entity_Id;
       Loop_Id   : E_Loop_Id;
-      No_Checks : Boolean := False)
-      return W_Identifier_Id
+      No_Checks : Boolean := False) return W_Identifier_Id
    is
       Result : W_Identifier_Id;
 
       procedure Get_Name
-        (Loop_Id  :        Node_Id;
-         Loop_Map : in out Ada_To_Why_Ident.Map);
+        (Loop_Id : Node_Id; Loop_Map : in out Ada_To_Why_Ident.Map);
       --  Update the mapping Loop_Map with an entry for Expr if not already
       --  present, and store the corresponding identifier in Result.
 
       procedure Get_Name
-        (Loop_Id   :        Node_Id;
-         Loop_Maps : in out Loop_Entry_Values);
+        (Loop_Id : Node_Id; Loop_Maps : in out Loop_Entry_Values);
       --  Same as above but chooses the map to update depending on the value of
       --  No_Checks.
 
@@ -1400,8 +1362,7 @@ package body Gnat2Why.Util is
       --------------
 
       procedure Get_Name
-        (Loop_Id  :        Node_Id;
-         Loop_Map : in out Ada_To_Why_Ident.Map)
+        (Loop_Id : Node_Id; Loop_Map : in out Ada_To_Why_Ident.Map)
       is
          Typ : W_Type_Id;
          Nd  : Node_Id;
@@ -1411,16 +1372,16 @@ package body Gnat2Why.Util is
 
          use Ada_To_Why_Ident;
 
-         Attrs : String_Utils.String_Sets.Set :=
-                   String_Utils.String_Sets.Empty_Set;
+         Attrs       : String_Utils.String_Sets.Set :=
+           String_Utils.String_Sets.Empty_Set;
          Model_Trace : constant String :=
-           --  Here we exclude Loop_Entry expressions and only consider
-           --  Entities
-           (if Nkind (Expr) in N_Has_Entity then
-               "model_trace:" &
-               Trim (Source => Entity (Expr)'Image,
-                     Side   => Ada.Strings.Left) &
-              "'Loop_Entry"
+         --  Here we exclude Loop_Entry expressions and only consider
+         --  Entities
+           (if Nkind (Expr) in N_Has_Entity
+            then
+              "model_trace:"
+              & Trim (Source => Entity (Expr)'Image, Side => Ada.Strings.Left)
+              & "'Loop_Entry"
             else "");
 
       begin
@@ -1430,35 +1391,35 @@ package body Gnat2Why.Util is
 
             if Nkind (Expr) in N_Defining_Identifier then
                Typ := Why_Type_Of_Entity (Expr);
-               Nd  := Expr;
+               Nd := Expr;
             elsif Nkind (Expr) in N_Identifier | N_Expanded_Name then
                Typ := Why_Type_Of_Entity (Entity (Expr));
-               Nd  := Entity (Expr);
+               Nd := Entity (Expr);
             else
                Typ := Type_Of_Node (Expr);
-               Nd  := Types.Empty;
+               Nd := Types.Empty;
             end if;
 
             if Model_Trace /= "" then
                String_Utils.String_Sets.Insert (Attrs, Model_Trace);
             end if;
-            Loop_Map.Insert (Key      => Expr,
-                             New_Item => New_Generated_Identifier
-                                           (Typ       => Typ,
-                                            Ada_Node  => Nd,
-                                            Base_Name => "loop_entry",
-                                            Attrs     => Attrs),
-                             Position => Pos,
-                             Inserted => Dummy);
+            Loop_Map.Insert
+              (Key      => Expr,
+               New_Item =>
+                 New_Generated_Identifier
+                   (Typ       => Typ,
+                    Ada_Node  => Nd,
+                    Base_Name => "loop_entry",
+                    Attrs     => Attrs),
+               Position => Pos,
+               Inserted => Dummy);
          end if;
 
          Result := Loop_Map (Pos);
       end Get_Name;
 
       procedure Get_Name
-        (Loop_Id   :        Node_Id;
-         Loop_Maps : in out Loop_Entry_Values)
-      is
+        (Loop_Id : Node_Id; Loop_Maps : in out Loop_Entry_Values) is
       begin
          if No_Checks then
             Get_Name (Loop_Id, Loop_Maps.No_Checks);
@@ -1470,17 +1431,14 @@ package body Gnat2Why.Util is
       Cur   : Loop_Entry_Nodes.Cursor;
       Dummy : Boolean;
 
-   --  Start of processing for Name_For_Loop_Entry
+      --  Start of processing for Name_For_Loop_Entry
 
    begin
       Loop_Entry_Map.Insert
-        (Key      => Loop_Id,
-         Position => Cur,
-         Inserted => Dummy);
+        (Key => Loop_Id, Position => Cur, Inserted => Dummy);
 
       Loop_Entry_Map.Update_Element
-        (Position => Cur,
-         Process  => Get_Name'Access);
+        (Position => Cur, Process => Get_Name'Access);
 
       return Result;
    end Name_For_Loop_Entry;
@@ -1497,42 +1455,42 @@ package body Gnat2Why.Util is
 
    begin
       --  Tentatively insert an empty node to update it later
-      Old_Map.Insert (Key      => N,
-                      New_Item => Why_Empty,
-                      Position => Position,
-                      Inserted => Inserted);
+      Old_Map.Insert
+        (Key      => N,
+         New_Item => Why_Empty,
+         Position => Position,
+         Inserted => Inserted);
 
       if Inserted then
          declare
-            function Is_Contract_Case (P : Node_Id) return Boolean is
-              (Is_Pragma (P, Pragma_Contract_Cases));
+            function Is_Contract_Case (P : Node_Id) return Boolean
+            is (Is_Pragma (P, Pragma_Contract_Cases));
 
             function Enclosing_Contract_Case is new
               First_Parent_With_Property (Is_Contract_Case);
 
-            Typ : W_Type_Id;
-            Nd  : Node_Id;
-            Attrs : String_Utils.String_Sets.Set :=
-                   String_Utils.String_Sets.Empty_Set;
+            Typ         : W_Type_Id;
+            Nd          : Node_Id;
+            Attrs       : String_Utils.String_Sets.Set :=
+              String_Utils.String_Sets.Empty_Set;
             Model_Trace : constant String :=
-              --  Here we exclude Old expressions and only consider Entities
-              (if Nkind (N) in N_Has_Entity then
-                  "model_trace:" &
-                  Trim (Source => Entity (N)'Image,
-                        Side   => Ada.Strings.Left) &
-                 "'Old"
+            --  Here we exclude Old expressions and only consider Entities
+              (if Nkind (N) in N_Has_Entity
+               then
+                 "model_trace:"
+                 & Trim (Source => Entity (N)'Image, Side => Ada.Strings.Left)
+                 & "'Old"
                else "");
          begin
             if Nkind (N) in N_Identifier | N_Expanded_Name then
                Typ := Type_Of_Node (N);
-               Nd  := Entity (N);
+               Nd := Entity (N);
             else
                Typ := Type_Of_Node (Etype (N));
-               Nd  := Types.Empty;
+               Nd := Types.Empty;
             end if;
 
-            if Present (Enclosing_Contract_Case (N)) and then
-              Model_Trace /= ""
+            if Present (Enclosing_Contract_Case (N)) and then Model_Trace /= ""
             then
                String_Utils.String_Sets.Insert (Attrs, Model_Trace);
                Old_Map (Position) :=
@@ -1543,9 +1501,8 @@ package body Gnat2Why.Util is
                     Attrs     => Attrs);
             else
                Old_Map (Position) :=
-                 New_Temp_Identifier (Base_Name => "old",
-                                      Typ       => Typ,
-                                      Ada_Node  => Nd);
+                 New_Temp_Identifier
+                   (Base_Name => "old", Typ => Typ, Ada_Node => Nd);
             end if;
          end;
       end if;
@@ -1560,7 +1517,8 @@ package body Gnat2Why.Util is
    function Needs_DIC_Check_At_Decl (Ty : Type_Kind_Id) return Boolean is
       E : constant Type_Kind_Id := Retysp (Ty);
    begin
-      return May_Need_DIC_Checking (E)
+      return
+        May_Need_DIC_Checking (E)
 
         --  We do not want to emit DIC checks for types whose full view is not
         --  in SPARK. If the Restysp is not a private type, then the full view
@@ -1569,11 +1527,10 @@ package body Gnat2Why.Util is
         --  private declaration. In that case, the completion must not be in
         --  SPARK.
 
-        and then
-          (not Is_Incomplete_Or_Private_Type (E)
-           or else
-           Nkind (Enclosing_Declaration (E)) not in
-             N_Private_Type_Declaration | N_Private_Extension_Declaration)
+        and then (not Is_Incomplete_Or_Private_Type (E)
+                  or else Nkind (Enclosing_Declaration (E))
+                          not in N_Private_Type_Declaration
+                               | N_Private_Extension_Declaration)
         and then Check_DIC_At_Declaration (E);
    end Needs_DIC_Check_At_Decl;
 
@@ -1581,9 +1538,8 @@ package body Gnat2Why.Util is
    -- Needs_DIC_Check_At_Use --
    ----------------------------
 
-   function Needs_DIC_Check_At_Use (Ty : Type_Kind_Id) return Boolean is
-     (May_Need_DIC_Checking (Ty)
-       and then not Check_DIC_At_Declaration (Ty));
+   function Needs_DIC_Check_At_Use (Ty : Type_Kind_Id) return Boolean
+   is (May_Need_DIC_Checking (Ty) and then not Check_DIC_At_Declaration (Ty));
 
    --------------------
    -- New_Check_Info --
@@ -1595,12 +1551,14 @@ package body Gnat2Why.Util is
       User_Message   : String_Id := No_String;
       Details        : String := "") return Check_Info_Type
    is ((User_Message => User_Message,
-        Fix_Info     => (Range_Check_Ty => Range_Check_Ty,
-                         Divisor        => Divisor,
-                         Bound_Info     => No_Bound),
+        Fix_Info     =>
+          (Range_Check_Ty => Range_Check_Ty,
+           Divisor        => Divisor,
+           Bound_Info     => No_Bound),
         Continuation => Continuation_Stack,
         Details      =>
-          (if Details = "" then Null_Unbounded_String
+          (if Details = ""
+           then Null_Unbounded_String
            else To_Unbounded_String (Details))));
 
    --------------------------------
@@ -1608,33 +1566,31 @@ package body Gnat2Why.Util is
    --------------------------------
 
    function Nth_Index_Rep_Type_No_Bool
-     (E   : Array_Kind_Id;
-      Dim : Positive)
-      return W_Type_Id
-   is
-     (Base_Why_Type_No_Bool
-        (Nth_Index_Type
-           ((if Ekind (E) = E_String_Literal_Subtype
-             --  If E is a string literal subtype then use its base type's
-             --  index type type's.
-             then Retysp (Etype (E))
-             else E),
-            Dim)));
+     (E : Array_Kind_Id; Dim : Positive) return W_Type_Id
+   is (Base_Why_Type_No_Bool
+         (Nth_Index_Type
+            ((if Ekind (E)
+                = E_String_Literal_Subtype
+                  --  If E is a string literal subtype then use its base type's
+                  --  index type type's.
+              then Retysp (Etype (E))
+              else E),
+             Dim)));
 
    ----------------
    -- Short_Name --
    ----------------
 
-   function Short_Name (E : Entity_Id) return String is
-     (Avoid_Why3_Keyword (Get_Name_String (Chars (E))));
+   function Short_Name (E : Entity_Id) return String
+   is (Avoid_Why3_Keyword (Get_Name_String (Chars (E))));
 
    ---------------------------------
    -- Type_Has_Static_Constraints --
    ---------------------------------
 
-   function Type_Has_Static_Constraints (E : Type_Kind_Id) return Boolean is
-     (Type_Needs_Dynamic_Invariant (E, Include_Static => True)
-      and then not Type_Needs_Dynamic_Invariant (E, Include_Static => False));
+   function Type_Has_Static_Constraints (E : Type_Kind_Id) return Boolean
+   is (Type_Needs_Dynamic_Invariant (E, Include_Static => True)
+       and then not Type_Needs_Dynamic_Invariant (E, Include_Static => False));
 
    -----------------------------
    -- Type_Is_Modeled_As_Base --
@@ -1642,7 +1598,8 @@ package body Gnat2Why.Util is
 
    function Type_Is_Modeled_As_Base (T : Type_Kind_Id) return Boolean is
    begin
-      return Is_Scalar_Type (T)
+      return
+        Is_Scalar_Type (T)
         and then (not Has_OK_Static_Scalar_Subtype (T)
                   or else Is_Null_Range (T));
    end Type_Is_Modeled_As_Base;
@@ -1652,18 +1609,15 @@ package body Gnat2Why.Util is
    ----------------------------------
 
    function Type_Needs_Dynamic_Invariant
-     (T              : Type_Kind_Id;
-      Include_Static : Boolean := True) return Boolean is
+     (T : Type_Kind_Id; Include_Static : Boolean := True) return Boolean
+   is
 
       function Has_Potentially_Inherited_Type_Invariants
-        (T : Type_Kind_Id)
-         return Boolean;
+        (T : Type_Kind_Id) return Boolean;
       --  Return True if T or one of its ancestors has a type invariant
 
       function Type_Needs_Dynamic_Invariant_Ann
-        (T         : Type_Kind_Id;
-         Top_Level : Boolean)
-         return Boolean;
+        (T : Type_Kind_Id; Top_Level : Boolean) return Boolean;
       --  Generation of dynamic invariants is slightly different when called
       --  recursively on component types of arrays or records. Top_Level should
       --  be False in recursive calls.
@@ -1677,8 +1631,7 @@ package body Gnat2Why.Util is
       -----------------------------------------------
 
       function Has_Potentially_Inherited_Type_Invariants
-        (T : Type_Kind_Id)
-         return Boolean
+        (T : Type_Kind_Id) return Boolean
       is
          Current : Type_Kind_Id := T;
          Parent  : Type_Kind_Id;
@@ -1700,14 +1653,13 @@ package body Gnat2Why.Util is
       --------------------------------------
 
       function Type_Needs_Dynamic_Invariant_Ann
-        (T         : Type_Kind_Id;
-         Top_Level : Boolean)
-         return Boolean
+        (T : Type_Kind_Id; Top_Level : Boolean) return Boolean
       is
-         Ty_Spec   : constant Type_Kind_Id :=
-           (if Is_Class_Wide_Type (T) then Get_Specific_Type_From_Classwide (T)
+         Ty_Spec : constant Type_Kind_Id :=
+           (if Is_Class_Wide_Type (T)
+            then Get_Specific_Type_From_Classwide (T)
             else T);
-         Ty_Ext    : constant Type_Kind_Id := Retysp (Ty_Spec);
+         Ty_Ext  : constant Type_Kind_Id := Retysp (Ty_Spec);
 
       begin
          --  Dynamic invariant of the type itself
@@ -1721,14 +1673,14 @@ package body Gnat2Why.Util is
            --  but not for components of arrays and records which are never
            --  represented in split form.
 
-           or else
-             (Top_Level
-              and then Use_Split_Form_For_Type (Ty_Ext))
+           or else (Top_Level and then Use_Split_Form_For_Type (Ty_Ext))
 
            --  For array types, we need an invariant to link the content and
            --  the bounds and, for non static array types, potentially bound
            --  constraints.
 
+           --  Nested expression gets indented too much
+           --!format off
            or else
              (Is_Array_Type (Ty_Ext)
               and then
@@ -1738,15 +1690,15 @@ package body Gnat2Why.Util is
                     and then
                       (Is_Constrained (Ty_Ext)
                        or else Is_Fixed_Lower_Bound_Array_Subtype (Ty_Ext)))))
+           --!format on
 
            --  Types with discriminants might have variant parts. Components
            --  which are not present in an object are fixed by the dynamic
            --  invariant. For constrained types, also assume discriminant
            --  constraints.
 
-           or else
-             (Has_Discriminants (Ty_Ext)
-              and then (Include_Static or else Is_Constrained (Ty_Ext)))
+           or else (Has_Discriminants (Ty_Ext)
+                    and then (Include_Static or else Is_Constrained (Ty_Ext)))
 
            --  Tagged types have an invariant providing the value of the
            --  extension when the tag is the tag of Ty_Ext.
@@ -1762,8 +1714,7 @@ package body Gnat2Why.Util is
            --  null. For other access types, the value is fixed by the dynamic
            --  invariant when the pointer is null.
 
-           or else (Include_Static
-                    and then Is_Access_Type (Ty_Ext))
+           or else (Include_Static and then Is_Access_Type (Ty_Ext))
 
            --  We need an invariant for type predicates
 
@@ -1775,10 +1726,9 @@ package body Gnat2Why.Util is
 
            --  Some hardcoded types have dynamic properties
 
-           or else
-             (Is_Hardcoded_Entity (Root_Retysp (Ty_Ext))
-              and then Hardcoded_Type_Needs_Dynamic_Property
-                (Root_Retysp (Ty_Ext)))
+           or else (Is_Hardcoded_Entity (Root_Retysp (Ty_Ext))
+                    and then Hardcoded_Type_Needs_Dynamic_Property
+                               (Root_Retysp (Ty_Ext)))
 
          then
             return True;
@@ -1806,17 +1756,18 @@ package body Gnat2Why.Util is
 
             for Comp of Get_Component_Set (Ty_Ext) loop
                if not Is_Type (Comp)
-                 and then
-                   (Type_Needs_Dynamic_Invariant_Ann (Etype (Comp), False)
-                    or else Is_Tagged_Type (Retysp (Etype (Comp))))
+                 and then (Type_Needs_Dynamic_Invariant_Ann
+                             (Etype (Comp), False)
+                           or else Is_Tagged_Type (Retysp (Etype (Comp))))
                then
                   return True;
                end if;
             end loop;
 
          elsif Is_Array_Type (Ty_Ext) then
-            return Type_Needs_Dynamic_Invariant_Ann
-              (Component_Type (Ty_Ext), False);
+            return
+              Type_Needs_Dynamic_Invariant_Ann
+                (Component_Type (Ty_Ext), False);
 
          elsif Is_Access_Type (Ty_Ext) then
 
@@ -1829,11 +1780,10 @@ package body Gnat2Why.Util is
 
             if Designates_Incomplete_Type (Ty_Ext) then
                if Incompl_Access_Seen.Contains (Ty_Ext)
-                 or else
-                   (Include_Static
-                    and then not Type_Needs_Dynamic_Invariant
-                      (Directly_Designated_Type (Ty_Ext),
-                       Include_Static => False))
+                 or else (Include_Static
+                          and then not Type_Needs_Dynamic_Invariant
+                                         (Directly_Designated_Type (Ty_Ext),
+                                          Include_Static => False))
                then
                   return False;
                else
@@ -1841,14 +1791,15 @@ package body Gnat2Why.Util is
                end if;
             end if;
 
-            return Type_Needs_Dynamic_Invariant_Ann
-              (Directly_Designated_Type (Ty_Ext), False);
+            return
+              Type_Needs_Dynamic_Invariant_Ann
+                (Directly_Designated_Type (Ty_Ext), False);
          end if;
 
          return False;
       end Type_Needs_Dynamic_Invariant_Ann;
 
-   --  Start of processing for Type_Needs_Dynamic_Invariant
+      --  Start of processing for Type_Needs_Dynamic_Invariant
 
    begin
       return Type_Needs_Dynamic_Invariant_Ann (T, True);
@@ -1861,15 +1812,9 @@ package body Gnat2Why.Util is
    function Type_Of_Node (N : Node_Id) return Type_Kind_Id is
       T : constant Type_Kind_Id :=
         (case Nkind (N) is
-            when N_Entity =>
-              (if Is_Type (N) then
-                 N
-               else
-                 Etype (N)),
-            when N_Identifier | N_Expanded_Name =>
-               Etype (Entity (N)),
-            when others =>
-               Etype (N));
+           when N_Entity => (if Is_Type (N) then N else Etype (N)),
+           when N_Identifier | N_Expanded_Name => Etype (Entity (N)),
+           when others => Etype (N));
 
    begin
       --  The type of a node is either its most underlying type, or else the
@@ -1885,7 +1830,8 @@ package body Gnat2Why.Util is
 
    function Use_Guard_For_Function (E : Function_Kind_Id) return Boolean is
    begin
-      return Gnat2Why_Args.Proof_Generate_Guards
+      return
+        Gnat2Why_Args.Proof_Generate_Guards
 
         --  No axioms are generated for volatile functions and functions with
         --  side effects.
@@ -1918,7 +1864,8 @@ package body Gnat2Why.Util is
 
    function Use_Split_Form_For_Type (E : Type_Kind_Id) return Boolean is
    begin
-      return Is_Scalar_Type (Retysp (E))
+      return
+        Is_Scalar_Type (Retysp (E))
         and then not Is_Standard_Boolean_Type (Retysp (E));
    end Use_Split_Form_For_Type;
 
@@ -1949,12 +1896,14 @@ package body Gnat2Why.Util is
 
    function Why_Type_Is_BitVector (Typ : W_Type_Id) return Boolean is
    begin
-      return Typ in EW_BitVector_8_Type
-                  | EW_BitVector_16_Type
-                  | EW_BitVector_32_Type
-                  | EW_BitVector_64_Type
-                  | EW_BitVector_128_Type
-                  | EW_BitVector_256_Type;
+      return
+        Typ
+        in EW_BitVector_8_Type
+         | EW_BitVector_16_Type
+         | EW_BitVector_32_Type
+         | EW_BitVector_64_Type
+         | EW_BitVector_128_Type
+         | EW_BitVector_256_Type;
    end Why_Type_Is_BitVector;
 
    -----------------------
@@ -1963,7 +1912,8 @@ package body Gnat2Why.Util is
 
    function Why_Type_Is_Fixed (Typ : W_Type_Id) return Boolean is
    begin
-      return Get_Type_Kind (Typ) = EW_Builtin
+      return
+        Get_Type_Kind (Typ) = EW_Builtin
         and then Present (Get_Ada_Node (+Typ))
         and then Is_Fixed_Point_Type (Get_Ada_Node (+Typ));
    end Why_Type_Is_Fixed;
@@ -1982,8 +1932,8 @@ package body Gnat2Why.Util is
    --------------------
 
    package body W_Pred_Vectors is
-      procedure Free is new Ada.Unchecked_Deallocation
-        (W_Pred_Array, W_Pred_Array_Acc);
+      procedure Free is new
+        Ada.Unchecked_Deallocation (W_Pred_Array, W_Pred_Array_Acc);
 
       ------------
       -- Append --
@@ -2012,8 +1962,7 @@ package body Gnat2Why.Util is
       -- To_Array --
       --------------
 
-      function To_Array (V : in out Vector) return W_Pred_Array
-      is
+      function To_Array (V : in out Vector) return W_Pred_Array is
       begin
          if V.Top = 0 then
             Free (V.Content);

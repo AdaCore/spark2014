@@ -387,21 +387,23 @@ package Gnat2Why is
    --  transformed differently in the context of generating VCs for run-time
    --  errors, or in the context of generating a postcondition in Why3.
 
-   subtype Generate_VCs is Transformation_Phase range
-     Generate_VCs_For_Contract ..
-     --  Generate_VCs_For_Assert
-     Generate_VCs_For_Body;
+   subtype Generate_VCs is
+     Transformation_Phase
+       range Generate_VCs_For_Contract
+             ..
+             --  Generate_VCs_For_Assert
+             Generate_VCs_For_Body;
    --  Transformation phases for the generation of VCs
 
-   subtype Generate_VCs_For_Assertion is Transformation_Phase range
-     Generate_VCs_For_Contract ..
-     Generate_VCs_For_Assert;
+   subtype Generate_VCs_For_Assertion is
+     Transformation_Phase
+       range Generate_VCs_For_Contract .. Generate_VCs_For_Assert;
    --  Transformation phases for the generation of VCs to check absence of
    --  run-time errors in assertions.
 
-   subtype Generate_For_Body is Transformation_Phase range
-     Generate_VCs_For_Body ..
-     Generate_Contract_For_Body;
+   subtype Generate_For_Body is
+     Transformation_Phase
+       range Generate_VCs_For_Body .. Generate_Contract_For_Body;
    --  Transformation phases for the generation of Why3 code corresponding to
    --  the body of a subprogram.
 

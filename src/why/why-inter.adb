@@ -57,19 +57,21 @@ with Why.Images;                use Why.Images;
 
 package body Why.Inter is
 
-   package Symbol_To_Theory_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Symbol,
-      Element_Type    => W_Theory_Declaration_Id,
-      Hash            => GNATCOLL.Symbols.Hash,
-      Equivalent_Keys => "=");
+   package Symbol_To_Theory_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Symbol,
+        Element_Type    => W_Theory_Declaration_Id,
+        Hash            => GNATCOLL.Symbols.Hash,
+        Equivalent_Keys => "=");
 
    Symbol_To_Theory_Map : Symbol_To_Theory_Maps.Map;
 
-   package Entity_For_Axiom_Module_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Why_Node_Id,
-      Element_Type    => Node_Id,
-      Hash            => Why_Node_Hash,
-      Equivalent_Keys => "=");
+   package Entity_For_Axiom_Module_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Why_Node_Id,
+        Element_Type    => Node_Id,
+        Hash            => Why_Node_Hash,
+        Equivalent_Keys => "=");
 
    Entity_For_Axiom_Module : Entity_For_Axiom_Module_Maps.Map;
    --  For axiom modules, we register the corresponding entity, in whose VC
@@ -91,11 +93,12 @@ package body Why.Inter is
    --  other units).
 
    function Compute_Ada_Node_Set (S : Why_Node_Sets.Set) return Node_Sets.Set
-     with Post => (for all N of Compute_Ada_Node_Set'Result =>
-                     Nkind (N) in N_Entity | N_Aggregate | N_Delta_Aggregate
-                       or else
-                     (Nkind (N) = N_Attribute_Reference
-                      and then Attribute_Name (N) = Name_Access));
+   with
+     Post =>
+       (for all N of Compute_Ada_Node_Set'Result =>
+          Nkind (N) in N_Entity | N_Aggregate | N_Delta_Aggregate
+          or else (Nkind (N) = N_Attribute_Reference
+                   and then Attribute_Name (N) = Name_Access));
    --  Transform a module set into a node set by taking the Ada_Node of each
    --  element.
 
@@ -106,17 +109,15 @@ package body Why.Inter is
    --  even in the case Left = Right.
 
    function EW_Abstract_Shared
-     (N            : Node_Id;
-      Kind         : EW_Type;
-      Relaxed_Init : Boolean := False) return W_Type_Id
-     with Pre => Is_Type (N)
-                 and then Kind in EW_Abstract | EW_Split;
+     (N : Node_Id; Kind : EW_Type; Relaxed_Init : Boolean := False)
+      return W_Type_Id
+   with Pre => Is_Type (N) and then Kind in EW_Abstract | EW_Split;
    --  Build a type node from an Ada type node, either of kind Split or
    --  Abstract.
 
    function New_Kind_Base_Type
      (E : Entity_Id; Kind : EW_Type; Relaxed_Init : Boolean) return W_Type_Id
-     with Pre => Kind in EW_Abstract | EW_Split;
+   with Pre => Kind in EW_Abstract | EW_Split;
    --  @param E The type entity for which we want to construct a why type
    --  @param Kind The kind we want the Why type to have. For now, EW_Split is
    --              only supported for arrays and discrete types.
@@ -168,44 +169,34 @@ package body Why.Inter is
       end record;
 
       procedure Identifier_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Identifier_Id);
+        (State : in out Search_State; Node : W_Identifier_Id);
 
-      procedure Name_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Name_Id);
+      procedure Name_Pre_Op (State : in out Search_State; Node : W_Name_Id);
 
       procedure Integer_Constant_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Integer_Constant_Id);
+        (State : in out Search_State; Node : W_Integer_Constant_Id);
 
       procedure Modular_Constant_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Modular_Constant_Id);
+        (State : in out Search_State; Node : W_Modular_Constant_Id);
 
       procedure Real_Constant_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Real_Constant_Id);
+        (State : in out Search_State; Node : W_Real_Constant_Id);
 
       procedure Fixed_Constant_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Fixed_Constant_Id);
+        (State : in out Search_State; Node : W_Fixed_Constant_Id);
 
       procedure Clone_Substitution_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Clone_Substitution_Id);
+        (State : in out Search_State; Node : W_Clone_Substitution_Id);
 
       procedure Include_Declaration_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Include_Declaration_Id);
+        (State : in out Search_State; Node : W_Include_Declaration_Id);
 
       -------------------------------
       -- Clone_Substitution_Pre_Op --
       -------------------------------
 
       procedure Clone_Substitution_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Clone_Substitution_Id) is
+        (State : in out Search_State; Node : W_Clone_Substitution_Id) is
       begin
          --  For clone substitutions, the node for the original name is
          --  irrelevant
@@ -219,8 +210,8 @@ package body Why.Inter is
       ---------------------------
 
       procedure Fixed_Constant_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Fixed_Constant_Id) is
+        (State : in out Search_State; Node : W_Fixed_Constant_Id)
+      is
          pragma Unreferenced (Node);
       begin
          State.S.Include (+Int_Module);
@@ -231,9 +222,7 @@ package body Why.Inter is
       -----------------------
 
       procedure Identifier_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Identifier_Id)
-      is
+        (State : in out Search_State; Node : W_Identifier_Id) is
       begin
          --  ??? special hack to be removed at some point
 
@@ -256,8 +245,7 @@ package body Why.Inter is
       --------------------------------
 
       procedure Include_Declaration_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Include_Declaration_Id) is
+        (State : in out Search_State; Node : W_Include_Declaration_Id) is
       begin
          if Include_Declaration_Get_Use_Kind (+Node) /= EW_Clone_Default then
             State.S.Include (Include_Declaration_Get_Module (+Node));
@@ -269,8 +257,8 @@ package body Why.Inter is
       -----------------------------
 
       procedure Integer_Constant_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Integer_Constant_Id) is
+        (State : in out Search_State; Node : W_Integer_Constant_Id)
+      is
          pragma Unreferenced (Node);
       begin
          State.S.Include (+Int_Module);
@@ -281,8 +269,8 @@ package body Why.Inter is
       -----------------------------
 
       procedure Modular_Constant_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Modular_Constant_Id) is
+        (State : in out Search_State; Node : W_Modular_Constant_Id)
+      is
          Typ : constant W_Type_Id := Get_Typ (Node);
          pragma Unreferenced (Node);
       begin
@@ -307,10 +295,7 @@ package body Why.Inter is
       -- Name_Pre_Op --
       -----------------
 
-      procedure Name_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Name_Id)
-      is
+      procedure Name_Pre_Op (State : in out Search_State; Node : W_Name_Id) is
          Module : constant W_Module_Id := Get_Module (Node);
       begin
          if Module /= Why_Empty then
@@ -323,8 +308,8 @@ package body Why.Inter is
       --------------------------
 
       procedure Real_Constant_Pre_Op
-        (State : in out Search_State;
-         Node  : W_Real_Constant_Id) is
+        (State : in out Search_State; Node : W_Real_Constant_Id)
+      is
          pragma Unreferenced (Node);
       begin
          State.S.Include (+RealInfix);
@@ -332,7 +317,7 @@ package body Why.Inter is
 
       SS : Search_State := (Control => Continue, S => Empty_Set);
 
-   --  Start of processing for Compute_Ada_Nodeset
+      --  Start of processing for Compute_Ada_Nodeset
 
    begin
       Traverse (SS, +W);
@@ -378,24 +363,18 @@ package body Why.Inter is
       Use_Kind : EW_Clone_Type)
    is
       Use_Kind2 : constant EW_Clone_Type :=
-        (if Module in Int_Module | RealInfix
-         then EW_Import
-         else Use_Kind);
+        (if Module in Int_Module | RealInfix then EW_Import else Use_Kind);
       --  ??? override the Use_Kind given by the caller
 
    begin
       Theory_Declaration_Append_To_Includes
         (T,
          New_Include_Declaration
-           (Module   => Module,
-            Use_Kind => Use_Kind2,
-            Kind     => EW_Module));
+           (Module => Module, Use_Kind => Use_Kind2, Kind => EW_Module));
    end Add_With_Clause;
 
    procedure Add_With_Clause
-     (T        : Theory_UC;
-      Module   : W_Module_Id;
-      Use_Kind : EW_Clone_Type) is
+     (T : Theory_UC; Module : W_Module_Id; Use_Kind : EW_Clone_Type) is
    begin
       Add_With_Clause (T.Th, Module, Use_Kind);
    end Add_With_Clause;
@@ -408,9 +387,7 @@ package body Why.Inter is
       Kind : constant EW_Type := Get_Type_Kind (W);
    begin
       case Kind is
-         when EW_Abstract
-            | EW_Split
-         =>
+         when EW_Abstract | EW_Split =>
             return Base_Why_Type (Get_Ada_Node (+W));
 
          when others =>
@@ -426,8 +403,7 @@ package body Why.Inter is
 
       E   : constant W_Type_Id := Get_EW_Term_Type (N);
       Typ : Entity_Id :=
-        (if Nkind (N) in N_Entity and then Is_Type (N) then N
-         else Etype (N));
+        (if Nkind (N) in N_Entity and then Is_Type (N) then N else Etype (N));
    begin
       if E = Why_Empty then
 
@@ -459,8 +435,7 @@ package body Why.Inter is
       end if;
    end Base_Why_Type;
 
-   function Base_Why_Type (Left, Right : W_Type_Id) return W_Type_Id
-   is
+   function Base_Why_Type (Left, Right : W_Type_Id) return W_Type_Id is
    begin
       return LCA (Base_Why_Type (Left), Base_Why_Type (Right));
    end Base_Why_Type;
@@ -494,15 +469,15 @@ package body Why.Inter is
       end if;
    end Base_Why_Type_No_Bool;
 
-   function Base_Why_Type_No_Bool (Expr : W_Expr_Id) return W_Type_Id is
-     (Base_Why_Type_No_Bool (Get_Type (Expr)));
+   function Base_Why_Type_No_Bool (Expr : W_Expr_Id) return W_Type_Id
+   is (Base_Why_Type_No_Bool (Get_Type (Expr)));
 
    -----------------------------
    -- Check_Safe_Guard_Cycles --
    -----------------------------
 
    procedure Check_Safe_Guard_Cycles is
-      Seen     : Node_Sets.Set;
+      Seen : Node_Sets.Set;
 
       procedure DFS (N : Node_Id);
       --  A non-recursive depth-first traversal of the graph stored in
@@ -547,14 +522,14 @@ package body Why.Inter is
                         Error_Msg_N
                           (Create ("unsupported recursive subprogram"),
                            Next,
-                           First => True,
+                           First         => True,
                            Continuations =>
                              [Create
-                                  ("& might include a recursive call due to a"
-                                   & " type invariant or subtype predicate,"
-                                   & " or there might be a cycle in the"
-                                   & " elaboration of the enclosing unit",
-                                   Names => [Next])]);
+                                ("& might include a recursive call due to a"
+                                 & " type invariant or subtype predicate,"
+                                 & " or there might be a cycle in the"
+                                 & " elaboration of the enclosing unit",
+                                 Names => [Next])]);
                      end if;
                   end loop;
                end if;
@@ -598,8 +573,7 @@ package body Why.Inter is
       --  Adds imports for the axioms of symbols in S. Filter the axiom
       --  modules which are mutually recursive with the defined entity if any.
 
-      procedure Record_Dependencies
-        (Filter_Module  : W_Module_Id := Why_Empty);
+      procedure Record_Dependencies (Filter_Module : W_Module_Id := Why_Empty);
       --  Records the dependencies between the current module and the modules
       --  in S.
 
@@ -608,8 +582,8 @@ package body Why.Inter is
       -----------------------
 
       procedure Add_Axiom_Imports is
-         Filter  : Why_Node_Sets.Set;
-         Mask    : constant Why_Node_Maps.Map :=
+         Filter : Why_Node_Sets.Set;
+         Mask   : constant Why_Node_Maps.Map :=
            Get_Refinement_Mask (Defined_Entity);
          --  Get a mask used to update the Module_Dependencies map in order to
          --  take into account visibility of refined posts and expression
@@ -621,17 +595,18 @@ package body Why.Inter is
 
          --  Filter out the axiom modules of mutually dependent entities
 
-         if Ekind (Defined_Entity) in
-             E_Function | E_Entry | E_Procedure | E_Package
+         if Ekind (Defined_Entity)
+            in E_Function | E_Entry | E_Procedure | E_Package
          then
             Filter := Mutually_Recursive_Modules (Defined_Entity);
          end if;
 
-         Closure := Get_Graph_Closure
-           (Map    => Module_Dependencies,
-            From   => S,
-            Filter => Filter,
-            Mask   => Mask);
+         Closure :=
+           Get_Graph_Closure
+             (Map    => Module_Dependencies,
+              From   => S,
+              Filter => Filter,
+              Mask   => Mask);
 
          if not Safe_Guard_Graph.Contains (Defined_Entity) then
             Safe_Guard_Graph.Include (Defined_Entity, Node_Sets.Empty_Set);
@@ -691,19 +666,17 @@ package body Why.Inter is
       -- Record_Dependencies --
       -------------------------
 
-      procedure Record_Dependencies
-        (Filter_Module  : W_Module_Id := Why_Empty) is
+      procedure Record_Dependencies (Filter_Module : W_Module_Id := Why_Empty)
+      is
       begin
          for M of S loop
             if +M /= Filter_Module and then +M /= Th.Module then
-               Add_To_Graph (Module_Dependencies,
-                             +Th.Module,
-                             M);
+               Add_To_Graph (Module_Dependencies, +Th.Module, M);
             end if;
          end loop;
       end Record_Dependencies;
 
-   --  Start of processing for Close_Theory
+      --  Start of processing for Close_Theory
 
    begin
       Add_With_Clause (Th.Th, M_Main.Module, EW_Import);
@@ -728,7 +701,8 @@ package body Why.Inter is
          when Definition_Theory =>
             declare
                Filter_Module : constant W_Module_Id :=
-                 (if No (Defined_Entity) then Why_Empty
+                 (if No (Defined_Entity)
+                  then Why_Empty
                   else E_Module (Defined_Entity));
             begin
                Record_Dependencies (Filter_Module);
@@ -805,12 +779,13 @@ package body Why.Inter is
          --  Dummy EW_Abstract types are introduced for record private parts.
          --  Eq_Base should only be called on such types if they are equal.
 
-         pragma Assert
-           ((No (Get_Ada_Node (+Left))
-            and then No (Get_Ada_Node (+Right))
-            and then Get_Name (+Left) = Get_Name (+Right))
-            or else (Present (Get_Ada_Node (+Left))
-              and then Present (Get_Ada_Node (+Right))));
+         pragma
+           Assert
+             ((No (Get_Ada_Node (+Left))
+               and then No (Get_Ada_Node (+Right))
+               and then Get_Name (+Left) = Get_Name (+Right))
+                or else (Present (Get_Ada_Node (+Left))
+                         and then Present (Get_Ada_Node (+Right))));
 
          return Get_Ada_Node (+Left) = Get_Ada_Node (+Right);
       else
@@ -838,10 +813,10 @@ package body Why.Inter is
             M1 : constant W_Module_Id := Get_Module (N1);
             M2 : constant W_Module_Id := Get_Module (N2);
          begin
-            if M1 = M2 or else
-              (M1 /= Why_Empty
-               and then M2 /= Why_Empty
-               and then Get_Name (M1) = Get_Name (M2))
+            if M1 = M2
+              or else (M1 /= Why_Empty
+                       and then M2 /= Why_Empty
+                       and then Get_Name (M1) = Get_Name (M2))
             then
                return Get_Symb (N1) = Get_Symb (N2);
             else
@@ -856,8 +831,7 @@ package body Why.Inter is
    -----------------
 
    function EW_Abstract
-     (N : Node_Id; Relaxed_Init : Boolean := False) return W_Type_Id
-   is
+     (N : Node_Id; Relaxed_Init : Boolean := False) return W_Type_Id is
    begin
       return EW_Abstract_Shared (N, EW_Abstract, Relaxed_Init);
    end EW_Abstract;
@@ -867,9 +841,8 @@ package body Why.Inter is
    ------------------------
 
    function EW_Abstract_Shared
-     (N            : Node_Id;
-      Kind         : EW_Type;
-      Relaxed_Init : Boolean := False) return W_Type_Id is
+     (N : Node_Id; Kind : EW_Type; Relaxed_Init : Boolean := False)
+      return W_Type_Id is
    begin
       if Is_Standard_Boolean_Type (N) then
          if Relaxed_Init then
@@ -899,16 +872,15 @@ package body Why.Inter is
    -- EW_Fixed_Type --
    -------------------
 
-   function EW_Fixed_Type (E : Entity_Id) return W_Type_Id is
-      (Get_Fixed_Point_Theory (E).T);
+   function EW_Fixed_Type (E : Entity_Id) return W_Type_Id
+   is (Get_Fixed_Point_Theory (E).T);
 
    --------------
    -- EW_Split --
    --------------
 
    function EW_Split
-     (N : Node_Id; Relaxed_Init : Boolean := False) return W_Type_Id
-   is
+     (N : Node_Id; Relaxed_Init : Boolean := False) return W_Type_Id is
    begin
       return EW_Abstract_Shared (N, EW_Split, Relaxed_Init);
    end EW_Split;
@@ -1057,21 +1029,21 @@ package body Why.Inter is
    -------------------------
 
    function Is_Array_Conversion (Left, Right : W_Type_Id) return Boolean
-   is (Get_Type_Kind (Base_Why_Type (Left)) in EW_Abstract | EW_Split and then
-       Get_Type_Kind (Base_Why_Type (Right)) in EW_Abstract | EW_Split and then
-       Has_Array_Type (Get_Ada_Node (+Left)) and then
-       Has_Array_Type (Get_Ada_Node (+Right)));
+   is (Get_Type_Kind (Base_Why_Type (Left)) in EW_Abstract | EW_Split
+       and then Get_Type_Kind (Base_Why_Type (Right)) in EW_Abstract | EW_Split
+       and then Has_Array_Type (Get_Ada_Node (+Left))
+       and then Has_Array_Type (Get_Ada_Node (+Right)));
 
    ---------------------------
    -- Is_Pointer_Conversion --
    ---------------------------
 
    function Is_Pointer_Conversion (Left, Right : W_Type_Id) return Boolean
-   is (Get_Type_Kind (Base_Why_Type (Left)) in EW_Abstract | EW_Split and then
-       Get_Type_Kind (Base_Why_Type (Right)) in EW_Abstract | EW_Split and then
-       Has_Access_Type (Get_Ada_Node (+Left)) and then
-       Has_Access_Type (Get_Ada_Node (+Right)) and then
-       not Is_Access_Subprogram_Type (Retysp (Get_Ada_Node (+Left))));
+   is (Get_Type_Kind (Base_Why_Type (Left)) in EW_Abstract | EW_Split
+       and then Get_Type_Kind (Base_Why_Type (Right)) in EW_Abstract | EW_Split
+       and then Has_Access_Type (Get_Ada_Node (+Left))
+       and then Has_Access_Type (Get_Ada_Node (+Right))
+       and then not Is_Access_Subprogram_Type (Retysp (Get_Ada_Node (+Left))));
 
    ---------------------------
    -- Is_Private_Conversion --
@@ -1088,29 +1060,26 @@ package body Why.Inter is
    --------------------------
 
    function Is_Record_Conversion (Left, Right : W_Type_Id) return Boolean
-   is (Get_Type_Kind (Base_Why_Type (Left)) in EW_Abstract | EW_Split and then
-       Get_Type_Kind (Base_Why_Type (Right)) in EW_Abstract | EW_Split and then
-       Has_Record_Type (Get_Ada_Node (+Left)) and then
-       Has_Record_Type (Get_Ada_Node (+Right)));
+   is (Get_Type_Kind (Base_Why_Type (Left)) in EW_Abstract | EW_Split
+       and then Get_Type_Kind (Base_Why_Type (Right)) in EW_Abstract | EW_Split
+       and then Has_Record_Type (Get_Ada_Node (+Left))
+       and then Has_Record_Type (Get_Ada_Node (+Right)));
 
    --------------------------------
    -- Is_Subp_Pointer_Conversion --
    --------------------------------
 
    function Is_Subp_Pointer_Conversion (Left, Right : W_Type_Id) return Boolean
-   is (Get_Type_Kind (Base_Why_Type (Left)) in EW_Abstract | EW_Split and then
-       Get_Type_Kind (Base_Why_Type (Right)) in EW_Abstract | EW_Split and then
-       Is_Access_Subprogram_Type (Retysp (Get_Ada_Node (+Left))) and then
-       Is_Access_Subprogram_Type (Retysp (Get_Ada_Node (+Right))));
+   is (Get_Type_Kind (Base_Why_Type (Left)) in EW_Abstract | EW_Split
+       and then Get_Type_Kind (Base_Why_Type (Right)) in EW_Abstract | EW_Split
+       and then Is_Access_Subprogram_Type (Retysp (Get_Ada_Node (+Left)))
+       and then Is_Access_Subprogram_Type (Retysp (Get_Ada_Node (+Right))));
 
    ---------
    -- LCA --
    ---------
 
-   function LCA
-     (Left  : W_Type_Id;
-      Right : W_Type_Id) return W_Type_Id
-   is
+   function LCA (Left : W_Type_Id; Right : W_Type_Id) return W_Type_Id is
       Left_Base, Right_Base : W_Type_Id;
 
    begin
@@ -1121,28 +1090,26 @@ package body Why.Inter is
       Left_Base := Base_Why_Type (Left);
       Right_Base := Base_Why_Type (Right);
 
-      if Left_Base = EW_Int_Type
-        or else Right = EW_Int_Type
-      then
+      if Left_Base = EW_Int_Type or else Right = EW_Int_Type then
          return EW_Int_Type;
-      elsif Left_Base = EW_BitVector_128_Type or else
-        Right_Base = EW_BitVector_128_Type
+      elsif Left_Base = EW_BitVector_128_Type
+        or else Right_Base = EW_BitVector_128_Type
       then
          return EW_BitVector_128_Type;
-      elsif Left_Base = EW_BitVector_64_Type or else
-        Right_Base = EW_BitVector_64_Type
+      elsif Left_Base = EW_BitVector_64_Type
+        or else Right_Base = EW_BitVector_64_Type
       then
          return EW_BitVector_64_Type;
-      elsif Left_Base = EW_BitVector_32_Type or else
-        Right_Base = EW_BitVector_32_Type
+      elsif Left_Base = EW_BitVector_32_Type
+        or else Right_Base = EW_BitVector_32_Type
       then
          return EW_BitVector_32_Type;
-      elsif Left_Base = EW_BitVector_16_Type or else
-        Right_Base = EW_BitVector_16_Type
+      elsif Left_Base = EW_BitVector_16_Type
+        or else Right_Base = EW_BitVector_16_Type
       then
          return EW_BitVector_16_Type;
-      elsif Left_Base = EW_BitVector_8_Type or else
-        Right_Base = EW_BitVector_8_Type
+      elsif Left_Base = EW_BitVector_8_Type
+        or else Right_Base = EW_BitVector_8_Type
       then
          return EW_BitVector_8_Type;
       end if;
@@ -1157,21 +1124,15 @@ package body Why.Inter is
    -------------------------
 
    function Loop_Exception_Name
-     (E     : Entity_Id;
-      Local : Boolean := False)
-      return W_Name_Id
+     (E : Entity_Id; Local : Boolean := False) return W_Name_Id
    is
-      Suffix : constant Symbol :=
-        NID (Capitalize_First (Short_Name (E)));
+      Suffix : constant Symbol := NID (Capitalize_First (Short_Name (E)));
    begin
       if Local then
          return New_Name (Ada_Node => E, Symb => Suffix);
       else
          return
-           New_Name
-             (Ada_Node => E,
-              Symb     => Suffix,
-              Module   => E_Module (E));
+           New_Name (Ada_Node => E, Symb => Suffix, Module => E_Module (E));
       end if;
    end Loop_Exception_Name;
 
@@ -1201,51 +1162,57 @@ package body Why.Inter is
 
          --  Static array types and arrays split forms are in fact Why3 maps
 
-         return New_Type
-           (Ada_Node     => E,
-            Is_Mutable   => False,
-            Type_Kind    =>
-              (if Is_Static_Array_Type (Retysp (E)) then EW_Abstract
-               else Kind),
-            Relaxed_Init => Relaxed_Init,
-            Name         =>
-              New_Name
-                (Ada_Node => E,
-                 Symb     => NID ("map"),
-                 Module   =>
-                   New_Module
-                     (File => No_Symbol,
-                      Name => Img (Get_Array_Theory_Name (E, Relaxed_Init)))));
+         return
+           New_Type
+             (Ada_Node     => E,
+              Is_Mutable   => False,
+              Type_Kind    =>
+                (if Is_Static_Array_Type (Retysp (E))
+                 then EW_Abstract
+                 else Kind),
+              Relaxed_Init => Relaxed_Init,
+              Name         =>
+                New_Name
+                  (Ada_Node => E,
+                   Symb     => NID ("map"),
+                   Module   =>
+                     New_Module
+                       (File => No_Symbol,
+                        Name =>
+                          Img (Get_Array_Theory_Name (E, Relaxed_Init)))));
       elsif Kind = EW_Split and then Has_Fixed_Point_Type (E) then
 
          --  The base type of a fixed point type is __fixed. Do not call
          --  Base_Why_Type which may fail if the theory for the small value of
          --  E has not been constructed yet.
 
-         return New_Type
-           (Ada_Node     => E,
-            Is_Mutable   => False,
-            Type_Kind    => Kind,
-            Relaxed_Init => Relaxed_Init,
-            Name         => Get_Name (M_Main.Fixed_Type));
+         return
+           New_Type
+             (Ada_Node     => E,
+              Is_Mutable   => False,
+              Type_Kind    => Kind,
+              Relaxed_Init => Relaxed_Init,
+              Name         => Get_Name (M_Main.Fixed_Type));
       elsif Kind = EW_Split then
 
          --  Discrete types split forms are their base why type
 
          pragma Assert (Use_Split_Form_For_Type (E));
-         return New_Type
-           (Ada_Node     => E,
-            Is_Mutable   => False,
-            Relaxed_Init => Relaxed_Init,
-            Type_Kind    => EW_Split,
-            Name         => Get_Name (Base_Why_Type (E)));
+         return
+           New_Type
+             (Ada_Node     => E,
+              Is_Mutable   => False,
+              Relaxed_Init => Relaxed_Init,
+              Type_Kind    => EW_Split,
+              Name         => Get_Name (Base_Why_Type (E)));
       else
-         return New_Type (Ada_Node     => E,
-                          Is_Mutable   => False,
-                          Relaxed_Init => Relaxed_Init,
-                          Type_Kind    => EW_Abstract,
-                          Name         => To_Why_Type
-                            (E, Relaxed_Init => Relaxed_Init));
+         return
+           New_Type
+             (Ada_Node     => E,
+              Is_Mutable   => False,
+              Relaxed_Init => Relaxed_Init,
+              Type_Kind    => EW_Abstract,
+              Name         => To_Why_Type (E, Relaxed_Init => Relaxed_Init));
       end if;
    end New_Kind_Base_Type;
 
@@ -1254,14 +1221,15 @@ package body Why.Inter is
    --------------------
 
    function New_Named_Type
-     (Name : W_Name_Id; Relaxed_Init : Boolean := False) return W_Type_Id
-   is
+     (Name : W_Name_Id; Relaxed_Init : Boolean := False) return W_Type_Id is
    begin
-      return New_Type (Ada_Node     => Empty,
-                       Is_Mutable   => False,
-                       Type_Kind    => EW_Abstract,
-                       Name         => Name,
-                       Relaxed_Init => Relaxed_Init);
+      return
+        New_Type
+          (Ada_Node     => Empty,
+           Is_Mutable   => False,
+           Type_Kind    => EW_Abstract,
+           Name         => Name,
+           Relaxed_Init => Relaxed_Init);
    end New_Named_Type;
 
    function New_Named_Type (S : String) return W_Type_Id is
@@ -1279,10 +1247,11 @@ package body Why.Inter is
          return Ty;
       else
          return
-           New_Type (Ada_Node   => Get_Ada_Node (+Ty),
-                     Type_Kind  => Get_Type_Kind (+Ty),
-                     Name       => Get_Name (+Ty),
-                     Is_Mutable => True);
+           New_Type
+             (Ada_Node   => Get_Ada_Node (+Ty),
+              Type_Kind  => Get_Type_Kind (+Ty),
+              Name       => Get_Name (+Ty),
+              Is_Mutable => True);
       end if;
    end New_Ref_Type;
 
@@ -1291,19 +1260,19 @@ package body Why.Inter is
    -----------------
 
    function Open_Theory
-     (P       : W_Section_Id;
-      Module  : W_Module_Id;
-      Comment : String)
-      return Theory_UC
-   is
+     (P : W_Section_Id; Module : W_Module_Id; Comment : String)
+      return Theory_UC is
    begin
-      return Theory_UC'(Th       =>
-                          New_Theory_Declaration (Name    => Get_Name (Module),
-                                                  Kind    => EW_Module,
-                                                  Comment => NID (Comment)),
-                        Module   => Module,
-                        Section  => P,
-                        Finished => False);
+      return
+        Theory_UC'
+          (Th       =>
+             New_Theory_Declaration
+               (Name    => Get_Name (Module),
+                Kind    => EW_Module,
+                Comment => NID (Comment)),
+           Module   => Module,
+           Section  => P,
+           Finished => False);
    end Open_Theory;
 
    ---------------------------------
@@ -1325,9 +1294,11 @@ package body Why.Inter is
                when Hide_Expr_Fun =>
                   Module_Dependencies (+E_Module (Ent)).Delete
                     (+E_Module (Ent, Expr_Fun_Axiom));
+
                when Unhide_Expr_Fun =>
                   Module_Dependencies (+E_Module (Ent)).Insert
                     (+E_Module (Ent, Expr_Fun_Axiom));
+
                when Unhide_Package_Body =>
                   raise Program_Error;
             end case;
@@ -1345,12 +1316,16 @@ package body Why.Inter is
             case Element (Position) is
                when Hide_Expr_Fun =>
                   Ada_Ent_To_Why.Insert
-                    (Symbol_Table, Ent,
+                    (Symbol_Table,
+                     Ent,
                      Mk_Item_Of_Entity (Ent, Hide_Info => True));
+
                when Unhide_Expr_Fun =>
                   Ada_Ent_To_Why.Insert
-                    (Symbol_Table, Ent,
+                    (Symbol_Table,
+                     Ent,
                      Mk_Item_Of_Entity (Ent, Hide_Info => False));
+
                when Unhide_Package_Body =>
                   raise Program_Error;
             end case;
@@ -1363,13 +1338,9 @@ package body Why.Inter is
    -----------------------------
 
    procedure Record_Extra_Dependency
-     (Defining_Module : W_Module_Id;
-      Axiom_Module    : W_Module_Id)
-   is
+     (Defining_Module : W_Module_Id; Axiom_Module : W_Module_Id) is
    begin
-      Add_To_Graph (Module_Dependencies,
-                    +Defining_Module,
-                    +Axiom_Module);
+      Add_To_Graph (Module_Dependencies, +Defining_Module, +Axiom_Module);
    end Record_Extra_Dependency;
 
    ---------------------------
@@ -1399,9 +1370,11 @@ package body Why.Inter is
                when Hide_Expr_Fun =>
                   Module_Dependencies (+E_Module (Ent)).Insert
                     (+E_Module (Ent, Expr_Fun_Axiom));
+
                when Unhide_Expr_Fun =>
                   Module_Dependencies (+E_Module (Ent)).Delete
                     (+E_Module (Ent, Expr_Fun_Axiom));
+
                when Unhide_Package_Body =>
                   raise Program_Error;
             end case;
@@ -1437,15 +1410,18 @@ package body Why.Inter is
       if (Ekind (E) in E_Component | E_Discriminant
           or else Is_Part_Of_Protected_Object (E)
           or else Rec /= Empty)
-          and then not No_Comp
+        and then not No_Comp
       then
          pragma Assert (Rec /= Empty);
          declare
             Ada_N  : constant Entity_Id := Retysp (Rec);
             Kind   : constant Module_Kind :=
-              (if Relaxed_Init then Init_Wrapper
-               elsif From_Tree = Move_Tree then Move_Tree
-               elsif From_Tree = Validity_Tree then Validity_Tree
+              (if Relaxed_Init
+               then Init_Wrapper
+               elsif From_Tree = Move_Tree
+               then Move_Tree
+               elsif From_Tree = Validity_Tree
+               then Validity_Tree
                else Regular);
             Module : constant W_Module_Id := E_Module (Ada_N, Kind);
             Orig   : constant Entity_Id :=
@@ -1456,9 +1432,8 @@ package body Why.Inter is
               To_String (WNE_Rec_Comp_Prefix) & (Full_Name (Orig));
          begin
             if Local then
-               return New_Identifier (Ada_Node => Ada_N,
-                                      Name     => Field,
-                                      Typ      => Typ);
+               return
+                 New_Identifier (Ada_Node => Ada_N, Name => Field, Typ => Typ);
             else
                return
                  New_Identifier
@@ -1478,22 +1453,20 @@ package body Why.Inter is
             if Local then
                return New_Identifier (Name => Name, Typ => EW_Int_Type);
             else
-               return New_Identifier
-                 (Module => Exception_Module,
-                  Name   => Name,
-                  Typ    => EW_Int_Type);
+               return
+                 New_Identifier
+                   (Module => Exception_Module,
+                    Name   => Name,
+                    Typ    => EW_Int_Type);
             end if;
          end;
 
       --  The name of local parameters should always be prefixed to avoid
       --  collision with the name of the function.
 
-      elsif Local
-        and then E in Formal_Kind_Id
-      then
+      elsif Local and then E in Formal_Kind_Id then
          declare
-            Param : constant String :=
-              To_String (WNE_Param_Prefix) & Suffix;
+            Param : constant String := To_String (WNE_Param_Prefix) & Suffix;
          begin
             return New_Identifier (Ada_Node => E, Name => Param, Typ => Typ);
          end;
@@ -1506,15 +1479,18 @@ package body Why.Inter is
             Kind      : constant Module_Kind :=
               (if Selector = Dispatch
                then (if Domain = EW_Prog then Dispatch_Axiom else Dispatch)
-               elsif Init_Decl then Logic_Function_Decl
+               elsif Init_Decl
+               then Logic_Function_Decl
                elsif Ekind (E) in Subprogram_Kind | Entry_Kind
-               and then Domain = EW_Prog
+                 and then Domain = EW_Prog
                then Program_Function_Decl
-               elsif Relaxed_Init then Init_Wrapper
+               elsif Relaxed_Init
+               then Init_Wrapper
                else Regular);
             Module    : constant W_Module_Id := E_Module (E, Kind);
             Namespace : constant Symbol :=
-              (if Hide_Info then NID (To_String (WNE_Hidden_Module))
+              (if Hide_Info
+               then NID (To_String (WNE_Hidden_Module))
                elsif Selector = Refine and then Domain = EW_Prog
                then NID (To_String (WNE_Refine_Module))
                else No_Symbol);
@@ -1531,14 +1507,13 @@ package body Why.Inter is
    end To_Why_Id;
 
    function To_Why_Id
-     (Obj   : Entity_Name;
-      Local : Boolean)
-      return W_Identifier_Id
-   is
+     (Obj : Entity_Name; Local : Boolean) return W_Identifier_Id is
    begin
       if Is_Heap_Variable (Obj) then
-         return New_Identifier (Name => SPARK_Xrefs.Name_Of_Heap_Variable,
-                                Typ  => M_Main.Type_Of_Heap);
+         return
+           New_Identifier
+             (Name => SPARK_Xrefs.Name_Of_Heap_Variable,
+              Typ  => M_Main.Type_Of_Heap);
       else
          declare
             Ada_Name : constant String := To_String (Obj);
@@ -1546,14 +1521,14 @@ package body Why.Inter is
               Avoid_Why3_Keyword (Extract_Object_Name (Ada_Name));
          begin
             if Local then
-               return New_Identifier (Name => Why_Name,
-                                      Typ  => EW_Private_Type);
+               return
+                 New_Identifier (Name => Why_Name, Typ => EW_Private_Type);
             else
-               return New_Identifier
-                 (Module => New_Module (File => No_Symbol,
-                                        Name => Ada_Name),
-                  Name   => Why_Name,
-                  Typ    => EW_Private_Type);
+               return
+                 New_Identifier
+                   (Module => New_Module (File => No_Symbol, Name => Ada_Name),
+                    Name   => Why_Name,
+                    Typ    => EW_Private_Type);
             end if;
          end;
       end if;
@@ -1564,13 +1539,12 @@ package body Why.Inter is
    -----------------
 
    function To_Why_Type
-     (E            : Entity_Id;
-      Local        : Boolean := False;
-      Relaxed_Init : Boolean := False) return W_Name_Id
+     (E : Entity_Id; Local : Boolean := False; Relaxed_Init : Boolean := False)
+      return W_Name_Id
    is
-      Suffix : constant String := Short_Name (E)
-        & (if Relaxed_Init then To_String (WNE_Init_Wrapper_Suffix)
-           else "");
+      Suffix : constant String :=
+        Short_Name (E)
+        & (if Relaxed_Init then To_String (WNE_Init_Wrapper_Suffix) else "");
    begin
       --  Classwide types are translated as their corresponding specific tagged
       --  types.
@@ -1586,8 +1560,9 @@ package body Why.Inter is
            New_Name
              (Ada_Node => E,
               Symb     => NID (Suffix),
-              Module   => E_Module
-                (E, (if Relaxed_Init then Init_Wrapper else Regular)));
+              Module   =>
+                E_Module
+                  (E, (if Relaxed_Init then Init_Wrapper else Regular)));
       end if;
    end To_Why_Type;
 
@@ -1617,16 +1592,18 @@ package body Why.Inter is
             E            : constant Entity_Id := Type_Of_Node (N);
             Relaxed_Init : constant Boolean :=
               (case Nkind (N) is
-                  when N_Entity                       =>
-                    (if Is_Type (N) then False
-                     elsif Is_Object (N) then Obj_Has_Relaxed_Init (N)
-                     elsif Ekind (N) = E_Function then Fun_Has_Relaxed_Init (N)
-                     else Has_Relaxed_Init (Etype (N))),
-                  when N_Identifier | N_Expanded_Name =>
-                    Is_Object (Entity (N))
-                      and then Obj_Has_Relaxed_Init (Entity (N)),
-                  when others                         =>
-                    Expr_Has_Relaxed_Init (N));
+                 when N_Entity =>
+                   (if Is_Type (N)
+                    then False
+                    elsif Is_Object (N)
+                    then Obj_Has_Relaxed_Init (N)
+                    elsif Ekind (N) = E_Function
+                    then Fun_Has_Relaxed_Init (N)
+                    else Has_Relaxed_Init (Etype (N))),
+                 when N_Identifier | N_Expanded_Name =>
+                   Is_Object (Entity (N))
+                   and then Obj_Has_Relaxed_Init (Entity (N)),
+                 when others => Expr_Has_Relaxed_Init (N));
          begin
             --  If N might be partially initialized, use a wrapper type
 
@@ -1639,9 +1616,7 @@ package body Why.Inter is
                return EW_Bool_Type;
             elsif E = Universal_Fixed then
                return EW_Real_Type;
-            elsif Is_Type (E)
-              and then Use_Split_Form_For_Type (E)
-            then
+            elsif Is_Type (E) and then Use_Split_Form_For_Type (E) then
                return EW_Split (E);
             else
                return EW_Abstract (E);
@@ -1655,18 +1630,17 @@ package body Why.Inter is
    -------------------------------
 
    function Why_Subp_Has_Precondition
-     (E        : Callable_Kind_Id;
-      Selector : Selection_Kind := Why.Inter.Standard)
+     (E : Callable_Kind_Id; Selector : Selection_Kind := Why.Inter.Standard)
       return Boolean
    is
-      Has_Precondition : constant Boolean :=
+      Has_Precondition                        : constant Boolean :=
         Has_Contracts (E, Pragma_Precondition);
       Has_Classwide_Or_Inherited_Precondition : constant Boolean :=
-        Has_Contracts (E, Pragma_Precondition,
-                       Classwide => True,
-                       Inherited => True);
+        Has_Contracts
+          (E, Pragma_Precondition, Classwide => True, Inherited => True);
    begin
-      return (Selector /= Dispatch and then Has_Precondition)
+      return
+        (Selector /= Dispatch and then Has_Precondition)
         or else Has_Classwide_Or_Inherited_Precondition;
    end Why_Subp_Has_Precondition;
 

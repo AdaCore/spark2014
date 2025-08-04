@@ -39,41 +39,28 @@ package body Why.Gen.Progs is
    -- Append --
    ------------
 
-   procedure Append
-     (Left  : in out W_Prog_Id;
-      Right : W_Prog_Id)
-   is
+   procedure Append (Left : in out W_Prog_Id; Right : W_Prog_Id) is
    begin
       Left := Sequence (Left, Right);
    end Append;
 
-   procedure Append
-     (Left           : in out W_Prog_Id;
-      Right1, Right2 : W_Prog_Id)
-   is
+   procedure Append (Left : in out W_Prog_Id; Right1, Right2 : W_Prog_Id) is
    begin
       Left := Sequence ((1 => Left, 2 => Right1, 3 => Right2));
    end Append;
 
-   procedure Append
-     (Left  : in out W_Expr_Id;
-      Right : W_Prog_Id)
-   is
+   procedure Append (Left : in out W_Expr_Id; Right : W_Prog_Id) is
    begin
       Left := +Sequence (+Left, Right);
    end Append;
 
-   procedure Append
-     (Left           : in out W_Expr_Id;
-      Right1, Right2 : W_Prog_Id)
-   is
+   procedure Append (Left : in out W_Expr_Id; Right1, Right2 : W_Prog_Id) is
    begin
       Left := +Sequence ((1 => +Left, 2 => Right1, 3 => Right2));
    end Append;
 
    procedure Append
-     (Left  : in out W_Statement_Sequence_Id;
-      Right : W_Statement_Sequence_Id)
+     (Left : in out W_Statement_Sequence_Id; Right : W_Statement_Sequence_Id)
    is
       pragma Annotate (GNATSAS, Skip_Analysis);  --  for unmodified Left
       pragma Unmodified (Left);
@@ -86,9 +73,7 @@ package body Why.Gen.Progs is
       end loop;
    end Append;
 
-   procedure Append
-     (Left  : in out W_Statement_Sequence_Id;
-      Right : W_Prog_Id)
+   procedure Append (Left : in out W_Statement_Sequence_Id; Right : W_Prog_Id)
    is
    begin
       if Is_Void (Right) then
@@ -107,12 +92,10 @@ package body Why.Gen.Progs is
    ----------------------------------
 
    procedure Emit_Always_True_Range_Check
-     (Ada_Node   : Node_Id;
-      Check_Kind : Scalar_Check_Kind)
-   is
+     (Ada_Node : Node_Id; Check_Kind : Scalar_Check_Kind) is
    begin
-      Emit_Static_Proof_Result (Ada_Node, To_VC_Kind (Check_Kind), True,
-                                Current_Subp);
+      Emit_Static_Proof_Result
+        (Ada_Node, To_VC_Kind (Check_Kind), True, Current_Subp);
    end Emit_Always_True_Range_Check;
 
    ----------------------
@@ -131,13 +114,11 @@ package body Why.Gen.Progs is
    --------------------------
 
    function New_Absurd_Statement
-     (Ada_Node : Node_Id;
-      Reason   : VC_Kind)
-      return W_Prog_Id
-   is
-     (New_VC_Prog (Ada_Node => Ada_Node,
-                   Expr     => +New_Identifier (Name => "absurd"),
-                   Reason   => Reason));
+     (Ada_Node : Node_Id; Reason : VC_Kind) return W_Prog_Id
+   is (New_VC_Prog
+         (Ada_Node => Ada_Node,
+          Expr     => +New_Identifier (Name => "absurd"),
+          Reason   => Reason));
 
    -----------------------
    -- New_Any_Statement --
@@ -148,28 +129,28 @@ package body Why.Gen.Progs is
       Pre         : W_Pred_Id;
       Post        : W_Pred_Id;
       Reason      : VC_Kind;
-      Return_Type : W_Type_Id := Why_Empty)
-      return W_Prog_Id is
+      Return_Type : W_Type_Id := Why_Empty) return W_Prog_Id is
    begin
       return
         +Insert_Cnt_Loc_Label
-          (Ada_Node,
-           New_Any_Expr
-             (Ada_Node    => Ada_Node,
-              Pre         => Pre,
-              Post        => Post,
-              Labels      => New_VC_Labels
-                (Ada_Node, Reason, Check_Info => New_Check_Info),
-              Return_Type =>
-                (if Return_Type = Why_Empty then EW_Unit_Type
-                 else Return_Type)));
+           (Ada_Node,
+            New_Any_Expr
+              (Ada_Node    => Ada_Node,
+               Pre         => Pre,
+               Post        => Post,
+               Labels      =>
+                 New_VC_Labels
+                   (Ada_Node, Reason, Check_Info => New_Check_Info),
+               Return_Type =>
+                 (if Return_Type = Why_Empty
+                  then EW_Unit_Type
+                  else Return_Type)));
    end New_Any_Statement;
 
    function New_Any_Statement
      (Ada_Node    : Node_Id := Empty;
       Post        : W_Pred_Id;
-      Return_Type : W_Type_Id := Why_Empty)
-      return W_Prog_Id is
+      Return_Type : W_Type_Id := Why_Empty) return W_Prog_Id is
    begin
       return
         New_Any_Expr
@@ -177,8 +158,7 @@ package body Why.Gen.Progs is
            Post        => Post,
            Labels      => Symbol_Sets.Empty_Set,
            Return_Type =>
-             (if Return_Type = Why_Empty then EW_Unit_Type
-              else Return_Type));
+             (if Return_Type = Why_Empty then EW_Unit_Type else Return_Type));
    end New_Any_Statement;
 
    --------------------------
@@ -186,18 +166,14 @@ package body Why.Gen.Progs is
    --------------------------
 
    function New_Assume_Statement
-     (Ada_Node : Node_Id := Empty;
-      Pred     : W_Pred_Id)
-      return W_Prog_Id is
+     (Ada_Node : Node_Id := Empty; Pred : W_Pred_Id) return W_Prog_Id is
    begin
       if Is_True_Boolean (+Pred) then
          return +Void;
       else
          return
            New_Assert
-             (Ada_Node    => Ada_Node,
-              Pred        => Pred,
-              Assert_Kind => EW_Assume);
+             (Ada_Node => Ada_Node, Pred => Pred, Assert_Kind => EW_Assume);
       end if;
    end New_Assume_Statement;
 
@@ -206,8 +182,7 @@ package body Why.Gen.Progs is
    -------------------------
 
    function New_Havoc_Statement
-     (Ada_Node : Node_Id := Empty;
-      Effects  : W_Effects_Id) return W_Prog_Id is
+     (Ada_Node : Node_Id := Empty; Effects : W_Effects_Id) return W_Prog_Id is
    begin
       return
         New_Any_Expr
@@ -221,14 +196,15 @@ package body Why.Gen.Progs is
    -- New_Ignore --
    ----------------
 
-   function New_Ignore (Ada_Node : Node_Id := Empty; Prog : W_Prog_Id)
-      return W_Prog_Id
+   function New_Ignore
+     (Ada_Node : Node_Id := Empty; Prog : W_Prog_Id) return W_Prog_Id
    is
       Call : constant W_Prog_Id :=
         New_Binding
           (Ada_Node => Ada_Node,
-           Name     => New_Identifier
-             (Domain => EW_Prog, Name => "_", Typ => Get_Type (+Prog)),
+           Name     =>
+             New_Identifier
+               (Domain => EW_Prog, Name => "_", Typ => Get_Type (+Prog)),
            Def      => +Prog,
            Context  => +Void,
            Typ      => EW_Unit_Type);
@@ -245,9 +221,7 @@ package body Why.Gen.Progs is
       Expr       : W_Prog_Id;
       Post       : W_Pred_Id;
       Reason     : VC_Kind;
-      Check_Info : Check_Info_Type := New_Check_Info)
-      return W_Prog_Id
-   is
+      Check_Info : Check_Info_Type := New_Check_Info) return W_Prog_Id is
    begin
       return
         New_Abstract_Expr
@@ -271,72 +245,55 @@ package body Why.Gen.Progs is
       Pred       : W_Pred_Id;
       Reason     : VC_Kind;
       Kind       : EW_Assert_Kind;
-      Check_Info : Check_Info_Type := New_Check_Info)
-      return W_Prog_Id
-   is
-      (New_Assert (Ada_Node    => Ada_Node,
-                   Pred        => New_VC_Pred (Ada_Node   => Ada_Node,
-                                               Expr       => Pred,
-                                               Reason     => Reason,
-                                               Check_Info => Check_Info),
-                   Assert_Kind => Kind));
+      Check_Info : Check_Info_Type := New_Check_Info) return W_Prog_Id
+   is (New_Assert
+         (Ada_Node    => Ada_Node,
+          Pred        =>
+            New_VC_Pred
+              (Ada_Node   => Ada_Node,
+               Expr       => Pred,
+               Reason     => Reason,
+               Check_Info => Check_Info),
+          Assert_Kind => Kind));
 
    ------------------------
    -- New_Simpl_Any_Prog --
    ------------------------
 
    function New_Simpl_Any_Prog
-     (T    : W_Type_Id;
-      Pred : W_Pred_OId := Why_Empty)
-      return W_Prog_Id
-   is
+     (T : W_Type_Id; Pred : W_Pred_OId := Why_Empty) return W_Prog_Id is
    begin
       return
         New_Any_Expr
-          (Post        => Pred,
-           Labels      => Symbol_Sets.Empty_Set,
-           Return_Type => +T);
+          (Post => Pred, Labels => Symbol_Sets.Empty_Set, Return_Type => +T);
    end New_Simpl_Any_Prog;
 
    -------------
    -- Prepend --
    -------------
 
-   procedure Prepend
-     (Left  : W_Prog_Id;
-      Right : in out W_Prog_Id)
-   is
+   procedure Prepend (Left : W_Prog_Id; Right : in out W_Prog_Id) is
    begin
       Right := Sequence (Left, Right);
    end Prepend;
 
-   procedure Prepend
-     (Left  : W_Prog_Id;
-      Right : in out W_Expr_Id)
-   is
+   procedure Prepend (Left : W_Prog_Id; Right : in out W_Expr_Id) is
    begin
       Right := +Sequence (Left, +Right);
    end Prepend;
 
-   procedure Prepend
-     (Left1, Left2  : W_Prog_Id;
-      Right         : in out W_Prog_Id)
-   is
+   procedure Prepend (Left1, Left2 : W_Prog_Id; Right : in out W_Prog_Id) is
    begin
       Right := Sequence ((1 => Left1, 2 => Left2, 3 => Right));
    end Prepend;
 
-   procedure Prepend
-     (Left1, Left2  : W_Prog_Id;
-      Right         : in out W_Expr_Id)
-   is
+   procedure Prepend (Left1, Left2 : W_Prog_Id; Right : in out W_Expr_Id) is
    begin
       Right := +Sequence ((1 => Left1, 2 => Left2, 3 => +Right));
    end Prepend;
 
    procedure Prepend
-     (Left  : W_Statement_Sequence_Id;
-      Right : in out W_Statement_Sequence_Id)
+     (Left : W_Statement_Sequence_Id; Right : in out W_Statement_Sequence_Id)
    is
       pragma Annotate (GNATSAS, Skip_Analysis);  --  for unmodified Right
       pragma Unmodified (Right);
@@ -349,9 +306,7 @@ package body Why.Gen.Progs is
       end loop;
    end Prepend;
 
-   procedure Prepend
-     (Left  : W_Prog_Id;
-      Right : in out W_Statement_Sequence_Id)
+   procedure Prepend (Left : W_Prog_Id; Right : in out W_Statement_Sequence_Id)
    is
    begin
       if Is_Void (Left) then
@@ -372,24 +327,22 @@ package body Why.Gen.Progs is
    --------------
 
    function Sequence
-     (Ada_Node    : Node_Id;
-      Left, Right : W_Prog_Id)
-      return W_Prog_Id
-   is
+     (Ada_Node : Node_Id; Left, Right : W_Prog_Id) return W_Prog_Id is
    begin
       if Is_Void (Left) then
          return Right;
       elsif Is_Void (Right) then
          return Left;
       else
-         return New_Statement_Sequence
-           (Ada_Node => Ada_Node, Statements => (1 => Left, 2 => Right));
+         return
+           New_Statement_Sequence
+             (Ada_Node => Ada_Node, Statements => (1 => Left, 2 => Right));
       end if;
    end Sequence;
 
    function Sequence (Progs : W_Prog_Array) return W_Prog_Id is
       Non_Void_Progs : W_Prog_Array := Progs;
-      J : Integer := Non_Void_Progs'First;
+      J              : Integer := Non_Void_Progs'First;
    begin
       for E of Progs loop
          if not Is_Void (E) then
@@ -400,8 +353,9 @@ package body Why.Gen.Progs is
       if J <= Non_Void_Progs'First then
          return +Void;
       else
-         return New_Statement_Sequence
-           (Statements => (Non_Void_Progs (Non_Void_Progs'First .. J - 1)));
+         return
+           New_Statement_Sequence
+             (Statements => (Non_Void_Progs (Non_Void_Progs'First .. J - 1)));
       end if;
    end Sequence;
 
@@ -409,8 +363,8 @@ package body Why.Gen.Progs is
    -- Void_Sequence --
    -------------------
 
-   function Void_Sequence return W_Statement_Sequence_Id is
-     (New_Statement_Sequence (Ada_Node => Empty,
-                              Statements => (1 .. 1 => +Void)));
+   function Void_Sequence return W_Statement_Sequence_Id
+   is (New_Statement_Sequence
+         (Ada_Node => Empty, Statements => (1 .. 1 => +Void)));
 
 end Why.Gen.Progs;

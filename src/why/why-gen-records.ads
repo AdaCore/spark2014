@@ -40,56 +40,57 @@ package Why.Gen.Records is
    --  This package encapsulates the encoding of Ada records into Why. This
    --  also includes records with variant parts.
 
-   procedure Declare_Ada_Record
-     (Th : Theory_UC;
-      E  : Entity_Id) with
-     Pre => Ekind (E) in E_Record_Type | E_Record_Subtype |
-                         Incomplete_Or_Private_Kind  | Concurrent_Kind;
+   procedure Declare_Ada_Record (Th : Theory_UC; E : Entity_Id)
+   with
+     Pre =>
+       Ekind (E)
+       in E_Record_Type
+        | E_Record_Subtype
+        | Incomplete_Or_Private_Kind
+        | Concurrent_Kind;
    --  Emit all necessary Why3 declarations to support Ada records. This also
    --  supports variant records, private types and concurrent types.
    --  @param P the Why section to insert the declaration
    --  @param Theory the theory in which to insert the type declaration
    --  @param E the type entity to translate
 
-   procedure Declare_Init_Wrapper_For_Record
-     (Th : Theory_UC;
-      E  : Entity_Id) with
-     Pre => Ekind (E) in E_Record_Type | E_Record_Subtype |
-                         Incomplete_Or_Private_Kind
-     and then Has_Init_Wrapper (E);
+   procedure Declare_Init_Wrapper_For_Record (Th : Theory_UC; E : Entity_Id)
+   with
+     Pre =>
+       Ekind (E)
+       in E_Record_Type | E_Record_Subtype | Incomplete_Or_Private_Kind
+       and then Has_Init_Wrapper (E);
 
-   procedure Complete_Tagged_Record_Type
-     (Th : Theory_UC;
-      E  : Entity_Id)
+   procedure Complete_Tagged_Record_Type (Th : Theory_UC; E : Entity_Id)
    with Pre => Is_Tagged_Type (E);
    --  Emit a type concrete declaration for the extension part of a tagged type
    --  and axioms for its extract__ and hide__ functions.
 
-   procedure Create_Compatible_Tags_Theory (E : Entity_Id) with
-     Pre => Is_Tagged_Type (E) and then E = Root_Retysp (E);
+   procedure Create_Compatible_Tags_Theory (E : Entity_Id)
+   with Pre => Is_Tagged_Type (E) and then E = Root_Retysp (E);
    --  Create a module with axioms giving values to the __compatible_tag
    --  predicate for all types visible from the current unit which are
    --  descendants of E.
 
    procedure Create_Rep_Record_Theory_If_Needed (E : Entity_Id)
    with
-     Pre => Ekind (E) in E_Record_Type | E_Record_Subtype |
-                         Incomplete_Or_Private_Kind  | Concurrent_Kind;
+     Pre =>
+       Ekind (E)
+       in E_Record_Type
+        | E_Record_Subtype
+        | Incomplete_Or_Private_Kind
+        | Concurrent_Kind;
    --  Create a module for the representative type of a record if needed. It
    --  contains a why record type named WNE_Rec_Rep and all the needed
    --  functions and attributes except for the tag of tagged types.
 
-   procedure Create_Move_Tree_Theory_For_Record
-     (Th : Theory_UC;
-      E  : Entity_Id)
-   with
-     Pre => Contains_Allocated_Parts (E);
+   procedure Create_Move_Tree_Theory_For_Record (Th : Theory_UC; E : Entity_Id)
+   with Pre => Contains_Allocated_Parts (E);
    --  Create a module declaring a type for the move trees for objects
    --  of type E.
 
    procedure Create_Validity_Tree_Theory_For_Record
-     (Th : Theory_UC;
-      E  : Entity_Id);
+     (Th : Theory_UC; E : Entity_Id);
    --  Create a module declaring a type for the validity trees for objects
    --  of type E.
 
@@ -98,8 +99,7 @@ package Why.Gen.Records is
       Domain   : EW_Domain;
       Name     : W_Expr_Id;
       Field    : Entity_Id;
-      Ty       : Entity_Id)
-      return W_Expr_Id;
+      Ty       : Entity_Id) return W_Expr_Id;
    --  Generate a Why3 expression that corresponds to the access to an Ada
    --  record field.
    --  @param Ada_Node  the Ada Node that corresponds to the record access
@@ -115,8 +115,7 @@ package Why.Gen.Records is
      (Ada_Node : Node_Id := Empty;
       Name     : W_Prog_Id;
       Field    : Entity_Id;
-      Ty       : Entity_Id)
-      return W_Prog_Id
+      Ty       : Entity_Id) return W_Prog_Id
    is (+W_Expr_Id'
          (New_Ada_Record_Access (Ada_Node, EW_Prog, +Name, Field, Ty)));
 
@@ -124,8 +123,7 @@ package Why.Gen.Records is
      (Ada_Node : Node_Id := Empty;
       Name     : W_Term_Id;
       Field    : Entity_Id;
-      Ty       : Entity_Id)
-      return W_Term_Id
+      Ty       : Entity_Id) return W_Term_Id
    is (+W_Expr_Id'
          (New_Ada_Record_Access (Ada_Node, EW_Term, +Name, Field, Ty)));
 
@@ -134,8 +132,7 @@ package Why.Gen.Records is
       Domain   : EW_Domain;
       Name     : W_Expr_Id;
       Field    : Entity_Id;
-      Ty       : Entity_Id)
-      return W_Expr_Id;
+      Ty       : Entity_Id) return W_Expr_Id;
    --  Generate a Why3 expression that corresponds to the cases where a record
    --  field is present in an Ada record.
    --  @param Ada_Node
@@ -150,29 +147,26 @@ package Why.Gen.Records is
      (Ada_Node : Node_Id := Empty;
       Name     : W_Term_Id;
       Field    : Entity_Id;
-      Ty       : Entity_Id)
-      return W_Pred_Id
+      Ty       : Entity_Id) return W_Pred_Id
    is (+W_Expr_Id'
          (New_Ada_Record_Check_For_Field
-           (Ada_Node, EW_Pred, +Name, Field, Ty)));
+            (Ada_Node, EW_Pred, +Name, Field, Ty)));
 
    function New_Ada_Record_Check_For_Field
      (Ada_Node : Node_Id := Empty;
       Name     : W_Prog_Id;
       Field    : Entity_Id;
-      Ty       : Entity_Id)
-      return W_Prog_Id
+      Ty       : Entity_Id) return W_Prog_Id
    is (+W_Expr_Id'
          (New_Ada_Record_Check_For_Field
-           (Ada_Node, EW_Prog, +Name, Field, Ty)));
+            (Ada_Node, EW_Prog, +Name, Field, Ty)));
 
    function New_Ada_Record_Update
      (Ada_Node : Node_Id;
       Domain   : EW_Domain;
       Name     : W_Expr_Id;
       Field    : Entity_Id;
-      Value    : W_Expr_Id)
-      return W_Expr_Id;
+      Value    : W_Expr_Id) return W_Expr_Id;
    --  Generate a Why3 expression that corresponds to the update to an Ada
    --  record field. Emit all necessary checks.
    --  Note that this function does not generate an assignment, instead it
@@ -185,8 +179,7 @@ package Why.Gen.Records is
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Name     : W_Expr_Id;
-      Updates  : W_Field_Association_Array)
-      return W_Expr_Id;
+      Updates  : W_Field_Association_Array) return W_Expr_Id;
    --  Generate an update to a record. The associations in Updates should only
    --  modify normal fields (not discrimiants).
 
@@ -228,16 +221,12 @@ package Why.Gen.Records is
      (Name  : W_Expr_Id;
       Field : Entity_Id;
       Ty    : Entity_Id;
-      Local : Boolean := False)
-      return W_Expr_Id
+      Local : Boolean := False) return W_Expr_Id
    with Pre => Contains_Allocated_Parts (Etype (Field));
    --  Access to the move tree for Field in Name
 
    function New_Move_Tree_Record_Update
-     (Name  : W_Prog_Id;
-      Field : Entity_Id;
-      Value : W_Prog_Id;
-      Ty    : Entity_Id)
+     (Name : W_Prog_Id; Field : Entity_Id; Value : W_Prog_Id; Ty : Entity_Id)
       return W_Prog_Id
    with Pre => Contains_Allocated_Parts (Etype (Field));
    --  Update to the move tree for Field in Name
@@ -246,15 +235,11 @@ package Why.Gen.Records is
      (Name  : W_Expr_Id;
       Field : Entity_Id;
       Ty    : Entity_Id;
-      Local : Boolean := False)
-      return W_Expr_Id;
+      Local : Boolean := False) return W_Expr_Id;
    --  Access to the validity tree for Field in Name
 
    function New_Validity_Tree_Record_Update
-     (Name  : W_Prog_Id;
-      Field : Entity_Id;
-      Value : W_Prog_Id;
-      Ty    : Entity_Id)
+     (Name : W_Prog_Id; Field : Entity_Id; Value : W_Prog_Id; Ty : Entity_Id)
       return W_Prog_Id;
    --  Update to the validity tree for Field in Name
 
@@ -278,46 +263,34 @@ package Why.Gen.Records is
    --  a tagged type E.
 
    function New_Discriminants_Access
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Expr_Id;
-      Ty       : Entity_Id)
+     (Ada_Node : Node_Id := Empty; Name : W_Expr_Id; Ty : Entity_Id)
       return W_Expr_Id;
    --  Generate a Why3 expression that corresponds to an access to the
    --  top-level field for discriminants.
 
    function New_Discriminants_Access
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Prog_Id;
-      Ty       : Entity_Id)
+     (Ada_Node : Node_Id := Empty; Name : W_Prog_Id; Ty : Entity_Id)
       return W_Prog_Id
    is (+W_Expr_Id'(New_Discriminants_Access (Ada_Node, +Name, Ty)));
 
    function New_Discriminants_Access
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Term_Id;
-      Ty       : Entity_Id)
+     (Ada_Node : Node_Id := Empty; Name : W_Term_Id; Ty : Entity_Id)
       return W_Term_Id
    is (+W_Expr_Id'(New_Discriminants_Access (Ada_Node, +Name, Ty)));
 
    function New_Fields_Access
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Expr_Id;
-      Ty       : Entity_Id)
+     (Ada_Node : Node_Id := Empty; Name : W_Expr_Id; Ty : Entity_Id)
       return W_Expr_Id;
    --  Generate a Why3 expression that corresponds to an access to the
    --  top-level field for fields.
 
    function New_Fields_Access
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Prog_Id;
-      Ty       : Entity_Id)
+     (Ada_Node : Node_Id := Empty; Name : W_Prog_Id; Ty : Entity_Id)
       return W_Prog_Id
    is (+W_Expr_Id'(New_Fields_Access (Ada_Node, +Name, Ty)));
 
    function New_Fields_Access
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Term_Id;
-      Ty       : Entity_Id)
+     (Ada_Node : Node_Id := Empty; Name : W_Term_Id; Ty : Entity_Id)
       return W_Term_Id
    is (+W_Expr_Id'(New_Fields_Access (Ada_Node, +Name, Ty)));
 
@@ -326,8 +299,7 @@ package Why.Gen.Records is
       Domain   : EW_Domain;
       Name     : W_Expr_Id;
       Value    : W_Expr_Id;
-      Ty       : Entity_Id)
-      return W_Expr_Id;
+      Ty       : Entity_Id) return W_Expr_Id;
    --  Generate a Why3 expression that corresponds to an update of the
    --  top-level field for fields.
 
@@ -335,15 +307,12 @@ package Why.Gen.Records is
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Name     : W_Expr_Id;
-      Ty       : Entity_Id)
-      return W_Expr_Id;
+      Ty       : Entity_Id) return W_Expr_Id;
    --  Generate a Why3 expression that corresponds to an access to the
    --  additional field introduced for records' tag.
 
    function New_Ext_Access
-     (Ada_Node : Node_Id := Empty;
-      Name     : W_Expr_Id;
-      Ty       : Entity_Id)
+     (Ada_Node : Node_Id := Empty; Name : W_Expr_Id; Ty : Entity_Id)
       return W_Expr_Id;
    --  Generate a Why3 expression that corresponds to an access to the
    --  additional field introduced for records' tagged extension. It should be
@@ -354,8 +323,7 @@ package Why.Gen.Records is
       Domain    : EW_Domain;
       Name      : W_Expr_Id;
       From_Expr : W_Expr_Id := Why_Empty;
-      Ty        : Entity_Id)
-      return W_Expr_Id;
+      Ty        : Entity_Id) return W_Expr_Id;
    --  Generate a Why3 expression that corresponds to an update to the
    --  additional fields introduced in records for the 'Tag attribute and
    --  extension.
@@ -372,22 +340,18 @@ package Why.Gen.Records is
      (Ada_Node  : Node_Id := Empty;
       Name      : W_Prog_Id;
       From_Expr : W_Prog_Id := Why_Empty;
-      Ty        : Entity_Id)
-      return W_Prog_Id
+      Ty        : Entity_Id) return W_Prog_Id
    is (+New_Tag_And_Ext_Update (Ada_Node, EW_Prog, +Name, +From_Expr, Ty));
 
    function New_Tag_And_Ext_Update
      (Ada_Node  : Node_Id := Empty;
       Name      : W_Term_Id;
       From_Expr : W_Term_Id := Why_Empty;
-      Ty        : Entity_Id)
-      return W_Term_Id
+      Ty        : Entity_Id) return W_Term_Id
    is (+New_Tag_And_Ext_Update (Ada_Node, EW_Term, +Name, +From_Expr, Ty));
 
    function Insert_Subtype_Discriminant_Check
-     (Ada_Node : Node_Id;
-      Check_Ty : Entity_Id;
-      Expr     : W_Prog_Id)
+     (Ada_Node : Node_Id; Check_Ty : Entity_Id; Expr : W_Prog_Id)
       return W_Prog_Id
    with Pre => Has_Discriminants (Check_Ty) and then Is_Constrained (Check_Ty);
    --  Given a record subtype and an expression, add a call to the subtype
@@ -397,47 +361,38 @@ package Why.Gen.Records is
      (Check_Ty : Entity_Id;
       Expr     : W_Expr_Id;
       Domain   : EW_Domain;
-      Params   : Transformation_Params)
-      return W_Expr_Array;
+      Params   : Transformation_Params) return W_Expr_Array;
    --  Given a record type, compute the argument array that can be used
    --  together with its subtype check predicate of program function. The
    --  last argument is actually the given expression itself.
 
    function Insert_Tag_Check
-     (Ada_Node : Node_Id;
-      Check_Ty : Entity_Id;
-      Expr     : W_Prog_Id)
+     (Ada_Node : Node_Id; Check_Ty : Entity_Id; Expr : W_Prog_Id)
       return W_Prog_Id;
    --  Given a record subtype and an expression, add a call to compatible_tag
    --  function to generate a tag check.
 
    function Record_From_Split_Form
-     (I           : Item_Type;
-      Ref_Allowed : Boolean)
-      return W_Term_Id
-   with
-       Pre => I.Kind = DRecord;
+     (I : Item_Type; Ref_Allowed : Boolean) return W_Term_Id
+   with Pre => I.Kind = DRecord;
    --  Reconstructs a complete record from an item in split form.
 
    function Record_From_Split_Form
      (Ada_Node     : Node_Id := Empty;
       A            : W_Expr_Array;
       Ty           : Entity_Id;
-      Relaxed_Init : Boolean := False)
-      return W_Term_Id;
+      Relaxed_Init : Boolean := False) return W_Term_Id;
    --  Reconstructs a complete record of type Ty from an array of expressions
    --  representing a split form. A should contain first the fields, then the
    --  discriminants, the 'Constrained attribute and the 'Tag attribute.
 
-   function Field_Type_For_Discriminants (E : Entity_Id) return W_Type_Id with
-     Pre => Is_Type (E) and then Has_Discriminants (E);
+   function Field_Type_For_Discriminants (E : Entity_Id) return W_Type_Id
+   with Pre => Is_Type (E) and then Has_Discriminants (E);
    --  Type of the top-level Why3 field for discriminants of E.
 
    function Field_Type_For_Fields
-     (E            : Entity_Id;
-      Relaxed_Init : Boolean := False) return W_Type_Id
-   with
-     Pre => Is_Type (E) and then Count_Why_Regular_Fields (E) > 0;
+     (E : Entity_Id; Relaxed_Init : Boolean := False) return W_Type_Id
+   with Pre => Is_Type (E) and then Count_Why_Regular_Fields (E) > 0;
    --  Type of the top-level Why3 field for fields of E.
 
    function Record_Type_Is_Clone (E : Entity_Id) return Boolean;
@@ -445,8 +400,8 @@ package Why.Gen.Records is
    --  clone an existing one.
    --  This is used so that we can know if we need to create new references
 
-   function Record_Type_Cloned_Subtype (E : Entity_Id) return Entity_Id with
-     Pre => Record_Type_Is_Clone (E);
+   function Record_Type_Cloned_Subtype (E : Entity_Id) return Entity_Id
+   with Pre => Record_Type_Is_Clone (E);
    --  Return the existing type declaration that has been cloned for E
 
    function Oldest_Parent_With_Same_Fields (E : Entity_Id) return Entity_Id;
@@ -457,27 +412,28 @@ package Why.Gen.Records is
    function Build_Predicate_For_Absent_Field
      (Unused_F_Expr1, Unused_F_Expr2 : W_Term_Id;
       Unused_F_Ty                    : Entity_Id;
-      Unused_E                       : Entity_Id)
-      return W_Pred_Id
+      Unused_E                       : Entity_Id) return W_Pred_Id
    is (True_Pred);
 
    function Build_Predicate_For_Absent_Field
      (Unused_F_Expr1 : W_Term_Id;
       Unused_F_Ty    : Entity_Id;
-      Unused_E       : Entity_Id)
-      return W_Pred_Id
+      Unused_E       : Entity_Id) return W_Pred_Id
    is (True_Pred);
 
    generic
-      with function Build_Predicate_For_Discr
-        (D_Expr : W_Term_Id; D_Ty : Entity_Id; E : Entity_Id)
-         return W_Pred_Id;
-      with function Build_Predicate_For_Field
-        (F_Expr : W_Term_Id; F_Ty : Entity_Id; E : Entity_Id)
-         return W_Pred_Id;
-      with function Build_Predicate_For_Absent_Field
-        (F_Expr : W_Term_Id; F_Ty : Entity_Id; E : Entity_Id)
-         return W_Pred_Id is <>;
+      with
+        function Build_Predicate_For_Discr
+          (D_Expr : W_Term_Id; D_Ty : Entity_Id; E : Entity_Id)
+           return W_Pred_Id;
+      with
+        function Build_Predicate_For_Field
+          (F_Expr : W_Term_Id; F_Ty : Entity_Id; E : Entity_Id)
+           return W_Pred_Id;
+      with
+        function Build_Predicate_For_Absent_Field
+          (F_Expr : W_Term_Id; F_Ty : Entity_Id; E : Entity_Id)
+           return W_Pred_Id is <>;
       Ignore_Private_State : Boolean := True;
    function Build_Predicate_For_Record
      (Expr : W_Term_Id; Ty : Entity_Id) return W_Pred_Id;
@@ -500,15 +456,18 @@ package Why.Gen.Records is
    --  on type entities of ancestors of Ty which have private components.
 
    generic
-      with function Build_Predicate_For_Discr
-        (D_Expr1, D_Expr2 : W_Term_Id; D_Ty : Entity_Id; E : Entity_Id)
-         return W_Pred_Id;
-      with function Build_Predicate_For_Field
-        (F_Expr1, F_Expr2 : W_Term_Id; F_Ty : Entity_Id; E : Entity_Id)
-         return W_Pred_Id;
-      with function Build_Predicate_For_Absent_Field
-        (F_Expr1, F_Expr2 : W_Term_Id; F_Ty : Entity_Id; E : Entity_Id)
-         return W_Pred_Id is <>;
+      with
+        function Build_Predicate_For_Discr
+          (D_Expr1, D_Expr2 : W_Term_Id; D_Ty : Entity_Id; E : Entity_Id)
+           return W_Pred_Id;
+      with
+        function Build_Predicate_For_Field
+          (F_Expr1, F_Expr2 : W_Term_Id; F_Ty : Entity_Id; E : Entity_Id)
+           return W_Pred_Id;
+      with
+        function Build_Predicate_For_Absent_Field
+          (F_Expr1, F_Expr2 : W_Term_Id; F_Ty : Entity_Id; E : Entity_Id)
+           return W_Pred_Id is <>;
       Ignore_Private_State : Boolean := True;
    function Build_Binary_Predicate_For_Record
      (Expr1, Expr2 : W_Term_Id; Ty : Entity_Id) return W_Pred_Id;
@@ -536,13 +495,11 @@ package Why.Gen.Records is
    --  on type entities of ancestors of Ty which have private components.
 
    function Get_Discriminants_Of_Subtype
-     (Ty     : Entity_Id;
-      Domain : EW_Terms;
-      Params : Transformation_Params)
+     (Ty : Entity_Id; Domain : EW_Terms; Params : Transformation_Params)
       return W_Expr_Array
    with
      Pre  => Has_Discriminants (Ty) and Is_Constrained (Ty),
-     Post => Get_Discriminants_Of_Subtype'Result'Length =
-       Count_Discriminants (Ty);
+     Post =>
+       Get_Discriminants_Of_Subtype'Result'Length = Count_Discriminants (Ty);
 
 end Why.Gen.Records;
