@@ -1,14 +1,13 @@
 import os
-import subprocess
+
+from test_support import gnatprove
 
 
 def run_spark(project_file, filename, line, gnattest_JSON):
-    print("Running gnatprove")
-    subprocess.run(
-        [
-            "gnatprove",
+    gnatprove(
+        opt=[
             f"-P{project_file}",
-            "-j0",
+            "--quiet",
             "--output=oneline",
             "--counterexamples=on",
             "--check-counterexamples=on",
