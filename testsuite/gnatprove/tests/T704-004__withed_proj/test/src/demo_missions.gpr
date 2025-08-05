@@ -11,7 +11,6 @@ project Demo_Missions is
    package Builder  renames Roadrunner_Flags.Builder;
    package Compiler renames Roadrunner_Flags.Compiler;
    package IDE      renames Roadrunner_Flags.IDE;
-   package Prove    renames Roadrunner_Flags.Prove;
 
    package Binder is
       for Default_Switches ("Ada") use ("-E");
@@ -36,5 +35,10 @@ project Demo_Missions is
       end case;
 
    end Linker;
+
+   --  This section defines source files which needs prover level 3+4 for proof
+   package Prove is
+      for Proof_Switches ("dimensions.ads") use ("--timeout=20");
+   end Prove;
 
 end Demo_Missions;

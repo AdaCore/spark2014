@@ -102,10 +102,4 @@ abstract project Roadrunner_Flags is
       end case;
    end Ide;
 
-   --  This section defines source files which needs prover level 3+4 for proof
-   package Prove is
-      for Proof_Switches ("dimensions.ads") use ("--timeout=20");
-   end Prove;
-
-
 end Roadrunner_Flags;

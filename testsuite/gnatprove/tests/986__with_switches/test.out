@@ -1,0 +1,6 @@
+a.ads:3:12: info: implicit aspect Always_Terminates on "Incr" has been proved, subprogram will terminate
+a.ads:3:52: info: overflow check proved (CVC5: 2 VC)
+b.ads:3:12: info: implicit aspect Always_Terminates on "Incr" has been proved, subprogram will terminate
+b.ads:3:52: info: overflow check proved (Z3: 2 VC)
+c.ads:3:12: info: implicit aspect Always_Terminates on "Incr" has been proved, subprogram will terminate
+c.ads:3:52: info: overflow check proved (altergo: 2 VC)
