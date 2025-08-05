@@ -684,8 +684,7 @@ package Why.Sinfo is
    --  theories. A special comment can be given.
 
    type Why_Node_Kind is
-     (
-      W_Unused_At_Start,
+     (W_Unused_At_Start,
 
       -----------
       -- Types --
@@ -805,24 +804,19 @@ package Why.Sinfo is
 
       W_Module
 
-      );
+     );
 
-   type EW_ODomain is
-     (EW_Expr,
-      EW_Term,
-      EW_Pterm,
-      EW_Pred,
-      EW_Prog);
+   type EW_ODomain is (EW_Expr, EW_Term, EW_Pterm, EW_Pred, EW_Prog);
 
-   subtype EW_Domain is EW_ODomain range
-       EW_Term ..
-   --  EW_Pterm,
-   --  EW_Pred
-       EW_Prog;
+   subtype EW_Domain is
+     EW_ODomain
+       range EW_Term
+             ..
+             --  EW_Pterm,
+             --  EW_Pred
+             EW_Prog;
 
-   subtype EW_Terms is EW_ODomain range
-       EW_Term ..
-       EW_Pterm;
+   subtype EW_Terms is EW_ODomain range EW_Term .. EW_Pterm;
 
    type EW_Type is
      (EW_Builtin,
@@ -832,42 +826,25 @@ package Why.Sinfo is
       EW_Split,
       EW_Abstract);
 
-   type EW_Literal is
-     (EW_True,
-      EW_False);
+   type EW_Literal is (EW_True, EW_False);
 
-   type EW_Theory_Type is
-     (EW_Theory,
-      EW_Module);
+   type EW_Theory_Type is (EW_Theory, EW_Module);
 
-   type EW_Clone_Type is
-      (EW_Import,
-       EW_Export,
-       EW_Clone_Default);
+   type EW_Clone_Type is (EW_Import, EW_Export, EW_Clone_Default);
 
    type EW_Subst_Type is
-      (EW_Type_Subst,
-       EW_Function,
-       EW_Predicate,
-       EW_Namepace,
-       EW_Lemma,
-       EW_Goal);
+     (EW_Type_Subst,
+      EW_Function,
+      EW_Predicate,
+      EW_Namepace,
+      EW_Lemma,
+      EW_Goal);
 
    type EW_Connector is
-     (EW_Or_Else,
-      EW_And_Then,
-      EW_Imply,
-      EW_Equivalent,
-      EW_Or,
-      EW_And);
+     (EW_Or_Else, EW_And_Then, EW_Imply, EW_Equivalent, EW_Or, EW_And);
 
-   type EW_Assert_Kind is
-     (EW_Assert,
-      EW_Check,
-      EW_Assume);
+   type EW_Assert_Kind is (EW_Assert, EW_Check, EW_Assume);
 
-   type EW_Axiom_Dep_Kind is
-     (EW_Axdep_Func,
-      EW_Axdep_Pred);
+   type EW_Axiom_Dep_Kind is (EW_Axdep_Func, EW_Axdep_Pred);
 
 end Why.Sinfo;

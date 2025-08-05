@@ -27,86 +27,86 @@
 with Ada.Containers.Hashed_Maps;
 with Ada.Directories;
 with Ada.Environment_Variables;
-with Ada.Strings.Unbounded;           use Ada.Strings.Unbounded;
-with Ada.Text_IO;                     use Ada.Text_IO;
-with ALI.Util;                        use ALI.Util;
-with ALI;                             use ALI;
-with Assumption_Types;                use Assumption_Types;
-with Atree;                           use Atree;
+with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
+with Ada.Text_IO;                    use Ada.Text_IO;
+with ALI.Util;                       use ALI.Util;
+with ALI;                            use ALI;
+with Assumption_Types;               use Assumption_Types;
+with Atree;                          use Atree;
 with Binderr;
-with Call;                            use Call;
-with CE_RAC;                          use CE_RAC;
-with CE_Utils;                        use CE_Utils;
-with CE_Values;                       use CE_Values;
-with Common_Containers;               use Common_Containers;
-with Debug;                           use Debug;
-with Debug.Timing;                    use Debug.Timing;
-with Einfo.Entities;                  use Einfo.Entities;
-with Einfo.Utils;                     use Einfo.Utils;
-with Errout_Wrapper;                  use Errout_Wrapper;
-with Flow;                            use Flow;
-with Flow.Analysis.Assumptions;       use Flow.Analysis.Assumptions;
+with Call;                           use Call;
+with CE_RAC;                         use CE_RAC;
+with CE_Utils;                       use CE_Utils;
+with CE_Values;                      use CE_Values;
+with Common_Containers;              use Common_Containers;
+with Debug;                          use Debug;
+with Debug.Timing;                   use Debug.Timing;
+with Einfo.Entities;                 use Einfo.Entities;
+with Einfo.Utils;                    use Einfo.Utils;
+with Errout_Wrapper;                 use Errout_Wrapper;
+with Flow;                           use Flow;
+with Flow.Analysis.Assumptions;      use Flow.Analysis.Assumptions;
 with Flow_Generated_Globals.Phase_1;
 with Flow_Generated_Globals.Traversal;
-with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
-with Flow_Types;                      use Flow_Types;
-with Flow_Utility;                    use Flow_Utility;
-with Flow_Visibility;                 use Flow_Visibility;
-with Gnat2Why_Opts.Reading;           use Gnat2Why_Opts.Reading;
-with GNAT.OS_Lib;                     use GNAT.OS_Lib;
+with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
+with Flow_Types;                     use Flow_Types;
+with Flow_Utility;                   use Flow_Utility;
+with Flow_Visibility;                use Flow_Visibility;
+with Gnat2Why_Opts.Reading;          use Gnat2Why_Opts.Reading;
+with GNAT.OS_Lib;                    use GNAT.OS_Lib;
 with GNAT.SHA1;
 with GNAT.Source_Info;
-with GNATCOLL.JSON;                   use GNATCOLL.JSON;
-with GNATCOLL.Utils;                  use GNATCOLL.Utils;
-with Gnat2Why.Assumptions;            use Gnat2Why.Assumptions;
-with Gnat2Why.Borrow_Checker;         use Gnat2Why.Borrow_Checker;
-with Gnat2Why.Data_Decomposition;     use Gnat2Why.Data_Decomposition;
-with Gnat2Why.Decls;                  use Gnat2Why.Decls;
-with Gnat2Why.Error_Messages;         use Gnat2Why.Error_Messages;
-with Gnat2Why.Subprograms;            use Gnat2Why.Subprograms;
-with Gnat2Why.Tables;                 use Gnat2Why.Tables;
-with Gnat2Why.Types;                  use Gnat2Why.Types;
-with Gnat2Why.Util;                   use Gnat2Why.Util;
+with GNATCOLL.JSON;                  use GNATCOLL.JSON;
+with GNATCOLL.Utils;                 use GNATCOLL.Utils;
+with Gnat2Why.Assumptions;           use Gnat2Why.Assumptions;
+with Gnat2Why.Borrow_Checker;        use Gnat2Why.Borrow_Checker;
+with Gnat2Why.Data_Decomposition;    use Gnat2Why.Data_Decomposition;
+with Gnat2Why.Decls;                 use Gnat2Why.Decls;
+with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
+with Gnat2Why.Subprograms;           use Gnat2Why.Subprograms;
+with Gnat2Why.Tables;                use Gnat2Why.Tables;
+with Gnat2Why.Types;                 use Gnat2Why.Types;
+with Gnat2Why.Util;                  use Gnat2Why.Util;
 with Gnat2Why_Args;
-with Hashing;                         use Hashing;
-with Lib;                             use Lib;
-with Namet;                           use Namet;
-with Nlists;                          use Nlists;
-with Osint.C;                         use Osint.C;
-with Osint;                           use Osint;
-with Outputs;                         use Outputs;
+with Hashing;                        use Hashing;
+with Lib;                            use Lib;
+with Namet;                          use Namet;
+with Nlists;                         use Nlists;
+with Osint.C;                        use Osint.C;
+with Osint;                          use Osint;
+with Outputs;                        use Outputs;
 with Sem;
-with Sem_Aux;                         use Sem_Aux;
-with Sem_Util;                        use Sem_Util;
-with Sinfo.Nodes;                     use Sinfo.Nodes;
-with Sinput;                          use Sinput;
-with SPARK_Definition.Annotate;       use SPARK_Definition.Annotate;
-with SPARK_Definition;                use SPARK_Definition;
-with SPARK_Register;                  use SPARK_Register;
-with SPARK_Rewrite;                   use SPARK_Rewrite;
-with SPARK_Util;                      use SPARK_Util;
-with SPARK_Util.Hardcoded;            use SPARK_Util.Hardcoded;
-with SPARK_Util.Subprograms;          use SPARK_Util.Subprograms;
-with SPARK_Util.Types;                use SPARK_Util.Types;
+with Sem_Aux;                        use Sem_Aux;
+with Sem_Util;                       use Sem_Util;
+with Sinfo.Nodes;                    use Sinfo.Nodes;
+with Sinput;                         use Sinput;
+with SPARK_Definition.Annotate;      use SPARK_Definition.Annotate;
+with SPARK_Definition;               use SPARK_Definition;
+with SPARK_Register;                 use SPARK_Register;
+with SPARK_Rewrite;                  use SPARK_Rewrite;
+with SPARK_Util;                     use SPARK_Util;
+with SPARK_Util.Hardcoded;           use SPARK_Util.Hardcoded;
+with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
+with SPARK_Util.Types;               use SPARK_Util.Types;
 with SPARK_Xrefs;
-with Stand;                           use Stand;
-with String_Utils;                    use String_Utils;
-with Switch;                          use Switch;
-with Tempdir;                         use Tempdir;
-with VC_Kinds;                        use VC_Kinds;
-with Why;                             use Why;
-with Why.Atree;                       use Why.Atree;
-with Why.Atree.Modules;               use Why.Atree.Modules;
-with Why.Atree.To_Json;               use Why.Atree.To_Json;
-with Why.Gen.Binders;                 use Why.Gen.Binders;
-with Why.Gen.Expr;                    use Why.Gen.Expr;
+with Stand;                          use Stand;
+with String_Utils;                   use String_Utils;
+with Switch;                         use Switch;
+with Tempdir;                        use Tempdir;
+with VC_Kinds;                       use VC_Kinds;
+with Why;                            use Why;
+with Why.Atree;                      use Why.Atree;
+with Why.Atree.Modules;              use Why.Atree.Modules;
+with Why.Atree.To_Json;              use Why.Atree.To_Json;
+with Why.Gen.Binders;                use Why.Gen.Binders;
+with Why.Gen.Expr;                   use Why.Gen.Expr;
 with Why.Gen.Names;
-with Why.Inter;                       use Why.Inter;
-with Why.Images;                      use Why.Images;
+with Why.Inter;                      use Why.Inter;
+with Why.Images;                     use Why.Images;
 
 pragma Warnings (Off, "unit ""Why.Atree.Treepr"" is not referenced");
 with Why.Atree.Treepr;  --  To force the link of debug routines (wpn, wpt)
-pragma Warnings (On,  "unit ""Why.Atree.Treepr"" is not referenced");
+pragma Warnings (On, "unit ""Why.Atree.Treepr"" is not referenced");
 
 package body Gnat2Why.Driver is
 
@@ -138,9 +138,11 @@ package body Gnat2Why.Driver is
    procedure Translate_Standard_Package;
 
    procedure Translate_Entity (E : Entity_Id)
-   with Pre => (if Ekind (E) = E_Package
-                then Entity_Spec_In_SPARK (E)
-                else Entity_In_SPARK (E));
+   with
+     Pre =>
+       (if Ekind (E) = E_Package
+        then Entity_Spec_In_SPARK (E)
+        else Entity_In_SPARK (E));
    --  Translates entity E into Why
 
    procedure Translate_Hidden_Globals (E : Entity_Id);
@@ -149,9 +151,11 @@ package body Gnat2Why.Driver is
    --  marking), or representing invisible constituents of abstract states.
 
    procedure Do_Generate_VCs (E : Entity_Id)
-   with Pre => (if Ekind (E) = E_Package
-                then Entity_Spec_In_SPARK (E)
-                else Entity_In_SPARK (E));
+   with
+     Pre =>
+       (if Ekind (E) = E_Package
+        then Entity_Spec_In_SPARK (E)
+        else Entity_In_SPARK (E));
    --  Generates VCs for entity E. This is currently a noop for E other than
    --  subprogram, entry, task or package.
 
@@ -161,8 +165,8 @@ package body Gnat2Why.Driver is
    procedure Print_GNAT_Json_File (Filename : String);
    --  Print the GNAT AST as Json into file
 
-   procedure Create_JSON_File (Progress    : Analysis_Progress;
-                               Stop_Reason : Stop_Reason_Type);
+   procedure Create_JSON_File
+     (Progress : Analysis_Progress; Stop_Reason : Stop_Reason_Type);
    --  At the very end, write the analysis results into file. Progress
    --  describes the last analysis done. Stop_Reason indicates why the
    --  analysis did not progress to the next phase.
@@ -189,28 +193,29 @@ package body Gnat2Why.Driver is
    --  translate each of them exactly once.
 
    function Process_Id_Hash (X : Process_Id) return Ada.Containers.Hash_Type
-     is (Generic_Integer_Hash (Pid_To_Integer (X)));
+   is (Generic_Integer_Hash (Pid_To_Integer (X)));
    --  Hash function for process ids to be used in Hashed maps
 
-   package Pid_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Process_Id,
-      Element_Type    => Path_Name_Type,
-      Hash            => Process_Id_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
+   package Pid_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Process_Id,
+        Element_Type    => Path_Name_Type,
+        Hash            => Process_Id_Hash,
+        Equivalent_Keys => "=",
+        "="             => "=");
 
    Output_File_Map : Pid_Maps.Map;
    --  Global map which stores the temp file names in which the various
    --  gnatwhy3 processes store their output, by process id.
 
    procedure Collect_One_Result
-     with Pre => not Output_File_Map.Is_Empty;
+   with Pre => not Output_File_Map.Is_Empty;
    --  Wait for one gnatwhy3 process to finish and process its results. If a
    --  previously finished gnatwhy3 is already waiting to be collected, this
    --  procedure returns immediately.
 
    procedure Collect_Results
-     with Post => Output_File_Map.Is_Empty;
+   with Post => Output_File_Map.Is_Empty;
    --  Wait until all child gnatwhy3 processes finish and collect their results
 
    procedure Run_Gnatwhy3 (E : Entity_Id; Filename : String)
@@ -225,9 +230,7 @@ package body Gnat2Why.Driver is
    --  project structure.
 
    function Compute_Why3_File_Name
-     (E         : Entity_Id;
-      Extension : String)
-      return String
+     (E : Entity_Id; Extension : String) return String
    with
      Post => Compute_Why3_File_Name'Result'Length <= Max_Why3_Filename_Length;
    --  Compute the why3 file to be used. Guarantees to be no longer than
@@ -237,8 +240,7 @@ package body Gnat2Why.Driver is
    -- Collect_One_Result --
    ------------------------
 
-   procedure Collect_One_Result
-   is
+   procedure Collect_One_Result is
       Pid     : Process_Id;
       Success : Boolean;
       pragma Warnings (Off, Success); --  modified but then not referenced
@@ -279,10 +281,7 @@ package body Gnat2Why.Driver is
       Current_Subp := E;
 
       case Ekind (E) is
-         when E_Entry
-            | E_Function
-            | E_Procedure
-         =>
+         when E_Entry | E_Function | E_Procedure =>
             if Is_Translated_Subprogram (E) then
                if Is_Expression_Function_Or_Completion (E)
                  and then Entity_Body_Compatible_With_SPARK (E)
@@ -315,11 +314,9 @@ package body Gnat2Why.Driver is
    ----------------------------
 
    function Compute_Why3_File_Name
-     (E         : Entity_Id;
-      Extension : String)
-      return String
+     (E : Entity_Id; Extension : String) return String
    is
-      S : constant String := Full_Name (E);
+      S             : constant String := Full_Name (E);
       Digest_Length : constant := 20;
       --  Arbitrary number of digits that we take from the SHA1 digest to
       --  achieve uniqueness.
@@ -330,10 +327,17 @@ package body Gnat2Why.Driver is
          --  remove the file ending
          --  remove 1 for the dash
          --  remove Digest_Length for the digest
-         return GNAT.SHA1.Digest (S) (1 .. Digest_Length) & "-" &
-           S (S'Last - (Max_Why3_Filename_Length - 1 -
-                          Extension'Length - 1 - Digest_Length)
-              .. S'Last)
+         return
+           GNAT.SHA1.Digest (S) (1 .. Digest_Length)
+           & "-"
+           & S
+               (S'Last
+                - (Max_Why3_Filename_Length
+                   - 1
+                   - Extension'Length
+                   - 1
+                   - Digest_Length)
+                .. S'Last)
            & Extension;
       else
          return S & Extension;
@@ -344,14 +348,14 @@ package body Gnat2Why.Driver is
    -- Create_JSON_File --
    ----------------------
 
-   procedure Create_JSON_File (Progress    : Analysis_Progress;
-                               Stop_Reason : Stop_Reason_Type) is
-      FD : Ada.Text_IO.File_Type;
+   procedure Create_JSON_File
+     (Progress : Analysis_Progress; Stop_Reason : Stop_Reason_Type)
+   is
+      FD        : Ada.Text_IO.File_Type;
       File_Name : constant String :=
         Ada.Directories.Compose
-          (Name      => Unit_Name,
-           Extension => VC_Kinds.SPARK_Suffix);
-      Full : constant JSON_Value := Create_Object;
+          (Name => Unit_Name, Extension => VC_Kinds.SPARK_Suffix);
+      Full      : constant JSON_Value := Create_Object;
    begin
       Set_Field (Full, "spark", Get_SPARK_JSON);
       Set_Field (Full, "skip_flow_proof", Get_Skip_Flow_And_Proof_JSON);
@@ -378,10 +382,9 @@ package body Gnat2Why.Driver is
       Ada.Text_IO.Close (FD);
    end Create_JSON_File;
 
-   procedure Parse_Gnattest_Values (E : Entity_Id)
-   is
-      JSON_File_Name : constant Unbounded_String
-        := Gnat2Why_Opts.Reading.Gnattest_Values;
+   procedure Parse_Gnattest_Values (E : Entity_Id) is
+      JSON_File_Name : constant Unbounded_String :=
+        Gnat2Why_Opts.Reading.Gnattest_Values;
       Json_Data      : JSON_Value;
       R              : Read_Result;
 
@@ -393,8 +396,8 @@ package body Gnat2Why.Driver is
       end if;
 
       if not Ada.Directories.Exists (To_String (JSON_File_Name)) then
-         raise Program_Error with "Can not find "
-           & To_String (JSON_File_Name) & ".";
+         raise Program_Error
+           with "Can not find " & To_String (JSON_File_Name) & ".";
       end if;
 
       R := GNATCOLL.JSON.Read_File (To_String (JSON_File_Name));
@@ -402,47 +405,40 @@ package body Gnat2Why.Driver is
       if R.Success then
          Json_Data := R.Value;
       else
-         raise Program_Error with "Failed to read "
-           & To_String (JSON_File_Name);
+         raise Program_Error
+           with "Failed to read " & To_String (JSON_File_Name);
       end if;
 
       declare
-         Test_Vectors : constant GNATCOLL.JSON.JSON_Array
-           := Get (Json_Data);
+         Test_Vectors : constant GNATCOLL.JSON.JSON_Array := Get (Json_Data);
       begin
          declare
-            Length : constant Natural
-              := GNATCOLL.JSON.Length (Test_Vectors);
+            Length : constant Natural := GNATCOLL.JSON.Length (Test_Vectors);
          begin
-            CE_RAC.Gnattest_Values.Values
-              := new Value_List (1 .. Length);
+            CE_RAC.Gnattest_Values.Values := new Value_List (1 .. Length);
             CE_RAC.Gnattest_Values.Pos := 1;
-            for I in 1 .. Length
-            loop
+            for I in 1 .. Length loop
                declare
-                  Bidings      : Entity_Bindings.Map;
-                  Param_Values : constant GNATCOLL.JSON.JSON_Array
-                    := Get (Test_Vectors, I).Get ("param_values");
-                  Param_Values_Length : constant Natural
-                    := GNATCOLL.JSON.Length (Param_Values);
+                  Bidings             : Entity_Bindings.Map;
+                  Param_Values        : constant GNATCOLL.JSON.JSON_Array :=
+                    Get (Test_Vectors, I).Get ("param_values");
+                  Param_Values_Length : constant Natural :=
+                    GNATCOLL.JSON.Length (Param_Values);
                begin
-                  for Param in 1 .. Param_Values_Length
-                  loop
+                  for Param in 1 .. Param_Values_Length loop
                      declare
-                        Param_Value : constant GNATCOLL.JSON.JSON_Value
-                          := Get (Param_Values, Param);
+                        Param_Value : constant GNATCOLL.JSON.JSON_Value :=
+                          Get (Param_Values, Param);
                      begin
                         declare
-                           Name     : constant GNATCOLL.JSON.JSON_Value
-                             := Param_Value.Get ("name");
-                           Value    : constant GNATCOLL.JSON.JSON_Value
-                             := Param_Value.Get ("value");
-                           Param_Id : constant Entity_Id
-                             := Get_Id_From_Name (E,
-                                                  Get (Name));
-                           V        : constant Value_Access
-                             := To_Value_Access (Param_Id,
-                                                 Value);
+                           Name     : constant GNATCOLL.JSON.JSON_Value :=
+                             Param_Value.Get ("name");
+                           Value    : constant GNATCOLL.JSON.JSON_Value :=
+                             Param_Value.Get ("value");
+                           Param_Id : constant Entity_Id :=
+                             Get_Id_From_Name (E, Get (Name));
+                           V        : constant Value_Access :=
+                             To_Value_Access (Param_Id, Value);
                         begin
                            Bidings.Include (Param_Id, V);
                         end;
@@ -481,11 +477,12 @@ package body Gnat2Why.Driver is
 
       pragma Assert (Text /= null);
 
-      Main_Lib_Id := Scan_ALI
-        (F             => Main_Lib_File,
-         T             => Text,
-         Err           => False,
-         Ignore_Errors => Debug_Flag_I);
+      Main_Lib_Id :=
+        Scan_ALI
+          (F             => Main_Lib_File,
+           T             => Text,
+           Err           => False,
+           Ignore_Errors => Debug_Flag_I);
       Free (Text);
 
       Read_Withed_ALIs (Main_Lib_Id);
@@ -520,10 +517,7 @@ package body Gnat2Why.Driver is
       Process_Info_Hiding_For_VCs (E);
 
       case Ekind (E) is
-         when Entry_Kind
-            | E_Function
-            | E_Procedure
-         =>
+         when Entry_Kind | E_Function | E_Procedure =>
             if Entity_Spec_In_SPARK (E)
 
               --  Ignore hardcoded subprograms
@@ -534,8 +528,8 @@ package body Gnat2Why.Driver is
             then
                declare
                   LSP_Applies : constant Boolean :=
-                    Is_Dispatching_Operation (E) and then
-                    Present (Find_Dispatching_Type (E));
+                    Is_Dispatching_Operation (E)
+                    and then Present (Find_Dispatching_Type (E));
                begin
                   if LSP_Applies then
                      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
@@ -556,9 +550,10 @@ package body Gnat2Why.Driver is
                   end if;
                end;
             end if;
-            Timing_Phase_Completed (Timing,
-                                    Entity_To_Subp_Assumption (E),
-                                    "gnat2why.vc_generation");
+            Timing_Phase_Completed
+              (Timing,
+               Entity_To_Subp_Assumption (E),
+               "gnat2why.vc_generation");
 
          when E_Package =>
             Generate_VCs_For_Package_Elaboration (E);
@@ -615,7 +610,7 @@ package body Gnat2Why.Driver is
 
          if not Has_At_End_Borrow_Annotation (E) then
 
-         --  Set error node so that bugbox information will be correct
+            --  Set error node so that bugbox information will be correct
 
             Current_Error_Node := E;
             Borrow_Checker.Check_Entity (E);
@@ -666,9 +661,7 @@ package body Gnat2Why.Driver is
             --  and units that were not analysed (e.g. system.ads when it is
             --  implicitly pulled by Ensure_System_Dependency).
 
-            if Present (Cunit (U))
-              and then Analyzed (Unit (Cunit (U)))
-            then
+            if Present (Cunit (U)) and then Analyzed (Unit (Cunit (U))) then
                Action (Unit (Cunit (U)));
             end if;
          end loop;
@@ -691,20 +684,21 @@ package body Gnat2Why.Driver is
          Action (Unit (GNAT_Root));
       end Process_Current_Unit;
 
-      procedure Mark_Current_Unit is new Process_Current_Unit
-        (Action => Mark_Compilation_Unit);
+      procedure Mark_Current_Unit is new
+        Process_Current_Unit (Action => Mark_Compilation_Unit);
 
-      procedure Build_Flow_Tree is new Process_Current_Unit
-        (Action => Flow_Generated_Globals.Traversal.Build_Tree);
+      procedure Build_Flow_Tree is new
+        Process_Current_Unit
+          (Action => Flow_Generated_Globals.Traversal.Build_Tree);
 
-      procedure Rewrite_All_Compilation_Units is new Process_All_Units
-        (Action => Rewrite_Compilation_Unit);
+      procedure Rewrite_All_Compilation_Units is new
+        Process_All_Units (Action => Rewrite_Compilation_Unit);
 
-      procedure Register_All_Entities is new Process_All_Units
-        (Action => Register_Compilation_Unit);
+      procedure Register_All_Entities is new
+        Process_All_Units (Action => Register_Compilation_Unit);
 
-      procedure Register_All_Flow_Scopes is new Process_All_Units
-        (Action => Register_Flow_Scopes);
+      procedure Register_All_Flow_Scopes is new
+        Process_All_Units (Action => Register_Flow_Scopes);
 
       --  Local variables
 
@@ -716,7 +710,7 @@ package body Gnat2Why.Driver is
 
       Stop_Reason : Stop_Reason_Type := Stop_Reason_None;
 
-   --  Start of processing for GNAT_To_Why
+      --  Start of processing for GNAT_To_Why
 
    begin
       Timing_Start (Timing);
@@ -739,8 +733,8 @@ package body Gnat2Why.Driver is
                   GNAT_Root,
                   Continuations =>
                     [Create
-                         ("only instantiations of the generic will be"
-                          & " analyzed")]);
+                       ("only instantiations of the generic will be"
+                        & " analyzed")]);
             end if;
          end if;
 
@@ -797,9 +791,7 @@ package body Gnat2Why.Driver is
          --  Finalize has to be called before we call Compilation_Errors
          Finalize (Last_Call => False);
 
-         if Compilation_Errors
-           or else Gnat2Why_Args.Mode = GPM_Check
-         then
+         if Compilation_Errors or else Gnat2Why_Args.Mode = GPM_Check then
             goto Leave;
          end if;
 
@@ -839,15 +831,14 @@ package body Gnat2Why.Driver is
          declare
             Root : constant Entity_Id := Defining_Entity (Unit (GNAT_Root));
          begin
-            if Gnat2Why_Args.Limit_Units
-              and then No (SPARK_Pragma (Root))
-            then
+            if Gnat2Why_Args.Limit_Units and then No (SPARK_Pragma (Root)) then
                Warning_Msg_N
                  (Warn_Unit_Not_SPARK,
                   GNAT_Root,
                   Continuations =>
-                    [Create ("only enclosed declarations with SPARK_Mode"
-                             & " will be analyzed")]);
+                    [Create
+                       ("only enclosed declarations with SPARK_Mode"
+                        & " will be analyzed")]);
             end if;
          end;
 
@@ -888,11 +879,10 @@ package body Gnat2Why.Driver is
          --  Finalize has to be called before we call Compilation_Errors
          Finalize (Last_Call => False);
 
-         if Compilation_Errors
-           or else Gnat2Why_Args.Mode = GPM_Check
-         then
+         if Compilation_Errors or else Gnat2Why_Args.Mode = GPM_Check then
             Stop_Reason :=
-              (if Compilation_Errors then Stop_Reason_Error_Marking
+              (if Compilation_Errors
+               then Stop_Reason_Error_Marking
                else Stop_Reason_Check_Mode);
             goto Leave_With_JSON;
          end if;
@@ -950,34 +940,42 @@ package body Gnat2Why.Driver is
 
             declare
 
-               function Assertion (VC : VC_Kind) return String is
-                 (case VC is
+               function Assertion (VC : VC_Kind) return String
+               is (case VC is
                      when VC_Assert => "ADA.ASSERTIONS.ASSERTION_ERROR",
-                     when others    => VC_Kind'Image (VC));
+                     when others => VC_Kind'Image (VC));
                --  Return the name of the assertion that is triggered for at
                --  the given VC.
 
-               Res : constant CE_RAC.Result := CE_RAC.RAC_Execute
-                 (Unique_Main_Unit_Entity,
-                  VC_Kinds.Cntexample_File_Maps.Empty,
-                  Do_Sideeffects => True);
+               Res : constant CE_RAC.Result :=
+                 CE_RAC.RAC_Execute
+                   (Unique_Main_Unit_Entity,
+                    VC_Kinds.Cntexample_File_Maps.Empty,
+                    Do_Sideeffects => True);
             begin
                case Res.Res_Kind is
                   when Res_Normal =>
                      null;
+
                   when Res_Failure =>
                      Put_Line (Standard_Error, "");
                      Put_Line
                        (Standard_Error,
-                        "raised " & Assertion (Res.Res_VC_Kind) &
-                          " : " & File_Name (Sloc (Res.Res_Node)) &
-                          ":" & GNATCOLL.Utils.Image
-                          (Integer (Get_Logical_Line_Number
-                           (Sloc (Res.Res_Node))), 0));
+                        "raised "
+                        & Assertion (Res.Res_VC_Kind)
+                        & " : "
+                        & File_Name (Sloc (Res.Res_Node))
+                        & ":"
+                        & GNATCOLL.Utils.Image
+                            (Integer
+                               (Get_Logical_Line_Number (Sloc (Res.Res_Node))),
+                             0));
+
                   when Res_Incomplete =>
                      Put_Line
                        (Standard_Error,
                         "RAC incomplete: " & To_String (Res.Res_Reason));
+
                   when Res_Stuck | Res_Not_Executed =>
                      pragma Assert (False);
                end case;
@@ -995,8 +993,8 @@ package body Gnat2Why.Driver is
             Timing_Phase_Completed (Timing, Null_Subp, "init_why_sections");
 
             Translate_Standard_Package;
-            Timing_Phase_Completed (Timing, Null_Subp,
-                                    "translation of standard");
+            Timing_Phase_Completed
+              (Timing, Null_Subp, "translation of standard");
 
             Translate_CUnit;
 
@@ -1015,9 +1013,10 @@ package body Gnat2Why.Driver is
             Progress := Progress_Proof;
 
          else
-            Stop_Reason := (if Gnat2Why_Args.Mode = GPM_Check_All
-                            then Stop_Reason_Check_Mode
-                            else Stop_Reason_Flow_Mode);
+            Stop_Reason :=
+              (if Gnat2Why_Args.Mode = GPM_Check_All
+               then Stop_Reason_Check_Mode
+               else Stop_Reason_Flow_Mode);
          end if;
       end if;
 
@@ -1049,17 +1048,22 @@ package body Gnat2Why.Driver is
         (Name  => "GMON_OUT_PREFIX",
          Value =>
            Ada.Directories.Compose
-             (Name      => Unit_Name & (if Gnat2Why_Args.Global_Gen_Mode
-                                        then "_phase1"
-                                        else "_phase2") & "_gmon",
+             (Name      =>
+                Unit_Name
+                & (if Gnat2Why_Args.Global_Gen_Mode
+                   then "_phase1"
+                   else "_phase2")
+                & "_gmon",
               Extension => "out"));
       Ada.Environment_Variables.Set
         (Name  => "GNATCOV_TRACE_FILE",
          Value =>
            Ada.Directories.Compose
-             (Name      => Unit_Name & (if Gnat2Why_Args.Global_Gen_Mode
-                                        then "_phase1"
-                                        else "_phase2"),
+             (Name      =>
+                Unit_Name
+                & (if Gnat2Why_Args.Global_Gen_Mode
+                   then "_phase1"
+                   else "_phase2"),
               Extension => "srctrace"));
 
    end GNAT_To_Why;
@@ -1107,8 +1111,9 @@ package body Gnat2Why.Driver is
       Result : JSON_Array := GNATCOLL.JSON.Empty_Array;
    begin
       for Elt of Skipped_Flow_And_Proof loop
-         Append (Result,
-                 Assumption_Types.To_JSON (Entity_To_Subp_Assumption (Elt)));
+         Append
+           (Result,
+            Assumption_Types.To_JSON (Entity_To_Subp_Assumption (Elt)));
       end loop;
       return Result;
    end Get_Skip_Flow_And_Proof_JSON;
@@ -1121,8 +1126,9 @@ package body Gnat2Why.Driver is
       Result : JSON_Array := GNATCOLL.JSON.Empty_Array;
    begin
       for Elt of Skipped_Proof loop
-         Append (Result,
-                 Assumption_Types.To_JSON (Entity_To_Subp_Assumption (Elt)));
+         Append
+           (Result,
+            Assumption_Types.To_JSON (Entity_To_Subp_Assumption (Elt)));
       end loop;
       return Result;
    end Get_Skip_Proof_JSON;
@@ -1146,20 +1152,20 @@ package body Gnat2Why.Driver is
 
       return
         Is_Switch (Switch)
-          and then (Switch (First) in 'f' | 'g' | 'm' | 'O' | 'W' | 'w'
-                    or else Switch (First .. Last) = "nostdlib"
-                    or else Switch (First .. Last) = "pipe"
-                    or else
-                      (Switch'Length >= 11
-                       and then Switch (First .. First + 9) = "save-temps"));
+        and then (Switch (First) in 'f' | 'g' | 'm' | 'O' | 'W' | 'w'
+                  or else Switch (First .. Last) = "nostdlib"
+                  or else Switch (First .. Last) = "pipe"
+                  or else (Switch'Length >= 11
+                           and then Switch (First .. First + 9)
+                                    = "save-temps"));
    end Is_Back_End_Switch;
 
    ------------------------------
    -- Is_Translated_Subprogram --
    ------------------------------
 
-   function Is_Translated_Subprogram (E : Entity_Id) return Boolean is
-     (
+   function Is_Translated_Subprogram (E : Entity_Id) return Boolean
+   is (
        --  Ignore inlined subprograms. Either these are not analyzed
        --  (when referenced and analysis was not specifically requested
        --  for them), in which case it's safer to skip a declaration
@@ -1249,8 +1255,7 @@ package body Gnat2Why.Driver is
       --  messages.
 
       declare
-         Args : Argument_List :=
-           Call.Argument_List_Of_String_List (Why3_Args);
+         Args : Argument_List := Call.Argument_List_Of_String_List (Why3_Args);
          Fd   : File_Descriptor;
          Name : Path_Name_Type;
          Pid  : Process_Id;
@@ -1305,8 +1310,7 @@ package body Gnat2Why.Driver is
       ----------------------
 
       procedure For_All_Entities
-        (Process : not null access procedure (E : Entity_Id))
-      is
+        (Process : not null access procedure (E : Entity_Id)) is
       begin
          for E of Entities_To_Translate loop
 
@@ -1323,14 +1327,11 @@ package body Gnat2Why.Driver is
 
       procedure Generate_VCs (E : Entity_Id) is
       begin
-         if Ekind (E) in Entry_Kind
-                       | E_Function
-                       | E_Package
-                       | E_Procedure
-                       | Type_Kind
+         if Ekind (E)
+            in Entry_Kind | E_Function | E_Package | E_Procedure | Type_Kind
          then
             case Analysis_Status'
-              (Analysis_Requested (E, With_Inlined => False))
+                (Analysis_Requested (E, With_Inlined => False))
             is
                when Analyzed =>
                   Do_Generate_VCs (E);
@@ -1345,18 +1346,16 @@ package body Gnat2Why.Driver is
                   then
                      Error_Msg_N
                        ("local subprogram &"
-                        &  " only analyzed in the context of calls"
+                        & " only analyzed in the context of calls"
                         & Tag_Suffix (Warn_Info_Unrolling_Inlining),
                         E,
-                        Kind => Info_Kind,
+                        Kind          => Info_Kind,
                         Continuations =>
                           ["add a contract to"
                            & " analyze it separately from calling contexts"]);
                   end if;
 
-               when Not_In_Analyzed_Files
-                  | Not_The_Analyzed_Subprogram
-               =>
+               when Not_In_Analyzed_Files | Not_The_Analyzed_Subprogram =>
                   null;
             end case;
          end if;
@@ -1369,15 +1368,15 @@ package body Gnat2Why.Driver is
       procedure Register_Symbol (E : Entity_Id) is
       begin
          case Ekind (E) is
-            when E_Entry
-               | E_Function
-               | E_Procedure =>
+            when E_Entry | E_Function | E_Procedure =>
                if Is_Translated_Subprogram (E) then
                   Ada_Ent_To_Why.Insert
-                    (Symbol_Table, E,
+                    (Symbol_Table,
+                     E,
                      Mk_Item_Of_Entity
                        (E, Hide_Info => Expr_Fun_Hidden_By_Default (E)));
                end if;
+
             when Object_Kind =>
 
                if Is_Discriminal (E)
@@ -1396,7 +1395,7 @@ package body Gnat2Why.Driver is
          end case;
       end Register_Symbol;
 
-   --  Start of processing for Translate_CUnit
+      --  Start of processing for Translate_CUnit
 
    begin
       --  Translation of the __HEAP is hardcoded into the
@@ -1458,24 +1457,27 @@ package body Gnat2Why.Driver is
       -- Generate_Empty_Axiom_Theory --
       ---------------------------------
 
-      procedure Generate_Empty_Axiom_Theory (E : Entity_Id)
-      is
+      procedure Generate_Empty_Axiom_Theory (E : Entity_Id) is
          Th : Theory_UC;
       begin
-         Th := Open_Theory
-           (WF_Context, E_Module (E, Axiom),
-            Comment =>
-              "Module giving an empty axiom for the entity "
-            & """" & Get_Name_String (Chars (E)) & """"
-            & (if Sloc (E) > 0 then
-                 " defined at " & Build_Location_String (Sloc (E))
-              else "")
-            & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-         Close_Theory (Th,
-                       Kind => Standalone_Theory);
+         Th :=
+           Open_Theory
+             (WF_Context,
+              E_Module (E, Axiom),
+              Comment =>
+                "Module giving an empty axiom for the entity "
+                & """"
+                & Get_Name_String (Chars (E))
+                & """"
+                & (if Sloc (E) > 0
+                   then " defined at " & Build_Location_String (Sloc (E))
+                   else "")
+                & ", created in "
+                & GNAT.Source_Info.Enclosing_Entity);
+         Close_Theory (Th, Kind => Standalone_Theory);
       end Generate_Empty_Axiom_Theory;
 
-   --  Start of processing for Translate_Entity
+      --  Start of processing for Translate_Entity
 
    begin
       --  Check that the global variables are cleared before and after this
@@ -1554,10 +1556,7 @@ package body Gnat2Why.Driver is
 
          --  Generate a logic function for Ada subprograms
 
-         when E_Entry
-            | E_Function
-            | E_Procedure
-         =>
+         when E_Entry | E_Function | E_Procedure =>
             if Is_Translated_Subprogram (E) then
                Translate_Subprogram_Spec (E);
             end if;
@@ -1582,15 +1581,14 @@ package body Gnat2Why.Driver is
 
    procedure Translate_Hidden_Globals (E : Entity_Id) is
    begin
-      if (case Ekind (E) is
-          when Entry_Kind | E_Task_Type => True,
-          when E_Function | E_Procedure => Is_Translated_Subprogram (E),
-          when others                   => False
       --  For packages we don't translate objects from the RHS of their
       --  (generated) Initializes contract, because such objects are either
       --  visible (and thus translated anyway) or are pulled by subprograms
       --  called from the Initial_Condition (and thus already translated).
-      )
+      if (case Ekind (E) is
+            when Entry_Kind | E_Task_Type => True,
+            when E_Function | E_Procedure => Is_Translated_Subprogram (E),
+            when others => False)
       then
          declare
             Reads       : Flow_Types.Flow_Id_Sets.Set;
@@ -1599,10 +1597,11 @@ package body Gnat2Why.Driver is
             Inserted    : Boolean;
          begin
             --  Collect global variables potentially read and written
-            Flow_Utility.Get_Proof_Globals (Subprogram      => E,
-                                            Reads           => Reads,
-                                            Writes          => Writes,
-                                            Erase_Constants => True);
+            Flow_Utility.Get_Proof_Globals
+              (Subprogram      => E,
+               Reads           => Reads,
+               Writes          => Writes,
+               Erase_Constants => True);
 
             Reads.Union (Writes);
 
@@ -1645,7 +1644,7 @@ package body Gnat2Why.Driver is
          Complete_Declaration (E);
       end Translate_Standard_Entity;
 
-   --  Start of processing for Translate_Standard_Package
+      --  Start of processing for Translate_Standard_Package
 
    begin
       for S_Type in S_Types loop

@@ -153,18 +153,18 @@ package Why.Gen.Arrays is
       Dim     : Positive;
       Arg_Ind : in out Positive;
       Params  : Transformation_Params := Body_Params)
-   with Pre =>
+   with
+     Pre =>
        (Attr in Attribute_First | Attribute_Last | Attribute_Length
         and then Is_Constrained (Ty))
-     or else (Attr = Attribute_First
-              and then Is_Fixed_Lower_Bound_Index_Subtype
-                (Nth_Index_Type (Ty, Dim)));
+       or else (Attr = Attribute_First
+                and then Is_Fixed_Lower_Bound_Index_Subtype
+                           (Nth_Index_Type (Ty, Dim)));
    --  This variant of Add_Attr_Arg will only work when the attribute of the
    --  type is constrained.
 
    function Array_From_Split_Form
-     (I           : Item_Type;
-      Ref_Allowed : Boolean) return W_Term_Id
+     (I : Item_Type; Ref_Allowed : Boolean) return W_Term_Id
    with Pre => I.Kind = UCArray;
    --  Reconstructs a complete array from an item in split form.
 
@@ -173,8 +173,8 @@ package Why.Gen.Arrays is
    --  E is the entity which contains the relevant type information (the
    --  underlying type).
 
-   procedure Declare_Init_Wrapper_For_Array (Th : Theory_UC; E  : Entity_Id)
-     with Pre => Has_Array_Type (E) and then Has_Init_Wrapper (E);
+   procedure Declare_Init_Wrapper_For_Array (Th : Theory_UC; E : Entity_Id)
+   with Pre => Has_Array_Type (E) and then Has_Init_Wrapper (E);
    --  Introduce necessary declarations for the wrapper type for E
 
    procedure Declare_Additional_Symbols_For_String (Th : Theory_UC);
@@ -189,14 +189,12 @@ package Why.Gen.Arrays is
    --  Generate an expr that corresponds to an array access
 
    function New_Array_Access
-     (Ada_Node : Node_Id := Empty;
-      Ar       : W_Term_Id;
-      Index    : W_Expr_Array) return W_Term_Id
+     (Ada_Node : Node_Id := Empty; Ar : W_Term_Id; Index : W_Expr_Array)
+      return W_Term_Id
    is (+W_Expr_Id'(New_Array_Access (Ada_Node, +Ar, Index, EW_Term)));
 
    function Array_Convert_To_Base
-     (Domain : EW_Domain;
-      Ar     : W_Expr_Id) return W_Expr_Id
+     (Domain : EW_Domain; Ar : W_Expr_Id) return W_Expr_Id
    with Pre => Get_Type_Kind (Get_Type (Ar)) = EW_Abstract;
    --  "Ar" must be a Why expression of unconstrained array type. Convert it to
    --  the "split" view of UC arrays
@@ -220,9 +218,8 @@ package Why.Gen.Arrays is
    --  from its split form [Ar] and its [Bounds] expressions
 
    function Array_Convert_From_Base
-     (Domain   : EW_Domain;
-      Old_Ar   : W_Expr_Id;
-      New_Base : W_Expr_Id) return W_Expr_Id
+     (Domain : EW_Domain; Old_Ar : W_Expr_Id; New_Base : W_Expr_Id)
+      return W_Expr_Id
    with Pre => Get_Type_Kind (Get_Type (New_Base)) = EW_Split;
    --  "New_Base" must be a Why expression of unconstrained array type, in
    --  split form. Convert it to the regular unconstrained form, using Old_Ar's
@@ -232,8 +229,7 @@ package Why.Gen.Arrays is
      (Index_Expr : W_Term_Id;
       Array_Expr : W_Term_Id;
       Domain     : EW_Domain;
-      Dim        : Positive)
-      return W_Expr_Id;
+      Dim        : Positive) return W_Expr_Id;
    --  Construct an expression stating that an index is in an array's bound.
    --  @param Index_Expr expression for the considered index
    --  @param Array_Expr expression for the array
@@ -243,17 +239,16 @@ package Why.Gen.Arrays is
    --  <array_expr>.first<dim> <= <index_expr> <= <array_expr>.last<dim>
 
    function New_Array_Update
-     (Ada_Node  : Node_Id;
-      Ar        : W_Expr_Id;
-      Index     : W_Expr_Array;
-      Value     : W_Expr_Id;
-      Domain    : EW_Domain) return W_Expr_Id;
+     (Ada_Node : Node_Id;
+      Ar       : W_Expr_Id;
+      Index    : W_Expr_Array;
+      Value    : W_Expr_Id;
+      Domain   : EW_Domain) return W_Expr_Id;
    --  ???
 
    function New_Bounds_Equality
-     (Left_Arr  : W_Term_Id;
-      Right_Arr : W_Term_Id;
-      Dim       : Positive) return W_Pred_Id;
+     (Left_Arr : W_Term_Id; Right_Arr : W_Term_Id; Dim : Positive)
+      return W_Pred_Id;
    --  @param Left_Arr array expression whose bounds should be compared
    --  @param Right_Arr
    --  @param Dim number of dimensions in the arrays
@@ -265,22 +260,18 @@ package Why.Gen.Arrays is
    function New_Bounds_Equality
      (Left_Arr : W_Term_Id;
       Right_Ty : Entity_Id;
-      Params   : Transformation_Params := Body_Params)
-      return W_Pred_Id
+      Params   : Transformation_Params := Body_Params) return W_Pred_Id
    with Pre => Is_Constrained (Right_Ty);
    --  same as above but takes the bounds of a type for Right
 
    function New_Bounds_Equality
-     (Left_Arr     : W_Term_Id;
-      Right_Bounds : W_Expr_Array;
-      Dim          : Positive) return W_Pred_Id
+     (Left_Arr : W_Term_Id; Right_Bounds : W_Expr_Array; Dim : Positive)
+      return W_Pred_Id
    with Pre => Right_Bounds'Length = Dim * 2;
    --  same as above but with the bounds stored in an array
 
    function New_Length_Equality
-     (Left_Arr  : W_Term_Id;
-      Right_Arr : W_Term_Id;
-      Dim       : Positive)
+     (Left_Arr : W_Term_Id; Right_Arr : W_Term_Id; Dim : Positive)
       return W_Pred_Id;
    --  @param Left_Arr array expression whose length should be compared to
    --  @param Right_Arr
@@ -294,10 +285,7 @@ package Why.Gen.Arrays is
    --     else <right_arr>.last1 < <right_arr>.first1) /\ ...
 
    function New_Length_Equality
-     (Left_Arr : W_Term_Id;
-      Right    : Entity_Id;
-      Dim      : Positive)
-      return W_Pred_Id
+     (Left_Arr : W_Term_Id; Right : Entity_Id; Dim : Positive) return W_Pred_Id
    with Pre => Is_Constrained (Right);
    --  Same as above but with a constrained array type
 
@@ -305,8 +293,7 @@ package Why.Gen.Arrays is
      (Domain : EW_Domain;
       Ty     : Entity_Id;
       Args   : W_Expr_Array;
-      Params : Transformation_Params := Body_Params)
-      return W_Expr_Id;
+      Params : Transformation_Params := Body_Params) return W_Expr_Id;
    --  @param Domain The domain of the returned expression
    --  @param Ty the entity for the Ada array type
    --  @param Args bound values on which we want to check the dynamic predicate
@@ -330,20 +317,22 @@ package Why.Gen.Arrays is
      (Name   : W_Expr_Id;
       Index  : W_Expr_Array;
       Ty     : Entity_Id;
-      Domain : EW_Domain)
-      return W_Expr_Id
-   with Pre => Is_Array_Type (Ty)
-     and then Contains_Allocated_Parts (Component_Type (Ty));
+      Domain : EW_Domain) return W_Expr_Id
+   with
+     Pre =>
+       Is_Array_Type (Ty)
+       and then Contains_Allocated_Parts (Component_Type (Ty));
    --  Access to the reclamation tree of Name at Index
 
    function New_Move_Tree_Array_Update
      (Name  : W_Prog_Id;
       Index : W_Expr_Array;
       Value : W_Prog_Id;
-      Ty    : Entity_Id)
-      return W_Prog_Id
-   with Pre => Is_Array_Type (Ty)
-     and then Contains_Allocated_Parts (Component_Type (Ty));
+      Ty    : Entity_Id) return W_Prog_Id
+   with
+     Pre =>
+       Is_Array_Type (Ty)
+       and then Contains_Allocated_Parts (Component_Type (Ty));
    --  Update to the reclamation tree of Name at Index with Value
 
    function New_Move_Tree_Element_Equality
@@ -358,8 +347,7 @@ package Why.Gen.Arrays is
      (Name   : W_Expr_Id;
       Index  : W_Expr_Array;
       Ty     : Entity_Id;
-      Domain : EW_Domain)
-      return W_Expr_Id
+      Domain : EW_Domain) return W_Expr_Id
    with Pre => Is_Array_Type (Ty);
    --  Access to the validity tree of Name at Index
 
@@ -368,8 +356,7 @@ package Why.Gen.Arrays is
       Index  : W_Expr_Array;
       Value  : W_Expr_Id;
       Ty     : Entity_Id;
-      Domain : EW_Domain)
-      return W_Expr_Id
+      Domain : EW_Domain) return W_Expr_Id
    with Pre => Is_Array_Type (Ty);
    --  Update to the validity tree of Name at Index with Value
 
@@ -378,8 +365,7 @@ package Why.Gen.Arrays is
       Expr   : W_Expr_Id;
       To     : W_Type_Id;
       Domain : EW_Domain;
-      Params : Transformation_Params)
-      return W_Expr_Id;
+      Params : Transformation_Params) return W_Expr_Id;
    --  Slide the validity tree Tree from the bounds of Expr to the bounds of
    --  To for all its constrained indexes.
 
@@ -395,8 +381,7 @@ package Why.Gen.Arrays is
    function Build_Length_Expr
      (Domain      : EW_Domain;
       First, Last : W_Expr_Id;
-      Typ         : W_Type_Id := EW_Int_Type)
-      return W_Expr_Id;
+      Typ         : W_Type_Id := EW_Int_Type) return W_Expr_Id;
    --  Given the terms for first and last, build the expression
    --    if first <= last then last - first + 1 else 0
    --  Beware that the computation may wrap around on bitvectors
@@ -437,10 +422,10 @@ package Why.Gen.Arrays is
      (Expr : W_Term_Id;
       Attr : Attribute_Id;
       Dim  : Positive;
-      Typ  : W_Type_Id := EW_Int_Type)
-      return W_Term_Id
+      Typ  : W_Type_Id := EW_Int_Type) return W_Term_Id
    with
-     Pre => Attr in Attribute_First | Attribute_Last | Attribute_Length
+     Pre =>
+       Attr in Attribute_First | Attribute_Last | Attribute_Length
        and then (Typ = EW_Int_Type or else Why_Type_Is_BitVector (Typ));
    --  Get the expression for the attribute (first/last/length) of the array.
    --  For constrained arrays, this refers to the introduced constant,
@@ -458,10 +443,10 @@ package Why.Gen.Arrays is
       Attr   : Attribute_Id;
       Dim    : Positive;
       Params : Transformation_Params := Body_Params;
-      Typ    : W_Type_Id := EW_Int_Type)
-      return W_Term_Id
+      Typ    : W_Type_Id := EW_Int_Type) return W_Term_Id
    with
-     Pre => Attr in Attribute_First | Attribute_Last | Attribute_Length
+     Pre =>
+       Attr in Attribute_First | Attribute_Last | Attribute_Length
        and then (Typ = EW_Int_Type or else Why_Type_Is_BitVector (Typ));
    --  Same as Get_Array_Attr, can be used when the type is already known.
    --  On unconstrained array types, return bounds used to constrain the index.
@@ -478,8 +463,7 @@ package Why.Gen.Arrays is
      (Item : Item_Type;
       Attr : Attribute_Id;
       Dim  : Positive;
-      Typ  : W_Type_Id := EW_Int_Type)
-      return W_Term_Id;
+      Typ  : W_Type_Id := EW_Int_Type) return W_Term_Id;
    --  Get the expression for the attribute (first/last/length) of an array
    --  item.
    --  @param Item the item for the array object
@@ -505,16 +489,12 @@ package Why.Gen.Arrays is
    --  Return a call to the const function in Why array theory
 
    function New_Logic_Eq_Call
-     (Left, Right : W_Term_Id;
-      Domain      : EW_Domain)
-      return W_Expr_Id;
+     (Left, Right : W_Term_Id; Domain : EW_Domain) return W_Expr_Id;
    --  Return a call to the logic_eq predicate
 
    function New_Singleton_Call
-     (Domain : EW_Domain;
-      Elt    : W_Expr_Id;
-      Pos    : W_Expr_Id;
-      Typ    : W_Type_Id) return W_Expr_Id;
+     (Domain : EW_Domain; Elt : W_Expr_Id; Pos : W_Expr_Id; Typ : W_Type_Id)
+      return W_Expr_Id;
    --  Return a call to the singleton function in Why array theory
 
    function New_Slice_Call
@@ -526,17 +506,14 @@ package Why.Gen.Arrays is
    --  Return a call to the slice function in Why array theory
 
    function New_Slice_Call
-     (Domain : EW_Domain;
-      Arr    : W_Expr_Id;
-      Typ    : W_Type_Id) return W_Expr_Id;
+     (Domain : EW_Domain; Arr : W_Expr_Id; Typ : W_Type_Id) return W_Expr_Id;
    --  Return a call to the slice function in Why array theory
 
    function New_Well_Formed_Pred (Arr : W_Term_Id) return W_Pred_Id;
    --  Return a call to the well_formed predicate
 
    function Get_Array_Theory_Name
-     (E            : Entity_Id;
-      Relaxed_Init : Boolean := False) return Symbol
+     (E : Entity_Id; Relaxed_Init : Boolean := False) return Symbol
    with Pre => Is_Type (E) and then Has_Array_Type (E);
    --  @param E the entity of an array type
    --  @param Relaxed_Init True for array modules for wrapper for relaxed
@@ -555,9 +532,7 @@ package Why.Gen.Arrays is
    --         emited.
 
    procedure Create_Array_Conversion_Theory_If_Needed
-     (From         : Entity_Id;
-      To           : Entity_Id;
-      Relaxed_Init : Boolean := False);
+     (From : Entity_Id; To : Entity_Id; Relaxed_Init : Boolean := False);
    --  Check if the conversion theory for converting from From to To has
    --  already been created. If not create it.
    --  @param File the current file section. Conversion theories are always
@@ -568,30 +543,24 @@ package Why.Gen.Arrays is
    --  @param Relaxed_Init True to convert partially initialized expressions.
    --  ??? Relaxed_Init is always False, is it expected?
 
-   procedure Create_Move_Tree_Theory_For_Array
-     (Th : Theory_UC;
-      E  : Entity_Id)
-   with
-     Pre => Has_Array_Type (E) and then Contains_Allocated_Parts (E);
+   procedure Create_Move_Tree_Theory_For_Array (Th : Theory_UC; E : Entity_Id)
+   with Pre => Has_Array_Type (E) and then Contains_Allocated_Parts (E);
    --  Create a module declaring a type for the reclamation trees for objects
    --  of type E.
 
    procedure Create_Validity_Tree_Theory_For_Array
-     (Th : Theory_UC;
-      E  : Entity_Id);
+     (Th : Theory_UC; E : Entity_Id);
    --  Create a module declaring a type for the validity trees for objects
    --  of type E.
 
    function Get_Array_Theory
-     (E            : Entity_Id;
-      Relaxed_Init : Boolean := False) return M_Array_Type;
+     (E : Entity_Id; Relaxed_Init : Boolean := False) return M_Array_Type;
    --  Return the m_array_type containing the theory of the type of E
    --  @param E the entity of type array
    --  @param Relaxed_Init get the theory for wrappers for initialization
 
    function Get_Array_Theory_1
-     (E            : Entity_Id;
-      Relaxed_Init : Boolean := False) return M_Array_1_Type;
+     (E : Entity_Id; Relaxed_Init : Boolean := False) return M_Array_1_Type;
    --  Return the m_array_1_type containing the theory of the type of E
    --  @param E the entity of type array
    --  @param Relaxed_Init get the theory for wrappers for initialization
@@ -606,8 +575,8 @@ package Why.Gen.Arrays is
    --  @param E the entity of type array
 
    function Get_Array_Conversion_Name
-     (From, To     : Entity_Id;
-      Relaxed_Init : Boolean := False) return W_Identifier_Id;
+     (From, To : Entity_Id; Relaxed_Init : Boolean := False)
+      return W_Identifier_Id;
    --  Return the name of the conversion from type From to type To.
    --  @param From the entity of source type of the conversion
    --  @param To the entity of target type of the conversion.
@@ -615,21 +584,20 @@ package Why.Gen.Arrays is
    --  ??? Relaxed_Init is always False, is it expected?
 
    function Get_Array_Of_Wrapper_Name (E : Entity_Id) return W_Identifier_Id
-     with Pre => Has_Init_Wrapper (E);
+   with Pre => Has_Init_Wrapper (E);
    --  @param E array type entity
    --  @return the name of the conversion from the wrapper type for E.
 
    function Get_Array_To_Wrapper_Name (E : Entity_Id) return W_Identifier_Id
-     with Pre => Has_Init_Wrapper (E);
+   with Pre => Has_Init_Wrapper (E);
    --  @param E array type entity
    --  @return the name of the conversion to the wrapper type for E.
 
    generic
-      with function Build_Predicate_For_Comp
-        (C_Expr : W_Term_Id;
-         C_Ty   : Entity_Id;
-         Idx    : W_Expr_Array)
-         return W_Pred_Id;
+      with
+        function Build_Predicate_For_Comp
+          (C_Expr : W_Term_Id; C_Ty : Entity_Id; Idx : W_Expr_Array)
+           return W_Pred_Id;
    function Build_Predicate_For_Array
      (Expr : W_Term_Id; Ty : Entity_Id) return W_Pred_Id;
    --  Construct a predicate:
@@ -638,10 +606,10 @@ package Why.Gen.Arrays is
    --    Build_Predicate_For_Comp (get <Expr> i1 .. in, [i1 .. in])
 
    generic
-      with function Build_Predicate_For_Comp
-        (C_Expr1, C_Expr2 : W_Term_Id;
-         C_Ty             : Entity_Id;
-         Idx              : W_Expr_Array) return W_Pred_Id;
+      with
+        function Build_Predicate_For_Comp
+          (C_Expr1, C_Expr2 : W_Term_Id; C_Ty : Entity_Id; Idx : W_Expr_Array)
+           return W_Pred_Id;
    function Build_Binary_Predicate_For_Array
      (Expr1, Expr2 : W_Term_Id; Ty : Entity_Id) return W_Pred_Id;
    --  Construct a predicate:
@@ -656,8 +624,8 @@ package Why.Gen.Arrays is
    --  with dynamic bounds are clones of their base type.
    --  This is used so that we can know if we need to create new references
 
-   function Array_Type_Cloned_Subtype (E : Entity_Id) return Entity_Id with
-     Pre => Array_Type_Is_Clone (E);
+   function Array_Type_Cloned_Subtype (E : Entity_Id) return Entity_Id
+   with Pre => Array_Type_Is_Clone (E);
    --  Return the existing type declaration that has been cloned for E
 
 end Why.Gen.Arrays;

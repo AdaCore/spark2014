@@ -43,9 +43,7 @@ with Why.Types;           use Why.Types;
 
 package body Why.Gen.Decl is
 
-   procedure Emit
-     (Theory : W_Theory_Declaration_Id;
-      Decl   : W_Declaration_Id);
+   procedure Emit (Theory : W_Theory_Declaration_Id; Decl : W_Declaration_Id);
    --  Append Decl to the list of declarations from Theory
    --  @param Theory the theory where the declaration will be emitted
    --  @param Decl declaration to emit
@@ -55,7 +53,7 @@ package body Why.Gen.Decl is
       Param_Ty_Name : W_Name_Id;
       Field_Id      : W_Identifier_Id;
       Labels        : Symbol_Sets.Set)
-     with Pre => Field_Id /= Why_Empty;
+   with Pre => Field_Id /= Why_Empty;
    --  Emit declaration of a projection for a Why3 record type. The projection
    --  projects values of the record type to given field of this type.
    --  The declaration consists of a declaration of a function that returns a
@@ -73,22 +71,18 @@ package body Why.Gen.Decl is
    -- Emit --
    ----------
 
-   procedure Emit
-     (Theory : W_Theory_Declaration_Id;
-      Decl   : W_Declaration_Id) is
+   procedure Emit (Theory : W_Theory_Declaration_Id; Decl : W_Declaration_Id)
+   is
    begin
       Theory_Declaration_Append_To_Declarations
-        (Id => Theory,
-         New_Item => +Decl);
+        (Id => Theory, New_Item => +Decl);
    end Emit;
 
    ----------
    -- Emit --
    ----------
 
-   procedure Emit
-     (Th   : Theory_UC;
-      Decl : W_Declaration_Id) is
+   procedure Emit (Th : Theory_UC; Decl : W_Declaration_Id) is
    begin
       Emit (Th.Th, Decl);
    end Emit;
@@ -100,16 +94,18 @@ package body Why.Gen.Decl is
    procedure Emit_Projection_Metas (Th : Theory_UC; Projection_Fun : String) is
    begin
       --  mark function as projection function
-      Emit (Th,
-            New_Meta_Declaration (Name      => NID (Model_Proj_Meta),
-                                  Parameter => NID ("function " &
-                                      Projection_Fun)));
+      Emit
+        (Th,
+         New_Meta_Declaration
+           (Name      => NID (Model_Proj_Meta),
+            Parameter => NID ("function " & Projection_Fun)));
 
       --  disable inlining of projection functions
-      Emit (Th,
-            New_Meta_Declaration (Name      => NID ("inline:no"),
-                                  Parameter => NID ("function " &
-                                      Projection_Fun)));
+      Emit
+        (Th,
+         New_Meta_Declaration
+           (Name      => NID ("inline:no"),
+            Parameter => NID ("function " & Projection_Fun)));
    end Emit_Projection_Metas;
 
    -----------------------------
@@ -120,13 +116,11 @@ package body Why.Gen.Decl is
      (Th           : Theory_UC;
       Name         : W_Name_Id;
       Binders      : Why.Gen.Binders.Binder_Array;
-      SPARK_Record : Boolean := False)
-   is
+      SPARK_Record : Boolean := False) is
    begin
       --  Emit declaration of the record
-      Emit (Th,
-            Decl => New_Record_Definition (Name     => Name,
-                                           Binders  => Binders));
+      Emit
+        (Th, Decl => New_Record_Definition (Name => Name, Binders => Binders));
 
       --  For each record field, emit projection from the record to the field
       for Binder in Binders'Range loop
@@ -135,16 +129,18 @@ package body Why.Gen.Decl is
             Param_Ty_Name => Name,
             Field_Id      => Binders (Binder).B_Name,
             Labels        =>
-              (if SPARK_Record then Binders (Binder).Labels
+              (if SPARK_Record
+               then Binders (Binder).Labels
                else Symbol_Sets.Empty_Set));
       end loop;
    end Emit_Record_Declaration;
 
-   package Projection_Names is new Ada.Containers.Indefinite_Ordered_Maps
-     (Key_Type     => String,
-      Element_Type => Positive,
-      "<"          => Standard."<",
-      "="          => Standard."=");
+   package Projection_Names is new
+     Ada.Containers.Indefinite_Ordered_Maps
+       (Key_Type     => String,
+        Element_Type => Positive,
+        "<"          => Standard."<",
+        "="          => Standard."=");
 
    Projection_Names_Decls : Projection_Names.Map;
    --  Map from the name of projection to the number of declarations of
@@ -181,7 +177,8 @@ package body Why.Gen.Decl is
         Projection_Names_Decls.Find (Proj_Name);
 
       Proj_Name_Decls_Num : constant Positive :=
-        (if Proj_Name_Cursor = No_Element then 1
+        (if Proj_Name_Cursor = No_Element
+         then 1
          else Element (Proj_Name_Cursor));
 
       Proj_Fun_Name : constant String :=
@@ -200,8 +197,7 @@ package body Why.Gen.Decl is
       --  The access to the field to that the record is projected
       Field_Access : constant W_Expr_Id :=
         Why.Atree.Builders.New_Record_Access
-          (Name  => +Param_Ident,
-           Field => Field_Id);
+          (Name => +Param_Ident, Field => Field_Id);
 
    begin
       --  Update number of declarations of projection with name Proj_Name
@@ -215,11 +211,14 @@ package body Why.Gen.Decl is
         (Th,
          Why.Atree.Builders.New_Function_Decl
            (Domain      => EW_Term,
-            Name        => Why.Gen.Names.New_Identifier (
-              Name => Proj_Fun_Name),
-            Binders     => (1 => New_Binder (Domain => EW_Prog,
-                                             Name => Param_Ident,
-                                             Arg_Type => Param_Ty)),
+            Name        =>
+              Why.Gen.Names.New_Identifier (Name => Proj_Fun_Name),
+            Binders     =>
+              (1 =>
+                 New_Binder
+                   (Domain   => EW_Prog,
+                    Name     => Param_Ident,
+                    Arg_Type => Param_Ty)),
             Return_Type => Get_Type (+Field_Id),
             Labels      => Labels,
             Location    => No_Location,
@@ -232,48 +231,41 @@ package body Why.Gen.Decl is
    -- Emit_Ref_Type_Definition --
    ------------------------------
 
-   procedure Emit_Ref_Type_Definition
-     (Th   : Theory_UC;
-      Name : W_Name_Id)
-   is
-      Field_Typ : constant W_Type_Id := New_Type
-        (Type_Kind  => EW_Abstract,
-         Name       => Name);
+   procedure Emit_Ref_Type_Definition (Th : Theory_UC; Name : W_Name_Id) is
+      Field_Typ : constant W_Type_Id :=
+        New_Type (Type_Kind => EW_Abstract, Name => Name);
    begin
       Emit_Record_Declaration
-        (Th => Th,
+        (Th      => Th,
          Name    => Ref_Append (Name),
-         Binders => (1 => (B_Name  => Content_Append (Name, Field_Typ),
-                           Mutable => True,
-                           others  => <>)));
+         Binders =>
+           (1 =>
+              (B_Name  => Content_Append (Name, Field_Typ),
+               Mutable => True,
+               others  => <>)));
    end Emit_Ref_Type_Definition;
 
    ---------------------------
    -- New_Havoc_Declaration --
    ---------------------------
 
-   function New_Havoc_Declaration (Name : W_Name_Id) return W_Declaration_Id
-   is
-      Typ       : constant W_Type_Id := New_Type
-        (Type_Kind  => EW_Abstract,
-         Name       => Ref_Append (Name));
-      Havoc_Fun : constant W_Identifier_Id :=
-        Havoc_Append (Name);
+   function New_Havoc_Declaration (Name : W_Name_Id) return W_Declaration_Id is
+      Typ       : constant W_Type_Id :=
+        New_Type (Type_Kind => EW_Abstract, Name => Ref_Append (Name));
+      Havoc_Fun : constant W_Identifier_Id := Havoc_Append (Name);
       X         : constant W_Identifier_Id :=
-        New_Identifier (Domain => EW_Prog,
-                        Name   => "x",
-                        Typ    => Typ);
+        New_Identifier (Domain => EW_Prog, Name => "x", Typ => Typ);
    begin
-      return Why.Atree.Builders.New_Function_Decl
-                 (Domain      => EW_Prog,
-                  Name        => Havoc_Fun,
-                  Binders     => (1 => New_Binder (Domain   => EW_Prog,
-                                                   Name     => X,
-                                                   Arg_Type => Typ)),
-                  Effects     => New_Effects (Writes   => (1 => X)),
-                  Return_Type => EW_Unit_Type,
-                  Labels      => Symbol_Sets.Empty_Set,
-                  Location    => No_Location);
+      return
+        Why.Atree.Builders.New_Function_Decl
+          (Domain      => EW_Prog,
+           Name        => Havoc_Fun,
+           Binders     =>
+             (1 => New_Binder (Domain => EW_Prog, Name => X, Arg_Type => Typ)),
+           Effects     => New_Effects (Writes => (1 => X)),
+           Return_Type => EW_Unit_Type,
+           Labels      => Symbol_Sets.Empty_Set,
+           Location    => No_Location);
    end New_Havoc_Declaration;
 
    -------------------
@@ -289,15 +281,15 @@ package body Why.Gen.Decl is
    end New_Type_Decl;
 
    function New_Type_Decl
-     (Name  : W_Name_Id;
-      Alias : W_Type_Id) return W_Declaration_Id is
+     (Name : W_Name_Id; Alias : W_Type_Id) return W_Declaration_Id is
    begin
-      return New_Type_Decl
-        (Name       => Name,
-         Labels     => Symbol_Sets.Empty_Set,
-         Definition => New_Transparent_Type_Definition
-           (Domain          => EW_Prog,
-            Type_Definition => Alias));
+      return
+        New_Type_Decl
+          (Name       => Name,
+           Labels     => Symbol_Sets.Empty_Set,
+           Definition =>
+             New_Transparent_Type_Definition
+               (Domain => EW_Prog, Type_Definition => Alias));
    end New_Type_Decl;
 
 end Why.Gen.Decl;

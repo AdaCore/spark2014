@@ -23,32 +23,32 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings;           use Ada.Strings;
-with Ada.Strings.Fixed;     use Ada.Strings.Fixed;
+with Ada.Strings;          use Ada.Strings;
+with Ada.Strings.Fixed;    use Ada.Strings.Fixed;
 with GNAT.Source_Info;
 with GNATCOLL.Symbols;
-with Gnat2Why.Expr;         use Gnat2Why.Expr;
-with Gnat2Why.Util;         use Gnat2Why.Util;
-with Namet;                 use Namet;
-with Sinput;                use Sinput;
-with SPARK_Util.Hardcoded;  use SPARK_Util.Hardcoded;
-with Types;                 use Types;
-with Uintp;                 use Uintp;
-with Why.Atree.Accessors;   use Why.Atree.Accessors;
-with Why.Atree.Builders;    use Why.Atree.Builders;
-with Why.Atree.Modules;     use Why.Atree.Modules;
-with Why.Conversions;       use Why.Conversions;
-with Why.Gen.Binders;       use Why.Gen.Binders;
-with Why.Gen.Decl;          use Why.Gen.Decl;
-with Why.Gen.Expr;          use Why.Gen.Expr;
-with Why.Gen.Hardcoded;     use Why.Gen.Hardcoded;
-with Why.Gen.Names;         use Why.Gen.Names;
-with Why.Gen.Pointers;      use Why.Gen.Pointers;
-with Why.Gen.Terms;         use Why.Gen.Terms;
-with Why.Ids;               use Why.Ids;
-with Why.Inter;             use Why.Inter;
-with Why.Sinfo;             use Why.Sinfo;
-with Why.Types;             use Why.Types;
+with Gnat2Why.Expr;        use Gnat2Why.Expr;
+with Gnat2Why.Util;        use Gnat2Why.Util;
+with Namet;                use Namet;
+with Sinput;               use Sinput;
+with SPARK_Util.Hardcoded; use SPARK_Util.Hardcoded;
+with Types;                use Types;
+with Uintp;                use Uintp;
+with Why.Atree.Accessors;  use Why.Atree.Accessors;
+with Why.Atree.Builders;   use Why.Atree.Builders;
+with Why.Atree.Modules;    use Why.Atree.Modules;
+with Why.Conversions;      use Why.Conversions;
+with Why.Gen.Binders;      use Why.Gen.Binders;
+with Why.Gen.Decl;         use Why.Gen.Decl;
+with Why.Gen.Expr;         use Why.Gen.Expr;
+with Why.Gen.Hardcoded;    use Why.Gen.Hardcoded;
+with Why.Gen.Names;        use Why.Gen.Names;
+with Why.Gen.Pointers;     use Why.Gen.Pointers;
+with Why.Gen.Terms;        use Why.Gen.Terms;
+with Why.Ids;              use Why.Ids;
+with Why.Inter;            use Why.Inter;
+with Why.Sinfo;            use Why.Sinfo;
+with Why.Types;            use Why.Types;
 
 package body Gnat2Why.Decls is
 
@@ -65,44 +65,48 @@ package body Gnat2Why.Decls is
       --  function for the logic term needs the current theory to insert an
       --  include declaration.
 
-      Th := Open_Theory
-        (WF_Context, E_Module (E),
-         Comment =>
-           "Module for defining the constant "
-         & """" & Get_Name_String (Chars (E)) & """"
-         & (if Sloc (E) > 0 then
-              " defined at " & Build_Location_String (Sloc (E))
-           else "")
-         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      Th :=
+        Open_Theory
+          (WF_Context,
+           E_Module (E),
+           Comment =>
+             "Module for defining the constant "
+             & """"
+             & Get_Name_String (Chars (E))
+             & """"
+             & (if Sloc (E) > 0
+                then " defined at " & Build_Location_String (Sloc (E))
+                else "")
+             & ", created in "
+             & GNAT.Source_Info.Enclosing_Entity);
 
       --  We generate a "logic", whose axiom will be given in a completion
 
-      Emit (Th,
-            Why.Atree.Builders.New_Function_Decl
-              (Domain      => EW_Pterm,
-               Name        => To_Local (B.Main.B_Name),
-               Binders     => (1 .. 0 => <>),
-               Labels      => Get_Counterexample_Labels (E),
-               Location    => Safe_First_Sloc (E),
-               Return_Type => Get_Typ (B.Main.B_Name)));
+      Emit
+        (Th,
+         Why.Atree.Builders.New_Function_Decl
+           (Domain      => EW_Pterm,
+            Name        => To_Local (B.Main.B_Name),
+            Binders     => (1 .. 0 => <>),
+            Labels      => Get_Counterexample_Labels (E),
+            Location    => Safe_First_Sloc (E),
+            Return_Type => Get_Typ (B.Main.B_Name)));
 
       --  Generate a constant for the validity flag
 
       if B.Valid.Present then
-         Emit (Th,
-               Why.Atree.Builders.New_Function_Decl
-                 (Domain      => EW_Pterm,
-                  Name        => To_Local (B.Valid.Id),
-                  Binders     => (1 .. 0 => <>),
-                  Labels      => Get_Counterexample_Labels
-                    (E, "'" & Valid_Label),
-                  Location    => Safe_First_Sloc (E),
-                  Return_Type => Get_Typ (B.Valid.Id)));
+         Emit
+           (Th,
+            Why.Atree.Builders.New_Function_Decl
+              (Domain      => EW_Pterm,
+               Name        => To_Local (B.Valid.Id),
+               Binders     => (1 .. 0 => <>),
+               Labels      => Get_Counterexample_Labels (E, "'" & Valid_Label),
+               Location    => Safe_First_Sloc (E),
+               Return_Type => Get_Typ (B.Valid.Id)));
       end if;
 
-      Close_Theory (Th,
-                    Kind           => Definition_Theory,
-                    Defined_Entity => E);
+      Close_Theory (Th, Kind => Definition_Theory, Defined_Entity => E);
    end Translate_Constant;
 
    ------------------------------
@@ -136,22 +140,26 @@ package body Gnat2Why.Decls is
       --  function for the logic term needs the current theory to insert an
       --  include declaration.
 
-      Th := Open_Theory
-        (WF_Context,
-         E_Module (E, Axiom),
-         Comment =>
-           "Module for defining the value of constant "
-         & """" & Get_Name_String (Chars (E)) & """"
-         & (if Sloc (E) > 0 then
-              " defined at " & Build_Location_String (Sloc (E))
-           else "")
-         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      Th :=
+        Open_Theory
+          (WF_Context,
+           E_Module (E, Axiom),
+           Comment =>
+             "Module for defining the value of constant "
+             & """"
+             & Get_Name_String (Chars (E))
+             & """"
+             & (if Sloc (E) > 0
+                then " defined at " & Build_Location_String (Sloc (E))
+                else "")
+             & ", created in "
+             & GNAT.Source_Info.Enclosing_Entity);
 
       --  If the constant is hardcoded, get its definition
 
       if Is_Hardcoded_Entity (E) then
          declare
-            B  : constant Item_Type :=
+            B   : constant Item_Type :=
               Ada_Ent_To_Why.Element (Symbol_Table, E);
             pragma Assert (B.Kind = Regular and then not B.Main.Mutable);
             Def : constant W_Term_Id := Hardcoded_Constant_Value (E);
@@ -200,7 +208,8 @@ package body Gnat2Why.Decls is
             --  Context and validity flag to handle potantially invalid values
 
             Valid_Flag : W_Expr_Id :=
-              (if B.Valid.Present then +New_Valid_Value_For_Type (Etype (E))
+              (if B.Valid.Present
+               then +New_Valid_Value_For_Type (Etype (E))
                else Why_Empty);
             Context    : Ref_Context;
 
@@ -209,13 +218,14 @@ package body Gnat2Why.Decls is
 
             if Propagates_Validity_Flag (Decl) then
                pragma Assert (B.Valid.Present);
-               Def := +Transform_Potentially_Invalid_Expr
-                 (Expr          => Expr,
-                  Expected_Type => Get_Typ (B.Main.B_Name),
-                  Domain        => EW_Term,
-                  Params        => Params,
-                  Context       => Context,
-                  Valid_Flag    => Valid_Flag);
+               Def :=
+                 +Transform_Potentially_Invalid_Expr
+                    (Expr          => Expr,
+                     Expected_Type => Get_Typ (B.Main.B_Name),
+                     Domain        => EW_Term,
+                     Params        => Params,
+                     Context       => Context,
+                     Valid_Flag    => Valid_Flag);
             else
                Def := Transform_Term (Expr, Get_Typ (B.Main.B_Name), Params);
             end if;
@@ -224,18 +234,18 @@ package body Gnat2Why.Decls is
             --  context inside Def and Valid_Flag.
 
             if B.Valid.Present then
-               Def := +Bindings_For_Ref_Context
-                 (Expr    => +Def,
-                  Context => Context,
-                  Domain  => EW_Term);
+               Def :=
+                 +Bindings_For_Ref_Context
+                    (Expr => +Def, Context => Context, Domain => EW_Term);
 
                if Propagates_Validity_Flag (Decl)
                  and then Is_Potentially_Invalid_Expr (Expr)
                then
-                  Valid_Flag := Bindings_For_Ref_Context
-                    (Expr    => Valid_Flag,
-                     Context => Context,
-                     Domain  => EW_Term);
+                  Valid_Flag :=
+                    Bindings_For_Ref_Context
+                      (Expr    => Valid_Flag,
+                       Context => Context,
+                       Domain  => EW_Term);
                end if;
             end if;
 
@@ -274,10 +284,10 @@ package body Gnat2Why.Decls is
       --  view. Attach the newly created theory as a completion of the
       --  existing one.
 
-      Close_Theory (Th,
-                    Kind           => Axiom_Theory,
-                    Defined_Entity =>
-                      (if Is_Full_View (E) then Partial_View (E) else E));
+      Close_Theory
+        (Th,
+         Kind           => Axiom_Theory,
+         Defined_Entity => (if Is_Full_View (E) then Partial_View (E) else E));
    end Translate_Constant_Value;
 
    --------------------------
@@ -294,7 +304,7 @@ package body Gnat2Why.Decls is
            Module  => Exception_Module,
            Comment =>
              "Module declaring the Ada exceptions, created in "
-           & GNAT.Source_Info.Enclosing_Entity);
+             & GNAT.Source_Info.Enclosing_Entity);
 
       --  Declare a distinct constant for all Ada exceptions
 
@@ -307,13 +317,12 @@ package body Gnat2Why.Decls is
                Labels      => Symbol_Sets.Empty_Set,
                Location    => No_Location,
                Return_Type => EW_Int_Type,
-               Def         => New_Integer_Constant
-                 (Value => UI_From_Int (V))));
+               Def         =>
+                 New_Integer_Constant (Value => UI_From_Int (V))));
          V := V + 1;
       end loop;
 
-      Close_Theory (Th,
-                    Kind => Standalone_Theory);
+      Close_Theory (Th, Kind => Standalone_Theory);
    end Translate_Exceptions;
 
    -------------------------------
@@ -322,17 +331,19 @@ package body Gnat2Why.Decls is
 
    procedure Translate_External_Object (E : Entity_Name) is
       Object_Name : constant String := To_String (E);
-      Th : Theory_UC;
+      Th          : Theory_UC;
    begin
       Th :=
         Open_Theory
           (WF_Context,
-           Module =>
-             New_Module (Name => Object_Name,
-                         File => GNATCOLL.Symbols.No_Symbol),
+           Module  =>
+             New_Module
+               (Name => Object_Name, File => GNATCOLL.Symbols.No_Symbol),
            Comment =>
-             "Module declaring the external object """ & Object_Name &
-             ","" created in " & GNAT.Source_Info.Enclosing_Entity);
+             "Module declaring the external object """
+             & Object_Name
+             & ","" created in "
+             & GNAT.Source_Info.Enclosing_Entity);
 
       --  Do not set a location as counterexample values for external objects
       --  are not meaningful.
@@ -345,8 +356,7 @@ package body Gnat2Why.Decls is
             Location => No_Location,
             Ref_Type => EW_Private_Type));
 
-      Close_Theory (Th,
-                    Kind => Standalone_Theory);
+      Close_Theory (Th, Kind => Standalone_Theory);
    end Translate_External_Object;
 
    ---------------------------
@@ -356,24 +366,28 @@ package body Gnat2Why.Decls is
    procedure Translate_Loop_Entity (E : E_Loop_Id) is
       Th : Theory_UC;
    begin
-      Th := Open_Theory
-        (WF_Context, E_Module (E),
-         Comment =>
-           "Module for defining "
-         & "the loop exit exception for the loop "
-         & """" & Get_Name_String (Chars (E)) & """"
-         & (if Sloc (E) > 0 then
-              " defined at " & Build_Location_String (Sloc (E))
-           else "")
-         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      Th :=
+        Open_Theory
+          (WF_Context,
+           E_Module (E),
+           Comment =>
+             "Module for defining "
+             & "the loop exit exception for the loop "
+             & """"
+             & Get_Name_String (Chars (E))
+             & """"
+             & (if Sloc (E) > 0
+                then " defined at " & Build_Location_String (Sloc (E))
+                else "")
+             & ", created in "
+             & GNAT.Source_Info.Enclosing_Entity);
 
-      Emit (Th,
-            New_Exception_Declaration
-              (Name => Loop_Exception_Name (E, Local => True),
-               Arg  => Why_Empty));
+      Emit
+        (Th,
+         New_Exception_Declaration
+           (Name => Loop_Exception_Name (E, Local => True), Arg => Why_Empty));
 
-      Close_Theory (Th,
-                    Kind => Standalone_Theory);
+      Close_Theory (Th, Kind => Standalone_Theory);
    end Translate_Loop_Entity;
 
    ------------------------
@@ -382,18 +396,22 @@ package body Gnat2Why.Decls is
 
    procedure Translate_Variable (E : Object_Kind_Id) is
       Var : constant Item_Type := Mk_Item_Of_Entity (E);
-      Th : Theory_UC;
+      Th  : Theory_UC;
    begin
-      Th := Open_Theory
-        (WF_Context,
-         E_Module (E),
-         Comment =>
-           "Module for defining a ref holding the value of variable "
-         & """" & Get_Name_String (Chars (E)) & """"
-         & (if Sloc (E) > 0 then
-              " defined at " & Build_Location_String (Sloc (E))
-           else "")
-         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      Th :=
+        Open_Theory
+          (WF_Context,
+           E_Module (E),
+           Comment =>
+             "Module for defining a ref holding the value of variable "
+             & """"
+             & Get_Name_String (Chars (E))
+             & """"
+             & (if Sloc (E) > 0
+                then " defined at " & Build_Location_String (Sloc (E))
+                else "")
+             & ", created in "
+             & GNAT.Source_Info.Enclosing_Entity);
 
       --  If E is not in SPARK, only declare an object of type __private for
       --  use in effects of program functions in Why3.
@@ -408,8 +426,9 @@ package body Gnat2Why.Decls is
                  (Th,
                   New_Global_Ref_Declaration
                     (Name     => To_Local (Var.Fields.Binder.B_Name),
-                     Labels   => Get_Counterexample_Labels
-                          (E, Append_To_Name => "'" & Field_Label),
+                     Labels   =>
+                       Get_Counterexample_Labels
+                         (E, Append_To_Name => "'" & Field_Label),
                      Location => Safe_First_Sloc (E),
                      Ref_Type => Get_Typ (Var.Fields.Binder.B_Name)));
             end if;
@@ -423,8 +442,9 @@ package body Gnat2Why.Decls is
                     (Th,
                      New_Global_Ref_Declaration
                        (Name     => To_Local (Var.Discrs.Binder.B_Name),
-                        Labels   => Get_Counterexample_Labels
-                          (E, Append_To_Name => "'" & Discr_Label),
+                        Labels   =>
+                          Get_Counterexample_Labels
+                            (E, Append_To_Name => "'" & Discr_Label),
                         Location => Safe_First_Sloc (E),
                         Ref_Type => Get_Typ (Var.Discrs.Binder.B_Name)));
                else
@@ -432,11 +452,11 @@ package body Gnat2Why.Decls is
                     (Th,
                      Why.Atree.Builders.New_Function_Decl
                        (Domain      => EW_Pterm,
-                        Name        =>
-                          To_Local (Var.Discrs.Binder.B_Name),
+                        Name        => To_Local (Var.Discrs.Binder.B_Name),
                         Binders     => (1 .. 0 => <>),
-                        Labels      => Get_Counterexample_Labels
-                          (E, Append_To_Name => "'" & Discr_Label),
+                        Labels      =>
+                          Get_Counterexample_Labels
+                            (E, Append_To_Name => "'" & Discr_Label),
                         Location    => Safe_First_Sloc (E),
                         Return_Type => Get_Typ (Var.Discrs.Binder.B_Name)));
                end if;
@@ -452,8 +472,8 @@ package body Gnat2Why.Decls is
                     (Domain      => EW_Pterm,
                      Name        => To_Local (Var.Constr.Id),
                      Binders     => (1 .. 0 => <>),
-                     Labels      => Get_Counterexample_Labels
-                       (E, "'" & Constrained_Label),
+                     Labels      =>
+                       Get_Counterexample_Labels (E, "'" & Constrained_Label),
                      Location    => Safe_First_Sloc (E),
                      Return_Type => Get_Typ (Var.Constr.Id)));
             end if;
@@ -488,13 +508,15 @@ package body Gnat2Why.Decls is
             for D in 1 .. Var.Dim loop
                declare
                   function Bound_Dimension_To_Str
-                    (Total_Dim, Num_Dim : Integer;
-                     Bound_Name : String) return String
-                  is
-                    (if Total_Dim = 1 then Bound_Name
-                     else Bound_Name &
-                       " (" & Trim (Integer'Image (Num_Dim), Both) &
-                       ")");
+                    (Total_Dim, Num_Dim : Integer; Bound_Name : String)
+                     return String
+                  is (if Total_Dim = 1
+                      then Bound_Name
+                      else
+                        Bound_Name
+                        & " ("
+                        & Trim (Integer'Image (Num_Dim), Both)
+                        & ")");
 
                   Ty_First : constant W_Type_Id :=
                     Get_Typ (Var.Bounds (D).First);
@@ -510,8 +532,10 @@ package body Gnat2Why.Decls is
                        (Domain      => EW_Pterm,
                         Name        => To_Local (Var.Bounds (D).First),
                         Binders     => (1 .. 0 => <>),
-                        Labels      => Get_Counterexample_Labels
-                          (E, Bound_Dimension_To_Str
+                        Labels      =>
+                          Get_Counterexample_Labels
+                            (E,
+                             Bound_Dimension_To_Str
                                (Var.Dim, D, "'" & First_Label)),
                         Location    => Safe_First_Sloc (E),
                         Return_Type => Ty_First));
@@ -522,8 +546,10 @@ package body Gnat2Why.Decls is
                        (Domain      => EW_Pterm,
                         Name        => To_Local (Var.Bounds (D).Last),
                         Binders     => (1 .. 0 => <>),
-                        Labels      => Get_Counterexample_Labels
-                          (E, Bound_Dimension_To_Str
+                        Labels      =>
+                          Get_Counterexample_Labels
+                            (E,
+                             Bound_Dimension_To_Str
                                (Var.Dim, D, "'" & Last_Label)),
                         Location    => Safe_First_Sloc (E),
                         Return_Type => Ty_Last));
@@ -550,8 +576,8 @@ package body Gnat2Why.Decls is
                   New_Global_Ref_Declaration
                     (Name     => To_Local (Var.Is_Null),
                      Location => Safe_First_Sloc (E),
-                     Labels   => Get_Counterexample_Labels
-                       (E, "'" & Is_Null_Label),
+                     Labels   =>
+                       Get_Counterexample_Labels (E, "'" & Is_Null_Label),
                      Ref_Type => Get_Typ (Var.Is_Null)));
 
             --  Otherwise generate a constant
@@ -564,8 +590,8 @@ package body Gnat2Why.Decls is
                      Name        => To_Local (Var.Is_Null),
                      Binders     => (1 .. 0 => <>),
                      Location    => Safe_First_Sloc (E),
-                     Labels      => Get_Counterexample_Labels
-                       (E, "'" & Is_Null_Label),
+                     Labels      =>
+                       Get_Counterexample_Labels (E, "'" & Is_Null_Label),
                      Return_Type => Get_Typ (Var.Is_Null)));
             end if;
 
@@ -596,8 +622,8 @@ package body Gnat2Why.Decls is
            (Th,
             New_Global_Ref_Declaration
               (Name     => To_Local (Var.Init.Id),
-               Labels   => Get_Counterexample_Labels
-                 (E, "'" & Initialized_Label),
+               Labels   =>
+                 Get_Counterexample_Labels (E, "'" & Initialized_Label),
                Location => Safe_First_Sloc (E),
                Ref_Type => EW_Bool_Type));
       end if;
@@ -617,13 +643,13 @@ package body Gnat2Why.Decls is
       --  Generate a variable for the validity flag
 
       if Var.Valid.Present then
-         Emit (Th,
-               New_Global_Ref_Declaration
-                 (Name     => To_Local (Var.Valid.Id),
-                  Labels   => Get_Counterexample_Labels
-                    (E, "'" & Valid_Label),
-                  Location => Safe_First_Sloc (E),
-                  Ref_Type => Get_Typ (Var.Valid.Id)));
+         Emit
+           (Th,
+            New_Global_Ref_Declaration
+              (Name     => To_Local (Var.Valid.Id),
+               Labels   => Get_Counterexample_Labels (E, "'" & Valid_Label),
+               Location => Safe_First_Sloc (E),
+               Ref_Type => Get_Typ (Var.Valid.Id)));
       end if;
 
       --  Declare the variable for the value at end of E
@@ -632,9 +658,7 @@ package body Gnat2Why.Decls is
          Declare_At_End_Ref (Th, E);
       end if;
 
-      Close_Theory (Th,
-                    Kind           => Definition_Theory,
-                    Defined_Entity => E);
+      Close_Theory (Th, Kind => Definition_Theory, Defined_Entity => E);
    end Translate_Variable;
 
 end Gnat2Why.Decls;

@@ -29,19 +29,22 @@ with Uintp;  use Uintp;
 
 package Gnat2Why.Data_Decomposition is
 
-   subtype Size_Attribute_Id is Attribute_Id with
-     Static_Predicate => Size_Attribute_Id in Attribute_Size
-                                            | Attribute_Value_Size
-                                            | Attribute_Object_Size
-                                            | Attribute_Component_Size;
+   subtype Size_Attribute_Id is Attribute_Id
+   with
+     Static_Predicate =>
+       Size_Attribute_Id
+       in Attribute_Size
+        | Attribute_Value_Size
+        | Attribute_Object_Size
+        | Attribute_Component_Size;
 
-   subtype Repr_Attribute_Id is Attribute_Id with
-     Static_Predicate => Repr_Attribute_Id in Attribute_Alignment
-                                            | Size_Attribute_Id;
+   subtype Repr_Attribute_Id is Attribute_Id
+   with
+     Static_Predicate =>
+       Repr_Attribute_Id in Attribute_Alignment | Size_Attribute_Id;
 
    function Get_Attribute_Value
-     (E       : Entity_Id;
-      Attr_Id : Repr_Attribute_Id) return Uint;
+     (E : Entity_Id; Attr_Id : Repr_Attribute_Id) return Uint;
    --  Return the value of E'Attr_Id or No_Uint if not known
 
    procedure Read_Data_Decomposition_JSON_File;

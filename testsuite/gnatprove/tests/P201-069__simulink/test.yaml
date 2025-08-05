@@ -2,3 +2,4 @@ large: True
 prove_all:
   prover: ["cvc5", "colibri"]
   counterexample: False
+  enable_sarif_check: True

@@ -43,15 +43,15 @@ with VC_Kinds;
 
 package body Back_End is
 
-   package GNAT2Why_BE is new Adabkend
-     (Product_Name       => "GNAT2WHY",
-      Copyright_Years    => "2010-2025",
-      Driver             => Gnat2Why.Driver.GNAT_To_Why,
-      Is_Back_End_Switch => Gnat2Why.Driver.Is_Back_End_Switch);
+   package GNAT2Why_BE is new
+     Adabkend
+       (Product_Name       => "GNAT2WHY",
+        Copyright_Years    => "2010-2025",
+        Driver             => Gnat2Why.Driver.GNAT_To_Why,
+        Is_Back_End_Switch => Gnat2Why.Driver.Is_Back_End_Switch);
 
    function To_Front_End_Warning_Mode
-     (M : Gnat2Why_Opts.SPARK_Warning_Mode_Type)
-      return Opt.Warning_Mode_Type;
+     (M : Gnat2Why_Opts.SPARK_Warning_Mode_Type) return Opt.Warning_Mode_Type;
    --  Transform warning mode type of gnat2why_args to the warning mode type of
    --  the front-end.
 
@@ -80,7 +80,7 @@ package body Back_End is
          goto Unlock;
       end if;
 
-   <<Unlock>>
+      <<Unlock>>
       --  Make sure to lock any unlocked tables again before returning
 
       Namet.Lock;
@@ -134,8 +134,7 @@ package body Back_End is
       --  Read extra options for gnat2why
 
       declare
-         Args_File   : String renames
-           Opt.SPARK_Switches_File_Name.all;
+         Args_File   : String renames Opt.SPARK_Switches_File_Name.all;
          Source_File : constant String :=
            Ada.Directories.Simple_Name (Osint.Get_First_Main_File_Name);
       begin
@@ -152,8 +151,7 @@ package body Back_End is
       --  For the colored output mode, we set the corresponding flag in
       --  Erroutc.
 
-      if Gnat2Why_Args.Output_Mode = Gnat2Why_Opts.GPO_Pretty_Color
-      then
+      if Gnat2Why_Args.Output_Mode = Gnat2Why_Opts.GPO_Pretty_Color then
          Erroutc.Use_SGR_Control := True;
       end if;
 
@@ -189,8 +187,8 @@ package body Back_End is
       Debug_Flag_M := Gnat2Why_Args.No_Inlining;
       --  Make this depend on the value for the unrolling warnings
       Debug_Flag_Underscore_F :=
-        VC_Kinds.Warning_Status
-          (VC_Kinds.Warn_Info_Unrolling_Inlining) /= VC_Kinds.WS_Disabled;
+        VC_Kinds.Warning_Status (VC_Kinds.Warn_Info_Unrolling_Inlining)
+        /= VC_Kinds.WS_Disabled;
 
    end Scan_Compiler_Arguments;
 
@@ -199,15 +197,14 @@ package body Back_End is
    -------------------------------
 
    function To_Front_End_Warning_Mode
-     (M : Gnat2Why_Opts.SPARK_Warning_Mode_Type)
-      return Opt.Warning_Mode_Type
+     (M : Gnat2Why_Opts.SPARK_Warning_Mode_Type) return Opt.Warning_Mode_Type
    is
    begin
       return
         (case M is
-            when Gnat2Why_Opts.SW_Suppress       => Opt.Suppress,
-            when Gnat2Why_Opts.SW_Normal         => Opt.Normal,
-            when Gnat2Why_Opts.SW_Treat_As_Error => Opt.Treat_As_Error);
+           when Gnat2Why_Opts.SW_Suppress => Opt.Suppress,
+           when Gnat2Why_Opts.SW_Normal => Opt.Normal,
+           when Gnat2Why_Opts.SW_Treat_As_Error => Opt.Treat_As_Error);
    end To_Front_End_Warning_Mode;
 
 end Back_End;

@@ -73,10 +73,9 @@ package Gnat2Why.Subprograms is
    Current_Subp : Entity_Id := Empty;
 
    function Compute_Outputs_With_Allocated_Parts
-     (E : Callable_Kind_Id)
-      return Entity_Sets.Set
-   with Pre =>
-     (if Ekind (E) = E_Function then Is_Function_With_Side_Effects (E));
+     (E : Callable_Kind_Id) return Entity_Sets.Set
+   with
+     Pre => (if Ekind (E) = E_Function then Is_Function_With_Side_Effects (E));
    --  Compute the set of outputs with allocated parts for a procedure or
    --  entry E, which consist in output parameters and globals of mode Output.
 
@@ -85,9 +84,7 @@ package Gnat2Why.Subprograms is
    --  related to the absence of run-time errors in E.
 
    procedure Generate_VCs_For_Subprogram
-     (E          : Callable_Kind_Id;
-      Th         : Theory_UC;
-      Prog_Name  : W_Identifier_Id);
+     (E : Callable_Kind_Id; Th : Theory_UC; Prog_Name : W_Identifier_Id);
    --  Same as above except that it does not create its own theory but uses an
    --  existing one.
 
@@ -106,8 +103,8 @@ package Gnat2Why.Subprograms is
 
    procedure Generate_VCs_For_Protected_Type (E : E_Protected_Type_Id);
 
-   procedure Translate_Subprogram_Spec (E : Callable_Kind_Id) with
-     Pre => Ekind (E) in E_Entry | E_Function | E_Procedure;
+   procedure Translate_Subprogram_Spec (E : Callable_Kind_Id)
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure;
    --  Generate a Why logic declaration that corresponds to an Ada subprogram
 
    function Get_Logic_Args
@@ -121,8 +118,8 @@ package Gnat2Why.Subprograms is
    --  the subprogram in addition to its actual inputs. It is used to handle
    --  calls with higher order specialization.
 
-   procedure Generate_Subprogram_Completion (E : Callable_Kind_Id) with
-     Pre => Ekind (E) in E_Entry | E_Function | E_Procedure;
+   procedure Generate_Subprogram_Completion (E : Callable_Kind_Id)
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure;
    --  Generate a Why program declaration and potentially a defining axiom for
    --  an Ada subprogram.
 
@@ -228,8 +225,10 @@ private
       Spec_Guard            : W_Pred_Id := True_Pred;
       Specialization_Module : Symbol := No_Symbol;
       More_Reads            : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set)
-   with Pre => Ekind (E) = E_Subprogram_Type
-     or else (Is_True_Boolean (+Spec_Guard) and Spec_Binders'Length = 0);
+   with
+     Pre =>
+       Ekind (E) = E_Subprogram_Type
+       or else (Is_True_Boolean (+Spec_Guard) and Spec_Binders'Length = 0);
    --  @param Th theory in which the axioms should be generated
    --  @param Dispatch_Th if E is a dispatching operation, specific theory for
    --    its dispatch post axiom.
@@ -253,15 +252,16 @@ private
    function Compute_Dynamic_Property_For_Inputs
      (E              : Unit_Kind_Id;
       Params         : Transformation_Params;
-      Pred_Fun_Param : Entity_Id := Empty)
-      return W_Prog_Id
+      Pred_Fun_Param : Entity_Id := Empty) return W_Prog_Id
    with
-       Pre => Ekind (E) in E_Procedure |
-                           E_Function  |
-                           E_Package   |
-                           E_Task_Type |
-                           E_Entry     |
-                           E_Subprogram_Type;
+     Pre =>
+       Ekind (E)
+       in E_Procedure
+        | E_Function
+        | E_Package
+        | E_Task_Type
+        | E_Entry
+        | E_Subprogram_Type;
    --  Given an Ada node, collects the set of external dynamic objects
    --  that are referenced in this node.
    --  @param E Entity of subprogram or task or entry or package.
@@ -285,9 +285,7 @@ private
    --          by E.
 
    function Compute_Call_Effects
-     (Params : Transformation_Params;
-      E      : Callable_Kind_Id)
-      return W_Prog_Id;
+     (Params : Transformation_Params; E : Callable_Kind_Id) return W_Prog_Id;
    --  Generate a Why3 program simulating the effects of a call of the
    --  subprogram.
 
@@ -295,18 +293,16 @@ private
    --  Return True if Subp_1 and Sup2 access the same set of global variables
 
    function Compute_CC_And_EC_Postcondition
-     (Params : Transformation_Params;
-      E      : Callable_Kind_Id)
-      return W_Pred_Id;
+     (Params : Transformation_Params; E : Callable_Kind_Id) return W_Pred_Id;
    --  Returns the postcondition corresponding to the Contract_Cases and
    --  Exit_Cases pragmas for  subprogram E (if any), to be used in the
    --  postcondition of the program function.
 
    procedure Collect_Old_For_Subprogram
-     (E                 :        Callable_Kind_Id;
+     (E                 : Callable_Kind_Id;
       Old_Parts         : in out Node_Sets.Set;
-      Exclude_Classwide :        Boolean := True;
-      Exclude_CC        :        Boolean := False);
+      Exclude_Classwide : Boolean := True;
+      Exclude_CC        : Boolean := False);
    --  Collects the set of old attributes occuring in the postcondition of E.
    --  If Exclude_CC is False, also collects old attributes and guards from
    --  the contract case if any.

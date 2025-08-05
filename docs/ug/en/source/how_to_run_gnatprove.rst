@@ -237,10 +237,18 @@ memory limit may differ depending on the computing power, current load or
 platform of the machine. A default value of 100 for ``--steps`` is used
 if none of ``--steps`` or ``--timeout`` is used, either directly or
 indirectly through ``--level``.
+
 The option ``-j`` activates parallel compilation and
 parallel proofs. With ``-jnnn``, at most nnn cores can be used in parallel.
 With the special value ``-j0``, at most N cores can be used in parallel, when
 N is the number of cores on the machine.
+
+If more than one prover is specified via the ``--prover`` option, and without
+parallel proofs enabled via the ``-j`` switch, the provers are tried in order
+on each VC, until one of them succeeds or all fail. If parallel proofs are
+enabled, provers might be run in parallel, and if one succeeds, the other
+provers are interrupted. Interactive provers cannot be combined with other
+provers, so must appear on their own.
 
 .. index::
     single: -U; speeding up

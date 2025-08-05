@@ -74,10 +74,8 @@ with Why.Types;                     use Why.Types;
 package body Gnat2Why.Types is
 
    procedure Create_Initialization_Predicate
-     (Th         : Theory_UC;
-      E          : Type_Kind_Id;
-      Predeclare : Boolean := False)
-     with Pre => Has_Init_Wrapper (E);
+     (Th : Theory_UC; E : Type_Kind_Id; Predeclare : Boolean := False)
+   with Pre => Has_Init_Wrapper (E);
    --  Create a function to state that objects of type E are initialized.
    --  If Predeclare is True, only emit a declaration and use a local name for
    --  the type associated to E.
@@ -87,50 +85,47 @@ package body Gnat2Why.Types is
    -------------------------------------
 
    procedure Create_Initialization_Predicate
-     (Th         : Theory_UC;
-      E          : Type_Kind_Id;
-      Predeclare : Boolean := False)
+     (Th : Theory_UC; E : Type_Kind_Id; Predeclare : Boolean := False)
    is
-      Abstr_Ty : constant W_Type_Id :=
-        EW_Abstract (E, Relaxed_Init => True);
-      Main_Ty : constant W_Type_Id :=
+      Abstr_Ty : constant W_Type_Id := EW_Abstract (E, Relaxed_Init => True);
+      Main_Ty  : constant W_Type_Id :=
         (if Predeclare
-         then New_Named_Type
-           (Name         => To_Local (Get_Name (Abstr_Ty)),
-            Relaxed_Init => True)
+         then
+           New_Named_Type
+             (Name => To_Local (Get_Name (Abstr_Ty)), Relaxed_Init => True)
          else Abstr_Ty);
       Main_Arg : constant W_Identifier_Id :=
-        New_Temp_Identifier
-          (Typ       => Main_Ty,
-           Base_Name => "expr");
+        New_Temp_Identifier (Typ => Main_Ty, Base_Name => "expr");
       --  Expression on which we want to assume the property
 
-      Binders  : constant Binder_Array := Binder_Array'
-        (1 => Binder_Type'(B_Name => Main_Arg,
-                           others => <>));
+      Binders : constant Binder_Array :=
+        Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg, others => <>));
 
-      Def      : constant W_Pred_Id :=
-        (if Predeclare then Why_Empty
-         else +Compute_Is_Initialized
-           (E                  => E,
-            Name               => +Main_Arg,
-            Params             => Logic_Params,
-            Domain             => EW_Pred,
-            Exclude_Components => Relaxed,
-            Use_Pred           => False));
+      Def : constant W_Pred_Id :=
+        (if Predeclare
+         then Why_Empty
+         else
+           +Compute_Is_Initialized
+              (E                  => E,
+               Name               => +Main_Arg,
+               Params             => Logic_Params,
+               Domain             => EW_Pred,
+               Exclude_Components => Relaxed,
+               Use_Pred           => False));
 
    begin
       --  ??? Here we should probably consider variable inputs occurring in
       --  potential predicates.
 
-      Emit (Th,
-            New_Function_Decl
-              (Domain   => EW_Pred,
-               Name     => To_Local (E_Symb (E, WNE_Is_Initialized_Pred)),
-               Def      => +Def,
-               Location => No_Location,
-               Labels   => Symbol_Sets.Empty_Set,
-               Binders  => Binders));
+      Emit
+        (Th,
+         New_Function_Decl
+           (Domain   => EW_Pred,
+            Name     => To_Local (E_Symb (E, WNE_Is_Initialized_Pred)),
+            Def      => +Def,
+            Location => No_Location,
+            Labels   => Symbol_Sets.Empty_Set,
+            Binders  => Binders));
    end Create_Initialization_Predicate;
 
    ------------------------------
@@ -142,34 +137,27 @@ package body Gnat2Why.Types is
       --  Local subprograms
 
       procedure Complete_Initialization_Predicate
-        (Th : Theory_UC;
-         E  : Type_Kind_Id)
+        (Th : Theory_UC; E : Type_Kind_Id)
       with Pre => Has_Init_Wrapper (E);
       --  Generate axioms to complete the definitions of Is_Initializes if it
       --  has been predeclared.
 
       procedure Create_Axioms_For_Scalar_Bounds
-        (Th : Theory_UC;
-         E  : Type_Kind_Id);
+        (Th : Theory_UC; E : Type_Kind_Id);
       --  Create axioms defining the values of non-static scalar bounds
 
       procedure Create_Default_Init_Assumption
-        (Th : Theory_UC;
-         E  : Type_Kind_Id);
+        (Th : Theory_UC; E : Type_Kind_Id);
       --  Create a function to express type E's default initial assumption
 
       procedure Create_Dynamic_Invariant
-        (Th     : Theory_UC;
-         E      : Type_Kind_Id;
-         Module : W_Module_Id);
+        (Th : Theory_UC; E : Type_Kind_Id; Module : W_Module_Id);
       --  Create a function to express type E's dynamic invariant. Module is
       --  the module in which dynamic invariants for access to incomplete
       --  types will be created if any.
 
-      procedure Create_Type_Invariant
-        (Th : Theory_UC;
-         E  : Type_Kind_Id)
-        with Pre => Has_Invariants_In_SPARK (E);
+      procedure Create_Type_Invariant (Th : Theory_UC; E : Type_Kind_Id)
+      with Pre => Has_Invariants_In_SPARK (E);
       --  Create a function to express type E's invariant
 
       procedure Generate_Axioms_For_Equality (E : Type_Kind_Id);
@@ -181,8 +169,7 @@ package body Gnat2Why.Types is
       ---------------------------------------
 
       procedure Complete_Initialization_Predicate
-        (Th : Theory_UC;
-         E  : Type_Kind_Id)
+        (Th : Theory_UC; E : Type_Kind_Id)
       is
          Main_Arg : constant W_Identifier_Id :=
            New_Temp_Identifier
@@ -190,17 +177,17 @@ package body Gnat2Why.Types is
               Base_Name => "expr");
          --  Expression on which we want to assume the property
 
-         Binders  : constant Binder_Array := Binder_Array'
-           (1 => Binder_Type'(B_Name => Main_Arg,
-                              others => <>));
+         Binders : constant Binder_Array :=
+           Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg, others => <>));
 
-         Def     : constant W_Pred_Id := +Compute_Is_Initialized
-           (E                  => E,
-            Name               => +Main_Arg,
-            Params             => Logic_Params,
-            Domain             => EW_Pred,
-            Exclude_Components => Relaxed,
-            Use_Pred           => False);
+         Def : constant W_Pred_Id :=
+           +Compute_Is_Initialized
+              (E                  => E,
+               Name               => +Main_Arg,
+               Params             => Logic_Params,
+               Domain             => EW_Pred,
+               Exclude_Components => Relaxed,
+               Use_Pred           => False);
 
       begin
          Emit
@@ -218,13 +205,10 @@ package body Gnat2Why.Types is
       -------------------------------------
 
       procedure Create_Axioms_For_Scalar_Bounds
-        (Th : Theory_UC;
-         E  : Type_Kind_Id)
+        (Th : Theory_UC; E : Type_Kind_Id)
       is
          procedure Create_Axiom_For_Expr
-           (Name : W_Identifier_Id;
-            Bnd  : Node_Id;
-            Typ  : W_Type_Id)
+           (Name : W_Identifier_Id; Bnd : Node_Id; Typ : W_Type_Id)
          with Pre => Nkind (Bnd) in N_Subexpr;
          --  Create a defining axiom for a logic function which can be used
          --  instead of E.
@@ -234,9 +218,7 @@ package body Gnat2Why.Types is
          ---------------------------
 
          procedure Create_Axiom_For_Expr
-           (Name : W_Identifier_Id;
-            Bnd  : Node_Id;
-            Typ  : W_Type_Id)
+           (Name : W_Identifier_Id; Bnd : Node_Id; Typ : W_Type_Id)
          is
             Items : Item_Array := Get_Binders_From_Expression (Bnd);
             Def   : W_Term_Id;
@@ -251,17 +233,19 @@ package body Gnat2Why.Types is
             Ada_Ent_To_Why.Push_Scope (Symbol_Table);
             Push_Binders_To_Symbol_Table (Items);
 
-            Def := +Transform_Expr
-              (Expr          => Bnd,
-               Expected_Type => Typ,
-               Domain        => EW_Term,
-               Params        => Logic_Params);
+            Def :=
+              +Transform_Expr
+                 (Expr          => Bnd,
+                  Expected_Type => Typ,
+                  Domain        => EW_Term,
+                  Params        => Logic_Params);
 
-            Emit (Th,
-                  New_Defining_Axiom
-                    (Name    => Name,
-                     Def     => +Def,
-                     Binders => To_Binder_Array (Items)));
+            Emit
+              (Th,
+               New_Defining_Axiom
+                 (Name    => Name,
+                  Def     => +Def,
+                  Binders => To_Binder_Array (Items)));
 
             Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
          end Create_Axiom_For_Expr;
@@ -270,7 +254,7 @@ package body Gnat2Why.Types is
          Low  : constant Node_Id := Low_Bound (Rng);
          High : constant Node_Id := High_Bound (Rng);
 
-      --  Start of processing for Create_Axioms_For_Scalar_Bounds
+         --  Start of processing for Create_Axioms_For_Scalar_Bounds
 
       begin
          if not Compile_Time_Known_Value (Low) then
@@ -292,8 +276,7 @@ package body Gnat2Why.Types is
       ------------------------------------
 
       procedure Create_Default_Init_Assumption
-        (Th : Theory_UC;
-         E  : Type_Kind_Id)
+        (Th : Theory_UC; E : Type_Kind_Id)
       is
          Variables : Flow_Id_Sets.Set;
 
@@ -303,22 +286,22 @@ package body Gnat2Why.Types is
          Variables_In_Default_Init (E, Variables);
 
          declare
-            Items    : constant Item_Array :=
+            Items : constant Item_Array :=
               Get_Localized_Binders_From_Variables
                 (Variables, Only_Variables => False);
             --  Use local names for variables
 
             Main_Arg : constant W_Identifier_Id :=
-              New_Temp_Identifier (Typ       => Type_Of_Node (E),
-                                   Base_Name => "expr");
+              New_Temp_Identifier
+                (Typ => Type_Of_Node (E), Base_Name => "expr");
             --  Expression on which we want to assume the property
 
             Slst_Arg : constant W_Identifier_Id :=
-              New_Temp_Identifier (Typ       => EW_Bool_Type,
-                                   Base_Name => "skip_top_level");
+              New_Temp_Identifier
+                (Typ => EW_Bool_Type, Base_Name => "skip_top_level");
             --  Only assume initial condition for the components
 
-            Def      : W_Pred_Id;
+            Def : W_Pred_Id;
 
          begin
             --  Push variable names to Symbol_Table
@@ -326,26 +309,27 @@ package body Gnat2Why.Types is
             Ada_Ent_To_Why.Push_Scope (Symbol_Table);
             Push_Binders_To_Symbol_Table (Items);
 
-            Def := Compute_Default_Init
-              (Expr           => +Main_Arg,
-               Ty             => E,
-               Skip_Last_Cond => +Slst_Arg,
-               Params         => Logic_Params,
-               Use_Pred       => False);
+            Def :=
+              Compute_Default_Init
+                (Expr           => +Main_Arg,
+                 Ty             => E,
+                 Skip_Last_Cond => +Slst_Arg,
+                 Params         => Logic_Params,
+                 Use_Pred       => False);
 
-            Emit (Th,
-                  New_Function_Decl
-                    (Domain   => EW_Pred,
-                     Name     => To_Local (E_Symb (E, WNE_Default_Init)),
-                     Def      => +Def,
-                     Labels   => Symbol_Sets.Empty_Set,
-                     Location => No_Location,
-                     Binders  =>
-                       Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg,
-                                                       others => <>),
-                                     2 => Binder_Type'(B_Name => Slst_Arg,
-                                                       others => <>))
-                     & To_Binder_Array (Items)));
+            Emit
+              (Th,
+               New_Function_Decl
+                 (Domain   => EW_Pred,
+                  Name     => To_Local (E_Symb (E, WNE_Default_Init)),
+                  Def      => +Def,
+                  Labels   => Symbol_Sets.Empty_Set,
+                  Location => No_Location,
+                  Binders  =>
+                    Binder_Array'
+                      (1 => Binder_Type'(B_Name => Main_Arg, others => <>),
+                       2 => Binder_Type'(B_Name => Slst_Arg, others => <>))
+                    & To_Binder_Array (Items)));
 
             Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
          end;
@@ -356,9 +340,7 @@ package body Gnat2Why.Types is
       ------------------------------
 
       procedure Create_Dynamic_Invariant
-        (Th     : Theory_UC;
-         E      : Type_Kind_Id;
-         Module : W_Module_Id)
+        (Th : Theory_UC; E : Type_Kind_Id; Module : W_Module_Id)
       is
          procedure Create_Dynamic_Invariant
            (E            : Type_Kind_Id;
@@ -370,17 +352,17 @@ package body Gnat2Why.Types is
          --  definition into a declaration and a separate axiom to handle
          --  circularity.
 
-         package Decl_Lists is new Ada.Containers.Doubly_Linked_Lists
-           (W_Declaration_Id);
+         package Decl_Lists is new
+           Ada.Containers.Doubly_Linked_Lists (W_Declaration_Id);
 
-         Loc_Incompl_Acc   : Ada_To_Why_Ident.Map;
+         Loc_Incompl_Acc : Ada_To_Why_Ident.Map;
          --  Map of all local symbols introduced for predicates of access to
          --  incomplete access types.
 
          Loc_Incompl_Acc_R : Ada_To_Why_Ident.Map;
          --  Same as above but for init wrappers
 
-         Axioms            : Decl_Lists.List;
+         Axioms : Decl_Lists.List;
          --  Axioms for predicates of access to incomplete access types
 
          ------------------------------
@@ -402,39 +384,38 @@ package body Gnat2Why.Types is
             Variables_In_Dynamic_Invariant (E, Variables, Scop => Empty);
 
             declare
-               Items    : constant Item_Array :=
+               Items : constant Item_Array :=
                  Get_Localized_Binders_From_Variables
                    (Variables, Only_Variables => False);
                --  Use local names for variables
 
                Init_Arg : constant W_Identifier_Id :=
-                 New_Temp_Identifier (Typ       => EW_Bool_Type,
-                                      Base_Name => "is_init");
+                 New_Temp_Identifier
+                   (Typ => EW_Bool_Type, Base_Name => "is_init");
                --  Is the object known to be initialized
 
                Ovar_Arg : constant W_Identifier_Id :=
-                 New_Temp_Identifier (Typ       => EW_Bool_Type,
-                                      Base_Name => "skip_constant");
+                 New_Temp_Identifier
+                   (Typ => EW_Bool_Type, Base_Name => "skip_constant");
                --  Do we need to assume the properties on constant parts
 
-               Top_Arg  : constant W_Identifier_Id :=
-                 New_Temp_Identifier (Typ       => EW_Bool_Type,
-                                      Base_Name => "do_toplevel");
+               Top_Arg : constant W_Identifier_Id :=
+                 New_Temp_Identifier
+                   (Typ => EW_Bool_Type, Base_Name => "do_toplevel");
                --  Should we include the toplevel predicate
 
-               Inv_Arg  : constant W_Identifier_Id :=
-                 New_Temp_Identifier (Typ       => EW_Bool_Type,
-                                      Base_Name => "do_typ_inv");
+               Inv_Arg : constant W_Identifier_Id :=
+                 New_Temp_Identifier
+                   (Typ => EW_Bool_Type, Base_Name => "do_typ_inv");
                --  Should we include the non local type invariants
 
-               Main_Ty  : constant W_Type_Id :=
-                 (if Relaxed_Init then EW_Abstract (E, Relaxed_Init => True)
+               Main_Ty : constant W_Type_Id :=
+                 (if Relaxed_Init
+                  then EW_Abstract (E, Relaxed_Init => True)
                   else Type_Of_Node (E));
 
                Main_Arg : constant W_Identifier_Id :=
-                 New_Temp_Identifier
-                   (Typ       => Main_Ty,
-                    Base_Name => "expr");
+                 New_Temp_Identifier (Typ => Main_Ty, Base_Name => "expr");
                --  Expression on which we want to assume the property
 
                Def               : W_Pred_Id;
@@ -505,17 +486,13 @@ package body Gnat2Why.Types is
                end loop;
 
                declare
-                  Binders : constant Binder_Array := Binder_Array'
-                    (1 => Binder_Type'(B_Name => Main_Arg,
-                                       others => <>),
-                     2 => Binder_Type'(B_Name => Init_Arg,
-                                       others => <>),
-                     3 => Binder_Type'(B_Name => Ovar_Arg,
-                                       others => <>),
-                     4 => Binder_Type'(B_Name => Top_Arg,
-                                       others => <>),
-                     5 => Binder_Type'(B_Name => Inv_Arg,
-                                       others => <>))
+                  Binders : constant Binder_Array :=
+                    Binder_Array'
+                      (1 => Binder_Type'(B_Name => Main_Arg, others => <>),
+                       2 => Binder_Type'(B_Name => Init_Arg, others => <>),
+                       3 => Binder_Type'(B_Name => Ovar_Arg, others => <>),
+                       4 => Binder_Type'(B_Name => Top_Arg, others => <>),
+                       5 => Binder_Type'(B_Name => Inv_Arg, others => <>))
                     & To_Binder_Array (Items);
                begin
 
@@ -524,13 +501,14 @@ package body Gnat2Why.Types is
                   --  and a defining axiom to avoid circularity.
 
                   if For_Acc then
-                     Emit (Th,
-                           New_Function_Decl
-                             (Domain   => EW_Pred,
-                              Name     => Name,
-                              Labels   => Symbol_Sets.Empty_Set,
-                              Binders  => Binders,
-                              Location => No_Location));
+                     Emit
+                       (Th,
+                        New_Function_Decl
+                          (Domain   => EW_Pred,
+                           Name     => Name,
+                           Labels   => Symbol_Sets.Empty_Set,
+                           Binders  => Binders,
+                           Location => No_Location));
                      Axioms.Append
                        (New_Defining_Bool_Axiom
                           (Fun_Name => Get (Get_Symb (Get_Name (Name))).all,
@@ -542,14 +520,15 @@ package body Gnat2Why.Types is
                   --  Otherwise, define the symbol at declaration
 
                   else
-                     Emit (Th,
-                           New_Function_Decl
-                             (Domain   => EW_Pred,
-                              Name     => Name,
-                              Def      => +Def,
-                              Location => No_Location,
-                              Labels   => Symbol_Sets.Empty_Set,
-                              Binders  => Binders));
+                     Emit
+                       (Th,
+                        New_Function_Decl
+                          (Domain   => EW_Pred,
+                           Name     => Name,
+                           Def      => +Def,
+                           Location => No_Location,
+                           Labels   => Symbol_Sets.Empty_Set,
+                           Binders  => Binders));
                   end if;
                end;
 
@@ -557,7 +536,7 @@ package body Gnat2Why.Types is
             end;
          end Create_Dynamic_Invariant;
 
-      --  Start of processing for Create_Dynamic_Invariant
+         --  Start of processing for Create_Dynamic_Invariant
 
       begin
          Create_Dynamic_Invariant
@@ -569,8 +548,9 @@ package body Gnat2Why.Types is
          if Has_Init_Wrapper (E) then
             Create_Dynamic_Invariant
               (E            => E,
-               Name         => To_Local
-                 (E_Symb (E, WNE_Dynamic_Invariant, Relaxed_Init => True)),
+               Name         =>
+                 To_Local
+                   (E_Symb (E, WNE_Dynamic_Invariant, Relaxed_Init => True)),
                Relaxed_Init => True,
                For_Acc      => False);
          end if;
@@ -586,10 +566,7 @@ package body Gnat2Why.Types is
       -- Create_Type_Invariant --
       ---------------------------
 
-      procedure Create_Type_Invariant
-        (Th : Theory_UC;
-         E  : Type_Kind_Id)
-      is
+      procedure Create_Type_Invariant (Th : Theory_UC; E : Type_Kind_Id) is
          Variables : Flow_Id_Sets.Set;
 
       begin
@@ -598,7 +575,7 @@ package body Gnat2Why.Types is
          Variables_In_Type_Invariant (E, Variables);
 
          declare
-            Items    : constant Item_Array :=
+            Items : constant Item_Array :=
               Get_Localized_Binders_From_Variables
                 (Variables, Only_Variables => False);
             --  Use local names for variables
@@ -614,11 +591,12 @@ package body Gnat2Why.Types is
             Ada_Ent_To_Why.Push_Scope (Symbol_Table);
             Push_Binders_To_Symbol_Table (Items);
 
-            Def := Compute_Top_Level_Type_Invariant
-                     (Expr     => +Main_Arg,
-                      Ty       => E,
-                      Params   => Logic_Params,
-                      Use_Pred => False);
+            Def :=
+              Compute_Top_Level_Type_Invariant
+                (Expr     => +Main_Arg,
+                 Ty       => E,
+                 Params   => Logic_Params,
+                 Use_Pred => False);
 
             Emit
               (Th,
@@ -629,8 +607,8 @@ package body Gnat2Why.Types is
                   Location => No_Location,
                   Labels   => Symbol_Sets.To_Set (NID (GP_Inline_Marker)),
                   Binders  =>
-                    Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg,
-                                                    others => <>))
+                    Binder_Array'
+                      (1 => Binder_Type'(B_Name => Main_Arg, others => <>))
                     & To_Binder_Array (Items)));
 
             Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
@@ -648,32 +626,32 @@ package body Gnat2Why.Types is
          Declares_Dispatching_Eq : constant Boolean :=
            Is_Tagged_Type (E)
            and then Root_Retysp (E) = E
-           and then
-             (if Present (Eq) then not Is_Hidden_Dispatching_Operation (Eq));
+           and then (if Present (Eq)
+                     then not Is_Hidden_Dispatching_Operation (Eq));
          Var_A                   : constant W_Identifier_Id :=
-           New_Identifier (Ada_Node => E,
-                           Name     => "a",
-                           Typ      => Ty);
+           New_Identifier (Ada_Node => E, Name => "a", Typ => Ty);
          Var_B                   : constant W_Identifier_Id :=
-           New_Identifier (Ada_Node => E,
-                           Name     => "b",
-                           Typ      => Ty);
+           New_Identifier (Ada_Node => E, Name => "b", Typ => Ty);
 
-         User_Th                 : Theory_UC;
-         Dispatch_Th             : Theory_UC;
+         User_Th     : Theory_UC;
+         Dispatch_Th : Theory_UC;
 
       begin
          if Declares_Dispatching_Eq then
             Dispatch_Th :=
               Open_Theory
-                (WF_Context, E_Module (E, Dispatch_Equality_Axiom),
+                (WF_Context,
+                 E_Module (E, Dispatch_Equality_Axiom),
                  Comment =>
                    "Module giving axioms for dispatching equality of record"
-                 & " type """ & Get_Name_String (Chars (E)) & """"
-                 & (if Sloc (E) > 0 then
-                      " defined at " & Build_Location_String (Sloc (E))
-                   else "")
-                 & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+                   & " type """
+                   & Get_Name_String (Chars (E))
+                   & """"
+                   & (if Sloc (E) > 0
+                      then " defined at " & Build_Location_String (Sloc (E))
+                      else "")
+                   & ", created in "
+                   & GNAT.Source_Info.Enclosing_Entity);
          end if;
 
          --  When there is a user-provided equality, generate an axiom to give
@@ -684,14 +662,18 @@ package body Gnat2Why.Types is
          then
             User_Th :=
               Open_Theory
-                (WF_Context, E_Module (E, User_Equality_Axiom),
+                (WF_Context,
+                 E_Module (E, User_Equality_Axiom),
                  Comment =>
                    "Module giving axioms for primitive equality of record"
-                 & " type """ & Get_Name_String (Chars (E)) & """"
-                 & (if Sloc (E) > 0 then
-                      " defined at " & Build_Location_String (Sloc (E))
-                   else "")
-                 & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+                   & " type """
+                   & Get_Name_String (Chars (E))
+                   & """"
+                   & (if Sloc (E) > 0
+                      then " defined at " & Build_Location_String (Sloc (E))
+                      else "")
+                   & ", created in "
+                   & GNAT.Source_Info.Enclosing_Entity);
 
             --  Go to the expected types without checking, checks are
             --  introduced separately.
@@ -713,24 +695,26 @@ package body Gnat2Why.Types is
                Def     : constant W_Expr_Id :=
                  (if Is_Hardcoded_Entity (Eq)
 
-                  --  If the equality is hardcoded, we define user_eq as its
-                  --  hardcoded definition.
+                    --  If the equality is hardcoded, we define user_eq as its
+                    --  hardcoded definition.
 
-                  then Transform_Hardcoded_Function_Call
-                    (Subp     => Eq,
-                     Args     => (Arg_A, Arg_B),
-                     Domain   => EW_Term,
-                     Ada_Node => Eq)
-                  else New_Function_Call
-                    (Ada_Node => Eq,
-                     Domain   => EW_Term,
-                     Name     => To_Why_Id (E      => Eq,
-                                            Domain => EW_Term,
-                                            Typ    => EW_Bool_Type),
-                     Subp     => Eq,
-                     Args     => (1 => Arg_A, 2 => Arg_B),
-                     Check    => False,
-                     Typ      => EW_Bool_Type));
+                    then
+                    Transform_Hardcoded_Function_Call
+                      (Subp     => Eq,
+                       Args     => (Arg_A, Arg_B),
+                       Domain   => EW_Term,
+                       Ada_Node => Eq)
+                  else
+                    New_Function_Call
+                      (Ada_Node => Eq,
+                       Domain   => EW_Term,
+                       Name     =>
+                         To_Why_Id
+                           (E => Eq, Domain => EW_Term, Typ => EW_Bool_Type),
+                       Subp     => Eq,
+                       Args     => (1 => Arg_A, 2 => Arg_B),
+                       Check    => False,
+                       Typ      => EW_Bool_Type));
             begin
                Emit
                  (User_Th,
@@ -742,8 +726,7 @@ package body Gnat2Why.Types is
                      Name     => E_Symb (E, WNE_User_Eq),
                      Def      => +Def));
 
-               Close_Theory (User_Th,
-                             Kind => Definition_Theory);
+               Close_Theory (User_Th, Kind => Definition_Theory);
                Record_Extra_Dependency
                  (Defining_Module => E_Module (E, User_Equality),
                   Axiom_Module    => User_Th.Module);
@@ -760,37 +743,38 @@ package body Gnat2Why.Types is
                   end if;
 
                   declare
-                     Tag_Id : constant W_Identifier_Id := New_Identifier
-                       (Name   => To_String (WNE_Attr_Tag),
-                        Typ    => EW_Int_Type);
+                     Tag_Id : constant W_Identifier_Id :=
+                       New_Identifier
+                         (Name => To_String (WNE_Attr_Tag),
+                          Typ  => EW_Int_Type);
                   begin
                      Emit
                        (Dispatch_Th,
                         New_Defining_Axiom
                           (Ada_Node => E,
                            Binders  =>
-                             (1 => Binder_Type'
-                                (B_Name => Tag_Id, others => <>),
-                              2 => Binder_Type'
-                                (B_Name => Var_A, others => <>),
-                              3 => Binder_Type'
-                                (B_Name => Var_B, others => <>)),
+                             (1 =>
+                                Binder_Type'(B_Name => Tag_Id, others => <>),
+                              2 => Binder_Type'(B_Name => Var_A, others => <>),
+                              3 =>
+                                Binder_Type'(B_Name => Var_B, others => <>)),
                            Name     => E_Symb (E, WNE_Dispatch_Eq),
-                           Def      => +New_Function_Call
-                             (Ada_Node => Eq,
-                              Domain   => EW_Term,
-                              Selector => Dispatch,
-                              Name     => To_Why_Id
-                                (E        => Eq,
+                           Def      =>
+                             +New_Function_Call
+                                (Ada_Node => Eq,
                                  Domain   => EW_Term,
-                                 Typ      => EW_Bool_Type,
-                                 Selector => Dispatch),
-                              Subp     => Eq,
-                              Args     => (1 => +Tag_Id,
-                                           2 => Arg_A,
-                                           3 => Arg_B),
-                              Check    => False,
-                              Typ      => EW_Bool_Type)));
+                                 Selector => Dispatch,
+                                 Name     =>
+                                   To_Why_Id
+                                     (E        => Eq,
+                                      Domain   => EW_Term,
+                                      Typ      => EW_Bool_Type,
+                                      Selector => Dispatch),
+                                 Subp     => Eq,
+                                 Args     =>
+                                   (1 => +Tag_Id, 2 => Arg_A, 3 => Arg_B),
+                                 Check    => False,
+                                 Typ      => EW_Bool_Type)));
                   end;
                end if;
             end;
@@ -834,57 +818,72 @@ package body Gnat2Why.Types is
                     (Dispatch_Th,
                      New_Guarded_Axiom
                        (Binders  =>
-                            (1 => Binder_Type'(B_Name => Var_A, others => <>),
-                             2 => Binder_Type'(B_Name => Var_B, others => <>)),
-                        Triggers => New_Triggers
-                          (Triggers =>
-                               (1 => New_Trigger
+                          (1 => Binder_Type'(B_Name => Var_A, others => <>),
+                           2 => Binder_Type'(B_Name => Var_B, others => <>)),
+                        Triggers =>
+                          New_Triggers
+                            (Triggers =>
+                               (1 =>
+                                  New_Trigger
                                     (Terms =>
-                                       (1 => +W_Term_Id'(New_Call
-                                        (Name => Dispatch_Eq,
-                                         Args => (+D_Tag, +Var_A, +Var_B),
-                                         Typ  => EW_Bool_Type)))))),
-                        Name     =>
-                          NID (Full_Name (D) & "__" & Compat_Axiom),
-                        Pre      => New_And_Pred
-                          (Left  => New_Comparison
-                               (Symbol   => Why_Eq,
-                                Left     => +New_Tag_Access
-                                  (Domain => EW_Term,
-                                   Name   => +Var_A,
-                                   Ty     => E),
-                                Right    => +D_Tag),
-                           Right => New_Comparison
-                             (Symbol   => Why_Eq,
-                              Left     => +New_Tag_Access
-                                (Domain => EW_Term,
-                                 Name   => +Var_B,
-                                 Ty     => E),
-                              Right    => +D_Tag)),
-                        Def      => New_Comparison
-                          (Symbol => Why_Eq,
-                           Left   => New_Call
-                             (Name => Dispatch_Eq,
-                              Args => (+D_Tag, +Var_A, +Var_B),
-                              Typ  => EW_Bool_Type),
-                           Right  => +New_Ada_Equality
-                             (Typ    => D,
-                              Domain => EW_Term,
-                              Left   => +W_Term_Id'(New_Call
-                                (Name => E_Symb (D, WNE_Of_Base),
-                                 Args => (1 => +Var_A),
-                                 Typ  => EW_Abstract (D))),
-                              Right  => +W_Term_Id'(New_Call
-                                (Name => E_Symb (D, WNE_Of_Base),
-                                 Args => (1 => +Var_B),
-                                 Typ  => EW_Abstract (D)))))));
+                                       (1 =>
+                                          +W_Term_Id'
+                                            (New_Call
+                                               (Name => Dispatch_Eq,
+                                                Args =>
+                                                  (+D_Tag, +Var_A, +Var_B),
+                                                Typ  => EW_Bool_Type)))))),
+                        Name     => NID (Full_Name (D) & "__" & Compat_Axiom),
+                        Pre      =>
+                          New_And_Pred
+                            (Left  =>
+                               New_Comparison
+                                 (Symbol => Why_Eq,
+                                  Left   =>
+                                    +New_Tag_Access
+                                       (Domain => EW_Term,
+                                        Name   => +Var_A,
+                                        Ty     => E),
+                                  Right  => +D_Tag),
+                             Right =>
+                               New_Comparison
+                                 (Symbol => Why_Eq,
+                                  Left   =>
+                                    +New_Tag_Access
+                                       (Domain => EW_Term,
+                                        Name   => +Var_B,
+                                        Ty     => E),
+                                  Right  => +D_Tag)),
+                        Def      =>
+                          New_Comparison
+                            (Symbol => Why_Eq,
+                             Left   =>
+                               New_Call
+                                 (Name => Dispatch_Eq,
+                                  Args => (+D_Tag, +Var_A, +Var_B),
+                                  Typ  => EW_Bool_Type),
+                             Right  =>
+                               +New_Ada_Equality
+                                  (Typ    => D,
+                                   Domain => EW_Term,
+                                   Left   =>
+                                     +W_Term_Id'
+                                       (New_Call
+                                          (Name => E_Symb (D, WNE_Of_Base),
+                                           Args => (1 => +Var_A),
+                                           Typ  => EW_Abstract (D))),
+                                   Right  =>
+                                     +W_Term_Id'
+                                       (New_Call
+                                          (Name => E_Symb (D, WNE_Of_Base),
+                                           Args => (1 => +Var_B),
+                                           Typ  => EW_Abstract (D)))))));
                end loop;
             end;
          end if;
 
          if Declares_Dispatching_Eq then
-            Close_Theory (Dispatch_Th,
-                          Kind => Definition_Theory);
+            Close_Theory (Dispatch_Th, Kind => Definition_Theory);
             Record_Extra_Dependency
               (Defining_Module => E_Module (E, Dispatch_Equality),
                Axiom_Module    => Dispatch_Th.Module);
@@ -893,19 +892,23 @@ package body Gnat2Why.Types is
 
       Th : Theory_UC;
 
-   --  Start of processing for Generate_Type_Completion
+      --  Start of processing for Generate_Type_Completion
 
    begin
       Th :=
         Open_Theory
-          (WF_Context, E_Module (E, Axiom),
+          (WF_Context,
+           E_Module (E, Axiom),
            Comment =>
              "Module giving axioms for type "
-           & """" & Get_Name_String (Chars (E)) & """"
-           & (if Sloc (E) > 0 then
-                " defined at " & Build_Location_String (Sloc (E))
-             else "")
-           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+             & """"
+             & Get_Name_String (Chars (E))
+             & """"
+             & (if Sloc (E) > 0
+                then " defined at " & Build_Location_String (Sloc (E))
+                else "")
+             & ", created in "
+             & GNAT.Source_Info.Enclosing_Entity);
 
       if Is_Access_Subprogram_Type (E) then
 
@@ -955,9 +958,7 @@ package body Gnat2Why.Types is
          end if;
       end if;
 
-      Close_Theory (Th,
-                    Kind => Axiom_Theory,
-                    Defined_Entity => E);
+      Close_Theory (Th, Kind => Axiom_Theory, Defined_Entity => E);
 
       --  Generate a predicate for E's default initialization.
       --  We do not generate default initialization for unconstrained types.
@@ -965,48 +966,58 @@ package body Gnat2Why.Types is
       if not Is_Itype (E) and then Can_Be_Default_Initialized (E) then
          Th :=
            Open_Theory
-             (WF_Context, E_Module (E, Default_Initialialization),
+             (WF_Context,
+              E_Module (E, Default_Initialialization),
               Comment =>
                 "Module giving a predicate for the default initial assumption"
-              & " of type """ & Get_Name_String (Chars (E)) & """"
-              & (if Sloc (E) > 0 then
-                   " defined at " & Build_Location_String (Sloc (E))
-                else "")
-              & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+                & " of type """
+                & Get_Name_String (Chars (E))
+                & """"
+                & (if Sloc (E) > 0
+                   then " defined at " & Build_Location_String (Sloc (E))
+                   else "")
+                & ", created in "
+                & GNAT.Source_Info.Enclosing_Entity);
          Create_Default_Init_Assumption (Th, E);
-         Close_Theory (Th,
-                       Kind => Definition_Theory);
+         Close_Theory (Th, Kind => Definition_Theory);
       end if;
 
       if Has_Invariants_In_SPARK (E) then
          Th :=
            Open_Theory
-             (WF_Context, E_Module (E, Invariant),
+             (WF_Context,
+              E_Module (E, Invariant),
               Comment =>
                 "Module giving a predicate for the type invariant of"
-              & " type """ & Get_Name_String (Chars (E)) & """"
-              & (if Sloc (E) > 0 then
-                   " defined at " & Build_Location_String (Sloc (E))
-                else "")
-              & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+                & " type """
+                & Get_Name_String (Chars (E))
+                & """"
+                & (if Sloc (E) > 0
+                   then " defined at " & Build_Location_String (Sloc (E))
+                   else "")
+                & ", created in "
+                & GNAT.Source_Info.Enclosing_Entity);
          Create_Type_Invariant (Th, E);
-         Close_Theory (Th,
-                       Kind => Definition_Theory);
+         Close_Theory (Th, Kind => Definition_Theory);
       end if;
 
       --  For types which need reclamation, generate a move tree theory.
 
       if Contains_Allocated_Parts (E) then
-         Th := Open_Theory
-           (WF_Context,
-            E_Module (E, Move_Tree),
-            Comment =>
-              "Module for move trees for objects of type "
-            & """" & Get_Name_String (Chars (E)) & """"
-            & (if Sloc (E) > 0 then
-                 " defined at " & Build_Location_String (Sloc (E))
-              else "")
-            & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+         Th :=
+           Open_Theory
+             (WF_Context,
+              E_Module (E, Move_Tree),
+              Comment =>
+                "Module for move trees for objects of type "
+                & """"
+                & Get_Name_String (Chars (E))
+                & """"
+                & (if Sloc (E) > 0
+                   then " defined at " & Build_Location_String (Sloc (E))
+                   else "")
+                & ", created in "
+                & GNAT.Source_Info.Enclosing_Entity);
 
          if Is_Record_Type_In_Why (E) then
             Create_Move_Tree_Theory_For_Record (Th, E);
@@ -1045,12 +1056,13 @@ package body Gnat2Why.Types is
                   then EW_Init_Wrapper (Type_Of_Node (E))
                   else Type_Of_Node (E));
                Obj_Binder    : constant Binder_Type :=
-                 (B_Name => New_Identifier (Name => "obj", Typ  => Typ),
+                 (B_Name => New_Identifier (Name => "obj", Typ => Typ),
                   others => <>);
-               Moved_Tree_Id : constant W_Identifier_Id := New_Identifier
-                 (Domain => EW_Term, --  factor out
-                  Symb   => NID (To_String (WNE_Moved_Tree)),
-                  Typ    => New_Named_Type (To_Name (WNE_Move_Tree)));
+               Moved_Tree_Id : constant W_Identifier_Id :=
+                 New_Identifier
+                   (Domain => EW_Term, --  factor out
+                    Symb   => NID (To_String (WNE_Moved_Tree)),
+                    Typ    => New_Named_Type (To_Name (WNE_Move_Tree)));
 
             begin
                Emit
@@ -1062,12 +1074,13 @@ package body Gnat2Why.Types is
                      Location    => No_Location,
                      Labels      => Symbol_Sets.Empty_Set,
                      Return_Type => Get_Typ (Moved_Tree_Id),
-                     Post        => New_Call
-                       (Name =>
+                     Post        =>
+                       New_Call
+                         (Name =>
                             To_Local (E_Symb (E, WNE_Is_Moved_Or_Reclaimed)),
-                        Args =>
-                          (1 => +New_Result_Ident (Get_Typ (Moved_Tree_Id)),
-                           2 => +Obj_Binder.B_Name))));
+                          Args =>
+                            (1 => +New_Result_Ident (Get_Typ (Moved_Tree_Id)),
+                             2 => +Obj_Binder.B_Name))));
             end;
          end if;
 
@@ -1095,8 +1108,8 @@ package body Gnat2Why.Types is
       Priv_View       : constant Opt_Type_Kind_Id :=
         Find_View_For_Default_Checks (E);
       Check_Default   : constant Boolean := Present (Priv_View);
-      Check_Subp      : constant Boolean := Is_Access_Subprogram_Type (E)
-        and then No (Parent_Retysp (E));
+      Check_Subp      : constant Boolean :=
+        Is_Access_Subprogram_Type (E) and then No (Parent_Retysp (E));
       Check_Iter      : constant Boolean := Declares_Iterable_Aspect (E);
       Check_Eq        : constant Boolean :=
         Is_Base_Type (E) and then not Use_Predefined_Equality_For_Type (E);
@@ -1104,12 +1117,16 @@ package body Gnat2Why.Types is
         Needs_Check_For_Aggregate_Annotation (E);
       Check_Ownership : constant Boolean := Needs_Ownership_Check (E);
       Need_Check      : constant Boolean :=
-        Check_Default or else Check_Iter or else Check_Subp or else Check_Eq
-        or else Check_Aggr or else Check_Ownership;
+        Check_Default
+        or else Check_Iter
+        or else Check_Subp
+        or else Check_Eq
+        or else Check_Aggr
+        or else Check_Ownership;
       Name            : constant String := Full_Name (E);
       S_Ty            : constant Entity_Id :=
         (if Present (First_Subtype (E))
-         and then Entity_In_SPARK (First_Subtype (E))
+           and then Entity_In_SPARK (First_Subtype (E))
          then First_Subtype (E)
          else E);
       --  Use the first subtype if any, as it can be more
@@ -1124,18 +1141,20 @@ package body Gnat2Why.Types is
       end if;
 
       Th :=
-        Open_Theory (WF_Main,
-                     New_Module
-                       (Name => Name & "__default_checks",
-                        File => No_Symbol),
-                     Comment =>
-                       "Module for checking DIC of default value and"
-                     & " absence of runtime errors in the private part of "
-                     & """" & Get_Name_String (Chars (E)) & """"
-                     & (if Sloc (E) > 0 then
-                          " defined at " & Build_Location_String (Sloc (E))
-                       else "")
-                     & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+        Open_Theory
+          (WF_Main,
+           New_Module (Name => Name & "__default_checks", File => No_Symbol),
+           Comment =>
+             "Module for checking DIC of default value and"
+             & " absence of runtime errors in the private part of "
+             & """"
+             & Get_Name_String (Chars (E))
+             & """"
+             & (if Sloc (E) > 0
+                then " defined at " & Build_Location_String (Sloc (E))
+                else "")
+             & ", created in "
+             & GNAT.Source_Info.Enclosing_Entity);
 
       Register_VC_Entity (E);
 
@@ -1148,25 +1167,25 @@ package body Gnat2Why.Types is
            Sequence
              (Why_Body,
               New_Ignore
-                (Prog => Compute_Default_Check
-                   (Ada_Node         => Priv_View,
-                    Ty               => Retysp (E),
-                    Params           => Params,
-                    At_Declaration   => True,
-                    Include_Subtypes => True)));
+                (Prog =>
+                   Compute_Default_Check
+                     (Ada_Node         => Priv_View,
+                      Ty               => Retysp (E),
+                      Params           => Params,
+                      At_Declaration   => True,
+                      Include_Subtypes => True)));
 
          --  If the type has a DIC and this DIC should be checked at
          --  declaration, check that there can be no runtime error
          --  in the DIC and that default values of the type and all
          --  its subtypes respect the DIC.
 
-         if Has_DIC (Priv_View)
-           and then Needs_DIC_Check_At_Decl (Priv_View)
+         if Has_DIC (Priv_View) and then Needs_DIC_Check_At_Decl (Priv_View)
          then
-            Why_Body := Sequence
-              (Why_Body,
-               Check_Type_With_DIC (Params => Params,
-                                    Ty     => Priv_View));
+            Why_Body :=
+              Sequence
+                (Why_Body,
+                 Check_Type_With_DIC (Params => Params, Ty => Priv_View));
          end if;
 
       end if;
@@ -1177,11 +1196,10 @@ package body Gnat2Why.Types is
       --  without run-time errors.
 
       if Check_Iter then
-         Why_Body := Sequence
-           (New_Ignore (Ada_Node => E,
-                        Prog     => Why_Body),
-            Check_Type_With_Iterable (Params => Params,
-                                      Ty     => E));
+         Why_Body :=
+           Sequence
+             (New_Ignore (Ada_Node => E, Prog => Why_Body),
+              Check_Type_With_Iterable (Params => Params, Ty => E));
       end if;
 
       --  If E has a primitive equality which will be used for membersip tests
@@ -1196,15 +1214,12 @@ package body Gnat2Why.Types is
 
       if Check_Eq then
          declare
-            Eq : constant Entity_Id :=
-              Get_User_Defined_Eq (Base_Type (E));
+            Eq : constant Entity_Id := Get_User_Defined_Eq (Base_Type (E));
          begin
             --  To limit the number of checks on hardcoded entities, assume
             --  that hardcoded equality functions are correct here.
 
-            if Entity_In_SPARK (Eq)
-              and then not Is_Hardcoded_Entity (Eq)
-            then
+            if Entity_In_SPARK (Eq) and then not Is_Hardcoded_Entity (Eq) then
                Continuation_Stack.Append
                  (Continuation_Type'
                     (E,
@@ -1216,63 +1231,66 @@ package body Gnat2Why.Types is
                     Compute_Subprogram_Parameters (Eq, EW_Term);
                   pragma Assert (Binders'Length = 2);
 
-                  W_Ty    : constant W_Type_Id := Type_Of_Node (S_Ty);
-                  Result  : constant W_Identifier_Id :=
-                    New_Result_Ident (W_Ty);
-                  W_Post  : constant W_Pred_Id :=
+                  W_Ty   : constant W_Type_Id := Type_Of_Node (S_Ty);
+                  Result : constant W_Identifier_Id := New_Result_Ident (W_Ty);
+                  W_Post : constant W_Pred_Id :=
                     Compute_Dynamic_Inv_And_Initialization
                       (Expr        => +Result,
                        Ty          => Retysp (E),
                        Initialized => True_Term,
                        Only_Var    => False_Term,
                        Params      => Params);
-                  X_Id    : constant W_Identifier_Id :=
+                  X_Id   : constant W_Identifier_Id :=
                     New_Temp_Identifier (Typ => W_Ty);
-                  Y_Id    : constant W_Identifier_Id :=
+                  Y_Id   : constant W_Identifier_Id :=
                     New_Temp_Identifier (Typ => W_Ty);
-                  Arg_X   : constant W_Expr_Id :=
+                  Arg_X  : constant W_Expr_Id :=
                     Insert_Checked_Conversion
                       (Ada_Node => First_Formal (Eq),
                        Domain   => EW_Prog,
                        Expr     => +X_Id,
                        To       => Get_Why_Type_From_Item (Binders (1)));
-                  Arg_Y   : constant W_Expr_Id :=
+                  Arg_Y  : constant W_Expr_Id :=
                     Insert_Checked_Conversion
                       (Ada_Node => Next_Formal (First_Formal (Eq)),
                        Domain   => EW_Prog,
                        Expr     => +Y_Id,
                        To       => Get_Why_Type_From_Item (Binders (2)));
-                  Pre_N   : constant Node_Lists.List :=
+                  Pre_N  : constant Node_Lists.List :=
                     Find_Contracts (Eq, Pragma_Precondition);
-                  Def     : constant W_Expr_Id :=
+                  Def    : constant W_Expr_Id :=
                     New_Function_Call
                       (Ada_Node =>
                          (if Pre_N.Is_Empty then Eq else Pre_N.First_Element),
                        Domain   => EW_Prog,
-                       Name     => To_Why_Id (E      => Eq,
-                                              Domain => EW_Prog,
-                                              Typ    => EW_Bool_Type),
+                       Name     =>
+                         To_Why_Id
+                           (E => Eq, Domain => EW_Prog, Typ => EW_Bool_Type),
                        Subp     => Eq,
                        Args     => (1 => Arg_X, 2 => Arg_Y),
                        Check    => Why_Subp_Has_Precondition (Eq),
                        Typ      => EW_Bool_Type);
-                  Check   : W_Prog_Id := New_Ignore (Prog => +Def);
+                  Check  : W_Prog_Id := New_Ignore (Prog => +Def);
                begin
-                  Check := New_Typed_Binding
-                    (Name    => X_Id,
-                     Def     =>
-                       New_Any_Expr (Ada_Node    => E,
-                                     Post        => W_Post,
-                                     Labels      => Symbol_Sets.Empty_Set,
-                                     Return_Type => W_Ty),
-                     Context => New_Typed_Binding
-                       (Name    => Y_Id,
-                        Def     =>
-                          New_Any_Expr (Ada_Node    => E,
-                                        Post        => W_Post,
-                                        Labels      => Symbol_Sets.Empty_Set,
-                                        Return_Type => W_Ty),
-                        Context => Check));
+                  Check :=
+                    New_Typed_Binding
+                      (Name    => X_Id,
+                       Def     =>
+                         New_Any_Expr
+                           (Ada_Node    => E,
+                            Post        => W_Post,
+                            Labels      => Symbol_Sets.Empty_Set,
+                            Return_Type => W_Ty),
+                       Context =>
+                         New_Typed_Binding
+                           (Name    => Y_Id,
+                            Def     =>
+                              New_Any_Expr
+                                (Ada_Node    => E,
+                                 Post        => W_Post,
+                                 Labels      => Symbol_Sets.Empty_Set,
+                                 Return_Type => W_Ty),
+                            Context => Check));
                   Why_Body := Sequence (Why_Body, New_Ignore (Prog => Check));
                end;
                Continuation_Stack.Delete_Last;
@@ -1285,9 +1303,10 @@ package body Gnat2Why.Types is
       --  and the preservation of the associated invariants.
 
       if Check_Aggr then
-         Why_Body := Sequence
-           (Why_Body,
-            New_Ignore (Prog => Generate_VCs_For_Aggregate_Annotation (E)));
+         Why_Body :=
+           Sequence
+             (Why_Body,
+              New_Ignore (Prog => Generate_VCs_For_Aggregate_Annotation (E)));
       end if;
 
       --  Generate checks for the reclamation function of E. If an object of
@@ -1312,41 +1331,46 @@ package body Gnat2Why.Types is
               New_Temp_Identifier (Typ => W_Ty, Base_Name => "reclaimed");
             Tree_Id            : constant W_Identifier_Id :=
               New_Temp_Identifier
-                (Typ       => Get_Move_Tree_Type (S_Ty),
-                 Base_Name => "move_tree");
+                (Typ => Get_Move_Tree_Type (S_Ty), Base_Name => "move_tree");
             Check              : W_Prog_Id;
             Reclamation_Entity : Entity_Id;
             Kind               : Reclamation_Kind;
          begin
             Get_Reclamation_Entity
               (Retysp (E), Reclamation_Entity, Kind, For_Check => True);
-            Check := New_Located_Assert
-              (Ada_Node => Reclamation_Entity,
-               Pred     => New_Conditional
-                 (Condition => Compute_Is_Reclaimed_For_Ownership
-                      (Expr => +Value_Id, Ty => E, For_Check => True),
-                  Then_Part => Compute_Is_Moved_Or_Reclaimed
-                    (Expr => +Value_Id, Tree => +Tree_Id, Ty => S_Ty)),
-               Reason   => VC_Reclamation_Check,
-               Kind     => EW_Assert);
-            Check := New_Typed_Binding
-              (Name    => Value_Id,
-               Def     =>
-                 New_Any_Expr (Ada_Node    => E,
-                               Post        => W_Post,
-                               Labels      => Symbol_Sets.Empty_Set,
-                               Return_Type => W_Ty),
-               Context => Check);
-            Check := New_Typed_Binding
-              (Name    => Tree_Id,
-               Def     =>
-                 New_Any_Expr (Ada_Node    => E,
-                               Labels      => Symbol_Sets.Empty_Set,
-                               Return_Type => Get_Typ (Tree_Id)),
-               Context => Check);
-            Why_Body := Sequence
-              (Why_Body,
-               New_Ignore (Prog => Check));
+            Check :=
+              New_Located_Assert
+                (Ada_Node => Reclamation_Entity,
+                 Pred     =>
+                   New_Conditional
+                     (Condition =>
+                        Compute_Is_Reclaimed_For_Ownership
+                          (Expr => +Value_Id, Ty => E, For_Check => True),
+                      Then_Part =>
+                        Compute_Is_Moved_Or_Reclaimed
+                          (Expr => +Value_Id, Tree => +Tree_Id, Ty => S_Ty)),
+                 Reason   => VC_Reclamation_Check,
+                 Kind     => EW_Assert);
+            Check :=
+              New_Typed_Binding
+                (Name    => Value_Id,
+                 Def     =>
+                   New_Any_Expr
+                     (Ada_Node    => E,
+                      Post        => W_Post,
+                      Labels      => Symbol_Sets.Empty_Set,
+                      Return_Type => W_Ty),
+                 Context => Check);
+            Check :=
+              New_Typed_Binding
+                (Name    => Tree_Id,
+                 Def     =>
+                   New_Any_Expr
+                     (Ada_Node    => E,
+                      Labels      => Symbol_Sets.Empty_Set,
+                      Return_Type => Get_Typ (Tree_Id)),
+                 Context => Check);
+            Why_Body := Sequence (Why_Body, New_Ignore (Prog => Check));
          end;
       end if;
 
@@ -1355,14 +1379,15 @@ package body Gnat2Why.Types is
 
          Assume_Value_Of_Constants (Why_Body, E, Params);
 
-         Emit (Th,
-               Why.Gen.Binders.New_Function_Decl
-                 (Domain   => EW_Prog,
-                  Name     => Def_Name,
-                  Binders  => (1 => Unit_Param),
-                  Location => No_Location,
-                  Labels   => Symbol_Sets.Empty_Set,
-                  Def      => +Why_Body));
+         Emit
+           (Th,
+            Why.Gen.Binders.New_Function_Decl
+              (Domain   => EW_Prog,
+               Name     => Def_Name,
+               Binders  => (1 => Unit_Param),
+               Location => No_Location,
+               Labels   => Symbol_Sets.Empty_Set,
+               Def      => +Why_Body));
       end if;
 
       --  Introduce checks for access-to-subprogram types. This can include
@@ -1372,19 +1397,14 @@ package body Gnat2Why.Types is
       if Check_Subp then
          declare
             Name    : constant W_Identifier_Id :=
-              New_Identifier
-                (Symb   => NID ("subp__def"),
-                 Domain => EW_Term);
-            Profile : constant Entity_Id :=
-              Directly_Designated_Type (E);
+              New_Identifier (Symb => NID ("subp__def"), Domain => EW_Term);
+            Profile : constant Entity_Id := Directly_Designated_Type (E);
          begin
             Generate_VCs_For_Subprogram (Profile, Th, Name);
          end;
       end if;
 
-      Close_Theory (Th,
-                    Kind           => VC_Generation_Theory,
-                    Defined_Entity => E);
+      Close_Theory (Th, Kind => VC_Generation_Theory, Defined_Entity => E);
 
    end Generate_VCs_For_Type;
 
@@ -1394,10 +1414,10 @@ package body Gnat2Why.Types is
 
    function Ident_Of_Ada_Type (E : Type_Kind_Id) return W_Name_Id is
    begin
-      return (if Is_Standard_Boolean_Type (E) then
-                Get_Name (EW_Bool_Type)
-              else
-                To_Why_Type (E));
+      return
+        (if Is_Standard_Boolean_Type (E)
+         then Get_Name (EW_Bool_Type)
+         else To_Why_Type (E));
    end Ident_Of_Ada_Type;
 
    --------------------
@@ -1407,21 +1427,21 @@ package body Gnat2Why.Types is
    procedure Translate_Type (E : Type_Kind_Id) is
 
       procedure Create_Additional_Equality_Theories (E : Entity_Id)
-      with Pre => (Is_Tagged_Type (E) and then E = Root_Retysp (E))
-        or else not Use_Predefined_Equality_For_Type (E);
+      with
+        Pre =>
+          (Is_Tagged_Type (E) and then E = Root_Retysp (E))
+          or else not Use_Predefined_Equality_For_Type (E);
       --  Create a module for the primitive equality __user_eq on values of
       --  type E and another module for the dispatching equality on E if it is
       --  the root of a tagged hierarchy.
 
       procedure Generate_Ref_Type_And_Havoc_Fun
-        (Th           : Theory_UC;
-         E            : Entity_Id;
-         Relaxed_Init : Boolean);
+        (Th : Theory_UC; E : Entity_Id; Relaxed_Init : Boolean);
       --  Generate a record type containing only one mutable field of
       --  type t. This is used to store mutable variables of type t.
       --  Also generate a havoc function for this type.
 
-      procedure Translate_Underlying_Type (Th : Theory_UC; E  : Entity_Id);
+      procedure Translate_Underlying_Type (Th : Theory_UC; E : Entity_Id);
       --  Translate a non-private type entity E
 
       -----------------------------------------
@@ -1435,25 +1455,28 @@ package body Gnat2Why.Types is
          B_Ident : constant W_Identifier_Id :=
            New_Identifier (Name => "b", Typ => W_Type);
          Binders : constant Binder_Array :=
-           (1 => (B_Name => A_Ident,
-                  others => <>),
-            2 => (B_Name => B_Ident,
-                  others => <>));
+           (1 => (B_Name => A_Ident, others => <>),
+            2 => (B_Name => B_Ident, others => <>));
          Th      : Theory_UC;
 
       begin
          --  Declare place-holder for primitive equality function
 
          if not Use_Predefined_Equality_For_Type (E) then
-            Th := Open_Theory
-              (WF_Context, E_Module (E, User_Equality),
-               Comment =>
-                 "Module for primitive equality of record type "
-               & """" & Get_Name_String (Chars (E)) & """"
-               & (if Sloc (E) > 0 then
-                    " defined at " & Build_Location_String (Sloc (E))
-                 else "")
-               & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+            Th :=
+              Open_Theory
+                (WF_Context,
+                 E_Module (E, User_Equality),
+                 Comment =>
+                   "Module for primitive equality of record type "
+                   & """"
+                   & Get_Name_String (Chars (E))
+                   & """"
+                   & (if Sloc (E) > 0
+                      then " defined at " & Build_Location_String (Sloc (E))
+                      else "")
+                   & ", created in "
+                   & GNAT.Source_Info.Enclosing_Entity);
 
             Emit
               (Th,
@@ -1471,15 +1494,20 @@ package body Gnat2Why.Types is
          --  Declare the dispatching equality function in root tagged types
 
          if Is_Tagged_Type (E) and then E = Root_Retysp (E) then
-            Th := Open_Theory
-              (WF_Context, E_Module (E, Dispatch_Equality),
-               Comment =>
-                 "Module for dispatching equality of record type "
-               & """" & Get_Name_String (Chars (E)) & """"
-               & (if Sloc (E) > 0 then
-                    " defined at " & Build_Location_String (Sloc (E))
-                 else "")
-               & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+            Th :=
+              Open_Theory
+                (WF_Context,
+                 E_Module (E, Dispatch_Equality),
+                 Comment =>
+                   "Module for dispatching equality of record type "
+                   & """"
+                   & Get_Name_String (Chars (E))
+                   & """"
+                   & (if Sloc (E) > 0
+                      then " defined at " & Build_Location_String (Sloc (E))
+                      else "")
+                   & ", created in "
+                   & GNAT.Source_Info.Enclosing_Entity);
 
             Emit
               (Th,
@@ -1488,10 +1516,13 @@ package body Gnat2Why.Types is
                   Name        => To_Local (E_Symb (E, WNE_Dispatch_Eq)),
                   Return_Type => EW_Bool_Type,
                   Binders     =>
-                    Binder_Type'(B_Name => New_Identifier
-                                 (Name => To_String (WNE_Attr_Tag),
-                                  Typ  => EW_Int_Type),
-                                 others => <>) & Binders,
+                    Binder_Type'
+                      (B_Name =>
+                         New_Identifier
+                           (Name => To_String (WNE_Attr_Tag),
+                            Typ  => EW_Int_Type),
+                       others => <>)
+                    & Binders,
                   Location    => No_Location,
                   Labels      => Symbol_Sets.Empty_Set));
 
@@ -1504,10 +1535,7 @@ package body Gnat2Why.Types is
       -------------------------------------
 
       procedure Generate_Ref_Type_And_Havoc_Fun
-        (Th           : Theory_UC;
-         E            : Entity_Id;
-         Relaxed_Init : Boolean)
-      is
+        (Th : Theory_UC; E : Entity_Id; Relaxed_Init : Boolean) is
       begin
          --  We do not generate these declarations for array or record types
          --  which are clones of existing types with the same name and
@@ -1519,25 +1547,26 @@ package body Gnat2Why.Types is
          if (not (Has_Record_Type (E)
                   or else Has_Incomplete_Or_Private_Type (E))
              or else not Record_Type_Is_Clone (Retysp (E))
-             or else Short_Name (Retysp (E)) /=
-               Short_Name (Record_Type_Cloned_Subtype (Retysp (E))))
+             or else Short_Name (Retysp (E))
+                     /= Short_Name (Record_Type_Cloned_Subtype (Retysp (E))))
            and then not Is_Class_Wide_Type (Retysp (E))
            and then (not Has_Array_Type (E)
                      or else not Is_Static_Array_Type (Retysp (E)))
            and then (not Has_Array_Type (E)
                      or else not Array_Type_Is_Clone (Retysp (E))
-                     or else Short_Name (Retysp (E)) /=
-                       Short_Name (Array_Type_Cloned_Subtype (Retysp (E))))
+                     or else Short_Name (Retysp (E))
+                             /= Short_Name
+                                  (Array_Type_Cloned_Subtype (Retysp (E))))
          then
             Emit_Ref_Type_Definition
-              (Th, To_Why_Type
-                 (Retysp (E),
-                  Local        => True,
-                  Relaxed_Init => Relaxed_Init));
+              (Th,
+               To_Why_Type
+                 (Retysp (E), Local => True, Relaxed_Init => Relaxed_Init));
             Emit
               (Th,
                New_Havoc_Declaration
-                 (Name => To_Why_Type
+                 (Name =>
+                    To_Why_Type
                       (Retysp (E),
                        Local        => True,
                        Relaxed_Init => Relaxed_Init)));
@@ -1548,8 +1577,7 @@ package body Gnat2Why.Types is
       -- Translate_Underlying_Type --
       -------------------------------
 
-      procedure Translate_Underlying_Type (Th : Theory_UC; E  : Entity_Id)
-      is
+      procedure Translate_Underlying_Type (Th : Theory_UC; E : Entity_Id) is
       begin
          case Ekind (E) is
             when Scalar_Kind =>
@@ -1558,15 +1586,15 @@ package body Gnat2Why.Types is
             when Array_Kind =>
                Declare_Ada_Array (Th, E);
 
-            when E_Record_Type
-               | E_Record_Subtype
-               | Concurrent_Kind
-            =>
+            when E_Record_Type | E_Record_Subtype | Concurrent_Kind =>
                Declare_Ada_Record (Th, E);
 
             when Class_Wide_Kind =>
-               Add_Use_For_Entity (Th, Specific_Tagged (E),
-                                   EW_Export, With_Completion => False);
+               Add_Use_For_Entity
+                 (Th,
+                  Specific_Tagged (E),
+                  EW_Export,
+                  With_Completion => False);
 
             when Incomplete_Or_Private_Kind =>
                pragma Assert (Full_View_Not_In_SPARK (E));
@@ -1580,15 +1608,16 @@ package body Gnat2Why.Types is
                end if;
 
             when others =>
-               Ada.Text_IO.Put_Line ("[Translate_Underlying_Type] ekind ="
-                                     & Entity_Kind'Image (Ekind (E)));
+               Ada.Text_IO.Put_Line
+                 ("[Translate_Underlying_Type] ekind ="
+                  & Entity_Kind'Image (Ekind (E)));
                raise Not_Implemented;
          end case;
       end Translate_Underlying_Type;
 
       Th : Theory_UC;
 
-   --  Start of processing for Translate_Type
+      --  Start of processing for Translate_Type
 
    begin
       if Is_Standard_Boolean_Type (E) or else E = Universal_Fixed then
@@ -1597,10 +1626,11 @@ package body Gnat2Why.Types is
       else
          if Has_Array_Type (E) then
             Create_Rep_Array_Theory_If_Needed (E);
-         elsif Retysp_Kind (E) in Incomplete_Or_Private_Kind
-                                | E_Record_Type
-                                | E_Record_Subtype
-                                | Concurrent_Kind
+         elsif Retysp_Kind (E)
+               in Incomplete_Or_Private_Kind
+                | E_Record_Type
+                | E_Record_Subtype
+                | Concurrent_Kind
          then
             Create_Rep_Record_Theory_If_Needed (Retysp (E));
          elsif Is_Access_Subprogram_Type (Retysp (E)) then
@@ -1615,14 +1645,18 @@ package body Gnat2Why.Types is
 
          Th :=
            Open_Theory
-             (WF_Context, E_Module (E),
+             (WF_Context,
+              E_Module (E),
               Comment =>
                 "Module for axiomatizing type "
-              & """" & Get_Name_String (Chars (E)) & """"
-              & (if Sloc (E) > 0 then
-                   " defined at " & Build_Location_String (Sloc (E))
-                else "")
-              & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+                & """"
+                & Get_Name_String (Chars (E))
+                & """"
+                & (if Sloc (E) > 0
+                   then " defined at " & Build_Location_String (Sloc (E))
+                   else "")
+                & ", created in "
+                & GNAT.Source_Info.Enclosing_Entity);
 
          Translate_Underlying_Type (Th, Retysp (E));
 
@@ -1631,7 +1665,7 @@ package body Gnat2Why.Types is
          --  definition.
 
          if (Has_Record_Type (E) or else Has_Incomplete_Or_Private_Type (E))
-             and then not Record_Type_Is_Clone (Retysp (E))
+           and then not Record_Type_Is_Clone (Retysp (E))
          then
             Emit
               (Th,
@@ -1650,31 +1684,32 @@ package body Gnat2Why.Types is
          --  If E is the full view of a private type, use its partial view as
          --  the filtering entity, as it is the entity used everywhere in AST.
 
-         Close_Theory (Th,
-                       Kind => Definition_Theory,
-                       Defined_Entity =>
-                         (if Is_Full_View (E)
-                          then Partial_View (E)
-                          else E));
+         Close_Theory
+           (Th,
+            Kind           => Definition_Theory,
+            Defined_Entity =>
+              (if Is_Full_View (E) then Partial_View (E) else E));
 
          --  For scalar types that are not modeled using their base types
          --  declare a Module where the functions to_rep/of_rep are defined.
          --  This let us separate the different axioms (inversion/range/coerce)
          --  to try and minimalize quantified axioms in the VCs' context.
 
-         if Is_Scalar_Type (E)
-           and then not Type_Is_Modeled_As_Base (E)
-         then
+         if Is_Scalar_Type (E) and then not Type_Is_Modeled_As_Base (E) then
             Th :=
               Open_Theory
-                (WF_Context, E_Module (E, Type_Representative),
+                (WF_Context,
+                 E_Module (E, Type_Representative),
                  Comment =>
                    "Module defining to_rep/of_rep for type "
-                 & """" & Get_Name_String (Chars (E)) & """"
-                 & (if SPARK_Atree.Sloc (E) > 0 then
-                      " defined at " & Build_Location_String (Sloc (E))
-                   else "")
-                 & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+                   & """"
+                   & Get_Name_String (Chars (E))
+                   & """"
+                   & (if SPARK_Atree.Sloc (E) > 0
+                      then " defined at " & Build_Location_String (Sloc (E))
+                      else "")
+                   & ", created in "
+                   & GNAT.Source_Info.Enclosing_Entity);
 
             Define_Scalar_Rep_Proj (Th, E);
 
@@ -1687,10 +1722,12 @@ package body Gnat2Why.Types is
          if E = Standard_String then
             Th :=
               Open_Theory
-                (WF_Context, String_Image_Module,
+                (WF_Context,
+                 String_Image_Module,
                  Comment =>
                    "Module defining to_string/of_string functions"
-                 & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+                   & ", created in "
+                   & GNAT.Source_Info.Enclosing_Entity);
 
             Declare_Additional_Symbols_For_String (Th);
 
@@ -1704,14 +1741,18 @@ package body Gnat2Why.Types is
       if Has_Init_Wrapper (E) then
          Th :=
            Open_Theory
-             (WF_Context, E_Module (E, Init_Wrapper),
+             (WF_Context,
+              E_Module (E, Init_Wrapper),
               Comment =>
                 "Module defining a wrapper to verify initialization for type "
-              & """" & Get_Name_String (Chars (E)) & """"
-              & (if SPARK_Atree.Sloc (E) > 0 then
-                   " defined at " & Build_Location_String (Sloc (E))
-                else "")
-              & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+                & """"
+                & Get_Name_String (Chars (E))
+                & """"
+                & (if SPARK_Atree.Sloc (E) > 0
+                   then " defined at " & Build_Location_String (Sloc (E))
+                   else "")
+                & ", created in "
+                & GNAT.Source_Info.Enclosing_Entity);
 
          Declare_Init_Wrapper (Th, E);
 
@@ -1774,16 +1815,20 @@ package body Gnat2Why.Types is
         and then not Has_Scalar_Type (E)
         and then E = Base_Retysp (E)
       then
-         Th := Open_Theory
-           (WF_Context,
-            E_Module (E, Validity_Tree),
-            Comment =>
-              "Module for validity trees for objects of type "
-            & """" & Get_Name_String (Chars (E)) & """"
-            & (if Sloc (E) > 0 then
-                 " defined at " & Build_Location_String (Sloc (E))
-              else "")
-            & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+         Th :=
+           Open_Theory
+             (WF_Context,
+              E_Module (E, Validity_Tree),
+              Comment =>
+                "Module for validity trees for objects of type "
+                & """"
+                & Get_Name_String (Chars (E))
+                & """"
+                & (if Sloc (E) > 0
+                   then " defined at " & Build_Location_String (Sloc (E))
+                   else "")
+                & ", created in "
+                & GNAT.Source_Info.Enclosing_Entity);
 
          if Has_Array_Type (E) then
             Create_Validity_Tree_Theory_For_Array (Th, E);

@@ -2,3 +2,4 @@ large: True
 prove_all:
   steps: 5700
   check_counterexamples: False
+  enable_sarif_check: True

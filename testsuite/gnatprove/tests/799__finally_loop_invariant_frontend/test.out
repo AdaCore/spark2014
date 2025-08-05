@@ -1,0 +1,2 @@
+ko.adb:12:10: error: pragma "LOOP_INVARIANT" must appear immediately within the statements of a loop
+gnatprove: error during generation of Global contracts

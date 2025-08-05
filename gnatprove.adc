@@ -1,4 +1,2 @@
-pragma Initialize_Scalars;
-
 --  Attribute Update is soon to be obsoleted and then deconstructed
 pragma Restrictions (No_Use_Of_Attribute => Update);

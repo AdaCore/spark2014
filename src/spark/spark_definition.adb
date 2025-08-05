@@ -2527,10 +2527,11 @@ package body SPARK_Definition is
       -----------------------
 
       procedure Check_Loop_Invariant_Placement
-        (Stmts       : List_Id;
-         In_Handled  : Boolean;
-         Goto_Labels : in out Node_Sets.Set;
-         Inv_Found   : in out Boolean);
+        (Stmts         : List_Id;
+         In_Handled    : Boolean;
+         Under_Finally : Boolean;
+         Goto_Labels   : in out Node_Sets.Set;
+         Inv_Found     : in out Boolean);
       --  Checks that a loop contains no construct in Stmts that could pose
       --  problem when re-ordering said loop for verification. Those constructs
       --  are (1) any non-scalar object declarations occurring before the last
@@ -2548,6 +2549,8 @@ package body SPARK_Definition is
       --  @param Stmts a sequence of statement within a loop
       --  @param In_Handled whether Stmts is nested within a
       --    sequence of statement with exception handlers.
+      --  @param Under_Finally whether Stmts is nested within a sequence of
+      --     statements with a finally statement.
       --  @param Goto_Labels the labels occurring after the Stmts
       --    in the loop and after the last loop-invariant or
       --    variant. In case of success, updated by adding the labels of the
@@ -2558,13 +2561,14 @@ package body SPARK_Definition is
       --    Updated to True if it occurrs in Stmts.
 
       procedure Check_Loop_Invariant_Placement
-        (Stmt        : N_Handled_Sequence_Of_Statements_Id;
-         In_Handled  : Boolean;
-         Goto_Labels : in out Node_Sets.Set;
-         Inv_Found   : in out Boolean);
+        (Stmt          : N_Handled_Sequence_Of_Statements_Id;
+         In_Handled    : Boolean;
+         Under_Finally : Boolean;
+         Goto_Labels   : in out Node_Sets.Set;
+         Inv_Found     : in out Boolean);
       --  Version of Check_Loop_Invariant_Placement for handled sequence of
       --  statements. When the invariant was already found, also scan handlers
-      --  for potential non-scalar object declaration.
+      --  (and finally section) for potential non-scalar object declaration.
 
       procedure Check_Loop_Invariant_Placement (Stmts : List_Id);
       --  Same as above with missing parameters In_Handled, Goto_Labels, and
@@ -2594,14 +2598,20 @@ package body SPARK_Definition is
          Goto_Labels : Node_Sets.Set;
          Inv_Found   : Boolean := False;
       begin
-         Check_Loop_Invariant_Placement (Stmts, False, Goto_Labels, Inv_Found);
+         Check_Loop_Invariant_Placement
+           (Stmts,
+            In_Handled    => False,
+            Under_Finally => False,
+            Goto_Labels   => Goto_Labels,
+            Inv_Found     => Inv_Found);
       end Check_Loop_Invariant_Placement;
 
       procedure Check_Loop_Invariant_Placement
-        (Stmts       : List_Id;
-         In_Handled  : Boolean;
-         Goto_Labels : in out Node_Sets.Set;
-         Inv_Found   : in out Boolean)
+        (Stmts         : List_Id;
+         In_Handled    : Boolean;
+         Under_Finally : Boolean;
+         Goto_Labels   : in out Node_Sets.Set;
+         Inv_Found     : in out Boolean)
       is
          N              : Node_Id :=
            (if Present (Stmts) then Last (Stmts) else Empty);
@@ -2617,13 +2627,18 @@ package body SPARK_Definition is
                Check_Loop_Invariant_Placement
                  (Handled_Statement_Sequence (N),
                   In_Handled,
+                  Under_Finally,
                   Goto_Labels,
                   Inv_Found);
 
                --  Check declarations
 
                Check_Loop_Invariant_Placement
-                 (Declarations (N), In_Handled, Goto_Labels, Inv_Found);
+                 (Declarations (N),
+                  In_Handled,
+                  Under_Finally,
+                  Goto_Labels,
+                  Inv_Found);
 
             elsif not Inv_Found then
 
@@ -2639,6 +2654,8 @@ package body SPARK_Definition is
 
                   if In_Handled then
                      Mark_Unsupported (Lim_Loop_Inv_And_Handler, N);
+                  elsif Under_Finally then
+                     Mark_Unsupported (Lim_Loop_Inv_And_Finally, N);
                   end if;
                elsif Nkind (N) = N_Label then
                   Goto_Labels.Insert (Entity (Identifier (N)));
@@ -2673,6 +2690,7 @@ package body SPARK_Definition is
                      Check_Loop_Invariant_Placement
                        (Then_Statements (N),
                         In_Handled,
+                        Under_Finally,
                         Goto_Labels,
                         Inv_Found);
                      declare
@@ -2682,6 +2700,7 @@ package body SPARK_Definition is
                            Check_Loop_Invariant_Placement
                              (Then_Statements (Cur),
                               In_Handled,
+                              Under_Finally,
                               Goto_Labels,
                               Inv_Found);
                            Next (Cur);
@@ -2690,6 +2709,7 @@ package body SPARK_Definition is
                      Check_Loop_Invariant_Placement
                        (Else_Statements (N),
                         In_Handled,
+                        Under_Finally,
                         Goto_Labels,
                         Inv_Found);
 
@@ -2702,6 +2722,7 @@ package body SPARK_Definition is
                            Check_Loop_Invariant_Placement
                              (Statements (Cur),
                               In_Handled,
+                              Under_Finally,
                               Goto_Labels,
                               Inv_Found);
                            Next_Non_Pragma (Cur);
@@ -2712,11 +2733,13 @@ package body SPARK_Definition is
                      Check_Loop_Invariant_Placement
                        (Return_Object_Declarations (N),
                         In_Handled,
+                        Under_Finally,
                         Goto_Labels,
                         Inv_Found);
                      Check_Loop_Invariant_Placement
                        (Handled_Statement_Sequence (N),
                         In_Handled,
+                        Under_Finally,
                         Goto_Labels,
                         Inv_Found);
 
@@ -2725,7 +2748,11 @@ package body SPARK_Definition is
 
                   when N_Loop_Statement =>
                      Check_Loop_Invariant_Placement
-                       (Statements (N), In_Handled, Goto_Labels, Inv_Found);
+                       (Statements (N),
+                        In_Handled,
+                        Under_Finally,
+                        Goto_Labels,
+                        Inv_Found);
 
                   when N_Goto_Statement =>
 
@@ -2768,12 +2795,24 @@ package body SPARK_Definition is
       end Check_Loop_Invariant_Placement;
 
       procedure Check_Loop_Invariant_Placement
-        (Stmt        : N_Handled_Sequence_Of_Statements_Id;
-         In_Handled  : Boolean;
-         Goto_Labels : in out Node_Sets.Set;
-         Inv_Found   : in out Boolean) is
+        (Stmt          : N_Handled_Sequence_Of_Statements_Id;
+         In_Handled    : Boolean;
+         Under_Finally : Boolean;
+         Goto_Labels   : in out Node_Sets.Set;
+         Inv_Found     : in out Boolean) is
       begin
          if Inv_Found then
+            --  Objects may be declared in the finally section. If we are
+            --  before the invariant, we need to check that they are
+            --  non-scalar.
+
+            Check_Loop_Invariant_Placement
+              (Finally_Statements (Stmt),
+               In_Handled,
+               Under_Finally,
+               Goto_Labels,
+               Inv_Found);
+
             --  Objects may be declared in handlers. If we are before the
             --  invariant, we need to check that they are non-scalar.
 
@@ -2783,7 +2822,11 @@ package body SPARK_Definition is
             begin
                while Present (Handler) loop
                   Check_Loop_Invariant_Placement
-                    (Statements (Handler), In_Handled, Goto_Labels, Inv_Found);
+                    (Statements (Handler),
+                     In_Handled,
+                     Under_Finally,
+                     Goto_Labels,
+                     Inv_Found);
                   Next_Non_Pragma (Handler);
                end loop;
             end;
@@ -2794,6 +2837,7 @@ package body SPARK_Definition is
          Check_Loop_Invariant_Placement
            (Statements (Stmt),
             In_Handled or else Present (Exception_Handlers (Stmt)),
+            Under_Finally or else Present (Finally_Statements (Stmt)),
             Goto_Labels,
             Inv_Found);
       end Check_Loop_Invariant_Placement;
@@ -4961,7 +5005,12 @@ package body SPARK_Definition is
                Mark_Unsupported (Lim_Relaxed_Init_Aliasing, E);
             end if;
 
-            if Is_Potentially_Invalid (E)
+            --  For constant overlays, the overlaying object cannot be used to
+            --  modify the overlaid object, so it is OK for it to have invalid
+            --  values.
+
+            if (Is_Potentially_Invalid (E)
+                and then not Is_Constant_In_SPARK (E))
               or else Is_Potentially_Invalid (Aliased_Object)
             then
                Mark_Violation ("potentially invalid overlaid object", E);
@@ -12258,10 +12307,7 @@ package body SPARK_Definition is
       end loop;
 
       if Present (Finally_Statements (N)) then
-         Mark_Unsupported
-           (Kind => Lim_Finally_Statements,
-            N    => First (Finally_Statements (N)),
-            Name => "finally");
+         Mark_Stmt_Or_Decl_List (Finally_Statements (N));
       end if;
    end Mark_Handled_Statements;
 

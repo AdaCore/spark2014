@@ -247,63 +247,63 @@ package Why.Atree.Modules is
    end record;
 
    type M_Floating_Type is record
-      Module                      : W_Module_Id;
-      Operations_Module           : W_Module_Id;
-      Power_Module                : W_Module_Id;
-      Next_Prev_Module            : W_Module_Id;
-      T                           : W_Type_Id;
-      Bool_Eq                     : W_Identifier_Id;
-      Bool_Ne                     : W_Identifier_Id;
-      Bool_Le                     : W_Identifier_Id;
-      Bool_Lt                     : W_Identifier_Id;
-      Bool_Ge                     : W_Identifier_Id;
-      Bool_Gt                     : W_Identifier_Id;
-      Max                         : W_Identifier_Id;
-      Min                         : W_Identifier_Id;
-      Abs_Float                   : W_Identifier_Id;
-      Ceil                        : W_Identifier_Id;
-      Floor                       : W_Identifier_Id;
-      Is_Finite                   : W_Identifier_Id;
-      Power                       : W_Identifier_Id;
-      Rounding                    : W_Identifier_Id;
-      Of_Int                      : W_Identifier_Id;
-      To_Int                      : W_Identifier_Id;
-      Truncate                    : W_Identifier_Id;
-      Unary_Minus                 : W_Identifier_Id;
-      Add                         : W_Identifier_Id;
-      Subtr                       : W_Identifier_Id;
-      Mult                        : W_Identifier_Id;
-      Div                         : W_Identifier_Id;
-      Remainder                   : W_Identifier_Id;
-      Le                          : W_Identifier_Id;
-      Lt                          : W_Identifier_Id;
-      Ge                          : W_Identifier_Id;
-      Gt                          : W_Identifier_Id;
-      Eq                          : W_Identifier_Id;
-      Neq                         : W_Identifier_Id;
-      Next_Rep                    : W_Identifier_Id;
-      Prev_Rep                    : W_Identifier_Id;
-      Of_BV8                      : W_Identifier_Id;
-      Of_BV16                     : W_Identifier_Id;
-      Of_BV32                     : W_Identifier_Id;
-      Of_BV64                     : W_Identifier_Id;
-      To_BV8                      : W_Identifier_Id;
-      To_BV16                     : W_Identifier_Id;
-      To_BV32                     : W_Identifier_Id;
-      To_BV64                     : W_Identifier_Id;
-      Of_BV8_RTP                  : W_Identifier_Id;
-      Of_BV16_RTP                 : W_Identifier_Id;
-      Of_BV32_RTP                 : W_Identifier_Id;
-      Of_BV64_RTP                 : W_Identifier_Id;
-      Of_BV8_RTN                  : W_Identifier_Id;
-      Of_BV16_RTN                 : W_Identifier_Id;
-      Of_BV32_RTN                 : W_Identifier_Id;
-      Of_BV64_RTN                 : W_Identifier_Id;
-      Range_Check                 : W_Identifier_Id;
-      Plus_Zero                   : W_Identifier_Id;
-      One                         : W_Identifier_Id;
-      To_Real                     : W_Identifier_Id;
-      Copy_Sign                   : W_Identifier_Id;
+      Module            : W_Module_Id;
+      Operations_Module : W_Module_Id;
+      Power_Module      : W_Module_Id;
+      Next_Prev_Module  : W_Module_Id;
+      T                 : W_Type_Id;
+      Bool_Eq           : W_Identifier_Id;
+      Bool_Ne           : W_Identifier_Id;
+      Bool_Le           : W_Identifier_Id;
+      Bool_Lt           : W_Identifier_Id;
+      Bool_Ge           : W_Identifier_Id;
+      Bool_Gt           : W_Identifier_Id;
+      Max               : W_Identifier_Id;
+      Min               : W_Identifier_Id;
+      Abs_Float         : W_Identifier_Id;
+      Ceil              : W_Identifier_Id;
+      Floor             : W_Identifier_Id;
+      Is_Finite         : W_Identifier_Id;
+      Power             : W_Identifier_Id;
+      Rounding          : W_Identifier_Id;
+      Of_Int            : W_Identifier_Id;
+      To_Int            : W_Identifier_Id;
+      Truncate          : W_Identifier_Id;
+      Unary_Minus       : W_Identifier_Id;
+      Add               : W_Identifier_Id;
+      Subtr             : W_Identifier_Id;
+      Mult              : W_Identifier_Id;
+      Div               : W_Identifier_Id;
+      Remainder         : W_Identifier_Id;
+      Le                : W_Identifier_Id;
+      Lt                : W_Identifier_Id;
+      Ge                : W_Identifier_Id;
+      Gt                : W_Identifier_Id;
+      Eq                : W_Identifier_Id;
+      Neq               : W_Identifier_Id;
+      Next_Rep          : W_Identifier_Id;
+      Prev_Rep          : W_Identifier_Id;
+      Of_BV8            : W_Identifier_Id;
+      Of_BV16           : W_Identifier_Id;
+      Of_BV32           : W_Identifier_Id;
+      Of_BV64           : W_Identifier_Id;
+      To_BV8            : W_Identifier_Id;
+      To_BV16           : W_Identifier_Id;
+      To_BV32           : W_Identifier_Id;
+      To_BV64           : W_Identifier_Id;
+      Of_BV8_RTP        : W_Identifier_Id;
+      Of_BV16_RTP       : W_Identifier_Id;
+      Of_BV32_RTP       : W_Identifier_Id;
+      Of_BV64_RTP       : W_Identifier_Id;
+      Of_BV8_RTN        : W_Identifier_Id;
+      Of_BV16_RTN       : W_Identifier_Id;
+      Of_BV32_RTN       : W_Identifier_Id;
+      Of_BV64_RTN       : W_Identifier_Id;
+      Range_Check       : W_Identifier_Id;
+      Plus_Zero         : W_Identifier_Id;
+      One               : W_Identifier_Id;
+      To_Real           : W_Identifier_Id;
+      Copy_Sign         : W_Identifier_Id;
 
       --  Symbols form Ada.Numerics.Generic_Elementary_Functions
 
@@ -492,12 +492,12 @@ package Why.Atree.Modules is
    end record;
 
    type M_Fixed_Point_Type is record
-      Module      : W_Module_Id;
-      T           : W_Type_Id;
-      Mult_Int    : W_Identifier_Id;
-      Div_Int     : W_Identifier_Id;
-      Of_Int      : W_Identifier_Id;
-      To_Int      : W_Identifier_Id;
+      Module   : W_Module_Id;
+      T        : W_Type_Id;
+      Mult_Int : W_Identifier_Id;
+      Div_Int  : W_Identifier_Id;
+      Of_Int   : W_Identifier_Id;
+      To_Int   : W_Identifier_Id;
    end record;
 
    type M_Fixed_Point_Mult_Div_Type is record
@@ -536,35 +536,39 @@ package Why.Atree.Modules is
    --  These maps are populated by "Create_Rep_Array_Theory_If_Needed",
    --  and can be accessed through "Get_array_Theory(_..)" functions.
 
-   package Name_Id_Array_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Symbol,
-      Element_Type    => M_Array_Type,
-      Hash            => GNATCOLL.Symbols.Hash,
-      Equivalent_Keys => "=");
+   package Name_Id_Array_Map is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Symbol,
+        Element_Type    => M_Array_Type,
+        Hash            => GNATCOLL.Symbols.Hash,
+        Equivalent_Keys => "=");
 
    M_Arrays : Name_Id_Array_Map.Map;
 
-   package Name_Id_Array_1_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Symbol,
-      Element_Type    => M_Array_1_Type,
-      Hash            => GNATCOLL.Symbols.Hash,
-      Equivalent_Keys => "=");
+   package Name_Id_Array_1_Map is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Symbol,
+        Element_Type    => M_Array_1_Type,
+        Hash            => GNATCOLL.Symbols.Hash,
+        Equivalent_Keys => "=");
 
    M_Arrays_1 : Name_Id_Array_1_Map.Map;
 
-   package Name_Id_Array_1_Comp_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Symbol,
-      Element_Type    => M_Array_1_Comp_Type,
-      Hash            => GNATCOLL.Symbols.Hash,
-      Equivalent_Keys => "=");
+   package Name_Id_Array_1_Comp_Map is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Symbol,
+        Element_Type    => M_Array_1_Comp_Type,
+        Hash            => GNATCOLL.Symbols.Hash,
+        Equivalent_Keys => "=");
 
    M_Arrays_1_Comp : Name_Id_Array_1_Comp_Map.Map;
 
-   package Name_Id_Array_1_Bool_Op_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Symbol,
-      Element_Type    => M_Array_1_Bool_Op_Type,
-      Hash            => GNATCOLL.Symbols.Hash,
-      Equivalent_Keys => "=");
+   package Name_Id_Array_1_Bool_Op_Map is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Symbol,
+        Element_Type    => M_Array_1_Bool_Op_Type,
+        Hash            => GNATCOLL.Symbols.Hash,
+        Equivalent_Keys => "=");
 
    M_Arrays_1_Bool_Op : Name_Id_Array_1_Bool_Op_Map.Map;
 
@@ -573,19 +577,20 @@ package Why.Atree.Modules is
    --  generated by "Get_Array_Theory_Name", and the elements by
    --  "Create_Array_Conversion_Function_If_Needed".
 
-   package Name_Id_Conversion_Name_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Symbol,
-      Element_Type    => W_Identifier_Id,
-      Hash            => GNATCOLL.Symbols.Hash,
-      Equivalent_Keys => "=");
+   package Name_Id_Conversion_Name_Map is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Symbol,
+        Element_Type    => W_Identifier_Id,
+        Hash            => GNATCOLL.Symbols.Hash,
+        Equivalent_Keys => "=");
 
    package Name_Id_Name_Id_Conversion_Name_Map is new
      Ada.Containers.Hashed_Maps
-     (Key_Type        => Symbol,
-      Element_Type    => Name_Id_Conversion_Name_Map.Map,
-      Hash            => GNATCOLL.Symbols.Hash,
-      Equivalent_Keys => "=",
-      "="             => Name_Id_Conversion_Name_Map."=");
+       (Key_Type        => Symbol,
+        Element_Type    => Name_Id_Conversion_Name_Map.Map,
+        Hash            => GNATCOLL.Symbols.Hash,
+        Equivalent_Keys => "=",
+        "="             => Name_Id_Conversion_Name_Map."=");
 
    M_Arrays_Conversion : Name_Id_Name_Id_Conversion_Name_Map.Map;
 
@@ -623,11 +628,12 @@ package Why.Atree.Modules is
    --  small of a fixed-point type, to the module defining operations with said
    --  small.
 
-   package Name_Id_Fixed_Point_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Symbol,
-      Element_Type    => M_Fixed_Point_Type,
-      Hash            => GNATCOLL.Symbols.Hash,
-      Equivalent_Keys => "=");
+   package Name_Id_Fixed_Point_Map is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Symbol,
+        Element_Type    => M_Fixed_Point_Type,
+        Hash            => GNATCOLL.Symbols.Hash,
+        Equivalent_Keys => "=");
 
    M_Fixed_Points : Name_Id_Fixed_Point_Map.Map;
 
@@ -636,11 +642,12 @@ package Why.Atree.Modules is
    --  types, to the module defining the multiplication and division with said
    --  smalls.
 
-   package Name_Id_Fixed_Point_Mult_Div_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Symbol,
-      Element_Type    => M_Fixed_Point_Mult_Div_Type,
-      Hash            => GNATCOLL.Symbols.Hash,
-      Equivalent_Keys => "=");
+   package Name_Id_Fixed_Point_Mult_Div_Map is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Symbol,
+        Element_Type    => M_Fixed_Point_Mult_Div_Type,
+        Hash            => GNATCOLL.Symbols.Hash,
+        Equivalent_Keys => "=");
 
    M_Fixed_Point_Mult_Div : Name_Id_Fixed_Point_Mult_Div_Map.Map;
 
@@ -656,29 +663,29 @@ package Why.Atree.Modules is
 
    --  Built-in infix symbols
 
-   Why_Eq            : W_Identifier_Id;
-   Why_Neq           : W_Identifier_Id;
-   Int_Infix_Add     : W_Identifier_Id;
-   Int_Infix_Subtr   : W_Identifier_Id;
-   Int_Infix_Mult    : W_Identifier_Id;
-   Int_Infix_Le      : W_Identifier_Id;
-   Int_Infix_Ge      : W_Identifier_Id;
-   Int_Infix_Gt      : W_Identifier_Id;
-   Int_Infix_Lt      : W_Identifier_Id;
+   Why_Eq          : W_Identifier_Id;
+   Why_Neq         : W_Identifier_Id;
+   Int_Infix_Add   : W_Identifier_Id;
+   Int_Infix_Subtr : W_Identifier_Id;
+   Int_Infix_Mult  : W_Identifier_Id;
+   Int_Infix_Le    : W_Identifier_Id;
+   Int_Infix_Ge    : W_Identifier_Id;
+   Int_Infix_Gt    : W_Identifier_Id;
+   Int_Infix_Lt    : W_Identifier_Id;
 
    Fixed_Infix_Add   : W_Identifier_Id;
    Fixed_Infix_Subtr : W_Identifier_Id;
    Fixed_Infix_Mult  : W_Identifier_Id;
 
-   Real_Infix_Add    : W_Identifier_Id;
-   Real_Infix_Subtr  : W_Identifier_Id;
-   Real_Infix_Mult   : W_Identifier_Id;
-   Real_Infix_Div    : W_Identifier_Id;
-   Real_Infix_Le     : W_Identifier_Id;
-   Real_Infix_Ge     : W_Identifier_Id;
-   Real_Infix_Gt     : W_Identifier_Id;
-   Real_Infix_Lt     : W_Identifier_Id;
-   Real_Infix_Eq     : W_Identifier_Id;
+   Real_Infix_Add   : W_Identifier_Id;
+   Real_Infix_Subtr : W_Identifier_Id;
+   Real_Infix_Mult  : W_Identifier_Id;
+   Real_Infix_Div   : W_Identifier_Id;
+   Real_Infix_Le    : W_Identifier_Id;
+   Real_Infix_Ge    : W_Identifier_Id;
+   Real_Infix_Gt    : W_Identifier_Id;
+   Real_Infix_Lt    : W_Identifier_Id;
+   Real_Infix_Eq    : W_Identifier_Id;
 
    String_Image_Module : W_Module_Id;
    To_String_Id        : W_Identifier_Id;
@@ -713,19 +720,21 @@ package Why.Atree.Modules is
    type M_Subprogram_Profile_Type (Is_Function : Boolean := True) is record
       Module : W_Module_Id;
       case Is_Function is
-         when True  =>
+         when True =>
             Call_Id : W_Identifier_Id;
             Pred_Id : W_Identifier_Id;
+
          when False =>
             null;
       end case;
    end record;
 
-   package Name_Id_Profile_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Symbol,
-      Element_Type    => M_Subprogram_Profile_Type,
-      Hash            => GNATCOLL.Symbols.Hash,
-      Equivalent_Keys => "=");
+   package Name_Id_Profile_Map is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Symbol,
+        Element_Type    => M_Subprogram_Profile_Type,
+        Hash            => GNATCOLL.Symbols.Hash,
+        Equivalent_Keys => "=");
 
    M_Subprogram_Profiles : Name_Id_Profile_Map.Map;
 
@@ -739,35 +748,39 @@ package Why.Atree.Modules is
       Variant_Id  : W_Identifier_Id;
    end record;
 
-   package Name_Id_HO_Specializations_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Symbol,
-      Element_Type    => M_HO_Specialization_Type,
-      Hash            => GNATCOLL.Symbols.Hash,
-      Equivalent_Keys => "=");
+   package Name_Id_HO_Specializations_Map is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Symbol,
+        Element_Type    => M_HO_Specialization_Type,
+        Hash            => GNATCOLL.Symbols.Hash,
+        Equivalent_Keys => "=");
 
-   package Node_Id_HO_Specializations_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Node_Id,
-      Element_Type    => Name_Id_HO_Specializations_Map.Map,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=",
-      "="             => Name_Id_HO_Specializations_Map."=");
+   package Node_Id_HO_Specializations_Map is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Node_Id,
+        Element_Type    => Name_Id_HO_Specializations_Map.Map,
+        Hash            => Node_Hash,
+        Equivalent_Keys => "=",
+        "="             => Name_Id_HO_Specializations_Map."=");
 
    M_HO_Specializations : Node_Id_HO_Specializations_Map.Map;
    --  M_HO_Specializations maps subprogram entities to a map containing all
    --  their specializations.
 
-   package Name_Id_Module_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Symbol,
-      Element_Type    => W_Module_Id,
-      Hash            => GNATCOLL.Symbols.Hash,
-      Equivalent_Keys => "=");
+   package Name_Id_Module_Map is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Symbol,
+        Element_Type    => W_Module_Id,
+        Hash            => GNATCOLL.Symbols.Hash,
+        Equivalent_Keys => "=");
 
-   package Node_Id_Modules_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Node_Id,
-      Element_Type    => Name_Id_Module_Map.Map,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=",
-      "="             => Name_Id_Module_Map."=");
+   package Node_Id_Modules_Map is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Node_Id,
+        Element_Type    => Name_Id_Module_Map.Map,
+        Hash            => Node_Hash,
+        Equivalent_Keys => "=",
+        "="             => Name_Id_Module_Map."=");
 
    M_Lemma_HO_Specializations : Node_Id_Modules_Map.Map;
    --  M_Lemma_HO_Specializations maps lemma procedure entities to a map
@@ -777,9 +790,8 @@ package Why.Atree.Modules is
    --  Call this procedure before using any of the entities in this package
 
    function E_Symb
-     (E            : Entity_Id;
-      S            : Why_Name_Enum;
-      Relaxed_Init : Boolean := False) return W_Identifier_Id;
+     (E : Entity_Id; S : Why_Name_Enum; Relaxed_Init : Boolean := False)
+      return W_Identifier_Id;
    --  Return the symbol which corresponds to [S] in the Why3 module which
    --  corresponds to E
    --  @param E the Ada type entity
@@ -797,21 +809,21 @@ package Why.Atree.Modules is
       Program_Function_Decl,     --  Declaration of the program function
       Dispatch,                  --  Dispatch function
       Dispatch_Axiom,            --  Compatibility axioms and dispatch program
-                                 --  function.
+      --  function.
       Dispatch_Post_Axiom,       --  Post'Class axiom for dispatching functions
       Refined_Post_Axiom,        --  Refined post axiom
       Lemma_Axiom,               --  Post axiom of a lemma procedure annotated
-                                 --  with Automatic_Instantiation.
+      --  with Automatic_Instantiation.
       Validity_Wrapper,          --  Defining a wrapper for functions returning
-                                 --  potentially invalid results.
+      --  potentially invalid results.
       Type_Completion,           --  Type completion
       Type_Representative,       --  Representative module for a type
       Record_Rep_Completion,     --  Completion of representative module for a
-                                 --  record type.
+      --  record type.
       Init_Wrapper,              --  Wrappers for relaxed initialization
       Init_Wrapper_Completion,   --  Completion for init wrappers
       Init_Wrapper_Pointer_Rep,  --  Representative module for init wrappers of
-                                 --  an access type.
+      --  an access type.
       Default_Initialialization, --  Default assumption for a type
       Invariant,                 --  Type invariants
       User_Equality,             --  Redefined primitive equality on records
@@ -823,9 +835,7 @@ package Why.Atree.Modules is
       Validity_Tree);            --  Declarations for the validity tree
 
    function E_Module
-     (E : Entity_Id;
-      K : Module_Kind := Regular)
-      return W_Module_Id;
+     (E : Entity_Id; K : Module_Kind := Regular) return W_Module_Id;
    --  Return the module of kind K which should be used for E. Return Empty
    --  when E is a node which is not an entity, and no module is known for this
    --  entity. Use memoization.
@@ -835,8 +845,7 @@ package Why.Atree.Modules is
    --  function or function type.
 
    function Get_Logic_Function_Guard
-     (E : Function_Kind_Id)
-      return W_Identifier_Id;
+     (E : Function_Kind_Id) return W_Identifier_Id;
    --  Return the guard predicate __pred_call associated with the profile of a
    --  function or function type.
 
@@ -849,14 +858,12 @@ package Why.Atree.Modules is
    function Get_Move_Tree_Type (E : Entity_Id) return W_Type_Id;
    --  Compute the type of the move tree for E
 
-   function Get_Validity_Tree_Type (E : Entity_Id) return W_Type_Id with
-     Pre => Type_Might_Be_Invalid (E);
+   function Get_Validity_Tree_Type (E : Entity_Id) return W_Type_Id
+   with Pre => Type_Might_Be_Invalid (E);
    --  Compute the type of the validity tree for E
 
    procedure Insert_Extra_Module
-     (N    : Node_Id;
-      M    : W_Module_Id;
-      Kind : Module_Kind := Regular);
+     (N : Node_Id; M : W_Module_Id; Kind : Module_Kind := Regular);
    --  After a call to this procedure, if Is_Axiom is false then E_Module (N)
    --  will return M otherwise E_Axiom_Module (N) will return M.
    --  @param N the Ada Node
@@ -867,14 +874,13 @@ package Why.Atree.Modules is
 
    function Init_Array_Module (Module : W_Module_Id) return M_Array_Type;
    function Init_Array_1_Module (Module : W_Module_Id) return M_Array_1_Type;
-   function Init_Array_1_Comp_Module (Module : W_Module_Id)
-                                      return M_Array_1_Comp_Type;
-   function Init_Array_1_Bool_Op_Module (Module : W_Module_Id)
-                                      return M_Array_1_Bool_Op_Type;
+   function Init_Array_1_Comp_Module
+     (Module : W_Module_Id) return M_Array_1_Comp_Type;
+   function Init_Array_1_Bool_Op_Module
+     (Module : W_Module_Id) return M_Array_1_Bool_Op_Type;
 
    function Mutually_Recursive_Modules (E : Entity_Id) return Why_Node_Sets.Set
-   with
-     Pre => Ekind (E) in E_Function | E_Procedure | E_Entry | E_Package;
+   with Pre => Ekind (E) in E_Function | E_Procedure | E_Entry | E_Package;
    --  Function returning the set of axiom modules mutually recursive with a
    --  given entity. Those are the modules which should not be included in the
    --  VC module for E.
