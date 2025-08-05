@@ -271,6 +271,7 @@ package body Flow_Types is
            Assert
              (Nkind (SC.N)
               in N_Entry_Call_Statement
+               | N_Block_Statement
                | N_Package_Declaration
                | N_Subprogram_Call
                 or else Is_Specialized_Actual (SC.N));

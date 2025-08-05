@@ -527,6 +527,11 @@ package body Flow.Slice is
                then
                   null;
 
+               --  Ignore inlined calls
+
+               elsif Nkind (SC.N) = N_Block_Statement then
+                  null;
+
                --  For ordinary subprograms, check if their flow effects
                --  have been already "inlined" in CFG; see the call
                --  to Process_Subprogram_Globals in Do_Call_Statement.
