@@ -1481,13 +1481,6 @@ package body Flow.Control_Flow_Graph is
            Make_Variable_Attributes (F_Ent => F_Final, Mode => M, E_Loc => E);
 
       begin
-         --  Proof will pull reclamation functions at the end of the scope of
-         --  E if its type needs reclamation.
-         if Ekind (E) in E_Constant | E_Variable
-           and then not Is_Library_Level_Entity (E)
-         then
-            Process_Reclamation_Functions (Etype (E), FA.Proof_Dependencies);
-         end if;
 
          --  Setup the n'initial vertex. Note that initialization for
          --  variables is detected (and set) when building the flow graph
@@ -1624,7 +1617,7 @@ package body Flow.Control_Flow_Graph is
          Tasking            => FA.Tasking,
          Generating_Globals => FA.Generating_Globals);
 
-      Process_Reclamation_Functions (LHS_Type, FA.Proof_Dependencies);
+      Process_Reclamation_Functions (Etype (Name (N)), FA.Proof_Dependencies);
 
       --  Assignment with a function that has side effects is handled like a
       --  subprogram call: the function entity acts like a formal parameter
@@ -4628,6 +4621,12 @@ package body Flow.Control_Flow_Graph is
       then
          Add_Dummy_Vertex (N, FA, CM);
          return;
+      end if;
+
+      --  Proof will pull reclamation functions at the end of the scope of
+      --  E if its type needs reclamation.
+      if not Is_Library_Level_Entity (E) then
+         Process_Reclamation_Functions (Etype (E), FA.Proof_Dependencies);
       end if;
 
       case Ekind (E) is
