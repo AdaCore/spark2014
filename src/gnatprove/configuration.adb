@@ -1825,10 +1825,10 @@ package body Configuration is
 
       procedure Parse_Proof_Switches (Com_Lin : String_List) is
 
-         function Concat3
+         function Concat
            (A, B : String_List_Access; C : String_List) return String_List;
 
-         function Concat4
+         function Concat
            (A, B, C : String_List_Access; D : String_List) return String_List;
 
          procedure Expand_Ada_Switches (View : Project.View.Object);
@@ -1840,24 +1840,20 @@ package body Configuration is
          --  Reset file-specific switches between parsing of the full
          --  command-line for each file.
 
-         -------------
-         -- Concat3 --
-         -------------
+         ------------
+         -- Concat --
+         ------------
 
-         function Concat3
+         function Concat
            (A, B : String_List_Access; C : String_List) return String_List is
          begin
             return
               (if A = null then [] else A.all)
               & (if B = null then [] else B.all)
               & C;
-         end Concat3;
+         end Concat;
 
-         -------------
-         -- Concat4 --
-         -------------
-
-         function Concat4
+         function Concat
            (A, B, C : String_List_Access; D : String_List) return String_List
          is
          begin
@@ -1866,7 +1862,7 @@ package body Configuration is
               & (if B = null then [] else B.all)
               & (if C = null then [] else C.all)
               & D;
-         end Concat4;
+         end Concat;
 
          procedure Expand_Ada_Switches (View : Project.View.Object) is
 
@@ -1930,7 +1926,7 @@ package body Configuration is
                       ((+"Prove", +"Proof_Switches"),
                        Index => GPR2.Project.Attribute_Index.Create ("Ada")));
                Parsed_Cmdline     : constant String_List :=
-                 Concat3 (Prove_Switches, Proof_Switches_Ada, Com_Lin);
+                 Concat (Prove_Switches, Proof_Switches_Ada, Com_Lin);
             begin
                --  parse all switches that apply to all files, concatenated in
                --  the right order (most important is last).
@@ -1954,7 +1950,7 @@ package body Configuration is
                         FS_Switches    : constant String_List_Access :=
                           List_From_Attr (Attr);
                         Parsed_Cmdline : constant String_List :=
-                          Concat4
+                          Concat
                             (Prove_Switches,
                              Proof_Switches_Ada,
                              FS_Switches,
