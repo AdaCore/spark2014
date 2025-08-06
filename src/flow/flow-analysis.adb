@@ -354,7 +354,7 @@ package body Flow.Analysis is
       then
          Error_Msg_Flow
            (FA       => FA,
-            Msg      => "subprogram & " & "has no effect",
+            Msg      => "subprogram & has no effect",
             N        => FA.Spec_Entity,
             F1       => Direct_Mapping_Id (FA.Spec_Entity),
             Tag      => Ineffective,
@@ -2021,7 +2021,7 @@ package body Flow.Analysis is
                                 (FA       => FA,
                                  Path     => Mask,
                                  Msg      =>
-                                   "initialization of & has no " & "effect",
+                                   "initialization of & has no effect",
                                  N        => N,
                                  F1       =>
                                    Direct_Mapping_Id (Defining_Entity (N)),
@@ -2525,7 +2525,7 @@ package body Flow.Analysis is
             if V_Start_Atr.Is_Param_Havoc then
                Append
                  (Explanation,
-                  "value of & is unknown following " & "exceptional exit");
+                  "value of & is unknown following exceptional exit");
                Explanation_F1 := Var;
             end if;
 
@@ -3601,7 +3601,7 @@ package body Flow.Analysis is
             Error_Msg_Flow
               (FA       => FA,
                Msg      =>
-                 "& must be a Proof_In as it is only " & "used in assertions",
+                 "& must be a Proof_In as it is only used in assertions",
                SRM_Ref  => "6.1.4(19)",
                N        =>
                  Find_Global (FA.Spec_Entity, Direct_Mapping_Id (Input)),
@@ -4298,8 +4298,7 @@ package body Flow.Analysis is
                         Error_Msg_Flow
                           (FA       => FA,
                            Path     => Path,
-                           Msg      =>
-                             "missing dependency ""%'Result => " & "%""",
+                           Msg      => "missing dependency ""%'Result => %""",
                            N        =>
                              Search_Depends_Contract
                                (FA.Spec_Entity, FA.Spec_Entity),
@@ -5438,7 +5437,7 @@ package body Flow.Analysis is
                         Error_Msg_Flow
                           (FA       => FA,
                            Msg      =>
-                             "& is not initialized " & "at subprogram entry",
+                             "& is not initialized at subprogram entry",
                            Severity => High_Check_Kind,
                            N        =>
                              First_Variable_Use
@@ -6406,7 +6405,7 @@ package body Flow.Analysis is
                                 & "might be nonterminating"),
                            Explanation =>
                              (if Is_Function_Type (SC.E)
-                              then "call could hide recursive " & "calls"
+                              then "call could hide recursive calls"
                               else ""),
                            Severity    => Medium_Check_Kind,
                            N           => Atr.Error_Location,
@@ -6427,7 +6426,7 @@ package body Flow.Analysis is
                                 & "might be nonterminating"),
                            Explanation =>
                              (if Nkind (SC.N) = N_Function_Call
-                              then "call could hide recursive " & "calls"
+                              then "call could hide recursive calls"
                               else ""),
                            Severity    => Medium_Check_Kind,
                            N           => Atr.Error_Location,
@@ -6513,7 +6512,7 @@ package body Flow.Analysis is
                              (FA       => FA,
                               Msg      =>
                                 Check_Msg
-                                  ("call to & might be " & "nonterminating"),
+                                  ("call to & might be nonterminating"),
                               Fix      =>
                                 (if Get_Termination_Condition (SC.E).Kind
                                    = Unspecified
@@ -6544,8 +6543,7 @@ package body Flow.Analysis is
                              Check_Msg
                                ("indirect dispatching call to record equality "
                                 & "might be nonterminating"),
-                           Explanation =>
-                             ("call could hide recursive " & "calls"),
+                           Explanation => ("call could hide recursive calls"),
                            Severity    => Medium_Check_Kind,
                            N           => Atr.Error_Location,
                            F1          => Spec_Entity_Id,
