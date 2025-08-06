@@ -1071,7 +1071,7 @@ package body Configuration is
    procedure Prepare_Prover_Lib (Obj_Dir : String) is
 
       Provers        : String_Lists.List renames
-        File_Specific_Map ("Ada").Provers;
+        File_Specific_Map ("default").Provers;
       Prover_Name    : constant String :=
         Ada.Characters.Handling.To_Lower (Provers.First_Element);
       Prover_Lib_Dir : constant String :=
@@ -1529,7 +1529,7 @@ package body Configuration is
 
    function Prover_List return String is
    begin
-      return Prover_List (File_Specific_Map ("Ada"));
+      return Prover_List (File_Specific_Map ("default"));
    end Prover_List;
 
    -----------------------
