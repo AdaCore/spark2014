@@ -1386,3 +1386,18 @@ def print_version():
         elts = text.split(" - ")
         text = elts[0]
         print(text)
+
+
+def run_spark_for_gnattest_json(project_file, filename, line, gnattest_JSON):
+    gnatprove(
+        opt=[
+            f"-P{project_file}",
+            "--quiet",
+            "--output=oneline",
+            "--counterexamples=on",
+            "--check-counterexamples=on",
+            "--level=2",
+            f"--limit-subp={filename}:{line}",
+            f"--gnattest-values={gnattest_JSON}",
+        ]
+    )
