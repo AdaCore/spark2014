@@ -1940,11 +1940,21 @@ package body Flow.Analysis is
                                   (if Present (Target)
                                      then Is_Easily_Printable (Target));
 
+                              Called_Entity : constant Entity_Id :=
+                                Get_Called_Entity
+                                  (Get_Direct_Mapping_Id (Atr.Call_Vertex));
+
                               Callee : constant Flow_Id :=
-                                Direct_Mapping_Id
-                                  (Get_Called_Entity
-                                     (Get_Direct_Mapping_Id
-                                        (Atr.Call_Vertex)));
+                                (if Ekind (Called_Entity) = E_Subprogram_Type
+                                 then Null_Flow_Id
+                                 else Direct_Mapping_Id (Called_Entity));
+
+                              By_What : constant String :=
+                                (if Ekind (Called_Entity) = E_Subprogram_Type
+                                 then ""
+                                 else " by &");
+                              --  Do not print subprogram name if it is a call
+                              --  via access-to-subprogram.
 
                            begin
                               if Present (Target) then
@@ -1952,7 +1962,8 @@ package body Flow.Analysis is
                                    (FA       => FA,
                                     Path     => Mask,
                                     Msg      =>
-                                      "& is set by &"
+                                      "& is set"
+                                      & By_What
                                       & " but not used after the call",
                                     N        => N,
                                     F1       => Target,

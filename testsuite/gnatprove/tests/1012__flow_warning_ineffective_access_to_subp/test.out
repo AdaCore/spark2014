@@ -1,0 +1,7 @@
+main.adb:4:17: info: initialization of "X" proved
+main.adb:6:04: warning: analyzing unreferenced procedure "Foo" [unreferenced-procedure]
+main.adb:6:19: info: initialization of "X" proved
+main.adb:7:07: warning: initialization of "P_Acc" has no effect
+main.adb:9:13: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:9:13: warning: statement has no effect
+main.adb:9:18: warning: "X" is set but not used after the call
