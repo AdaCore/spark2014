@@ -24,10 +24,10 @@ tictactoe.adb:116:32: info: index check proved (CVC5: 32 VC)
 tictactoe.adb:116:38: info: index check proved (CVC5: 32 VC)
 tictactoe.adb:118:27: info: index check proved (CVC5: 32 VC)
 tictactoe.adb:127:10: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-tictactoe.adb:131:22: info: assertion proved (altergo: 1 VC)
+tictactoe.adb:131:22: info: assertion proved (CVC5: 1 VC)
 tictactoe.adb:133:28: info: unrolling loop [info-unrolling-inlining]
 tictactoe.adb:134:32: info: unrolling loop [info-unrolling-inlining]
-tictactoe.adb:136:16: info: precondition proved (CVC5: 9 VC; altergo: 9 VC)
+tictactoe.adb:136:16: info: precondition proved (CVC5: 18 VC)
 tictactoe.adb:145:28: info: unrolling loop [info-unrolling-inlining]
 tictactoe.adb:146:23: info: unrolling loop [info-unrolling-inlining]
 tictactoe.adb:161:07: info: initialization of "Score" proved
