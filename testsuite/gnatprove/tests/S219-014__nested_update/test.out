@@ -10,8 +10,8 @@ generic_ring_buffer.adb:44:14: info: discriminant check proved (CVC5: 1 VC), in 
 generic_ring_buffer.adb:44:23: info: predicate check proved (CVC5: 5 VC), in instantiation at tester.adb:10
 generic_ring_buffer.adb:45:76: info: range check proved (CVC5: 2 VC), in instantiation at tester.adb:10
 generic_ring_buffer.adb:46:32: info: range check proved (CVC5: 2 VC), in instantiation at tester.adb:10
-generic_ring_buffer.adb:47:25: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in instantiation at tester.adb:10
-generic_ring_buffer.adb:47:31: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in instantiation at tester.adb:10
+generic_ring_buffer.adb:47:25: info: length check proved (CVC5: 3 VC), in instantiation at tester.adb:10
+generic_ring_buffer.adb:47:31: info: length check proved (CVC5: 3 VC), in instantiation at tester.adb:10
 generic_ring_buffer.adb:48:14: info: index check proved (CVC5: 2 VC), in instantiation at tester.adb:10
 generic_ring_buffer.adb:48:52: info: range check proved (CVC5: 2 VC), in instantiation at tester.adb:10
 generic_ring_buffer.adb:48:71: info: range check proved (CVC5: 2 VC), in instantiation at tester.adb:10

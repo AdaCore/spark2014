@@ -112,16 +112,16 @@ test_slide.adb:8:14: warning: subprogram "Test_OK" has no effect
 test_slide.adb:17:40: info: initialization of "Y" proved
 test_slide.adb:20:17: info: postcondition proved (CVC5: 2 VC)
 test_slide.adb:22:07: info: no contextual analysis of "Test_OK" (nested subprogram)
-test_slide.adb:24:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test_slide.adb:24:12: info: length check proved (CVC5: 3 VC)
 test_slide.adb:27:40: info: initialization of "Y" proved
 test_slide.adb:30:17: info: postcondition proved (CVC5: 2 VC)
-test_slide.adb:34:15: info: length check proved (CVC5: 6 VC; Trivial: 2 VC)
-test_slide.adb:43:13: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test_slide.adb:34:15: info: length check proved (CVC5: 6 VC)
+test_slide.adb:43:13: info: length check proved (CVC5: 3 VC)
 test_slide.adb:44:25: info: assertion proved (CVC5: 2 VC)
 test_slide.adb:49:17: info: postcondition proved (Trivial: 1 VC)
 test_slide.adb:54:25: info: assertion proved (CVC5: 2 VC)
 test_slide.adb:57:17: warning: subprogram "Decl" has no effect
-test_slide.adb:62:20: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test_slide.adb:62:20: info: length check proved (CVC5: 3 VC)
 test_slide.adb:64:25: info: assertion proved (CVC5: 2 VC)
 test_slide.adb:70:14: warning: subprogram "Test_Bad" has no effect
 test_slide.adb:78:17: warning: invalid data might be read; read data is assumed to be valid in SPARK [potentially-invalid-read]
@@ -130,21 +130,21 @@ test_slide.adb:83:17: medium: postcondition might fail
 test_slide.adb:83:20: info: index check proved (CVC5: 2 VC)
 test_slide.adb:83:34: info: index check proved (CVC5: 2 VC)
 test_slide.adb:85:07: info: no contextual analysis of "Test_Bad" (nested subprogram)
-test_slide.adb:87:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test_slide.adb:87:12: info: length check proved (CVC5: 3 VC)
 test_slide.adb:90:40: info: initialization of "Y" proved
 test_slide.adb:93:17: medium: postcondition might fail
 test_slide.adb:93:20: info: index check proved (CVC5: 2 VC)
 test_slide.adb:93:34: info: index check proved (CVC5: 2 VC)
-test_slide.adb:97:15: info: length check proved (CVC5: 6 VC; Trivial: 2 VC)
+test_slide.adb:97:15: info: length check proved (CVC5: 6 VC)
 test_slide.adb:106:10: info: precondition proved (CVC5: 2 VC)
-test_slide.adb:106:14: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test_slide.adb:106:14: info: length check proved (CVC5: 3 VC)
 test_slide.adb:107:25: medium: assertion might fail [possible fix: precondition of subprogram at line 100 should mention B]
 test_slide.adb:107:28: info: index check proved (CVC5: 2 VC)
 test_slide.adb:116:10: info: precondition proved (CVC5: 2 VC)
 test_slide.adb:117:25: medium: assertion might fail [possible fix: precondition of subprogram at line 110 should mention B]
 test_slide.adb:117:28: info: index check proved (CVC5: 2 VC)
 test_slide.adb:120:17: warning: subprogram "Decl" has no effect
-test_slide.adb:125:20: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test_slide.adb:125:20: info: length check proved (CVC5: 3 VC)
 test_slide.adb:127:25: medium: assertion might fail [possible fix: precondition of subprogram at line 120 should mention X]
 test_slide.adb:127:28: info: index check proved (CVC5: 2 VC)
 test_slide.adb:127:42: info: index check proved (CVC5: 2 VC)

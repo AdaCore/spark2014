@@ -9,4 +9,4 @@ p.ads:6:07: info: range check proved (CVC5: 2 VC)
 p.ads:10:16: info: implicit aspect Always_Terminates on "Prot" has been proved, subprogram will terminate
 p.ads:14:23: info: range check proved (CVC5: 2 VC)
 p.ads:14:29: info: discriminant check proved (CVC5: 1 VC)
-p.ads:14:44: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+p.ads:14:44: info: length check proved (CVC5: 3 VC)

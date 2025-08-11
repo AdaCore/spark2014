@@ -1,8 +1,8 @@
 test.adb:4:45: info: data dependencies proved
 test.adb:5:07: info: range check proved (CVC5: 2 VC)
-test.adb:5:31: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test.adb:5:31: info: length check proved (CVC5: 3 VC)
 test.adb:6:07: info: range check proved (CVC5: 2 VC)
-test.adb:6:31: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test.adb:6:31: info: length check proved (CVC5: 3 VC)
 test.adb:8:10: info: index check proved (CVC5: 2 VC)
 test.adb:9:22: high: assertion might fail (e.g. when X = (1 => 1) and Y = (1 => 0))
 test.adb:12:45: info: data dependencies proved

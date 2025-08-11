@@ -3,7 +3,7 @@ alignment_attribute.adb:39:15: info: range check proved (CVC5: 2 VC)
 alignment_attribute.adb:47:04: warning: analyzing unreferenced procedure "Q" [unreferenced-procedure]
 alignment_attribute.adb:47:14: high: all paths in "Q" raise exceptions or do not terminate normally
 alignment_attribute.adb:47:14: warning: subprogram "Q" has no effect
-alignment_attribute.adb:50:22: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+alignment_attribute.adb:50:22: info: length check proved (CVC5: 3 VC)
 alignment_attribute.adb:53:22: info: assertion proved (Trivial)
 alignment_attribute.adb:54:07: high: assertion might fail
 alignment_attribute.adb:60:19: info: assertion proved (Trivial)
@@ -30,7 +30,7 @@ alignment_attribute.adb:83:19: info: assertion proved (Trivial)
 alignment_attribute.adb:84:19: info: assertion proved (Trivial)
 component_size_attribute.adb:13:04: warning: analyzing unreferenced procedure "P" [unreferenced-procedure]
 component_size_attribute.adb:13:14: warning: subprogram "P" has no effect
-component_size_attribute.adb:17:22: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+component_size_attribute.adb:17:22: info: length check proved (CVC5: 3 VC)
 component_size_attribute.adb:20:22: info: assertion proved (Trivial)
 component_size_attribute.adb:21:22: medium: assertion might fail
 component_size_attribute.adb:21:24: warning: the value of attribute Component_Size is handled in an imprecise way [imprecise-component-size]

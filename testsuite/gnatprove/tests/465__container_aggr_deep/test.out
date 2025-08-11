@@ -35,7 +35,7 @@ deep_vectors.ads:45:53: info: index check proved (CVC5: 2 VC)
 deep_vectors.ads:47:13: info: implicit aspect Always_Terminates on "Copy" has been proved, subprogram will terminate
 deep_vectors.ads:48:07: info: null exclusion check proved (CVC5: 1 VC)
 deep_vectors.ads:51:07: info: predicate check proved (CVC5: 3 VC)
-deep_vectors.ads:51:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+deep_vectors.ads:51:29: info: length check proved (CVC5: 3 VC)
 deep_vectors.ads:51:29: info: range check proved (CVC5: 2 VC)
 deep_vectors.ads:51:32: info: range check proved (CVC5: 2 VC)
 deep_vectors.ads:54:19: info: null exclusion check proved (CVC5: 1 VC)

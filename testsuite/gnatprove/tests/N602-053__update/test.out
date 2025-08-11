@@ -2,7 +2,7 @@ sorters.adb:10:08: info: flow dependencies proved
 sorters.adb:15:16: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 sorters.adb:15:62: info: index check proved (CVC5: 2 VC)
 sorters.adb:16:62: info: index check proved (CVC5: 2 VC)
-sorters.adb:19:15: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+sorters.adb:19:15: info: length check proved (CVC5: 3 VC)
 sorters.adb:19:33: info: index check proved (CVC5: 2 VC)
 sorters.adb:19:46: info: index check proved (CVC5: 2 VC)
 sorters.adb:20:33: info: index check proved (CVC5: 2 VC)

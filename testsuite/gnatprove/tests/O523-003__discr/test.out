@@ -1,13 +1,13 @@
 bounded_strings.adb:8:07: info: initialization of "B" proved
 bounded_strings.adb:8:26: info: range check proved (CVC5: 2 VC)
-bounded_strings.adb:10:14: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-bounded_strings.adb:10:17: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+bounded_strings.adb:10:14: info: length check proved (CVC5: 3 VC)
+bounded_strings.adb:10:17: info: length check proved (CVC5: 3 VC)
 bounded_strings.adb:11:08: info: range check proved (CVC5: 4 VC)
 bounded_strings.adb:11:14: info: index check proved (CVC5: 2 VC)
 bounded_strings.adb:11:30: info: index check proved (CVC5: 2 VC)
 bounded_strings.adb:11:30: info: range check proved (CVC5: 2 VC)
-bounded_strings.adb:11:39: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-bounded_strings.adb:11:42: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+bounded_strings.adb:11:39: info: length check proved (CVC5: 3 VC)
+bounded_strings.adb:11:42: info: length check proved (CVC5: 3 VC)
 bounded_strings.adb:12:28: info: range check proved (CVC5: 2 VC)
 bounded_strings.ads:12:13: info: implicit aspect Always_Terminates on "Size" has been proved, subprogram will terminate
 bounded_strings.ads:13:11: info: data dependencies proved

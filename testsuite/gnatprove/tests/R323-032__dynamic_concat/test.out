@@ -1,9 +1,9 @@
 concat.adb:2:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 concat.adb:7:09: info: range check proved (CVC5: 2 VC)
-concat.adb:11:21: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-concat.adb:12:21: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+concat.adb:11:21: info: length check proved (CVC5: 3 VC)
+concat.adb:12:21: info: length check proved (CVC5: 3 VC)
 concat.adb:14:21: info: range check proved (CVC5: 4 VC)
-concat.adb:14:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+concat.adb:14:32: info: length check proved (CVC5: 3 VC)
 concat.adb:14:32: info: range check proved (CVC5: 2 VC)
 concat.adb:14:34: info: range check proved (CVC5: 4 VC)
 concat.adb:16:19: info: assertion proved (CVC5: 1 VC)

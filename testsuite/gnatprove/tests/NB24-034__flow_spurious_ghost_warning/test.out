@@ -28,8 +28,8 @@ sorters.adb:63:07: info: initialization of "Values_Last" proved
 sorters.adb:63:07: info: range check proved (CVC5: 2 VC)
 sorters.adb:65:07: info: initialization of "Smallest" proved
 sorters.adb:68:50: info: overflow check proved (CVC5: 2 VC)
-sorters.adb:69:22: info: length check proved (CVC5: 6 VC; Trivial: 2 VC)
-sorters.adb:69:25: info: length check proved (CVC5: 6 VC; Trivial: 2 VC)
+sorters.adb:69:22: info: length check proved (CVC5: 6 VC)
+sorters.adb:69:25: info: length check proved (CVC5: 6 VC)
 sorters.adb:70:22: info: precondition proved (CVC5: 2 VC)
 sorters.adb:70:40: info: range check proved (CVC5: 8 VC)
 sorters.adb:73:13: info: precondition proved (CVC5: 10 VC)

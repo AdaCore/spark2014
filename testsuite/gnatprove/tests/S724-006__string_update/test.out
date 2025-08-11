@@ -1,5 +1,5 @@
-p.adb:4:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-p.adb:8:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+p.adb:4:09: info: length check proved (CVC5: 3 VC)
+p.adb:8:09: info: length check proved (CVC5: 3 VC)
 p.ads:1:16: info: flow dependencies proved
 p.ads:5:17: high: range check might fail (e.g. when S'First = 1 and S'Last = 0) [reason for check: slice bounds must fit in the underlying array]
 p.ads:5:17: medium: postcondition might fail

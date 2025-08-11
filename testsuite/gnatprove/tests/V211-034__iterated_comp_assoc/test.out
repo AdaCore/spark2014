@@ -1,4 +1,4 @@
-main.adb:8:16: info: length check proved (CVC5: 6 VC; Trivial: 2 VC)
+main.adb:8:16: info: length check proved (CVC5: 6 VC)
 main.adb:8:16: info: range check proved (CVC5: 4 VC)
 main.adb:8:31: info: range check proved (CVC5: 4 VC)
 main.adb:10:10: info: loop invariant initialization proved (CVC5: 1 VC)

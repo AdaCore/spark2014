@@ -2,8 +2,8 @@ test.adb:2:14: warning: subprogram "Test_Lt" has no effect
 test.adb:3:34: info: initialization of "X" proved
 test.adb:3:37: info: initialization of "Y" proved
 test.adb:6:07: info: no contextual analysis of "Test_Lt" (nested subprogram)
-test.adb:8:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-test.adb:9:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test.adb:8:12: info: length check proved (CVC5: 3 VC)
+test.adb:9:12: info: length check proved (CVC5: 3 VC)
 test.adb:11:28: high: assertion might fail (e.g. when X'First = 1 and X'Last = 0 and Y'First = 1 and Y'Last = 0)
 test.adb:13:28: high: assertion might fail (e.g. when X = "o" and X'First = 1 and Y'First = 2 and Y'Last = 1)
 test.adb:15:28: high: assertion might fail (e.g. when X'First = 1 and X'Last = 0 and Y = "o" and Y'First = 1)
@@ -18,8 +18,8 @@ test.adb:43:14: warning: subprogram "Test_Gt" has no effect
 test.adb:44:34: info: initialization of "X" proved
 test.adb:44:37: info: initialization of "Y" proved
 test.adb:47:07: info: no contextual analysis of "Test_Gt" (nested subprogram)
-test.adb:49:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-test.adb:50:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test.adb:49:12: info: length check proved (CVC5: 3 VC)
+test.adb:50:12: info: length check proved (CVC5: 3 VC)
 test.adb:52:28: high: assertion might fail (e.g. when X'First = 1 and X'Last = 0 and Y'First = 1 and Y'Last = 0)
 test.adb:54:28: high: assertion might fail (e.g. when X'First = 1 and X'Last = 0 and Y = "o" and Y'First = 1)
 test.adb:56:28: high: assertion might fail (e.g. when X = "o" and X'First = 1 and Y'First = 2 and Y'Last = 1)
@@ -34,8 +34,8 @@ test.adb:84:14: warning: subprogram "Test_Le" has no effect
 test.adb:85:34: info: initialization of "X" proved
 test.adb:85:37: info: initialization of "Y" proved
 test.adb:88:07: info: no contextual analysis of "Test_Le" (nested subprogram)
-test.adb:90:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-test.adb:91:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test.adb:90:12: info: length check proved (CVC5: 3 VC)
+test.adb:91:12: info: length check proved (CVC5: 3 VC)
 test.adb:93:28: high: assertion might fail (e.g. when X'First = 1 and X'Last = 0 and Y'First = 1 and Y'Last = 0)
 test.adb:95:28: high: assertion might fail (e.g. when X = "o" and X'First = 1 and Y'First = 2 and Y'Last = 1)
 test.adb:97:28: high: assertion might fail (e.g. when X'First = 1 and X'Last = 0 and Y = "o" and Y'First = 1)
@@ -50,8 +50,8 @@ test.adb:125:14: warning: subprogram "Test_Ge" has no effect
 test.adb:126:34: info: initialization of "X" proved
 test.adb:126:37: info: initialization of "Y" proved
 test.adb:129:07: info: no contextual analysis of "Test_Ge" (nested subprogram)
-test.adb:131:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-test.adb:132:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test.adb:131:12: info: length check proved (CVC5: 3 VC)
+test.adb:132:12: info: length check proved (CVC5: 3 VC)
 test.adb:134:28: high: assertion might fail (e.g. when X'First = 1 and X'Last = 0 and Y'First = 1 and Y'Last = 0)
 test.adb:136:28: high: assertion might fail (e.g. when X'First = 1 and X'Last = 0 and Y = "o" and Y'First = 1)
 test.adb:138:28: high: assertion might fail (e.g. when X = "o" and X'First = 1 and Y'First = 2 and Y'Last = 1)
