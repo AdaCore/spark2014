@@ -1154,7 +1154,7 @@ procedure Gnatprove with SPARK_Mode is
 
       procedure Set_Key_Value (Key, Value : String) is
       begin
-         Put_Line (File, Key & " = " & """" & Value & """");
+         Put_Line (File, Key & " = " & '"' & Value & '"');
       end Set_Key_Value;
 
       ------------------------

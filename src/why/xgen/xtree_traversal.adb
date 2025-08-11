@@ -34,8 +34,8 @@ package body Xtree_Traversal is
 
    Node_Param  : constant String := "Node";
    State_Param : constant String := "State";
-   Control     : constant String := State_Param & "." & "Control";
-   Depth       : constant String := State_Param & "." & "Depth";
+   Control     : constant String := State_Param & ".Control";
+   Depth       : constant String := State_Param & ".Depth";
 
    Node_Renaming : constant String := "This_Node";
 
