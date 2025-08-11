@@ -1021,3 +1021,31 @@ recursive calls using a ``Loop_Variant`` (for the loop iterations) and a
 ``Subprogram_Variant`` (for the recursive calls). Also note that, though it was
 not able to prove termination of ``P_Rec``, ``P_While``, and ``P_Call``,
 |GNATprove| will still trust the annotation when verifying ``P_Term``.
+
+For calls via access-to-subprograms, |GNATprove| distinguishes
+calls to functions and procedures. |GNATprove| emits checks on all calls via
+access-to-procedures. Calls via access-to-functions are permitted; termination
+checks are emitted when referencing the 'Access attribute of a function when
+the function calls other subprograms through access-to-subprograms. The calls
+might hide recursive calls, so |GNATprove| is unable to determine whether the
+call will terminate. The following example illustrates the three cases:
+
+.. literalinclude:: /examples/ug__termination_access_to_subp/termination_access_to_subprogram.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__termination_access_to_subp/termination_access_to_subprogram.adb
+   :language: ada
+   :linenos:
+
+Although all subprograms terminate in this case, |GNATprove| emits the following output:
+
+.. literalinclude:: /examples/ug__termination_access_to_subp/test.out
+   :language: none
+   :linenos:
+
+.. note::
+
+   Dispatching calls of functions and procedures are handled in the same way as
+   calls via access-to-procedures for the same reasons. They might hide recursive
+   calls that |GNATprove| is unable to track.

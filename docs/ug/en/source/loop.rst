@@ -32,14 +32,6 @@ refer to the value of a borrowed list or a local borrower at the end of the
 borrow, see :ref:`Referring to a value at the end of a borrow` for more
 explanations.
 
-.. note::
-   Although the structural subprogram variant of ``For_All_List`` is proved,
-   this is not sufficient to prove the termination of ``For_All_List``,
-   as we have no way for now to state on
-   the access-to-subprogram type Property that all elements of this type
-   must terminate. Therefore, we justify this check, see section on
-   :ref:`Justifying Check Messages`.
-
 .. index:: Loop_Invariant; rationale
 
 The Need for a Loop Invariant

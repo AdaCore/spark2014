@@ -204,7 +204,8 @@ package body Flow_Generated_Globals.Phase_1 is
       Has_Subp_Variant  : Boolean;
       No_Body           : Boolean;
       Nonreturning      : Boolean;
-      Nonblocking       : Boolean)
+      Nonblocking       : Boolean;
+      Calls_Via_Access  : Boolean)
    is
       procedure Process_Volatiles_And_States
         (Objects : Node_Sets.Set; Local_Vars : Boolean := False);
@@ -415,6 +416,7 @@ package body Flow_Generated_Globals.Phase_1 is
             Serialize (No_Body);
             Serialize (Nonreturning);
             Serialize (Nonblocking);
+            Serialize (Calls_Via_Access);
          end if;
 
          Serialize (Entries_Called);

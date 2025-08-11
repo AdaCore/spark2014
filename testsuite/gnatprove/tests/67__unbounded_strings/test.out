@@ -988,13 +988,13 @@ strunb.ads:988:13: info: precondition proved
 strunb.ads:989:72: info: index check proved
 strunb.ads:990:06: info: data dependencies proved
 strunb.ads:997:16: info: postcondition proved
-strunb.ads:998:08: info: justified that implicit aspect Always_Terminates on "Translate" could be incorrect, call via access-to-subprogram might be nonterminating
+strunb.ads:998:08: info: justified that implicit aspect Always_Terminates on "Translate" could be incorrect, call via access-to-procedure might be nonterminating
 strunb.ads:1000:13: info: precondition proved
 strunb.ads:1000:45: info: pointer dereference check proved
 strunb.ads:1000:54: info: precondition proved
 strunb.ads:1001:06: info: data dependencies proved
 strunb.ads:1011:16: info: postcondition proved
-strunb.ads:1012:08: info: justified that aspect Always_Terminates on "Translate" could be incorrect, call via access-to-subprogram might be nonterminating
+strunb.ads:1012:08: info: justified that aspect Always_Terminates on "Translate" could be incorrect, call via access-to-procedure might be nonterminating
 strunb.ads:1014:13: info: precondition proved
 strunb.ads:1014:35: info: pointer dereference check proved
 strunb.ads:1014:68: info: index check proved

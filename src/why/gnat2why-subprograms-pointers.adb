@@ -23,26 +23,28 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
-with Flow_Utility;           use Flow_Utility;
-with GNAT.Source_Info;       use GNAT.Source_Info;
-with Gnat2Why.Expr;          use Gnat2Why.Expr;
-with Sinput;                 use Sinput;
-with SPARK_Util;             use SPARK_Util;
-with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
-with SPARK_Util.Types;       use SPARK_Util.Types;
-with String_Utils;           use String_Utils;
-with VC_Kinds;               use VC_Kinds;
-with Why.Atree.Accessors;    use Why.Atree.Accessors;
-with Why.Atree.Builders;     use Why.Atree.Builders;
-with Why.Atree.Modules;      use Why.Atree.Modules;
-with Why.Conversions;        use Why.Conversions;
-with Why.Gen.Decl;           use Why.Gen.Decl;
-with Why.Gen.Expr;           use Why.Gen.Expr;
-with Why.Gen.Names;          use Why.Gen.Names;
-with Why.Gen.Progs;          use Why.Gen.Progs;
-with Why.Images;             use Why.Images;
-with Why.Inter;              use Why.Inter;
+with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
+with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
+with Flow_Utility;                   use Flow_Utility;
+with GNAT.Source_Info;               use GNAT.Source_Info;
+with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
+with Gnat2Why.Expr;                  use Gnat2Why.Expr;
+with Sinput;                         use Sinput;
+with SPARK_Util;                     use SPARK_Util;
+with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
+with SPARK_Util.Types;               use SPARK_Util.Types;
+with String_Utils;                   use String_Utils;
+with VC_Kinds;                       use VC_Kinds;
+with Why.Atree.Accessors;            use Why.Atree.Accessors;
+with Why.Atree.Builders;             use Why.Atree.Builders;
+with Why.Atree.Modules;              use Why.Atree.Modules;
+with Why.Conversions;                use Why.Conversions;
+with Why.Gen.Decl;                   use Why.Gen.Decl;
+with Why.Gen.Expr;                   use Why.Gen.Expr;
+with Why.Gen.Names;                  use Why.Gen.Names;
+with Why.Gen.Progs;                  use Why.Gen.Progs;
+with Why.Images;                     use Why.Images;
+with Why.Inter;                      use Why.Inter;
 
 package body Gnat2Why.Subprograms.Pointers is
 
@@ -1362,6 +1364,23 @@ package body Gnat2Why.Subprograms.Pointers is
               Typ          => EW_Abstract (Etype (Expr)));
 
       else
+
+         --  If Subp is a function, check that it does not call other
+         --  subprograms through access-to-subprograms; otherwise raise a
+         --  termination check.
+
+         if Ekind (Subp) = E_Function
+           and then Calls_Via_Access_To_Subprogram (Subp)
+         then
+            Emit_Static_Proof_Result
+              (Expr,
+               VC_Termination_Check,
+               False,
+               Current_Subp,
+               "calls via access-to-subprograms inside function taken as"
+               & " access might hide recursive calls");
+         end if;
+
          Check_No_Globals;
 
          --  Declare a logic symbol for the subprogram object designated by

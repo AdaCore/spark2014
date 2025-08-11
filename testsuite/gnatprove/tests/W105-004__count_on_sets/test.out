@@ -1,4 +1,3 @@
-ho_sets.adb:8:07: medium: implicit aspect Always_Terminates on "Count" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
 ho_sets.adb:9:22: info: precondition proved (CVC5: 1 VC)
 ho_sets.adb:9:58: info: predicate check proved (Trivial: 1 VC)
 ho_sets.adb:9:79: info: predicate check proved (Trivial: 1 VC)
@@ -30,6 +29,7 @@ ho_sets.adb:36:102: info: null exclusion check proved (CVC5: 1 VC)
 ho_sets.adb:37:10: info: precondition proved (CVC5: 1 VC)
 ho_sets.adb:37:10: info: subprogram variant proved (CVC5: 1 VC)
 ho_sets.adb:37:30: info: precondition proved (CVC5: 1 VC)
+ho_sets.ads:8:13: info: implicit aspect Always_Terminates on "Count" has been proved, subprogram will terminate
 ho_sets.ads:8:13: warning: expression function body of subprograms with a numeric variant might not be available on recursive calls [numeric-variant]
 ho_sets.ads:8:13: warning: function contract might not be available on recursive calls [contracts-recursive]
 ho_sets.ads:10:28: info: function contract feasibility proved (Trivial: 1 VC)
@@ -45,6 +45,7 @@ ho_sets.ads:27:14: info: predicate check proved (Trivial: 1 VC)
 ho_sets.ads:27:27: info: null exclusion check proved (CVC5: 1 VC)
 ho_sets.ads:27:35: info: predicate check proved (Trivial: 1 VC)
 ho_sets.ads:27:49: info: null exclusion check proved (CVC5: 1 VC)
+ho_sets.ads:29:14: info: implicit aspect Always_Terminates on "Lemma_Count_Remove" has been proved, subprogram will terminate
 ho_sets.ads:32:28: info: function contract feasibility proved (Trivial: 1 VC)
 ho_sets.ads:37:42: info: predicate check proved (Trivial: 1 VC)
 ho_sets.ads:37:61: medium: range check might fail [reason for check: expression of type Big_Integer must be non-negative]
@@ -52,7 +53,6 @@ ho_sets.ads:37:63: info: predicate check proved (Trivial: 1 VC)
 ho_sets.ads:39:14: info: postcondition proved (CVC5: 1 VC)
 ho_sets.ads:39:14: info: predicate check proved (Trivial: 1 VC)
 ho_sets.ads:39:32: info: null exclusion check proved (CVC5: 1 VC)
-ho_sets.ads:39:38: medium: implicit aspect Always_Terminates on "Lemma_Count_Remove" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
 ho_sets.ads:40:10: info: predicate check proved (Trivial: 1 VC)
 ho_sets.ads:40:17: info: precondition proved (CVC5: 1 VC)
 ho_sets.ads:40:43: info: null exclusion check proved (CVC5: 1 VC)

@@ -1396,12 +1396,14 @@ package body Flow_Generated_Globals.Phase_2 is
                      Unused (V.No_Body);
                      Unused (V.Nonreturning);
                      Unused (V.Nonblocking);
+                     Unused (V.Calls_Via_Access);
                   else
                      Serialize (V.Always_Terminates);
                      Serialize (V.Has_Subp_Variant);
                      Serialize (V.No_Body);
                      Serialize (V.Nonreturning);
                      Serialize (V.Nonblocking);
+                     Serialize (V.Calls_Via_Access);
                   end if;
                   Serialize (V.Tasking);
                end if;
@@ -3410,6 +3412,71 @@ package body Flow_Generated_Globals.Phase_2 is
    function Calls_Potentially_Nonreturning_Subprogram
      (E : Entity_Id) return Boolean
    is (Calls_Potentially_Nonreturning_Subprogram (To_Entity_Name (E)));
+
+   ------------------------------------
+   -- Calls_Via_Access_To_Subprogram --
+   ------------------------------------
+
+   function Calls_Via_Access_To_Subprogram (E : Entity_Id) return Boolean is
+      EN : constant Entity_Name := To_Entity_Name (E);
+
+      Explored : Name_Sets.Set;
+      --  Visited call graph nodes
+      Stack    : Name_Sets.Set;
+      --  Call graph nodes to visit
+
+   begin
+
+      --  If E calls via access-to-subprogram, then there is no need to check
+      --  the property for its callees.
+
+      if Phase_1_Info.Contains (EN) and then Phase_1_Info (EN).Calls_Via_Access
+      then
+         return True;
+      end if;
+
+      --  Insert the analyzed entity in the sets
+      Stack.Insert (EN);
+      Explored.Insert (EN);
+
+      while not Stack.Is_Empty loop
+
+         declare
+            Caller : constant Entity_Name := Stack (Stack.First);
+         begin
+
+            for Callee of Generated_Calls (Caller) loop
+
+               --  Return if the callee calls via access-to-subprogram
+
+               if Phase_1_Info.Contains (Callee)
+                 and then Phase_1_Info (Callee).Calls_Via_Access
+               then
+                  return True;
+               end if;
+
+               --  Insert Callee on the stack if it has not
+               --  already been visited.
+
+               declare
+                  Inserted : Boolean;
+                  Position : Name_Sets.Cursor;
+               begin
+                  Name_Sets.Insert (Explored, Callee, Position, Inserted);
+
+                  if Inserted then
+                     Stack.Insert (Callee);
+                  end if;
+               end;
+            end loop;
+
+            --  Pop Caller from the stack
+            Stack.Delete (Caller);
+         end;
+      end loop;
+
+      return False;
+   end Calls_Via_Access_To_Subprogram;
 
    ------------------------------------------
    -- Is_Potentially_Nonreturning_Internal --

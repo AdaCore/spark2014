@@ -8728,14 +8728,14 @@ package body Flow.Control_Flow_Graph is
                   --  Same for problematic calls that make the subprogram
                   --  potentially nonterminating:
                   --  * dispatching calls,
-                  --  * calls via access-to-subprogram,
+                  --  * calls via access-to-procedures,
                   --  * procedures from the standard library with No_Return.
 
                   if FA.Has_Only_Terminating_Constructs then
                      for SC of Atr.Subprogram_Calls loop
                         if (Nkind (SC.N) in N_Subprogram_Call
                             and then Flow_Classwide.Is_Dispatching_Call (SC.N))
-                          or else Ekind (SC.E) = E_Subprogram_Type
+                          or else Is_Procedure_Type (SC.E)
                           or else (Is_Ignored_Internal (SC.E)
                                    and then Is_Subprogram (SC.E)
                                    and then No_Return (SC.E))
@@ -8745,6 +8745,14 @@ package body Flow.Control_Flow_Graph is
                         end if;
                      end loop;
                   end if;
+
+                  --  Subprograms that call other subprograms via
+                  --  access-to-subprogram are also flagged.
+
+                  FA.Calls_Via_Access :=
+                    FA.Calls_Via_Access
+                    or else (for some SC of Atr.Subprogram_Calls =>
+                               Ekind (SC.E) = E_Subprogram_Type);
 
                   --  Indirect calls to equality can make the subprogram
                   --  nonterminating. We flag calls to dispatching equalities

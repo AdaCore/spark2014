@@ -4201,6 +4201,8 @@ package body Flow_Error_Messages is
                     =>
                       "call",
                     when N_Loop_Statement => "loop",
+                    when N_Attribute_Reference =>
+                      "call via access-to-function",
                     when others => raise Program_Error);
             begin
                return Statement & " might not terminate";

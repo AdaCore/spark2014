@@ -1,0 +1,11 @@
+ medium: call via access-to-function might not terminate
+--> termination_access_to_subprogram.adb:16:36
+   16 |          Call_Acc    : Func_Access := Call_Via_Access'Access;    -- Check
+      |                                       ^~~~~~~~~~~~~~~~~~~~~~
+      + reason for check: procedure "P_Term" has an Always_Terminates aspect
+      + possible explanation: calls via access-to-subprograms inside function taken as access might hide recursive calls
+
+ medium: aspect Always_Terminates on "P_Term" could be incorrect, call via access-to-procedure might be nonterminating
+--> termination_access_to_subprogram.adb:20:13
+   20 |          P_Acc.all;                                              -- Check
+      |          ~~~~~~^~~
