@@ -1369,7 +1369,8 @@ package body Gnat2Why.Subprograms.Pointers is
          --  subprograms through access-to-subprograms; otherwise raise a
          --  termination check.
 
-         if Ekind (Subp) = E_Function
+         if Domain = EW_Prog
+           and then Ekind (Subp) = E_Function
            and then Calls_Via_Access_To_Subprogram (Subp)
          then
             Emit_Static_Proof_Result
