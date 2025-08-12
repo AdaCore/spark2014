@@ -16,13 +16,13 @@ procedure Foo is
    end P;
 
    P_Acc : Proc_Acc := P'Access with Ghost;
-   F1_Acc : Func_Acc := F1'Access with Ghost;
-   F2_Acc : Func_Acc := F2'Access with Ghost;
+   F1_Acc : Func_Acc := F1'Access with Ghost; --@TERMINATION:NONE
+   F2_Acc : Func_Acc := F2'Access with Ghost; --@TERMINATION:FAIL
 
    I : Integer with Ghost;
    B1, B2 : Boolean with Ghost;
 begin
    P_Acc.all (I);          --@TERMINATION:FAIL
-   B1 := F1_Acc.all (1);   --@TERMINATION:FAIL
-   B2 := F2_Acc.all (2);   --@TERMINATION:FAIL
+   B1 := F1_Acc.all (1);
+   B2 := F2_Acc.all (2);
 end Foo;

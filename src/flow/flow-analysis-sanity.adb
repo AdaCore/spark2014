@@ -579,7 +579,7 @@ package body Flow.Analysis.Sanity is
                      Error_Msg_Flow
                        (FA       => FA,
                         Msg      =>
-                          "call via access-to-subprogram "
+                          "call via access-to-function "
                           & "in the predicate of & might not terminate",
                         Severity => High_Check_Kind,
                         Tag      => Subprogram_Termination,
