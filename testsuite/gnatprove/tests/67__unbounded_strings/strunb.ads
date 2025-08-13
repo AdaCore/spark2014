@@ -999,9 +999,6 @@ is
          (for all K in 1 .. Length (Source) =>
             Element (Translate'Result, K) = Mapping (Element (Source, K))),
      Global => null;
-   pragma Annotate (GNATprove, False_Positive,
-                    "call via access-to-procedure",
-                    "function Mapping must always terminate");
 
    procedure Translate
      (Source  : in out Unbounded_String;
@@ -1013,9 +1010,6 @@ is
          (for all K in 1 .. Length (Source) =>
             Element (Source, K) = Mapping (To_String (Source)'Old (K))),
      Global => null;
-   pragma Annotate (GNATprove, False_Positive,
-                    "call via access-to-procedure",
-                    "function Mapping must always terminate");
 
    --  The Translate function has an analogous effect to the corresponding
    --  subprogram in Strings.Fixed. The translation is applied to the string
