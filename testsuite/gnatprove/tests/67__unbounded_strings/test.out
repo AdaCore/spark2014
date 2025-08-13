@@ -987,327 +987,327 @@ strunb.ads:985:16: info: postcondition proved
 strunb.ads:988:13: info: precondition proved
 strunb.ads:989:72: info: index check proved
 strunb.ads:990:06: info: data dependencies proved
+strunb.ads:992:13: info: implicit aspect Always_Terminates on "Translate" has been proved, subprogram will terminate
 strunb.ads:997:16: info: postcondition proved
-strunb.ads:998:08: info: justified that implicit aspect Always_Terminates on "Translate" could be incorrect, call via access-to-procedure might be nonterminating
 strunb.ads:1000:13: info: precondition proved
 strunb.ads:1000:45: info: pointer dereference check proved
 strunb.ads:1000:54: info: precondition proved
 strunb.ads:1001:06: info: data dependencies proved
-strunb.ads:1011:16: info: postcondition proved
-strunb.ads:1012:08: info: justified that aspect Always_Terminates on "Translate" could be incorrect, call via access-to-procedure might be nonterminating
-strunb.ads:1014:13: info: precondition proved
-strunb.ads:1014:35: info: pointer dereference check proved
-strunb.ads:1014:68: info: index check proved
-strunb.ads:1015:06: info: data dependencies proved
-strunb.ads:1029:13: info: implicit aspect Always_Terminates on "Replace_Slice" has been proved, subprogram will terminate
-strunb.ads:1039:38: info: overflow check proved
-strunb.ads:1039:42: info: range check proved
-strunb.ads:1040:23: info: overflow check proved
-strunb.ads:1040:54: info: overflow check proved
-strunb.ads:1041:57: info: overflow check proved
-strunb.ads:1041:61: info: range check proved
-strunb.ads:1049:09: info: contract case proved
-strunb.ads:1054:21: info: overflow check proved
-strunb.ads:1054:25: info: range check proved
-strunb.ads:1054:33: info: overflow check proved
-strunb.ads:1054:64: info: overflow check proved
-strunb.ads:1059:15: info: precondition proved
-strunb.ads:1060:17: info: precondition proved
-strunb.ads:1062:15: info: precondition proved
-strunb.ads:1062:57: info: overflow check proved
-strunb.ads:1062:61: info: range check proved
-strunb.ads:1070:18: info: precondition proved
-strunb.ads:1071:24: info: overflow check proved
-strunb.ads:1071:28: info: range check proved
-strunb.ads:1072:22: info: precondition proved
-strunb.ads:1072:42: info: overflow check proved
-strunb.ads:1077:09: info: contract case proved
-strunb.ads:1081:59: info: overflow check proved
-strunb.ads:1081:63: info: range check proved
-strunb.ads:1086:15: info: precondition proved
-strunb.ads:1087:17: info: precondition proved
-strunb.ads:1089:15: info: precondition proved
-strunb.ads:1089:57: info: overflow check proved
-strunb.ads:1089:61: info: range check proved
-strunb.ads:1097:17: info: precondition proved
-strunb.ads:1098:23: info: overflow check proved
-strunb.ads:1098:27: info: range check proved
-strunb.ads:1099:21: info: precondition proved
-strunb.ads:1100:06: info: data dependencies proved
-strunb.ads:1111:14: info: aspect Always_Terminates on "Replace_Slice" has been proved, subprogram will terminate
-strunb.ads:1121:38: info: overflow check proved
-strunb.ads:1121:42: info: range check proved
-strunb.ads:1122:23: info: overflow check proved
-strunb.ads:1122:54: info: overflow check proved
-strunb.ads:1123:57: info: overflow check proved
-strunb.ads:1123:61: info: range check proved
-strunb.ads:1131:09: info: contract case proved
-strunb.ads:1136:21: info: overflow check proved
-strunb.ads:1136:25: info: range check proved
-strunb.ads:1136:33: info: overflow check proved
-strunb.ads:1136:68: info: overflow check proved
-strunb.ads:1140:22: info: precondition proved
-strunb.ads:1141:15: info: precondition proved
-strunb.ads:1142:22: info: precondition proved
-strunb.ads:1142:50: info: overflow check proved
-strunb.ads:1142:54: info: range check proved
-strunb.ads:1149:21: info: precondition proved
-strunb.ads:1149:40: info: overflow check proved
-strunb.ads:1149:44: info: range check proved
-strunb.ads:1150:18: info: precondition proved
-strunb.ads:1155:57: info: overflow check proved
-strunb.ads:1161:09: info: contract case proved
-strunb.ads:1165:49: info: overflow check proved
-strunb.ads:1165:53: info: range check proved
-strunb.ads:1169:22: info: precondition proved
-strunb.ads:1170:15: info: precondition proved
-strunb.ads:1171:22: info: precondition proved
-strunb.ads:1171:50: info: overflow check proved
-strunb.ads:1171:54: info: range check proved
-strunb.ads:1178:21: info: precondition proved
-strunb.ads:1178:40: info: overflow check proved
-strunb.ads:1178:44: info: range check proved
-strunb.ads:1179:18: info: precondition proved
-strunb.ads:1180:06: info: data dependencies proved
-strunb.ads:1182:13: info: implicit aspect Always_Terminates on "Insert" has been proved, subprogram will terminate
-strunb.ads:1188:35: info: range check proved
-strunb.ads:1188:59: info: overflow check proved
-strunb.ads:1192:08: info: postcondition proved
-strunb.ads:1192:49: info: overflow check proved
-strunb.ads:1192:59: info: range check proved
-strunb.ads:1197:12: info: precondition proved
-strunb.ads:1197:51: info: precondition proved
-strunb.ads:1199:12: info: precondition proved
-strunb.ads:1199:53: info: overflow check proved
-strunb.ads:1199:63: info: range check proved
-strunb.ads:1207:15: info: precondition proved
-strunb.ads:1207:44: info: overflow check proved
-strunb.ads:1207:54: info: range check proved
-strunb.ads:1209:19: info: precondition proved
-strunb.ads:1210:06: info: data dependencies proved
-strunb.ads:1216:14: info: aspect Always_Terminates on "Insert" has been proved, subprogram will terminate
-strunb.ads:1222:35: info: range check proved
-strunb.ads:1222:59: info: overflow check proved
-strunb.ads:1226:08: info: postcondition proved
-strunb.ads:1226:46: info: overflow check proved
-strunb.ads:1226:56: info: range check proved
-strunb.ads:1231:12: info: precondition proved
-strunb.ads:1231:44: info: precondition proved
-strunb.ads:1233:12: info: precondition proved
-strunb.ads:1233:46: info: overflow check proved
-strunb.ads:1233:56: info: range check proved
-strunb.ads:1240:15: info: precondition proved
-strunb.ads:1240:37: info: overflow check proved
-strunb.ads:1240:47: info: range check proved
-strunb.ads:1241:17: info: precondition proved
-strunb.ads:1242:06: info: data dependencies proved
-strunb.ads:1244:13: info: implicit aspect Always_Terminates on "Overwrite" has been proved, subprogram will terminate
-strunb.ads:1250:35: info: range check proved
-strunb.ads:1250:59: info: overflow check proved
-strunb.ads:1254:08: info: postcondition proved
-strunb.ads:1255:53: info: overflow check proved
-strunb.ads:1255:63: info: range check proved
-strunb.ads:1260:12: info: precondition proved
-strunb.ads:1261:14: info: precondition proved
-strunb.ads:1263:12: info: precondition proved
-strunb.ads:1263:60: info: overflow check proved
-strunb.ads:1263:70: info: range check proved
-strunb.ads:1266:29: info: overflow check proved
-strunb.ads:1266:39: info: range check proved
-strunb.ads:1271:15: info: precondition proved
-strunb.ads:1272:26: info: overflow check proved
-strunb.ads:1272:36: info: range check proved
-strunb.ads:1273:19: info: precondition proved
-strunb.ads:1274:30: info: overflow check proved
-strunb.ads:1274:40: info: range check proved
-strunb.ads:1275:06: info: data dependencies proved
-strunb.ads:1277:14: info: aspect Always_Terminates on "Overwrite" has been proved, subprogram will terminate
-strunb.ads:1283:35: info: range check proved
-strunb.ads:1283:59: info: overflow check proved
-strunb.ads:1287:08: info: postcondition proved
-strunb.ads:1288:57: info: overflow check proved
-strunb.ads:1288:67: info: range check proved
-strunb.ads:1293:12: info: precondition proved
-strunb.ads:1293:46: info: precondition proved
-strunb.ads:1295:12: info: precondition proved
-strunb.ads:1295:50: info: overflow check proved
-strunb.ads:1295:60: info: range check proved
-strunb.ads:1297:29: info: overflow check proved
-strunb.ads:1297:39: info: range check proved
-strunb.ads:1302:15: info: precondition proved
-strunb.ads:1303:26: info: overflow check proved
-strunb.ads:1303:36: info: range check proved
-strunb.ads:1304:19: info: precondition proved
-strunb.ads:1309:38: info: overflow check proved
-strunb.ads:1309:48: info: range check proved
-strunb.ads:1310:36: info: overflow check proved
-strunb.ads:1310:46: info: range check proved
-strunb.ads:1313:06: info: data dependencies proved
-strunb.ads:1315:13: info: implicit aspect Always_Terminates on "Delete" has been proved, subprogram will terminate
-strunb.ads:1322:09: info: contract case proved
-strunb.ads:1324:22: info: overflow check proved
-strunb.ads:1324:53: info: overflow check proved
-strunb.ads:1326:15: info: precondition proved
-strunb.ads:1326:52: info: precondition proved
-strunb.ads:1329:18: info: precondition proved
-strunb.ads:1330:20: info: precondition proved
-strunb.ads:1330:43: info: overflow check proved
-strunb.ads:1331:09: info: contract case proved
-strunb.ads:1333:06: info: data dependencies proved
-strunb.ads:1335:14: info: aspect Always_Terminates on "Delete" has been proved, subprogram will terminate
-strunb.ads:1342:09: info: contract case proved
-strunb.ads:1344:22: info: overflow check proved
-strunb.ads:1344:57: info: overflow check proved
-strunb.ads:1346:15: info: precondition proved
-strunb.ads:1347:35: info: range check proved
-strunb.ads:1350:17: info: precondition proved
-strunb.ads:1351:37: info: range check proved
-strunb.ads:1351:51: info: overflow check proved
-strunb.ads:1352:09: info: contract case proved
-strunb.ads:1354:06: info: data dependencies proved
-strunb.ads:1356:13: info: implicit aspect Always_Terminates on "Trim" has been proved, subprogram will terminate
+strunb.ads:1003:14: info: aspect Always_Terminates on "Translate" has been proved, subprogram will terminate
+strunb.ads:1008:16: info: postcondition proved
+strunb.ads:1011:13: info: precondition proved
+strunb.ads:1011:35: info: pointer dereference check proved
+strunb.ads:1011:68: info: index check proved
+strunb.ads:1012:06: info: data dependencies proved
+strunb.ads:1023:13: info: implicit aspect Always_Terminates on "Replace_Slice" has been proved, subprogram will terminate
+strunb.ads:1033:38: info: overflow check proved
+strunb.ads:1033:42: info: range check proved
+strunb.ads:1034:23: info: overflow check proved
+strunb.ads:1034:54: info: overflow check proved
+strunb.ads:1035:57: info: overflow check proved
+strunb.ads:1035:61: info: range check proved
+strunb.ads:1043:09: info: contract case proved
+strunb.ads:1048:21: info: overflow check proved
+strunb.ads:1048:25: info: range check proved
+strunb.ads:1048:33: info: overflow check proved
+strunb.ads:1048:64: info: overflow check proved
+strunb.ads:1053:15: info: precondition proved
+strunb.ads:1054:17: info: precondition proved
+strunb.ads:1056:15: info: precondition proved
+strunb.ads:1056:57: info: overflow check proved
+strunb.ads:1056:61: info: range check proved
+strunb.ads:1064:18: info: precondition proved
+strunb.ads:1065:24: info: overflow check proved
+strunb.ads:1065:28: info: range check proved
+strunb.ads:1066:22: info: precondition proved
+strunb.ads:1066:42: info: overflow check proved
+strunb.ads:1071:09: info: contract case proved
+strunb.ads:1075:59: info: overflow check proved
+strunb.ads:1075:63: info: range check proved
+strunb.ads:1080:15: info: precondition proved
+strunb.ads:1081:17: info: precondition proved
+strunb.ads:1083:15: info: precondition proved
+strunb.ads:1083:57: info: overflow check proved
+strunb.ads:1083:61: info: range check proved
+strunb.ads:1091:17: info: precondition proved
+strunb.ads:1092:23: info: overflow check proved
+strunb.ads:1092:27: info: range check proved
+strunb.ads:1093:21: info: precondition proved
+strunb.ads:1094:06: info: data dependencies proved
+strunb.ads:1105:14: info: aspect Always_Terminates on "Replace_Slice" has been proved, subprogram will terminate
+strunb.ads:1115:38: info: overflow check proved
+strunb.ads:1115:42: info: range check proved
+strunb.ads:1116:23: info: overflow check proved
+strunb.ads:1116:54: info: overflow check proved
+strunb.ads:1117:57: info: overflow check proved
+strunb.ads:1117:61: info: range check proved
+strunb.ads:1125:09: info: contract case proved
+strunb.ads:1130:21: info: overflow check proved
+strunb.ads:1130:25: info: range check proved
+strunb.ads:1130:33: info: overflow check proved
+strunb.ads:1130:68: info: overflow check proved
+strunb.ads:1134:22: info: precondition proved
+strunb.ads:1135:15: info: precondition proved
+strunb.ads:1136:22: info: precondition proved
+strunb.ads:1136:50: info: overflow check proved
+strunb.ads:1136:54: info: range check proved
+strunb.ads:1143:21: info: precondition proved
+strunb.ads:1143:40: info: overflow check proved
+strunb.ads:1143:44: info: range check proved
+strunb.ads:1144:18: info: precondition proved
+strunb.ads:1149:57: info: overflow check proved
+strunb.ads:1155:09: info: contract case proved
+strunb.ads:1159:49: info: overflow check proved
+strunb.ads:1159:53: info: range check proved
+strunb.ads:1163:22: info: precondition proved
+strunb.ads:1164:15: info: precondition proved
+strunb.ads:1165:22: info: precondition proved
+strunb.ads:1165:50: info: overflow check proved
+strunb.ads:1165:54: info: range check proved
+strunb.ads:1172:21: info: precondition proved
+strunb.ads:1172:40: info: overflow check proved
+strunb.ads:1172:44: info: range check proved
+strunb.ads:1173:18: info: precondition proved
+strunb.ads:1174:06: info: data dependencies proved
+strunb.ads:1176:13: info: implicit aspect Always_Terminates on "Insert" has been proved, subprogram will terminate
+strunb.ads:1182:35: info: range check proved
+strunb.ads:1182:59: info: overflow check proved
+strunb.ads:1186:08: info: postcondition proved
+strunb.ads:1186:49: info: overflow check proved
+strunb.ads:1186:59: info: range check proved
+strunb.ads:1191:12: info: precondition proved
+strunb.ads:1191:51: info: precondition proved
+strunb.ads:1193:12: info: precondition proved
+strunb.ads:1193:53: info: overflow check proved
+strunb.ads:1193:63: info: range check proved
+strunb.ads:1201:15: info: precondition proved
+strunb.ads:1201:44: info: overflow check proved
+strunb.ads:1201:54: info: range check proved
+strunb.ads:1203:19: info: precondition proved
+strunb.ads:1204:06: info: data dependencies proved
+strunb.ads:1210:14: info: aspect Always_Terminates on "Insert" has been proved, subprogram will terminate
+strunb.ads:1216:35: info: range check proved
+strunb.ads:1216:59: info: overflow check proved
+strunb.ads:1220:08: info: postcondition proved
+strunb.ads:1220:46: info: overflow check proved
+strunb.ads:1220:56: info: range check proved
+strunb.ads:1225:12: info: precondition proved
+strunb.ads:1225:44: info: precondition proved
+strunb.ads:1227:12: info: precondition proved
+strunb.ads:1227:46: info: overflow check proved
+strunb.ads:1227:56: info: range check proved
+strunb.ads:1234:15: info: precondition proved
+strunb.ads:1234:37: info: overflow check proved
+strunb.ads:1234:47: info: range check proved
+strunb.ads:1235:17: info: precondition proved
+strunb.ads:1236:06: info: data dependencies proved
+strunb.ads:1238:13: info: implicit aspect Always_Terminates on "Overwrite" has been proved, subprogram will terminate
+strunb.ads:1244:35: info: range check proved
+strunb.ads:1244:59: info: overflow check proved
+strunb.ads:1248:08: info: postcondition proved
+strunb.ads:1249:53: info: overflow check proved
+strunb.ads:1249:63: info: range check proved
+strunb.ads:1254:12: info: precondition proved
+strunb.ads:1255:14: info: precondition proved
+strunb.ads:1257:12: info: precondition proved
+strunb.ads:1257:60: info: overflow check proved
+strunb.ads:1257:70: info: range check proved
+strunb.ads:1260:29: info: overflow check proved
+strunb.ads:1260:39: info: range check proved
+strunb.ads:1265:15: info: precondition proved
+strunb.ads:1266:26: info: overflow check proved
+strunb.ads:1266:36: info: range check proved
+strunb.ads:1267:19: info: precondition proved
+strunb.ads:1268:30: info: overflow check proved
+strunb.ads:1268:40: info: range check proved
+strunb.ads:1269:06: info: data dependencies proved
+strunb.ads:1271:14: info: aspect Always_Terminates on "Overwrite" has been proved, subprogram will terminate
+strunb.ads:1277:35: info: range check proved
+strunb.ads:1277:59: info: overflow check proved
+strunb.ads:1281:08: info: postcondition proved
+strunb.ads:1282:57: info: overflow check proved
+strunb.ads:1282:67: info: range check proved
+strunb.ads:1287:12: info: precondition proved
+strunb.ads:1287:46: info: precondition proved
+strunb.ads:1289:12: info: precondition proved
+strunb.ads:1289:50: info: overflow check proved
+strunb.ads:1289:60: info: range check proved
+strunb.ads:1291:29: info: overflow check proved
+strunb.ads:1291:39: info: range check proved
+strunb.ads:1296:15: info: precondition proved
+strunb.ads:1297:26: info: overflow check proved
+strunb.ads:1297:36: info: range check proved
+strunb.ads:1298:19: info: precondition proved
+strunb.ads:1303:38: info: overflow check proved
+strunb.ads:1303:48: info: range check proved
+strunb.ads:1304:36: info: overflow check proved
+strunb.ads:1304:46: info: range check proved
+strunb.ads:1307:06: info: data dependencies proved
+strunb.ads:1309:13: info: implicit aspect Always_Terminates on "Delete" has been proved, subprogram will terminate
+strunb.ads:1316:09: info: contract case proved
+strunb.ads:1318:22: info: overflow check proved
+strunb.ads:1318:53: info: overflow check proved
+strunb.ads:1320:15: info: precondition proved
+strunb.ads:1320:52: info: precondition proved
+strunb.ads:1323:18: info: precondition proved
+strunb.ads:1324:20: info: precondition proved
+strunb.ads:1324:43: info: overflow check proved
+strunb.ads:1325:09: info: contract case proved
+strunb.ads:1327:06: info: data dependencies proved
+strunb.ads:1329:14: info: aspect Always_Terminates on "Delete" has been proved, subprogram will terminate
+strunb.ads:1336:09: info: contract case proved
+strunb.ads:1338:22: info: overflow check proved
+strunb.ads:1338:57: info: overflow check proved
+strunb.ads:1340:15: info: precondition proved
+strunb.ads:1341:35: info: range check proved
+strunb.ads:1344:17: info: precondition proved
+strunb.ads:1345:37: info: range check proved
+strunb.ads:1345:51: info: overflow check proved
+strunb.ads:1346:09: info: contract case proved
+strunb.ads:1348:06: info: data dependencies proved
+strunb.ads:1350:13: info: implicit aspect Always_Terminates on "Trim" has been proved, subprogram will terminate
+strunb.ads:1358:09: info: contract case proved
 strunb.ads:1364:09: info: contract case proved
-strunb.ads:1370:09: info: contract case proved
-strunb.ads:1375:22: info: range check proved
-strunb.ads:1377:37: info: range check proved
-strunb.ads:1378:22: info: range check proved
-strunb.ads:1380:40: info: precondition proved
-strunb.ads:1381:06: info: data dependencies proved
-strunb.ads:1383:14: info: aspect Always_Terminates on "Trim" has been proved, subprogram will terminate
+strunb.ads:1369:22: info: range check proved
+strunb.ads:1371:37: info: range check proved
+strunb.ads:1372:22: info: range check proved
+strunb.ads:1374:40: info: precondition proved
+strunb.ads:1375:06: info: data dependencies proved
+strunb.ads:1377:14: info: aspect Always_Terminates on "Trim" has been proved, subprogram will terminate
+strunb.ads:1385:09: info: contract case proved
 strunb.ads:1391:09: info: contract case proved
-strunb.ads:1397:09: info: contract case proved
-strunb.ads:1402:55: info: range check proved
-strunb.ads:1404:52: info: range check proved
-strunb.ads:1405:56: info: range check proved
-strunb.ads:1407:53: info: range check proved
-strunb.ads:1408:06: info: data dependencies proved
-strunb.ads:1410:13: info: implicit aspect Always_Terminates on "Trim" has been proved, subprogram will terminate
-strunb.ads:1419:09: info: contract case proved
-strunb.ads:1427:09: info: contract case proved
-strunb.ads:1431:16: info: range check proved
-strunb.ads:1433:16: info: range check proved
-strunb.ads:1435:40: info: precondition proved
-strunb.ads:1436:06: info: data dependencies proved
-strunb.ads:1438:14: info: aspect Always_Terminates on "Trim" has been proved, subprogram will terminate
-strunb.ads:1447:09: info: contract case proved
-strunb.ads:1455:09: info: contract case proved
-strunb.ads:1459:54: info: range check proved
-strunb.ads:1461:56: info: range check proved
-strunb.ads:1463:53: info: range check proved
-strunb.ads:1464:06: info: data dependencies proved
-strunb.ads:1466:13: info: implicit aspect Always_Terminates on "Head" has been proved, subprogram will terminate
-strunb.ads:1471:24: info: postcondition proved
+strunb.ads:1396:55: info: range check proved
+strunb.ads:1398:52: info: range check proved
+strunb.ads:1399:56: info: range check proved
+strunb.ads:1401:53: info: range check proved
+strunb.ads:1402:06: info: data dependencies proved
+strunb.ads:1404:13: info: implicit aspect Always_Terminates on "Trim" has been proved, subprogram will terminate
+strunb.ads:1413:09: info: contract case proved
+strunb.ads:1421:09: info: contract case proved
+strunb.ads:1425:16: info: range check proved
+strunb.ads:1427:16: info: range check proved
+strunb.ads:1429:40: info: precondition proved
+strunb.ads:1430:06: info: data dependencies proved
+strunb.ads:1432:14: info: aspect Always_Terminates on "Trim" has been proved, subprogram will terminate
+strunb.ads:1441:09: info: contract case proved
+strunb.ads:1449:09: info: contract case proved
+strunb.ads:1453:54: info: range check proved
+strunb.ads:1455:56: info: range check proved
+strunb.ads:1457:53: info: range check proved
+strunb.ads:1458:06: info: data dependencies proved
+strunb.ads:1460:13: info: implicit aspect Always_Terminates on "Head" has been proved, subprogram will terminate
+strunb.ads:1465:24: info: postcondition proved
+strunb.ads:1467:09: info: contract case proved
+strunb.ads:1471:37: info: precondition proved
 strunb.ads:1473:09: info: contract case proved
-strunb.ads:1477:37: info: precondition proved
-strunb.ads:1479:09: info: contract case proved
-strunb.ads:1483:11: info: precondition proved
-strunb.ads:1485:15: info: precondition proved
-strunb.ads:1485:51: info: overflow check proved
-strunb.ads:1486:17: info: range check proved
-strunb.ads:1486:20: info: range check proved
-strunb.ads:1486:29: info: overflow check proved
-strunb.ads:1487:06: info: data dependencies proved
-strunb.ads:1489:14: info: aspect Always_Terminates on "Head" has been proved, subprogram will terminate
-strunb.ads:1494:24: info: postcondition proved
+strunb.ads:1477:11: info: precondition proved
+strunb.ads:1479:15: info: precondition proved
+strunb.ads:1479:51: info: overflow check proved
+strunb.ads:1480:17: info: range check proved
+strunb.ads:1480:20: info: range check proved
+strunb.ads:1480:29: info: overflow check proved
+strunb.ads:1481:06: info: data dependencies proved
+strunb.ads:1483:14: info: aspect Always_Terminates on "Head" has been proved, subprogram will terminate
+strunb.ads:1488:24: info: postcondition proved
+strunb.ads:1490:09: info: contract case proved
+strunb.ads:1494:32: info: precondition proved
 strunb.ads:1496:09: info: contract case proved
-strunb.ads:1500:32: info: precondition proved
-strunb.ads:1502:09: info: contract case proved
-strunb.ads:1506:11: info: precondition proved
-strunb.ads:1508:15: info: precondition proved
-strunb.ads:1508:50: info: overflow check proved
-strunb.ads:1509:17: info: range check proved
-strunb.ads:1509:20: info: range check proved
-strunb.ads:1509:29: info: overflow check proved
-strunb.ads:1510:06: info: data dependencies proved
-strunb.ads:1512:13: info: implicit aspect Always_Terminates on "Tail" has been proved, subprogram will terminate
-strunb.ads:1517:24: info: postcondition proved
-strunb.ads:1518:06: info: disjoint contract or exit cases proved
-strunb.ads:1519:09: info: contract case proved
-strunb.ads:1523:09: info: contract case proved
-strunb.ads:1528:13: info: precondition proved
-strunb.ads:1528:44: info: overflow check proved
-strunb.ads:1528:52: info: overflow check proved
-strunb.ads:1528:52: info: range check proved
-strunb.ads:1530:09: info: contract case proved
-strunb.ads:1535:39: info: range check proved
-strunb.ads:1535:42: info: range check proved
-strunb.ads:1537:13: info: precondition proved
-strunb.ads:1537:42: info: overflow check proved
-strunb.ads:1537:42: info: range check proved
-strunb.ads:1538:15: info: range check proved
-strunb.ads:1538:18: info: range check proved
-strunb.ads:1538:27: info: overflow check proved
-strunb.ads:1540:17: info: precondition proved
-strunb.ads:1540:43: info: overflow check proved
-strunb.ads:1540:61: info: overflow check proved
-strunb.ads:1540:61: info: range check proved
-strunb.ads:1542:06: info: data dependencies proved
-strunb.ads:1544:14: info: aspect Always_Terminates on "Tail" has been proved, subprogram will terminate
-strunb.ads:1549:24: info: postcondition proved
-strunb.ads:1550:06: info: disjoint contract or exit cases proved
-strunb.ads:1551:09: info: contract case proved
-strunb.ads:1555:09: info: contract case proved
-strunb.ads:1560:13: info: precondition proved
-strunb.ads:1565:65: info: overflow check proved
-strunb.ads:1565:73: info: overflow check proved
-strunb.ads:1565:73: info: range check proved
-strunb.ads:1569:09: info: contract case proved
-strunb.ads:1574:34: info: range check proved
-strunb.ads:1574:37: info: range check proved
-strunb.ads:1576:13: info: precondition proved
-strunb.ads:1576:37: info: overflow check proved
-strunb.ads:1576:37: info: range check proved
-strunb.ads:1577:15: info: range check proved
-strunb.ads:1577:18: info: range check proved
-strunb.ads:1577:27: info: overflow check proved
-strunb.ads:1579:17: info: precondition proved
-strunb.ads:1579:38: info: overflow check proved
-strunb.ads:1579:60: info: overflow check proved
-strunb.ads:1579:60: info: range check proved
-strunb.ads:1581:06: info: data dependencies proved
-strunb.ads:1583:13: info: implicit aspect Always_Terminates on overriding operator "*" has been proved, subprogram will terminate
-strunb.ads:1588:16: info: postcondition proved
-strunb.ads:1588:41: info: range check proved
-strunb.ads:1588:44: info: range check proved
-strunb.ads:1589:06: info: data dependencies proved
-strunb.ads:1591:13: info: implicit aspect Always_Terminates on overriding operator "*" has been proved, subprogram will terminate
-strunb.ads:1595:40: info: range check proved
-strunb.ads:1595:64: info: division check proved
-strunb.ads:1597:08: info: postcondition proved
-strunb.ads:1597:35: info: overflow check proved
-strunb.ads:1597:42: info: range check proved
-strunb.ads:1600:39: info: overflow check proved
-strunb.ads:1600:46: info: range check proved
-strunb.ads:1601:18: info: precondition proved
-strunb.ads:1602:39: info: index check proved
-strunb.ads:1602:39: info: overflow check proved
-strunb.ads:1602:49: info: division check proved
-strunb.ads:1602:58: info: range check proved
-strunb.ads:1603:06: info: data dependencies proved
-strunb.ads:1605:13: info: implicit aspect Always_Terminates on overriding operator "*" has been proved, subprogram will terminate
-strunb.ads:1609:66: info: division check proved
-strunb.ads:1611:08: info: postcondition proved
-strunb.ads:1611:35: info: overflow check proved
-strunb.ads:1614:39: info: overflow check proved
-strunb.ads:1615:18: info: precondition proved
-strunb.ads:1616:20: info: precondition proved
-strunb.ads:1616:38: info: overflow check proved
-strunb.ads:1616:48: info: division check proved
-strunb.ads:1617:06: info: data dependencies proved
-strunb.ads:1645:17: info: pointer dereference check proved
-strunb.ads:1646:36: info: pointer dereference check proved
-strunb.ads:1647:17: info: pointer dereference check proved
-strunb.ads:1647:17: info: range check proved
-strunb.ads:1670:14: info: aspect Always_Terminates on "Realloc_For_Chunk" has been proved, subprogram will terminate
-strunb.ads:1674:42: info: overflow check proved
-strunb.ads:1675:14: info: postcondition proved
-strunb.ads:1675:20: info: pointer dereference check proved
-strunb.ads:1675:30: info: range check proved
-strunb.ads:1675:57: info: overflow check proved
-strunb.ads:1677:23: info: initialization check proved
-strunb.ads:1677:23: info: pointer dereference check proved
-strunb.ads:1677:23: info: range check proved
-strunb.ads:1678:16: info: pointer dereference check proved
-strunb.ads:1678:16: info: range check proved
-strunb.ads:1678:45: info: initialization check proved
-strunb.ads:1688:30: info: predicate check proved
+strunb.ads:1500:11: info: precondition proved
+strunb.ads:1502:15: info: precondition proved
+strunb.ads:1502:50: info: overflow check proved
+strunb.ads:1503:17: info: range check proved
+strunb.ads:1503:20: info: range check proved
+strunb.ads:1503:29: info: overflow check proved
+strunb.ads:1504:06: info: data dependencies proved
+strunb.ads:1506:13: info: implicit aspect Always_Terminates on "Tail" has been proved, subprogram will terminate
+strunb.ads:1511:24: info: postcondition proved
+strunb.ads:1512:06: info: disjoint contract or exit cases proved
+strunb.ads:1513:09: info: contract case proved
+strunb.ads:1517:09: info: contract case proved
+strunb.ads:1522:13: info: precondition proved
+strunb.ads:1522:44: info: overflow check proved
+strunb.ads:1522:52: info: overflow check proved
+strunb.ads:1522:52: info: range check proved
+strunb.ads:1524:09: info: contract case proved
+strunb.ads:1529:39: info: range check proved
+strunb.ads:1529:42: info: range check proved
+strunb.ads:1531:13: info: precondition proved
+strunb.ads:1531:42: info: overflow check proved
+strunb.ads:1531:42: info: range check proved
+strunb.ads:1532:15: info: range check proved
+strunb.ads:1532:18: info: range check proved
+strunb.ads:1532:27: info: overflow check proved
+strunb.ads:1534:17: info: precondition proved
+strunb.ads:1534:43: info: overflow check proved
+strunb.ads:1534:61: info: overflow check proved
+strunb.ads:1534:61: info: range check proved
+strunb.ads:1536:06: info: data dependencies proved
+strunb.ads:1538:14: info: aspect Always_Terminates on "Tail" has been proved, subprogram will terminate
+strunb.ads:1543:24: info: postcondition proved
+strunb.ads:1544:06: info: disjoint contract or exit cases proved
+strunb.ads:1545:09: info: contract case proved
+strunb.ads:1549:09: info: contract case proved
+strunb.ads:1554:13: info: precondition proved
+strunb.ads:1559:65: info: overflow check proved
+strunb.ads:1559:73: info: overflow check proved
+strunb.ads:1559:73: info: range check proved
+strunb.ads:1563:09: info: contract case proved
+strunb.ads:1568:34: info: range check proved
+strunb.ads:1568:37: info: range check proved
+strunb.ads:1570:13: info: precondition proved
+strunb.ads:1570:37: info: overflow check proved
+strunb.ads:1570:37: info: range check proved
+strunb.ads:1571:15: info: range check proved
+strunb.ads:1571:18: info: range check proved
+strunb.ads:1571:27: info: overflow check proved
+strunb.ads:1573:17: info: precondition proved
+strunb.ads:1573:38: info: overflow check proved
+strunb.ads:1573:60: info: overflow check proved
+strunb.ads:1573:60: info: range check proved
+strunb.ads:1575:06: info: data dependencies proved
+strunb.ads:1577:13: info: implicit aspect Always_Terminates on overriding operator "*" has been proved, subprogram will terminate
+strunb.ads:1582:16: info: postcondition proved
+strunb.ads:1582:41: info: range check proved
+strunb.ads:1582:44: info: range check proved
+strunb.ads:1583:06: info: data dependencies proved
+strunb.ads:1585:13: info: implicit aspect Always_Terminates on overriding operator "*" has been proved, subprogram will terminate
+strunb.ads:1589:40: info: range check proved
+strunb.ads:1589:64: info: division check proved
+strunb.ads:1591:08: info: postcondition proved
+strunb.ads:1591:35: info: overflow check proved
+strunb.ads:1591:42: info: range check proved
+strunb.ads:1594:39: info: overflow check proved
+strunb.ads:1594:46: info: range check proved
+strunb.ads:1595:18: info: precondition proved
+strunb.ads:1596:39: info: index check proved
+strunb.ads:1596:39: info: overflow check proved
+strunb.ads:1596:49: info: division check proved
+strunb.ads:1596:58: info: range check proved
+strunb.ads:1597:06: info: data dependencies proved
+strunb.ads:1599:13: info: implicit aspect Always_Terminates on overriding operator "*" has been proved, subprogram will terminate
+strunb.ads:1603:66: info: division check proved
+strunb.ads:1605:08: info: postcondition proved
+strunb.ads:1605:35: info: overflow check proved
+strunb.ads:1608:39: info: overflow check proved
+strunb.ads:1609:18: info: precondition proved
+strunb.ads:1610:20: info: precondition proved
+strunb.ads:1610:38: info: overflow check proved
+strunb.ads:1610:48: info: division check proved
+strunb.ads:1611:06: info: data dependencies proved
+strunb.ads:1639:17: info: pointer dereference check proved
+strunb.ads:1640:36: info: pointer dereference check proved
+strunb.ads:1641:17: info: pointer dereference check proved
+strunb.ads:1641:17: info: range check proved
+strunb.ads:1664:14: info: aspect Always_Terminates on "Realloc_For_Chunk" has been proved, subprogram will terminate
+strunb.ads:1668:42: info: overflow check proved
+strunb.ads:1669:14: info: postcondition proved
+strunb.ads:1669:20: info: pointer dereference check proved
+strunb.ads:1669:30: info: range check proved
+strunb.ads:1669:57: info: overflow check proved
+strunb.ads:1671:23: info: initialization check proved
+strunb.ads:1671:23: info: pointer dereference check proved
+strunb.ads:1671:23: info: range check proved
+strunb.ads:1672:16: info: pointer dereference check proved
+strunb.ads:1672:16: info: range check proved
+strunb.ads:1672:45: info: initialization check proved
+strunb.ads:1682:30: info: predicate check proved
