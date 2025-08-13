@@ -196,18 +196,10 @@ spark2014_nocache:
      - cpu:16
   stage: test
   script:
-    # Setup the sandbox
     - *setup_repos
-
-    # Deploy the installed package
     - *deploy_package
-
-    # Test using anod
     - anod run $ANOD_TARGET
-
-    # Process the results
-    - cp -r  $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$BUILDSPACE/results/new $CI_PROJECT_DIR/__results-$BUILDSPACE
-    - e3-testsuite-report --failure-exit-code 1 --xunit-output $CI_PROJECT_DIR/xunit-$BUILDSPACE.xml $CI_PROJECT_DIR/__results-$BUILDSPACE --xunit-name $BUILDSPACE
+    - testsuite_reports
 
   artifacts:
      paths:
@@ -224,7 +216,6 @@ acats:
     - when: never
   variables:
     GENERIC_ANOD_CI_OPTIONS: "--add-dep eng/toolchain/acats"
-    BUILDSPACE: acats-4-gnatprove-baseline_assertions_coverage_test
     ANOD_TARGET: test_acats
 
 sparklib:
@@ -235,7 +226,6 @@ sparklib:
     - when: never
   variables:
     GENERIC_ANOD_CI_OPTIONS: "--add-dep eng/spark/sparklib"
-    BUILDSPACE: sparklib_assertions_large_test
     ANOD_TARGET: test_sparklib
 
 ################
