@@ -42,7 +42,6 @@ with GPR2.Build.Compilation_Unit;
 with GPR2.Build.Compilation_Unit.Maps;
 with GPR2.Build.Source;
 with GPR2.Build.View_Db;
-with GPR2.KB;
 with GPR2.Log;
 with GPR2.Message;
 with GPR2.Options;
@@ -314,9 +313,7 @@ package body Configuration is
       --  as Project.Tree.Target_Name, that we have to normalize first. There
       --  is nothing to check for the native target.
 
-      if View.Tree.Target
-        /= View.Tree.Get_KB.Normalized_Target (Project.Tree.Target_Name)
-      then
+      if View.Tree.Is_Cross_Target then
          --  User has already set the attribute, don't try anything smart
          if Has_gnateT_Switch (View) then
             return "";
@@ -806,6 +803,10 @@ package body Configuration is
            (Config,
             CL_Switches.Print_Gpr_Registry'Access,
             Long_Switch => GPR2.Options.Print_GPR_Registry_Option);
+         Define_Switch
+           (Config, CL_Switches.Config'Access, Long_Switch => "--config=");
+         Define_Switch
+           (Config, CL_Switches.Autoconf'Access, Long_Switch => "--autoconf=");
       end if;
 
       if Mode in Project_Parsing | All_Switches | Global_Switches_Only then
@@ -1640,6 +1641,12 @@ package body Configuration is
 
          Proj_Opt.Add_Switch
            (Options.Subdirs, Phase2_Subdir.Display_Full_Name);
+         if not Null_Or_Empty_String (CL_Switches.Config) then
+            Proj_Opt.Add_Switch (Options.Config, CL_Switches.Config.all);
+         end if;
+         if not Null_Or_Empty_String (CL_Switches.Autoconf) then
+            Proj_Opt.Add_Switch (Options.Autoconf, CL_Switches.Autoconf.all);
+         end if;
          Project.Registry.Pack.Add
            (+"Prove", Project.Registry.Pack.Everywhere);
          Project.Registry.Pack.Description.Set_Package_Description
@@ -2943,7 +2950,6 @@ package body Configuration is
                  .Display_Full_Name);
          end if;
       end;
-
       Sanitize_File_List (Tree);
    end Read_Command_Line;
 
