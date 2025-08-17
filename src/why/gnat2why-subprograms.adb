@@ -6779,15 +6779,12 @@ package body Gnat2Why.Subprograms is
             Dep           : constant W_Axiom_Dep_Id :=
               New_Axiom_Dep (Name => Id, Kind => EW_Axdep_Func);
          begin
-            if Is_True_Boolean (+Complete_Post) then
-               return;
-
             --  If we have a specific guard, generate:
             --  forall spec_binders [spec_guard].
             --    spec_guard <->
             --      (forall binders [call]. Guard /\ Pre -> Def)
 
-            elsif not Is_True_Boolean (+Spec_Guard) then
+            if not Is_True_Boolean (+Spec_Guard) then
                Emit
                  (Th,
                   New_Guarded_Axiom

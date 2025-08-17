@@ -10,5 +10,5 @@ stacks.ads:21:40: medium: overflow check might fail, cannot prove upper bound fo
 stacks.ads:27:13: info: implicit aspect Always_Terminates on "Peer" has been proved, subprogram will terminate
 stacks.ads:34:07: info: range check proved (CVC5: 2 VC)
 stacks.ads:34:37: info: in default value of private type at stacks.ads:11
-stacks.ads:34:37: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+stacks.ads:34:37: info: length check proved (CVC5: 3 VC)
 stacks.ads:43:58: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (S.Top in 1 .. Max) to subprogram at line 27]

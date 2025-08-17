@@ -1,6 +1,6 @@
 e.adb:4:28: info: initialization of "Y" proved
 e.adb:12:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
-e.adb:13:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+e.adb:13:09: info: length check proved (CVC5: 3 VC)
 main.adb:15:19: high: "R.N" is not initialized in "Foo" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R.N" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 q.adb:20:22: medium: "X" is not set
 q.adb:20:22: medium: range check might fail [reason for check: slice bounds must fit in the underlying array]

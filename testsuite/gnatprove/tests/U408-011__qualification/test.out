@@ -1,7 +1,7 @@
 test_qualif.adb:2:25: info: data dependencies proved
 test_qualif.adb:5:16: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test_qualif.adb:7:07: info: range check proved (CVC5: 2 VC)
-test_qualif.adb:7:40: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test_qualif.adb:7:40: info: length check proved (CVC5: 3 VC)
 test_qualif.adb:7:40: info: range check proved (CVC5: 2 VC)
 test_qualif.adb:8:32: info: range check proved (CVC5: 1 VC)
 test_qualif.adb:8:32: medium: predicate check might fail

@@ -12,7 +12,7 @@ empty_type.adb:25:15: medium: range check might fail, cannot prove upper bound f
 empty_type.adb:32:04: info: precondition proved (CVC5: 1 VC)
 init_by_proof.adb:11:44: info: initialization of "Error" proved
 init_by_proof.adb:13:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
-init_by_proof.adb:16:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+init_by_proof.adb:16:09: info: length check proved (CVC5: 3 VC)
 init_by_proof.adb:22:20: info: initialization of "Error" proved
 init_by_proof.adb:23:19: info: range check proved (CVC5: 2 VC)
 init_by_proof.adb:24:14: info: postcondition proved (CVC5: 1 VC; Trivial: 2 VC)

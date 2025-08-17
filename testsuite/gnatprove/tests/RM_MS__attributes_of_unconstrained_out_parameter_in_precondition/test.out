@@ -1,4 +1,4 @@
-p.adb:6:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+p.adb:6:09: info: length check proved (CVC5: 3 VC)
 p.adb:6:13: info: range check proved (CVC5: 2 VC)
 p.adb:6:26: info: range check proved (CVC5: 2 VC)
 p.ads:8:20: info: initialization of "X" proved

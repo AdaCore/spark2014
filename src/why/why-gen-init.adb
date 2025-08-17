@@ -276,9 +276,7 @@ package body Why.Gen.Init is
                --  initialization checks already performed.
 
             begin
-               if not Is_True_Boolean (+Typ_Pred) then
-                  P := New_And_Pred (Left => P, Right => Typ_Pred);
-               end if;
+               P := New_And_Pred (Left => P, Right => Typ_Pred);
             end;
          end if;
 
