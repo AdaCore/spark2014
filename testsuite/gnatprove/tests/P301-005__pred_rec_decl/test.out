@@ -68,8 +68,6 @@ preds.ads:36:23: info: in default value at preds.adb:34
 preds.ads:36:23: info: range check proved (CVC5: 2 VC)
 preds.ads:38:34: info: initialization of "X" proved
 preds.ads:39:35: info: initialization of "X" proved
-preds.ads:43:57: info: index check proved (CVC5: 2 VC)
-preds.ads:47:59: info: index check proved (CVC5: 2 VC)
 preds.ads:49:29: info: initialization of "X" proved
 preds.ads:50:30: info: initialization of "X" proved
 preds.ads:54:07: info: in default initialization of component "X" at preds.ads:54
