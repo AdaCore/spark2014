@@ -29,7 +29,7 @@ input.adb:269:27: info: cannot unroll loop (too many loop iterations) [info-unro
 input.adb:270:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 input.adb:270:16: info: index check proved (CVC5: 2 VC)
 input.adb:270:59: info: index check proved (CVC5: 2 VC)
-input.adb:273:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+input.adb:273:12: info: length check proved (CVC5: 3 VC)
 input.adb:273:17: low: range check might fail, cannot prove upper bound for S & (1 .. V'Length - S'Length => ' ') [reason for check: result of concatenation must fit in the target type of the assignment] [possible fix: loop at line 269 should mention S in a loop invariant]
 input.adb:273:19: info: range check proved (CVC5: 2 VC)
 input.adb:273:22: info: range check proved (CVC5: 2 VC)

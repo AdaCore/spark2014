@@ -8,8 +8,8 @@ aco-math-very_longs.adb:43:16: medium: postcondition might fail [possible fix: l
 aco-math-very_longs.adb:45:07: info: initialization of "L_Digit" proved
 aco-math-very_longs.adb:46:07: info: initialization of "R_Digit" proved
 aco-math-very_longs.adb:47:07: info: initialization of "Sum" proved
-aco-math-very_longs.adb:49:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-aco-math-very_longs.adb:49:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+aco-math-very_longs.adb:49:26: info: length check proved (CVC5: 3 VC)
+aco-math-very_longs.adb:49:29: info: length check proved (CVC5: 3 VC)
 aco-math-very_longs.adb:51:36: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 aco-math-very_longs.adb:52:52: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:53:52: info: index check proved (CVC5: 2 VC)
@@ -22,8 +22,8 @@ aco-math-very_longs.adb:66:16: medium: postcondition might fail [possible fix: l
 aco-math-very_longs.adb:68:07: info: initialization of "L_Digit" proved
 aco-math-very_longs.adb:69:07: info: initialization of "R_Digit" proved
 aco-math-very_longs.adb:70:07: info: initialization of "Difference" proved
-aco-math-very_longs.adb:72:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-aco-math-very_longs.adb:72:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+aco-math-very_longs.adb:72:26: info: length check proved (CVC5: 3 VC)
+aco-math-very_longs.adb:72:29: info: length check proved (CVC5: 3 VC)
 aco-math-very_longs.adb:74:36: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 aco-math-very_longs.adb:75:55: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:76:55: info: index check proved (CVC5: 2 VC)
@@ -32,8 +32,8 @@ aco-math-very_longs.adb:83:29: medium: array index check might fail [reason for 
 aco-math-very_longs.adb:97:07: info: initialization of "Result" proved
 aco-math-very_longs.adb:97:26: info: range check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:98:07: info: initialization of "Temp" proved
-aco-math-very_longs.adb:100:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-aco-math-very_longs.adb:100:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+aco-math-very_longs.adb:100:26: info: length check proved (CVC5: 3 VC)
+aco-math-very_longs.adb:100:29: info: length check proved (CVC5: 3 VC)
 aco-math-very_longs.adb:102:45: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 aco-math-very_longs.adb:103:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 aco-math-very_longs.adb:103:29: info: index check proved (CVC5: 2 VC)
@@ -46,8 +46,8 @@ aco-math-very_longs.adb:114:07: info: initialization of "H_Digit" proved
 aco-math-very_longs.adb:115:07: info: initialization of "L_Digit" proved
 aco-math-very_longs.adb:116:07: info: initialization of "H_Okay" proved
 aco-math-very_longs.adb:117:07: info: initialization of "L_Okay" proved
-aco-math-very_longs.adb:119:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-aco-math-very_longs.adb:119:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+aco-math-very_longs.adb:119:26: info: length check proved (CVC5: 3 VC)
+aco-math-very_longs.adb:119:29: info: length check proved (CVC5: 3 VC)
 aco-math-very_longs.adb:122:41: info: range check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:123:29: info: range check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:125:32: info: loop invariant preservation proved (CVC5: 1 VC)
@@ -76,8 +76,8 @@ aco-math-very_longs.adb:196:07: info: initialization of "L_Digit" proved
 aco-math-very_longs.adb:197:07: info: initialization of "R_Digit" proved
 aco-math-very_longs.adb:198:07: info: initialization of "Sum" proved
 aco-math-very_longs.adb:199:07: info: initialization of "Carry" proved
-aco-math-very_longs.adb:201:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-aco-math-very_longs.adb:201:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+aco-math-very_longs.adb:201:26: info: length check proved (CVC5: 3 VC)
+aco-math-very_longs.adb:201:29: info: length check proved (CVC5: 3 VC)
 aco-math-very_longs.adb:203:36: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 aco-math-very_longs.adb:204:52: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:205:52: info: index check proved (CVC5: 2 VC)
@@ -89,8 +89,8 @@ aco-math-very_longs.adb:216:07: info: initialization of "L_Digit" proved
 aco-math-very_longs.adb:217:07: info: initialization of "R_Digit" proved
 aco-math-very_longs.adb:218:07: info: initialization of "Difference" proved
 aco-math-very_longs.adb:219:07: info: initialization of "Borrow" proved
-aco-math-very_longs.adb:221:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-aco-math-very_longs.adb:221:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+aco-math-very_longs.adb:221:26: info: length check proved (CVC5: 3 VC)
+aco-math-very_longs.adb:221:29: info: length check proved (CVC5: 3 VC)
 aco-math-very_longs.adb:223:36: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 aco-math-very_longs.adb:224:55: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:225:55: info: index check proved (CVC5: 2 VC)
@@ -103,8 +103,8 @@ aco-math-very_longs.adb:244:07: info: initialization of "R_Digit" proved
 aco-math-very_longs.adb:245:07: info: initialization of "T_Digit" proved
 aco-math-very_longs.adb:246:07: info: initialization of "Temp" proved
 aco-math-very_longs.adb:247:07: info: initialization of "Carry" proved
-aco-math-very_longs.adb:250:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-aco-math-very_longs.adb:250:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+aco-math-very_longs.adb:250:26: info: length check proved (CVC5: 3 VC)
+aco-math-very_longs.adb:250:29: info: length check proved (CVC5: 3 VC)
 aco-math-very_longs.adb:253:36: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 aco-math-very_longs.adb:255:39: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 aco-math-very_longs.adb:256:55: info: index check proved (CVC5: 2 VC)
@@ -123,8 +123,8 @@ aco-math-very_longs.adb:273:07: info: initialization of "R_Digit" proved
 aco-math-very_longs.adb:274:07: info: initialization of "T_Digit" proved
 aco-math-very_longs.adb:275:07: info: initialization of "Temp" proved
 aco-math-very_longs.adb:276:07: info: initialization of "Carry" proved
-aco-math-very_longs.adb:279:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-aco-math-very_longs.adb:279:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+aco-math-very_longs.adb:279:26: info: length check proved (CVC5: 3 VC)
+aco-math-very_longs.adb:279:29: info: length check proved (CVC5: 3 VC)
 aco-math-very_longs.adb:282:36: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 aco-math-very_longs.adb:284:39: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 aco-math-very_longs.adb:285:56: info: index check proved (CVC5: 2 VC)
@@ -174,8 +174,8 @@ aco-math-very_longs.adb:361:11: info: flow dependencies proved
 aco-math-very_longs.adb:362:60: medium: overflow check might fail, cannot prove upper bound for Number.Octet_Length + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 aco-math-very_longs.adb:365:10: info: initialization of "New_Overflow" proved
 aco-math-very_longs.adb:366:10: info: initialization of "Overflow_Mask" proved
-aco-math-very_longs.adb:368:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-aco-math-very_longs.adb:368:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+aco-math-very_longs.adb:368:29: info: length check proved (CVC5: 3 VC)
+aco-math-very_longs.adb:368:32: info: length check proved (CVC5: 3 VC)
 aco-math-very_longs.adb:370:44: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 aco-math-very_longs.adb:371:77: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:372:19: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
@@ -268,10 +268,10 @@ aco-math-very_longs.adb:500:29: info: overflow check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:500:33: info: index check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:500:57: info: overflow check proved (CVC5: 2 VC)
 aco-math-very_longs.adb:500:61: info: index check proved (CVC5: 2 VC)
-aco-math-very_longs.adb:505:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-aco-math-very_longs.adb:505:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-aco-math-very_longs.adb:506:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-aco-math-very_longs.adb:506:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+aco-math-very_longs.adb:505:29: info: length check proved (CVC5: 3 VC)
+aco-math-very_longs.adb:505:32: info: length check proved (CVC5: 3 VC)
+aco-math-very_longs.adb:506:29: info: length check proved (CVC5: 3 VC)
+aco-math-very_longs.adb:506:32: info: length check proved (CVC5: 3 VC)
 aco-math-very_longs.adb:509:12: info: precondition proved (CVC5: 1 VC)
 aco-math-very_longs.adb:509:29: medium: overflow check might fail, cannot prove upper bound for Get_MSD(Divisor) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Get_MSD(Divisor) <= 2147483647 - 1) to subprogram at aco-math-very_longs.ads:75]
 aco-math-very_longs.adb:509:29: medium: range check might fail, cannot prove upper bound for Get_MSD(Divisor) + 1 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: add precondition (Get_MSD(Divisor) <= Divisor_Digits_Count_Type'Last - 1) to subprogram at aco-math-very_longs.ads:75]

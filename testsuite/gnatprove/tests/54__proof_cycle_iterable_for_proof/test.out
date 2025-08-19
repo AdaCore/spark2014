@@ -20,7 +20,7 @@ contains_through_model.ads:33:51: info: overflow check proved (CVC5: 2 VC)
 contains_through_model.ads:37:21: info: index check proved (CVC5: 2 VC)
 contains_through_model.ads:43:22: info: range check proved (CVC5: 2 VC)
 contains_through_model.ads:43:36: info: range check proved (CVC5: 2 VC)
-contains_through_model.ads:43:54: info: length check proved (CVC5: 2 VC; Trivial: 2 VC)
+contains_through_model.ads:43:54: info: length check proved (CVC5: 2 VC; Trivial: 1 VC)
 contains_through_model.ads:55:16: info: during checks for quantification at contains_through_model.ads:69
 contains_through_model.ads:55:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
 contains_through_model.ads:55:16: info: precondition proved (Trivial: 1 VC)
@@ -42,7 +42,7 @@ contains_through_model.ads:74:51: info: overflow check proved (CVC5: 2 VC)
 contains_through_model.ads:78:21: info: index check proved (CVC5: 2 VC)
 contains_through_model.ads:84:22: info: range check proved (CVC5: 2 VC)
 contains_through_model.ads:84:36: info: range check proved (CVC5: 2 VC)
-contains_through_model.ads:84:54: info: length check proved (CVC5: 2 VC; Trivial: 2 VC)
+contains_through_model.ads:84:54: info: length check proved (CVC5: 2 VC; Trivial: 1 VC)
 contains_through_model.ads:96:16: info: during checks for quantification at contains_through_model.ads:111
 contains_through_model.ads:96:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
 contains_through_model.ads:96:16: info: precondition proved (Trivial: 1 VC)
@@ -81,7 +81,7 @@ element_through_model.ads:31:51: info: overflow check proved (CVC5: 2 VC)
 element_through_model.ads:35:21: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Element_Through_Model_Id (Integer (Y)) in F .. L) to subprogram at line 19]
 element_through_model.ads:39:22: info: range check proved (CVC5: 2 VC)
 element_through_model.ads:39:36: info: range check proved (CVC5: 2 VC)
-element_through_model.ads:39:54: info: length check proved (CVC5: 2 VC; Trivial: 2 VC)
+element_through_model.ads:39:54: info: length check proved (CVC5: 2 VC; Trivial: 1 VC)
 element_through_model.ads:51:16: info: during checks for quantification at element_through_model.ads:65
 element_through_model.ads:51:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
 element_through_model.ads:51:16: info: precondition proved (Trivial: 1 VC)
@@ -103,7 +103,7 @@ element_through_model.ads:70:51: info: overflow check proved (CVC5: 2 VC)
 element_through_model.ads:74:21: info: index check proved (CVC5: 2 VC)
 element_through_model.ads:80:22: info: range check proved (CVC5: 2 VC)
 element_through_model.ads:80:36: info: range check proved (CVC5: 2 VC)
-element_through_model.ads:80:54: info: length check proved (CVC5: 2 VC; Trivial: 2 VC)
+element_through_model.ads:80:54: info: length check proved (CVC5: 2 VC; Trivial: 1 VC)
 element_through_model.ads:92:16: info: during checks for quantification at element_through_model.ads:107
 element_through_model.ads:92:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
 element_through_model.ads:92:16: info: precondition proved (Trivial: 1 VC)
@@ -141,7 +141,7 @@ good.adb:32:51: info: overflow check proved (CVC5: 2 VC)
 good.adb:36:21: info: index check proved (CVC5: 2 VC)
 good.adb:40:22: info: range check proved (CVC5: 2 VC)
 good.adb:40:36: info: range check proved (CVC5: 2 VC)
-good.adb:40:54: info: length check proved (CVC5: 2 VC; Trivial: 2 VC)
+good.adb:40:54: info: length check proved (CVC5: 2 VC; Trivial: 1 VC)
 good.adb:52:16: info: during checks for quantification at good.adb:65
 good.adb:52:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
 good.adb:52:16: info: precondition proved (Trivial: 1 VC)
@@ -184,7 +184,7 @@ has_element_through_model.ads:31:51: info: overflow check proved (CVC5: 2 VC)
 has_element_through_model.ads:35:21: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Integer (Y) in F .. L) to subprogram at line 19]
 has_element_through_model.ads:39:22: info: range check proved (CVC5: 2 VC)
 has_element_through_model.ads:39:36: info: range check proved (CVC5: 2 VC)
-has_element_through_model.ads:39:54: info: length check proved (CVC5: 2 VC; Trivial: 2 VC)
+has_element_through_model.ads:39:54: info: length check proved (CVC5: 2 VC; Trivial: 1 VC)
 has_element_through_model.ads:51:16: info: during checks for quantification at has_element_through_model.ads:65
 has_element_through_model.ads:51:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
 has_element_through_model.ads:51:16: info: precondition proved (Trivial: 1 VC)
@@ -206,7 +206,7 @@ has_element_through_model.ads:70:51: info: overflow check proved (CVC5: 2 VC)
 has_element_through_model.ads:74:21: info: index check proved (CVC5: 2 VC)
 has_element_through_model.ads:80:22: info: range check proved (CVC5: 2 VC)
 has_element_through_model.ads:80:36: info: range check proved (CVC5: 2 VC)
-has_element_through_model.ads:80:54: info: length check proved (CVC5: 2 VC; Trivial: 2 VC)
+has_element_through_model.ads:80:54: info: length check proved (CVC5: 2 VC; Trivial: 1 VC)
 has_element_through_model.ads:92:16: info: during checks for quantification at has_element_through_model.ads:107
 has_element_through_model.ads:92:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
 has_element_through_model.ads:92:16: info: precondition proved (Trivial: 1 VC)
@@ -244,7 +244,7 @@ main.adb:33:51: info: overflow check proved (CVC5: 2 VC)
 main.adb:37:21: info: index check proved (CVC5: 2 VC)
 main.adb:41:22: info: range check proved (CVC5: 2 VC)
 main.adb:41:36: info: range check proved (CVC5: 2 VC)
-main.adb:41:54: info: length check proved (CVC5: 2 VC; Trivial: 2 VC)
+main.adb:41:54: info: length check proved (CVC5: 2 VC; Trivial: 1 VC)
 main.adb:52:16: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate
 main.adb:53:16: error: iteration primitive shall not be recursive, (including implicitly so)
 main.adb:53:16: info: during checks for quantification at main.adb:65
@@ -374,7 +374,7 @@ p.ads:31:51: info: overflow check proved (CVC5: 2 VC)
 p.ads:35:21: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Integer (Y) in F .. L) to subprogram at line 19]
 p.ads:39:22: info: range check proved (CVC5: 2 VC)
 p.ads:39:36: info: range check proved (CVC5: 2 VC)
-p.ads:39:54: info: length check proved (CVC5: 2 VC; Trivial: 2 VC)
+p.ads:39:54: info: length check proved (CVC5: 2 VC; Trivial: 1 VC)
 p.ads:51:16: info: during checks for quantification at p.ads:66
 p.ads:51:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
 p.ads:51:16: info: precondition proved (Trivial: 1 VC)

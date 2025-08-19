@@ -1,5 +1,5 @@
 main.adb:7:06: info: data dependencies proved
-main.adb:10:16: medium: range check might fail [reason for check: high bound of empty array aggregate must be a valid value of the base type] [possible explanation: empty aggregates cannot be used if there is no element before the first element of their index type]
+main.adb:10:16: high: range check might fail
 main.adb:10:16: warning: Constraint_Error will be raised at run time [enabled by default]
 main.adb:10:16: warning: Pred of "Integer'First" [enabled by default]
 main.adb:17:06: info: data dependencies proved
