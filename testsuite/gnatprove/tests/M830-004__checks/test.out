@@ -35,25 +35,25 @@ do_checks.adb:161:39: high: range check might fail (e.g. when Zero = 0)
 do_checks.adb:161:39: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:161:40: info: range check proved (CVC5: 2 VC)
 do_checks.adb:161:60: medium: range check might fail [possible fix: add precondition (Zero .. 1 in Positive) to subprogram at line 5]
-do_checks.adb:167:38: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+do_checks.adb:167:38: info: length check proved (CVC5: 3 VC)
 do_checks.adb:167:38: info: range check proved (CVC5: 2 VC)
 do_checks.adb:167:39: info: range check proved (CVC5: 2 VC)
 do_checks.adb:167:59: info: range check proved (CVC5: 2 VC)
 do_checks.adb:167:67: high: overflow check might fail, cannot prove lower bound for Zero - 1 (e.g. when Zero = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
 do_checks.adb:167:67: medium: overflow check might fail, cannot prove lower bound for Zero - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
 do_checks.adb:210:32: warning: "Y" is not modified, could be IN
-do_checks.adb:212:21: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+do_checks.adb:212:21: info: length check proved (CVC5: 3 VC)
 do_checks.adb:212:26: medium: length check might fail [reason for check: both array operands must have the same length] [possible fix: precondition of subprogram at line 210 should mention X and Y]
 do_checks.adb:217:16: info: precondition proved (Trivial: 1 VC)
 do_checks.adb:221:32: warning: "Y" is not modified, could be IN
-do_checks.adb:223:21: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+do_checks.adb:223:21: info: length check proved (CVC5: 3 VC)
 do_checks.adb:223:26: medium: length check might fail [reason for check: both array operands must have the same length] [possible fix: precondition of subprogram at line 221 should mention X and Y]
 do_checks.adb:228:16: info: precondition proved (Trivial: 1 VC)
 do_checks.adb:234:37: info: initialization of "Y" proved
 do_checks.adb:236:24: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: precondition of subprogram at line 234 should mention X]
 do_checks.adb:241:16: info: precondition proved (Trivial: 1 VC)
 do_checks.adb:245:37: info: initialization of "Y" proved
-do_checks.adb:249:24: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+do_checks.adb:249:24: info: length check proved (CVC5: 3 VC)
 do_checks.adb:254:16: info: precondition proved (CVC5: 2 VC)
 do_checks.adb:260:30: warning: "X" is not modified, could be IN
 do_checks.adb:260:30: warning: unused variable "X"
@@ -63,7 +63,7 @@ do_checks.adb:270:16: info: precondition proved (Trivial: 1 VC)
 do_checks.adb:274:30: warning: "X" is not modified, could be IN
 do_checks.adb:274:30: warning: unused variable "X"
 do_checks.adb:282:19: info: precondition proved (Trivial: 1 VC)
-do_checks.adb:282:22: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+do_checks.adb:282:22: info: length check proved (CVC5: 3 VC)
 do_checks.adb:286:16: info: precondition proved (CVC5: 2 VC)
 do_checks.adb:300:16: info: range check proved (CVC5: 2 VC)
 do_checks.adb:305:24: info: range check proved (CVC5: 2 VC)

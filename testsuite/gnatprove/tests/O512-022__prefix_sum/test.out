@@ -65,9 +65,7 @@ prefixsum.ads:7:13: info: implicit aspect Always_Terminates on "All_Elements_In"
 prefixsum.ads:10:13: info: implicit aspect Always_Terminates on "All_Left_Elements_In" has been proved, subprogram will terminate
 prefixsum.ads:15:13: info: implicit aspect Always_Terminates on "All_Right_Elements_In" has been proved, subprogram will terminate
 prefixsum.ads:20:13: info: implicit aspect Always_Terminates on "Intermediate_Form" has been proved, subprogram will terminate
-prefixsum.ads:26:18: info: overflow check proved
 prefixsum.ads:26:23: info: division check proved
-prefixsum.ads:27:17: info: index check proved
 prefixsum.ads:27:28: info: overflow check proved
 prefixsum.ads:27:36: info: overflow check proved
 prefixsum.ads:27:44: info: overflow check proved
@@ -75,28 +73,16 @@ prefixsum.ads:27:52: info: overflow check proved
 prefixsum.ads:28:28: info: overflow check proved
 prefixsum.ads:28:36: info: overflow check proved
 prefixsum.ads:28:44: info: overflow check proved
-prefixsum.ads:29:20: info: overflow check proved
 prefixsum.ads:29:25: info: division check proved
-prefixsum.ads:30:17: info: index check proved
-prefixsum.ads:30:25: info: index check proved
 prefixsum.ads:30:28: info: overflow check proved
 prefixsum.ads:30:34: info: index check proved
-prefixsum.ads:30:34: info: overflow check proved
 prefixsum.ads:30:38: info: overflow check proved
 prefixsum.ads:30:44: info: index check proved
-prefixsum.ads:30:44: info: overflow check proved
 prefixsum.ads:30:48: info: overflow check proved
 prefixsum.ads:30:54: info: index check proved
-prefixsum.ads:30:54: info: overflow check proved
-prefixsum.ads:31:20: info: overflow check proved
 prefixsum.ads:31:25: info: division check proved
-prefixsum.ads:32:17: info: index check proved
-prefixsum.ads:32:25: info: index check proved
 prefixsum.ads:32:28: info: overflow check proved
 prefixsum.ads:32:34: info: index check proved
-prefixsum.ads:32:34: info: overflow check proved
-prefixsum.ads:34:17: info: index check proved
-prefixsum.ads:34:25: info: index check proved
 prefixsum.ads:36:41: info: initialization of "Output_Space" proved
 prefixsum.ads:38:14: info: postcondition proved
 prefixsum.ads:40:17: info: precondition proved
