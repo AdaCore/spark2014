@@ -722,6 +722,9 @@ package Flow_Utility is
    function Is_Checked_Ghost_Entity (F : Flow_Id) return Boolean;
    --  Returns True iff F represents a ghost entity with policy Checked
 
+   function Is_Ignored_Ghost_Entity (F : Flow_Id) return Boolean;
+   --  Returns True iff F represents a ghost entity with policy Ignored
+
    function Is_Constant_After_Elaboration (F : Flow_Id) return Boolean
    with Pre => Present (F);
    --  Returns True iff F represents a constant after elaboration

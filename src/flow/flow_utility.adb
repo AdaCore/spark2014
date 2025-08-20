@@ -5933,6 +5933,24 @@ package body Flow_Utility is
       end case;
    end Is_Checked_Ghost_Entity;
 
+   -----------------------------
+   -- Is_Ignored_Ghost_Entity --
+   -----------------------------
+
+   function Is_Ignored_Ghost_Entity (F : Flow_Id) return Boolean is
+   begin
+      case F.Kind is
+         when Direct_Mapping | Record_Field =>
+            return Is_Ignored_Ghost_Entity (Get_Direct_Mapping_Id (F));
+
+         when Magic_String =>
+            return GG_Is_Ignored_Ghost_Entity (F.Name);
+
+         when others =>
+            return False;
+      end case;
+   end Is_Ignored_Ghost_Entity;
+
    -----------------------------------
    -- Is_Constant_After_Elaboration --
    -----------------------------------

@@ -3323,6 +3323,15 @@ package body Flow_Generated_Globals.Phase_2 is
       return Checked_Ghost_Entities.Contains (EN);
    end GG_Is_Checked_Ghost_Entity;
 
+   --------------------------------
+   -- GG_Is_Ignored_Ghost_Entity --
+   --------------------------------
+
+   function GG_Is_Ignored_Ghost_Entity (EN : Entity_Name) return Boolean is
+   begin
+      return Ignored_Ghost_Entities.Contains (EN);
+   end GG_Is_Ignored_Ghost_Entity;
+
    --------------------
    -- GG_Is_Constant --
    --------------------
