@@ -1569,10 +1569,9 @@ package body Gnat2Why.Util is
      (E : Array_Kind_Id; Dim : Positive) return W_Type_Id
    is (Base_Why_Type_No_Bool
          (Nth_Index_Type
-            ((if Ekind (E)
-                = E_String_Literal_Subtype
-                  --  If E is a string literal subtype then use its base type's
-                  --  index type type's.
+            ((if Ekind (E) = E_String_Literal_Subtype
+                --  If E is a string literal subtype then use its base type's
+                --  index type type's.
               then Retysp (Etype (E))
               else E),
              Dim)));
