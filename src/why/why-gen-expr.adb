@@ -2542,11 +2542,10 @@ package body Why.Gen.Expr is
             --  checks, for example the overflow check on 'Pred and 'Succ,
             --  therefore test first that Check_Kind is a range check.
 
-            if Check_Kind
-              = RCK_Range
+            if Check_Kind = RCK_Range
 
-                --  We can only remove the check if we can compute the expected
-                --  bounds of the Range_Type now.
+              --  We can only remove the check if we can compute the expected
+              --  bounds of the Range_Type now.
 
               and then Compile_Time_Known_Value (Tlo)
               and then Compile_Time_Known_Value (Thi)
