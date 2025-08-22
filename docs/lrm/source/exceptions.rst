@@ -69,17 +69,23 @@ A pragma Assert might contain one or several associations of a check expression
 and an optional message string:
 
 ::
+
    simple_assert_params ::= [Check =>] boolean_expression[, [Message =>] string_expression]
+
    level_assert_params ::= assertion_level => (simple_assert_params)[, level_assert_params]
+
    assert_params ::= simple_assert_params | level_assert_params
+
    pragma Assert (assert_params);
 
 An assertion level might be used instead of an assertion aspect mark inside a
 pragma Assertion_Policy:
 
 ::
+
    assertion_aspect_mark_or_level ::= assertion_aspect_mark | assertion_level
-   pragma Assertion_Policy(assertion_aspect_mark_or_level => policy_identifier
+
+   pragma Assertion_Policy (assertion_aspect_mark_or_level => policy_identifier
    {, assertion_aspect_mark_or_level => policy_identifier});
 
 .. container:: heading
@@ -162,11 +168,16 @@ expressions and specification aspects so they can be enabled or disabled
 together using a pragma Assertion_Policy. An assertion level can depend on other
 assertion levels.
 
+.. container:: heading
+
    Syntax
 
 ::
+
    assertion_level_list ::= assertion_level[, assertion_level_list]
+
    assertion_levels ::= assertion_level | assertion_level_list
+
    pragma Assertion_Level (assertion_level[, Depends => assertion_levels]);
 
 The assertion levels Runtime and Static are implicitly declared at the
