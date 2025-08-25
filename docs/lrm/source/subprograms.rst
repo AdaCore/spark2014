@@ -2381,8 +2381,8 @@ body (see Ada RM 7.2(4))].
       assertion-level-dependent on E and is not a predicate expression,
       unless the predicate is introduced by aspect Ghost_Predicate; or
 
-    * the specified aspect is either Global, Depends,
-      Refined_Global, Refined_Depends, Initializes, or Refined_State.
+    * the specified aspect is either Global, Depends, Refined_Global,
+      Refined_Depends, Initializes, Refined_State, or Iterable.
       [For example, the Global aspect of a non-ghost subprogram might
       refer to a ghost variable.]
 
