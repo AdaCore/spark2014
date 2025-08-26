@@ -393,7 +393,7 @@ package body Flow.Interprocedural is
                            Input_Is_Ghost : constant Boolean :=
                              Input_Is_Ignored_Ghost or Input_Is_Checked_Ghost;
 
-                           Dependency_Allowed : constant Boolean :=
+                           Ghost_Policy_OK : constant Boolean :=
                              Is_Abstract_State (Output)
                              or else (if Output_Is_Ignored_Ghost
                                       then True
@@ -415,6 +415,14 @@ package body Flow.Interprocedural is
                            --  Abstract states can be assigned with anything,
                            --  because they might contain all kinds of
                            --  constituents.
+
+                           Ghost_Level_OK : constant Boolean :=
+                             (if Output_Is_Ghost and Input_Is_Ghost
+                              then
+                                Is_Assertion_Level_Dependent (Input, Output));
+
+                           Dependency_Allowed : constant Boolean :=
+                             Ghost_Policy_OK and Ghost_Level_OK;
 
                         begin
                            if Dependency_Allowed then

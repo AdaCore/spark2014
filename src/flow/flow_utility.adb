@@ -26,6 +26,7 @@ with Ada.Containers.Hashed_Maps;
 
 with Aspects;        use Aspects;
 with Errout_Wrapper; use Errout_Wrapper;
+with Ghost;          use Ghost;
 with Namet;          use Namet;
 with Nlists;         use Nlists;
 with Output;         use Output;
@@ -5896,6 +5897,26 @@ package body Flow_Utility is
       end loop;
       return False;
    end Is_Ancestor;
+
+   ----------------------------------
+   -- Is_Assertion_Level_Dependent --
+   ----------------------------------
+
+   function Is_Assertion_Level_Dependent
+     (Self : Flow_Id; Other : Flow_Id) return Boolean is
+   begin
+      pragma Assert (Self.Kind in Direct_Mapping | Magic_String);
+      pragma Assert (Other.Kind in Direct_Mapping | Magic_String);
+
+      if Self.Kind = Direct_Mapping and then Other.Kind = Direct_Mapping then
+         return
+           Is_Assertion_Level_Dependent
+             (Ghost_Assertion_Level (Get_Direct_Mapping_Id (Self)),
+              Ghost_Assertion_Level (Get_Direct_Mapping_Id (Other)));
+      else
+         raise Program_Error;
+      end if;
+   end Is_Assertion_Level_Dependent;
 
    ---------------------
    -- Is_Ghost_Entity --

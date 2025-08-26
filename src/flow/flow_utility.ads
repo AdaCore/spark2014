@@ -716,6 +716,12 @@ package Flow_Utility is
    --  likely just placeholders and will be later removed or populated with
    --  constituents.
 
+   function Is_Assertion_Level_Dependent
+     (Self : Flow_Id; Other : Flow_Id) return Boolean
+   with Pre => Is_Ghost_Entity (Self) and then Is_Ghost_Entity (Other);
+   --  Check that ghost object Self is assertion-level-dependent with ghost
+   --  object Other.
+
    function Is_Ghost_Entity (F : Flow_Id) return Boolean;
    --  Returns True iff F represents a ghost entity
 
