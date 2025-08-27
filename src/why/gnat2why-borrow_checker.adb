@@ -6226,34 +6226,53 @@ package body Gnat2Why.Borrow_Checker is
             Loc);
       end if;
 
-      if Query_Read_Only_Tree (Current_Perm_Env, Root) = null then
+      --  If the root object is not in the current environment, then it must be
+      --  a constant without variable input, or a variable declared in another
+      --  context within package elaboration code. In either case, it can only
+      --  be read. In the case of elaboration, we add the variable to the
+      --  environment anyway to avoid spurious/misleading messages about
+      --  variable being declared unwritable. Flow already flags illegal writes
+      --  during elaboration as such.
 
-         --  If the root object is not in the current environment, then it must
-         --  be a constant without variable input. It can only be read.
-
-         if Ekind (Root) /= E_Constant
-           or else Is_Access_Variable (Etype (Root))
-           or else Has_Variable_Input (Root)
-         then
-            pragma Assert (Present (Current_Subp));
-            BC_Error
-              (Create
-                 ("owning or observing object should occur in the global"
-                  & " contract of &",
-                  Names => [Current_Subp]),
-               Root);
+      declare
+         Missing_Name : Boolean :=
+           Query_Read_Only_Tree (Current_Perm_Env, Root) = null;
+         Missing_Var  : constant Boolean :=
+           Missing_Name
+           and then (Ekind (Root) /= E_Constant
+                     or else Is_Access_Variable (Etype (Root))
+                     or else Has_Variable_Input (Root));
+      begin
+         if Missing_Var and then Inside_Elaboration then
+            Setup_Environment_For_Object
+              (Root,
+               (if Is_Read_Only (Root) then Read_Only else Read_Write),
+               Declaration_Node (Root));
+            Missing_Name := False;
          end if;
 
-         Perm := Read_Only;
-         Expl := Root;
-      else
-         declare
-            Perm_Expl : constant Perm_And_Expl := Get_Perm_And_Expl (Expr);
-         begin
-            Perm := Perm_Expl.Perm;
-            Expl := Perm_Expl.Expl;
-         end;
-      end if;
+         if Missing_Name then
+            if Missing_Var then
+               pragma Assert (Present (Current_Subp));
+               BC_Error
+                 (Create
+                    ("owning or observing object should occur in the global"
+                     & " contract of &",
+                     Names => [Current_Subp]),
+                  Root);
+            end if;
+
+            Perm := Read_Only;
+            Expl := Root;
+         else
+            declare
+               Perm_Expl : constant Perm_And_Expl := Get_Perm_And_Expl (Expr);
+            begin
+               Perm := Perm_Expl.Perm;
+               Expl := Perm_Expl.Expl;
+            end;
+         end if;
+      end;
 
       --  Check permissions
 
