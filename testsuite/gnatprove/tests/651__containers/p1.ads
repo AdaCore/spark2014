@@ -1,12 +1,11 @@
 with SPARK.Containers.Functional.Sets;
 
-package P1 with SPARK_Mode is
+package P1 with SPARK_Mode, Ghost is
    type C is private with Default_Initial_Condition;
    type E is private;
    function All_In (V : C) return Boolean;
    procedure Lemma with
      Global => null,
-     Ghost,
      Post => False;
 private
    type E is new Integer with Type_Invariant => E >= 0, Default_Value => 0;
