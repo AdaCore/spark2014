@@ -518,8 +518,6 @@ package body Flow is
       Format_Item ("Execution", Execution_Kind_T'Image (A.Execution));
       Format_Item ("Perform_IPFA", Boolean'Image (A.Perform_IPFA));
 
-      Format_Item ("Call_Vertex", Flow_Id_Image (A.Call_Vertex));
-
       if A.Is_Parameter then
          Format_Item ("Parameter_Actual", Flow_Id_Image (A.Parameter_Actual));
       end if;

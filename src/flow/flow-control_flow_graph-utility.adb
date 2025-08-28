@@ -304,6 +304,7 @@ package body Flow.Control_Flow_Graph.Utility is
 
    function Make_Call_Attributes
      (Callsite   : Node_Id;
+      Callee     : Entity_Id;
       Var_Use    : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
       Subp_Calls : Call_Sets.Set := Call_Sets.Empty_Set;
       Indt_Calls : Node_Sets.Set := Node_Sets.Empty_Set;
@@ -313,6 +314,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A : V_Attributes := Null_Attributes;
       pragma Unreferenced (Callsite);
    begin
+      A.Callee := Callee;
       A.Variables_Explicitly_Used := Var_Use;
       A.Variables_Used := Var_Use;
       A.Subprogram_Calls := Subp_Calls;
@@ -352,7 +354,8 @@ package body Flow.Control_Flow_Graph.Utility is
 
    function Make_Parameter_Attributes
      (FA         : Flow_Analysis_Graphs;
-      Callsite   : Node_Id;
+      Call       : Node_Id;
+      Callsite   : Flow_Graphs.Vertex_Id;
       Actual     : Node_Id;
       Formal     : Entity_Id;
       In_Vertex  : Boolean;
@@ -361,14 +364,14 @@ package body Flow.Control_Flow_Graph.Utility is
       Vertex_Ctx : Vertex_Context;
       E_Loc      : Node_Or_Entity_Id) return V_Attributes
    is
-      Subprogram : constant Entity_Id := Get_Called_Entity (Callsite);
+      Subprogram : constant Entity_Id := Get_Called_Entity (Call);
       Scope      : Flow_Scope renames FA.B_Scope;
 
       Ext_Relevant_To_Formal : constant Boolean :=
         Has_Extensions_Visible (Subprogram)
         or else Is_Class_Wide_Type (Get_Type (Formal, Scope))
-        or else (Flow_Classwide.Is_Dispatching_Call (Callsite)
-                 and then Ekind (Formal) in Formal_Kind
+        or else (Flow_Classwide.Is_Dispatching_Call (Call)
+                 and then Is_Formal (Formal)
                  and then Is_Controlling_Formal (Formal));
 
       A : V_Attributes := Null_Attributes;
@@ -377,7 +380,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Is_Parameter := True;
       A.Subprogram_Calls := Subp_Calls;
       A.Indirect_Calls := Indt_Calls;
-      A.Call_Vertex := Direct_Mapping_Id (Callsite);
+      A.Call_Vertex := Callsite;
       A.Parameter_Actual := Direct_Mapping_Id (Actual);
       A.Parameter_Formal := Direct_Mapping_Id (Formal);
       A.Loops := Vertex_Ctx.Current_Loops;
@@ -645,7 +648,7 @@ package body Flow.Control_Flow_Graph.Utility is
    ----------------------------
 
    function Make_Global_Attributes
-     (Callsite   : Node_Id;
+     (Callsite   : Flow_Graphs.Vertex_Id;
       Global     : Flow_Id;
       Mode       : Param_Mode;
       Scope      : Flow_Scope;
@@ -658,7 +661,7 @@ package body Flow.Control_Flow_Graph.Utility is
       Tmp : Flow_Id_Sets.Set;
    begin
       A.Is_Global_Parameter := True;
-      A.Call_Vertex := Direct_Mapping_Id (Callsite);
+      A.Call_Vertex := Callsite;
       A.Parameter_Formal := Global;
       A.Loops := Vertex_Ctx.Current_Loops;
       A.In_Nested_Package := Vertex_Ctx.In_Nested_Package;
@@ -720,18 +723,19 @@ package body Flow.Control_Flow_Graph.Utility is
    ----------------------------------------
 
    function Make_Implicit_Parameter_Attributes
-     (FA          : Flow_Analysis_Graphs;
-      Call_Vertex : Node_Id;
-      In_Vertex   : Boolean;
-      Scope       : Flow_Scope;
-      Subp_Calls  : Call_Sets.Set := Call_Sets.Empty_Set;
-      Indt_Calls  : Node_Sets.Set := Node_Sets.Empty_Set;
-      Vertex_Ctx  : Vertex_Context;
-      E_Loc       : Node_Or_Entity_Id) return V_Attributes
+     (FA         : Flow_Analysis_Graphs;
+      Call       : Node_Id;
+      Callsite   : Flow_Graphs.Vertex_Id;
+      In_Vertex  : Boolean;
+      Scope      : Flow_Scope;
+      Subp_Calls : Call_Sets.Set := Call_Sets.Empty_Set;
+      Indt_Calls : Node_Sets.Set := Node_Sets.Empty_Set;
+      Vertex_Ctx : Vertex_Context;
+      E_Loc      : Node_Or_Entity_Id) return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
 
-      Subprogram : constant Entity_Id := Get_Called_Entity (Call_Vertex);
+      Subprogram : constant Entity_Id := Get_Called_Entity (Call);
 
    begin
       --  External calls appear in the code as:
@@ -747,12 +751,12 @@ package body Flow.Control_Flow_Graph.Utility is
       --  Note: we can't simply reuse that routine because it is (rightly)
       --  flooded with assertions that check for ordinary formal parameters.
 
-      if Is_External_Call (Call_Vertex) then
+      if Is_External_Call (Call) then
          A.Is_Parameter := True;
          A.Subprogram_Calls := Subp_Calls;
          A.Indirect_Calls := Indt_Calls;
-         A.Call_Vertex := Direct_Mapping_Id (Call_Vertex);
-         A.Parameter_Actual := Direct_Mapping_Id (Prefix (Name (Call_Vertex)));
+         A.Call_Vertex := Callsite;
+         A.Parameter_Actual := Direct_Mapping_Id (Prefix (Name (Call)));
          A.Parameter_Formal :=
            Direct_Mapping_Id (Sinfo.Nodes.Scope (Subprogram));
          A.Loops := Vertex_Ctx.Current_Loops;
@@ -763,7 +767,7 @@ package body Flow.Control_Flow_Graph.Utility is
             declare
                Used : constant Flow_Id_Sets.Set :=
                  Get_Variables
-                   (N                    => Prefix (Name (Call_Vertex)),
+                   (N                    => Prefix (Name (Call)),
                     Scope                => Scope,
                     Target_Name          => Null_Flow_Id,
                     Fold_Functions       => Inputs,
@@ -785,7 +789,7 @@ package body Flow.Control_Flow_Graph.Utility is
                --  for each actual anyway, so we can ignore the proof variables
                --  here.
                Untangle_Assignment_Target
-                 (N                    => Prefix (Name (Call_Vertex)),
+                 (N                    => Prefix (Name (Call)),
                   Scope                => Scope,
                   Use_Computed_Globals => not FA.Generating_Globals,
                   Map_Root             => Unused_Root,
@@ -822,7 +826,7 @@ package body Flow.Control_Flow_Graph.Utility is
 
          begin
             A.Is_Implicit_Parameter := True;
-            A.Call_Vertex := Direct_Mapping_Id (Call_Vertex);
+            A.Call_Vertex := Callsite;
             A.Parameter_Formal :=
               Change_Variant
                 (Implicit, (if In_Vertex then In_View else Out_View));
