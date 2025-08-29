@@ -424,12 +424,14 @@ package body Flow.Control_Flow_Graph is
    --  Helper procedure to add a vertex (with attributes) to the graph
 
    procedure Add_Vertex
-     (FA : in out Flow_Analysis_Graphs;
-      F  : Flow_Id;
-      A  : V_Attributes;
-      V  : out Flow_Graphs.Vertex_Id);
+     (FA    : in out Flow_Analysis_Graphs;
+      F     : Flow_Id;
+      A     : V_Attributes;
+      V     : out Flow_Graphs.Vertex_Id;
+      Keyed : Boolean := False);
    --  Helper procedure to add a vertex (with attributes) to the graph,
-   --  returning the Id of the newly added vertex.
+   --  returning the Id of the newly added vertex. If Keyed is True, then
+   --  then a unique mapping from F to V is added so Get_Vertex can be used.
 
    procedure Add_Vertex
      (FA : in out Flow_Analysis_Graphs;
@@ -1199,15 +1201,16 @@ package body Flow.Control_Flow_Graph is
    end Add_Vertex;
 
    procedure Add_Vertex
-     (FA : in out Flow_Analysis_Graphs;
-      F  : Flow_Id;
-      A  : V_Attributes;
-      V  : out Flow_Graphs.Vertex_Id) is
+     (FA    : in out Flow_Analysis_Graphs;
+      F     : Flow_Id;
+      A     : V_Attributes;
+      V     : out Flow_Graphs.Vertex_Id;
+      Keyed : Boolean := False) is
    begin
       if F.Kind in Direct_Mapping | Record_Field then
          fndi (FA.Spec_Entity, F.Node);
       end if;
-      FA.CFG.Add_Vertex (F, V);
+      FA.CFG.Add_Vertex (F, V, Keyed => Keyed);
       FA.Atr.Insert (V, A);
    end Add_Vertex;
 
@@ -1496,13 +1499,13 @@ package body Flow.Control_Flow_Graph is
          --  Setup the n'initial vertex. Note that initialization for
          --  variables is detected (and set) when building the flow graph
          --  for declarative parts.
-         Add_Vertex (FA, F_Initial, Initial_Atr, Initial_V);
+         Add_Vertex (FA, F_Initial, Initial_Atr, Initial_V, Keyed => True);
          Linkup (FA, Initial_V, FA.Start_Vertex);
 
          Create_Record_Tree (F_Initial, Initial_Atr, FA);
 
          --  Setup the n'final vertex
-         Add_Vertex (FA, F_Final, Final_Atr, Final_V);
+         Add_Vertex (FA, F_Final, Final_Atr, Final_V, Keyed => True);
          Linkup (FA, FA.End_Vertex, Final_V);
 
          Create_Record_Tree (F_Final, Final_Atr, FA);
@@ -1555,13 +1558,13 @@ package body Flow.Control_Flow_Graph is
       begin
          --  Setup the F'initial vertex. Initialization is deduced from the
          --  mode.
-         Add_Vertex (FA, F_Initial, Initial_Atr, Initial_V);
+         Add_Vertex (FA, F_Initial, Initial_Atr, Initial_V, Keyed => True);
          Linkup (FA, Initial_V, FA.Start_Vertex);
 
          Create_Record_Tree (F_Initial, Initial_Atr, FA);
 
          --  Setup the F'final vertex
-         Add_Vertex (FA, F_Final, Final_Atr, Final_V);
+         Add_Vertex (FA, F_Final, Final_Atr, Final_V, Keyed => True);
          Linkup (FA, FA.End_Vertex, Final_V);
 
          Create_Record_Tree (F_Final, Final_Atr, FA);
@@ -8904,7 +8907,8 @@ package body Flow.Control_Flow_Graph is
                      F_Initial,
                      Make_Variable_Attributes
                        (F_Ent => F_Initial, Mode => Mode_In_Out, E_Loc => E),
-                     V);
+                     V,
+                     Keyed => True);
                   Linkup (FA, V, FA.Start_Vertex);
 
                   --  Setup the n'final vertex
@@ -8913,7 +8917,8 @@ package body Flow.Control_Flow_Graph is
                      F_Final,
                      Make_Variable_Attributes
                        (F_Ent => F_Final, Mode => Mode_In_Out, E_Loc => E),
-                     V);
+                     V,
+                     Keyed => True);
                   Linkup (FA, FA.End_Vertex, V);
                end;
             end if;
