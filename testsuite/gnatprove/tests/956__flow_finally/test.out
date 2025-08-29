@@ -1,0 +1,8 @@
+test1.adb:9:20: warning: subprogram "Test" has no effect
+test1.adb:16:10: info: precondition proved (Trivial: 1 VC)
+test2.adb:10:42: error: launch "gnatprove --explain=E0007" for more information
+test2.adb:10:42: error: subtype constraint cannot depend on variable input "X" [E0007]
+test2.adb:10:42: error: use instead a constant initialized to the expression with variable input
+test3.adb:15:22: high: "A" must be listed in the Global aspect of "Flip" (SPARK RM 6.1.4(15))
+test3.adb:18:10: info: precondition proved (Trivial: 1 VC)
+gnatprove: error during flow analysis and proof
