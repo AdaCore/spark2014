@@ -637,9 +637,11 @@ profile`` for |SPARK| (in the |SPARK| section of the Preferences dialog - menu
 :menuselection:`Edit --> Preferences`) from ``Basic`` to ``Advanced``, then a
 more complex panel is displayed for proof, with more detailed switches.
 
-|GNATprove| project switches can be edited from the panel ``GNATprove`` (menu
-:menuselection:`Edit --> Project Properties`, in the :menuselection:`Build --> Switches`
-section of the dialog).
+|GNATprove| project switches (see :ref:`Project Attributes`) can be specified
+by editing directly the project file: GNAT Studio provides completion, tooltips,
+outline and other common IDE features for project files through LSP and the
+`Ada Language Server <https://github.com/AdaCore/ada_language_server>`_, helping
+you to customize your project more easily.
 
 When proving a check fails on a specific path through a subprogram (for both
 checks verified in flow analysis and in proof), |GNATprove| may generate path
