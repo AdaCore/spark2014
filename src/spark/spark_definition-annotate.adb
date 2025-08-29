@@ -445,6 +445,10 @@ package body SPARK_Definition.Annotate is
    --  given entity, emitting appropriate error message.
    --  In case of package specification, the allowed range for the pragma
    --  is immediately after the 'is' of the package.
+   --
+   --  Pragmas converted from an aspect are considered well-placed by default.
+   --  For entities with multiple views, we check that the aspect is attached
+   --  to the expected view.
 
    procedure Check_Annotate_Placement
      (E : Entity_Id; Prag : Node_Id; Prag_Name : String; Ok : out Boolean)
@@ -1739,9 +1743,15 @@ package body SPARK_Definition.Annotate is
       Cursor   : Node_Id := Prag;
       Target   : Node_Id;
       Base_Ent : Entity_Id;
+      From_Asp : constant Boolean := From_Aspect_Specification (Prag);
+      Aspect   : constant Node_Id :=
+        (if From_Asp then Corresponding_Aspect (Prag) else Types.Empty);
    begin
-      if From_Aspect_Specification (Prag) then
-         Ok := True;
+      if From_Asp then
+         Ok :=
+           Ent_Decl_Kind not in Placed_At_Private_View | Placed_At_Full_View
+           or else Aspect_On_Partial_View (Aspect)
+                   = (Ent_Decl_Kind = Placed_At_Private_View);
       elsif not Is_List_Member (Cursor) then
          Ok := False;
       else
@@ -1847,7 +1857,8 @@ package body SPARK_Definition.Annotate is
       end if;
       if not Ok then
          Error_Msg_N_If
-           ("pragma Annotate "
+           ((if From_Asp then "aspect" else "pragma")
+            & " Annotate "
             & Prag_Name
             & " must immediately follow the "
             & Decl_Name,
@@ -4277,6 +4288,9 @@ package body SPARK_Definition.Annotate is
       end if;
 
       E := Entity (Arg3_Exp);
+      if Present (Full_View (E)) then
+         E := Full_View (E);
+      end if;
       Decl := Parent (E);
 
       --  Annotation should apply to type declaration (not subtype)
@@ -4342,6 +4356,9 @@ package body SPARK_Definition.Annotate is
       end if;
 
       E := Entity (Arg3_Exp);
+      if Present (Full_View (E)) then
+         E := Full_View (E);
+      end if;
       Decl := Parent (E);
 
       --  Annotation should apply to type declaration (not subtype)
