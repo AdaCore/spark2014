@@ -65,6 +65,10 @@ def cache_mode():
     return "cache" in os.environ and os.environ["cache"] == "true"
 
 
+def coverage_mode():
+    return "coverage" in os.environ and os.environ["coverage"] == "true"
+
+
 def cache_option():
     if "GNATPROVE_CACHE" in os.environ:
         cache = os.environ["GNATPROVE_CACHE"]
@@ -1346,9 +1350,14 @@ def check_output_file(sort=False):
 
 
 def sparklib_exec_test(project_file="test.gpr", binary="./obj/test"):
-    gprbuild(opt=["-P", project_file])
-    p = Run([binary])
-    print(p.out)
+    cov_mode = coverage_mode()
+    if cov_mode:
+        Run(["gnatcov", "instrument", "-P", project_file, "--level=stmt"])
+    opt = ["-P", project_file]
+    if cov_mode:
+        opt += ["--src-subdirs=gnatcov-instr", "--implicit-with=gnatcov_rts.gpr"]
+    gprbuild(opt=opt)
+    Run([binary])
 
 
 def print_version():
