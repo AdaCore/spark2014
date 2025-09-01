@@ -193,11 +193,11 @@ package body Gnat2Why.Error_Messages is
    is
       Extra_Text : constant String :=
         (case EI.Bound_Info is
-           when Low_Bound =>
+           when Low_Bound  =>
              "lower bound for " & String_Of_Node (Original_Node (VC.Node)),
            when High_Bound =>
              "upper bound for " & String_Of_Node (Original_Node (VC.Node)),
-           when No_Bound =>
+           when No_Bound   =>
              (if Present (EI.Node) and then VC.Node /= EI.Node
               then String_Of_Node (Original_Node (EI.Node))
               else ""));
@@ -221,7 +221,7 @@ package body Gnat2Why.Error_Messages is
       Subp       : Node_Id) return Cntexmp_Verdict is
    begin
       case Small_Step.Res_Kind is
-         when Res_Failure =>
+         when Res_Failure      =>
             if VC_Id (Small_Step.Res_VC_Id) = VC
               and then VC_Kinds_Match (Info.Kind, Small_Step.Res_VC_Kind)
             then
@@ -251,32 +251,32 @@ package body Gnat2Why.Error_Messages is
                        & To_String (Info.Kind, Info.Node)));
             end if;
 
-         when Res_Stuck =>
+         when Res_Stuck        =>
             return
               (Verdict_Category => Bad_Counterexample,
                Verdict_Reason   =>
                  "normal RAC stuck: " & Small_Step.Res_Reason);
 
-         when Res_Normal =>
+         when Res_Normal       =>
             case Giant_Step.Res_Kind is
-               when Res_Failure =>
+               when Res_Failure      =>
                   return
                     (Verdict_Category => Subcontract_Weakness, others => <>);
 
-               when Res_Normal =>
+               when Res_Normal       =>
                   return
                     (Verdict_Category => Bad_Counterexample,
                      Verdict_Reason   =>
                        To_Unbounded_String
                          ("normal/giant-step RAC: no failure"));
 
-               when Res_Stuck =>
+               when Res_Stuck        =>
                   return
                     (Verdict_Category => Bad_Counterexample,
                      Verdict_Reason   =>
                        "giant-step RAC stuck: " & Giant_Step.Res_Reason);
 
-               when Res_Incomplete =>
+               when Res_Incomplete   =>
                   return
                     (Verdict_Category => Incomplete,
                      Verdict_Reason   =>
@@ -290,27 +290,27 @@ package body Gnat2Why.Error_Messages is
                        & Giant_Step.Res_Reason);
             end case;
 
-         when Res_Incomplete =>
+         when Res_Incomplete   =>
             case Giant_Step.Res_Kind is
-               when Res_Failure =>
+               when Res_Failure      =>
                   return
                     (Verdict_Category =>
                        Non_Conformity_Or_Subcontract_Weakness,
                      others           => <>);
 
-               when Res_Normal =>
+               when Res_Normal       =>
                   return
                     (Verdict_Category => Incomplete,
                      Verdict_Reason   =>
                        "normal RAC incomplete: " & Small_Step.Res_Reason);
 
-               when Res_Stuck =>
+               when Res_Stuck        =>
                   return
                     (Verdict_Category => Bad_Counterexample,
                      Verdict_Reason   =>
                        "giant-step RAC stuck: " & Giant_Step.Res_Reason);
 
-               when Res_Incomplete =>
+               when Res_Incomplete   =>
                   return
                     (Verdict_Category => Incomplete,
                      Verdict_Reason   =>

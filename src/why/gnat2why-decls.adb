@@ -425,7 +425,7 @@ package body Gnat2Why.Decls is
       --  use in effects of program functions in Why3.
 
       case Var.Kind is
-         when DRecord =>
+         when DRecord                =>
             if Var.Fields.Present then
 
                --  Generate a global ref for the fields
@@ -501,7 +501,7 @@ package body Gnat2Why.Decls is
                      Return_Type => Get_Typ (Var.Tag.Id)));
             end if;
 
-         when UCArray =>
+         when UCArray                =>
 
             --  Generate a global ref for the content
 
@@ -564,7 +564,7 @@ package body Gnat2Why.Decls is
                end;
             end loop;
 
-         when Pointer =>
+         when Pointer                =>
 
             --  Generate a global ref for the value
 
@@ -603,7 +603,7 @@ package body Gnat2Why.Decls is
                      Return_Type => Get_Typ (Var.Is_Null)));
             end if;
 
-         when Regular =>
+         when Regular                =>
             begin
                --  Currently only generate values for scalar variables in
                --  counterexamples, which are always of the Regular kind.

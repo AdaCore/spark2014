@@ -1246,17 +1246,15 @@ package body Why.Gen.Pointers is
                   | N_Indexed_Component
                   | N_Selected_Component
                   | N_Slice
-                  | N_Attribute_Reference
-               =>
+                  | N_Attribute_Reference          =>
                   Borrowed_Expr := Prefix (Borrowed_Expr);
 
                when N_Qualified_Expression
                   | N_Type_Conversion
-                  | N_Unchecked_Type_Conversion
-               =>
+                  | N_Unchecked_Type_Conversion    =>
                   Borrowed_Expr := Expression (Borrowed_Expr);
 
-               when others =>
+               when others                         =>
                   raise Program_Error;
             end case;
          end loop;

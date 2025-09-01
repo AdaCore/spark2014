@@ -390,7 +390,7 @@ package body Why.Inter is
          when EW_Abstract | EW_Split =>
             return Base_Why_Type (Get_Ada_Node (+W));
 
-         when others =>
+         when others                 =>
             if W = M_Boolean_Init_Wrapper.Wrapper_Ty then
                return EW_Bool_Type;
             else
@@ -685,7 +685,7 @@ package body Why.Inter is
       case Kind is
          --  case 1: a standalone theory with no dependencies
 
-         when Standalone_Theory =>
+         when Standalone_Theory    =>
             null;
 
          --  case 2: a theory defining the symbols for Defined_Entity
@@ -698,7 +698,7 @@ package body Why.Inter is
          --  Defined_Entity. Make sure not to import the current theory
          --  defining Defined_Entity itself. Add standard imports.
 
-         when Definition_Theory =>
+         when Definition_Theory    =>
             declare
                Filter_Module : constant W_Module_Id :=
                  (if No (Defined_Entity)
@@ -721,7 +721,7 @@ package body Why.Inter is
          --  The definition theory for Defined_Entity will be one of those. Add
          --  standard imports.
 
-         when Axiom_Theory =>
+         when Axiom_Theory         =>
             pragma Assert (Present (Defined_Entity));
             Record_Dependencies;
             Record_Extra_Dependency (E_Module (Defined_Entity), Th.Module);
@@ -945,10 +945,10 @@ package body Why.Inter is
       end if;
 
       case Ekind (Ty) is
-         when Fixed_Point_Kind =>
+         when Fixed_Point_Kind           =>
             return EW_Fixed_Type (Ty);
 
-         when Float_Kind =>
+         when Float_Kind                 =>
             if Is_Single_Precision_Floating_Point_Type (Etype (Ty)) then
                return EW_Float_32_Type;
             elsif Is_Double_Precision_Floating_Point_Type (Etype (Ty)) then
@@ -959,7 +959,7 @@ package body Why.Inter is
                raise Program_Error;
             end if;
 
-         when Discrete_Kind =>
+         when Discrete_Kind              =>
             --  In the case of Standard.Boolean, the base type 'bool' is
             --  used directly. For its subtypes, however, an abstract type
             --  representing a signed int is generated, just like for any
@@ -1008,7 +1008,7 @@ package body Why.Inter is
                return Get_EW_Term_Type (Retysp (Ty));
             end if;
 
-         when others =>
+         when others                     =>
             return Why_Empty;
       end case;
    end Get_EW_Term_Type;
@@ -1294,11 +1294,11 @@ package body Why.Inter is
             Ent : constant Entity_Id := Key (Position);
          begin
             case Element (Position) is
-               when Hide_Expr_Fun =>
+               when Hide_Expr_Fun       =>
                   Module_Dependencies (+E_Module (Ent)).Delete
                     (+E_Module (Ent, Expr_Fun_Axiom));
 
-               when Unhide_Expr_Fun =>
+               when Unhide_Expr_Fun     =>
                   Module_Dependencies (+E_Module (Ent)).Insert
                     (+E_Module (Ent, Expr_Fun_Axiom));
 
@@ -1317,13 +1317,13 @@ package body Why.Inter is
             Ent : constant Entity_Id := Key (Position);
          begin
             case Element (Position) is
-               when Hide_Expr_Fun =>
+               when Hide_Expr_Fun       =>
                   Ada_Ent_To_Why.Insert
                     (Symbol_Table,
                      Ent,
                      Mk_Item_Of_Entity (Ent, Hide_Info => True));
 
-               when Unhide_Expr_Fun =>
+               when Unhide_Expr_Fun     =>
                   Ada_Ent_To_Why.Insert
                     (Symbol_Table,
                      Ent,
@@ -1370,11 +1370,11 @@ package body Why.Inter is
             Ent : constant Entity_Id := Key (Position);
          begin
             case Element (Position) is
-               when Hide_Expr_Fun =>
+               when Hide_Expr_Fun       =>
                   Module_Dependencies (+E_Module (Ent)).Insert
                     (+E_Module (Ent, Expr_Fun_Axiom));
 
-               when Unhide_Expr_Fun =>
+               when Unhide_Expr_Fun     =>
                   Module_Dependencies (+E_Module (Ent)).Delete
                     (+E_Module (Ent, Expr_Fun_Axiom));
 
@@ -1595,7 +1595,7 @@ package body Why.Inter is
             E            : constant Entity_Id := Type_Of_Node (N);
             Relaxed_Init : constant Boolean :=
               (case Nkind (N) is
-                 when N_Entity =>
+                 when N_Entity                       =>
                    (if Is_Type (N)
                     then False
                     elsif Is_Object (N)
@@ -1606,7 +1606,8 @@ package body Why.Inter is
                  when N_Identifier | N_Expanded_Name =>
                    Is_Object (Entity (N))
                    and then Obj_Has_Relaxed_Init (Entity (N)),
-                 when others => Expr_Has_Relaxed_Init (N));
+                 when others                         =>
+                   Expr_Has_Relaxed_Init (N));
          begin
             --  If N might be partially initialized, use a wrapper type
 

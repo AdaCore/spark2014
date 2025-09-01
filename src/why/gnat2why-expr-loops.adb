@@ -299,7 +299,7 @@ package body Gnat2Why.Expr.Loops is
                         exit Main;
                      end if;
 
-                  when N_Pragma =>
+                  when N_Pragma          =>
                      if Is_Pragma_Check (Cur_Stmt, Name_Loop_Invariant)
                        or else Is_Pragma (Cur_Stmt, Pragma_Loop_Variant)
                      then
@@ -307,7 +307,7 @@ package body Gnat2Why.Expr.Loops is
                         exit Main;
                      end if;
 
-                  when others =>
+                  when others            =>
                      null;
                end case;
 
@@ -326,7 +326,7 @@ package body Gnat2Why.Expr.Loops is
    begin
       while Present (Cur_Stmt) loop
          case Nkind (Cur_Stmt) is
-            when N_Block_Statement =>
+            when N_Block_Statement    =>
                if Contains_Loop_Invariant (Cur_Stmt) then
                   if Present (Declarations (Cur_Stmt)) then
                      Append
@@ -364,7 +364,7 @@ package body Gnat2Why.Expr.Loops is
                                      (Etype (Defining_Identifier (Cur_Stmt))));
                Flat_Stmts.Append (Cur_Stmt);
 
-            when others =>
+            when others               =>
                Flat_Stmts.Append (Cur_Stmt);
          end case;
 
@@ -463,7 +463,7 @@ package body Gnat2Why.Expr.Loops is
                   end if;
                end if;
 
-            when In_Selected_Block =>
+            when In_Selected_Block     =>
 
                --  Add any loop invariant to the selected ones
 
@@ -500,7 +500,7 @@ package body Gnat2Why.Expr.Loops is
                   Initial_Stmts.Append (N);
                end if;
 
-            when Past_Selected_Block =>
+            when Past_Selected_Block   =>
                pragma Assert (not Is_Pragma_Check (N, Name_Loop_Invariant));
                pragma Assert (not Is_Pragma (N, Pragma_Loop_Variant));
                Final_Stmts.Append (N);

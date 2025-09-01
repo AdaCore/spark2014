@@ -512,8 +512,8 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
            & (case S.Part is
                 when Visible_Part => " (Spec)",
                 when Private_Part => " (Priv)",
-                when Body_Part => " (Body)",
-                when Null_Part => raise Program_Error);
+                when Body_Part    => " (Body)",
+                when Null_Part    => raise Program_Error);
 
       begin
          return
@@ -612,7 +612,7 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
             & (case Declarative_Part'(S.Part) is
                  when Visible_Part => "spec",
                  when Private_Part => "priv",
-                 when Body_Part => "body"));
+                 when Body_Part    => "body"));
       end Print_Vertex;
 
       --  Start of processing for Print_Path

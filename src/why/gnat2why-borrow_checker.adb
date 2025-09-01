@@ -387,14 +387,14 @@ package body Gnat2Why.Borrow_Checker is
          --  Now reallocate access components for a deep copy of the tree
 
          case Kind (From) is
-            when Entire_Object =>
+            when Entire_Object    =>
                null;
 
-            when Reference =>
+            when Reference        =>
                To.all.Tree.Get_All := new Perm_Tree_Wrapper;
                Copy_Tree (Get_All (From), Get_All (To));
 
-            when Array_Component =>
+            when Array_Component  =>
                To.all.Tree.Get_Elem := new Perm_Tree_Wrapper;
                Copy_Tree (Get_Elem (From), Get_Elem (To));
 
@@ -468,13 +468,13 @@ package body Gnat2Why.Borrow_Checker is
 
       begin
          case Kind (PT) is
-            when Entire_Object =>
+            when Entire_Object    =>
                null;
 
-            when Reference =>
+            when Reference        =>
                Free_Tree (PT.all.Tree.Get_All);
 
-            when Array_Component =>
+            when Array_Component  =>
                Free_Tree (PT.all.Tree.Get_Elem);
 
             when Record_Component =>
@@ -1246,10 +1246,10 @@ package body Gnat2Why.Borrow_Checker is
       function ">=" (P1, P2 : Perm_Kind) return Boolean is
       begin
          case P2 is
-            when No_Access =>
+            when No_Access  =>
                return True;
 
-            when Read_Only =>
+            when Read_Only  =>
                --  When a loop starts with permission Read_Only for an object,
                --  this permission cannot change by the end of the loop, so
                --  P1 = P2 and function "<" does not even call ">=".
@@ -1383,7 +1383,7 @@ package body Gnat2Why.Borrow_Checker is
                  ("non-ghost object & cannot be "
                   & (case Mode is
                        when Borrow => "borrowed",
-                       when Move => "moved",
+                       when Move   => "moved",
                        when others => raise Program_Error)
                   & " in an assignment to ghost object &",
                   Names => [Expr_Root, Target_Root]),
@@ -1397,7 +1397,7 @@ package body Gnat2Why.Borrow_Checker is
                  ("enabled ghost object & cannot be "
                   & (case Mode is
                        when Borrow => "borrowed",
-                       when Move => "moved",
+                       when Move   => "moved",
                        when others => raise Program_Error)
                   & " in an assignment to disabled ghost object &",
                   Names => [Expr_Root, Target_Root]),
@@ -1415,7 +1415,7 @@ package body Gnat2Why.Borrow_Checker is
                  ("ghost object & cannot be "
                   & (case Mode is
                        when Borrow => "borrowed",
-                       when Move => "moved",
+                       when Move   => "moved",
                        when others => raise Program_Error)
                   & " in an assignment to ghost object &",
                   Names => [Expr_Root, Target_Root]),
@@ -1726,7 +1726,7 @@ package body Gnat2Why.Borrow_Checker is
             when E_Out_Parameter =>
                Check_Expression (Actual, Assign);
 
-            when others =>
+            when others          =>
                null;
          end case;
       end Update_Param;
@@ -1885,15 +1885,15 @@ package body Gnat2Why.Borrow_Checker is
       --  Check permission-related legality rules
 
       case N_Declaration'(Nkind (Decl)) is
-         when N_Full_Type_Declaration =>
+         when N_Full_Type_Declaration        =>
             null;
 
          --  ??? What about component declarations with defaults.
 
-         when N_Subtype_Declaration =>
+         when N_Subtype_Declaration          =>
             Check_Expression (Subtype_Indication (Decl), Read);
 
-         when N_Object_Declaration =>
+         when N_Object_Declaration           =>
             Expr := Expression (Decl);
 
             if Present (Expr) then
@@ -1916,8 +1916,7 @@ package body Gnat2Why.Borrow_Checker is
             | N_Procedure_Specification
             | N_Component_Declaration
             | N_Iterator_Specification
-            | N_Loop_Parameter_Specification
-         =>
+            | N_Loop_Parameter_Specification =>
             raise Program_Error;
 
          --  Ignored constructs for pointer checking
@@ -1929,13 +1928,12 @@ package body Gnat2Why.Borrow_Checker is
             | N_Private_Extension_Declaration
             | N_Private_Type_Declaration
             | N_Protected_Type_Declaration
-            | N_Exception_Declaration
-         =>
+            | N_Exception_Declaration        =>
             null;
 
          --  The following nodes are rewritten by semantic analysis
 
-         when N_Expression_Function =>
+         when N_Expression_Function          =>
             raise Program_Error;
       end case;
    end Check_Declaration;
@@ -1993,14 +1991,14 @@ package body Gnat2Why.Borrow_Checker is
       pragma Assert (Object_Scope.Is_Initial_Value);
       Object_Scope.Push_Scope;
       case Ekind (E) is
-         when Type_Kind =>
+         when Type_Kind                          =>
             if Ekind (E) in E_Task_Type | E_Protected_Type
               and then Entity_Body_In_SPARK (E)
             then
                Check_Callable_Body (E);
             end if;
 
-         when Object_Kind =>
+         when Object_Kind                        =>
 
             null;
 
@@ -2009,7 +2007,7 @@ package body Gnat2Why.Borrow_Checker is
                Check_Callable_Body (E);
             end if;
 
-         when E_Package =>
+         when E_Package                          =>
             declare
                Scope : constant Opt_Unit_Kind_Id :=
                  (if Is_Compilation_Unit (E)
@@ -2031,10 +2029,10 @@ package body Gnat2Why.Borrow_Checker is
                end if;
             end;
 
-         when E_Loop =>
+         when E_Loop                             =>
             null;
 
-         when others =>
+         when others                             =>
             raise Program_Error;
       end case;
       Object_Scope.Pop_Scope;
@@ -2211,17 +2209,16 @@ package body Gnat2Why.Borrow_Checker is
 
             when N_Qualified_Expression
                | N_Type_Conversion
-               | N_Unchecked_Type_Conversion
-            =>
+               | N_Unchecked_Type_Conversion =>
                Check_Anonymous_Object (Expression (Expr), Mode);
 
             --  The argument of an allocator is read or moved as part of the
             --  implicit assignment.
 
-            when N_Allocator =>
+            when N_Allocator                 =>
                Check_Subobject (Expression (Expr));
 
-            when N_Aggregate =>
+            when N_Aggregate                 =>
 
                --  Container aggregates should be treated as function calls
 
@@ -2230,25 +2227,25 @@ package body Gnat2Why.Borrow_Checker is
                   Check_Associations (Component_Associations (Expr));
                end if;
 
-            when N_Delta_Aggregate =>
+            when N_Delta_Aggregate           =>
                Check_Subobject (Expression (Expr));
                Check_Associations (Component_Associations (Expr));
 
-            when N_Extension_Aggregate =>
+            when N_Extension_Aggregate       =>
                Check_Subobject (Ancestor_Part (Expr));
                Check_Expressions (Expressions (Expr));
                Check_Associations (Component_Associations (Expr));
 
             --  Handle 'Update like delta aggregate
 
-            when N_Attribute_Reference =>
+            when N_Attribute_Reference       =>
                if Get_Attribute_Id (Attribute_Name (Expr)) = Attribute_Update
                then
                   Check_Subobject (Prefix (Expr));
                   Check_Expressions (Expressions (Expr));
                end if;
 
-            when others =>
+            when others                      =>
                null;
          end case;
       end Check_Anonymous_Object;
@@ -2496,28 +2493,27 @@ package body Gnat2Why.Borrow_Checker is
          pragma Assert (Is_Path_Expression (Expr));
 
          case N_Subexpr'(Nkind (Expr)) is
-            when N_Identifier | N_Expanded_Name | N_Null =>
+            when N_Identifier | N_Expanded_Name | N_Null       =>
                null;
 
             when N_Allocator
                | N_Aggregate
                | N_Delta_Aggregate
-               | N_Extension_Aggregate
-            =>
+               | N_Extension_Aggregate                         =>
                Check_Anonymous_Object (Expr, Read);
 
             when N_Explicit_Dereference | N_Selected_Component =>
                Read_Indexes (Prefix (Expr));
 
-            when N_Indexed_Component =>
+            when N_Indexed_Component                           =>
                Read_Indexes (Prefix (Expr));
                Read_Expression_List (Expressions (Expr));
 
-            when N_Slice =>
+            when N_Slice                                       =>
                Read_Indexes (Prefix (Expr));
                Read_Expression (Discrete_Range (Expr));
 
-            when N_Function_Call =>
+            when N_Function_Call                               =>
                declare
                   Fun : constant Entity_Id := Get_Called_Entity (Expr);
 
@@ -2555,11 +2551,10 @@ package body Gnat2Why.Borrow_Checker is
 
             when N_Qualified_Expression
                | N_Type_Conversion
-               | N_Unchecked_Type_Conversion
-            =>
+               | N_Unchecked_Type_Conversion                   =>
                Read_Indexes (Expression (Expr));
 
-            when N_Attribute_Reference =>
+            when N_Attribute_Reference                         =>
                pragma
                  Assert
                    (Get_Attribute_Id (Attribute_Name (Expr))
@@ -2584,11 +2579,11 @@ package body Gnat2Why.Borrow_Checker is
                   Read_Expression_List (Expressions (Expr));
                end if;
 
-            when N_Op_Eq | N_Op_Ne =>
+            when N_Op_Eq | N_Op_Ne                             =>
                Read_Indexes (Left_Opnd (Expr));
                Read_Indexes (Right_Opnd (Expr));
 
-            when others =>
+            when others                                        =>
                raise Program_Error;
          end case;
       end Read_Indexes;
@@ -2641,7 +2636,7 @@ package body Gnat2Why.Borrow_Checker is
                      when N_Discriminant_Association =>
                         Read_Expression (Expression (Assn));
 
-                     when others =>
+                     when others                     =>
                         Read_Expression (Assn);
                   end case;
 
@@ -2650,31 +2645,31 @@ package body Gnat2Why.Borrow_Checker is
             end;
             return;
 
-         when N_Range_Constraint =>
+         when N_Range_Constraint                 =>
             Read_Expression (Range_Expression (Expr));
             return;
 
-         when N_Subtype_Indication =>
+         when N_Subtype_Indication               =>
             if Present (Constraint (Expr)) then
                Read_Expression (Constraint (Expr));
             end if;
             return;
 
-         when N_Digits_Constraint =>
+         when N_Digits_Constraint                =>
             Read_Expression (Digits_Expression (Expr));
             if Present (Range_Constraint (Expr)) then
                Read_Expression (Range_Constraint (Expr));
             end if;
             return;
 
-         when N_Delta_Constraint =>
+         when N_Delta_Constraint                 =>
             Read_Expression (Delta_Expression (Expr));
             if Present (Range_Constraint (Expr)) then
                Read_Expression (Range_Constraint (Expr));
             end if;
             return;
 
-         when others =>
+         when others                             =>
             null;
       end case;
 
@@ -2682,11 +2677,11 @@ package body Gnat2Why.Borrow_Checker is
 
       case N_Subexpr'(Nkind (Expr)) is
 
-         when N_Binary_Op | N_Short_Circuit =>
+         when N_Binary_Op | N_Short_Circuit                 =>
             Read_Expression (Left_Opnd (Expr));
             Read_Expression (Right_Opnd (Expr));
 
-         when N_Membership_Test =>
+         when N_Membership_Test                             =>
             Read_Expression (Left_Opnd (Expr));
             if Present (Right_Opnd (Expr)) then
                Read_Expression (Right_Opnd (Expr));
@@ -2703,10 +2698,10 @@ package body Gnat2Why.Borrow_Checker is
                end;
             end if;
 
-         when N_Unary_Op =>
+         when N_Unary_Op                                    =>
             Read_Expression (Right_Opnd (Expr));
 
-         when N_Attribute_Reference =>
+         when N_Attribute_Reference                         =>
             declare
                Aname   : constant Name_Id := Attribute_Name (Expr);
                Attr_Id : constant Attribute_Id := Get_Attribute_Id (Aname);
@@ -2740,8 +2735,7 @@ package body Gnat2Why.Borrow_Checker is
                      | Attribute_Size
                      | Attribute_Terminated
                      | Attribute_Valid
-                     | Attribute_Value_Size
-                  =>
+                     | Attribute_Value_Size                     =>
                      Read_Expression (Pref);
 
                   --  The following attributes take a type name as prefix,
@@ -2762,15 +2756,14 @@ package body Gnat2Why.Borrow_Checker is
                      | Attribute_Succ
                      | Attribute_Truncation
                      | Attribute_Val
-                     | Attribute_Value
-                  =>
+                     | Attribute_Value                          =>
                      Read_Expression_List (Args);
 
                   --  Attributes Image and Img either take a type name as
                   --  prefix with an expression in argument, or the expression
                   --  directly as prefix. Adapt to each case.
 
-                  when Attribute_Image | Attribute_Img =>
+                  when Attribute_Image | Attribute_Img          =>
                      if No (Args) then
                         Read_Expression (Pref);
                      else
@@ -2790,24 +2783,23 @@ package body Gnat2Why.Borrow_Checker is
                   when Attribute_Loop_Entry
                      | Attribute_Old
                      | Attribute_Result
-                     | Attribute_Update
-                  =>
+                     | Attribute_Update                         =>
                      raise Program_Error;
 
                   --  Other attributes are not supported in SPARK (or only for
                   --  static values), leading to an error in marking. Ignore
                   --  them here.
 
-                  when others =>
+                  when others                                   =>
                      null;
                end case;
             end;
 
-         when N_Range =>
+         when N_Range                                       =>
             Read_Expression (Low_Bound (Expr));
             Read_Expression (High_Bound (Expr));
 
-         when N_If_Expression =>
+         when N_If_Expression                               =>
             declare
                Cond_Expr : constant Node_Id := First (Expressions (Expr));
                Then_Expr : constant Node_Id := Next (Cond_Expr);
@@ -2818,7 +2810,7 @@ package body Gnat2Why.Borrow_Checker is
                Check_Expression (Else_Expr, Mode);
             end;
 
-         when N_Case_Expression =>
+         when N_Case_Expression                             =>
             declare
                Cases    : constant List_Id := Alternatives (Expr);
                Cur_Case : Node_Id := First (Cases);
@@ -2834,11 +2826,10 @@ package body Gnat2Why.Borrow_Checker is
 
          when N_Qualified_Expression
             | N_Type_Conversion
-            | N_Unchecked_Type_Conversion
-         =>
+            | N_Unchecked_Type_Conversion                   =>
             Read_Expression (Expression (Expr));
 
-         when N_Quantified_Expression =>
+         when N_Quantified_Expression                       =>
             Object_Scope.Push_Scope;
             declare
                For_In_Spec     : constant Node_Id :=
@@ -2886,25 +2877,24 @@ package body Gnat2Why.Borrow_Checker is
             | N_Numeric_Or_String_Literal
             | N_Operator_Symbol
             | N_Raise_Expression
-            | N_Raise_xxx_Error
-         =>
+            | N_Raise_xxx_Error                             =>
             null;
 
-         when N_Delta_Aggregate | N_Target_Name =>
+         when N_Delta_Aggregate | N_Target_Name             =>
             null;
 
          when N_Explicit_Dereference | N_Selected_Component =>
             Check_Expression (Prefix (Expr), Mode);
 
-         when N_Indexed_Component =>
+         when N_Indexed_Component                           =>
             Check_Expression (Prefix (Expr), Mode);
             Read_Expression_List (Expressions (Expr));
 
-         when N_Slice =>
+         when N_Slice                                       =>
             Check_Expression (Prefix (Expr), Mode);
             Read_Expression (Discrete_Range (Expr));
 
-         when N_Expression_With_Actions =>
+         when N_Expression_With_Actions                     =>
 
             --  Go over the objects declared in a declare expressions and fill
             --  the map for them. No need to handle local borrowers or
@@ -2917,7 +2907,7 @@ package body Gnat2Why.Borrow_Checker is
 
          --  Procedure calls are handled in Check_Node
 
-         when N_Procedure_Call_Statement =>
+         when N_Procedure_Call_Statement                    =>
             raise Program_Error;
 
          --  Path expressions are handled before this point
@@ -2929,13 +2919,12 @@ package body Gnat2Why.Borrow_Checker is
             | N_Function_Call
             | N_Identifier
             | N_Null
-            | N_External_Initializer
-         =>
+            | N_External_Initializer                        =>
             raise Program_Error;
 
          --  The following nodes are never generated in GNATprove mode
 
-         when N_Reference =>
+         when N_Reference                                   =>
             raise Program_Error;
       end case;
    end Check_Expression;
@@ -3074,7 +3063,7 @@ package body Gnat2Why.Borrow_Checker is
             end if;
 
             case Kind (Tree) is
-               when Entire_Object =>
+               when Entire_Object    =>
                   if Children_Permission (Tree) < Perm then
                      Perm_Error_Loop_Exit
                        (E,
@@ -3084,7 +3073,7 @@ package body Gnat2Why.Borrow_Checker is
                         Explanation (Tree));
                   end if;
 
-               when Reference =>
+               when Reference        =>
                   if Null_Permission (Tree) < Perm then
                      Perm_Error_Loop_Exit
                        (E,
@@ -3097,7 +3086,7 @@ package body Gnat2Why.Borrow_Checker is
                   Check_Is_Less_Restrictive_Tree_Than
                     (Get_All (Tree), Perm, E);
 
-               when Array_Component =>
+               when Array_Component  =>
                   if Bounds_Permission (Tree) < Perm then
                      Perm_Error_Loop_Exit
                        (E,
@@ -3136,7 +3125,7 @@ package body Gnat2Why.Borrow_Checker is
             end if;
 
             case Kind (Tree) is
-               when Entire_Object =>
+               when Entire_Object    =>
                   if Perm < Children_Permission (Tree) then
                      Perm_Error_Loop_Exit
                        (E,
@@ -3146,7 +3135,7 @@ package body Gnat2Why.Borrow_Checker is
                         Explanation (Tree));
                   end if;
 
-               when Reference =>
+               when Reference        =>
                   if Perm < Null_Permission (Tree) then
                      Perm_Error_Loop_Exit
                        (E,
@@ -3159,7 +3148,7 @@ package body Gnat2Why.Borrow_Checker is
                   Check_Is_More_Restrictive_Tree_Than
                     (Get_All (Tree), Perm, E);
 
-               when Array_Component =>
+               when Array_Component  =>
                   if Perm < Bounds_Permission (Tree) then
                      Perm_Error_Loop_Exit
                        (E,
@@ -3205,9 +3194,9 @@ package body Gnat2Why.Borrow_Checker is
             --  look at the Children_Permission of the folded tree against
             --  the unfolded tree Orig_Tree.
 
-            when Entire_Object =>
+            when Entire_Object    =>
                case Kind (Orig_Tree) is
-                  when Entire_Object =>
+                  when Entire_Object    =>
                      if Children_Permission (New_Tree)
                        < Children_Permission (Orig_Tree)
                      then
@@ -3219,7 +3208,7 @@ package body Gnat2Why.Borrow_Checker is
                            Expl       => Explanation (New_Tree));
                      end if;
 
-                  when Reference =>
+                  when Reference        =>
                      if Children_Permission (New_Tree)
                        < Null_Permission (Orig_Tree)
                      then
@@ -3236,7 +3225,7 @@ package body Gnat2Why.Borrow_Checker is
                         Children_Permission (New_Tree),
                         E);
 
-                  when Array_Component =>
+                  when Array_Component  =>
                      if Children_Permission (New_Tree)
                        < Bounds_Permission (Orig_Tree)
                      then
@@ -3268,7 +3257,7 @@ package body Gnat2Why.Borrow_Checker is
                      end;
                end case;
 
-            when Reference =>
+            when Reference        =>
                case Kind (Orig_Tree) is
                   when Entire_Object =>
                      if Null_Permission (New_Tree)
@@ -3287,7 +3276,7 @@ package body Gnat2Why.Borrow_Checker is
                         Children_Permission (Orig_Tree),
                         E);
 
-                  when Reference =>
+                  when Reference     =>
                      if Null_Permission (New_Tree)
                        < Null_Permission (Orig_Tree)
                      then
@@ -3302,13 +3291,13 @@ package body Gnat2Why.Borrow_Checker is
                      Check_Is_Less_Restrictive_Tree
                        (Get_All (New_Tree), Get_All (Orig_Tree), E);
 
-                  when others =>
+                  when others        =>
                      raise Program_Error;
                end case;
 
-            when Array_Component =>
+            when Array_Component  =>
                case Kind (Orig_Tree) is
-                  when Entire_Object =>
+                  when Entire_Object   =>
                      if Bounds_Permission (New_Tree)
                        < Children_Permission (Orig_Tree)
                      then
@@ -3340,7 +3329,7 @@ package body Gnat2Why.Borrow_Checker is
                      Check_Is_Less_Restrictive_Tree
                        (Get_Elem (New_Tree), Get_Elem (Orig_Tree), E);
 
-                  when others =>
+                  when others          =>
                      raise Program_Error;
                end case;
 
@@ -3351,7 +3340,7 @@ package body Gnat2Why.Borrow_Checker is
                   CompN := Perm_Tree_Maps.Get_First (Component (New_Tree));
 
                   case Kind (Orig_Tree) is
-                     when Entire_Object =>
+                     when Entire_Object    =>
                         while CompN /= null loop
                            Check_Is_Less_Restrictive_Tree_Than
                              (CompN, Children_Permission (Orig_Tree), E);
@@ -3385,7 +3374,7 @@ package body Gnat2Why.Borrow_Checker is
                            end loop;
                         end;
 
-                     when others =>
+                     when others           =>
                         raise Program_Error;
                   end case;
                end;
@@ -3542,19 +3531,19 @@ package body Gnat2Why.Borrow_Checker is
    procedure Check_Node (N : Node_Id) is
    begin
       case Nkind (N) is
-         when N_Declaration =>
+         when N_Declaration                                               =>
             Check_Declaration (N);
 
-         when N_Body_Stub =>
+         when N_Body_Stub                                                 =>
             null;
 
-         when N_Statement_Other_Than_Procedure_Call =>
+         when N_Statement_Other_Than_Procedure_Call                       =>
             Check_Statement (N);
 
-         when N_Procedure_Call_Statement =>
+         when N_Procedure_Call_Statement                                  =>
             Check_Call_With_Side_Effects (N);
 
-         when N_Package_Body =>
+         when N_Package_Body                                              =>
             declare
                Id : constant Entity_Id := Unique_Defining_Entity (N);
             begin
@@ -3566,16 +3555,16 @@ package body Gnat2Why.Borrow_Checker is
                end if;
             end;
 
-         when N_Subprogram_Body =>
+         when N_Subprogram_Body                                           =>
             null;
 
-         when N_Entry_Body | N_Task_Body =>
+         when N_Entry_Body | N_Task_Body                                  =>
             null;
 
-         when N_Protected_Body =>
+         when N_Protected_Body                                            =>
             null;
 
-         when N_Package_Declaration =>
+         when N_Package_Declaration                                       =>
             declare
                Id : constant Entity_Id := Defining_Entity (N);
             begin
@@ -3584,7 +3573,7 @@ package body Gnat2Why.Borrow_Checker is
                end if;
             end;
 
-         when N_Handled_Sequence_Of_Statements =>
+         when N_Handled_Sequence_Of_Statements                            =>
             Object_Scope.Push_Scope;
             Check_List (Statements (N));
             Object_Scope.Pop_Scope;
@@ -3624,23 +3613,23 @@ package body Gnat2Why.Borrow_Checker is
             Check_List (Finally_Statements (N));
             Object_Scope.Pop_Scope;
 
-         when N_Pragma =>
+         when N_Pragma                                                    =>
             Check_Pragma (N);
 
-         when N_Subprogram_Declaration =>
+         when N_Subprogram_Declaration                                    =>
             null;
 
          --  Attribute references in statement position are not supported in
          --  SPARK and will be rejected by GNATprove.
 
-         when N_Attribute_Reference =>
+         when N_Attribute_Reference                                       =>
             null;
 
          --  When a goto label is reached, we merge the accumulated
          --  environment coming from goto statements mentioning this label in
          --  the current environment.
 
-         when N_Label =>
+         when N_Label                                                     =>
             Merge_Transfer_Of_Control_Env
               (Current_Goto_Accumulators, Entity (Identifier (N)));
 
@@ -3690,7 +3679,7 @@ package body Gnat2Why.Borrow_Checker is
 
          --  Checking should not be called directly on these nodes
 
-         when others =>
+         when others                                                      =>
             raise Program_Error;
       end case;
    end Check_Node;
@@ -3932,7 +3921,7 @@ package body Gnat2Why.Borrow_Checker is
 
    begin
       case Kind is
-         when E_In_Parameter =>
+         when E_In_Parameter     =>
 
             --  Inputs of functions without side effects have R permission
             --  only. Protected functions are never allowed to modify protected
@@ -3984,7 +3973,7 @@ package body Gnat2Why.Borrow_Checker is
                Mode := Read;
             end if;
 
-         when E_Out_Parameter =>
+         when E_Out_Parameter    =>
             pragma Assert (not Is_Anonymous_Access_Object_Type (Typ));
             Mode := Assign;
 
@@ -4123,7 +4112,7 @@ package body Gnat2Why.Borrow_Checker is
       end if;
 
       case Prag_Id is
-         when Pragma_Check =>
+         when Pragma_Check             =>
             --  Ignored Pragma_Check are not marked. Ignore them.
 
             if not Is_Ignored_Pragma_Check (Prag) then
@@ -4148,8 +4137,7 @@ package body Gnat2Why.Borrow_Checker is
             | Pragma_Precondition
             | Pragma_Postcondition
             | Pragma_Contract_Cases
-            | Pragma_Refined_Post
-         =>
+            | Pragma_Refined_Post      =>
             null;
 
          --  The same holds for the initial condition after package
@@ -4169,11 +4157,10 @@ package body Gnat2Why.Borrow_Checker is
             | Pragma_Compile_Time_Error
             | Pragma_Compile_Time_Warning
             | Pragma_Debug
-            | Pragma_Loop_Invariant
-         =>
+            | Pragma_Loop_Invariant    =>
             pragma Assert (Should_Ignore_Pragma_Sem (Prag));
 
-         when others =>
+         when others                   =>
             null;
       end case;
    end Check_Pragma;
@@ -4260,12 +4247,12 @@ package body Gnat2Why.Borrow_Checker is
 
          --  An entry call is handled like other calls
 
-         when N_Entry_Call_Statement =>
+         when N_Entry_Call_Statement                               =>
             Check_Call_With_Side_Effects (Stmt);
 
          --  An assignment may correspond to a move, a borrow, or an observe
 
-         when N_Assignment_Statement =>
+         when N_Assignment_Statement                               =>
             declare
                Target : constant Node_Id := Name (Stmt);
                Expr   : constant Node_Id := Expression (Stmt);
@@ -4319,7 +4306,7 @@ package body Gnat2Why.Borrow_Checker is
                end if;
             end;
 
-         when N_Block_Statement =>
+         when N_Block_Statement                                    =>
             Object_Scope.Push_Scope;
             Check_List (Declarations (Stmt));
             Check_Node (Handled_Statement_Sequence (Stmt));
@@ -4343,7 +4330,7 @@ package body Gnat2Why.Borrow_Checker is
             end;
             Object_Scope.Pop_Scope;
 
-         when N_Case_Statement =>
+         when N_Case_Statement                                     =>
             declare
                Alt       : Node_Id;
                Saved_Env : Perm_Env;
@@ -4397,10 +4384,10 @@ package body Gnat2Why.Borrow_Checker is
          when N_Delay_Relative_Statement | N_Delay_Until_Statement =>
             Check_Expression (Expression (Stmt), Read);
 
-         when N_Loop_Statement =>
+         when N_Loop_Statement                                     =>
             Check_Loop_Statement (Stmt);
 
-         when N_Simple_Return_Statement =>
+         when N_Simple_Return_Statement                            =>
             declare
                Targ : constant Entity_Id :=
                  Return_Applies_To (Return_Statement_Entity (Stmt));
@@ -4412,7 +4399,7 @@ package body Gnat2Why.Borrow_Checker is
                Check_Transfer_Of_Control (Stmt, Unconditional => True);
             end;
 
-         when N_Extended_Return_Statement =>
+         when N_Extended_Return_Statement                          =>
             Object_Scope.Push_Scope;
             declare
                Subp      : constant Entity_Id :=
@@ -4469,7 +4456,7 @@ package body Gnat2Why.Borrow_Checker is
          --  accumulator for the given loop. The handling for loop
          --  exit/continues is actually the same.
 
-         when N_Exit_Statement | N_Continue_Statement =>
+         when N_Exit_Statement | N_Continue_Statement              =>
             declare
                Cond     : constant Node_Id := Condition (Stmt);
                Has_Cond : constant Boolean := Present (Cond);
@@ -4484,7 +4471,7 @@ package body Gnat2Why.Borrow_Checker is
          --  the permission environment, then merge the resulting permission
          --  environments.
 
-         when N_If_Statement =>
+         when N_If_Statement                                       =>
             declare
                Saved_Env : Perm_Env;
                New_Env   : Perm_Env;
@@ -4546,7 +4533,7 @@ package body Gnat2Why.Borrow_Checker is
                Free_Env (Saved_Env);
             end;
 
-         when N_Raise_Statement =>
+         when N_Raise_Statement                                    =>
 
             --  If the exception is handled, merge the environment into the
             --  appropriate handlers accumulators and/or exit the enclosing
@@ -4554,7 +4541,7 @@ package body Gnat2Why.Borrow_Checker is
 
             Check_Transfer_Of_Control (Stmt, Unconditional => True);
 
-         when N_Null_Statement =>
+         when N_Null_Statement                                     =>
             null;
 
          --  When a goto statement is encountered, the current environment is
@@ -4562,7 +4549,7 @@ package body Gnat2Why.Borrow_Checker is
          --  is reached. The environment is reset afterward as the path is
          --  cut.
 
-         when N_Goto_Statement =>
+         when N_Goto_Statement                                     =>
 
             Check_Transfer_Of_Control (Stmt, Unconditional => True);
 
@@ -4575,21 +4562,19 @@ package body Gnat2Why.Borrow_Checker is
             | N_Conditional_Entry_Call
             | N_Requeue_Statement
             | N_Selective_Accept
-            | N_Timed_Entry_Call
-         =>
+            | N_Timed_Entry_Call                                   =>
             null;
 
          --  Unsupported INOX constructs
 
          when N_Goto_When_Statement
             | N_Raise_When_Statement
-            | N_Return_When_Statement
-         =>
+            | N_Return_When_Statement                              =>
             null;
 
          --  The following nodes are never generated in GNATprove mode
 
-         when N_Compound_Statement | N_Free_Statement =>
+         when N_Compound_Statement | N_Free_Statement              =>
             raise Program_Error;
       end case;
    end Check_Statement;
@@ -4632,10 +4617,10 @@ package body Gnat2Why.Borrow_Checker is
             --  For exited blocks/bodies, check that declared borrowers are
             --  in the unrestricted state.
 
-            when N_Block_Statement =>
+            when N_Block_Statement                =>
                Check_End_Of_Scope (Declarations (Scop), N => From);
 
-            when N_Entity =>
+            when N_Entity                         =>
                Check_End_Of_Scope (Declarations (Get_Body (Scop)), N => From);
 
             --  For exiting paths through finally statements, carry the
@@ -4654,11 +4639,10 @@ package body Gnat2Why.Borrow_Checker is
 
             when N_Loop_Statement
                | N_Iteration_Scheme
-               | N_Extended_Return_Statement
-            =>
+               | N_Extended_Return_Statement      =>
                null;
 
-            when others =>
+            when others                           =>
                raise Program_Error;
          end case;
       end Process;
@@ -4700,7 +4684,7 @@ package body Gnat2Why.Borrow_Checker is
 
       begin
          case Nkind (Destination) is
-            when N_Loop_Statement =>
+            when N_Loop_Statement            =>
                declare
                   Loop_Name : constant Entity_Id :=
                     Entity (Identifier (Destination));
@@ -4712,7 +4696,7 @@ package body Gnat2Why.Borrow_Checker is
                   end if;
                end;
 
-            when N_Exception_Handler =>
+            when N_Exception_Handler         =>
 
                Do_Local (Current_Exc_Accumulators, Destination);
 
@@ -4722,7 +4706,7 @@ package body Gnat2Why.Borrow_Checker is
                  (Current_Extended_Return_Accumulators,
                   Return_Statement_Entity (Destination));
 
-            when N_Entity =>
+            when N_Entity                    =>
                if Ekind (Destination) = E_Label then
                   Do_Local (Current_Goto_Accumulators, Destination);
                else
@@ -4756,7 +4740,7 @@ package body Gnat2Why.Borrow_Checker is
                   end;
                end if;
 
-            when others =>
+            when others                      =>
                raise Program_Error;
          end case;
       end Stop;
@@ -4848,16 +4832,16 @@ package body Gnat2Why.Borrow_Checker is
             return (Perm => Read_Write, Expl => Types.Empty);
          end if;
          case Kind (T) is
-            when Entire_Object =>
+            when Entire_Object    =>
                return
                  (Perm => Children_Permission (T), Expl => Explanation (T));
 
-            when Reference =>
+            when Reference        =>
                return
                  (Perm => Permission (Get_All (T)),
                   Expl => Explanation (Get_All (T)));
 
-            when Array_Component =>
+            when Array_Component  =>
                return Scan_Under_Dereference (Get_Elem (T));
 
             when Record_Component =>
@@ -4936,7 +4920,7 @@ package body Gnat2Why.Borrow_Checker is
                 (if N.Is_Ent then N else (Is_Ent => False, Expr => Main_Path));
          begin
             case Tree_Or_Perm.R is
-               when Folded =>
+               when Folded   =>
                   Result :=
                     (Perm => Tree_Or_Perm.Found_Permission,
                      Expl => Tree_Or_Perm.Explanation);
@@ -5069,8 +5053,7 @@ package body Gnat2Why.Borrow_Checker is
             | N_Slice
             | N_Attribute_Reference
             | N_Op_Ne
-            | N_Op_Eq
-         =>
+            | N_Op_Eq                        =>
             pragma
               Assert
                 (if Nkind (N.Expr) = N_Attribute_Reference
@@ -5092,7 +5075,7 @@ package body Gnat2Why.Borrow_Checker is
                   --  Some earlier prefix was already folded, return the
                   --  permission found.
 
-                  when Folded =>
+                  when Folded   =>
                      return C;
 
                   when Unfolded =>
@@ -5101,14 +5084,14 @@ package body Gnat2Why.Borrow_Checker is
                         --  If the prefix tree is already folded, return the
                         --  children permission.
 
-                        when Entire_Object =>
+                        when Entire_Object    =>
                            return
                              (R                => Folded,
                               Found_Permission =>
                                 Children_Permission (C.Tree_Access),
                               Explanation      => Explanation (C.Tree_Access));
 
-                        when Reference =>
+                        when Reference        =>
                            pragma
                              Assert
                                (Nkind (N.Expr)
@@ -5142,7 +5125,7 @@ package body Gnat2Why.Borrow_Checker is
                               return (R => Unfolded, Tree_Access => D);
                            end;
 
-                        when Array_Component =>
+                        when Array_Component  =>
                            pragma
                              Assert
                                (Nkind (N.Expr) = N_Indexed_Component
@@ -5175,11 +5158,10 @@ package body Gnat2Why.Borrow_Checker is
 
          when N_Qualified_Expression
             | N_Type_Conversion
-            | N_Unchecked_Type_Conversion
-         =>
+            | N_Unchecked_Type_Conversion    =>
             return Get_Perm_Or_Tree (+Expression (N.Expr));
 
-         when others =>
+         when others                         =>
             raise Program_Error;
       end case;
    end Get_Perm_Or_Tree;
@@ -5200,15 +5182,15 @@ package body Gnat2Why.Borrow_Checker is
    function Glb (P1, P2 : Perm_Kind) return Perm_Kind is
    begin
       case P1 is
-         when No_Access =>
+         when No_Access  =>
             return No_Access;
 
-         when Read_Only =>
+         when Read_Only  =>
             case P2 is
                when No_Access | Write_Only =>
                   return No_Access;
 
-               when Read_Perm =>
+               when Read_Perm              =>
                   return Read_Only;
             end case;
 
@@ -5217,7 +5199,7 @@ package body Gnat2Why.Borrow_Checker is
                when No_Access | Read_Only =>
                   return No_Access;
 
-               when Write_Perm =>
+               when Write_Perm            =>
                   return Write_Only;
             end case;
 
@@ -5233,25 +5215,24 @@ package body Gnat2Why.Borrow_Checker is
    function Has_Array_Component (Expr : Node_Id) return Boolean is
    begin
       case Nkind (Expr) is
-         when N_Expanded_Name | N_Identifier =>
+         when N_Expanded_Name | N_Identifier                =>
             return False;
 
          when N_Explicit_Dereference | N_Selected_Component =>
             return Has_Array_Component (Prefix (Expr));
 
-         when N_Indexed_Component | N_Slice =>
+         when N_Indexed_Component | N_Slice                 =>
             return True;
 
-         when N_Allocator | N_Null | N_Function_Call =>
+         when N_Allocator | N_Null | N_Function_Call        =>
             return False;
 
          when N_Qualified_Expression
             | N_Type_Conversion
-            | N_Unchecked_Type_Conversion
-         =>
+            | N_Unchecked_Type_Conversion                   =>
             return Has_Array_Component (Expression (Expr));
 
-         when others =>
+         when others                                        =>
             raise Program_Error;
       end case;
    end Has_Array_Component;
@@ -5288,7 +5269,7 @@ package body Gnat2Why.Borrow_Checker is
          --  The initial value of the an access-to-constant allocator is
          --  moved if the designated type is deep.
 
-         when N_Allocator =>
+         when N_Allocator                                     =>
             --  Ada RM 4.8(5/2): If the type of the allocator is an
             --  access-to-constant type, the allocator shall be an
             --  initialized allocator.
@@ -5316,7 +5297,7 @@ package body Gnat2Why.Borrow_Checker is
               not (Is_Access_Constant (Retysp (Etype (Expression (Expr))))
                    or else Is_Rooted_In_Constant (Expression (Expr)));
 
-         when others =>
+         when others                                          =>
             return False;
       end case;
    end Is_Move_To_Constant;
@@ -5348,23 +5329,21 @@ package body Gnat2Why.Borrow_Checker is
             when N_Expanded_Name | N_Identifier =>
                return Expr_Array'(1 => Entity (Expr));
 
-            when N_Slice =>
+            when N_Slice                        =>
                return Get_Expr_Array (Prefix (Expr));
 
             when N_Explicit_Dereference
                | N_Indexed_Component
                | N_Selected_Component
-               | N_Attribute_Reference
-            =>
+               | N_Attribute_Reference          =>
                return Get_Expr_Array (Prefix (Expr)) & Expr;
 
             when N_Qualified_Expression
                | N_Type_Conversion
-               | N_Unchecked_Type_Conversion
-            =>
+               | N_Unchecked_Type_Conversion    =>
                return Get_Expr_Array (Expression (Expr));
 
-            when N_Op_Ne | N_Op_Eq =>
+            when N_Op_Ne | N_Op_Eq              =>
                if Nkind (Left_Opnd (Expr)) = N_Null then
                   return Get_Expr_Array (Right_Opnd (Expr)) & Expr;
                else
@@ -5372,7 +5351,7 @@ package body Gnat2Why.Borrow_Checker is
                   return Get_Expr_Array (Left_Opnd (Expr)) & Expr;
                end if;
 
-            when others =>
+            when others                         =>
                raise Program_Error;
          end case;
       end Get_Expr_Array;
@@ -5412,14 +5391,14 @@ package body Gnat2Why.Borrow_Checker is
                when N_Explicit_Dereference | N_Indexed_Component =>
                   null;
 
-               when N_Op_Ne | N_Op_Eq | N_Attribute_Reference =>
+               when N_Op_Ne | N_Op_Eq | N_Attribute_Reference    =>
                   --  Prefix and Expr cannot be equality operators together,
                   --  nor attribute references together, as one or the other
                   --  necessarily is a borrowed expression.
 
                   raise Program_Error;
 
-               when N_Selected_Component =>
+               when N_Selected_Component                         =>
                   if Original_Record_Component
                        (Entity (Selector_Name (Prefix_Elt)))
                     /= Original_Record_Component
@@ -5428,7 +5407,7 @@ package body Gnat2Why.Borrow_Checker is
                      return False;
                   end if;
 
-               when others =>
+               when others                                       =>
                   raise Program_Error;
             end case;
          end;
@@ -5491,15 +5470,15 @@ package body Gnat2Why.Borrow_Checker is
    function Lub (P1, P2 : Perm_Kind) return Perm_Kind is
    begin
       case P1 is
-         when No_Access =>
+         when No_Access  =>
             return P2;
 
-         when Read_Only =>
+         when Read_Only  =>
             case P2 is
                when No_Access | Read_Only =>
                   return Read_Only;
 
-               when Write_Perm =>
+               when Write_Perm            =>
                   return Read_Write;
             end case;
 
@@ -5508,7 +5487,7 @@ package body Gnat2Why.Borrow_Checker is
                when No_Access | Write_Only =>
                   return Write_Only;
 
-               when Read_Perm =>
+               when Read_Perm              =>
                   return Read_Write;
             end case;
 
@@ -5543,15 +5522,15 @@ package body Gnat2Why.Borrow_Checker is
          A.all.Tree.Permission := Glb (Permission (A), P);
 
          case Kind (A) is
-            when Entire_Object =>
+            when Entire_Object    =>
                A.all.Tree.Children_Permission :=
                  Glb (Children_Permission (A), P);
 
-            when Reference =>
+            when Reference        =>
                Apply_Glb_Tree (Get_All (A), P);
                A.all.Tree.Null_Permission := Glb (Null_Permission (A), P);
 
-            when Array_Component =>
+            when Array_Component  =>
                Apply_Glb_Tree (Get_Elem (A), P);
                A.all.Tree.Bounds_Permission := Glb (Bounds_Permission (A), P);
 
@@ -5589,25 +5568,25 @@ package body Gnat2Why.Borrow_Checker is
          Target.all.Tree.Permission := Perm;
 
          case Kind (Target) is
-            when Entire_Object =>
+            when Entire_Object    =>
                declare
                   Child_Perm : constant Perm_Kind :=
                     Children_Permission (Target);
 
                begin
                   case Kind (Source) is
-                     when Entire_Object =>
+                     when Entire_Object    =>
                         Target.all.Tree.Children_Permission :=
                           Glb (Child_Perm, Children_Permission (Source));
 
-                     when Reference =>
+                     when Reference        =>
                         Copy_Tree (Source, Target);
                         Target.all.Tree.Null_Permission :=
                           Glb (Child_Perm, Null_Permission (Source));
                         Target.all.Tree.Permission := Perm;
                         Apply_Glb_Tree (Get_All (Target), Child_Perm);
 
-                     when Array_Component =>
+                     when Array_Component  =>
                         Copy_Tree (Source, Target);
                         Target.all.Tree.Bounds_Permission :=
                           Glb (Child_Perm, Bounds_Permission (Source));
@@ -5634,7 +5613,7 @@ package body Gnat2Why.Borrow_Checker is
                   end case;
                end;
 
-            when Reference =>
+            when Reference        =>
                case Kind (Source) is
                   when Entire_Object =>
                      Target.all.Tree.Null_Permission :=
@@ -5644,20 +5623,20 @@ package body Gnat2Why.Borrow_Checker is
                      Apply_Glb_Tree
                        (Get_All (Target), Children_Permission (Source));
 
-                  when Reference =>
+                  when Reference     =>
                      Target.all.Tree.Null_Permission :=
                        Glb
                          (Null_Permission (Target), Null_Permission (Source));
                      Merge_Trees (Get_All (Target), Get_All (Source));
 
-                  when others =>
+                  when others        =>
                      raise Program_Error;
 
                end case;
 
-            when Array_Component =>
+            when Array_Component  =>
                case Kind (Source) is
-                  when Entire_Object =>
+                  when Entire_Object   =>
                      Target.all.Tree.Bounds_Permission :=
                        Glb
                          (Bounds_Permission (Target),
@@ -5672,14 +5651,14 @@ package body Gnat2Why.Borrow_Checker is
                           Bounds_Permission (Source));
                      Merge_Trees (Get_Elem (Target), Get_Elem (Source));
 
-                  when others =>
+                  when others          =>
                      raise Program_Error;
 
                end case;
 
             when Record_Component =>
                case Kind (Source) is
-                  when Entire_Object =>
+                  when Entire_Object    =>
                      declare
                         Child_Perm : constant Perm_Kind :=
                           Children_Permission (Source);
@@ -5723,7 +5702,7 @@ package body Gnat2Why.Borrow_Checker is
                         end loop;
                      end;
 
-                  when others =>
+                  when others           =>
                      raise Program_Error;
                end case;
          end case;
@@ -5918,23 +5897,21 @@ package body Gnat2Why.Borrow_Checker is
 
             when N_Type_Conversion
                | N_Unchecked_Type_Conversion
-               | N_Qualified_Expression
-            =>
+               | N_Qualified_Expression         =>
                Set_Root_Object (Expression (Path), Obj, Part, Deref);
 
             when N_Indexed_Component
                | N_Selected_Component
                | N_Slice
-               | N_Attribute_Reference
-            =>
+               | N_Attribute_Reference          =>
                Set_Root_Object (Prefix (Path), Obj, Part, Deref);
                Part := True;
 
-            when N_Explicit_Dereference =>
+            when N_Explicit_Dereference         =>
                Set_Root_Object (Prefix (Path), Obj, Part, Deref);
                Deref := True;
 
-            when N_Op_Ne | N_Op_Eq =>
+            when N_Op_Ne | N_Op_Eq              =>
                if Nkind (Left_Opnd (Path)) = N_Null then
                   Set_Root_Object (Right_Opnd (Path), Obj, Part, Deref);
                else
@@ -5943,7 +5920,7 @@ package body Gnat2Why.Borrow_Checker is
                end if;
                Part := True;
 
-            when others =>
+            when others                         =>
                raise Program_Error;
          end case;
       end Set_Root_Object;
@@ -6088,14 +6065,14 @@ package body Gnat2Why.Borrow_Checker is
                        Secondary_Loc => Sec_Sloc);
                end if;
 
-            when Read_Only =>
+            when Read_Only  =>
                return
                  Create
                    ("object was " & Reason,
                     Explain_Code  => Code,
                     Secondary_Loc => Sec_Sloc);
 
-            when No_Access =>
+            when No_Access  =>
                raise Program_Error;
          end case;
       end if;
@@ -6180,7 +6157,7 @@ package body Gnat2Why.Borrow_Checker is
          begin
             loop
                case Nkind (N) is
-                  when N_Function_Call =>
+                  when N_Function_Call                =>
                      pragma
                        Assert
                          (Has_At_End_Borrow_Annotation
@@ -6195,14 +6172,13 @@ package body Gnat2Why.Borrow_Checker is
                   when N_Selected_Component
                      | N_Indexed_Component
                      | N_Attribute_Reference
-                     | N_Explicit_Dereference
-                  =>
+                     | N_Explicit_Dereference         =>
                      N := Prefix (N);
 
                   when N_Identifier | N_Expanded_Name =>
                      N := Expression (Parent (Entity (N)));
 
-                  when others =>
+                  when others                         =>
                      --  Should be ruled out by marking.
 
                      raise Program_Error;
@@ -6218,7 +6194,7 @@ package body Gnat2Why.Borrow_Checker is
       --  For modes that require W permission, check path was not observed
 
       case Mode is
-         when Read | Observe =>
+         when Read | Observe                =>
             null;
 
          when Assign | Move | Free | Borrow =>
@@ -6283,7 +6259,7 @@ package body Gnat2Why.Borrow_Checker is
 
       case Mode is
 
-         when Read =>
+         when Read    =>
             --  Check path is readable
 
             if Perm not in Read_Perm then
@@ -6291,7 +6267,7 @@ package body Gnat2Why.Borrow_Checker is
                return;
             end if;
 
-         when Move =>
+         when Move    =>
 
             --  Forbidden on deep path during elaboration, otherwise no
             --  checking needed.
@@ -6331,7 +6307,7 @@ package body Gnat2Why.Borrow_Checker is
                end if;
             end;
 
-         when Free =>
+         when Free    =>
             --  Check W permission on the pointed-to path. Still issue an error
             --  message wrt permission of the full path and RW permission, as
             --  it is likely less confusing.
@@ -6347,7 +6323,7 @@ package body Gnat2Why.Borrow_Checker is
                end if;
             end;
 
-         when Assign =>
+         when Assign  =>
             --  For assignment, check W permission
 
             if Perm not in Write_Perm then
@@ -6355,7 +6331,7 @@ package body Gnat2Why.Borrow_Checker is
                return;
             end if;
 
-         when Borrow =>
+         when Borrow  =>
 
             --  Forbidden during elaboration, an error is already issued in
             --  Check_Declaration, just return.
@@ -6410,10 +6386,10 @@ package body Gnat2Why.Borrow_Checker is
 
       case Mode is
 
-         when Read =>
+         when Read             =>
             null;
 
-         when Free =>
+         when Free             =>
             --  Set permission RW for the path and its extensions
 
             declare
@@ -6427,7 +6403,7 @@ package body Gnat2Why.Borrow_Checker is
                Set_Perm_Prefixes_Assign (Expr);
             end;
 
-         when Move =>
+         when Move             =>
 
             --  SPARK RM 3.10(1): After a move operation, the state of the
             --  source object (if any) becomes Moved.
@@ -6460,7 +6436,7 @@ package body Gnat2Why.Borrow_Checker is
                end;
             end if;
 
-         when Assign =>
+         when Assign           =>
 
             --  If there is no root object, or the tree has an array component,
             --  then the permissions do not get modified by the assignment.
@@ -6670,13 +6646,13 @@ package body Gnat2Why.Borrow_Checker is
       procedure Free_Perm_Tree_Children (T : Perm_Tree_Access) is
       begin
          case Kind (T) is
-            when Entire_Object =>
+            when Entire_Object    =>
                null;
 
-            when Reference =>
+            when Reference        =>
                Free_Tree (T.all.Tree.Get_All);
 
-            when Array_Component =>
+            when Array_Component  =>
                Free_Tree (T.all.Tree.Get_Elem);
 
             when Record_Component =>
@@ -6738,7 +6714,7 @@ package body Gnat2Why.Borrow_Checker is
          --  For a folded tree of composite type, unfold the tree for better
          --  precision.
 
-         when Entire_Object =>
+         when Entire_Object    =>
             case Ekind (Check_Ty) is
                when E_Array_Type | E_Array_Subtype =>
                   declare
@@ -6762,7 +6738,7 @@ package body Gnat2Why.Borrow_Checker is
                         Get_Elem          => C);
                   end;
 
-               when Record_Kind =>
+               when Record_Kind                    =>
                   declare
                      C       : Perm_Tree_Access;
                      Comp    : Entity_Id;
@@ -6831,14 +6807,14 @@ package body Gnat2Why.Borrow_Checker is
 
                --  Otherwise, extensions are set to NO
 
-               when others =>
+               when others                         =>
                   Set_Perm_Extensions (T, No_Access, Expl);
             end case;
 
-         when Reference =>
+         when Reference        =>
             Set_Perm_Extensions (T, No_Access, Expl);
 
-         when Array_Component =>
+         when Array_Component  =>
             Set_Perm_Extensions_Move
               (Get_Elem (T), Component_Type (Check_Ty), Expl);
             T.Tree.Bounds_Permission := Read_Write;
@@ -6930,7 +6906,7 @@ package body Gnat2Why.Borrow_Checker is
          --  assign an adequate permission to it, if unfolded. If folded,
          --  we unroll the tree one level.
 
-         when N_Explicit_Dereference =>
+         when N_Explicit_Dereference         =>
             declare
                C : constant Perm_Tree_Access :=
                  Set_Perm_Prefixes
@@ -6990,7 +6966,7 @@ package body Gnat2Why.Borrow_Checker is
                end if;
             end;
 
-         when N_Selected_Component =>
+         when N_Selected_Component           =>
             declare
                C : constant Perm_Tree_Access :=
                  Set_Perm_Prefixes (+Prefix (N.Expr), Perm, Expl, Move_Access);
@@ -7111,7 +7087,7 @@ package body Gnat2Why.Borrow_Checker is
                end if;
             end;
 
-         when N_Indexed_Component =>
+         when N_Indexed_Component            =>
             declare
                C : constant Perm_Tree_Access :=
                  Set_Perm_Prefixes (+Prefix (N.Expr), Perm, Expl, Move_Access);
@@ -7169,19 +7145,18 @@ package body Gnat2Why.Borrow_Checker is
                end if;
             end;
 
-         when N_Slice =>
+         when N_Slice                        =>
             return
               Set_Perm_Prefixes (+Prefix (N.Expr), Perm, Expl, Move_Access);
 
          when N_Qualified_Expression
             | N_Type_Conversion
-            | N_Unchecked_Type_Conversion
-         =>
+            | N_Unchecked_Type_Conversion    =>
             return
               Set_Perm_Prefixes
                 (+Expression (N.Expr), Perm, Expl, Move_Access);
 
-         when others =>
+         when others                         =>
             raise Program_Error;
       end case;
    end Set_Perm_Prefixes;
@@ -7195,15 +7170,15 @@ package body Gnat2Why.Borrow_Checker is
 
    begin
       case Kind (C) is
-         when Entire_Object =>
+         when Entire_Object    =>
             pragma Assert (Children_Permission (C) = Read_Write);
             C.all.Tree.Permission := Read_Write;
 
-         when Reference =>
+         when Reference        =>
             C.all.Tree.Permission :=
               Lub (Permission (C), Permission (Get_All (C)));
 
-         when Array_Component =>
+         when Array_Component  =>
             null;
 
          when Record_Component =>
@@ -7236,17 +7211,15 @@ package body Gnat2Why.Borrow_Checker is
             when N_Explicit_Dereference
                | N_Indexed_Component
                | N_Selected_Component
-               | N_Slice
-            =>
+               | N_Slice                        =>
                Set_Perm_Prefixes_Assign (+Prefix (N.Expr));
 
             when N_Qualified_Expression
                | N_Type_Conversion
-               | N_Unchecked_Type_Conversion
-            =>
+               | N_Unchecked_Type_Conversion    =>
                Set_Perm_Prefixes_Assign (+Expression (N.Expr));
 
-            when others =>
+            when others                         =>
                raise Program_Error;
          end case;
       end if;

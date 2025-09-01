@@ -88,14 +88,14 @@ package body SPARK_Register is
          case Nkind (N) is
             --  Recursively call the tree rewriting procedure on subunits
 
-            when N_Body_Stub =>
+            when N_Body_Stub                        =>
                if not Is_Generic_Unit (Unique_Defining_Entity (N)) then
                   Process_Tree (Unit (Library_Unit (N)));
                end if;
 
                return OK;
 
-            when N_Generic_Declaration =>
+            when N_Generic_Declaration              =>
                return Skip;
 
             when N_Package_Body | N_Subprogram_Body =>
@@ -106,10 +106,10 @@ package body SPARK_Register is
             --  Ignore freeze entities, because front end might not care to set
             --  all of their fields (such as Scope or Ekind).
 
-            when N_Freeze_Entity =>
+            when N_Freeze_Entity                    =>
                return Skip;
 
-            when others =>
+            when others                             =>
                null;
          end case;
 
@@ -127,12 +127,12 @@ package body SPARK_Register is
 
             begin
                case Ekind (E) is
-                  when Subprogram_Kind | Entry_Kind =>
+                  when Subprogram_Kind | Entry_Kind   =>
                      case Nkind (Parent (N)) is
                         --  Register ordinary subprogram calls and internal
                         --  calls to protected subprograms and entries.
 
-                        when N_Call =>
+                        when N_Call               =>
 
                            --  Ignore calls to predicate functions
                            if Ekind (E) = E_Function
@@ -150,7 +150,7 @@ package body SPARK_Register is
 
                         when N_Selected_Component =>
                            case Nkind (Parent (Parent (N))) is
-                              when N_Call =>
+                              when N_Call              =>
                                  Register_Entity (E);
 
                               --  Register calls to entry families, internal
@@ -163,11 +163,11 @@ package body SPARK_Register is
                                     Register_Entity (E);
                                  end if;
 
-                              when others =>
+                              when others              =>
                                  null;
                            end case;
 
-                        when Rewriten_Call =>
+                        when Rewriten_Call        =>
                            if Nkind (Original_Node (Parent (N)))
                               in N_Subprogram_Call
                              and then Ekind (E) /= E_Operator
@@ -175,16 +175,16 @@ package body SPARK_Register is
                               Register_Entity (E);
                            end if;
 
-                        when others =>
+                        when others               =>
                            if Is_Unchecked_Conversion_Instance (E) then
                               Register_Entity (E);
                            end if;
                      end case;
 
-                  when E_Constant =>
+                  when E_Constant                     =>
                      Register_Entity (Unique_Entity (E));
 
-                  when E_Variable =>
+                  when E_Variable                     =>
                      if Is_Quantified_Loop_Param (E) then
                         null;
                      else
@@ -194,13 +194,13 @@ package body SPARK_Register is
                   when E_Loop_Parameter | Formal_Kind =>
                      Register_Entity (E);
 
-                  when E_Abstract_State =>
+                  when E_Abstract_State               =>
                      Register_Entity
                        (if Present (Non_Limited_View (E))
                         then Non_Limited_View (E)
                         else E);
 
-                  when others =>
+                  when others                         =>
                      null;
                end case;
             end;
@@ -376,10 +376,10 @@ package body SPARK_Register is
                   Register_Entity (Defining_Entity (N));
                end if;
 
-            when N_Object_Declaration =>
+            when N_Object_Declaration           =>
                Register_Entity (Unique_Defining_Entity (N));
 
-            when N_Parameter_Specification =>
+            when N_Parameter_Specification      =>
                declare
                   P : constant Node_Id := Parent (N);
                begin
@@ -389,33 +389,31 @@ package body SPARK_Register is
                            Register_Entity (Defining_Entity (N));
                         end if;
 
-                     when N_Entry_Declaration =>
+                     when N_Entry_Declaration        =>
                         Register_Entity (Defining_Entity (N));
 
                      --  Accept statements are not in SPARK, but for
                      --  completeness we register their parameters.
 
-                     when N_Accept_Statement =>
+                     when N_Accept_Statement         =>
                         Register_Entity (Defining_Entity (N));
 
                      when N_Access_To_Subprogram_Definition
-                        | N_Entry_Body_Formal_Part
-                     =>
+                        | N_Entry_Body_Formal_Part   =>
                         null;
 
-                     when others =>
+                     when others                     =>
                         raise Program_Error;
                   end case;
                end;
 
             when N_Package_Declaration
                | N_Protected_Type_Declaration
-               | N_Task_Type_Declaration
-            =>
+               | N_Task_Type_Declaration        =>
                --  ??? is this needed for wrapper packages?
                Register_Entity (Defining_Entity (N));
 
-            when others =>
+            when others                         =>
                null;
          end case;
 

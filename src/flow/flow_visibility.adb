@@ -696,8 +696,8 @@ package body Flow_Visibility is
            & (case S.Part is
                 when Visible_Part => " (Spec)",
                 when Private_Part => " (Priv)",
-                when Body_Part => " (Body)",
-                when Null_Part => raise Program_Error);
+                when Body_Part    => " (Body)",
+                when Null_Part    => raise Program_Error);
 
          Show : Boolean;
 
@@ -828,7 +828,7 @@ package body Flow_Visibility is
                & (case Declarative_Part'(S.Part) is
                     when Visible_Part => "spec",
                     when Private_Part => "priv",
-                    when Body_Part => "body"));
+                    when Body_Part    => "body"));
          else
             Ada.Text_IO.Put_Line ("standard");
          end if;
@@ -969,19 +969,19 @@ package body Flow_Visibility is
          --  Call Process on all interesting declarations and traverse
 
          case Nkind (N) is
-            when N_Package_Declaration =>
+            when N_Package_Declaration             =>
                Process (N);
                Traverse_Visible_And_Private_Parts (Specification (N));
 
-            when N_Generic_Package_Declaration =>
+            when N_Generic_Package_Declaration     =>
                Process (N);
 
-            when N_Package_Body =>
+            when N_Package_Body                    =>
                if Ekind (Unique_Defining_Entity (N)) /= E_Generic_Package then
                   Traverse_Package_Body (N);
                end if;
 
-            when N_Package_Body_Stub =>
+            when N_Package_Body_Stub               =>
                if Ekind (Unique_Defining_Entity (N)) /= E_Generic_Package then
                   Traverse_Package_Body (Get_Body_From_Stub (N));
                end if;
@@ -989,12 +989,11 @@ package body Flow_Visibility is
             when N_Entry_Declaration
                | N_Generic_Subprogram_Declaration
                | N_Subprogram_Declaration
-               | N_Abstract_Subprogram_Declaration
-            =>
+               | N_Abstract_Subprogram_Declaration =>
                --  ??? abstract subprograms have no bodies
                Process (N);
 
-            when N_Subprogram_Body =>
+            when N_Subprogram_Body                 =>
                if Acts_As_Spec (N) then
                   Process (N);
                end if;
@@ -1003,10 +1002,10 @@ package body Flow_Visibility is
                   Traverse_Subprogram_Body (N);
                end if;
 
-            when N_Entry_Body =>
+            when N_Entry_Body                      =>
                Traverse_Subprogram_Body (N);
 
-            when N_Subprogram_Body_Stub =>
+            when N_Subprogram_Body_Stub            =>
                if Is_Subprogram_Stub_Without_Prior_Declaration (N) then
                   Process (N);
                end if;
@@ -1015,17 +1014,17 @@ package body Flow_Visibility is
                   Traverse_Subprogram_Body (Get_Body_From_Stub (N));
                end if;
 
-            when N_Protected_Body =>
+            when N_Protected_Body                  =>
                Traverse_Protected_Body (N);
 
-            when N_Protected_Body_Stub =>
+            when N_Protected_Body_Stub             =>
                Traverse_Protected_Body (Get_Body_From_Stub (N));
 
-            when N_Protected_Type_Declaration =>
+            when N_Protected_Type_Declaration      =>
                Process (N);
                Traverse_Visible_And_Private_Parts (Protected_Definition (N));
 
-            when N_Task_Type_Declaration =>
+            when N_Task_Type_Declaration           =>
 
                Process (N);
 
@@ -1041,16 +1040,16 @@ package body Flow_Visibility is
                   end if;
                end;
 
-            when N_Task_Body =>
+            when N_Task_Body                       =>
                Traverse_Task_Body (N);
 
-            when N_Task_Body_Stub =>
+            when N_Task_Body_Stub                  =>
                Traverse_Task_Body (Get_Body_From_Stub (N));
 
-            when N_Block_Statement =>
+            when N_Block_Statement                 =>
                Traverse_Declarations_And_HSS (N);
 
-            when N_If_Statement =>
+            when N_If_Statement                    =>
 
                --  Traverse the statements in the THEN part
 
@@ -1075,7 +1074,7 @@ package body Flow_Visibility is
 
                Traverse_Declarations_Or_Statements (Else_Statements (N));
 
-            when N_Case_Statement =>
+            when N_Case_Statement                  =>
 
                --  Process case branches
 
@@ -1090,14 +1089,14 @@ package body Flow_Visibility is
                   end loop;
                end;
 
-            when N_Extended_Return_Statement =>
+            when N_Extended_Return_Statement       =>
                Traverse_Handled_Statement_Sequence
                  (Handled_Statement_Sequence (N));
 
-            when N_Loop_Statement =>
+            when N_Loop_Statement                  =>
                Traverse_Declarations_Or_Statements (Statements (N));
 
-            when N_Private_Type_Declaration =>
+            when N_Private_Type_Declaration        =>
                --  Both private and full view declarations might be represented
                --  by N_Private_Type_Declaration; the former comes from source,
                --  the latter comes from rewriting.
@@ -1115,7 +1114,7 @@ package body Flow_Visibility is
                   end;
                end if;
 
-            when N_Full_Type_Declaration =>
+            when N_Full_Type_Declaration           =>
                declare
                   T : constant Entity_Id := Defining_Entity (N);
 
@@ -1132,7 +1131,7 @@ package body Flow_Visibility is
                   end if;
                end;
 
-            when others =>
+            when others                            =>
                null;
          end case;
       end Traverse_Declaration_Or_Statement;

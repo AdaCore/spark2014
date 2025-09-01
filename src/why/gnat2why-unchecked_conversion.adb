@@ -1031,7 +1031,7 @@ package body Gnat2Why.Unchecked_Conversion is
       Typ : constant Type_Kind_Id := Retysp (Arg_Typ);
    begin
       case Ekind (Typ) is
-         when Integer_Kind =>
+         when Integer_Kind     =>
             if Has_Biased_Representation (Typ) then
                return False_With_Explain ("type with biased representation");
 
@@ -1062,7 +1062,7 @@ package body Gnat2Why.Unchecked_Conversion is
                end;
             end if;
 
-         when Record_Kind =>
+         when Record_Kind      =>
 
             --  Tagged types and discriminants are not supported in UC
 
@@ -1096,7 +1096,7 @@ package body Gnat2Why.Unchecked_Conversion is
                end loop;
             end;
 
-         when Array_Kind =>
+         when Array_Kind       =>
             declare
                Check : constant True_Or_Explain :=
                  Suitable_For_Precise_UC (Component_Type (Typ));
@@ -1113,7 +1113,7 @@ package body Gnat2Why.Unchecked_Conversion is
                return False_With_Explain ("type has reverse storage order");
             end if;
 
-         when others =>
+         when others           =>
             return False_With_Explain ("elementary non-integer type");
       end case;
 

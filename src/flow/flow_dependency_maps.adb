@@ -147,7 +147,7 @@ package body Flow_Dependency_Maps is
          pragma Assert (List_Length (Choices (Row)) = 1);
          LHS := First (Choices (Row));
          case Nkind (LHS) is
-            when N_Aggregate =>
+            when N_Aggregate                                            =>
                --  (Foo, Bar, Baz) => ...
                LHS := First (Expressions (LHS));
                while Present (LHS) loop
@@ -159,11 +159,11 @@ package body Flow_Dependency_Maps is
             when N_Attribute_Reference | N_Identifier | N_Expanded_Name =>
                Outputs.Insert (Direct_Mapping_Id (LHS_Entity (LHS, Context)));
 
-            when N_Null =>
+            when N_Null                                                 =>
                --  null => ...
                null;
 
-            when others =>
+            when others                                                 =>
                raise Program_Error;
          end case;
 
@@ -171,7 +171,7 @@ package body Flow_Dependency_Maps is
 
          RHS := Expression (Row);
          case Nkind (RHS) is
-            when N_Aggregate =>
+            when N_Aggregate                    =>
                RHS := First (Expressions (RHS));
                while Present (RHS) loop
                   declare
@@ -198,10 +198,10 @@ package body Flow_Dependency_Maps is
                   end if;
                end;
 
-            when N_Null =>
+            when N_Null                         =>
                null;
 
-            when others =>
+            when others                         =>
                raise Program_Error;
 
          end case;

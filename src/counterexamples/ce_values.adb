@@ -76,7 +76,7 @@ package body CE_Values is
    function "=" (V1, V2 : Scalar_Value_Type) return Boolean
    is (V1.K = V2.K
        and then (case V1.K is
-                   when Enum_K =>
+                   when Enum_K    =>
                      Nkind (V1.Enum_Entity) = Nkind (V2.Enum_Entity)
                      and then (if Nkind (V1.Enum_Entity) = N_Character_Literal
                                then
@@ -86,8 +86,8 @@ package body CE_Values is
                    when Integer_K => V1.Integer_Content = V2.Integer_Content,
                    --  The 2 following cases are currently unused as the rac
                    --  does not support real values.
-                   when Float_K => V1.Float_Content = V2.Float_Content,
-                   when Fixed_K => V1.Fixed_Content = V2.Fixed_Content));
+                   when Float_K   => V1.Float_Content = V2.Float_Content,
+                   when Fixed_K   => V1.Fixed_Content = V2.Fixed_Content));
 
    function "=" (V1, V2 : Value_Type) return Boolean is
 
@@ -152,7 +152,7 @@ package body CE_Values is
       end if;
 
       case V1.K is
-         when Scalar_K =>
+         when Scalar_K   =>
 
             --  Equality should only be called on initialized scalars
 
@@ -162,7 +162,7 @@ package body CE_Values is
 
             return V1.Scalar_Content.all = V2.Scalar_Content.all;
 
-         when Record_K =>
+         when Record_K   =>
             return
               Entity_To_Value_Maps."=" (V1.Record_Fields, V2.Record_Fields);
 
@@ -171,7 +171,7 @@ package body CE_Values is
          when Multidim_K =>
             raise Program_Error;
 
-         when Array_K =>
+         when Array_K    =>
             declare
                use Checked_Indices_Set;
 
@@ -212,7 +212,7 @@ package body CE_Values is
                end if;
             end;
 
-         when Access_K =>
+         when Access_K   =>
 
             --  Equality on access should only be called when one operand in
             --  null. This case is currently unused as the rac does not support
@@ -322,7 +322,7 @@ package body CE_Values is
                end loop;
             end;
 
-         when others =>
+         when others   =>
             null;
       end case;
       return True;
@@ -484,10 +484,10 @@ package body CE_Values is
 
    function To_String (V : Scalar_Value_Type) return String
    is (case V.K is
-         when Enum_K => Enum_Entity_To_String (V.Enum_Entity),
+         when Enum_K    => Enum_Entity_To_String (V.Enum_Entity),
          when Integer_K => To_String (V.Integer_Content),
-         when Fixed_K => To_String (V.Fixed_Content),
-         when Float_K => To_String (V.Float_Content));
+         when Fixed_K   => To_String (V.Fixed_Content),
+         when Float_K   => To_String (V.Float_Content));
 
    function To_String
      (F : Entity_To_Value_Maps.Map; B : Opt_Boolean) return String
@@ -578,7 +578,7 @@ package body CE_Values is
 
    function To_String (V : Value_Type) return String
    is (case V.K is
-         when Scalar_K =>
+         when Scalar_K   =>
            (if V.Initialized_Attr.Present
             then
               "('Initialize => "
@@ -589,12 +589,12 @@ package body CE_Values is
               then "UNDEFINED"
               else To_String (V.Scalar_Content.all))
            & (if V.Initialized_Attr.Present then ")" else ""),
-         when Record_K => To_String (V.Record_Fields, V.Constrained_Attr),
-         when Array_K =>
+         when Record_K   => To_String (V.Record_Fields, V.Constrained_Attr),
+         when Array_K    =>
            To_String
              (V.First_Attr, V.Last_Attr, V.Array_Values, V.Array_Others),
          when Multidim_K => To_String (V.Bounds),
-         when Access_K => To_String (V.Designated_Value, V.Is_Null));
+         when Access_K   => To_String (V.Designated_Value, V.Is_Null));
 
    function To_String (V : Opt_Value_Type) return String
    is (if V.Present then To_String (V.Content) else "NONE");

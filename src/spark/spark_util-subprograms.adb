@@ -301,7 +301,7 @@ package body SPARK_Util.Subprograms is
      (E : Entity_Id; Prag : Pragma_Id) return Opt_N_Pragma_Id is
    begin
       case Prag is
-         when Pragma_Global | Pragma_Depends =>
+         when Pragma_Global | Pragma_Depends                 =>
             return
               Get_Pragma
                 ((if Ekind (E) = E_Task_Type
@@ -352,7 +352,7 @@ package body SPARK_Util.Subprograms is
                end if;
             end;
 
-         when others =>
+         when others                                         =>
             raise Program_Error;
       end case;
    end Find_Contract;
@@ -408,8 +408,7 @@ package body SPARK_Util.Subprograms is
             | Pragma_Refined_Post
             | Pragma_Initial_Condition
             | Pragma_Contract_Cases
-            | Pragma_Subprogram_Variant
-         =>
+            | Pragma_Subprogram_Variant =>
             if Name = Pragma_Refined_Post then
 
                --  Querying the Refined_Post is only allowed when the body is
@@ -442,16 +441,17 @@ package body SPARK_Util.Subprograms is
                  (case Name is
                     when Pragma_Precondition
                        | Pragma_Postcondition
-                       | Pragma_Refined_Post
-                    =>
+                       | Pragma_Refined_Post                               =>
                       Pre_Post_Conditions (Contr),
 
-                    when Pragma_Initial_Condition => Classifications (Contr),
+                    when Pragma_Initial_Condition                          =>
+                      Classifications (Contr),
 
                     when Pragma_Contract_Cases | Pragma_Subprogram_Variant =>
                       Contract_Test_Cases (Contr),
 
-                    when others => raise Program_Error);
+                    when others                                            =>
+                      raise Program_Error);
 
                while Present (Prag) loop
                   if Get_Pragma_Id (Prag) = Name
@@ -464,7 +464,7 @@ package body SPARK_Util.Subprograms is
                end loop;
             end if;
 
-         when others =>
+         when others                    =>
             raise Program_Error;
       end case;
 
@@ -623,7 +623,7 @@ package body SPARK_Util.Subprograms is
                when E_Out_Parameter | E_In_Out_Parameter =>
                   return True;
 
-               when E_In_Parameter =>
+               when E_In_Parameter                       =>
                   if Is_Writable_Parameter (Formal) then
                      return True;
                   end if;
@@ -753,7 +753,7 @@ package body SPARK_Util.Subprograms is
    begin
       if Present (Priority_Node) then
          case Nkind (Priority_Node) is
-            when N_Pragma =>
+            when N_Pragma                      =>
                declare
                   Arg : constant Node_Id :=
                     First (Pragma_Argument_Associations (Priority_Node));
@@ -770,7 +770,7 @@ package body SPARK_Util.Subprograms is
             when N_Attribute_Definition_Clause =>
                return Expression (Priority_Node);
 
-            when others =>
+            when others                        =>
                raise Program_Error;
          end case;
 
@@ -1229,7 +1229,7 @@ package body SPARK_Util.Subprograms is
       --  Dive into the scope hierarchy and look for names of predefined
       --  blocking subprograms.
       case Scope_Name (1) is
-         when Name_Ada =>
+         when Name_Ada        =>
             --  Further checks needed
             null;
 
@@ -1237,11 +1237,11 @@ package body SPARK_Util.Subprograms is
             --  All subprograms in package Interfaces are nonblocking
             return False;
 
-         when Name_System =>
+         when Name_System     =>
             --  Only subprograms in System.RPC are blocking
             return Scope_Name (2) = Name_Rpc;
 
-         when others =>
+         when others          =>
             --  It is a user-defined subprogram and the call itself is
             --  nonblocking. If the target subprogram is potentially
             --  blocking, then it will be detected by call graph traversal.
@@ -1258,34 +1258,34 @@ package body SPARK_Util.Subprograms is
          when Name_Directories
             | Name_Direct_IO
             | Name_Sequential_IO
-            | Name_Streams
-         =>
+            | Name_Streams                                              =>
             return True;
 
          --  Detect Ada.Dispatching.Yield
 
-         when Name_Dispatching =>
+         when Name_Dispatching                                          =>
             return Scope_Name (3) = Name_Yield;
 
          --  Detect all subprograms in
          --    Ada.Strings.[[Wide_]Wide_]Unbounded.[[Wide_]Wide_]Text_IO.
 
-         when Name_Strings =>
+         when Name_Strings                                              =>
             return
               (case Scope_Name (3) is
-                 when Name_Unbounded => Scope_Name (4) = Name_Text_IO,
+                 when Name_Unbounded           =>
+                   Scope_Name (4) = Name_Text_IO,
 
-                 when Name_Wide_Unbounded =>
+                 when Name_Wide_Unbounded      =>
                    Scope_Name (4) = Name_Wide_Text_IO,
 
                  when Name_Wide_Wide_Unbounded =>
                    Scope_Name (4) = Name_Wide_Wide_Text_IO,
 
-                 when others => False);
+                 when others                   => False);
 
          --  Detect Ada.Synchronous_Barriers.Wait_For_Release
 
-         when Name_Synchronous_Barriers =>
+         when Name_Synchronous_Barriers                                 =>
             return Scope_Name (3) = Name_Wait_For_Release;
 
          --  Detect
@@ -1293,7 +1293,7 @@ package body SPARK_Util.Subprograms is
          --    Ada.Synchronous_Task_Control.EDF.
          --        Suspend_Until_True_And_Set_Deadline.
 
-         when Name_Synchronous_Task_Control =>
+         when Name_Synchronous_Task_Control                             =>
             return
               Scope_Name (3) = Name_Suspend_Until_True
               or else (Scope_Name (3) = Name_EDF
@@ -1302,7 +1302,7 @@ package body SPARK_Util.Subprograms is
 
          --  Detect Ada.Task_Identification.Abort_Task
 
-         when Name_Task_Identification =>
+         when Name_Task_Identification                                  =>
             return Scope_Name (3) = Name_Abort_Task;
 
          when Name_Text_IO | Name_Wide_Text_IO | Name_Wide_Wide_Text_IO =>
@@ -1310,7 +1310,7 @@ package body SPARK_Util.Subprograms is
                --  Operations on bounded/unbounded strings either print or read
                --  them and thus are potentially blocking.
 
-               when Name_Bounded_IO | Name_Unbounded_IO =>
+               when Name_Bounded_IO | Name_Unbounded_IO    =>
                   return True;
 
                --  These generics have both blocking and nonblocking Put/Get
@@ -1330,8 +1330,7 @@ package body SPARK_Util.Subprograms is
 
                when Name_C_Streams
                   | Name_Text_Streams
-                  | Name_Reset_Standard_Files
-               =>
+                  | Name_Reset_Standard_Files              =>
                   return False;
 
                --  Ada.Text_IO.Editing is nonblocking, except for Decimal_IO,
@@ -1341,7 +1340,7 @@ package body SPARK_Util.Subprograms is
                --  and they are also detected by the name of the first formal
                --  parameter.
 
-               when Name_Editing =>
+               when Name_Editing                           =>
                   return
                     Scope_Name (4) = Name_Decimal_IO
                     and then Ekind (E) = E_Procedure
@@ -1353,13 +1352,13 @@ package body SPARK_Util.Subprograms is
                --  exceptions, e.g. Mode/Name/Form/Is_Open. However, they can
                --  be blocking in other compilers, so assume the worst case.
 
-               when others =>
+               when others                                 =>
                   return True;
             end case;
 
          --  All other predefined subprograms are nonblocking
 
-         when others =>
+         when others                                                    =>
             return False;
       end case;
 
@@ -1588,22 +1587,22 @@ package body SPARK_Util.Subprograms is
          --  which corresponds to a shift or rotate
 
          case Name is
-            when Name_Shift_Right =>
+            when Name_Shift_Right            =>
                return N_Op_Shift_Right;
 
             when Name_Shift_Right_Arithmetic =>
                return N_Op_Shift_Right_Arithmetic;
 
-            when Name_Shift_Left =>
+            when Name_Shift_Left             =>
                return N_Op_Shift_Left;
 
-            when Name_Rotate_Left =>
+            when Name_Rotate_Left            =>
                return N_Op_Rotate_Left;
 
-            when Name_Rotate_Right =>
+            when Name_Rotate_Right           =>
                return N_Op_Rotate_Right;
 
-            when others =>
+            when others                      =>
                null;
          end case;
       end if;
@@ -1870,9 +1869,9 @@ package body SPARK_Util.Subprograms is
         (case Nkind (Spec) is
            when N_Procedure_Specification => True,
 
-           when N_Function_Specification => Is_Integer_Type (Etype (E)),
+           when N_Function_Specification  => Is_Integer_Type (Etype (E)),
 
-           when others => raise Program_Error);
+           when others                    => raise Program_Error);
    end Might_Be_Main;
 
    ---------------------------------
@@ -1897,10 +1896,10 @@ package body SPARK_Util.Subprograms is
                when Direct_Mapping =>
                   Process (Get_Direct_Mapping_Id (F), Kind);
 
-               when Magic_String =>
+               when Magic_String   =>
                   pragma Assert (Is_Opaque_For_Proof (F));
 
-               when others =>
+               when others         =>
                   raise Program_Error;
             end case;
          end loop;
@@ -1914,8 +1913,7 @@ package body SPARK_Util.Subprograms is
             | E_Function
             | E_Procedure
             | E_Task_Type
-            | E_Subprogram_Type
-         =>
+            | E_Subprogram_Type =>
             declare
                Out_Ids    : Flow_Types.Flow_Id_Sets.Set;
                In_Ids     : Flow_Types.Flow_Id_Sets.Set;
@@ -1941,7 +1939,7 @@ package body SPARK_Util.Subprograms is
                Process_All (Out_Ids, E_Out_Parameter);
             end;
 
-         when E_Package =>
+         when E_Package         =>
             if not Is_Wrapper_Package (E) then
 
                --  For packages, we use the Initializes aspect to get the
@@ -1980,7 +1978,7 @@ package body SPARK_Util.Subprograms is
                end;
             end if;
 
-         when others =>
+         when others            =>
             raise Program_Error;
       end case;
    end Process_Referenced_Entities;
@@ -2000,13 +1998,13 @@ package body SPARK_Util.Subprograms is
                Body_E := Get_Body_Entity (E);
             end if;
 
-         when E_Package =>
+         when E_Package                                           =>
             Body_N := Package_Body (E);
             if Present (Body_N) then
                Body_E := Defining_Entity (Body_N);
             end if;
 
-         when others =>
+         when others                                              =>
             null;
       end case;
 
@@ -2111,8 +2109,8 @@ package body SPARK_Util.Subprograms is
    is (case Ekind (E) is
          when E_Procedure =>
            Is_Invariant_Procedure (E) or else Is_DIC_Procedure (E),
-         when E_Function => Is_Tagged_Predefined_Eq (E),
-         when others => False);
+         when E_Function  => Is_Tagged_Predefined_Eq (E),
+         when others      => False);
 
    -----------------------------------
    -- Suspends_On_Suspension_Object --
@@ -2173,12 +2171,12 @@ package body SPARK_Util.Subprograms is
    begin
       return
         (case Ekind (E) is
-           when Entry_Kind => Entry_Body (E),
+           when Entry_Kind               => Entry_Body (E),
            when E_Function | E_Procedure => Subprogram_Body (E),
-           when E_Protected_Type => Protected_Body (E),
-           when E_Task_Type => Task_Body (E),
-           when E_Subprogram_Type => Empty,
-           when others => raise Program_Error);
+           when E_Protected_Type         => Protected_Body (E),
+           when E_Task_Type              => Task_Body (E),
+           when E_Subprogram_Type        => Empty,
+           when others                   => raise Program_Error);
    end Get_Body;
 
    ---------------------
@@ -2189,10 +2187,10 @@ package body SPARK_Util.Subprograms is
    begin
       return
         (case Ekind (E) is
-           when Entry_Kind => Entry_Body_Entity (E),
-           when E_Task_Type => Task_Body_Entity (E),
+           when Entry_Kind      => Entry_Body_Entity (E),
+           when E_Task_Type     => Task_Body_Entity (E),
            when Subprogram_Kind => Subprogram_Body_Entity (E),
-           when others => raise Program_Error);
+           when others          => raise Program_Error);
    end Get_Body_Entity;
 
 end SPARK_Util.Subprograms;

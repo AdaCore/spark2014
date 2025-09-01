@@ -1580,34 +1580,34 @@ package body Gnat2Why.Types is
       procedure Translate_Underlying_Type (Th : Theory_UC; E : Entity_Id) is
       begin
          case Ekind (E) is
-            when Scalar_Kind =>
+            when Scalar_Kind                                        =>
                Declare_Scalar_Type (Th, E);
 
-            when Array_Kind =>
+            when Array_Kind                                         =>
                Declare_Ada_Array (Th, E);
 
             when E_Record_Type | E_Record_Subtype | Concurrent_Kind =>
                Declare_Ada_Record (Th, E);
 
-            when Class_Wide_Kind =>
+            when Class_Wide_Kind                                    =>
                Add_Use_For_Entity
                  (Th,
                   Specific_Tagged (E),
                   EW_Export,
                   With_Completion => False);
 
-            when Incomplete_Or_Private_Kind =>
+            when Incomplete_Or_Private_Kind                         =>
                pragma Assert (Full_View_Not_In_SPARK (E));
                Declare_Ada_Record (Th, E);
 
-            when Access_Kind =>
+            when Access_Kind                                        =>
                if Is_Access_Subprogram_Type (E) then
                   Declare_Access_To_Subprogram_Type (Th, E);
                else
                   Declare_Ada_Pointer (Th, E);
                end if;
 
-            when others =>
+            when others                                             =>
                Ada.Text_IO.Put_Line
                  ("[Translate_Underlying_Type] ekind ="
                   & Entity_Kind'Image (Ekind (E)));

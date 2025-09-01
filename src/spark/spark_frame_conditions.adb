@@ -242,17 +242,17 @@ package body SPARK_Frame_Conditions is
          --  Register xref according to type
 
          case Xref.Rtype is
-            when 'r' =>
+            when 'r'    =>
                if not Ignore_Object_Reference (Ref_Entity, Ref_Scope) then
                   Add_To_Map (Reads, Ref_Scope, Ref_Entity);
                end if;
 
-            when 'm' =>
+            when 'm'    =>
                if not Ignore_Object_Reference (Ref_Entity, Ref_Scope) then
                   Add_To_Map (Writes, Ref_Scope, Ref_Entity);
                end if;
 
-            when 's' =>
+            when 's'    =>
                if not In_Generic_Scope (Ref_Entity) then
                   Add_To_Map (Calls, Ref_Scope, Ref_Entity);
                end if;

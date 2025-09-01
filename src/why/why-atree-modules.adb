@@ -138,52 +138,56 @@ package body Why.Atree.Modules is
       Name : constant String :=
         (if Nkind (E) in N_Entity then Full_Name (E) else "")
         & (case K is
-             when Regular => "",
-             when Axiom => "___axiom",
-             when Expr_Fun_Axiom => "___def__axiom",
-             when Fun_Post_Axiom => "___post__axiom",
-             when Logic_Function_Decl => "___logic_fun",
-             when Program_Function_Decl => "___program_fun",
-             when Dispatch => "___dispatch",
-             when Dispatch_Axiom => "___dispatch__axiom",
-             when Dispatch_Post_Axiom => "___dispatch__post__axiom",
-             when Refined_Post_Axiom => "___refined__post__axiom",
-             when Lemma_Axiom => "___post_axiom",
-             when Validity_Wrapper => "___validity_wrapper",
-             when Type_Completion => "___compl",
-             when Type_Representative => "___rep",
-             when Record_Rep_Completion => "___rep__compl",
-             when Init_Wrapper => "___init_wrapper",
-             when Init_Wrapper_Completion => "___init_wrapper__compl",
-             when Init_Wrapper_Pointer_Rep => "___init_wrapper__rep",
+             when Regular                   => "",
+             when Axiom                     => "___axiom",
+             when Expr_Fun_Axiom            => "___def__axiom",
+             when Fun_Post_Axiom            => "___post__axiom",
+             when Logic_Function_Decl       => "___logic_fun",
+             when Program_Function_Decl     => "___program_fun",
+             when Dispatch                  => "___dispatch",
+             when Dispatch_Axiom            => "___dispatch__axiom",
+             when Dispatch_Post_Axiom       => "___dispatch__post__axiom",
+             when Refined_Post_Axiom        => "___refined__post__axiom",
+             when Lemma_Axiom               => "___post_axiom",
+             when Validity_Wrapper          => "___validity_wrapper",
+             when Type_Completion           => "___compl",
+             when Type_Representative       => "___rep",
+             when Record_Rep_Completion     => "___rep__compl",
+             when Init_Wrapper              => "___init_wrapper",
+             when Init_Wrapper_Completion   => "___init_wrapper__compl",
+             when Init_Wrapper_Pointer_Rep  => "___init_wrapper__rep",
              when Default_Initialialization => "___default_init",
-             when Invariant => "___invariant",
-             when User_Equality => "___user_eq",
-             when User_Equality_Axiom => "___user_eq__axiom",
-             when Dispatch_Equality => "___dispatch_eq",
-             when Dispatch_Equality_Axiom => "___dispatch_eq__axiom",
-             when Move_Tree => "___move_tree",
-             when Incomp_Move_Tree => "___incomplete_move_tree",
-             when Validity_Tree => "___validity_tree");
+             when Invariant                 => "___invariant",
+             when User_Equality             => "___user_eq",
+             when User_Equality_Axiom       => "___user_eq__axiom",
+             when Dispatch_Equality         => "___dispatch_eq",
+             when Dispatch_Equality_Axiom   => "___dispatch_eq__axiom",
+             when Move_Tree                 => "___move_tree",
+             when Incomp_Move_Tree          => "___incomplete_move_tree",
+             when Validity_Tree             => "___validity_tree");
 
    begin
       --  Sanity checking
 
       case K is
-         when Regular | Axiom =>
+         when Regular | Axiom
+         =>
             null;
 
-         when Expr_Fun_Axiom =>
+         when Expr_Fun_Axiom
+         =>
             pragma
               Assert
                 (E in Callable_Kind_Id
                    and then Is_Expression_Function_Or_Completion (E)
                    and then Entity_Body_Compatible_With_SPARK (E));
 
-         when Fun_Post_Axiom =>
+         when Fun_Post_Axiom
+         =>
             pragma Assert (E in Callable_Kind_Id);
 
-         when Logic_Function_Decl =>
+         when Logic_Function_Decl
+         =>
             pragma
               Assert
                 (Nkind (E) in N_Aggregate | N_Delta_Aggregate
@@ -191,41 +195,48 @@ package body Why.Atree.Modules is
                             and then not Has_Pragma_Volatile_Function (E)
                             and then not Is_Function_With_Side_Effects (E)));
 
-         when Program_Function_Decl =>
+         when Program_Function_Decl
+         =>
             pragma
               Assert
                 (Nkind (E) in N_Aggregate | N_Delta_Aggregate
                    or else E in Callable_Kind_Id);
 
-         when Dispatch | Dispatch_Axiom | Dispatch_Post_Axiom =>
+         when Dispatch | Dispatch_Axiom | Dispatch_Post_Axiom
+         =>
             pragma
               Assert
                 (E in Callable_Kind_Id
                    and then Is_Dispatching_Operation (E)
                    and then not Is_Hidden_Dispatching_Operation (E));
 
-         when Refined_Post_Axiom =>
+         when Refined_Post_Axiom
+         =>
             pragma
               Assert
                 (E in Callable_Kind_Id
                    and then Entity_Body_In_SPARK (E)
                    and then Has_Contracts (E, Pragma_Refined_Post));
 
-         when Lemma_Axiom =>
+         when Lemma_Axiom
+         =>
             pragma Assert (Has_Automatic_Instantiation_Annotation (E));
 
-         when Validity_Wrapper =>
+         when Validity_Wrapper
+         =>
             pragma
               Assert
                 (Ekind (E) = E_Function and then Is_Potentially_Invalid (E));
 
-         when Type_Completion | Type_Representative =>
+         when Type_Completion | Type_Representative
+         =>
             pragma Assert (E in Type_Kind_Id);
             if E in Access_Kind_Id then
                pragma Assert (E = Repr_Pointer_Type (E));
             end if;
 
-         when Record_Rep_Completion =>
+         when Record_Rep_Completion
+         =>
             pragma Assert (Is_Record_Type_In_Why (E));
 
          when Init_Wrapper | Init_Wrapper_Completion | Init_Wrapper_Pointer_Rep
@@ -237,31 +248,37 @@ package body Why.Atree.Modules is
                    (E in Access_Kind_Id and then E = Repr_Pointer_Type (E));
             end if;
 
-         when Default_Initialialization =>
+         when Default_Initialialization
+         =>
             pragma
               Assert
                 (E in Type_Kind_Id
                    and then not Is_Itype (E)
                    and then Can_Be_Default_Initialized (E));
 
-         when Invariant =>
+         when Invariant
+         =>
             pragma
               Assert (E in Type_Kind_Id and then Has_Invariants_In_SPARK (E));
 
-         when User_Equality | User_Equality_Axiom =>
+         when User_Equality | User_Equality_Axiom
+         =>
             pragma
               Assert
                 (E in Type_Kind_Id
                    and then not Use_Predefined_Equality_For_Type (E));
 
-         when Dispatch_Equality | Dispatch_Equality_Axiom =>
+         when Dispatch_Equality | Dispatch_Equality_Axiom
+         =>
             pragma Assert (Is_Tagged_Type (E) and then E = Root_Retysp (E));
 
-         when Move_Tree | Incomp_Move_Tree =>
+         when Move_Tree | Incomp_Move_Tree
+         =>
             pragma
               Assert (E in Type_Kind_Id and then Contains_Allocated_Parts (E));
 
-         when Validity_Tree =>
+         when Validity_Tree
+         =>
             pragma
               Assert
                 (E in Type_Kind_Id
@@ -349,8 +366,8 @@ package body Why.Atree.Modules is
          Mode_Name :=
            To_Unbounded_String
              (case Formal_Kind (Ekind (Param)) is
-                when E_In_Parameter => "__In",
-                when E_Out_Parameter => "__Out",
+                when E_In_Parameter     => "__In",
+                when E_Out_Parameter    => "__Out",
                 when E_In_Out_Parameter => "__InOut");
          Type_Name :=
            To_Unbounded_String

@@ -177,10 +177,10 @@ package body Report_Database is
       procedure Process (Stat : in out Stat_Rec) is
       begin
          case Msg_Kind is
-            when FMK_Error =>
+            when FMK_Error   =>
                Stat.Flow_Errors := Stat.Flow_Errors + 1;
 
-            when FMK_Check =>
+            when FMK_Check   =>
                Stat.Flow_Checks := Stat.Flow_Checks + 1;
 
             when FMK_Warning =>

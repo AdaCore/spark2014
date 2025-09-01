@@ -1231,19 +1231,19 @@ package body Configuration is
    function To_String (P : Proof_Mode) return String is
    begin
       case P is
-         when No_WP =>
+         when No_WP       =>
             return "no_wp";
 
-         when All_Split =>
+         when All_Split   =>
             return "all_split";
 
          when Progressive =>
             return "progressive";
 
-         when Per_Path =>
+         when Per_Path    =>
             return "per_path";
 
-         when Per_Check =>
+         when Per_Check   =>
             return "per_check";
       end case;
    end To_String;
@@ -1308,13 +1308,13 @@ package body Configuration is
       function Category (K : VC_Kind) return String is
       begin
          case K is
-            when VC_RTE_Kind =>
+            when VC_RTE_Kind     =>
                return "(run-time-check)";
 
-            when VC_Assert_Kind =>
+            when VC_Assert_Kind  =>
                return "(assertion)";
 
-            when VC_LSP_Kind =>
+            when VC_LSP_Kind     =>
                return "(liskov-substitution-principle)";
 
             when VC_Warning_Kind =>
@@ -1332,7 +1332,7 @@ package body Configuration is
             when VC_RTE_Kind | VC_Assert_Kind | VC_LSP_Kind =>
                return "MEDIUM";
 
-            when VC_Warning_Kind =>
+            when VC_Warning_Kind                            =>
                return "EASY";
          end case;
       end Effort;
@@ -2368,14 +2368,14 @@ package body Configuration is
 
             --  See the UG for the meaning of the level switches
 
-            when 0 =>
+            when 0             =>
                FS.Provers.Append ("cvc5");
                FS.Steps := 0;
                FS.Timeout := 1;
                FS.Memlimit := 1000;
                FS.Counterexamples := False;
 
-            when 1 =>
+            when 1             =>
                FS.Provers.Append ("cvc5");
                FS.Provers.Append ("z3");
                FS.Provers.Append ("altergo");
@@ -2384,7 +2384,7 @@ package body Configuration is
                FS.Memlimit := 1000;
                FS.Counterexamples := False;
 
-            when 2 =>
+            when 2             =>
                FS.Provers.Append ("cvc5");
                FS.Provers.Append ("z3");
                FS.Provers.Append ("altergo");
@@ -2393,7 +2393,7 @@ package body Configuration is
                FS.Memlimit := 1000;
                FS.Counterexamples := True;
 
-            when 3 =>
+            when 3             =>
                FS.Provers.Append ("cvc5");
                FS.Provers.Append ("z3");
                FS.Provers.Append ("altergo");
@@ -2402,7 +2402,7 @@ package body Configuration is
                FS.Memlimit := 2000;
                FS.Counterexamples := True;
 
-            when 4 =>
+            when 4             =>
                FS.Provers.Append ("cvc5");
                FS.Provers.Append ("z3");
                FS.Provers.Append ("altergo");
@@ -2411,7 +2411,7 @@ package body Configuration is
                FS.Memlimit := 2000;
                FS.Counterexamples := True;
 
-            when others =>
+            when others        =>
                Abort_Msg
                  ("error: wrong argument for --level", With_Help => False);
          end case;
