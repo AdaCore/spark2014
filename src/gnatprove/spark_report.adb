@@ -457,13 +457,13 @@ procedure SPARK_Report is
    function Flow_Kind_To_Summary (S : Flow_Tag_Kind) return Possible_Entries is
    begin
       case S is
-         when Empty_Tag =>
+         when Empty_Tag                                             =>
             return No_Entry;
 
-         when Aliasing =>
+         when Aliasing                                              =>
             return Non_Aliasing;
 
-         when Call_To_Current_Task =>
+         when Call_To_Current_Task                                  =>
             return Runtime_Checks;
 
          when Concurrent_Access | Potentially_Blocking_In_Protected =>
@@ -480,25 +480,22 @@ procedure SPARK_Report is
             | Refined_State_Wrong
             | Side_Effects
             | Unused_Global
-            | Volatile_Function_Without_Volatile_Effects
-         =>
+            | Volatile_Function_Without_Volatile_Effects            =>
             return Data_Dep;
 
          when Impossible_To_Initialize_State
             | Initializes_Wrong
             | Uninitialized
-            | Default_Initialization_Mismatch
-         =>
+            | Default_Initialization_Mismatch                       =>
             return Init;
 
          when Depends_Missing
             | Depends_Missing_Clause
             | Depends_Null
-            | Depends_Wrong
-         =>
+            | Depends_Wrong                                         =>
             return Flow_Dep;
 
-         when Call_In_Type_Invariant | Subprogram_Termination =>
+         when Call_In_Type_Invariant | Subprogram_Termination       =>
             return Termination;
 
          when Dead_Code
@@ -509,8 +506,7 @@ procedure SPARK_Report is
             | Reference_To_Non_CAE_Variable
             | Stable
             | Unused_Initial_Value
-            | Unused_Variable
-         =>
+            | Unused_Variable                                       =>
             return No_Entry;
       end case;
    end Flow_Kind_To_Summary;
@@ -691,7 +687,7 @@ procedure SPARK_Report is
                               Increment (Summary (Category).Provers.Total);
                            end;
 
-                        when PC_Prover =>
+                        when PC_Prover  =>
                            if Has_Field (Result, "stats") then
                               declare
                                  Stats     : constant Prover_Stat_Maps.Map :=
@@ -716,7 +712,7 @@ procedure SPARK_Report is
                            end if;
                            Increment (Summary (Category).Provers.Total);
 
-                        when PC_Flow =>
+                        when PC_Flow    =>
                            --  we shouldn't encounter flow values here
                            raise Program_Error;
                      end case;
@@ -1095,25 +1091,25 @@ procedure SPARK_Report is
       function To_String (Reason : Stop_Reason_Type) return String is
       begin
          case Reason is
-            when Stop_Reason_None =>
+            when Stop_Reason_None          =>
                return "";
 
-            when Stop_Reason_Generic_Unit =>
+            when Stop_Reason_Generic_Unit  =>
                return "generic unit is not analyzed";
 
-            when Stop_Reason_Check_Mode =>
+            when Stop_Reason_Check_Mode    =>
                return "only SPARK_Mode checking was requested";
 
-            when Stop_Reason_Flow_Mode =>
+            when Stop_Reason_Flow_Mode     =>
                return "only flow analysis was requested";
 
             when Stop_Reason_Error_Marking =>
                return "error during checking of SPARK_Mode";
 
-            when Stop_Reason_Error_Flow =>
+            when Stop_Reason_Error_Flow    =>
                return "error during flow analysis";
 
-            when Stop_Reason_Error_Borrow =>
+            when Stop_Reason_Error_Borrow  =>
                return "error during ownership checking";
          end case;
       end To_String;
@@ -1244,12 +1240,12 @@ procedure SPARK_Report is
 
       function OS_String return String
       is (case Get_OS_Flavor is
-            when X86_Windows | X86_64_Windows => "Windows",
+            when X86_Windows | X86_64_Windows             => "Windows",
             when X86_Linux | X86_64_Linux | AArch64_Linux => "Linux",
-            when X86_64_Darwin => "Darwin",
-            when X86_64_FreeBSD => "FreeBSD",
-            when GNATSAS_OS => "GNATSAS OS",
-            when AArch64_Darwin => "Darwin");
+            when X86_64_Darwin                            => "Darwin",
+            when X86_64_FreeBSD                           => "FreeBSD",
+            when GNATSAS_OS                               => "GNATSAS OS",
+            when AArch64_Darwin                           => "Darwin");
 
       Pointer_Size : constant :=
         System.Storage_Elements.Integer_Address'Size / System.Storage_Unit;
@@ -1321,11 +1317,10 @@ procedure SPARK_Report is
             | VC_UC_Alignment
             | VC_Unchecked_Union_Restriction
             | VC_UC_Volatile
-            | VC_Validity_Check
-         =>
+            | VC_Validity_Check                                              =>
             return Runtime_Checks;
 
-         when VC_Initialization_Check =>
+         when VC_Initialization_Check                                        =>
             return Init;
 
          when VC_Assert
@@ -1333,8 +1328,7 @@ procedure SPARK_Report is
             | VC_Assert_Step
             | VC_Loop_Invariant
             | VC_Loop_Invariant_Init
-            | VC_Loop_Invariant_Preserv
-         =>
+            | VC_Loop_Invariant_Preserv                                      =>
             return Assertions;
 
          when VC_Loop_Variant | VC_Subprogram_Variant | VC_Termination_Check =>
@@ -1355,8 +1349,7 @@ procedure SPARK_Report is
             | VC_Inline_Check
             | VC_Container_Aggr_Check
             | VC_Reclamation_Check
-            | VC_Feasible_Post
-         =>
+            | VC_Feasible_Post                                               =>
             return Functional_Contracts;
 
          when VC_Weaker_Pre
@@ -1365,11 +1358,10 @@ procedure SPARK_Report is
             | VC_Weaker_Classwide_Pre
             | VC_Stronger_Classwide_Post
             | VC_Weaker_Pre_Access
-            | VC_Stronger_Post_Access
-         =>
+            | VC_Stronger_Post_Access                                        =>
             return LSP;
 
-         when VC_Warning_Kind =>
+         when VC_Warning_Kind                                                =>
             return Warnings;
       end case;
    end VC_Kind_To_Summary;
@@ -1399,37 +1391,37 @@ procedure SPARK_Report is
    function To_String (S : Summary_Entries) return String is
    begin
       case S is
-         when Data_Dep =>
+         when Data_Dep             =>
             return "Data Dependencies";
 
-         when Flow_Dep =>
+         when Flow_Dep             =>
             return "Flow Dependencies";
 
-         when Init =>
+         when Init                 =>
             return "Initialization";
 
-         when Non_Aliasing =>
+         when Non_Aliasing         =>
             return "Non-Aliasing";
 
-         when Runtime_Checks =>
+         when Runtime_Checks       =>
             return "Run-time Checks";
 
-         when Assertions =>
+         when Assertions           =>
             return "Assertions";
 
          when Functional_Contracts =>
             return "Functional Contracts";
 
-         when LSP =>
+         when LSP                  =>
             return "LSP Verification";
 
-         when Termination =>
+         when Termination          =>
             return "Termination";
 
-         when Concurrency =>
+         when Concurrency          =>
             return "Concurrency";
 
-         when Total =>
+         when Total                =>
             return "Total";
       end case;
    end To_String;

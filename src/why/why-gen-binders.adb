@@ -101,10 +101,10 @@ package body Why.Gen.Binders is
                Effects_Append (Eff, Binder.Main.B_Name);
             end if;
 
-         when UCArray =>
+         when UCArray                   =>
             Effects_Append (Eff, Binder.Content.B_Name);
 
-         when Pointer =>
+         when Pointer                   =>
             if Binder.Mutable then
                Effects_Append (Eff, Binder.Value.B_Name);
                Effects_Append (Eff, Binder.Is_Null);
@@ -112,7 +112,7 @@ package body Why.Gen.Binders is
                Effects_Append (Eff, Binder.Value.B_Name);
             end if;
 
-         when DRecord =>
+         when DRecord                   =>
             if Binder.Fields.Present then
                Effects_Append (Eff, Binder.Fields.Binder.B_Name);
             end if;
@@ -120,7 +120,7 @@ package body Why.Gen.Binders is
                Effects_Append (Eff, Binder.Discrs.Binder.B_Name);
             end if;
 
-         when Subp =>
+         when Subp                      =>
             raise Program_Error;
       end case;
    end Effects_Append_Binder;
@@ -135,20 +135,20 @@ package body Why.Gen.Binders is
          when Regular | Concurrent_Self =>
             return B.Main.Ada_Node;
 
-         when DRecord =>
+         when DRecord                   =>
             if B.Fields.Present then
                return B.Fields.Binder.Ada_Node;
             else
                return B.Discrs.Binder.Ada_Node;
             end if;
 
-         when UCArray =>
+         when UCArray                   =>
             return B.Content.Ada_Node;
 
-         when Pointer =>
+         when Pointer                   =>
             return B.Value.Ada_Node;
 
-         when Subp =>
+         when Subp                      =>
             raise Program_Error;
       end case;
    end Get_Ada_Node_From_Item;
@@ -160,7 +160,7 @@ package body Why.Gen.Binders is
    function Get_Ada_Type_From_Item (B : Item_Type) return Entity_Id is
    begin
       case B.Kind is
-         when Subp =>
+         when Subp              =>
             raise Program_Error;
 
          when Regular | UCArray =>
@@ -174,13 +174,13 @@ package body Why.Gen.Binders is
                return Empty;
             end if;
 
-         when Concurrent_Self =>
+         when Concurrent_Self   =>
             return B.Main.Ada_Node;
 
-         when DRecord =>
+         when DRecord           =>
             return B.Typ;
 
-         when Pointer =>
+         when Pointer           =>
             return B.P_Typ;
       end case;
    end Get_Ada_Type_From_Item;
@@ -230,7 +230,7 @@ package body Why.Gen.Binders is
    begin
       for N of Contextual_Nodes loop
          case Nkind (N) is
-            when N_Target_Name =>
+            when N_Target_Name         =>
                pragma Assert (Target_Name /= Why_Empty);
                Binders (I) :=
                  Mk_Tmp_Item_Of_Entity
@@ -252,7 +252,7 @@ package body Why.Gen.Binders is
                        Mutable => False);
                end if;
 
-            when others =>
+            when others                =>
                pragma Assert (Nkind (N) = N_Defining_Identifier);
                Binders (I) := Ada_Ent_To_Why.Element (Symbol_Table, N);
          end case;
@@ -451,7 +451,7 @@ package body Why.Gen.Binders is
          when Regular | Concurrent_Self =>
             return Get_Typ (B.Main.B_Name);
 
-         when DRecord =>
+         when DRecord                   =>
 
             --  To know if we should use the wrapper type, see if the
             --  fields component comes from the wrapper module.
@@ -467,7 +467,7 @@ package body Why.Gen.Binders is
                return EW_Abstract (B.Typ, Relaxed_Init => Relaxed_Init);
             end;
 
-         when UCArray =>
+         when UCArray                   =>
             declare
                Typ : constant W_Type_Id := Get_Typ (B.Content.B_Name);
             begin
@@ -476,7 +476,7 @@ package body Why.Gen.Binders is
                  EW_Abstract (Get_Ada_Node (+Typ), Get_Relaxed_Init (Typ));
             end;
 
-         when Pointer =>
+         when Pointer                   =>
 
             --  Use the wrapper type if either we have an init field or if the
             --  designated value is of a wrapper type when the designated type
@@ -495,7 +495,7 @@ package body Why.Gen.Binders is
                return EW_Abstract (B.P_Typ, Relaxed_Init => Relaxed_Init);
             end;
 
-         when Subp =>
+         when Subp                      =>
             raise Program_Error;
 
       end case;
@@ -512,9 +512,9 @@ package body Why.Gen.Binders is
    is
       function Keep_Local (Is_Local : Boolean) return Boolean
       is (case Keep_Const is
-            when Keep => True,
+            when Keep       => True,
             when Local_Only => Is_Local,
-            when Erase => False);
+            when Erase      => False);
 
       Count : Natural := 0;
    begin
@@ -540,7 +540,7 @@ package body Why.Gen.Binders is
                      Count := Count + 1;
                   end if;
 
-               when Pointer =>
+               when Pointer                   =>
                   pragma Assert (B.Value.Mutable);
                   if B.Mutable or else Keep_Local (B.Local) then
                      Count := Count + 2;
@@ -548,7 +548,7 @@ package body Why.Gen.Binders is
                      Count := Count + 1;
                   end if;
 
-               when UCArray =>
+               when UCArray                   =>
                   pragma Assert (B.Content.Mutable);
                   if Keep_Local (B.Local) then
                      Count := Count + 1 + 2 * B.Dim;
@@ -556,7 +556,7 @@ package body Why.Gen.Binders is
                      Count := Count + 1;
                   end if;
 
-               when DRecord =>
+               when DRecord                   =>
 
                   if B.Discrs.Present
                     and then (Keep_Local (B.Local)
@@ -580,7 +580,7 @@ package body Why.Gen.Binders is
                      Count := Count + 1;
                   end if;
 
-               when Subp =>
+               when Subp                      =>
                   raise Program_Error;
             end case;
          end;
@@ -595,13 +595,13 @@ package body Why.Gen.Binders is
    function Item_Is_Mutable (B : Item_Type) return Boolean is
    begin
       case B.Kind is
-         when Regular | Concurrent_Self =>
+         when Regular | Concurrent_Self   =>
             return B.Main.Mutable;
 
          when UCArray | DRecord | Pointer =>
             return True;
 
-         when Subp =>
+         when Subp                        =>
             raise Program_Error;
       end case;
    end Item_Is_Mutable;
@@ -679,12 +679,12 @@ package body Why.Gen.Binders is
                   pragma Assert (Suffix = "");
                   null;
 
-               when Regular =>
+               when Regular         =>
                   if B.Main.Mutable or else not Only_Variables then
                      B.Main.B_Name := Local_Name (B.Main.B_Name);
                   end if;
 
-               when UCArray =>
+               when UCArray         =>
                   pragma Assert (B.Content.Mutable);
                   B.Content.B_Name := Local_Name (B.Content.B_Name);
 
@@ -697,7 +697,7 @@ package body Why.Gen.Binders is
                      end loop;
                   end if;
 
-               when Pointer =>
+               when Pointer         =>
                   pragma Assert (B.Value.Mutable);
                   B.Value.B_Name := Local_Name (B.Value.B_Name);
 
@@ -705,7 +705,7 @@ package body Why.Gen.Binders is
                      B.Is_Null := Local_Name (B.Is_Null);
                   end if;
 
-               when DRecord =>
+               when DRecord         =>
                   if B.Discrs.Present
                     and then (B.Discrs.Binder.Mutable
                               or else not Only_Variables)
@@ -730,7 +730,7 @@ package body Why.Gen.Binders is
                      B.Tag.Id := Local_Name (B.Tag.Id);
                   end if;
 
-               when Subp =>
+               when Subp            =>
                   raise Program_Error;
             end case;
             B.Local := B.Local or not Only_Variables;
@@ -1457,7 +1457,7 @@ package body Why.Gen.Binders is
       T : W_Term_Id;
    begin
       case E.Kind is
-         when Subp =>
+         when Subp                      =>
             raise Program_Error;
 
          when Regular | Concurrent_Self =>
@@ -1471,13 +1471,13 @@ package body Why.Gen.Binders is
                     Typ      => Get_Type (+T));
             end if;
 
-         when UCArray =>
+         when UCArray                   =>
             T := Array_From_Split_Form (E, Ref_Allowed);
 
-         when DRecord =>
+         when DRecord                   =>
             T := Record_From_Split_Form (E, Ref_Allowed);
 
-         when Pointer =>
+         when Pointer                   =>
             T := Pointer_From_Split_Form (E, Ref_Allowed);
 
       end case;
@@ -1494,9 +1494,9 @@ package body Why.Gen.Binders is
    is
       function Keep_Local (Is_Local : Boolean) return Boolean
       is (case Keep_Const is
-            when Keep => True,
+            when Keep       => True,
             when Local_Only => Is_Local,
-            when Erase => False);
+            when Erase      => False);
 
       Result : Binder_Array (1 .. Item_Array_Length (A, Keep_Const));
       Count  : Natural := 1;
@@ -1526,7 +1526,7 @@ package body Why.Gen.Binders is
                      Count := Count + 1;
                   end if;
 
-               when UCArray =>
+               when UCArray                   =>
                   Result (Count) := Cur.Content;
                   Count := Count + 1;
 
@@ -1542,7 +1542,7 @@ package body Why.Gen.Binders is
                      end loop;
                   end if;
 
-               when Pointer =>
+               when Pointer                   =>
                   Result (Count) := Cur.Value;
                   Count := Count + 1;
 
@@ -1554,7 +1554,7 @@ package body Why.Gen.Binders is
                      Count := Count + 1;
                   end if;
 
-               when DRecord =>
+               when DRecord                   =>
                   if Cur.Fields.Present
                     and then (Keep_Local (Cur.Local)
                               or else Cur.Fields.Binder.Mutable)
@@ -1578,7 +1578,7 @@ package body Why.Gen.Binders is
                      Count := Count + 1;
                   end if;
 
-               when Subp =>
+               when Subp                      =>
                   raise Program_Error;
             end case;
          end;

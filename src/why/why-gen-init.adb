@@ -432,10 +432,10 @@ package body Why.Gen.Init is
          when EW_Abstract =>
             return EW_Abstract (Get_Ada_Node (+Ty), Relaxed_Init => True);
 
-         when EW_Split =>
+         when EW_Split    =>
             return EW_Split (Get_Ada_Node (+Ty), Relaxed_Init => True);
 
-         when EW_Builtin =>
+         when EW_Builtin  =>
             pragma Assert (Ty = EW_Bool_Type);
             return M_Boolean_Init_Wrapper.Wrapper_Ty;
       end case;

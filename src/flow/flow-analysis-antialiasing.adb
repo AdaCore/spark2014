@@ -250,14 +250,13 @@ package body Flow.Analysis.Antialiasing is
                | N_Qualified_Expression
                | N_Type_Conversion
 
-               | N_Unchecked_Type_Conversion
-            =>
+               | N_Unchecked_Type_Conversion =>
                return True;
 
             --  The only interesting attribute reference is 'Access. However
             --  access-to-object is not yet supported by the borrow checker.
 
-            when N_Attribute_Reference =>
+            when N_Attribute_Reference       =>
                pragma Assert (Attribute_Name (N) /= Name_Access);
                return False;
 
@@ -267,7 +266,7 @@ package body Flow.Analysis.Antialiasing is
             --  concern of flow analysis: either the result is newly allocated,
             --  or it's a borrow/observe and dealt with by the borrow checker.
 
-            when N_Function_Call =>
+            when N_Function_Call             =>
                return Is_Unchecked_Conversion_Instance (Get_Called_Entity (N));
 
             --  Character literals, qualified expressions are boring
@@ -277,7 +276,7 @@ package body Flow.Analysis.Antialiasing is
             --  Everything else must be an expression and is thus not
             --  interesting.
 
-            when others =>
+            when others                      =>
                return False;
          end case;
       end Is_Interesting;
@@ -300,14 +299,13 @@ package body Flow.Analysis.Antialiasing is
          case Nkind (N) is
             when N_Qualified_Expression
                | N_Type_Conversion
-               | N_Unchecked_Type_Conversion
-            =>
+               | N_Unchecked_Type_Conversion =>
                return True;
 
-            when N_Function_Call =>
+            when N_Function_Call             =>
                return Is_Unchecked_Conversion_Instance (Get_Called_Entity (N));
 
-            when others =>
+            when others                      =>
                return False;
          end case;
       end Is_Conversion;
@@ -366,20 +364,18 @@ package body Flow.Analysis.Antialiasing is
             when N_Explicit_Dereference
                | N_Indexed_Component
                | N_Slice
-               | N_Selected_Component
-            =>
+               | N_Selected_Component   =>
                return Prefix (N);
 
             when N_Type_Conversion
                | N_Unchecked_Type_Conversion
-               | N_Qualified_Expression
-            =>
+               | N_Qualified_Expression =>
                return Expression (N);
 
-            when N_Function_Call =>
+            when N_Function_Call        =>
                return First_Actual (N);
 
-            when others =>
+            when others                 =>
                raise Program_Error;
          end case;
       end Down_One_Level;
@@ -705,7 +701,7 @@ package body Flow.Analysis.Antialiasing is
                Node2 => Head_B);
 
             case Nkind (Head_A) is
-               when N_Selected_Component =>
+               when N_Selected_Component   =>
                   if Entity (Selector_Name (Head_A))
                     /= Entity (Selector_Name (Head_B))
                   then
@@ -713,7 +709,7 @@ package body Flow.Analysis.Antialiasing is
                      return No_Aliasing;
                   end if;
 
-               when N_Indexed_Component =>
+               when N_Indexed_Component    =>
                   declare
                      Index_A : Node_Id := First (Expressions (Head_A));
                      Index_B : Node_Id := First (Expressions (Head_B));
@@ -722,7 +718,7 @@ package body Flow.Analysis.Antialiasing is
                         pragma Assert (Present (Index_B));
 
                         case Compile_Time_Compare (Index_A, Index_B, True) is
-                           when LT | GT | NE =>
+                           when LT | GT | NE      =>
                               Trace_Two_Nodes
                                 (Text1 => "   -> index ",
                                  Node1 => Index_A,
@@ -731,7 +727,7 @@ package body Flow.Analysis.Antialiasing is
                                  Text3 => " statically differ");
                               return No_Aliasing;
 
-                           when EQ =>
+                           when EQ                =>
                               null;
 
                            when LE | GE | Unknown =>
@@ -744,11 +740,11 @@ package body Flow.Analysis.Antialiasing is
                      end loop;
                   end;
 
-               when N_Slice =>
+               when N_Slice                =>
                   case Check_Ranges
                          (Discrete_Range (Head_A), Discrete_Range (Head_B))
                   is
-                     when No_Aliasing =>
+                     when No_Aliasing       =>
                         Trace_Two_Nodes
                           (Text1 => "   -> slice ",
                            Node1 => Discrete_Range (Head_A),
@@ -767,7 +763,7 @@ package body Flow.Analysis.Antialiasing is
                when N_Explicit_Dereference =>
                   null;
 
-               when others =>
+               when others                 =>
                   raise Why.Unexpected_Node;
             end case;
 
@@ -868,13 +864,13 @@ package body Flow.Analysis.Antialiasing is
 
    begin
       case Current_Status is
-         when Impossible =>
+         when Impossible                            =>
             return;
 
          when Possible_Aliasing | Definite_Aliasing =>
             null;
 
-         when No_Aliasing =>
+         when No_Aliasing                           =>
             Append (Msg, "non-aliasing of ");
       end case;
 
@@ -899,20 +895,20 @@ package body Flow.Analysis.Antialiasing is
       Append
         (Msg,
          (case Current_Status is
-            when No_Aliasing => " proved",
+            when No_Aliasing       => " proved",
             when Possible_Aliasing => " might be aliased",
             when Definite_Aliasing => " are aliased",
-            when Impossible => raise Program_Error));
+            when Impossible        => raise Program_Error));
 
       Error_Msg_Flow
         (FA       => FA,
          Msg      => To_String (Msg),
          Severity =>
            (case Current_Status is
-              when No_Aliasing => Info_Kind,
+              when No_Aliasing       => Info_Kind,
               when Possible_Aliasing => Medium_Check_Kind,
               when Definite_Aliasing => High_Check_Kind,
-              when Impossible => raise Program_Error),
+              when Impossible        => raise Program_Error),
          N        => Error_N,
          F1       => Direct_Mapping_Id (A_Formal),
          F2       => Direct_Mapping_Id (B_Node),
@@ -1112,10 +1108,10 @@ package body Flow.Analysis.Antialiasing is
                --  If we don't have an Entity_Id for a global, then it can't be
                --  referenced as a parameter.
 
-               when Magic_String =>
+               when Magic_String   =>
                   null;
 
-               when others =>
+               when others         =>
                   raise Program_Error;
             end case;
          end loop;

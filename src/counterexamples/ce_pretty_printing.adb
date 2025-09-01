@@ -1160,7 +1160,7 @@ package body CE_Pretty_Printing is
                   return Pretty_Print (Value.Integer_Content, AST_Type);
                end;
 
-            when Enum_K =>
+            when Enum_K    =>
 
                --  Necessary for some types that makes boolean be translated to
                --  integers like: "subype only_true := True .. True".
@@ -1211,10 +1211,10 @@ package body CE_Pretty_Printing is
                   end;
                end if;
 
-            when Fixed_K =>
+            when Fixed_K   =>
                return Print_Fixed (Value.Small, Value.Fixed_Content);
 
-            when Float_K =>
+            when Float_K   =>
                case Value.Float_Content.K is
                   when Float_32_K =>
                      declare
@@ -1265,7 +1265,7 @@ package body CE_Pretty_Printing is
    function Print_Value (Value : Value_Type) return Value_And_Attributes is
    begin
       case Value.K is
-         when Scalar_K =>
+         when Scalar_K   =>
 
             --  Don't display uninitialized or invalid values
 
@@ -1322,7 +1322,7 @@ package body CE_Pretty_Printing is
                end if;
             end;
 
-         when Record_K =>
+         when Record_K   =>
             return Print_Record_Value (Value);
 
          when Multidim_K =>
@@ -1378,10 +1378,10 @@ package body CE_Pretty_Printing is
                return (Value => Dont_Display, Attributes => Attributes);
             end;
 
-         when Array_K =>
+         when Array_K    =>
             return Print_Array_Value (Value);
 
-         when Access_K =>
+         when Access_K   =>
             return Print_Access_Value (Value);
       end case;
    end Print_Value;
@@ -1489,7 +1489,7 @@ package body CE_Pretty_Printing is
                  (JSON_Obj, "value", Create (Trim (F_Str, Ada.Strings.Left)));
             end;
 
-         when others =>
+         when others     =>
             declare
                Ext_Content : constant Long_Long_Float := F.Ext_Content;
                F_Str       : String (1 .. Long_Long_Float'Digits * 3);
@@ -1517,7 +1517,7 @@ package body CE_Pretty_Printing is
       JSON_Obj : GNATCOLL.JSON.JSON_Value := Create_Object;
    begin
       case Value.K is
-         when Scalar_K =>
+         when Scalar_K   =>
             if Value.Scalar_Content /= null then
                case Value.Scalar_Content.K is
                   when Integer_K =>
@@ -1527,11 +1527,11 @@ package body CE_Pretty_Printing is
                             (To_String (Value.Scalar_Content.Integer_Content),
                              Ada.Strings.Left));
 
-                  when Float_K =>
+                  when Float_K   =>
                      JSON_Obj :=
                        Serialize_Float (Value.Scalar_Content.Float_Content);
 
-                  when Fixed_K =>
+                  when Fixed_K   =>
                      Set_Field
                        (JSON_Obj,
                         "value",
@@ -1542,7 +1542,7 @@ package body CE_Pretty_Printing is
                               True)));
                      Set_Field (JSON_Obj, "quotient", True);
 
-                  when others =>
+                  when others    =>
                      case Nkind (Value.Scalar_Content.Enum_Entity) is
                         when N_Character_Literal =>
                            JSON_Obj :=
@@ -1550,13 +1550,13 @@ package body CE_Pretty_Printing is
                                (To_String (Value)
                                   (To_String (Value)'First)'Image);
 
-                        when others =>
+                        when others              =>
                            JSON_Obj := Create (To_String (Value));
                      end case;
                end case;
             end if;
 
-         when Record_K =>
+         when Record_K   =>
             declare
                Components    : constant GNATCOLL.JSON.JSON_Value :=
                  Create_Object;
@@ -1575,7 +1575,7 @@ package body CE_Pretty_Printing is
                               Name,
                               Serialize_Value (Value.Record_Fields (Elt).all));
 
-                        when others =>
+                        when others         =>
                            Set_Field
                              (Components,
                               Name,
@@ -1587,7 +1587,7 @@ package body CE_Pretty_Printing is
                Set_Field (JSON_Obj, "components", Components);
             end;
 
-         when Array_K =>
+         when Array_K    =>
             if Value.First_Attr.Present and Value.Last_Attr.Present then
                declare
                   Aggregate  : constant GNATCOLL.JSON.JSON_Value :=
@@ -1644,7 +1644,7 @@ package body CE_Pretty_Printing is
          when Multidim_K =>
             JSON_Obj := Create (Value.Bounds'Image);
 
-         when Access_K =>
+         when Access_K   =>
             if Value.Is_Null.Present
               and then not Value.Is_Null.Content
               and then Value.Designated_Value /= null

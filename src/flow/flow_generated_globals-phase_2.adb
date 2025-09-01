@@ -1093,13 +1093,13 @@ package body Flow_Generated_Globals.Phase_2 is
          --  there is yet no a subprogram body or it is not in SPARK.
 
          case Nkind (U) is
-            when N_Subprogram_Body =>
+            when N_Subprogram_Body        =>
                S := Unique_Defining_Entity (U);
 
             when N_Subprogram_Declaration =>
                S := Defining_Entity (U);
 
-            when N_Package_Body =>
+            when N_Package_Body           =>
                if Nkind (Original_Node (U)) in N_Subprogram_Instantiation then
 
                   S :=
@@ -1116,7 +1116,7 @@ package body Flow_Generated_Globals.Phase_2 is
                   S := Types.Empty;
                end if;
 
-            when others =>
+            when others                   =>
                S := Types.Empty;
          end case;
 
@@ -1444,14 +1444,14 @@ package body Flow_Generated_Globals.Phase_2 is
             New_GG_Line (Line);
             Serialize (K);
             case K is
-               when EK_End_Marker =>
+               when EK_End_Marker             =>
                   if GG_Parsing_State = Started then
                      GG_Parsing_State := Finished;
                   else
                      Corrupted_ALI_File ("unexpected GG end marker");
                   end if;
 
-               when EK_State_Map =>
+               when EK_State_Map              =>
                   declare
                      State : Entity_Name;
 
@@ -1475,7 +1475,7 @@ package body Flow_Generated_Globals.Phase_2 is
                      State_Abstractions.Include (State);
                   end;
 
-               when EK_Part_Of =>
+               when EK_Part_Of                =>
                   declare
                      State    : Entity_Name;
                      Part_Ofs : Name_Sets.Set;
@@ -1512,10 +1512,10 @@ package body Flow_Generated_Globals.Phase_2 is
                      State_Abstractions.Include (State);
                   end;
 
-               when EK_Remote_States =>
+               when EK_Remote_States          =>
                   Serialize (State_Abstractions);
 
-               when EK_Predef_Init_Entities =>
+               when EK_Predef_Init_Entities   =>
                   Serialize (Initialized_Vars_And_States);
 
                when EK_Checked_Ghost_Entities =>
@@ -1524,22 +1524,22 @@ package body Flow_Generated_Globals.Phase_2 is
                when EK_Ignored_Ghost_Entities =>
                   Serialize (Ignored_Ghost_Entities);
 
-               when EK_CAE_Entities =>
+               when EK_CAE_Entities           =>
                   Serialize (CAE_Entities);
 
-               when EK_Constants =>
+               when EK_Constants              =>
                   Serialize (Constants);
 
-               when EK_Volatiles =>
+               when EK_Volatiles              =>
                   Serialize (Async_Readers_Vars, "AR");
                   Serialize (Async_Writers_Vars, "AW");
                   Serialize (Effective_Reads_Vars, "ER");
                   Serialize (Effective_Writes_Vars, "EW");
 
-               when EK_Synchronized =>
+               when EK_Synchronized           =>
                   Serialize (Synchronized_Vars);
 
-               when EK_Globals =>
+               when EK_Globals                =>
                   --  ??? this line should be loaded only when
                   --  For_Current_Unit or else not V.The_Global_Info.Local
                   declare
@@ -1586,7 +1586,7 @@ package body Flow_Generated_Globals.Phase_2 is
                        (Entity, Phase_1_Info (Pos).Parents);
                   end;
 
-               when EK_Constant_Calls =>
+               when EK_Constant_Calls         =>
                   declare
                      Const_Pos : Name_Graphs.Cursor;
                      --  Position of the caller in the direct calls graph
@@ -1607,7 +1607,7 @@ package body Flow_Generated_Globals.Phase_2 is
                      Serialize (Constant_Calls (Const_Pos));
                   end;
 
-               when EK_Protected_Instance =>
+               when EK_Protected_Instance     =>
                   declare
                      Variable   : Entity_Name;
                      Prio_Kind  : Priority_Kind;
@@ -1647,7 +1647,7 @@ package body Flow_Generated_Globals.Phase_2 is
                           (Kind => Prio_Kind, Value => Prio_Value));
                   end;
 
-               when EK_Task_Instance =>
+               when EK_Task_Instance          =>
                   declare
                      Typ       : Entity_Name;
                      Object    : Entity_Name;
@@ -1666,7 +1666,7 @@ package body Flow_Generated_Globals.Phase_2 is
                            Node      => Find_Entity (Object)));
                   end;
 
-               when EK_Max_Queue_Length =>
+               when EK_Max_Queue_Length       =>
                   declare
                      Entry_Name       : Entity_Name;
                      Max_Queue_Length : Nat;
@@ -1683,7 +1683,7 @@ package body Flow_Generated_Globals.Phase_2 is
                        (Key => Entry_Name, New_Item => Max_Queue_Length);
                   end;
 
-               when EK_Direct_Calls =>
+               when EK_Direct_Calls           =>
                   declare
                      Caller : Entity_Name;
 
@@ -1705,7 +1705,7 @@ package body Flow_Generated_Globals.Phase_2 is
                      Serialize (Direct_Calls (Caller_Pos));
                   end;
 
-               when EK_Proof_Dependencies =>
+               when EK_Proof_Dependencies     =>
                   declare
                      Caller : Entity_Name;
 
@@ -1727,7 +1727,7 @@ package body Flow_Generated_Globals.Phase_2 is
                      Serialize (Proof_Dependencies (Caller_Pos));
                   end;
 
-               when EK_Flow_Scope =>
+               when EK_Flow_Scope             =>
                   declare
                      Entity : Entity_Name;
                      Info   : Name_Info_T;
@@ -1806,7 +1806,7 @@ package body Flow_Generated_Globals.Phase_2 is
                                  GG_Parsing_State := Started;
                                  Parse_GG_Line (Line);
 
-                              when Finished =>
+                              when Finished         =>
                                  Corrupted_ALI_File
                                    ("GG data after GG end marker");
 
@@ -2081,12 +2081,12 @@ package body Flow_Generated_Globals.Phase_2 is
                         --    Boolean'Image (Contr.Nonblocking));
                         null;
 
-                     when E_Package =>
+                     when E_Package                =>
                         --  ??? by reusing the Dump procedure defined for
                         --  Input/Ouput/Proof_In, we get an extra indentation
                         Dump ("Initializes  ", Contr.Initializes);
 
-                     when others =>
+                     when others                   =>
                         null;
                   end case;
                end;
@@ -3689,9 +3689,9 @@ package body Flow_Generated_Globals.Phase_2 is
          begin
             return
               (case Info.Kind is
-                 when Entry_Kind => True,
+                 when Entry_Kind               => True,
                  when E_Function | E_Procedure => Info.Is_Protected,
-                 when others => False);
+                 when others                   => False);
          end;
       else
          return False;
@@ -4390,13 +4390,13 @@ package body Flow_Generated_Globals.Phase_2 is
                   return Aliases;
                end;
 
-            when Magic_String =>
+            when Magic_String   =>
                return Flow_Id_Sets.To_Set (Change_Variant (F, Normal_Use));
 
-            when Null_Value =>
+            when Null_Value     =>
                return Flow_Id_Sets.Empty_Set;
 
-            when others =>
+            when others         =>
                raise Program_Error;
          end case;
       end if;

@@ -123,7 +123,7 @@ package body Flow.Interprocedural is
                --  magic strings or synthetic null exports, but in any case
                --  the parameter and the formal will always match in kind.
                case A.Parameter_Formal.Kind is
-                  when Direct_Mapping =>
+                  when Direct_Mapping        =>
                      if Parameter.Kind = Direct_Mapping
                        and then A.Parameter_Formal.Variant = Parameter.Variant
                        and then Get_Direct_Mapping_Id (Parameter)
@@ -132,7 +132,7 @@ package body Flow.Interprocedural is
                         return V;
                      end if;
 
-                  when Magic_String =>
+                  when Magic_String          =>
                      if Parameter.Kind = Magic_String
                        and then A.Parameter_Formal.Variant = Parameter.Variant
                        and then Parameter.Name = A.Parameter_Formal.Name
@@ -147,7 +147,7 @@ package body Flow.Interprocedural is
                         return V;
                      end if;
 
-                  when others =>
+                  when others                =>
                      raise Program_Error;
 
                end case;

@@ -185,10 +185,10 @@ is
          First : Natural;
       begin
          case C.Align is
-            when Left_Align =>
+            when Left_Align  =>
                First := 1;
 
-            when Centered =>
+            when Centered    =>
                First := (Width - Len) / 2 + 1;
 
             when Right_Align =>

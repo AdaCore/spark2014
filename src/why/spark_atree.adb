@@ -444,14 +444,13 @@ package body SPARK_Atree is
             when N_Explicit_Dereference
                | N_Indexed_Component
                | N_Selected_Component
-               | N_Slice
-            =>
+               | N_Slice                                         =>
                return Get_Entire_Object (Prefix (N));
 
             when N_Type_Conversion | N_Unchecked_Type_Conversion =>
                return Get_Entire_Object (Expression (N));
 
-            when others =>
+            when others                                          =>
                return Empty;
          end case;
       end if;
@@ -758,7 +757,7 @@ package body SPARK_Atree is
 
    begin
       case Nkind (Decl) is
-         when N_Subtype_Declaration =>
+         when N_Subtype_Declaration   =>
             return not Cstr_Subtype_Indication (Decl);
 
          when N_Full_Type_Declaration =>
@@ -774,7 +773,7 @@ package body SPARK_Atree is
                return False;
             end if;
 
-         when others =>
+         when others                  =>
             raise Program_Error;
       end case;
    end Is_Type_Renaming;

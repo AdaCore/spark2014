@@ -200,8 +200,7 @@ package body Gnat2Why.Tables is
          when E_Record_Subtype
             | E_Record_Subtype_With_Private
             | E_Protected_Subtype
-            | E_Task_Subtype
-         =>
+            | E_Task_Subtype                             =>
             return Find_Rec_Node_For_Variant (Etype (Ty));
 
          --  Record types always have their own variant part
@@ -213,14 +212,14 @@ package body Gnat2Why.Tables is
          --  nouveau. If they are derived types, use the variant type of their
          --  Etype.
 
-         when E_Protected_Type | E_Task_Type =>
+         when E_Protected_Type | E_Task_Type             =>
             return
               (if Nkind (Parent (Ty))
                   in N_Protected_Type_Declaration | N_Task_Type_Declaration
                then Ty
                else Find_Rec_Node_For_Variant (Etype (Ty)));
 
-         when others =>
+         when others                                     =>
             return Types.Empty;
       end case;
    end Find_Rec_Node_For_Variant;
@@ -422,12 +421,12 @@ package body Gnat2Why.Tables is
         (if Present (Def_Node)
          then
            (case Nkind (Def_Node) is
-              when N_Record_Definition => Component_List (Def_Node),
+              when N_Record_Definition       => Component_List (Def_Node),
               when N_Derived_Type_Definition =>
                 (if Present (Record_Extension_Part (Def_Node))
                  then Component_List (Record_Extension_Part (Def_Node))
                  else Types.Empty),
-              when others => raise Program_Error)
+              when others                    => raise Program_Error)
          else Types.Empty);
 
       Ancestor_Type : constant Entity_Id := Retysp (Etype (E));

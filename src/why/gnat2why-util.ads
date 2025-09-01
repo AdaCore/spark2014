@@ -222,14 +222,14 @@ package Gnat2Why.Util is
 
    function Term_Domain (Domain : EW_Domain) return EW_Domain
    is (case Domain is
-         when EW_Pred | EW_Term => EW_Term,
+         when EW_Pred | EW_Term  => EW_Term,
          when EW_Prog | EW_Pterm => EW_Pterm);
    --  @return the term domain corresponding to the [Domain] parameter
 
    function Prog_Or_Term_Domain (Domain : EW_Domain) return EW_Domain
    is (case Domain is
          when EW_Pred => EW_Term,
-         when others => Domain);
+         when others  => Domain);
    --  @return the program or term domain corresponding to the [Domain]
    --     parameter, which means essentially converting predicate to term.
 
@@ -704,17 +704,17 @@ package Gnat2Why.Util is
 
    function To_VC_Kind (R : Scalar_Check_Kind) return VC_Range_Kind
    is (case R is
-         when RCK_Overflow => VC_Overflow_Check,
-         when RCK_FP_Overflow => VC_FP_Overflow_Check,
-         when RCK_Range => VC_Range_Check,
-         when RCK_Length => VC_Length_Check,
-         when RCK_Index => VC_Index_Check,
-         when RCK_Range_Not_First => VC_Range_Check,
-         when RCK_Range_Not_Last => VC_Range_Check,
-         when RCK_Overflow_Not_First => VC_Overflow_Check,
+         when RCK_Overflow              => VC_Overflow_Check,
+         when RCK_FP_Overflow           => VC_FP_Overflow_Check,
+         when RCK_Range                 => VC_Range_Check,
+         when RCK_Length                => VC_Length_Check,
+         when RCK_Index                 => VC_Index_Check,
+         when RCK_Range_Not_First       => VC_Range_Check,
+         when RCK_Range_Not_Last        => VC_Range_Check,
+         when RCK_Overflow_Not_First    => VC_Overflow_Check,
          when RCK_FP_Overflow_Not_First => VC_FP_Overflow_Check,
-         when RCK_Overflow_Not_Last => VC_Overflow_Check,
-         when RCK_FP_Overflow_Not_Last => VC_FP_Overflow_Check);
+         when RCK_Overflow_Not_Last     => VC_Overflow_Check,
+         when RCK_FP_Overflow_Not_Last  => VC_FP_Overflow_Check);
    --  to convert a Scalar_Check_Kind to a VC_Kind
 
    function Build_Printing_Plan return Why_Node_Lists.List;

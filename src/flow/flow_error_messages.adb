@@ -290,7 +290,7 @@ package body Flow_Error_Messages is
                when Direct_Mapping | Record_Field =>
                   return Get_Direct_Mapping_Id (K);
 
-               when others =>
+               when others                        =>
                   raise Program_Error;
             end case;
          end;
@@ -398,7 +398,7 @@ package body Flow_Error_Messages is
                when Error_Kind =>
                   Suppressed := False;
 
-               when others =>
+               when others     =>
                   Suppressed := True;
             end case;
          else
@@ -411,10 +411,10 @@ package body Flow_Error_Messages is
                      Result.Suppr := Suppressed_Warning;
                   end if;
 
-               when Info_Kind =>
+               when Info_Kind    =>
                   Suppressed := Report_Mode = GPR_Fail;
 
-               when Check_Kind =>
+               when Check_Kind   =>
                   Check_Is_Annotated (N, Msg3, True, Info);
 
                   if Info.Present then
@@ -436,7 +436,7 @@ package body Flow_Error_Messages is
                      Suppressed := False;
                   end if;
 
-               when Error_Kind =>
+               when Error_Kind   =>
 
                   --  Set the error flag if we have an error message. Note that
                   --  warnings do not count as errors here, they should not
@@ -680,7 +680,7 @@ package body Flow_Error_Messages is
                       ("add or complete related loop invariants "
                        & "or postconditions");
 
-               when others =>
+               when others               =>
                   null;
             end case;
          end if;
@@ -918,7 +918,7 @@ package body Flow_Error_Messages is
       Check_Is_Annotated (N, Msg, Severity in Check_Kind, Info);
 
       case Severity is
-         when Check_Kind =>
+         when Check_Kind   =>
             if Info.Present then
                Result.Suppr :=
                  Suppressed_Message'
@@ -982,7 +982,7 @@ package body Flow_Error_Messages is
                end;
             end if;
 
-         when Info_Kind =>
+         when Info_Kind    =>
             if Report_Mode /= GPR_Fail then
                Msg_Id := Print_Regular_Msg (Result);
             end if;
@@ -990,7 +990,7 @@ package body Flow_Error_Messages is
          when Warning_Kind =>
             Msg_Id := Print_Regular_Msg (Result);
 
-         when Error_Kind =>
+         when Error_Kind   =>
             --  cannot happen
             raise Program_Error;
       end case;
@@ -1029,15 +1029,15 @@ package body Flow_Error_Messages is
       --  Name of the operation to use in more detailed message
       Oper : constant String :=
         (case Nkind (N) is
-           when N_Op_Add => "addition",
+           when N_Op_Add      => "addition",
            when N_Op_Subtract => "subtraction",
            when N_Op_Multiply => "multiplication",
-           when N_Op_Divide => "division",
-           when N_Op_Abs => "absolute value",
-           when N_Op_Minus => "negation",
-           when N_Op_Expon => "exponentiation",
-           when N_Op_Concat => "concatenation",
-           when others => "operation");
+           when N_Op_Divide   => "division",
+           when N_Op_Abs      => "absolute value",
+           when N_Op_Minus    => "negation",
+           when N_Op_Expon    => "exponentiation",
+           when N_Op_Concat   => "concatenation",
+           when others        => "operation");
 
       --  Name of value to use in more detailed message
       Value : constant String :=
@@ -1075,7 +1075,7 @@ package body Flow_Error_Messages is
       end loop;
 
       case Tag is
-         when VC_Termination_Check =>
+         when VC_Termination_Check                     =>
             if Nkind (N)
                in N_Function_Call
                 | N_Procedure_Call_Statement
@@ -1133,7 +1133,7 @@ package body Flow_Error_Messages is
                return "";
             end if;
 
-         when VC_Raise =>
+         when VC_Raise                                 =>
             if Nkind (N) = N_Procedure_Call_Statement
               and then Ekind (Get_Called_Entity (N)) = E_Procedure
               and then Is_Ghost_Entity (Get_Called_Entity (N))
@@ -1146,10 +1146,10 @@ package body Flow_Error_Messages is
                return "";
             end if;
 
-         when VC_Index_Check =>
+         when VC_Index_Check                           =>
             return Value & " must be a valid index into the array";
 
-         when VC_Length_Check =>
+         when VC_Length_Check                          =>
 
             --  Length check is put on the interesting node itself in various
             --  cases.
@@ -1160,10 +1160,10 @@ package body Flow_Error_Messages is
                     "source and destination arrays for the assignment"
                     & " must have the same length";
 
-               when N_Op_Boolean =>
+               when N_Op_Boolean           =>
                   return "both array operands must have the same length";
 
-               when others =>
+               when others                 =>
                   null;
             end case;
 
@@ -1179,7 +1179,7 @@ package body Flow_Error_Messages is
                     & " must have same length as the target array type"
                     & " of the conversion";
 
-               when N_Qualified_Expression =>
+               when N_Qualified_Expression                          =>
                   return
                     Value
                     & " must have the same length as the array type"
@@ -1188,13 +1188,12 @@ package body Flow_Error_Messages is
                when N_Parameter_Association
                   | N_Function_Call
                   | N_Procedure_Call_Statement
-                  | N_Entry_Call_Statement
-               =>
+                  | N_Entry_Call_Statement                          =>
                   return
                     "argument array must have the same length"
                     & " as the parameter array type";
 
-               when others =>
+               when others                                          =>
                   return "array must be of the appropriate length";
             end case;
 
@@ -1238,7 +1237,7 @@ package body Flow_Error_Messages is
          --  SPARK_Atree.Get_Range_Check_Info, based on the kind of
          --  the enclosing expression.
 
-         when VC_Range_Check =>
+         when VC_Range_Check                           =>
 
             --  Range check is put on the node itself for slices and empty
             --  array aggregates.
@@ -1256,11 +1255,11 @@ package body Flow_Error_Messages is
 
             case Nkind (Par) is
 
-               when N_Assignment_Statement =>
+               when N_Assignment_Statement                          =>
                   return
                     Value & " must fit in the target type of the assignment";
 
-               when N_Indexed_Component =>
+               when N_Indexed_Component                             =>
                   return Value & " must be a valid index into the array";
 
                when N_Type_Conversion | N_Unchecked_Type_Conversion =>
@@ -1270,10 +1269,10 @@ package body Flow_Error_Messages is
                     & " must be convertible to the target type"
                     & " of the conversion";
 
-               when N_Qualified_Expression =>
+               when N_Qualified_Expression                          =>
                   return Value & " must fit in the type of the qualification";
 
-               when N_Simple_Return_Statement =>
+               when N_Simple_Return_Statement                       =>
                   return
                     "returned value must fit in the result type of the "
                     & "function";
@@ -1281,17 +1280,16 @@ package body Flow_Error_Messages is
                when N_Parameter_Association
                   | N_Function_Call
                   | N_Procedure_Call_Statement
-                  | N_Entry_Call_Statement
-               =>
+                  | N_Entry_Call_Statement                          =>
                   declare
                      Param : constant Entity_Id :=
                        Get_Formal_From_Actual (Arg);
                   begin
                      case Formal_Kind'(Ekind (Param)) is
-                        when E_In_Parameter =>
+                        when E_In_Parameter     =>
                            return "input value must fit in parameter type";
 
-                        when E_Out_Parameter =>
+                        when E_Out_Parameter    =>
                            return "output value must fit in argument type";
 
                         when E_In_Out_Parameter =>
@@ -1301,7 +1299,7 @@ package body Flow_Error_Messages is
                      end case;
                   end;
 
-               when N_Attribute_Reference =>
+               when N_Attribute_Reference                           =>
                   Attribute :
                   declare
                      Aname   : constant Name_Id := Attribute_Name (Par);
@@ -1309,13 +1307,13 @@ package body Flow_Error_Messages is
                        Get_Attribute_Id (Aname);
                   begin
                      case Attr_Id is
-                        when Attribute_Pred =>
+                        when Attribute_Pred     =>
                            return "value cannot be minimum value of the type";
 
-                        when Attribute_Succ =>
+                        when Attribute_Succ     =>
                            return "value cannot be maximum value of the type";
 
-                        when Attribute_Val =>
+                        when Attribute_Val      =>
                            return
                              "value must correspond to position in the type";
 
@@ -1324,15 +1322,15 @@ package body Flow_Error_Messages is
                              "value must correspond to representation"
                              & " in the type";
 
-                        when others =>
+                        when others             =>
                            return "";
                      end case;
                   end Attribute;
 
-               when N_Op_Expon =>
+               when N_Op_Expon                                      =>
                   return "exponent value must fit in type Natural";
 
-               when N_Component_Association =>
+               when N_Component_Association                         =>
                   declare
                      Ancestor : constant Node_Id := Parent (Parent (Par));
                      --  Construct enclosing the aggregate
@@ -1352,27 +1350,27 @@ package body Flow_Error_Messages is
                      end if;
                   end;
 
-               when N_Range =>
+               when N_Range                                         =>
                   return
                     "bounds of non-empty range must fit in the "
                     & "underlying type";
 
-               when N_Aggregate =>
+               when N_Aggregate                                     =>
                   return "";
 
                --  We only expect range checks on aspects for default values
 
-               when N_Aspect_Specification =>
+               when N_Aspect_Specification                          =>
                   case Aspects.Get_Aspect_Id (Par) is
                      when Aspects.Aspect_Default_Component_Value =>
                         return
                           "default component value must fit"
                           & " in the component type";
 
-                     when Aspects.Aspect_Default_Value =>
+                     when Aspects.Aspect_Default_Value           =>
                         return "default value must fit in the type";
 
-                     when others =>
+                     when others                                 =>
                         raise Program_Error;
                   end case;
 
@@ -1381,21 +1379,20 @@ package body Flow_Error_Messages is
 
                when N_Object_Declaration
                   | N_Component_Declaration
-                  | N_Discriminant_Specification
-               =>
+                  | N_Discriminant_Specification                    =>
                   return "default component value must fit in the type";
 
-               when N_If_Expression =>
+               when N_If_Expression                                 =>
                   return "value must fit in the type of the expression";
 
-               when N_Case_Expression_Alternative =>
+               when N_Case_Expression_Alternative                   =>
                   return "value must fit in the type of the expression";
 
-               when N_Allocator =>
+               when N_Allocator                                     =>
                   return
                     "value must fit in the designated type of the allocator";
 
-               when N_Pragma_Argument_Association =>
+               when N_Pragma_Argument_Association                   =>
                   if Pragma_Name (Parent (Par)) = Name_Loop_Variant then
                      pragma
                        Assert
@@ -1406,11 +1403,11 @@ package body Flow_Error_Messages is
                      return "";
                   end if;
 
-               when others =>
+               when others                                          =>
                   return "";
             end case;
 
-         when others =>
+         when others                                   =>
             return "";
       end case;
    end Get_Details;
@@ -3032,11 +3029,11 @@ package body Flow_Error_Messages is
                                 (case Sign_Is_Known (Right_Opnd (N)) is
                                    when Positive_Or_Null => Pos_Right,
                                    when Negative_Or_Null => Neg_Right,
-                                   when Unknown =>
+                                   when Unknown          =>
                                      (case Sign_Is_Known (Left_Opnd (N)) is
                                         when Positive_Or_Null => Pos_Left,
                                         when Negative_Or_Null => Neg_Left,
-                                        when Unknown =>
+                                        when Unknown          =>
                                           "if "
                                           & Right_Str
                                           & " >= 0 then "
@@ -3079,11 +3076,11 @@ package body Flow_Error_Messages is
                                 (case Sign_Is_Known (Right_Opnd (N)) is
                                    when Positive_Or_Null => Pos_Right,
                                    when Negative_Or_Null => Neg_Right,
-                                   when Unknown =>
+                                   when Unknown          =>
                                      (case Sign_Is_Known (Left_Opnd (N)) is
                                         when Positive_Or_Null => Pos_Left,
                                         when Negative_Or_Null => Neg_Left,
-                                        when Unknown =>
+                                        when Unknown          =>
                                           "if "
                                           & Right_Str
                                           & " >= 0 then "
@@ -3184,14 +3181,14 @@ package body Flow_Error_Messages is
 
             while Present (Stmt) loop
                case Explain_Node_Kind'(Nkind (Stmt)) is
-                  when N_Empty =>
+                  when N_Empty                                      =>
                      null;
 
                   --  If we bump into an object declaration, remove the
                   --  declared variable and replace it with the variables it
                   --  is assigned from.
 
-                  when N_Object_Declaration =>
+                  when N_Object_Declaration                         =>
                      declare
                         Var       : constant Entity_Id :=
                           Defining_Identifier (Stmt);
@@ -3219,7 +3216,7 @@ package body Flow_Error_Messages is
                   --  for the proof. Remove this variable from the set of
                   --  variables tracked.
 
-                  when N_Assignment_Statement =>
+                  when N_Assignment_Statement                       =>
                      declare
                         Lhs       : constant Node_Id := Name (Stmt);
                         Expr      : constant Node_Id := Expression (Stmt);
@@ -3257,7 +3254,7 @@ package body Flow_Error_Messages is
                         end if;
                      end;
 
-                  when N_Procedure_Call_Statement =>
+                  when N_Procedure_Call_Statement                   =>
                      declare
                         Formal_To_Actual : Flow_Id_Surjection.Map;
                         Actual_To_Formal : Flow_Id_Surjection.Map;
@@ -3376,7 +3373,7 @@ package body Flow_Error_Messages is
                         end if;
                      end;
 
-                  when N_Loop_Statement =>
+                  when N_Loop_Statement                             =>
 
                      if not Is_Selected_For_Loop_Unrolling (Stmt) then
 
@@ -3400,7 +3397,7 @@ package body Flow_Error_Messages is
                            Id          : Flow_Id;
                         begin
                            case Nkind (Cond_Or_Var) is
-                              when N_Empty =>
+                              when N_Empty  =>
                                  null;
 
                               --  The loop variable in a FOR loop is defined
@@ -3416,7 +3413,7 @@ package body Flow_Error_Messages is
                               --  providing information on these variables
                               --  for this loop. Add them from Info_Vars.
 
-                              when others =>
+                              when others   =>
                                  Info_Vars :=
                                    Get_Variables_From_Expr (Cond_Or_Var, N);
                            end case;
@@ -3882,7 +3879,7 @@ package body Flow_Error_Messages is
       case Gnat2Why_Args.Output_Mode is
          --  In brief mode, just print the check message
 
-         when GPO_Brief =>
+         when GPO_Brief   =>
             Wrap_Error_Msg (Obj.Msg);
 
          --  In oneline mode, append all the extra information to the
@@ -3935,7 +3932,7 @@ package body Flow_Error_Messages is
          --  indentation and no repetion of the  file:line:column: prefix
          --  and info/warning/error information.
 
-         when GPO_Pretty =>
+         when GPO_Pretty  =>
 
             if Obj.User_Message /= Null_Unbounded_String then
                My_Conts.Append
@@ -4002,131 +3999,131 @@ package body Flow_Error_Messages is
       case Kind is
          --  VC_RTE_Kind - run-time checks
 
-         when VC_Division_Check =>
+         when VC_Division_Check                   =>
             return "divide by zero might fail";
 
-         when VC_Index_Check =>
+         when VC_Index_Check                      =>
             return "array index check might fail";
 
-         when VC_Overflow_Check =>
+         when VC_Overflow_Check                   =>
             return "overflow check might fail";
 
-         when VC_FP_Overflow_Check =>
+         when VC_FP_Overflow_Check                =>
             return "float overflow check might fail";
 
-         when VC_Range_Check =>
+         when VC_Range_Check                      =>
             return "range check might fail";
 
-         when VC_Predicate_Check =>
+         when VC_Predicate_Check                  =>
             return "predicate check might fail";
 
          when VC_Predicate_Check_On_Default_Value =>
             return "predicate check might fail on default value";
 
-         when VC_Null_Pointer_Dereference =>
+         when VC_Null_Pointer_Dereference         =>
             return "pointer dereference check might fail";
 
-         when VC_Null_Exclusion =>
+         when VC_Null_Exclusion                   =>
             return "null exclusion check might fail";
 
-         when VC_Dynamic_Accessibility_Check =>
+         when VC_Dynamic_Accessibility_Check      =>
             return "dynamic accessibility check might fail";
 
-         when VC_Resource_Leak =>
+         when VC_Resource_Leak                    =>
             return "resource or memory leak might occur";
 
-         when VC_Resource_Leak_At_End_Of_Scope =>
+         when VC_Resource_Leak_At_End_Of_Scope    =>
             return "resource or memory leak might occur at end of scope";
 
-         when VC_Invariant_Check =>
+         when VC_Invariant_Check                  =>
             return "invariant check might fail";
 
          when VC_Invariant_Check_On_Default_Value =>
             return "invariant check might fail on default value";
 
-         when VC_Length_Check =>
+         when VC_Length_Check                     =>
             return "length check might fail";
 
-         when VC_Discriminant_Check =>
+         when VC_Discriminant_Check               =>
             return "discriminant check might fail";
 
-         when VC_Tag_Check =>
+         when VC_Tag_Check                        =>
             return "tag check might fail";
 
-         when VC_Ceiling_Interrupt =>
+         when VC_Ceiling_Interrupt                =>
             return "ceiling priority might not be in Interrupt_Priority";
 
-         when VC_Interrupt_Reserved =>
+         when VC_Interrupt_Reserved               =>
             return "this interrupt might be reserved";
 
-         when VC_Ceiling_Priority_Protocol =>
+         when VC_Ceiling_Priority_Protocol        =>
             return "ceiling priority protocol might not be respected";
 
-         when VC_Task_Termination =>
+         when VC_Task_Termination                 =>
             return "the task might terminate, which is not allowed in SPARK";
 
          --  VC_Assert_Kind - assertions
 
-         when VC_Initial_Condition =>
+         when VC_Initial_Condition                =>
             return "initial condition might fail";
 
-         when VC_Default_Initial_Condition =>
+         when VC_Default_Initial_Condition        =>
             return "default initial condition might fail";
 
-         when VC_Precondition =>
+         when VC_Precondition                     =>
             return "precondition might fail";
 
-         when VC_Precondition_Main =>
+         when VC_Precondition_Main                =>
             return "precondition of main program might fail";
 
-         when VC_Postcondition =>
+         when VC_Postcondition                    =>
             return "postcondition might fail";
 
-         when VC_Refined_Post =>
+         when VC_Refined_Post                     =>
             return "refined postcondition might fail";
 
-         when VC_Contract_Case =>
+         when VC_Contract_Case                    =>
             return "contract case might fail";
 
-         when VC_Disjoint_Cases =>
+         when VC_Disjoint_Cases                   =>
             return "contract or exit cases might not be disjoint";
 
-         when VC_Complete_Cases =>
+         when VC_Complete_Cases                   =>
             return "contract cases might not be complete";
 
-         when VC_Exceptional_Case =>
+         when VC_Exceptional_Case                 =>
             return "exceptional case might fail";
 
-         when VC_Program_Exit_Post =>
+         when VC_Program_Exit_Post                =>
             return "program exit postcondition might fail";
 
-         when VC_Exit_Case =>
+         when VC_Exit_Case                        =>
             return "exit case might fail";
 
-         when VC_Loop_Invariant =>
+         when VC_Loop_Invariant                   =>
             return "loop invariant might fail";
 
-         when VC_Loop_Invariant_Init =>
+         when VC_Loop_Invariant_Init              =>
             return "loop invariant might fail in first iteration";
 
-         when VC_Loop_Invariant_Preserv =>
+         when VC_Loop_Invariant_Preserv           =>
             return
               "loop invariant might not be preserved by an arbitrary "
               & "iteration";
 
-         when VC_Loop_Variant =>
+         when VC_Loop_Variant                     =>
             return "loop variant might fail";
 
-         when VC_Assert =>
+         when VC_Assert                           =>
             return "assertion might fail";
 
-         when VC_Assert_Premise =>
+         when VC_Assert_Premise                   =>
             return "assertion premise might fail";
 
-         when VC_Assert_Step =>
+         when VC_Assert_Step                      =>
             return "assertion step might fail";
 
-         when VC_Raise =>
+         when VC_Raise                            =>
             --  Give explanations for exceptions which frontend statically
             --  determined to always happen, should the given node be executed.
 
@@ -4137,19 +4134,19 @@ package body Flow_Error_Messages is
                --  VC kind in the JSON file. Same for Proved_Message.
 
                case RT_Exception_Code'Val (UI_To_Int (Reason (Node))) is
-                  when CE_Range_Check_Failed =>
+                  when CE_Range_Check_Failed  =>
                      return Not_Proved_Message (Node, VC_Range_Check);
 
-                  when CE_Index_Check_Failed =>
+                  when CE_Index_Check_Failed  =>
                      return Not_Proved_Message (Node, VC_Index_Check);
 
-                  when CE_Divide_By_Zero =>
+                  when CE_Divide_By_Zero      =>
                      return Not_Proved_Message (Node, VC_Division_Check);
 
                   when CE_Access_Check_Failed =>
                      return Not_Proved_Message (Node, VC_Null_Exclusion);
 
-                  when SE_Infinite_Recursion =>
+                  when SE_Infinite_Recursion  =>
 
                      --  ??? This message should be reflected in the "Messages
                      --  reported by Proof" SPARK UG table, which is generated
@@ -4163,55 +4160,53 @@ package body Flow_Error_Messages is
                   --  missing case, which we will fix whenever it occurs;
                   --  in production builds users will get a generic message.
 
-                  when others =>
+                  when others                 =>
                      pragma Assert (False);
                end case;
             end if;
             return "unexpected exception might be raised";
 
-         when VC_Unexpected_Program_Exit =>
+         when VC_Unexpected_Program_Exit          =>
             return "call might exit the program";
 
-         when VC_Feasible_Post =>
+         when VC_Feasible_Post                    =>
             return "contract of function might not be feasible";
 
-         when VC_Inline_Check =>
+         when VC_Inline_Check                     =>
             return
               "Inline_For_Proof or Logical_Equal annotation might be"
               & " incorrect";
 
-         when VC_Container_Aggr_Check =>
+         when VC_Container_Aggr_Check             =>
             return "Container_Aggregates annotation might be incorrect";
 
-         when VC_Reclamation_Check =>
+         when VC_Reclamation_Check                =>
             return
               "reclamation entity might not be consistent with "
               & "reclamation on the full view";
 
-         when VC_Subprogram_Variant =>
+         when VC_Subprogram_Variant               =>
             return "subprogram variant might fail";
 
-         when VC_Termination_Check =>
+         when VC_Termination_Check                =>
             declare
                Statement : constant String :=
                  (case Nkind (Node) is
                     when N_Procedure_Call_Statement
                        | N_Entry_Call_Statement
-                       | N_Function_Call
-                    =>
-                      "call",
-                    when N_Loop_Statement => "loop",
+                       | N_Function_Call       => "call",
+                    when N_Loop_Statement      => "loop",
                     when N_Attribute_Reference =>
                       "call via access-to-function",
-                    when others => raise Program_Error);
+                    when others                => raise Program_Error);
             begin
                return Statement & " might not terminate";
             end;
 
-         when VC_UC_Source =>
+         when VC_UC_Source                        =>
             return "type is unsuitable as a source for unchecked conversion";
 
-         when VC_UC_Target =>
+         when VC_UC_Target                        =>
             declare
                Common : constant String := " is unsuitable ";
             begin
@@ -4224,7 +4219,7 @@ package body Flow_Error_Messages is
                end if;
             end;
 
-         when VC_UC_Same_Size =>
+         when VC_UC_Same_Size                     =>
             declare
                Prefix : constant String :=
                  (if Nkind (Node) = N_Attribute_Reference
@@ -4234,58 +4229,58 @@ package body Flow_Error_Messages is
                return Prefix & " do not have the same size";
             end;
 
-         when VC_UC_Alignment =>
+         when VC_UC_Alignment                     =>
             return
               "address in address clause might not be an integral "
               & "multiple of alignment of object";
 
-         when VC_Initialization_Check =>
+         when VC_Initialization_Check             =>
             return "initialization check might fail";
 
-         when VC_Validity_Check =>
+         when VC_Validity_Check                   =>
             return "validity check might fail";
 
-         when VC_Unchecked_Union_Restriction =>
+         when VC_Unchecked_Union_Restriction      =>
             return
               "operation on unchecked union type will raise"
               & " Program_Error";
 
-         when VC_UC_Volatile =>
+         when VC_UC_Volatile                      =>
             return
               "object with non-trivial address clause or prefix of the "
               & "'Address reference does not have asynchronous writers";
 
          --  VC_LSP_Kind - Liskov Substitution Principle
 
-         when VC_Weaker_Pre =>
+         when VC_Weaker_Pre                       =>
             return
               "precondition might be stronger than "
               & "class-wide precondition";
 
-         when VC_Trivial_Weaker_Pre =>
+         when VC_Trivial_Weaker_Pre               =>
             return
               "precondition is stronger than the default "
               & "class-wide precondition of True";
 
-         when VC_Stronger_Post =>
+         when VC_Stronger_Post                    =>
             return
               "postcondition might be weaker than "
               & "class-wide postcondition";
 
-         when VC_Weaker_Classwide_Pre =>
+         when VC_Weaker_Classwide_Pre             =>
             return
               "class-wide precondition might be stronger than overridden one";
 
-         when VC_Stronger_Classwide_Post =>
+         when VC_Stronger_Classwide_Post          =>
             return
               "class-wide postcondition might be weaker than overridden one";
 
-         when VC_Weaker_Pre_Access =>
+         when VC_Weaker_Pre_Access                =>
             return
               "precondition of target might not be strong enough to"
               & " imply precondition of source";
 
-         when VC_Stronger_Post_Access =>
+         when VC_Stronger_Post_Access             =>
             return
               "postcondition of source might not be strong enough to"
               & " imply postcondition of target";
@@ -4294,7 +4289,7 @@ package body Flow_Error_Messages is
 
          --  Warnings should only be issued when the VC is proved
 
-         when VC_Warning_Kind =>
+         when VC_Warning_Kind                     =>
             raise Program_Error;
       end case;
    end Not_Proved_Message;
@@ -4345,10 +4340,10 @@ package body Flow_Error_Messages is
                   Quote := Element (S, Index) in '&' | '#';
 
                   case F.Kind is
-                     when Null_Value =>
+                     when Null_Value                    =>
                         raise Program_Error;
 
-                     when Synthetic_Null_Export =>
+                     when Synthetic_Null_Export         =>
                         Append_Quote;
                         Append (R, "null");
 
@@ -4465,7 +4460,7 @@ package body Flow_Error_Messages is
                            Append (R, Flow_Id_To_String (F));
                         end if;
 
-                     when Magic_String =>
+                     when Magic_String                  =>
                         --  ??? we may want to use __gnat_decode() here instead
                         Append_Quote;
                         declare
@@ -4486,7 +4481,7 @@ package body Flow_Error_Messages is
                                  --  Replace __ with . in the magic string
                                  while Index <= F_Name_String'Last loop
                                     case F_Name_String (Index) is
-                                       when '_' =>
+                                       when '_'    =>
                                           if Index < F_Name_String'Last
                                             and then F_Name_String (Index + 1)
                                                      = '_'
@@ -4526,7 +4521,7 @@ package body Flow_Error_Messages is
                                 (R, Erroutc.Msg_Buffer (1 .. Erroutc.Msglen));
                            end;
 
-                        when others =>
+                        when others                        =>
                            --  Can't really add source information for stuff
                            --  that doesn't come from the tree.
                            null;
@@ -4535,7 +4530,7 @@ package body Flow_Error_Messages is
 
                   Do_Sub := False;
 
-               when '@' =>
+               when '@'             =>
                   declare
                      N : constant Node_Id := Get_Direct_Mapping_Id (F);
 
@@ -4545,7 +4540,7 @@ package body Flow_Error_Messages is
                      Append (R, Erroutc.Msg_Buffer (1 .. Erroutc.Msglen));
                   end;
 
-               when others =>
+               when others          =>
                   Append (R, Element (S, Index));
             end case;
          else
@@ -4586,128 +4581,128 @@ package body Flow_Error_Messages is
    function VC_Message (Node : Node_Id; Kind : VC_Kind) return String is
    begin
       case Kind is
-         when VC_Division_Check =>
+         when VC_Division_Check                   =>
             return "division check " & Verb;
 
-         when VC_Index_Check =>
+         when VC_Index_Check                      =>
             return "index check " & Verb;
 
-         when VC_Overflow_Check =>
+         when VC_Overflow_Check                   =>
             return "overflow check " & Verb;
 
-         when VC_FP_Overflow_Check =>
+         when VC_FP_Overflow_Check                =>
             return "float overflow check " & Verb;
 
-         when VC_Range_Check =>
+         when VC_Range_Check                      =>
             return "range check " & Verb;
 
-         when VC_Predicate_Check =>
+         when VC_Predicate_Check                  =>
             return "predicate check " & Verb;
 
          when VC_Predicate_Check_On_Default_Value =>
             return "predicate check " & Verb & " on default value";
 
-         when VC_Null_Pointer_Dereference =>
+         when VC_Null_Pointer_Dereference         =>
             return "pointer dereference check " & Verb;
 
-         when VC_Null_Exclusion =>
+         when VC_Null_Exclusion                   =>
             return "null exclusion check " & Verb;
 
-         when VC_Dynamic_Accessibility_Check =>
+         when VC_Dynamic_Accessibility_Check      =>
             return "dynamic accessibility check " & Verb;
 
-         when VC_Resource_Leak =>
+         when VC_Resource_Leak                    =>
             return "absence of resource or memory leak " & Verb;
 
-         when VC_Resource_Leak_At_End_Of_Scope =>
+         when VC_Resource_Leak_At_End_Of_Scope    =>
             return
               "absence of resource or memory leak at end of scope " & Verb;
 
-         when VC_Invariant_Check =>
+         when VC_Invariant_Check                  =>
             return "invariant check " & Verb;
 
          when VC_Invariant_Check_On_Default_Value =>
             return "invariant check " & Verb & " on default value";
 
-         when VC_Length_Check =>
+         when VC_Length_Check                     =>
             return "length check " & Verb;
 
-         when VC_Discriminant_Check =>
+         when VC_Discriminant_Check               =>
             return "discriminant check " & Verb;
 
-         when VC_Tag_Check =>
+         when VC_Tag_Check                        =>
             return "tag check " & Verb;
 
-         when VC_Ceiling_Interrupt =>
+         when VC_Ceiling_Interrupt                =>
             return "ceiling priority in Interrupt_Priority " & Verb;
 
-         when VC_Interrupt_Reserved =>
+         when VC_Interrupt_Reserved               =>
             return "availability of interrupt " & Verb;
 
-         when VC_Ceiling_Priority_Protocol =>
+         when VC_Ceiling_Priority_Protocol        =>
             return Prefix & "ceiling priority protocol is respected";
 
-         when VC_Task_Termination =>
+         when VC_Task_Termination                 =>
             return "nontermination of task " & Verb;
 
-         when VC_Initial_Condition =>
+         when VC_Initial_Condition                =>
             return "initial condition " & Verb;
 
-         when VC_Default_Initial_Condition =>
+         when VC_Default_Initial_Condition        =>
             return "default initial condition " & Verb;
 
-         when VC_Precondition =>
+         when VC_Precondition                     =>
             return "precondition " & Verb;
 
-         when VC_Precondition_Main =>
+         when VC_Precondition_Main                =>
             return "precondition of main program " & Verb;
 
-         when VC_Postcondition =>
+         when VC_Postcondition                    =>
             return "postcondition " & Verb;
 
-         when VC_Refined_Post =>
+         when VC_Refined_Post                     =>
             return "refined post " & Verb;
 
-         when VC_Contract_Case =>
+         when VC_Contract_Case                    =>
             return "contract case " & Verb;
 
-         when VC_Disjoint_Cases =>
+         when VC_Disjoint_Cases                   =>
             return "disjoint contract or exit cases " & Verb;
 
-         when VC_Complete_Cases =>
+         when VC_Complete_Cases                   =>
             return "complete contract cases " & Verb;
 
-         when VC_Exceptional_Case =>
+         when VC_Exceptional_Case                 =>
             return "exceptional case " & Verb;
 
-         when VC_Program_Exit_Post =>
+         when VC_Program_Exit_Post                =>
             return "program exit postcondition " & Verb;
 
-         when VC_Exit_Case =>
+         when VC_Exit_Case                        =>
             return "exit case " & Verb;
 
-         when VC_Loop_Invariant =>
+         when VC_Loop_Invariant                   =>
             return "loop invariant " & Verb;
 
-         when VC_Loop_Invariant_Init =>
+         when VC_Loop_Invariant_Init              =>
             return "loop invariant initialization " & Verb;
 
-         when VC_Loop_Invariant_Preserv =>
+         when VC_Loop_Invariant_Preserv           =>
             return "loop invariant preservation " & Verb;
 
-         when VC_Loop_Variant =>
+         when VC_Loop_Variant                     =>
             return "loop variant " & Verb;
 
-         when VC_Assert =>
+         when VC_Assert                           =>
             return "assertion " & Verb;
 
-         when VC_Assert_Premise =>
+         when VC_Assert_Premise                   =>
             return "assertion premise " & Verb;
 
-         when VC_Assert_Step =>
+         when VC_Assert_Step                      =>
             return "assertion step " & Verb;
 
-         when VC_Raise =>
+         when VC_Raise                            =>
             --  Give explanations for exceptions which frontend statically
             --  determined to always happen, but backend proved to be
             --  unreachable.
@@ -4720,7 +4715,7 @@ package body Flow_Error_Messages is
                   when CE_Index_Check_Failed =>
                      return VC_Message (Node, VC_Index_Check);
 
-                  when CE_Divide_By_Zero =>
+                  when CE_Divide_By_Zero     =>
                      return VC_Message (Node, VC_Division_Check);
 
                   when SE_Infinite_Recursion =>
@@ -4730,50 +4725,48 @@ package body Flow_Error_Messages is
                   --  missing case, which we will fix whenever it occurs;
                   --  in production builds users will get a generic message.
 
-                  when others =>
+                  when others                =>
                      pragma Assert (False);
                end case;
             end if;
             return Prefix & "only expected exception raised";
 
-         when VC_Unexpected_Program_Exit =>
+         when VC_Unexpected_Program_Exit          =>
             return "call cannot exit the program " & Verb;
 
-         when VC_Feasible_Post =>
+         when VC_Feasible_Post                    =>
             return "function contract feasibility " & Verb;
 
-         when VC_Inline_Check =>
+         when VC_Inline_Check                     =>
             return "Inline_For_Proof or Logical_Equal annotation " & Verb;
 
-         when VC_Container_Aggr_Check =>
+         when VC_Container_Aggr_Check             =>
             return "Container_Aggregates annotation " & Verb;
 
-         when VC_Reclamation_Check =>
+         when VC_Reclamation_Check                =>
             return "reclamation entity consistency " & Verb;
 
-         when VC_Subprogram_Variant =>
+         when VC_Subprogram_Variant               =>
             return "subprogram variant " & Verb;
 
-         when VC_Termination_Check =>
+         when VC_Termination_Check                =>
             declare
                Statement : constant String :=
                  (case Nkind (Node) is
                     when N_Procedure_Call_Statement
                        | N_Entry_Call_Statement
-                       | N_Function_Call
-                    =>
-                      "call",
+                       | N_Function_Call  => "call",
                     when N_Loop_Statement => "loop",
-                    when others => raise Program_Error);
+                    when others           => raise Program_Error);
             begin
                return "conditional " & Statement & " termination " & Verb;
             end;
 
-         when VC_UC_Source =>
+         when VC_UC_Source                        =>
             return
               Prefix & "type is suitable as source for unchecked conversion";
 
-         when VC_UC_Target =>
+         when VC_UC_Target                        =>
             declare
                Common : constant String := " is suitable for ";
             begin
@@ -4786,7 +4779,7 @@ package body Flow_Error_Messages is
                end if;
             end;
 
-         when VC_UC_Same_Size =>
+         when VC_UC_Same_Size                     =>
             if Nkind (Node) = N_Attribute_Reference then
                return Prefix & "types of aliased objects have the same size";
             else
@@ -4794,79 +4787,79 @@ package body Flow_Error_Messages is
                  Prefix & "types in unchecked conversion have the same size";
             end if;
 
-         when VC_UC_Alignment =>
+         when VC_UC_Alignment                     =>
             return
               Prefix
               & "address in address clause is compatible with object "
               & "alignment";
 
-         when VC_UC_Volatile =>
+         when VC_UC_Volatile                      =>
             return
               Prefix
               & "object with non-trivial address clause and prefix of the"
               & " 'Address attribute have asynchronous writers";
 
-         when VC_Weaker_Pre =>
+         when VC_Weaker_Pre                       =>
             return
               Prefix
               & "precondition is weaker than"
               & " class-wide precondition";
 
-         when VC_Trivial_Weaker_Pre =>
+         when VC_Trivial_Weaker_Pre               =>
             return Prefix & "precondition is always True";
 
-         when VC_Stronger_Post =>
+         when VC_Stronger_Post                    =>
             return
               Prefix
               & "postcondition is stronger"
               & " than class-wide postcondition";
 
-         when VC_Weaker_Classwide_Pre =>
+         when VC_Weaker_Classwide_Pre             =>
             return
               Prefix & "class-wide precondition is weaker than overridden one";
 
-         when VC_Stronger_Classwide_Post =>
+         when VC_Stronger_Classwide_Post          =>
             return
               Prefix
               & "class-wide postcondition is stronger"
               & " than overridden one";
 
-         when VC_Weaker_Pre_Access =>
+         when VC_Weaker_Pre_Access                =>
             return
               Prefix
               & "precondition of target is strong enough to imply"
               & " precondition of source";
 
-         when VC_Stronger_Post_Access =>
+         when VC_Stronger_Post_Access             =>
             return
               Prefix
               & "postcondition of source is strong enough to imply"
               & " postcondition of target";
 
-         when VC_Initialization_Check =>
+         when VC_Initialization_Check             =>
             return "initialization check " & Verb;
 
-         when VC_Validity_Check =>
+         when VC_Validity_Check                   =>
             return "validity check " & Verb;
 
-         when VC_Unchecked_Union_Restriction =>
+         when VC_Unchecked_Union_Restriction      =>
             return "operation on unchecked union type " & Verb;
 
          --  VC_Warning_Kind - warnings
 
-         when VC_Inconsistent_Pre =>
+         when VC_Inconsistent_Pre                 =>
             return Prefix & "precondition is always False";
 
-         when VC_Inconsistent_Post =>
+         when VC_Inconsistent_Post                =>
             return Prefix & "postcondition is always False";
 
-         when VC_Inconsistent_Assume =>
+         when VC_Inconsistent_Assume              =>
             return Prefix & "pragma Assume is always False";
 
-         when VC_Unreachable_Branch =>
+         when VC_Unreachable_Branch               =>
             return "unreachable branch" & Suffix;
 
-         when VC_Dead_Code =>
+         when VC_Dead_Code                        =>
             return "unreachable code" & Suffix;
       end case;
    end VC_Message;

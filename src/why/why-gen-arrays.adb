@@ -2868,8 +2868,8 @@ package body Why.Gen.Arrays is
                Enum : constant Why_Name_Enum :=
                  (case Attr is
                     when Attribute_First => WNE_Attr_First (Dim),
-                    when Attribute_Last => WNE_Attr_Last (Dim),
-                    when others => raise Program_Error);
+                    when Attribute_Last  => WNE_Attr_Last (Dim),
+                    when others          => raise Program_Error);
             begin
                return
                  New_Call
@@ -2905,10 +2905,10 @@ package body Why.Gen.Arrays is
 
          when UCArray =>
             case Attr is
-               when Attribute_First =>
+               when Attribute_First  =>
                   return +Item.Bounds (Dim).First;
 
-               when Attribute_Last =>
+               when Attribute_Last   =>
                   return +Item.Bounds (Dim).Last;
 
                when Attribute_Length =>
@@ -2919,11 +2919,11 @@ package body Why.Gen.Arrays is
                         Last   => +Item.Bounds (Dim).Last,
                         Typ    => Typ);
 
-               when others =>
+               when others           =>
                   raise Program_Error;
             end case;
 
-         when others =>
+         when others  =>
             raise Program_Error;
       end case;
    end Get_Array_Attr;

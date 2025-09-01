@@ -134,10 +134,10 @@ package body Why.Gen.Names is
    function Attr_To_Why_Name (A : Attribute_Id) return Why_Name_Enum
    is (case A is
          when Attribute_Constrained => WNE_Attr_Constrained,
-         when Attribute_First => WNE_Attr_First,
-         when Attribute_Last => WNE_Attr_Last,
-         when Attribute_Tag => WNE_Attr_Tag,
-         when others => raise Program_Error);
+         when Attribute_First       => WNE_Attr_First,
+         when Attribute_Last        => WNE_Attr_Last,
+         when Attribute_Tag         => WNE_Attr_Tag,
+         when others                => raise Program_Error);
 
    --------------------
    -- Content_Append --
@@ -166,9 +166,9 @@ package body Why.Gen.Names is
       To_Kind   : constant EW_Type := Get_Type_Kind (To);
    begin
       case From_Kind is
-         when EW_Builtin =>
+         when EW_Builtin             =>
             case To_Kind is
-               when EW_Builtin =>
+               when EW_Builtin             =>
 
                   --  Only certain conversions are OK
 
@@ -288,7 +288,7 @@ package body Why.Gen.Names is
 
          when EW_Abstract | EW_Split =>
             case To_Kind is
-               when EW_Builtin =>
+               when EW_Builtin             =>
                   declare
                      A : constant Node_Id := Get_Ada_Node (+From);
                   begin
@@ -547,8 +547,8 @@ package body Why.Gen.Names is
            (E,
             (case Selector_Name is
                when Why.Inter.Standard => WNE_Func_Guard,
-               when Dispatch => WNE_Dispatch_Func_Guard,
-               when Refine => WNE_Func_Guard))
+               when Dispatch           => WNE_Dispatch_Func_Guard,
+               when Refine             => WNE_Func_Guard))
        else Get_Logic_Function_Guard (E));
 
    ------------------
@@ -935,68 +935,68 @@ package body Why.Gen.Names is
 
    function To_String (W : Why_Name_Enum) return String
    is (case W is
-         when WNE_Aggregate_Def_Suffix => "__aggregate_def",
-         when WNE_Array_Component_Type => "component_type",
-         when WNE_Array_Type => "__t",
-         when WNE_Array_BV_Suffix => "_BV",
-         when WNE_Array_Comparison_Suffix => "_Comp",
-         when WNE_Array_Concatenation_Suffix => "__Concat",
-         when WNE_Array_Int_Suffix => "_Int",
-         when WNE_Array_Logical_Op_Suffix => "__Bool_Op",
-         when WNE_Array_Prefix => "Array_",
+         when WNE_Aggregate_Def_Suffix        => "__aggregate_def",
+         when WNE_Array_Component_Type        => "component_type",
+         when WNE_Array_Type                  => "__t",
+         when WNE_Array_BV_Suffix             => "_BV",
+         when WNE_Array_Comparison_Suffix     => "_Comp",
+         when WNE_Array_Concatenation_Suffix  => "__Concat",
+         when WNE_Array_Int_Suffix            => "_Int",
+         when WNE_Array_Logical_Op_Suffix     => "__Bool_Op",
+         when WNE_Array_Prefix                => "Array_",
 
-         when WNE_Attr_Access => "attr__access",
-         when WNE_Attr_Constrained => "attr__constrained",
-         when WNE_Attr_First => "first",
-         when WNE_Attr_Last => "last",
-         when WNE_Attr_Tag => "attr__tag",
-         when WNE_Axiom_Suffix => "___axiom",
-         when WNE_Content => "__content",
-         when WNE_Dispatch_Module => "Dispatch",
-         when WNE_Extract_Prefix => "extract__",
-         when WNE_Fixed_Point_Prefix => "Fixed_Point",
+         when WNE_Attr_Access                 => "attr__access",
+         when WNE_Attr_Constrained            => "attr__constrained",
+         when WNE_Attr_First                  => "first",
+         when WNE_Attr_Last                   => "last",
+         when WNE_Attr_Tag                    => "attr__tag",
+         when WNE_Axiom_Suffix                => "___axiom",
+         when WNE_Content                     => "__content",
+         when WNE_Dispatch_Module             => "Dispatch",
+         when WNE_Extract_Prefix              => "extract__",
+         when WNE_Fixed_Point_Prefix          => "Fixed_Point",
          when WNE_Fixed_Point_Mult_Div_Prefix => "Fixed_Point_Mult_Div",
-         when WNE_Havoc => "__havoc",
-         when WNE_Hidden_Extension => "rec__hidden_ext__",
-         when WNE_Hide_Extension => "hide_ext__",
-         when WNE_Init_Wrapper_Suffix => "__init_wrapper",
-         when WNE_Param_Prefix => "param__",
-         when WNE_Rec_Rep => "__rep",
-         when WNE_Rec_Comp_Prefix => "rec__",
-         when WNE_Rec_Extension_Suffix => "ext__",
-         when WNE_Refine_Module => "Refine",
-         when WNE_Hidden_Module => "Hide",
-         when WNE_Ref => "__ref",
+         when WNE_Havoc                       => "__havoc",
+         when WNE_Hidden_Extension            => "rec__hidden_ext__",
+         when WNE_Hide_Extension              => "hide_ext__",
+         when WNE_Init_Wrapper_Suffix         => "__init_wrapper",
+         when WNE_Param_Prefix                => "param__",
+         when WNE_Rec_Rep                     => "__rep",
+         when WNE_Rec_Comp_Prefix             => "rec__",
+         when WNE_Rec_Extension_Suffix        => "ext__",
+         when WNE_Refine_Module               => "Refine",
+         when WNE_Hidden_Module               => "Hide",
+         when WNE_Ref                         => "__ref",
 
          --  these are used both by E_Symb function and by To_String
 
-         when WNE_Attr_Init => "__attr__init",
-         when WNE_Rec_Split_Discrs => "__split_discrs",
-         when WNE_Rec_Split_Fields => "__split_fields",
-         when WNE_Null_Pointer => "__null_pointer",
-         when WNE_Is_Initialized_Pred => "__is_initialized",
-         when WNE_Is_Null_Pointer => "__is_null_pointer",
-         when WNE_Pointer_Value => "__pointer_value",
-         when WNE_Close => "__close",
-         when WNE_Open => "__open",
-         when WNE_Static_Constraint => "__static_constraint",
-         when WNE_Dummy_Abstr => "__dummy_abstr",
-         when WNE_Move_Tree => "__move_tree",
-         when WNE_Move_Tree_Ptr_Is_Moved => "rec__is_moved__",
-         when WNE_Move_Tree_Ptr_Value => "rec__value__",
-         when WNE_Move_Tree_Array_Get => "__get",
-         when WNE_Move_Tree_Array_Set => "__set",
-         when WNE_Move_Tree_Open => "__open",
-         when WNE_Move_Tree_Close => "__close",
-         when WNE_Is_Moved_Or_Reclaimed => "__is_moved_or_reclaimed",
-         when WNE_Moved_Tree => "__moved_tree",
-         when WNE_Validity_Tree => "__validity_tree",
-         when WNE_Valid_Flag => "__valid_flag",
-         when WNE_Valid_Value => "__valid_value",
-         when WNE_Is_Valid => "__is_valid",
-         when WNE_Validity_Tree_Get => "__get",
-         when WNE_Validity_Tree_Set => "__set",
-         when WNE_Validity_Tree_Slide => "__slide",
+         when WNE_Attr_Init                   => "__attr__init",
+         when WNE_Rec_Split_Discrs            => "__split_discrs",
+         when WNE_Rec_Split_Fields            => "__split_fields",
+         when WNE_Null_Pointer                => "__null_pointer",
+         when WNE_Is_Initialized_Pred         => "__is_initialized",
+         when WNE_Is_Null_Pointer             => "__is_null_pointer",
+         when WNE_Pointer_Value               => "__pointer_value",
+         when WNE_Close                       => "__close",
+         when WNE_Open                        => "__open",
+         when WNE_Static_Constraint           => "__static_constraint",
+         when WNE_Dummy_Abstr                 => "__dummy_abstr",
+         when WNE_Move_Tree                   => "__move_tree",
+         when WNE_Move_Tree_Ptr_Is_Moved      => "rec__is_moved__",
+         when WNE_Move_Tree_Ptr_Value         => "rec__value__",
+         when WNE_Move_Tree_Array_Get         => "__get",
+         when WNE_Move_Tree_Array_Set         => "__set",
+         when WNE_Move_Tree_Open              => "__open",
+         when WNE_Move_Tree_Close             => "__close",
+         when WNE_Is_Moved_Or_Reclaimed       => "__is_moved_or_reclaimed",
+         when WNE_Moved_Tree                  => "__moved_tree",
+         when WNE_Validity_Tree               => "__validity_tree",
+         when WNE_Valid_Flag                  => "__valid_flag",
+         when WNE_Valid_Value                 => "__valid_value",
+         when WNE_Is_Valid                    => "__is_valid",
+         when WNE_Validity_Tree_Get           => "__get",
+         when WNE_Validity_Tree_Set           => "__set",
+         when WNE_Validity_Tree_Slide         => "__slide",
 
          --  please use these only in conjunction with E_Symb function
 
@@ -1098,9 +1098,7 @@ package body Why.Gen.Names is
             | WNE_Empty
             | WNE_Valid_Wrapper
             | WNE_Valid_Wrapper_Flag
-            | WNE_Valid_Wrapper_Result
-         =>
-           raise Program_Error);
+            | WNE_Valid_Wrapper_Result        => raise Program_Error);
 
    --------------
    -- To_Ident --
@@ -1183,17 +1181,15 @@ package body Why.Gen.Names is
          case R is
             when RCK_Range_Not_First
                | RCK_Overflow_Not_First
-               | RCK_FP_Overflow_Not_First
-            =>
+               | RCK_FP_Overflow_Not_First =>
                return M_Boolean.Check_Not_First;
 
             when RCK_Range_Not_Last
                | RCK_Overflow_Not_Last
-               | RCK_FP_Overflow_Not_Last
-            =>
+               | RCK_FP_Overflow_Not_Last  =>
                return M_Boolean.Check_Not_Last;
 
-            when others =>
+            when others                    =>
                return M_Boolean.Range_Check;
          end case;
       else
@@ -1202,15 +1198,11 @@ package body Why.Gen.Names is
               (case R is
                  when RCK_Range_Not_First
                     | RCK_Overflow_Not_First
-                    | RCK_FP_Overflow_Not_First
-                 =>
-                   WNE_Check_Not_First,
+                    | RCK_FP_Overflow_Not_First => WNE_Check_Not_First,
                  when RCK_Range_Not_Last
                     | RCK_Overflow_Not_Last
-                    | RCK_FP_Overflow_Not_Last
-                 =>
-                   WNE_Check_Not_Last,
-                 when others => WNE_Range_Check_Fun);
+                    | RCK_FP_Overflow_Not_Last  => WNE_Check_Not_Last,
+                 when others                    => WNE_Range_Check_Fun);
 
          begin
             return E_Symb (Ty, Name);
@@ -1310,10 +1302,10 @@ package body Why.Gen.Names is
 
    function WNE_Array_Base_Range_Pred (I : Integer) return Why_Name_Enum
    is (case I is
-         when 1 => WNE_Array_Base_Range_Pred,
-         when 2 => WNE_Array_Base_Range_Pred_2,
-         when 3 => WNE_Array_Base_Range_Pred_3,
-         when 4 => WNE_Array_Base_Range_Pred_4,
+         when 1      => WNE_Array_Base_Range_Pred,
+         when 2      => WNE_Array_Base_Range_Pred_2,
+         when 3      => WNE_Array_Base_Range_Pred_3,
+         when 4      => WNE_Array_Base_Range_Pred_4,
          when others => raise Program_Error);
 
    --------------------
@@ -1322,10 +1314,10 @@ package body Why.Gen.Names is
 
    function WNE_Attr_First (I : Integer) return Why_Name_Enum
    is (case I is
-         when 1 => WNE_Attr_First,
-         when 2 => WNE_Attr_First_2,
-         when 3 => WNE_Attr_First_3,
-         when 4 => WNE_Attr_First_4,
+         when 1      => WNE_Attr_First,
+         when 2      => WNE_Attr_First_2,
+         when 3      => WNE_Attr_First_3,
+         when 4      => WNE_Attr_First_4,
          when others => raise Program_Error);
 
    -------------------
@@ -1334,10 +1326,10 @@ package body Why.Gen.Names is
 
    function WNE_Attr_Last (I : Integer) return Why_Name_Enum
    is (case I is
-         when 1 => WNE_Attr_Last,
-         when 2 => WNE_Attr_Last_2,
-         when 3 => WNE_Attr_Last_3,
-         when 4 => WNE_Attr_Last_4,
+         when 1      => WNE_Attr_Last,
+         when 2      => WNE_Attr_Last_2,
+         when 3      => WNE_Attr_Last_3,
+         when 4      => WNE_Attr_Last_4,
          when others => raise Program_Error);
 
    ---------------------
@@ -1346,10 +1338,10 @@ package body Why.Gen.Names is
 
    function WNE_Attr_Length (I : Integer) return Why_Name_Enum
    is (case I is
-         when 1 => WNE_Attr_Length,
-         when 2 => WNE_Attr_Length_2,
-         when 3 => WNE_Attr_Length_3,
-         when 4 => WNE_Attr_Length_4,
+         when 1      => WNE_Attr_Length,
+         when 2      => WNE_Attr_Length_2,
+         when 3      => WNE_Attr_Length_3,
+         when 4      => WNE_Attr_Length_4,
          when others => raise Program_Error);
 
    --------------------------------
@@ -1358,10 +1350,10 @@ package body Why.Gen.Names is
 
    function WNE_Index_Dynamic_Property (I : Integer) return Why_Name_Enum
    is (case I is
-         when 1 => WNE_Index_Dynamic_Property,
-         when 2 => WNE_Index_Dynamic_Property_2,
-         when 3 => WNE_Index_Dynamic_Property_3,
-         when 4 => WNE_Index_Dynamic_Property_4,
+         when 1      => WNE_Index_Dynamic_Property,
+         when 2      => WNE_Index_Dynamic_Property_2,
+         when 3      => WNE_Index_Dynamic_Property_3,
+         when 4      => WNE_Index_Dynamic_Property_4,
          when others => raise Program_Error);
 
    ----------------
@@ -1370,10 +1362,10 @@ package body Why.Gen.Names is
 
    function WNE_To_Int (I : Integer) return Why_Name_Enum
    is (case I is
-         when 1 => WNE_To_Int,
-         when 2 => WNE_To_Int_2,
-         when 3 => WNE_To_Int_3,
-         when 4 => WNE_To_Int_4,
+         when 1      => WNE_To_Int,
+         when 2      => WNE_To_Int_2,
+         when 3      => WNE_To_Int_3,
+         when 4      => WNE_To_Int_4,
          when others => raise Program_Error);
 
 end Why.Gen.Names;

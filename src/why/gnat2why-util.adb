@@ -65,12 +65,12 @@ package body Gnat2Why.Util is
           then
             (case Ekind (E) is
                when E_Discriminant => Root_Discriminant (E),
-               when E_Constant =>
+               when E_Constant     =>
                  (if Is_Partial_View (E)
                     and then Entity_In_SPARK (Full_View (E))
                   then Full_View (E)
                   else E),
-               when others => E)
+               when others         => E)
           else E);
       --  Entities of discriminants can vary when types are derived. We want to
       --  refer to the same item for every variants of a single discriminant
@@ -235,19 +235,19 @@ package body Gnat2Why.Util is
          procedure Apply_Action (A : Action) is
          begin
             case A.Kind is
-               when Insert_Ent =>
+               when Insert_Ent  =>
                   M.Entity_Ids.Include (A.Ins_Entity, A.Ins_Binder);
 
                when Insert_Name =>
                   M.Entity_Names.Include (A.Ins_Name, A.Ins_Binder);
 
-               when Remove_Ent =>
+               when Remove_Ent  =>
                   M.Entity_Ids.Delete (A.Rem_Entity);
 
                when Remove_Name =>
                   M.Entity_Names.Delete (A.Rem_Name);
 
-               when Boundary =>
+               when Boundary    =>
                   raise Program_Error;
             end case;
          end Apply_Action;
@@ -408,7 +408,7 @@ package body Gnat2Why.Util is
 
       else
          case Ekind (E_Type) is
-            when Scalar_Kind =>
+            when Scalar_Kind                            =>
                Labels := Model_Trace;
 
                --  If the type used in Why3 for the entity is not abstract or
@@ -435,7 +435,7 @@ package body Gnat2Why.Util is
                Labels := Model_Trace;
                Labels.Include (Model_Projected);
 
-            when others =>
+            when others                                 =>
                null;
          end case;
       end if;
@@ -1109,10 +1109,10 @@ package body Gnat2Why.Util is
          --  be initialized. In the same way, tasks can only access
          --  synchronized or Part_Of objects, which are always initialized.
 
-         when E_Package | E_Task_Type =>
+         when E_Package | E_Task_Type            =>
             return not Obj_Has_Relaxed_Init (Obj);
 
-         when others =>
+         when others                             =>
             raise Program_Error;
       end case;
    end Is_Initialized_In_Scope;
@@ -1127,14 +1127,14 @@ package body Gnat2Why.Util is
       --  SPARK/Ada or due to its represententation in Why.
 
       case Ekind (E) is
-         when E_Loop_Parameter =>
+         when E_Loop_Parameter                     =>
 
             --  A loop parameter of an genuine loop (but not of a quantified
             --  expression) is mutable.
 
             return not Is_Quantified_Loop_Param (E);
 
-         when E_Variable =>
+         when E_Variable                           =>
 
             --  Same for variables that are Part_Ofs protected objects; they
             --  are like components for proof.
@@ -1143,13 +1143,13 @@ package body Gnat2Why.Util is
               not Is_Quantified_Loop_Param (E)
               and then not Is_Part_Of_Protected_Object (E);
 
-         when E_Task_Type =>
+         when E_Task_Type                          =>
 
             --  Tasks are modeled as constants
 
             return False;
 
-         when E_Component | E_Discriminant =>
+         when E_Component | E_Discriminant         =>
 
             --  A component or discriminant is not separately considered
             --  as mutable, only the enclosing object is. This ensures that
@@ -1166,10 +1166,10 @@ package body Gnat2Why.Util is
 
             return not Is_Constant_In_SPARK (E);
 
-         when E_Protected_Type =>
+         when E_Protected_Type                     =>
             return True;
 
-         when E_Constant =>
+         when E_Constant                           =>
 
             --  Volatile constants with async writers are mutable
 
@@ -1196,7 +1196,7 @@ package body Gnat2Why.Util is
                return not Is_Constant_In_SPARK (E);
             end if;
 
-         when E_In_Parameter =>
+         when E_In_Parameter                       =>
 
             --  Volatile in parameters with async writers are mutable
 
@@ -1212,7 +1212,7 @@ package body Gnat2Why.Util is
                return not Is_Constant_In_SPARK (E);
             end if;
 
-         when others =>
+         when others                               =>
             raise Program_Error;
       end case;
    end Is_Mutable_In_Why;
@@ -1811,9 +1811,10 @@ package body Gnat2Why.Util is
    function Type_Of_Node (N : Node_Id) return Type_Kind_Id is
       T : constant Type_Kind_Id :=
         (case Nkind (N) is
-           when N_Entity => (if Is_Type (N) then N else Etype (N)),
+           when N_Entity                       =>
+             (if Is_Type (N) then N else Etype (N)),
            when N_Identifier | N_Expanded_Name => Etype (Entity (N)),
-           when others => Etype (N));
+           when others                         => Etype (N));
 
    begin
       --  The type of a node is either its most underlying type, or else the

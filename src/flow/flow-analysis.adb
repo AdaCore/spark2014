@@ -244,7 +244,7 @@ package body Flow.Analysis is
    is
    begin
       case F.Kind is
-         when Direct_Mapping | Record_Field =>
+         when Direct_Mapping | Record_Field      =>
             declare
                Target : constant Entity_Id := Get_Direct_Mapping_Id (F);
                Result : Node_Or_Entity_Id := S;
@@ -300,7 +300,7 @@ package body Flow.Analysis is
                return Result;
             end;
 
-         when Magic_String =>
+         when Magic_String                       =>
             return S;
 
          when Null_Value | Synthetic_Null_Export =>
@@ -500,7 +500,7 @@ package body Flow.Analysis is
    begin
       if Targeted then
          case Nkind (N) is
-            when N_Assignment_Statement =>
+            when N_Assignment_Statement        =>
                --  ??? The object might appear in the LHS of the assignment,
                --  e.g. in the array index expressions, but we only search on
                --  the RHS to better locate checks on self-assignment of
@@ -508,16 +508,16 @@ package body Flow.Analysis is
 
                Search_Under := Expression (N);
 
-            when N_Case_Statement =>
+            when N_Case_Statement              =>
                Search_Under := Expression (N);
 
             when N_If_Statement | N_Elsif_Part =>
                Search_Under := Condition (N);
 
-            when N_Loop_Statement =>
+            when N_Loop_Statement              =>
                Search_Under := Iteration_Scheme (N);
 
-            when others =>
+            when others                        =>
                null;
          end case;
       end if;
@@ -627,13 +627,13 @@ package body Flow.Analysis is
             when N_If_Statement | N_Elsif_Part =>
                First_Use := Condition (First_Use);
 
-            when N_Case_Statement =>
+            when N_Case_Statement              =>
                First_Use := Expression (First_Use);
 
-            when N_Loop_Statement =>
+            when N_Loop_Statement              =>
                First_Use := Iteration_Scheme (First_Use);
 
-            when others =>
+            when others                        =>
                null;
          end case;
 
@@ -1113,14 +1113,14 @@ package body Flow.Analysis is
          return
            (case Key.Variant is
               when Final_Value => Atr.Is_Export,
-              when Normal_Use =>
+              when Normal_Use  =>
                 Atr.Is_Exceptional_Branch
                 or else Atr.Is_Assertion
                 or else (Atr.Is_Callsite
                          and then Is_Dummy_Call
                                     (Get_Direct_Mapping_Id (Key), FA.B_Scope))
                 or else Defines_Async_Reader_Var (FA, V),
-              when others => False);
+              when others      => False);
       end Is_Final_Use;
 
       ---------------------------------
@@ -1706,14 +1706,14 @@ package body Flow.Analysis is
          return
            (case Key.Variant is
               when Final_Value => Atr.Is_Export,
-              when Normal_Use =>
+              when Normal_Use  =>
                 Atr.Is_Exceptional_Branch
                 or else Atr.Is_Assertion
                 or else (Atr.Is_Callsite
                          and then Is_Dummy_Call
                                     (Get_Direct_Mapping_Id (Key), FA.B_Scope))
                 or else Defines_Async_Reader_Var (FA, V),
-              when others => False);
+              when others      => False);
       end Is_Final_Use_Any_Export;
 
       ---------------------
@@ -2514,8 +2514,9 @@ package body Flow.Analysis is
                      (case FA.Kind is
                         when Kind_Subprogram =>
                           " after elaboration of main program &",
-                        when Kind_Task => " before start of tasks of type &",
-                        when others => raise Program_Error));
+                        when Kind_Task       =>
+                          " before start of tasks of type &",
+                        when others          => raise Program_Error));
                --  ??? this message should be tuned for interrupt handlers
 
                end if;
@@ -2576,7 +2577,7 @@ package body Flow.Analysis is
                          (if Default_Init
                           then Low_Check_Kind
                           else Medium_Check_Kind),
-                       when Err =>
+                       when Err     =>
                          (if Default_Init
                           then Medium_Check_Kind
                           else High_Check_Kind)),
@@ -2892,7 +2893,7 @@ package body Flow.Analysis is
 
                      --  Abstract state can't be annotated
 
-                     when E_Abstract_State =>
+                     when E_Abstract_State                                   =>
                         return False;
 
                      --  Other objects can be either annotated directly, or
@@ -2908,12 +2909,12 @@ package body Flow.Analysis is
                                     then Fun_Has_Relaxed_Init (E)
                                     else Obj_Has_Relaxed_Init (E));
 
-                     when others =>
+                     when others                                             =>
                         return False;
                   end case;
                end;
 
-            when Record_Field =>
+            when Record_Field   =>
 
                declare
                   E : constant Entity_Id := Get_Direct_Mapping_Id (F);
@@ -2948,10 +2949,10 @@ package body Flow.Analysis is
             --  Objects not visible by Entity_Id are assumed to have no
             --  Relaxed_Initialization.
 
-            when Magic_String =>
+            when Magic_String   =>
                return False;
 
-            when others =>
+            when others         =>
                raise Program_Error;
          end case;
       end Has_Relaxed_Initialization;
@@ -3448,7 +3449,7 @@ package body Flow.Analysis is
                   --  modified in the loop body, then the loop is considered
                   --  stable.
 
-                  when N_Loop_Statement =>
+                  when N_Loop_Statement     =>
                      if Is_While_Loop (Cond_Id.Node)
                        and then Is_Stable
                                   (Loop_Id        =>
@@ -3460,7 +3461,7 @@ package body Flow.Analysis is
                            N   => Cond_Id.Node);
                      end if;
 
-                  when N_Exit_Statement =>
+                  when N_Exit_Statement     =>
                      if Is_Stable
                           (Loop_Id        =>
                              Loop_Entity_Of_Exit_Statement (Cond_Id.Node),
@@ -3482,7 +3483,7 @@ package body Flow.Analysis is
                            N   => Cond_Id.Node);
                      end if;
 
-                  when others =>
+                  when others               =>
                      null;
                end case;
             end if;
@@ -3992,18 +3993,18 @@ package body Flow.Analysis is
 
             begin
                case Ekind (Param) is
-                  when E_In_Parameter =>
+                  when E_In_Parameter                 =>
                      Inputs.Insert (Formal_Param);
                      if Is_Access_Type (Underlying_Type (Etype (Param))) then
                         --  ??? this should be added to Get_Depends
                         Outputs.Insert (Formal_Param);
                      end if;
 
-                  when E_In_Out_Parameter =>
+                  when E_In_Out_Parameter             =>
                      Inputs.Insert (Formal_Param);
                      Outputs.Insert (Formal_Param);
 
-                  when E_Out_Parameter =>
+                  when E_Out_Parameter                =>
                      Outputs.Insert (Formal_Param);
 
                   when E_Protected_Type | E_Task_Type =>
@@ -4012,7 +4013,7 @@ package body Flow.Analysis is
                         Outputs.Insert (Formal_Param);
                      end if;
 
-                  when others =>
+                  when others                         =>
                      raise Program_Error;
                end case;
             end;
@@ -5907,7 +5908,7 @@ package body Flow.Analysis is
       procedure Check_Ownership (Owning_Kind : Simple_Owning_Kind) is
          Msg : constant String :=
            (case Owning_Kind is
-              when Suspends_On =>
+              when Suspends_On      =>
                 "multiple tasks might suspend on suspension object &",
               when Unsynch_Accesses =>
                 "possible data race when accessing variable &");
@@ -5915,7 +5916,7 @@ package body Flow.Analysis is
 
          Msg_Owner_String : constant String :=
            (case Owning_Kind is
-              when Suspends_On => "with task &",
+              when Suspends_On      => "with task &",
               when Unsynch_Accesses => "task & accesses &");
          --  Supplementary message
 

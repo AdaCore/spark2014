@@ -116,12 +116,13 @@ package SPARK_Util.Subprograms is
    with
      Pre =>
        (case Ekind (E) is
-          when E_Component | E_Discriminant => Is_Protected_Type (Scope (E)),
+          when E_Component | E_Discriminant                      =>
+            Is_Protected_Type (Scope (E)),
 
           when E_Function | E_Procedure | Entry_Kind | E_Package =>
             Within_Protected_Type (E),
 
-          when others => False);
+          when others                                            => False);
    --  @param E a subprogram or entry or field which is part of a protected
    --            type
    --  @return the enclosing protected type
@@ -155,8 +156,7 @@ package SPARK_Util.Subprograms is
           when Pragma_Global
              | Pragma_Depends
              | Pragma_Refined_Global
-             | Pragma_Refined_Depends
-          =>
+             | Pragma_Refined_Depends =>
             Ekind (E)
             in Entry_Kind
              | E_Function
@@ -164,7 +164,7 @@ package SPARK_Util.Subprograms is
              | E_Task_Type
              | E_Subprogram_Type,
 
-          when others => False);
+          when others                 => False);
    --  Contract pragmas might be attached to non-obvious entities, e.g. for
    --  single concurrent types they are attached to the corresponding anonymous
    --  concurrent object and "refined" pragmas are attached to the body. This
@@ -238,11 +238,11 @@ package SPARK_Util.Subprograms is
         then
           Nkind (Get_Body'Result)
           = (case Ekind (E) is
-               when Entry_Kind => N_Entry_Body,
+               when Entry_Kind               => N_Entry_Body,
                when E_Function | E_Procedure => N_Subprogram_Body,
-               when E_Protected_Type => N_Protected_Body,
-               when E_Task_Type => N_Task_Body,
-               when others => raise Program_Error));
+               when E_Protected_Type         => N_Protected_Body,
+               when E_Task_Type              => N_Task_Body,
+               when others                   => raise Program_Error));
    --  @param E is an entry, subprogram or task
    --  @return the body for the given entry/subprogram/task. This is a wrapper
    --    around Entry_Body, Subprogram_Body and Task_Body.
@@ -253,18 +253,19 @@ package SPARK_Util.Subprograms is
      Post =>
        No (Get_Body_Entity'Result)
        or else (case Ekind (E) is
-                  when E_Entry => Ekind (Get_Body_Entity'Result) = E_Entry,
+                  when E_Entry        =>
+                    Ekind (Get_Body_Entity'Result) = E_Entry,
                   when E_Entry_Family =>
                     Ekind (Get_Body_Entity'Result) = E_Entry_Family,
-                  when E_Function =>
+                  when E_Function     =>
                     Ekind (Get_Body_Entity'Result)
                     in E_Function | E_Subprogram_Body,
-                  when E_Procedure =>
+                  when E_Procedure    =>
                     Ekind (Get_Body_Entity'Result)
                     in E_Procedure | E_Subprogram_Body,
-                  when E_Task_Type =>
+                  when E_Task_Type    =>
                     Ekind (Get_Body_Entity'Result) = E_Task_Body,
-                  when others => raise Program_Error);
+                  when others         => raise Program_Error);
    --  @param E is an entry, subprogram or task
    --  @return the body entity for the given entry/subprogram/task.
    --    This is a wrapper around Entry_Body_Entity, Subprogram_Body_Entity

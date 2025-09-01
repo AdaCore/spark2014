@@ -202,8 +202,8 @@ package body Back_End is
    begin
       return
         (case M is
-           when Gnat2Why_Opts.SW_Suppress => Opt.Suppress,
-           when Gnat2Why_Opts.SW_Normal => Opt.Normal,
+           when Gnat2Why_Opts.SW_Suppress       => Opt.Suppress,
+           when Gnat2Why_Opts.SW_Normal         => Opt.Normal,
            when Gnat2Why_Opts.SW_Treat_As_Error => Opt.Treat_As_Error);
    end To_Front_End_Warning_Mode;
 

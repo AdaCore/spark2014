@@ -187,13 +187,13 @@ package body CE_Display is
                --  Update the name with the modifier
 
                case Var_Mod is
-                  when None | Index =>
+                  when None | Index     =>
                      null;
 
-                  when Old =>
+                  when Old              =>
                      Append (Name, "'Old");
 
-                  when Loop_Entry =>
+                  when Loop_Entry       =>
                      Append (Name, "'Loop_Entry");
 
                   when CE_Values.Result =>
@@ -596,7 +596,7 @@ package body CE_Display is
         (E : Entity_Id; Mode : Modifier; Loop_Id : Entity_Id := Empty) is
       begin
          case Mode is
-            when None =>
+            when None             =>
                declare
                   Val : constant Value_Access := Find_Binding (E, False);
                begin
@@ -605,7 +605,7 @@ package body CE_Display is
                   end if;
                end;
 
-            when Old =>
+            when Old              =>
                declare
                   Val : constant Opt_Value_Type := Find_Old_Value (E);
                begin
@@ -614,7 +614,7 @@ package body CE_Display is
                   end if;
                end;
 
-            when Loop_Entry =>
+            when Loop_Entry       =>
                declare
                   Val : constant Opt_Value_Type :=
                     Find_Loop_Entry_Value (E, Loop_Id);
@@ -633,7 +633,7 @@ package body CE_Display is
                   end if;
                end;
 
-            when Index =>
+            when Index            =>
                null;
          end case;
       end Accumulate_Expl_For_Entity;
@@ -1005,7 +1005,7 @@ package body CE_Display is
       function Process_Node (N : Node_Id) return Atree.Traverse_Result is
       begin
          case Nkind (N) is
-            when N_Subprogram_Call =>
+            when N_Subprogram_Call              =>
 
                --  Manually add global reads, as they will not be traversed.
                --  Discard global writes, only preconditions are located at
@@ -1027,7 +1027,7 @@ package body CE_Display is
                end;
                return Atree.Skip;
 
-            when N_Attribute_Reference =>
+            when N_Attribute_Reference          =>
 
                --  For 'Old and 'Loop_Entry, print the old value of referenced
                --  variables. Stop the search to avoid pulling useless values.
@@ -1036,7 +1036,7 @@ package body CE_Display is
                --  the prefix is not evaluated.
 
                case Attribute_Name (N) is
-                  when Snames.Name_Old =>
+                  when Snames.Name_Old        =>
                      declare
                         Variables : constant Flow_Id_Sets.Set :=
                           Get_Variables_For_Proof (Prefix (N), Prefix (N));
@@ -1068,7 +1068,7 @@ package body CE_Display is
                      end;
                      return Atree.Skip;
 
-                  when Snames.Name_Result =>
+                  when Snames.Name_Result     =>
                      declare
                         E : constant Entity_Id :=
                           SPARK_Atree.Entity (Prefix (N));
@@ -1077,11 +1077,11 @@ package body CE_Display is
                      end;
                      return Atree.Skip;
 
-                  when others =>
+                  when others                 =>
                      null;
                end case;
 
-            when N_Target_Name =>
+            when N_Target_Name                  =>
                declare
                   function Is_Assignment (N : Node_Id) return Boolean
                   is (Nkind (N) = N_Assignment_Statement);
@@ -1092,7 +1092,7 @@ package body CE_Display is
                   Process_All (Name (Assign));
                end;
 
-            when others =>
+            when others                         =>
                null;
          end case;
          return Atree.OK;
@@ -1105,7 +1105,7 @@ package body CE_Display is
       --  Find the relevant expression and call Process_Entity on used objects
 
       case Nkind (N) is
-         when N_Defining_Identifier =>
+         when N_Defining_Identifier   =>
 
             --  Some checks are located on subprogram entities.
             --  Get all inputs and outputs of the subprogram.
@@ -1127,7 +1127,7 @@ package body CE_Display is
                Process_Basic_Entity (N);
             end if;
 
-         when N_Subexpr =>
+         when N_Subexpr               =>
 
             --  For index checks, we want to include the array object to get
             --  the bounds.
@@ -1185,16 +1185,15 @@ package body CE_Display is
                      when N_Assignment_Statement =>
                         Exp_Ty := Etype (Name (Par));
 
-                     when N_Object_Declaration =>
+                     when N_Object_Declaration   =>
                         Exp_Ty := Etype (Defining_Identifier (Par));
 
                      when N_Type_Conversion
                         | N_Unchecked_Type_Conversion
-                        | N_Qualified_Expression
-                     =>
+                        | N_Qualified_Expression =>
                         Exp_Ty := Etype (Par);
 
-                     when others =>
+                     when others                 =>
                         null;
                   end case;
 
@@ -1249,7 +1248,7 @@ package body CE_Display is
                end loop;
             end;
 
-         when N_Pragma =>
+         when N_Pragma                =>
 
             --  Disjointness or completeness of Contract_Cases
 
@@ -1267,7 +1266,7 @@ package body CE_Display is
                end;
             end if;
 
-         when N_Assignment_Statement =>
+         when N_Assignment_Statement  =>
             Process_All (Expression (N));
 
             --  Add the left-hand side for discriminant checks
@@ -1307,7 +1306,7 @@ package body CE_Display is
                end if;
             end if;
 
-         when others =>
+         when others                  =>
             null;
       end case;
    end Process_Entities_For_One_Liner;

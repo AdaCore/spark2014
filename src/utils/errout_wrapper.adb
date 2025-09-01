@@ -230,17 +230,17 @@ package body Errout_Wrapper is
       procedure Print_Msg (Msg : Message; Cont : Boolean) is
          Prefix      : constant String :=
            (case Kind is
-              when Error_Kind => "",
-              when Warning_Kind => "?",
-              when Info_Kind => "info: ",
-              when Low_Check_Kind => "low: ",
+              when Error_Kind        => "",
+              when Warning_Kind      => "?",
+              when Info_Kind         => "info: ",
+              when Low_Check_Kind    => "low: ",
               when Medium_Check_Kind => "medium: ",
-              when High_Check_Kind => "high: ");
+              when High_Check_Kind   => "high: ");
          Cont_Prefix : constant String :=
            (case Kind is
               when Error_Kind | Info_Kind => "\",
-              when Warning_Kind => "\?",
-              when Check_Kind =>
+              when Warning_Kind           => "\?",
+              when Check_Kind             =>
                 (if Gnat2Why_Args.Output_Mode in GPO_Pretty
                  then "\"
                  else "\" & Prefix));
@@ -590,7 +590,7 @@ package body Errout_Wrapper is
          when N_Pragma =>
             return Source_Name (Pragma_Identifier (N));
 
-         when others =>
+         when others   =>
             return Source_Name (N);
       end case;
    end Node_To_Name;
@@ -615,12 +615,12 @@ package body Errout_Wrapper is
    function To_JSON (Kind : Msg_Severity) return GNATCOLL.JSON.JSON_Value is
       S : constant String :=
         (case Kind is
-           when Error_Kind => "error",
-           when Warning_Kind => "warning",
-           when Info_Kind => "info",
-           when High_Check_Kind => "high",
+           when Error_Kind        => "error",
+           when Warning_Kind      => "warning",
+           when Info_Kind         => "info",
+           when High_Check_Kind   => "high",
            when Medium_Check_Kind => "medium",
-           when Low_Check_Kind => "low");
+           when Low_Check_Kind    => "low");
    begin
       return GNATCOLL.JSON.Create (S);
    end To_JSON;
@@ -660,7 +660,7 @@ package body Errout_Wrapper is
       Contains_Placeholder := False;
       while Index in 1 .. Len loop
          case Element (S, Index) is
-            when ''' =>
+            when '''    =>
                if Index < Len and then Element (S, Index + 1) in '&' | '#' then
                   Append (Result, Element (S, Index + 1));
                   Index := Index + 1;
@@ -668,7 +668,7 @@ package body Errout_Wrapper is
                   Append (Result, ''');
                end if;
 
-            when '&' =>
+            when '&'    =>
                declare
                   Img : constant String := Counter'Img;
                begin
@@ -679,7 +679,7 @@ package body Errout_Wrapper is
                Counter := Counter + 1;
                Contains_Placeholder := True;
 
-            when '#' =>
+            when '#'    =>
                Append (Result, "[here](0)");
 
             when others =>

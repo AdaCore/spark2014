@@ -905,11 +905,11 @@ package body CE_RAC is
       begin
          RAC_Trace ("check node " & Node_Kind'Image (Nkind (Expr)));
          case Nkind (Expr) is
-            when N_Op_Not =>
+            when N_Op_Not                =>
                Check_Node_Early_Fail
                  (Right_Opnd (Expr), not Expected_Val, New_Expl);
 
-            when N_And_Then =>
+            when N_And_Then              =>
                if Expected_Val then
                   Check_Node_Early_Fail (Left_Opnd (Expr), True, New_Expl);
                   Check_Node_Early_Fail (Right_Opnd (Expr), True, New_Expl);
@@ -917,7 +917,7 @@ package body CE_RAC is
                   return;
                end if;
 
-            when N_Or_Else =>
+            when N_Or_Else               =>
                if not Expected_Val then
                   Check_Node_Early_Fail (Left_Opnd (Expr), False, New_Expl);
                   Check_Node_Early_Fail (Right_Opnd (Expr), False, New_Expl);
@@ -929,10 +929,10 @@ package body CE_RAC is
             --  as both operands need to be evaluated prior to evaluating the
             --  operation.
 
-            when N_Op_And | N_Op_Or =>
+            when N_Op_And | N_Op_Or      =>
                null;
 
-            when N_If_Expression =>
+            when N_If_Expression         =>
                declare
                   Cond_Expr : constant Node_Id := First (Expressions (Expr));
                   Then_Expr : constant Node_Id := Next (Cond_Expr);
@@ -947,7 +947,7 @@ package body CE_RAC is
                   return;
                end;
 
-            when N_Case_Expression =>
+            when N_Case_Expression       =>
                declare
                   Alternative : Node_Id;
                begin
@@ -996,7 +996,7 @@ package body CE_RAC is
                   end;
                end if;
 
-            when others =>
+            when others                  =>
                null;
          end case;
 
@@ -1031,7 +1031,7 @@ package body CE_RAC is
       Check_Supported_Type (Ty);
 
       case V.K is
-         when Scalar_K =>
+         when Scalar_K   =>
 
             --  Check that we have an actual value for the scalar
 
@@ -1042,7 +1042,7 @@ package body CE_RAC is
                RAC_Unsupported ("uninitialized scalar", N);
             end if;
 
-         when Record_K =>
+         when Record_K   =>
 
             --  Check that we have values for all components and discriminants.
             --  Delete components which are not present in the type.
@@ -1159,7 +1159,7 @@ package body CE_RAC is
                end if;
             end loop;
 
-         when Array_K =>
+         when Array_K    =>
 
             declare
                Type_Fst : Big_Integer;
@@ -1242,7 +1242,7 @@ package body CE_RAC is
          when Multidim_K =>
             RAC_Unsupported ("multidimensional array type", N);
 
-         when Access_K =>
+         when Access_K   =>
             RAC_Unsupported ("value of an access type", N);
       end case;
 
@@ -1299,7 +1299,7 @@ package body CE_RAC is
       case V.K is
          --  ??? gnatcov complains if this is an expression function (V330-044)
 
-         when Record_K =>
+         when Record_K   =>
             return
               (V
                with delta
@@ -1309,7 +1309,7 @@ package body CE_RAC is
                      (V.Record_Fields,
                       (if Ty_Changed then Target_Ty else Types.Empty)));
 
-         when Array_K =>
+         when Array_K    =>
             return
               (V
                with delta
@@ -1320,7 +1320,7 @@ package body CE_RAC is
                     then null
                     else new Value_Type'(Copy (V.Array_Others.all))));
 
-         when Scalar_K =>
+         when Scalar_K   =>
             return
               (V
                with delta
@@ -1330,7 +1330,7 @@ package body CE_RAC is
                     then null
                     else new Scalar_Value_Type'(V.Scalar_Content.all)));
 
-         when Access_K =>
+         when Access_K   =>
             return
               (V
                with delta
@@ -2014,9 +2014,9 @@ package body CE_RAC is
          return
            (case (V.Scalar_Content.K) is
               when Integer_K => V.Scalar_Content.Integer_Content = 0,
-              when Float_K => Is_Zero (V.Scalar_Content.Float_Content),
-              when Fixed_K => V.Scalar_Content.Fixed_Content = 0,
-              when others => raise Program_Error);
+              when Float_K   => Is_Zero (V.Scalar_Content.Float_Content),
+              when Fixed_K   => V.Scalar_Content.Fixed_Content = 0,
+              when others    => raise Program_Error);
       end if;
    end Is_Zero;
 
@@ -2345,7 +2345,7 @@ package body CE_RAC is
             Val := new Value_Type'(Copy (RAC_Expr (Actual)));
          else
             case Formal_Kind (Ekind (Formal)) is
-               when E_In_Parameter =>
+               when E_In_Parameter                       =>
                   Val := new Value_Type'(Copy (RAC_Expr (Actual)));
 
                when E_In_Out_Parameter | E_Out_Parameter =>
@@ -2662,7 +2662,7 @@ package body CE_RAC is
                         end if;
                      end;
 
-                  when others =>
+                  when others         =>
                      null;
                end case;
             end loop;
@@ -2781,7 +2781,7 @@ package body CE_RAC is
 
    begin
       case Nkind (Decl) is
-         when N_Object_Declaration =>
+         when N_Object_Declaration                            =>
             declare
                V  : Value_Type;
                Ty : constant Entity_Id :=
@@ -2824,7 +2824,7 @@ package body CE_RAC is
                end;
             end;
 
-         when N_Package_Declaration =>
+         when N_Package_Declaration                           =>
             declare
                Unique_E : constant Entity_Id := Unique_Defining_Entity (Decl);
             begin
@@ -2832,7 +2832,7 @@ package body CE_RAC is
                RAC_Decls (Private_Declarations_Of_Package (Unique_E));
             end;
 
-         when N_Package_Body =>
+         when N_Package_Body                                  =>
             if not Is_Generic_Unit (Unique_Defining_Entity (Decl)) then
                RAC_Decls (Declarations (Decl));
                if Present (Handled_Statement_Sequence (Decl)) then
@@ -2840,9 +2840,9 @@ package body CE_RAC is
                end if;
             end if;
 
-         when N_Defining_Identifier =>
+         when N_Defining_Identifier                           =>
             case Ekind (Decl) is
-               when E_Package =>
+               when E_Package      =>
                   RAC_Decls (Visible_Declarations_Of_Package (Decl));
                   RAC_Decls (Private_Declarations_Of_Package (Decl));
 
@@ -2854,7 +2854,7 @@ package body CE_RAC is
                      end if;
                   end if;
 
-               when others =>
+               when others         =>
                   RAC_Unsupported
                     ("RAC_Decl",
                      "N_Defining_Identifier not package or package body");
@@ -2887,11 +2887,10 @@ package body CE_RAC is
             | N_Subprogram_Declaration
             | N_Subprogram_Body
             | N_Ignored_In_SPARK
-            | N_Object_Renaming_Declaration
-         =>
+            | N_Object_Renaming_Declaration                   =>
             null;
 
-         when others =>
+         when others                                          =>
             RAC_Unsupported ("RAC_Decl", Node_Kind'Image (Nkind (Decl)));
       end case;
    end RAC_Decl;
@@ -2982,7 +2981,7 @@ package body CE_RAC is
       RAC_Trace ("entry: " & Full_Name (E));
 
       case Ekind (E) is
-         when E_Function | E_Procedure =>
+         when E_Function | E_Procedure   =>
             Init_Global_Scope;
             return
               (Res_Kind  => Res_Normal,
@@ -2995,10 +2994,10 @@ package body CE_RAC is
 
             return (Res_Kind => Res_Normal, Res_Value => (Present => False));
 
-         when E_Entry | Type_Kind =>
+         when E_Entry | Type_Kind        =>
             RAC_Unsupported ("RAC_Execute", E);
 
-         when others =>
+         when others                     =>
             raise Program_Error
               with
                 ("Cannot execute RAC entity " & Entity_Kind'Image (Ekind (E)));
@@ -3336,7 +3335,7 @@ package body CE_RAC is
 
                         else
                            case Nkind (Choice) is
-                              when N_Subexpr =>
+                              when N_Subexpr       =>
                                  Res.Array_Values.Include
                                    (Value_Enum_Integer (RAC_Expr (Choice)),
                                     Val);
@@ -3344,7 +3343,7 @@ package body CE_RAC is
                               when N_Others_Choice =>
                                  Res.Array_Others := Val;
 
-                              when others =>
+                              when others          =>
                                  raise Program_Error;
 
                            end case;
@@ -3368,7 +3367,7 @@ package body CE_RAC is
       function RAC_Attribute_Reference return Value_Type is
       begin
          case Attribute_Name (N) is
-            when Snames.Name_Old =>
+            when Snames.Name_Old                               =>
                --  E'Old
                declare
                   P : constant Node_Id := Prefix (N);
@@ -3377,7 +3376,7 @@ package body CE_RAC is
                   return Find_Old_Value (P).Content;
                end;
 
-            when Snames.Name_Loop_Entry =>
+            when Snames.Name_Loop_Entry                        =>
                --  E'Loop_Entry
                declare
                   P       : constant Node_Id := Prefix (N);
@@ -3387,7 +3386,7 @@ package body CE_RAC is
                   return Find_Loop_Entry_Value (P, Loop_Id).Content;
                end;
 
-            when Snames.Name_Result =>
+            when Snames.Name_Result                            =>
                --  E'Result
                declare
                   E : constant Entity_Id := SPARK_Atree.Entity (Prefix (N));
@@ -3395,7 +3394,7 @@ package body CE_RAC is
                   return Find_Binding (E).all;
                end;
 
-            when Snames.Name_First | Snames.Name_Last =>
+            when Snames.Name_First | Snames.Name_Last          =>
                if Is_Array_Type (Etype (Prefix (N))) then
                   declare
                      Index_Ty : constant Entity_Id :=
@@ -3411,7 +3410,7 @@ package body CE_RAC is
                               return Int_Value (V.Last_Attr.Content, Index_Ty);
                            end if;
 
-                        when others =>
+                        when others  =>
                            raise Program_Error;
                      end case;
                   end;
@@ -3433,15 +3432,15 @@ package body CE_RAC is
                      when Snames.Name_First =>
                         return Int_Value (Fst, Etype (N));
 
-                     when Snames.Name_Last =>
+                     when Snames.Name_Last  =>
                         return Int_Value (Lst, Etype (N));
 
-                     when others =>
+                     when others            =>
                         raise Program_Error;
                   end case;
                end;
 
-            when Snames.Name_Min | Snames.Name_Max =>
+            when Snames.Name_Min | Snames.Name_Max             =>
                if Has_Floating_Point_Type (Etype (N)) then
                   declare
                      Ex   : constant Node_Id := First (Expressions (N));
@@ -3457,7 +3456,7 @@ package body CE_RAC is
                         when Snames.Name_Max =>
                            return Real_Value (Max (Val1, Val2), N);
 
-                        when others =>
+                        when others          =>
                            raise Program_Error;
                      end case;
                   end;
@@ -3477,7 +3476,7 @@ package body CE_RAC is
                         when Snames.Name_Max =>
                            return Integer_Value (Max (I1, I2), N);
 
-                        when others =>
+                        when others          =>
                            raise Program_Error;
                      end case;
                   end;
@@ -3487,7 +3486,7 @@ package body CE_RAC is
                     ("RAC_Attribute_Reference min/max on fixed-point", N);
                end if;
 
-            when Snames.Name_Succ | Snames.Name_Pred =>
+            when Snames.Name_Succ | Snames.Name_Pred           =>
                if Has_Floating_Point_Type (Etype (N)) then
                   declare
                      Ex  : constant Node_Id := First (Expressions (N));
@@ -3509,7 +3508,7 @@ package body CE_RAC is
 
                            return Real_Value (Pred (Val), N);
 
-                        when others =>
+                        when others           =>
                            raise Program_Error;
                      end case;
                   end;
@@ -3533,7 +3532,7 @@ package body CE_RAC is
                         when Snames.Name_Pred =>
                            Val := Val - 1;
 
-                        when others =>
+                        when others           =>
                            raise Program_Error;
                      end case;
 
@@ -3554,7 +3553,7 @@ package body CE_RAC is
                     ("RAC_Attribute_Reference succ/prev not enum", N);
                end if;
 
-            when Snames.Name_Update =>
+            when Snames.Name_Update                            =>
                --  Ex'Update ((Ch | ... => V, ...), ...)
                declare
                   Res              : Value_Type;
@@ -3610,7 +3609,7 @@ package body CE_RAC is
                   end if;
                end;
 
-            when Snames.Name_Image =>
+            when Snames.Name_Image                             =>
                if Is_Empty_List (Expressions (N)) then
                   RAC_Unsupported
                     ("RAC_Attribute_Reference 'Image without argument", N);
@@ -3618,7 +3617,7 @@ package body CE_RAC is
                return
                  String_Value (To_String (RAC_Expr (First (Expressions (N)))));
 
-            when Snames.Name_Length =>
+            when Snames.Name_Length                            =>
                if not Is_Empty_List (Expressions (N)) then
                   RAC_Unsupported
                     ("RAC_Attribute_Reference 'Length with argument", N);
@@ -3645,7 +3644,7 @@ package body CE_RAC is
                                    - V.First_Attr.Content),
                                 Etype (N));
 
-                        when others =>
+                        when others  =>
                            raise Program_Error;
                      end case;
                   else
@@ -3668,7 +3667,7 @@ package body CE_RAC is
                   return Boolean_Value (True, Etype (N));
                end if;
 
-            when Snames.Name_Copy_Sign =>
+            when Snames.Name_Copy_Sign                         =>
 
                if No (Expressions (N)) then
                   RAC_Unsupported
@@ -3690,7 +3689,7 @@ package body CE_RAC is
                   end;
                end if;
 
-            when Snames.Name_Constrained =>
+            when Snames.Name_Constrained                       =>
                --  E'Constrained
 
                --  The handling of the Constrained attribute here is similar
@@ -3740,7 +3739,7 @@ package body CE_RAC is
                   end if;
                end;
 
-            when others =>
+            when others                                        =>
                RAC_Unsupported
                  ("RAC_Attribute_Reference",
                   Get_Name_String (Attribute_Name (N)));
@@ -3758,7 +3757,7 @@ package body CE_RAC is
          Right_Type : constant Type_Kind_Id := Etype (Right_Opnd (N));
       begin
          case Nkind (N) is
-            when N_Op_Add =>
+            when N_Op_Add                      =>
                if Is_Integer_Type (Ty) then
                   return
                     Integer_Value
@@ -3780,7 +3779,7 @@ package body CE_RAC is
                   raise Program_Error;
                end if;
 
-            when N_Op_Expon =>
+            when N_Op_Expon                    =>
                if Is_Integer_Type (Ty) then
                   declare
                      Val_Left  : constant Big_Integer := Value_Integer (Left);
@@ -3814,7 +3813,7 @@ package body CE_RAC is
                   RAC_Unsupported ("RAC_Binary_Op float exponentiation", N);
                end if;
 
-            when N_Op_Subtract =>
+            when N_Op_Subtract                 =>
                if Is_Integer_Type (Ty) then
                   return
                     Integer_Value
@@ -3836,7 +3835,7 @@ package body CE_RAC is
                   raise Program_Error;
                end if;
 
-            when N_Op_Divide .. N_Op_Rem =>
+            when N_Op_Divide .. N_Op_Rem       =>
                if Has_Fixed_Point_Type (Ty)
                  or Has_Fixed_Point_Type (Left_Type)
                  or Has_Fixed_Point_Type (Right_Type)
@@ -3890,7 +3889,7 @@ package body CE_RAC is
                                    N);
                            end if;
 
-                        when N_Op_Divide =>
+                        when N_Op_Divide   =>
                            if Has_Fixed_Point_Type (Ty) then
                               return
                                 Fixed_Point_Value
@@ -3914,7 +3913,7 @@ package body CE_RAC is
                                    N);
                            end if;
 
-                        when others =>
+                        when others        =>
                            raise Program_Error;
                      end case;
                   end;
@@ -3930,13 +3929,13 @@ package body CE_RAC is
                       ((case Nkind (N) is
                           when N_Op_Multiply =>
                             Value_Integer (Left) * Value_Integer (Right),
-                          when N_Op_Divide =>
+                          when N_Op_Divide   =>
                             Value_Integer (Left) / Value_Integer (Right),
-                          when N_Op_Mod =>
+                          when N_Op_Mod      =>
                             Value_Integer (Left) mod Value_Integer (Right),
-                          when N_Op_Rem =>
+                          when N_Op_Rem      =>
                             Value_Integer (Left) rem Value_Integer (Right),
-                          when others => raise Program_Error),
+                          when others        => raise Program_Error),
                        N);
 
                elsif Is_Floating_Point_Type (Ty) then
@@ -3951,15 +3950,15 @@ package body CE_RAC is
                       ((case Nkind (N) is
                           when N_Op_Multiply =>
                             Value_Real (Left) * Value_Real (Right),
-                          when N_Op_Divide =>
+                          when N_Op_Divide   =>
                             Value_Real (Left) / Value_Real (Right),
-                          when others => raise Program_Error),
+                          when others        => raise Program_Error),
                        N);
                else
                   raise Program_Error;
                end if;
 
-            when N_Op_Compare =>
+            when N_Op_Compare                  =>
                return
                  Boolean_Value
                    (RAC_Op_Compare
@@ -3971,13 +3970,13 @@ package body CE_RAC is
                   return
                     Boolean_Value
                       ((case Nkind (N) is
-                          when N_Op_Or =>
+                          when N_Op_Or  =>
                             Value_Boolean (Left) or Value_Boolean (Right),
                           when N_Op_And =>
                             Value_Boolean (Left) and Value_Boolean (Right),
                           when N_Op_Xor =>
                             Value_Boolean (Left) xor Value_Boolean (Right),
-                          when others => raise Program_Error),
+                          when others   => raise Program_Error),
                        Etype (N));
 
                elsif Is_Modular_Integer_Type (Left_Type) then
@@ -3992,7 +3991,7 @@ package body CE_RAC is
 
                   begin
                      case Nkind (N) is
-                        when N_Op_Or =>
+                        when N_Op_Or  =>
                            return Integer_Value (From_Ulargest (L or R), N);
 
                         when N_Op_And =>
@@ -4001,7 +4000,7 @@ package body CE_RAC is
                         when N_Op_Xor =>
                            return Integer_Value (From_Ulargest (L xor R), N);
 
-                        when others =>
+                        when others   =>
                            raise Program_Error;
                      end case;
                   end;
@@ -4010,7 +4009,7 @@ package body CE_RAC is
                   RAC_Unsupported ("RAC_Binary_Op N_Op_Boolean", N);
                end if;
 
-            when N_Op_Concat =>
+            when N_Op_Concat                   =>
                if Is_Constrained (Etype (N)) then
                   RAC_Unsupported
                     ("RAC_Binary_Op concat on constrained type", N);
@@ -4078,10 +4077,10 @@ package body CE_RAC is
                   end;
                end if;
 
-            when N_Op_Shift =>
+            when N_Op_Shift                    =>
                RAC_Unsupported ("RAC_Binary_Op", N);
 
-            when others =>
+            when others                        =>
                raise Program_Error;
          end case;
       end RAC_Binary_Op;
@@ -4329,7 +4328,7 @@ package body CE_RAC is
             when N_Op_Ne =>
                return Left /= Right;
 
-            when others =>
+            when others  =>
                if Is_Array_Type (Typ) then
                   declare
                      I_Left  : Big_Integer := Left.First_Attr.Content;
@@ -4369,7 +4368,7 @@ package body CE_RAC is
                                  return True;
                               end if;
 
-                           when others =>
+                           when others  =>
                               raise Program_Error;
                         end case;
 
@@ -4443,7 +4442,7 @@ package body CE_RAC is
                         when N_Op_Gt =>
                            return Fixed_L > Fixed_R;
 
-                        when others =>
+                        when others  =>
                            raise Program_Error;
                      end case;
                   end;
@@ -4466,7 +4465,7 @@ package body CE_RAC is
                         when N_Op_Gt =>
                            return L > R;
 
-                        when others =>
+                        when others  =>
                            raise Program_Error;
                      end case;
                   end;
@@ -4489,7 +4488,7 @@ package body CE_RAC is
                         when N_Op_Gt =>
                            return L > R;
 
-                        when others =>
+                        when others  =>
                            raise Program_Error;
                      end case;
                   end;
@@ -4505,7 +4504,7 @@ package body CE_RAC is
          Right : constant Value_Type := RAC_Expr (Right_Opnd (N));
       begin
          case Nkind (N) is
-            when N_Op_Abs =>
+            when N_Op_Abs   =>
                if Is_Integer_Type (Ty) then
                   return Integer_Value (abs Value_Integer (Right), N);
                elsif Has_Fixed_Point_Type (Ty) then
@@ -4527,17 +4526,17 @@ package body CE_RAC is
                   return Real_Value (-Value_Real (Right), N);
                end if;
 
-            when N_Op_Plus =>
+            when N_Op_Plus  =>
                return Right;
 
-            when N_Op_Not =>
+            when N_Op_Not   =>
                if Is_Boolean_Type (Etype (N)) then
                   return Boolean_Value (not Value_Boolean (Right), Etype (N));
                else
                   RAC_Unsupported ("RAC_Unary_Op N_Op_Not", N);
                end if;
 
-            when others =>
+            when others     =>
                raise Program_Error;
          end case;
       end RAC_Unary_Op;
@@ -4558,16 +4557,16 @@ package body CE_RAC is
       end if;
 
       case Nkind (N) is
-         when N_Integer_Literal =>
+         when N_Integer_Literal               =>
             Res := Integer_Value (From_String (UI_Image (Intval (N))), N);
 
-         when N_Character_Literal =>
+         when N_Character_Literal             =>
             Res := Enum_Value (N, Etype (N));
 
-         when N_String_Literal =>
+         when N_String_Literal                =>
             Res := String_Value (Stringt.To_String (Strval (N)));
 
-         when N_Real_Literal =>
+         when N_Real_Literal                  =>
             if Has_Fixed_Point_Type (Ty) then
                declare
                   F : constant Big_Integer :=
@@ -4588,7 +4587,7 @@ package body CE_RAC is
                end;
             end if;
 
-         when N_Identifier | N_Expanded_Name =>
+         when N_Identifier | N_Expanded_Name  =>
             declare
                E : constant Entity_Id := SPARK_Atree.Entity (N);
             begin
@@ -4604,49 +4603,49 @@ package body CE_RAC is
                end if;
             end;
 
-         when N_Attribute_Reference =>
+         when N_Attribute_Reference           =>
             Res := RAC_Attribute_Reference;
 
-         when N_Binary_Op =>
+         when N_Binary_Op                     =>
             Res := RAC_Binary_Op;
 
-         when N_Unary_Op =>
+         when N_Unary_Op                      =>
             Res := RAC_Unary_Op;
 
-         when N_And_Then =>
+         when N_And_Then                      =>
             Res :=
               Boolean_Value
                 (Value_Boolean (RAC_Expr (Left_Opnd (N)))
                  and then Value_Boolean (RAC_Expr (Right_Opnd (N))),
                  Etype (N));
 
-         when N_Or_Else =>
+         when N_Or_Else                       =>
             Res :=
               Boolean_Value
                 (Value_Boolean (RAC_Expr (Left_Opnd (N)))
                  or else Value_Boolean (RAC_Expr (Right_Opnd (N))),
                  Etype (N));
 
-         when N_Function_Call =>
+         when N_Function_Call                 =>
             if Nkind (Name (N)) not in N_Identifier | N_Expanded_Name then
                RAC_Unsupported ("RAC_Procedure_Call name", Name (N));
             end if;
 
             Res := RAC_Call (N, Entity (Name (N))).Content;
 
-         when N_In =>
+         when N_In                            =>
             Res := RAC_In;
 
-         when N_Not_In =>
+         when N_Not_In                        =>
             return RAC_In (Negate => True);
 
-         when N_If_Expression =>
+         when N_If_Expression                 =>
             Res := RAC_If_Expression;
 
-         when N_Qualified_Expression =>
+         when N_Qualified_Expression          =>
             Res := RAC_Expr (Expression (N), Entity (Subtype_Mark (N)));
 
-         when N_Type_Conversion =>
+         when N_Type_Conversion               =>
 
             --  ??? Do we handle array conversions then?
 
@@ -4734,7 +4733,7 @@ package body CE_RAC is
          when N_Aggregate | N_Delta_Aggregate =>
             Res := RAC_Aggregate;
 
-         when N_Selected_Component =>
+         when N_Selected_Component            =>
 
             declare
                Prefix_Value  : constant Value_Type := RAC_Expr (Prefix (N));
@@ -4751,7 +4750,7 @@ package body CE_RAC is
                end if;
             end;
 
-         when N_Indexed_Component =>
+         when N_Indexed_Component             =>
             declare
                A : constant Value_Type := RAC_Expr (Prefix (N));
                E : constant Node_Id := First (Expressions (N));
@@ -4785,7 +4784,7 @@ package body CE_RAC is
                end;
             end;
 
-         when N_Quantified_Expression =>
+         when N_Quantified_Expression         =>
             declare
                Break : exception;
                procedure Iteration;
@@ -4834,7 +4833,7 @@ package body CE_RAC is
                end if;
             end;
 
-         when N_Case_Expression =>
+         when N_Case_Expression               =>
             declare
                Alternative : Node_Id;
             begin
@@ -4842,7 +4841,7 @@ package body CE_RAC is
                Res := RAC_Expr (Expression (Alternative));
             end;
 
-         when N_Slice =>
+         when N_Slice                         =>
             declare
                Base_Array : constant Value_Type := RAC_Expr (Prefix (N));
                Idx_Range  : constant Node_Id := Get_Range (Discrete_Range (N));
@@ -4887,7 +4886,7 @@ package body CE_RAC is
                end if;
             end;
 
-         when N_Allocator =>
+         when N_Allocator                     =>
             declare
                Value : Value_Type :=
                  (if Nkind (Expression (N)) = N_Qualified_Expression
@@ -4903,7 +4902,7 @@ package body CE_RAC is
                Res := Not_Null_Access_Value (Ty, Value);
             end;
 
-         when others =>
+         when others                          =>
             RAC_Unsupported ("RAC_Expr", N);
       end case;
 
@@ -4927,10 +4926,10 @@ package body CE_RAC is
          when N_Identifier | N_Expanded_Name =>
             return Find_Binding (SPARK_Atree.Entity (N));
 
-         when N_Type_Conversion =>
+         when N_Type_Conversion              =>
             return RAC_Expr_LHS (Expression (N));
 
-         when N_Selected_Component =>
+         when N_Selected_Component           =>
             declare
                LHS_Fields : constant Entity_To_Value_Maps.Map :=
                  RAC_Expr_LHS (Prefix (N)).all.Record_Fields;
@@ -4954,7 +4953,7 @@ package body CE_RAC is
                end;
             end;
 
-         when N_Indexed_Component =>
+         when N_Indexed_Component            =>
             declare
                A : constant Value_Access := RAC_Expr_LHS (Prefix (N));
                E : constant Node_Id := First (Expressions (N));
@@ -4985,7 +4984,7 @@ package body CE_RAC is
                return A.Array_Values (C);
             end;
 
-         when others =>
+         when others                         =>
             RAC_Unsupported ("RAC_Expr_LHS", N);
       end case;
    end RAC_Expr_LHS;
@@ -5075,13 +5074,13 @@ package body CE_RAC is
 
                RAC_List (Statements (N));
 
-            when N_Procedure_Call_Statement =>
+            when N_Procedure_Call_Statement       =>
                Ignore := RAC_Call (N, Entity (Name (N)));
 
-            when N_Pragma =>
+            when N_Pragma                         =>
                RAC_Pragma (N);
 
-            when others =>
+            when others                           =>
                RAC_Statement (N);
          end case;
       end if;
@@ -5121,7 +5120,7 @@ package body CE_RAC is
                Check_Node (Expr, Desc, VC_Assert);
             end if;
 
-         when others =>
+         when others       =>
             RAC_Unsupported ("RAC_Pragma", N);
       end case;
    end RAC_Pragma;
@@ -5221,10 +5220,10 @@ package body CE_RAC is
          when N_Object_Renaming_Declaration | N_Ignored_In_SPARK =>
             null;
 
-         when N_Object_Declaration =>
+         when N_Object_Declaration                               =>
             RAC_Decl (N);
 
-         when N_Simple_Return_Statement =>
+         when N_Simple_Return_Statement                          =>
             if Present (Expression (N)) then
                declare
                   Ty  : constant Type_Kind_Id :=
@@ -5240,7 +5239,7 @@ package body CE_RAC is
                RAC_Return (No_Value);
             end if;
 
-         when N_Assignment_Statement =>
+         when N_Assignment_Statement                             =>
             declare
                Ty  : constant Entity_Id := Retysp (Etype (Name (N)));
                RHS : constant Value_Access :=
@@ -5350,7 +5349,7 @@ package body CE_RAC is
                   when N_Identifier | N_Expanded_Name =>
                      Update_Value (Ctx.Env, Entity (Name (N)), RHS);
 
-                  when N_Selected_Component =>
+                  when N_Selected_Component           =>
 
                      declare
                         LHS           : constant Value_Access :=
@@ -5372,7 +5371,7 @@ package body CE_RAC is
                         pragma Assert (Valid_Value (LHS.all));
                      end;
 
-                  when N_Indexed_Component =>
+                  when N_Indexed_Component            =>
                      declare
                         A : constant Value_Access :=
                           RAC_Expr_LHS (Prefix (Name (N)));
@@ -5405,11 +5404,11 @@ package body CE_RAC is
                         end if;
                      end;
 
-                  when N_Slice =>
+                  when N_Slice                        =>
                      Assignment_To_Slice
                        (RAC_Expr_LHS (Prefix (Name (N))), RHS);
 
-                  when others =>
+                  when others                         =>
                      RAC_Unsupported ("N_Assignment_Statement", Name (N));
                end case;
 
@@ -5429,7 +5428,7 @@ package body CE_RAC is
                end;
             end;
 
-         when N_If_Statement =>
+         when N_If_Statement                                     =>
             if Value_Boolean (RAC_Expr (Condition (N))) then
                RAC_List (Then_Statements (N));
             else
@@ -5452,7 +5451,7 @@ package body CE_RAC is
                end;
             end if;
 
-         when N_Loop_Statement =>
+         when N_Loop_Statement                                   =>
             declare
                procedure Iteration;
                --  Handle one iteration of the loop
@@ -5551,7 +5550,7 @@ package body CE_RAC is
                Ctx.Env.Delete_First;
             end;
 
-         when N_Exit_Statement =>
+         when N_Exit_Statement                                   =>
             if Present (Name (N)) then
                RAC_Unsupported ("RAC_Statement exit statement with name", N);
             end if;
@@ -5562,13 +5561,13 @@ package body CE_RAC is
                raise Exn_RAC_Exit;
             end if;
 
-         when N_Block_Statement =>
+         when N_Block_Statement                                  =>
             Ctx.Env.Prepend (Scopes'(others => <>));
             RAC_Decls (Declarations (N));
             RAC_Node (Handled_Statement_Sequence (N));
             Ctx.Env.Delete_First;
 
-         when N_Case_Statement =>
+         when N_Case_Statement                                   =>
             declare
                Alternative : Node_Id;
             begin
@@ -5576,7 +5575,7 @@ package body CE_RAC is
                RAC_List (Statements (Alternative));
             end;
 
-         when others =>
+         when others                                             =>
             RAC_Unsupported ("RAC_Statement", N);
       end case;
    end RAC_Statement;
@@ -5748,12 +5747,12 @@ package body CE_RAC is
 
    function To_String (Res : Result) return String
    is (case Res.Res_Kind is
-         when Res_Normal =>
+         when Res_Normal       =>
            "NORMAL"
            & (if Res.Res_Value.Present
               then " (" & To_String (Res.Res_Value.Content) & ")"
               else ""),
-         when Res_Failure =>
+         when Res_Failure      =>
            "FAILURE ("
            & VC_Kind'Image (Res.Res_VC_Kind)
            & " at "
@@ -5761,8 +5760,8 @@ package body CE_RAC is
            & ":"
            & Int'Image (Int (Get_Logical_Line_Number (Sloc (Res.Res_Node))))
            & ")",
-         when Res_Stuck => "STUCK (" & To_String (Res.Res_Reason) & ")",
-         when Res_Incomplete =>
+         when Res_Stuck        => "STUCK (" & To_String (Res.Res_Reason) & ")",
+         when Res_Incomplete   =>
            "INCOMPLETE (" & To_String (Res.Res_Reason) & ")",
          when Res_Not_Executed => "NOT EXECUTED");
 
@@ -5907,15 +5906,15 @@ package body CE_RAC is
          when Integer_K =>
             return V.Scalar_Content.Integer_Content;
 
-         when Fixed_K =>
+         when Fixed_K   =>
             return V.Scalar_Content.Fixed_Content;
 
-         when Enum_K =>
+         when Enum_K    =>
             return
               To_Big_Integer
                 (Enum_Entity_To_Integer (V.Scalar_Content.Enum_Entity));
 
-         when others =>
+         when others    =>
             raise Program_Error with "Value_Enum_Integer";
       end case;
    end Value_Enum_Integer;
