@@ -2440,6 +2440,9 @@ body (see Ada RM 7.2(4))].
     If the Ghost assertion policy in effect at the point of the declaration
     of a ghost variable is Check, then the assertion policy applicable
     to any assignment to a part of that variable shall be Check.
+    Additionally, if an assignment to a part of a ghost variable occurs in a
+    ghost entity, then the variable should be assertion-level-dependent on this
+    entity.
     [This includes both assignment statements and passing a ghost variable
     as an **out** or **in out** mode actual parameter.]
 
