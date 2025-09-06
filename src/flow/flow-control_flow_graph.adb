@@ -1427,6 +1427,9 @@ package body Flow.Control_Flow_Graph is
    procedure Create_Initial_And_Final_Vertices
      (E : Entity_Id; FA : in out Flow_Analysis_Graphs)
    is
+      Current_Entity : Entity_To_Vertex_Maps.Cursor;
+      Inserted       : Boolean;
+
       M : constant Param_Mode :=
         (case Ekind (E) is
 
@@ -1501,12 +1504,14 @@ package body Flow.Control_Flow_Graph is
          --  for declarative parts.
          Add_Vertex (FA, F_Initial, Initial_Atr, Initial_V, Keyed => True);
          Linkup (FA, Initial_V, FA.Start_Vertex);
+         FA.Initial_And_Final_Vertices (Current_Entity).Insert (Initial_V);
 
          Create_Record_Tree (F_Initial, Initial_Atr, FA);
 
          --  Setup the n'final vertex
          Add_Vertex (FA, F_Final, Final_Atr, Final_V, Keyed => True);
          Linkup (FA, FA.End_Vertex, Final_V);
+         FA.Initial_And_Final_Vertices (Current_Entity).Insert (Final_V);
 
          Create_Record_Tree (F_Final, Final_Atr, FA);
 
@@ -1516,6 +1521,9 @@ package body Flow.Control_Flow_Graph is
       --  Start of processing for Create_Initial_And_Final_Vertices
 
    begin
+      FA.Initial_And_Final_Vertices.Insert (E, Current_Entity, Inserted);
+      pragma Assert (Inserted);
+
       for Comp of Flatten_Variable (E, FA.B_Scope) loop
          Process (Comp);
       end loop;
@@ -3287,6 +3295,7 @@ package body Flow.Control_Flow_Graph is
                Var_Ex_Use => Vars,
                Subp_Calls => Funcalls,
                Indt_Calls => Indcalls,
+               Obj_Decls  => Node_Sets.To_Set (LP),
                Vertex_Ctx => Ctx.Vertex_Ctx,
                E_Loc      => N),
             V);
@@ -4000,6 +4009,7 @@ package body Flow.Control_Flow_Graph is
                  or Get_Filter_Variables (Filter),
                Subp_Calls => Funcalls,
                Indt_Calls => Indcalls,
+               Obj_Decls  => Node_Sets.To_Set (Param),
                Vertex_Ctx => Ctx.Vertex_Ctx,
                E_Loc      => Cont),
             V);
@@ -4782,15 +4792,14 @@ package body Flow.Control_Flow_Graph is
                            if Empty_Reuse = Flow_Graphs.Null_Vertex then
                               Add_Vertex
                                 (FA,
-                                 (Make_Basic_Attributes
-                                    (Var_Def    => Flow_Id_Sets.Empty_Set,
-                                     Var_Ex_Use => Inputs,
-                                     Subp_Calls => Funcalls,
-                                     Indt_Calls => Indcalls,
-                                     Vertex_Ctx => Ctx.Vertex_Ctx,
-                                     E_Loc      => N,
-                                     Print_Hint => Pretty_Print_Record_Field)
-                                  with delta Is_Declaration_Node => True),
+                                 Make_Basic_Attributes
+                                   (Var_Def    => Flow_Id_Sets.Empty_Set,
+                                    Var_Ex_Use => Inputs,
+                                    Subp_Calls => Funcalls,
+                                    Indt_Calls => Indcalls,
+                                    Vertex_Ctx => Ctx.Vertex_Ctx,
+                                    E_Loc      => N,
+                                    Print_Hint => Pretty_Print_Record_Field),
                                  V);
 
                               Inits.Append (V);
@@ -4805,15 +4814,14 @@ package body Flow.Control_Flow_Graph is
                         else
                            Add_Vertex
                              (FA,
-                              (Make_Basic_Attributes
-                                 (Var_Def    => Flow_Id_Sets.To_Set (Output),
-                                  Var_Ex_Use => Inputs,
-                                  Subp_Calls => Funcalls,
-                                  Indt_Calls => Indcalls,
-                                  Vertex_Ctx => Ctx.Vertex_Ctx,
-                                  E_Loc      => N,
-                                  Print_Hint => Pretty_Print_Record_Field)
-                               with delta Is_Declaration_Node => True),
+                              Make_Basic_Attributes
+                                (Var_Def    => Flow_Id_Sets.To_Set (Output),
+                                 Var_Ex_Use => Inputs,
+                                 Subp_Calls => Funcalls,
+                                 Indt_Calls => Indcalls,
+                                 Vertex_Ctx => Ctx.Vertex_Ctx,
+                                 E_Loc      => N,
+                                 Print_Hint => Pretty_Print_Record_Field),
                               V);
 
                            Inits.Append (V);
@@ -4828,21 +4836,20 @@ package body Flow.Control_Flow_Graph is
                Add_Vertex
                  (FA,
                   Direct_Mapping_Id (N),
-                  (Make_Basic_Attributes
-                     (Var_Def    => Var_Def,
-                      Var_Ex_Use =>
-                        Get_Variables
-                          (Expr,
-                           Scope                => FA.B_Scope,
-                           Target_Name          => Null_Flow_Id,
-                           Fold_Functions       => Inputs,
-                           Use_Computed_Globals => not FA.Generating_Globals,
-                           Consider_Extensions  => To_CW),
-                      Subp_Calls => Funcalls,
-                      Indt_Calls => Indcalls,
-                      Vertex_Ctx => Ctx.Vertex_Ctx,
-                      E_Loc      => N)
-                   with delta Is_Declaration_Node => True),
+                  Make_Basic_Attributes
+                    (Var_Def    => Var_Def,
+                     Var_Ex_Use =>
+                       Get_Variables
+                         (Expr,
+                          Scope                => FA.B_Scope,
+                          Target_Name          => Null_Flow_Id,
+                          Fold_Functions       => Inputs,
+                          Use_Computed_Globals => not FA.Generating_Globals,
+                          Consider_Extensions  => To_CW),
+                     Subp_Calls => Funcalls,
+                     Indt_Calls => Indcalls,
+                     Vertex_Ctx => Ctx.Vertex_Ctx,
+                     E_Loc      => N),
                   V);
                Inits.Append (V);
 
@@ -5009,6 +5016,23 @@ package body Flow.Control_Flow_Graph is
 
       end if;
 
+      --  Add a single vertex that represents object declaration; it acts as a
+      --  link to the object entity when declaration turns out to be dead code.
+
+      if No (Alias) then
+         Add_Vertex
+           (FA,
+            (Null_Node_Attributes
+             with delta
+               Is_Null_Node        => False,
+               Is_Program_Node     => False,
+               Object_Declarations => Node_Sets.To_Set (E),
+               Pretty_Print_Kind   => Pretty_Print_Declaration,
+               Error_Location      => N),
+            V);
+         Inits.Prepend (V);
+      end if;
+
       --  If nothing has been initialized by this object declaration, then add
       --  a dummy vertex.
 
@@ -5088,6 +5112,8 @@ package body Flow.Control_Flow_Graph is
    is
       Spec_E : constant Entity_Id := Defining_Entity (N);
 
+      Declared_States : Node_Sets.Set;
+
    begin
       --  If the nested package is not in SPARK (either because of explicit
       --  SPARK_Mode => Off or because a SPARK violation), then ignore its
@@ -5117,6 +5143,7 @@ package body Flow.Control_Flow_Graph is
 
             begin
                Create_Initial_And_Final_Vertices (State, FA);
+               Declared_States.Insert (State);
 
                if FA.Kind = Kind_Package then
                   Final_V_Id := FA.CFG.Get_Vertex (Final_F_Id);
@@ -5174,6 +5201,7 @@ package body Flow.Control_Flow_Graph is
                  (No_Vertex_Context
                   with delta
                     In_Nested_Package => Ctx.Vertex_Ctx.In_Nested_Package),
+               Obj_Decls  => Declared_States,
                E_Loc      => N,
                Print_Hint => Pretty_Print_Package),
             V);
@@ -7520,16 +7548,13 @@ package body Flow.Control_Flow_Graph is
 
                --  If we are dealing with a declaration node, then we delete
                --  the corresponding 'Initial and 'Final vertices as well.
-               if Atr.Is_Declaration_Node then
-                  for F of Atr.Variables_Defined loop
-                     Clear_Vertex_And_Attributes
-                       (FA,
-                        FA.CFG.Get_Vertex (Change_Variant (F, Initial_Value)));
-                     Clear_Vertex_And_Attributes
-                       (FA,
-                        FA.CFG.Get_Vertex (Change_Variant (F, Final_Value)));
+               for Object of Atr.Object_Declarations loop
+                  for Initial_Or_Final_Vertex of
+                    FA.Initial_And_Final_Vertices (Object)
+                  loop
+                     Clear_Vertex_And_Attributes (FA, Initial_Or_Final_Vertex);
                   end loop;
-               end if;
+               end loop;
 
                --  Then we delete vertex V
                Clear_Vertex_And_Attributes (FA, V);
@@ -7553,16 +7578,13 @@ package body Flow.Control_Flow_Graph is
 
                --  If we are dealing with a declaration node, then we delete
                --  the corresponding 'Initial and 'Final vertices as well.
-               if Atr.Is_Declaration_Node then
-                  for F of Atr.Variables_Defined loop
-                     Clear_Vertex_And_Attributes
-                       (FA,
-                        FA.CFG.Get_Vertex (Change_Variant (F, Initial_Value)));
-                     Clear_Vertex_And_Attributes
-                       (FA,
-                        FA.CFG.Get_Vertex (Change_Variant (F, Final_Value)));
+               for Object of Atr.Object_Declarations loop
+                  for Initial_Or_Final_Vertex of
+                    FA.Initial_And_Final_Vertices (Object)
+                  loop
+                     Clear_Vertex_And_Attributes (FA, Initial_Or_Final_Vertex);
                   end loop;
-               end if;
+               end loop;
 
                --  Then we delete vertex V
                Clear_Vertex_And_Attributes (FA, V);

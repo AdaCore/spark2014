@@ -177,8 +177,6 @@ package body Flow.Slice is
 
       DM : Dependency_Maps.Map := Dependency_Maps.Empty_Map;
 
-      use type Vertex_Sets.Set;
-
       --  Start of processing for Compute_Dependency_Relation
 
    begin

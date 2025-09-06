@@ -166,6 +166,7 @@ package body Flow.Control_Flow_Graph.Utility is
       Var_Im_Use : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
       Subp_Calls : Call_Sets.Set := Call_Sets.Empty_Set;
       Indt_Calls : Node_Sets.Set := Node_Sets.Empty_Set;
+      Obj_Decls  : Node_Sets.Set := Node_Sets.Empty_Set;
       Vertex_Ctx : Vertex_Context;
       E_Loc      : Node_Or_Entity_Id := Empty;
       Print_Hint : Pretty_Print_Kind_T := Pretty_Print_Null)
@@ -184,6 +185,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Warnings_Off := Vertex_Ctx.Warnings_Off;
       A.Error_Location := E_Loc;
       A.Pretty_Print_Kind := Print_Hint;
+      A.Object_Declarations := Obj_Decls;
 
       Add_Volatile_Effects (A);
       return A;
@@ -312,7 +314,6 @@ package body Flow.Control_Flow_Graph.Utility is
       E_Loc      : Node_Or_Entity_Id := Empty) return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
-      pragma Unreferenced (Callsite);
    begin
       A.Callee := Callee;
       A.Variables_Explicitly_Used := Var_Use;
@@ -325,6 +326,18 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Warnings_Off := Vertex_Ctx.Warnings_Off;
       A.Is_Callsite := True;
       A.Error_Location := E_Loc;
+
+      --  If this is a call to function with side effects occuring in object
+      --  declaration, then 'Initial and 'Final vertices have just been created
+      --  for this object.
+
+      if Nkind (Callsite) = N_Function_Call
+        and then Nkind (Parent (Callsite)) = N_Object_Declaration
+      then
+         pragma Assert (Is_Function_With_Side_Effects (Callee));
+         A.Object_Declarations.Insert
+           (Defining_Identifier (Parent (Callsite)));
+      end if;
 
       --  ??? The below is the logic for doing IPFA within a
       --  compilation unit. To be enabled by M227-027.

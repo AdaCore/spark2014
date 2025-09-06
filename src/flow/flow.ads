@@ -175,6 +175,16 @@ package Flow is
    --  Named array type for sets of nodes related to tasking. The nodes
    --  represent library-level objects.
 
+   use type Vertex_Sets.Set;
+
+   package Entity_To_Vertex_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Entity_Id,
+        Element_Type    => Vertex_Sets.Set,
+        Hash            => Node_Hash,
+        Equivalent_Keys => "=");
+   --  Maps from object to 'Initial and 'Final vertices that represent them
+
    type Flow_Analysis_Graphs_Root
      (Kind               : Analyzed_Subject_Kind := Kind_Subprogram;
       Generating_Globals : Boolean := False)
@@ -195,6 +205,8 @@ package Flow is
       --  exceptional end is where the transfer go when an unhandled
       --  exception is raised, i.e. Exceptional_Cases are checked, but
       --  not postconditions.
+
+      Initial_And_Final_Vertices : Entity_To_Vertex_Maps.Map;
 
       CFG : Flow_Graphs.Graph;
       DDG : Flow_Graphs.Graph;
