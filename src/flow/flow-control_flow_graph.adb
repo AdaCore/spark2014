@@ -1522,7 +1522,23 @@ package body Flow.Control_Flow_Graph is
 
    begin
       FA.Initial_And_Final_Vertices.Insert (E, Current_Entity, Inserted);
-      pragma Assert (Inserted);
+
+      --  If we are creating the vertices, then create a path counter as well
+
+      if Inserted then
+         FA.Declaration_Paths.Insert (Key => E, New_Item => 1);
+
+      --  Otherwise just increment the existing path counter
+
+      else
+         declare
+            Declarations : Natural renames FA.Declaration_Paths (E);
+         begin
+            Declarations := Declarations + 1;
+         end;
+
+         return;
+      end if;
 
       for Comp of Flatten_Variable (E, FA.B_Scope) loop
          Process (Comp);
@@ -7549,11 +7565,20 @@ package body Flow.Control_Flow_Graph is
                --  If we are dealing with a declaration node, then we delete
                --  the corresponding 'Initial and 'Final vertices as well.
                for Object of Atr.Object_Declarations loop
-                  for Initial_Or_Final_Vertex of
-                    FA.Initial_And_Final_Vertices (Object)
-                  loop
-                     Clear_Vertex_And_Attributes (FA, Initial_Or_Final_Vertex);
-                  end loop;
+                  declare
+                     Declarations : Natural renames
+                       FA.Declaration_Paths (Object);
+                  begin
+                     Declarations := Declarations - 1;
+                     if Declarations = 0 then
+                        for Initial_Or_Final_Vertex of
+                          FA.Initial_And_Final_Vertices (Object)
+                        loop
+                           Clear_Vertex_And_Attributes
+                             (FA, Initial_Or_Final_Vertex);
+                        end loop;
+                     end if;
+                  end;
                end loop;
 
                --  Then we delete vertex V
@@ -7579,11 +7604,20 @@ package body Flow.Control_Flow_Graph is
                --  If we are dealing with a declaration node, then we delete
                --  the corresponding 'Initial and 'Final vertices as well.
                for Object of Atr.Object_Declarations loop
-                  for Initial_Or_Final_Vertex of
-                    FA.Initial_And_Final_Vertices (Object)
-                  loop
-                     Clear_Vertex_And_Attributes (FA, Initial_Or_Final_Vertex);
-                  end loop;
+                  declare
+                     Declarations : Natural renames
+                       FA.Declaration_Paths (Object);
+                  begin
+                     Declarations := Declarations - 1;
+                     if Declarations = 0 then
+                        for Initial_Or_Final_Vertex of
+                          FA.Initial_And_Final_Vertices (Object)
+                        loop
+                           Clear_Vertex_And_Attributes
+                             (FA, Initial_Or_Final_Vertex);
+                        end loop;
+                     end if;
+                  end;
                end loop;
 
                --  Then we delete vertex V
@@ -8963,6 +8997,10 @@ package body Flow.Control_Flow_Graph is
 
       --  Simplify graph by removing all null vertices
       Simplify_CFG (FA);
+
+      --  Clear data that won't be needed anymore
+      FA.Declaration_Paths.Clear;
+      FA.Declaration_Paths.Reserve_Capacity (0);
 
       --  Finally, make sure that all extra checks for folded functions have
       --  been processed and other context information has been dropped.

@@ -89,6 +89,14 @@ package Flow is
    --  Flow_Analysis_Graphs
    ----------------------------------------------------------------------
 
+   package Entity_To_Natural_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Entity_Id,
+        Element_Type    => Natural,
+        Hash            => Node_Hash,
+        Equivalent_Keys => "=");
+   --  Map from local objects to counters with how many paths declare them
+
    --  ??? This should be a variant record, but O325-005 and AI12-0047 make
    --      this difficult.
    type Flow_Global_Generation_Info is record
@@ -230,6 +238,11 @@ package Flow is
       Calls_Via_Access : Boolean;
       --  True for subprograms that call other subprograms via
       --  access-to-subprogram.
+
+      Declaration_Paths : Entity_To_Natural_Maps.Map;
+      --  Map from locally declared objects to number of path copies with their
+      --  declarations. For removing 'Initial and 'Final vertices where all
+      --  these paths are found to be dead code.
 
       Has_Only_Terminating_Constructs : Boolean;
       --  False for entities that contain constructs that may not terminate,
