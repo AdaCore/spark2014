@@ -5521,12 +5521,12 @@ package body Flow.Control_Flow_Graph is
                Loop_Name := First (Expressions (N));
 
                pragma Assert (Nkind (Loop_Name) = N_Identifier);
-               Ctx.Entry_References (Entity (Loop_Name)).Include (N);
+               Ctx.Entry_References (Entity (Loop_Name)).Insert (N);
 
             --  or otherwise a reference to the immediately enclosing loop
 
             else
-               Ctx.Entry_References (Ctx.Active_Loop).Include (N);
+               Ctx.Entry_References (Ctx.Active_Loop).Insert (N);
             end if;
          end if;
 
