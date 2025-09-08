@@ -264,6 +264,17 @@ function. We are running |GNATprove| with a prover timeout of 60 seconds
 (switch ``--timeout=60``) to get the results presented in the rest of this
 section.
 
+.. note::
+
+   It is often not possible to write a provable loop invariant for a loop which
+   uses an array component iterator or a container element iterator - that is,
+   a loop of the form ``for .. of .. loop``. Indeed,
+   the fact that the underlying array index or cursor is implicit, makes it
+   impossible to refer to the number of previous iterations of the loop, or
+   to caraterize elements that have already been traversed. The solution is to
+   rewrite the loop to iterate over the array indexes or the cursors of the
+   container instead - that is, a loop of the form ``for .. in .. loop``.
+
 Proving a Loop Invariant in the First Iteration
 -----------------------------------------------
 
