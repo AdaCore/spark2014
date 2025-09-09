@@ -2370,60 +2370,86 @@ package body Flow.Control_Flow_Graph is
       --  retrieved from the AST when we see a simple_return_statement.
       Ctx.Extended_Return := N;
 
-      --  Process the statements of Ret_Object_L
+      --  Process return object declarations
       Process_Statement_List (Ret_Object_L, FA, CM, Ctx);
+
+      --  Connections for the return object declarations become connections for
+      --  the extended return statements itself.
 
       Move_Connections
         (CM, Dst => Union_Id (N), Src => Union_Id (Ret_Object_L));
 
-      Add_Vertex
-        (FA,
-         Direct_Mapping_Id (Ret_Entity),
-         Make_Extended_Return_Attributes
-           (Var_Def         => Flatten_Variable (FA.Spec_Entity, FA.B_Scope),
-            Var_Use         => Flatten_Variable (Ret_Object, FA.B_Scope),
-            Object_Returned => Ret_Object,
-            Vertex_Ctx      => Ctx.Vertex_Ctx,
-            E_Loc           => Ret_Entity),
-         V);
+      --  The declratations alone must return normally
+
+      pragma Assert (not CM (Union_Id (N)).Standard_Exits.Is_Empty);
 
       if Present (HSS) then
          --  We process the sequence of statements
          Process_Statement (HSS, FA, CM, Ctx);
 
-         --  We link the standard exits of Ret_Object_L to the standard entry
-         --  of the sequence of statements.
-         Linkup
-           (FA,
-            CM (Union_Id (N)).Standard_Exits,
-            CM (Union_Id (HSS)).Standard_Entry);
+         --  We link the standard exits of return object declarations to the
+         --  standard entry of the sequence of statements.
 
-         --  We link the standard exits of the sequence of statements to the
-         --  standard entry of the implicit return statement.
-         Linkup (FA, CM (Union_Id (HSS)).Standard_Exits, V);
+         declare
+            HSS_Position : Connection_Maps.Cursor := CM.Find (Union_Id (HSS));
+         begin
+            declare
+               N_Connections   : Graph_Connections renames CM (Union_Id (N));
+               HSS_Connections : Graph_Connections renames CM (HSS_Position);
+            begin
+               Linkup
+                 (FA,
+                  N_Connections.Standard_Exits,
+                  HSS_Connections.Standard_Entry);
 
-         CM.Delete (Union_Id (HSS));
-      else
-         --  No sequence of statements is present. We link the
-         --  standard exits of Ret_Object_L to the implicit return
-         --  statement.
-         Linkup (FA, CM (Union_Id (N)).Standard_Exits, V);
+               Vertex_Sets.Move
+                 (Target => N_Connections.Standard_Exits,
+                  Source => HSS_Connections.Standard_Exits);
+            end;
+
+            CM.Delete (HSS_Position);
+         end;
       end if;
 
-      CM (Union_Id (N)).Standard_Exits := Empty_Set;
+      --  If what we have so far returns normally, then we need a vertex for
+      --  the implicit return, which defines the function's result using the
+      --  declared object.
+
+      if not CM (Union_Id (N)).Standard_Exits.Is_Empty then
+         Add_Vertex
+           (FA,
+            Direct_Mapping_Id (Ret_Entity),
+            Make_Extended_Return_Attributes
+              (Var_Def         =>
+                 Flatten_Variable (FA.Spec_Entity, FA.B_Scope),
+               Var_Use         => Flatten_Variable (Ret_Object, FA.B_Scope),
+               Object_Returned => Ret_Object,
+               Vertex_Ctx      => Ctx.Vertex_Ctx,
+               E_Loc           => Ret_Entity),
+            V);
+
+         --  We link the standard exits of declarations + statements to the
+         --  standard entry of the implicit return statement.
+         Linkup (FA, CM (Union_Id (N)).Standard_Exits, V);
+
+         --  When borrowers go out of scope, we pop them from the stack and
+         --  assign back to the borrowed objects. This way we keep track of
+         --  anything that happened while they were borrowed.
+
+         for Decl of reverse Ctx.Borrowers loop
+            Reclaim_Borrower (Decl, FA, Last => V);
+         end loop;
+
+         --  We link the implicit return statement to the helper end vertex
+
+         Linkup (FA, V, FA.Helper_End_Vertex);
+
+         --  The extended return statement as a whole doesn't return normally
+
+         CM (Union_Id (N)).Standard_Exits := Empty_Set;
+      end if;
 
       Ctx.Extended_Return := Types.Empty;
-
-      --  When borrowers go out of scope, we pop them from the stack and
-      --  assign back to the borrowed objects. This way we keep track of
-      --  anything that happened while they were borrowed.
-
-      for Decl of reverse Ctx.Borrowers loop
-         Reclaim_Borrower (Decl, FA, Last => V);
-      end loop;
-
-      --  We link the implicit return statement to the helper end vertex
-      Linkup (FA, V, FA.Helper_End_Vertex);
    end Do_Extended_Return_Statement;
 
    -----------------------
