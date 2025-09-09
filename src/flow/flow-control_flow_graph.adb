@@ -699,9 +699,6 @@ package body Flow.Control_Flow_Graph is
    --              |
    --             end
    --
-   --  We create a null vertex for the extended return statement (this
-   --  vertex is not visible in the CFG).
-   --
    --  The "return returned_object" vertex corresponds to the
    --  Return_Statement_Entity of the extended return, and its
    --  Aux_Node is set to the object actually returned (the
@@ -2369,13 +2366,6 @@ package body Flow.Control_Flow_Graph is
       HSS          : constant Node_Id := Handled_Statement_Sequence (N);
 
    begin
-      --  We create a null vertex for the extended return statement
-      Add_Vertex (FA, Direct_Mapping_Id (N), Null_Node_Attributes, V);
-      --  Control flows in, but we do not flow out again
-      CM.Insert
-        (Union_Id (N),
-         Graph_Connections'(Standard_Entry => V, Standard_Exits => Empty_Set));
-
       --  Store the extended return node in context, because it cannot be
       --  retrieved from the AST when we see a simple_return_statement.
       Ctx.Extended_Return := N;
@@ -2383,9 +2373,8 @@ package body Flow.Control_Flow_Graph is
       --  Process the statements of Ret_Object_L
       Process_Statement_List (Ret_Object_L, FA, CM, Ctx);
 
-      --  Link the entry vertex V (the extended return statement) to
-      --  standard entry of its return_object_declarations.
-      Linkup (FA, V, CM (Union_Id (Ret_Object_L)).Standard_Entry);
+      Move_Connections
+        (CM, Dst => Union_Id (N), Src => Union_Id (Ret_Object_L));
 
       Add_Vertex
         (FA,
@@ -2406,7 +2395,7 @@ package body Flow.Control_Flow_Graph is
          --  of the sequence of statements.
          Linkup
            (FA,
-            CM (Union_Id (Ret_Object_L)).Standard_Exits,
+            CM (Union_Id (N)).Standard_Exits,
             CM (Union_Id (HSS)).Standard_Entry);
 
          --  We link the standard exits of the sequence of statements to the
@@ -2418,10 +2407,11 @@ package body Flow.Control_Flow_Graph is
          --  No sequence of statements is present. We link the
          --  standard exits of Ret_Object_L to the implicit return
          --  statement.
-         Linkup (FA, CM (Union_Id (Ret_Object_L)).Standard_Exits, V);
+         Linkup (FA, CM (Union_Id (N)).Standard_Exits, V);
       end if;
 
-      CM.Delete (Union_Id (Ret_Object_L));
+      CM (Union_Id (N)).Standard_Exits := Empty_Set;
+
       Ctx.Extended_Return := Types.Empty;
 
       --  When borrowers go out of scope, we pop them from the stack and
