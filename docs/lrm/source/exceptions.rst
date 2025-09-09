@@ -156,8 +156,9 @@ pragma Assertion_Policy:
    level associated with the ghost entity, assertion expression, or
    specification aspect in the specific region should be considered.
 
-7. The Runtime assertion level shall always be associated with the Check policy
-   identifier and the Static assertion level shall always be associated with
+7. If they occur in a pragma Assertion_Policy, the Runtime assertion level shall
+   always be associated with the Check policy identifier and the Static
+   assertion level or levels that depend on it shall always be associated with
    the Ignore policy identifier.
 
 Pragma Assertion_Level
@@ -199,7 +200,7 @@ Assertion levels defined at the configuration level are always visible.
    assertion aspect mark.
 
 3. No two pragmas Assertion_Level with the same assertion level name shall occur
-   in the same project.
+   in the same project, unless they have exactly the same dependencies.
 
 .. container:: heading
 
