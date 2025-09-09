@@ -548,10 +548,10 @@ package body Flow.Analysis.Sanity is
                Expr : constant Node_Id :=
                  Get_Expr_From_Return_Only_Func (Predicate_Function (Typ));
 
-               Funcalls  : Call_Sets.Set;
-               Indcalls  : Node_Sets.Set;
-               Proofdeps : Node_Sets.Set;
-               Unused    : Tasking_Info;
+               Funcalls   : Call_Sets.Set;
+               Indcalls   : Node_Sets.Set;
+               Proofdeps  : Node_Sets.Set;
+               Unused_Ext : Tasking_Info_Ext;
 
             begin
 
@@ -566,7 +566,7 @@ package body Flow.Analysis.Sanity is
                   Function_Calls     => Funcalls,
                   Indirect_Calls     => Indcalls,
                   Proof_Dependencies => Proofdeps,
-                  Tasking            => Unused,
+                  Tasking_Ext        => Unused_Ext,
                   Generating_Globals => False);
 
                --  Check that the type predicate expression has no calls via
@@ -620,10 +620,10 @@ package body Flow.Analysis.Sanity is
               Get_Exprs_From_Check_Only_Proc (Invariant_Procedure (Typ))
             loop
                declare
-                  Funcalls  : Call_Sets.Set;
-                  Indcalls  : Node_Sets.Set;
-                  Proofdeps : Node_Sets.Set;
-                  Unused    : Tasking_Info;
+                  Funcalls   : Call_Sets.Set;
+                  Indcalls   : Node_Sets.Set;
+                  Proofdeps  : Node_Sets.Set;
+                  Unused_Ext : Tasking_Info_Ext;
 
                begin
                   --  Check 7.3.2(3) [which is really 4.4(2)] (no variable
@@ -637,7 +637,7 @@ package body Flow.Analysis.Sanity is
                      Function_Calls     => Funcalls,
                      Indirect_Calls     => Indcalls,
                      Proof_Dependencies => Proofdeps,
-                     Tasking            => Unused,
+                     Tasking_Ext        => Unused_Ext,
                      Generating_Globals => False);
 
                   for SC of Funcalls loop

@@ -23,6 +23,10 @@
 --> semaphores1.ads:6:09
     6 |       task T1;
       |            ^~
+      + reason for check: ceiling priority of the protected object "Semaphores1.Protected_Natural" must be >= the priority of the caller "Semaphores1.T1" in the call chain:
+        "Semaphores1.T1"
+        -> "Semaphores1.Initialize_Shared_Data"
+        -> "Semaphores1.Protected_Natural.Incr"
 
  info: nontermination of task proved
 --> semaphores1.ads:6:09
@@ -31,6 +35,7 @@
 --> semaphores1.ads:7:09
     7 |       task T2;
       |            ^~
+      + reason for check: ceiling priority of the protected object "Semaphores1.Protected_Natural" must be >= the priority of the caller "Semaphores1.T2" in the call "Semaphores1.T2" -> "Semaphores1.Protected_Natural.Get"
 
  info: nontermination of task proved
 --> semaphores1.ads:7:09

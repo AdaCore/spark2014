@@ -2867,7 +2867,6 @@ package body Flow.Analysis is
       ----------
 
       function Hash (Path : Path_Vertices) return Ada.Containers.Hash_Type is
-         use type Ada.Containers.Hash_Type;
          use Flow_Graphs;
       begin
          return 17 * Vertex_Hash (Path.Start) + 13 * Vertex_Hash (Path.V_Use);

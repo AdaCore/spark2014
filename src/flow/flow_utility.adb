@@ -50,6 +50,7 @@ with Why;
 
 with Flow_Classwide;
 with Flow_Debug;                      use Flow_Debug;
+with Flow_Generated_Globals;          use Flow_Generated_Globals;
 with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                 use Flow_Refinement;
 with Flow_Utility.Initialization;     use Flow_Utility.Initialization;
@@ -137,7 +138,7 @@ package body Flow_Utility is
       Function_Calls     : in out Call_Sets.Set;
       Indirect_Calls     : in out Node_Sets.Set;
       Proof_Dependencies : in out Node_Sets.Set;
-      Tasking            : in out Tasking_Info;
+      Tasking_Ext        : in out Tasking_Info_Ext;
       Types_Seen         : in out Node_Sets.Set;
       Constants_Seen     : in out Node_Sets.Set;
       Generating_Globals : Boolean)
@@ -272,7 +273,7 @@ package body Flow_Utility is
       Function_Calls     : in out Call_Sets.Set;
       Indirect_Calls     : in out Node_Sets.Set;
       Proof_Dependencies : in out Node_Sets.Set;
-      Tasking            : in out Tasking_Info;
+      Tasking_Ext        : in out Tasking_Info_Ext;
       Types_Seen         : in out Node_Sets.Set;
       Constants_Seen     : in out Node_Sets.Set;
       Generating_Globals : Boolean)
@@ -308,7 +309,7 @@ package body Flow_Utility is
             Function_Calls     => Function_Calls,
             Indirect_Calls     => Indirect_Calls,
             Proof_Dependencies => Proof_Dependencies,
-            Tasking            => Tasking,
+            Tasking_Ext        => Tasking_Ext,
             Generating_Globals => Generating_Globals);
       end Process_Predicate_Expression;
 
@@ -378,8 +379,7 @@ package body Flow_Utility is
                     and then Ekind (Scope (Called_Func)) = E_Protected_Type
                     and then Is_External_Call (N)
                   then
-                     Tasking (Locks).Include
-                       (Get_Enclosing_Object (Prefix (Name (N))));
+                     Register_Protected_Calls (N, Tasking_Ext);
                   end if;
                end;
 
@@ -669,7 +669,7 @@ package body Flow_Utility is
       Function_Calls     : in out Call_Sets.Set;
       Indirect_Calls     : in out Node_Sets.Set;
       Proof_Dependencies : in out Node_Sets.Set;
-      Tasking            : in out Tasking_Info;
+      Tasking_Ext        : in out Tasking_Info_Ext;
       Generating_Globals : Boolean)
    is
       Types_Unused, Const_Unused : Node_Sets.Set;
@@ -680,7 +680,7 @@ package body Flow_Utility is
          Function_Calls,
          Indirect_Calls,
          Proof_Dependencies,
-         Tasking,
+         Tasking_Ext,
          Types_Unused,
          Const_Unused,
          Generating_Globals);
@@ -697,9 +697,9 @@ package body Flow_Utility is
       Types_Seen         : in out Node_Sets.Set;
       Constants_Seen     : in out Node_Sets.Set)
    is
-      Funcalls : Call_Sets.Set;
-      Indcalls : Node_Sets.Set;
-      Unused   : Tasking_Info;
+      Funcalls   : Call_Sets.Set;
+      Indcalls   : Node_Sets.Set;
+      Unused_Ext : Tasking_Info_Ext;
    begin
       Pick_Generated_Info_Internal
         (N                  => Expr,
@@ -707,7 +707,7 @@ package body Flow_Utility is
          Function_Calls     => Funcalls,
          Indirect_Calls     => Indcalls,
          Proof_Dependencies => Proof_Dependencies,
-         Tasking            => Unused,
+         Tasking_Ext        => Unused_Ext,
          Types_Seen         => Types_Seen,
          Constants_Seen     => Constants_Seen,
          Generating_Globals => True);
@@ -1721,10 +1721,10 @@ package body Flow_Utility is
    function Get_Functions
      (N : Node_Id; Include_Predicates : Boolean) return Node_Sets.Set
    is
-      Funcalls  : Call_Sets.Set;
-      Indcalls  : Node_Sets.Set;
-      Proofdeps : Node_Sets.Set;
-      Unused    : Tasking_Info;
+      Funcalls   : Call_Sets.Set;
+      Indcalls   : Node_Sets.Set;
+      Proofdeps  : Node_Sets.Set;
+      Unused_Ext : Tasking_Info_Ext;
    begin
       Pick_Generated_Info
         (N,
@@ -1732,7 +1732,7 @@ package body Flow_Utility is
          Function_Calls     => Funcalls,
          Indirect_Calls     => Indcalls,
          Proof_Dependencies => Proofdeps,
-         Tasking            => Unused,
+         Tasking_Ext        => Unused_Ext,
          Generating_Globals => Include_Predicates);
       return To_Subprograms (Funcalls);
    end Get_Functions;
@@ -8256,5 +8256,24 @@ package body Flow_Utility is
 
       return Subps;
    end To_Subprograms;
+
+   ------------------------------
+   -- Register_Protected_Calls --
+   ------------------------------
+
+   procedure Register_Protected_Calls
+     (Callsite : Node_Id; Tasking_Ext : in out Tasking_Info_Ext)
+   is
+      Enclosing_Object : constant Entity_Id :=
+        Get_Enclosing_Object (Prefix (Name (Callsite)));
+
+      Protected_Call : constant Entity_Id := Get_Called_Entity (Callsite);
+      Protected_Type : constant Entity_Id := Scope (Protected_Call);
+
+   begin
+      Tasking_Ext.Include
+        (Locking_Target'(Object => Enclosing_Object, Typ => Protected_Type),
+         Protected_Call);
+   end Register_Protected_Calls;
 
 end Flow_Utility;

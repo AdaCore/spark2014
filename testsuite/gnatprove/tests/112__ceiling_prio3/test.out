@@ -1,0 +1,24 @@
+main.adb:4:11: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "Prots.Po" must be >= the priority of the caller "Main" in the call chain "Main" -> "Proxy.Proc1" -> "Prots.P1" -> "Prots.Po.Set_Value"]
+main.adb:5:21: info: range check proved (CVC5: 2 VC)
+prots.adb:10:10: warning: initialization of "B" has no effect
+prots.adb:35:25: warning: "X" is set by "Wait_For_True" but not used after the call
+prots.ads:6:17: info: aspect Always_Terminates on "Set_Value" has been proved, subprogram will terminate
+prots.ads:7:12: info: data dependencies proved
+prots.ads:8:16: info: aspect Always_Terminates on "Get_Value" has been proved, subprogram will terminate
+prots.ads:9:26: info: data dependencies proved
+prots.ads:10:13: info: aspect Always_Terminates on "Wait_For_True" has been proved, subprogram will terminate
+prots.ads:10:28: info: initialization of "V" proved
+prots.ads:11:12: info: data dependencies proved
+prots.ads:19:14: warning: subprogram "P2" has no effect
+prots2.adb:5:14: info: add a contract to analyze it separately from calling contexts
+prots2.adb:5:14: info: local subprogram "P_Local" only analyzed in the context of calls [info-unrolling-inlining]
+prots2.adb:7:09: high: call to potentially blocking subprogram "prots.p3" in protected operation "PP3", in call inlined at prots2.adb:25
+prots2.adb:15:15: high: call to potentially blocking subprogram "prots.p3" in protected operation "PP1"
+prots2.adb:20:10: high: call to potentially blocking subprogram "prots.p3" in protected operation "PP2"
+prots2.adb:25:10: info: analyzing call to "P_Local" in context
+prots2.ads:8:17: info: aspect Always_Terminates on "PP1" has been proved, subprogram will terminate
+prots2.ads:8:17: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "Prots.Po" must be >= the priority of the caller "Prots2.Po.Pp1" in the call chain "Prots2.Po.Pp1" -> "Proxy.Proc1" -> "Prots.P1" -> "Prots.Po.Set_Value"]
+prots2.ads:10:17: info: aspect Always_Terminates on "PP2" has been proved, subprogram will terminate
+prots2.ads:12:17: info: aspect Always_Terminates on "PP3" has been proved, subprogram will terminate
+prots2.ads:12:17: info: ceiling priority protocol is respected (CVC5: 1 VC)
+proxy.ads:6:14: warning: subprogram "Proc2" has no effect

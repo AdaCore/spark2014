@@ -180,6 +180,7 @@ package body Flow_Generated_Globals.Partial is
       Nonblocking        : Boolean;
       Entry_Calls        : Entry_Call_Sets.Set;
       Tasking            : Tasking_Info;
+      Tasking_Ext        : Tasking_Info_Ext;
       Calls_Current_Task : Boolean;
       Calls_Via_Access   : Boolean;
       --  Only meaningfull only for entries, functions and procedures and
@@ -558,6 +559,7 @@ package body Flow_Generated_Globals.Partial is
 
       --  Deal with tasking-related stuff
       Contr.Tasking := FA.Tasking;
+      Contr.Tasking_Ext := FA.Tasking_Ext;
       Contr.Entry_Calls := FA.Entries;
 
       return Contr;
@@ -825,7 +827,7 @@ package body Flow_Generated_Globals.Partial is
          --  (because such calls are volatile and they would occur in an
          --  interfering context).
          pragma Assert (Contr.Tasking (Suspends_On).Is_Empty);
-         pragma Assert (Contr.Tasking (Locks).Is_Empty);
+         pragma Assert (Contr.Tasking_Ext.Is_Empty);
          pragma Assert (Contr.Entry_Calls.Is_Empty);
 
       --  Otherwise, fill in dummy values
@@ -1202,8 +1204,8 @@ package body Flow_Generated_Globals.Partial is
       -------------------
 
       procedure Collect_Calls (Expr : Node_Id) is
-         Funcalls : Call_Sets.Set;
-         Unused   : Tasking_Info;
+         Funcalls   : Call_Sets.Set;
+         Unused_Ext : Tasking_Info_Ext;
       begin
          Pick_Generated_Info
            (Expr,
@@ -1211,7 +1213,7 @@ package body Flow_Generated_Globals.Partial is
             Function_Calls     => Funcalls,
             Indirect_Calls     => Indirect_Calls,
             Proof_Dependencies => Proof_Dependencies,
-            Tasking            => Unused,
+            Tasking_Ext        => Unused_Ext,
             Generating_Globals => True);
 
          for Call of Funcalls loop
@@ -2713,6 +2715,8 @@ package body Flow_Generated_Globals.Partial is
          GG_Register_Calls
            (E, Contr.Proof_Dependencies, EK_Proof_Dependencies);
 
+         GG_Register_Locking_Calls (E, Contr.Tasking_Ext);
+
          GG_Register_Global_Info
            (E                 => E,
             Local             => not Is_Visible_From_Other_Units (E),
@@ -2734,7 +2738,8 @@ package body Flow_Generated_Globals.Partial is
             Nonblocking       => Contr.Nonblocking,
             Calls_Via_Access  => Contr.Calls_Via_Access,
             Entries_Called    => Contr.Entry_Calls,
-            Tasking           => Contr.Tasking);
+            Tasking           => Contr.Tasking,
+            Tasking_Ext       => Contr.Tasking_Ext);
       end if;
 
    end Write_Contracts_To_ALI;

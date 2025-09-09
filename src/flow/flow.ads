@@ -22,6 +22,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers;
+use type Ada.Containers.Hash_Type;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
@@ -117,12 +118,12 @@ package Flow is
         Hash                => Hash,
         Equivalent_Elements => "=");
 
-   type Tasking_Info_Kind is
-     (Entry_Calls, Suspends_On, Unsynch_Accesses, Locks);
+   type Tasking_Info_Kind is (Entry_Calls, Suspends_On, Unsynch_Accesses);
    pragma Ordered (Tasking_Info_Kind);
    --  Tasking-related information collected for subprograms, entries, tasks
-   --  and package elaborations. Used both for ownership (aka. exclusivity)
-   --  checks and for ceiling priority protocol checks.
+   --  and package elaborations. Used for ownership (aka. exclusivity) checks.
+   --  For the ceiling priority protocol checks a separate extended data
+   --  structure is used (see Tasking_Info_Ext).
 
    subtype Tasking_Owning_Kind is
      Tasking_Info_Kind
@@ -135,9 +136,45 @@ package Flow is
    --  Note: it is intentionally defined with range and not with
    --  Static_Predicate to allow its use as an array index.
 
-   type Tasking_Info is array (Suspends_On .. Locks) of Node_Sets.Set;
+   type Tasking_Info is
+     array (Suspends_On .. Unsynch_Accesses) of Node_Sets.Set;
    --  Named array type for sets of nodes related to tasking. The nodes
    --  represent library-level objects.
+
+   type Locking_Target is record
+      Object : Entity_Id;
+      Typ    : Entity_Id;
+   end record;
+   --  An object-protected type pair. See Locking_Target_Maps for more details.
+
+   function Hash (Key : Locking_Target) return Ada.Containers.Hash_Type
+   is (Node_Hash (Key.Object) xor (Node_Hash (Key.Typ) * 1009));
+   --  Hash function needed to instantiate container package
+
+   package Locking_Target_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Locking_Target,
+        Element_Type    => Entity_Id,
+        Hash            => Hash,
+        Equivalent_Keys => "=");
+   --  Map from locked object-type pairs to the locking calls:
+   --
+   --  * Map key - Locked object and type. For non-composite protected objects
+   --    there will be only a single such pair - the protected object and its
+   --    type. However, for objects having a composite type object-type pairs
+   --    with all the different different protected (leaf) types are tracked.
+   --  * Map element - A protected operation that belongs to the protected type
+   --    referenced in the key and that is directly called from the currently
+   --    analyzed entity. If there are several such operations, then it is
+   --    sufficient to track only one since their priority in SPARK is
+   --    determined by the enclosing protected type.
+
+   subtype Tasking_Info_Ext is Locking_Target_Maps.Map;
+   --  This structure is used for storing Phase 1 information related to
+   --  ceiling locking checks. In the future similar information might be
+   --  needed for other tasking checks as well. So, this type could be either
+   --  extended to other tasking kinds (like those in Tasking_Info) or the
+   --  latter could be rearranged into an array of maps.
 
    type Flow_Analysis_Graphs_Root
      (Kind               : Analyzed_Subject_Kind := Kind_Subprogram;
@@ -232,6 +269,9 @@ package Flow is
 
       Tasking : Tasking_Info;
       --  Tasking-related information collected in phase 1
+
+      Tasking_Ext : Tasking_Info_Ext;
+      --  Extra tasking-related information collected in phase 1
 
       Is_Generative : Boolean;
       --  True if we do not have a global contract

@@ -1625,7 +1625,7 @@ package body Flow.Control_Flow_Graph is
          Function_Calls     => Funcalls,
          Indirect_Calls     => Indcalls,
          Proof_Dependencies => FA.Proof_Dependencies,
-         Tasking            => FA.Tasking,
+         Tasking_Ext        => FA.Tasking_Ext,
          Generating_Globals => FA.Generating_Globals);
 
       Process_Reclamation_Functions (Etype (Name (N)), FA.Proof_Dependencies);
@@ -1957,7 +1957,7 @@ package body Flow.Control_Flow_Graph is
          Function_Calls     => Funcalls,
          Indirect_Calls     => Indcalls,
          Proof_Dependencies => FA.Proof_Dependencies,
-         Tasking            => FA.Tasking,
+         Tasking_Ext        => FA.Tasking_Ext,
          Generating_Globals => FA.Generating_Globals);
 
       --  We have a vertex V for the case statement itself
@@ -2119,7 +2119,7 @@ package body Flow.Control_Flow_Graph is
             Function_Calls     => Funcalls,
             Indirect_Calls     => Indcalls,
             Proof_Dependencies => FA.Proof_Dependencies,
-            Tasking            => FA.Tasking,
+            Tasking_Ext        => FA.Tasking_Ext,
             Generating_Globals => FA.Generating_Globals);
 
          Add_Vertex
@@ -2211,7 +2211,7 @@ package body Flow.Control_Flow_Graph is
          Function_Calls     => Funcalls,
          Indirect_Calls     => Indcalls,
          Proof_Dependencies => FA.Proof_Dependencies,
-         Tasking            => FA.Tasking,
+         Tasking_Ext        => FA.Tasking_Ext,
          Generating_Globals => FA.Generating_Globals);
 
       Add_Vertex
@@ -2290,7 +2290,7 @@ package body Flow.Control_Flow_Graph is
             Function_Calls     => Funcalls,
             Indirect_Calls     => Indcalls,
             Proof_Dependencies => FA.Proof_Dependencies,
-            Tasking            => FA.Tasking,
+            Tasking_Ext        => FA.Tasking_Ext,
             Generating_Globals => FA.Generating_Globals);
 
          Add_Vertex
@@ -2596,7 +2596,7 @@ package body Flow.Control_Flow_Graph is
          Function_Calls     => Funcalls,
          Indirect_Calls     => Indcalls,
          Proof_Dependencies => FA.Proof_Dependencies,
-         Tasking            => FA.Tasking,
+         Tasking_Ext        => FA.Tasking_Ext,
          Generating_Globals => FA.Generating_Globals);
 
       --  Disable warnings on the if statement itself when the condition is
@@ -2718,7 +2718,7 @@ package body Flow.Control_Flow_Graph is
                   Function_Calls     => Funcalls,
                   Indirect_Calls     => Indcalls,
                   Proof_Dependencies => FA.Proof_Dependencies,
-                  Tasking            => FA.Tasking,
+                  Tasking_Ext        => FA.Tasking_Ext,
                   Generating_Globals => FA.Generating_Globals);
 
                --  Disable warnings on the elsif statement itself when the
@@ -3193,7 +3193,7 @@ package body Flow.Control_Flow_Graph is
             Function_Calls     => Funcalls,
             Indirect_Calls     => Indcalls,
             Proof_Dependencies => FA.Proof_Dependencies,
-            Tasking            => FA.Tasking,
+            Tasking_Ext        => FA.Tasking_Ext,
             Generating_Globals => FA.Generating_Globals);
 
          Add_Vertex
@@ -3273,7 +3273,7 @@ package body Flow.Control_Flow_Graph is
             Function_Calls     => Funcalls,
             Indirect_Calls     => Indcalls,
             Proof_Dependencies => FA.Proof_Dependencies,
-            Tasking            => FA.Tasking,
+            Tasking_Ext        => FA.Tasking_Ext,
             Generating_Globals => FA.Generating_Globals);
 
          Add_Vertex
@@ -3979,7 +3979,7 @@ package body Flow.Control_Flow_Graph is
             Function_Calls     => Funcalls,
             Indirect_Calls     => Indcalls,
             Proof_Dependencies => FA.Proof_Dependencies,
-            Tasking            => FA.Tasking,
+            Tasking_Ext        => FA.Tasking_Ext,
             Generating_Globals => FA.Generating_Globals);
 
          Add_Vertex
@@ -4560,7 +4560,7 @@ package body Flow.Control_Flow_Graph is
             Function_Calls     => Funcalls,
             Indirect_Calls     => Indcalls,
             Proof_Dependencies => FA.Proof_Dependencies,
-            Tasking            => FA.Tasking,
+            Tasking_Ext        => FA.Tasking_Ext,
             Generating_Globals => FA.Generating_Globals);
 
          Add_Vertex
@@ -4602,6 +4602,7 @@ package body Flow.Control_Flow_Graph is
       --  Start of processing for Do_Object_Declaration
 
    begin
+
       --  Task creation and activation in a protected action are potentially
       --  blocking, but in SPARK task types are only allowed when the Ravenscar
       --  profile is active and in the Ravenscar task objects are only allowed
@@ -4736,7 +4737,7 @@ package body Flow.Control_Flow_Graph is
                Function_Calls     => Funcalls,
                Indirect_Calls     => Indcalls,
                Proof_Dependencies => FA.Proof_Dependencies,
-               Tasking            => FA.Tasking,
+               Tasking_Ext        => FA.Tasking_Ext,
                Generating_Globals => FA.Generating_Globals);
 
             if No (Alias) and then RHS_Split_Useful (E, Expr, FA.B_Scope) then
@@ -4886,7 +4887,7 @@ package body Flow.Control_Flow_Graph is
                Function_Calls     => Funcalls,
                Indirect_Calls     => Indcalls,
                Proof_Dependencies => FA.Proof_Dependencies,
-               Tasking            => FA.Tasking,
+               Tasking_Ext        => FA.Tasking_Ext,
                Generating_Globals => FA.Generating_Globals);
 
             for F of Flatten_Variable (E, FA.B_Scope) loop
@@ -4956,7 +4957,7 @@ package body Flow.Control_Flow_Graph is
                      Function_Calls     => Funcalls,
                      Indirect_Calls     => Indcalls,
                      Proof_Dependencies => FA.Proof_Dependencies,
-                     Tasking            => FA.Tasking,
+                     Tasking_Ext        => FA.Tasking_Ext,
                      Generating_Globals => FA.Generating_Globals);
 
                   Add_Vertex
@@ -5498,7 +5499,7 @@ package body Flow.Control_Flow_Graph is
             Function_Calls     => Funcalls,
             Indirect_Calls     => Indcalls,
             Proof_Dependencies => FA.Proof_Dependencies,
-            Tasking            => FA.Tasking,
+            Tasking_Ext        => FA.Tasking_Ext,
             Generating_Globals => FA.Generating_Globals);
 
          --  Syntax for pragmas relevant to flow is:
@@ -5607,7 +5608,7 @@ package body Flow.Control_Flow_Graph is
             Function_Calls     => Funcalls,
             Indirect_Calls     => Indcalls,
             Proof_Dependencies => FA.Proof_Dependencies,
-            Tasking            => FA.Tasking,
+            Tasking_Ext        => FA.Tasking_Ext,
             Generating_Globals => FA.Generating_Globals);
 
          Vars :=
@@ -5919,7 +5920,7 @@ package body Flow.Control_Flow_Graph is
                Function_Calls     => Funcalls,
                Indirect_Calls     => Indcalls,
                Proof_Dependencies => FA.Proof_Dependencies,
-               Tasking            => FA.Tasking,
+               Tasking_Ext        => FA.Tasking_Ext,
                Generating_Globals => FA.Generating_Globals);
 
             Ctx.Folded_Function_Checks.Append (Pref);
@@ -6203,8 +6204,7 @@ package body Flow.Control_Flow_Graph is
                     (Prefix => Prefix (Name (N)), Entr => Called_Thing));
             end if;
 
-            FA.Tasking (Locks).Include
-              (Get_Enclosing_Object (Prefix (Name (N))));
+            Register_Protected_Calls (N, FA.Tasking_Ext);
          end if;
 
          --  Check for suspending on a suspension object
@@ -6238,7 +6238,7 @@ package body Flow.Control_Flow_Graph is
          Function_Calls     => Funcalls,
          Indirect_Calls     => Indcalls,
          Proof_Dependencies => FA.Proof_Dependencies,
-         Tasking            => FA.Tasking,
+         Tasking_Ext        => FA.Tasking_Ext,
          Generating_Globals => FA.Generating_Globals);
 
       Add_Vertex
@@ -6322,7 +6322,7 @@ package body Flow.Control_Flow_Graph is
             Function_Calls     => Funcalls,
             Indirect_Calls     => Indcalls,
             Proof_Dependencies => FA.Proof_Dependencies,
-            Tasking            => FA.Tasking,
+            Tasking_Ext        => FA.Tasking_Ext,
             Generating_Globals => FA.Generating_Globals);
 
          Add_Vertex
@@ -6451,7 +6451,7 @@ package body Flow.Control_Flow_Graph is
                Function_Calls     => Funcalls,
                Indirect_Calls     => Indcalls,
                Proof_Dependencies => FA.Proof_Dependencies,
-               Tasking            => FA.Tasking,
+               Tasking_Ext        => FA.Tasking_Ext,
                Generating_Globals => FA.Generating_Globals);
 
             Add_Vertex
@@ -6724,7 +6724,7 @@ package body Flow.Control_Flow_Graph is
             Function_Calls     => Funcalls,
             Indirect_Calls     => Indcalls,
             Proof_Dependencies => FA.Proof_Dependencies,
-            Tasking            => FA.Tasking,
+            Tasking_Ext        => FA.Tasking_Ext,
             Generating_Globals => FA.Generating_Globals);
 
          Add_Vertex
@@ -6836,7 +6836,7 @@ package body Flow.Control_Flow_Graph is
                   Function_Calls     => Funcalls,
                   Indirect_Calls     => Indcalls,
                   Proof_Dependencies => FA.Proof_Dependencies,
-                  Tasking            => FA.Tasking,
+                  Tasking_Ext        => FA.Tasking_Ext,
                   Generating_Globals => FA.Generating_Globals);
 
                Add_Vertex
@@ -8727,7 +8727,6 @@ package body Flow.Control_Flow_Graph is
                if not Atr.In_Nested_Package then
 
                   for SC of Atr.Subprogram_Calls loop
-
                      --  Only pick calls that genuinely appear as direct in
                      --  the source code.
 

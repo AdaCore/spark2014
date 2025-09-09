@@ -1915,8 +1915,6 @@ package body Flow is
    ----------
 
    function Hash (E : Entry_Call) return Ada.Containers.Hash_Type is
-      use type Ada.Containers.Hash_Type;
-
    begin
       --  ??? constants for hashing are picked from the air
       return

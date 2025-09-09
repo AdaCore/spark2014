@@ -47,7 +47,7 @@ package Flow_Utility is
       Function_Calls     : in out Call_Sets.Set;
       Indirect_Calls     : in out Node_Sets.Set;
       Proof_Dependencies : in out Node_Sets.Set;
-      Tasking            : in out Tasking_Info;
+      Tasking_Ext        : in out Tasking_Info_Ext;
       Generating_Globals : Boolean)
    with
      Pre  => Present (N),
@@ -858,6 +858,16 @@ package Flow_Utility is
       return Flow_Id_Sets.Set
    with Pre => Is_Subprogram (E);
    --  Return global outputs used in the Program_Exit expression; for flow
+
+   procedure Register_Protected_Calls
+     (Callsite : Node_Id; Tasking_Ext : in out Tasking_Info_Ext)
+   with Pre => Is_External_Call (Callsite);
+   --  Register protected calls made from a given Callsite with the granularity
+   --  of involved protected types. Most objects have just one associated
+   --  protected type. However, record objects may have several protected
+   --  components with different types. From each involved protected type we'll
+   --  register just the first seen protected operation since that is
+   --  sufficient for the ceiling priority checks.
 
 private
 

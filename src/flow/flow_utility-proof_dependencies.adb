@@ -47,9 +47,9 @@ package body Flow_Utility.Proof_Dependencies is
       -------------------------
 
       procedure Process_Expressions (L : Node_Lists.List) is
-         Funcalls : Call_Sets.Set;
-         Indcalls : Node_Sets.Set;
-         Unused   : Tasking_Info;
+         Funcalls   : Call_Sets.Set;
+         Indcalls   : Node_Sets.Set;
+         Unused_Ext : Tasking_Info_Ext;
       begin
          for Expr of L loop
             Pick_Generated_Info
@@ -58,7 +58,7 @@ package body Flow_Utility.Proof_Dependencies is
                Funcalls,
                Indcalls,
                Proof_Dependencies,
-               Unused,
+               Unused_Ext,
                Generating_Globals);
          end loop;
 

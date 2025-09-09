@@ -23,10 +23,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;
+use type Ada.Containers.Count_Type;
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Atree;
 with Errout_Wrapper;                 use Errout_Wrapper;
+with Erroutc;                        use Erroutc;
 with Exp_Util;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
 with Flow_Generated_Globals;         use Flow_Generated_Globals;
@@ -37,6 +40,7 @@ with GNAT.Source_Info;
 with Gnat2Why.Data_Decomposition;    use Gnat2Why.Data_Decomposition;
 with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;                  use Gnat2Why.Expr;
+with Gnat2Why_Opts;                  use Gnat2Why_Opts;
 with Gnat2Why.Tables;                use Gnat2Why.Tables;
 with Gnat2Why.Unchecked_Conversion;  use Gnat2Why.Unchecked_Conversion;
 with Gnat2Why_Args;
@@ -620,6 +624,105 @@ package body Gnat2Why.Subprograms is
 
       end Self_Priority;
 
+      function To_String (Trace : Name_Lists.List) return String
+      with Pre => not Trace.Is_Empty;
+      --  Helper to generate a string for the call trace.
+
+      function Detailed_Msg
+        (Locked_Obj : Entity_Name; Trace : Name_Lists.List) return String
+      with Pre => not Trace.Is_Empty;
+      --  Generates contents for the details section for a ceiling priority
+      --  check message.
+      --
+      --  Typically Trace has at least 2 elements - the source and target
+      --  operations. Exceptionally, in the case of recursion it will have
+      --  length 1. This function must support such traces as well. However,
+      --  such traces will typically not appear in the output due to other
+      --  constraints.
+
+      ---------------
+      -- To_String --
+      ---------------
+
+      function To_String (Trace : Name_Lists.List) return String is
+         Result         : Unbounded_String;
+         Position       : Ada.Containers.Count_Type := 1;
+         In_Elaboration : Boolean := False;
+         Split_Lines    : constant Boolean :=
+           Trace.Length > 2 and then Gnat2Why_Args.Output_Mode in GPO_Pretty;
+      begin
+
+         --  Typically the chain elements are subprograms. However, in call
+         --  traces involving a "main" subprogram and elaboration code of
+         --  withed units the 2nd element of a chain is a package.
+         --
+         --  Note: This might be made more exact by checking if the entity is a
+         --  package. In general the call trace can include the elaboration of
+         --  multiple packages. However, currently only the package whose
+         --  elaboration contains the actual call is provided in the trace at
+         --  position 2. (That's because the withed units are flattened to a
+         --  closure.)
+
+         if Trace.Length >= 2
+           and then Top_Level_Packages.Contains
+                      (Trace (Name_Lists.Next (Trace.First)))
+         then
+            In_Elaboration := True;
+         end if;
+
+         --  Build the message string
+
+         if Split_Lines then
+            Append (Result, ':' & ASCII.LF & "        ");
+         else
+            Append (Result, ' ');
+         end if;
+
+         for Call of Trace loop
+            if Position > 1 then
+               if Split_Lines then
+                  Append
+                    (Result, ASCII.LF & SGR_Note & "        -> " & SGR_Reset);
+               else
+                  Append (Result, " -> ");
+               end if;
+            end if;
+
+            Append (Result, '"' & Pretty_Print (Call) & '"');
+
+            if In_Elaboration and then Position <= 2 then
+               Append (Result, " (elaboration)");
+            end if;
+            Position := Position + 1;
+         end loop;
+
+         return To_String (Result);
+      end To_String;
+
+      ------------------
+      -- Detailed_Msg --
+      ------------------
+
+      function Detailed_Msg
+        (Locked_Obj : Entity_Name; Trace : Name_Lists.List) return String
+      is
+         Source renames Trace.First_Element;
+
+         Result : Unbounded_String;
+      begin
+         Append (Result, "ceiling priority of the protected object """);
+         Append (Result, Pretty_Print (Locked_Obj));
+         Append (Result, """ must be >= the priority of the");
+         Append (Result, " caller """);
+         Append (Result, Pretty_Print (Source));
+         Append (Result, """ in the call");
+         if Trace.Length > 2 then
+            Append (Result, " chain");
+         end if;
+         Append (Result, To_String (Trace));
+         return To_String (Result);
+      end Detailed_Msg;
+
       --  Start of processing for Check_Ceiling_Protocol
 
    begin
@@ -631,74 +734,124 @@ package body Gnat2Why.Subprograms is
       end if;
 
       declare
-         Prio : constant W_Term_Id := Self_Priority;
-         S    : W_Prog_Id := +Void;
-      begin
+         Self_Prio : constant W_Term_Id := Self_Priority;
+         S         : W_Prog_Id := +Void;
          --  Placeholder for a Why3 sequence that will represent the check
-         for Obj_Name of Directly_Called_Protected_Objects (E) loop
 
-            --  Create a check that compares priorities of the task and of a
-            --  single protected component of an object. See ARM, D.3 (7-11)
-            --  for details.
+         procedure Create_Check
+           (Obj_Name : Entity_Name;
+            Obj_Prio : Priority_Value;
+            Trace    : Name_Lists.List);
+         --  Create check for accessing protected object Obj_Name with priority
+         --  Obj_Prio via call chain Trace.
 
-            for Obj_Prio of Component_Priorities (Obj_Name) loop
+         ------------------
+         -- Create_Check --
+         ------------------
 
-               declare
-                  Obj_Prio_Expr : constant W_Term_Id :=
-                    (case Obj_Prio.Kind is
-                       --  ??? if type of the component is visible we should
-                       --  try to transform the expression.
-                       when Nonstatic              =>
-                         +New_Attribute_Expr
-                            (Domain => EW_Term,
-                             Ty     => RTE (RE_Any_Priority),
-                             Attr   => Attribute_First,
-                             Params => Params),
+         procedure Create_Check
+           (Obj_Name : Entity_Name;
+            Obj_Prio : Priority_Value;
+            Trace    : Name_Lists.List) is
+         begin
+            --  Create a check that compares the priority of the calling
+            --  context and the locked object or protected component. See ARM,
+            --  D.3 (7-11) for details.
 
-                       when Static                 =>
-                         New_Integer_Constant
-                           (Value => UI_From_Int (Obj_Prio.Value)),
+            declare
+               Obj_Prio_Expr : constant W_Term_Id :=
+                 (case Obj_Prio.Kind is
+                    --  ??? if type of the component is visible we
+                    --  should try to transform the expression.
+                    when Nonstatic              =>
+                      +New_Attribute_Expr
+                         (Domain => EW_Term,
+                          Ty     => RTE (RE_Any_Priority),
+                          Attr   => Attribute_First,
+                          Params => Params),
 
-                       when Default_Prio           =>
-                         +New_Attribute_Expr
-                            (Domain => EW_Term,
-                             Ty     => RTE (RE_Priority),
-                             Attr   => Attribute_Last,
-                             Params => Params),
+                    when Static                 =>
+                      New_Integer_Constant
+                        (Value => UI_From_Int (Obj_Prio.Value)),
 
-                       when Default_Interrupt_Prio =>
-                         +New_Attribute_Expr
-                            (Domain => EW_Term,
-                             Ty     => RTE (RE_Interrupt_Priority),
-                             Attr   => Attribute_First,
-                             Params => Params),
+                    when Default_Prio           =>
+                      +New_Attribute_Expr
+                         (Domain => EW_Term,
+                          Ty     => RTE (RE_Priority),
+                          Attr   => Attribute_Last,
+                          Params => Params),
 
-                       when Last_Interrupt_Prio    =>
-                         +New_Attribute_Expr
-                            (Domain => EW_Term,
-                             Ty     => RTE (RE_Interrupt_Priority),
-                             Attr   => Attribute_Last,
-                             Params => Params));
+                    when Default_Interrupt_Prio =>
+                      +New_Attribute_Expr
+                         (Domain => EW_Term,
+                          Ty     => RTE (RE_Interrupt_Priority),
+                          Attr   => Attribute_First,
+                          Params => Params),
 
-                  Pred : constant W_Pred_Id :=
-                    New_Comparison
-                      (Symbol =>
-                         (case Obj_Prio.Kind is
-                            when Nonstatic => Why_Eq,
-                            when others    => Int_Infix_Le),
-                       Left   => Prio,
-                       Right  => Obj_Prio_Expr);
+                    when Last_Interrupt_Prio    =>
+                      +New_Attribute_Expr
+                         (Domain => EW_Term,
+                          Ty     => RTE (RE_Interrupt_Priority),
+                          Attr   => Attribute_Last,
+                          Params => Params));
 
-                  Check : constant W_Prog_Id :=
-                    New_Located_Assert
-                      (Ada_Node => E,
-                       Pred     => Pred,
-                       Reason   => VC_Ceiling_Priority_Protocol,
-                       Kind     => EW_Check);
-               begin
-                  Append (S, Check);
-               end;
-            end loop;
+               Pred : constant W_Pred_Id :=
+                 New_Comparison
+                   (Symbol =>
+                      (case Obj_Prio.Kind is
+                         when Nonstatic => Why_Eq,
+                         when others    => Int_Infix_Le),
+                    Left   => Self_Prio,
+                    Right  => Obj_Prio_Expr);
+
+               Info  : Check_Info_Type;
+               Check : W_Prog_Id;
+
+            begin
+               Info :=
+                 New_Check_Info
+                   (Details =>
+                      Detailed_Msg (Locked_Obj => Obj_Name, Trace => Trace));
+
+               Check :=
+                 New_Located_Assert
+                   (Ada_Node   => E,
+                    Pred       => Pred,
+                    Reason     => VC_Ceiling_Priority_Protocol,
+                    Kind       => EW_Check,
+                    Check_Info => Info);
+               Append (S, Check);
+            end;
+         end Create_Check;
+
+      begin
+
+         --  Loop over the protected objects that are reachable from the caller
+
+         for Locking of Directly_Called_Protected_Objects (E) loop
+
+            --  Loop over the protected operations that are called from the
+            --  target protected object.
+
+            declare
+               Op : Entity_Name renames Locking.Trace.Last_Element;
+
+               Obj_Type : constant Entity_Name :=
+                 Enclosing_Protected_Type (Op);
+               --  Type of the protected operation in the locked object or its
+               --  component.
+
+               Priority : constant Priority_Value :=
+                 Protected_Type_Priority (Obj_Type);
+               --  Ceiling priority of the called protected operation
+
+            begin
+
+               Create_Check
+                 (Obj_Name => Locking.Obj,
+                  Trace    => Locking.Trace,
+                  Obj_Prio => Priority);
+            end;
          end loop;
 
          return S;
