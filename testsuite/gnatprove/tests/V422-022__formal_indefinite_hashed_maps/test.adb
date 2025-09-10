@@ -1,5 +1,3 @@
-pragma Ignore_Pragma (Assertion_Policy);
-
 with SPARK.Containers.Formal.Unbounded_Hashed_Maps;
 with Ada.Strings.Hash;
 
