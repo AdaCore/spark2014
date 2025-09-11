@@ -2360,6 +2360,7 @@ package body Flow.Control_Flow_Graph is
       Ctx : in out Context)
    is
       V            : Flow_Graphs.Vertex_Id;
+      Implicit_Ret : Flow_Graphs.Vertex_Id;
       Ret_Object_L : constant List_Id := Return_Object_Declarations (N);
       Ret_Entity   : constant Node_Id := Return_Statement_Entity (N);
       Ret_Object   : constant Entity_Id := Get_Return_Object (N);
@@ -2416,6 +2417,27 @@ package body Flow.Control_Flow_Graph is
       --  declared object.
 
       if not CM (Union_Id (N)).Standard_Exits.Is_Empty then
+
+         --  Add dummy vertex which combines all the standard exits from the
+         --  Handled_Statement_Sequence and has just one exit, so that the
+         --  subsequent vertices which reclaim borrowers form just a straight
+         --  single-entry -> single-exit sequence
+
+         Add_Vertex (FA, Null_Node_Attributes, V);
+
+         --  Link the standard exits of declarations + statements to the
+         --  standard entry of this dummy vertex.
+
+         Linkup (FA, CM (Union_Id (N)).Standard_Exits, V);
+
+         --  Process cleanup actions, if any
+
+         for Decl of reverse Ctx.Borrowers loop
+            Reclaim_Borrower (Decl, FA, Last => V);
+         end loop;
+
+         --  Add implicit return vertex and link it after cleanup actions
+
          Add_Vertex
            (FA,
             Direct_Mapping_Id (Ret_Entity),
@@ -2426,23 +2448,13 @@ package body Flow.Control_Flow_Graph is
                Object_Returned => Ret_Object,
                Vertex_Ctx      => Ctx.Vertex_Ctx,
                E_Loc           => Ret_Entity),
-            V);
+            Implicit_Ret);
 
-         --  We link the standard exits of declarations + statements to the
-         --  standard entry of the implicit return statement.
-         Linkup (FA, CM (Union_Id (N)).Standard_Exits, V);
-
-         --  When borrowers go out of scope, we pop them from the stack and
-         --  assign back to the borrowed objects. This way we keep track of
-         --  anything that happened while they were borrowed.
-
-         for Decl of reverse Ctx.Borrowers loop
-            Reclaim_Borrower (Decl, FA, Last => V);
-         end loop;
+         Linkup (FA, V, Implicit_Ret);
 
          --  We link the implicit return statement to the helper end vertex
 
-         Linkup (FA, V, FA.Helper_End_Vertex);
+         Linkup (FA, Implicit_Ret, FA.Helper_End_Vertex);
 
          --  The extended return statement as a whole doesn't return normally
 
@@ -6343,10 +6355,9 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      V          : Flow_Graphs.Vertex_Id;
-      Funcalls   : Call_Sets.Set;
-      Indcalls   : Node_Sets.Set;
-      Ret_Object : Entity_Id;
+      V        : Flow_Graphs.Vertex_Id;
+      Funcalls : Call_Sets.Set;
+      Indcalls : Node_Sets.Set;
 
       Expr : constant Node_Id := Expression (N);
 
@@ -6369,22 +6380,9 @@ package body Flow.Control_Flow_Graph is
          else
             pragma Assert (Ekind (FA.Spec_Entity) = E_Function);
 
-            Ret_Object := Get_Return_Object (Ctx.Extended_Return);
-
-            Add_Vertex
-              (FA => FA,
-               F  => Direct_Mapping_Id (N),
-               A  =>
-                 Make_Extended_Return_Attributes
-                   (Var_Def         =>
-                      Flatten_Variable (FA.Spec_Entity, FA.B_Scope),
-                    Var_Use         =>
-                      Flatten_Variable (Ret_Object, FA.B_Scope),
-                    Object_Returned => Ret_Object,
-                    Vertex_Ctx      => Ctx.Vertex_Ctx,
-                    E_Loc           =>
-                      Return_Statement_Entity (Ctx.Extended_Return)),
-               V  => V);
+            --  Add dummy vertex as a start for a sequence of finally
+            --  statements and borrower reclamations.
+            Add_Vertex (FA, Null_Node_Attributes, V);
          end if;
       else
          --  We have a function return
@@ -6429,6 +6427,40 @@ package body Flow.Control_Flow_Graph is
       for Decl of reverse Ctx.Borrowers loop
          Reclaim_Borrower (Decl, FA, Last => V);
       end loop;
+
+      --  When cleanup actions are done, create an implicit return for a simple
+      --  return statement within an extended return statement.
+
+      if No (Expr) and then Present (Ctx.Extended_Return) then
+         declare
+            Implicit_Ret : Flow_Graphs.Vertex_Id;
+            Ret_Object   : constant Entity_Id :=
+              Get_Return_Object (Ctx.Extended_Return);
+         begin
+            Add_Vertex
+              (FA => FA,
+               F  => Direct_Mapping_Id (N),
+               A  =>
+                 Make_Extended_Return_Attributes
+                   (Var_Def         =>
+                      Flatten_Variable (FA.Spec_Entity, FA.B_Scope),
+                    Var_Use         =>
+                      Flatten_Variable (Ret_Object, FA.B_Scope),
+                    Object_Returned => Ret_Object,
+                    Vertex_Ctx      => Ctx.Vertex_Ctx,
+                    E_Loc           =>
+                      Return_Statement_Entity (Ctx.Extended_Return)),
+               V  => Implicit_Ret);
+
+            --  Implicit return must be executed at the very end
+
+            Linkup (FA, From => V, To => Implicit_Ret);
+
+            --  And it becomes the last vertex of a sequence
+
+            V := Implicit_Ret;
+         end;
+      end if;
 
       --  Instead we link the last vertex directly to the helper end vertex
       Linkup (FA, From => V, To => FA.Helper_End_Vertex);
