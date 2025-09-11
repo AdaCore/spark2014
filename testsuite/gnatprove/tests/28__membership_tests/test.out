@@ -2,7 +2,6 @@ test.adb:12:32: info: initialization of "B" proved
 test.adb:18:12: info: initialization check proved (CVC5: 1 VC)
 test.adb:21:36: info: initialization of "B" proved
 test.adb:28:12: info: initialization check proved (CVC5: 1 VC)
-test.adb:28:12: info: initialization check proved (CVC5: 1 VC; Trivial: 3 VC)
 test.adb:31:33: info: initialization of "B" proved
 test.adb:37:12: medium: initialization check might fail (e.g. when X = (F => 0, G => ?, H => 0) and X.F'Initialized = True and X.G'Initialized = False and X.H'Initialized = True)
 test.adb:40:37: info: initialization of "B" proved
@@ -12,7 +11,6 @@ test.adb:57:33: info: initialization of "B" proved
 test.adb:60:04: warning: analyzing unreferenced procedure "Pred_OK_2" [unreferenced-procedure]
 test.adb:65:37: info: initialization of "B" proved
 test.adb:72:12: info: initialization check proved (CVC5: 1 VC)
-test.adb:72:12: info: initialization check proved (CVC5: 1 VC; Trivial: 3 VC)
 test.adb:72:17: info: initialization check proved (CVC5: 1 VC)
 test.adb:72:21: info: initialization check proved (CVC5: 1 VC)
 test.adb:75:38: info: initialization of "B" proved

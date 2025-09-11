@@ -67,3 +67,9 @@ sqrt_subcontract_weakness.adb:14:42: info: overflow check proved (CVC5: 4 VC)
 sqrt_subcontract_weakness.adb:17:13: medium: overflow check might fail, cannot prove upper bound for Y+Z (e.g. when Y = 4 and Z = Integer'Last-3) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 12 should mention Z]
 sqrt_subcontract_weakness.adb:18:13: info: overflow check proved (CVC5: 2 VC)
 sqrt_subcontract_weakness.adb:19:13: info: range check proved (CVC5: 2 VC)
+counterexample expected for check at sqrt_non_conformity.adb:13
+  trace at sqrt_non_conformity.adb:1 --> N = 3
+  trace at sqrt_non_conformity.adb:7 --> R = 3
+  trace at sqrt_non_conformity.adb:8 --> Y = 9
+  trace at sqrt_non_conformity.adb:9 --> Z = -5
+  trace at sqrt_non_conformity.adb:13 --> R = 2 and Y = 14

@@ -7,8 +7,8 @@ very_longs.adb:55:08: info: flow dependencies proved
 very_longs.adb:58:07: info: initialization of "L_Digit" proved
 very_longs.adb:59:07: info: initialization of "R_Digit" proved
 very_longs.adb:60:07: info: initialization of "Sum" proved
-very_longs.adb:62:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:62:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:62:26: info: length check proved (CVC5: 3 VC)
+very_longs.adb:62:29: info: length check proved (CVC5: 3 VC)
 very_longs.adb:64:36: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 very_longs.adb:65:48: info: index check proved (CVC5: 2 VC)
 very_longs.adb:66:48: info: index check proved (CVC5: 2 VC)
@@ -20,8 +20,8 @@ very_longs.adb:78:08: info: flow dependencies proved
 very_longs.adb:81:07: info: initialization of "L_Digit" proved
 very_longs.adb:82:07: info: initialization of "R_Digit" proved
 very_longs.adb:83:07: info: initialization of "Difference" proved
-very_longs.adb:85:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:85:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:85:26: info: length check proved (CVC5: 3 VC)
+very_longs.adb:85:29: info: length check proved (CVC5: 3 VC)
 very_longs.adb:87:36: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 very_longs.adb:88:51: info: index check proved (CVC5: 2 VC)
 very_longs.adb:89:51: info: index check proved (CVC5: 2 VC)
@@ -31,8 +31,8 @@ very_longs.adb:112:07: info: initialization of "Result" proved
 very_longs.adb:112:26: info: range check proved (CVC5: 2 VC)
 very_longs.adb:113:07: info: initialization of "Temp" proved
 very_longs.adb:115:21: info: assertion proved (CVC5: 1 VC)
-very_longs.adb:116:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:116:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:116:26: info: length check proved (CVC5: 3 VC)
+very_longs.adb:116:29: info: length check proved (CVC5: 3 VC)
 very_longs.adb:118:45: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 very_longs.adb:119:16: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 very_longs.adb:119:29: info: index check proved (CVC5: 2 VC)
@@ -45,8 +45,8 @@ very_longs.adb:131:07: info: initialization of "H_Digit" proved
 very_longs.adb:132:07: info: initialization of "L_Digit" proved
 very_longs.adb:133:07: info: initialization of "H_Okay" proved
 very_longs.adb:134:07: info: initialization of "L_Okay" proved
-very_longs.adb:136:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:136:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:136:26: info: length check proved (CVC5: 3 VC)
+very_longs.adb:136:29: info: length check proved (CVC5: 3 VC)
 very_longs.adb:139:34: info: range check proved (CVC5: 2 VC)
 very_longs.adb:140:29: info: range check proved (CVC5: 2 VC)
 very_longs.adb:143:13: info: loop invariant initialization proved (CVC5: 1 VC)
@@ -83,8 +83,8 @@ very_longs.adb:230:07: info: initialization of "L_Digit" proved
 very_longs.adb:231:07: info: initialization of "R_Digit" proved
 very_longs.adb:232:07: info: initialization of "Sum" proved
 very_longs.adb:233:07: info: initialization of "Carry" proved
-very_longs.adb:235:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:235:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:235:26: info: length check proved (CVC5: 3 VC)
+very_longs.adb:235:29: info: length check proved (CVC5: 3 VC)
 very_longs.adb:237:36: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 very_longs.adb:238:48: info: index check proved (CVC5: 2 VC)
 very_longs.adb:239:48: info: index check proved (CVC5: 2 VC)
@@ -96,8 +96,8 @@ very_longs.adb:250:07: info: initialization of "L_Digit" proved
 very_longs.adb:251:07: info: initialization of "R_Digit" proved
 very_longs.adb:252:07: info: initialization of "Difference" proved
 very_longs.adb:253:07: info: initialization of "Borrow" proved
-very_longs.adb:255:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:255:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:255:26: info: length check proved (CVC5: 3 VC)
+very_longs.adb:255:29: info: length check proved (CVC5: 3 VC)
 very_longs.adb:257:36: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 very_longs.adb:258:51: info: index check proved (CVC5: 2 VC)
 very_longs.adb:259:51: info: index check proved (CVC5: 2 VC)
@@ -110,8 +110,8 @@ very_longs.adb:279:07: info: initialization of "R_Digit" proved
 very_longs.adb:280:07: info: initialization of "T_Digit" proved
 very_longs.adb:281:07: info: initialization of "Temp" proved
 very_longs.adb:282:07: info: initialization of "Carry" proved
-very_longs.adb:285:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:285:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:285:26: info: length check proved (CVC5: 3 VC)
+very_longs.adb:285:29: info: length check proved (CVC5: 3 VC)
 very_longs.adb:288:36: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 very_longs.adb:290:39: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 very_longs.adb:291:51: info: index check proved (CVC5: 2 VC)
@@ -129,8 +129,8 @@ very_longs.adb:308:07: info: initialization of "R_Digit" proved
 very_longs.adb:309:07: info: initialization of "T_Digit" proved
 very_longs.adb:310:07: info: initialization of "Temp" proved
 very_longs.adb:311:07: info: initialization of "Carry" proved
-very_longs.adb:314:26: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:314:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:314:26: info: length check proved (CVC5: 3 VC)
+very_longs.adb:314:29: info: length check proved (CVC5: 3 VC)
 very_longs.adb:317:36: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 very_longs.adb:319:39: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 very_longs.adb:320:52: info: index check proved (CVC5: 2 VC)
@@ -160,8 +160,8 @@ very_longs.adb:383:33: info: initialization of "Result" proved
 very_longs.adb:385:11: info: flow dependencies proved
 very_longs.adb:389:10: info: initialization of "New_Overflow" proved
 very_longs.adb:390:10: info: initialization of "Overflow_Mask" proved
-very_longs.adb:392:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:392:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:392:29: info: length check proved (CVC5: 3 VC)
+very_longs.adb:392:32: info: length check proved (CVC5: 3 VC)
 very_longs.adb:394:44: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 very_longs.adb:395:60: info: index check proved (CVC5: 2 VC)
 very_longs.adb:396:19: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
@@ -255,10 +255,10 @@ very_longs.adb:539:29: info: index check proved (CVC5: 2 VC)
 very_longs.adb:539:29: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:539:53: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:539:53: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 518 should mention J and N in a precondition]
-very_longs.adb:544:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:544:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:545:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-very_longs.adb:545:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+very_longs.adb:544:29: info: length check proved (CVC5: 3 VC)
+very_longs.adb:544:32: info: length check proved (CVC5: 3 VC)
+very_longs.adb:545:29: info: length check proved (CVC5: 3 VC)
+very_longs.adb:545:32: info: length check proved (CVC5: 3 VC)
 very_longs.adb:548:12: medium: range check might fail, cannot prove upper bound for Number_Of_Digits(Divisor) [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (Number_Of_Digits(Divisor) <= Divisor_Digits_Count_Type'Last) to subprogram at very_longs.ads:65]
 very_longs.adb:549:28: info: range check proved (CVC5: 2 VC)
 very_longs.adb:552:25: info: precondition proved (CVC5: 1 VC)

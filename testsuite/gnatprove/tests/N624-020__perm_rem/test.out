@@ -1,7 +1,7 @@
 perm.adb:4:07: info: range check proved (CVC5: 2 VC)
 perm.adb:4:51: info: overflow check proved (CVC5: 2 VC)
 perm.adb:6:09: info: range check proved (CVC5: 4 VC)
-perm.adb:6:24: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+perm.adb:6:24: info: length check proved (CVC5: 3 VC)
 perm.adb:6:24: info: range check proved (CVC5: 2 VC)
 perm.adb:6:26: info: range check proved (CVC5: 4 VC)
 perm.adb:11:13: info: implicit aspect Always_Terminates on "Get_Witness" has been proved, subprogram will terminate

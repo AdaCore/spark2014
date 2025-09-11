@@ -1,0 +1,27 @@
+gen.adb:5:12: high: overflow check might fail, cannot prove upper bound for X + 1, in instantiation at gen2.ads:8, in instantiation at main.adb:13 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at gen.ads:5 should mention X in a precondition]
+gen.adb:5:12: high: overflow check might fail, cannot prove upper bound for X + 1, in instantiation at main.adb:4 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at gen.ads:5 should mention X in a precondition]
+gen.adb:5:12: high: overflow check might fail, cannot prove upper bound for X + 1, in instantiation at main.adb:6 (e.g. when X = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at gen.ads:5 should mention X in a precondition]
+gen.adb:5:12: high: range check might fail, cannot prove upper bound for X + 1, in instantiation at gen2.ads:7, in instantiation at main.adb:13 (e.g. when X = T'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at gen.ads:5 should mention X in a precondition]
+gen.adb:5:12: high: range check might fail, cannot prove upper bound for X + 1, in instantiation at main.adb:11 (e.g. when X = T'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at gen.ads:5 should mention X in a precondition]
+gen.ads:6:18: info: postcondition proved (CVC5: 1 VC), in instantiation at gen2.ads:7, in instantiation at main.adb:13
+gen.ads:6:18: info: postcondition proved (CVC5: 1 VC), in instantiation at gen2.ads:8, in instantiation at main.adb:13
+gen.ads:6:18: info: postcondition proved (CVC5: 1 VC), in instantiation at main.adb:11
+gen.ads:6:18: info: postcondition proved (CVC5: 1 VC), in instantiation at main.adb:4
+gen.ads:6:18: info: postcondition proved (CVC5: 1 VC), in instantiation at main.adb:6
+gen.ads:6:28: info: overflow check proved (CVC5: 2 VC), in instantiation at gen2.ads:8, in instantiation at main.adb:13
+gen.ads:6:28: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:4
+gen.ads:6:28: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:6
+gen2.adb:6:12: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:13
+gen2.ads:10:18: high: postcondition might fail, in instantiation at main.adb:13 (e.g. when X = 0 and X'Old = 0)
+======= expect only instance at line 4 =========
+gen.adb:5:12: high: overflow check might fail, cannot prove upper bound for X + 1, in instantiation at main.adb:4 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at gen.ads:5 should mention X in a precondition]
+======= expect only instance at line 6 =========
+gen.adb:5:12: high: overflow check might fail, cannot prove upper bound for X + 1, in instantiation at main.adb:6 (e.g. when X = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at gen.ads:5 should mention X in a precondition]
+======= expect only instance at line 11 =========
+gen.adb:5:12: high: range check might fail, cannot prove upper bound for X + 1, in instantiation at main.adb:11 (e.g. when X = T'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at gen.ads:5 should mention X in a precondition]
+======= expect only instance at line 13, instance line 7 =========
+gen.adb:5:12: high: range check might fail, cannot prove upper bound for X + 1, in instantiation at gen2.ads:7, in instantiation at main.adb:13 (e.g. when X = T'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at gen.ads:5 should mention X in a precondition]
+======= expect only instance at line 13, instance line 7 =========
+gen.adb:5:12: high: range check might fail, cannot prove upper bound for X + 1, in instantiation at gen2.ads:7, in instantiation at main.adb:13 (e.g. when X = T'Last) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at gen.ads:5 should mention X in a precondition]
+======= expect only instance at line 4 =========
+gen.adb:5:12: high: overflow check might fail, cannot prove upper bound for X + 1, in instantiation at main.adb:4 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at gen.ads:5 should mention X in a precondition]

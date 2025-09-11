@@ -116,7 +116,10 @@ package body Assumption_Types is
             JS_Base : constant JSON_Value := Get (V, Index);
          begin
             Sloc.Append
-              (Mk_Base_Sloc (Get (JS_Base, "file"), Get (JS_Base, "line")));
+              (Mk_Base_Sloc
+                 (Get (JS_Base, "file"),
+                  Get (JS_Base, "line"),
+                  Get (JS_Base, "column")));
          end;
       end loop;
       return Sloc;
@@ -146,7 +149,8 @@ package body Assumption_Types is
    function Hash (S : Base_Sloc) return Ada.Containers.Hash_Type is
       use Ada.Containers;
    begin
-      return 5 * Hash (S.File) + 7 * Hash_Type (S.Line);
+      return
+        5 * Hash (S.File) + 7 * Hash_Type (S.Line) + 11 * Hash_Type (S.Column);
    end Hash;
 
    function Hash (S : My_Sloc) return Ada.Containers.Hash_Type is
@@ -178,9 +182,11 @@ package body Assumption_Types is
    -- Mk_Base_Sloc --
    ------------------
 
-   function Mk_Base_Sloc (File : String; Line : Positive) return Base_Sloc is
+   function Mk_Base_Sloc
+     (File : String; Line : Positive; Column : Positive) return Base_Sloc is
    begin
-      return (File => Find (Symbol_Table, File), Line => Line);
+      return
+        (File => Find (Symbol_Table, File), Line => Line, Column => Column);
    end Mk_Base_Sloc;
 
    -------------
@@ -284,6 +290,7 @@ package body Assumption_Types is
          begin
             Set_Field (JS_Base, "file", Base_Sloc_File (Base_Sloc));
             Set_Field (JS_Base, "line", Base_Sloc.Line);
+            Set_Field (JS_Base, "column", Base_Sloc.Column);
             Append (JS_Sloc, JS_Base);
          end;
       end loop;
@@ -328,7 +335,11 @@ package body Assumption_Types is
        then True
        elsif Right.File < Left.File
        then False
-       else Left.Line < Right.Line);
+       elsif Left.Line < Right.Line
+       then True
+       elsif Left.Line > Right.Line
+       then False
+       else Left.Column < Right.Column);
 
    function "<" (Left, Right : My_Sloc) return Boolean is
       use Sloc_Lists;

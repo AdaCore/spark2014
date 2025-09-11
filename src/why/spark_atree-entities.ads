@@ -211,6 +211,9 @@ package SPARK_Atree.Entities is
    function Get_Pragma (E : Entity_Id; Id : Pragma_Id) return Node_Id
    renames Einfo.Utils.Get_Pragma;
 
+   function Ghost_Assertion_Level (E : Entity_Id) return Entity_Id
+   renames Einfo.Entities.Ghost_Assertion_Level;
+
    function Is_Access_Subprogram_Type (E : Type_Kind_Id) return Boolean;
    --  Return True if E's base type is an access-to-subprogram type
 

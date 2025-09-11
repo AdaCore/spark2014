@@ -1321,6 +1321,7 @@ package body Flow is
       FA.Errors_Or_Warnings := False;
       FA.Data_Dependency_Errors := False;
       FA.Flow_Dependency_Errors := False;
+      FA.Calls_Via_Access := False;
       FA.Has_Only_Terminating_Constructs := True;
       FA.Has_Only_Nonblocking_Statements := True;
       FA.Has_Only_Exceptional_Paths := False;
@@ -1728,6 +1729,7 @@ package body Flow is
                      Analysis.Check_Always_Terminates (FA);
                      Analysis.Check_Ghost_Subprogram_Outputs (FA);
                   end if;
+                  Analysis.Check_Ghost_Calls_Policy (FA);
                   Analysis.Check_Ghost_Terminates (FA);
                   Analysis.Find_Input_Only_Used_In_Assertions (FA);
                   Analysis.Find_Illegal_Reads_Of_Proof_Ins (FA);

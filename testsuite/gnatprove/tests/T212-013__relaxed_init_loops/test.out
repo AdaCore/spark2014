@@ -13,7 +13,7 @@ test_loops.adb:49:57: info: index check proved (CVC5: 2 VC)
 test_loops.adb:52:10: info: index check proved (CVC5: 2 VC)
 test_loops.adb:57:07: info: range check proved (CVC5: 2 VC)
 test_loops.adb:59:32: info: index check proved (CVC5: 2 VC)
-test_loops.adb:60:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test_loops.adb:60:09: info: length check proved (CVC5: 3 VC)
 test_loops.adb:63:28: info: initialization of "X" proved
 test_loops.adb:67:16: medium: in value of subprogram parameter after the call at test_loops.adb:67
 test_loops.adb:67:16: medium: initialization check might fail

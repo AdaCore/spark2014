@@ -1,7 +1,7 @@
 procedure Main is
    X : Integer;
    procedure SetX (N : Integer)
-     with Post => X > N is -- @COUNTEREXAMPLE
+     with Post => X > N is
    begin
       X := N+1;
    end SetX;

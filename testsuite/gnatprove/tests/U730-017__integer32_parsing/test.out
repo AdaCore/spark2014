@@ -304,7 +304,7 @@ integer32_parsing.adb:289:40: medium: precondition might fail, cannot prove s'La
 integer32_parsing.adb:289:71: info: range check proved (CVC5: 2 VC)
 integer32_parsing.adb:291:07: info: analyzing call to "Prove_Is_Integer" in context
 integer32_parsing.adb:295:09: info: range check proved (CVC5: 2 VC)
-integer32_parsing.adb:295:47: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+integer32_parsing.adb:295:47: info: length check proved (CVC5: 3 VC)
 integer32_parsing.adb:295:47: info: range check proved (CVC5: 4 VC)
 integer32_parsing.adb:295:56: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.adb:297:09: medium: precondition might fail, cannot prove Valid_Int_32 (s1) (e.g. when res0 = "8" and res0'First = 1) [possible fix: loop at line 267 should mention res and top in a loop invariant]

@@ -179,6 +179,7 @@ package Flow_Generated_Globals is
       Always_Terminates : Boolean;
       Has_Subp_Variant  : Boolean;
       No_Body           : Boolean;
+      Calls_Via_Access  : Boolean;
       Nonreturning      : Boolean;
       Nonblocking       : Boolean;
    end record;

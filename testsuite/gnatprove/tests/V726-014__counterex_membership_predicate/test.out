@@ -6,3 +6,9 @@ main.adb:26:22: medium: assertion might fail, cannot prove S.A /= 0 (e.g. when X
 main.adb:26:22: medium: in inlined predicate at main.adb:20
 main.adb:29:14: warning: subprogram "Int_Predicate" has no effect
 main.adb:33:21: high: assertion might fail (e.g. when X = 0) [possible fix: subprogram at line 29 should mention X in a precondition]
+counterexample expected for check at main.adb:26
+  trace at main.adb:22 --> X = (A => 0, B => 0)
+  trace at main.adb:26 --> X = (A => 0, B => 0)
+counterexample expected for check at main.adb:33
+  trace at main.adb:29 --> X = 0
+  trace at main.adb:33 --> X = 0

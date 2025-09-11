@@ -50,7 +50,7 @@ is
       B : out Boolean;
       OldA : out Boolean)with
      --  Pre => not(SetA and SetB),
-     Post => R_1 (SetA, A, B)  -- @COUNTEREXAMPLE
+     Post => R_1 (SetA, A, B)
      --  fails when SetA = true, SetB = true and C = false
      --  and then R_2 (SetA, C, B)
      --  and then R_3 (SetA, SetB, A, B)

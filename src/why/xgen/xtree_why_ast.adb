@@ -897,7 +897,7 @@ package body Xtree_Why_AST is
                Coercion    : constant String :=
                  OCaml_Lower_Identifier (Strip_Prefix (Prefix) & "_coercion");
             begin
-               PL (O, "and " & Name & " json =" & "  "
+               PL (O, "and " & Name & " json =  "
                      & Alias & " " & Coercion
                      & " json");
             end;

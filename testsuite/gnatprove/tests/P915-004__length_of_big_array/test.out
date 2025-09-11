@@ -1,7 +1,7 @@
 fail.adb:4:13: info: implicit aspect Always_Terminates on "Create" has been proved, subprogram will terminate
 fail.adb:5:14: info: postcondition proved (CVC5: 2 VC)
 fail.adb:7:07: info: range check proved (CVC5: 2 VC)
-fail.adb:7:28: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+fail.adb:7:28: info: length check proved (CVC5: 3 VC)
 fail.adb:17:11: high: range check might fail, cannot prove upper bound for C'Length (e.g. when C = (others => False) and C'First = 0 and C'Last = My_Index'Last)
 fail.adb:17:11: info: range check proved (CVC5: 1 VC)
 fail.adb:19:14: info: range check proved (CVC5: 1 VC)

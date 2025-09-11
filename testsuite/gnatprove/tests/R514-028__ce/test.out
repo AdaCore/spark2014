@@ -1,1 +1,5 @@
 saturation.adb:11:23: high: postcondition might fail (e.g. when Val = (Value => 32769, Upper_Bound => 32769) and Val'Old = (Value => 32767, Upper_Bound => 32769))
+counterexample expected for check at saturation.adb:11
+  trace at saturation.adb:10 --> Val = (Value => 32767, Upper_Bound => 32769)
+  trace at saturation.adb:11 --> Val = (Value => 32769, Upper_Bound => 32769) and Val'Old = (Value => 32767, Upper_Bound => 32769)
+  trace at saturation.adb:15 --> Val = (Value => 32769, Upper_Bound => 32769)

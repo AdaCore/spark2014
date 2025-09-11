@@ -10,7 +10,7 @@ flow.adb:11:36: info: initialization of "L" proved
 flow.adb:11:39: info: initialization of "H" proved
 flow.adb:12:12: info: flow dependencies proved
 flow.adb:13:20: info: postcondition proved (CVC5: 2 VC)
-flow.adb:18:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+flow.adb:18:09: info: length check proved (CVC5: 3 VC)
 flow.adb:21:18: medium: range check might fail
 flow.adb:21:23: info: range check proved (CVC5: 2 VC)
 flow.adb:22:04: medium: range check might fail

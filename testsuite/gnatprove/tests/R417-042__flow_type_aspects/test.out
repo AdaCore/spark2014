@@ -25,7 +25,7 @@ termination.ads:53:09: medium: in inlined invariant at termination.ads:56
 termination.ads:53:09: medium: invariant check might fail on default value, cannot prove Infinite_Loop2
 termination.ads:54:07: info: range check proved (CVC5: 2 VC)
 termination.ads:54:30: info: in default value of private type at termination.ads:37
-termination.ads:54:30: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+termination.ads:54:30: info: length check proved (CVC5: 3 VC)
 visibility.adb:10:07: warning: unreachable code [enabled by default]
 wrapper.adb:1:46: info: data dependencies proved
 wrapper.adb:3:25: info: data dependencies proved

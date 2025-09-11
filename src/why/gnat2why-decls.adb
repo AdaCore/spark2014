@@ -385,7 +385,15 @@ package body Gnat2Why.Decls is
       Emit
         (Th,
          New_Exception_Declaration
-           (Name => Loop_Exception_Name (E, Local => True), Arg => Why_Empty));
+           (Name =>
+              Loop_Exception_Name (E, Is_Continue => False, Local => True),
+            Arg  => Why_Empty));
+      Emit
+        (Th,
+         New_Exception_Declaration
+           (Name =>
+              Loop_Exception_Name (E, Is_Continue => True, Local => True),
+            Arg  => Why_Empty));
 
       Close_Theory (Th, Kind => Standalone_Theory);
    end Translate_Loop_Entity;

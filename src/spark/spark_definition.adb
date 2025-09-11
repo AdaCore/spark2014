@@ -2457,7 +2457,7 @@ package body SPARK_Definition is
       --  even though a resource leak is certain to occur in that case if
       --  assertions are enabled, and will be reported by GNATprove.
 
-      if In_Assertion_Expression_Pragma (Alloc) then
+      if In_Statically_Leaking_Context (Alloc, Ignore_Non_Exec => False) then
          return True;
       end if;
 
@@ -2528,6 +2528,7 @@ package body SPARK_Definition is
 
       procedure Check_Loop_Invariant_Placement
         (Stmts         : List_Id;
+         Loop_Entity   : Entity_Id;
          In_Handled    : Boolean;
          Under_Finally : Boolean;
          Goto_Labels   : in out Node_Sets.Set;
@@ -2547,6 +2548,7 @@ package body SPARK_Definition is
       --  loop-invariant or variant to the Loop_Entity_Set for future
       --  processing.
       --  @param Stmts a sequence of statement within a loop
+      --  @param Loop_Entity the entity of the loop
       --  @param In_Handled whether Stmts is nested within a
       --    sequence of statement with exception handlers.
       --  @param Under_Finally whether Stmts is nested within a sequence of
@@ -2562,6 +2564,7 @@ package body SPARK_Definition is
 
       procedure Check_Loop_Invariant_Placement
         (Stmt          : N_Handled_Sequence_Of_Statements_Id;
+         Loop_Entity   : Entity_Id;
          In_Handled    : Boolean;
          Under_Finally : Boolean;
          Goto_Labels   : in out Node_Sets.Set;
@@ -2570,7 +2573,8 @@ package body SPARK_Definition is
       --  statements. When the invariant was already found, also scan handlers
       --  (and finally section) for potential non-scalar object declaration.
 
-      procedure Check_Loop_Invariant_Placement (Stmts : List_Id);
+      procedure Check_Loop_Invariant_Placement
+        (Loop_Stmt : N_Loop_Statement_Id);
       --  Same as above with missing parameters In_Handled, Goto_Labels, and
       --  Inv_Found initialized by the value they are expected to have for the
       --  statement sequence of a loop; respectively False, Empty_Set, False.
@@ -2594,12 +2598,15 @@ package body SPARK_Definition is
       -- Check_Loop_Invariant_Placement --
       ------------------------------------
 
-      procedure Check_Loop_Invariant_Placement (Stmts : List_Id) is
+      procedure Check_Loop_Invariant_Placement
+        (Loop_Stmt : N_Loop_Statement_Id)
+      is
          Goto_Labels : Node_Sets.Set;
          Inv_Found   : Boolean := False;
       begin
          Check_Loop_Invariant_Placement
-           (Stmts,
+           (Statements (Loop_Stmt),
+            Loop_Entity   => Entity (Identifier (Loop_Stmt)),
             In_Handled    => False,
             Under_Finally => False,
             Goto_Labels   => Goto_Labels,
@@ -2608,6 +2615,7 @@ package body SPARK_Definition is
 
       procedure Check_Loop_Invariant_Placement
         (Stmts         : List_Id;
+         Loop_Entity   : Entity_Id;
          In_Handled    : Boolean;
          Under_Finally : Boolean;
          Goto_Labels   : in out Node_Sets.Set;
@@ -2626,6 +2634,7 @@ package body SPARK_Definition is
 
                Check_Loop_Invariant_Placement
                  (Handled_Statement_Sequence (N),
+                  Loop_Entity,
                   In_Handled,
                   Under_Finally,
                   Goto_Labels,
@@ -2635,6 +2644,7 @@ package body SPARK_Definition is
 
                Check_Loop_Invariant_Placement
                  (Declarations (N),
+                  Loop_Entity,
                   In_Handled,
                   Under_Finally,
                   Goto_Labels,
@@ -2689,6 +2699,7 @@ package body SPARK_Definition is
                   when N_If_Statement =>
                      Check_Loop_Invariant_Placement
                        (Then_Statements (N),
+                        Loop_Entity,
                         In_Handled,
                         Under_Finally,
                         Goto_Labels,
@@ -2699,6 +2710,7 @@ package body SPARK_Definition is
                         while Present (Cur) loop
                            Check_Loop_Invariant_Placement
                              (Then_Statements (Cur),
+                              Loop_Entity,
                               In_Handled,
                               Under_Finally,
                               Goto_Labels,
@@ -2708,6 +2720,7 @@ package body SPARK_Definition is
                      end;
                      Check_Loop_Invariant_Placement
                        (Else_Statements (N),
+                        Loop_Entity,
                         In_Handled,
                         Under_Finally,
                         Goto_Labels,
@@ -2721,6 +2734,7 @@ package body SPARK_Definition is
                         while Present (Cur) loop
                            Check_Loop_Invariant_Placement
                              (Statements (Cur),
+                              Loop_Entity,
                               In_Handled,
                               Under_Finally,
                               Goto_Labels,
@@ -2732,12 +2746,14 @@ package body SPARK_Definition is
                   when N_Extended_Return_Statement =>
                      Check_Loop_Invariant_Placement
                        (Return_Object_Declarations (N),
+                        Loop_Entity,
                         In_Handled,
                         Under_Finally,
                         Goto_Labels,
                         Inv_Found);
                      Check_Loop_Invariant_Placement
                        (Handled_Statement_Sequence (N),
+                        Loop_Entity,
                         In_Handled,
                         Under_Finally,
                         Goto_Labels,
@@ -2749,6 +2765,7 @@ package body SPARK_Definition is
                   when N_Loop_Statement =>
                      Check_Loop_Invariant_Placement
                        (Statements (N),
+                        Loop_Entity,
                         In_Handled,
                         Under_Finally,
                         Goto_Labels,
@@ -2760,6 +2777,24 @@ package body SPARK_Definition is
 
                      if Goto_Labels.Contains (Entity (Name (N))) then
                         Mark_Unsupported (Lim_Goto_Cross_Inv, N);
+                     end if;
+
+                  when N_Continue_Statement =>
+
+                     --  Continue statements are essentially goto. Reject them
+                     --  when crossing loop invariants.
+                     --  * If the loop being continue'd is an outer loop, this
+                     --    is similar to an exit, it cannot skip the current
+                     --    loop invariant within an iteration.
+                     --  * If the loop being continue'd is an inner loop, this
+                     --    is internal to a statement not containing the loop
+                     --    invariant.
+                     --  * The only problematic case if when we continue the
+                     --    current loop.
+
+                     if Loop_Entity_Of_Continue_Statement (N) = Loop_Entity
+                     then
+                        Mark_Unsupported (Lim_Continue_Cross_Inv, N);
                      end if;
 
                   when others =>
@@ -2796,6 +2831,7 @@ package body SPARK_Definition is
 
       procedure Check_Loop_Invariant_Placement
         (Stmt          : N_Handled_Sequence_Of_Statements_Id;
+         Loop_Entity   : Entity_Id;
          In_Handled    : Boolean;
          Under_Finally : Boolean;
          Goto_Labels   : in out Node_Sets.Set;
@@ -2808,6 +2844,7 @@ package body SPARK_Definition is
 
             Check_Loop_Invariant_Placement
               (Finally_Statements (Stmt),
+               Loop_Entity,
                In_Handled,
                Under_Finally,
                Goto_Labels,
@@ -2823,6 +2860,7 @@ package body SPARK_Definition is
                while Present (Handler) loop
                   Check_Loop_Invariant_Placement
                     (Statements (Handler),
+                     Loop_Entity,
                      In_Handled,
                      Under_Finally,
                      Goto_Labels,
@@ -2836,6 +2874,7 @@ package body SPARK_Definition is
 
          Check_Loop_Invariant_Placement
            (Statements (Stmt),
+            Loop_Entity,
             In_Handled or else Present (Exception_Handlers (Stmt)),
             Under_Finally or else Present (Finally_Statements (Stmt)),
             Goto_Labels,
@@ -3447,7 +3486,7 @@ package body SPARK_Definition is
                end if;
             end;
 
-            Check_Loop_Invariant_Placement (Statements (N));
+            Check_Loop_Invariant_Placement (N);
             Check_Unrolled_Loop (N);
 
             --  Mark the entity for the loop, which is used in the translation
@@ -4482,7 +4521,9 @@ package body SPARK_Definition is
             Mark_Unsupported (Lim_External_Initializer, N);
 
          when N_Continue_Statement =>
-            Mark_Unsupported (Lim_Continue_Statement, N);
+            if Present (Condition (N)) then
+               Mark (Condition (N));
+            end if;
 
          --  Mark should not be called on other kinds
 
@@ -7791,7 +7832,7 @@ package body SPARK_Definition is
 
                      --  A user-defined primitive equality operation on a
                      --  non-ghost record type shall not be ghost, unless the
-                     --  record type has only limited views (SPARK RM 6.9(22)).
+                     --  record type has only limited views (SPARK RM 6.9(23)).
                      elsif Is_Ghost_Entity (Id)
                        and then not Is_Ghost_Entity (Typ)
                      then
@@ -7799,7 +7840,7 @@ package body SPARK_Definition is
                           ("ghost function as user-defined equality"
                            & " on non-ghost record type",
                            Id,
-                           SRM_Reference => "SPARK RM 6.9(22)");
+                           SRM_Reference => "SPARK RM 6.9(23)");
 
                      --  A user-defined primitive equality operation on a
                      --  record type shall not have a subprogram variant.
@@ -12443,6 +12484,7 @@ package body SPARK_Definition is
             | E_Task_Body
             | E_Void
             | Generic_Unit_Kind
+            | E_Assertion_Level
          =>
             raise Program_Error;
       end case;

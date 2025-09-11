@@ -1,4 +1,4 @@
-a.adb:3:10: info: overflow check proved (altergo: 2 VC)
+a.adb:3:10: info: overflow check proved (Z3: 2 VC)
 a.adb:4:10: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 b.adb:3:10: info: overflow check proved (altergo: 2 VC)
 b.adb:4:10: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]

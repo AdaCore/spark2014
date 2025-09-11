@@ -1,0 +1,6 @@
+simple.adb:8:26: info: unrolling loop [info-unrolling-inlining]
+simple.adb:9:23: high: range check might fail, cannot prove upper bound for Toto + A (Elt) (e.g. when A(0) = 5 and A(1) = 4 and A(2) = 5 and A(3) = 10 and A(4) = 10 and Elt = 2 and Toto = 9) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at simple.ads:11 should mention A in a precondition]
+An unexpected error occurred while processing file 'JSONs/Add_Array.json'. No counterexample candidates could be extracted from this file.
+simple.adb:17:24: info: unrolling loop [info-unrolling-inlining]
+simple.adb:18:25: medium: assertion might fail [possible fix: subprogram at simple.ads:23 should mention F in a precondition]
+simple.ads:23:14: warning: subprogram "Check_Family" has no effect

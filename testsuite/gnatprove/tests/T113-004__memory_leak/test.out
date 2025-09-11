@@ -163,7 +163,7 @@ pointers.adb:33:19: info: postcondition proved (Trivial: 1 VC)
 pointers.adb:35:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 pointers.adb:35:07: info: initialization of "Loc" proved
 pointers.adb:35:07: info: range check proved (CVC5: 2 VC)
-pointers.adb:37:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+pointers.adb:37:09: info: length check proved (CVC5: 3 VC)
 pointers.adb:37:09: medium: resource or memory leak might occur [possible fix: subprogram at line 32 should mention X in a precondition]
 pointers.adb:41:06: info: absence of resource or memory leak proved (CVC5: 1 VC)
 pointers.adb:43:06: info: absence of resource or memory leak proved (CVC5: 1 VC)

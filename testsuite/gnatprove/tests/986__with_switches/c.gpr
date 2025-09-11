@@ -1,0 +1,16 @@
+with "a.gpr";
+with "b.gpr";
+project C is
+
+  for Source_Dirs use ("c");
+
+  package Compiler is
+    for Default_Switches ("Ada") use ("-gnatws");
+    for Local_Configuration_Pragmas use "test.adc";
+  end Compiler;
+
+  package Prove is
+     for Proof_Switches ("Ada") use ("--prover=z3");
+     for Proof_Switches ("c.ads") use ("--prover=altergo");
+  end Prove;
+end C;

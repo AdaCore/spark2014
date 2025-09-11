@@ -79,4 +79,9 @@ project GNAT2Why_GNAT is
       for Body ("Get_Targ") use "ada_get_targ.adb";
    end Naming;
 
+   package Format is
+     for Ignore use "gnat2why_ignore_format.txt";
+   end Format;
+
+
 end GNAT2Why_GNAT;

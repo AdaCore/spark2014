@@ -84,7 +84,8 @@ package Flow_Generated_Globals.Phase_1 is
       Has_Subp_Variant  : Boolean;
       No_Body           : Boolean;
       Nonreturning      : Boolean;
-      Nonblocking       : Boolean)
+      Nonblocking       : Boolean;
+      Calls_Via_Access  : Boolean)
    with Pre => GG_Mode = GG_Write_Mode, Post => GG_Mode = GG_Write_Mode;
    --  Register information needed later to compute globals. It also stores
    --  information related to volatiles and remote states.

@@ -67,10 +67,10 @@ reason_for_check.adb:126:04: warning: analyzing unreferenced function "Get_Small
 reason_for_check.adb:126:13: info: implicit aspect Always_Terminates on "Get_Small" has been proved, subprogram will terminate
 reason_for_check.adb:128:27: medium: length check might fail [reason for check: value must have same length as the target array type of the conversion] [possible fix: subprogram at line 126 should mention S in a precondition]
 reason_for_check.adb:134:04: warning: analyzing unreferenced procedure "Oper_Mask" [unreferenced-procedure]
-reason_for_check.adb:137:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+reason_for_check.adb:137:32: info: length check proved (CVC5: 3 VC)
 reason_for_check.adb:137:37: medium: length check might fail [reason for check: both array operands must have the same length] [possible fix: subprogram at line 134 should mention X and Y in a precondition]
-reason_for_check.adb:138:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+reason_for_check.adb:138:32: info: length check proved (CVC5: 3 VC)
 reason_for_check.adb:138:37: medium: length check might fail [reason for check: both array operands must have the same length] [possible fix: subprogram at line 134 should mention X and Y in a precondition]
-reason_for_check.adb:139:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+reason_for_check.adb:139:32: info: length check proved (CVC5: 3 VC)
 reason_for_check.adb:139:37: medium: length check might fail [reason for check: both array operands must have the same length] [possible fix: subprogram at line 134 should mention X and Y in a precondition]
 reason_for_check.adb:144:04: info: precondition proved (Trivial: 1 VC)

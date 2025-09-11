@@ -18,12 +18,12 @@ p.adb:44:12: info: initialization check proved (Trivial: 1 VC)
 p.adb:44:12: warning: mutable discriminants of a standalone object or parameter with relaxed initialization are enforced to always be initialized [relaxed-mutable-discriminants]
 p.adb:49:31: info: initialization of "Y" proved
 p.adb:50:06: info: flow dependencies proved
-p.adb:57:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+p.adb:57:09: info: length check proved (CVC5: 3 VC)
 p.adb:60:31: info: data dependencies proved
 p.adb:66:07: info: precondition proved (CVC5: 1 VC)
 p.adb:69:32: info: initialization of "Y" proved
 p.adb:70:06: info: flow dependencies proved
 p.adb:76:31: info: initialization check proved (CVC5: 1 VC)
-p.adb:77:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+p.adb:77:09: info: length check proved (CVC5: 3 VC)
 p.adb:80:32: info: data dependencies proved
 p.adb:86:07: medium: precondition might fail

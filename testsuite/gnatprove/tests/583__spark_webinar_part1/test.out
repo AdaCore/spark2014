@@ -20,8 +20,6 @@ low_level.adb:36:05: info: address in address clause is compatible with object a
 low_level.adb:69:14: info: implicit aspect Always_Terminates on "Read_C_Struct" has been proved, subprogram will terminate
 rich_data.ads:36:30: info: predicate check proved (CVC5: 1 VC)
 rich_data.ads:41:24: info: predicate check proved (CVC5: 2 VC)
-rich_data.ads:44:70: info: index check proved (CVC5: 2 VC)
-rich_data.ads:44:77: info: overflow check proved (CVC5: 2 VC)
 rich_data.ads:46:24: info: predicate check proved (CVC5: 1 VC)
 safe_pointers.adb:11:09: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 safe_pointers.adb:11:09: info: initialization of "X" proved

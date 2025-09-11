@@ -88,19 +88,19 @@
   <goal name="def&#39;vc.19" proved="true">
   <proof prover="0"><result status="valid" steps="12"/></proof>
   <proof prover="1"><result status="valid" steps="691"/></proof>
-  <proof prover="2"><result status="valid" steps="533"/></proof>
+  <proof prover="2"><result status="valid" steps="531"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.20" proved="true">
   <proof prover="0"><result status="valid" steps="22"/></proof>
   <proof prover="1"><result status="valid" steps="759"/></proof>
-  <proof prover="2"><result status="valid" steps="557"/></proof>
+  <proof prover="2"><result status="valid" steps="555"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.21" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="valid" steps="1748"/></proof>
-  <proof prover="2"><result status="valid" steps="5692"/></proof>
+  <proof prover="2"><result status="valid" steps="5690"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.22" proved="true">

@@ -1478,153 +1478,74 @@ package body SPARK_Util is
 
    procedure Collect_Reachable_Handlers (Call_Or_Stmt : Node_Id) is
 
-      function Is_Body (N : Node_Id) return Boolean
-      is (Nkind (N) in N_Entity_Body);
-
-      function Enclosing_Body is new First_Parent_With_Property (Is_Body);
-
-      Stmt    : constant Node_Id :=
-        (if Nkind (Call_Or_Stmt) = N_Function_Call
-         then
-           Enclosing_Statement_Of_Call_To_Function_With_Side_Effects
-             (Call_Or_Stmt)
-         else Call_Or_Stmt);
-      Scop    : Node_Id := Stmt;
-      Prev    : Node_Id;
-      Exc_Set : Exception_Sets.Set :=
-        Get_Raised_Exceptions (Call_Or_Stmt, Only_Handled => False);
-
       Handlers : Node_Lists.List;
+      --  Result list
 
-   begin
-      --  Ghost function and procedure calls shall never propagate exceptions
-      --  to non-ghost code.
+      procedure Collect_Handler
+        (Destination : Node_Id;
+         Exc_Set     : Exception_Sets.Set;
+         Is_Continue : Boolean);
+      --  Collect potential handler/entity body
 
-      if Is_Ghost_Assignment (Stmt)
-        or else Is_Ghost_Declaration (Stmt)
-        or else Is_Ghost_Procedure_Call (Stmt)
-      then
-         declare
-            Caller : constant Entity_Id :=
-              Unique_Defining_Entity (Enclosing_Body (Stmt));
-         begin
-            if not Is_Ghost_Entity (Caller) then
-               Raise_To_Handlers_Map.Insert
-                 (Call_Or_Stmt, Node_Lists.Empty_List);
-               return;
-            end if;
-         end;
-      end if;
+      procedure Do_Nothing (Scop : Node_Id) is null;
+      procedure Collect_All is new
+        Iter_Exited_Scopes (Process => Do_Nothing, Stop => Collect_Handler);
 
-      --  Go up the parent chain to collect all the potentially reachable
-      --  handlers. Stop when Exc_Set is empty or the enclosing body is
-      --  reached.
+      ---------------------
+      -- Collect_Handler --
+      ---------------------
 
-      if not Exc_Set.Is_Empty then
-         Outer :
-         loop
-            --  If we are inside a handler, skip the enclosing handled sequence
-            --  of statements.
+      procedure Collect_Handler
+        (Destination : Node_Id;
+         Exc_Set     : Exception_Sets.Set;
+         Is_Continue : Boolean)
+      is
+         pragma Unreferenced (Is_Continue);
+      begin
+         if Nkind (Destination) = N_Exception_Handler then
+            pragma Assert (not Exc_Set.Is_Empty);
+            Handlers.Append (Destination);
 
-            if Nkind (Scop) = N_Exception_Handler then
-               Scop := Parent (Scop);
-            end if;
-            Prev := Scop;
-            Scop := Parent (Scop);
+            --  Also store the set of reachable exceptions in the
+            --  Raised_Exceptions map.
 
-            case Nkind (Scop) is
+            declare
+               Position : Node_To_Exceptions.Cursor;
+               Inserted : Boolean;
+            begin
+               Raised_Exceptions.Insert
+                 (Destination,
+                  (Exc_Set, Is_Blocked => False),
+                  Position,
+                  Inserted);
 
-               --  Stop the search if a body is found. Add the body to the list
-               --  if it handles some of the remaining exceptions.
+               if not Inserted then
 
-               when N_Entity_Body =>
+                  --  Sanity checking, the exception set should not have been
+                  --  used yet.
 
-                  Exc_Set.Intersection
-                    (Get_Exceptions_For_Subp (Unique_Defining_Entity (Scop)));
-
-                  if not Exc_Set.Is_Empty then
-                     Handlers.Append (Scop);
+                  if Raised_Exceptions (Position).Is_Blocked then
+                     raise Program_Error;
                   end if;
 
-                  exit Outer;
+                  Raised_Exceptions (Position).Exceptions.Union (Exc_Set);
+               end if;
+            end;
 
-               when N_Handled_Sequence_Of_Statements =>
+         --  Case of the entity body
 
-                  --  Stop the search if the exception come from the finally
-                  --  statements, as exceptions shall not escape finally blocks
-                  --  in SPARK.
+         elsif Nkind (Destination) in N_Entity
+           and then Ekind (Destination) /= E_Label
+         then
+            pragma Assert (not Exc_Set.Is_Empty);
+            Handlers.Append (Get_Body (Destination));
+         end if;
+      end Collect_Handler;
 
-                  exit Outer when
-                    Present (Finally_Statements (Scop))
-                    and then List_Containing (Prev)
-                             = Finally_Statements (Scop);
+      --  Start of processing for Collect_Reachable_Handlers
 
-                  --  Go over the handlers to accumulate those which are
-                  --  reachable from the current statement. The set of
-                  --  potentially raised exceptions is reduced along the
-                  --  search. If all exceptions have been encountered, the
-                  --  search is stopped.
-
-                  declare
-                     Handler : Node_Id;
-                  begin
-                     Handler := First_Non_Pragma (Exception_Handlers (Scop));
-                     while Present (Handler) loop
-                        declare
-                           Handler_Exc_Set : Exception_Sets.Set :=
-                             Get_Exceptions_From_Handler (Handler);
-                        begin
-                           Handler_Exc_Set.Intersection (Exc_Set);
-
-                           --  Handler can be reached from exceptions of
-                           --  Exc_Set. Append it to the list of reachable
-                           --  handlers. Also store the set of reachable
-                           --  exceptions in the Raised_Exceptions map.
-
-                           if not Handler_Exc_Set.Is_Empty then
-                              Handlers.Append (Handler);
-                              Exc_Set.Difference (Handler_Exc_Set);
-
-                              declare
-                                 Position : Node_To_Exceptions.Cursor;
-                                 Inserted : Boolean;
-                              begin
-                                 Raised_Exceptions.Insert
-                                   (Handler,
-                                    (Handler_Exc_Set, Is_Blocked => False),
-                                    Position,
-                                    Inserted);
-
-                                 if not Inserted then
-
-                                    --  Sanity checking, the exception
-                                    --  set should not have been used
-                                    --  yet.
-
-                                    if Raised_Exceptions (Position).Is_Blocked
-                                    then
-                                       raise Program_Error;
-                                    end if;
-
-                                    Raised_Exceptions (Position)
-                                      .Exceptions
-                                      .Union (Handler_Exc_Set);
-                                 end if;
-                              end;
-
-                              exit when Exc_Set.Is_Empty;
-                           end if;
-                        end;
-                        Next_Non_Pragma (Handler);
-                     end loop;
-                  end;
-
-               when others =>
-                  null;
-            end case;
-         end loop Outer;
-      end if;
-
+   begin
+      Collect_All (Call_Or_Stmt);
       Raise_To_Handlers_Map.Insert (Call_Or_Stmt, Handlers);
    end Collect_Reachable_Handlers;
 
@@ -1886,7 +1807,8 @@ package body SPARK_Util is
        and then Is_Access_Type (Retysp (Etype (Expression (Expr))))
        and then not Is_Access_Constant (Retysp (Etype (Expression (Expr))))
        and then not Is_Rooted_In_Constant (Expression (Expr))
-       and then not In_Assertion_Expression_Pragma (Expr));
+       and then not In_Statically_Leaking_Context
+                      (Expr, Ignore_Non_Exec => False));
 
    --------------------------------------------
    -- Directly_Enclosing_Subprogram_Or_Entry --
@@ -2015,11 +1937,14 @@ package body SPARK_Util is
       begin
          loop
             declare
-               File : constant String := File_Name (Slc);
-               Line : constant Positive :=
+               File   : constant String := File_Name (Slc);
+               Line   : constant Positive :=
                  Positive (Get_Physical_Line_Number (Slc));
+               Column : constant Positive :=
+                 Positive (Get_Column_Number (Slc));
             begin
-               Sloc.Append (Mk_Base_Sloc (File => File, Line => Line));
+               Sloc.Append
+                 (Mk_Base_Sloc (File => File, Line => Line, Column => Column));
             end;
             Slc := Instantiation_Location (Slc);
 
@@ -2701,73 +2626,46 @@ package body SPARK_Util is
    function Get_Handled_Exceptions
      (Call_Or_Stmt : Node_Id) return Exception_Sets.Set
    is
-      function Is_Body (N : Node_Id) return Boolean
-      is (Nkind (N) in N_Entity_Body);
-
-      function Enclosing_Body is new First_Parent_With_Property (Is_Body);
-
-      Stmt   : constant Node_Id :=
-        (if Nkind (Call_Or_Stmt) = N_Function_Call
-         then
-           Enclosing_Statement_Of_Call_To_Function_With_Side_Effects
-             (Call_Or_Stmt)
-         else Call_Or_Stmt);
-      Scop   : Node_Id := Stmt;
-      Prev   : Node_Id;
       Result : Exception_Sets.Set := Exception_Sets.Empty_Set;
+
+      procedure Collect_Handled_By
+        (Destination : Node_Id;
+         Exc_Set     : Exception_Sets.Set;
+         Is_Continue : Boolean);
+      --  Collect exceptions handled at Destination
+
+      procedure Do_Nothing (Scop : Node_Id) is null;
+      procedure Collect_All is new
+        Iter_Exited_Scopes_With_Specified_Transfer
+          (Process => Do_Nothing,
+           Stop    => Collect_Handled_By);
+
+      ------------------------
+      -- Collect_Handled_By --
+      ------------------------
+
+      procedure Collect_Handled_By
+        (Destination : Node_Id;
+         Exc_Set     : Exception_Sets.Set;
+         Is_Continue : Boolean)
+      is
+         pragma Unreferenced (Destination, Is_Continue);
+      begin
+         Result.Union (Exc_Set);
+      end Collect_Handled_By;
+
+      --  Start of processing for Get_Handled_Exceptions
 
    begin
       --  Ghost function and procedure calls shall never propagate exceptions
       --  to non-ghost code.
 
-      if Is_Ghost_Assignment (Stmt)
-        or else Is_Ghost_Declaration (Stmt)
-        or else Is_Ghost_Procedure_Call (Stmt)
+      if Call_Or_Stmt not in N_Call_Id
+        or else not Is_Ghost_With_Respect_To_Context (Call_Or_Stmt)
       then
-         declare
-            Caller : constant Entity_Id :=
-              Unique_Defining_Entity (Enclosing_Body (Stmt));
-         begin
-            if not Is_Ghost_Entity (Caller) then
-               return Result;
-            end if;
-         end;
+         Collect_All
+           (Call_Or_Stmt, Exception_Sources => Exception_Sets.All_Exceptions);
       end if;
-
-      --  Traverse all the enclosing handlers and collect the handled
-      --  exceptions.
-
-      loop
-         --  Ignore the enclosing handled sequences of statement if we are in a
-         --  handler.
-
-         if Nkind (Scop) = N_Exception_Handler then
-            Scop := Parent (Scop);
-         end if;
-         Prev := Scop;
-         Scop := Parent (Scop);
-
-         --  On handled sequences of statement, get the set of handled
-         --  exceptions, unless we are crossing a finally boundary. In this
-         --  case, no more exception can be handled.
-
-         if Nkind (Scop) = N_Handled_Sequence_Of_Statements then
-            exit when
-              Present (Finally_Statements (Scop))
-              and then List_Containing (Prev) = Finally_Statements (Scop);
-            Result.Union (Get_Exceptions_From_Handlers (Scop));
-
-         --  On subprogram bodies, get the expected exceptions from the
-         --  exceptional cases.
-
-         elsif Nkind (Scop) = N_Subprogram_Body then
-            Result.Union
-              (Get_Exceptions_For_Subp (Unique_Defining_Entity (Scop)));
-         end if;
-
-         exit when Nkind (Scop) in N_Entity_Body;
-      end loop;
-
       return Result;
    end Get_Handled_Exceptions;
 
@@ -3375,6 +3273,36 @@ package body SPARK_Util is
         and then Str_Name (Str_Name'Last) in 's' | 'b';
    end In_SPARK_Library_Unit;
 
+   -----------------------------------
+   -- In_Statically_Leaking_Context --
+   -----------------------------------
+
+   function In_Statically_Leaking_Context
+     (Expr : N_Subexpr_Id; Ignore_Non_Exec : Boolean) return Boolean
+   is
+      function Is_Pragma_Or_Unit (N : Node_Id) return Boolean
+      is (Nkind (N)
+          in N_Pragma
+           | N_Package_Body
+           | N_Package_Declaration
+           | N_Subprogram_Body);
+
+      function Enclosing_Pragma_Or_Unit is new
+        First_Parent_With_Property (Is_Pragma_Or_Unit);
+
+      Par : constant Node_Id := Enclosing_Pragma_Or_Unit (Expr);
+   begin
+
+      return
+        Present (Par)
+        and then Nkind (Par) = N_Pragma
+        and then Assertion_Expression_Pragma (Get_Pragma_Id (Par))
+        and then (if Ignore_Non_Exec
+                  then
+                    not Is_Non_Exec_Assertion_Level
+                          (Pragma_Ghost_Assertion_Level (Par)));
+   end In_Statically_Leaking_Context;
+
    -------------------------------------
    -- Is_Access_Attribute_Of_Function --
    -------------------------------------
@@ -3818,6 +3746,38 @@ package body SPARK_Util is
    is (Nkind (N) = N_Function_Call
        and then Is_Function_With_Side_Effects (Get_Called_Entity (N)));
 
+   --------------------------------------
+   -- Is_Ghost_With_Respect_To_Context --
+   --------------------------------------
+
+   function Is_Ghost_With_Respect_To_Context (Call : N_Call_Id) return Boolean
+   is
+
+      function Is_Body (N : Node_Id) return Boolean
+      is (Nkind (N) in N_Entity_Body);
+
+      function Enclosing_Body is new First_Parent_With_Property (Is_Body);
+
+      Stmt : constant Node_Id :=
+        (if Nkind (Call) = N_Function_Call
+         then Enclosing_Statement_Of_Call_To_Function_With_Side_Effects (Call)
+         else Call);
+   begin
+      if Is_Ghost_Assignment (Stmt)
+        or else Is_Ghost_Declaration (Stmt)
+        or else Is_Ghost_Procedure_Call (Stmt)
+      then
+         declare
+            Caller : constant Entity_Id :=
+              Unique_Defining_Entity (Enclosing_Body (Stmt));
+         begin
+            return not Is_Ghost_Entity (Caller);
+         end;
+      else
+         return False;
+      end if;
+   end Is_Ghost_With_Respect_To_Context;
+
    ----------------------
    -- Is_Global_Entity --
    ----------------------
@@ -4082,6 +4042,13 @@ package body SPARK_Util is
    begin
       return Is_Subprogram_Or_Entry (Scop) or else Ekind (Scop) = E_Block;
    end Is_Local_Context;
+
+   ---------------------------------
+   -- Is_Non_Exec_Assertion_Level --
+   ---------------------------------
+
+   function Is_Non_Exec_Assertion_Level (Level : Entity_Id) return Boolean
+   is (Is_Same_Or_Depends_On_Level (Level, Standard_Level_Static));
 
    ---------------------------------
    -- Is_Not_Hidden_Discriminant  --
@@ -4924,11 +4891,13 @@ package body SPARK_Util is
       Goto_Labels       : Node_Sets.Set := Node_Sets.Empty_Set;
       Exception_Sources : Exception_Sets.Set := Exception_Sets.Empty_Set;
       Exited_Loops      : Node_Sets.Set := Node_Sets.Empty_Set;
+      Continued_Loops   : Node_Sets.Set := Node_Sets.Empty_Set;
       Return_Source     : Boolean := False)
    is
       Remaining_Labels     : Node_Graphs.Map;
       Remaining_Exceptions : Exception_Sets.Set := Exception_Sources;
-      Remaining_Loops      : Node_Sets.Set := Exited_Loops;
+      Remaining_E_Loops    : Node_Sets.Set := Exited_Loops;
+      Remaining_C_Loops    : Node_Sets.Set := Continued_Loops;
       Remaining_Return     : Boolean := Return_Source;
       --  Track transfer of control not <<caught>> yet. For labels, the
       --  collection is indexed by sequence of statement, in order to detect
@@ -4946,7 +4915,8 @@ package body SPARK_Util is
 
       procedure Do_Stop
         (Destination : Node_Id;
-         Exc_Set     : Exception_Sets.Set := Exception_Sets.Empty_Set);
+         Exc_Set     : Exception_Sets.Set := Exception_Sets.Empty_Set;
+         Is_Continue : Boolean := False);
       --  Wrapper over client Stop procedure. Clear the buffered scopes,
       --  calling Process over each of them, before calling the actual Stop
       --  procedure.
@@ -4957,13 +4927,14 @@ package body SPARK_Util is
 
       procedure Do_Stop
         (Destination : Node_Id;
-         Exc_Set     : Exception_Sets.Set := Exception_Sets.Empty_Set) is
+         Exc_Set     : Exception_Sets.Set := Exception_Sets.Empty_Set;
+         Is_Continue : Boolean := False) is
       begin
          for N of Buffer loop
             Process (N);
          end loop;
          Buffer.Clear;
-         Stop (Destination, Exc_Set);
+         Stop (Destination, Exc_Set, Is_Continue);
       end Do_Stop;
 
       --  Start of processing for Iter_Exited_Scopes_With_Specified_Transfer
@@ -4992,7 +4963,8 @@ package body SPARK_Util is
       while Remaining_Return
         or else not Remaining_Labels.Is_Empty
         or else not Exception_Sources.Is_Empty
-        or else not Remaining_Loops.Is_Empty
+        or else not Remaining_E_Loops.Is_Empty
+        or else not Remaining_C_Loops.Is_Empty
       loop
 
          Prev := Scop;
@@ -5082,23 +5054,30 @@ package body SPARK_Util is
 
                Buffer.Append (Scop);
 
-            --  Exit loop statement scopes, and stop loop exits
+            --  Exit loop statement scopes, and stop loop exits/continues. Loop
+            --  continues are stopped before exiting loop statement scopes.
 
             when N_Loop_Statement =>
 
-               if Present (Iteration_Scheme (Scop))
-                 and then No (Condition (Iteration_Scheme (Scop)))
-               then
-                  Buffer.Append (Scop);
-               end if;
-
                declare
-                  Key    : constant Node_Id := Entity (Identifier (Scop));
-                  Cursor : Node_Sets.Cursor := Remaining_Loops.Find (Key);
+                  Key      : constant Node_Id := Entity (Identifier (Scop));
+                  Cursor_E : Node_Sets.Cursor := Remaining_E_Loops.Find (Key);
+                  Cursor_C : Node_Sets.Cursor := Remaining_C_Loops.Find (Key);
                begin
-                  if Node_Sets.Has_Element (Cursor) then
+                  if Node_Sets.Has_Element (Cursor_C) then
+                     Do_Stop (Scop, Is_Continue => True);
+                     Remaining_C_Loops.Delete (Cursor_C);
+                  end if;
+
+                  if Present (Iteration_Scheme (Scop))
+                    and then No (Condition (Iteration_Scheme (Scop)))
+                  then
+                     Buffer.Append (Scop);
+                  end if;
+
+                  if Node_Sets.Has_Element (Cursor_E) then
                      Do_Stop (Scop);
-                     Remaining_Loops.Delete (Cursor);
+                     Remaining_E_Loops.Delete (Cursor_E);
                   end if;
                end;
 
@@ -5145,13 +5124,25 @@ package body SPARK_Util is
               (Source,
                Goto_Labels => Node_Sets.To_Set (Entity (Name (Source))));
 
-         --  Exit statement. Exit all scopes until named loop.
+         --  Exit statement. Exit all scopes until named loop, including the
+         --  loop.
 
          when N_Exit_Statement =>
             Main_Iteration
               (Source,
                Exited_Loops =>
                  Node_Sets.To_Set (Loop_Entity_Of_Exit_Statement (Source)));
+
+         --  Continue statement. Exit all scopes until named loop, excluding
+         --  the loop.
+
+         when N_Continue_Statement =>
+
+            Main_Iteration
+              (Source,
+               Continued_Loops =>
+                 Node_Sets.To_Set
+                   (Loop_Entity_Of_Continue_Statement (Source)));
 
          --  Return statement. Exit all scopes until end of body.
 
@@ -5161,15 +5152,28 @@ package body SPARK_Util is
          --  Exception-raising constructs. Exit all scopes until all potential
          --  exceptions have been handled.
 
-         when N_Subprogram_Call | N_Entry_Call_Statement | N_Raise_Statement =>
+         when N_Raise_Statement =>
             Main_Iteration
-              ((if Nkind (Source) = N_Function_Call
-                then
-                  Enclosing_Statement_Of_Call_To_Function_With_Side_Effects
-                    (Source)
-                else Source),
+              (Source,
                Exception_Sources =>
                  Get_Raised_Exceptions (Source, Only_Handled => False));
+
+         --  For ghost calls in non-ghost context, exceptions are not
+         --  propagated.
+
+         when N_Subprogram_Call | N_Entry_Call_Statement =>
+            if Is_Ghost_With_Respect_To_Context (Source) then
+               return;
+            else
+               Main_Iteration
+                 ((if Nkind (Source) = N_Function_Call
+                   then
+                     Enclosing_Statement_Of_Call_To_Function_With_Side_Effects
+                       (Source)
+                   else Source),
+                  Exception_Sources =>
+                    Get_Raised_Exceptions (Source, Only_Handled => False));
+            end if;
 
          when others =>
             raise Program_Error;
@@ -5509,7 +5513,7 @@ package body SPARK_Util is
                      end if;
                   end;
 
-               when N_Exit_Statement =>
+               when N_Exit_Statement | N_Continue_Statement =>
                   Connect_Transfer_Of_Control (Stmt);
                   if Present (Condition (Stmt)) then
                      Add_Edge (Start, Exit_Vertex);
@@ -5723,10 +5727,14 @@ package body SPARK_Util is
             --  and update Preceding to the completion of that finalization.
 
             procedure Connect_Target
-              (Destination : Node_Id; Exc_Set : Exception_Sets.Set);
+              (Destination : Node_Id;
+               Exc_Set     : Exception_Sets.Set;
+               Is_Continue : Boolean);
             --  Connect Preceding to Destination
 
-            function Target_Vertex (Destination : Node_Id) return Vertex;
+            function Target_Vertex
+              (Destination : Node_Id; Is_Continue : Boolean := False)
+               return Vertex;
             --  Convert target to the correct vertex
 
             procedure Do_Connect is new
@@ -5765,24 +5773,32 @@ package body SPARK_Util is
             --------------------
 
             procedure Connect_Target
-              (Destination : Node_Id; Exc_Set : Exception_Sets.Set)
+              (Destination : Node_Id;
+               Exc_Set     : Exception_Sets.Set;
+               Is_Continue : Boolean)
             is
                pragma Unreferenced (Exc_Set);
             begin
-               Add_Edge (Preceding, Target_Vertex (Destination));
+               Add_Edge (Preceding, Target_Vertex (Destination, Is_Continue));
             end Connect_Target;
 
             -------------------
             -- Target_Vertex --
             -------------------
 
-            function Target_Vertex (Destination : Node_Id) return Vertex is
+            function Target_Vertex
+              (Destination : Node_Id; Is_Continue : Boolean := False)
+               return Vertex is
             begin
                case Nkind (Destination) is
                   when N_Loop_Statement =>
-                     return
-                       Loop_Exit_Nodes.Element
-                         (Entity (Identifier (Destination)));
+                     if Is_Continue then
+                        return Vertex'(Kind => Loop_Iter, Node => Destination);
+                     else
+                        return
+                          Loop_Exit_Nodes.Element
+                            (Entity (Identifier (Destination)));
+                     end if;
 
                   when N_Exception_Handler =>
                      return Starting_Vertex (First (Statements (Destination)));
@@ -5989,12 +6005,11 @@ package body SPARK_Util is
       return To_String (Buf);
    end Location_String;
 
-   -----------------------------------
-   -- Loop_Entity_Of_Exit_Statement --
-   -----------------------------------
+   ----------------------------------------
+   -- Loop_Entity_Of_Loop_Jump_Statement --
+   ----------------------------------------
 
-   function Loop_Entity_Of_Exit_Statement
-     (N : N_Exit_Statement_Id) return Entity_Id
+   function Loop_Entity_Of_Loop_Jump_Statement (N : Node_Id) return Entity_Id
    is
       function Is_Loop_Statement (N : Node_Id) return Boolean
       is (Nkind (N) = N_Loop_Statement);
@@ -6008,14 +6023,14 @@ package body SPARK_Util is
       if Present (Name (N)) then
          return Entity (Name (N));
 
-      --  Otherwise the exit statement belongs to the innermost loop, so
-      --  simply go upwards (follow parent nodes) until we encounter the
-      --  loop.
+      --  Otherwise the transfer-of-control statement belongs to the innermost
+      --  loop, so simply go upwards (follow parent nodes) until we encounter
+      --  the loop.
 
       else
          return Entity (Identifier (Innermost_Loop_Stmt (N)));
       end if;
-   end Loop_Entity_Of_Exit_Statement;
+   end Loop_Entity_Of_Loop_Jump_Statement;
 
    -------------------------------
    -- May_Issue_Warning_On_Node --
@@ -6058,21 +6073,9 @@ package body SPARK_Util is
 
          --  Ghost function and procedure calls shall never exit the program
 
-         declare
-            Stmt : constant Node_Id :=
-              (if Nkind (Call) = N_Function_Call
-               then
-                 Enclosing_Statement_Of_Call_To_Function_With_Side_Effects
-                   (Call)
-               else Call);
-         begin
-            if Is_Ghost_Assignment (Stmt)
-              or else Is_Ghost_Declaration (Stmt)
-              or else Is_Ghost_Procedure_Call (Stmt)
-            then
-               return False;
-            end if;
-         end;
+         if Is_Ghost_With_Respect_To_Context (Call) then
+            return False;
+         end if;
 
          --  A call to a function annotated with Program_Exit might exit the
          --  program if it is located directly inside a subprogram annotated

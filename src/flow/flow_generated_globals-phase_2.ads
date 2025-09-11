@@ -190,6 +190,11 @@ package Flow_Generated_Globals.Phase_2 is
    --  @param EN is the entity name that we check for being a ghost entity
    --  @return True iff EN is a ghost entity
 
+   function GG_Is_Checked_Ghost_Entity (EN : Entity_Name) return Boolean
+   with Pre => GG_Has_Been_Generated;
+   --  @param EN is the entity name that we examine
+   --  @return True iff EN is ghost entity with policy Checked
+
    function GG_Is_Constant (EN : Entity_Name) return Boolean
    with Pre => GG_Has_Been_Generated;
    --  @param EN is the entity name that we check for being a constant
@@ -360,6 +365,14 @@ package Flow_Generated_Globals.Phase_2 is
                  or else Is_Function_With_Side_Effects (E));
    --  Returns True iff the E calls potentially nonreturning subprograms,
    --  trusting their Always_Terminates aspects.
+
+   function Calls_Via_Access_To_Subprogram (E : Entity_Id) return Boolean
+   with
+     Pre =>
+       GG_Has_Been_Generated
+       and then Entity_In_SPARK (E)
+       and then Ekind (E) = E_Function;
+   --  Returns True iff E calls other subprograms through access-to-subprogram
 
    function Is_Directly_Nonreturning (E : Entity_Id) return Boolean
    with

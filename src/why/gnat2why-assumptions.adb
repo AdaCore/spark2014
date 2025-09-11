@@ -24,7 +24,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;         use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
+with Ada.Containers.Hashed_Sets;
 with SPARK_Atree;            use SPARK_Atree;
 with SPARK_Atree.Entities;   use SPARK_Atree.Entities;
 with SPARK_Definition;       use SPARK_Definition;
@@ -33,6 +35,22 @@ with SPARK_Util;             use SPARK_Util;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 
 package body Gnat2Why.Assumptions is
+
+   function Hash_Claim (C : Claim) return Ada.Containers.Hash_Type;
+
+   ----------------
+   -- Hash_Claim --
+   ----------------
+
+   function Hash_Claim (C : Claim) return Ada.Containers.Hash_Type
+   is (Hash_Type (Claim_Kind'Pos (C.Kind)) + 4 * Hash_Type (C.E));
+
+   package Claim_Sets is new
+     Ada.Containers.Hashed_Sets
+       (Element_Type        => Claim,
+        Hash                => Hash_Claim,
+        Equivalent_Elements => "=",
+        "="                 => "=");
 
    package Claim_Maps is new
      Ada.Containers.Hashed_Maps
@@ -50,24 +68,6 @@ package body Gnat2Why.Assumptions is
 
    Claims : Claim_Sets.Set := Claim_Sets.Empty_Set;
    --  All established claims
-
-   ----------------------
-   -- Assume_For_Claim --
-   ----------------------
-
-   procedure Assume_For_Claim (C : Claim; Assume : Claim_Lists.List) is
-      Position : Claim_Maps.Cursor;
-      Dummy    : Boolean;
-
-   begin
-      --  Attempt to insert an empty set and then put the assumption there
-      Claim_Assumptions.Insert
-        (Key => C, Position => Position, Inserted => Dummy);
-
-      for A of Assume loop
-         Claim_Assumptions (Position).Include (A);
-      end loop;
-   end Assume_For_Claim;
 
    --------------------
    -- Claim_To_Token --
@@ -93,7 +93,7 @@ package body Gnat2Why.Assumptions is
          begin
             if Claim_Maps.Has_Element (Cu) then
                for A of Claim_Assumptions (Cu) loop
-                  S.Include (Claim_To_Token (A));
+                  S.Insert (Claim_To_Token (A));
                end loop;
             end if;
             Rules.Append ((Claim => Claim_To_Token (C), Assumptions => S));
@@ -114,18 +114,41 @@ package body Gnat2Why.Assumptions is
    -----------------------------------
 
    procedure Register_Assumptions_For_Call (Caller, Callee : Entity_Id) is
-      Assumptions : Claim_Lists.List;
+
+      procedure Assume_For_Claim (C : Claim; Assume : Claim_Sets.Set);
+      --  Both procedures register that the claim C depends on the
+      --  assumption(s) provided. Calling these procedures does not mean
+      --  that claim C has been established.
+
+      ----------------------
+      -- Assume_For_Claim --
+      ----------------------
+
+      procedure Assume_For_Claim (C : Claim; Assume : Claim_Sets.Set) is
+         Position : Claim_Maps.Cursor;
+         Dummy    : Boolean;
+
+      begin
+         --  Attempt to insert an empty set and then put the assumption there
+         Claim_Assumptions.Insert
+           (Key => C, Position => Position, Inserted => Dummy);
+
+         Claim_Assumptions (Position).Union (Assume);
+      end Assume_For_Claim;
+
+      Assumptions : Claim_Sets.Set;
+
    begin
-      Assumptions.Append ((Kind => Claim_Effects, E => Callee));
+      Assumptions.Insert ((Kind => Claim_Effects, E => Callee));
 
       Assume_For_Claim
         (C => (Kind => Claim_Effects, E => Caller), Assume => Assumptions);
 
       if Has_Contracts (Callee, Pragma_Postcondition) then
-         Assumptions.Append ((Kind => Claim_Post, E => Callee));
+         Assumptions.Insert ((Kind => Claim_Post, E => Callee));
       end if;
 
-      Assumptions.Append ((Kind => Claim_AoRTE, E => Callee));
+      Assumptions.Insert ((Kind => Claim_AoRTE, E => Callee));
 
       Assume_For_Claim
         (C => (Kind => Claim_Post, E => Caller), Assume => Assumptions);

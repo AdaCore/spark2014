@@ -1,5 +1,4 @@
 p.ads:3:10: info: function contract feasibility proved (CVC5: 1 VC)
-p.ads:7:04: medium: implicit aspect Always_Terminates on "P" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
 p.ads:7:19: warning: Program_Error will be raised at run time [enabled by default]
 p.ads:7:19: warning: assuming "Id" has no effect on global items
 p.ads:7:19: warning: cannot call "Id" before body seen [enabled by default]

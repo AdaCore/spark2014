@@ -354,7 +354,7 @@ package body Flow.Analysis is
       then
          Error_Msg_Flow
            (FA       => FA,
-            Msg      => "subprogram & " & "has no effect",
+            Msg      => "subprogram & has no effect",
             N        => FA.Spec_Entity,
             F1       => Direct_Mapping_Id (FA.Spec_Entity),
             Tag      => Ineffective,
@@ -1940,11 +1940,21 @@ package body Flow.Analysis is
                                   (if Present (Target)
                                      then Is_Easily_Printable (Target));
 
+                              Called_Entity : constant Entity_Id :=
+                                Get_Called_Entity
+                                  (Get_Direct_Mapping_Id (Atr.Call_Vertex));
+
                               Callee : constant Flow_Id :=
-                                Direct_Mapping_Id
-                                  (Get_Called_Entity
-                                     (Get_Direct_Mapping_Id
-                                        (Atr.Call_Vertex)));
+                                (if Ekind (Called_Entity) = E_Subprogram_Type
+                                 then Null_Flow_Id
+                                 else Direct_Mapping_Id (Called_Entity));
+
+                              By_What : constant String :=
+                                (if Ekind (Called_Entity) = E_Subprogram_Type
+                                 then ""
+                                 else " by &");
+                              --  Do not print subprogram name if it is a call
+                              --  via access-to-subprogram.
 
                            begin
                               if Present (Target) then
@@ -1952,7 +1962,8 @@ package body Flow.Analysis is
                                    (FA       => FA,
                                     Path     => Mask,
                                     Msg      =>
-                                      "& is set by &"
+                                      "& is set"
+                                      & By_What
                                       & " but not used after the call",
                                     N        => N,
                                     F1       => Target,
@@ -2010,7 +2021,7 @@ package body Flow.Analysis is
                                 (FA       => FA,
                                  Path     => Mask,
                                  Msg      =>
-                                   "initialization of & has no " & "effect",
+                                   "initialization of & has no effect",
                                  N        => N,
                                  F1       =>
                                    Direct_Mapping_Id (Defining_Entity (N)),
@@ -2514,7 +2525,7 @@ package body Flow.Analysis is
             if V_Start_Atr.Is_Param_Havoc then
                Append
                  (Explanation,
-                  "value of & is unknown following " & "exceptional exit");
+                  "value of & is unknown following exceptional exit");
                Explanation_F1 := Var;
             end if;
 
@@ -3460,6 +3471,17 @@ package body Flow.Analysis is
                            N   => Cond_Id.Node);
                      end if;
 
+                  when N_Continue_Statement =>
+                     if Is_Stable
+                          (Loop_Id        =>
+                             Loop_Entity_Of_Continue_Statement (Cond_Id.Node),
+                           Condition_Vars => Cond_Atr.Variables_Used)
+                     then
+                        Error_Msg
+                          (Msg => "loop continue condition is stable",
+                           N   => Cond_Id.Node);
+                     end if;
+
                   when others =>
                      null;
                end case;
@@ -3579,7 +3601,7 @@ package body Flow.Analysis is
             Error_Msg_Flow
               (FA       => FA,
                Msg      =>
-                 "& must be a Proof_In as it is only " & "used in assertions",
+                 "& must be a Proof_In as it is only used in assertions",
                SRM_Ref  => "6.1.4(19)",
                N        =>
                  Find_Global (FA.Spec_Entity, Direct_Mapping_Id (Input)),
@@ -4276,8 +4298,7 @@ package body Flow.Analysis is
                         Error_Msg_Flow
                           (FA       => FA,
                            Path     => Path,
-                           Msg      =>
-                             "missing dependency ""%'Result => " & "%""",
+                           Msg      => "missing dependency ""%'Result => %""",
                            N        =>
                              Search_Depends_Contract
                                (FA.Spec_Entity, FA.Spec_Entity),
@@ -4360,6 +4381,54 @@ package body Flow.Analysis is
       end loop;
    end Check_Depends_Contract;
 
+   ------------------------------
+   -- Check_Ghost_Calls_Policy --
+   ------------------------------
+
+   procedure Check_Ghost_Calls_Policy (FA : in out Flow_Analysis_Graphs) is
+      Globals : Global_Flow_Ids;
+   begin
+      for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         declare
+            Atr : V_Attributes renames FA.Atr (V);
+         begin
+            --  Ignore vertices coming from elaboration of nested packages
+
+            if not Atr.In_Nested_Package then
+               for SC of Atr.Subprogram_Calls loop
+                  if Is_Ignored_Ghost_Node (SC.N)
+                    and then (Ekind (SC.E) = E_Procedure
+                              or else Is_Function_With_Side_Effects (SC.E))
+                  then
+                     Get_Globals
+                       (Subprogram => SC.E,
+                        Scope      => FA.B_Scope,
+                        Classwide  => False,
+                        Globals    => Globals);
+
+                     for Output of To_Ordered_Flow_Id_Set (Globals.Outputs)
+                     loop
+                        if Is_Checked_Ghost_Entity (Output) then
+                           Error_Msg_Flow
+                             (FA       => FA,
+                              Msg      =>
+                                "call to ignored ghost subprogram & "
+                                & "with checked ghost global output &",
+                              F1       => Direct_Mapping_Id (SC.E),
+                              F2       => Output,
+                              Severity => Medium_Check_Kind,
+                              N        => Atr.Error_Location,
+                              Tag      => Ghost_Wrong,  --  ???
+                              Vertex   => V);
+                        end if;
+                     end loop;
+                  end if;
+               end loop;
+            end if;
+         end;
+      end loop;
+   end Check_Ghost_Calls_Policy;
+
    ------------------------------------
    -- Check_Ghost_Subprogram_Outputs --
    ------------------------------------
@@ -4390,7 +4459,7 @@ package body Flow.Analysis is
                   F2       => Output,
                   Severity => Medium_Check_Kind,
                   Tag      => Ghost_Wrong,
-                  SRM_Ref  => "6.9(20)");
+                  SRM_Ref  => "6.9(24)");
             end if;
          end loop;
       end if;
@@ -5368,7 +5437,7 @@ package body Flow.Analysis is
                         Error_Msg_Flow
                           (FA       => FA,
                            Msg      =>
-                             "& is not initialized " & "at subprogram entry",
+                             "& is not initialized at subprogram entry",
                            Severity => High_Check_Kind,
                            N        =>
                              First_Variable_Use
@@ -6325,24 +6394,26 @@ package body Flow.Analysis is
                      if Ekind (SC.E) = E_Package then
                         null;
 
+                     --  Calls via access-to-procedures are not supported;
+                     --  access-to-functions are checked when creating the
+                     --  access.
+
                      elsif Ekind (SC.E) = E_Subprogram_Type then
 
-                        Proved := False;
-                        Error_Msg_Flow
-                          (FA          => FA,
-                           Msg         =>
-                             Check_Msg
-                               ("call via access-to-subprogram "
-                                & "might be nonterminating"),
-                           Explanation =>
-                             (if Is_Function_Type (SC.E)
-                              then "call could hide recursive " & "calls"
-                              else ""),
-                           Severity    => Medium_Check_Kind,
-                           N           => Atr.Error_Location,
-                           F1          => Spec_Entity_Id,
-                           Tag         => Subprogram_Termination,
-                           Vertex      => V);
+                        if Is_Procedure_Type (SC.E) then
+                           Proved := False;
+                           Error_Msg_Flow
+                             (FA       => FA,
+                              Msg      =>
+                                Check_Msg
+                                  ("call via access-to-procedure "
+                                   & "might be nonterminating"),
+                              Severity => Medium_Check_Kind,
+                              N        => Atr.Error_Location,
+                              F1       => Spec_Entity_Id,
+                              Tag      => Subprogram_Termination,
+                              Vertex   => V);
+                        end if;
 
                      elsif Nkind (SC.N) in N_Subprogram_Call
                        and then Flow_Classwide.Is_Dispatching_Call (SC.N)
@@ -6357,7 +6428,7 @@ package body Flow.Analysis is
                                 & "might be nonterminating"),
                            Explanation =>
                              (if Nkind (SC.N) = N_Function_Call
-                              then "call could hide recursive " & "calls"
+                              then "call could hide recursive calls"
                               else ""),
                            Severity    => Medium_Check_Kind,
                            N           => Atr.Error_Location,
@@ -6443,7 +6514,7 @@ package body Flow.Analysis is
                              (FA       => FA,
                               Msg      =>
                                 Check_Msg
-                                  ("call to & might be " & "nonterminating"),
+                                  ("call to & might be nonterminating"),
                               Fix      =>
                                 (if Get_Termination_Condition (SC.E).Kind
                                    = Unspecified
@@ -6474,8 +6545,7 @@ package body Flow.Analysis is
                              Check_Msg
                                ("indirect dispatching call to record equality "
                                 & "might be nonterminating"),
-                           Explanation =>
-                             ("call could hide recursive " & "calls"),
+                           Explanation => ("call could hide recursive calls"),
                            Severity    => Medium_Check_Kind,
                            N           => Atr.Error_Location,
                            F1          => Spec_Entity_Id,
@@ -6556,6 +6626,17 @@ package body Flow.Analysis is
    ----------------------------
 
    procedure Check_Ghost_Terminates (FA : in out Flow_Analysis_Graphs) is
+
+      function Is_Ghost_Subprogram_Call (N : Node_Id) return Boolean
+      with Pre => Nkind (N) in N_Subprogram_Call;
+      --  Return True if called entity from N denotes a ghost subprogram
+
+      function Is_Ghost_Subprogram_Call (N : Node_Id) return Boolean is
+         Id : constant Entity_Id := Get_Enclosing_Ghost_Entity (Name (N));
+      begin
+         return Is_Ghost_Entity (Id);
+      end Is_Ghost_Subprogram_Call;
+
    begin
       --  We are only interested in calls originating from non-ghost entities.
       --  Also, if the termination condition of the caller is statically true,
@@ -6576,59 +6657,66 @@ package body Flow.Analysis is
 
             if not Atr.In_Nested_Package then
                for SC of Atr.Subprogram_Calls loop
-                  if Is_Ghost_Entity (SC.E) then
-                     if Get_Termination_Condition (SC.E, Compute => True)
-                       = (Static, False)
-                     then
-                        --  For calls via access-to-subprogram don't mention
-                        --  the subprogram name (both because it wouldn't be
-                        --  terribly useful and because it could be an itype).
-                        --  Also, don't emit a possible fix, because
-                        --  access-to-subprograms types cannot be annotated
-                        --  with Always_Terminates anyway.
 
-                        if Ekind (SC.E) = E_Subprogram_Type then
+                  --  Package elaboration is checked on the package itself,
+                  --  and entries cannot be marked ghost, so we only check for
+                  --  ghost subprogram calls.
+
+                  if Nkind (SC.N) in N_Subprogram_Call
+                    and then Is_Ghost_Subprogram_Call (SC.N)
+                    and then Get_Termination_Condition (SC.E, Compute => True)
+                             = (Static, False)
+                  then
+                     --  For calls via access-to-procedures don't mention
+                     --  the subprogram name (both because it wouldn't be
+                     --  terribly useful and because it could be an itype).
+                     --  Also, don't emit a possible fix, because
+                     --  access-to-subprograms types cannot be annotated
+                     --  with Always_Terminates anyway. Access-to-functions
+                     --  are checked when the access is created.
+
+                     if Ekind (SC.E) = E_Subprogram_Type then
+                        if Is_Procedure_Type (SC.E) then
                            Error_Msg_Flow
                              (FA       => FA,
                               Msg      =>
-                                "call to ghost access-to-subprogram "
+                                "call to ghost access-to-procedure "
                                 & "might be nonterminating",
                               Severity => Medium_Check_Kind,
                               N        => Atr.Error_Location,
-                              Tag      => Subprogram_Termination,
-                              Vertex   => V);
-
-                        --  For calls to ordinary subprograms with statically
-                        --  false termination the check is certain and clear,
-                        --  so no need to offer a fix.
-
-                        elsif Get_Termination_Condition (SC.E)
-                          = (Static, False)
-                        then
-                           Error_Msg_Flow
-                             (FA       => FA,
-                              Msg      =>
-                                "call to ghost subprogram & is nonterminating",
-                              Severity => Medium_Check_Kind,
-                              N        => Atr.Error_Location,
-                              F1       => Direct_Mapping_Id (SC.E),
-                              Tag      => Subprogram_Termination,
-                              Vertex   => V);
-                        else
-                           Error_Msg_Flow
-                             (FA       => FA,
-                              Msg      =>
-                                "call to ghost subprogram & "
-                                & "might be nonterminating",
-                              Fix      =>
-                                "annotate & with aspect Always_Terminates",
-                              Severity => Medium_Check_Kind,
-                              N        => Atr.Error_Location,
-                              F1       => Direct_Mapping_Id (SC.E),
-                              FF1      => Direct_Mapping_Id (SC.E),
                               Tag      => Subprogram_Termination,
                               Vertex   => V);
                         end if;
+
+                     --  For calls to ordinary subprograms with statically
+                     --  false termination the check is certain and clear,
+                     --  so no need to offer a fix.
+
+                     elsif Get_Termination_Condition (SC.E) = (Static, False)
+                     then
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Msg      =>
+                             "call to ghost subprogram & is nonterminating",
+                           Severity => Medium_Check_Kind,
+                           N        => Atr.Error_Location,
+                           F1       => Direct_Mapping_Id (SC.E),
+                           Tag      => Subprogram_Termination,
+                           Vertex   => V);
+                     else
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Msg      =>
+                             "call to ghost subprogram & "
+                             & "might be nonterminating",
+                           Fix      =>
+                             "annotate & with aspect Always_Terminates",
+                           Severity => Medium_Check_Kind,
+                           N        => Atr.Error_Location,
+                           F1       => Direct_Mapping_Id (SC.E),
+                           FF1      => Direct_Mapping_Id (SC.E),
+                           Tag      => Subprogram_Termination,
+                           Vertex   => V);
                      end if;
                   end if;
                end loop;

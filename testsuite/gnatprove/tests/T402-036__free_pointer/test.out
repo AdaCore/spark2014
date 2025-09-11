@@ -6,7 +6,7 @@ ghc_sort.adb:23:22: medium: overflow check might fail, cannot prove upper bound 
 ghc_sort.adb:23:25: info: pointer dereference check proved (CVC5: 1 VC)
 ghc_sort.adb:23:30: info: pointer dereference check proved (CVC5: 1 VC)
 ghc_sort.adb:23:35: info: pointer dereference check proved (CVC5: 1 VC)
-ghc_sort.adb:23:42: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+ghc_sort.adb:23:42: info: length check proved (CVC5: 3 VC)
 ghc_sort.adb:23:42: info: range check proved (CVC5: 2 VC)
 ghc_sort.adb:23:45: info: pointer dereference check proved (CVC5: 1 VC)
 ghc_sort.adb:23:50: info: pointer dereference check proved (CVC5: 1 VC)

@@ -7,7 +7,7 @@ procedure Main is
     with Unreferenced
   is
   begin
-    pragma Assert (X in B);  --  @ASSERT:FAIL @COUNTEREXAMPLE
+    pragma Assert (X in B);  --  @ASSERT:FAIL
   end Array_Predicate;
 
   subtype Int is Integer with Predicate => Int in 5 | 8 .. 10 | 40 + 2;

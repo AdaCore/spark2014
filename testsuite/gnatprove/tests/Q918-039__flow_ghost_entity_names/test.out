@@ -1,1 +1,1 @@
-p.adb:2:11: medium: ghost subprogram "P" cannot have non-ghost global output "q.g" (SPARK RM 6.9(20))
+p.adb:2:11: medium: ghost subprogram "P" cannot have non-ghost global output "q.g" (SPARK RM 6.9(24))

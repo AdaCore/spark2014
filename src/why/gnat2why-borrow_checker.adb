@@ -900,14 +900,6 @@ package body Gnat2Why.Borrow_Checker is
    --  a prefix, in the sense that they could still refer to overlapping memory
    --  locations.
 
-   function Loop_Statement_Of_Exit (Stmt : Node_Id) return Node_Id;
-   --  A function that takes an exit statement node and returns the loop
-   --  statement of the loop that this statement is exiting from.
-
-   function Loop_Of_Exit (Stmt : Node_Id) return Entity_Id;
-   --  A function that takes an exit statement node and returns the entity of
-   --  the loop that this statement is exiting from.
-
    procedure Merge_Env
      (Source : in out Perm_Env;
       Target : in out Perm_Env;
@@ -924,6 +916,13 @@ package body Gnat2Why.Borrow_Checker is
    --  scope of the transfer-of-control target, to avoid accumulating values we
    --  will filter later on, but keeping track of such information would be
    --  more complex.
+
+   procedure Merge_Transfer_Of_Control_Env
+     (Map : in out Env_Backups; Key : Node_Id);
+   --  Used at transfer-of-control target points, to merge environments stored
+   --  for the target in the current environment. Map, Key must be the
+   --  corresponding maps/key corresponding to the target. After merge, the key
+   --  is removed from the map.
 
    procedure BC_Error
      (Msg           : Message;
@@ -1121,7 +1120,7 @@ package body Gnat2Why.Borrow_Checker is
    Current_Subp : Entity_Id := Empty;
    --  Set to the enclosing unit during the analysis of a callable body
 
-   Current_Loops_Accumulators : Env_Backups;
+   Current_Exit_Accumulators : Env_Backups;
    --  This variable contains the environments used as accumulators for loops,
    --  that consist of the merge of all environments at each exit point of
    --  the loop (which can also be the entry point of the loop in the case of
@@ -1129,6 +1128,13 @@ package body Gnat2Why.Borrow_Checker is
    --  We require that the environment stored in the accumulator be less
    --  restrictive than the saved environment at the beginning of the loop, and
    --  the permission environment after the loop is equal to the accumulator.
+
+   Current_Continue_Accumulators : Env_Backups;
+   --  This variable contains the environments used as accumulators for loop
+   --  continues, that consists of the merge of all environments at each
+   --  continue statements mentioning the given loop. When the completion of
+   --  the loop is encountered, this environment is merged with the current
+   --  one.
 
    Current_Goto_Accumulators : Env_Backups;
    --  This variable contains the environments used as accumulators for goto
@@ -1360,16 +1366,18 @@ package body Gnat2Why.Borrow_Checker is
 
       --  SPARK RM 3.10(17): A path rooted at a non-ghost object shall only
       --  be moved, or borrowed, if the target object of the move or borrow
-      --  is itself non-ghost.
+      --  is itself non-ghost and if the target object of a move or borrow is a
+      --  disabled ghost object, then the moved or borrowed path shall be
+      --  rooted at a disabled ghost object.
 
       procedure Check_Assignment_To_Ghost
         (Target_Root : Entity_Id; Expr_Root : Entity_Id; Mode : Checking_Mode)
       is
       begin
-         if Is_Ghost_Entity (Target_Root)
-           and then Present (Expr_Root)
-           and then not Is_Ghost_Entity (Expr_Root)
-         then
+         if not Is_Ghost_Entity (Target_Root) or else No (Expr_Root) then
+            null;
+
+         elsif not Is_Ghost_Entity (Expr_Root) then
             BC_Error
               (Create
                  ("non-ghost object & cannot be "
@@ -1380,6 +1388,42 @@ package body Gnat2Why.Borrow_Checker is
                   & " in an assignment to ghost object &",
                   Names => [Expr_Root, Target_Root]),
                Expr);
+
+         elsif not Is_Checked_Ghost_Entity (Target_Root)
+           and then Is_Checked_Ghost_Entity (Expr_Root)
+         then
+            BC_Error
+              (Create
+                 ("enabled ghost object & cannot be "
+                  & (case Mode is
+                       when Borrow => "borrowed",
+                       when Move => "moved",
+                       when others => raise Program_Error)
+                  & " in an assignment to disabled ghost object &",
+                  Names => [Expr_Root, Target_Root]),
+               Expr);
+
+         elsif not Is_Same_Or_Depends_On_Level
+                     (Ghost_Assertion_Level (Target_Root),
+                      Ghost_Assertion_Level (Expr_Root))
+           or else not Is_Same_Or_Depends_On_Level
+                         (Ghost_Assertion_Level (Expr_Root),
+                          Ghost_Assertion_Level (Target_Root))
+         then
+            BC_Error
+              (Create
+                 ("ghost object & cannot be "
+                  & (case Mode is
+                       when Borrow => "borrowed",
+                       when Move => "moved",
+                       when others => raise Program_Error)
+                  & " in an assignment to ghost object &",
+                  Names => [Expr_Root, Target_Root]),
+               Expr,
+               Continuations =>
+                 [Create
+                    ("& and & should have matching assertion levels",
+                     Names => [Expr_Root, Target_Root])]);
          end if;
       end Check_Assignment_To_Ghost;
 
@@ -3392,7 +3436,8 @@ package body Gnat2Why.Borrow_Checker is
       --  Otherwise, the loop exit environment remains empty until it is
       --  populated by analyzing exit statements.
 
-      pragma Assert (Get (Current_Loops_Accumulators, Loop_Name) = null);
+      pragma Assert (Get (Current_Exit_Accumulators, Loop_Name) = null);
+      pragma Assert (Get (Current_Continue_Accumulators, Loop_Name) = null);
 
       if Present (Iteration_Scheme (Stmt)) then
          declare
@@ -3400,7 +3445,7 @@ package body Gnat2Why.Borrow_Checker is
 
          begin
             Copy_Env (From => Current_Perm_Env, To => Exit_Env.all);
-            Set (Current_Loops_Accumulators, Loop_Name, Exit_Env);
+            Set (Current_Exit_Accumulators, Loop_Name, Exit_Env);
          end;
       end if;
 
@@ -3453,8 +3498,12 @@ package body Gnat2Why.Borrow_Checker is
 
       Copy_Env (Current_Perm_Env, Loop_Env);
 
+      --  At the end of the iteration, we must merge environment from continue
+      --  statements.
+
       Object_Scope.Push_Scope;
       Check_List (Statements (Stmt));
+      Merge_Transfer_Of_Control_Env (Current_Continue_Accumulators, Loop_Name);
       Object_Scope.Pop_Scope;
 
       --  Check that environment gets less restrictive at end of loop
@@ -3467,7 +3516,7 @@ package body Gnat2Why.Borrow_Checker is
 
       declare
          Exit_Env : constant Perm_Env_Access :=
-           Get (Current_Loops_Accumulators, Loop_Name);
+           Get (Current_Exit_Accumulators, Loop_Name);
       begin
          --  In the normal case, Exit_Env is not null and we use it. In the
          --  degraded case of a plain-loop without exit statements, Exit_Env is
@@ -3475,9 +3524,9 @@ package body Gnat2Why.Borrow_Checker is
          --  environment.
 
          if Exit_Env /= null then
-            Copy_Env (From => Exit_Env.all, To => Current_Perm_Env);
-            Free_Env (Exit_Env.all);
-            Remove (Current_Loops_Accumulators, Loop_Name);
+            Free_Env (Current_Perm_Env);
+            Current_Perm_Env := Exit_Env.all;
+            Remove (Current_Exit_Accumulators, Loop_Name);
          else
             Reset_Env (Current_Perm_Env);
          end if;
@@ -3592,16 +3641,8 @@ package body Gnat2Why.Borrow_Checker is
          --  the current environment.
 
          when N_Label =>
-            declare
-               Label_Entity : constant Entity_Id := Entity (Identifier (N));
-               Label_Env    : constant Perm_Env_Access :=
-                 Get (Current_Goto_Accumulators, Label_Entity);
-            begin
-               if Label_Env /= null then
-                  Merge_Env (Label_Env.all, Current_Perm_Env, Filter => True);
-                  Remove (Current_Goto_Accumulators, Label_Entity);
-               end if;
-            end;
+            Merge_Transfer_Of_Control_Env
+              (Current_Goto_Accumulators, Entity (Identifier (N)));
 
          --  Ignored constructs for pointer checking
 
@@ -3984,18 +4025,49 @@ package body Gnat2Why.Borrow_Checker is
          declare
             Root : constant Entity_Id := Get_Root_Object (Expr.Expr);
          begin
-            if Present (Root) and then not Is_Ghost_Entity (Root) then
+            --  Here, errors should only occur with mode Borrow as Free and
+            --  Move are associated with IN OUT parameters that should be
+            --  rejected by the frontend.
+
+            if No (Root) then
+               null;
+            elsif not Is_Ghost_Entity (Root) then
+               pragma Assert (Mode = Borrow);
                BC_Error
                  (Create
-                    ("non-ghost object & cannot be "
-                     & (case Mode is
-                          when Borrow => "borrowed",
-                          when Free => "freed",
-                          when Move => "moved",
-                          when others => raise Program_Error)
+                    ("non-ghost object & cannot be borrowed"
                      & " in a call to ghost subprogram &",
                      Names => [Root, Subp]),
                   Expr.Expr);
+
+            elsif not Is_Checked_Ghost_Entity (Subp)
+              and then Is_Checked_Ghost_Entity (Root)
+            then
+               pragma Assert (Mode = Borrow);
+               BC_Error
+                 (Create
+                    ("enabled ghost object & cannot be borrowed"
+                     & " in a call to disabled ghost subprogram &",
+                     Names => [Root, Subp]),
+                  Expr.Expr);
+
+            elsif not Is_Same_Or_Depends_On_Level
+                        (Ghost_Assertion_Level (Subp),
+                         Ghost_Assertion_Level (Root))
+              or else not Is_Same_Or_Depends_On_Level
+                            (Ghost_Assertion_Level (Root),
+                             Ghost_Assertion_Level (Subp))
+            then
+               BC_Error
+                 (Create
+                    ("ghost object & cannot be borrowed"
+                     & " in a call to ghost subprogram &",
+                     Names => [Root, Subp]),
+                  Expr.Expr,
+                  Continuations =>
+                    [Create
+                       ("& and & should have matching assertion levels",
+                        Names => [Root, Subp])]);
             end if;
          end;
       end if;
@@ -4358,19 +4430,9 @@ package body Gnat2Why.Borrow_Checker is
 
                --  Merge environments from inner return
 
-               declare
-                  Return_Entity : constant Entity_Id :=
-                    Return_Statement_Entity (Stmt);
-                  Return_Env    : constant Perm_Env_Access :=
-                    Get (Current_Extended_Return_Accumulators, Return_Entity);
-               begin
-                  if Return_Env /= null then
-                     Merge_Env
-                       (Return_Env.all, Current_Perm_Env, Filter => True);
-                     Remove
-                       (Current_Extended_Return_Accumulators, Return_Entity);
-                  end if;
-               end;
+               Merge_Transfer_Of_Control_Env
+                 (Current_Extended_Return_Accumulators,
+                  Return_Statement_Entity (Stmt));
 
                declare
                   E_Obj : constant Expr_Or_Ent :=
@@ -4404,9 +4466,10 @@ package body Gnat2Why.Borrow_Checker is
             Object_Scope.Pop_Scope;
 
          --  On loop exit, merge the current permission environment with the
-         --  accumulator for the given loop.
+         --  accumulator for the given loop. The handling for loop
+         --  exit/continues is actually the same.
 
-         when N_Exit_Statement =>
+         when N_Exit_Statement | N_Continue_Statement =>
             declare
                Cond     : constant Node_Id := Condition (Stmt);
                Has_Cond : constant Boolean := Present (Cond);
@@ -4518,8 +4581,7 @@ package body Gnat2Why.Borrow_Checker is
 
          --  Unsupported INOX constructs
 
-         when N_Continue_Statement
-            | N_Goto_When_Statement
+         when N_Goto_When_Statement
             | N_Raise_When_Statement
             | N_Return_When_Statement
          =>
@@ -4549,7 +4611,10 @@ package body Gnat2Why.Borrow_Checker is
       --  * When crossing through a finally, check the finally statements with
       --    current environment
 
-      procedure Stop (Destination : Node_Id; Exc_Set : Exception_Sets.Set);
+      procedure Stop
+        (Destination : Node_Id;
+         Exc_Set     : Exception_Sets.Set;
+         Is_Continue : Boolean);
       --  Deal with accumulating permission environment at destination of
       --  transfer of control. For transfer of control escaping the subprogram,
       --  check permission environments are in the expected state.
@@ -4602,89 +4667,64 @@ package body Gnat2Why.Borrow_Checker is
       -- Stop --
       ----------
 
-      procedure Stop (Destination : Node_Id; Exc_Set : Exception_Sets.Set) is
+      procedure Stop
+        (Destination : Node_Id;
+         Exc_Set     : Exception_Sets.Set;
+         Is_Continue : Boolean)
+      is
+         procedure Do_Local (Env_Map : in out Env_Backups; Key : Node_Id);
+         --  Common processing for transfer-of-control stopping within current
+         --  body. The corresponding map and keys should be passed as
+         --  parameter.
+
+         --------------
+         -- Do_Local --
+         --------------
+
+         procedure Do_Local (Env_Map : in out Env_Backups; Key : Node_Id) is
+            Saved_Accumulator : constant Perm_Env_Access := Get (Env_Map, Key);
+            Environment_Copy  : constant Perm_Env_Access := new Perm_Env;
+         begin
+            Copy_Env (Current_Perm_Env, Environment_Copy.all);
+
+            if Saved_Accumulator = null then
+               Set (Env_Map, Key, Environment_Copy);
+            else
+               Merge_Env
+                 (Source => Environment_Copy.all,
+                  Target => Saved_Accumulator.all);
+            end if;
+         end Do_Local;
+
+         --  Start of processing for Stop
+
       begin
          case Nkind (Destination) is
             when N_Loop_Statement =>
                declare
-                  Loop_Name         : constant Entity_Id :=
+                  Loop_Name : constant Entity_Id :=
                     Entity (Identifier (Destination));
-                  Saved_Accumulator : constant Perm_Env_Access :=
-                    Get (Current_Loops_Accumulators, Loop_Name);
-                  Environment_Copy  : constant Perm_Env_Access := new Perm_Env;
                begin
-                  Copy_Env (Current_Perm_Env, Environment_Copy.all);
-
-                  if Saved_Accumulator = null then
-                     Set
-                       (Current_Loops_Accumulators,
-                        Loop_Name,
-                        Environment_Copy);
+                  if Is_Continue then
+                     Do_Local (Current_Continue_Accumulators, Loop_Name);
                   else
-                     Merge_Env
-                       (Source => Environment_Copy.all,
-                        Target => Saved_Accumulator.all);
+                     Do_Local (Current_Exit_Accumulators, Loop_Name);
                   end if;
                end;
 
             when N_Exception_Handler =>
-               --  Store the current environment in the
-               --  Current_Exc_Accumulators map for handler.
 
-               declare
-                  Handler_Env      : constant Perm_Env_Access :=
-                    Get (Current_Exc_Accumulators, Destination);
-                  Environment_Copy : constant Perm_Env_Access := new Perm_Env;
-               begin
-                  Copy_Env (Current_Perm_Env, Environment_Copy.all);
-
-                  if Handler_Env = null then
-                     Set
-                       (Current_Exc_Accumulators,
-                        Destination,
-                        Environment_Copy);
-                  else
-                     Merge_Env (Environment_Copy.all, Handler_Env.all);
-                  end if;
-               end;
+               Do_Local (Current_Exc_Accumulators, Destination);
 
             when N_Extended_Return_Statement =>
-               declare
-                  Return_Ent       : constant Entity_Id :=
-                    Return_Statement_Entity (Destination);
-                  Return_Env       : constant Perm_Env_Access :=
-                    Get (Current_Extended_Return_Accumulators, Return_Ent);
-                  Environment_Copy : constant Perm_Env_Access := new Perm_Env;
-               begin
-                  Copy_Env (Current_Perm_Env, Environment_Copy.all);
-                  if Return_Env = null then
-                     Set
-                       (Current_Extended_Return_Accumulators,
-                        Return_Ent,
-                        Environment_Copy);
-                  else
-                     Merge_Env (Environment_Copy.all, Return_Env.all);
-                  end if;
-               end;
+
+               Do_Local
+                 (Current_Extended_Return_Accumulators,
+                  Return_Statement_Entity (Destination));
 
             when N_Entity =>
                if Ekind (Destination) = E_Label then
-                  declare
-                     Label_Env        : constant Perm_Env_Access :=
-                       Get (Current_Goto_Accumulators, Destination);
-                     Environment_Copy : constant Perm_Env_Access :=
-                       new Perm_Env;
-                  begin
-                     Copy_Env (Current_Perm_Env, Environment_Copy.all);
-                     if Label_Env = null then
-                        Set
-                          (Current_Goto_Accumulators,
-                           Destination,
-                           Environment_Copy);
-                     else
-                        Merge_Env (Environment_Copy.all, Label_Env.all);
-                     end if;
-                  end;
+                  Do_Local (Current_Goto_Accumulators, Destination);
                else
                   declare
                      Subp : Entity_Id renames Destination;
@@ -5444,30 +5484,6 @@ package body Gnat2Why.Borrow_Checker is
 
    end Is_Read_Only;
 
-   ------------------
-   -- Loop_Of_Exit --
-   ------------------
-
-   function Loop_Of_Exit (Stmt : Node_Id) return Entity_Id
-   is (Entity (Identifier (Loop_Statement_Of_Exit (Stmt))));
-
-   ----------------------------
-   -- Loop_Statement_Of_Exit --
-   ----------------------------
-
-   function Loop_Statement_Of_Exit (Stmt : Node_Id) return Node_Id is
-      Loop_Id : constant E_Loop_Id := Loop_Entity_Of_Exit_Statement (Stmt);
-
-      function Is_Target_Loop (N : Node_Id) return Boolean
-      is (Nkind (N) = N_Loop_Statement
-          and then Entity (Identifier (N)) = Loop_Id);
-
-      function Enclosing_Loop_Stmt is new
-        First_Parent_With_Property (Is_Target_Loop);
-   begin
-      return Enclosing_Loop_Stmt (Stmt);
-   end Loop_Statement_Of_Exit;
-
    ---------
    -- Lub --
    ---------
@@ -5779,6 +5795,21 @@ package body Gnat2Why.Borrow_Checker is
          end loop;
       end;
    end Merge_Env;
+
+   -----------------------------------
+   -- Merge_Transfer_Of_Control_Env --
+   -----------------------------------
+
+   procedure Merge_Transfer_Of_Control_Env
+     (Map : in out Env_Backups; Key : Node_Id)
+   is
+      Saved_Env : constant Perm_Env_Access := Get (Map, Key);
+   begin
+      if Saved_Env /= null then
+         Merge_Env (Saved_Env.all, Current_Perm_Env, Filter => True);
+         Remove (Map, Key);
+      end if;
+   end Merge_Transfer_Of_Control_Env;
 
    ------------------
    -- Object_Scope --

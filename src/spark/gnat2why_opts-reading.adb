@@ -52,12 +52,17 @@ package body Gnat2Why_Opts.Reading is
       -----------------------------
 
       procedure Read_File_Specific_Info (V : JSON_Value) is
-         R : constant JSON_Value :=
-           (if Has_Field (V, Source_File)
-            then Get (V, Source_File)
-            else Get (V, "Ada"));
-
+         R : JSON_Value;
       begin
+         if Has_Field (V, Source_File) then
+            R := Get (V, Source_File);
+         else
+            --  This is incorrect (there shouldn't be a need for default
+            --  switches), but in some corner cases (mostly bodies with pragma
+            --  No_Body), we can't guarantee that our file is mentioned in the
+            --  list of files. In this case we take the default switches.
+            R := Get (V, "default");
+         end if;
          No_Loop_Unrolling := Get_Opt (R, No_Loop_Unrolling_Name);
          No_Inlining := Get_Opt (R, No_Inlining_Name);
          Check_Counterexamples := Get_Opt (R, Check_Counterexamples_Name);

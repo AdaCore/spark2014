@@ -158,7 +158,7 @@ package body Not_Discrete is
          Is_Rec := True;
       end if;
 
-      pragma Assert (not Is_Rec);    --  @ASSERT:FAIL @COUNTEREXAMPLE
+      pragma Assert (not Is_Rec);    --  @ASSERT:FAIL
 
       return Is_Rec;
    end Record_Discr_Constraint_Same;
@@ -175,7 +175,7 @@ package body Not_Discrete is
          Is_Small := True;
       end if;
 
-      pragma Assert (not Is_Small);  --  @ASSERT:FAIL @COUNTEREXAMPLE
+      pragma Assert (not Is_Small);  --  @ASSERT:FAIL
 
       return Is_Small;
    end Record_Discr_Constraint_Down;
@@ -192,7 +192,7 @@ package body Not_Discrete is
          Is_Rec := True;
       end if;
 
-      pragma Assert (not Is_Rec);    --  @ASSERT:FAIL @COUNTEREXAMPLE
+      pragma Assert (not Is_Rec);    --  @ASSERT:FAIL
 
       return Is_Rec;
    end Record_Discr_Constraint_Up;
@@ -209,7 +209,7 @@ package body Not_Discrete is
          Is_Circle := True;
       end if;
 
-      pragma Assert (not Is_Circle); --  @ASSERT:FAIL @COUNTEREXAMPLE
+      pragma Assert (not Is_Circle); --  @ASSERT:FAIL
 
       return Is_Circle;
    end Record_Tagged;

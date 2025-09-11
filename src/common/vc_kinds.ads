@@ -510,7 +510,7 @@ package VC_Kinds is
       Lim_Classwide_With_Predicate,
       Lim_Complex_Raise_Expr_In_Prec,
       Lim_Constrained_Classwide,
-      Lim_Continue_Statement,
+      Lim_Continue_Cross_Inv,
       Lim_Contract_On_Derived_Private_Type,
       Lim_Conv_Fixed_Float,
       Lim_Conv_Fixed_Integer,
@@ -858,7 +858,8 @@ package VC_Kinds is
            "attribute ""Address"" in unsupported context",
          when Lim_Alloc_With_Type_Constraints =>
            "uninitialized allocator with type constraints",
-         when Lim_Continue_Statement => "continue statement",
+         when Lim_Continue_Cross_Inv =>
+           "continue statement preceding loop-invariant",
          when Lim_Object_Before_Inv =>
            "non-scalar object declared before loop-invariant",
          when Lim_Package_Before_Inv =>
