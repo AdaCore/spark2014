@@ -1,7 +1,7 @@
 procedure Flow_Borrows with SPARK_Mode is
    type Int_Ptr is access Integer;
    type Two_Ptrs is record
-      F , G : Int_Ptr;
+      F, G : Int_Ptr;
    end record;
 
    XF : Int_Ptr := new Integer'(5);
