@@ -14,11 +14,12 @@ package Prots is
       F1 : PT1; --  Inherited priority 3
       F2 : PT2; --  Inherited priority 4
       F3 : PT1; --  Inherited priority 3
-      -- F3 has intentionally the same type as F1. Just to have multiple
-      -- instances of one type. Note that in SPARK it is not possible to to
-      -- have different priorities for the fields of one and the same component
-      -- type. Whereas components having different types can also have
-      -- different (inherited) priorities.
+      F4 : PT2; --  Inherited priority 4
+      -- F3 and F4 have intentionally the same types as F1 and F2. Just to have
+      -- multiple instances of the same type. Note that in SPARK it is not
+      -- possible to to have different priorities for the fields of one and the
+      -- same component type. Whereas components having different types can
+      -- also have different (inherited) priorities.
    end record;
 
    protected PO

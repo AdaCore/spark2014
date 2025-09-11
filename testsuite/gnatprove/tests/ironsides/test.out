@@ -210,7 +210,7 @@ dns_table_pkg.ads:265:12: info: data dependencies proved
 dns_table_pkg.ads:266:12: info: flow dependencies proved
 dns_types.ads:149:09: info: flow dependencies proved
 dns_types.ads:151:06: info: postcondition proved (CVC5: 1 VC)
-driver.adb:38:11: info: ceiling priority protocol is respected (CVC5: 1 VC)
+driver.adb:38:11: info: ceiling priority protocol is respected for "Dns_Table_Pkg.Dns_Table" (CVC5: 1 VC)
 driver.adb:39:20: info: range check proved (CVC5: 2 VC)
 driver.adb:40:04: info: initialization of "ReturnedARecords" proved
 driver.adb:41:04: info: initialization of "ReturnedAAAARecords" proved
@@ -721,7 +721,7 @@ spark_ada_command_line.ads:61:09: warning: the elaboration of "Text_IO" is not k
 spark_ada_command_line.ads:61:09: warning: use pragma Elaborate_Body in "Text_IO" or pragma Elaborate in the current unit
 spark_ada_command_line.ads:62:26: info: initialization of "SPARK_Ada_Command_Line.State" proved
 spark_ada_command_line.ads:63:08: info: flow dependencies proved
-spark_dns_main.adb:27:11: info: ceiling priority protocol is respected (CVC5: 1 VC)
+spark_dns_main.adb:27:11: info: ceiling priority protocol is respected for "Dns_Table_Pkg.Dns_Table" (CVC5: 1 VC)
 spark_dns_main.adb:28:08: info: data dependencies proved
 spark_dns_main.adb:29:46: info: initialization of "TCP_DNS_Package.Startup_Suspension" proved
 spark_dns_main.adb:30:46: info: initialization of "UDP_DNS_Package.Startup_Suspension" proved

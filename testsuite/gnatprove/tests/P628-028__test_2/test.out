@@ -28,8 +28,8 @@ polyorb_hi-periodic_task.adb:78:39: medium: range check might fail, in instantia
 polyorb_hi-periodic_task.adb:110:42: medium: range check might fail, in instantiation at polyorb_hi_generated-activity.ads:22 [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 82 should mention Next_Start in a loop invariant]
 polyorb_hi-periodic_task.adb:110:42: medium: range check might fail, in instantiation at polyorb_hi_generated-activity.ads:37 [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 82 should mention Next_Start in a loop invariant]
 polyorb_hi-periodic_task.ads:43:22: info: range check proved (CVC5: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:22
-polyorb_hi-periodic_task.ads:71:09: info: ceiling priority protocol is respected (CVC5: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:22
-polyorb_hi-periodic_task.ads:71:09: info: ceiling priority protocol is respected (CVC5: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:37
+polyorb_hi-periodic_task.ads:71:09: info: ceiling priority protocol is respected for "Polyorb_Hi.Epoch.Epoch_Data" (CVC5: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:22
+polyorb_hi-periodic_task.ads:71:09: info: ceiling priority protocol is respected for "Polyorb_Hi.Epoch.Epoch_Data" (CVC5: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:37
 polyorb_hi-periodic_task.ads:71:09: info: nontermination of task proved (CVC5: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:22
 polyorb_hi-periodic_task.ads:71:09: info: nontermination of task proved (CVC5: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:37
 polyorb_hi-periodic_task.ads:75:13: info: implicit aspect Always_Terminates on "Next_Deadline" has been proved, subprogram will terminate, in instantiation at polyorb_hi_generated-activity.ads:22

@@ -832,11 +832,16 @@ package body Flow_Error_Messages is
 
       --  Local variables
 
+      Subject     : constant String :=
+        (if Check_Info.Subject = Null_Unbounded_String
+         then ""
+         else ' ' & To_String (Check_Info.Subject));
       Msg         : constant String :=
         (if Is_Proved
-         then Proved_Message (VC_Loc, Tag) & Stat_Message
+         then Proved_Message (VC_Loc, Tag) & Subject & Stat_Message
          else
            Not_Proved_Message (VC_Loc, Tag)
+           & Subject
            & (if CWE then CWE_Message (Tag) else ""))
         & Extra_Msg
         & (if VC_File /= "" then ", vc file: " & VC_File else "");

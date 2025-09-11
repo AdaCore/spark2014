@@ -1,4 +1,4 @@
-main.adb:3:11: info: ceiling priority protocol is respected (CVC5: 1 VC)
+main.adb:3:11: info: ceiling priority protocol is respected for "P.Po" (CVC5: 1 VC)
 main.adb:5:08: warning: assuming "Dummy" always terminates
 main.adb:5:08: warning: assuming "Dummy" has no effect on global items
 main.adb:5:08: warning: no Always_Terminates aspect available for "Dummy" [assumed-always-terminates]

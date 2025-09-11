@@ -11,11 +11,12 @@ display.ads:14:06: info: data dependencies proved
 display.ads:15:06: info: flow dependencies proved
 main.adb:5:03: info: data dependencies proved
 timer.adb:10:34: info: range check proved (CVC5: 2 VC)
-timer.adb:16:17: info: ceiling priority protocol is respected (CVC5: 1 VC)
+timer.adb:16:17: info: ceiling priority protocol is respected for "Display.Control" (CVC5: 1 VC)
 timer.adb:17:14: info: data dependencies proved
 timer.adb:67:54: info: range check proved (CVC5: 1 VC)
 timer.adb:70:39: info: range check proved (CVC5: 1 VC)
-timer.ads:18:09: info: ceiling priority protocol is respected (CVC5: 1 VC)
+timer.ads:18:09: info: ceiling priority protocol is respected for "Display.Control" (CVC5: 1 VC)
+timer.ads:18:09: info: ceiling priority protocol is respected for "Timer.Run_State" (CVC5: 1 VC)
 timer.ads:18:09: info: nontermination of task proved (CVC5: 1 VC)
 timer.ads:19:11: info: data dependencies proved
 timer.ads:21:39: info: initialization of "Display.LCD" proved
@@ -27,13 +28,13 @@ timer.ads:33:06: info: flow dependencies proved
 tuningdata.ads:13:19: info: range check proved (CVC5: 1 VC)
 user.ads:9:14: info: ceiling priority in Interrupt_Priority proved (CVC5: 2 VC)
 user.ads:10:44: info: range check proved (CVC5: 2 VC)
-user.ads:12:17: info: ceiling priority protocol is respected (CVC5: 1 VC)
+user.ads:12:17: info: ceiling priority protocol is respected for "Timer.Run_State" (CVC5: 1 VC)
 user.ads:13:09: info: data dependencies proved
 user.ads:14:27: info: availability of interrupt justified
-user.ads:19:17: info: ceiling priority protocol is respected (CVC5: 1 VC)
+user.ads:19:17: info: ceiling priority protocol is respected for "Timer.Run_State" (CVC5: 1 VC)
 user.ads:20:09: info: data dependencies proved
 user.ads:21:27: info: availability of interrupt justified
-user.ads:26:17: info: ceiling priority protocol is respected (CVC5: 1 VC)
+user.ads:26:17: info: ceiling priority protocol is respected for "Display.Control" (CVC5: 1 VC)
 user.ads:27:09: info: data dependencies proved
 user.ads:27:37: info: initialization of "Display.LCD" proved
 user.ads:28:27: info: availability of interrupt justified
