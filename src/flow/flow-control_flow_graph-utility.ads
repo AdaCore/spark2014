@@ -42,13 +42,18 @@ package Flow.Control_Flow_Graph.Utility is
       --  True iff we do not want to emit warning on the code (when we are
       --  processing dead vertices that comes from a statically known condition
       --  involving a variable with Warnings => Off).
+
+      Is_Path_Copy : Boolean;
+      --  True iff we are on a copy of finally statements that are implicitly
+      --  executed during non-standard transfer of control.
    end record;
 
    No_Vertex_Context : constant Vertex_Context :=
      Vertex_Context'
        (Current_Loops     => Node_Sets.Empty_Set,
         In_Nested_Package => False,
-        Warnings_Off      => False);
+        Warnings_Off      => False,
+        Is_Path_Copy      => False);
 
    function Make_Basic_Attributes
      (Var_Def    : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;

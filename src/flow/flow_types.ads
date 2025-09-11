@@ -638,6 +638,9 @@ package Flow_Types is
       In_Nested_Package : Boolean;
       --  True for vertices created for constructs in nested packages
 
+      Is_Path_Copy : Boolean;
+      --  True for vertices on internal copies of finally statements
+
       Is_Exceptional_Branch : Boolean;
       --  True for nodes which lead *into* an exceptional path (see below), but
       --  are not part of the path itself.
@@ -802,6 +805,7 @@ package Flow_Types is
      V_Attributes'
        (Is_Null_Node              => False,
         In_Nested_Package         => False,
+        Is_Path_Copy              => False,
         Is_Program_Node           => False,
         Is_Original_Program_Node  => False,
         Is_Dead_Path              => False,

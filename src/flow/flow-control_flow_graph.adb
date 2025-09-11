@@ -4082,7 +4082,8 @@ package body Flow.Control_Flow_Graph is
       --  of a path expression in the iteration scheme is modified during the
       --  loop.
 
-      if not FA.Generating_Globals then
+      if not FA.Generating_Globals and then not Ctx.Vertex_Ctx.Is_Path_Copy
+      then
          for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
             declare
                Atr : V_Attributes renames FA.Atr (V);
@@ -4090,6 +4091,7 @@ package body Flow.Control_Flow_Graph is
             begin
                if Atr.Loops.Contains (Loop_Id)
                  and then not Atr.In_Nested_Package
+                 and then not Atr.Is_Path_Copy
                then
                   for Var of Atr.Variables_Defined.Union (Atr.Volatiles_Read)
                   loop
@@ -4120,7 +4122,8 @@ package body Flow.Control_Flow_Graph is
          --  This is a normal for loop over a type or range
          Do_For_Loop (Fully_Initialized);
 
-         if not FA.Generating_Globals then
+         if not FA.Generating_Globals and then not Ctx.Vertex_Ctx.Is_Path_Copy
+         then
             Loop_Writes.Insert
               (Direct_Mapping_Id
                  (Defining_Identifier
@@ -4139,7 +4142,8 @@ package body Flow.Control_Flow_Graph is
          --  This is a `in' or `of' loop over some container
          Do_Iterator_Loop;
 
-         if not FA.Generating_Globals then
+         if not FA.Generating_Globals and then not Ctx.Vertex_Ctx.Is_Path_Copy
+         then
             Loop_Writes.Insert
               (Direct_Mapping_Id
                  (Defining_Identifier (Iterator_Specification (I_Scheme))));
@@ -4226,7 +4230,8 @@ package body Flow.Control_Flow_Graph is
 
       --  Finally, we can update the loop information in Flow_Utility for proof
 
-      if not FA.Generating_Globals then
+      if not FA.Generating_Globals and then not Ctx.Vertex_Ctx.Is_Path_Copy
+      then
          Add_Loop_Writes (Loop_Id, Expand_Abstract_States (Loop_Writes));
       end if;
    end Do_Loop_Statement;
@@ -4241,7 +4246,6 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      pragma Unreferenced (Ctx);
       V : Flow_Graphs.Vertex_Id;
    begin
       --  We introduce a vertex V which has control entering from the top and
@@ -4252,6 +4256,10 @@ package body Flow.Control_Flow_Graph is
          Make_Aux_Vertex_Attributes
            (E_Loc => N, Execution => Normal_Execution),
          V);
+
+      --  ??? This attribute should be set by the Make_XXX_Attributes routine,
+      --  and all those routines should set it in the vertex automatically.
+      FA.Atr (V).Is_Path_Copy := Ctx.Vertex_Ctx.Is_Path_Copy;
 
       if FA.Generating_Globals and then Nkind (N) = N_Block_Statement then
          FA.Atr (V).Subprogram_Calls.Insert
@@ -5216,7 +5224,8 @@ package body Flow.Control_Flow_Graph is
                Vertex_Ctx =>
                  (No_Vertex_Context
                   with delta
-                    In_Nested_Package => Ctx.Vertex_Ctx.In_Nested_Package),
+                    In_Nested_Package => Ctx.Vertex_Ctx.In_Nested_Package,
+                    Is_Path_copy      => Ctx.Vertex_Ctx.Is_Path_Copy),
                Obj_Decls  => Declared_States,
                E_Loc      => N,
                Print_Hint => Pretty_Print_Package),
@@ -8129,6 +8138,7 @@ package body Flow.Control_Flow_Graph is
          with delta
            Is_Null_Node             => True,
            Is_Dead_Path             => Atr.Is_Dead_Path,
+           Is_Path_Copy             => Atr.Is_Path_Copy,
            Is_Original_Program_Node => Atr.Is_Original_Program_Node,
            Error_Location           => Atr.Error_Location,
            Warnings_Off             => Atr.Warnings_Off);

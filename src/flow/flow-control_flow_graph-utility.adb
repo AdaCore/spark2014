@@ -183,6 +183,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Loops := Vertex_Ctx.Current_Loops;
       A.In_Nested_Package := Vertex_Ctx.In_Nested_Package;
       A.Warnings_Off := Vertex_Ctx.Warnings_Off;
+      A.Is_Path_Copy := Vertex_Ctx.Is_Path_Copy;
       A.Error_Location := E_Loc;
       A.Pretty_Print_Kind := Print_Hint;
       A.Object_Declarations := Obj_Decls;
@@ -210,6 +211,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Variables_Explicitly_Used := Var_Use;
       A.Loops := Vertex_Ctx.Current_Loops;
       A.Warnings_Off := Vertex_Ctx.Warnings_Off;
+      A.Is_Path_Copy := Vertex_Ctx.Is_Path_Copy;
       A.Error_Location := E_Loc;
       A.Aux_Node := Object_Returned;
 
@@ -324,6 +326,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Loops := Vertex_Ctx.Current_Loops;
       A.In_Nested_Package := Vertex_Ctx.In_Nested_Package;
       A.Warnings_Off := Vertex_Ctx.Warnings_Off;
+      A.Is_Path_Copy := Vertex_Ctx.Is_Path_Copy;
       A.Is_Callsite := True;
       A.Error_Location := E_Loc;
 
