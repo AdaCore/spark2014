@@ -223,7 +223,6 @@ package body Flow_Generated_Globals.Phase_1 is
          New_GG_Line (EK_Locking_Call);
          Serialize (E);
          Serialize (Full_Protected_Name (Call.Prefix));
-         Serialize (Scope (Call.Operation));
          Serialize (Call.Operation);
          Terminate_GG_Line;
       end loop;

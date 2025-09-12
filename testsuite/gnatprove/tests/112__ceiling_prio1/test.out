@@ -1,3 +1,4 @@
+main.adb:3:11: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "P.Po1" must be >= the priority of the caller "Main" in the call chain "Main" (elaboration) -> "P" (elaboration) -> "P.Po1.Pp11"]
 main.adb:3:11: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "P.Po2" must be >= the priority of the caller "Main" in the call chain "Main" (elaboration) -> "P" (elaboration) -> "P.P2" -> "P.P2b" -> "P.Po2.Pp21"]
 main.adb:4:21: info: range check proved (CVC5: 2 VC)
 p.adb:10:14: info: add a contract to analyze it separately from calling contexts

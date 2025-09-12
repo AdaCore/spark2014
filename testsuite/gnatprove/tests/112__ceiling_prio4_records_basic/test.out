@@ -1,4 +1,5 @@
 main.adb:5:11: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "Prots.Obj.F1" must be >= the priority of the caller "Main" in the call chain "Main" -> "Proxy.Proxy_Proc1" -> "Prots.Proc1" -> "Prots.Pt1.Pp1"]
+main.adb:5:11: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "Prots.Obj.F2" must be >= the priority of the caller "Main" in the call chain "Main" -> "Proxy.Proxy_Proc2" -> "Prots.Proc2" -> "Prots.Pt2.Pp2"]
 main.adb:5:11: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "Prots.Obj.F3" must be >= the priority of the caller "Main" in the call chain "Main" -> "Proxy.Proxy_Proc2" -> "Prots.Proc2" -> "Prots.Pt1.Pp1"]
 main.adb:5:11: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "Prots.Po" must be >= the priority of the caller "Main" in the call chain "Main" -> "Proxy.Proxy_Proc1" -> "Prots.Proc1" -> "Prots.Po.Pp0"]
 main.adb:6:21: info: range check proved (CVC5: 2 VC)
@@ -15,6 +16,7 @@ tasks1.ads:6:09: info: nontermination of task proved (CVC5: 1 VC)
 tasks1.ads:7:09: info: nontermination of task proved (CVC5: 1 VC)
 tasks1.ads:7:09: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "Prots.Obj.F1" must be >= the priority of the caller "Tasks1.Tb1" in the call chain "Tasks1.Tb1" -> "Proxy.Proxy_Proc1" -> "Prots.Proc1" -> "Prots.Pt1.Pp1"]
 tasks1.ads:7:09: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "Prots.Po" must be >= the priority of the caller "Tasks1.Tb1" in the call chain "Tasks1.Tb1" -> "Proxy.Proxy_Proc1" -> "Prots.Proc1" -> "Prots.Po.Pp0"]
+tasks1.ads:8:09: info: ceiling priority protocol is respected (CVC5: 1 VC)
 tasks1.ads:8:09: info: nontermination of task proved (CVC5: 1 VC)
 tasks1.ads:8:09: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "Prots.Obj.F3" must be >= the priority of the caller "Tasks1.Tb2" in the call chain "Tasks1.Tb2" -> "Proxy.Proxy_Proc2" -> "Prots.Proc2" -> "Prots.Pt1.Pp1"]
 tasks2.ads:5:14: info: ceiling priority protocol is respected (CVC5: 1 VC)
@@ -24,5 +26,6 @@ tasks2.ads:6:14: info: nontermination of task proved (CVC5: 1 VC)
 tasks2.ads:7:14: info: nontermination of task proved (CVC5: 1 VC)
 tasks2.ads:7:14: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "Prots.Obj.F1" must be >= the priority of the caller "Tasks2.Ttb1" in the call chain "Tasks2.Ttb1" -> "Proxy.Proxy_Proc1" -> "Prots.Proc1" -> "Prots.Pt1.Pp1"]
 tasks2.ads:7:14: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "Prots.Po" must be >= the priority of the caller "Tasks2.Ttb1" in the call chain "Tasks2.Ttb1" -> "Proxy.Proxy_Proc1" -> "Prots.Proc1" -> "Prots.Po.Pp0"]
+tasks2.ads:8:14: info: ceiling priority protocol is respected (CVC5: 1 VC)
 tasks2.ads:8:14: info: nontermination of task proved (CVC5: 1 VC)
 tasks2.ads:8:14: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "Prots.Obj.F3" must be >= the priority of the caller "Tasks2.Ttb2" in the call chain "Tasks2.Ttb2" -> "Proxy.Proxy_Proc2" -> "Prots.Proc2" -> "Prots.Pt1.Pp1"]

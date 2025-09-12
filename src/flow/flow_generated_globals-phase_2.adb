@@ -23,13 +23,9 @@
 
 with GNAT.Regpat; use GNAT.Regpat;
 
-with Ada.Containers;
-with Ada.Containers.Hashed_Sets;
-use type Ada.Containers.Hash_Type;
 with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;           use Ada.Text_IO;
-with System;
 
 with Assumption_Types; use Assumption_Types;
 
@@ -142,47 +138,15 @@ package body Flow_Generated_Globals.Phase_2 is
    --  subprogram and stored in the ALI file. In phase 2 it is populated
    --  with objects directly and indirectly accessed by each subprogram.
 
-   type Locking_Target is record
-      Object : Entity_Name;
-      Typ    : Entity_Name;
-   end record;
-   --  An object-protected type pair. See Locking_Target_Maps in flow.ads for
-   --  more details.
-
-   function Hash (Key : Locking_Target) return Ada.Containers.Hash_Type
-   is (Name_Hash (Key.Object) xor (Name_Hash (Key.Typ) * 1009));
-   --  Hash function needed to instantiate container packages
-
-   package Locking_Target_Maps is new
-     Ada.Containers.Hashed_Maps
-       (Key_Type        => Locking_Target,
-        Element_Type    => Entity_Name,
-        Hash            => Hash,
-        Equivalent_Keys => "=");
-   --  Map from locked object-type pairs to the locking calls. See
-   --  Locking_Target_Maps in flow.ads for more details.
-
-   subtype Locking_Target_Map is Locking_Target_Maps.Map;
-
-   package Locking_Target_Sets is new
-     Ada.Containers.Hashed_Sets
-       (Element_Type        => Locking_Target,
-        Hash                => Hash,
-        Equivalent_Elements => "=");
-   --  A set of locked object-type pairs. Similar to Locking_Target_Maps, but
-   --  without the protected calls.
-
-   subtype Locking_Target_Set is Locking_Target_Sets.Set;
-
    package Locking_Call_Maps is new
      Ada.Containers.Hashed_Maps
        (Key_Type        => Entity_Name,
-        Element_Type    => Locking_Target_Map,
+        Element_Type    => Name_Maps.Map,
         Hash            => Name_Hash,
         Equivalent_Keys => "=",
-        "="             => Locking_Target_Maps."=");
+        "="             => Name_Maps."=");
    --  Map whose keys are callers of protected operations. Values are maps from
-   --  protected object-type pairs to the protected operations being called.
+   --  protected object to protected operations being called.
 
    subtype Locking_Call_Map is Locking_Call_Maps.Map;
 
@@ -1805,32 +1769,26 @@ package body Flow_Generated_Globals.Phase_2 is
 
                when EK_Locking_Call           =>
                   declare
-                     Caller         : Entity_Name;
-                     Object         : Entity_Name;
-                     Protected_Type : Entity_Name;
-                     Protected_Call : Entity_Name;
+                     Caller              : Entity_Name;
+                     Protected_Object    : Entity_Name;
+                     Protected_Operation : Entity_Name;
 
                      Caller_Position : Locking_Call_Maps.Cursor;
                      Unused          : Boolean;
 
                   begin
                      Serialize (Caller);
-                     Serialize (Object);
-                     Serialize (Protected_Type);
-                     Serialize (Protected_Call);
+                     Serialize (Protected_Object);
+                     Serialize (Protected_Operation);
 
                      Tasking_Info_Ext.Insert
                        (Key      => Caller,
                         Position => Caller_Position,
                         Inserted => Unused);
 
-                     --  Register protected call. We are only interested in
-                     --  unique object-type pairs and one called protected
-                     --  operation from each pair.
+                     --  Register protected operation that reaches object
                      Tasking_Info_Ext (Caller_Position).Insert
-                       (Locking_Target'
-                          (Object => Object, Typ => Protected_Type),
-                        Protected_Call);
+                       (Protected_Object, Protected_Operation);
                   end;
 
                when EK_Task_Instance          =>
@@ -3083,9 +3041,9 @@ package body Flow_Generated_Globals.Phase_2 is
    --------------------------------------------------------------------------
 
    function Shortest_Call_Trace
-     (Source : Entity_Name; Target : Locking_Target) return Name_Lists.List;
+     (Source : Entity_Name; Target : Entity_Name) return Name_Lists.List;
    --  Returns a shortest call trace from subprogram Source to a protected
-   --  object-type pair Target.
+   --  object Target.
 
    -----------------------------
    -- Protected_Type_Priority --
@@ -3099,7 +3057,7 @@ package body Flow_Generated_Globals.Phase_2 is
    -------------------------
 
    function Shortest_Call_Trace
-     (Source : Entity_Name; Target : Locking_Target) return Name_Lists.List
+     (Source : Entity_Name; Target : Entity_Name) return Name_Lists.List
    is
       Call_Graph : Tasking_Graph.Graph renames Original_Priority_Call_Graph;
 
@@ -3144,13 +3102,13 @@ package body Flow_Generated_Globals.Phase_2 is
       begin
          if Locking_Call_Maps.Has_Element (Caller_Position) then
             declare
-               Target_Map : Locking_Target_Map renames
+               Target_Map : Name_Maps.Map renames
                  Phase_1_Info (Caller_Position);
 
-               Target_Position : constant Locking_Target_Maps.Cursor :=
+               Target_Position : constant Name_Maps.Cursor :=
                  Target_Map.Find (Target);
             begin
-               if Locking_Target_Maps.Has_Element (Target_Position) then
+               if Name_Maps.Has_Element (Target_Position) then
                   Protected_Call := Target_Map (Target_Position);
                   Instruction := Tasking_Graph.Found_Destination;
                   return;
@@ -3186,15 +3144,11 @@ package body Flow_Generated_Globals.Phase_2 is
 
       Call_Graph : Tasking_Graph.Graph renames Ceiling_Priority_Call_Graph;
 
-      Locking_Targets : Locking_Target_Set;
-      --  A set of reachable protected object-type pairs
-
-      Min_Static_Prio : Int := Int (System.Any_Priority'Last);
-      --  The minimum static priority among the lock targets
+      Locking_Targets : Name_Sets.Set;
+      --  Reachable protected objects
 
       Res : Locking_Traces_List;
-      --  A list of reachable protected object-type pairs and respective call
-      --  traces
+      --  Reachable protected objects and respective call traces
 
       procedure Collect_Objects_From_Subprogram (S : Entity_Name);
       --  Collect protected objects directly accessed from S. Here S is either
@@ -3218,26 +3172,15 @@ package body Flow_Generated_Globals.Phase_2 is
 
          if Locking_Call_Maps.Has_Element (Caller_Position) then
 
-            --  Collect all the unique target object-type pairs. For the
-            --  ceiling locking analysis this will be sufficient since all the
+            --  Collect all the target protected objects. For the ceiling
+            --  locking analysis this will be sufficient since all the
             --  protected operations in one type have the same priority.
 
             for Target_Position in Phase_1_Info (Caller_Position).Iterate loop
                declare
-                  Target         : Locking_Target renames
-                    Locking_Target_Maps.Key (Target_Position);
-                  Protected_Type : Entity_Name renames Target.Typ;
-
-                  Priority : constant Priority_Value :=
-                    Protected_Type_Priority (Protected_Type);
+                  Target : Entity_Name renames Name_Maps.Key (Target_Position);
                begin
                   Locking_Targets.Include (Target);
-
-                  if Priority.Kind = Static
-                    and then Priority.Value < Min_Static_Prio
-                  then
-                     Min_Static_Prio := Priority.Value;
-                  end if;
                end;
             end loop;
          end if;
@@ -3265,24 +3208,9 @@ package body Flow_Generated_Globals.Phase_2 is
       end loop;
 
       for Target of Locking_Targets loop
-         declare
-            Priority : constant Priority_Value :=
-              Protected_Type_Priority (Target.Typ);
-         begin
-            --  Provide traces for all locking targets with non-static
-            --  priorities and targets with minimum static priorities.
-            --  Generating VCs for several levels of static priorities can
-            --  result in producing confusing messages where for one callsite
-            --  some ceiling priority protocol checks are proven to hold and
-            --  others are not.
-            if Priority.Kind /= Static or else Priority.Value = Min_Static_Prio
-            then
-               Res.Append
-                 (Locking_Trace'
-                    (Obj   => Target.Object,
-                     Trace => Shortest_Call_Trace (EN, Target)));
-            end if;
-         end;
+         Res.Append
+           (Locking_Trace'
+              (Obj => Target, Trace => Shortest_Call_Trace (EN, Target)));
       end loop;
 
       return Res;
