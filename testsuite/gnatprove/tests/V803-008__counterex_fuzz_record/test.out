@@ -20,3 +20,11 @@ main.adb:53:12: info: implicit aspect Always_Terminates on "Test_3" has been pro
 main.adb:56:20: medium: assertion might fail
 main.adb:60:12: info: implicit aspect Always_Terminates on "Test_4" has been proved, subprogram will terminate
 main.adb:63:20: high: assertion might fail (e.g. when Res = (A => (A => 0)))
+counterexample expected for check at main.adb:42
+  trace at main.adb:39 --> R = (A => 0)
+  trace at main.adb:40 --> Res = (A => 0)
+  trace at main.adb:42 --> Res = (A => 0)
+counterexample expected for check at main.adb:49
+  trace at main.adb:46 --> R = (A => 0, B => 0, C => 0, D => 0, E => 0, F => 0)
+  trace at main.adb:47 --> Res = (A => 0, B => 0, C => 0, D => 0, E => 0, F => 0)
+  trace at main.adb:49 --> Res = (A => 0, B => 0, C => 0, D => 0, E => 0, F => 0)

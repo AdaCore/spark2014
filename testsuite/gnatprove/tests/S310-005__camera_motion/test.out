@@ -131,11 +131,11 @@ camera_motion.adb:225:07: warning: initialization of "Weighted_Mean_Y" has no ef
 camera_motion.adb:228:07: warning: initialization of "Weighted_Stddev_X" has no effect
 camera_motion.adb:229:07: warning: initialization of "Weighted_Stddev_Y" has no effect
 camera_motion.adb:230:07: info: initialization of "Stats" proved
-camera_motion.adb:233:16: info: length check proved (CVC5: 6 VC; Trivial: 1 VC)
+camera_motion.adb:233:16: info: length check proved (CVC5: 6 VC)
 camera_motion.adb:233:19: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: subprogram at camera_motion.ads:15 should mention Ref_Image in a precondition]
-camera_motion.adb:234:16: info: length check proved (CVC5: 6 VC; Trivial: 1 VC)
+camera_motion.adb:234:16: info: length check proved (CVC5: 6 VC)
 camera_motion.adb:234:19: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: subprogram at camera_motion.ads:15 should mention New_Image in a precondition]
-camera_motion.adb:237:18: info: length check proved (CVC5: 6 VC; Trivial: 1 VC)
+camera_motion.adb:237:18: info: length check proved (CVC5: 6 VC)
 camera_motion.adb:237:21: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: you should consider adding a postcondition to function Difference_Image or turning it into an expression function]
 camera_motion.adb:240:16: info: analyzing call to "Get_Image_Statistics" in context
 camera_motion.adb:240:16: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]

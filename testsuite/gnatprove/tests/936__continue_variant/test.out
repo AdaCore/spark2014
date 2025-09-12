@@ -1,0 +1,20 @@
+main.adb:25:10: warning: statement has no effect
+main.adb:25:22: medium: pointer dereference check might fail (e.g. when Y = null) [possible fix: loop at line 24 should mention Y in a loop invariant]
+main.adb:28:19: medium: pointer dereference check might fail [possible fix: loop at line 24 should mention Y in a loop invariant]
+main.adb:30:10: info: subprogram variant proved (Trivial)
+main.adb:39:22: medium: pointer dereference check might fail (e.g. when Y = null) [possible fix: loop at line 38 should mention Y in a loop invariant]
+main.adb:40:14: medium: pointer dereference check might fail [possible fix: loop at line 38 should mention Y in a loop invariant]
+main.adb:40:17: medium: resource or memory leak might occur [possible fix: loop at line 38 should mention Y in a loop invariant]
+main.adb:43:19: medium: pointer dereference check might fail [possible fix: loop at line 38 should mention Y in a loop invariant]
+main.adb:45:10: medium: subprogram variant might fail [possible explanation: the value designated by "X" might be updated through local borrower "Y"]
+main.adb:54:22: medium: pointer dereference check might fail (e.g. when Y = null) [possible fix: loop at line 53 should mention Y in a loop invariant]
+main.adb:55:36: medium: pointer dereference check might fail [possible fix: loop at line 53 should mention Y in a loop invariant]
+main.adb:55:38: medium: overflow check might fail, cannot prove upper bound for Y.V+1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 53 should mention Y in a loop invariant]
+main.adb:57:19: medium: pointer dereference check might fail [possible fix: loop at line 53 should mention Y in a loop invariant]
+main.adb:59:10: medium: subprogram variant might fail [possible explanation: structural variant of "KO_2" might not be a strict subcomponent of "X"]
+main.adb:68:25: medium: pointer dereference check might fail [possible fix: loop at line 67 should mention Y in a loop invariant]
+main.adb:68:27: medium: overflow check might fail, cannot prove upper bound for Y.V+1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 67 should mention Y in a loop invariant]
+main.adb:69:42: medium: pointer dereference check might fail
+main.adb:70:19: medium: pointer dereference check might fail
+main.adb:72:29: medium: pointer dereference check might fail
+main.adb:73:10: medium: subprogram variant might fail [possible explanation: structural variant of "KO_3" might not be a strict subcomponent of "X"]

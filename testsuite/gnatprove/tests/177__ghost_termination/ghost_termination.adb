@@ -87,24 +87,24 @@ procedure Ghost_Termination with SPARK_Mode is
       end if;
    end Non_Ghost_Caller_Bad_2;
 
-   type F is not null access function return Integer with Ghost;
-   function Z return Integer is (0) with Ghost;
+   type P is not null access procedure with Ghost;
+   procedure Proc is null;
 
-   V : F := Z'Access with Ghost;
+   V : P := Proc'Access with Ghost;
 
-   procedure Ghost_Caller_Fun with Ghost, Global => V;
+   procedure Ghost_Caller_Proc with Ghost, Global => V;
 
-   procedure Ghost_Caller_Fun is
+   procedure Ghost_Caller_Proc is
    begin
-      Term (V.all);
-   end Ghost_Caller_Fun;
+      V.all; -- @TERMINATION:NONE
+   end Ghost_Caller_Proc;
 
-   procedure Non_Ghost_Caller_Fun with Global => V;
+   procedure Non_Ghost_Caller_Proc with Global => V;
 
-   procedure Non_Ghost_Caller_Fun is
+   procedure Non_Ghost_Caller_Proc is
    begin
-      Term (V.all); -- call might not terminate (flow)  @TERMINATION:FAIL
-   end Non_Ghost_Caller_Fun;
+      V.all; -- call might not terminate (flow)  @TERMINATION:FAIL
+   end Non_Ghost_Caller_Proc;
 
 begin
    null;

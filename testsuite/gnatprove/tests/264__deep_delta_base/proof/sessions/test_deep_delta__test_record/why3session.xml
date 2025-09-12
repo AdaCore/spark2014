@@ -35,7 +35,7 @@
   <goal name="def&#39;vc.6" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="valid" steps="1799"/></proof>
-  <proof prover="2"><result status="highfailure"/></proof>
+  <proof prover="2"><result status="valid" steps="3206"/></proof>
   <proof prover="5"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.7" proved="true">
@@ -45,10 +45,10 @@
   <proof prover="0"><result status="unknown" steps="47599"/></proof>
   <proof prover="1"><result status="unknown" steps="2667"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="5"><result status="unknown" steps="1729"/></proof>
+  <proof prover="5"><result status="unknown" steps="5677"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.8.0">
-   <proof prover="4"><result status="unknown" steps="4750"/></proof>
+   <proof prover="4"><result status="unknown" steps="5344"/></proof>
    </goal>
   </transf>
   </goal>

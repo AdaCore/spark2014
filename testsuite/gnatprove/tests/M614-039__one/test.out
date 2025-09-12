@@ -16,5 +16,5 @@ unconstr.adb:52:13: info: index check proved (CVC5: 2 VC)
 unconstr.adb:56:13: info: implicit aspect Always_Terminates on "Unconstr_Return" has been proved, subprogram will terminate
 unconstr.adb:57:20: info: postcondition proved (CVC5: 2 VC)
 unconstr.adb:61:07: info: range check proved (CVC5: 2 VC)
-unconstr.adb:61:30: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+unconstr.adb:61:30: info: length check proved (CVC5: 3 VC)
 unconstr.ads:3:14: warning: subprogram "P" has no effect

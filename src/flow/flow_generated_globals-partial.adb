@@ -181,6 +181,7 @@ package body Flow_Generated_Globals.Partial is
       Entry_Calls        : Entry_Call_Sets.Set;
       Tasking            : Tasking_Info;
       Calls_Current_Task : Boolean;
+      Calls_Via_Access   : Boolean;
       --  Only meaningfull only for entries, functions and procedures and
       --  initially for packages (nested in entries, functions or procedures).
       --
@@ -542,6 +543,8 @@ package body Flow_Generated_Globals.Partial is
                   and then Entity_Body_In_SPARK (FA.Spec_Entity)))
         and then not FA.Has_Only_Terminating_Constructs;
 
+      Contr.Calls_Via_Access := FA.Calls_Via_Access;
+
       Contr.No_Body := False;
 
       --  Check for potentially blocking statements in bodies of callable
@@ -666,6 +669,9 @@ package body Flow_Generated_Globals.Partial is
       -------------------------------------------------------------------------
 
       if Entity_In_SPARK (E) then
+
+         Contr.Calls_Via_Access := False;
+
          if Is_Callable (E) then
             declare
                Function_Calls     : Node_Sets.Set;
@@ -679,10 +685,11 @@ package body Flow_Generated_Globals.Partial is
 
                   --  Ignore calls via access-to-subprogram, because we can't
                   --  know the actual subprogram and thus we assume it to be
-                  --  pure.
+                  --  pure; just flag the subprogram as calling other
+                  --  subprograms via access.
 
                   if Ekind (Call) = E_Subprogram_Type then
-                     null;
+                     Contr.Calls_Via_Access := True;
 
                   --  Likewise, ignore calls to abstract functions (since
                   --  procedures or entries cannot be called in contracts),
@@ -715,7 +722,6 @@ package body Flow_Generated_Globals.Partial is
                         else Etype (Left_Opnd (N)));
                   begin
                      if Calls_Dispatching_Equality (N) then
-                        Contr.Nonreturning := True;
                         Process_Indirect_Dispatching_Equality
                           (Typ, Contr.Proof_Dependencies);
                      else
@@ -829,6 +835,7 @@ package body Flow_Generated_Globals.Partial is
 
          Contr.Nonreturning := Meaningless;
          Contr.Nonblocking := Meaningless;
+         Contr.Calls_Via_Access := Meaningless;
       end if;
 
       Contr.No_Body := Has_No_Body_Yet (E);
@@ -2724,7 +2731,7 @@ package body Flow_Generated_Globals.Partial is
             No_Body           => Contr.No_Body,
             Nonreturning      => Contr.Nonreturning,
             Nonblocking       => Contr.Nonblocking,
-
+            Calls_Via_Access  => Contr.Calls_Via_Access,
             Entries_Called    => Contr.Entry_Calls,
             Tasking           => Contr.Tasking);
       end if;

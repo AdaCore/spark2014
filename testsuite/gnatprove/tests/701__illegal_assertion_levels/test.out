@@ -1,0 +1,13 @@
+main.adb:6:14: warning: subprogram "Test_Policy" has no effect
+main.adb:10:22: error: enabled ghost object "X" cannot be moved in an assignment to disabled ghost object "Y"
+main.adb:17:09: info: data dependencies proved
+main.adb:20:07: info: no contextual analysis of "Test_Policy" (nested subprogram)
+main.adb:25:20: error: enabled ghost object "Z" cannot be borrowed in a call to disabled ghost subprogram "Set_To_Zero"
+main.adb:29:14: warning: subprogram "Test_Levels" has no effect
+main.adb:31:22: error: "X" and "Y" should have matching assertion levels
+main.adb:31:22: error: ghost object "X" cannot be moved in an assignment to ghost object "Y"
+main.adb:36:09: info: data dependencies proved
+main.adb:39:07: info: no contextual analysis of "Test_Levels" (nested subprogram)
+main.adb:44:20: error: "Z" and "Set_To_Zero" should have matching assertion levels
+main.adb:44:20: error: ghost object "Z" cannot be borrowed in a call to ghost subprogram "Set_To_Zero"
+gnatprove: error during flow analysis and proof

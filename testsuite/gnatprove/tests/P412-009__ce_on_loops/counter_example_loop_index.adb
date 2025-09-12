@@ -44,7 +44,7 @@ is
    begin
       for I in 1 .. 100 loop
          pragma Loop_Invariant (True);
-         pragma Loop_Invariant (F (J)); --@PRECONDITION:FAIL @ COUNTEREXAMPLE
+         pragma Loop_Invariant (F (J)); --@PRECONDITION:FAIL @COUNTEREXAMPLE
          pragma Loop_Invariant (True);
          K := I;
          J := I;

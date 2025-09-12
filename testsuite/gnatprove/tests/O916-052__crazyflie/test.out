@@ -22,7 +22,7 @@ crtp_pack.adb:99:24: medium: discriminant check might fail, in instantiation at 
 crtp_pack.adb:100:20: info: index check proved (CVC5: 2 VC), in instantiation at console_pack.adb:40
 crtp_pack.adb:100:44: info: overflow check proved (CVC5: 2 VC), in instantiation at console_pack.adb:40
 crtp_pack.adb:100:56: info: index check proved (CVC5: 2 VC), in instantiation at console_pack.adb:40
-crtp_pack.adb:100:61: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in instantiation at console_pack.adb:40
-crtp_pack.adb:101:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in instantiation at console_pack.adb:40
+crtp_pack.adb:100:61: info: length check proved (CVC5: 3 VC), in instantiation at console_pack.adb:40
+crtp_pack.adb:101:12: info: length check proved (CVC5: 3 VC), in instantiation at console_pack.adb:40
 crtp_pack.adb:104:41: info: overflow check proved (CVC5: 2 VC), in instantiation at console_pack.adb:40
 crtp_pack.ads:105:07: info: initialization of "Has_Succeed" proved, in instantiation at console_pack.adb:40

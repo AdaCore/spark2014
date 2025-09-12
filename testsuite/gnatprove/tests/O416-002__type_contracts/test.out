@@ -1,11 +1,11 @@
 communications.adb:5:38: info: predicate check proved (CVC5: 1 VC)
-communications.adb:7:16: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-communications.adb:7:19: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+communications.adb:7:16: info: length check proved (CVC5: 3 VC)
+communications.adb:7:19: info: length check proved (CVC5: 3 VC)
 communications.adb:11:07: info: initialization of "Coms" proved
 communications.adb:11:30: medium: range check might fail, cannot prove lower bound for A'Length
 communications.adb:11:30: medium: range check might fail, cannot prove upper bound for A'Length
-communications.adb:13:17: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-communications.adb:13:20: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+communications.adb:13:17: info: length check proved (CVC5: 3 VC)
+communications.adb:13:20: info: length check proved (CVC5: 3 VC)
 communications.ads:10:13: info: implicit aspect Always_Terminates on "Create" has been proved, subprogram will terminate
 communications.ads:10:13: medium: for the result of Create at communications.ads:10
 communications.ads:10:13: medium: in inlined invariant at communications.ads:21

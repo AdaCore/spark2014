@@ -1,5 +1,5 @@
 bv_arrays.adb:4:07: info: range check proved (CVC5: 2 VC)
-bv_arrays.adb:4:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+bv_arrays.adb:4:32: info: length check proved (CVC5: 3 VC)
 bv_arrays.ads:7:13: info: implicit aspect Always_Terminates on "Zero" has been proved, subprogram will terminate
 bv_arrays.ads:9:13: info: implicit aspect Always_Terminates on "Create" has been proved, subprogram will terminate
 bv_arrays.ads:10:14: info: postcondition proved (CVC5: 2 VC)

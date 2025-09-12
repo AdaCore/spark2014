@@ -3526,7 +3526,13 @@ package body Flow_Utility is
                --  pragma Assert (not Ctx.Assume_In_Expression);
                null;
 
-            when E_Block | E_Exception | E_Label | E_Loop | E_Package =>
+            when E_Block
+               | E_Exception
+               | E_Label
+               | E_Loop
+               | E_Package
+               | E_Assertion_Level
+            =>
                --  Nothing to do for these directly; we get them while
                --  traversing a list of statements or an identifier.
                null;
@@ -5909,6 +5915,24 @@ package body Flow_Utility is
             return False;
       end case;
    end Is_Ghost_Entity;
+
+   -----------------------------
+   -- Is_Checked_Ghost_Entity --
+   -----------------------------
+
+   function Is_Checked_Ghost_Entity (F : Flow_Id) return Boolean is
+   begin
+      case F.Kind is
+         when Direct_Mapping | Record_Field =>
+            return Is_Checked_Ghost_Entity (Get_Direct_Mapping_Id (F));
+
+         when Magic_String =>
+            return GG_Is_Checked_Ghost_Entity (F.Name);
+
+         when others =>
+            return False;
+      end case;
+   end Is_Checked_Ghost_Entity;
 
    -----------------------------------
    -- Is_Constant_After_Elaboration --

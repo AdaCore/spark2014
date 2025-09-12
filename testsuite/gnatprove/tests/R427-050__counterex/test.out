@@ -1,5 +1,5 @@
 competition.adb:10:07: info: range check proved (CVC5: 2 VC)
-competition.adb:10:38: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+competition.adb:10:38: info: length check proved (CVC5: 3 VC)
 competition.adb:12:43: high: range check might fail, cannot prove lower bound for Result'First - 1 (e.g. when Result'First = 0 and Result'Last = -1) [reason for check: default component value must fit in the type]
 competition.adb:12:43: info: overflow check proved (CVC5: 2 VC)
 competition.adb:14:14: info: range check proved (CVC5: 4 VC)

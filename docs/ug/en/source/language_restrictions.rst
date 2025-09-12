@@ -181,6 +181,17 @@ different sizes and ``With_Holes`` has unused bits in its representation:
 .. literalinclude:: /examples/ug__unchecked_conversion/test.out
    :language: none
 
+.. note::
+
+  Calls to instances of ``Unchecked_Conversion`` are sometimes handled
+  imprecisely by |GNATprove|. As a result, nothing will be known about the
+  result of such a call. A warning for such situations can be enabled using
+  ``-W imprecise-unchecked-conversion`` or using the ``--info``
+  switch, see :ref:`Proof Limitations`.
+  Currently, overlays are always imprecisely supported by |GNATprove|, so
+  nothing will be known about an object after it has been intialized or modified
+  through one of its overlays.
+
 |SPARK| allows conversions from (suitable) integer types or
 ``System.Address_Type`` to general access-to-object types. When
 calling such instances of ``Unchecked_Conversion``, |GNATprove| makes

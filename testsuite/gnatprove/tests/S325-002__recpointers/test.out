@@ -18,7 +18,7 @@ rec_types.adb:24:17: info: pointer dereference check proved (CVC5: 1 VC)
 rec_types.adb:24:24: info: index check proved (CVC5: 2 VC)
 rec_types.adb:24:27: info: absence of resource or memory leak proved (CVC5: 1 VC)
 rec_types.adb:24:27: info: discriminant check proved (Trivial: 1 VC)
-rec_types.adb:24:71: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+rec_types.adb:24:71: info: length check proved (CVC5: 3 VC)
 rec_types.adb:32:10: medium: resource or memory leak might occur at end of scope
 rec_types.adb:34:11: info: pointer dereference check proved (CVC5: 1 VC)
 rec_types.adb:34:17: info: absence of resource or memory leak proved (CVC5: 1 VC)

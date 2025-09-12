@@ -24,7 +24,7 @@ hello.adb:39:13: info: implicit aspect Always_Terminates on "To_Camel_Case" has 
 hello.adb:41:08: info: postcondition proved (CVC5: 5 VC)
 hello.adb:45:08: info: precondition proved (CVC5: 3 VC)
 hello.adb:53:07: info: range check proved (CVC5: 2 VC)
-hello.adb:53:48: info: length check proved (CVC5: 2 VC; Trivial: 2 VC)
+hello.adb:53:48: info: length check proved (CVC5: 2 VC; Trivial: 1 VC)
 hello.adb:59:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 hello.adb:61:13: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
 hello.adb:64:25: info: assertion proved (Trivial)

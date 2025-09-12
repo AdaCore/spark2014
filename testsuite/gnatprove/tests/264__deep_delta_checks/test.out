@@ -23,7 +23,7 @@ deep_delta_access_checks.adb:52:06: info: data dependencies proved
 deep_delta_access_checks.adb:65:19: info: range check proved (CVC5: 1 VC)
 deep_delta_access_checks.adb:68:07: info: range check proved (CVC5: 2 VC)
 deep_delta_access_checks.adb:82:09: info: data dependencies proved
-deep_delta_access_checks.adb:85:38: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+deep_delta_access_checks.adb:85:38: info: length check proved (CVC5: 3 VC)
 deep_delta_access_checks.adb:85:56: info: discriminant check proved (CVC5: 1 VC)
 deep_delta_access_checks.adb:87:27: info: index check proved (CVC5: 2 VC)
 deep_delta_access_checks.adb:87:29: info: discriminant check proved (CVC5: 1 VC)
@@ -31,14 +31,14 @@ deep_delta_access_checks.adb:87:36: info: discriminant check proved (CVC5: 1 VC)
 deep_delta_access_checks.adb:88:27: info: index check proved (CVC5: 2 VC)
 deep_delta_access_checks.adb:89:23: medium: discriminant check might fail
 deep_delta_access_checks.adb:97:09: info: data dependencies proved
-deep_delta_access_checks.adb:100:38: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+deep_delta_access_checks.adb:100:38: info: length check proved (CVC5: 3 VC)
 deep_delta_access_checks.adb:100:56: info: discriminant check proved (CVC5: 1 VC)
 deep_delta_access_checks.adb:103:27: info: index check proved (CVC5: 2 VC)
 deep_delta_access_checks.adb:103:29: info: discriminant check proved (CVC5: 1 VC)
 deep_delta_access_checks.adb:103:36: medium: discriminant check might fail
 deep_delta_access_checks.adb:104:27: info: index check proved (CVC5: 2 VC)
 deep_delta_access_checks.adb:105:23: info: discriminant check proved (CVC5: 1 VC)
-deep_delta_access_checks.adb:110:35: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+deep_delta_access_checks.adb:110:35: info: length check proved (CVC5: 3 VC)
 deep_delta_access_checks.adb:110:53: info: discriminant check proved (CVC5: 1 VC)
 deep_delta_access_checks.adb:112:24: info: index check proved (CVC5: 2 VC)
 deep_delta_access_checks.adb:112:26: info: discriminant check proved (CVC5: 1 VC)
@@ -54,7 +54,7 @@ deep_delta_access_checks.adb:120:22: info: assertion proved (Z3: 1 VC)
 deep_delta_access_checks.adb:121:22: medium: assertion might fail
 deep_delta_access_checks.adb:127:06: info: data dependencies proved
 deep_delta_access_checks.adb:139:07: info: range check proved (CVC5: 2 VC)
-deep_delta_access_checks.adb:146:16: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+deep_delta_access_checks.adb:146:16: info: length check proved (CVC5: 3 VC)
 deep_delta_access_checks.adb:149:24: info: index check proved (CVC5: 2 VC)
 deep_delta_access_checks.adb:150:24: info: index check proved (CVC5: 2 VC)
 deep_delta_access_checks.adb:150:31: info: index check proved (CVC5: 2 VC)

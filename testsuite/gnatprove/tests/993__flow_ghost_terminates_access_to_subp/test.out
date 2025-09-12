@@ -1,0 +1,12 @@
+foo.adb:3:04: info: function contract feasibility proved (Trivial: 1 VC)
+foo.adb:5:13: info: implicit aspect Always_Terminates on "F1" has been proved, subprogram will terminate
+foo.adb:6:13: info: implicit aspect Always_Terminates on "F2" has been proved, subprogram will terminate
+foo.adb:7:28: medium: call via access-to-function might not terminate [reason for check: functions should always terminate in SPARK] [possible explanation: calls via access-to-subprograms inside function taken as access might hide recursive calls]
+foo.adb:9:21: info: pointer dereference check proved (CVC5: 1 VC)
+foo.adb:12:17: info: initialization of "I" proved
+foo.adb:15:13: info: pointer dereference check proved (CVC5: 1 VC)
+foo.adb:20:25: medium: call via access-to-function might not terminate [possible explanation: calls via access-to-subprograms inside function taken as access might hide recursive calls]
+foo.adb:25:10: info: pointer dereference check proved (CVC5: 1 VC)
+foo.adb:25:10: medium: call to ghost access-to-procedure might be nonterminating
+foo.adb:26:17: info: pointer dereference check proved (CVC5: 1 VC)
+foo.adb:27:17: info: pointer dereference check proved (CVC5: 1 VC)

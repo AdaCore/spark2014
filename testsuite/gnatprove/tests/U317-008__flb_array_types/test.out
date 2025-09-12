@@ -133,7 +133,7 @@ test_first_bound.adb:140:16: info: implicit aspect Always_Terminates on "Id" has
 test_first_bound.adb:141:16: info: implicit aspect Always_Terminates on "Id2" has been proved, subprogram will terminate
 test_first_bound.adb:142:16: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test_first_bound.adb:144:07: info: range check proved (CVC5: 2 VC)
-test_first_bound.adb:144:40: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test_first_bound.adb:144:40: info: length check proved (CVC5: 3 VC)
 test_first_bound.adb:144:40: info: range check proved (CVC5: 2 VC)
 test_first_bound.adb:145:27: info: range check proved (CVC5: 2 VC)
 test_first_bound.adb:145:27: medium: array index check might fail [reason for check: value must be a valid index into the array]
@@ -158,7 +158,7 @@ test_first_bound.adb:175:21: medium: length check might fail [reason for check: 
 test_first_bound.adb:180:27: info: data dependencies proved
 test_first_bound.adb:181:16: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test_first_bound.adb:185:07: info: range check proved (CVC5: 2 VC)
-test_first_bound.adb:186:21: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test_first_bound.adb:186:21: info: length check proved (CVC5: 3 VC)
 test_first_bound.adb:186:21: info: range check proved (CVC5: 2 VC)
 test_first_bound.adb:187:29: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
 test_first_bound.adb:196:04: info: precondition proved (CVC5: 1 VC)

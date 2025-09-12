@@ -1,4 +1,4 @@
 repro.adb:7:26: info: initialization of "X" proved
 repro.adb:13:25: info: initialization of "X" proved
 repro.adb:13:41: info: flow dependencies proved
-repro.adb:15:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+repro.adb:15:12: info: length check proved (CVC5: 3 VC)

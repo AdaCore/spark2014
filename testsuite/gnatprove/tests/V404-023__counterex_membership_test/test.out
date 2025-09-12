@@ -63,3 +63,127 @@ not_discrete.ads:96:13: info: implicit aspect Always_Terminates on "Array_Uncons
 not_discrete.ads:99:13: info: implicit aspect Always_Terminates on "Array_Unconstrained_Down" has been proved, subprogram will terminate
 not_discrete.ads:101:13: info: implicit aspect Always_Terminates on "Array_Unconstrained_Diff" has been proved, subprogram will terminate
 not_discrete.ads:106:13: info: implicit aspect Always_Terminates on "In_Range_Float" has been proved, subprogram will terminate
+counterexample expected for check at discrete.adb:31
+  trace at discrete.adb:24 --> K = Secondary
+  trace at discrete.adb:28 --> K = Primary
+  trace at discrete.adb:31 --> K = Primary
+  trace at discrete.ads:25 --> C = Red
+counterexample expected for check at discrete.adb:48
+  trace at discrete.adb:41 --> K = Primary
+  trace at discrete.adb:45 --> K = Secondary
+  trace at discrete.adb:48 --> K = Secondary
+  trace at discrete.ads:27 --> C = Cyan
+counterexample expected for check at discrete.adb:65
+  trace at discrete.adb:58 --> K = Secondary
+  trace at discrete.adb:62 --> K = Primary
+  trace at discrete.adb:65 --> K = Primary
+  trace at discrete.ads:29 --> T = Blood
+counterexample expected for check at discrete.adb:85
+  trace at discrete.adb:75 --> K = Secondary
+  trace at discrete.adb:82 --> K = Primary
+  trace at discrete.adb:85 --> K = Primary
+  trace at discrete.ads:31 --> C = Red
+counterexample expected for check at discrete.adb:102
+  trace at discrete.adb:95 --> K = Secondary
+  trace at discrete.adb:99 --> K = Primary
+  trace at discrete.adb:102 --> K = Primary
+  trace at discrete.ads:35 --> C = Red
+counterexample expected for check at discrete.adb:119
+  trace at discrete.adb:112 --> K = Primary
+  trace at discrete.adb:116 --> K = Secondary
+  trace at discrete.adb:119 --> K = Secondary
+  trace at discrete.ads:37 --> C = Cyan
+counterexample expected for check at discrete.adb:136
+  trace at discrete.adb:129 --> Work = True
+  trace at discrete.adb:133 --> Work = False
+  trace at discrete.adb:136 --> Work = False
+  trace at discrete.ads:41 --> D = Mon
+counterexample expected for check at discrete.adb:153
+  trace at discrete.adb:146 --> Sleep = True
+  trace at discrete.adb:150 --> Sleep = False
+  trace at discrete.adb:153 --> Sleep = False
+  trace at discrete.ads:43 --> D = Sat
+counterexample expected for check at discrete.adb:171
+  trace at discrete.adb:163 --> B = True
+  trace at discrete.adb:168 --> B = False
+  trace at discrete.adb:171 --> B = False
+  trace at discrete.ads:47 --> M = Mar
+counterexample expected for check at not_discrete.adb:15
+  trace at not_discrete.adb:8 --> Is_Sub = False
+  trace at not_discrete.adb:12 --> Is_Sub = True
+  trace at not_discrete.adb:15 --> Is_Sub = True
+  trace at not_discrete.ads:13 --> R = (Field => 0)
+counterexample expected for check at not_discrete.adb:32
+  trace at not_discrete.adb:25 --> Is_Sub = False
+  trace at not_discrete.adb:29 --> Is_Sub = True
+  trace at not_discrete.adb:32 --> Is_Sub = True
+  trace at not_discrete.ads:15 --> R = (Field => 0)
+counterexample expected for check at not_discrete.adb:49
+  trace at not_discrete.adb:42 --> Is_Rec = False
+  trace at not_discrete.adb:46 --> Is_Rec = True
+  trace at not_discrete.adb:49 --> Is_Rec = True
+  trace at not_discrete.ads:28 --> R = (Discr => 0, Field => 0)
+counterexample expected for check at not_discrete.adb:66
+  trace at not_discrete.adb:59 --> Is_Small = False
+  trace at not_discrete.adb:63 --> Is_Small = True
+  trace at not_discrete.adb:66 --> Is_Small = True
+  trace at not_discrete.ads:30 --> R = (Discr => 42, Field => 0)
+counterexample expected for check at not_discrete.adb:83
+  trace at not_discrete.adb:76 --> Is_Rec = False
+  trace at not_discrete.adb:80 --> Is_Rec = True
+  trace at not_discrete.adb:83 --> Is_Rec = True
+  trace at not_discrete.ads:32 --> R = (Discr => 42, Field => 0)
+counterexample expected for check at not_discrete.adb:100
+  trace at not_discrete.adb:93 --> Is_Rec = False
+  trace at not_discrete.adb:97 --> Is_Rec = True
+  trace at not_discrete.adb:100 --> Is_Rec = True
+  trace at not_discrete.ads:34 --> R = (Discr => 42, Field => 0)
+counterexample expected for check at not_discrete.adb:117
+  trace at not_discrete.adb:110 --> Is_Sub_42 = False
+  trace at not_discrete.adb:114 --> Is_Sub_42 = True
+  trace at not_discrete.adb:117 --> Is_Sub_42 = True
+  trace at not_discrete.ads:36 --> R = (Discr => 42, Field => 0)
+counterexample expected for check at not_discrete.adb:145
+  trace at not_discrete.adb:143 --> B = False
+  trace at not_discrete.adb:145 --> B = False
+  trace at not_discrete.ads:41 --> R = (Discr => 42, Field => 0)
+counterexample expected for check at not_discrete.adb:229
+  trace at not_discrete.adb:222 --> Is_Same = False
+  trace at not_discrete.adb:226 --> Is_Same = True
+  trace at not_discrete.adb:229 --> Is_Same = True
+  trace at not_discrete.ads:88 --> A = (others => 0)
+counterexample expected for check at not_discrete.adb:246
+  trace at not_discrete.adb:239 --> Is_Up = False
+  trace at not_discrete.adb:243 --> Is_Up = True
+  trace at not_discrete.adb:246 --> Is_Up = True
+  trace at not_discrete.ads:90 --> A = (others => 0)
+counterexample expected for check at not_discrete.adb:263
+  trace at not_discrete.adb:256 --> Is_Down = False
+  trace at not_discrete.adb:260 --> Is_Down = True
+  trace at not_discrete.adb:263 --> Is_Down = True
+  trace at not_discrete.ads:92 --> A = (others => 0)
+counterexample expected for check at not_discrete.adb:281
+  trace at not_discrete.adb:274 --> Is_Same = False
+  trace at not_discrete.adb:278 --> Is_Same = True
+  trace at not_discrete.adb:281 --> Is_Same = True
+  trace at not_discrete.ads:94 --> A'First = 1 and A'Last = 0
+counterexample expected for check at not_discrete.adb:299
+  trace at not_discrete.adb:292 --> Is_Up = False
+  trace at not_discrete.adb:296 --> Is_Up = True
+  trace at not_discrete.adb:299 --> Is_Up = True
+  trace at not_discrete.ads:96 --> A = (others => 0)
+counterexample expected for check at not_discrete.adb:317
+  trace at not_discrete.adb:310 --> Is_Up = False
+  trace at not_discrete.adb:314 --> Is_Up = True
+  trace at not_discrete.adb:317 --> Is_Up = True
+  trace at not_discrete.ads:99 --> A = (others => 1) and A'First = 1 and A'Last = 10
+counterexample expected for check at not_discrete.adb:335
+  trace at not_discrete.adb:328 --> Is_Diff = False
+  trace at not_discrete.adb:332 --> Is_Diff = True
+  trace at not_discrete.adb:335 --> Is_Diff = True
+  trace at not_discrete.ads:101 --> A = (others => 0)
+counterexample expected for check at not_discrete.adb:352
+  trace at not_discrete.adb:345 --> B = True
+  trace at not_discrete.adb:349 --> B = False
+  trace at not_discrete.adb:352 --> B = False
+  trace at not_discrete.ads:106 --> X = 5.0000000E-1

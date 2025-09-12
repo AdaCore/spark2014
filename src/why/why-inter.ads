@@ -99,9 +99,11 @@ package Why.Inter is
    with Pre => Ekind (E) = E_Label;
 
    function Loop_Exception_Name
-     (E : Entity_Id; Local : Boolean := False) return W_Name_Id
+     (E : Entity_Id; Is_Continue : Boolean; Local : Boolean := False)
+      return W_Name_Id
    with Pre => Ekind (E) = E_Loop;
-   --  Transform a loop entity into a name for a Why exception
+   --  Transform a loop entity into a name for a Why exception. There are two
+   --  separate exceptions for exit and continue statements.
 
    --  A given subprogram declaration in SPARK may be translated into multiple
    --  variants in Why3, with different contracts. This type defines the

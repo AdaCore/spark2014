@@ -1,0 +1,16 @@
+main.adb:4:04: info: initialization of "X" proved
+main.adb:7:22: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+main.adb:11:09: medium: "Y" might not be initialized
+main.adb:12:22: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+main.adb:13:27: medium: "Y" might not be initialized
+main.adb:16:22: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+main.adb:17:07: warning: loop continue condition is stable
+main.adb:20:29: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+main.adb:21:25: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+main.adb:27:09: medium: "Y" might not be initialized
+main.adb:29:34: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+main.adb:30:38: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+main.adb:31:40: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+main.adb:38:34: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+main.adb:39:38: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
+main.adb:40:40: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]

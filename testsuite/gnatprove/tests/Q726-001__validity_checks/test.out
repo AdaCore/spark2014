@@ -4,5 +4,5 @@ essai05.adb:9:04: info: no contextual analysis of "Conv" (unconstrained return t
 essai05.adb:9:13: info: implicit aspect Always_Terminates on "Conv" has been proved, subprogram will terminate
 essai05.adb:13:07: medium: range check might fail
 essai05.adb:13:07: warning: initialization of "R" has no effect
-essai05.adb:13:32: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+essai05.adb:13:32: info: length check proved (CVC5: 3 VC)
 essai05.adb:15:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]

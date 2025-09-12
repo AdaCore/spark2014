@@ -579,7 +579,7 @@ package body Flow.Analysis.Sanity is
                      Error_Msg_Flow
                        (FA       => FA,
                         Msg      =>
-                          "call via access-to-subprogram "
+                          "call via access-to-function "
                           & "in the predicate of & might not terminate",
                         Severity => High_Check_Kind,
                         Tag      => Subprogram_Termination,
@@ -1649,7 +1649,7 @@ package body Flow.Analysis.Sanity is
                         Error_Msg_Flow
                           (FA           => FA,
                            Msg          =>
-                             "cannot write & during" & " elaboration of &",
+                             "cannot write & during elaboration of &",
                            Explain_Code => EC_Write_In_Elaboration,
                            N            => Error_Location (FA.PDG, FA.Atr, V),
                            Severity     => High_Check_Kind,

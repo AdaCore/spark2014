@@ -1,0 +1,15 @@
+main.adb:10:04: warning: unreachable code [enabled by default]
+main.adb:12:07: warning: unreachable code [enabled by default]
+main.adb:14:12: warning: unreachable code [enabled by default]
+main.adb:19:04: warning: unreachable code [enabled by default]
+main.adb:20:07: error: continue statement preceding loop-invariant is not yet supported
+main.adb:23:11: warning: unreachable code [enabled by default]
+main.adb:25:10: error: continue statement preceding loop-invariant is not yet supported
+main.adb:29:13: warning: unreachable code [enabled by default]
+main.adb:35:12: warning: unreachable code [enabled by default]
+main.adb:37:24: error: "Random_Ko" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+main.adb:37:24: error: violation of aspect SPARK_Mode at line 2
+main.adb:40:34: error: "Random_Ko" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+main.adb:40:34: error: violation of aspect SPARK_Mode at line 2
+main.adb:44:20: warning: unreachable code [enabled by default]
+gnatprove: error during flow analysis and proof

@@ -2715,10 +2715,12 @@ package body Gnat2Why.Expr is
       --  borrow checker. Here we check that all pointers in the designated
       --  value, if any, are moved (null being a special case of moved).
 
-      Typ : constant Entity_Id :=
+      Typ  : constant Entity_Id :=
         (if Is_Uncheck_Dealloc
          then Retysp (Directly_Designated_Type (Init_Typ))
          else Init_Typ);
+      Root : constant Entity_Id :=
+        (if Nkind (N) = N_Defining_Identifier then N else Get_Root_Object (N));
 
       Result : W_Prog_Id := +Void;
       Kind   : constant VC_Kind :=
@@ -2727,10 +2729,19 @@ package body Gnat2Why.Expr is
          else VC_Resource_Leak);
 
    begin
-      --  Nothing to check on borrow/observe of anonymous access type
+      --  Nothing to check on borrow/observe of anonymous access type. Do not
+      --  emit checks for memory leaks for ghost entities that cannot be
+      --  enabled at runtime.
 
       if Contains_Allocated_Parts (Typ)
         and then not Is_Anonymous_Access_Type (Typ)
+        and then (not Is_Ghost_Entity (Current_Subp)
+                  or else not Is_Non_Exec_Assertion_Level
+                                (Ghost_Assertion_Level (Current_Subp)))
+        and then not (Present (Root)
+                      and then Is_Ghost_Entity (Root)
+                      and then Is_Non_Exec_Assertion_Level
+                                 (Ghost_Assertion_Level (Root)))
       then
          declare
             Val     : constant W_Expr_Id :=
@@ -9071,7 +9082,10 @@ package body Gnat2Why.Expr is
       procedure Append (Scop : Node_Id);
       --  Collect exited scopes (for Iter_Exited_Scopes)
 
-      procedure Stop (Destination : Node_Id; Exc_Set : Exception_Sets.Set);
+      procedure Stop
+        (Destination : Node_Id;
+         Exc_Set     : Exception_Sets.Set;
+         Is_Continue : Boolean);
       --  Stop collection at first caught exception by raising Found
 
       procedure Iter_From is new
@@ -9096,8 +9110,12 @@ package body Gnat2Why.Expr is
       -- Stop --
       ----------
 
-      procedure Stop (Destination : Node_Id; Exc_Set : Exception_Sets.Set) is
-         pragma Unreferenced (Exc_Set);
+      procedure Stop
+        (Destination : Node_Id;
+         Exc_Set     : Exception_Sets.Set;
+         Is_Continue : Boolean)
+      is
+         pragma Unreferenced (Exc_Set, Is_Continue);
       begin
          if Nkind (Destination) = N_Exception_Handler then
             raise Found;
@@ -10982,7 +11000,10 @@ package body Gnat2Why.Expr is
                --  type.
 
                if Is_Access_Type (Retysp (Etype (Expr))) then
-                  pragma Assert (not In_Assertion_Expression_Pragma (Expr));
+                  pragma
+                    Assert
+                      (not In_Statically_Leaking_Context
+                             (Expr, Ignore_Non_Exec => False));
 
                   declare
                      Target_Typ : constant Entity_Id := Retysp (Etype (Expr));
@@ -20296,7 +20317,7 @@ package body Gnat2Why.Expr is
          Subp_Cond  : constant Termination_Condition :=
            Get_Termination_Condition (Subp, Compute => True);
          Ghost_Call : constant Boolean :=
-           Is_Ghost_Entity (Subp) and then not Is_Ghost_Entity (Current_Subp);
+           Is_Ghost_With_Respect_To_Context (Call);
 
       begin
          --  If the enclosing subprogram has a dynamic termination condition,
@@ -24274,12 +24295,16 @@ package body Gnat2Why.Expr is
                     Directly_Designated_Type (Expr_Type);
 
                begin
-                  --  Insert static resource leak if needed
-
                   if Domain = EW_Prog
                     and then (if To_Gen or else To_Const
                               then not Value_Is_Never_Leaked (Expr)
-                              else In_Assertion_Expression_Pragma (Expr))
+                              else
+                                In_Statically_Leaking_Context
+                                  (Expr, Ignore_Non_Exec => True))
+                    and then not (Is_Ghost_Entity (Current_Subp)
+                                  and then Is_Non_Exec_Assertion_Level
+                                             (Ghost_Assertion_Level
+                                                (Current_Subp)))
                   then
                      Emit_Static_Proof_Result
                        (Expr,
@@ -25646,7 +25671,11 @@ package body Gnat2Why.Expr is
 
          if Is_Allocating_Function (Subp)
            and then Contains_Allocated_Parts (Etype (Subp))
-           and then In_Assertion_Expression_Pragma (Expr)
+           and then In_Statically_Leaking_Context
+                      (Expr, Ignore_Non_Exec => True)
+           and then not (Is_Ghost_Entity (Current_Subp)
+                         and then Is_Non_Exec_Assertion_Level
+                                    (Ghost_Assertion_Level (Current_Subp)))
          then
             Emit_Static_Proof_Result
               (Expr,
@@ -27664,7 +27693,13 @@ package body Gnat2Why.Expr is
          else Empty);
 
    begin
-      if Present (Expr) then
+      --  The Priority aspect has no effect if it is specified for a subprogram
+      --  other than the main subprogram.
+
+      if Present (Expr)
+        and then (not Is_Subprogram (Current_Subp)
+                  or else Might_Be_Main (Current_Subp))
+      then
          declare
             --  Task Priorities (D.1 (17)):
             --
@@ -28953,8 +28988,8 @@ package body Gnat2Why.Expr is
                     Transform_Loop_Statement (Stmt_Or_Decl, Params));
             end;
 
-         when N_Exit_Statement =>
-            return Transform_Exit_Statement (Stmt_Or_Decl, Params);
+         when N_Exit_Statement | N_Continue_Statement =>
+            return Transform_Loop_Jump_Statement (Stmt_Or_Decl, Params);
 
          when N_Case_Statement =>
             declare

@@ -1,5 +1,4 @@
 iter_array.adb:5:19: info: assertion proved (CVC5: 1 VC)
-iter_array.adb:5:45: info: index check proved (CVC5: 2 VC)
 iter_array.adb:6:19: info: assertion proved (CVC5: 1 VC)
 iter_array.adb:8:15: info: unrolling loop [info-unrolling-inlining]
 iter_array.adb:11:19: info: assertion proved (CVC5: 1 VC)

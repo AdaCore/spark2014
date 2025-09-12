@@ -1,0 +1,13 @@
+project A is
+
+  for Source_Dirs use ("a");
+
+  package Compiler is
+    for Default_Switches ("Ada") use ("-gnatws");
+    for Local_Configuration_Pragmas use "test.adc";
+  end Compiler;
+
+  package Prove is
+     for Proof_Switches ("Ada") use ("--prover=cvc5");
+  end Prove;
+end A;

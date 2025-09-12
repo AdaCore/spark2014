@@ -1,0 +1,7 @@
+simple.adb:8:26: info: unrolling loop [info-unrolling-inlining]
+simple.adb:9:23: medium: range check might fail, cannot prove upper bound for Toto + A (Elt) [reason for check: result of addition must fit in the target type of the assignment] [possible fix: subprogram at simple.ads:11 should mention A in a precondition]
+Cannot find JSONs/Add_Array.json.
+simple.adb:17:24: info: unrolling loop [info-unrolling-inlining]
+simple.adb:18:25: medium: assertion might fail [possible fix: subprogram at simple.ads:23 should mention F in a precondition]
+simple.ads:23:14: warning: subprogram "Check_Family" has no effect
+Cannot find JSONs/Check_Family.json.

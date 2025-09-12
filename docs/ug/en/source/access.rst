@@ -486,6 +486,12 @@ that the above code is correctly deallocating memory:
    :language: none
    :linenos:
 
+.. note::
+
+   No checks are emitted for resource leaks that occur in ghost code or
+   assertions associated to :ref:`Assertion Levels` that cannot be enabled at
+   runtime.
+
 .. index:: traversal function
 
 Traversal Functions

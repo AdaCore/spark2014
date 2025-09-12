@@ -70,6 +70,7 @@ package SPARK_Atree is
    subtype N_Attribute_Reference_Id is SN.N_Attribute_Reference_Id;
    subtype N_Block_Statement_Id is SN.N_Block_Statement_Id;
    subtype N_Component_Association_Id is SN.N_Component_Association_Id;
+   subtype N_Continue_Statement_Id is SN.N_Continue_Statement_Id;
    subtype N_Exit_Statement_Id is SN.N_Exit_Statement_Id;
    subtype N_Function_Call_Id is SN.N_Function_Call_Id;
    subtype N_Has_Chars is SN.N_Has_Chars;
@@ -144,6 +145,8 @@ package SPARK_Atree is
    N_Exception_Handler               : Node_Kind renames
      SN.N_Exception_Handler;
    N_Exit_Statement                  : Node_Kind renames SN.N_Exit_Statement;
+   N_Continue_Statement              : Node_Kind renames
+     SN.N_Continue_Statement;
    N_Explicit_Dereference            : Node_Kind renames
      SN.N_Explicit_Dereference;
    N_Expression_With_Actions         : Node_Kind renames
@@ -356,7 +359,8 @@ package SPARK_Atree is
    with
      Pre =>
        Nkind (N)
-       in N_Elsif_Part
+       in N_Continue_Statement
+        | N_Elsif_Part
         | N_Exit_Statement
         | N_If_Statement
         | N_Iteration_Scheme
@@ -595,8 +599,6 @@ package SPARK_Atree is
         | N_Loop_Statement
         | N_Record_Representation_Clause
         | N_Label;
-
-   function In_Assertion_Expression_Pragma (N : Node_Id) return Boolean;
 
    function Inherited_Discriminant (N : Node_Id) return Boolean
    with Pre => Nkind (N) = N_Component_Association;

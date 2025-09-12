@@ -32,6 +32,7 @@ GNAT-*
 /benchmark_script/bench
 /gnat2why/why/xgen/b__xtree.ad?
 /testsuite/gnatprove/temp
+/testsuite/gnatprove/sparklib
 /include
 /spark2014vsn.ads.stderr
 /spark2014vsn.ads.stdout

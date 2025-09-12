@@ -93,18 +93,18 @@ formals_arr_split.adb:3:04: info: range check proved (CVC5: 2 VC)
 formals_arr_split.adb:5:04: info: range check proved (CVC5: 2 VC)
 formals_arr_split.adb:7:12: info: range check proved (CVC5: 2 VC)
 formals_arr_split.adb:10:17: info: initialization of "A" proved
-formals_arr_split.adb:14:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-formals_arr_split.adb:14:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+formals_arr_split.adb:14:09: info: length check proved (CVC5: 3 VC)
+formals_arr_split.adb:14:12: info: length check proved (CVC5: 3 VC)
 formals_arr_split.adb:14:12: info: range check proved (CVC5: 2 VC)
 formals_arr_split.adb:14:15: info: range check proved (CVC5: 2 VC)
 formals_arr_split.adb:17:14: info: add a contract to analyze it separately from calling contexts
 formals_arr_split.adb:17:14: info: local subprogram "P2" only analyzed in the context of calls [info-unrolling-inlining]
 formals_arr_split.adb:17:18: info: initialization of "A" proved
 formals_arr_split.adb:20:07: medium: length check might fail, in call inlined at formals_arr_split.adb:48 [reason for check: array must be of the appropriate length]
-formals_arr_split.adb:20:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:43
-formals_arr_split.adb:20:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:48
-formals_arr_split.adb:20:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:43
-formals_arr_split.adb:20:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:48
+formals_arr_split.adb:20:09: info: length check proved (CVC5: 3 VC), in call inlined at formals_arr_split.adb:43
+formals_arr_split.adb:20:09: info: length check proved (CVC5: 3 VC), in call inlined at formals_arr_split.adb:48
+formals_arr_split.adb:20:12: info: length check proved (CVC5: 3 VC), in call inlined at formals_arr_split.adb:43
+formals_arr_split.adb:20:12: info: length check proved (CVC5: 3 VC), in call inlined at formals_arr_split.adb:48
 formals_arr_split.adb:20:12: info: range check proved (CVC5: 2 VC), in call inlined at formals_arr_split.adb:43
 formals_arr_split.adb:20:12: info: range check proved (CVC5: 2 VC), in call inlined at formals_arr_split.adb:48
 formals_arr_split.adb:20:15: info: range check proved (CVC5: 2 VC), in call inlined at formals_arr_split.adb:43
@@ -113,15 +113,15 @@ formals_arr_split.adb:23:14: info: add a contract to analyze it separately from 
 formals_arr_split.adb:23:14: info: local subprogram "P3" only analyzed in the context of calls [info-unrolling-inlining]
 formals_arr_split.adb:23:18: info: initialization of "A" proved
 formals_arr_split.adb:26:07: medium: length check might fail, in call inlined at formals_arr_split.adb:54 [reason for check: array must be of the appropriate length]
-formals_arr_split.adb:26:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:54
-formals_arr_split.adb:26:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:54
+formals_arr_split.adb:26:09: info: length check proved (CVC5: 3 VC), in call inlined at formals_arr_split.adb:54
+formals_arr_split.adb:26:12: info: length check proved (CVC5: 3 VC), in call inlined at formals_arr_split.adb:54
 formals_arr_split.adb:26:12: info: range check proved (CVC5: 2 VC), in call inlined at formals_arr_split.adb:54
 formals_arr_split.adb:26:15: info: range check proved (CVC5: 2 VC), in call inlined at formals_arr_split.adb:54
 formals_arr_split.adb:31:11: info: index check proved (CVC5: 2 VC)
 formals_arr_split.adb:36:07: info: precondition proved (CVC5: 1 VC)
 formals_arr_split.adb:36:22: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: precondition of subprogram at line 34 should mention A]
-formals_arr_split.adb:39:22: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-formals_arr_split.adb:40:24: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+formals_arr_split.adb:39:22: info: length check proved (CVC5: 3 VC)
+formals_arr_split.adb:40:24: info: length check proved (CVC5: 3 VC)
 formals_arr_split.adb:42:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split.adb:43:04: info: analyzing call to "P2" in context
 formals_arr_split.adb:46:10: info: precondition proved (Trivial: 1 VC)

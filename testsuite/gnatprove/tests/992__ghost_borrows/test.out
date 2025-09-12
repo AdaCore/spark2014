@@ -1,0 +1,7 @@
+p.adb:5:04: warning: analyzing unreferenced procedure "Test1" [unreferenced-procedure]
+p.adb:5:14: warning: subprogram "Test1" has no effect
+p.adb:11:32: error: enabled ghost object "X" cannot be borrowed in an assignment to disabled ghost object "Y"
+p.adb:18:14: warning: subprogram "Test2" has no effect
+p.adb:27:10: info: no contextual analysis of "Test2" (nested subprogram)
+p.adb:32:23: error: enabled ghost object "X" cannot be borrowed in a call to disabled ghost subprogram "Set_To_Zero"
+gnatprove: error during flow analysis and proof

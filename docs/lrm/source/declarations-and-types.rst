@@ -114,6 +114,12 @@ itself. But the subtype cannot appear as a subtype_mark in a membership test.
 [As predicates participate in membership tests, a membership test may
 implicitly reference ghost entities in that case.]
 
+As with :ref:`Subprogram Contracts`, the boolean expression of a Predicate or
+Ghost_Predicate aspect can be split between different assertion levels and
+replaced by a ``level_and_expression_list``. In this case, each boolean
+expression is handled as for simple Predicate or Ghost_Predicate aspects, but
+their execution semantics is governed by the associated assertion level.
+
 .. container:: heading
 
    Legality Rules
@@ -985,7 +991,11 @@ X.Link is poisoned by the assignment to Y.]
     borrow.]
 
 17. A path rooted at a non-ghost object shall only be moved, or borrowed, if
-    the target object of the move or borrow is itself non-ghost.  [This rule is
+    the target object of the move or borrow is itself non-ghost. In the same
+    way, if the target object of a move or borrow is a disabled ghost object,
+    then the moved or borrowed path shall be rooted at a disabled ghost object.
+    In addition, the target object of a move or borrow and the root of its
+    moved or borrowed path shall have matching assertion levels. [This rule is
     meant to avoid introducing aliases between a non-ghost variable and a ghost
     variable. Otherwise writes or deallocation through the ghost variable would
     have an effect on the non-ghost underlying memory.]
@@ -1012,21 +1022,24 @@ X.Link is poisoned by the assignment to Y.]
     is finalized or when it is passed as an actual parameter
     of mode **out**, all extensions of the path extracted from R which denote
     an object of a pool-specific access type and
-    have unrestricted prefixes shall be null.
+    have unrestricted prefixes shall be null, unless the object is a ghost
+    object that cannot be enabled at runtime (see :ref:`Ghost Entities`).
 
     Similarly, at the point of a call, for each global output R of the callee
     (i.e., an output other than a parameter of the callee or a function
     result) that is not also an input, all paths rooted at R which denote
     an object of a pool-specific access type and which have unrestricted
-    prefixes shall be null.
+    prefixes shall be null, unless R is a ghost
+    object that cannot be enabled at runtime.
 
     [Redundant: This rule applies to any finalization associated with a
     call to an instance of Ada.Unchecked_Deallocation. For details, see
     the Ada RM 13.11.2 rule "Free(X), ... first performs finalization of
     the object designated by X".]
 
-    [Redundant:This rule effectively forbids the use of allocators and
-    calls to allocating functions inside contracts or assertions.]
+    [Redundant: This rule effectively forbids the use of allocators and
+    calls to allocating functions inside contracts or assertions if they
+    can be enabled at runtime.]
 
 22. Allocators and conversions from a pool-specific access type to a named
     access-to-constant type or a general access-to-variable type shall only

@@ -233,10 +233,7 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("-k");
       end if;
 
-      if Force
-        or else Is_Manual_Prover (File_Specific_Map ("Ada"))
-        or else CL_Switches.Replay
-      then
+      if Force or else Has_Manual_Prover or else CL_Switches.Replay then
          Args.Append ("-f");
       end if;
 
@@ -266,6 +263,14 @@ procedure Gnatprove with SPARK_Mode is
 
       if CL_Switches.Target /= null and then CL_Switches.Target.all /= "" then
          Args.Append ("--target=" & CL_Switches.Target.all);
+      end if;
+
+      if not Null_Or_Empty_String (CL_Switches.Autoconf) then
+         Args.Append ("--autoconf=" & CL_Switches.Autoconf.all);
+      end if;
+
+      if not Null_Or_Empty_String (CL_Switches.Config) then
+         Args.Append ("--config=" & CL_Switches.Config.all);
       end if;
 
       for S of CL_Switches.GPR_Project_Path loop
@@ -1157,7 +1162,7 @@ procedure Gnatprove with SPARK_Mode is
 
       procedure Set_Key_Value (Key, Value : String) is
       begin
-         Put_Line (File, Key & " = " & """" & Value & """");
+         Put_Line (File, Key & " = " & '"' & Value & '"');
       end Set_Key_Value;
 
       ------------------------

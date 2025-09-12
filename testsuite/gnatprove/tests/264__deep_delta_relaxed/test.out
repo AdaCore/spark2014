@@ -21,8 +21,8 @@ deep_delta_relaxed.adb:67:06: info: data dependencies proved
 deep_delta_relaxed.adb:77:07: info: range check proved (CVC5: 2 VC)
 deep_delta_relaxed.adb:84:09: info: data dependencies proved
 deep_delta_relaxed.adb:89:10: info: initialization of "Y" proved
-deep_delta_relaxed.adb:92:15: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-deep_delta_relaxed.adb:92:18: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+deep_delta_relaxed.adb:92:15: info: length check proved (CVC5: 3 VC)
+deep_delta_relaxed.adb:92:18: info: length check proved (CVC5: 3 VC)
 deep_delta_relaxed.adb:93:16: info: index check proved (CVC5: 2 VC)
 deep_delta_relaxed.adb:94:16: info: index check proved (CVC5: 2 VC)
 deep_delta_relaxed.adb:95:15: info: initialization check proved (Z3: 1 VC)
@@ -39,7 +39,7 @@ deep_delta_relaxed.adb:104:29: info: initialization check proved (Z3: 1 VC)
 deep_delta_relaxed.adb:105:25: medium: assertion might fail
 deep_delta_relaxed.adb:105:29: medium: initialization check might fail
 deep_delta_relaxed.adb:109:09: info: data dependencies proved
-deep_delta_relaxed.adb:112:27: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+deep_delta_relaxed.adb:112:27: info: length check proved (CVC5: 3 VC)
 deep_delta_relaxed.adb:115:27: info: index check proved (CVC5: 2 VC)
 deep_delta_relaxed.adb:116:27: info: index check proved (CVC5: 2 VC)
 deep_delta_relaxed.adb:121:16: info: index check proved (CVC5: 2 VC)
@@ -52,8 +52,8 @@ deep_delta_relaxed.adb:124:57: info: index check proved (CVC5: 2 VC)
 deep_delta_relaxed.adb:125:25: medium: assertion might fail
 deep_delta_relaxed.adb:125:31: info: index check proved (CVC5: 2 VC)
 deep_delta_relaxed.adb:129:09: info: data dependencies proved
-deep_delta_relaxed.adb:136:15: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-deep_delta_relaxed.adb:136:18: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+deep_delta_relaxed.adb:136:15: info: length check proved (CVC5: 3 VC)
+deep_delta_relaxed.adb:136:18: info: length check proved (CVC5: 3 VC)
 deep_delta_relaxed.adb:137:16: info: index check proved (CVC5: 2 VC)
 deep_delta_relaxed.adb:138:16: info: index check proved (CVC5: 2 VC)
 deep_delta_relaxed.adb:140:28: medium: assertion might fail

@@ -5,16 +5,16 @@ aggregates.ads:9:14: info: for X at the end of Update_Arr at aggregates.ads:9
 aggregates.ads:9:14: info: invariant check proved (CVC5: 1 VC; Trivial: 1 VC)
 aggregates.ads:11:13: info: implicit aspect Always_Terminates on "Get_Arr" has been proved, subprogram will terminate
 aggregates.ads:13:14: info: for X at the end of Create_Rec at aggregates.ads:13
-aggregates.ads:13:14: info: invariant check proved (CVC5: 2 VC; Trivial: 1 VC)
+aggregates.ads:13:14: info: invariant check proved (CVC5: 2 VC)
 aggregates.ads:13:26: info: initialization of "X" proved
 aggregates.ads:15:14: info: for X at the end of Update_Rec at aggregates.ads:15
-aggregates.ads:15:14: info: invariant check proved (CVC5: 2 VC; Trivial: 1 VC)
+aggregates.ads:15:14: info: invariant check proved (CVC5: 2 VC)
 aggregates.ads:17:13: info: implicit aspect Always_Terminates on "Get_Rec" has been proved, subprogram will terminate
 aggregates.ads:21:09: info: invariant check proved on default value (CVC5: 1 VC)
 aggregates.ads:22:23: info: in default value of private type at aggregates.ads:3
 aggregates.ads:22:23: info: range check proved (CVC5: 2 VC)
 aggregates.ads:25:09: info: invariant check proved on default value (CVC5: 1 VC; Trivial: 1 VC)
-aggregates.ads:27:09: info: invariant check proved on default value (CVC5: 2 VC; Trivial: 1 VC)
+aggregates.ads:27:09: info: invariant check proved on default value (CVC5: 2 VC)
 external.adb:14:17: medium: implicit aspect Always_Terminates on "Get" could be incorrect, "Get" and "Get" are mutually recursive [possible fix: annotate "Get" and "Get" with Subprogram_Variant aspects]
 external.ads:5:22: info: initialization of "X" proved
 external.ads:9:13: warning: implicit function contract might not be available on recursive calls [contracts-recursive]

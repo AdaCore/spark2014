@@ -1034,12 +1034,34 @@ package SPARK_Util is
    --  Same as above but with an object. Look through the definition of
    --  constants.
 
+   function Is_Non_Exec_Assertion_Level (Level : Entity_Id) return Boolean;
+   --  Return true on an assertion level that cannot be enabled at runtime
+
+   function In_Statically_Leaking_Context
+     (Expr : N_Subexpr_Id; Ignore_Non_Exec : Boolean) return Boolean;
+   --  Return True if Expr occurs in a context where it is statically known
+   --  to not be possible to reclaim. This happens for expressions that are
+   --  part of an assertion pragma. If Ignore_Non_Exec is True, only consider
+   --  pragmas that can be enabled at runtime.
+
    function Is_Traversal_Function_Call (Expr : Node_Id) return Boolean;
    --  @param Expr any node
    --  @return True iff Expr is a call to a traversal function
 
+   function Loop_Entity_Of_Loop_Jump_Statement (N : Node_Id) return Entity_Id
+   with Pre => Nkind (N) in N_Exit_Statement | N_Continue_Statement;
+   --  Return the Defining_Identifier of the loop that belongs to a
+   --  transfer-of-control statement associated to loops.
+
+   function Loop_Entity_Of_Continue_Statement
+     (N : N_Continue_Statement_Id) return Entity_Id
+   renames Loop_Entity_Of_Loop_Jump_Statement;
+   --  Return the Defining_Identifier of the loop that belongs to a continue
+   --  statement.
+
    function Loop_Entity_Of_Exit_Statement
-     (N : N_Exit_Statement_Id) return Entity_Id;
+     (N : N_Exit_Statement_Id) return Entity_Id
+   renames Loop_Entity_Of_Loop_Jump_Statement;
    --  Return the Defining_Identifier of the loop that belongs to an exit
    --  statement.
 
@@ -1358,6 +1380,16 @@ package SPARK_Util is
       end record;
    end Exception_Sets;
 
+   function Is_Ghost_With_Respect_To_Context (Call : N_Call_Id) return Boolean
+   with
+     Pre =>
+       (if Nkind (Call) = N_Function_Call
+        then Is_Function_Call_With_Side_Effects (Call));
+   --  Detect if a call with side effects is ghost respectively to the
+   --  enclosing calling context (the assertion level associated to the call
+   --  depends on the assertion level of the calling subprogram). In
+   --  particular, exceptions do not escape such calls.
+
    function Has_Exceptional_Contract (E : Entity_Id) return Boolean;
    --  Return True if E has an exceptional contract with cases which are not
    --  all statically False.
@@ -1436,19 +1468,24 @@ package SPARK_Util is
    --  be issued.
 
    procedure Iter_Exited_Scopes_Ignore_Stops
-     (Destination : Node_Id; Exc_Set : Exception_Sets.Set)
+     (Destination : Node_Id;
+      Exc_Set     : Exception_Sets.Set;
+      Is_Continue : Boolean)
    is null;
 
    generic
       with procedure Process (Scop : Node_Id);
       with
-        procedure Stop (Destination : Node_Id; Exc_Set : Exception_Sets.Set)
-        is Iter_Exited_Scopes_Ignore_Stops;
+        procedure Stop
+          (Destination : Node_Id;
+           Exc_Set     : Exception_Sets.Set;
+           Is_Continue : Boolean) is Iter_Exited_Scopes_Ignore_Stops;
    procedure Iter_Exited_Scopes_With_Specified_Transfer
      (Start             : Node_Id;
       Goto_Labels       : Node_Sets.Set := Node_Sets.Empty_Set;
       Exception_Sources : Exception_Sets.Set := Exception_Sets.Empty_Set;
       Exited_Loops      : Node_Sets.Set := Node_Sets.Empty_Set;
+      Continued_Loops   : Node_Sets.Set := Node_Sets.Empty_Set;
       Return_Source     : Boolean := False);
    --  For Start a statement that can be exited by indirect transfer of
    --  control, iterates over scopes exited upon such indirect transfer.
@@ -1460,6 +1497,8 @@ package SPARK_Util is
    --    the expected set of exceptions.
    --  * Exited_Loops corresponds to exit statement sources. It provides the
    --    loops that are exited by such statements.
+   --  * Continued_Loops corresponds to continue statement sources. It provides
+   --    the loops whose iterations are completed by such statements.
    --  * Return_Source corresponds to (extended) return statement. Note that
    --    return statements nested within extended return statements do not exit
    --    the full body, instead they jump to the completion of the enclosing
@@ -1480,7 +1519,9 @@ package SPARK_Util is
    --  Stop is called once per reached destination, after all relevant scopes
    --  have been exited and no other. The arguments passed to Stop may be:
    --  * Goto label entities (targets of goto)
-   --  * Loop statements (targets of loop exit)
+   --  * Loop statements (targets of loop exit, or of loop continues).
+   --    Is_Continue is set to true if and only if the destination is that
+   --    of the loop continue (the end of the iteration rather than the loop).
    --  * Extended return statements (targets of inner return statements)
    --  * Exception handler. In this case, Exc_Sets contains the (non-empty)
    --    subset of exceptions that may reach the handler.
@@ -1498,8 +1539,10 @@ package SPARK_Util is
    generic
       with procedure Process (Scop : Node_Id);
       with
-        procedure Stop (Destination : Node_Id; Exc_Set : Exception_Sets.Set)
-        is Iter_Exited_Scopes_Ignore_Stops;
+        procedure Stop
+          (Destination : Node_Id;
+           Exc_Set     : Exception_Sets.Set;
+           Is_Continue : Boolean) is Iter_Exited_Scopes_Ignore_Stops;
    procedure Iter_Exited_Scopes (Source : Node_Id)
    with
      Pre =>
@@ -1509,6 +1552,7 @@ package SPARK_Util is
         | N_Raise_Statement
         | N_Goto_Statement
         | N_Exit_Statement
+        | N_Continue_Statement
         | N_Simple_Return_Statement
         | N_Extended_Return_Statement
        and then (if Nkind (Source) = N_Function_Call

@@ -988,6 +988,12 @@ The Initial_Condition aspect is introduced by an ``aspect_specification`` where
 the ``aspect_mark`` is Initial_Condition and the ``aspect_definition`` shall
 be a *Boolean_*\ ``expression``.
 
+As with :ref:`Subprogram Contracts`, the boolean expression of an
+Initial_Condition aspect can be split between different assertion levels and
+replaced by a ``level_and_expression_list``. In this case, each boolean
+expression is handled as for simple Initial_Condition aspects, but their
+execution semantics is governed by the associated assertion level.
+
 .. container:: heading
 
    Legality Rules
@@ -2065,6 +2071,12 @@ RM, but there is a lot of such expository text in this section and we
 don't want anyone to be confused about what is strictly part of the
 language definition and what is not.]
 
+As with :ref:`Subprogram Contracts`, the boolean expression of a
+Type_Invariant aspect can be split between different assertion levels and
+replaced by a ``level_and_expression_list``. In this case, each boolean
+expression is handled as for simple Type_Invariant aspects, but their
+execution semantics is governed by the associated assertion level.
+
 .. container:: heading
 
    Static Semantics
@@ -2202,6 +2214,15 @@ An aspect specification of "null" indicates that the partial view of the
 type does not define full default initialization (see :ref:`Declarations`).
 [The full view of the type might or might not define full default
 initialization.] This case has no associated dynamic semantics.
+
+As with :ref:`Subprogram Contracts`, the boolean expression of a
+Default_Initial_Condition aspect can be split between different assertion
+levels and
+replaced by a ``level_and_expression_list``. In this case, each boolean
+expression is handled as for simple Default_Initial_Condition aspects, but
+their execution semantics is governed by the associated assertion level.
+[The value "null" cannot be associated with an assertion level as it has no
+runtime semantics.]
 
 Conversely, an aspect specification of a *Boolean_*\ ``expression`` indicates
 that, in the partial view of the type, every part whose type is not

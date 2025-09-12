@@ -389,15 +389,18 @@ package body Gnat2Why.Driver is
       R              : Read_Result;
 
    begin
+      CE_RAC.Gnattest_Values.Values := new Value_List (1 .. 0);
+      CE_RAC.Gnattest_Values.Pos := 2;
+
       if JSON_File_Name = "" then
-         CE_RAC.Gnattest_Values.Values := new Value_List (1 .. 0);
-         CE_RAC.Gnattest_Values.Pos := 2;
          return;
       end if;
 
       if not Ada.Directories.Exists (To_String (JSON_File_Name)) then
-         raise Program_Error
-           with "Can not find " & To_String (JSON_File_Name) & ".";
+         Ada.Text_IO.Put_Line
+           (Ada.Strings.Unbounded.To_String
+              ("Cannot find " & JSON_File_Name & "."));
+         return;
       end if;
 
       R := GNATCOLL.JSON.Read_File (To_String (JSON_File_Name));
@@ -405,8 +408,7 @@ package body Gnat2Why.Driver is
       if R.Success then
          Json_Data := R.Value;
       else
-         raise Program_Error
-           with "Failed to read " & To_String (JSON_File_Name);
+         raise Program_Error;
       end if;
 
       declare
@@ -448,6 +450,16 @@ package body Gnat2Why.Driver is
                end;
             end loop;
          end;
+
+      exception
+         when others =>
+            Ada.Text_IO.Put_Line
+              (Ada.Strings.Unbounded.To_String
+                 ("An unexpected error occurred while "
+                  & "processing file '"
+                  & JSON_File_Name
+                  & "'. No counterexample candidates could "
+                  & "be extracted from this file."));
       end;
    end Parse_Gnattest_Values;
 

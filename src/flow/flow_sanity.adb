@@ -246,7 +246,7 @@ package body Flow_Sanity is
                Proof_Context => Proof_Context,
                Error_Loc     => Error_Loc,
                Msg           =>
-                 "& is referenced in Pre " & "but missing from the Global");
+                 "& is referenced in Pre but missing from the Global");
          end loop;
 
          for Post of Get_Postcondition_Expressions (E, Refined => False) loop
@@ -255,7 +255,7 @@ package body Flow_Sanity is
                Proof_Context => Proof_Context,
                Error_Loc     => Error_Loc,
                Msg           =>
-                 "& is referenced in Post " & "but missing from the Global");
+                 "& is referenced in Post but missing from the Global");
          end loop;
       end Check_Incomplete_Global;
 

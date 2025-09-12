@@ -2,7 +2,7 @@ main.adb:39:49: medium: in default value of box association at main.adb:39
 main.adb:39:49: medium: predicate check might fail on default value
 main.adb:45:45: medium: in default value of box association at main.adb:45
 main.adb:45:45: medium: predicate check might fail on default value
-main.adb:52:15: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+main.adb:52:15: info: length check proved (CVC5: 3 VC)
 main.adb:52:23: medium: in default value of box association at main.adb:52
 main.adb:52:23: medium: predicate check might fail on default value
 main.adb:58:24: medium: in default value of box association at main.adb:58

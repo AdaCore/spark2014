@@ -2542,11 +2542,10 @@ package body Why.Gen.Expr is
             --  checks, for example the overflow check on 'Pred and 'Succ,
             --  therefore test first that Check_Kind is a range check.
 
-            if Check_Kind
-              = RCK_Range
+            if Check_Kind = RCK_Range
 
-                --  We can only remove the check if we can compute the expected
-                --  bounds of the Range_Type now.
+              --  We can only remove the check if we can compute the expected
+              --  bounds of the Range_Type now.
 
               and then Compile_Time_Known_Value (Tlo)
               and then Compile_Time_Known_Value (Thi)
@@ -3519,12 +3518,25 @@ package body Why.Gen.Expr is
    ------------------
 
    function New_And_Pred (Conjuncts : W_Pred_Array) return W_Pred_Id is
+      Filtered : W_Pred_Array (1 .. Conjuncts'Length);
+      Count    : Natural := 0;
    begin
-      if Conjuncts'Length = 0 then
+      for Conjunct of Conjuncts loop
+         if Is_True_Boolean (+Conjunct) then
+            null;
+         elsif Is_False_Boolean (+Conjunct) then
+            return False_Pred;
+         else
+            Count := Count + 1;
+            Filtered (Count) := Conjunct;
+         end if;
+      end loop;
+
+      if Count = 0 then
          return True_Pred;
 
-      elsif Conjuncts'Length = 1 then
-         return Conjuncts (Conjuncts'First);
+      elsif Count = 1 then
+         return Filtered (1);
 
       else
          --  We use the array form with "More_Right" here for these reasons:
@@ -3537,9 +3549,9 @@ package body Why.Gen.Expr is
          return
            New_Connection
              (Op         => EW_And,
-              Left       => Conjuncts (Conjuncts'First),
-              Right      => Conjuncts (Conjuncts'First + 1),
-              More_Right => Conjuncts (Conjuncts'First + 2 .. Conjuncts'Last));
+              Left       => Filtered (1),
+              Right      => Filtered (2),
+              More_Right => Filtered (3 .. Count));
       end if;
    end New_And_Pred;
 
@@ -4818,20 +4830,33 @@ package body Why.Gen.Expr is
    -----------------
 
    function New_Or_Pred (Conjuncts : W_Pred_Array) return W_Pred_Id is
+      Filtered : W_Pred_Array (1 .. Conjuncts'Length);
+      Count    : Natural := 0;
    begin
-      if Conjuncts'Length = 0 then
+      for Conjunct of Conjuncts loop
+         if Is_True_Boolean (+Conjunct) then
+            return True_Pred;
+         elsif Is_False_Boolean (+Conjunct) then
+            null;
+         else
+            Count := Count + 1;
+            Filtered (Count) := Conjunct;
+         end if;
+      end loop;
+
+      if Count = 0 then
          return False_Pred;
 
-      elsif Conjuncts'Length = 1 then
-         return Conjuncts (Conjuncts'First);
+      elsif Count = 1 then
+         return Filtered (1);
 
       else
          return
            New_Connection
              (Op         => EW_Or,
-              Left       => Conjuncts (Conjuncts'First),
-              Right      => Conjuncts (Conjuncts'First + 1),
-              More_Right => Conjuncts (Conjuncts'First + 2 .. Conjuncts'Last));
+              Left       => Filtered (1),
+              Right      => Filtered (2),
+              More_Right => Filtered (3 .. Count));
       end if;
    end New_Or_Pred;
 

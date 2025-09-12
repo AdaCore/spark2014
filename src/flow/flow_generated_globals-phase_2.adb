@@ -288,8 +288,9 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Ghost information
    ----------------------------------------------------------------------
 
-   Ghost_Entities : Name_Sets.Set;
-   --  Entities annotated as ghost
+   Checked_Ghost_Entities : Name_Sets.Set;
+   Ignored_Ghost_Entities : Name_Sets.Set;
+   --  Entities annotated as ghost, with policy Check and Ignore, respectively
 
    ----------------------------------------------------------------------
    --  Constant information
@@ -1395,12 +1396,14 @@ package body Flow_Generated_Globals.Phase_2 is
                      Unused (V.No_Body);
                      Unused (V.Nonreturning);
                      Unused (V.Nonblocking);
+                     Unused (V.Calls_Via_Access);
                   else
                      Serialize (V.Always_Terminates);
                      Serialize (V.Has_Subp_Variant);
                      Serialize (V.No_Body);
                      Serialize (V.Nonreturning);
                      Serialize (V.Nonblocking);
+                     Serialize (V.Calls_Via_Access);
                   end if;
                   Serialize (V.Tasking);
                end if;
@@ -1515,8 +1518,11 @@ package body Flow_Generated_Globals.Phase_2 is
                when EK_Predef_Init_Entities =>
                   Serialize (Initialized_Vars_And_States);
 
-               when EK_Ghost_Entities =>
-                  Serialize (Ghost_Entities);
+               when EK_Checked_Ghost_Entities =>
+                  Serialize (Checked_Ghost_Entities);
+
+               when EK_Ignored_Ghost_Entities =>
+                  Serialize (Ignored_Ghost_Entities);
 
                when EK_CAE_Entities =>
                   Serialize (CAE_Entities);
@@ -1858,6 +1864,14 @@ package body Flow_Generated_Globals.Phase_2 is
       Volatile_Vars.Union (Async_Writers_Vars);
       Volatile_Vars.Union (Effective_Reads_Vars);
       Volatile_Vars.Union (Effective_Writes_Vars);
+
+      --  Check consistenty of ghost policies coming from all the ALI files
+
+      pragma
+        Assert
+          (Name_Sets.Intersection
+             (Checked_Ghost_Entities, Ignored_Ghost_Entities)
+             .Is_Empty);
 
       GG_State_Constituents := True;
 
@@ -3034,8 +3048,21 @@ package body Flow_Generated_Globals.Phase_2 is
    -- GG_Is_Ghost_Entity --
    ------------------------
 
-   function GG_Is_Ghost_Entity (EN : Entity_Name) return Boolean
-   renames Ghost_Entities.Contains;
+   function GG_Is_Ghost_Entity (EN : Entity_Name) return Boolean is
+   begin
+      return
+        Checked_Ghost_Entities.Contains (EN)
+        or else Ignored_Ghost_Entities.Contains (EN);
+   end GG_Is_Ghost_Entity;
+
+   --------------------------------
+   -- GG_Is_Checked_Ghost_Entity --
+   --------------------------------
+
+   function GG_Is_Checked_Ghost_Entity (EN : Entity_Name) return Boolean is
+   begin
+      return Checked_Ghost_Entities.Contains (EN);
+   end GG_Is_Checked_Ghost_Entity;
 
    --------------------
    -- GG_Is_Constant --
@@ -3385,6 +3412,71 @@ package body Flow_Generated_Globals.Phase_2 is
    function Calls_Potentially_Nonreturning_Subprogram
      (E : Entity_Id) return Boolean
    is (Calls_Potentially_Nonreturning_Subprogram (To_Entity_Name (E)));
+
+   ------------------------------------
+   -- Calls_Via_Access_To_Subprogram --
+   ------------------------------------
+
+   function Calls_Via_Access_To_Subprogram (E : Entity_Id) return Boolean is
+      EN : constant Entity_Name := To_Entity_Name (E);
+
+      Explored : Name_Sets.Set;
+      --  Visited call graph nodes
+      Stack    : Name_Sets.Set;
+      --  Call graph nodes to visit
+
+   begin
+
+      --  If E calls via access-to-subprogram, then there is no need to check
+      --  the property for its callees.
+
+      if Phase_1_Info.Contains (EN) and then Phase_1_Info (EN).Calls_Via_Access
+      then
+         return True;
+      end if;
+
+      --  Insert the analyzed entity in the sets
+      Stack.Insert (EN);
+      Explored.Insert (EN);
+
+      while not Stack.Is_Empty loop
+
+         declare
+            Caller : constant Entity_Name := Stack (Stack.First);
+         begin
+
+            for Callee of Generated_Calls (Caller) loop
+
+               --  Return if the callee calls via access-to-subprogram
+
+               if Phase_1_Info.Contains (Callee)
+                 and then Phase_1_Info (Callee).Calls_Via_Access
+               then
+                  return True;
+               end if;
+
+               --  Insert Callee on the stack if it has not
+               --  already been visited.
+
+               declare
+                  Inserted : Boolean;
+                  Position : Name_Sets.Cursor;
+               begin
+                  Name_Sets.Insert (Explored, Callee, Position, Inserted);
+
+                  if Inserted then
+                     Stack.Insert (Callee);
+                  end if;
+               end;
+            end loop;
+
+            --  Pop Caller from the stack
+            Stack.Delete (Caller);
+         end;
+      end loop;
+
+      return False;
+   end Calls_Via_Access_To_Subprogram;
 
    ------------------------------------------
    -- Is_Potentially_Nonreturning_Internal --
