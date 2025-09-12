@@ -42,7 +42,6 @@ with Common_Iterators;       use Common_Iterators;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK_Util.Types;       use SPARK_Util.Types;
-with SPARK_Util;             use SPARK_Util;
 with VC_Kinds;               use VC_Kinds;
 
 with Errout_Wrapper;                 use Errout_Wrapper;

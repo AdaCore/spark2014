@@ -45,7 +45,6 @@ with Uintp;       use Uintp;
 with Common_Iterators;       use Common_Iterators;
 with Hashing;                use Hashing;
 with SPARK_Definition;       use SPARK_Definition;
-with SPARK_Util;             use SPARK_Util;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK_Util.Types;       use SPARK_Util.Types;
 

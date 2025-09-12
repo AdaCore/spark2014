@@ -1974,7 +1974,44 @@ package body Flow is
    -- Have_Same_Prefix --
    ----------------------
 
-   function Have_Same_Prefix (A, B : Protected_Call) return Boolean
-   is (Full_Protected_Name (A.Prefix) = Full_Protected_Name (B.Prefix));
+   function Have_Same_Prefix (A, B : Protected_Call) return Boolean is
+      A_Prefix : Node_Id := A.Prefix;
+      B_Prefix : Node_Id := B.Prefix;
+   begin
+      loop
+         if Is_Entity_Name (A_Prefix) and then Is_Entity_Name (B_Prefix) then
+            return Entity (A_Prefix) = Entity (B_Prefix);
+
+         elsif Nkind (A_Prefix) = N_Indexed_Component
+           and then Nkind (B_Prefix) = N_Indexed_Component
+         then
+            A_Prefix := Prefix (A_Prefix);
+            B_Prefix := Prefix (B_Prefix);
+
+         elsif Nkind (A_Prefix) = N_Selected_Component
+           and then Nkind (B_Prefix) = N_Selected_Component
+           and then Chars (Selector_Name (A_Prefix))
+                    = Chars (Selector_Name (B_Prefix))
+         then
+            A_Prefix := Prefix (A_Prefix);
+            B_Prefix := Prefix (B_Prefix);
+
+         else
+            pragma
+              Assert
+                (Is_Entity_Name (A_Prefix)
+                   or else Nkind (A_Prefix)
+                           in N_Indexed_Component | N_Selected_Component);
+
+            pragma
+              Assert
+                (Is_Entity_Name (B_Prefix)
+                   or else Nkind (B_Prefix)
+                           in N_Indexed_Component | N_Selected_Component);
+
+            return False;
+         end if;
+      end loop;
+   end Have_Same_Prefix;
 
 end Flow;

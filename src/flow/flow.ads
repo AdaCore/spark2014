@@ -31,6 +31,7 @@ with Einfo.Entities;        use Einfo.Entities;
 with Einfo.Utils;           use Einfo.Utils;
 with Flow_Dependency_Maps;  use Flow_Dependency_Maps;
 with Flow_Types;            use Flow_Types;
+with SPARK_Util;            use SPARK_Util;
 with Types;                 use Types;
 
 package Flow is
@@ -125,7 +126,11 @@ package Flow is
    --  the prefix, because for locking checks the protected subprogram is
    --  irrelevant.
 
-   function Have_Same_Prefix (A, B : Protected_Call) return Boolean;
+   function Have_Same_Prefix (A, B : Protected_Call) return Boolean
+   with
+     Post =>
+       Have_Same_Prefix'Result
+       = (Full_Protected_Name (A.Prefix) = Full_Protected_Name (B.Prefix));
    --  Returns True if prefixes of protected calls denote equal objects, as
    --  far as flow analysis is concerned, i.e. without looking at indices
    --  of indexed elements; for locking checks the protected subprogram is

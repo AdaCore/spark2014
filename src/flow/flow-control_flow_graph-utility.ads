@@ -27,7 +27,6 @@ with Flow_Refinement;             use Flow_Refinement;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with Sem_Util;                    use Sem_Util;
 with Sinfo.Nodes;                 use Sinfo.Nodes;
-with SPARK_Util;                  use SPARK_Util;
 
 package Flow.Control_Flow_Graph.Utility is
 
