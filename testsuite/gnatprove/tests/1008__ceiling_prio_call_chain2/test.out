@@ -1,4 +1,4 @@
-main.adb:3:11: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "P.Po1" must be >= the priority of the caller "Main" in the call chain "Main" (elaboration) -> "P" (elaboration) -> "P.F" -> "P.Pt.Pp1"]
+main.adb:3:11: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "P.Po1" must be >= the priority of the caller "Main" in the call chain "Main" (elaboration) -> "P" (elaboration) -> "P.F" -> "P.Pt.Pp2"]
 main.adb:3:11: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "P.Po2" must be >= the priority of the caller "Main" in the call chain "Main" (elaboration) -> "P" (elaboration) -> "P.F" -> "P.Pt.Pp2"]
 p.adb:19:14: info: add a contract to analyze it separately from calling contexts
 p.adb:19:14: info: local subprogram "Q1" only analyzed in the context of calls [info-unrolling-inlining]

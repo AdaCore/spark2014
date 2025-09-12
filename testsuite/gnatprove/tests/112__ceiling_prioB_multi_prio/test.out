@@ -1,7 +1,9 @@
 main.adb:4:11: info: ceiling priority protocol is respected (CVC5: 1 VC)
-main.adb:4:11: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "P.X" must be >= the priority of the caller "Main" in the call "Main" -> "P.Pt1.Proc1"]
+main.adb:4:11: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "P.X.C1" must be >= the priority of the caller "Main" in the call "Main" -> "P.Pt1.Proc1"]
+main.adb:4:11: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "P.X.C4" must be >= the priority of the caller "Main" in the call "Main" -> "P.Pt1.Proc1"]
 tasks1.ads:3:09: info: ceiling priority protocol is respected (CVC5: 1 VC)
 tasks1.ads:3:09: info: nontermination of task proved (CVC5: 1 VC)
 tasks1.ads:4:09: info: ceiling priority protocol is respected (CVC5: 1 VC)
 tasks1.ads:4:09: info: nontermination of task proved (CVC5: 1 VC)
-tasks1.ads:4:09: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "P.X" must be >= the priority of the caller "Tasks1.Tb" in the call "Tasks1.Tb" -> "P.Pt1.Proc1"]
+tasks1.ads:4:09: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "P.X.C1" must be >= the priority of the caller "Tasks1.Tb" in the call "Tasks1.Tb" -> "P.Pt1.Proc1"]
+tasks1.ads:4:09: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "P.X.C4" must be >= the priority of the caller "Tasks1.Tb" in the call "Tasks1.Tb" -> "P.Pt1.Proc1"]

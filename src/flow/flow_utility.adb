@@ -8262,18 +8262,12 @@ package body Flow_Utility is
    ------------------------------
 
    procedure Register_Protected_Calls
-     (Callsite : Node_Id; Tasking_Ext : in out Tasking_Info_Ext)
-   is
-      Enclosing_Object : constant Entity_Id :=
-        Get_Enclosing_Object (Prefix (Name (Callsite)));
-
-      Protected_Call : constant Entity_Id := Get_Called_Entity (Callsite);
-      Protected_Type : constant Entity_Id := Scope (Protected_Call);
-
+     (Callsite : Node_Id; Tasking_Ext : in out Tasking_Info_Ext) is
    begin
       Tasking_Ext.Include
-        (Locking_Target'(Object => Enclosing_Object, Typ => Protected_Type),
-         Protected_Call);
+        (Entry_Call'
+           (Prefix => Prefix (Name (Callsite)),
+            Entr   => Get_Called_Entity (Callsite)));
    end Register_Protected_Calls;
 
 end Flow_Utility;

@@ -105,7 +105,7 @@ package Flow is
       Prefix : Node_Id;      --  prefix of an entry call
       Entr   : Entity_Id;    --  protected entry
    end record
-   with Predicate => Is_Entry (Entry_Call.Entr);
+   with Predicate => Is_Subprogram_Or_Entry (Entry_Call.Entr);
    --  Unique representation of a call to protected entry of a library-level
    --  protected object.
 
@@ -141,35 +141,7 @@ package Flow is
    --  Named array type for sets of nodes related to tasking. The nodes
    --  represent library-level objects.
 
-   type Locking_Target is record
-      Object : Entity_Id;
-      Typ    : Entity_Id;
-   end record;
-   --  An object-protected type pair. See Locking_Target_Maps for more details.
-
-   function Hash (Key : Locking_Target) return Ada.Containers.Hash_Type
-   is (Node_Hash (Key.Object) xor (Node_Hash (Key.Typ) * 1009));
-   --  Hash function needed to instantiate container package
-
-   package Locking_Target_Maps is new
-     Ada.Containers.Hashed_Maps
-       (Key_Type        => Locking_Target,
-        Element_Type    => Entity_Id,
-        Hash            => Hash,
-        Equivalent_Keys => "=");
-   --  Map from locked object-type pairs to the locking calls:
-   --
-   --  * Map key - Locked object and type. For non-composite protected objects
-   --    there will be only a single such pair - the protected object and its
-   --    type. However, for objects having a composite type object-type pairs
-   --    with all the different different protected (leaf) types are tracked.
-   --  * Map element - A protected operation that belongs to the protected type
-   --    referenced in the key and that is directly called from the currently
-   --    analyzed entity. If there are several such operations, then it is
-   --    sufficient to track only one since their priority in SPARK is
-   --    determined by the enclosing protected type.
-
-   subtype Tasking_Info_Ext is Locking_Target_Maps.Map;
+   subtype Tasking_Info_Ext is Entry_Call_Sets.Set;
    --  This structure is used for storing Phase 1 information related to
    --  ceiling locking checks. In the future similar information might be
    --  needed for other tasking checks as well. So, this type could be either

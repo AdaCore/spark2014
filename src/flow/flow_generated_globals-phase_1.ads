@@ -76,28 +76,9 @@ package Flow_Generated_Globals.Phase_1 is
                  | E_Function
                  | E_Package
                  | E_Procedure
-                 | E_Task_Type
-       and then (for all C in Calls.Iterate =>
-                   (declare
-                      PO     : constant Entity_Id :=
-                        Locking_Target_Maps.Key (C).Object;
-                      PT     : constant Entity_Id :=
-                        Locking_Target_Maps.Key (C).Typ;
-                      Callee : Entity_Id renames Calls (C);
-                    begin
-                      Ekind (PO) = E_Variable
-                      and then SPARK_Atree.Entities.Is_Protected_Type (PT)
-                      and then Scope (Callee) = PT)),
+                 | E_Task_Type,
      Post => GG_Mode = GG_Write_Mode;
-   --  Register locking calls made from E as one or more entries of the
-   --  following form:
-   --  * Caller     - The entity E
-   --  * Obj        - The object or (in case of a record object) a protected
-   --                 component that is being locked
-   --  * Typ        - Type of the locked object or its protected component that
-   --                 is locked
-   --  * Operation  - The protected operation that belongs to Typ and is called
-   --                 by E
+   --  Register locking calls made from E
 
    procedure GG_Register_Global_Info
      (E                 : Entity_Id;
