@@ -2303,7 +2303,7 @@ package body SPARK_Util is
          --  ignoring them we conservatively consider accesses to different
          --  components as potential violations.
 
-         when N_Indexed_Component            =>
+         when N_Indexed_Component | N_Slice  =>
             return Full_Protected_Name (Prefix (N));
 
          --  Accesses to record components are known statically and become part

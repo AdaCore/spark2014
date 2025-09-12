@@ -809,6 +809,7 @@ package SPARK_Util is
        in N_Expanded_Name
         | N_Identifier
         | N_Indexed_Component
+        | N_Slice
         | N_Selected_Component;
    --  @param N is a prefix of an entry call; it denotes either a stand-alone
    --     protected object or a component of a protected type within a

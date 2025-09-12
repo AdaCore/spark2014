@@ -1959,7 +1959,7 @@ package body Flow is
 
          --  Ignore an array and just proceed with its prefix
 
-         elsif Nkind (Pref) in N_Indexed_Component then
+         elsif Nkind (Pref) in N_Indexed_Component | N_Slice then
             return Hash (Prefix (Pref));
 
          else
@@ -1982,6 +1982,12 @@ package body Flow is
          if Is_Entity_Name (A_Prefix) and then Is_Entity_Name (B_Prefix) then
             return Entity (A_Prefix) = Entity (B_Prefix);
 
+         elsif Nkind (A_Prefix) = N_Slice then
+            A_Prefix := Prefix (A_Prefix);
+
+         elsif Nkind (B_Prefix) = N_Slice then
+            B_Prefix := Prefix (B_Prefix);
+
          elsif Nkind (A_Prefix) = N_Indexed_Component
            and then Nkind (B_Prefix) = N_Indexed_Component
          then
@@ -2001,13 +2007,17 @@ package body Flow is
               Assert
                 (Is_Entity_Name (A_Prefix)
                    or else Nkind (A_Prefix)
-                           in N_Indexed_Component | N_Selected_Component);
+                           in N_Indexed_Component
+                            | N_Selected_Component
+                            | N_Slice);
 
             pragma
               Assert
                 (Is_Entity_Name (B_Prefix)
                    or else Nkind (B_Prefix)
-                           in N_Indexed_Component | N_Selected_Component);
+                           in N_Indexed_Component
+                            | N_Selected_Component
+                            | N_Slice);
 
             return False;
          end if;
