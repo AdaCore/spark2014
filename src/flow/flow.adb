@@ -25,6 +25,7 @@ with Ada.Characters.Latin_1;
 with Ada.Directories;
 with Ada.Strings.Maps;
 with Ada.Strings;
+with Ada.Strings.Hash;
 with Ada.Strings.Fixed;
 with Ada.Text_IO;
 with Assumptions;                      use Assumptions;
@@ -1922,5 +1923,15 @@ package body Flow is
         * 17
         + Ada.Containers.Hash_Type (E.Entr) * 19;
    end Hash;
+
+   function Hash (P : Protected_Call) return Ada.Containers.Hash_Type
+   is (Ada.Strings.Hash (Full_Protected_Name (P.Prefix)));
+
+   ----------------------
+   -- Have_Same_Prefix --
+   ----------------------
+
+   function Have_Same_Prefix (A, B : Protected_Call) return Boolean
+   is (Full_Protected_Name (A.Prefix) = Full_Protected_Name (B.Prefix));
 
 end Flow;

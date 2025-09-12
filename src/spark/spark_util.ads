@@ -802,7 +802,7 @@ package SPARK_Util is
    --  Return the statement enclosing Call which is a call to a function with
    --  side-effects.
 
-   function Full_Entry_Name (N : Node_Id) return String
+   function Full_Protected_Name (N : Node_Id) return String
    with
      Pre =>
        Nkind (N)
@@ -811,7 +811,8 @@ package SPARK_Util is
         | N_Indexed_Component
         | N_Selected_Component;
    --  @param N is a prefix of an entry call; it denotes either a stand-alone
-   --     protected object or a protected component within a composite object
+   --     protected object or a component of a protected type within a
+   --     composite object
    --  @return a name that uniquely identifies the prefix
 
    function Generic_Actual_Subprograms (E : E_Package_Id) return Node_Sets.Set

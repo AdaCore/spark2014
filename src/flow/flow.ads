@@ -105,18 +105,43 @@ package Flow is
       Prefix : Node_Id;      --  prefix of an entry call
       Entr   : Entity_Id;    --  protected entry
    end record
-   with Predicate => Is_Subprogram_Or_Entry (Entry_Call.Entr);
+   with Predicate => Is_Entry (Entry_Call.Entr);
    --  Unique representation of a call to protected entry of a library-level
    --  protected object.
 
+   type Protected_Call is record
+      Prefix    : Node_Id;      --  prefix of an protected call
+      Operation : Entity_Id;    --  protected operation
+   end record
+   with Predicate => Is_Subprogram_Or_Entry (Protected_Call.Operation);
+   --  Unique representation of a call to protected subprogram of a
+   --  library-level protected object.
+
    function Hash (E : Entry_Call) return Ada.Containers.Hash_Type;
    --  Hash function needed to instantiate container package
+
+   function Hash (P : Protected_Call) return Ada.Containers.Hash_Type;
+   --  Hash function needed to instantiate container package; it only uses
+   --  the prefix, because for locking checks the protected subprogram is
+   --  irrelevant.
+
+   function Have_Same_Prefix (A, B : Protected_Call) return Boolean;
+   --  Returns True if prefixes of protected calls denote equal objects, as
+   --  far as flow analysis is concerned, i.e. without looking at indices
+   --  of indexed elements; for locking checks the protected subprogram is
+   --  irrelevant.
 
    package Entry_Call_Sets is new
      Ada.Containers.Hashed_Sets
        (Element_Type        => Entry_Call,
         Hash                => Hash,
         Equivalent_Elements => "=");
+
+   package Protected_Call_Sets is new
+     Ada.Containers.Hashed_Sets
+       (Element_Type        => Protected_Call,
+        Hash                => Hash,
+        Equivalent_Elements => Have_Same_Prefix);
 
    type Tasking_Info_Kind is (Entry_Calls, Suspends_On, Unsynch_Accesses);
    pragma Ordered (Tasking_Info_Kind);
@@ -242,7 +267,7 @@ package Flow is
       Tasking : Tasking_Info;
       --  Tasking-related information collected in phase 1
 
-      Tasking_Ext : Tasking_Info_Ext;
+      Locks : Protected_Call_Sets.Set;
       --  Extra tasking-related information collected in phase 1
 
       Is_Generative : Boolean;

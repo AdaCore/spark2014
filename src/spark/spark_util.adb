@@ -2276,7 +2276,7 @@ package body SPARK_Util is
    -- Full_Entry_Name --
    ---------------------
 
-   function Full_Entry_Name (N : Node_Id) return String is
+   function Full_Protected_Name (N : Node_Id) return String is
    begin
       case Nkind (N) is
          --  Once we get to the root of the prefix, which can be either a
@@ -2304,21 +2304,21 @@ package body SPARK_Util is
          --  components as potential violations.
 
          when N_Indexed_Component            =>
-            return Full_Entry_Name (Prefix (N));
+            return Full_Protected_Name (Prefix (N));
 
          --  Accesses to record components are known statically and become part
          --  of the returned identifier.
 
          when N_Selected_Component           =>
             return
-              Full_Entry_Name (Prefix (N))
+              Full_Protected_Name (Prefix (N))
               & "__"
               & Get_Name_String (Chars (Entity (Selector_Name (N))));
 
          when others                         =>
             raise Program_Error;
       end case;
-   end Full_Entry_Name;
+   end Full_Protected_Name;
 
    ---------------
    -- Full_Name --

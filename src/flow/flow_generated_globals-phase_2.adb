@@ -1826,9 +1826,8 @@ package body Flow_Generated_Globals.Phase_2 is
 
                      --  Register protected call. We are only interested in
                      --  unique object-type pairs and one called protected
-                     --  operation from each pair. Hence, it is fine to
-                     --  overwrite any existing entry with the same key.
-                     Tasking_Info_Ext (Caller_Position).Include
+                     --  operation from each pair.
+                     Tasking_Info_Ext (Caller_Position).Insert
                        (Locking_Target'
                           (Object => Object, Typ => Protected_Type),
                         Protected_Call);

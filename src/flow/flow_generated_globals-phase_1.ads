@@ -67,7 +67,7 @@ package Flow_Generated_Globals.Phase_1 is
    --  without caring if they are proof-only, definite or conditional.
 
    procedure GG_Register_Locking_Calls
-     (E : Entity_Id; Calls : Tasking_Info_Ext)
+     (E : Entity_Id; Calls : Protected_Call_Sets.Set)
    with
      Pre  =>
        GG_Mode = GG_Write_Mode
@@ -94,7 +94,7 @@ package Flow_Generated_Globals.Phase_1 is
 
       Entries_Called    : Entry_Call_Sets.Set;
       Tasking           : Tasking_Info;
-      Tasking_Ext       : Tasking_Info_Ext;
+      Locks             : Protected_Call_Sets.Set;
 
       Always_Terminates : Boolean;
       Has_Subp_Variant  : Boolean;

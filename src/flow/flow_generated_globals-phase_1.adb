@@ -217,14 +217,14 @@ package body Flow_Generated_Globals.Phase_1 is
    -------------------------------
 
    procedure GG_Register_Locking_Calls
-     (E : Entity_Id; Calls : Tasking_Info_Ext) is
+     (E : Entity_Id; Calls : Protected_Call_Sets.Set) is
    begin
       for Call of Calls loop
          New_GG_Line (EK_Locking_Call);
          Serialize (E);
-         Serialize (Full_Entry_Name (Call.Prefix));
-         Serialize (Scope (Call.Entr));
-         Serialize (Call.Entr);
+         Serialize (Full_Protected_Name (Call.Prefix));
+         Serialize (Scope (Call.Operation));
+         Serialize (Call.Operation);
          Terminate_GG_Line;
       end loop;
    end GG_Register_Locking_Calls;
@@ -247,7 +247,7 @@ package body Flow_Generated_Globals.Phase_1 is
 
       Entries_Called    : Entry_Call_Sets.Set;
       Tasking           : Tasking_Info;
-      Tasking_Ext       : Tasking_Info_Ext;
+      Locks             : Protected_Call_Sets.Set;
 
       Always_Terminates : Boolean;
       Has_Subp_Variant  : Boolean;
@@ -281,7 +281,7 @@ package body Flow_Generated_Globals.Phase_1 is
       --  Goes through Objects, finds Constant_After_Elaboration variables and
       --  stores them in the appropriate container.
 
-      procedure Process_Protected_Objects (Tasking_Ext : Tasking_Info_Ext);
+      procedure Process_Protected_Objects (Locks : Protected_Call_Sets.Set);
       --  Stores protected objects that E locks and the protected operations it
       --  calls in appropriate containers.
 
@@ -314,7 +314,7 @@ package body Flow_Generated_Globals.Phase_1 is
             --  For entry calls pretend that we are accessing an object
             --  Package_Name.Object_Name.Entry_Name.
             Serialize
-              (Full_Entry_Name (EC.Prefix)
+              (Full_Protected_Name (EC.Prefix)
                & "__"
                & Get_Name_String (Chars (EC.Entr)));
          end loop;
@@ -412,9 +412,9 @@ package body Flow_Generated_Globals.Phase_1 is
       -- Process_Protected_Objects --
       -------------------------------
 
-      procedure Process_Protected_Objects (Tasking_Ext : Tasking_Info_Ext) is
+      procedure Process_Protected_Objects (Locks : Protected_Call_Sets.Set) is
       begin
-         for Lock of Tasking_Ext loop
+         for Lock of Locks loop
             --  Register the locked protected object
             Protected_Objects.Include (Get_Enclosing_Object (Lock.Prefix));
 
@@ -425,7 +425,7 @@ package body Flow_Generated_Globals.Phase_1 is
             --  operation might not necessarily be defined in the current unit
             --  (e.g., its parent is defined in a system package) and thus
             --  there might not exist an EK_Globals entry for this operation.
-            Protected_Operations.Include (Lock.Entr);
+            Protected_Operations.Include (Lock.Operation);
          end loop;
       end Process_Protected_Objects;
 
@@ -483,7 +483,7 @@ package body Flow_Generated_Globals.Phase_1 is
 
       --  Collect referenced protected objects
 
-      Process_Protected_Objects (Tasking_Ext);
+      Process_Protected_Objects (Locks);
 
       if not Local then
          --  If the current entity is non-local, i.e. can be called from
