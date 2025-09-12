@@ -216,8 +216,7 @@ package body Flow_Types is
             declare
                use Interfaces;
 
-               H : Unsigned_32 :=
-                 Unsigned_32 (Generic_Integer_Hash (Integer (N.Node)));
+               H : Unsigned_32 := Unsigned_32 (Node_Hash (N.Node));
 
                procedure Hash_Component (C : Entity_Vectors.Cursor);
                --  Update hash with a component C. Especially in debug mode

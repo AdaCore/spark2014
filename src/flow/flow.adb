@@ -25,7 +25,6 @@ with Ada.Characters.Latin_1;
 with Ada.Directories;
 with Ada.Strings.Maps;
 with Ada.Strings;
-with Ada.Strings.Hash;
 with Ada.Strings.Fixed;
 with Ada.Text_IO;
 with Assumptions;                      use Assumptions;
@@ -51,6 +50,7 @@ with Flow_Utility;                     use Flow_Utility;
 with Gnat2Why.Assumptions;             use Gnat2Why.Assumptions;
 with Gnat2Why_Args;
 with GNATCOLL.JSON;                    use GNATCOLL.JSON;
+with Interfaces;
 with Namet;                            use Namet;
 with Output;                           use Output;
 with Sem_Ch7;                          use Sem_Ch7;
@@ -62,7 +62,6 @@ with Snames;                           use Snames;
 with SPARK_Definition;                 use SPARK_Definition;
 with SPARK_Definition.Annotate;        use SPARK_Definition.Annotate;
 with SPARK_Frame_Conditions;           use SPARK_Frame_Conditions;
-with SPARK_Util;                       use SPARK_Util;
 with SPARK_Util.Subprograms;           use SPARK_Util.Subprograms;
 with Sprint;                           use Sprint;
 with String_Utils;                     use String_Utils;
@@ -1924,8 +1923,52 @@ package body Flow is
         + Ada.Containers.Hash_Type (E.Entr) * 19;
    end Hash;
 
-   function Hash (P : Protected_Call) return Ada.Containers.Hash_Type
-   is (Ada.Strings.Hash (Full_Protected_Name (P.Prefix)));
+   function Hash (P : Protected_Call) return Ada.Containers.Hash_Type is
+
+      use Interfaces;
+
+      function Hash (Pref : Node_Id) return Unsigned_32;
+      --  Recursively hash prefix of a protected call. This is the same
+      --  algoritm as for Flow_Id, but in a functional style.
+
+      ----------
+      -- Hash --
+      ----------
+
+      function Hash (Pref : Node_Id) return Unsigned_32 is
+      begin
+         --  Stop when we reach an entire object
+
+         if Is_Entity_Name (Pref) then
+            pragma Assert (Ekind (Entity (Pref)) = E_Variable);
+            return Unsigned_32 (Node_Hash (Entity (Pref)));
+
+         --  For a record component combine hash of its prefix with hash if the
+         --  component itself.
+
+         elsif Nkind (Pref) = N_Selected_Component then
+            return H : Unsigned_32 := Hash (Prefix (Pref)) do
+               H := Rotate_Left (H, 5);
+               H :=
+                 H
+                 + Unsigned_32
+                     (Node_Hash
+                        (Unique_Component (Entity (Selector_Name (Pref)))))
+                 + 1;
+            end return;
+
+         --  Ignore an array and just proceed with its prefix
+
+         elsif Nkind (Pref) in N_Indexed_Component then
+            return Hash (Prefix (Pref));
+
+         else
+            raise Program_Error;
+         end if;
+      end Hash;
+   begin
+      return Ada.Containers.Hash_Type (Hash (P.Prefix));
+   end Hash;
 
    ----------------------
    -- Have_Same_Prefix --
