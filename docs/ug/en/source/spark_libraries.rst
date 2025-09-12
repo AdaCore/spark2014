@@ -61,6 +61,26 @@ Finally, if you instantiate in your code a generic from the SPARK library, you
 may also need to pass ``-gnateDSPARK_BODY_MODE=Off`` as a compilation switch
 for the units with these instantiations.
 
+In addition, it is possible to enable (or disable, if assertions are enabled
+by default) assertion levels defined in the |SPARK| library globally for your
+project. It can be done by supplying ``Check_Policy`` or ``Assertion_Policy``
+pragmas at the project level. They can be stored in a separate file, for
+example, a file ``pragmas.adc`` can be created containing the following pragmas:
+
+.. code-block:: ada
+
+   pragma Check_Policy (SPARKlib_Defensive => Check);
+   pragma Check_Policy (SPARKlib_Logic => Ignore);
+
+This file should then by referenced in the ``Builder`` section of your project
+file:
+
+.. code-block:: gpr
+
+   package Builder is
+      for Global_Configuration_Pragmas use "pragmas.adc";
+   end Builder;
+
 .. index:: Big_Numbers
 
 Big Numbers Library
