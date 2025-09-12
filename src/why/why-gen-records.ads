@@ -115,9 +115,15 @@ package Why.Gen.Records is
      (Ada_Node : Node_Id := Empty;
       Name     : W_Prog_Id;
       Field    : Entity_Id;
-      Ty       : Entity_Id) return W_Prog_Id
+      Ty       : Entity_Id;
+      Do_Check : Boolean := True) return W_Prog_Id
    is (+W_Expr_Id'
-         (New_Ada_Record_Access (Ada_Node, EW_Prog, +Name, Field, Ty)));
+         (New_Ada_Record_Access
+            (Ada_Node,
+             (if Do_Check then EW_Prog else EW_Pterm),
+             +Name,
+             Field,
+             Ty)));
 
    function New_Ada_Record_Access
      (Ada_Node : Node_Id := Empty;
