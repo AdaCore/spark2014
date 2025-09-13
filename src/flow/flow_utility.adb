@@ -8262,12 +8262,22 @@ package body Flow_Utility is
    -----------------------------
 
    procedure Register_Protected_Call
-     (Callsite : Node_Id; Locks : in out Protected_Call_Sets.Set) is
+     (Callsite : Node_Id; Locks : in out Protected_Call_Sets.Set)
+   is
+      Unused_Position : Protected_Call_Sets.Cursor;
+      Unused_Inserted : Boolean;
    begin
-      Locks.Include
+      --  If a given prefix was already locked by another protected operation,
+      --  then inserting as opposed to including will keep the previous
+      --  operation. This way we pick the syntactically first protected call
+      --  to a given prefix, which makes call traces easier to understand.
+
+      Locks.Insert
         (Protected_Call'
            (Prefix    => Prefix (Name (Callsite)),
-            Operation => Get_Called_Entity (Callsite)));
+            Operation => Get_Called_Entity (Callsite)),
+         Unused_Position,
+         Unused_Inserted);
    end Register_Protected_Call;
 
 end Flow_Utility;
