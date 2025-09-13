@@ -1016,7 +1016,8 @@ package body Flow.Control_Flow_Graph is
    --  can check for use of uninitialized variables).
 
    procedure Process_Call_Actuals
-     (Callsite            : Node_Id;
+     (Call                : Node_Id;
+      Callsite            : Flow_Graphs.Vertex_Id;
       Ins                 : in out Vertex_Lists.List;
       Outs_By_Copy        : in out Vertex_Lists.List;
       Outs_By_Reference   : in out Vertex_Lists.List;
@@ -1024,7 +1025,7 @@ package body Flow.Control_Flow_Graph is
       FA                  : in out Flow_Analysis_Graphs;
       CM                  : in out Connection_Maps.Map;
       Ctx                 : in out Context)
-   with Pre => Nkind (Callsite) in N_Subprogram_Call | N_Entry_Call_Statement;
+   with Pre => Nkind (Call) in N_Subprogram_Call | N_Entry_Call_Statement;
    --  Similar to Process_Subprogram_Globals, this deals with the actuals
    --  provided in a subprogram call. The vertices are created but not linked
    --  up; as above, they are appended to Ins and various variants of Outs,
@@ -1056,13 +1057,18 @@ package body Flow.Control_Flow_Graph is
    --  exits of the last statement.
 
    procedure Process_Subprogram_Globals
-     (Callsite : Node_Id;
+     (Call     : Node_Id;
+      Callee   : Entity_Id;
+      Callsite : Flow_Graphs.Vertex_Id;
       Ins      : in out Vertex_Lists.List;
       Outs     : in out Vertex_Lists.List;
       FA       : in out Flow_Analysis_Graphs;
       CM       : in out Connection_Maps.Map;
       Ctx      : in out Context)
-   with Pre => Nkind (Callsite) in N_Subprogram_Call | N_Entry_Call_Statement;
+   with
+     Pre =>
+       Nkind (Call) in N_Subprogram_Call | N_Entry_Call_Statement
+       and then Is_Subprogram_Or_Entry (Callee);
    --  This procedures creates the in and out vertices for a
    --  subprogram's globals. They are not connected to anything,
    --  instead the vertices are appended to Ins and Outs.
@@ -1263,7 +1269,7 @@ package body Flow.Control_Flow_Graph is
         or else From_Atr.Is_Parameter
         or else From_Atr.Is_Global_Parameter
       then
-         Col := Get_Colour (FA.CFG.Get_Vertex (From_Atr.Call_Vertex));
+         Col := Get_Colour (From_Atr.Call_Vertex);
 
       --  For other vertices we get the execution kind from the vertex itself
 
@@ -5849,8 +5855,8 @@ package body Flow.Control_Flow_Graph is
       Outs_By_Reference   : Vertex_Lists.List;
       Outs_By_Unspecified : Vertex_Lists.List;
 
-      V : Flow_Graphs.Vertex_Id;
-      C : Flow_Graphs.Cluster_Id;
+      Call_V : Flow_Graphs.Vertex_Id;
+      C      : Flow_Graphs.Cluster_Id;
 
       Excp  : Flow_Graphs.Vertex_Id;
       Havoc : Flow_Graphs.Vertex_Id;
@@ -5919,6 +5925,7 @@ package body Flow.Control_Flow_Graph is
          Direct_Mapping_Id (N),
          Make_Call_Attributes
            (Callsite   => N,
+            Callee     => Called_Thing,
             Var_Use    => Vars_Used,
             Subp_Calls =>
               Call_Sets.To_Set (Subprogram_Call'(N => N, E => Called_Thing))
@@ -5926,12 +5933,13 @@ package body Flow.Control_Flow_Graph is
             Indt_Calls => Indcalls,
             Vertex_Ctx => Ctx.Vertex_Ctx,
             E_Loc      => N),
-         V);
-      FA.CFG.Set_Cluster (V, C);
+         Call_V);
+      FA.CFG.Set_Cluster (Call_V, C);
 
       --  Deal with the subprogram's parameters
       Process_Call_Actuals
         (N,
+         Call_V,
          Ins,
          Outs_By_Copy,
          Outs_By_Reference,
@@ -5947,7 +5955,8 @@ package body Flow.Control_Flow_Graph is
       --  ??? for this decision we rely on condition hardcoded in Get_Globals,
       --  just like we do in Do_Subprogram_Call when processing function calls
       if Ekind (Called_Thing) /= E_Subprogram_Type then
-         Process_Subprogram_Globals (N, Ins, Outs_By_Reference, FA, CM, Ctx);
+         Process_Subprogram_Globals
+           (N, Called_Thing, Call_V, Ins, Outs_By_Reference, FA, CM, Ctx);
       end if;
 
       --  A magic null export is needed when:
@@ -5987,7 +5996,7 @@ package body Flow.Control_Flow_Graph is
                Add_Vertex
                  (FA,
                   Make_Global_Attributes
-                    (Callsite   => N,
+                    (Callsite   => Call_V,
                      Global     =>
                        Change_Variant (Null_Export_Flow_Id, Out_View),
                      Mode       => Mode_Out,
@@ -6009,7 +6018,7 @@ package body Flow.Control_Flow_Graph is
             Add_Vertex
               (FA,
                Make_Global_Attributes
-                 (Callsite   => N,
+                 (Callsite   => Call_V,
                   Global     => Change_Variant (Null_Export_Flow_Id, Out_View),
                   Mode       => Mode_Out,
                   Scope      => FA.B_Scope,
@@ -6022,7 +6031,7 @@ package body Flow.Control_Flow_Graph is
 
       --  We now build the connection map for this sequence
       declare
-         Prev : Flow_Graphs.Vertex_Id := V;
+         Prev : Flow_Graphs.Vertex_Id := Call_V;
          --  Pointer to the previous vertex, initialized to V which goes first
 
       begin
@@ -6117,9 +6126,9 @@ package body Flow.Control_Flow_Graph is
             CM.Insert
               (Union_Id (N),
                Graph_Connections'
-                 (Standard_Entry => V,
+                 (Standard_Entry => Call_V,
                   Standard_Exits => Vertex_Sets.Empty_Set));
-            FA.Atr (V).Execution :=
+            FA.Atr (Call_V).Execution :=
               Get_Execution_Kind
                 (Called_Thing, After_GG => not FA.Generating_Globals);
             Linkup (FA, Prev, FA.Helper_End_Vertex);
@@ -6127,7 +6136,7 @@ package body Flow.Control_Flow_Graph is
             CM.Insert
               (Union_Id (N),
                Graph_Connections'
-                 (Standard_Entry => V,
+                 (Standard_Entry => Call_V,
                   Standard_Exits => Vertex_Sets.To_Set (Prev)));
 
             if not Local_Handlers.Is_Empty then
@@ -6575,7 +6584,9 @@ package body Flow.Control_Flow_Graph is
    --------------------------------
 
    procedure Process_Subprogram_Globals
-     (Callsite : Node_Id;
+     (Call     : Node_Id;
+      Callee   : Entity_Id;
+      Callsite : Flow_Graphs.Vertex_Id;
       Ins      : in out Vertex_Lists.List;
       Outs     : in out Vertex_Lists.List;
       FA       : in out Flow_Analysis_Graphs;
@@ -6590,9 +6601,9 @@ package body Flow.Control_Flow_Graph is
    begin
       --  Obtain globals (either from contracts or the computed stuff)
       Get_Globals
-        (Subprogram          => Get_Called_Entity (Callsite),
+        (Subprogram          => Callee,
          Scope               => FA.B_Scope,
-         Classwide           => Flow_Classwide.Is_Dispatching_Call (Callsite),
+         Classwide           => Flow_Classwide.Is_Dispatching_Call (Call),
          Globals             => Globals,
          Use_Deduced_Globals => not FA.Generating_Globals);
 
@@ -6612,7 +6623,7 @@ package body Flow.Control_Flow_Graph is
                Mode       => Mode_Proof,
                Scope      => FA.B_Scope,
                Vertex_Ctx => Ctx.Vertex_Ctx,
-               E_Loc      => Callsite),
+               E_Loc      => Call),
             V);
          Ins.Append (V);
       end loop;
@@ -6626,7 +6637,7 @@ package body Flow.Control_Flow_Graph is
                Mode       => Mode_In,
                Scope      => FA.B_Scope,
                Vertex_Ctx => Ctx.Vertex_Ctx,
-               E_Loc      => Callsite),
+               E_Loc      => Call),
             V);
          Ins.Append (V);
       end loop;
@@ -6641,7 +6652,7 @@ package body Flow.Control_Flow_Graph is
                   Mode       => Mode_Out,
                   Scope      => FA.B_Scope,
                   Vertex_Ctx => Ctx.Vertex_Ctx,
-                  E_Loc      => Callsite),
+                  E_Loc      => Call),
                V);
             Ins.Append (V);
          end if;
@@ -6653,7 +6664,7 @@ package body Flow.Control_Flow_Graph is
                Mode       => Mode_Out,
                Scope      => FA.B_Scope,
                Vertex_Ctx => Ctx.Vertex_Ctx,
-               E_Loc      => Callsite),
+               E_Loc      => Call),
             V);
          Outs.Append (V);
       end loop;
@@ -6664,7 +6675,8 @@ package body Flow.Control_Flow_Graph is
    --------------------------
 
    procedure Process_Call_Actuals
-     (Callsite            : Node_Id;
+     (Call                : Node_Id;
+      Callsite            : Flow_Graphs.Vertex_Id;
       Ins                 : in out Vertex_Lists.List;
       Outs_By_Copy        : in out Vertex_Lists.List;
       Outs_By_Reference   : in out Vertex_Lists.List;
@@ -6675,7 +6687,7 @@ package body Flow.Control_Flow_Graph is
    is
       pragma Unreferenced (CM);
 
-      Called_Thing : constant Entity_Id := Get_Called_Entity (Callsite);
+      Called_Thing : constant Entity_Id := Get_Called_Entity (Call);
 
       procedure Handle_Parameter (Formal : Entity_Id; Actual : Node_Id)
       with
@@ -6710,6 +6722,7 @@ package body Flow.Control_Flow_Graph is
             Direct_Mapping_Id (Actual, In_View),
             Make_Parameter_Attributes
               (FA         => FA,
+               Call       => Call,
                Callsite   => Callsite,
                Actual     => Actual,
                Formal     => Formal,
@@ -6739,6 +6752,7 @@ package body Flow.Control_Flow_Graph is
                Direct_Mapping_Id (Actual, Out_View),
                Make_Parameter_Attributes
                  (FA         => FA,
+                  Call       => Call,
                   Callsite   => Callsite,
                   Actual     => Actual,
                   Formal     => Formal,
@@ -6767,16 +6781,16 @@ package body Flow.Control_Flow_Graph is
       --  Start of processing for Process_Call_Actuals
 
    begin
-      Handle_Parameters (Callsite);
+      Handle_Parameters (Call);
 
       --  Function call is only processed for assignment where the call
       --  occurs immediately as the RHS and the function has side effects. The
       --  function entity acts as a formal parameter and the LHS acts as the
       --  actual parameter.
 
-      if Nkind (Callsite) = N_Function_Call then
+      if Nkind (Call) = N_Function_Call then
          declare
-            Context : constant Node_Id := Parent (Callsite);
+            Context : constant Node_Id := Parent (Call);
             Actual  : Node_Id;
          begin
             case Nkind (Context) is
@@ -6790,17 +6804,17 @@ package body Flow.Control_Flow_Graph is
                   raise Program_Error;
             end case;
             Handle_Parameter
-              (Formal => Get_Called_Entity (Callsite), Actual => Actual);
+              (Formal => Get_Called_Entity (Call), Actual => Actual);
          end;
       end if;
 
       --  Create vertices for the implicit formal parameter
       if Ekind (Scope (Called_Thing)) = E_Protected_Type then
-         if Is_External_Call (Callsite) then
+         if Is_External_Call (Call) then
             declare
                V : Flow_Graphs.Vertex_Id;
 
-               Actual   : constant Node_Id := Prefix (Name (Callsite));
+               Actual   : constant Node_Id := Prefix (Name (Call));
                Funcalls : Call_Sets.Set;
                Indcalls : Node_Sets.Set;
 
@@ -6819,14 +6833,15 @@ package body Flow.Control_Flow_Graph is
                  (FA,
                   Direct_Mapping_Id (Actual, In_View),
                   Make_Implicit_Parameter_Attributes
-                    (FA          => FA,
-                     Call_Vertex => Callsite,
-                     In_Vertex   => True,
-                     Scope       => FA.B_Scope,
-                     Subp_Calls  => Funcalls,
-                     Indt_Calls  => Indcalls,
-                     Vertex_Ctx  => Ctx.Vertex_Ctx,
-                     E_Loc       => Callsite),
+                    (FA         => FA,
+                     Call       => Call,
+                     Callsite   => Callsite,
+                     In_Vertex  => True,
+                     Scope      => FA.B_Scope,
+                     Subp_Calls => Funcalls,
+                     Indt_Calls => Indcalls,
+                     Vertex_Ctx => Ctx.Vertex_Ctx,
+                     E_Loc      => Call),
                   V);
                Ins.Append (V);
 
@@ -6836,12 +6851,13 @@ package body Flow.Control_Flow_Graph is
                     (FA,
                      Direct_Mapping_Id (Actual, Out_View),
                      Make_Implicit_Parameter_Attributes
-                       (FA          => FA,
-                        Call_Vertex => Callsite,
-                        In_Vertex   => False,
-                        Scope       => FA.B_Scope,
-                        Vertex_Ctx  => Ctx.Vertex_Ctx,
-                        E_Loc       => Callsite),
+                       (FA         => FA,
+                        Call       => Call,
+                        Callsite   => Callsite,
+                        In_Vertex  => False,
+                        Scope      => FA.B_Scope,
+                        Vertex_Ctx => Ctx.Vertex_Ctx,
+                        E_Loc      => Call),
                      V);
                   Outs_By_Reference.Append (V);
                end if;
@@ -6855,12 +6871,13 @@ package body Flow.Control_Flow_Graph is
                Add_Vertex
                  (FA,
                   Make_Implicit_Parameter_Attributes
-                    (FA          => FA,
-                     Call_Vertex => Callsite,
-                     In_Vertex   => True,
-                     Scope       => FA.B_Scope,
-                     Vertex_Ctx  => Ctx.Vertex_Ctx,
-                     E_Loc       => Callsite),
+                    (FA         => FA,
+                     Call       => Call,
+                     Callsite   => Callsite,
+                     In_Vertex  => True,
+                     Scope      => FA.B_Scope,
+                     Vertex_Ctx => Ctx.Vertex_Ctx,
+                     E_Loc      => Call),
                   V);
                Ins.Append (V);
 
@@ -6869,12 +6886,13 @@ package body Flow.Control_Flow_Graph is
                   Add_Vertex
                     (FA,
                      Make_Implicit_Parameter_Attributes
-                       (FA          => FA,
-                        Call_Vertex => Callsite,
-                        In_Vertex   => False,
-                        Scope       => FA.B_Scope,
-                        Vertex_Ctx  => Ctx.Vertex_Ctx,
-                        E_Loc       => Callsite),
+                       (FA         => FA,
+                        Call       => Call,
+                        Callsite   => Callsite,
+                        In_Vertex  => False,
+                        Scope      => FA.B_Scope,
+                        Vertex_Ctx => Ctx.Vertex_Ctx,
+                        E_Loc      => Call),
                      V);
                   Outs_By_Reference.Append (V);
                end if;
