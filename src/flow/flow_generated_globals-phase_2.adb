@@ -1787,16 +1787,29 @@ package body Flow_Generated_Globals.Phase_2 is
                      Entry_Name       : Entity_Name;
                      Max_Queue_Length : Nat;
 
+                     Position : Max_Queue_Lenghts_Maps.Cursor;
+                     Inserted : Boolean;
+
                   begin
                      Serialize (Entry_Name);
                      Serialize (Max_Queue_Length);
 
-                     --  As we are registering the Max_Queue_Lenght for every
-                     --  reference, this might appear in more than one ALI file
-                     --  and therefore we use Include.
+                     --  As we are registering the Max_Queue_Length for every
+                     --  reference, this might appear in more than one ALI
+                     --  file, but the value must be the same in every file.
 
-                     Max_Queue_Lengths.Include
-                       (Key => Entry_Name, New_Item => Max_Queue_Length);
+                     Max_Queue_Lengths.Insert
+                       (Key      => Entry_Name,
+                        New_Item => Max_Queue_Length,
+                        Position => Position,
+                        Inserted => Inserted);
+
+                     pragma
+                       Assert
+                         (Inserted
+                            or else Max_Queue_Lengths (Position)
+                                    = Max_Queue_Length,
+                          "conflicting max queue lengths");
                   end;
 
                when EK_Direct_Calls           =>
