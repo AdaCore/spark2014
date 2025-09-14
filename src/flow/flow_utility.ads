@@ -859,6 +859,11 @@ package Flow_Utility is
    with Pre => Is_Subprogram (E);
    --  Return global outputs used in the Program_Exit expression; for flow
 
+   function Denote_Same_Protected_Object (A, B : Node_Id) return Boolean;
+   --  Returns True if prefixes of external protected calls denote the same
+   --  protected object, as far as flow analysis is concerned, i.e. without
+   --  looking at indices of indexed elements.
+
    procedure Register_Protected_Call
      (Callsite : Node_Id; Locks : in out Protected_Call_Sets.Set)
    with

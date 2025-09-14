@@ -136,11 +136,23 @@ package Flow is
    --  of indexed elements; for locking checks the protected subprogram is
    --  irrelevant.
 
+   function Have_Same_Target (A, B : Entry_Call) return Boolean
+   with
+     Post =>
+       Have_Same_Target'Result
+       = (Full_Protected_Name (A.Prefix) = Full_Protected_Name (B.Prefix)
+          and then A.Entr = B.Entr);
+   --  Returns True if both calls target the same entries and their prefixes
+   --  denote same objects, as far as flow analysis is concerned, i.e. without
+   --  looking at indices of indexed elements. For checks of the number of
+   --  tasks waiting at a the same entry queue we only need to register which
+   --  entries are called and not the calls themselves.
+
    package Entry_Call_Sets is new
      Ada.Containers.Hashed_Sets
        (Element_Type        => Entry_Call,
         Hash                => Hash,
-        Equivalent_Elements => "=");
+        Equivalent_Elements => Have_Same_Target);
 
    package Protected_Call_Sets is new
      Ada.Containers.Hashed_Sets

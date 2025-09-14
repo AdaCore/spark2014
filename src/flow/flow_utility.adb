@@ -8257,6 +8257,60 @@ package body Flow_Utility is
       return Subps;
    end To_Subprograms;
 
+   ----------------------------------
+   -- Denote_Same_Protected_Object --
+   ----------------------------------
+
+   function Denote_Same_Protected_Object (A, B : Node_Id) return Boolean is
+      A_Prefix : Node_Id := A;
+      B_Prefix : Node_Id := B;
+   begin
+      loop
+         if Is_Entity_Name (A_Prefix) and then Is_Entity_Name (B_Prefix) then
+            return Entity (A_Prefix) = Entity (B_Prefix);
+
+         elsif Nkind (A_Prefix) = N_Slice then
+            A_Prefix := Prefix (A_Prefix);
+
+         elsif Nkind (B_Prefix) = N_Slice then
+            B_Prefix := Prefix (B_Prefix);
+
+         elsif Nkind (A_Prefix) = N_Indexed_Component
+           and then Nkind (B_Prefix) = N_Indexed_Component
+         then
+            A_Prefix := Prefix (A_Prefix);
+            B_Prefix := Prefix (B_Prefix);
+
+         elsif Nkind (A_Prefix) = N_Selected_Component
+           and then Nkind (B_Prefix) = N_Selected_Component
+           and then Chars (Selector_Name (A_Prefix))
+                    = Chars (Selector_Name (B_Prefix))
+         then
+            A_Prefix := Prefix (A_Prefix);
+            B_Prefix := Prefix (B_Prefix);
+
+         else
+            pragma
+              Assert
+                (Is_Entity_Name (A_Prefix)
+                   or else Nkind (A_Prefix)
+                           in N_Indexed_Component
+                            | N_Selected_Component
+                            | N_Slice);
+
+            pragma
+              Assert
+                (Is_Entity_Name (B_Prefix)
+                   or else Nkind (B_Prefix)
+                           in N_Indexed_Component
+                            | N_Selected_Component
+                            | N_Slice);
+
+            return False;
+         end if;
+      end loop;
+   end Denote_Same_Protected_Object;
+
    -----------------------------
    -- Register_Protected_Call --
    -----------------------------
