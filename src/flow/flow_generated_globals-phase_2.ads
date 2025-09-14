@@ -467,10 +467,6 @@ package Flow_Generated_Globals.Phase_2 is
    --  Returns the set of objects (e.g. suspension objects or entries,
    --  depending on the Kind) accessed by a main-like subprogram Subp.
 
-   function Enclosing_Protected_Type (EN : Entity_Name) return Entity_Name;
-   --  Returns the container (the protected type) that the given protected
-   --  operation belongs to.
-
    function Directly_Called_Protected_Objects
      (E : Entity_Id) return Locking_Traces_List
    with
@@ -487,8 +483,9 @@ package Flow_Generated_Globals.Phase_2 is
    --    object there will be multiple traces returned if multiple components
    --    with a *different* protected type are reachable.
 
-   function Protected_Type_Priority (Typ : Entity_Name) return Priority_Value;
-   --  @param Typ a protected type
+   function Protected_Object_Priority
+     (Obj : Entity_Name) return Priority_Value;
+   --  @param Obj protected object
    --  @return the corresponding priority kind and value
 
    function GG_Has_Globals (E : Entity_Id) return Boolean

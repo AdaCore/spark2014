@@ -246,11 +246,8 @@ package body Flow_Generated_Globals.Phase_2 is
         Equivalent_Keys => "=");
    --  Maps from protected types to its associated priority
 
-   Protected_Types_To_Priorities : Entity_Name_To_Priority_Maps.Map;
-   --  A map from protected types to the associated priority
-
-   Protected_Operations_To_Types : Name_Maps.Map;
-   --  A map from protected operations to their parent protected types
+   Protected_Objects_To_Priorities : Entity_Name_To_Priority_Maps.Map;
+   --  A map from protected objects to their priority
 
    package Entity_Contract_Maps is new
      Ada.Containers.Hashed_Maps
@@ -1698,7 +1695,6 @@ package body Flow_Generated_Globals.Phase_2 is
 
                when EK_Protected_Instance     =>
                   declare
-                     Typ        : Entity_Name;
                      Variable   : Entity_Name;
                      Prio_Kind  : Priority_Kind;
                      Prio_Value : Int;
@@ -1708,7 +1704,6 @@ package body Flow_Generated_Globals.Phase_2 is
                          (Priority_Kind);
 
                   begin
-                     Serialize (Typ);
                      Serialize (Variable);
                      Serialize (Prio_Kind);
                      if Prio_Kind = Static then
@@ -1730,41 +1725,18 @@ package body Flow_Generated_Globals.Phase_2 is
                         Prio     : constant Priority_Value :=
                           (Prio_Kind, Prio_Value);
                      begin
-                        Protected_Types_To_Priorities.Insert
-                          (Typ, Prio, Position, Inserted);
+                        Protected_Objects_To_Priorities.Insert
+                          (Variable, Prio, Position, Inserted);
 
                         pragma
                           Assert
                             (Inserted
-                               or else Protected_Types_To_Priorities (Position)
+                               or else Protected_Objects_To_Priorities
+                                         (Position)
                                        = Prio,
                              "Conflicting priority values registered");
                      end;
 
-                  end;
-
-               when EK_Protected_Operation    =>
-                  declare
-                     Operation   : Entity_Name;
-                     Parent_Type : Entity_Name;
-                     Position    : Name_Maps.Cursor;
-                     Inserted    : Boolean;
-
-                  begin
-                     Serialize (Operation);
-                     Serialize (Parent_Type);
-
-                     Protected_Operations_To_Types.Insert
-                       (Key      => Operation,
-                        New_Item => Parent_Type,
-                        Position => Position,
-                        Inserted => Inserted);
-
-                     pragma
-                       Assert
-                         (Inserted
-                            or else Protected_Operations_To_Types (Position)
-                                    = Parent_Type);
                   end;
 
                when EK_Locking_Call           =>
@@ -3045,12 +3017,12 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Returns a shortest call trace from subprogram Source to a protected
    --  object Target.
 
-   -----------------------------
-   -- Protected_Type_Priority --
-   -----------------------------
+   -------------------------------
+   -- Protected_Object_Priority --
+   -------------------------------
 
-   function Protected_Type_Priority (Typ : Entity_Name) return Priority_Value
-   renames Protected_Types_To_Priorities.Element;
+   function Protected_Object_Priority (Obj : Entity_Name) return Priority_Value
+   renames Protected_Objects_To_Priorities.Element;
 
    -------------------------
    -- Shortest_Call_Trace --
@@ -3880,13 +3852,6 @@ package body Flow_Generated_Globals.Phase_2 is
       return
         (if Has_Element (C) then Phase_2_Info (C) else Name_Sets.Empty_Set);
    end Tasking_Objects;
-
-   -----------------------------------
-   -- Enclosing_Protected_Type --
-   -----------------------------------
-
-   function Enclosing_Protected_Type (EN : Entity_Name) return Entity_Name
-   renames Protected_Operations_To_Types.Element;
 
    --------------------------------------------------------------------------
    --  Debug output routines

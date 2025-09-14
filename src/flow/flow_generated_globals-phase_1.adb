@@ -78,9 +78,6 @@ package body Flow_Generated_Globals.Phase_1 is
    --  Protected objects or records/array objects that have a protected type
    --  as a field/component.
 
-   Protected_Operations : Node_Sets.Set;
-   --  Referenced protected operations
-
    ----------------------------------------------------------------------
    --  Protected types information
    ----------------------------------------------------------------------
@@ -91,27 +88,17 @@ package body Flow_Generated_Globals.Phase_1 is
    --  belonging to the same an object, i.e. (in the regexp syntax)
    --  "(package__)+object(__component)*__entry".
 
-   procedure GG_Register_Protected_Object
-     (PO : String; PT : Entity_Id; Prio : Priority_Value)
-   with Pre => PO'Length > 0 and then Ekind (PT) = E_Protected_Type;
+   procedure GG_Register_Protected_Object (PO : String; Prio : Priority_Value)
+   with Pre => PO'Length > 0;
    --  Register protected object or an object with protected components.
    --
    --  The following data are recorded:
-   --  * Type - The type of the object or its protected component.
    --  * Object - A protected object or object with protected components.
    --  * Priority kind.
    --  * Piority value (only if kind = Static).
    --
-   --  Note that in SPARK the priority is always determined by a type. Hence,
-   --  there will be some redundancy as different objects of the same type will
-   --  record the same priority value. We could instead store a type, priority
-   --  and all the objects in one entry. However, this is not important since
-   --  the type-priority mapping is normalized and its consistency is checked
-   --  in Phase 2 where we aggregate data from multiple units.
-   --
-   --  @param PO   - The object to serialize
-   --  @param PT   - The type of PO
-   --  @param Prio - Priority of PO or the serialized component
+   --  @param PO   - The name of protected object to serialize
+   --  @param Prio - Priority of the PO
 
    procedure Register_PO_Info (PO : Entity_Id; PT : Entity_Id; Prefix : String)
    with
@@ -121,20 +108,6 @@ package body Flow_Generated_Globals.Phase_1 is
        and then Prefix'Length > 0;
    --  Register the protected object, its type and priorty, and if the object
    --  has entries then also their Max_Queue_Length.
-
-   procedure GG_Register_Protected_Operation (Op : Entity_Id)
-   with Pre => Ekind (Op) in E_Procedure | E_Function | E_Entry;
-   --  Register a protected operation and the type where it belongs.
-   --
-   --  The following data are recorded:
-   --  * Op - The protected operation.
-   --  * Typ - The protected type where Op belongs.
-   --
-   --  Note: There is some redundancy because the same information is also
-   --  recorded in EK_Globals provided that a globals entry for Op is created
-   --  in the ALI. However, the globals entry is not created for operations
-   --  from predefined types like those in GNAT.Semaphores. For the latter use
-   --  case we still need to record this mapping.
 
    ----------------------------------------------------------------------
    --  Volatile information
@@ -416,15 +389,6 @@ package body Flow_Generated_Globals.Phase_1 is
          for Lock of Locks loop
             --  Register the locked protected object
             Protected_Objects.Include (Get_Enclosing_Object (Lock.Prefix));
-
-            --  Also register the called protected operation from that object.
-            --  This is to be able to later record the operation-type mapping
-            --  for each protected operation that may be either a source or
-            --  target of a call chain that must be checked. Note that the
-            --  operation might not necessarily be defined in the current unit
-            --  (e.g., its parent is defined in a system package) and thus
-            --  there might not exist an EK_Globals entry for this operation.
-            Protected_Operations.Include (Lock.Operation);
          end loop;
       end Process_Protected_Objects;
 
@@ -589,15 +553,13 @@ package body Flow_Generated_Globals.Phase_1 is
    -- GG_Register_Protected_Object --
    ----------------------------------
 
-   procedure GG_Register_Protected_Object
-     (PO : String; PT : Entity_Id; Prio : Priority_Value)
+   procedure GG_Register_Protected_Object (PO : String; Prio : Priority_Value)
    is
       procedure Serialize is new
         Flow_Generated_Globals.Phase_1.Write.Serialize_Discrete
           (Priority_Kind);
    begin
       New_GG_Line (EK_Protected_Instance);
-      Serialize (PT);
       Serialize (PO);
       Serialize (Prio.Kind);
       if Prio.Kind = Static then
@@ -614,12 +576,9 @@ package body Flow_Generated_Globals.Phase_1 is
    is
    begin
       if Is_Protected_Type (PT) then
-         --  Register the protected object in the ALI file. Note that we'll
-         --  record its first subtype as opposed to the actual type to make
-         --  sure it works also with discriminated types. In the latter case
-         --  the actual type is an Itype.
-         GG_Register_Protected_Object
-           (Prefix, First_Subtype (PT), Protected_Type_Priority (PT));
+         --  Register the protected object in the ALI file
+
+         GG_Register_Protected_Object (Prefix, Protected_Type_Priority (PT));
 
          declare
             Ent : Entity_Id := First_Entity (PT);
@@ -665,20 +624,6 @@ package body Flow_Generated_Globals.Phase_1 is
          Register_PO_Info (PO, Component_Type (PT), Prefix);
       end if;
    end Register_PO_Info;
-
-   -------------------------------------
-   -- GG_Register_Protected_Operation --
-   -------------------------------------
-
-   procedure GG_Register_Protected_Operation (Op : Entity_Id) is
-      Parent_Type : constant Entity_Id := Scope (Op);
-
-   begin
-      New_GG_Line (EK_Protected_Operation);
-      Serialize (Op);
-      Serialize (Parent_Type);
-      Terminate_GG_Line;
-   end GG_Register_Protected_Operation;
 
    ----------------------------------
    -- GG_Register_State_Refinement --
@@ -825,10 +770,6 @@ package body Flow_Generated_Globals.Phase_1 is
 
       for PO of Protected_Objects loop
          Register_PO_Info (PO, Etype (PO), Unique_Name (PO));
-      end loop;
-
-      for Op of Protected_Operations loop
-         GG_Register_Protected_Operation (Op);
       end loop;
 
       --  Write the finalization string

@@ -829,29 +829,10 @@ package body Gnat2Why.Subprograms is
          --  Loop over the protected objects that are reachable from the caller
 
          for Locking of Directly_Called_Protected_Objects (E) loop
-
-            --  Loop over the protected operations that are called from the
-            --  target protected object.
-
-            declare
-               Op : Entity_Name renames Locking.Trace.Last_Element;
-
-               Obj_Type : constant Entity_Name :=
-                 Enclosing_Protected_Type (Op);
-               --  Type of the protected operation in the locked object or its
-               --  component.
-
-               Priority : constant Priority_Value :=
-                 Protected_Type_Priority (Obj_Type);
-               --  Ceiling priority of the called protected operation
-
-            begin
-
-               Create_Check
-                 (Obj_Name => Locking.Obj,
-                  Trace    => Locking.Trace,
-                  Obj_Prio => Priority);
-            end;
+            Create_Check
+              (Obj_Name => Locking.Obj,
+               Trace    => Locking.Trace,
+               Obj_Prio => Protected_Object_Priority (Locking.Obj));
          end loop;
 
          return S;
