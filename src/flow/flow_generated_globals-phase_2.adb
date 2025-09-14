@@ -23,6 +23,7 @@
 
 with GNAT.Regpat; use GNAT.Regpat;
 
+with Ada.Containers.Hashed_Sets;
 with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;           use Ada.Text_IO;
@@ -138,15 +139,36 @@ package body Flow_Generated_Globals.Phase_2 is
    --  subprogram and stored in the ALI file. In phase 2 it is populated
    --  with objects directly and indirectly accessed by each subprogram.
 
+   --  For protected calls we recreate data structures from phase 1, including
+   --  sets where only prefix of the protected call is important while
+   --  protected operation acts as an extra information (and we only use it for
+   --  call traces).
+
+   type Protected_Call is record
+      Prefix    : Entity_Name;
+      Operation : Entity_Name;
+   end record;
+
+   function Hash (P : Protected_Call) return Ada.Containers.Hash_Type
+   is (Name_Hash (P.Prefix));
+
+   function Have_Same_Prefix (A, B : Protected_Call) return Boolean
+   is (A.Prefix = B.Prefix);
+
+   package Protected_Call_Sets is new
+     Ada.Containers.Hashed_Sets
+       (Element_Type        => Protected_Call,
+        Hash                => Hash,
+        Equivalent_Elements => Have_Same_Prefix);
+
    package Locking_Call_Maps is new
      Ada.Containers.Hashed_Maps
        (Key_Type        => Entity_Name,
-        Element_Type    => Name_Maps.Map,
+        Element_Type    => Protected_Call_Sets.Set,
         Hash            => Name_Hash,
         Equivalent_Keys => "=",
-        "="             => Name_Maps."=");
-   --  Map whose keys are callers of protected operations. Values are maps from
-   --  protected object to protected operations being called.
+        "="             => Protected_Call_Sets."=");
+   --  Maps from callers to protected calls that they execute
 
    subtype Locking_Call_Map is Locking_Call_Maps.Map;
 
@@ -1752,7 +1774,9 @@ package body Flow_Generated_Globals.Phase_2 is
 
                      --  Register protected operation that reaches object
                      Tasking_Info_Ext (Caller_Position).Insert
-                       (Protected_Object, Protected_Operation);
+                       (Protected_Call'
+                          (Prefix    => Protected_Object,
+                           Operation => Protected_Operation));
                   end;
 
                when EK_Task_Instance          =>
@@ -3038,8 +3062,8 @@ package body Flow_Generated_Globals.Phase_2 is
    is
       Call_Graph : Tasking_Graph.Graph renames Original_Priority_Call_Graph;
 
-      Trace          : Name_Lists.List;
-      Protected_Call : Entity_Name;
+      Trace                : Name_Lists.List;
+      Final_Protected_Call : Entity_Name;
       --  The result trace and the final protected operation on that trace
 
       procedure Add_Call_To_Trace (V : Tasking_Graph.Vertex_Id);
@@ -3079,14 +3103,23 @@ package body Flow_Generated_Globals.Phase_2 is
       begin
          if Locking_Call_Maps.Has_Element (Caller_Position) then
             declare
-               Target_Map : Name_Maps.Map renames
+               Protected_Calls : Protected_Call_Sets.Set renames
                  Phase_1_Info (Caller_Position);
 
-               Target_Position : constant Name_Maps.Cursor :=
-                 Target_Map.Find (Target);
+               Target_Position : constant Protected_Call_Sets.Cursor :=
+                 Protected_Calls.Find
+                   (Protected_Call'
+                      (Prefix => Target, Operation => Entity_Name'Last));
+               --  The protected operation is not actually used when finding a
+               --  protected call, so we just use a dummy value.
+
             begin
-               if Name_Maps.Has_Element (Target_Position) then
-                  Protected_Call := Target_Map (Target_Position);
+               --  If there is a protected call to the given protected object,
+               --  then we pick the actual protected operation from that call.
+
+               if Protected_Call_Sets.Has_Element (Target_Position) then
+                  Final_Protected_Call :=
+                    Protected_Calls (Target_Position).Operation;
                   Instruction := Tasking_Graph.Found_Destination;
                   return;
                end if;
@@ -3103,7 +3136,7 @@ package body Flow_Generated_Globals.Phase_2 is
          Search        => Has_Call_To_Target'Access,
          Step          => Add_Call_To_Trace'Access);
 
-      Trace.Append (Protected_Call);
+      Trace.Append (Final_Protected_Call);
 
       return Trace;
    end Shortest_Call_Trace;
@@ -3153,9 +3186,9 @@ package body Flow_Generated_Globals.Phase_2 is
             --  locking analysis this will be sufficient since all the
             --  protected operations in one type have the same priority.
 
-            for Target_Position in Phase_1_Info (Caller_Position).Iterate loop
+            for Call of Phase_1_Info (Caller_Position) loop
                declare
-                  Target : Entity_Name renames Name_Maps.Key (Target_Position);
+                  Target : Entity_Name renames Call.Prefix;
                begin
                   Locking_Targets.Include (Target);
                end;
