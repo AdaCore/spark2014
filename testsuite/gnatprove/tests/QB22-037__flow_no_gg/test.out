@@ -1,2 +1,4 @@
+p.adb:4:04: warning: Refined_Global contract expected for "Get_Half"
 p.ads:1:37: info: flow dependencies proved
-p.ads:2:42: low: global Input "P.S" of "Get_Half" not read
+p.ads:2:13: info: implicit aspect Always_Terminates on "Get_Half" has been proved, subprogram will terminate
+p.ads:2:42: info: data dependencies proved

@@ -3021,9 +3021,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
       begin
          --  Library-level renamings have no root entity; ignore them
-         if Present (Root_Entity)
-           and then Gnat2Why_Args.Flow_Generate_Contracts
-         then
+         if Present (Root_Entity) then
             declare
                Position : Entity_Contract_Maps.Cursor;
                Inserted : Boolean;

@@ -2237,8 +2237,7 @@ package body Flow_Utility is
 
          Debug ("giving null globals for a pure entity");
 
-      elsif Gnat2Why_Args.Flow_Generate_Contracts and then Use_Deduced_Globals
-      then
+      elsif Use_Deduced_Globals then
 
          --  We don't have a global or a depends aspect so we look at the
          --  generated globals.

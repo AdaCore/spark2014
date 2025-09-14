@@ -1669,6 +1669,10 @@ package body Flow is
                Analysis.Check_Constant_Global_Contracts (E);
             end if;
 
+            if not Gnat2Why_Args.Flow_Generate_Contracts then
+               Analysis.Check_Required_Contracts (E);
+            end if;
+
             if Is_Subprogram (E) then
                Check_Classwide_Contracts (E);
             end if;
