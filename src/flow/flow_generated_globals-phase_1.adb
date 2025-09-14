@@ -30,12 +30,10 @@ with Osint.C;     use Osint.C;
 with Sem_Aux;     use Sem_Aux;
 with Sem_Eval;    use Sem_Eval;
 with Sem_Util;    use Sem_Util;
-with Sinfo.Utils; use Sinfo.Utils;
 with Snames;      use Snames;
 with Uintp;       use Uintp;
 
 with Common_Iterators;       use Common_Iterators;
-with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK2014VSN;           use SPARK2014VSN;
@@ -74,9 +72,9 @@ package body Flow_Generated_Globals.Phase_1 is
    CAE_Entities : Node_Sets.Set;
    --  Entities marked with a Constant_After_Elaboration aspect
 
-   Protected_Objects : Node_Sets.Set;
-   --  Protected objects or records/array objects that have a protected type
-   --  as a field/component.
+   All_Entry_Calls     : Entry_Call_Sets.Set;
+   All_Protected_Calls : Protected_Call_Sets.Set;
+   --  Entry and protected calls from all the analyzed subprograms
 
    ----------------------------------------------------------------------
    --  Protected types information
@@ -100,14 +98,11 @@ package body Flow_Generated_Globals.Phase_1 is
    --  @param PO   - The name of protected object to serialize
    --  @param Prio - Priority of the PO
 
-   procedure Register_PO_Info (PO : Entity_Id; PT : Entity_Id; Prefix : String)
-   with
-     Pre =>
-       Ekind (PO) = E_Variable
-       and then Is_Type (PT)
-       and then Prefix'Length > 0;
-   --  Register the protected object, its type and priorty, and if the object
-   --  has entries then also their Max_Queue_Length.
+   procedure Register_Info (Call : Entry_Call);
+   --  Register the protected entry and its Max_Queue_Length
+
+   procedure Register_Info (Call : Protected_Call);
+   --  Register the protected object and its priorty
 
    ----------------------------------------------------------------------
    --  Volatile information
@@ -253,10 +248,6 @@ package body Flow_Generated_Globals.Phase_1 is
       --  Goes through Objects, finds Constant_After_Elaboration variables and
       --  stores them in the appropriate container.
 
-      procedure Process_Protected_Objects (Locks : Protected_Call_Sets.Set);
-      --  Stores protected objects that E locks and the protected operations it
-      --  calls in appropriate containers.
-
       procedure Serialize is new Serialize_Discrete (Boolean);
       procedure Serialize is new Serialize_Discrete (Entity_Kind);
       procedure Serialize is new Serialize_Discrete (Globals_Origin_T);
@@ -380,18 +371,6 @@ package body Flow_Generated_Globals.Phase_1 is
          end loop;
       end Process_CAE;
 
-      -------------------------------
-      -- Process_Protected_Objects --
-      -------------------------------
-
-      procedure Process_Protected_Objects (Locks : Protected_Call_Sets.Set) is
-      begin
-         for Lock of Locks loop
-            --  Register the locked protected object
-            Protected_Objects.Include (Get_Enclosing_Object (Lock.Prefix));
-         end loop;
-      end Process_Protected_Objects;
-
       --  Start of processing for GG_Register_Global_Info
 
    begin
@@ -446,7 +425,8 @@ package body Flow_Generated_Globals.Phase_1 is
 
       --  Collect referenced protected objects
 
-      Process_Protected_Objects (Locks);
+      All_Entry_Calls.Union (Entries_Called);
+      All_Protected_Calls.Union (Locks);
 
       if not Local then
          --  If the current entity is non-local, i.e. can be called from
@@ -568,62 +548,29 @@ package body Flow_Generated_Globals.Phase_1 is
       Terminate_GG_Line;
    end GG_Register_Protected_Object;
 
-   ----------------------
-   -- Register_PO_Info --
-   ----------------------
+   -------------------
+   -- Register_Info --
+   -------------------
 
-   procedure Register_PO_Info (PO : Entity_Id; PT : Entity_Id; Prefix : String)
-   is
+   procedure Register_Info (Call : Entry_Call) is
+      Max_Queue_Length : constant Nat :=
+        UI_To_Int (Get_Max_Queue_Length (Call.Entr));
+      --  Zero is returned when the pragma is not present and it stands for
+      --  unbounded queue length.
    begin
-      if Is_Protected_Type (PT) then
-         --  Register the protected object in the ALI file
+      GG_Register_Max_Queue_Length
+        (Full_Protected_Name (Call.Prefix)
+         & "__"
+         & Get_Name_String (Chars (Call.Entr)),
+         Max_Queue_Length);
+   end Register_Info;
 
-         GG_Register_Protected_Object (Prefix, Protected_Type_Priority (PT));
-
-         declare
-            Ent : Entity_Id := First_Entity (PT);
-
-         begin
-            --  Register value of Max_Queue_Length for an entry
-
-            while Present (Ent) loop
-               if Ekind (Ent) = E_Entry and then Entity_In_SPARK (Ent) then
-                  declare
-                     Max_Queue_Length : constant Nat :=
-                       UI_To_Int (Get_Max_Queue_Length (Ent));
-                     --  Zero is returned when the pragma is not
-                     --  present and it stands for unbounded queue
-                     --  length.
-
-                  begin
-                     GG_Register_Max_Queue_Length
-                       (Prefix & "__" & Get_Name_String (Chars (Ent)),
-                        Max_Queue_Length);
-                  end;
-               end if;
-               Next_Entity (Ent);
-            end loop;
-         end;
-
-      elsif Is_Record_Type (PT) then
-         declare
-            C : Entity_Id := First_Component (PT);
-
-         begin
-            while Present (C)
-              and then Component_Is_Visible_In_SPARK (C)
-              and then Entity_In_SPARK (Etype (C))
-            loop
-               Register_PO_Info
-                 (PO, Etype (C), Prefix & "__" & Get_Name_String (Chars (C)));
-               Next_Component (C);
-            end loop;
-         end;
-
-      elsif Is_Array_Type (PT) then
-         Register_PO_Info (PO, Component_Type (PT), Prefix);
-      end if;
-   end Register_PO_Info;
+   procedure Register_Info (Call : Protected_Call) is
+   begin
+      GG_Register_Protected_Object
+        (Full_Protected_Name (Call.Prefix),
+         Protected_Type_Priority (Scope (Call.Operation)));
+   end Register_Info;
 
    ----------------------------------
    -- GG_Register_State_Refinement --
@@ -768,8 +715,12 @@ package body Flow_Generated_Globals.Phase_1 is
          Terminate_GG_Line;
       end if;
 
-      for PO of Protected_Objects loop
-         Register_PO_Info (PO, Etype (PO), Unique_Name (PO));
+      for Call of All_Entry_Calls loop
+         Register_Info (Call);
+      end loop;
+
+      for Call of All_Protected_Calls loop
+         Register_Info (Call);
       end loop;
 
       --  Write the finalization string
