@@ -1695,9 +1695,10 @@ package body Flow_Generated_Globals.Phase_2 is
 
                when EK_Protected_Instance     =>
                   declare
-                     Variable   : Entity_Name;
-                     Prio_Kind  : Priority_Kind;
-                     Prio_Value : Int;
+                     Variable : Entity_Name;
+                     Prio     : Priority_Value;
+                     Position : Entity_Name_To_Priority_Maps.Cursor;
+                     Inserted : Boolean;
 
                      procedure Serialize is new
                        Flow_Generated_Globals.Phase_2.Read.Serialize_Discrete
@@ -1705,38 +1706,29 @@ package body Flow_Generated_Globals.Phase_2 is
 
                   begin
                      Serialize (Variable);
-                     Serialize (Prio_Kind);
-                     if Prio_Kind = Static then
-                        Serialize (Prio_Value);
+                     Serialize (Prio.Kind);
+                     if Prio.Kind = Static then
+                        Serialize (Prio.Value);
                      else
-                        Prio_Value := 0;
+                        Prio.Value := 0;
                      end if;
 
-                     --  Register a type to priority mapping.
+                     --  Register a type to priority mapping
                      --
                      --  Note: There can be several objects or protected
                      --  components having the same type. Since the priority
                      --  can only be determined by the type in SPARK the
                      --  priority values must be necessarily the same.
 
-                     declare
-                        Position : Entity_Name_To_Priority_Maps.Cursor;
-                        Inserted : Boolean;
-                        Prio     : constant Priority_Value :=
-                          (Prio_Kind, Prio_Value);
-                     begin
-                        Protected_Objects_To_Priorities.Insert
-                          (Variable, Prio, Position, Inserted);
+                     Protected_Objects_To_Priorities.Insert
+                       (Variable, Prio, Position, Inserted);
 
-                        pragma
-                          Assert
-                            (Inserted
-                               or else Protected_Objects_To_Priorities
-                                         (Position)
-                                       = Prio,
-                             "Conflicting priority values registered");
-                     end;
-
+                     pragma
+                       Assert
+                         (Inserted
+                            or else Protected_Objects_To_Priorities (Position)
+                                    = Prio,
+                          "Conflicting priority values registered");
                   end;
 
                when EK_Locking_Call           =>
