@@ -2501,13 +2501,19 @@ body (see Ada RM 7.2(4))].
 
 
 24. A ghost subprogram with side effects shall not have a non-ghost [global]
-    output. In addition, [global] outputs of a ghost subprogram shall be
+    output. If the assertion policy applicable to the declaration of a Ghost
+    subprogram with side effects is Ignore, then the assertion policy applicable
+    to the declaration of each of its [ghost] outputs shall be Ignore.
+    In addition, [global] outputs of a ghost subprogram shall be
     assertion-level-dependent on the subprogram. [This ensures that a
     disabled ghost subprogram never modifies an enabled (ghost) state].
 
 
 25. An output of a non-ghost subprogram other than a state abstraction
-    or a ghost global shall not depend on a ghost input. In addition, if a ghost
+    or a ghost global shall not depend on a ghost input. If the assertion policy
+    applicable to the declaration of a ghost input of a subprogram is Ignore,
+    then the assertion policy applicable to the declaration of each of the
+    [ghost] outputs that depend on it shall be Ignore. In addition, if a ghost
     output of a subprogram depends on one of its ghost inputs, then the output
     should be assertion-level-dependent on the input.
     [It is intended
@@ -2528,9 +2534,12 @@ body (see Ada RM 7.2(4))].
 
 27. If the assertion policy applicable to the declaration of
     a ghost variable or ghost state abstraction is Check, then the
-    assertion policy applicable to any call to a procedural
-    subprogram for which that variable or state abstraction is a global output
-    shall be Check.
+    assertion policy applicable to any call to a subprogram with side effects
+    for which that variable or state abstraction is a global output shall be
+    Check. In addition, if a call to a subprogram with side effects occurring
+    in a ghost entity has a [ghost] variable or state abstraction as a global
+    output, then the variable or state abstraction shall be
+    assertion-level-dependent on the enclosing entity.
 
 
 .. container:: heading
