@@ -40,9 +40,9 @@ with Stand;       use Stand;
 
 with Common_Iterators;       use Common_Iterators;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
+with SPARK_Util;             use SPARK_Util;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK_Util.Types;       use SPARK_Util.Types;
-with SPARK_Util;             use SPARK_Util;
 with VC_Kinds;               use VC_Kinds;
 
 with Errout_Wrapper;                 use Errout_Wrapper;
@@ -2867,7 +2867,6 @@ package body Flow.Analysis is
       ----------
 
       function Hash (Path : Path_Vertices) return Ada.Containers.Hash_Type is
-         use type Ada.Containers.Hash_Type;
          use Flow_Graphs;
       begin
          return 17 * Vertex_Hash (Path.Start) + 13 * Vertex_Hash (Path.V_Use);

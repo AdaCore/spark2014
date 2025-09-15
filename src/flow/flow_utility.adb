@@ -50,6 +50,7 @@ with Why;
 
 with Flow_Classwide;
 with Flow_Debug;                      use Flow_Debug;
+with Flow_Generated_Globals;          use Flow_Generated_Globals;
 with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                 use Flow_Refinement;
 with Flow_Utility.Initialization;     use Flow_Utility.Initialization;
@@ -137,7 +138,7 @@ package body Flow_Utility is
       Function_Calls     : in out Call_Sets.Set;
       Indirect_Calls     : in out Node_Sets.Set;
       Proof_Dependencies : in out Node_Sets.Set;
-      Tasking            : in out Tasking_Info;
+      Locks              : in out Protected_Call_Sets.Set;
       Types_Seen         : in out Node_Sets.Set;
       Constants_Seen     : in out Node_Sets.Set;
       Generating_Globals : Boolean)
@@ -272,7 +273,7 @@ package body Flow_Utility is
       Function_Calls     : in out Call_Sets.Set;
       Indirect_Calls     : in out Node_Sets.Set;
       Proof_Dependencies : in out Node_Sets.Set;
-      Tasking            : in out Tasking_Info;
+      Locks              : in out Protected_Call_Sets.Set;
       Types_Seen         : in out Node_Sets.Set;
       Constants_Seen     : in out Node_Sets.Set;
       Generating_Globals : Boolean)
@@ -308,7 +309,7 @@ package body Flow_Utility is
             Function_Calls     => Function_Calls,
             Indirect_Calls     => Indirect_Calls,
             Proof_Dependencies => Proof_Dependencies,
-            Tasking            => Tasking,
+            Locks              => Locks,
             Generating_Globals => Generating_Globals);
       end Process_Predicate_Expression;
 
@@ -378,8 +379,7 @@ package body Flow_Utility is
                     and then Ekind (Scope (Called_Func)) = E_Protected_Type
                     and then Is_External_Call (N)
                   then
-                     Tasking (Locks).Include
-                       (Get_Enclosing_Object (Prefix (Name (N))));
+                     Register_Protected_Call (N, Locks);
                   end if;
                end;
 
@@ -669,7 +669,7 @@ package body Flow_Utility is
       Function_Calls     : in out Call_Sets.Set;
       Indirect_Calls     : in out Node_Sets.Set;
       Proof_Dependencies : in out Node_Sets.Set;
-      Tasking            : in out Tasking_Info;
+      Locks              : in out Protected_Call_Sets.Set;
       Generating_Globals : Boolean)
    is
       Types_Unused, Const_Unused : Node_Sets.Set;
@@ -680,7 +680,7 @@ package body Flow_Utility is
          Function_Calls,
          Indirect_Calls,
          Proof_Dependencies,
-         Tasking,
+         Locks,
          Types_Unused,
          Const_Unused,
          Generating_Globals);
@@ -697,9 +697,9 @@ package body Flow_Utility is
       Types_Seen         : in out Node_Sets.Set;
       Constants_Seen     : in out Node_Sets.Set)
    is
-      Funcalls : Call_Sets.Set;
-      Indcalls : Node_Sets.Set;
-      Unused   : Tasking_Info;
+      Funcalls     : Call_Sets.Set;
+      Indcalls     : Node_Sets.Set;
+      Unused_Locks : Protected_Call_Sets.Set;
    begin
       Pick_Generated_Info_Internal
         (N                  => Expr,
@@ -707,7 +707,7 @@ package body Flow_Utility is
          Function_Calls     => Funcalls,
          Indirect_Calls     => Indcalls,
          Proof_Dependencies => Proof_Dependencies,
-         Tasking            => Unused,
+         Locks              => Unused_Locks,
          Types_Seen         => Types_Seen,
          Constants_Seen     => Constants_Seen,
          Generating_Globals => True);
@@ -1721,10 +1721,10 @@ package body Flow_Utility is
    function Get_Functions
      (N : Node_Id; Include_Predicates : Boolean) return Node_Sets.Set
    is
-      Funcalls  : Call_Sets.Set;
-      Indcalls  : Node_Sets.Set;
-      Proofdeps : Node_Sets.Set;
-      Unused    : Tasking_Info;
+      Funcalls     : Call_Sets.Set;
+      Indcalls     : Node_Sets.Set;
+      Proofdeps    : Node_Sets.Set;
+      Unused_Locks : Protected_Call_Sets.Set;
    begin
       Pick_Generated_Info
         (N,
@@ -1732,7 +1732,7 @@ package body Flow_Utility is
          Function_Calls     => Funcalls,
          Indirect_Calls     => Indcalls,
          Proof_Dependencies => Proofdeps,
-         Tasking            => Unused,
+         Locks              => Unused_Locks,
          Generating_Globals => Include_Predicates);
       return To_Subprograms (Funcalls);
    end Get_Functions;
@@ -8256,5 +8256,93 @@ package body Flow_Utility is
 
       return Subps;
    end To_Subprograms;
+
+   ----------------------------------
+   -- Denote_Same_Protected_Object --
+   ----------------------------------
+
+   function Denote_Same_Protected_Object (A, B : Node_Id) return Boolean is
+      A_Prefix : Node_Id := A;
+      B_Prefix : Node_Id := B;
+   begin
+      --  The following code intentionally uses iteration and not recursion, so
+      --  that we only check the postcondition once we get the final verdict.
+
+      loop
+         if Is_Entity_Name (A_Prefix) and then Is_Entity_Name (B_Prefix) then
+            return Entity (A_Prefix) = Entity (B_Prefix);
+
+         elsif Nkind (A_Prefix) = N_Slice then
+            A_Prefix := Prefix (A_Prefix);
+
+         elsif Nkind (B_Prefix) = N_Slice then
+            B_Prefix := Prefix (B_Prefix);
+
+         elsif Nkind (A_Prefix) = N_Indexed_Component
+           and then Nkind (B_Prefix) = N_Indexed_Component
+         then
+            A_Prefix := Prefix (A_Prefix);
+            B_Prefix := Prefix (B_Prefix);
+
+         elsif Nkind (A_Prefix) = N_Selected_Component
+           and then Nkind (B_Prefix) = N_Selected_Component
+           and then Chars (Selector_Name (A_Prefix))
+                    = Chars (Selector_Name (B_Prefix))
+         then
+            A_Prefix := Prefix (A_Prefix);
+            B_Prefix := Prefix (B_Prefix);
+
+         else
+            --  This routine is only executed as part of equivalence check
+            --  after protected prefixes yield the same hash value, which is
+            --  virtually impossible to test.
+
+            pragma Annotate (Xcov, Exempt_On, "Only runs on hash collision");
+
+            pragma
+              Assert
+                (Is_Entity_Name (A_Prefix)
+                   or else Nkind (A_Prefix)
+                           in N_Indexed_Component
+                            | N_Selected_Component
+                            | N_Slice);
+
+            pragma
+              Assert
+                (Is_Entity_Name (B_Prefix)
+                   or else Nkind (B_Prefix)
+                           in N_Indexed_Component
+                            | N_Selected_Component
+                            | N_Slice);
+
+            return False;
+
+            pragma Annotate (Xcov, Exempt_Off);
+         end if;
+      end loop;
+   end Denote_Same_Protected_Object;
+
+   -----------------------------
+   -- Register_Protected_Call --
+   -----------------------------
+
+   procedure Register_Protected_Call
+     (Callsite : Node_Id; Locks : in out Protected_Call_Sets.Set)
+   is
+      Unused_Position : Protected_Call_Sets.Cursor;
+      Unused_Inserted : Boolean;
+   begin
+      --  If a given prefix was already locked by another protected operation,
+      --  then inserting as opposed to including will keep the previous
+      --  operation. This way we pick the syntactically first protected call
+      --  to a given prefix, which makes call traces easier to understand.
+
+      Locks.Insert
+        (Protected_Call'
+           (Prefix    => Prefix (Name (Callsite)),
+            Operation => Get_Called_Entity (Callsite)),
+         Unused_Position,
+         Unused_Inserted);
+   end Register_Protected_Call;
 
 end Flow_Utility;

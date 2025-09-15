@@ -24,7 +24,7 @@
 with Ada.Characters.Handling;
 with Ada.Containers;                 use Ada.Containers;
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
-with Ada.Strings;
+with Ada.Strings;                    use Ada.Strings;
 with Einfo.Utils;                    use Einfo.Utils;
 with Errout;                         use Errout;
 with Errout_Wrapper;                 use Errout_Wrapper;
@@ -216,8 +216,7 @@ package body Flow_Types is
             declare
                use Interfaces;
 
-               H : Unsigned_32 :=
-                 Unsigned_32 (Generic_Integer_Hash (Integer (N.Node)));
+               H : Unsigned_32 := Unsigned_32 (Node_Hash (N.Node));
 
                procedure Hash_Component (C : Entity_Vectors.Cursor);
                --  Update hash with a component C. Especially in debug mode
@@ -271,6 +270,7 @@ package body Flow_Types is
            Assert
              (Nkind (SC.N)
               in N_Entry_Call_Statement
+               | N_Block_Statement
                | N_Package_Declaration
                | N_Subprogram_Call
                 or else Is_Specialized_Actual (SC.N));
@@ -908,6 +908,30 @@ package body Flow_Types is
                   Pretty (Last) := '_';
                end if;
                Capitalize := True;
+
+            --  Capital "T" and "TK" are internally generated suffixes
+            --  for single concurrent types that we don't include in the
+            --  pretty-printed name. We expect that they occur either at the
+            --  end of the full name or are followed by "__" and another name
+            --  part.
+
+            elsif Original (J) = 'T' then
+               pragma
+                 Assert
+                   (J = Original'Last
+                      or else Original (J .. J + 1) = "TK"
+                      or else Original (J + 1 .. J + 2) = "__");
+
+               Last := Last - 1;
+
+            elsif Original (J) = 'K' then
+               pragma
+                 Assert
+                   (J = Original'Last
+                      or else Original (J + 1 .. J + 2) = "__");
+
+               Last := Last - 1;
+
             else
                Pretty (Last) :=
                  (if Capitalize
@@ -948,7 +972,7 @@ package body Flow_Types is
 
                when E_Task_Type | E_Protected_Type =>
                   --  For single concurrent units return the original name,
-                  --  i.e. without the "tk" or "t" suffixes added by expansion.
+                  --  i.e. without the "TK" or "T" suffixes added by expansion.
                   if Is_Single_Concurrent_Type (N) then
                      Nam := Anonymous_Object (N);
                   end if;

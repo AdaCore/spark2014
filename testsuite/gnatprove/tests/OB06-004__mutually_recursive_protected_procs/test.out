@@ -1,6 +1,6 @@
 p1.adb:7:13: info: implicit aspect Always_Terminates on "Prio" has been proved, subprogram will terminate
 p1.adb:10:24: info: range check proved (CVC5: 2 VC)
-p1.adb:11:17: medium: ceiling priority protocol might not be respected
+p1.adb:11:17: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "P2.Po" must be >= the priority of the caller "P1.Po.Dummy" in the call chain "P1.Po.Dummy" -> "P2.Proxy" -> "P2.Po.Dummy"]
 p1.adb:18:12: high: "PO" constituent of "State" must be listed in the Global aspect of "Dummy" (SPARK RM 6.1.4(15))
 p1.adb:18:12: high: external call to "Dummy" from "p2.proxy" in protected operation "Dummy"
 p12.adb:7:20: info: ceiling priority protocol is respected (CVC5: 1 VC)
@@ -10,5 +10,5 @@ p12.adb:30:20: info: ceiling priority protocol is respected (CVC5: 1 VC)
 p12.adb:36:15: high: external call to "Dummy2" from "p12.p1.po1T.dummy1" in protected operation "Dummy2"
 p2.adb:7:13: info: implicit aspect Always_Terminates on "Prio" has been proved, subprogram will terminate
 p2.adb:10:24: info: range check proved (CVC5: 2 VC)
-p2.adb:11:17: medium: ceiling priority protocol might not be respected
+p2.adb:11:17: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "P1.Po" must be >= the priority of the caller "P2.Po.Dummy" in the call chain "P2.Po.Dummy" -> "P1.Proxy" -> "P1.Po.Dummy"]
 p2.adb:17:12: high: external call to "Dummy" from "p1.proxy" in protected operation "Dummy"

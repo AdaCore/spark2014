@@ -47,7 +47,7 @@ package Flow_Utility is
       Function_Calls     : in out Call_Sets.Set;
       Indirect_Calls     : in out Node_Sets.Set;
       Proof_Dependencies : in out Node_Sets.Set;
-      Tasking            : in out Tasking_Info;
+      Locks              : in out Protected_Call_Sets.Set;
       Generating_Globals : Boolean)
    with
      Pre  => Present (N),
@@ -858,6 +858,27 @@ package Flow_Utility is
       return Flow_Id_Sets.Set
    with Pre => Is_Subprogram (E);
    --  Return global outputs used in the Program_Exit expression; for flow
+
+   function Denote_Same_Protected_Object (A, B : Node_Id) return Boolean
+   with
+     Post =>
+       Denote_Same_Protected_Object'Result
+       = (Full_Protected_Name (A) = Full_Protected_Name (B));
+   --  Returns True if prefixes of external protected calls denote the same
+   --  protected object as far as flow analysis is concerned, i.e. without
+   --  looking at indices of indexed elements.
+   --
+   --  Note: this routine is intentially named after a frontend routine
+   --  Denotes_Same_Object that implements a similar check, but takes array
+   --  and slice indices into account. Also, here we don't expect prefixes
+   --  with explicit dereferences, which are rejected in marking.
+
+   procedure Register_Protected_Call
+     (Callsite : Node_Id; Locks : in out Protected_Call_Sets.Set)
+   with
+     Pre  => Is_External_Call (Callsite),
+     Post => Locks'Old.Is_Subset (Of_Set => Locks);
+   --  Register protected calls made from a given Callsite
 
 private
 

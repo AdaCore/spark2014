@@ -26,7 +26,6 @@ with Flow_Utility;           use Flow_Utility;
 with Sem_Util;               use Sem_Util;
 with Sinfo.Nodes;            use Sinfo.Nodes;
 with Snames;                 use Snames;
-with SPARK_Util;             use SPARK_Util;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 
 package body Flow.Slice is
@@ -525,6 +524,11 @@ package body Flow.Slice is
                elsif Is_Overloadable (SC.E)
                  and then Is_Abstract_Subprogram (SC.E)
                then
+                  null;
+
+               --  Ignore inlined calls
+
+               elsif Nkind (SC.N) = N_Block_Statement then
                   null;
 
                --  For ordinary subprograms, check if their flow effects

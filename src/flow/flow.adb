@@ -50,6 +50,7 @@ with Flow_Utility;                     use Flow_Utility;
 with Gnat2Why.Assumptions;             use Gnat2Why.Assumptions;
 with Gnat2Why_Args;
 with GNATCOLL.JSON;                    use GNATCOLL.JSON;
+with Interfaces;                       use Interfaces;
 with Namet;                            use Namet;
 with Output;                           use Output;
 with Sem_Ch7;                          use Sem_Ch7;
@@ -111,6 +112,10 @@ package body Flow is
    --  SRM 6.1.4(16)
    --  We do this for requested subprograms from the current unit whose spec
    --  has SPARK_Mode => On, regardless of the SPARK_Mode on their bodies.
+
+   function Hash_Protected_Prefix (Pref : Node_Id) return Unsigned_32;
+   --  Recursively hash prefix of a protected call. This is the same algoritm
+   --  as for Flow_Id, but in a functional style.
 
    -------------------------------------
    -- Debug_Print_Generated_Contracts --
@@ -1915,14 +1920,68 @@ package body Flow is
    ----------
 
    function Hash (E : Entry_Call) return Ada.Containers.Hash_Type is
-      use type Ada.Containers.Hash_Type;
-
+      H : Unsigned_32 := Hash_Protected_Prefix (E.Prefix);
    begin
-      --  ??? constants for hashing are picked from the air
-      return
-        Ada.Containers.Hash_Type (E.Prefix)
-        * 17
-        + Ada.Containers.Hash_Type (E.Entr) * 19;
+      --  Hash entry name like we hash component names
+      H := Rotate_Left (H, 5);
+      H := H + Unsigned_32 (Node_Hash (E.Entr)) + 1;
+      return Ada.Containers.Hash_Type (H);
    end Hash;
+
+   function Hash (P : Protected_Call) return Ada.Containers.Hash_Type is
+   begin
+      return Ada.Containers.Hash_Type (Hash_Protected_Prefix (P.Prefix));
+   end Hash;
+
+   ---------------------------
+   -- Hash_Protected_Prefix --
+   ---------------------------
+
+   function Hash_Protected_Prefix (Pref : Node_Id) return Unsigned_32 is
+   begin
+      --  Stop when we reach an entire object
+
+      if Is_Entity_Name (Pref) then
+         pragma Assert (Ekind (Entity (Pref)) = E_Variable);
+         return Unsigned_32 (Node_Hash (Entity (Pref)));
+
+      --  For a record component combine hash of its prefix with hash if the
+      --  component itself.
+
+      elsif Nkind (Pref) = N_Selected_Component then
+         return H : Unsigned_32 := Hash_Protected_Prefix (Prefix (Pref)) do
+            H := Rotate_Left (H, 5);
+            H :=
+              H
+              + Unsigned_32
+                  (Node_Hash
+                     (Unique_Component (Entity (Selector_Name (Pref)))))
+              + 1;
+         end return;
+
+      --  Ignore an array and just proceed with its prefix
+
+      elsif Nkind (Pref) in N_Indexed_Component | N_Slice then
+         return Hash_Protected_Prefix (Prefix (Pref));
+
+      else
+         raise Program_Error;
+      end if;
+   end Hash_Protected_Prefix;
+
+   ----------------------
+   -- Have_Same_Prefix --
+   ----------------------
+
+   function Have_Same_Prefix (A, B : Protected_Call) return Boolean
+   is (Denote_Same_Protected_Object (A.Prefix, B.Prefix));
+
+   ----------------------
+   -- Have_Same_Target --
+   ----------------------
+
+   function Have_Same_Target (A, B : Entry_Call) return Boolean
+   is (Denote_Same_Protected_Object (A.Prefix, B.Prefix)
+       and then A.Entr = B.Entr);
 
 end Flow;

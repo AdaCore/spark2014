@@ -39,6 +39,7 @@ package Flow_Generated_Globals.ALI_Serialization is
       EK_Synchronized,
       EK_Globals,
       EK_Constant_Calls,
+      EK_Locking_Call,
       EK_Protected_Instance,
       EK_Task_Instance,
       EK_Max_Queue_Length,

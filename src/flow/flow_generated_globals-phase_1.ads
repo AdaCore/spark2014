@@ -28,6 +28,7 @@ with SPARK_Util;                     use SPARK_Util;
 
 with Flow_Generated_Globals.ALI_Serialization;
 use Flow_Generated_Globals.ALI_Serialization;
+with SPARK_Atree.Entities;
 
 package Flow_Generated_Globals.Phase_1 is
 
@@ -65,6 +66,20 @@ package Flow_Generated_Globals.Phase_1 is
    --  Register Calls as direct calls or proof dependencies depending on Kind,
    --  without caring if they are proof-only, definite or conditional.
 
+   procedure GG_Register_Locking_Calls
+     (E : Entity_Id; Calls : Protected_Call_Sets.Set)
+   with
+     Pre  =>
+       GG_Mode = GG_Write_Mode
+       and then Ekind (E)
+                in Entry_Kind
+                 | E_Function
+                 | E_Package
+                 | E_Procedure
+                 | E_Task_Type,
+     Post => GG_Mode = GG_Write_Mode;
+   --  Register locking calls made from E
+
    procedure GG_Register_Global_Info
      (E                 : Entity_Id;
       Local             : Boolean;
@@ -79,6 +94,7 @@ package Flow_Generated_Globals.Phase_1 is
 
       Entries_Called    : Entry_Call_Sets.Set;
       Tasking           : Tasking_Info;
+      Locks             : Protected_Call_Sets.Set;
 
       Always_Terminates : Boolean;
       Has_Subp_Variant  : Boolean;
@@ -123,5 +139,13 @@ package Flow_Generated_Globals.Phase_1 is
    procedure GG_Write_Finalize
    with Pre => GG_Mode = GG_Write_Mode, Post => GG_Mode = GG_No_Mode;
    --  Appends all collected information to the ALI file
+
+   -------------
+   -- Queries --
+   -------------
+
+   function Protected_Type_Priority (Typ : Entity_Id) return Priority_Value
+   with Pre => SPARK_Atree.Entities.Is_Protected_Type (Typ);
+   --  Return the priority associated to the protected type Typ
 
 end Flow_Generated_Globals.Phase_1;

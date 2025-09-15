@@ -1,0 +1,14 @@
+main.adb:3:11: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "Prots.Obj1.F1" must be >= the priority of the caller "Main" in the call chain "Main" (elaboration) -> "Prots" (elaboration) -> "Prots.Pt.Pp1"]
+main.adb:3:11: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "Prots.Obj1.F2" must be >= the priority of the caller "Main" in the call chain "Main" (elaboration) -> "Prots" (elaboration) -> "Prots.Pt.Pp1"]
+main.adb:3:11: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "Prots.Obj2.F1" must be >= the priority of the caller "Main" in the call chain "Main" (elaboration) -> "Prots" (elaboration) -> "Prots.Pt.Pp1"]
+main.adb:3:11: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "Prots.Obj2.F2" must be >= the priority of the caller "Main" in the call chain "Main" (elaboration) -> "Prots" (elaboration) -> "Prots.Pt.Pp1"]
+main.adb:3:11: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "Prots.Po1" must be >= the priority of the caller "Main" in the call chain "Main" (elaboration) -> "Prots" (elaboration) -> "Prots.Pt.Pp1"]
+main.adb:3:11: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "Prots.Po2" must be >= the priority of the caller "Main" in the call chain "Main" (elaboration) -> "Prots" (elaboration) -> "Prots.Pt.Pp1"]
+main.adb:4:21: info: range check proved (CVC5: 2 VC)
+prots.ads:4:24: medium: range check might fail
+prots.ads:6:17: info: aspect Always_Terminates on "PP1" has been proved, subprogram will terminate
+prots.ads:7:12: info: data dependencies proved
+prots.ads:10:23: info: range check proved (CVC5: 2 VC)
+prots.ads:11:23: info: range check proved (CVC5: 2 VC)
+prots.ads:13:14: info: range check proved (CVC5: 2 VC)
+prots.ads:14:14: info: range check proved (CVC5: 2 VC)
