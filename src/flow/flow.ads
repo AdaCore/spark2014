@@ -157,7 +157,7 @@ package Flow is
    --  Tasking-related information collected for subprograms, entries, tasks
    --  and package elaborations. Used for ownership (aka. exclusivity) checks.
    --  For the ceiling priority protocol checks a separate extended data
-   --  structure is used (see Tasking_Info_Ext).
+   --  structure is used (see Protected_Call_Sets).
 
    subtype Tasking_Owning_Kind is
      Tasking_Info_Kind
@@ -174,13 +174,6 @@ package Flow is
      array (Suspends_On .. Unsynch_Accesses) of Node_Sets.Set;
    --  Named array type for sets of nodes related to tasking. The nodes
    --  represent library-level objects.
-
-   subtype Tasking_Info_Ext is Entry_Call_Sets.Set;
-   --  This structure is used for storing Phase 1 information related to
-   --  ceiling locking checks. In the future similar information might be
-   --  needed for other tasking checks as well. So, this type could be either
-   --  extended to other tasking kinds (like those in Tasking_Info) or the
-   --  latter could be rearranged into an array of maps.
 
    type Flow_Analysis_Graphs_Root
      (Kind               : Analyzed_Subject_Kind := Kind_Subprogram;

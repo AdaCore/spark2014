@@ -140,8 +140,8 @@ package body Flow_Generated_Globals.Phase_2 is
    --  with objects directly and indirectly accessed by each subprogram.
 
    --  For protected calls we recreate data structures from phase 1, including
-   --  sets where only prefix of the protected call is important while
-   --  protected operation acts as an extra information (and we only use it for
+   --  sets where only the prefix of the protected call is important while the
+   --  protected operation acts as extra information (and we only use it for
    --  call traces).
 
    type Protected_Call is record
@@ -172,7 +172,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
    subtype Locking_Call_Map is Locking_Call_Maps.Map;
 
-   Tasking_Info_Ext : Locking_Call_Map;
+   Locks : Locking_Call_Map;
 
    package Entity_Name_Graphs is new
      Graphs
@@ -1735,12 +1735,12 @@ package body Flow_Generated_Globals.Phase_2 is
                         Prio.Value := 0;
                      end if;
 
-                     --  Register a type to priority mapping
+                     --  Register object to priority mapping
                      --
-                     --  Note: There can be several objects or protected
-                     --  components having the same type. Since the priority
-                     --  can only be determined by the type in SPARK the
-                     --  priority values must be necessarily the same.
+                     --  Note: In general the priority in SPARK is determined
+                     --  by the type. However, it is simpler to have a bit of
+                     --  redundancy and track the priorities of protected
+                     --  objects directly.
 
                      Protected_Objects_To_Priorities.Insert
                        (Variable, Prio, Position, Inserted);
@@ -1767,13 +1767,13 @@ package body Flow_Generated_Globals.Phase_2 is
                      Serialize (Protected_Object);
                      Serialize (Protected_Operation);
 
-                     Tasking_Info_Ext.Insert
+                     Locks.Insert
                        (Key      => Caller,
                         Position => Caller_Position,
                         Inserted => Unused);
 
                      --  Register protected operation that reaches object
-                     Tasking_Info_Ext (Caller_Position).Insert
+                     Locks (Caller_Position).Insert
                        (Protected_Call'
                           (Prefix    => Protected_Object,
                            Operation => Protected_Operation));
@@ -3095,7 +3095,7 @@ package body Flow_Generated_Globals.Phase_2 is
          Instruction : out Tasking_Graph.Traversal_Instruction)
       is
          Caller       : constant Entity_Name := Call_Graph.Get_Key (V);
-         Phase_1_Info : Locking_Call_Map renames Tasking_Info_Ext;
+         Phase_1_Info : Locking_Call_Map renames Locks;
 
          Caller_Position : constant Locking_Call_Maps.Cursor :=
            Phase_1_Info.Find (Caller);
@@ -3172,7 +3172,7 @@ package body Flow_Generated_Globals.Phase_2 is
       -------------------------------------
 
       procedure Collect_Objects_From_Subprogram (S : Entity_Name) is
-         Phase_1_Info : Locking_Call_Map renames Tasking_Info_Ext;
+         Phase_1_Info : Locking_Call_Map renames Locks;
 
          Caller_Position : constant Locking_Call_Maps.Cursor :=
            Phase_1_Info.Find (S);
