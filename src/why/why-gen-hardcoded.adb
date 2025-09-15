@@ -120,10 +120,10 @@ package body Why.Gen.Hardcoded is
          when Big_Integers =>
             Alias := EW_Int_Type;
 
-         when Big_Reals =>
+         when Big_Reals    =>
             Alias := EW_Real_Type;
 
-         when Real_Time =>
+         when Real_Time    =>
 
             --  If necessary, initialize Real_Time_Module as a clone of
             --  Real_Time_Model. It takes as parameters the numerator and
@@ -340,8 +340,7 @@ package body Why.Gen.Hardcoded is
          when Cut_Operations
             | System_Storage_Elements
             | Elementary_Functions
-            | System
-         =>
+            | System       =>
             raise Program_Error;
       end case;
 
@@ -419,10 +418,10 @@ package body Why.Gen.Hardcoded is
          when Big_Integers =>
             return M_Integer.Bool_Eq;
 
-         when Big_Reals =>
+         when Big_Reals    =>
             return M_Real.Bool_Eq;
 
-         when Real_Time =>
+         when Real_Time    =>
             return M_Integer.Bool_Eq;
 
          --  No equal in the following units
@@ -430,8 +429,7 @@ package body Why.Gen.Hardcoded is
          when Cut_Operations
             | System_Storage_Elements
             | Elementary_Functions
-            | System
-         =>
+            | System       =>
             raise Program_Error;
 
       end case;
@@ -588,7 +586,7 @@ package body Why.Gen.Hardcoded is
 
                else
                   case Chars (Subp) is
-                     when Name_Op_Add =>
+                     when Name_Op_Add      =>
                         Name := Int_Infix_Add;
 
                      when Name_Op_Subtract =>
@@ -597,49 +595,49 @@ package body Why.Gen.Hardcoded is
                      when Name_Op_Multiply =>
                         Name := Int_Infix_Mult;
 
-                     when Name_Op_Divide =>
+                     when Name_Op_Divide   =>
                         Name := M_Int_Div.Div;
 
-                     when Name_Op_Mod =>
+                     when Name_Op_Mod      =>
                         Name := M_Int_Div.Mod_Id;
 
-                     when Name_Op_Rem =>
+                     when Name_Op_Rem      =>
                         Name := M_Int_Div.Rem_Id;
 
-                     when Name_Op_Expon =>
+                     when Name_Op_Expon    =>
                         Name := M_Int_Power.Power;
 
-                     when Name_Op_Eq =>
+                     when Name_Op_Eq       =>
                         Name :=
                           (if Domain = EW_Term
                            then M_Integer.Bool_Eq
                            else Why_Eq);
 
-                     when Name_Op_Lt =>
+                     when Name_Op_Lt       =>
                         Name :=
                           (if Domain = EW_Term
                            then M_Integer.Bool_Lt
                            else Int_Infix_Lt);
 
-                     when Name_Op_Le =>
+                     when Name_Op_Le       =>
                         Name :=
                           (if Domain = EW_Term
                            then M_Integer.Bool_Le
                            else Int_Infix_Le);
 
-                     when Name_Op_Gt =>
+                     when Name_Op_Gt       =>
                         Name :=
                           (if Domain = EW_Term
                            then M_Integer.Bool_Gt
                            else Int_Infix_Gt);
 
-                     when Name_Op_Ge =>
+                     when Name_Op_Ge       =>
                         Name :=
                           (if Domain = EW_Term
                            then M_Integer.Bool_Ge
                            else Int_Infix_Ge);
 
-                     when others =>
+                     when others           =>
                         raise Program_Error;
                   end case;
                end if;
@@ -754,10 +752,10 @@ package body Why.Gen.Hardcoded is
                      when Name_Op_Subtract =>
                         Name := Int_Unary_Minus;
 
-                     when Name_Op_Abs =>
+                     when Name_Op_Abs      =>
                         Name := M_Int_Abs.Abs_Id;
 
-                     when others =>
+                     when others           =>
                         raise Program_Error;
                   end case;
 
@@ -891,7 +889,7 @@ package body Why.Gen.Hardcoded is
 
                   else
                      case Chars (Subp) is
-                        when Name_Op_Add =>
+                        when Name_Op_Add      =>
                            Name := Real_Infix_Add;
 
                         when Name_Op_Subtract =>
@@ -900,7 +898,7 @@ package body Why.Gen.Hardcoded is
                         when Name_Op_Multiply =>
                            Name := Real_Infix_Mult;
 
-                        when Name_Op_Divide =>
+                        when Name_Op_Divide   =>
                            --  If the division is done on big integers, we need
                            --  to insert a conversion to real on both operands.
 
@@ -924,7 +922,7 @@ package body Why.Gen.Hardcoded is
 
                            Name := Real_Infix_Div;
 
-                        when Name_Op_Expon =>
+                        when Name_Op_Expon    =>
                            --  For exponentiation, a mathematical integer is
                            --  expected for the second parameter.
 
@@ -936,7 +934,7 @@ package body Why.Gen.Hardcoded is
                                 To       => EW_Int_Type);
                            Name := M_Real_Power.Power;
 
-                        when Name_Op_Eq =>
+                        when Name_Op_Eq       =>
                            Name :=
                              (if Domain = EW_Term
                               then M_Real.Bool_Eq
@@ -944,31 +942,31 @@ package body Why.Gen.Hardcoded is
                               then Why_Eq
                               else Real_Infix_Eq);
 
-                        when Name_Op_Lt =>
+                        when Name_Op_Lt       =>
                            Name :=
                              (if Domain = EW_Term
                               then M_Real.Bool_Lt
                               else Real_Infix_Lt);
 
-                        when Name_Op_Le =>
+                        when Name_Op_Le       =>
                            Name :=
                              (if Domain = EW_Term
                               then M_Real.Bool_Le
                               else Real_Infix_Le);
 
-                        when Name_Op_Gt =>
+                        when Name_Op_Gt       =>
                            Name :=
                              (if Domain = EW_Term
                               then M_Real.Bool_Gt
                               else Real_Infix_Gt);
 
-                        when Name_Op_Ge =>
+                        when Name_Op_Ge       =>
                            Name :=
                              (if Domain = EW_Term
                               then M_Real.Bool_Ge
                               else Real_Infix_Ge);
 
-                        when others =>
+                        when others           =>
                            raise Program_Error;
                      end case;
                   end if;
@@ -1075,10 +1073,10 @@ package body Why.Gen.Hardcoded is
                      when Name_Op_Subtract =>
                         Name := Real_Unary_Minus;
 
-                     when Name_Op_Abs =>
+                     when Name_Op_Abs      =>
                         Name := M_Real_Abs.Abs_Id;
 
-                     when others =>
+                     when others           =>
                         raise Program_Error;
                   end case;
 
@@ -1156,7 +1154,7 @@ package body Why.Gen.Hardcoded is
             Nam        : constant String := Get_Name_String (Chars (Subp));
             Symb       : constant W_Identifier_Id :=
               (case Args'Length is
-                 when 1 =>
+                 when 1      =>
                    (if Nam = EFN.Ada_Sqrt
                     then MF.Ada_Sqrt
                     elsif Nam = EFN.Log
@@ -1192,7 +1190,7 @@ package body Why.Gen.Hardcoded is
                     elsif Nam = EFN.Arccoth
                     then MF.Arccoth
                     else raise Program_Error),
-                 when 2 =>
+                 when 2      =>
                    (if Chars (Subp) = Name_Op_Expon
                     then MF.Ada_Power
                     elsif Nam = EFN.Log
@@ -1214,7 +1212,7 @@ package body Why.Gen.Hardcoded is
                     elsif Nam = EFN.Arccot
                     then MF.Arccot
                     else raise Program_Error),
-                 when 3 =>
+                 when 3      =>
                    (if Nam = EFN.Arctan
                     then MF.Arctan_2
                     elsif Nam = EFN.Arccot
@@ -1223,7 +1221,7 @@ package body Why.Gen.Hardcoded is
                  when others => raise Program_Error);
             Def_Domain : constant W_Identifier_Id :=
               (case Args'Length is
-                 when 1 =>
+                 when 1      =>
                    (if Nam = EFN.Log
                     then MF.Log_Definition_Domain
                     elsif Nam = EFN.Cot
@@ -1237,7 +1235,7 @@ package body Why.Gen.Hardcoded is
                     elsif Nam = EFN.Arccosh
                     then MF.Arccosh_Definition_Domain
                     else Why_Empty),
-                 when 2 =>
+                 when 2      =>
                    (if Chars (Subp) = Name_Op_Expon
                     then MF.Ada_Power_Definition_Domain
                     elsif Nam = EFN.Log
@@ -2083,16 +2081,16 @@ package body Why.Gen.Hardcoded is
                     UI_Add
                       (UI_Mul (Result, Uint_10),
                        (case Str_Value (J) is
-                          when '0' => Uint_0,
-                          when '1' => Uint_1,
-                          when '2' => Uint_2,
-                          when '3' => Uint_3,
-                          when '4' => Uint_4,
-                          when '5' => Uint_5,
-                          when '6' => Uint_6,
-                          when '7' => Uint_7,
-                          when '8' => Uint_8,
-                          when '9' => Uint_9,
+                          when '0'    => Uint_0,
+                          when '1'    => Uint_1,
+                          when '2'    => Uint_2,
+                          when '3'    => Uint_3,
+                          when '4'    => Uint_4,
+                          when '5'    => Uint_5,
+                          when '6'    => Uint_6,
+                          when '7'    => Uint_7,
+                          when '8'    => Uint_8,
+                          when '9'    => Uint_9,
                           when others => raise Program_Error));
                elsif Str_Value (J) = '_' then
                   if J = Str_Value'Last or else Str_Value (J + 1) = '_' then

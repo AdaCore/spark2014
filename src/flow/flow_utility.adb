@@ -325,7 +325,7 @@ package body Flow_Utility is
          end if;
 
          case Nkind (N) is
-            when N_Function_Call =>
+            when N_Function_Call                            =>
                declare
                   Called_Func : constant Entity_Id := Get_Called_Entity (N);
                   pragma
@@ -383,7 +383,7 @@ package body Flow_Utility is
                   end if;
                end;
 
-            when N_Membership_Test =>
+            when N_Membership_Test                          =>
                if Present (Right_Opnd (N)) then
                   --  x in t
                   P := Right_Opnd (N);
@@ -436,7 +436,7 @@ package body Flow_Utility is
             --  in the set of indirect calls to include the appropriate
             --  primitives in the call set.
 
-            when N_Op =>
+            when N_Op                                       =>
 
                if Nkind (N) in N_Op_Eq | N_Op_Ne then
                   Indirect_Calls.Include (N);
@@ -446,7 +446,7 @@ package body Flow_Utility is
 
             --  Detect calls via Iterable aspect specification, if present
 
-            when N_Iterator_Specification =>
+            when N_Iterator_Specification                   =>
                declare
                   Typ : constant Entity_Id := Etype (Name (N));
 
@@ -509,7 +509,7 @@ package body Flow_Utility is
             --  Predicates applying to entities referenced in the expression
             --  are analyzed to fill Proof_Dependencies.
 
-            when N_Identifier | N_Expanded_Name =>
+            when N_Identifier | N_Expanded_Name             =>
                declare
                   E : constant Entity_Id := Entity (N);
                begin
@@ -547,7 +547,7 @@ package body Flow_Utility is
             --  Pull subprograms referenced through 'Access in the proof
             --  dependencies.
 
-            when N_Attribute_Reference =>
+            when N_Attribute_Reference                      =>
                if Attribute_Name (N) = Name_Access then
                   Process_Access_Attribute (N, Proof_Dependencies);
                end if;
@@ -555,7 +555,7 @@ package body Flow_Utility is
             --  Pull implicit calls and proof dependencies from container
             --  aggregates.
 
-            when N_Aggregate =>
+            when N_Aggregate                                =>
                --  Ignore aggregates that are not really subexpressions, e.g.
                --  those occurring inside 'Update attribute reference.
 
@@ -597,19 +597,19 @@ package body Flow_Utility is
                      Add_Proof_Dependency (Annot.Capacity);
 
                      case Annot.Kind is
-                        when Sets =>
+                        when Sets  =>
                            Add_Proof_Dependency (Annot.Contains);
                            Add_Proof_Dependency (Annot.Equivalent_Elements);
                            Add_Proof_Dependency (Annot.Sets_Length);
 
-                        when Maps =>
+                        when Maps  =>
                            Add_Proof_Dependency (Annot.Has_Key);
                            Add_Proof_Dependency (Annot.Default_Item);
                            Add_Proof_Dependency (Annot.Equivalent_Keys);
                            Add_Proof_Dependency (Annot.Maps_Length);
                            Add_Proof_Dependency (Annot.Maps_Length);
 
-                        when Seqs =>
+                        when Seqs  =>
                            Add_Proof_Dependency (Annot.Seqs_Get);
                            Add_Proof_Dependency (Annot.First);
                            Add_Proof_Dependency (Annot.Last);
@@ -620,7 +620,7 @@ package body Flow_Utility is
                   end;
                end if;
 
-            when others =>
+            when others                                     =>
                null;
          end case;
 
@@ -995,10 +995,10 @@ package body Flow_Utility is
    is
    begin
       case F.Kind is
-         when Direct_Mapping =>
+         when Direct_Mapping                                    =>
             return Extensions_Visible (Get_Direct_Mapping_Id (F), Scope);
 
-         when Record_Field =>
+         when Record_Field                                      =>
             --  Record fields themselves cannot be classwide
             return False;
 
@@ -1093,7 +1093,8 @@ package body Flow_Utility is
                end if;
 
                case Type_Kind'(Ekind (T)) is
-                  when Private_Nonrecord_Kind =>
+                  when Private_Nonrecord_Kind
+                  =>
                      Debug ("processing private type");
 
                      pragma Assert (not Is_Tagged_Type (T));
@@ -1111,13 +1112,14 @@ package body Flow_Utility is
                         Results := Flow_Id_Sets.To_Set (F);
                      end if;
 
-                  when Concurrent_Kind =>
+                  when Concurrent_Kind
+                  =>
                      Debug
                        ("processing "
                         & (case Ekind (T) is
                              when Protected_Kind => "protected",
-                             when Task_Kind => "task",
-                             when others => raise Program_Error)
+                             when Task_Kind      => "task",
+                             when others         => raise Program_Error)
                         & " type");
 
                      --  From the inside of a concurrent object include
@@ -1159,7 +1161,8 @@ package body Flow_Utility is
                         Results.Insert (F);
                      end if;
 
-                  when Record_Kind =>
+                  when Record_Kind
+                  =>
                      Debug ("processing record type");
 
                      --  If T is not visible in Scope, add a private part.
@@ -1226,7 +1229,8 @@ package body Flow_Utility is
                           ((F with delta Facet => Extension_Part));
                      end if;
 
-                  when Access_Kind | Array_Kind | Scalar_Kind =>
+                  when Access_Kind | Array_Kind | Scalar_Kind
+                  =>
                      Debug ("processing access or array or scalar type");
 
                      Results := Flow_Id_Sets.To_Set (F);
@@ -1342,7 +1346,8 @@ package body Flow_Utility is
               when N_Type_Conversion | N_Unchecked_Type_Conversion =>
                 Expression (Root_Node),
 
-              when others => Prefix (Root_Node));
+              when others                                          =>
+                Prefix (Root_Node));
       end loop;
 
       pragma Assert (Nkind (Root_Node) in N_Identifier | N_Expanded_Name);
@@ -1383,7 +1388,7 @@ package body Flow_Utility is
 
       for N of Seq loop
          case Interesting_Nodes (Nkind (N)) is
-            when N_Selected_Component =>
+            when N_Selected_Component                                   =>
                if Root_Overlaid then
                   Partial_Definition := True;
                   exit;
@@ -1419,7 +1424,7 @@ package body Flow_Utility is
                   end;
                end if;
 
-            when N_Type_Conversion | N_Unchecked_Type_Conversion =>
+            when N_Type_Conversion | N_Unchecked_Type_Conversion        =>
                null;
 
             when N_Indexed_Component | N_Slice | N_Explicit_Dereference =>
@@ -1538,16 +1543,16 @@ package body Flow_Utility is
 
             begin
                case Ekind (Param) is
-                  when E_In_Parameter =>
+                  when E_In_Parameter                 =>
                      Globals.Inputs.Insert (Formal_Param);
                      Globals.Proof_Ins.Insert (Formal_Param);
 
-                  when E_In_Out_Parameter =>
+                  when E_In_Out_Parameter             =>
                      Globals.Proof_Ins.Insert (Formal_Param);
                      Globals.Inputs.Insert (Formal_Param);
                      Globals.Outputs.Insert (Formal_Param);
 
-                  when E_Out_Parameter =>
+                  when E_Out_Parameter                =>
                      Globals.Outputs.Insert (Formal_Param);
 
                   when E_Protected_Type | E_Task_Type =>
@@ -1557,7 +1562,7 @@ package body Flow_Utility is
                         Globals.Outputs.Insert (Formal_Param);
                      end if;
 
-                  when others =>
+                  when others                         =>
                      raise Program_Error;
                end case;
             end;
@@ -1760,16 +1765,16 @@ package body Flow_Utility is
 
       begin
          case The_Mode is
-            when Name_Input =>
+            when Name_Input    =>
                if not Is_Generic_Actual_Without_Variable_Input (E) then
                   Globals.Inputs.Insert (E);
                end if;
 
-            when Name_In_Out =>
+            when Name_In_Out   =>
                Globals.Inputs.Insert (E);
                Globals.Outputs.Insert (E);
 
-            when Name_Output =>
+            when Name_Output   =>
                Globals.Outputs.Insert (E);
 
             when Name_Proof_In =>
@@ -1838,13 +1843,13 @@ package body Flow_Utility is
 
                begin
                   case Nkind (RHS) is
-                     when N_Null =>
+                     when N_Null                         =>
                         null;
 
                      when N_Identifier | N_Expanded_Name =>
                         Process (Mode, Entity (RHS));
 
-                     when N_Aggregate =>
+                     when N_Aggregate                    =>
                         declare
                            Item : Node_Id := First (Expressions (RHS));
 
@@ -1863,7 +1868,7 @@ package body Flow_Utility is
                            end loop;
                         end;
 
-                     when others =>
+                     when others                         =>
                         raise Program_Error;
 
                   end case;
@@ -1941,10 +1946,10 @@ package body Flow_Utility is
                   end if;
                end;
 
-            when Magic_String =>
+            when Magic_String                  =>
                Mapped.Include (Object);
 
-            when others =>
+            when others                        =>
                raise Program_Error;
          end case;
       end loop;
@@ -2393,14 +2398,14 @@ package body Flow_Utility is
                end loop;
             end if;
 
-         when E_Package =>
+         when E_Package                                                 =>
             if Refined then
                P_Expr := Node_Lists.Empty_List;
             else
                P_Expr := Find_Contracts (E, Pragma_Initial_Condition);
             end if;
 
-         when others =>
+         when others                                                    =>
             raise Program_Error;
 
       end case;
@@ -2680,8 +2685,8 @@ package body Flow_Utility is
       E : constant Entity_Id :=
         (case F.Kind is
            when Direct_Mapping => Get_Direct_Mapping_Id (F),
-           when Record_Field => F.Component.Last_Element,
-           when others => raise Program_Error);
+           when Record_Field   => F.Component.Last_Element,
+           when others         => raise Program_Error);
    begin
       return Get_Type (E, Scope);
    end Get_Type;
@@ -2791,11 +2796,11 @@ package body Flow_Utility is
                then Scope (E)
                else Empty);
 
-         when E_Task_Type =>
+         when E_Task_Type                        =>
             --  A task sees itself as a formal parameter
             return E;
 
-         when others =>
+         when others                             =>
             raise Program_Error;
 
       end case;
@@ -3107,7 +3112,7 @@ package body Flow_Utility is
             --  to the actual expression.
 
             case Ctx.Fold_Functions is
-               when Inputs =>
+               when Inputs    =>
                   if Ekind (Subprogram) = E_Function
                     and then Has_Depends (Subprogram)
                   then
@@ -3182,7 +3187,7 @@ package body Flow_Utility is
                --  (user-written or synthesized) and possibly also null.
 
                case Ctx.Fold_Functions is
-                  when Inputs =>
+                  when Inputs    =>
                      Flow_Id_Sets.Move
                        (Target => Used_Reads,
                         Source => Depends (Direct_Mapping_Id (Subprogram)));
@@ -3214,7 +3219,7 @@ package body Flow_Utility is
 
             begin
                case Ctx.Fold_Functions is
-                  when Inputs =>
+                  when Inputs    =>
                      if Ekind (Subprogram) = E_Function
                        and then Has_Depends (Subprogram)
                      then
@@ -3298,7 +3303,7 @@ package body Flow_Utility is
          --  Handle globals; very much like in Handle_Parameter
 
          case Ctx.Fold_Functions is
-            when Inputs =>
+            when Inputs    =>
                for G of Globals.Inputs loop
                   if Ekind (Subprogram) = E_Function
                     and then Has_Depends (Subprogram)
@@ -3395,7 +3400,7 @@ package body Flow_Utility is
             -- Entities requiring some kind of action --
             --------------------------------------------
 
-            when E_Constant =>
+            when E_Constant                               =>
                if Ctx.Expand_Internal_Objects
                  and then not Comes_From_Source (E)
                then
@@ -3440,8 +3445,7 @@ package body Flow_Utility is
                | E_Discriminant
                | E_Loop_Parameter
                | E_Variable
-               | Formal_Kind
-            =>
+               | Formal_Kind                              =>
                if Is_Discriminal (E) then
                   return Do_Entity (Discriminal_Link (E));
                end if;
@@ -3490,7 +3494,7 @@ package body Flow_Utility is
             --  traverse expressions we special-case type identifiers depending
             --  on the context.
 
-            when Type_Kind =>
+            when Type_Kind                                =>
                pragma Assert (not Ctx.Assume_In_Expression);
 
                --  These kinds of types are not allowed in SPARK (yet)
@@ -3513,11 +3517,11 @@ package body Flow_Utility is
             -- Entities with no flow consequence --
             ---------------------------------------
 
-            when Named_Kind | E_Enumeration_Literal =>
+            when Named_Kind | E_Enumeration_Literal       =>
                --  All of these are simply constants, with no flow concern
                null;
 
-            when E_Entry | E_Function | E_Procedure =>
+            when E_Entry | E_Function | E_Procedure       =>
                --  Dealt with when dealing with N_Subprogram_Call nodes, except
                --  when traversing the AST looking for first use of a variable.
                --  ??? the following assertion can fail on access to
@@ -3531,8 +3535,7 @@ package body Flow_Utility is
                | E_Label
                | E_Loop
                | E_Package
-               | E_Assertion_Level
-            =>
+               | E_Assertion_Level                        =>
                --  Nothing to do for these directly; we get them while
                --  traversing a list of statements or an identifier.
                null;
@@ -3544,12 +3547,12 @@ package body Flow_Utility is
             --  Entities related to generic units are not in SPARK itself (we
             --  analyze instantiations instead of generics).
 
-            when Formal_Object_Kind | Generic_Unit_Kind =>
+            when Formal_Object_Kind | Generic_Unit_Kind   =>
                raise Program_Error;
 
             --  Frontend rewrites calls to operators into function calls
 
-            when E_Operator =>
+            when E_Operator                               =>
                raise Program_Error;
 
             --  Entry families are not in SPARK yet
@@ -3559,7 +3562,7 @@ package body Flow_Utility is
 
             --  Abstract state cannot directly appear in expressions
 
-            when E_Abstract_State =>
+            when E_Abstract_State                         =>
                raise Program_Error;
 
             when E_Package_Body
@@ -3567,8 +3570,7 @@ package body Flow_Utility is
                | E_Return_Statement
                | E_Subprogram_Body
                | E_Task_Body
-               | E_Void
-            =>
+               | E_Void                                   =>
                raise Program_Error;
 
          end case;
@@ -3597,12 +3599,12 @@ package body Flow_Utility is
          -----------------
 
          case The_Attribute is
-            when Attribute_Access =>
+            when Attribute_Access      =>
                if Is_Specialized_Actual (N) then
                   return Do_Subprogram_Call (N);
                end if;
 
-            when Attribute_Result =>
+            when Attribute_Result      =>
                pragma Assert (Ekind (Entity (Prefix (N))) = E_Function);
 
                --  It is an over-approximation to return all components of the
@@ -3612,7 +3614,7 @@ package body Flow_Utility is
 
                return Flatten_Variable (Entity (Prefix (N)), Ctx.Scope);
 
-            when Attribute_Update =>
+            when Attribute_Update      =>
                declare
                   --  There is exactly one attribute expression, which is an
                   --  aggregate with component associations only.
@@ -3808,8 +3810,7 @@ package body Flow_Utility is
             when Attribute_Alignment
                | Attribute_Size
                | Attribute_Object_Size
-               | Attribute_Value_Size
-            =>
+               | Attribute_Value_Size  =>
                --  Attribute Size and similar do not read data from their
                --  prefix (which can be either a type name or an object
                --  reference), but for arrays and discriminated records
@@ -3890,8 +3891,7 @@ package body Flow_Utility is
             when Attribute_First
                | Attribute_Last
                | Attribute_Length
-               | Attribute_Range
-            =>
+               | Attribute_Range       =>
                declare
                   T : Entity_Id;
                   --  Type of the attribute prefix
@@ -4003,17 +4003,17 @@ package body Flow_Utility is
                end;
                return Variables;
 
-            when Attribute_Loop_Entry =>
+            when Attribute_Loop_Entry  =>
                --  Again, we ignore loop entry references, these are dealt with
                --  by Do_Pragma and Do_Loop_Statement in the CFG construction.
                return Flow_Id_Sets.Empty_Set;
 
-            when Attribute_Address =>
+            when Attribute_Address     =>
                --  The address of anything is totally separate from anything
                --  flow analysis cares about, so we ignore it.
                return Flow_Id_Sets.Empty_Set;
 
-            when Attribute_Old =>
+            when Attribute_Old         =>
                --  If Skip_Old is True, ignore the attribute. Otherwise, we
                --  just need the usual.
 
@@ -4024,8 +4024,7 @@ package body Flow_Utility is
             when Attribute_Callable
                | Attribute_Caller
                | Attribute_Count
-               | Attribute_Terminated
-            =>
+               | Attribute_Terminated  =>
                --  Add the implicit use of
                --  Ada.Task_Identification.Tasking_State
                Variables.Union
@@ -4033,7 +4032,7 @@ package body Flow_Utility is
 
             --  We also need to do the usual
 
-            when others =>
+            when others                =>
                --  We just need to do the usual
                null;
          end case;
@@ -4353,7 +4352,7 @@ package body Flow_Utility is
 
                for N of Seq loop
                   case Nkind (N) is
-                     when N_Attribute_Reference =>
+                     when N_Attribute_Reference                    =>
                         pragma Assert (Is_Attribute_Update (N));
                         pragma Assert (List_Length (Expressions (N)) = 1);
 
@@ -4373,7 +4372,7 @@ package body Flow_Utility is
                            end loop;
                         end;
 
-                     when N_Delta_Aggregate =>
+                     when N_Delta_Aggregate                        =>
                         declare
                            Component_Association : Node_Id :=
                              First (Component_Associations (N));
@@ -4390,7 +4389,7 @@ package body Flow_Utility is
                      when N_Selected_Component | N_Type_Conversion =>
                         null;
 
-                     when others =>
+                     when others                                   =>
                         raise Why.Unexpected_Node;
                   end case;
                end loop;
@@ -4549,7 +4548,7 @@ package body Flow_Utility is
             pragma Annotate (Xcov, Exempt_Off);
 
             case Nkind (N) is
-               when N_Delta_Aggregate =>
+               when N_Delta_Aggregate     =>
                   pragma Annotate (Xcov, Exempt_On, "Debugging code");
                   if Debug_Trace_Untangle_Fields then
                      Write_Str ("Updating the map at ");
@@ -4575,7 +4574,7 @@ package body Flow_Utility is
                   Untangle_Delta_Fields
                     (Component_Associations (First (Expressions (N))));
 
-               when N_Selected_Component =>
+               when N_Selected_Component  =>
                   declare
                      Comp : constant Entity_Id :=
                        Unique_Component (Entity (Selector_Name (N)));
@@ -4614,7 +4613,7 @@ package body Flow_Utility is
                      Comp_Id := Comp_Id + 1;
                   end;
 
-               when N_Type_Conversion =>
+               when N_Type_Conversion     =>
                   declare
                      New_T     : constant Entity_Id :=
                        Get_Type (Etype (N), Scope);
@@ -4696,7 +4695,7 @@ package body Flow_Utility is
                      M.Move (Source => New_Map);
                   end;
 
-               when others =>
+               when others                =>
                   raise Why.Unexpected_Node;
             end case;
 
@@ -4757,13 +4756,12 @@ package body Flow_Utility is
       function Proc (N : Node_Id) return Traverse_Result is
       begin
          case Nkind (N) is
-            when N_Ignored_In_SPARK =>
+            when N_Ignored_In_SPARK                                   =>
                return Skip;
 
             when N_Entry_Call_Statement
                | N_Function_Call
-               | N_Procedure_Call_Statement
-            =>
+               | N_Procedure_Call_Statement                           =>
                pragma
                  Assert
                    (not Ctx.Assume_In_Expression
@@ -4777,7 +4775,7 @@ package body Flow_Utility is
             --  operator parameters will be picked when processing their own
             --  nodes.
 
-            when N_Op =>
+            when N_Op                                                 =>
                pragma Assert (Is_Intrinsic_Subprogram (Entity (N)));
 
             when N_Abstract_Subprogram_Declaration
@@ -4787,14 +4785,13 @@ package body Flow_Utility is
                | N_Proper_Body
                | N_Single_Task_Declaration
                | N_Subprogram_Declaration
-               | N_Task_Type_Declaration
-            =>
+               | N_Task_Type_Declaration                              =>
                pragma Assert (not Ctx.Assume_In_Expression);
 
                --  These should allow us to go through package specs and bodies
                return Skip;
 
-            when N_Identifier | N_Expanded_Name =>
+            when N_Identifier | N_Expanded_Name                       =>
                if Present (Entity (N)) then
 
                   --  When detecting variable inputs and seeing an internal
@@ -4858,7 +4855,7 @@ package body Flow_Utility is
             --  is called on an entire type declaration and not just on its
             --  constraint expressions; such calls of Get_Variables feel wrong.
 
-            when N_Defining_Identifier =>
+            when N_Defining_Identifier                                =>
                if Is_Type (N) then
                   Variables.Union (Do_Entity (N));
                else
@@ -4867,7 +4864,7 @@ package body Flow_Utility is
                       (Is_Internal (N) or else Is_Quantified_Loop_Param (N));
                end if;
 
-            when N_Aggregate =>
+            when N_Aggregate                                          =>
                if Is_Array_Type (Etype (N)) then
                   declare
                      Array_Bounds : constant Node_Id := Aggregate_Bounds (N);
@@ -4930,7 +4927,7 @@ package body Flow_Utility is
                   end if;
                end;
 
-            when N_Delta_Aggregate =>
+            when N_Delta_Aggregate                                    =>
                declare
                   T : constant Entity_Id := Get_Type (N, Ctx.Scope);
                begin
@@ -4998,7 +4995,7 @@ package body Flow_Utility is
                   end if;
                end;
 
-            when N_Selected_Component =>
+            when N_Selected_Component                                 =>
                if Is_Subprogram_Or_Entry (Entity (Selector_Name (N))) then
 
                   --  ??? We are only getting here in the dubious mode that
@@ -5017,7 +5014,7 @@ package body Flow_Utility is
                end if;
                return Skip;
 
-            when N_Type_Conversion =>
+            when N_Type_Conversion                                    =>
                if Is_Record_Type (Get_Type (N, Ctx.Scope)) then
                   --  We use Untangle_Record_Assignment as this can deal with
                   --  view conversions.
@@ -5049,11 +5046,11 @@ package body Flow_Utility is
 
                return Skip;
 
-            when N_Attribute_Reference =>
+            when N_Attribute_Reference                                =>
                Variables.Union (Do_Attribute_Reference (N));
                return Skip;
 
-            when N_Case_Expression_Alternative =>
+            when N_Case_Expression_Alternative                        =>
                --  We special case case_expression_alternative because their
                --  discrete_choice_list may include subtype_indication, whose
                --  processing depends on the context. Here only subtypes with
@@ -5062,7 +5059,7 @@ package body Flow_Utility is
                Variables.Union (Recurse (Expression (N)));
                return Skip;
 
-            when N_Component_Association =>
+            when N_Component_Association                              =>
                declare
                   Choice : Node_Id := First (Choices (N));
                begin
@@ -5138,7 +5135,7 @@ package body Flow_Utility is
 
                return Skip;
 
-            when N_Membership_Test =>
+            when N_Membership_Test                                    =>
                --  Membership tests involving type with predicates have the
                --  predicate flow into the variable set returned.
 
@@ -5274,7 +5271,7 @@ package body Flow_Utility is
                Variables.Union (Recurse (Expression (N)));
                return Skip;
 
-            when N_Quantified_Expression =>
+            when N_Quantified_Expression                              =>
                declare
                   pragma
                     Assert
@@ -5342,7 +5339,7 @@ package body Flow_Utility is
                end;
                return Skip;
 
-            when N_Iterated_Component_Association =>
+            when N_Iterated_Component_Association                     =>
 
                pragma
                  Assert
@@ -5410,7 +5407,7 @@ package body Flow_Utility is
                end;
                return Skip;
 
-            when N_Slice =>
+            when N_Slice                                              =>
                declare
                   R : constant Node_Id := Get_Range (Discrete_Range (N));
                begin
@@ -5420,7 +5417,7 @@ package body Flow_Utility is
                Variables.Union (Recurse (Prefix (N)));
                return Skip;
 
-            when N_Allocator =>
+            when N_Allocator                                          =>
                declare
                   Expr : constant Node_Id := Expression (N);
                begin
@@ -5475,7 +5472,7 @@ package body Flow_Utility is
             --  declare items and a body_expression. We recurse into each
             --  part in turn.
 
-            when N_Expression_With_Actions =>
+            when N_Expression_With_Actions                            =>
 
                --  The declare items include object declarations and object
                --  renaming declarations; process these depending on the
@@ -5494,7 +5491,7 @@ package body Flow_Utility is
                   begin
                      while Present (Action) loop
                         case Nkind (Action) is
-                           when N_Object_Declaration =>
+                           when N_Object_Declaration          =>
                               Variables.Union
                                 (Recurse
                                    (N              => Expression (Action),
@@ -5511,7 +5508,7 @@ package body Flow_Utility is
                            --  this action list has been synthesised so we
                            --  ignore it.
 
-                           when others =>
+                           when others                        =>
                               pragma Assert (not Comes_From_Source (Action));
                         end case;
                         Next (Action);
@@ -5523,7 +5520,7 @@ package body Flow_Utility is
                      --  Variables referenced in object declarations do not
                      --  flow into inputs.
 
-                     when Inputs =>
+                     when Inputs    =>
                         null;
 
                      --  Proof inputs need to be pulled
@@ -5545,14 +5542,14 @@ package body Flow_Utility is
                Variables.Union (Recurse (Expression (N)));
                return Skip;
 
-            when N_Target_Name =>
+            when N_Target_Name                                        =>
                if Ctx.Fold_Functions = Inputs then
                   Variables.Union
                     (Flatten_Variable (Ctx.Target_Name, Ctx.Scope));
                end if;
                return Skip;
 
-            when others =>
+            when others                                               =>
                null;
          end case;
          return OK;
@@ -5908,10 +5905,10 @@ package body Flow_Utility is
          when Direct_Mapping | Record_Field =>
             return Is_Ghost_Entity (Get_Direct_Mapping_Id (F));
 
-         when Magic_String =>
+         when Magic_String                  =>
             return GG_Is_Ghost_Entity (F.Name);
 
-         when others =>
+         when others                        =>
             return False;
       end case;
    end Is_Ghost_Entity;
@@ -5926,10 +5923,10 @@ package body Flow_Utility is
          when Direct_Mapping | Record_Field =>
             return Is_Checked_Ghost_Entity (Get_Direct_Mapping_Id (F));
 
-         when Magic_String =>
+         when Magic_String                  =>
             return GG_Is_Checked_Ghost_Entity (F.Name);
 
-         when others =>
+         when others                        =>
             return False;
       end case;
    end Is_Checked_Ghost_Entity;
@@ -5951,10 +5948,10 @@ package body Flow_Utility is
                  and then Is_Constant_After_Elaboration (E);
             end;
 
-         when Magic_String =>
+         when Magic_String   =>
             return GG_Is_CAE_Entity (F.Name);
 
-         when others =>
+         when others         =>
             raise Program_Error;
       end case;
    end Is_Constant_After_Elaboration;
@@ -5969,7 +5966,7 @@ package body Flow_Utility is
 
          --  On a function call, the usual routine works correctly
 
-         when N_Function_Call =>
+         when N_Function_Call   =>
             pragma Assert (Is_Tagged_Predefined_Eq (Get_Called_Entity (N)));
 
             return Flow_Classwide.Is_Dispatching_Call (N);
@@ -6015,7 +6012,7 @@ package body Flow_Utility is
               Is_Class_Wide_Type (Etype (Left_Opnd (N)))
               or else Is_Class_Wide_Type (Etype (Right_Opnd (N)));
 
-         when others =>
+         when others            =>
             raise Program_Error;
       end case;
    end Calls_Dispatching_Equality;
@@ -6032,13 +6029,13 @@ package body Flow_Utility is
             return
               Is_Initialized_At_Elaboration (Get_Direct_Mapping_Id (F), S);
 
-         when Magic_String =>
+         when Magic_String                  =>
             return GG_Is_Initialized_At_Elaboration (F.Name);
 
-         when Synthetic_Null_Export =>
+         when Synthetic_Null_Export         =>
             return False;
 
-         when Null_Value =>
+         when Null_Value                    =>
             raise Program_Error;
       end case;
    end Is_Initialized_At_Elaboration;
@@ -6061,20 +6058,20 @@ package body Flow_Utility is
                   when E_Abstract_State =>
                      return False;
 
-                  when others =>
+                  when others           =>
                      pragma Assert (Nkind (Parent (E)) = N_Object_Declaration);
                      return Present (Expression (Parent (E)));
 
                end case;
             end;
 
-         when Magic_String =>
+         when Magic_String                  =>
             --  The fact it is a Magic_String instead of an entity means that
             --  it comes from another compilation unit (via an indirect call)
             --  and therefore has to have already been elaborated.
             return True;
 
-         when others =>
+         when others                        =>
             raise Program_Error;
       end case;
    end Is_Initialized_In_Specification;
@@ -6090,7 +6087,7 @@ package body Flow_Utility is
          case Valid_Assignment_Kinds (Nkind (Ptr)) is
             --  ??? Check the return for dereference
 
-            when N_Identifier | N_Expanded_Name =>
+            when N_Identifier | N_Expanded_Name                  =>
                return True;
 
             when N_Type_Conversion | N_Unchecked_Type_Conversion =>
@@ -6099,8 +6096,7 @@ package body Flow_Utility is
             when N_Indexed_Component
                | N_Slice
                | N_Selected_Component
-               | N_Explicit_Dereference
-            =>
+               | N_Explicit_Dereference                          =>
                Ptr := Prefix (Ptr);
          end case;
       end loop;
@@ -6127,16 +6123,16 @@ package body Flow_Utility is
                end if;
             end;
 
-         when Magic_String =>
+         when Magic_String                  =>
             return True;
 
          --  Consider anything that is not a Direct_Mapping or a Record_Field
          --  to be a variable.
 
-         when Synthetic_Null_Export =>
+         when Synthetic_Null_Export         =>
             return True;
 
-         when Null_Value =>
+         when Null_Value                    =>
             raise Program_Error;
       end case;
    end Is_Variable;
@@ -6170,7 +6166,7 @@ package body Flow_Utility is
          Context : constant Node_Id := Parent (Item);
       begin
          case Nkind (Context) is
-            when N_Package_Body =>
+            when N_Package_Body          =>
                pragma Assert (List_Containing (Item) = Declarations (Context));
                return True;
 
@@ -6189,11 +6185,11 @@ package body Flow_Utility is
             --  Compilation unit may contain a package where objects are
             --  declared, but it won't contain the objects themselves.
 
-            when N_Compilation_Unit =>
+            when N_Compilation_Unit      =>
                pragma Assert (Nkind (Item) = N_Package_Declaration);
                return Is_Private_Descendant (Defining_Entity (Item));
 
-            when others =>
+            when others                  =>
                return False;
          end case;
       end In_Body_Or_Private_Part;
@@ -6271,13 +6267,13 @@ package body Flow_Utility is
                   end if;
                end;
 
-            when Magic_String =>
+            when Magic_String                  =>
                null;
 
-            when Synthetic_Null_Export =>
+            when Synthetic_Null_Export         =>
                null;
 
-            when Null_Value =>
+            when Null_Value                    =>
                raise Program_Error;
          end case;
       end loop;
@@ -6350,7 +6346,7 @@ package body Flow_Utility is
          case Nkind (Item) is
             --  Handle a clause like "null => ...", which must be the last one
 
-            when N_Null =>
+            when N_Null                         =>
                if No (Output) then
                   Needle := Item;
                   if Present (Input) then
@@ -6372,7 +6368,7 @@ package body Flow_Utility is
 
             --  Handle clauses like "X'Result => ..." and "X.Y'Result => ..."
 
-            when N_Attribute_Reference =>
+            when N_Attribute_Reference          =>
                pragma Assert (Attribute_Name (Item) = Name_Result);
 
                if Entity (Prefix (Item)) = Output then
@@ -6385,7 +6381,7 @@ package body Flow_Utility is
 
             --  Handle clauses like "(X, X.Y, Z'Result, Z.Y'Result) => ..."
 
-            when N_Aggregate =>
+            when N_Aggregate                    =>
                declare
                   Single_Item : Node_Id := First (Expressions (Item));
 
@@ -6403,7 +6399,7 @@ package body Flow_Utility is
                               return;
                            end if;
 
-                        when N_Attribute_Reference =>
+                        when N_Attribute_Reference          =>
                            pragma
                              Assert
                                (Attribute_Name (Single_Item) = Name_Result);
@@ -6416,7 +6412,7 @@ package body Flow_Utility is
                               return;
                            end if;
 
-                        when others =>
+                        when others                         =>
                            raise Program_Error;
                      end case;
 
@@ -6426,7 +6422,7 @@ package body Flow_Utility is
                   end loop;
                end;
 
-            when others =>
+            when others                         =>
                raise Program_Error;
 
          end case;
@@ -6439,7 +6435,7 @@ package body Flow_Utility is
       procedure Find_Input (N : Node_Id) is
       begin
          case Nkind (N) is
-            when N_Null =>
+            when N_Null                         =>
                --  ??? a null RHS is syntactically possible, but this routine
                --  is not called in that case.
                raise Program_Error;
@@ -6453,7 +6449,7 @@ package body Flow_Utility is
 
             --  Handle contracts like "... => (X, X.Y)"
 
-            when N_Aggregate =>
+            when N_Aggregate                    =>
                declare
                   Item : Node_Id := First (Expressions (N));
 
@@ -6473,7 +6469,7 @@ package body Flow_Utility is
                   end loop;
                end;
 
-            when others =>
+            when others                         =>
                raise Program_Error;
          end case;
       end Find_Input;
@@ -6487,7 +6483,7 @@ package body Flow_Utility is
          case Nkind (N) is
             --  Handle empty contract, i.e. "null"
 
-            when N_Null =>
+            when N_Null      =>
                return;
 
             --  Handle non-empty contracts, e.g. "... => ..., ... => ..."
@@ -6509,7 +6505,7 @@ package body Flow_Utility is
                   end loop;
                end;
 
-            when others =>
+            when others      =>
                raise Program_Error;
          end case;
       end Scan_Contract;
@@ -6604,7 +6600,7 @@ package body Flow_Utility is
          case Nkind (Inits) is
             --  Null initialization list
 
-            when N_Null =>
+            when N_Null      =>
                Needle := Inits;
                return;
 
@@ -6644,7 +6640,7 @@ package body Flow_Utility is
                   end loop;
                end if;
 
-            when others =>
+            when others      =>
                raise Program_Error;
          end case;
       end Scan_Initialization_Spec;
@@ -6666,7 +6662,7 @@ package body Flow_Utility is
 
             --  Handle aggregate inputs like "... => (X, Y)"
 
-            when N_Aggregate =>
+            when N_Aggregate                    =>
                declare
                   RHS : Node_Id := First (Expressions (N));
 
@@ -6686,7 +6682,7 @@ package body Flow_Utility is
                   end loop;
                end;
 
-            when others =>
+            when others                         =>
                raise Program_Error;
 
          end case;
@@ -7156,11 +7152,11 @@ package body Flow_Utility is
                           (Unique_Component (Entity (Selector_Name (N))),
                            Get_Type (F, Scope));
 
-                     when N_Indexed_Component =>
+                     when N_Indexed_Component  =>
                         Partial := True;
                         exit;
 
-                     when others =>
+                     when others               =>
                         raise Program_Error;
                   end case;
                end loop;
@@ -7186,7 +7182,7 @@ package body Flow_Utility is
                      when N_Selected_Component =>
                         null;
 
-                     when N_Indexed_Component =>
+                     when N_Indexed_Component  =>
                         declare
                            Expr : Node_Id;
                         begin
@@ -7198,7 +7194,7 @@ package body Flow_Utility is
                            end loop;
                         end;
 
-                     when others =>
+                     when others               =>
                         raise Program_Error;
                   end case;
                end loop;
@@ -7270,7 +7266,7 @@ package body Flow_Utility is
       end if;
 
       case Nkind (N) is
-         when N_Aggregate =>
+         when N_Aggregate                                        =>
             pragma Assert (No (Expressions (N)));
             --  The front-end should rewrite this for us.
 
@@ -7319,12 +7315,12 @@ package body Flow_Utility is
                end loop;
             end;
 
-         when N_Delta_Aggregate =>
+         when N_Delta_Aggregate                                  =>
             M :=
               Untangle_Delta_Aggregate
                 (Expression (N), Component_Associations (N));
 
-         when N_Selected_Component =>
+         when N_Selected_Component                               =>
             pragma Annotate (Xcov, Exempt_On, "Debugging code");
             if Debug_Trace_Untangle_Record then
                Write_Line ("processing selected component");
@@ -7365,7 +7361,7 @@ package body Flow_Utility is
                end if;
             end;
 
-         when N_Identifier | N_Expanded_Name | N_Target_Name =>
+         when N_Identifier | N_Expanded_Name | N_Target_Name     =>
             pragma Annotate (Xcov, Exempt_On, "Debugging code");
             if Debug_Trace_Untangle_Record then
                Write_Str ("processing direct assignment");
@@ -7449,7 +7445,7 @@ package body Flow_Utility is
                      --  extensions.
 
                      case Nkind (N) is
-                        when N_Target_Name =>
+                        when N_Target_Name                  =>
                            if Extensions_Visible (Target_Name, Scope) then
                               RHS.Insert
                                 ((Target_Name
@@ -7472,7 +7468,7 @@ package body Flow_Utility is
 
                            end if;
 
-                        when others =>
+                        when others                         =>
                            raise Program_Error;
                      end case;
                   end if;
@@ -7517,7 +7513,7 @@ package body Flow_Utility is
                end;
             end if;
 
-         when N_Type_Conversion =>
+         when N_Type_Conversion                                  =>
             pragma Annotate (Xcov, Exempt_On, "Debugging code");
             if Debug_Trace_Untangle_Record then
                Write_Str ("processing type/view conversion");
@@ -7550,7 +7546,7 @@ package body Flow_Utility is
             --  Recurse into the expression.
             M := Recurse_On (Expression (N), Map_Root, Map_Type);
 
-         when N_Attribute_Reference =>
+         when N_Attribute_Reference                              =>
             pragma Annotate (Xcov, Exempt_On, "Debugging code");
             if Debug_Trace_Untangle_Record then
                Write_Str ("processing attribute ");
@@ -7583,10 +7579,10 @@ package body Flow_Utility is
                                  or not Extensions_Irrelevant));
                   end;
 
-               when Name_Old =>
+               when Name_Old    =>
                   M := Recurse_On (Prefix (N), Map_Root);
 
-               when others =>
+               when others      =>
                   Error_Msg_N ("cannot untangle attribute", N);
                   raise Program_Error;
             end case;
@@ -7594,8 +7590,7 @@ package body Flow_Utility is
          when N_Explicit_Dereference
             | N_Function_Call
             | N_Indexed_Component
-            | N_Unchecked_Type_Conversion
-         =>
+            | N_Unchecked_Type_Conversion                        =>
 
             --  For these we just summarize the entire blob
 
@@ -7610,7 +7605,7 @@ package body Flow_Utility is
                end loop;
             end;
 
-         when others =>
+         when others                                             =>
             declare
                S : constant String := Nkind (N)'Img;
 
@@ -7730,7 +7725,7 @@ package body Flow_Utility is
 
       for N of Seq loop
          case Valid_Assignment_Kinds (Nkind (N)) is
-            when N_Indexed_Component =>
+            when N_Indexed_Component                             =>
                declare
                   Expr : Node_Id := First (Expressions (N));
 
@@ -7741,7 +7736,7 @@ package body Flow_Utility is
                   end loop;
                end;
 
-            when N_Slice =>
+            when N_Slice                                         =>
                declare
                   R  : constant Node_Id := Get_Range (Discrete_Range (N));
                   LB : constant Node_Id := Low_Bound (R);
@@ -7751,16 +7746,16 @@ package body Flow_Utility is
                   Vars_Used.Union (Get_Vars_Wrapper (HB));
                end;
 
-            when N_Selected_Component =>
+            when N_Selected_Component                            =>
                Idx := Idx + 1;
 
             when N_Unchecked_Type_Conversion | N_Type_Conversion =>
                null;
 
-            when N_Explicit_Dereference =>
+            when N_Explicit_Dereference                          =>
                null;
 
-            when others =>
+            when others                                          =>
                raise Why.Unexpected_Node;
 
          end case;
@@ -7808,7 +7803,7 @@ package body Flow_Utility is
 
                               null;
 
-                           when Private_Part =>
+                           when Private_Part   =>
 
                               --  If Map_Root has a private part, then it might
                               --  be written by the assignment if Assigned_Ty
@@ -7829,7 +7824,7 @@ package body Flow_Utility is
                                      (Base_Ty, Assigned_Ty, Scope);
                               end if;
 
-                           when others =>
+                           when others         =>
                               raise Program_Error;
                         end case;
                      end if;
@@ -7897,7 +7892,7 @@ package body Flow_Utility is
          when N_Full_Type_Declaration =>
             Def := Type_Definition (Decl);
             case Nkind (Def) is
-               when N_Record_Definition =>
+               when N_Record_Definition       =>
                   --  Ordinary record declaration, we just check if its either
                   --  null or there are no components.
                   return
@@ -7917,11 +7912,11 @@ package body Flow_Utility is
                                  or else No (Component_List (Ext)));
                   end;
 
-               when others =>
+               when others                    =>
                   null;
             end case;
 
-         when N_Subtype_Declaration =>
+         when N_Subtype_Declaration   =>
             --  A subtype can be null too, we just check if the thing we're
             --  deriving it from is null.
             return
@@ -7929,7 +7924,7 @@ package body Flow_Utility is
               and then Is_Empty_Record_Type
                          (Entity (Subtype_Indication (Decl)));
 
-         when others =>
+         when others                  =>
             null;
       end case;
 
@@ -8161,17 +8156,13 @@ package body Flow_Utility is
                  | N_Indexed_Component
                  | N_Slice
                  | N_Selected_Component
-                 | N_Attribute_Reference
-              =>
-                Prefix (N),
+                 | N_Attribute_Reference       => Prefix (N),
 
               when N_Qualified_Expression
                  | N_Type_Conversion
-                 | N_Unchecked_Type_Conversion
-              =>
-                Expression (N),
+                 | N_Unchecked_Type_Conversion => Expression (N),
 
-              when others => raise Program_Error);
+              when others                      => raise Program_Error);
       end loop;
 
       if Nkind (N) = N_Null then
@@ -8206,17 +8197,16 @@ package body Flow_Utility is
             when N_Explicit_Dereference | N_Indexed_Component | N_Slice =>
                return Obj;
 
-            when N_Attribute_Reference =>
+            when N_Attribute_Reference                                  =>
                pragma Assert (Attribute_Name (N) = Name_Access);
                return Obj;
 
             when N_Qualified_Expression
                | N_Type_Conversion
-               | N_Unchecked_Type_Conversion
-            =>
+               | N_Unchecked_Type_Conversion                            =>
                null;
 
-            when N_Selected_Component =>
+            when N_Selected_Component                                   =>
                declare
                   Field      : constant Entity_Id :=
                     Unique_Component (Entity (Selector_Name (N)));
@@ -8245,7 +8235,7 @@ package body Flow_Utility is
                   end if;
                end;
 
-            when others =>
+            when others                                                 =>
                raise Program_Error;
          end case;
       end loop;

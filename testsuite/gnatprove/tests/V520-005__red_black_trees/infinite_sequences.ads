@@ -3,7 +3,7 @@ with Ada.Numerics.Big_Numbers.Big_Integers;
 use  Ada.Numerics.Big_Numbers.Big_Integers;
 with SPARK.Big_Intervals; use SPARK.Big_Intervals;
 
-package Infinite_Sequences with SPARK_Mode is
+package Infinite_Sequences with SPARK_Mode, Ghost is
    type Sequence is private;
    function First (S : Sequence) return Big_Positive;
    function Last (S : Sequence) return Big_Natural with

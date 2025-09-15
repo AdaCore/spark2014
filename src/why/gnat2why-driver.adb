@@ -292,7 +292,7 @@ package body Gnat2Why.Driver is
                end if;
             end if;
 
-         when Type_Kind =>
+         when Type_Kind                          =>
             pragma Assert (Entity_In_SPARK (E));
 
             if Retysp (E) = E
@@ -302,7 +302,7 @@ package body Gnat2Why.Driver is
                Generate_Type_Completion (E);
             end if;
 
-         when others =>
+         when others                             =>
             null;
       end case;
 
@@ -567,10 +567,10 @@ package body Gnat2Why.Driver is
                Entity_To_Subp_Assumption (E),
                "gnat2why.vc_generation");
 
-         when E_Package =>
+         when E_Package                             =>
             Generate_VCs_For_Package_Elaboration (E);
 
-         when Type_Kind =>
+         when Type_Kind                             =>
 
             if Ekind (E) in E_Protected_Type | E_Task_Type
               and then Entity_Spec_In_SPARK (E)
@@ -580,10 +580,10 @@ package body Gnat2Why.Driver is
                   when E_Protected_Type =>
                      Generate_VCs_For_Protected_Type (E);
 
-                  when E_Task_Type =>
+                  when E_Task_Type      =>
                      Generate_VCs_For_Task_Type (E);
 
-                  when others =>
+                  when others           =>
                      raise Program_Error;
                end case;
             elsif Entity_Spec_In_SPARK (Enclosing_Unit (E))
@@ -592,7 +592,7 @@ package body Gnat2Why.Driver is
                Generate_VCs_For_Type (E);
             end if;
 
-         when others =>
+         when others                                =>
             raise Program_Error;
       end case;
       if Num_Registered_VCs_In_Why3 > Old_Num then
@@ -955,7 +955,7 @@ package body Gnat2Why.Driver is
                function Assertion (VC : VC_Kind) return String
                is (case VC is
                      when VC_Assert => "ADA.ASSERTIONS.ASSERTION_ERROR",
-                     when others => VC_Kind'Image (VC));
+                     when others    => VC_Kind'Image (VC));
                --  Return the name of the assertion that is triggered for at
                --  the given VC.
 
@@ -966,10 +966,10 @@ package body Gnat2Why.Driver is
                     Do_Sideeffects => True);
             begin
                case Res.Res_Kind is
-                  when Res_Normal =>
+                  when Res_Normal                   =>
                      null;
 
-                  when Res_Failure =>
+                  when Res_Failure                  =>
                      Put_Line (Standard_Error, "");
                      Put_Line
                        (Standard_Error,
@@ -983,7 +983,7 @@ package body Gnat2Why.Driver is
                                (Get_Logical_Line_Number (Sloc (Res.Res_Node))),
                              0));
 
-                  when Res_Incomplete =>
+                  when Res_Incomplete               =>
                      Put_Line
                        (Standard_Error,
                         "RAC incomplete: " & To_String (Res.Res_Reason));
@@ -1092,8 +1092,7 @@ package body Gnat2Why.Driver is
                | E_Function
                | E_Procedure
                | E_Package
-               | E_Task_Type
-            =>
+               | E_Task_Type =>
                --  Packages have always a "body" in the SPARK meaning, that is,
                --  some elaboration code will always be run even for packages
                --  without explicit elaboration code in the package body
@@ -1109,7 +1108,7 @@ package body Gnat2Why.Driver is
                   end loop;
                end if;
 
-            when others =>
+            when others      =>
                null;
          end case;
       end loop;
@@ -1345,7 +1344,7 @@ package body Gnat2Why.Driver is
             case Analysis_Status'
                 (Analysis_Requested (E, With_Inlined => False))
             is
-               when Analyzed =>
+               when Analyzed                                            =>
                   Do_Generate_VCs (E);
 
                --  This subprogram is only analyzed contextually. In the case
@@ -1353,7 +1352,7 @@ package body Gnat2Why.Driver is
                --  address for example) or if all calls are in non-SPARK code,
                --  the subprogram may not be analyzed at all.
 
-               when Contextually_Analyzed =>
+               when Contextually_Analyzed                               =>
                   if Warning_Status (Warn_Info_Unrolling_Inlining) = WS_Enabled
                   then
                      Error_Msg_N
@@ -1389,7 +1388,7 @@ package body Gnat2Why.Driver is
                        (E, Hide_Info => Expr_Fun_Hidden_By_Default (E)));
                end if;
 
-            when Object_Kind =>
+            when Object_Kind                        =>
 
                if Is_Discriminal (E)
                  or else Is_Protected_Component_Or_Discr_Or_Part_Of (E)
@@ -1402,7 +1401,7 @@ package body Gnat2Why.Driver is
 
                Insert_Item (E, Mk_Item_Of_Entity (E));
 
-            when others =>
+            when others                             =>
                null;
          end case;
       end Register_Symbol;
@@ -1500,7 +1499,7 @@ package body Gnat2Why.Driver is
       Current_Subp := E;
 
       case Ekind (E) is
-         when Type_Kind =>
+         when Type_Kind                          =>
 
             --  For a type with partial and full view, both entities will be
             --  encountered here, but only one should be translated. We pick
@@ -1515,7 +1514,7 @@ package body Gnat2Why.Driver is
                Translate_Type (E);
             end if;
 
-         when Object_Kind =>
+         when Object_Kind                        =>
 
             --  Ignore discriminals, i.e. objects that occur for discriminants
             --  of record types, protected types, and task types.
@@ -1573,14 +1572,14 @@ package body Gnat2Why.Driver is
                Translate_Subprogram_Spec (E);
             end if;
 
-         when E_Loop =>
+         when E_Loop                             =>
             Translate_Loop_Entity (E);
             Generate_Empty_Axiom_Theory (E);
 
-         when E_Package =>
+         when E_Package                          =>
             null;
 
-         when others =>
+         when others                             =>
             raise Program_Error;
       end case;
 
@@ -1600,7 +1599,7 @@ package body Gnat2Why.Driver is
       if (case Ekind (E) is
             when Entry_Kind | E_Task_Type => True,
             when E_Function | E_Procedure => Is_Translated_Subprogram (E),
-            when others => False)
+            when others                   => False)
       then
          declare
             Reads       : Flow_Types.Flow_Id_Sets.Set;

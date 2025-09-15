@@ -72,17 +72,17 @@ package body Flow.Slice is
          F : Flow_Id renames FA.PDG.Get_Key (V);
       begin
          case F.Variant is
-            when Initial_Value =>
+            when Initial_Value                     =>
                Deps.Insert (V);
 
             --  Final values don't depend on each other and there is no
             --  self-dependency of V_Final, because the DFS skips the start
             --  vertex.
 
-            when Final_Value =>
+            when Final_Value                       =>
                raise Program_Error;
 
-            when In_View | Out_View =>
+            when In_View | Out_View                =>
                if IPFA then
                   Deps.Insert (V);
                end if;
@@ -90,7 +90,7 @@ package body Flow.Slice is
             when Initial_Grouping | Final_Grouping =>
                null;
 
-            when Normal_Use =>
+            when Normal_Use                        =>
                null;
          end case;
          TV := Flow_Graphs.Continue;
@@ -377,7 +377,7 @@ package body Flow.Slice is
 
          function Is_Empty (E : Entity_Id) return Boolean
          is (case Ekind (E) is
-               when E_Abstract_State => Has_Null_Refinement (E),
+               when E_Abstract_State        => Has_Null_Refinement (E),
                --  ??? The intention is to check the Refined_State of the
                --  currently analysed package, but see what happens here:
                --
@@ -391,7 +391,7 @@ package body Flow.Slice is
                when E_Constant | E_Variable =>
                  Is_Empty_Record_Type (Get_Type (E, FA.B_Scope)),
 
-               when others => raise Program_Error);
+               when others                  => raise Program_Error);
 
          ----------------
          -- Is_Written --

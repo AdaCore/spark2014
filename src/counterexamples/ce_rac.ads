@@ -214,7 +214,7 @@ package CE_RAC is
    is (case Res.Res_Kind is
          when Res_Incomplete | Res_Stuck | Res_Not_Executed =>
            To_String (Res.Res_Reason),
-         when Res_Normal | Res_Failure => "");
+         when Res_Normal | Res_Failure                      => "");
    --  Return the reason for a result ("" for failure and normal)
 
    function Do_RAC_Info return Boolean;

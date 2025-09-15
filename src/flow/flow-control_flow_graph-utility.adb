@@ -254,7 +254,7 @@ package body Flow.Control_Flow_Graph.Utility is
          A.Pretty_Print_Kind := Pretty_Print_Folded_Function_Check;
       else
          case Aspect is
-            when DIC =>
+            when DIC       =>
                A.Pretty_Print_Kind := Pretty_Print_DIC;
 
             when No_Aspect =>
@@ -667,7 +667,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Is_Assertion := Mode = Mode_Proof;
 
       case Global.Variant is
-         when In_View =>
+         when In_View  =>
             if Mode = Mode_Out then
                if G.Kind = Direct_Mapping
                  and then Is_Unconstrained_Or_Tagged_Item
@@ -707,7 +707,7 @@ package body Flow.Control_Flow_Graph.Utility is
             end if;
             A.Variables_Defined := Tmp;
 
-         when others =>
+         when others   =>
             raise Program_Error;
       end case;
 
@@ -862,7 +862,7 @@ package body Flow.Control_Flow_Graph.Utility is
             A.Variables_Defined :=
               Flow_Id_Sets.To_Set (Change_Variant (F, Normal_Use));
 
-         when Final_Value =>
+         when Final_Value   =>
             A.Variables_Used :=
               Flow_Id_Sets.To_Set (Change_Variant (F, Normal_Use));
 
@@ -870,7 +870,7 @@ package body Flow.Control_Flow_Graph.Utility is
 
             A.Is_Export := True;
 
-         when others =>
+         when others        =>
             raise Program_Error;
       end case;
 
@@ -945,7 +945,7 @@ package body Flow.Control_Flow_Graph.Utility is
             A.Variables_Defined :=
               Flow_Id_Sets.To_Set (Change_Variant (F_Ent, Normal_Use));
 
-         when Final_Value =>
+         when Final_Value   =>
             A.Is_Export :=
               A.Mode in Exported_Global_Modes and then not Is_Bound (F_Ent);
 
@@ -953,7 +953,7 @@ package body Flow.Control_Flow_Graph.Utility is
               Flow_Id_Sets.To_Set (Change_Variant (F_Ent, Normal_Use));
             A.Variables_Explicitly_Used := A.Variables_Used;
 
-         when others =>
+         when others        =>
             raise Program_Error;
       end case;
 
@@ -993,7 +993,7 @@ package body Flow.Control_Flow_Graph.Utility is
             A.Variables_Defined :=
               Flow_Id_Sets.To_Set (Change_Variant (F, Normal_Use));
 
-         when Final_Value =>
+         when Final_Value   =>
             --  Array bounds are not exported.
             A.Is_Export :=
               Mode in Exported_Global_Modes and then not Is_Bound (F);
@@ -1002,7 +1002,7 @@ package body Flow.Control_Flow_Graph.Utility is
               Flow_Id_Sets.To_Set (Change_Variant (F, Normal_Use));
             A.Variables_Explicitly_Used := A.Variables_Used;
 
-         when others =>
+         when others        =>
             raise Program_Error;
       end case;
 

@@ -116,10 +116,10 @@ package body Flow_Classwide is
 
          return
            (case Valid_Param_Mode (M) is
-              when Mode_Proof => "Proof_In",
-              when Mode_In => "Input",
+              when Mode_Proof  => "Proof_In",
+              when Mode_In     => "Input",
               when Mode_In_Out => "In_Out",
-              when Mode_Out => "Output");
+              when Mode_Out    => "Output");
       end Mode;
 
       --  Start of processing for Check_Classwide_Global
@@ -310,17 +310,17 @@ package body Flow_Classwide is
 
                begin
                   case Ekind (P) is
-                     when E_In_Parameter =>
+                     when E_In_Parameter     =>
                         Inputs.Insert (Formal);
 
-                     when E_Out_Parameter =>
+                     when E_Out_Parameter    =>
                         Outputs.Insert (Formal);
 
                      when E_In_Out_Parameter =>
                         Inputs.Insert (Formal);
                         Outputs.Insert (Formal);
 
-                     when others =>
+                     when others             =>
                         raise Program_Error;
                   end case;
                end;

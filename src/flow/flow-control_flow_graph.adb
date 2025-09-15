@@ -1242,10 +1242,10 @@ package body Flow.Control_Flow_Graph is
 
       function Get_Colour (V : Flow_Graphs.Vertex_Id) return Edge_Colours
       is (case FA.Atr (V).Execution is
-            when Normal_Execution => EC_Default,
-            when Barrier => EC_Barrier,
+            when Normal_Execution     => EC_Default,
+            when Barrier              => EC_Barrier,
             when Abnormal_Termination => EC_Abend,
-            when Infinite_Loop => EC_Inf);
+            when Infinite_Loop        => EC_Inf);
 
       --  Local variables
 
@@ -1328,18 +1328,18 @@ package body Flow.Control_Flow_Graph is
    is
    begin
       case F.Variant is
-         when Normal_Use | In_View | Out_View =>
+         when Normal_Use | In_View | Out_View   =>
             raise Program_Error;
 
-         when Initial_Value | Final_Value =>
+         when Initial_Value | Final_Value       =>
             case F.Kind is
                when Null_Value | Synthetic_Null_Export =>
                   raise Program_Error;
 
-               when Magic_String =>
+               when Magic_String                       =>
                   null;
 
-               when Direct_Mapping | Record_Field =>
+               when Direct_Mapping | Record_Field      =>
                   if F.Kind = Record_Field
                     or else F.Facet in Private_Part | Extension_Part
                   then
@@ -1358,13 +1358,13 @@ package body Flow.Control_Flow_Graph is
                                  FA.CFG.Get_Vertex (P),
                                  FA.CFG.Get_Vertex (F));
 
-                           when Final_Value =>
+                           when Final_Value   =>
                               Linkup
                                 (FA,
                                  FA.CFG.Get_Vertex (F),
                                  FA.CFG.Get_Vertex (P));
 
-                           when others =>
+                           when others        =>
                               raise Program_Error;
                         end case;
                      end;
@@ -1379,7 +1379,7 @@ package body Flow.Control_Flow_Graph is
                when Null_Value | Synthetic_Null_Export | Magic_String =>
                   raise Program_Error;
 
-               when Direct_Mapping | Record_Field =>
+               when Direct_Mapping | Record_Field                     =>
                   --  Only proceed if we don't have this vertex yet
                   if not FA.CFG.Contains (F) then
                      --  Create vertex
@@ -1395,13 +1395,13 @@ package body Flow.Control_Flow_Graph is
                                  FA.CFG.Get_Vertex (Parent_Record (F)),
                                  FA.CFG.Get_Vertex (F));
 
-                           when Final_Grouping =>
+                           when Final_Grouping   =>
                               Linkup
                                 (FA,
                                  FA.CFG.Get_Vertex (F),
                                  FA.CFG.Get_Vertex (Parent_Record (F)));
 
-                           when others =>
+                           when others           =>
                               raise Program_Error;
                         end case;
                      end if;
@@ -1424,7 +1424,8 @@ package body Flow.Control_Flow_Graph is
            --  type can be assigned in subprograms with side-effects, so we
            --  handle them very much like IN OUTs.
 
-           when E_In_Parameter =>
+           when E_In_Parameter
+           =>
              (if Is_Access_Variable (Etype (E))
                 and then (Ekind (FA.Spec_Entity) in E_Procedure | E_Entry
                           or else Is_Function_With_Side_Effects
@@ -1432,20 +1433,23 @@ package body Flow.Control_Flow_Graph is
               then Mode_In_Out
               else Mode_In),
 
-           when E_In_Out_Parameter | E_Task_Type => Mode_In_Out,
+           when E_In_Out_Parameter | E_Task_Type
+           => Mode_In_Out,
 
-           when E_Function | E_Out_Parameter => Mode_Out,
+           when E_Function | E_Out_Parameter
+           => Mode_Out,
 
-           when E_Protected_Type =>
+           when E_Protected_Type
+           =>
              (if Ekind (FA.Spec_Entity) = E_Function
               then Mode_In
               else Mode_In_Out),
 
            when E_Abstract_State | E_Constant | E_Loop_Parameter | E_Variable
-           =>
-             Mode_Invalid,
+           => Mode_Invalid,
 
-           when others => raise Program_Error);
+           when others
+           => raise Program_Error);
 
       Scop : constant Flow_Scope :=
         (if FA.Generating_Globals or else Is_In_Analyzed_Files (E)
@@ -2073,7 +2077,7 @@ package body Flow.Control_Flow_Graph is
       loop
          L := Parent (L);
          case Nkind (L) is
-            when N_Loop_Statement =>
+            when N_Loop_Statement  =>
                --  When completing the iteration of a loop without name, we
                --  complete the iteration of the first loop; when there is
                --  a name, we look for the matching loop.
@@ -2086,7 +2090,7 @@ package body Flow.Control_Flow_Graph is
             when N_Block_Statement =>
                Borrowers_Markers.Previous (Mark);
 
-            when others =>
+            when others            =>
                null;
          end case;
       end loop;
@@ -2188,11 +2192,11 @@ package body Flow.Control_Flow_Graph is
            (RTE
               (case Nkind (N) is
                  when N_Delay_Relative_Statement => RE_Clock_Time,
-                 when N_Delay_Until_Statement =>
+                 when N_Delay_Until_Statement    =>
                    (if Is_RTE (Base_Type (Etype (Expression (N))), RO_CA_Time)
                     then RO_CA_Clock_Time
                     else RE_Clock_Time),
-                 when others => raise Program_Error)));
+                 when others                     => raise Program_Error)));
 
       Pick_Generated_Info
         (Expression (N),
@@ -2246,7 +2250,7 @@ package body Flow.Control_Flow_Graph is
       loop
          L := Parent (L);
          case Nkind (L) is
-            when N_Loop_Statement =>
+            when N_Loop_Statement  =>
                --  When exiting without name, we exit at the first loop;
                --  when exiting with name, we look for the matching loop.
                if No (Name (N))
@@ -2258,7 +2262,7 @@ package body Flow.Control_Flow_Graph is
             when N_Block_Statement =>
                Borrowers_Markers.Previous (Mark);
 
-            when others =>
+            when others            =>
                null;
          end case;
       end loop;
@@ -3074,11 +3078,10 @@ package body Flow.Control_Flow_Graph is
                   | N_Subprogram_Declaration
                   | N_Package_Declaration
                   | N_Package_Body
-                  | N_Generic_Declaration
-               =>
+                  | N_Generic_Declaration                                   =>
                   return Skip;
 
-               when others =>
+               when others                                                  =>
                   return OK;
             end case;
          end Proc;
@@ -3371,8 +3374,7 @@ package body Flow.Control_Flow_Graph is
                   | N_Extended_Return_Statement
                   | N_Exit_Statement
                   | N_Goto_Statement
-                  | N_Continue_Statement
-               =>
+                  | N_Continue_Statement  =>
                   return Abandon;
 
                --  In those the EXIT/RETURN statement, if present, will
@@ -3383,11 +3385,10 @@ package body Flow.Control_Flow_Graph is
                   | N_Subprogram_Declaration
                   | N_Package_Declaration
                   | N_Package_Body
-                  | N_Generic_Declaration
-               =>
+                  | N_Generic_Declaration =>
                   return Skip;
 
-               when others =>
+               when others                =>
                   return OK;
             end case;
          end Proc_Search;
@@ -3526,10 +3527,10 @@ package body Flow.Control_Flow_Graph is
                   when N_Identifier | N_Expanded_Name =>
                      exit;
 
-                  when N_Selected_Component =>
+                  when N_Selected_Component           =>
                      Root := Prefix (Root);
 
-                  when others =>
+                  when others                         =>
                      return Null_Target;
                end case;
             end loop;
@@ -3565,16 +3566,16 @@ package body Flow.Control_Flow_Graph is
                         end if;
                      end;
 
-                  when N_Selected_Component =>
+                  when N_Selected_Component           =>
                      F :=
                        Add_Component
                          (F, Unique_Component (Entity (Selector_Name (Root))));
 
-                  when N_Indexed_Component =>
+                  when N_Indexed_Component            =>
                      pragma Assert (Root = N);
                      exit;
 
-                  when others =>
+                  when others                         =>
                      raise Program_Error;
                end case;
 
@@ -3689,7 +3690,7 @@ package body Flow.Control_Flow_Graph is
 
                         L.Append (Entity (Param_Expr));
 
-                     when others =>
+                     when others                         =>
                         --  This is not a simple entity, so just abort.
                         --  For example:
                         --
@@ -3842,7 +3843,7 @@ package body Flow.Control_Flow_Graph is
             T : constant Target := Get_Array_Index (N);
          begin
             case T.Kind is
-               when Precise =>
+               when Precise   =>
                   if Fully_Defined_In_Original_Loop (T) then
                      Fully_Initialized.Include (T.Var);
                   else
@@ -3852,7 +3853,7 @@ package body Flow.Control_Flow_Graph is
                when Imprecise =>
                   Emit_Warning (T, N);
 
-               when Invalid =>
+               when Invalid   =>
                   null;
             end case;
          end Potentially_Defined;
@@ -3864,7 +3865,7 @@ package body Flow.Control_Flow_Graph is
          function Proc_Search (N : Node_Id) return Traverse_Result is
          begin
             case Nkind (N) is
-               when N_Loop_Statement =>
+               when N_Loop_Statement                                    =>
                   if N = Current_Loop then
                      return OK;
 
@@ -3887,7 +3888,7 @@ package body Flow.Control_Flow_Graph is
                      return Skip;
                   end if;
 
-               when N_Assignment_Statement =>
+               when N_Assignment_Statement                              =>
                   Potentially_Defined (Name (N));
 
                when N_Procedure_Call_Statement | N_Entry_Call_Statement =>
@@ -3923,11 +3924,10 @@ package body Flow.Control_Flow_Graph is
                   | N_Subprogram_Declaration
                   | N_Package_Declaration
                   | N_Package_Body
-                  | N_Generic_Declaration
-               =>
+                  | N_Generic_Declaration                               =>
                   return Skip;
 
-               when others =>
+               when others                                              =>
                   null;
             end case;
             return OK;
@@ -4673,7 +4673,7 @@ package body Flow.Control_Flow_Graph is
                Create_Initial_And_Final_Vertices (E, FA);
             end if;
 
-         when others =>
+         when others     =>
             raise Program_Error;
       end case;
 
@@ -5507,11 +5507,11 @@ package body Flow.Control_Flow_Graph is
                  Get_All_Variables
                    (Expression
                       (case Get_Pragma_Id (N) is
-                         when Pragma_Check =>
+                         when Pragma_Check        =>
                            Next (First (Pragma_Argument_Associations (N))),
                          when Pragma_Loop_Variant =>
                            First (Pragma_Argument_Associations (N)),
-                         when others => raise Program_Error),
+                         when others              => raise Program_Error),
                     Scope                => FA.B_Scope,
                     Target_Name          => Null_Flow_Id,
                     Use_Computed_Globals => not FA.Generating_Globals),
@@ -6783,10 +6783,10 @@ package body Flow.Control_Flow_Graph is
                when N_Assignment_Statement =>
                   Actual := Name (Context);
 
-               when N_Object_Declaration =>
+               when N_Object_Declaration   =>
                   Actual := Defining_Identifier (Context);
 
-               when others =>
+               when others                 =>
                   raise Program_Error;
             end case;
             Handle_Parameter
@@ -6905,7 +6905,7 @@ package body Flow.Control_Flow_Graph is
                --  We completely skip these.
                null;
 
-            when others =>
+            when others                             =>
                Process_Statement (P, FA, CM, Ctx);
                Statements.Append (Union_Id (P));
 
@@ -6940,55 +6940,54 @@ package body Flow.Control_Flow_Graph is
 
       --  Deal with the statement.
       case Nkind (N) is
-         when N_Assignment_Statement =>
+         when N_Assignment_Statement                                     =>
             Do_Assignment_Statement (N, FA, CM, Ctx);
 
-         when N_Block_Statement =>
+         when N_Block_Statement                                          =>
             Do_Subprogram_Or_Block (N, FA, CM, Ctx);
 
-         when N_Case_Statement =>
+         when N_Case_Statement                                           =>
             Do_Case_Statement (N, FA, CM, Ctx);
 
-         when N_Continue_Statement =>
+         when N_Continue_Statement                                       =>
             Do_Continue_Statement (N, FA, CM, Ctx);
 
-         when N_Object_Declaration =>
+         when N_Object_Declaration                                       =>
             Do_Object_Declaration (N, FA, CM, Ctx);
 
-         when N_Delay_Relative_Statement | N_Delay_Until_Statement =>
+         when N_Delay_Relative_Statement | N_Delay_Until_Statement       =>
             Do_Delay_Statement (N, FA, CM, Ctx);
 
-         when N_Entry_Call_Statement | N_Procedure_Call_Statement =>
+         when N_Entry_Call_Statement | N_Procedure_Call_Statement        =>
             Do_Call_Statement (N, FA, CM, Ctx);
 
          when N_Exception_Declaration | N_Exception_Renaming_Declaration =>
             Do_Null_Statement (N, FA, CM, Ctx);
 
-         when N_Exit_Statement =>
+         when N_Exit_Statement                                           =>
             Do_Exit_Statement (N, FA, CM, Ctx);
 
-         when N_Extended_Return_Statement =>
+         when N_Extended_Return_Statement                                =>
             Do_Extended_Return_Statement (N, FA, CM, Ctx);
 
          when N_Full_Type_Declaration
             | N_Private_Extension_Declaration
-            | N_Subtype_Declaration
-         =>
+            | N_Subtype_Declaration                                      =>
             Do_Type_Declaration (N, FA, CM, Ctx);
 
-         when N_Handled_Sequence_Of_Statements =>
+         when N_Handled_Sequence_Of_Statements                           =>
             Do_Handled_Sequence_Of_Statements (N, FA, CM, Ctx);
 
-         when N_If_Statement =>
+         when N_If_Statement                                             =>
             Do_If_Statement (N, FA, CM, Ctx);
 
-         when N_Loop_Statement =>
+         when N_Loop_Statement                                           =>
             Do_Loop_Statement (N, FA, CM, Ctx);
 
-         when N_Null_Statement =>
+         when N_Null_Statement                                           =>
             Do_Null_Statement (N, FA, CM, Ctx);
 
-         when N_Package_Body | N_Package_Body_Stub =>
+         when N_Package_Body | N_Package_Body_Stub                       =>
 
             --  Skip bodies of generic packages and bodies of wrappers with
             --  instances of generic subprograms.
@@ -7001,40 +7000,40 @@ package body Flow.Control_Flow_Graph is
                   when E_Generic_Package =>
                      Add_Dummy_Vertex (N, FA, CM);
 
-                  when E_Package =>
+                  when E_Package         =>
                      if Is_Wrapper_Package (E) then
                         Add_Dummy_Vertex (N, FA, CM);
                      else
                         Do_Package_Body_Or_Stub (N, FA, CM, Ctx);
                      end if;
 
-                  when others =>
+                  when others            =>
                      raise Program_Error;
                end case;
             end;
 
-         when N_Package_Declaration =>
+         when N_Package_Declaration                                      =>
             Do_Package_Declaration (N, FA, CM, Ctx);
 
-         when N_Pragma =>
+         when N_Pragma                                                   =>
             Do_Pragma (N, FA, CM, Ctx);
 
-         when N_Raise_Statement =>
+         when N_Raise_Statement                                          =>
             Do_Raise_Statement (N, FA, CM, Ctx);
 
-         when N_Raise_xxx_Error =>
+         when N_Raise_xxx_Error                                          =>
             Do_Raise_xxx_Error (N, FA, CM, Ctx);
 
-         when N_Simple_Return_Statement =>
+         when N_Simple_Return_Statement                                  =>
             Do_Simple_Return_Statement (N, FA, CM, Ctx);
 
-         when N_Goto_Statement =>
+         when N_Goto_Statement                                           =>
             Do_Goto_Statement (N, FA, CM, Ctx);
 
-         when N_Label =>
+         when N_Label                                                    =>
             Do_Label (N, FA, CM, Ctx);
 
-         when others =>
+         when others                                                     =>
             Print_Node_Subtree (N);
             --  ??? To be added by various future tickets. Eventually we will
             --  replace this with a Why.Unexpected_Node exception.
@@ -7192,27 +7191,26 @@ package body Flow.Control_Flow_Graph is
          end if;
 
          case Nkind (N) is
-            when N_Aggregate =>
+            when N_Aggregate                                        =>
                return not Is_Container_Aggregate (N);
 
             when N_Delta_Aggregate | N_Identifier | N_Expanded_Name =>
                return True;
 
-            when N_Selected_Component =>
+            when N_Selected_Component                               =>
                return Is_Split_Useful (Prefix (N));
 
-            when N_Attribute_Reference =>
+            when N_Attribute_Reference                              =>
                return
                  Attribute_Name (N) = Name_Update
                  and then Is_Split_Useful (Prefix (N));
 
             when N_Expression_With_Actions
                | N_Qualified_Expression
-               | N_Type_Conversion
-            =>
+               | N_Type_Conversion                                  =>
                return Is_Split_Useful (Expression (N));
 
-            when others =>
+            when others                                             =>
                return False;
          end case;
       end Is_Split_Useful;
@@ -7301,10 +7299,10 @@ package body Flow.Control_Flow_Graph is
             when EC_Default | EC_Barrier | EC_Inf =>
                return True;
 
-            when EC_Abend =>
+            when EC_Abend                         =>
                return False;
 
-            when others =>
+            when others                           =>
                raise Program_Error;
          end case;
       end Ignore_Abend_Edges;
@@ -7699,10 +7697,10 @@ package body Flow.Control_Flow_Graph is
    function Pragma_Relevant_To_Flow (N : Node_Id) return Boolean is
    begin
       case Get_Pragma_Id (N) is
-         when Pragma_Check =>
+         when Pragma_Check                =>
             return not Is_Ignored_Pragma_Check (N);
 
-         when Pragma_Loop_Variant =>
+         when Pragma_Loop_Variant         =>
             return True;
 
          --  Do not issue a warning on invariant pragmas, as one is already
@@ -7710,8 +7708,7 @@ package body Flow.Control_Flow_Graph is
 
          when Pragma_Invariant
             | Pragma_Type_Invariant
-            | Pragma_Type_Invariant_Class
-         =>
+            | Pragma_Type_Invariant_Class =>
             return False;
 
          --  Remaining pragmas fall into two major groups:
@@ -7853,8 +7850,7 @@ package body Flow.Control_Flow_Graph is
             | Pragma_Validity_Checks
             | Pragma_Volatile_Full_Access
             | Pragma_Warnings
-            | Pragma_Weak_External
-         =>
+            | Pragma_Weak_External        =>
             return False;
 
          --  Group 1d - These pragmas are re-written and/or removed by the
@@ -7867,8 +7863,7 @@ package body Flow.Control_Flow_Graph is
             | Pragma_Compile_Time_Error
             | Pragma_Compile_Time_Warning
             | Pragma_Debug
-            | Pragma_Loop_Invariant
-         =>
+            | Pragma_Loop_Invariant       =>
             return False;
 
          --  Group 2 - Remaining pragmas, enumerated here rather than a
@@ -7997,8 +7992,7 @@ package body Flow.Control_Flow_Graph is
             | Pragma_Remote_Types
             | Pragma_Shared_Passive
             | Pragma_Lock_Free
-            | Pragma_Storage_Size
-         =>
+            | Pragma_Storage_Size         =>
             return False;
 
          --  Unknown_Pragma is treated here. We use an OTHERS case in order to
@@ -8007,7 +8001,7 @@ package body Flow.Control_Flow_Graph is
          --  issue a warning on unknown pragmas, as an error is issued in
          --  SPARK.Definition.
 
-         when others =>
+         when others                      =>
             return False;
       end case;
 
@@ -8072,7 +8066,7 @@ package body Flow.Control_Flow_Graph is
          when Kind_Subprogram | Kind_Task =>
             Body_N := Get_Body (FA.Spec_Entity);
 
-         when Kind_Package =>
+         when Kind_Package                =>
             Spec_N := Package_Specification (FA.Spec_Entity);
             Body_N :=
               (if Entity_Body_In_SPARK (FA.Spec_Entity)
@@ -8122,7 +8116,7 @@ package body Flow.Control_Flow_Graph is
                   FA.Proof_Dependencies);
             end loop;
 
-         when Kind_Task =>
+         when Kind_Task       =>
             --  Tasks see themselves as formal "in out" parameters
             --
             --  This includes, after flattening:
@@ -8131,7 +8125,7 @@ package body Flow.Control_Flow_Graph is
             --      formal in parameters)
             Create_Initial_And_Final_Vertices (FA.Spec_Entity, FA);
 
-         when Kind_Package =>
+         when Kind_Package    =>
             null;
       end case;
 
@@ -8178,7 +8172,7 @@ package body Flow.Control_Flow_Graph is
                   end loop;
                end;
 
-            when Kind_Package =>
+            when Kind_Package                =>
                --  Packages have no obvious globals, but we can extract a list
                --  of global variables used from the optional rhs of the
                --  initializes clause:
@@ -8559,11 +8553,11 @@ package body Flow.Control_Flow_Graph is
                end if;
             end;
 
-         when Kind_Task =>
+         when Kind_Task       =>
             --  No pre or post here
             null;
 
-         when Kind_Package =>
+         when Kind_Package    =>
             --  Flowgraph for initial_condition aspect
             declare
                NL : Union_Lists.List := Union_Lists.Empty_List;
@@ -8610,7 +8604,7 @@ package body Flow.Control_Flow_Graph is
             Linkup (FA, Excep_Cases_Block.Standard_Exits, FA.End_Vertex);
             Linkup (FA, Postcon_Block.Standard_Exits, FA.End_Vertex);
 
-         when Kind_Task =>
+         when Kind_Task       =>
             Do_Subprogram_Or_Block (Body_N, FA, Connection_Map, The_Context);
 
             Linkup
@@ -8623,7 +8617,7 @@ package body Flow.Control_Flow_Graph is
                FA.Helper_End_Vertex);
             Linkup (FA, FA.Helper_End_Vertex, FA.End_Vertex);
 
-         when Kind_Package =>
+         when Kind_Package    =>
             declare
                Nodes : Union_Lists.List := Union_Lists.Empty_List;
                Block : Graph_Connections;

@@ -839,7 +839,7 @@ package body SPARK_Definition.Annotate is
                         Annot.Element_Type := Etype (Elem_Formal);
                      end;
 
-                  when Maps =>
+                  when Maps        =>
                      if No (Add_Named_Subp) then
                         Error_Msg_N_If
                           ("a type with predefined map aggregates shall"
@@ -862,7 +862,7 @@ package body SPARK_Definition.Annotate is
                         Annot.Element_Type := Etype (Elem_Formal);
                      end;
 
-                  when Model =>
+                  when Model       =>
                      if No (Add_Named_Subp) and then No (Add_Unnamed_Subp) then
                         Error_Msg_N_If
                           ("a type with container aggregates shall specify"
@@ -1299,7 +1299,7 @@ package body SPARK_Definition.Annotate is
                     Aggregate_Annotations (Cont_Ty);
                begin
                   case Annot.Kind is
-                     when Sets =>
+                     when Sets  =>
                         --  The type of the parameters of Contains
                         --  should match those of the Add_Unnamed primitive.
                         --  Length should return an integer type.
@@ -1379,7 +1379,7 @@ package body SPARK_Definition.Annotate is
                            return;
                         end if;
 
-                     when Maps =>
+                     when Maps  =>
                         --  The type of the parameters/return type of Has_Key,
                         --  and Get should match those of the Add_Named
                         --  primitive. Length should return an integer type.
@@ -1500,7 +1500,7 @@ package body SPARK_Definition.Annotate is
                            return;
                         end if;
 
-                     when Seqs =>
+                     when Seqs  =>
 
                         --  The index parameter of Get and the return type of
                         --  Last should have the same base type. Store it in
@@ -1699,13 +1699,13 @@ package body SPARK_Definition.Annotate is
       end if;
       E := Entity (Arg);
       case Ekind (E) is
-         when E_Package | E_Package_Body =>
+         when E_Package | E_Package_Body                            =>
             Continue := True;
 
          when Subprogram_Kind | Type_Kind | Entry_Kind | E_Constant =>
             Continue := Ignore_SPARK_Status or else In_SPARK (E);
 
-         when Generic_Unit_Kind =>
+         when Generic_Unit_Kind                                     =>
             --  For generic units: SPARK does not verify anything,
             --  so we delay most checks on instance copy.
             --  We nevertheless check the placement to make sure the pragma
@@ -1713,7 +1713,7 @@ package body SPARK_Definition.Annotate is
             Check_Annotate_Placement (E, Prag, Prag_Name, Continue);
             Continue := False;
 
-         when others =>
+         when others                                                =>
             Error_Msg_N_If
               ("entity argument of pragma Annotate "
                & Prag_Name
@@ -1746,9 +1746,9 @@ package body SPARK_Definition.Annotate is
          Ok := False;
       else
          case Ent_Decl_Kind is
-            when Placed_At_Specification =>
+            when Placed_At_Specification      =>
                case Ekind (Ent) is
-                  when Generic_Subprogram_Kind =>
+                  when Generic_Subprogram_Kind     =>
                      --  For generic subprograms, only aspect form of
                      --  annotate will be duplicated as instances.
                      Ok := False;
@@ -1759,7 +1759,7 @@ package body SPARK_Definition.Annotate is
                         Prag);
                      return;
 
-                  when E_Generic_Package =>
+                  when E_Generic_Package           =>
                      Target := Empty;
 
                   when E_Package | Subprogram_Kind =>
@@ -1785,18 +1785,17 @@ package body SPARK_Definition.Annotate is
                             (Defining_Entity (Parent (Target)));
                      end if;
 
-                  when Entry_Kind =>
+                  when Entry_Kind                  =>
                      Target := Declaration_Node (Ent);
 
-                  when others =>
+                  when others                      =>
                      raise Program_Error;
                end case;
 
             when Placed_At_Declaration
                | Placed_At_Full_View
                | Placed_At_Private_View
-               | Placed_At_Task_Specification
-            =>
+               | Placed_At_Task_Specification =>
                pragma Assert (Ekind (Ent) in Type_Kind | E_Constant);
                Target := Unique_Entity (Ent);
          end case;
@@ -1810,7 +1809,7 @@ package body SPARK_Definition.Annotate is
                goto Not_Found;
             end if;
             case Ent_Decl_Kind is
-               when Placed_At_Specification =>
+               when Placed_At_Specification      =>
                   exit when Cursor = Target;
 
                when Placed_At_Task_Specification =>
@@ -1818,19 +1817,19 @@ package body SPARK_Definition.Annotate is
                     Nkind (Cursor) in N_Task_Type_Declaration
                     and then Unique_Defining_Entity (Cursor) = Target;
 
-               when Placed_At_Full_View =>
+               when Placed_At_Full_View          =>
                   exit when
                     Nkind (Cursor) in N_Full_Type_Declaration
                     and then Unique_Defining_Entity (Cursor) = Target;
 
-               when Placed_At_Private_View =>
+               when Placed_At_Private_View       =>
                   exit when
                     Nkind (Cursor)
                     in N_Private_Type_Declaration
                      | N_Private_Extension_Declaration
                     and then Unique_Defining_Entity (Cursor) = Target;
 
-               when Placed_At_Declaration =>
+               when Placed_At_Declaration        =>
                   exit when
                     Nkind (Cursor) = N_Object_Declaration
                     and then Unique_Defining_Entity (Cursor) = Target;
@@ -1870,7 +1869,7 @@ package body SPARK_Definition.Annotate is
                "specification of subprogram " & Source_Name (E),
                Ok);
 
-         when Entry_Kind =>
+         when Entry_Kind                                =>
             Check_Annotate_Placement
               (E,
                Placed_At_Specification,
@@ -1879,7 +1878,7 @@ package body SPARK_Definition.Annotate is
                "declaration of entry " & Source_Name (E),
                Ok);
 
-         when E_Package =>
+         when E_Package                                 =>
             Check_Annotate_Placement
               (E,
                Placed_At_Specification,
@@ -1888,7 +1887,7 @@ package body SPARK_Definition.Annotate is
                "beginning or end of package specification " & Source_Name (E),
                Ok);
 
-         when E_Generic_Package =>
+         when E_Generic_Package                         =>
             Check_Annotate_Placement
               (E,
                Placed_At_Specification,
@@ -1897,7 +1896,7 @@ package body SPARK_Definition.Annotate is
                "beginning of package specification " & Source_Name (E),
                Ok);
 
-         when E_Task_Type =>
+         when E_Task_Type                               =>
             Check_Annotate_Placement
               (E,
                Placed_At_Task_Specification,
@@ -1906,7 +1905,7 @@ package body SPARK_Definition.Annotate is
                "declaration of task " & Source_Name (E),
                Ok);
 
-         when E_Constant =>
+         when E_Constant                                =>
             Check_Annotate_Placement
               (E,
                Placed_At_Declaration,
@@ -1915,7 +1914,7 @@ package body SPARK_Definition.Annotate is
                "declaration of constant " & Source_Name (E),
                Ok);
 
-         when others =>
+         when others                                    =>
             pragma Assert (False);
       end case;
    end Check_Annotate_Placement;
@@ -2322,10 +2321,10 @@ package body SPARK_Definition.Annotate is
                   Param_String : constant String :=
                     (case Ekind (Formal) is
                        when E_In_Out_Parameter => """in out"" parameters",
-                       when E_Out_Parameter => """out"" parameters",
-                       when E_In_Parameter =>
+                       when E_Out_Parameter    => """out"" parameters",
+                       when E_In_Parameter     =>
                          "parameters of an access-to-variable type",
-                       when others => raise Program_Error);
+                       when others             => raise Program_Error);
                begin
                   Error_Msg_N_If
                     ("procedure annotated with the "
@@ -3137,10 +3136,10 @@ package body SPARK_Definition.Annotate is
                      Param_String : constant String :=
                        (case Ekind (Formal) is
                           when E_In_Out_Parameter => """in out"" parameters",
-                          when E_Out_Parameter => """out"" parameters",
-                          when E_In_Parameter =>
+                          when E_Out_Parameter    => """out"" parameters",
+                          when E_In_Parameter     =>
                             "parameters of an access-to-variable type",
-                          when others => raise Program_Error);
+                          when others             => raise Program_Error);
                   begin
                      Error_Msg_N_If
                        ("procedure annotated with the "
@@ -3881,7 +3880,7 @@ package body SPARK_Definition.Annotate is
                   when Contains =>
                      Found := False;
 
-                  when Model =>
+                  when Model    =>
                      Cursor := Etype (Annot.Entity);
                end case;
             end if;
@@ -5155,7 +5154,7 @@ package body SPARK_Definition.Annotate is
       end;
 
       case Annot.Kind is
-         when Sets =>
+         when Sets   =>
 
             --  Search for an applicable Equivalent_Elements function. It is
             --  mandatory.
@@ -5199,7 +5198,7 @@ package body SPARK_Definition.Annotate is
                        ("the cardinality of aggregates will be unknown")]);
             end if;
 
-         when Maps =>
+         when Maps   =>
 
             --  Search for applicable Equivalent_Keys and Default_Item
             --  functions. Equivalent_Keys is mandatory.
@@ -5291,7 +5290,7 @@ package body SPARK_Definition.Annotate is
                        ("the cardinality of aggregates will be unknown")]);
             end if;
 
-         when Seqs =>
+         when Seqs   =>
 
             --  Search for an applicable First function. It is mandatory.
 
@@ -5630,14 +5629,14 @@ package body SPARK_Definition.Annotate is
          begin
             if Potentially_Hidden_Entities (E) = Kind then
                case Kind is
-                  when Hide_Expr_Fun =>
+                  when Hide_Expr_Fun       =>
                      Error_Msg_N_If
                        ("Hide_Info annotation is redundant, "
                         & Source_Name (E)
                         & " is hidden by default",
                         Prag);
 
-                  when Unhide_Expr_Fun =>
+                  when Unhide_Expr_Fun     =>
                      Error_Msg_N_If
                        ("Unhide_Info annotation is redundant, "
                         & Source_Name (E)
@@ -6456,7 +6455,7 @@ package body SPARK_Definition.Annotate is
          when False =>
             return;
 
-         when True =>
+         when True  =>
             if Consider_Next then
                Insert_With_Next
                  (N, Result.Kind, Result.Pattern, Result.Reason, Preceding);

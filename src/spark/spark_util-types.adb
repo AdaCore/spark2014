@@ -168,7 +168,7 @@ package body SPARK_Util.Types is
                   return Skip;
                end if;
 
-            when others =>
+            when others                         =>
                null;
          end case;
          return OK;
@@ -257,7 +257,7 @@ package body SPARK_Util.Types is
       Size_Str    : out Unbounded_String) is
    begin
       case Nkind (Obj) is
-         when N_Indexed_Component =>
+         when N_Indexed_Component                                    =>
             declare
                Typ : constant Type_Kind_Id := Retysp (Etype (Prefix (Obj)));
             begin
@@ -270,7 +270,7 @@ package body SPARK_Util.Types is
                     & " is");
             end;
 
-         when N_Selected_Component =>
+         when N_Selected_Component                                   =>
             Record_Component_Size
               (Retysp (Etype (Prefix (Obj))),
                Entity (Selector_Name (Obj)),
@@ -306,7 +306,7 @@ package body SPARK_Util.Types is
                end if;
             end;
 
-         when others =>
+         when others                                                 =>
             raise Program_Error;
       end case;
    end Check_Known_Size_For_Object;
@@ -614,7 +614,7 @@ package body SPARK_Util.Types is
    begin
       while Present (Rep_Item) loop
          case Nkind (Rep_Item) is
-            when N_Pragma =>
+            when N_Pragma               =>
 
                --  Ignore pragmas coming from aspect specification. It will be
                --  analyzed when the corresponding aspect is found.
@@ -645,7 +645,7 @@ package body SPARK_Util.Types is
                   return;
                end if;
 
-            when others =>
+            when others                 =>
                null;
          end case;
          Next_Rep_Item (Rep_Item);
@@ -746,7 +746,7 @@ package body SPARK_Util.Types is
             T_Def : constant Node_Id := Type_Definition (N);
          begin
             case Nkind (T_Def) is
-               when N_Subtype_Indication =>
+               when N_Subtype_Indication      =>
                   raise Program_Error;
 
                when N_Derived_Type_Definition =>
@@ -760,7 +760,7 @@ package body SPARK_Util.Types is
                           else S);
                   end;
 
-               when others =>
+               when others                    =>
                   return Empty;
             end case;
          end;
@@ -1013,12 +1013,12 @@ package body SPARK_Util.Types is
         (if Present (Def_Node)
          then
            (case Nkind (Def_Node) is
-              when N_Record_Definition => Component_List (Def_Node),
+              when N_Record_Definition       => Component_List (Def_Node),
               when N_Derived_Type_Definition =>
                 (if Present (Record_Extension_Part (Def_Node))
                  then Component_List (Record_Extension_Part (Def_Node))
                  else Empty),
-              when others => raise Program_Error)
+              when others                    => raise Program_Error)
          else Empty);
    begin
       if Present (Components) then
@@ -1189,12 +1189,12 @@ package body SPARK_Util.Types is
         (if Present (Def_Node)
          then
            (case Nkind (Def_Node) is
-              when N_Record_Definition => Component_List (Def_Node),
+              when N_Record_Definition       => Component_List (Def_Node),
               when N_Derived_Type_Definition =>
                 (if Present (Record_Extension_Part (Def_Node))
                  then Component_List (Record_Extension_Part (Def_Node))
                  else Empty),
-              when others => raise Program_Error)
+              when others                    => raise Program_Error)
          else Empty);
    begin
       pragma Assert (Present (Components));
@@ -2607,10 +2607,10 @@ package body SPARK_Util.Types is
          --  Apply Test to the current type
 
          case Test (Rep_Ty) is
-            when Fail =>
+            when Fail     =>
                return False;
 
-            when Pass =>
+            when Pass     =>
                return True;
 
             when Continue =>
@@ -2891,7 +2891,7 @@ package body SPARK_Util.Types is
       function Use_Real_Eq_For_Type (E : Type_Kind_Id) return Boolean is
       begin
          case Ekind (E) is
-            when Incomplete_Or_Private_Kind =>
+            when Incomplete_Or_Private_Kind                     =>
                declare
                   Full_Type : constant Entity_Id := Unchecked_Full_Type (E);
                begin
@@ -2900,7 +2900,7 @@ package body SPARK_Util.Types is
                     and then Use_Real_Eq_For_Type (Full_Type);
                end;
 
-            when E_Record_Subtype | E_Record_Type =>
+            when E_Record_Subtype | E_Record_Type               =>
                --  The user defined equality of components of a record type
                --  will be used in the predefined equality of the enclosing
                --  composite type.
@@ -2927,7 +2927,7 @@ package body SPARK_Util.Types is
                end;
                return True;
 
-            when Array_Kind =>
+            when Array_Kind                                     =>
 
                --  Equality on unconstrained array types does not compare the
                --  bounds.
@@ -2944,10 +2944,10 @@ package body SPARK_Util.Types is
 
             --  Equality on floating point type will return True on -0 and +0
 
-            when Float_Kind =>
+            when Float_Kind                                     =>
                return False;
 
-            when others =>
+            when others                                         =>
                return False;
          end case;
       end Use_Real_Eq_For_Type;

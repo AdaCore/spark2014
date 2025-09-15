@@ -847,7 +847,7 @@ package body SPARK_Definition is
          return Boolean is
       begin
          case Nkind (Expr) is
-            when N_Attribute_Reference =>
+            when N_Attribute_Reference                       =>
                if Attribute_Name (Expr) in Name_Valid | Name_Valid_Scalars then
                   return Pol and then Is_Ent (Prefix (Expr), Old_Seen);
                elsif Attribute_Name (Expr) = Name_Old then
@@ -856,7 +856,7 @@ package body SPARK_Definition is
                   return False;
                end if;
 
-            when N_Op_Not =>
+            when N_Op_Not                                    =>
                return Valid_Guard (Right_Opnd (Expr), not Pol, Old_Seen);
 
             when N_Op_Or | N_Op_And | N_And_Then | N_Or_Else =>
@@ -870,7 +870,7 @@ package body SPARK_Definition is
                     and then Valid_Guard (Right_Opnd (Expr), Pol, Old_Seen);
                end if;
 
-            when others =>
+            when others                                      =>
                return False;
          end case;
       end Valid_Guard;
@@ -1167,17 +1167,16 @@ package body SPARK_Definition is
                      when Pragma_Postcondition
                         | Pragma_Post_Class
                         | Pragma_Contract_Cases
-                        | Pragma_Refined_Post
-                     =>
+                        | Pragma_Refined_Post =>
                         In_Contracts :=
                           Unique_Defining_Entity
                             (Find_Related_Declaration_Or_Body (Parent (N)));
                         return;
 
-                     when Pragma_Check =>
+                     when Pragma_Check        =>
                         return;
 
-                     when others =>
+                     when others              =>
                         exit;
                   end case;
                end;
@@ -1187,8 +1186,7 @@ package body SPARK_Definition is
                | N_Iterated_Component_Association
                | N_Iterator_Specification
                | N_Component_Association
-               | N_Parameter_Association
-            =>
+               | N_Parameter_Association       =>
                --  We allow procedure calls if they correspond to
                --  lemmas.
 
@@ -1241,7 +1239,7 @@ package body SPARK_Definition is
                   return;
                end if;
 
-            when N_Object_Declaration =>
+            when N_Object_Declaration          =>
                if Nkind (Parent (N)) = N_Expression_With_Actions then
                   --  Skip over declare expressions
 
@@ -1288,7 +1286,7 @@ package body SPARK_Definition is
                            when N_Selected_Component | N_Indexed_Component =>
                               N := Prefix (N);
 
-                           when N_Explicit_Dereference =>
+                           when N_Explicit_Dereference                     =>
                               --  Do not allow dereferences other than the root
                               --  one, they can make pledges fail at run-time.
 
@@ -1298,7 +1296,7 @@ package body SPARK_Definition is
                               Register_Prophecy_Save (Var);
                               return;
 
-                           when others =>
+                           when others                                     =>
                               goto Bad_Prophecy_Save;
                         end case;
                      end loop;
@@ -1314,7 +1312,7 @@ package body SPARK_Definition is
                   end;
                end if;
 
-            when others =>
+            when others                        =>
                exit;
          end case;
       end loop;
@@ -1431,13 +1429,13 @@ package body SPARK_Definition is
 
             --  Null is statically reclaimed
 
-            when N_Null =>
+            when N_Null                 =>
                raise Program_Error;
 
             --  Allocators are fine as long as the allocated value itself
             --  can be duplicated.
 
-            when N_Allocator =>
+            when N_Allocator            =>
                return
                  Nkind (Expression (N)) /= N_Qualified_Expression
                  or else Can_Be_Duplicated (Expression (N));
@@ -1448,13 +1446,13 @@ package body SPARK_Definition is
             --  Allocating function calls are fine, they necessarily return
             --  new data-structures.
 
-            when N_Function_Call =>
+            when N_Function_Call        =>
                return Is_Allocating_Function (Get_Called_Entity (N));
 
             --  Aggregates are safe if all their expressions can be
             --  duplicated.
 
-            when N_Aggregate =>
+            when N_Aggregate            =>
                declare
                   Assocs : constant List_Id := Component_Associations (N);
                   Exprs  : constant List_Id := Expressions (N);
@@ -1482,7 +1480,7 @@ package body SPARK_Definition is
 
             --  Other expressions are not handled precisely yet
 
-            when others =>
+            when others                 =>
                return False;
          end case;
       end Can_Be_Duplicated;
@@ -2197,7 +2195,7 @@ package body SPARK_Definition is
             Root : constant N_Subexpr_Id := Get_Root_Expr (Expr);
          begin
             case Nkind (Root) is
-               when N_Null | N_Function_Call =>
+               when N_Null | N_Function_Call       =>
                   null;
 
                when N_Expanded_Name | N_Identifier =>
@@ -2207,10 +2205,10 @@ package body SPARK_Definition is
                      Mark_Violation ("move of a volatile object", Expr);
                   end if;
 
-               when N_Allocator =>
+               when N_Allocator                    =>
                   Check_Subobject (Expression (Root));
 
-               when N_Aggregate =>
+               when N_Aggregate                    =>
                   --  Container aggregates do not move their components since
                   --  they reduce to procedure calls.
 
@@ -2219,16 +2217,16 @@ package body SPARK_Definition is
                      Check_Associations (Component_Associations (Root));
                   end if;
 
-               when N_Delta_Aggregate =>
+               when N_Delta_Aggregate              =>
                   Check_Subobject (Expression (Root));
                   Check_Associations (Component_Associations (Root));
 
-               when N_Extension_Aggregate =>
+               when N_Extension_Aggregate          =>
                   Check_Subobject (Ancestor_Part (Root));
                   Check_Expressions (Expressions (Root));
                   Check_Associations (Component_Associations (Root));
 
-               when N_Attribute_Reference =>
+               when N_Attribute_Reference          =>
                   if Get_Attribute_Id (Attribute_Name (Root))
                     = Attribute_Update
                   then
@@ -2236,7 +2234,7 @@ package body SPARK_Definition is
                      Check_Expressions (Expressions (Root));
                   end if;
 
-               when others =>
+               when others                         =>
                   raise Program_Error;
             end case;
          end;
@@ -2470,8 +2468,7 @@ package body SPARK_Definition is
 
             when N_Assignment_Statement
                | N_Object_Declaration
-               | N_Simple_Return_Statement
-            =>
+               | N_Simple_Return_Statement                                  =>
                return
                  Present (Expression (Context))
                  and then Expression (Context) = Subcontext
@@ -2484,14 +2481,13 @@ package body SPARK_Definition is
 
             when N_Qualified_Expression
                | N_Type_Conversion
-               | N_Unchecked_Type_Conversion
-            =>
+               | N_Unchecked_Type_Conversion                                =>
                null;
 
             --  The allocating expression occurs as the expression in another
             --  initialized allocator.
 
-            when N_Allocator =>
+            when N_Allocator                                                =>
                return True;
 
             --  The allocating expression corresponds to a component value in
@@ -2499,7 +2495,7 @@ package body SPARK_Definition is
             --  aggregates are really subprogram calls, they are never
             --  allocating contexts.
 
-            when N_Aggregate | N_Delta_Aggregate | N_Extension_Aggregate =>
+            when N_Aggregate | N_Delta_Aggregate | N_Extension_Aggregate    =>
                if Is_Container_Aggregate (Context) then
                   return False;
                end if;
@@ -2507,7 +2503,7 @@ package body SPARK_Definition is
             when N_Component_Association | N_Iterated_Component_Association =>
                null;
 
-            when others =>
+            when others                                                     =>
                return False;
          end case;
 
@@ -2676,7 +2672,7 @@ package body SPARK_Definition is
                --  before the last invariant/variant.
 
                case Nkind (N) is
-                  when N_Object_Declaration =>
+                  when N_Object_Declaration                         =>
                      if Is_Scalar_Type (Etype (Defining_Entity (N))) then
                         --  Store scalar entities defined in loops before the
                         --  invariant in Loop_Entity_Set.
@@ -2686,7 +2682,7 @@ package body SPARK_Definition is
                         Mark_Unsupported (Lim_Object_Before_Inv, N);
                      end if;
 
-                  when N_Package_Declaration =>
+                  when N_Package_Declaration                        =>
                      Mark_Unsupported (Lim_Package_Before_Inv, N);
 
                   when N_Subprogram_Declaration | N_Subprogram_Body =>
@@ -2696,7 +2692,7 @@ package body SPARK_Definition is
                   --  nested loops to check for absence of non-scalar
                   --  object declarations.
 
-                  when N_If_Statement =>
+                  when N_If_Statement                               =>
                      Check_Loop_Invariant_Placement
                        (Then_Statements (N),
                         Loop_Entity,
@@ -2726,7 +2722,7 @@ package body SPARK_Definition is
                         Goto_Labels,
                         Inv_Found);
 
-                  when N_Case_Statement =>
+                  when N_Case_Statement                             =>
                      declare
                         Cases : constant List_Id := Alternatives (N);
                         Cur   : Node_Id := First_Non_Pragma (Cases);
@@ -2743,7 +2739,7 @@ package body SPARK_Definition is
                         end loop;
                      end;
 
-                  when N_Extended_Return_Statement =>
+                  when N_Extended_Return_Statement                  =>
                      Check_Loop_Invariant_Placement
                        (Return_Object_Declarations (N),
                         Loop_Entity,
@@ -2759,10 +2755,10 @@ package body SPARK_Definition is
                         Goto_Labels,
                         Inv_Found);
 
-                  when N_Block_Statement =>
+                  when N_Block_Statement                            =>
                      raise Program_Error;
 
-                  when N_Loop_Statement =>
+                  when N_Loop_Statement                             =>
                      Check_Loop_Invariant_Placement
                        (Statements (N),
                         Loop_Entity,
@@ -2771,7 +2767,7 @@ package body SPARK_Definition is
                         Goto_Labels,
                         Inv_Found);
 
-                  when N_Goto_Statement =>
+                  when N_Goto_Statement                             =>
 
                      --  Reject goto statements crossing loop invariants
 
@@ -2779,7 +2775,7 @@ package body SPARK_Definition is
                         Mark_Unsupported (Lim_Goto_Cross_Inv, N);
                      end if;
 
-                  when N_Continue_Statement =>
+                  when N_Continue_Statement                         =>
 
                      --  Continue statements are essentially goto. Reject them
                      --  when crossing loop invariants.
@@ -2797,7 +2793,7 @@ package body SPARK_Definition is
                         Mark_Unsupported (Lim_Continue_Cross_Inv, N);
                      end if;
 
-                  when others =>
+                  when others                                       =>
                      null;
                end case;
             end if;
@@ -3009,10 +3005,10 @@ package body SPARK_Definition is
 
       case Nkind (N) is
 
-         when N_Abstract_Subprogram_Declaration =>
+         when N_Abstract_Subprogram_Declaration                      =>
             Mark_Subprogram_Declaration (N);
 
-         when N_Aggregate =>
+         when N_Aggregate                                            =>
 
             --  We assume that the node can be neither a subaggregate of
             --  a multidim array nor an index of update of a multidim array,
@@ -3081,7 +3077,7 @@ package body SPARK_Definition is
                end if;
             end if;
 
-         when N_Allocator =>
+         when N_Allocator                                            =>
             if not Is_Valid_Allocating_Context (N) then
                Mark_Violation
                  ("allocator not stored in object as "
@@ -3195,7 +3191,7 @@ package body SPARK_Definition is
                Mark_Violation (N, Etype (N));
             end if;
 
-         when N_Assignment_Statement =>
+         when N_Assignment_Statement                                 =>
             declare
                Var  : constant Node_Id := Name (N);
                Expr : constant Node_Id := Expression (N);
@@ -3291,17 +3287,17 @@ package body SPARK_Definition is
                end if;
             end;
 
-         when N_Attribute_Reference =>
+         when N_Attribute_Reference                                  =>
             Mark_Attribute_Reference (N);
 
-         when N_Binary_Op =>
+         when N_Binary_Op                                            =>
             Mark_Binary_Op (N);
 
-         when N_Block_Statement =>
+         when N_Block_Statement                                      =>
             Mark_Stmt_Or_Decl_List (Declarations (N));
             Mark (Handled_Statement_Sequence (N));
 
-         when N_Case_Expression | N_Case_Statement =>
+         when N_Case_Expression | N_Case_Statement                   =>
             if not Is_Discrete_Type
                      (Unchecked_Full_Type (Etype (Expression (N))))
             then
@@ -3311,24 +3307,24 @@ package body SPARK_Definition is
                Mark_List (Alternatives (N));
             end if;
 
-         when N_Case_Expression_Alternative =>
+         when N_Case_Expression_Alternative                          =>
             Mark_List (Discrete_Choices (N));
             Mark_Actions (N, Actions (N));
             Mark (Expression (N));
 
-         when N_Case_Statement_Alternative =>
+         when N_Case_Statement_Alternative                           =>
             Mark_List (Discrete_Choices (N));
             Mark_Stmt_Or_Decl_List (Statements (N));
 
-         when N_Code_Statement =>
+         when N_Code_Statement                                       =>
             Mark_Violation ("code statement", N);
 
-         when N_Component_Association =>
+         when N_Component_Association                                =>
             pragma Assert (No (Loop_Actions (N)));
             Mark_List (Choices (N));
             Mark_Component_Of_Component_Association (N);
 
-         when N_Iterated_Component_Association =>
+         when N_Iterated_Component_Association                       =>
             if Present (Iterator_Specification (N)) then
                Mark_Unsupported (Lim_Iterator_In_Component_Assoc, N);
             else
@@ -3338,28 +3334,28 @@ package body SPARK_Definition is
                Mark (Expression (N));
             end if;
 
-         when N_Delay_Relative_Statement | N_Delay_Until_Statement =>
+         when N_Delay_Relative_Statement | N_Delay_Until_Statement   =>
             Mark (Expression (N));
 
-         when N_Exit_Statement =>
+         when N_Exit_Statement                                       =>
             if Present (Condition (N)) then
                Mark (Condition (N));
             end if;
 
-         when N_Expanded_Name | N_Identifier =>
+         when N_Expanded_Name | N_Identifier                         =>
             Mark_Identifier_Or_Expanded_Name (N);
 
-         when N_Explicit_Dereference =>
+         when N_Explicit_Dereference                                 =>
             if not Most_Underlying_Type_In_SPARK (Etype (Prefix (N))) then
                Mark_Violation (N, From => Etype (Prefix (N)));
             else
                Mark (Prefix (N));
             end if;
 
-         when N_Extended_Return_Statement =>
+         when N_Extended_Return_Statement                            =>
             Mark_Extended_Return_Statement (N);
 
-         when N_Extension_Aggregate =>
+         when N_Extension_Aggregate                                  =>
             if not Most_Underlying_Type_In_SPARK (Etype (N)) then
                Mark_Violation (N, From => Etype (N));
 
@@ -3377,7 +3373,7 @@ package body SPARK_Definition is
                Mark_List (Component_Associations (N));
             end if;
 
-         when N_Function_Call =>
+         when N_Function_Call                                        =>
             Mark_Call (N);
 
             --  Collect handlers reachable from N if it might raise exceptions
@@ -3387,7 +3383,7 @@ package body SPARK_Definition is
                Collect_Reachable_Handlers (N);
             end if;
 
-         when N_Goto_Statement =>
+         when N_Goto_Statement                                       =>
             --  If the goto label was encountered before the goto statement,
             --  it is a backward goto. Reject it.
 
@@ -3395,16 +3391,16 @@ package body SPARK_Definition is
                Mark_Violation ("backward goto statement", N);
             end if;
 
-         when N_Handled_Sequence_Of_Statements =>
+         when N_Handled_Sequence_Of_Statements                       =>
             Mark_Handled_Statements (N);
 
-         when N_If_Expression =>
+         when N_If_Expression                                        =>
             Mark_If_Expression (N);
 
-         when N_If_Statement =>
+         when N_If_Statement                                         =>
             Mark_If_Statement (N);
 
-         when N_Indexed_Component =>
+         when N_Indexed_Component                                    =>
             if not Most_Underlying_Type_In_SPARK (Etype (Prefix (N))) then
                Mark_Violation (N, From => Etype (Prefix (N)));
             else
@@ -3412,7 +3408,7 @@ package body SPARK_Definition is
                Mark_List (Expressions (N));
             end if;
 
-         when N_Iterated_Element_Association =>
+         when N_Iterated_Element_Association                         =>
             pragma
               Annotate
                 (Xcov,
@@ -3421,7 +3417,7 @@ package body SPARK_Definition is
             Mark_Unsupported (Lim_Iterated_Element_Association, N);
             pragma Annotate (Xcov, Exempt_Off);
 
-         when N_Iterator_Specification =>
+         when N_Iterator_Specification                               =>
 
             --  Mark the iterator filter if any
 
@@ -3470,10 +3466,10 @@ package body SPARK_Definition is
 
             Mark_Entity (Defining_Identifier (N));
 
-         when N_Label =>
+         when N_Label                                                =>
             Goto_Labels.Insert (Entity (Identifier (N)));
 
-         when N_Loop_Statement =>
+         when N_Loop_Statement                                       =>
 
             --  Detect loops coming from rewritten GOTO statements (see
             --  Find_Natural_Loops in the parser) and reject them.
@@ -3514,7 +3510,7 @@ package body SPARK_Definition is
 
             Mark_Stmt_Or_Decl_List (Statements (N));
 
-         when N_Membership_Test =>
+         when N_Membership_Test                                      =>
             Mark (Left_Opnd (N));
             if Present (Alternatives (N)) then
                Mark_List (Alternatives (N));
@@ -3586,39 +3582,39 @@ package body SPARK_Definition is
 
          --  Check that the type of null is visibly an access type
 
-         when N_Null =>
+         when N_Null                                                 =>
             if not Retysp_In_SPARK (Etype (N))
               or else not Is_Access_Type (Retysp (Etype (N)))
             then
                Mark_Violation (N, Etype (N));
             end if;
 
-         when N_Object_Declaration =>
+         when N_Object_Declaration                                   =>
             Mark_Object_Declaration (N);
 
-         when N_Package_Body =>
+         when N_Package_Body                                         =>
             Mark_Package_Body (N);
 
-         when N_Package_Body_Stub =>
+         when N_Package_Body_Stub                                    =>
             Mark_Package_Body (Get_Body_From_Stub (N));
 
-         when N_Package_Declaration =>
+         when N_Package_Declaration                                  =>
             Mark_Package_Declaration (N);
 
-         when N_Pragma =>
+         when N_Pragma                                               =>
             Mark_Pragma (N);
 
-         when N_Procedure_Call_Statement =>
+         when N_Procedure_Call_Statement                             =>
             Mark_Call (N);
 
             --  Collect handlers reachable from N if it might raise exceptions
             Collect_Reachable_Handlers (N);
 
-         when N_Qualified_Expression =>
+         when N_Qualified_Expression                                 =>
             Mark (Subtype_Mark (N));
             Mark (Expression (N));
 
-         when N_Quantified_Expression =>
+         when N_Quantified_Expression                                =>
             if Present (Loop_Parameter_Specification (N)) then
                Mark_Entity
                  (Defining_Identifier (Loop_Parameter_Specification (N)));
@@ -3637,7 +3633,7 @@ package body SPARK_Definition is
             end if;
             Mark (Condition (N));
 
-         when N_Raise_Statement =>
+         when N_Raise_Statement                                      =>
             if Present (Expression (N)) then
                Mark (Expression (N));
             end if;
@@ -3657,10 +3653,10 @@ package body SPARK_Definition is
          --  them here as the code should in that case be rejected after
          --  marking.
 
-         when N_Raise_xxx_Error =>
+         when N_Raise_xxx_Error                                      =>
             null;
 
-         when N_Raise_Expression =>
+         when N_Raise_Expression                                     =>
             declare
                procedure Check_Raise_Context (Expr : Node_Id);
                --  If a raise expression occurs in a precondition, it should
@@ -3731,7 +3727,7 @@ package body SPARK_Definition is
                            --  precondition.  For example, (X and Y) protects:
                            --  (X or else raise) and (Y or else raise)
 
-                           when N_Op_And | N_And_Then =>
+                           when N_Op_And | N_And_Then         =>
                               null;
 
                            --  In or else connectors, only the right operand is
@@ -3742,7 +3738,7 @@ package body SPARK_Definition is
                            --  but not: (X or else raise) or else Y
                            --  NB. In or connectors, no operands is protected.
 
-                           when N_Or_Else =>
+                           when N_Or_Else                     =>
                               if N = Left_Opnd (P) then
                                  exit;
                               end if;
@@ -3750,12 +3746,12 @@ package body SPARK_Definition is
                            --  In conditional expressions, raise expressions
                            --  should not occur in the conditions.
 
-                           when N_If_Expression =>
+                           when N_If_Expression               =>
                               if N = First (Expressions (P)) then
                                  exit;
                               end if;
 
-                           when N_Case_Expression =>
+                           when N_Case_Expression             =>
                               if N = Expression (P) then
                                  exit;
                               end if;
@@ -3765,7 +3761,7 @@ package body SPARK_Definition is
 
                            --  Other expressions are not supported
 
-                           when others =>
+                           when others                        =>
                               exit;
                         end case;
                         N := P;
@@ -3792,19 +3788,19 @@ package body SPARK_Definition is
                end if;
             end;
 
-         when N_Range =>
+         when N_Range                                                =>
             Mark (Low_Bound (N));
             Mark (High_Bound (N));
 
-         when N_Short_Circuit =>
+         when N_Short_Circuit                                        =>
             Mark_Actions (N, Actions (N));
             Mark (Left_Opnd (N));
             Mark (Right_Opnd (N));
 
-         when N_Simple_Return_Statement =>
+         when N_Simple_Return_Statement                              =>
             Mark_Simple_Return_Statement (N);
 
-         when N_Selected_Component =>
+         when N_Selected_Component                                   =>
 
             --  In some cases, the static type of the prefix does not contain
             --  the selected component. This may happen for generic instances,
@@ -3848,7 +3844,7 @@ package body SPARK_Definition is
 
             Mark (Prefix (N));
 
-         when N_Slice =>
+         when N_Slice                                                =>
             if not Most_Underlying_Type_In_SPARK (Etype (Prefix (N))) then
                Mark_Violation (N, From => Etype (Prefix (N)));
             else
@@ -3856,7 +3852,7 @@ package body SPARK_Definition is
                Mark (Discrete_Range (N));
             end if;
 
-         when N_Subprogram_Body =>
+         when N_Subprogram_Body                                      =>
             declare
                E : constant Entity_Id := Unique_Defining_Entity (N);
             begin
@@ -3909,7 +3905,7 @@ package body SPARK_Definition is
                end if;
             end;
 
-         when N_Subprogram_Body_Stub =>
+         when N_Subprogram_Body_Stub                                 =>
             if Is_Subprogram_Stub_Without_Prior_Declaration (N) then
                Mark_Subprogram_Declaration (N);
             end if;
@@ -3918,7 +3914,7 @@ package body SPARK_Definition is
                Mark_Subprogram_Body (Get_Body_From_Stub (N));
             end if;
 
-         when N_Subprogram_Declaration =>
+         when N_Subprogram_Declaration                               =>
 
             --  Predicate function declarations should not be marked.
             --  Additionally, wrappers for inherited function with dispatching
@@ -3952,10 +3948,10 @@ package body SPARK_Definition is
                end if;
             end;
 
-         when N_Subtype_Indication =>
+         when N_Subtype_Indication                                   =>
             Mark_Subtype_Indication (N);
 
-         when N_Type_Conversion | N_Unchecked_Type_Conversion =>
+         when N_Type_Conversion | N_Unchecked_Type_Conversion        =>
             --  Mark the expression first, so that its type is marked for the
             --  rest of the checks on SPARK restrictions.
 
@@ -4155,7 +4151,7 @@ package body SPARK_Definition is
                end Scalar_Conversion;
             end if;
 
-         when N_Unary_Op =>
+         when N_Unary_Op                                             =>
             Mark_Unary_Op (N);
 
          --  Frontend sometimes declares an Itype for the base type of a type
@@ -4167,8 +4163,7 @@ package body SPARK_Definition is
          when N_Full_Type_Declaration
             | N_Private_Extension_Declaration
             | N_Private_Type_Declaration
-            | N_Subtype_Declaration
-         =>
+            | N_Subtype_Declaration                                  =>
             declare
                E : constant Type_Kind_Id := Defining_Entity (N);
             begin
@@ -4235,16 +4230,16 @@ package body SPARK_Definition is
 
          --  Supported tasking constructs
 
-         when N_Protected_Body | N_Task_Body =>
+         when N_Protected_Body | N_Task_Body                         =>
             if Is_SPARK_Tasking_Configuration then
                case Nkind (N) is
                   when N_Protected_Body =>
                      Mark_Protected_Body (N);
 
-                  when N_Task_Body =>
+                  when N_Task_Body      =>
                      Mark_Subprogram_Body (N);
 
-                  when others =>
+                  when others           =>
                      raise Program_Error;
 
                end case;
@@ -4252,17 +4247,17 @@ package body SPARK_Definition is
                Mark_Violation_In_Tasking (N);
             end if;
 
-         when N_Protected_Body_Stub | N_Task_Body_Stub =>
+         when N_Protected_Body_Stub | N_Task_Body_Stub               =>
             if Is_SPARK_Tasking_Configuration then
                Mark (Get_Body_From_Stub (N));
             else
                Mark_Violation_In_Tasking (N);
             end if;
 
-         when N_Entry_Body =>
+         when N_Entry_Body                                           =>
             Mark_Subprogram_Body (N);
 
-         when N_Entry_Call_Statement =>
+         when N_Entry_Call_Statement                                 =>
             if Is_SPARK_Tasking_Configuration then
                --  This might be either protected entry or protected subprogram
                --  call.
@@ -4271,10 +4266,10 @@ package body SPARK_Definition is
                Mark_Violation_In_Tasking (N);
             end if;
 
-         when N_Entry_Declaration =>
+         when N_Entry_Declaration                                    =>
             Mark_Subprogram_Declaration (N);
 
-         when N_With_Clause =>
+         when N_With_Clause                                          =>
 
             --  Proof requires marking of initial conditions of all withed
             --  units.
@@ -4302,19 +4297,18 @@ package body SPARK_Definition is
             | N_Conditional_Entry_Call
             | N_Requeue_Statement
             | N_Selective_Accept
-            | N_Timed_Entry_Call
-         =>
+            | N_Timed_Entry_Call                                     =>
             Mark_Violation ("tasking", N);
 
          --  Unsupported GNAT extensions
 
-         when N_Goto_When_Statement =>
+         when N_Goto_When_Statement                                  =>
             Mark_Violation ("GNAT extension for conditional goto", N);
 
-         when N_Raise_When_Statement =>
+         when N_Raise_When_Statement                                 =>
             Mark_Violation ("GNAT extension for conditional raise", N);
 
-         when N_Return_When_Statement =>
+         when N_Return_When_Statement                                =>
             Mark_Violation ("GNAT extension for conditional return", N);
 
          --  The following kinds can be safely ignored by marking
@@ -4328,14 +4322,13 @@ package body SPARK_Definition is
             | N_Formal_Type_Declaration
             | N_Operator_Symbol
             | N_Others_Choice
-            | N_String_Literal
-         =>
+            | N_String_Literal                                       =>
             null;
 
          --  Itype reference node may be needed to express the side effects
          --  associated to the creation of an Itype.
 
-         when N_Itype_Reference =>
+         when N_Itype_Reference                                      =>
             declare
                Assoc : constant Node_Id :=
                  Associated_Node_For_Itype (Itype (N));
@@ -4345,10 +4338,10 @@ package body SPARK_Definition is
                end if;
             end;
 
-         when N_Real_Literal | N_Integer_Literal =>
+         when N_Real_Literal | N_Integer_Literal                     =>
             Mark_Entity (Etype (N));
 
-         when N_Delta_Aggregate =>
+         when N_Delta_Aggregate                                      =>
             --  We do not use Mark_Array_Aggregate for arrays here. It is
             --  unnecessary as array delta-aggregates are necessarily
             --  one-dimensional, so extra aggregate node cannot be observed.
@@ -4454,13 +4447,13 @@ package body SPARK_Definition is
          --  is still being evaluated at the location of the renaming, even if
          --  there are no uses of the renaming.
 
-         when N_Object_Renaming_Declaration =>
+         when N_Object_Renaming_Declaration                          =>
             Mark (Name (N));
 
          --  N_Expression_With_Actions is only generated from declare
          --  expressions in GNATprove mode.
 
-         when N_Expression_With_Actions =>
+         when N_Expression_With_Actions                              =>
             pragma Assert (Comes_From_Source (N));
             Mark_Actions (N, Actions (N));
             Mark (Expression (N));
@@ -4469,16 +4462,15 @@ package body SPARK_Definition is
 
          when N_Expression_Function
             | N_Single_Protected_Declaration
-            | N_Single_Task_Declaration
-         =>
+            | N_Single_Task_Declaration                              =>
             raise Program_Error;
 
          --  The following nodes are never generated in GNATprove mode
 
-         when N_Compound_Statement =>
+         when N_Compound_Statement                                   =>
             raise Program_Error;
 
-         when N_Target_Name =>
+         when N_Target_Name                                          =>
             --  For now, we don't support the use of target_name inside an
             --  assignment which is a move or reborrow.
 
@@ -4514,13 +4506,13 @@ package body SPARK_Definition is
                end if;
             end;
 
-         when N_Interpolated_String_Literal =>
+         when N_Interpolated_String_Literal                          =>
             Mark_Unsupported (Lim_Interpolated_String_Literal, N);
 
-         when N_External_Initializer =>
+         when N_External_Initializer                                 =>
             Mark_Unsupported (Lim_External_Initializer, N);
 
-         when N_Continue_Statement =>
+         when N_Continue_Statement                                   =>
             if Present (Condition (N)) then
                Mark (Condition (N));
             end if;
@@ -4601,8 +4593,7 @@ package body SPARK_Definition is
             | N_Unused_At_End
             | N_Unused_At_Start
             | N_Variant
-            | N_Variant_Part
-         =>
+            | N_Variant_Part                                         =>
             raise Program_Error;
       end case;
    end Mark;
@@ -4642,7 +4633,7 @@ package body SPARK_Definition is
                when N_Subtype_Declaration | N_Full_Type_Declaration =>
                   null;
 
-               when N_Object_Declaration =>
+               when N_Object_Declaration                            =>
 
                   --  We only accept constants
 
@@ -4679,11 +4670,10 @@ package body SPARK_Definition is
 
                when N_Ignored_In_SPARK
                   | N_Itype_Reference
-                  | N_Object_Renaming_Declaration
-               =>
+                  | N_Object_Renaming_Declaration                   =>
                   null;
 
-               when N_Pragma =>
+               when N_Pragma                                        =>
                   --  With exceptions of ignored pragmas,
                   --  only pragma allowed are pragma checks in declare
                   --  expressions.
@@ -4694,7 +4684,7 @@ package body SPARK_Definition is
                      return False;
                   end if;
 
-               when others =>
+               when others                                          =>
                   return False;
             end case;
 
@@ -4976,13 +4966,13 @@ package body SPARK_Definition is
                   function Prop_Name (X : Volatile_Pragma_Id) return String is
                   begin
                      case X is
-                        when Pragma_Async_Readers =>
+                        when Pragma_Async_Readers    =>
                            return "Async_Readers";
 
-                        when Pragma_Async_Writers =>
+                        when Pragma_Async_Writers    =>
                            return "Async_Writers";
 
-                        when Pragma_Effective_Reads =>
+                        when Pragma_Effective_Reads  =>
                            return "Effective_Reads";
 
                         when Pragma_Effective_Writes =>
@@ -5334,8 +5324,7 @@ package body SPARK_Definition is
             | Attribute_Val
             | Attribute_Valid
             | Attribute_Valid_Scalars
-            | Attribute_Value
-         =>
+            | Attribute_Value                      =>
             null;
 
          --  These attributes are supported according to SPARM RM, but we
@@ -5381,12 +5370,11 @@ package body SPARK_Definition is
             | Attribute_Wide_Wide_Value
             | Attribute_Wide_Wide_Width
             | Attribute_Wide_Width
-            | Attribute_Width
-         =>
+            | Attribute_Width                      =>
             Mark_Unsupported
               (Lim_Non_Static_Attribute, N, Name => Get_Name_String (Aname));
 
-         when Attribute_Result =>
+         when Attribute_Result                     =>
 
             --  If a potentially invalid object occurs in a postcondition,
             --  emit a warning if we cannot acertain that the access is
@@ -5399,7 +5387,7 @@ package body SPARK_Definition is
          --  We assume a maximal length for the image of any type. This length
          --  may be inaccurate for identifiers.
 
-         when Attribute_Img | Attribute_Image =>
+         when Attribute_Img | Attribute_Image      =>
             --  We do not support 'Image on types which are not scalars. We
             --  could theoretically encode the attribute as an uninterpreted
             --  function for all types which do not contain subcomponents of
@@ -5436,8 +5424,7 @@ package body SPARK_Definition is
             | Attribute_Object_Size
             | Attribute_Position
             | Attribute_Size
-            | Attribute_Value_Size
-         =>
+            | Attribute_Value_Size                 =>
             if Attr_Id
                in Attribute_Alignment
                 | Attribute_Object_Size
@@ -5501,7 +5488,7 @@ package body SPARK_Definition is
          --  Only allow 'Initialized on a discriminant if it can actually not
          --  be initialized to avoid confusion as much as possible.
 
-         when Attribute_Initialized =>
+         when Attribute_Initialized                =>
             if not Retysp_In_SPARK (Etype (P)) then
                Mark_Violation (N, From => Etype (P));
 
@@ -5541,7 +5528,7 @@ package body SPARK_Definition is
          --  domain from Prog to Pred, as this is not supported in the
          --  translation currently.
 
-         when Attribute_Address =>
+         when Attribute_Address                    =>
 
             declare
                M : Node_Id := Parent (N);
@@ -5631,7 +5618,7 @@ package body SPARK_Definition is
                end;
             end if;
 
-         when Attribute_Access =>
+         when Attribute_Access                     =>
             --  We support 'Access if it is directly prefixed by a
             --  subprogram name.
 
@@ -5829,7 +5816,7 @@ package body SPARK_Definition is
                return;
             end if;
 
-         when others =>
+         when others                               =>
             Mark_Violation
               ("attribute """
                & Standard_Ada_Case (Get_Name_String (Aname))
@@ -6019,7 +6006,7 @@ package body SPARK_Definition is
                   pragma Annotate (Xcov, Exempt_Off);
                end if;
 
-            when N_Multiplying_Operator =>
+            when N_Multiplying_Operator   =>
                if Nkind (Left_Opnd (N)) in N_Multiplying_Operator
                  and then Paren_Count (Left_Opnd (N)) = 0
                then
@@ -6041,7 +6028,7 @@ package body SPARK_Definition is
                   pragma Annotate (Xcov, Exempt_Off);
                end if;
 
-            when others =>
+            when others                   =>
                null;
          end case;
       end if;
@@ -6116,7 +6103,7 @@ package body SPARK_Definition is
                  (Msg           =>
                     (case Nkind (Actual) is
                        when N_Function_Call => "volatile function call",
-                       when others => "volatile object")
+                       when others          => "volatile object")
                     & " as actual",
                   N             => Actual,
                   Code          => EC_Volatile_Non_Interfering_Context,
@@ -6172,11 +6159,11 @@ package body SPARK_Definition is
             declare
                Mode : constant String :=
                  (case Ekind (Formal) is
-                    when E_In_Parameter =>
+                    when E_In_Parameter     =>
                       """in"" parameter of an access-to-variable type",
                     when E_In_Out_Parameter => """in out"" parameter",
-                    when E_Out_Parameter => """out"" parameter",
-                    when others => raise Program_Error);
+                    when E_Out_Parameter    => """out"" parameter",
+                    when others             => raise Program_Error);
                Root : constant Entity_Id :=
                  (if Is_Path_Expression (Actual)
                   then Get_Root_Object (Actual, Through_Traversal => False)
@@ -6333,7 +6320,7 @@ package body SPARK_Definition is
 
                   --  Accept external calls prefixed with library-level objects
 
-                  when E_Variable =>
+                  when E_Variable  =>
                      Mark (Prefix (Name (N)));
 
                   when E_Component =>
@@ -6341,7 +6328,7 @@ package body SPARK_Definition is
                        (Lim_Protected_Operation_Of_Component, N);
                      return;
 
-                  when others =>
+                  when others      =>
                      raise Program_Error;
                end case;
             else
@@ -6366,10 +6353,10 @@ package body SPARK_Definition is
 
                   --  Suspension on library-level objects is fine
 
-                  when E_Variable =>
+                  when E_Variable  =>
                      null;
 
-                  when others =>
+                  when others      =>
                      raise Program_Error;
                end case;
             else
@@ -6653,8 +6640,8 @@ package body SPARK_Definition is
                        (N,
                         (case G.Kind is
                            when Direct_Mapping => Source_Name (G.Node),
-                           when Magic_String => To_String (G.Name),
-                           when others => raise Program_Error),
+                           when Magic_String   => To_String (G.Name),
+                           when others         => raise Program_Error),
                         Add_Cont => True);
                   end loop;
                end;
@@ -6806,21 +6793,20 @@ package body SPARK_Definition is
                         | N_Case_Expression_Alternative
                         | N_Quantified_Expression
                         | N_Expression_With_Actions
-                        | N_Parameter_Association
-                     =>
+                        | N_Parameter_Association       =>
                         null;
 
-                     when N_If_Expression =>
+                     when N_If_Expression               =>
                         if N = First (Expressions (P)) then
                            return False;
                         end if;
 
-                     when N_Case_Expression =>
+                     when N_Case_Expression             =>
                         if N = Expression (P) then
                            return False;
                         end if;
 
-                     when N_Function_Call =>
+                     when N_Function_Call               =>
                         if No (Get_Called_Entity (P))
                           or else not Is_From_Hardcoded_Unit
                                         (Get_Called_Entity (P), Cut_Operations)
@@ -6828,7 +6814,7 @@ package body SPARK_Definition is
                            return False;
                         end if;
 
-                     when others =>
+                     when others                        =>
                         return False;
                   end case;
                   N := P;
@@ -7226,7 +7212,7 @@ package body SPARK_Definition is
                --  initialization of a component implies the default-
                --  initialization of the array, so we only check the latter.
 
-               when Array_Kind =>
+               when Array_Kind  =>
                   if not Component_Inherits_Relaxed_Initialization (N)
                     and then Default_Initialization (Typ)
                              not in Full_Default_Initialization
@@ -7246,7 +7232,7 @@ package body SPARK_Definition is
                      Touch_Record_Fields_For_Default_Init (Typ);
                   end if;
 
-               when others =>
+               when others      =>
                   raise Program_Error;
             end case;
          end;
@@ -7902,7 +7888,7 @@ package body SPARK_Definition is
 
                if not Is_Function_With_Side_Effects (Id) then
                   case Ekind (Formal) is
-                     when E_Out_Parameter =>
+                     when E_Out_Parameter    =>
                         Mark_Violation ("function with ""out"" parameter", Id);
 
                      when E_In_Out_Parameter =>
@@ -7913,10 +7899,10 @@ package body SPARK_Definition is
                              ("function with ""in out"" parameter", Id);
                         end if;
 
-                     when E_In_Parameter =>
+                     when E_In_Parameter     =>
                         null;
 
-                     when others =>
+                     when others             =>
                         raise Program_Error;
                   end case;
                end if;
@@ -8182,13 +8168,13 @@ package body SPARK_Definition is
                      begin
                         while Present (Exc) loop
                            case Nkind (Exc) is
-                              when N_Others_Choice =>
+                              when N_Others_Choice                =>
                                  null;
 
                               when N_Identifier | N_Expanded_Name =>
                                  Register_Exception (Entity (Exc));
 
-                              when others =>
+                              when others                         =>
                                  raise Program_Error;
                            end case;
                            Next (Exc);
@@ -8263,7 +8249,7 @@ package body SPARK_Definition is
                                    & "which is not a stand-alone objects";
                               begin
                                  case Ekind (Ent) is
-                                    when Protected_Kind =>
+                                    when Protected_Kind            =>
                                        Mark_Violation
                                          ("reference to the implicit self "
                                           & "parameter of the protected "
@@ -8277,7 +8263,7 @@ package body SPARK_Definition is
                                     when Constant_Or_Variable_Kind =>
                                        null;
 
-                                    when others =>
+                                    when others                    =>
                                        Mark_Violation
                                          ("reference to &, output of &, in the"
                                           & " expression of its "
@@ -8340,7 +8326,7 @@ package body SPARK_Definition is
                            when N_Others_Choice =>
                               null;
 
-                           when others =>
+                           when others          =>
                               Mark (Guard);
                         end case;
                      end;
@@ -8365,7 +8351,7 @@ package body SPARK_Definition is
                                     Exit_Kind);
                               end if;
 
-                           when N_Aggregate =>
+                           when N_Aggregate  =>
                               Except :=
                                 Expression
                                   (First (Component_Associations (Exit_Kind)));
@@ -8383,7 +8369,7 @@ package body SPARK_Definition is
                                     Except);
                               end if;
 
-                           when others =>
+                           when others       =>
                               raise Program_Error;
                         end case;
                      end;
@@ -8585,13 +8571,13 @@ package body SPARK_Definition is
                      Mark_Function_Specification (Id);
                   end if;
 
-               when E_Function =>
+               when E_Function        =>
                   Mark_Function_Specification (Id);
 
-               when E_Entry_Family =>
+               when E_Entry_Family    =>
                   Mark_Unsupported (Lim_Entry_Family, Id);
 
-               when others =>
+               when others            =>
                   null;
             end case;
 
@@ -8825,7 +8811,7 @@ package body SPARK_Definition is
                            end if;
 
                            case Nkind (Above) is
-                              when N_Function_Call =>
+                              when N_Function_Call           =>
                                  --  Sanity checking: check cursor is among the
                                  --  actuals. There should be no other
                                  --  subexpressions in a function call
@@ -8852,10 +8838,10 @@ package body SPARK_Definition is
                                       Call_Notional_Status (Above);
                                  begin
                                     case Status is
-                                       when None =>
+                                       when None     =>
                                           goto End_Propagation;
 
-                                       when Result =>
+                                       when Result   =>
                                           goto Continue_Propagation;
 
                                        when Arg_Only =>
@@ -8863,7 +8849,7 @@ package body SPARK_Definition is
                                     end case;
                                  end;
 
-                              when N_Attribute_Reference =>
+                              when N_Attribute_Reference     =>
                                  --  Notional type propagates through
                                  --  'Old/'Loop_Entry/'Access.
 
@@ -8875,7 +8861,7 @@ package body SPARK_Definition is
                                     raise Program_Error;
                                  end if;
 
-                              when N_If_Expression =>
+                              when N_If_Expression           =>
                                  --  Notional type propagates through dependent
                                  --  expressions of if expressions.
 
@@ -8904,7 +8890,7 @@ package body SPARK_Definition is
                                  end;
                                  goto Continue_Propagation;
 
-                              when N_Case_Expression =>
+                              when N_Case_Expression         =>
                                  --  Notional type propagates through dependent
                                  --  expressions of case expressions.
 
@@ -8938,21 +8924,20 @@ package body SPARK_Definition is
                                  pragma Assert (Cursor = Expression (Above));
                                  goto Continue_Propagation;
 
-                              when N_Explicit_Dereference =>
+                              when N_Explicit_Dereference    =>
                                  pragma Assert (Prefix (Above) = Cursor);
                                  goto Continue_Propagation;
 
                               when N_Type_Conversion
                                  | N_Qualified_Expression
-                                 | N_Selected_Component
-                              =>
+                                 | N_Selected_Component      =>
                                  --  Type conversion blocks propagation of
                                  --  notional type, so do extracting a field.
 
                                  pragma Assert (Prefix (Above) = Cursor);
                                  goto End_Propagation;
 
-                              when N_Op_Eq =>
+                              when N_Op_Eq                   =>
                                  --  The equal operator blocks propagation of
                                  --  notional type, but takes it into account,
                                  --  unless the type is an (anonymous) access.
@@ -8967,7 +8952,7 @@ package body SPARK_Definition is
                                     goto Dispatching_Root;
                                  end if;
 
-                              when N_Membership_Test =>
+                              when N_Membership_Test         =>
                                  --  Membership tests against values implicitly
                                  --  use dispatching equality, the behavior
                                  --  is similar to the equal operator.
@@ -8998,7 +8983,7 @@ package body SPARK_Definition is
                                     goto Dispatching_Root;
                                  end if;
 
-                              when others =>
+                              when others                    =>
 
                                  --  Other cases are unexpected and we are not
                                  --  sure what should happen.
@@ -9046,7 +9031,7 @@ package body SPARK_Definition is
             is
             begin
                case Nkind (Root) is
-                  when N_Function_Call =>
+                  when N_Function_Call                            =>
                      if Call_Notional_Status (Root) = None then
                         --  This one should not even type-check in the first
                         --  place.
@@ -9085,10 +9070,10 @@ package body SPARK_Definition is
 
                      raise Program_Error;
 
-                  when N_Explicit_Dereference =>
+                  when N_Explicit_Dereference                     =>
                      Replace_Calls (Prefix (Root), Formals, Controlling);
 
-                  when N_Attribute_Reference =>
+                  when N_Attribute_Reference                      =>
                      if Attribute_Name (Root)
                         in Name_Old | Name_Loop_Entry | Name_Access
                      then
@@ -9101,12 +9086,12 @@ package body SPARK_Definition is
                         raise Program_Error;
                      end if;
 
-                  when N_Identifier | N_Expanded_Name =>
+                  when N_Identifier | N_Expanded_Name             =>
                      if not Formals.Contains (Entity (Root)) then
                         raise Program_Error;
                      end if;
 
-                  when N_If_Expression =>
+                  when N_If_Expression                            =>
                      declare
                         Dep_Expr : Node_Id := First (Expressions (Root));
                      begin
@@ -9122,7 +9107,7 @@ package body SPARK_Definition is
 
                      end;
 
-                  when N_Case_Expression =>
+                  when N_Case_Expression                          =>
                      declare
                         Dep_Alt : Node_Id := First (Alternatives (Root));
                      begin
@@ -9134,10 +9119,10 @@ package body SPARK_Definition is
                         end loop;
                      end;
 
-                  when N_Expression_With_Actions =>
+                  when N_Expression_With_Actions                  =>
                      Replace_Calls (Expression (Root), Formals, Controlling);
 
-                  when N_Op_Eq =>
+                  when N_Op_Eq                                    =>
                      --  Treat dispatching equality as a dispatching function
                      --  call.
 
@@ -9145,7 +9130,7 @@ package body SPARK_Definition is
                      Replace_Calls (Left_Opnd (Root), Formals, Controlling);
                      Replace_Calls (Right_Opnd (Root), Formals, Controlling);
 
-                  when N_Membership_Test =>
+                  when N_Membership_Test                          =>
                      --  Membership test may implicitly use equality
 
                      Set_Call_Simulates_Contract_Dispatch (Root);
@@ -9166,7 +9151,7 @@ package body SPARK_Definition is
                         end loop;
                      end;
 
-                  when others =>
+                  when others                                     =>
                      --  We do not know what should happen in other cases
 
                      raise Program_Error;
@@ -9237,7 +9222,7 @@ package body SPARK_Definition is
                if not Visited.Contains (N) then
                   Visited.Insert (N);
                   case Nkind (N) is
-                     when N_If_Expression =>
+                     when N_If_Expression           =>
                         declare
                            Then_Expr : constant Node_Id :=
                              Next (First (Expressions (N)));
@@ -9250,7 +9235,7 @@ package body SPARK_Definition is
                            Set_Etype (N, Etype (Then_Expr));
                         end;
 
-                     when N_Case_Expression =>
+                     when N_Case_Expression         =>
                         declare
                            Dep_Alt  : Node_Id := First (Alternatives (N));
                            Dep_Expr : constant Node_Id := Expression (Dep_Alt);
@@ -9270,7 +9255,7 @@ package body SPARK_Definition is
                            Set_Etype (N, Etype (Dep_Expr));
                         end;
 
-                     when others =>
+                     when others                    =>
                         null;
                   end case;
                end if;
@@ -9983,7 +9968,7 @@ package body SPARK_Definition is
                            --!format on
                         end;
 
-                     when others =>
+                     when others                         =>
                         null;
                   end case;
 
@@ -10291,14 +10276,14 @@ package body SPARK_Definition is
                   Ty    : Opt_Type_Kind_Id := Empty;
                begin
                   case Nkind (Subty) is
-                     when N_Attribute_Reference =>
+                     when N_Attribute_Reference          =>
                         pragma Assert (Attribute_Name (Subty) = Name_Class);
                         Ty := Entity (Prefix (Subty));
 
                      when N_Identifier | N_Expanded_Name =>
                         Ty := Entity (Subty);
 
-                     when N_Subtype_Indication =>
+                     when N_Subtype_Indication           =>
 
                         --  Constrained class-wide types are not supported yet
                         --  as it is unclear wether we should do discriminant
@@ -10306,7 +10291,7 @@ package body SPARK_Definition is
 
                         Mark_Unsupported (Lim_Constrained_Classwide, E);
 
-                     when others =>
+                     when others                         =>
                         raise Program_Error;
                   end case;
 
@@ -11840,24 +11825,23 @@ package body SPARK_Definition is
       --  Mark differently each kind of entity
 
       case Ekind (E) is
-         when Type_Kind =>
+         when Type_Kind                                       =>
             Mark_Type_Entity (E);
 
-         when Subprogram_Kind =>
+         when Subprogram_Kind                                 =>
             Mark_Subprogram_Entity (E);
 
-         when E_Constant | E_Variable =>
+         when E_Constant | E_Variable                         =>
             begin
                case Nkind (Parent (E)) is
-                  when N_Object_Declaration =>
+                  when N_Object_Declaration             =>
                      Mark_Object_Entity (E);
 
                   when N_Iterator_Specification
-                     | N_Iterated_Component_Association
-                  =>
+                     | N_Iterated_Component_Association =>
                      Mark_Parameter_Entity (E);
 
-                  when others =>
+                  when others                           =>
                      raise Program_Error;
                end case;
             end;
@@ -11865,18 +11849,18 @@ package body SPARK_Definition is
          when E_Discriminant | E_Loop_Parameter | Formal_Kind =>
             Mark_Parameter_Entity (E);
 
-         when Named_Kind =>
+         when Named_Kind                                      =>
             null;
 
          --  The identifier of a loop is used to generate the needed
          --  exception declarations in the translation phase.
 
-         when E_Loop =>
+         when E_Loop                                          =>
             null;
 
          --  Mark_Entity is called on all abstract state variables
 
-         when E_Abstract_State =>
+         when E_Abstract_State                                =>
 
             --  If an abstract state is a Part_Of constituent of a single
             --  concurrent object then raise a violation.
@@ -11885,10 +11869,10 @@ package body SPARK_Definition is
                Mark_Unsupported (Lim_Abstract_State_Part_Of_Concurrent_Obj, E);
             end if;
 
-         when Entry_Kind =>
+         when Entry_Kind                                      =>
             Mark_Subprogram_Entity (E);
 
-         when others =>
+         when others                                          =>
             Ada.Text_IO.Put_Line
               ("[Mark_Entity] kind =" & Entity_Kind'Image (Ekind (E)));
             raise Program_Error;
@@ -12105,10 +12089,10 @@ package body SPARK_Definition is
             --
             --  Named numbers also do not require any translation.
 
-            when E_Abstract_State | Named_Kind =>
+            when E_Abstract_State | Named_Kind  =>
                null;
 
-            when E_Record_Type =>
+            when E_Record_Type                  =>
 
                Entity_List.Append (E);
 
@@ -12132,7 +12116,7 @@ package body SPARK_Definition is
                   end if;
                end if;
 
-            when others =>
+            when others                         =>
 
                --  Do not translate objects from declare expressions. They
                --  are handled as local objects.
@@ -12201,13 +12185,13 @@ package body SPARK_Definition is
          begin
             loop
                case Nkind (Choice) is
-                  when N_Others_Choice =>
+                  when N_Others_Choice                =>
                      null;
 
                   when N_Identifier | N_Expanded_Name =>
                      Register_Exception (Entity (Choice));
 
-                  when others =>
+                  when others                         =>
                      raise Program_Error;
                end case;
                Next (Choice);
@@ -12360,7 +12344,7 @@ package body SPARK_Definition is
       E : constant Entity_Id := Entity (N);
    begin
       case Ekind (E) is
-         when Object_Kind =>
+         when Object_Kind                                                    =>
             if Ekind (E) in E_Variable | E_Constant | Formal_Kind then
                if not In_SPARK (E) then
                   Mark_Violation (N, From => E);
@@ -12448,25 +12432,25 @@ package body SPARK_Definition is
                Mark_Violation (N, From => E);
             end if;
 
-         when E_Enumeration_Literal =>
+         when E_Enumeration_Literal                                          =>
             null;
 
          --  Loop identifiers appear in the "X'Loop_Entry [(loop_name)]"
          --  expressions.
 
-         when E_Loop =>
+         when E_Loop                                                         =>
             null;
 
          --  Abstract state entities are passed directly to Mark_Entity
 
-         when E_Abstract_State =>
+         when E_Abstract_State                                               =>
             raise Program_Error;
 
          --  Entry index is only visible from an entry family spec and body,
          --  and families are not supported in SPARK (yet), so we should never
          --  need to mark any entry index.
 
-         when E_Entry_Index_Parameter =>
+         when E_Entry_Index_Parameter                                        =>
             raise Program_Error;
 
          --  Identifiers that we do not expect to mark (or that do not appear
@@ -12484,8 +12468,7 @@ package body SPARK_Definition is
             | E_Task_Body
             | E_Void
             | Generic_Unit_Kind
-            | E_Assertion_Level
-         =>
+            | E_Assertion_Level                                              =>
             raise Program_Error;
       end case;
    end Mark_Identifier_Or_Expanded_Name;
@@ -13068,7 +13051,7 @@ package body SPARK_Definition is
          --                  [Check   =>] Boolean_Expression
          --                [,[Message =>] String_Expression]);
 
-         when Pragma_Check =>
+         when Pragma_Check                   =>
             if not Is_Ignored_Pragma_Check (N) then
                Mark (Get_Pragma_Arg (Arg2));
 
@@ -13098,7 +13081,7 @@ package body SPARK_Definition is
 
          --    CHANGE_DIRECTION ::= Increases | Decreases
 
-         when Pragma_Loop_Variant =>
+         when Pragma_Loop_Variant            =>
             declare
                Variant : Node_Id := First (Pragma_Argument_Associations (N));
 
@@ -13136,7 +13119,7 @@ package body SPARK_Definition is
          --  Pragma Overflow_Mode is taken into account when used as
          --  configuration pragma in the main unit.
 
-         when Pragma_Overflow_Mode =>
+         when Pragma_Overflow_Mode           =>
             if Nkind (Parent (N)) = N_Compilation_Unit then
                Sem_Prag.Set_Overflow_Mode (N);
 
@@ -13152,30 +13135,30 @@ package body SPARK_Definition is
                Warning_Msg_N (Warn_Pragma_Overflow_Mode, N, First => True);
             end if;
 
-         when Pragma_Attach_Handler =>
+         when Pragma_Attach_Handler          =>
             --  Arg1 is the handler name; check if it is in SPARK, because
             --  SPARK code should not reference non-SPARK code.
             --  Arg2 is the interrupt ID.
             Mark (Expression (Arg1));
             Mark (Expression (Arg2));
 
-         when Pragma_Interrupt_Priority =>
+         when Pragma_Interrupt_Priority      =>
             --  Priority expression is optional
             if Present (Arg1) then
                Mark (Expression (Arg1));
             end if;
 
-         when Pragma_Priority =>
+         when Pragma_Priority                =>
             Mark (Expression (Arg1));
 
-         when Pragma_Max_Queue_Length =>
+         when Pragma_Max_Queue_Length        =>
             Mark (Expression (Arg1));
 
          --  Pragma Restrictions is ignored in general by GNATprove. Warn on
          --  particular restrictions which might be assumed to have an effect
          --  on verification.
 
-         when Pragma_Restrictions =>
+         when Pragma_Restrictions            =>
             declare
                Arg  : Node_Id;
                Id   : Name_Id;
@@ -13345,8 +13328,7 @@ package body SPARK_Definition is
             | Pragma_Validity_Checks
             | Pragma_Volatile_Full_Access
             | Pragma_Warnings
-            | Pragma_Weak_External
-         =>
+            | Pragma_Weak_External           =>
             null;
 
          --  Group 1d - These pragmas are re-written and/or removed by the
@@ -13359,8 +13341,7 @@ package body SPARK_Definition is
             | Pragma_Compile_Time_Error
             | Pragma_Compile_Time_Warning
             | Pragma_Debug
-            | Pragma_Loop_Invariant
-         =>
+            | Pragma_Loop_Invariant          =>
             pragma Assert (Should_Ignore_Pragma_Sem (N));
 
          --  Group 2 - Remaining pragmas, enumerated here rather than a
@@ -13490,8 +13471,7 @@ package body SPARK_Definition is
             | Pragma_Remote_Types
             | Pragma_Shared_Passive
             | Pragma_Storage_Size
-            | Pragma_Task_Dispatching_Policy
-         =>
+            | Pragma_Task_Dispatching_Policy =>
             if Emit_Warning_Info_Messages and then SPARK_Pragma_Is (Opt.On)
             then
                Warning_Msg_N (Warn_Pragma_Ignored, N);
@@ -13501,7 +13481,7 @@ package body SPARK_Definition is
          --  deal with all the more recent pragmas introduced in GNAT for which
          --  we have not yet defined how they are supported in SPARK.
 
-         when others =>
+         when others                         =>
             Mark_Violation ("unknown pragma &", N, Names => [N]);
       end case;
    end Mark_Pragma;
@@ -13904,7 +13884,7 @@ package body SPARK_Definition is
                  and then Emit_Warning_Info_Messages
                then
                   case Ekind (E) is
-                     when E_Function =>
+                     when E_Function  =>
                         Warning_Msg_N
                           (Warn_Unreferenced_Function, N, Names => [E]);
 
@@ -13912,7 +13892,7 @@ package body SPARK_Definition is
                         Warning_Msg_N
                           (Warn_Unreferenced_Procedure, N, Names => [E]);
 
-                     when others =>
+                     when others      =>
                         raise Program_Error;
 
                   end case;
@@ -14140,14 +14120,13 @@ package body SPARK_Definition is
       case Nkind (C) is
          when N_Delta_Constraint
             | N_Digits_Constraint
-            | N_Index_Or_Discriminant_Constraint
-         =>
+            | N_Index_Or_Discriminant_Constraint =>
             null;
 
-         when N_Range_Constraint =>
+         when N_Range_Constraint                 =>
             Mark (Range_Expression (C));
 
-         when others =>
+         when others                             =>
             raise Program_Error;
       end case;
 
@@ -14430,7 +14409,7 @@ package body SPARK_Definition is
          --  or the statements of the body (second case).
 
          case Ekind (Scop) is
-            when E_Package =>
+            when E_Package                      =>
                if List_Containing (Decl)
                  = Private_Declarations (Package_Specification (Scop))
                then
@@ -14448,7 +14427,7 @@ package body SPARK_Definition is
             --  arbitrarily nested DECLARE block of the package body
             --  statements.
 
-            when E_Package_Body =>
+            when E_Package_Body                 =>
                if List_Containing (Decl)
                  = Declarations (Package_Body (Unique_Entity (Scop)))
                then
@@ -14463,7 +14442,7 @@ package body SPARK_Definition is
             when E_Protected_Type | E_Task_Type =>
                raise Program_Error;
 
-            when others =>
+            when others                         =>
                null;
          end case;
 
@@ -14559,13 +14538,13 @@ package body SPARK_Definition is
 
             if Is_Nouveau_Type (E) then
                case Nkind (Decl) is
-                  when N_Object_Declaration =>
+                  when N_Object_Declaration                                 =>
                      return SPARK_Pragma (Defining_Identifier (Decl));
 
                   when N_Procedure_Specification | N_Function_Specification =>
                      return SPARK_Pragma (Defining_Unit_Name (Decl));
 
-                  when others =>
+                  when others                                               =>
                      return Empty;
                end case;
             end if;

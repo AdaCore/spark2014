@@ -88,7 +88,7 @@ package body Flow_Utility.Initialization is
          case Init is
             --  Mixed initialization renders the entire record mixed
 
-            when Mixed_Initialization =>
+            when Mixed_Initialization        =>
                FDI := True;
                NDI := True;
 
@@ -100,12 +100,12 @@ package body Flow_Utility.Initialization is
 
             --  Components with no possible initialization are ignored
 
-            when No_Possible_Initialization =>
+            when No_Possible_Initialization  =>
                null;
 
             --  The component has no full default initialization
 
-            when No_Default_Initialization =>
+            when No_Default_Initialization   =>
                NDI := True;
          end case;
       end Process_Component;
@@ -191,7 +191,7 @@ package body Flow_Utility.Initialization is
       <<LOOK_AT_SOURCE_DECLARATION>>
 
       case Nkind (Decl) is
-         when N_Full_Type_Declaration =>
+         when N_Full_Type_Declaration                                =>
 
             Def := Type_Definition (Decl);
 
@@ -201,14 +201,13 @@ package body Flow_Utility.Initialization is
 
                when N_Access_To_Object_Definition
                   | N_Access_Function_Definition
-                  | N_Access_Procedure_Definition
-               =>
+                  | N_Access_Procedure_Definition    =>
                   return Full_Default_Initialization;
 
                --  Array types might have aspect Default_Component_Value or
                --  their components might be initialized by default.
 
-               when N_Array_Type_Definition =>
+               when N_Array_Type_Definition          =>
                   if Has_Default_Aspect (Typ) then
                      return Full_Default_Initialization;
                   else
@@ -221,7 +220,7 @@ package body Flow_Utility.Initialization is
                --  types, respectively); otherwise, we examine the parent
                --  type and any added components.
 
-               when N_Derived_Type_Definition =>
+               when N_Derived_Type_Definition        =>
                   if Has_Default_Aspect (Typ) then
                      return Full_Default_Initialization;
                   end if;
@@ -310,8 +309,7 @@ package body Flow_Utility.Initialization is
                   | N_Floating_Point_Definition
                   | N_Decimal_Fixed_Point_Definition
                   | N_Ordinary_Fixed_Point_Definition
-                  | N_Signed_Integer_Type_Definition
-               =>
+                  | N_Signed_Integer_Type_Definition =>
                   if Has_Default_Aspect (Typ) then
                      return Full_Default_Initialization;
                   else
@@ -320,7 +318,7 @@ package body Flow_Utility.Initialization is
 
                --  For record types we traverse their component declarations
 
-               when N_Record_Definition =>
+               when N_Record_Definition              =>
                   declare
                      CList   : Node_Id := Component_List (Def);
                      CItem   : Node_Id;
@@ -388,14 +386,14 @@ package body Flow_Utility.Initialization is
                      return Result;
                   end;
 
-               when others =>
+               when others                           =>
                   raise Program_Error;
             end case;
 
          --  For private types created by the frontend, e.g. for derived
          --  private types, we jump to their original source code declarations.
 
-         when N_Private_Type_Declaration =>
+         when N_Private_Type_Declaration                             =>
             if not Comes_From_Source (Decl)
               and then Comes_From_Source (Original_Node (Decl))
             then
@@ -420,7 +418,7 @@ package body Flow_Utility.Initialization is
 
          --  For private extension respect their SPARK_Mode barrier, if present
 
-         when N_Private_Extension_Declaration =>
+         when N_Private_Extension_Declaration                        =>
 
             --  If the SPARK_Mode barrier is Off, then combine initialization
             --  status of the parent with the assumed uninitilised status of
@@ -449,8 +447,7 @@ package body Flow_Utility.Initialization is
 
                   case Parent_Initialization is
                      when No_Possible_Initialization
-                        | No_Default_Initialization
-                     =>
+                        | No_Default_Initialization                          =>
                         return No_Default_Initialization;
 
                      when Full_Default_Initialization | Mixed_Initialization =>
@@ -468,7 +465,7 @@ package body Flow_Utility.Initialization is
          --  inserted by the frontend, so we look at the original source
          --  code declarations.
 
-         when N_Subtype_Declaration =>
+         when N_Subtype_Declaration                                  =>
             if not Comes_From_Source (Decl)
               and then Comes_From_Source (Original_Node (Decl))
             then
@@ -498,7 +495,7 @@ package body Flow_Utility.Initialization is
 
          --  Recurse into itypes created by component declarations
 
-         when N_Component_Declaration =>
+         when N_Component_Declaration                                =>
 
             pragma Assert (Is_Itype (Typ));
 
@@ -534,7 +531,7 @@ package body Flow_Utility.Initialization is
          --  Other itypes have either no parent at all or the parent has no
          --  semantic significance.
 
-         when others =>
+         when others                                                 =>
             pragma Assert (Is_Itype (Typ));
 
             --  We recurse into the underlying type, except for types, where
@@ -634,10 +631,10 @@ package body Flow_Utility.Initialization is
                when E_Array_Subtype =>
                   return Get_Simple_Default (Etype (E));
 
-               when E_Array_Type =>
+               when E_Array_Type    =>
                   return Get_Simple_Default (Component_Type (E));
 
-               when others =>
+               when others          =>
                   return Empty;
             end case;
          end if;
@@ -650,10 +647,10 @@ package body Flow_Utility.Initialization is
 
    begin
       case F.Kind is
-         when Direct_Mapping =>
+         when Direct_Mapping                                    =>
             return Get_Simple_Default (Etype (Get_Direct_Mapping_Id (F)));
 
-         when Record_Field =>
+         when Record_Field                                      =>
             --  If the Flow_Id represents the 'Hidden part of a record then we
             --  do not consider it to be initialized.
             if Is_Private_Part (F)
@@ -718,10 +715,10 @@ package body Flow_Utility.Initialization is
             when E_Abstract_State =>
                return False;
 
-            when Type_Kind =>
+            when Type_Kind        =>
                Typ := E;
 
-            when others =>
+            when others           =>
                Typ := Etype (E);
          end case;
 
@@ -734,7 +731,7 @@ package body Flow_Utility.Initialization is
 
    begin
       case F.Kind is
-         when Direct_Mapping =>
+         when Direct_Mapping                                    =>
             declare
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
 
@@ -745,7 +742,7 @@ package body Flow_Utility.Initialization is
                  or else Has_Full_Default_Initialization (E);
             end;
 
-         when Record_Field =>
+         when Record_Field                                      =>
             if In_Generic_Actual (Get_Direct_Mapping_Id (F))
               or else Is_Imported (Get_Direct_Mapping_Id (F))
             then

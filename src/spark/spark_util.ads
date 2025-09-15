@@ -1678,15 +1678,17 @@ package SPARK_Util is
       with
         Predicate =>
           (case Vertex.Kind is
-             when Entrance => True,
-             when Completion =>
+             when Entrance                          => True,
+             when Completion                        =>
                Nkind (Vertex.Node)
                in N_Block_Statement
                 | N_Handled_Sequence_Of_Statements
                 | N_Extended_Return_Statement
                 | N_Entity,
-             when Loop_Cond | Loop_Iter => Vertex.Node in N_Loop_Statement_Id,
-             when Body_Exit => Nkind (Vertex.Node) in N_Entity,
+             when Loop_Cond | Loop_Iter             =>
+               Vertex.Node in N_Loop_Statement_Id,
+             when Body_Exit                         =>
+               Nkind (Vertex.Node) in N_Entity,
              when Final_Entrance | Final_Completion =>
                Vertex.Node in Has_Finalization);
 

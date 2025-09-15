@@ -137,16 +137,15 @@ package body Flow_Generated_Globals.Traversal is
                | N_Package_Declaration
                | N_Protected_Type_Declaration
                | N_Subprogram_Declaration
-               | N_Task_Type_Declaration
-            =>
+               | N_Task_Type_Declaration =>
                Insert (Defining_Entity (N));
 
-            when N_Subprogram_Body =>
+            when N_Subprogram_Body       =>
                if Acts_As_Spec (N) then
                   Insert (Defining_Entity (N));
                end if;
 
-            when N_Subprogram_Body_Stub =>
+            when N_Subprogram_Body_Stub  =>
                if No (Corresponding_Spec_Of_Stub (N)) then
                   declare
                      E : constant Entity_Id := Unique_Defining_Entity (N);
@@ -158,7 +157,7 @@ package body Flow_Generated_Globals.Traversal is
                   end;
                end if;
 
-            when N_Object_Declaration =>
+            when N_Object_Declaration    =>
                if Gnat2Why_Args.Global_Gen_Mode then
                   declare
                      E : constant Entity_Id := Defining_Entity (N);
@@ -175,7 +174,7 @@ package body Flow_Generated_Globals.Traversal is
                   end;
                end if;
 
-            when others =>
+            when others                  =>
                null;
 
          end case;
@@ -322,42 +321,42 @@ package body Flow_Generated_Globals.Traversal is
          end if;
 
          case Nkind (N) is
-            when N_Package_Declaration =>
+            when N_Package_Declaration        =>
                Traverse_Visible_And_Private_Parts (Specification (N));
 
-            when N_Package_Body =>
+            when N_Package_Body               =>
                if not Is_Generic_Unit (Unique_Defining_Entity (N)) then
                   Traverse_Package_Body (N);
                end if;
 
-            when N_Package_Body_Stub =>
+            when N_Package_Body_Stub          =>
                if not Is_Generic_Unit (Unique_Defining_Entity (N)) then
                   Traverse_Package_Body (Get_Body_From_Stub (N));
                end if;
 
-            when N_Subprogram_Body =>
+            when N_Subprogram_Body            =>
                if not Is_Generic_Unit (Unique_Defining_Entity (N)) then
                   Traverse_Subprogram_Body (N);
                end if;
 
-            when N_Entry_Body =>
+            when N_Entry_Body                 =>
                Traverse_Subprogram_Body (N);
 
-            when N_Subprogram_Body_Stub =>
+            when N_Subprogram_Body_Stub       =>
                if not Is_Generic_Unit (Unique_Defining_Entity (N)) then
                   Traverse_Subprogram_Body (Get_Body_From_Stub (N));
                end if;
 
-            when N_Protected_Body =>
+            when N_Protected_Body             =>
                Traverse_Protected_Body (N);
 
-            when N_Protected_Body_Stub =>
+            when N_Protected_Body_Stub        =>
                Traverse_Protected_Body (Get_Body_From_Stub (N));
 
             when N_Protected_Type_Declaration =>
                Traverse_Visible_And_Private_Parts (Protected_Definition (N));
 
-            when N_Task_Type_Declaration =>
+            when N_Task_Type_Declaration      =>
                --  Task type definition is optional (unlike protected type
                --  definition, which is mandatory).
                declare
@@ -368,16 +367,16 @@ package body Flow_Generated_Globals.Traversal is
                   end if;
                end;
 
-            when N_Task_Body =>
+            when N_Task_Body                  =>
                Traverse_Task_Body (N);
 
-            when N_Task_Body_Stub =>
+            when N_Task_Body_Stub             =>
                Traverse_Task_Body (Get_Body_From_Stub (N));
 
-            when N_Block_Statement =>
+            when N_Block_Statement            =>
                Traverse_Block (N);
 
-            when N_If_Statement =>
+            when N_If_Statement               =>
 
                --  Traverse the statements in the THEN part
 
@@ -402,7 +401,7 @@ package body Flow_Generated_Globals.Traversal is
 
                Traverse_Declarations_Or_Statements (Else_Statements (N));
 
-            when N_Case_Statement =>
+            when N_Case_Statement             =>
 
                --  Process case branches
 
@@ -416,16 +415,16 @@ package body Flow_Generated_Globals.Traversal is
                   end loop;
                end;
 
-            when N_Extended_Return_Statement =>
+            when N_Extended_Return_Statement  =>
                Traverse_Handled_Statement_Sequence
                  (Handled_Statement_Sequence (N));
 
-            when N_Loop_Statement =>
+            when N_Loop_Statement             =>
                Traverse_Declarations_Or_Statements (Statements (N));
 
             --  Generic declarations are ignored
 
-            when others =>
+            when others                       =>
                null;
          end case;
       end Traverse_Declaration_Or_Statement;

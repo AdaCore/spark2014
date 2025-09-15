@@ -3,7 +3,8 @@ with SPARK.Containers.Functional.Sets;
 package P1 with SPARK_Mode is
    type C is private with Default_Initial_Condition;
    type E is private;
-   function All_In (V : C) return Boolean;
+   function All_In (V : C) return Boolean
+     with Ghost;
    procedure Lemma with
      Global => null,
      Ghost,

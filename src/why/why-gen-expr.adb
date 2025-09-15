@@ -172,7 +172,7 @@ package body Why.Gen.Expr is
 
       elsif Has_No_Bitwise_Operations_Annotation (Ty) then
          case Op is
-            when N_Op_Add =>
+            when N_Op_Add                   =>
                declare
                   Modulus   : constant W_Expr_Id :=
                     New_Integer_Constant (Value => Modulus_Val);
@@ -243,7 +243,7 @@ package body Why.Gen.Expr is
                        Typ    => EW_Int_Type);
                end;
 
-            when others =>
+            when others                     =>
                raise Program_Error;
          end case;
 
@@ -390,10 +390,10 @@ package body Why.Gen.Expr is
          when EW_Prog | EW_Pterm =>
             return +Boolean_Prog_Of_Pred (W);
 
-         when EW_Term =>
+         when EW_Term            =>
             return +Boolean_Term_Of_Pred (W);
 
-         when EW_Pred =>
+         when EW_Pred            =>
             return +W;
       end case;
    end Boolean_Expr_Of_Pred;
@@ -645,10 +645,10 @@ package body Why.Gen.Expr is
               Insert_Simple_Conversion (Expr => Right_Expr, To => Next_Bv);
             Oper         : constant W_Identifier_Id :=
               (case Op is
-                 when N_Op_Add => MF_BVs (Next_Bv).Add,
+                 when N_Op_Add      => MF_BVs (Next_Bv).Add,
                  when N_Op_Subtract => MF_BVs (Next_Bv).Sub,
                  when N_Op_Multiply => MF_BVs (Next_Bv).Mult,
-                 when others => raise Program_Error);
+                 when others        => raise Program_Error);
             Oper_Expr    : constant W_Term_Id :=
               New_Call
                 (Ada_Node => Ada_Node,
@@ -712,25 +712,25 @@ package body Why.Gen.Expr is
    function Get_Type (E : W_Expr_Id) return W_Type_Id is
    begin
       case Get_Kind (+E) is
-         when W_Integer_Constant =>
+         when W_Integer_Constant               =>
             return EW_Int_Type;
 
-         when W_Fixed_Constant =>
+         when W_Fixed_Constant                 =>
             return +Get_Typ (W_Fixed_Constant_Id (E));
 
-         when W_Real_Constant =>
+         when W_Real_Constant                  =>
             return EW_Real_Type;
 
-         when W_Float_Constant =>
+         when W_Float_Constant                 =>
             return +Get_Typ (W_Float_Constant_Id (E));
 
-         when W_Range_Constant =>
+         when W_Range_Constant                 =>
             return +Get_Typ (W_Range_Constant_Id (E));
 
-         when W_Modular_Constant =>
+         when W_Modular_Constant               =>
             return +Get_Typ (W_Modular_Constant_Id (E));
 
-         when W_Literal =>
+         when W_Literal                        =>
             return EW_Bool_Type;
 
          when W_Loop | W_Assignment | W_Assert =>
@@ -739,72 +739,71 @@ package body Why.Gen.Expr is
          when W_Connection
             | W_Not
             | W_Universal_Quantif
-            | W_Existential_Quantif
-         =>
+            | W_Existential_Quantif            =>
             return EW_Bool_Type;
 
-         when W_Identifier =>
+         when W_Identifier                     =>
             return Get_Typ (W_Identifier_Id (E));
 
-         when W_Tagged =>
+         when W_Tagged                         =>
             return Get_Typ (W_Tagged_Id (E));
 
-         when W_Call =>
+         when W_Call                           =>
             return Get_Typ (W_Call_Id (E));
 
-         when W_Binding =>
+         when W_Binding                        =>
             if Get_Typ (W_Binding_Id (E)) = Why_Empty then
                return Get_Type (Get_Context (W_Binding_Id (E)));
             else
                return Get_Typ (W_Binding_Id (E));
             end if;
 
-         when W_Elsif =>
+         when W_Elsif                          =>
             return Get_Typ (W_Elsif_Id (E));
 
-         when W_Conditional =>
+         when W_Conditional                    =>
             return Get_Typ (W_Conditional_Id (E));
 
-         when W_Deref =>
+         when W_Deref                          =>
             return Get_Typ (W_Deref_Id (E));
 
-         when W_Record_Access =>
+         when W_Record_Access                  =>
             return Get_Typ (W_Record_Access_Id (E));
 
-         when W_Record_Update =>
+         when W_Record_Update                  =>
             return Get_Typ (W_Record_Update_Id (E));
 
-         when W_Record_Aggregate =>
+         when W_Record_Aggregate               =>
             return Get_Typ (W_Record_Aggregate_Id (E));
 
-         when W_Binding_Ref =>
+         when W_Binding_Ref                    =>
             return Get_Typ (W_Binding_Ref_Id (E));
 
-         when W_Any_Expr =>
+         when W_Any_Expr                       =>
             return Get_Return_Type (W_Any_Expr_Id (E));
 
-         when W_Abstract_Expr =>
+         when W_Abstract_Expr                  =>
             return Get_Typ (W_Abstract_Expr_Id (E));
 
-         when W_Try_Block =>
+         when W_Try_Block                      =>
             return Get_Typ (W_Try_Block_Id (E));
 
-         when W_Raise =>
+         when W_Raise                          =>
             return Get_Typ (W_Raise_Id (E));
 
-         when W_Label =>
+         when W_Label                          =>
             return Get_Typ (W_Label_Id (E));
 
-         when W_Loc_Label =>
+         when W_Loc_Label                      =>
             return Get_Type (Get_Def (W_Loc_Label_Id (E)));
 
-         when W_Epsilon =>
+         when W_Epsilon                        =>
             return Get_Typ (W_Epsilon_Id (E));
 
          --  ??? The following nodes should get their own Type field at some
          --  point, right now we use recursion.
 
-         when W_Statement_Sequence =>
+         when W_Statement_Sequence             =>
             declare
                use Why_Node_Lists;
                L : constant List :=
@@ -813,7 +812,7 @@ package body Why.Gen.Expr is
                return Get_Type (+Last_Element (L));
             end;
 
-         when others =>
+         when others                           =>
             return Why_Empty;
       end case;
 
@@ -3667,7 +3666,7 @@ package body Why.Gen.Expr is
                       (Value => Expr_Value (String_Literal_Low_Bound (Ty)),
                        Typ   => BT);
 
-               when Attribute_Last =>
+               when Attribute_Last  =>
                   return
                     New_Discrete_Constant
                       (Value =>
@@ -3676,7 +3675,7 @@ package body Why.Gen.Expr is
                          - 1,
                        Typ   => BT);
 
-               when others =>
+               when others          =>
                   raise Program_Error;
             end case;
          end;
@@ -3686,7 +3685,7 @@ package body Why.Gen.Expr is
             when Attribute_First =>
                return +M_Boolean.First;
 
-            when Attribute_Last =>
+            when Attribute_Last  =>
                return +M_Boolean.Last;
 
             when Attribute_Image =>
@@ -3695,43 +3694,43 @@ package body Why.Gen.Expr is
             when Attribute_Value =>
                return +M_Boolean.Value;
 
-            when others =>
+            when others          =>
                raise Program_Error;
          end case;
 
       else
          case Attr is
-            when Attribute_First =>
+            when Attribute_First                       =>
                return +E_Symb (Ty, WNE_Attr_First);
 
-            when Attribute_Last =>
+            when Attribute_Last                        =>
                return +E_Symb (Ty, WNE_Attr_Last);
 
-            when Attribute_Alignment =>
+            when Attribute_Alignment                   =>
                return +E_Symb (Ty, WNE_Attr_Alignment);
 
-            when Attribute_Modulus =>
+            when Attribute_Modulus                     =>
                return +E_Symb (Ty, WNE_Attr_Modulus);
 
-            when Attribute_Constrained =>
+            when Attribute_Constrained                 =>
                return +E_Symb (Ty, WNE_Attr_Constrained);
 
             when Attribute_Size | Attribute_Value_Size =>
                return +E_Symb (Ty, WNE_Attr_Value_Size);
 
-            when Attribute_Component_Size =>
+            when Attribute_Component_Size              =>
                return +E_Symb (Ty, WNE_Attr_Component_Size);
 
-            when Attribute_Tag =>
+            when Attribute_Tag                         =>
                return +E_Symb (Ty, WNE_Attr_Tag);
 
-            when Attribute_Image =>
+            when Attribute_Image                       =>
                return +E_Symb (Ty, WNE_Attr_Image);
 
-            when Attribute_Value =>
+            when Attribute_Value                       =>
                return +E_Symb (Ty, WNE_Attr_Value);
 
-            when others =>
+            when others                                =>
                raise Program_Error;
          end case;
       end if;
@@ -3768,8 +3767,7 @@ package body Why.Gen.Expr is
             | N_Op_Or
             | N_Op_Xor
             | N_Op_Concat
-            | N_Op_Shift
-         =>
+            | N_Op_Shift               =>
             raise Program_Error;
 
          when N_Op_Add | N_Op_Subtract =>
@@ -3839,7 +3837,7 @@ package body Why.Gen.Expr is
                end if;
             end;
 
-         when N_Op_Multiply =>
+         when N_Op_Multiply            =>
             declare
                L_Type, R_Type : W_Type_Id;
                Oper           : Why_Name_Enum := WNE_Empty;
@@ -3910,7 +3908,7 @@ package body Why.Gen.Expr is
                      Name : W_Identifier_Id;
                   begin
                      case Oper is
-                        when WNE_Fixed_Point_Mult =>
+                        when WNE_Fixed_Point_Mult     =>
                            Name :=
                              Get_Fixed_Point_Mult_Div_Theory
                                (Typ_Left   => Left_Type,
@@ -3923,7 +3921,7 @@ package body Why.Gen.Expr is
                              Get_Fixed_Point_Theory (Typ => Return_Type)
                                .Mult_Int;
 
-                        when others =>
+                        when others                   =>
                            raise Program_Error;
                      end case;
 
@@ -3987,7 +3985,7 @@ package body Why.Gen.Expr is
                end if;
             end;
 
-         when N_Op_Divide =>
+         when N_Op_Divide              =>
             declare
                Oper           : Why_Name_Enum := WNE_Empty;
                Name           : W_Identifier_Id;
@@ -4033,7 +4031,7 @@ package body Why.Gen.Expr is
                --  Construct the operation
 
                case Oper is
-                  when WNE_Fixed_Point_Div =>
+                  when WNE_Fixed_Point_Div     =>
                      Name :=
                        Get_Fixed_Point_Mult_Div_Theory
                          (Typ_Left   => Left_Type,
@@ -4045,7 +4043,7 @@ package body Why.Gen.Expr is
                      Name :=
                        Get_Fixed_Point_Theory (Typ => Return_Type).Div_Int;
 
-                  when others =>
+                  when others                  =>
                      Name := New_Division (Base);
                end case;
 
@@ -4087,7 +4085,7 @@ package body Why.Gen.Expr is
                end if;
             end;
 
-         when N_Op_Rem | N_Op_Mod =>
+         when N_Op_Rem | N_Op_Mod      =>
             declare
                Base : constant W_Type_Id :=
                  Base_Why_Type (Left_Type, Right_Type);
@@ -4126,7 +4124,7 @@ package body Why.Gen.Expr is
                     Typ        => Base);
             end;
 
-         when N_Op_Expon =>
+         when N_Op_Expon               =>
             declare
                Name  : W_Identifier_Id;
                Typ   : constant W_Type_Id := Base_Why_Type (Left_Type);
@@ -4602,7 +4600,7 @@ package body Why.Gen.Expr is
          when EW_Term =>
             return +Boolean_Term_Of_Pred (Is_Valid);
 
-         when others =>
+         when others  =>
             return +Boolean_Prog_Of_Pred (Is_Valid);
       end case;
    end New_Is_Valid_Call_For_Constrained_Ty;
@@ -4670,7 +4668,7 @@ package body Why.Gen.Expr is
             when EW_Pred =>
                Res := +Pred_Of_Boolean_Term (+Tmp);
 
-            when others =>
+            when others  =>
                Res := +Tmp;
          end case;
 
@@ -4689,7 +4687,7 @@ package body Why.Gen.Expr is
                when EW_Term =>
                   Res := +Boolean_Term_Of_Pred (Is_Valid);
 
-               when others =>
+               when others  =>
                   Res := +Boolean_Prog_Of_Pred (Is_Valid);
             end case;
          end;
@@ -5610,7 +5608,7 @@ package body Why.Gen.Expr is
          --  of -0. We use modulo instead of a test in order to have a fully
          --  computational interpretation.
 
-         when N_Op_Minus =>
+         when N_Op_Minus    =>
             pragma Assert (Left_Opnd = Why_Empty);
 
             declare
@@ -5639,7 +5637,7 @@ package body Why.Gen.Expr is
          --    then (X + Y) - Modulus
          --    else X + Y
 
-         when N_Op_Add =>
+         when N_Op_Add      =>
             declare
                BV            : constant M_BV_Type := MF_BVs (Rep_Type);
                Modulus_Expr  : constant W_Expr_Id :=
@@ -5799,7 +5797,7 @@ package body Why.Gen.Expr is
          --  possible to go to a bigger bitvector type here as there are no
          --  such bitvector type even for 8 bit bitvectors.
 
-         when N_Op_Expon =>
+         when N_Op_Expon    =>
             declare
                Modulus_Expr : constant W_Expr_Id :=
                  New_Integer_Constant (Value => Modulus);
@@ -5828,7 +5826,7 @@ package body Why.Gen.Expr is
                     To       => Rep_Type);
             end;
 
-         when others =>
+         when others        =>
             raise Program_Error;
       end case;
 

@@ -648,18 +648,18 @@ package body Gnat2Why.Subprograms is
                     (case Obj_Prio.Kind is
                        --  ??? if type of the component is visible we should
                        --  try to transform the expression.
-                       when Nonstatic =>
+                       when Nonstatic              =>
                          +New_Attribute_Expr
                             (Domain => EW_Term,
                              Ty     => RTE (RE_Any_Priority),
                              Attr   => Attribute_First,
                              Params => Params),
 
-                       when Static =>
+                       when Static                 =>
                          New_Integer_Constant
                            (Value => UI_From_Int (Obj_Prio.Value)),
 
-                       when Default_Prio =>
+                       when Default_Prio           =>
                          +New_Attribute_Expr
                             (Domain => EW_Term,
                              Ty     => RTE (RE_Priority),
@@ -673,7 +673,7 @@ package body Gnat2Why.Subprograms is
                              Attr   => Attribute_First,
                              Params => Params),
 
-                       when Last_Interrupt_Prio =>
+                       when Last_Interrupt_Prio    =>
                          +New_Attribute_Expr
                             (Domain => EW_Term,
                              Ty     => RTE (RE_Interrupt_Priority),
@@ -685,7 +685,7 @@ package body Gnat2Why.Subprograms is
                       (Symbol =>
                          (case Obj_Prio.Kind is
                             when Nonstatic => Why_Eq,
-                            when others => Int_Infix_Le),
+                            when others    => Int_Infix_Le),
                        Left   => Prio,
                        Right  => Obj_Prio_Expr);
 
@@ -813,10 +813,10 @@ package body Gnat2Why.Subprograms is
                               end if;
                            end;
 
-                        when Magic_String =>
+                        when Magic_String   =>
                            pragma Assert (Is_Opaque_For_Proof (F));
 
-                        when others =>
+                        when others         =>
                            raise Program_Error;
                      end case;
                   end loop;
@@ -1159,8 +1159,7 @@ package body Gnat2Why.Subprograms is
             | E_Procedure
             | E_Task_Type
             | E_Package
-            | E_Subprogram_Type
-         =>
+            | E_Subprogram_Type =>
             Include_Referenced_Entities (E);
 
             --  Collect parameters of E if any
@@ -1188,7 +1187,7 @@ package body Gnat2Why.Subprograms is
                end;
             end if;
 
-         when others =>
+         when others            =>
             raise Program_Error;
       end case;
 
@@ -1441,7 +1440,7 @@ package body Gnat2Why.Subprograms is
 
                end;
 
-            when Magic_String =>
+            when Magic_String   =>
                declare
                   Cu : constant Ada_Ent_To_Why.Cursor :=
                     Ada_Ent_To_Why.Find (Symbol_Table, To_Name (Write_Id));
@@ -1462,7 +1461,7 @@ package body Gnat2Why.Subprograms is
                   end if;
                end;
 
-            when others =>
+            when others         =>
                raise Program_Error;
          end case;
       end loop;
@@ -1511,7 +1510,7 @@ package body Gnat2Why.Subprograms is
                   end if;
                end;
 
-            when Magic_String =>
+            when Magic_String   =>
                declare
                   Cu : constant Ada_Ent_To_Why.Cursor :=
                     Ada_Ent_To_Why.Find (Symbol_Table, To_Name (Read_Id));
@@ -1532,7 +1531,7 @@ package body Gnat2Why.Subprograms is
                   end if;
                end;
 
-            when others =>
+            when others         =>
                raise Program_Error;
          end case;
       end loop;
@@ -1587,7 +1586,7 @@ package body Gnat2Why.Subprograms is
                             Left   => W_Tag,
                             Right  => +B.Tag.Id));
 
-               when others =>
+               when others  =>
                   raise Program_Error;
             end case;
          end if;
@@ -1744,10 +1743,10 @@ package body Gnat2Why.Subprograms is
                      end if;
                   end;
 
-               when Magic_String =>
+               when Magic_String   =>
                   null;
 
-               when others =>
+               when others         =>
                   raise Program_Error;
             end case;
          end loop;
@@ -2673,7 +2672,7 @@ package body Gnat2Why.Subprograms is
                case Nkind (Exit_Kind) is
                   when N_Identifier =>
                      case Chars (Exit_Kind) is
-                        when Name_Exception_Raised =>
+                        when Name_Exception_Raised                  =>
                            null;
 
                         when Name_Normal_Return | Name_Program_Exit =>
@@ -2689,11 +2688,11 @@ package body Gnat2Why.Subprograms is
                                       Kind       => EW_Assert,
                                       Check_Info => Check_Info)));
 
-                        when others =>
+                        when others                                 =>
                            raise Program_Error;
                      end case;
 
-                  when N_Aggregate =>
+                  when N_Aggregate  =>
                      Append
                        (Result,
                         New_Ignore
@@ -2718,7 +2717,7 @@ package body Gnat2Why.Subprograms is
                                 Kind       => EW_Assert,
                                 Check_Info => Check_Info)));
 
-                  when others =>
+                  when others       =>
                      raise Program_Error;
                end case;
             end;
@@ -2790,7 +2789,7 @@ package body Gnat2Why.Subprograms is
                         then True_Pred
                         else False_Pred);
 
-                  when N_Aggregate =>
+                  when N_Aggregate  =>
                      W_Conseq :=
                        New_Comparison
                          (Symbol => Why_Eq,
@@ -2803,7 +2802,7 @@ package body Gnat2Why.Subprograms is
                                         (Component_Associations
                                            (Exit_Kind))))));
 
-                  when others =>
+                  when others       =>
                      raise Program_Error;
                end case;
 
@@ -2875,8 +2874,8 @@ package body Gnat2Why.Subprograms is
          Loc        : constant String :=
            (case Name is
               when Name_Normal_Return => "on normal return",
-              when Name_Program_Exit => "on program exit",
-              when others => raise Program_Error);
+              when Name_Program_Exit  => "on program exit",
+              when others             => raise Program_Error);
 
       begin
          Check_Info.Continuation.Append
@@ -2899,10 +2898,10 @@ package body Gnat2Why.Subprograms is
                   when N_Identifier =>
                      Exclude := Chars (Exit_Kind) /= Name;
 
-                  when N_Aggregate =>
+                  when N_Aggregate  =>
                      Exclude := True;
 
-                  when others =>
+                  when others       =>
                      raise Program_Error;
                end case;
 
@@ -2987,10 +2986,10 @@ package body Gnat2Why.Subprograms is
                   when N_Identifier =>
                      Is_Name := Chars (Exit_Kind) = Name;
 
-                  when N_Aggregate =>
+                  when N_Aggregate  =>
                      Is_Name := False;
 
-                  when others =>
+                  when others       =>
                      raise Program_Error;
                end case;
 
@@ -6392,7 +6391,7 @@ package body Gnat2Why.Subprograms is
                     Is_Statically_False (Left_Opnd (N))
                     or else Is_Statically_False (Right_Opnd (N));
 
-               when others =>
+               when others                =>
                   return
                     Compile_Time_Known_Value (N)
                     and then not Is_True (Expr_Value (N));
@@ -8045,7 +8044,7 @@ package body Gnat2Why.Subprograms is
                                   else +Dispatch_Binder.Main.B_Name),
                                Ty     => Get_Ada_Node (+Dispatch_Typ)),
                           when DRecord => +Dispatch_Binder.Tag.Id,
-                          when others => raise Program_Error);
+                          when others  => raise Program_Error);
                      --  Tag used for dispatching in calls to E
 
                      Logic_Args : W_Expr_Array :=

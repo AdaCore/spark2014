@@ -4,7 +4,7 @@ package P3.Child with SPARK_Mode is
    package E_Set is new SPARK.Containers.Functional.Sets (E);
    --  Quantification on E_Set are handled consistently inside and
    --  outside of P3.Child. There should be no failed checks.
-   function All_In (V : C) return Boolean;
+   function All_In (V : C) return Boolean with Ghost;
    procedure Lemma with
      Global => null,
      Ghost,

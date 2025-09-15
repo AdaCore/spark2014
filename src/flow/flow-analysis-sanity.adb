@@ -359,7 +359,7 @@ package body Flow.Analysis.Sanity is
                   end loop;
                end;
 
-            when N_Slice =>
+            when N_Slice             =>
                declare
                   R : constant Node_Id := Discrete_Range (N);
                begin
@@ -371,7 +371,7 @@ package body Flow.Analysis.Sanity is
                      Err_Desc => "renamed slice");
                end;
 
-            when others =>
+            when others              =>
                null;
          end case;
 
@@ -385,7 +385,7 @@ package body Flow.Analysis.Sanity is
       procedure Check_Subtype_Constraints (N : Node_Id) is
       begin
          case Nkind (N) is
-            when N_Range =>
+            when N_Range                                  =>
                declare
                   Lo : constant Node_Id := Low_Bound (N);
                   Hi : constant Node_Id := High_Bound (N);
@@ -398,7 +398,7 @@ package body Flow.Analysis.Sanity is
                     (N => Hi, Err_Desc => "subtype constraint");
                end;
 
-            when N_Range_Constraint =>
+            when N_Range_Constraint                       =>
                declare
                   Range_Expr : constant Node_Id := Range_Expression (N);
 
@@ -413,17 +413,17 @@ package body Flow.Analysis.Sanity is
                     (N => Hi, Err_Desc => "subtype constraint");
                end;
 
-            when N_Index_Or_Discriminant_Constraint =>
+            when N_Index_Or_Discriminant_Constraint       =>
                declare
                   Constr : Node_Id := First (Constraints (N));
 
                begin
                   loop
                      case Nkind (Constr) is
-                        when N_Subtype_Indication =>
+                        when N_Subtype_Indication       =>
                            Check_Subtype_Constraints (Constraint (Constr));
 
-                        when N_Range =>
+                        when N_Range                    =>
                            Check_Subtype_Constraints (Constr);
 
                         when N_Discriminant_Association =>
@@ -431,7 +431,7 @@ package body Flow.Analysis.Sanity is
                              (N        => Expression (Constr),
                               Err_Desc => "subtype constraint");
 
-                        when others =>
+                        when others                     =>
                            if Is_Entity_Name (Constr)
                              and then Is_Type (Entity (Constr))
                            then
@@ -456,7 +456,7 @@ package body Flow.Analysis.Sanity is
 
                null;
 
-            when others =>
+            when others                                   =>
                raise Program_Error;
          end case;
       end Check_Subtype_Constraints;
@@ -468,29 +468,29 @@ package body Flow.Analysis.Sanity is
       procedure Check_Subtype_Indication (N : Node_Id) is
       begin
          case Nkind (N) is
-            when N_Access_Definition =>
+            when N_Access_Definition              =>
                pragma
                  Assert
                    (if Present (Subtype_Mark (N))
                       then Is_Type (Entity (Subtype_Mark (N)))
                       else Present (Access_To_Subprogram_Definition (N)));
 
-            when N_Attribute_Reference =>
+            when N_Attribute_Reference            =>
                pragma Assert (Is_Type_Attribute_Name (Attribute_Name (N)));
 
-            when N_Expanded_Name | N_Identifier =>
+            when N_Expanded_Name | N_Identifier   =>
                pragma Assert (Is_Type (Entity (N)));
 
-            when N_Subtype_Indication =>
+            when N_Subtype_Indication             =>
                Check_Subtype_Constraints (Constraint (N));
 
-            when N_Constrained_Array_Definition =>
+            when N_Constrained_Array_Definition   =>
                Check_Constrained_Array_Definition (N);
 
             when N_Unconstrained_Array_Definition =>
                null;
 
-            when others =>
+            when others                           =>
                raise Program_Error;
          end case;
       end Check_Subtype_Indication;
@@ -504,10 +504,10 @@ package body Flow.Analysis.Sanity is
       begin
          loop
             case Nkind (DSD) is
-               when N_Range =>
+               when N_Range                        =>
                   Check_Subtype_Constraints (DSD);
 
-               when N_Subtype_Indication =>
+               when N_Subtype_Indication           =>
                   pragma
                     Assert (Nkind (Constraint (DSD)) = N_Range_Constraint);
                   Check_Subtype_Constraints (Constraint (DSD));
@@ -515,7 +515,7 @@ package body Flow.Analysis.Sanity is
                when N_Identifier | N_Expanded_Name =>
                   pragma Assert (Is_Discrete_Type (Entity (DSD)));
 
-               when others =>
+               when others                         =>
                   raise Program_Error;
             end case;
 
@@ -904,12 +904,12 @@ package body Flow.Analysis.Sanity is
                      end if;
                   end;
 
-               when Magic_String =>
+               when Magic_String                  =>
                   if not GG_Is_Constant (F.Name) then
                      Emit_Error (F);
                   end if;
 
-               when others =>
+               when others                        =>
                   raise Program_Error;
 
             end case;
@@ -993,7 +993,7 @@ package body Flow.Analysis.Sanity is
          end if;
 
          case Nkind (N) is
-            when N_Protected_Body =>
+            when N_Protected_Body                =>
                declare
                   Spec : constant Entity_Id := Corresponding_Spec (N);
 
@@ -1003,7 +1003,7 @@ package body Flow.Analysis.Sanity is
                   end if;
                end;
 
-            when N_Protected_Type_Declaration =>
+            when N_Protected_Type_Declaration    =>
                declare
                   Typ : constant Entity_Id := Defining_Identifier (N);
 
@@ -1033,7 +1033,7 @@ package body Flow.Analysis.Sanity is
                   end if;
                end;
 
-            when N_Task_Type_Declaration =>
+            when N_Task_Type_Declaration         =>
                declare
                   Typ : constant Entity_Id := Defining_Identifier (N);
 
@@ -1069,7 +1069,7 @@ package body Flow.Analysis.Sanity is
                   end if;
                end;
 
-            when N_Full_Type_Declaration =>
+            when N_Full_Type_Declaration         =>
                if Comes_From_Source (N) then
                   declare
                      Typ_Def : constant Node_Id := Type_Definition (N);
@@ -1087,13 +1087,13 @@ package body Flow.Analysis.Sanity is
                      Traverse_Discriminants (N);
 
                      case Nkind (Typ_Def) is
-                        when N_Access_To_Object_Definition =>
+                        when N_Access_To_Object_Definition    =>
                            Check_Subtype_Indication
                              (Subtype_Indication (Typ_Def));
 
                            Optional_Component_List := Empty;
 
-                        when N_Record_Definition =>
+                        when N_Record_Definition              =>
                            Optional_Component_List := Component_List (Typ_Def);
 
                            if Present (Optional_Component_List) then
@@ -1101,7 +1101,7 @@ package body Flow.Analysis.Sanity is
                                 (Optional_Component_List);
                            end if;
 
-                        when N_Derived_Type_Definition =>
+                        when N_Derived_Type_Definition        =>
                            Check_Subtype_Indication
                              (Subtype_Indication (Typ_Def));
 
@@ -1116,7 +1116,7 @@ package body Flow.Analysis.Sanity is
                               end if;
                            end if;
 
-                        when N_Array_Type_Definition =>
+                        when N_Array_Type_Definition          =>
                            Check_Subtype_Indication (Typ_Def);
                            Check_Component_Definition
                              (Component_Definition (Typ_Def));
@@ -1132,17 +1132,16 @@ package body Flow.Analysis.Sanity is
                            | N_Floating_Point_Definition
                            | N_Modular_Type_Definition
                            | N_Ordinary_Fixed_Point_Definition
-                           | N_Signed_Integer_Type_Definition
-                        =>
+                           | N_Signed_Integer_Type_Definition =>
                            null;
 
-                        when others =>
+                        when others                           =>
                            raise Program_Error;
                      end case;
                   end;
                end if;
 
-            when N_Private_Type_Declaration =>
+            when N_Private_Type_Declaration      =>
                Traverse_Discriminants (N);
 
             when N_Private_Extension_Declaration =>
@@ -1152,7 +1151,7 @@ package body Flow.Analysis.Sanity is
                pragma Assert (No (Discriminant_Specifications (N)));
                Check_Subtype_Indication (Subtype_Indication (N));
 
-            when N_Subtype_Declaration =>
+            when N_Subtype_Declaration           =>
                --  Completions of incomplete types are rewritten from full type
                --  declarations to subtypes that do not come from source.
 
@@ -1161,10 +1160,10 @@ package body Flow.Analysis.Sanity is
                   Check_Subtype_Indication (Subtype_Indication (N));
                end if;
 
-            when N_Block_Statement =>
+            when N_Block_Statement               =>
                Traverse_Declarations_And_HSS (N);
 
-            when N_If_Statement =>
+            when N_If_Statement                  =>
 
                --  Traverse the statements in the THEN part
 
@@ -1190,7 +1189,7 @@ package body Flow.Analysis.Sanity is
 
                Traverse_Declarations_Or_Statements (Else_Statements (N));
 
-            when N_Case_Statement =>
+            when N_Case_Statement                =>
 
                --  Process case alterantives
 
@@ -1204,16 +1203,16 @@ package body Flow.Analysis.Sanity is
                   end loop;
                end;
 
-            when N_Extended_Return_Statement =>
+            when N_Extended_Return_Statement     =>
                Traverse_Declarations_Or_Statements
                  (Return_Object_Declarations (N));
                Traverse_Handled_Statement_Sequence
                  (Handled_Statement_Sequence (N));
 
-            when N_Loop_Statement =>
+            when N_Loop_Statement                =>
                Traverse_Declarations_Or_Statements (Statements (N));
 
-            when N_Object_Renaming_Declaration =>
+            when N_Object_Renaming_Declaration   =>
 
                if Comes_From_Source (N) then
                   --  The checks below apply to generic in-out parameters which
@@ -1244,7 +1243,7 @@ package body Flow.Analysis.Sanity is
             --  Check that the constrained array definition of an object
             --  declaration does not contain variable inputs.
 
-            when N_Object_Declaration =>
+            when N_Object_Declaration            =>
                if Comes_From_Source (N) then
                   Check_Subtype_Indication (Object_Definition (N));
 
@@ -1269,19 +1268,22 @@ package body Flow.Analysis.Sanity is
                      procedure Collect_Indexes (Expr : Node_Id) is
                      begin
                         case Nkind (Expr) is
-                           when N_Expanded_Name | N_Identifier =>
+                           when N_Expanded_Name | N_Identifier
+                           =>
                               null;
 
                            when N_Explicit_Dereference | N_Selected_Component
                            =>
                               Collect_Indexes (Prefix (Expr));
 
-                           when N_Attribute_Reference =>
+                           when N_Attribute_Reference
+                           =>
                               pragma
                                 Assert (Attribute_Name (Expr) = Name_Access);
                               Collect_Indexes (Prefix (Expr));
 
-                           when N_Indexed_Component =>
+                           when N_Indexed_Component
+                           =>
                               declare
                                  Ind_Expr : Node_Id :=
                                    First (Expressions (Expr));
@@ -1294,7 +1296,8 @@ package body Flow.Analysis.Sanity is
                               end;
                               Collect_Indexes (Prefix (Expr));
 
-                           when N_Slice =>
+                           when N_Slice
+                           =>
                               Indexes.Append (Discrete_Range (Expr));
                               Collect_Indexes (Prefix (Expr));
 
@@ -1304,7 +1307,8 @@ package body Flow.Analysis.Sanity is
                            =>
                               Collect_Indexes (Expression (Expr));
 
-                           when others =>
+                           when others
+                           =>
                               raise Program_Error;
                         end case;
                      end Collect_Indexes;
@@ -1330,7 +1334,7 @@ package body Flow.Analysis.Sanity is
                   end;
                end if;
 
-            when others =>
+            when others                          =>
                null;
          end case;
       end Traverse_Declaration_Or_Statement;
@@ -1446,7 +1450,7 @@ package body Flow.Analysis.Sanity is
                end if;
             end;
 
-         when Kind_Task =>
+         when Kind_Task       =>
 
             --  Traverse declarations and statements in the task body. We deal
             --  with the visible and private parts of the task when analysing
@@ -1454,7 +1458,7 @@ package body Flow.Analysis.Sanity is
 
             Traverse_Declarations_And_HSS (Task_Body (FA.Spec_Entity));
 
-         when Kind_Package =>
+         when Kind_Package    =>
             if Entity_Spec_In_SPARK (FA.Spec_Entity) then
                declare
                   Pkg_Spec : constant Node_Id :=
@@ -1524,7 +1528,7 @@ package body Flow.Analysis.Sanity is
         (FA : Flow_Analysis_Graphs; G : Flow_Id) return Boolean is
       begin
          case G.Kind is
-            when Magic_String =>
+            when Magic_String                  =>
                return False;
 
             when Direct_Mapping | Record_Field =>
@@ -1554,7 +1558,7 @@ package body Flow.Analysis.Sanity is
                     Present (Find_In (All_Globals, Get_Direct_Mapping_Id (G)));
                end;
 
-            when others =>
+            when others                        =>
                raise Program_Error;
          end case;
       end In_Abstract_Contract;
@@ -1572,7 +1576,7 @@ package body Flow.Analysis.Sanity is
               then "Depends"
               else "Global"),
 
-           when Kind_Package => "Initializes");
+           when Kind_Package                => "Initializes");
       --  A string representation of the aspect that needs to be corrected; the
       --  preference in choosing a contract matches the preference hardcoded in
       --  Get_Global routine. If no contract is present, then ask the user to
@@ -1589,7 +1593,7 @@ package body Flow.Analysis.Sanity is
               then "Depends"
               else ""),
 
-           when Kind_Package => "");
+           when Kind_Package                => "");
       --  A string representation of the next aspect that needs to be
       --  corrected, i.e. this is the Global/Depends aspect if a global has
       --  been detected to be missing from a Refined_Global/Refined_Depends
@@ -1602,7 +1606,7 @@ package body Flow.Analysis.Sanity is
         (case FA.Kind is
            when Kind_Subprogram | Kind_Task =>
              "must be listed in the " & Aspect_To_Fix & " aspect of",
-           when Kind_Package =>
+           when Kind_Package                =>
              "must be mentioned as an input of the "
              & Aspect_To_Fix
              & " aspect of");
@@ -1610,7 +1614,7 @@ package body Flow.Analysis.Sanity is
       SRM_Ref : constant String :=
         (case FA.Kind is
            when Kind_Subprogram | Kind_Task => "6.1.4(15)",
-           when Kind_Package => "7.1.5(11)");
+           when Kind_Package                => "7.1.5(11)");
       --  String representation of the violated SPARK RM rule
 
       Unknown_Globals_In_Package : Flow_Id_Sets.Set;

@@ -21,7 +21,7 @@ procedure Check_HO_Pre with SPARK_Mode is
 
    procedure P1 (M : Map) with Global => null is
    begin
-      pragma Assert (Eq_Compatible (M, Test_Bad'Access)); --@ASSERT:FAIL
+      pragma Assert (Static => Eq_Compatible (M, Test_Bad'Access)); --@ASSERT:FAIL
    end P1;
 
    function Test_OK (X : String; Y : String) return Boolean is
@@ -32,7 +32,7 @@ procedure Check_HO_Pre with SPARK_Mode is
 
    procedure P2 (M : Map) with Global => null is
    begin
-      pragma Assert (Eq_Compatible (M, Test_OK'Access));
+      pragma Assert (Static => Eq_Compatible (M, Test_OK'Access));
    end P2;
 
    function Value_Bad (X : String; Y : String) return Big_Integer is
@@ -42,7 +42,7 @@ procedure Check_HO_Pre with SPARK_Mode is
 
    procedure P3 (M : Map) with Global => null is
    begin
-      pragma Assert (Eq_Compatible (M, Value_Bad'Access)); --@ASSERT:FAIL
+      pragma Assert (Static => Eq_Compatible (M, Value_Bad'Access)); --@ASSERT:FAIL
    end P3;
 
    function Value_OK (X : String; Y : String) return Big_Integer is
@@ -53,7 +53,7 @@ procedure Check_HO_Pre with SPARK_Mode is
 
    procedure P4 (M : Map) with Global => null is
    begin
-      pragma Assert (Eq_Compatible (M, Value_OK'Access));
+      pragma Assert (Static => Eq_Compatible (M, Value_OK'Access));
    end P4;
 
 begin

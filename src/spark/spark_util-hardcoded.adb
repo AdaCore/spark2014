@@ -194,14 +194,14 @@ package body SPARK_Util.Hardcoded is
             return
               Get_Name_String (Chars (E)) = Big_Integers_Names.From_String;
 
-         when Big_Reals =>
+         when Big_Reals    =>
             return
               Get_Name_String (Chars (E))
               in Big_Reals_Names.From_String
                | Big_Reals_Names.From_Quotient_String
                | Big_Reals_Names.From_Universal_Image;
 
-         when others =>
+         when others       =>
             return False;
       end case;
    end Has_Imprecise_Precondition;
@@ -260,12 +260,12 @@ package body SPARK_Util.Hardcoded is
       --  Then, we check the name of the generic parent
 
       case Unit is
-         when Big_Integers =>
+         when Big_Integers         =>
             return
               Get_Name_String (Chars (Generic_Parent (Par)))
               in "signed_conversions" | "unsigned_conversions";
 
-         when Big_Reals =>
+         when Big_Reals            =>
             return
               Get_Name_String (Chars (Generic_Parent (Par)))
               in "fixed_conversions" | "float_conversions";
@@ -273,7 +273,7 @@ package body SPARK_Util.Hardcoded is
          when Elementary_Functions =>
             return True;
 
-         when others =>
+         when others               =>
             raise Program_Error;
       end case;
    end Is_From_Hardcoded_Generic_Unit;
@@ -345,7 +345,7 @@ package body SPARK_Util.Hardcoded is
 
             return Scope (S_Ptr) = Standard_Standard;
 
-         when Cut_Operations =>
+         when Cut_Operations           =>
             if Get_Name_String (Chars (S_Ptr)) /= "cut_operations" then
                return False;
             end if;
@@ -360,7 +360,7 @@ package body SPARK_Util.Hardcoded is
 
             return S_Ptr = Standard_Standard;
 
-         when Elementary_Functions =>
+         when Elementary_Functions     =>
             if Get_Name_String (Chars (S_Ptr))
               /= "generic_elementary_functions"
             then
@@ -381,7 +381,7 @@ package body SPARK_Util.Hardcoded is
 
             return Scope (S_Ptr) = Standard_Standard;
 
-         when Real_Time =>
+         when Real_Time                =>
             if Get_Name_String (Chars (S_Ptr)) /= "real_time" then
                return False;
             end if;
@@ -394,14 +394,14 @@ package body SPARK_Util.Hardcoded is
 
             return Scope (S_Ptr) = Standard_Standard;
 
-         when System =>
+         when System                   =>
             if Get_Name_String (Chars (S_Ptr)) /= "system" then
                return False;
             end if;
 
             return Scope (S_Ptr) = Standard_Standard;
 
-         when System_Storage_Elements =>
+         when System_Storage_Elements  =>
             if Get_Name_String (Chars (S_Ptr)) /= "storage_elements" then
                return False;
             end if;
@@ -424,11 +424,11 @@ package body SPARK_Util.Hardcoded is
    function Is_Imprecisely_Hardcoded (E : Entity_Id) return Boolean is
    begin
       case Get_Hardcoded_Unit (E) is
-         when Big_Integers =>
+         when Big_Integers         =>
             return
               Get_Name_String (Chars (E)) = Big_Integers_Names.From_String;
 
-         when Big_Reals =>
+         when Big_Reals            =>
             return
               Get_Name_String (Chars (E))
               in Big_Reals_Names.From_String
@@ -441,7 +441,7 @@ package body SPARK_Util.Hardcoded is
 
             return True;
 
-         when others =>
+         when others               =>
             return False;
       end case;
    end Is_Imprecisely_Hardcoded;

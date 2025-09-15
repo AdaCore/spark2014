@@ -588,10 +588,10 @@ procedure Gnatprove with SPARK_Mode is
                Compute_Data_Representation (Project_File, Tree, Status);
             end if;
 
-         when GS_ALI =>
+         when GS_ALI                 =>
             Compute_ALI_Information (Project_File, Tree, Status);
 
-         when GS_Gnat2Why =>
+         when GS_Gnat2Why            =>
             Copy_ALI_Files (Tree);
             Flow_Analysis_And_Proof (Project_File, Tree, Status);
       end case;
@@ -977,22 +977,22 @@ procedure Gnatprove with SPARK_Mode is
          when GS_Data_Representation =>
             return "generation of data representation information";
 
-         when GS_ALI =>
+         when GS_ALI                 =>
             if CL_Switches.No_Global_Generation then
                return "generation of program properties";
             else
                return "generation of Global contracts";
             end if;
 
-         when GS_Gnat2Why =>
+         when GS_Gnat2Why            =>
             case Configuration.Mode is
-               when GPM_Check =>
+               when GPM_Check           =>
                   return "fast partial checking of SPARK legality rules";
 
-               when GPM_Check_All =>
+               when GPM_Check_All       =>
                   return "full checking of SPARK legality rules";
 
-               when GPM_Flow =>
+               when GPM_Flow            =>
                   return "analysis of data and information flow";
 
                when GPM_Prove | GPM_All =>

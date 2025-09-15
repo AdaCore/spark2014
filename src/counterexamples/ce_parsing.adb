@@ -181,7 +181,7 @@ package body CE_Parsing is
       Val : Value_Type := New_Item (AST_Ty);
    begin
       case Val.K is
-         when Scalar_K =>
+         when Scalar_K   =>
 
             --  Counterexample can be a record if the object has relaxed
             --  initialization. In this case, search for the values of the
@@ -222,7 +222,7 @@ package body CE_Parsing is
          when Multidim_K =>
             raise Parse_Error;
 
-         when Array_K =>
+         when Array_K    =>
 
             --  When the array has no bounds, we have a Cnt_Array
 
@@ -359,7 +359,7 @@ package body CE_Parsing is
                raise Parse_Error;
             end if;
 
-         when Record_K =>
+         when Record_K   =>
 
             --  Records with only one field might be simplified by Why3
             --  transformations.
@@ -497,7 +497,7 @@ package body CE_Parsing is
                end if;
             end;
 
-         when Access_K =>
+         when Access_K   =>
 
             --  Counterexample should be a record
 
@@ -672,9 +672,9 @@ package body CE_Parsing is
 
             Var_Modifier  : Modifier :=
               (case Elt.Kind is
-                 when CEE_Old => Old,
+                 when CEE_Old    => Old,
                  when CEE_Result => Result,
-                 when others => None);
+                 when others     => None);
             Is_Attribute  : Boolean := False;
             Current_Slice : Slice_Number := 2;
             Current_Ty    : Entity_Id;
@@ -950,7 +950,7 @@ package body CE_Parsing is
                   pragma Assert (Current_Val.AST_Ty = New_Val.AST_Ty);
 
                   case Current_Val.K is
-                     when Scalar_K =>
+                     when Scalar_K   =>
                         Current_Val.Scalar_Content := New_Val.Scalar_Content;
 
                         if New_Val.Initialized_Attr.Present then
@@ -973,7 +973,7 @@ package body CE_Parsing is
                            end if;
                         end loop;
 
-                     when Array_K =>
+                     when Array_K    =>
                         Current_Val.Array_Values := New_Val.Array_Values;
                         Current_Val.Array_Others := New_Val.Array_Others;
 
@@ -984,7 +984,7 @@ package body CE_Parsing is
                            Current_Val.Last_Attr := New_Val.Last_Attr;
                         end if;
 
-                     when Record_K =>
+                     when Record_K   =>
                         for Pos in New_Val.Record_Fields.Iterate loop
                            Current_Val.Record_Fields.Include
                              (Key (Pos), Element (Pos));
@@ -995,7 +995,7 @@ package body CE_Parsing is
                              New_Val.Constrained_Attr;
                         end if;
 
-                     when Access_K =>
+                     when Access_K   =>
                         Current_Val.Designated_Value :=
                           New_Val.Designated_Value;
 
@@ -1047,7 +1047,7 @@ package body CE_Parsing is
             --  Decision: we don't handle infinities or Nan
             raise Parse_Error;
 
-         when Float_Plus_Zero =>
+         when Float_Plus_Zero                                        =>
             if Is_Single_Precision_Floating_Point_Type (Ty) then
                return (Float_K, (Float_32_K, Float'Copy_Sign (0.0, 1.0)));
             elsif Is_Double_Precision_Floating_Point_Type (Ty) then
@@ -1059,7 +1059,7 @@ package body CE_Parsing is
                raise Program_Error;
             end if;
 
-         when Float_Minus_Zero =>
+         when Float_Minus_Zero                                       =>
             if Is_Single_Precision_Floating_Point_Type (Ty) then
                return (Float_K, (Float_32_K, Float'Copy_Sign (0.0, -1.0)));
             elsif Is_Double_Precision_Floating_Point_Type (Ty) then
@@ -1073,7 +1073,7 @@ package body CE_Parsing is
                raise Program_Error;
             end if;
 
-         when Float_Val =>
+         when Float_Val                                              =>
             declare
                Sign        : constant String := To_String (F.F_Sign);
                Significand : constant String := To_String (F.F_Significand);
@@ -1134,7 +1134,7 @@ package body CE_Parsing is
       Why3_Type : constant Cntexmp_Type := Cnt_Value.T;
    begin
       case Why3_Type is
-         when Cnt_Integer =>
+         when Cnt_Integer                                           =>
 
             --  Necessary for some types that makes boolean be translated to
             --  integers like: "subype only_true := True .. True".
@@ -1218,10 +1218,10 @@ package body CE_Parsing is
                end;
             end if;
 
-         when Cnt_Boolean =>
+         when Cnt_Boolean                                           =>
             return Boolean_Value (Cnt_Value.Bo);
 
-         when Cnt_Bitvector =>
+         when Cnt_Bitvector                                         =>
 
             --  Boolean are translated into bitvector of size 1 for CVC4
             --  because it fails to produce a model when booleans are used
@@ -1243,7 +1243,7 @@ package body CE_Parsing is
                   raise Parse_Error;
             end;
 
-         when Cnt_Decimal =>
+         when Cnt_Decimal                                           =>
             pragma Assert (Is_Floating_Point_Type (AST_Type));
 
             begin
@@ -1268,7 +1268,7 @@ package body CE_Parsing is
                   raise Parse_Error;
             end;
 
-         when Cnt_Float =>
+         when Cnt_Float                                             =>
             pragma Assert (Is_Floating_Point_Type (AST_Type));
 
             return Parse_Float (Cnt_Value, AST_Type);
@@ -1340,7 +1340,7 @@ package body CE_Parsing is
                end;
             end if;
 
-         when others =>
+         when others   =>
             raise Parse_Error;
       end case;
    end Parse_Valid_Flag;
@@ -1371,7 +1371,7 @@ package body CE_Parsing is
       Comp : Big_Integer;
    begin
       case Cnt_Value.T is
-         when Cnt_Integer =>
+         when Cnt_Integer   =>
             Comp :=
               From_String (Ada.Strings.Unbounded.To_String (Cnt_Value.I));
 
@@ -1379,7 +1379,7 @@ package body CE_Parsing is
             Comp :=
               From_String (Ada.Strings.Unbounded.To_String (Cnt_Value.B));
 
-         when others =>
+         when others        =>
             raise Parse_Error;
       end case;
       Flag := (True, Comp);
