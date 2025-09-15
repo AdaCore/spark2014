@@ -1,3 +1,11 @@
 main.adb:5:08: info: data dependencies proved
 main.adb:18:11: info: data dependencies proved
 main.adb:29:11: info: flow dependencies proved
+main1.adb:28:04: info: precondition proved (Trivial: 1 VC)
+main1.adb:28:04: warning: "Y" is set by "Test" but not used after the call
+main1.adb:28:04: warning: "Y1" is set by "Test" but not used after the call
+main1.adb:28:04: warning: "Y2" is set by "Test" but not used after the call
+main1.adb:28:04: warning: "Y3" is set by "Test" but not used after the call
+p.ads:6:13: info: implicit aspect Always_Terminates on "Get_Item" has been proved, subprogram will terminate
+p.ads:7:13: info: implicit aspect Always_Terminates on "Get_Item1" has been proved, subprogram will terminate
+p.ads:8:13: info: implicit aspect Always_Terminates on "Get_Item2" has been proved, subprogram will terminate

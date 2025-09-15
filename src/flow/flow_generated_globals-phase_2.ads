@@ -231,6 +231,25 @@ package Flow_Generated_Globals.Phase_2 is
    --  @param EN is the entity name that we examine
    --  @return True iff EN is ghost entity with policy Ignored
 
+   function GG_Ghost_Assertion_Level (EN : Entity_Name) return Any_Entity_Name
+   with Pre => GG_Has_Been_Generated;
+   --  Equivalent to the frontend routine for Entity_Id
+
+   function GG_Is_Assertion_Level_Dependent
+     (Self : Entity_Name; Other : Entity_Name) return Boolean
+   with Pre => GG_Has_Been_Generated;
+   --  Equivalent to the frontend routine for Entity_Ids
+
+   function GG_Is_Assertion_Level_Dependent
+     (Self : Entity_Id; Other : Entity_Name) return Boolean
+   with Pre => GG_Has_Been_Generated;
+   --  Equivalent to the frontend routine for Entity_Ids
+
+   function GG_Is_Assertion_Level_Dependent
+     (Self : Entity_Name; Other : Entity_Id) return Boolean
+   with Pre => GG_Has_Been_Generated;
+   --  Equivalent to the frontend routine for Entity_Ids
+
    function GG_Is_Constant (EN : Entity_Name) return Boolean
    with Pre => GG_Has_Been_Generated;
    --  @param EN is the entity name that we check for being a constant

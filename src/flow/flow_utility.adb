@@ -5908,13 +5908,28 @@ package body Flow_Utility is
       pragma Assert (Self.Kind in Direct_Mapping | Magic_String);
       pragma Assert (Other.Kind in Direct_Mapping | Magic_String);
 
+      --  Call the apropriate routine depening on the kind of inputs
+
       if Self.Kind = Direct_Mapping and then Other.Kind = Direct_Mapping then
          return
            Is_Assertion_Level_Dependent
              (Ghost_Assertion_Level (Get_Direct_Mapping_Id (Self)),
               Ghost_Assertion_Level (Get_Direct_Mapping_Id (Other)));
+      elsif Self.Kind = Direct_Mapping and then Other.Kind = Magic_String then
+         return
+           GG_Is_Assertion_Level_Dependent
+             (Ghost_Assertion_Level (Get_Direct_Mapping_Id (Self)),
+              GG_Ghost_Assertion_Level (Other.Name));
+      elsif Self.Kind = Magic_String and then Other.Kind = Direct_Mapping then
+         return
+           GG_Is_Assertion_Level_Dependent
+             (GG_Ghost_Assertion_Level (Self.Name),
+              Ghost_Assertion_Level (Get_Direct_Mapping_Id (Other)));
       else
-         raise Program_Error;
+         return
+           GG_Is_Assertion_Level_Dependent
+             (GG_Ghost_Assertion_Level (Self.Name),
+              GG_Ghost_Assertion_Level (Other.Name));
       end if;
    end Is_Assertion_Level_Dependent;
 
@@ -5964,10 +5979,10 @@ package body Flow_Utility is
          when Direct_Mapping | Record_Field =>
             return Is_Ignored_Ghost_Entity (Get_Direct_Mapping_Id (F));
 
-         when Magic_String =>
+         when Magic_String                  =>
             return GG_Is_Ignored_Ghost_Entity (F.Name);
 
-         when others =>
+         when others                        =>
             return False;
       end case;
    end Is_Ignored_Ghost_Entity;
