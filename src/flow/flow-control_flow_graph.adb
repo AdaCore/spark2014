@@ -477,7 +477,10 @@ package body Flow.Control_Flow_Graph is
    --  kept because they are read in a routine that detects dead code.
 
    procedure Create_Record_Tree
-     (F : Flow_Id; Leaf_Atr : V_Attributes; FA : in out Flow_Analysis_Graphs)
+     (F              : Flow_Id;
+      Leaf_Atr       : V_Attributes;
+      FA             : in out Flow_Analysis_Graphs;
+      Current_Entity : Entity_To_Vertex_Maps.Cursor)
    with Pre => F.Kind in Direct_Mapping | Record_Field | Magic_String;
    --  Create part of the tree structure used to represent records. In
    --  particular, we create the subtree which is formed by the leaf F up to
@@ -1331,8 +1334,12 @@ package body Flow.Control_Flow_Graph is
    ------------------------
 
    procedure Create_Record_Tree
-     (F : Flow_Id; Leaf_Atr : V_Attributes; FA : in out Flow_Analysis_Graphs)
+     (F              : Flow_Id;
+      Leaf_Atr       : V_Attributes;
+      FA             : in out Flow_Analysis_Graphs;
+      Current_Entity : Entity_To_Vertex_Maps.Cursor)
    is
+      V : Flow_Graphs.Vertex_Id;
    begin
       case F.Variant is
          when Normal_Use | In_View | Out_View   =>
@@ -1357,7 +1364,7 @@ package body Flow.Control_Flow_Graph is
                              Corresponding_Grouping (F.Variant));
 
                      begin
-                        Create_Record_Tree (P, Leaf_Atr, FA);
+                        Create_Record_Tree (P, Leaf_Atr, FA, Current_Entity);
                         case F.Variant is
                            when Initial_Value =>
                               Linkup
@@ -1391,22 +1398,31 @@ package body Flow.Control_Flow_Graph is
                   if not FA.CFG.Contains (F) then
                      --  Create vertex
                      Add_Vertex
-                       (FA, F, Make_Record_Tree_Attributes (Leaf_Atr));
+                       (FA,
+                        F,
+                        Make_Record_Tree_Attributes (Leaf_Atr),
+                        V,
+                        Keyed => True);
+
+                     --  Register vertex, so that record tree will be removed
+                     --  if object declaration turns out to be dead code.
+
+                     if Entity_To_Vertex_Maps.Has_Element (Current_Entity) then
+                        FA.Initial_And_Final_Vertices (Current_Entity).Insert
+                          (V);
+                     end if;
 
                      if F.Kind = Record_Field then
-                        Create_Record_Tree (Parent_Record (F), Leaf_Atr, FA);
+                        Create_Record_Tree
+                          (Parent_Record (F), Leaf_Atr, FA, Current_Entity);
                         case F.Variant is
                            when Initial_Grouping =>
                               Linkup
-                                (FA,
-                                 FA.CFG.Get_Vertex (Parent_Record (F)),
-                                 FA.CFG.Get_Vertex (F));
+                                (FA, FA.CFG.Get_Vertex (Parent_Record (F)), V);
 
                            when Final_Grouping   =>
                               Linkup
-                                (FA,
-                                 FA.CFG.Get_Vertex (F),
-                                 FA.CFG.Get_Vertex (Parent_Record (F)));
+                                (FA, V, FA.CFG.Get_Vertex (Parent_Record (F)));
 
                            when others           =>
                               raise Program_Error;
@@ -1503,14 +1519,14 @@ package body Flow.Control_Flow_Graph is
          Linkup (FA, Initial_V, FA.Start_Vertex);
          FA.Initial_And_Final_Vertices (Current_Entity).Insert (Initial_V);
 
-         Create_Record_Tree (F_Initial, Initial_Atr, FA);
+         Create_Record_Tree (F_Initial, Initial_Atr, FA, Current_Entity);
 
          --  Setup the n'final vertex
          Add_Vertex (FA, F_Final, Final_Atr, Final_V, Keyed => True);
          Linkup (FA, FA.End_Vertex, Final_V);
          FA.Initial_And_Final_Vertices (Current_Entity).Insert (Final_V);
 
-         Create_Record_Tree (F_Final, Final_Atr, FA);
+         Create_Record_Tree (F_Final, Final_Atr, FA, Current_Entity);
 
          FA.All_Vars.Insert (F);
       end Process;
@@ -1582,13 +1598,21 @@ package body Flow.Control_Flow_Graph is
          Add_Vertex (FA, F_Initial, Initial_Atr, Initial_V, Keyed => True);
          Linkup (FA, Initial_V, FA.Start_Vertex);
 
-         Create_Record_Tree (F_Initial, Initial_Atr, FA);
+         Create_Record_Tree
+           (F_Initial,
+            Initial_Atr,
+            FA,
+            Current_Entity => Entity_To_Vertex_Maps.No_Element);
 
          --  Setup the F'final vertex
          Add_Vertex (FA, F_Final, Final_Atr, Final_V, Keyed => True);
          Linkup (FA, FA.End_Vertex, Final_V);
 
-         Create_Record_Tree (F_Final, Final_Atr, FA);
+         Create_Record_Tree
+           (F_Final,
+            Final_Atr,
+            FA,
+            Current_Entity => Entity_To_Vertex_Maps.No_Element);
 
          FA.All_Vars.Insert (F);
       end Process;
