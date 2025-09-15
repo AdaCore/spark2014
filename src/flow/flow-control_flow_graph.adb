@@ -5408,6 +5408,13 @@ package body Flow.Control_Flow_Graph is
 
       --  Proof will pull reclamation functions at the end of the scope of
       --  E if its type needs reclamation.
+      --
+      --  ??? For deferred constants, i.e. constants declared in visible part
+      --  of a package spec and completed in the private part this will be
+      --  executed twice; however, the completion might be hidden behind
+      --  SPARK_Mode => Off, so we can't just move it after the CASE statement
+      --  below. Or maybe such constants do not need reclamation?
+
       if not Is_Library_Level_Entity (E) then
          FA.Proof_Dependencies (Reclaimed_Types).Include (Etype (E));
       end if;
