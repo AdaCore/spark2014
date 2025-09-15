@@ -62,6 +62,7 @@ with Snames;                           use Snames;
 with SPARK_Definition;                 use SPARK_Definition;
 with SPARK_Definition.Annotate;        use SPARK_Definition.Annotate;
 with SPARK_Frame_Conditions;           use SPARK_Frame_Conditions;
+with SPARK_Util;                       use SPARK_Util;
 with SPARK_Util.Subprograms;           use SPARK_Util.Subprograms;
 with Sprint;                           use Sprint;
 with String_Utils;                     use String_Utils;

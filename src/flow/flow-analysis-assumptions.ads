@@ -26,6 +26,7 @@
 
 with GNATCOLL.JSON; use GNATCOLL.JSON;
 with Snames;        use Snames;
+with SPARK_Util;    use SPARK_Util;
 
 package Flow.Analysis.Assumptions is
 

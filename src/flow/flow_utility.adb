@@ -8265,6 +8265,9 @@ package body Flow_Utility is
       A_Prefix : Node_Id := A;
       B_Prefix : Node_Id := B;
    begin
+      --  The following code intentionally uses iteration and not recursion, so
+      --  that we only check the postcondition once we get the final verdict.
+
       loop
          if Is_Entity_Name (A_Prefix) and then Is_Entity_Name (B_Prefix) then
             return Entity (A_Prefix) = Entity (B_Prefix);
@@ -8290,6 +8293,12 @@ package body Flow_Utility is
             B_Prefix := Prefix (B_Prefix);
 
          else
+            --  This routine is only executed as part of equivalence check
+            --  after protected prefixes yield the same hash value, which is
+            --  virtually impossible to test.
+
+            pragma Annotate (Xcov, Exempt_On, "Only runs on hash collision");
+
             pragma
               Assert
                 (Is_Entity_Name (A_Prefix)
@@ -8307,6 +8316,8 @@ package body Flow_Utility is
                             | N_Slice);
 
             return False;
+
+            pragma Annotate (Xcov, Exempt_Off);
          end if;
       end loop;
    end Denote_Same_Protected_Object;

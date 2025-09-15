@@ -36,6 +36,7 @@ with Sem_Util;                  use Sem_Util;
 with Sinfo.Utils;               use Sinfo.Utils;
 with Snames;                    use Snames;
 with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
+with SPARK_Util;                use SPARK_Util;
 with Sprint;                    use Sprint;
 with VC_Kinds;                  use VC_Kinds;
 with Why;

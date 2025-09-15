@@ -41,6 +41,7 @@ with Sinfo.Utils;                    use Sinfo.Utils;
 with Sinput;                         use Sinput;
 with Snames;                         use Snames;
 with SPARK_Definition;               use SPARK_Definition;
+with SPARK_Util;                     use SPARK_Util;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 with SPARK_Util.Types;               use SPARK_Util.Types;
 with VC_Kinds;                       use VC_Kinds;

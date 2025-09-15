@@ -859,10 +859,19 @@ package Flow_Utility is
    with Pre => Is_Subprogram (E);
    --  Return global outputs used in the Program_Exit expression; for flow
 
-   function Denote_Same_Protected_Object (A, B : Node_Id) return Boolean;
+   function Denote_Same_Protected_Object (A, B : Node_Id) return Boolean
+   with
+     Post =>
+       Denote_Same_Protected_Object'Result
+       = (Full_Protected_Name (A) = Full_Protected_Name (B));
    --  Returns True if prefixes of external protected calls denote the same
-   --  protected object, as far as flow analysis is concerned, i.e. without
+   --  protected object as far as flow analysis is concerned, i.e. without
    --  looking at indices of indexed elements.
+   --
+   --  Note: this routine is intentially named after a frontend routine
+   --  Denotes_Same_Object that implements a similar check, but takes array
+   --  and slice indices into account. Also, here we don't expect prefixes
+   --  with explicit dereferences, which are rejected in marking.
 
    procedure Register_Protected_Call
      (Callsite : Node_Id; Locks : in out Protected_Call_Sets.Set)
