@@ -398,7 +398,7 @@ package body SPARK_Rewrite is
 
          case Nkind (N) is
 
-            when N_Attribute_Reference =>
+            when N_Attribute_Reference                                     =>
 
                --  References to the Old attribute might not have the
                --  type of their prefix. This might lead to discrepencies and
@@ -429,7 +429,7 @@ package body SPARK_Rewrite is
                   end;
                end if;
 
-            when N_Real_Literal =>
+            when N_Real_Literal                                            =>
                Rewrite_Real_Literal (N);
 
             --  Replace renamings and inherited subprograms by the subprogram
@@ -438,23 +438,23 @@ package body SPARK_Rewrite is
             when N_Identifier | N_Expanded_Name | N_Op | N_Operator_Symbol =>
                Rewrite_Subprogram_Reference (N);
 
-            when N_Subprogram_Instantiation =>
+            when N_Subprogram_Instantiation                                =>
                Rewrite_Subprogram_Instantiation (N);
 
-            when N_Package_Declaration =>
+            when N_Package_Declaration                                     =>
                Rewrite_Wrapper_Package (N);
 
             --  Recursively call the tree rewriting procedure on subunits
 
-            when N_Body_Stub =>
+            when N_Body_Stub                                               =>
                if not Is_Generic_Unit (Unique_Defining_Entity (N)) then
                   Rewrite_Nodes (Unit (Library_Unit (N)));
                end if;
 
-            when N_Generic_Declaration =>
+            when N_Generic_Declaration                                     =>
                return Skip;
 
-            when N_Package_Body | N_Subprogram_Body =>
+            when N_Package_Body | N_Subprogram_Body                        =>
                if Is_Generic_Unit (Unique_Defining_Entity (N)) then
                   return Skip;
                end if;
@@ -462,12 +462,12 @@ package body SPARK_Rewrite is
             --  Ignore freeze entities, because front end might not care to set
             --  all of their fields (such as Scope or Ekind).
 
-            when N_Freeze_Entity =>
+            when N_Freeze_Entity                                           =>
                return Skip;
 
             --  Traverse expressions for DIC procedures
 
-            when N_Full_Type_Declaration =>
+            when N_Full_Type_Declaration                                   =>
 
                --  Frontend rewrites declarations of derived types, so only
                --  their original node comes from source.
@@ -523,7 +523,7 @@ package body SPARK_Rewrite is
                   end;
                end if;
 
-            when N_Subprogram_Declaration =>
+            when N_Subprogram_Declaration                                  =>
 
                --  We always unconditionally complete the null procedure with a
                --  null body in GNATprove, because some checks in GNATprove are
@@ -535,7 +535,7 @@ package body SPARK_Rewrite is
                   Rewrite_Null_Procedure (N);
                end if;
 
-            when others =>
+            when others                                                    =>
                null;
          end case;
 

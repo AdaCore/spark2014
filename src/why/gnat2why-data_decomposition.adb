@@ -68,12 +68,12 @@ package body Gnat2Why.Data_Decomposition is
    begin
       --  Return the known value if any
       case Attr_Id is
-         when Attribute_Alignment =>
+         when Attribute_Alignment      =>
             if Known_Alignment (E) then
                return Alignment (E);
             end if;
 
-         when Attribute_Size =>
+         when Attribute_Size           =>
             if Is_Type (E) then
                if Known_RM_Size (E) then
                   return RM_Size (E);
@@ -85,13 +85,13 @@ package body Gnat2Why.Data_Decomposition is
                end if;
             end if;
 
-         when Attribute_Value_Size =>
+         when Attribute_Value_Size     =>
             pragma Assert (Is_Type (E));
             if Known_RM_Size (E) then
                return RM_Size (E);
             end if;
 
-         when Attribute_Object_Size =>
+         when Attribute_Object_Size    =>
             pragma Assert (Is_Type (E));
             if Known_Esize (E) then
                return Esize (E);
@@ -130,10 +130,10 @@ package body Gnat2Why.Data_Decomposition is
                when Attribute_Size | Attribute_Value_Size =>
                   return Data_Entry.Value_Size;
 
-               when Attribute_Object_Size =>
+               when Attribute_Object_Size                 =>
                   return Data_Entry.Object_Size;
 
-               when Attribute_Component_Size =>
+               when Attribute_Component_Size              =>
                   pragma
                     Annotate
                       (Xcov,

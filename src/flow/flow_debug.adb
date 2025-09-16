@@ -55,7 +55,7 @@ package body Flow_Debug is
                   end if;
                   Prev := C;
 
-               when others =>
+               when others                    =>
                   Append (Temp_String, C);
                   Prev := C;
             end case;
@@ -183,7 +183,7 @@ package body Flow_Debug is
             & (case Declarative_Part'(S.Part) is
                  when Visible_Part => "spec",
                  when Private_Part => "priv",
-                 when Body_Part => "body"));
+                 when Body_Part    => "body"));
       else
          Write_Str ("null_flow_scope");
       end if;

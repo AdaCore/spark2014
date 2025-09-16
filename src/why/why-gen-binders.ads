@@ -414,12 +414,12 @@ package Why.Gen.Binders is
      Ghost,
      Predicate =>
        (case Nkind (Contextual_Node) is
-          when N_Target_Name => True,
+          when N_Target_Name         => True,
           when N_Attribute_Reference =>
             Attribute_Name (Contextual_Node) in Name_Old | Name_Loop_Entry,
           when N_Defining_Identifier =>
             Comes_From_Declare_Expr (Contextual_Node),
-          when others => False);
+          when others                => False);
    --  Nodes whose translation is a local Why3 objects defined in the context
    --  of the expression. This includes attributes 'Loop_entry and 'Old, target
    --  name, and constants coming from declare expressions.

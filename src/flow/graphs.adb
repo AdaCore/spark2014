@@ -225,10 +225,10 @@ package body Graphs is
             Visitor (V, Origin, D, T_Ins);
 
             case T_Ins is
-               when Continue =>
+               when Continue        =>
                   Enqueue_Children (V, D);
 
-               when Skip_Children =>
+               when Skip_Children   =>
                   null;
 
                when Abort_Traversal =>
@@ -731,11 +731,11 @@ package body Graphs is
             Visitor (Current_Node, TV);
 
             case TV is
-               when Continue =>
+               when Continue        =>
                   --  Visit all children
                   Schedule_Children (Current_Node);
 
-               when Skip_Children =>
+               when Skip_Children   =>
                   null;
 
                when Abort_Traversal =>
@@ -1058,7 +1058,7 @@ package body Graphs is
       G : access constant Graph renames Coll.The_Graph;
    begin
       case Coll.The_Type is
-         when In_Neighbours =>
+         when In_Neighbours  =>
             return
               Cursor'
                 (Collection_Type   => In_Neighbours,
@@ -1072,7 +1072,7 @@ package body Graphs is
                  EAM_Native_Cursor =>
                    G.Vertices (Coll.Id).Out_Neighbours.First);
 
-         when All_Vertices =>
+         when All_Vertices   =>
             return
               Cursor'
                 (Collection_Type  => All_Vertices,
@@ -1096,7 +1096,7 @@ package body Graphs is
       return Vertex_Collection_T is
    begin
       case The_Type is
-         when In_Neighbours =>
+         when In_Neighbours  =>
             return
               Vertex_Collection_T'
                 (The_Type  => In_Neighbours,
@@ -1132,13 +1132,13 @@ package body Graphs is
      (Coll : Vertex_Collection_T; C : Cursor) return Vertex_Id is
    begin
       case Coll.The_Type is
-         when In_Neighbours =>
+         when In_Neighbours  =>
             return Element (C.VIS_Native_Cursor);
 
          when Out_Neighbours =>
             return Key (C.EAM_Native_Cursor);
 
-         when All_Vertices =>
+         when All_Vertices   =>
             return To_Index (C.VL_Native_Cursor);
       end case;
    end Get_Element;
@@ -1169,9 +1169,9 @@ package body Graphs is
 
    function Has_Element (Coll : Vertex_Collection_T; C : Cursor) return Boolean
    is (case Coll.The_Type is
-         when In_Neighbours => Has_Element (C.VIS_Native_Cursor),
+         when In_Neighbours  => Has_Element (C.VIS_Native_Cursor),
          when Out_Neighbours => Has_Element (C.EAM_Native_Cursor),
-         when All_Vertices => Has_Element (C.VL_Native_Cursor));
+         when All_Vertices   => Has_Element (C.VL_Native_Cursor));
 
    ----------
    -- Hash --
@@ -1286,7 +1286,7 @@ package body Graphs is
 
    function Next_Cursor (Coll : Vertex_Collection_T; C : Cursor) return Cursor
    is (case Coll.The_Type is
-         when In_Neighbours =>
+         when In_Neighbours  =>
            Cursor'
              (Collection_Type   => In_Neighbours,
               VIS_Native_Cursor => Next (C.VIS_Native_Cursor)),
@@ -1294,7 +1294,7 @@ package body Graphs is
            Cursor'
              (Collection_Type   => Out_Neighbours,
               EAM_Native_Cursor => Next (C.EAM_Native_Cursor)),
-         when All_Vertices =>
+         when All_Vertices   =>
            Cursor'
              (Collection_Type  => All_Vertices,
               VL_Native_Cursor => Next (C.VL_Native_Cursor)));
@@ -1580,7 +1580,7 @@ package body Graphs is
                C : constant Character := Element (S, P);
             begin
                case C is
-                  when '"' =>
+                  when '"'    =>
                      Append (R, '\');
                      Append (R, C);
 
@@ -1626,16 +1626,16 @@ package body Graphs is
                   Put (FD, Escape (Info.Label));
                   Put (FD, """");
                   case Info.Shape is
-                     when Shape_Oval =>
+                     when Shape_Oval    =>
                         null;
 
-                     when Shape_Box =>
+                     when Shape_Box     =>
                         Put (FD, ",shape=""box""");
 
                      when Shape_Diamond =>
                         Put (FD, ",shape=""diamond""");
 
-                     when Shape_None =>
+                     when Shape_None    =>
                         Put (FD, ",shape=""plaintext""");
                   end case;
                   if Info.Colour /= Null_Unbounded_String then

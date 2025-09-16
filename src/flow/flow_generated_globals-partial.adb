@@ -445,7 +445,7 @@ package body Flow_Generated_Globals.Partial is
                Contr.Globals.Proper := Contract_Globals (E, Refined => False);
                Contr.Globals.Refined := Contract_Globals (E, Refined => True);
 
-            when E_Package =>
+            when E_Package                                           =>
 
                --  Store objects from the LHSs of explicit Initializes
                --  contracts in the ALI file to know that are claimed to be
@@ -488,10 +488,10 @@ package body Flow_Generated_Globals.Partial is
                   --  ??? probably we should also give the RHS to the GG
                end loop;
 
-            when E_Protected_Type =>
+            when E_Protected_Type                                    =>
                null; --  ??? do nothing for now
 
-            when others =>
+            when others                                              =>
                raise Program_Error;
          end case;
       end if;
@@ -777,10 +777,10 @@ package body Flow_Generated_Globals.Partial is
                            when E_Function | E_Procedure =>
                               Contr.Direct_Calls.Include (S);
 
-                           when E_Operator =>
+                           when E_Operator               =>
                               pragma Assert (Is_Ignored_Internal (S));
 
-                           when others =>
+                           when others                   =>
                               raise Program_Error;
                         end case;
                      end loop;
@@ -1475,7 +1475,7 @@ package body Flow_Generated_Globals.Partial is
                        (Indent & "Initializes  (refined)",
                         Contr.Globals.Initializes.Refined);
 
-                  when others =>
+                  when others    =>
                      null;
                end case;
 
@@ -1633,21 +1633,20 @@ package body Flow_Generated_Globals.Partial is
                then
                   --  ??? flatten the condition, e.g. make it a function
                   if (case Ekind (Callee) is
-                        when E_Package =>
+                        when E_Package        =>
                           Present (Get_Pragma (Callee, Pragma_Initializes)),
 
                         when Entry_Kind
                            | E_Function
                            | E_Procedure
-                           | E_Task_Type
-                        =>
+                           | E_Task_Type      =>
                           Entity_In_SPARK (Callee)
                           and then not Entity_Body_In_SPARK (Callee)
                           and then Has_User_Supplied_Globals (Callee),
 
                         when E_Protected_Type => Meaningless,
 
-                        when others => raise Program_Error)
+                        when others           => raise Program_Error)
                   then
                      Debug ("Folding with down-projected globals:", Callee);
                      return Down_Project (Callee_Globals.Proper, Caller);
@@ -2076,17 +2075,17 @@ package body Flow_Generated_Globals.Partial is
                   else Preanalyze_Spec (E));
                --!format on
 
-            when E_Package =>
+            when E_Package                                           =>
                Contr :=
                  (if Entity_In_SPARK (E)
                   then Preanalyze_Body (E)
                   else Preanalyze_Spec (E));
 
-            when E_Protected_Type =>
+            when E_Protected_Type                                    =>
                --   ??? perhaps we should do something, but now we don't
                null;
 
-            when others =>
+            when others                                              =>
                raise Program_Error;
          end case;
 
@@ -2517,12 +2516,14 @@ package body Flow_Generated_Globals.Partial is
 
             Variable_Inputs : constant Node_Lists.List :=
               (case Ekind (E) is
-                 when E_Constant => Direct_Inputs_Of_Constant (E),
+                 when E_Constant                            =>
+                   Direct_Inputs_Of_Constant (E),
 
                  when Entry_Kind | E_Function | E_Procedure =>
                    Direct_Inputs_Of_Subprogram (E),
 
-                 when others => raise Program_Error);
+                 when others                                =>
+                   raise Program_Error);
 
             LHS : constant Constant_Graphs.Vertex_Id :=
               Constant_Graph.Get_Vertex (E);

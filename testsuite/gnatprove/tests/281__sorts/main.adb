@@ -23,13 +23,27 @@ procedure Main with SPARK_Mode is
    with Ghost,
      Subprogram_Variant => (Structural => L);
 
+   function "<=" (V : Integer; L : access constant List_Cell) return Boolean
+   with Ghost,
+     Post =>
+       (Static => "<="'Result =  (for all W of Occurrences (L) => V <= W)),
+     Subprogram_Variant => (Structural => L);
+
+   function "<=" (L : access constant List_Cell; V : Integer) return Boolean
+   with Ghost,
+     Post =>
+       (Static => "<="'Result = (for all W of Occurrences (L) => W <= V)),
+     Subprogram_Variant => (Structural => L);
+
    function "<=" (V : Integer; L : access constant List_Cell) return Boolean is
-     (for all W of Occurrences (L) => V <= W)
-   with Ghost;
+   begin
+     return L = null or else (V <= L.V and then V <= L.N);
+   end "<=";
 
    function "<=" (L : access constant List_Cell; V : Integer) return Boolean is
-     (for all W of Occurrences (L) => W <= V)
-   with Ghost;
+   begin
+     return L = null or else (L.V <= V and then L.N <= V);
+   end "<=";
 
    function Is_Sorted (L : access constant List_Cell) return Boolean is
      (if L = null then True else L.V <= L.N and then Is_Sorted (L.N))

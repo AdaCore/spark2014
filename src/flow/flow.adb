@@ -376,12 +376,12 @@ package body Flow is
                      Append (Variables, To_JSON (F.Node));
                   end if;
 
-               when Magic_String =>
+               when Magic_String   =>
                   if not Is_Heap_Variable (F.Name) then
                      Append (Variables, Create (Pretty_Print (F.Name)));
                   end if;
 
-               when others =>
+               when others         =>
                   raise Program_Error;
             end case;
          end loop;
@@ -474,7 +474,7 @@ package body Flow is
                (if Nkind (Get_Direct_Mapping_Id (F)) in N_Entity
                 then Flow_Id_To_String (F)
                 else Node_Or_Entity_Id'Image (Get_Direct_Mapping_Id (F))),
-             when others => Flow_Id_To_String (F))
+             when others         => Flow_Id_To_String (F))
           & "|"
           & F.Variant'Img);
 
@@ -551,9 +551,9 @@ package body Flow is
    is (X.Kind
        = (case Ekind (X.Spec_Entity) is
             when E_Function | E_Procedure | E_Entry => Kind_Subprogram,
-            when E_Task_Type => Kind_Task,
-            when E_Package => Kind_Package,
-            when others => raise Program_Error)
+            when E_Task_Type                        => Kind_Task,
+            when E_Package                          => Kind_Package,
+            when others                             => raise Program_Error)
        and then (if not X.Generating_Globals
                  then
                    X.GG.Globals.Is_Empty
@@ -687,12 +687,12 @@ package body Flow is
                when Initial_Value =>
                   Rv.Show := False;
 
-               when Final_Value =>
+               when Final_Value   =>
                   Rv.Colour := To_Unbounded_String ("chartreuse");
                   Rv.Shape := Shape_None;
                   Write_Str ("null");
 
-               when others =>
+               when others        =>
                   raise Program_Error;
             end case;
 
@@ -793,7 +793,7 @@ package body Flow is
             Rv.Shape := Shape_None;
 
             case F.Variant is
-               when In_View =>
+               when In_View  =>
                   pragma Assert (A.Parameter_Formal.Kind = Direct_Mapping);
                   pragma Assert (A.Parameter_Actual.Kind = Direct_Mapping);
                   Print_Node (Get_Direct_Mapping_Id (A.Parameter_Formal));
@@ -809,7 +809,7 @@ package body Flow is
                   Print_Node (Get_Direct_Mapping_Id (A.Parameter_Formal));
                   Write_Str ("'out");
 
-               when others =>
+               when others   =>
                   raise Program_Error;
             end case;
 
@@ -819,13 +819,13 @@ package body Flow is
             Write_Str ("global" & NBSP);
             Sprint_Flow_Id (A.Parameter_Formal);
             case A.Parameter_Formal.Variant is
-               when In_View =>
+               when In_View  =>
                   Write_Str ("'in");
 
                when Out_View =>
                   Write_Str ("'out");
 
-               when others =>
+               when others   =>
                   raise Program_Error;
             end case;
 
@@ -835,13 +835,13 @@ package body Flow is
             Write_Str ("implicit" & NBSP);
             Sprint_Flow_Id (A.Parameter_Formal);
             case A.Parameter_Formal.Variant is
-               when In_View =>
+               when In_View  =>
                   Write_Str ("'in");
 
                when Out_View =>
                   Write_Str ("'out");
 
-               when others =>
+               when others   =>
                   raise Program_Error;
             end case;
 
@@ -872,12 +872,12 @@ package body Flow is
             end if;
 
             case F.Kind is
-               when Direct_Mapping =>
+               when Direct_Mapping                     =>
                   declare
                      N : constant Node_Id := Get_Direct_Mapping_Id (F);
                   begin
                      case Nkind (N) is
-                        when N_Case_Statement =>
+                        when N_Case_Statement             =>
                            Rv.Shape := Shape_Diamond;
                            Write_Str ("case ");
                            Print_Node (Expression (N));
@@ -887,7 +887,7 @@ package body Flow is
                            Write_Str ("when ");
                            Sprint_Comma_List (Discrete_Choices (N));
 
-                        when N_Block_Statement =>
+                        when N_Block_Statement            =>
                            pragma
                              Assert
                                (Nkind (Original_Node (N))
@@ -896,27 +896,27 @@ package body Flow is
                            Write_Str ("inlined call ");
                            Print_Node (Original_Node (N));
 
-                        when N_Defining_Identifier =>
+                        when N_Defining_Identifier        =>
                            case Ekind (N) is
                               when E_Return_Statement =>
                                  Write_Str ("return ");
                                  Print_Node (A.Aux_Node);
 
-                              when others =>
+                              when others             =>
                                  Sprint_Flow_Id (F);
                            end case;
 
-                        when N_Elsif_Part =>
+                        when N_Elsif_Part                 =>
                            Rv.Shape := Shape_Diamond;
                            Write_Str ("elsif ");
                            Print_Node (Condition (N));
 
-                        when N_If_Statement =>
+                        when N_If_Statement               =>
                            Rv.Shape := Shape_Diamond;
                            Write_Str ("if ");
                            Print_Node (Condition (N));
 
-                        when N_Loop_Statement =>
+                        when N_Loop_Statement             =>
                            Rv.Shape := Shape_Diamond;
                            if No (Iteration_Scheme (N)) then
                               --  Basic loop
@@ -930,27 +930,27 @@ package body Flow is
                               Print_Node (Iteration_Scheme (N));
                            end if;
 
-                        when N_Procedure_Call_Statement =>
+                        when N_Procedure_Call_Statement   =>
                            Rv.Shape := Shape_Box;
                            Write_Str ("call ");
                            Print_Node (Name (N));
 
-                        when N_Null_Statement =>
+                        when N_Null_Statement             =>
                            --  This is here in order NOT to print an empty
                            --  bubble. Sprint usually, but not always,
                            --  returns "null;" for this node.
                            Write_Str ("null;");
 
-                        when N_Entry_Body_Formal_Part =>
+                        when N_Entry_Body_Formal_Part     =>
                            Rv.Shape := Shape_None;
                            Write_Str ("barrier");
 
-                        when others =>
+                        when others                       =>
                            Print_Node (N);
                      end case;
                   end;
 
-               when Record_Field | Magic_String =>
+               when Record_Field | Magic_String        =>
                   Sprint_Flow_Id (F);
 
                when Synthetic_Null_Export | Null_Value =>
@@ -963,11 +963,11 @@ package body Flow is
                   Rv.Shape := Shape_None;
                   Write_Str ("'group'initial");
 
-               when Final_Grouping =>
+               when Final_Grouping   =>
                   Rv.Shape := Shape_None;
                   Write_Str ("'group'final");
 
-               when Initial_Value =>
+               when Initial_Value    =>
                   Rv.Shape := Shape_None;
                   Write_Str ("'initial");
 
@@ -993,7 +993,7 @@ package body Flow is
                      Rv.Colour := To_Unbounded_String ("purple");
                   end if;
 
-               when Final_Value =>
+               when Final_Value      =>
                   Rv.Shape := Shape_None;
                   Write_Str ("'final");
                   if A.Is_Export then
@@ -1002,7 +1002,7 @@ package body Flow is
                      Rv.Colour := To_Unbounded_String ("red");
                   end if;
 
-               when others =>
+               when others           =>
                   null;
             end case;
 
@@ -1094,16 +1094,16 @@ package body Flow is
          end if;
 
          case A.Execution is
-            when Normal_Execution =>
+            when Normal_Execution     =>
                null;
 
-            when Barrier =>
+            when Barrier              =>
                Write_Str ("\nExecution: BARRIER");
 
             when Abnormal_Termination =>
                Write_Str ("\nExecution: ABEND");
 
-            when Infinite_Loop =>
+            when Infinite_Loop        =>
                Write_Str ("\nExecution: INF");
          end case;
 
@@ -1152,7 +1152,7 @@ package body Flow is
                Rv.Colour := To_Unbounded_String ("gold");
                Rv.Label := To_Unbounded_String ("barrier");
 
-            when EC_Abend =>
+            when EC_Abend   =>
                --  Using the same colour as for barriers, since this one
                --  won't ever show up normally (we prune all such paths).
                --  But in some debug modes you can see it, and they are
@@ -1160,14 +1160,14 @@ package body Flow is
                Rv.Colour := To_Unbounded_String ("gold");
                Rv.Label := To_Unbounded_String ("abend");
 
-            when EC_Inf =>
+            when EC_Inf     =>
                Rv.Colour := To_Unbounded_String ("chartreuse"); --  Hi Martin!
                Rv.Label := To_Unbounded_String ("inf");
 
-            when EC_DDG =>
+            when EC_DDG     =>
                Rv.Colour := To_Unbounded_String ("red");
 
-            when EC_TDG =>
+            when EC_TDG     =>
                Rv.Colour := To_Unbounded_String ("cornflowerblue");
          end case;
          return Rv;
@@ -1204,9 +1204,10 @@ package body Flow is
           (Kind =>
              (case Ekind (E) is
                 when E_Function | E_Procedure | E_Entry => Kind_Subprogram,
-                when E_Task_Type => Kind_Task,
-                when E_Package => Kind_Package,
-                when others => raise Program_Error),
+                when E_Task_Type                        => Kind_Task,
+                when E_Package                          => Kind_Package,
+                when others                             =>
+                  raise Program_Error),
            Generating_Globals => Generating_Globals);
 
       Phase : constant String :=
@@ -1286,7 +1287,7 @@ package body Flow is
                   Debug ("Spec in SPARK: ", Entity_In_SPARK (E));
                   Debug ("Body in SPARK: ", Entity_Body_In_SPARK (E));
 
-               when Kind_Package =>
+               when Kind_Package                =>
                   if not FA.Is_Generative then
                      Debug ("skipped (package spec)");
                      if Entity_Body_In_SPARK (FA.Spec_Entity) then
@@ -1345,9 +1346,9 @@ package body Flow is
               (case Ekind (E) is
                  when E_Function | E_Procedure =>
                    Might_Be_Main (E) or else Is_Interrupt_Handler (E),
-                 when E_Entry => False,
-                 when E_Task_Type => True,
-                 when others => raise Program_Error);
+                 when E_Entry                  => False,
+                 when E_Task_Type              => True,
+                 when others                   => raise Program_Error);
 
             FA.Depends_N := Find_Contract (E, Pragma_Depends);
             FA.Global_N := Find_Contract (E, Pragma_Global);
@@ -1357,7 +1358,7 @@ package body Flow is
 
             FA.Is_Generative := Refinement_Needed (E);
 
-         when E_Package =>
+         when E_Package                                        =>
             if Entity_Body_In_SPARK (E) then
                FA.B_Scope := (Ent => E, Part => Body_Part);
 
@@ -1378,7 +1379,7 @@ package body Flow is
 
             FA.Is_Generative := No (FA.Initializes_N);
 
-         when others =>
+         when others                                           =>
             raise Program_Error;
       end case;
 
@@ -1411,7 +1412,7 @@ package body Flow is
                Indent;
                while Present (Ptr) loop
                   case Declarative_Part'(Ptr.Part) is
-                     when Body_Part =>
+                     when Body_Part                   =>
                         Ptr.Part := Private_Part;
 
                      when Private_Part | Visible_Part =>
@@ -1525,7 +1526,7 @@ package body Flow is
                   Skipped_Flow_And_Proof.Insert (E);
                end if;
 
-            when E_Package =>
+            when E_Package                                           =>
                --  Build graphs only when requested, the package is in SPARK
                --  and it is annotated with SPARK_Mode => On.
                --
@@ -1540,7 +1541,7 @@ package body Flow is
                  and then not Is_Ignored_Internal (E)
                  and then not Is_Wrapper_Package (E);
 
-            when E_Protected_Type =>
+            when E_Protected_Type                                    =>
                --   ??? perhaps we should do something, but now we don't
                Build := False;
          end case;
@@ -1744,7 +1745,7 @@ package body Flow is
                        (Claim'(E => FA.Spec_Entity, Kind => Claim_Effects));
                   end if;
 
-               when Kind_Package =>
+               when Kind_Package                =>
                   declare
                      Have_Full_Package_Code : constant Boolean :=
                        not Unit_Requires_Body
@@ -1852,7 +1853,7 @@ package body Flow is
                      Severity => Info_Kind);
                end if;
 
-            when Kind_Package =>
+            when Kind_Package                =>
                if Present (FA.Initializes_N)
                  and then not FA.Flow_Dependency_Errors
                then

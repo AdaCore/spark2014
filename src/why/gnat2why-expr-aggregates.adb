@@ -281,9 +281,9 @@ package body Gnat2Why.Expr.Aggregates is
       function Record_Access
         (Prefix : Write_Type; Field : Entity_Id) return Write_Type
       is (case Prefix.Kind is
-            when Partial => raise Program_Error,
+            when Partial   => raise Program_Error,
             when Preserved => Prefix,
-            when Entire =>
+            when Entire    =>
               (Entire,
                new Path_Link'
                  (Kind => Record_Acc, Prefix => Prefix.Path, Field => Field)));
@@ -293,9 +293,9 @@ package body Gnat2Why.Expr.Aggregates is
       function Array_Access
         (Prefix : Write_Type; Index : Positive) return Write_Type
       is (case Prefix.Kind is
-            when Partial => raise Program_Error,
+            when Partial   => raise Program_Error,
             when Preserved => Prefix,
-            when Entire =>
+            when Entire    =>
               (Entire,
                new Path_Link'
                  (Kind => Array_Acc, Prefix => Prefix.Path, Index => Index)));
@@ -410,7 +410,7 @@ package body Gnat2Why.Expr.Aggregates is
          end loop;
 
          case Writes.Kind is
-            when Entire_Object =>
+            when Entire_Object     =>
                null;
 
             when Record_Components =>
@@ -418,7 +418,7 @@ package body Gnat2Why.Expr.Aggregates is
                   Finalize (Comp_Writes);
                end loop;
 
-            when Array_Components =>
+            when Array_Components  =>
                Finalize (Writes.Content_Status);
          end case;
          Free (Writes);
@@ -566,7 +566,7 @@ package body Gnat2Why.Expr.Aggregates is
             --  Insert the last association
 
             case Nkind (Deep_Access) is
-               when N_Indexed_Component =>
+               when N_Indexed_Component  =>
                   declare
                      Index_Value : constant Node_Id :=
                        First (Expressions (Deep_Access));
@@ -600,7 +600,7 @@ package body Gnat2Why.Expr.Aggregates is
                         Local_Writes => Local_Writes);
                   end;
 
-               when others =>
+               when others               =>
                   raise Program_Error;
             end case;
          end if;
@@ -762,7 +762,7 @@ package body Gnat2Why.Expr.Aggregates is
             end loop;
             Ada.Text_IO.New_Line;
             case Writes.Kind is
-               when Entire_Object =>
+               when Entire_Object     =>
                   null;
 
                when Record_Components =>
@@ -777,7 +777,7 @@ package body Gnat2Why.Expr.Aggregates is
                        (Write_Status_Maps.Element (Position).all, Padding + 6);
                   end loop;
 
-               when Array_Components =>
+               when Array_Components  =>
                   Ada.Text_IO.Put_Line (Spaces & "Content =>");
                   Print_Writes (Writes.Content_Status.all, Padding + 3);
             end case;
@@ -810,7 +810,7 @@ package body Gnat2Why.Expr.Aggregates is
          --  Propagate the new association to all subtrees
 
          case Writes.Kind is
-            when Entire_Object =>
+            when Entire_Object     =>
                null;
 
             when Record_Components =>
@@ -821,7 +821,7 @@ package body Gnat2Why.Expr.Aggregates is
                      Record_Access (Status, Write_Status_Maps.Key (Position)));
                end loop;
 
-            when Array_Components =>
+            when Array_Components  =>
                Propagate
                  (Writes.Content_Status,
                   Choices & Empty,
@@ -1317,7 +1317,7 @@ package body Gnat2Why.Expr.Aggregates is
       end if;
 
       case Model_Annot.Kind is
-         when Sets =>
+         when Sets  =>
 
             --  For predefined sets, we want to generate the following
             --  programs to checks the initialization and the preservation
@@ -1618,7 +1618,7 @@ package body Gnat2Why.Expr.Aggregates is
                end if;
             end;
 
-         when Seqs =>
+         when Seqs  =>
 
             --  For predefined sequences, we want to generate the following
             --  programs to checks the initialization and the preservation
@@ -1886,7 +1886,7 @@ package body Gnat2Why.Expr.Aggregates is
                end if;
             end;
 
-         when Maps =>
+         when Maps  =>
 
             --  For predefined maps, we want to generate the following
             --  programs to checks the initialization and the preservation
@@ -2714,7 +2714,7 @@ package body Gnat2Why.Expr.Aggregates is
                Check_Info : Check_Info_Type := New_Check_Info;
             begin
                case Model_Annot.Kind is
-                  when Sets =>
+                  when Sets  =>
                      Check_Info.Continuation.Append
                        (Continuation_Type'
                           (Annot.Annotate_Node,
@@ -2732,7 +2732,7 @@ package body Gnat2Why.Expr.Aggregates is
                                  else "")
                               & " for set aggregates")));
 
-                  when Seqs =>
+                  when Seqs  =>
                      Check_Info.Continuation.Append
                        (Continuation_Type'
                           (Annot.Annotate_Node,
@@ -2743,7 +2743,7 @@ package body Gnat2Why.Expr.Aggregates is
                                  else "")
                               & " for sequence aggregates")));
 
-                  when Maps =>
+                  when Maps  =>
                      Check_Info.Continuation.Append
                        (Continuation_Type'
                           (Annot.Annotate_Node,
@@ -2915,7 +2915,7 @@ package body Gnat2Why.Expr.Aggregates is
          end loop;
 
          case Model_Annot.Kind is
-            when Sets =>
+            when Sets  =>
 
                --  For the precondition of an aggregate (E1, E2, ...),
                --  generate:
@@ -3142,7 +3142,7 @@ package body Gnat2Why.Expr.Aggregates is
                   end;
                end if;
 
-            when Maps =>
+            when Maps  =>
 
                --  For the precondition of a map aggregate
                --  (K1 -> E1, K2 -> E2, ...), generate:
@@ -3479,7 +3479,7 @@ package body Gnat2Why.Expr.Aggregates is
                   end if;
                end;
 
-            when Seqs =>
+            when Seqs  =>
 
                --  For the precondition of (E1, E2, ...), generate:
                --
@@ -4559,7 +4559,7 @@ package body Gnat2Why.Expr.Aggregates is
 
             --  The object is entirely written, there is nothing more to do
 
-            when Entire_Object =>
+            when Entire_Object     =>
                null;
 
             when Record_Components =>
@@ -4741,7 +4741,7 @@ package body Gnat2Why.Expr.Aggregates is
 
                Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
 
-            when Array_Components =>
+            when Array_Components  =>
 
                --  Introduce bindings and checks for the index values
 
@@ -5098,7 +5098,7 @@ package body Gnat2Why.Expr.Aggregates is
                when Entire_Object | Array_Components =>
                   null;
 
-               when Record_Components =>
+               when Record_Components                =>
 
                   --  Discriminants are preserved
 
@@ -5222,7 +5222,7 @@ package body Gnat2Why.Expr.Aggregates is
 
          begin
             case Writes.Kind is
-               when Entire_Object =>
+               when Entire_Object     =>
 
                   --  For a sequence of constrained values:
                   --
@@ -5254,13 +5254,13 @@ package body Gnat2Why.Expr.Aggregates is
                            Term    : W_Term_Id;
                         begin
                            case C_Value.Status.Kind is
-                              when Partial =>
+                              when Partial   =>
                                  raise Program_Error;
 
                               when Preserved =>
                                  null;
 
-                              when Entire =>
+                              when Entire    =>
                                  Top := Top + 1;
                                  Conditions (Top) :=
                                    Transform_Choices
@@ -5383,7 +5383,7 @@ package body Gnat2Why.Expr.Aggregates is
                               when Partial | Preserved =>
                                  null;
 
-                              when Entire =>
+                              when Entire              =>
                                  Top := Top + 1;
                                  Conditions (Top) :=
                                    Transform_Choices
@@ -5438,7 +5438,7 @@ package body Gnat2Why.Expr.Aggregates is
                             Root_Values => Root_Values,
                             Indices     => Indices));
 
-               when Array_Components =>
+               when Array_Components  =>
 
                   --  For a sequence of constrained values:
                   --
@@ -5845,10 +5845,10 @@ package body Gnat2Why.Expr.Aggregates is
                   --  This simpler translation is only used when there are no
                   --  array indexed components in the selectors.
 
-                  when Array_Components =>
+                  when Array_Components  =>
                      raise Program_Error;
 
-                  when Entire_Object =>
+                  when Entire_Object     =>
 
                      --  Search for a constrained value which is not preserved.
                      --  There should be exactly one and its Path should be a
@@ -5980,10 +5980,10 @@ package body Gnat2Why.Expr.Aggregates is
          end loop;
 
          case Writes.Kind is
-            when Entire_Object =>
+            when Entire_Object     =>
                null;
 
-            when Array_Components =>
+            when Array_Components  =>
 
                --  Go over the choice indexes and store them in Index_Map
 
@@ -6023,10 +6023,10 @@ package body Gnat2Why.Expr.Aggregates is
         (Writes : Write_Status) return Boolean is
       begin
          case Writes.Kind is
-            when Entire_Object =>
+            when Entire_Object     =>
                return True;
 
-            when Array_Components =>
+            when Array_Components  =>
                return False;
 
             when Record_Components =>

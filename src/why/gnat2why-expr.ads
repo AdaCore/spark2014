@@ -417,8 +417,8 @@ package Gnat2Why.Expr is
        (case Kind is
           when Globally_Assumed =>
             No (Scop) and then No (Subp) and then not Include_Comp,
-          when Locally_Assumed => Present (Scop),
-          when For_Check => Present (Scop) and then Include_Comp),
+          when Locally_Assumed  => Present (Scop),
+          when For_Check        => Present (Scop) and then Include_Comp),
      Post =>
        (if Kind = For_Check
         then

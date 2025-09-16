@@ -667,407 +667,425 @@ package VC_Kinds is
 
    function Warning_Message (Kind : Misc_Warning_Kind) return String
    is (case Kind is
-         when Warn_Address_To_Access =>
+         when Warn_Address_To_Access               =>
            "call to & is assumed to return a valid access"
            & " designating a valid value",
-         when Warn_Alias_Atomic_Vol =>
+         when Warn_Alias_Atomic_Vol                =>
            "aliased objects must have the same volatility and atomic status",
-         when Warn_Alias_Different_Volatility =>
+         when Warn_Alias_Different_Volatility      =>
            "aliased objects have different volatile properties",
-         when Warn_Attribute_Valid => "attribute & is assumed to return True",
-         when Warn_Auto_Lemma_Higher_Order =>
+         when Warn_Attribute_Valid                 =>
+           "attribute & is assumed to return True",
+         when Warn_Auto_Lemma_Higher_Order         =>
            "automatically instantiated lemma is not annotated with"
            & " Higher_Order_Specialization",
-         when Warn_Auto_Lemma_Calls =>
+         when Warn_Auto_Lemma_Calls                =>
            "automatically instantiated lemma contains calls to "
            & "& which cannot be arbitrarily specialized",
-         when Warn_Auto_Lemma_Different =>
+         when Warn_Auto_Lemma_Different            =>
            "automatically instantiated lemma contains several "
            & "calls to & with different specializations",
-         when Warn_Auto_Lemma_Specializable =>
+         when Warn_Auto_Lemma_Specializable        =>
            "automatically instantiated lemma does not contain any "
            & "specializable calls to &",
-         when Warn_Initialization_To_Alias =>
+         when Warn_Initialization_To_Alias         =>
            "initialization of & is assumed to have no effects on"
            & " other non-volatile objects",
-         when Warn_Function_Is_Valid =>
+         when Warn_Function_Is_Valid               =>
            "function Is_Valid is assumed to return True",
-         when Warn_Generic_Not_Analyzed =>
+         when Warn_Generic_Not_Analyzed            =>
            "generic compilation unit is not analyzed",
-         when Warn_No_Possible_Termination =>
+         when Warn_No_Possible_Termination         =>
            "procedure which does not return normally nor raises an exception"
            & " cannot always terminate",
-         when Warn_Potentially_Invalid_Read =>
+         when Warn_Potentially_Invalid_Read        =>
            "invalid data might be read; read data is assumed to be valid in "
            & "SPARK",
-         when Warn_Pragma_Annotate_No_Check =>
+         when Warn_Pragma_Annotate_No_Check        =>
            "no check message justified by this pragma",
-         when Warn_Pragma_Annotate_Proved_Check =>
+         when Warn_Pragma_Annotate_Proved_Check    =>
            "only proved check messages justified by this pragma",
-         when Warn_Pragma_Annotate_Terminating =>
+         when Warn_Pragma_Annotate_Terminating     =>
            "Terminating, Always_Return, and Might_Not_Return annotations are"
            & " deprecated, ignored",
-         when Warn_Pragma_External_Axiomatization =>
+         when Warn_Pragma_External_Axiomatization  =>
            "External Axiomatizations are not supported anymore, ignored",
-         when Warn_Pragma_Ignored => "pragma & ignored (not yet supported)",
-         when Warn_Pragma_Overflow_Mode =>
+         when Warn_Pragma_Ignored                  =>
+           "pragma & ignored (not yet supported)",
+         when Warn_Pragma_Overflow_Mode            =>
            "pragma Overflow_Mode in code is ignored",
-         when Warn_Precondition_Statically_False =>
+         when Warn_Precondition_Statically_False   =>
            "precondition is statically False",
-         when Warn_Restriction_Ignored =>
+         when Warn_Restriction_Ignored             =>
            "restriction & ignored (not yet supported)",
-         when Warn_Unreferenced_Function =>
+         when Warn_Unreferenced_Function           =>
            "analyzing unreferenced function &",
-         when Warn_Unreferenced_Procedure =>
+         when Warn_Unreferenced_Procedure          =>
            "analyzing unreferenced procedure &",
          when Warn_Useless_Potentially_Invalid_Obj =>
            "& cannot have invalid values",
          when Warn_Useless_Potentially_Invalid_Fun =>
            "the result of & cannot have invalid values",
-         when Warn_Useless_Relaxed_Init_Fun =>
+         when Warn_Useless_Relaxed_Init_Fun        =>
            "the result of & cannot be partially initialized",
-         when Warn_Useless_Relaxed_Init_Obj =>
+         when Warn_Useless_Relaxed_Init_Obj        =>
            "& cannot be partially initialized",
-         when Warn_Variant_Not_Recursive => "no recursive call visible",
+         when Warn_Variant_Not_Recursive           =>
+           "no recursive call visible",
 
          --  Warnings guaranteed to be issued
-         when Warn_Assumed_Always_Terminates =>
+         when Warn_Assumed_Always_Terminates       =>
            "no Always_Terminates aspect available for &",
-         when Warn_Assumed_Global_Null => "no Global contract available for &",
+         when Warn_Assumed_Global_Null             =>
+           "no Global contract available for &",
          --  The warning message is customized depending on the assumptions
          --  that need to be checked.
-         when Warn_Imprecisely_Supported_Address =>
+         when Warn_Imprecisely_Supported_Address   =>
            "address specification on & is imprecisely supported",
 
          --  Warnings enabled with --pedantic switch
-         when Warn_Image_Attribute_Length =>
+         when Warn_Image_Attribute_Length          =>
            "attribute & has an implementation-defined length",
-         when Warn_Operator_Reassociation =>
+         when Warn_Operator_Reassociation          =>
            "possible reassociation due to missing parentheses",
-         when Warn_Representation_Attribute_Value =>
+         when Warn_Representation_Attribute_Value  =>
            "attribute & has an implementation-defined value",
 
          --  Warnings enabled with --info switch
-         when Warn_Unit_Not_SPARK =>
+         when Warn_Unit_Not_SPARK                  =>
            "SPARK_Mode not applied to this compilation unit",
 
          --  Tool limitations
-         when Warn_Comp_Relaxed_Init =>
+         when Warn_Comp_Relaxed_Init               =>
            "& is handled as if it was annotated with Relaxed_Initialization "
            & "as all its components are annotated that way",
-         when Warn_Full_View_Visible =>
+         when Warn_Full_View_Visible               =>
            "full view of & declared # is visible when analyzing &",
 
          --  Flow limitations
-         when Warn_Alias_Array =>
+         when Warn_Alias_Array                     =>
            "aliasing check on components of an array is handled imprecisely",
-         when Warn_Imprecise_GG => "global generation of & might be imprecise",
-         when Warn_Init_Array =>
+         when Warn_Imprecise_GG                    =>
+           "global generation of & might be imprecise",
+         when Warn_Init_Array                      =>
            "initialization of an array in FOR loop is handled imprecisely",
-         when Warn_Init_Multidim_Array =>
+         when Warn_Init_Multidim_Array             =>
            "initialization of a multi-dimensional array in nested FOR loops "
            & "is handled imprecisely",
-         when Warn_Tagged_Untangling =>
+         when Warn_Tagged_Untangling               =>
            "flow of dependencies on & is handled imprecisely",
 
          --  Proof limitations
-         when Warn_Contracts_Recursive =>
+         when Warn_Contracts_Recursive             =>
            "&function contract might not be available on &",
-         when Warn_DIC_Ignored =>
+         when Warn_DIC_Ignored                     =>
            "default initial condition on type & not available for proof in an "
            & "assertion context",
-         when Warn_Imprecise_Address =>
+         when Warn_Imprecise_Address               =>
            "adress of object is not precisely known",
-         when Warn_Imprecise_Align =>
+         when Warn_Imprecise_Align                 =>
            "alignment of object is not precisely known",
-         when Warn_Imprecise_Call => "call to & is not handled precisely",
-         when Warn_Component_Size =>
+         when Warn_Imprecise_Call                  =>
+           "call to & is not handled precisely",
+         when Warn_Component_Size                  =>
            "the value of attribute Component_Size is handled in an imprecise "
            & "way",
-         when Warn_Record_Component_Attr =>
+         when Warn_Record_Component_Attr           =>
            "the value of attribute & is handled in an imprecise way",
-         when Warn_Imprecise_Size =>
+         when Warn_Imprecise_Size                  =>
            "the value of attribute & is handled in an imprecise way",
-         when Warn_Imprecise_UC =>
+         when Warn_Imprecise_UC                    =>
            "imprecise handling of Unchecked_Conversion (&)",
-         when Warn_Imprecise_Value =>
+         when Warn_Imprecise_Value                 =>
            "references to the ""Value"" attribute are handled in an imprecise "
            & "way, so the precondition is impossible to prove and nothing "
            & "will be known about the evaluation of the attribute reference",
-         when Warn_Imprecise_Image =>
+         when Warn_Imprecise_Image                 =>
            "references to the & attribute are handled in an"
            & " imprecise way, so nothing will be known about the evaluation"
            & " of the attribute reference apart from a bound on its length",
-         when Warn_Loop_Entity =>
+         when Warn_Loop_Entity                     =>
            "The initial value of & declared before the loop invariant "
            & "is not visible after the invariant; it shall be restated in the "
            & "invariant if necessary",
-         when Warn_Init_Cond_Ignored =>
+         when Warn_Init_Cond_Ignored               =>
            "Initial_Condition of package & is ignored",
-         when Warn_No_Reclam_Func =>
+         when Warn_No_Reclam_Func                  =>
            "no reclamation function nor reclaimed value found for type with "
            & "ownership &",
-         when Warn_Num_Variant =>
+         when Warn_Num_Variant                     =>
            "expression function body of subprograms with a numeric "
            & "variant might not be available on recursive calls",
-         when Warn_Map_Length_Aggregates =>
+         when Warn_Map_Length_Aggregates           =>
            "no ""Length"" function found for type with predefined map "
            & "aggregates &",
-         when Warn_Set_Length_Aggregates =>
+         when Warn_Set_Length_Aggregates           =>
            "no ""Length"" function found for type with predefined set "
            & "aggregates &",
-         when Warn_Relaxed_Init_Mutable_Discr =>
+         when Warn_Relaxed_Init_Mutable_Discr      =>
            "mutable discriminants of a standalone object or parameter with "
            & "relaxed initialization are enforced to always be initialized",
-         when Warn_Predef_Eq_Null =>
+         when Warn_Predef_Eq_Null                  =>
            "no null value found for type with predefined equality &",
 
          --  info messages enabled by default
-         when Warn_Info_Unrolling_Inlining =>
-         --  these messages are issued by the front-end
+         when Warn_Info_Unrolling_Inlining         =>
+           --  these messages are issued by the front-end
            raise Program_Error);
 
    function Unsupported_Message
      (Kind : Unsupported_Kind; Name : String := "") return String
    is (case Kind is
-         when Lim_Abstract_State_Part_Of_Concurrent_Obj =>
+         when Lim_Abstract_State_Part_Of_Concurrent_Obj                   =>
            "abstract state Part_Of constituent of a single concurrent object",
-         when Lim_Access_Attr_With_Ownership_In_Unsupported_Context =>
+         when Lim_Access_Attr_With_Ownership_In_Unsupported_Context       =>
            """Access"" attribute of a type with ownership not directly inside"
            & " an assignment statement, an object declaration, or a simple"
            & " return statement",
-         when Lim_Access_Conv =>
+         when Lim_Access_Conv                                             =>
            "conversion between access types with"
            & " different designated types",
-         when Lim_Access_Sub_Formal_With_Inv =>
+         when Lim_Access_Sub_Formal_With_Inv                              =>
            "formal with type invariants in access-to-subprogram",
-         when Lim_Access_Sub_Protected => "access to protected subprogram",
-         when Lim_Access_Sub_Return_Type_With_Inv =>
+         when Lim_Access_Sub_Protected                                    =>
+           "access to protected subprogram",
+         when Lim_Access_Sub_Return_Type_With_Inv                         =>
            "access-to-subprogram returning a type with invariants",
-         when Lim_Access_Sub_Traversal =>
+         when Lim_Access_Sub_Traversal                                    =>
            "access to borrowing traversal function",
-         when Lim_Access_To_Dispatch_Op => "access to dispatching operation",
-         when Lim_Access_To_No_Return_Subp => "access to No_Return procedure",
-         when Lim_Access_To_Relaxed_Init_Subp =>
+         when Lim_Access_To_Dispatch_Op                                   =>
+           "access to dispatching operation",
+         when Lim_Access_To_No_Return_Subp                                =>
+           "access to No_Return procedure",
+         when Lim_Access_To_Relaxed_Init_Subp                             =>
            "access to subprogram annotated with Relaxed_Initialization",
-         when Lim_Access_To_Subp_With_Exc =>
+         when Lim_Access_To_Subp_With_Exc                                 =>
            "access to procedure which might propagate exceptions",
-         when Lim_Access_To_Subp_With_Prog_Exit =>
+         when Lim_Access_To_Subp_With_Prog_Exit                           =>
            "access to procedure which might exit the program",
-         when Lim_Address_Attr_In_Unsupported_Context =>
+         when Lim_Address_Attr_In_Unsupported_Context                     =>
            "attribute ""Address"" in unsupported context",
-         when Lim_Alloc_With_Type_Constraints =>
+         when Lim_Alloc_With_Type_Constraints                             =>
            "uninitialized allocator with type constraints",
-         when Lim_Continue_Cross_Inv =>
+         when Lim_Continue_Cross_Inv                                      =>
            "continue statement preceding loop-invariant",
-         when Lim_Object_Before_Inv =>
+         when Lim_Object_Before_Inv                                       =>
            "non-scalar object declared before loop-invariant",
-         when Lim_Package_Before_Inv =>
+         when Lim_Package_Before_Inv                                      =>
            "nested packages before loop-invariant",
-         when Lim_Subprogram_Before_Inv =>
+         when Lim_Subprogram_Before_Inv                                   =>
            "nested subprogram before loop-invariant",
-         when Lim_Goto_Cross_Inv =>
+         when Lim_Goto_Cross_Inv                                          =>
            "goto statement to label located inside the loop crossing the loop"
            & " invariant",
-         when Lim_Assert_And_Cut_Meet_Inv =>
+         when Lim_Assert_And_Cut_Meet_Inv                                 =>
            "pragma Assert_And_Cut immediately within a sequence of statements"
            & " containing a loop invariant",
-         when Lim_Multidim_Update =>
+         when Lim_Multidim_Update                                         =>
            "attribute ""Update"" of unconstrained multidimensional array",
-         when Lim_Null_Aggregate_In_Branching_Array_Aggregate =>
+         when Lim_Null_Aggregate_In_Branching_Array_Aggregate             =>
            "null aggregate as subaggregate of a multidimensional array"
            & " aggregate with multiple associations",
-         when Lim_Uninit_Alloc_In_Expr_Fun =>
+         when Lim_Uninit_Alloc_In_Expr_Fun                                =>
            "uninitialized allocator inside expression function",
-         when Lim_Iterator_In_Component_Assoc =>
+         when Lim_Iterator_In_Component_Assoc                             =>
            "iterated component association with iterator specification",
-         when Lim_Exceptional_Cases_Dispatch =>
+         when Lim_Exceptional_Cases_Dispatch                              =>
            "aspect ""Exceptional_Cases"" on dispatching operation",
-         when Lim_Exceptional_Cases_Ownership =>
+         when Lim_Exceptional_Cases_Ownership                             =>
            "procedure which might propagate exceptions with parameters of mode"
            & " ""in out"" or ""out"" subjected to ownership which might not "
            & "be passed by reference",
-         when Lim_Exit_Cases_Dispatch =>
+         when Lim_Exit_Cases_Dispatch                                     =>
            "aspect ""Exit_Cases"" on dispatching operation",
-         when Lim_Program_Exit_Dispatch =>
+         when Lim_Program_Exit_Dispatch                                   =>
            "aspect ""Program_Exit"" on dispatching operation",
-         when Lim_Program_Exit_Global_Modified_In_Callee =>
+         when Lim_Program_Exit_Global_Modified_In_Callee                  =>
            "call which might exit the program and leave "
            & Name
            & " mentioned in the postcondition of & in an inconsistent state",
-         when Lim_Ext_Aggregate_With_Type_Ancestor =>
+         when Lim_Ext_Aggregate_With_Type_Ancestor                        =>
            "extension aggregate with subtype ancestor part",
-         when Lim_Extension_Case_Pattern_Matching =>
+         when Lim_Extension_Case_Pattern_Matching                         =>
            "GNAT extension for case pattern matching",
-         when Lim_External_Initializer =>
+         when Lim_External_Initializer                                    =>
            "GNAT extension for embedded binary resources",
-         when Lim_Iterated_Element_Association =>
+         when Lim_Iterated_Element_Association                            =>
            "iterated element association",
-         when Lim_Multidim_Iterator =>
+         when Lim_Multidim_Iterator                                       =>
            "iterator specification over multi-dimensional array",
-         when Lim_Loop_Inv_And_Handler =>
+         when Lim_Loop_Inv_And_Handler                                    =>
            "loop invariant in a list of statements with an exception handler",
-         when Lim_Loop_Inv_And_Finally =>
+         when Lim_Loop_Inv_And_Finally                                    =>
            "loop invariant in a list of statements with a finally section",
-         when Lim_Loop_With_Iterator_Filter =>
+         when Lim_Loop_With_Iterator_Filter                               =>
            "loop on an iterator specification with an iterator filter",
-         when Lim_Complex_Raise_Expr_In_Prec =>
+         when Lim_Complex_Raise_Expr_In_Prec                              =>
            "raise expression in a complex expression in a precondition",
-         when Lim_Array_Conv_Different_Size_Modular_Index =>
+         when Lim_Array_Conv_Different_Size_Modular_Index                 =>
            "conversion between array types with modular index types of"
            & " different sizes",
-         when Lim_Array_Conv_Signed_Modular_Index =>
+         when Lim_Array_Conv_Signed_Modular_Index                         =>
            "conversion between array types with modular and non-modular index"
            & " types",
-         when Lim_Move_To_Access_Constant =>
+         when Lim_Move_To_Access_Constant                                 =>
            "move as part of an allocator or a conversion to an "
            & "access-to-constant type which does not occur directly inside"
            & " an assignment statement, an object declaration, or a simple"
            & " return statement",
-         when Lim_Conv_Fixed_Float =>
+         when Lim_Conv_Fixed_Float                                        =>
            "conversion between fixed-point and floating-point types",
-         when Lim_Conv_Incompatible_Fixed =>
+         when Lim_Conv_Incompatible_Fixed                                 =>
            "conversion between incompatible fixed-point types",
-         when Lim_Conv_Fixed_Integer =>
+         when Lim_Conv_Fixed_Integer                                      =>
            "conversion between fixed-point and integer types",
-         when Lim_Conv_Float_Modular_128 =>
+         when Lim_Conv_Float_Modular_128                                  =>
            "conversion between floating-point and 128-bits modular types",
-         when Lim_Target_Name_In_Borrow => "@ inside a reborrow",
-         when Lim_Target_Name_In_Move => "@ inside a move assignment",
-         when Lim_Deep_Object_With_Addr =>
+         when Lim_Target_Name_In_Borrow                                   =>
+           "@ inside a reborrow",
+         when Lim_Target_Name_In_Move                                     =>
+           "@ inside a move assignment",
+         when Lim_Deep_Object_With_Addr                                   =>
            "address clause on an object of an ownership type",
-         when Lim_Deep_Value_In_Delta_Aggregate =>
+         when Lim_Deep_Value_In_Delta_Aggregate                           =>
            "delta aggregate with possible aliasing of components of an "
            & "ownership type",
-         when Lim_Derived_Interface =>
+         when Lim_Derived_Interface                                       =>
            "interface derived from other interfaces",
-         when Lim_Overlay_With_Deep_Object =>
+         when Lim_Overlay_With_Deep_Object                                =>
            "overlay with an object of an ownership type",
-         when Lim_Deep_Object_Declaration_Outside_Block =>
+         when Lim_Deep_Object_Declaration_Outside_Block                   =>
            "declaration of an object of an ownership type outside a block "
            & "for declarations",
-         when Lim_Non_Static_Attribute =>
+         when Lim_Non_Static_Attribute                                    =>
            "non-static attribute """ & Standard_Ada_Case (Name) & """",
-         when Lim_Img_On_Non_Scalar =>
+         when Lim_Img_On_Non_Scalar                                       =>
            "attribute """ & Standard_Ada_Case (Name) & """ on non-scalar type",
-         when Lim_Incomplete_Type_Early_Usage =>
+         when Lim_Incomplete_Type_Early_Usage                             =>
            "usage of incomplete type completed in package body outside of an "
            & "access type declaration",
-         when Lim_Inherited_Controlling_Result_From_Hidden_Part =>
+         when Lim_Inherited_Controlling_Result_From_Hidden_Part           =>
            "tagged type with inherited primitive subprograms with controlling"
            & " result and hidden private extension",
-         when Lim_Inherited_Controlling_Result_From_SPARK_Off =>
+         when Lim_Inherited_Controlling_Result_From_SPARK_Off             =>
            "tagged type with inherited primitive subprograms with controlling"
            & " result and private extension outside SPARK",
-         when Lim_Inherited_Prim_From_Hidden_Part =>
+         when Lim_Inherited_Prim_From_Hidden_Part                         =>
            "tagged type with primitive subprograms inherited from a type"
            & " declared in a hidden private part",
-         when Lim_Inherited_Prim_From_SPARK_Off =>
+         when Lim_Inherited_Prim_From_SPARK_Off                           =>
            "tagged type with primitive subprograms inherited from a type"
            & " declared in a private part with SPARK_Mode Off",
-         when Lim_Interpolated_String_Literal =>
+         when Lim_Interpolated_String_Literal                             =>
            "GNAT extension for interpolated string literal",
-         when Lim_Unknown_Alignment => "unknown value of object alignment",
-         when Lim_Op_Fixed_Float =>
+         when Lim_Unknown_Alignment                                       =>
+           "unknown value of object alignment",
+         when Lim_Op_Fixed_Float                                          =>
            "operation between fixed-point and floating-point types",
-         when Lim_Op_Incompatible_Fixed =>
+         when Lim_Op_Incompatible_Fixed                                   =>
            "operation between incompatible fixed-point types",
-         when Lim_Protected_Operation_Of_Formal =>
+         when Lim_Protected_Operation_Of_Formal                           =>
            "call to operation of a formal protected parameter",
-         when Lim_Protected_Operation_Of_Component =>
+         when Lim_Protected_Operation_Of_Component                        =>
            "call to operation of a component of a protected type",
-         when Lim_Suspension_On_Formal => "suspension on a formal parameter",
-         when Lim_Borrow_Traversal_First_Param =>
+         when Lim_Suspension_On_Formal                                    =>
+           "suspension on a formal parameter",
+         when Lim_Borrow_Traversal_First_Param                            =>
            "borrowing traversal functions whose first parameter does not have"
            & " an anonymous access-to-variable type",
-         when Lim_Borrow_Traversal_Volatile =>
+         when Lim_Borrow_Traversal_Volatile                               =>
            "volatile borrowing traversal function",
-         when Lim_No_Return_Function => "function annotated with No_Return",
-         when Lim_Multiple_Inheritance_Root =>
+         when Lim_No_Return_Function                                      =>
+           "function annotated with No_Return",
+         when Lim_Multiple_Inheritance_Root                               =>
            "subprogram inherited from root and interface",
-         when Lim_Multiple_Inheritance_Interfaces =>
+         when Lim_Multiple_Inheritance_Interfaces                         =>
            "subprogram inherited from multiple interfaces",
-         when Lim_Multiple_Inheritance_Mixed_SPARK_Mode =>
+         when Lim_Multiple_Inheritance_Mixed_SPARK_Mode                   =>
            "subprogram implicitly inherited from multiple progenitor types"
            & " with conflicting SPARK mode",
-         when Lim_Overriding_With_Precondition_Discrepancy_Hiding =>
+         when Lim_Overriding_With_Precondition_Discrepancy_Hiding         =>
            "dispatching primitive subprogram overriding with class-wide"
            & " precondition inherited from a potentially hidden ancestor",
          when Lim_Overriding_With_Precondition_Discrepancy_Tagged_Privacy =>
            "dispatching primitive subprogram overriding declared for a"
            & " private untagged type with no precondition and a class-wide"
            & " precondition inherited from ancestor",
-         when Lim_Potentially_Invalid_Iterable =>
+         when Lim_Potentially_Invalid_Iterable                            =>
            "Potentially_Invalid aspect on a function associated to the aspect"
            & " Iterable",
-         when Lim_Potentially_Invalid_Mutable_Discr =>
+         when Lim_Potentially_Invalid_Mutable_Discr                       =>
            "part of potentially invalid object with mutable discriminants",
-         when Lim_Potentially_Invalid_Predicates =>
+         when Lim_Potentially_Invalid_Predicates                          =>
            "potentially invalid object with a part subject to predicates",
-         when Lim_Potentially_Invalid_Private =>
+         when Lim_Potentially_Invalid_Private                             =>
            "potentially invalid object with a part whose full view is not in "
            & "SPARK",
-         when Lim_Potentially_Invalid_Relaxed =>
+         when Lim_Potentially_Invalid_Relaxed                             =>
            "potentially invalid object with a part with relaxed "
            & "initialization",
-         when Lim_Potentially_Invalid_Subp_Access =>
+         when Lim_Potentially_Invalid_Subp_Access                         =>
            "access to a subprogram annotated with Potentially_Invalid",
-         when Lim_Primitive_Call_In_DIC =>
+         when Lim_Primitive_Call_In_DIC                                   =>
            "primitive calls in default initial condition",
-         when Lim_Constrained_Classwide => "constrained class-wide subtype",
-         when Lim_Type_Inv_Access_Type =>
+         when Lim_Constrained_Classwide                                   =>
+           "constrained class-wide subtype",
+         when Lim_Type_Inv_Access_Type                                    =>
            "access to incomplete or private type which needs an invariant"
            & " check",
-         when Lim_Type_Inv_Protected_Type =>
+         when Lim_Type_Inv_Protected_Type                                 =>
            "type invariant on protected types",
-         when Lim_Type_Inv_Tagged_Type => "type invariant on tagged types",
-         when Lim_Type_Inv_Volatile =>
+         when Lim_Type_Inv_Tagged_Type                                    =>
+           "type invariant on tagged types",
+         when Lim_Type_Inv_Volatile                                       =>
            "volatile object with asynchronous writers or readers and a type"
            & " invariant",
-         when Lim_Type_Inv_Tagged_Comp =>
+         when Lim_Type_Inv_Tagged_Comp                                    =>
            "type invariant on components of tagged types",
-         when Lim_Max_Array_Dimension =>
+         when Lim_Max_Array_Dimension                                     =>
            "array of dimension greater than" & Max_Array_Dimensions'Img,
-         when Lim_Max_Modulus => "modulus greater than 2 '*'* 128",
-         when Lim_Class_Attr_Of_Constrained_Type =>
+         when Lim_Max_Modulus                                             =>
+           "modulus greater than 2 '*'* 128",
+         when Lim_Class_Attr_Of_Constrained_Type                          =>
            "attribute ""Class"" of a constrained type",
-         when Lim_Classwide_Representation_Value =>
+         when Lim_Classwide_Representation_Value                          =>
            "representation attribute on class-wide value",
-         when Lim_Classwide_With_Predicate =>
+         when Lim_Classwide_With_Predicate                                =>
            "subtype predicate on a classwide type",
-         when Lim_Contract_On_Derived_Private_Type =>
+         when Lim_Contract_On_Derived_Private_Type                        =>
            "type aspect on type derived from a private type",
-         when Lim_Predicate_With_Different_SPARK_Mode =>
+         when Lim_Predicate_With_Different_SPARK_Mode                     =>
            "type with predicates with different SPARK_Mode values",
-         when Lim_Predicate_With_Different_Visibility =>
+         when Lim_Predicate_With_Different_Visibility                     =>
            "type with predicates with different visibility",
-         when Lim_UU_Tagged_Comp =>
+         when Lim_UU_Tagged_Comp                                          =>
            "component of an unconstrained unchecked union type in a tagged"
            & " extension",
-         when Lim_Relaxed_Init_Invariant =>
+         when Lim_Relaxed_Init_Invariant                                  =>
            "invariant on a type used as a subcomponent of a type or"
            & " an object annotated with relaxed initialization",
-         when Lim_Relaxed_Init_Access_Type =>
+         when Lim_Relaxed_Init_Access_Type                                =>
            "access-to-subprogram type used as a subcomponent of a type or"
            & " an object annotated with relaxed initialization",
-         when Lim_Relaxed_Init_Aliasing =>
+         when Lim_Relaxed_Init_Aliasing                                   =>
            "relaxed initialization on overlaid objects",
-         when Lim_Relaxed_Init_Variant_Part =>
+         when Lim_Relaxed_Init_Variant_Part                               =>
            "subtype with a discriminant constraint containing only"
            & " subcomponents whose type is annotated with"
            & " Relaxed_Initialization",
-         when Lim_Limited_Type_From_Limited_With =>
+         when Lim_Limited_Type_From_Limited_With                          =>
            "limited view of type & coming from limited with",
-         when Lim_Refined_Post_On_Entry =>
+         when Lim_Refined_Post_On_Entry                                   =>
            "Refined_Post aspect on a protected entry",
-         when Lim_Entry_Family => "entry family",
-         when Lim_Generic_In_Hidden_Private =>
+         when Lim_Entry_Family                                            =>
+           "entry family",
+         when Lim_Generic_In_Hidden_Private                               =>
            "instance of a generic unit declared in a package whose private "
            & "part is hidden outside of this package",
-         when Lim_Generic_In_Type_Inv =>
+         when Lim_Generic_In_Type_Inv                                     =>
            "instance of a generic unit declared in a package containing a "
            & "type with an invariant outside of this package",
-         when Lim_Hidden_Private_Relaxed_Init =>
+         when Lim_Hidden_Private_Relaxed_Init                             =>
            "hidden private type containing only subcomponents whose type is"
            & " annotated with Relaxed_Initialization");
 
@@ -1154,9 +1172,9 @@ package VC_Kinds is
 
    function Locate_On_First_Token (V : VC_Kind) return Boolean
    is (case V is
-         when VC_RTE_Kind => False,
-         when VC_Assert_Kind => V not in VC_Precondition | VC_Raise,
-         when VC_LSP_Kind => True,
+         when VC_RTE_Kind     => False,
+         when VC_Assert_Kind  => V not in VC_Precondition | VC_Raise,
+         when VC_LSP_Kind     => True,
          when VC_Warning_Kind => True);
    --  Returns True if this kind of VC should be considered like an assertion
    --  when positioning the message to the left-most subexpression of the
@@ -1533,7 +1551,7 @@ package VC_Kinds is
    is (case Verdict.Verdict_Category is
          when Bad_Counterexample | Not_Checked | Incomplete =>
            To_String (Verdict.Verdict_Reason),
-         when others => "");
+         when others                                        => "");
    --  Return the reason for a verdict (empty for confirmed verdicts)
 
    function To_String (P : Prover_Category) return String;

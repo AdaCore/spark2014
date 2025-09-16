@@ -70,13 +70,13 @@ package body Why.Images is
    function Img (Ty : EW_Type) return String is
    begin
       case Ty is
-         when EW_Builtin =>
+         when EW_Builtin  =>
             return "builtin";
 
          when EW_Abstract =>
             return "[abstract node]";
 
-         when EW_Split =>
+         when EW_Split    =>
             return "[split node]";
       end case;
    end Img;
@@ -391,7 +391,7 @@ package body Why.Images is
    procedure P (O : Output_Id; Value : EW_Literal) is
    begin
       case Value is
-         when EW_True =>
+         when EW_True  =>
             P (O, "True");
 
          when EW_False =>
@@ -402,22 +402,22 @@ package body Why.Images is
    procedure P (O : Output_Id; Value : EW_Connector) is
    begin
       case Value is
-         when EW_Or_Else =>
+         when EW_Or_Else    =>
             P (O, "||");
 
-         when EW_And_Then =>
+         when EW_And_Then   =>
             P (O, "&&");
 
-         when EW_Imply =>
+         when EW_Imply      =>
             P (O, "->");
 
          when EW_Equivalent =>
             P (O, "<->");
 
-         when EW_Or =>
+         when EW_Or         =>
             P (O, "\/");
 
-         when EW_And =>
+         when EW_And        =>
             P (O, "/\");
       end case;
    end P;
@@ -425,13 +425,13 @@ package body Why.Images is
    procedure P (O : Output_Id; Value : EW_Domain) is
    begin
       case Value is
-         when EW_Term =>
+         when EW_Term  =>
             P (O, "[term]");
 
-         when EW_Pred =>
+         when EW_Pred  =>
             P (O, "[predicate]");
 
-         when EW_Prog =>
+         when EW_Prog  =>
             P (O, "[program]");
 
          when EW_Pterm =>
@@ -442,10 +442,10 @@ package body Why.Images is
    procedure P (O : Output_Id; Value : EW_Clone_Type) is
    begin
       case Value is
-         when EW_Import =>
+         when EW_Import        =>
             P (O, "      "); --  import is now the default
 
-         when EW_Export =>
+         when EW_Export        =>
             P (O, "export");
 
          when EW_Clone_Default =>
@@ -470,19 +470,19 @@ package body Why.Images is
          when EW_Type_Subst =>
             P (O, "type");
 
-         when EW_Function =>
+         when EW_Function   =>
             P (O, "function");
 
-         when EW_Predicate =>
+         when EW_Predicate  =>
             P (O, "predicate");
 
-         when EW_Namepace =>
+         when EW_Namepace   =>
             P (O, "namespace");
 
-         when EW_Lemma =>
+         when EW_Lemma      =>
             P (O, "lemma");
 
-         when EW_Goal =>
+         when EW_Goal       =>
             P (O, "goal");
       end case;
    end P;
@@ -493,7 +493,7 @@ package body Why.Images is
          when EW_Assert =>
             P (O, "assert");
 
-         when EW_Check =>
+         when EW_Check  =>
             P (O, "check");
 
          when EW_Assume =>

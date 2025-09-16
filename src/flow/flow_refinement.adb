@@ -77,7 +77,7 @@ package body Flow_Refinement is
    function Is_Visible (F : Flow_Id; S : Flow_Scope) return Boolean
    is (case F.Kind is
          when Direct_Mapping | Record_Field => Is_Visible (F.Node, S),
-         when others => raise Program_Error);
+         when others                        => raise Program_Error);
 
    -------------------------
    -- Is_Globally_Visible --
@@ -152,7 +152,7 @@ package body Flow_Refinement is
             --  the corresponding stub is located. To give this answer we
             --  restart the query at where the stub is.
 
-            when N_Subunit =>
+            when N_Subunit                                  =>
                pragma Assert (Prev_Context = Proper_Body (Context));
 
                Prev_Context := Empty;
@@ -166,8 +166,7 @@ package body Flow_Refinement is
             when N_Package_Body_Stub
                | N_Protected_Body_Stub
                | N_Subprogram_Body_Stub
-               | N_Task_Body_Stub
-            =>
+               | N_Task_Body_Stub                           =>
                --  Ada RM 10.1.3(13): A body_stub shall appear immediately
                --  within the declarative_part of a compilation unit body.
                --  [This rule does not apply within an instance of a generic
@@ -187,8 +186,7 @@ package body Flow_Refinement is
                | N_Package_Body
                | N_Protected_Body
                | N_Subprogram_Body
-               | N_Task_Body
-            =>
+               | N_Task_Body                                =>
                declare
                   E : constant Entity_Id := Unique_Defining_Entity (Context);
 
@@ -238,7 +236,7 @@ package body Flow_Refinement is
                  (Ent  => Defining_Entity (Parent (Context)),
                   Part => Visible_Part);
 
-            when N_Package_Specification =>
+            when N_Package_Specification                    =>
                declare
                   Ent  : constant Entity_Id := Defining_Entity (Context);
                   Part : Declarative_Part;
@@ -281,7 +279,7 @@ package body Flow_Refinement is
             --  Front end rewrites aspects into pragmas with empty parents. In
             --  such cases we jump to the entity of the aspect.
 
-            when N_Pragma =>
+            when N_Pragma                                   =>
                --  Pretend that pre- and postconditions are attached to the
                --  body; this makes no difference for flow analysis (which
                --  relies on the FA.S_Scope and FA.B_Scope that are set before
@@ -326,8 +324,7 @@ package body Flow_Refinement is
 
             when N_Entry_Declaration
                | N_Subprogram_Declaration
-               | N_Abstract_Subprogram_Declaration
-            =>
+               | N_Abstract_Subprogram_Declaration          =>
                if Present (Prev_Context) then
                   if Is_Tagged_Predefined_Eq (Defining_Entity (Context)) then
                      Prev_Context := Context;
@@ -344,7 +341,7 @@ package body Flow_Refinement is
                   Context := Parent (Context);
                end if;
 
-            when others =>
+            when others                                     =>
                Prev_Context := Context;
                Context := Parent (Context);
          end case;
@@ -407,7 +404,7 @@ package body Flow_Refinement is
    is (case State.Kind is
          when Direct_Mapping =>
            Is_Fully_Contained (State.Node, To_Node_Set (Outputs), Scop),
-         when others => raise Program_Error);
+         when others         => raise Program_Error);
 
    ----------------
    -- Up_Project --
@@ -1039,7 +1036,7 @@ package body Flow_Refinement is
            Find_Contract
              (E,
               (case C is
-                 when Global_Contract => Pragma_Refined_Global,
+                 when Global_Contract  => Pragma_Refined_Global,
                  when Depends_Contract => Pragma_Refined_Depends));
       else
          Prag := Empty;
@@ -1050,7 +1047,7 @@ package body Flow_Refinement is
            Find_Contract
              (E,
               (case C is
-                 when Global_Contract => Pragma_Global,
+                 when Global_Contract  => Pragma_Global,
                  when Depends_Contract => Pragma_Depends));
       end if;
 
@@ -1134,10 +1131,10 @@ package body Flow_Refinement is
                 (Down_Project (Get_Direct_Mapping_Id (Var), S),
                  View => Var.Variant);
 
-         when Magic_String =>
+         when Magic_String   =>
             return Flow_Id_Sets.To_Set (Var);
 
-         when others =>
+         when others         =>
             raise Program_Error;
       end case;
    end Down_Project;
@@ -1264,7 +1261,7 @@ package body Flow_Refinement is
             function Ancestor (S : Flow_Scope) return Flow_Scope is
             begin
                case Declarative_Part'(S.Part) is
-                  when Body_Part =>
+                  when Body_Part                   =>
                      return Private_Scope (S);
 
                   when Private_Part | Visible_Part =>
@@ -1353,11 +1350,11 @@ package body Flow_Refinement is
             when E_Abstract_State =>
                null;
 
-            when E_Constant =>
+            when E_Constant       =>
                --  Constants are always initialized at elaboration
                return True;
 
-            when E_Variable =>
+            when E_Variable       =>
                if Is_Concurrent_Type (Etype (Ent)) then
                   --  Instances of a protected type are always fully default
                   --  initialized.
@@ -1374,7 +1371,7 @@ package body Flow_Refinement is
                   return True;
                end if;
 
-            when others =>
+            when others           =>
                raise Program_Error;
          end case;
 
@@ -1432,8 +1429,8 @@ package body Flow_Refinement is
       Globals : constant Raw_Global_Nodes :=
         (case Get_Pragma_Id (N) is
            when Pragma_Depends => Parse_Depends_Contract (Spec_Id, N),
-           when Pragma_Global => Parse_Global_Contract (Spec_Id, N),
-           when others => raise Program_Error);
+           when Pragma_Global  => Parse_Global_Contract (Spec_Id, N),
+           when others         => raise Program_Error);
       --  Globals of Spec_Id, taken either from the Depends or Global contract
 
       function Has_Ambiguous_Refinement (E : Entity_Id) return Boolean

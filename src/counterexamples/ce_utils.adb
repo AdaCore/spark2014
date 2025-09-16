@@ -324,7 +324,7 @@ package body CE_Utils is
                when Integer_K =>
                   Int_Val := Val.Scalar_Content.Integer_Content;
 
-               when Enum_K =>
+               when Enum_K    =>
                   declare
                      Ent : constant Entity_Id :=
                        Val.Scalar_Content.Enum_Entity;
@@ -339,7 +339,7 @@ package body CE_Utils is
                      end if;
                   end;
 
-               when others =>
+               when others    =>
                   raise Program_Error;
             end case;
 

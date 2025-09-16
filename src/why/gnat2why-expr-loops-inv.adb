@@ -779,10 +779,10 @@ package body Gnat2Why.Expr.Loops.Inv is
 
    begin
       case Status.Kind is
-         when Discard =>
+         when Discard           =>
             raise Program_Error;
 
-         when Not_Written =>
+         when Not_Written       =>
 
             Preserved_Components :=
               +New_And_Expr
@@ -795,7 +795,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                         Domain => EW_Pred),
                   Domain => EW_Pred);
 
-         when Entire_Object =>
+         when Entire_Object     =>
 
             --  Even when the entire object is written, the bounds of arrays
             --  and the values of immutable discriminants are preserved.
@@ -895,7 +895,7 @@ package body Gnat2Why.Expr.Loops.Inv is
          --     then get <Expr> i1 .. in = get <At_Entry> i1 .. in
          --     else Equality_Of_Preserved_Components (get <Expr> i1 .. in))
 
-         when Array_Components =>
+         when Array_Components  =>
             declare
                Dim        : constant Positive :=
                  Positive (Number_Dimensions (Expr_Ty));
@@ -1018,7 +1018,7 @@ package body Gnat2Why.Expr.Loops.Inv is
          --  /\ (not <Expr>.is_null ->
          --        Equality_Of_Preserved_Components <Expr>.value)
 
-         when Access_Value =>
+         when Access_Value      =>
             pragma Assert (not For_Valid);
 
             declare
@@ -1648,7 +1648,7 @@ package body Gnat2Why.Expr.Loops.Inv is
       In_Nested         : Boolean) is
    begin
       case Nkind (N) is
-         when N_Assignment_Statement =>
+         when N_Assignment_Statement                              =>
             declare
                Lvalue   : constant Entity_Id := SPARK_Atree.Name (N);
                Rvalue   : constant Node_Id := SPARK_Atree.Expression (N);
@@ -1688,7 +1688,7 @@ package body Gnat2Why.Expr.Loops.Inv is
 
          --  Discard writes to variables local to a case statement
 
-         when N_Case_Statement =>
+         when N_Case_Statement                                    =>
             declare
                Alternative : Opt_N_Case_Statement_Alternative_Id :=
                  First_Non_Pragma (Alternatives (N));
@@ -1738,7 +1738,7 @@ package body Gnat2Why.Expr.Loops.Inv is
          --  useless frame conditions, as Y cannot be mentioned in the frame
          --  condition in any meaningful way.
 
-         when N_Object_Declaration =>
+         when N_Object_Declaration                                =>
             declare
                E        : constant Constant_Or_Variable_Kind_Id :=
                  Defining_Identifier (N);
@@ -1790,7 +1790,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                end if;
             end;
 
-         when N_Elsif_Part =>
+         when N_Elsif_Part                                        =>
             Process_Statement_List
               (Then_Statements (N),
                Loop_Writes,
@@ -1809,7 +1809,7 @@ package body Gnat2Why.Expr.Loops.Inv is
 
          --  Discard writes to variables local to a return statement
 
-         when N_Extended_Return_Statement =>
+         when N_Extended_Return_Statement                         =>
             Process_Statement_List
               (Return_Object_Declarations (N),
                Loop_Writes,
@@ -1833,7 +1833,7 @@ package body Gnat2Why.Expr.Loops.Inv is
 
          --  Discard writes to variables local to an if statement
 
-         when N_If_Statement =>
+         when N_If_Statement                                      =>
             Process_Statement_List
               (Then_Statements (N),
                Loop_Writes,
@@ -1856,7 +1856,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                After_Inv,
                In_Nested => True);
 
-         when N_Handled_Sequence_Of_Statements =>
+         when N_Handled_Sequence_Of_Statements                    =>
             Process_Statement_List
               (Statements (N),
                Loop_Writes,
@@ -1880,7 +1880,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                end loop;
             end;
 
-         when N_Loop_Statement =>
+         when N_Loop_Statement                                    =>
 
             --  Discard the loop index of nested loops if any
 
@@ -1915,7 +1915,7 @@ package body Gnat2Why.Expr.Loops.Inv is
 
          --  Discard writes to variables local to a block statement
 
-         when N_Block_Statement =>
+         when N_Block_Statement                                   =>
             if Present (Declarations (N)) then
                Process_Statement_List
                  (Declarations (N),
@@ -1949,11 +1949,10 @@ package body Gnat2Why.Expr.Loops.Inv is
             | N_Package_Declaration
             | N_Subprogram_Body
             | N_Subprogram_Declaration
-            | N_Delay_Statement
-         =>
+            | N_Delay_Statement                                   =>
             null;
 
-         when others =>
+         when others                                              =>
             Ada.Text_IO.Put_Line
               ("[Loops.Inv.Process_Statement] kind ="
                & Node_Kind'Image (Nkind (N)));
@@ -2189,15 +2188,15 @@ package body Gnat2Why.Expr.Loops.Inv is
             when Entire_Object | Not_Written | Discard =>
                null;
 
-            when Record_Components =>
+            when Record_Components                     =>
                for E of Status.Component_Status loop
                   Finalize (E);
                end loop;
 
-            when Array_Components =>
+            when Array_Components                      =>
                Finalize (Status.Content_Status);
 
-            when Access_Value =>
+            when Access_Value                          =>
                Finalize (Status.Value_Status);
          end case;
 
@@ -2213,13 +2212,13 @@ package body Gnat2Why.Expr.Loops.Inv is
          return Write_Status_Access is
       begin
          case Expected_Kind is
-            when Discard =>
+            when Discard           =>
                return new Write_Status'(Kind => Discard);
 
-            when Not_Written =>
+            when Not_Written       =>
                return new Write_Status'(Kind => Not_Written);
 
-            when Entire_Object =>
+            when Entire_Object     =>
                return new Write_Status'(Kind => Entire_Object);
 
             when Record_Components =>
@@ -2238,14 +2237,14 @@ package body Gnat2Why.Expr.Loops.Inv is
                   return new Write_Status'(Kind => Entire_Object);
                end if;
 
-            when Array_Components =>
+            when Array_Components  =>
                return
                  new Write_Status'
                    (Kind              => Array_Components,
                     Write_Constraints => Array_Constraints_Maps.Empty_Map,
                     Content_Status    => null);
 
-            when Access_Value =>
+            when Access_Value      =>
                return
                  new Write_Status'(Kind => Access_Value, Value_Status => null);
          end case;
@@ -2362,7 +2361,7 @@ package body Gnat2Why.Expr.Loops.Inv is
 
             --  For identifiers, update the corresponding status.
 
-            when N_Identifier | N_Expanded_Name =>
+            when N_Identifier | N_Expanded_Name                  =>
                One_Level_Update
                  (New_Write      => Entity (New_Write),
                   Writes         => Writes,
@@ -2381,7 +2380,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                   Expected_Type  => Expected_Type,
                   Updated_Status => Updated_Status);
 
-            when N_Selected_Component =>
+            when N_Selected_Component                            =>
 
                --  Call Update_Status on Prefix (New_Write) with Expected_Kind
                --  set to Record_Components to create a status for it.
@@ -2465,7 +2464,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                   end;
                end if;
 
-            when N_Indexed_Component | N_Slice =>
+            when N_Indexed_Component | N_Slice                   =>
                --  Call Update_Status on Prefix (New_Write) with Expected_Kind
                --  set to Array_Components to create a status for it.
 
@@ -2548,7 +2547,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                   end if;
                end if;
 
-            when N_Explicit_Dereference =>
+            when N_Explicit_Dereference                          =>
 
                --  Call Update_Status on Prefix (New_Write) with Expected_Kind
                --  set to Access_Value to create a status for it.
@@ -2614,7 +2613,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                     Retysp (Directly_Designated_Type (Expected_Type));
                end if;
 
-            when others =>
+            when others                                          =>
                Ada.Text_IO.Put_Line
                  ("[Update_Status] kind ="
                   & Node_Kind'Image (Nkind (New_Write)));

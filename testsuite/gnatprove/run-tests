@@ -612,6 +612,11 @@ class SPARKTestsuite(Testsuite):
             help="Run only replay tests",
         )
         parser.add_argument(
+            "--coverage",
+            action="store_true",
+            help="Generate coverage information for SPARKlib executable tests",
+        )
+        parser.add_argument(
             "--share-why3server",
             action="store_true",
             help="Use a shared why3server for all tests",
@@ -635,6 +640,9 @@ class SPARKTestsuite(Testsuite):
             os.chdir(cur_dir)
         return socketname
 
+    def setup_coverage(self):
+        os.environ["coverage"] = "true"
+
     def compute_environ(self):
         python_lib = os.path.join(self.root_dir, "lib", "python")
         pypath = "PYTHONPATH"
@@ -648,6 +656,8 @@ class SPARKTestsuite(Testsuite):
             os.environ["benchmark"] = self.main.args.benchmark
         if self.main.args.share_why3server:
             os.environ["why3server"] = self.run_why3server()
+        if self.main.args.coverage:
+            self.setup_coverage()
         return dict(os.environ)
 
     def set_up(self):

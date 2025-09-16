@@ -127,19 +127,19 @@ package body Assumptions is
       function Human_Readable (C : Claim_Kind) return String is
       begin
          case C is
-            when Claim_Init =>
+            when Claim_Init    =>
                return "initializiation of all out parameters and out Globals";
 
-            when Claim_Pre =>
+            when Claim_Pre     =>
                return "the precondition";
 
-            when Claim_Post =>
+            when Claim_Post    =>
                return "the postcondition";
 
             when Claim_Effects =>
                return "effects on parameters and Global variables";
 
-            when Claim_AoRTE =>
+            when Claim_AoRTE   =>
                return "absence of run-time errors";
          end case;
       end Human_Readable;

@@ -446,7 +446,7 @@ package SPARK_Definition.Annotate is
    function To_String (Kind : Annotate_Kind) return String
    is (case Kind is
          when False_Positive => "false positive",
-         when Intentional => "intentional");
+         when Intentional    => "intentional");
    --  Return the string representation of the supplied annotation
 
    function Has_At_End_Borrow_Annotation (E : Entity_Id) return Boolean;

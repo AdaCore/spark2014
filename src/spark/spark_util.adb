@@ -629,8 +629,7 @@ package body SPARK_Util is
          case Nkind (P) is
             when N_Qualified_Expression
                | N_Type_Conversion
-               | N_Unchecked_Type_Conversion
-            =>
+               | N_Unchecked_Type_Conversion =>
                null;
 
             --  Reach past an enclosing aggregate
@@ -638,20 +637,19 @@ package body SPARK_Util is
             when N_Aggregate
                | N_Component_Association
                | N_Delta_Aggregate
-               | N_Extension_Aggregate
-            =>
+               | N_Extension_Aggregate       =>
                null;
 
             --  Deep aggregate cannot be the prefix of an expression (SPARK RM
             --  3.10(6)) except for the special case of 'Update.
 
-            when N_Attribute_Reference =>
+            when N_Attribute_Reference       =>
                pragma Assert (Attribute_Name (P) = Name_Update);
 
             --  In other cases, the aggregate is not directly on the rhs of
             --  an assignment.
 
-            when others =>
+            when others                      =>
                return False;
          end case;
 
@@ -830,7 +828,7 @@ package body SPARK_Util is
                   return Abandon;
                end if;
 
-            when others =>
+            when others               =>
                null;
          end case;
 
@@ -978,7 +976,7 @@ package body SPARK_Util is
 
          --  Graphic characters are printed directly
 
-         when Graphic_Character =>
+         when Graphic_Character           =>
             return String'(1 => C);
 
          --  Other characters are printed as their enumeration name in the
@@ -986,487 +984,487 @@ package body SPARK_Util is
          --  get the names as it returns the character itself instead of a name
          --  for C greater than 160.
 
-         when NUL =>
+         when NUL                         =>
             return "NUL";
 
-         when SOH =>
+         when SOH                         =>
             return "SOH";
 
-         when STX =>
+         when STX                         =>
             return "STX";
 
-         when ETX =>
+         when ETX                         =>
             return "ETX";
 
-         when EOT =>
+         when EOT                         =>
             return "EOT";
 
-         when ENQ =>
+         when ENQ                         =>
             return "ENQ";
 
-         when ACK =>
+         when ACK                         =>
             return "ACK";
 
-         when BEL =>
+         when BEL                         =>
             return "BEL";
 
-         when BS =>
+         when BS                          =>
             return "BS";
 
-         when HT =>
+         when HT                          =>
             return "HT";
 
-         when LF =>
+         when LF                          =>
             return "LF";
 
-         when VT =>
+         when VT                          =>
             return "VT";
 
-         when FF =>
+         when FF                          =>
             return "FF";
 
-         when CR =>
+         when CR                          =>
             return "CR";
 
-         when SO =>
+         when SO                          =>
             return "SO";
 
-         when SI =>
+         when SI                          =>
             return "SI";
 
-         when DLE =>
+         when DLE                         =>
             return "DLE";
 
-         when DC1 =>
+         when DC1                         =>
             return "DC1";
 
-         when DC2 =>
+         when DC2                         =>
             return "DC2";
 
-         when DC3 =>
+         when DC3                         =>
             return "DC3";
 
-         when DC4 =>
+         when DC4                         =>
             return "DC4";
 
-         when NAK =>
+         when NAK                         =>
             return "NAK";
 
-         when SYN =>
+         when SYN                         =>
             return "SYN";
 
-         when ETB =>
+         when ETB                         =>
             return "ETB";
 
-         when CAN =>
+         when CAN                         =>
             return "CAN";
 
-         when EM =>
+         when EM                          =>
             return "EM";
 
-         when SUB =>
+         when SUB                         =>
             return "SUB";
 
-         when ESC =>
+         when ESC                         =>
             return "ESC";
 
-         when FS =>
+         when FS                          =>
             return "FS";
 
-         when GS =>
+         when GS                          =>
             return "GS";
 
-         when RS =>
+         when RS                          =>
             return "RS";
 
-         when US =>
+         when US                          =>
             return "US";
 
-         when DEL =>
+         when DEL                         =>
             return "DEL";
 
-         when Reserved_128 =>
+         when Reserved_128                =>
             return "Reserved_128";
 
-         when Reserved_129 =>
+         when Reserved_129                =>
             return "Reserved_129";
 
-         when BPH =>
+         when BPH                         =>
             return "BPH";
 
-         when NBH =>
+         when NBH                         =>
             return "NBH";
 
-         when Reserved_132 =>
+         when Reserved_132                =>
             return "Reserved_132";
 
-         when NEL =>
+         when NEL                         =>
             return "NEL";
 
-         when SSA =>
+         when SSA                         =>
             return "SSA";
 
-         when ESA =>
+         when ESA                         =>
             return "ESA";
 
-         when HTS =>
+         when HTS                         =>
             return "HTS";
 
-         when HTJ =>
+         when HTJ                         =>
             return "HTJ";
 
-         when VTS =>
+         when VTS                         =>
             return "VTS";
 
-         when PLD =>
+         when PLD                         =>
             return "PLD";
 
-         when PLU =>
+         when PLU                         =>
             return "PLU";
 
-         when RI =>
+         when RI                          =>
             return "RI";
 
-         when SS2 =>
+         when SS2                         =>
             return "SS2";
 
-         when SS3 =>
+         when SS3                         =>
             return "SS3";
 
-         when DCS =>
+         when DCS                         =>
             return "DCS";
 
-         when PU1 =>
+         when PU1                         =>
             return "PU1";
 
-         when PU2 =>
+         when PU2                         =>
             return "PU2";
 
-         when STS =>
+         when STS                         =>
             return "STS";
 
-         when CCH =>
+         when CCH                         =>
             return "CCH";
 
-         when MW =>
+         when MW                          =>
             return "MW";
 
-         when SPA =>
+         when SPA                         =>
             return "SPA";
 
-         when EPA =>
+         when EPA                         =>
             return "EPA";
 
-         when SOS =>
+         when SOS                         =>
             return "SOS";
 
-         when Reserved_153 =>
+         when Reserved_153                =>
             return "Reserved_153";
 
-         when SCI =>
+         when SCI                         =>
             return "SCI";
 
-         when CSI =>
+         when CSI                         =>
             return "CSI";
 
-         when ST =>
+         when ST                          =>
             return "ST";
 
-         when OSC =>
+         when OSC                         =>
             return "OSC";
 
-         when PM =>
+         when PM                          =>
             return "PM";
 
-         when APC =>
+         when APC                         =>
             return "APC";
 
-         when No_Break_Space =>
+         when No_Break_Space              =>
             return "No_Break_Space";
 
-         when Inverted_Exclamation =>
+         when Inverted_Exclamation        =>
             return "Inverted_Exclamation";
 
-         when Cent_Sign =>
+         when Cent_Sign                   =>
             return "Cent_Sign";
 
-         when Pound_Sign =>
+         when Pound_Sign                  =>
             return "Pound_Sign";
 
-         when Currency_Sign =>
+         when Currency_Sign               =>
             return "Currency_Sign";
 
-         when Yen_Sign =>
+         when Yen_Sign                    =>
             return "Yen_Sign";
 
-         when Broken_Bar =>
+         when Broken_Bar                  =>
             return "Broken_Bar";
 
-         when Section_Sign =>
+         when Section_Sign                =>
             return "Section_Sign";
 
-         when Diaeresis =>
+         when Diaeresis                   =>
             return "Diaeresis";
 
-         when Copyright_Sign =>
+         when Copyright_Sign              =>
             return "Copyright_Sign";
 
-         when Feminine_Ordinal_Indicator =>
+         when Feminine_Ordinal_Indicator  =>
             return "Feminine_Ordinal_Indicator";
 
-         when Left_Angle_Quotation =>
+         when Left_Angle_Quotation        =>
             return "Left_Angle_Quotation";
 
-         when Not_Sign =>
+         when Not_Sign                    =>
             return "Not_Sign";
 
-         when Soft_Hyphen =>
+         when Soft_Hyphen                 =>
             return "Soft_Hyphen";
 
-         when Registered_Trade_Mark_Sign =>
+         when Registered_Trade_Mark_Sign  =>
             return "Registered_Trade_Mark_Sign";
 
-         when Macron =>
+         when Macron                      =>
             return "Macron";
 
-         when Degree_Sign =>
+         when Degree_Sign                 =>
             return "Degree_Sign";
 
-         when Plus_Minus_Sign =>
+         when Plus_Minus_Sign             =>
             return "Plus_Minus_Sign";
 
-         when Superscript_Two =>
+         when Superscript_Two             =>
             return "Superscript_Two";
 
-         when Superscript_Three =>
+         when Superscript_Three           =>
             return "Superscript_Three";
 
-         when Acute =>
+         when Acute                       =>
             return "Acute";
 
-         when Micro_Sign =>
+         when Micro_Sign                  =>
             return "Micro_Sign";
 
-         when Pilcrow_Sign =>
+         when Pilcrow_Sign                =>
             return "Pilcrow_Sign";
 
-         when Middle_Dot =>
+         when Middle_Dot                  =>
             return "Middle_Dot";
 
-         when Cedilla =>
+         when Cedilla                     =>
             return "Cedilla";
 
-         when Superscript_One =>
+         when Superscript_One             =>
             return "Superscript_One";
 
          when Masculine_Ordinal_Indicator =>
             return "Masculine_Ordinal_Indicator";
 
-         when Right_Angle_Quotation =>
+         when Right_Angle_Quotation       =>
             return "Right_Angle_Quotation";
 
-         when Fraction_One_Quarter =>
+         when Fraction_One_Quarter        =>
             return "Fraction_One_Quarter";
 
-         when Fraction_One_Half =>
+         when Fraction_One_Half           =>
             return "Fraction_One_Half";
 
-         when Fraction_Three_Quarters =>
+         when Fraction_Three_Quarters     =>
             return "Fraction_Three_Quarters";
 
-         when Inverted_Question =>
+         when Inverted_Question           =>
             return "Inverted_Question";
 
-         when UC_A_Grave =>
+         when UC_A_Grave                  =>
             return "UC_A_Grave";
 
-         when UC_A_Acute =>
+         when UC_A_Acute                  =>
             return "UC_A_Acute";
 
-         when UC_A_Circumflex =>
+         when UC_A_Circumflex             =>
             return "UC_A_Circumflex";
 
-         when UC_A_Tilde =>
+         when UC_A_Tilde                  =>
             return "UC_A_Tilde";
 
-         when UC_A_Diaeresis =>
+         when UC_A_Diaeresis              =>
             return "UC_A_Diaeresis";
 
-         when UC_A_Ring =>
+         when UC_A_Ring                   =>
             return "UC_A_Ring";
 
-         when UC_AE_Diphthong =>
+         when UC_AE_Diphthong             =>
             return "UC_AE_Diphthong";
 
-         when UC_C_Cedilla =>
+         when UC_C_Cedilla                =>
             return "UC_C_Cedilla";
 
-         when UC_E_Grave =>
+         when UC_E_Grave                  =>
             return "UC_E_Grave";
 
-         when UC_E_Acute =>
+         when UC_E_Acute                  =>
             return "UC_E_Acute";
 
-         when UC_E_Circumflex =>
+         when UC_E_Circumflex             =>
             return "UC_E_Circumflex";
 
-         when UC_E_Diaeresis =>
+         when UC_E_Diaeresis              =>
             return "UC_E_Diaeresis";
 
-         when UC_I_Grave =>
+         when UC_I_Grave                  =>
             return "UC_I_Grave";
 
-         when UC_I_Acute =>
+         when UC_I_Acute                  =>
             return "UC_I_Acute";
 
-         when UC_I_Circumflex =>
+         when UC_I_Circumflex             =>
             return "UC_I_Circumflex";
 
-         when UC_I_Diaeresis =>
+         when UC_I_Diaeresis              =>
             return "UC_I_Diaeresis";
 
-         when UC_Icelandic_Eth =>
+         when UC_Icelandic_Eth            =>
             return "UC_Icelandic_Eth";
 
-         when UC_N_Tilde =>
+         when UC_N_Tilde                  =>
             return "UC_N_Tilde";
 
-         when UC_O_Grave =>
+         when UC_O_Grave                  =>
             return "UC_O_Grave";
 
-         when UC_O_Acute =>
+         when UC_O_Acute                  =>
             return "UC_O_Acute";
 
-         when UC_O_Circumflex =>
+         when UC_O_Circumflex             =>
             return "UC_O_Circumflex";
 
-         when UC_O_Tilde =>
+         when UC_O_Tilde                  =>
             return "UC_O_Tilde";
 
-         when UC_O_Diaeresis =>
+         when UC_O_Diaeresis              =>
             return "UC_O_Diaeresis";
 
-         when Multiplication_Sign =>
+         when Multiplication_Sign         =>
             return "Multiplication_Sign";
 
-         when UC_O_Oblique_Stroke =>
+         when UC_O_Oblique_Stroke         =>
             return "UC_O_Oblique_Stroke";
 
-         when UC_U_Grave =>
+         when UC_U_Grave                  =>
             return "UC_U_Grave";
 
-         when UC_U_Acute =>
+         when UC_U_Acute                  =>
             return "UC_U_Acute";
 
-         when UC_U_Circumflex =>
+         when UC_U_Circumflex             =>
             return "UC_U_Circumflex";
 
-         when UC_U_Diaeresis =>
+         when UC_U_Diaeresis              =>
             return "UC_U_Diaeresis";
 
-         when UC_Y_Acute =>
+         when UC_Y_Acute                  =>
             return "UC_Y_Acute";
 
-         when UC_Icelandic_Thorn =>
+         when UC_Icelandic_Thorn          =>
             return "UC_Icelandic_Thorn";
 
-         when LC_German_Sharp_S =>
+         when LC_German_Sharp_S           =>
             return "LC_German_Sharp_S";
 
-         when LC_A_Grave =>
+         when LC_A_Grave                  =>
             return "LC_A_Grave";
 
-         when LC_A_Acute =>
+         when LC_A_Acute                  =>
             return "LC_A_Acute";
 
-         when LC_A_Circumflex =>
+         when LC_A_Circumflex             =>
             return "LC_A_Circumflex";
 
-         when LC_A_Tilde =>
+         when LC_A_Tilde                  =>
             return "LC_A_Tilde";
 
-         when LC_A_Diaeresis =>
+         when LC_A_Diaeresis              =>
             return "LC_A_Diaeresis";
 
-         when LC_A_Ring =>
+         when LC_A_Ring                   =>
             return "LC_A_Ring";
 
-         when LC_AE_Diphthong =>
+         when LC_AE_Diphthong             =>
             return "LC_AE_Diphthong";
 
-         when LC_C_Cedilla =>
+         when LC_C_Cedilla                =>
             return "LC_C_Cedilla";
 
-         when LC_E_Grave =>
+         when LC_E_Grave                  =>
             return "LC_E_Grave";
 
-         when LC_E_Acute =>
+         when LC_E_Acute                  =>
             return "LC_E_Acute";
 
-         when LC_E_Circumflex =>
+         when LC_E_Circumflex             =>
             return "LC_E_Circumflex";
 
-         when LC_E_Diaeresis =>
+         when LC_E_Diaeresis              =>
             return "LC_E_Diaeresis";
 
-         when LC_I_Grave =>
+         when LC_I_Grave                  =>
             return "LC_I_Grave";
 
-         when LC_I_Acute =>
+         when LC_I_Acute                  =>
             return "LC_I_Acute";
 
-         when LC_I_Circumflex =>
+         when LC_I_Circumflex             =>
             return "LC_I_Circumflex";
 
-         when LC_I_Diaeresis =>
+         when LC_I_Diaeresis              =>
             return "LC_I_Diaeresis";
 
-         when LC_Icelandic_Eth =>
+         when LC_Icelandic_Eth            =>
             return "LC_Icelandic_Eth";
 
-         when LC_N_Tilde =>
+         when LC_N_Tilde                  =>
             return "LC_N_Tilde";
 
-         when LC_O_Grave =>
+         when LC_O_Grave                  =>
             return "LC_O_Grave";
 
-         when LC_O_Acute =>
+         when LC_O_Acute                  =>
             return "LC_O_Acute";
 
-         when LC_O_Circumflex =>
+         when LC_O_Circumflex             =>
             return "LC_O_Circumflex";
 
-         when LC_O_Tilde =>
+         when LC_O_Tilde                  =>
             return "LC_O_Tilde";
 
-         when LC_O_Diaeresis =>
+         when LC_O_Diaeresis              =>
             return "LC_O_Diaeresis";
 
-         when Division_Sign =>
+         when Division_Sign               =>
             return "Division_Sign";
 
-         when LC_O_Oblique_Stroke =>
+         when LC_O_Oblique_Stroke         =>
             return "LC_O_Oblique_Stroke";
 
-         when LC_U_Grave =>
+         when LC_U_Grave                  =>
             return "LC_U_Grave";
 
-         when LC_U_Acute =>
+         when LC_U_Acute                  =>
             return "LC_U_Acute";
 
-         when LC_U_Circumflex =>
+         when LC_U_Circumflex             =>
             return "LC_U_Circumflex";
 
-         when LC_U_Diaeresis =>
+         when LC_U_Diaeresis              =>
             return "LC_U_Diaeresis";
 
-         when LC_Y_Acute =>
+         when LC_Y_Acute                  =>
             return "LC_Y_Acute";
 
-         when LC_Icelandic_Thorn =>
+         when LC_Icelandic_Thorn          =>
             return "LC_Icelandic_Thorn";
 
-         when LC_Y_Diaeresis =>
+         when LC_Y_Diaeresis              =>
             return "LC_Y_Diaeresis";
       end case;
       pragma Annotate (Xcov, Exempt_Off);
@@ -1690,13 +1688,13 @@ package body SPARK_Util is
               Contains_Cut_Operations (Left_Opnd (N))
               or else Contains_Cut_Operations (Right_Opnd (N));
 
-         when N_Quantified_Expression =>
+         when N_Quantified_Expression                     =>
             return Contains_Cut_Operations (Condition (N));
 
-         when N_Expression_With_Actions =>
+         when N_Expression_With_Actions                   =>
             return Contains_Cut_Operations (Expression (N));
 
-         when N_If_Expression =>
+         when N_If_Expression                             =>
             declare
                Cond      : constant N_Subexpr_Id := First (Expressions (N));
                Then_Part : constant N_Subexpr_Id := Next (Cond);
@@ -1708,7 +1706,7 @@ package body SPARK_Util is
                           and then Contains_Cut_Operations (Else_Part));
             end;
 
-         when N_Case_Expression =>
+         when N_Case_Expression                           =>
             declare
                Alt : Node_Id := First (Alternatives (N));
             begin
@@ -1721,13 +1719,13 @@ package body SPARK_Util is
                return False;
             end;
 
-         when N_Function_Call =>
+         when N_Function_Call                             =>
             return
               Present (Get_Called_Entity (N))
               and then Is_From_Hardcoded_Unit
                          (Get_Called_Entity (N), Cut_Operations);
 
-         when others =>
+         when others                                      =>
             return False;
       end case;
    end Contains_Cut_Operations;
@@ -1974,8 +1972,7 @@ package body SPARK_Util is
       case Nkind (Expr) is
          when N_Qualified_Expression
             | N_Unchecked_Type_Conversion
-            | N_Type_Conversion
-         =>
+            | N_Type_Conversion              =>
             return Expr_Has_Relaxed_Discr (Expression (Expr));
 
          when N_Identifier | N_Expanded_Name =>
@@ -1987,11 +1984,10 @@ package body SPARK_Util is
 
          when N_Indexed_Component
             | N_Selected_Component
-            | N_Explicit_Dereference
-         =>
+            | N_Explicit_Dereference         =>
             return True;
 
-         when N_Attribute_Reference =>
+         when N_Attribute_Reference          =>
             if Attribute_Name (Expr) in Name_Loop_Entry | Name_Old then
                return Expr_Has_Relaxed_Discr (Prefix (Expr));
             else
@@ -2004,11 +2000,10 @@ package body SPARK_Util is
             | N_Delta_Aggregate
             | N_Extension_Aggregate
             | N_String_Literal
-            | N_Target_Name
-         =>
+            | N_Target_Name                  =>
             return False;
 
-         when others =>
+         when others                         =>
             raise Program_Error;
       end case;
    end Expr_Has_Relaxed_Discr;
@@ -2110,29 +2105,29 @@ package body SPARK_Util is
       end if;
 
       case Nkind (Expr) is
-         when N_Aggregate =>
+         when N_Aggregate                                     =>
             return Aggr_Has_Relaxed_Init (Expr);
 
-         when N_Extension_Aggregate =>
+         when N_Extension_Aggregate                           =>
             return
               Expr_Has_Relaxed_Init (Ancestor_Part (Expr), No_Eval => False)
               or else Aggr_Has_Relaxed_Init (Expr);
 
-         when N_Delta_Aggregate =>
+         when N_Delta_Aggregate                               =>
             return
               Expr_Has_Relaxed_Init (Expression (Expr), No_Eval => False)
               or else Aggr_Has_Relaxed_Init (Expr);
 
-         when N_Slice =>
+         when N_Slice                                         =>
             return Expr_Has_Relaxed_Init (Prefix (Expr), No_Eval);
 
-         when N_Op_Concat =>
+         when N_Op_Concat                                     =>
             return
               Expr_Has_Relaxed_Init (Left_Opnd (Expr), No_Eval => False)
               or else Expr_Has_Relaxed_Init
                         (Right_Opnd (Expr), No_Eval => False);
 
-         when N_If_Expression =>
+         when N_If_Expression                                 =>
             declare
                Cond      : constant Node_Id := First (Expressions (Expr));
                Then_Part : constant Node_Id := Next (Cond);
@@ -2145,7 +2140,7 @@ package body SPARK_Util is
                                      (Else_Part, No_Eval => False));
             end;
 
-         when N_Case_Expression =>
+         when N_Case_Expression                               =>
             declare
                Cases   : constant List_Id := Alternatives (Expr);
                Current : Node_Id := First (Cases);
@@ -2161,29 +2156,28 @@ package body SPARK_Util is
                return False;
             end;
 
-         when N_Qualified_Expression =>
+         when N_Qualified_Expression                          =>
             return Expr_Has_Relaxed_Init (Expression (Expr), No_Eval => False);
 
          when N_Unchecked_Type_Conversion | N_Type_Conversion =>
             return Expr_Has_Relaxed_Init (Expression (Expr), No_Eval);
 
-         when N_Function_Call =>
+         when N_Function_Call                                 =>
             return Fun_Has_Relaxed_Init (Get_Called_Entity (Expr));
 
-         when N_Identifier | N_Expanded_Name =>
+         when N_Identifier | N_Expanded_Name                  =>
             return Obj_Has_Relaxed_Init (Entity (Expr));
 
          when N_Indexed_Component
             | N_Selected_Component
-            | N_Explicit_Dereference
-         =>
+            | N_Explicit_Dereference                          =>
             return
               Has_Relaxed_Init (Etype (Expr))
               or else Expr_Has_Relaxed_Init (Prefix (Expr), No_Eval);
 
-         when N_Attribute_Reference =>
+         when N_Attribute_Reference                           =>
             case Get_Attribute_Id (Attribute_Name (Expr)) is
-               when Attribute_Result =>
+               when Attribute_Result                     =>
                   return Fun_Has_Relaxed_Init (Entity (Prefix (Expr)));
 
                when Attribute_Old | Attribute_Loop_Entry =>
@@ -2192,26 +2186,26 @@ package body SPARK_Util is
                --  Getting a reference to an object does not cause it to be
                --  evaluated.
 
-               when Attribute_Access =>
+               when Attribute_Access                     =>
                   return
                     not Has_Relaxed_Init
                           (Directly_Designated_Type (Retysp (Etype (Expr))))
                     and then Expr_Has_Relaxed_Init
                                (Prefix (Expr), No_Eval => True);
 
-               when Attribute_Update =>
+               when Attribute_Update                     =>
                   return
                     Expr_Has_Relaxed_Init (Prefix (Expr), No_Eval => False)
                     or else Aggr_Has_Relaxed_Init (First (Expressions (Expr)));
 
-               when others =>
+               when others                               =>
                   return False;
             end case;
 
-         when N_Expression_With_Actions =>
+         when N_Expression_With_Actions                       =>
             return Expr_Has_Relaxed_Init (Expression (Expr), No_Eval);
 
-         when N_Allocator =>
+         when N_Allocator                                     =>
             if Nkind (Expression (Expr)) = N_Qualified_Expression then
                declare
                   Des_Ty : Entity_Id :=
@@ -2256,11 +2250,10 @@ package body SPARK_Util is
             | N_Short_Circuit
             | N_Membership_Test
             | N_Quantified_Expression
-            | N_Null
-         =>
+            | N_Null                                          =>
             return False;
 
-         when others =>
+         when others                                          =>
             raise Program_Error;
       end case;
    end Expr_Has_Relaxed_Init;
@@ -2310,19 +2303,19 @@ package body SPARK_Util is
          --  ignoring them we conservatively consider accesses to different
          --  components as potential violations.
 
-         when N_Indexed_Component =>
+         when N_Indexed_Component            =>
             return Full_Entry_Name (Prefix (N));
 
          --  Accesses to record components are known statically and become part
          --  of the returned identifier.
 
-         when N_Selected_Component =>
+         when N_Selected_Component           =>
             return
               Full_Entry_Name (Prefix (N))
               & "__"
               & Get_Name_String (Chars (Entity (Selector_Name (N))));
 
-         when others =>
+         when others                         =>
             raise Program_Error;
       end case;
    end Full_Entry_Name;
@@ -2489,13 +2482,13 @@ package body SPARK_Util is
                            return Exception_Sets.All_Exceptions;
                         end if;
 
-                     when N_Aggregate =>
+                     when N_Aggregate  =>
                         Result.Include
                           (Entity
                              (Expression
                                 (First (Component_Associations (Exit_Kind)))));
 
-                     when others =>
+                     when others       =>
                         raise Program_Error;
                   end case;
                end;
@@ -2524,7 +2517,7 @@ package body SPARK_Util is
             begin
                while Present (Exc) loop
                   case Nkind (Exc) is
-                     when N_Others_Choice =>
+                     when N_Others_Choice                =>
                         if not False_Post then
                            pragma Assert (Result.Is_Empty);
                            Result := Exception_Sets.All_Exceptions;
@@ -2537,7 +2530,7 @@ package body SPARK_Util is
                            Result.Include (Entity (Exc));
                         end if;
 
-                     when others =>
+                     when others                         =>
                         raise Program_Error;
                   end case;
                   Next (Exc);
@@ -2562,14 +2555,14 @@ package body SPARK_Util is
    begin
       while Present (Exc) loop
          case Nkind (Exc) is
-            when N_Others_Choice =>
+            when N_Others_Choice                =>
                pragma Assert (Result.Is_Empty);
                return Exception_Sets.All_Exceptions;
 
             when N_Identifier | N_Expanded_Name =>
                Result.Include (Entity (Exc));
 
-            when others =>
+            when others                         =>
                raise Program_Error;
          end case;
          Next (Exc);
@@ -2727,11 +2720,10 @@ package body SPARK_Util is
                | N_Indexed_Component
                | N_Selected_Component
                | N_Slice
-               | N_Attribute_Reference
-            =>
+               | N_Attribute_Reference          =>
                return Find_Func_Call (Prefix (Expr));
 
-            when N_Op_Eq | N_Op_Ne =>
+            when N_Op_Eq | N_Op_Ne              =>
                if Nkind (Left_Opnd (Expr)) = N_Null then
                   return Find_Func_Call (Right_Opnd (Expr));
                else
@@ -2741,14 +2733,13 @@ package body SPARK_Util is
 
             when N_Qualified_Expression
                | N_Type_Conversion
-               | N_Unchecked_Type_Conversion
-            =>
+               | N_Unchecked_Type_Conversion    =>
                return Find_Func_Call (Expression (Expr));
 
-            when N_Function_Call =>
+            when N_Function_Call                =>
                return Expr;
 
-            when others =>
+            when others                         =>
                raise Program_Error;
          end case;
       end Find_Func_Call;
@@ -2838,7 +2829,7 @@ package body SPARK_Util is
             Result :=
               Get_Exceptions_For_Subp (Get_Called_Entity (Call_Or_Stmt));
 
-         when N_Raise_Statement =>
+         when N_Raise_Statement                            =>
             if Present (Name (Call_Or_Stmt)) then
                Result := Exception_Sets.Exactly (Entity (Name (Call_Or_Stmt)));
 
@@ -2866,10 +2857,10 @@ package body SPARK_Util is
                end;
             end if;
 
-         when N_Entry_Call_Statement =>
+         when N_Entry_Call_Statement                       =>
             return Exception_Sets.Empty_Set;
 
-         when others =>
+         when others                                       =>
             raise Program_Error;
       end case;
 
@@ -2893,32 +2884,29 @@ package body SPARK_Util is
             | N_Modular_Type_Definition
             | N_Floating_Point_Definition
             | N_Ordinary_Fixed_Point_Definition
-            | N_Decimal_Fixed_Point_Definition
-         =>
+            | N_Decimal_Fixed_Point_Definition =>
             return N;
 
-         when N_Subtype_Indication =>
+         when N_Subtype_Indication             =>
             return Range_Expression (Constraint (N));
 
-         when N_Identifier | N_Expanded_Name =>
+         when N_Identifier | N_Expanded_Name   =>
             return Get_Range (Entity (N));
 
-         when N_Defining_Identifier =>
+         when N_Defining_Identifier            =>
             return
               Get_Range
                 (Scalar_Range
                    (case Ekind (N) is
-                      when Object_Kind => Etype (N),
-                      when Scalar_Kind => N,
+                      when Object_Kind    => Etype (N),
+                      when Scalar_Kind    => N,
                       when E_Limited_Private_Subtype
                          | E_Limited_Private_Type
                          | E_Private_Subtype
-                         | E_Private_Type
-                      =>
-                        Full_View (N),
-                      when others => raise Program_Error));
+                         | E_Private_Type => Full_View (N),
+                      when others         => raise Program_Error));
 
-         when others =>
+         when others                           =>
             raise Program_Error;
       end case;
    end Get_Range;
@@ -2959,22 +2947,20 @@ package body SPARK_Util is
             | N_Allocator
             | N_Delta_Aggregate
             | N_Extension_Aggregate
-            | N_Null
-         =>
+            | N_Null                      =>
             return Expr;
 
          when N_Explicit_Dereference
             | N_Indexed_Component
             | N_Selected_Component
-            | N_Slice
-         =>
+            | N_Slice                     =>
             return GRE (Prefix (Expr));
 
          --  In the case of a call to a traversal function, the root object is
          --  the root of the traversed parameter. Otherwise there is no root
          --  object.
 
-         when N_Function_Call =>
+         when N_Function_Call             =>
             if Through_Traversal
               and then Is_Traversal_Function_Call (Expr)
               and then Is_Path_Expression (First_Actual (Expr))
@@ -2986,11 +2972,10 @@ package body SPARK_Util is
 
          when N_Qualified_Expression
             | N_Type_Conversion
-            | N_Unchecked_Type_Conversion
-         =>
+            | N_Unchecked_Type_Conversion =>
             return GRE (Expression (Expr));
 
-         when N_Attribute_Reference =>
+         when N_Attribute_Reference       =>
             if Attribute_Name (Expr)
                in Name_First | Name_Last | Name_Length | Name_Access
             then
@@ -3003,7 +2988,7 @@ package body SPARK_Util is
                return Expr;
             end if;
 
-         when N_Op_Eq | N_Op_Ne =>
+         when N_Op_Eq | N_Op_Ne           =>
             if Nkind (Left_Opnd (Expr)) = N_Null then
                return GRE (Right_Opnd (Expr));
             else
@@ -3011,7 +2996,7 @@ package body SPARK_Util is
                return GRE (Left_Opnd (Expr));
             end if;
 
-         when others =>
+         when others                      =>
             raise Program_Error;
       end case;
    end Get_Root_Expr;
@@ -3148,10 +3133,10 @@ package body SPARK_Util is
                            return True;
                         end if;
 
-                     when N_Aggregate =>
+                     when N_Aggregate  =>
                         null;
 
-                     when others =>
+                     when others       =>
                         raise Program_Error;
                   end case;
                end;
@@ -3171,10 +3156,10 @@ package body SPARK_Util is
 
    function Has_Volatile (E : N_Entity_Id) return Boolean
    is (case Ekind (E) is
-         when E_Abstract_State => Is_External_State (E),
+         when E_Abstract_State        => Is_External_State (E),
          when Object_Kind | Type_Kind =>
            not Is_Concurrent_Type (E) and then Is_Effectively_Volatile (E),
-         when others => raise Program_Error);
+         when others                  => raise Program_Error);
 
    ---------------------------
    -- Has_Volatile_Property --
@@ -3197,20 +3182,19 @@ package body SPARK_Util is
             | E_Component
             | E_Loop_Parameter
             | Type_Kind
-            | E_In_Out_Parameter
-         =>
+            | E_In_Out_Parameter =>
             return
               (case P is
-                 when Pragma_Async_Readers => Async_Readers_Enabled (E),
-                 when Pragma_Async_Writers => Async_Writers_Enabled (E),
-                 when Pragma_Effective_Reads => Effective_Reads_Enabled (E),
+                 when Pragma_Async_Readers    => Async_Readers_Enabled (E),
+                 when Pragma_Async_Writers    => Async_Writers_Enabled (E),
+                 when Pragma_Effective_Reads  => Effective_Reads_Enabled (E),
                  when Pragma_Effective_Writes => Effective_Writes_Enabled (E));
 
          --  All volatile in parameters have only async_writers set. In
          --  particular reads cannot be effective and the absence of AR
          --  is irrelevant since we are not allowed to write to it anyway.
 
-         when E_In_Parameter =>
+         when E_In_Parameter     =>
             return P = Pragma_Async_Writers and then Async_Writers_Enabled (E);
 
          --  Out parameters we assume that writes are effective (worst case).
@@ -3218,14 +3202,14 @@ package body SPARK_Util is
          --  illegal to read anyway, b - we ban passing a fully volatile
          --  object as an argument to an out parameter).
 
-         when E_Out_Parameter =>
+         when E_Out_Parameter    =>
             return
               (case P is
-                 when Pragma_Async_Readers => Async_Readers_Enabled (E),
+                 when Pragma_Async_Readers    => Async_Readers_Enabled (E),
                  when Pragma_Effective_Writes => Effective_Writes_Enabled (E),
-                 when others => False);
+                 when others                  => False);
 
-         when others =>
+         when others             =>
             raise Program_Error;
       end case;
    end Has_Volatile_Property;
@@ -3327,17 +3311,17 @@ package body SPARK_Util is
 
       return
         (case Nkind (P) is
-           when N_Component_Association => L = Loop_Actions (P),
-           when N_And_Then | N_Or_Else => L = Actions (P),
-           when N_If_Expression =>
+           when N_Component_Association       => L = Loop_Actions (P),
+           when N_And_Then | N_Or_Else        => L = Actions (P),
+           when N_If_Expression               =>
              L = Then_Actions (P) or else L = Else_Actions (P),
            when N_Case_Expression_Alternative => L = Actions (P),
-           when N_Elsif_Part => L = Condition_Actions (P),
-           when N_Iteration_Scheme => L = Condition_Actions (P),
-           when N_Block_Statement => L = Cleanup_Actions (P),
-           when N_Expression_With_Actions => L = Actions (P),
-           when N_Freeze_Entity => L = Actions (P),
-           when others => False);
+           when N_Elsif_Part                  => L = Condition_Actions (P),
+           when N_Iteration_Scheme            => L = Condition_Actions (P),
+           when N_Block_Statement             => L = Cleanup_Actions (P),
+           when N_Expression_With_Actions     => L = Actions (P),
+           when N_Freeze_Entity               => L = Actions (P),
+           when others                        => False);
    end Is_Action;
 
    -----------------------------------
@@ -3398,7 +3382,7 @@ package body SPARK_Util is
    function Is_Constant_In_SPARK (E : Object_Kind_Id) return Boolean is
    begin
       case Ekind (E) is
-         when E_In_Parameter =>
+         when E_In_Parameter     =>
 
             --  The enclosing subprogram should have been marked so potential
             --  annotations for mutable In parameters are processed.
@@ -3415,10 +3399,10 @@ package body SPARK_Util is
               or else (not Is_Access_Variable (Etype (E))
                        and then not Has_Mutable_In_Param_Annotation (E));
 
-         when E_Loop_Parameter =>
+         when E_Loop_Parameter   =>
             return True;
 
-         when E_Constant =>
+         when E_Constant         =>
             return
               Comes_From_Declare_Expr (E)
               or else not Is_Access_Variable (Etype (E));
@@ -3429,7 +3413,7 @@ package body SPARK_Util is
          when E_In_Out_Parameter =>
             return Is_Borrowing_Traversal_Function (Scope (E));
 
-         when others =>
+         when others             =>
             return False;
       end case;
    end Is_Constant_In_SPARK;
@@ -3555,17 +3539,16 @@ package body SPARK_Util is
          when N_Loop_Statement
             | N_Case_Statement_Alternative
             | N_Exception_Handler
-            | N_Handled_Sequence_Of_Statements
-         =>
+            | N_Handled_Sequence_Of_Statements =>
             return List = Statements (Par);
 
-         when N_If_Statement | N_Elsif_Part =>
+         when N_If_Statement | N_Elsif_Part    =>
             return
               List = Then_Statements (Par)
               or else (Nkind (Par) = N_If_Statement
                        and then List = Else_Statements (Par));
 
-         when others =>
+         when others                           =>
             return False;
       end case;
    end Is_Declared_In_Statements;
@@ -3679,10 +3662,10 @@ package body SPARK_Util is
 
          --  Only unhandled exceptions are considered to signal errors
 
-         when N_Raise_Statement =>
+         when N_Raise_Statement                      =>
             return not Might_Raise_Handled_Exceptions (N);
 
-         when N_Pragma =>
+         when N_Pragma                               =>
             if Is_Pragma_Check (N, Name_Assert) then
                declare
                   Arg1 : constant Node_Id :=
@@ -3700,7 +3683,7 @@ package body SPARK_Util is
 
          --  Recognize calls to functions with a precondition of False
 
-         when N_Function_Call =>
+         when N_Function_Call                        =>
             declare
                Subp     : constant Entity_Id := Get_Called_Entity (N);
                Pre_List : constant Node_Lists.List :=
@@ -3717,7 +3700,7 @@ package body SPARK_Util is
                              and then Entity (Expr) = Standard_False);
             end;
 
-         when others =>
+         when others                                 =>
             return False;
       end case;
    end Is_Error_Signaling_Statement;
@@ -4157,13 +4140,13 @@ package body SPARK_Util is
    function Is_Package_State (E : Entity_Id) return Boolean
    is ((case Ekind (E) is
           when E_Abstract_State => True,
-          when E_Constant =>
+          when E_Constant       =>
             Ekind (Scope (E)) = E_Package
             and then not In_Generic_Actual (E)
             and then (Is_Access_Variable (Etype (E))
                       or else Has_Variable_Input (E)),
-          when E_Variable => Ekind (Scope (E)) = E_Package,
-          when others => False)
+          when E_Variable       => Ekind (Scope (E)) = E_Package,
+          when others           => False)
        and then Comes_From_Source (E));
 
    ----------------------------------
@@ -4231,13 +4214,12 @@ package body SPARK_Util is
             when N_Explicit_Dereference
                | N_Indexed_Component
                | N_Selected_Component
-               | N_Slice
-            =>
+               | N_Slice                        =>
                return Is_Path_Expression_Ann (Prefix (Expr));
 
             --  Special value NULL corresponds to an empty path
 
-            when N_Null =>
+            when N_Null                         =>
                return True;
 
             --  Object returned by an (extension) aggregate, an allocator, or
@@ -4247,11 +4229,10 @@ package body SPARK_Util is
                | N_Allocator
                | N_Delta_Aggregate
                | N_Extension_Aggregate
-               | N_Function_Call
-            =>
+               | N_Function_Call                =>
                return True;
 
-            when N_Attribute_Reference =>
+            when N_Attribute_Reference          =>
 
                --  Old and Loop_Entry attributes can only be called on new
                --  objects. Update attribute is similar to delta aggregates.
@@ -4262,11 +4243,10 @@ package body SPARK_Util is
 
             when N_Qualified_Expression
                | N_Type_Conversion
-               | N_Unchecked_Type_Conversion
-            =>
+               | N_Unchecked_Type_Conversion    =>
                return Is_Path_Expression_Ann (Expression (Expr));
 
-            when others =>
+            when others                         =>
                return False;
          end case;
       end Is_Path_Expression_Ann;
@@ -4286,14 +4266,14 @@ package body SPARK_Util is
 
          --  Path op null or null op Path is a path
 
-         when N_Op_Eq | N_Op_Ne =>
+         when N_Op_Eq | N_Op_Ne     =>
             return
               (Nkind (Left_Opnd (Expr)) = N_Null
                and then Is_Path_Expression_Ann (Right_Opnd (Expr)))
               or else (Nkind (Right_Opnd (Expr)) = N_Null
                        and then Is_Path_Expression_Ann (Left_Opnd (Expr)));
 
-         when others =>
+         when others                =>
             return Is_Path_Expression_Ann (Expr);
       end case;
    end Is_Path_Expression;
@@ -4305,7 +4285,7 @@ package body SPARK_Util is
    function Is_Potentially_Invalid (E : Entity_Id) return Boolean is
    begin
       case Ekind (E) is
-         when E_Function =>
+         when E_Function               =>
             return
               Has_Potentially_Invalid (E)
               and then not Fun_Has_Only_Valid_Values (E);
@@ -4315,7 +4295,7 @@ package body SPARK_Util is
               Has_Potentially_Invalid (E)
               and then not Obj_Has_Only_Valid_Values (E);
 
-         when E_Constant =>
+         when E_Constant               =>
             if Is_Full_View (E) then
                return
                  Has_Potentially_Invalid (Partial_View (E))
@@ -4326,7 +4306,7 @@ package body SPARK_Util is
                  and then not Obj_Has_Only_Valid_Values (E);
             end if;
 
-         when others =>
+         when others                   =>
             return False;
       end case;
    end Is_Potentially_Invalid;
@@ -4341,10 +4321,10 @@ package body SPARK_Util is
          when N_Identifier | N_Expanded_Name =>
             return Is_Potentially_Invalid (Entity (Expr));
 
-         when N_Function_Call =>
+         when N_Function_Call                =>
             return Is_Potentially_Invalid (Get_Called_Entity (Expr));
 
-         when N_Attribute_Reference =>
+         when N_Attribute_Reference          =>
             return
               (Attribute_Name (Expr) in Name_Old | Name_Loop_Entry
                and then Is_Potentially_Invalid_Expr (Prefix (Expr))
@@ -4353,7 +4333,7 @@ package body SPARK_Util is
                        and then Is_Potentially_Invalid
                                   (Entity (Prefix (Expr))));
 
-         when N_Selected_Component =>
+         when N_Selected_Component           =>
             declare
                Pref : constant Node_Id := Prefix (Expr);
                Comp : constant Entity_Id := Entity (Selector_Name (Expr));
@@ -4366,10 +4346,10 @@ package body SPARK_Util is
                  and then Is_Potentially_Invalid_Expr (Pref);
             end;
 
-         when N_Indexed_Component | N_Slice =>
+         when N_Indexed_Component | N_Slice  =>
             return Is_Potentially_Invalid_Expr (Prefix (Expr));
 
-         when others =>
+         when others                         =>
             return False;
       end case;
    end Is_Potentially_Invalid_Expr;
@@ -4433,7 +4413,7 @@ package body SPARK_Util is
       --  variables with default initialization).
       if In_Predefined_Unit (E) then
          case Ekind (E) is
-            when E_Variable =>
+            when E_Variable       =>
                declare
                   Full_Type : constant Entity_Id :=
                     (if Is_Private_Type (Etype (E))
@@ -4454,7 +4434,7 @@ package body SPARK_Util is
                   return Initializes.Contains (Direct_Mapping_Id (E));
                end;
 
-            when others =>
+            when others           =>
                return False;
          end case;
       else
@@ -4473,13 +4453,13 @@ package body SPARK_Util is
       --  Get E's specification
 
       case Ekind (E) is
-         when E_Package =>
+         when E_Package       =>
             Spec := Package_Spec (E);
 
          when Subprogram_Kind =>
             Spec := Subprogram_Spec (E);
 
-         when others =>
+         when others          =>
             raise Program_Error;
       end case;
 
@@ -4789,7 +4769,7 @@ package body SPARK_Util is
       procedure Auxiliary_Append (Subexpr : N_Subexpr_Id) is
       begin
          case Nkind (Subexpr) is
-            when N_If_Expression =>
+            when N_If_Expression   =>
                declare
                   Then_Expr : constant N_Subexpr_Id :=
                     Next (First (Expressions (Subexpr)));
@@ -4809,7 +4789,7 @@ package body SPARK_Util is
                   end loop;
                end;
 
-            when others =>
+            when others            =>
                Result.Append (Subexpr);
          end case;
       end Auxiliary_Append;
@@ -4987,7 +4967,7 @@ package body SPARK_Util is
 
             --  Entity body is the final scope
 
-            when N_Entity_Body =>
+            when N_Entity_Body                    =>
 
                declare
                   Ent_Of_Body : constant Entity_Id :=
@@ -5008,14 +4988,14 @@ package body SPARK_Util is
 
             --  Block statements are escaped
 
-            when N_Block_Statement =>
+            when N_Block_Statement                =>
                Buffer.Append (Scop);
 
             --  Transfer from an exception handlers always exit their
             --  surrounding handled sequence of statement, handlers do not
             --  apply to themselves.
 
-            when N_Exception_Handler =>
+            when N_Exception_Handler              =>
 
                Scop := Parent (Scop);
                Buffer.Append (Scop);
@@ -5057,7 +5037,7 @@ package body SPARK_Util is
             --  Exit loop statement scopes, and stop loop exits/continues. Loop
             --  continues are stopped before exiting loop statement scopes.
 
-            when N_Loop_Statement =>
+            when N_Loop_Statement                 =>
 
                declare
                   Key      : constant Node_Id := Entity (Identifier (Scop));
@@ -5084,7 +5064,7 @@ package body SPARK_Util is
             --  Extended return statements stop inner returns, and are exited
             --  otherwise.
 
-            when N_Extended_Return_Statement =>
+            when N_Extended_Return_Statement      =>
 
                if Remaining_Return then
                   Do_Stop (Scop);
@@ -5095,7 +5075,7 @@ package body SPARK_Util is
 
             --  Nothing to do in other cases
 
-            when others =>
+            when others                           =>
                null;
          end case;
       end loop;
@@ -5119,7 +5099,7 @@ package body SPARK_Util is
          --  Goto statement. Exit all scopes until reaching the construct
          --  containing the label.
 
-         when N_Goto_Statement =>
+         when N_Goto_Statement                                        =>
             Main_Iteration
               (Source,
                Goto_Labels => Node_Sets.To_Set (Entity (Name (Source))));
@@ -5127,7 +5107,7 @@ package body SPARK_Util is
          --  Exit statement. Exit all scopes until named loop, including the
          --  loop.
 
-         when N_Exit_Statement =>
+         when N_Exit_Statement                                        =>
             Main_Iteration
               (Source,
                Exited_Loops =>
@@ -5136,7 +5116,7 @@ package body SPARK_Util is
          --  Continue statement. Exit all scopes until named loop, excluding
          --  the loop.
 
-         when N_Continue_Statement =>
+         when N_Continue_Statement                                    =>
 
             Main_Iteration
               (Source,
@@ -5152,7 +5132,7 @@ package body SPARK_Util is
          --  Exception-raising constructs. Exit all scopes until all potential
          --  exceptions have been handled.
 
-         when N_Raise_Statement =>
+         when N_Raise_Statement                                       =>
             Main_Iteration
               (Source,
                Exception_Sources =>
@@ -5161,7 +5141,7 @@ package body SPARK_Util is
          --  For ghost calls in non-ghost context, exceptions are not
          --  propagated.
 
-         when N_Subprogram_Call | N_Entry_Call_Statement =>
+         when N_Subprogram_Call | N_Entry_Call_Statement              =>
             if Is_Ghost_With_Respect_To_Context (Source) then
                return;
             else
@@ -5175,7 +5155,7 @@ package body SPARK_Util is
                     Get_Raised_Exceptions (Source, Only_Handled => False));
             end if;
 
-         when others =>
+         when others                                                  =>
             raise Program_Error;
       end case;
    end Iter_Exited_Scopes;
@@ -5441,7 +5421,7 @@ package body SPARK_Util is
             end if;
 
             case Nkind (Stmt) is
-               when N_Block_Statement =>
+               when N_Block_Statement                       =>
                   Exit_Temp := Vertex'(Kind => Completion, Node => Stmt);
                   Insert_Neighborhood (Exit_Temp, Depth + 1);
                   Add_Edge (Exit_Temp, Exit_Vertex);
@@ -5451,7 +5431,7 @@ package body SPARK_Util is
                     (Declarations (Stmt), Depth + 1, Exit_Temp);
                   Add_Edge (Start, Exit_Temp);
 
-               when N_Case_Statement =>
+               when N_Case_Statement                        =>
                   declare
                      Alternative : Opt_N_Case_Statement_Alternative_Id :=
                        First_Non_Pragma (Alternatives (Stmt));
@@ -5471,8 +5451,7 @@ package body SPARK_Util is
                   | N_Entry_Call_Statement
                   | N_Object_Declaration
                   | N_Procedure_Call_Statement
-                  | N_Raise_Statement
-               =>
+                  | N_Raise_Statement                       =>
                   declare
                      Exc_Node : Node_Id := Stmt;
                   begin
@@ -5519,7 +5498,7 @@ package body SPARK_Util is
                      Add_Edge (Start, Exit_Vertex);
                   end if;
 
-               when N_Extended_Return_Statement =>
+               when N_Extended_Return_Statement             =>
 
                   Exit_Temp := Vertex'(Kind => Completion, Node => Stmt);
                   Insert_Neighborhood (Exit_Temp, Depth + 1);
@@ -5530,10 +5509,10 @@ package body SPARK_Util is
                   Add_Edge (Start, Exit_Temp);
                   Connect_Transfer_Of_Control (Stmt);
 
-               when N_Goto_Statement =>
+               when N_Goto_Statement                        =>
                   Connect_Transfer_Of_Control (Stmt);
 
-               when N_Handled_Sequence_Of_Statements =>
+               when N_Handled_Sequence_Of_Statements        =>
 
                   Exit_Temp := Exit_Vertex;
 
@@ -5585,7 +5564,7 @@ package body SPARK_Util is
                      Add_Edge (Start, Exit_Temp);
                   end;
 
-               when N_If_Statement =>
+               when N_If_Statement                          =>
 
                   declare
                      Elsif_Iter : Node_Id := First (Elsif_Parts (Stmt));
@@ -5609,7 +5588,7 @@ package body SPARK_Util is
                      end loop;
                   end;
 
-               when N_Loop_Statement =>
+               when N_Loop_Statement                        =>
                   declare
                      Loop_Entity : constant Node_Id :=
                        Entity (Identifier (Stmt));
@@ -5649,7 +5628,7 @@ package body SPARK_Util is
                      Add_Edge (Vertex_Cond, Exit_Temp);
                   end;
 
-               when N_Simple_Return_Statement =>
+               when N_Simple_Return_Statement               =>
 
                   Connect_Transfer_Of_Control (Stmt);
 
@@ -5663,8 +5642,7 @@ package body SPARK_Util is
                   | N_Package_Declaration
                   | N_Subprogram_Body
                   | N_Subprogram_Declaration
-                  | N_Delay_Statement
-               =>
+                  | N_Delay_Statement                       =>
                   --  Statements treated as plain instructions/no-ops
 
                   Add_Edge (Start, Exit_Vertex);
@@ -5675,7 +5653,7 @@ package body SPARK_Util is
                      Goto_Targets.Insert (Entity (Identifier (Stmt)), Start);
                   end if;
 
-               when others =>
+               when others                                  =>
                   Ada.Text_IO.Put_Line
                     ("[Spark_Util.Local_CFG.Cache_Graph_Of_Body] kind ="
                      & Node_Kind'Image (Nkind (Stmt)));
@@ -5763,7 +5741,7 @@ package body SPARK_Util is
                         end;
                      end if;
 
-                  when others =>
+                  when others                           =>
                      null;
                end case;
             end Connect_Scope_Finalization;
@@ -5791,7 +5769,7 @@ package body SPARK_Util is
                return Vertex is
             begin
                case Nkind (Destination) is
-                  when N_Loop_Statement =>
+                  when N_Loop_Statement            =>
                      if Is_Continue then
                         return Vertex'(Kind => Loop_Iter, Node => Destination);
                      else
@@ -5800,23 +5778,23 @@ package body SPARK_Util is
                             (Entity (Identifier (Destination)));
                      end if;
 
-                  when N_Exception_Handler =>
+                  when N_Exception_Handler         =>
                      return Starting_Vertex (First (Statements (Destination)));
 
                   when N_Extended_Return_Statement =>
                      return Vertex'(Kind => Completion, Node => Destination);
 
-                  when N_Entity =>
+                  when N_Entity                    =>
                      case Ekind (Destination) is
                         when E_Label =>
                            return Goto_Targets.Element (Destination);
 
-                        when others =>
+                        when others  =>
                            pragma Assert (Destination = Body_Entity);
                            return Body_Exit_Vertex;
                      end case;
 
-                  when others =>
+                  when others                      =>
                      raise Program_Error;
                end case;
             end Target_Vertex;
@@ -5926,12 +5904,12 @@ package body SPARK_Util is
          Hash :=
            Hash
            + (case X.Kind is
-                when Entrance => 0,
-                when Completion => 1,
-                when Loop_Cond => 2,
-                when Loop_Iter => 3,
-                when Body_Exit => 4,
-                when Final_Entrance => 5,
+                when Entrance         => 0,
+                when Completion       => 1,
+                when Loop_Cond        => 2,
+                when Loop_Iter        => 3,
+                when Body_Exit        => 4,
+                when Final_Entrance   => 5,
                 when Final_Completion => 6);
          return Hash;
       end Vertex_Hash;
@@ -5986,11 +5964,11 @@ package body SPARK_Util is
             Combine
               (Buf,
                (case Mode is
-                  when Check_Label_Mode =>
+                  when Check_Label_Mode        =>
                     (if Comes_From_Inlined_Body (Slc)
                      then ":inlined:"
                      else ":instantiated:"),
-                  when Limit_Subp_Mode => ":",
+                  when Limit_Subp_Mode         => ":",
                   when Data_Decomposition_Mode => " ["));
             Slc := Instantiation_Location (Slc);
             Num_Instantiations := Num_Instantiations + 1;
@@ -6236,7 +6214,7 @@ package body SPARK_Util is
    begin
       for V of Stmts loop
          case Nkind (V.Node) is
-            when N_Assignment_Statement =>
+            when N_Assignment_Statement                              =>
                declare
                   Lvalue : constant Node_Id := Name (V.Node);
                   Rvalue : constant Node_Id := Expression (V.Node);
@@ -6279,7 +6257,7 @@ package body SPARK_Util is
                   return False;
                end if;
 
-            when others =>
+            when others                                              =>
                null;
          end case;
       end loop;
@@ -6306,7 +6284,7 @@ package body SPARK_Util is
             when N_Component_Association =>
                Count := Count + 1;
 
-            when others =>
+            when others                  =>
                null;
          end case;
          return OK;
@@ -6561,24 +6539,22 @@ package body SPARK_Util is
                | N_Aggregate
                | N_Allocator
                | N_Delta_Aggregate
-               | N_Extension_Aggregate
-            =>
+               | N_Extension_Aggregate       =>
                return False;
 
             when N_Explicit_Dereference
                | N_Indexed_Component
                | N_Selected_Component
-               | N_Slice
-            =>
+               | N_Slice                     =>
                return Path_Contains_Auxiliary (Prefix (Subpath));
 
-            when N_Function_Call =>
+            when N_Function_Call             =>
                return
                  Is_Traversal_Function_Call (Subpath)
                  and then Is_Path_Expression (First_Actual (Subpath))
                  and then Path_Contains_Auxiliary (First_Actual (Subpath));
 
-            when N_Attribute_Reference =>
+            when N_Attribute_Reference       =>
 
                pragma
                  Assert
@@ -6588,11 +6564,10 @@ package body SPARK_Util is
 
             when N_Qualified_Expression
                | N_Type_Conversion
-               | N_Unchecked_Type_Conversion
-            =>
+               | N_Unchecked_Type_Conversion =>
                return Path_Contains_Auxiliary (Expression (Subpath));
 
-            when others =>
+            when others                      =>
                raise Program_Error;
          end case;
       end Path_Contains_Auxiliary;
@@ -6613,7 +6588,7 @@ package body SPARK_Util is
                return Path_Contains_Auxiliary (Expr);
             end if;
 
-         when N_Op_Eq | N_Op_Ne =>
+         when N_Op_Eq | N_Op_Ne     =>
             if Test (Expr) then
                return True;
             end if;
@@ -6624,7 +6599,7 @@ package body SPARK_Util is
                return Path_Contains_Auxiliary (Left_Opnd (Expr));
             end if;
 
-         when others =>
+         when others                =>
             return Path_Contains_Auxiliary (Expr);
       end case;
    end Path_Contains_Witness;
@@ -6636,7 +6611,7 @@ package body SPARK_Util is
    function Propagates_Validity_Flag (N : Node_Id) return Boolean is
    begin
       case Nkind (N) is
-         when N_Object_Declaration =>
+         when N_Object_Declaration   =>
             return
               Present (Expression (N))
               and then (Nkind (Expression (N)) = N_Function_Call
@@ -6652,7 +6627,7 @@ package body SPARK_Util is
 
          --  N should be an actual parameter of a call
 
-         when others =>
+         when others                 =>
 
             declare
                Call   : Node_Id;
@@ -6821,23 +6796,21 @@ package body SPARK_Util is
                | N_Expression_Function
                | N_Package_Body
                | N_Package_Specification
-               | N_Generic_Subprogram_Declaration
-            =>
+               | N_Generic_Subprogram_Declaration                        =>
                exit;
 
-            when N_Loop_Statement =>
+            when N_Loop_Statement                                        =>
                declare
                   It_Scheme : constant Node_Id := Iteration_Scheme (Node_It);
                begin
                   if Present (It_Scheme) then
                      case Nkind (It_Scheme) is
                         when N_Loop_Parameter_Specification
-                           | N_Iterator_Specification
-                        =>
+                           | N_Iterator_Specification =>
                            --  for
                            Buf := "for" & Label_Append (Buf);
 
-                        when others =>
+                        when others                   =>
                            --  while
                            Buf := "while" & Label_Append (Buf);
                      end case;
@@ -6852,38 +6825,38 @@ package body SPARK_Util is
                     Get_Name_String (Chars (Identifier (Node_It))) & "_" & Buf;
                end if;
 
-            when N_Case_Statement | N_Case_Expression =>
+            when N_Case_Statement | N_Case_Expression                    =>
                Buf := "case" & Label_Append (Buf);
 
-            when N_If_Statement | N_If_Expression =>
+            when N_If_Statement | N_If_Expression                        =>
                Buf := "if" & Label_Append (Buf);
 
-            when N_Enumeration_Representation_Clause =>
+            when N_Enumeration_Representation_Clause                     =>
                Buf :=
                  Get_Name_String (Chars (Identifier (Node_It)))
                  & "_rep"
                  & Label_Append (Buf);
 
-            when N_At_Clause =>
+            when N_At_Clause                                             =>
                Buf :=
                  Get_Name_String (Chars (Identifier (Node_It)))
                  & "_at"
                  & Label_Append (Buf);
 
-            when N_Record_Representation_Clause =>
+            when N_Record_Representation_Clause                          =>
                Buf :=
                  Get_Name_String (Chars (Identifier (Node_It))) & "_" & Buf;
 
-            when N_Component_Clause =>
+            when N_Component_Clause                                      =>
                Buf :=
                  Get_Name_String (Chars (Component_Name (Node_It)))
                  & "_rep"
                  & Label_Append (Buf);
 
-            when N_Mod_Clause =>
+            when N_Mod_Clause                                            =>
                Buf := "modrep" & Label_Append (Buf);
 
-            when N_Attribute_Definition_Clause =>
+            when N_Attribute_Definition_Clause                           =>
                Buf :=
                  Get_Name_String (Chars (Name (Node_It)))
                  & "_"
@@ -6891,132 +6864,132 @@ package body SPARK_Util is
                  & "_def"
                  & Label_Append (Buf);
 
-            when N_Pragma_Argument_Association =>
+            when N_Pragma_Argument_Association                           =>
                Buf := "pragargs" & Label_Append (Buf);
 
-            when N_Op_Add =>
+            when N_Op_Add                                                =>
                Buf := "add" & Label_Append (Buf);
 
-            when N_Op_Concat =>
+            when N_Op_Concat                                             =>
                Buf := "concat" & Label_Append (Buf);
 
-            when N_Op_Expon =>
+            when N_Op_Expon                                              =>
                Buf := "exp" & Label_Append (Buf);
 
-            when N_Op_Subtract =>
+            when N_Op_Subtract                                           =>
                Buf := "sub" & Label_Append (Buf);
 
-            when N_Op_Divide =>
+            when N_Op_Divide                                             =>
                Buf := "div" & Label_Append (Buf);
 
-            when N_Op_Mod =>
+            when N_Op_Mod                                                =>
                Buf := "mod" & Label_Append (Buf);
 
-            when N_Op_Multiply =>
+            when N_Op_Multiply                                           =>
                Buf := "mult" & Label_Append (Buf);
 
-            when N_Op_Rem =>
+            when N_Op_Rem                                                =>
                Buf := "rem" & Label_Append (Buf);
 
-            when N_Op_And =>
+            when N_Op_And                                                =>
                Buf := "and" & Label_Append (Buf);
 
-            when N_Op_Compare =>
+            when N_Op_Compare                                            =>
                Buf := "cmp" & Label_Append (Buf);
 
-            when N_Op_Or =>
+            when N_Op_Or                                                 =>
                Buf := "or" & Label_Append (Buf);
 
-            when N_Op_Xor =>
+            when N_Op_Xor                                                =>
                Buf := "xor" & Label_Append (Buf);
 
-            when N_Op_Rotate_Left =>
+            when N_Op_Rotate_Left                                        =>
                Buf := "rol" & Label_Append (Buf);
 
-            when N_Op_Rotate_Right =>
+            when N_Op_Rotate_Right                                       =>
                Buf := "ror" & Label_Append (Buf);
 
-            when N_Op_Shift_Left =>
+            when N_Op_Shift_Left                                         =>
                Buf := "lsl" & Label_Append (Buf);
 
-            when N_Op_Shift_Right =>
+            when N_Op_Shift_Right                                        =>
                Buf := "lsr" & Label_Append (Buf);
 
-            when N_Op_Shift_Right_Arithmetic =>
+            when N_Op_Shift_Right_Arithmetic                             =>
                Buf := "asr" & Label_Append (Buf);
 
-            when N_Op_Abs =>
+            when N_Op_Abs                                                =>
                Buf := "abs" & Label_Append (Buf);
 
-            when N_Op_Minus =>
+            when N_Op_Minus                                              =>
                Buf := "minus" & Label_Append (Buf);
 
-            when N_Op_Not =>
+            when N_Op_Not                                                =>
                Buf := "not" & Label_Append (Buf);
 
-            when N_Op_Plus =>
+            when N_Op_Plus                                               =>
                Buf := "plus" & Label_Append (Buf);
 
-            when N_Attribute_Reference =>
+            when N_Attribute_Reference                                   =>
                Buf :=
                  Get_Name_String (Attribute_Name (Node_It))
                  & "_ref"
                  & Label_Append (Buf);
 
-            when N_Membership_Test =>
+            when N_Membership_Test                                       =>
                Buf := "in" & Label_Append (Buf);
 
-            when N_And_Then =>
+            when N_And_Then                                              =>
                Buf := "andthen" & Label_Append (Buf);
 
-            when N_Or_Else =>
+            when N_Or_Else                                               =>
                Buf := "orelse" & Label_Append (Buf);
 
-            when N_Subprogram_Call =>
+            when N_Subprogram_Call                                       =>
                Buf :=
                  "call_"
                  & Get_Name_String (Chars (Get_Called_Entity (Node_It)))
                  & Label_Append (Buf);
 
-            when N_Indexed_Component =>
+            when N_Indexed_Component                                     =>
                Buf := "ixdcomp" & Label_Append (Buf);
 
-            when N_Null =>
+            when N_Null                                                  =>
                Buf := "null" & Label_Append (Buf);
 
-            when N_Qualified_Expression =>
+            when N_Qualified_Expression                                  =>
                Buf :=
                  Get_Name_String (Chars (Subtype_Mark (Node_It)))
                  & "_qual"
                  & Label_Append (Buf);
 
-            when N_Quantified_Expression =>
+            when N_Quantified_Expression                                 =>
                Buf :=
                  (if All_Present (Node_It) then "forall" else "forsome")
                  & Label_Append (Buf);
 
-            when N_Aggregate =>
+            when N_Aggregate                                             =>
                Buf := "aggr" & Label_Append (Buf);
 
-            when N_Allocator =>
+            when N_Allocator                                             =>
                Buf := "new_" & Buf;
 
-            when N_Raise_Expression =>
+            when N_Raise_Expression                                      =>
                Buf := "raise" & Label_Append (Buf);
 
-            when N_Range =>
+            when N_Range                                                 =>
                Buf := "range" & Label_Append (Buf);
 
-            when N_Selected_Component =>
+            when N_Selected_Component                                    =>
                Buf := "selectcomp" & Label_Append (Buf);
 
-            when N_Slice =>
+            when N_Slice                                                 =>
                Buf := "slice" & Label_Append (Buf);
 
-            when N_Type_Conversion | N_Unchecked_Type_Conversion =>
+            when N_Type_Conversion | N_Unchecked_Type_Conversion         =>
                Buf := "typeconv" & Label_Append (Buf);
 
-            when N_Subtype_Indication =>
+            when N_Subtype_Indication                                    =>
                Buf :=
                  Get_Name_String (Chars (Subtype_Mark (Node_It)))
                  & "_ind"
@@ -7025,8 +6998,7 @@ package body SPARK_Util is
             when N_Formal_Type_Declaration
                | N_Implicit_Label_Declaration
                | N_Object_Declaration
-               | N_Formal_Object_Declaration
-            =>
+               | N_Formal_Object_Declaration                             =>
                declare
                   I_Name   : constant Name_Id :=
                     Chars (Defining_Identifier (Node_It));
@@ -7042,35 +7014,34 @@ package body SPARK_Util is
                | N_Incomplete_Type_Declaration
                | N_Protected_Type_Declaration
                | N_Private_Type_Declaration
-               | N_Subtype_Declaration
-            =>
+               | N_Subtype_Declaration                                   =>
                Buf :=
                  Get_Name_String (Chars (Defining_Identifier (Node_It)))
                  & "_def"
                  & Label_Append (Buf);
 
-            when N_Private_Extension_Declaration =>
+            when N_Private_Extension_Declaration                         =>
                Buf :=
                  Get_Name_String (Chars (Defining_Identifier (Node_It)))
                  & "_priv"
                  & Label_Append (Buf);
 
-            when N_Body_Stub =>
+            when N_Body_Stub                                             =>
                Buf :=
                  Get_Name_String (Chars (Defining_Identifier (Node_It)))
                  & "_stub"
                  & Label_Append (Buf);
 
-            when N_Generic_Instantiation =>
+            when N_Generic_Instantiation                                 =>
                Buf :=
                  Get_Name_String (Chars (Defining_Identifier (Node_It)))
                  & "_inst"
                  & Label_Append (Buf);
 
-            when N_Array_Type_Definition =>
+            when N_Array_Type_Definition                                 =>
                Buf := "arrayof_" & Buf;
 
-            when N_Assignment_Statement =>
+            when N_Assignment_Statement                                  =>
                declare
                   Obj      : constant Entity_Id :=
                     Get_Enclosing_Object (Name (Node_It));
@@ -7089,7 +7060,7 @@ package body SPARK_Util is
                   end if;
                end;
 
-            when N_Block_Statement =>
+            when N_Block_Statement                                       =>
                declare
                   Tmp : constant String :=
                     (if Present (Identifier (Node_It))
@@ -7099,13 +7070,13 @@ package body SPARK_Util is
                   Buf := Tmp & "declblk" & Label_Append (Buf);
                end;
 
-            when N_Goto_Statement =>
+            when N_Goto_Statement                                        =>
                Buf :=
                  "goto_"
                  & Get_Name_String (Chars (Name (Node_It)))
                  & Label_Append (Buf);
 
-            when N_Raise_Statement =>
+            when N_Raise_Statement                                       =>
                Buf :=
                  "raise"
                  & (if Present (Name (Node_It))
@@ -7116,7 +7087,7 @@ package body SPARK_Util is
             when N_Simple_Return_Statement | N_Extended_Return_Statement =>
                Buf := "return" & Label_Append (Buf);
 
-            when N_Exit_Statement =>
+            when N_Exit_Statement                                        =>
                Buf :=
                  "exit"
                  & (if Present (Name (Node_It))
@@ -7124,7 +7095,7 @@ package body SPARK_Util is
                     else "")
                  & Label_Append (Buf);
 
-            when others =>
+            when others                                                  =>
                null;
 
          end case;
@@ -7713,7 +7684,7 @@ package body SPARK_Util is
             --  The allocating expression appears on the rhs of a library level
             --  constant declaration.
 
-            when N_Object_Declaration =>
+            when N_Object_Declaration                  =>
                declare
                   Obj : constant Entity_Id := Defining_Identifier (Context);
                begin
@@ -7728,14 +7699,13 @@ package body SPARK_Util is
 
             when N_Qualified_Expression
                | N_Type_Conversion
-               | N_Unchecked_Type_Conversion
-            =>
+               | N_Unchecked_Type_Conversion           =>
                null;
 
             --  The allocating expression occurs as the expression in another
             --  initialized allocator.
 
-            when N_Allocator =>
+            when N_Allocator                           =>
                Nested := True;
 
             --  The allocating expression corresponds to a component value in
@@ -7744,7 +7714,7 @@ package body SPARK_Util is
             when N_Aggregate | N_Component_Association =>
                Nested := True;
 
-            when others =>
+            when others                                =>
                return False;
          end case;
 
@@ -7787,7 +7757,7 @@ package body SPARK_Util is
       begin
          while Present (N) loop
             case Nkind (N) is
-               when N_Object_Declaration =>
+               when N_Object_Declaration  =>
                   declare
                      Obj : constant Entity_Id := Defining_Entity (N);
 
@@ -7843,7 +7813,7 @@ package body SPARK_Util is
                      end if;
                   end;
 
-               when others =>
+               when others                =>
                   null;
             end case;
 
