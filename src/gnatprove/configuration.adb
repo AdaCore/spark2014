@@ -853,6 +853,11 @@ package body Configuration is
             Long_Switch => "--debug-prover-errors");
          Define_Switch
            (Config,
+            CL_Switches.Debug_Subp_Multi'Access,
+            Long_Switch => "--debug-subprogram-multiprocessing=",
+            Initial     => 0);
+         Define_Switch
+           (Config,
             CL_Switches.Exclude_Line'Access,
             Long_Switch => "--exclude-line=");
          Define_Switch
