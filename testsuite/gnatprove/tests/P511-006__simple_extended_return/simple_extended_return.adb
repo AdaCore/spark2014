@@ -7,7 +7,7 @@ is
    is
    begin
       if True then
-	 return X : Integer := 1;
+         return X : Integer := 1;
       end if;
       return Y : Integer := 3;
    end Simple_Extended_R1;
@@ -17,11 +17,11 @@ is
    is
    begin
       if X > 0 then
-	 return A : Boolean := True;
+         return A : Boolean := True;
       else
-	 return B : Boolean do
-	   B := True;
-	 end return;
+         return B : Boolean do
+            B := True;
+         end return;
       end if;
    end Simple_Extended_R2;
 

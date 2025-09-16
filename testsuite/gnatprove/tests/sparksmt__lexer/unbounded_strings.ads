@@ -63,7 +63,7 @@ private
    use Char_Vectors;
 
    type Unbounded_String is record
-   	Vec : Vector;
+      Vec : Vector;
    end record;
 
 end Unbounded_Strings;

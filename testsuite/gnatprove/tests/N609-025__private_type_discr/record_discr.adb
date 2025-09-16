@@ -21,7 +21,7 @@ package body Record_Discr with SPARK_Mode is
       function Bad (R : Result_Ty) return Res_False;
       function Bad (R : Result_Ty) return Res_False is
       begin
-	 return Res_False (R); -- @DISCRIMINANT_CHECK:FAIL
+         return Res_False (R); -- @DISCRIMINANT_CHECK:FAIL
       end Bad;
 
       Result : constant Result_Ty :=
