@@ -4430,6 +4430,7 @@ package body Flow.Analysis is
 
    procedure Check_Ghost_Subprogram_Outputs (FA : in out Flow_Analysis_Graphs)
    is
+      Subp    : constant Flow_Id := Direct_Mapping_Id (FA.Spec_Entity);
       Globals : Global_Flow_Ids;
    begin
       if (Ekind (FA.Spec_Entity) = E_Procedure
@@ -4443,6 +4444,12 @@ package body Flow.Analysis is
             Globals    => Globals);
 
          for Output of Globals.Outputs loop
+
+            --  We need to prevent three kinds of data dependencies:
+            --  1. ghost flowing into ordinary (non-ghost) data
+            --  2. ignored ghost flowing into checked ghost data
+            --  3. flow that violate assertion-level-dependencies
+
             if not Is_Ghost_Entity (Output) then
                Error_Msg_Flow
                  (FA       => FA,
@@ -4450,11 +4457,40 @@ package body Flow.Analysis is
                     "ghost subprogram & cannot have "
                     & "non-ghost global output &",
                   N        => FA.Spec_Entity,
-                  F1       => Direct_Mapping_Id (FA.Spec_Entity),
+                  F1       => Subp,
                   F2       => Output,
                   Severity => Medium_Check_Kind,
                   Tag      => Ghost_Wrong,
                   SRM_Ref  => "6.9(24)");
+
+            elsif Is_Ignored_Ghost_Entity (FA.Spec_Entity)
+              and then Is_Checked_Ghost_Entity (Output)
+            then
+               Error_Msg_Flow
+                 (FA       => FA,
+                  Msg      =>
+                    "ignored ghost subprogram & cannot have "
+                    & "checked global output &",
+                  N        => FA.Spec_Entity,
+                  F1       => Subp,
+                  F2       => Output,
+                  Severity => Medium_Check_Kind,
+                  Tag      => Ghost_Wrong,
+                  SRM_Ref  => "6.9(24)");
+
+            elsif not Is_Assertion_Level_Dependent (Output, Subp) then
+               Error_Msg_Flow
+                 (FA       => FA,
+                  Msg      =>
+                    "global output & should be assertion-level-dependent "
+                    & "on subprogram &",
+                  N        => FA.Spec_Entity,
+                  F1       => Output,
+                  F2       => Subp,
+                  Severity => Medium_Check_Kind,
+                  Tag      => Ghost_Wrong,
+                  SRM_Ref  => "6.9(24)");
+
             end if;
          end loop;
       end if;
