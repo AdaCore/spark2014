@@ -26,6 +26,7 @@ with Ada.Containers.Hashed_Maps;
 
 with Aspects;        use Aspects;
 with Errout_Wrapper; use Errout_Wrapper;
+with Ghost;          use Ghost;
 with Namet;          use Namet;
 with Nlists;         use Nlists;
 with Output;         use Output;
@@ -5897,6 +5898,41 @@ package body Flow_Utility is
       return False;
    end Is_Ancestor;
 
+   ----------------------------------
+   -- Is_Assertion_Level_Dependent --
+   ----------------------------------
+
+   function Is_Assertion_Level_Dependent
+     (Self : Flow_Id; Other : Flow_Id) return Boolean is
+   begin
+      pragma Assert (Self.Kind in Direct_Mapping | Magic_String);
+      pragma Assert (Other.Kind in Direct_Mapping | Magic_String);
+
+      --  Call the apropriate routine depening on the kind of inputs
+
+      if Self.Kind = Direct_Mapping and then Other.Kind = Direct_Mapping then
+         return
+           Is_Assertion_Level_Dependent
+             (Ghost_Assertion_Level (Get_Direct_Mapping_Id (Self)),
+              Ghost_Assertion_Level (Get_Direct_Mapping_Id (Other)));
+      elsif Self.Kind = Direct_Mapping and then Other.Kind = Magic_String then
+         return
+           GG_Is_Assertion_Level_Dependent
+             (Ghost_Assertion_Level (Get_Direct_Mapping_Id (Self)),
+              GG_Ghost_Assertion_Level (Other.Name));
+      elsif Self.Kind = Magic_String and then Other.Kind = Direct_Mapping then
+         return
+           GG_Is_Assertion_Level_Dependent
+             (GG_Ghost_Assertion_Level (Self.Name),
+              Ghost_Assertion_Level (Get_Direct_Mapping_Id (Other)));
+      else
+         return
+           GG_Is_Assertion_Level_Dependent
+             (GG_Ghost_Assertion_Level (Self.Name),
+              GG_Ghost_Assertion_Level (Other.Name));
+      end if;
+   end Is_Assertion_Level_Dependent;
+
    ---------------------
    -- Is_Ghost_Entity --
    ---------------------
@@ -5932,6 +5968,24 @@ package body Flow_Utility is
             return False;
       end case;
    end Is_Checked_Ghost_Entity;
+
+   -----------------------------
+   -- Is_Ignored_Ghost_Entity --
+   -----------------------------
+
+   function Is_Ignored_Ghost_Entity (F : Flow_Id) return Boolean is
+   begin
+      case F.Kind is
+         when Direct_Mapping | Record_Field =>
+            return Is_Ignored_Ghost_Entity (Get_Direct_Mapping_Id (F));
+
+         when Magic_String                  =>
+            return GG_Is_Ignored_Ghost_Entity (F.Name);
+
+         when others                        =>
+            return False;
+      end case;
+   end Is_Ignored_Ghost_Entity;
 
    -----------------------------------
    -- Is_Constant_After_Elaboration --
