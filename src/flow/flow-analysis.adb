@@ -2064,6 +2064,7 @@ package body Flow.Analysis is
               and then Instantiation_Location (Sloc (Atr.Error_Location))
                        = No_Location
               and then not Atr.Warnings_Off
+              and then not Atr.Is_Path_Copy
             then
                Error_Msg_Flow
                  (FA       => FA,
@@ -5545,7 +5546,9 @@ package body Flow.Analysis is
             Key : Flow_Id renames FA.CFG.Get_Key (V);
 
          begin
-            if Atr.Is_Callsite then
+            if Atr.Is_Path_Copy then
+               null;
+            elsif Atr.Is_Callsite then
                Antialiasing.Check_Procedure_Call
                  (FA => FA, N => Get_Direct_Mapping_Id (Key));
             elsif Is_Inlined_Subprogram_Call (Key) then

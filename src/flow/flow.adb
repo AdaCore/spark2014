@@ -518,8 +518,6 @@ package body Flow is
       Format_Item
         ("Is_Global_Parameter", Boolean'Image (A.Is_Global_Parameter));
       Format_Item ("Is_Neverending", Boolean'Image (A.Is_Neverending));
-      Format_Item
-        ("Is_Declaration_Node", Boolean'Image (A.Is_Declaration_Node));
       Format_Item ("Execution", Execution_Kind_T'Image (A.Execution));
       Format_Item ("Perform_IPFA", Boolean'Image (A.Perform_IPFA));
 
@@ -535,6 +533,9 @@ package body Flow is
 
       Write_Str ("Variables_Used: ");
       Print_Node_Set (A.Variables_Used);
+
+      Write_Str ("Declares: ");
+      Print_Node_Set (A.Object_Declarations);
 
       Write_Str ("Subprograms_Called: ");
       Print_Node_Set (To_Subprograms (A.Subprogram_Calls));
@@ -698,6 +699,10 @@ package body Flow is
                when others        =>
                   raise Program_Error;
             end case;
+
+         elsif A.Pretty_Print_Kind = Pretty_Print_Declaration then
+            Write_Str ("object declaration");
+            Print_Node (A.Error_Location);
 
          elsif A.Pretty_Print_Kind = Pretty_Print_Folded_Function_Check then
             Write_Str ("ff check for: ");
@@ -1091,6 +1096,23 @@ package body Flow is
                      Write_Str (", ");
                   end if;
                   Sprint_Flow_Id (F);
+               end loop;
+            end;
+            Write_Str ("}");
+         end if;
+
+         if not A.Object_Declarations.Is_Empty then
+            Write_Str ("\ndeclares: {");
+            declare
+               First : Boolean := True;
+            begin
+               for Object of A.Object_Declarations loop
+                  if First then
+                     First := False;
+                  else
+                     Write_Str (", ");
+                  end if;
+                  Sprint_Flow_Id (Direct_Mapping_Id (Object));
                end loop;
             end;
             Write_Str ("}");
