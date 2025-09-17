@@ -1,9 +1,3 @@
-p.adb:5:36: info: postcondition proved (CVC5: 1 VC)
-p.adb:12:14: medium: ignored ghost subprogram "P2" cannot have checked global output "X" (SPARK RM 6.9(24))
-p.adb:12:14: medium: ignored ghost subprogram "P2" cannot have checked global output "q.hidden" (SPARK RM 6.9(24))
-p.adb:12:37: info: postcondition proved (CVC5: 1 VC)
-p.adb:15:07: medium: call to ignored ghost subprogram "P" with checked ghost global output "X"
-p.adb:15:07: medium: call to ignored ghost subprogram "P" with checked ghost global output "q.hidden"
-p.adb:18:04: medium: call to ignored ghost subprogram "P2" with checked ghost global output "X"
-p.adb:18:04: medium: call to ignored ghost subprogram "P2" with checked ghost global output "q.hidden"
-p.adb:23:22: info: assertion proved (CVC5: 1 VC)
+p.adb:17:07: info: precondition proved (Trivial: 1 VC)
+p.adb:17:07: medium: call to ignored ghost subprogram "Set_Visible_Checked_Ghost_Object" with checked ghost global output "Visible_Checked"
+p.adb:18:08: medium: call to ignored ghost subprogram "Set_Hidden_Checked_Ghost_Object" with checked ghost global output "q.hidden_checked"
