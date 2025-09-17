@@ -91,6 +91,7 @@ finally_range.adb:57:25: info: when an exception is raised at finally_range.adb:
 finally_range.adb:57:25: info: when an exception is raised at finally_range.adb:266
 finally_range.adb:57:25: info: when an exception is raised at finally_range.adb:72
 finally_range.adb:57:25: info: when an exception is raised at finally_range.adb:81
+finally_range.adb:57:25: medium: overflow check might fail, cannot prove lower bound for Depth - 1, in call inlined at finally_range.adb:290 [reason for check: result of subtraction must fit in a 32-bits machine integer]
 finally_range.adb:59:17: info: add a contract to analyze it separately from calling contexts
 finally_range.adb:59:17: info: local subprogram "Register" only analyzed in the context of calls [info-unrolling-inlining]
 finally_range.adb:65:30: warning: unused assignment, in call inlined at finally_range.adb:281
@@ -111,7 +112,6 @@ finally_range.adb:98:10: info: analyzing call to "Final_Section" in context
 finally_range.adb:100:07: info: analyzing call to "Register" in context
 finally_range.adb:104:13: info: analyzing call to "Enter" in context
 finally_range.adb:107:19: info: analyzing call to "Enter" in context
-finally_range.adb:108:30: warning: unused variable "I"
 finally_range.adb:108:48: warning: this statement is never reached
 finally_range.adb:110:25: info: analyzing call to "Enter" in context
 finally_range.adb:131:24: info: analyzing call to "Final_Section" in context
@@ -158,6 +158,7 @@ finally_range.adb:291:07: info: analyzing call to "Register" in context
 finally_range.adb:292:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 finally_range.adb:292:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
 finally_range.adb:292:22: info: when an exception is raised at finally_range.adb:72
+finally_range.adb:292:43: medium: assertion might fail, cannot prove High_Assigned
 finally_range.adb:293:22: info: assertion proved (CVC5: 1 VC)
 finally_range.adb:293:22: info: when an exception is raised at finally_range.adb:72
 finally_range.adb:297:23: info: only expected exception raised (CVC5: 1 VC)
