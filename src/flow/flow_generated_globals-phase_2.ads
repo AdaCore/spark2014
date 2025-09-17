@@ -40,14 +40,9 @@ package Flow_Generated_Globals.Phase_2 is
    --------------------------------
 
    type Locking_Trace is record
-      Obj : Entity_Name;
-      --  The locked object - a protected object or, more generally, a
-      --  composite object with at least one component having a protected type.
-      --  Note that in the latter case Obj itself does not have a protected
-      --  type, but some of its leaf components do. And as a consequence the
-      --  protected operations associated with Obj could belong to several
-      --  different protected types.
-
+      Obj   : Entity_Name;
+      --  The locked object. Either a standalone protected object or a
+      --  protected part of a composite object.
       Trace : Name_Lists.List;
       --  List of suprograms or packages. In its most general form the trace
       --  corresponds to the following regex: (PKG ->)* (SUBP ->)* (POP) where
@@ -499,13 +494,9 @@ package Flow_Generated_Globals.Phase_2 is
        and then Analysis_Requested (E, With_Inlined => True);
    --  @param E An entity name that refers to a task, main-like subprogram or
    --    protected operation.
-   --  @return A list of locking traces. Each trace references an object Obj
-   --    that is either a protected object or a composite object with at least
-   --    one component having a protected type and that is "directly" reachable
-   --    from E over a call chain in the sense that no intermediate protected
-   --    operation is visited in between. Note that in case Obj is a composite
-   --    object there will be multiple traces returned if multiple components
-   --    with a *different* protected type are reachable.
+   --  @return A list of locking traces. Each trace references a protected
+   --    object that is "directly" reachable from E over a call chain in the
+   --    sense that no intermediate protected operation is visited in between.
 
    function Protected_Object_Priority
      (Obj : Entity_Name) return Priority_Value;

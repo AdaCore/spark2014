@@ -1806,7 +1806,7 @@ package body Flow_Generated_Globals.Phase_2 is
                           "Conflicting priority values registered");
                   end;
 
-               when EK_Locking_Call           =>
+               when EK_Locking_Call            =>
                   declare
                      Caller              : Entity_Name;
                      Protected_Object    : Entity_Name;
@@ -3262,7 +3262,7 @@ package body Flow_Generated_Globals.Phase_2 is
             Callee : constant Entity_Name := Call_Graph.Get_Key (Obj);
          begin
             --  Protected operations should not be part of this graph;
-            --  they need to be explicitcly picked from the subprogram.
+            --  they need to be explicitly picked from the subprogram.
             pragma Assert (not Is_Protected_Operation (Callee));
             Collect_Objects_From_Subprogram (Callee);
          end;
