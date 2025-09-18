@@ -50,5 +50,5 @@ po_t7.ads:14:21: high: variable "Not_CAE" cannot be referenced in precondition o
 use_po_t8.adb:3:11: high: more tasks than allowed might queue on protected entry "po_t8.p_int.increase" (restriction No_Entry_Queue active) (SPARK RM 9(11))
 use_po_t8.adb:3:11: high: task "po_t8.t" is queueing
 use_po_t8.adb:3:11: high: task "use_po_t8" is queueing
-use_po_t8.adb:3:11: info: ceiling priority protocol is respected (CVC5: 1 VC)
+use_po_t8.adb:3:11: info: ceiling priority protocol is respected for "Po_T8.P_Int" (CVC5: 1 VC)
 use_po_t8.adb:22:21: info: unrolling loop [info-unrolling-inlining]

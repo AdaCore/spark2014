@@ -138,7 +138,8 @@ decadriver.ads:323:16: info: implicit aspect Always_Terminates on "Get_Part_ID" 
 decadriver.ads:324:16: info: implicit aspect Always_Terminates on "Get_Lot_ID" has been proved, subprogram will terminate
 decadriver.ads:326:16: info: implicit aspect Always_Terminates on "PHR_Mode" has been proved, subprogram will terminate
 decadriver.ads:327:14: info: flow dependencies proved
-decadriver.ads:331:17: info: ceiling priority protocol is respected (CVC5: 1 VC)
+decadriver.ads:331:17: info: ceiling priority protocol is respected for "Decadriver.Receiver" (CVC5: 1 VC)
+decadriver.ads:331:17: info: ceiling priority protocol is respected for "Decadriver.Transmitter" (CVC5: 1 VC)
 decadriver.ads:332:49: medium: this interrupt might be reserved
 decadriver.ads:333:09: info: data dependencies proved
 decadriver.ads:342:49: medium: incorrect dependency "Transmitter => Driver_Type"

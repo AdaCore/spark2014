@@ -3,6 +3,6 @@ p.adb:6:13: warning: assuming "Release" always terminates
 p.adb:6:13: warning: assuming "Release" has no effect on global items
 p.adb:6:13: warning: no Always_Terminates aspect available for "Release" [assumed-always-terminates]
 p.adb:6:13: warning: no Global contract available for "Release" [assumed-global-null]
-p.ads:6:17: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "P.Sem" must be >= the priority of the caller "P.Sync.Proc" in the call "P.Sync.Proc" -> "Gnat.Semaphores.Binary_Semaphore.Release"]
+p.ads:6:17: medium: ceiling priority protocol might not be respected for "P.Sem" [reason for check: ceiling priority of the protected object "P.Sem" must be >= the priority of the caller "P.Sync.Proc" in the call "P.Sync.Proc" -> "Gnat.Semaphores.Binary_Semaphore.Release"]
 p.ads:10:30: info: range check proved (CVC5: 1 VC)
 p.ads:11:33: info: range check proved (CVC5: 2 VC)

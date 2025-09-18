@@ -416,6 +416,7 @@ package Gnat2Why.Util is
      (Range_Check_Ty : Opt_Type_Kind_Id := Empty;
       Divisor        : Node_Or_Entity_Id := Empty;
       User_Message   : String_Id := No_String;
+      Subject        : String := "";
       Details        : String := "") return Check_Info_Type;
    --  Construct a check info with the supplied information for the fix
    --  message and the current continuation stack.

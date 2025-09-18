@@ -1,5 +1,5 @@
 === test_01.adb ===
-test_01.adb:9:09: info: ceiling priority protocol is respected (CVC5: 1 VC)
+test_01.adb:9:09: info: ceiling priority protocol is respected for "Test_01.Database" (CVC5: 1 VC)
 test_01.adb:9:09: info: initialization of "Updater" constituent of "State" proved
 test_01.adb:9:09: info: nontermination of task proved (CVC5: 1 VC)
 test_01.adb:13:16: info: implicit aspect Always_Terminates on "Get_Cache" has been proved, subprogram will terminate
@@ -13,7 +13,7 @@ test_01.ads:5:04: info: flow dependencies proved
 test_01.ads:8:13: info: implicit aspect Always_Terminates on "Get_Reading" has been proved, subprogram will terminate
 test_01.ads:10:09: info: data dependencies proved
 === test_02.adb ===
-test_02.adb:9:09: info: ceiling priority protocol is respected (CVC5: 1 VC)
+test_02.adb:9:09: info: ceiling priority protocol is respected for "Test_02.Database" (CVC5: 1 VC)
 test_02.adb:9:09: info: initialization of "Updater" constituent of "State" proved
 test_02.adb:9:09: info: nontermination of task proved (CVC5: 1 VC)
 test_02.adb:13:16: info: implicit aspect Always_Terminates on "Get_Cache" has been proved, subprogram will terminate

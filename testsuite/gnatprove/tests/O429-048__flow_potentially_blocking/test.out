@@ -12,8 +12,10 @@ blocking_contract.adb:13:31: error: violation of pragma SPARK_Mode at test.adc:1
 blocking_contract.adb:13:31: info: no contextual analysis of "Blocking" (in assertion expression)
 blocking_contract.adb:27:10: error: "Proc" is not allowed in SPARK (due to function with global outputs)
 blocking_contract.adb:27:10: error: violation of pragma SPARK_Mode at test.adc:1
-external.adb:3:11: info: ceiling priority protocol is respected (CVC5: 1 VC)
-external_separate_calls.ads:4:13: info: ceiling priority protocol is respected (CVC5: 1 VC)
+external.adb:3:11: info: ceiling priority protocol is respected for "Pack.Po_Func" (CVC5: 1 VC)
+external.adb:3:11: info: ceiling priority protocol is respected for "Pack.Po_Proc" (CVC5: 1 VC)
+external.adb:3:11: info: ceiling priority protocol is respected for "Pack.Po_Safe" (CVC5: 1 VC)
+external_separate_calls.ads:4:13: info: ceiling priority protocol is respected for "External_Separate_Calls.Po2" (CVC5: 1 VC)
 floatio.adb:7:21: medium: unexpected exception might be raised
 internal_protected_call.adb:7:33: high: call to potentially blocking subprogram "P" in protected operation "E"
 internal_protected_call.adb:8:10: high: call to potentially blocking subprogram "P" in protected operation "E"
@@ -87,12 +89,13 @@ p.ads:17:13: info: implicit aspect Always_Terminates on "Nonblocking_Func" has b
 p.ads:64:14: medium: the task might terminate, which is not allowed in SPARK
 p.ads:67:14: medium: the task might terminate, which is not allowed in SPARK
 p.ads:115:16: info: implicit aspect Always_Terminates on "Func_Call_To_Library_Level_Function" has been proved, subprogram will terminate
-pack.ads:5:13: info: ceiling priority protocol is respected (CVC5: 1 VC)
+pack.ads:5:13: info: ceiling priority protocol is respected for "Pack.Po_Proc" (CVC5: 1 VC)
 pack.ads:9:16: info: implicit aspect Always_Terminates on "Func" has been proved, subprogram will terminate
-pack.ads:10:13: info: ceiling priority protocol is respected (CVC5: 1 VC)
+pack.ads:10:13: info: ceiling priority protocol is respected for "Pack.Po_Func" (CVC5: 1 VC)
 pack.ads:14:14: warning: subprogram "External_Call_To_Protected_Func" has no effect
 pack.ads:17:16: info: implicit aspect Always_Terminates on "Func" has been proved, subprogram will terminate
-pack.ads:19:13: info: ceiling priority protocol is respected (CVC5: 1 VC)
+pack.ads:19:13: info: ceiling priority protocol is respected for "Pack.Po_Func" (CVC5: 1 VC)
+pack.ads:19:13: info: ceiling priority protocol is respected for "Pack.Po_Proc" (CVC5: 1 VC)
 remote.ads:3:04: warning: pragma "Remote_Call_Interface" ignored (not yet supported) [ignored-pragma]
 remote.ads:4:04: warning: pragma "All_Calls_Remote" ignored (not yet supported) [ignored-pragma]
 remote.ads:7:14: warning: subprogram "Remote_Call" has no effect

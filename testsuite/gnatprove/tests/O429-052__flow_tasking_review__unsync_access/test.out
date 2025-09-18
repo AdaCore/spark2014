@@ -4,7 +4,7 @@ bar.adb:16:04: high: task "bar.task_1" accesses "bar.g"
 bar.adb:16:04: high: task "bar.task_2" accesses "bar.g"
 bar.adb:16:17: info: range check proved (CVC5: 1 VC)
 bar.adb:17:17: info: range check proved (CVC5: 1 VC)
-foo.adb:4:09: info: ceiling priority protocol is respected (CVC5: 1 VC)
+foo.adb:4:09: info: ceiling priority protocol is respected for "Foo.P1" (CVC5: 1 VC)
 foo.adb:4:09: info: nontermination of task proved (CVC5: 1 VC)
-foo.adb:6:09: info: ceiling priority protocol is respected (CVC5: 1 VC)
+foo.adb:6:09: info: ceiling priority protocol is respected for "Foo.P1" (CVC5: 1 VC)
 foo.adb:6:09: info: nontermination of task proved (CVC5: 1 VC)

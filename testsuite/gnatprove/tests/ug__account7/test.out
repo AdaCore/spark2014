@@ -17,13 +17,13 @@
  info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 --> account7.ads:6:16
 
- info: ceiling priority protocol is respected
+ info: ceiling priority protocol is respected for "Account7.Num_Accounts"
 --> account7.ads:18:13
 
- info: ceiling priority protocol is respected
+ info: ceiling priority protocol is respected for "Account7.Num_Accounts"
 --> account7.ads:19:17
 
- info: ceiling priority protocol is respected
+ info: ceiling priority protocol is respected for "Account7.Num_Accounts"
 --> account7.ads:23:14
 
  info: nontermination of task proved
