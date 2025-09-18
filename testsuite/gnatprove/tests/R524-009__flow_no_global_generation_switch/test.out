@@ -1,2 +1,3 @@
+p.adb:4:04: warning: Refined_Global contract expected for "Initialize"
 p.ads:2:14: info: initialization of "A" constituent of "State" proved
 p.ads:3:11: info: data dependencies proved

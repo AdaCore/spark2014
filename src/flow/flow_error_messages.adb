@@ -28,7 +28,6 @@ with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Ada.Text_IO;               use Ada.Text_IO;
 with Aspects;                   use Aspects;
-with Atree;                     use Atree;
 with CE_Display;                use CE_Display;
 with Checked_Types;             use Checked_Types;
 with Common_Containers;         use Common_Containers;

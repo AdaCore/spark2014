@@ -218,6 +218,8 @@ package Flow.Analysis is
    --  Check if the global contracts directly reference any constant without
    --  variable inputs. This enforces SPARK RM 6.1.4(16).
 
+   procedure Check_Required_Contracts (E : Entity_Id);
+
 private
 
    type Var_Use_Kind is (Use_Read, Use_Write, Use_Any);

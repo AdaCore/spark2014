@@ -1795,9 +1795,7 @@ package body Flow.Analysis.Sanity is
                   --  and "Subprogram_Name @ Vertex_Id : Flow_Id (for the
                   --  developers).
 
-                  if Gnat2Why_Args.Flow_Generate_Contracts
-                    and then FA.Is_Generative
-                  then
+                  if FA.Is_Generative then
                      Current_Error_Node := A.Error_Location;
 
                      --  If the unknown variable is declared within the

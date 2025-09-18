@@ -3,7 +3,6 @@ p.adb:7:09: info: data dependencies proved
 p.adb:13:04: info: initialization of "Set" constituent of "S" proved
 p.adb:13:32: info: range check proved (CVC5: 2 VC)
 p.adb:18:11: medium: precondition might fail [possible fix: subprogram at p.ads:5 should mention X and Set in a precondition]
-p.ads:1:34: warning: no subprogram exists that can initialize abstract state "P.S"
 p.ads:5:34: info: data dependencies proved
 spark-containers-formal-ordered_sets.ads:80:06: medium: Container_Aggregates annotation might be incorrect, in instantiation at p.adb:9
 spark-containers-formal-ordered_sets.ads:80:06: medium: after a call to Insert at spark-containers-formal-ordered_sets.ads:752, in instantiation at p.adb:9

@@ -1979,18 +1979,13 @@ package body Flow_Generated_Globals.Partial is
 
          begin
             --  Load frontend cross-references (for subprograms with SPARK_Mode
-            --  => Off), except for the "no Global means Global => null" mode;
-            --  they will be picked in Do_Preanalysis below.
+            --  => Off); they will be picked in Do_Preanalysis below.
 
-            if Gnat2Why_Args.Flow_Generate_Contracts then
-               Load_SPARK_Xrefs;
-            end if;
+            Load_SPARK_Xrefs;
 
             Do_Preanalysis (Contracts);
 
-            if Gnat2Why_Args.Flow_Generate_Contracts then
-               Do_Global (Root_Entity, Contracts);
-            end if;
+            Do_Global (Root_Entity, Contracts);
 
             Resolve_Constants (Contracts, Constant_Graph);
 

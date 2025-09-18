@@ -71,13 +71,16 @@ objectives to achieve.
 Generation of Dependency Contracts
 ----------------------------------
 
-By default, |GNATprove| does not require the user to write data dependencies
-(introduced with aspect ``Global``) and flow dependencies (introduced
-with aspect ``Depends``), as it can automatically generate them from the
-program.
+By default, |GNATprove| does not require the user to explicitly specify data
+and flow dependencies (introduced with aspects ``Global`` and ``Depends``,
+respectively). It generates these dependencies automatically from the code.
 
-This behavior can be disabled using the ``--no-global-generation`` switch,
-which means a missing data dependency is the same as ``Global => null``.
+This behavior can be adjusted with command line switch
+``--no-global-generation``, which causes a warning to be emitted when no
+explicit contract is given and the generated contract is either ``Global``
+different from ``null`` or ``Refined_Global`` different from the existing
+``Global``.
+
 Note that this option also forces ``--no-inlining`` (see :ref:`Contextual
 Analysis of Subprograms Without Contracts`).
 
