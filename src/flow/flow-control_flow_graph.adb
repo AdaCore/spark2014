@@ -1146,6 +1146,15 @@ package body Flow.Control_Flow_Graph is
    --  Likewise, for unwinding actions until we reach a stack position
    --  designated by Mark.
 
+   procedure Unwind_All
+     (FA   : in out Flow_Analysis_Graphs;
+      Ctx  : Context;
+      Last : in out Flow_Graphs.Vertex_Id)
+   with
+     Pre  => Last /= Flow_Graphs.Null_Vertex,
+     Post => Last /= Flow_Graphs.Null_Vertex;
+   --  Likewise, for unwinding all actions when leaving the subprogram
+
    function RHS_Split_Useful
      (LHS : Node_Or_Entity_Id; RHS : Node_Id; Scope : Flow_Scope)
       return Boolean
@@ -2491,9 +2500,7 @@ package body Flow.Control_Flow_Graph is
 
          --  Process all cleanup actions
 
-         for Decl of reverse Ctx.Unwind_Actions loop
-            Unwind (Decl, FA, Ctx.Finally_Ctxs, Last => V);
-         end loop;
+         Unwind_All (FA, Ctx, Last => V);
 
          --  Add implicit return vertex and link it after cleanup actions
 
@@ -5863,9 +5870,7 @@ package body Flow.Control_Flow_Graph is
          else
             --  Process all cleanup actions
 
-            for Decl of reverse Ctx.Unwind_Actions loop
-               Unwind (Decl, FA, Ctx.Finally_Ctxs, Last => V);
-            end loop;
+            Unwind_All (FA, Ctx, Last => V);
 
             --  Link the last vertex directly to the exceptional end vertex,
             --  i.e. bypass evaluation of any postconditions.
@@ -6005,9 +6010,7 @@ package body Flow.Control_Flow_Graph is
          else
             --  Process all cleanup actions
 
-            for Decl of reverse Ctx.Unwind_Actions loop
-               Unwind (Decl, FA, Ctx.Finally_Ctxs, Last => Cleanup);
-            end loop;
+            Unwind_All (FA, Ctx, Last => Cleanup);
 
             --  Link the last vertex directly to the exceptional end vertex,
             --  i.e. bypass evaluation of any postconditions.
@@ -6495,9 +6498,7 @@ package body Flow.Control_Flow_Graph is
 
       --  Process all cleanup actions
 
-      for Decl of reverse Ctx.Unwind_Actions loop
-         Unwind (Decl, FA, Ctx.Finally_Ctxs, Last => V);
-      end loop;
+      Unwind_All (FA, Ctx, Last => V);
 
       --  When cleanup actions are done, create an implicit return for a simple
       --  return statement within an extended return statement.
@@ -8018,6 +8019,16 @@ package body Flow.Control_Flow_Graph is
          Node_Lists.Previous (Top);
       end loop;
    end Unwind;
+
+   procedure Unwind_All
+     (FA   : in out Flow_Analysis_Graphs;
+      Ctx  : Context;
+      Last : in out Flow_Graphs.Vertex_Id) is
+   begin
+      for N of reverse Ctx.Unwind_Actions loop
+         Unwind (N, FA, Ctx.Finally_Ctxs, Last);
+      end loop;
+   end Unwind_All;
 
    -----------------------------
    -- Pragma_Relevant_To_Flow --
