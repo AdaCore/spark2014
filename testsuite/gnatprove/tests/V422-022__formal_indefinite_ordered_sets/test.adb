@@ -1,5 +1,3 @@
-pragma Ignore_Pragma (Assertion_Policy);
-
 with SPARK.Containers.Formal.Unbounded_Ordered_Sets;
 
 procedure Test with SPARK_Mode is

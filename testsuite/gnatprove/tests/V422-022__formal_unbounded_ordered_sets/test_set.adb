@@ -2,13 +2,6 @@ with Ada.Containers; use Ada.Containers;
 
 package body Test_Set with SPARK_Mode is
 
-   --  Do not execute ghost procedures from the model, or assertions which call
-   --  ghost functions from the model, as the container instance is compiled
-   --  without assertions. Add a special Static check policy for such
-   --  assertions.
-   pragma Assertion_Policy (Ghost => Ignore);
-   pragma Check_Policy (Static => Ignore);
-
    procedure Test_Set_Pos with Pre => True is
       use Test_Set.M;
       L, K : Set;
@@ -36,11 +29,11 @@ package body Test_Set with SPARK_Mode is
       Include (L, 1);
       Insert (L, 4);
 
-      pragma Check (Static, Formal_Model.P.Get (Formal_Model.Positions (L), Floor (L, 1)) = 1);
-      pragma Check (Static, Formal_Model.P.Get (Formal_Model.Positions (L), Floor (L, 3)) = 2);
+      pragma Assert (Formal_Model.P.Get (Formal_Model.Positions (L), Floor (L, 1)) = 1);
+      pragma Assert (Formal_Model.P.Get (Formal_Model.Positions (L), Floor (L, 3)) = 2);
       pragma Assert (Floor (L, 0) = No_Element);
-      pragma Check (Static, Formal_Model.P.Get (Formal_Model.Positions (L), Ceiling (L, 1)) = 1);
-      pragma Check (Static, Formal_Model.P.Get (Formal_Model.Positions (L), Ceiling (L, 3)) = 3);
+      pragma Assert (Formal_Model.P.Get (Formal_Model.Positions (L), Ceiling (L, 1)) = 1);
+      pragma Assert (Formal_Model.P.Get (Formal_Model.Positions (L), Ceiling (L, 3)) = 3);
       pragma Assert (Ceiling (L, 5) = No_Element);
 
       pragma Assert (not Contains (L, 3));
@@ -103,7 +96,7 @@ package body Test_Set with SPARK_Mode is
       pragma Assert (Contains (L, 4));
       Exclude (L, 4);
       pragma Assert (Length (L) = 0);
-      --  pragma Check (Proof_Only, False);
+      pragma Check (Proof_Only, False);
    end Test_Set_Pos;
 
    procedure Test_Set_Rec with Pre => True is
@@ -157,7 +150,7 @@ package body Test_Set with SPARK_Mode is
       pragma Assert (Contains (K, 1));
       Exclude (K, 1);
       pragma Assert (Length (K) = 0);
-      --  pragma Check (Proof_Only, False);
+      pragma Check (Proof_Only, False);
    end Test_Set_Rec;
 
    procedure Test_Set_Rec_2 with Pre => True is
@@ -197,7 +190,7 @@ package body Test_Set with SPARK_Mode is
       pragma Assert (Contains (L, (F => 1, G => 8)));
       Exclude (L, (F => 1, G => 9));
       pragma Assert (Length (L) = 0);
-      --  pragma Check (Proof_Only, False);
+      pragma Check (Proof_Only, False);
    end Test_Set_Rec_2;
 
    procedure Test_Ordered_Set is
@@ -394,8 +387,8 @@ package body Test_Set with SPARK_Mode is
 
       K := L;
       Delete (L, 3);
-      pragma Check (Static, G.Formal_Model.M_Included_Except (N.Formal_Model.Model (K), N.Formal_Model.Model (L), 3));
-      pragma Check (Static, N.Formal_Model.M."<=" (N.Formal_Model.Model (L), N.Formal_Model.Model (K)));
+      pragma Assert (G.Formal_Model.M_Included_Except (N.Formal_Model.Model (K), N.Formal_Model.Model (L), 3));
+      pragma Assert (N.Formal_Model.M."<=" (N.Formal_Model.Model (L), N.Formal_Model.Model (K)));
 
       --  Element
 
@@ -409,8 +402,8 @@ package body Test_Set with SPARK_Mode is
       pragma Assert (L = K);
 
       Exclude (L, 2);
-      pragma Check (Static, G.Formal_Model.M_Included_Except (N.Formal_Model.Model (K), N.Formal_Model.Model (L), 2));
-      pragma Check (Static, N.Formal_Model.M."<=" (N.Formal_Model.Model (L), N.Formal_Model.Model (K)));
+      pragma Assert (G.Formal_Model.M_Included_Except (N.Formal_Model.Model (K), N.Formal_Model.Model (L), 2));
+      pragma Assert (N.Formal_Model.M."<=" (N.Formal_Model.Model (L), N.Formal_Model.Model (K)));
 
       --  Key
 

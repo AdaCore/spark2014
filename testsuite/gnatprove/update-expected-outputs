@@ -39,7 +39,7 @@ def parse_options():
         help="Specify the Gitlab pipeline id to read outputs from",
     )
     parser.add_argument(
-        "--compute-time", default=True, action=argparse.BooleanOptionalAction
+        "--compute-time", default=False, action=argparse.BooleanOptionalAction
     )
     args = parser.parse_args()
     if (

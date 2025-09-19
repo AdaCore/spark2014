@@ -1,1 +1,2 @@
 pragma Check_Policy (Proof_Only => Ignore);
+pragma Check_Policy (SPARKlib_Full => Ignore);
