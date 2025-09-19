@@ -1,7 +1,10 @@
+bar.adb:5:14: warning: Global contract expected for "Test_01"
 bar.adb:5:14: warning: subprogram "Test_01" has no effect
-baz.ads:4:04: info: flow dependencies proved
-baz.ads:4:25: high: Public_G must be initialized at elaboration
+baz.ads:4:25: medium: initialization of "S" does not depend on "Public_G" (SPARK RM 7.1.5(11))
 baz.ads:7:04: high: "S" is not initialized in "Baz" [reason for check: variable is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "S" at declaration]
-foo.adb:9:12: high: "G" must be listed in the Global aspect of "P" (SPARK RM 6.1.4(15))
-foo.adb:15:27: high: "G" must be listed in the Global aspect of "F" (SPARK RM 6.1.4(15))
-foo.adb:18:61: high: "G" must be listed in the Global aspect of "E" (SPARK RM 6.1.4(15))
+foo.adb:12:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+foo.adb:12:13: warning: Global contract expected for "F"
+foo.adb:18:13: info: implicit aspect Always_Terminates on "E" has been proved, subprogram will terminate
+foo.adb:18:13: warning: Global contract expected for "E"
+foo.ads:5:14: warning: Global contract expected for "P"
+foo.ads:5:17: info: initialization of "X" proved

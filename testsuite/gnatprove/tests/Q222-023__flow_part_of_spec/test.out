@@ -1,2 +1,5 @@
-main.adb:5:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Proxy or turning it into an expression function in its unit spec]
+main.adb:3:11: warning: Global contract expected for "Main"
+main.adb:5:19: medium: "p.state" might not be initialized after elaboration of main program "Main"
+main.adb:5:19: medium: assertion might fail [possible fix: subprogram at line 3 should mention P.Secret and P.State in a precondition]
 p.ads:1:46: warning: no subprogram exists that can initialize abstract state "P.State"
+proxy.ads:1:10: warning: Global contract expected for "Proxy"
