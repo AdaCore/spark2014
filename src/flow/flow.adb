@@ -52,6 +52,7 @@ with Gnat2Why_Args;
 with GNATCOLL.JSON;                    use GNATCOLL.JSON;
 with Interfaces;                       use Interfaces;
 with Namet;                            use Namet;
+with Nlists;                           use Nlists;
 with Output;                           use Output;
 with Sem_Ch7;                          use Sem_Ch7;
 with Sem_Util;                         use Sem_Util;
@@ -869,6 +870,13 @@ package body Flow is
             Write_Str ("initializes ");
 
             pragma Assert (not Present (F));
+
+         elsif Present (A.Error_Location)
+           and then Nkind (A.Error_Location) = N_Handled_Sequence_Of_Statements
+           and then Present (Finally_Statements (A.Error_Location))
+         then
+            Rv.Shape := Shape_None;
+            Write_Str ("finally completed");
 
          else
             if A.Is_Assertion then
