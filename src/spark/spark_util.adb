@@ -4850,6 +4850,27 @@ package body SPARK_Util is
       end if;
    end To_String;
 
+   -------------------------------
+   -- Is_Within_Finally_Section --
+   -------------------------------
+
+   function Is_Within_Finally_Section (N : Node_Id) return Boolean is
+      Cursor : Node_Id := N;
+      Prev   : Node_Id;
+   begin
+      while Present (Cursor) loop
+         Prev := Cursor;
+         Cursor := Parent (Cursor);
+         if Nkind (Cursor) = N_Handled_Sequence_Of_Statements
+           and then Present (Finally_Statements (Cursor))
+           and then Finally_Statements (Cursor) = List_Containing (Prev)
+         then
+            return True;
+         end if;
+      end loop;
+      return False;
+   end Is_Within_Finally_Section;
+
    ---------------------------
    -- Is_Writable_Parameter --
    ---------------------------
