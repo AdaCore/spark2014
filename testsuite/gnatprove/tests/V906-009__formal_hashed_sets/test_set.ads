@@ -1,5 +1,3 @@
-pragma Ignore_Pragma (Assertion_Policy);
-
 with Ada.Containers; use Ada.Containers;
 with SPARK.Containers.Formal.Hashed_Sets;
 

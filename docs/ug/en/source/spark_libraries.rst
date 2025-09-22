@@ -599,34 +599,32 @@ quantified expression above is equivalent to:
 where ``Result`` is the value of the quantified expression. See |GNAT Pro|
 Reference Manual for details on aspect ``Iterable``.
 
-Containers and Executablity
----------------------------
+Assertion Levels in the SPARK Library
+-------------------------------------
 
-Some features of the container library (both functional and formal) might not
-have executable semantics. To ensure that user code never attempts to execute
-them, these subprograms call the ``Check_Or_Fail`` procedure declared in
-``SPARK.Containers``. This procedure is marked as ``Import``, so an error will
-occur at link time if these features are used in normal code (or in enabled
-ghost code or assertions).
+The |SPARK| library introduces several :ref:`Assertion Levels` that are used in
+particular in the container libraries. These levels are available in all
+projects that use the |SPARK| library.
 
-These non-executable features include quantified expressions over functional
-maps, sets, and multisets and logical equality in nearly all functional and
+The assertion level ``SPARKlib_Defensive`` allows enabling preconditions
+on container operations. It is useful in particular if these operations are
+called from non-proved code. The assertion level ``SPARKlib_Logic`` is for
+models of formal containers. It can be enabled in the full runtime. In the
+light runtime, it is also used for the ghost versions of the
+:ref:`Big Numbers Library` and :ref:`Functional Containers Library`. As these
+libraries require finalization, the assertion level ``SPARKlib_Logic`` cannot
+be enabled in the light runtime.
+
+Finally, some features of the container library (both functional and formal)
+might not have executable semantics. To ensure that user code never attempts to
+execute them, these subprograms are associated with the assertion level
+``SPARKlib_Full`` that depends on ``Static`` and can never be enabled at
+runtime. These non-executable features include quantified expressions over
+functional maps, sets, and multisets and logical equality in functional and
 formal containers.
 
-.. note::
-
-   When instantiating containers from SPARKlib in your code, and compiling with
-   assertions enabled (e.g. because you passed the switch ``-gnata``), you may
-   get the following error, even if you don't use the non-executable features
-   mentioned above::
-
-      undefined reference to `check_or_fail'
-
-   This spurious error comes from your executable including unused functions
-   calling in the undefined procedure ``Check_Or_Fail``. To get rid of this
-   error, you should compile your code with the switch ``-ffunction-sections``
-   and link it with the switch ``-Wl,--gc-sections``, so that unused functions
-   are not included in the executable.
+The assertion level ``SPARKlib_Full`` is also used for postconditions
+on container operations, as it is never useful to execute them.
 
 Quantified Expressions over Functional Maps, Sets, and Multisets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

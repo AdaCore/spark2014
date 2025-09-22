@@ -181,25 +181,25 @@ test_map.adb:270:17: info: pointer dereference check proved
 test_map.adb:273:25: info: assertion proved
 test_map.adb:273:25: info: precondition proved
 test_map.adb:275:07: medium: assertion might fail
-test_map.ads:18:13: info: implicit aspect Always_Terminates on "My_Lt" has been proved, subprogram will terminate
-test_map.ads:19:12: info: postcondition proved
-test_map.ads:27:14: warning: subprogram "Test_Ordered_Map" has no effect
-test_map.ads:29:14: warning: subprogram "Large_Test" has no effect
+test_map.ads:16:13: info: implicit aspect Always_Terminates on "My_Lt" has been proved, subprogram will terminate
+test_map.ads:17:12: info: postcondition proved
+test_map.ads:25:14: warning: subprogram "Test_Ordered_Map" has no effect
+test_map.ads:27:14: warning: subprogram "Large_Test" has no effect
 test.adb:5:04: warning: check will fail at run time [-gnatw.a]
 test.adb:5:04: warning: check will fail at run time [-gnatw.a]
-test.adb:5:04: warning: in instantiation at spark-containers-formal-ordered_maps.ads:263 [-gnatw.a]
-test.adb:5:04: warning: in instantiation at spark-containers-formal-ordered_maps.ads:263 [-gnatw.a]
+test.adb:5:04: warning: in instantiation at spark-containers-formal-ordered_maps.ads:267 [-gnatw.a]
+test.adb:5:04: warning: in instantiation at spark-containers-formal-ordered_maps.ads:267 [-gnatw.a]
 test.adb:5:04: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
 test.adb:5:04: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
-test_map.ads:8:04: warning: check will fail at run time [-gnatw.a]
-test_map.ads:8:04: warning: check will fail at run time [-gnatw.a]
-test_map.ads:8:04: warning: in instantiation at spark-containers-formal-ordered_maps.ads:263 [-gnatw.a]
-test_map.ads:8:04: warning: in instantiation at spark-containers-formal-ordered_maps.ads:263 [-gnatw.a]
-test_map.ads:8:04: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
-test_map.ads:8:04: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
-test_map.ads:22:04: warning: check will fail at run time [-gnatw.a]
-test_map.ads:22:04: warning: check will fail at run time [-gnatw.a]
-test_map.ads:22:04: warning: in instantiation at spark-containers-formal-ordered_maps.ads:263 [-gnatw.a]
-test_map.ads:22:04: warning: in instantiation at spark-containers-formal-ordered_maps.ads:263 [-gnatw.a]
-test_map.ads:22:04: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
-test_map.ads:22:04: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
+test_map.ads:6:04: warning: check will fail at run time [-gnatw.a]
+test_map.ads:6:04: warning: check will fail at run time [-gnatw.a]
+test_map.ads:6:04: warning: in instantiation at spark-containers-formal-ordered_maps.ads:267 [-gnatw.a]
+test_map.ads:6:04: warning: in instantiation at spark-containers-formal-ordered_maps.ads:267 [-gnatw.a]
+test_map.ads:6:04: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
+test_map.ads:6:04: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
+test_map.ads:20:04: warning: check will fail at run time [-gnatw.a]
+test_map.ads:20:04: warning: check will fail at run time [-gnatw.a]
+test_map.ads:20:04: warning: in instantiation at spark-containers-formal-ordered_maps.ads:267 [-gnatw.a]
+test_map.ads:20:04: warning: in instantiation at spark-containers-formal-ordered_maps.ads:267 [-gnatw.a]
+test_map.ads:20:04: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
+test_map.ads:20:04: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
