@@ -1,8 +1,8 @@
-main1.adb:3:11: medium: ceiling priority protocol might not be respected
-main2.adb:3:11: medium: ceiling priority protocol might not be respected
+main1.adb:3:11: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object P.Obj must be >= the priority of the calling context Main1 in the call chain: Main1 -> P.ObjT.Pp1]
+main2.adb:3:11: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object P.Obj must be >= the priority of the calling context Main2 in the call chain: Main2 -> P.ObjT.Pp1]
 main3.adb:3:11: info: ceiling priority protocol is respected (CVC5: 1 VC)
 main3.adb:4:21: info: range check proved (CVC5: 2 VC)
-main4.adb:3:11: medium: ceiling priority protocol might not be respected
+main4.adb:3:11: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object P.Obj must be >= the priority of the calling context Main4 in the call chain: Main4 -> P.ObjT.Pp1]
 main4.adb:4:21: info: range check proved (CVC5: 2 VC)
 p.ads:5:17: info: aspect Always_Terminates on "PP1" has been proved, subprogram will terminate
 p.ads:6:12: info: data dependencies proved

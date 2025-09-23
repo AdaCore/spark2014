@@ -722,8 +722,14 @@ package Flow_Types is
       --  True if the dependencies for this callsite should be filled in using
       --  interprocedural flow analysis.
 
-      Call_Vertex : Flow_Id;
-      --  Used to identify which vertex a parameter vertex belongs to.
+      Callee : Entity_Id;
+      --  For nodes where Is_Callsite is True; denotes the called entity
+      --
+      --  Note: this could be recovered from the vertex key, but it is
+      --  convenient to store it directly.
+
+      Call_Vertex : Flow_Graphs.Vertex_Id;
+      --  For parameter vertices it denotes the corresponding call vertex
 
       Parameter_Actual : Flow_Id;
       Parameter_Formal : Flow_Id;
@@ -819,7 +825,8 @@ package Flow_Types is
         Is_Declaration_Node       => False,
         Execution                 => Normal_Execution,
         Perform_IPFA              => False,
-        Call_Vertex               => Null_Flow_Id,
+        Callee                    => Empty,
+        Call_Vertex               => Flow_Graphs.Null_Vertex,
         Parameter_Actual          => Null_Flow_Id,
         Parameter_Formal          => Null_Flow_Id,
         Default_Init_Var          => Null_Flow_Id,

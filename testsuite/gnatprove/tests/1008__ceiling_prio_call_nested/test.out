@@ -1,0 +1,7 @@
+main.adb:3:11: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "P.Inner.Po" must be >= the priority of the caller "Main" in the call chain "Main" (elaboration) -> "P.Inner" (elaboration) -> "P.Inner.P1" -> "P.Inner.Po.Pp1"]
+p.adb:11:17: info: add a contract to analyze it separately from calling contexts
+p.adb:11:17: info: local subprogram "P1" only analyzed in the context of calls [info-unrolling-inlining]
+p.adb:19:07: info: analyzing call to "P1" in context
+p.ads:7:20: info: aspect Always_Terminates on "PP1" has been proved, subprogram will terminate
+p.ads:8:15: info: data dependencies proved
+proxy.ads:3:14: warning: subprogram "Proc" has no effect

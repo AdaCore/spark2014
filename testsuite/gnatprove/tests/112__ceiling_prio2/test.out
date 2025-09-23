@@ -1,0 +1,19 @@
+main1.adb:3:11: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "U2.Po" must be >= the priority of the caller "Main1" in the call chain "Main1" -> "U1.P1" -> "U1.P2" -> "U1.P3" -> "U2.P4" -> "U2.P5" -> "U2.P6" -> "U2.P7" -> "U2.P8" -> "U2.Po.Pp1"]
+main1.adb:4:21: info: range check proved (CVC5: 2 VC)
+main2.adb:3:11: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "U2.Po" must be >= the priority of the caller "Main2" in the call chain "Main2" -> "U1.Paa" -> "U2.Pa" -> "U2.P7" -> "U2.P8" -> "U2.Po.Pp1"]
+main2.adb:4:21: info: range check proved (CVC5: 2 VC)
+u1.adb:5:14: info: add a contract to analyze it separately from calling contexts
+u1.adb:5:14: info: local subprogram "P3" only analyzed in the context of calls [info-unrolling-inlining]
+u1.adb:17:07: info: analyzing call to "P3" in context
+u2.adb:10:14: info: add a contract to analyze it separately from calling contexts
+u2.adb:10:14: info: local subprogram "P8" only analyzed in the context of calls [info-unrolling-inlining]
+u2.adb:22:07: info: analyzing call to "P8" in context
+u2.adb:25:14: info: add a contract to analyze it separately from calling contexts
+u2.adb:25:14: info: local subprogram "P6" only analyzed in the context of calls [info-unrolling-inlining]
+u2.adb:30:07: info: precondition proved (Trivial: 1 VC), in call inlined at u2.adb:36
+u2.adb:30:07: info: precondition proved (Trivial: 1 VC), in call inlined at u2.adb:48
+u2.adb:36:07: info: analyzing call to "P6" in context
+u2.adb:48:07: info: analyzing call to "P6" in context
+u2.adb:49:07: info: precondition proved (Trivial: 1 VC)
+u2.ads:6:17: info: aspect Always_Terminates on "PP1" has been proved, subprogram will terminate
+u2.ads:7:12: info: data dependencies proved

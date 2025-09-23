@@ -57,7 +57,7 @@ package body Flow.Control_Dependence_Graph is
             elsif FA.Atr (P).Is_Call_Exception then
                pragma Assert (FA.Atr (V).Is_Parameter);
                pragma Assert (FA.CFG.Get_Key (V).Variant = Out_View);
-               pragma Assert (FA.CDG.Get_Vertex (FA.Atr (V).Call_Vertex) = CV);
+               pragma Assert (FA.Atr (V).Call_Vertex = CV);
 
             else
                --  Bath, we have a problem
@@ -108,8 +108,7 @@ package body Flow.Control_Dependence_Graph is
               or else A.Is_Implicit_Parameter
             then
                declare
-                  CV : constant Flow_Graphs.Vertex_Id :=
-                    FA.CDG.Get_Vertex (A.Call_Vertex);
+                  CV : constant Flow_Graphs.Vertex_Id := A.Call_Vertex;
 
                begin
                   Sanity_Check (V => V, CV => CV);
