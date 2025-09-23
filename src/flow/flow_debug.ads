@@ -32,13 +32,13 @@ with Types;                use Types;
 package Flow_Debug is
 
    procedure Print_Node_Set (S : Node_Sets.Set);
-   --  Print a mostly human-readable form the given node set.
+   --  Print a mostly human-readable form of the given node set.
 
    procedure Print_Node_Set (S : Flow_Id_Sets.Set);
-   --  Print a mostly human-readable form the given node set.
+   --  Print a mostly human-readable form of the given flow id set.
 
    procedure Print_Node_Set (S : Ordered_Flow_Id_Sets.Set);
-   --  Print a mostly human-readable form the given node set.
+   --  Print a mostly human-readable form of the given flow id set.
 
    procedure Print_Flow_Map (M : Flow_Id_Maps.Map);
    --  Print a human-readable version of the given map.

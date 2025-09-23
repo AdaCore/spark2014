@@ -22,6 +22,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers;
+use type Ada.Containers.Hash_Type;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
@@ -108,21 +109,55 @@ package Flow is
    --  Unique representation of a call to protected entry of a library-level
    --  protected object.
 
+   type Protected_Call is record
+      Prefix    : Node_Id;      --  prefix of an protected call
+      Operation : Entity_Id;    --  protected operation
+   end record
+   with Predicate => Is_Subprogram_Or_Entry (Protected_Call.Operation);
+   --  Unique representation of a call to protected subprogram of a
+   --  library-level protected object.
+
    function Hash (E : Entry_Call) return Ada.Containers.Hash_Type;
    --  Hash function needed to instantiate container package
+
+   function Hash (P : Protected_Call) return Ada.Containers.Hash_Type;
+   --  Hash function needed to instantiate container package; it only uses
+   --  the prefix, because for locking checks the protected subprogram is
+   --  irrelevant.
+
+   function Have_Same_Prefix (A, B : Protected_Call) return Boolean
+   with Post => (if Have_Same_Prefix'Result then Hash (A) = Hash (B));
+   --  Returns True if prefixes of protected calls denote equal objects, as
+   --  far as flow analysis is concerned, i.e. without looking at indices
+   --  of indexed elements; for locking checks the protected subprogram is
+   --  irrelevant.
+
+   function Have_Same_Target (A, B : Entry_Call) return Boolean
+   with Post => (if Have_Same_Target'Result then Hash (A) = Hash (B));
+   --  Returns True if both calls target the same entries and their prefixes
+   --  denote same objects, as far as flow analysis is concerned, i.e. without
+   --  looking at indices of indexed elements. For checks of the number of
+   --  tasks waiting at a the same entry queue we only need to register which
+   --  entries are called and not the calls themselves.
 
    package Entry_Call_Sets is new
      Ada.Containers.Hashed_Sets
        (Element_Type        => Entry_Call,
         Hash                => Hash,
-        Equivalent_Elements => "=");
+        Equivalent_Elements => Have_Same_Target);
 
-   type Tasking_Info_Kind is
-     (Entry_Calls, Suspends_On, Unsynch_Accesses, Locks);
+   package Protected_Call_Sets is new
+     Ada.Containers.Hashed_Sets
+       (Element_Type        => Protected_Call,
+        Hash                => Hash,
+        Equivalent_Elements => Have_Same_Prefix);
+
+   type Tasking_Info_Kind is (Entry_Calls, Suspends_On, Unsynch_Accesses);
    pragma Ordered (Tasking_Info_Kind);
    --  Tasking-related information collected for subprograms, entries, tasks
-   --  and package elaborations. Used both for ownership (aka. exclusivity)
-   --  checks and for ceiling priority protocol checks.
+   --  and package elaborations. Used for ownership (aka. exclusivity) checks.
+   --  For the ceiling priority protocol checks a separate extended data
+   --  structure is used (see Protected_Call_Sets).
 
    subtype Tasking_Owning_Kind is
      Tasking_Info_Kind
@@ -135,7 +170,8 @@ package Flow is
    --  Note: it is intentionally defined with range and not with
    --  Static_Predicate to allow its use as an array index.
 
-   type Tasking_Info is array (Suspends_On .. Locks) of Node_Sets.Set;
+   type Tasking_Info is
+     array (Suspends_On .. Unsynch_Accesses) of Node_Sets.Set;
    --  Named array type for sets of nodes related to tasking. The nodes
    --  represent library-level objects.
 
@@ -232,6 +268,9 @@ package Flow is
 
       Tasking : Tasking_Info;
       --  Tasking-related information collected in phase 1
+
+      Locks : Protected_Call_Sets.Set;
+      --  Extra tasking-related information collected in phase 1
 
       Is_Generative : Boolean;
       --  True if we do not have a global contract

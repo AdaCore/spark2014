@@ -35,6 +35,34 @@ with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 
 package Flow_Generated_Globals.Phase_2 is
 
+   --------------------------------
+   -- Tasking analysis utilities --
+   --------------------------------
+
+   type Locking_Trace is record
+      Obj : Entity_Name;
+      --  The locked object - a protected object or, more generally, a
+      --  composite object with at least one component having a protected type.
+      --  Note that in the latter case Obj itself does not have a protected
+      --  type, but some of its leaf components do. And as a consequence the
+      --  protected operations associated with Obj could belong to several
+      --  different protected types.
+
+      Trace : Name_Lists.List;
+      --  List of suprograms or packages. In its most general form the trace
+      --  corresponds to the following regex: (PKG ->)* (SUBP ->)* (POP) where
+      --  * PKG is a package that either withs the following package or calls a
+      --    SUBP or POP from its elaboration code.
+      --  * SUBP is a subprogram that isn't a protected operation.
+      --  * POP is some protected operation defined in the type of Obj or its
+      --    components.
+   end record;
+
+   package Locking_Traces_Lists is new
+     Ada.Containers.Doubly_Linked_Lists (Element_Type => Locking_Trace);
+
+   subtype Locking_Traces_List is Locking_Traces_Lists.List;
+
    function "<" (Left, Right : Task_Object) return Boolean;
    --  Compare task objects giving preference to the object from the current
    --  compilation unit, or else, visible by Entity_Id, or else, resort to the
@@ -75,6 +103,9 @@ package Flow_Generated_Globals.Phase_2 is
 
    Max_Queue_Lengths : Max_Queue_Lenghts_Maps.Map;
    --  Maps entries to their Max_Queue_Length
+
+   Top_Level_Packages : Name_Sets.Set;
+   --  All the top-level packages
 
    -------------------------
    -- Reading & Computing --
@@ -437,27 +468,25 @@ package Flow_Generated_Globals.Phase_2 is
    --  depending on the Kind) accessed by a main-like subprogram Subp.
 
    function Directly_Called_Protected_Objects
-     (E : Entity_Id) return Name_Sets.Set
+     (E : Entity_Id) return Locking_Traces_List
    with
      Pre =>
        GG_Has_Been_Generated
        and then Analysis_Requested (E, With_Inlined => True);
-   --  @param E an entity name that refers to a task, main-like subprogram or
-   --    protected operation
-   --  @return the set of protected operations that are called "directly", that
-   --    is without going through other protected operations
+   --  @param E An entity name that refers to a task, main-like subprogram or
+   --    protected operation.
+   --  @return A list of locking traces. Each trace references an object Obj
+   --    that is either a protected object or a composite object with at least
+   --    one component having a protected type and that is "directly" reachable
+   --    from E over a call chain in the sense that no intermediate protected
+   --    operation is visited in between. Note that in case Obj is a composite
+   --    object there will be multiple traces returned if multiple components
+   --    with a *different* protected type are reachable.
 
-   package Object_Priority_Lists is new
-     Ada.Containers.Doubly_Linked_Lists (Element_Type => Priority_Value);
-   --  Containers with priorities of protected components
-
-   function Component_Priorities
-     (Obj : Entity_Name) return Object_Priority_Lists.List
-   with
-     Post => not Object_Priority_Lists.Is_Empty (Component_Priorities'Result);
-   --  @param Obj an entity name that refers to a library-level object with
-   --    protected components
-   --  @return priorities of protected object components
+   function Protected_Object_Priority
+     (Obj : Entity_Name) return Priority_Value;
+   --  @param Obj protected object
+   --  @return the corresponding priority kind and value
 
    function GG_Has_Globals (E : Entity_Id) return Boolean
    with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure;

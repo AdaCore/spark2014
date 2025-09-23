@@ -1880,6 +1880,14 @@ package body Gnat2Why.Expr.Loops.Inv is
                end loop;
             end;
 
+            Process_Statement_List
+              (Finally_Statements (N),
+               Loop_Writes,
+               Invalid_Objects,
+               Relevant_Vertices,
+               After_Inv,
+               In_Nested);
+
          when N_Loop_Statement                                    =>
 
             --  Discard the loop index of nested loops if any

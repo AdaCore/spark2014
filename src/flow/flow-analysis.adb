@@ -40,9 +40,9 @@ with Stand;       use Stand;
 
 with Common_Iterators;       use Common_Iterators;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
+with SPARK_Util;             use SPARK_Util;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK_Util.Types;       use SPARK_Util.Types;
-with SPARK_Util;             use SPARK_Util;
 with VC_Kinds;               use VC_Kinds;
 
 with Errout_Wrapper;                 use Errout_Wrapper;
@@ -193,7 +193,7 @@ package body Flow.Analysis is
            or else Atr.Is_Global_Parameter
            or else Atr.Is_Implicit_Parameter
          then
-            Vertices.Include (FA.PDG.Get_Vertex (Atr.Call_Vertex));
+            Vertices.Include (Atr.Call_Vertex);
          end if;
       end Add_Loc;
 
@@ -610,7 +610,7 @@ package body Flow.Analysis is
          elsif Atr.Is_Global_Parameter then
             --  If we have a global, the procedure call itself is the best
             --  location we can provide.
-            First_Use := Get_Direct_Mapping_Id (Atr.Call_Vertex);
+            First_Use := FA.Atr (Atr.Call_Vertex).Error_Location;
             return;
          else
             --  If we don't have any of the above, we should keep searching for
@@ -1758,9 +1758,7 @@ package body Flow.Analysis is
 
          return
            FA.PDG.In_Neighbour_Count (V) = 1
-           and then Has_Depends
-                      (Get_Called_Entity
-                         (Get_Direct_Mapping_Id (Atr.Call_Vertex)));
+           and then Has_Depends (FA.Atr (Atr.Call_Vertex).Callee);
       end Null_Dependency_Assignment;
 
       ------------------------------
@@ -1854,9 +1852,7 @@ package body Flow.Analysis is
                  --  that is reachable; code that is unreachable is clearly
                  --  ineffective as well, but it gets its own warning.
                  Reachable_Code.Contains
-                   (if Atr.Is_Program_Node
-                    then V
-                    else FA.PDG.Get_Vertex (Atr.Call_Vertex))
+                   (if Atr.Is_Program_Node then V else Atr.Call_Vertex)
                  and then
 
                  --  Suppression for package initializations
@@ -1941,8 +1937,7 @@ package body Flow.Analysis is
                                      then Is_Easily_Printable (Target));
 
                               Called_Entity : constant Entity_Id :=
-                                Get_Called_Entity
-                                  (Get_Direct_Mapping_Id (Atr.Call_Vertex));
+                                FA.Atr (Atr.Call_Vertex).Callee;
 
                               Callee : constant Flow_Id :=
                                 (if Ekind (Called_Entity) = E_Subprogram_Type
@@ -2872,7 +2867,6 @@ package body Flow.Analysis is
       ----------
 
       function Hash (Path : Path_Vertices) return Ada.Containers.Hash_Type is
-         use type Ada.Containers.Hash_Type;
          use Flow_Graphs;
       begin
          return 17 * Vertex_Hash (Path.Start) + 13 * Vertex_Hash (Path.V_Use);

@@ -1,0 +1,28 @@
+p.adb:6:13: high: call to potentially blocking subprogram "Release" in protected operation "Proc"
+p.adb:6:13: warning: assuming "Release" always terminates
+p.adb:6:13: warning: assuming "Release" has no effect on global items
+p.adb:6:13: warning: no Always_Terminates aspect available for "Release" [assumed-always-terminates]
+p.adb:6:13: warning: no Global contract available for "Release" [assumed-global-null]
+p.adb:13:13: high: call to potentially blocking subprogram "Release" in protected operation "Proc"
+p.adb:13:13: warning: assuming "Release" always terminates
+p.adb:13:13: warning: assuming "Release" has no effect on global items
+p.adb:13:13: warning: no Always_Terminates aspect available for "Release" [assumed-always-terminates]
+p.adb:13:13: warning: no Global contract available for "Release" [assumed-global-null]
+p.ads:7:17: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "P.Sem" must be >= the priority of the caller "P.Synca.Proc" in the call "P.Synca.Proc" -> "Gnat.Semaphores.Binary_Semaphore.Release"]
+p.ads:12:17: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "P.Sem" must be >= the priority of the caller "P.Syncb_Type.Proc" in the call "P.Syncb_Type.Proc" -> "Gnat.Semaphores.Binary_Semaphore.Release"]
+p.ads:16:30: info: range check proved (CVC5: 1 VC)
+p.ads:17:33: info: range check proved (CVC5: 2 VC)
+p2.adb:8:16: high: call to potentially blocking subprogram "Release" in protected operation "Proc"
+p2.adb:8:16: warning: assuming "Release" always terminates
+p2.adb:8:16: warning: assuming "Release" has no effect on global items
+p2.adb:8:16: warning: no Always_Terminates aspect available for "Release" [assumed-always-terminates]
+p2.adb:8:16: warning: no Global contract available for "Release" [assumed-global-null]
+p2.adb:15:16: high: call to potentially blocking subprogram "Release" in protected operation "Proc"
+p2.adb:15:16: warning: assuming "Release" always terminates
+p2.adb:15:16: warning: assuming "Release" has no effect on global items
+p2.adb:15:16: warning: no Always_Terminates aspect available for "Release" [assumed-always-terminates]
+p2.adb:15:16: warning: no Global contract available for "Release" [assumed-global-null]
+p2.ads:9:20: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "P2.Nested.Sem" must be >= the priority of the caller "P2.Nested.Synca.Proc" in the call "P2.Nested.Synca.Proc" -> "Gnat.Semaphores.Binary_Semaphore.Release"]
+p2.ads:14:20: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "P2.Nested.Sem" must be >= the priority of the caller "P2.Nested.Syncb_Type.Proc" in the call "P2.Nested.Syncb_Type.Proc" -> "Gnat.Semaphores.Binary_Semaphore.Release"]
+p2.ads:19:35: info: range check proved (CVC5: 1 VC)
+p2.ads:20:38: info: range check proved (CVC5: 2 VC)

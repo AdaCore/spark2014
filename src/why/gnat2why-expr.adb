@@ -465,6 +465,22 @@ package body Gnat2Why.Expr is
    --  Need_Store is True, the Pattern is updated to reference the parts reused
    --  from Var if any.
 
+   function Insert_Invariant_Check_For_Eq
+     (Ada_Node         : Node_Id;
+      Typ              : Type_Kind_Id;
+      W_Expr           : W_Expr_Id;
+      Domain           : EW_Domain;
+      Force_Predefined : Boolean := True) return W_Expr_Id;
+   --  Insert to W_Expr the necessary invariant checks for a comparison using
+   --  the equality of Typ.
+   --  If Force_Predefined is True, consider the predefined equality.
+   --  Otherwise, consider the primitive equality or the predefined equality
+   --  as per Ada rules for membership tests and components.
+   --  For now, we handle operands independently, so we might perform invariant
+   --  checks that are not necessary. Indeed component comparison might not
+   --  occur, for example on arrays with different lenghs or records whose
+   --  discriminants do not match.
+
    procedure Insert_Move_Of_Deep_Parts
      (Rhs     : N_Subexpr_Id;
       Lhs_Typ : Entity_Id;
@@ -10892,6 +10908,122 @@ package body Gnat2Why.Expr is
            Typ      => Get_Type (+W_Expr));
    end Insert_Invariant_Check;
 
+   -----------------------------------
+   -- Insert_Invariant_Check_For_Eq --
+   -----------------------------------
+
+   function Insert_Invariant_Check_For_Eq
+     (Ada_Node         : Node_Id;
+      Typ              : Type_Kind_Id;
+      W_Expr           : W_Expr_Id;
+      Domain           : EW_Domain;
+      Force_Predefined : Boolean := True) return W_Expr_Id
+   is
+      function Compute_Type_Invariant_For_Eq
+        (Typ            : Type_Kind_Id;
+         W_Expr         : W_Term_Id;
+         Skip_Top_Level : Boolean := False) return W_Pred_Id;
+      --  Generate a predicate with the potential type invariants of all
+      --  subcomponents of W_Expr of type Typ that have a user-defined equality
+      --  which is used in the predefined equality of enclosing types.
+      --  If Skip_Top_Level is True, do not consider Typ itself, even if it has
+      --  a user-defined equality.
+
+      function Compute_Inv_For_Field
+        (F_Expr : W_Term_Id; F_Ty : Entity_Id; E : Entity_Id) return W_Pred_Id
+      is (if Ekind (E) = E_Component
+          then Compute_Type_Invariant_For_Eq (F_Ty, F_Expr)
+          else True_Pred);
+
+      function Compute_Inv_For_Record is new
+        Build_Predicate_For_Record
+          (Compute_Inv_For_Field,
+           Compute_Inv_For_Field);
+
+      function Compute_Inv_For_Comp
+        (C_Expr : W_Term_Id; C_Ty : Entity_Id; Unused_Idx : W_Expr_Array)
+         return W_Pred_Id
+      is (Compute_Type_Invariant_For_Eq (C_Ty, C_Expr));
+
+      function Compute_Inv_For_Array is new
+        Build_Predicate_For_Array (Compute_Inv_For_Comp);
+
+      -----------------------------------
+      -- Compute_Type_Invariant_For_Eq --
+      -----------------------------------
+
+      function Compute_Type_Invariant_For_Eq
+        (Typ            : Type_Kind_Id;
+         W_Expr         : W_Term_Id;
+         Skip_Top_Level : Boolean := False) return W_Pred_Id is
+      begin
+         --  If Typ has a primitive equality, perform invariant checks
+
+         if not Skip_Top_Level
+           and then not Use_Predefined_Equality_For_Type (Typ)
+         then
+            return
+              Compute_Type_Invariant
+                (+W_Expr, Typ, For_Check, Scop => Current_Subp);
+
+         --  For composite types, traverse the type to find potential
+         --  subcomponents with a primitive equality.
+
+         elsif Has_Array_Type (Typ) then
+            return Compute_Inv_For_Array (W_Expr, Typ);
+
+         elsif Is_Record_Type_In_Why (Typ) then
+
+            --  Type invariants are not supported on tagged types and on
+            --  components of tagged types, so Typ cannot be tagged. No need
+            --  to account for the parent equality. Simply traverse the
+            --  components.
+
+            pragma Assert (not Is_Tagged_Type (Typ));
+            return Compute_Inv_For_Record (W_Expr, Typ);
+         else
+            pragma Assert (Has_Scalar_Type (Typ));
+            return True_Pred;
+         end if;
+      end Compute_Type_Invariant_For_Eq;
+
+      --  Start of processing for Insert_Invariant_Check_For_Eq
+
+   begin
+      if Domain /= EW_Prog
+        or else not Invariant_Check_Needed (Typ, Scop => Current_Subp)
+      then
+         return W_Expr;
+
+      else
+         declare
+            W_Tmp : constant W_Expr_Id := New_Temp_For_Expr (+W_Expr);
+            Inv   : constant W_Pred_Id :=
+              Compute_Type_Invariant_For_Eq
+                (Retysp (Typ), +W_Tmp, Skip_Top_Level => Force_Predefined);
+         begin
+            if Is_True_Boolean (+Inv) then
+               return W_Expr;
+            else
+               return
+                 +Binding_For_Temp
+                    (Ada_Node => Ada_Node,
+                     Tmp      => +W_Tmp,
+                     Context  =>
+                       Sequence
+                         (New_Ignore
+                            (Prog =>
+                               New_Assert
+                                 (Pred        =>
+                                    New_VC_Pred
+                                      (Ada_Node, Inv, VC_Invariant_Check),
+                                  Assert_Kind => EW_Assert)),
+                          +W_Tmp));
+            end if;
+         end;
+      end if;
+   end Insert_Invariant_Check_For_Eq;
+
    -------------------------------
    -- Insert_Move_Of_Deep_Parts --
    -------------------------------
@@ -17667,33 +17799,50 @@ package body Gnat2Why.Expr is
       Domain    : EW_Domain;
       Ada_Node  : Node_Id) return W_Expr_Id
    is
-      Dim       : constant Positive :=
+      Dim        : constant Positive :=
         Positive (Number_Dimensions (Retysp (Left_Type)));
-      Subdomain : constant EW_Domain :=
+      Subdomain  : constant EW_Domain :=
         (if Domain = EW_Pred then EW_Term else Domain);
-      Args      : W_Expr_Array (1 .. 4 * Dim + 2);
-      T         : W_Expr_Id;
+      Args       : W_Expr_Array (1 .. 4 * Dim + 2);
+      T          : W_Expr_Id;
+      Left_Expr  : W_Expr_Id;
+      Right_Expr : W_Expr_Id;
+      Arg_Ind    : Positive := 1;
+   begin
 
       --  Check that operands are initialized
 
-      Left_Expr  : constant W_Expr_Id :=
-        New_Temp_For_Expr
-          (Insert_Initialization_Check
-             (Left_Opnd (Ada_Node),
-              Left_Type,
-              Left,
-              Domain,
-              Exclude_Components => For_Eq));
-      Right_Expr : constant W_Expr_Id :=
-        New_Temp_For_Expr
-          (Insert_Initialization_Check
-             (Right_Opnd (Ada_Node),
-              Etype (Right_Opnd (Ada_Node)),
-              Right,
-              Domain,
-              Exclude_Components => For_Eq));
-      Arg_Ind    : Positive := 1;
-   begin
+      Left_Expr :=
+        Insert_Initialization_Check
+          (Left_Opnd (Ada_Node),
+           Left_Type,
+           Left,
+           Domain,
+           Exclude_Components => For_Eq);
+      Right_Expr :=
+        Insert_Initialization_Check
+          (Right_Opnd (Ada_Node),
+           Etype (Right_Opnd (Ada_Node)),
+           Right,
+           Domain,
+           Exclude_Components => For_Eq);
+
+      --  Potentially check invariants if subcomponents of the array type have
+      --  a user-defined equality.
+
+      Left_Expr :=
+        Insert_Invariant_Check_For_Eq
+          (Left_Opnd (Ada_Node), Left_Type, Left_Expr, Domain);
+      Right_Expr :=
+        Insert_Invariant_Check_For_Eq
+          (Right_Opnd (Ada_Node),
+           Etype (Right_Opnd (Ada_Node)),
+           Right_Expr,
+           Domain);
+
+      Left_Expr := New_Temp_For_Expr (Left_Expr);
+      Right_Expr := New_Temp_For_Expr (Right_Expr);
+
       Add_Array_Arg (Subdomain, Args, Left_Expr, Arg_Ind);
       Add_Array_Arg (Subdomain, Args, Right_Expr, Arg_Ind);
 
@@ -26371,17 +26520,28 @@ package body Gnat2Why.Expr is
                       Params        => Params),
                  Domain => Domain);
          else
-            Result :=
-              New_Ada_Equality
-                (Typ    => Etype (Left_Opnd (Expr)),
-                 Left   => Var,
-                 Right  =>
-                   Transform_Expr
-                     (Expr          => Alt,
-                      Expected_Type => Base_Type,
-                      Domain        => Subdomain,
-                      Params        => Params),
-                 Domain => Domain);
+            declare
+               Right_Expr : W_Expr_Id :=
+                 Transform_Expr
+                   (Expr          => Alt,
+                    Expected_Type => Base_Type,
+                    Domain        => Subdomain,
+                    Params        => Params);
+            begin
+               Right_Expr :=
+                 Insert_Invariant_Check_For_Eq
+                   (Ada_Node         => Alt,
+                    Typ              => Etype (Alt),
+                    W_Expr           => Right_Expr,
+                    Domain           => Subdomain,
+                    Force_Predefined => False);
+               Result :=
+                 New_Ada_Equality
+                   (Typ    => Etype (Left_Opnd (Expr)),
+                    Left   => Var,
+                    Right  => Right_Expr,
+                    Domain => Domain);
+            end;
          end if;
 
          return Result;
@@ -26769,8 +26929,8 @@ package body Gnat2Why.Expr is
       --  initialization of additional subcomponents whose type has relaxed
       --  initialization.
 
-      if Initialization_Check_For_Eq
-        and then Use_Predefined_Equality_For_Type (Etype (Var))
+      if Use_Predefined_Equality_For_Type (Etype (Var))
+        and then Initialization_Check_For_Eq
       then
          Var_Expr :=
            Insert_Initialization_Check
@@ -26780,6 +26940,16 @@ package body Gnat2Why.Expr is
               Domain             => Subdomain,
               Exclude_Components => For_Eq);
       end if;
+
+      --  Also perform invariant checks if needed.
+
+      Var_Expr :=
+        Insert_Invariant_Check_For_Eq
+          (Ada_Node         => Var,
+           Typ              => Etype (Var),
+           W_Expr           => Var_Expr,
+           Domain           => Domain,
+           Force_Predefined => False);
 
       if Present (Alternatives (Expr)) then
          declare
@@ -28108,6 +28278,18 @@ package body Gnat2Why.Expr is
            Right_Expr,
            Domain,
            Exclude_Components => For_Eq);
+
+      --  Potentially check invariants if subcomponents of BT have a
+      --  user-defined equality.
+
+      Left_Expr :=
+        Insert_Invariant_Check_For_Eq
+          (Left, Get_Ada_Node (+BT), Left_Expr, Domain);
+      Right_Expr :=
+        Insert_Invariant_Check_For_Eq
+          (Right, Get_Ada_Node (+BT), Right_Expr, Domain);
+
+      --  Introduce checks for the subcomponents of operands
 
       if Is_Class_Wide_Type (Left_Type)
         or else Call_Simulates_Contract_Dispatch (Expr)

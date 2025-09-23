@@ -21,7 +21,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNAT.Regpat;           use GNAT.Regpat;
+with GNAT.Regpat; use GNAT.Regpat;
+
+with Ada.Containers.Hashed_Sets;
 with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;           use Ada.Text_IO;
@@ -117,6 +119,18 @@ package body Flow_Generated_Globals.Phase_2 is
 
    type Phase is (GG_Phase_1, GG_Phase_2);
 
+   --------------------------------------
+   -- Tasking analysis data structures --
+   --------------------------------------
+
+   package Tasking_Graph is new
+     Graphs
+       (Vertex_Key   => Entity_Name,
+        Key_Hash     => Name_Hash,
+        Edge_Colours => No_Colours,
+        Null_Key     => Entity_Name'Last,
+        Test_Key     => "=");
+
    Tasking_Info_Bag : array (Phase, Tasking_Info_Kind) of Name_Graphs.Map :=
      (others => (others => Name_Graphs.Empty_Map));
    --  Maps from subprogram names to accessed objects
@@ -124,6 +138,41 @@ package body Flow_Generated_Globals.Phase_2 is
    --  In phase 1 it is populated with objects directly accessed by each
    --  subprogram and stored in the ALI file. In phase 2 it is populated
    --  with objects directly and indirectly accessed by each subprogram.
+
+   --  For protected calls we recreate data structures from phase 1, including
+   --  sets where only the prefix of the protected call is important while the
+   --  protected operation acts as extra information (and we only use it for
+   --  call traces).
+
+   type Protected_Call is record
+      Prefix    : Entity_Name;
+      Operation : Entity_Name;
+   end record;
+
+   function Hash (P : Protected_Call) return Ada.Containers.Hash_Type
+   is (Name_Hash (P.Prefix));
+
+   function Have_Same_Prefix (A, B : Protected_Call) return Boolean
+   is (A.Prefix = B.Prefix);
+
+   package Protected_Call_Sets is new
+     Ada.Containers.Hashed_Sets
+       (Element_Type        => Protected_Call,
+        Hash                => Hash,
+        Equivalent_Elements => Have_Same_Prefix);
+
+   package Locking_Call_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => Entity_Name,
+        Element_Type    => Protected_Call_Sets.Set,
+        Hash            => Name_Hash,
+        Equivalent_Keys => "=",
+        "="             => Protected_Call_Sets."=");
+   --  Maps from callers to protected calls that they execute
+
+   subtype Locking_Call_Map is Locking_Call_Maps.Map;
+
+   Locks : Locking_Call_Map;
 
    package Entity_Name_Graphs is new
      Graphs
@@ -181,14 +230,21 @@ package body Flow_Generated_Globals.Phase_2 is
    --  from the body (otherwise they have no body or the body is not in SPARK).
    --  Edges correspond to subprogram calls.
 
-   Ceiling_Priority_Call_Graph : Entity_Name_Graphs.Graph :=
-     Entity_Name_Graphs.Create;
+   Ceiling_Priority_Call_Graph : Tasking_Graph.Graph := Tasking_Graph.Create;
    --  Call graph for ceiling priority checks
    --
    --  It is similar to other call graphs, but rooted at task types, main-like
    --  subprograms and protected operations (i.e. entries, protected functions
    --  and protected procedures) in current compilation unit and is cut at
    --  protected operations.
+
+   Original_Priority_Call_Graph : Tasking_Graph.Graph;
+   --  Unlike some other graphs this graph has not been transitively closed.
+   --  Mainly because for call chains involving protected objects (e.g., PO1 ->
+   --  ... -> PO2 -> ... -> PO3) we want to check and report ceiling priority
+   --  violations for each segment (i.e., check calls from PO1 only up to PO2
+   --  and analyze any calls made from PO2 separately). It also simplifies the
+   --  construction call chains in user messages.
 
    Direct_Calls : Name_Graphs.Map;
    --  Map from names of subprograms, entries and task types to subprograms and
@@ -204,17 +260,16 @@ package body Flow_Generated_Globals.Phase_2 is
 
    use type Entity_Name_Graphs.Vertex_Id;
 
-   package Entity_Name_To_Priorities_Maps is new
+   package Entity_Name_To_Priority_Maps is new
      Ada.Containers.Hashed_Maps
        (Key_Type        => Entity_Name,
-        Element_Type    => Object_Priority_Lists.List,
+        Element_Type    => Priority_Value,
         Hash            => Name_Hash,
-        Equivalent_Keys => "=",
-        "="             => Object_Priority_Lists."=");
-   --  Maps from variables containing protected objects to their static
-   --  priorities; for priority ceiling checks.
+        Equivalent_Keys => "=");
+   --  Maps from protected types to its associated priority
 
-   Protected_Objects : Entity_Name_To_Priorities_Maps.Map;
+   Protected_Objects_To_Priorities : Entity_Name_To_Priority_Maps.Map;
+   --  A map from protected objects to their priority
 
    package Entity_Contract_Maps is new
      Ada.Containers.Hashed_Maps
@@ -307,14 +362,6 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Entities annotated as Constant_After_Elaboration
 
    ----------------------------------------------------------------------
-   --  POs information
-   ----------------------------------------------------------------------
-
-   Directly_Called_POs_In_Elaborations : Name_Sets.Set;
-   --  Protected objects directly accessed in elaborations of (possibly) main
-   --  subprograms.
-
-   ----------------------------------------------------------------------
    --  Volatile information
    ----------------------------------------------------------------------
 
@@ -361,8 +408,8 @@ package body Flow_Generated_Globals.Phase_2 is
    --  terribly painful, because they operate on containers with different
    --  items. Here it is intentionally undocumented; see phase 1 for comments.
 
-   function Is_Protected_Operation (E_Name : Entity_Name) return Boolean;
-   --  Return True if E_Name refers to an entry or protected subprogram
+   function Is_Protected_Operation (EN : Entity_Name) return Boolean;
+   --  Return True if EN refers to an entry or protected subprogram
 
    function Is_Predefined (EN : Entity_Name) return Boolean;
    --  Returns True iff EN is a predefined entity
@@ -456,6 +503,9 @@ package body Flow_Generated_Globals.Phase_2 is
 
    procedure Print (G : Constant_Graphs.Graph);
    --  Print graph with dependencies between constants and their inputs
+
+   procedure Print (G : Tasking_Graph.Graph);
+   --  Print graph with calls between main-like programs and protected objects
 
    procedure Print_Tasking_Info_Bag (P : Phase);
    --  Display the tasking-related information
@@ -997,9 +1047,11 @@ package body Flow_Generated_Globals.Phase_2 is
             --  We collect protected operations in SPARK and use them as seeds
             --  to grow the call graph.
 
-            Call_Graph : Entity_Name_Graphs.Graph renames
+            Call_Graph : Tasking_Graph.Graph renames
               Ceiling_Priority_Call_Graph;
             --  A short alias for a long name
+
+            use type Tasking_Graph.Vertex_Id;
 
          begin
             --  First collect SPARK-compliant protected operations, task types
@@ -1023,6 +1075,48 @@ package body Flow_Generated_Globals.Phase_2 is
                end if;
             end loop;
 
+            --  If the root entity is a main-like subprogram, then we need to
+            --  consider also the withed packages and any calls made from their
+            --  elaboration code. That's because it is possible to explicitly
+            --  set the priority of the subprogram and when used as a main its
+            --  priority carries over to the environment task and must be taken
+            --  into account during the elaboration phase. We'll add the withed
+            --  units as additional seed vertexes for the graph.
+            --
+            --  However, the above is irrelevant when the analysis of the root
+            --  entity was not requested (e.g., it was included via the -U
+            --  switch).
+            if Present (Root_Entity)
+              and then Is_Subprogram (Root_Entity)
+              and then Analysis_Requested (Root_Entity, With_Inlined => True)
+              and then Might_Be_Main (Root_Entity)
+              and then Entity_Body_In_SPARK (Root_Entity)
+            then
+               --   We need to add edges from the main to all the withed
+               --   packages.
+               --   We need to:
+               --    1. Identify the top level package
+               --    2. Add edges NOTE: In general, if the root-entity is not a
+               --       subprogram (i.e., there is no "main"-like subprogram),
+               --       then the elaboration of withed packages will not be
+               --       considered (since there will be no way to define a
+               --       conflicting priority in the "withing" package). So,
+               --       adding those edges is
+               --          (a) not needed - optimization?
+               --          (b) could it be wrong/harmful to add them ???
+               declare
+                  V_Main : constant Tasking_Graph.Vertex_Id :=
+                    Call_Graph.Get_Vertex (To_Entity_Name (Root_Entity));
+                  V_Pkg  : Tasking_Graph.Vertex_Id;
+               begin
+                  for E of Top_Level_Packages loop
+                     Stack.Insert (E);
+                     Call_Graph.Add_Vertex (E, V_Pkg);
+                     Call_Graph.Add_Edge (V_Main, V_Pkg);
+                  end loop;
+               end;
+            end if;
+
             --  Then create a call graph for them
             while not Stack.Is_Empty loop
 
@@ -1030,33 +1124,31 @@ package body Flow_Generated_Globals.Phase_2 is
                   Caller : constant Entity_Name := Stack (Stack.First);
                   --  Name of the caller
 
-                  V_Caller : constant Entity_Name_Graphs.Vertex_Id :=
+                  V_Caller : constant Tasking_Graph.Vertex_Id :=
                     Call_Graph.Get_Vertex (Caller);
 
-                  V_Callee : Entity_Name_Graphs.Vertex_Id;
+                  V_Callee : Tasking_Graph.Vertex_Id;
                   --  Call graph vertices for the caller and the callee
 
                begin
                   for Callee of Generated_Calls (Caller) loop
-                     --  Get vertex for the callee
-                     V_Callee := Call_Graph.Get_Vertex (Callee);
+                     --  If the callee is a protected subprogram or entry
+                     --  then do not put it on the stack; if its analysis is
+                     --  requested then it is already a root of the graph.
+                     if not Is_Protected_Operation (Callee) then
+                        --  Get vertex for the callee
+                        V_Callee := Call_Graph.Get_Vertex (Callee);
 
-                     --  If there is no vertex for the callee then create
-                     --  one and put the callee on the stack.
-                     if V_Callee = Entity_Name_Graphs.Null_Vertex then
-                        Call_Graph.Add_Vertex (Callee, V_Callee);
-
-                        --  If the callee is a protected subprogram or entry
-                        --  then do not put it on the stack; if its analysis is
-                        --  requested then it is already a root of the graph.
-                        if not Is_Protected_Operation (Callee) then
+                        --  If there is no vertex for the callee then create
+                        --  one and put the callee on the stack.
+                        if V_Callee = Tasking_Graph.Null_Vertex then
+                           Call_Graph.Add_Vertex (Callee, V_Callee);
                            Stack.Include (Callee);
                         end if;
 
+                        Call_Graph.Add_Edge (V_Caller, V_Callee);
+
                      end if;
-
-                     Call_Graph.Add_Edge (V_Caller, V_Callee);
-
                   end loop;
 
                   --  Pop the caller from the stack
@@ -1064,7 +1156,18 @@ package body Flow_Generated_Globals.Phase_2 is
                end;
             end loop;
 
+            --  Done with the construction of the call graph. As mentioned
+            --  above we don't close this graph.
+
+            pragma Annotate (Xcov, Exempt_On, "Debugging code");
+            if Gnat2Why_Args.Flow_Advanced_Debug then
+               Print (Call_Graph);
+            end if;
+            pragma Annotate (Xcov, Exempt_Off);
+
+            Original_Priority_Call_Graph := Call_Graph;
             Call_Graph.Close;
+
          end Add_Ceiling_Priority_Edges;
       end Add_Edges;
 
@@ -1545,13 +1648,15 @@ package body Flow_Generated_Globals.Phase_2 is
                   declare
                      Entity : Entity_Name;
 
-                     Pos      : Phase_1_Info_Maps.Cursor;
+                     Pos : Phase_1_Info_Maps.Cursor;
+
                      Inserted : Boolean;
 
                   begin
                      Serialize (Entity);
 
                      --  Move global information to separate container
+
                      Phase_1_Info.Insert
                        (Key => Entity, Position => Pos, Inserted => Inserted);
 
@@ -1565,6 +1670,10 @@ package body Flow_Generated_Globals.Phase_2 is
                      --  ??? Clear the original map as a sanity check
                      --  Clear (Phase_1_Info (Entity_Pos).Globals);
 
+                     --  Extract various tasking-related information to further
+                     --  dedicated containers.
+
+                     --  Subprogram names to accessed objects
                      for Kind in Tasking_Info_Kind loop
                         if not Phase_1_Info (Pos).Tasking (Kind).Is_Empty then
                            Tasking_Info_Bag (GG_Phase_1, Kind).Insert
@@ -1572,14 +1681,13 @@ package body Flow_Generated_Globals.Phase_2 is
                         end if;
                      end loop;
 
-                     if Present (Root_Entity)
-                       and then Is_Subprogram (Root_Entity)
-                       and then Might_Be_Main (Root_Entity)
-                       and then Phase_1_Info (Pos).Kind = E_Package
+                     --  Top-level packages
+                     --  Note: This includes also nested packages that are at
+                     --  the library level, but currently it is not an issue.
+                     if Phase_1_Info (Pos).Kind = E_Package
                        and then Phase_1_Info (Pos).Is_Library_Level
                      then
-                        Directly_Called_POs_In_Elaborations.Union
-                          (Phase_1_Info (Pos).Tasking (Locks));
+                        Top_Level_Packages.Include (Entity);
                      end if;
 
                      Register_Nested_Scopes
@@ -1609,42 +1717,66 @@ package body Flow_Generated_Globals.Phase_2 is
 
                when EK_Protected_Instance     =>
                   declare
-                     Variable   : Entity_Name;
-                     Prio_Kind  : Priority_Kind;
-                     Prio_Value : Int;
+                     Variable : Entity_Name;
+                     Prio     : Priority_Value;
+                     Position : Entity_Name_To_Priority_Maps.Cursor;
+                     Inserted : Boolean;
 
                      procedure Serialize is new
                        Flow_Generated_Globals.Phase_2.Read.Serialize_Discrete
                          (Priority_Kind);
 
-                     C : Entity_Name_To_Priorities_Maps.Cursor;
-                     --  Position of a list of protected components of a global
-                     --  variable and their priorities.
-
-                     Dummy : Boolean;
-                     --  Flag that indicates if a key was inserted or if
-                     --  it already existed in a map. It is required by the
-                     --  hashed-maps API, but not used here.
-
                   begin
                      Serialize (Variable);
-                     Serialize (Prio_Kind);
-                     if Prio_Kind = Static then
-                        Serialize (Prio_Value);
+                     Serialize (Prio.Kind);
+                     if Prio.Kind = Static then
+                        Serialize (Prio.Value);
                      else
-                        Prio_Value := 0;
+                        Prio.Value := 0;
                      end if;
 
-                     --  Find a list of protected components of a global
-                     --  variable; if it does not exist then initialize with
-                     --  an empty list.
+                     --  Register object to priority mapping
+                     --
+                     --  Note: In general the priority in SPARK is determined
+                     --  by the type. However, it is simpler to have a bit of
+                     --  redundancy and track the priorities of protected
+                     --  objects directly.
 
-                     Protected_Objects.Insert
-                       (Key => Variable, Position => C, Inserted => Dummy);
+                     Protected_Objects_To_Priorities.Insert
+                       (Variable, Prio, Position, Inserted);
 
-                     Protected_Objects (C).Append
-                       (Priority_Value'
-                          (Kind => Prio_Kind, Value => Prio_Value));
+                     pragma
+                       Assert
+                         (Inserted
+                            or else Protected_Objects_To_Priorities (Position)
+                                    = Prio,
+                          "Conflicting priority values registered");
+                  end;
+
+               when EK_Locking_Call           =>
+                  declare
+                     Caller              : Entity_Name;
+                     Protected_Object    : Entity_Name;
+                     Protected_Operation : Entity_Name;
+
+                     Caller_Position : Locking_Call_Maps.Cursor;
+                     Unused          : Boolean;
+
+                  begin
+                     Serialize (Caller);
+                     Serialize (Protected_Object);
+                     Serialize (Protected_Operation);
+
+                     Locks.Insert
+                       (Key      => Caller,
+                        Position => Caller_Position,
+                        Inserted => Unused);
+
+                     --  Register protected operation that reaches object
+                     Locks (Caller_Position).Insert
+                       (Protected_Call'
+                          (Prefix    => Protected_Object,
+                           Operation => Protected_Operation));
                   end;
 
                when EK_Task_Instance          =>
@@ -1671,16 +1803,29 @@ package body Flow_Generated_Globals.Phase_2 is
                      Entry_Name       : Entity_Name;
                      Max_Queue_Length : Nat;
 
+                     Position : Max_Queue_Lenghts_Maps.Cursor;
+                     Inserted : Boolean;
+
                   begin
                      Serialize (Entry_Name);
                      Serialize (Max_Queue_Length);
 
-                     --  As we are registering the Max_Queue_Lenght for every
-                     --  reference, this might appear in more than one ALI file
-                     --  and therefore we use Include.
+                     --  As we are registering the Max_Queue_Length for every
+                     --  reference, this might appear in more than one ALI
+                     --  file, but the value must be the same in every file.
 
-                     Max_Queue_Lengths.Include
-                       (Key => Entry_Name, New_Item => Max_Queue_Length);
+                     Max_Queue_Lengths.Insert
+                       (Key      => Entry_Name,
+                        New_Item => Max_Queue_Length,
+                        Position => Position,
+                        Inserted => Inserted);
+
+                     pragma
+                       Assert
+                         (Inserted
+                            or else Max_Queue_Lengths (Position)
+                                    = Max_Queue_Length,
+                          "conflicting max queue lengths");
                   end;
 
                when EK_Direct_Calls           =>
@@ -2896,73 +3041,187 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Queries
    --------------------------------------------------------------------------
 
-   --------------------------
-   -- Component_Priorities --
-   --------------------------
+   function Shortest_Call_Trace
+     (Source : Entity_Name; Target : Entity_Name) return Name_Lists.List;
+   --  Returns a shortest call trace from subprogram Source to a protected
+   --  object Target.
 
-   function Component_Priorities
-     (Obj : Entity_Name) return Object_Priority_Lists.List
-   renames Protected_Objects.Element;
+   -------------------------------
+   -- Protected_Object_Priority --
+   -------------------------------
+
+   function Protected_Object_Priority (Obj : Entity_Name) return Priority_Value
+   renames Protected_Objects_To_Priorities.Element;
+
+   -------------------------
+   -- Shortest_Call_Trace --
+   -------------------------
+
+   function Shortest_Call_Trace
+     (Source : Entity_Name; Target : Entity_Name) return Name_Lists.List
+   is
+      Call_Graph : Tasking_Graph.Graph renames Original_Priority_Call_Graph;
+
+      Trace                : Name_Lists.List;
+      Final_Protected_Call : Entity_Name;
+      --  The result trace and the final protected operation on that trace
+
+      procedure Add_Call_To_Trace (V : Tasking_Graph.Vertex_Id);
+      --  Add subprogram corresponding to vertex V to the result trace
+
+      procedure Has_Call_To_Target
+        (V           : Tasking_Graph.Vertex_Id;
+         Instruction : out Tasking_Graph.Traversal_Instruction);
+      --  Protected objects and protected operations that access them are
+      --  not part of the graph, so this routine explicitly checks if a
+      --  given subprogram calls the Target protected object.
+
+      -----------------------
+      -- Add_Call_To_Trace --
+      -----------------------
+
+      procedure Add_Call_To_Trace (V : Tasking_Graph.Vertex_Id) is
+         Call : constant Entity_Name := Call_Graph.Get_Key (V);
+      begin
+         Trace.Append (Call);
+      end Add_Call_To_Trace;
+
+      ------------------------
+      -- Has_Call_To_Target --
+      ------------------------
+
+      procedure Has_Call_To_Target
+        (V           : Tasking_Graph.Vertex_Id;
+         Instruction : out Tasking_Graph.Traversal_Instruction)
+      is
+         Caller       : constant Entity_Name := Call_Graph.Get_Key (V);
+         Phase_1_Info : Locking_Call_Map renames Locks;
+
+         Caller_Position : constant Locking_Call_Maps.Cursor :=
+           Phase_1_Info.Find (Caller);
+
+      begin
+         if Locking_Call_Maps.Has_Element (Caller_Position) then
+            declare
+               Protected_Calls : Protected_Call_Sets.Set renames
+                 Phase_1_Info (Caller_Position);
+
+               Target_Position : constant Protected_Call_Sets.Cursor :=
+                 Protected_Calls.Find
+                   (Protected_Call'
+                      (Prefix => Target, Operation => Entity_Name'Last));
+               --  The protected operation is not actually used when finding a
+               --  protected call, so we just use a dummy value.
+
+            begin
+               --  If there is a protected call to the given protected object,
+               --  then we pick the actual protected operation from that call.
+
+               if Protected_Call_Sets.Has_Element (Target_Position) then
+                  Final_Protected_Call :=
+                    Protected_Calls (Target_Position).Operation;
+                  Instruction := Tasking_Graph.Found_Destination;
+                  return;
+               end if;
+            end;
+         end if;
+
+         Instruction := Tasking_Graph.Continue;
+      end Has_Call_To_Target;
+
+   begin
+      Call_Graph.Shortest_Path
+        (Start         => Call_Graph.Get_Vertex (Source),
+         Allow_Trivial => True,
+         Search        => Has_Call_To_Target'Access,
+         Step          => Add_Call_To_Trace'Access);
+
+      Trace.Append (Final_Protected_Call);
+
+      return Trace;
+   end Shortest_Call_Trace;
 
    ---------------------------------------
    -- Directly_Called_Protected_Objects --
    ---------------------------------------
 
    function Directly_Called_Protected_Objects
-     (E : Entity_Id) return Name_Sets.Set
+     (E : Entity_Id) return Locking_Traces_List
    is
       EN : constant Entity_Name := To_Entity_Name (E);
 
-      use Entity_Name_Graphs;
+      use Tasking_Graph;
 
-      Call_Graph : Graph renames Ceiling_Priority_Call_Graph;
+      Call_Graph : Tasking_Graph.Graph renames Ceiling_Priority_Call_Graph;
 
-      Res : Name_Sets.Set;
-      V   : constant Vertex_Id := Call_Graph.Get_Vertex (EN);
+      Locking_Targets : Name_Sets.Set;
+      --  Reachable protected objects
+
+      Res : Locking_Traces_List;
+      --  Reachable protected objects and respective call traces
 
       procedure Collect_Objects_From_Subprogram (S : Entity_Name);
-      --  Collect protected objects directly accessed from subprogram S
+      --  Collect protected objects directly accessed from S. Here S is either
+      --  a subprogram or package. In the latter case the calls from the
+      --  elaboration code of S are being considered. The analysis is based on
+      --  the locking calls identified in Phase 1. The call graph is not
+      --  considered in this subroutine.
 
       -------------------------------------
       -- Collect_Objects_From_Subprogram --
       -------------------------------------
 
       procedure Collect_Objects_From_Subprogram (S : Entity_Name) is
+         Phase_1_Info : Locking_Call_Map renames Locks;
+
+         Caller_Position : constant Locking_Call_Maps.Cursor :=
+           Phase_1_Info.Find (S);
       begin
-         declare
-            Phase_1_Info : Name_Graphs.Map renames
-              Tasking_Info_Bag (GG_Phase_1, Locks);
 
-            C : constant Name_Graphs.Cursor := Phase_1_Info.Find (S);
+         --  Check if S makes any locking calls
 
-         begin
-            if Has_Element (C) then
-               Res.Union (Phase_1_Info (C));
-            end if;
-         end;
+         if Locking_Call_Maps.Has_Element (Caller_Position) then
+
+            --  Collect all the target protected objects. For the ceiling
+            --  locking analysis this will be sufficient since all the
+            --  protected operations in one type have the same priority.
+
+            for Call of Phase_1_Info (Caller_Position) loop
+               declare
+                  Target : Entity_Name renames Call.Prefix;
+               begin
+                  Locking_Targets.Include (Target);
+               end;
+            end loop;
+         end if;
       end Collect_Objects_From_Subprogram;
+
+      Caller : constant Tasking_Graph.Vertex_Id := Call_Graph.Get_Vertex (EN);
 
       --  Start of processing for Directly_Called_Protected_Objects
 
    begin
-      --  Collect objects from the caller subprogram itself
+      --  Explicitly collect objects from the initial subprogram, because
+      --  the transitive closure graph is not reflexive.
+
       Collect_Objects_From_Subprogram (EN);
 
-      --  and from all its callees
-      for Obj of Call_Graph.Get_Collection (V, Out_Neighbours) loop
+      for Obj of Call_Graph.Get_Collection (Caller, Out_Neighbours) loop
          declare
             Callee : constant Entity_Name := Call_Graph.Get_Key (Obj);
          begin
+            --  Protected operations should not be part of this graph;
+            --  they need to be explicitcly picked from the subprogram.
+            pragma Assert (not Is_Protected_Operation (Callee));
             Collect_Objects_From_Subprogram (Callee);
          end;
       end loop;
 
-      --  For a (possibly) main subprogram we also consider protected objects
-      --  that are accessed in elaborations.
-      if E = Root_Entity and then Is_Subprogram (E) and then Might_Be_Main (E)
-      then
-         Res.Union (Directly_Called_POs_In_Elaborations);
-      end if;
+      for Target of Locking_Targets loop
+         Res.Append
+           (Locking_Trace'
+              (Obj => Target, Trace => Shortest_Call_Trace (EN, Target)));
+      end loop;
 
       return Res;
    end Directly_Called_Protected_Objects;
@@ -3680,8 +3939,8 @@ package body Flow_Generated_Globals.Phase_2 is
    -- Is_Protected_Operation --
    ----------------------------
 
-   function Is_Protected_Operation (E_Name : Entity_Name) return Boolean is
-      C : constant Phase_1_Info_Maps.Cursor := Phase_1_Info.Find (E_Name);
+   function Is_Protected_Operation (EN : Entity_Name) return Boolean is
+      C : constant Phase_1_Info_Maps.Cursor := Phase_1_Info.Find (EN);
    begin
       if Phase_1_Info_Maps.Has_Element (C) then
          declare
@@ -4021,6 +4280,78 @@ package body Flow_Generated_Globals.Phase_2 is
 
       Filename : constant String :=
         Unique_Name (Unique_Main_Unit_Entity) & "_constants_2";
+
+      --  Start of processing for Print_Graph
+
+   begin
+      if Gnat2Why_Args.Flow_Advanced_Debug then
+         G.Write_Pdf_File
+           (Filename  => Filename,
+            Node_Info => NDI'Access,
+            Edge_Info => EDI'Access);
+      end if;
+   end Print;
+
+   procedure Print (G : Tasking_Graph.Graph) is
+      use Tasking_Graph;
+
+      function NDI (G : Graph; V : Vertex_Id) return Node_Display_Info;
+      --  Pretty-printing for vertices in the dot output
+
+      function EDI
+        (G      : Graph;
+         A      : Vertex_Id;
+         B      : Vertex_Id;
+         Marked : Boolean;
+         Colour : No_Colours) return Edge_Display_Info;
+      --  Pretty-printing for edges in the dot output
+
+      ---------
+      -- NDI --
+      ---------
+
+      function NDI (G : Graph; V : Vertex_Id) return Node_Display_Info is
+         E : constant Entity_Name := G.Get_Key (V);
+      begin
+         return
+           (Show        => True,
+            Shape       => Shape_Box,
+            Colour      => Null_Unbounded_String,
+            Fill_Colour =>
+              (if Is_Protected_Operation (E)
+               then To_Unbounded_String ("gray")
+               else Null_Unbounded_String),
+            Label       => To_Unbounded_String (To_String (E)));
+      end NDI;
+
+      ---------
+      -- EDI --
+      ---------
+
+      function EDI
+        (G      : Graph;
+         A      : Vertex_Id;
+         B      : Vertex_Id;
+         Marked : Boolean;
+         Colour : No_Colours) return Edge_Display_Info
+      is
+         pragma Unreferenced (G, A, B, Marked, Colour);
+      begin
+         return
+           (Show   => True,
+            Shape  => Edge_Normal,
+            Colour => Null_Unbounded_String,
+            Label  => Null_Unbounded_String);
+      end EDI;
+
+      --  Local constants
+
+      Filename : constant String :=
+      --  CPCG: Short name for Ceiling Priority Call Graph. To be updated and
+      --  parameterized when the printing of other tasking graphs will be
+      --  added.
+        Unique_Name (Unique_Main_Unit_Entity)
+        & "_cpcg";
 
       --  Start of processing for Print_Graph
 

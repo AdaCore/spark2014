@@ -130,13 +130,17 @@ package Flow.Control_Flow_Graph.Utility is
 
    function Make_Call_Attributes
      (Callsite   : Node_Id;
+      Callee     : Entity_Id;
       Var_Use    : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
       Subp_Calls : Call_Sets.Set := Call_Sets.Empty_Set;
       Indt_Calls : Node_Sets.Set := Node_Sets.Empty_Set;
       Vertex_Ctx : Vertex_Context;
       E_Loc      : Node_Or_Entity_Id := Empty) return V_Attributes
    with
-     Pre  => Nkind (Callsite) in N_Subprogram_Call | N_Entry_Call_Statement,
+     Pre  =>
+       Nkind (Callsite) in N_Subprogram_Call | N_Entry_Call_Statement
+       and then (Is_Subprogram_Or_Entry (Callee)
+                 or else Ekind (Callee) = E_Subprogram_Type),
      Post =>
        not Make_Call_Attributes'Result.Is_Null_Node
        and Make_Call_Attributes'Result.Is_Program_Node
@@ -148,7 +152,8 @@ package Flow.Control_Flow_Graph.Utility is
 
    function Make_Parameter_Attributes
      (FA         : Flow_Analysis_Graphs;
-      Callsite   : Node_Id;
+      Call       : Node_Id;
+      Callsite   : Flow_Graphs.Vertex_Id;
       Actual     : Node_Id;
       Formal     : Entity_Id;
       In_Vertex  : Boolean;
@@ -161,7 +166,8 @@ package Flow.Control_Flow_Graph.Utility is
        (Is_Formal (Formal) or else Is_Function_With_Side_Effects (Formal))
        and then (if Ekind (Formal) = E_In_Parameter
                  then In_Vertex or else Is_Writable_Parameter (Formal))
-       and then Nkind (Actual) in N_Subexpr | N_Defining_Identifier,
+       and then Nkind (Actual) in N_Subexpr | N_Defining_Identifier
+       and then Nkind (Call) in N_Subprogram_Call | N_Entry_Call_Statement,
      Post =>
        not Make_Parameter_Attributes'Result.Is_Null_Node
        and not Make_Parameter_Attributes'Result.Is_Program_Node
@@ -174,7 +180,7 @@ package Flow.Control_Flow_Graph.Utility is
    --  Note: variables defined and used are calculated automatically
 
    function Make_Global_Attributes
-     (Callsite   : Node_Id;
+     (Callsite   : Flow_Graphs.Vertex_Id;
       Global     : Flow_Id;
       Mode       : Param_Mode;
       Scope      : Flow_Scope;
@@ -191,14 +197,15 @@ package Flow.Control_Flow_Graph.Utility is
    --  used are calculated automatically.
 
    function Make_Implicit_Parameter_Attributes
-     (FA          : Flow_Analysis_Graphs;
-      Call_Vertex : Node_Id;
-      In_Vertex   : Boolean;
-      Scope       : Flow_Scope;
-      Subp_Calls  : Call_Sets.Set := Call_Sets.Empty_Set;
-      Indt_Calls  : Node_Sets.Set := Node_Sets.Empty_Set;
-      Vertex_Ctx  : Vertex_Context;
-      E_Loc       : Node_Or_Entity_Id) return V_Attributes
+     (FA         : Flow_Analysis_Graphs;
+      Call       : Node_Id;
+      Callsite   : Flow_Graphs.Vertex_Id;
+      In_Vertex  : Boolean;
+      Scope      : Flow_Scope;
+      Subp_Calls : Call_Sets.Set := Call_Sets.Empty_Set;
+      Indt_Calls : Node_Sets.Set := Node_Sets.Empty_Set;
+      Vertex_Ctx : Vertex_Context;
+      E_Loc      : Node_Or_Entity_Id) return V_Attributes
    with
      Post =>
        not Make_Implicit_Parameter_Attributes'Result.Is_Null_Node
