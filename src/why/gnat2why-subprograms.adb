@@ -4011,6 +4011,7 @@ package body Gnat2Why.Subprograms is
 
       if not Init_Conds.Is_Empty
         and then (No (Body_N) or else Entity_Body_In_SPARK (E))
+        and then not Is_Ignored_Internal (Body_N)
       then
          Post := True_Pred;
 
