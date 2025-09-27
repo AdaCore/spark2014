@@ -9,7 +9,6 @@ import re
 import sys
 from time import sleep
 from e3.os.fs import which
-from e3.env import Env
 from e3.os.process import Run, STDOUT
 from test_util import sort_key_for_errors
 
@@ -758,26 +757,6 @@ def spark_install_path():
     """the location of the SPARK install"""
     exec_loc = which("gnatprove")
     return os.path.dirname(os.path.dirname(exec_loc))
-
-
-def altergo(src, timeout=10, opt=None):
-    """Invoke alt-ergo with why3-cpulimit wrapper
-
-    PARAMETERS
-      src: VC file to process
-      timeout: timeout passed to why3-cpulimit
-      opt: additional command line options for alt-ergo
-    """
-    # add libexec/spark/bin to the PATH
-    installdir = spark_install_path()
-    bindir = os.path.join(installdir, "libexec", "spark", "bin")
-    Env().add_path(bindir)
-    # run alt-ergo
-    cmd = ["alt-ergo", "-steps-bound", "20000"]
-    cmd += to_list(opt)
-    cmd += [src]
-    process = Run(cmd)
-    print(process.out)
 
 
 def strip_provers_output(s):
