@@ -8,7 +8,7 @@ import os
 import re
 import sys
 from time import sleep
-from e3.os.fs import which
+from shutil import which
 from e3.os.process import Run, STDOUT
 from test_util import sort_key_for_errors
 
