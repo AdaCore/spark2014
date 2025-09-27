@@ -7,6 +7,7 @@ import json
 import os
 import re
 import sys
+from fnmatch import fnmatch
 from time import sleep
 from shutil import which
 from e3.os.process import Run, STDOUT
@@ -134,21 +135,27 @@ def cat(filename, sort=False, start=1, end=0):
                         print(line, end="")
 
 
-def ls(directory=None, filter_output=None):
-    """ls wrapper for the testsuite
+def ls(path=".", exclude_pattern=None):
+    try:
+        if os.path.isfile(path):
+            print(path)
+        elif os.path.isdir(path):
+            entries = os.listdir(path)
+            entries.sort()
 
-    PARAMETERS
-       directory: the name of the directory to list the files of
-    """
-    if directory:
-        cmd = ["ls", directory]
-    else:
-        cmd = ["ls"]
-    process = Run(cmd)
-    strlist = str.splitlines(process.out)
-    if filter_output is not None:
-        strlist = grep(filter_output, strlist, invert=True)
-    print_sorted(strlist)
+            if exclude_pattern:
+                entries = [
+                    entry for entry in entries if not fnmatch(entry, exclude_pattern)
+                ]
+
+            for entry in entries:
+                print(entry)
+        else:
+            print(f"Error: '{path!r}' is neither a file nor a directory.")
+    except FileNotFoundError:
+        print(f"Error: The path '{path!r}' does not exist.")
+    except PermissionError:
+        print(f"Error: Permission denied to access '{path!r}'.")
 
 
 def matches(comp_reg, s, invert):
