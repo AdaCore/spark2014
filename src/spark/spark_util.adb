@@ -3735,7 +3735,6 @@ package body SPARK_Util is
 
    function Is_Ghost_With_Respect_To_Context (Call : N_Call_Id) return Boolean
    is
-
       function Is_Body (N : Node_Id) return Boolean
       is (Nkind (N) in N_Entity_Body);
 
@@ -3745,19 +3744,33 @@ package body SPARK_Util is
         (if Nkind (Call) = N_Function_Call
          then Enclosing_Statement_Of_Call_To_Function_With_Side_Effects (Call)
          else Call);
+      Ent  : constant Entity_Id :=
+        (case Nkind (Stmt) is
+           when N_Assignment_Statement                              =>
+             Get_Enclosing_Ghost_Entity (Name (Stmt)),
+           when N_Object_Declaration                                =>
+             Defining_Entity (Stmt),
+           when N_Procedure_Call_Statement | N_Entry_Call_Statement =>
+             Get_Called_Entity (Stmt),
+           when others                                              =>
+             raise Program_Error);
+
    begin
-      if Is_Ghost_Assignment (Stmt)
-        or else Is_Ghost_Declaration (Stmt)
-        or else Is_Ghost_Procedure_Call (Stmt)
-      then
+      if not Is_Ghost_Entity (Ent) then
+         return False;
+      else
          declare
             Caller : constant Entity_Id :=
               Unique_Defining_Entity (Enclosing_Body (Stmt));
          begin
-            return not Is_Ghost_Entity (Caller);
+            return
+              not Is_Ghost_Entity (Caller)
+              or else (Is_Checked_Ghost_Entity (Caller)
+                       and then not Is_Checked_Ghost_Entity (Ent))
+              or else not Is_Assertion_Level_Dependent
+                            (Ghost_Assertion_Level (Caller),
+                             Ghost_Assertion_Level (Ent));
          end;
-      else
-         return False;
       end if;
    end Is_Ghost_With_Respect_To_Context;
 
