@@ -23,6 +23,7 @@
 
 --  This package provides mechanisms for emitting errors and warnings.
 
+with Atree;          use Atree;
 with Errout_Wrapper; use Errout_Wrapper;
 with Flow;           use Flow;
 with Flow_Types;     use Flow_Types;
@@ -84,7 +85,8 @@ package Flow_Error_Messages is
                    when Flow_Error_Kind   => Severity = Error_Kind,
                    when Flow_Check_Kind   =>
                      Severity in Check_Kind | Info_Kind,
-                   when Flow_Warning_Kind => Severity = Warning_Kind);
+                   when Flow_Warning_Kind => Severity = Warning_Kind)
+       and then Present (N);
    --  Output a message attached to the given node with a substitution
    --  using F1, F2 and F3. If not empty, the details, explanation and possible
    --  fix for the check are appended to the message with a substitution for

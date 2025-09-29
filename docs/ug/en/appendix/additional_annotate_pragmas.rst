@@ -146,6 +146,11 @@ cannot lead to overflow. Unary negation is checked for possible non-nullity of
 its argument, which leads to overflow. The predecessor attribute ``'Pred`` and
 successor attribute ``'Succ`` are also checked for possible overflows.
 
+.. warning::
+
+   Even if a type is annotated with ``No_Wrap_Arround``, no overflow checks are
+   introduced for computations done at compile time in static expressions.
+
 Annotation for Simplifying Iteration for Proof
 ----------------------------------------------
 

@@ -31,6 +31,8 @@ package Flow_Generated_Globals.ALI_Serialization is
       EK_State_Map,
       EK_Remote_States,
       EK_Predef_Init_Entities,
+      EK_Ghost_Assertion_Level,
+      EK_Parent_Assertion_Levels,
       EK_Checked_Ghost_Entities,
       EK_Ignored_Ghost_Entities,
       EK_Constants,

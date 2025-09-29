@@ -7,14 +7,13 @@ procedure Main with SPARK_Mode is
       null;
    end record;
 
-   procedure P is
-      Y1 : My_Rec := (D => False);
-   begin
-      --  Objects of immutable record type are always constrained
-      pragma Assert (not Y1'Constrained); --@ASSERT:FAIL
-      pragma Assert (Y1'Constrained); --@ASSERT:PASS
-   end P;
+   Y : My_Rec := (D => False);
+   Z : constant My_Rec := (D => False);
+   --  Objects of immutable record type are always constrained
+
+   pragma Assert (Y'Constrained); --@ASSERT:PASS
+   pragma Assert (Z'Constrained); --@ASSERT:PASS
 
 begin
-   P;
+   null;
 end Main;

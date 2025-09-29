@@ -5,5 +5,5 @@ exc_prot.ads:9:16: info: implicit aspect Always_Terminates on "Get" has been pro
 exc_prot.ads:11:17: info: postcondition proved (CVC5: 1 VC)
 exc_prot.ads:13:43: info: exceptional case proved (CVC5: 1 VC)
 exc_prot.ads:15:43: info: exceptional case proved (CVC5: 1 VC)
-use_exc_prot.adb:3:11: info: ceiling priority protocol is respected (CVC5: 1 VC)
+use_exc_prot.adb:3:11: info: ceiling priority protocol is respected for "Exc_Prot.Counter" (CVC5: 1 VC)
 use_exc_prot.adb:5:11: medium: unexpected exception might be raised

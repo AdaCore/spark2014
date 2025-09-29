@@ -35,9 +35,9 @@ concurrency_example_fixed.adb:41:25: medium: assertion might fail [possible fix:
 concurrency_example_fixed.adb:42:31: medium: range check might fail [reason for check: value must fit in the target type of the assignment] [possible fix: loop at line 35 should mention Deadline in a loop invariant]
 concurrency_example_fixed.adb:42:33: info: range check proved (CVC5: 1 VC)
 concurrency_example_fixed.ads:8:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
-concurrency_example_fixed.ads:14:09: info: ceiling priority protocol is respected (CVC5: 1 VC)
+concurrency_example_fixed.ads:14:09: info: ceiling priority protocol is respected for "Concurrency_Example_Fixed.Data" (CVC5: 1 VC)
 concurrency_example_fixed.ads:14:09: info: nontermination of task proved (CVC5: 1 VC)
-concurrency_example_fixed.ads:15:09: info: ceiling priority protocol is respected (CVC5: 1 VC)
+concurrency_example_fixed.ads:15:09: info: ceiling priority protocol is respected for "Concurrency_Example_Fixed.Data" (CVC5: 1 VC)
 concurrency_example_fixed.ads:15:09: info: nontermination of task proved (CVC5: 1 VC)
 counter_example.adb:3:13: info: implicit aspect Always_Terminates on "Pick_Last" has been proved, subprogram will terminate
 counter_example.adb:3:82: info: index check proved (CVC5: 2 VC)

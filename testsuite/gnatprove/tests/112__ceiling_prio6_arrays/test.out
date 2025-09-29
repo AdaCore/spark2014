@@ -1,4 +1,4 @@
-main.adb:3:11: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "Prots.Po_Arr" must be >= the priority of the caller "Main" in the call chain "Main" -> "Proxy.Proxy_Proc2" -> "Prots.Proc2" -> "Prots.Pt.Pp2"]
+main.adb:3:11: medium: ceiling priority protocol might not be respected for "Prots.Po_Arr" [reason for check: ceiling priority of the protected object "Prots.Po_Arr" must be >= the priority of the caller "Main" in the call chain "Main" -> "Proxy.Proxy_Proc2" -> "Prots.Proc2" -> "Prots.Pt.Pp2"]
 prots.ads:5:17: info: aspect Always_Terminates on "PP1" has been proved, subprogram will terminate
 prots.ads:6:12: info: data dependencies proved
 prots.ads:7:17: info: aspect Always_Terminates on "PP2" has been proved, subprogram will terminate

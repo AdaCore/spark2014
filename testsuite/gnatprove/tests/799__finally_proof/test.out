@@ -7,8 +7,8 @@ finally_exceptions.adb:19:22: info: assertion proved (CVC5: 1 VC)
 finally_frame_condition.adb:4:14: warning: subprogram "Write_Detection" has no effect
 finally_frame_condition.adb:5:04: warning: analyzing unreferenced procedure "Write_Detection" [unreferenced-procedure]
 finally_frame_condition.adb:11:28: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
-finally_frame_condition.adb:15:20: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
-finally_frame_condition.adb:19:22: medium: assertion might fail
+finally_frame_condition.adb:15:20: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 11 should mention X in a loop invariant]
+finally_frame_condition.adb:19:22: medium: assertion might fail [possible fix: loop at line 11 should mention X in a loop invariant]
 finally_frame_condition.adb:22:14: warning: subprogram "Loop_Needing_Accurate_Analysis" has no effect
 finally_frame_condition.adb:23:04: warning: analyzing unreferenced procedure "Loop_Needing_Accurate_Analysis" [unreferenced-procedure]
 finally_frame_condition.adb:29:20: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 27 should mention X in a loop invariant]
@@ -29,8 +29,6 @@ finally_range.adb:40:31: info: exit case proved (Z3: 1 VC)
 finally_range.adb:40:31: info: on exceptional exit from Test at finally_range.adb:8
 finally_range.adb:45:17: info: add a contract to analyze it separately from calling contexts
 finally_range.adb:45:17: info: local subprogram "Enter" only analyzed in the context of calls [info-unrolling-inlining]
-finally_range.adb:48:16: warning: unused assignment, in call inlined at finally_range.adb:188
-finally_range.adb:48:16: warning: unused assignment, in call inlined at finally_range.adb:190
 finally_range.adb:48:25: info: overflow check proved (CVC5: 2 VC), in call inlined at finally_range.adb:104
 finally_range.adb:48:25: info: overflow check proved (CVC5: 2 VC), in call inlined at finally_range.adb:107
 finally_range.adb:48:25: info: overflow check proved (CVC5: 2 VC), in call inlined at finally_range.adb:110
@@ -93,17 +91,12 @@ finally_range.adb:57:25: info: when an exception is raised at finally_range.adb:
 finally_range.adb:57:25: info: when an exception is raised at finally_range.adb:81
 finally_range.adb:59:17: info: add a contract to analyze it separately from calling contexts
 finally_range.adb:59:17: info: local subprogram "Register" only analyzed in the context of calls [info-unrolling-inlining]
-finally_range.adb:65:30: warning: unused assignment, in call inlined at finally_range.adb:281
-finally_range.adb:65:30: warning: unused assignment, in call inlined at finally_range.adb:286
 finally_range.adb:67:23: warning: unused assignment, in call inlined at finally_range.adb:136
 finally_range.adb:67:23: warning: unused assignment, in call inlined at finally_range.adb:161
-finally_range.adb:67:23: warning: unused assignment, in call inlined at finally_range.adb:281
-finally_range.adb:67:23: warning: unused assignment, in call inlined at finally_range.adb:286
 finally_range.adb:67:23: warning: unused assignment, in call inlined at finally_range.adb:93
 finally_range.adb:72:22: info: assertion proved (CVC5: 1 VC)
 finally_range.adb:73:07: info: analyzing call to "Enter" in context
 finally_range.adb:77:10: info: analyzing call to "Enter" in context
-finally_range.adb:80:23: warning: unused assignment
 finally_range.adb:85:16: info: analyzing call to "Enter" in context
 finally_range.adb:89:16: info: analyzing call to "Final_Section" in context
 finally_range.adb:93:10: info: analyzing call to "Register" in context
@@ -111,7 +104,6 @@ finally_range.adb:98:10: info: analyzing call to "Final_Section" in context
 finally_range.adb:100:07: info: analyzing call to "Register" in context
 finally_range.adb:104:13: info: analyzing call to "Enter" in context
 finally_range.adb:107:19: info: analyzing call to "Enter" in context
-finally_range.adb:108:30: warning: unused variable "I"
 finally_range.adb:108:48: warning: this statement is never reached
 finally_range.adb:110:25: info: analyzing call to "Enter" in context
 finally_range.adb:131:24: info: analyzing call to "Final_Section" in context
@@ -122,9 +114,9 @@ finally_range.adb:161:13: info: analyzing call to "Register" in context
 finally_range.adb:177:16: info: analyzing call to "Register" in context
 finally_range.adb:179:13: info: analyzing call to "Final_Section" in context
 finally_range.adb:184:07: info: analyzing call to "Register" in context
+finally_range.adb:187:17: warning: initialization of "B" has no effect
 finally_range.adb:188:13: info: analyzing call to "Enter" in context
 finally_range.adb:190:16: info: analyzing call to "Enter" in context
-finally_range.adb:192:29: warning: unused assignment
 finally_range.adb:196:18: info: analyzing call to "Final_Section" in context
 finally_range.adb:199:13: info: analyzing call to "Final_Section" in context
 finally_range.adb:200:13: info: analyzing call to "Register" in context
@@ -170,10 +162,8 @@ finally_structural_variants.adb:30:25: info: pointer dereference check proved (C
 finally_structural_variants.adb:30:31: info: absence of resource or memory leak proved (CVC5: 1 VC)
 finally_structural_variants.adb:34:18: medium: subprogram variant might fail [possible explanation: the value designated by "X" might be updated]
 finally_structural_variants.adb:34:25: info: pointer dereference check proved (CVC5: 1 VC)
-finally_structural_variants.adb:43:23: warning: loop condition is stable
 finally_structural_variants.adb:44:10: info: loop variant proved (Trivial)
 finally_structural_variants.adb:47:39: info: loop invariant initialization proved (CVC5: 1 VC)
-finally_structural_variants.adb:49:19: warning: statement has no effect
 finally_structural_variants.adb:49:25: info: pointer dereference check proved (CVC5: 1 VC)
 finally_structural_variants.adb:60:25: info: pointer dereference check proved (CVC5: 1 VC)
 finally_structural_variants.adb:60:25: info: when an exception is raised at finally_structural_variants.adb:53

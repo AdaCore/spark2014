@@ -2064,6 +2064,7 @@ package body Flow.Analysis is
               and then Instantiation_Location (Sloc (Atr.Error_Location))
                        = No_Location
               and then not Atr.Warnings_Off
+              and then not Atr.Is_Path_Copy
             then
                Error_Msg_Flow
                  (FA       => FA,
@@ -4430,6 +4431,7 @@ package body Flow.Analysis is
 
    procedure Check_Ghost_Subprogram_Outputs (FA : in out Flow_Analysis_Graphs)
    is
+      Subp    : constant Flow_Id := Direct_Mapping_Id (FA.Spec_Entity);
       Globals : Global_Flow_Ids;
    begin
       if (Ekind (FA.Spec_Entity) = E_Procedure
@@ -4443,6 +4445,12 @@ package body Flow.Analysis is
             Globals    => Globals);
 
          for Output of Globals.Outputs loop
+
+            --  We need to prevent three kinds of data dependencies:
+            --  1. ghost flowing into ordinary (non-ghost) data
+            --  2. ignored ghost flowing into checked ghost data
+            --  3. flow that violate assertion-level-dependencies
+
             if not Is_Ghost_Entity (Output) then
                Error_Msg_Flow
                  (FA       => FA,
@@ -4450,11 +4458,40 @@ package body Flow.Analysis is
                     "ghost subprogram & cannot have "
                     & "non-ghost global output &",
                   N        => FA.Spec_Entity,
-                  F1       => Direct_Mapping_Id (FA.Spec_Entity),
+                  F1       => Subp,
                   F2       => Output,
                   Severity => Medium_Check_Kind,
                   Tag      => Ghost_Wrong,
                   SRM_Ref  => "6.9(24)");
+
+            elsif Is_Ignored_Ghost_Entity (FA.Spec_Entity)
+              and then Is_Checked_Ghost_Entity (Output)
+            then
+               Error_Msg_Flow
+                 (FA       => FA,
+                  Msg      =>
+                    "ignored ghost subprogram & cannot have "
+                    & "checked global output &",
+                  N        => FA.Spec_Entity,
+                  F1       => Subp,
+                  F2       => Output,
+                  Severity => Medium_Check_Kind,
+                  Tag      => Ghost_Wrong,
+                  SRM_Ref  => "6.9(24)");
+
+            elsif not Is_Assertion_Level_Dependent (Output, Subp) then
+               Error_Msg_Flow
+                 (FA       => FA,
+                  Msg      =>
+                    "global output & should be assertion-level-dependent "
+                    & "on subprogram &",
+                  N        => FA.Spec_Entity,
+                  F1       => Output,
+                  F2       => Subp,
+                  Severity => Medium_Check_Kind,
+                  Tag      => Ghost_Wrong,
+                  SRM_Ref  => "6.9(24)");
+
             end if;
          end loop;
       end if;
@@ -5509,7 +5546,9 @@ package body Flow.Analysis is
             Key : Flow_Id renames FA.CFG.Get_Key (V);
 
          begin
-            if Atr.Is_Callsite then
+            if Atr.Is_Path_Copy then
+               null;
+            elsif Atr.Is_Callsite then
                Antialiasing.Check_Procedure_Call
                  (FA => FA, N => Get_Direct_Mapping_Id (Key));
             elsif Is_Inlined_Subprogram_Call (Key) then
@@ -6780,5 +6819,191 @@ package body Flow.Analysis is
          end loop;
       end if;
    end Check_Constant_Global_Contracts;
+
+   ------------------------------
+   -- Check_Required_Contracts --
+   ------------------------------
+
+   procedure Check_Required_Contracts (E : Entity_Id) is
+
+      function Is_Empty (G : Global_Flow_Ids) return Boolean
+      is (G.Proof_Ins.Is_Empty
+          and then G.Inputs.Is_Empty
+          and then G.Outputs.Is_Empty);
+      --  Return True iff globals are empty
+
+      --  The following functions mirror a frontend legality procedure with the
+      --  same name, but uses flow-specific data types and return status
+      --  without emitting an error.
+
+      function Check_State_And_Constituent_Use
+        (Item : Flow_Id; Globals : Global_Flow_Ids) return Boolean;
+      --  Return True if Item from generated Refined_Global is represented by
+      --  anything in the explicit Global, i.e. it appears there directly or is
+      --  a (possibly nested) constituent and its abstract state appears there.
+
+      function Check_State_And_Constituent_Use
+        (Items : Flow_Id_Sets.Set; Globals : Global_Flow_Ids) return Boolean;
+      --  Likewise, but for sets of items that are Input/Output/Proof_Ins of
+      --  a generated Refined_Global.
+
+      function Check_State_And_Constituent_Use
+        (Globals : Global_Flow_Ids) return Boolean;
+      --  Likewise, but for the entire generated Refined_Global
+
+      -------------------------------------
+      -- Check_State_And_Constituent_Use --
+      -------------------------------------
+
+      function Check_State_And_Constituent_Use
+        (Item : Flow_Id; Globals : Global_Flow_Ids) return Boolean
+      is
+         Checked : Flow_Id;
+      begin
+         Checked := Item;
+         while Is_Constituent (Checked) loop
+            Checked := Encapsulating_State (Checked);
+            if Globals.Proof_Ins.Contains (Checked)
+              or else Globals.Inputs.Contains (Checked)
+              or else Globals.Outputs.Contains (Checked)
+            then
+               return True;
+            end if;
+         end loop;
+
+         return False;
+      end Check_State_And_Constituent_Use;
+
+      function Check_State_And_Constituent_Use
+        (Items : Flow_Id_Sets.Set; Globals : Global_Flow_Ids) return Boolean is
+      begin
+         return
+           (for some Item of Items =>
+              Check_State_And_Constituent_Use (Item, Globals));
+      end Check_State_And_Constituent_Use;
+
+      function Check_State_And_Constituent_Use
+        (Globals : Global_Flow_Ids) return Boolean is
+      begin
+         return
+           Check_State_And_Constituent_Use (Globals.Proof_Ins, Globals)
+           or else Check_State_And_Constituent_Use (Globals.Inputs, Globals)
+           or else Check_State_And_Constituent_Use (Globals.Outputs, Globals);
+      end Check_State_And_Constituent_Use;
+
+      --  Local variables
+
+      Has_Spec_Contract : constant Boolean :=
+        Present (Find_Contract (E, Pragma_Global))
+        or else Present (Find_Contract (E, Pragma_Depends));
+
+      Has_Body_Contract : constant Boolean :=
+        Present (Find_Contract (E, Pragma_Refined_Global))
+        or else Present (Find_Contract (E, Pragma_Refined_Depends));
+
+      S_Scope : constant Flow_Scope := (Ent => E, Part => Visible_Part);
+      B_Scope : constant Flow_Scope := (Ent => E, Part => Body_Part);
+      --  Spec and body scopes, respectively
+
+      Spec_Globals    : Global_Flow_Ids;
+      Refined_Globals : Global_Flow_Ids;
+
+      Unused : Boolean;
+
+   begin
+      if Has_Spec_Contract then
+
+         --  If both Global and Refined_Global is present, then nothing to do
+
+         if Has_Body_Contract then
+            null;
+
+         --  Otherwise diagnose a missing Refined_Global
+
+         else
+            --  Imported subprograms have no body, so there is no place to put
+            --  Refined_Global.
+
+            if Is_Imported (E) then
+               return;
+            end if;
+
+            --  The Refined_Global might be absent either because it is
+            --  missing, or because it would be redundant with respect to the
+            --  explicit Global. To diagnose this we need both contracts.
+
+            Get_Globals
+              (Subprogram => E,
+               Scope      => S_Scope,
+               Classwide  => False,
+               Globals    => Spec_Globals);
+
+            Get_Globals
+              (Subprogram => E,
+               Scope      => B_Scope,
+               Classwide  => False,
+               Globals    => Refined_Globals);
+
+            --  Sanity check: Global => null implies Refined_Global => null
+
+            pragma
+              Assert
+                (if Is_Empty (Spec_Globals) then Is_Empty (Refined_Globals));
+
+            --  If explicit Global and generated Refined_Global are the same,
+            --  then an explicit Refined_Global would not be allowed.
+
+            if Spec_Globals = Refined_Globals then
+               null;
+
+            --  If generated Refined_Global include both a constituent and
+            --  its encapsulating state, then it would be illegal to write
+            --  it explicitly.
+
+            elsif Check_State_And_Constituent_Use (Refined_Globals) then
+               null;
+
+            --  Otherwise we have a genuine missing Refined_Global
+
+            else
+               Error_Msg_Flow
+                 (E,
+                  Msg        =>
+                    (if Is_Empty (Refined_Globals) then "null " else "")
+                    & "Refined_Global contract expected for &",
+                  Severity   => Warning_Kind,
+                  N          => Get_Body (E),
+                  Suppressed => Unused,
+                  F1         => Direct_Mapping_Id (E));
+            end if;
+         end if;
+
+      --  Diagnose a missing Global
+
+      else
+         Get_Globals
+           (Subprogram => E,
+            Scope      => S_Scope,
+            Classwide  => False,
+            Globals    => Spec_Globals);
+
+         --  Explicit Global => null is not required
+
+         if Is_Empty (Spec_Globals) then
+            null;
+
+         --  Otherwise we have a genuine Global
+
+         else
+            Error_Msg_Flow
+              (E,
+               Msg        => "Global contract expected for &",
+               Severity   => Warning_Kind,
+               N          => E,
+               Suppressed => Unused,
+               F1         => Direct_Mapping_Id (E));
+         end if;
+      end if;
+   end Check_Required_Contracts;
 
 end Flow.Analysis;

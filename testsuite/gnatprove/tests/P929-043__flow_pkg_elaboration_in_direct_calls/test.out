@@ -14,7 +14,7 @@ nest_in_task.adb:32:04: high: more tasks than allowed might queue on protected e
 nest_in_task.adb:32:04: high: task "nest_in_task.b" is queueing
 nest_in_task.adb:32:04: high: task "nest_in_task.c" is queueing
 nest_in_task.ads:4:17: info: aspect Always_Terminates on "Proc" has been proved, subprogram will terminate
-nest_in_task.ads:9:14: info: ceiling priority protocol is respected (CVC5: 1 VC)
+nest_in_task.ads:9:14: info: ceiling priority protocol is respected for "Nest_In_Task.A" (CVC5: 1 VC)
 nest_in_task.ads:9:14: info: nontermination of task proved (CVC5: 1 VC)
 recursion.adb:1:11: info: aspect Always_Terminates on "Recursion" has been proved, subprogram will terminate
 recursion.adb:3:17: warning: subprogram "P" has no effect

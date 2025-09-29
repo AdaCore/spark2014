@@ -69,6 +69,9 @@ package body Flow_Generated_Globals.Phase_1 is
    Ignored_Ghost_Entities : Node_Sets.Set;
    --  Entities marked as Ghost, but with policy Ignore
 
+   Ghost_Assertion_Levels : Node_Sets.Set;
+   --  Assertion levels of ghost objects
+
    CAE_Entities : Node_Sets.Set;
    --  Entities marked with a Constant_After_Elaboration aspect
 
@@ -340,6 +343,15 @@ package body Flow_Generated_Globals.Phase_1 is
             elsif Is_Ignored_Ghost_Entity (E) then
                Ignored_Ghost_Entities.Include (E);
             end if;
+
+            declare
+               Assertion_Level : constant Entity_Id :=
+                 Ghost_Assertion_Level (E);
+            begin
+               if Present (Assertion_Level) then
+                  Ghost_Assertion_Levels.Include (Assertion_Level);
+               end if;
+            end;
          end loop;
       end Process_Ghost;
 
@@ -702,6 +714,34 @@ package body Flow_Generated_Globals.Phase_1 is
          Serialize (Ignored_Ghost_Entities);
          Terminate_GG_Line;
       end if;
+
+      for E of Checked_Ghost_Entities loop
+         New_GG_Line (EK_Ghost_Assertion_Level);
+         Serialize (E);
+         Serialize (Ghost_Assertion_Level (E));
+         Terminate_GG_Line;
+      end loop;
+
+      for E of Ignored_Ghost_Entities loop
+         New_GG_Line (EK_Ghost_Assertion_Level);
+         Serialize (E);
+         Serialize (Ghost_Assertion_Level (E));
+         Terminate_GG_Line;
+      end loop;
+
+      for Level of Ghost_Assertion_Levels loop
+         New_GG_Line (EK_Parent_Assertion_Levels);
+         Serialize (Level);
+         if Present (Parent_Levels (Level)) then
+            Serialize (List_Length (Parent_Levels (Level)));
+            for Parent_Level of Iter (Parent_Levels (Level)) loop
+               Serialize (Parent_Level);
+            end loop;
+         else
+            Serialize (Nat'(0));
+         end if;
+         Terminate_GG_Line;
+      end loop;
 
       if not Constants.Is_Empty then
          New_GG_Line (EK_Constants);

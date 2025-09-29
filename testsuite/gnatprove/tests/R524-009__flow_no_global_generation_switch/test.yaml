@@ -1,2 +1,2 @@
 do_flow:
-  opt: ["--no-global-generation"]
+  gg: False

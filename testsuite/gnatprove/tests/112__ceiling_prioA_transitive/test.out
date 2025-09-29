@@ -1,2 +1,2 @@
-p.ads:6:17: info: ceiling priority protocol is respected (CVC5: 1 VC)
-p.ads:14:17: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "P.Po3" must be >= the priority of the caller "P.Po2.Pp21" in the call chain "P.Po2.Pp21" -> "P.Pb" -> "P.Po3.Pp31"]
+p.ads:6:17: info: ceiling priority protocol is respected for "P.Po2" (CVC5: 1 VC)
+p.ads:14:17: medium: ceiling priority protocol might not be respected for "P.Po3" [reason for check: ceiling priority of the protected object "P.Po3" must be >= the priority of the caller "P.Po2.Pp21" in the call chain "P.Po2.Pp21" -> "P.Pb" -> "P.Po3.Pp31"]

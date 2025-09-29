@@ -347,14 +347,15 @@ package body Flow.Control_Flow_Graph is
    --  Vertices of this kind that lie within dead code will have to be
    --  unlinked at the end.
 
-   package Borrowers_Markers is new
+   package Unwind_Marker_Lists is new
      Ada.Containers.Doubly_Linked_Lists (Ada.Containers.Count_Type);
-   --  To keep track of how many local borrowers exist when entering a loop, so
-   --  that we know how many of them need to be reclaimed by an EXIT statement.
+   --  To keep track of how many unwind actions exist when entering a dynamic
+   --  scope (e.g. LOOP), so that we unwind any new actions created in that
+   --  scope when leaving it (e.g. by an EXIT statement).
    --
    --  Note: it would be much easier to keep track of cursors on the
-   --  stack of borrowers. However, this stack grows/shrinks as borrowers
-   --  appear/disappear and this would be tampering with cursors, should
+   --  unwind stack. However, this stack grows/shrinks as unwind actions
+   --  appear/disappear and we would be tampering with cursors, should
    --  cursors exist. Instead, we record the number of elements in the stack.
 
    package Goto_Jump_Maps is new
@@ -366,9 +367,22 @@ package body Flow.Control_Flow_Graph is
    --  Maps from labels entities (e.g. "<<L1>>") to vertices with their
    --  matching goto statements (e.g. "goto L1").
 
+   package HSS_Context_Maps is new
+     Ada.Containers.Hashed_Maps
+       (Key_Type        => N_Handled_Sequence_Of_Statements_Id,
+        Element_Type    => Vertex_Context,
+        Hash            => Node_Hash,
+        Equivalent_Keys => "=");
+   --  Maps from handled sequence of statements with finally statements to
+   --  vertex contexts for processing those finally statements.
+
    type Context is record
       Vertex_Ctx : Vertex_Context;
       --  Context that will be passed to vertex attributes
+
+      Finally_Ctxs : HSS_Context_Maps.Map;
+      --  Contexts for processing finally statements of a handled statement
+      --  sequence.
 
       Active_Loop : Entity_Id;
       --  The currently processed loop. This is always a member of
@@ -384,11 +398,11 @@ package body Flow.Control_Flow_Graph is
       --  Nodes we need to separately check for uninitialized variables due to
       --  function folding.
 
-      Borrowers : Node_Lists.List;
-      --  Stack of object declarations for local borrowers
+      Unwind_Actions : Node_Lists.List;
+      --  Stack of nodes requiring unwind actions
 
-      Borrow_Numbers : Borrowers_Markers.List;
-      --  Numbers of local borrowers in scope at each sequence_of_statements
+      Unwind_Lengths : Unwind_Marker_Lists.List;
+      --  Numbers of unwind actions in scope at each sequence_of_statements
 
       Goto_Jumps : Goto_Jump_Maps.Map;
       --  Map for connecting gotos with labels
@@ -400,12 +414,13 @@ package body Flow.Control_Flow_Graph is
    No_Context : constant Context :=
      Context'
        (Vertex_Ctx             => No_Vertex_Context,
+        Finally_Ctxs           => HSS_Context_Maps.Empty_Map,
         Active_Loop            => Types.Empty,
         Termination_Proved     => False,
         Entry_References       => Node_Graphs.Empty_Map,
         Folded_Function_Checks => Node_Lists.Empty_List,
-        Borrowers              => Node_Lists.Empty_List,
-        Borrow_Numbers         => Borrowers_Markers.Empty_List,
+        Unwind_Actions         => Node_Lists.Empty_List,
+        Unwind_Lengths         => Unwind_Marker_Lists.Empty_List,
         Goto_Jumps             => Goto_Jump_Maps.Empty_Map,
         Extended_Return        => Types.Empty);
 
@@ -424,12 +439,14 @@ package body Flow.Control_Flow_Graph is
    --  Helper procedure to add a vertex (with attributes) to the graph
 
    procedure Add_Vertex
-     (FA : in out Flow_Analysis_Graphs;
-      F  : Flow_Id;
-      A  : V_Attributes;
-      V  : out Flow_Graphs.Vertex_Id);
+     (FA    : in out Flow_Analysis_Graphs;
+      F     : Flow_Id;
+      A     : V_Attributes;
+      V     : out Flow_Graphs.Vertex_Id;
+      Keyed : Boolean := False);
    --  Helper procedure to add a vertex (with attributes) to the graph,
-   --  returning the Id of the newly added vertex.
+   --  returning the Id of the newly added vertex. If Keyed is True, then
+   --  then a unique mapping from F to V is added so Get_Vertex can be used.
 
    procedure Add_Vertex
      (FA : in out Flow_Analysis_Graphs;
@@ -475,7 +492,10 @@ package body Flow.Control_Flow_Graph is
    --  kept because they are read in a routine that detects dead code.
 
    procedure Create_Record_Tree
-     (F : Flow_Id; Leaf_Atr : V_Attributes; FA : in out Flow_Analysis_Graphs)
+     (F              : Flow_Id;
+      Leaf_Atr       : V_Attributes;
+      FA             : in out Flow_Analysis_Graphs;
+      Current_Entity : Entity_To_Vertex_Maps.Cursor)
    with Pre => F.Kind in Direct_Mapping | Record_Field | Magic_String;
    --  Create part of the tree structure used to represent records. In
    --  particular, we create the subtree which is formed by the leaf F up to
@@ -597,7 +617,7 @@ package body Flow.Control_Flow_Graph is
    --     |                                 /       |       \
    --     {standard exit}                  /        |        \
    --                                     /         |         \
-   --                               [reclaim1] [reclaim2] ... [reclaim all]
+   --                               [unwind1]  [unwind2]  ... [unwind all]
    --                               |          |              |
    --                               [handler1] [handler2] ... [exceptional_end]
    --
@@ -696,9 +716,6 @@ package body Flow.Control_Flow_Graph is
    --    return returned_object
    --              |
    --             end
-   --
-   --  We create a null vertex for the extended return statement (this
-   --  vertex is not visible in the CFG).
    --
    --  The "return returned_object" vertex corresponds to the
    --  Return_Statement_Entity of the extended return, and its
@@ -1016,6 +1033,19 @@ package body Flow.Control_Flow_Graph is
    --  This ignores type declarations (but creates a sink vertex so we
    --  can check for use of uninitialized variables).
 
+   procedure Do_Finally_Statements
+     (HSS     : Node_Id;
+      FA      : in out Flow_Analysis_Graphs;
+      HSS_Ctx : Vertex_Context;
+      Last    : in out Flow_Graphs.Vertex_Id)
+   with
+     Pre  =>
+       Present (Finally_Statements (HSS))
+       and then Last /= Flow_Graphs.Null_Vertex,
+     Post => Last /= Flow_Graphs.Null_Vertex;
+   --  Process finally statements when leaving a handled sequence of statements
+   --  via non-standard exit (e.g. return or goto).
+
    procedure Process_Call_Actuals
      (Call                : Node_Id;
       Callsite            : Flow_Graphs.Vertex_Id;
@@ -1087,6 +1117,43 @@ package body Flow.Control_Flow_Graph is
    --  borrowed object and links it up to Last. Then, Last is assigned with
    --  the created vertex, so this procedure can be called again with another
    --  borrower.
+
+   procedure Unwind
+     (N    : Node_Id;
+      FA   : in out Flow_Analysis_Graphs;
+      Ctxs : HSS_Context_Maps.Map;
+      Last : in out Flow_Graphs.Vertex_Id)
+   with
+     Pre  =>
+       Nkind (N) in N_Object_Declaration | N_Handled_Sequence_Of_Statements
+       and then Last /= Flow_Graphs.Null_Vertex,
+     Post => Last /= Flow_Graphs.Null_Vertex;
+   --  Creates a vertex for a cleanup action that leaves the current code
+   --  region via a non-standard exit (e.g. return or goto). Currently this
+   --  action is either reclamation of a local borrower or exection of finally
+   --  statements. The action will is linked to the initial value of Last
+   --  vertex. Then this parameter is assigned with the last vertex of the
+   --  cleanup action, so this procedure can be called again with another node.
+
+   procedure Unwind
+     (Mark : Unwind_Marker_Lists.Cursor;
+      FA   : in out Flow_Analysis_Graphs;
+      Ctx  : Context;
+      Last : in out Flow_Graphs.Vertex_Id)
+   with
+     Pre  => Last /= Flow_Graphs.Null_Vertex,
+     Post => Last /= Flow_Graphs.Null_Vertex;
+   --  Likewise, for unwinding actions until we reach a stack position
+   --  designated by Mark.
+
+   procedure Unwind_All
+     (FA   : in out Flow_Analysis_Graphs;
+      Ctx  : Context;
+      Last : in out Flow_Graphs.Vertex_Id)
+   with
+     Pre  => Last /= Flow_Graphs.Null_Vertex,
+     Post => Last /= Flow_Graphs.Null_Vertex;
+   --  Likewise, for unwinding all actions when leaving the subprogram
 
    function RHS_Split_Useful
      (LHS : Node_Or_Entity_Id; RHS : Node_Id; Scope : Flow_Scope)
@@ -1199,15 +1266,16 @@ package body Flow.Control_Flow_Graph is
    end Add_Vertex;
 
    procedure Add_Vertex
-     (FA : in out Flow_Analysis_Graphs;
-      F  : Flow_Id;
-      A  : V_Attributes;
-      V  : out Flow_Graphs.Vertex_Id) is
+     (FA    : in out Flow_Analysis_Graphs;
+      F     : Flow_Id;
+      A     : V_Attributes;
+      V     : out Flow_Graphs.Vertex_Id;
+      Keyed : Boolean := False) is
    begin
       if F.Kind in Direct_Mapping | Record_Field then
          fndi (FA.Spec_Entity, F.Node);
       end if;
-      FA.CFG.Add_Vertex (F, V);
+      FA.CFG.Add_Vertex (F, V, Keyed => Keyed);
       FA.Atr.Insert (V, A);
    end Add_Vertex;
 
@@ -1331,8 +1399,12 @@ package body Flow.Control_Flow_Graph is
    ------------------------
 
    procedure Create_Record_Tree
-     (F : Flow_Id; Leaf_Atr : V_Attributes; FA : in out Flow_Analysis_Graphs)
+     (F              : Flow_Id;
+      Leaf_Atr       : V_Attributes;
+      FA             : in out Flow_Analysis_Graphs;
+      Current_Entity : Entity_To_Vertex_Maps.Cursor)
    is
+      V : Flow_Graphs.Vertex_Id;
    begin
       case F.Variant is
          when Normal_Use | In_View | Out_View   =>
@@ -1357,7 +1429,7 @@ package body Flow.Control_Flow_Graph is
                              Corresponding_Grouping (F.Variant));
 
                      begin
-                        Create_Record_Tree (P, Leaf_Atr, FA);
+                        Create_Record_Tree (P, Leaf_Atr, FA, Current_Entity);
                         case F.Variant is
                            when Initial_Value =>
                               Linkup
@@ -1391,22 +1463,31 @@ package body Flow.Control_Flow_Graph is
                   if not FA.CFG.Contains (F) then
                      --  Create vertex
                      Add_Vertex
-                       (FA, F, Make_Record_Tree_Attributes (Leaf_Atr));
+                       (FA,
+                        F,
+                        Make_Record_Tree_Attributes (Leaf_Atr),
+                        V,
+                        Keyed => True);
+
+                     --  Register vertex, so that record tree will be removed
+                     --  if object declaration turns out to be dead code.
+
+                     if Entity_To_Vertex_Maps.Has_Element (Current_Entity) then
+                        FA.Initial_And_Final_Vertices (Current_Entity).Insert
+                          (V);
+                     end if;
 
                      if F.Kind = Record_Field then
-                        Create_Record_Tree (Parent_Record (F), Leaf_Atr, FA);
+                        Create_Record_Tree
+                          (Parent_Record (F), Leaf_Atr, FA, Current_Entity);
                         case F.Variant is
                            when Initial_Grouping =>
                               Linkup
-                                (FA,
-                                 FA.CFG.Get_Vertex (Parent_Record (F)),
-                                 FA.CFG.Get_Vertex (F));
+                                (FA, FA.CFG.Get_Vertex (Parent_Record (F)), V);
 
                            when Final_Grouping   =>
                               Linkup
-                                (FA,
-                                 FA.CFG.Get_Vertex (F),
-                                 FA.CFG.Get_Vertex (Parent_Record (F)));
+                                (FA, V, FA.CFG.Get_Vertex (Parent_Record (F)));
 
                            when others           =>
                               raise Program_Error;
@@ -1424,6 +1505,9 @@ package body Flow.Control_Flow_Graph is
    procedure Create_Initial_And_Final_Vertices
      (E : Entity_Id; FA : in out Flow_Analysis_Graphs)
    is
+      Current_Entity : Entity_To_Vertex_Maps.Cursor;
+      Inserted       : Boolean;
+
       M : constant Param_Mode :=
         (case Ekind (E) is
 
@@ -1496,16 +1580,18 @@ package body Flow.Control_Flow_Graph is
          --  Setup the n'initial vertex. Note that initialization for
          --  variables is detected (and set) when building the flow graph
          --  for declarative parts.
-         Add_Vertex (FA, F_Initial, Initial_Atr, Initial_V);
+         Add_Vertex (FA, F_Initial, Initial_Atr, Initial_V, Keyed => True);
          Linkup (FA, Initial_V, FA.Start_Vertex);
+         FA.Initial_And_Final_Vertices (Current_Entity).Insert (Initial_V);
 
-         Create_Record_Tree (F_Initial, Initial_Atr, FA);
+         Create_Record_Tree (F_Initial, Initial_Atr, FA, Current_Entity);
 
          --  Setup the n'final vertex
-         Add_Vertex (FA, F_Final, Final_Atr, Final_V);
+         Add_Vertex (FA, F_Final, Final_Atr, Final_V, Keyed => True);
          Linkup (FA, FA.End_Vertex, Final_V);
+         FA.Initial_And_Final_Vertices (Current_Entity).Insert (Final_V);
 
-         Create_Record_Tree (F_Final, Final_Atr, FA);
+         Create_Record_Tree (F_Final, Final_Atr, FA, Current_Entity);
 
          FA.All_Vars.Insert (F);
       end Process;
@@ -1513,6 +1599,25 @@ package body Flow.Control_Flow_Graph is
       --  Start of processing for Create_Initial_And_Final_Vertices
 
    begin
+      FA.Initial_And_Final_Vertices.Insert (E, Current_Entity, Inserted);
+
+      --  If we are creating the vertices, then create a path counter as well
+
+      if Inserted then
+         FA.Declaration_Paths.Insert (Key => E, New_Item => 1);
+
+      --  Otherwise just increment the existing path counter
+
+      else
+         declare
+            Declarations : Natural renames FA.Declaration_Paths (E);
+         begin
+            Declarations := Declarations + 1;
+         end;
+
+         return;
+      end if;
+
       for Comp of Flatten_Variable (E, FA.B_Scope) loop
          Process (Comp);
       end loop;
@@ -1555,16 +1660,24 @@ package body Flow.Control_Flow_Graph is
       begin
          --  Setup the F'initial vertex. Initialization is deduced from the
          --  mode.
-         Add_Vertex (FA, F_Initial, Initial_Atr, Initial_V);
+         Add_Vertex (FA, F_Initial, Initial_Atr, Initial_V, Keyed => True);
          Linkup (FA, Initial_V, FA.Start_Vertex);
 
-         Create_Record_Tree (F_Initial, Initial_Atr, FA);
+         Create_Record_Tree
+           (F_Initial,
+            Initial_Atr,
+            FA,
+            Current_Entity => Entity_To_Vertex_Maps.No_Element);
 
          --  Setup the F'final vertex
-         Add_Vertex (FA, F_Final, Final_Atr, Final_V);
+         Add_Vertex (FA, F_Final, Final_Atr, Final_V, Keyed => True);
          Linkup (FA, FA.End_Vertex, Final_V);
 
-         Create_Record_Tree (F_Final, Final_Atr, FA);
+         Create_Record_Tree
+           (F_Final,
+            Final_Atr,
+            FA,
+            Current_Entity => Entity_To_Vertex_Maps.No_Element);
 
          FA.All_Vars.Insert (F);
       end Process;
@@ -2068,13 +2181,9 @@ package body Flow.Control_Flow_Graph is
       Indcalls : Node_Sets.Set;
       Cond     : constant Node_Id := Condition (N);
 
-      Mark : Borrowers_Markers.Cursor := Ctx.Borrow_Numbers.Last;
+      Mark : Unwind_Marker_Lists.Cursor := Ctx.Unwind_Lengths.Last;
       --  Once we know which loop the continue statement refers to, it will
       --  point to the number of local borrowers in scope of that loop.
-
-      Top : Node_Lists.Cursor := Ctx.Borrowers.Last;
-      --  Iterator for the borrowers reclaimed when completing the current
-      --  iteration.
 
       Position : Goto_Jump_Maps.Cursor;
       Unused   : Boolean;
@@ -2095,7 +2204,7 @@ package body Flow.Control_Flow_Graph is
                end if;
 
             when N_Block_Statement =>
-               Borrowers_Markers.Previous (Mark);
+               Unwind_Marker_Lists.Previous (Mark);
 
             when others            =>
                null;
@@ -2142,14 +2251,7 @@ package body Flow.Control_Flow_Graph is
          CM.Insert (Union_Id (N), Trivial_Connection (V));
       end if;
 
-      --  When borrowers go out of scope, we pop them from the stack and
-      --  assign back to the borrowed objects. This way we keep track of
-      --  anything that happened while they were borrowed.
-
-      for J in Ctx.Borrow_Numbers (Mark) + 1 .. Ctx.Borrowers.Length loop
-         Reclaim_Borrower (Ctx.Borrowers (Top), FA, Last => V);
-         Node_Lists.Previous (Top);
-      end loop;
+      Unwind (Mark, FA, Ctx, V);
 
       Ctx.Goto_Jumps.Insert
         (Key      => Entity (Identifier (L)),
@@ -2245,12 +2347,9 @@ package body Flow.Control_Flow_Graph is
       Indcalls : Node_Sets.Set;
       Cond     : constant Node_Id := Condition (N);
 
-      Mark : Borrowers_Markers.Cursor := Ctx.Borrow_Numbers.Last;
+      Mark : Unwind_Marker_Lists.Cursor := Ctx.Unwind_Lengths.Last;
       --  Once we know which loop the EXIT statement refers to, it will point
       --  to the number of local borrowers in scope of that loop.
-
-      Top : Node_Lists.Cursor := Ctx.Borrowers.Last;
-      --  Iterator for the borrowers reclaimed when exiting the loop
 
    begin
       --  Go up the tree until we find the loop we are exiting from
@@ -2267,7 +2366,7 @@ package body Flow.Control_Flow_Graph is
                end if;
 
             when N_Block_Statement =>
-               Borrowers_Markers.Previous (Mark);
+               Unwind_Marker_Lists.Previous (Mark);
 
             when others            =>
                null;
@@ -2313,14 +2412,7 @@ package body Flow.Control_Flow_Graph is
          CM.Insert (Union_Id (N), Trivial_Connection (V));
       end if;
 
-      --  When borrowers go out of scope, we pop them from the stack and
-      --  assign back to the borrowed objects. This way we keep track of
-      --  anything that happened while they were borrowed.
-
-      for J in Ctx.Borrow_Numbers (Mark) + 1 .. Ctx.Borrowers.Length loop
-         Reclaim_Borrower (Ctx.Borrowers (Top), FA, Last => V);
-         Node_Lists.Previous (Top);
-      end loop;
+      Unwind (Mark, FA, Ctx, V);
 
       CM (Union_Id (L)).Standard_Exits.Insert (V);
    end Do_Exit_Statement;
@@ -2336,77 +2428,106 @@ package body Flow.Control_Flow_Graph is
       Ctx : in out Context)
    is
       V            : Flow_Graphs.Vertex_Id;
+      Implicit_Ret : Flow_Graphs.Vertex_Id;
       Ret_Object_L : constant List_Id := Return_Object_Declarations (N);
       Ret_Entity   : constant Node_Id := Return_Statement_Entity (N);
       Ret_Object   : constant Entity_Id := Get_Return_Object (N);
       HSS          : constant Node_Id := Handled_Statement_Sequence (N);
 
    begin
-      --  We create a null vertex for the extended return statement
-      Add_Vertex (FA, Direct_Mapping_Id (N), Null_Node_Attributes, V);
-      --  Control flows in, but we do not flow out again
-      CM.Insert
-        (Union_Id (N),
-         Graph_Connections'(Standard_Entry => V, Standard_Exits => Empty_Set));
-
       --  Store the extended return node in context, because it cannot be
       --  retrieved from the AST when we see a simple_return_statement.
       Ctx.Extended_Return := N;
 
-      --  Process the statements of Ret_Object_L
+      --  Process return object declarations
       Process_Statement_List (Ret_Object_L, FA, CM, Ctx);
 
-      --  Link the entry vertex V (the extended return statement) to
-      --  standard entry of its return_object_declarations.
-      Linkup (FA, V, CM (Union_Id (Ret_Object_L)).Standard_Entry);
+      --  Connections for the return object declarations become connections for
+      --  the extended return statements itself.
 
-      Add_Vertex
-        (FA,
-         Direct_Mapping_Id (Ret_Entity),
-         Make_Extended_Return_Attributes
-           (Var_Def         => Flatten_Variable (FA.Spec_Entity, FA.B_Scope),
-            Var_Use         => Flatten_Variable (Ret_Object, FA.B_Scope),
-            Object_Returned => Ret_Object,
-            Vertex_Ctx      => Ctx.Vertex_Ctx,
-            E_Loc           => Ret_Entity),
-         V);
+      Move_Connections
+        (CM, Dst => Union_Id (N), Src => Union_Id (Ret_Object_L));
+
+      --  The declratations alone must return normally
+
+      pragma Assert (not CM (Union_Id (N)).Standard_Exits.Is_Empty);
 
       if Present (HSS) then
          --  We process the sequence of statements
          Process_Statement (HSS, FA, CM, Ctx);
 
-         --  We link the standard exits of Ret_Object_L to the standard entry
-         --  of the sequence of statements.
-         Linkup
-           (FA,
-            CM (Union_Id (Ret_Object_L)).Standard_Exits,
-            CM (Union_Id (HSS)).Standard_Entry);
+         --  We link the standard exits of return object declarations to the
+         --  standard entry of the sequence of statements.
 
-         --  We link the standard exits of the sequence of statements to the
-         --  standard entry of the implicit return statement.
-         Linkup (FA, CM (Union_Id (HSS)).Standard_Exits, V);
+         declare
+            HSS_Position : Connection_Maps.Cursor := CM.Find (Union_Id (HSS));
+         begin
+            declare
+               N_Connections   : Graph_Connections renames CM (Union_Id (N));
+               HSS_Connections : Graph_Connections renames CM (HSS_Position);
+            begin
+               Linkup
+                 (FA,
+                  N_Connections.Standard_Exits,
+                  HSS_Connections.Standard_Entry);
 
-         CM.Delete (Union_Id (HSS));
-      else
-         --  No sequence of statements is present. We link the
-         --  standard exits of Ret_Object_L to the implicit return
-         --  statement.
-         Linkup (FA, CM (Union_Id (Ret_Object_L)).Standard_Exits, V);
+               Vertex_Sets.Move
+                 (Target => N_Connections.Standard_Exits,
+                  Source => HSS_Connections.Standard_Exits);
+            end;
+
+            CM.Delete (HSS_Position);
+         end;
       end if;
 
-      CM.Delete (Union_Id (Ret_Object_L));
+      --  If what we have so far returns normally, then we need a vertex for
+      --  the implicit return, which defines the function's result using the
+      --  declared object.
+
+      if not CM (Union_Id (N)).Standard_Exits.Is_Empty then
+
+         --  Add dummy vertex which combines all the standard exits from
+         --  the Handled_Statement_Sequence and has just one exit, so that
+         --  the subsequent vertices with cleanup actions form a straight
+         --  single-entry -> single-exit sequence.
+
+         Add_Vertex (FA, Null_Node_Attributes, V);
+
+         --  Link the standard exits of declarations + statements to the
+         --  standard entry of this dummy vertex.
+
+         Linkup (FA, CM (Union_Id (N)).Standard_Exits, V);
+
+         --  Process all cleanup actions
+
+         Unwind_All (FA, Ctx, Last => V);
+
+         --  Add implicit return vertex and link it after cleanup actions
+
+         Add_Vertex
+           (FA,
+            Direct_Mapping_Id (Ret_Entity),
+            Make_Extended_Return_Attributes
+              (Var_Def         =>
+                 Flatten_Variable (FA.Spec_Entity, FA.B_Scope),
+               Var_Use         => Flatten_Variable (Ret_Object, FA.B_Scope),
+               Object_Returned => Ret_Object,
+               Vertex_Ctx      => Ctx.Vertex_Ctx,
+               E_Loc           => Ret_Entity),
+            Implicit_Ret);
+
+         Linkup (FA, V, Implicit_Ret);
+
+         --  We link the implicit return statement to the helper end vertex
+
+         Linkup (FA, Implicit_Ret, FA.Helper_End_Vertex);
+
+         --  The extended return statement as a whole doesn't return normally
+
+         CM (Union_Id (N)).Standard_Exits := Empty_Set;
+      end if;
+
       Ctx.Extended_Return := Types.Empty;
-
-      --  When borrowers go out of scope, we pop them from the stack and
-      --  assign back to the borrowed objects. This way we keep track of
-      --  anything that happened while they were borrowed.
-
-      for Decl of reverse Ctx.Borrowers loop
-         Reclaim_Borrower (Decl, FA, Last => V);
-      end loop;
-
-      --  We link the implicit return statement to the helper end vertex
-      Linkup (FA, V, FA.Helper_End_Vertex);
    end Do_Extended_Return_Statement;
 
    -----------------------
@@ -2429,12 +2550,9 @@ package body Flow.Control_Flow_Graph is
       Par : Node_Id := N;
       --  Iterator for finding the parent of the target label
 
-      Mark : Borrowers_Markers.Cursor := Ctx.Borrow_Numbers.Last;
+      Mark : Unwind_Marker_Lists.Cursor := Ctx.Unwind_Lengths.Last;
       --  Once we know which sequence_of_statements we will jump to, it will
       --  point to the number of local borrowers at that point.
-
-      Top : Node_Lists.Cursor := Ctx.Borrowers.Last;
-      --  Iterator for the borrowers reclaimed when jumping with goto
 
    begin
       --  Go up the tree until we find the parent of the sequence_of_statements
@@ -2444,7 +2562,7 @@ package body Flow.Control_Flow_Graph is
          Par := Parent (Par);
          exit when Par = Target_Label_Parent;
          if Nkind (Par) = N_Block_Statement then
-            Borrowers_Markers.Previous (Mark);
+            Unwind_Marker_Lists.Previous (Mark);
          end if;
       end loop;
 
@@ -2454,14 +2572,7 @@ package body Flow.Control_Flow_Graph is
          Graph_Connections'
            (Standard_Entry => V, Standard_Exits => Vertex_Sets.Empty_Set));
 
-      --  When borrowers go out of scope, we pop them from the stack and
-      --  assign back to the borrowed objects. This way we keep track of
-      --  anything that happened while they were borrowed.
-
-      for J in Ctx.Borrow_Numbers (Mark) + 1 .. Ctx.Borrowers.Length loop
-         Reclaim_Borrower (Ctx.Borrowers (Top), FA, Last => V);
-         Node_Lists.Previous (Top);
-      end loop;
+      Unwind (Mark, FA, Ctx, V);
 
       Ctx.Goto_Jumps.Insert
         (Key      => Entity (Name (N)),
@@ -2484,12 +2595,19 @@ package body Flow.Control_Flow_Graph is
       Handler : Node_Id;
       HStmts  : List_Id;
       Stmts   : constant List_Id := Statements (N);
+
+      Final_Stmts : constant List_Id := Finally_Statements (N);
    begin
+      if Present (Final_Stmts) then
+         Ctx.Unwind_Actions.Append (N);
+         Ctx.Finally_Ctxs.Insert (N, Ctx.Vertex_Ctx);
+      end if;
+
       --  Borrowers might be declared both in block statements and extended
       --  return statements, but both these constructs include a handled
       --  sequence of statements, so it is better to handle both of them here.
 
-      Ctx.Borrow_Numbers.Append (Ctx.Borrowers.Length);
+      Ctx.Unwind_Lengths.Append (Ctx.Unwind_Actions.Length);
 
       --  We first process exception handlers, so when a statement from the
       --  handled sequence of statements raises an exception, it can be linked
@@ -2541,10 +2659,47 @@ package body Flow.Control_Flow_Graph is
          Next_Non_Pragma (Handler);
       end loop;
 
+      if Present (Final_Stmts) then
+
+         --  Remove finally statements from the stack of cleanup actions
+
+         Ctx.Finally_Ctxs.Delete (N);
+         Ctx.Unwind_Actions.Delete_Last;
+
+         --  Since finally statements might occur in several copies on the
+         --  graph, we don't want to warn on some of their statements being
+         --  unreachable or ineffective in one copy, because they might be
+         --  reachable and effective in another copy.
+         --
+         --  Obviously, this should be improved...
+
+         declare
+            Save_Warnings_Off : constant Boolean :=
+              Ctx.Vertex_Ctx.Warnings_Off;
+         begin
+            Ctx.Vertex_Ctx.Warnings_Off := True;
+
+            Process_Statement_List (Final_Stmts, FA, CM, Ctx);
+
+            Ctx.Vertex_Ctx.Warnings_Off := Save_Warnings_Off;
+         end;
+
+         Linkup
+           (FA,
+            Froms => CM (Union_Id (N)).Standard_Exits,
+            To    => CM (Union_Id (Final_Stmts)).Standard_Entry);
+
+         Vertex_Sets.Move
+           (Target => CM (Union_Id (N)).Standard_Exits,
+            Source => CM (Union_Id (Final_Stmts)).Standard_Exits);
+
+         CM.Delete (Union_Id (Final_Stmts));
+      end if;
+
       --  Local borrowers cease to exist when exiting the handled sequence of
       --  statements.
 
-      Ctx.Borrow_Numbers.Delete_Last;
+      Ctx.Unwind_Lengths.Delete_Last;
    end Do_Handled_Sequence_Of_Statements;
 
    ---------------------
@@ -3284,6 +3439,7 @@ package body Flow.Control_Flow_Graph is
                Var_Ex_Use => Vars,
                Subp_Calls => Funcalls,
                Indt_Calls => Indcalls,
+               Obj_Decls  => Node_Sets.To_Set (LP),
                Vertex_Ctx => Ctx.Vertex_Ctx,
                E_Loc      => N),
             V);
@@ -3997,6 +4153,7 @@ package body Flow.Control_Flow_Graph is
                  or Get_Filter_Variables (Filter),
                Subp_Calls => Funcalls,
                Indt_Calls => Indcalls,
+               Obj_Decls  => Node_Sets.To_Set (Param),
                Vertex_Ctx => Ctx.Vertex_Ctx,
                E_Loc      => Cont),
             V);
@@ -4053,7 +4210,8 @@ package body Flow.Control_Flow_Graph is
       --  of a path expression in the iteration scheme is modified during the
       --  loop.
 
-      if not FA.Generating_Globals then
+      if not FA.Generating_Globals and then not Ctx.Vertex_Ctx.Is_Path_Copy
+      then
          for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
             declare
                Atr : V_Attributes renames FA.Atr (V);
@@ -4061,6 +4219,7 @@ package body Flow.Control_Flow_Graph is
             begin
                if Atr.Loops.Contains (Loop_Id)
                  and then not Atr.In_Nested_Package
+                 and then not Atr.Is_Path_Copy
                then
                   for Var of Atr.Variables_Defined.Union (Atr.Volatiles_Read)
                   loop
@@ -4091,7 +4250,8 @@ package body Flow.Control_Flow_Graph is
          --  This is a normal for loop over a type or range
          Do_For_Loop (Fully_Initialized);
 
-         if not FA.Generating_Globals then
+         if not FA.Generating_Globals and then not Ctx.Vertex_Ctx.Is_Path_Copy
+         then
             Loop_Writes.Insert
               (Direct_Mapping_Id
                  (Defining_Identifier
@@ -4110,7 +4270,8 @@ package body Flow.Control_Flow_Graph is
          --  This is a `in' or `of' loop over some container
          Do_Iterator_Loop;
 
-         if not FA.Generating_Globals then
+         if not FA.Generating_Globals and then not Ctx.Vertex_Ctx.Is_Path_Copy
+         then
             Loop_Writes.Insert
               (Direct_Mapping_Id
                  (Defining_Identifier (Iterator_Specification (I_Scheme))));
@@ -4197,7 +4358,8 @@ package body Flow.Control_Flow_Graph is
 
       --  Finally, we can update the loop information in Flow_Utility for proof
 
-      if not FA.Generating_Globals then
+      if not FA.Generating_Globals and then not Ctx.Vertex_Ctx.Is_Path_Copy
+      then
          Add_Loop_Writes (Loop_Id, Expand_Abstract_States (Loop_Writes));
       end if;
    end Do_Loop_Statement;
@@ -4212,7 +4374,6 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      pragma Unreferenced (Ctx);
       V : Flow_Graphs.Vertex_Id;
    begin
       --  We introduce a vertex V which has control entering from the top and
@@ -4223,6 +4384,10 @@ package body Flow.Control_Flow_Graph is
          Make_Aux_Vertex_Attributes
            (E_Loc => N, Execution => Normal_Execution),
          V);
+
+      --  ??? This attribute should be set by the Make_XXX_Attributes routine,
+      --  and all those routines should set it in the vertex automatically.
+      FA.Atr (V).Is_Path_Copy := Ctx.Vertex_Ctx.Is_Path_Copy;
 
       if FA.Generating_Globals and then Nkind (N) = N_Block_Statement then
          FA.Atr (V).Subprogram_Calls.Insert
@@ -4779,15 +4944,14 @@ package body Flow.Control_Flow_Graph is
                            if Empty_Reuse = Flow_Graphs.Null_Vertex then
                               Add_Vertex
                                 (FA,
-                                 (Make_Basic_Attributes
-                                    (Var_Def    => Flow_Id_Sets.Empty_Set,
-                                     Var_Ex_Use => Inputs,
-                                     Subp_Calls => Funcalls,
-                                     Indt_Calls => Indcalls,
-                                     Vertex_Ctx => Ctx.Vertex_Ctx,
-                                     E_Loc      => N,
-                                     Print_Hint => Pretty_Print_Record_Field)
-                                  with delta Is_Declaration_Node => True),
+                                 Make_Basic_Attributes
+                                   (Var_Def    => Flow_Id_Sets.Empty_Set,
+                                    Var_Ex_Use => Inputs,
+                                    Subp_Calls => Funcalls,
+                                    Indt_Calls => Indcalls,
+                                    Vertex_Ctx => Ctx.Vertex_Ctx,
+                                    E_Loc      => N,
+                                    Print_Hint => Pretty_Print_Record_Field),
                                  V);
 
                               Inits.Append (V);
@@ -4802,15 +4966,14 @@ package body Flow.Control_Flow_Graph is
                         else
                            Add_Vertex
                              (FA,
-                              (Make_Basic_Attributes
-                                 (Var_Def    => Flow_Id_Sets.To_Set (Output),
-                                  Var_Ex_Use => Inputs,
-                                  Subp_Calls => Funcalls,
-                                  Indt_Calls => Indcalls,
-                                  Vertex_Ctx => Ctx.Vertex_Ctx,
-                                  E_Loc      => N,
-                                  Print_Hint => Pretty_Print_Record_Field)
-                               with delta Is_Declaration_Node => True),
+                              Make_Basic_Attributes
+                                (Var_Def    => Flow_Id_Sets.To_Set (Output),
+                                 Var_Ex_Use => Inputs,
+                                 Subp_Calls => Funcalls,
+                                 Indt_Calls => Indcalls,
+                                 Vertex_Ctx => Ctx.Vertex_Ctx,
+                                 E_Loc      => N,
+                                 Print_Hint => Pretty_Print_Record_Field),
                               V);
 
                            Inits.Append (V);
@@ -4825,21 +4988,20 @@ package body Flow.Control_Flow_Graph is
                Add_Vertex
                  (FA,
                   Direct_Mapping_Id (N),
-                  (Make_Basic_Attributes
-                     (Var_Def    => Var_Def,
-                      Var_Ex_Use =>
-                        Get_Variables
-                          (Expr,
-                           Scope                => FA.B_Scope,
-                           Target_Name          => Null_Flow_Id,
-                           Fold_Functions       => Inputs,
-                           Use_Computed_Globals => not FA.Generating_Globals,
-                           Consider_Extensions  => To_CW),
-                      Subp_Calls => Funcalls,
-                      Indt_Calls => Indcalls,
-                      Vertex_Ctx => Ctx.Vertex_Ctx,
-                      E_Loc      => N)
-                   with delta Is_Declaration_Node => True),
+                  Make_Basic_Attributes
+                    (Var_Def    => Var_Def,
+                     Var_Ex_Use =>
+                       Get_Variables
+                         (Expr,
+                          Scope                => FA.B_Scope,
+                          Target_Name          => Null_Flow_Id,
+                          Fold_Functions       => Inputs,
+                          Use_Computed_Globals => not FA.Generating_Globals,
+                          Consider_Extensions  => To_CW),
+                     Subp_Calls => Funcalls,
+                     Indt_Calls => Indcalls,
+                     Vertex_Ctx => Ctx.Vertex_Ctx,
+                     E_Loc      => N),
                   V);
                Inits.Append (V);
 
@@ -4852,7 +5014,7 @@ package body Flow.Control_Flow_Graph is
                if Is_Anonymous_Access_Object_Type (Get_Type (E, FA.B_Scope))
                  and then not Is_Access_Constant (Get_Type (E, FA.B_Scope))
                then
-                  Ctx.Borrowers.Append (N);
+                  Ctx.Unwind_Actions.Append (N);
                end if;
 
             end if;
@@ -5006,6 +5168,23 @@ package body Flow.Control_Flow_Graph is
 
       end if;
 
+      --  Add a single vertex that represents object declaration; it acts as a
+      --  link to the object entity when declaration turns out to be dead code.
+
+      if No (Alias) then
+         Add_Vertex
+           (FA,
+            (Null_Node_Attributes
+             with delta
+               Is_Null_Node        => False,
+               Is_Program_Node     => False,
+               Object_Declarations => Node_Sets.To_Set (E),
+               Pretty_Print_Kind   => Pretty_Print_Declaration,
+               Error_Location      => N),
+            V);
+         Inits.Prepend (V);
+      end if;
+
       --  If nothing has been initialized by this object declaration, then add
       --  a dummy vertex.
 
@@ -5085,6 +5264,8 @@ package body Flow.Control_Flow_Graph is
    is
       Spec_E : constant Entity_Id := Defining_Entity (N);
 
+      Declared_States : Node_Sets.Set;
+
    begin
       --  If the nested package is not in SPARK (either because of explicit
       --  SPARK_Mode => Off or because a SPARK violation), then ignore its
@@ -5114,6 +5295,7 @@ package body Flow.Control_Flow_Graph is
 
             begin
                Create_Initial_And_Final_Vertices (State, FA);
+               Declared_States.Insert (State);
 
                if FA.Kind = Kind_Package then
                   Final_V_Id := FA.CFG.Get_Vertex (Final_F_Id);
@@ -5170,7 +5352,9 @@ package body Flow.Control_Flow_Graph is
                Vertex_Ctx =>
                  (No_Vertex_Context
                   with delta
-                    In_Nested_Package => Ctx.Vertex_Ctx.In_Nested_Package),
+                    In_Nested_Package => Ctx.Vertex_Ctx.In_Nested_Package,
+                    Is_Path_copy      => Ctx.Vertex_Ctx.Is_Path_Copy),
+               Obj_Decls  => Declared_States,
                E_Loc      => N,
                Print_Hint => Pretty_Print_Package),
             V);
@@ -5465,12 +5649,12 @@ package body Flow.Control_Flow_Graph is
                Loop_Name := First (Expressions (N));
 
                pragma Assert (Nkind (Loop_Name) = N_Identifier);
-               Ctx.Entry_References (Entity (Loop_Name)).Include (N);
+               Ctx.Entry_References (Entity (Loop_Name)).Insert (N);
 
             --  or otherwise a reference to the immediately enclosing loop
 
             else
-               Ctx.Entry_References (Ctx.Active_Loop).Include (N);
+               Ctx.Entry_References (Ctx.Active_Loop).Insert (N);
             end if;
          end if;
 
@@ -5584,12 +5768,9 @@ package body Flow.Control_Flow_Graph is
       Par : Node_Id;
       --  Iterator for finding the parent of the corresponding handler
 
-      Mark : Borrowers_Markers.Cursor;
+      Mark : Unwind_Marker_Lists.Cursor;
       --  Once we know which sequence_of_statements we will jump to, it will
       --  point to the number of local borrowers at that point.
-
-      Top : Node_Lists.Cursor;
-      --  Iterator for the borrowers reclaimed when jumping with goto
 
       Expr           : constant Node_Id := Expression (N);
       Local_Handlers : constant Node_Lists.List := Reachable_Handlers (N);
@@ -5658,15 +5839,15 @@ package body Flow.Control_Flow_Graph is
       for Handler of Local_Handlers loop
          V := V_Raise;
 
-         --  For exception that has a local handler we reclaim the borrowed
-         --  objects and record a jump to the exception handler.
+         --  For exception that has a local handler we unwind cleanup actions
+         --  and record a jump to the exception handler.
 
          if Nkind (Handler) = N_Exception_Handler then
             --  Go up the tree until we find the parent of the
             --  sequence_of_statements we are jumping to and move the cursor
             --  at each block that we jump out from.
 
-            Mark := Ctx.Borrow_Numbers.Last;
+            Mark := Ctx.Unwind_Lengths.Last;
             Par := N;
 
             loop
@@ -5675,20 +5856,11 @@ package body Flow.Control_Flow_Graph is
                  Nkind (Par) = N_Handled_Sequence_Of_Statements
                  and then List_Containing (Handler) = Exception_Handlers (Par);
                if Nkind (Par) = N_Block_Statement then
-                  Borrowers_Markers.Previous (Mark);
+                  Unwind_Marker_Lists.Previous (Mark);
                end if;
             end loop;
 
-            --  When borrowers go out of scope, we pop them from the stack and
-            --  assign back to the borrowed objects. This way we keep track of
-            --  anything that happened while they were borrowed.
-
-            Top := Ctx.Borrowers.Last;
-
-            for J in Ctx.Borrow_Numbers (Mark) + 1 .. Ctx.Borrowers.Length loop
-               Reclaim_Borrower (Ctx.Borrowers (Top), FA, Last => V);
-               Node_Lists.Previous (Top);
-            end loop;
+            Unwind (Mark, FA, Ctx, V);
 
             Linkup
               (FA, From => V, To => CM (Union_Id (Handler)).Standard_Entry);
@@ -5696,9 +5868,9 @@ package body Flow.Control_Flow_Graph is
          --  Deal with exception that is only listed in Exceptional_Cases
 
          else
-            for Decl of reverse Ctx.Borrowers loop
-               Reclaim_Borrower (Decl, FA, Last => V);
-            end loop;
+            --  Process all cleanup actions
+
+            Unwind_All (FA, Ctx, Last => V);
 
             --  Link the last vertex directly to the exceptional end vertex,
             --  i.e. bypass evaluation of any postconditions.
@@ -5755,7 +5927,7 @@ package body Flow.Control_Flow_Graph is
       procedure Handle_Exception
         (Branch : Flow_Graphs.Vertex_Id; Handler : Node_Id);
       --  Transfer control from Branch to Handler when the called subprogram
-      --  raises an exception. In particular, reclaim local borrowers.
+      --  raises an exception. In particular, unwind cleanup actions.
 
       ----------------------
       -- Check_Visibility --
@@ -5792,30 +5964,27 @@ package body Flow.Control_Flow_Graph is
       procedure Handle_Exception
         (Branch : Flow_Graphs.Vertex_Id; Handler : Node_Id)
       is
-         Reclaim : Flow_Graphs.Vertex_Id := Branch;
-         --  Pointer to the vertex for reclaiming a borrower when jumping to an
+         Cleanup : Flow_Graphs.Vertex_Id := Branch;
+         --  Pointer to the vertex for a cleanup action when jumping to an
          --  exception handler.
 
-         Mark : Borrowers_Markers.Cursor;
+         Mark : Unwind_Marker_Lists.Cursor;
          --  Once we know which sequence_of_statements we will jump to, it will
          --  point to the number of local borrowers at that point.
-
-         Top : Node_Lists.Cursor;
-         --  Iterator for the borrowers reclaimed when jumping with raise
 
          Par : Node_Id;
          --  Iterator for finding the parent of the corresponding handler
 
       begin
-         --  For exception that has a local handler we reclaim the borrowed
-         --  objects and record a jump to the exception handler.
+         --  For exception that has a local handler we unwind cleanup actions
+         --  and record a jump to the exception handler.
 
          if Nkind (Handler) = N_Exception_Handler then
             --  Go up the tree until we find the parent of the
             --  sequence_of_statements we are jumping to and move the cursor
             --  at each block that we jump out from.
 
-            Mark := Ctx.Borrow_Numbers.Last;
+            Mark := Ctx.Unwind_Lengths.Last;
             Par := N;
 
             loop
@@ -5824,37 +5993,28 @@ package body Flow.Control_Flow_Graph is
                  Nkind (Par) = N_Handled_Sequence_Of_Statements
                  and then List_Containing (Handler) = Exception_Handlers (Par);
                if Nkind (Par) = N_Block_Statement then
-                  Borrowers_Markers.Previous (Mark);
+                  Unwind_Marker_Lists.Previous (Mark);
                end if;
             end loop;
 
-            --  When borrowers go out of scope, we pop them from the stack and
-            --  assign back to the borrowed objects. This way we keep track of
-            --  anything that happened while they were borrowed.
-
-            Top := Ctx.Borrowers.Last;
-
-            for J in Ctx.Borrow_Numbers (Mark) + 1 .. Ctx.Borrowers.Length loop
-               Reclaim_Borrower (Ctx.Borrowers (Top), FA, Last => Reclaim);
-               Node_Lists.Previous (Top);
-            end loop;
+            Unwind (Mark, FA, Ctx, Cleanup);
 
             Linkup
               (FA,
-               From => Reclaim,
+               From => Cleanup,
                To   => CM (Union_Id (Handler)).Standard_Entry);
 
-         --  For exception that is only listed in Exceptional_Cases we reclaim
-         --  the borrowers and jump out of the subprogram.
+         --  For exception that is only listed in Exceptional_Cases we unwind
+         --  all the actions and jump out of the subprogram.
 
          else
-            for Decl of reverse Ctx.Borrowers loop
-               Reclaim_Borrower (Decl, FA, Last => Reclaim);
-            end loop;
+            --  Process all cleanup actions
+
+            Unwind_All (FA, Ctx, Last => Cleanup);
 
             --  Link the last vertex directly to the exceptional end vertex,
             --  i.e. bypass evaluation of any postconditions.
-            Linkup (FA, From => Reclaim, To => FA.Exceptional_End_Vertex);
+            Linkup (FA, From => Cleanup, To => FA.Exceptional_End_Vertex);
          end if;
       end Handle_Exception;
 
@@ -6271,10 +6431,9 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      V          : Flow_Graphs.Vertex_Id;
-      Funcalls   : Call_Sets.Set;
-      Indcalls   : Node_Sets.Set;
-      Ret_Object : Entity_Id;
+      V        : Flow_Graphs.Vertex_Id;
+      Funcalls : Call_Sets.Set;
+      Indcalls : Node_Sets.Set;
 
       Expr : constant Node_Id := Expression (N);
 
@@ -6297,22 +6456,9 @@ package body Flow.Control_Flow_Graph is
          else
             pragma Assert (Ekind (FA.Spec_Entity) = E_Function);
 
-            Ret_Object := Get_Return_Object (Ctx.Extended_Return);
-
-            Add_Vertex
-              (FA => FA,
-               F  => Direct_Mapping_Id (N),
-               A  =>
-                 Make_Extended_Return_Attributes
-                   (Var_Def         =>
-                      Flatten_Variable (FA.Spec_Entity, FA.B_Scope),
-                    Var_Use         =>
-                      Flatten_Variable (Ret_Object, FA.B_Scope),
-                    Object_Returned => Ret_Object,
-                    Vertex_Ctx      => Ctx.Vertex_Ctx,
-                    E_Loc           =>
-                      Return_Statement_Entity (Ctx.Extended_Return)),
-               V  => V);
+            --  Add dummy vertex as a start for a sequence of finally
+            --  statements and borrower reclamations.
+            Add_Vertex (FA, Null_Node_Attributes, V);
          end if;
       else
          --  We have a function return
@@ -6350,13 +6496,43 @@ package body Flow.Control_Flow_Graph is
         (Union_Id (N),
          Graph_Connections'(Standard_Entry => V, Standard_Exits => Empty_Set));
 
-      --  When borrowers go out of scope, we pop them from the stack and
-      --  assign back to the borrowed objects. This way we keep track of
-      --  anything that happened while they were borrowed.
+      --  Process all cleanup actions
 
-      for Decl of reverse Ctx.Borrowers loop
-         Reclaim_Borrower (Decl, FA, Last => V);
-      end loop;
+      Unwind_All (FA, Ctx, Last => V);
+
+      --  When cleanup actions are done, create an implicit return for a simple
+      --  return statement within an extended return statement.
+
+      if No (Expr) and then Present (Ctx.Extended_Return) then
+         declare
+            Implicit_Ret : Flow_Graphs.Vertex_Id;
+            Ret_Object   : constant Entity_Id :=
+              Get_Return_Object (Ctx.Extended_Return);
+         begin
+            Add_Vertex
+              (FA => FA,
+               F  => Direct_Mapping_Id (N),
+               A  =>
+                 Make_Extended_Return_Attributes
+                   (Var_Def         =>
+                      Flatten_Variable (FA.Spec_Entity, FA.B_Scope),
+                    Var_Use         =>
+                      Flatten_Variable (Ret_Object, FA.B_Scope),
+                    Object_Returned => Ret_Object,
+                    Vertex_Ctx      => Ctx.Vertex_Ctx,
+                    E_Loc           =>
+                      Return_Statement_Entity (Ctx.Extended_Return)),
+               V  => Implicit_Ret);
+
+            --  Implicit return must be executed at the very end
+
+            Linkup (FA, From => V, To => Implicit_Ret);
+
+            --  And it becomes the last vertex of a sequence
+
+            V := Implicit_Ret;
+         end;
+      end if;
 
       --  Instead we link the last vertex directly to the helper end vertex
       Linkup (FA, From => V, To => FA.Helper_End_Vertex);
@@ -6377,8 +6553,8 @@ package body Flow.Control_Flow_Graph is
       Decls : constant List_Id := Declarations (N);
       HSS   : constant Node_Id := Handled_Statement_Sequence (N);
 
-      Borrowers_Marker : constant Ada.Containers.Count_Type :=
-        Ctx.Borrowers.Length;
+      Unwind_Marker : constant Ada.Containers.Count_Type :=
+        Ctx.Unwind_Actions.Length;
       --  Record current position of the borrows stack
 
    begin
@@ -6405,29 +6581,33 @@ package body Flow.Control_Flow_Graph is
       Join (FA, CM, L, Block);
 
       --  When the subprogram or block exits early, e.g. with a RETURN or an
-      --  EXIT statement, then we just forget about the borrowed objects. They
-      --  have been already reclaimed when dealing with the exiting statement.
+      --  EXIT statement, then we just forget about the cleanup actions. They
+      --  have been already executed when processing the exiting statement.
 
       if Block.Standard_Exits.Is_Empty then
-         while Ctx.Borrowers.Length > Borrowers_Marker loop
-            Ctx.Borrowers.Delete_Last;
+         while Ctx.Unwind_Actions.Length > Unwind_Marker loop
+            Ctx.Unwind_Actions.Delete_Last;
          end loop;
       else
          declare
             V : Flow_Graphs.Vertex_Id;
             --  A dummy vertex which combines all the standard exits from
             --  the Handled_Statement_Sequence and has just one exit, so that
-            --  the subsequent vertices which reclaim borrowers form just a
-            --  straight single-entry -> single-exit sequence.
+            --  the subsequent vertices with cleanup actions form a straight
+            --  single-entry -> single-exit sequence.
 
          begin
             Add_Vertex (FA, Null_Node_Attributes, V);
 
             Linkup (FA, Block.Standard_Exits, V);
 
-            while Ctx.Borrowers.Length > Borrowers_Marker loop
-               Reclaim_Borrower (Ctx.Borrowers.Last_Element, FA, Last => V);
-               Ctx.Borrowers.Delete_Last;
+            while Ctx.Unwind_Actions.Length > Unwind_Marker loop
+               Unwind
+                 (Ctx.Unwind_Actions.Last_Element,
+                  FA,
+                  Ctx.Finally_Ctxs,
+                  Last => V);
+               Ctx.Unwind_Actions.Delete_Last;
             end loop;
 
             Block.Standard_Exits := Vertex_Sets.To_Set (V);
@@ -6588,6 +6768,80 @@ package body Flow.Control_Flow_Graph is
          end;
       end if;
    end Do_Type_Declaration;
+
+   ---------------------------
+   -- Do_Finally_Statements --
+   ---------------------------
+
+   procedure Do_Finally_Statements
+     (HSS     : Node_Id;
+      FA      : in out Flow_Analysis_Graphs;
+      HSS_Ctx : Vertex_Context;
+      Last    : in out Flow_Graphs.Vertex_Id)
+   is
+      Final_Stmts : constant List_Id := Finally_Statements (HSS);
+
+      CM  : Connection_Maps.Map;
+      Ctx : Context := No_Context;
+      --  A minimal context and empty connection map for processing the finally
+      --  statements.
+
+      Finally_Connections : Connection_Maps.Cursor;
+
+   begin
+      --  Take vertex context from the handled sequence of statements where the
+      --  finally statements occur.
+
+      Ctx.Vertex_Ctx :=
+        (HSS_Ctx with delta Is_Path_Copy => True, Warnings_Off => True);
+
+      --  We won't unwind anything as part of the finally statements
+      --  themselves, but we need to make the context well-defined.
+
+      Ctx.Unwind_Lengths.Append (Ctx.Unwind_Actions.Length);
+
+      --  Now we can process finally statements
+
+      Process_Statement_List (Final_Stmts, FA, CM, Ctx);
+
+      --  Attach finally statements after initial value of the Last vertex:
+      --
+      --        Last'Old
+      --           |
+      --           v
+      --    finally statements
+      --        |  |  |
+      --         \ | /
+      --          \|/
+      --           v
+      --     auxiliary vertex
+      --           |
+      --           v
+      --
+      --  The auxiliary vertex will overwrite the Last when we exit.
+
+      Finally_Connections := CM.Find (Union_Id (Final_Stmts));
+
+      declare
+         Finally_Block : Graph_Connections renames CM (Finally_Connections);
+      begin
+         Linkup (FA, From => Last, To => Finally_Block.Standard_Entry);
+
+         Add_Vertex (FA, Make_Aux_Vertex_Attributes (E_Loc => HSS), Last);
+
+         Linkup (FA, Froms => Finally_Block.Standard_Exits, To => Last);
+      end;
+
+      --  Cleanup the context to make sure that it is clean indeed
+
+      CM.Delete (Finally_Connections);
+      Ctx.Unwind_Lengths.Delete_Last;
+
+      pragma
+        Assert ((Ctx with delta Vertex_Ctx => No_Vertex_Context) = No_Context);
+
+      pragma Assert (CM.Is_Empty);
+   end Do_Finally_Statements;
 
    --------------------------------
    -- Process_Subprogram_Globals --
@@ -7517,16 +7771,22 @@ package body Flow.Control_Flow_Graph is
 
                --  If we are dealing with a declaration node, then we delete
                --  the corresponding 'Initial and 'Final vertices as well.
-               if Atr.Is_Declaration_Node then
-                  for F of Atr.Variables_Defined loop
-                     Clear_Vertex_And_Attributes
-                       (FA,
-                        FA.CFG.Get_Vertex (Change_Variant (F, Initial_Value)));
-                     Clear_Vertex_And_Attributes
-                       (FA,
-                        FA.CFG.Get_Vertex (Change_Variant (F, Final_Value)));
-                  end loop;
-               end if;
+               for Object of Atr.Object_Declarations loop
+                  declare
+                     Declarations : Natural renames
+                       FA.Declaration_Paths (Object);
+                  begin
+                     Declarations := Declarations - 1;
+                     if Declarations = 0 then
+                        for Initial_Or_Final_Vertex of
+                          FA.Initial_And_Final_Vertices (Object)
+                        loop
+                           Clear_Vertex_And_Attributes
+                             (FA, Initial_Or_Final_Vertex);
+                        end loop;
+                     end if;
+                  end;
+               end loop;
 
                --  Then we delete vertex V
                Clear_Vertex_And_Attributes (FA, V);
@@ -7550,16 +7810,22 @@ package body Flow.Control_Flow_Graph is
 
                --  If we are dealing with a declaration node, then we delete
                --  the corresponding 'Initial and 'Final vertices as well.
-               if Atr.Is_Declaration_Node then
-                  for F of Atr.Variables_Defined loop
-                     Clear_Vertex_And_Attributes
-                       (FA,
-                        FA.CFG.Get_Vertex (Change_Variant (F, Initial_Value)));
-                     Clear_Vertex_And_Attributes
-                       (FA,
-                        FA.CFG.Get_Vertex (Change_Variant (F, Final_Value)));
-                  end loop;
-               end if;
+               for Object of Atr.Object_Declarations loop
+                  declare
+                     Declarations : Natural renames
+                       FA.Declaration_Paths (Object);
+                  begin
+                     Declarations := Declarations - 1;
+                     if Declarations = 0 then
+                        for Initial_Or_Final_Vertex of
+                          FA.Initial_And_Final_Vertices (Object)
+                        loop
+                           Clear_Vertex_And_Attributes
+                             (FA, Initial_Or_Final_Vertex);
+                        end loop;
+                     end if;
+                  end;
+               end loop;
 
                --  Then we delete vertex V
                Clear_Vertex_And_Attributes (FA, V);
@@ -7717,6 +7983,52 @@ package body Flow.Control_Flow_Graph is
          end;
       end loop;
    end Simplify_CFG;
+
+   ------------
+   -- Unwind --
+   ------------
+
+   procedure Unwind
+     (N    : Node_Id;
+      FA   : in out Flow_Analysis_Graphs;
+      Ctxs : HSS_Context_Maps.Map;
+      Last : in out Flow_Graphs.Vertex_Id) is
+   begin
+      if Nkind (N) = N_Object_Declaration then
+         Reclaim_Borrower (N, FA, Last);
+      else
+         Do_Finally_Statements (N, FA, Ctxs (N), Last);
+      end if;
+   end Unwind;
+
+   procedure Unwind
+     (Mark : Unwind_Marker_Lists.Cursor;
+      FA   : in out Flow_Analysis_Graphs;
+      Ctx  : Context;
+      Last : in out Flow_Graphs.Vertex_Id)
+   is
+      Top : Node_Lists.Cursor := Ctx.Unwind_Actions.Last;
+      --  Iterator for the stack of unwind actions
+
+   begin
+      --  When leaving a scope we pop actions from the stack and execute them
+      --  in reverse order.
+
+      for J in Ctx.Unwind_Lengths (Mark) + 1 .. Ctx.Unwind_Actions.Length loop
+         Unwind (Ctx.Unwind_Actions (Top), FA, Ctx.Finally_Ctxs, Last);
+         Node_Lists.Previous (Top);
+      end loop;
+   end Unwind;
+
+   procedure Unwind_All
+     (FA   : in out Flow_Analysis_Graphs;
+      Ctx  : Context;
+      Last : in out Flow_Graphs.Vertex_Id) is
+   begin
+      for N of reverse Ctx.Unwind_Actions loop
+         Unwind (N, FA, Ctx.Finally_Ctxs, Last);
+      end loop;
+   end Unwind_All;
 
    -----------------------------
    -- Pragma_Relevant_To_Flow --
@@ -8070,6 +8382,7 @@ package body Flow.Control_Flow_Graph is
          with delta
            Is_Null_Node             => True,
            Is_Dead_Path             => Atr.Is_Dead_Path,
+           Is_Path_Copy             => Atr.Is_Path_Copy,
            Is_Original_Program_Node => Atr.Is_Original_Program_Node,
            Error_Location           => Atr.Error_Location,
            Warnings_Off             => Atr.Warnings_Off);
@@ -8904,7 +9217,8 @@ package body Flow.Control_Flow_Graph is
                      F_Initial,
                      Make_Variable_Attributes
                        (F_Ent => F_Initial, Mode => Mode_In_Out, E_Loc => E),
-                     V);
+                     V,
+                     Keyed => True);
                   Linkup (FA, V, FA.Start_Vertex);
 
                   --  Setup the n'final vertex
@@ -8913,7 +9227,8 @@ package body Flow.Control_Flow_Graph is
                      F_Final,
                      Make_Variable_Attributes
                        (F_Ent => F_Final, Mode => Mode_In_Out, E_Loc => E),
-                     V);
+                     V,
+                     Keyed => True);
                   Linkup (FA, FA.End_Vertex, V);
                end;
             end if;
@@ -8936,6 +9251,10 @@ package body Flow.Control_Flow_Graph is
 
       --  Simplify graph by removing all null vertices
       Simplify_CFG (FA);
+
+      --  Clear data that won't be needed anymore
+      FA.Declaration_Paths.Clear;
+      FA.Declaration_Paths.Reserve_Capacity (0);
 
       --  Finally, make sure that all extra checks for folded functions have
       --  been processed and other context information has been dropped.

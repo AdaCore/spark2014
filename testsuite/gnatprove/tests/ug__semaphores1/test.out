@@ -19,7 +19,7 @@
       |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       + assuming "Suspend_Until_True" always terminates
 
- medium: ceiling priority protocol might not be respected
+ medium: ceiling priority protocol might not be respected for "Semaphores1.Protected_Natural"
 --> semaphores1.ads:6:09
     6 |       task T1;
       |            ^~
@@ -31,7 +31,7 @@
  info: nontermination of task proved
 --> semaphores1.ads:6:09
 
- medium: ceiling priority protocol might not be respected
+ medium: ceiling priority protocol might not be respected for "Semaphores1.Protected_Natural"
 --> semaphores1.ads:7:09
     7 |       task T2;
       |            ^~

@@ -597,8 +597,6 @@ hw-gfx-gma-pipe_setup.adb:149:13: info: implicit aspect Always_Terminates on "En
 hw-gfx-gma-pipe_setup.adb:205:07: info: data dependencies proved
 hw-gfx-gma-pipe_setup.adb:206:07: info: flow dependencies proved
 hw-gfx-gma-pipe_setup.adb:220:07: warning: statement has no effect
-hw-gfx-gma-pipe_setup.adb:222:13: warning: unused variable "Stride"
-hw-gfx-gma-pipe_setup.adb:222:21: warning: unused variable "Offset"
 hw-gfx-gma-pipe_setup.adb:223:13: warning: this statement is never reached
 hw-gfx-gma-pipe_setup.adb:224:13: warning: this statement is never reached
 hw-gfx-gma-pipe_setup.adb:226:13: warning: this statement is never reached

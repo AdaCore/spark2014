@@ -26,6 +26,7 @@ with Ada.Containers.Hashed_Maps;
 
 with Aspects;        use Aspects;
 with Errout_Wrapper; use Errout_Wrapper;
+with Ghost;          use Ghost;
 with Namet;          use Namet;
 with Nlists;         use Nlists;
 with Output;         use Output;
@@ -2236,8 +2237,7 @@ package body Flow_Utility is
 
          Debug ("giving null globals for a pure entity");
 
-      elsif Gnat2Why_Args.Flow_Generate_Contracts and then Use_Deduced_Globals
-      then
+      elsif Use_Deduced_Globals then
 
          --  We don't have a global or a depends aspect so we look at the
          --  generated globals.
@@ -2522,24 +2522,6 @@ package body Flow_Utility is
       Erase_Constants : Boolean;
       Scop            : Flow_Scope := Null_Flow_Scope)
    is
-      Globals : Global_Flow_Ids;
-
-      --  If explicit visibility scope is provided, then use it;
-      --  for access-to-subprograms use the visibility of their declaration;
-      --  otherwise use "the most precise globals" that make sense, i.e.
-      --  Refined_Global if subprogram body is in SPARK and Global otherwise.
-
-      S : constant Flow_Scope :=
-        (if Present (Scop)
-         then Scop
-         elsif Ekind (Subprogram) = E_Subprogram_Type
-         then Get_Flow_Scope (Subprogram)
-         else
-           (Ent  => Subprogram,
-            Part =>
-              (if Entity_Body_In_SPARK (Subprogram)
-               then Body_Part
-               else Visible_Part)));
 
       function Only_Mutable
         (Objects : Flow_Id_Sets.Set) return Flow_Id_Sets.Set
@@ -2595,6 +2577,9 @@ package body Flow_Utility is
       --  analysis do not provide it). For them, proof expects the Global
       --  contract of the root type (which should also be a task type and also
       --  be in SPARK).
+
+      Globals : Global_Flow_Ids;
+      Scope   : Flow_Scope;
 
       --  Start of processing for Get_Proof_Globals
 
@@ -2653,9 +2638,26 @@ package body Flow_Utility is
       --  Otherwise, we rely on the flow analysis
 
       else
+
+         --  If explicit visibility scope is provided, then use it; for
+         --  access-to-subprograms use the visibility of their declaration;
+         --  otherwise use "the most precise globals" that make sense,
+         --  i.e. Refined_Global if subprogram body is in SPARK and
+         --  Global otherwise.
+
+         Scope :=
+           (if Present (Scop)
+            then Scop
+            else
+              (Ent  => E,
+               Part =>
+                 (if Entity_Body_In_SPARK (E)
+                  then Body_Part
+                  else Visible_Part)));
+
          Get_Globals
            (Subprogram          => E,
-            Scope               => S,
+            Scope               => Scope,
             Classwide           => True,
             Globals             => Globals,
             Use_Deduced_Globals => True);
@@ -5895,6 +5897,41 @@ package body Flow_Utility is
       return False;
    end Is_Ancestor;
 
+   ----------------------------------
+   -- Is_Assertion_Level_Dependent --
+   ----------------------------------
+
+   function Is_Assertion_Level_Dependent
+     (Self : Flow_Id; Other : Flow_Id) return Boolean is
+   begin
+      pragma Assert (Self.Kind in Direct_Mapping | Magic_String);
+      pragma Assert (Other.Kind in Direct_Mapping | Magic_String);
+
+      --  Call the apropriate routine depening on the kind of inputs
+
+      if Self.Kind = Direct_Mapping and then Other.Kind = Direct_Mapping then
+         return
+           Is_Assertion_Level_Dependent
+             (Ghost_Assertion_Level (Get_Direct_Mapping_Id (Self)),
+              Ghost_Assertion_Level (Get_Direct_Mapping_Id (Other)));
+      elsif Self.Kind = Direct_Mapping and then Other.Kind = Magic_String then
+         return
+           GG_Is_Assertion_Level_Dependent
+             (Ghost_Assertion_Level (Get_Direct_Mapping_Id (Self)),
+              GG_Ghost_Assertion_Level (Other.Name));
+      elsif Self.Kind = Magic_String and then Other.Kind = Direct_Mapping then
+         return
+           GG_Is_Assertion_Level_Dependent
+             (GG_Ghost_Assertion_Level (Self.Name),
+              Ghost_Assertion_Level (Get_Direct_Mapping_Id (Other)));
+      else
+         return
+           GG_Is_Assertion_Level_Dependent
+             (GG_Ghost_Assertion_Level (Self.Name),
+              GG_Ghost_Assertion_Level (Other.Name));
+      end if;
+   end Is_Assertion_Level_Dependent;
+
    ---------------------
    -- Is_Ghost_Entity --
    ---------------------
@@ -5930,6 +5967,24 @@ package body Flow_Utility is
             return False;
       end case;
    end Is_Checked_Ghost_Entity;
+
+   -----------------------------
+   -- Is_Ignored_Ghost_Entity --
+   -----------------------------
+
+   function Is_Ignored_Ghost_Entity (F : Flow_Id) return Boolean is
+   begin
+      case F.Kind is
+         when Direct_Mapping | Record_Field =>
+            return Is_Ignored_Ghost_Entity (Get_Direct_Mapping_Id (F));
+
+         when Magic_String                  =>
+            return GG_Is_Ignored_Ghost_Entity (F.Name);
+
+         when others                        =>
+            return False;
+      end case;
+   end Is_Ignored_Ghost_Entity;
 
    -----------------------------------
    -- Is_Constant_After_Elaboration --

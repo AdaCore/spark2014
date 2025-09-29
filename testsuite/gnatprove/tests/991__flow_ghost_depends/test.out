@@ -1,0 +1,3 @@
+main.adb:2:08: info: data dependencies proved
+main.adb:23:24: info: data dependencies proved
+main.adb:41:11: info: flow dependencies proved

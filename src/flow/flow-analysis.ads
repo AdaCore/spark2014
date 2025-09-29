@@ -173,8 +173,7 @@ package Flow.Analysis is
 
    procedure Check_Ghost_Subprogram_Outputs (FA : in out Flow_Analysis_Graphs)
    with Pre => FA.Kind = Kind_Subprogram;
-   --  Check if the ghost procedure has any non-ghost (global) outputs. This is
-   --  to enforce SPARK RM 6.9(24).
+   --  Check outputs of a ghost subprogram with side effects; SPARK RM 6.9(24)
 
    procedure Check_Hidden_State (FA : in out Flow_Analysis_Graphs)
    with Pre => FA.Kind = Kind_Package;
@@ -218,6 +217,8 @@ package Flow.Analysis is
        and then not Entity_Body_In_SPARK (E);
    --  Check if the global contracts directly reference any constant without
    --  variable inputs. This enforces SPARK RM 6.1.4(16).
+
+   procedure Check_Required_Contracts (E : Entity_Id);
 
 private
 
