@@ -75,9 +75,10 @@ stages:
 
     - *deploy_package
 
-    # set caching location
+    # place cache in proper location; avoid project dir to avoid slowdown of source packaging
     - mkdir -p $CI_PROJECT_DIR/gnatprove_cache
-    - export GNATPROVE_CACHE="file:$CI_PROJECT_DIR/gnatprove_cache"
+    - mv $CI_PROJECT_DIR/gnatprove_cache /tmp
+    - export GNATPROVE_CACHE="file:/tmp/gnatprove_cache"
     # set location of sources for coverage
     - ANOD_BUILDSPACE_SOURCES=`anod eval spark2014-core build_space_name --primitive build --qualifier=coverage,assertions`
     - export COVERAGE_ROOT_DIR=$ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE_SOURCES/src
@@ -91,6 +92,9 @@ stages:
     - cp -r $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE/src/cobertura-report/ $CI_PROJECT_DIR/coverage
 
     - testsuite_reports || exit_code=$?
+
+    # Reestablish cache
+    - mv /tmp/gnatprove_cache $CI_PROJECT_DIR/gnatprove_cache
 
     # Coverage HTML report
     - export HTMLTARGETDIR=$CI_COMMIT_BRANCH
