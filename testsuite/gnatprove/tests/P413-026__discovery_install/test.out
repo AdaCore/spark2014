@@ -10,7 +10,11 @@ gnatls
 gnatwhy3
 gnatwhy3.hash
 gprbuild
+gprbuild1
+gprbuild2
 gprclean
+gprclean1
+gprclean2
 gprconfig
 gprinspect
 gprls
