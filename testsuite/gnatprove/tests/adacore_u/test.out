@@ -8,7 +8,7 @@ global_stack.ads:4:12: error: launch "gnatprove --explain=E0005" for more inform
 global_stack.ads:4:12: error: violation of aspect SPARK_Mode at line 1
 search_array.adb:7:24: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 search_array.adb:9:20: info: range check proved (CVC5: 2 VC)
-search_array.adb:12:07: medium: unexpected exception might be raised
+search_array.adb:12:07: medium: unexpected exception might be raised [reason for check: Search_Zero_P allows propagating no exceptions] [possible explanation: Not_Found might be unexpectedly raised]
 search_array.ads:5:13: info: implicit aspect Always_Terminates on "Search_Zero_P" has been proved, subprogram will terminate
 use_access.adb:3:41: medium: range check might fail, cannot prove lower bound for W (W'First) [reason for check: default component value must fit in the type] [possible fix: subprogram at use_access.ads:4 should mention W in a precondition]
 use_access.adb:3:45: high: array index check might fail (e.g. when W'First = 1 and W'Last = 0) [reason for check: value must be a valid index into the array]

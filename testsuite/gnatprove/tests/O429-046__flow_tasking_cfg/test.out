@@ -47,4 +47,4 @@ test.adb:6:11: info: ceiling priority protocol is respected for "Support.Prot" (
 test.adb:8:33: info: range check proved (Trivial)
 test.adb:8:36: info: division check proved (CVC5: 1 VC)
 test.adb:8:36: info: float overflow check proved (Trivial)
-test.adb:12:21: medium: unexpected exception might be raised
+test.adb:12:21: medium: unexpected exception might be raised [reason for check: Test allows propagating no exceptions] [possible explanation: Layout_Error might be unexpectedly raised]

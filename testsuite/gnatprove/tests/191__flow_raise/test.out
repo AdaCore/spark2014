@@ -1,9 +1,9 @@
 p.adb:1:18: info: data dependencies proved
 p.adb:6:13: info: implicit aspect Always_Terminates on "Func1" has been proved, subprogram will terminate
-p.adb:8:41: medium: unexpected exception might be raised [possible fix: subprogram at line 6 should mention S1 in a precondition]
+p.adb:8:41: medium: unexpected exception might be raised [reason for check: expressions shall not raise exceptions] [possible fix: subprogram at line 6 should mention S1 in a precondition]
 p.adb:11:13: info: implicit aspect Always_Terminates on "Func2" has been proved, subprogram will terminate
 p.adb:16:25: medium: assertion might fail [possible fix: subprogram at line 11 should mention C in a precondition]
-p.adb:17:10: medium: unexpected exception might be raised
+p.adb:17:10: medium: unexpected exception might be raised [reason for check: Func2 allows propagating no exceptions] [possible explanation: Program_Error might be unexpectedly raised]
 p.adb:22:19: high: "B" is not initialized
 p.adb:22:19: high: "C" is not initialized
 p.adb:22:19: high: "S1" is not initialized

@@ -3,7 +3,7 @@ test.adb:3:14: warning: subprogram "Test1" has no effect
 test.adb:5:07: info: no contextual analysis of "Test1" (nested subprogram)
 test.adb:5:17: info: add a contract to analyze it separately from calling contexts
 test.adb:5:17: info: local subprogram "Raise_PE" only analyzed in the context of calls [info-unrolling-inlining]
-test.adb:8:13: medium: unexpected exception might be raised, in call inlined at test.adb:13
+test.adb:8:13: medium: unexpected exception might be raised, in call inlined at test.adb:13 [reason for check: ghost inlined call to Raise_PE shall not propagate exceptions] [possible explanation: Program_Error might be unexpectedly raised]
 test.adb:13:07: info: analyzing call to "Raise_PE" in context
 test.adb:14:07: info: only expected exception raised (CVC5: 1 VC)
 test.adb:20:14: high: all paths in "Test2" raise exceptions or do not terminate normally
@@ -11,7 +11,7 @@ test.adb:20:14: warning: subprogram "Test2" has no effect
 test.adb:22:07: info: no contextual analysis of "Test2" (nested subprogram)
 test.adb:22:17: info: add a contract to analyze it separately from calling contexts
 test.adb:22:17: info: local subprogram "Raise_PE" only analyzed in the context of calls [info-unrolling-inlining]
-test.adb:25:13: medium: unexpected exception might be raised, in call inlined at test.adb:32, in call inlined at test.adb:36
+test.adb:25:13: medium: unexpected exception might be raised, in call inlined at test.adb:32, in call inlined at test.adb:36 [reason for check: ghost inlined call to Call_Raise_PE shall not propagate exceptions] [possible explanation: Program_Error might be unexpectedly raised]
 test.adb:30:17: info: add a contract to analyze it separately from calling contexts
 test.adb:30:17: info: local subprogram "Call_Raise_PE" only analyzed in the context of calls [info-unrolling-inlining]
 test.adb:32:10: info: analyzing call to "Raise_PE" in context
