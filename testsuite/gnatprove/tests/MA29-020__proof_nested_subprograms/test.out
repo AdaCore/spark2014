@@ -49,7 +49,7 @@ skein.adb:110:07: warning: statement has no effect
 skein.adb:111:10: info: analyzing call to "Zero_Pad_B" in context
 skein.adb:111:10: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
 skein.adb:111:10: info: in inlined body at line 87
-skein.adb:115:52: high: range check might fail, cannot prove lower bound for (Local_Ctx.H.Hash_Bit_Len + 7) / 8 (e.g. when Local_Ctx.H.Tweak_Words.Byte_Count_LSB = 63 and Local_Ctx.H.Tweak_Words.Byte_Count_MSB = 0 and Local_Ctx.H.Tweak_Words.Reserved = 0 and Local_Ctx.H.Tweak_Words.Tree_Level = 0 and Local_Ctx.H.Tweak_Words.Bit_Pad = True) [reason for check: result of division must fit in the target type of the assignment]
+skein.adb:115:52: high: range check might fail, cannot prove lower bound for (Local_Ctx.H.Hash_Bit_Len + 7) / 8 (e.g. when Local_Ctx = (H => (Tweak_Words => (Byte_Count_LSB => 63, Byte_Count_MSB => 0, Reserved => 0, Tree_Level => 0, Bit_Pad => True, Field_Type => 0, First_Block => True, Final_Block => True), Hash_Bit_Len => 0, Byte_Count => 63), X => (others => 63), B => (others => 0))) [reason for check: result of division must fit in the target type of the assignment]
 skein.adb:115:52: info: division check proved (CVC5: 1 VC)
 skein.adb:118:19: warning: unused assignment
 skein.adb:121:44: info: division check proved (CVC5: 1 VC)
