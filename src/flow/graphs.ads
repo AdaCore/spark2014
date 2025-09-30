@@ -174,11 +174,16 @@ package Graphs is
    --
    --  Complexity is O(1).
 
-   procedure Add_Vertex (G : in out Graph; V : Vertex_Key; Id : out Vertex_Id)
+   procedure Add_Vertex
+     (G     : in out Graph;
+      V     : Vertex_Key;
+      Id    : out Vertex_Id;
+      Keyed : Boolean := True)
    with
      Pre  => not G.Is_Frozen and then not G.Contains (V),
      Post => Id /= Null_Vertex;
-   --  Add a new vertex to the graph, with no edges attached.
+   --  Add a new vertex to the graph, with no edges attached. If Keyed is True,
+   --  then a unique mapping from V to Id added so Get_Vertex can be used.
    --
    --  Complexity is O(1) in the general case, but presumably can be
    --  O(N) if the internal vector is resized.
@@ -188,9 +193,11 @@ package Graphs is
    --  Adds an unkeyed vertex. You must never lose the returned Id,
    --  otherwise you lose the vertex!
 
-   procedure Add_Vertex (G : in out Graph; V : Vertex_Key)
+   procedure Add_Vertex
+     (G : in out Graph; V : Vertex_Key; Keyed : Boolean := True)
    with Pre => not G.Is_Frozen and then not G.Contains (V);
-   --  Add a new keyed vertex, but do not return its Id.
+   --  Add a new keyed vertex, but do not return its Id. If Keyed is True,
+   --  then a unique mapping from V to Id added so Get_Vertex can be used.
 
    procedure Include_Vertex (G : in out Graph; V : Vertex_Key)
    with Pre => not G.Is_Frozen;

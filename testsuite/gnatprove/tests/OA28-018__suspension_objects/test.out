@@ -8,6 +8,6 @@ semaphores1.adb:34:07: warning: no Always_Terminates aspect available for "Set_T
 semaphores1.adb:42:07: warning: assuming "Suspend_Until_True" always terminates
 semaphores1.adb:42:07: warning: no Always_Terminates aspect available for "Suspend_Until_True" [assumed-always-terminates]
 semaphores1.ads:6:09: info: nontermination of task proved (CVC5: 1 VC)
-semaphores1.ads:6:09: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "Semaphores1.Protected_Natural" must be >= the priority of the caller "Semaphores1.T1" in the call chain "Semaphores1.T1" -> "Semaphores1.Initialize_Shared_Data" -> "Semaphores1.Protected_Natural.Incr"]
+semaphores1.ads:6:09: medium: ceiling priority protocol might not be respected for "Semaphores1.Protected_Natural" [reason for check: ceiling priority of the protected object "Semaphores1.Protected_Natural" must be >= the priority of the caller "Semaphores1.T1" in the call chain "Semaphores1.T1" -> "Semaphores1.Initialize_Shared_Data" -> "Semaphores1.Protected_Natural.Incr"]
 semaphores1.ads:7:09: info: nontermination of task proved (CVC5: 1 VC)
-semaphores1.ads:7:09: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "Semaphores1.Protected_Natural" must be >= the priority of the caller "Semaphores1.T2" in the call "Semaphores1.T2" -> "Semaphores1.Protected_Natural.Get"]
+semaphores1.ads:7:09: medium: ceiling priority protocol might not be respected for "Semaphores1.Protected_Natural" [reason for check: ceiling priority of the protected object "Semaphores1.Protected_Natural" must be >= the priority of the caller "Semaphores1.T2" in the call "Semaphores1.T2" -> "Semaphores1.Protected_Natural.Get"]

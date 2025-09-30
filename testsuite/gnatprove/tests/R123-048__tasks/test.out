@@ -147,7 +147,9 @@ psu_monitoring.ads:46:16: info: implicit aspect Always_Terminates on "get_monito
 psu_monitoring.ads:49:16: info: implicit aspect Always_Terminates on "get_monitor_pfc_current_config" has been proved, subprogram will terminate
 psu_monitoring.ads:52:16: info: implicit aspect Always_Terminates on "get_monitor_output_voltage_config" has been proved, subprogram will terminate
 psu_monitoring.ads:55:16: info: implicit aspect Always_Terminates on "get_monitor_output_current_config" has been proved, subprogram will terminate
-psu_monitoring.ads:74:09: info: ceiling priority protocol is respected (CVC5: 1 VC)
+psu_monitoring.ads:74:09: info: ceiling priority protocol is respected for "Psu_Control.Ctrl" (CVC5: 1 VC)
+psu_monitoring.ads:74:09: info: ceiling priority protocol is respected for "Psu_Monitoring.Monitoring_Interface" (CVC5: 1 VC)
+psu_monitoring.ads:74:09: info: ceiling priority protocol is respected for "Psu_Simulation.Sim" (CVC5: 1 VC)
 psu_monitoring.ads:74:09: info: nontermination of task proved (CVC5: 1 VC)
 psu_monitoring.ads:75:39: info: range check proved (CVC5: 2 VC)
 psu_monitoring.ads:78:40: info: range check proved (Z3: 1 VC)

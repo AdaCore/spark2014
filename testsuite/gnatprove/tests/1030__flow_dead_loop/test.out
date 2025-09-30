@@ -1,0 +1,20 @@
+pkg.adb:1:10: info: implicit aspect Always_Terminates on "Pkg" has been proved, subprogram will terminate
+pkg.adb:3:04: warning: statement has no effect
+pkg.adb:7:10: warning: this statement is never reached
+pkg.adb:7:43: warning: this statement is never reached
+pkg.adb:7:50: info: flow dependencies proved
+pkg.adb:8:33: info: data dependencies proved
+pkg.adb:19:11: warning: this statement is never reached
+pkg.adb:21:07: warning: this statement is never reached
+side.adb:2:10: info: implicit aspect Always_Terminates on "Side" has been proved, subprogram will terminate
+side.adb:3:04: warning: initialization of "X" has no effect
+side.adb:10:04: warning: statement has no effect
+side.adb:13:22: warning: this statement is never reached
+side.adb:14:07: warning: this statement is never reached
+silly.adb:1:10: info: implicit aspect Always_Terminates on "Silly" has been proved, subprogram will terminate
+silly.adb:2:04: info: initialization of "S" proved
+silly.adb:4:04: warning: statement has no effect
+silly.adb:9:10: warning: this statement is never reached
+silly.adb:13:18: info: unrolling loop [info-unrolling-inlining]
+silly.adb:13:18: warning: this statement is never reached
+silly.adb:16:07: warning: this statement is never reached

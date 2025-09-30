@@ -157,22 +157,22 @@ multiple_ports.ads:55:04: medium: address in address clause might not be an inte
 multiple_ports.ads:55:04: warning: address specification on "V_In_Out" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [imprecise-address-specification] [E0012]
 multiple_ports.ads:55:04: warning: launch "gnatprove --explain=E0012" for more information
 multiple_ports.ads:55:04: warning: make sure that all overlapping objects have Async_Writers set to True
-outer-public_child.ads:6:17: info: initialization of "Hidden_State" constituent of "A2" proved
-outer-public_child.ads:7:14: info: data dependencies proved
-outer-public_child.ads:7:41: info: initialization of "Outer.A2" proved
-outer-public_child.ads:8:14: info: flow dependencies proved
+outer-public_child.ads:6:14: info: initialization of "Hidden_State" constituent of "A2" proved
+outer-public_child.ads:7:11: info: data dependencies proved
+outer-public_child.ads:7:38: info: initialization of "Outer.A2" proved
+outer-public_child.ads:8:11: info: flow dependencies proved
 outer.adb:32:49: info: initialization of "Inner.B1" constituent of "Outer.A1" proved
 outer.adb:40:45: info: initialization of "Hidden_State" constituent of "A2" proved
 outer.adb:40:59: info: initialization of "State_In_Body" constituent of "A2" proved
-outer.ads:5:14: info: data dependencies proved
-outer.ads:6:14: info: flow dependencies proved
-outer.ads:9:14: info: data dependencies proved
-outer.ads:10:14: info: flow dependencies proved
-outer.ads:25:17: info: data dependencies proved
-outer.ads:26:17: info: flow dependencies proved
-outer.ads:31:17: info: data dependencies proved
-outer.ads:31:39: info: initialization of "Hidden_State" constituent of "A2" proved
-outer.ads:32:17: info: flow dependencies proved
+outer.ads:5:11: info: data dependencies proved
+outer.ads:6:11: info: flow dependencies proved
+outer.ads:9:11: info: data dependencies proved
+outer.ads:10:11: info: flow dependencies proved
+outer.ads:25:14: info: data dependencies proved
+outer.ads:26:14: info: flow dependencies proved
+outer.ads:31:14: info: data dependencies proved
+outer.ads:31:36: info: initialization of "Hidden_State" constituent of "A2" proved
+outer.ads:32:14: info: flow dependencies proved
 output_port.ads:6:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 output_port.ads:6:04: warning: address specification on "Sensor" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [imprecise-address-specification] [E0012]
 output_port.ads:6:04: warning: launch "gnatprove --explain=E0012" for more information
@@ -182,22 +182,22 @@ param_1_illegal.adb:5:28: medium: "X" might not be initialized in "Param_1_Illeg
 param_1_illegal.adb:9:10: info: index check proved (CVC5: 2 VC)
 param_1_legal.adb:7:10: info: index check proved (CVC5: 2 VC)
 q-child.adb:9:44: info: initialization of "Actual_State" constituent of "C1" proved
-q-child.ads:12:14: info: data dependencies proved
-q-child.ads:13:14: info: flow dependencies proved
-q-child.ads:19:15: info: data dependencies proved
-q-child.ads:19:38: info: initialization of "Hidden_State" constituent of "Q2" proved
-q-child.ads:20:15: info: flow dependencies proved
+q-child.ads:12:11: info: data dependencies proved
+q-child.ads:13:11: info: flow dependencies proved
+q-child.ads:19:12: info: data dependencies proved
+q-child.ads:19:35: info: initialization of "Hidden_State" constituent of "Q2" proved
+q-child.ads:20:12: info: flow dependencies proved
 q.adb:12:51: info: initialization of "Child.C1" constituent of "Q.Q1" proved
 q.adb:20:45: info: initialization of "Hidden_State" constituent of "Q2" proved
 q.adb:20:59: info: initialization of "State_In_Body" constituent of "Q2" proved
-q.ads:6:14: info: data dependencies proved
-q.ads:7:14: info: flow dependencies proved
-q.ads:10:14: info: data dependencies proved
-q.ads:11:14: info: flow dependencies proved
+q.ads:6:11: info: data dependencies proved
+q.ads:7:11: info: flow dependencies proved
+q.ads:10:11: info: data dependencies proved
+q.ads:11:11: info: flow dependencies proved
 r-child.adb:14:11: warning: "Actual_State" constituent of "R2" is set by "Op_1" but not used after the call
-r-child.ads:2:30: warning: no subprogram exists that can initialize abstract state "Child.R2" constituent of "R.R1"
-r-child.ads:12:14: info: data dependencies proved
-r-child.ads:13:14: info: flow dependencies proved
+r-child.ads:2:27: warning: no subprogram exists that can initialize abstract state "Child.R2" constituent of "R.R1"
+r-child.ads:12:11: info: data dependencies proved
+r-child.ads:13:11: info: flow dependencies proved
 refined_depends_examples.adb:10:41: info: initialization of "B" constituent of "State" proved
 refined_depends_examples.adb:23:41: info: initialization of "A" constituent of "State" proved
 refined_depends_examples.adb:44:42: info: initialization of "A" constituent of "State" proved

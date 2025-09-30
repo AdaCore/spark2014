@@ -34,6 +34,7 @@ with ALI;    use ALI;
 with Namet;  use Namet;
 with Osint;  use Osint;
 with Output; use Output;
+with Stand;  use Stand;
 
 with Call;                      use Call;
 with Debug.Timing;              use Debug.Timing;
@@ -346,6 +347,13 @@ package body Flow_Generated_Globals.Phase_2 is
    Checked_Ghost_Entities : Name_Sets.Set;
    Ignored_Ghost_Entities : Name_Sets.Set;
    --  Entities annotated as ghost, with policy Check and Ignore, respectively
+
+   ----------------------------------------------------------------------
+   --  Assertion levels information
+   ----------------------------------------------------------------------
+
+   Ghost_Assertion_Levels  : Name_Maps.Map;
+   Parent_Assertion_Levels : Name_Graphs.Map;
 
    ----------------------------------------------------------------------
    --  Constant information
@@ -1547,14 +1555,14 @@ package body Flow_Generated_Globals.Phase_2 is
             New_GG_Line (Line);
             Serialize (K);
             case K is
-               when EK_End_Marker             =>
+               when EK_End_Marker              =>
                   if GG_Parsing_State = Started then
                      GG_Parsing_State := Finished;
                   else
                      Corrupted_ALI_File ("unexpected GG end marker");
                   end if;
 
-               when EK_State_Map              =>
+               when EK_State_Map               =>
                   declare
                      State : Entity_Name;
 
@@ -1578,7 +1586,7 @@ package body Flow_Generated_Globals.Phase_2 is
                      State_Abstractions.Include (State);
                   end;
 
-               when EK_Part_Of                =>
+               when EK_Part_Of                 =>
                   declare
                      State    : Entity_Name;
                      Part_Ofs : Name_Sets.Set;
@@ -1615,34 +1623,79 @@ package body Flow_Generated_Globals.Phase_2 is
                      State_Abstractions.Include (State);
                   end;
 
-               when EK_Remote_States          =>
+               when EK_Remote_States           =>
                   Serialize (State_Abstractions);
 
-               when EK_Predef_Init_Entities   =>
+               when EK_Predef_Init_Entities    =>
                   Serialize (Initialized_Vars_And_States);
 
-               when EK_Checked_Ghost_Entities =>
+               when EK_Checked_Ghost_Entities  =>
                   Serialize (Checked_Ghost_Entities);
 
-               when EK_Ignored_Ghost_Entities =>
+               when EK_Ignored_Ghost_Entities  =>
                   Serialize (Ignored_Ghost_Entities);
 
-               when EK_CAE_Entities           =>
+               when EK_Ghost_Assertion_Level   =>
+                  declare
+                     Object : Entity_Name;
+                     Level  : Entity_Name;
+
+                     Position : Name_Maps.Cursor;
+                     Inserted : Boolean;
+                  begin
+                     Serialize (Object);
+                     Serialize (Level);
+
+                     Ghost_Assertion_Levels.Insert
+                       (Object, Level, Position, Inserted);
+
+                     pragma
+                       Assert
+                         (Inserted
+                            or else Ghost_Assertion_Levels (Object) = Level);
+                  end;
+
+               when EK_Parent_Assertion_Levels =>
+                  declare
+                     Level         : Entity_Name;
+                     Parent_Levels : Name_Sets.Set;
+
+                     Position : Name_Graphs.Cursor;
+                     Inserted : Boolean;
+                  begin
+                     Serialize (Level);
+                     Serialize (Parent_Levels);
+
+                     Parent_Assertion_Levels.Insert
+                       (Key      => Level,
+                        New_Item => Parent_Levels,
+                        Position => Position,
+                        Inserted => Inserted);
+
+                     if not Inserted then
+                        pragma
+                          Assert
+                            (Parent_Levels
+                               = Parent_Assertion_Levels (Position));
+                     end if;
+                  end;
+
+               when EK_CAE_Entities            =>
                   Serialize (CAE_Entities);
 
-               when EK_Constants              =>
+               when EK_Constants               =>
                   Serialize (Constants);
 
-               when EK_Volatiles              =>
+               when EK_Volatiles               =>
                   Serialize (Async_Readers_Vars, "AR");
                   Serialize (Async_Writers_Vars, "AW");
                   Serialize (Effective_Reads_Vars, "ER");
                   Serialize (Effective_Writes_Vars, "EW");
 
-               when EK_Synchronized           =>
+               when EK_Synchronized            =>
                   Serialize (Synchronized_Vars);
 
-               when EK_Globals                =>
+               when EK_Globals                 =>
                   --  ??? this line should be loaded only when
                   --  For_Current_Unit or else not V.The_Global_Info.Local
                   declare
@@ -1694,7 +1747,7 @@ package body Flow_Generated_Globals.Phase_2 is
                        (Entity, Phase_1_Info (Pos).Parents);
                   end;
 
-               when EK_Constant_Calls         =>
+               when EK_Constant_Calls          =>
                   declare
                      Const_Pos : Name_Graphs.Cursor;
                      --  Position of the caller in the direct calls graph
@@ -1715,7 +1768,7 @@ package body Flow_Generated_Globals.Phase_2 is
                      Serialize (Constant_Calls (Const_Pos));
                   end;
 
-               when EK_Protected_Instance     =>
+               when EK_Protected_Instance      =>
                   declare
                      Variable : Entity_Name;
                      Prio     : Priority_Value;
@@ -1753,7 +1806,7 @@ package body Flow_Generated_Globals.Phase_2 is
                           "Conflicting priority values registered");
                   end;
 
-               when EK_Locking_Call           =>
+               when EK_Locking_Call            =>
                   declare
                      Caller              : Entity_Name;
                      Protected_Object    : Entity_Name;
@@ -1779,7 +1832,7 @@ package body Flow_Generated_Globals.Phase_2 is
                            Operation => Protected_Operation));
                   end;
 
-               when EK_Task_Instance          =>
+               when EK_Task_Instance           =>
                   declare
                      Typ       : Entity_Name;
                      Object    : Entity_Name;
@@ -1798,7 +1851,7 @@ package body Flow_Generated_Globals.Phase_2 is
                            Node      => Find_Entity (Object)));
                   end;
 
-               when EK_Max_Queue_Length       =>
+               when EK_Max_Queue_Length        =>
                   declare
                      Entry_Name       : Entity_Name;
                      Max_Queue_Length : Nat;
@@ -1828,7 +1881,7 @@ package body Flow_Generated_Globals.Phase_2 is
                           "conflicting max queue lengths");
                   end;
 
-               when EK_Direct_Calls           =>
+               when EK_Direct_Calls            =>
                   declare
                      Caller : Entity_Name;
 
@@ -1850,7 +1903,7 @@ package body Flow_Generated_Globals.Phase_2 is
                      Serialize (Direct_Calls (Caller_Pos));
                   end;
 
-               when EK_Proof_Dependencies     =>
+               when EK_Proof_Dependencies      =>
                   declare
                      Caller : Entity_Name;
 
@@ -1872,7 +1925,7 @@ package body Flow_Generated_Globals.Phase_2 is
                      Serialize (Proof_Dependencies (Caller_Pos));
                   end;
 
-               when EK_Flow_Scope             =>
+               when EK_Flow_Scope              =>
                   declare
                      Entity : Entity_Name;
                      Info   : Name_Info_T;
@@ -2968,9 +3021,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
       begin
          --  Library-level renamings have no root entity; ignore them
-         if Present (Root_Entity)
-           and then Gnat2Why_Args.Flow_Generate_Contracts
-         then
+         if Present (Root_Entity) then
             declare
                Position : Entity_Contract_Maps.Cursor;
                Inserted : Boolean;
@@ -3211,7 +3262,7 @@ package body Flow_Generated_Globals.Phase_2 is
             Callee : constant Entity_Name := Call_Graph.Get_Key (Obj);
          begin
             --  Protected operations should not be part of this graph;
-            --  they need to be explicitcly picked from the subprogram.
+            --  they need to be explicitly picked from the subprogram.
             pragma Assert (not Is_Protected_Operation (Callee));
             Collect_Objects_From_Subprogram (Callee);
          end;
@@ -3318,10 +3369,113 @@ package body Flow_Generated_Globals.Phase_2 is
    -- GG_Is_Checked_Ghost_Entity --
    --------------------------------
 
-   function GG_Is_Checked_Ghost_Entity (EN : Entity_Name) return Boolean is
+   function GG_Is_Checked_Ghost_Entity (EN : Entity_Name) return Boolean
+   renames Checked_Ghost_Entities.Contains;
+
+   --------------------------------
+   -- GG_Is_Ignored_Ghost_Entity --
+   --------------------------------
+
+   function GG_Is_Ignored_Ghost_Entity (EN : Entity_Name) return Boolean
+   renames Ignored_Ghost_Entities.Contains;
+
+   ------------------------------
+   -- GG_Ghost_Assertion_Level --
+   ------------------------------
+
+   function GG_Ghost_Assertion_Level (EN : Entity_Name) return Any_Entity_Name
+   is
    begin
-      return Checked_Ghost_Entities.Contains (EN);
-   end GG_Is_Checked_Ghost_Entity;
+      if GG_Is_Ghost_Entity (EN) then
+         return Ghost_Assertion_Levels (EN);
+      else
+         return Null_Entity_Name;
+      end if;
+   end GG_Ghost_Assertion_Level;
+
+   -----------
+   -- Ghost --
+   -----------
+
+   package Ghost is
+
+      --  This package provides equivalents of routines from the frontend Ghost
+      --  package, but for Entity_Names instead of Entity_Ids.
+
+      function Depends_On_Level
+        (Self : Entity_Name; Other : Entity_Name) return Boolean
+      is (for some Parent_Level of Parent_Assertion_Levels (Self) =>
+            Parent_Level = Other
+            or else Depends_On_Level (Parent_Level, Other));
+
+      function Depends_On_Level
+        (Self : Entity_Id; Other : Entity_Name) return Boolean
+      is (for some Parent_Level of Iter (Parent_Levels (Self)) =>
+            To_Entity_Name (Parent_Level) = Other
+            or else Depends_On_Level (Parent_Level, Other));
+
+      function Depends_On_Level
+        (Self : Entity_Name; Other : Entity_Id) return Boolean
+      is (for some Parent_Level of Parent_Assertion_Levels (Self) =>
+            Parent_Level = To_Entity_Name (Other)
+            or else Depends_On_Level (Parent_Level, Other));
+
+      function Is_Same_Or_Depends_On_Level
+        (Self : Entity_Name; Other : Entity_Name) return Boolean
+      is (Self = Other or else Depends_On_Level (Self, Other));
+
+      function Is_Same_Or_Depends_On_Level
+        (Self : Entity_Id; Other : Entity_Name) return Boolean
+      is (To_Entity_Name (Self) = Other
+          or else Depends_On_Level (Self, Other));
+
+      function Is_Same_Or_Depends_On_Level
+        (Self : Entity_Name; Other : Entity_Id) return Boolean
+      is (Self = To_Entity_Name (Other)
+          or else Depends_On_Level (Self, Other));
+
+   end Ghost;
+
+   -------------------------------------
+   -- GG_Is_Assertion_Level_Dependent --
+   -------------------------------------
+
+   function GG_Is_Assertion_Level_Dependent
+     (Self : Entity_Name; Other : Entity_Name) return Boolean
+   is
+      use Ghost;
+   begin
+      return
+        Self = To_Entity_Name (Standard_Level_Default)
+        or else Other = To_Entity_Name (Standard_Level_Default)
+        or else Is_Same_Or_Depends_On_Level (Self, Other)
+        or else Is_Same_Or_Depends_On_Level
+                  (Self, To_Entity_Name (Standard_Level_Static));
+   end GG_Is_Assertion_Level_Dependent;
+
+   function GG_Is_Assertion_Level_Dependent
+     (Self : Entity_Id; Other : Entity_Name) return Boolean
+   is
+      use Ghost;
+   begin
+      return
+        Self = Standard_Level_Default
+        or else Other = To_Entity_Name (Standard_Level_Default)
+        or else Is_Same_Or_Depends_On_Level (Self, Other)
+        or else Is_Same_Or_Depends_On_Level (Self, Standard_Level_Static);
+   end GG_Is_Assertion_Level_Dependent;
+
+   function GG_Is_Assertion_Level_Dependent
+     (Self : Entity_Name; Other : Entity_Id) return Boolean
+   is
+      use Ghost;
+   begin
+      return
+        Self = To_Entity_Name (Standard_Level_Default)
+        or else Other = Standard_Level_Default
+        or else Is_Same_Or_Depends_On_Level (Self, Other)
+        or else Is_Same_Or_Depends_On_Level (Self, Standard_Level_Static);
+   end GG_Is_Assertion_Level_Dependent;
 
    --------------------
    -- GG_Is_Constant --

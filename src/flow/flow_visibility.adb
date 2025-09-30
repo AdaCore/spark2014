@@ -1178,6 +1178,8 @@ package body Flow_Visibility is
                Traverse_Declarations_Or_Statements (Statements (Handler));
                Next_Non_Pragma (Handler);
             end loop;
+
+            Traverse_Declarations_Or_Statements (Finally_Statements (N));
          end if;
       end Traverse_Handled_Statement_Sequence;
 

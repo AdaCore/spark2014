@@ -1,4 +1,4 @@
- info: ceiling priority protocol is respected
+ info: ceiling priority protocol is respected for "Synchronous_Abstractions.P"
 --> synchronous_abstractions.adb:6:09
 
  info: nontermination of task proved

@@ -628,11 +628,14 @@ package body Gnat2Why.Subprograms is
       with Pre => not Trace.Is_Empty;
       --  Helper to generate a string for the call trace.
 
-      function Detailed_Msg
-        (Locked_Obj : Entity_Name; Trace : Name_Lists.List) return String
+      procedure Msg_Details
+        (Locked_Obj : Entity_Name;
+         Trace      : Name_Lists.List;
+         Subject    : out Unbounded_String;
+         Details    : out Unbounded_String)
       with Pre => not Trace.Is_Empty;
-      --  Generates contents for the details section for a ceiling priority
-      --  check message.
+      --  Generates contents for the subject and details sections of a ceiling
+      --  priority check message.
       --
       --  Typically Trace has at least 2 elements - the source and target
       --  operations. Exceptionally, in the case of recursion it will have
@@ -699,29 +702,40 @@ package body Gnat2Why.Subprograms is
          return To_String (Result);
       end To_String;
 
-      ------------------
-      -- Detailed_Msg --
-      ------------------
+      -----------------
+      -- Msg_Details --
+      -----------------
 
-      function Detailed_Msg
-        (Locked_Obj : Entity_Name; Trace : Name_Lists.List) return String
+      procedure Msg_Details
+        (Locked_Obj : Entity_Name;
+         Trace      : Name_Lists.List;
+         Subject    : out Unbounded_String;
+         Details    : out Unbounded_String)
       is
          Source renames Trace.First_Element;
 
-         Result : Unbounded_String;
+         Locked_Obj_Pretty : constant String := Pretty_Print (Locked_Obj);
+
       begin
-         Append (Result, "ceiling priority of the protected object """);
-         Append (Result, Pretty_Print (Locked_Obj));
-         Append (Result, """ must be >= the priority of the");
-         Append (Result, " caller """);
-         Append (Result, Pretty_Print (Source));
-         Append (Result, """ in the call");
+         Append (Subject, "for """ & Locked_Obj_Pretty & '"');
+
+         --  The details of the proved and unproved messages currently differ
+         --  only at the end. For the unproved message we show *one* failing
+         --  trace. In the proved case *all* the potential calls to the given
+         --  protected object are proven to be safe.
+         Append (Details, "ceiling priority of the protected object """);
+         Append (Details, Locked_Obj_Pretty);
+         Append (Details, """ must be >= the priority of the");
+         Append (Details, " caller """);
+         Append (Details, Pretty_Print (Source) & '"');
+         Append (Details, " in the call");
+
          if Trace.Length > 2 then
-            Append (Result, " chain");
+            Append (Details, " chain");
          end if;
-         Append (Result, To_String (Trace));
-         return To_String (Result);
-      end Detailed_Msg;
+
+         Append (Details, To_String (Trace));
+      end Msg_Details;
 
       --  Start of processing for Check_Ceiling_Protocol
 
@@ -742,9 +756,8 @@ package body Gnat2Why.Subprograms is
            (Obj_Name : Entity_Name;
             Obj_Prio : Priority_Value;
             Trace    : Name_Lists.List);
-         --  Create check for accessing protected object Obj_Name with priority
-         --  Obj_Prio via call chain Trace.
-
+         --  Create check for accessing the protected object Obj_Name with
+         --  priority Obj_Prio via call chain Trace.
          ------------------
          -- Create_Check --
          ------------------
@@ -804,14 +817,22 @@ package body Gnat2Why.Subprograms is
                     Left   => Self_Prio,
                     Right  => Obj_Prio_Expr);
 
-               Info  : Check_Info_Type;
-               Check : W_Prog_Id;
+               Info    : Check_Info_Type;
+               Subject : Unbounded_String;
+               Details : Unbounded_String;
+               Check   : W_Prog_Id;
 
             begin
+               Msg_Details
+                 (Locked_Obj => Obj_Name,
+                  Trace      => Trace,
+                  Subject    => Subject,
+                  Details    => Details);
+
                Info :=
                  New_Check_Info
-                   (Details =>
-                      Detailed_Msg (Locked_Obj => Obj_Name, Trace => Trace));
+                   (Subject => To_String (Subject),
+                    Details => To_String (Details));
 
                Check :=
                  New_Located_Assert

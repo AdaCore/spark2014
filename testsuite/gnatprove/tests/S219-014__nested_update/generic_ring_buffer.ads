@@ -24,14 +24,14 @@ is
    end record
      with Dynamic_Predicate =>
        (Ring_Buffer_Type.Max_Size <= Small_Positive'Last and
-	Ring_Buffer_Type.Count    <= Ring_Buffer_Type.Max_Size and
-	Ring_Buffer_Type.Head     <= Ring_Buffer_Type.Max_Size and
-	Ring_Buffer_Type.Tail     <= Ring_Buffer_Type.Max_Size and
+        Ring_Buffer_Type.Count    <= Ring_Buffer_Type.Max_Size and
+        Ring_Buffer_Type.Head     <= Ring_Buffer_Type.Max_Size and
+        Ring_Buffer_Type.Tail     <= Ring_Buffer_Type.Max_Size and
         ((Ring_Buffer_Type.Count = 0 and
-	    Ring_Buffer_Type.Tail = Ring_Buffer_Type.Max_Size and
-	    Ring_Buffer_Type.Head = 1) or
-	 (Ring_Buffer_Type.Count = Ring_Buffer_Type.Max_Size + Ring_Buffer_Type.Tail - Ring_Buffer_Type.Head + 1) or
-	 (Ring_Buffer_Type.Count = Ring_Buffer_Type.Tail - Ring_Buffer_Type.Head + 1)));
+          Ring_Buffer_Type.Tail = Ring_Buffer_Type.Max_Size and
+          Ring_Buffer_Type.Head = 1) or
+         (Ring_Buffer_Type.Count = Ring_Buffer_Type.Max_Size + Ring_Buffer_Type.Tail - Ring_Buffer_Type.Head + 1) or
+         (Ring_Buffer_Type.Count = Ring_Buffer_Type.Tail - Ring_Buffer_Type.Head + 1)));
 
 
      ----------------------------------------------------------------------------
@@ -73,7 +73,7 @@ is
 
      procedure Get
        (Buffer   : in out Ring_Buffer_Type;
-	Element  :    out Element_Type)
+        Element  :    out Element_Type)
      with
        Pre   => not Empty (Buffer) and
                 Size (Buffer) >= 1,
@@ -84,7 +84,7 @@ is
 
      procedure Put
        (Buffer   : in out Ring_Buffer_Type;
-	Element  : in     Element_Type)
+        Element  : in     Element_Type)
      with
        Pre   => not Full (Buffer),
        Post  => not Empty (Buffer) and

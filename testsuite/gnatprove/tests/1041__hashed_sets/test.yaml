@@ -1,0 +1,8 @@
+large: True
+timeout: 4000
+replay: True
+prove_all:
+  sparklib: True
+session_opt:
+  level: 4
+  prover: ["z3", "cvc5", "alt-ergo"]

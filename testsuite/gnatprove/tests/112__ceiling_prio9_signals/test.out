@@ -3,8 +3,8 @@ prots.adb:3:14: info: local subprogram "P1" only analyzed in the context of call
 prots.adb:21:10: info: analyzing call to "P1" in context
 prots.adb:30:10: info: analyzing call to "P1" in context
 prots.ads:15:14: info: ceiling priority in Interrupt_Priority proved (CVC5: 2 VC)
-prots.ads:18:17: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "Prots.Po" must be >= the priority of the caller "Prots.Signal_Handler.Teardown" in the call chain "Prots.Signal_Handler.Teardown" -> "Prots.P1" -> "Prots.Po_T.Pp1"]
+prots.ads:18:17: medium: ceiling priority protocol might not be respected for "Prots.Po" [reason for check: ceiling priority of the protected object "Prots.Po" must be >= the priority of the caller "Prots.Signal_Handler.Teardown" in the call chain "Prots.Signal_Handler.Teardown" -> "Prots.P1" -> "Prots.Po_T.Pp1"]
 prots.ads:19:30: medium: this interrupt might be reserved
 prots.ads:23:19: info: ceiling priority in Interrupt_Priority proved (CVC5: 2 VC)
-prots.ads:26:17: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "Prots.Po" must be >= the priority of the caller "Prots.Signal2_Handler_Type.Teardown" in the call chain "Prots.Signal2_Handler_Type.Teardown" -> "Prots.P1" -> "Prots.Po_T.Pp1"]
+prots.ads:26:17: medium: ceiling priority protocol might not be respected for "Prots.Po" [reason for check: ceiling priority of the protected object "Prots.Po" must be >= the priority of the caller "Prots.Signal2_Handler_Type.Teardown" in the call chain "Prots.Signal2_Handler_Type.Teardown" -> "Prots.P1" -> "Prots.Po_T.Pp1"]
 prots.ads:27:30: medium: this interrupt might be reserved

@@ -63,8 +63,7 @@ package Gnat2Why_Opts.Reading is
    --  The SPARK RM does not make global contracts optional, rather this is a
    --  liberty we have taken in this implementation of SPARK. This flag is
    --  controlled by the --no-global-generation switch and will make sure the
-   --  absence of a global contract means the same thing as Global => null. By
-   --  default, in gnat2why we synthesize global contracts.
+   --  absence of a Global or Refined_Global contract will be reported.
 
    Flow_Generate_Contracts : Boolean;
 

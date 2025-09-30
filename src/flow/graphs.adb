@@ -95,8 +95,11 @@ package body Graphs is
    -- Add_Vertex --
    ----------------
 
-   procedure Add_Vertex (G : in out Graph; V : Vertex_Key; Id : out Vertex_Id)
-   is
+   procedure Add_Vertex
+     (G     : in out Graph;
+      V     : Vertex_Key;
+      Id    : out Vertex_Id;
+      Keyed : Boolean := True) is
    begin
       G.Vertices.Append
         (Vertex'
@@ -105,7 +108,9 @@ package body Graphs is
             Out_Neighbours => EAM.Empty_Map,
             Cluster        => Null_Cluster));
       Id := G.Vertices.Last_Index;
-      G.Key_To_Id.Insert (V, Id);
+      if Keyed then
+         G.Key_To_Id.Insert (V, Id);
+      end if;
    end Add_Vertex;
 
    procedure Add_Vertex (G : in out Graph; Id : out Vertex_Id) is
@@ -119,7 +124,8 @@ package body Graphs is
       Id := G.Vertices.Last_Index;
    end Add_Vertex;
 
-   procedure Add_Vertex (G : in out Graph; V : Vertex_Key) is
+   procedure Add_Vertex
+     (G : in out Graph; V : Vertex_Key; Keyed : Boolean := True) is
    begin
       G.Vertices.Append
         (Vertex'
@@ -127,7 +133,9 @@ package body Graphs is
             In_Neighbours  => VIS.Empty_Set,
             Out_Neighbours => EAM.Empty_Map,
             Cluster        => Null_Cluster));
-      G.Key_To_Id.Insert (V, G.Vertices.Last_Index);
+      if Keyed then
+         G.Key_To_Id.Insert (V, G.Vertices.Last_Index);
+      end if;
    end Add_Vertex;
 
    ---------

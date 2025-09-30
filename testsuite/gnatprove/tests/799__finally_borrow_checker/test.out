@@ -17,7 +17,6 @@ finally_ownership.adb:15:13: error: launch "gnatprove --explain=E0010" for more 
 finally_ownership.adb:15:13: error: object was moved at line 160 [E0010]
 finally_ownership.adb:15:13: error: return from "KO6" with moved value for "X"
 finally_ownership.adb:26:07: info: initialization of "Y" proved
-finally_ownership.adb:32:10: warning: initialization of "R" has no effect
 finally_ownership.adb:53:07: info: initialization of "Y" proved
 finally_ownership.adb:66:14: error: launch "gnatprove --explain=E0010" for more information
 finally_ownership.adb:66:14: error: object was moved at line 61 [E0010]
@@ -54,7 +53,6 @@ finally_ownership.adb:185:08: error: part of dereference from "Y" is not writabl
 finally_ownership.adb:198:13: error: launch "gnatprove --explain=E0010" for more information
 finally_ownership.adb:198:13: error: object was moved at line 194 [E0010]
 finally_ownership.adb:198:13: error: part of dereference from "Y" is not writable
-finally_ownership.adb:210:13: warning: statement has no effect
 finally_ownership.adb:215:16: error: launch "gnatprove --explain=E0010" for more information
 finally_ownership.adb:215:16: error: object was moved at line 211 [E0010]
 finally_ownership.adb:215:16: error: part of dereference from "Y" is not writable

@@ -571,6 +571,7 @@ package Flow_Types is
 
    type Pretty_Print_Kind_T is
      (Pretty_Print_Null,
+      Pretty_Print_Declaration,
       Pretty_Print_DIC,
       Pretty_Print_Package,
       Pretty_Print_Folded_Function_Check,
@@ -636,6 +637,9 @@ package Flow_Types is
 
       In_Nested_Package : Boolean;
       --  True for vertices created for constructs in nested packages
+
+      Is_Path_Copy : Boolean;
+      --  True for vertices on internal copies of finally statements
 
       Is_Exceptional_Branch : Boolean;
       --  True for nodes which lead *into* an exceptional path (see below), but
@@ -710,9 +714,10 @@ package Flow_Types is
       --  True if this vertex models a loop that is detected as potentially
       --  nonreturning.
 
-      Is_Declaration_Node : Boolean;
-      --  True if this vertex models a declaration node with explicit
-      --  initialization.
+      Object_Declarations : Node_Sets.Set;
+      --  Objects whose 'Initial and 'Final vertices were created together with
+      --  this vertex and should be cleared when this vertex is found to be a
+      --  dead code.
 
       Execution : Execution_Kind_T;
       --  Determines how we should treat edges from this vertex. Most nodes
@@ -800,6 +805,7 @@ package Flow_Types is
      V_Attributes'
        (Is_Null_Node              => False,
         In_Nested_Package         => False,
+        Is_Path_Copy              => False,
         Is_Program_Node           => False,
         Is_Original_Program_Node  => False,
         Is_Dead_Path              => False,
@@ -822,7 +828,7 @@ package Flow_Types is
         Is_Call_Exception         => False,
         Is_Param_Havoc            => False,
         Is_Neverending            => False,
-        Is_Declaration_Node       => False,
+        Object_Declarations       => Node_Sets.Empty_Set,
         Execution                 => Normal_Execution,
         Perform_IPFA              => False,
         Callee                    => Empty,

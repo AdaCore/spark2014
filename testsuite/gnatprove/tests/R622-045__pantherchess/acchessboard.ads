@@ -103,9 +103,9 @@ package ACChessBoard is
          Piece     : Board_Piece_Type;
          Captured  : Board_Piece_Type;
          From      : Square_Type;
-	       To        : Square_Type;
-	       Flag      : Flag_Type;
-	       Promotion : Board_Piece_Type;
+         To        : Square_Type;
+         Flag      : Flag_Type;
+         Promotion : Board_Piece_Type;
          Check     : Check_Type;
          Score     : Integer_Type;
          Pin       : Pin_Type;

@@ -31,8 +31,10 @@ package body Prots is
 
    procedure Proc2 is
    begin
+      Obj.F1.PP1; -- Ceiling priority of the callee is 3
       Obj.F2.PP2; -- Ceiling priority of the callee is 4
       Obj.F3.PP1; -- Ceiling priority of the callee is 3
+      Obj.F4.PP2; -- Ceiling priority of the callee is 4
    end;
 
 end Prots;

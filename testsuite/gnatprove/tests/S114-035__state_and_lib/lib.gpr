@@ -3,6 +3,7 @@ is
 
    for Library_Name use "mylib";
    for Library_Dir use ".";
+   for Object_Dir use "obj";
    for Externally_Built use "true";
    for Source_Dirs use ("include");
 

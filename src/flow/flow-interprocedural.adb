@@ -263,8 +263,14 @@ package body Flow.Interprocedural is
             Globals : Global_Flow_Ids;
             --  Globals deduced from the contract (if available) or body
 
-            Ghost_Subprogram : constant Boolean :=
-              Is_Ghost_Entity (Called_Thing);
+            Subprogram_Is_Ignored_Ghost : constant Boolean :=
+              Is_Ignored_Ghost_Entity (Called_Thing);
+
+            Subprogram_Is_Checked_Ghost : constant Boolean :=
+              Is_Checked_Ghost_Entity (Called_Thing);
+
+            Subprogram_Is_Ghost : constant Boolean :=
+              Subprogram_Is_Ignored_Ghost or Subprogram_Is_Checked_Ghost;
 
             Inputs, Outputs : Flow_Id_Sets.Set;
 
@@ -366,22 +372,57 @@ package body Flow.Interprocedural is
                      Output_V : constant Flow_Graphs.Vertex_Id :=
                        Find_Parameter_Vertex (FA, V, Output);
 
+                     Output_Is_Ignored_Ghost : constant Boolean :=
+                       Is_Ignored_Ghost_Entity (Output);
+
+                     Output_Is_Checked_Ghost : constant Boolean :=
+                       Is_Checked_Ghost_Entity (Output);
+
                      Output_Is_Ghost : constant Boolean :=
-                       Is_Ghost_Entity (Output);
+                       Output_Is_Ignored_Ghost or Output_Is_Checked_Ghost;
 
                   begin
                      for Input of Inputs loop
                         declare
+                           Input_Is_Ignored_Ghost : constant Boolean :=
+                             Is_Ignored_Ghost_Entity (Input);
+
+                           Input_Is_Checked_Ghost : constant Boolean :=
+                             Is_Checked_Ghost_Entity (Input);
+
+                           Input_Is_Ghost : constant Boolean :=
+                             Input_Is_Ignored_Ghost or Input_Is_Checked_Ghost;
+
+                           Ghost_Policy_OK : constant Boolean :=
+                             Is_Abstract_State (Output)
+                             or else (if Output_Is_Ignored_Ghost
+                                      then True
+
+                                      elsif Output_Is_Checked_Ghost
+                                      then not Is_Ignored_Ghost_Entity (Input)
+
+                                      elsif not Output_Is_Ghost
+                                      then
+                                        not Subprogram_Is_Ghost
+                                        and then not Input_Is_Ghost
+                                      else raise Program_Error);
+                           --  Data kinds have an order that governs what
+                           --  assignments (dependencies) are allowed:
+                           --  ignored ghost << checked ghost << ordinary,
+                           --  i.e. each data kind can be only assigned with
+                           --  data of its own or subsequent kind.
+                           --
+                           --  Abstract states can be assigned with anything,
+                           --  because they might contain all kinds of
+                           --  constituents.
+
+                           Ghost_Level_OK : constant Boolean :=
+                             (if Output_Is_Ghost and Input_Is_Ghost
+                              then
+                                Is_Assertion_Level_Dependent (Input, Output));
+
                            Dependency_Allowed : constant Boolean :=
-                             Output_Is_Ghost
-                             or else Is_Abstract_State (Output)
-                             or else (not Ghost_Subprogram
-                                      and then not Is_Ghost_Entity (Input));
-                           --  Ghost outputs can always be modified; non-ghost
-                           --  abstract states too, because they might contain
-                           --  ghost constituents; non-ghost outputs can only
-                           --  be modified by non-ghost subprograms using
-                           --  non-ghost inputs.
+                             Ghost_Policy_OK and Ghost_Level_OK;
 
                         begin
                            if Dependency_Allowed then

@@ -5,6 +5,6 @@ account8.adb:16:14: warning: subprogram "Get_Next_Account_Created" has no effect
 account8.adb:25:10: info: analyzing call to "Get_Next_Account_Created" in context
 account8.ads:6:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 account8.ads:15:14: info: nontermination of task proved (CVC5: 1 VC)
-account8.ads:15:14: medium: ceiling priority protocol might not be respected [reason for check: ceiling priority of the protected object "Account8.Num_Accounts" must be >= the priority of the caller "Account8.Account_Management" in the call "Account8.Account_Management" -> "Account8.Protected_Natural.Incr"]
+account8.ads:15:14: medium: ceiling priority protocol might not be respected for "Account8.Num_Accounts" [reason for check: ceiling priority of the protected object "Account8.Num_Accounts" must be >= the priority of the caller "Account8.Account_Management" in the call "Account8.Account_Management" -> "Account8.Protected_Natural.Incr"]
 account8.ads:17:06: info: data dependencies proved
 account8.ads:18:06: info: flow dependencies proved

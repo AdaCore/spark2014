@@ -1,10 +1,10 @@
 package body Q is
    pragma Assertion_Policy (Ghost => Check);
 
-   Hidden : Boolean with Ghost;
+   Hidden_Checked : Boolean with Ghost;
 
-   procedure Set_Ignored_Ghost_Object is
+   procedure Set_Hidden_Checked_Ghost_Object is
    begin
-      Hidden := True;
+      Hidden_Checked := True;
    end;
 end;
