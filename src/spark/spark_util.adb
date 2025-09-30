@@ -3733,10 +3733,9 @@ package body SPARK_Util is
    -- Is_Ghost_With_Respect_To_Context --
    --------------------------------------
 
-   function Is_Ghost_With_Respect_To_Context (Call : N_Call_Id) return Boolean
-   is
+   function Is_Ghost_With_Respect_To_Context (Call : Node_Id) return Boolean is
       function Is_Body (N : Node_Id) return Boolean
-      is (Nkind (N) in N_Entity_Body);
+      is (Nkind (N) in N_Entity_Body or else Is_Inlined_Call (N));
 
       function Enclosing_Body is new First_Parent_With_Property (Is_Body);
 
@@ -3752,6 +3751,8 @@ package body SPARK_Util is
              Defining_Entity (Stmt),
            when N_Procedure_Call_Statement | N_Entry_Call_Statement =>
              Get_Called_Entity (Stmt),
+           when N_Block_Statement                                   =>
+             Called_Entity_From_Inlined_Call (Stmt),
            when others                                              =>
              raise Program_Error);
 
@@ -3760,8 +3761,11 @@ package body SPARK_Util is
          return False;
       else
          declare
+            Scop   : constant Node_Id := Enclosing_Body (Stmt);
             Caller : constant Entity_Id :=
-              Unique_Defining_Entity (Enclosing_Body (Stmt));
+              (if Nkind (Scop) in N_Entity_Body
+               then Unique_Defining_Entity (Scop)
+               else Called_Entity_From_Inlined_Call (Scop));
          begin
             return
               not Is_Ghost_Entity (Caller)
@@ -5003,6 +5007,14 @@ package body SPARK_Util is
 
             when N_Block_Statement                =>
                Buffer.Append (Scop);
+
+               --  Cut propagation of ghost inlined calls here
+
+               if Is_Inlined_Call (Scop)
+                 and then Is_Ghost_With_Respect_To_Context (Scop)
+               then
+                  exit;
+               end if;
 
             --  Transfer from an exception handlers always exit their
             --  surrounding handled sequence of statement, handlers do not

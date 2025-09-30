@@ -1385,11 +1385,21 @@ package SPARK_Util is
       end record;
    end Exception_Sets;
 
-   function Is_Ghost_With_Respect_To_Context (Call : N_Call_Id) return Boolean
+   function Is_Inlined_Call (Stmt : Node_Id) return Boolean
+   is (Nkind (Stmt) = N_Block_Statement
+       and then Present (Original_Node (Stmt))
+       and then Nkind (Original_Node (Stmt)) = N_Procedure_Call_Statement);
+
+   function Called_Entity_From_Inlined_Call (Call : Node_Id) return Entity_Id
+   is (Get_Called_Entity (Original_Node (Call)))
+   with Pre => Is_Inlined_Call (Call);
+
+   function Is_Ghost_With_Respect_To_Context (Call : Node_Id) return Boolean
    with
      Pre =>
-       (if Nkind (Call) = N_Function_Call
-        then Is_Function_Call_With_Side_Effects (Call));
+       (Call in N_Call_Id or else Is_Inlined_Call (Call))
+       and then (if Nkind (Call) = N_Function_Call
+                 then Is_Function_Call_With_Side_Effects (Call));
    --  Detect if a call with side effects is ghost respectively to the
    --  enclosing calling context (the assertion level associated to the call
    --  depends on the assertion level of the calling subprogram). In
