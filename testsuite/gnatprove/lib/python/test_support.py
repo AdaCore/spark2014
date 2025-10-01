@@ -7,10 +7,10 @@ import json
 import os
 import re
 import sys
+from fnmatch import fnmatch
 from time import sleep
-from e3.os.fs import which
-from e3.env import Env
-from e3.os.process import Run, STDOUT
+from shutil import which
+import subprocess
 from test_util import sort_key_for_errors
 
 
@@ -52,6 +52,13 @@ is_msg = re.compile(
     r"([\w-]*\.ad.?):(\d*):\d*:" r" (info|warning|low|medium|high)?(: )?([^(,[]*)(.*)?$"
 )
 is_mark = re.compile(r"@(\w*):(\w*)")
+
+
+def Run(command):
+    result = subprocess.run(
+        command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True
+    )
+    return result
 
 
 def benchmark_mode():
@@ -135,21 +142,27 @@ def cat(filename, sort=False, start=1, end=0):
                         print(line, end="")
 
 
-def ls(directory=None, filter_output=None):
-    """ls wrapper for the testsuite
+def ls(path=".", exclude_pattern=None):
+    try:
+        if os.path.isfile(path):
+            print(path)
+        elif os.path.isdir(path):
+            entries = os.listdir(path)
+            entries.sort()
 
-    PARAMETERS
-       directory: the name of the directory to list the files of
-    """
-    if directory:
-        cmd = ["ls", directory]
-    else:
-        cmd = ["ls"]
-    process = Run(cmd)
-    strlist = str.splitlines(process.out)
-    if filter_output is not None:
-        strlist = grep(filter_output, strlist, invert=True)
-    print_sorted(strlist)
+            if exclude_pattern:
+                entries = [
+                    entry for entry in entries if not fnmatch(entry, exclude_pattern)
+                ]
+
+            for entry in entries:
+                print(entry)
+        else:
+            print(f"Error: '{path!r}' is neither a file nor a directory.")
+    except FileNotFoundError:
+        print(f"Error: The path '{path!r}' does not exist.")
+    except PermissionError:
+        print(f"Error: Permission denied to access '{path!r}'.")
 
 
 def matches(comp_reg, s, invert):
@@ -726,15 +739,15 @@ def gcc(src, opt=None):
     cmd += to_list(opt)
     cmd += [src]
     process = Run(cmd)
-    print_sorted(str.splitlines(process.out))
+    print_sorted(str.splitlines(process.stdout))
 
 
 def gprbuild(opt=None, sort_lines=True):
     """Call gprbuld -q **opt. Sort the output if sort_lines is True."""
     if opt is None:
         opt = []
-    process = Run(["gprbuild", "-q"] + opt, error=STDOUT)
-    lines = str.splitlines(process.out)
+    process = Run(["gprbuild", "-q"] + opt)
+    lines = str.splitlines(process.stdout)
     if len(lines) == 0:
         return
 
@@ -758,26 +771,6 @@ def spark_install_path():
     """the location of the SPARK install"""
     exec_loc = which("gnatprove")
     return os.path.dirname(os.path.dirname(exec_loc))
-
-
-def altergo(src, timeout=10, opt=None):
-    """Invoke alt-ergo with why3-cpulimit wrapper
-
-    PARAMETERS
-      src: VC file to process
-      timeout: timeout passed to why3-cpulimit
-      opt: additional command line options for alt-ergo
-    """
-    # add libexec/spark/bin to the PATH
-    installdir = spark_install_path()
-    bindir = os.path.join(installdir, "libexec", "spark", "bin")
-    Env().add_path(bindir)
-    # run alt-ergo
-    cmd = ["alt-ergo", "-steps-bound", "20000"]
-    cmd += to_list(opt)
-    cmd += [src]
-    process = Run(cmd)
-    print(process.out)
 
 
 def strip_provers_output(s):
@@ -900,7 +893,7 @@ def gnatprove(
     # process = open("test.out", 'r').read()
 
     # Check marks in source code and print the command output sorted
-    strlist = str.splitlines(process.out)
+    strlist = str.splitlines(process.stdout)
     # Replace line above by the one below for testing the scripts without
     # running the tool
     # strlist = str.splitlines(process)
@@ -908,7 +901,7 @@ def gnatprove(
     check_marks(strlist)
     check_fail(strlist, no_fail)
     # Check that the exit status is as expected
-    if exit_status is not None and process.status != exit_status:
+    if exit_status is not None and process.returncode != exit_status:
         print("Unexpected exit status of", process.status)
         failure = True
     else:
@@ -1381,7 +1374,7 @@ def print_version():
     os.environ["LD_LIBRARY_PATH"] = ""
 
     p = Run(["gnatprove", "--version"])
-    lines = p.out.splitlines()
+    lines = p.stdout.splitlines()
     # drop first line of output
     lines = lines[1:]
     for line in lines:

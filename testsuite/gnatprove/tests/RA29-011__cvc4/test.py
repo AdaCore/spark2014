@@ -7,7 +7,7 @@ bindir = os.path.join(installdir, "libexec", "spark", "bin")
 Env().add_path(bindir)
 
 process = Run(["cvc5", "--show-config"])
-lines = process.out.splitlines()
+lines = process.stdout.splitlines()
 # First three lines of cvc5 output contain date and exact compiler version, so
 # remove this output. We also remove the "scm" line which refers to the exact
 # git commit in some builds. Same for "portfolio", which is only available on
