@@ -1,6 +1,6 @@
 func.adb:1:10: info: implicit aspect Always_Terminates on "Func" has been proved, subprogram will terminate
 func.adb:5:32: high: "C" is not initialized
-func.adb:5:38: medium: unexpected exception might be raised
+func.adb:5:38: medium: unexpected exception might be raised [reason for check: expressions shall not raise exceptions]
 func.adb:5:63: high: "S" is not initialized
 func.adb:8:07: warning: this statement is never reached
 proc.adb:1:35: info: data dependencies proved

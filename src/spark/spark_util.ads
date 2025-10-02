@@ -1378,6 +1378,10 @@ package SPARK_Util is
         Post =>
           Is_Subset (Left'Old, Left) and Is_Subset (Right, Right => Left);
 
+      --  For display
+
+      function Print (S : Set) return String;
+
    private
       type Set is tagged record
          All_But : Boolean;

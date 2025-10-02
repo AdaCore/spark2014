@@ -1,1 +1,1 @@
-no_return.adb:14:07: medium: unexpected exception might be raised
+no_return.adb:14:07: medium: unexpected exception might be raised [reason for check: Aborting allows propagating no exceptions] [possible explanation: Program_Error might be unexpectedly raised]

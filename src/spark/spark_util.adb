@@ -206,6 +206,52 @@ package body SPARK_Util is
       end Is_Subset;
 
       -----------
+      -- Print --
+      -----------
+
+      function Print (S : Set) return String is
+         use type Ada.Containers.Count_Type;
+         Exc_Str     : Unbounded_String;
+         Is_Last     : Boolean := True;
+         Is_Last_But : Boolean := True;
+      begin
+         if S.Exc_Set.Is_Empty then
+            if S.All_But then
+               return "any exception";
+            else
+               return "no exceptions";
+            end if;
+
+         elsif S.Exc_Set.Length = 1 then
+            Exc_Str :=
+              To_Unbounded_String (Source_Name (S.Exc_Set.First_Element));
+         elsif S.Exc_Set.Length = 2 then
+            Exc_Str :=
+              To_Unbounded_String (Source_Name (S.Exc_Set.First_Element))
+              & " and "
+              & Source_Name (S.Exc_Set.Last_Element);
+         else
+            Exc_Str := To_Unbounded_String ("");
+            for E of reverse S.Exc_Set loop
+               if Is_Last then
+                  Is_Last := False;
+               elsif Is_Last_But then
+                  Is_Last_But := False;
+                  Exc_Str := ", and " & Exc_Str;
+               else
+                  Exc_Str := ", " & Exc_Str;
+               end if;
+               Exc_Str := Source_Name (E) & Exc_Str;
+            end loop;
+         end if;
+
+         if S.All_But then
+            Exc_Str := "any exception but " & Exc_Str;
+         end if;
+         return To_String (Exc_Str);
+      end Print;
+
+      -----------
       -- Union --
       -----------
 
@@ -2825,11 +2871,18 @@ package body SPARK_Util is
 
    begin
       case Nkind (Call_Or_Stmt) is
-         when N_Function_Call | N_Procedure_Call_Statement =>
+
+         --  Entries might not have exceptional cases, but calls to protected
+         --  subprograms are sometimes rewritten as entry calls by the
+         --  frontend.
+
+         when N_Function_Call
+            | N_Procedure_Call_Statement
+            | N_Entry_Call_Statement =>
             Result :=
               Get_Exceptions_For_Subp (Get_Called_Entity (Call_Or_Stmt));
 
-         when N_Raise_Statement                            =>
+         when N_Raise_Statement      =>
             if Present (Name (Call_Or_Stmt)) then
                Result := Exception_Sets.Exactly (Entity (Name (Call_Or_Stmt)));
 
@@ -2857,10 +2910,7 @@ package body SPARK_Util is
                end;
             end if;
 
-         when N_Entry_Call_Statement                       =>
-            return Exception_Sets.Empty_Set;
-
-         when others                                       =>
+         when others                 =>
             raise Program_Error;
       end case;
 
