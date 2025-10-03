@@ -2189,6 +2189,11 @@ body (see Ada RM 7.2(4))].
    policy applicable to this declaration comes from the policy applicable to the
    enclosing declaration, statement, assertion pragma or specification aspect.
 
+   If the declaration occurs inside a ghost declaration, ghost statement,
+   assertion pragma or specification aspect and the assertion policy applicable
+   to this scope is Ignore, then the assertion policy applicable to the
+   declaration is also Ignore.
+
    Otherwise, the assertion policy applicable to an object declaration comes
    either from its assertion level if any, or from the ghost policy at the point
    of declaration.
