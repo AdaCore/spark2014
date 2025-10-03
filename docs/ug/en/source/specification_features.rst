@@ -2361,6 +2361,18 @@ executable. For example on Unix-like platforms::
 
   nm <object files or executable> | grep my_unit
 
+.. warning::
+
+   Using :ref:`Assertion Levels` or :ref:`Pragma Assertion_Policy`, it is
+   possible to decide which ghost code, assertion, or contract is kept at
+   execution and which is discarded.
+   If some ghost code is enabled in the final executable, then it
+   is necessary for the soundness of the verification to ensure that disabled
+   ghost code cannot affect ghost code that is enabled at execution.
+   The necessary compatibility checks are performed
+   by |GNATprove| by default, provided it is given the same directives with
+   respect to ghost code removal as those used for the final executable.
+
 .. index:: quantified-expression
 
 Quantified Expressions
