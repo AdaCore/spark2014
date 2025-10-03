@@ -469,7 +469,7 @@ def check_marks(strlist):
 
         # When adding a tag in this section, you need also to update the
         # function is_flow_tag below.
-        if "aliased" in text:
+        if "aliased" in text and "aliased objects" not in text:
             return "ALIASING"
         elif "dependency" in text:
             return "DEPENDS"
@@ -606,7 +606,11 @@ def check_marks(strlist):
             return "ASSERT"
         elif "raise statement" in text or "expected exception" in text:
             return "RAISE"
-        elif "aliasing via address clause" in text or "unchecked conversion" in text:
+        elif (
+            "aliasing via address clause" in text
+            or "aliased objects" in text
+            or "unchecked conversion" in text
+        ):
             if "size" in text:
                 return "UNCHECKED_CONVERSION_SIZE"
             else:

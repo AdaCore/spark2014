@@ -36,7 +36,7 @@ procedure Main with SPARK_Mode is
 
    procedure P3 (X : aliased Byte_Array) is
       Y : aliased constant T1_Byte_Array
-      with Import, Address => X (1 .. 15)'Address, Alignment => 8; --  Size check fails
+      with Import, Address => X (1 .. 15)'Address, Alignment => 8; --  @UNCHECKED_CONVERSION_SIZE:FAIL
    begin
       Parse_T1 (Y);
    end P3;
@@ -49,7 +49,7 @@ procedure Main with SPARK_Mode is
       Y : aliased constant T1_Byte_Array
       with
         Import,
-        Address   => X (D .. D + 16)'Address, --  Size check fails
+        Address   => X (D .. D + 16)'Address, --  @UNCHECKED_CONVERSION_SIZE:FAIL
         Alignment => 8;
    begin
       Parse_T1 (Y);
