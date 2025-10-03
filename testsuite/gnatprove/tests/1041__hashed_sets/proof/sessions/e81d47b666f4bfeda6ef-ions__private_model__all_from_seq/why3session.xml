@@ -137,7 +137,7 @@
   <proof prover="2"><result status="valid" steps="5360"/></proof>
   </goal>
   <goal name="def&#39;vc.28" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
+  <proof prover="0"><result status="valid" steps="53"/></proof>
   <proof prover="1"><result status="valid" steps="2351"/></proof>
   <proof prover="2"><result status="valid" steps="5240"/></proof>
   </goal>
@@ -150,7 +150,7 @@
   <proof prover="2"><result status="valid" steps="6288"/></proof>
   </goal>
   <goal name="def&#39;vc.31" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
+  <proof prover="0"><result status="valid" steps="63"/></proof>
   <proof prover="1"><result status="valid" steps="2929"/></proof>
   <proof prover="2"><result status="valid" steps="6288"/></proof>
   </goal>
@@ -170,7 +170,7 @@
   <proof prover="2"><result status="valid" steps="6622"/></proof>
   </goal>
   <goal name="def&#39;vc.35" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
+  <proof prover="0"><result status="valid" steps="69"/></proof>
   <proof prover="1"><result status="valid" steps="1328"/></proof>
   <proof prover="2"><result status="valid" steps="878"/></proof>
   </goal>
@@ -197,8 +197,8 @@
   </goal>
   <goal name="def&#39;vc.41" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="1382"/></proof>
-  <proof prover="2"><result status="highfailure"/></proof>
+  <proof prover="1"><result status="valid"/></proof>
+  <proof prover="2"><result status="valid" steps="928"/></proof>
   </goal>
   <goal name="def&#39;vc.42" proved="true">
   <proof prover="0"><result status="valid" steps="48"/></proof>
@@ -206,7 +206,7 @@
   <proof prover="2"><result status="valid" steps="943"/></proof>
   </goal>
   <goal name="def&#39;vc.43" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
+  <proof prover="0"><result status="valid" steps="81"/></proof>
   <proof prover="1"><result status="valid" steps="1386"/></proof>
   <proof prover="2"><result status="valid" steps="943"/></proof>
   </goal>
