@@ -647,12 +647,14 @@ package body Gnat2Why.Unchecked_Conversion is
 
          elsif Is_Record_Type (Typ) then
             declare
-               Comps  : constant Component_Sets.Set := Get_Component_Set (Typ);
-               Assocs :
+               Comps   : constant Component_Sets.Set :=
+                 Get_Component_Set (Typ);
+               Assocs  :
                  W_Field_Association_Array (1 .. Integer (Comps.Length));
-               Flags  :
+               Flags   :
                  W_Field_Association_Array (1 .. Integer (Comps.Length));
-               Index  : Positive := 1;
+               Index   : Positive := 1;
+               F_Index : Positive := 1;
             begin
                for Comp of Comps loop
                   declare
@@ -670,9 +672,12 @@ package body Gnat2Why.Unchecked_Conversion is
                           Field  =>
                             To_Why_Id (Comp, Local => False, Rec => Typ),
                           Value  => +F_Value.Value);
+                     Index := Index + 1;
 
-                     if Do_Validity then
-                        Flags (Index) :=
+                     if Do_Validity
+                       and then not Comp_Has_Only_Valid_Values (Comp, Typ).Ok
+                     then
+                        Flags (F_Index) :=
                           New_Field_Association
                             (Domain => EW_Term,
                              Field  =>
@@ -682,9 +687,9 @@ package body Gnat2Why.Unchecked_Conversion is
                                   Rec       => Base_Retysp (Typ),
                                   From_Tree => Validity_Tree),
                              Value  => +F_Value.Valid_Flag);
+                        F_Index := F_Index + 1;
                      end if;
                   end;
-                  Index := Index + 1;
                end loop;
 
                return
@@ -703,7 +708,7 @@ package body Gnat2Why.Unchecked_Conversion is
                     (if Do_Validity
                      then
                        New_Record_Aggregate
-                         (Associations => Flags,
+                         (Associations => Flags (1 .. F_Index - 1),
                           Typ          => Get_Validity_Tree_Type (Typ))
                      else Why_Empty));
             end;
