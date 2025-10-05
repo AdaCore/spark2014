@@ -37,6 +37,7 @@ with Ada.Strings.Fixed;                     use Ada.Strings.Fixed;
 with Ada.Text_IO;
 with Casing;                                use Casing;
 with CE_Parsing;                            use CE_Parsing;
+with CE_RAC;                                use CE_RAC;
 with CE_Utils;                              use CE_Utils;
 with Gnat2Why.Tables;                       use Gnat2Why.Tables;
 with Namet;                                 use Namet;
@@ -1276,25 +1277,41 @@ package body CE_Pretty_Printing is
 
                   begin
                      --  Special case for characters, which are defined in the
-                     --  standard unit Standard.ASCII, and as such do not have
-                     --  a source code representation.
+                     --  standard unit Latin-1, and as such do not represent an
+                     --  entity in the source code.
 
                      if Is_Character_Type (AST_Type) then
 
-                        --  Call Get_Unqualified_Decoded_Name_String to get a
-                        --  correctly printed character in Name_Buffer.
+                        --  Determine the underlying character and convert it
+                        --  to a human-readable form using a custom translation
+                        --  that currently supports the Latin-1 character range
+                        --  (0 .. 255) as input.
 
-                        Get_Unqualified_Decoded_Name_String (Chars (Lit));
+                        --  Note that the characters that can exist in CEs are
+                        --  those that are permitted in character and string
+                        --  literals. I.e., Latin-1 characters or possibly also
+                        --  wide characters. For these cases the numeric value
+                        --  of the character literal is sufficient and
+                        --  unambiguous. It is not necessary to go through the
+                        --  encoding provided by the 'Namet' package.
+                        --  Conversely, depending on the context the front-end
+                        --  may or might not provide the encoding and hence we
+                        --  cannot expect the 'Namet' routines to be always
+                        --  able to decode the character.
 
-                        --  The call to Get_Unqualified_Decoded_Name_String set
-                        --  Name_Buffer to '<char>' where <char> is the
-                        --  character we are interested in. Just retrieve it
-                        --  directly at Name_Buffer(2).
-
-                        return
-                          '''
-                          & Char_To_String_Representation (Name_Buffer (2))
-                          & ''';
+                        declare
+                           CC : constant Char_Code :=
+                             UI_To_CC (Char_Literal_Value (Lit));
+                           C  : Character;
+                        begin
+                           if CC <= 255 then
+                              C := Get_Character (CC);
+                              return
+                                ''' & Char_To_String_Representation (C) & ''';
+                           else
+                              RAC_Stuck ("Bad value of character");
+                           end if;
+                        end;
 
                      --  For all enumeration types that are not character,
                      --  call Get_Enum_Lit_From_Pos to get a corresponding
