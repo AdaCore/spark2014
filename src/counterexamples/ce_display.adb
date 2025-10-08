@@ -481,45 +481,10 @@ package body CE_Display is
    begin
       for Elt of Cntexmp_Line loop
          if Elt.Kind /= CEE_Error_Msg then
-            declare
-               Num_Elems : Natural := Elt.Val_Str.Count;
-               Cur_Elems : S_String_List.Cursor := Elt.Val_Str.Elems.First;
-
-               --  Maximum number of elements to print for a single
-               --  variable, whose value can be set arbitrarily. It should
-               --  be small enough that even with multiple variables being
-               --  printed, the output remains small enough that (1) it can
-               --  be output by Errout without truncation, and (2) it is not
-               --  so long as to be confusing to users.
-               Max_Elems : constant := 5;
-
-               use S_String_List;
-            begin
-               --  If the normal display of counterexample values
-               --  would include more than Max_Elems for this variable,
-               --  then display at most Max_Elems values of individual
-               --  subcomponents of the variable. In such a case, simply
-               --  prepend Elt.Name to the string in Cur_Elems, as Cur_Elems
-               --  already contains the rest of the path to the subcomponent
-               --  if any, the equality symbol and the value.
-
-               if Num_Elems > Max_Elems then
-                  Num_Elems := Max_Elems;
-                  while Num_Elems > 0 and then Has_Element (Cur_Elems) loop
-                     Before_Next_Element (Cntexmp_Line_Str);
-                     Append (Cntexmp_Line_Str, Elt.Name);
-                     Append (Cntexmp_Line_Str, Element (Cur_Elems));
-                     Num_Elems := Num_Elems - 1;
-                     Next (Cur_Elems);
-                  end loop;
-
-               else
-                  Before_Next_Element (Cntexmp_Line_Str);
-                  Append (Cntexmp_Line_Str, Elt.Name);
-                  Append (Cntexmp_Line_Str, " = ");
-                  Append (Cntexmp_Line_Str, Elt.Val_Str.Str);
-               end if;
-            end;
+            Before_Next_Element (Cntexmp_Line_Str);
+            Append (Cntexmp_Line_Str, Elt.Name);
+            Append (Cntexmp_Line_Str, " = ");
+            Append (Cntexmp_Line_Str, Elt.Val_Str.Str);
          end if;
       end loop;
       return To_String (Cntexmp_Line_Str);

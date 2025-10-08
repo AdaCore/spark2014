@@ -6,5 +6,5 @@ simple.adb:15:33: medium: overflow check might fail, cannot prove upper bound fo
 simple.adb:17:22: high: assertion might fail (e.g. when Total_Age = 1321) [possible fix: loop at line 14 should mention Total_Age in a loop invariant]
 simple.ads:22:14: warning: subprogram "Check_Town" has no effect
 simple.adb:22:29: info: cannot unroll loop (too many loop iterations) [info-unrolling-inlining]
-simple.adb:23:25: high: assertion might fail (e.g. when N = 2 and R.Size = ? and R.Data(1) = -89084396 and R.Data(2) = 42 and R.Data(3) = 973711627 and R.Data(4) = 99) [possible fix: subprogram at simple.ads:30 should mention R in a precondition]
+simple.adb:23:25: high: assertion might fail (e.g. when N = 2 and R = (Size => ?, Data => (1 => -89084396, 2 => 42, 3 => 973711627, 4 => 99, 5 => -88939281))) [possible fix: subprogram at simple.ads:30 should mention R in a precondition]
 simple.ads:30:14: warning: subprogram "Check_Record" has no effect
