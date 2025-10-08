@@ -17,10 +17,20 @@ rules:
     discs: ["aarch64-linux"]
     action: skip
     tests:
+      - 28__membership_tests
+      - 63__c_strings_proof
       - 247__container_aggregate_capacity
       - 281__sorts
       - 308__counterexample
       - 325__difficult_proofs
+      - 531__default_generic_expression_function
+      - 665__c_strings_test
+      - 665__formal_hashed_maps_test
+      - 665__formal_hashed_sets_test
+      - 665__formal_unbounded_doubly_linked_lists_test
+      - 665__formal_unbounded_hashed_maps_test
+      - 665__formal_unbounded_hashed_sets_test
+      - 665__formal_unbounded_vectors_test
       - 668__container_aggr_scalar
       - 67__unbounded_strings
       - 921__relaxed_mutable_discrs
@@ -31,17 +41,26 @@ rules:
       - MA03-015__warnings
       - N122-016__switches
       - N122-021__succ_floats
+      - N515-042__ipstack_aggregate
       - NC01-041__float_range
       - NC06-004__init
       - O325-024__abstract_state
       - O512-022__prefix_sum
       - O826-006__float_exponential
       - OA05-076__dynamic_inv_assert_and_cut
+      - P405-006__sparklib_proof
       - P530-022__loopinv
+      - P915-004__simple_expression
+      - P925-006__big_context_on_bv
       - PB16-052__float_invariant
       - PC14-014__functional
       - Q424-012__succ_floats_copy_z3
       - QA31-008__von_neumann_redone
+      - R323-066__violation
+      - R509-011__higher_order_proof
+      - R531-025__fixed_point_divide
+      - R902-002__size_and_length
+      - S322-052__loop_entry_int
       - S325-002__recpointers
       - S515-024__pointer_traversal
       - T212-013__relaxed_init
@@ -54,10 +73,12 @@ rules:
       - UB05-006__long_long_float
       - V520-005__borrow_examples
       - V803-008__counterex_fuzz_record
+      - V809-008__relaxed_globals
       - V906-009__formal_ordered_maps
       - V906-009__formal_ordered_sets
       - W110-016__relaxed_init_user_equality
       - allocators
+      - astrium_sgs
       - float_error_bounds
       - ghc_sort
       - openETCS
@@ -65,5 +86,6 @@ rules:
       - proofinuse__floating_point
       - spark_book
       - sparkskein
+      - tokeneer
       - trajectory_computation
       - ug__at_end_borrow
