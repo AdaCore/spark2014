@@ -1,4 +1,3 @@
-a-strbou.ads:61:27: medium: initial condition might fail, in instantiation at repr2.ads:5
 a-strbou.ads:78:12: info: in default value of private type at a-strbou.ads:78, in instantiation at repr2.ads:5
 a-strbou.ads:78:12: info: predicate check proved on default value (CVC5: 2 VC; Trivial: 1 VC), in instantiation at repr2.ads:5
 a-strbou.ads:102:37: info: range check proved (CVC5: 2 VC), in instantiation at repr2.ads:5
