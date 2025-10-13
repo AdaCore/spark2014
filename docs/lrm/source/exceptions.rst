@@ -155,7 +155,8 @@ pragma Assertion_Policy:
    pragmas Assertion_Policy that apply to named assertion aspects are ignored.
    [The assertion policy applicable to ghost entities, assertion expressions,
    and specification aspects associated with the Runtime assertion policy is
-   always Check and the assertion policy applicable to ghost entities, assertion
+   always Check, unless the entity occurs in an ignored ghost scope. The
+   assertion policy applicable to ghost entities, assertion
    expressions, and specification aspects associated with assertion levels
    depending on the Static assertion level is always Ignore.]
 
