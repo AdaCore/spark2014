@@ -1,0 +1,7 @@
+p.adb:1:11: warning: subprogram "P" has no effect
+p.adb:10:28: high: assertion might fail (e.g. when X = 'SOH')
+p.adb:18:28: high: assertion might fail (e.g. when X = 'UC_A_Tilde') <--  Wrong! Should be LC_E_Acute
+p.adb:26:28: high: assertion might fail (e.g. when X = 'UC_A_Tilde') <--  Wrong! Should be LC_E_Acute
+p.adb:33:13: high: assertion might fail
+p.adb:40:28: high: assertion might fail (e.g. when X = (1 => 'SOH', 2 => 'UC_A_Tilde')) <--  Wrong! Should be LC_E_Acute
+p.adb:47:28: high: assertion might fail (e.g. when X = (1 => 'SOH', 2 => 'UC_A_Tilde')) <--  Wrong! Should be LC_E_Acute
