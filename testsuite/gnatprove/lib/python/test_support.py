@@ -843,6 +843,8 @@ def gnatprove(
     sparklib=False,
     filter_sparklib=True,
     info=True,
+    report=None,
+    do_sarif_check=False,
 ):
     """Invoke gnatprove, and in case of success return list of output lines
 
@@ -857,6 +859,8 @@ def gnatprove(
     if opt is None:
         opt = ["-P", default_project]
 
+    if report is not None:
+        opt = [f"--report={report}"] + opt
     generate_project_file(ada, sparklib)
 
     # Generate sparklib.gpr if the project depends on SPARKlib
@@ -900,6 +904,8 @@ def gnatprove(
 
     check_marks(strlist)
     check_fail(strlist, no_fail)
+    if do_sarif_check:
+        check_sarif(strlist, report)
     # Check that the exit status is as expected
     if exit_status is not None and process.returncode != exit_status:
         print("Unexpected exit status of", process.status)
@@ -974,16 +980,13 @@ def has_pattern(msg):
             return True
 
 
-def check_sarif(report):
+def check_sarif(lines, report):
     potential_sarif_files = glob.glob("**/gnatprove.sarif")
     if len(potential_sarif_files) == 0:
         return
     sarif_file = potential_sarif_files[0]
     with open(sarif_file, "r") as f:
         sarif = json.load(f)
-    # TODO don't work on test.out, but real test output instead
-    with open("test.out", "r") as f:
-        lines = f.readlines()
 
     def contains(text):
         for line in lines:
@@ -1045,9 +1048,6 @@ def prove_all(
     fullopt = ["--output=oneline"]
     if warnings is not None:
         fullopt += ["--warnings=%s" % (warnings)]
-    if report is None:
-        report = "all" if replay else "provers"
-    fullopt += ["--report=%s" % (report)]
     fullopt += ["--assumptions"]
     fullopt += ["-P", project, "--quiet"]
     if codepeer:
@@ -1098,6 +1098,9 @@ def prove_all(
     # Add opt last, so that it may include switch -cargs
     if opt is not None:
         fullopt += opt
+    report = report if report is not None else "all" if replay else "provers"
+    # limit-switches don't play well with sarif output for now
+    has_limit_switch = any("--limit" in s for s in fullopt)
     gnatprove(
         fullopt,
         no_fail=no_fail,
@@ -1109,12 +1112,9 @@ def prove_all(
         filter_output=filter_output,
         sparklib=sparklib,
         filter_sparklib=filter_sparklib,
+        report=report,
+        do_sarif_check=enable_sarif_check and not sparklib and not has_limit_switch,
     )
-    # limit-switches don't play well with sarif output for now
-    has_limit_switch = any("--limit" in s for s in fullopt)
-    # usage of sparklib generates too many mismatches for SARIF check for now
-    if enable_sarif_check and not sparklib and not has_limit_switch:
-        check_sarif(report)
     verify_counterexamples()
 
 
@@ -1401,5 +1401,6 @@ def run_spark_for_gnattest_json(project_file, filename, line, gnattest_JSON):
             "--level=2",
             f"--limit-subp={filename}:{line}",
             f"--gnattest-values={gnattest_JSON}",
-        ]
+        ],
+        report=None,
     )
