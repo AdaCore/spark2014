@@ -1,0 +1,32 @@
+p.adb:1:11: warning: subprogram "P" has no effect
+p.adb:8:04: warning: analyzing unreferenced procedure "P1" [unreferenced-procedure]
+p.adb:8:14: warning: subprogram "P1" has no effect
+p.adb:9:22: info: length check proved (CVC5: 3 VC)
+p.adb:10:07: info: address in address clause is compatible with object alignment (Trivial)
+p.adb:10:07: info: object is suitable for aliasing via address clause (Trivial)
+p.adb:10:07: info: type is suitable as source for unchecked conversion (Trivial)
+p.adb:11:31: high: type is unsuitable as a source for unchecked conversion [possible explanation: type Dyn_Arr doesn't have a Size representation clause or aspect; type Dyn_Arr might have unused bits that are not modelled in SPARK]
+p.adb:11:31: high: types of aliased objects do not have the same size [possible explanation: type Dyn_Arr doesn't have an Object_Size representation clause or aspect]
+p.adb:11:31: info: object is suitable for aliasing via address clause (Trivial)
+p.adb:16:04: warning: analyzing unreferenced procedure "P2" [unreferenced-procedure]
+p.adb:16:14: warning: subprogram "P2" has no effect
+p.adb:17:34: info: length check proved (CVC5: 3 VC)
+p.adb:18:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: unknown alignment for object] [possible fix: overlaying object should have an Alignment representation clause]
+p.adb:18:07: high: object with non-trivial address clause or prefix of the 'Address reference does not have asynchronous writers
+p.adb:18:07: info: object is suitable for aliasing via address clause (Trivial)
+p.adb:18:07: info: type is suitable as source for unchecked conversion (Trivial)
+p.adb:19:31: high: type is unsuitable as a source for unchecked conversion [possible explanation: type Dyn_Arr doesn't have a Size representation clause or aspect; type Dyn_Arr might have unused bits that are not modelled in SPARK]
+p.adb:19:31: high: types of aliased objects do not have the same size [possible explanation: type Dyn_Arr doesn't have an Object_Size representation clause or aspect]
+p.adb:19:31: info: object is suitable for aliasing via address clause (Trivial)
+p.adb:19:34: warning: alignment of object is not precisely known [imprecise-align]
+p.adb:24:04: warning: analyzing unreferenced procedure "P3" [unreferenced-procedure]
+p.adb:24:14: warning: subprogram "P3" has no effect
+p.adb:25:39: info: length check proved (CVC5: 3 VC)
+p.adb:26:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: unknown alignment for object] [possible fix: overlaying object should have an Alignment representation clause]
+p.adb:26:07: high: object with non-trivial address clause or prefix of the 'Address reference does not have asynchronous writers
+p.adb:26:07: info: object is suitable for aliasing via address clause (Trivial)
+p.adb:26:07: info: type is suitable as source for unchecked conversion (Trivial)
+p.adb:27:31: high: type is unsuitable as a source for unchecked conversion [possible explanation: type Dyn_Arr doesn't have a Size representation clause or aspect; type Dyn_Arr might have unused bits that are not modelled in SPARK]
+p.adb:27:31: high: types of aliased objects do not have the same size [possible explanation: Component_Size of type Array_Holder is missing]
+p.adb:27:31: info: object is suitable for aliasing via address clause (Trivial)
+p.adb:27:36: warning: alignment of object is not precisely known [imprecise-align]
