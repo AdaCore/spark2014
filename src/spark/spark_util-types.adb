@@ -285,24 +285,26 @@ package body SPARK_Util.Types is
                   then Obj
                   else Entity (Obj));
             begin
-               --  For aliased objects, we need to take the Object_Size of the
-               --  type (ARM K.2 164 2/5).
-               --  Otherwise, we can take the size of the object, if available
-               --  (ARM K.2 229).
-               --  If the size is not specified, for stand-alone objects (which
-               --  is the case here) GNAT uses the Object_Size of the type.
+               --  If the object has its own size annotation, use it.
 
-               if Is_Aliased (Ent) or else not Known_Esize (Ent) then
+               if Known_Esize (Ent) then
+                  Size := Esize (Ent);
+                  Size_Str :=
+                    To_Unbounded_String
+                      ("object " & Source_Name (Ent) & " has size");
+
+               --  If the size is not specified, for stand-alone objects (which
+               --  is the case here) GNAT always uses the Object_Size of the
+               --  type.
+               --  Note that the RM only mandates the Object_Size for aliased
+               --  objects (ARM K.2 164 2/5).
+
+               else
                   Check_Known_Esize (Etype (Ent), Size, Explanation);
                   Size_Str :=
                     To_Unbounded_String
                       (Type_Name_For_Explanation (Etype (Ent))
                        & " has Object_Size");
-               else
-                  Size := Esize (Ent);
-                  Size_Str :=
-                    To_Unbounded_String
-                      ("object " & Source_Name (Ent) & " has size");
                end if;
             end;
 
