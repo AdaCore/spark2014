@@ -21877,7 +21877,8 @@ package body Gnat2Why.Expr is
                         --  No need to check for source of UC.
 
                         if not Is_Constant_In_SPARK (Obj) then
-                           Suitable_For_UC_Source (Obj_Ty, Valid, Explanation);
+                           Object_Suitable_For_UC_Source
+                             (Obj, Valid, Explanation);
                            Emit_Static_Proof_Result
                              (Decl,
                               VC_UC_Source,
@@ -21941,8 +21942,8 @@ package body Gnat2Why.Expr is
                              Retysp (Etype (Pref));
                         begin
 
-                           Suitable_For_UC_Source
-                             (Addr_Ty, Valid, Explanation);
+                           Object_Suitable_For_UC_Source
+                             (Pref, Valid, Explanation);
                            Emit_Static_Proof_Result
                              (Address,
                               VC_UC_Source,
