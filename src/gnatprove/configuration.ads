@@ -109,7 +109,6 @@ package Configuration is
       Debug_Save_VCs       : aliased Boolean;
       Debug_Trivial        : aliased Boolean;
       Debug_Prover_Errors  : aliased Boolean;
-      Debug_Subp_Multi     : aliased Integer;
       Exclude_Line         : aliased GNAT.Strings.String_Access;
       Explain              : aliased GNAT.Strings.String_Access;
       F                    : aliased Boolean;
