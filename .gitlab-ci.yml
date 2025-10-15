@@ -62,6 +62,9 @@ stages:
      - cpu:16
   stage: test
   script:
+    # script to load helper functions for log sections
+    - source scripts/ci_predef.sh
+
     # add internal testsuite for which we want to use most recent
     # sources for testing
     - GENERIC_ANOD_CI_OPTIONS="--add-dep eng/spark/spark-internal-testsuite"
@@ -96,10 +99,12 @@ stages:
     - mv /tmp/gnatprove_cache $CI_PROJECT_DIR/gnatprove_cache
 
     # Coverage HTML report
+    - section_start "coverage_report" "Generate Coverage HTML report"
     - export HTMLTARGETDIR=$CI_COMMIT_BRANCH
     - if [[ $CI_PIPELINE_SOURCE == "merge_request_event" ]]; then export HTMLTARGETDIR=MRs/$CI_MERGE_REQUEST_IID ; fi
     - if [[ $CI_PIPELINE_SOURCE == "schedule" ]]; then export HTMLTARGETDIR=weekly ; fi
     - publish-pages $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE/src/html-report --target-subdir $HTMLTARGETDIR --expires 30
+    - section_end "coverage_report"
     - exit $exit_code
 
   artifacts:
