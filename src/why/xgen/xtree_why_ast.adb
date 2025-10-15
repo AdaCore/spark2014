@@ -280,21 +280,9 @@ package body Xtree_Why_AST is
                PL (O, "procedure " & Name & "_To_Json");
                begin
                   Relative_Indent (O, 2);
-                  PL (O, "(O : Output_Id; Arg : " & Name & ");");
-                  Relative_Indent (O, -2);
-               end;
-               NL (O);
-               PL (O, "procedure " & Name & "_To_Json");
-               begin
-                  Relative_Indent (O, 2);
                   PL (O, "(O : Output_Id; Arg : " & Name & ")");
+                  PL (O, "renames " & Why_Node_Name & "_To_Json;");
                   Relative_Indent (O, -2);
-                  PL (O, "is");
-                  PL (O, "begin");
-                  Relative_Indent (O, 3);
-                  PL (O, Why_Node_Name & "_To_Json (O, Arg);");
-                  Relative_Indent (O, -3);
-                  PL (O, "end " & Name & "_To_Json;");
                end;
                NL (O);
             end;
