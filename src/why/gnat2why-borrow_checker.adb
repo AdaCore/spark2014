@@ -3059,7 +3059,11 @@ package body Gnat2Why.Borrow_Checker is
          begin
             if Permission (Tree) < Perm then
                Perm_Error_Loop_Exit
-                 (E, Stmt, Permission (Tree), Perm, Explanation (Tree));
+                 (E,
+                  Stmt,
+                  Perm       => Perm,
+                  Found_Perm => Permission (Tree),
+                  Expl       => Explanation (Tree));
             end if;
 
             case Kind (Tree) is
@@ -3068,9 +3072,9 @@ package body Gnat2Why.Borrow_Checker is
                      Perm_Error_Loop_Exit
                        (E,
                         Stmt,
-                        Children_Permission (Tree),
-                        Perm,
-                        Explanation (Tree));
+                        Perm       => Perm,
+                        Found_Perm => Children_Permission (Tree),
+                        Expl       => Explanation (Tree));
                   end if;
 
                when Reference        =>
@@ -3078,9 +3082,9 @@ package body Gnat2Why.Borrow_Checker is
                      Perm_Error_Loop_Exit
                        (E,
                         Stmt,
-                        Null_Permission (Tree),
-                        Perm,
-                        Explanation (Tree));
+                        Perm       => Perm,
+                        Found_Perm => Null_Permission (Tree),
+                        Expl       => Explanation (Tree));
                   end if;
 
                   Check_Is_Less_Restrictive_Tree_Than
@@ -3091,9 +3095,9 @@ package body Gnat2Why.Borrow_Checker is
                      Perm_Error_Loop_Exit
                        (E,
                         Stmt,
-                        Bounds_Permission (Tree),
-                        Perm,
-                        Explanation (Tree));
+                        Perm       => Perm,
+                        Found_Perm => Bounds_Permission (Tree),
+                        Expl       => Explanation (Tree));
                   end if;
 
                   Check_Is_Less_Restrictive_Tree_Than
@@ -3121,7 +3125,11 @@ package body Gnat2Why.Borrow_Checker is
          begin
             if Perm < Permission (Tree) then
                Perm_Error_Loop_Exit
-                 (E, Stmt, Permission (Tree), Perm, Explanation (Tree));
+                 (E,
+                  Stmt,
+                  Perm       => Permission (Tree),
+                  Found_Perm => Perm,
+                  Expl       => Explanation (Tree));
             end if;
 
             case Kind (Tree) is
@@ -3130,9 +3138,9 @@ package body Gnat2Why.Borrow_Checker is
                      Perm_Error_Loop_Exit
                        (E,
                         Stmt,
-                        Children_Permission (Tree),
-                        Perm,
-                        Explanation (Tree));
+                        Perm       => Children_Permission (Tree),
+                        Found_Perm => Perm,
+                        Expl       => Explanation (Tree));
                   end if;
 
                when Reference        =>
@@ -3140,9 +3148,9 @@ package body Gnat2Why.Borrow_Checker is
                      Perm_Error_Loop_Exit
                        (E,
                         Stmt,
-                        Null_Permission (Tree),
-                        Perm,
-                        Explanation (Tree));
+                        Perm       => Null_Permission (Tree),
+                        Found_Perm => Perm,
+                        Expl       => Explanation (Tree));
                   end if;
 
                   Check_Is_More_Restrictive_Tree_Than
@@ -3153,9 +3161,9 @@ package body Gnat2Why.Borrow_Checker is
                      Perm_Error_Loop_Exit
                        (E,
                         Stmt,
-                        Bounds_Permission (Tree),
-                        Perm,
-                        Explanation (Tree));
+                        Perm       => Bounds_Permission (Tree),
+                        Found_Perm => Perm,
+                        Expl       => Explanation (Tree));
                   end if;
 
                   Check_Is_More_Restrictive_Tree_Than
