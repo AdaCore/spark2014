@@ -88,10 +88,9 @@ stages:
 
     # Process the results
     - ANOD_BUILDSPACE=`anod eval spark2014 build_space_name --primitive test --qualifier=$ANOD_QUALIFIERS`
+    - testsuite_reports || exit_code=$?
     - mv $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE/results/new/ $CI_PROJECT_DIR/testsuite-results
     - mv $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE/src/cobertura-report/ $CI_PROJECT_DIR/coverage
-
-    - testsuite_reports || exit_code=$?
 
     # Reestablish cache
     - mv /tmp/gnatprove_cache $CI_PROJECT_DIR/gnatprove_cache
