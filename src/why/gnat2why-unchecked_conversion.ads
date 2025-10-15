@@ -54,6 +54,11 @@ package Gnat2Why.Unchecked_Conversion is
    --  This procedure implements the notion of "suitable for unchecked
    --  conversion" of SPARK RM 13.9. It always uses the RM size.
 
+   procedure Object_Suitable_For_UC_Source
+     (Obj : Node_Id; Result : out Boolean; Explanation : out Unbounded_String);
+   --  This procedure implements the notion of "suitable for unchecked
+   --  conversion" of SPARK RM 13.9. It uses the size of Obj.
+
    procedure Suitable_For_UC_Target
      (Typ            : Type_Kind_Id;
       Size           : Uint;
