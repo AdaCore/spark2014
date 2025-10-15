@@ -264,12 +264,12 @@ package body Xtree_Builders is
              "Node_Table.Last_Index;");
       PL (O, New_Node & " : Why_Node renames " &
              "Node_Table (" & New_Node_Id & ");");
-      PL (O, Checked_Default_Value & " : constant Boolean :=");
+      P  (O, Checked_Default_Value & " : constant Boolean := ");
 
       if IK = Unchecked then
-         PL (O, "  False;");
+         PL (O, "False;");
       else
-         PL (O, "  True;");
+         PL (O, "True;");
       end if;
    end Print_Builder_Local_Declarations;
 
