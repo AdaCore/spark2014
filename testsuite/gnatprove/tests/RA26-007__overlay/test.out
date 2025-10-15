@@ -10,7 +10,8 @@ arrays.ads:20:04: high: object with non-trivial address clause or prefix of the 
 arrays.ads:20:04: info: object is suitable for aliasing via address clause (Trivial)
 arrays.ads:20:04: info: type is suitable as source for unchecked conversion (Trivial)
 arrays.ads:21:04: warning: aliased objects must have the same volatility and atomic status [alias-volatile-atomic-mismatch]
-arrays.ads:21:26: high: types of aliased objects do not have the same size [possible explanation: sizes of overlaid objects differ: type Tarr_3s has Object_Size 2048, while Component_Size of type Tarr_1s is 8]
+arrays.ads:21:26: high: type is unsuitable as a source for unchecked conversion [possible explanation: type First doesn't have a Pack pragma or aspect; anonymous type might have unused bits that are not modelled in SPARK]
 arrays.ads:21:26: info: object is suitable for aliasing via address clause (Trivial)
-arrays.ads:21:26: info: type is suitable as source for unchecked conversion (Trivial)
+arrays.ads:21:26: info: range check proved (CVC5: 4 VC)
+arrays.ads:21:26: info: types of aliased objects have the same size (Trivial)
 arrays.ads:21:39: warning: alignment of object is not precisely known [imprecise-align]
