@@ -72,7 +72,6 @@ package body Xtree_Why_AST is
                | "symbol_set"
                | "string_sets.set"
                | "node_id"
-               | "why_node_set"
       then
          return Str;
       else
