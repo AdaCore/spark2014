@@ -28,6 +28,8 @@ with Ada.Numerics.Big_Numbers.Big_Integers;
 use Ada.Numerics.Big_Numbers.Big_Integers;
 with Ada.Numerics.Big_Numbers.Big_Reals;
 use Ada.Numerics.Big_Numbers.Big_Reals;
+with Ada.Strings.UTF_Encoding.Strings;
+use Ada.Strings.UTF_Encoding.Strings;
 with Ada.Strings.Fixed;                     use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;
 with Atree;
@@ -801,7 +803,7 @@ package body CE_Utils is
          if JSON_Data.Kind = GNATCOLL.JSON.JSON_String_Type then
             declare
                C : constant Character :=
-                 Character'Value (GNATCOLL.JSON.Get (JSON_Data));
+                 Character'Value (Decode (GNATCOLL.JSON.Get (JSON_Data)));
             begin
                Res := new Value_Type'(Character_Value (C, Res_Type));
             end;

@@ -4,7 +4,7 @@ is
 
    procedure Not_Michel (Name : String) is
    begin
-      pragma Assert (Name /= "Michel");
+      pragma Assert (Name /= "Michèle");
    end;
 
 end Simple;

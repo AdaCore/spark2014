@@ -34,6 +34,8 @@ with Ada.Numerics.Big_Numbers.Big_Reals;
 use Ada.Numerics.Big_Numbers.Big_Reals;
 with Ada.Strings;                           use Ada.Strings;
 with Ada.Strings.Fixed;                     use Ada.Strings.Fixed;
+with Ada.Strings.UTF_Encoding.Strings;
+use Ada.Strings.UTF_Encoding.Strings;
 with Ada.Text_IO;
 with Casing;                                use Casing;
 with CE_Parsing;                            use CE_Parsing;
@@ -1639,9 +1641,24 @@ package body CE_Pretty_Printing is
                      Set_Field (JSON_Obj, "quotient", True);
 
                   when Char_K    =>
-                     JSON_Obj :=
-                       Create
-                         (To_String (Value) (To_String (Value)'First)'Image);
+
+                     declare
+                        Value_As_String : constant String := To_String (Value);
+                     begin
+
+                        --  The direct conversion to String should always yield
+                        --  1 character. Unlike pretty-printing where
+                        --  non-printable or non-ASCII characters are
+                        --  represented with longer strings.
+
+                        pragma Assert (Value_As_String'Length = 1);
+
+                        --  The JSON constructor expects UTF-8 strings. The
+                        --  characters in CE-s are Latin-1, so a conversion
+                        --  is needed.
+
+                        JSON_Obj := Create (Encode (Value_As_String));
+                     end;
 
                   when Enum_K    =>
                      JSON_Obj := Create (To_String (Value));
