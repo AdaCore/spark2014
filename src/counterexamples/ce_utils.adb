@@ -324,19 +324,22 @@ package body CE_Utils is
                when Integer_K =>
                   Int_Val := Val.Scalar_Content.Integer_Content;
 
+               when Char_K    =>
+                  declare
+                     N : constant Node_Id := Val.Scalar_Content.Char_Node;
+                  begin
+                     pragma Assert (Nkind (N) = N_Character_Literal);
+                     Int_Val :=
+                       From_String (UI_Image (Char_Literal_Value (N)));
+                  end;
+
                when Enum_K    =>
                   declare
                      Ent : constant Entity_Id :=
                        Val.Scalar_Content.Enum_Entity;
                   begin
-                     if Nkind (Ent) = N_Character_Literal then
-                        Int_Val :=
-                          From_String (UI_Image (Char_Literal_Value (Ent)));
-                     else
-                        pragma Assert (Ekind (Ent) = E_Enumeration_Literal);
-                        Int_Val :=
-                          From_String (UI_Image (Enumeration_Pos (Ent)));
-                     end if;
+                     pragma Assert (Ekind (Ent) = E_Enumeration_Literal);
+                     Int_Val := From_String (UI_Image (Enumeration_Pos (Ent)));
                   end;
 
                when others    =>
