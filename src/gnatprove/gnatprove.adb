@@ -959,11 +959,11 @@ procedure Gnatprove with SPARK_Mode is
       end if;
       if Use_Semaphores then
          declare
-            Max_Proc : constant Integer :=
+            Num_Provers : constant Integer :=
               Integer'Max
-                (1,
-                 Parallel
-                 / Integer (File_Specific_Map ("default").Provers.Length));
+                (1, Integer (File_Specific_Map ("default").Provers.Length));
+            Max_Proc    : constant Integer :=
+              Integer'Max (1, Parallel / Num_Provers);
          begin
             Delete (Semaphore_Name);
             Create (Semaphore_Name, Max_Proc, Why3_Semaphore);
