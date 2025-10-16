@@ -4870,7 +4870,7 @@ package body Flow_Utility is
             --  didn't visit actions for short-circuit and if/case-expressions.
             --  Ignore these actions until this is discussed with the frontend.
 
-            when N_Subtype_Declaration                                =>
+            when N_Subtype_Declaration | N_Object_Declaration         =>
                pragma
                  Assert
                    (not Ctx.Assume_In_Expression
