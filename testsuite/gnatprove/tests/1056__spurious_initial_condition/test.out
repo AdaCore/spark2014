@@ -1,0 +1,108 @@
+a-strbou.ads:78:12: info: in default value of private type at a-strbou.ads:78, in instantiation at main.adb:6
+a-strbou.ads:78:12: info: predicate check proved on default value (CVC5: 2 VC; Trivial: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:102:37: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:103:09: info: disjoint contract or exit cases proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:104:18: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:108:18: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:144:37: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:145:09: info: disjoint contract or exit cases proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:146:18: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:150:18: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:177:09: info: disjoint contract or exit cases proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:220:20: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:222:09: info: disjoint contract or exit cases proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:223:47: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:234:46: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:273:19: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:275:09: info: disjoint contract or exit cases proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:276:16: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:286:16: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:324:09: info: disjoint contract or exit cases proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:351:09: info: disjoint contract or exit cases proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:385:09: info: disjoint contract or exit cases proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:429:23: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:431:09: info: disjoint contract or exit cases proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:432:52: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:443:51: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:486:09: info: disjoint contract or exit cases proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:527:22: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:539:21: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:753:09: info: disjoint contract or exit cases proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:766:62: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:767:25: info: precondition proved (CVC5: 4 VC), in instantiation at main.adb:6
+a-strbou.ads:806:09: info: disjoint contract or exit cases proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:819:62: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:820:25: info: precondition proved (CVC5: 5 VC), in instantiation at main.adb:6
+a-strbou.ads:906:09: info: disjoint contract or exit cases proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:922:20: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:922:30: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:923:24: info: precondition proved (CVC5: 4 VC), in instantiation at main.adb:6
+a-strbou.ads:970:09: info: disjoint contract or exit cases proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:986:20: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:986:30: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:987:24: info: precondition proved (CVC5: 5 VC), in instantiation at main.adb:6
+a-strbou.ads:1042:53: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:1136:22: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:1213:50: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:1213:67: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:1267:50: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:1398:46: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:1399:29: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:1400:65: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:1401:09: info: disjoint contract or exit cases proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:1402:38: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:1403:14: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:1426:37: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:1427:14: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:1530:46: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:1531:29: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:1532:65: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:1533:09: info: disjoint contract or exit cases proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:1534:38: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:1535:14: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:1555:37: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:1556:14: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:1649:34: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:1651:09: info: disjoint contract or exit cases proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:1652:52: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:1669:51: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:1763:34: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:1765:09: info: disjoint contract or exit cases proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:1766:52: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:1782:51: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:1876:34: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:1878:09: info: disjoint contract or exit cases proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:1879:49: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:1904:48: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:1962:34: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:1964:09: info: disjoint contract or exit cases proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:1965:49: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:1990:48: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:2203:09: info: disjoint contract or exit cases proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:2232:18: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:2258:09: info: disjoint contract or exit cases proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:2289:18: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:2316:09: info: disjoint contract or exit cases proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:2352:18: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:2377:09: info: disjoint contract or exit cases proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:2414:18: info: overflow check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:2448:41: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:2448:63: info: division check proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:2461:65: info: division check proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:2486:39: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:2486:60: info: division check proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:2488:09: info: disjoint contract or exit cases proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:2489:34: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:2489:56: info: division check proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:2498:27: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:2498:48: info: division check proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:2520:62: info: division check proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:2522:09: info: disjoint contract or exit cases proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:2523:60: info: division check proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:2532:50: info: division check proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:2565:61: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:2572:25: info: range check proved (CVC5: 2 VC), in instantiation at main.adb:6
+a-strbou.ads:2579:31: info: discriminant check proved (CVC5: 1 VC), in instantiation at main.adb:6
+a-strbou.ads:2579:31: info: predicate check proved (CVC5: 2 VC; Trivial: 1 VC), in instantiation at main.adb:6
+main.adb:6:04: warning: in instantiation at a-strbou.ads
+main.adb:6:04: warning: pragma "Stream_Convert" ignored (not yet supported) [ignored-pragma]
