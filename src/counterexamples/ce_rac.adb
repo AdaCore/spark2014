@@ -1736,9 +1736,9 @@ package body CE_RAC is
       end if;
    end Find_Old_Value;
 
-   -----------------------
-   -- Flush_RAC_Failure --
-   -----------------------
+   --------------------------
+   -- Flush_Exn_RAC_Result --
+   --------------------------
 
    function Flush_Exn_RAC_Result return Result is
       Res : Result;
