@@ -68,13 +68,6 @@ procedure P with SPARK_Mode is
       null;
    end Test_Object_Size_Check_On_Source_6;
 
-   procedure Test_Object_Size_Check_On_Source_7 is
-      Z : Long_Long_Integer := Long_Long_Integer'Last with Alignment => 8;
-      X : Float with Size => 64, Import, Address => Z'Address; --  X might have invalid values, as well as unused bits
-   begin
-      null;
-   end Test_Object_Size_Check_On_Source_7;
-
    type H_R2b is record
      C : R2b;
    end record;

@@ -3,8 +3,8 @@ package Arrays with SPARK_Mode is
    type Uint64 is mod 2 ** 64;
    type Uint8 is mod 2 ** 8;
    type Uint32 is mod 2 ** 32;
-   type First is array (Uint64 range <>) of Uint8;
-   type Second is array (Uint64 range <>) of Uint32;
+   type First is array (Uint64 range <>) of aliased Uint8;
+   type Second is array (Uint64 range <>) of aliased Uint32;
 
 
    Arr_1 : First(0.. 255) with Volatile;
