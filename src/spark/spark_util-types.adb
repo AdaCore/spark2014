@@ -262,12 +262,19 @@ package body SPARK_Util.Types is
                Typ : constant Type_Kind_Id := Retysp (Etype (Prefix (Obj)));
             begin
                Size := Get_Attribute_Value (Typ, Attribute_Component_Size);
-               pragma Assert (not No (Size));
-               Size_Str :=
-                 To_Unbounded_String
-                   ("Component_Size of "
-                    & Type_Name_For_Explanation (Typ)
-                    & " is");
+               if No (Size) then
+                  Explanation :=
+                    To_Unbounded_String
+                      ("Component_Size of "
+                       & Type_Name_For_Explanation (Typ)
+                       & " is missing");
+               else
+                  Size_Str :=
+                    To_Unbounded_String
+                      ("Component_Size of "
+                       & Type_Name_For_Explanation (Typ)
+                       & " is");
+               end if;
             end;
 
          when N_Selected_Component                                   =>
