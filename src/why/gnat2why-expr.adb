@@ -465,6 +465,16 @@ package body Gnat2Why.Expr is
    --  Need_Store is True, the Pattern is updated to reference the parts reused
    --  from Var if any.
 
+   procedure Insert_Check_For_Size_Of_Overlays
+     (Ada_Node        : Node_Id;
+      Obj             : Entity_Id;
+      Overlaid_Object : Node_Id;
+      P               : in out W_Prog_Id;
+      Params          : Transformation_Params);
+   --  Insert a check in P to ensure that an object Obj and the path it
+   --  overlays Overlaid_Object have the same size. Emit the check statically
+   --  if possible.
+
    function Insert_Invariant_Check_For_Eq
      (Ada_Node         : Node_Id;
       Typ              : Type_Kind_Id;
@@ -10876,6 +10886,267 @@ package body Gnat2Why.Expr is
       end if;
       return Result;
    end Havoc_Overlay_Aliases;
+
+   ---------------------------------------
+   -- Insert_Check_For_Size_Of_Overlays --
+   ---------------------------------------
+
+   procedure Insert_Check_For_Size_Of_Overlays
+     (Ada_Node        : Node_Id;
+      Obj             : Entity_Id;
+      Overlaid_Object : Node_Id;
+      P               : in out W_Prog_Id;
+      Params          : Transformation_Params)
+   is
+
+      --  In this function, we try to emit a static check if possible, a
+      --  dynamic check otherwise.
+      --  Statically_Invalid is set to True when an unsupported construct is
+      --  encountered so the check cannot be performed, even dynamically. When
+      --  it is set, a statically failing check is emitted. In this case,
+      --  Explanation is set to relevant information.
+      --  Dynamic_Check is set to True whenever at least part of the
+      --  information cannot be computed statically.
+
+      Statically_Invalid : Boolean := False;
+      Explanation        : Unbounded_String;
+      Dynamic_Check      : Boolean := False;
+
+      function Compute_Dynamic_Size
+        (Typ : Type_Kind_Id; Rng : Node_Id := Empty) return W_Term_Id
+
+      with
+        Pre =>
+          Is_Array_Type (Typ)
+          and then (Present (Rng) or else Is_Constrained (Typ))
+          and then Has_Aliased_Components (Etype (Typ));
+      --  Compute the size of a dynamically constrained array by counting its
+      --  components. The Rng optional parameter supplies the bounds of a
+      --  slice. If it is empty, the whole array is considerd. This is only
+      --  valid if the array does not contain gaps between components (gaps in
+      --  components are fine). Arrays with aliased components never have gaps
+      --  between components (but packed arrays might have gaps at the end).
+
+      procedure Compute_Dynamic_Size_If_Possible
+        (Typ          : Type_Kind_Id;
+         Dynamic_Size : out W_Term_Id;
+         Rng          : Node_Id := Empty);
+      --  If Typ is a dynamic array type with aliased components, compute the
+      --  size dynamically and store it in Dynamic_Size. Update
+      --  Statically_Invalid, Explanation, and Dynamic_Check accordingly.
+      --  This procedure should only be called for objects which do not have
+      --  a specific Size indication.
+
+      --------------------------
+      -- Compute_Dynamic_Size --
+      --------------------------
+
+      function Compute_Dynamic_Size
+        (Typ : Type_Kind_Id; Rng : Node_Id := Empty) return W_Term_Id
+      is
+         Comp_Size : constant Uint :=
+           Get_Attribute_Value (Typ, Attribute_Component_Size);
+      begin
+         pragma Assert (not No (Comp_Size));
+         if Present (Rng) then
+            declare
+               Low  : constant Node_Id := Low_Bound (Rng);
+               High : constant Node_Id := High_Bound (Rng);
+            begin
+               return
+                 New_Call
+                   (Name => Int_Infix_Mult,
+                    Args =>
+                      (Build_Length_Expr
+                         (Domain => EW_Term,
+                          First  =>
+                            +Transform_Term
+                               (Expr          => Low,
+                                Expected_Type => EW_Int_Type,
+                                Params        => Params),
+                          Last   =>
+                            +Transform_Term
+                               (Expr          => High,
+                                Expected_Type => EW_Int_Type,
+                                Params        => Params)),
+                       New_Integer_Constant (Value => Comp_Size)));
+            end;
+         else
+            declare
+               Res : W_Term_Id := New_Integer_Constant (Value => Comp_Size);
+            begin
+               for I in 1 .. Natural (Number_Dimensions (Typ)) loop
+                  Res :=
+                    New_Call
+                      (Name => Int_Infix_Mult,
+                       Args =>
+                         (Build_Length_Expr
+                            (Domain => EW_Term, Ty => Typ, Dim => I),
+                          +Res));
+               end loop;
+               return Res;
+            end;
+         end if;
+      end Compute_Dynamic_Size;
+
+      --------------------------------------
+      -- Compute_Dynamic_Size_If_Possible --
+      --------------------------------------
+
+      procedure Compute_Dynamic_Size_If_Possible
+        (Typ          : Type_Kind_Id;
+         Dynamic_Size : out W_Term_Id;
+         Rng          : Node_Id := Empty) is
+      begin
+         --  Check if we are in a case where the size of an object of type Typ
+         --  can safely be computed dynamically.
+
+         if Present (Rng)
+           or else (Is_Array_Type (Typ) and then Is_Constrained (Typ))
+         then
+
+            --  For arrays, provide a more precise explanation if the size
+            --  cannot be computed.
+
+            if not Has_Aliased_Components (Etype (Typ)) then
+               Explanation :=
+                 To_Unbounded_String
+                   (Type_Name_For_Explanation (Typ)
+                    & " doesn't have aliased components");
+
+            elsif No (Get_Attribute_Value (Typ, Attribute_Component_Size)) then
+               Explanation :=
+                 To_Unbounded_String
+                   (Type_Name_For_Explanation (Typ)
+                    & " doesn't have a Component_Size representation clause"
+                    & " or aspect");
+
+            else
+               Dynamic_Check := True;
+               Dynamic_Size := Compute_Dynamic_Size (Typ, Rng);
+               return;
+            end if;
+         end if;
+
+         --  Dynamic computation has failed, the check is statically invalid
+
+         Statically_Invalid := True;
+         Dynamic_Size := Why_Empty;
+      end Compute_Dynamic_Size_If_Possible;
+
+      --  Objects introduced for the sizes of Obj and its Overlaid_Object.
+      --  If the size can be computed statically, Static_*_Size and *_Size_Str
+      --  are set and Dynamic_*_Size is Why_Empty. If the size can only be
+      --  computed dynamically, Dynamic_*_Size is set.
+
+      Obj_Typ               : constant Type_Kind_Id := Retysp (Etype (Obj));
+      Static_Obj_Size       : Uint;
+      Obj_Size_Str          : Unbounded_String := Null_Unbounded_String;
+      Dynamic_Obj_Size      : W_Term_Id := Why_Empty;
+      Overlaid_Size_Str     : Unbounded_String;
+      Static_Overlaid_Size  : Uint;
+      Dynamic_Overlaid_Size : W_Term_Id := Why_Empty;
+   begin
+      Check_Known_Size_For_Object
+        (Obj, Static_Obj_Size, Explanation, Obj_Size_Str);
+
+      --  Try to compute the size of dynamic array object if static computation
+      --  failed.
+
+      if No (Static_Obj_Size) then
+         Compute_Dynamic_Size_If_Possible (Obj_Typ, Dynamic_Obj_Size);
+      end if;
+
+      Check_Known_Size_For_Object
+        (Overlaid_Object,
+         Static_Overlaid_Size,
+         Explanation,
+         Overlaid_Size_Str);
+
+      if No (Static_Overlaid_Size) then
+
+         --  Try to compute the size of dynamic array objects
+
+         if Nkind (Overlaid_Object) = N_Slice then
+            declare
+               Overlaid_Typ : constant Type_Kind_Id :=
+                 Retysp (Etype (Prefix (Overlaid_Object)));
+
+            begin
+               Compute_Dynamic_Size_If_Possible
+                 (Overlaid_Typ,
+                  Dynamic_Overlaid_Size,
+                  Discrete_Range (Overlaid_Object));
+            end;
+
+         else
+            declare
+               Overlaid_Typ : constant Type_Kind_Id :=
+                 Retysp (Etype (Overlaid_Object));
+
+            begin
+               Compute_Dynamic_Size_If_Possible
+                 (Overlaid_Typ, Dynamic_Overlaid_Size);
+            end;
+         end if;
+      end if;
+
+      --  If one of the sizes is dynamic, add a dynamic check to P
+
+      if not Statically_Invalid and then Dynamic_Check then
+         if No (Dynamic_Obj_Size) then
+            pragma Assert (Present (Static_Obj_Size));
+            Dynamic_Obj_Size :=
+              New_Integer_Constant (Value => Static_Obj_Size);
+         elsif No (Dynamic_Overlaid_Size) then
+            pragma Assert (Present (Static_Overlaid_Size));
+            Dynamic_Overlaid_Size :=
+              New_Integer_Constant (Value => Static_Overlaid_Size);
+         end if;
+
+         P :=
+           +Sequence
+              (New_Ignore
+                 (Prog =>
+                    Why.Gen.Progs.New_Located_Assert
+                      (Ada_Node => Ada_Node,
+                       Pred     =>
+                         New_Comparison
+                           (Symbol => Why_Eq,
+                            Left   => Dynamic_Obj_Size,
+                            Right  => Dynamic_Overlaid_Size),
+                       Reason   => VC_UC_Same_Size,
+                       Kind     => EW_Assert)),
+               P);
+
+      --  Otherwise, everything is static. Check the sizes and emit a static
+      --  proof result.
+
+      else
+         if Statically_Invalid then
+            null;
+         elsif Static_Obj_Size /= Static_Overlaid_Size then
+            Statically_Invalid := True;
+            Explanation :=
+              To_Unbounded_String
+                ("sizes of overlaid objects differ: "
+                 & To_String (Obj_Size_Str)
+                 & " "
+                 & Escape (UI_Image (Static_Obj_Size))
+                 & ", while "
+                 & To_String (Overlaid_Size_Str)
+                 & " "
+                 & Escape (UI_Image (Static_Overlaid_Size)));
+         end if;
+
+         Emit_Static_Proof_Result
+           (Ada_Node,
+            VC_UC_Same_Size,
+            not Statically_Invalid,
+            Current_Subp,
+            Explanation => To_String (Explanation));
+      end if;
+   end Insert_Check_For_Size_Of_Overlays;
 
    ----------------------------
    -- Insert_Invariant_Check --
@@ -21968,16 +22239,8 @@ package body Gnat2Why.Expr is
                               Valid,
                               Current_Subp,
                               Explanation => To_String (Explanation));
-
-                           Objects_Have_Same_Size
-                             (Obj, Pref, Valid, Explanation);
-                           Emit_Static_Proof_Result
-                             (Address,
-                              VC_UC_Same_Size,
-                              Valid,
-                              Current_Subp,
-                              Explanation => To_String (Explanation));
-
+                           Insert_Check_For_Size_Of_Overlays
+                             (Address, Obj, Pref, R, Params);
                            if Nkind (Pref) in N_Has_Entity then
                               Objects_Have_Compatible_Alignments
                                 (Obj, Entity (Pref), Valid, Explanation);

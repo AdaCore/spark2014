@@ -225,7 +225,46 @@ package body SPARK_Util.Types is
            and then not Is_Constrained (Etype (Typ))
            and then not Is_First_Subtype (Typ)
          then
-            if not Has_Pragma_Pack (Etype (Typ)) then
+
+            --  Arrays with aliased components cannot have gaps, try to compute
+            --  the size if the array type has static bounds.
+
+            if Has_Aliased_Components (Etype (Typ))
+              and then Is_Static_Array_Type (Typ)
+            then
+               declare
+                  Comp_Size : constant Uint :=
+                    Get_Attribute_Value (Typ, Attribute_Component_Size);
+                  Index     : Node_Id := First_Index (Typ);
+               begin
+                  if No (Comp_Size) then
+                     Explanation :=
+                       To_Unbounded_String
+                         (Type_Name_For_Explanation (Typ)
+                          & " doesn't have a Component_Size representation "
+                          & "clause or aspect");
+                  else
+                     RM_Size := Comp_Size;
+                     while Present (Index) loop
+                        declare
+                           Low  : constant Node_Id :=
+                             Low_Bound (Get_Range (Index));
+                           High : constant Node_Id :=
+                             High_Bound (Get_Range (Index));
+                        begin
+                           RM_Size :=
+                             (if Expr_Value (High) < Expr_Value (Low)
+                              then Uint_0
+                              else
+                                (Expr_Value (High) - Expr_Value (Low) + 1)
+                                * RM_Size);
+                        end;
+                        Next_Index (Index);
+                     end loop;
+                  end if;
+               end;
+
+            elsif not Has_Pragma_Pack (Etype (Typ)) then
                Explanation :=
                  To_Unbounded_String
                    (Type_Name_For_Explanation (Etype (Typ))
