@@ -275,12 +275,12 @@ pre-commit:
     - cd $ANOD_DEFAULT_SANDBOX_DIR
     - anod install gnat --latest
     - anod install libgpr2 --latest
-    - anod install vss-text -Qedge --latest
-    - anod install vss-extra -Qedge --latest
+    - anod install vss-text --latest
+    - anod install vss-extra --latest
     - eval $(anod printenv gnat)
     - eval $(anod printenv libgpr2)
-    - eval $(anod printenv vss-text -Qedge)
-    - eval $(anod printenv vss-extra -Qedge)
+    - eval $(anod printenv vss-text)
+    - eval $(anod printenv vss-extra)
     - mkdir /tmp/sarif-ada
     - e3-cathod source sarif-ada-src --latest --install /tmp/sarif-ada
     - export GPR_PROJECT_PATH=/tmp/sarif-ada/gnat:$GPR_PROJECT_PATH
