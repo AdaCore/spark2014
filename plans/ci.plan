@@ -10,8 +10,8 @@ def build():
     anod_install("libgpr", query_range=20)
     anod_install("libgpr2", query_range=20)
     anod_install("gnatcoll-core", query_range=20)
-    anod_install("vss-extra", qualifier="edge", query_range=20)
-    anod_install("vss-text", qualifier="edge", query_range=20)
+    anod_install("vss-extra", query_range=20)
+    anod_install("vss-text", query_range=20)
     anod_build("why3")
     anod_build("spark2014", qualifier="assertions,coverage")
 
