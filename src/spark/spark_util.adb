@@ -4755,8 +4755,17 @@ package body SPARK_Util is
         (if Simple_Address
          then Get_Root_Object (Prefix_Expr, Through_Traversal => False)
          else Empty);
+
    begin
-      if Present (Aliased_Object)
+      --  Taking the address of a slice is only well-defined if the components
+      --  are aliased.
+
+      if Simple_Address
+        and then Nkind (Prefix_Expr) = N_Slice
+        and then not Has_Aliased_Components (Etype (Etype (Prefix_Expr)))
+      then
+         return Empty;
+      elsif Present (Aliased_Object)
         and then Ekind (Aliased_Object)
                  in E_Constant | E_Loop_Parameter | E_Variable | Formal_Kind
       then

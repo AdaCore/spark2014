@@ -257,6 +257,49 @@ package body SPARK_Util.Types is
       Size_Str    : out Unbounded_String) is
    begin
       case Nkind (Obj) is
+         when N_Slice                                                =>
+            declare
+               Typ       : constant Type_Kind_Id :=
+                 Retysp (Etype (Prefix (Obj)));
+               Comp_Size : Uint;
+               Low       : constant Node_Id :=
+                 Low_Bound (Discrete_Range (Obj));
+               High      : constant Node_Id :=
+                 High_Bound (Discrete_Range (Obj));
+
+            begin
+               Comp_Size :=
+                 Get_Attribute_Value (Typ, Attribute_Component_Size);
+               pragma Assert (Has_Aliased_Components (Etype (Typ)));
+
+               --  Here, components of slices are always aliased. Compute the
+               --  size if the slice has static bounds. Otherwise, return
+               --  No_Uint.
+
+               if No (Comp_Size) then
+                  Explanation :=
+                    To_Unbounded_String
+                      ("Component_Size of "
+                       & Type_Name_For_Explanation (Typ)
+                       & " is missing");
+                  Size := No_Uint;
+
+               elsif Compile_Time_Known_Value (Low)
+                 and then Compile_Time_Known_Value (High)
+               then
+                  Size_Str := To_Unbounded_String ("size of slice is");
+                  Size :=
+                    (if Expr_Value (High) < Expr_Value (Low)
+                     then Uint_0
+                     else
+                       (Expr_Value (High) - Expr_Value (Low) + 1) * Comp_Size);
+               else
+                  Explanation :=
+                    To_Unbounded_String ("slice has dynamic bounds");
+                  Size := No_Uint;
+               end if;
+            end;
+
          when N_Indexed_Component                                    =>
             declare
                Typ : constant Type_Kind_Id := Retysp (Etype (Prefix (Obj)));
@@ -1916,17 +1959,14 @@ package body SPARK_Util.Types is
       Size_Str    : Unbounded_String;
       Valid       : True_Or_Explain;
    begin
-      Check_Known_Size_For_Object (Obj, Size, Explanation, Size_Str);
-      if Is_Scalar_Type (Ty) and then No (Size) then
-         return False;
-      else
-         Valid :=
-           Type_Has_Only_Valid_Values
-             (Ty,
-              (if Is_Scalar_Type (Ty) then Size else Uint_0),
-              To_String (Size_Str));
-         return Valid.Ok;
+      if Is_Scalar_Type (Ty) then
+         Check_Known_Size_For_Object (Obj, Size, Explanation, Size_Str);
+         if No (Size) then
+            return False;
+         end if;
       end if;
+      Valid := Type_Has_Only_Valid_Values (Ty, Size, To_String (Size_Str));
+      return Valid.Ok;
    end Obj_Has_Only_Valid_Values;
 
    -------------------
