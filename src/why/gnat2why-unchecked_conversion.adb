@@ -236,6 +236,74 @@ package body Gnat2Why.Unchecked_Conversion is
       Result := True;
       Explanation := Null_Unbounded_String;
    end Objects_Have_Same_Size;
+
+   -----------------------------------
+   -- Object_Suitable_For_UC_Source --
+   -----------------------------------
+
+   procedure Object_Suitable_For_UC_Source
+     (Obj : Node_Id; Result : out Boolean; Explanation : out Unbounded_String)
+   is
+      Common_Exp : constant String :=
+        "; "
+        & (if Nkind (Obj)
+              in N_Defining_Identifier | N_Identifier | N_Expanded_Name
+           then Source_Name (Obj)
+           else "object")
+        & " might have unused bits that are not modelled in SPARK";
+      Typ        : constant Type_Kind_Id := Retysp (Etype (Obj));
+      Obj_Size   : Uint;
+      RM_Size    : Uint;
+      Size_Str   : Unbounded_String;
+   begin
+      --  Check the absence of holes in the type's representation
+
+      Suitable_For_UC_Source (Typ, Result, Explanation);
+
+      --  As per ARM 13.1(7/5): If the size of an object is greater than that
+      --  of its subtype, the additional bits are padding bits. For an
+      --  elementary object, these padding bits are normally read and updated
+      --  along with the others. For a composite object, it is unspecified
+      --  whether padding bits are read or updated in any given composite
+      --  operation.
+      --  GNAT effectively reads and updates padding bits along with the others
+      --  for discrete and fixed-point objects, but not floating-point objects.
+      --  We rely on this behavior and do not consider padding bits as unused
+      --  for these types. For floating-point types and composite types, we
+      --  are conservative and don't assume anything of the sort.
+
+      if not Result
+        or else Has_Discrete_Type (Typ)
+        or else Has_Fixed_Point_Type (Typ)
+      then
+         return;
+      end if;
+
+      --  Checks for absence of holes in Typ are done on the RM size. Check
+      --  that there are no additional bits in Obj.
+      --  For now, the object size and the RM_Size are necessarily known for
+      --  the check that Typ is suitable as source to go through.
+
+      Check_Known_Size_For_Object (Obj, Obj_Size, Explanation, Size_Str);
+      pragma Assert (Present (Obj_Size));
+
+      Check_Known_RM_Size (Typ, RM_Size, Explanation);
+      pragma Assert (Present (RM_Size));
+
+      if RM_Size /= Obj_Size then
+         Result := False;
+         Explanation :=
+           Size_Str
+           & " "
+           & UI_Image (Obj_Size)
+           & ", but "
+           & Type_Name_For_Explanation (Typ)
+           & " has Size "
+           & UI_Image (RM_Size)
+           & Common_Exp;
+      end if;
+   end Object_Suitable_For_UC_Source;
+
    --------------------------
    -- Precise_Composite_UC --
    --------------------------
@@ -1340,6 +1408,13 @@ package body Gnat2Why.Unchecked_Conversion is
    begin
       Suitable_For_UC (Typ, Result, Explanation);
       if not Result then
+         return;
+      end if;
+
+      --  Scalar types cannot have holes, as all bits are relevant for their
+      --  values. Instead, such objects are considered to have invalid values.
+
+      if Has_Scalar_Type (Typ) then
          return;
       end if;
 
