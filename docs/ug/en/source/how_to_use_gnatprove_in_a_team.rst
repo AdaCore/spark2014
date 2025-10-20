@@ -583,6 +583,13 @@ component of a composite value or the designated object of an access value).
 The following assumptions need to be addressed when using SPARK on all or part
 of a program:
 
+* [SPARK_IMPLEMENTATION_DEFINED]
+  If a compiler different from the GNAT compiler is used, then the program
+  should not depend on program behavior that is declared as
+  implementation-defined in the Ada language reference manual. The command-line
+  switch "--pedantic" produces warnings for a subset of implementation-defined
+  behavior.
+
 * [SPARK_JUSTIFICATION]
   All justifications of check messages should be reviewed (see :ref:`Justifying
   Check Messages`), both when using :ref:`Direct Justification with Pragma
