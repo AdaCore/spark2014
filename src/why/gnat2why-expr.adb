@@ -26521,86 +26521,21 @@ package body Gnat2Why.Expr is
                              Valid  =>
                                Get_Valid_Id_From_Object
                                  (Ent, Params.Ref_Allowed));
+                        Eff      : constant W_Effects_Id := New_Effects;
+                        procedure Effects_Append_Binder_To_Writes is new
+                          Effects_Append_Binder (Effects_Append_To_Writes);
                         Havoc    : W_Prog_Id := +Void;
+
                      begin
-                        case E.Kind is
-                           when Subp                      =>
-                              raise Program_Error;
+                        Effects_Append_Binder_To_Writes (Eff, E);
+                        Havoc := New_Havoc_Statement (Effects => Eff);
 
-                           when Regular | Concurrent_Self =>
-                              if E.Main.Mutable then
-                                 Havoc := New_Havoc_Call (E.Main.B_Name);
-                              end if;
-
-                           when UCArray                   =>
-                              pragma Assert (E.Content.Mutable);
-                              Havoc := New_Havoc_Call (E.Content.B_Name);
-
-                           when DRecord                   =>
-
-                              --  Havoc the reference for fields
-
-                              if E.Fields.Present then
-                                 pragma Assert (E.Fields.Binder.Mutable);
-
-                                 Prepend
-                                   (New_Havoc_Call (E.Fields.Binder.B_Name),
-                                    Havoc);
-                              end if;
-
-                              --  If the object is not constrained then also
-                              --  havoc the reference for discriminants.
-
-                              if E.Discrs.Present
-                                and then E.Discrs.Binder.Mutable
-                              then
-                                 pragma Assert (E.Constr.Present);
-
-                                 declare
-                                    Havoc_Discr      : constant W_Prog_Id :=
-                                      New_Havoc_Call (E.Discrs.Binder.B_Name);
-                                    Havoc_Discr_Cond : constant W_Prog_Id :=
-                                      New_Conditional
-                                        (Condition =>
-                                           New_Not (Right => +E.Constr.Id),
-                                         Then_Part => Havoc_Discr);
-                                 begin
-                                    Prepend (Havoc_Discr_Cond, Havoc);
-                                 end;
-                              end if;
-
-                           when Pointer                   =>
-
-                              --  Havoc the reference for value
-
-                              pragma Assert (E.Value.Mutable);
-
-                              Havoc := New_Havoc_Call (E.Value.B_Name);
-
-                              --  If the object is mutable then also havoc the
-                              --  is_null field.
-
-                              if E.Mutable then
-                                 Prepend (New_Havoc_Call (E.Is_Null), Havoc);
-                              end if;
-                        end case;
-
-                        if Object_Has_Valid_Id (Ent) then
+                        if Dyn_Prop /= True_Pred then
                            Prepend
-                             (New_Havoc_Call
-                                (+Get_Valid_Id_From_Object
-                                    (Ent, Ref_Allowed => False)),
-                              Havoc);
+                             (New_Assume_Statement (Pred => Dyn_Prop), T);
                         end if;
 
-                        if Havoc /= +Void then
-                           if Dyn_Prop /= True_Pred then
-                              Prepend
-                                (New_Assume_Statement (Pred => Dyn_Prop), T);
-                           end if;
-
-                           Prepend (Havoc, T);
-                        end if;
+                        Prepend (Havoc, T);
                      end;
                   end if;
                end;
