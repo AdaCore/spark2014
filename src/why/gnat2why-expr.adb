@@ -28628,8 +28628,8 @@ package body Gnat2Why.Expr is
           (Etype (N),
            Relaxed_Init => Expr_Has_Relaxed_Init (N, No_Eval => False));
       Rng       : constant Node_Id := Get_Range (Discrete_Range (N));
-      Pref_Term : constant W_Term_Id :=
-        +New_Temp_For_Expr (Expr, Need_Temp => Domain = EW_Prog);
+      Pref_Term : constant W_Expr_Id :=
+        New_Temp_For_Expr (Expr, Need_Temp => Domain = EW_Prog);
       T         : W_Expr_Id;
       Rng_Type  : constant W_Type_Id :=
         Base_Why_Type_No_Bool (Entity_Id'(Type_Of_Node (Low_Bound (Rng))));
@@ -28641,7 +28641,7 @@ package body Gnat2Why.Expr is
           (Transform_Expr (High_Bound (Rng), Rng_Type, Domain, Params));
 
    begin
-      T := +Pref_Term;
+      T := Pref_Term;
 
       --  if needed, we convert the arrray to a simple base type
 
@@ -28669,13 +28669,13 @@ package body Gnat2Why.Expr is
                 (To   => Rng_Type,
                  Expr =>
                    Get_Array_Attr
-                     (Expr => Pref_Term, Attr => Attribute_First, Dim => 1));
+                     (Expr => +Pref_Term, Attr => Attribute_First, Dim => 1));
             Ar_High : constant W_Term_Id :=
               Insert_Simple_Conversion
                 (To   => Rng_Type,
                  Expr =>
                    Get_Array_Attr
-                     (Expr => Pref_Term, Attr => Attribute_Last, Dim => 1));
+                     (Expr => +Pref_Term, Attr => Attribute_Last, Dim => 1));
             Check   : constant W_Pred_Id :=
               New_Connection
                 (Op    => EW_Imply,
