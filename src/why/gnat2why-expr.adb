@@ -14556,12 +14556,22 @@ package body Gnat2Why.Expr is
                --  duplicates of those done in One_Level_Update.
 
                Prefix_Expr : constant W_Expr_Id :=
-                 Transform_Expr
-                   (Domain        => Subdomain,
-                    Expr          => Prefix (N),
-                    Expected_Type => Prefix_Type,
-                    Params        => Body_Params);
-               Prefix_Var  : constant W_Expr_Id :=
+                 Insert_Simple_Conversion
+                   (Domain         => Subdomain,
+                    Expr           =>
+                      Transform_Expr
+                        (Domain => Subdomain,
+                         Expr   => Prefix (N),
+                         Params => Body_Params),
+                    To             => Prefix_Type,
+                    Force_No_Slide => True);
+               --  The type of the type prefix might not match Prefix_Type if
+               --  it is a discriminant dependent subcomponent. In this case,
+               --  Prefix_Type might have bounds that reference discriminants
+               --  whose value is not known in the context. Sliding is not
+               --  necessary but could cause crashes.
+
+               Prefix_Var : constant W_Expr_Id :=
                  New_Temp_For_Expr (Prefix_Expr);
             begin
                Expr :=
