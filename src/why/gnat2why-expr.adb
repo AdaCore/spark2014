@@ -13369,7 +13369,9 @@ package body Gnat2Why.Expr is
             --  It can happen that the prefix does not have the expected type
             --  but some Itype with the same constraints. To avoid a type
             --  mismatch in Why, we should use the selector of the expected
-            --  type instead.
+            --  type instead. Force no sliding, as the bounds of the expected
+            --  type might depend on the discriminants of the enclosing type,
+            --  which are not in the symbol table at this stage.
             --  If there is no such component, we must be in a tagged view
             --  conversion. Introduce conversions to do the update.
 
@@ -13407,10 +13409,11 @@ package body Gnat2Why.Expr is
                       (Etype (Selector), Relaxed_Init => Relaxed_Init);
                   New_Value    : constant W_Expr_Id :=
                     Insert_Simple_Conversion
-                      (Ada_Node => N,
-                       Domain   => Domain,
-                       Expr     => Init_Val,
-                       To       => To_Type);
+                      (Ada_Node       => N,
+                       Domain         => Domain,
+                       Expr           => Init_Val,
+                       To             => To_Type,
+                       Force_No_Slide => True);
                begin
                   --  The code should never update a discrimiant by assigning
                   --  to it.
