@@ -821,3 +821,89 @@ global inputs or outputs.
   Annotations specifying whether or not a subprogram returns are not available
   currently on access-to-subprogram types. As a result, all calls through
   dereferences are considered to possibly not terminate.
+
+Pointer Value and Predefined Equality
+-------------------------------------
+
+For all kinds of access types in |SPARK|, the value of the access itself -
+as opposed to the value that the access designates - is not modeled by
+|GNATprove|. Said otherwise, pointers are seen as a data-structure containing
+an optional element by the tool, ownership restrictions ensure that the
+memory representation is irrelevant for verification. This behavior is
+demonstrated in the following example. It is possible for |GNATprove| to deduce
+that the function ``Read``, which is not otherwise specified, necessarily
+returns the same thing on two access objects if they designate the same value,
+as these objects are exactly the same in the underlying model:
+
+.. code-block:: ada
+
+   type Int_Acc is not null access Integer;
+
+   function Read (X : Int_Acc) return Boolean with Import;
+
+   procedure Test (X, Y : Int_Acc) is
+   begin
+      pragma Assert (if X.all = Y.all then Read (X) = Read (Y));
+   end Test;
+
+The fact that the value of access objects is not represented by the tool is key
+for the seemless support of allocators in particular. Indeed, an allocator
+returns a different object each time it is evaluated, and so, even if it is
+given the same parameter. In |SPARK|, this behavior would mandate a volatile
+effect, see :ref:`Volatile Variables`. Making all subprograms that perform
+allocations volatile would by overly restrictive, as in particular, volatile
+functions can only be used in particular contexts. The fact that the value of
+access types is not modeled makes it possible for example to create a deep copy
+function that can be used in a contract to workaround the restrictions imposed
+on uses of the ``Old`` attribute by the ownership policy:
+
+.. code-block:: ada
+
+   function Deep_Copy (X : Int_Acc) return Int_Acc is
+      (new Integer'(X.all));
+
+   procedure Swap (X, Y : in out Int_Acc) with
+     Post => X.all = Deep_Copy (Y)'Old.all;
+
+For this reasoning to be sound, it is necessary to ensure that the value of
+access objects is never read in |SPARK| code. In particular, this results in
+the predefined equality on access types being rejected unless one of the
+operand in known to be ``null``. In addition, if the result of a subprogram
+that is not analysed by |GNATprove| depends on the value of one of its acces
+s inputs, then it is necessary to mark it as volatile, as stated in
+the :ref:`Complete List of Assumptions` of |SPARK|.
+Here is an example of how to write a subprogram that uses
+access equality to optimize some handling in a way that is consistent with the
+limitations of |SPARK|. The function ``Address_Eq`` has a volatile input with
+asynchronous writers that models the values of all accesses. It is used inside
+``Swap_If_Different`` to optimize the computation if the objects are actually
+the same. Note that such an optimization is not necessarily very interesting in
+this particular case, as the ownership policy of |SPARK| would make it
+impossible to get the same pointer for ``X`` and ``Y`` here.
+
+.. code-block:: ada
+
+   type Int_Acc is not null access Integer;
+
+   package Address_Values with
+      Abstract_State => (Addresses with External => Async_Writers)
+   is
+
+      function Address_Eq (X, Y : Int_Acc) return Boolean
+      with Volatile_Function;
+
+      function Address_Eq (X, Y : Int_Acc) return Boolean
+      is (X = Y)
+        with SPARK_Mode => Off;
+
+   end Address_Values;
+
+   procedure Swap_If_Different (X, Y : in out Int_Acc) is
+      Eq : constant Boolean := Address_Values.Address_Eq (X, Y);
+   begin
+      if Eq then
+         null;
+      else
+         Swap (X, Y);
+      end if;
+   end Swap_If_Different;
