@@ -1620,11 +1620,14 @@ Program_Exit aspects are ignored for execution.
    declaration of a subprogram with side effects (which may be a declaration, a
    body or a body stub).
 
+3. If the Program_Exit aspect is specified for a subprogram, that subprogram
+   shall not be ghost.
+
 .. container:: heading
 
    Verification Rules
 
-3. A verification condition is introduced on calls to subprograms annotated with
+4. A verification condition is introduced on calls to subprograms annotated with
    the Program_Exit aspect. For calls occuring directly inside subprograms also
    annotated with the Program_Exit aspect, it ensures that the boolean
    expression of the Program_Exit aspect of the caller evaluates to True if the
@@ -1695,8 +1698,9 @@ Exit_Cases aspects are ignored for execution.
    allowed by the Exceptional_Cases contract of the subprogram, if any.
 
 4. If the Exit_Cases aspect has at least one exit case associated with
-   Program_Exit, then the Program_Exit contract for the subprogram, if any,
-   shall not have a postcondition which is known to be False at compile time.
+   Program_Exit, then the subprogram shall not be ghost. The Program_Exit
+   contract for the subprogram, if any, shall not have a postcondition
+   which is known to be False at compile time.
 
 .. container:: heading
 

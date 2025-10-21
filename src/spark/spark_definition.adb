@@ -8320,6 +8320,19 @@ package body SPARK_Definition is
                if Ekind (E) = E_Entry then
                   raise Program_Error;
 
+               --  Exiting the program is a visible effect, it should not
+               --  happen in ghost code. Redundant if there is already a error
+               --  for the Program_Exit pragma.
+
+               elsif Is_Ghost_Entity (E)
+                 and then No (Get_Pragma (E, Pragma_Program_Exit))
+                 and then Has_Program_Exit (E)
+               then
+                  Mark_Violation
+                    ("aspect ""Exit_Cases"" with exit kind ""Program_Exit"" on"
+                     & " ghost operations",
+                     E);
+
                --  Reject dispatching operations for now. Supporting them would
                --  require handling Liskov on exit contracts.
 
