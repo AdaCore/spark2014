@@ -1773,7 +1773,11 @@ package body Gnat2Why.Expr is
             Binder  : constant Item_Type :=
               Ada_Ent_To_Why.Element (Symbol_Table, Lvalue);
             L_Deref : constant W_Term_Id :=
-              Reconstruct_Item (Binder, Ref_Allowed => True);
+              +Transform_Identifier
+                 (Params => Body_Params,
+                  Expr   => Lvalue,
+                  Ent    => Lvalue,
+                  Domain => EW_Term);
 
             Constrained_Ty : constant Entity_Id := Etype (Lvalue);
             --  Type of the fullview
@@ -10873,8 +10877,9 @@ package body Gnat2Why.Expr is
                      Append
                        (Assume,
                         Assume_Dynamic_Invariant
-                          (+Reconstruct_Item (Item),
-                           Get_Ada_Type_From_Item (Item),
+                          (+Transform_Identifier
+                              (Body_Params, Elt, Elt, EW_Term),
+                           Type_Of_Node (Elt),
                            Valid =>
                              Get_Valid_Id_From_Object
                                (Elt, Ref_Allowed => True)));
@@ -14239,10 +14244,8 @@ package body Gnat2Why.Expr is
       function Compute_Type_Invariant_For_Entity
         (Obj : Entity_Id; Is_Param : Boolean) return W_Pred_Id
       is
-         Binder : constant Item_Type :=
-           Ada_Ent_To_Why.Element (Symbol_Table, Obj);
-         Expr   : constant W_Term_Id :=
-           Reconstruct_Item (Binder, Ref_Allowed => Params.Ref_Allowed);
+         Expr : constant W_Term_Id :=
+           +Transform_Identifier (Body_Params, Obj, Obj, EW_Term);
       begin
          --  If Is_Param is True, exclude invariants relaxed for parameters of
          --  E.
