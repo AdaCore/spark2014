@@ -29,6 +29,19 @@ is
       pragma Assert (State_After.Sources (State_After.F) = State_Before.Sources (State_Before.F)); --@ASSERT:PASS
    end;
 
+   type State_Holder (F, L : Index_Type) is record
+     State : State_T (F, L);
+   end record;
+
+   procedure Update_3 (State_Before : State_Holder;
+                     State_After  : out State_Holder)
+   is
+   begin
+      for I in State_Before.F .. State_Before.L loop
+         State_After.State.Sources (I) := State_Before.State.Sources (I - State_Before.F + State_After.F);
+      end loop;
+   end;
+
 begin
   null;
 end;

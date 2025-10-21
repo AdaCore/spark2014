@@ -8,3 +8,14 @@ main.adb:28:42: info: length check proved (CVC5: 3 VC)
 main.adb:29:22: info: assertion proved (CVC5: 1 VC)
 main.adb:29:54: info: index check proved (CVC5: 2 VC)
 main.adb:29:94: info: index check proved (CVC5: 2 VC)
+main.adb:33:23: info: range check proved (CVC5: 2 VC)
+main.adb:33:26: info: range check proved (CVC5: 2 VC)
+main.adb:37:22: medium: "State_After.State.Sources" might not be initialized in "Update_3" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "State_After.State.Sources" on all paths, make "State_After" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+main.adb:40:49: info: unrolling loop [info-unrolling-inlining]
+main.adb:41:21: info: range check proved (CVC5: 20 VC)
+main.adb:41:27: warning: initialization of an array in FOR loop is handled imprecisely [array-initialization]
+main.adb:41:37: medium: array index check might fail [reason for check: value must be a valid index into the array]
+main.adb:41:55: info: range check proved (CVC5: 20 VC)
+main.adb:41:73: info: overflow check proved (CVC5: 20 VC)
+main.adb:41:90: info: overflow check proved (CVC5: 14 VC; Z3: 6 VC)
+main.adb:41:90: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: subprogram at line 36 should mention State_Before in a precondition]
