@@ -313,7 +313,7 @@ CodePeer 静的解析器を使う
 
 .. note::
 
-   |CodePeer| は，SPARK Pro 17 以上の一部として利用可能です．しかし，SPARK Discovery には含まれていません．
+   |CodePeer| は，SPARK Pro 17 以上の一部として利用可能です．
 
 |CodePeer| は，静的解析器であり，AdaCore社によって開発・商用化されました(http://www.adacore.com/codepeer)． |GNATprove| では，検査における証明において追加の情報源として， |CodePeer| を用いることができます．このためには，コマンドラインオプションとして， ``--codepeer=on`` を使用します． |CodePeer| は，自動証明の前に，実行されます．もし，特定の検査に関して証明ができた場合， |GNATprove| は，別の検証器を用いて，再度この検査を繰り返そうとはしません．
 

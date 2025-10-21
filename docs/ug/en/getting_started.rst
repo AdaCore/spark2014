@@ -20,21 +20,12 @@ illustration.
 As a prerequisite, it is assumed that the |SPARK| tools have already been
 installed. As a minimum you should install:
 
- - |SPARK| Pro, |SPARK| Discovery or |SPARK| Community
+ - |SPARK| Pro, |SPARK| FSF
  - GNAT Studio or the GNATbench plug-in of Eclipse
 
-|SPARK| Pro is the most complete toolset for |SPARK|. |SPARK| Discovery is a
-reduced toolset that still allows to perform all analyses presented in this
-User's Guide, but is less powerful than |SPARK| Pro. Compared to |SPARK| Pro,
-|SPARK| Discovery:
+|SPARK| Pro is the most complete toolset for |SPARK|.
 
- * only comes with one automatic prover instead of three
- * does not generate counterexamples for failed proofs
- * has limited proof support for programs using modular arithmetic or
-   floating-point arithmetic
- * comes without a lemma library for more difficult proofs
-
-|SPARK| Community is a version packaged for free software developers,
+|SPARK| FSF is a version packaged for free software developers,
 hobbyists, and students, which retains most of the capabilities of |SPARK|
 Pro.
 
