@@ -11,15 +11,10 @@
 
 |SPARK| ツールが，すでにインストールされていることが前提です．最低限必要なのは，次のツールです．
 
-- |SPARK| Pro あるいは |SPARK| Discovery
+- |SPARK| Pro
 - GNAT Studio 或いは the GNATbench plug-in (Eclipse用）
 
-|SPARK| Pro は， |SPARK| の完全なツールセットです． |SPARK| Discovery は，サブセットですが，このユーザガイドにある全ての解析を実行することができます．もちろん， |SPARK| Pro がより強力です． |SPARK| Pro と比較したとき， |SPARK| Discovery は：
-
- * 自動証明器は，三つではなく一つになります
- * 静的解析器 |CodePeer| と統合されていません
- * 証明に失敗したときに反例が生成されません
- * モジュラー演算ないしは，浮動小数点演算を用いたプログラムに対する証明支援が限定的です
+|SPARK| Pro は， |SPARK| の完全なツールセットです．
 
 （注）厳密に言えば，GNAT Studio は必須ではありません． |SPARK| では，全てのコマンドはコマンドラインから実行できるからです．また，Eclipse の GNATbench プラグインを用いることもできます．しかし，この節では，GNAT Studio を前提として説明します．もし，サポートサービスを受けていれば，ツールのインストールに関する更なる情報を入手することができます．GNAT Tracker の "Download" タブにある，"AdaCore Installation Procedures" を見るか，より詳細な情報が必要であれば AdaCore 社に，お問い合わせ下さい．
 

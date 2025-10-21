@@ -22,14 +22,6 @@ be found on their respective websites:
  * cvc5: https://cvc5.github.io/
  * Z3: https://github.com/Z3Prover/z3
 
-Installed with |SPARK| Discovery
---------------------------------
-
-In this case, only prover Alt-Ergo is installed with the |SPARK| tool. Hence,
-by default |GNATprove| only uses prover Alt-Ergo. In particular, switch
-``--level`` has no impact on the use of different provers, and ``--prover=all``
-will only select Alt-Ergo.
-
 Installed with |SPARK| Community
 --------------------------------
 
