@@ -4765,13 +4765,8 @@ package body SPARK_Util is
         and then not Has_Aliased_Components (Etype (Etype (Prefix_Expr)))
       then
          return Empty;
-      elsif Present (Aliased_Object)
-        and then Ekind (Aliased_Object)
-                 in E_Constant | E_Loop_Parameter | E_Variable | Formal_Kind
-      then
-         return Aliased_Object;
       else
-         return Empty;
+         return Aliased_Object;
       end if;
    end Supported_Alias;
 

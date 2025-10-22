@@ -4915,6 +4915,30 @@ package body SPARK_Definition is
                Mark_Unsupported (Lim_Overlay_With_Deep_Object, Address);
             end if;
 
+            --  Reject objects Part_Of a protected object with a precisely
+            --  supported address clause.
+
+            if Is_Protected_Component_Or_Discr_Or_Part_Of (E) then
+               Mark_Violation
+                 ("precisely supported address clause for Part_Of constituent"
+                  & " of a protected object",
+                  Address);
+               return;
+            end if;
+
+            --  Reject taking the address of a protected component or Part_Of
+            --  object in a supported address clause.
+
+            if Is_Protected_Component_Or_Discr_Or_Part_Of (Aliased_Object) then
+               Mark_Violation
+                 ("Address attribute on a part of "
+                  & (if Ekind (Aliased_Object) in E_Component | E_Discriminant
+                     then "a protected component"
+                     else "a Part_Of constituent of a protected object"),
+                  Address_Expr);
+               return;
+            end if;
+
             --  If the address expression is a reference to the address of
             --  (a part of) another object, check that either both are
             --  mutable or both are constant for SPARK.
