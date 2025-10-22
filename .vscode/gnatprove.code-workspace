@@ -1,0 +1,14 @@
+{
+  "folders": [
+    {
+      "path": ".."
+    }
+  ],
+  "settings": {
+    "ada.projectFile": "gnatprove.gpr",
+    "ada.onTypeFormatting.indentOnly": true,
+    "[ada]": {
+      "editor.formatOnType": false,
+    },
+  }
+}
