@@ -61,6 +61,7 @@ stages:
      - image:pe-base
      - cpu:16
   stage: test
+  interruptible: true
   script:
     # script to load helper functions for log sections
     - source scripts/ci_predef.sh
@@ -132,6 +133,7 @@ build:
      - image:pe-base
      - cpu:8
   stage: build
+  interruptible: true
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || $CI_PIPELINE_SOURCE == "schedule"
       when: always
@@ -203,6 +205,7 @@ spark2014_nocache:
      - image:pe-base
      - cpu:16
   stage: test
+  interruptible: true
   script:
     - *setup_repos
     - *deploy_package
@@ -242,6 +245,7 @@ sparklib:
 
 build_docs:
   stage: build
+  interruptible: true
   services:
      - image:pe-base
   rules:
@@ -271,6 +275,7 @@ build_docs:
     - publish-pages $CI_PROJECT_DIR/spark/html/ug --target-subdir doc/ug/$HTMLTARGETDIR --expires 30
 
 pre-commit:
+  interruptible: true
   services:
      - image:pe-base
      #Memory is bound to CPU and we need more than the 1Gig that 1 cpu provides
