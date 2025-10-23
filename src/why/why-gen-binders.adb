@@ -1447,38 +1447,68 @@ package body Why.Gen.Binders is
       end loop;
    end Push_Binders_To_Symbol_Table;
 
+   ------------------------
+   -- Reconstruct_Binder --
+   ------------------------
+
+   function Reconstruct_Binder
+     (Id          : W_Identifier_Id;
+      Mutable     : Boolean;
+      Domain      : EW_Domain;
+      Ref_Allowed : Boolean := True;
+      Alias       : W_Expr_Id := Why_Empty) return W_Expr_Id is
+   begin
+      if not Mutable then
+         return +Id;
+      elsif Present (Alias) then
+         return
+           New_Call
+             (Domain => Domain,
+              Name   => Id,
+              Args   => (1 => Alias),
+              Typ    => Get_Typ (Id));
+      elsif Ref_Allowed then
+         return
+           New_Deref
+             (Ada_Node => Get_Ada_Node (+Id),
+              Right    => Id,
+              Typ      => Get_Typ (Id));
+      else
+         return +Id;
+      end if;
+   end Reconstruct_Binder;
+
    ----------------------
    -- Reconstruct_Item --
    ----------------------
 
    function Reconstruct_Item
-     (E : Item_Type; Ref_Allowed : Boolean := True) return W_Term_Id
+     (E           : Item_Type;
+      Domain      : EW_Domain;
+      Ref_Allowed : Boolean := True;
+      Alias       : W_Expr_Id := Why_Empty) return W_Expr_Id
    is
-      T : W_Term_Id;
+      T : W_Expr_Id;
    begin
       case E.Kind is
          when Subp                      =>
             raise Program_Error;
 
          when Regular | Concurrent_Self =>
-            T := +E.Main.B_Name;
-
-            if E.Main.Mutable and then Ref_Allowed then
-               T :=
-                 New_Deref
-                   (Ada_Node => Get_Ada_Node (+T),
-                    Right    => +T,
-                    Typ      => Get_Type (+T));
-            end if;
+            T :=
+              Reconstruct_Binder
+                (E.Main.B_Name, E.Main.Mutable, Domain, Ref_Allowed, Alias);
 
          when UCArray                   =>
-            T := Array_From_Split_Form (E, Ref_Allowed);
+            T := Array_From_Split_Form (E, Domain, Ref_Allowed, Alias);
 
          when DRecord                   =>
-            T := Record_From_Split_Form (E, Ref_Allowed);
+            T := Record_From_Split_Form (E, Domain, Ref_Allowed, Alias);
 
          when Pointer                   =>
-            T := Pointer_From_Split_Form (E, Ref_Allowed);
+            pragma Assert (No (Alias));
+
+            T := +Pointer_From_Split_Form (E, Ref_Allowed);
 
       end case;
 

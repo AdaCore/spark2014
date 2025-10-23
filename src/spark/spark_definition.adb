@@ -2669,11 +2669,16 @@ package body SPARK_Definition is
 
             else
                --  Check that there are no non-scalar objects declarations
-               --  before the last invariant/variant.
+               --  before the last invariant/variant. Also reject (scalar)
+               --  overlays, as their address might depend on the iteration.
 
                case Nkind (N) is
                   when N_Object_Declaration                         =>
-                     if Is_Scalar_Type (Etype (Defining_Entity (N))) then
+                     if Is_Scalar_Type (Etype (Defining_Entity (N)))
+                       and then No
+                                  (Ultimate_Overlaid_Entity
+                                     (Defining_Entity (N)))
+                     then
                         --  Store scalar entities defined in loops before the
                         --  invariant in Loop_Entity_Set.
 
@@ -4737,6 +4742,7 @@ package body SPARK_Definition is
            Supported_Alias (Address_Expr);
          Supported_Alias : constant Boolean := Present (Aliased_Object);
          E_Is_Constant   : constant Boolean := Is_Constant_In_SPARK (E);
+
       begin
          --  If we cannot determine which object the address of E references,
          --  the address clause will basically be ignored. We emit some
@@ -5069,12 +5075,6 @@ package body SPARK_Definition is
               or else Is_Potentially_Invalid (Aliased_Object)
             then
                Mark_Violation ("potentially invalid overlaid object", E);
-            end if;
-
-            --  Fill the map used to havoc overlaid objects
-
-            if not E_Is_Constant then
-               Set_Overlay_Alias (E, Aliased_Object);
             end if;
          end if;
 

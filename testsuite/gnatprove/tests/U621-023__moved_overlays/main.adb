@@ -18,12 +18,38 @@ procedure Main with SPARK_Mode is
       B : Int_Acc := X'Access;
    begin
       declare
-         Y : Integer with Import, Address => X'Address, Alignment => 4; --  X should be moved
+         Y : Integer with Import, Address => X'Address, Alignment => 4; --  X is moved, it cannot be read
       begin
          Y := 16;
       end;
       pragma Assert (B.all = 15);
    end P2;
+
+   procedure P3 with Global => null is
+      type Int_Acc is access all Integer;
+      X : aliased Integer := 15 with Alignment => 4;
+      B : access constant Integer := X'Access;
+   begin
+      declare
+         Y : Integer with Import, Address => X'Address, Alignment => 4; --  X is observed, reading it is ok
+      begin
+         Y := 16; --  X is observed, it cannot be assigned
+      end;
+      pragma Assert (B.all = 15);
+   end P3;
+
+   procedure P4 with Global => null is
+      type Int_Acc is access all Integer;
+      X : aliased Integer := 15 with Alignment => 4;
+      B : access constant Integer := X'Access;
+   begin
+      declare
+         Y : Integer := 12 with Address => X'Address, Alignment => 4; --  X is observed, it cannot be assigned
+      begin
+         Y := 16;
+      end;
+      pragma Assert (B.all = 15);
+   end P4;
 begin
    null;
 end;

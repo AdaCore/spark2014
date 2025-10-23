@@ -1,5 +1,11 @@
 main.adb:2:22: info: data dependencies proved
-main.adb:8:26: error: moved object aliased through address clauses is not supported yet
+main.adb:8:26: error: moving object aliased through address clauses is not supported yet
 main.adb:15:22: info: data dependencies proved
-main.adb:18:23: error: moved object aliased through address clauses is not supported yet
+main.adb:21:10: error: "X" is not readable
+main.adb:21:10: error: launch "gnatprove --explain=E0010" for more information
+main.adb:21:10: error: object was moved at line 18 [E0010]
+main.adb:28:22: info: data dependencies proved
+main.adb:36:10: error: "X" was observed at line 31
+main.adb:41:22: info: data dependencies proved
+main.adb:47:10: error: "X" was observed at line 44
 gnatprove: error during flow analysis and proof
