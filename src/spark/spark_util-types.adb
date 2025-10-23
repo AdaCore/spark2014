@@ -358,6 +358,16 @@ package body SPARK_Util.Types is
                end if;
             end;
 
+         when N_Explicit_Dereference                                 =>
+            declare
+               Typ : constant Type_Kind_Id := Retysp (Etype (Obj));
+            begin
+               Check_Known_Esize (Typ, Size, Explanation);
+               Size_Str :=
+                 To_Unbounded_String
+                   (Type_Name_For_Explanation (Typ) & "has Object_Size");
+            end;
+
          when others                                                 =>
             raise Program_Error;
       end case;
