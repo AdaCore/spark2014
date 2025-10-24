@@ -295,7 +295,7 @@ pre-commit:
     - eval $(anod printenv vss-text -Qedge)
     - eval $(anod printenv vss-extra -Qedge)
     - mkdir /tmp/sarif-ada
-    - e3-cathod source sarif-ada-src --latest --install /tmp/sarif-ada
+    - e3-cathod source sarif-ada-src --setup $ANOD_SETUP --latest --install /tmp/sarif-ada
     - export GPR_PROJECT_PATH=/tmp/sarif-ada:$GPR_PROJECT_PATH
     - cd $CI_PROJECT_DIR
     - ln -s $ACI_SUBPROJECTS_ROOT/gnat gnat2why/gnat_src
