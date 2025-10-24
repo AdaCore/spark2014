@@ -1,0 +1,12 @@
+main.adb:7:14: info: add a contract to analyze it separately from calling contexts
+main.adb:7:14: info: local subprogram "Parse_T1" only analyzed in the context of calls [info-unrolling-inlining]
+main.adb:7:14: warning: subprogram "Parse_T1" has no effect
+main.adb:13:14: warning: subprogram "P1" has no effect
+main.adb:17:07: high: address in address clause might not be an integral multiple of alignment of object [possible explanation: unknown alignment for object] [possible fix: overlaying object should have an Alignment representation clause]
+main.adb:17:07: info: object is suitable for aliasing via address clause (Trivial)
+main.adb:18:31: info: object is suitable for aliasing via address clause (Trivial)
+main.adb:18:31: info: range check proved (CVC5: 4 VC)
+main.adb:18:31: info: type is suitable as source for unchecked conversion (Trivial)
+main.adb:18:31: info: types of aliased objects have the same size (Trivial)
+main.adb:18:42: warning: alignment of object is not precisely known [imprecise-align]
+main.adb:20:07: info: analyzing call to "Parse_T1" in context
