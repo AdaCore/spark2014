@@ -1,19 +1,33 @@
+ medium: resource or memory leak might occur at end of scope
+--> main.adb:4:04
+    4 |       L : constant List := [1, 2, 3, 4, 5, 6];
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ info: precondition proved
+--> main.adb:4:25
+      + all elements shall fit in index type for sequence aggregates at through_model.ads:9
+
+ info: assertion proved
+--> main.adb:6:19
+
+ info: precondition proved
+--> main.adb:6:26
  info: absence of resource or memory leak proved
 --> through_model.adb:5:09
 
  info: Container_Aggregates annotation proved
 --> through_model.ads:9:06
-      + when establishing invariant on Length at spark-containers-functional-infinite_sequences.ads:77, in instantiation at through_model.ads:4
+      + when establishing invariant on Length at spark-containers-functional-infinite_sequences.ads:88, in instantiation at through_model.ads:4
       + after a call to Empty_List at through_model.ads:11
 
  info: Container_Aggregates annotation proved
 --> through_model.ads:9:06
-      + when reestablishing invariant on Get at spark-containers-functional-infinite_sequences.ads:83, in instantiation at through_model.ads:4
+      + when reestablishing invariant on Get at spark-containers-functional-infinite_sequences.ads:94, in instantiation at through_model.ads:4
       + after a call to Add at through_model.ads:17
 
  info: Container_Aggregates annotation proved
 --> through_model.ads:9:06
-      + when reestablishing invariant on Length at spark-containers-functional-infinite_sequences.ads:77, in instantiation at through_model.ads:4
+      + when reestablishing invariant on Length at spark-containers-functional-infinite_sequences.ads:88, in instantiation at through_model.ads:4
       + after a call to Add at through_model.ads:17
 
  info: implicit aspect Always_Terminates on "Empty_List" has been proved, subprogram will terminate
@@ -37,75 +51,69 @@
  info: pointer dereference check proved
 --> through_model.ads:32:34
 
+ info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at through_model.ads:4
+--> spark-containers-functional-infinite_sequences.ads:30:19
+
  info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:25:19
+--> spark-containers-functional-infinite_sequences.ads:36:19
 
  info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:27:19
+--> spark-containers-functional-infinite_sequences.ads:38:19
 
  info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:29:19
+--> spark-containers-functional-infinite_sequences.ads:40:19
 
  info: aspect Always_Terminates on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:35:19
+--> spark-containers-functional-infinite_sequences.ads:46:19
 
  info: aspect Always_Terminates on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:37:19
+--> spark-containers-functional-infinite_sequences.ads:48:19
 
  info: aspect Always_Terminates on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:39:19
+--> spark-containers-functional-infinite_sequences.ads:50:19
 
  info: Container_Aggregates annotation proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:61:06
-      + when establishing invariant on Length at spark-containers-functional-infinite_sequences.ads:77, in instantiation at through_model.ads:4
-      + after a call to Empty_Sequence at spark-containers-functional-infinite_sequences.ads:199, in instantiation at through_model.ads:4
+--> spark-containers-functional-infinite_sequences.ads:72:06
+      + when establishing invariant on Length at spark-containers-functional-infinite_sequences.ads:88, in instantiation at through_model.ads:4
+      + after a call to Empty_Sequence at spark-containers-functional-infinite_sequences.ads:224, in instantiation at through_model.ads:4
 
  info: Container_Aggregates annotation proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:61:06
-      + when reestablishing invariant on Get at spark-containers-functional-infinite_sequences.ads:83, in instantiation at through_model.ads:4
-      + after a call to Aggr_Append at spark-containers-functional-infinite_sequences.ads:490, in instantiation at through_model.ads:4
+--> spark-containers-functional-infinite_sequences.ads:72:06
+      + when reestablishing invariant on Get at spark-containers-functional-infinite_sequences.ads:94, in instantiation at through_model.ads:4
+      + after a call to Aggr_Append at spark-containers-functional-infinite_sequences.ads:519, in instantiation at through_model.ads:4
 
  info: Container_Aggregates annotation proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:61:06
-      + when reestablishing invariant on Length at spark-containers-functional-infinite_sequences.ads:77, in instantiation at through_model.ads:4
-      + after a call to Aggr_Append at spark-containers-functional-infinite_sequences.ads:490, in instantiation at through_model.ads:4
+--> spark-containers-functional-infinite_sequences.ads:72:06
+      + when reestablishing invariant on Length at spark-containers-functional-infinite_sequences.ads:88, in instantiation at through_model.ads:4
+      + after a call to Aggr_Append at spark-containers-functional-infinite_sequences.ads:519, in instantiation at through_model.ads:4
 
  info: precondition proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:83:13
-      + during checks for quantification at spark-containers-functional-infinite_sequences.ads:53, in instantiation at through_model.ads:4
+--> spark-containers-functional-infinite_sequences.ads:94:13
+      + during checks for quantification at spark-containers-functional-infinite_sequences.ads:64, in instantiation at through_model.ads:4
 
  info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:102:13
+--> spark-containers-functional-infinite_sequences.ads:113:13
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:102:43
+--> spark-containers-functional-infinite_sequences.ads:113:43
 
  info: data dependencies proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:105:06
+--> spark-containers-functional-infinite_sequences.ads:116:06
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:169:39
+--> spark-containers-functional-infinite_sequences.ads:194:39
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:169:46
+--> spark-containers-functional-infinite_sequences.ads:194:46
 
  info: precondition proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:187:42
+--> spark-containers-functional-infinite_sequences.ads:212:42
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:217:39
+--> spark-containers-functional-infinite_sequences.ads:242:39
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:217:51
-
- info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:244:39
-
- info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:244:51
-
- info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:244:70
+--> spark-containers-functional-infinite_sequences.ads:242:51
 
  info: predicate check proved, in instantiation at through_model.ads:4
 --> spark-containers-functional-infinite_sequences.ads:269:39
@@ -113,163 +121,200 @@
  info: predicate check proved, in instantiation at through_model.ads:4
 --> spark-containers-functional-infinite_sequences.ads:269:51
 
+ info: predicate check proved, in instantiation at through_model.ads:4
+--> spark-containers-functional-infinite_sequences.ads:269:70
+
+ info: predicate check proved, in instantiation at through_model.ads:4
+--> spark-containers-functional-infinite_sequences.ads:294:39
+
+ info: predicate check proved, in instantiation at through_model.ads:4
+--> spark-containers-functional-infinite_sequences.ads:294:51
+
  info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:290:13
+--> spark-containers-functional-infinite_sequences.ads:315:13
 
  info: precondition proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:329:13
-      + during checks for quantification at spark-containers-functional-infinite_sequences.ads:53, in instantiation at through_model.ads:4
+--> spark-containers-functional-infinite_sequences.ads:358:13
+      + during checks for quantification at spark-containers-functional-infinite_sequences.ads:64, in instantiation at through_model.ads:4
 
  info: precondition proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:333:13
-      + during checks for quantification at spark-containers-functional-infinite_sequences.ads:53, in instantiation at through_model.ads:4
+--> spark-containers-functional-infinite_sequences.ads:362:13
+      + during checks for quantification at spark-containers-functional-infinite_sequences.ads:64, in instantiation at through_model.ads:4
 
  info: precondition proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:343:13
-      + during checks for quantification at spark-containers-functional-infinite_sequences.ads:53, in instantiation at through_model.ads:4
+--> spark-containers-functional-infinite_sequences.ads:372:13
+      + during checks for quantification at spark-containers-functional-infinite_sequences.ads:64, in instantiation at through_model.ads:4
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:376:16
+--> spark-containers-functional-infinite_sequences.ads:405:16
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:376:23
+--> spark-containers-functional-infinite_sequences.ads:405:23
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:408:16
+--> spark-containers-functional-infinite_sequences.ads:437:16
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:408:28
+--> spark-containers-functional-infinite_sequences.ads:437:28
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:428:16
+--> spark-containers-functional-infinite_sequences.ads:457:16
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:428:21
+--> spark-containers-functional-infinite_sequences.ads:457:21
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:428:37
+--> spark-containers-functional-infinite_sequences.ads:457:37
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:428:42
+--> spark-containers-functional-infinite_sequences.ads:457:42
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:449:16
+--> spark-containers-functional-infinite_sequences.ads:478:16
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:449:23
+--> spark-containers-functional-infinite_sequences.ads:478:23
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:449:39
+--> spark-containers-functional-infinite_sequences.ads:478:39
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:449:46
+--> spark-containers-functional-infinite_sequences.ads:478:46
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:470:08
+--> spark-containers-functional-infinite_sequences.ads:499:08
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:470:15
+--> spark-containers-functional-infinite_sequences.ads:499:15
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:472:16
+--> spark-containers-functional-infinite_sequences.ads:501:16
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:472:23
+--> spark-containers-functional-infinite_sequences.ads:501:23
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:473:15
+--> spark-containers-functional-infinite_sequences.ads:502:15
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:473:24
+--> spark-containers-functional-infinite_sequences.ads:502:24
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:473:31
+--> spark-containers-functional-infinite_sequences.ads:502:31
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:473:37
+--> spark-containers-functional-infinite_sequences.ads:502:37
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:473:46
+--> spark-containers-functional-infinite_sequences.ads:502:46
 
  info: predicate check proved, in instantiation at through_model.ads:4
---> spark-containers-functional-infinite_sequences.ads:473:53
+--> spark-containers-functional-infinite_sequences.ads:502:53
 
- info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:304, in instantiation at through_model.ads:4
---> spark-containers-parameter_checks.ads:29:17
+ info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:329, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.ads:37:17
 
- info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:304, in instantiation at through_model.ads:4
---> spark-containers-parameter_checks.ads:30:09
+ info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:329, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.ads:38:09
 
- info: postcondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:304, in instantiation at through_model.ads:4
---> spark-containers-parameter_checks.ads:31:19
+ info: postcondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:329, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.ads:39:19
 
- info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:304, in instantiation at through_model.ads:4
---> spark-containers-parameter_checks.ads:33:17
+ info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:329, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.ads:41:17
 
- info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:304, in instantiation at through_model.ads:4
---> spark-containers-parameter_checks.ads:34:09
+ info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:329, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.ads:42:09
 
- info: postcondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:304, in instantiation at through_model.ads:4
---> spark-containers-parameter_checks.ads:36:19
+ info: postcondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:329, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.ads:44:19
 
- info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:304, in instantiation at through_model.ads:4
---> spark-containers-parameter_checks.ads:38:17
+ info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:329, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.ads:46:17
 
- info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:304, in instantiation at through_model.ads:4
---> spark-containers-parameter_checks.ads:39:09
+ info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:329, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.ads:47:09
 
- info: postcondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:304, in instantiation at through_model.ads:4
---> spark-containers-parameter_checks.ads:41:19
+ info: postcondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:329, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.ads:49:19
 
- info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:313, in instantiation at through_model.ads:4
---> spark-containers-parameter_checks.ads:61:17
+ info: aspect Always_Terminates on "Eq_Logical_Eq" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:329, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.ads:55:17
 
- info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:313, in instantiation at through_model.ads:4
---> spark-containers-parameter_checks.ads:62:09
+ info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:329, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.ads:56:09
 
- info: postcondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:313, in instantiation at through_model.ads:4
---> spark-containers-parameter_checks.ads:64:19
+ info: postcondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:329, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.ads:58:19
 
- info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:313, in instantiation at through_model.ads:4
---> spark-containers-parameter_checks.ads:69:17
+ info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:340, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.ads:85:17
 
- info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:313, in instantiation at through_model.ads:4
---> spark-containers-parameter_checks.ads:70:09
+ info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:340, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.ads:86:09
 
- info: postcondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:313, in instantiation at through_model.ads:4
---> spark-containers-parameter_checks.ads:71:19
+ info: postcondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:340, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.ads:88:19
 
- info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:313, in instantiation at through_model.ads:4
---> spark-containers-parameter_checks.ads:73:17
+ info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:340, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.ads:93:17
 
- info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:313, in instantiation at through_model.ads:4
---> spark-containers-parameter_checks.ads:74:09
+ info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:340, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.ads:94:09
 
- info: postcondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:313, in instantiation at through_model.ads:4
---> spark-containers-parameter_checks.ads:76:19
+ info: postcondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:340, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.ads:95:19
 
- info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:313, in instantiation at through_model.ads:4
---> spark-containers-parameter_checks.ads:78:17
+ info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:340, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.ads:97:17
 
- info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:313, in instantiation at through_model.ads:4
---> spark-containers-parameter_checks.ads:79:09
+ info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:340, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.ads:98:09
 
- info: postcondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:313, in instantiation at through_model.ads:4
---> spark-containers-parameter_checks.ads:81:19
+ info: postcondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:340, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.ads:100:19
 
- info: precondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:313, in instantiation at through_model.ads:4
---> spark-containers-parameter_checks.adb:58:10
- medium: resource or memory leak might occur at end of scope
---> main.adb:4:04
-    4 |       L : constant List := [1, 2, 3, 4, 5, 6];
-      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:340, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.ads:102:17
 
- info: precondition proved
---> main.adb:4:25
-      + all elements shall fit in index type for sequence aggregates at through_model.ads:9
+ info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:340, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.ads:103:09
 
- info: assertion proved
---> main.adb:6:19
+ info: postcondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:340, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.ads:105:19
 
- info: precondition proved
---> main.adb:6:26
+ info: precondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:329, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.adb:32:13
+
+ info: precondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:329, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.adb:45:13
+
+ info: precondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:329, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.adb:48:13
+
+ info: precondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:329, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.adb:63:13
+
+ info: precondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:329, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.adb:64:13
+
+ info: precondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:329, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.adb:65:13
+
+ info: precondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:340, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.adb:96:10
+
+ info: precondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:340, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.adb:111:13
+
+ info: precondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:340, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.adb:114:13
+
+ info: precondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:340, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.adb:128:13
+
+ info: precondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:340, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.adb:129:13
+
+ info: precondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:340, in instantiation at through_model.ads:4
+--> spark-containers-parameter_checks.adb:130:13

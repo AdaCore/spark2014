@@ -1,0 +1,28 @@
+spark-containers-parameter_checks.ads:58:19: medium: postcondition might fail, in instantiation at spark-containers-functional-infinite_sequences.ads:329, in instantiation at test_eq_infinite_sequences.adb:67 [possible fix: you should consider adding a postcondition to function Logical_Eq or turning it into an expression function]
+spark-containers-parameter_checks.ads:58:19: medium: postcondition might fail, in instantiation at spark-containers-functional-vectors.ads:359, in instantiation at test_eq_vectors.adb:68 [possible fix: you should consider adding a postcondition to function Logical_Eq or turning it into an expression function]
+test_eq_infinite_sequences.adb:31:31: info: postcondition proved (CVC5: 1 VC)
+test_eq_infinite_sequences.adb:38:13: info: predicate check proved (Trivial: 1 VC)
+test_eq_infinite_sequences.adb:38:32: info: predicate check proved (Trivial: 1 VC)
+test_eq_infinite_sequences.adb:39:41: info: precondition proved (CVC5: 1 VC)
+test_eq_infinite_sequences.adb:39:60: info: precondition proved (CVC5: 1 VC)
+test_eq_infinite_sequences.adb:40:14: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec]
+test_eq_infinite_sequences.adb:44:14: warning: subprogram "Test_Eq_3" has no effect
+test_eq_infinite_sequences.adb:47:13: info: predicate check proved (Trivial: 1 VC)
+test_eq_infinite_sequences.adb:47:32: info: predicate check proved (Trivial: 1 VC)
+test_eq_infinite_sequences.adb:48:41: info: precondition proved (CVC5: 1 VC)
+test_eq_infinite_sequences.adb:48:60: info: precondition proved (CVC5: 1 VC)
+test_eq_infinite_sequences.adb:49:14: info: postcondition proved (CVC5: 1 VC)
+test_eq_infinite_sequences.adb:53:22: info: assertion proved (CVC5: 1 VC)
+test_eq_vectors.adb:32:31: info: postcondition proved (CVC5: 1 VC)
+test_eq_vectors.adb:39:13: info: predicate check proved (Trivial: 1 VC)
+test_eq_vectors.adb:39:32: info: predicate check proved (Trivial: 1 VC)
+test_eq_vectors.adb:40:41: info: precondition proved (CVC5: 2 VC)
+test_eq_vectors.adb:40:60: info: precondition proved (CVC5: 2 VC)
+test_eq_vectors.adb:41:14: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec]
+test_eq_vectors.adb:45:14: warning: subprogram "Test_Eq_3" has no effect
+test_eq_vectors.adb:48:13: info: predicate check proved (Trivial: 1 VC)
+test_eq_vectors.adb:48:32: info: predicate check proved (Trivial: 1 VC)
+test_eq_vectors.adb:49:41: info: precondition proved (CVC5: 2 VC)
+test_eq_vectors.adb:49:60: info: precondition proved (CVC5: 2 VC)
+test_eq_vectors.adb:50:14: info: postcondition proved (CVC5: 1 VC)
+test_eq_vectors.adb:54:22: info: assertion proved (CVC5: 1 VC)

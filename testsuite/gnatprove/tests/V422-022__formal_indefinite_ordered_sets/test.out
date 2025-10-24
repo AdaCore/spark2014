@@ -5,7 +5,10 @@ test.adb:15:04: info: precondition proved (CVC5: 2 VC)
 test.adb:17:19: info: assertion proved (CVC5: 1 VC)
 test.adb:4:04: warning: check will fail at run time [-gnatw.a]
 test.adb:4:04: warning: check will fail at run time [-gnatw.a]
+test.adb:4:04: warning: check will fail at run time [-gnatw.a]
+test.adb:4:04: warning: in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:149 [-gnatw.a]
 test.adb:4:04: warning: in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:321 [-gnatw.a]
 test.adb:4:04: warning: in instantiation at spark-containers-formal-unbounded_ordered_sets.ads:321 [-gnatw.a]
 test.adb:4:04: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
 test.adb:4:04: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
+test.adb:4:04: warning: in instantiation at spark-containers-functional-vectors.ads:164 [-gnatw.a]

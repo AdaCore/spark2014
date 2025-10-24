@@ -1936,347 +1936,348 @@ data_structure-basic_operations.adb:2516:41: info: precondition proved
 data_structure-basic_operations.adb:2517:19: info: precondition proved
 data_structure-basic_operations.adb:2520:17: info: add a contract to analyze it separately from calling contexts
 data_structure-basic_operations.adb:2520:17: info: local subprogram "Prove_Invariant" only analyzed in the context of calls [info-unrolling-inlining]
-data_structure-basic_operations.adb:2530:16: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2531:30: info: index check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2532:16: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2532:54: info: index check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2533:16: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2534:30: info: index check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2538:18: info: loop invariant initialization proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2538:18: info: loop invariant preservation proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2540:22: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2540:22: info: predicate check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2541:24: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2541:24: info: predicate check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2543:22: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2543:22: info: predicate check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2544:24: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2544:24: info: predicate check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2544:69: info: predicate check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2547:18: info: loop invariant initialization proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2547:18: info: loop invariant preservation proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2547:41: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2547:65: info: index check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2550:18: info: loop invariant initialization proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2550:18: info: loop invariant preservation proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2553:23: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2553:49: info: index check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2554:25: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2554:51: info: index check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2557:18: info: loop invariant initialization proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2557:18: info: loop invariant preservation proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2560:23: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2560:47: info: index check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2561:25: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2561:49: info: index check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2564:18: info: loop invariant initialization proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2564:18: info: loop invariant preservation proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2567:23: info: predicate check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2567:31: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2567:57: info: index check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2568:25: info: predicate check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2568:33: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2568:59: info: index check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2574:13: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2574:43: info: range check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2575:13: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2575:41: info: range check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2576:13: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2576:43: info: range check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2579:18: info: assertion proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2579:18: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2579:34: info: range check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2580:22: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2580:38: info: range check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2585:15: info: assertion proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2588:20: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2588:42: info: index check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2589:22: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2589:44: info: index check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2592:15: info: assertion proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2592:28: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2592:54: info: index check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2593:27: info: index check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2594:25: info: assertion proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2597:15: info: assertion proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2600:20: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2601:22: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2602:25: info: assertion proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2603:10: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2604:10: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2604:39: info: range check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2604:42: info: range check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2605:10: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2605:35: info: range check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2605:38: info: range check proved, in call inlined at data_structure-basic_operations.adb:2776
-data_structure-basic_operations.adb:2613:17: info: postcondition proved
-data_structure-basic_operations.adb:2613:21: info: precondition proved
-data_structure-basic_operations.adb:2613:21: info: predicate check proved
-data_structure-basic_operations.adb:2613:48: info: index check proved
-data_structure-basic_operations.adb:2613:58: info: predicate check proved
-data_structure-basic_operations.adb:2625:18: info: loop invariant initialization proved
-data_structure-basic_operations.adb:2625:18: info: loop invariant preservation proved
-data_structure-basic_operations.adb:2625:21: info: precondition proved
-data_structure-basic_operations.adb:2625:21: info: predicate check proved
-data_structure-basic_operations.adb:2625:48: info: index check proved
-data_structure-basic_operations.adb:2625:58: info: predicate check proved
-data_structure-basic_operations.adb:2626:25: info: precondition proved
-data_structure-basic_operations.adb:2626:25: info: predicate check proved
-data_structure-basic_operations.adb:2626:66: info: predicate check proved
-data_structure-basic_operations.adb:2634:07: info: precondition proved
-data_structure-basic_operations.adb:2636:23: info: index check proved
-data_structure-basic_operations.adb:2639:25: info: assertion proved
-data_structure-basic_operations.adb:2639:25: info: predicate check proved
-data_structure-basic_operations.adb:2639:31: info: predicate check proved
-data_structure-basic_operations.adb:2643:42: info: index check proved
-data_structure-basic_operations.adb:2643:52: info: index check proved
-data_structure-basic_operations.adb:2643:61: info: initialization check proved
-data_structure-basic_operations.adb:2644:10: info: precondition proved
-data_structure-basic_operations.adb:2644:33: info: range check proved
+data_structure-basic_operations.adb:2530:16: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2531:30: info: index check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2532:16: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2532:54: info: index check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2533:16: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2534:30: info: index check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2538:18: info: loop invariant initialization proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2538:18: info: loop invariant preservation proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2540:22: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2540:22: info: predicate check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2541:24: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2541:24: info: predicate check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2543:22: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2543:22: info: predicate check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2544:24: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2544:24: info: predicate check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2544:69: info: predicate check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2547:18: info: loop invariant initialization proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2547:18: info: loop invariant preservation proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2547:41: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2547:65: info: index check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2550:18: info: loop invariant initialization proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2550:18: info: loop invariant preservation proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2553:23: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2553:49: info: index check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2554:25: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2554:51: info: index check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2557:18: info: loop invariant initialization proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2557:18: info: loop invariant preservation proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2560:23: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2560:47: info: index check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2561:25: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2561:49: info: index check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2564:18: info: loop invariant initialization proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2564:18: info: loop invariant preservation proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2567:23: info: predicate check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2567:31: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2567:57: info: index check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2568:25: info: predicate check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2568:33: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2568:59: info: index check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2574:13: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2574:43: info: range check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2575:13: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2575:41: info: range check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2576:13: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2576:43: info: range check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2579:18: info: assertion proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2579:18: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2579:34: info: range check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2580:22: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2580:38: info: range check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2585:15: info: assertion proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2588:20: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2588:42: info: index check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2589:22: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2589:44: info: index check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2592:15: info: assertion proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2592:28: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2592:54: info: index check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2593:27: info: index check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2594:25: info: assertion proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2595:25: info: assertion proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2598:15: info: assertion proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2601:20: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2602:22: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2603:25: info: assertion proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2604:10: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2605:10: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2605:39: info: range check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2605:42: info: range check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2606:10: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2606:35: info: range check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2606:38: info: range check proved, in call inlined at data_structure-basic_operations.adb:2777
+data_structure-basic_operations.adb:2614:17: info: postcondition proved
+data_structure-basic_operations.adb:2614:21: info: precondition proved
+data_structure-basic_operations.adb:2614:21: info: predicate check proved
+data_structure-basic_operations.adb:2614:48: info: index check proved
+data_structure-basic_operations.adb:2614:58: info: predicate check proved
+data_structure-basic_operations.adb:2626:18: info: loop invariant initialization proved
+data_structure-basic_operations.adb:2626:18: info: loop invariant preservation proved
+data_structure-basic_operations.adb:2626:21: info: precondition proved
+data_structure-basic_operations.adb:2626:21: info: predicate check proved
+data_structure-basic_operations.adb:2626:48: info: index check proved
+data_structure-basic_operations.adb:2626:58: info: predicate check proved
+data_structure-basic_operations.adb:2627:25: info: precondition proved
+data_structure-basic_operations.adb:2627:25: info: predicate check proved
+data_structure-basic_operations.adb:2627:66: info: predicate check proved
+data_structure-basic_operations.adb:2635:07: info: precondition proved
+data_structure-basic_operations.adb:2637:23: info: index check proved
+data_structure-basic_operations.adb:2640:25: info: assertion proved
+data_structure-basic_operations.adb:2640:25: info: predicate check proved
+data_structure-basic_operations.adb:2640:31: info: predicate check proved
+data_structure-basic_operations.adb:2644:42: info: index check proved
+data_structure-basic_operations.adb:2644:52: info: index check proved
+data_structure-basic_operations.adb:2644:61: info: initialization check proved
 data_structure-basic_operations.adb:2645:10: info: precondition proved
-data_structure-basic_operations.adb:2645:31: info: range check proved
+data_structure-basic_operations.adb:2645:33: info: range check proved
 data_structure-basic_operations.adb:2646:10: info: precondition proved
-data_structure-basic_operations.adb:2648:11: info: predicate check proved
-data_structure-basic_operations.adb:2648:21: info: index check proved
-data_structure-basic_operations.adb:2648:37: info: index check proved
+data_structure-basic_operations.adb:2646:31: info: range check proved
+data_structure-basic_operations.adb:2647:10: info: precondition proved
 data_structure-basic_operations.adb:2649:11: info: predicate check proved
-data_structure-basic_operations.adb:2649:20: info: index check proved
-data_structure-basic_operations.adb:2653:10: info: precondition proved
-data_structure-basic_operations.adb:2653:50: info: index check proved
+data_structure-basic_operations.adb:2649:21: info: index check proved
+data_structure-basic_operations.adb:2649:37: info: index check proved
+data_structure-basic_operations.adb:2650:11: info: predicate check proved
+data_structure-basic_operations.adb:2650:20: info: index check proved
 data_structure-basic_operations.adb:2654:10: info: precondition proved
-data_structure-basic_operations.adb:2654:48: info: index check proved
+data_structure-basic_operations.adb:2654:50: info: index check proved
 data_structure-basic_operations.adb:2655:10: info: precondition proved
-data_structure-basic_operations.adb:2655:50: info: index check proved
-data_structure-basic_operations.adb:2656:25: info: assertion proved
-data_structure-basic_operations.adb:2656:25: info: precondition proved
-data_structure-basic_operations.adb:2656:49: info: index check proved
-data_structure-basic_operations.adb:2659:15: info: assertion proved
-data_structure-basic_operations.adb:2659:15: info: precondition proved
-data_structure-basic_operations.adb:2659:41: info: index check proved
-data_structure-basic_operations.adb:2660:19: info: precondition proved
-data_structure-basic_operations.adb:2660:27: info: precondition proved
-data_structure-basic_operations.adb:2660:58: info: range check proved
-data_structure-basic_operations.adb:2663:15: info: assertion proved
-data_structure-basic_operations.adb:2664:18: info: precondition proved
+data_structure-basic_operations.adb:2655:48: info: index check proved
+data_structure-basic_operations.adb:2656:10: info: precondition proved
+data_structure-basic_operations.adb:2656:50: info: index check proved
+data_structure-basic_operations.adb:2657:25: info: assertion proved
+data_structure-basic_operations.adb:2657:25: info: precondition proved
+data_structure-basic_operations.adb:2657:49: info: index check proved
+data_structure-basic_operations.adb:2660:15: info: assertion proved
+data_structure-basic_operations.adb:2660:15: info: precondition proved
+data_structure-basic_operations.adb:2660:41: info: index check proved
+data_structure-basic_operations.adb:2661:19: info: precondition proved
+data_structure-basic_operations.adb:2661:27: info: precondition proved
+data_structure-basic_operations.adb:2661:58: info: range check proved
+data_structure-basic_operations.adb:2664:15: info: assertion proved
 data_structure-basic_operations.adb:2665:18: info: precondition proved
-data_structure-basic_operations.adb:2665:18: info: predicate check proved
-data_structure-basic_operations.adb:2665:39: info: range check proved
 data_structure-basic_operations.adb:2666:18: info: precondition proved
-data_structure-basic_operations.adb:2666:42: info: index check proved
-data_structure-basic_operations.adb:2670:13: info: initialization of "P" proved
-data_structure-basic_operations.adb:2670:13: info: range check proved
-data_structure-basic_operations.adb:2677:39: info: loop invariant initialization proved
-data_structure-basic_operations.adb:2677:39: info: loop invariant preservation proved
+data_structure-basic_operations.adb:2666:18: info: predicate check proved
+data_structure-basic_operations.adb:2666:39: info: range check proved
+data_structure-basic_operations.adb:2667:18: info: precondition proved
+data_structure-basic_operations.adb:2667:42: info: index check proved
+data_structure-basic_operations.adb:2671:13: info: initialization of "P" proved
+data_structure-basic_operations.adb:2671:13: info: range check proved
 data_structure-basic_operations.adb:2678:39: info: loop invariant initialization proved
 data_structure-basic_operations.adb:2678:39: info: loop invariant preservation proved
-data_structure-basic_operations.adb:2678:39: info: precondition proved
-data_structure-basic_operations.adb:2681:21: info: loop invariant initialization proved
-data_structure-basic_operations.adb:2681:21: info: loop invariant preservation proved
-data_structure-basic_operations.adb:2681:21: info: precondition proved
-data_structure-basic_operations.adb:2682:26: info: precondition proved
-data_structure-basic_operations.adb:2682:52: info: index check proved
-data_structure-basic_operations.adb:2685:21: info: loop invariant initialization proved
-data_structure-basic_operations.adb:2685:21: info: loop invariant preservation proved
-data_structure-basic_operations.adb:2685:21: info: precondition proved
-data_structure-basic_operations.adb:2686:26: info: precondition proved
-data_structure-basic_operations.adb:2686:50: info: index check proved
-data_structure-basic_operations.adb:2692:21: info: loop invariant initialization proved
-data_structure-basic_operations.adb:2692:21: info: loop invariant preservation proved
-data_structure-basic_operations.adb:2692:56: info: index check proved
-data_structure-basic_operations.adb:2692:64: info: initialization check proved
-data_structure-basic_operations.adb:2695:21: info: loop invariant initialization proved
-data_structure-basic_operations.adb:2695:21: info: loop invariant preservation proved
-data_structure-basic_operations.adb:2697:32: info: precondition proved
+data_structure-basic_operations.adb:2679:39: info: loop invariant initialization proved
+data_structure-basic_operations.adb:2679:39: info: loop invariant preservation proved
+data_structure-basic_operations.adb:2679:39: info: precondition proved
+data_structure-basic_operations.adb:2682:21: info: loop invariant initialization proved
+data_structure-basic_operations.adb:2682:21: info: loop invariant preservation proved
+data_structure-basic_operations.adb:2682:21: info: precondition proved
+data_structure-basic_operations.adb:2683:26: info: precondition proved
+data_structure-basic_operations.adb:2683:52: info: index check proved
+data_structure-basic_operations.adb:2686:21: info: loop invariant initialization proved
+data_structure-basic_operations.adb:2686:21: info: loop invariant preservation proved
+data_structure-basic_operations.adb:2686:21: info: precondition proved
+data_structure-basic_operations.adb:2687:26: info: precondition proved
+data_structure-basic_operations.adb:2687:50: info: index check proved
+data_structure-basic_operations.adb:2693:21: info: loop invariant initialization proved
+data_structure-basic_operations.adb:2693:21: info: loop invariant preservation proved
+data_structure-basic_operations.adb:2693:56: info: index check proved
+data_structure-basic_operations.adb:2693:64: info: initialization check proved
+data_structure-basic_operations.adb:2696:21: info: loop invariant initialization proved
+data_structure-basic_operations.adb:2696:21: info: loop invariant preservation proved
 data_structure-basic_operations.adb:2698:32: info: precondition proved
-data_structure-basic_operations.adb:2698:56: info: index check proved
-data_structure-basic_operations.adb:2701:33: info: index check proved
-data_structure-basic_operations.adb:2701:33: info: precondition proved
-data_structure-basic_operations.adb:2701:38: info: precondition proved
-data_structure-basic_operations.adb:2701:62: info: index check proved
-data_structure-basic_operations.adb:2703:32: info: initialization check proved
-data_structure-basic_operations.adb:2708:21: info: loop variant proved
-data_structure-basic_operations.adb:2708:34: info: range check proved
-data_structure-basic_operations.adb:2708:42: info: precondition proved
-data_structure-basic_operations.adb:2710:16: info: precondition proved
-data_structure-basic_operations.adb:2710:39: info: range check proved
+data_structure-basic_operations.adb:2699:32: info: precondition proved
+data_structure-basic_operations.adb:2699:56: info: index check proved
+data_structure-basic_operations.adb:2702:33: info: index check proved
+data_structure-basic_operations.adb:2702:33: info: precondition proved
+data_structure-basic_operations.adb:2702:38: info: precondition proved
+data_structure-basic_operations.adb:2702:62: info: index check proved
+data_structure-basic_operations.adb:2704:32: info: initialization check proved
+data_structure-basic_operations.adb:2709:21: info: loop variant proved
+data_structure-basic_operations.adb:2709:34: info: range check proved
+data_structure-basic_operations.adb:2709:42: info: precondition proved
 data_structure-basic_operations.adb:2711:16: info: precondition proved
-data_structure-basic_operations.adb:2711:37: info: range check proved
+data_structure-basic_operations.adb:2711:39: info: range check proved
 data_structure-basic_operations.adb:2712:16: info: precondition proved
-data_structure-basic_operations.adb:2714:21: info: range check proved
-data_structure-basic_operations.adb:2715:31: info: index check proved
-data_structure-basic_operations.adb:2717:34: info: assertion proved
-data_structure-basic_operations.adb:2717:34: info: predicate check proved
-data_structure-basic_operations.adb:2717:40: info: predicate check proved
-data_structure-basic_operations.adb:2719:53: info: index check proved
-data_structure-basic_operations.adb:2719:61: info: initialization check proved
-data_structure-basic_operations.adb:2720:34: info: assertion proved
-data_structure-basic_operations.adb:2720:34: info: predicate check proved
-data_structure-basic_operations.adb:2720:40: info: predicate check proved
-data_structure-basic_operations.adb:2720:46: info: precondition proved
-data_structure-basic_operations.adb:2722:20: info: predicate check proved
-data_structure-basic_operations.adb:2722:29: info: index check proved
-data_structure-basic_operations.adb:2722:50: info: index check proved
+data_structure-basic_operations.adb:2712:37: info: range check proved
+data_structure-basic_operations.adb:2713:16: info: precondition proved
+data_structure-basic_operations.adb:2715:21: info: range check proved
+data_structure-basic_operations.adb:2716:31: info: index check proved
+data_structure-basic_operations.adb:2718:34: info: assertion proved
+data_structure-basic_operations.adb:2718:34: info: predicate check proved
+data_structure-basic_operations.adb:2718:40: info: predicate check proved
+data_structure-basic_operations.adb:2720:53: info: index check proved
+data_structure-basic_operations.adb:2720:61: info: initialization check proved
+data_structure-basic_operations.adb:2721:34: info: assertion proved
+data_structure-basic_operations.adb:2721:34: info: predicate check proved
+data_structure-basic_operations.adb:2721:40: info: predicate check proved
+data_structure-basic_operations.adb:2721:46: info: precondition proved
 data_structure-basic_operations.adb:2723:20: info: predicate check proved
 data_structure-basic_operations.adb:2723:29: info: index check proved
-data_structure-basic_operations.adb:2728:22: info: precondition proved
-data_structure-basic_operations.adb:2728:45: info: range check proved
+data_structure-basic_operations.adb:2723:50: info: index check proved
+data_structure-basic_operations.adb:2724:20: info: predicate check proved
+data_structure-basic_operations.adb:2724:29: info: index check proved
 data_structure-basic_operations.adb:2729:22: info: precondition proved
-data_structure-basic_operations.adb:2729:43: info: range check proved
+data_structure-basic_operations.adb:2729:45: info: range check proved
 data_structure-basic_operations.adb:2730:22: info: precondition proved
+data_structure-basic_operations.adb:2730:43: info: range check proved
 data_structure-basic_operations.adb:2731:22: info: precondition proved
-data_structure-basic_operations.adb:2732:26: info: range check proved
-data_structure-basic_operations.adb:2732:36: info: index check proved
-data_structure-basic_operations.adb:2734:35: info: index check proved
-data_structure-basic_operations.adb:2737:22: info: precondition proved
-data_structure-basic_operations.adb:2738:26: info: range check proved
-data_structure-basic_operations.adb:2738:36: info: index check proved
-data_structure-basic_operations.adb:2740:35: info: index check proved
-data_structure-basic_operations.adb:2743:22: info: precondition proved
-data_structure-basic_operations.adb:2744:26: info: range check proved
-data_structure-basic_operations.adb:2744:36: info: index check proved
-data_structure-basic_operations.adb:2746:35: info: index check proved
-data_structure-basic_operations.adb:2751:27: info: assertion proved
-data_structure-basic_operations.adb:2751:27: info: precondition proved
-data_structure-basic_operations.adb:2752:30: info: precondition proved
-data_structure-basic_operations.adb:2752:54: info: index check proved
+data_structure-basic_operations.adb:2732:22: info: precondition proved
+data_structure-basic_operations.adb:2733:26: info: range check proved
+data_structure-basic_operations.adb:2733:36: info: index check proved
+data_structure-basic_operations.adb:2735:35: info: index check proved
+data_structure-basic_operations.adb:2738:22: info: precondition proved
+data_structure-basic_operations.adb:2739:26: info: range check proved
+data_structure-basic_operations.adb:2739:36: info: index check proved
+data_structure-basic_operations.adb:2741:35: info: index check proved
+data_structure-basic_operations.adb:2744:22: info: precondition proved
+data_structure-basic_operations.adb:2745:26: info: range check proved
+data_structure-basic_operations.adb:2745:36: info: index check proved
+data_structure-basic_operations.adb:2747:35: info: index check proved
+data_structure-basic_operations.adb:2752:27: info: assertion proved
+data_structure-basic_operations.adb:2752:27: info: precondition proved
 data_structure-basic_operations.adb:2753:30: info: precondition proved
 data_structure-basic_operations.adb:2753:54: info: index check proved
-data_structure-basic_operations.adb:2754:30: info: predicate check proved
-data_structure-basic_operations.adb:2755:36: info: precondition proved
-data_structure-basic_operations.adb:2755:60: info: index check proved
-data_structure-basic_operations.adb:2759:27: info: assertion proved
-data_structure-basic_operations.adb:2759:27: info: precondition proved
-data_structure-basic_operations.adb:2759:51: info: index check proved
-data_structure-basic_operations.adb:2760:33: info: precondition proved
-data_structure-basic_operations.adb:2760:59: info: index check proved
-data_structure-basic_operations.adb:2761:35: info: precondition proved
-data_structure-basic_operations.adb:2762:38: info: precondition proved
-data_structure-basic_operations.adb:2762:64: info: index check proved
-data_structure-basic_operations.adb:2763:38: info: range check proved
-data_structure-basic_operations.adb:2765:36: info: precondition proved
-data_structure-basic_operations.adb:2765:60: info: index check proved
-data_structure-basic_operations.adb:2766:36: info: predicate check proved
-data_structure-basic_operations.adb:2767:36: info: precondition proved
-data_structure-basic_operations.adb:2767:60: info: index check proved
-data_structure-basic_operations.adb:2775:08: info: predicate check proved
-data_structure-basic_operations.adb:2775:28: info: range check proved
-data_structure-basic_operations.adb:2776:07: info: analyzing call to "Prove_Invariant" in context
-data_structure-basic_operations.adb:2792:09: info: precondition proved
-data_structure-basic_operations.adb:2792:31: info: index check proved
-data_structure-basic_operations.adb:2792:31: info: precondition proved
-data_structure-basic_operations.adb:2795:09: info: precondition proved
-data_structure-basic_operations.adb:2796:12: info: precondition proved
-data_structure-basic_operations.adb:2796:34: info: index check proved
-data_structure-basic_operations.adb:2796:34: info: precondition proved
+data_structure-basic_operations.adb:2754:30: info: precondition proved
+data_structure-basic_operations.adb:2754:54: info: index check proved
+data_structure-basic_operations.adb:2755:30: info: predicate check proved
+data_structure-basic_operations.adb:2756:36: info: precondition proved
+data_structure-basic_operations.adb:2756:60: info: index check proved
+data_structure-basic_operations.adb:2760:27: info: assertion proved
+data_structure-basic_operations.adb:2760:27: info: precondition proved
+data_structure-basic_operations.adb:2760:51: info: index check proved
+data_structure-basic_operations.adb:2761:33: info: precondition proved
+data_structure-basic_operations.adb:2761:59: info: index check proved
+data_structure-basic_operations.adb:2762:35: info: precondition proved
+data_structure-basic_operations.adb:2763:38: info: precondition proved
+data_structure-basic_operations.adb:2763:64: info: index check proved
+data_structure-basic_operations.adb:2764:38: info: range check proved
+data_structure-basic_operations.adb:2766:36: info: precondition proved
+data_structure-basic_operations.adb:2766:60: info: index check proved
+data_structure-basic_operations.adb:2767:36: info: predicate check proved
+data_structure-basic_operations.adb:2768:36: info: precondition proved
+data_structure-basic_operations.adb:2768:60: info: index check proved
+data_structure-basic_operations.adb:2776:08: info: predicate check proved
+data_structure-basic_operations.adb:2776:28: info: range check proved
+data_structure-basic_operations.adb:2777:07: info: analyzing call to "Prove_Invariant" in context
+data_structure-basic_operations.adb:2793:09: info: precondition proved
+data_structure-basic_operations.adb:2793:31: info: index check proved
+data_structure-basic_operations.adb:2793:31: info: precondition proved
+data_structure-basic_operations.adb:2796:09: info: precondition proved
 data_structure-basic_operations.adb:2797:12: info: precondition proved
-data_structure-basic_operations.adb:2801:07: info: initialization of "I" proved
-data_structure-basic_operations.adb:2801:07: info: range check proved
-data_structure-basic_operations.adb:2803:07: info: precondition proved
-data_structure-basic_operations.adb:2803:33: info: in value of subprogram parameter after the call at data_structure-basic_operations.adb:2803
-data_structure-basic_operations.adb:2803:33: info: range check proved
-data_structure-basic_operations.adb:2805:10: info: precondition proved
-data_structure-basic_operations.adb:2805:25: info: range check proved
-data_structure-basic_operations.adb:2808:15: info: assertion proved
-data_structure-basic_operations.adb:2809:25: info: predicate check proved
-data_structure-basic_operations.adb:2809:28: info: precondition proved
-data_structure-basic_operations.adb:2809:50: info: index check proved
-data_structure-basic_operations.adb:2809:50: info: precondition proved
-data_structure-basic_operations.adb:2821:17: info: add a contract to analyze it separately from calling contexts
-data_structure-basic_operations.adb:2821:17: info: local subprogram "Prove_Invariant" only analyzed in the context of calls [info-unrolling-inlining]
-data_structure-basic_operations.adb:2830:13: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2830:43: info: range check proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2831:13: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2831:41: info: range check proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2832:13: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2832:43: info: range check proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2835:18: info: assertion proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2835:18: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2835:34: info: range check proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2836:22: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2836:38: info: range check proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2842:13: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2842:53: info: index check proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2843:13: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2843:51: info: index check proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2844:13: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2844:53: info: index check proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2847:18: info: loop invariant initialization proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2847:18: info: loop invariant preservation proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2847:18: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2847:18: info: predicate check proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2848:22: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2848:22: info: predicate check proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2851:18: info: loop invariant initialization proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2851:18: info: loop invariant preservation proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2851:41: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2851:65: info: index check proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2854:18: info: loop invariant initialization proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2854:18: info: loop invariant preservation proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2855:20: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2855:46: info: index check proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2856:22: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2856:48: info: index check proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2859:18: info: loop invariant initialization proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2859:18: info: loop invariant preservation proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2860:20: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2860:44: info: index check proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2861:22: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2861:46: info: index check proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2864:18: info: loop invariant initialization proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2864:18: info: loop invariant preservation proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2865:20: info: predicate check proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2865:28: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2865:54: info: index check proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2866:22: info: predicate check proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2866:30: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2866:56: info: index check proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2871:15: info: assertion proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2872:17: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2873:19: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2874:25: info: assertion proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2875:10: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2876:10: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2876:35: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2876:35: info: range check proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2877:10: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2877:39: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2877:39: info: range check proved, in call inlined at data_structure-basic_operations.adb:2888
-data_structure-basic_operations.adb:2881:07: info: precondition proved
-data_structure-basic_operations.adb:2882:20: info: index check proved
-data_structure-basic_operations.adb:2882:28: info: initialization check proved
-data_structure-basic_operations.adb:2884:10: info: precondition proved
-data_structure-basic_operations.adb:2884:33: info: index check proved
-data_structure-basic_operations.adb:2884:41: info: initialization check proved
-data_structure-basic_operations.adb:2885:11: info: precondition proved
-data_structure-basic_operations.adb:2887:11: info: predicate check proved
-data_structure-basic_operations.adb:2887:20: info: index check proved
-data_structure-basic_operations.adb:2888:10: info: analyzing call to "Prove_Invariant" in context
-data_structure-basic_operations.adb:2894:10: info: range check proved
-data_structure-basic_operations.adb:2895:13: info: range check proved
-data_structure-basic_operations.adb:2895:23: info: index check proved
-data_structure-basic_operations.adb:2895:23: info: precondition proved
-data_structure-basic_operations.adb:2898:36: info: loop invariant initialization proved
-data_structure-basic_operations.adb:2898:36: info: loop invariant preservation proved
-data_structure-basic_operations.adb:2898:36: info: precondition proved
-data_structure-basic_operations.adb:2901:18: info: loop invariant initialization proved
-data_structure-basic_operations.adb:2901:18: info: loop invariant preservation proved
-data_structure-basic_operations.adb:2901:18: info: precondition proved
-data_structure-basic_operations.adb:2902:23: info: precondition proved
-data_structure-basic_operations.adb:2903:37: info: index check proved
-data_structure-basic_operations.adb:2903:37: info: precondition proved
-data_structure-basic_operations.adb:2905:29: info: loop variant proved
-data_structure-basic_operations.adb:2905:42: info: range check proved
-data_structure-basic_operations.adb:2905:50: info: precondition proved
-data_structure-basic_operations.adb:2906:47: info: index check proved
-data_structure-basic_operations.adb:2906:55: info: initialization check proved
-data_structure-basic_operations.adb:2907:16: info: only expected exception raised
-data_structure-basic_operations.adb:2909:13: info: precondition proved
-data_structure-basic_operations.adb:2909:36: info: range check proved
+data_structure-basic_operations.adb:2797:34: info: index check proved
+data_structure-basic_operations.adb:2797:34: info: precondition proved
+data_structure-basic_operations.adb:2798:12: info: precondition proved
+data_structure-basic_operations.adb:2802:07: info: initialization of "I" proved
+data_structure-basic_operations.adb:2802:07: info: range check proved
+data_structure-basic_operations.adb:2804:07: info: precondition proved
+data_structure-basic_operations.adb:2804:33: info: in value of subprogram parameter after the call at data_structure-basic_operations.adb:2804
+data_structure-basic_operations.adb:2804:33: info: range check proved
+data_structure-basic_operations.adb:2806:10: info: precondition proved
+data_structure-basic_operations.adb:2806:25: info: range check proved
+data_structure-basic_operations.adb:2809:15: info: assertion proved
+data_structure-basic_operations.adb:2810:25: info: predicate check proved
+data_structure-basic_operations.adb:2810:28: info: precondition proved
+data_structure-basic_operations.adb:2810:50: info: index check proved
+data_structure-basic_operations.adb:2810:50: info: precondition proved
+data_structure-basic_operations.adb:2822:17: info: add a contract to analyze it separately from calling contexts
+data_structure-basic_operations.adb:2822:17: info: local subprogram "Prove_Invariant" only analyzed in the context of calls [info-unrolling-inlining]
+data_structure-basic_operations.adb:2831:13: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2831:43: info: range check proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2832:13: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2832:41: info: range check proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2833:13: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2833:43: info: range check proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2836:18: info: assertion proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2836:18: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2836:34: info: range check proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2837:22: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2837:38: info: range check proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2843:13: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2843:53: info: index check proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2844:13: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2844:51: info: index check proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2845:13: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2845:53: info: index check proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2848:18: info: loop invariant initialization proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2848:18: info: loop invariant preservation proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2848:18: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2848:18: info: predicate check proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2849:22: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2849:22: info: predicate check proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2852:18: info: loop invariant initialization proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2852:18: info: loop invariant preservation proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2852:41: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2852:65: info: index check proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2855:18: info: loop invariant initialization proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2855:18: info: loop invariant preservation proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2856:20: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2856:46: info: index check proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2857:22: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2857:48: info: index check proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2860:18: info: loop invariant initialization proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2860:18: info: loop invariant preservation proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2861:20: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2861:44: info: index check proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2862:22: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2862:46: info: index check proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2865:18: info: loop invariant initialization proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2865:18: info: loop invariant preservation proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2866:20: info: predicate check proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2866:28: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2866:54: info: index check proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2867:22: info: predicate check proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2867:30: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2867:56: info: index check proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2872:15: info: assertion proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2873:17: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2874:19: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2875:25: info: assertion proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2876:10: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2877:10: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2877:35: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2877:35: info: range check proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2878:10: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2878:39: info: precondition proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2878:39: info: range check proved, in call inlined at data_structure-basic_operations.adb:2889
+data_structure-basic_operations.adb:2882:07: info: precondition proved
+data_structure-basic_operations.adb:2883:20: info: index check proved
+data_structure-basic_operations.adb:2883:28: info: initialization check proved
+data_structure-basic_operations.adb:2885:10: info: precondition proved
+data_structure-basic_operations.adb:2885:33: info: index check proved
+data_structure-basic_operations.adb:2885:41: info: initialization check proved
+data_structure-basic_operations.adb:2886:11: info: precondition proved
+data_structure-basic_operations.adb:2888:11: info: predicate check proved
+data_structure-basic_operations.adb:2888:20: info: index check proved
+data_structure-basic_operations.adb:2889:10: info: analyzing call to "Prove_Invariant" in context
+data_structure-basic_operations.adb:2895:10: info: range check proved
+data_structure-basic_operations.adb:2896:13: info: range check proved
+data_structure-basic_operations.adb:2896:23: info: index check proved
+data_structure-basic_operations.adb:2896:23: info: precondition proved
+data_structure-basic_operations.adb:2899:36: info: loop invariant initialization proved
+data_structure-basic_operations.adb:2899:36: info: loop invariant preservation proved
+data_structure-basic_operations.adb:2899:36: info: precondition proved
+data_structure-basic_operations.adb:2902:18: info: loop invariant initialization proved
+data_structure-basic_operations.adb:2902:18: info: loop invariant preservation proved
+data_structure-basic_operations.adb:2902:18: info: precondition proved
+data_structure-basic_operations.adb:2903:23: info: precondition proved
+data_structure-basic_operations.adb:2904:37: info: index check proved
+data_structure-basic_operations.adb:2904:37: info: precondition proved
+data_structure-basic_operations.adb:2906:29: info: loop variant proved
+data_structure-basic_operations.adb:2906:42: info: range check proved
+data_structure-basic_operations.adb:2906:50: info: precondition proved
+data_structure-basic_operations.adb:2907:47: info: index check proved
+data_structure-basic_operations.adb:2907:55: info: initialization check proved
+data_structure-basic_operations.adb:2908:16: info: only expected exception raised
 data_structure-basic_operations.adb:2910:13: info: precondition proved
-data_structure-basic_operations.adb:2911:28: info: index check proved
-data_structure-basic_operations.adb:2911:30: info: range check proved
-data_structure-basic_operations.adb:2915:07: info: precondition proved
+data_structure-basic_operations.adb:2910:36: info: range check proved
+data_structure-basic_operations.adb:2911:13: info: precondition proved
+data_structure-basic_operations.adb:2912:28: info: index check proved
+data_structure-basic_operations.adb:2912:30: info: range check proved
 data_structure-basic_operations.adb:2916:07: info: precondition proved
+data_structure-basic_operations.adb:2917:07: info: precondition proved
 data_structure-basic_operations.ads:18:16: info: implicit aspect Always_Terminates on "LL_Correct" has been proved, subprogram will terminate
 data_structure-basic_operations.ads:34:10: info: range check proved
 data_structure-basic_operations.ads:39:37: info: index check proved
