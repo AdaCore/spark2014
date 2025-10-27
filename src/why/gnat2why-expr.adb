@@ -22350,15 +22350,8 @@ package body Gnat2Why.Expr is
                               Explanation => To_String (Explanation));
                            Insert_Check_For_Size_Of_Overlays
                              (Address, Obj, Pref, R, Params);
-                           if Nkind (Pref) in N_Has_Entity then
-                              Objects_Have_Compatible_Alignments
-                                (Obj, Entity (Pref), Valid, Explanation);
-                           else
-                              Valid := False;
-                              Explanation :=
-                                To_Unbounded_String
-                                  ("unknown alignment for object");
-                           end if;
+                           Compatible_Alignments
+                             (Obj, Pref, Valid, Explanation);
                            Emit_Static_Proof_Result
                              (Decl,
                               VC_UC_Alignment,
