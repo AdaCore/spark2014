@@ -827,10 +827,10 @@ Pointer Value and Predefined Equality
 
 For all kinds of access types in |SPARK|, the value of the access itself -
 as opposed to the value that the access designates - is not modeled by
-|GNATprove|. Said otherwise, pointers are seen as a data-structure containing
-an optional element by the tool, ownership restrictions ensure that the
+|GNATprove|. Said otherwise, pointers are viewed as a data structure containing
+an optional element by the tool; ownership restrictions ensure that the
 memory representation is irrelevant for verification. This behavior is
-demonstrated in the following example. It is possible for |GNATprove| to deduce
+demonstrated in the following example: it is possible for |GNATprove| to deduce
 that the function ``Read``, which is not otherwise specified, necessarily
 returns the same thing on two access objects if they designate the same value,
 as these objects are exactly the same in the underlying model:
@@ -847,14 +847,16 @@ as these objects are exactly the same in the underlying model:
    end Test;
 
 The fact that the value of access objects is not represented by the tool is key
-for the seemless support of allocators in particular. Indeed, an allocator
-returns a different object each time it is evaluated, and so, even if it is
+for the seamless support of allocators in particular. Indeed, an allocator
+returns a different object each time it is evaluated, even if it is
 given the same parameter. In |SPARK|, this behavior would mandate a volatile
 effect, see :ref:`Volatile Variables`. Making all subprograms that perform
-allocations volatile would by overly restrictive, as in particular, volatile
-functions can only be used in particular contexts. The fact that the value of
-access types is not modeled makes it possible for example to create a deep copy
-function that can be used in a contract to workaround the restrictions imposed
+allocations volatile would by overly restrictive, especially since volatile
+functions can only be used in particular contexts. 
+
+The fact that the value of
+access types is not modeled also makes it possible for example to create a deep copy
+function that can be used in a contract to work around the restrictions imposed
 on uses of the ``Old`` attribute by the ownership policy:
 
 .. code-block:: ada
@@ -868,10 +870,11 @@ on uses of the ``Old`` attribute by the ownership policy:
 For this reasoning to be sound, it is necessary to ensure that the value of
 access objects is never read in |SPARK| code. In particular, this results in
 the predefined equality on access types being rejected unless one of the
-operand in known to be ``null``. In addition, if the result of a subprogram
-that is not analysed by |GNATprove| depends on the value of one of its acces
-s inputs, then it is necessary to mark it as volatile, as stated in
+operands is known to be ``null``. In addition, if the result of a subprogram
+that is not analysed by |GNATprove| depends on the value of one of its access
+inputs, then it is necessary to mark it as volatile, as stated in
 the :ref:`Complete List of Assumptions` of |SPARK|.
+
 Here is an example of how to write a subprogram that uses
 access equality to optimize some handling in a way that is consistent with the
 limitations of |SPARK|. The function ``Address_Eq`` has a volatile input with
