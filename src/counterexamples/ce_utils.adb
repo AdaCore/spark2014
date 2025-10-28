@@ -28,6 +28,8 @@ with Ada.Numerics.Big_Numbers.Big_Integers;
 use Ada.Numerics.Big_Numbers.Big_Integers;
 with Ada.Numerics.Big_Numbers.Big_Reals;
 use Ada.Numerics.Big_Numbers.Big_Reals;
+with Ada.Strings.UTF_Encoding.Strings;
+use Ada.Strings.UTF_Encoding.Strings;
 with Ada.Strings.Fixed;                     use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;
 with Atree;
@@ -324,19 +326,22 @@ package body CE_Utils is
                when Integer_K =>
                   Int_Val := Val.Scalar_Content.Integer_Content;
 
+               when Char_K    =>
+                  declare
+                     N : constant Node_Id := Val.Scalar_Content.Char_Node;
+                  begin
+                     pragma Assert (Nkind (N) = N_Character_Literal);
+                     Int_Val :=
+                       From_String (UI_Image (Char_Literal_Value (N)));
+                  end;
+
                when Enum_K    =>
                   declare
                      Ent : constant Entity_Id :=
                        Val.Scalar_Content.Enum_Entity;
                   begin
-                     if Nkind (Ent) = N_Character_Literal then
-                        Int_Val :=
-                          From_String (UI_Image (Char_Literal_Value (Ent)));
-                     else
-                        pragma Assert (Ekind (Ent) = E_Enumeration_Literal);
-                        Int_Val :=
-                          From_String (UI_Image (Enumeration_Pos (Ent)));
-                     end if;
+                     pragma Assert (Ekind (Ent) = E_Enumeration_Literal);
+                     Int_Val := From_String (UI_Image (Enumeration_Pos (Ent)));
                   end;
 
                when others    =>
@@ -798,7 +803,7 @@ package body CE_Utils is
          if JSON_Data.Kind = GNATCOLL.JSON.JSON_String_Type then
             declare
                C : constant Character :=
-                 Character'Value (GNATCOLL.JSON.Get (JSON_Data));
+                 Character'Value (Decode (GNATCOLL.JSON.Get (JSON_Data)));
             begin
                Res := new Value_Type'(Character_Value (C, Res_Type));
             end;

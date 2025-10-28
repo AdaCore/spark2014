@@ -34,6 +34,8 @@ with Ada.Numerics.Big_Numbers.Big_Reals;
 use Ada.Numerics.Big_Numbers.Big_Reals;
 with Ada.Strings;                           use Ada.Strings;
 with Ada.Strings.Fixed;                     use Ada.Strings.Fixed;
+with Ada.Strings.UTF_Encoding.Strings;
+use Ada.Strings.UTF_Encoding.Strings;
 with Ada.Text_IO;
 with Casing;                                use Casing;
 with CE_Parsing;                            use CE_Parsing;
@@ -1256,7 +1258,38 @@ package body CE_Pretty_Printing is
                   return Pretty_Print (Value.Integer_Content, AST_Type);
                end;
 
+            when Char_K    =>
+
+               --  Determine the underlying character and print it
+               --  to a human-readable form. The printing is using a
+               --  custom translation that is currently defined for
+               --  the Latin-1 character range (0 .. 255).
+
+               --  Note: As we are using a custom printing routine
+               --  there is no need to go through the decoding
+               --  provided by the 'Namet' package. Using the
+               --  character code directly is sufficient and more
+               --  efficient.
+
+               declare
+                  CC : constant Char_Code :=
+                    UI_To_CC (Char_Literal_Value (Value.Char_Node));
+                  C  : Character;
+               begin
+                  if In_Character_Range (CC) then
+                     C := Get_Character (CC);
+                     return ''' & Char_To_String_Representation (C) & ''';
+                  else
+                     RAC_Stuck ("Character value outside the Latin-1 range");
+                  end if;
+               end;
+
             when Enum_K    =>
+
+               pragma
+                 Assert
+                   (Is_Enumeration_Type (AST_Type)
+                      and then not Is_Character_Type (AST_Type));
 
                --  Necessary for some types that makes boolean be translated to
                --  integers like: "subype only_true := True .. True".
@@ -1269,59 +1302,11 @@ package body CE_Pretty_Printing is
                   end if;
 
                else
+                  --  Call Get_Enum_Lit_From_Pos to get a corresponding
+                  --  enumeration entity, then Source_Name to get a
+                  --  correctly capitalized enumeration value.
 
-                  pragma Assert (Is_Enumeration_Type (AST_Type));
-
-                  declare
-                     Lit : constant Entity_Id := Value.Enum_Entity;
-
-                  begin
-                     --  Special case for characters, which are defined in the
-                     --  standard unit Latin-1, and as such do not represent an
-                     --  entity in the source code.
-
-                     if Is_Character_Type (AST_Type) then
-
-                        --  Determine the underlying character and convert it
-                        --  to a human-readable form using a custom translation
-                        --  that currently supports the Latin-1 character range
-                        --  (0 .. 255) as input.
-
-                        --  Note that the characters that can exist in CEs are
-                        --  those that are permitted in character and string
-                        --  literals. I.e., Latin-1 characters or possibly also
-                        --  wide characters. For these cases the numeric value
-                        --  of the character literal is sufficient and
-                        --  unambiguous. It is not necessary to go through the
-                        --  encoding provided by the 'Namet' package.
-                        --  Conversely, depending on the context the front-end
-                        --  may or might not provide the encoding and hence we
-                        --  cannot expect the 'Namet' routines to be always
-                        --  able to decode the character.
-
-                        declare
-                           CC : constant Char_Code :=
-                             UI_To_CC (Char_Literal_Value (Lit));
-                           C  : Character;
-                        begin
-                           if CC <= 255 then
-                              C := Get_Character (CC);
-                              return
-                                ''' & Char_To_String_Representation (C) & ''';
-                           else
-                              RAC_Stuck ("Bad value of character");
-                           end if;
-                        end;
-
-                     --  For all enumeration types that are not character,
-                     --  call Get_Enum_Lit_From_Pos to get a corresponding
-                     --  enumeratio n entity, then Source_Name to get a
-                     --  correctly capitalized enumeration value.
-
-                     else
-                        return Source_Name (Lit);
-                     end if;
-                  end;
+                  return Source_Name (Value.Enum_Entity);
                end if;
 
             when Fixed_K   =>
@@ -1655,17 +1640,28 @@ package body CE_Pretty_Printing is
                               True)));
                      Set_Field (JSON_Obj, "quotient", True);
 
-                  when others    =>
-                     case Nkind (Value.Scalar_Content.Enum_Entity) is
-                        when N_Character_Literal =>
-                           JSON_Obj :=
-                             Create
-                               (To_String (Value)
-                                  (To_String (Value)'First)'Image);
+                  when Char_K    =>
 
-                        when others              =>
-                           JSON_Obj := Create (To_String (Value));
-                     end case;
+                     declare
+                        Value_As_String : constant String := To_String (Value);
+                     begin
+
+                        --  The direct conversion to String should always yield
+                        --  1 character. Unlike pretty-printing where
+                        --  non-printable or non-ASCII characters are
+                        --  represented with longer strings.
+
+                        pragma Assert (Value_As_String'Length = 1);
+
+                        --  The JSON constructor expects UTF-8 strings. The
+                        --  characters in CE-s are Latin-1, so a conversion
+                        --  is needed.
+
+                        JSON_Obj := Create (Encode (Value_As_String));
+                     end;
+
+                  when Enum_K    =>
+                     JSON_Obj := Create (To_String (Value));
                end case;
             end if;
 
