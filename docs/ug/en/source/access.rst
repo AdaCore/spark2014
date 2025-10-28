@@ -852,7 +852,7 @@ returns a different object each time it is evaluated, even if it is
 given the same parameter. In |SPARK|, this behavior would mandate a volatile
 effect, see :ref:`Volatile Variables`. Making all subprograms that perform
 allocations volatile would by overly restrictive, especially since volatile
-functions can only be used in particular contexts. 
+functions can only be used in particular contexts.
 
 The fact that the value of
 access types is not modeled also makes it possible for example to create a deep copy
