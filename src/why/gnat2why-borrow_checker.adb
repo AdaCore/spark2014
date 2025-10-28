@@ -1505,10 +1505,10 @@ package body Gnat2Why.Borrow_Checker is
          if Is_Decl then
             Target_Root := Target;
 
-            --  Check that the root of the initial expression does not have
-            --  overlays.
+            --  Check that the root of the initial expression is not an overlay
 
-            if not Overlay_Alias (Expr_Root).Is_Empty
+            if Ekind (Expr_Root) in E_Constant | E_Variable
+              and then Present (Ultimate_Overlaid_Entity (Expr_Root))
               and then not Is_Constant_In_SPARK (Expr_Root)
             then
                declare
@@ -1898,6 +1898,15 @@ package body Gnat2Why.Borrow_Checker is
 
             if Present (Expr) then
                Check_Assignment (Target => Target, Expr => Expr);
+            end if;
+
+            --  If the Target is an overlay, the declaration reads/writes the
+            --  overlaid object even without an expression.
+
+            if Present (Ultimate_Overlaid_Entity (Target)) then
+               Process_Path
+                 ((Is_Ent => True, Ent => Target, Loc => Target),
+                  (if Is_Imported (Target) then Read else Assign));
             end if;
 
             --  Always add variable to the current permission environment,
@@ -6116,6 +6125,77 @@ package body Gnat2Why.Borrow_Checker is
          return;
       end if;
 
+      --  If the root is an overlay, consider the overlaid object instead
+
+      if Ekind (Root) in E_Constant | E_Variable
+        and then Present (Ultimate_Overlaid_Entity (Root))
+      then
+         --  Moving an overlay is not supported
+
+         if Mode = Move
+           and then not Expr.Is_Ent
+           and then Nkind (Expr.Expr) = N_Attribute_Reference
+         then
+            BC_Error
+              (Create
+                 ("moving object aliased through address clauses is not"
+                  & " supported yet"),
+               Loc);
+            return;
+         end if;
+
+         declare
+            Alias     : constant Object_Kind_Id :=
+              Ultimate_Overlaid_Entity (Root);
+            Alias_Ent : constant Expr_Or_Ent :=
+              (Is_Ent => True, Ent => Alias, Loc => Loc);
+         begin
+            --  Check path was not borrowed
+
+            Check_Not_Borrowed (Alias_Ent, Alias);
+
+            --  For modes that require W permission, check path was not
+            --  observed.
+
+            case Mode is
+               when Read | Observe                =>
+                  null;
+
+               when Move | Assign | Borrow | Free =>
+                  Check_Not_Observed (Alias_Ent, Alias);
+            end case;
+
+            --  Deep parts of objects cannot be overlaid. If Alias is not in
+            --  the environment, then there is nothing more to check.
+
+            if Get (Current_Perm_Env, Alias) = null then
+               return;
+            end if;
+
+            declare
+               Perm_Expl : constant Perm_And_Expl :=
+                 Get_Perm_And_Expl (Alias_Ent);
+               Perm      : constant Perm_Kind_Option := Perm_Expl.Perm;
+               Expl      : constant Node_Id := Perm_Expl.Expl;
+            begin
+               case Mode is
+                  when Read | Observe                =>
+                     if Perm not in Read_Perm then
+                        Perm_Error (Alias_Ent, Read_Only, Perm, Expl => Expl);
+                        return;
+                     end if;
+
+                  when Move | Assign | Borrow | Free =>
+                     if Perm not in Read_Write then
+                        Perm_Error (Alias_Ent, Read_Write, Perm, Expl => Expl);
+                        return;
+                     end if;
+               end case;
+            end;
+         end;
+         return;
+      end if;
+
       --  Identify the root type for the path
 
       Root := Unique_Entity_In_SPARK (Root);
@@ -6220,18 +6300,6 @@ package body Gnat2Why.Borrow_Checker is
         and then Get (Current_Perm_Env, Root) = null
       then
          return;
-      end if;
-
-      --  Check that the root of the moved expression does not have overlays.
-      --  We could also only consider visible overlays, or even move all
-      --  overlays visible at this point in the program.
-
-      if Mode = Move and then not Overlay_Alias (Root).Is_Empty then
-         BC_Error
-           (Create
-              ("moved object aliased through address clauses is not supported"
-               & " yet"),
-            Loc);
       end if;
 
       --  If the root object is not in the current environment, then it must be

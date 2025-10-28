@@ -22,7 +22,6 @@
 ------------------------------------------------------------------------------
 
 with Atree;                  use Atree;
-with Common_Containers;      use Common_Containers;
 with Einfo.Entities;         use Einfo.Entities;
 with Einfo.Utils;            use Einfo.Utils;
 with Errout_Wrapper;         use Errout_Wrapper;
@@ -178,17 +177,6 @@ package body Flow_Sanity is
             Scop            => Get_Flow_Scope (E));
 
          Proof_Context := Reads or Writes or To_Flow_Id_Set (Get_Formals (E));
-
-         --  Include aliases of formal parameters
-
-         for Formal of Get_Explicit_Formals (E) loop
-            for Alias of Overlay_Alias (Formal) loop
-               Proof_Context.Insert
-                 (if Entity_In_SPARK (Alias)
-                  then Direct_Mapping_Id (Alias, Normal_Use)
-                  else Magic_String_Id (To_Entity_Name (Alias)));
-            end loop;
-         end loop;
 
          --  For functions we also have the implicit 'Result object
 

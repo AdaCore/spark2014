@@ -379,7 +379,10 @@ package Why.Gen.Records is
    --  function to generate a tag check.
 
    function Record_From_Split_Form
-     (I : Item_Type; Ref_Allowed : Boolean) return W_Term_Id
+     (I           : Item_Type;
+      Domain      : EW_Domain;
+      Ref_Allowed : Boolean := True;
+      Alias       : W_Expr_Id := Why_Empty) return W_Expr_Id
    with Pre => I.Kind = DRecord;
    --  Reconstructs a complete record from an item in split form.
 

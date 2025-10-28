@@ -870,7 +870,8 @@ package VC_Kinds is
          when Lim_Continue_Cross_Inv                                      =>
            "continue statement preceding loop-invariant",
          when Lim_Object_Before_Inv                                       =>
-           "non-scalar object declared before loop-invariant",
+           "non-scalar object or object with address clause declared before"
+           & " loop-invariant",
          when Lim_Package_Before_Inv                                      =>
            "nested packages before loop-invariant",
          when Lim_Subprogram_Before_Inv                                   =>

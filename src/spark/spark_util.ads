@@ -244,14 +244,6 @@ package SPARK_Util is
    --  @param E classwide type
    --  @return the specific tagged type corresponding to classwide type E
 
-   procedure Set_Overlay_Alias (New_Id, Old_Id : Object_Kind_Id);
-   --  Register that New_Id is aliasing Old_Id via overlays
-
-   function Overlay_Alias (E : Object_Kind_Id) return Node_Sets.Set
-   with Post => not Overlay_Alias'Result.Contains (E);
-   --  Return the objects which are aliases of E via overlays. This does not
-   --  return E itself.
-
    procedure Set_Visible_Overridden_Operation (E, Inh : Callable_Kind_Id)
    with
      Pre =>

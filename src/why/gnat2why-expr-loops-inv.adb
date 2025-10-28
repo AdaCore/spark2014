@@ -249,13 +249,6 @@ package body Gnat2Why.Expr.Loops.Inv is
    --  @param Relevant_Path False if the update is not relevant and the object
    --         is not actually written.
 
-   procedure Write_Aliases
-     (New_Write     : Object_Kind_Id;
-      Loop_Writes   : in out Write_Status_Maps.Map;
-      Relevant_Path : Boolean);
-   --  Write all overlay alias of an objects, by calling Write_Entity on all
-   --  said aliases. Those writes are not (a priori) discarded.
-
    --------------------
    -- Tree Traversal --
    --------------------
@@ -1505,6 +1498,75 @@ package body Gnat2Why.Expr.Loops.Inv is
                In_Nested         => False);
          end;
       end loop;
+
+      --  Post processing - handle potential overlays.
+      --  The root alias of written overlaid objects are entirely written.
+      --  If several objects which overlay each others are modified by the
+      --  loop, discard those which are not roots.
+
+      declare
+         Written_Aliases : Node_Maps.Map;
+
+      begin
+         --  Store in Written_Aliases roots which are written through overlays.
+         --  Map the root to the single overlaid object that writes it if any.
+         --  If there are several, discard overlaid objects so nothing is
+         --  assumed about them and map the root to Empty.
+
+         for Pos in Loop_Writes.Iterate loop
+            declare
+               Obj      : Node_Id renames Write_Status_Maps.Key (Pos);
+               Alias    : constant Opt_Object_Kind_Id :=
+                 Ultimate_Overlaid_Entity (Obj);
+               Alias_P  : Node_Maps.Cursor;
+               Inserted : Boolean;
+
+            begin
+               --  If a written overlay is found, try to insert it in
+               --  Written_Aliases. If it fails, then discard both aliases.
+
+               if Present (Alias)
+                 and then Write_Status_Maps.Element (Pos).Kind /= Not_Written
+               then
+                  Written_Aliases.Insert (Alias, Obj, Alias_P, Inserted);
+
+                  if not Inserted then
+                     Discard_Entity (Obj, Loop_Writes);
+                     if Present (Written_Aliases (Alias_P)) then
+                        Discard_Entity
+                          (Written_Aliases (Alias_P), Loop_Writes);
+                        Written_Aliases (Alias_P) := Empty;
+                     end if;
+                  end if;
+               end if;
+            end;
+         end loop;
+
+         --  Write entirely all roots in Written_Aliases. If a root is
+         --  also written directly, discard the overlaid object.
+         --  Otherwise, keep it, the generated frame condition is sound for it.
+
+         for Pos in Written_Aliases.Iterate loop
+            declare
+               Alias : Node_Id renames Node_Maps.Key (Pos);
+               Obj   : Node_Id renames Node_Maps.Element (Pos);
+
+            begin
+               --  If Alias itself is also written directly, discard Obj
+
+               if Present (Obj)
+                 and then Loop_Writes.Contains (Alias)
+                 and then Loop_Writes.Element (Alias).Kind /= Not_Written
+               then
+                  Discard_Entity (Obj, Loop_Writes);
+               end if;
+
+               --  Alias is entirely written
+
+               Write_Entity (Alias, Loop_Writes);
+            end;
+         end loop;
+      end;
    end Get_Loop_Writes;
 
    ------------------
@@ -1552,11 +1614,6 @@ package body Gnat2Why.Expr.Loops.Inv is
                Invalid_Objects.Include
                  (Unique_Entity (Get_Root_Object (Actual)));
             end if;
-
-            --  Aliases of the root of the actual are entirely written
-
-            Write_Aliases
-              (Get_Root_Object (Actual), Loop_Writes, Relevant_Path);
          end if;
       end Process_Param;
 
@@ -1669,10 +1726,6 @@ package body Gnat2Why.Expr.Loops.Inv is
                     (Unique_Entity (Get_Root_Object (Lvalue)));
                end if;
 
-               --  Aliases of the left-hand side are entirely written
-
-               Write_Aliases (Get_Root_Object (Lvalue), Loop_Writes, Relevant);
-
                if Nkind (Rvalue) = N_Function_Call then
                   Process_Call
                     (Call            => Rvalue,
@@ -1767,13 +1820,6 @@ package body Gnat2Why.Expr.Loops.Inv is
 
                   if Object_Has_Valid_Id (E) then
                      Invalid_Objects.Include (Unique_Entity (E));
-                  end if;
-
-                  --  If E has an initial value, its aliases are entirely
-                  --  written.
-
-                  if not Is_Imported (E) then
-                     Write_Aliases (E, Loop_Writes, Relevant);
                   end if;
                end if;
 
@@ -1992,28 +2038,6 @@ package body Gnat2Why.Expr.Loops.Inv is
          Next (N);
       end loop;
    end Process_Statement_List;
-
-   -------------------
-   -- Write_Aliases --
-   -------------------
-
-   procedure Write_Aliases
-     (New_Write     : Object_Kind_Id;
-      Loop_Writes   : in out Write_Status_Maps.Map;
-      Relevant_Path : Boolean) is
-   begin
-      for Alias of Overlay_Alias (New_Write) loop
-         Write_Entity
-           (Alias,
-            Loop_Writes,
-            Discard_Writes => False,
-            Relevant_Path  => Relevant_Path);
-
-         --  Overlaid objects cannot be potentially invalid
-
-         pragma Assert (not Object_Has_Valid_Id (Alias));
-      end loop;
-   end Write_Aliases;
 
    ------------------
    -- Write_Entity --

@@ -1263,9 +1263,22 @@ package body Gnat2Why.Expr is
    --  If Already_Equal is set to true, only assumes the pledge without
    --  havocking.
 
-   function Havoc_Overlay_Aliases (Aliases : Node_Sets.Set) return W_Prog_Id;
-   --  For each variable in the parameter set, havoc its contents and assume
-   --  its invariants.
+   --------------------------
+   -- Handling of overlays --
+   --------------------------
+
+   function New_Overlay_Assignment
+     (Lvalue : Object_Kind_Id; Right : W_Prog_Id := Why_Empty)
+      return W_Prog_Id;
+   --  Havoc the ultimate alias of Lvalue and assume that Lvalue is now equal
+   --  to Right if it is supplied.
+
+   procedure Assume_Dynamic_Invariant_For_Overlay
+     (Obj     : Object_Kind_Id;
+      Params  : Transformation_Params;
+      Context : in out W_Prog_Id);
+   --  For mutable overlays, assume the dynamic invariant
+   --  of the overlay for all values of the root object.
 
    -----------------------
    -- All_DICs_But_Last --
@@ -1392,95 +1405,278 @@ package body Gnat2Why.Expr is
                Expr    => Why_Expr,
                Do_Move => Dummy);
 
-            if Binder.Init.Present then
-               Append
-                 (Res,
-                  New_Assignment
-                    (Ada_Node => N,
-                     Name     => Binder.Init.Id,
-                     Labels   => Symbol_Sets.Empty_Set,
-                     Value    => True_Prog,
-                     Typ      => EW_Bool_Type));
-            end if;
+            --  Initializing an overlay havocs the overlaid object
 
-            --  Handle the validity field if any
+            if Present (Ultimate_Overlaid_Entity (Lvalue)) then
+               Res := New_Overlay_Assignment (Lvalue, Why_Expr);
 
-            if Do_Valid then
-               if Is_Mutable_In_Why (Lvalue) then
+            else
+               if Binder.Init.Present then
                   Append
                     (Res,
                      New_Assignment
                        (Ada_Node => N,
-                        Name     =>
-                          +Get_Valid_Id_From_Object
-                             (Lvalue, Ref_Allowed => False),
+                        Name     => Binder.Init.Id,
                         Labels   => Symbol_Sets.Empty_Set,
-                        Value    => +Valid_Flag,
-                        Typ      => Get_Validity_Tree_Type (Etype (Lvalue))));
-               else
-                  Append
-                    (Res,
-                     New_Assume_Statement
-                       (Ada_Node => N,
-                        Pred     =>
-                          New_Comparison
-                            (Symbol => Why_Eq,
-                             Left   =>
-                               +Get_Valid_Id_From_Object
-                                  (Lvalue, Body_Params.Ref_Allowed),
-                             Right  => +Valid_Flag)));
+                        Value    => True_Prog,
+                        Typ      => EW_Bool_Type));
                end if;
-            end if;
 
-            case Binder.Kind is
-               when DRecord                   =>
+               --  Handle the validity field if any
 
-                  --  For objects in record split form, we produce:
-                  --  let <v_name>__assume = <init_value> in
-                  --   <v__fields> := <v_name>__assume.fields;
-                  --   <v__discrs> := <v_name>__assume.discrs; if discr is
-                  --                                           mutable
-                  --   assume (<v__discrs> = <v_name>__assume.discrs);
-                  --     otherwise
-                  --   assume (<v__constrained>=
-                  --     Is_Constrained (Etype (Lvalue)));
-                  --   assume (<v__tag> = <v_name>__assume.tag); if classwide
-                  --   assume (<v__tag> = Ty.__tag); otherwise
+               if Do_Valid then
+                  if Is_Mutable_In_Why (Lvalue) then
+                     Append
+                       (Res,
+                        New_Assignment
+                          (Ada_Node => N,
+                           Name     =>
+                             +Get_Valid_Id_From_Object
+                                (Lvalue, Ref_Allowed => False),
+                           Labels   => Symbol_Sets.Empty_Set,
+                           Value    => +Valid_Flag,
+                           Typ      =>
+                             Get_Validity_Tree_Type (Etype (Lvalue))));
+                  else
+                     Append
+                       (Res,
+                        New_Assume_Statement
+                          (Ada_Node => N,
+                           Pred     =>
+                             New_Comparison
+                               (Symbol => Why_Eq,
+                                Left   =>
+                                  +Get_Valid_Id_From_Object
+                                     (Lvalue, Body_Params.Ref_Allowed),
+                                Right  => +Valid_Flag)));
+                  end if;
+               end if;
 
-                  declare
-                     Tmp_Var : constant W_Identifier_Id :=
-                       New_Identifier
-                         (Name => L_Name & "__assume", Typ => Why_Ty);
-                  begin
-                     if Binder.Fields.Present then
-                        Append
-                          (Res,
-                           New_Assignment
-                             (Ada_Node => N,
-                              Name     => Binder.Fields.Binder.B_Name,
-                              Labels   => Symbol_Sets.Empty_Set,
-                              Value    =>
-                                New_Fields_Access
-                                  (Name => +Tmp_Var, Ty => Binder.Typ),
-                              Typ      =>
-                                Get_Typ (Binder.Fields.Binder.B_Name)));
-                     end if;
+               case Binder.Kind is
+                  when DRecord                   =>
 
-                     if Binder.Discrs.Present then
-                        if Binder.Discrs.Binder.Mutable then
+                     --  For objects in record split form, we produce:
+                     --  let <v_name>__assume = <init_value> in
+                     --   <v__fields> := <v_name>__assume.fields;
+                     --   <v__discrs> := <v_name>__assume.discrs; if discr is
+                     --                                           mutable
+                     --   assume (<v__discrs> = <v_name>__assume.discrs);
+                     --     otherwise
+                     --   assume (<v__constrained>=
+                     --     Is_Constrained (Etype (Lvalue)));
+                     --   assume (<v__tag> = <v_name>__assume.tag);
+                     --                                        if classwide
+                     --   assume (<v__tag> = Ty.__tag); otherwise
+
+                     declare
+                        Tmp_Var : constant W_Identifier_Id :=
+                          New_Identifier
+                            (Name => L_Name & "__assume", Typ => Why_Ty);
+                     begin
+                        if Binder.Fields.Present then
                            Append
                              (Res,
                               New_Assignment
                                 (Ada_Node => N,
-                                 Name     => Binder.Discrs.Binder.B_Name,
+                                 Name     => Binder.Fields.Binder.B_Name,
                                  Labels   => Symbol_Sets.Empty_Set,
                                  Value    =>
-                                   New_Discriminants_Access
+                                   New_Fields_Access
                                      (Name => +Tmp_Var, Ty => Binder.Typ),
                                  Typ      =>
-                                   Get_Typ (Binder.Discrs.Binder.B_Name)));
+                                   Get_Typ (Binder.Fields.Binder.B_Name)));
+                        end if;
 
-                           pragma Assert (Binder.Constr.Present);
+                        if Binder.Discrs.Present then
+                           if Binder.Discrs.Binder.Mutable then
+                              Append
+                                (Res,
+                                 New_Assignment
+                                   (Ada_Node => N,
+                                    Name     => Binder.Discrs.Binder.B_Name,
+                                    Labels   => Symbol_Sets.Empty_Set,
+                                    Value    =>
+                                      New_Discriminants_Access
+                                        (Name => +Tmp_Var, Ty => Binder.Typ),
+                                    Typ      =>
+                                      Get_Typ (Binder.Discrs.Binder.B_Name)));
+
+                              pragma Assert (Binder.Constr.Present);
+                           else
+                              Append
+                                (Res,
+                                 New_Assume_Statement
+                                   (Ada_Node => N,
+                                    Pred     =>
+                                      New_Call
+                                        (Name => Why_Eq,
+                                         Typ  => EW_Bool_Type,
+                                         Args =>
+                                           (1 => +Binder.Discrs.Binder.B_Name,
+                                            2 =>
+                                              New_Discriminants_Access
+                                                (Name => +Tmp_Var,
+                                                 Ty   => Binder.Typ)))));
+                           end if;
+
+                           if Binder.Constr.Present then
+                              Append
+                                (Res,
+                                 New_Assume_Statement
+                                   (Ada_Node => N,
+                                    Pred     =>
+                                      New_Call
+                                        (Name => Why_Eq,
+                                         Typ  => EW_Bool_Type,
+                                         Args =>
+                                           (+Binder.Constr.Id,
+                                            (if Binder.Discrs.Binder.Mutable
+                                             then +False_Term
+                                             else +True_Term)))));
+                           end if;
+                        end if;
+
+                        if Binder.Tag.Present then
+                           Append
+                             (Res,
+                              New_Assume_Statement
+                                (Ada_Node => N,
+                                 Pred     =>
+                                   New_Call
+                                     (Name => Why_Eq,
+                                      Typ  => EW_Bool_Type,
+                                      Args =>
+                                        (1 => +Binder.Tag.Id,
+                                         2 =>
+                                           (if Is_Class_Wide_Type
+                                                 (Etype (Lvalue))
+                                            then
+                                              New_Tag_Access
+                                                (Domain => EW_Prog,
+                                                 Name   => +Tmp_Var,
+                                                 Ty     => Binder.Typ)
+                                            else
+                                              +E_Symb
+                                                 (Binder.Typ, WNE_Tag))))));
+                        end if;
+
+                        Res :=
+                          New_Typed_Binding
+                            (Ada_Node => N,
+                             Name     => Tmp_Var,
+                             Def      => Why_Expr,
+                             Context  => Res);
+                     end;
+
+                  when UCArray                   =>
+
+                     --  For objects in array split form, we produce:
+                     --  let <v_name>__assume = <init_value> in
+                     --    <v> := of_array (<v_name>__assume);
+                     --    assume (<v__first> = <v_name>__assume.first);
+                     --    assume (<v__last> = <v_name>__assume.last);
+
+                     declare
+                        Tmp_Var : constant W_Identifier_Id :=
+                          New_Identifier
+                            (Name => L_Name & "__assume", Typ => Why_Ty);
+                     begin
+                        Append
+                          (Res,
+                           New_Assignment
+                             (Ada_Node => N,
+                              Name     => Binder.Content.B_Name,
+                              Labels   => Symbol_Sets.Empty_Set,
+                              Value    =>
+                                +Array_Convert_To_Base (EW_Prog, +Tmp_Var),
+                              Typ      => Get_Typ (Binder.Content.B_Name)));
+
+                        for I in 1 .. Binder.Dim loop
+                           Append
+                             (Res,
+                              New_Assume_Statement
+                                (Ada_Node => N,
+                                 Pred     =>
+                                   New_Call
+                                     (Name => Why_Eq,
+                                      Typ  => EW_Bool_Type,
+                                      Args =>
+                                        (1 =>
+                                           +Insert_Conversion_To_Rep_No_Bool
+                                              (+Binder.Bounds (I).First),
+                                         2 =>
+                                           +Insert_Conversion_To_Rep_No_Bool
+                                              (Get_Array_Attr
+                                                 (Expr => +Tmp_Var,
+                                                  Attr => Attribute_First,
+                                                  Dim  => I))))),
+                              New_Assume_Statement
+                                (Ada_Node => N,
+                                 Pred     =>
+                                   New_Call
+                                     (Name => Why_Eq,
+                                      Typ  => EW_Bool_Type,
+                                      Args =>
+                                        (1 =>
+                                           +Insert_Conversion_To_Rep_No_Bool
+                                              (+Binder.Bounds (I).Last),
+                                         2 =>
+                                           +Insert_Conversion_To_Rep_No_Bool
+                                              (Get_Array_Attr
+                                                 (Expr => +Tmp_Var,
+                                                  Attr => Attribute_Last,
+                                                  Dim  => I))))));
+                        end loop;
+
+                        Res :=
+                          New_Typed_Binding
+                            (Ada_Node => N,
+                             Name     => Tmp_Var,
+                             Def      => Why_Expr,
+                             Context  => Res);
+                     end;
+
+                  when Pointer                   =>
+
+                     --  For objects in access split form, we produce:
+                     --  let <v_name>__assume = <init_value> in
+                     --    <v> := <v_name>__assume.value;
+                     --  and either:
+                     --    assume (<v__is_null> = <v_name>__assume.is_null);
+                     --  if the pointer is not mutable, or:
+                     --    <v__is_null> := <v_name>__assume.is_null;
+                     --  otherwise.
+
+                     declare
+                        Tmp_Var : constant W_Identifier_Id :=
+                          New_Identifier
+                            (Name => L_Name & "__assume", Typ => Why_Ty);
+                     begin
+                        Append
+                          (Res,
+                           New_Assignment
+                             (Ada_Node => N,
+                              Name     => Binder.Value.B_Name,
+                              Labels   => Symbol_Sets.Empty_Set,
+                              Value    =>
+                                +New_Pointer_Value_Access
+                                   (Ada_Node => Empty,
+                                    Domain   => EW_Term,
+                                    Name     => +Tmp_Var,
+                                    E        => Etype (Lvalue)),
+                              Typ      => Get_Typ (Binder.Value.B_Name)));
+
+                        if Binder.Mutable then
+                           Append
+                             (Res,
+                              New_Assignment
+                                (Ada_Node => N,
+                                 Name     => Binder.Is_Null,
+                                 Labels   => Symbol_Sets.Empty_Set,
+                                 Value    =>
+                                   New_Pointer_Is_Null_Access
+                                     (E => Etype (Lvalue), Name => +Tmp_Var),
+                                 Typ      => EW_Bool_Type));
                         else
                            Append
                              (Res,
@@ -1491,271 +1687,100 @@ package body Gnat2Why.Expr is
                                      (Name => Why_Eq,
                                       Typ  => EW_Bool_Type,
                                       Args =>
-                                        (1 => +Binder.Discrs.Binder.B_Name,
+                                        (1 => +Binder.Is_Null,
                                          2 =>
-                                           New_Discriminants_Access
-                                             (Name => +Tmp_Var,
-                                              Ty   => Binder.Typ)))));
+                                           New_Pointer_Is_Null_Access
+                                             (E    => Etype (Lvalue),
+                                              Name => +Tmp_Var)))));
                         end if;
 
-                        if Binder.Constr.Present then
+                        Res :=
+                          New_Typed_Binding
+                            (Ada_Node => N,
+                             Name     => Tmp_Var,
+                             Def      => Why_Expr,
+                             Context  => Res);
+                     end;
+
+                  when Regular | Concurrent_Self =>
+                     declare
+                        L_Id : constant W_Identifier_Id := Binder.Main.B_Name;
+                     begin
+                        if Is_Mutable_In_Why (Lvalue) then
+
+                           --  Attributes of record objects have the default
+                           --  values of their type.
+
                            Append
                              (Res,
-                              New_Assume_Statement
+                              New_Assignment
                                 (Ada_Node => N,
-                                 Pred     =>
-                                   New_Call
-                                     (Name => Why_Eq,
-                                      Typ  => EW_Bool_Type,
-                                      Args =>
-                                        (+Binder.Constr.Id,
-                                         (if Binder.Discrs.Binder.Mutable
-                                          then +False_Term
-                                          else +True_Term)))));
+                                 Name     => L_Id,
+                                 Labels   => Symbol_Sets.Empty_Set,
+                                 Value    =>
+                                   (if Has_Record_Type (Etype (Lvalue))
+                                      or else Full_View_Not_In_SPARK
+                                                (Etype (Lvalue))
+                                    then
+                                      New_Tag_And_Ext_Update
+                                        (Ada_Node => N,
+                                         Name     => Why_Expr,
+                                         Ty       => Etype (Lvalue))
+                                    else Why_Expr),
+                                 Typ      => Why_Ty));
+
+                        else
+                           declare
+                              Tmp_Var : constant W_Identifier_Id :=
+                                New_Identifier
+                                  (Name => L_Name & "__assume", Typ => Why_Ty);
+                              Eq      : constant W_Pred_Id :=
+                                New_Call
+                                  (Name => Why_Eq,
+                                   Typ  => EW_Bool_Type,
+                                   Args =>
+                                     (New_Tag_And_Ext_Update
+                                        (Ada_Node => N,
+                                         Domain   => EW_Prog,
+                                         Name     => +Tmp_Var,
+                                         Ty       => Etype (Lvalue)),
+                                      +L_Id));
+                           begin
+                              Append
+                                (Res,
+                                 New_Typed_Binding
+                                   (Ada_Node => N,
+                                    Name     => Tmp_Var,
+                                    Def      => Why_Expr,
+                                    Context  =>
+                                      New_Assume_Statement
+                                        (Ada_Node => N, Pred => Eq)));
+                           end;
                         end if;
-                     end if;
+                     end;
 
-                     if Binder.Tag.Present then
-                        Append
-                          (Res,
-                           New_Assume_Statement
-                             (Ada_Node => N,
-                              Pred     =>
-                                New_Call
-                                  (Name => Why_Eq,
-                                   Typ  => EW_Bool_Type,
-                                   Args =>
-                                     (1 => +Binder.Tag.Id,
-                                      2 =>
-                                        (if Is_Class_Wide_Type (Etype (Lvalue))
-                                         then
-                                           New_Tag_Access
-                                             (Domain => EW_Prog,
-                                              Name   => +Tmp_Var,
-                                              Ty     => Binder.Typ)
-                                         else
-                                           +E_Symb (Binder.Typ, WNE_Tag))))));
-                     end if;
+                  when Subp                      =>
+                     raise Program_Error;
+               end case;
 
-                     Res :=
-                       New_Typed_Binding
-                         (Ada_Node => N,
-                          Name     => Tmp_Var,
-                          Def      => Why_Expr,
-                          Context  => Res);
-                  end;
+               --  Add bindings for the validity wrapper if any
 
-               when UCArray                   =>
+               Res :=
+                 +Bindings_For_Ref_Context
+                    (Expr => +Res, Context => Context, Domain => EW_Prog);
 
-                  --  For objects in array split form, we produce:
-                  --  let <v_name>__assume = <init_value> in
-                  --    <v> := of_array (<v_name>__assume);
-                  --    assume (<v__first> = <v_name>__assume.first);
-                  --    assume (<v__last> = <v_name>__assume.last);
+               --  Init value at end of local borrowers. This assumes the
+               --  dynamic invariant of the value of the borrowed object at the
+               --  end of the borrow, so it should be done after all checks at
+               --  performed for the assignment so that we do not create an
+               --  inconsistency.
 
-                  declare
-                     Tmp_Var : constant W_Identifier_Id :=
-                       New_Identifier
-                         (Name => L_Name & "__assume", Typ => Why_Ty);
-                  begin
-                     Append
-                       (Res,
-                        New_Assignment
-                          (Ada_Node => N,
-                           Name     => Binder.Content.B_Name,
-                           Labels   => Symbol_Sets.Empty_Set,
-                           Value    =>
-                             +Array_Convert_To_Base (EW_Prog, +Tmp_Var),
-                           Typ      => Get_Typ (Binder.Content.B_Name)));
-
-                     for I in 1 .. Binder.Dim loop
-                        Append
-                          (Res,
-                           New_Assume_Statement
-                             (Ada_Node => N,
-                              Pred     =>
-                                New_Call
-                                  (Name => Why_Eq,
-                                   Typ  => EW_Bool_Type,
-                                   Args =>
-                                     (1 =>
-                                        +Insert_Conversion_To_Rep_No_Bool
-                                           (+Binder.Bounds (I).First),
-                                      2 =>
-                                        +Insert_Conversion_To_Rep_No_Bool
-                                           (Get_Array_Attr
-                                              (Expr => +Tmp_Var,
-                                               Attr => Attribute_First,
-                                               Dim  => I))))),
-                           New_Assume_Statement
-                             (Ada_Node => N,
-                              Pred     =>
-                                New_Call
-                                  (Name => Why_Eq,
-                                   Typ  => EW_Bool_Type,
-                                   Args =>
-                                     (1 =>
-                                        +Insert_Conversion_To_Rep_No_Bool
-                                           (+Binder.Bounds (I).Last),
-                                      2 =>
-                                        +Insert_Conversion_To_Rep_No_Bool
-                                           (Get_Array_Attr
-                                              (Expr => +Tmp_Var,
-                                               Attr => Attribute_Last,
-                                               Dim  => I))))));
-                     end loop;
-
-                     Res :=
-                       New_Typed_Binding
-                         (Ada_Node => N,
-                          Name     => Tmp_Var,
-                          Def      => Why_Expr,
-                          Context  => Res);
-                  end;
-
-               when Pointer                   =>
-
-                  --  For objects in access split form, we produce:
-                  --  let <v_name>__assume = <init_value> in
-                  --    <v> := <v_name>__assume.value;
-                  --  and either:
-                  --    assume (<v__is_null> = <v_name>__assume.is_null);
-                  --  if the pointer is not mutable, or:
-                  --    <v__is_null> := <v_name>__assume.is_null;
-                  --  otherwise.
-
-                  declare
-                     Tmp_Var : constant W_Identifier_Id :=
-                       New_Identifier
-                         (Name => L_Name & "__assume", Typ => Why_Ty);
-                  begin
-                     Append
-                       (Res,
-                        New_Assignment
-                          (Ada_Node => N,
-                           Name     => Binder.Value.B_Name,
-                           Labels   => Symbol_Sets.Empty_Set,
-                           Value    =>
-                             +New_Pointer_Value_Access
-                                (Ada_Node => Empty,
-                                 Domain   => EW_Term,
-                                 Name     => +Tmp_Var,
-                                 E        => Etype (Lvalue)),
-                           Typ      => Get_Typ (Binder.Value.B_Name)));
-
-                     if Binder.Mutable then
-                        Append
-                          (Res,
-                           New_Assignment
-                             (Ada_Node => N,
-                              Name     => Binder.Is_Null,
-                              Labels   => Symbol_Sets.Empty_Set,
-                              Value    =>
-                                New_Pointer_Is_Null_Access
-                                  (E => Etype (Lvalue), Name => +Tmp_Var),
-                              Typ      => EW_Bool_Type));
-                     else
-                        Append
-                          (Res,
-                           New_Assume_Statement
-                             (Ada_Node => N,
-                              Pred     =>
-                                New_Call
-                                  (Name => Why_Eq,
-                                   Typ  => EW_Bool_Type,
-                                   Args =>
-                                     (1 => +Binder.Is_Null,
-                                      2 =>
-                                        New_Pointer_Is_Null_Access
-                                          (E    => Etype (Lvalue),
-                                           Name => +Tmp_Var)))));
-                     end if;
-
-                     Res :=
-                       New_Typed_Binding
-                         (Ada_Node => N,
-                          Name     => Tmp_Var,
-                          Def      => Why_Expr,
-                          Context  => Res);
-                  end;
-
-               when Regular | Concurrent_Self =>
-                  declare
-                     L_Id : constant W_Identifier_Id := Binder.Main.B_Name;
-                  begin
-                     if Is_Mutable_In_Why (Lvalue) then
-
-                        --  Attributes of record objects have the default
-                        --  values of their type.
-
-                        Append
-                          (Res,
-                           New_Assignment
-                             (Ada_Node => N,
-                              Name     => L_Id,
-                              Labels   => Symbol_Sets.Empty_Set,
-                              Value    =>
-                                (if Has_Record_Type (Etype (Lvalue))
-                                   or else Full_View_Not_In_SPARK
-                                             (Etype (Lvalue))
-                                 then
-                                   New_Tag_And_Ext_Update
-                                     (Ada_Node => N,
-                                      Name     => Why_Expr,
-                                      Ty       => Etype (Lvalue))
-                                 else Why_Expr),
-                              Typ      => Why_Ty));
-
-                     else
-                        declare
-                           Tmp_Var : constant W_Identifier_Id :=
-                             New_Identifier
-                               (Name => L_Name & "__assume", Typ => Why_Ty);
-                           Eq      : constant W_Pred_Id :=
-                             New_Call
-                               (Name => Why_Eq,
-                                Typ  => EW_Bool_Type,
-                                Args =>
-                                  (New_Tag_And_Ext_Update
-                                     (Ada_Node => N,
-                                      Domain   => EW_Prog,
-                                      Name     => +Tmp_Var,
-                                      Ty       => Etype (Lvalue)),
-                                   +L_Id));
-                        begin
-                           Append
-                             (Res,
-                              New_Typed_Binding
-                                (Ada_Node => N,
-                                 Name     => Tmp_Var,
-                                 Def      => Why_Expr,
-                                 Context  =>
-                                   New_Assume_Statement
-                                     (Ada_Node => N, Pred => Eq)));
-                        end;
-                     end if;
-                  end;
-
-               when Subp                      =>
-                  raise Program_Error;
-            end case;
-
-            --  Add bindings for the validity wrapper if any
-
-            Res :=
-              +Bindings_For_Ref_Context
-                 (Expr => +Res, Context => Context, Domain => EW_Prog);
-
-            --  Init value at end of local borrowers. This assumes the dynamic
-            --  invariant of the value of the borrowed object at the end of the
-            --  borrow, so it should be done after all checks at performed for
-            --  the assignment so that we do not create an inconsistency.
-
-            if Is_Local_Borrower (Lvalue) then
-               Append
-                 (Res,
-                  New_Update_For_Borrow_At_End
-                    (Brower => Lvalue, Path => Rexpr));
+               if Is_Local_Borrower (Lvalue) then
+                  Append
+                    (Res,
+                     New_Update_For_Borrow_At_End
+                       (Brower => Lvalue, Path => Rexpr));
+               end if;
             end if;
 
             return Res;
@@ -1857,6 +1882,12 @@ package body Gnat2Why.Expr is
                      Typ      => Get_Validity_Tree_Type (Constrained_Ty)));
             end if;
 
+            --  Initializing an overlay havocs the overlaid object
+
+            if Present (Ultimate_Overlaid_Entity (Lvalue)) then
+               Append (Default_Checks, New_Overlay_Assignment (Lvalue));
+            end if;
+
             if Init_Assumption /= True_Pred then
                Append
                  (Default_Checks,
@@ -1927,6 +1958,14 @@ package body Gnat2Why.Expr is
       begin
          Append (Context, Dyn_Inv);
       end;
+
+      --  For mutable overlays, assume the dynamic invariant of the overlay for
+      --  all values of the root object.
+
+      if Present (Ultimate_Overlaid_Entity (E)) and then Is_Mutable_In_Why (E)
+      then
+         Assume_Dynamic_Invariant_For_Overlay (E, Body_Params, Context);
+      end if;
 
       --  Constants of access-to-variable types are not constant. Still assume
       --  the value of the is_null field if the declaration is null or an
@@ -2299,6 +2338,54 @@ package body Gnat2Why.Expr is
       end loop;
       return Dynamic_Prop_Inputs;
    end Assume_Dynamic_Invariant_For_Variables;
+
+   ------------------------------------------
+   -- Assume_Dynamic_Invariant_For_Overlay --
+   ------------------------------------------
+
+   procedure Assume_Dynamic_Invariant_For_Overlay
+     (Obj     : Object_Kind_Id;
+      Params  : Transformation_Params;
+      Context : in out W_Prog_Id)
+   is
+      Alias    : constant Opt_Object_Kind_Id := Ultimate_Overlaid_Entity (Obj);
+      Alias_Id : constant W_Identifier_Id :=
+        New_Temp_Identifier
+          (Base_Name => "overlaid", Typ => Type_Of_Node (Alias));
+      Obj_Term : constant W_Term_Id :=
+        +Reconstruct_Item
+           (Ada_Ent_To_Why.Element (Symbol_Table, Obj),
+            EW_Term,
+            Params.Ref_Allowed,
+            +Alias_Id);
+   begin
+      --  No need to consider the validity flag, mutable overlays cannot be
+      --  invalid.
+
+      Append
+        (Context,
+         New_Assume_Statement
+           (Pred =>
+              New_Universal_Quantif
+                (Binders  =>
+                   (1 => Binder_Type'(B_Name => Alias_Id, others => <>)),
+                 Triggers =>
+                   New_Triggers
+                     (Triggers =>
+                        (1 => New_Trigger (Terms => (1 => +Obj_Term)))),
+                 Pred     =>
+                   New_Conditional
+                     (Condition =>
+                        Compute_Dynamic_Invariant
+                          (Expr   => +Alias_Id,
+                           Params => Params,
+                           Ty     => Type_Of_Node (Alias)),
+                      Then_Part =>
+                        Compute_Dynamic_Invariant
+                          (Expr   => Obj_Term,
+                           Params => Params,
+                           Ty     => Type_Of_Node (Obj))))));
+   end Assume_Dynamic_Invariant_For_Overlay;
 
    -------------------------------
    -- Assume_For_Nested_Package --
@@ -4623,7 +4710,6 @@ package body Gnat2Why.Expr is
          --  call and add to Store and Handler a call to havoc them.
 
          declare
-            Aliases      : Node_Sets.Set;
             Call_Outputs : Node_Sets.Set;
             Read_Ids     : Flow_Types.Flow_Id_Sets.Set;
             Write_Ids    : Flow_Types.Flow_Id_Sets.Set;
@@ -4654,20 +4740,6 @@ package body Gnat2Why.Expr is
                      null;
                end case;
             end loop;
-
-            for Elt of Call_Outputs loop
-               Aliases.Union (Overlay_Alias (Elt));
-            end loop;
-
-            --  We remove the global outputs of the call from the aliases
-            --  to be havoced.
-
-            Aliases.Difference (Call_Outputs);
-            Append (Store, Havoc_Overlay_Aliases (Aliases));
-
-            if Exc_Exit then
-               Append (Exc_Store, Havoc_Overlay_Aliases (Aliases));
-            end if;
          end;
 
          return Why_Args;
@@ -7512,16 +7584,6 @@ package body Gnat2Why.Expr is
          end if;
       end if;
 
-      --  Havoc all aliases of Actual. Flow analysis should make sure that they
-      --  are all un-initialized by the call so it should not make any
-      --  differences.
-
-      if Present (Actual) then
-         Append
-           (Store,
-            Havoc_Overlay_Aliases (Overlay_Alias (Get_Root_Object (Actual))));
-      end if;
-
       --  Pop the continuation
 
       Continuation_Stack.Delete_Last;
@@ -8002,14 +8064,6 @@ package body Gnat2Why.Expr is
             end;
          end if;
       end;
-
-      --  Havoc all aliases of Actual
-
-      if Present (Actual) then
-         Append
-           (Store,
-            Havoc_Overlay_Aliases (Overlay_Alias (Get_Root_Object (Actual))));
-      end if;
 
       --  Pop the continuation if any
 
@@ -10848,50 +10902,6 @@ package body Gnat2Why.Expr is
            Right => Assignment);
    end Havoc_Borrowed_Expression;
 
-   ---------------------------
-   -- Havoc_Overlay_Aliases --
-   ---------------------------
-
-   function Havoc_Overlay_Aliases (Aliases : Node_Sets.Set) return W_Prog_Id is
-      Result : W_Prog_Id := +Void;
-   begin
-      if not Aliases.Is_Empty then
-         declare
-            Eff    : constant W_Effects_Id := New_Effects;
-            procedure Effects_Append_Binder_To_Writes is new
-              Effects_Append_Binder (Effects_Append_To_Writes);
-            Assume : W_Prog_Id := +Void;
-         begin
-            for Elt of Aliases loop
-
-               --  Append Elt to Eff and its dynamic property to Assume. If
-               --  Elt has asynchronous writers, we do not need to do anything
-               --  as Elt will be havoc'ed at reads anyway.
-
-               if not Has_Async_Writers (Direct_Mapping_Id (Elt)) then
-                  declare
-                     Item : constant Item_Type :=
-                       Ada_Ent_To_Why.Element (Symbol_Table, Elt);
-                  begin
-                     Effects_Append_Binder_To_Writes (Eff, Item);
-                     Append
-                       (Assume,
-                        Assume_Dynamic_Invariant
-                          (+Transform_Identifier
-                              (Body_Params, Elt, Elt, EW_Term),
-                           Type_Of_Node (Elt),
-                           Valid =>
-                             Get_Valid_Id_From_Object
-                               (Elt, Ref_Allowed => True)));
-                  end;
-               end if;
-            end loop;
-            Result := Sequence (New_Havoc_Statement (Effects => Eff), Assume);
-         end;
-      end if;
-      return Result;
-   end Havoc_Overlay_Aliases;
-
    ---------------------------------------
    -- Insert_Check_For_Size_Of_Overlays --
    ---------------------------------------
@@ -11750,7 +11760,8 @@ package body Gnat2Why.Expr is
       return
         Nkind (Actual) in N_Identifier | N_Expanded_Name
         and then not Is_Protected_Component_Or_Discr_Or_Part_Of
-                       (Entity (Actual));
+                       (Entity (Actual))
+        and then No (Ultimate_Overlaid_Entity (Entity (Actual)));
    end Is_Simple_Actual;
 
    ----------------------
@@ -11912,6 +11923,12 @@ package body Gnat2Why.Expr is
                        Body_Params),
                  Typ      => Get_Typ (Prot_Obj));
          end;
+
+      --  For overlays, the ultimate alias is havocked and the value of the
+      --  object is assumed.
+
+      elsif Present (Ultimate_Overlaid_Entity (Entity (Left_Side))) then
+         Result := New_Overlay_Assignment (Entity (Left_Side), +Right_Side);
       else
          declare
             Binder : constant Item_Type :=
@@ -12624,6 +12641,66 @@ package body Gnat2Why.Expr is
          end case;
       end loop;
    end New_Move_Tree_Assignment;
+
+   ----------------------------
+   -- New_Overlay_Assignment --
+   ----------------------------
+
+   function New_Overlay_Assignment
+     (Lvalue : Object_Kind_Id; Right : W_Prog_Id := Why_Empty) return W_Prog_Id
+   is
+      Alias      : constant Object_Kind_Id :=
+        Ultimate_Overlaid_Entity (Lvalue);
+      Alias_Item : constant Item_Type :=
+        Ada_Ent_To_Why.Element (Symbol_Table, Alias);
+      Typ        : constant Entity_Id := Type_Of_Node (Alias);
+      Eff        : constant W_Effects_Id := New_Effects;
+      procedure Effects_Append_Binder_To_Writes is new
+        Effects_Append_Binder (Effects_Append_To_Writes);
+      Result     : W_Prog_Id;
+
+   begin
+      --  Havoc the ultimate alias
+
+      Effects_Append_Binder_To_Writes (Eff, Alias_Item);
+      Result :=
+        Sequence
+          (New_Havoc_Statement (Effects => Eff),
+           Assume_Dynamic_Invariant
+             (Expr  =>
+                +Transform_Identifier (Body_Params, Alias, Alias, EW_Term),
+              Ty    => Typ,
+              Valid =>
+                Get_Valid_Id_From_Object (Alias, Body_Params.Ref_Allowed)));
+
+      --  If a new value is supplied for the overlay, assume it
+
+      if Present (Right) then
+         declare
+            Right_Tmp : constant W_Identifier_Id :=
+              New_Temp_Identifier (Typ => Get_Type (+Right));
+
+         begin
+            Result :=
+              New_Typed_Binding
+                (Name    => Right_Tmp,
+                 Def     => Right,
+                 Context =>
+                   Sequence
+                     (Result,
+                      New_Assume_Statement
+                        (Pred =>
+                           New_Comparison
+                             (Symbol => Why_Eq,
+                              Left   =>
+                                +Transform_Identifier
+                                   (Body_Params, Lvalue, Lvalue, EW_Term),
+                              Right  => +Right_Tmp))));
+         end;
+      end if;
+
+      return Result;
+   end New_Overlay_Assignment;
 
    -------------------------
    -- New_Predicate_Check --
@@ -18831,12 +18908,6 @@ package body Gnat2Why.Expr is
          end;
       end if;
 
-      --  After the assignment, we need to havoc the overlay aliases of the
-      --  lvalue.
-
-      Append
-        (T, Havoc_Overlay_Aliases (Overlay_Alias (Get_Root_Object (Lvalue))));
-
       return T;
    end Transform_Assignment_Statement;
 
@@ -22114,6 +22185,15 @@ package body Gnat2Why.Expr is
                            Initialized => Initialized,
                            Only_Var    => False));
 
+                     --  For mutable overlays, assume the dynamic invariant
+                     --  of the overlay for all values of the root object.
+
+                     if Present (Ultimate_Overlaid_Entity (Obj))
+                       and then Is_Mutable_In_Why (Obj)
+                     then
+                        Assume_Dynamic_Invariant_For_Overlay (Obj, Params, R);
+                     end if;
+
                      --  Check the type invariant of constants with no
                      --  variable inputs.
 
@@ -22137,7 +22217,7 @@ package body Gnat2Why.Expr is
 
                --  In the case of a precisely supported address specificatiom,
                --  we emit a static check that the type of the object is OK
-               --  for address clauses, and we havoc any potential aliases.
+               --  for address clauses.
 
                if Present (Get_Address_Expr (Decl)) then
                   declare
@@ -22154,7 +22234,25 @@ package body Gnat2Why.Expr is
                      Explanation : Unbounded_String;
                      Obj_Ty      : constant Type_Kind_Id :=
                        Retysp (Etype (Obj));
+
                   begin
+                     --  Sanity checking: for proof, we use
+                     --  Ultimate_Overlaid_Entity to translate mutable objects
+                     --  with supported aliases. Check that it is consistent.
+
+                     if not Is_Mutable_In_Why (Obj) then
+                        null;
+
+                     elsif Supported_Alias
+                       /= Present (Ultimate_Overlaid_Entity (Obj))
+                       or else (Supported_Alias
+                                and then not Entity_In_SPARK
+                                               (Ultimate_Overlaid_Entity
+                                                  (Obj)))
+                     then
+                        raise Program_Error;
+                     end if;
+
                      --  The check is needed only for overlays between two
                      --  SPARK objects.
 
@@ -22190,11 +22288,6 @@ package body Gnat2Why.Expr is
                            Valid,
                            Current_Subp,
                            Explanation => To_String (Explanation));
-
-                        if not Is_Imported (Obj) then
-                           Append
-                             (R, Havoc_Overlay_Aliases (Overlay_Alias (Obj)));
-                        end if;
 
                         --  If the address clause has a root object which is
                         --  a variable, check that we can account for indirect
@@ -26397,8 +26490,18 @@ package body Gnat2Why.Expr is
                end case;
             else
                declare
-                  Var : constant W_Expr_Id :=
-                    +Reconstruct_Item (E, Params.Ref_Allowed);
+                  Alias : constant Opt_Object_Kind_Id :=
+                    Ultimate_Overlaid_Entity (Ent);
+                  Var   : constant W_Expr_Id :=
+                    Reconstruct_Item
+                      (E,
+                       Domain,
+                       Params.Ref_Allowed,
+                       Alias =>
+                         (if Present (Alias) and then Is_Mutable_In_Why (Ent)
+                          then
+                            Transform_Identifier (Params, Expr, Alias, Domain)
+                          else Why_Empty));
                begin
                   T := Var;
 
@@ -26515,20 +26618,23 @@ package body Gnat2Why.Expr is
                   --  It is sound (and necessary) to only do that in the
                   --  program domain. We can be sure that the relevant Ada code
                   --  will pass this point at least once in program domain.
+                  --  No need to havoc anything for overlays, the alias is
+                  --  havocked when it is translated as volatile parameter for
+                  --  the function call.
 
                   if Is_Object (Ent)
                     and then Has_Volatile (Ent)
                     and then Has_Volatile_Property (Ent, Pragma_Async_Writers)
                     and then Domain in EW_Prog | EW_Pterm
                     and then Params.Ref_Allowed
+                    and then No (Alias)
                   then
                      pragma Assert (Is_Mutable_In_Why (Ent));
 
                      --  Assume dynamic invariant of the object after havoc
 
                      declare
-                        Typ      : constant Entity_Id :=
-                          Get_Ada_Type_From_Item (E);
+                        Typ      : constant Entity_Id := Type_Of_Node (Ent);
                         Dyn_Prop : constant W_Pred_Id :=
                           Compute_Dynamic_Invariant
                             (Expr   => +Var,
