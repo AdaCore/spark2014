@@ -6,4 +6,3 @@ prove_all:
 session_opt:
   level: 4
   prover: ["z3", "cvc5", "alt-ergo"]
-  opt: ["--debug-subprogram-multiprocessing=1"]

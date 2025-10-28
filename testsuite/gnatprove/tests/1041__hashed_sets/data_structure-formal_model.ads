@@ -11,7 +11,7 @@ is
    renames Memory_Index_To_Big.To_Big_Integer;
 
    package Memory_Index_Sequences is new
-     SPARK.Containers.Functional.Infinite_Sequences (Positive_Count_Type);
+     SPARK.Containers.Functional.Infinite_Sequences (Positive_Count_Type, Use_Logical_Equality => True);
 
    package Index_To_Value_Maps is new
      SPARK.Containers.Functional.Maps (Positive_Count_Type, Element_Type);

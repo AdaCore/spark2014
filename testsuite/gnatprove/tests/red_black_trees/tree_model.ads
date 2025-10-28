@@ -21,7 +21,7 @@ package Tree_Model with SPARK_Mode is
 
    subtype Positive_Count_Type is Count_Type range 1 .. Count_Type'Last;
    package D_Seq is new SPARK.Containers.Functional.Vectors
-     (Positive_Count_Type, Direction);
+     (Positive_Count_Type, Direction, Use_Logical_Equality => True);
    use D_Seq;
    --  Sequence of directions modelling a path from the root of the tree to a
    --  node in the tree.

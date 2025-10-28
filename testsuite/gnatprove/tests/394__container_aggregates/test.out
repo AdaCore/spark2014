@@ -63,7 +63,7 @@ test_formal_predicate.adb:42:33: info: predicate check proved (CVC5: 1 VC)
 test_formal_predicate.adb:42:39: medium: predicate check might fail [possible fix: you should consider adding a postcondition to function Get_Value or turning it into an expression function in its unit spec]
 test_formal_predicate.adb:42:53: info: predicate check proved (CVC5: 1 VC)
 test_functional.adb:9:06: info: data dependencies proved
-test_functional.adb:13:23: info: all elements shall fit in index type for sequence aggregates at spark-containers-functional-vectors.ads:78, in instantiation at test_functional_instances.ads:14
+test_functional.adb:13:23: info: all elements shall fit in index type for sequence aggregates at spark-containers-functional-vectors.ads:89, in instantiation at test_functional_instances.ads:14
 test_functional.adb:13:23: info: precondition proved (CVC5: 1 VC)
 test_functional.adb:13:30: medium: range check might fail, cannot prove lower bound for One [possible fix: subprogram at line 8 should mention One in a precondition]
 test_functional.adb:19:06: info: data dependencies proved
@@ -75,7 +75,7 @@ test_functional.adb:33:18: info: keys shall be distinct for maps aggregates at s
 test_functional.adb:33:18: info: precondition proved (CVC5: 10 VC)
 test_functional.adb:33:24: medium: range check might fail, cannot prove lower bound for One [reason for check: value must fit in component type] [possible fix: subprogram at line 28 should mention One in a precondition]
 test_functional.adb:39:06: info: data dependencies proved
-test_functional.adb:43:23: info: all elements shall fit in index type for sequence aggregates at spark-containers-functional-infinite_sequences.ads:61, in instantiation at test_functional_instances.ads:17
+test_functional.adb:43:23: info: all elements shall fit in index type for sequence aggregates at spark-containers-functional-infinite_sequences.ads:72, in instantiation at test_functional_instances.ads:17
 test_functional.adb:43:23: info: precondition proved (Trivial: 1 VC)
 test_functional.adb:43:33: medium: range check might fail, cannot prove lower bound for One [possible fix: subprogram at line 38 should mention One in a precondition]
 test_functional.adb:49:06: info: data dependencies proved
@@ -88,7 +88,7 @@ test_functional.adb:53:47: info: predicate check proved (CVC5: 1 VC; Trivial: 1 
 test_functional.adb:53:55: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_functional.adb:53:63: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_functional_predicate.adb:9:06: info: data dependencies proved
-test_functional_predicate.adb:13:23: info: all elements shall fit in index type for sequence aggregates at spark-containers-functional-vectors.ads:78, in instantiation at test_functional_predicate_instances.ads:15
+test_functional_predicate.adb:13:23: info: all elements shall fit in index type for sequence aggregates at spark-containers-functional-vectors.ads:89, in instantiation at test_functional_predicate_instances.ads:15
 test_functional_predicate.adb:13:23: info: precondition proved (CVC5: 1 VC)
 test_functional_predicate.adb:13:24: info: predicate check proved (CVC5: 1 VC)
 test_functional_predicate.adb:13:30: info: predicate check proved (CVC5: 1 VC)
@@ -112,7 +112,7 @@ test_functional_predicate.adb:33:48: info: predicate check proved (CVC5: 1 VC)
 test_functional_predicate.adb:33:59: info: predicate check proved (CVC5: 1 VC)
 test_functional_predicate.adb:33:70: info: predicate check proved (CVC5: 1 VC)
 test_functional_predicate.adb:39:06: info: data dependencies proved
-test_functional_predicate.adb:43:23: info: all elements shall fit in index type for sequence aggregates at spark-containers-functional-infinite_sequences.ads:61, in instantiation at test_functional_predicate_instances.ads:18
+test_functional_predicate.adb:43:23: info: all elements shall fit in index type for sequence aggregates at spark-containers-functional-infinite_sequences.ads:72, in instantiation at test_functional_predicate_instances.ads:18
 test_functional_predicate.adb:43:23: info: precondition proved (Trivial: 1 VC)
 test_functional_predicate.adb:43:24: info: predicate check proved (CVC5: 1 VC)
 test_functional_predicate.adb:43:30: info: predicate check proved (CVC5: 1 VC)

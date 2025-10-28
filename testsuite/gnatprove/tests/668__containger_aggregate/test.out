@@ -7,8 +7,8 @@ p.ads:11:11: medium: Container_Aggregates annotation might be incorrect
 p.ads:11:11: medium: after a call to Empty_Set at p.ads:13
 p.ads:11:11: medium: after a call to Include at p.ads:18
 p.ads:11:11: medium: after a call to Include at p.ads:18
-p.ads:11:11: medium: when establishing invariant on Length at spark-containers-functional-infinite_sequences.ads:77, in instantiation at p.ads:4
-p.ads:11:11: medium: when reestablishing invariant on Get at spark-containers-functional-infinite_sequences.ads:83, in instantiation at p.ads:4
-p.ads:11:11: medium: when reestablishing invariant on Length at spark-containers-functional-infinite_sequences.ads:77, in instantiation at p.ads:4
+p.ads:11:11: medium: when establishing invariant on Length at spark-containers-functional-infinite_sequences.ads:88, in instantiation at p.ads:4
+p.ads:11:11: medium: when reestablishing invariant on Get at spark-containers-functional-infinite_sequences.ads:94, in instantiation at p.ads:4
+p.ads:11:11: medium: when reestablishing invariant on Length at spark-containers-functional-infinite_sequences.ads:88, in instantiation at p.ads:4
 p.ads:13:13: info: implicit aspect Always_Terminates on "Empty_Set" has been proved, subprogram will terminate
 p.ads:18:14: info: aspect Always_Terminates on "Include" has been proved, subprogram will terminate
