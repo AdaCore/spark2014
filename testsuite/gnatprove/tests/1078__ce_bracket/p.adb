@@ -18,6 +18,14 @@ begin
             pragma Assert (X = 'B');
          end;
 
+      when 13 =>
+         declare
+            -- A character from the Latin-1 Supplement block (128 .. 255)
+            X : Character := '["00E9"]'; -- LC_E_Acute
+         begin
+            pragma Assert (X = 'B');
+         end;
+
       when 21 =>
          declare
             X : String := ASCII.SOH & Character'Val (233);
