@@ -146,3 +146,19 @@ git submodule update
 ```
 
 Then follow the instructions in the [Makefile](https://github.com/AdaCore/spark2014/blob/master/Makefile).
+
+# 8 Working with source code
+
+Since most of the source code is written in Ada an editor or IDE that has
+dedicated support for Ada is recommended. Below are tips for some common IDEs.
+
+## 8.1 Using GNAT Studio
+
+Simply open the respective project, e.g., `gnatprove.gpr` or
+`gnat2why/gnat2why.gpr`, from GNAT Studio or pass it to the executable using
+the `-P` switch.
+
+## 8.2 Using VS Code
+
+The folder `.vscode` contains some settings and a [README](.vscode/README.md)
+file that can be helpful when using VS Code.

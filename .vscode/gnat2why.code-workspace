@@ -1,0 +1,17 @@
+{
+  "folders": [
+    {
+      "path": ".."
+    },
+    {
+      "path": "../../sarif-ada/src"
+    }
+  ],
+  "settings": {
+    "ada.projectFile": "gnat2why/gnat2why.gpr",
+    "ada.onTypeFormatting.indentOnly": true,
+    "[ada]": {
+      "editor.formatOnType": false,
+    },
+  }
+}

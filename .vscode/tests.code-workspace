@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../testsuite/gnatprove/tests"
+		},
+		{
+			"path": "../testsuite/gnatprove/sparklib"
+		},
+		{
+			"path": "../testsuite/gnatprove/internal"
+		}
+	]
+}
