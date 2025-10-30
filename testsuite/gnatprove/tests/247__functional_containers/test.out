@@ -58,7 +58,3 @@ main.adb:57:22: info: assertion proved (CVC5: 1 VC)
 main.adb:57:29: info: precondition proved (CVC5: 1 VC)
 main.adb:58:22: info: assertion proved (CVC5: 1 VC)
 main.adb:58:29: info: precondition proved (CVC5: 1 VC)
-main.adb:42:07: warning: check will fail at run time [-gnatw.a]
-main.adb:42:07: warning: in instantiation at spark-containers-functional-vectors.ads:164 [-gnatw.a]
-main.adb:52:07: warning: check will fail at run time [-gnatw.a]
-main.adb:52:07: warning: in instantiation at spark-containers-functional-infinite_sequences.ads:144 [-gnatw.a]

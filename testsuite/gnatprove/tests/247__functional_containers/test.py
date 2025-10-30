@@ -1,8 +1,5 @@
 from subprocess import call
 from test_support import prove_all, create_sparklib, gprbuild
-import os
-
-os.environ["SPARKLIB_BODY_MODE"] = "On"
 
 # Check that aggregates of functional containers work as expected.
 
