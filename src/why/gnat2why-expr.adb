@@ -22289,27 +22289,6 @@ package body Gnat2Why.Expr is
                            Current_Subp,
                            Explanation => To_String (Explanation));
 
-                        --  If the address clause has a root object which is
-                        --  a variable, check that we can account for indirect
-                        --  effects to the declared object. Either Expr is a
-                        --  reference to another object, or the defined object
-                        --  should have async writers. If no Root_Object can
-                        --  be found, a warning has already been emitted in
-                        --  marking.
-
-                        if not Is_Constant_In_SPARK (Aliased_Object)
-                          and then Nkind (Prefix (Address))
-                                   not in N_Identifier | N_Expanded_Name
-                        then
-                           Emit_Static_Proof_Result
-                             (Decl,
-                              VC_UC_Volatile,
-                              Has_Async_Writers (Direct_Mapping_Id (Obj))
-                              and Has_Async_Writers
-                                    (Direct_Mapping_Id (Aliased_Object)),
-                              Current_Subp);
-                        end if;
-
                         --  We now emit static checks to make sure the two
                         --  aliased objects are compatible.
 
