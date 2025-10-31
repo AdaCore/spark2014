@@ -404,4 +404,12 @@ package CE_Values is
 
    function To_String (V : Opt_Value_Type) return String;
 
+   type Supported_Attribute is (Initialized, First, Last, Constrained, Valid);
+   --  Enumeration for attributes that are supported in the RAC.
+
+   function To_String (Attribute : Supported_Attribute) return String;
+   --  Procedure to convert supported attributes to a properly capitalized
+   --  string (e.g., "Initialized"). Note that the predefined Image function
+   --  converts the attribute names to all upper case (e.g., "INITIALIZED").
+
 end CE_Values;
