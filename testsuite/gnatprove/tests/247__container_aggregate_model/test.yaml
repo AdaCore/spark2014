@@ -1,3 +1,4 @@
+large: true
 prove_all:
-  sparklib: True
-  enable_sarif_check: True
+  enable_sarif_check: true
+  sparklib: true
