@@ -465,6 +465,16 @@ package body Gnat2Why.Expr is
    --  Need_Store is True, the Pattern is updated to reference the parts reused
    --  from Var if any.
 
+   procedure Insert_Check_For_Size_Of_Overlays
+     (Ada_Node        : Node_Id;
+      Obj             : Entity_Id;
+      Overlaid_Object : Node_Id;
+      P               : in out W_Prog_Id;
+      Params          : Transformation_Params);
+   --  Insert a check in P to ensure that an object Obj and the path it
+   --  overlays Overlaid_Object have the same size. Emit the check statically
+   --  if possible.
+
    function Insert_Invariant_Check_For_Eq
      (Ada_Node         : Node_Id;
       Typ              : Type_Kind_Id;
@@ -1763,7 +1773,11 @@ package body Gnat2Why.Expr is
             Binder  : constant Item_Type :=
               Ada_Ent_To_Why.Element (Symbol_Table, Lvalue);
             L_Deref : constant W_Term_Id :=
-              Reconstruct_Item (Binder, Ref_Allowed => True);
+              +Transform_Identifier
+                 (Params => Body_Params,
+                  Expr   => Lvalue,
+                  Ent    => Lvalue,
+                  Domain => EW_Term);
 
             Constrained_Ty : constant Entity_Id := Etype (Lvalue);
             --  Type of the fullview
@@ -10863,8 +10877,9 @@ package body Gnat2Why.Expr is
                      Append
                        (Assume,
                         Assume_Dynamic_Invariant
-                          (+Reconstruct_Item (Item),
-                           Get_Ada_Type_From_Item (Item),
+                          (+Transform_Identifier
+                              (Body_Params, Elt, Elt, EW_Term),
+                           Type_Of_Node (Elt),
                            Valid =>
                              Get_Valid_Id_From_Object
                                (Elt, Ref_Allowed => True)));
@@ -10876,6 +10891,267 @@ package body Gnat2Why.Expr is
       end if;
       return Result;
    end Havoc_Overlay_Aliases;
+
+   ---------------------------------------
+   -- Insert_Check_For_Size_Of_Overlays --
+   ---------------------------------------
+
+   procedure Insert_Check_For_Size_Of_Overlays
+     (Ada_Node        : Node_Id;
+      Obj             : Entity_Id;
+      Overlaid_Object : Node_Id;
+      P               : in out W_Prog_Id;
+      Params          : Transformation_Params)
+   is
+
+      --  In this function, we try to emit a static check if possible, a
+      --  dynamic check otherwise.
+      --  Statically_Invalid is set to True when an unsupported construct is
+      --  encountered so the check cannot be performed, even dynamically. When
+      --  it is set, a statically failing check is emitted. In this case,
+      --  Explanation is set to relevant information.
+      --  Dynamic_Check is set to True whenever at least part of the
+      --  information cannot be computed statically.
+
+      Statically_Invalid : Boolean := False;
+      Explanation        : Unbounded_String;
+      Dynamic_Check      : Boolean := False;
+
+      function Compute_Dynamic_Size
+        (Typ : Type_Kind_Id; Rng : Node_Id := Empty) return W_Term_Id
+
+      with
+        Pre =>
+          Is_Array_Type (Typ)
+          and then (Present (Rng) or else Is_Constrained (Typ))
+          and then Has_Aliased_Components (Etype (Typ));
+      --  Compute the size of a dynamically constrained array by counting its
+      --  components. The Rng optional parameter supplies the bounds of a
+      --  slice. If it is empty, the whole array is considerd. This is only
+      --  valid if the array does not contain gaps between components (gaps in
+      --  components are fine). Arrays with aliased components never have gaps
+      --  between components (but packed arrays might have gaps at the end).
+
+      procedure Compute_Dynamic_Size_If_Possible
+        (Typ          : Type_Kind_Id;
+         Dynamic_Size : out W_Term_Id;
+         Rng          : Node_Id := Empty);
+      --  If Typ is a dynamic array type with aliased components, compute the
+      --  size dynamically and store it in Dynamic_Size. Update
+      --  Statically_Invalid, Explanation, and Dynamic_Check accordingly.
+      --  This procedure should only be called for objects which do not have
+      --  a specific Size indication.
+
+      --------------------------
+      -- Compute_Dynamic_Size --
+      --------------------------
+
+      function Compute_Dynamic_Size
+        (Typ : Type_Kind_Id; Rng : Node_Id := Empty) return W_Term_Id
+      is
+         Comp_Size : constant Uint :=
+           Get_Attribute_Value (Typ, Attribute_Component_Size);
+      begin
+         pragma Assert (not No (Comp_Size));
+         if Present (Rng) then
+            declare
+               Low  : constant Node_Id := Low_Bound (Rng);
+               High : constant Node_Id := High_Bound (Rng);
+            begin
+               return
+                 New_Call
+                   (Name => Int_Infix_Mult,
+                    Args =>
+                      (Build_Length_Expr
+                         (Domain => EW_Term,
+                          First  =>
+                            +Transform_Term
+                               (Expr          => Low,
+                                Expected_Type => EW_Int_Type,
+                                Params        => Params),
+                          Last   =>
+                            +Transform_Term
+                               (Expr          => High,
+                                Expected_Type => EW_Int_Type,
+                                Params        => Params)),
+                       New_Integer_Constant (Value => Comp_Size)));
+            end;
+         else
+            declare
+               Res : W_Term_Id := New_Integer_Constant (Value => Comp_Size);
+            begin
+               for I in 1 .. Natural (Number_Dimensions (Typ)) loop
+                  Res :=
+                    New_Call
+                      (Name => Int_Infix_Mult,
+                       Args =>
+                         (Build_Length_Expr
+                            (Domain => EW_Term, Ty => Typ, Dim => I),
+                          +Res));
+               end loop;
+               return Res;
+            end;
+         end if;
+      end Compute_Dynamic_Size;
+
+      --------------------------------------
+      -- Compute_Dynamic_Size_If_Possible --
+      --------------------------------------
+
+      procedure Compute_Dynamic_Size_If_Possible
+        (Typ          : Type_Kind_Id;
+         Dynamic_Size : out W_Term_Id;
+         Rng          : Node_Id := Empty) is
+      begin
+         --  Check if we are in a case where the size of an object of type Typ
+         --  can safely be computed dynamically.
+
+         if Present (Rng)
+           or else (Is_Array_Type (Typ) and then Is_Constrained (Typ))
+         then
+
+            --  For arrays, provide a more precise explanation if the size
+            --  cannot be computed.
+
+            if not Has_Aliased_Components (Etype (Typ)) then
+               Explanation :=
+                 To_Unbounded_String
+                   (Type_Name_For_Explanation (Typ)
+                    & " doesn't have aliased components");
+
+            elsif No (Get_Attribute_Value (Typ, Attribute_Component_Size)) then
+               Explanation :=
+                 To_Unbounded_String
+                   (Type_Name_For_Explanation (Typ)
+                    & " doesn't have a Component_Size representation clause"
+                    & " or aspect");
+
+            else
+               Dynamic_Check := True;
+               Dynamic_Size := Compute_Dynamic_Size (Typ, Rng);
+               return;
+            end if;
+         end if;
+
+         --  Dynamic computation has failed, the check is statically invalid
+
+         Statically_Invalid := True;
+         Dynamic_Size := Why_Empty;
+      end Compute_Dynamic_Size_If_Possible;
+
+      --  Objects introduced for the sizes of Obj and its Overlaid_Object.
+      --  If the size can be computed statically, Static_*_Size and *_Size_Str
+      --  are set and Dynamic_*_Size is Why_Empty. If the size can only be
+      --  computed dynamically, Dynamic_*_Size is set.
+
+      Obj_Typ               : constant Type_Kind_Id := Retysp (Etype (Obj));
+      Static_Obj_Size       : Uint;
+      Obj_Size_Str          : Unbounded_String := Null_Unbounded_String;
+      Dynamic_Obj_Size      : W_Term_Id := Why_Empty;
+      Overlaid_Size_Str     : Unbounded_String;
+      Static_Overlaid_Size  : Uint;
+      Dynamic_Overlaid_Size : W_Term_Id := Why_Empty;
+   begin
+      Check_Known_Size_For_Object
+        (Obj, Static_Obj_Size, Explanation, Obj_Size_Str);
+
+      --  Try to compute the size of dynamic array object if static computation
+      --  failed.
+
+      if No (Static_Obj_Size) then
+         Compute_Dynamic_Size_If_Possible (Obj_Typ, Dynamic_Obj_Size);
+      end if;
+
+      Check_Known_Size_For_Object
+        (Overlaid_Object,
+         Static_Overlaid_Size,
+         Explanation,
+         Overlaid_Size_Str);
+
+      if No (Static_Overlaid_Size) then
+
+         --  Try to compute the size of dynamic array objects
+
+         if Nkind (Overlaid_Object) = N_Slice then
+            declare
+               Overlaid_Typ : constant Type_Kind_Id :=
+                 Retysp (Etype (Prefix (Overlaid_Object)));
+
+            begin
+               Compute_Dynamic_Size_If_Possible
+                 (Overlaid_Typ,
+                  Dynamic_Overlaid_Size,
+                  Discrete_Range (Overlaid_Object));
+            end;
+
+         else
+            declare
+               Overlaid_Typ : constant Type_Kind_Id :=
+                 Retysp (Etype (Overlaid_Object));
+
+            begin
+               Compute_Dynamic_Size_If_Possible
+                 (Overlaid_Typ, Dynamic_Overlaid_Size);
+            end;
+         end if;
+      end if;
+
+      --  If one of the sizes is dynamic, add a dynamic check to P
+
+      if not Statically_Invalid and then Dynamic_Check then
+         if No (Dynamic_Obj_Size) then
+            pragma Assert (Present (Static_Obj_Size));
+            Dynamic_Obj_Size :=
+              New_Integer_Constant (Value => Static_Obj_Size);
+         elsif No (Dynamic_Overlaid_Size) then
+            pragma Assert (Present (Static_Overlaid_Size));
+            Dynamic_Overlaid_Size :=
+              New_Integer_Constant (Value => Static_Overlaid_Size);
+         end if;
+
+         P :=
+           +Sequence
+              (New_Ignore
+                 (Prog =>
+                    Why.Gen.Progs.New_Located_Assert
+                      (Ada_Node => Ada_Node,
+                       Pred     =>
+                         New_Comparison
+                           (Symbol => Why_Eq,
+                            Left   => Dynamic_Obj_Size,
+                            Right  => Dynamic_Overlaid_Size),
+                       Reason   => VC_UC_Same_Size,
+                       Kind     => EW_Assert)),
+               P);
+
+      --  Otherwise, everything is static. Check the sizes and emit a static
+      --  proof result.
+
+      else
+         if Statically_Invalid then
+            null;
+         elsif Static_Obj_Size /= Static_Overlaid_Size then
+            Statically_Invalid := True;
+            Explanation :=
+              To_Unbounded_String
+                ("sizes of overlaid objects differ: "
+                 & To_String (Obj_Size_Str)
+                 & " "
+                 & Escape (UI_Image (Static_Obj_Size))
+                 & ", while "
+                 & To_String (Overlaid_Size_Str)
+                 & " "
+                 & Escape (UI_Image (Static_Overlaid_Size)));
+         end if;
+
+         Emit_Static_Proof_Result
+           (Ada_Node,
+            VC_UC_Same_Size,
+            not Statically_Invalid,
+            Current_Subp,
+            Explanation => To_String (Explanation));
+      end if;
+   end Insert_Check_For_Size_Of_Overlays;
 
    ----------------------------
    -- Insert_Invariant_Check --
@@ -13369,7 +13645,9 @@ package body Gnat2Why.Expr is
             --  It can happen that the prefix does not have the expected type
             --  but some Itype with the same constraints. To avoid a type
             --  mismatch in Why, we should use the selector of the expected
-            --  type instead.
+            --  type instead. Force no sliding, as the bounds of the expected
+            --  type might depend on the discriminants of the enclosing type,
+            --  which are not in the symbol table at this stage.
             --  If there is no such component, we must be in a tagged view
             --  conversion. Introduce conversions to do the update.
 
@@ -13407,10 +13685,11 @@ package body Gnat2Why.Expr is
                       (Etype (Selector), Relaxed_Init => Relaxed_Init);
                   New_Value    : constant W_Expr_Id :=
                     Insert_Simple_Conversion
-                      (Ada_Node => N,
-                       Domain   => Domain,
-                       Expr     => Init_Val,
-                       To       => To_Type);
+                      (Ada_Node       => N,
+                       Domain         => Domain,
+                       Expr           => Init_Val,
+                       To             => To_Type,
+                       Force_No_Slide => True);
                begin
                   --  The code should never update a discrimiant by assigning
                   --  to it.
@@ -13965,10 +14244,8 @@ package body Gnat2Why.Expr is
       function Compute_Type_Invariant_For_Entity
         (Obj : Entity_Id; Is_Param : Boolean) return W_Pred_Id
       is
-         Binder : constant Item_Type :=
-           Ada_Ent_To_Why.Element (Symbol_Table, Obj);
-         Expr   : constant W_Term_Id :=
-           Reconstruct_Item (Binder, Ref_Allowed => Params.Ref_Allowed);
+         Expr : constant W_Term_Id :=
+           +Transform_Identifier (Body_Params, Obj, Obj, EW_Term);
       begin
          --  If Is_Param is True, exclude invariants relaxed for parameters of
          --  E.
@@ -14553,12 +14830,22 @@ package body Gnat2Why.Expr is
                --  duplicates of those done in One_Level_Update.
 
                Prefix_Expr : constant W_Expr_Id :=
-                 Transform_Expr
-                   (Domain        => Subdomain,
-                    Expr          => Prefix (N),
-                    Expected_Type => Prefix_Type,
-                    Params        => Body_Params);
-               Prefix_Var  : constant W_Expr_Id :=
+                 Insert_Simple_Conversion
+                   (Domain         => Subdomain,
+                    Expr           =>
+                      Transform_Expr
+                        (Domain => Subdomain,
+                         Expr   => Prefix (N),
+                         Params => Body_Params),
+                    To             => Prefix_Type,
+                    Force_No_Slide => True);
+               --  The type of the type prefix might not match Prefix_Type if
+               --  it is a discriminant dependent subcomponent. In this case,
+               --  Prefix_Type might have bounds that reference discriminants
+               --  whose value is not known in the context. Sliding is not
+               --  necessary but could cause crashes.
+
+               Prefix_Var : constant W_Expr_Id :=
                  New_Temp_For_Expr (Prefix_Expr);
             begin
                Expr :=
@@ -21877,7 +22164,8 @@ package body Gnat2Why.Expr is
                         --  No need to check for source of UC.
 
                         if not Is_Constant_In_SPARK (Obj) then
-                           Suitable_For_UC_Source (Obj_Ty, Valid, Explanation);
+                           Object_Suitable_For_UC_Source
+                             (Obj, Valid, Explanation);
                            Emit_Static_Proof_Result
                              (Decl,
                               VC_UC_Source,
@@ -21941,8 +22229,8 @@ package body Gnat2Why.Expr is
                              Retysp (Etype (Pref));
                         begin
 
-                           Suitable_For_UC_Source
-                             (Addr_Ty, Valid, Explanation);
+                           Object_Suitable_For_UC_Source
+                             (Pref, Valid, Explanation);
                            Emit_Static_Proof_Result
                              (Address,
                               VC_UC_Source,
@@ -21967,16 +22255,8 @@ package body Gnat2Why.Expr is
                               Valid,
                               Current_Subp,
                               Explanation => To_String (Explanation));
-
-                           Objects_Have_Same_Size
-                             (Obj, Pref, Valid, Explanation);
-                           Emit_Static_Proof_Result
-                             (Address,
-                              VC_UC_Same_Size,
-                              Valid,
-                              Current_Subp,
-                              Explanation => To_String (Explanation));
-
+                           Insert_Check_For_Size_Of_Overlays
+                             (Address, Obj, Pref, R, Params);
                            if Nkind (Pref) in N_Has_Entity then
                               Objects_Have_Compatible_Alignments
                                 (Obj, Entity (Pref), Valid, Explanation);
@@ -26257,86 +26537,21 @@ package body Gnat2Why.Expr is
                              Valid  =>
                                Get_Valid_Id_From_Object
                                  (Ent, Params.Ref_Allowed));
+                        Eff      : constant W_Effects_Id := New_Effects;
+                        procedure Effects_Append_Binder_To_Writes is new
+                          Effects_Append_Binder (Effects_Append_To_Writes);
                         Havoc    : W_Prog_Id := +Void;
+
                      begin
-                        case E.Kind is
-                           when Subp                      =>
-                              raise Program_Error;
+                        Effects_Append_Binder_To_Writes (Eff, E);
+                        Havoc := New_Havoc_Statement (Effects => Eff);
 
-                           when Regular | Concurrent_Self =>
-                              if E.Main.Mutable then
-                                 Havoc := New_Havoc_Call (E.Main.B_Name);
-                              end if;
-
-                           when UCArray                   =>
-                              pragma Assert (E.Content.Mutable);
-                              Havoc := New_Havoc_Call (E.Content.B_Name);
-
-                           when DRecord                   =>
-
-                              --  Havoc the reference for fields
-
-                              if E.Fields.Present then
-                                 pragma Assert (E.Fields.Binder.Mutable);
-
-                                 Prepend
-                                   (New_Havoc_Call (E.Fields.Binder.B_Name),
-                                    Havoc);
-                              end if;
-
-                              --  If the object is not constrained then also
-                              --  havoc the reference for discriminants.
-
-                              if E.Discrs.Present
-                                and then E.Discrs.Binder.Mutable
-                              then
-                                 pragma Assert (E.Constr.Present);
-
-                                 declare
-                                    Havoc_Discr      : constant W_Prog_Id :=
-                                      New_Havoc_Call (E.Discrs.Binder.B_Name);
-                                    Havoc_Discr_Cond : constant W_Prog_Id :=
-                                      New_Conditional
-                                        (Condition =>
-                                           New_Not (Right => +E.Constr.Id),
-                                         Then_Part => Havoc_Discr);
-                                 begin
-                                    Prepend (Havoc_Discr_Cond, Havoc);
-                                 end;
-                              end if;
-
-                           when Pointer                   =>
-
-                              --  Havoc the reference for value
-
-                              pragma Assert (E.Value.Mutable);
-
-                              Havoc := New_Havoc_Call (E.Value.B_Name);
-
-                              --  If the object is mutable then also havoc the
-                              --  is_null field.
-
-                              if E.Mutable then
-                                 Prepend (New_Havoc_Call (E.Is_Null), Havoc);
-                              end if;
-                        end case;
-
-                        if Object_Has_Valid_Id (Ent) then
+                        if Dyn_Prop /= True_Pred then
                            Prepend
-                             (New_Havoc_Call
-                                (+Get_Valid_Id_From_Object
-                                    (Ent, Ref_Allowed => False)),
-                              Havoc);
+                             (New_Assume_Statement (Pred => Dyn_Prop), T);
                         end if;
 
-                        if Havoc /= +Void then
-                           if Dyn_Prop /= True_Pred then
-                              Prepend
-                                (New_Assume_Statement (Pred => Dyn_Prop), T);
-                           end if;
-
-                           Prepend (Havoc, T);
-                        end if;
+                        Prepend (Havoc, T);
                      end;
                   end if;
                end;
@@ -28627,8 +28842,8 @@ package body Gnat2Why.Expr is
           (Etype (N),
            Relaxed_Init => Expr_Has_Relaxed_Init (N, No_Eval => False));
       Rng       : constant Node_Id := Get_Range (Discrete_Range (N));
-      Pref_Term : constant W_Term_Id :=
-        +New_Temp_For_Expr (Expr, Need_Temp => Domain = EW_Prog);
+      Pref_Term : constant W_Expr_Id :=
+        New_Temp_For_Expr (Expr, Need_Temp => Domain = EW_Prog);
       T         : W_Expr_Id;
       Rng_Type  : constant W_Type_Id :=
         Base_Why_Type_No_Bool (Entity_Id'(Type_Of_Node (Low_Bound (Rng))));
@@ -28640,7 +28855,7 @@ package body Gnat2Why.Expr is
           (Transform_Expr (High_Bound (Rng), Rng_Type, Domain, Params));
 
    begin
-      T := +Pref_Term;
+      T := Pref_Term;
 
       --  if needed, we convert the arrray to a simple base type
 
@@ -28668,13 +28883,13 @@ package body Gnat2Why.Expr is
                 (To   => Rng_Type,
                  Expr =>
                    Get_Array_Attr
-                     (Expr => Pref_Term, Attr => Attribute_First, Dim => 1));
+                     (Expr => +Pref_Term, Attr => Attribute_First, Dim => 1));
             Ar_High : constant W_Term_Id :=
               Insert_Simple_Conversion
                 (To   => Rng_Type,
                  Expr =>
                    Get_Array_Attr
-                     (Expr => Pref_Term, Attr => Attribute_Last, Dim => 1));
+                     (Expr => +Pref_Term, Attr => Attribute_Last, Dim => 1));
             Check   : constant W_Pred_Id :=
               New_Connection
                 (Op    => EW_Imply,

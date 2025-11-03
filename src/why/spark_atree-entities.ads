@@ -624,6 +624,12 @@ package SPARK_Atree.Entities is
 
    function Number_Dimensions (Typ : Array_Kind_Id) return Pos;
 
+   function Has_Pragma_Pack (N : Entity_Id) return Boolean
+   renames Einfo.Entities.Has_Pragma_Pack;
+
+   function Has_Aliased_Components (N : Entity_Id) return Boolean
+   renames Einfo.Entities.Has_Aliased_Components;
+
    ------------------
    --  For Strings --
    ------------------

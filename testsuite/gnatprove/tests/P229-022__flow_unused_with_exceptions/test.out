@@ -1,19 +1,19 @@
-fileio.adb:7:10: medium: unexpected exception might be raised
+fileio.adb:7:10: medium: unexpected exception might be raised [reason for check: Simple allows propagating no exceptions] [possible explanation: Constraint_Error might be unexpectedly raised]
 fileio.adb:9:14: medium: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at fileio.ads:15 should mention X in a precondition]
 fileio.adb:10:14: medium: overflow check might fail, cannot prove upper bound for Y + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at fileio.ads:15 should mention Y in a precondition]
 fileio.adb:14:07: warning: initialization of "Z" has no effect
-fileio.adb:18:10: medium: unexpected exception might be raised
+fileio.adb:18:10: medium: unexpected exception might be raised [reason for check: Simple2 allows propagating no exceptions] [possible explanation: Constraint_Error might be unexpectedly raised]
 fileio.adb:20:14: medium: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at fileio.ads:17 should mention X in a precondition]
 fileio.adb:21:14: medium: overflow check might fail, cannot prove upper bound for Y + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at fileio.ads:17 should mention Y in a precondition]
 fileio.adb:26:07: warning: assuming "fgetc" always terminates
 fileio.adb:26:07: warning: no Always_Terminates aspect available for "fgetc" [assumed-always-terminates]
 fileio.adb:28:28: warning: assuming "ferror" has no effect on global items
 fileio.adb:28:28: warning: no Global contract available for "ferror" [assumed-global-null]
-fileio.adb:29:10: medium: unexpected exception might be raised
+fileio.adb:29:10: medium: unexpected exception might be raised [reason for check: Getc allows propagating no exceptions] [possible explanation: Device_Error might be unexpectedly raised]
 fileio.adb:34:07: info: initialization of "Result" proved
 fileio.adb:37:10: warning: assuming "ungetc" always terminates
 fileio.adb:37:10: warning: no Always_Terminates aspect available for "ungetc" [assumed-always-terminates]
-fileio.adb:39:13: medium: unexpected exception might be raised
+fileio.adb:39:13: medium: unexpected exception might be raised [reason for check: Ungetc allows propagating no exceptions] [possible explanation: Device_Error might be unexpectedly raised]
 fileio.ads:19:38: info: initialization of "Ch" proved
 fileio.ads:20:32: medium: "The_File" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(19))
 fileio.ads:21:14: medium: postcondition might fail, cannot prove Ch = Character'Pos (The_File (Cur_Position'Old))

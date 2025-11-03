@@ -27,8 +27,19 @@ Raise Statements and Raise Expressions
 Raise statements and raise expressions are in |SPARK|. An exception is said to
 be *expected* if it is covered by a choice of an exception handler in an
 enclosing handled sequence of statements, or if its enclosing entity is a
-procedure body and the exception is covered by a choice in its Exceptional_Cases
-aspect whose associated consequence is not statically False.
+subprogram body and the exception is covered by a choice in its
+Exceptional_Cases aspect whose associated consequence is not statically False.
+In addition, if the construct raising the exception is ghost, then it is only
+expected if the handled sequence of statements or subprogram body that covers
+it fullfils the following properties:
+
+* It shall be ghost,
+
+* it shall be assertion-level-dependent on the construct, and
+
+* if the assertion policy applicable to the construct raising the exception is
+  Ignore, then the assertion policy applicable to handled sequence of statements
+  or subprogram body that covers it shall be Ignore too.
 
 As described below, all raise expressions must be provably never executed.
 The same holds true for raise statements if they raise unexpected exceptions.
@@ -144,7 +155,8 @@ pragma Assertion_Policy:
    pragmas Assertion_Policy that apply to named assertion aspects are ignored.
    [The assertion policy applicable to ghost entities, assertion expressions,
    and specification aspects associated with the Runtime assertion policy is
-   always Check and the assertion policy applicable to ghost entities, assertion
+   always Check, unless the entity occurs in an ignored ghost scope. The
+   assertion policy applicable to ghost entities, assertion
    expressions, and specification aspects associated with assertion levels
    depending on the Static assertion level is always Ignore.]
 

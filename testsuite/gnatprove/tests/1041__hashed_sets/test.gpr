@@ -3,7 +3,7 @@ with "sparklib";
 project Test is
 
   package Compiler is
-     for Switches("Ada") use ("-gnat2022");
+     for Switches("Ada") use ("-gnat2022", "-gnatX");
   end Compiler;
 
   package Prove is

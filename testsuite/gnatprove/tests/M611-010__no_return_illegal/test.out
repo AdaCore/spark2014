@@ -1,4 +1,4 @@
-no_return_illegal.adb:11:07: medium: unexpected exception might be raised
+no_return_illegal.adb:11:07: medium: unexpected exception might be raised [reason for check: Aborting allows propagating no exceptions] [possible explanation: Program_Error might be unexpectedly raised]
 no_return_illegal.adb:18:12: warning: this statement is never reached
 no_return_illegal.adb:18:12: warning: unreachable code [enabled by default]
 no_return_illegal.adb:18:17: info: overflow check proved (CVC5: 2 VC)

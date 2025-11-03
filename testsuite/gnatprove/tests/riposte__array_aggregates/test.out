@@ -39,13 +39,13 @@ array_aggregates.adb:168:11: info: flow dependencies proved
 array_aggregates.adb:173:22: info: assertion proved (CVC5: 1 VC)
 array_aggregates.adb:176:32: info: initialization of "X" proved
 array_aggregates.adb:177:11: info: flow dependencies proved
-array_aggregates.adb:186:22: high: assertion might fail (e.g. when X(2).A = 5 and X(2).B = False and X(2).C = Elem_0 and X(4).A = 5 and X(4).B = False)
+array_aggregates.adb:186:22: high: assertion might fail (e.g. when X = (2 => (A => 5, B => False, C => Elem_0), 4 => (A => 5, B => False, C => Elem_0), 5 => (A => 5, B => False, C => Elem_0), 6 => (A => 5, B => False, C => Elem_0), others => (A => 10, B => True, C => Elem_1)))
 array_aggregates.adb:189:32: info: initialization of "X" proved
 array_aggregates.adb:190:11: info: flow dependencies proved
 array_aggregates.adb:199:22: info: assertion proved (CVC5: 1 VC)
 array_aggregates.adb:202:32: info: initialization of "X" proved
 array_aggregates.adb:203:11: info: flow dependencies proved
-array_aggregates.adb:212:22: high: assertion might fail (e.g. when X(2)(1) = 1 and X(2)(2) = 2 and X(2)(3) = 3 and X(4)(1) = 1 and X(4)(2) = 2)
+array_aggregates.adb:212:22: high: assertion might fail (e.g. when X = (2 => (1 => 1, 2 => 2, 3 => 3, others => 0), 4 => (1 => 1, 2 => 2, 3 => 3, others => 0), 5 => (1 => 1, 2 => 2, 3 => 3, others => 0), 6 => (1 => 1, 2 => 2, 3 => 3, others => 0), others => (5 => 10, others => 12)))
 array_aggregates.adb:215:32: info: initialization of "X" proved
 array_aggregates.adb:216:11: info: flow dependencies proved
 array_aggregates.adb:225:22: info: assertion proved (CVC5: 1 VC)
@@ -69,19 +69,19 @@ array_aggregates.adb:277:12: info: flow dependencies proved
 array_aggregates.adb:287:22: info: assertion proved (CVC5: 1 VC)
 array_aggregates.adb:290:32: info: initialization of "X" proved
 array_aggregates.adb:291:11: info: flow dependencies proved
-array_aggregates.adb:297:22: high: assertion might fail (e.g. when X(2) = Elem_0 and X(4) = Elem_0 and X(5) = Elem_0 and X(6) = Elem_0 and X(Small_Index_T'Last) = Elem_2)
+array_aggregates.adb:297:22: high: assertion might fail (e.g. when X = (2 => Elem_0, 4 => Elem_0, 5 => Elem_0, 6 => Elem_0, Small_Index_T'Last => Elem_2, others => Elem_1))
 array_aggregates.adb:300:32: info: initialization of "X" proved
 array_aggregates.adb:302:11: info: flow dependencies proved
-array_aggregates.adb:309:22: high: assertion might fail (e.g. when N = 1 and X(2) = Elem_0 and X(4) = Elem_0 and X(5) = Elem_0 and X(6) = Elem_0 and X(Small_Index_T'Last) = Elem_2) [possible fix: subprogram at line 300 should mention N in a precondition]
+array_aggregates.adb:309:22: high: assertion might fail (e.g. when N = 1 and X = (2 => Elem_0, 4 => Elem_0, 5 => Elem_0, 6 => Elem_0, Small_Index_T'Last => Elem_2, others => Elem_1)) [possible fix: subprogram at line 300 should mention N in a precondition]
 array_aggregates.adb:312:32: info: initialization of "X" proved
 array_aggregates.adb:314:11: info: flow dependencies proved
-array_aggregates.adb:321:22: high: assertion might fail (e.g. when N = Small_Index_T'Last and X(2) = Elem_0 and X(4) = Elem_0 and X(5) = Elem_0 and X(6) = Elem_0 and X(Small_Index_T'Last) = Elem_2) [possible fix: subprogram at line 312 should mention N in a precondition]
+array_aggregates.adb:321:22: high: assertion might fail (e.g. when N = Small_Index_T'Last and X = (2 => Elem_0, 4 => Elem_0, 5 => Elem_0, 6 => Elem_0, Small_Index_T'Last => Elem_2, others => Elem_1)) [possible fix: subprogram at line 312 should mention N in a precondition]
 array_aggregates.adb:324:33: info: initialization of "X" proved
 array_aggregates.adb:326:11: info: flow dependencies proved
-array_aggregates.adb:333:22: high: assertion might fail (e.g. when N = 1 and X(2) = Elem_0 and X(4) = Elem_0 and X(5) = Elem_0 and X(6) = Elem_0 and X(Small_Index_T'Last) = Elem_2) [possible fix: subprogram at line 324 should mention N in a precondition]
+array_aggregates.adb:333:22: high: assertion might fail (e.g. when N = 1 and X = (2 => Elem_0, 4 => Elem_0, 5 => Elem_0, 6 => Elem_0, Small_Index_T'Last => Elem_2, others => Elem_1)) [possible fix: subprogram at line 324 should mention N in a precondition]
 array_aggregates.adb:336:33: info: initialization of "X" proved
 array_aggregates.adb:338:11: info: flow dependencies proved
-array_aggregates.adb:345:46: high: assertion might fail, cannot prove X (N) = Elem_2 (e.g. when N = 2 and X(2) = Elem_0 and X(4) = Elem_0 and X(5) = Elem_0 and X(6) = Elem_0 and X(Small_Index_T'Last) = Elem_2) [possible fix: subprogram at line 336 should mention N in a precondition]
+array_aggregates.adb:345:46: high: assertion might fail, cannot prove X (N) = Elem_2 (e.g. when N = 2 and X = (2 => Elem_0, 4 => Elem_0, 5 => Elem_0, 6 => Elem_0, Small_Index_T'Last => Elem_2, others => Elem_1)) [possible fix: subprogram at line 336 should mention N in a precondition]
 array_aggregates.adb:348:33: info: initialization of "X" proved
 array_aggregates.adb:349:11: info: flow dependencies proved
 array_aggregates.adb:353:22: high: assertion might fail (e.g. when X = (others => 5))

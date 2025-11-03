@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Doubly_Linked_Lists;
-with Errout_Wrapper;              use Errout_Wrapper;
 with Gnat2Why.Data_Decomposition; use Gnat2Why.Data_Decomposition;
 with Gnat2Why.Tables;             use Gnat2Why.Tables;
 with Gnat2Why.Util;               use Gnat2Why.Util;
@@ -199,43 +198,84 @@ package body Gnat2Why.Unchecked_Conversion is
       return (Ok => True);
    end Is_UC_With_Precise_Definition;
 
-   ----------------------------
-   -- Objects_Have_Same_Size --
-   ----------------------------
+   -----------------------------------
+   -- Object_Suitable_For_UC_Source --
+   -----------------------------------
 
-   procedure Objects_Have_Same_Size
-     (A, B : Node_Id; Result : out Boolean; Explanation : out Unbounded_String)
+   procedure Object_Suitable_For_UC_Source
+     (Obj : Node_Id; Result : out Boolean; Explanation : out Unbounded_String)
    is
-      A_Size, B_Size         : Uint;
-      A_Size_Str, B_Size_Str : Unbounded_String;
+      Common_Exp : constant String :=
+        "; "
+        & (if Nkind (Obj)
+              in N_Defining_Identifier | N_Identifier | N_Expanded_Name
+           then Source_Name (Obj)
+           else "object")
+        & " might have unused bits that are not modelled in SPARK";
+      Typ        : constant Type_Kind_Id := Retysp (Etype (Obj));
+      Obj_Size   : Uint;
+      RM_Size    : Uint;
+      Size_Str   : Unbounded_String;
    begin
-      Check_Known_Size_For_Object (A, A_Size, Explanation, A_Size_Str);
-      if No (A_Size) then
-         Result := False;
+      --  Check the absence of holes in the type's representation
+
+      Suitable_For_UC_Source (Typ, Result, Explanation);
+
+      --  As per ARM 13.1(7/5): If the size of an object is greater than that
+      --  of its subtype, the additional bits are padding bits. For an
+      --  elementary object, these padding bits are normally read and updated
+      --  along with the others. For a composite object, it is unspecified
+      --  whether padding bits are read or updated in any given composite
+      --  operation.
+      --  GNAT effectively reads and updates padding bits along with the others
+      --  for discrete and fixed-point objects, but not floating-point objects.
+      --  We rely on this behavior and do not consider padding bits as unused
+      --  for these types. For floating-point types and composite types, we
+      --  are conservative and don't assume anything of the sort.
+
+      if not Result
+        or else Has_Discrete_Type (Typ)
+        or else Has_Fixed_Point_Type (Typ)
+      then
          return;
       end if;
-      Check_Known_Size_For_Object (B, B_Size, Explanation, B_Size_Str);
-      if No (B_Size) then
-         Result := False;
+
+      --  Checks for absence of holes in Typ are done on the RM size. Check
+      --  that there are no additional bits in Obj.
+
+      Check_Known_Size_For_Object (Obj, Obj_Size, Explanation, Size_Str);
+
+      --  If the object size and the RM_Size are not known but the check that
+      --  Typ is suitable as source succeeds, it means that Obj is a
+      --  dynamically constrained array with aliased components. In this case,
+      --  the object size necessarily matches the RM_Size, there is nothing
+      --  more to check.
+
+      if No (Obj_Size) then
+         pragma
+           Assert
+             (Is_Array_Type (Typ)
+                and then Has_Aliased_Components (Etype (Typ)));
          return;
       end if;
-      if A_Size /= B_Size then
+
+      Check_Known_RM_Size (Typ, RM_Size, Explanation);
+      pragma Assert (Present (RM_Size));
+
+      if RM_Size /= Obj_Size then
          Result := False;
          Explanation :=
-           To_Unbounded_String
-             ("sizes of overlaid objects differ: "
-              & To_String (A_Size_Str)
-              & " "
-              & Escape (UI_Image (A_Size))
-              & ", while "
-              & To_String (B_Size_Str)
-              & " "
-              & Escape (UI_Image (B_Size)));
-         return;
+           Size_Str
+           & " "
+           & UI_Image (Obj_Size)
+           & ", but "
+           & Type_Name_For_Explanation (Typ)
+           & " has Size "
+           & UI_Image (RM_Size)
+           & Common_Exp;
       end if;
-      Result := True;
-      Explanation := Null_Unbounded_String;
-   end Objects_Have_Same_Size;
+   end Object_Suitable_For_UC_Source;
+
    --------------------------
    -- Precise_Composite_UC --
    --------------------------
@@ -647,12 +687,14 @@ package body Gnat2Why.Unchecked_Conversion is
 
          elsif Is_Record_Type (Typ) then
             declare
-               Comps  : constant Component_Sets.Set := Get_Component_Set (Typ);
-               Assocs :
+               Comps   : constant Component_Sets.Set :=
+                 Get_Component_Set (Typ);
+               Assocs  :
                  W_Field_Association_Array (1 .. Integer (Comps.Length));
-               Flags  :
+               Flags   :
                  W_Field_Association_Array (1 .. Integer (Comps.Length));
-               Index  : Positive := 1;
+               Index   : Positive := 1;
+               F_Index : Positive := 1;
             begin
                for Comp of Comps loop
                   declare
@@ -670,9 +712,12 @@ package body Gnat2Why.Unchecked_Conversion is
                           Field  =>
                             To_Why_Id (Comp, Local => False, Rec => Typ),
                           Value  => +F_Value.Value);
+                     Index := Index + 1;
 
-                     if Do_Validity then
-                        Flags (Index) :=
+                     if Do_Validity
+                       and then not Comp_Has_Only_Valid_Values (Comp, Typ).Ok
+                     then
+                        Flags (F_Index) :=
                           New_Field_Association
                             (Domain => EW_Term,
                              Field  =>
@@ -682,9 +727,9 @@ package body Gnat2Why.Unchecked_Conversion is
                                   Rec       => Base_Retysp (Typ),
                                   From_Tree => Validity_Tree),
                              Value  => +F_Value.Valid_Flag);
+                        F_Index := F_Index + 1;
                      end if;
                   end;
-                  Index := Index + 1;
                end loop;
 
                return
@@ -703,7 +748,7 @@ package body Gnat2Why.Unchecked_Conversion is
                     (if Do_Validity
                      then
                        New_Record_Aggregate
-                         (Associations => Flags,
+                         (Associations => Flags (1 .. F_Index - 1),
                           Typ          => Get_Validity_Tree_Type (Typ))
                      else Why_Empty));
             end;
@@ -1329,8 +1374,44 @@ package body Gnat2Why.Unchecked_Conversion is
         "; "
         & Typ_Name
         & " might have unused bits that are not modelled in SPARK";
-      Size       : Uint;
-      Sum_Comp   : Uint;
+
+      procedure Check_No_Holes_In_Typ
+        (Typ : Type_Kind_Id; Size : Uint; Size_Str : String);
+      --  Check that the sum of the components of Typ is equal to Size. If not,
+      --  store an explanation in Explanation. Set result to the result of the
+      --  check.
+
+      ---------------------------
+      -- Check_No_Holes_In_Typ --
+      ---------------------------
+
+      procedure Check_No_Holes_In_Typ
+        (Typ : Type_Kind_Id; Size : Uint; Size_Str : String)
+      is
+         Sum_Comp : Uint;
+      begin
+         Compute_Size_Of_Components (Typ, Result, Sum_Comp, Explanation);
+
+         if not Result then
+            Append (Explanation, Common_Exp);
+         elsif Size = Sum_Comp then
+            Result := True;
+         else
+            Result := False;
+            Explanation :=
+              To_Unbounded_String
+                (Type_Name_For_Explanation (Typ)
+                 & " has minimal size "
+                 & UI_Image (Sum_Comp)
+                 & ", but "
+                 & Size_Str
+                 & " was declared as "
+                 & UI_Image (Size)
+                 & Common_Exp);
+         end if;
+      end Check_No_Holes_In_Typ;
+
+      Size : Uint;
 
    begin
       Suitable_For_UC (Typ, Result, Explanation);
@@ -1338,33 +1419,52 @@ package body Gnat2Why.Unchecked_Conversion is
          return;
       end if;
 
+      --  Scalar types cannot have holes, as all bits are relevant for their
+      --  values. Instead, such objects are considered to have invalid values.
+
+      if Has_Scalar_Type (Typ) then
+         return;
+      end if;
+
       --  Check that there is no holes
 
       Check_Known_RM_Size (Typ, Size, Explanation);
+
       if No (Size) then
-         Result := False;
-         Append (Explanation, Common_Exp);
-         return;
+
+         --  Arrays with aliased components cannot have holes between
+         --  components. It is enough to check that the components themselves
+         --  have no holes.
+
+         if Is_Array_Type (Typ) and then Has_Aliased_Components (Etype (Typ))
+         then
+            declare
+               Comp_Ty   : constant Type_Kind_Id :=
+                 Retysp (Component_Type (Typ));
+               Comp_Size : constant Uint :=
+                 Get_Attribute_Value (Typ, Attribute_Component_Size);
+            begin
+               if No (Comp_Size) then
+                  Result := False;
+                  Explanation :=
+                    To_Unbounded_String
+                      (Typ_Name
+                       & " doesn't have a Component_Size representation clause"
+                       & " or aspect");
+                  return;
+               end if;
+
+               Check_No_Holes_In_Typ (Comp_Ty, Comp_Size, "Component_Size");
+               return;
+            end;
+         else
+            Result := False;
+            Append (Explanation, Common_Exp);
+            return;
+         end if;
       end if;
 
-      Compute_Size_Of_Components (Typ, Result, Sum_Comp, Explanation);
-
-      if not Result then
-         Append (Explanation, Common_Exp);
-         return;
-      elsif Size = Sum_Comp then
-         Result := True;
-      else
-         Result := False;
-         Explanation :=
-           To_Unbounded_String
-             (Typ_Name
-              & " has minimal size "
-              & UI_Image (Sum_Comp)
-              & ", but Size was declared as "
-              & UI_Image (Size)
-              & Common_Exp);
-      end if;
+      Check_No_Holes_In_Typ (Typ, Size, "Size");
    end Suitable_For_UC_Source;
 
    ----------------------------

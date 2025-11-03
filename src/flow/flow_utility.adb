@@ -4866,6 +4866,20 @@ package body Flow_Utility is
                       (Is_Internal (N) or else Is_Quantified_Loop_Param (N));
                end if;
 
+            --  ??? Previously Traverse_Proc, as opposed to Traverse_More_Proc,
+            --  didn't visit actions for short-circuit and if/case-expressions.
+            --  Ignore these actions until this is discussed with the frontend.
+
+            when N_Subtype_Declaration | N_Object_Declaration         =>
+               pragma
+                 Assert
+                   (not Ctx.Assume_In_Expression
+                      or else Is_Actions_Entity (Defining_Identifier (N)));
+
+               if Is_Actions_Entity (Defining_Identifier (N)) then
+                  return Skip;
+               end if;
+
             when N_Aggregate                                          =>
                if Is_Array_Type (Etype (N)) then
                   declare
