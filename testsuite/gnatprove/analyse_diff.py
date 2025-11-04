@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-""" A small script to check how a change to the proof system affects the
-    number of discharged VCs.
+"""A small script to check how a change to the proof system affects the
+number of discharged VCs.
 
-    Usage: git diff | ./analyze_diff.py
+Usage: git diff | ./analyze_diff.py
 """
 
 import sys

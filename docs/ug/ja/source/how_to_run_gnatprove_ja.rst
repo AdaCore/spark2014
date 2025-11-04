@@ -313,7 +313,7 @@ CodePeer 静的解析器を使う
 
 .. note::
 
-   |CodePeer| は，SPARK Pro 17 以上の一部として利用可能です．しかし，SPARK Discovery には含まれていません．
+   |CodePeer| は，SPARK Pro 17 以上の一部として利用可能です．
 
 |CodePeer| は，静的解析器であり，AdaCore社によって開発・商用化されました(http://www.adacore.com/codepeer)． |GNATprove| では，検査における証明において追加の情報源として， |CodePeer| を用いることができます．このためには，コマンドラインオプションとして， ``--codepeer=on`` を使用します． |CodePeer| は，自動証明の前に，実行されます．もし，特定の検査に関して証明ができた場合， |GNATprove| は，別の検証器を用いて，再度この検査を繰り返そうとはしません．
 
@@ -377,7 +377,7 @@ Adaファイルを編集するときに， |GNATprove| を，:menuselection:`SPA
 
 メニュー :menuselection:`SPARK --> Prove ...` を選択すると， |GNATprove| を用いて解析を行うために用いる様々なスイッチを設定するためのパネルが開きます．デフォルトでは，このパネルには基本的な幾つかの設定がなされているのみです．例えば，証明レベルに関する設定があります（詳しくは， :ref:`ja Running GNATprove from the Command Line` 中の ``--level`` を参照方）． :menuselection:`Edit --> Preferences --> SPARK` において |SPARK| に対する ``User profile`` を ``Basic`` から ``Advanced`` に変更すると，証明のためのより複雑なパネルが表示されます．ここには，より詳細なスイッチがあります．
 
-|GNATprove| プロジェクトのスイッチは，パネル ``GNATprove`` で変更することができます（ :menuselection:`Project --> Edit Project Properties --> Switches` )．
+|GNATprove| のプロジェクトスイッチ（:ref:`Project Attributes` を参照）は、プロジェクトファイルを直接編集することで指定できます。GNAT Studio は、LSP と `Ada Language Server <https://github.com/AdaCore/ada_language_server>`_ を通じて、プロジェクトファイルに対する補完、ツールチップ、アウトラインなどの一般的な IDE 機能を提供し、プロジェクトのカスタマイズをより簡単に行えるよう支援します。
 
 フロー解析および証明に関する検査を行ったときに，あるサブプログラムの特定の経路が不合格となった場合， |GNATprove| は，ユーザに対して経路情報を生成する場合があります．次の操作によって，ユーザは GNAT Studio 上にこの経路を表示することができます．最初の方法は，不合格を示す証明メッセージの左にあるアイコンをクリックすることです．二番目の方法は，エディタ中で関係する行の左にあるアイコンをクリックすることです．同じアイコンを再度クリックすると，経路は再び見えなくなります．
 

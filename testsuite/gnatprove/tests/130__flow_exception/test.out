@@ -28,7 +28,7 @@ choice1.adb:3:08: info: flow dependencies proved
 choice1.adb:9:40: info: exceptional case proved (CVC5: 1 VC)
 choice1.adb:9:52: info: exceptional case proved (CVC5: 1 VC)
 choice1.adb:20:04: info: only expected exception raised (CVC5: 1 VC)
-choice1.adb:21:04: medium: unexpected exception might be raised
+choice1.adb:21:04: medium: unexpected exception might be raised [reason for check: Choice1 allows propagating no exceptions] [possible explanation: Program_Error might be unexpectedly raised]
 copy1.adb:1:34: info: initialization of "Z" proved
 copy1.adb:2:08: info: flow dependencies proved
 copy1.adb:13:04: info: only expected exception raised (CVC5: 1 VC)

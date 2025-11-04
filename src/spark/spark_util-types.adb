@@ -225,7 +225,46 @@ package body SPARK_Util.Types is
            and then not Is_Constrained (Etype (Typ))
            and then not Is_First_Subtype (Typ)
          then
-            if not Has_Pragma_Pack (Etype (Typ)) then
+
+            --  Arrays with aliased components cannot have gaps, try to compute
+            --  the size if the array type has static bounds.
+
+            if Has_Aliased_Components (Etype (Typ))
+              and then Is_Static_Array_Type (Typ)
+            then
+               declare
+                  Comp_Size : constant Uint :=
+                    Get_Attribute_Value (Typ, Attribute_Component_Size);
+                  Index     : Node_Id := First_Index (Typ);
+               begin
+                  if No (Comp_Size) then
+                     Explanation :=
+                       To_Unbounded_String
+                         (Type_Name_For_Explanation (Typ)
+                          & " doesn't have a Component_Size representation "
+                          & "clause or aspect");
+                  else
+                     RM_Size := Comp_Size;
+                     while Present (Index) loop
+                        declare
+                           Low  : constant Node_Id :=
+                             Low_Bound (Get_Range (Index));
+                           High : constant Node_Id :=
+                             High_Bound (Get_Range (Index));
+                        begin
+                           RM_Size :=
+                             (if Expr_Value (High) < Expr_Value (Low)
+                              then Uint_0
+                              else
+                                (Expr_Value (High) - Expr_Value (Low) + 1)
+                                * RM_Size);
+                        end;
+                        Next_Index (Index);
+                     end loop;
+                  end if;
+               end;
+
+            elsif not Has_Pragma_Pack (Etype (Typ)) then
                Explanation :=
                  To_Unbounded_String
                    (Type_Name_For_Explanation (Etype (Typ))
@@ -257,17 +296,67 @@ package body SPARK_Util.Types is
       Size_Str    : out Unbounded_String) is
    begin
       case Nkind (Obj) is
+         when N_Slice                                                =>
+            declare
+               Typ       : constant Type_Kind_Id :=
+                 Retysp (Etype (Prefix (Obj)));
+               Comp_Size : Uint;
+               Low       : constant Node_Id :=
+                 Low_Bound (Discrete_Range (Obj));
+               High      : constant Node_Id :=
+                 High_Bound (Discrete_Range (Obj));
+
+            begin
+               Comp_Size :=
+                 Get_Attribute_Value (Typ, Attribute_Component_Size);
+               pragma Assert (Has_Aliased_Components (Etype (Typ)));
+
+               --  Here, components of slices are always aliased. Compute the
+               --  size if the slice has static bounds. Otherwise, return
+               --  No_Uint.
+
+               if No (Comp_Size) then
+                  Explanation :=
+                    To_Unbounded_String
+                      ("Component_Size of "
+                       & Type_Name_For_Explanation (Typ)
+                       & " is missing");
+                  Size := No_Uint;
+
+               elsif Compile_Time_Known_Value (Low)
+                 and then Compile_Time_Known_Value (High)
+               then
+                  Size_Str := To_Unbounded_String ("size of slice is");
+                  Size :=
+                    (if Expr_Value (High) < Expr_Value (Low)
+                     then Uint_0
+                     else
+                       (Expr_Value (High) - Expr_Value (Low) + 1) * Comp_Size);
+               else
+                  Explanation :=
+                    To_Unbounded_String ("slice has dynamic bounds");
+                  Size := No_Uint;
+               end if;
+            end;
+
          when N_Indexed_Component                                    =>
             declare
                Typ : constant Type_Kind_Id := Retysp (Etype (Prefix (Obj)));
             begin
                Size := Get_Attribute_Value (Typ, Attribute_Component_Size);
-               pragma Assert (not No (Size));
-               Size_Str :=
-                 To_Unbounded_String
-                   ("Component_Size of "
-                    & Type_Name_For_Explanation (Typ)
-                    & " is");
+               if No (Size) then
+                  Explanation :=
+                    To_Unbounded_String
+                      ("Component_Size of "
+                       & Type_Name_For_Explanation (Typ)
+                       & " is missing");
+               else
+                  Size_Str :=
+                    To_Unbounded_String
+                      ("Component_Size of "
+                       & Type_Name_For_Explanation (Typ)
+                       & " is");
+               end if;
             end;
 
          when N_Selected_Component                                   =>
@@ -285,25 +374,37 @@ package body SPARK_Util.Types is
                   then Obj
                   else Entity (Obj));
             begin
-               --  For aliased objects, we need to take the Object_Size of the
-               --  type (ARM K.2 164 2/5).
-               --  Otherwise, we can take the size of the object, if available
-               --  (ARM K.2 229).
-               --  If the size is not specified, for stand-alone objects (which
-               --  is the case here) GNAT uses the Object_Size of the type.
+               --  If the object has its own size annotation, use it.
 
-               if Is_Aliased (Ent) or else not Known_Esize (Ent) then
+               if Known_Esize (Ent) then
+                  Size := Esize (Ent);
+                  Size_Str :=
+                    To_Unbounded_String
+                      ("object " & Source_Name (Ent) & " has size");
+
+               --  If the size is not specified, for stand-alone objects (which
+               --  is the case here) GNAT always uses the Object_Size of the
+               --  type.
+               --  Note that the RM only mandates the Object_Size for aliased
+               --  objects (ARM K.2 164 2/5).
+
+               else
                   Check_Known_Esize (Etype (Ent), Size, Explanation);
                   Size_Str :=
                     To_Unbounded_String
                       (Type_Name_For_Explanation (Etype (Ent))
                        & " has Object_Size");
-               else
-                  Size := Esize (Ent);
-                  Size_Str :=
-                    To_Unbounded_String
-                      ("object " & Source_Name (Ent) & " has size");
                end if;
+            end;
+
+         when N_Explicit_Dereference                                 =>
+            declare
+               Typ : constant Type_Kind_Id := Retysp (Etype (Obj));
+            begin
+               Check_Known_Esize (Typ, Size, Explanation);
+               Size_Str :=
+                 To_Unbounded_String
+                   (Type_Name_For_Explanation (Typ) & "has Object_Size");
             end;
 
          when others                                                 =>
@@ -1907,17 +2008,14 @@ package body SPARK_Util.Types is
       Size_Str    : Unbounded_String;
       Valid       : True_Or_Explain;
    begin
-      Check_Known_Size_For_Object (Obj, Size, Explanation, Size_Str);
-      if Is_Scalar_Type (Ty) and then No (Size) then
-         return False;
-      else
-         Valid :=
-           Type_Has_Only_Valid_Values
-             (Ty,
-              (if Is_Scalar_Type (Ty) then Size else Uint_0),
-              To_String (Size_Str));
-         return Valid.Ok;
+      if Is_Scalar_Type (Ty) then
+         Check_Known_Size_For_Object (Obj, Size, Explanation, Size_Str);
+         if No (Size) then
+            return False;
+         end if;
       end if;
+      Valid := Type_Has_Only_Valid_Values (Ty, Size, To_String (Size_Str));
+      return Valid.Ok;
    end Obj_Has_Only_Valid_Values;
 
    -------------------

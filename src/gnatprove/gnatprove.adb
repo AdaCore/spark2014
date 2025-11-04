@@ -959,15 +959,17 @@ procedure Gnatprove with SPARK_Mode is
       end if;
       if Use_Semaphores then
          declare
-            Max_Proc : constant Integer :=
-              (if CL_Switches.Debug_Subp_Multi = 0
-               then Parallel
-               else CL_Switches.Debug_Subp_Multi);
+            Num_Provers : constant Integer :=
+              Integer'Max
+                (1, Integer (File_Specific_Map ("default").Provers.Length));
+            Max_Proc    : constant Integer :=
+              Integer'Max (1, Parallel / Num_Provers);
          begin
             Delete (Semaphore_Name);
             Create (Semaphore_Name, Max_Proc, Why3_Semaphore);
+            Ada.Environment_Variables.Set
+              ("GNATPROVE_SEMAPHORE", Semaphore_Name);
          end;
-         Ada.Environment_Variables.Set ("GNATPROVE_SEMAPHORE", Semaphore_Name);
       end if;
       return Id;
    end Spawn_VC_Server_And_Semaphore;

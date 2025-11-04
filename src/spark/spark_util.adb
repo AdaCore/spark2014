@@ -206,6 +206,52 @@ package body SPARK_Util is
       end Is_Subset;
 
       -----------
+      -- Print --
+      -----------
+
+      function Print (S : Set) return String is
+         use type Ada.Containers.Count_Type;
+         Exc_Str     : Unbounded_String;
+         Is_Last     : Boolean := True;
+         Is_Last_But : Boolean := True;
+      begin
+         if S.Exc_Set.Is_Empty then
+            if S.All_But then
+               return "any exception";
+            else
+               return "no exceptions";
+            end if;
+
+         elsif S.Exc_Set.Length = 1 then
+            Exc_Str :=
+              To_Unbounded_String (Source_Name (S.Exc_Set.First_Element));
+         elsif S.Exc_Set.Length = 2 then
+            Exc_Str :=
+              To_Unbounded_String (Source_Name (S.Exc_Set.First_Element))
+              & " and "
+              & Source_Name (S.Exc_Set.Last_Element);
+         else
+            Exc_Str := To_Unbounded_String ("");
+            for E of reverse S.Exc_Set loop
+               if Is_Last then
+                  Is_Last := False;
+               elsif Is_Last_But then
+                  Is_Last_But := False;
+                  Exc_Str := ", and " & Exc_Str;
+               else
+                  Exc_Str := ", " & Exc_Str;
+               end if;
+               Exc_Str := Source_Name (E) & Exc_Str;
+            end loop;
+         end if;
+
+         if S.All_But then
+            Exc_Str := "any exception but " & Exc_Str;
+         end if;
+         return To_String (Exc_Str);
+      end Print;
+
+      -----------
       -- Union --
       -----------
 
@@ -2825,11 +2871,18 @@ package body SPARK_Util is
 
    begin
       case Nkind (Call_Or_Stmt) is
-         when N_Function_Call | N_Procedure_Call_Statement =>
+
+         --  Entries might not have exceptional cases, but calls to protected
+         --  subprograms are sometimes rewritten as entry calls by the
+         --  frontend.
+
+         when N_Function_Call
+            | N_Procedure_Call_Statement
+            | N_Entry_Call_Statement =>
             Result :=
               Get_Exceptions_For_Subp (Get_Called_Entity (Call_Or_Stmt));
 
-         when N_Raise_Statement                            =>
+         when N_Raise_Statement      =>
             if Present (Name (Call_Or_Stmt)) then
                Result := Exception_Sets.Exactly (Entity (Name (Call_Or_Stmt)));
 
@@ -2857,10 +2910,7 @@ package body SPARK_Util is
                end;
             end if;
 
-         when N_Entry_Call_Statement                       =>
-            return Exception_Sets.Empty_Set;
-
-         when others                                       =>
+         when others                 =>
             raise Program_Error;
       end case;
 
@@ -3733,11 +3783,9 @@ package body SPARK_Util is
    -- Is_Ghost_With_Respect_To_Context --
    --------------------------------------
 
-   function Is_Ghost_With_Respect_To_Context (Call : N_Call_Id) return Boolean
-   is
-
+   function Is_Ghost_With_Respect_To_Context (Call : Node_Id) return Boolean is
       function Is_Body (N : Node_Id) return Boolean
-      is (Nkind (N) in N_Entity_Body);
+      is (Nkind (N) in N_Entity_Body or else Is_Inlined_Call (N));
 
       function Enclosing_Body is new First_Parent_With_Property (Is_Body);
 
@@ -3745,19 +3793,38 @@ package body SPARK_Util is
         (if Nkind (Call) = N_Function_Call
          then Enclosing_Statement_Of_Call_To_Function_With_Side_Effects (Call)
          else Call);
+      Ent  : constant Entity_Id :=
+        (case Nkind (Stmt) is
+           when N_Assignment_Statement                              =>
+             Get_Enclosing_Ghost_Entity (Name (Stmt)),
+           when N_Object_Declaration                                =>
+             Defining_Entity (Stmt),
+           when N_Procedure_Call_Statement | N_Entry_Call_Statement =>
+             Get_Called_Entity (Stmt),
+           when N_Block_Statement                                   =>
+             Called_Entity_From_Inlined_Call (Stmt),
+           when others                                              =>
+             raise Program_Error);
+
    begin
-      if Is_Ghost_Assignment (Stmt)
-        or else Is_Ghost_Declaration (Stmt)
-        or else Is_Ghost_Procedure_Call (Stmt)
-      then
-         declare
-            Caller : constant Entity_Id :=
-              Unique_Defining_Entity (Enclosing_Body (Stmt));
-         begin
-            return not Is_Ghost_Entity (Caller);
-         end;
-      else
+      if not Is_Ghost_Entity (Ent) then
          return False;
+      else
+         declare
+            Scop   : constant Node_Id := Enclosing_Body (Stmt);
+            Caller : constant Entity_Id :=
+              (if Nkind (Scop) in N_Entity_Body
+               then Unique_Defining_Entity (Scop)
+               else Called_Entity_From_Inlined_Call (Scop));
+         begin
+            return
+              not Is_Ghost_Entity (Caller)
+              or else (Is_Checked_Ghost_Entity (Caller)
+                       and then not Is_Checked_Ghost_Entity (Ent))
+              or else not Is_Assertion_Level_Dependent
+                            (Ghost_Assertion_Level (Caller),
+                             Ghost_Assertion_Level (Ent));
+         end;
       end if;
    end Is_Ghost_With_Respect_To_Context;
 
@@ -4738,14 +4805,18 @@ package body SPARK_Util is
         (if Simple_Address
          then Get_Root_Object (Prefix_Expr, Through_Traversal => False)
          else Empty);
+
    begin
-      if Present (Aliased_Object)
-        and then Ekind (Aliased_Object)
-                 in E_Constant | E_Loop_Parameter | E_Variable | Formal_Kind
+      --  Taking the address of a slice is only well-defined if the components
+      --  are aliased.
+
+      if Simple_Address
+        and then Nkind (Prefix_Expr) = N_Slice
+        and then not Has_Aliased_Components (Etype (Etype (Prefix_Expr)))
       then
-         return Aliased_Object;
-      else
          return Empty;
+      else
+         return Aliased_Object;
       end if;
    end Supported_Alias;
 
@@ -4990,6 +5061,14 @@ package body SPARK_Util is
 
             when N_Block_Statement                =>
                Buffer.Append (Scop);
+
+               --  Cut propagation of ghost inlined calls here
+
+               if Is_Inlined_Call (Scop)
+                 and then Is_Ghost_With_Respect_To_Context (Scop)
+               then
+                  exit;
+               end if;
 
             --  Transfer from an exception handlers always exit their
             --  surrounding handled sequence of statement, handlers do not

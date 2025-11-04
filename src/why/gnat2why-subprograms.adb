@@ -936,13 +936,9 @@ package body Gnat2Why.Subprograms is
                                 and then not Is_Part_Of_Concurrent_Object (Obj)
                               then
                                  declare
-                                    Binder  : constant Item_Type :=
-                                      Ada_Ent_To_Why.Element
-                                        (Symbol_Table, Obj);
                                     Expr    : constant W_Term_Id :=
-                                      Reconstruct_Item
-                                        (Binder,
-                                         Ref_Allowed => Params.Ref_Allowed);
+                                      +Transform_Identifier
+                                         (Params, Obj, Obj, EW_Term);
                                     Dyn_Inv : constant W_Pred_Id :=
                                       Compute_Type_Invariant
                                         (Expr   => Expr,
@@ -1958,13 +1954,10 @@ package body Gnat2Why.Subprograms is
             pragma Assert (Is_Object (Get_Direct_Mapping_Id (F)));
 
             declare
-               Binder   : constant Item_Type :=
-                 Ada_Ent_To_Why.Element
-                   (Symbol_Table, Get_Direct_Mapping_Id (F));
-               Ada_Type : constant Entity_Id :=
-                 Get_Ada_Type_From_Item (Binder);
+               Obj      : constant Object_Kind_Id := Get_Direct_Mapping_Id (F);
+               Ada_Type : constant Entity_Id := Type_Of_Node (Obj);
                Expr     : constant W_Term_Id :=
-                 Reconstruct_Item (Binder, Ref_Allowed => Params.Ref_Allowed);
+                 +Transform_Identifier (Params, Obj, Obj, EW_Term);
             begin
                Top := Top + 1;
                Dyn_Props (Top) :=
@@ -1975,8 +1968,7 @@ package body Gnat2Why.Subprograms is
                          Ty     => Ada_Type,
                          Params => Params,
                          Valid  =>
-                           Get_Valid_Id_From_Item
-                             (Binder, Params.Ref_Allowed)),
+                           Get_Valid_Id_From_Object (Obj, Params.Ref_Allowed)),
                     Right =>
                       Compute_Type_Invariant
                         (Expr   => Expr,
@@ -4011,6 +4003,7 @@ package body Gnat2Why.Subprograms is
 
       if not Init_Conds.Is_Empty
         and then (No (Body_N) or else Entity_Body_In_SPARK (E))
+        and then not Is_Ignored_Internal (Body_N)
       then
          Post := True_Pred;
 
@@ -5015,8 +5008,8 @@ package body Gnat2Why.Subprograms is
                              +Compute_Is_Initialized
                                 (E                  => Etype (Param),
                                  Name               =>
-                                   +Reconstruct_Item
-                                      (B, Body_Params.Ref_Allowed),
+                                   Transform_Identifier
+                                     (Body_Params, Param, Param, EW_Term),
                                  Params             => Body_Params,
                                  Domain             => EW_Pred,
                                  Exclude_Components => Relaxed),
@@ -5029,7 +5022,8 @@ package body Gnat2Why.Subprograms is
                         New_Predicate_Check
                           (Ada_Node => Param,
                            W_Expr   =>
-                             +Reconstruct_Item (B, Body_Params.Ref_Allowed),
+                             Transform_Identifier
+                               (Body_Params, Param, Param, EW_Term),
                            Ty       => Etype (Param)));
                   end if;
 
@@ -6042,13 +6036,10 @@ package body Gnat2Why.Subprograms is
                         declare
                            Obj        : constant Entity_Id :=
                              Get_Direct_Mapping_Id (F);
-                           Binder     : constant Item_Type :=
-                             Ada_Ent_To_Why.Element (Symbol_Table, Obj);
                            Ada_Type   : constant Entity_Id :=
-                             Get_Ada_Type_From_Item (Binder);
+                             Type_Of_Node (Obj);
                            Expr       : constant W_Term_Id :=
-                             Reconstruct_Item
-                               (Binder, Ref_Allowed => Params.Ref_Allowed);
+                             +Transform_Identifier (Params, Obj, Obj, EW_Term);
                            Check_Info : Check_Info_Type := New_Check_Info;
                            Inv        : constant W_Pred_Id :=
                              Compute_Type_Invariant

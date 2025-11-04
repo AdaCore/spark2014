@@ -6,9 +6,9 @@ test_handlers.adb:32:17: info: overflow check proved (CVC5: 2 VC)
 test_handlers.adb:38:31: info: initialization of "Y" proved
 test_handlers.adb:39:14: info: postcondition proved (CVC5: 1 VC)
 test_handlers.adb:41:15: info: exceptional case proved (CVC5: 2 VC)
-test_handlers.adb:54:10: medium: unexpected exception might be raised
+test_handlers.adb:54:10: medium: unexpected exception might be raised [reason for check: P2 allows propagating E1] [possible explanation: E3 might be unexpectedly raised]
 test_handlers.adb:62:17: info: overflow check proved (CVC5: 2 VC)
-test_handlers.adb:63:10: medium: unexpected exception might be raised
+test_handlers.adb:63:10: medium: unexpected exception might be raised [reason for check: P2 allows propagating E1] [possible explanation: E2 might be unexpectedly raised]
 test_handlers.adb:66:31: info: initialization of "Y" proved
 test_handlers.adb:67:14: info: postcondition proved (CVC5: 1 VC)
 test_handlers.adb:69:15: info: exceptional case proved (CVC5: 2 VC)

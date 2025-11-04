@@ -54,6 +54,11 @@ package Gnat2Why.Unchecked_Conversion is
    --  This procedure implements the notion of "suitable for unchecked
    --  conversion" of SPARK RM 13.9. It always uses the RM size.
 
+   procedure Object_Suitable_For_UC_Source
+     (Obj : Node_Id; Result : out Boolean; Explanation : out Unbounded_String);
+   --  This procedure implements the notion of "suitable for unchecked
+   --  conversion" of SPARK RM 13.9. It uses the size of Obj.
+
    procedure Suitable_For_UC_Target
      (Typ            : Type_Kind_Id;
       Size           : Uint;
@@ -90,13 +95,6 @@ package Gnat2Why.Unchecked_Conversion is
      (Arg_Typ : Type_Kind_Id) return True_Or_Explain;
    --  Check if Typ is only made of integers. When returning False,
    --  return also the Explanation.
-
-   procedure Objects_Have_Same_Size
-     (A, B        : Node_Id;
-      Result      : out Boolean;
-      Explanation : out Unbounded_String);
-   --  If objects A and B have the same size, then set Result to True;
-   --  otherwise set Result to False and Explanation to a possible fix.
 
    procedure Have_Same_Known_RM_Size
      (A, B        : Type_Kind_Id;

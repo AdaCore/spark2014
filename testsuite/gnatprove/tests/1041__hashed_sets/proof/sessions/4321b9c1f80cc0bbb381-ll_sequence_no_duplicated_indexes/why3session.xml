@@ -186,7 +186,7 @@
   <proof prover="2"><result status="valid" steps="55252"/></proof>
   </goal>
   <goal name="def&#39;vc.37" proved="true">
-  <proof prover="0"><result status="valid" steps="9268"/></proof>
+  <proof prover="0"><result status="valid" steps="9269"/></proof>
   <proof prover="1"><result status="valid" steps="33335"/></proof>
   <proof prover="2"><result status="valid" steps="89890"/></proof>
   </goal>
@@ -291,7 +291,7 @@
   <proof prover="2"><result status="valid" steps="52740"/></proof>
   </goal>
   <goal name="def&#39;vc.62" proved="true">
-  <proof prover="0"><result status="valid" steps="4511"/></proof>
+  <proof prover="0"><result status="valid" steps="4514"/></proof>
   <proof prover="1"><result status="valid" steps="32366"/></proof>
   <proof prover="2"><result status="valid" steps="133325"/></proof>
   </goal>
@@ -301,8 +301,8 @@
   <proof prover="2"><result status="valid" steps="52739"/></proof>
   </goal>
   <goal name="def&#39;vc.64" proved="true">
-  <proof prover="0"><result status="failure" steps="0"/></proof>
-  <proof prover="1"><result status="failure" steps="0"/></proof>
+  <proof prover="0"><result status="valid" steps="2105"/></proof>
+  <proof prover="1"><result status="valid" steps="16480"/></proof>
   <proof prover="2"><result status="valid" steps="56999"/></proof>
   </goal>
   <goal name="def&#39;vc.65" proved="true">
@@ -382,7 +382,7 @@
   </goal>
   <goal name="def&#39;vc.80" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="valid" steps="39569"/></proof>
+  <proof prover="1"><result status="highfailure"/></proof>
   <proof prover="2"><result status="valid" steps="97336"/></proof>
   </goal>
   <goal name="def&#39;vc.81" proved="true">
@@ -462,8 +462,8 @@
   <proof prover="2"><result status="valid" steps="22443"/></proof>
   </goal>
   <goal name="def&#39;vc.99" proved="true">
-  <proof prover="0"><result status="failure" steps="0"/></proof>
-  <proof prover="1"><result status="failure" steps="0"/></proof>
+  <proof prover="0"><result status="valid" steps="21586"/></proof>
+  <proof prover="1"><result status="valid" steps="41781"/></proof>
   <proof prover="2"><result status="valid" steps="100946"/></proof>
   </goal>
   <goal name="def&#39;vc.100" proved="true">
@@ -487,12 +487,12 @@
   <proof prover="2"><result status="valid" steps="23418"/></proof>
   </goal>
   <goal name="def&#39;vc.104" proved="true">
-  <proof prover="0"><result status="failure" steps="0"/></proof>
-  <proof prover="1"><result status="highfailure"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
+  <proof prover="1"><result status="valid" steps="43123"/></proof>
   <proof prover="2"><result status="valid" steps="98567"/></proof>
   </goal>
   <goal name="def&#39;vc.105" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
+  <proof prover="0"><result status="valid" steps="18756"/></proof>
   <proof prover="1"><result status="valid" steps="37811"/></proof>
   <proof prover="2"><result status="valid" steps="70980"/></proof>
   </goal>
@@ -535,7 +535,7 @@
   <proof prover="2"><result status="valid" steps="19354"/></proof>
   </goal>
   <goal name="def&#39;vc.116" proved="true">
-  <proof prover="0"><result status="valid" steps="14971"/></proof>
+  <proof prover="0"><result status="valid" steps="14987"/></proof>
   <proof prover="1"><result status="valid" steps="43812"/></proof>
   <proof prover="2"><result status="valid" steps="65716"/></proof>
   </goal>
@@ -572,8 +572,11 @@
   </goal>
   <goal name="def&#39;vc.124" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
-  <proof prover="1"><result status="unknown" steps="43035"/></proof>
-  <proof prover="2"><result status="valid" steps="245699"/></proof>
+  <proof prover="1"><result status="valid" steps="43599"/></proof>
+  <proof prover="2"><result status="valid" steps="82359"/></proof>
+  </goal>
+  <goal name="def&#39;vc.125" proved="true">
+  <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
  </transf>
  </goal>

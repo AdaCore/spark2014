@@ -191,7 +191,7 @@ package body Xtree_Accessors is
          begin
             PL (O, "(" & Id_Subtype (Node_Kind (FI), IK, M));
             Relative_Indent (O, 2);
-            PL (O, "(Node_Table (+" & Node_Id_Param & ")."
+            P  (O, "(Node_Table (+" & Node_Id_Param & ")."
                & Field_Name (FI) & "))");
             Relative_Indent (O, -2);
          end;

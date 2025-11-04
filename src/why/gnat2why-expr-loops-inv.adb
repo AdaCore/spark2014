@@ -1170,10 +1170,8 @@ package body Gnat2Why.Expr.Loops.Inv is
                       and then Is_Mutable_In_Why (N));
 
                declare
-                  Binder      : constant Item_Type :=
-                    Ada_Ent_To_Why.Element (Symbol_Table, N);
                   Expr        : constant W_Term_Id :=
-                    Reconstruct_Item (Binder, Ref_Allowed => True);
+                    +Transform_Identifier (Body_Params, N, N, EW_Term);
                   Init_Id     : constant W_Expr_Id :=
                     Get_Init_Id_From_Object (N, Ref_Allowed => True);
                   Initialized : constant Boolean :=

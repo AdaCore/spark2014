@@ -8,7 +8,7 @@ p.adb:15:13: info: implicit aspect Always_Terminates on "Proxy2" has been proved
 p.adb:19:40: warning: call to "Sin" is not handled precisely [imprecise-call]
 p.adb:22:13: info: implicit aspect Always_Terminates on "Proxy3" has been proved, subprogram will terminate
 p.adb:24:41: warning: call to "Sin" is not handled precisely [imprecise-call]
-p.adb:30:12: medium: unexpected exception might be raised
+p.adb:30:12: medium: unexpected exception might be raised [reason for check: Proxy4 allows propagating no exceptions] [possible explanation: Layout_Error might be unexpectedly raised]
 p.adb:51:10: high: call to potentially blocking subprogram "Proxy4" in protected operation "Print"
 p.ads:3:16: info: implicit aspect Always_Terminates on "S1" has been proved, subprogram will terminate
 p.ads:4:16: info: implicit aspect Always_Terminates on "S2" has been proved, subprogram will terminate

@@ -570,7 +570,10 @@ Complete List of Assumptions
 For the sake of these assumptions, we define a *precisely supported address
 specification* to be an address clause or aspect whose expression is a
 reference to the Address attribute on a part of a standalone object or
-constant. We define an *imprecisely supported address specification* to be an
+constant. In addition, if the prefix of the Address attribute is a slice, then
+its components should be aliased, as otherwise, taking the address of a slice is
+not well defined.
+We define an *imprecisely supported address specification* to be an
 address clause or aspect that is not a precisely supported address
 specification.
 
@@ -582,6 +585,13 @@ component of a composite value or the designated object of an access value).
 
 The following assumptions need to be addressed when using SPARK on all or part
 of a program:
+
+* [SPARK_IMPLEMENTATION_DEFINED]
+  If a compiler different from the GNAT compiler is used, then the program
+  should not depend on program behavior that is declared as
+  implementation-defined in the Ada language reference manual. The command-line
+  switch "--pedantic" produces warnings for a subset of implementation-defined
+  behavior.
 
 * [SPARK_JUSTIFICATION]
   All justifications of check messages should be reviewed (see :ref:`Justifying

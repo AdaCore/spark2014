@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-    pygments.lexers.ml
-    ~~~~~~~~~~~~~~~~~~
+pygments.lexers.ml
+~~~~~~~~~~~~~~~~~~
 
-    This is a lexer for Whyml adapted from the file
-    pygments-main/pygments/lexers/ml.py of the pygments repository.
-    It takes the information present in why3.el in Why3 repository.
+This is a lexer for Whyml adapted from the file
+pygments-main/pygments/lexers/ml.py of the pygments repository.
+It takes the information present in why3.el in Why3 repository.
 
-    Note that this file is quickly done wrong (only keywords change from the
-    ocaml file) but it helps.
+Note that this file is quickly done wrong (only keywords change from the
+ocaml file) but it helps.
 
 """
 

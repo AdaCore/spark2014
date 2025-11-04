@@ -2,3 +2,5 @@
 --> exit_cases_default_contract.adb:19:07
    19 |          Might_Return_Abnormally (X);
       |          ^~~~~~~~~~~~~~~~~~~~~~~~~~
+      + reason for check: Call_Might_Return_Abnormally allows propagating E1 and E2
+      + possible explanation: any exception but E1 and E2 might be unexpectedly raised

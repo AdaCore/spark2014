@@ -1138,17 +1138,58 @@ package body Flow_Error_Messages is
             end if;
 
          when VC_Raise                                 =>
-            if Nkind (N) = N_Procedure_Call_Statement
-              and then Ekind (Get_Called_Entity (N)) = E_Procedure
-              and then Is_Ghost_Entity (Get_Called_Entity (N))
-              and then not Is_Ghost_Entity (E)
-            then
-               return
-                 "ghost procedure calls should not propagate exceptions"
-                 & " to non-ghost code";
-            else
-               return "";
-            end if;
+            declare
+               function Is_Body_Or_Ghost_Inlined (N : Node_Id) return Boolean
+               is (Nkind (N) in N_Entity_Body
+                   or else (Is_Inlined_Call (N)
+                            and then Is_Ghost_With_Respect_To_Context (N)));
+
+               function Enclosing_Body_Or_Ghost_Inlined is new
+                 First_Parent_With_Property (Is_Body_Or_Ghost_Inlined);
+            begin
+
+               if Nkind (N) = N_Raise_Expression then
+                  return "expressions shall not raise exceptions";
+
+               elsif Nkind (N) in N_Subprogram_Call
+                 and then Is_Ghost_With_Respect_To_Context (N)
+               then
+                  return
+                    "ghost subprogram call shall not propagate "
+                    & "exceptions";
+
+               elsif Nkind (N) in N_Raise_xxx_Error then
+                  return "";
+
+               else
+                  declare
+                     Scop : constant Node_Id :=
+                       Enclosing_Body_Or_Ghost_Inlined (N);
+                  begin
+                     if Nkind (Scop) in N_Entity_Body then
+                        declare
+                           Caller       : constant Entity_Id :=
+                             Unique_Defining_Entity (Scop);
+                           Expected_Exc : constant String :=
+                             Get_Exceptions_For_Subp (Caller).Print;
+                        begin
+                           return
+                             Source_Name (Caller)
+                             & " allows propagating "
+                             & Expected_Exc;
+                        end;
+                     elsif Is_Inlined_Call (Scop) then
+                        return
+                          "ghost inlined call to "
+                          & Source_Name
+                              (Called_Entity_From_Inlined_Call (Scop))
+                          & " shall not propagate exceptions";
+                     else
+                        return "";
+                     end if;
+                  end;
+               end if;
+            end;
 
          when VC_Index_Check                           =>
             return Value & " must be a valid index into the array";
@@ -1535,6 +1576,18 @@ package body Flow_Error_Messages is
               & " of "
               & Source_Name (E)
               & " should be implied by its refined postcondition";
+         end;
+
+      elsif Tag = VC_Raise
+        and then (Nkind (N) = N_Raise_Statement or else N in N_Call_Id)
+      then
+         declare
+            Unexpected_Exc : Exception_Sets.Set :=
+              Get_Raised_Exceptions (N, Only_Handled => False);
+         begin
+            Unexpected_Exc.Difference
+              (Get_Raised_Exceptions (N, Only_Handled => True));
+            return Unexpected_Exc.Print & " might be unexpectedly raised";
          end;
       end if;
 
