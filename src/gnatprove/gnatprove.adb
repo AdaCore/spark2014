@@ -304,6 +304,7 @@ procedure Gnatprove with SPARK_Mode is
       if not Call_Gnat2Why then
          Args.Append ("-gnatR2js");  --  Generate data representation files
          Args.Append ("-gnatws");    --  Suppress all warnings
+         Args.Append ("-gnatx");     --  Suppress cross-ref information
 
       end if;
 
