@@ -50,6 +50,17 @@ package body Graphs is
    --  function calls this, and so does Dominance_Frontier as its
    --  easier to work with the array representation.
 
+   type Dominator_Tree_Visitor is record
+      Child  : Valid_Vertex_Id;
+      Parent : Vertex_Id;
+   end record;
+   --  For iterative implementation of DFS (depth-first search) in dominator
+   --  tree; the currently visited vertex and its parent, respectively.
+
+   package Dominator_Tree_Visitors is new
+     Ada.Containers.Vectors (Positive, Dominator_Tree_Visitor);
+   --  For iterative implementation of DFS in dominator tree
+
    ---------------
    -- Is_Frozen --
    ---------------
@@ -802,7 +813,7 @@ package body Graphs is
 
       N : Vertex_Id := 0;
 
-      procedure DT_DFS (V : Valid_Vertex_Id);
+      procedure DT_DFS (Start : Valid_Vertex_Id);
       --  See paper by Tarjan and Lengauer.
 
       procedure Compress (V : Valid_Vertex_Id);
@@ -818,27 +829,61 @@ package body Graphs is
       -- DT_DFS --
       ------------
 
-      procedure DT_DFS (V : Valid_Vertex_Id) is
+      procedure DT_DFS (Start : Valid_Vertex_Id) is
+         Stack   : Dominator_Tree_Visitors.Vector;
+         Current : Dominator_Tree_Visitor;
+         --  In the original paper by Tarjan and Lengauer there is a recursive
+         --  DFS algorithm, but since our graphs might be large, we need an
+         --  iterative version. We follow a standard approach for this and
+         --  maintain a stack of vertices that need to be visited.
+
       begin
-         N := N + 1;
-         Label (V) := V;
+         Stack.Append
+           (Dominator_Tree_Visitor'(Parent => Null_Vertex, Child => Start));
 
-         Semi (V) := N;
-         Vertex (N) := Label (V);
-         Child (V) := 0;
-         Ancestor (V) := 0;
-         Size (V) := 1;
+         while not Stack.Is_Empty loop
+            Current := Stack.Last_Element;
+            Stack.Delete_Last;
 
-         for C in G.Vertices (V).Out_Neighbours.Iterate loop
-            declare
-               W : Valid_Vertex_Id renames Key (C);
-            begin
-               if Semi (W) = 0 then
-                  Parent (W) := V;
-                  DT_DFS (W);
+            if Semi (Current.Child) = 0 then
+
+               --  In the original paper Parent is assigned just before the
+               --  recursive call to DFS. We mimic this by passing the parent
+               --  vertex on the stack, together with its child that needs
+               --  to be visited (except for the vertex from where we start
+               --  the traversal). We do this assignment here, at the very
+               --  beginning of visiting the child vertex.
+
+               if Current.Parent in Valid_Vertex_Id then
+                  Parent (Current.Child) := Current.Parent;
                end if;
-            --  In_Neighbours is our version of Pred
-            end;
+
+               N := N + 1;
+               Label (Current.Child) := Current.Child;
+
+               Semi (Current.Child) := N;
+               Vertex (N) := Label (Current.Child);
+               Child (Current.Child) := 0;
+               Ancestor (Current.Child) := 0;
+               Size (Current.Child) := 1;
+
+               for C in G.Vertices (Current.Child).Out_Neighbours.Iterate loop
+                  declare
+                     W : Valid_Vertex_Id renames Key (C);
+                  begin
+                     if Semi (W) = 0 then
+                        --  This is where Parent is assigned in the recursive
+                        --  DFS from the original paper, i.e. just before the
+                        --  recursive call (which we mimic my putting the child
+                        --  vertex on a stack).
+                        Stack.Append
+                          (Dominator_Tree_Visitor'
+                             (Parent => Current.Child, Child => W));
+                     end if;
+                  --  In_Neighbours is our version of Pred
+                  end;
+               end loop;
+            end if;
          end loop;
       end DT_DFS;
 
