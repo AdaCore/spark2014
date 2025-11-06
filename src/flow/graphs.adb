@@ -24,6 +24,7 @@
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 with Ada.Text_IO;         use Ada.Text_IO;
+with Ada.Unchecked_Deallocation;
 with GNAT.OS_Lib;         use GNAT.OS_Lib;
 with GNAT.Strings;
 
@@ -656,7 +657,15 @@ package body Graphs is
       type Bit_Field is
         array (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Boolean;
 
-      Will_Visit : Bit_Field := Bit_Field'(others => False);
+      type Bit_Field_Ptr is access Bit_Field;
+      --  We must keep track of visited vertices using heap memory, because the
+      --  graph might be large.
+
+      procedure Free is new
+        Ada.Unchecked_Deallocation (Bit_Field, Bit_Field_Ptr);
+      --  Release heap memory
+
+      Will_Visit : Bit_Field_Ptr := new Bit_Field'(others => False);
       Stack      : Vertex_Index_List := VIL.Empty_Vector;
       TV         : Simple_Traversal_Instruction;
 
@@ -758,10 +767,12 @@ package body Graphs is
                   null;
 
                when Abort_Traversal =>
-                  return;
+                  exit;
             end case;
          end;
       end loop;
+
+      Free (Will_Visit);
    end DFS;
 
    ------------------------
@@ -806,10 +817,20 @@ package body Graphs is
         array (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index)
         of Vertex_Index_List;
 
-      Parent, Ancestor, Child, Vertex : V_To_V;
-      Label, Semi, Size, Dom          : V_To_V := (others => 0);
+      type V_To_V_Ptr is access V_To_V;
+      type V_To_VIL_Ptr is access V_To_VIL;
+      --  Arrays for vertices must be allocated on the heap, because the graph
+      --  might be large.
 
-      Bucket : V_To_VIL;
+      procedure Free is new Ada.Unchecked_Deallocation (V_To_V, V_To_V_Ptr);
+      procedure Free is new
+        Ada.Unchecked_Deallocation (V_To_VIL, V_To_VIL_Ptr);
+      --  Release heap memory
+
+      Parent, Ancestor, Child, Vertex : V_To_V_Ptr := new V_To_V;
+      Label, Semi, Size               : V_To_V_Ptr := new V_To_V'(others => 0);
+
+      Bucket : V_To_VIL_Ptr := new V_To_VIL;
 
       N : Vertex_Id := 0;
 
@@ -980,55 +1001,72 @@ package body Graphs is
       DT_DFS (R);
       --  Size, Label and Semi are already set to 0, see above.
 
-      for J in reverse Valid_Vertex_Id range 2 .. N loop
-         declare
-            W : constant Valid_Vertex_Id := Vertex (J);
-         begin
-            --  Step 2
-            for V of G.Vertices (W).In_Neighbours loop
-               declare
-                  U : constant Vertex_Id := Eval (V);
-               begin
-                  if Semi (U) < Semi (W) then
-                     Semi (W) := Semi (U);
-                  end if;
-               end;
-            end loop;
-            Bucket (Vertex (Semi (W))).Append (W);
-            Link (Parent (W), W);
+      --  An extended return statement will put the returned object on the
+      --  secondary stack; this is more convenient than returning a pointer
+      --  and releasing it.
 
-            --  Step 3
-            while not Bucket (Parent (W)).Is_Empty loop
-               declare
-                  V : constant Valid_Vertex_Id :=
-                    Bucket (Parent (W)).Last_Element;
-                  U : constant Valid_Vertex_Id := Eval (V);
-               begin
-                  Bucket (Parent (W)).Delete_Last;
-                  if Semi (U) < Semi (V) then
-                     Dom (V) := U;
-                  else
-                     Dom (V) := Parent (W);
-                  end if;
-               end;
-            end loop;
-         end;
-      end loop;
+      return Dom : V_To_V := (others => 0) do
 
-      --  Step 4
-      for J in Valid_Vertex_Id range 2 .. N loop
-         declare
-            W : constant Valid_Vertex_Id := Vertex (J);
-         begin
-            if Dom (W) /= Vertex (Semi (W)) then
-               Dom (W) := Dom (Dom (W));
-            end if;
-         end;
-      end loop;
+         for J in reverse Valid_Vertex_Id range 2 .. N loop
+            declare
+               W : constant Valid_Vertex_Id := Vertex (J);
+            begin
+               --  Step 2
+               for V of G.Vertices (W).In_Neighbours loop
+                  declare
+                     U : constant Vertex_Id := Eval (V);
+                  begin
+                     if Semi (U) < Semi (W) then
+                        Semi (W) := Semi (U);
+                     end if;
+                  end;
+               end loop;
+               Bucket (Vertex (Semi (W))).Append (W);
+               Link (Parent (W), W);
 
-      Dom (R) := 0;
+               --  Step 3
+               while not Bucket (Parent (W)).Is_Empty loop
+                  declare
+                     V : constant Valid_Vertex_Id :=
+                       Bucket (Parent (W)).Last_Element;
+                     U : constant Valid_Vertex_Id := Eval (V);
+                  begin
+                     Bucket (Parent (W)).Delete_Last;
+                     if Semi (U) < Semi (V) then
+                        Dom (V) := U;
+                     else
+                        Dom (V) := Parent (W);
+                     end if;
+                  end;
+               end loop;
+            end;
+         end loop;
 
-      return Dom;
+         --  Step 4
+         for J in Valid_Vertex_Id range 2 .. N loop
+            declare
+               W : constant Valid_Vertex_Id := Vertex (J);
+            begin
+               if Dom (W) /= Vertex (Semi (W)) then
+                  Dom (W) := Dom (Dom (W));
+               end if;
+            end;
+         end loop;
+
+         Dom (R) := 0;
+
+         Free (Parent);
+         Free (Ancestor);
+         Free (Child);
+         Free (Vertex);
+
+         Free (Label);
+         Free (Semi);
+         Free (Size);
+
+         Free (Bucket);
+
+      end return;
    end Dominator_Tree_Internal;
 
    --------------------
