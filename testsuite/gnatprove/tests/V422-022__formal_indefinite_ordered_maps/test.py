@@ -1,8 +1,6 @@
 from subprocess import call
 from test_support import prove_all, gprbuild
 
-contains_manual_proof = False
-
 # Counterexample generation does not seem to consume the steps correctly on
 # this test.
 
